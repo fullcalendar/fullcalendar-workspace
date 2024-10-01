@@ -20,6 +20,7 @@ temporary regressions
 very few breaking changes
 updateSize method deprected
 windowResize/windowResizeDelay/handleWindowResize settings removed
+className breakage
 exports
   DayTable no longer exposed from '@fullcalendar/daygrid/internal'
   DayGridView ('@fullcalendar/daygrid/internal') renamed to DayGridView
@@ -55,12 +56,14 @@ daygrid
     [x] https://github.com/fullcalendar/fullcalendar/issues/5762
     BREAKING
   Events not rendered when container is resized (#7555)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/7555
+    [x] https://github.com/fullcalendar/fullcalendar/issues/7555
+    (can't produce - ask them)
 resizing (all views)
   Layout does not resize to new container width after browser resizing (#6407)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/6407
+    [x] https://github.com/fullcalendar/fullcalendar/issues/6407
+    (too hard to recreate... definitely fixed)
   Resource rows don't adjust height to fit resourceLaneContent (#6103)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/6103
+    [x] https://github.com/fullcalendar/fullcalendar/issues/6103
   dynamic calendar width doesn't adjust (#5507)
     [ ] https://github.com/fullcalendar/fullcalendar/issues/5507
   Adjust calendar sizing when scrollbar width changes (or (de)activated) (#5561)
