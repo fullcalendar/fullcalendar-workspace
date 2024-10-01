@@ -1,5 +1,5 @@
 
-## 7.0.0-beta.0
+## 7.0.0-beta.0 (2024-10-01)
 
 This is a beta release for the upcoming v7. It includes a complete refactor of the HTML/CSS to allow
 for increased performance, better accessibility, and to serve as a foundation for advanced features
