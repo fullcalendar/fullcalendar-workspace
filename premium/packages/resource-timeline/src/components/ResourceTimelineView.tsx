@@ -361,34 +361,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           // ^^weird to have same element responsible for width and veritical padding
                         }}
                       >
-                        {/* resource-group rows */}
-                        {/* container simply to enclose siblings for :first-child, etc */}
-                        <div>
-                          {flatGroupRowLayouts.map((groupRowLayout) => {
-                            const group = groupRowLayout.entity
-                            return (
-                              <div
-                                key={queryObjKey(group)}
-                                role='row'
-                                aria-rowindex={groupRowLayout.rowIndex}
-                                class={[
-                                  'fc-row fc-fill-x',
-                                  groupRowLayout.rowIndex ? 'fc-not-first' : '',
-                                ].join(' ')}
-                                style={{
-                                  top: bodyTops.get(group),
-                                  height: bodyHeights.get(group),
-                                }}
-                              >
-                                <GroupWideCell
-                                  group={group}
-                                  isExpanded={groupRowLayout.isExpanded}
-                                  innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
-                                />
-                              </div>
-                            )
-                          })}
-                        </div>
                         <div
                           className='fc-flex-row'
                           style={{
@@ -471,6 +443,35 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               )
                             })}
                           </div>
+                        </div>
+                        {/* resource-group rows */}
+                        {/* container simply to enclose siblings for :first-child, etc */}
+                        {/* hackily moved after resources for z-index reasons */}
+                        <div>
+                          {flatGroupRowLayouts.map((groupRowLayout) => {
+                            const group = groupRowLayout.entity
+                            return (
+                              <div
+                                key={queryObjKey(group)}
+                                role='row'
+                                aria-rowindex={groupRowLayout.rowIndex}
+                                class={[
+                                  'fc-row fc-fill-x',
+                                  groupRowLayout.rowIndex ? 'fc-not-first' : '',
+                                ].join(' ')}
+                                style={{
+                                  top: bodyTops.get(group),
+                                  height: bodyHeights.get(group),
+                                }}
+                              >
+                                <GroupWideCell
+                                  group={group}
+                                  isExpanded={groupRowLayout.isExpanded}
+                                  innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
+                                />
+                              </div>
+                            )
+                          })}
                         </div>
                       </div>
                     </Scroller>
@@ -583,31 +584,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           style={{ height: bodyCanvasHeight }}
                         >
                           <div>
-                            {flatGroupRowLayouts.map((groupRowLayout) => {
-                              const group = groupRowLayout.entity
-                              return (
-                                <div
-                                  key={queryObjKey(group)}
-                                  role='row'
-                                  aria-rowindex={groupRowLayout.rowIndex}
-                                  class={[
-                                    'fc-row fc-fill-x',
-                                    groupRowLayout.rowIndex ? 'fc-not-first' : '',
-                                  ].join(' ')}
-                                  style={{
-                                    top: bodyTops.get(group),
-                                    height: bodyHeights.get(group),
-                                  }}
-                                >
-                                  <GroupLane
-                                    group={group}
-                                    innerHeightRef={this.timeEntityInnerHeightMap.createRef(group)}
-                                  />
-                                </div>
-                              )
-                            })}
-                          </div>
-                          <div>
                             {flatResourceLayouts.map((resourceLayout) => {
                               const resource = resourceLayout.entity
                               return (
@@ -639,6 +615,32 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
                                     // dimensions
                                     slotWidth={slotWidth}
+                                  />
+                                </div>
+                              )
+                            })}
+                          </div>
+                          {/* groups hackily moved after resource-rows for z-index reasons */}
+                          <div>
+                            {flatGroupRowLayouts.map((groupRowLayout) => {
+                              const group = groupRowLayout.entity
+                              return (
+                                <div
+                                  key={queryObjKey(group)}
+                                  role='row'
+                                  aria-rowindex={groupRowLayout.rowIndex}
+                                  class={[
+                                    'fc-row fc-fill-x',
+                                    groupRowLayout.rowIndex ? 'fc-not-first' : '',
+                                  ].join(' ')}
+                                  style={{
+                                    top: bodyTops.get(group),
+                                    height: bodyHeights.get(group),
+                                  }}
+                                >
+                                  <GroupLane
+                                    group={group}
+                                    innerHeightRef={this.timeEntityInnerHeightMap.createRef(group)}
                                   />
                                 </div>
                               )

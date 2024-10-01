@@ -136,8 +136,7 @@ These will be addressed before v7 official release. No need to report bugs relat
   - Edge: Aug 2020
 - **List view** - currently still leverages `<table>`, but will be refactored away soon
 - **Other bugs**
-  - Resource Timeline resource *groups* do not collapse/expand when icon clicked (TODO: make ticket)
-  - the space to accommodate scrollbars is just blank (#7780)
+  - The space to accommodate scrollbars is just blank (#7780)
     https://github.com/fullcalendar/fullcalendar/issues/7780
   - timegrid time-axis isn't selectable (#7781)
     https://github.com/fullcalendar/fullcalendar/issues/7781
