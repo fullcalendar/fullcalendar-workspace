@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar-examples/ionic-angular",
-  "version": "0.0.1",
+  "version": "0.0.2-beta.0",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
   "scripts": {
@@ -25,10 +25,10 @@
     "@capacitor/haptics": "4.1.0",
     "@capacitor/keyboard": "4.1.1",
     "@capacitor/status-bar": "4.1.1",
-    "@fullcalendar/angular": "^6.1.10",
-    "@fullcalendar/core": "^6.1.10",
-    "@fullcalendar/daygrid": "^6.1.10",
-    "@fullcalendar/timegrid": "^6.1.10",
+    "@fullcalendar/angular": "^7.0.0-beta.0",
+    "@fullcalendar/core": "^7.0.0-beta.0",
+    "@fullcalendar/daygrid": "^7.0.0-beta.0",
+    "@fullcalendar/timegrid": "^7.0.0-beta.0",
     "@ionic/angular": "^6.1.9",
     "ionicons": "^6.0.3",
     "rxjs": "~7.5.0",

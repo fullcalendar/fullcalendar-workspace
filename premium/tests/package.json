@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@fullcalendar-tests/premium",
-  "version": "0.0.2",
+  "version": "0.0.3-beta.0",
   "dependencies": {
     "@fullcalendar/core": "workspace:*",
     "@fullcalendar/daygrid": "workspace:*",
@@ -19,7 +19,7 @@
     "xhr-mock": "^2.5.1"
   },
   "devDependencies": {
-    "@fullcalendar-scripts/standard": "*",
+    "@fullcalendar-scripts/standard": "0.0.1-beta.0",
     "@types/jasmine": "^3.3.12",
     "@types/jasmine-jquery": "^1.5.33",
     "@types/jquery": "^3.3.29",

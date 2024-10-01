@@ -2,7 +2,7 @@
   "private": true,
   "name": "@fullcalendar-examples/react-redux",
   "title": "FullCalendar React+Redux Example Project",
-  "version": "0.0.0",
+  "version": "0.0.1-beta.0",
   "license": "ISC",
   "scripts": {
     "clean": "rm -rf dist",
@@ -11,11 +11,11 @@
     "start": "webpack serve"
   },
   "dependencies": {
-    "@fullcalendar/core": "^6.1.10",
-    "@fullcalendar/daygrid": "^6.1.10",
-    "@fullcalendar/interaction": "^6.1.10",
-    "@fullcalendar/react": "^6.1.10",
-    "@fullcalendar/timegrid": "^6.1.10",
+    "@fullcalendar/core": "^7.0.0-beta.0",
+    "@fullcalendar/daygrid": "^7.0.0-beta.0",
+    "@fullcalendar/interaction": "^7.0.0-beta.0",
+    "@fullcalendar/react": "^7.0.0-beta.0",
+    "@fullcalendar/timegrid": "^7.0.0-beta.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^7.2.0",

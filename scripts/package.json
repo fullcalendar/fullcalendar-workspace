@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@fullcalendar-scripts/workspace",
-  "version": "0.0.0",
+  "version": "0.0.1-beta.0",
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*",
     "@types/js-yaml": "^4.0.5",

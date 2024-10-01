@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@fullcalendar-examples/typescript-scheduler",
-  "version": "0.0.0",
+  "version": "0.0.1-beta.0",
   "license": "ISC",
   "author": "Adam Shaw <arshaw@arshaw.com> (http://arshaw.com/)",
   "scripts": {
@@ -10,16 +10,16 @@
     "clean": "rm -rf dist tsc"
   },
   "dependencies": {
-    "@fullcalendar/adaptive": "^6.1.10",
-    "@fullcalendar/core": "^6.1.10",
-    "@fullcalendar/daygrid": "^6.1.10",
-    "@fullcalendar/interaction": "^6.1.10",
-    "@fullcalendar/list": "^6.1.10",
-    "@fullcalendar/premium-common": "^6.1.10",
-    "@fullcalendar/resource": "^6.1.10",
-    "@fullcalendar/resource-timeline": "^6.1.10",
-    "@fullcalendar/timegrid": "^6.1.10",
-    "@fullcalendar/timeline": "^6.1.10"
+    "@fullcalendar/adaptive": "^7.0.0-beta.0",
+    "@fullcalendar/core": "^7.0.0-beta.0",
+    "@fullcalendar/daygrid": "^7.0.0-beta.0",
+    "@fullcalendar/interaction": "^7.0.0-beta.0",
+    "@fullcalendar/list": "^7.0.0-beta.0",
+    "@fullcalendar/premium-common": "^7.0.0-beta.0",
+    "@fullcalendar/resource": "^7.0.0-beta.0",
+    "@fullcalendar/resource-timeline": "^7.0.0-beta.0",
+    "@fullcalendar/timegrid": "^7.0.0-beta.0",
+    "@fullcalendar/timeline": "^7.0.0-beta.0"
   },
   "devDependencies": {
     "css-loader": "^4.3.0",

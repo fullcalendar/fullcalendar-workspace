@@ -3,7 +3,7 @@
   "sideEffects": false,
   "name": "@fullcalendar-examples/remix",
   "title": "FullCalendar Remix Example Project",
-  "version": "0.0.0",
+  "version": "0.0.1-beta.0",
   "scripts": {
     "build": "remix build",
     "dev": "remix dev",
@@ -12,11 +12,11 @@
     "clean": "rm -rf build public/build .cache"
   },
   "dependencies": {
-    "@fullcalendar/core": "^6.1.10",
-    "@fullcalendar/daygrid": "^6.1.10",
-    "@fullcalendar/interaction": "^6.1.10",
-    "@fullcalendar/react": "^6.1.10",
-    "@fullcalendar/timegrid": "^6.1.10",
+    "@fullcalendar/core": "^7.0.0-beta.0",
+    "@fullcalendar/daygrid": "^7.0.0-beta.0",
+    "@fullcalendar/interaction": "^7.0.0-beta.0",
+    "@fullcalendar/react": "^7.0.0-beta.0",
+    "@fullcalendar/timegrid": "^7.0.0-beta.0",
     "@remix-run/node": "~1.14.2",
     "@remix-run/react": "~1.14.2",
     "@remix-run/serve": "~1.14.2",
