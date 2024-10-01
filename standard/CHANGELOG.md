@@ -87,7 +87,7 @@ events (all views)
   Events times are cutoff with eventDisplay: "block" when there is not enough space for the title (#6457)
     [x] https://github.com/fullcalendar/fullcalendar/issues/6457
   Compressed space between events in dayGrid when month-start title (#7184)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/7184
+    [x] https://github.com/fullcalendar/fullcalendar/issues/7184
 scrollbars (all views)
   Don't show MacOS/iOS hovering scrollbars in timeline header/left (#5180)
     [x] https://github.com/fullcalendar/fullcalendar/issues/5180
