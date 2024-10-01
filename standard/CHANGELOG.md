@@ -3,7 +3,7 @@
 
 This is a beta release for the upcoming v7. It includes a complete refactor of the HTML/CSS to allow
 for increased performance, better accessibility, and to serve as a foundation for advanced features
-in *future* releases such as virtual rendering and endless scrolling.
+in *future* releases such as virtual rendering and infinite scrolling.
 
 v7 has very few breaking changes. However, If you've written custom CSS that overrides any of
 FullCalendar's default styles, there's a chance your CSS will need to be updated. We will release
@@ -11,6 +11,8 @@ an upgrade guide specifically for how to upgrade CSS statements as soon as all v
 become stable. In the meantime, it's recommended to simply disable your custom CSS.
 
 Please test things out! and report bugs on the [issue tracker](https://github.com/fullcalendar/fullcalendar/issues).
+
+Where to find the code
 
 <!-- ENSURE all tickets have status "Staged" -->
 
@@ -140,6 +142,8 @@ These will be addressed before v7 official release:
   https://github.com/fullcalendar/fullcalendar/issues/7734
 - `moreLinkClick` date is not adjusted for moment timezone (#7314)
   https://github.com/fullcalendar/fullcalendar/issues/7314
+- resource open/close animation (#4844)
+  https://github.com/fullcalendar/fullcalendar/issues/4844
 
 ### Features Postponed Until v7.5
 
