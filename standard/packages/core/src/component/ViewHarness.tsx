@@ -3,6 +3,7 @@ import { CssDimValue } from '../scrollgrid/util.js'
 
 export interface ViewHarnessProps {
   height?: CssDimValue
+  heightLiquid?: boolean
   aspectRatio?: number
   children: ComponentChildren
 }
@@ -10,24 +11,23 @@ export interface ViewHarnessProps {
 export class ViewHarness extends Component<ViewHarnessProps> {
   render() {
     const { props } = this
-    const { height, aspectRatio } = props
-    const fixedHeightEnabled = height != null
-    const aspectRatioEnabled = !fixedHeightEnabled && aspectRatio != null
 
     return (
       <div
         className={[
           'fc-view-harness',
-          fixedHeightEnabled
+          props.height != null
             ? 'fc-view-harness-fixedheight'
-            : aspectRatioEnabled
-              ? 'fc-view-harness-aspectratio'
-              : 'fc-view-harness-liquid',
+            : props.heightLiquid
+              ? 'fc-view-harness-liquid'
+              : props.aspectRatio != null
+                ? 'fc-view-harness-aspectratio'
+                : ''
         ].join(' ')}
         style={{
-          height,
-          paddingBottom: aspectRatioEnabled
-            ? `${(1 / aspectRatio) * 100}%`
+          height: props.height,
+          paddingBottom: props.aspectRatio != null
+            ? `${(1 / props.aspectRatio) * 100}%`
             : undefined
         }}
       >

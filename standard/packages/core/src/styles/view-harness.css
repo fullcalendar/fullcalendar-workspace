@@ -3,11 +3,14 @@
   position: relative; // for aspectratio AND for being origin for premium-message at bottom-left corner
 }
 
+.fc-view-harness-liquid,
 .fc-view-harness-fixedheight {
   display: flex;
   flex-direction: column;
 }
 
+.fc-view-harness-liquid,
+.fc-view-harness-liquid > .fc-view,
 .fc-view-harness-fixedheight > .fc-view {
   // liquid
   flex-basis: 0;
@@ -21,17 +24,4 @@
   left: 0;
   right: 0;
   bottom: 0;
-}
-
-.fc-view-harness-liquid {
-  display: flex;
-  flex-direction: column;
-}
-
-.fc-view-harness-liquid,
-.fc-view-harness-liquid > .fc-view {
-  // liquid
-  flex-grow: 1;
-  flex-basis: 0;
-  min-height: 0;
 }

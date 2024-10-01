@@ -54,12 +54,13 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
     )
 
     let viewHeight: CssDimValue | undefined
+    let viewHeightLiquid = false
     let viewAspectRatio: number | undefined
 
     if (props.forPrint || getIsHeightAuto(options)) {
-      ; // don't set any heights
+      ;
     } else if (options.height != null) {
-      ; // nothing to do. already set via Calendar::setHeight
+      viewHeightLiquid = true
     } else if (options.contentHeight != null) {
       viewHeight = options.contentHeight
     } else {
@@ -92,6 +93,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
         )}
         <ViewHarness
           height={viewHeight}
+          heightLiquid={viewHeightLiquid}
           aspectRatio={viewAspectRatio}
         >
           {this.renderView(props)}
