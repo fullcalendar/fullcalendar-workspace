@@ -21,21 +21,22 @@ very few breaking changes
 we want people to test performance
 updateSize method deprected
 windowResize/windowResizeDelay/handleWindowResize settings removed
-className breakage
+className breakage (separete changelog coming)
 exports
   DayTable no longer exposed from '@fullcalendar/daygrid/internal'
   DayGridView ('@fullcalendar/daygrid/internal') renamed to DayGridView
   DayTimeCols no longer exposed from '@fullcalendar/timegrid/internal'
   DayTimeColsView ('@fullcalendar/timegrid/internal') renamed to TimeGridView
 performance
-  https://github.com/fullcalendar/fullcalendar/issues/7677 (perf)
-  https://github.com/fullcalendar/fullcalendar/issues/7488 (flickering)
-  https://github.com/fullcalendar/fullcalendar/issues/4906 (layout thrashing)
-  https://github.com/fullcalendar/fullcalendar/issues/3003
+  [x] https://github.com/fullcalendar/fullcalendar/issues/7677 (perf)
+    (about 2x perf improvement in timegrid and daygrid)
+  [ ] https://github.com/fullcalendar/fullcalendar/issues/7488 (flickering)
+  [ ] https://github.com/fullcalendar/fullcalendar/issues/4906 (layout thrashing)
+  [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
     (not rerendinering events that didn't change --- see if/when this was fixed)
   reflows from some interaction:
-    https://github.com/fullcalendar/fullcalendar/issues/7209 (initially a about multimonth?)
-    https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
+    [ ] https://github.com/fullcalendar/fullcalendar/issues/7209 (initially a about multimonth?)
+    [ ] https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
 resoure-timeline
   Resource Timeline Rows don't render with correct height (#6082)
     [x] https://github.com/fullcalendar/fullcalendar/issues/6082
