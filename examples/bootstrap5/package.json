@@ -10,12 +10,12 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@fullcalendar/bootstrap5": "^7.0.0-beta.0",
-    "@fullcalendar/core": "^7.0.0-beta.0",
-    "@fullcalendar/daygrid": "^7.0.0-beta.0",
-    "@fullcalendar/interaction": "^7.0.0-beta.0",
-    "@fullcalendar/list": "^7.0.0-beta.0",
-    "@fullcalendar/timegrid": "^7.0.0-beta.0",
+    "@fullcalendar/bootstrap5": "7.0.0-beta.0",
+    "@fullcalendar/core": "7.0.0-beta.0",
+    "@fullcalendar/daygrid": "7.0.0-beta.0",
+    "@fullcalendar/interaction": "7.0.0-beta.0",
+    "@fullcalendar/list": "7.0.0-beta.0",
+    "@fullcalendar/timegrid": "7.0.0-beta.0",
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.1.3",
     "bootstrap-icons": "^1.8.1"

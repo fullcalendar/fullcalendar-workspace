@@ -4,11 +4,11 @@
   "version": "0.0.1-beta.0",
   "license": "ISC",
   "dependencies": {
-    "@fullcalendar/core": "^7.0.0-beta.0",
-    "@fullcalendar/daygrid": "^7.0.0-beta.0",
-    "@fullcalendar/interaction": "^7.0.0-beta.0",
-    "@fullcalendar/timegrid": "^7.0.0-beta.0",
-    "@fullcalendar/vue": "^7.0.0-beta.0",
+    "@fullcalendar/core": "7.0.0-beta.0",
+    "@fullcalendar/daygrid": "7.0.0-beta.0",
+    "@fullcalendar/interaction": "7.0.0-beta.0",
+    "@fullcalendar/timegrid": "7.0.0-beta.0",
+    "@fullcalendar/vue": "7.0.0-beta.0",
     "vue": "^2.6.12",
     "vue-class-component": "^7.2.6",
     "vue-property-decorator": "^9.1.2"

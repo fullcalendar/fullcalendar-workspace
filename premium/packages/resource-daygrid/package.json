@@ -9,16 +9,16 @@
   ],
   "homepage": "https://fullcalendar.io/docs/resource-daygrid-view",
   "dependencies": {
-    "@fullcalendar/daygrid": "~7.0.0-beta.0",
-    "@fullcalendar/premium-common": "~7.0.0-beta.0"
+    "@fullcalendar/daygrid": "7.0.0-beta.0",
+    "@fullcalendar/premium-common": "7.0.0-beta.0"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "~7.0.0-beta.0",
-    "@fullcalendar/resource": "~7.0.0-beta.0"
+    "@fullcalendar/core": "7.0.0-beta.0",
+    "@fullcalendar/resource": "7.0.0-beta.0"
   },
   "devDependencies": {
-    "@fullcalendar/core": "~7.0.0-beta.0",
-    "@fullcalendar/resource": "~7.0.0-beta.0",
+    "@fullcalendar/core": "7.0.0-beta.0",
+    "@fullcalendar/resource": "7.0.0-beta.0",
     "@fullcalendar-scripts/standard": "0.0.1-beta.0"
   },
   "scripts": {

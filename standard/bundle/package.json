@@ -5,12 +5,12 @@
   "description": "Easily render a full-sized drag & drop calendar with a combination of standard plugins",
   "homepage": "https://fullcalendar.io/docs/initialize-globals",
   "dependencies": {
-    "@fullcalendar/core": "~7.0.0-beta.0",
-    "@fullcalendar/daygrid": "~7.0.0-beta.0",
-    "@fullcalendar/interaction": "~7.0.0-beta.0",
-    "@fullcalendar/list": "~7.0.0-beta.0",
-    "@fullcalendar/multimonth": "~7.0.0-beta.0",
-    "@fullcalendar/timegrid": "~7.0.0-beta.0"
+    "@fullcalendar/core": "7.0.0-beta.0",
+    "@fullcalendar/daygrid": "7.0.0-beta.0",
+    "@fullcalendar/interaction": "7.0.0-beta.0",
+    "@fullcalendar/list": "7.0.0-beta.0",
+    "@fullcalendar/multimonth": "7.0.0-beta.0",
+    "@fullcalendar/timegrid": "7.0.0-beta.0"
   },
   "devDependencies": {
     "@fullcalendar-scripts/standard": "0.0.1-beta.0"

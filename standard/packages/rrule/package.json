@@ -8,11 +8,11 @@
   ],
   "homepage": "https://fullcalendar.io/docs/rrule-plugin",
   "peerDependencies": {
-    "@fullcalendar/core": "~7.0.0-beta.0",
+    "@fullcalendar/core": "7.0.0-beta.0",
     "rrule": "^2.6.0"
   },
   "devDependencies": {
-    "@fullcalendar/core": "~7.0.0-beta.0",
+    "@fullcalendar/core": "7.0.0-beta.0",
     "@fullcalendar-scripts/standard": "0.0.1-beta.0",
     "rrule": "^2.6.0"
   },

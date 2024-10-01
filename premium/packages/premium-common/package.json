@@ -4,10 +4,10 @@
   "title": "FullCalendar Premium Common",
   "description": "Utilities for FullCalendar's premium plugins",
   "peerDependencies": {
-    "@fullcalendar/core": "~7.0.0-beta.0"
+    "@fullcalendar/core": "7.0.0-beta.0"
   },
   "devDependencies": {
-    "@fullcalendar/core": "~7.0.0-beta.0",
+    "@fullcalendar/core": "7.0.0-beta.0",
     "@fullcalendar-scripts/standard": "0.0.1-beta.0"
   },
   "scripts": {

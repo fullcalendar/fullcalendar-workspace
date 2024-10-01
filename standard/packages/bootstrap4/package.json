@@ -9,10 +9,10 @@
   ],
   "homepage": "https://fullcalendar.io/docs/bootstrap4",
   "peerDependencies": {
-    "@fullcalendar/core": "~7.0.0-beta.0"
+    "@fullcalendar/core": "7.0.0-beta.0"
   },
   "devDependencies": {
-    "@fullcalendar/core": "~7.0.0-beta.0",
+    "@fullcalendar/core": "7.0.0-beta.0",
     "@fullcalendar-scripts/standard": "0.0.1-beta.0"
   },
   "scripts": {

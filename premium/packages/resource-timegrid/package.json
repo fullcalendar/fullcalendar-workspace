@@ -9,18 +9,18 @@
   ],
   "homepage": "https://fullcalendar.io/docs/vertical-resource-view",
   "dependencies": {
-    "@fullcalendar/daygrid": "~7.0.0-beta.0",
-    "@fullcalendar/premium-common": "~7.0.0-beta.0",
-    "@fullcalendar/resource-daygrid": "~7.0.0-beta.0",
-    "@fullcalendar/timegrid": "~7.0.0-beta.0"
+    "@fullcalendar/daygrid": "7.0.0-beta.0",
+    "@fullcalendar/premium-common": "7.0.0-beta.0",
+    "@fullcalendar/resource-daygrid": "7.0.0-beta.0",
+    "@fullcalendar/timegrid": "7.0.0-beta.0"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "~7.0.0-beta.0",
-    "@fullcalendar/resource": "~7.0.0-beta.0"
+    "@fullcalendar/core": "7.0.0-beta.0",
+    "@fullcalendar/resource": "7.0.0-beta.0"
   },
   "devDependencies": {
-    "@fullcalendar/core": "~7.0.0-beta.0",
-    "@fullcalendar/resource": "~7.0.0-beta.0",
+    "@fullcalendar/core": "7.0.0-beta.0",
+    "@fullcalendar/resource": "7.0.0-beta.0",
     "@fullcalendar-scripts/standard": "0.0.1-beta.0"
   },
   "scripts": {

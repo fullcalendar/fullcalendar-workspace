@@ -9,11 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fullcalendar/core": "^7.0.0-beta.0",
-    "@fullcalendar/interaction": "^7.0.0-beta.0",
-    "@fullcalendar/react": "^7.0.0-beta.0",
-    "@fullcalendar/resource": "^7.0.0-beta.0",
-    "@fullcalendar/resource-timeline": "^7.0.0-beta.0",
+    "@fullcalendar/core": "7.0.0-beta.0",
+    "@fullcalendar/interaction": "7.0.0-beta.0",
+    "@fullcalendar/react": "7.0.0-beta.0",
+    "@fullcalendar/resource": "7.0.0-beta.0",
+    "@fullcalendar/resource-timeline": "7.0.0-beta.0",
     "next": "^12.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

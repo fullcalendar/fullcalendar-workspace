@@ -10,11 +10,11 @@
     "clean": "rm -rf dist tsc"
   },
   "dependencies": {
-    "@fullcalendar/core": "^7.0.0-beta.0",
-    "@fullcalendar/daygrid": "^7.0.0-beta.0",
-    "@fullcalendar/interaction": "^7.0.0-beta.0",
-    "@fullcalendar/list": "^7.0.0-beta.0",
-    "@fullcalendar/timegrid": "^7.0.0-beta.0"
+    "@fullcalendar/core": "7.0.0-beta.0",
+    "@fullcalendar/daygrid": "7.0.0-beta.0",
+    "@fullcalendar/interaction": "7.0.0-beta.0",
+    "@fullcalendar/list": "7.0.0-beta.0",
+    "@fullcalendar/timegrid": "7.0.0-beta.0"
   },
   "devDependencies": {
     "css-loader": "^4.3.0",
