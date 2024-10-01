@@ -29138,16 +29138,6 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/types@2.8.0':
-    dependencies:
-      '@parcel/cache': 2.8.0(@parcel/core@2.8.0)
-      '@parcel/diagnostic': 2.8.0
-      '@parcel/fs': 2.8.0(@parcel/core@2.8.0)
-      '@parcel/package-manager': 2.8.0(@parcel/core@2.8.0)
-      '@parcel/source-map': 2.1.1
-      '@parcel/workers': 2.8.0(@parcel/core@2.8.0)
-      utility-types: 3.10.0
-
   '@parcel/types@2.8.0(@parcel/core@2.8.0)':
     dependencies:
       '@parcel/cache': 2.8.0(@parcel/core@2.8.0)
@@ -29180,7 +29170,7 @@ snapshots:
       '@parcel/core': 2.8.0
       '@parcel/diagnostic': 2.8.0
       '@parcel/logger': 2.8.0
-      '@parcel/types': 2.8.0
+      '@parcel/types': 2.8.0(@parcel/core@2.8.0)
       '@parcel/utils': 2.8.0
       chrome-trace-event: 1.0.3
       nullthrows: 1.1.1
