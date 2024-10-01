@@ -24,14 +24,6 @@
 }
 
 //
-// daygrid-cell > inner
-//
-
-.fc-daygrid-row-spacious .fc-daygrid-cell-inner { // (spacious)
-  min-height: 3em;
-}
-
-//
 // daygrid-cell > inner > header
 //
 
@@ -57,6 +49,15 @@
 .fc-daygrid-month-start { // (month-start) on .fc-daygrid-cell-number
   font-weight: bold;
   font-size: 1.1em;
+}
+
+
+//
+// daygrid-cell > inner > main
+//
+
+.fc-daygrid-cell-main {
+  min-height: 2em;
 }
 
 //

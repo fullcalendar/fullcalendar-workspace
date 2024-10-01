@@ -91,6 +91,8 @@ ensure automated tests for...
   resource-timeline indent works
   pixel # for height/contentHeight works
   correct header row heights for multi-header resource-TIMEgrid row with horizontal scrolling
+  no matter how tall daygrid rows are filled with events, should never squish fc-daygrid-cell-main
+    down to zero height. Noticed while working with repro in #6798
 
 AFTER beta.1
   test on touch

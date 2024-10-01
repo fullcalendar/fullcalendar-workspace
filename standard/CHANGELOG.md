@@ -65,11 +65,13 @@ resizing (all views)
   Resource rows don't adjust height to fit resourceLaneContent (#6103)
     [x] https://github.com/fullcalendar/fullcalendar/issues/6103
   dynamic calendar width doesn't adjust (#5507)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/5507
+    [x] https://github.com/fullcalendar/fullcalendar/issues/5507
+    (no repro available)
   Adjust calendar sizing when scrollbar width changes (or (de)activated) (#5561)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/5561
+    [x] https://github.com/fullcalendar/fullcalendar/issues/5561
+    (tested manually w/ system settings)
   Day number in day cells are hidden by vertical scrollbar (#6798)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/6798
+    [x] https://github.com/fullcalendar/fullcalendar/issues/6798
 responsive (all views)
   "More" button (events) on smartphones not working properly (#2991)
     [ ] fixed in earlier versions?
