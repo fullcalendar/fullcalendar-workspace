@@ -30,10 +30,10 @@ exports
 performance
   [x] https://github.com/fullcalendar/fullcalendar/issues/7677 (perf)
     (about 2x perf improvement in timegrid and daygrid)
-  [ ] https://github.com/fullcalendar/fullcalendar/issues/7488 (flickering)
-  [ ] https://github.com/fullcalendar/fullcalendar/issues/4906 (layout thrashing)
-  [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
-    (not rerendinering events that didn't change --- see if/when this was fixed)
+  [x] https://github.com/fullcalendar/fullcalendar/issues/7488 (flickering)
+    (could not recreate)
+  [x] https://github.com/fullcalendar/fullcalendar/issues/4906 (layout thrashing)
+    (just graphs, no good recreation)
   reflows from some interaction:
     [ ] https://github.com/fullcalendar/fullcalendar/issues/7209 (initially a about multimonth?)
     [ ] https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
@@ -109,6 +109,11 @@ for future beta release (not yet implemented)
     Remaining a11y-* tickets
   Upgrade to peerDep ical.js v2 (#7734)
     https://github.com/fullcalendar/fullcalendar/issues/7734
+
+maybe
+  [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
+    not rerendinering events that didn't change --- see if/when this was fixed...
+    ...not fixed in v6 or v7-beta
 
 ## 6.1.15 (2024-07-12)
 

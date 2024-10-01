@@ -17,6 +17,8 @@ FOR beta.1
     go back to simple classNames for views
 
 audit all CSS
+  bug w/ daygrid event DnD where only all-day events rerender (calling eventContent) during drag
+    see month-event-rerender-bug.html
   bug with unnecessary vertical scrollbar in daygrid see issue-6749-related.html
   daygrid cell -main containers don't seem to have bottom margin for events
   no matter how tall daygrid rows are filled with events, should never squish fc-daygrid-cell-main
