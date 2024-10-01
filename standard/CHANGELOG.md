@@ -99,7 +99,7 @@ a11y
   No `role` attributes on td/th/tr elements inside a table element (#7568)
     [x] https://github.com/fullcalendar/fullcalendar/issues/7568
   Event time order different than DOM order, bad for tabbing (#6943)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/6943
+    [x] https://github.com/fullcalendar/fullcalendar/issues/6943
 
 for future beta release (not yet implemented)
   Event titles repeated each day in print (#6657)
