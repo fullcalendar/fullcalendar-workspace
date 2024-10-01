@@ -18,6 +18,7 @@ temporary regressions
     (need to fix z-indexes or change fc-flex-row's first cell)
 
 very few breaking changes
+we want people to test performance
 updateSize method deprected
 windowResize/windowResizeDelay/handleWindowResize settings removed
 className breakage
@@ -84,7 +85,7 @@ events (all views)
     [x] https://github.com/fullcalendar/fullcalendar/issues/6749
     (updated original repro: https://codepen.io/arshaw/pen/NWQGQLN?editors=0110)
   Events times are cutoff with eventDisplay: "block" when there is not enough space for the title (#6457)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/6457
+    [x] https://github.com/fullcalendar/fullcalendar/issues/6457
   Compressed space between events in dayGrid when month-start title (#7184)
     [ ] https://github.com/fullcalendar/fullcalendar/issues/7184
 scrollbars (all views)
