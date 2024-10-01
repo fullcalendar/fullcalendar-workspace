@@ -10,9 +10,18 @@ FullCalendar's default styles, there's a chance your CSS will need to be updated
 an upgrade guide specifically for how to upgrade CSS statements as soon as all v7 classNames
 become stable. In the meantime, it's recommended to simply disable your custom CSS.
 
+```sh
+# INSTALLATION INSTRUCTIONS
+#
+# A) use NPM and append the @beta tag to all packages:
+npm install @fullcalendar/core@beta @fullcalendar/daygrid@beta
+#
+# B) download the .ZIP archives at the footer of this release
+```
+
 Please test things out! and report bugs on the [issue tracker](https://github.com/fullcalendar/fullcalendar/issues).
 
-Where to find the code
+You can find the source code at the [v7-dev branch in the fullcalendar-workspace repo](https://github.com/fullcalendar/fullcalendar-workspace/tree/v7-dev). It will eventually move to this repo.
 
 <!-- ENSURE all tickets have status "Staged" -->
 
@@ -118,9 +127,9 @@ These will be addressed before v7 official release. No need to report bugs relat
 - **Print mode** - very broken
 - **Angular support** - not working and not yet released, caused by
   [this Preact issue](https://github.com/preactjs/preact/issues/4023)
-- **Minimum browser support** - because `ResizeObserver` is not used internally, and because newer
+- **Minimum browser support** - because `ResizeObserver` is now used internally, and because newer
   ES syntax is used in places, the minimum supported browsers have been temporarily raised. However
-  ponyfills and transpiling will come to the rescue before official release.
+  ponyfills and transpiling will come to the rescue before official release. Minimum versions:
   - Safari: Sept 2020
   - Firefox: July 2020
   - Chrome: Aug 2020
@@ -134,6 +143,8 @@ These will be addressed before v7 official release. No need to report bugs relat
 ### Not Yet Implemented
 
 These will be addressed before v7 official release:
+
+<!-- ENSURE all tickets have status "In progress" or Null -->
 
 - All remaining `a11y-*` in the v7 milestone of the [GitHub Project](https://github.com/orgs/fullcalendar/projects/1/views/2)
 - Event titles repeated each day in print (#6657)
@@ -149,6 +160,8 @@ These will be addressed before v7 official release:
 
 Unfortunately we didn't have time to get to these but will implement them in a follow-up minor
 release:
+
+<!-- ENSURE removed from v7 milestone -->
 
 - Improve resource timeline performance with virtual rendering (#5673)
   https://github.com/fullcalendar/fullcalendar/issues/5673

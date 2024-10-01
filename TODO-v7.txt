@@ -1,7 +1,4 @@
 
-Write note in changelog about where source is
-Need to link to all issues with explicit url. change notes-to-self to comments
-Make v7-dev branch
 clean/build/manually-test
 temporarily downgrade @fullcalendar/angular to 7.1.15
 `changeset publish --tag beta --no-git-tag` ----- possible to do dry-run?
