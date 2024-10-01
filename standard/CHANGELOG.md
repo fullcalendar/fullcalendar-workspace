@@ -49,14 +49,11 @@ daygrid + timegrid (with resources)
     [x] https://github.com/fullcalendar/fullcalendar/issues/7377
 daygrid
   Better dayGrid height row height, height:auto, and +more link behavior (#6033)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/6033
-    BREAKING
+    [x] https://github.com/fullcalendar/fullcalendar/issues/6033
+    BREAKING (^^^ repro in other issue vvv)
   Day cells are not always equal height with calendar height set to auto (#5762)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/5762
+    [x] https://github.com/fullcalendar/fullcalendar/issues/5762
     BREAKING
-  Event titles repeated each day in print (#6657)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/6657
-    [ ] correct section to put this in?
   Events not rendered when container is resized (#7555)
     [ ] https://github.com/fullcalendar/fullcalendar/issues/7555
 resizing (all views)
@@ -98,6 +95,8 @@ a11y
     [ ] https://github.com/fullcalendar/fullcalendar/issues/6943
 
 for future beta release (not yet implemented)
+  Event titles repeated each day in print (#6657)
+    https://github.com/fullcalendar/fullcalendar/issues/6657
   a11y
     Remaining a11y-* tickets
   Upgrade to peerDep ical.js v2 (#7734)
