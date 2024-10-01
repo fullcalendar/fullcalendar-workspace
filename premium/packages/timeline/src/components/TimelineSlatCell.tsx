@@ -26,7 +26,7 @@ export interface TimelineSlatCellProps {
 
 export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
   // ref
-  private innerElRef = createRef<HTMLElement>()
+  private innerElRef = createRef<HTMLDivElement>()
 
   // internal
   private detachWidth?: () => void
@@ -46,6 +46,8 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
+          'fc-flex-column',
+          'fc-align-start', // shrink width of INnerContent
           'fc-cell',
           'fc-timeline-slot',
           'fc-timeline-slot-lane',
@@ -82,10 +84,12 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         willUnmount={options.slotLaneWillUnmount}
       >
         {(InnerContent) => (
-          <InnerContent
-            elTag="div"
-            elRef={this.innerElRef} // TODO: is thie correct element? should we want a "frame"?
-          />
+          <div ref={this.innerElRef} className='fc-flex-column'>
+            <InnerContent
+              elTag="div"
+              elClasses={['fc-cell-inner']}
+            />
+          </div>
         )}
       </ContentContainer>
     )

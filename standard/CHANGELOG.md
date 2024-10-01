@@ -137,7 +137,6 @@ These will be addressed before v7 official release. No need to report bugs relat
 - **List view** - currently still leverages `<table>`, but will be refactored away soon
 - **Other bugs**
   - strange weekNumber styling in bundle/examples/week-numbers.html
-  - bundle/examples/timeline-scale.html, when clicking '10 days' expands forever!!!
   - When height:100% or contentHeight:100%, calendar breaks (TODO: make ticket)
   - Resource Timeline resource *groups* do not collapse/expand when icon clicked (TODO: make ticket)
   - the space to accommodate scrollbars is just blank (#7780)
