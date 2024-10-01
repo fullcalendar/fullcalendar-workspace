@@ -36,8 +36,8 @@ performance
     https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
 resoure-timeline
   Resource Timeline Rows don't render with correct height (#6082)
-    [ ] react-only?
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/6082
+    [x] https://github.com/fullcalendar/fullcalendar/issues/6082
+    (no good reproduction - ask them to do it)
 resource-timeline view
   resourceAreaHeaderContent above columns should stay fixed, not scroll horizontally (#7779)
     [x] https://github.com/fullcalendar/fullcalendar/issues/7779
@@ -46,7 +46,7 @@ list view
     [x] https://github.com/fullcalendar/fullcalendar/issues/7778
 daygrid + timegrid (with resources)
   Vertical resource view with no resources shows blank resource row (#7377)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/7377
+    [x] https://github.com/fullcalendar/fullcalendar/issues/7377
 daygrid
   Better dayGrid height row height, height:auto, and +more link behavior (#6033)
     [ ] https://github.com/fullcalendar/fullcalendar/issues/6033

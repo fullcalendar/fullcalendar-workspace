@@ -14,11 +14,13 @@ import { createElement } from '@fullcalendar/core/preact'
 import { createDayHeaderFormatter, DateHeaderCell, DateHeaderCellObj, DayOfWeekHeaderCell, DayOfWeekHeaderCellObj, DayTableSlicer } from '@fullcalendar/daygrid/internal'
 import { ResourceDayTableJoiner, buildResourceHeaderTiers, ResourceHeaderCell, ResourceDateHeaderCellObj } from '@fullcalendar/resource-daygrid/internal'
 import {
+  AbstractResourceDayTableModel,
   DEFAULT_RESOURCE_ORDER,
   DayResourceTableModel,
   Resource,
   ResourceDayTableModel,
   ResourceViewProps,
+  ResourcelessDayTableModel,
   VResourceSplitter,
   flattenResources,
 } from '@fullcalendar/resource/internal'
@@ -269,8 +271,12 @@ function buildResourceTimeColsModel(
   resources: Resource[],
   datesAboveResources: boolean,
   context: CalendarContext,
-) {
+): AbstractResourceDayTableModel {
   let dayTable = buildTimeColsModel(dateProfile, dateProfileGenerator)
+
+  if (!resources.length) {
+    return new ResourcelessDayTableModel(dayTable)
+  }
 
   return datesAboveResources ?
     new DayResourceTableModel(dayTable, resources, context) :

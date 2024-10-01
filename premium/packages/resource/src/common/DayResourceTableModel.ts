@@ -1,9 +1,9 @@
-import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel.js'
+import { ResourcefulDayTableModel } from './ResourcefulDayTableModel.js'
 
 /*
 dates over resources
 */
-export class DayResourceTableModel extends AbstractResourceDayTableModel {
+export class DayResourceTableModel extends ResourcefulDayTableModel {
   computeCol(dateI, resourceI) {
     return dateI * this.resources.length + resourceI
   }

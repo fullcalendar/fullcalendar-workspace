@@ -13,11 +13,13 @@ import {
 import { createElement } from '@fullcalendar/core/preact'
 import { DateHeaderCell, DateHeaderCellObj, DayGridLayout, DayOfWeekHeaderCell, DayOfWeekHeaderCellObj, DayTableSlicer, buildDayTableModel, createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
 import {
+  AbstractResourceDayTableModel,
   DEFAULT_RESOURCE_ORDER,
   DayResourceTableModel,
   Resource,
   ResourceDayTableModel,
   ResourceViewProps,
+  ResourcelessDayTableModel,
   VResourceSplitter,
   flattenResources,
 } from '@fullcalendar/resource/internal'
@@ -31,7 +33,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
   private buildResourceDayTableModel = memoize(buildResourceDayTableModel)
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
 
-  private resourceDayTableModel: ResourceDayTableModel
+  private resourceDayTableModel: AbstractResourceDayTableModel
   private splitter = new VResourceSplitter()
   private slicers: { [resourceId: string]: DayTableSlicer } = {}
   private joiner = new ResourceDayTableJoiner()
@@ -164,8 +166,12 @@ function buildResourceDayTableModel(
   resources: Resource[],
   datesAboveResources: boolean,
   context: CalendarContext,
-) {
+): AbstractResourceDayTableModel {
   let dayTable = buildDayTableModel(dateProfile, dateProfileGenerator)
+
+  if (!resources.length) {
+    return new ResourcelessDayTableModel(dayTable)
+  }
 
   return datesAboveResources ?
     new DayResourceTableModel(dayTable, resources, context) :

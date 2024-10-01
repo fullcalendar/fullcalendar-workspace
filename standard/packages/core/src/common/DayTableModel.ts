@@ -54,7 +54,7 @@ export class DayTableModel {
     this.headerDates = this.buildHeaderDates()
   }
 
-  private buildCells() {
+  public buildCells() {
     let rows = []
 
     for (let row = 0; row < this.rowCnt; row += 1) {
