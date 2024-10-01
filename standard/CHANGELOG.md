@@ -136,7 +136,6 @@ These will be addressed before v7 official release. No need to report bugs relat
   - Edge: Aug 2020
 - **List view** - currently still leverages `<table>`, but will be refactored away soon
 - **Other bugs**
-  - strange weekNumber styling in bundle/examples/week-numbers.html
   - When height:100% or contentHeight:100%, calendar breaks (TODO: make ticket)
   - Resource Timeline resource *groups* do not collapse/expand when icon clicked (TODO: make ticket)
   - the space to accommodate scrollbars is just blank (#7780)
@@ -160,7 +159,7 @@ These will be addressed before v7 official release:
 - resource open/close animation (#4844)
   https://github.com/fullcalendar/fullcalendar/issues/4844
 
-### Features Postponed Until v7.5
+### Features Postponed Until v7.1
 
 Unfortunately we didn't have time to get to these but will implement them in a follow-up minor
 release:

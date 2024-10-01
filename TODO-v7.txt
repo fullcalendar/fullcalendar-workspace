@@ -1,8 +1,6 @@
 
 clean/build/manually-test
 `changeset publish --tag beta --no-git-tag` ----- possible to do dry-run?
-restore angular version, ensure pnpm-install is same
-record these notes^^^
 
 FOR beta.1
   Bootstrap color mode:

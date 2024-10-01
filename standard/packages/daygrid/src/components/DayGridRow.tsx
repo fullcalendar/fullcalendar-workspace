@@ -37,6 +37,7 @@ export interface DayGridRowProps {
   todayRange: DateRange
   cells: DayTableCell[]
   showDayNumbers: boolean
+  showWeekNumbers?: boolean
   forPrint: boolean
   cellGroup?: boolean // bad name now
   className?: string // TODO: better API for this
@@ -147,15 +148,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
         }}
         ref={this.handleRootEl}
       >
-        {options.weekNumbers && (
-          <WeekNumberContainer
-            elTag="a"
-            elClasses={['fc-daygrid-week-number']}
-            elAttrs={buildNavLinkAttrs(context, weekDate, 'week')}
-            date={weekDate}
-            defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
-          />
-        )}
         {props.cells.map((cell, col) => {
           const normalFgNodes = this.renderFgSegs(
             fgEventSegsByCol[col],
@@ -219,6 +211,16 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
             />
           )
         })}
+        {/* Must be at end b/c CSS selectors depend on cell being first-child */}
+        {props.showWeekNumbers && (
+          <WeekNumberContainer
+            elTag="a"
+            elClasses={['fc-daygrid-week-number']}
+            elAttrs={buildNavLinkAttrs(context, weekDate, 'week')}
+            date={weekDate}
+            defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
+          />
+        )}
       </div>
     )
   }
