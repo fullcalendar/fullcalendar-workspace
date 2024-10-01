@@ -17,6 +17,11 @@ FOR beta.1
     go back to simple classNames for views
 
 audit all CSS
+  daygrid cell -main containers don't seem to have bottom margin for events
+  no matter how tall daygrid rows are filled with events, should never squish fc-daygrid-cell-main
+    down to zero height. Noticed while working with repro in #6798
+    afterwards, write automated test
+    very hard with row min-height. it misbehaves (because of basis?)
   no more event <a> tags when not a link
   rethink .fc-cell/fc-daygrid-cell classNames
   change names to runon, like "fc-nowindicator" and "morelink" and "viewharness"
@@ -91,8 +96,6 @@ ensure automated tests for...
   resource-timeline indent works
   pixel # for height/contentHeight works
   correct header row heights for multi-header resource-TIMEgrid row with horizontal scrolling
-  no matter how tall daygrid rows are filled with events, should never squish fc-daygrid-cell-main
-    down to zero height. Noticed while working with repro in #6798
 
 AFTER beta.1
   test on touch

@@ -74,11 +74,11 @@ resizing (all views)
     [x] https://github.com/fullcalendar/fullcalendar/issues/6798
 responsive (all views)
   "More" button (events) on smartphones not working properly (#2991)
-    [ ] fixed in earlier versions?
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/2991
+    [x] https://github.com/fullcalendar/fullcalendar/issues/2991
+    (no repro, not sure if fixed in past version, but definitely fixed now)
   More responsive toolbar controls (#4638)
-    [ ] https://github.com/fullcalendar/fullcalendar/issues/4638
-    [ ] retitle this issue
+    [x] https://github.com/fullcalendar/fullcalendar/issues/4638
+    (TODO: retitle this issue)
 events (all views)
   bugfix: Events overflow below day cell with dayMaxEvents:true and showNonCurrentDates:false (#6749)
     [ ] https://github.com/fullcalendar/fullcalendar/issues/6749
