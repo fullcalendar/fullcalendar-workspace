@@ -1,6 +1,5 @@
 
 clean/build/manually-test
-temporarily downgrade @fullcalendar/angular to 7.1.15
 `changeset publish --tag beta --no-git-tag` ----- possible to do dry-run?
 restore angular version, ensure pnpm-install is same
 record these notes^^^
@@ -23,6 +22,9 @@ FOR beta.1
     go back to simple classNames for views
 
 audit all CSS
+  Is the event style in timeline-no-overlap.html too chunky?
+  resource-timeline column grouping, should expand to full height, but doesn't
+    See bundle/examples/responsive.html
   bug w/ daygrid event DnD where only all-day events rerender (calling eventContent) during drag
     see month-event-rerender-bug.html
   bug with unnecessary vertical scrollbar in daygrid see issue-6749-related.html
