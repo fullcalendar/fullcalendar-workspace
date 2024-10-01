@@ -136,7 +136,6 @@ These will be addressed before v7 official release. No need to report bugs relat
   - Edge: Aug 2020
 - **List view** - currently still leverages `<table>`, but will be refactored away soon
 - **Other bugs**
-  - When height:100% or contentHeight:100%, calendar breaks (TODO: make ticket)
   - Resource Timeline resource *groups* do not collapse/expand when icon clicked (TODO: make ticket)
   - the space to accommodate scrollbars is just blank (#7780)
     https://github.com/fullcalendar/fullcalendar/issues/7780
