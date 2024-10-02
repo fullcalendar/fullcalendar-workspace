@@ -28,8 +28,8 @@ You can find the source code at the [v7-dev branch in the fullcalendar-workspace
 
 ### :watch: Performance
 
-- daygrid/timegrid rendering 2x performance gain ([#7677](https://github.com/fullcalendar/fullcalendar/issues/7677))
-- multimonth performance gain, solving "Forced reflow while executing JavaScript took <#> ms" violation ([#7209](https://github.com/fullcalendar/fullcalendar/issues/7209)) <!-- manually verified -->
+- DayGrid/TimeGrid rendering 2x performance gain ([#7677](https://github.com/fullcalendar/fullcalendar/issues/7677))
+- MultiMonth performance gain, solving "Forced reflow while executing JavaScript took <#> ms" violation ([#7209](https://github.com/fullcalendar/fullcalendar/issues/7209)) <!-- manually verified -->
 - Likely less layout thrashing ([#4906](https://github.com/fullcalendar/fullcalendar/issues/4906)), awaiting confirmation <!-- could not recreate -->
 - Likely less flickering during event rerendering for React connector ([#7488](https://github.com/fullcalendar/fullcalendar/issues/7488)), awaiting confirmation <!-- could not recreate -->
 
@@ -47,7 +47,7 @@ Performance is expected to improve between now and the v7 official release. Prof
   - Layout does not resize to new container width after browser resizing ([#6407](https://github.com/fullcalendar/fullcalendar/issues/6407)) <!-- too hard to recreate... definitely fixed -->
   - Resource rows don't adjust height to fit resourceLaneContent ([#6103](https://github.com/fullcalendar/fullcalendar/issues/6103))
   - Resource rows don't render with correct height ([#6082](https://github.com/fullcalendar/fullcalendar/issues/6082)) <!-- no good reproduction - ask them to do it -->
-  - dynamic calendar width doesn't adjust ([#5507](https://github.com/fullcalendar/fullcalendar/issues/5507)) <!-- no repro available -->
+  - Dynamic calendar width doesn't adjust ([#5507](https://github.com/fullcalendar/fullcalendar/issues/5507)) <!-- no repro available -->
   - Adjust calendar sizing when scrollbar width changes (or (de)activated) ([#5561](https://github.com/fullcalendar/fullcalendar/issues/5561)) <!-- tested manually w/ system settings -->
   - Day number in day cells are hidden by vertical scrollbar ([#6798](https://github.com/fullcalendar/fullcalendar/issues/6798))
 - Scrollbars
@@ -92,7 +92,7 @@ These will be addressed before v7 official release. No need to report bugs relat
 - **List view** - currently still leverages `<table>`, but will be refactored away soon
 - **Other bugs**
   - The space to accommodate scrollbars needs better styling ([#7780](https://github.com/fullcalendar/fullcalendar/issues/7780))
-  - TimeGrid time-axis isn't selectable ([#7781](https://github.com/fullcalendar/fullcalendar/issues/7781))
+  - TimeGrid time-axis isn't text-selectable ([#7781](https://github.com/fullcalendar/fullcalendar/issues/7781))
 
 ### :vertical_traffic_light: Not Yet Implemented
 

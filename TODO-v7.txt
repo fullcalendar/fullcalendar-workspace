@@ -1,6 +1,6 @@
 
-clean/build/manually-test
-`changeset publish --tag beta --no-git-tag` ----- possible to do dry-run?
+publishing:
+ pnpm changeset publish --tag beta --no-git-tag
 
 FOR beta.1
   Bootstrap color mode:
@@ -20,8 +20,11 @@ FOR beta.1
     go back to simple classNames for views
   Add to changelog
     Behavior-change for daygrid events being split-up by more link (that freshdesk ticket)
+    all cell headers are no longer bold
 
 audit all CSS
+  bug: when multimonth made REALLY small, single col month gets padding
+    standard/bundle/examples/responsive.html
   should fc-padding-* classes be responsive, meaning related to font-size?
   does every timegrid event have the 'inset' border class even when not needed?
   Is the event style in timeline-no-overlap.html too chunky?
