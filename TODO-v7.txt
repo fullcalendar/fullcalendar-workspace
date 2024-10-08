@@ -77,8 +77,6 @@ Timeline
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
 Resource Timeline
-  bug: when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
-    related to slots growing in size!
   bug w/ scrollbar: resizing two-column causes datagrid bottom padding to collapse to 1px !?
     because bottom scrollbars widths don't notify update because the inner-box doesn't change
       (ResizeObserver needs to support box:border-box)

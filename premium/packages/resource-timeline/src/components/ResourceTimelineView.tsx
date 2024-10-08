@@ -118,6 +118,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private timeHeaderScrollerRef = createRef<Scroller>()
   private timeBodyScrollerRef = createRef<Scroller>()
   private timeFooterScrollerRef = createRef<Scroller>()
+  private headerRowInnerWidthMap = new RefMap<number, number>(() => { // just for timeline-header
+    afterSize(this.handleSlotInnerWidths)
+  })
   private headerRowInnerHeightMap = new RefMap<boolean | number, number>(this.handleHeightChange)
   private spreadsheetEntityInnerHeightMap = new RefMap<Resource | Group, number>(this.handleHeightChange)
   private timeEntityInnerHeightMap = new RefMap<Resource | Group, number>(this.handleHeightChange)
@@ -539,7 +542,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               isLastRow={isLast}
                               cells={cells}
                               slotWidth={slotWidth}
-                              innerWidthRef={isLast ? this.handleHeaderSlotInnerWidth : undefined}
+                              innerWidthRef={this.headerRowInnerWidthMap.createRef(rowLevel)}
                               innerHeighRef={this.headerRowInnerHeightMap.createRef(rowLevel)}
                               height={headerHeights.get(rowLevel)}
                             />
@@ -812,13 +815,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     })
   }
 
-  private headerSlotInnerWidth: number
   private bodySlotInnerWidth: number
-
-  handleHeaderSlotInnerWidth = (width: number) => {
-    this.headerSlotInnerWidth = width
-    afterSize(this.handleSlotInnerWidths)
-  }
 
   handleBodySlotInnerWidth = (width: number) => {
     this.bodySlotInnerWidth = width
@@ -827,7 +824,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
   handleSlotInnerWidths = () => {
     const slotInnerWidth = Math.max(
-      this.headerSlotInnerWidth,
+      this.headerRowInnerWidthMap.current.get(this.tDateProfile.cellRows.length - 1) || 0,
       this.bodySlotInnerWidth,
     )
 

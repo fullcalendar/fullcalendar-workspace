@@ -18,6 +18,7 @@ import {
   ScrollerSyncerInterface,
   getIsHeightAuto,
   ScrollResponder,
+  RefMap,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
@@ -48,7 +49,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   private tDateProfile?: TimelineDateProfile
   private bodyEl?: HTMLElement
   private slotWidth?: number
-  private headerSlotInnerWidth?: number
+  private headerRowInnerWidthMap = new RefMap<number, number>(() => { // just for timeline-header
+    afterSize(this.handleSlotInnerWidths)
+  })
   private bodySlotInnerWidth?: number
 
   // internal
@@ -138,7 +141,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                           isLastRow={isLast}
                           cells={cells}
                           slotWidth={slotWidth}
-                          innerWidthRef={isLast ? this.handleHeaderSlotInnerWidth : undefined}
+                          innerWidthRef={this.headerRowInnerWidthMap.createRef(rowLevel)}
                         />
                       )
                     })}
@@ -265,11 +268,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  handleHeaderSlotInnerWidth = (innerWidth: number) => {
-    this.headerSlotInnerWidth = innerWidth
-    afterSize(this.handleSlotInnerWidths)
-  }
-
   handleBodySlotInnerWidth = (innerWidth: number) => {
     this.bodySlotInnerWidth = innerWidth
     afterSize(this.handleSlotInnerWidths)
@@ -278,7 +276,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   handleSlotInnerWidths = () => {
     const { state } = this
     const slotInnerWidth = Math.max(
-      this.headerSlotInnerWidth,
+      this.headerRowInnerWidthMap.current.get(this.tDateProfile.cellRows.length - 1) || 0,
       this.bodySlotInnerWidth,
     )
 
