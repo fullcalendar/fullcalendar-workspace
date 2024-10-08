@@ -1,6 +1,7 @@
-import { Duration } from '@fullcalendar/core'
 import {
+  afterSize,
   BaseComponent,
+  DateMarker,
   DateProfile,
   DateRange,
   DayTableCell,
@@ -8,7 +9,6 @@ import {
   Hit,
   RefMap,
   Scroller,
-  ScrollResponder,
   ViewContainer
 } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, createRef, Ref } from '@fullcalendar/core/preact'
@@ -48,7 +48,12 @@ export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
 export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent<DayGridLayoutProps<HeaderCellModel, HeaderCellKey>> {
   // ref
   private scrollerRef = createRef<Scroller>()
-  private rowHeightRefMap = new RefMap<string, number>()
+  private rowHeightRefMap = new RefMap<string, number>(() => {
+    afterSize(this.updateScroll)
+  })
+
+  // internal
+  private scrollDate: DateMarker | null = null
 
   render() {
     const { props, context } = this
@@ -78,46 +83,50 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    const { context } = this
-    const { options } = context
+    this.scrollDate = this.props.dateProfile.currentDate
+    this.updateScroll()
 
-    context.emitter.on('_timeScrollRequest', this.timeScrollResponder.handleScroll)
-    this.timeScrollResponder.handleScroll(options.scrollTime)
+    this.scrollerRef.current.addScrollEndListener(this.clearScroll)
   }
 
   componentDidUpdate(prevProps: DayGridLayoutProps<unknown, unknown>) {
     const { options } = this.context
 
     if (prevProps.dateProfile !== this.props.dateProfile && options.scrollTimeReset) {
-      this.timeScrollResponder.handleScroll(options.scrollTime)
-    } else {
-      this.timeScrollResponder.drain()
+      this.scrollDate = this.props.dateProfile.currentDate
     }
+    this.updateScroll()
   }
 
   componentWillUnmount() {
-    this.context.emitter.off('_timeScrollRequest', this.timeScrollResponder.handleScroll)
+    this.scrollerRef.current.removeScrollEndListener(this.clearScroll)
   }
 
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
-  private timeScrollResponder = new ScrollResponder((_time: Duration) => {
-    // HACK to scroll to day
-    const rowHeightMap = this.rowHeightRefMap.current
-    const scroller = this.scrollerRef.current
+  clearScroll = () => {
+    this.scrollDate = null
+  }
 
-    const scrollTop = computeTopFromDate(
-      this.props.dateProfile.currentDate,
-      this.props.cellRows,
-      rowHeightMap,
-    )
+  updateScroll = () => {
+    if (this.scrollDate) {
+      const rowHeightMap = this.rowHeightRefMap.current
+      const scroller = this.scrollerRef.current
 
-    if (scrollTop != null) {
-      scroller.scrollTo({ y: scrollTop })
-      return true
+      let scrollTop = computeTopFromDate(
+        this.scrollDate,
+        this.props.cellRows,
+        rowHeightMap,
+        1, // HACK to consider *outer* height to include border
+      )
+
+      if (scrollTop != null) {
+        if (scrollTop) {
+          scrollTop++ // clear top border
+        }
+        scroller.scrollTo({ y: scrollTop })
+      }
     }
-
-    return false
-  })
+  }
 }
