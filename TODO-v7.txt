@@ -9,21 +9,24 @@ TODO: pick issues for beta.1
   Initial scroll problems like
     https://github.com/fullcalendar/fullcalendar/issues/7787
   Other scroll bugs
+  Angular working
 
 REVIVE allowReslicing...
-Issue where some ppl want allowReslicing:
-  issue: https://github.com/fullcalendar/fullcalendar/issues/6187
-  repro before: https://codepen.io/acerix/pen/NWbOaVZ?editors=0010
-  repro after: https://codepen.io/arshaw/pen/YzZwKoE?editors=0010
-  commit: https://github.com/fullcalendar/fullcalendar/commit/c3199457dc36f9245f011557b032346b3a0552fe
+  Issue where some ppl want allowReslicing:
+    issue: https://github.com/fullcalendar/fullcalendar/issues/6187
+    repro before: https://codepen.io/acerix/pen/NWbOaVZ?editors=0010
+    repro after: https://codepen.io/arshaw/pen/YzZwKoE?editors=0010
+    commit: https://github.com/fullcalendar/fullcalendar/commit/c3199457dc36f9245f011557b032346b3a0552fe
+  WHY we recently switch allowReslicing=false for DayGrid
+  https://github.com/fullcalendar/fullcalendar-workspace/commit/fa146e9e5a91b117bbfbc3e6a3a259360905a8fa
+  Ticket where customer does NOT want reslicing:
+  https://fullcalendar.freshdesk.com/a/tickets/9203
 
 ResizeObserver
   implement fallback
-  for Angular/Vue/React connectors, pause resizeobserver until we know content-injection is finished
-    (so a size-adjustment doesn't happen based on an empty container)
   structure: stop doing "frame" elements for measurements, and instead use just "cushion"
     how would that work for getting a scroller's "clientWidth/clientHeight"?
-Angular: get working
+Angular
   bug: angular not compiling with our Preact version
     https://github.com/fullcalendar/fullcalendar/issues/6457
     https://github.com/preactjs/preact/issues/4023
