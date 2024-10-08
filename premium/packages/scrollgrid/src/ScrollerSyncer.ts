@@ -2,7 +2,7 @@ import { Emitter, isArraysEqual, Scroller, ScrollerSyncerInterface } from "@full
 
 /*
 Fires:
-- scrollEnd
+- scrollEnd: (x, y) => void
 */
 export class ScrollerSyncer implements ScrollerSyncerInterface {
   public emitter: Emitter<any> = new Emitter()
@@ -85,7 +85,7 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
     const onScrollEnd = () => {
       if (this.masterScroller === scroller) {
         this.masterScroller = null
-        this.emitter.trigger('scrollEnd')
+        this.emitter.trigger('scrollEnd', this.x, this.y)
       }
     }
 

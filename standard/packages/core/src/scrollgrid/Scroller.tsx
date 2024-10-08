@@ -16,8 +16,7 @@ export interface ScrollerProps {
   elStyle?: Dictionary
 
   // handlers
-  onScrollStart?: () => void
-  onScrollEnd?: () => void
+  onScrollEnd?: (x: number, y: number) => void
 
   // dimensions
   widthRef?: Ref<number>
@@ -68,14 +67,9 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     const el = this.elRef.current // TODO: make dynamic with useEffect
 
     this.listener = new ScrollListener(el)
-    this.listener.emitter.on('scrollStart', () => {
-      if (this.props.onScrollStart) {
-        this.props.onScrollStart()
-      }
-    })
     this.listener.emitter.on('scrollEnd', () => {
       if (this.props.onScrollEnd) {
-        this.props.onScrollEnd()
+        this.props.onScrollEnd(this.x, this.y)
       }
     })
 
