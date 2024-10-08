@@ -1,9 +1,17 @@
-import { Emitter, DelayedRunner } from '@fullcalendar/core/internal'
+import { Emitter } from "../common/Emitter.js"
+import { DelayedRunner } from "../util/DelayedRunner.js"
 
 const WHEEL_EVENT_NAMES = 'wheel mousewheel DomMouseScroll MozMousePixelScroll'.split(' ')
 
 /*
-ALSO, with the ability to disable touch
+Fires:
+- scrollStart (always user)
+- scroll
+- scrollEnd (always user)
+
+NOTE: detection is complicated (w/ touch and wheel) because ScrollerSyncer needs to know about it,
+but are we sure we can't just ignore programmatic scrollTo() calls with a flag? and determine the
+the scroll-master simply by who was the newest scroller?
 */
 export class ScrollListener {
   public emitter: Emitter<any> = new Emitter()
@@ -60,14 +68,14 @@ export class ScrollListener {
   // Handlers
   // ----------------------------------------------------------------------------------------------
 
-  handleScroll = () => {
+  private handleScroll = () => {
     this.startScroll()
     this.emitter.trigger('scroll', this.isRecentlyWheeled, this.isTouching)
     this.isRecentlyScrolled = true
     this.scrollWaiter.request(500)
   }
 
-  _handleScrollWaited() {
+  private _handleScrollWaited() {
     this.isRecentlyScrolled = false
 
     // only end the scroll if not currently touching.
@@ -78,21 +86,21 @@ export class ScrollListener {
   }
 
   // will fire *before* the scroll event is fired (might not cause a scroll)
-  handleWheel = () => {
+  private handleWheel = () => {
     this.isRecentlyWheeled = true
     this.wheelWaiter.request(500)
   }
 
-  _handleWheelWaited() {
+  private _handleWheelWaited() {
     this.isRecentlyWheeled = false
   }
 
   // will fire *before* the scroll event is fired (might not cause a scroll)
-  handleTouchStart = () => {
+  private handleTouchStart = () => {
     this.isTouching = true
   }
 
-  handleTouchEnd = () => {
+  private handleTouchEnd = () => {
     this.isTouching = false
 
     // if the user ended their touch, and the scroll area wasn't moving,

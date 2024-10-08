@@ -3,6 +3,7 @@ import { watchSize } from '../component-util/resize-observer.js'
 import { DateComponent, Dictionary, removeElement, setRef } from '../internal.js'
 import { ComponentChildren, createElement, createRef, Ref } from '../preact.js'
 import { ScrollerInterface } from './ScrollerInterface.js'
+import { ScrollListener } from './ScrollListener.js'
 
 export interface ScrollerProps {
   vertical?: boolean // true always implies 'auto' (won't show scrollbars if no overflow)
@@ -13,6 +14,10 @@ export interface ScrollerProps {
   // el hooks
   elClassNames?: string[]
   elStyle?: Dictionary
+
+  // handlers
+  onScrollStart?: () => void
+  onScrollEnd?: () => void
 
   // dimensions
   widthRef?: Ref<number>
@@ -27,6 +32,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   private elRef = createRef<HTMLDivElement>()
 
   // internal
+  public listener: ScrollListener
   private disconnectSize?: () => void
   private currentWidth: number
   private currentHeight: number
@@ -60,6 +66,18 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
   componentDidMount(): void {
     const el = this.elRef.current // TODO: make dynamic with useEffect
+
+    this.listener = new ScrollListener(el)
+    this.listener.emitter.on('scrollStart', () => {
+      if (this.props.onScrollStart) {
+        this.props.onScrollStart()
+      }
+    })
+    this.listener.emitter.on('scrollEnd', () => {
+      if (this.props.onScrollEnd) {
+        this.props.onScrollEnd()
+      }
+    })
 
     this.disconnectSize = watchSize(el, (contentWidth, contentHeight) => {
       const { props, context } = this
@@ -96,6 +114,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     const { props } = this
 
     this.disconnectSize()
+    this.listener.destroy()
 
     setRef(props.widthRef, null)
     setRef(props.heightRef, null)
@@ -106,10 +125,6 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
   // Public API
   // -----------------------------------------------------------------------------------------------
-
-  get el(): HTMLElement {
-    return this.elRef.current
-  }
 
   get x(): number {
     const { isRtl } = this.context
@@ -133,6 +148,10 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     if (x != null) {
       setNormalizedScrollX(el, isRtl, x)
     }
+  }
+
+  endScroll() {
+    this.listener.endScroll()
   }
 }
 
