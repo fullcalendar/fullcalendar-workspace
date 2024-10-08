@@ -843,24 +843,22 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   // -----------------------------------------------------------------------------------------------
 
   updateScrollersSyncers() {
-    const { isRtl } = this.context
-
     this.timeScroller.handleChildren([
       this.timeHeaderScrollerRef.current,
       this.timeBodyScrollerRef.current,
       this.timeFooterScrollerRef.current,
-    ], isRtl)
+    ])
 
     this.bodyScroller.handleChildren([
       this.spreadsheetBodyScrollerRef.current,
       this.timeBodyScrollerRef.current,
-    ], isRtl)
+    ])
 
     this.spreadsheetScroller.handleChildren([
       this.spreadsheetHeaderScrollerRef.current,
       this.spreadsheetBodyScrollerRef.current,
       this.spreadsheetFooterScrollerRef.current,
-    ], isRtl)
+    ])
   }
 
   private timeScrollResponder = new ScrollResponder((time: Duration) => {

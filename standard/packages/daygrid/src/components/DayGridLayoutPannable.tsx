@@ -204,12 +204,10 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
   // -----------------------------------------------------------------------------------------------
 
   updateSyncedScroller() {
-    const { isRtl } = this.context
-
     this.syncedScroller.handleChildren([
       this.headerScrollerRef.current,
       this.bodyScrollerRef.current,
       this.footerScrollerRef.current,
-    ], isRtl)
+    ])
   }
 }

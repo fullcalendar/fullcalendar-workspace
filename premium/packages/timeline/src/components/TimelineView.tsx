@@ -311,7 +311,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       this.headerScrollerRef.current,
       this.bodyScrollerRef.current,
       this.footerScrollerRef.current
-    ], this.context.isRtl)
+    ])
   }
 
   private timeScrollResponder = new ScrollResponder((time: Duration) => {
