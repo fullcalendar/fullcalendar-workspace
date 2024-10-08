@@ -4,12 +4,13 @@ Publishing:
 
 TODO: pick issues for beta.1
   2 showstopper bugs
-  ResizeObserver/ponyfill
-  Raise minimum versions
-  1 React flickering bug
+    https://github.com/fullcalendar/fullcalendar/issues/7784
+    https://github.com/fullcalendar/fullcalendar/issues/7783
   Initial scroll problems like
     https://github.com/fullcalendar/fullcalendar/issues/7787
+  Other scroll bugs
 
+REVIVE allowReslicing...
 Issue where some ppl want allowReslicing:
   issue: https://github.com/fullcalendar/fullcalendar/issues/6187
   repro before: https://codepen.io/acerix/pen/NWbOaVZ?editors=0010
@@ -20,10 +21,10 @@ ResizeObserver
   implement fallback
   for Angular/Vue/React connectors, pause resizeobserver until we know content-injection is finished
     (so a size-adjustment doesn't happen based on an empty container)
-  stop doing "frame" elements for measurements, and instead use just "cushion"
+  structure: stop doing "frame" elements for measurements, and instead use just "cushion"
     how would that work for getting a scroller's "clientWidth/clientHeight"?
 Angular: get working
-  angular not compiling with our Preact version
+  bug: angular not compiling with our Preact version
     https://github.com/fullcalendar/fullcalendar/issues/6457
     https://github.com/preactjs/preact/issues/4023
     tried skipLibCheck:true, but getting runtime errors (related!?). related? reverted
@@ -37,24 +38,24 @@ Theming
   in bootstrap themes, event-height line-height is very tall. normalize? then make changelog entry?
 DayGrid
   bug: resizing event to different row, no mirror rendered in other rows
-  cell -main containers don't seem to have bottom margin for events
-  Bug: no matter how tall daygrid rows are filled with events, should never squish fc-daygrid-cell-main
+  bug: no matter how tall daygrid rows are filled with events, should never squish fc-daygrid-cell-main
     down to zero height. Noticed while working with repro in #6798
     afterwards, write automated test
     very hard with row min-height. it misbehaves (because of basis?)
-  multiweek-view.html: when dragging and dropping event, scroll jumps down
-  multiweek 'today' doesn't scroll into view
+  bug: multiweek-view.html: when dragging and dropping event, scroll jumps down
+  bug: multiweek 'today' doesn't scroll into view
+  bug: cell -main containers don't seem to have bottom margin for events
+  bug: businessHours in month view, right side, has weird 1px gap
+    (happens because percentage left/width -- try to return to using 'right'?)
+  ensure DayGrid events don't overlap the left border of the day-cell when 0px padding
   for daygrid/timegrid that DON'T have horizontal scroll, improve header inner-text overflow:
     if not a header row that has sticky inner-content, set cell's overflow:hidden
     (the canonical test would be sizing month-view down really narrow)
   for event rendering, expose an isStandin flag for if hidden behind multiday
-  businessHours in month view, right side, has weird 1px gap
-    (happens because percentage left/width -- try to return to using 'right'?)
-  ensure DayGrid events don't overlap the left border of the day-cell when 0px padding
 MultiMonth
   bug: when multimonth made REALLY small, single col month gets padding
     standard/bundle/examples/responsive.html
-  responsive bug:
+  bug w/ responsive:
     1. start out in different view, size window really small
     2. switch to multimonth, size window large
     3. multi-columns don't appear. just one column with vertically-squished months
@@ -63,32 +64,32 @@ TimeGrid
   does every timegrid event have the 'inset' border class even when not needed?
   just like scrollbar dead area should have grey bg,
     make timegrid bottom area w/o slots a grey bg
-  in TimeGridLayoutNormal, not nice how axis text isn't selectable
+  structure: in TimeGridLayoutNormal, not nice how axis text isn't selectable
     (related to how now-indicator is rendered in axis)
 Timeline
-  Is the event style in timeline-no-overlap.html too chunky?
-  .fc-timeline-now-indicator-container shouldn't cover all the text in the header cells
   bug for timeline event dragging:
     1. have +more link with eventMaxStack
     2. open link, begin to drag event
     3. event looses it's duration. inconsistent with how normal event dragging happens
     (will be breaking change? maybe file ticket and add changelog)
+  Is the event style in timeline-no-overlap.html too chunky?
+  .fc-timeline-now-indicator-container shouldn't cover all the text in the header cells
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
 Resource Timeline
-  column grouping, should expand to full height, but doesn't
-    See bundle/examples/responsive.html
-  in datagrid, move fc-resource to the fc-row (instead of each fc-cell)... add to changelog
   bug: when switching back and forth from 1-day to 3-day, many times, scrolltime gets messed up
     related to slots growing in size!
-  just like scrollbar dead area should have grey bg,
-    make timeline bottom area w/o slots a grey bg
-  resource-row dom-structure unnecessarily complex
-  [scrollbar bug] resizing two-column causes datagrid bottom padding to collapse to 1px !?
+  bug w/ scrollbar: resizing two-column causes datagrid bottom padding to collapse to 1px !?
     because bottom scrollbars widths don't notify update because the inner-box doesn't change
       (ResizeObserver needs to support box:border-box)
     RELATED BUG: when bottom-padding of spreadsheet DOES work, it's off by one because querying
       for scrollbar width is faulty due to offsetWidth/clientWidth bug including border
+  column grouping, should expand to full height, but doesn't
+    See bundle/examples/responsive.html
+  in datagrid, move fc-resource to the fc-row (instead of each fc-cell)... add to changelog
+  just like scrollbar dead area should have grey bg,
+    make timeline bottom area w/o slots a grey bg
+  structure: resource-row dom-structure unnecessarily complex
   get grouping via row and col simultaneously working. should be possible.
     see timeline-row-n-col-grouping-not-working.html
   ensure row-height-syncing doesn't have 1px-off problem
@@ -118,11 +119,11 @@ General Events
     https://github.com/fullcalendar/fullcalendar/issues/7675
     use `getEventRangeAnchorAttrs`
 Scrollbars
+  bug: unnecessary vertical scrollbar in daygrid see issue-6749-related.html
   implement scroller padding rectangles
-  Bug: unnecessary vertical scrollbar in daygrid see issue-6749-related.html
   Test horizontal scroll normalization (for isRTL) in variety of browsers
   See [scrollbar bug] for Resource Timeline
-Markup/CSS
+Markup/CSS/structure
   Rename fc-flex-column -> fc-flex-col (consistent with fc-timegrid-col, and tailwind)
   go back to simple classNames for views (no `*-view`)
     compare to old and then add to changelog
