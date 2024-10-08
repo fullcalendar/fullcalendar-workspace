@@ -738,12 +738,18 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     return this.queryEntityScroll()
   }
 
-  componentDidUpdate(prevProps: ResourceViewProps, state: ResourceTimelineViewState, entityScroll: EntityScroll) {
+  componentDidUpdate(
+    prevProps: ResourceViewProps,
+    state: ResourceTimelineViewState,
+    entityScroll: EntityScroll | undefined,
+  ) {
     const { options } = this.context
 
     this.updateScrollersSyncers()
 
-    this.entityScrollResponder.handleScroll(entityScroll)
+    if (entityScroll) {
+      this.entityScrollResponder.handleScroll(entityScroll)
+    }
 
     if (prevProps.dateProfile !== this.props.dateProfile && options.scrollTimeReset) {
       this.timeScrollResponder.handleScroll(options.scrollTime)
@@ -903,7 +909,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     return false
   })
 
-  queryEntityScroll(): EntityScroll {
+  queryEntityScroll(): EntityScroll | undefined {
     let { bodyLayouts, bodyTops, bodyHeights } = this
     let scrollTop = this.bodyScroller.y
 
@@ -914,13 +920,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       scrollTop,
     )
 
-    let [entity, elTop, elHeight] = coordRes
-    let elBottom = elTop + elHeight
-    let elBottomRelScroller = elBottom - scrollTop
+    if (coordRes) {
+      let [entity, elTop, elHeight] = coordRes
+      let elBottom = elTop + elHeight
+      let elBottomRelScroller = elBottom - scrollTop
 
-    return {
-      entityId: createEntityId(entity),
-      fromBottom: elBottomRelScroller,
+      return {
+        entityId: createEntityId(entity),
+        fromBottom: elBottomRelScroller,
+      }
     }
   }
 

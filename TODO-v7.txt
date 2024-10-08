@@ -3,8 +3,6 @@ Publishing:
  pnpm changeset publish --no-git-tag
 
 TODO: pick issues for beta.1
-  2 showstopper bugs
-    https://github.com/fullcalendar/fullcalendar/issues/7784
   Initial scroll problems like
     https://github.com/fullcalendar/fullcalendar/issues/7787
   Other scroll bugs
