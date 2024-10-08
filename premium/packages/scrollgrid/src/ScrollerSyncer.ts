@@ -5,8 +5,7 @@ Fires:
 - scrollEnd: (x, y) => void
 */
 export class ScrollerSyncer implements ScrollerSyncerInterface {
-  public emitter: Emitter<any> = new Emitter()
-
+  private emitter: Emitter<any> = new Emitter()
   private scrollers: Scroller[] = []
   private destroyFuncs: (() => void)[] = []
   private masterScroller: Scroller
@@ -56,6 +55,14 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
     }
 
     this.isPaused = false
+  }
+
+  addScrollEndListener(handler: (x: number, y: number) => void): void {
+    this.emitter.on('scrollEnd', handler)
+  }
+
+  removeScrollEndListener(handler: (x: number, y: number) => void): void {
+    this.emitter.off('scrollEnd', handler)
   }
 
   bindScroller(scroller: Scroller) {

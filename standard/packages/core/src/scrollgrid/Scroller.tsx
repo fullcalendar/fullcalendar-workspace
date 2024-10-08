@@ -15,9 +15,6 @@ export interface ScrollerProps {
   elClassNames?: string[]
   elStyle?: Dictionary
 
-  // handlers
-  onScrollEnd?: (x: number, y: number) => void
-
   // dimensions
   widthRef?: Ref<number>
   heightRef?: Ref<number>
@@ -31,7 +28,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   private elRef = createRef<HTMLDivElement>()
 
   // internal
-  public listener: ScrollListener
+  public listener: ScrollListener // public for ScrollerSyncer
   private disconnectSize?: () => void
   private currentWidth: number
   private currentHeight: number
@@ -67,11 +64,6 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     const el = this.elRef.current // TODO: make dynamic with useEffect
 
     this.listener = new ScrollListener(el)
-    this.listener.emitter.on('scrollEnd', () => {
-      if (this.props.onScrollEnd) {
-        this.props.onScrollEnd(this.x, this.y)
-      }
-    })
 
     this.disconnectSize = watchSize(el, (contentWidth, contentHeight) => {
       const { props, context } = this
@@ -117,6 +109,10 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     setRef(props.leftScrollbarWidthRef, null)
   }
 
+  endScroll() {
+    this.listener.endScroll()
+  }
+
   // Public API
   // -----------------------------------------------------------------------------------------------
 
@@ -144,8 +140,12 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     }
   }
 
-  endScroll() {
-    this.listener.endScroll()
+  addScrollEndListener(handler: (x: number, y: number) => void): void {
+    this.listener.emitter.on('scrollEnd', handler)
+  }
+
+  removeScrollEndListener(handler: (x: number, y: number) => void): void {
+    this.listener.emitter.off('scrollEnd', handler)
   }
 }
 
