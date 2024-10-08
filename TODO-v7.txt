@@ -161,6 +161,10 @@ Dev Cleanup
 Changelog
   Add: all cell headers are no longer bold
   Add: standin events get put through eventContent/etc
+Support Tickets
+  Fixed this issue of mousedown taking long time to recalculate style?
+    https://fullcalendar.freshdesk.com/a/tickets/9078
+    Can see forced-reflow warning here too: bundle/examples-v7/issue-7677.html
 
 ensure automated tests for...
   positioning of sticky headers in all views. list view sticky subheaders too
