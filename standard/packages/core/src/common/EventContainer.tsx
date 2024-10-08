@@ -1,20 +1,20 @@
 import { ComponentChild, createElement } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
-import { Seg } from '../component/DateComponent.js'
 import { EventImpl } from '../api/EventImpl.js'
 import {
-  computeSegDraggable,
-  computeSegStartResizable,
-  computeSegEndResizable,
+  computeEventRangeDraggable,
   EventContentArg,
   getEventClassNames,
-  setElSeg,
+  setElEventRange,
+  EventRenderRange,
 } from '../component-util/event-rendering.js'
 import { ContentContainer, InnerContainerFunc } from '../content-inject/ContentContainer.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
 
-export interface MinimalEventProps<S = Seg> {
-  seg: S
+export interface MinimalEventProps {
+  eventRange: EventRenderRange
+  isStart: boolean
+  isEnd: boolean
   isDragging: boolean // rename to isMirrorDragging? make optional?
   isResizing: boolean // rename to isMirrorResizing? make optional?
   isDateSelecting: boolean // rename to isMirrorDateSelecting? make optional?
@@ -38,8 +38,7 @@ export class EventContainer extends BaseComponent<EventContainerProps> {
   render() {
     const { props, context } = this
     const { options } = context
-    const { seg } = props
-    const { eventRange } = seg
+    const { eventRange } = props
     const { ui } = eventRange
 
     const renderProps: EventContentArg = {
@@ -49,12 +48,12 @@ export class EventContainer extends BaseComponent<EventContainerProps> {
       textColor: ui.textColor,
       backgroundColor: ui.backgroundColor,
       borderColor: ui.borderColor,
-      isDraggable: !props.disableDragging && computeSegDraggable(seg, context),
-      isStartResizable: !props.disableResizing && computeSegStartResizable(seg, context),
-      isEndResizable: !props.disableResizing && computeSegEndResizable(seg, context),
+      isDraggable: !props.disableDragging && computeEventRangeDraggable(eventRange, context),
+      isStartResizable: !props.disableResizing && props.isStart && eventRange.ui.durationEditable && options.eventResizableFromStart,
+      isEndResizable: !props.disableResizing && props.isEnd && eventRange.ui.durationEditable,
       isMirror: Boolean(props.isDragging || props.isResizing || props.isDateSelecting),
-      isStart: Boolean(seg.isStart),
-      isEnd: Boolean(seg.isEnd),
+      isStart: Boolean(props.isStart),
+      isEnd: Boolean(props.isEnd),
       isPast: Boolean(props.isPast), // TODO: don't cast. getDateMeta does it
       isFuture: Boolean(props.isFuture), // TODO: don't cast. getDateMeta does it
       isToday: Boolean(props.isToday), // TODO: don't cast. getDateMeta does it
@@ -69,7 +68,7 @@ export class EventContainer extends BaseComponent<EventContainerProps> {
         elRef={this.handleEl}
         elClasses={[
           ...getEventClassNames(renderProps),
-          ...seg.eventRange.ui.classNames,
+          ...eventRange.ui.classNames,
           ...(props.elClasses || []),
         ]}
         renderProps={renderProps}
@@ -87,13 +86,13 @@ export class EventContainer extends BaseComponent<EventContainerProps> {
     this.el = el
 
     if (el) {
-      setElSeg(el, this.props.seg)
+      setElEventRange(el, this.props.eventRange)
     }
   }
 
   componentDidUpdate(prevProps: EventContainerProps): void {
-    if (this.el && this.props.seg !== prevProps.seg) {
-      setElSeg(this.el, this.props.seg)
+    if (this.el && this.props.eventRange !== prevProps.eventRange) {
+      setElEventRange(this.el, this.props.eventRange)
     }
   }
 }

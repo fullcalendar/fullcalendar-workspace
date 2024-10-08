@@ -38,8 +38,6 @@ Theming
 DayGrid
   bug: resizing event to different row, no mirror rendered in other rows
   cell -main containers don't seem to have bottom margin for events
-  Bug w/ event DnD where only all-day events rerender (calling eventContent) during drag
-    see month-event-rerender-bug.html!!!
   Bug: no matter how tall daygrid rows are filled with events, should never squish fc-daygrid-cell-main
     down to zero height. Noticed while working with repro in #6798
     afterwards, write automated test
@@ -118,7 +116,7 @@ General Responsive
 General Events
   remove <a> tags from events w/o url (or editable?)
     https://github.com/fullcalendar/fullcalendar/issues/7675
-    use `getSegAnchorAttrs`
+    use `getEventRangeAnchorAttrs`
 Scrollbars
   implement scroller padding rectangles
   Bug: unnecessary vertical scrollbar in daygrid see issue-6749-related.html

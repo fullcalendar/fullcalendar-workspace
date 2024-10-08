@@ -2,7 +2,7 @@ import {
   EventSegUiInteractionState,
   BaseComponent,
   DateRange,
-  getSegMeta,
+  getEventRangeMeta,
   DateProfile,
   BgEvent,
   renderFill,
@@ -247,7 +247,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
 
       // TODO: optimize ID creation? all related
-      const { instanceId } = seg.eventRange.instance
+      const { eventRange } = seg
+      const { instanceId } = eventRange.instance
       const segSpanId = getSegSpanId(seg)
       const segStartId = getSegStartId(seg)
 
@@ -280,21 +281,25 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
         >
           {hasListItemDisplay(seg) ? (
             <DayGridListEvent
-              seg={seg}
+              eventRange={eventRange}
+              isStart={seg.isStart}
+              isEnd={seg.isEnd}
               isDragging={isDragging}
               isSelected={instanceId === eventSelection}
               defaultDisplayEventEnd={defaultDisplayEventEnd}
-              {...getSegMeta(seg, todayRange)}
+              {...getEventRangeMeta(eventRange, todayRange)}
             />
           ) : (
             <DayGridBlockEvent
-              seg={seg}
+              eventRange={eventRange}
+              isStart={seg.isStart}
+              isEnd={seg.isEnd}
               isDragging={isDragging}
               isResizing={isResizing}
               isDateSelecting={isDateSelecting}
               isSelected={instanceId === eventSelection}
               defaultDisplayEventEnd={defaultDisplayEventEnd}
-              {...getSegMeta(seg, todayRange)}
+              {...getEventRangeMeta(eventRange, todayRange)}
             />
           )}
         </DayGridEventHarness>,
@@ -328,8 +333,15 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
           }}
         >
           {fillType === 'bg-event' ?
-            <BgEvent seg={seg} {...getSegMeta(seg, todayRange)} /> :
-            renderFill(fillType)}
+            <BgEvent
+              eventRange={seg.eventRange}
+              isStart={seg.isStart}
+              isEnd={seg.isEnd}
+              {...getEventRangeMeta(seg.eventRange, todayRange)}
+            /> : (
+              renderFill(fillType)
+            )
+          }
         </div>,
       )
     }

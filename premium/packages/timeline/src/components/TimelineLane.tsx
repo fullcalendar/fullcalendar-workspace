@@ -2,7 +2,7 @@ import { Duration } from '@fullcalendar/core'
 import {
   EventStore, EventUiHash, DateSpan, EventInteractionState,
   BaseComponent, memoize,
-  getSegMeta, DateMarker, DateRange, DateProfile, sortEventSegs,
+  getEventRangeMeta, DateMarker, DateRange, DateProfile, sortEventSegs,
   SegGroup,
   RefMap,
   afterSize,
@@ -179,7 +179,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     return (
       <Fragment>
         {segs.map((seg) => {
-          const { instanceId } = seg.eventRange.instance
+          const { eventRange } = seg
+          const { instanceId } = eventRange.instance
           const segTop = segTops[instanceId]
           const segHorizontal = segHorizontals[instanceId]
           const isVisible = isMirror ||
@@ -197,12 +198,14 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
             >
               <TimelineEvent
                 isTimeScale={props.tDateProfile.isTimeScale}
-                seg={seg}
+                eventRange={eventRange}
+                isStart={seg.isStart}
+                isEnd={seg.isEnd}
                 isDragging={isDragging}
                 isResizing={isResizing}
                 isDateSelecting={isDateSelecting}
                 isSelected={instanceId === props.eventSelection /* TODO: bad for mirror? */}
-                {...getSegMeta(seg, props.todayRange, props.nowDate)}
+                {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate)}
               />
             </TimelineEventHarness>
           )

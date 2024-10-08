@@ -1,6 +1,6 @@
 import {
   BaseComponent, MoreLinkContainer,
-  DateProfile, DateRange, DateMarker, getSegMeta,
+  DateProfile, DateRange, DateMarker, getEventRangeMeta,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { TimelineEvent } from './TimelineEvent.js'
@@ -37,7 +37,9 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
         popoverContent={() => (
           <Fragment>
             {hiddenSegs.map((seg) => {
-              let instanceId = seg.eventRange.instance.instanceId
+              let { eventRange } = seg
+              let instanceId = eventRange.instance.instanceId
+
               return (
                 <div
                   key={instanceId}
@@ -45,12 +47,14 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
                 >
                   <TimelineEvent
                     isTimeScale={props.isTimeScale}
-                    seg={seg}
+                    eventRange={eventRange}
+                    isStart={seg.isStart}
+                    isEnd={seg.isEnd}
                     isDragging={false}
                     isResizing={false}
                     isDateSelecting={false}
                     isSelected={instanceId === props.eventSelection}
-                    {...getSegMeta(seg, props.todayRange, props.nowDate)}
+                    {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate)}
                   />
                 </div>
               )

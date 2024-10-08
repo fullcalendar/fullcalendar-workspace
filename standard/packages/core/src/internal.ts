@@ -185,11 +185,11 @@ export { DaySeriesModel } from './common/DaySeriesModel.js'
 
 export type { EventInteractionState } from './interactions/event-interaction-state.js'
 export {
-  sliceEventStore, hasBgRendering, getElSeg,
-  buildSegTimeText,
+  sliceEventStore, hasBgRendering, getElEventRange,
+  buildEventRangeTimeText,
   sortEventSegs,
-  getSegMeta, buildEventRangeKey,
-  getSegAnchorAttrs,
+  getEventRangeMeta, buildEventRangeKey,
+  getEventRangeAnchorAttrs,
 } from './component-util/event-rendering.js'
 
 export type { DayTableCell } from './common/DayTableModel.js'

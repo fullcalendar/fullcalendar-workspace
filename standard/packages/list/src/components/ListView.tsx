@@ -14,7 +14,7 @@ import {
   memoize,
   Seg,
   sortEventSegs,
-  getSegMeta,
+  getEventRangeMeta,
   NowTimer,
   ViewContainer,
   DateComponent,
@@ -160,7 +160,11 @@ export class ListView extends DateComponent<ViewProps> {
                 innerNodes.push(
                   <ListViewEventRow
                     key={dayStr + ':' + seg.eventRange.instance.instanceId /* are multiple segs for an instanceId */}
-                    seg={seg}
+                    eventRange={seg.eventRange}
+                    isStart={seg.isStart}
+                    isEnd={seg.isEnd}
+                    segStart={seg.start}
+                    segEnd={seg.end}
                     isDragging={false}
                     isResizing={false}
                     isDateSelecting={false}
@@ -168,7 +172,7 @@ export class ListView extends DateComponent<ViewProps> {
                     timeHeaderId={timeHeaderId}
                     eventHeaderId={eventHeaderId}
                     dateHeaderId={dateHeaderId}
-                    {...getSegMeta(seg, todayRange, nowDate)}
+                    {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
                   />,
                 )
               }

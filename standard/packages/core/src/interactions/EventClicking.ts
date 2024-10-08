@@ -1,7 +1,7 @@
 import { listenBySelector } from '../util/dom-event.js'
 import { EventImpl } from '../api/EventImpl.js'
 import { elementClosest } from '../util/dom-manip.js'
-import { getElSeg } from '../component-util/event-rendering.js'
+import { getElEventRange } from '../component-util/event-rendering.js'
 import { Interaction, InteractionSettings } from './interaction.js'
 import { ViewApi } from '../api/ViewApi.js'
 
@@ -30,10 +30,10 @@ export class EventClicking extends Interaction {
   handleSegClick = (ev: Event, segEl: HTMLElement) => {
     let { component } = this
     let { context } = component
-    let seg = getElSeg(segEl)
+    let eventRange = getElEventRange(segEl)
 
     if (
-      seg && // might be the <div> surrounding the more link
+      eventRange && // might be the <div> surrounding the more link
       component.isValidSegDownEl(ev.target as HTMLElement)
     ) {
       // our way to simulate a link click for elements that can't be <a> tags
@@ -45,8 +45,8 @@ export class EventClicking extends Interaction {
         el: segEl,
         event: new EventImpl(
           component.context,
-          seg.eventRange.def,
-          seg.eventRange.instance,
+          eventRange.def,
+          eventRange.instance,
         ),
         jsEvent: ev as MouseEvent, // Is this always a mouse event? See #4655
         view: context.viewApi,

@@ -6,14 +6,14 @@ import {
   Duration,
 } from '@fullcalendar/core'
 import {
-  Seg, Hit,
+  Hit,
   EventMutation, applyMutationToEventStore,
   elementClosest,
   PointerDragEvent,
   EventStore, getRelevantEvents, createEmptyEventStore,
   diffDates, enableCursor, disableCursor,
   DateRange,
-  getElSeg,
+  getElEventRange,
   createDuration,
   EventInteractionState,
   Interaction, InteractionSettings, interactionSettingsToStore, buildEventApis, isInteractionValid,
@@ -46,7 +46,7 @@ export class EventResizing extends Interaction {
 
   // internal state
   draggingSegEl: HTMLElement | null = null
-  draggingSeg: Seg | null = null // TODO: rename to resizingSeg? subjectSeg?
+  draggingEventRange: EventRenderRange | null = null // TODO: rename to resizingSeg? subjectSeg?
   eventRange: EventRenderRange | null = null
   relevantEvents: EventStore | null = null
   validMutation: EventMutation | null = null
@@ -75,8 +75,7 @@ export class EventResizing extends Interaction {
   handlePointerDown = (ev: PointerDragEvent) => {
     let { component } = this
     let segEl = this.querySegEl(ev)
-    let seg = getElSeg(segEl)
-    let eventRange = this.eventRange = seg.eventRange!
+    let eventRange = this.eventRange = getElEventRange(segEl)!
 
     this.dragging.minDistance = component.context.options.eventDragMinDistance
 
@@ -98,7 +97,7 @@ export class EventResizing extends Interaction {
 
     let segEl = this.querySegEl(ev)
     this.draggingSegEl = segEl
-    this.draggingSeg = getElSeg(segEl)
+    this.draggingEventRange = getElEventRange(segEl)
 
     context.calendarApi.unselect()
     context.emitter.trigger('eventResizeStart', {
@@ -229,7 +228,7 @@ export class EventResizing extends Interaction {
     }
 
     // reset all internal state
-    this.draggingSeg = null
+    this.draggingEventRange = null
     this.relevantEvents = null
     this.validMutation = null
 

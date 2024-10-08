@@ -9,7 +9,10 @@ import { Dictionary } from '../options.js'
 export type DateComponentHash = { [uid: string]: DateComponent<any, any> }
 
 export interface Seg {
-  eventRange?: EventRenderRange // the original event-range (eventDef+defaultDuration)
+  // the original event-range (eventDef+defaultDuration)
+  // HACK: optional because slicer utils return objects with the eventRange
+  eventRange?: EventRenderRange
+
   isStart: boolean
   isEnd: boolean
 }

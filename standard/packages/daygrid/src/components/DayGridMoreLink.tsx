@@ -6,7 +6,7 @@ import {
   DateProfile,
   DateRange,
   EventSegUiInteractionState,
-  getSegMeta,
+  getEventRangeMeta,
 } from '@fullcalendar/core/internal'
 import { createElement, RefObject, Fragment } from '@fullcalendar/core/preact'
 import { hasListItemDisplay } from '../event-rendering.js'
@@ -51,7 +51,9 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
           return (
             <Fragment>
               {props.segs.map((seg) => {
-                let instanceId = seg.eventRange.instance.instanceId
+                let { eventRange } = seg
+                let instanceId = eventRange.instance.instanceId
+
                 return (
                   <div
                     key={instanceId}
@@ -61,21 +63,25 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
                   >
                     {hasListItemDisplay(seg) ? (
                       <DayGridListEvent
-                        seg={seg}
+                        eventRange={eventRange}
+                        isStart={seg.isStart}
+                        isEnd={seg.isEnd}
                         isDragging={false}
                         isSelected={instanceId === props.eventSelection}
                         defaultDisplayEventEnd={false}
-                        {...getSegMeta(seg, props.todayRange)}
+                        {...getEventRangeMeta(eventRange, props.todayRange)}
                       />
                     ) : (
                       <DayGridBlockEvent
-                        seg={seg}
+                        eventRange={eventRange}
+                        isStart={seg.isStart}
+                        isEnd={seg.isEnd}
                         isDragging={false}
                         isResizing={false}
                         isDateSelecting={false}
                         isSelected={instanceId === props.eventSelection}
                         defaultDisplayEventEnd={false}
-                        {...getSegMeta(seg, props.todayRange)}
+                        {...getEventRangeMeta(eventRange, props.todayRange)}
                       />
                     )}
                   </div>

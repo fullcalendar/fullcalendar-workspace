@@ -125,13 +125,13 @@ export function hasBgRendering(def: EventDef) {
   return def.ui.display === 'background' || def.ui.display === 'inverse-background'
 }
 
-export function setElSeg(el: HTMLElement, seg: Seg) {
-  (el as any).fcSeg = seg
+export function setElEventRange(el: HTMLElement, eventRange: EventRenderRange) {
+  (el as any).fcEventRange = eventRange
 }
 
-export function getElSeg(el: HTMLElement): Seg | null {
-  return (el as any).fcSeg ||
-    (el.parentNode as any).fcSeg || // for the harness
+export function getElEventRange(el: HTMLElement): EventRenderRange | null {
+  return (el as any).fcEventRange ||
+    (el.parentNode as any).fcEventRange || // for the harness
     null
 }
 
@@ -210,10 +210,10 @@ export interface EventContentArg { // for *Content handlers
 
 export type EventMountArg = MountArg<EventContentArg>
 
-export function computeSegDraggable(seg: Seg, context: ViewContext) {
+export function computeEventRangeDraggable(eventRange: EventRenderRange, context: ViewContext) {
   let { pluginHooks } = context
   let transformers = pluginHooks.isDraggableTransformers
-  let { def, ui } = seg.eventRange
+  let { def, ui } = eventRange
   let val = ui.startEditable
 
   for (let transformer of transformers) {
@@ -223,16 +223,8 @@ export function computeSegDraggable(seg: Seg, context: ViewContext) {
   return val
 }
 
-export function computeSegStartResizable(seg: Seg, context: ViewContext) {
-  return seg.isStart && seg.eventRange.ui.durationEditable && context.options.eventResizableFromStart
-}
-
-export function computeSegEndResizable(seg: Seg, context: ViewContext) {
-  return seg.isEnd && seg.eventRange.ui.durationEditable
-}
-
-export function buildSegTimeText(
-  seg: Seg & { start?: DateMarker, end?: DateMarker },
+export function buildEventRangeTimeText(
+  eventRange: EventRenderRange,
   timeFormat: DateFormatter,
   context: ViewContext,
   defaultDisplayEventTime?: boolean, // defaults to true
@@ -242,16 +234,16 @@ export function buildSegTimeText(
 ) {
   let { dateEnv, options } = context
   let { displayEventTime, displayEventEnd } = options
-  let eventDef = seg.eventRange.def
-  let eventInstance = seg.eventRange.instance
+  let eventDef = eventRange.def
+  let eventInstance = eventRange.instance
 
   if (displayEventTime == null) { displayEventTime = defaultDisplayEventTime !== false }
   if (displayEventEnd == null) { displayEventEnd = defaultDisplayEventEnd !== false }
 
   let wholeEventStart = eventInstance.range.start
   let wholeEventEnd = eventInstance.range.end
-  let segStart = startOverride || seg.start || seg.eventRange.range.start
-  let segEnd = endOverride || seg.end || seg.eventRange.range.end
+  let segStart = startOverride || eventRange.range.start
+  let segEnd = endOverride || eventRange.range.end
   let isStartDay = startOfDay(wholeEventStart).valueOf() === startOfDay(segStart).valueOf()
   let isEndDay = startOfDay(addMs(wholeEventEnd, -1)).valueOf() === startOfDay(addMs(segEnd, -1)).valueOf()
 
@@ -273,8 +265,8 @@ export function buildSegTimeText(
   return ''
 }
 
-export function getSegMeta(seg: Seg, todayRange: DateRange, nowDate?: DateMarker) { // TODO: make arg order consistent with date util
-  let segRange = seg.eventRange.range
+export function getEventRangeMeta(eventRange: EventRenderRange, todayRange: DateRange, nowDate?: DateMarker) {
+  let segRange = eventRange.range
 
   return {
     isPast: segRange.end <= (nowDate || todayRange.start),
@@ -340,8 +332,8 @@ export function buildEventRangeKey(eventRange: EventRenderRange) {
   // inverse-background events don't have specific instances. TODO: better solution
 }
 
-export function getSegAnchorAttrs(seg: Seg, context: ViewContext) {
-  let { def, instance } = seg.eventRange
+export function getEventRangeAnchorAttrs(eventRange: EventRenderRange, context: ViewContext) {
+  let { def, instance } = eventRange
   let { url } = def
 
   if (url) {

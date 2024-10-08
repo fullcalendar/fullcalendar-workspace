@@ -8,7 +8,7 @@ import {
   Dictionary,
   EventSegUiInteractionState,
   fracToCssDim,
-  getSegMeta,
+  getEventRangeMeta,
   hasCustomDayCellContent,
   memoize,
   renderFill,
@@ -187,7 +187,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       <Fragment>
         {this.renderHiddenGroups(hiddenGroups, segs)}
         {segs.map((seg, index) => {
-          let instanceId = seg.eventRange.instance.instanceId // guaranteed because it's an fg event
+          let { eventRange } = seg
+          let instanceId = eventRange.instance.instanceId // guaranteed because it's an fg event
           let segVertical = segVerticals[index]
           let setRect = segRects[index] // for horizontals. could be undefined!? HACK
 
@@ -210,14 +211,18 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               }}
             >
               <TimeGridEvent
-                seg={seg}
+                eventRange={eventRange}
+                segStart={seg.start}
+                segEnd={seg.end}
+                isStart={seg.isStart}
+                isEnd={seg.isEnd}
                 isDragging={isDragging}
                 isResizing={isResizing}
                 isDateSelecting={isDateSelecting}
                 isSelected={instanceId === eventSelection}
                 isShort={segVertical.isShort}
                 isInset={isInset}
-                {...getSegMeta(seg, todayRange, nowDate)}
+                {...getEventRangeMeta(eventRange, todayRange, nowDate)}
               />
             </div>
           )
@@ -273,11 +278,12 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     return (
       <Fragment>
         {segs.map((seg, index) => {
+          const { eventRange } = seg
           const segVertical = segVerticals[index]
 
           return (
             <div
-              key={buildEventRangeKey(seg.eventRange)}
+              key={buildEventRangeKey(eventRange)}
               className="fc-timegrid-bg-harness fc-fill-x"
               style={{
                 top: fracToCssDim(segVertical.start),
@@ -285,7 +291,12 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               }}
             >
               {fillType === 'bg-event' ?
-                <BgEvent seg={seg} {...getSegMeta(seg, props.todayRange, props.nowDate)} /> :
+                <BgEvent
+                  eventRange={eventRange}
+                  isStart={seg.isStart}
+                  isEnd={seg.isEnd}
+                  {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate)}
+                /> :
                 renderFill(fillType)}
             </div>
           )
@@ -364,7 +375,9 @@ export function renderPlainFgSegs(
   return (
     <Fragment>
       {sortedFgSegs.map((seg) => {
-        let instanceId = seg.eventRange.instance.instanceId
+        let { eventRange } = seg
+        let instanceId = eventRange.instance.instanceId
+
         return (
           <div
             key={instanceId}
@@ -372,14 +385,18 @@ export function renderPlainFgSegs(
             style={{ visibility: hiddenInstances[instanceId] ? 'hidden' : ('' as any) }}
           >
             <TimeGridEvent
-              seg={seg}
+              eventRange={eventRange}
+              segStart={seg.start}
+              segEnd={seg.end}
+              isStart={seg.isStart}
+              isEnd={seg.isEnd}
               isDragging={false}
               isResizing={false}
               isDateSelecting={false}
               isSelected={instanceId === eventSelection}
               isShort={false}
               isInset={false}
-              {...getSegMeta(seg, todayRange, nowDate)}
+              {...getEventRangeMeta(eventRange, todayRange, nowDate)}
             />
           </div>
         )

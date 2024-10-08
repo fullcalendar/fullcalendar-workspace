@@ -1,8 +1,9 @@
-import { AllDayContentArg } from '@fullcalendar/core'
+import { AllDayContentArg, EventRenderRange } from '@fullcalendar/core'
 import {
   MinimalEventProps, BaseComponent, ViewContext,
-  Seg, isMultiDayRange, DateFormatter, buildSegTimeText, createFormatter,
-  getSegAnchorAttrs, EventContainer, ContentContainer,
+  isMultiDayRange, DateFormatter, buildEventRangeTimeText, createFormatter,
+  getEventRangeAnchorAttrs, EventContainer, ContentContainer,
+  DateMarker,
 } from '@fullcalendar/core/internal'
 import {
   createElement,
@@ -10,7 +11,6 @@ import {
   Fragment,
   ComponentChild,
 } from '@fullcalendar/core/preact'
-import { ListSeg } from './ListView.js'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
   hour: 'numeric',
@@ -18,17 +18,19 @@ const DEFAULT_TIME_FORMAT = createFormatter({
   meridiem: 'short',
 })
 
-export interface ListViewEventRowProps extends MinimalEventProps<ListSeg> {
+export interface ListViewEventRowProps extends MinimalEventProps {
   timeHeaderId: string
   eventHeaderId: string
   dateHeaderId: string
+  segStart: DateMarker | undefined
+  segEnd: DateMarker | undefined
 }
 
 export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
   render() {
     let { props, context } = this
     let { options } = context
-    let { seg, timeHeaderId, eventHeaderId, dateHeaderId } = props
+    let { eventRange, timeHeaderId, eventHeaderId, dateHeaderId } = props
     let timeFormat = options.eventTimeFormat || DEFAULT_TIME_FORMAT
 
     return (
@@ -37,17 +39,17 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
         elTag="tr"
         elClasses={[
           'fc-list-event',
-          seg.eventRange.def.url && 'fc-event-forced-url',
+          eventRange.def.url && 'fc-event-forced-url',
         ]}
-        defaultGenerator={() => renderEventInnerContent(seg, context) /* weird */}
-        seg={seg}
+        defaultGenerator={() => renderEventInnerContent(eventRange, context) /* weird */}
+        eventRange={eventRange}
         timeText=""
         disableDragging={true}
         disableResizing={true}
       >
         {(InnerContent, eventContentArg) => (
           <Fragment>
-            {buildTimeContent(seg, timeFormat, context, timeHeaderId, dateHeaderId)}
+            {buildTimeContent(eventRange, props.isStart, props.isEnd, props.segStart, props.segEnd, timeFormat, context, timeHeaderId, dateHeaderId)}
             <td aria-hidden className="fc-list-event-dot-cell">
               <span
                 className="fc-list-event-dot"
@@ -68,18 +70,22 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
   }
 }
 
-function renderEventInnerContent(seg: Seg, context: ViewContext) {
-  let interactiveAttrs = getSegAnchorAttrs(seg, context)
+function renderEventInnerContent(eventRange: EventRenderRange, context: ViewContext) {
+  let interactiveAttrs = getEventRangeAnchorAttrs(eventRange, context)
   return (
     <a {...interactiveAttrs}>
       {/* TODO: document how whole row become clickable */}
-      {seg.eventRange.def.title}
+      {eventRange.def.title}
     </a>
   )
 }
 
 function buildTimeContent(
-  seg: ListSeg,
+  eventRange: EventRenderRange,
+  isStart: boolean,
+  isEnd: boolean,
+  segStart: DateMarker | undefined,
+  segEnd: DateMarker | undefined,
   timeFormat: DateFormatter,
   context: ViewContext,
   timeHeaderId: string,
@@ -88,42 +94,46 @@ function buildTimeContent(
   let { options } = context
 
   if (options.displayEventTime !== false) {
-    let eventDef = seg.eventRange.def
-    let eventInstance = seg.eventRange.instance
+    let eventDef = eventRange.def
+    let eventInstance = eventRange.instance
     let doAllDay = false
     let timeText: string
 
     if (eventDef.allDay) {
       doAllDay = true
-    } else if (isMultiDayRange(seg.eventRange.range)) { // TODO: use (!isStart || !isEnd) instead?
-      if (seg.isStart) {
-        timeText = buildSegTimeText(
-          seg,
+    } else if (isMultiDayRange(eventRange.range)) { // TODO: use (!isStart || !isEnd) instead?
+      if (isStart) {
+        timeText = buildEventRangeTimeText(
+          eventRange,
           timeFormat,
           context,
           null,
           null,
           eventInstance.range.start,
-          seg.end,
+          segEnd,
         )
-      } else if (seg.isEnd) {
-        timeText = buildSegTimeText(
-          seg,
+      } else if (isEnd) {
+        timeText = buildEventRangeTimeText(
+          eventRange,
           timeFormat,
           context,
           null,
           null,
-          seg.start,
+          segStart,
           eventInstance.range.end,
         )
       } else {
         doAllDay = true
       }
     } else {
-      timeText = buildSegTimeText(
-        seg,
+      timeText = buildEventRangeTimeText(
+        eventRange,
         timeFormat,
         context,
+        null,
+        null,
+        segStart,
+        segEnd,
       )
     }
 

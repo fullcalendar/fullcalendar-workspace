@@ -1,15 +1,17 @@
 import { createElement, Fragment } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
-import { buildSegTimeText, EventContentArg, getSegAnchorAttrs } from '../component-util/event-rendering.js'
+import { buildEventRangeTimeText, EventContentArg, EventRenderRange, getEventRangeAnchorAttrs } from '../component-util/event-rendering.js'
 import { DateFormatter } from '../datelib/DateFormatter.js'
 import { EventContainer } from './EventContainer.js'
-import { Seg } from '../component/DateComponent.js'
 import { ElRef } from '../content-inject/ContentInjector.js'
+import { DateMarker } from '../datelib/marker.js'
 
 export interface StandardEventProps {
   elRef?: ElRef
   elClasses?: string[]
-  seg: Seg
+  eventRange: EventRenderRange,
+  isStart: boolean
+  isEnd: boolean
   isDragging: boolean // rename to isMirrorDragging? make optional?
   isResizing: boolean // rename to isMirrorResizing? make optional?
   isDateSelecting: boolean // rename to isMirrorDateSelecting? make optional?
@@ -22,6 +24,8 @@ export interface StandardEventProps {
   defaultTimeFormat: DateFormatter
   defaultDisplayEventTime?: boolean // default true
   defaultDisplayEventEnd?: boolean // default true
+  startOverride?: DateMarker
+  endOverride?: DateMarker
 }
 
 // should not be a purecomponent
@@ -29,15 +33,17 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
   render() {
     let { props, context } = this
     let { options } = context
-    let { seg } = props
-    let { ui } = seg.eventRange
+    let { eventRange } = props
+    let { ui } = eventRange
     let timeFormat = options.eventTimeFormat || props.defaultTimeFormat
-    let timeText = buildSegTimeText(
-      seg,
+    let timeText = buildEventRangeTimeText(
+      eventRange,
       timeFormat,
       context,
       props.defaultDisplayEventTime,
       props.defaultDisplayEventEnd,
+      props.startOverride,
+      props.endOverride,
     )
 
     return (
@@ -48,7 +54,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
           borderColor: ui.borderColor,
           backgroundColor: ui.backgroundColor,
         }}
-        elAttrs={getSegAnchorAttrs(seg, context)}
+        elAttrs={getEventRangeAnchorAttrs(eventRange, context)}
         defaultGenerator={renderInnerContent}
         timeText={timeText}
       >

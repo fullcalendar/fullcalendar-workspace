@@ -1,16 +1,17 @@
-import { EventContentArg } from '@fullcalendar/core'
+import { EventContentArg, EventRenderRange } from '@fullcalendar/core'
 import {
   BaseComponent,
-  Seg,
-  buildSegTimeText,
+  buildEventRangeTimeText,
   EventContainer,
-  getSegAnchorAttrs,
+  getEventRangeAnchorAttrs,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT } from '../event-rendering.js'
 
 export interface DayGridListEventProps {
-  seg: Seg
+  eventRange: EventRenderRange
+  isStart: boolean
+  isEnd: boolean
   isDragging: boolean
   isSelected: boolean
   isPast: boolean
@@ -24,10 +25,10 @@ export class DayGridListEvent extends BaseComponent<DayGridListEventProps> {
   render() {
     let { props, context } = this
     let { options } = context
-    let { seg } = props
+    let { eventRange } = props
     let timeFormat = options.eventTimeFormat || DEFAULT_TABLE_EVENT_TIME_FORMAT
-    let timeText = buildSegTimeText(
-      seg,
+    let timeText = buildEventRangeTimeText(
+      eventRange,
       timeFormat,
       context,
       true,
@@ -39,7 +40,7 @@ export class DayGridListEvent extends BaseComponent<DayGridListEventProps> {
         {...props}
         elTag="a"
         elClasses={['fc-daygrid-event', 'fc-daygrid-dot-event']}
-        elAttrs={getSegAnchorAttrs(props.seg, context)}
+        elAttrs={getEventRangeAnchorAttrs(eventRange, context)}
         defaultGenerator={renderInnerContent}
         timeText={timeText}
         isResizing={false}

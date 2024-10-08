@@ -1,6 +1,6 @@
 import {
   BaseComponent, BgEvent, renderFill,
-  getSegMeta, DateRange, DateMarker, buildEventRangeKey,
+  getEventRangeMeta, DateRange, DateMarker, buildEventRangeKey,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { computeSegHorizontals } from '../event-placement.js'
@@ -59,8 +59,15 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
               style={hStyle}
             >
               {fillType === 'bg-event' ?
-                <BgEvent seg={seg} {...getSegMeta(seg, todayRange, nowDate)} /> :
-                renderFill(fillType)}
+                <BgEvent
+                  eventRange={seg.eventRange}
+                  isStart={seg.isStart}
+                  isEnd={seg.isEnd}
+                  {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
+                /> : (
+                  renderFill(fillType)
+                )
+              }
             </div>
           )
         })}

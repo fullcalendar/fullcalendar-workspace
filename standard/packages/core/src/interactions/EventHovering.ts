@@ -1,6 +1,6 @@
 import { listenToHoverBySelector } from '../util/dom-event.js'
 import { EventImpl } from '../api/EventImpl.js'
-import { getElSeg } from '../component-util/event-rendering.js'
+import { getElEventRange } from '../component-util/event-rendering.js'
 import { Interaction, InteractionSettings } from './interaction.js'
 import { ViewApi } from '../api/ViewApi.js'
 
@@ -43,7 +43,7 @@ export class EventHovering extends Interaction {
   }
 
   handleSegEnter = (ev: Event, segEl: HTMLElement) => {
-    if (getElSeg(segEl)) { // TODO: better way to make sure not hovering over more+ link or its wrapper
+    if (getElEventRange(segEl)) { // TODO: better way to make sure not hovering over more+ link or its wrapper
       this.currentSegEl = segEl
       this.triggerEvent('eventMouseEnter', ev, segEl)
     }
@@ -59,15 +59,15 @@ export class EventHovering extends Interaction {
   triggerEvent(publicEvName: 'eventMouseEnter' | 'eventMouseLeave', ev: Event | null, segEl: HTMLElement) {
     let { component } = this
     let { context } = component
-    let seg = getElSeg(segEl)!
+    let eventRange = getElEventRange(segEl)!
 
     if (!ev || component.isValidSegDownEl(ev.target as HTMLElement)) {
       context.emitter.trigger(publicEvName, {
         el: segEl,
         event: new EventImpl(
           context,
-          seg.eventRange.def,
-          seg.eventRange.instance,
+          eventRange.def,
+          eventRange.instance,
         ),
         jsEvent: ev as MouseEvent, // Is this always a mouse event? See #4655
         view: context.viewApi,

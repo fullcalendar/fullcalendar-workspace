@@ -1,11 +1,12 @@
 import { createElement } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
-import { Seg } from '../component/DateComponent.js'
-import { EventContentArg } from '../component-util/event-rendering.js'
+import { EventContentArg, EventRenderRange } from '../component-util/event-rendering.js'
 import { EventContainer } from './EventContainer.js'
 
 export interface BgEventProps {
-  seg: Seg
+  eventRange: EventRenderRange
+  isStart: boolean
+  isEnd: boolean
   isPast: boolean
   isFuture: boolean
   isToday: boolean
@@ -14,15 +15,17 @@ export interface BgEventProps {
 export class BgEvent extends BaseComponent<BgEventProps> {
   render() {
     let { props } = this
-    let { seg } = props
+    let { eventRange } = props
 
     return (
       <EventContainer
         elTag="div"
         elClasses={['fc-bg-event']}
-        elStyle={{ backgroundColor: seg.eventRange.ui.backgroundColor }}
+        elStyle={{ backgroundColor: eventRange.ui.backgroundColor }}
         defaultGenerator={renderInnerContent}
-        seg={seg}
+        eventRange={eventRange}
+        isStart={props.isStart}
+        isEnd={props.isEnd}
         timeText=""
         isDragging={false}
         isResizing={false}

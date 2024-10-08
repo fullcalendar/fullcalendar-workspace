@@ -7,7 +7,7 @@ import {
   EventRenderRange,
 } from '@fullcalendar/core'
 import {
-  DateComponent, Seg,
+  DateComponent,
   PointerDragEvent, Hit,
   EventMutation, applyMutationToEventStore,
   startOfDay,
@@ -15,7 +15,7 @@ import {
   EventStore, getRelevantEvents, createEmptyEventStore,
   EventInteractionState,
   diffDates, enableCursor, disableCursor,
-  getElSeg,
+  getElEventRange,
   eventDragMutationMassager,
   Interaction, InteractionSettings, interactionSettingsStore,
   EventDropTransformers,
@@ -48,7 +48,6 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
 
   // internal state
   subjectEl: HTMLElement | null = null
-  subjectSeg: Seg | null = null // the seg being selected/dragged
   isDragging: boolean = false
   eventRange: EventRenderRange | null = null
   relevantEvents: EventStore | null = null // the events being dragged
@@ -86,8 +85,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
     let { options } = component.context
     let initialContext = component.context
     this.subjectEl = ev.subjectEl as HTMLElement
-    let subjectSeg = this.subjectSeg = getElSeg(ev.subjectEl as HTMLElement)!
-    let eventRange = this.eventRange = subjectSeg.eventRange!
+    let eventRange = this.eventRange = getElEventRange(ev.subjectEl as HTMLElement)!
     let eventInstanceId = eventRange.instance!.instanceId
 
     this.relevantEvents = getRelevantEvents(
@@ -425,7 +423,6 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
   }
 
   cleanup() { // reset all internal state
-    this.subjectSeg = null
     this.isDragging = false
     this.eventRange = null
     this.relevantEvents = null
