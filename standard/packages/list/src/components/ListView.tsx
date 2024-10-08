@@ -37,6 +37,12 @@ export interface NoEventsContentArg {
   view: ViewApi
 }
 
+export interface ListSeg extends Seg {
+  start: DateMarker
+  end: DateMarker
+  dayIndex: number
+}
+
 export type NoEventsMountArg = MountArg<NoEventsContentArg>
 
 /*
@@ -120,7 +126,7 @@ export class ListView extends DateComponent<ViewProps> {
     )
   }
 
-  renderSegList(allSegs: Seg[], dayDates: DateMarker[]) {
+  renderSegList(allSegs: ListSeg[], dayDates: DateMarker[]) {
     let { options } = this.context
     let { timeHeaderId, eventHeaderId, dateHeaderIdRoot } = this.state
     let segsByDay = groupSegsByDay(allSegs) // sparse array
@@ -186,7 +192,7 @@ export class ListView extends DateComponent<ViewProps> {
     )
   }
 
-  _eventStoreToSegs(eventStore: EventStore, eventUiBases: EventUiHash, dayRanges: DateRange[]): Seg[] {
+  _eventStoreToSegs(eventStore: EventStore, eventUiBases: EventUiHash, dayRanges: DateRange[]): ListSeg[] {
     return this.eventRangesToSegs(
       sliceEventStore(
         eventStore,
@@ -198,8 +204,8 @@ export class ListView extends DateComponent<ViewProps> {
     )
   }
 
-  eventRangesToSegs(eventRanges: EventRenderRange[], dayRanges: DateRange[]) {
-    let segs = []
+  eventRangesToSegs(eventRanges: EventRenderRange[], dayRanges: DateRange[]): ListSeg[] {
+    let segs: ListSeg[] = []
 
     for (let eventRange of eventRanges) {
       segs.push(...this.eventRangeToSegs(eventRange, dayRanges))
@@ -215,15 +221,14 @@ export class ListView extends DateComponent<ViewProps> {
     let allDay = eventRange.def.allDay
     let dayIndex
     let segRange
-    let seg
-    let segs = []
+    let seg: ListSeg
+    let segs: ListSeg[] = []
 
     for (dayIndex = 0; dayIndex < dayRanges.length; dayIndex += 1) {
       segRange = intersectRanges(range, dayRanges[dayIndex])
 
       if (segRange) {
         seg = {
-          component: this,
           eventRange,
           start: segRange.start,
           end: segRange.end,
@@ -281,10 +286,10 @@ function computeDateVars(dateProfile: DateProfile) {
 }
 
 // Returns a sparse array of arrays, segs grouped by their dayIndex
-function groupSegsByDay(segs): Seg[][] {
-  let segsByDay = [] // sparse array
-  let i
-  let seg
+function groupSegsByDay(segs: ListSeg[]): ListSeg[][] {
+  let segsByDay: ListSeg[][] = [] // sparse array
+  let i: number
+  let seg: ListSeg
 
   for (i = 0; i < segs.length; i += 1) {
     seg = segs[i];

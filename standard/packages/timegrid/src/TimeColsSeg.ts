@@ -33,7 +33,10 @@ export function splitSegsByCol(segs: TimeColsSeg[] | null, colCnt: number) {
 TODO: more DRY with daygrid?
 can be given null/undefined!
 */
-export function splitInteractionByCol(ui: EventSegUiInteractionState | null, colCnt: number) {
+export function splitInteractionByCol(
+  ui: EventSegUiInteractionState<TimeColsSeg> | null,
+  colCnt: number,
+): EventSegUiInteractionState[] {
   let byRow: EventSegUiInteractionState[] = []
 
   if (!ui) {

@@ -8,21 +8,15 @@ import { Dictionary } from '../options.js'
 
 export type DateComponentHash = { [uid: string]: DateComponent<any, any> }
 
-// NOTE: for fg-events, eventRange.range is NOT sliced,
-// thus, we need isStart/isEnd
 export interface Seg {
-  component?: DateComponent<any, any>
+  eventRange?: EventRenderRange // the original event-range (eventDef+defaultDuration)
   isStart: boolean
   isEnd: boolean
-  eventRange?: EventRenderRange
-  [otherProp: string]: any // TODO: remove this. extending Seg will handle this
-  el?: never
-  // NOTE: can sometimes have start/end, which are important values :(
 }
 
-export interface EventSegUiInteractionState {
+export interface EventSegUiInteractionState<S = Seg> {
   affectedInstances: EventInstanceHash
-  segs: Seg[]
+  segs: S[]
   isEvent: boolean
 }
 

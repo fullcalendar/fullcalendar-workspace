@@ -13,8 +13,8 @@ import {
 import { ContentContainer, InnerContainerFunc } from '../content-inject/ContentContainer.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
 
-export interface MinimalEventProps {
-  seg: Seg
+export interface MinimalEventProps<S = Seg> {
+  seg: S
   isDragging: boolean // rename to isMirrorDragging? make optional?
   isResizing: boolean // rename to isMirrorResizing? make optional?
   isDateSelecting: boolean // rename to isMirrorDateSelecting? make optional?

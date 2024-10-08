@@ -157,16 +157,16 @@ export function compileEventUi(eventDef: EventDef, eventUiBases: EventUiHash) {
   return combineEventUis(uis)
 }
 
-export function sortEventSegs(segs, eventOrderSpecs: OrderSpec<EventImpl>[]): Seg[] {
+export function sortEventSegs<S extends Seg>(segs: S[], eventOrderSpecs: OrderSpec<EventImpl>[]): S[] {
   let objs = segs.map(buildSegCompareObj)
 
-  objs.sort((obj0, obj1) => compareByFieldSpecs(obj0, obj1, eventOrderSpecs))
+  objs.sort((obj0, obj1) => compareByFieldSpecs(obj0, obj1, eventOrderSpecs as any)) // !!!
 
   return objs.map((c) => c._seg)
 }
 
 // returns a object with all primitive props that can be compared
-export function buildSegCompareObj(seg: Seg) {
+export function buildSegCompareObj<S extends Seg>(seg: S) {
   let { eventRange } = seg
   let eventDef = eventRange.def
   let range = eventRange.instance ? eventRange.instance.range : eventRange.range
@@ -232,7 +232,7 @@ export function computeSegEndResizable(seg: Seg, context: ViewContext) {
 }
 
 export function buildSegTimeText(
-  seg: Seg,
+  seg: Seg & { start?: DateMarker, end?: DateMarker },
   timeFormat: DateFormatter,
   context: ViewContext,
   defaultDisplayEventTime?: boolean, // defaults to true

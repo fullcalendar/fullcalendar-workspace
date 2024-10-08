@@ -10,6 +10,7 @@ import {
   Fragment,
   ComponentChild,
 } from '@fullcalendar/core/preact'
+import { ListSeg } from './ListView.js'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
   hour: 'numeric',
@@ -17,7 +18,7 @@ const DEFAULT_TIME_FORMAT = createFormatter({
   meridiem: 'short',
 })
 
-export interface ListViewEventRowProps extends MinimalEventProps {
+export interface ListViewEventRowProps extends MinimalEventProps<ListSeg> {
   timeHeaderId: string
   eventHeaderId: string
   dateHeaderId: string
@@ -78,7 +79,7 @@ function renderEventInnerContent(seg: Seg, context: ViewContext) {
 }
 
 function buildTimeContent(
-  seg: Seg,
+  seg: ListSeg,
   timeFormat: DateFormatter,
   context: ViewContext,
   timeHeaderId: string,

@@ -46,7 +46,7 @@ export type EventRefined =
   EventUiRefined &
   RefinedOptionsFromRefiners<Required<EventRefiners>> // Required hack
 
-export interface EventTuple {
+export interface EventTuple { // TODO: not an array-style tuple!
   def: EventDef
   instance: EventInstance | null
 }

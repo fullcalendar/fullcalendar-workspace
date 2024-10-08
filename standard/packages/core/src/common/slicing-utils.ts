@@ -27,8 +27,8 @@ export interface SlicedProps<SegType extends Seg> {
   businessHourSegs: SegType[]
   fgEventSegs: SegType[]
   bgEventSegs: SegType[]
-  eventDrag: EventSegUiInteractionState | null
-  eventResize: EventSegUiInteractionState | null
+  eventDrag: EventSegUiInteractionState<SegType> | null
+  eventResize: EventSegUiInteractionState<SegType> | null
   eventSelection: string
 }
 
@@ -133,7 +133,7 @@ export abstract class Slicer<SegType extends Seg, ExtraArgs extends any[] = []> 
     dateProfile: DateProfile,
     nextDayThreshold: Duration | null,
     ...extraArgs: ExtraArgs
-  ): EventSegUiInteractionState {
+  ): EventSegUiInteractionState<SegType> {
     if (!interaction) {
       return null
     }

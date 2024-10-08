@@ -36,6 +36,7 @@ Theming
     ensure minimum Bootstrap version
   in bootstrap themes, event-height line-height is very tall. normalize? then make changelog entry?
 DayGrid
+  bug: resizing event to different row, no mirror rendered in other rows
   cell -main containers don't seem to have bottom margin for events
   Bug w/ event DnD where only all-day events rerender (calling eventContent) during drag
     see month-event-rerender-bug.html!!!

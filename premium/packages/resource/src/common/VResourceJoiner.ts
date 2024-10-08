@@ -94,7 +94,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
   joinInteractions(
     resourceDayTable: AbstractResourceDayTableModel,
     ...interactions: EventSegUiInteractionState[]
-  ): EventSegUiInteractionState | null {
+  ): EventSegUiInteractionState<SegType> | null {
     let resourceCnt = resourceDayTable.resources.length
     let affectedInstances = {}
     let transformedSegs = []

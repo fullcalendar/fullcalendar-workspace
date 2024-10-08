@@ -23,7 +23,10 @@ export function splitSegsByRow(segs: TableSeg[], rowCnt: number) {
   return byRow
 }
 
-export function splitInteractionByRow(ui: EventSegUiInteractionState | null, rowCnt: number) {
+export function splitInteractionByRow(
+  ui: EventSegUiInteractionState<Seg & { row: number }> | null,
+  rowCnt: number,
+): EventSegUiInteractionState[] {
   const byRow: EventSegUiInteractionState[] = []
 
   if (!ui) {

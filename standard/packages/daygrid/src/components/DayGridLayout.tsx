@@ -40,8 +40,8 @@ export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   bgEventSegs: TableSeg[]
   businessHourSegs: TableSeg[]
   dateSelectionSegs: TableSeg[]
-  eventDrag: EventSegUiInteractionState | null
-  eventResize: EventSegUiInteractionState | null
+  eventDrag: EventSegUiInteractionState<TableSeg> | null
+  eventResize: EventSegUiInteractionState<TableSeg> | null
   eventSelection: string
 }
 
