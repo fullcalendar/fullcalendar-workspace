@@ -12,7 +12,6 @@ import {
   getStickyHeaderDates,
   getStickyFooterScrollbar,
   Scroller,
-  getScrollerSyncerClass,
   rangeContainsMarker,
   multiplyDuration,
   afterSize,
@@ -21,6 +20,7 @@ import {
   ScrollResponder,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
+import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import { buildTimelineDateProfile, TimelineDateProfile } from '../timeline-date-profile.js'
 import { TimelineSlats } from './TimelineSlats.js'
 import { TimelineLane } from './TimelineLane.js'
@@ -237,7 +237,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     const { context } = this
     const { options } = context
 
-    const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
     this.syncedScroller = new ScrollerSyncer(true) // horizontal=true
     this.updateSyncedScroller()
 

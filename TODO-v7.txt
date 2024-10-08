@@ -5,7 +5,6 @@ Publishing:
 TODO: pick issues for beta.1
   2 showstopper bugs
     https://github.com/fullcalendar/fullcalendar/issues/7784
-    https://github.com/fullcalendar/fullcalendar/issues/7783
   Initial scroll problems like
     https://github.com/fullcalendar/fullcalendar/issues/7787
   Other scroll bugs

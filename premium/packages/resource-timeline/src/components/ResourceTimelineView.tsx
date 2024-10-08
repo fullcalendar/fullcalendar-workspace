@@ -1,10 +1,10 @@
+import { Duration } from '@fullcalendar/core'
 import {
   afterSize,
   DateComponent,
   DateMarker,
   DateRange,
   getIsHeightAuto,
-  getScrollerSyncerClass,
   getStickyFooterScrollbar,
   getStickyHeaderDates,
   greatestDurationDenominator,
@@ -22,6 +22,7 @@ import {
   ViewContainer, ViewOptionsRefined,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
+import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import {
   buildResourceHierarchy,
   ColSpec,
@@ -70,7 +71,6 @@ import { HeaderRow } from './spreadsheet/HeaderRow.js'
 import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
 import { buildHeaderLayouts, buildResourceLayouts, computeHasNesting, GenericLayout, ResourceLayout } from '../resource-layout.js'
-import { Duration } from '@fullcalendar/core'
 
 interface ResourceTimelineViewState {
   slotInnerWidth?: number
@@ -723,7 +723,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     const { context } = this
     const { options } = context
 
-    const ScrollerSyncer = getScrollerSyncerClass(this.context.pluginHooks)
     this.timeScroller = new ScrollerSyncer(true) // horizontal=true
     this.bodyScroller = new ScrollerSyncer() // horizontal=false
     this.spreadsheetScroller = new ScrollerSyncer(true) // horizontal=true
