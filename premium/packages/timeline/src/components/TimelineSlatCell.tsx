@@ -105,5 +105,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
 
   componentWillUnmount(): void {
     this.detachWidth()
+
+    setRef(this.props.innerWidthRef, null)
   }
 }

@@ -61,5 +61,6 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
 
   componentWillUnmount(): void {
     this.detachInnerHeight()
+    setRef(this.props.innerHeightRef, null)
   }
 }

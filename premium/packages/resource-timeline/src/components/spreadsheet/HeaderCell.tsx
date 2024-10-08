@@ -85,5 +85,6 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
 
   componentWillUnmount(): void {
     this.detachInnerHeight()
+    setRef(this.props.innerHeightRef, null)
   }
 }

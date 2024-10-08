@@ -40,5 +40,6 @@ export class DayGridEventHarness extends Component<DayGridEventHarnessProps> {
 
   componentWillUnmount(): void {
     this.detachHeight()
+    setRef(this.props.heightRef, null)
   }
 }

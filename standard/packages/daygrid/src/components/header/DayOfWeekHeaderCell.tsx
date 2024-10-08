@@ -127,5 +127,6 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
 
   componentWillUnmount(): void {
     this.disconectInnerHeight()
+    setRef(this.props.innerHeightRef, null)
   }
 }

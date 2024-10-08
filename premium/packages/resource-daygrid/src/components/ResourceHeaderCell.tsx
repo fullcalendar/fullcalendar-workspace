@@ -76,5 +76,6 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
 
   componentWillUnmount(): void {
     this.disconectInnerHeight()
+    setRef(this.props.innerHeightRef, null)
   }
 }

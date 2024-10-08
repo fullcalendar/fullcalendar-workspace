@@ -130,5 +130,6 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
 
   componentWillUnmount(): void {
     this.disconectInnerHeight()
+    setRef(this.props.innerHeightRef, null)
   }
 }

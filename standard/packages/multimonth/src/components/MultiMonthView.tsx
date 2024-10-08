@@ -40,7 +40,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
-  private unwatchWidth: () => void
+  private detachWidth: () => void
 
   render() {
     const { context, props, state } = this
@@ -118,7 +118,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     const { context } = this
     const { options } = context
 
-    this.unwatchWidth = watchWidth(this.rootElRef.current, this.handleClientWidth)
+    this.detachWidth = watchWidth(this.rootElRef.current, this.handleClientWidth)
 
     context.emitter.on('_timeScrollRequest', this.timeScrollResponder.handleScroll)
     this.timeScrollResponder.handleScroll(options.scrollTime)
@@ -135,7 +135,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   }
 
   componentWillUnmount() {
-    this.unwatchWidth()
+    this.detachWidth()
 
     this.context.emitter.off('_timeScrollRequest', this.timeScrollResponder.handleScroll)
   }

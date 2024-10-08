@@ -64,7 +64,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
       rowHeightRefMap.handleValue(height, key)
     }
   })
-  private unwatchWidth?: () => void
+  private detachWidth?: () => void
 
   render() {
     let { props, state, context, rowHeightRefMap } = this
@@ -149,13 +149,13 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
   }
 
   componentDidMount(): void {
-    this.unwatchWidth = watchWidth(this.rootEl, (width) => {
+    this.detachWidth = watchWidth(this.rootEl, (width) => {
       this.setState({ width })
     })
   }
 
   componentWillUnmount(): void {
-    this.unwatchWidth()
+    this.detachWidth()
   }
 
   // Hit System

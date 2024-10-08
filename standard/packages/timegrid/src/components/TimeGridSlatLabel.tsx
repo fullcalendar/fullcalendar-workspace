@@ -110,21 +110,27 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
   }
 
   componentDidMount(): void {
+    const { props } = this
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
 
     if (innerEl) { // could be null if !isLabeled
       // TODO: only attach this if refs props present
       // TODO: fire width/height independently?
       this.detachInnerSize = watchSize(innerEl, (width, height) => {
-        setRef(this.props.innerWidthRef, width)
-        setRef(this.props.innerHeightRef, height)
+        setRef(props.innerWidthRef, width)
+        setRef(props.innerHeightRef, height)
       })
     }
   }
 
   componentWillUnmount(): void {
+    const { props } = this
+
     if (this.detachInnerSize) {
       this.detachInnerSize()
+
+      setRef(props.innerWidthRef, null)
+      setRef(props.innerHeightRef, null)
     }
   }
 }

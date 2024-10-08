@@ -91,6 +91,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
 
   componentWillUnmount(): void {
     this.detachInnerHeight() // should fire a 'null' height? yes! will cleanup any map listeners
+    setRef(this.props.innerHeightRef, null)
   }
 }
 

@@ -65,5 +65,6 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
 
   componentWillUnmount(): void {
     this.detachInnerHeight()
+    setRef(this.props.innerHeightRef, null)
   }
 }

@@ -43,5 +43,6 @@ export class TimelineEventHarness extends Component<TimelineEventHarnessProps> {
 
   componentWillUnmount(): void {
     this.detachHeight()
+    setRef(this.props.heightRef, null)
   }
 }

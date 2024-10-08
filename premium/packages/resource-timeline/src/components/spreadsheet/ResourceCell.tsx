@@ -92,6 +92,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
 
   componentWillUnmount(): void {
     this.unwatchHeight()
+    setRef(this.props.innerHeightRef, null)
   }
 
   onExpanderClick = (ev: UIEvent) => {

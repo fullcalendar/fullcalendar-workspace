@@ -132,10 +132,13 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
   }
 
   componentWillUnmount(): void {
-    this.detachSize()
-  }
+    const { props } = this
 
-  // TODO: unset width/height ref on unmount?
+    this.detachSize()
+
+    setRef(props.innerWidthRef, null)
+    setRef(props.innerHeightRef, null)
+  }
 }
 
 // Utils

@@ -93,7 +93,15 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   }
 
   componentWillUnmount(): void {
+    const { props } = this
+
     this.disconnectSize()
+
+    setRef(props.widthRef, null)
+    setRef(props.heightRef, null)
+    setRef(props.bottomScrollbarWidthRef, null)
+    setRef(props.rightScrollbarWidthRef, null)
+    setRef(props.leftScrollbarWidthRef, null)
   }
 
   // Public API

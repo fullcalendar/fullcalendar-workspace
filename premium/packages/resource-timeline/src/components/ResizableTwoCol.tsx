@@ -27,8 +27,8 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
   startWidth: number // weird names, might get confused with dragging start/end
   endWidth: number //
   resizerDragging: ElementDragging
-  unwatchStartWidth?: () => void
-  unwatchEndWidth?: () => void
+  detachStartWidth?: () => void
+  detachEndWidth?: () => void
 
   render() {
     let { props, state, context } = this
@@ -86,12 +86,12 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
   }
 
   componentDidMount() {
-    this.unwatchStartWidth = watchWidth(this.startElRef.current, (width) => {
+    this.detachStartWidth = watchWidth(this.startElRef.current, (width) => {
       this.startWidth = width
       afterSize(this.fireSizing)
     })
 
-    this.unwatchEndWidth = watchWidth(this.endElRef.current, (width) => {
+    this.detachEndWidth = watchWidth(this.endElRef.current, (width) => {
       this.endWidth = width
       afterSize(this.fireSizing)
     })
@@ -100,6 +100,13 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
   }
 
   componentWillUnmount() {
+    if (this.props.onSizes) {
+      this.props.onSizes(null, null)
+    }
+
+    this.detachStartWidth()
+    this.detachEndWidth()
+
     this.destroyResizing()
   }
 

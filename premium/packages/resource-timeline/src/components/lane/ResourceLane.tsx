@@ -76,5 +76,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
 
   componentWillUnmount(): void {
     this.unwatchHeight()
+    setRef(this.props.innerHeightRef, null)
   }
 }

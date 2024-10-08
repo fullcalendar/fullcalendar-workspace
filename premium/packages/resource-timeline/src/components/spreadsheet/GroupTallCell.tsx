@@ -68,6 +68,7 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
 
   componentWillUnmount(): void {
     this.detachInnerHeight()
+    setRef(this.props.innerHeightRef, null)
   }
 }
 

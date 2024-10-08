@@ -75,5 +75,6 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
 
   componentWillUnmount(): void {
     this.detachInnerHeight()
+    setRef(this.props.innerHeightRef, null)
   }
 }
