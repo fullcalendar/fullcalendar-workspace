@@ -12,6 +12,8 @@ REVIVE allowReslicing...
   https://github.com/fullcalendar/fullcalendar-workspace/commit/fa146e9e5a91b117bbfbc3e6a3a259360905a8fa
   Ticket where customer does NOT want reslicing:
   https://fullcalendar.freshdesk.com/a/tickets/9203
+  does fit between levels:
+    https://codepen.io/arshaw/pen/LYwbxza?editors=0110
 
 ResizeObserver
   implement fallback
