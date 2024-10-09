@@ -3,6 +3,17 @@ export * from 'preact'
 export { createPortal } from 'preact/compat'
 
 /*
+Shim newer TS global libs
+https://github.com/preactjs/preact/issues/4023
+*/
+declare global {
+  interface PictureInPictureEvent extends Event {
+  }
+  interface PictureInPictureEventInit extends EventInit {
+  }
+}
+
+/*
 NOTE: this can be a public API, especially createElement for hooks.
 See examples/typescript-scheduler/src/index.ts
 */

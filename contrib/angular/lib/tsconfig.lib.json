@@ -2,7 +2,6 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "skipLibCheck": true,
     "outDir": "../out-tsc/lib",
     "declaration": true,
     "declarationMap": true,
