@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@fullcalendar-examples/rollup-scheduler",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1-beta.1",
   "license": "ISC",
   "author": "Adam Shaw <arshaw@arshaw.com> (http://arshaw.com/)",
   "scripts": {
@@ -10,14 +10,14 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@fullcalendar/adaptive": "workspace:7.0.0-beta.0",
-    "@fullcalendar/core": "workspace:7.0.0-beta.0",
-    "@fullcalendar/daygrid": "workspace:7.0.0-beta.0",
-    "@fullcalendar/interaction": "workspace:7.0.0-beta.0",
-    "@fullcalendar/list": "workspace:7.0.0-beta.0",
-    "@fullcalendar/resource": "workspace:7.0.0-beta.0",
-    "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.0",
-    "@fullcalendar/timegrid": "workspace:7.0.0-beta.0"
+    "@fullcalendar/adaptive": "workspace:7.0.0-beta.1",
+    "@fullcalendar/core": "workspace:7.0.0-beta.1",
+    "@fullcalendar/daygrid": "workspace:7.0.0-beta.1",
+    "@fullcalendar/interaction": "workspace:7.0.0-beta.1",
+    "@fullcalendar/list": "workspace:7.0.0-beta.1",
+    "@fullcalendar/resource": "workspace:7.0.0-beta.1",
+    "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.1",
+    "@fullcalendar/timegrid": "workspace:7.0.0-beta.1"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^14.0.1",

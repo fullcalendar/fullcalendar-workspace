@@ -1,13 +1,13 @@
 {
   "name": "@fullcalendar/premium-common",
-  "version": "7.0.0-beta.0",
+  "version": "7.0.0-beta.1",
   "title": "FullCalendar Premium Common",
   "description": "Utilities for FullCalendar's premium plugins",
   "peerDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.0"
+    "@fullcalendar/core": "workspace:7.0.0-beta.1"
   },
   "devDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.0",
+    "@fullcalendar/core": "workspace:7.0.0-beta.1",
     "@fullcalendar-scripts/standard": "workspace:*"
   },
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/resource-timegrid",
-  "version": "7.0.0-beta.0",
+  "version": "7.0.0-beta.1",
   "title": "FullCalendar Resource Time Grid Plugin",
   "description": "Displays events on a vertical resource view with time slots",
   "keywords": [
@@ -9,18 +9,18 @@
   ],
   "homepage": "https://fullcalendar.io/docs/vertical-resource-view",
   "dependencies": {
-    "@fullcalendar/daygrid": "workspace:7.0.0-beta.0",
-    "@fullcalendar/premium-common": "workspace:7.0.0-beta.0",
-    "@fullcalendar/resource-daygrid": "workspace:7.0.0-beta.0",
-    "@fullcalendar/timegrid": "workspace:7.0.0-beta.0"
+    "@fullcalendar/daygrid": "workspace:7.0.0-beta.1",
+    "@fullcalendar/premium-common": "workspace:7.0.0-beta.1",
+    "@fullcalendar/resource-daygrid": "workspace:7.0.0-beta.1",
+    "@fullcalendar/timegrid": "workspace:7.0.0-beta.1"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.0",
-    "@fullcalendar/resource": "workspace:7.0.0-beta.0"
+    "@fullcalendar/core": "workspace:7.0.0-beta.1",
+    "@fullcalendar/resource": "workspace:7.0.0-beta.1"
   },
   "devDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.0",
-    "@fullcalendar/resource": "workspace:7.0.0-beta.0",
+    "@fullcalendar/core": "workspace:7.0.0-beta.1",
+    "@fullcalendar/resource": "workspace:7.0.0-beta.1",
     "@fullcalendar-scripts/standard": "workspace:*"
   },
   "scripts": {
