@@ -194,7 +194,9 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
     const timeScroller = this.timeScrollerRef.current
     const { scrollTime, slatHeight } = this
 
-    if (scrollTime != null && slatHeight != null) {
+    // Since updateScroll is called by handleSlatHeight, could be called with null during cleanup,
+    // and the timeScroller might not exist
+    if (timeScroller && scrollTime && slatHeight != null) {
       let top = computeTimeTopFrac(scrollTime, this.props.dateProfile)
         * (slatHeight * this.currentSlatCnt)
         + (this.context.isRtl ? -1 : 1) // overcome border

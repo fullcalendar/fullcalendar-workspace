@@ -110,10 +110,12 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
   }
 
   updateScrollY = () => {
-    if (this.scrollDate) {
-      const rowHeightMap = this.rowHeightRefMap.current
-      const scroller = this.scrollerRef.current
+    const rowHeightMap = this.rowHeightRefMap.current
+    const scroller = this.scrollerRef.current
 
+    // Since updateScrollY is called by rowHeightRefMap, could be called with null during cleanup,
+    // and the scroller might not exist
+    if (scroller && this.scrollDate) {
       let scrollTop = computeTopFromDate(
         this.scrollDate,
         this.props.cellRows,
