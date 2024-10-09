@@ -17,7 +17,6 @@ import {
   afterSize,
   ScrollerSyncerInterface,
   getIsHeightAuto,
-  ScrollResponder,
   RefMap,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
@@ -56,6 +55,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
   // internal
   private syncedScroller: ScrollerSyncerInterface
+  private scrollTime: Duration | null = null
 
   render() {
     const { props, state, context } = this
@@ -237,32 +237,28 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    const { context } = this
-    const { options } = context
-
     this.syncedScroller = new ScrollerSyncer(true) // horizontal=true
     this.updateSyncedScroller()
-
-    context.emitter.on('_timeScrollRequest', this.timeScrollResponder.handleScroll)
-    this.timeScrollResponder.handleScroll(options.scrollTime)
+    this.resetScroll()
+    this.context.emitter.on('_timeScrollRequest', this.handleTimeScroll)
+    this.syncedScroller.addScrollEndListener(this.clearScroll)
   }
 
   componentDidUpdate(prevProps: ViewProps) {
-    const { options } = this.context
-
     this.updateSyncedScroller()
 
-    if (prevProps.dateProfile !== this.props.dateProfile && options.scrollTimeReset) {
-      this.timeScrollResponder.handleScroll(options.scrollTime)
+    if (prevProps.dateProfile !== this.props.dateProfile && this.context.options.scrollTimeReset) {
+      this.resetScroll()
     } else {
-      this.timeScrollResponder.drain()
+      // TODO: inefficient to update so often
+      this.updateScroll()
     }
   }
 
   componentWillUnmount() {
     this.syncedScroller.destroy()
-
-    this.context.emitter.off('_timeScrollRequest', this.timeScrollResponder.handleScroll)
+    this.context.emitter.off('_timeScrollRequest', this.handleTimeScroll)
+    this.syncedScroller.removeScrollEndListener(this.clearScroll)
   }
 
   // Sizing
@@ -306,7 +302,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
-  updateSyncedScroller() {
+  private updateSyncedScroller() {
     this.syncedScroller.handleChildren([
       this.headerScrollerRef.current,
       this.bodyScrollerRef.current,
@@ -314,19 +310,32 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     ])
   }
 
-  private timeScrollResponder = new ScrollResponder((time: Duration) => {
-    const { props, context, tDateProfile, slotWidth } = this
+  private resetScroll() {
+    this.handleTimeScroll(this.context.options.scrollTime)
+  }
 
-    if (slotWidth != null) {
-      const x = timeToCoord(time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth) +
-        (context.isRtl ? -1 : 1) // overcome border. TODO: DRY this up
+  private handleTimeScroll = (scrollTime: Duration) => {
+    this.scrollTime = scrollTime
+    this.updateScroll()
+  }
+
+  private updateScroll = () => {
+    const { props, context, tDateProfile, scrollTime, slotWidth } = this
+
+    if (scrollTime != null && slotWidth != null) {
+      let x = timeToCoord(scrollTime, context.dateEnv, props.dateProfile, tDateProfile, slotWidth)
+
+      if (x) {
+        x += context.isRtl ? -1 : 1 // overcome border. TODO: DRY this up
+      }
 
       this.syncedScroller.scrollTo({ x })
-      return true
     }
+  }
 
-    return false
-  })
+  private clearScroll = () => {
+    this.scrollTime = null
+  }
 
   // Hit System
   // -----------------------------------------------------------------------------------------------

@@ -49,7 +49,7 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
   // ref
   private scrollerRef = createRef<Scroller>()
   private rowHeightRefMap = new RefMap<string, number>(() => {
-    afterSize(this.updateScroll)
+    afterSize(this.updateScrollY)
   })
 
   // internal
@@ -83,19 +83,14 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    this.scrollDate = this.props.dateProfile.currentDate
-    this.updateScroll()
-
+    this.resetScroll()
     this.scrollerRef.current.addScrollEndListener(this.clearScroll)
   }
 
   componentDidUpdate(prevProps: DayGridLayoutProps<unknown, unknown>) {
-    const { options } = this.context
-
-    if (prevProps.dateProfile !== this.props.dateProfile && options.scrollTimeReset) {
-      this.scrollDate = this.props.dateProfile.currentDate
+    if (prevProps.dateProfile !== this.props.dateProfile && this.context.options.scrollTimeReset) {
+      this.resetScroll()
     }
-    this.updateScroll()
   }
 
   componentWillUnmount() {
@@ -105,11 +100,16 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
-  clearScroll = () => {
-    this.scrollDate = null
+  resetScroll() {
+    this.scrollDate = this.props.dateProfile.currentDate
+    this.updateScrollY()
+
+    // updateScrollX
+    const scroller = this.scrollerRef.current
+    scroller.scrollTo({ x: 0 })
   }
 
-  updateScroll = () => {
+  updateScrollY = () => {
     if (this.scrollDate) {
       const rowHeightMap = this.rowHeightRefMap.current
       const scroller = this.scrollerRef.current
@@ -128,5 +128,9 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
         scroller.scrollTo({ y: scrollTop })
       }
     }
+  }
+
+  clearScroll = () => {
+    this.scrollDate = null
   }
 }

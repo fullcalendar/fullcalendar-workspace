@@ -1,5 +1,5 @@
 import { Duration, ViewOptions } from '@fullcalendar/core'
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, ScrollResponder, Scroller, ViewContainer, afterSize, memoize } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ViewContainer, afterSize, memoize } from "@fullcalendar/core/internal"
 import { createElement, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
 import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { buildSlatMetas } from "../time-slat-meta.js"
@@ -65,6 +65,7 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
 
   // internal
   private currentSlatCnt?: number
+  private scrollTime: Duration | null = null
 
   render() {
     const { props, context } = this
@@ -148,46 +149,53 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
   // -----------------------------------------------------------------------------------------------
 
   componentDidMount() {
-    const { context } = this
-    const { options } = context
-
-    context.emitter.on('_timeScrollRequest', this.timeScrollResponder.handleScroll)
-    this.timeScrollResponder.handleScroll(options.scrollTime)
+    this.resetScroll()
+    this.context.emitter.on('_timeScrollRequest', this.handleTimeScroll)
+    this.timeScrollerRef.current.addScrollEndListener(this.clearScroll)
   }
 
   componentDidUpdate(prevProps: TimeGridLayoutProps<unknown, unknown>) {
-    const { options } = this.context
-
-    if (prevProps.dateProfile !== this.props.dateProfile && options.scrollTimeReset) {
-      this.timeScrollResponder.handleScroll(options.scrollTime)
-    } else {
-      this.handleSize()
+    if (prevProps.dateProfile !== this.props.dateProfile && this.context.options.scrollTimeReset) {
+      this.resetScroll()
     }
   }
 
   componentWillUnmount() {
-    this.context.emitter.off('_timeScrollRequest', this.timeScrollResponder.handleScroll)
+    this.context.emitter.off('_timeScrollRequest', this.handleTimeScroll)
+    this.timeScrollerRef.current.removeScrollEndListener(this.clearScroll)
+  }
+
+  // Sizing
+  // -----------------------------------------------------------------------------------------------
+
+  private handleSlatHeight = (slatHeight: number) => {
+    this.slatHeight = slatHeight
+    afterSize(this.updateScroll)
   }
 
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
-  private handleSlatHeight = (slatHeight: number) => {
-    this.slatHeight = slatHeight
-    afterSize(this.handleSize)
-  }
+  private resetScroll() {
+    this.handleTimeScroll(this.context.options.scrollTime)
 
-  private handleSize = () => {
-    this.timeScrollResponder.drain()
-  }
-
-  private timeScrollResponder = new ScrollResponder((time: Duration) => {
     const dayScroller = this.dayScrollerRef.current
-    const timeScroller = this.timeScrollerRef.current
-    const { slatHeight } = this
+    if (dayScroller) {
+      dayScroller.scrollTo({ x: 0 })
+    }
+  }
 
-    if (slatHeight != null) {
-      let top = computeTimeTopFrac(time, this.props.dateProfile)
+  private handleTimeScroll = (scrollTime: Duration) => {
+    this.scrollTime = scrollTime
+    this.updateScroll()
+  }
+
+  private updateScroll = () => {
+    const timeScroller = this.timeScrollerRef.current
+    const { scrollTime, slatHeight } = this
+
+    if (scrollTime != null && slatHeight != null) {
+      let top = computeTimeTopFrac(scrollTime, this.props.dateProfile)
         * (slatHeight * this.currentSlatCnt)
         + (this.context.isRtl ? -1 : 1) // overcome border
 
@@ -196,17 +204,12 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
       }
 
       timeScroller.scrollTo({ y: top })
-
-      // HACK to scroll to day
-      if (dayScroller) {
-        dayScroller.scrollTo({ x: 0 })
-      }
-
-      return true
     }
+  }
 
-    return false
-  })
+  private clearScroll = () => {
+    this.scrollTime = null
+  }
 }
 
 // Utils

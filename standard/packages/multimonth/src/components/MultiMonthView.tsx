@@ -1,4 +1,3 @@
-import { Duration } from '@fullcalendar/core'
 import {
   DateComponent,
   ViewProps,
@@ -16,16 +15,15 @@ import {
   DateRange,
   NowTimer,
   getIsHeightAuto,
-  watchWidth,
   compareNumbers,
-  ScrollResponder,
+  Scroller,
 } from '@fullcalendar/core/internal'
 import { buildDayTableRenderRange } from '@fullcalendar/daygrid/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { SingleMonth } from './SingleMonth.js'
 
 interface MultiMonthViewState {
-  clientWidth?: number // just inside the scroller
+  width?: number // inside the scroller
   xGap?: number
   xPadding?: number
 }
@@ -36,30 +34,31 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   private buildMonthFormat = memoize(buildMonthFormat)
 
   // ref
-  private rootElRef = createRef<HTMLDivElement>() // also the scroll container
+  private scrollerRef = createRef<Scroller>()
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
-  private detachWidth: () => void
+  private scrollDate: DateMarker | null = null
 
   render() {
     const { context, props, state } = this
     const { options } = context
+    const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
 
-    const colCount = state.clientWidth == null
+    const colCount = state.width == null
       ? 2
       : Math.min(
           options.multiMonthMaxColumns,
           Math.floor(
-            (state.clientWidth - state.xPadding + state.xGap) /
+            (state.width - state.xPadding + state.xGap) /
             (options.multiMonthMinWidth + state.xGap)
           ),
         )
 
-    const monthWidth = state.clientWidth == null
+    const monthWidth = state.width == null
       ? '34%' // will expand. now small enough to be 1/3. for allowing gap
       : Math.floor( // exact values can cause expansion to other rows
-          (state.clientWidth - state.xPadding - (state.xGap * (colCount - 1))) /
+          (state.width - state.xPadding - (state.xGap * (colCount - 1))) /
           colCount
         )
 
@@ -77,9 +76,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
       (colCount === 1) ?
         'fc-multimonth-singlecol' :
         'fc-multimonth-multicol',
-      getIsHeightAuto(options) ?
-        '' :
-        'fc-multimonth-scroll',
+      'fc-flex-column',
       'fc-border', // BAD to mix this with size-listening?
     ]
 
@@ -87,60 +84,67 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
       <NowTimer unit="day">
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <ViewContainer
-            elRef={this.rootElRef}
             elClasses={rootClassNames}
             viewSpec={context.viewSpec}
           >
-            <div ref={this.innerElRef} className='fc-multimonth-inner'>
-              {monthDateProfiles.map((monthDateProfile, i) => {
-                const monthStr = formatIsoMonthStr(monthDateProfile.currentRange.start)
+            <Scroller
+              vertical={verticalScrolling}
+              elClassNames={[
+                verticalScrolling ? 'fc-liquid' : '',
+              ]}
+              ref={this.scrollerRef}
+              widthRef={this.handleWidth}
+            >
+              <div ref={this.innerElRef} className='fc-multimonth-inner'>
+                {monthDateProfiles.map((monthDateProfile, i) => {
+                  const monthStr = formatIsoMonthStr(monthDateProfile.currentRange.start)
 
-                return (
-                  <SingleMonth
-                    {...props}
-                    key={monthStr}
-                    todayRange={todayRange}
-                    isoDateStr={monthStr}
-                    titleFormat={monthTitleFormat}
-                    dateProfile={monthDateProfile}
-                    width={monthWidth}
-                  />
-                )
-              })}
-            </div>
+                  return (
+                    <SingleMonth
+                      {...props}
+                      key={monthStr}
+                      todayRange={todayRange}
+                      isoDateStr={monthStr}
+                      titleFormat={monthTitleFormat}
+                      dateProfile={monthDateProfile}
+                      width={monthWidth}
+                    />
+                  )
+                })}
+              </div>
+            </Scroller>
           </ViewContainer>
         )}
       </NowTimer>
     )
   }
 
+  // Lifecycle
+  // -----------------------------------------------------------------------------------------------
+
   componentDidMount(): void {
-    const { context } = this
-    const { options } = context
-
-    this.detachWidth = watchWidth(this.rootElRef.current, this.handleClientWidth)
-
-    context.emitter.on('_timeScrollRequest', this.timeScrollResponder.handleScroll)
-    this.timeScrollResponder.handleScroll(options.scrollTime)
+    this.resetScroll()
+    this.scrollerRef.current.addScrollEndListener(this.clearScroll)
   }
 
   componentDidUpdate(prevProps: ViewProps) {
-    const { options } = this.context
-
-    if (prevProps.dateProfile !== this.props.dateProfile && options.scrollTimeReset) {
-      this.timeScrollResponder.handleScroll(options.scrollTime)
+    if (prevProps.dateProfile !== this.props.dateProfile && this.context.options.scrollTimeReset) {
+      this.resetScroll()
     } else {
-      this.timeScrollResponder.drain()
+      // NOT optimal to update so often
+      // TODO: isolate dependencies of scroll coordinate
+      this.updateScroll()
     }
   }
 
   componentWillUnmount() {
-    this.detachWidth()
-
-    this.context.emitter.off('_timeScrollRequest', this.timeScrollResponder.handleScroll)
+    this.scrollerRef.current.removeScrollEndListener(this.clearScroll)
   }
 
-  handleClientWidth = (clientWidth: number) => {
+  // Sizing
+  // -----------------------------------------------------------------------------------------------
+
+  handleWidth = (width: number) => {
     let { xGap, xPadding } = this.state
 
     // for first time, assume 2 columns and query gap/padding
@@ -156,31 +160,38 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
           Math.abs(box0.left - box1.right),
           Math.abs(box0.right - box1.left),
         ].sort(compareNumbers)
-        xPadding = clientWidth - xSpan
+        xPadding = width - xSpan
       }
     }
 
-    this.setState({ clientWidth, xGap, xPadding })
+    this.setState({ width, xGap, xPadding })
   }
 
-  private timeScrollResponder = new ScrollResponder((_time: Duration) => {
-    // HACK to scroll to day
+  // Scrolling
+  // -----------------------------------------------------------------------------------------------
 
-    if (this.state.clientWidth != null) {
-      const { currentDate } = this.props.dateProfile
-      const rootEl = this.rootElRef.current
+  private resetScroll() {
+    this.scrollDate = this.props.dateProfile.currentDate
+    this.updateScroll()
+  }
+
+  private updateScroll = () => {
+    if (this.scrollDate != null && this.state.width != null) {
+      const scroller = this.scrollerRef.current
       const innerEl = this.innerElRef.current
-      const monthEl = innerEl.querySelector(`[data-date="${formatIsoMonthStr(currentDate)}"]`)
-
-      rootEl.scrollTop = Math.ceil( // for fractions, err on the side of scrolling further
+      const monthEl = innerEl.querySelector(`[data-date="${formatIsoMonthStr(this.scrollDate)}"]`)
+      const scrollTop = Math.ceil( // for fractions, err on the side of scrolling further
         monthEl.getBoundingClientRect().top -
         innerEl.getBoundingClientRect().top
       )
-      return true
-    }
 
-    return false
-  })
+      scroller.scrollTo({ y: scrollTop })
+    }
+  }
+
+  private clearScroll = () => {
+    this.scrollDate = null
+  }
 }
 
 // date profile

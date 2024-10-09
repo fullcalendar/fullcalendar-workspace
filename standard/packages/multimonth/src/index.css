@@ -1,14 +1,5 @@
 
 //
-// multimonth
-//
-
-.fc-multimonth-scroll { // (scroll)
-  overflow-y: scroll; // HACK to prevent width oscillation, for handleScrollRequest
-  overflow-x: hidden;
-}
-
-//
 // multimonth > inner
 //
 

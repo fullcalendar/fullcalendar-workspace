@@ -226,7 +226,6 @@ export { RefMap } from './util/RefMap.js'
 export { getIsRtlScrollbarOnLeft } from './util/scrollbar-side.js'
 
 export { NowTimer } from './NowTimer.js'
-export { ScrollResponder } from './component-util/ScrollResponder.js'
 export type {
   CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountArg,
 } from './common/render-hook.js'
