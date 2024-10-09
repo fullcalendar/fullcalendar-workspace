@@ -1,4 +1,11 @@
 
+## 7.0.0-beta.1 (2024-10-09)
+
+- [beta] restored Angular support
+- [beta] dayGridYear no longer scrolls to current month initially ([#7787](https://github.com/fullcalendar/fullcalendar/issues/7787))
+- [beta] scrollgrid plugin not included for resource-timeline ([#7783](https://github.com/fullcalendar/fullcalendar/issues/7783))
+- [beta] error: coordRes is not iterable ([#7784](https://github.com/fullcalendar/fullcalendar/issues/7784))
+
 ## 7.0.0-beta.0 (2024-10-01)
 
 This is a beta release for the upcoming v7. It includes a complete refactor of the HTML/CSS to allow for increased performance, better accessibility, and to serve as a foundation for advanced features in *future* releases such as virtual rendering and infinite scrolling.
