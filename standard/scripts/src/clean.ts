@@ -49,8 +49,8 @@ function cleanPkgsDirectly(monorepoStruct: MonorepoStruct): Promise<void> {
     const { pkgJson } = pkgStruct
 
     if (
-      pkgJson.buildConfig ||
-      pkgJson.tsConfig
+      (pkgJson.buildConfig || pkgJson.tsConfig) &&
+      pkgJson.name !== '@fullcalendar-scripts/standard' // HACK. self
     ) {
       return cleanPkg(pkgStruct.pkgDir)
     }
