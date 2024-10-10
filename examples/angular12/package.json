@@ -20,7 +20,7 @@
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
-    "@fullcalendar/angular": "workspace:7.0.0-beta.1",
+    "@fullcalendar/angular": "workspace:7.0.0-beta.2",
     "@fullcalendar/core": "workspace:7.0.0-beta.1",
     "@fullcalendar/daygrid": "workspace:7.0.0-beta.1",
     "@fullcalendar/interaction": "workspace:7.0.0-beta.1",

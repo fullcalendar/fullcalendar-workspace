@@ -25,7 +25,7 @@
     "@capacitor/haptics": "4.1.0",
     "@capacitor/keyboard": "4.1.1",
     "@capacitor/status-bar": "4.1.1",
-    "@fullcalendar/angular": "workspace:7.0.0-beta.1",
+    "@fullcalendar/angular": "workspace:7.0.0-beta.2",
     "@fullcalendar/core": "workspace:7.0.0-beta.1",
     "@fullcalendar/daygrid": "workspace:7.0.0-beta.1",
     "@fullcalendar/timegrid": "workspace:7.0.0-beta.1",

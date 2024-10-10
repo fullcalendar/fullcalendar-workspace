@@ -382,7 +382,7 @@ importers:
         specifier: ~12.2.0
         version: 12.2.17(@angular/common@12.2.17(@angular/core@12.2.17(rxjs@6.6.7)(zone.js@0.11.8))(rxjs@6.6.7))(@angular/core@12.2.17(rxjs@6.6.7)(zone.js@0.11.8))(@angular/platform-browser@12.2.17(@angular/animations@12.2.17(@angular/core@12.2.17(rxjs@6.6.7)(zone.js@0.11.8)))(@angular/common@12.2.17(@angular/core@12.2.17(rxjs@6.6.7)(zone.js@0.11.8))(rxjs@6.6.7))(@angular/core@12.2.17(rxjs@6.6.7)(zone.js@0.11.8)))(rxjs@6.6.7)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.1
+        specifier: workspace:7.0.0-beta.2
         version: link:../../contrib/angular/dist/lib
       '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.1
@@ -476,7 +476,7 @@ importers:
         specifier: ~13.3.0
         version: 13.3.12(@angular/common@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(@angular/platform-browser@13.3.12(@angular/animations@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8)))(@angular/common@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8)))(rxjs@7.5.7)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.1
+        specifier: workspace:7.0.0-beta.2
         version: link:../../contrib/angular/dist/lib
       '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.1
@@ -567,7 +567,7 @@ importers:
         specifier: ^14.1.0
         version: 14.2.12(@angular/common@14.2.12(@angular/core@14.2.12(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@14.2.12(rxjs@7.5.7)(zone.js@0.11.8))(@angular/platform-browser@14.2.12(@angular/animations@14.2.12(@angular/core@14.2.12(rxjs@7.5.7)(zone.js@0.11.8)))(@angular/common@14.2.12(@angular/core@14.2.12(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@14.2.12(rxjs@7.5.7)(zone.js@0.11.8)))(rxjs@7.5.7)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.1
+        specifier: workspace:7.0.0-beta.2
         version: link:../../contrib/angular/dist/lib
       '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.1
@@ -655,7 +655,7 @@ importers:
         specifier: ^15.0.0
         version: 15.0.0(@angular/common@15.0.0(@angular/core@15.0.0(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.0.0(rxjs@7.5.7)(zone.js@0.12.0))(@angular/platform-browser@15.0.0(@angular/animations@15.0.0(@angular/core@15.0.0(rxjs@7.5.7)(zone.js@0.12.0)))(@angular/common@15.0.0(@angular/core@15.0.0(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.0.0(rxjs@7.5.7)(zone.js@0.12.0)))(rxjs@7.5.7)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.1
+        specifier: workspace:7.0.0-beta.2
         version: link:../../contrib/angular/dist/lib
       '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.1
@@ -743,7 +743,7 @@ importers:
         specifier: ^15.0.0
         version: 15.0.0(@angular/common@15.0.0(@angular/core@15.0.0(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.0.0(rxjs@7.5.7)(zone.js@0.12.0))(@angular/platform-browser@15.0.0(@angular/animations@15.0.0(@angular/core@15.0.0(rxjs@7.5.7)(zone.js@0.12.0)))(@angular/common@15.0.0(@angular/core@15.0.0(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.0.0(rxjs@7.5.7)(zone.js@0.12.0)))(rxjs@7.5.7)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.1
+        specifier: workspace:7.0.0-beta.2
         version: link:../../contrib/angular/dist/lib
       '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.1
@@ -834,7 +834,7 @@ importers:
         specifier: ^16.0.0
         version: 16.0.2(@angular/common@16.0.2(@angular/core@16.0.2(rxjs@7.8.1)(zone.js@0.13.0))(rxjs@7.8.1))(@angular/core@16.0.2(rxjs@7.8.1)(zone.js@0.13.0))(@angular/platform-browser@16.0.2(@angular/animations@16.0.2(@angular/core@16.0.2(rxjs@7.8.1)(zone.js@0.13.0)))(@angular/common@16.0.2(@angular/core@16.0.2(rxjs@7.8.1)(zone.js@0.13.0))(rxjs@7.8.1))(@angular/core@16.0.2(rxjs@7.8.1)(zone.js@0.13.0)))(rxjs@7.8.1)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.1
+        specifier: workspace:7.0.0-beta.2
         version: link:../../contrib/angular/dist/lib
       '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.1
@@ -922,7 +922,7 @@ importers:
         specifier: ^17.0.0
         version: 17.0.0(@angular/common@17.0.0(@angular/core@17.0.0(rxjs@7.8.1)(zone.js@0.14.2))(rxjs@7.8.1))(@angular/core@17.0.0(rxjs@7.8.1)(zone.js@0.14.2))(@angular/platform-browser@17.0.0(@angular/animations@17.0.0(@angular/core@17.0.0(rxjs@7.8.1)(zone.js@0.14.2)))(@angular/common@17.0.0(@angular/core@17.0.0(rxjs@7.8.1)(zone.js@0.14.2))(rxjs@7.8.1))(@angular/core@17.0.0(rxjs@7.8.1)(zone.js@0.14.2)))(rxjs@7.8.1)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.1
+        specifier: workspace:7.0.0-beta.2
         version: link:../../contrib/angular/dist/lib
       '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.1
@@ -1010,7 +1010,7 @@ importers:
         specifier: ^18.0.0
         version: 18.0.0(@angular/common@18.0.0(@angular/core@18.0.0(rxjs@7.8.1)(zone.js@0.14.3))(rxjs@7.8.1))(@angular/core@18.0.0(rxjs@7.8.1)(zone.js@0.14.3))(@angular/platform-browser@18.0.0(@angular/animations@18.0.0(@angular/core@18.0.0(rxjs@7.8.1)(zone.js@0.14.3)))(@angular/common@18.0.0(@angular/core@18.0.0(rxjs@7.8.1)(zone.js@0.14.3))(rxjs@7.8.1))(@angular/core@18.0.0(rxjs@7.8.1)(zone.js@0.14.3)))(rxjs@7.8.1)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.1
+        specifier: workspace:7.0.0-beta.2
         version: link:../../contrib/angular/dist/lib
       '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.1
@@ -1202,7 +1202,7 @@ importers:
         specifier: 4.1.1
         version: 4.1.1(@capacitor/core@4.7.1)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-beta.1
+        specifier: workspace:7.0.0-beta.2
         version: link:../../contrib/angular/dist/lib
       '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.1
@@ -29138,16 +29138,6 @@ snapshots:
     transitivePeerDependencies:
       - '@parcel/core'
 
-  '@parcel/types@2.8.0':
-    dependencies:
-      '@parcel/cache': 2.8.0(@parcel/core@2.8.0)
-      '@parcel/diagnostic': 2.8.0
-      '@parcel/fs': 2.8.0(@parcel/core@2.8.0)
-      '@parcel/package-manager': 2.8.0(@parcel/core@2.8.0)
-      '@parcel/source-map': 2.1.1
-      '@parcel/workers': 2.8.0(@parcel/core@2.8.0)
-      utility-types: 3.10.0
-
   '@parcel/types@2.8.0(@parcel/core@2.8.0)':
     dependencies:
       '@parcel/cache': 2.8.0(@parcel/core@2.8.0)
@@ -29180,7 +29170,7 @@ snapshots:
       '@parcel/core': 2.8.0
       '@parcel/diagnostic': 2.8.0
       '@parcel/logger': 2.8.0
-      '@parcel/types': 2.8.0
+      '@parcel/types': 2.8.0(@parcel/core@2.8.0)
       '@parcel/utils': 2.8.0
       chrome-trace-event: 1.0.3
       nullthrows: 1.1.1
