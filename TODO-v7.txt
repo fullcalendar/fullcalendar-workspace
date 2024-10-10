@@ -1,6 +1,8 @@
 
 Publishing:
  pnpm changeset publish --no-git-tag
+ (next version should be v7.0.0-beta.3 because beta.2 was taken by the angular hotfix..
+ ..write release/changelog for that)
 
 REVIVE allowReslicing...
   Issue where some ppl want allowReslicing:
