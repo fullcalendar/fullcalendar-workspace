@@ -9,28 +9,43 @@ import {
   groupIntersectingEntries,
 } from '@fullcalendar/core/internal'
 
+/*
+Output for buildWeb
+*/
 interface SegNode extends SegEntry {
   nextLevelNodes: SegNode[] // with highest-pressure first
 }
 
+/*
+Used internally within buildWeb
+*/
 type SegNodeAndPressure = [ SegNode, number ]
 
-interface SegSiblingRange { // will ALWAYS have span of 1 or more items. if not, will be null
+/*
+Internal structure. Result from `findNextLevelSegs`
+Will ALWAYS have span of 1 or more items. if not, will be null
+*/
+interface SegSiblingRange {
   level: number
   lateralStart: number
   lateralEnd: number
 }
 
+/*
+For final output
+*/
 export interface SegWebRect extends SegRect {
   stackDepth: number
   stackForward: number
 }
 
-// segEntries assumed sorted
+/*
+segEntries assumed sorted
+*/
 export function buildWebPositioning(
   segEntries: SegEntry[],
   strictOrder?: boolean,
-  maxStackCnt?: number,
+  maxStackDepth?: number,
 ): [
   segRects: SegWebRect[],
   hiddenGroups: SegGroup[]
@@ -39,8 +54,8 @@ export function buildWebPositioning(
   if (strictOrder != null) {
     hierarchy.strictOrder = strictOrder
   }
-  if (maxStackCnt != null) {
-    hierarchy.maxStackCnt = maxStackCnt
+  if (maxStackDepth != null) {
+    hierarchy.maxStackDepth = maxStackDepth
   }
 
   let hiddenEntries = hierarchy.addSegs(segEntries)
@@ -53,6 +68,12 @@ export function buildWebPositioning(
   return [segRects, hiddenGroups]
 }
 
+/*
+TODO: investigate whether this "web" can be built from SegHierarchy
+In SegHierarchy::findInsertion, we already find start/end overlaps in lower levels
+In buildWeb, we find overlaps in higher levels, but we just need to determine "pressure" and
+"chain length", which doesn't care about direction.
+*/
 function buildWeb(hierarchy: SegHierarchy): SegNode[] {
   const { entriesByLevel } = hierarchy
 
@@ -60,28 +81,33 @@ function buildWeb(hierarchy: SegHierarchy): SegNode[] {
     (level: number, lateral: number) => level + ':' + lateral,
     (level: number, lateral: number): SegNodeAndPressure => {
       let siblingRange = findNextLevelSegs(hierarchy, level, lateral)
-      let nextLevelRes = buildNodes(siblingRange, buildNode)
+      let [nextLevelNodes, maxPressure] = buildNodes(siblingRange, buildNode)
       let entry = entriesByLevel[level][lateral]
 
       return [
-        { ...entry, nextLevelNodes: nextLevelRes[0] },
-        entry.thickness + nextLevelRes[1], // the pressure builds
+        { ...entry, nextLevelNodes },
+        entry.thickness + maxPressure, // the pressure builds
       ]
     },
   )
 
-  return buildNodes(
+  const [topLevelNodes] = buildNodes(
     entriesByLevel.length
       ? { level: 0, lateralStart: 0, lateralEnd: entriesByLevel[0].length }
       : null,
     buildNode,
-  )[0]
+  )
+
+  return topLevelNodes
 }
 
 function buildNodes(
   siblingRange: SegSiblingRange | null,
   buildNode: (level: number, lateral: number) => SegNodeAndPressure,
-): [SegNode[], number] { // number is maxPressure
+): [
+  nodes: SegNode[],
+  maxPressure: number,
+] {
   if (!siblingRange) {
     return [[], 0]
   }
@@ -98,7 +124,7 @@ function buildNodes(
   pairs.sort(cmpDescPressures)
 
   return [
-    pairs.map(extractNode),
+    pairs.map(extractNode), // nodes
     pairs[0][1], // first item's pressure
   ]
 }

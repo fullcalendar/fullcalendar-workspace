@@ -70,9 +70,9 @@ export function computeFgSegVerticals(
     hierarchy.maxCoord = maxHeight
     hierarchy.hiddenConsumes = true
   } else if (typeof dayMaxEvents === 'number') {
-    hierarchy.maxStackCnt = dayMaxEvents
+    hierarchy.maxStackDepth = dayMaxEvents
   } else if (typeof dayMaxEventRows === 'number') {
-    hierarchy.maxStackCnt = dayMaxEventRows
+    hierarchy.maxStackDepth = dayMaxEventRows
     hierarchy.hiddenConsumes = true
   }
 
@@ -134,7 +134,7 @@ class DayGridSegHierarchy extends SegHierarchy {
 
   handleInvalidInsertion(insertion: SegInsertion, entry: SegEntry, hiddenEntries: SegEntry[]) {
     const { entriesByLevel, forceHidden } = this
-    const { touchingEntry, touchingLevel, touchingLateral } = insertion
+    const { touchingEntry, touchingLevelIndex: touchingLevel, touchingLateralIndex } = insertion
 
     // the entry that the new insertion is touching must be hidden
     if (this.hiddenConsumes && touchingEntry) {
@@ -152,7 +152,7 @@ class DayGridSegHierarchy extends SegHierarchy {
           // occupy the space) but mark it forced-hidden
           const hiddenEntryId = buildEntryKey(hiddenEntry)
           forceHidden[hiddenEntryId] = true
-          entriesByLevel[touchingLevel][touchingLateral] = hiddenEntry
+          entriesByLevel[touchingLevel][touchingLateralIndex] = hiddenEntry
 
           hiddenEntries.push(hiddenEntry)
           this.splitEntry(touchingEntry, entry, hiddenEntries)

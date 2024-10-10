@@ -57,7 +57,7 @@ export function computeFgSegPlacements( // mostly horizontals
   segHorizontals: { [instanceId: string]: TimelineSegHorizontals },
   segHeights: Map<string, number>, // keyed by instanceId
   strictOrder?: boolean,
-  maxStackCnt?: number,
+  maxStackDepth?: number,
 ): [
   segTops: { [instanceId: string]: number },
   segsBottom: number,
@@ -89,8 +89,8 @@ export function computeFgSegPlacements( // mostly horizontals
   if (strictOrder != null) {
     hierarchy.strictOrder = strictOrder
   }
-  if (maxStackCnt != null) {
-    hierarchy.maxStackCnt = maxStackCnt
+  if (maxStackDepth != null) {
+    hierarchy.maxStackDepth = maxStackDepth
   }
 
   let hiddenEntries = hierarchy.addSegs(segEntries)
@@ -103,7 +103,7 @@ export function computeFgSegPlacements( // mostly horizontals
   }))
 
   // add more-links into the hierarchy, but don't limit
-  hierarchy.maxStackCnt = -1
+  hierarchy.maxStackDepth = -1 // HACK
   hierarchy.addSegs(hiddenGroupEntries)
 
   let visibleRects = hierarchy.toRects()

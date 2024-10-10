@@ -2,44 +2,53 @@ import { buildIsoString } from "./datelib/formatting-utils.js"
 import { computeEarliestSegStart } from './common/MoreLinkContainer.js'
 import { Seg } from './component/DateComponent.js'
 
+/*
+Misc usage
+*/
 export interface SegSpan {
   start: number
   end: number
 }
 
+/*
+For input, internal storage (in entriesByLevel), and for SegRect (which extends this) is used for output!
+*/
 export interface SegEntry {
   index: number // TODO: eventually move completely to seg as key
   seg?: Seg
-  segGroup?: SegGroup
+  segGroup?: SegGroup // given as input if adding hiddenGroups to the hierarchy in a second pass (TODO: rethink)
   span: SegSpan
   thickness?: number // if not defined, a query-func will declare it
 }
 
-// used internally. exposed for subclasses of SegHierarchy
+/*
+Used internally, to represent a candidate insertion point within the hierarchy
+Exposed for subclasses of SegHierarchy
+*/
 export interface SegInsertion {
-  level: number // will have an equal coord, or slightly before, entries in existing level
-  levelCoord: number
-  lateral: number // where to insert in the existing level. -1 if creating a new level
-  touchingLevel: number // -1 if no touching
-  touchingLateral: number // -1 if no touching
-  touchingEntry: SegEntry // the last touching entry in the level
-  stackCnt: number
+  // All segs witin a single "level" share the same levelCoord
+  // As segs accumulate, new interstitial levels can be added. Thus, levelIndex might change
+  levelIndex: number
+  levelCoord: number // for convenience
+
+  // index WITHIN the level. set to -1 if requesting to create a new level at levelIndex with the new levelCoord
+  lateral: number
+
+  // information about the Seg in the prior level this Seg is touching
+  touchingLevelIndex: number // -1 if no touching
+  touchingLateralIndex: number // -1 if no touching
+  touchingEntry?: SegEntry // the last touching entry in the level
+
+  // the max traversal depth through prior levels
+  stackDepth: number
 }
 
+/*
+For output
+*/
 export interface SegRect extends SegEntry {
   thickness: number // TODO: rename to 'size' ?
   levelCoord: number
-}
-
-export interface SegEntryMerge {
-  span: SegSpan
-  entries: SegEntry[]
-}
-
-export interface SegGroup {
-  key: string
-  span: SegSpan
-  segs: Seg[]
 }
 
 export class SegHierarchy {
@@ -47,11 +56,15 @@ export class SegHierarchy {
   strictOrder: boolean = false
   allowReslicing: boolean = false
   maxCoord: number = -1 // -1 means no max
-  maxStackCnt: number = -1 // -1 means no max
+  maxStackDepth: number = -1 // -1 means no max
+  // ^^^ can change mid-processing! (see timeline event-placement). TODO: make this an function param?
 
   levelCoords: number[] = [] // ordered
   entriesByLevel: SegEntry[][] = [] // parallel with levelCoords
-  stackCnts: { [entryId: string]: number } = {} // TODO: use better technique!?
+
+  // stores results, via lookup with buildEntryKey, of each entry's stackDepth
+  // TODO: store within individual data structures
+  stackDepths: { [entryId: string]: number } = {}
 
   constructor(
     private getEntryThickness = (entry: SegEntry): number | undefined => {
@@ -78,7 +91,7 @@ export class SegHierarchy {
     } else {
       let insertion = this.findInsertion(entry, entryThickness)
 
-      if (this.isInsertionValid(insertion, entry, entryThickness)) {
+      if (this.isInsertionValid(insertion, entryThickness)) {
         this.insertEntryAt(entry, insertion)
       } else {
         this.handleInvalidInsertion(insertion, entry, hiddenEntries)
@@ -86,9 +99,9 @@ export class SegHierarchy {
     }
   }
 
-  isInsertionValid(insertion: SegInsertion, entry: SegEntry, entryThickness: number): boolean {
+  isInsertionValid(insertion: SegInsertion, entryThickness: number): boolean {
     return (this.maxCoord === -1 || insertion.levelCoord + entryThickness <= this.maxCoord) &&
-      (this.maxStackCnt === -1 || insertion.stackCnt < this.maxStackCnt)
+      (this.maxStackDepth === -1 || insertion.stackDepth < this.maxStackDepth)
   }
 
   handleInvalidInsertion(insertion: SegInsertion, entry: SegEntry, hiddenEntries: SegEntry[]): void {
@@ -112,6 +125,7 @@ export class SegHierarchy {
     let entrySpan = entry.span
     let barrierSpan = barrier.span
 
+    // any leftover seg on the start-side of the barrier?
     if (entrySpan.start < barrierSpan.start) {
       this.insertEntry({
         index: entry.index,
@@ -121,6 +135,7 @@ export class SegHierarchy {
       }, hiddenEntries)
     }
 
+    // any leftover seg on the end-side of the barrier?
     if (entrySpan.end > barrierSpan.end) {
       this.insertEntry({
         index: entry.index,
@@ -136,85 +151,101 @@ export class SegHierarchy {
 
     if (insertion.lateral === -1) {
       // create a new level
-      insertAt(levelCoords, insertion.level, insertion.levelCoord)
-      insertAt(entriesByLevel, insertion.level, [entry])
+      insertAt(levelCoords, insertion.levelIndex, insertion.levelCoord)
+      insertAt(entriesByLevel, insertion.levelIndex, [entry])
     } else {
       // insert into existing level
-      insertAt(entriesByLevel[insertion.level], insertion.lateral, entry)
+      insertAt(entriesByLevel[insertion.levelIndex], insertion.lateral, entry)
     }
 
-    this.stackCnts[buildEntryKey(entry)] = insertion.stackCnt
+    this.stackDepths[buildEntryKey(entry)] = insertion.stackDepth
   }
 
   /*
   does not care about limits
   */
   findInsertion(newEntry: SegEntry, newEntryThickness: number): SegInsertion {
-    let { levelCoords, entriesByLevel, strictOrder, stackCnts } = this
+    let { levelCoords, entriesByLevel, strictOrder, stackDepths } = this
     let levelCnt = levelCoords.length
-    let candidateCoord = 0
-    let touchingLevel: number = -1
-    let touchingLateral: number = -1
+    let candidateCoord = 0 // a tentative levelCoord for newEntry's placement
+    let touchingLevelIndex: number = -1
+    let touchingLateralIndex: number = -1
     let touchingEntry: SegEntry = null
-    let stackCnt = 0
+    let stackDepth = 0
 
-    for (let trackingLevel = 0; trackingLevel < levelCnt; trackingLevel += 1) {
-      const trackingCoord = levelCoords[trackingLevel]
+    // iterate through existing levels
+    for (let currentLevelIndex = 0; currentLevelIndex < levelCnt; currentLevelIndex += 1) {
+      const currentLevelCoord = levelCoords[currentLevelIndex]
 
-      // if the current level is past the placed entry, we have found a good empty space and can stop.
+      // if the current level has cleared newEntry's bottom coord, we have found a good empty space and can stop.
       // if strictOrder, keep finding more lateral intersections.
-      if (!strictOrder && trackingCoord >= candidateCoord + newEntryThickness) {
+      if (!strictOrder && currentLevelCoord >= candidateCoord + newEntryThickness) {
         break
       }
 
-      let trackingEntries = entriesByLevel[trackingLevel]
-      let trackingEntry: SegEntry
-      let searchRes = binarySearch(trackingEntries, newEntry.span.start, getEntrySpanEnd) // find first entry after newEntry's end
-      let lateralIndex = searchRes[0] + searchRes[1] // if exact match (which doesn't collide), go to next one
+      let currentLevelEntries = entriesByLevel[currentLevelIndex]
+      let currentEntry: SegEntry
 
-      while ( // loop through entries that horizontally intersect
-        (trackingEntry = trackingEntries[lateralIndex]) && // but not past the whole entry list
-        trackingEntry.span.start < newEntry.span.end // and not entirely past newEntry
+      // finds the first possible entry that newEntry could intersect with
+      let [searchIndex, isExact] = binarySearch(currentLevelEntries, newEntry.span.start, getEntrySpanEnd) // find first entry after newEntry's end
+      let lateralIndex = searchIndex + isExact // if exact match (which doesn't collide), go to next one
+
+      // loop through entries that horizontally intersect
+      while (
+        (currentEntry = currentLevelEntries[lateralIndex]) && // but not past the whole entry list
+        currentEntry.span.start < newEntry.span.end // and not entirely past newEntry
       ) {
-        let trackingEntryBottom = trackingCoord + this.getEntryThickness(trackingEntry)
+        let currentEntryBottom = currentLevelCoord + this.getEntryThickness(currentEntry)
+
         // intersects into the top of the candidate?
-        if (trackingEntryBottom > candidateCoord) {
-          candidateCoord = trackingEntryBottom
-          touchingEntry = trackingEntry
-          touchingLevel = trackingLevel
-          touchingLateral = lateralIndex
+        if (currentEntryBottom > candidateCoord) {
+          // push it downward so doesn't 'vertically' intersect anymore
+          candidateCoord = currentEntryBottom
+
+          // tentatively record as touching
+          touchingEntry = currentEntry
+          touchingLevelIndex = currentLevelIndex
+          touchingLateralIndex = lateralIndex
         }
-        // butts up against top of candidate? (will happen if just intersected as well)
-        if (trackingEntryBottom === candidateCoord) {
-          // accumulate the highest possible stackCnt of the trackingEntries that butt up
-          stackCnt = Math.max(stackCnt, stackCnts[buildEntryKey(trackingEntry)] + 1)
+
+        // does current entry butt up against top of candidate?
+        // will obviously happen if just intersected, but can also happen if pushed down previously
+        // because intersected with a sibling
+        // TODO: after automated tests hooked up, see if these gate is unnecessary,
+        // we might just be able to do this for ALL intersecting currentEntries (this whole loop)
+        if (currentEntryBottom === candidateCoord) {
+          // accumulate the highest possible stackDepth of the currentLevelEntries that butt up
+          stackDepth = Math.max(stackDepth, stackDepths[buildEntryKey(currentEntry)] + 1)
         }
+
         lateralIndex += 1
       }
     }
 
     // the destination level will be after touchingEntry's level. find it
+    // TODO: can reuse work from above?
     let destLevel = 0
     if (touchingEntry) {
-      destLevel = touchingLevel + 1
+      destLevel = touchingLevelIndex + 1
       while (destLevel < levelCnt && levelCoords[destLevel] < candidateCoord) {
         destLevel += 1
       }
     }
 
     // if adding to an existing level, find where to insert
+    // TODO: can reuse work from above?
     let destLateral = -1
     if (destLevel < levelCnt && levelCoords[destLevel] === candidateCoord) {
-      destLateral = binarySearch(entriesByLevel[destLevel], newEntry.span.end, getEntrySpanEnd)[0]
+      [destLateral] = binarySearch(entriesByLevel[destLevel], newEntry.span.end, getEntrySpanEnd)
     }
 
     return {
-      touchingLevel,
-      touchingLateral,
+      touchingLevelIndex,
+      touchingLateralIndex,
       touchingEntry,
-      stackCnt,
+      stackDepth,
       levelCoord: candidateCoord,
-      level: destLevel,
+      levelIndex: destLevel,
       lateral: destLateral,
     }
   }
@@ -232,7 +263,7 @@ export class SegHierarchy {
       for (let entry of entries) {
         rects.push({
           ...entry,
-          thickness: this.getEntryThickness(entry),
+          thickness: this.getEntryThickness(entry), // called to many times!
           levelCoord,
         })
       }
@@ -252,6 +283,20 @@ without fear of accidentally busting the cache on subsequent rerenders
 */
 export function buildEntryKey(entry: SegEntry) {
   return entry.index + ':' + entry.span.start
+}
+
+// Grouping
+// -------------------------------------------------------------------------------------------------
+
+export interface SegGroup {
+  key: string
+  span: SegSpan
+  segs: Seg[]
+}
+
+interface SegEntryMerge {
+  span: SegSpan
+  entries: SegEntry[]
 }
 
 /*
@@ -296,6 +341,9 @@ function extractEntrySeg(entry: SegEntry): Seg {
   return entry.seg
 }
 
+// Seg Geometry
+// -------------------------------------------------------------------------------------------------
+
 export function joinSpans(span0: SegSpan, span1: SegSpan): SegSpan {
   return {
     start: Math.min(span0.start, span1.start),
@@ -314,8 +362,8 @@ export function intersectSpans(span0: SegSpan, span1: SegSpan): SegSpan | null {
   return null
 }
 
-// general util
-// ---------------------------------------------------------------------------------------------------------------------
+// General Util
+// -------------------------------------------------------------------------------------------------
 
 function insertAt<Item>(arr: Item[], index: number, item: Item) {
   arr.splice(index, 0, item)
