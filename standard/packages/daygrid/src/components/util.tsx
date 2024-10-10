@@ -98,21 +98,21 @@ export function computeHorizontalsFromSeg(
   let width: CssDimValue
 
   if (colWidth != null) {
-    width = (seg.lastCol - seg.firstCol + 1) * colWidth
+    width = (seg.end - seg.start) * colWidth
 
     if (isRtl) {
-      right = seg.firstCol * colWidth
+      right = seg.start * colWidth
     } else {
-      left = seg.firstCol * colWidth
+      left = seg.start * colWidth
     }
   } else {
     const colWidthFrac = 1 / colCnt
-    width = fracToCssDim((seg.lastCol - seg.firstCol + 1) * colWidthFrac)
+    width = fracToCssDim((seg.end - seg.start) * colWidthFrac)
 
     if (isRtl) {
-      right = fracToCssDim(seg.firstCol * colWidthFrac)
+      right = fracToCssDim(seg.start * colWidthFrac)
     } else {
-      left = fracToCssDim(seg.firstCol * colWidthFrac)
+      left = fracToCssDim(seg.start * colWidthFrac)
     }
   }
 

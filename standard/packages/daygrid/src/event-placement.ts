@@ -12,14 +12,14 @@ import { TableSeg } from './TableSeg.js'
 Unique per-START-column, good for cataloging by top
 */
 export function getSegStartId(seg: TableSeg): string {
-  return seg.eventRange.instance.instanceId + ':' + seg.firstCol
+  return seg.eventRange.instance.instanceId + ':' + seg.start
 }
 
 /*
 Unique per-START-and-END-column, good for cataloging by width/height
 */
 export function getSegSpanId(seg: TableSeg): string {
-  return getSegStartId(seg) + ':' + seg.lastCol
+  return getSegStartId(seg) + ':' + seg.end
 }
 
 export function computeFgSegVerticals(
@@ -53,8 +53,8 @@ export function computeFgSegVerticals(
     index: index,
     seg,
     span: {
-      start: seg.firstCol,
-      end: seg.lastCol + 1,
+      start: seg.start,
+      end: seg.end,
     },
   }))
 

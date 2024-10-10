@@ -32,6 +32,7 @@ Theming
     ensure minimum Bootstrap version
   in bootstrap themes, event-height line-height is very tall. normalize? then make changelog entry?
 DayGrid
+  bug: crazy error: throw new Error('alignGridTop not supported yet')
   bug: resizing event to different row, no mirror rendered in other rows
   bug: no matter how tall daygrid rows are filled with events, should never squish fc-daygrid-cell-main
     down to zero height. Noticed while working with repro in #6798
@@ -72,6 +73,9 @@ Timeline
   .fc-timeline-now-indicator-container shouldn't cover all the text in the header cells
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
+Resource DayGrid
+  bug w/ `bundle/examples-v7/resource-daygrid.html` when dragging event3 one day ahead,
+    would result in a +more link that'd disappear when you return, but after we refactor DayGrid rendering, should be fixed
 Resource Timeline
   bug w/ scrollbar: resizing two-column causes datagrid bottom padding to collapse to 1px !?
     because bottom scrollbars widths don't notify update because the inner-box doesn't change

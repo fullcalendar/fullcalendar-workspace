@@ -19,8 +19,8 @@ export abstract class AbstractResourceDayTableModel {
   abstract computeCol(dateI: number, resourceI: number): number
 
   abstract computeColRanges(dateStartI: number, dateEndI: number, resourceI: number): {
-    firstCol: number,
-    lastCol: number,
+    start: number, // col
+    end: number, // col
     isStart: boolean,
     isEnd: boolean
   }[]

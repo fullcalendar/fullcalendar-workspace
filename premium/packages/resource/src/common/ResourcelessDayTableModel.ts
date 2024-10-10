@@ -16,15 +16,15 @@ export class ResourcelessDayTableModel extends AbstractResourceDayTableModel {
   }
 
   computeColRanges(dateStartI: number, dateEndI: number, _resourceI: number): {
-    firstCol: number,
-    lastCol: number,
+    start: number,
+    end: number,
     isStart: boolean,
     isEnd: boolean
   }[] {
     return [
       {
-        firstCol: dateStartI,
-        lastCol: dateEndI,
+        start: dateStartI,
+        end: dateEndI,
         isStart: true,
         isEnd: true,
       },

@@ -4,18 +4,18 @@ import { ResourcefulDayTableModel } from './ResourcefulDayTableModel.js'
 resources over dates
 */
 export class ResourceDayTableModel extends ResourcefulDayTableModel {
-  computeCol(dateI, resourceI) {
+  computeCol(dateI: number, resourceI: number) {
     return resourceI * this.dayTableModel.colCnt + dateI
   }
 
   /*
   all date ranges are intact
   */
-  computeColRanges(dateStartI, dateEndI, resourceI) {
+  computeColRanges(dateStartI: number, dateEndI: number, resourceI: number) {
     return [
       {
-        firstCol: this.computeCol(dateStartI, resourceI),
-        lastCol: this.computeCol(dateEndI, resourceI),
+        start: this.computeCol(dateStartI, resourceI),
+        end: this.computeCol(dateEndI, resourceI),
         isStart: true,
         isEnd: true,
       },

@@ -20,8 +20,8 @@ export abstract class ResourcefulDayTableModel extends AbstractResourceDayTableM
   abstract computeCol(dateI: number, resourceI: number): number
 
   abstract computeColRanges(dateStartI: number, dateEndI: number, resourceI: number): {
-    firstCol: number,
-    lastCol: number,
+    start: number,
+    end: number,
     isStart: boolean,
     isEnd: boolean
   }[]

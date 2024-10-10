@@ -4,8 +4,8 @@ import { EventSegUiInteractionState, Seg } from '@fullcalendar/core/internal'
 
 export interface TableSeg extends Seg {
   row: number
-  firstCol: number
-  lastCol: number
+  start: number, // col
+  end: number, // col
   isStandin?: boolean
 }
 
@@ -58,14 +58,14 @@ export function splitSegsByCol(segs: TableSeg[], colCnt: number) {
   }
 
   for (let seg of segs) {
-    for (let col = seg.firstCol; col <= seg.lastCol; col++) {
-      if (seg.firstCol !== col) {
+    for (let col = seg.start; col < seg.end; col++) {
+      if (seg.start !== col) {
         seg = {
           ...seg,
-          firstCol: col,
-          lastCol: col,
+          start: col,
+          end: col + 1,
           isStart: false,
-          isEnd: seg.isEnd && seg.lastCol === col,
+          isEnd: seg.isEnd && seg.end - 1 === col,
           isStandin: true,
         }
       }

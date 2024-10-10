@@ -3,8 +3,8 @@ import { DateMarker, addDays, diffDays } from '../datelib/marker.js'
 import { DateRange } from '../datelib/date-range.js'
 
 export interface DaySeriesSeg {
-  firstIndex: number
-  lastIndex: number
+  start: number
+  end: number
   isStart: boolean
   isEnd: boolean
 }
@@ -50,12 +50,13 @@ export class DaySeriesModel {
 
     if (clippedFirstIndex <= clippedLastIndex) {
       return {
-        firstIndex: clippedFirstIndex,
-        lastIndex: clippedLastIndex,
+        start: clippedFirstIndex,
+        end: clippedLastIndex + 1, // make exclusive
         isStart: firstIndex === clippedFirstIndex,
         isEnd: lastIndex === clippedLastIndex,
       }
     }
+
     return null
   }
 

@@ -3,7 +3,7 @@ import { AbstractResourceDayTableModel, VResourceJoiner } from '@fullcalendar/re
 
 export class ResourceDayTableJoiner extends VResourceJoiner<TableSeg> {
   transformSeg(seg: TableSeg, resourceDayTableModel: AbstractResourceDayTableModel, resourceI: number): TableSeg[] {
-    let colRanges = resourceDayTableModel.computeColRanges(seg.firstCol, seg.lastCol, resourceI)
+    let colRanges = resourceDayTableModel.computeColRanges(seg.start, seg.end, resourceI)
 
     return colRanges.map((colRange) => ({
       ...seg,

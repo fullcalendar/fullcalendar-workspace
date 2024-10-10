@@ -11,17 +11,17 @@ export class DayResourceTableModel extends ResourcefulDayTableModel {
   /*
   every single day is broken up
   */
-  computeColRanges(dateStartI, dateEndI, resourceI) {
+  computeColRanges(dateStartI: number, dateEndI: number, resourceI: number) {
     let segs = []
 
-    for (let i = dateStartI; i <= dateEndI; i += 1) {
+    for (let i = dateStartI; i < dateEndI; i += 1) {
       let col = this.computeCol(i, resourceI)
 
       segs.push({
-        firstCol: col,
-        lastCol: col,
+        start: col,
+        end: col + 1,
         isStart: i === dateStartI,
-        isEnd: i === dateEndI,
+        isEnd: i === dateEndI - 1,
       })
     }
 

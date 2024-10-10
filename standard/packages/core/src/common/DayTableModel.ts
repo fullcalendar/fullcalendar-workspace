@@ -6,8 +6,8 @@ import { Dictionary } from '../options.js'
 
 export interface DayTableSeg extends Seg {
   row: number
-  firstCol: number
-  lastCol: number
+  start: number // col
+  end: number // col
 }
 
 export interface DayTableCell {
@@ -96,19 +96,19 @@ export class DayTableModel {
     let segs: DayTableSeg[] = []
 
     if (seriesSeg) {
-      let { firstIndex, lastIndex } = seriesSeg
-      let index = firstIndex
+      const { start, end } = seriesSeg
+      let index = start
 
-      while (index <= lastIndex) {
+      while (index < end) {
         let row = Math.floor(index / colCnt)
-        let nextIndex = Math.min((row + 1) * colCnt, lastIndex + 1)
+        let nextIndex = Math.min((row + 1) * colCnt, end)
 
         segs.push({
           row,
-          firstCol: index % colCnt,
-          lastCol: (nextIndex - 1) % colCnt,
-          isStart: seriesSeg.isStart && index === firstIndex,
-          isEnd: seriesSeg.isEnd && (nextIndex - 1) === lastIndex,
+          start: index % colCnt,
+          end: (nextIndex - 1) % colCnt + 1,
+          isStart: seriesSeg.isStart && index === start,
+          isEnd: seriesSeg.isEnd && nextIndex === end,
         })
 
         index = nextIndex
