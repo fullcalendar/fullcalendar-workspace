@@ -3,6 +3,8 @@ Publishing:
  pnpm changeset publish --no-git-tag
  (next version should be v7.0.0-beta.3 because beta.2 was taken by the angular hotfix..
  ..write release/changelog for that)
+ Angular beta repro:
+  https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 REVIVE allowReslicing...
   Issue where some ppl want allowReslicing:
@@ -156,6 +158,9 @@ Manual Testing
 Dev Cleanup
   Remove unused css mixins
   Why is week-numbers.html example in premium? has nothing to do with premium
+Examples
+  In each two-column layout, give the sidebar flex-shrink:0 and the main min-width:0
+    Things are currently collapsing very strangely on a narrow screen (like stackblitz angular demo)
 Changelog
   Add: all cell headers are no longer bold
   Add: standin events get put through eventContent/etc
