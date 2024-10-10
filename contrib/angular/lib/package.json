@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/angular",
-  "version": "7.0.0-beta.1",
+  "version": "7.0.0-beta.2",
   "title": "FullCalendar Angular Component",
   "description": "The official Angular component for FullCalendar",
   "keywords": [
