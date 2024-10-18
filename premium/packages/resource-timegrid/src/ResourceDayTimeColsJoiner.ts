@@ -1,8 +1,13 @@
-import { TimeColsSeg } from '@fullcalendar/timegrid/internal'
+import { TimeGridRange } from '@fullcalendar/timegrid/internal'
 import { AbstractResourceDayTableModel, VResourceJoiner } from '@fullcalendar/resource/internal'
+import { EventRangeProps } from '@fullcalendar/core/internal'
 
-export class ResourceDayTimeColsJoiner extends VResourceJoiner<TimeColsSeg> {
-  transformSeg(seg: TimeColsSeg, resourceDayTable: AbstractResourceDayTableModel, resourceI: number): TimeColsSeg[] {
+export class ResourceDayTimeColsJoiner extends VResourceJoiner<TimeGridRange> {
+  transformSeg(
+    seg: TimeGridRange & EventRangeProps,
+    resourceDayTable: AbstractResourceDayTableModel,
+    resourceI: number,
+  ): (TimeGridRange & EventRangeProps)[] {
     return [
       {
         ...seg,

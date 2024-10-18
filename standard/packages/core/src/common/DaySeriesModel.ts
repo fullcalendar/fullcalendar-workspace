@@ -1,13 +1,7 @@
 import { DateProfileGenerator } from '../DateProfileGenerator.js'
 import { DateMarker, addDays, diffDays } from '../datelib/marker.js'
 import { DateRange } from '../datelib/date-range.js'
-
-export interface DaySeriesSeg {
-  start: number
-  end: number
-  isStart: boolean
-  isEnd: boolean
-}
+import { SlicedCoordRange } from '../coord-range.js'
 
 export class DaySeriesModel {
   cnt: number
@@ -37,7 +31,7 @@ export class DaySeriesModel {
     this.cnt = dates.length
   }
 
-  sliceRange(range: DateRange): DaySeriesSeg | null {
+  sliceRange(range: DateRange): SlicedCoordRange | null {
     let firstIndex = this.getDateDayIndex(range.start) // inclusive first index
     let lastIndex = this.getDateDayIndex(addDays(range.end, -1)) // inclusive last index
 

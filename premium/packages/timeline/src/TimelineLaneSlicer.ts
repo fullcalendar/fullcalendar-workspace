@@ -1,19 +1,24 @@
 import {
   DateRange, intersectRanges, addMs, DateProfile, Slicer,
-  DateProfileGenerator, DateEnv, DateMarker, Seg,
+  DateProfileGenerator, DateEnv, DateMarker,
+  CoordRange,
 } from '@fullcalendar/core/internal'
 import { normalizeRange, isValidDate, TimelineDateProfile } from './timeline-date-profile.js'
 import { computeDateSnapCoverage } from './TimelineCoords.js'
 
-export interface TimelineLaneSeg extends Seg {
+export interface TimelineRange {
   // the point of this range is because it might be different than seg.eventRange.range
   // because the date might have been rounded to the start of a week or a month
-  start: DateMarker
-  end: DateMarker
+  startDate: DateMarker
+  endDate: DateMarker
+  isStart: boolean
+  isEnd: boolean
 }
 
+export type TimelineCoordRange = TimelineRange & CoordRange
+
 export class TimelineLaneSlicer extends Slicer<
-  TimelineLaneSeg,
+  TimelineRange,
   [DateProfile, DateProfileGenerator, TimelineDateProfile, DateEnv]
 > {
   sliceRange(
@@ -22,9 +27,9 @@ export class TimelineLaneSlicer extends Slicer<
     dateProfileGenerator: DateProfileGenerator,
     tDateProfile: TimelineDateProfile,
     dateEnv: DateEnv,
-  ): TimelineLaneSeg[] {
+  ): TimelineRange[] {
     let normalRange = normalizeRange(origRange, tDateProfile, dateEnv)
-    let segs: TimelineLaneSeg[] = []
+    let segs: TimelineRange[] = []
 
     // protect against when the span is entirely in an invalid date region
     if (
@@ -36,8 +41,8 @@ export class TimelineLaneSlicer extends Slicer<
 
       if (slicedRange) {
         segs.push({
-          start: slicedRange.start,
-          end: slicedRange.end,
+          startDate: slicedRange.start,
+          endDate: slicedRange.end,
           isStart: slicedRange.start.valueOf() === normalRange.start.valueOf()
             && isValidDate(slicedRange.start, tDateProfile, dateProfile, dateProfileGenerator),
           isEnd: slicedRange.end.valueOf() === normalRange.end.valueOf()

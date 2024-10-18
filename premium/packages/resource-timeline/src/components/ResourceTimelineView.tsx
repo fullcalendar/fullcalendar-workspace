@@ -40,7 +40,6 @@ import {
   TimelineDateProfile,
   TimelineHeaderRow,
   TimelineLaneBg,
-  TimelineLaneSeg,
   TimelineLaneSlicer,
   TimelineNowIndicatorArrow,
   TimelineNowIndicatorLine,
@@ -675,7 +674,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
                             dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
                             // empty array will result in unnecessary rerenders?...
-                            eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs as TimelineLaneSeg[] : [])}
+                            eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : [])}
 
                             // dimensions
                             slotWidth={slotWidth}

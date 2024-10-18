@@ -1,19 +1,23 @@
-import { DateMarker, Seg, EventSegUiInteractionState } from '@fullcalendar/core/internal'
+import { CoordRange, DateMarker, EventSegUiInteractionState } from '@fullcalendar/core/internal'
 
 // JUST A DATA STRUCTURE, not a component
 
-export interface TimeColsSeg extends Seg {
+export interface TimeGridRange {
   col: number
-  start: DateMarker
-  end: DateMarker
+  startDate: DateMarker
+  endDate: DateMarker
+  isStart: boolean
+  isEnd: boolean
 }
+
+export type TimeGridCoordRange = TimeGridRange & CoordRange
 
 /*
 TODO: more DRY with daygrid?
 can be given null/undefined!
 */
-export function splitSegsByCol(segs: TimeColsSeg[] | null, colCnt: number) {
-  let segsByCol: TimeColsSeg[][] = []
+export function splitSegsByCol<S extends TimeGridRange>(segs: S[] | null, colCnt: number) {
+  let segsByCol: S[][] = []
   let i
 
   for (i = 0; i < colCnt; i += 1) {
@@ -34,10 +38,10 @@ TODO: more DRY with daygrid?
 can be given null/undefined!
 */
 export function splitInteractionByCol(
-  ui: EventSegUiInteractionState<TimeColsSeg> | null,
+  ui: EventSegUiInteractionState<TimeGridRange> | null,
   colCnt: number,
-): EventSegUiInteractionState[] {
-  let byRow: EventSegUiInteractionState[] = []
+): EventSegUiInteractionState<TimeGridRange>[] {
+  let byRow: EventSegUiInteractionState<TimeGridRange>[] = []
 
   if (!ui) {
     for (let i = 0; i < colCnt; i += 1) {

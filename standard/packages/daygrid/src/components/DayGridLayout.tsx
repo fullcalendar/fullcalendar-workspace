@@ -5,14 +5,15 @@ import {
   DateProfile,
   DateRange,
   DayTableCell,
+  DayGridRange,
   EventSegUiInteractionState,
   Hit,
   RefMap,
   Scroller,
-  ViewContainer
+  ViewContainer,
+  EventRangeProps
 } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, createRef, Ref } from '@fullcalendar/core/preact'
-import { TableSeg } from '../TableSeg.js'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal.js'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable.js'
 import { computeTopFromDate } from './util.js'
@@ -36,12 +37,12 @@ export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
   // body content
-  fgEventSegs: TableSeg[]
-  bgEventSegs: TableSeg[]
-  businessHourSegs: TableSeg[]
-  dateSelectionSegs: TableSeg[]
-  eventDrag: EventSegUiInteractionState<TableSeg> | null
-  eventResize: EventSegUiInteractionState<TableSeg> | null
+  fgEventSegs: (DayGridRange & EventRangeProps)[]
+  bgEventSegs: (DayGridRange & EventRangeProps)[]
+  businessHourSegs: (DayGridRange & EventRangeProps)[]
+  dateSelectionSegs: (DayGridRange & EventRangeProps)[]
+  eventDrag: EventSegUiInteractionState<DayGridRange> | null
+  eventResize: EventSegUiInteractionState<DayGridRange> | null
   eventSelection: string
 }
 

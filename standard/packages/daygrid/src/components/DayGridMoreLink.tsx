@@ -7,25 +7,26 @@ import {
   DateRange,
   EventSegUiInteractionState,
   getEventRangeMeta,
+  SlicedCoordRange,
+  EventRangeProps,
 } from '@fullcalendar/core/internal'
 import { createElement, RefObject, Fragment } from '@fullcalendar/core/preact'
 import { hasListItemDisplay } from '../event-rendering.js'
 import { DayGridBlockEvent } from './DayGridBlockEvent.js'
 import { DayGridListEvent } from './DayGridListEvent.js'
-import { TableSeg } from '../TableSeg.js'
 
 export interface DayGridMoreLinkProps {
   allDayDate: DateMarker
-  segs: TableSeg[]
-  hiddenSegs: TableSeg[]
+  segs: (SlicedCoordRange & EventRangeProps)[]
+  hiddenSegs: (SlicedCoordRange & EventRangeProps)[]
   alignmentElRef: RefObject<HTMLElement>
   alignGridTop: boolean // for popover
   extraDateSpan?: Dictionary
   dateProfile: DateProfile
   todayRange: DateRange
   eventSelection: string
-  eventDrag: EventSegUiInteractionState | null
-  eventResize: EventSegUiInteractionState | null
+  eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null
+  eventResize: EventSegUiInteractionState<SlicedCoordRange> | null
 }
 
 export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {

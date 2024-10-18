@@ -1,15 +1,16 @@
 import { DaySeriesModel } from './DaySeriesModel.js'
 import { DateRange } from '../datelib/date-range.js'
 import { DateMarker } from '../datelib/marker.js'
-import { Seg } from '../component/DateComponent.js'
 import { Dictionary } from '../options.js'
+import { SlicedCoordRange } from '../coord-range.js'
 
-export interface DayTableSeg extends Seg {
+export interface DayGridRange extends SlicedCoordRange {
   row: number
-  start: number // col
-  end: number // col
 }
 
+/*
+TODO: move this to @fullcalendar/daygrid
+*/
 export interface DayTableCell {
   key: string // probably just the serialized date, but could be other metadata if this col is specific to another entity
   date: DateMarker
@@ -29,9 +30,9 @@ export class DayTableModel {
 
   constructor(daySeries: DaySeriesModel, breakOnWeeks: boolean) {
     let { dates } = daySeries
-    let daysPerRow
-    let firstDay
-    let rowCnt
+    let daysPerRow: number
+    let firstDay: number
+    let rowCnt: number
 
     if (breakOnWeeks) {
       // count columns until the day-of-week repeats
@@ -90,10 +91,10 @@ export class DayTableModel {
     return dates
   }
 
-  sliceRange(range: DateRange): DayTableSeg[] {
+  sliceRange(range: DateRange): DayGridRange[] {
     let { colCnt } = this
     let seriesSeg = this.daySeries.sliceRange(range)
-    let segs: DayTableSeg[] = []
+    let segs: DayGridRange[] = []
 
     if (seriesSeg) {
       const { start, end } = seriesSeg

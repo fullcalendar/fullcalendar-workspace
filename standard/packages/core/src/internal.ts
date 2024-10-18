@@ -103,7 +103,7 @@ export { ScrollController, ElementScrollController, WindowScrollController } fro
 export { Theme } from './theme/Theme.js'
 export type { ViewContext } from './ViewContext.js'
 export { ViewContextType } from './ViewContext.js'
-export type { Seg, EventSegUiInteractionState } from './component/DateComponent.js'
+export type { EventSegUiInteractionState } from './component/DateComponent.js'
 export { DateComponent } from './component/DateComponent.js'
 export type { CalendarData } from './reducers/data-types.js'
 export type { ViewProps } from './component-util/View.js'
@@ -150,11 +150,7 @@ export type { EventSourceDef } from './structs/event-source-def.js'
 export type { EventSourceRefined } from './structs/event-source-parse.js'
 export { EventSourceRefiners } from './structs/event-source-parse.js'
 
-export type { SegSpan, SegRect, SegEntry, SegInsertion, SegGroup } from './seg-hierarchy.js'
-export {
-  SegHierarchy, buildEntryKey, getEntrySpanEnd, binarySearch, groupIntersectingEntries,
-  intersectSpans,
-} from './seg-hierarchy.js'
+export { SegHierarchy, EventPlacement, groupIntersectingSegs, SegGroup, binarySearch } from './seg-hierarchy.js'
 
 export type { InteractionSettings, InteractionSettingsStore } from './interactions/interaction.js'
 export {
@@ -190,9 +186,11 @@ export {
   sortEventSegs,
   getEventRangeMeta, buildEventRangeKey,
   getEventRangeAnchorAttrs,
+  EventRangeProps,
+  getEventKey,
 } from './component-util/event-rendering.js'
 
-export type { DayTableCell } from './common/DayTableModel.js'
+export type { DayTableCell, DayGridRange } from './common/DayTableModel.js'
 export { DayTableModel } from './common/DayTableModel.js'
 
 export { Scroller, getNormalizedScrollX, setNormalizedScrollX } from './scrollgrid/Scroller.js'
@@ -237,7 +235,7 @@ export type { MinimalEventProps } from './common/EventContainer.js'
 export { EventContainer } from './common/EventContainer.js'
 export { renderFill, BgEvent } from './common/bg-fill.js'
 export { WeekNumberContainerProps, WeekNumberContainer } from './common/WeekNumberContainer.js'
-export { MoreLinkContainer, computeEarliestSegStart } from './common/MoreLinkContainer.js'
+export { MoreLinkContainer } from './common/MoreLinkContainer.js'
 
 export type { ViewContainerProps } from './common/ViewContainer.js'
 export { ViewContainer } from './common/ViewContainer.js'
@@ -255,3 +253,12 @@ export type { InnerContainerFunc } from './content-inject/ContentContainer.js'
 export { ContentContainer } from './content-inject/ContentContainer.js'
 export type { CustomRendering } from './content-inject/CustomRenderingStore.js'
 export { CustomRenderingStore } from './content-inject/CustomRenderingStore.js'
+
+export {
+  CoordRange,
+  CoordSpan,
+  SlicedCoordRange,
+  computeEarliestStart,
+  computeLatestEnd,
+  getCoordRangeEnd,
+} from './coord-range.js'

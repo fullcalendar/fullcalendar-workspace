@@ -1,10 +1,11 @@
 import {
   BaseComponent, MoreLinkContainer,
   DateProfile, DateRange, DateMarker, getEventRangeMeta,
+  EventRangeProps,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { TimelineEvent } from './TimelineEvent.js'
-import { TimelineLaneSeg } from '../TimelineLaneSlicer.js'
+import { TimelineRange } from '../TimelineLaneSlicer.js'
 
 export interface TimelineLaneMoreLinkProps {
   dateProfile: DateProfile
@@ -13,7 +14,7 @@ export interface TimelineLaneMoreLinkProps {
   todayRange: DateRange
 
   // content
-  hiddenSegs: TimelineLaneSeg[]
+  hiddenSegs: (TimelineRange & EventRangeProps)[]
   eventSelection: string
   forcedInvisibleMap: { [instanceId: string]: any }
   resourceId?: string // HACK... make a generic keyval like extraRenderProps

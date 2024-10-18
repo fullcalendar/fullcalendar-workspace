@@ -1,6 +1,9 @@
-import { DayTableModel, DayTableCell } from '@fullcalendar/core/internal'
+import { DayTableModel, DayTableCell, SlicedCoordRange } from '@fullcalendar/core/internal'
 import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel.js'
 
+/*
+TODO: move this so @fullcalendar/resource-daygrid
+*/
 export class ResourcelessDayTableModel extends AbstractResourceDayTableModel {
   constructor(dayTableModel: DayTableModel) {
     super(
@@ -15,12 +18,7 @@ export class ResourcelessDayTableModel extends AbstractResourceDayTableModel {
     return dateI
   }
 
-  computeColRanges(dateStartI: number, dateEndI: number, _resourceI: number): {
-    start: number,
-    end: number,
-    isStart: boolean,
-    isEnd: boolean
-  }[] {
+  computeColRanges(dateStartI: number, dateEndI: number, _resourceI: number): SlicedCoordRange[] {
     return [
       {
         start: dateStartI,

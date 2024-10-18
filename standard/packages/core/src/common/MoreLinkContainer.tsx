@@ -1,5 +1,4 @@
 import { EventImpl } from '../api/EventImpl.js'
-import { Seg } from '../component/DateComponent.js'
 import { DateRange } from '../datelib/date-range.js'
 import { addDays, DateMarker } from '../datelib/marker.js'
 import { DateProfile } from '../DateProfileGenerator.js'
@@ -15,13 +14,15 @@ import { MountArg } from './render-hook.js'
 import { ContentContainer, InnerContainerFunc } from '../content-inject/ContentContainer.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
+import { EventRangeProps } from '../component-util/event-rendering.js'
+import { computeEarliestStart, computeLatestEnd, SlicedCoordRange } from '../coord-range.js'
 
 export interface MoreLinkContainerProps extends Partial<ElProps> {
   dateProfile: DateProfile
   todayRange: DateRange
   allDayDate: DateMarker | null
-  segs: Seg[]
-  hiddenSegs: Seg[]
+  segs: EventRangeProps[]
+  hiddenSegs: EventRangeProps[]
   extraDateSpan?: Dictionary
   alignmentElRef?: RefObject<HTMLElement> // will use internal <a> if unspecified
   alignGridTop?: boolean // for popover
@@ -158,7 +159,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
     let { moreLinkClick } = context.options
     let date = computeRange(props).start
 
-    function buildPublicSeg(seg: Seg) {
+    function buildPublicSeg(seg: SlicedCoordRange & EventRangeProps) {
       let { def, instance, range } = seg.eventRange
       return {
         event: new EventImpl(context, def, instance),
@@ -204,23 +205,7 @@ function computeRange(props: MoreLinkContainerProps): DateRange {
     }
   }
   return {
-    start: computeEarliestSegStart(props.hiddenSegs),
-    end: computeLatestSegEnd(props.hiddenSegs),
+    start: computeEarliestStart(props.hiddenSegs),
+    end: computeLatestEnd(props.hiddenSegs),
   }
-}
-
-export function computeEarliestSegStart(segs: Seg[]): DateMarker {
-  return segs.reduce(pickEarliestStart).eventRange.range.start
-}
-
-function pickEarliestStart(seg0: Seg, seg1: Seg): Seg {
-  return seg0.eventRange.range.start < seg1.eventRange.range.start ? seg0 : seg1
-}
-
-function computeLatestSegEnd(segs: Seg[]): DateMarker {
-  return segs.reduce(pickLatestEnd).eventRange.range.end
-}
-
-function pickLatestEnd(seg0: Seg, seg1: Seg): Seg {
-  return seg0.eventRange.range.end > seg1.eventRange.range.end ? seg0 : seg1
 }

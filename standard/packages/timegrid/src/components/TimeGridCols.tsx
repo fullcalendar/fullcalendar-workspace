@@ -5,6 +5,7 @@ import {
   DateProfile,
   DateRange,
   DayTableCell,
+  EventRangeProps,
   EventSegUiInteractionState,
   Hit,
   addDurations,
@@ -14,7 +15,7 @@ import {
 } from '@fullcalendar/core/internal'
 import { computeColFromPosition, getCellEl } from '@fullcalendar/daygrid/internal'
 import { createElement } from '@fullcalendar/core/preact'
-import { TimeColsSeg } from '../TimeColsSeg.js'
+import { TimeGridRange } from '../TimeColsSeg.js'
 import { TimeGridCol } from './TimeGridCol.js'
 
 export interface TimeGridColsProps {
@@ -28,13 +29,13 @@ export interface TimeGridColsProps {
   className?: string // TODO: better API for this?
 
   // content
-  fgEventSegsByCol: TimeColsSeg[][]
-  bgEventSegsByCol: TimeColsSeg[][]
-  businessHourSegsByCol: TimeColsSeg[][]
-  nowIndicatorSegsByCol: TimeColsSeg[][]
-  dateSelectionSegsByCol: TimeColsSeg[][]
-  eventDragByCol: EventSegUiInteractionState[]
-  eventResizeByCol: EventSegUiInteractionState[]
+  fgEventSegsByCol: (TimeGridRange & EventRangeProps)[][]
+  bgEventSegsByCol: (TimeGridRange & EventRangeProps)[][]
+  businessHourSegsByCol: (TimeGridRange & EventRangeProps)[][]
+  nowIndicatorSegsByCol: TimeGridRange[][]
+  dateSelectionSegsByCol: (TimeGridRange & EventRangeProps)[][]
+  eventDragByCol: EventSegUiInteractionState<TimeGridRange>[]
+  eventResizeByCol: EventSegUiInteractionState<TimeGridRange>[]
   eventSelection: string
 
   // dimensions

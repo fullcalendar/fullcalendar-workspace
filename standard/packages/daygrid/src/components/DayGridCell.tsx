@@ -13,6 +13,8 @@ import {
   DateEnv,
   watchHeight,
   setRef,
+  SlicedCoordRange,
+  EventRangeProps,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -23,7 +25,6 @@ import {
   Fragment,
 } from '@fullcalendar/core/preact'
 import { DayGridMoreLink } from './DayGridMoreLink.js'
-import { TableSeg } from '../TableSeg.js'
 
 export interface DayGridCellProps {
   dateProfile: DateProfile
@@ -32,13 +33,13 @@ export interface DayGridCellProps {
   showDayNumber: boolean
 
   // content
-  segs: TableSeg[] // for +more link popover content
-  hiddenSegs: TableSeg[] // "
+  segs: (SlicedCoordRange & EventRangeProps)[] // for +more link popover content
+  hiddenSegs: (SlicedCoordRange & EventRangeProps)[] // "
   fgLiquidHeight: boolean
   fg: ComponentChildren
   bg: ComponentChildren
-  eventDrag: EventSegUiInteractionState | null
-  eventResize: EventSegUiInteractionState | null
+  eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null
+  eventResize: EventSegUiInteractionState<SlicedCoordRange> | null
   eventSelection: string
 
   // render hooks

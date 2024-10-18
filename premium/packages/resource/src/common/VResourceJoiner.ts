@@ -1,9 +1,9 @@
-import { SlicedProps, Seg, memoize, EventSegUiInteractionState } from '@fullcalendar/core/internal'
+import { SlicedProps, memoize, EventSegUiInteractionState, EventRangeProps } from '@fullcalendar/core/internal'
 import { AbstractResourceDayTableModel } from './AbstractResourceDayTableModel.js'
 
 const NO_SEGS = [] // for memoizing
 
-export abstract class VResourceJoiner<SegType extends Seg> {
+export abstract class VResourceJoiner<R> {
   private joinDateSelection = memoize(this.joinSegs)
   private joinBusinessHours = memoize(this.joinSegs)
   private joinFgEvents = memoize(this.joinSegs)
@@ -15,9 +15,9 @@ export abstract class VResourceJoiner<SegType extends Seg> {
   propSets also has a '' key for things with no resource
   */
   joinProps(
-    propSets: { [resourceId: string]: SlicedProps<SegType> },
+    propSets: { [resourceId: string]: SlicedProps<R> },
     resourceDayTable: AbstractResourceDayTableModel,
-  ): SlicedProps<SegType> {
+  ): SlicedProps<R> {
     let dateSelectionSets = []
     let businessHoursSets = []
     let fgEventSets = []
@@ -50,7 +50,10 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     }
   }
 
-  joinSegs(resourceDayTable: AbstractResourceDayTableModel, ...segGroups: SegType[][]): SegType[] {
+  joinSegs(
+    resourceDayTable: AbstractResourceDayTableModel,
+    ...segGroups: (R & EventRangeProps)[][]
+  ): (R & EventRangeProps)[] {
     let resourceCnt = resourceDayTable.resources.length
     let transformedSegs = []
 
@@ -76,14 +79,17 @@ export abstract class VResourceJoiner<SegType extends Seg> {
   only for public use.
   no memoizing.
   */
-  expandSegs(resourceDayTable: AbstractResourceDayTableModel, segs: SegType[]) {
+  expandSegs(
+    resourceDayTable: AbstractResourceDayTableModel,
+    segs: R[], // HACK
+  ): (R & EventRangeProps)[] {
     let resourceCnt = resourceDayTable.resources.length
     let transformedSegs = []
 
     for (let i = 0; i < resourceCnt; i += 1) {
       for (let seg of segs) {
         transformedSegs.push(
-          ...this.transformSeg(seg, resourceDayTable, i),
+          ...this.transformSeg(seg as any, resourceDayTable, i), // HACK
         )
       }
     }
@@ -93,8 +99,8 @@ export abstract class VResourceJoiner<SegType extends Seg> {
 
   joinInteractions(
     resourceDayTable: AbstractResourceDayTableModel,
-    ...interactions: EventSegUiInteractionState[]
-  ): EventSegUiInteractionState<SegType> | null {
+    ...interactions: EventSegUiInteractionState<R>[]
+  ): EventSegUiInteractionState<R> | null {
     let resourceCnt = resourceDayTable.resources.length
     let affectedInstances = {}
     let transformedSegs = []
@@ -109,7 +115,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
 
         for (let seg of interaction.segs) {
           transformedSegs.push(
-            ...this.transformSeg(seg as SegType, resourceDayTable, i), // TODO: templateify Interaction::segs
+            ...this.transformSeg(seg, resourceDayTable, i), // TODO: templateify Interaction::segs
           )
         }
 
@@ -120,7 +126,7 @@ export abstract class VResourceJoiner<SegType extends Seg> {
       if (interactions[resourceCnt]) { // one beyond. the all-resource
         for (let seg of interactions[resourceCnt].segs) {
           transformedSegs.push(
-            ...this.transformSeg(seg as SegType, resourceDayTable, i), // TODO: templateify Interaction::segs
+            ...this.transformSeg(seg, resourceDayTable, i), // TODO: templateify Interaction::segs
           )
         }
       }
@@ -137,6 +143,13 @@ export abstract class VResourceJoiner<SegType extends Seg> {
     return null
   }
 
-  // needs to generate NEW seg obj!!! because of .el
-  abstract transformSeg(seg: SegType, resourceDayTable: AbstractResourceDayTableModel, resourceI: number): SegType[]
+  /*
+  Needs to generate NEW seg obj!!! because of .el
+  Must always forward unknown seg properties!!!
+  */
+  abstract transformSeg(
+    seg: R & EventRangeProps,
+    resourceDayTable: AbstractResourceDayTableModel,
+    resourceI: number
+  ): (R & EventRangeProps)[]
 }

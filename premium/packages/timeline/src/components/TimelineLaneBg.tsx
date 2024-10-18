@@ -1,23 +1,24 @@
 import {
   BaseComponent, BgEvent, renderFill,
   getEventRangeMeta, DateRange, DateMarker, buildEventRangeKey,
+  EventRangeProps,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { computeSegHorizontals } from '../event-placement.js'
 import { horizontalsToCss } from '../TimelineCoords.js'
-import { TimelineLaneSeg } from '../TimelineLaneSlicer.js'
+import { TimelineRange } from '../TimelineLaneSlicer.js'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 
 export interface TimelineLaneBgProps {
-  tDateProfile: TimelineDateProfile,
+  tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
 
   // content
-  bgEventSegs: TimelineLaneSeg[] | null // can be null :(
-  businessHourSegs: TimelineLaneSeg[] | null // can be null :(
-  dateSelectionSegs: TimelineLaneSeg[]
-  eventResizeSegs: TimelineLaneSeg[]
+  bgEventSegs: (TimelineRange & EventRangeProps)[] | null // can be null :(
+  businessHourSegs: (TimelineRange & EventRangeProps)[] | null // can be null :(
+  dateSelectionSegs: (TimelineRange & EventRangeProps)[]
+  eventResizeSegs: (TimelineRange & EventRangeProps)[]
 
   // dimensions
   slotWidth: number | undefined
@@ -38,7 +39,7 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
     )
   }
 
-  renderSegs(segs: TimelineLaneSeg[], fillType: string) {
+  renderSegs(segs: (TimelineRange & EventRangeProps)[], fillType: string) {
     let { tDateProfile, todayRange, nowDate, slotWidth } = this.props
     let { dateEnv, isRtl } = this.context
 

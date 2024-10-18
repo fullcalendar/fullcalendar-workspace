@@ -14,10 +14,11 @@ import {
   getIsHeightAuto,
   getScrollerSyncerClass,
   RefMap,
+  DayGridRange,
+  EventRangeProps,
 } from '@fullcalendar/core/internal'
 import { ComponentChild, Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
-import { TableSeg } from '../TableSeg.js'
 import { computeColWidth } from './util.js'
 import { DayGridHeader } from './DayGridHeader.js'
 
@@ -39,12 +40,12 @@ export interface DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
   // body content
-  fgEventSegs: TableSeg[]
-  bgEventSegs: TableSeg[]
-  businessHourSegs: TableSeg[]
-  dateSelectionSegs: TableSeg[]
-  eventDrag: EventSegUiInteractionState<TableSeg> | null
-  eventResize: EventSegUiInteractionState<TableSeg> | null
+  fgEventSegs: (DayGridRange & EventRangeProps)[]
+  bgEventSegs: (DayGridRange & EventRangeProps)[]
+  businessHourSegs: (DayGridRange & EventRangeProps)[]
+  dateSelectionSegs: (DayGridRange & EventRangeProps)[]
+  eventDrag: EventSegUiInteractionState<DayGridRange> | null
+  eventResize: EventSegUiInteractionState<DayGridRange> | null
   eventSelection: string
 
   // dimensions

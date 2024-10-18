@@ -1,5 +1,5 @@
 import { BaseComponent } from '../vdom-util.js'
-import { EventRenderRange } from '../component-util/event-rendering.js'
+import { EventRangeProps } from '../component-util/event-rendering.js'
 import { EventInstanceHash } from '../structs/event-instance.js'
 import { Hit } from '../interactions/hit.js'
 import { elementClosest } from '../util/dom-manip.js'
@@ -8,18 +8,9 @@ import { Dictionary } from '../options.js'
 
 export type DateComponentHash = { [uid: string]: DateComponent<any, any> }
 
-export interface Seg {
-  // the original event-range (eventDef+defaultDuration)
-  // HACK: optional because slicer utils return objects with the eventRange
-  eventRange?: EventRenderRange
-
-  isStart: boolean
-  isEnd: boolean
-}
-
-export interface EventSegUiInteractionState<S = Seg> {
+export interface EventSegUiInteractionState<S> {
   affectedInstances: EventInstanceHash
-  segs: S[]
+  segs: (S & EventRangeProps)[]
   isEvent: boolean
 }
 

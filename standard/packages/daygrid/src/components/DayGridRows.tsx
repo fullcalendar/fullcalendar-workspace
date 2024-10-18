@@ -10,9 +10,11 @@ import {
   RefMap,
   watchWidth,
   getIsHeightAuto,
+  DayGridRange,
+  EventRangeProps,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
-import { TableSeg, splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
+import { splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
 import { COMPACT_CELL_WIDTH, DayGridRow } from './DayGridRow.js'
 import { computeColFromPosition, computeRowFromPosition, getCellEl, getRowEl } from './util.js'
 
@@ -24,12 +26,12 @@ export interface DayGridRowsProps {
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 
   // content
-  fgEventSegs: TableSeg[]
-  bgEventSegs: TableSeg[]
-  businessHourSegs: TableSeg[]
-  dateSelectionSegs: TableSeg[]
-  eventDrag: EventSegUiInteractionState<TableSeg> | null
-  eventResize: EventSegUiInteractionState<TableSeg> | null
+  fgEventSegs: (DayGridRange & EventRangeProps)[]
+  bgEventSegs: (DayGridRange & EventRangeProps)[]
+  businessHourSegs: (DayGridRange & EventRangeProps)[]
+  dateSelectionSegs: (DayGridRange & EventRangeProps)[]
+  eventDrag: EventSegUiInteractionState<DayGridRange> | null
+  eventResize: EventSegUiInteractionState<DayGridRange> | null
   eventSelection: string
 
   // dimensions
@@ -207,6 +209,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
 // Utils
 // -------------------------------------------------------------------------------------------------
 
-function isSegAllDay(seg: TableSeg) {
+function isSegAllDay(seg: EventRangeProps): boolean {
   return seg.eventRange.def.allDay
 }

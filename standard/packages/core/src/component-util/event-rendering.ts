@@ -5,7 +5,6 @@ import { DateRange, invertRanges, intersectRanges, rangeContainsMarker } from '.
 import { Duration } from '../datelib/duration.js'
 import { compareByFieldSpecs, OrderSpec } from '../util/misc.js'
 import { computeVisibleDayRange } from '../util/date.js'
-import { Seg } from '../component/DateComponent.js'
 import { EventImpl } from '../api/EventImpl.js'
 import { EventUi, EventUiHash, combineEventUis } from './event-ui.js'
 import { mapHash } from '../util/object.js'
@@ -21,6 +20,14 @@ export interface EventRenderRange extends EventTuple {
   range: DateRange
   isStart: boolean
   isEnd: boolean
+}
+
+export interface EventRangeProps {
+  eventRange: EventRenderRange
+}
+
+export function getEventKey(seg: EventRangeProps): string {
+  return seg.eventRange.instance.instanceId
 }
 
 /*
@@ -157,7 +164,7 @@ export function compileEventUi(eventDef: EventDef, eventUiBases: EventUiHash) {
   return combineEventUis(uis)
 }
 
-export function sortEventSegs<S extends Seg>(segs: S[], eventOrderSpecs: OrderSpec<EventImpl>[]): S[] {
+export function sortEventSegs<S extends EventRangeProps>(segs: S[], eventOrderSpecs: OrderSpec<EventImpl>[]): S[] {
   let objs = segs.map(buildSegCompareObj)
 
   objs.sort((obj0, obj1) => compareByFieldSpecs(obj0, obj1, eventOrderSpecs as any)) // !!!
@@ -166,7 +173,7 @@ export function sortEventSegs<S extends Seg>(segs: S[], eventOrderSpecs: OrderSp
 }
 
 // returns a object with all primitive props that can be compared
-export function buildSegCompareObj<S extends Seg>(seg: S) {
+export function buildSegCompareObj<S extends EventRangeProps>(seg: S) {
   let { eventRange } = seg
   let eventDef = eventRange.def
   let range = eventRange.instance ? eventRange.instance.range : eventRange.range

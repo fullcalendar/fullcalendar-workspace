@@ -1,6 +1,6 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize, getIsHeightAuto, rangeContainsMarker } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize, getIsHeightAuto, rangeContainsMarker, SlicedCoordRange, EventRangeProps } from "@fullcalendar/core/internal"
 import { Fragment, createElement, ComponentChild, Ref } from '@fullcalendar/core/preact'
-import { HeaderRow, TableSeg, COMPACT_CELL_WIDTH } from '@fullcalendar/daygrid/internal'
+import { HeaderRow, COMPACT_CELL_WIDTH } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
 import { TimeGridAllDayLane } from "./TimeGridAllDayLane.js"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
@@ -8,7 +8,7 @@ import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridCols } from "./TimeGridCols.js"
-import { TimeColsSeg } from "../TimeColsSeg.js"
+import { TimeGridRange } from "../TimeColsSeg.js"
 import { computeSlatHeight, getSlatRowClassName } from "./util.js"
 
 export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
@@ -37,23 +37,23 @@ export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
   // all-day content
-  fgEventSegs: TableSeg[]
-  bgEventSegs: TableSeg[]
-  businessHourSegs: TableSeg[]
-  dateSelectionSegs: TableSeg[]
-  eventDrag: EventSegUiInteractionState | null
-  eventResize: EventSegUiInteractionState | null
+  fgEventSegs: (SlicedCoordRange & EventRangeProps)[]
+  bgEventSegs: (SlicedCoordRange & EventRangeProps)[]
+  businessHourSegs: (SlicedCoordRange & EventRangeProps)[]
+  dateSelectionSegs: (SlicedCoordRange & EventRangeProps)[]
+  eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null
+  eventResize: EventSegUiInteractionState<SlicedCoordRange> | null
   dayMaxEvents: boolean | number
   dayMaxEventRows: boolean | number
 
   // timed content
-  fgEventSegsByCol: TimeColsSeg[][]
-  bgEventSegsByCol: TimeColsSeg[][]
-  businessHourSegsByCol: TimeColsSeg[][]
-  nowIndicatorSegsByCol: TimeColsSeg[][]
-  dateSelectionSegsByCol: TimeColsSeg[][]
-  eventDragByCol: EventSegUiInteractionState[]
-  eventResizeByCol: EventSegUiInteractionState[]
+  fgEventSegsByCol: (TimeGridRange & EventRangeProps)[][]
+  bgEventSegsByCol: (TimeGridRange & EventRangeProps)[][]
+  businessHourSegsByCol: (TimeGridRange & EventRangeProps)[][]
+  nowIndicatorSegsByCol: TimeGridRange[][]
+  dateSelectionSegsByCol: (TimeGridRange & EventRangeProps)[][]
+  eventDragByCol: EventSegUiInteractionState<TimeGridRange>[]
+  eventResizeByCol: EventSegUiInteractionState<TimeGridRange>[]
 
   // universal content
   eventSelection: string

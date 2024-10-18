@@ -12,7 +12,6 @@ import {
   sliceEventStore,
   EventStore,
   memoize,
-  Seg,
   sortEventSegs,
   getEventRangeMeta,
   NowTimer,
@@ -23,6 +22,8 @@ import {
   formatDayString,
   ContentContainer,
   getIsHeightAuto,
+  EventRangeProps,
+  getEventKey,
 } from '@fullcalendar/core/internal'
 import {
   ComponentChild,
@@ -37,9 +38,11 @@ export interface NoEventsContentArg {
   view: ViewApi
 }
 
-export interface ListSeg extends Seg {
-  start: DateMarker
-  end: DateMarker
+export interface ListSeg {
+  startDate: DateMarker
+  endDate: DateMarker
+  isStart: boolean
+  isEnd: boolean
   dayIndex: number
 }
 
@@ -126,7 +129,7 @@ export class ListView extends DateComponent<ViewProps> {
     )
   }
 
-  renderSegList(allSegs: ListSeg[], dayDates: DateMarker[]) {
+  renderSegList(allSegs: (ListSeg & EventRangeProps)[], dayDates: DateMarker[]) {
     let { options } = this.context
     let { timeHeaderId, eventHeaderId, dateHeaderIdRoot } = this.state
     let segsByDay = groupSegsByDay(allSegs) // sparse array
@@ -159,12 +162,12 @@ export class ListView extends DateComponent<ViewProps> {
               for (let seg of daySegs) {
                 innerNodes.push(
                   <ListViewEventRow
-                    key={dayStr + ':' + seg.eventRange.instance.instanceId /* are multiple segs for an instanceId */}
+                    key={dayStr + ':' + getEventKey(seg) /* are multiple segs for an instanceId */}
                     eventRange={seg.eventRange}
                     isStart={seg.isStart}
                     isEnd={seg.isEnd}
-                    segStart={seg.start}
-                    segEnd={seg.end}
+                    segStart={seg.startDate}
+                    segEnd={seg.endDate}
                     isDragging={false}
                     isResizing={false}
                     isDateSelecting={false}
@@ -196,7 +199,11 @@ export class ListView extends DateComponent<ViewProps> {
     )
   }
 
-  _eventStoreToSegs(eventStore: EventStore, eventUiBases: EventUiHash, dayRanges: DateRange[]): ListSeg[] {
+  _eventStoreToSegs(
+    eventStore: EventStore,
+    eventUiBases: EventUiHash,
+    dayRanges: DateRange[],
+  ): (ListSeg & EventRangeProps)[] {
     return this.eventRangesToSegs(
       sliceEventStore(
         eventStore,
@@ -208,8 +215,11 @@ export class ListView extends DateComponent<ViewProps> {
     )
   }
 
-  eventRangesToSegs(eventRanges: EventRenderRange[], dayRanges: DateRange[]): ListSeg[] {
-    let segs: ListSeg[] = []
+  eventRangesToSegs(
+    eventRanges: EventRenderRange[],
+    dayRanges: DateRange[],
+  ): (ListSeg & EventRangeProps)[] {
+    let segs: (ListSeg & EventRangeProps)[] = []
 
     for (let eventRange of eventRanges) {
       segs.push(...this.eventRangeToSegs(eventRange, dayRanges))
@@ -218,15 +228,18 @@ export class ListView extends DateComponent<ViewProps> {
     return segs
   }
 
-  eventRangeToSegs(eventRange: EventRenderRange, dayRanges: DateRange[]) {
+  eventRangeToSegs(
+    eventRange: EventRenderRange,
+    dayRanges: DateRange[],
+  ): (ListSeg & EventRangeProps)[] {
     let { dateEnv } = this.context
     let { nextDayThreshold } = this.context.options
     let range = eventRange.range
     let allDay = eventRange.def.allDay
     let dayIndex
     let segRange
-    let seg: ListSeg
-    let segs: ListSeg[] = []
+    let seg: ListSeg & EventRangeProps
+    let segs: (ListSeg & EventRangeProps)[] = []
 
     for (dayIndex = 0; dayIndex < dayRanges.length; dayIndex += 1) {
       segRange = intersectRanges(range, dayRanges[dayIndex])
@@ -234,8 +247,8 @@ export class ListView extends DateComponent<ViewProps> {
       if (segRange) {
         seg = {
           eventRange,
-          start: segRange.start,
-          end: segRange.end,
+          startDate: segRange.start,
+          endDate: segRange.end,
           isStart: eventRange.isStart && segRange.start.valueOf() === range.start.valueOf(),
           isEnd: eventRange.isEnd && segRange.end.valueOf() === range.end.valueOf(),
           dayIndex,
@@ -254,7 +267,7 @@ export class ListView extends DateComponent<ViewProps> {
               nextDayThreshold,
             )
         ) {
-          seg.end = range.end
+          seg.endDate = range.end
           seg.isEnd = true
           break
         }
@@ -290,10 +303,12 @@ function computeDateVars(dateProfile: DateProfile) {
 }
 
 // Returns a sparse array of arrays, segs grouped by their dayIndex
-function groupSegsByDay(segs: ListSeg[]): ListSeg[][] {
-  let segsByDay: ListSeg[][] = [] // sparse array
+function groupSegsByDay(
+  segs: (ListSeg & EventRangeProps)[]
+): (ListSeg & EventRangeProps)[][] {
+  let segsByDay: (ListSeg & EventRangeProps)[][] = [] // sparse array
   let i: number
-  let seg: ListSeg
+  let seg: ListSeg & EventRangeProps
 
   for (i = 0; i < segs.length; i += 1) {
     seg = segs[i];

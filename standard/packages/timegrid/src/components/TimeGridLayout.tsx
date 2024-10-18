@@ -1,9 +1,8 @@
 import { Duration, ViewOptions } from '@fullcalendar/core'
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ViewContainer, afterSize, memoize } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, Scroller, SlicedCoordRange, ViewContainer, afterSize, memoize } from "@fullcalendar/core/internal"
 import { createElement, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
-import { TableSeg } from '@fullcalendar/daygrid/internal'
 import { buildSlatMetas } from "../time-slat-meta.js"
-import { TimeColsSeg } from '../TimeColsSeg.js'
+import { TimeGridRange } from '../TimeColsSeg.js'
 import { TimeGridLayoutPannable } from './TimeGridLayoutPannable.js'
 import { TimeGridLayoutNormal } from './TimeGridLayoutNormal.js'
 import { computeTimeTopFrac } from './util.js'
@@ -34,21 +33,21 @@ export interface TimeGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
 
   // all-day content
-  fgEventSegs: TableSeg[],
-  bgEventSegs: TableSeg[],
-  businessHourSegs: TableSeg[],
-  dateSelectionSegs: TableSeg[],
-  eventDrag: EventSegUiInteractionState | null,
-  eventResize: EventSegUiInteractionState | null,
+  fgEventSegs: (SlicedCoordRange & EventRangeProps)[],
+  bgEventSegs: (SlicedCoordRange & EventRangeProps)[],
+  businessHourSegs: (SlicedCoordRange & EventRangeProps)[],
+  dateSelectionSegs: (SlicedCoordRange & EventRangeProps)[],
+  eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null,
+  eventResize: EventSegUiInteractionState<SlicedCoordRange> | null,
 
   // timed content
-  fgEventSegsByCol: TimeColsSeg[][]
-  bgEventSegsByCol: TimeColsSeg[][]
-  businessHourSegsByCol: TimeColsSeg[][]
-  nowIndicatorSegsByCol: TimeColsSeg[][]
-  dateSelectionSegsByCol: TimeColsSeg[][]
-  eventDragByCol: EventSegUiInteractionState[]
-  eventResizeByCol: EventSegUiInteractionState[]
+  fgEventSegsByCol: (TimeGridRange & EventRangeProps)[][]
+  bgEventSegsByCol: (TimeGridRange & EventRangeProps)[][]
+  businessHourSegsByCol: (TimeGridRange & EventRangeProps)[][]
+  nowIndicatorSegsByCol: TimeGridRange[][]
+  dateSelectionSegsByCol: (TimeGridRange & EventRangeProps)[][]
+  eventDragByCol: EventSegUiInteractionState<TimeGridRange>[]
+  eventResizeByCol: EventSegUiInteractionState<TimeGridRange>[]
 
   // universal content
   eventSelection: string

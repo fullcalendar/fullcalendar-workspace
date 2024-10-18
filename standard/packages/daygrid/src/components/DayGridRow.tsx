@@ -16,6 +16,8 @@ import {
   buildNavLinkAttrs,
   watchHeight,
   afterSize,
+  SlicedCoordRange,
+  EventRangeProps,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -23,11 +25,11 @@ import {
   Fragment,
   Ref,
 } from '@fullcalendar/core/preact'
-import { splitSegsByCol, TableSeg } from '../TableSeg.js'
+import { splitSegsByCol } from '../TableSeg.js'
 import { DayGridCell } from './DayGridCell.js'
 import { DayGridListEvent } from './DayGridListEvent.js'
 import { DayGridBlockEvent } from './DayGridBlockEvent.js'
-import { computeFgSegVerticals, getSegSpanId, getSegStartId } from '../event-placement.js'
+import { computeFgSegVerticals } from '../event-placement.js'
 import { hasListItemDisplay } from '../event-rendering.js'
 import { computeHorizontalsFromSeg } from './util.js'
 import { DayGridEventHarness } from './DayGridEventHarness.js'
@@ -45,12 +47,12 @@ export interface DayGridRowProps {
   compact?: boolean
 
   // content
-  fgEventSegs: TableSeg[]
-  bgEventSegs: TableSeg[]
-  businessHourSegs: TableSeg[]
-  dateSelectionSegs: TableSeg[]
-  eventDrag: EventSegUiInteractionState | null
-  eventResize: EventSegUiInteractionState | null
+  fgEventSegs: (SlicedCoordRange & EventRangeProps)[]
+  bgEventSegs: (SlicedCoordRange & EventRangeProps)[]
+  businessHourSegs: (SlicedCoordRange & EventRangeProps)[]
+  dateSelectionSegs: (SlicedCoordRange & EventRangeProps)[]
+  eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null
+  eventResize: EventSegUiInteractionState<SlicedCoordRange> | null
   eventSelection: string
   dayMaxEvents: boolean | number
   dayMaxEventRows: boolean | number
@@ -101,21 +103,13 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     const fgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
 
     // TODO: memoize? sort all types of segs?
-    const fgEventSegs = sortEventSegs(props.fgEventSegs, options.eventOrder) as TableSeg[]
+    const fgEventSegs = sortEventSegs(props.fgEventSegs, options.eventOrder)
 
     // TODO: memoize?
-    const fgEventSegsByCol = splitSegsByCol(fgEventSegs, colCnt)
-    const bgEventSegsByCol = splitSegsByCol(props.bgEventSegs, colCnt)
-    const businessHoursByCol = splitSegsByCol(props.businessHourSegs, colCnt)
-    const highlightSegsByCol = splitSegsByCol(this.getHighlightSegs(), colCnt) // TODO: doesn't need standins
-    const mirrorSegsByCol = splitSegsByCol(this.getMirrorSegs(), colCnt) // TODO: doesn't need standins
-
-    // TODO: memoize?
-    const [segTops, heightsByCol, hiddenSegsByCol] = computeFgSegVerticals(
+    const [fgEventSubSegs, segTops, heightsByCol, hiddenSegs] = computeFgSegVerticals(
       fgEventSegs,
       this.segHeightRefMap.current,
       cells,
-      state.headerHeight,
       (fgLiquidHeight && state.innerHeight != null && state.headerHeight != null)
         ? state.innerHeight - state.headerHeight
         : undefined,
@@ -123,6 +117,15 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       props.dayMaxEvents,
       props.dayMaxEventRows,
     )
+
+    // TODO: memoize?
+    const fgEventSegsByCol = splitSegsByCol(fgEventSegs, colCnt) // only for +more popover args
+    const fgEventSubSegsByCol = splitSegsByCol(fgEventSubSegs, colCnt) // for actual rendering
+    const bgEventSegsByCol = splitSegsByCol(props.bgEventSegs, colCnt)
+    const businessHoursByCol = splitSegsByCol(props.businessHourSegs, colCnt)
+    const highlightSegsByCol = splitSegsByCol(this.getHighlightSegs(), colCnt)
+    const mirrorSegsByCol = splitSegsByCol(this.getMirrorSegs(), colCnt)
+    const hiddenSegsByCol = splitSegsByCol(hiddenSegs, colCnt)
 
     const forcedInvisibleMap = // TODO: more convenient/DRY
       (props.eventDrag && props.eventDrag.affectedInstances) ||
@@ -150,7 +153,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       >
         {props.cells.map((cell, col) => {
           const normalFgNodes = this.renderFgSegs(
-            fgEventSegsByCol[col],
+            fgEventSubSegsByCol[col],
             segTops,
             props.todayRange,
             forcedInvisibleMap,
@@ -226,17 +229,18 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   }
 
   renderFgSegs(
-    segs: TableSeg[],
-    segTops: { [segStartId: string]: number },
+    segs: (SlicedCoordRange & EventRangeProps & { isStandin?: boolean, key?: string })[],
+    segTops: Map<string, number>,
     todayRange: DateRange,
     forcedInvisibleMap: { [instanceId: string]: any },
     isDragging?: boolean,
     isResizing?: boolean,
     isDateSelecting?: boolean,
   ): VNode[] {
-    const { props, context, segHeightRefMap } = this
+    const { props, state, context, segHeightRefMap } = this
     const { isRtl } = context
     const { colWidth, eventSelection } = props
+    const { headerHeight } = state
 
     const colCnt = props.cells.length
     const defaultDisplayEventEnd = props.cells.length === 1
@@ -246,37 +250,32 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     for (const seg of segs) {
       const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
 
-      // TODO: optimize ID creation? all related
+      // IDs
       const { eventRange } = seg
       const { instanceId } = eventRange.instance
-      const segSpanId = getSegSpanId(seg)
-      const segStartId = getSegStartId(seg)
+      const key = seg.key || instanceId
 
-      const top = segTops[segStartId]
-      const isVisible =
-        !seg.isStandin &&
-        top != null &&
-        !forcedInvisibleMap[instanceId]
+      // For mirrors, which use instanceId, accessing segTops might not yield a result if there are
+      // multiple Fragments, which are indexed by more specific keys, but who cares just render at 0
+      const localTop = segTops.get(key)
 
-      /*
-      TODO: is this comment still relevant? vvvvvvvv
-      known bug: events that are force to be list-item but span multiple days still take up space in later columns
-      todo: in print view, for multi-day events, don't display title within non-start/end segs
-      */
+      const isInvisible = seg.isStandin || forcedInvisibleMap[instanceId] || (localTop == null && !isMirror)
+      const top = (localTop || 0) + (headerHeight || 0)
+
       nodes.push(
         <DayGridEventHarness
-          key={segSpanId}
+          key={key}
           style={{
-            visibility: isVisible ? '' : 'hidden',
+            visibility: isInvisible ? 'hidden' : '',
             top,
             left,
             right,
             width,
           }}
           heightRef={
-            (isMirror || seg.isStandin)
-              ? null
-              : segHeightRefMap.createRef(segSpanId)
+            (!seg.isStandin && !isMirror)
+              ? segHeightRefMap.createRef(key)
+              : null
           }
         >
           {hasListItemDisplay(seg) ? (
@@ -309,7 +308,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     return nodes
   }
 
-  renderFillSegs(segs: TableSeg[], fillType: string): VNode {
+  renderFillSegs(
+    segs: (SlicedCoordRange & EventRangeProps & { isStandin?: boolean })[],
+    fillType: string,
+  ): VNode {
     const { props, context } = this
     const { isRtl } = context
     const { todayRange, colWidth } = props
@@ -414,25 +416,25 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   // Utils
   // -----------------------------------------------------------------------------------------------
 
-  getMirrorSegs(): TableSeg[] {
+  getMirrorSegs(): (SlicedCoordRange & EventRangeProps)[] {
     let { props } = this
 
     if (props.eventResize && props.eventResize.segs.length) { // messy check
-      return props.eventResize.segs as TableSeg[]
+      return props.eventResize.segs
     }
 
     return []
   }
 
-  getHighlightSegs(): TableSeg[] {
+  getHighlightSegs(): (SlicedCoordRange & EventRangeProps)[] {
     let { props } = this
 
     if (props.eventDrag && props.eventDrag.segs.length) { // messy check
-      return props.eventDrag.segs as TableSeg[]
+      return props.eventDrag.segs
     }
 
     if (props.eventResize && props.eventResize.segs.length) { // messy check
-      return props.eventResize.segs as TableSeg[]
+      return props.eventResize.segs
     }
 
     return props.dateSelectionSegs

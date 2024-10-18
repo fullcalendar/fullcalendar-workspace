@@ -41,6 +41,10 @@ DayGrid
   bug: cell -main containers don't seem to have bottom margin for events
   bug: businessHours in month view, right side, has weird 1px gap
     (happens because percentage left/width -- try to return to using 'right'?)
+  bug (should re-verify):
+    events that are force to be list-item but span multiple days still take up space in later columns
+  bug (print-view):
+    for multi-day events, don't display title within non-start/end segs
   ensure DayGrid events don't overlap the left border of the day-cell when 0px padding
   for daygrid/timegrid that DON'T have horizontal scroll, improve header inner-text overflow:
     if not a header row that has sticky inner-content, set cell's overflow:hidden

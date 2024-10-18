@@ -1,28 +1,26 @@
 import {
-  SegHierarchy, groupIntersectingEntries, SegEntry,
+  SegHierarchy, groupIntersectingSegs,
   DateEnv,
   SegGroup,
+  EventRangeProps,
+  CoordSpan,
+  getEventKey,
 } from '@fullcalendar/core/internal'
-import { TimelineLaneSeg } from './TimelineLaneSlicer.js'
+import { TimelineCoordRange, TimelineRange } from './TimelineLaneSlicer.js'
 import { TimelineDateProfile } from './timeline-date-profile.js'
 import { dateToCoord } from './timeline-positioning.js'
 
-export interface TimelineSegHorizontals {
-  start: number
-  size: number
-}
-
 export function computeManySegHorizontals(
-  segs: TimelineLaneSeg[],
+  segs: (TimelineRange & EventRangeProps)[],
   segMinWidth: number | undefined,
   dateEnv: DateEnv,
   tDateProfile: TimelineDateProfile,
   slotWidth: number,
-): { [instanceId: string]: TimelineSegHorizontals } {
-  const res: { [instanceId: string]: TimelineSegHorizontals } = {}
+): { [instanceId: string]: CoordSpan } {
+  const res: { [instanceId: string]: CoordSpan } = {}
 
   for (const seg of segs) {
-    res[seg.eventRange.instance.instanceId] = computeSegHorizontals(
+    res[getEventKey(seg)] = computeSegHorizontals(
       seg,
       segMinWidth,
       dateEnv,
@@ -35,14 +33,14 @@ export function computeManySegHorizontals(
 }
 
 export function computeSegHorizontals(
-  seg: TimelineLaneSeg,
+  seg: TimelineRange,
   segMinWidth: number | undefined,
   dateEnv: DateEnv,
   tDateProfile: TimelineDateProfile,
   slotWidth: number,
-): TimelineSegHorizontals {
-  const startCoord = dateToCoord(seg.start, dateEnv, tDateProfile, slotWidth)
-  const endCoord = dateToCoord(seg.end, dateEnv, tDateProfile, slotWidth)
+): CoordSpan {
+  const startCoord = dateToCoord(seg.startDate, dateEnv, tDateProfile, slotWidth)
+  const endCoord = dateToCoord(seg.endDate, dateEnv, tDateProfile, slotWidth)
   let size = endCoord - startCoord
 
   if (segMinWidth) {
@@ -53,119 +51,59 @@ export function computeSegHorizontals(
 }
 
 export function computeFgSegPlacements( // mostly horizontals
-  segs: TimelineLaneSeg[],
-  segHorizontals: { [instanceId: string]: TimelineSegHorizontals },
+  segs: (TimelineRange & EventRangeProps)[],
+  segHorizontals: { [instanceId: string]: CoordSpan }, // TODO: use Map
   segHeights: Map<string, number>, // keyed by instanceId
+  hiddenGroupHeights: Map<string, number>,
   strictOrder?: boolean,
   maxStackDepth?: number,
 ): [
-  segTops: { [instanceId: string]: number },
-  segsBottom: number,
-  hiddenGroups: SegGroup[],
-  hiddenGroupTops: { [key: string]: number },
+  segTops: Map<string, number>,
+  hiddenGroups: SegGroup<TimelineCoordRange>[],
+  hiddenGroupTops: Map<string, number>,
+  totalHeight: number,
 ] {
-  let segEntries: SegEntry[] = []
-
-  for (let i = 0; i < segs.length; i += 1) {
-    let seg = segs[i]
-    let instanceId = seg.eventRange.instance.instanceId
-    let height = segHeights.get(instanceId)
-    let hcoords = segHorizontals[instanceId]
-
-    if (height != null && hcoords != null) {
-      segEntries.push({
-        index: i,
-        seg,
-        span: {
-          start: hcoords.start,
-          end: hcoords.start + hcoords.size,
-        },
-        thickness: height,
-      })
-    }
-  }
-
-  let hierarchy = new SegHierarchy()
+  let hierarchy = new SegHierarchy<TimelineCoordRange>((instanceId) => {
+    return segHeights.get(instanceId)
+  })
   if (strictOrder != null) {
     hierarchy.strictOrder = strictOrder
   }
   if (maxStackDepth != null) {
-    hierarchy.maxStackDepth = maxStackDepth
+    hierarchy.maxDepth = maxStackDepth
   }
 
-  let hiddenEntries = hierarchy.addSegs(segEntries)
-  let hiddenGroups = groupIntersectingEntries(hiddenEntries)
-  let hiddenGroupEntries: SegEntry[] = hiddenGroups.map((hiddenGroup, index) => ({
-    index: segs.length + index, // HACK: ensure no collision
-    segGroup: hiddenGroup,
-    span: hiddenGroup.span,
-    thickness: 1, // HACK to ensure it's placed
+  const [segPlacements, segTops, hiddenSegs] = hierarchy.insertSegs(segs.map((seg) => {
+    const hcoords = segHorizontals[getEventKey(seg)]
+
+    return {
+      ...seg,
+      start: hcoords.start,
+      end: hcoords.start + hcoords.size,
+    }
   }))
 
-  // add more-links into the hierarchy, but don't limit
-  hierarchy.maxStackDepth = -1 // HACK
-  hierarchy.addSegs(hiddenGroupEntries)
+  let totalHeight = 0
 
-  let visibleRects = hierarchy.toRects()
-  let segTops: { [instanceId: string]: number } = {}
-  let hiddenGroupTops: { [key: string]: number } = {}
+  for (const segPlacement of segPlacements) {
+    totalHeight = Math.max(totalHeight, segTops.get(segPlacement.key) + segPlacement.thickness)
+  }
 
-  for (let rect of visibleRects) {
-    const { seg, segGroup } = rect
+  const hiddenGroups = groupIntersectingSegs(hiddenSegs)
+  const hiddenGroupTops = new Map<string, number>()
 
-    if (seg) { // regular seg
-      segTops[seg.eventRange.instance.instanceId] = rect.levelCoord
-    } else { // hiddenGroup
-      hiddenGroupTops[segGroup.key] = rect.levelCoord
-    }
+  for (const hiddenGroup of hiddenGroups) {
+    const { levelCoord: top } = hierarchy.findInsertion(hiddenGroup, 0)
+    const hiddenGroupHeight = hiddenGroupHeights.get(hiddenGroup.key) || 0
+
+    hiddenGroupTops.set(hiddenGroup.key, top)
+    totalHeight = Math.max(totalHeight, top + hiddenGroupHeight)
   }
 
   return [
     segTops,
-    computeMaxBottom(segs, segTops, segHeights),
     hiddenGroups,
     hiddenGroupTops,
+    totalHeight,
   ]
-}
-
-export function computeMaxBottom(
-  segs: TimelineLaneSeg[],
-  segTops: { [instanceId: string]: number },
-  segHeights: Map<string, number>,
-): number {
-  let max = 0
-
-  for (const seg of segs) {
-    const { instanceId } = seg.eventRange.instance
-    const top = segTops[instanceId]
-    const height = segHeights.get(instanceId)
-
-    if (top != null && height != null) {
-      max = Math.max(max, top + height)
-    }
-  }
-
-  return max
-}
-
-/*
-TODO: converge with computeMaxBottom, but keys are different
-*/
-export function computeMoreLinkMaxBottom(
-  hiddenGroups: SegGroup[],
-  hiddenGroupTops: { [key: string]: number },
-  hiddenGroupHeights: Map<string, number>,
-): number {
-  let max = 0
-
-  for (const hiddenGroup of hiddenGroups) {
-    const top = hiddenGroupTops[hiddenGroup.key]
-    const height = hiddenGroupHeights.get(hiddenGroup.key)
-
-    if (top != null && height != null) {
-      max = Math.max(max, top + height)
-    }
-  }
-
-  return max
 }

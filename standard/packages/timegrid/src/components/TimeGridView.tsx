@@ -1,10 +1,10 @@
-import { DateComponent, ViewProps, memoize, DateMarker, NowTimer, DateRange } from "@fullcalendar/core/internal"
+import { DateComponent, ViewProps, memoize, DateMarker, NowTimer, DateRange, EventRangeProps } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
 import { DateHeaderCell, DayTableSlicer } from '@fullcalendar/daygrid/internal'
 import { buildDayRanges, buildTimeColsModel } from "./util.js"
 import { AllDaySplitter } from "../AllDaySplitter.js"
 import { DayTimeColsSlicer } from "../DayTimeColsSlicer.js"
-import { splitInteractionByCol, splitSegsByCol } from "../TimeColsSeg.js"
+import { splitInteractionByCol, splitSegsByCol, TimeGridRange } from "../TimeColsSeg.js"
 import { TimeGridWeekNumber } from "./TimeGridWeekNumber.js"
 import { TimeGridLayout } from './TimeGridLayout.js'
 import { createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
@@ -14,11 +14,11 @@ export class TimeGridView extends DateComponent<ViewProps> {
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
   private buildTimeColsModel = memoize(buildTimeColsModel)
   private buildDayRanges = memoize(buildDayRanges)
-  private splitFgEventSegs = memoize(splitSegsByCol)
-  private splitBgEventSegs = memoize(splitSegsByCol)
-  private splitBusinessHourSegs = memoize(splitSegsByCol)
-  private splitNowIndicatorSegs = memoize(splitSegsByCol)
-  private splitDateSelectionSegs = memoize(splitSegsByCol)
+  private splitFgEventSegs = memoize(splitSegsByCol<TimeGridRange & EventRangeProps>)
+  private splitBgEventSegs = memoize(splitSegsByCol<TimeGridRange & EventRangeProps>)
+  private splitBusinessHourSegs = memoize(splitSegsByCol<TimeGridRange & EventRangeProps>)
+  private splitNowIndicatorSegs = memoize(splitSegsByCol<TimeGridRange>)
+  private splitDateSelectionSegs = memoize(splitSegsByCol<TimeGridRange & EventRangeProps>)
   private splitEventDrag = memoize(splitInteractionByCol)
   private splitEventResize = memoize(splitInteractionByCol)
 

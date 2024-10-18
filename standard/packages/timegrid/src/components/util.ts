@@ -8,6 +8,9 @@ export function buildTimeColsModel(dateProfile: DateProfile, dateProfileGenerato
   return new DayTableModel(daySeries, false)
 }
 
+/*
+TODO: move this so @fullcalendar/daygrid
+*/
 export function buildDayRanges(dayTableModel: DayTableModel, dateProfile: DateProfile, dateEnv: DateEnv): DateRange[] {
   let ranges: DateRange[] = []
 

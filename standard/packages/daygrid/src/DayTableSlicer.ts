@@ -1,10 +1,9 @@
-import { DayTableModel, DateRange, Slicer } from '@fullcalendar/core/internal'
-import { TableSeg } from './TableSeg.js'
+import { DayTableModel, DateRange, Slicer, DayGridRange } from '@fullcalendar/core/internal'
 
-export class DayTableSlicer extends Slicer<TableSeg, [DayTableModel]> {
+export class DayTableSlicer extends Slicer<DayGridRange, [DayTableModel]> {
   forceDayIfListItem = true
 
-  sliceRange(dateRange: DateRange, dayTableModel: DayTableModel): TableSeg[] {
+  sliceRange(dateRange: DateRange, dayTableModel: DayTableModel): DayGridRange[] {
     return dayTableModel.sliceRange(dateRange)
   }
 }

@@ -2,13 +2,14 @@ import { MoreLinkContentArg, CssDimValue } from '@fullcalendar/core'
 import {
   MoreLinkContainer, BaseComponent,
   Dictionary, DateProfile, DateRange, DateMarker, EventSegUiInteractionState,
+  EventRangeProps,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { renderPlainFgSegs } from './TimeGridCol.js' // BAD
-import { TimeColsSeg } from '../TimeColsSeg.js'
+import { TimeGridRange } from '../TimeColsSeg.js'
 
 export interface TimeGridMoreLinkProps {
-  hiddenSegs: TimeColsSeg[]
+  hiddenSegs: (TimeGridRange & EventRangeProps)[]
   top: CssDimValue
   height: CssDimValue
   extraDateSpan?: Dictionary
@@ -16,8 +17,8 @@ export interface TimeGridMoreLinkProps {
   todayRange: DateRange
   nowDate: DateMarker
   eventSelection: string
-  eventDrag: EventSegUiInteractionState
-  eventResize: EventSegUiInteractionState
+  eventDrag: EventSegUiInteractionState<TimeGridRange>
+  eventResize: EventSegUiInteractionState<TimeGridRange>
 }
 
 export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {

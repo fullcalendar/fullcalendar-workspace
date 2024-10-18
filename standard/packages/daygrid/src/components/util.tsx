@@ -1,12 +1,14 @@
 import { CssDimValue, DayHeaderContentArg } from '@fullcalendar/core'
-import { DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, fracToCssDim } from '@fullcalendar/core/internal'
+import { DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, fracToCssDim, SlicedCoordRange } from '@fullcalendar/core/internal'
 import { ComponentChild } from '@fullcalendar/core/preact'
-import { TableSeg } from '../TableSeg.js'
 
 export function renderInner(renderProps: DayHeaderContentArg): ComponentChild {
   return renderProps.text
 }
 
+/*
+TODO: move this so @fullcalendar/daygrid
+*/
 export function buildDayTableModel(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
   let daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
 
@@ -84,7 +86,7 @@ export function computeTopFromDate(
 }
 
 export function computeHorizontalsFromSeg(
-  seg: TableSeg,
+  seg: SlicedCoordRange,
   colWidth: number | undefined,
   colCnt: number,
   isRtl: boolean,

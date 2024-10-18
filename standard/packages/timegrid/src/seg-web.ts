@@ -1,18 +1,22 @@
 import {
-  SegEntry,
   SegHierarchy,
-  SegRect,
-  buildEntryKey,
-  getEntrySpanEnd,
-  binarySearch,
   SegGroup,
-  groupIntersectingEntries,
+  groupIntersectingSegs,
+  EventPlacement,
+  binarySearch,
+  getCoordRangeEnd,
+  EventRangeProps,
+  SlicedCoordRange,
+  getEventKey,
 } from '@fullcalendar/core/internal'
+import { TimeGridCoordRange, TimeGridRange } from './TimeColsSeg.js'
+import { TimeGridSegVertical } from './event-placement.js'
 
 /*
 Output for buildWeb
 */
-interface SegNode extends SegEntry {
+type SegNode = SlicedCoordRange & EventRangeProps & {
+  thickness: number
   nextLevelNodes: SegNode[] // with highest-pressure first
 }
 
@@ -34,32 +38,43 @@ interface SegSiblingRange {
 /*
 For final output
 */
-export interface SegWebRect extends SegRect {
+export type SegWebRect = SlicedCoordRange & EventRangeProps & {
+  thickness: number
+  levelCoord: number
   stackDepth: number
   stackForward: number
 }
 
 /*
-segEntries assumed sorted
+segs assumed sorted
 */
 export function buildWebPositioning(
-  segEntries: SegEntry[],
+  segs: (TimeGridRange & EventRangeProps)[],
+  segVerticals: TimeGridSegVertical[],
   strictOrder?: boolean,
-  maxStackDepth?: number,
+  maxDepth?: number,
 ): [
   segRects: SegWebRect[],
-  hiddenGroups: SegGroup[]
+  hiddenGroups: SegGroup<TimeGridCoordRange>[]
 ] {
-  let hierarchy = new SegHierarchy()
+  let hierarchy = new SegHierarchy<TimeGridCoordRange>()
   if (strictOrder != null) {
     hierarchy.strictOrder = strictOrder
   }
-  if (maxStackDepth != null) {
-    hierarchy.maxStackDepth = maxStackDepth
+  if (maxDepth != null) {
+    hierarchy.maxDepth = maxDepth
   }
 
-  let hiddenEntries = hierarchy.addSegs(segEntries)
-  let hiddenGroups = groupIntersectingEntries(hiddenEntries)
+  let [,, hiddenSegs] = hierarchy.insertSegs(segs.map((seg, i) => {
+    const segVertical = segVerticals[i]
+    return {
+      ...seg,
+      start: segVertical.start,
+      end: segVertical.start + segVertical.size,
+    }
+  }))
+
+  let hiddenGroups = groupIntersectingSegs(hiddenSegs)
 
   let web = buildWeb(hierarchy)
   web = stretchWeb(web, 1) // all levelCoords/thickness will have 0.0-1.0
@@ -68,32 +83,26 @@ export function buildWebPositioning(
   return [segRects, hiddenGroups]
 }
 
-/*
-TODO: investigate whether this "web" can be built from SegHierarchy
-In SegHierarchy::findInsertion, we already find start/end overlaps in lower levels
-In buildWeb, we find overlaps in higher levels, but we just need to determine "pressure" and
-"chain length", which doesn't care about direction.
-*/
-function buildWeb(hierarchy: SegHierarchy): SegNode[] {
-  const { entriesByLevel } = hierarchy
+function buildWeb(hierarchy: SegHierarchy<TimeGridCoordRange>): SegNode[] {
+  const { placementsByLevel } = hierarchy
 
   const buildNode = cacheable(
     (level: number, lateral: number) => level + ':' + lateral,
     (level: number, lateral: number): SegNodeAndPressure => {
       let siblingRange = findNextLevelSegs(hierarchy, level, lateral)
       let [nextLevelNodes, maxPressure] = buildNodes(siblingRange, buildNode)
-      let entry = entriesByLevel[level][lateral]
+      let segPlacement = placementsByLevel[level][lateral]
 
       return [
-        { ...entry, nextLevelNodes },
-        entry.thickness + maxPressure, // the pressure builds
+        { ...segPlacement, nextLevelNodes },
+        segPlacement.thickness + maxPressure, // the pressure builds
       ]
     },
   )
 
   const [topLevelNodes] = buildNodes(
-    entriesByLevel.length
-      ? { level: 0, lateralStart: 0, lateralEnd: entriesByLevel[0].length }
+    placementsByLevel.length
+      ? { level: 0, lateralStart: 0, lateralEnd: placementsByLevel[0].length }
       : null,
     buildNode,
   )
@@ -137,10 +146,10 @@ function extractNode(a: SegNodeAndPressure): SegNode {
   return a[0]
 }
 
-function findNextLevelSegs(hierarchy: SegHierarchy, subjectLevel: number, subjectLateral: number): SegSiblingRange | null {
-  let { levelCoords, entriesByLevel } = hierarchy
-  let subjectEntry = entriesByLevel[subjectLevel][subjectLateral]
-  let afterSubject = levelCoords[subjectLevel] + subjectEntry.thickness
+function findNextLevelSegs(hierarchy: SegHierarchy<TimeGridCoordRange>, subjectLevel: number, subjectLateral: number): SegSiblingRange | null {
+  let { levelCoords, placementsByLevel } = hierarchy
+  let subjectPlacement = placementsByLevel[subjectLevel][subjectLateral]
+  let afterSubject = levelCoords[subjectLevel] + subjectPlacement.thickness
   let levelCnt = levelCoords.length
   let level = subjectLevel
 
@@ -148,15 +157,15 @@ function findNextLevelSegs(hierarchy: SegHierarchy, subjectLevel: number, subjec
   for (; level < levelCnt && levelCoords[level] < afterSubject; level += 1) ; // do nothing
 
   for (; level < levelCnt; level += 1) {
-    let entries = entriesByLevel[level]
-    let entry: SegEntry
-    let searchIndex = binarySearch(entries, subjectEntry.span.start, getEntrySpanEnd)
+    let placements = placementsByLevel[level]
+    let placement: EventPlacement<TimeGridCoordRange>
+    let searchIndex = binarySearch(placements, subjectPlacement.start, getCoordRangeEnd)
     let lateralStart = searchIndex[0] + searchIndex[1] // if exact match (which doesn't collide), go to next one
     let lateralEnd = lateralStart
 
-    while ( // loop through entries that horizontally intersect
-      (entry = entries[lateralEnd]) && // but not past the whole seg list
-      entry.span.start < subjectEntry.span.end
+    while ( // loop through placements that horizontally intersect
+      (placement = placements[lateralEnd]) && // but not past the whole seg list
+      placement.start < subjectPlacement.end
     ) { lateralEnd += 1 }
 
     if (lateralStart < lateralEnd) {
@@ -169,7 +178,7 @@ function findNextLevelSegs(hierarchy: SegHierarchy, subjectLevel: number, subjec
 
 function stretchWeb(topLevelNodes: SegNode[], totalThickness: number): SegNode[] {
   const stretchNode = cacheable(
-    (node: SegNode, startCoord: number, prevThickness: number) => buildEntryKey(node),
+    (node: SegNode, startCoord: number, prevThickness: number) => getEventKey(node),
     (node: SegNode, startCoord: number, prevThickness: number): [number, SegNode] => { // [startCoord, node]
       let { nextLevelNodes, thickness } = node
       let allThickness = thickness + prevThickness
@@ -209,14 +218,14 @@ function webToRects(topLevelNodes: SegNode[]): SegWebRect[] {
   let rects: SegWebRect[] = []
 
   const processNode = cacheable(
-    (node: SegNode, levelCoord: number, stackDepth: number) => buildEntryKey(node),
+    (node: SegNode, levelCoord: number, stackDepth: number) => getEventKey(node),
     (node: SegNode, levelCoord: number, stackDepth: number) => { // returns forwardPressure
-      let rect = {
+      let rect: SegWebRect = {
         ...node,
         levelCoord,
         stackDepth,
         stackForward: 0, // will assign after recursing
-      } as SegWebRect
+      }
       rects.push(rect)
 
       return (

@@ -1,16 +1,11 @@
-import { EventSegUiInteractionState, Seg } from '@fullcalendar/core/internal'
+import { DayGridRange, SlicedCoordRange } from '@fullcalendar/core/internal'
+import { EventSegUiInteractionState } from '@fullcalendar/core/internal'
 
-// this is a DATA STRUCTURE, not a component
+// DayGridRange utils (TODO: move)
+// -------------------------------------------------------------------------------------------------
 
-export interface TableSeg extends Seg {
-  row: number
-  start: number, // col
-  end: number, // col
-  isStandin?: boolean
-}
-
-export function splitSegsByRow(segs: TableSeg[], rowCnt: number) {
-  const byRow: TableSeg[][] = []
+export function splitSegsByRow<S extends DayGridRange>(segs: S[], rowCnt: number): S[][] {
+  const byRow: S[][] = []
 
   for (let row = 0; row < rowCnt; row++) {
     byRow[row] = []
@@ -24,10 +19,10 @@ export function splitSegsByRow(segs: TableSeg[], rowCnt: number) {
 }
 
 export function splitInteractionByRow(
-  ui: EventSegUiInteractionState<Seg & { row: number }> | null,
+  ui: EventSegUiInteractionState<DayGridRange> | null,
   rowCnt: number,
-): EventSegUiInteractionState[] {
-  const byRow: EventSegUiInteractionState[] = []
+): EventSegUiInteractionState<DayGridRange>[] {
+  const byRow: EventSegUiInteractionState<DayGridRange>[] = []
 
   if (!ui) {
     for (let row = 0; row < rowCnt; row++) {
@@ -50,14 +45,19 @@ export function splitInteractionByRow(
   return byRow
 }
 
-export function splitSegsByCol(segs: TableSeg[], colCnt: number) {
-  let byCol: TableSeg[][] = []
+export function splitSegsByCol<R extends SlicedCoordRange>(
+  segs: R[],
+  colCnt: number,
+): (R & { isStandin?: boolean })[][] {
+  let byCol: (R & { isStandin?: boolean })[][] = []
 
   for (let col = 0; col < colCnt; col++) {
     byCol.push([])
   }
 
-  for (let seg of segs) {
+  let seg: (R & { isStandin?: boolean })
+
+  for (seg of segs) {
     for (let col = seg.start; col < seg.end; col++) {
       if (seg.start !== col) {
         seg = {

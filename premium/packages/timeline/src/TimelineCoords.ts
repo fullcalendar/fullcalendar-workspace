@@ -1,11 +1,10 @@
 import { CssDimValue } from '@fullcalendar/core'
 import {
+  CoordSpan,
   DateEnv,
   DateMarker,
-  SegSpan,
   isInt
 } from '@fullcalendar/core/internal'
-import { TimelineSegHorizontals } from './event-placement.js'
 import { TimelineDateProfile } from './timeline-date-profile.js'
 
 /*
@@ -43,42 +42,10 @@ export function computeDateSnapCoverage(date: DateMarker, tDateProfile: Timeline
 }
 
 /*
-TODO: audit!!!
-*/
-export function coordToCss(
-  hcoord: number | null,
-  isRtl: boolean,
-): { left: CssDimValue, right: CssDimValue } {
-  if (hcoord === null) {
-    return { left: '', right: '' }
-  }
-  if (isRtl) {
-    return { right: hcoord, left: '' }
-  }
-  return { left: hcoord, right: '' }
-}
-
-/*
-TODO: audit!!!
-*/
-export function coordsToCss(
-  hcoords: SegSpan | null,
-  isRtl: boolean,
-): { left: CssDimValue, right: CssDimValue } {
-  if (!hcoords) {
-    return { left: '', right: '' }
-  }
-  if (isRtl) {
-    return { right: hcoords.start, left: -hcoords.end }
-  }
-  return { left: hcoords.start, right: -hcoords.end }
-}
-
-/*
 TODO: DRY up with elsewhere?
 */
 export function horizontalsToCss(
-  hcoord: TimelineSegHorizontals | null,
+  hcoord: CoordSpan | null,
   isRtl: boolean,
 ): { left?: CssDimValue, right?: CssDimValue, width?: CssDimValue } {
   if (!hcoord) {

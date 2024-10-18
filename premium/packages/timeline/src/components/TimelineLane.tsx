@@ -3,18 +3,20 @@ import {
   EventStore, EventUiHash, DateSpan, EventInteractionState,
   BaseComponent, memoize,
   getEventRangeMeta, DateMarker, DateRange, DateProfile, sortEventSegs,
-  SegGroup,
   RefMap,
   afterSize,
+  SegGroup,
+  EventRangeProps,
+  CoordSpan,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 import { horizontalsToCss } from '../TimelineCoords.js'
 import { TimelineLaneBg } from './TimelineLaneBg.js'
-import { TimelineLaneSlicer, TimelineLaneSeg } from '../TimelineLaneSlicer.js'
+import { TimelineCoordRange, TimelineLaneSlicer, TimelineRange } from '../TimelineLaneSlicer.js'
 import { TimelineEvent } from './TimelineEvent.js'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink.js'
-import { computeFgSegPlacements, computeManySegHorizontals, computeMoreLinkMaxBottom, TimelineSegHorizontals } from '../event-placement.js'
+import { computeFgSegPlacements, computeManySegHorizontals } from '../event-placement.js'
 import { TimelineEventHarness } from './TimelineEventHarness.js'
 
 export interface TimelineLaneProps {
@@ -65,7 +67,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   TODO: lots of memoization needed here!
   */
   render() {
-    let { props, context, segHeightRefMap } = this
+    let { props, context, segHeightRefMap, moreLinkHeightRefMap } = this
     let { options } = context
     let { dateProfile, tDateProfile } = props
 
@@ -81,26 +83,24 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     )
 
     let mirrorSegs =
-      (slicedProps.eventDrag ? slicedProps.eventDrag.segs as TimelineLaneSeg[] : null) ||
-      (slicedProps.eventResize ? slicedProps.eventResize.segs as TimelineLaneSeg[] : null) ||
+      (slicedProps.eventDrag ? slicedProps.eventDrag.segs : null) ||
+      (slicedProps.eventResize ? slicedProps.eventResize.segs : null) ||
       []
 
-    let fgSegs = this.sortEventSegs(slicedProps.fgEventSegs, options.eventOrder) as TimelineLaneSeg[]
+    let fgSegs = this.sortEventSegs(slicedProps.fgEventSegs, options.eventOrder)
 
     let fgSegHorizontals = props.slotWidth != null
       ? computeManySegHorizontals(fgSegs, options.eventMinWidth, context.dateEnv, tDateProfile, props.slotWidth)
       : {}
 
-    let [fgSegTops, fgSegsBottom, hiddenGroups, hiddenGroupTops] = computeFgSegPlacements( // verticals
+    let [fgSegTops, hiddenGroups, hiddenGroupTops, totalHeight] = computeFgSegPlacements(
       fgSegs,
       fgSegHorizontals,
       segHeightRefMap.current,
+      moreLinkHeightRefMap.current,
       options.eventOrderStrict,
       options.eventMaxStack,
     )
-
-    let moreLinksBottom = computeMoreLinkMaxBottom(hiddenGroups, hiddenGroupTops, this.moreLinkHeightRefMap.current)
-    let innerHeight = Math.max(moreLinksBottom, fgSegsBottom)
 
     let forcedInvisibleMap = // TODO: more convenient/DRY
       (slicedProps.eventDrag ? slicedProps.eventDrag.affectedInstances : null) ||
@@ -118,7 +118,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           bgEventSegs={slicedProps.bgEventSegs}
           businessHourSegs={slicedProps.businessHourSegs}
           dateSelectionSegs={slicedProps.dateSelectionSegs}
-          eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs as TimelineLaneSeg[] : [] /* bad new empty array? */}
+          eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : [] /* bad new empty array? */}
 
           // dimensions
           slotWidth={props.slotWidth}
@@ -131,7 +131,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
               ? 'fc-timeline-events-overlap-disabled'
               : 'fc-timeline-events-overlap-enabled'
           ].join(' ')}
-          style={{ height: innerHeight }}
+          style={{ height: totalHeight }}
         >
           {this.renderFgSegs(
             fgSegs,
@@ -151,8 +151,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
               : {},
             fgSegTops,
             {}, // forcedInvisibleMap
-            [],
-            {},
+            [], // hiddenGroups
+            new Map(), // hiddenGroupTops
             Boolean(slicedProps.eventDrag),
             Boolean(slicedProps.eventResize),
             false, // isDateSelecting. because mirror is never drawn for date selection
@@ -163,12 +163,12 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   }
 
   renderFgSegs(
-    segs: TimelineLaneSeg[],
-    segHorizontals: { [instanceId: string]: TimelineSegHorizontals },
-    segTops: { [instanceId: string]: number },
+    segs: (TimelineRange & EventRangeProps)[],
+    segHorizontals: { [instanceId: string]: CoordSpan },
+    segTops: Map<string, number>,
     forcedInvisibleMap: { [instanceId: string]: any },
-    hiddenGroups: SegGroup[],
-    hiddenGroupTops: { [key: string]: number },
+    hiddenGroups: SegGroup<TimelineCoordRange>[],
+    hiddenGroupTops: Map<string, number>,
     isDragging: boolean,
     isResizing: boolean,
     isDateSelecting: boolean,
@@ -181,7 +181,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         {segs.map((seg) => {
           const { eventRange } = seg
           const { instanceId } = eventRange.instance
-          const segTop = segTops[instanceId]
+          const segTop = segTops.get(instanceId)
           const segHorizontal = segHorizontals[instanceId]
           const isVisible = isMirror ||
             (segHorizontal && segTop != null && !forcedInvisibleMap[instanceId])
@@ -217,14 +217,14 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
             style={{
               top: hiddenGroupTops[hiddenGroup.key] || 0,
               ...horizontalsToCss({ // TODO: better way to do this?
-                start: hiddenGroup.span.start,
-                size: hiddenGroup.span.end - hiddenGroup.span.start
+                start: hiddenGroup.start,
+                size: hiddenGroup.end - hiddenGroup.start
               }, context.isRtl),
             }}
             heightRef={moreLinkHeightRefMap.createRef(hiddenGroup.key)}
           >
             <TimelineLaneMoreLink
-              hiddenSegs={hiddenGroup.segs as TimelineLaneSeg[] /* TODO: make SegGroup generic! */}
+              hiddenSegs={hiddenGroup.segs}
               dateProfile={props.dateProfile}
               nowDate={props.nowDate}
               todayRange={props.todayRange}

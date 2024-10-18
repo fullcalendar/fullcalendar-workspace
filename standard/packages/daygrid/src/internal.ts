@@ -2,7 +2,6 @@ import './index.css'
 
 export { DayTableSlicer } from './DayTableSlicer.js'
 export { TableDateProfileGenerator, buildDayTableRenderRange } from './TableDateProfileGenerator.js'
-export { TableSeg } from './TableSeg.js'
 
 export { DayGridView } from './components/DayGridView.js'
 export { DateHeaderCell } from './components/header/DateHeaderCell.js'

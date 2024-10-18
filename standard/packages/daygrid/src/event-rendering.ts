@@ -1,5 +1,4 @@
-import { createFormatter, DateFormatter } from '@fullcalendar/core/internal'
-import { TableSeg } from './TableSeg.js'
+import { createFormatter, DateFormatter, EventRangeProps, SlicedCoordRange } from '@fullcalendar/core/internal'
 
 export const DEFAULT_TABLE_EVENT_TIME_FORMAT: DateFormatter = createFormatter({
   hour: 'numeric',
@@ -8,7 +7,7 @@ export const DEFAULT_TABLE_EVENT_TIME_FORMAT: DateFormatter = createFormatter({
   meridiem: 'narrow',
 })
 
-export function hasListItemDisplay(seg: TableSeg) {
+export function hasListItemDisplay(seg: SlicedCoordRange & EventRangeProps) {
   let { display } = seg.eventRange.ui
 
   return display === 'list-item' || (

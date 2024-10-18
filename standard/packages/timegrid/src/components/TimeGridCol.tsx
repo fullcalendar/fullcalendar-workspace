@@ -6,13 +6,13 @@ import {
   DateProfile,
   DateRange, DayCellContainer,
   Dictionary,
+  EventRangeProps,
   EventSegUiInteractionState,
   fracToCssDim,
   getEventRangeMeta,
   hasCustomDayCellContent,
   memoize,
   renderFill,
-  Seg,
   SegGroup,
   sortEventSegs
 } from '@fullcalendar/core/internal'
@@ -20,9 +20,9 @@ import {
   createElement,
   Fragment,
 } from '@fullcalendar/core/preact'
-import { TimeColsSeg } from '../TimeColsSeg.js'
-import { computeFgSegHorizontals, computeFgSegVerticals } from '../event-placement.js'
-import { SegWebRect } from '../seg-web.js'
+import { TimeGridCoordRange, TimeGridRange } from '../TimeColsSeg.js'
+import { computeFgSegVerticals } from '../event-placement.js'
+import { buildWebPositioning, SegWebRect } from '../seg-web.js'
 import { TimeGridEvent } from './TimeGridEvent.js'
 import { TimeGridMoreLink } from './TimeGridMoreLink.js'
 import { TimeGridNowIndicatorLine } from './TimeGridNowIndicatorLine.js'
@@ -40,13 +40,13 @@ export interface TimeGridColProps {
   forPrint: boolean
 
   // content
-  fgEventSegs: TimeColsSeg[]
-  bgEventSegs: TimeColsSeg[]
-  businessHourSegs: TimeColsSeg[]
-  nowIndicatorSegs: TimeColsSeg[]
-  dateSelectionSegs: TimeColsSeg[]
-  eventDrag: EventSegUiInteractionState | null
-  eventResize: EventSegUiInteractionState | null
+  fgEventSegs: (TimeGridRange & EventRangeProps)[]
+  bgEventSegs: (TimeGridRange & EventRangeProps)[]
+  businessHourSegs: (TimeGridRange & EventRangeProps)[]
+  nowIndicatorSegs: TimeGridRange[]
+  dateSelectionSegs: (TimeGridRange & EventRangeProps)[]
+  eventDrag: EventSegUiInteractionState<TimeGridRange> | null
+  eventResize: EventSegUiInteractionState<TimeGridRange> | null
   eventSelection: string
 
   // dimensions
@@ -62,7 +62,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     let { options } = context
     let isSelectMirror = options.selectMirror
 
-    let mirrorSegs: Seg[] = // yuck
+    let mirrorSegs: (TimeGridRange & EventRangeProps)[] = // yuck
       (props.eventDrag && props.eventDrag.segs) ||
       (props.eventResize && props.eventResize.segs) ||
       (isSelectMirror && props.dateSelectionSegs) ||
@@ -73,7 +73,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       (props.eventResize && props.eventResize.affectedInstances) ||
       {}
 
-    let sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder) as TimeColsSeg[]
+    let sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
 
     // HACK: equired for when column is taller than slats. because all positioning of events is
     // done via percentages. needs to be a percentage of the total slat height
@@ -115,7 +115,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 false,
               )}
               {this.renderFgSegs(
-                mirrorSegs as TimeColsSeg[],
+                mirrorSegs,
                 {},
                 Boolean(props.eventDrag),
                 Boolean(props.eventResize),
@@ -137,7 +137,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   }
 
   renderFgSegs(
-    sortedFgSegs: TimeColsSeg[],
+    sortedFgSegs: (TimeGridRange & EventRangeProps)[],
     segIsInvisible: { [instanceId: string]: any },
     isDragging: boolean,
     isResizing: boolean,
@@ -159,7 +159,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   }
 
   renderPositionedFgSegs(
-    segs: TimeColsSeg[], // if not mirror, needs to be sorted
+    segs: (TimeGridRange & EventRangeProps)[], // if not mirror, needs to be sorted
     segIsInvisible: { [instanceId: string]: any },
     isDragging: boolean,
     isResizing: boolean,
@@ -180,12 +180,12 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       eventMinHeight,
       eventShortHeight,
     )
-    let [segRects, hiddenGroups] = computeFgSegHorizontals(segs, segVerticals, eventOrderStrict, eventMaxStack)
+    let [segRects, hiddenGroups] = buildWebPositioning(segs, segVerticals, eventOrderStrict, eventMaxStack)
     let isMirror = isDragging || isResizing || isDateSelecting
 
     return (
       <Fragment>
-        {this.renderHiddenGroups(hiddenGroups, segs)}
+        {this.renderHiddenGroups(hiddenGroups)}
         {segs.map((seg, index) => {
           let { eventRange } = seg
           let instanceId = eventRange.instance.instanceId // guaranteed because it's an fg event
@@ -212,8 +212,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             >
               <TimeGridEvent
                 eventRange={eventRange}
-                segStart={seg.start}
-                segEnd={seg.end}
+                segStart={seg.startDate}
+                segEnd={seg.endDate}
                 isStart={seg.isStart}
                 isEnd={seg.isEnd}
                 isDragging={isDragging}
@@ -232,22 +232,22 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   }
 
   /*
-  NOTE: will already have eventMinHeight applied because segEntries already had it
+  NOTE: will already have eventMinHeight applied because segEntries(?) already had it
   */
-  renderHiddenGroups(hiddenGroups: SegGroup[], segs: TimeColsSeg[]) {
+  renderHiddenGroups(hiddenGroups: SegGroup<TimeGridCoordRange>[]) {
     let { extraDateSpan, dateProfile, todayRange, nowDate, eventSelection, eventDrag, eventResize } = this.props
 
     return (
       <Fragment>
         {hiddenGroups.map((hiddenGroup) => {
-          let startFrac = hiddenGroup.span.start
-          let endFrac = hiddenGroup.span.end
+          let startFrac = hiddenGroup.start
+          let endFrac = hiddenGroup.end
           let heightFrac = endFrac - startFrac
 
           return (
             <TimeGridMoreLink
               key={hiddenGroup.key}
-              hiddenSegs={hiddenGroup.segs as TimeColsSeg[] /* TODO: make SegGroup generic */}
+              hiddenSegs={hiddenGroup.segs}
               top={fracToCssDim(startFrac)}
               height={fracToCssDim(heightFrac)}
               extraDateSpan={extraDateSpan}
@@ -264,7 +264,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     )
   }
 
-  renderFillSegs(segs: TimeColsSeg[], fillType: string) {
+  renderFillSegs(segs: (TimeGridRange & EventRangeProps)[], fillType: string) {
     let { props, context } = this
     let segVerticals = computeFgSegVerticals(
       segs,
@@ -305,14 +305,14 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     )
   }
 
-  renderNowIndicator(segs: TimeColsSeg[]) {
+  renderNowIndicator(segs: TimeGridRange[]) {
     let { date, dateProfile } = this.props
 
     // TODO: what if nowIndicator turned OFF??
 
     return segs.map((seg) => (
       <TimeGridNowIndicatorLine
-        nowDate={seg.start}
+        nowDate={seg.startDate}
         dayDate={date}
         dateProfile={dateProfile}
       />
@@ -359,13 +359,13 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 }
 
 export function renderPlainFgSegs(
-  sortedFgSegs: TimeColsSeg[],
+  sortedFgSegs: (TimeGridRange & EventRangeProps)[],
   { todayRange, nowDate, eventSelection, eventDrag, eventResize }: {
     todayRange: DateRange
     nowDate: DateMarker
     eventSelection: string
-    eventDrag: EventSegUiInteractionState | null
-    eventResize: EventSegUiInteractionState | null
+    eventDrag: EventSegUiInteractionState<TimeGridRange> | null
+    eventResize: EventSegUiInteractionState<TimeGridRange> | null
   },
 ) {
   let hiddenInstances =
@@ -386,8 +386,8 @@ export function renderPlainFgSegs(
           >
             <TimeGridEvent
               eventRange={eventRange}
-              segStart={seg.start}
-              segEnd={seg.end}
+              segStart={seg.startDate}
+              segEnd={seg.endDate}
               isStart={seg.isStart}
               isEnd={seg.isEnd}
               isDragging={false}

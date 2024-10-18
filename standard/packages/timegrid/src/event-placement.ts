@@ -1,11 +1,8 @@
 import {
-  SegEntry,
-  SegGroup,
   DateMarker,
   DateProfile,
 } from '@fullcalendar/core/internal'
-import { TimeColsSeg } from './TimeColsSeg.js'
-import { SegWebRect, buildWebPositioning } from './seg-web.js'
+import { TimeGridRange } from './TimeColsSeg.js'
 import { computeDateTopFrac } from './components/util.js'
 
 // VERTICAL
@@ -19,7 +16,7 @@ export interface TimeGridSegVertical {
 }
 
 export function computeFgSegVerticals(
-  segs: TimeColsSeg[],
+  segs: TimeGridRange[],
   dateProfile: DateProfile,
   colDate: DateMarker,
   slatCnt: number,
@@ -30,8 +27,8 @@ export function computeFgSegVerticals(
   const res: TimeGridSegVertical[] = []
 
   for (const seg of segs) {
-    const startFrac = computeDateTopFrac(seg.start, dateProfile, colDate)
-    const endFrac = computeDateTopFrac(seg.end, dateProfile, colDate)
+    const startFrac = computeDateTopFrac(seg.startDate, dateProfile, colDate)
+    const endFrac = computeDateTopFrac(seg.endDate, dateProfile, colDate)
     let heightFrac = endFrac - startFrac
     let isShort = false
 
@@ -56,33 +53,4 @@ export function computeFgSegVerticals(
   }
 
   return res
-}
-
-// HORIZONTAL
-// -------------------------------------------------------------------------------------------------
-
-export function computeFgSegHorizontals(
-  segs: TimeColsSeg[],
-  segVerticals: TimeGridSegVertical[],
-  eventOrderStrict?: boolean,
-  eventMaxStack?: number,
-): [
-  segRects: SegWebRect[],
-  hiddenGroups: SegGroup[],
-] {
-  const segEntries: SegEntry[] = segs.map((seg, index) => ({
-    index,
-    seg,
-    thickness: 1,
-    span: segVerticals[index],
-  }))
-
-  const [segRectsUnordered, hiddenGroups] = buildWebPositioning(segEntries, eventOrderStrict, eventMaxStack)
-  const segRects: SegWebRect[] = []
-
-  for (const segRect of segRectsUnordered) {
-    segRects[segRect.index] = segRect
-  }
-
-  return [segRects, hiddenGroups]
 }
