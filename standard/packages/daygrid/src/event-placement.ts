@@ -1,5 +1,5 @@
 import { EventRenderRange } from '@fullcalendar/core'
-import { DayTableCell, SegHierarchy } from '@fullcalendar/core/internal'
+import { DayTableCell, SegHierarchy, SlicedCoordRange } from '@fullcalendar/core/internal'
 import { DayRowEventRange, DayRowEventRangePart, getEventPartKey, sliceStandin } from './TableSeg.js'
 
 export function computeFgSegVerticals(
@@ -140,6 +140,35 @@ export function computeFgSegVerticals(
     segTops,
     heightsByCol,
   ]
+}
+
+export const ENABLE_STANDINS = true
+
+/*
+Used by BG events
+Generates standins for all columns past seg's first
+TODO: make more DRY with computeFgSegVerticals?
+*/
+export function sliceSegsAcrossCols<R extends SlicedCoordRange>(
+  segs: R[],
+  colCnt: number,
+): (R & { standinFor?: any })[][] {
+  let byCol: (R & { standinFor?: any })[][] = []
+
+  for (let col = 0; col < colCnt; col++) {
+    byCol.push([])
+  }
+
+  for (const seg of segs) {
+    let col = seg.start
+    byCol[col++].push(seg)
+
+    for (; col < seg.end; col++) {
+      byCol[col].push(sliceStandin(seg, col))
+    }
+  }
+
+  return byCol
 }
 
 // Utils

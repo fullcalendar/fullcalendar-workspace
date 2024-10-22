@@ -25,11 +25,11 @@ import {
   Fragment,
   Ref,
 } from '@fullcalendar/core/preact'
-import { DayRowEventRangePart, getEventPartKey, organizeSegsByStartCol, sliceSegsAcrossCols } from '../TableSeg.js'
+import { DayRowEventRangePart, getEventPartKey, organizeSegsByStartCol } from '../TableSeg.js'
 import { DayGridCell } from './DayGridCell.js'
 import { DayGridListEvent } from './DayGridListEvent.js'
 import { DayGridBlockEvent } from './DayGridBlockEvent.js'
-import { computeFgSegVerticals } from '../event-placement.js'
+import { computeFgSegVerticals, ENABLE_STANDINS, sliceSegsAcrossCols } from '../event-placement.js'
 import { hasListItemDisplay } from '../event-rendering.js'
 import { computeHorizontalsFromSeg } from './util.js'
 import { DayGridEventHarness } from './DayGridEventHarness.js'
@@ -120,7 +120,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     )
 
     // TODO: memoize?
-    const bgEventSegsByCol = sliceSegsAcrossCols(props.bgEventSegs, colCnt) // needs standins
+    const bgEventSegsByCol = (ENABLE_STANDINS ? sliceSegsAcrossCols : organizeSegsByStartCol)(
+      props.bgEventSegs,
+      colCnt
+    )
     const businessHoursByCol = organizeSegsByStartCol(props.businessHourSegs, colCnt)
     const highlightSegsByCol = organizeSegsByStartCol(this.getHighlightSegs(), colCnt)
     const mirrorSegsByCol = organizeSegsByStartCol(this.getMirrorSegs(), colCnt)
@@ -249,6 +252,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       const key = getEventPartKey(seg)
       const { standinFor, eventRange } = seg
       const { instanceId } = eventRange.instance
+
+      if (!ENABLE_STANDINS && standinFor) {
+        continue
+      }
 
       const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
       const localTop = segTops.get(standinFor ? getEventPartKey(standinFor) : key) ?? (isMirror ? 0 : undefined)
