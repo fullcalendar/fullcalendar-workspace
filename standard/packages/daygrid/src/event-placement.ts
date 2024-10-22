@@ -142,7 +142,7 @@ export function computeFgSegVerticals(
   ]
 }
 
-export const ENABLE_STANDINS = true
+export const ENABLE_STANDINS = false
 
 /*
 Used by BG events

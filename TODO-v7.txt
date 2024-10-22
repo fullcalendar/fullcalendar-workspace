@@ -11,6 +11,8 @@ Start/end-times on event elements
   it's unclear if we should be slicing dates, like what sliceEventStore does
   weird time text on issue-6187-b.html
   probably pre-existing bug: when timed event goes from 8pm-8pm on different day, just says "8pm" not "8pm - 12" or whatever
+  might affect LIST VIEW?
+    https://github.com/fullcalendar/fullcalendar/issues/7518
 ResizeObserver
   implement fallback
   structure: stop doing "frame" elements for measurements, and instead use just "cushion"
@@ -135,6 +137,8 @@ Markup/CSS/structure
     same with indent
   position the popover -1px -1px, to overlap border
   is text-selection disabled everywhere? was it before? (if fixed, find ticket)
+Accessibility
+  lack of text-selectability: https://github.com/fullcalendar/fullcalendar/issues/5628
 Performance
   why does TimelineLane::render get called 3 times initially?
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
