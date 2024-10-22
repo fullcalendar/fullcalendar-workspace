@@ -53,18 +53,16 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
       >
         {(InnerContent) => (
           <Fragment>
-            <div ref={this.innerElRef} className='fc-flex-column'>
-              <div className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
-                {this.props.indent && (
-                  <span className="fc-datagrid-indent">
-                    <span className="fc-icon" />
-                  </span>
-                )}
-                <InnerContent
-                  elTag="span"
-                  elClasses={['fc-cell-main']}
-                />
-              </div>
+            <div ref={this.innerElRef} className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
+              {this.props.indent && (
+                <span className="fc-datagrid-indent">
+                  <span className="fc-icon" />
+                </span>
+              )}
+              <InnerContent
+                elTag="span"
+                elClasses={['fc-cell-main']}
+              />
             </div>
             {resizer && (
               <div className="fc-datagrid-col-resizer" ref={resizerElRef} />

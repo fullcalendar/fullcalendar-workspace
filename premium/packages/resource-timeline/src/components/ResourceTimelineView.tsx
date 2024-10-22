@@ -484,6 +484,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     ---------------------------------------------------------------------------- */}
                     <Scroller
                       horizontal
+                      watchBorderBox
                       elClassNames={[
                         stickyFooterScrollbar ? 'fc-sticky-footer' : '',
                       ]}
@@ -694,12 +695,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     ---------------------------------------------------------------------------- */}
                     {stickyFooterScrollbar && (
                       <Scroller
-                        ref={this.timeFooterScrollerRef}
                         horizontal
+                        watchBorderBox
                         elClassNames={['fc-sticky-footer']}
                         elStyle={{
                           marginTop: '-1px', // HACK
                         }}
+                        ref={this.timeFooterScrollerRef}
                       >
                         <div
                           style={{

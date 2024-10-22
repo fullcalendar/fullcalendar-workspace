@@ -1,4 +1,8 @@
 
+.fc-scroller {
+  padding: 0 !important;
+}
+
 .fc-scroller-nobars {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */

@@ -1,5 +1,11 @@
 
-const callbackMap = new Map<Element, (w: number, h: number) => void>()
+type ResizeCallback = (w: number, h: number) => void
+type ResizeConfig = [
+  callback: ResizeCallback,
+  watchContentBox?: boolean,
+]
+
+const configMap = new Map<Element, ResizeConfig>()
 let flushedCallbackSet = new Set<() => void>()
 let isHandling = false
 
@@ -12,18 +18,23 @@ const resizeObserver = new ResizeObserver((entries) => {
   isHandling = true
 
   for (let entry of entries) {
-    const callback = callbackMap.get(entry.target)
+    const [callback, watchContentBox] = configMap.get(entry.target)
 
-    if (entry.contentBoxSize) {
-      // The standard makes contentBoxSize an array...
-      if (entry.contentBoxSize[0]) {
-        callback(entry.contentBoxSize[0].inlineSize, entry.contentBoxSize[0].blockSize)
+    if (watchContentBox) {
+      if (entry.contentBoxSize) {
+        // old versions of Firefox treat it as a single item. normalize
+        const box = entry.contentBoxSize[0] || (entry.contentBoxSize as any as ResizeObserverSize)
+
+        callback(box.inlineSize, box.blockSize)
       } else {
-        // ...but old versions of Firefox treat it as a single item
-        callback((entry.contentBoxSize as any).inlineSize, (entry.contentBoxSize as any).blockSize)
+        // legacy contentRect
+        callback(entry.contentRect.width, entry.contentRect.height)
       }
+    } else if (entry.borderBoxSize) {
+      callback(entry.borderBoxSize[0].inlineSize, entry.borderBoxSize[0].blockSize)
     } else {
-      callback(entry.contentRect.width, entry.contentRect.height)
+      const rect = entry.target.getBoundingClientRect()
+      callback(rect.width, rect.height)
     }
   }
 
@@ -45,13 +56,16 @@ TODO:
 */
 export function watchSize(
   el: HTMLElement,
-  callback: (width: number, height: number) => void,
+  callback: ResizeCallback,
+  watchContentBox?: boolean,
 ) {
-  callbackMap.set(el, callback)
-  resizeObserver.observe(el)
+  configMap.set(el, [callback, watchContentBox])
+  resizeObserver.observe(el, {
+    box: watchContentBox ? undefined : 'border-box',
+  })
 
   return () => {
-    callbackMap.delete(el)
+    configMap.delete(el)
     resizeObserver.unobserve(el)
   }
 }
@@ -59,6 +73,7 @@ export function watchSize(
 export function watchWidth(
   el: HTMLElement,
   callback: (width: number) => void,
+  watchContentBox?: boolean,
 ) {
   let currentWidth: number | undefined
 
@@ -66,12 +81,13 @@ export function watchWidth(
     if (currentWidth == null || currentWidth !== width) {
       callback(currentWidth = width)
     }
-  })
+  }, watchContentBox)
 }
 
 export function watchHeight(
   el: HTMLElement,
   callback: (height: number) => void,
+  watchContentBox?: boolean,
 ) {
   let currentHeight: number | undefined
 
@@ -79,7 +95,7 @@ export function watchHeight(
     if (currentHeight == null || currentHeight !== height) {
       callback(currentHeight = height)
     }
-  })
+  }, watchContentBox)
 }
 
 export function afterSize(callback: () => void) {

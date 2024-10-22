@@ -200,7 +200,6 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               horizontal
               hideScrollbars
               elClassNames={['fc-cell fc-liquid']} // a "super" cell
-              // ^NOTE: not a good idea if ever gets left/right border
               ref={this.headerScrollerRef}
             >
               <div
@@ -246,7 +245,6 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 horizontal
                 hideScrollbars
                 elClassNames={['fc-cell', 'fc-liquid']} // a "super" cell
-                // ^NOTE: not a good idea if ever gets left/right border
                 ref={this.allDayScrollerRef}
               >
                 <div
@@ -302,7 +300,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             vertical={verticalScrolling}
             hideScrollbars
             elClassNames={[
-              'fc-cell', // NOTE: not a good idea if ever gets left/right border
+              'fc-cell',
               'fc-flex-column',
               'fc-content-box',
             ]}
@@ -414,11 +412,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             {Boolean(stickyFooterScrollbar) && (
               <Scroller
                 horizontal
+                watchBorderBox
                 elClassNames={['fc-sticky-footer']}
                 elStyle={{
                   marginTop: '-1px', // HACK
                 }}
-                // ^NOTE: not a good idea if ever gets left/right border
                 ref={this.footScrollerRef}
               >
                 <div

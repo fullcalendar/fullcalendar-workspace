@@ -11,6 +11,11 @@ export interface ScrollerProps {
   hideScrollbars?: boolean // default: false
   children: ComponentChildren
 
+  // will watch the element's *outer* width/height instead of the inner
+  // will affect what's given to widthRef/heightRef
+  // ALSO, HACKY requirement: element can't have borders! scrollbar widths will be wrong
+  watchBorderBox?: boolean
+
   // el hooks
   elClassNames?: string[]
   elStyle?: Dictionary
@@ -61,14 +66,20 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   }
 
   componentDidMount(): void {
+    const watchContentBox = !this.props.watchBorderBox
     const el = this.elRef.current // TODO: make dynamic with useEffect
 
     this.listener = new ScrollListener(el)
 
-    this.disconnectSize = watchSize(el, (contentWidth, contentHeight) => {
+    this.disconnectSize = watchSize(el, (width, height) => {
       const { props, context } = this
-      const bottomScrollbarWidth = el.offsetHeight - el.clientHeight
-      const horizontalScrollbarWidth = el.offsetWidth - el.clientWidth
+
+      // NOTE: if watchBorderBox is enabled, then we should technically subtract border width,
+      // However, we simply require that callers don't apply border to the element
+      // FYI, width/height never include padding because padding is disallowed for fc-scroller
+      const bottomScrollbarWidth = Math.round(height) - el.clientHeight
+      const horizontalScrollbarWidth = Math.round(width) - el.clientWidth
+
       let rightScrollbarWidth = 0
       let leftScrollbarWidth = 0
 
@@ -78,11 +89,11 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
         rightScrollbarWidth = horizontalScrollbarWidth
       }
 
-      if (!isDimsEqual(this.currentWidth, contentWidth)) {
-        setRef(props.widthRef, this.currentWidth = contentWidth)
+      if (!isDimsEqual(this.currentWidth, width)) {
+        setRef(props.widthRef, this.currentWidth = width)
       }
-      if (!isDimsEqual(this.currentHeight, contentHeight)) {
-        setRef(props.heightRef, this.currentHeight = contentHeight)
+      if (!isDimsEqual(this.currentHeight, height)) {
+        setRef(props.heightRef, this.currentHeight = height)
       }
       if (!isDimsEqual(this.currentBottomScrollbarWidth, bottomScrollbarWidth)) {
         setRef(props.bottomScrollbarWidthRef, this.currentBottomScrollbarWidth = bottomScrollbarWidth)
@@ -93,7 +104,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
       if (!isDimsEqual(this.currentLeftScrollbarWidth, leftScrollbarWidth)) {
         setRef(props.leftScrollbarWidthRef, this.currentLeftScrollbarWidth = leftScrollbarWidth)
       }
-    })
+    }, watchContentBox)
   }
 
   componentWillUnmount(): void {

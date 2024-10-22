@@ -47,18 +47,16 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         willUnmount={renderHooks.headerWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className='fc-flex-column'>
-            <div className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
-              {this.props.indent && (
-                <span className="fc-datagrid-indent">
-                  <span className="fc-icon" />
-                </span>
-              )}
-              <InnerContent
-                elTag="span"
-                elClasses={['fc-cell-main']}
-              />
-            </div>
+          <div ref={this.innerElRef} className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
+            {this.props.indent && (
+              <span className="fc-datagrid-indent">
+                <span className="fc-icon" />
+              </span>
+            )}
+            <InnerContent
+              elTag="span"
+              elClasses={['fc-cell-main']}
+            />
           </div>
         )}
       </ContentContainer>

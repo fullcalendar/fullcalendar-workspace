@@ -51,19 +51,17 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
           willUnmount={spec.labelWillUnmount}
         >
           {(InnerContent) => (
-            <div ref={this.innerElRef} className='fc-flex-column'>
-              <div className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
-                <ExpanderIcon
-                  indent={0}
-                  hasChildren
-                  isExpanded={props.isExpanded}
-                  onExpanderClick={this.onExpanderClick}
-                />
-                <InnerContent
-                  elTag="span"
-                  elClasses={['fc-cell-main']}
-                />
-              </div>
+            <div ref={this.innerElRef} className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
+              <ExpanderIcon
+                indent={0}
+                hasChildren
+                isExpanded={props.isExpanded}
+                onExpanderClick={this.onExpanderClick}
+              />
+              <InnerContent
+                elTag="span"
+                elClasses={['fc-cell-main']}
+              />
             </div>
           )}
         </ContentContainer>

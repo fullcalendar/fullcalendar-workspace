@@ -63,21 +63,19 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className='fc-flex-column'>
-            <div className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
-              {colSpec.isMain && (
-                <ExpanderIcon
-                  indent={props.indent}
-                  hasChildren={props.hasChildren}
-                  isExpanded={props.isExpanded}
-                  onExpanderClick={this.onExpanderClick}
-                />
-              )}
-              <InnerContent
-                elTag="span"
-                elClasses={['fc-cell-main']}
+          <div ref={this.innerElRef} className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
+            {colSpec.isMain && (
+              <ExpanderIcon
+                indent={props.indent}
+                hasChildren={props.hasChildren}
+                isExpanded={props.isExpanded}
+                onExpanderClick={this.onExpanderClick}
               />
-            </div>
+            )}
+            <InnerContent
+              elTag="span"
+              elClasses={['fc-cell-main']}
+            />
           </div>
         )}
       </ContentContainer>

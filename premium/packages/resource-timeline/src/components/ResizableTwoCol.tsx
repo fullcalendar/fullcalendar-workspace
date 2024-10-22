@@ -86,15 +86,18 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
   }
 
   componentDidMount() {
+    // TODO: since we're moving away from content-box watching,
+    // make the user responsible for watching dimensions of inner content
+
     this.detachStartWidth = watchWidth(this.startElRef.current, (width) => {
       this.startWidth = width
       afterSize(this.fireSizing)
-    })
+    }, /* watchContentBox = */ true)
 
     this.detachEndWidth = watchWidth(this.endElRef.current, (width) => {
       this.endWidth = width
       afterSize(this.fireSizing)
-    })
+    }, /* watchContentBox = */ true)
 
     this.initResizing()
   }

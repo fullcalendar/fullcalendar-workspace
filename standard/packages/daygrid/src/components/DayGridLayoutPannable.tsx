@@ -146,12 +146,13 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
         </Scroller>
         {Boolean(stickyFooterScrollbar) && (
           <Scroller
-            ref={this.footerScrollerRef}
             horizontal
+            watchBorderBox
             elClassNames={['fc-sticky-footer']}
             elStyle={{
               marginTop: '-1px', // HACK
             }}
+            ref={this.footerScrollerRef}
           >
             <div
               style={{

@@ -13,7 +13,7 @@ export interface ResourceLaneProps extends TimelineLaneProps {
 
 export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
-  private frameElRef = createRef<HTMLDivElement>()
+  private innerElRef = createRef<HTMLDivElement>()
   private unwatchHeight?: () => void
 
   render() {
@@ -39,7 +39,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         willUnmount={options.resourceLaneWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.frameElRef} className='fc-flex-column'>
+          <div ref={this.innerElRef} className='fc-flex-column'>
             <InnerContent
               elTag="div"
               elClasses={['fc-timeline-lane-misc']}
@@ -69,7 +69,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   }
 
   componentDidMount(): void {
-    this.unwatchHeight = watchHeight(this.frameElRef.current, (height) => {
+    this.unwatchHeight = watchHeight(this.innerElRef.current, (height) => {
       setRef(this.props.innerHeightRef, height)
     })
   }
