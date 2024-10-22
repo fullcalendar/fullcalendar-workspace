@@ -150,7 +150,14 @@ export type { EventSourceDef } from './structs/event-source-def.js'
 export type { EventSourceRefined } from './structs/event-source-parse.js'
 export { EventSourceRefiners } from './structs/event-source-parse.js'
 
-export { SegHierarchy, EventPlacement, groupIntersectingSegs, SegGroup, binarySearch } from './seg-hierarchy.js'
+export {
+  EventPlacement,
+  EventInsertion,
+  SegHierarchy,
+  SegGroup,
+  groupIntersectingSegs,
+  binarySearch,
+} from './seg-hierarchy.js'
 
 export type { InteractionSettings, InteractionSettingsStore } from './interactions/interaction.js'
 export {

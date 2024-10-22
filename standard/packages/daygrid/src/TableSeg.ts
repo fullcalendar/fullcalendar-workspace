@@ -1,5 +1,26 @@
-import { DayGridRange, SlicedCoordRange } from '@fullcalendar/core/internal'
+import { DayGridRange, EventRangeProps, getEventKey, SlicedCoordRange } from '@fullcalendar/core/internal'
 import { EventSegUiInteractionState } from '@fullcalendar/core/internal'
+
+// TODO: use these types elsewhere
+
+export type DayRowRange = SlicedCoordRange
+
+export type DayRowEventRange = DayRowRange & EventRangeProps
+
+export type DayRowEventRangePart = DayRowEventRange & {
+  isSlice?: boolean
+  standinFor?: DayRowEventRange
+}
+
+/*
+We need really specific keys because RefMap::createRef() which is then given to heightRef
+unable to change key! As a result, we cannot reuse elements between normal/slice/standin types,
+but that's okay since they render quite differently
+*/
+export function getEventPartKey(seg: DayRowEventRangePart): string {
+  return getEventKey(seg) + ':' + seg.start +
+    (seg.standinFor ? ':standin' : seg.isSlice ? ':slice' : '')
+}
 
 // DayGridRange utils (TODO: move)
 // -------------------------------------------------------------------------------------------------
@@ -45,33 +66,60 @@ export function splitInteractionByRow(
   return byRow
 }
 
-export function splitSegsByCol<R extends SlicedCoordRange>(
+export function organizeSegsByStartCol<R extends SlicedCoordRange>(
   segs: R[],
-  colCnt: number,
-): (R & { isStandin?: boolean })[][] {
-  let byCol: (R & { isStandin?: boolean })[][] = []
+  colCnt: number
+): R[][] {
+  let byCol: (R & { standinFor?: any })[][] = []
 
   for (let col = 0; col < colCnt; col++) {
     byCol.push([])
   }
 
-  let seg: (R & { isStandin?: boolean })
+  for (const seg of segs) {
+    byCol[seg.start].push(seg)
+  }
 
-  for (seg of segs) {
-    for (let col = seg.start; col < seg.end; col++) {
-      if (seg.start !== col) {
-        seg = {
-          ...seg,
-          start: col,
-          end: col + 1,
-          isStart: false,
-          isEnd: seg.isEnd && seg.end - 1 === col,
-          isStandin: true,
-        }
-      }
-      byCol[col].push(seg)
+  return byCol
+}
+
+/*
+Used by BG events
+Generates standins for all columns past seg's first
+TODO: make more DRY with computeFgSegVerticals?
+*/
+export function sliceSegsAcrossCols<R extends SlicedCoordRange>(
+  segs: R[],
+  colCnt: number,
+): (R & { standinFor?: any })[][] {
+  let byCol: (R & { standinFor?: any })[][] = []
+
+  for (let col = 0; col < colCnt; col++) {
+    byCol.push([])
+  }
+
+  for (const seg of segs) {
+    let col = seg.start
+    byCol[col++].push(seg)
+
+    for (; col < seg.end; col++) {
+      byCol[col].push(sliceStandin(seg, col))
     }
   }
 
   return byCol
+}
+
+export function sliceStandin<R extends SlicedCoordRange>(
+  seg: R,
+  col: number,
+): (R & { standinFor: R }) {
+  return {
+    ...seg,
+    start: col,
+    end: col + 1,
+    isStart: seg.isStart && seg.start === col,
+    isEnd: seg.isEnd && seg.end - 1 === col,
+    standinFor: seg,
+  }
 }

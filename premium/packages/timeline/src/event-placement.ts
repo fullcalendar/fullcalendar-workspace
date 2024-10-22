@@ -56,37 +56,50 @@ export function computeFgSegPlacements( // mostly horizontals
   segHeights: Map<string, number>, // keyed by instanceId
   hiddenGroupHeights: Map<string, number>,
   strictOrder?: boolean,
-  maxStackDepth?: number,
+  maxDepth?: number,
 ): [
   segTops: Map<string, number>,
   hiddenGroups: SegGroup<TimelineCoordRange>[],
   hiddenGroupTops: Map<string, number>,
   totalHeight: number,
 ] {
-  let hierarchy = new SegHierarchy<TimelineCoordRange>((instanceId) => {
-    return segHeights.get(instanceId)
-  })
-  if (strictOrder != null) {
-    hierarchy.strictOrder = strictOrder
-  }
-  if (maxStackDepth != null) {
-    hierarchy.maxDepth = maxStackDepth
-  }
-
-  const [segPlacements, segTops, hiddenSegs] = hierarchy.insertSegs(segs.map((seg) => {
+  const segRanges: (TimelineCoordRange & EventRangeProps)[] = segs.map((seg) => {
     const hcoords = segHorizontals[getEventKey(seg)]
-
     return {
       ...seg,
       start: hcoords.start,
       end: hcoords.start + hcoords.size,
     }
-  }))
+  })
 
+  const hierarchy = new SegHierarchy<TimelineCoordRange>(
+    segRanges,
+    (seg) => segHeights.get(getEventKey(seg)),
+    strictOrder,
+    undefined, // maxCoord
+    maxDepth,
+  )
+
+  const segTops = new Map<string, number>()
+  hierarchy.traverseSegs((seg, segTop) => {
+    segTops.set(getEventKey(seg), segTop)
+  })
+
+  const { hiddenSegs } = hierarchy
   let totalHeight = 0
 
-  for (const segPlacement of segPlacements) {
-    totalHeight = Math.max(totalHeight, segTops.get(segPlacement.key) + segPlacement.thickness)
+  for (const segRange of segRanges) {
+    const segKey = getEventKey(segRange)
+    const segHeight = segHeights.get(segKey)
+    const segTop = segTops.get(segKey)
+
+    if (segHeight != null) {
+      if (segTop != null) {
+        totalHeight = Math.max(totalHeight, segTop + segHeight)
+      } else {
+        hiddenSegs.push(segRange)
+      }
+    }
   }
 
   const hiddenGroups = groupIntersectingSegs(hiddenSegs)

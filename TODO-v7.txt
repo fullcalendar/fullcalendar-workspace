@@ -19,6 +19,14 @@ REVIVE allowReslicing...
   does fit between levels:
     https://codepen.io/arshaw/pen/LYwbxza?editors=0110
 
+TODO: add new setting
+TODO: tabindex effect
+
+Start/end-times on event elements
+  StandardEvent is in charge of this, via buildEventRangeTimeText
+  it's unclear if we should be slicing dates, like what sliceEventStore does
+  weird time text on issue-6187-b.html
+  probably pre-existing bug: when timed event goes from 8pm-8pm on different day, just says "8pm" not "8pm - 12" or whatever
 ResizeObserver
   implement fallback
   structure: stop doing "frame" elements for measurements, and instead use just "cushion"
@@ -32,8 +40,8 @@ Theming
     ensure minimum Bootstrap version
   in bootstrap themes, event-height line-height is very tall. normalize? then make changelog entry?
 DayGrid
+  structure: don't render selection within specific days (faster for rerender on DnD)
   bug: crazy error: throw new Error('alignGridTop not supported yet')
-  bug: resizing event to different row, no mirror rendered in other rows
   bug: no matter how tall daygrid rows are filled with events, should never squish fc-daygrid-cell-main
     down to zero height. Noticed while working with repro in #6798
     afterwards, write automated test
@@ -77,6 +85,7 @@ Timeline
   .fc-timeline-now-indicator-container shouldn't cover all the text in the header cells
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
+  Did +more links in timeline always have strict order (meaning they were at bottom?). Regression?
 Resource DayGrid
   bug w/ `bundle/examples-v7/resource-daygrid.html` when dragging event3 one day ahead,
     would result in a +more link that'd disappear when you return, but after we refactor DayGrid rendering, should be fixed
@@ -144,7 +153,6 @@ Markup/CSS/structure
   is text-selection disabled everywhere? was it before? (if fixed, find ticket)
 Performance
   why does TimelineLane::render get called 3 times initially?
-  if event will never be rendered because >eventMaxStack or >dayMaxEvents, don't put in dom at all!
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
     not rerendinering events that didn't change --- not fixed in v6 or v7-beta
   [?] https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)

@@ -1,11 +1,29 @@
-import { EventRangeProps, EventRenderRange, getEventKey } from './component-util/event-rendering.js'
+import { EventRangeProps } from './component-util/event-rendering.js'
 import { computeEarliestStart, CoordRange, doCoordRangesIntersect, getCoordRangeEnd, intersectCoordRanges, joinCoordRanges, SlicedCoordRange } from './coord-range.js'
 import { buildIsoString } from './datelib/formatting-utils.js'
 
 /*
+for INPUT
+*/
+export type EventSeg<R extends SlicedCoordRange> = R & EventRangeProps & {
+  isSlice?: boolean // output will retain this
+}
+
+/*
+for INTERNAL storage and OUTPUT
+QUESTION: won't depth change based on reslicing Fragments, which might make contact?
+*/
+export type EventPlacement<R extends SlicedCoordRange> = EventSeg<R> & {
+  thickness: number
+  depth: number
+  isSlice: boolean
+  isZombie: boolean
+}
+
+/*
 for POTENTIAL insertion
 */
-interface EventInsertion<R extends SlicedCoordRange> {
+export interface EventInsertion<R extends SlicedCoordRange> {
   // All segs witin a single "level" share the same levelCoord
   // As segs accumulate, new interstitial levels can be added
   // Thus, levelIndex might become stale
@@ -17,209 +35,179 @@ interface EventInsertion<R extends SlicedCoordRange> {
   lateralIndex: number
 
   // information about the EventCoordRange in the prior level this EventCoordRange is touching
-  touchingLevelIndex: number // -1 if no touching
-  touchingLateralIndex: number // -1 if no touching
-  touchingPlacement: EventPlacement<R> | undefined // the last touching entry in the level
+  touchingPlacement: EventPlacement<R> | undefined
 
   // the max traversal depth through touching-seg chain in prior levels
   depth: number
 }
 
-/*
-for INTERNAL storage and OUTPUT
-QUESTION: won't depth change based on reslicing Fragments, which might make contact?
-*/
-export type EventPlacement<R extends SlicedCoordRange> = R & EventRangeProps & {
-  key: string
-  thickness: number
-  depth: number // if isZombie, will be stale
-  isExperiment: boolean // SHOULD be included in DOM, but as visibility:hidden and w/o levelCoord
-  isZombie: boolean // should NOT be included in DOM, but internally occupying space
-}
-
-const THICKNESS_MIN = 10
-
 export class SegHierarchy<R extends SlicedCoordRange> {
-  // settings
-  strictOrder: boolean = false
-  allowFragments: boolean = false
-  hiddenConsumes: boolean = false // hidden segs also hide the touchingPlacement?
-  maxCoord: number = -1 // -1 means no max
-  maxDepth: number = -1 // -1 means no max
-
-  // internal storage
   placementsByLevel: EventPlacement<R>[][] = []
   levelCoords: number[] = [] // parallel with placementsByLevel
-  hiddenSegs: (R & EventRangeProps)[] = []
+  hiddenSegs: EventSeg<R>[] = []
 
   constructor(
-    private getSegThickness = (segKey: string): number | undefined => {
+    segs: EventSeg<R>[],
+    private getSegThickness = (seg: EventSeg<R>): number | undefined => {
       return 1
     },
-  ) {}
+    private strictOrder: boolean = false,
+    private maxCoord: number | undefined,
+    private maxDepth: number | undefined,
+    private hiddenConsumes = false, // hidden segs also hide the touchingPlacement?
+    private allowSlicing = false,
+  ) {
+    for (const seg of segs) {
+      this.insertSeg(seg, this.getSegThickness(seg))
+    }
+  }
+
+  private insertSeg(
+    seg: EventSeg<R>,
+    segThickness: number | undefined,
+    isSlice?: boolean,
+  ): void {
+    if (segThickness != null) {
+      const insertion = this.findInsertion(seg, segThickness)
+
+      if (this.isInsertionValid(insertion, segThickness)) {
+        this.insertSegAt(seg, insertion, segThickness, isSlice)
+      } else {
+        const { touchingPlacement } = insertion
+
+        // is there a touching-seg?
+        if (touchingPlacement) {
+
+          // consume the touching-seg?
+          if (this.hiddenConsumes && !touchingPlacement.isZombie) {
+            touchingPlacement.isZombie = true // edit in-place
+
+            if (this.allowSlicing) {
+              const intersection = intersectCoordRanges(touchingPlacement, seg)
+              Object.assign(touchingPlacement, intersection) // edit in-place
+              touchingPlacement.isSlice = true // edit in-place
+              this.hiddenSegs.push(touchingPlacement)
+              this.splitSeg(touchingPlacement, touchingPlacement.thickness, seg)
+            } else {
+              this.hiddenSegs.push(touchingPlacement)
+            }
+          }
+
+          // record seg as hidden
+          if (this.allowSlicing) {
+            const intersection = intersectCoordRanges(seg, touchingPlacement)
+            this.hiddenSegs.push({ ...seg, ...intersection })
+            this.splitSeg(seg, segThickness, touchingPlacement)
+          } else {
+            this.hiddenSegs.push(seg)
+          }
+
+        // not touching anything
+        } else {
+          // record seg as hidden
+          this.hiddenSegs.push(seg)
+        }
+      }
+    }
+  }
 
   /*
-  The `segs` input cannot have duplicate eventRanges
-  Returns arrays in stable order, based on order of `segs`
+  TODO: inline?
   */
-  insertSegs(segs: (R & EventRangeProps)[]): [
-    placements: EventPlacement<R>[],
-    segTops: Map<string, number>,
-    hiddenSegs: (R & EventRangeProps)[],
-  ] {
-    const { placementsByLevel, levelCoords } = this
-    const placementsByEventRange = new Map<EventRenderRange, EventPlacement<R>[]>()
-    const hiddenSegsByEventRange = new Map<EventRenderRange, (R & EventRangeProps)[]>()
-    const stablePlacements: EventPlacement<R>[] = []
-    const stableHiddenSegs: (R & EventRangeProps)[] = []
-    const segTops = new Map<string, number>()
-
-    for (const seg of segs) {
-      this.insertSeg(seg, /* isFragment = */ false)
-
-      // prime the arrays, stay in-order
-      placementsByEventRange.set(seg.eventRange, [])
-      hiddenSegsByEventRange.set(seg.eventRange, [])
-    }
-
-    for (let i = 0; i < placementsByLevel.length; i++) {
-      const levelCoord = levelCoords[i]
-
-      for (const placedSeg of placementsByLevel[i]) {
-        if (!placedSeg.isZombie) {
-          placementsByEventRange.get(placedSeg.eventRange).push(placedSeg)
-
-          if (!placedSeg.isExperiment) {
-            segTops.set(placedSeg.key, levelCoord)
-          }
-        }
-      }
-    }
-
-    for (const hiddenSeg of this.hiddenSegs) {
-      hiddenSegsByEventRange.get(hiddenSeg.eventRange).push(hiddenSeg)
-    }
-
-    for (const eventRangePlacements of placementsByEventRange.values()) {
-      stablePlacements.push(...eventRangePlacements)
-    }
-
-    for (const eventRangeHiddenSegs of hiddenSegsByEventRange.values()) {
-      stableHiddenSegs.push(...eventRangeHiddenSegs)
-    }
-
-    return [stablePlacements, segTops, stableHiddenSegs]
-  }
-
-  private insertSeg(seg: R & EventRangeProps, isFragment: boolean): void {
-    const segKey = getEventFragmentKey(seg, isFragment)
-    const thicknessMaybe = this.getSegThickness(segKey)
-    let thickness = Math.max(thicknessMaybe || 0, THICKNESS_MIN)
-    let isExperiment = thicknessMaybe == null
-    let insertion = this.findInsertion(seg, thickness)
-    let isValid = this.isInsertionValid(insertion, thickness)
-
-    if (!isExperiment && !isValid) {
-      isExperiment = true
-      insertion = this.findInsertion(seg, thickness = THICKNESS_MIN)
-      isValid = this.isInsertionValid(insertion, thickness)
-    }
-
-    if (isValid) {
-      this.insertSegAt({
-        ...seg,
-        key: segKey,
-        thickness,
-        depth: insertion.depth,
-        isExperiment,
-        isZombie: false,
-      }, insertion)
-    } else {
-      const { touchingPlacement } = insertion
-
-      if (this.allowFragments && touchingPlacement) {
-        this.splitSeg(seg, touchingPlacement)
-        seg = intersectCoordRanges(seg, touchingPlacement)
-      }
-
-      this.hiddenSegs.push(seg)
-
-      if (this.hiddenConsumes && touchingPlacement && !touchingPlacement.isZombie) {
-        if (this.allowFragments) {
-          this.splitSeg(touchingPlacement, seg)
-          Object.assign(touchingPlacement, intersectCoordRanges(touchingPlacement, seg)) // edit in-place
-        }
-
-        touchingPlacement.isZombie = true // edit in-place
-        this.hiddenSegs.push(touchingPlacement)
-      }
-    }
-  }
-
   private isInsertionValid(insertion: EventInsertion<R>, thickness: number): boolean {
-    return (this.maxCoord === -1 || insertion.levelCoord + thickness <= this.maxCoord) &&
-      (this.maxDepth === -1 || insertion.depth < this.maxDepth)
+    return (this.maxCoord == null || insertion.levelCoord + thickness <= this.maxCoord) &&
+      (this.maxDepth == null || insertion.depth < this.maxDepth)
   }
 
   /*
   Does not add to hiddenSegs
   */
-  private splitSeg(seg: R & EventRangeProps, barrier: CoordRange): void {
+  private splitSeg(
+    seg: EventSeg<R>,
+    segThickness: number,
+    barrier: CoordRange,
+  ): void {
     // any leftover seg on the start-side of the barrier?
     if (seg.start < barrier.start) {
-      this.insertSeg({ ...seg, end: barrier.start, isEnd: false }, /* isFragment = */ true)
+      this.insertSeg(
+        { ...seg, end: barrier.start, isEnd: false },
+        segThickness,
+        /* isSlice = */ true,
+      )
     }
 
     // any leftover seg on the end-side of the barrier?
     if (seg.end > barrier.end) {
-      this.insertSeg({ ...seg, start: barrier.end, isStart: false }, /* isFragment = */ true)
+      this.insertSeg(
+        { ...seg, start: barrier.end, isStart: false },
+        segThickness,
+        /* isSlice = */ true,
+      )
     }
   }
 
-  private insertSegAt(placedSeg: EventPlacement<R>, insertion: EventInsertion<R>): void {
+  /*
+  TODO: inline?
+  */
+  private insertSegAt(
+    seg: EventSeg<R>,
+    insertion: EventInsertion<R>,
+    segThickness: number,
+    isSlice?: boolean,
+  ): void {
+    const placement: EventPlacement<R> = {
+      ...seg,
+      thickness: segThickness,
+      depth: insertion.depth,
+      isSlice: isSlice || seg.isSlice || false,
+      isZombie: false,
+    }
+
     if (insertion.lateralIndex === -1) {
       // create a new level
-      insertAt(this.placementsByLevel, insertion.levelIndex, [placedSeg])
+      insertAt(this.placementsByLevel, insertion.levelIndex, [placement])
       insertAt(this.levelCoords, insertion.levelIndex, insertion.levelCoord)
     } else {
       // insert into existing level
-      insertAt(this.placementsByLevel[insertion.levelIndex], insertion.lateralIndex, placedSeg)
+      insertAt(this.placementsByLevel[insertion.levelIndex], insertion.lateralIndex, placement)
     }
   }
 
   /*
   Ignores limits
   */
-  findInsertion(newSeg: CoordRange, newEntryThickness: number): EventInsertion<R> {
-    let { strictOrder, placementsByLevel, levelCoords } = this
+  findInsertion(
+    seg: CoordRange,
+    segThickness: number,
+  ): EventInsertion<R> {
+    let { placementsByLevel, levelCoords } = this
     let levelCnt = placementsByLevel.length
-    let candidateCoord = 0 // a tentative levelCoord for newSeg's placement
-    let touchingLevelIndex: number = -1
-    let touchingLateralIndex: number = -1
+    let candidateCoord = 0 // a tentative levelCoord for seg's placement
     let touchingPlacement: EventPlacement<R> | undefined
+    let touchingLevelIndex: number
     let depth = 0
 
     // iterate through existing levels
     for (let currentLevelIndex = 0; currentLevelIndex < levelCnt; currentLevelIndex += 1) {
       const currentLevelCoord = levelCoords[currentLevelIndex]
 
-      // if the current level has cleared newSeg's bottom coord, we have found a good empty space and can stop.
+      // if the current level has cleared seg's bottom coord, we have found a good empty space and can stop.
       // if strictOrder, keep finding more lateral intersections.
-      if (!strictOrder && currentLevelCoord >= candidateCoord + newEntryThickness) {
+      if (!this.strictOrder && currentLevelCoord >= candidateCoord + segThickness) {
         break
       }
 
       let currentLevelSegs = placementsByLevel[currentLevelIndex]
       let currentSeg: EventPlacement<R>
 
-      // finds the first possible entry that newSeg could intersect with
-      let [searchIndex, isExact] = binarySearch(currentLevelSegs, newSeg.start, getCoordRangeEnd) // find first entry after newSeg's end
+      // finds the first possible entry that seg could intersect with
+      let [searchIndex, isExact] = binarySearch(currentLevelSegs, seg.start, getCoordRangeEnd) // find first entry after seg's end
       let lateralIndex = searchIndex + isExact // if exact match (which doesn't collide), go to next one
 
       // loop through entries that horizontally intersect
       while (
         (currentSeg = currentLevelSegs[lateralIndex]) && // but not past the whole entry list
-        currentSeg.start < newSeg.end // and not entirely past newSeg
+        currentSeg.start < seg.end // and not entirely past seg
       ) {
         let currentEntryBottom = currentLevelCoord + currentSeg.thickness
 
@@ -231,7 +219,6 @@ export class SegHierarchy<R extends SlicedCoordRange> {
           // tentatively record as touching
           touchingPlacement = currentSeg
           touchingLevelIndex = currentLevelIndex
-          touchingLateralIndex = lateralIndex
         }
 
         // does current entry butt up against top of candidate?
@@ -262,12 +249,10 @@ export class SegHierarchy<R extends SlicedCoordRange> {
     // TODO: can reuse work from above?
     let destLateralIndex = -1
     if (destLevelIndex < levelCnt && levelCoords[destLevelIndex] === candidateCoord) {
-      [destLateralIndex] = binarySearch(placementsByLevel[destLevelIndex], newSeg.end, getCoordRangeEnd)
+      [destLateralIndex] = binarySearch(placementsByLevel[destLevelIndex], seg.end, getCoordRangeEnd)
     }
 
     return {
-      touchingLevelIndex,
-      touchingLateralIndex,
       touchingPlacement,
       levelCoord: candidateCoord,
       levelIndex: destLevelIndex,
@@ -275,23 +260,28 @@ export class SegHierarchy<R extends SlicedCoordRange> {
       depth,
     }
   }
-}
 
-function getEventFragmentKey(seg: SlicedCoordRange & EventRangeProps, isFragment: boolean): string {
-  let key = getEventKey(seg)
+  traverseSegs(handler: (seg: EventPlacement<R>, levelCoord: number) => void) {
+    const { placementsByLevel, levelCoords } = this
 
-  if (isFragment) {
-    key += ':' + seg.start + ':' + seg.end
+    for (let i = 0; i < placementsByLevel.length; i++) {
+      const placements = placementsByLevel[i]
+      const levelCoord = levelCoords[i]
+
+      for (const placement of placements) {
+        if (!placement.isZombie) {
+          handler(placement, levelCoord)
+        }
+      }
+    }
   }
-
-  return key
 }
 
 // Grouping
 // -------------------------------------------------------------------------------------------------
 
 interface SegInternalGroup<R extends SlicedCoordRange> extends CoordRange {
-  segs: (R & EventRangeProps)[]
+  segs: EventSeg<R>[]
 }
 
 export interface SegGroup<R extends SlicedCoordRange> extends SegInternalGroup<R> {
@@ -301,7 +291,7 @@ export interface SegGroup<R extends SlicedCoordRange> extends SegInternalGroup<R
 /*
 Returns groups with entries sorted by input order
 */
-export function groupIntersectingSegs<R extends SlicedCoordRange>(segs: (R & EventRangeProps)[]): SegGroup<R>[] {
+export function groupIntersectingSegs<R extends SlicedCoordRange>(segs: EventSeg<R>[]): SegGroup<R>[] {
   let mergedGroups: SegInternalGroup<R>[] = []
 
   for (let seg of segs) {

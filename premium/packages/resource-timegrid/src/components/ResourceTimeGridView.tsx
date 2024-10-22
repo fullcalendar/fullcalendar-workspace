@@ -24,7 +24,7 @@ import {
   VResourceSplitter,
   flattenResources,
 } from '@fullcalendar/resource/internal'
-import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, TimeGridWeekNumber, buildDayRanges, buildTimeColsModel, splitInteractionByCol, splitSegsByCol } from '@fullcalendar/timegrid/internal'
+import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, TimeGridWeekNumber, buildDayRanges, buildTimeColsModel, splitInteractionByCol, organizeSegsByCol } from '@fullcalendar/timegrid/internal'
 import { ResourceDayTimeColsJoiner } from '../ResourceDayTimeColsJoiner.js'
 
 interface ResourceTimeGridViewState {
@@ -51,11 +51,11 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
   private timedResourceJoiner = new ResourceDayTimeColsJoiner()
 
   // timed-only column splitting
-  private splitFgEventSegs = memoize(splitSegsByCol)
-  private splitBgEventSegs = memoize(splitSegsByCol)
-  private splitBusinessHourSegs = memoize(splitSegsByCol)
-  private splitNowIndicatorSegs = memoize(splitSegsByCol)
-  private splitDateSelectionSegs = memoize(splitSegsByCol)
+  private splitFgEventSegs = memoize(organizeSegsByCol)
+  private splitBgEventSegs = memoize(organizeSegsByCol)
+  private splitBusinessHourSegs = memoize(organizeSegsByCol)
+  private splitNowIndicatorSegs = memoize(organizeSegsByCol)
+  private splitDateSelectionSegs = memoize(organizeSegsByCol)
   private splitEventDrag = memoize(splitInteractionByCol)
   private splitEventResize = memoize(splitInteractionByCol)
 

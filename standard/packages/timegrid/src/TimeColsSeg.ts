@@ -16,7 +16,7 @@ export type TimeGridCoordRange = TimeGridRange & CoordRange
 TODO: more DRY with daygrid?
 can be given null/undefined!
 */
-export function splitSegsByCol<S extends TimeGridRange>(segs: S[] | null, colCnt: number) {
+export function organizeSegsByCol<S extends TimeGridRange>(segs: S[] | null, colCnt: number) {
   let segsByCol: S[][] = []
   let i
 

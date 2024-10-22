@@ -57,32 +57,34 @@ export function buildWebPositioning(
   segRects: SegWebRect[],
   hiddenGroups: SegGroup<TimeGridCoordRange>[]
 ] {
-  let hierarchy = new SegHierarchy<TimeGridCoordRange>()
-  if (strictOrder != null) {
-    hierarchy.strictOrder = strictOrder
-  }
-  if (maxDepth != null) {
-    hierarchy.maxDepth = maxDepth
-  }
-
-  let [,, hiddenSegs] = hierarchy.insertSegs(segs.map((seg, i) => {
+  const segRanges: (TimeGridCoordRange & EventRangeProps)[] = segs.map((seg, i) => {
     const segVertical = segVerticals[i]
     return {
       ...seg,
       start: segVertical.start,
       end: segVertical.start + segVertical.size,
     }
-  }))
+  })
 
-  let hiddenGroups = groupIntersectingSegs(hiddenSegs)
+  const hierarchy = new SegHierarchy<TimeGridCoordRange>(
+    segRanges,
+    undefined, // 1 thickness for all segs
+    strictOrder,
+    undefined, // maxCoord
+    maxDepth,
+  )
 
   let web = buildWeb(hierarchy)
   web = stretchWeb(web, 1) // all levelCoords/thickness will have 0.0-1.0
-  let segRects = webToRects(web)
+  const segRects = webToRects(web)
 
+  const hiddenGroups = groupIntersectingSegs(hierarchy.hiddenSegs)
   return [segRects, hiddenGroups]
 }
 
+/*
+TODO: use SegHierarchy::traverseSegs for this?
+*/
 function buildWeb(hierarchy: SegHierarchy<TimeGridCoordRange>): SegNode[] {
   const { placementsByLevel } = hierarchy
 

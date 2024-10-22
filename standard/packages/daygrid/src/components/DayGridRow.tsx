@@ -25,7 +25,7 @@ import {
   Fragment,
   Ref,
 } from '@fullcalendar/core/preact'
-import { splitSegsByCol } from '../TableSeg.js'
+import { DayRowEventRangePart, getEventPartKey, organizeSegsByStartCol, sliceSegsAcrossCols } from '../TableSeg.js'
 import { DayGridCell } from './DayGridCell.js'
 import { DayGridListEvent } from './DayGridListEvent.js'
 import { DayGridBlockEvent } from './DayGridBlockEvent.js'
@@ -106,7 +106,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     const fgEventSegs = sortEventSegs(props.fgEventSegs, options.eventOrder)
 
     // TODO: memoize?
-    const [fgEventSubSegs, segTops, heightsByCol, hiddenSegs] = computeFgSegVerticals(
+    const [segsByCol, hiddenSegsByCol, renderableSegsByCol, segTops, heightsByCol] = computeFgSegVerticals(
       fgEventSegs,
       this.segHeightRefMap.current,
       cells,
@@ -119,13 +119,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     )
 
     // TODO: memoize?
-    const fgEventSegsByCol = splitSegsByCol(fgEventSegs, colCnt) // only for +more popover args
-    const fgEventSubSegsByCol = splitSegsByCol(fgEventSubSegs, colCnt) // for actual rendering
-    const bgEventSegsByCol = splitSegsByCol(props.bgEventSegs, colCnt)
-    const businessHoursByCol = splitSegsByCol(props.businessHourSegs, colCnt)
-    const highlightSegsByCol = splitSegsByCol(this.getHighlightSegs(), colCnt)
-    const mirrorSegsByCol = splitSegsByCol(this.getMirrorSegs(), colCnt)
-    const hiddenSegsByCol = splitSegsByCol(hiddenSegs, colCnt)
+    const bgEventSegsByCol = sliceSegsAcrossCols(props.bgEventSegs, colCnt) // needs standins
+    const businessHoursByCol = organizeSegsByStartCol(props.businessHourSegs, colCnt)
+    const highlightSegsByCol = organizeSegsByStartCol(this.getHighlightSegs(), colCnt)
+    const mirrorSegsByCol = organizeSegsByStartCol(this.getMirrorSegs(), colCnt)
 
     const forcedInvisibleMap = // TODO: more convenient/DRY
       (props.eventDrag && props.eventDrag.affectedInstances) ||
@@ -153,7 +150,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       >
         {props.cells.map((cell, col) => {
           const normalFgNodes = this.renderFgSegs(
-            fgEventSubSegsByCol[col],
+            renderableSegsByCol[col],
             segTops,
             props.todayRange,
             forcedInvisibleMap,
@@ -178,7 +175,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
               showDayNumber={props.showDayNumbers}
 
               // content
-              segs={fgEventSegsByCol[col]}
+              segs={segsByCol[col]}
               hiddenSegs={hiddenSegsByCol[col]}
               fgLiquidHeight={fgLiquidHeight}
               fg={(
@@ -229,7 +226,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   }
 
   renderFgSegs(
-    segs: (SlicedCoordRange & EventRangeProps & { isStandin?: boolean, key?: string })[],
+    segs: DayRowEventRangePart[],
     segTops: Map<string, number>,
     todayRange: DateRange,
     forcedInvisibleMap: { [instanceId: string]: any },
@@ -248,19 +245,14 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     const nodes: VNode[] = []
 
     for (const seg of segs) {
-      const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
-
-      // IDs
-      const { eventRange } = seg
+      const key = getEventPartKey(seg)
+      const { standinFor, eventRange } = seg
       const { instanceId } = eventRange.instance
-      const key = seg.key || instanceId
 
-      // For mirrors, which use instanceId, accessing segTops might not yield a result if there are
-      // multiple Fragments, which are indexed by more specific keys, but who cares just render at 0
-      const localTop = segTops.get(key)
-
-      const isInvisible = seg.isStandin || forcedInvisibleMap[instanceId] || (localTop == null && !isMirror)
-      const top = (localTop || 0) + (headerHeight || 0)
+      const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
+      const localTop = segTops.get(standinFor ? getEventPartKey(standinFor) : key) ?? (isMirror ? 0 : undefined)
+      const top = (headerHeight != null && localTop != null) ? headerHeight + localTop : undefined
+      const isInvisible = standinFor || forcedInvisibleMap[instanceId] || top == null
 
       nodes.push(
         <DayGridEventHarness
@@ -273,7 +265,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
             width,
           }}
           heightRef={
-            (!seg.isStandin && !isMirror)
+            (!standinFor && !isMirror)
               ? segHeightRefMap.createRef(key)
               : null
           }
@@ -309,7 +301,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   }
 
   renderFillSegs(
-    segs: (SlicedCoordRange & EventRangeProps & { isStandin?: boolean })[],
+    segs: DayRowEventRangePart[],
     fillType: string,
   ): VNode {
     const { props, context } = this
@@ -320,12 +312,13 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     const nodes: VNode[] = []
 
     for (const seg of segs) {
+      const key = buildEventRangeKey(seg.eventRange) // TODO: use different type of key than fg!?
       const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
-      const isVisible = !seg.isStandin
+      const isVisible = !seg.standinFor
 
       nodes.push(
         <div
-          key={buildEventRangeKey(seg.eventRange)}
+          key={key}
           className="fc-fill-y"
           style={{
             visibility: isVisible ? '' : 'hidden',
