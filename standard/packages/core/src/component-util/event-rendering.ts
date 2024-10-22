@@ -10,7 +10,7 @@ import { EventUi, EventUiHash, combineEventUis } from './event-ui.js'
 import { mapHash } from '../util/object.js'
 import { ViewContext } from '../ViewContext.js'
 import { DateFormatter } from '../datelib/DateFormatter.js'
-import { addMs, DateMarker, startOfDay } from '../datelib/marker.js'
+import { DateMarker } from '../datelib/marker.js'
 import { ViewApi } from '../api/ViewApi.js'
 import { MountArg } from '../common/render-hook.js'
 import { createAriaKeyboardAttrs } from '../util/dom-event.js'
@@ -234,10 +234,12 @@ export function buildEventRangeTimeText(
   eventRange: EventRenderRange,
   timeFormat: DateFormatter,
   context: ViewContext,
-  defaultDisplayEventTime?: boolean, // defaults to true
-  defaultDisplayEventEnd?: boolean, // defaults to true
-  startOverride?: DateMarker,
-  endOverride?: DateMarker,
+  segIsStart: boolean,
+  segIsEnd: boolean,
+  segStart?: DateMarker,
+  segEnd?: DateMarker,
+  defaultDisplayEventTime = true,
+  defaultDisplayEventEnd = true,
 ) {
   let { dateEnv, options } = context
   let { displayEventTime, displayEventEnd } = options
@@ -247,26 +249,32 @@ export function buildEventRangeTimeText(
   if (displayEventTime == null) { displayEventTime = defaultDisplayEventTime !== false }
   if (displayEventEnd == null) { displayEventEnd = defaultDisplayEventEnd !== false }
 
-  let wholeEventStart = eventInstance.range.start
-  let wholeEventEnd = eventInstance.range.end
-  let segStart = startOverride || eventRange.range.start
-  let segEnd = endOverride || eventRange.range.end
-  let isStartDay = startOfDay(wholeEventStart).valueOf() === startOfDay(segStart).valueOf()
-  let isEndDay = startOfDay(addMs(wholeEventEnd, -1)).valueOf() === startOfDay(addMs(segEnd, -1)).valueOf()
+  /*
+  HACK with forcing eventInstance.range.start/end when isStart/isEnd
+  Because eventRange.range.start/end seems to be aligned with the views' cells' date!?
+  It'd be better to unconditionally rely on eventRange.range.start/end
+  Or refactor-away eventRange altogether (and have it be part of DayGridEventRange/etc)
+  */
+  if (!segStart) {
+    segStart = segIsStart ? eventInstance.range.start : eventRange.range.start
+  }
+  if (!segEnd) {
+    segEnd = segIsEnd ? eventInstance.range.end : eventRange.range.end
+  }
 
-  if (displayEventTime && !eventDef.allDay && (isStartDay || isEndDay)) {
-    segStart = isStartDay ? wholeEventStart : segStart
-    segEnd = isEndDay ? wholeEventEnd : segEnd
-
-    if (displayEventEnd && eventDef.hasEnd) {
+  if (displayEventTime && !eventDef.allDay) {
+    if (displayEventEnd && (segIsStart || segIsEnd) && eventDef.hasEnd) {
       return dateEnv.formatRange(segStart, segEnd, timeFormat, {
-        forcedStartTzo: startOverride ? null : eventInstance.forcedStartTzo, // nooooooooooooo, give tzo if same date
-        forcedEndTzo: endOverride ? null : eventInstance.forcedEndTzo,
+        forcedStartTzo: segIsStart ? eventInstance.forcedStartTzo : null,
+        forcedEndTzo: segIsEnd ? eventInstance.forcedEndTzo : null,
       })
     }
-    return dateEnv.format(segStart, timeFormat, {
-      forcedTzo: startOverride ? null : eventInstance.forcedStartTzo, // nooooo, same
-    })
+
+    if (segIsStart) {
+      return dateEnv.format(segStart, timeFormat, {
+        forcedTzo: eventInstance.forcedStartTzo,
+      })
+    }
   }
 
   return ''

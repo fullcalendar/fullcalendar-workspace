@@ -107,8 +107,8 @@ function buildTimeContent(
           eventRange,
           timeFormat,
           context,
-          null,
-          null,
+          isStart,
+          isEnd,
           eventInstance.range.start,
           segEnd,
         )
@@ -117,8 +117,8 @@ function buildTimeContent(
           eventRange,
           timeFormat,
           context,
-          null,
-          null,
+          isStart,
+          isEnd,
           segStart,
           eventInstance.range.end,
         )
@@ -130,8 +130,8 @@ function buildTimeContent(
         eventRange,
         timeFormat,
         context,
-        null,
-        null,
+        isStart,
+        isEnd,
         segStart,
         segEnd,
       )

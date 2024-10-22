@@ -28,8 +28,8 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
           props.isInset ? 'fc-timegrid-event-inset' : '',
         ]}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
-        startOverride={props.segStart}
-        endOverride={props.segEnd}
+        segStart={props.segStart}
+        segEnd={props.segEnd}
       />
     )
   }

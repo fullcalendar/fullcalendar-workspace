@@ -10,6 +10,8 @@ export interface StandardEventProps {
   elRef?: ElRef
   elClasses?: string[]
   eventRange: EventRenderRange,
+  segStart?: DateMarker
+  segEnd?: DateMarker
   isStart: boolean
   isEnd: boolean
   isDragging: boolean // rename to isMirrorDragging? make optional?
@@ -24,8 +26,6 @@ export interface StandardEventProps {
   defaultTimeFormat: DateFormatter
   defaultDisplayEventTime?: boolean // default true
   defaultDisplayEventEnd?: boolean // default true
-  startOverride?: DateMarker
-  endOverride?: DateMarker
 }
 
 // should not be a purecomponent
@@ -40,10 +40,12 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       eventRange,
       timeFormat,
       context,
+      props.isStart,
+      props.isEnd,
+      props.segStart,
+      props.segEnd,
       props.defaultDisplayEventTime,
       props.defaultDisplayEventEnd,
-      props.startOverride,
-      props.endOverride,
     )
 
     return (

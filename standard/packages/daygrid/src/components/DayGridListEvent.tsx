@@ -31,7 +31,11 @@ export class DayGridListEvent extends BaseComponent<DayGridListEventProps> {
       eventRange,
       timeFormat,
       context,
-      true,
+      props.isStart,
+      props.isEnd,
+      null,
+      null,
+      true, // defaultDisplayEventTime
       props.defaultDisplayEventEnd,
     )
 
