@@ -79,6 +79,7 @@ like an fc-row, but DOES NOT FORCE CHILDREN TO BE CELLS
 }
 
 .fc-cell-inner {
+  flex-shrink: 0; // so that cell (whose height is controlled the row) does not compress
   white-space: nowrap;
   overflow: hidden;
 }
