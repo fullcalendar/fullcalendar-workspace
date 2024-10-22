@@ -47,16 +47,15 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
         willUnmount={options.allDayWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className='fc-flex-column'>
-            <InnerContent
-              elTag="span"
-              elClasses={[
-                'fc-timegrid-axis-inner',
-                'fc-cell-inner',
-                'fc-padding-sm',
-              ]}
-            />
-          </div>
+          <InnerContent
+            elTag="span"
+            elClasses={[
+              'fc-timegrid-axis-inner',
+              'fc-cell-inner',
+              'fc-padding-sm',
+            ]}
+            elRef={this.innerElRef}
+          />
         )}
       </ContentContainer>
     )

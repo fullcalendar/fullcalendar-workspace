@@ -45,21 +45,15 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
         date={props.date}
       >
         {(InnerContent) => (
-          <div
-            ref={this.innerElRef}
-            className={[
-              'fc-flex-column',
+          <InnerContent
+            elTag="span"
+            elClasses={[
+              'fc-cell-inner',
+              'fc-padding-sm',
               props.isSticky ? 'fc-sticky-x' : '',
-            ].join(' ')}
-          >
-            <InnerContent
-              elTag="span"
-              elClasses={[
-                'fc-cell-inner',
-                'fc-padding-sm',
-              ]}
-            />
-          </div>
+            ]}
+            elRef={this.innerElRef}
+          />
         )}
       </ResourceLabelContainer>
     )

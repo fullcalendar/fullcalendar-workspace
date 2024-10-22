@@ -93,24 +93,18 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
         willUnmount={options.dayHeaderWillUnmount}
       >
         {(InnerContent) => (
-          <div
-            ref={this.innerElRef}
-            className={[
-              'fc-flex-column',
+          <InnerContent
+            elTag="a"
+            elAttrs={{
+              'aria-label': dateEnv.format(date, WEEKDAY_FORMAT),
+            }}
+            elClasses={[
+              'fc-cell-inner',
+              'fc-padding-sm',
               props.isSticky ? 'fc-sticky-x' : '',
-            ].join(' ')}
-          >
-            <InnerContent
-              elTag="a"
-              elClasses={[
-                'fc-cell-inner',
-                'fc-padding-sm',
-              ]}
-              elAttrs={{
-                'aria-label': dateEnv.format(date, WEEKDAY_FORMAT),
-              }}
-            />
-          </div>
+            ]}
+            elRef={this.innerElRef}
+          />
         )}
       </ContentContainer>
     )

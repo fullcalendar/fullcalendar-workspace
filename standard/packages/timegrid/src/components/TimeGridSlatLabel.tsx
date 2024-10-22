@@ -94,16 +94,15 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
         willUnmount={options.slotLabelWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className='fc-flex-column'>
-            <InnerContent
-              elTag="div"
-              elClasses={[
-                'fc-timegrid-axis-inner',
-                'fc-cell-inner',
-                'fc-padding-sm',
-              ]}
-            />
-          </div>
+          <InnerContent
+            elTag="div"
+            elClasses={[
+              'fc-timegrid-axis-inner',
+              'fc-cell-inner',
+              'fc-padding-sm',
+            ]}
+            elRef={this.innerElRef}
+          />
         )}
       </ContentContainer>
     )

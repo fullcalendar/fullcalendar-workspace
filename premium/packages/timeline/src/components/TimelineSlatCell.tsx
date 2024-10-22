@@ -84,12 +84,11 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         willUnmount={options.slotLaneWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className='fc-flex-column'>
-            <InnerContent
-              elTag="div"
-              elClasses={['fc-cell-inner']}
-            />
-          </div>
+          <InnerContent
+            elTag="div"
+            elClasses={['fc-cell-inner']}
+            elRef={this.innerElRef}
+          />
         )}
       </ContentContainer>
     )

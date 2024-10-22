@@ -94,22 +94,16 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
         willUnmount={options.slotLabelWillUnmount}
       >
         {(InnerContent) => (
-          <div
-            ref={this.innerElRef}
-            className={[
-              'fc-flex-column',
+          <InnerContent
+            elTag="a"
+            elAttrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
+            elClasses={[
+              'fc-cell-inner',
+              'fc-padding-md',
               props.isSticky ? 'fc-sticky-x' : '',
-            ].join(' ')}
-          >
-            <InnerContent
-              elTag="a"
-              elClasses={[
-                'fc-cell-inner',
-                'fc-padding-md',
-              ]}
-              elAttrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
-            />
-          </div>
+            ]}
+            elRef={this.innerElRef}
+          />
         )}
       </ContentContainer>
     )

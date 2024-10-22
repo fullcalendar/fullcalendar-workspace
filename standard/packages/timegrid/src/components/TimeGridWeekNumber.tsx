@@ -47,17 +47,16 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
         defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className='fc-flex-column'>
-            <InnerContent
-              elTag="a"
-              elClasses={[
-                'fc-timegrid-axis-inner',
-                'fc-cell-inner',
-                'fc-padding-sm',
-              ]}
-              elAttrs={navLinkAttrs}
-            />
-          </div>
+          <InnerContent
+            elTag="a"
+            elAttrs={navLinkAttrs}
+            elClasses={[
+              'fc-timegrid-axis-inner',
+              'fc-cell-inner',
+              'fc-padding-sm',
+            ]}
+            elRef={this.innerElRef}
+          />
         )}
       </WeekNumberContainer>
     )

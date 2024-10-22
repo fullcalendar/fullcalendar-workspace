@@ -47,12 +47,11 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className='fc-flex-column fc-sticky-y'>
-            <InnerContent
-              elTag="div"
-              elClasses={['fc-cell-inner', 'fc-padding-lg']}
-            />
-          </div>
+          <InnerContent
+            elTag="div"
+            elClasses={['fc-cell-inner', 'fc-padding-lg', 'fc-sticky-y']}
+            elRef={this.innerElRef}
+          />
         )}
       </ContentContainer>
     )
