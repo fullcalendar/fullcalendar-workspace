@@ -6,23 +6,6 @@ Publishing:
  Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-REVIVE allowReslicing...
-  Issue where some ppl want allowReslicing:
-    issue: https://github.com/fullcalendar/fullcalendar/issues/6187
-    repro before: https://codepen.io/acerix/pen/NWbOaVZ?editors=0010
-    repro after: https://codepen.io/arshaw/pen/YzZwKoE?editors=0010
-    commit: https://github.com/fullcalendar/fullcalendar/commit/c3199457dc36f9245f011557b032346b3a0552fe
-  WHY we recently switch allowReslicing=false for DayGrid
-  https://github.com/fullcalendar/fullcalendar-workspace/commit/fa146e9e5a91b117bbfbc3e6a3a259360905a8fa
-  Ticket where customer does NOT want reslicing:
-  https://fullcalendar.freshdesk.com/a/tickets/9203
-  does fit between levels:
-    https://codepen.io/arshaw/pen/LYwbxza?editors=0110
-
-TODO: tabindex effect
-  Research if we should really do this
-  Only useful when we have roving tabindex?
-
 Start/end-times on event elements
   StandardEvent is in charge of this, via buildEventRangeTimeText
   it's unclear if we should be slicing dates, like what sliceEventStore does
@@ -182,6 +165,8 @@ Changelog
   Add: all cell headers are no longer bold
   Add: standin events get put through eventContent/etc
   Add: eventSlicing (write tests too)
+    eventSlicing:true (request: https://github.com/fullcalendar/fullcalendar/issues/6187)
+    eventSlicing:false (request: https://fullcalendar.freshdesk.com/a/tickets/9203)
 Support Tickets
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
