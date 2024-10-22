@@ -74,11 +74,9 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     this.disconnectSize = watchSize(el, (width, height) => {
       const { props, context } = this
 
-      // NOTE: if watchBorderBox is enabled, then we should technically subtract border width,
-      // However, we simply require that callers don't apply border to the element
-      // FYI, width/height never include padding because padding is disallowed for fc-scroller
-      const bottomScrollbarWidth = Math.round(height) - el.clientHeight
-      const horizontalScrollbarWidth = Math.round(width) - el.clientWidth
+      // TODO: subtract border width in some cases
+      const bottomScrollbarWidth = el.offsetHeight - el.clientHeight
+      const horizontalScrollbarWidth = el.offsetWidth - el.clientWidth
 
       let rightScrollbarWidth = 0
       let leftScrollbarWidth = 0
