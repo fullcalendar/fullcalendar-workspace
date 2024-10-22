@@ -63,14 +63,18 @@ export function computeFgSegPlacements( // mostly horizontals
   hiddenGroupTops: Map<string, number>,
   totalHeight: number,
 ] {
-  const segRanges: (TimelineCoordRange & EventRangeProps)[] = segs.map((seg) => {
+  const segRanges: (TimelineCoordRange & EventRangeProps)[] = []
+
+  for (const seg of segs) {
     const hcoords = segHorizontals[getEventKey(seg)]
-    return {
-      ...seg,
-      start: hcoords.start,
-      end: hcoords.start + hcoords.size,
+    if (hcoords) {
+      segRanges.push({
+        ...seg,
+        start: hcoords.start,
+        end: hcoords.start + hcoords.size,
+      })
     }
-  })
+  }
 
   const hierarchy = new SegHierarchy<TimelineCoordRange>(
     segRanges,
