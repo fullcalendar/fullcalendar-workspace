@@ -8,6 +8,7 @@ export function computeFgSegVerticals(
   cells: DayTableCell[],
   maxHeight: number | undefined,
   strictOrder: boolean,
+  allowSlicing: boolean = true,
   dayMaxEvents: boolean | number,
   dayMaxEventRows: boolean | number,
 ): [
@@ -43,7 +44,7 @@ export function computeFgSegVerticals(
     maxCoord,
     maxDepth,
     hiddenConsumes,
-    true, // allowSplitting (will use origin-seg heights, not lookup height)
+    allowSlicing, // will use origin-seg heights, not lookup height
   )
   hierarchy.traverseSegs((seg, segTop) => {
     if (seg.isSlice) {
@@ -66,7 +67,7 @@ export function computeFgSegVerticals(
       maxCoord,
       maxDepth,
       hiddenConsumes,
-      // allowSplitting = false
+      // allowSlicing = false
     )
     hierarchy.traverseSegs((seg, segTop) => {
       segTops.set(getEventPartKey(seg), segTop) // newly-hidden main segs and slices

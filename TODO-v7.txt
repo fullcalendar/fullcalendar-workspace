@@ -19,8 +19,9 @@ REVIVE allowReslicing...
   does fit between levels:
     https://codepen.io/arshaw/pen/LYwbxza?editors=0110
 
-TODO: add new setting
 TODO: tabindex effect
+  Research if we should really do this
+  Only useful when we have roving tabindex?
 
 Start/end-times on event elements
   StandardEvent is in charge of this, via buildEventRangeTimeText
@@ -180,6 +181,7 @@ Examples
 Changelog
   Add: all cell headers are no longer bold
   Add: standin events get put through eventContent/etc
+  Add: eventSlicing (write tests too)
 Support Tickets
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078

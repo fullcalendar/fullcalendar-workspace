@@ -120,6 +120,7 @@ export const BASE_OPTION_REFINERS = {
   dropAccept: identity as Identity<string | ((this: CalendarApi, draggable: any) => boolean)>, // TODO: type draggable
   eventOrder: parseFieldSpecs,
   eventOrderStrict: Boolean,
+  eventSlicing: Boolean, // default: true
 
   longPressDelay: Number,
   eventDragMinDistance: Number,

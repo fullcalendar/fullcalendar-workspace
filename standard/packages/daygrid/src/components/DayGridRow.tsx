@@ -114,6 +114,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
         ? state.innerHeight - state.headerHeight
         : undefined,
       options.eventOrderStrict,
+      options.eventSlicing,
       props.dayMaxEvents,
       props.dayMaxEventRows,
     )
