@@ -112,11 +112,11 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 <div className="fc-daygrid-cell-header">
                   <InnerContent
                     elTag="a"
+                    elAttrs={buildNavLinkAttrs(context, props.date)}
                     elClasses={[
                       'fc-daygrid-cell-number',
                       isMonthStart && 'fc-daygrid-month-start',
                     ]}
-                    elAttrs={buildNavLinkAttrs(context, props.date)}
                   />
                 </div>
               )}

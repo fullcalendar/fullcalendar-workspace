@@ -60,8 +60,8 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
             </td>
             <InnerContent
               elTag="td"
-              elClasses={['fc-list-event-title']}
               elAttrs={{ headers: `${eventHeaderId} ${dateHeaderId}` }}
+              elClasses={['fc-list-event-title']}
             />
           </Fragment>
         )}
