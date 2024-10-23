@@ -206,6 +206,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     let [headerHeights] = computeHeights(
       headerLayouts,
       (entity) => this.headerRowInnerHeightMap.current.get(entity), // makes memoization impossible!
+      /* minHeight = */ undefined,
+      /* inbetweenSpace = */ 1,
     )
 
     let [bodyHeights, bodyCanvasHeight] = computeHeights(
@@ -307,7 +309,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       {Boolean(superHeaderRendering) && (
                         <div
                           role="row"
-                          className="fc-row"
+                          className="fc-row fc-content-box"
                           style={{
                             height: headerHeights.get(true), // true means superheader
                           }}
@@ -396,7 +398,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                       role='row'
                                       aria-rowindex={groupCellLayout.rowIndex}
                                       class={[
-                                        'fc-row fc-fill-x',
+                                        'fc-row fc-fill-x fc-content-box',
                                         groupCellLayout.rowIndex ? 'fc-row-border' : '',
                                       ].join(' ')}
                                       style={{
@@ -431,7 +433,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   role='row'
                                   aria-rowindex={resourceLayout.rowIndex}
                                   class={[
-                                    'fc-row fc-fill-x',
+                                    'fc-row fc-fill-x fc-content-box',
                                     resourceLayout.rowIndex ? 'fc-row-border' : '',
                                   ].join(' ')}
                                   style={{
@@ -465,7 +467,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               role='row'
                               aria-rowindex={groupRowLayout.rowIndex}
                               class={[
-                                'fc-row fc-fill-x',
+                                'fc-row fc-fill-x fc-content-box',
                                 groupRowLayout.rowIndex ? 'fc-row-border' : '',
                               ].join(' ')}
                               style={{
@@ -596,7 +598,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   role='row'
                                   aria-rowindex={resourceLayout.rowIndex}
                                   className={[
-                                    'fc-row fc-fill-x',
+                                    'fc-row fc-fill-x fc-content-box',
                                     resourceLayout.rowIndex ? 'fc-row-border' : '',
                                   ].join(' ')}
                                   style={{
@@ -634,7 +636,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   role='row'
                                   aria-rowindex={groupRowLayout.rowIndex}
                                   class={[
-                                    'fc-row fc-fill-x',
+                                    'fc-row fc-fill-x fc-content-box',
                                     groupRowLayout.rowIndex ? 'fc-row-border' : '',
                                   ].join(' ')}
                                   style={{

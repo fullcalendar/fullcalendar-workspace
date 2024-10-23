@@ -6,12 +6,6 @@ Publishing:
  Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-regression (in beta.1 also):
-  resourceAreaHeaderContent causes datagrid-header to be 1px too tall
-  https://codepen.io/arshaw/pen/PoMOwdV?editors=0010
-    the problem is actually that the timeline-header cells' rows are set to 24px,
-    and the cell-inner widths are 24px, so they're getting cut off when row has 1px border
-
 ResizeObserver
   implement fallback
 Web Component
@@ -164,6 +158,8 @@ Changelog
   Add: eventSlicing (write tests too)
     eventSlicing:true (request: https://github.com/fullcalendar/fullcalendar/issues/6187)
     eventSlicing:false (request: https://fullcalendar.freshdesk.com/a/tickets/9203)
+  v7 regressions (worth adding?)
+    border problem fixed: https://codepen.io/arshaw/pen/PoMOwdV?editors=0010
 Support Tickets
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
@@ -178,3 +174,6 @@ ensure automated tests for...
   percentage-based resource-timeline spreadsheet-column resizing
   that expandRows works enabled/disabled for timegrid/resource-timeline views
   test datagrid with h scroll, but timeline area WITHOUT h scroll
+  multiple tiers of headers line-up across scrollers
+    timegrid h-scroll. with and without weekNumber
+    resource-timeline. w/ datagrid/timeline headers: 1/2, 2/1

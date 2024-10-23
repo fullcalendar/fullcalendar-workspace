@@ -182,7 +182,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               {headerTiers.map((models, tierNum) => (
                 <div
                   key={tierNum}
-                  className='fc-row'
+                  className='fc-row fc-content-box'
                   style={{ height: state.headerTierHeights[tierNum] }}
                 >
                   {props.renderHeaderLabel( // .fc-cell
@@ -229,7 +229,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         {options.allDaySlot && (
           <Fragment>
             <div
-              className='fc-timegrid-allday fc-row' // a "super" row
+              className='fc-timegrid-allday fc-row fc-content-box' // a "super" row
               style={{ height: state.allDayHeight }}
             >
               {/* ALL-DAY / label

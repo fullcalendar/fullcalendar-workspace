@@ -8,12 +8,13 @@ export function computeHeights<Entity>(
   siblingNodes: GenericLayout<Entity>[],
   getEntityHeight: (entity: Entity) => number,
   minHeight?: number,
+  inbetweenSpace = 0,
 ): [
   heightMap: Map<Entity, number>,
   totalHeight: number,
 ] {
   const heightMap = new Map<Entity, number>()
-  let [totalHeight, expandableCount] = computeTightHeights(siblingNodes, getEntityHeight, heightMap)
+  let [totalHeight, expandableCount] = computeTightHeights(siblingNodes, getEntityHeight, heightMap, inbetweenSpace)
 
   if (minHeight != null && minHeight > totalHeight) {
     expandHeights(siblingNodes, heightMap, (minHeight - totalHeight) / expandableCount)
@@ -27,6 +28,7 @@ function computeTightHeights<Entity>(
   siblingNodes: GenericLayout<Entity>[],
   getEntityHeight: (entity: Entity) => number,
   heightMap: Map<Entity, number>,
+  inbetweenSpace: number,
 ): [
   totalHeight: number,
   expandableCount: number,
@@ -35,42 +37,43 @@ function computeTightHeights<Entity>(
   let expandableCount = 0
 
   for (const siblingNode of siblingNodes) {
-    let siblingOwnHeight = getEntityHeight(siblingNode.entity) || 0
-    const [siblingChildrenHeight, siblingChildrenExpandableCount] = computeTightHeights(
+    let ownHeight = getEntityHeight(siblingNode.entity) || 0
+    const [childrenHeight, childrenExpandableCount] = computeTightHeights(
       siblingNode.children,
       getEntityHeight,
       heightMap,
+      inbetweenSpace
     )
 
     if (siblingNode.pooledHeight) { // 'own' is side-by-side with children
-      if (siblingOwnHeight > siblingChildrenHeight) {
+      if (ownHeight > childrenHeight) {
         // children are smaller. grow them
         expandHeights(
           siblingNode.children,
           heightMap,
-          (siblingOwnHeight - siblingChildrenHeight) / siblingChildrenExpandableCount
+          (ownHeight - childrenHeight) / childrenExpandableCount
         )
       } else {
         // own-element is smaller. grow to height of children
-        siblingOwnHeight = siblingChildrenHeight
+        ownHeight = childrenHeight
       }
 
-      totalHeight += siblingOwnHeight
+      totalHeight += ownHeight
     } else { // 'own' is above children
-      totalHeight += siblingOwnHeight + siblingChildrenHeight
+      totalHeight += ownHeight + inbetweenSpace + childrenHeight
     }
 
-    heightMap.set(siblingNode.entity, siblingOwnHeight)
+    heightMap.set(siblingNode.entity, ownHeight)
 
     // expandable?
     // vertically stacked, and not a group
     if (siblingNode.pooledHeight === undefined) {
       expandableCount++
     }
-    expandableCount += siblingChildrenExpandableCount
+    expandableCount += childrenExpandableCount
   }
 
-  return [totalHeight, expandableCount]
+  return [totalHeight + (siblingNodes.length - 1) * inbetweenSpace, expandableCount]
 }
 
 function expandHeights<Entity>(
