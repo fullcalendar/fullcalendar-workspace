@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, ElementDragging, PointerDragEvent, setRef, watchWidth } from '@fullcalendar/core/internal'
+import { BaseComponent, ElementDragging, PointerDragEvent, setRef } from '@fullcalendar/core/internal'
 import { ComponentChildren, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 
 export interface ResizableTwoColProps {
@@ -7,7 +7,6 @@ export interface ResizableTwoColProps {
   startClassName?: string
   endContent: ComponentChildren
   endClassName?: string
-  onSizes?: (startWidth: number, endWidth: number) => void
   elRef?: Ref<HTMLDivElement>
 }
 
@@ -20,15 +19,12 @@ const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, ResizableTwoColState> {
   rootEl: null | HTMLDivElement = null
   startElRef = createRef<HTMLDivElement>()
-  endElRef = createRef<HTMLDivElement>()
   resizerElRef = createRef<HTMLDivElement>()
 
   // internal
   startWidth: number // weird names, might get confused with dragging start/end
   endWidth: number //
   resizerDragging: ElementDragging
-  detachStartWidth?: () => void
-  detachEndWidth?: () => void
 
   render() {
     let { props, state, context } = this
@@ -69,7 +65,6 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
             'fc-liquid',
             props.endClassName,
           ].join(' ')}
-          ref={this.endElRef}
         >
           {props.endContent}
         </div>
@@ -86,52 +81,17 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
   }
 
   componentDidMount() {
-    // TODO: since we're moving away from content-box watching,
-    // make the user responsible for watching dimensions of inner content
-
-    this.detachStartWidth = watchWidth(this.startElRef.current, (width) => {
-      this.startWidth = width
-      afterSize(this.fireSizing)
-    }, /* watchContentBox = */ true)
-
-    this.detachEndWidth = watchWidth(this.endElRef.current, (width) => {
-      this.endWidth = width
-      afterSize(this.fireSizing)
-    }, /* watchContentBox = */ true)
-
-    this.initResizing()
-  }
-
-  componentWillUnmount() {
-    if (this.props.onSizes) {
-      this.props.onSizes(null, null)
-    }
-
-    this.detachStartWidth()
-    this.detachEndWidth()
-
-    this.destroyResizing()
-  }
-
-  fireSizing = () => {
-    if (this.props.onSizes) {
-      this.props.onSizes(this.startWidth, this.endWidth)
-    }
-  }
-
-  initResizing() {
     let { isRtl, pluginHooks } = this.context
     let ElementDraggingImpl = pluginHooks.elementDraggingImpl
 
     if (ElementDraggingImpl) {
-      let rootEl = this.rootEl
       let dragging = this.resizerDragging = new ElementDraggingImpl(this.resizerElRef.current)
-      let dragStartWidth
-      let viewWidth
+      let dragStartWidth: number
+      let viewWidth: number
 
       dragging.emitter.on('dragstart', () => {
-        dragStartWidth = this.startWidth
-        viewWidth = rootEl.getBoundingClientRect().width
+        viewWidth = this.rootEl.getBoundingClientRect().width
+        dragStartWidth = this.startElRef.current.getBoundingClientRect().width
       })
 
       dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
@@ -148,7 +108,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
     }
   }
 
-  destroyResizing() {
+  componentWillUnmount() {
     if (this.resizerDragging) {
       this.resizerDragging.destroy()
     }

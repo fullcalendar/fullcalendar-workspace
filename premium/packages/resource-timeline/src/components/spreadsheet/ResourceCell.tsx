@@ -42,9 +42,9 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
       <ContentContainer
         elTag="div"
         elClasses={[
-          'fc-cell',
           'fc-resource',
-          props.colIndex ? 'fc-not-first' : '',
+          'fc-cell',
+          props.colIndex ? 'fc-cell-border' : '',
         ]}
         elAttrs={{
           role: 'gridcell',

@@ -64,8 +64,8 @@ export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
 }
 
 interface TimeGridLayoutState {
-  scrollerWidth?: number
-  scrollerHeight?: number
+  clientWidth?: number
+  clientHeight?: number
   leftScrollbarWidth?: number
   rightScrollbarWidth?: number
   axisWidth?: number
@@ -108,7 +108,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
       verticalScrolling && options.expandRows,
       slatCnt,
       state.slatInnerHeight,
-      state.scrollerHeight,
+      state.clientHeight,
     )
     this.slatHeight = slatHeight
 
@@ -120,8 +120,8 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           <div
             className={[
               'fc-timegrid-header',
-              'fc-rowgroup',
-              stickyHeaderDates ? 'fc-sticky-header' : '',
+              'fc-table-header',
+              stickyHeaderDates ? 'fc-table-header-sticky' : '',
             ].join(' ')}
             style={{
               paddingLeft: state.leftScrollbarWidth,
@@ -155,9 +155,9 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         {/* ALL-DAY
         ---------------------------------------------------------------------------------------*/}
         {options.allDaySlot && (
-          <Fragment>
+          <div className='fc-timegrid-allday'>{/* TODO: role="rowgroup" will here. we omit fc-table-body to avoid top-border on next fc-table-body */}
             <div
-              className='fc-timegrid-allday fc-row'
+              className='fc-row'
               style={{
                 paddingLeft: state.leftScrollbarWidth,
                 paddingRight: state.rightScrollbarWidth,
@@ -176,8 +176,8 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 isHitComboAllowed={props.isHitComboAllowed}
                 className='fc-liquid fc-cell'
                 compact={
-                  (state.scrollerWidth != null && state.axisWidth != null)
-                    && (state.scrollerWidth - state.axisWidth) / props.cells.length < COMPACT_CELL_WIDTH
+                  (state.clientWidth != null && state.axisWidth != null)
+                    && (state.clientWidth - state.axisWidth) / props.cells.length < COMPACT_CELL_WIDTH
                 }
 
                 // content
@@ -193,7 +193,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
               />
             </div>
             <div className='fc-rowdivider'></div>
-          </Fragment>
+          </div>
         )}
         {/* SLATS
         -----------------------------------------------------------------------------------------*/}
@@ -201,12 +201,12 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           vertical={verticalScrolling}
           elClassNames={[
             'fc-timegrid-body',
-            'fc-rowgroup',
+            'fc-table-body',
             verticalScrolling ? 'fc-liquid' : '',
           ]}
           ref={props.timeScrollerRef}
-          widthRef={this.handleScrollerWidth}
-          heightRef={this.handleScrollerHeight}
+          clientWidthRef={this.handleClientWidth}
+          clientHeightRef={this.handleClientHeight}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
         >
@@ -299,12 +299,12 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  private handleScrollerWidth = (scrollerWidth: number) => {
-    this.setState({ scrollerWidth })
+  private handleClientWidth = (clientWidth: number) => {
+    this.setState({ clientWidth })
   }
 
-  private handleScrollerHeight = (scrollerHeight: number) => {
-    this.setState({ scrollerHeight })
+  private handleClientHeight = (clientHeight: number) => {
+    this.setState({ clientHeight })
   }
 
   private handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {

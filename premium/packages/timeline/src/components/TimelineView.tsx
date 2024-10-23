@@ -30,7 +30,7 @@ import { TimelineNowIndicatorLine } from './TimelineNowIndicatorLine.js'
 import { TimelineNowIndicatorArrow } from './TimelineNowIndicatorArrow.js'
 
 interface TimelineViewState {
-  scrollerWidth?: number
+  clientWidth?: number
   leftScrollbarWidth?: number
   rightScrollbarWidth?: number
   slotInnerWidth?: number
@@ -85,7 +85,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       tDateProfile.slotsPerLabel,
       options.slotMinWidth,
       state.slotInnerWidth, // is ACTUALLY the label width. rename?
-      state.scrollerWidth,
+      state.clientWidth,
     )
     this.slotWidth = slotWidth
 
@@ -114,8 +114,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 hideScrollbars
                 elClassNames={[
                   'fc-timeline-header',
-                  'fc-rowgroup',
-                  stickyHeaderDates ? 'fc-sticky-header' : '',
+                  'fc-table-header',
+                  stickyHeaderDates ? 'fc-table-header-sticky' : '',
                 ]}
                 ref={this.headerScrollerRef}
               >
@@ -127,25 +127,23 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     paddingRight: state.rightScrollbarWidth,
                   }}
                 >
-                  <div>
-                    {cellRows.map((cells, rowLevel) => {
-                      const isLast = rowLevel === cellRows.length - 1
-                      return (
-                        <TimelineHeaderRow
-                          key={rowLevel}
-                          dateProfile={props.dateProfile}
-                          tDateProfile={tDateProfile}
-                          nowDate={nowDate}
-                          todayRange={todayRange}
-                          rowLevel={rowLevel}
-                          isLastRow={isLast}
-                          cells={cells}
-                          slotWidth={slotWidth}
-                          innerWidthRef={this.headerRowInnerWidthMap.createRef(rowLevel)}
-                        />
-                      )
-                    })}
-                  </div>
+                  {cellRows.map((cells, rowLevel) => {
+                    const isLast = rowLevel === cellRows.length - 1
+                    return (
+                      <TimelineHeaderRow
+                        key={rowLevel}
+                        dateProfile={props.dateProfile}
+                        tDateProfile={tDateProfile}
+                        nowDate={nowDate}
+                        todayRange={todayRange}
+                        rowLevel={rowLevel}
+                        isLastRow={isLast}
+                        cells={cells}
+                        slotWidth={slotWidth}
+                        innerWidthRef={this.headerRowInnerWidthMap.createRef(rowLevel)}
+                      />
+                    )
+                  })}
                   {enableNowIndicator && (
                     // TODO: make this positioned WITHIN padding?
                     <TimelineNowIndicatorArrow
@@ -164,11 +162,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 horizontal
                 elClassNames={[
                   'fc-timeline-body',
-                  'fc-rowgroup',
+                  'fc-table-body',
                   verticalScrolling ? 'fc-liquid' : '',
                 ]}
                 ref={this.bodyScrollerRef}
-                widthRef={this.handleScrollerWidth}
+                clientWidthRef={this.handleClientWidth}
                 leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
                 rightScrollbarWidthRef={this.handleRightScrollbarWidth}
               >
@@ -281,9 +279,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     }
   }
 
-  handleScrollerWidth = (scrollerWidth: number) => {
+  handleClientWidth = (clientWidth: number) => {
     this.setState({
-      scrollerWidth,
+      clientWidth,
     })
   }
 

@@ -269,3 +269,5 @@ export {
   computeLatestEnd,
   getCoordRangeEnd,
 } from './coord-range.js'
+
+export { StickyFooterScrollbar } from './common/StickyFooterScrollbar.js'

@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual, getIsHeightAuto, rangeContainsMarker, SlicedCoordRange, EventRangeProps } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual, getIsHeightAuto, rangeContainsMarker, SlicedCoordRange, EventRangeProps, StickyFooterScrollbar } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { computeColWidth, HeaderRowAdvanced, COMPACT_CELL_WIDTH } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -68,8 +68,8 @@ export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
 }
 
 interface TimeGridLayoutPannableState {
-  scrollerWidth?: number
-  scrollerHeight?: number
+  clientWidth?: number
+  clientHeight?: number
   leftScrollbarWidth?: number
   rightScrollbarWidth?: number
   bottomScrollbarWidth?: number
@@ -152,14 +152,14 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
 
     const colCnt = props.cells.length
     // TODO: memo?
-    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.scrollerWidth)
+    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.clientWidth)
 
     const slatCnt = props.slatMetas.length
     const [slatHeight, slatLiquid] = computeSlatHeight( // TODO: memo?
       verticalScrolling && options.expandRows,
       slatCnt,
       state.slatInnerHeight,
-      state.scrollerHeight,
+      state.clientHeight,
     )
     this.slatHeight = slatHeight
 
@@ -170,7 +170,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             className={[
               'fc-timegrid-header',
               'fc-row', // a "super" row
-              stickyHeaderDates ? 'fc-sticky-header' : '',
+              stickyHeaderDates ? 'fc-table-header-sticky' : '',
             ].join(' ')}
           >
             {/* HEADER / labels
@@ -263,8 +263,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     forPrint={props.forPrint}
                     isHitComboAllowed={props.isHitComboAllowed}
                     compact={
-                      state.scrollerWidth != null
-                        && state.scrollerWidth / props.cells.length < COMPACT_CELL_WIDTH
+                      state.clientWidth != null
+                        && state.clientWidth / props.cells.length < COMPACT_CELL_WIDTH
                     }
 
                     // content
@@ -346,6 +346,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           {/* SLATS / main (scroller)
           ---------------------------------------------------------------------------------------*/}
           <div
+            // we need this div because it's bad for Scroller to have left/right borders,
+            // AND because we need to containt the StickyFooterScrollbar
             className='fc-cell fc-liquid fc-flex-column' // a "super" cell
           >
             <Scroller
@@ -357,8 +359,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 'fc-flex-column',
               ]}
               ref={this.mainScrollerRef}
-              widthRef={this.handleScrollerWidth}
-              heightRef={this.handleScrollerHeight}
+              clientWidthRef={this.handleClientWidth}
+              clientHeightRef={this.handleClientHeight}
               leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
               rightScrollbarWidthRef={this.handleRightScrollbarWidth}
               bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
@@ -410,22 +412,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               </div>
             </Scroller>
             {Boolean(stickyFooterScrollbar) && (
-              <Scroller
-                horizontal
-                watchBorderBox
-                elClassNames={['fc-sticky-footer']}
-                elStyle={{
-                  marginTop: '-1px', // HACK
-                }}
-                ref={this.footScrollerRef}
-              >
-                <div
-                  style={{
-                    width: canvasWidth,
-                    height: '1px', // HACK
-                  }}
-                />
-              </Scroller>
+              <StickyFooterScrollbar
+                canvasWidth={canvasWidth}
+                scrollerRef={this.footScrollerRef}
+              />
             )}
           </div>
         </div>
@@ -459,12 +449,12 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  private handleScrollerWidth = (scrollerWidth: number) => {
-    this.setState({ scrollerWidth })
+  private handleClientWidth = (clientWidth: number) => {
+    this.setState({ clientWidth })
   }
 
-  private handleScrollerHeight = (scrollerHeight: number) => {
-    this.setState({ scrollerHeight })
+  private handleClientHeight = (clientHeight: number) => {
+    this.setState({ clientHeight })
   }
 
   private handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {

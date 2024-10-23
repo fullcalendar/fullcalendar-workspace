@@ -11,18 +11,13 @@ export interface ScrollerProps {
   hideScrollbars?: boolean // default: false
   children: ComponentChildren
 
-  // will watch the element's *outer* width/height instead of the inner
-  // will affect what's given to widthRef/heightRef
-  // ALSO, HACKY requirement: element can't have borders! scrollbar widths will be wrong
-  watchBorderBox?: boolean
-
   // el hooks
   elClassNames?: string[]
   elStyle?: Dictionary
 
   // dimensions
-  widthRef?: Ref<number>
-  heightRef?: Ref<number>
+  clientWidthRef?: Ref<number> // for this to be accurate, element should NOT have left/right borders
+  clientHeightRef?: Ref<number> // for this to be accurate, element should NOT have top/bottom borders
   leftScrollbarWidthRef?: Ref<number>
   rightScrollbarWidthRef?: Ref<number>
   bottomScrollbarWidthRef?: Ref<number>
@@ -35,8 +30,8 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   // internal
   public listener: ScrollListener // public for ScrollerSyncer
   private disconnectSize?: () => void
-  private currentWidth: number
-  private currentHeight: number
+  private currentClientWidth: number
+  private currentClientHeight: number
   private currentLeftScrollbarWidth: number
   private currentRightScrollbarWidth: number
   private currentBottomScrollbarWidth: number
@@ -66,32 +61,36 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   }
 
   componentDidMount(): void {
-    const watchContentBox = !this.props.watchBorderBox
     const el = this.elRef.current // TODO: make dynamic with useEffect
 
     this.listener = new ScrollListener(el)
 
-    this.disconnectSize = watchSize(el, (width, height) => {
+    this.disconnectSize = watchSize(el, () => {
       const { props, context } = this
-
-      // TODO: subtract border width in some cases
-      const bottomScrollbarWidth = el.offsetHeight - el.clientHeight
-      const horizontalScrollbarWidth = el.offsetWidth - el.clientWidth
+      const { clientWidth, clientHeight } = el
+      const bottomScrollbarWidth = el.offsetHeight - clientHeight
+      const horizontalScrollbarWidth = el.offsetWidth - clientWidth
 
       let rightScrollbarWidth = 0
       let leftScrollbarWidth = 0
 
+      /*
+      TODO: more clever way to detect RTL behavior based on current scroller's inner center of mass
+      Only do it if horizontalScrollbarWidth as well as if leftScrollbarWidthRef/rightScrollbarWidthRef,
+      meaning caller is compliant about avoiding left/right borders.
+      However, might not be worth it because still need to query RtlScrollerSystem
+      */
       if (context.isRtl && getRtlScrollerConfig().leftScrollbars) {
         leftScrollbarWidth = horizontalScrollbarWidth
       } else {
         rightScrollbarWidth = horizontalScrollbarWidth
       }
 
-      if (!isDimsEqual(this.currentWidth, width)) {
-        setRef(props.widthRef, this.currentWidth = width)
+      if (this.currentClientWidth !== clientWidth) {
+        setRef(props.clientWidthRef, this.currentClientWidth = clientWidth)
       }
-      if (!isDimsEqual(this.currentHeight, height)) {
-        setRef(props.heightRef, this.currentHeight = height)
+      if (this.currentClientHeight !== clientHeight) {
+        setRef(props.clientHeightRef, this.currentClientHeight = clientHeight)
       }
       if (!isDimsEqual(this.currentBottomScrollbarWidth, bottomScrollbarWidth)) {
         setRef(props.bottomScrollbarWidthRef, this.currentBottomScrollbarWidth = bottomScrollbarWidth)
@@ -102,7 +101,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
       if (!isDimsEqual(this.currentLeftScrollbarWidth, leftScrollbarWidth)) {
         setRef(props.leftScrollbarWidthRef, this.currentLeftScrollbarWidth = leftScrollbarWidth)
       }
-    }, watchContentBox)
+    }, /* watchContentBox = */ true)
   }
 
   componentWillUnmount(): void {
@@ -111,8 +110,8 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     this.disconnectSize()
     this.listener.destroy()
 
-    setRef(props.widthRef, null)
-    setRef(props.heightRef, null)
+    setRef(props.clientWidthRef, null)
+    setRef(props.clientHeightRef, null)
     setRef(props.bottomScrollbarWidthRef, null)
     setRef(props.rightScrollbarWidthRef, null)
     setRef(props.leftScrollbarWidthRef, null)

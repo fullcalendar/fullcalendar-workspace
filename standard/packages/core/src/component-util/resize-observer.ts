@@ -1,11 +1,7 @@
 
 type ResizeCallback = (w: number, h: number) => void
-type ResizeConfig = [
-  callback: ResizeCallback,
-  watchContentBox?: boolean,
-]
 
-const configMap = new Map<Element, ResizeConfig>()
+const callbackMap = new Map<Element, ResizeCallback>()
 let flushedCallbackSet = new Set<() => void>()
 let isHandling = false
 
@@ -18,19 +14,9 @@ const resizeObserver = new ResizeObserver((entries) => {
   isHandling = true
 
   for (let entry of entries) {
-    const [callback, watchContentBox] = configMap.get(entry.target)
+    const callback = callbackMap.get(entry.target)
 
-    if (watchContentBox) {
-      if (entry.contentBoxSize) {
-        // old versions of Firefox treat it as a single item. normalize
-        const box = entry.contentBoxSize[0] || (entry.contentBoxSize as any as ResizeObserverSize)
-
-        callback(box.inlineSize, box.blockSize)
-      } else {
-        // legacy contentRect
-        callback(entry.contentRect.width, entry.contentRect.height)
-      }
-    } else if (entry.borderBoxSize) {
+    if (entry.borderBoxSize) {
       callback(entry.borderBoxSize[0].inlineSize, entry.borderBoxSize[0].blockSize)
     } else {
       const rect = entry.target.getBoundingClientRect()
@@ -49,23 +35,22 @@ const resizeObserver = new ResizeObserver((entries) => {
 /*
 PRECONDITIONS:
 - element can only have one listener attached ever
-- element cannot have border or padding
 
-TODO:
-- always force border/padding on these elements to `0 !important` ???
+If we every kill the ponyfill and use ResizeObserver unconditionally with full border-box support,
+we no longer need wrappers around the <StickyFooterScrollbar>'s <Scroller>
 */
 export function watchSize(
   el: HTMLElement,
   callback: ResizeCallback,
   watchContentBox?: boolean,
 ) {
-  configMap.set(el, [callback, watchContentBox])
+  callbackMap.set(el, callback)
   resizeObserver.observe(el, {
     box: watchContentBox ? undefined : 'border-box',
   })
 
   return () => {
-    configMap.delete(el)
+    callbackMap.delete(el)
     resizeObserver.unobserve(el)
   }
 }
@@ -73,7 +58,6 @@ export function watchSize(
 export function watchWidth(
   el: HTMLElement,
   callback: (width: number) => void,
-  watchContentBox?: boolean,
 ) {
   let currentWidth: number | undefined
 
@@ -81,13 +65,12 @@ export function watchWidth(
     if (currentWidth == null || currentWidth !== width) {
       callback(currentWidth = width)
     }
-  }, watchContentBox)
+  })
 }
 
 export function watchHeight(
   el: HTMLElement,
   callback: (height: number) => void,
-  watchContentBox?: boolean,
 ) {
   let currentHeight: number | undefined
 
@@ -95,7 +78,7 @@ export function watchHeight(
     if (currentHeight == null || currentHeight !== height) {
       callback(currentHeight = height)
     }
-  }, watchContentBox)
+  })
 }
 
 export function afterSize(callback: () => void) {

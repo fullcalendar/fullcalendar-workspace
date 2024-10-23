@@ -152,6 +152,15 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
         }}
         ref={this.handleRootEl}
       >
+        {props.showWeekNumbers && (
+          <WeekNumberContainer
+            elTag="a"
+            elClasses={['fc-daygrid-week-number']}
+            elAttrs={buildNavLinkAttrs(context, weekDate, 'week')}
+            date={weekDate}
+            defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
+          />
+        )}
         {props.cells.map((cell, col) => {
           const normalFgNodes = this.renderFgSegs(
             renderableSegsByCol[col],
@@ -215,16 +224,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
             />
           )
         })}
-        {/* Must be at end b/c CSS selectors depend on cell being first-child */}
-        {props.showWeekNumbers && (
-          <WeekNumberContainer
-            elTag="a"
-            elClasses={['fc-daygrid-week-number']}
-            elAttrs={buildNavLinkAttrs(context, weekDate, 'week')}
-            date={weekDate}
-            defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
-          />
-        )}
       </div>
     )
   }

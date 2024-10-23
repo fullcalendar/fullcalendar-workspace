@@ -18,6 +18,7 @@ import {
   RefMap,
   Scroller,
   ScrollerSyncerInterface,
+  StickyFooterScrollbar,
   ViewContainer, ViewOptionsRefined,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
@@ -72,11 +73,11 @@ import { buildHeaderLayouts, buildResourceLayouts, computeHasNesting, GenericLay
 
 interface ResourceTimelineViewState {
   slotInnerWidth?: number
-  spreadsheetWidth?: number
+  spreadsheetClientWidth?: number
   spreadsheetColWidthConfigs: ColWidthConfig[]
   spreadsheetColWidthOverrides?: number[]
-  mainScrollerWidth?: number
-  mainScrollerHeight?: number
+  timeClientWidth?: number
+  timeClientHeight?: number
   leftScrollbarWidth?: number
   rightScrollbarWidth?: number
   spreadsheetBottomScrollbarWidth?: number
@@ -220,7 +221,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
         }
       },
       (verticalScrolling && options.expandRows)
-        ? state.mainScrollerHeight
+        ? state.timeClientHeight
         : undefined,
     )
     let bodyTops = computeTopsFromHeights(bodyLayouts, bodyHeights)
@@ -232,15 +233,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       tDateProfile.slotsPerLabel,
       options.slotMinWidth,
       state.slotInnerWidth, // is ACTUALLY the last-level label width. rename?
-      state.mainScrollerWidth
+      state.timeClientWidth
     )
     this.slotWidth = slotWidth
     this.timeCanvasWidth = timeCanvasWidth
 
     let [spreadsheetColWidths, spreadsheetCanvasWidth] =
       state.spreadsheetColWidthOverrides
-        ? processSpreadsheetColWidthOverrides(state.spreadsheetColWidthOverrides, state.spreadsheetWidth)
-        : processSpreadsheetColWidthConfigs(initialColWidthConfigs, state.spreadsheetWidth)
+        ? processSpreadsheetColWidthOverrides(state.spreadsheetColWidthOverrides, state.spreadsheetClientWidth)
+        : processSpreadsheetColWidthConfigs(initialColWidthConfigs, state.spreadsheetClientWidth)
 
     let spreadsheetResourceWidth = sliceSpreadsheetColWidth(
       spreadsheetColWidths,
@@ -286,7 +287,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             >
               <ResizableTwoCol
                 className={verticalScrolling ? 'fc-liquid' : ''}
-                onSizes={this.handleTwoColSizes}
 
                 /* spreadsheet
                 --------------------------------------------------------------------------------- */
@@ -300,8 +300,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     <div
                       className={[
                         'fc-datagrid-header',
-                        'fc-rowgroup',
-                        stickyHeaderDates ? 'fc-sticky-header' : '',
+                        'fc-table-header',
+                        stickyHeaderDates ? 'fc-table-header-sticky' : '',
                       ].join(' ')}
                     >
                       {Boolean(superHeaderRendering) && (
@@ -322,7 +322,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       <Scroller
                         horizontal
                         hideScrollbars
-                        elClassNames={['fc-rowgroup']}
+                        elClassNames={[
+                          superHeaderRendering ? 'fc-row-border' : '',
+                        ]}
                         ref={this.spreadsheetHeaderScrollerRef}
                       >
                         <div style={{ width: spreadsheetCanvasWidth }}>
@@ -352,17 +354,22 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       hideScrollbars
                       elClassNames={[
                         'fc-datagrid-body',
-                        'fc-rowgroup',
+                        'fc-table-body',
                         verticalScrolling ? 'fc-liquid' : '',
                       ]}
                       ref={this.spreadsheetBodyScrollerRef}
+                      clientWidthRef={this.handleSpreadsheetClientWidth}
                     >
                       <div
                         className='fc-rel fc-grow'
                         style={{
                           width: spreadsheetCanvasWidth,
-                          paddingBottom: state.timeBottomScrollbarWidth - state.spreadsheetBottomScrollbarWidth,
-                          // ^^weird to have same element responsible for width and veritical padding
+                          // weird to have same element responsible for width and veritical padding
+                          paddingBottom: Math.max(
+                            0,
+                            (state.timeBottomScrollbarWidth || 0) -
+                            (state.spreadsheetBottomScrollbarWidth || 0)
+                          )
                         }}
                       >
                         <div
@@ -390,7 +397,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                       aria-rowindex={groupCellLayout.rowIndex}
                                       class={[
                                         'fc-row fc-fill-x',
-                                        groupCellLayout.rowIndex ? 'fc-not-first' : '',
+                                        groupCellLayout.rowIndex ? 'fc-row-border' : '',
                                       ].join(' ')}
                                       style={{
                                         top: bodyTops.get(group),
@@ -425,7 +432,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   aria-rowindex={resourceLayout.rowIndex}
                                   class={[
                                     'fc-row fc-fill-x',
-                                    resourceLayout.rowIndex ? 'fc-not-first' : '',
+                                    resourceLayout.rowIndex ? 'fc-row-border' : '',
                                   ].join(' ')}
                                   style={{
                                     top: bodyTops.get(resource),
@@ -449,58 +456,42 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           </div>
                         </div>
                         {/* resource-group rows */}
-                        {/* container simply to enclose siblings for :first-child, etc */}
                         {/* hackily moved after resources for z-index reasons */}
-                        <div>
-                          {flatGroupRowLayouts.map((groupRowLayout) => {
-                            const group = groupRowLayout.entity
-                            return (
-                              <div
-                                key={queryObjKey(group)}
-                                role='row'
-                                aria-rowindex={groupRowLayout.rowIndex}
-                                class={[
-                                  'fc-row fc-fill-x',
-                                  groupRowLayout.rowIndex ? 'fc-not-first' : '',
-                                ].join(' ')}
-                                style={{
-                                  top: bodyTops.get(group),
-                                  height: bodyHeights.get(group),
-                                }}
-                              >
-                                <GroupWideCell
-                                  group={group}
-                                  isExpanded={groupRowLayout.isExpanded}
-                                  innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
-                                />
-                              </div>
-                            )
-                          })}
-                        </div>
+                        {flatGroupRowLayouts.map((groupRowLayout) => {
+                          const group = groupRowLayout.entity
+                          return (
+                            <div
+                              key={queryObjKey(group)}
+                              role='row'
+                              aria-rowindex={groupRowLayout.rowIndex}
+                              class={[
+                                'fc-row fc-fill-x',
+                                groupRowLayout.rowIndex ? 'fc-row-border' : '',
+                              ].join(' ')}
+                              style={{
+                                top: bodyTops.get(group),
+                                height: bodyHeights.get(group),
+                              }}
+                            >
+                              <GroupWideCell
+                                group={group}
+                                isExpanded={groupRowLayout.isExpanded}
+                                innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
+                              />
+                            </div>
+                          )
+                        })}
                       </div>
                     </Scroller>
 
                     {/* spreadsheet FOOTER scrollbar
                     ---------------------------------------------------------------------------- */}
-                    <Scroller
-                      horizontal
-                      watchBorderBox
-                      elClassNames={[
-                        stickyFooterScrollbar ? 'fc-sticky-footer' : '',
-                      ]}
-                      elStyle={{
-                        marginTop: '-1px', // HACK
-                      }}
-                      ref={this.spreadsheetFooterScrollerRef}
-                      bottomScrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
-                    >
-                      <div
-                        style={{
-                          width: spreadsheetCanvasWidth,
-                          height: '1px', // HACK
-                        }}
-                      />
-                    </Scroller>
+                    {/* TODO: this should not always be sticky! */}
+                    <StickyFooterScrollbar
+                      canvasWidth={spreadsheetCanvasWidth}
+                      scrollerRef={this.spreadsheetFooterScrollerRef}
+                      scrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
+                    />
                   </Fragment>
                 }
 
@@ -519,8 +510,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       hideScrollbars
                       elClassNames={[
                         'fc-timeline-header',
-                        'fc-rowgroup',
-                        stickyHeaderDates ? 'fc-sticky-header' : '',
+                        'fc-table-header',
+                        stickyHeaderDates ? 'fc-table-header-sticky' : '',
                       ]}
                     >
                       <div
@@ -569,19 +560,27 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       hideScrollbars={stickyFooterScrollbar}
                       elClassNames={[
                         'fc-timeline-body',
-                        'fc-rowgroup',
+                        'fc-table-body',
                         verticalScrolling ? 'fc-liquid' : '',
                       ]}
                       ref={this.timeBodyScrollerRef}
-                      widthRef={this.handleMainScrollerWidth}
-                      heightRef={this.handleMainScrollerHeight}
+                      clientWidthRef={this.handleTimeClientWidth}
+                      clientHeightRef={this.handleTimeClientHeight}
                       leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
                       rightScrollbarWidthRef={this.handleRightScrollbarWidth}
                       bottomScrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
                     >
                       <div
                         className='fc-rel fc-grow'
-                        style={{ width: timeCanvasWidth }}
+                        style={{
+                          width: timeCanvasWidth,
+                          // weird to have same element responsible for width and veritical padding
+                          paddingBottom: Math.max(
+                            0,
+                            (state.spreadsheetBottomScrollbarWidth || 0) -
+                            (state.timeBottomScrollbarWidth || 0)
+                          )
+                        }}
                         ref={this.handleBodyEl}
                       >
                         <div
@@ -598,7 +597,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   aria-rowindex={resourceLayout.rowIndex}
                                   className={[
                                     'fc-row fc-fill-x',
-                                    resourceLayout.rowIndex ? 'fc-not-first' : '',
+                                    resourceLayout.rowIndex ? 'fc-row-border' : '',
                                   ].join(' ')}
                                   style={{
                                     top: bodyTops.get(resource),
@@ -636,7 +635,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   aria-rowindex={groupRowLayout.rowIndex}
                                   class={[
                                     'fc-row fc-fill-x',
-                                    groupRowLayout.rowIndex ? 'fc-not-first' : '',
+                                    groupRowLayout.rowIndex ? 'fc-row-border' : '',
                                   ].join(' ')}
                                   style={{
                                     top: bodyTops.get(group),
@@ -694,24 +693,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     {/* time-area FOOTER
                     ---------------------------------------------------------------------------- */}
                     {stickyFooterScrollbar && (
-                      <Scroller
-                        horizontal
-                        watchBorderBox
-                        elClassNames={['fc-sticky-footer']}
-                        elStyle={{
-                          marginTop: '-1px', // HACK
-                        }}
-                        ref={this.timeFooterScrollerRef}
-                      >
-                        <div
-                          style={{
-                            width: timeCanvasWidth,
-                            height: '1px', // HACK
-                          }}
-                        />
-                      </Scroller>
+                      <StickyFooterScrollbar
+                        canvasWidth={timeCanvasWidth}
+                        scrollerRef={this.timeFooterScrollerRef}
+                      />
                     )}
-
                   </Fragment>
                 }
               />
@@ -771,21 +757,21 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  handleTwoColSizes = (spreadsheetWidth: number) => {
+  handleSpreadsheetClientWidth = (spreadsheetClientWidth: number) => {
     this.setState({
-      spreadsheetWidth,
+      spreadsheetClientWidth,
     })
   }
 
-  handleMainScrollerWidth = (width: number) => {
+  handleTimeClientWidth = (width: number) => {
     this.setState({
-      mainScrollerWidth: width,
+      timeClientWidth: width,
     })
   }
 
-  handleMainScrollerHeight = (height: number) => {
+  handleTimeClientHeight = (height: number) => {
     this.setState({
-      mainScrollerHeight: height,
+      timeClientHeight: height,
     })
   }
 

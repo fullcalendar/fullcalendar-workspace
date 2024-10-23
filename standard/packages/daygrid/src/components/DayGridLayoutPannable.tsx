@@ -16,6 +16,7 @@ import {
   RefMap,
   DayGridRange,
   EventRangeProps,
+  StickyFooterScrollbar,
 } from '@fullcalendar/core/internal'
 import { ComponentChild, Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -57,7 +58,7 @@ export interface DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
 }
 
 interface DayGridViewState {
-  width?: number
+  clientWidth?: number
   leftScrollbarWidth?: number
   rightScrollbarWidth?: number
 }
@@ -77,7 +78,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
     const colCnt = props.cellRows[0].length
-    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.width)
+    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.clientWidth)
 
     return (
       <Fragment>
@@ -87,8 +88,8 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
             hideScrollbars
             elClassNames={[
               'fc-daygrid-header',
-              'fc-rowgroup',
-              stickyHeaderDates ? 'fc-sticky-header' : ''
+              'fc-table-header',
+              stickyHeaderDates ? 'fc-table-header-sticky' : ''
             ]}
             ref={this.headerScrollerRef}
           >
@@ -109,16 +110,15 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           vertical={verticalScrollbars}
           horizontal
           hideScrollbars={stickyFooterScrollbar}
-          widthRef={this.handleWidth}
-          leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
-          rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           elClassNames={[
             'fc-daygrid-body',
-            'fc-rowgroup',
-            'fc-flex-column',
+            'fc-table-body',
             verticalScrollbars ? 'fc-liquid' : '',
           ]}
           ref={this.bodyScrollerRef}
+          clientWidthRef={this.handleClientWidth}
+          leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
+          rightScrollbarWidthRef={this.handleRightScrollbarWidth}
         >
           <DayGridRows // .fc-grow
             dateProfile={props.dateProfile}
@@ -145,22 +145,10 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           />
         </Scroller>
         {Boolean(stickyFooterScrollbar) && (
-          <Scroller
-            horizontal
-            watchBorderBox
-            elClassNames={['fc-sticky-footer']}
-            elStyle={{
-              marginTop: '-1px', // HACK
-            }}
-            ref={this.footerScrollerRef}
-          >
-            <div
-              style={{
-                width: canvasWidth,
-                height: '1px', // HACK
-              }}
-            />
-          </Scroller>
+          <StickyFooterScrollbar
+            canvasWidth={canvasWidth}
+            scrollerRef={this.footerScrollerRef}
+          />
         )}
       </Fragment>
     )
@@ -190,8 +178,8 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  handleWidth = (width: number) => {
-    this.setState({ width })
+  handleClientWidth = (clientWidth: number) => {
+    this.setState({ clientWidth })
   }
 
   handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {

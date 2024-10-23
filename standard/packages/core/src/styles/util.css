@@ -34,94 +34,64 @@ Rarely used. Just inline this?
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
-.fc-row {
-  display: flex;
-  flex-direction: row;
-}
+// TODO: introduce fc-table/fc-table-border classnames?
 
-/*
-like an fc-row, but DOES NOT FORCE CHILDREN TO BE CELLS
-*/
-.fc-rowgroup {
+.fc-table-header, // TODO: change name to just fc-header?
+.fc-table-body { // TODO: change name to just fc-body?
   display: flex;
   flex-direction: column;
 }
 
+.fc-table-header,
+.fc-table-body,
 .fc-row,
-.fc-rowgroup,
-.fc-rowdivider {
-  border-style: solid;
-  border-color: var(--fc-border-color);
-  border-width: 1px 0 0; // top
-}
-
-// kill top border
-// (first-child)
-.fc-row:first-child:not(.fc-not-first),
-.fc-rowgroup:first-child,
-.fc-rowdivider:first-child,
-// (when below a header/divider)
-.fc-sticky-header + .fc-row, // TODO: move to fc-rowgroup-sticky?
-.fc-sticky-header + .fc-rowgroup,
-.fc-rowdivider + .fc-row,
-.fc-rowdivider + .fc-rowgroup { // TODO: combine this with above
-  border-top-width: 0;
-}
-
+.fc-row-border, // can be used standalone
+.fc-rowdivider,
 .fc-cell,
 .fc-celldivider {
   border: 0 solid var(--fc-border-color);
+}
+
+.fc-table-header {
+  border-bottom-width: 1px;
+}
+
+.fc-table-body + .fc-table-body,
+.fc-row + .fc-row,
+.fc-row-border {
+  border-top-width: 1px;
+}
+
+.fc-rowdivider { // TOOD: change name to fc-row-divider?
+  border-width: 1px 0;
+}
+
+.fc-celldivider { // TOOD: change name to fc-cell-divider?
+  border-width: 0 1px;
+}
+
+.fc-row {
+  display: flex;
+  flex-direction: row;
 }
 
 .fc-cell {
   margin: 0 !important;
   padding: 0 !important;
 }
+.fc-direction-ltr .fc-cell + .fc-cell,
+.fc-direction-ltr .fc-cell-border {
+  border-left-width: 1px;
+}
+.fc-direction-rtl .fc-cell + .fc-cell,
+.fc-direction-rtl .fc-cell-border {
+  border-right-width: 1px;
+}
 
 .fc-cell-inner {
   flex-shrink: 0; // so that cell (whose height is controlled the row) does not compress
   white-space: nowrap;
   overflow: hidden;
-}
-
-.fc-direction-ltr {
-  & .fc-cell,
-  & .fc-celldivider {
-    border-left-width: 1px;
-  }
-
-  // kill left border
-  // (first-child)
-  & .fc-cell:first-child:not(.fc-not-first),
-  // (when right of a divider)
-  & .fc-celldivider + .fc-cell {
-    border-left-width: 0;
-  }
-
-  // takeover right border
-  & .fc-celldivider {
-    border-right-width: 1px;
-  }
-}
-
-.fc-direction-rtl {
-  & .fc-cell,
-  & .fc-celldivider {
-    border-right-width: 1px;
-  }
-
-  // kill right border
-  // (first-child)
-  & .fc-cell:first-child:not(.fc-not-first),
-  // (when left of a divider)
-  & .fc-celldivider + .fc-cell {
-    border-right-width: 0;
-  }
-
-  // takeover left border
-  & .fc-celldivider {
-    border-left-width: 1px;
-  }
 }
 
 /*
@@ -143,12 +113,6 @@ Lone cell in a row should always fill row. Makes axis widths much easier
 }
 .fc-rowdivider {
   padding-bottom: 2px; // can use just height if we move towards content-box!
-}
-
-// takeover bottom border
-.fc-rowdivider,
-.fc-sticky-header {
-  border-bottom-width: 1px; // takeover the bottom border
 }
 
 // Misc Utils
@@ -194,17 +158,23 @@ Lone cell in a row should always fill row. Makes axis widths much easier
   right: 0;
 }
 
-.fc-sticky-header {
+.fc-table-header-sticky {
   position: sticky;
   top: 0;
   background: var(--fc-page-bg-color);
   z-index: 9999; // TODO: what was it before?
 }
 
-.fc-sticky-footer {
+.fc-sticky-footer-scrollbar {
   position: sticky;
   bottom: 0;
   z-index: 9999; // TODO: what was it before?
+}
+.fc-sticky-footer-scrollbar > .fc-scroller {
+  margin-top: -1px; // HACK for 1px height...
+}
+.fc-sticky-footer-scrollbar > .fc-scroller > * {
+  height: 1px; // ...needs 1px height or else scrollbars will never appear
 }
 
 /*
