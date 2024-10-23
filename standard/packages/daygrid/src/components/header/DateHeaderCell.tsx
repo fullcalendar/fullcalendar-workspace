@@ -16,7 +16,7 @@ import {
   watchHeight,
   setRef,
 } from '@fullcalendar/core/internal'
-import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
+import { Ref, createElement } from '@fullcalendar/core/preact'
 import { renderInner } from '../util.js'
 
 export interface DateHeaderCellProps {
@@ -41,9 +41,6 @@ export interface DateHeaderCellProps {
 }
 
 export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
-  // ref
-  private innerElRef = createRef<HTMLDivElement>()
-
   // internal
   private disconectInnerHeight?: () => void
 
@@ -96,40 +93,35 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
         willUnmount={options.dayHeaderWillUnmount}
       >
         {(InnerContainer) => (
-          <div
-            ref={this.innerElRef}
-            className={[
-              'fc-flex-column',
-              props.isSticky ? 'fc-sticky-x' : '',
-            ].join(' ')}
-          >
-            {!dayMeta.isDisabled && (
-              <InnerContainer
-                elTag="a"
-                elAttrs={navLinkAttrs}
-                elClasses={[
-                  'fc-cell-inner',
-                  'fc-padding-sm',
-                ]}
-              />
-            )}
-          </div>
+          !dayMeta.isDisabled && (
+            <InnerContainer
+              elTag="a"
+              elAttrs={navLinkAttrs}
+              elClasses={[
+                'fc-cell-inner',
+                'fc-flex-column',
+                'fc-padding-sm',
+                props.isSticky ? 'fc-sticky-x' : '',
+              ]}
+              elRef={this.handleInnerEl}
+            />
+          )
         )}
       </ContentContainer>
     )
   }
 
-  componentDidMount(): void {
-    const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+  handleInnerEl = (innerEl: HTMLElement | null) => {
+    if (this.disconectInnerHeight) {
+      this.disconectInnerHeight()
+      this.disconectInnerHeight = undefined
+      setRef(this.props.innerHeightRef, null)
+    }
 
-    // TODO: only attach this if refs props present
-    this.disconectInnerHeight = watchHeight(innerEl, (height) => {
-      setRef(this.props.innerHeightRef, height)
-    })
-  }
-
-  componentWillUnmount(): void {
-    this.disconectInnerHeight()
-    setRef(this.props.innerHeightRef, null)
+    if (innerEl) {
+      this.disconectInnerHeight = watchHeight(innerEl, (height) => {
+        setRef(this.props.innerHeightRef, height)
+      })
+    }
   }
 }
