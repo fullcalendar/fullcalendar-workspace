@@ -65,9 +65,8 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
     this.listener = new ScrollListener(el)
 
-    this.disconnectSize = watchSize(el, () => {
+    this.disconnectSize = watchSize(el, (clientWidth, clientHeight) => {
       const { props, context } = this
-      const { clientWidth, clientHeight } = el
       const bottomScrollbarWidth = el.offsetHeight - clientHeight
       const horizontalScrollbarWidth = el.offsetWidth - clientWidth
 
@@ -101,7 +100,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
       if (!isDimsEqual(this.currentLeftScrollbarWidth, leftScrollbarWidth)) {
         setRef(props.leftScrollbarWidthRef, this.currentLeftScrollbarWidth = leftScrollbarWidth)
       }
-    }, /* watchContentBox = */ true)
+    }, /* client(width+height) = */ true)
   }
 
   componentWillUnmount(): void {

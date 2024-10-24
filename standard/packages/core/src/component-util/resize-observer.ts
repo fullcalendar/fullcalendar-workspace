@@ -1,7 +1,11 @@
 
-type ResizeCallback = (w: number, h: number) => void
+type ResizeCallback = (width: number, height: number) => void
+type ResizeConfig = {
+  callback: ResizeCallback
+  client?: boolean // client(width+height)
+}
 
-const callbackMap = new Map<Element, ResizeCallback>()
+const configMap = new Map<Element, ResizeConfig>()
 let flushedCallbackSet = new Set<() => void>()
 let isHandling = false
 
@@ -14,12 +18,15 @@ const resizeObserver = new ResizeObserver((entries) => {
   isHandling = true
 
   for (let entry of entries) {
-    const callback = callbackMap.get(entry.target)
+    const el = entry.target
+    const { callback, client } = configMap.get(el)
 
-    if (entry.borderBoxSize) {
+    if (client) {
+      callback(el.clientWidth, el.clientHeight)
+    } else if (entry.borderBoxSize) {
       callback(entry.borderBoxSize[0].inlineSize, entry.borderBoxSize[0].blockSize)
     } else {
-      const rect = entry.target.getBoundingClientRect()
+      const rect = el.getBoundingClientRect()
       callback(rect.width, rect.height)
     }
   }
@@ -42,15 +49,15 @@ we no longer need wrappers around the <StickyFooterScrollbar>'s <Scroller>
 export function watchSize(
   el: HTMLElement,
   callback: ResizeCallback,
-  watchContentBox?: boolean,
+  client = false,
 ) {
-  callbackMap.set(el, callback)
+  configMap.set(el, { callback, client })
   resizeObserver.observe(el, {
-    box: watchContentBox ? undefined : 'border-box',
+    box: client ? undefined : 'border-box',
   })
 
   return () => {
-    callbackMap.delete(el)
+    configMap.delete(el)
     resizeObserver.unobserve(el)
   }
 }
