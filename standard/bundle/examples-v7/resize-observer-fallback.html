@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<script src='../dist/index.global.js'></script>
+<script>
+
+  /*
+  You must disable `resizeObserverEnabled` in the source code
+  */
+  document.addEventListener('DOMContentLoaded', function() {
+    const updateButton = document.querySelector('button.update')
+    const destroyButton = document.querySelector('button.destroy')
+    const el = document.querySelector('div')
+    let isSmall = false
+
+    const destroySize = watchSize(el, (width, height) => {
+      el.innerText = width + ' x ' + height
+    })
+
+    updateButton.addEventListener('click', () => {
+      if (isSmall) {
+        isSmall = false
+        el.classList.remove('small')
+      } else {
+        isSmall = true
+        el.classList.add('small')
+      }
+    })
+
+    destroyButton.addEventListener('click', () => {
+      destroySize()
+    })
+  });
+
+</script>
+<style>
+
+  div {
+    border: 5px solid red;
+    margin: 50px;
+    max-width: 1200px;
+    aspect-ratio: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  div.small {
+    border-color: green;
+    max-width: 800px;
+    aspect-ratio: 3;
+  }
+
+  div:hover {
+    border-width: 10px;
+  }
+
+</style>
+</head>
+<body>
+
+  <button class='update'>update</button>
+  <button class='destroy'>destroy</button>
+
+  <div></div>
+
+</body>
+</html>

@@ -6,10 +6,8 @@ Publishing:
  Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-ResizeObserver
-  implement fallback
-Web Component
-  remove `shadow` attribute
+Ensure transpilation to correct ES target
+  should transpile ??
 Theming
   did themeSystem:false ever clear the theme?
   Bootstrap color mode:
@@ -137,6 +135,9 @@ Performance
     https://github.com/fullcalendar/fullcalendar/issues/5606
   hit-system: only query DOM element for handlers like dayClick at very end
   this.detachInnerHeight() // should fire a 'null' height? yes! will cleanup any map listeners
+  ResizeObserver ponyfill
+    as few calls as possible
+    check no memory leak
 Angular
   Building example project gives warnings like
     Ignoring this import because ".." was marked as having no side effects
@@ -152,7 +153,10 @@ Dev Cleanup
 Examples
   In each two-column layout, give the sidebar flex-shrink:0 and the main min-width:0
     Things are currently collapsing very strangely on a narrow screen (like stackblitz angular demo)
+Last-minute features
+  Calendar::updateSize return promise
 Changelog
+  Add: Calendar::updateSize no longer synchronous
   Add: all cell headers are no longer bold
   Add: standin events get put through eventContent/etc
   Add: eventSlicing (write tests too)
