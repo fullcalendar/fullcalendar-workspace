@@ -1,7 +1,7 @@
 import { preactOptions } from '../preact.js'
 
-const resizeObserverEnabled = true
-const resizeObserverBorderBoxEnabled = true
+const nativeEnabled = true
+const nativeBorderBoxEnabled = true
 const fallbackTimeout = 100
 
 // Common
@@ -53,7 +53,7 @@ function initNative(): [WatchSize, UpdateSizeSync] {
 
       if (client) {
         callback(el.clientWidth, el.clientHeight)
-      } else if (entry.borderBoxSize && resizeObserverBorderBoxEnabled) {
+      } else if (entry.borderBoxSize && nativeBorderBoxEnabled) {
         callback(entry.borderBoxSize[0].inlineSize, entry.borderBoxSize[0].blockSize)
       } else {
         const rect = el.getBoundingClientRect()
@@ -72,7 +72,7 @@ function initNative(): [WatchSize, UpdateSizeSync] {
   ) {
     configMap.set(el, { callback, client })
     globalResizeObserver.observe(el, {
-      box: !client && resizeObserverBorderBoxEnabled
+      box: !client && nativeBorderBoxEnabled
         ? 'border-box'
         : undefined // default is 'content-box'
     })
@@ -118,7 +118,7 @@ const eventListenerConfig: AddEventListenerOptions = {
 }
 
 function initFallback(): [WatchSize, UpdateSizeSync] {
-  let globalMutationObserver: MutationObserver | undefined
+  let globalMutationObserver: MutationObserver | undefined // lazily initialize for non-browser envs
   let globalMutationObserverPaused = false
 
   const [requestCheckSizes, cancelCheckSizes] = debounce(checkSizes, fallbackTimeout)
@@ -325,12 +325,12 @@ border-box support, we no longer need wrappers around the <StickyFooterScrollbar
 */
 
 export const [watchSize, updateSizeSync] =
-  resizeObserverEnabled && typeof ResizeObserver !== 'undefined'
+  nativeEnabled && typeof ResizeObserver !== 'undefined'
     ? initNative()
     : initFallback()
 
 // debug
-if (!resizeObserverEnabled) {
+if (!nativeEnabled) {
   (window as any).watchSize = watchSize
 }
 
