@@ -82,3 +82,5 @@ export function createContext<T>(defaultValue: T) {
 
   return ContextType
 }
+
+export const preactOptions = preact.options

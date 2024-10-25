@@ -4,7 +4,6 @@ import { CalendarOptions, CalendarListeners } from '../options.js'
 import { Theme } from '../theme/Theme.js'
 import { Emitter } from '../common/Emitter.js'
 import { CssDimValue } from '../scrollgrid/util.js'
-import { updateSize } from '../component-util/resize-observer.js'
 
 export interface CalendarRootProps {
   options: CalendarOptions
@@ -41,11 +40,6 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
     let { emitter } = this.props
     emitter.on('_beforeprint', this.handleBeforePrint)
     emitter.on('_afterprint', this.handleAfterPrint)
-    updateSize()
-  }
-
-  componentDidUpdate() {
-    updateSize()
   }
 
   componentWillUnmount() {

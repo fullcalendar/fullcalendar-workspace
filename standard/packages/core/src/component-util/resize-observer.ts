@@ -1,13 +1,14 @@
+import { preactOptions } from '../preact.js'
 
 const resizeObserverEnabled = true
 const resizeObserverBorderBoxEnabled = true
-const fallbackTimeout = 50
+const fallbackTimeout = 100
 
 if (!resizeObserverEnabled) {
   (window as any).watchSize = watchSizeFallback // for testing
 }
 
-// COMMON
+// Common
 // -------------------------------------------------------------------------------------------------
 
 type ResizeConfig = {
@@ -19,6 +20,7 @@ type ResizeConfig = {
 
 const configMap = new Map<Element, ResizeConfig>()
 const afterSizeCallbacks = new Set<() => void>()
+
 let isHandling = false
 
 export function afterSize(callback: () => void) {
@@ -92,7 +94,7 @@ function watchSizeFallback(
   }
 
   configMap.set(el, { callback, client })
-  checkSizesAsync()
+  requestCheckSizes()
 
   return () => {
     configMap.delete(el)
@@ -110,7 +112,7 @@ while ignoring changes per-element after the first (to prevent infinite loops),
 but our Preact system does not commit to the DOM immediately, commits are batched for later,
 so we can skip this.
 */
-function _checkSizes() {
+function checkSizes() {
   if (!isHandling) {
     isHandling = true
 
@@ -143,11 +145,11 @@ function _checkSizes() {
   }
 }
 
-const [checkSizesAsync, cancelSizes] = debounce(_checkSizes, fallbackTimeout)
+const [requestCheckSizes, cancelCheckSizes] = debounce(checkSizes, fallbackTimeout)
 
-function checkSizesSync() {
-  cancelSizes()
-  _checkSizes()
+function requestCheckSizesSync() {
+  cancelCheckSizes()
+  checkSizes()
 }
 
 // from https://github.com/juggle/resize-observer/blob/master/src/utils/scheduler.ts
@@ -178,32 +180,94 @@ const eventListenerConfig: AddEventListenerOptions = {
 }
 
 let globalMutationObserver: MutationObserver | undefined
+let globalMutationObserverPaused = false
 
 function addGlobalHandlers() {
-  globalMutationObserver = new MutationObserver(checkSizesAsync)
+  globalMutationObserver = new MutationObserver(requestCheckSizes)
+  if (!globalMutationObserverPaused) {
+    startGlobalMutationObserver()
+  }
+
+  for (const eventName of globalEventNames) {
+    window.addEventListener(eventName, requestCheckSizes, eventListenerConfig)
+  }
+}
+
+function removeGlobalHandlers() {
+  if (!globalMutationObserverPaused) {
+    stopGlobalMutationObserver()
+  }
+
+  for (const eventName of globalEventNames) {
+    window.removeEventListener(eventName, requestCheckSizes, eventListenerConfig)
+  }
+}
+
+function startGlobalMutationObserver() {
   globalMutationObserver.observe(document.documentElement, {
     attributes: true,
     childList: true,
     subtree: true,
     characterData: true,
   })
+}
 
-  for (const eventName of globalEventNames) {
-    window.addEventListener(eventName, checkSizesAsync, eventListenerConfig)
+function stopGlobalMutationObserver() {
+  globalMutationObserver.disconnect()
+}
+
+function pauseGlobalMutationObserver() {
+  if (!globalMutationObserverPaused) {
+    globalMutationObserverPaused = true
+
+    if (configMap.size) {
+      stopGlobalMutationObserver()
+    }
   }
 }
 
-function removeGlobalHandlers() {
-  globalMutationObserver.disconnect()
-  globalMutationObserver = undefined
+function resumeGlobalMutationObserver() {
+  if (globalMutationObserverPaused) {
+    globalMutationObserverPaused = false
 
-  for (const eventName of globalEventNames) {
-    window.removeEventListener(eventName, checkSizesAsync, eventListenerConfig)
+    if (configMap.size) {
+      startGlobalMutationObserver()
+    }
+  }
+}
+
+// Preact Integration
+// -------------------------------------------------------------------------------------------------
+
+function installPreactHooks() {
+  const __rOld = (preactOptions as any).__r || noop
+  const __cOld = (preactOptions as any).__c || noop
+  let requested = false
+
+  // called before a component renders
+  ;(preactOptions as any).__r = function() {
+    pauseGlobalMutationObserver()
+    __rOld.apply(this, arguments)
+  }
+
+  // called after component committed to DOM
+  ;(preactOptions as any).__c = function() {
+    if (!requested) {
+      requested = true
+      requestAnimationFrame(() => {
+        requestCheckSizesSync()
+        resumeGlobalMutationObserver()
+        requested = false
+      })
+    }
+    __cOld.apply(this, arguments)
   }
 }
 
 // Util
 // -------------------------------------------------------------------------------------------------
+
+const noop = () => {} // TODO: use elsewhere
 
 function debounce(fn: () => void, ms: number): [
   request: () => void,
@@ -244,7 +308,7 @@ function debounce(fn: () => void, ms: number): [
   return [request, cancel]
 }
 
-// Top-level
+// Main
 // -------------------------------------------------------------------------------------------------
 /*
 PRECONDITION: element can only have one listener attached
@@ -256,17 +320,18 @@ border-box support, we no longer need wrappers around the <StickyFooterScrollbar
 export type ResizeCallback = (width: number, height: number) => void
 
 let watchSize: (el: HTMLElement, callback: ResizeCallback, client?: boolean) => () => void
-let updateSize: () => void
+let updateSizeSync: () => void
 
 if (resizeObserverEnabled && typeof ResizeObserver !== 'undefined') {
   watchSize = watchSizeNative
-  updateSize = () => {} // noop
+  updateSizeSync = noop
 } else {
   watchSize = watchSizeFallback
-  updateSize = checkSizesSync
+  updateSizeSync = requestCheckSizesSync
+  installPreactHooks()
 }
 
-export { watchSize, updateSize }
+export { watchSize, updateSizeSync }
 
 export function watchWidth(
   el: HTMLElement,

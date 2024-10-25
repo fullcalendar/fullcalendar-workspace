@@ -27,7 +27,7 @@ import {
   EventSourceInput,
   EventInput,
 } from './structs.js'
-import { updateSize } from '../component-util/resize-observer.js'
+import { updateSizeSync } from '../component-util/resize-observer.js'
 
 /*
 Calendar instance for ALL frameworks
@@ -50,7 +50,7 @@ export class CalendarImpl implements CalendarApi {
   }
 
   updateSize(): void {
-    requestAnimationFrame(updateSize)
+    requestAnimationFrame(updateSizeSync)
   }
 
   // Options

@@ -135,9 +135,6 @@ Performance
     https://github.com/fullcalendar/fullcalendar/issues/5606
   hit-system: only query DOM element for handlers like dayClick at very end
   this.detachInnerHeight() // should fire a 'null' height? yes! will cleanup any map listeners
-  ResizeObserver ponyfill
-    as few calls as possible
-    check no memory leak
 Angular
   Building example project gives warnings like
     Ignoring this import because ".." was marked as having no side effects
