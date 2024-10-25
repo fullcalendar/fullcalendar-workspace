@@ -103,42 +103,40 @@ function watchSizeFallback(
   }
 }
 
+/*
+A proper ResizeObserver polyfill would keep checking dimensions until all stabilized,
+to detect if a *handler* caused a new element's dimensions to change,
+while ignoring changes per-element after the first (to prevent infinite loops),
+but our Preact system does not commit to the DOM immediately, commits are batched for later,
+so we can skip this.
+*/
 function _checkSizes() {
   if (!isHandling) {
     isHandling = true
 
-    const firedConfigs = new Set<ResizeConfig>()
-    let dirtyConfigs: ResizeConfig[]
+    const dirtyConfigs: ResizeConfig[] = []
 
-    do {
-      dirtyConfigs = []
+    for (const [el, config] of configMap.entries()) {
+      let width: number
+      let height: number
 
-      for (const [el, config] of configMap.entries()) {
-        let width: number
-        let height: number
-
-        if (config.client) {
-          width = el.clientWidth
-          height = el.clientHeight
-        } else {
-          ({ width, height } = el.getBoundingClientRect())
-        }
-
-        if (width !== config.width || height !== config.height) {
-          config.width = width
-          config.height = height
-
-          if (!firedConfigs.has(config)) {
-            firedConfigs.add(config)
-            dirtyConfigs.push(config)
-          }
-        }
+      if (config.client) {
+        width = el.clientWidth
+        height = el.clientHeight
+      } else {
+        ({ width, height } = el.getBoundingClientRect())
       }
 
-      for (const dirtyConfig of dirtyConfigs) {
-        dirtyConfig.callback(dirtyConfig.width, dirtyConfig.height)
+      if (width !== config.width || height !== config.height) {
+        config.width = width
+        config.height = height
+        dirtyConfigs.push(config)
       }
-    } while (dirtyConfigs.length)
+    }
+
+    for (const dirtyConfig of dirtyConfigs) {
+      dirtyConfig.callback(dirtyConfig.width, dirtyConfig.height)
+    }
 
     flushAfterSize()
     isHandling = false
