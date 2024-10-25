@@ -6,8 +6,6 @@ Publishing:
  Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-Ensure transpilation to correct ES target
-  should transpile ??
 Theming
   did themeSystem:false ever clear the theme?
   Bootstrap color mode:
@@ -49,6 +47,9 @@ TimeGrid
     make timegrid bottom area w/o slots a grey bg
   structure: in TimeGridLayoutNormal, not nice how axis text isn't selectable
     (related to how now-indicator is rendered in axis)
+  structure:
+    div covering events
+    https://github.com/fullcalendar/fullcalendar/issues/7798
 Timeline
   bug (no resources): can't drag-n-drop. date-selection happens instead
   bug for timeline event dragging:
@@ -159,7 +160,8 @@ Changelog
   Add: eventSlicing (write tests too)
     eventSlicing:true (request: https://github.com/fullcalendar/fullcalendar/issues/6187)
     eventSlicing:false (request: https://fullcalendar.freshdesk.com/a/tickets/9203)
-  v7 regressions (worth adding?)
+  v7 regressions
+    NextJS ResizeObserver error: https://github.com/fullcalendar/fullcalendar/issues/7802
     border problem fixed: https://codepen.io/arshaw/pen/PoMOwdV?editors=0010
 Support Tickets
   Fixed this issue of mousedown taking long time to recalculate style?

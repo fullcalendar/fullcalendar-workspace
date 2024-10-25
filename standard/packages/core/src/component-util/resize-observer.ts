@@ -4,24 +4,25 @@ const resizeObserverEnabled = true
 const resizeObserverBorderBoxEnabled = true
 const fallbackTimeout = 100
 
-if (!resizeObserverEnabled) {
-  (window as any).watchSize = watchSizeFallback // for testing
-}
-
 // Common
 // -------------------------------------------------------------------------------------------------
 
-type ResizeConfig = {
-  callback: ResizeCallback
+export type SizeCallback = (width: number, height: number) => void
+export type DisconnectSize = () => void
+export type WatchSize = (el: HTMLElement, callback: SizeCallback, client?: boolean) => DisconnectSize
+export type UpdateSizeSync = () => void
+
+type SizeConfig = { // internal only
+  callback: SizeCallback
   client?: boolean // watch and report clientWidth/clientHeight?
   width?: number // only used by fallback technique
   height?: number // only used by fallback technique
 }
 
-const configMap = new Map<Element, ResizeConfig>()
+const configMap = new Map<Element, SizeConfig>()
 const afterSizeCallbacks = new Set<() => void>()
 
-let isHandling = false
+let isHandling = false // utilized by both techniques
 
 export function afterSize(callback: () => void) {
   if (isHandling) {
@@ -41,116 +42,53 @@ function flushAfterSize() {
 // Native Technique ONLY
 // -------------------------------------------------------------------------------------------------
 
-function watchSizeNative(
-  el: HTMLElement,
-  callback: ResizeCallback,
-  client?: boolean,
-) {
-  configMap.set(el, { callback, client })
-  resizeObserver.observe(el, {
-    box: !client && resizeObserverBorderBoxEnabled
-      ? 'border-box'
-      : undefined // default is 'content-box'
-  })
-
-  return () => {
-    configMap.delete(el)
-    resizeObserver.unobserve(el)
-  }
-}
-
-// Single global ResizeObserver does batching and uses less memory than individuals
-const resizeObserver = new ResizeObserver((entries) => {
-  isHandling = true
-
-  for (let entry of entries) {
-    const el = entry.target
-    const { callback, client } = configMap.get(el)
-
-    if (client) {
-      callback(el.clientWidth, el.clientHeight)
-    } else if (entry.borderBoxSize && resizeObserverBorderBoxEnabled) {
-      callback(entry.borderBoxSize[0].inlineSize, entry.borderBoxSize[0].blockSize)
-    } else {
-      const rect = el.getBoundingClientRect()
-      callback(rect.width, rect.height)
-    }
-  }
-
-  flushAfterSize()
-  isHandling = false
-})
-
-// Fallback Technique ONLY
-// -------------------------------------------------------------------------------------------------
-
-function watchSizeFallback(
-  el: HTMLElement,
-  callback: ResizeCallback,
-  client?: boolean,
-) {
-  if (!configMap.size) {
-    addGlobalHandlers()
-  }
-
-  configMap.set(el, { callback, client })
-  requestCheckSizes()
-
-  return () => {
-    configMap.delete(el)
-
-    if (!configMap.size) {
-      removeGlobalHandlers()
-    }
-  }
-}
-
-/*
-A proper ResizeObserver polyfill would keep checking dimensions until all stabilized,
-to detect if a *handler* caused a new element's dimensions to change,
-while ignoring changes per-element after the first (to prevent infinite loops),
-but our Preact system does not commit to the DOM immediately, commits are batched for later,
-so we can skip this.
-*/
-function checkSizes() {
-  if (!isHandling) {
+function initNative(): [WatchSize, UpdateSizeSync] {
+  // Single global ResizeObserver does batching and uses less memory than individuals
+  const globalResizeObserver = new ResizeObserver((entries) => {
     isHandling = true
 
-    const dirtyConfigs: ResizeConfig[] = []
+    for (let entry of entries) {
+      const el = entry.target
+      const { callback, client } = configMap.get(el)
 
-    for (const [el, config] of configMap.entries()) {
-      let width: number
-      let height: number
-
-      if (config.client) {
-        width = el.clientWidth
-        height = el.clientHeight
+      if (client) {
+        callback(el.clientWidth, el.clientHeight)
+      } else if (entry.borderBoxSize && resizeObserverBorderBoxEnabled) {
+        callback(entry.borderBoxSize[0].inlineSize, entry.borderBoxSize[0].blockSize)
       } else {
-        ({ width, height } = el.getBoundingClientRect())
+        const rect = el.getBoundingClientRect()
+        callback(rect.width, rect.height)
       }
-
-      if (width !== config.width || height !== config.height) {
-        config.width = width
-        config.height = height
-        dirtyConfigs.push(config)
-      }
-    }
-
-    for (const dirtyConfig of dirtyConfigs) {
-      dirtyConfig.callback(dirtyConfig.width, dirtyConfig.height)
     }
 
     flushAfterSize()
     isHandling = false
+  })
+
+  function watchSize(
+    el: HTMLElement,
+    callback: SizeCallback,
+    client?: boolean,
+  ) {
+    configMap.set(el, { callback, client })
+    globalResizeObserver.observe(el, {
+      box: !client && resizeObserverBorderBoxEnabled
+        ? 'border-box'
+        : undefined // default is 'content-box'
+    })
+
+    return () => {
+      configMap.delete(el)
+      globalResizeObserver.unobserve(el)
+    }
   }
+
+  return [watchSize, noop]
 }
 
-const [requestCheckSizes, cancelCheckSizes] = debounce(checkSizes, fallbackTimeout)
 
-function requestCheckSizesSync() {
-  cancelCheckSizes()
-  checkSizes()
-}
+// Fallback Technique ONLY
+// -------------------------------------------------------------------------------------------------
 
 // from https://github.com/juggle/resize-observer/blob/master/src/utils/scheduler.ts
 const globalEventNames = [
@@ -179,67 +117,134 @@ const eventListenerConfig: AddEventListenerOptions = {
   passive: true, // we don't call preventDefault, so can optimize
 }
 
-let globalMutationObserver: MutationObserver | undefined
-let globalMutationObserverPaused = false
+function initFallback(): [WatchSize, UpdateSizeSync] {
+  let globalMutationObserver: MutationObserver | undefined
+  let globalMutationObserverPaused = false
 
-function addGlobalHandlers() {
-  globalMutationObserver = new MutationObserver(requestCheckSizes)
-  if (!globalMutationObserverPaused) {
-    startGlobalMutationObserver()
+  const [requestCheckSizes, cancelCheckSizes] = debounce(checkSizes, fallbackTimeout)
+
+  function requestCheckSizesSync() {
+    cancelCheckSizes()
+    checkSizes()
   }
 
-  for (const eventName of globalEventNames) {
-    window.addEventListener(eventName, requestCheckSizes, eventListenerConfig)
-  }
-}
+  /*
+  A proper ResizeObserver polyfill would keep checking dimensions until all stabilized,
+  to detect if a *handler* caused a new element's dimensions to change,
+  while ignoring changes per-element after the first (to prevent infinite loops),
+  but our Preact system does not commit to the DOM immediately, commits are batched for later,
+  so we can skip this.
+  */
+  function checkSizes() {
+    if (!isHandling) {
+      isHandling = true
 
-function removeGlobalHandlers() {
-  if (!globalMutationObserverPaused) {
-    stopGlobalMutationObserver()
-  }
+      const dirtyConfigs: SizeConfig[] = []
 
-  for (const eventName of globalEventNames) {
-    window.removeEventListener(eventName, requestCheckSizes, eventListenerConfig)
-  }
-}
+      for (const [el, config] of configMap.entries()) {
+        let width: number
+        let height: number
 
-function startGlobalMutationObserver() {
-  globalMutationObserver.observe(document.documentElement, {
-    attributes: true,
-    childList: true,
-    subtree: true,
-    characterData: true,
-  })
-}
+        if (config.client) {
+          width = el.clientWidth
+          height = el.clientHeight
+        } else {
+          ({ width, height } = el.getBoundingClientRect())
+        }
 
-function stopGlobalMutationObserver() {
-  globalMutationObserver.disconnect()
-}
+        if (width !== config.width || height !== config.height) {
+          config.width = width
+          config.height = height
+          dirtyConfigs.push(config)
+        }
+      }
 
-function pauseGlobalMutationObserver() {
-  if (!globalMutationObserverPaused) {
-    globalMutationObserverPaused = true
+      for (const dirtyConfig of dirtyConfigs) {
+        dirtyConfig.callback(dirtyConfig.width, dirtyConfig.height)
+      }
 
-    if (configMap.size) {
-      stopGlobalMutationObserver()
+      flushAfterSize()
+      isHandling = false
     }
   }
-}
 
-function resumeGlobalMutationObserver() {
-  if (globalMutationObserverPaused) {
-    globalMutationObserverPaused = false
+  function watchSize(
+    el: HTMLElement,
+    callback: SizeCallback,
+    client?: boolean,
+  ) {
+    if (!configMap.size) {
+      addGlobalHandlers()
+    }
 
-    if (configMap.size) {
+    configMap.set(el, { callback, client })
+    requestCheckSizes()
+
+    return () => {
+      configMap.delete(el)
+
+      if (!configMap.size) {
+        removeGlobalHandlers()
+      }
+    }
+  }
+
+  function addGlobalHandlers() {
+    globalMutationObserver = new MutationObserver(requestCheckSizes)
+    if (!globalMutationObserverPaused) {
       startGlobalMutationObserver()
     }
+
+    for (const eventName of globalEventNames) {
+      window.addEventListener(eventName, requestCheckSizes, eventListenerConfig)
+    }
   }
-}
 
-// Preact Integration
-// -------------------------------------------------------------------------------------------------
+  function removeGlobalHandlers() {
+    if (!globalMutationObserverPaused) {
+      stopGlobalMutationObserver()
+    }
 
-function installPreactHooks() {
+    for (const eventName of globalEventNames) {
+      window.removeEventListener(eventName, requestCheckSizes, eventListenerConfig)
+    }
+  }
+
+  function startGlobalMutationObserver() {
+    globalMutationObserver.observe(document.documentElement, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+      characterData: true,
+    })
+  }
+
+  function stopGlobalMutationObserver() {
+    globalMutationObserver.disconnect()
+  }
+
+  function pauseGlobalMutationObserver() {
+    if (!globalMutationObserverPaused) {
+      globalMutationObserverPaused = true
+
+      if (configMap.size) {
+        stopGlobalMutationObserver()
+      }
+    }
+  }
+
+  function resumeGlobalMutationObserver() {
+    if (globalMutationObserverPaused) {
+      globalMutationObserverPaused = false
+
+      if (configMap.size) {
+        startGlobalMutationObserver()
+      }
+    }
+  }
+
+  // Preact Integration
+
   const __rOld = (preactOptions as any).__r || noop
   const __cOld = (preactOptions as any).__c || noop
   let requested = false
@@ -262,6 +267,8 @@ function installPreactHooks() {
     }
     __cOld.apply(this, arguments)
   }
+
+  return [watchSize, requestCheckSizesSync]
 }
 
 // Util
@@ -317,26 +324,20 @@ NOTE: If we ever kill the fallback technique and use ResizeObserver unconditiona
 border-box support, we no longer need wrappers around the <StickyFooterScrollbar>'s <Scroller>
 */
 
-export type ResizeCallback = (width: number, height: number) => void
+export const [watchSize, updateSizeSync] =
+  resizeObserverEnabled && typeof ResizeObserver !== 'undefined'
+    ? initNative()
+    : initFallback()
 
-let watchSize: (el: HTMLElement, callback: ResizeCallback, client?: boolean) => () => void
-let updateSizeSync: () => void
-
-if (resizeObserverEnabled && typeof ResizeObserver !== 'undefined') {
-  watchSize = watchSizeNative
-  updateSizeSync = noop
-} else {
-  watchSize = watchSizeFallback
-  updateSizeSync = requestCheckSizesSync
-  installPreactHooks()
+// debug
+if (!resizeObserverEnabled) {
+  (window as any).watchSize = watchSize
 }
-
-export { watchSize, updateSizeSync }
 
 export function watchWidth(
   el: HTMLElement,
   callback: (width: number) => void,
-) {
+): DisconnectSize {
   let currentWidth: number | undefined
 
   return watchSize(el, (width) => {
@@ -349,7 +350,7 @@ export function watchWidth(
 export function watchHeight(
   el: HTMLElement,
   callback: (height: number) => void,
-) {
+): DisconnectSize {
   let currentHeight: number | undefined
 
   return watchSize(el, (_width, height) => {
