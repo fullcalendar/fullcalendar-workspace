@@ -1,4 +1,4 @@
-import { BaseComponent } from '@fullcalendar/core/internal'
+import { BaseComponent, joinClassNames } from '@fullcalendar/core/internal'
 import { Fragment, ComponentChild, createElement, Ref } from '@fullcalendar/core/preact'
 
 export interface HeaderRowProps<Model, ModelKey> {
@@ -25,10 +25,10 @@ export class HeaderRow<Model, ModelKey> extends BaseComponent<HeaderRowProps<Mod
     return (
       <div
         role={props.cellGroup ? undefined : 'row'}
-        className={[
+        className={joinClassNames(
+          props.className,
           props.cellGroup ? 'fc-flex-row' : 'fc-row',
-          props.className || '',
-        ].join(' ')}
+        )}
       >
         {props.cells.map((cell) => (
           <Fragment key={props.getHeaderModelKey(cell)}>

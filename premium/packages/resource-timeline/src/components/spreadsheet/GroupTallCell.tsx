@@ -33,11 +33,7 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
         elAttrs={{
           role: 'gridcell',
         }}
-        elClasses={[
-          'fc-cell',
-          'fc-liquid',
-          'fc-resource-group',
-        ]}
+        elClassName='fc-resource-group fc-cell fc-liquid'
         renderProps={renderProps}
         generatorName="resourceGroupLabelContent"
         customGenerator={colSpec.cellContent}
@@ -49,7 +45,7 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
         {(InnerContent) => (
           <InnerContent
             elTag="div"
-            elClasses={['fc-cell-inner', 'fc-padding-lg', 'fc-sticky-y']}
+            elClassName='fc-cell-inner fc-padding-lg fc-sticky-y'
             elRef={this.innerElRef}
           />
         )}

@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { BaseComponent, DateMarker, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { Resource, ResourceLabelContainer } from '@fullcalendar/resource/internal'
 
@@ -28,14 +28,10 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
     return (
       <ResourceLabelContainer
         elTag="div"
-        elClasses={[
-          'fc-resource',
-          'fc-header-cell',
-          'fc-cell',
-          props.colWidth != null ? '' : 'fc-liquid',
-          'fc-flex-column',
-          'fc-align-center',
-        ]}
+        elClassName={joinClassNames(
+          'fc-resource fc-header-cell fc-cell fc-flex-column fc-align-center',
+          props.colWidth == null && 'fc-liquid',
+        )}
         elStyle={{
           width: props.colWidth != null // TODO: DRY
             ? props.colWidth * (props.colSpan || 1)
@@ -47,11 +43,10 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
         {(InnerContent) => (
           <InnerContent
             elTag="span"
-            elClasses={[
-              'fc-cell-inner',
-              'fc-padding-sm',
-              props.isSticky ? 'fc-sticky-x' : '',
-            ]}
+            elClassName={joinClassNames(
+              'fc-cell-inner fc-padding-sm',
+              props.isSticky && 'fc-sticky-x',
+            )}
             elRef={this.innerElRef}
           />
         )}

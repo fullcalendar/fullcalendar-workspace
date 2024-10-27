@@ -36,7 +36,7 @@ export abstract class ResourcefulDayTableModel extends AbstractResourceDayTableM
           let resource = resources[resourceCol]
           let extraRenderProps = { resource: new ResourceApi(this.context, resource) }
           let extraDataAttrs = { 'data-resource-id': resource.id }
-          let extraClassNames = ['fc-resource']
+          let extraClassName = 'fc-resource'
           let extraDateSpan = { resourceId: resource.id }
           let date = dayTableModel.cellRows[row][dateCol].date
 
@@ -47,7 +47,7 @@ export abstract class ResourcefulDayTableModel extends AbstractResourceDayTableM
             date,
             extraRenderProps,
             extraDataAttrs,
-            extraClassNames,
+            extraClassName,
             extraDateSpan,
           }
         }

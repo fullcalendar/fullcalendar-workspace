@@ -9,6 +9,7 @@ import {
   EventSegUiInteractionState,
   Hit,
   addDurations,
+  joinClassNames,
   memoize,
   multiplyDuration,
   wholeDivideDurations,
@@ -55,10 +56,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
 
     return (
       <div
-        className={[
-          'fc-flex-row',
-          props.className || '',
-        ].join(' ')}
+        className={joinClassNames(props.className, 'fc-flex-row')}
         ref={this.handleRootEl}
       >
         {props.cells.map((cell, col) => (

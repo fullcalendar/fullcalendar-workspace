@@ -1,5 +1,5 @@
 <ng-template [ngIf]="elTag == 'div'">
-  <div #rootEl [ngClass]="elClasses || ''" [ngStyle]="elStyle || null">
+  <div #rootEl [ngClass]="elClassName || ''" [ngStyle]="elStyle || null">
     <ng-container
       [ngTemplateOutlet]="template"
       [ngTemplateOutletContext]="{ $implicit: renderProps }"
@@ -7,7 +7,7 @@
   </div>
 </ng-template>
 <ng-template [ngIf]="elTag == 'span'">
-  <span #rootEl [ngClass]="elClasses || ''" [ngStyle]="elStyle || null">
+  <span #rootEl [ngClass]="elClassName || ''" [ngStyle]="elStyle || null">
     <ng-container
       [ngTemplateOutlet]="template"
       [ngTemplateOutletContext]="{ $implicit: renderProps }"
@@ -15,7 +15,7 @@
   </span>
 </ng-template>
 <ng-template [ngIf]="elTag == 'a'">
-  <a #rootEl [ngClass]="elClasses || ''" [ngStyle]="elStyle || null">
+  <a #rootEl [ngClass]="elClassName || ''" [ngStyle]="elStyle || null">
     <ng-container
       [ngTemplateOutlet]="template"
       [ngTemplateOutletContext]="{ $implicit: renderProps }"
@@ -23,7 +23,7 @@
   </a>
 </ng-template>
 <ng-template [ngIf]="elTag == 'tr'">
-  <tr #rootEl [ngClass]="elClasses || ''" [ngStyle]="elStyle || null">
+  <tr #rootEl [ngClass]="elClassName || ''" [ngStyle]="elStyle || null">
     <ng-container
       [ngTemplateOutlet]="template"
       [ngTemplateOutletContext]="{ $implicit: renderProps }"
@@ -31,7 +31,7 @@
   </tr>
 </ng-template>
 <ng-template [ngIf]="elTag == 'th'">
-  <th #rootEl [ngClass]="elClasses || ''" [ngStyle]="elStyle || null">
+  <th #rootEl [ngClass]="elClassName || ''" [ngStyle]="elStyle || null">
     <ng-container
       [ngTemplateOutlet]="template"
       [ngTemplateOutletContext]="{ $implicit: renderProps }"
@@ -39,7 +39,7 @@
   </th>
 </ng-template>
 <ng-template [ngIf]="elTag == 'td'">
-  <td #rootEl [ngClass]="elClasses || ''" [ngStyle]="elStyle || null">
+  <td #rootEl [ngClass]="elClassName || ''" [ngStyle]="elStyle || null">
     <ng-container
       [ngTemplateOutlet]="template"
       [ngTemplateOutletContext]="{ $implicit: renderProps }"

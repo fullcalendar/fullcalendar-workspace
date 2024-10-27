@@ -14,6 +14,7 @@ import { Dictionary, ViewOptions } from '../options.js'
 import { DateEnv } from '../datelib/env.js'
 import { ContentContainer, InnerContainerFunc } from '../content-inject/ContentContainer.js'
 import { ElProps, hasCustomRenderingHandler } from '../content-inject/ContentInjector.js'
+import { joinClassNames } from '../util/html.js'
 
 export interface DayCellContentArg extends DateMeta {
   date: DateMarker // localized
@@ -58,10 +59,10 @@ export class DayCellContainer extends BaseComponent<DayCellContainerProps> {
     return (
       <ContentContainer
         {...props /* includes children */}
-        elClasses={[
+        elClassName={joinClassNames(
+          props.elClassName,
           ...getDayClassNames(renderProps, context.theme),
-          ...(props.elClasses || []),
-        ]}
+        )}
         elAttrs={{
           ...props.elAttrs,
           ...(renderProps.isDisabled ? {} : { 'data-date': formatDayString(props.date) }),

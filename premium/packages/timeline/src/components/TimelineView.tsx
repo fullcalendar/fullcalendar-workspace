@@ -18,6 +18,7 @@ import {
   ScrollerSyncerInterface,
   getIsHeightAuto,
   RefMap,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
@@ -100,11 +101,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
           return (
             <ViewContainer
               viewSpec={context.viewSpec}
-              elClasses={[
-                'fc-timeline-view',
-                'fc-flex-column',
-                'fc-border',
-              ]}
+              elClassName='fc-timeline-view fc-flex-column fc-border'
             >
 
               {/* HEADER
@@ -112,11 +109,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               <Scroller
                 horizontal
                 hideScrollbars
-                elClassNames={[
-                  'fc-timeline-header',
-                  'fc-table-header',
-                  stickyHeaderDates ? 'fc-table-header-sticky' : '',
-                ]}
+                elClassName={joinClassNames(
+                  'fc-timeline-header fc-table-header',
+                  stickyHeaderDates && 'fc-table-header-sticky',
+                )}
                 ref={this.headerScrollerRef}
               >
                 <div
@@ -160,11 +156,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               <Scroller
                 vertical={verticalScrolling}
                 horizontal
-                elClassNames={[
-                  'fc-timeline-body',
-                  'fc-table-body',
-                  verticalScrolling ? 'fc-liquid' : '',
-                ]}
+                elClassName={joinClassNames(
+                  'fc-timeline-body fc-table-body',
+                  verticalScrolling && 'fc-liquid',
+                )}
                 ref={this.bodyScrollerRef}
                 clientWidthRef={this.handleClientWidth}
                 leftScrollbarWidthRef={this.handleLeftScrollbarWidth}

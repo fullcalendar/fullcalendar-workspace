@@ -3,12 +3,13 @@ import { computeClippedClientRect } from '../util/dom-geom.js'
 import { applyStyle, elementClosest, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-manip.js'
 import { createElement, ComponentChildren, Ref, createPortal } from '../preact.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
+import { joinClassNames } from '../util/html.js'
 
 export interface PopoverProps {
   elRef?: Ref<HTMLElement>
   id: string
   title: string
-  extraClassNames?: string[]
+  extraClassName?: string
   extraAttrs?: Dictionary
   parentEl: HTMLElement
   alignmentEl: HTMLElement
@@ -28,18 +29,16 @@ export class Popover extends BaseComponent<PopoverProps> {
   render(): any {
     let { theme, options } = this.context
     let { props, state } = this
-    let classNames = [
-      'fc-popover',
-      theme.getClass('popover'),
-    ].concat(
-      props.extraClassNames || [],
-    )
 
     return createPortal(
       <div
         {...props.extraAttrs}
         id={props.id}
-        className={classNames.join(' ')}
+        className={joinClassNames(
+          props.extraClassName,
+          'fc-popover',
+          theme.getClass('popover'),
+        )}
         aria-labelledby={state.titleId}
         ref={this.handleRootEl}
       >

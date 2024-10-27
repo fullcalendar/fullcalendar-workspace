@@ -1,6 +1,7 @@
 import { createElement, VNode } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
 import { ToolbarWidget } from '../toolbar-struct.js'
+import { joinClassNames } from '../util/html.js'
 
 export interface ToolbarContent {
   title: string
@@ -49,18 +50,17 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
           (!props.isPrevEnabled && buttonName === 'prev') ||
           (!props.isNextEnabled && buttonName === 'next')
 
-        let buttonClasses = [`fc-${buttonName}-button`, theme.getClass('button')]
-        if (isPressed) {
-          buttonClasses.push(theme.getClass('buttonActive'))
-        }
-
         children.push(
           <button
             type="button"
             title={typeof buttonHint === 'function' ? buttonHint(props.navUnit) : buttonHint}
             disabled={isDisabled}
             aria-pressed={isPressed}
-            className={buttonClasses.join(' ')}
+            className={joinClassNames(
+              `fc-${buttonName}-button`,
+              theme.getClass('button'),
+              isPressed && theme.getClass('buttonActive'),
+            )}
             onClick={buttonClick}
           >
             {buttonText || (buttonIcon ? <span className={buttonIcon} role="img" /> : '')}

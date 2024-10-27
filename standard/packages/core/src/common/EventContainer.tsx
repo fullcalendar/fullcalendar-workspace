@@ -10,6 +10,7 @@ import {
 } from '../component-util/event-rendering.js'
 import { ContentContainer, InnerContainerFunc } from '../content-inject/ContentContainer.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
+import { joinClassNames } from '../util/html.js'
 
 export interface MinimalEventProps {
   eventRange: EventRenderRange
@@ -66,11 +67,11 @@ export class EventContainer extends BaseComponent<EventContainerProps> {
       <ContentContainer
         {...props /* contains children */}
         elRef={this.handleEl}
-        elClasses={[
+        elClassName={joinClassNames(
+          props.elClassName,
           ...getEventClassNames(renderProps),
           ...eventRange.ui.classNames,
-          ...(props.elClasses || []),
-        ]}
+        )}
         renderProps={renderProps}
         generatorName="eventContent"
         customGenerator={options.eventContent}

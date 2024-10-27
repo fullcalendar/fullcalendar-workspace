@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual, getIsHeightAuto, rangeContainsMarker, SlicedCoordRange, EventRangeProps, StickyFooterScrollbar } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual, getIsHeightAuto, rangeContainsMarker, SlicedCoordRange, EventRangeProps, StickyFooterScrollbar, joinClassNames } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { computeColWidth, HeaderRowAdvanced, COMPACT_CELL_WIDTH } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -9,7 +9,7 @@ import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeGridRange } from "../TimeColsSeg.js"
-import { computeSlatHeight, getSlatRowClassName } from "./util.js"
+import { computeSlatHeight, getSlatRowClassNames } from './util.js'
 
 export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -167,11 +167,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
       <Fragment>
         {options.dayHeaders && (
           <div
-            className={[
+            className={joinClassNames(
               'fc-timegrid-header',
-              'fc-row', // a "super" row
-              stickyHeaderDates ? 'fc-table-header-sticky' : '',
-            ].join(' ')}
+              stickyHeaderDates && 'fc-table-header-sticky',
+              'fc-row',
+            )}
           >
             {/* HEADER / labels
             -------------------------------------------------------------------------------------*/}
@@ -199,7 +199,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             <Scroller
               horizontal
               hideScrollbars
-              elClassNames={['fc-cell fc-liquid']} // a "super" cell
+              elClassName='fc-cell fc-liquid'
               ref={this.headerScrollerRef}
             >
               <div
@@ -244,7 +244,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               <Scroller
                 horizontal
                 hideScrollbars
-                elClassNames={['fc-cell', 'fc-liquid']} // a "super" cell
+                elClassName='fc-cell fc-liquid'
                 ref={this.allDayScrollerRef}
               >
                 <div
@@ -290,20 +290,16 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             <div className='fc-rowdivider'></div>
           </Fragment>
         )}
-        <div className={[ // a "super" row
+        <div className={joinClassNames(
           'fc-timegrid-body fc-row',
-          verticalScrolling ? 'fc-liquid' : '',
-        ].join(' ')}>
+          verticalScrolling && 'fc-liquid',
+        )}>
           {/* SLATS / labels (vertical scroller)
           ---------------------------------------------------------------------------------------*/}
           <Scroller
             vertical={verticalScrolling}
             hideScrollbars
-            elClassNames={[
-              'fc-cell',
-              'fc-flex-column',
-              'fc-content-box',
-            ]}
+            elClassName='fc-cell fc-flex-column fc-content-box'
             elStyle={{
               width: axisWidth,
             }}
@@ -319,10 +315,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               {props.slatMetas.map((slatMeta) => (
                 <div
                   key={slatMeta.key}
-                  className={[
-                    getSlatRowClassName(slatMeta),
-                    slatLiquid ? 'fc-liquid' : ''
-                  ].join(' ')}
+                  className={joinClassNames(
+                    ...getSlatRowClassNames(slatMeta),
+                    slatLiquid && 'fc-liquid',
+                  )}
                   style={{
                     height: slatLiquid ? '' : slatHeight
                   }}
@@ -354,10 +350,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               vertical={verticalScrolling}
               horizontal
               hideScrollbars={stickyFooterScrollbar /* also means height:auto, so won't need vertical scrollbars anyway */}
-              elClassNames={[
-                verticalScrolling ? 'fc-liquid' : '',
+              elClassName={joinClassNames(
                 'fc-flex-column',
-              ]}
+                verticalScrolling && 'fc-liquid',
+              )}
               ref={this.mainScrollerRef}
               clientWidthRef={this.handleClientWidth}
               clientHeightRef={this.handleClientHeight}
@@ -370,10 +366,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   {props.slatMetas.map((slatMeta) => (
                     <div
                       key={slatMeta.key}
-                      className={[
-                        getSlatRowClassName(slatMeta),
-                        slatLiquid ? 'fc-liquid' : ''
-                      ].join(' ')}
+                      className={joinClassNames(
+                        ...getSlatRowClassNames(slatMeta),
+                        slatLiquid && 'fc-liquid',
+                      )}
                       style={{
                         height: slatLiquid ? '' : slatHeight
                       }}

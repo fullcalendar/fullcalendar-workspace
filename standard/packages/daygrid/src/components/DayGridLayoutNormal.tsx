@@ -13,6 +13,7 @@ import {
   RefMap,
   DayGridRange,
   EventRangeProps,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import { ComponentChild, Fragment, Ref, createElement } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -71,11 +72,10 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
             getHeaderModelKey={props.getHeaderModelKey}
 
             // render hooks
-            extraClassNames={[
-              'fc-daygrid-header',
-              'fc-table-header',
-              stickyHeaderDates ? 'fc-table-header-sticky' : '',
-            ]}
+            extraClassName={joinClassNames(
+              'fc-daygrid-header fc-table-header',
+              stickyHeaderDates && 'fc-table-header-sticky',
+            )}
 
             // dimensions
             paddingLeft={state.leftScrollbarWidth}
@@ -86,11 +86,10 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
           vertical={verticalScrollbars}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
-          elClassNames={[
-            'fc-daygrid-body',
-            'fc-table-body',
-            verticalScrollbars ? 'fc-liquid' : '',
-          ]}
+          elClassName={joinClassNames(
+            'fc-daygrid-body fc-table-body',
+            verticalScrollbars && 'fc-liquid',
+          )}
           ref={this.handleScroller}
         >
           <DayGridRows // .fc-grow

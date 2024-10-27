@@ -1,7 +1,7 @@
 import { ViewProps } from '../component-util/View.js'
 import { mapHash } from '../util/object.js'
 import { ComponentType, Component, createElement } from '../preact.js'
-import { buildViewClassNames } from '../common/ViewContainer.js'
+import { buildViewClassName } from '../common/ViewContainer.js'
 import { MountArg } from '../common/render-hook.js'
 import { ViewContext, ViewContextType } from '../ViewContext.js'
 import { ViewOptions } from '../options.js'
@@ -67,7 +67,7 @@ function createViewHookComponent(options: ViewOptions) {
       {(context: ViewContext) => (
         <ContentContainer
           elTag="div"
-          elClasses={buildViewClassNames(context.viewSpec)}
+          elClassName={buildViewClassName(context.viewSpec)}
           renderProps={{
             ...viewProps,
             nextDayThreshold: context.options.nextDayThreshold,

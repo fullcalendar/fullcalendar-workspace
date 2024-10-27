@@ -17,6 +17,7 @@ import {
   DayGridRange,
   EventRangeProps,
   StickyFooterScrollbar,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import { ComponentChild, Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -86,11 +87,10 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           <Scroller
             horizontal
             hideScrollbars
-            elClassNames={[
-              'fc-daygrid-header',
-              'fc-table-header',
-              stickyHeaderDates ? 'fc-table-header-sticky' : ''
-            ]}
+            elClassName={joinClassNames(
+              'fc-daygrid-header fc-table-header',
+              stickyHeaderDates && 'fc-table-header-sticky',
+            )}
             ref={this.headerScrollerRef}
           >
             <DayGridHeader
@@ -110,11 +110,10 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           vertical={verticalScrollbars}
           horizontal
           hideScrollbars={stickyFooterScrollbar}
-          elClassNames={[
-            'fc-daygrid-body',
-            'fc-table-body',
-            verticalScrollbars ? 'fc-liquid' : '',
-          ]}
+          elClassName={joinClassNames(
+            'fc-daygrid-body fc-table-body',
+            verticalScrollbars && 'fc-liquid',
+          )}
           ref={this.bodyScrollerRef}
           clientWidthRef={this.handleClientWidth}
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}

@@ -6,6 +6,7 @@ import {
   ViewContext,
   watchHeight,
   setRef,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment, ComponentChild, createRef, Ref } from '@fullcalendar/core/preact'
 import { ResourceApi } from '@fullcalendar/resource'
@@ -41,11 +42,10 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
     return (
       <ContentContainer
         elTag="div"
-        elClasses={[
-          'fc-resource',
-          'fc-cell',
-          props.colIndex ? 'fc-cell-border' : '',
-        ]}
+        elClassName={joinClassNames(
+          'fc-resource fc-cell',
+          props.colIndex && 'fc-cell-border',
+        )}
         elAttrs={{
           role: 'gridcell',
           'aria-colindex': props.colIndex,
@@ -74,7 +74,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
             )}
             <InnerContent
               elTag="span"
-              elClasses={['fc-cell-main']}
+              elClassName='fc-cell-main'
             />
           </div>
         )}

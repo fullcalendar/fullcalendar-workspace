@@ -20,7 +20,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
     return (
       <EventContainer
         elTag="div"
-        elClasses={['fc-bg-event']}
+        elClassName='fc-bg-event'
         elStyle={{ backgroundColor: eventRange.ui.backgroundColor }}
         defaultGenerator={renderInnerContent}
         eventRange={eventRange}

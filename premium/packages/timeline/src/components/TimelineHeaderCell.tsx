@@ -5,6 +5,7 @@ import {
   getDayClassNames, DateProfile, memoizeObjArg, ViewContext, memoize, ContentContainer, DateEnv,
   watchSize,
   setRef,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile.js'
@@ -59,21 +60,17 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
     return (
       <ContentContainer
         elTag="div"
-        elClasses={[
-          'fc-timeline-slot-label',
-          'fc-timeline-slot',
-          cell.isWeekStart ? 'fc-timeline-slot-em' : '', // TODO: document this semantic className
-          'fc-header-cell',
-          'fc-cell',
-          'fc-flex-column',
-          'fc-justify-center',
+        elClassName={joinClassNames(
+          'fc-timeline-slot-label fc-timeline-slot',
+          cell.isWeekStart && 'fc-timeline-slot-em', // TODO: document this semantic className
+          'fc-header-cell fc-cell fc-flex-column fc-justify-center',
           props.isCentered ? 'fc-align-center' : 'fc-align-start',
           ...( // TODO: so slot classnames for week/month/bigger. see note above about rowUnit
             cell.rowUnit === 'time' ?
               getSlotClassNames(dateMeta, context.theme) :
               getDayClassNames(dateMeta, context.theme)
           ),
-        ]}
+        )}
         elAttrs={{
           'data-date': dateEnv.formatIso(cell.date, {
             omitTime: !tDateProfile.isTimeScale,
@@ -97,11 +94,10 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
           <InnerContent
             elTag="a"
             elAttrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
-            elClasses={[
-              'fc-cell-inner',
-              'fc-padding-md',
-              props.isSticky ? 'fc-sticky-x' : '',
-            ]}
+            elClassName={joinClassNames(
+              'fc-cell-inner fc-padding-md',
+              props.isSticky && 'fc-sticky-x',
+            )}
             elRef={this.innerElRef}
           />
         )}

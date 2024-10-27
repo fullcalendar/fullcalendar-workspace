@@ -34,12 +34,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
     return (
       <WeekNumberContainer
         elTag='div'
-        elClasses={[
-          'fc-timegrid-weeknumber',
-          'fc-timegrid-axis',
-          'fc-cell',
-          'fc-content-box',
-        ]}
+        elClassName='fc-timegrid-weeknumber fc-timegrid-axis fc-cell fc-content-box'
         elStyle={{
           width: props.width
         }}
@@ -50,11 +45,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
           <InnerContent
             elTag="a"
             elAttrs={navLinkAttrs}
-            elClasses={[
-              'fc-timegrid-axis-inner',
-              'fc-cell-inner',
-              'fc-padding-sm',
-            ]}
+            elClassName='fc-timegrid-axis-inner fc-cell-inner fc-padding-sm'
             elRef={this.innerElRef}
           />
         )}

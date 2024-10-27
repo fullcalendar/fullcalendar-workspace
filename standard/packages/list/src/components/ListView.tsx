@@ -71,16 +71,12 @@ export class ListView extends DateComponent<ViewProps> {
     return (
       <ViewContainer
         elRef={this.setRootEl}
-        elClasses={[
-          'fc-list-view',
-          'fc-flex-column',
-          'fc-border',
-        ]}
+        elClassName='fc-list-view fc-flex-column fc-border'
         viewSpec={context.viewSpec}
       >
         <Scroller // TODO: don't need heavyweight component
           vertical={verticalScrolling}
-          elClassNames={[verticalScrolling ? 'fc-liquid' : '']}
+          elClassName={verticalScrolling ? 'fc-liquid' : ''}
         >
           {eventSegs.length > 0 ?
             this.renderSegList(eventSegs, dayDates) :
@@ -110,7 +106,7 @@ export class ListView extends DateComponent<ViewProps> {
     return (
       <ContentContainer
         elTag="div"
-        elClasses={['fc-list-empty']}
+        elClassName='fc-list-empty'
         renderProps={renderProps}
         generatorName="noEventsContent"
         customGenerator={options.noEventsContent}
@@ -122,7 +118,7 @@ export class ListView extends DateComponent<ViewProps> {
         {(InnerContent) => (
           <InnerContent
             elTag="div"
-            elClasses={['fc-list-empty-inner']}
+            elClassName='fc-list-empty-inner'
           />
         )}
       </ContentContainer>

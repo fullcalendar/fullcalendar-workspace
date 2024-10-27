@@ -8,6 +8,7 @@ import {
   SegGroup,
   EventRangeProps,
   CoordSpan,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
@@ -124,13 +125,13 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           slotWidth={props.slotWidth}
         />
         <div
-          className={[
+          className={joinClassNames(
             'fc-timeline-events',
-            'fc-content-box', // because height is set, and padding might be set
             options.eventOverlap === false // TODO: fix bad default
               ? 'fc-timeline-events-overlap-disabled'
-              : 'fc-timeline-events-overlap-enabled'
-          ].join(' ')}
+              : 'fc-timeline-events-overlap-enabled',
+            'fc-content-box', // because height is set, and padding might be set
+          )}
           style={{ height: totalHeight }}
         >
           {this.renderFgSegs(

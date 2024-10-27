@@ -11,6 +11,7 @@ import {
   fracToCssDim,
   getEventRangeMeta,
   hasCustomDayCellContent,
+  joinClassNames,
   memoize,
   renderFill,
   SegGroup,
@@ -35,7 +36,7 @@ export interface TimeGridColProps {
   slatCnt: number
   extraDataAttrs?: any
   extraRenderProps?: any
-  extraClassNames?: string[]
+  extraClassName?: string
   extraDateSpan?: Dictionary
   forPrint: boolean
 
@@ -82,13 +83,11 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     return (
       <DayCellContainer
         elTag="div"
-        elClasses={[
-          'fc-flex-column',
-          'fc-cell',
-          props.width != null ? '' : 'fc-liquid',
-          'fc-timegrid-col',
-          ...(props.extraClassNames || []),
-        ]}
+        elClassName={joinClassNames(
+          props.extraClassName,
+          'fc-timegrid-col fc-cell fc-flex-column',
+          props.width == null && 'fc-liquid',
+        )}
         elAttrs={{
           role: 'gridcell',
           ...props.extraDataAttrs,
@@ -127,7 +126,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {hasCustomDayCellContent(options) && (
               <InnerContent
                 elTag="div"
-                elClasses={['fc-timegrid-col-misc']}
+                elClassName='fc-timegrid-col-misc'
               />
             )}
           </div>

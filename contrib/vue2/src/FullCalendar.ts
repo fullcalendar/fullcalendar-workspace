@@ -50,7 +50,7 @@ const FullCalendar = Vue.extend({
               inPlaceOf: customRendering.containerEl,
               reportEl: customRendering.reportNewContainerEl,
               elTag: customRendering.elTag,
-              elClasses: customRendering.elClasses,
+              elClassName: customRendering.elClassName,
               elStyle: customRendering.elStyle,
               elAttrs: customRendering.elAttrs,
             }

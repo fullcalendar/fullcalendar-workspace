@@ -16,7 +16,7 @@ export interface DayTableCell {
   date: DateMarker
   extraRenderProps?: Dictionary
   extraDataAttrs?: Dictionary
-  extraClassNames?: string[]
+  extraClassName?: string
   extraDateSpan?: Dictionary
 }
 

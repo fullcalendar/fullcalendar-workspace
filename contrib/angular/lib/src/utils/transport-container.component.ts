@@ -22,7 +22,7 @@ export class TransportContainerComponent implements OnChanges, AfterViewInit, On
   @Input() inPlaceOf!: HTMLElement; // required
   @Input() reportEl!: (el: HTMLElement | null) => void; // required
   @Input() elTag!: string; // required
-  @Input() elClasses?: string[];
+  @Input() elClassName?: string;
   @Input() elStyle?: Record<string, unknown>;
   @Input() elAttrs?: Record<string, unknown>;
   @Input() template!: TemplateRef<any>; // required

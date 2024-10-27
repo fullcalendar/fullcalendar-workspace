@@ -19,7 +19,7 @@ export class TimelineNowIndicatorArrow extends BaseComponent<TimelineNowIndicato
     return (
       <div className="fc-timeline-now-indicator-container">
         <NowIndicatorContainer
-          elClasses={['fc-timeline-now-indicator-arrow']}
+          elClassName='fc-timeline-now-indicator-arrow'
           elStyle={
             props.slotWidth != null
               ? horizontalCoordToCss(

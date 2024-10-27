@@ -62,7 +62,7 @@ export {
   getEventTargetViaRoot,
   getUniqueDomId,
 } from './util/dom-manip.js'
-export { parseClassNames, fracToCssDim } from './util/html.js'
+export { joinClassNames, parseClassNames, fracToCssDim } from './util/html.js'
 
 export type { EventStore } from './structs/event-store.js'
 export {

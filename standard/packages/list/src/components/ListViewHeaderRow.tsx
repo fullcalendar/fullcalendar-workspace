@@ -3,6 +3,7 @@ import {
   BaseComponent, DateMarker, DateRange, getDateMeta,
   getDayClassNames, formatDayString, buildNavLinkAttrs, getUniqueDomId, ContentContainer,
   getStickyHeaderDates,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 
@@ -47,10 +48,10 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
     return (
       <ContentContainer
         elTag="tr"
-        elClasses={[
+        elClassName={joinClassNames(
           'fc-list-day',
           ...getDayClassNames(dayMeta, theme),
-        ]}
+        )}
         elAttrs={{
           'data-date': formatDayString(dayDate),
         }}
@@ -70,10 +71,10 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
               colSpan: 3,
               'aria-labelledby': textId,
             }}
-            elClasses={[
+            elClassName={joinClassNames(
               'fc-list-day-cell',
-              stickyHeaderDates ? 'fc-list-day-cell-sticky' : '',
-            ]}
+              stickyHeaderDates && 'fc-list-day-cell-sticky',
+            )}
           />
         )}
       </ContentContainer>

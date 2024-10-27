@@ -1,5 +1,6 @@
 import { createElement, Component, ComponentChildren } from '../preact.js'
 import { CssDimValue } from '../scrollgrid/util.js'
+import { joinClassNames } from '../util/html.js'
 
 export interface ViewHarnessProps {
   height?: CssDimValue
@@ -14,16 +15,15 @@ export class ViewHarness extends Component<ViewHarnessProps> {
 
     return (
       <div
-        className={[
+        className={joinClassNames(
           'fc-view-harness',
           props.height != null
             ? 'fc-view-harness-fixedheight'
             : props.heightLiquid
               ? 'fc-view-harness-liquid'
               : props.aspectRatio != null
-                ? 'fc-view-harness-aspectratio'
-                : ''
-        ].join(' ')}
+                && 'fc-view-harness-aspectratio'
+        )}
         style={{
           height: props.height,
           paddingBottom: props.aspectRatio != null

@@ -3,6 +3,7 @@ import { DateRange } from '../datelib/date-range.js'
 import { DateMarker } from '../datelib/marker.js'
 import { DateProfile } from '../DateProfileGenerator.js'
 import { Hit } from '../interactions/hit.js'
+import { joinClassNames } from '../util/html.js'
 import { Dictionary } from '../options.js'
 import { createElement, ComponentChildren } from '../preact.js'
 import { DayCellContainer, hasCustomDayCellContent } from './DayCellContainer.js'
@@ -44,11 +45,10 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             elRef={elAttrs.ref}
             id={props.id}
             title={title}
-            extraClassNames={
-              ['fc-more-popover'].concat(
-                (elAttrs.className as (string | undefined)) || [],
-              )
-            }
+            extraClassName={joinClassNames(
+              elAttrs.className as string, // TODO: solve SignalLike type problem
+              'fc-more-popover',
+            )}
             extraAttrs={elAttrs /* TODO: make these time-based when not whole-day? */}
             parentEl={props.parentEl}
             alignmentEl={props.alignmentEl}
@@ -58,7 +58,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             {hasCustomDayCellContent(options) && (
               <InnerContent
                 elTag="div"
-                elClasses={['fc-more-popover-misc']}
+                elClassName='fc-more-popover-misc'
               />
             )}
             {props.children}

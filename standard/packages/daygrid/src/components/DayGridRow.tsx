@@ -18,6 +18,7 @@ import {
   afterSize,
   SlicedCoordRange,
   EventRangeProps,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -136,17 +137,16 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     return (
       <div
         role={props.cellGroup ? undefined : 'row'}
-        className={[
+        className={joinClassNames(
+          props.className,
           'fc-daygrid-row',
           props.forceVSpacing
             ? 'fc-daygrid-row-spacious'
             : props.compact
-              ? 'fc-daygrid-row-compact'
-              : '',
+              &&'fc-daygrid-row-compact',
           props.cellGroup ? 'fc-flex-row' : 'fc-row',
           'fc-rel',
-          props.className || '',
-        ].join(' ')}
+        )}
         style={{
           minHeight: props.minHeight,
         }}
@@ -155,7 +155,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
         {props.showWeekNumbers && (
           <WeekNumberContainer
             elTag="a"
-            elClasses={['fc-daygrid-week-number']}
+            elClassName='fc-daygrid-week-number'
             elAttrs={buildNavLinkAttrs(context, weekDate, 'week')}
             date={weekDate}
             defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
@@ -212,7 +212,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
               extraRenderProps={cell.extraRenderProps}
               extraDateSpan={cell.extraDateSpan}
               extraDataAttrs={cell.extraDataAttrs}
-              extraClassNames={cell.extraClassNames}
+              extraClassName={cell.extraClassName}
 
               // dimensions
               fgHeight={heightsByCol[col]}

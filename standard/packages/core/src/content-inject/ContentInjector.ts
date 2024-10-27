@@ -6,13 +6,14 @@ import { isArraysEqual } from '../util/array.js'
 import { removeElement } from '../util/dom-manip.js'
 import { ViewOptions } from '../options.js'
 import { isNonHandlerPropsEqual, isPropsEqual } from '../util/object.js'
+import { joinClassNames } from '../util/html.js'
 
 export type ElRef = Ref<HTMLElement>
 export type ElAttrs = JSX.HTMLAttributes & JSX.SVGAttributes & { ref?: ElRef } & Record<string, any>
 
 export interface ElAttrsProps {
   elRef?: ElRef
-  elClasses?: string[]
+  elClassName?: string
   elStyle?: JSX.CSSProperties
   elAttrs?: ElAttrs
 }
@@ -43,7 +44,7 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
     const { props, context } = this
     const { options } = context
     const { customGenerator, defaultGenerator, renderProps } = props
-    const attrs = buildElAttrs(props, [], this.handleEl)
+    const attrs = buildElAttrs(props, '', this.handleEl)
     let useDefault = false
     let innerContent: ComponentChild | undefined
     let queuedDomNodes: Node[] = []
@@ -120,7 +121,6 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
           reportNewContainerEl: this.updateElRef, // front-end framework tells us about new container els
           generatorMeta,
           ...props,
-          elClasses: (props.elClasses || []).filter(isTruthy),
         })
       }
     }
@@ -158,7 +158,6 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
 }
 
 ContentInjector.addPropsEquality({
-  elClasses: isArraysEqual,
   elStyle: isPropsEqual,
   elAttrs: isNonHandlerPropsEqual,
   renderProps: isPropsEqual,
@@ -184,17 +183,17 @@ export function hasCustomRenderingHandler(
 
 export function buildElAttrs(
   props: ElAttrsProps,
-  extraClassNames?: string[],
+  extraClassName?: string,
   elRef?: ElRef,
 ): ElAttrs {
   const attrs: ElAttrs = { ...props.elAttrs, ref: elRef as any }
 
-  if (props.elClasses || extraClassNames) {
-    attrs.className = (props.elClasses || [])
-      .concat(extraClassNames || [])
-      .concat((attrs.className as (string | undefined)) || [])
-      .filter(Boolean)
-      .join(' ')
+  if (props.elClassName || extraClassName) {
+    attrs.className = joinClassNames(
+      extraClassName,
+      props.elClassName,
+      attrs.className as string, // TODO: solve SignalLike type problem
+    )
   }
 
   if (props.elStyle) {
@@ -202,8 +201,4 @@ export function buildElAttrs(
   }
 
   return attrs
-}
-
-function isTruthy(val: any): boolean {
-  return Boolean(val)
 }

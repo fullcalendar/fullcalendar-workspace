@@ -1,5 +1,5 @@
 import { Duration, ViewOptions } from '@fullcalendar/core'
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, Scroller, SlicedCoordRange, ViewContainer, afterSize, memoize } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, Scroller, SlicedCoordRange, ViewContainer, afterSize, joinClassNames, memoize } from "@fullcalendar/core/internal"
 import { createElement, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
 import { buildSlatMetas } from "../time-slat-meta.js"
 import { TimeGridRange } from '../TimeColsSeg.js'
@@ -124,11 +124,10 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
 
     return (
       <ViewContainer
-        elClasses={[
+        elClassName={joinClassNames(
           props.className,
-          'fc-flex-column',
-          'fc-border'
-        ]}
+          'fc-border fc-flex-column',
+        )}
         viewSpec={context.viewSpec}
       >
         {dayMinWidth ? (

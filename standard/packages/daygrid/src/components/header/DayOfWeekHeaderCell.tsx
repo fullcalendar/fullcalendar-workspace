@@ -12,6 +12,7 @@ import {
   ContentContainer,
   watchHeight,
   setRef,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { renderInner } from '../util.js'
@@ -25,7 +26,7 @@ export interface DayOfWeekHeaderCellProps {
   // render hooks
   extraRenderProps?: Dictionary
   extraDataAttrs?: Dictionary
-  extraClassNames?: string[] // needed?
+  extraClassName?: string // needed?
 
   // dimensions
   colWidth?: number
@@ -69,15 +70,12 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
     return (
       <ContentContainer
         elTag='div'
-        elClasses={[
+        elClassName={joinClassNames(
+          props.extraClassName,
+          'fc-header-cell fc-cell fc-flex-column fc-align-center',
+          props.colWidth == null && 'fc-liquid',
           ...getDayClassNames(dateMeta, theme),
-          ...(props.extraClassNames || []),
-          'fc-header-cell',
-          'fc-cell',
-          props.colWidth != null ? '' : 'fc-liquid',
-          'fc-flex-column',
-          'fc-align-center',
-        ]}
+        )}
         elAttrs={props.extraDataAttrs}
         elStyle={{
           width: props.colWidth != null // TODO: DRY
@@ -98,11 +96,10 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
             elAttrs={{
               'aria-label': dateEnv.format(date, WEEKDAY_FORMAT),
             }}
-            elClasses={[
-              'fc-cell-inner',
-              'fc-padding-sm',
-              props.isSticky ? 'fc-sticky-x' : '',
-            ]}
+            elClassName={joinClassNames(
+              'fc-cell-inner fc-padding-sm',
+              props.isSticky && 'fc-sticky-x',
+            )}
             elRef={this.innerElRef}
           />
         )}

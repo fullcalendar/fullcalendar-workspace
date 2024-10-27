@@ -2,6 +2,7 @@ import { createElement } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
 import { ToolbarModel, ToolbarWidget } from '../toolbar-struct.js'
 import { ToolbarSection, ToolbarContent } from './ToolbarSection.js'
+import { joinClassNames } from '../util/html.js'
 
 export interface ToolbarProps extends ToolbarContent {
   extraClassName: string // wish this could be array, but easier for pureness
@@ -31,14 +32,12 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
       endContent = sectionWidgets.end
     }
 
-    let classNames = [
-      extraClassName || '',
-      'fc-toolbar',
-      forceLtr ? 'fc-toolbar-ltr' : '',
-    ]
-
     return (
-      <div className={classNames.join(' ')}>
+      <div className={joinClassNames(
+        extraClassName,
+        'fc-toolbar',
+        forceLtr && 'fc-toolbar-ltr',
+      )}>
         {this.renderSection('start', startContent || [])}
         {this.renderSection('center', centerContent || [])}
         {this.renderSection('end', endContent || [])}

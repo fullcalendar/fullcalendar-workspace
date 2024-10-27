@@ -4,6 +4,7 @@ import {
   getDayClassNames, DateProfile, ContentContainer,
   watchWidth,
   setRef,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
@@ -45,14 +46,12 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
     return (
       <ContentContainer
         elTag="div"
-        elClasses={[
-          'fc-flex-column',
-          'fc-align-start', // shrink width of INnerContent
-          'fc-cell',
+        // fc-align-start shrinks width of InnerContent
+        // TODO: document this semantic className fc-timeline-slot-em
+        elClassName={joinClassNames(
           'fc-timeline-slot',
-          'fc-timeline-slot-lane',
-          isEm ? 'fc-timeline-slot-em' : '', // TODO: document this semantic className
-          tDateProfile.isTimeScale ? (
+          isEm && 'fc-timeline-slot-em',
+          tDateProfile.isTimeScale && (
             isInt(dateEnv.countDurationsBetween( // best to do this here?
               tDateProfile.normalizedRange.start,
               props.date,
@@ -60,13 +59,14 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
             )) ?
               'fc-timeline-slot-major' :
               'fc-timeline-slot-minor'
-          ) : '',
+          ),
+          'fc-timeline-slot-lane fc-cell fc-flex-column fc-align-start',
           ...(
             props.isDay ?
               getDayClassNames(dateMeta, theme) :
               getSlotClassNames(dateMeta, theme)
           ),
-        ]}
+        )}
         elAttrs={{
           'data-date': dateEnv.formatIso(date, {
             omitTimeZoneOffset: true,
@@ -86,7 +86,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         {(InnerContent) => (
           <InnerContent
             elTag="div"
-            elClasses={['fc-cell-inner']}
+            elClassName='fc-cell-inner'
             elRef={this.innerElRef}
           />
         )}

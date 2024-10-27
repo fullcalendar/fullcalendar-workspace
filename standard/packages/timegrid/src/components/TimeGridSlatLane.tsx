@@ -26,11 +26,8 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
     return (
       <ContentContainer
         elTag="div"
-        elClasses={[
-          // TODO: have lane classNames like 'fc-timegrid-lane'/'fc-timegrid-slot-lane'/'fc-timegrid-slat-lane'
-          'fc-cell',
-          'fc-liquid',
-        ]}
+        // TODO: have lane classNames like 'fc-timegrid-lane'/'fc-timegrid-slot-lane'/'fc-timegrid-slat-lane'
+        elClassName='fc-cell fc-liquid'
         elAttrs={{
           'data-time': props.isoTimeStr,
         }}
@@ -44,7 +41,7 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
         {(InnerContent) => (
           <InnerContent
             elTag="div"
-            elClasses={['fc-cell-inner']}
+            elClassName='fc-cell-inner'
             elRef={this.innerElRef}
           />
         )}

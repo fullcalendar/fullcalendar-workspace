@@ -15,6 +15,7 @@ import {
   ContentContainer,
   watchHeight,
   setRef,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import { Ref, createElement } from '@fullcalendar/core/preact'
 import { renderInner } from '../util.js'
@@ -31,7 +32,7 @@ export interface DateHeaderCellProps {
   // render props
   extraRenderProps?: Dictionary
   extraDataAttrs?: Dictionary
-  extraClassNames?: string[]
+  extraClassName?: string
 
   // dimensions
   colWidth?: number
@@ -66,15 +67,12 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
     return (
       <ContentContainer
         elTag='div'
-        elClasses={[
+        elClassName={joinClassNames(
+          props.extraClassName,
+          'fc-header-cell fc-cell fc-flex-column fc-align-center',
+          props.colWidth == null && 'fc-liquid',
           ...getDayClassNames(dayMeta, theme),
-          ...(props.extraClassNames || []),
-          'fc-header-cell',
-          'fc-cell',
-          props.colWidth != null ? '' : 'fc-liquid',
-          'fc-flex-column',
-          'fc-align-center',
-        ]}
+        )}
         elAttrs={{
           'data-date': !dayMeta.isDisabled ? formatDayString(date) : undefined,
           ...extraDataAttrs,
@@ -97,12 +95,10 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
             <InnerContainer
               elTag="a"
               elAttrs={navLinkAttrs}
-              elClasses={[
-                'fc-cell-inner',
-                'fc-flex-column',
-                'fc-padding-sm',
-                props.isSticky ? 'fc-sticky-x' : '',
-              ]}
+              elClassName={joinClassNames(
+                'fc-cell-inner fc-flex-column fc-padding-sm',
+                props.isSticky && 'fc-sticky-x',
+              )}
               elRef={this.handleInnerEl}
             />
           )

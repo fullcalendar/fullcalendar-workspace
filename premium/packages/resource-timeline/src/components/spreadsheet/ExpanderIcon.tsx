@@ -1,3 +1,4 @@
+import { joinClassNames } from '@fullcalendar/core/internal'
 import { createElement, VNode, Fragment } from '@fullcalendar/core/preact'
 
 /*
@@ -19,16 +20,16 @@ export function ExpanderIcon({ indent, hasChildren, isExpanded, onExpanderClick 
   }
 
   if (hasChildren) {
-    let iconClassNames = ['fc-datagrid-expander', 'fc-icon']
-
-    if (isExpanded) {
-      iconClassNames.push('fc-icon-minus-square')
-    } else {
-      iconClassNames.push('fc-icon-plus-square')
-    }
-
     nodes.push(
-       <span className={iconClassNames.join(' ')} onClick={onExpanderClick}/>,
+       <span
+        className={joinClassNames(
+          'fc-datagrid-expander fc-icon',
+          isExpanded
+            ? 'fc-icon-minus-square'
+            : 'fc-icon-plus-square'
+        )}
+        onClick={onExpanderClick}
+      />,
     )
   }
 

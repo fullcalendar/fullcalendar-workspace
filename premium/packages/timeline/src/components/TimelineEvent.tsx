@@ -1,4 +1,4 @@
-import { StandardEvent, MinimalEventProps, BaseComponent, createFormatter } from '@fullcalendar/core/internal'
+import { StandardEvent, MinimalEventProps, BaseComponent, createFormatter, joinClassNames } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 
 export interface TimelineEventProps extends MinimalEventProps {
@@ -20,13 +20,12 @@ export class TimelineEvent extends BaseComponent<TimelineEventProps> {
     return (
       <StandardEvent
         {...props}
-        elClasses={[
+        elClassName={joinClassNames(
           'fc-timeline-event',
-          'fc-h-event',
           options.eventOverlap === false // TODO: fix bad default
-            ? 'fc-timeline-event-spacious'
-            : ''
-        ]}
+            && 'fc-timeline-event-spacious',
+          'fc-h-event',
+        )}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
         defaultDisplayEventTime={!props.isTimeScale}
       />

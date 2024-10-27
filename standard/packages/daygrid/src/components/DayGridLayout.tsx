@@ -11,7 +11,8 @@ import {
   RefMap,
   Scroller,
   ViewContainer,
-  EventRangeProps
+  EventRangeProps,
+  joinClassNames
 } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal.js'
@@ -69,7 +70,7 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
     return (
       <ViewContainer
         viewSpec={context.viewSpec}
-        elClasses={[props.className, 'fc-flex-column', 'fc-border']}
+        elClassName={joinClassNames(props.className, 'fc-border fc-flex-column')}
       >
         {options.dayMinWidth ? (
           <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />

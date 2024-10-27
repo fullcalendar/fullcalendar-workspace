@@ -36,12 +36,8 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
             role: 'columnheader',
             scope: 'colgroup',
           }}
-          elClasses={[
-            'fc-cell',
-            'fc-liquid',
-            'fc-resource-group',
-            'fc-shaded', // TODO: make part of fc-resource-group so ppl can style both cells together?
-          ]}
+          // TODO: make part of fc-resource-group so ppl can style both cells together?
+          elClassName='fc-resource-group fc-cell fc-liquid fc-shaded'
           renderProps={renderProps}
           generatorName="resourceGroupLabelContent"
           customGenerator={spec.labelContent}
@@ -60,7 +56,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
               />
               <InnerContent
                 elTag="span"
-                elClasses={['fc-cell-main']}
+                elClassName='fc-cell-main'
               />
             </div>
           )}

@@ -14,6 +14,7 @@ import {
   watchHeight,
   setRef,
   SlicedCoordRange,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -46,7 +47,7 @@ export interface DayGridCellProps {
   extraRenderProps?: Dictionary
   extraDateSpan?: Dictionary
   extraDataAttrs?: Dictionary
-  extraClassNames?: string[]
+  extraClassName?: string
 
   // dimensions
   fgHeight: number | undefined
@@ -77,13 +78,11 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     return (
       <DayCellContainer
         elTag="div"
-        elClasses={[
-          'fc-daygrid-cell',
-          'fc-cell',
+        elClassName={joinClassNames(
+          props.extraClassName,
+          'fc-daygrid-cell fc-cell fc-flex-column',
           props.width != null ? '' : 'fc-liquid',
-          'fc-flex-column',
-          ...(props.extraClassNames || []),
-        ]}
+        )}
         elAttrs={{
           ...props.extraDataAttrs,
           role: 'gridcell',
@@ -102,10 +101,10 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         {(InnerContent, renderProps) => (
           <div
             ref={this.innerElRef}
-            className={[
+            className={joinClassNames(
               'fc-daygrid-cell-inner',
-              props.fgLiquidHeight ? 'fc-liquid' : ''
-            ].join(' ')}
+              props.fgLiquidHeight && 'fc-liquid',
+            )}
           >
             <div ref={this.headerWrapElRef} className="fc-flex-column">
               {!renderProps.isDisabled && (props.showDayNumber || hasCustomDayCellContent(options)) && (
@@ -113,10 +112,10 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                   <InnerContent
                     elTag="a"
                     elAttrs={buildNavLinkAttrs(context, props.date)}
-                    elClasses={[
+                    elClassName={joinClassNames(
                       'fc-daygrid-cell-number',
                       isMonthStart && 'fc-daygrid-month-start',
-                    ]}
+                    )}
                   />
                 </div>
               )}

@@ -8,7 +8,7 @@ import { DateMarker } from '../datelib/marker.js'
 
 export interface StandardEventProps {
   elRef?: ElRef
-  elClasses?: string[]
+  elClassName?: string
   eventRange: EventRenderRange,
   segStart?: DateMarker
   segEnd?: DateMarker
@@ -64,7 +64,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
           <Fragment>
             <InnerContent
               elTag="div"
-              elClasses={['fc-event-inner']}
+              elClassName='fc-event-inner'
               elStyle={{ color: eventContentArg.textColor }}
             />
             {Boolean(eventContentArg.isStartResizable) && (

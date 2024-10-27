@@ -4,6 +4,7 @@ import {
   isMultiDayRange, DateFormatter, buildEventRangeTimeText, createFormatter,
   getEventRangeAnchorAttrs, EventContainer, ContentContainer,
   DateMarker,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import {
   createElement,
@@ -37,10 +38,10 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
       <EventContainer
         {...props}
         elTag="tr"
-        elClasses={[
+        elClassName={joinClassNames(
           'fc-list-event',
           eventRange.def.url && 'fc-event-forced-url',
-        ]}
+        )}
         defaultGenerator={() => renderEventInnerContent(eventRange, context) /* weird */}
         eventRange={eventRange}
         timeText=""
@@ -61,7 +62,7 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
             <InnerContent
               elTag="td"
               elAttrs={{ headers: `${eventHeaderId} ${dateHeaderId}` }}
-              elClasses={['fc-list-event-title']}
+              elClassName='fc-list-event-title'
             />
           </Fragment>
         )}
@@ -146,7 +147,7 @@ function buildTimeContent(
       return (
         <ContentContainer
           elTag="td"
-          elClasses={['fc-list-event-time']}
+          elClassName='fc-list-event-time'
           elAttrs={{
             headers: `${timeHeaderId} ${dateHeaderId}`,
           }}

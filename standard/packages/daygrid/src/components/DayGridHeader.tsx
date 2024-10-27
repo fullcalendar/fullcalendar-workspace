@@ -1,3 +1,4 @@
+import { joinClassNames } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, Ref } from '@fullcalendar/core/preact'
 import { HeaderRow } from './header/HeaderRow.js'
 
@@ -12,7 +13,7 @@ export interface DayGridHeaderProps<Model, ModelKey> {
   getHeaderModelKey: (model: Model) => ModelKey
 
   // render hooks
-  extraClassNames?: string[] // TODO: how to make Pure-Component-like?
+  extraClassName?: string
 
   // dimensions
   colWidth?: number
@@ -24,11 +25,11 @@ export interface DayGridHeaderProps<Model, ModelKey> {
 export function DayGridHeader<Model, ModelKey>(props: DayGridHeaderProps<Model, ModelKey>) {
   return (
     <div
-      className={[
-        'fc-flex-column', // unnecessary if extraClassNames contain fc-table-header
-        'fc-content-box',
-        ...(props.extraClassNames || []),
-      ].join(' ')}
+      className={joinClassNames(
+        props.extraClassName,
+        // fc-flex-column unnecessary if extraClassName contain fc-table-header
+        'fc-flex-column fc-content-box',
+      )}
       style={{
         width: props.width,
         paddingLeft: props.paddingLeft,

@@ -1,6 +1,10 @@
 import { isDimsEqual } from '../component-util/rendering-misc.js'
 import { watchSize } from '../component-util/resize-observer.js'
-import { DateComponent, Dictionary, removeElement, setRef } from '../internal.js'
+import { DateComponent } from '../component/DateComponent.js'
+import { removeElement } from '../util/dom-manip.js'
+import { joinClassNames } from '../util/html.js'
+import { setRef } from '../vdom-util.js'
+import { Dictionary } from '../options.js'
 import { ComponentChildren, createElement, createRef, Ref } from '../preact.js'
 import { ScrollerInterface } from './ScrollerInterface.js'
 import { ScrollListener } from './ScrollListener.js'
@@ -12,7 +16,7 @@ export interface ScrollerProps {
   children: ComponentChildren
 
   // el hooks
-  elClassNames?: string[]
+  elClassName?: string
   elStyle?: Dictionary
 
   // dimensions
@@ -46,11 +50,11 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     return (
       <div
         ref={this.elRef}
-        className={[
+        className={joinClassNames(
+          props.elClassName,
           'fc-scroller',
-          props.hideScrollbars ? 'fc-scroller-nobars' : '',
-          ...(props.elClassNames || []),
-        ].join(' ')}
+          props.hideScrollbars && 'fc-scroller-nobars',
+        )}
         style={{
           ...props.elStyle,
           overflowX: props.horizontal ? 'auto' : fallbackOverflow,

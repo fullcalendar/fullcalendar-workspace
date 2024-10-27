@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize, getIsHeightAuto, rangeContainsMarker, SlicedCoordRange, EventRangeProps } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize, getIsHeightAuto, rangeContainsMarker, SlicedCoordRange, EventRangeProps, joinClassNames } from "@fullcalendar/core/internal"
 import { Fragment, createElement, ComponentChild, Ref } from '@fullcalendar/core/preact'
 import { HeaderRow, COMPACT_CELL_WIDTH } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -9,7 +9,7 @@ import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeGridRange } from "../TimeColsSeg.js"
-import { computeSlatHeight, getSlatRowClassName } from "./util.js"
+import { computeSlatHeight, getSlatRowClassNames } from './util.js'
 
 export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   dateProfile: DateProfile
@@ -118,11 +118,10 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         ---------------------------------------------------------------------------------------*/}
         {options.dayHeaders && (
           <div
-            className={[
-              'fc-timegrid-header',
-              'fc-table-header',
-              stickyHeaderDates ? 'fc-table-header-sticky' : '',
-            ].join(' ')}
+            className={joinClassNames(
+              'fc-timegrid-header fc-table-header',
+              stickyHeaderDates && 'fc-table-header-sticky',
+            )}
             style={{
               paddingLeft: state.leftScrollbarWidth,
               paddingRight: state.rightScrollbarWidth,
@@ -199,11 +198,10 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         -----------------------------------------------------------------------------------------*/}
         <Scroller
           vertical={verticalScrolling}
-          elClassNames={[
-            'fc-timegrid-body',
-            'fc-table-body',
-            verticalScrolling ? 'fc-liquid' : '',
-          ]}
+          elClassName={joinClassNames(
+            'fc-timegrid-body fc-table-body',
+            verticalScrolling && 'fc-liquid',
+          )}
           ref={props.timeScrollerRef}
           clientWidthRef={this.handleClientWidth}
           clientHeightRef={this.handleClientHeight}
@@ -216,10 +214,10 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
               {props.slatMetas.map((slatMeta) => (
                 <div
                   key={slatMeta.key}
-                  className={[
-                    getSlatRowClassName(slatMeta),
-                    slatLiquid ? 'fc-liquid' : ''
-                  ].join(' ')}
+                  className={joinClassNames(
+                    ...getSlatRowClassNames(slatMeta),
+                    slatLiquid && 'fc-liquid',
+                  )}
                   style={{
                     height: slatLiquid ? '' : slatHeight
                   }}

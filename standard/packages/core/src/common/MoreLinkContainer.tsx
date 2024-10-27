@@ -16,6 +16,7 @@ import { ElProps } from '../content-inject/ContentInjector.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
 import { EventRangeProps } from '../component-util/event-rendering.js'
 import { computeEarliestStart, computeLatestEnd, SlicedCoordRange } from '../coord-range.js'
+import { joinClassNames } from '../util/html.js'
 
 export interface MoreLinkContainerProps extends Partial<ElProps> {
   dateProfile: DateProfile
@@ -83,10 +84,10 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                 <ContentContainer
                   elTag={props.elTag || 'a'}
                   elRef={this.handleLinkEl}
-                  elClasses={[
-                    ...(props.elClasses || []),
+                  elClassName={joinClassNames(
+                    props.elClassName,
                     'fc-more-link',
-                  ]}
+                  )}
                   elStyle={props.elStyle}
                   elAttrs={{
                     ...props.elAttrs,

@@ -17,6 +17,7 @@ import {
   getIsHeightAuto,
   compareNumbers,
   Scroller,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import { buildDayTableRenderRange } from '@fullcalendar/daygrid/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
@@ -71,27 +72,24 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     )
 
     const monthTitleFormat = this.buildMonthFormat(options.multiMonthTitleFormat, monthDateProfiles)
-    const rootClassNames = [
-      'fc-multimonth-view',
-      (colCount === 1) ?
-        'fc-multimonth-singlecol' :
-        'fc-multimonth-multicol',
-      'fc-flex-column',
-      'fc-border', // BAD to mix this with size-listening?
-    ]
 
     return (
       <NowTimer unit="day">
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <ViewContainer
-            elClasses={rootClassNames}
+            elClassName={joinClassNames(
+              'fc-multimonth-view',
+              (colCount === 1) ?
+                'fc-multimonth-singlecol' :
+                'fc-multimonth-multicol',
+              // BAD to mix fc-borderthis with size-listening?
+              'fc-border fc-flex-column',
+            )}
             viewSpec={context.viewSpec}
           >
             <Scroller
               vertical={verticalScrolling}
-              elClassNames={[
-                verticalScrolling ? 'fc-liquid' : '',
-              ]}
+              elClassName={verticalScrolling ? 'fc-liquid' : ''}
               ref={this.scrollerRef}
               clientWidthRef={this.handleClientWidth}
             >

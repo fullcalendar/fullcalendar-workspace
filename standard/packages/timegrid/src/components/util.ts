@@ -81,10 +81,10 @@ export function computeTimeTopFrac(time: Duration, dateProfile: DateProfile): nu
   return frac
 }
 
-export function getSlatRowClassName(slatMeta: TimeSlatMeta): string {
+export function getSlatRowClassNames(slatMeta: TimeSlatMeta): string[] {
   return [
-    'fc-row',
     'fc-timegrid-slot',
     slatMeta.isLabeled ? '' : 'fc-timegrid-slot-minor',
-  ].join(' ')
+    'fc-row',
+  ]
 }

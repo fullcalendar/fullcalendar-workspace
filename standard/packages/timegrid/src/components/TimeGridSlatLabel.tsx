@@ -41,20 +41,13 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
   render() {
     let { props, context } = this
     let { dateEnv, options, viewApi } = context
-
-    let classNames = [
-      'fc-timegrid-slot-label',
-      'fc-timegrid-axis',
-      'fc-header-cell',
-      'fc-cell',
-      'fc-content-box',
-    ]
+    let className = 'fc-timegrid-slot-label fc-timegrid-axis fc-header-cell fc-cell fc-content-box'
 
     if (!props.isLabeled) {
       return (
         <div
           data-time={props.isoTimeStr}
-          className={classNames.join(' ')}
+          className={className}
           style={{
             width: props.width,
           }}
@@ -78,7 +71,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     return (
       <ContentContainer
         elTag="div"
-        elClasses={classNames}
+        elClassName={className}
         elAttrs={{
           'data-time': props.isoTimeStr,
         }}
@@ -96,11 +89,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
         {(InnerContent) => (
           <InnerContent
             elTag="div"
-            elClasses={[
-              'fc-timegrid-axis-inner',
-              'fc-cell-inner',
-              'fc-padding-sm',
-            ]}
+            elClassName='fc-timegrid-axis-inner fc-cell-inner fc-padding-sm'
             elRef={this.innerElRef}
           />
         )}

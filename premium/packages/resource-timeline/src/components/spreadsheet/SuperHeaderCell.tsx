@@ -31,13 +31,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           role: 'columnheader',
           scope: 'colgroup',
         }}
-        elClasses={[
-          'fc-header-cell',
-          'fc-cell',
-          'fc-liquid',
-          'fc-flex-column',
-          'fc-justify-center',
-        ]}
+        elClassName='fc-header-cell fc-cell fc-flex-column fc-justify-center fc-liquid'
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"
         customGenerator={renderHooks.headerContent}
@@ -55,7 +49,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
             )}
             <InnerContent
               elTag="span"
-              elClasses={['fc-cell-main']}
+              elClassName='fc-cell-main'
             />
           </div>
         )}

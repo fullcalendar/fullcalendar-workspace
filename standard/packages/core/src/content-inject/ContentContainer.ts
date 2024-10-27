@@ -10,6 +10,7 @@ import {
 } from './ContentInjector.js'
 import { RenderId } from './RenderId.js'
 import { setRef } from '../vdom-util.js'
+import { joinClassNames } from '../util/html.js'
 
 /*
 The `children` prop is a function that defines inner wrappers (ex: ResourceCell)
@@ -34,10 +35,10 @@ export class ContentContainer<RenderProps> extends Component<ContentContainerPro
 
   render() {
     const { props } = this
-    const generatedClassNames = generateClassNames(props.classNameGenerator, props.renderProps)
+    const generatedClassName = generateClassName(props.classNameGenerator, props.renderProps)
 
     if (props.children) {
-      const elAttrs = buildElAttrs(props, generatedClassNames, this.handleEl)
+      const elAttrs = buildElAttrs(props, generatedClassName, this.handleEl)
       const children = props.children(this.InnerContent, props.renderProps, elAttrs)
 
       if (props.elTag) {
@@ -50,7 +51,7 @@ export class ContentContainer<RenderProps> extends Component<ContentContainerPro
         ...props,
         elRef: this.handleEl,
         elTag: props.elTag || 'div',
-        elClasses: (props.elClasses || []).concat(generatedClassNames),
+        elClassName: joinClassNames(props.elClassName, generatedClassName),
         renderId: this.context,
       })
     }
@@ -114,13 +115,13 @@ function InnerContentInjector<RenderProps>(
 
 // Utils
 
-function generateClassNames<RenderProps>(
+function generateClassName<RenderProps>(
   classNameGenerator: ClassNamesGenerator<RenderProps> | undefined,
   renderProps: RenderProps,
-): string[] {
+): string {
   const classNames = typeof classNameGenerator === 'function' ?
     classNameGenerator(renderProps) :
     classNameGenerator || []
 
-  return typeof classNames === 'string' ? [classNames] : classNames
+  return typeof classNames === 'string' ? classNames : classNames.join(' ')
 }

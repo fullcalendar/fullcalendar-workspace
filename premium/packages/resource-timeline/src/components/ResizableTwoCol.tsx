@@ -1,4 +1,4 @@
-import { BaseComponent, ElementDragging, PointerDragEvent, setRef } from '@fullcalendar/core/internal'
+import { BaseComponent, ElementDragging, PointerDragEvent, setRef, joinClassNames } from '@fullcalendar/core/internal'
 import { ComponentChildren, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 
 export interface ResizableTwoColProps {
@@ -37,16 +37,10 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
     return (
       <div
         ref={this.handleRootEl}
-        class={[
-          'fc-flex-row',
-          props.className,
-        ].join(' ')}
+        class={joinClassNames(props.className, 'fc-flex-row')}
       >
         <div
-          class={[
-            'fc-cell',
-            props.startClassName
-          ].join(' ')}
+          class={joinClassNames(props.startClassName, 'fc-cell')}
           style={{ width: resourceAreaWidth }}
           ref={this.startElRef}
         >
@@ -59,13 +53,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
           style={{ cursor: 'col-resize' }}
           ref={this.resizerElRef}
         />
-        <div
-          class={[
-            'fc-cell',
-            'fc-liquid',
-            props.endClassName,
-          ].join(' ')}
-        >
+        <div class={joinClassNames(props.endClassName, 'fc-cell fc-liquid')}>
           {props.endContent}
         </div>
       </div>

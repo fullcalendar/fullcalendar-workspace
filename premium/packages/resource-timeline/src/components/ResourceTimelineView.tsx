@@ -11,6 +11,7 @@ import {
   guid,
   Hit,
   isArraysEqual,
+  joinClassNames,
   memoize,
   multiplyDuration,
   NowTimer,
@@ -280,11 +281,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
           return (
             <ViewContainer
-              elClasses={[
-                'fc-resource-timeline-view',
-                'fc-flex-column', // so ReisableTwoCol can grow
-                'fc-border',
-              ]}
+              elClassName='fc-resource-timeline-view fc-flex-column fc-border'
               viewSpec={viewSpec}
             >
               <ResizableTwoCol
@@ -300,11 +297,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     {/* spreadsheet HEADER
                     ---------------------------------------------------------------------------- */}
                     <div
-                      className={[
-                        'fc-datagrid-header',
-                        'fc-table-header',
-                        stickyHeaderDates ? 'fc-table-header-sticky' : '',
-                      ].join(' ')}
+                      className={joinClassNames(
+                        'fc-datagrid-header fc-table-header',
+                        stickyHeaderDates && 'fc-table-header-sticky',
+                      )}
                     >
                       {Boolean(superHeaderRendering) && (
                         <div
@@ -324,9 +320,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       <Scroller
                         horizontal
                         hideScrollbars
-                        elClassNames={[
-                          superHeaderRendering ? 'fc-row-border' : '',
-                        ]}
+                        elClassName={superHeaderRendering ? 'fc-row-border' : ''}
                         ref={this.spreadsheetHeaderScrollerRef}
                       >
                         <div style={{ width: spreadsheetCanvasWidth }}>
@@ -354,11 +348,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       vertical={verticalScrolling}
                       horizontal
                       hideScrollbars
-                      elClassNames={[
-                        'fc-datagrid-body',
-                        'fc-table-body',
-                        verticalScrolling ? 'fc-liquid' : '',
-                      ]}
+                      elClassName={joinClassNames(
+                        'fc-datagrid-body fc-table-body',
+                        verticalScrolling && 'fc-liquid',
+                      )}
                       ref={this.spreadsheetBodyScrollerRef}
                       clientWidthRef={this.handleSpreadsheetClientWidth}
                     >
@@ -397,10 +390,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                       key={queryObjKey(group)}
                                       role='row'
                                       aria-rowindex={groupCellLayout.rowIndex}
-                                      class={[
-                                        'fc-row fc-fill-x fc-content-box',
-                                        groupCellLayout.rowIndex ? 'fc-row-border' : '',
-                                      ].join(' ')}
+                                      class={joinClassNames(
+                                        'fc-row',
+                                        groupCellLayout.rowIndex && 'fc-row-border',
+                                        'fc-fill-x fc-content-box'
+                                      )}
                                       style={{
                                         top: bodyTops.get(group),
                                         height: bodyHeights.get(group),
@@ -432,10 +426,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   key={resource.id}
                                   role='row'
                                   aria-rowindex={resourceLayout.rowIndex}
-                                  class={[
-                                    'fc-row fc-fill-x fc-content-box',
-                                    resourceLayout.rowIndex ? 'fc-row-border' : '',
-                                  ].join(' ')}
+                                  class={joinClassNames(
+                                    'fc-row',
+                                    resourceLayout.rowIndex && 'fc-row-border',
+                                    'fc-fill-x fc-content-box',
+                                  )}
                                   style={{
                                     top: bodyTops.get(resource),
                                     height: bodyHeights.get(resource),
@@ -466,10 +461,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               key={queryObjKey(group)}
                               role='row'
                               aria-rowindex={groupRowLayout.rowIndex}
-                              class={[
-                                'fc-row fc-fill-x fc-content-box',
-                                groupRowLayout.rowIndex ? 'fc-row-border' : '',
-                              ].join(' ')}
+                              class={joinClassNames(
+                                'fc-row',
+                                groupRowLayout.rowIndex && 'fc-row-border',
+                                'fc-fill-x fc-content-box',
+                              )}
                               style={{
                                 top: bodyTops.get(group),
                                 height: bodyHeights.get(group),
@@ -510,11 +506,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       ref={this.timeHeaderScrollerRef}
                       horizontal
                       hideScrollbars
-                      elClassNames={[
-                        'fc-timeline-header',
-                        'fc-table-header',
-                        stickyHeaderDates ? 'fc-table-header-sticky' : '',
-                      ]}
+                      elClassName={joinClassNames(
+                        'fc-timeline-header fc-table-header',
+                        stickyHeaderDates && 'fc-table-header-sticky',
+                      )}
                     >
                       <div
                         className='fc-rel fc-content-box'
@@ -560,11 +555,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       vertical={verticalScrolling}
                       horizontal
                       hideScrollbars={stickyFooterScrollbar}
-                      elClassNames={[
-                        'fc-timeline-body',
-                        'fc-table-body',
-                        verticalScrolling ? 'fc-liquid' : '',
-                      ]}
+                      elClassName={joinClassNames(
+                        'fc-timeline-body fc-table-body',
+                        verticalScrolling && 'fc-liquid',
+                      )}
                       ref={this.timeBodyScrollerRef}
                       clientWidthRef={this.handleTimeClientWidth}
                       clientHeightRef={this.handleTimeClientHeight}
@@ -597,10 +591,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   key={resource.id}
                                   role='row'
                                   aria-rowindex={resourceLayout.rowIndex}
-                                  className={[
-                                    'fc-row fc-fill-x fc-content-box',
-                                    resourceLayout.rowIndex ? 'fc-row-border' : '',
-                                  ].join(' ')}
+                                  className={joinClassNames(
+                                    'fc-row',
+                                    resourceLayout.rowIndex && 'fc-row-border',
+                                    'fc-fill-x fc-content-box',
+                                  )}
                                   style={{
                                     top: bodyTops.get(resource),
                                     height: bodyHeights.get(resource),
@@ -635,10 +630,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   key={queryObjKey(group)}
                                   role='row'
                                   aria-rowindex={groupRowLayout.rowIndex}
-                                  class={[
-                                    'fc-row fc-fill-x fc-content-box',
-                                    groupRowLayout.rowIndex ? 'fc-row-border' : '',
-                                  ].join(' ')}
+                                  class={joinClassNames(
+                                    'fc-row',
+                                    groupRowLayout.rowIndex && 'fc-row-border',
+                                    'fc-fill-x fc-content-box',
+                                  )}
                                   style={{
                                     top: bodyTops.get(group),
                                     height: bodyHeights.get(group),

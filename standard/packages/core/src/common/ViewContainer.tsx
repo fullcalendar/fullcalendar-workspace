@@ -5,6 +5,7 @@ import { BaseComponent } from '../vdom-util.js'
 import { ViewApi } from '../api/ViewApi.js'
 import { ContentContainer } from '../content-inject/ContentContainer.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
+import { joinClassNames } from '../util/html.js'
 
 export interface ViewContainerProps extends Partial<ElProps> {
   viewSpec: ViewSpec
@@ -27,10 +28,10 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
       <ContentContainer
         {...props}
         elTag={props.elTag || 'div'}
-        elClasses={[
-          ...buildViewClassNames(props.viewSpec),
-          ...(props.elClasses || []),
-        ]}
+        elClassName={joinClassNames(
+          props.elClassName,
+          buildViewClassName(props.viewSpec),
+        )}
         renderProps={renderProps}
         classNameGenerator={options.viewClassNames}
         generatorName={undefined}
@@ -43,9 +44,6 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
   }
 }
 
-export function buildViewClassNames(viewSpec: ViewSpec): string[] {
-  return [
-    `fc-${viewSpec.type}-view`,
-    'fc-view',
-  ]
+export function buildViewClassName(viewSpec: ViewSpec): string {
+  return `fc-${viewSpec.type}-view fc-view`
 }
