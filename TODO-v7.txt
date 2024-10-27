@@ -47,9 +47,6 @@ TimeGrid
     make timegrid bottom area w/o slots a grey bg
   structure: in TimeGridLayoutNormal, not nice how axis text isn't selectable
     (related to how now-indicator is rendered in axis)
-  structure:
-    div covering events
-    https://github.com/fullcalendar/fullcalendar/issues/7798
 Timeline
   bug (no resources): can't drag-n-drop. date-selection happens instead
   bug for timeline event dragging:
@@ -62,9 +59,13 @@ Timeline
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
   Did +more links in timeline always have strict order (meaning they were at bottom?). Regression?
+  structure:
+    div covering events
+    https://github.com/fullcalendar/fullcalendar/issues/7798
 Resource DayGrid
   bug w/ `bundle/examples-v7/resource-daygrid.html` when dragging event3 one day ahead,
     would result in a +more link that'd disappear when you return, but after we refactor DayGrid rendering, should be fixed
+  structure: fix ResourceTimeline super-header fc-row-border abuse
 Resource Timeline
   bug: in `examples/resource-add-remove.html`, when deleting Auditorium D, collapses strangely after
   bug: when resourceAreaHeaderContent, and multiple datagrid-columns, super-header's indent is unnecessary. looks bad
