@@ -124,7 +124,7 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
 
     return (
       <ViewContainer
-        elClassName={joinClassNames(
+        className={joinClassNames(
           props.className,
           'fc-border fc-flex-column',
         )}

@@ -67,9 +67,9 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
             todayRange={props.todayRange}
             date={cell.date}
             slatCnt={props.slatCnt}
-            extraRenderProps={cell.extraRenderProps}
-            extraDataAttrs={cell.extraDataAttrs}
-            extraDateSpan={cell.extraDateSpan}
+            renderProps={cell.renderProps}
+            attrs={cell.attrs}
+            dateSpanProps={cell.dateSpanProps}
             forPrint={props.forPrint}
 
             // content
@@ -131,7 +131,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
       dateSpan: {
         range: { start, end },
         allDay: false,
-        ...cell.extraDateSpan,
+        ...cell.dateSpanProps,
       },
       // HACK. TODO: This is expensive to do every hit-query
       dayEl: getCellEl(this.rootEl, col),

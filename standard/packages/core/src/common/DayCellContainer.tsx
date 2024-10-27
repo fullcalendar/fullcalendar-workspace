@@ -31,7 +31,7 @@ export interface DayCellContainerProps extends Partial<ElProps> {
   todayRange: DateRange
   isMonthStart?: boolean
   showDayNumber?: boolean // defaults to false
-  extraRenderProps?: Dictionary
+  renderProps?: Dictionary
   defaultGenerator?: (renderProps: DayCellContentArg) => ComponentChild
   children?: InnerContainerFunc<DayCellContentArg>
 }
@@ -50,7 +50,7 @@ export class DayCellContainer extends BaseComponent<DayCellContainerProps> {
       todayRange: props.todayRange,
       isMonthStart: props.isMonthStart || false,
       showDayNumber: props.showDayNumber,
-      extraRenderProps: props.extraRenderProps,
+      renderProps: props.renderProps,
       viewApi: context.viewApi,
       dateEnv: context.dateEnv,
       monthStartFormat: options.monthStartFormat,
@@ -59,12 +59,12 @@ export class DayCellContainer extends BaseComponent<DayCellContainerProps> {
     return (
       <ContentContainer
         {...props /* includes children */}
-        elClassName={joinClassNames(
-          props.elClassName,
+        className={joinClassNames(
+          props.className,
           ...getDayClassNames(renderProps, context.theme),
         )}
-        elAttrs={{
-          ...props.elAttrs,
+        attrs={{
+          ...props.attrs,
           ...(renderProps.isDisabled ? {} : { 'data-date': formatDayString(props.date) }),
         }}
         renderProps={renderProps}
@@ -97,7 +97,7 @@ interface DayCellRenderPropsInput {
   monthStartFormat: DateFormatter
   isMonthStart: boolean // defaults to false
   showDayNumber?: boolean // defaults to false
-  extraRenderProps?: Dictionary // so can include a resource
+  renderProps?: Dictionary // so can include a resource
 }
 
 function refineRenderProps(raw: DayCellRenderPropsInput): DayCellContentArg {
@@ -113,6 +113,6 @@ function refineRenderProps(raw: DayCellRenderPropsInput): DayCellContentArg {
     ...dayMeta,
     isMonthStart,
     dayNumberText,
-    ...raw.extraRenderProps,
+    ...raw.renderProps,
   }
 }

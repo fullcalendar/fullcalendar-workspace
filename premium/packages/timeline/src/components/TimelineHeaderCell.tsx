@@ -59,8 +59,8 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
 
     return (
       <ContentContainer
-        elTag="div"
-        elClassName={joinClassNames(
+        tag="div"
+        className={joinClassNames(
           'fc-timeline-slot-label fc-timeline-slot',
           cell.isWeekStart && 'fc-timeline-slot-em', // TODO: document this semantic className
           'fc-header-cell fc-cell fc-flex-column fc-justify-center',
@@ -71,13 +71,13 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
               getDayClassNames(dateMeta, context.theme)
           ),
         )}
-        elAttrs={{
+        attrs={{
           'data-date': dateEnv.formatIso(cell.date, {
             omitTime: !tDateProfile.isTimeScale,
             omitTimeZoneOffset: true,
           }),
         }}
-        elStyle={{
+        style={{
           width: props.slotWidth != null
             ? props.slotWidth * cell.colspan
             : undefined,
@@ -92,9 +92,9 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
       >
         {(InnerContent) => (
           <InnerContent
-            elTag="a"
-            elAttrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
-            elClassName={joinClassNames(
+            tag="a"
+            attrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
+            className={joinClassNames(
               'fc-cell-inner fc-padding-md',
               props.isSticky && 'fc-sticky-x',
             )}

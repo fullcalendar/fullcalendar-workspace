@@ -37,8 +37,8 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
     return (
       <EventContainer
         {...props}
-        elTag="tr"
-        elClassName={joinClassNames(
+        tag="tr"
+        className={joinClassNames(
           'fc-list-event',
           eventRange.def.url && 'fc-event-forced-url',
         )}
@@ -60,9 +60,9 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
               />
             </td>
             <InnerContent
-              elTag="td"
-              elAttrs={{ headers: `${eventHeaderId} ${dateHeaderId}` }}
-              elClassName='fc-list-event-title'
+              tag="td"
+              attrs={{ headers: `${eventHeaderId} ${dateHeaderId}` }}
+              className='fc-list-event-title'
             />
           </Fragment>
         )}
@@ -146,11 +146,11 @@ function buildTimeContent(
 
       return (
         <ContentContainer
-          elTag="td"
-          elClassName='fc-list-event-time'
-          elAttrs={{
+          tag="td"
+          attrs={{
             headers: `${timeHeaderId} ${dateHeaderId}`,
           }}
+          className='fc-list-event-time'
           renderProps={renderProps}
           generatorName="allDayContent"
           customGenerator={options.allDayContent}

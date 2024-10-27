@@ -16,8 +16,8 @@ export interface ScrollerProps {
   children: ComponentChildren
 
   // el hooks
-  elClassName?: string
-  elStyle?: Dictionary
+  className?: string
+  style?: Dictionary
 
   // dimensions
   clientWidthRef?: Ref<number> // for this to be accurate, element should NOT have left/right borders
@@ -51,12 +51,12 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
       <div
         ref={this.elRef}
         className={joinClassNames(
-          props.elClassName,
+          props.className,
           'fc-scroller',
           props.hideScrollbars && 'fc-scroller-nobars',
         )}
         style={{
-          ...props.elStyle,
+          ...props.style,
           overflowX: props.horizontal ? 'auto' : fallbackOverflow,
           overflowY: props.vertical ? 'auto' : fallbackOverflow,
         }}

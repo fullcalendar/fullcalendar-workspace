@@ -14,10 +14,10 @@ TODO: move this to @fullcalendar/daygrid
 export interface DayTableCell {
   key: string // probably just the serialized date, but could be other metadata if this col is specific to another entity
   date: DateMarker
-  extraRenderProps?: Dictionary
-  extraDataAttrs?: Dictionary
-  extraClassName?: string
-  extraDateSpan?: Dictionary
+  renderProps?: Dictionary
+  attrs?: Dictionary
+  className?: string
+  dateSpanProps?: Dictionary
 }
 
 export class DayTableModel {

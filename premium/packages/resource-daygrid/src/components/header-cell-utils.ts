@@ -48,8 +48,8 @@ export function buildResourceHeaderTiers(
               {
                 date,
                 colSpan: 1,
-                extraRenderProps: { resource: new ResourceApi(context, resource) },
-                extraDataAttrs: { 'data-resource-id': resource.id },
+                attrs: { 'data-resource-id': resource.id },
+                renderProps: { resource: new ResourceApi(context, resource) },
               }
             ))
           ))
@@ -60,8 +60,8 @@ export function buildResourceHeaderTiers(
               {
                 dow: date.getUTCDay(),
                 colSpan: 1,
-                extraRenderProps: { resource: new ResourceApi(context, resource) },
-                extraDataAttrs: { 'data-resource-id': resource.id },
+                attrs: { 'data-resource-id': resource.id },
+                renderProps: { resource: new ResourceApi(context, resource) },
               }
             ))
           ))

@@ -29,13 +29,13 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
     // need empty inner div for abs positioning for resizer
     return (
       <ContentContainer
-        elTag="div"
-        elAttrs={{
+        tag="div"
+        attrs={{
           role: 'columnheader'
         }}
         // fc-rel for resizer abs positioning
-        elClassName='fc-header-cell fc-cell fc-flex-column fc-justify-center fc-rel'
-        elStyle={{
+        className='fc-header-cell fc-cell fc-flex-column fc-justify-center fc-rel'
+        style={{
           width,
         }}
         renderProps={renderProps}
@@ -55,8 +55,8 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
                 </span>
               )}
               <InnerContent
-                elTag="span"
-                elClassName='fc-cell-main'
+                tag="span"
+                className='fc-cell-main'
               />
             </div>
             {resizer && (

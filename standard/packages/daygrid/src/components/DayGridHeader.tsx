@@ -13,7 +13,7 @@ export interface DayGridHeaderProps<Model, ModelKey> {
   getHeaderModelKey: (model: Model) => ModelKey
 
   // render hooks
-  extraClassName?: string
+  className?: string
 
   // dimensions
   colWidth?: number
@@ -26,8 +26,8 @@ export function DayGridHeader<Model, ModelKey>(props: DayGridHeaderProps<Model, 
   return (
     <div
       className={joinClassNames(
-        props.extraClassName,
-        // fc-flex-column unnecessary if extraClassName contain fc-table-header
+        props.className,
+        // fc-flex-column unnecessary if className contain fc-table-header
         'fc-flex-column fc-content-box',
       )}
       style={{

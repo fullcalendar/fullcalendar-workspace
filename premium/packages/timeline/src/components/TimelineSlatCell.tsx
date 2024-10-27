@@ -45,10 +45,10 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
 
     return (
       <ContentContainer
-        elTag="div"
+        tag="div"
         // fc-align-start shrinks width of InnerContent
         // TODO: document this semantic className fc-timeline-slot-em
-        elClassName={joinClassNames(
+        className={joinClassNames(
           'fc-timeline-slot',
           isEm && 'fc-timeline-slot-em',
           tDateProfile.isTimeScale && (
@@ -67,13 +67,13 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
               getSlotClassNames(dateMeta, theme)
           ),
         )}
-        elAttrs={{
+        attrs={{
           'data-date': dateEnv.formatIso(date, {
             omitTimeZoneOffset: true,
             omitTime: !tDateProfile.isTimeScale,
           }),
         }}
-        elStyle={{
+        style={{
           width: props.width,
         }}
         renderProps={renderProps}
@@ -85,8 +85,8 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
       >
         {(InnerContent) => (
           <InnerContent
-            elTag="div"
-            elClassName='fc-cell-inner'
+            tag="div"
+            className='fc-cell-inner'
             elRef={this.innerElRef}
           />
         )}

@@ -47,8 +47,8 @@ export class ResourceLabelContainer extends BaseComponent<ResourceLabelContainer
           return (
             <ContentContainer
               {...props}
-              elAttrs={{
-                ...props.elAttrs,
+              attrs={{
+                ...props.attrs,
                 'data-resource-id': props.resource.id, // TODO: only do public-facing one?
                 'data-date': props.date ? formatDayString(props.date) : undefined,
               }}

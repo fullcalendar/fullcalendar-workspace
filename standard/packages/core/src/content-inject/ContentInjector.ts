@@ -12,14 +12,14 @@ export type ElRef = Ref<HTMLElement>
 export type ElAttrs = JSX.HTMLAttributes & JSX.SVGAttributes & { ref?: ElRef } & Record<string, any>
 
 export interface ElAttrsProps {
+  attrs?: ElAttrs
+  className?: string
+  style?: JSX.CSSProperties
   elRef?: ElRef
-  elClassName?: string
-  elStyle?: JSX.CSSProperties
-  elAttrs?: ElAttrs
 }
 
 export interface ElProps extends ElAttrsProps {
-  elTag: string
+  tag: string
 }
 
 export interface ContentGeneratorProps<RenderProps> {
@@ -87,7 +87,7 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
     this.queuedDomNodes = queuedDomNodes
     this.currentGeneratorMeta = currentGeneratorMeta
 
-    return createElement(props.elTag, attrs, innerContent)
+    return createElement(props.tag, attrs, innerContent)
   }
 
   componentDidMount(): void {
@@ -158,9 +158,9 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
 }
 
 ContentInjector.addPropsEquality({
-  elStyle: isPropsEqual,
-  elAttrs: isNonHandlerPropsEqual,
   renderProps: isPropsEqual,
+  attrs: isNonHandlerPropsEqual,
+  style: isPropsEqual,
 })
 
 // Util
@@ -183,21 +183,21 @@ export function hasCustomRenderingHandler(
 
 export function buildElAttrs(
   props: ElAttrsProps,
-  extraClassName?: string,
+  className?: string,
   elRef?: ElRef,
 ): ElAttrs {
-  const attrs: ElAttrs = { ...props.elAttrs, ref: elRef as any }
+  const attrs: ElAttrs = { ...props.attrs, ref: elRef as any }
 
-  if (props.elClassName || extraClassName) {
+  if (props.className || className) {
     attrs.className = joinClassNames(
-      extraClassName,
-      props.elClassName,
+      className,
+      props.className,
       attrs.className as string, // TODO: solve SignalLike type problem
     )
   }
 
-  if (props.elStyle) {
-    attrs.style = props.elStyle
+  if (props.style) {
+    attrs.style = props.style
   }
 
   return attrs

@@ -47,12 +47,12 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
     // TODO: make a reusable HOC for dayHeader (used in daygrid/timegrid too)
     return (
       <ContentContainer
-        elTag="tr"
-        elClassName={joinClassNames(
+        tag="tr"
+        className={joinClassNames(
           'fc-list-day',
           ...getDayClassNames(dayMeta, theme),
         )}
-        elAttrs={{
+        attrs={{
           'data-date': formatDayString(dayDate),
         }}
         renderProps={renderProps}
@@ -65,13 +65,13 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
       >
         {(InnerContent) => (
           <InnerContent
-            elTag="th"
-            elAttrs={{
+            tag="th"
+            attrs={{
               id: cellId,
               colSpan: 3,
               'aria-labelledby': textId,
             }}
-            elClassName={joinClassNames(
+            className={joinClassNames(
               'fc-list-day-cell',
               stickyHeaderDates && 'fc-list-day-cell-sticky',
             )}

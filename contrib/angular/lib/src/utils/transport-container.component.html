@@ -1,45 +1,45 @@
-<ng-template [ngIf]="elTag == 'div'">
-  <div #rootEl [ngClass]="elClassName || ''" [ngStyle]="elStyle || null">
+<ng-template [ngIf]="tag == 'div'">
+  <div #rootEl [ngClass]="className || ''" [ngStyle]="style || null">
     <ng-container
       [ngTemplateOutlet]="template"
       [ngTemplateOutletContext]="{ $implicit: renderProps }"
     ></ng-container>
   </div>
 </ng-template>
-<ng-template [ngIf]="elTag == 'span'">
-  <span #rootEl [ngClass]="elClassName || ''" [ngStyle]="elStyle || null">
+<ng-template [ngIf]="tag == 'span'">
+  <span #rootEl [ngClass]="className || ''" [ngStyle]="style || null">
     <ng-container
       [ngTemplateOutlet]="template"
       [ngTemplateOutletContext]="{ $implicit: renderProps }"
     ></ng-container>
   </span>
 </ng-template>
-<ng-template [ngIf]="elTag == 'a'">
-  <a #rootEl [ngClass]="elClassName || ''" [ngStyle]="elStyle || null">
+<ng-template [ngIf]="tag == 'a'">
+  <a #rootEl [ngClass]="className || ''" [ngStyle]="style || null">
     <ng-container
       [ngTemplateOutlet]="template"
       [ngTemplateOutletContext]="{ $implicit: renderProps }"
     ></ng-container>
   </a>
 </ng-template>
-<ng-template [ngIf]="elTag == 'tr'">
-  <tr #rootEl [ngClass]="elClassName || ''" [ngStyle]="elStyle || null">
+<ng-template [ngIf]="tag == 'tr'">
+  <tr #rootEl [ngClass]="className || ''" [ngStyle]="style || null">
     <ng-container
       [ngTemplateOutlet]="template"
       [ngTemplateOutletContext]="{ $implicit: renderProps }"
     ></ng-container>
   </tr>
 </ng-template>
-<ng-template [ngIf]="elTag == 'th'">
-  <th #rootEl [ngClass]="elClassName || ''" [ngStyle]="elStyle || null">
+<ng-template [ngIf]="tag == 'th'">
+  <th #rootEl [ngClass]="className || ''" [ngStyle]="style || null">
     <ng-container
       [ngTemplateOutlet]="template"
       [ngTemplateOutletContext]="{ $implicit: renderProps }"
     ></ng-container>
   </th>
 </ng-template>
-<ng-template [ngIf]="elTag == 'td'">
-  <td #rootEl [ngClass]="elClassName || ''" [ngStyle]="elStyle || null">
+<ng-template [ngIf]="tag == 'td'">
+  <td #rootEl [ngClass]="className || ''" [ngStyle]="style || null">
     <ng-container
       [ngTemplateOutlet]="template"
       [ngTemplateOutletContext]="{ $implicit: renderProps }"

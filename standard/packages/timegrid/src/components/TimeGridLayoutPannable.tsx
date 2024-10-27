@@ -199,7 +199,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             <Scroller
               horizontal
               hideScrollbars
-              elClassName='fc-cell fc-liquid'
+              className='fc-cell fc-liquid'
               ref={this.headerScrollerRef}
             >
               <div
@@ -244,7 +244,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               <Scroller
                 horizontal
                 hideScrollbars
-                elClassName='fc-cell fc-liquid'
+                className='fc-cell fc-liquid'
                 ref={this.allDayScrollerRef}
               >
                 <div
@@ -299,8 +299,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           <Scroller
             vertical={verticalScrolling}
             hideScrollbars
-            elClassName='fc-cell fc-flex-column fc-content-box'
-            elStyle={{
+            className='fc-cell fc-flex-column fc-content-box'
+            style={{
               width: axisWidth,
             }}
             ref={this.axisScrollerRef}
@@ -350,7 +350,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               vertical={verticalScrolling}
               horizontal
               hideScrollbars={stickyFooterScrollbar /* also means height:auto, so won't need vertical scrollbars anyway */}
-              elClassName={joinClassNames(
+              className={joinClassNames(
                 'fc-flex-column',
                 verticalScrolling && 'fc-liquid',
               )}

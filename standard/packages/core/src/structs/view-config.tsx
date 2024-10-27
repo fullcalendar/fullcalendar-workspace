@@ -66,8 +66,8 @@ function createViewHookComponent(options: ViewOptions) {
     <ViewContextType.Consumer>
       {(context: ViewContext) => (
         <ContentContainer
-          elTag="div"
-          elClassName={buildViewClassName(context.viewSpec)}
+          tag="div"
+          className={buildViewClassName(context.viewSpec)}
           renderProps={{
             ...viewProps,
             nextDayThreshold: context.options.nextDayThreshold,

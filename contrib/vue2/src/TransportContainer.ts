@@ -6,17 +6,17 @@ const TransportContainer = Vue.extend({
   props: {
     inPlaceOf: typeof Element !== 'undefined' ? Element : Object,
     reportEl: Function, // TODO: better type
-    elTag: String,
-    elClassName: String,
-    elStyle: Object,
-    elAttrs: Object
+    tag: String,
+    className: String,
+    style: Object,
+    attrs: Object
   },
 
   render(h) {
-    return h(this.elTag, {
-      class: this.elClassName,
-      style: this.elStyle,
-      attrs: this.elAttrs,
+    return h(this.tag, {
+      attrs: this.attrs,
+      class: this.className,
+      style: this.style,
     }, this.$slots.default || [])
   },
 

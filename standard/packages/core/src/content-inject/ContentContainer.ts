@@ -18,7 +18,7 @@ The `children` prop is a function that defines inner wrappers (ex: ResourceCell)
 export type ContentContainerProps<RenderProps> =
   ElAttrsProps &
   ContentGeneratorProps<RenderProps> & {
-    elTag?: string
+    tag?: string
     classNameGenerator: ClassNamesGenerator<RenderProps> | undefined
     didMount: ((renderProps: RenderProps & { el: HTMLElement }) => void) | undefined
     willUnmount: ((renderProps: RenderProps & { el: HTMLElement }) => void) | undefined
@@ -38,11 +38,11 @@ export class ContentContainer<RenderProps> extends Component<ContentContainerPro
     const generatedClassName = generateClassName(props.classNameGenerator, props.renderProps)
 
     if (props.children) {
-      const elAttrs = buildElAttrs(props, generatedClassName, this.handleEl)
-      const children = props.children(this.InnerContent, props.renderProps, elAttrs)
+      const attrs = buildElAttrs(props, generatedClassName, this.handleEl)
+      const children = props.children(this.InnerContent, props.renderProps, attrs)
 
-      if (props.elTag) {
-        return createElement(props.elTag, elAttrs, children)
+      if (props.tag) {
+        return createElement(props.tag, attrs, children)
       } else {
         return children
       }
@@ -50,8 +50,8 @@ export class ContentContainer<RenderProps> extends Component<ContentContainerPro
       return createElement(ContentInjector<RenderProps>, {
         ...props,
         elRef: this.handleEl,
-        elTag: props.elTag || 'div',
-        elClassName: joinClassNames(props.elClassName, generatedClassName),
+        tag: props.tag || 'div',
+        className: joinClassNames(props.className, generatedClassName),
         renderId: this.context,
       })
     }
@@ -94,7 +94,7 @@ export type InnerContainerComponent = FunctionalComponent<ElProps>
 export type InnerContainerFunc<RenderProps> = (
   InnerContainer: InnerContainerComponent,
   renderProps: RenderProps,
-  elAttrs: ElAttrs,
+  attrs: ElAttrs,
 ) => ComponentChildren
 
 function InnerContentInjector<RenderProps>(

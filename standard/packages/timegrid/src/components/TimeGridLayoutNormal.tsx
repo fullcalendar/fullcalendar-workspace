@@ -198,7 +198,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         -----------------------------------------------------------------------------------------*/}
         <Scroller
           vertical={verticalScrolling}
-          elClassName={joinClassNames(
+          className={joinClassNames(
             'fc-timegrid-body fc-table-body',
             verticalScrolling && 'fc-liquid',
           )}

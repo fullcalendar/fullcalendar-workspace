@@ -87,7 +87,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           <Scroller
             horizontal
             hideScrollbars
-            elClassName={joinClassNames(
+            className={joinClassNames(
               'fc-daygrid-header fc-table-header',
               stickyHeaderDates && 'fc-table-header-sticky',
             )}
@@ -110,7 +110,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           vertical={verticalScrollbars}
           horizontal
           hideScrollbars={stickyFooterScrollbar}
-          elClassName={joinClassNames(
+          className={joinClassNames(
             'fc-daygrid-body fc-table-body',
             verticalScrollbars && 'fc-liquid',
           )}

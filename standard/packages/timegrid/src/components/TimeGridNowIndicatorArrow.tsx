@@ -10,8 +10,8 @@ export interface TimeGridNowIndicatorArrowProps {
 export function TimeGridNowIndicatorArrow(props: TimeGridNowIndicatorArrowProps) {
   return (
     <NowIndicatorContainer
-      elClassName='fc-timegrid-now-indicator-arrow'
-      elStyle={{
+      className='fc-timegrid-now-indicator-arrow'
+      style={{
         top: fracToCssDim(computeDateTopFrac(props.nowDate, props.dateProfile))
       }}
       isAxis

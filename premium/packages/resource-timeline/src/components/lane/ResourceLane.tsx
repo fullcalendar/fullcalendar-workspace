@@ -23,9 +23,9 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
 
     return (
       <ContentContainer
-        elTag="div"
-        elClassName='fc-timeline-lane fc-resource'
-        elAttrs={{
+        tag="div"
+        className='fc-timeline-lane fc-resource'
+        attrs={{
           'data-resource-id': props.resource.id,
         }}
         renderProps={renderProps}
@@ -38,8 +38,8 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         {(InnerContent) => (
           <div ref={this.innerElRef} className='fc-flex-column'>
             <InnerContent
-              elTag="div"
-              elClassName='fc-timeline-lane-misc'
+              tag="div"
+              className='fc-timeline-lane-misc'
             />
             <TimelineLane
               dateProfile={props.dateProfile}

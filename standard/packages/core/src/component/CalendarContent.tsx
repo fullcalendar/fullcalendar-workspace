@@ -86,7 +86,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       <ViewContextType.Provider value={viewContext}>
         {toolbarConfig.header && (
           <Toolbar
-            extraClassName="fc-header-toolbar"
+            className="fc-header-toolbar"
             model={toolbarConfig.header}
             {...toolbarProps}
           />
@@ -101,7 +101,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
         </ViewHarness>
         {toolbarConfig.footer && (
           <Toolbar
-            extraClassName="fc-footer-toolbar"
+            className="fc-footer-toolbar"
             model={toolbarConfig.footer}
             {...toolbarProps}
           />

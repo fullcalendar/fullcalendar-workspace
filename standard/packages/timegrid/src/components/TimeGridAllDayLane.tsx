@@ -59,7 +59,7 @@ export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps> {
           end: cellEndDate,
         },
         allDay: true,
-        ...cell.extraDateSpan,
+        ...cell.dateSpanProps,
       },
       // HACK. TODO: This is expensive to do every hit-query
       dayEl: getCellEl(this.rootEl, col),

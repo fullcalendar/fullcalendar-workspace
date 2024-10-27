@@ -21,10 +21,10 @@ const dummyContainer = typeof document !== 'undefined' ? document.createDocument
 export class TransportContainerComponent implements OnChanges, AfterViewInit, OnDestroy {
   @Input() inPlaceOf!: HTMLElement; // required
   @Input() reportEl!: (el: HTMLElement | null) => void; // required
-  @Input() elTag!: string; // required
-  @Input() elClassName?: string;
-  @Input() elStyle?: Record<string, unknown>;
-  @Input() elAttrs?: Record<string, unknown>;
+  @Input() tag!: string; // required
+  @Input() attrs?: Record<string, unknown>;
+  @Input() className?: string;
+  @Input() style?: Record<string, unknown>;
   @Input() template!: TemplateRef<any>; // required
   @Input() renderProps?: any;
 
@@ -34,7 +34,7 @@ export class TransportContainerComponent implements OnChanges, AfterViewInit, On
     const rootEl: Element = this.rootElRef?.nativeElement; // assumed defined
 
     replaceEl(rootEl, this.inPlaceOf);
-    applyElAttrs(rootEl, undefined, this.elAttrs);
+    applyElAttrs(rootEl, undefined, this.attrs);
 
     // insurance for if Preact recreates and reroots inPlaceOf element
     this.inPlaceOf.style.display = 'none';
@@ -52,10 +52,10 @@ export class TransportContainerComponent implements OnChanges, AfterViewInit, On
       // original place. Detect this and re-replace.
       if (this.inPlaceOf.parentNode !== dummyContainer) {
         replaceEl(rootEl, this.inPlaceOf);
-        applyElAttrs(rootEl, undefined, this.elAttrs);
+        applyElAttrs(rootEl, undefined, this.attrs);
         this.reportEl(rootEl as HTMLElement);
       } else {
-        const elAttrsChange = changes['elAttrs'];
+        const elAttrsChange = changes['attrs'];
 
         if (elAttrsChange) {
           applyElAttrs(rootEl, elAttrsChange.previousValue, elAttrsChange.currentValue);

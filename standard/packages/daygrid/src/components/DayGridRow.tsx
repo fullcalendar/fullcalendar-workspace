@@ -154,9 +154,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       >
         {props.showWeekNumbers && (
           <WeekNumberContainer
-            elTag="a"
-            elClassName='fc-daygrid-week-number'
-            elAttrs={buildNavLinkAttrs(context, weekDate, 'week')}
+            tag="a"
+            attrs={buildNavLinkAttrs(context, weekDate, 'week')}
+            className='fc-daygrid-week-number'
             date={weekDate}
             defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
           />
@@ -209,10 +209,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
               eventSelection={props.eventSelection}
 
               // render hooks
-              extraRenderProps={cell.extraRenderProps}
-              extraDateSpan={cell.extraDateSpan}
-              extraDataAttrs={cell.extraDataAttrs}
-              extraClassName={cell.extraClassName}
+              renderProps={cell.renderProps}
+              dateSpanProps={cell.dateSpanProps}
+              attrs={cell.attrs}
+              className={cell.className}
 
               // dimensions
               fgHeight={heightsByCol[col]}

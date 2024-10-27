@@ -42,9 +42,9 @@ export class DayGridListEvent extends BaseComponent<DayGridListEventProps> {
     return (
       <EventContainer
         {...props}
-        elTag="a"
-        elClassName='fc-daygrid-dot-event fc-daygrid-event'
-        elAttrs={getEventRangeAnchorAttrs(eventRange, context)}
+        tag="a"
+        attrs={getEventRangeAnchorAttrs(eventRange, context)}
+        className='fc-daygrid-dot-event fc-daygrid-event'
         defaultGenerator={renderInnerContent}
         timeText={timeText}
         isResizing={false}

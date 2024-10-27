@@ -67,8 +67,8 @@ export class EventContainer extends BaseComponent<EventContainerProps> {
       <ContentContainer
         {...props /* contains children */}
         elRef={this.handleEl}
-        elClassName={joinClassNames(
-          props.elClassName,
+        className={joinClassNames(
+          props.className,
           ...getEventClassNames(renderProps),
           ...eventRange.ui.classNames,
         )}

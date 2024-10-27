@@ -17,24 +17,24 @@ export interface TimelineLaneMoreLinkProps {
   hiddenSegs: (TimelineRange & EventRangeProps)[]
   eventSelection: string
   forcedInvisibleMap: { [instanceId: string]: any }
-  resourceId?: string // HACK... make a generic keyval like extraRenderProps
+  resourceId?: string // HACK... make a generic keyval like renderProps
 }
 
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
   render() {
     let { props } = this
     let { hiddenSegs, resourceId, forcedInvisibleMap } = props
-    let extraDateSpan = resourceId ? { resourceId } : {}
+    let dateSpanProps = resourceId ? { resourceId } : {}
 
     return (
       <MoreLinkContainer
-        elClassName='fc-timeline-more-link'
+        className='fc-timeline-more-link'
         allDayDate={null}
         segs={hiddenSegs}
         hiddenSegs={hiddenSegs}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
-        extraDateSpan={extraDateSpan}
+        dateSpanProps={dateSpanProps}
         popoverContent={() => (
           <Fragment>
             {hiddenSegs.map((seg) => {
@@ -65,8 +65,8 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
       >
         {(InnerContent) => (
           <InnerContent
-            elTag="div"
-            elClassName='fc-timeline-more-link-inner fc-sticky-x'
+            tag="div"
+            className='fc-timeline-more-link-inner fc-sticky-x'
           />
         )}
       </MoreLinkContainer>

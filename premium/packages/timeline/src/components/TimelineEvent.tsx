@@ -20,7 +20,7 @@ export class TimelineEvent extends BaseComponent<TimelineEventProps> {
     return (
       <StandardEvent
         {...props}
-        elClassName={joinClassNames(
+        className={joinClassNames(
           'fc-timeline-event',
           options.eventOverlap === false // TODO: fix bad default
             && 'fc-timeline-event-spacious',

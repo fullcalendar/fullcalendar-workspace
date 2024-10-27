@@ -30,9 +30,9 @@ export interface DateHeaderCellProps {
   colSpan?: number
 
   // render props
-  extraRenderProps?: Dictionary
-  extraDataAttrs?: Dictionary
-  extraClassName?: string
+  renderProps?: Dictionary
+  attrs?: Dictionary
+  className?: string
 
   // dimensions
   colWidth?: number
@@ -47,7 +47,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
 
   render() {
     let { props, context } = this
-    let { dateProfile, date, extraRenderProps, extraDataAttrs } = props
+    let { dateProfile, date } = props
     let { dateEnv, options, theme, viewApi } = context
 
     let dayMeta = getDateMeta(date, props.todayRange, null, dateProfile)
@@ -57,27 +57,27 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
       : {}
 
     let renderProps: DayHeaderContentArg = {
+      ...props.renderProps,
+      ...dayMeta,
       date: dateEnv.toDate(date),
       view: viewApi,
-      ...extraRenderProps,
       text,
-      ...dayMeta,
     }
 
     return (
       <ContentContainer
-        elTag='div'
-        elClassName={joinClassNames(
-          props.extraClassName,
+        tag='div'
+        className={joinClassNames(
+          props.className,
           'fc-header-cell fc-cell fc-flex-column fc-align-center',
           props.colWidth == null && 'fc-liquid',
           ...getDayClassNames(dayMeta, theme),
         )}
-        elAttrs={{
+        attrs={{
+          ...props.attrs,
           'data-date': !dayMeta.isDisabled ? formatDayString(date) : undefined,
-          ...extraDataAttrs,
         }}
-        elStyle={{
+        style={{
           width: props.colWidth != null // TODO: DRY
             ? props.colWidth * (props.colSpan || 1)
             : undefined,
@@ -93,9 +93,9 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
         {(InnerContainer) => (
           !dayMeta.isDisabled && (
             <InnerContainer
-              elTag="a"
-              elAttrs={navLinkAttrs}
-              elClassName={joinClassNames(
+              tag="a"
+              attrs={navLinkAttrs}
+              className={joinClassNames(
                 'fc-cell-inner fc-flex-column fc-padding-sm',
                 props.isSticky && 'fc-sticky-x',
               )}

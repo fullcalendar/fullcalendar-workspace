@@ -34,21 +34,21 @@ export abstract class ResourcefulDayTableModel extends AbstractResourceDayTableM
       for (let dateCol = 0; dateCol < dayTableModel.colCnt; dateCol += 1) {
         for (let resourceCol = 0; resourceCol < resources.length; resourceCol += 1) {
           let resource = resources[resourceCol]
-          let extraRenderProps = { resource: new ResourceApi(this.context, resource) }
-          let extraDataAttrs = { 'data-resource-id': resource.id }
-          let extraClassName = 'fc-resource'
-          let extraDateSpan = { resourceId: resource.id }
           let date = dayTableModel.cellRows[row][dateCol].date
+          let renderProps = { resource: new ResourceApi(this.context, resource) }
+          let attrs = { 'data-resource-id': resource.id }
+          let className = 'fc-resource'
+          let dateSpanProps = { resourceId: resource.id }
 
           rowCells[
             this.computeCol(dateCol, resourceCol)
           ] = {
             key: resource.id + ':' + date.toISOString(),
             date,
-            extraRenderProps,
-            extraDataAttrs,
-            extraClassName,
-            extraDateSpan,
+            renderProps,
+            attrs,
+            className,
+            dateSpanProps,
           }
         }
       }

@@ -44,10 +44,10 @@ export interface DayGridCellProps {
   eventSelection: string
 
   // render hooks
-  extraRenderProps?: Dictionary
-  extraDateSpan?: Dictionary
-  extraDataAttrs?: Dictionary
-  extraClassName?: string
+  renderProps?: Dictionary
+  dateSpanProps?: Dictionary
+  attrs?: Dictionary
+  className?: string
 
   // dimensions
   fgHeight: number | undefined
@@ -77,20 +77,20 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
 
     return (
       <DayCellContainer
-        elTag="div"
-        elClassName={joinClassNames(
-          props.extraClassName,
+        tag="div"
+        className={joinClassNames(
+          props.className,
           'fc-daygrid-cell fc-cell fc-flex-column',
           props.width != null ? '' : 'fc-liquid',
         )}
-        elAttrs={{
-          ...props.extraDataAttrs,
+        attrs={{
+          ...props.attrs,
           role: 'gridcell',
         }}
-        elStyle={{
+        style={{
           width: props.width
         }}
-        extraRenderProps={props.extraRenderProps}
+        renderProps={props.renderProps}
         defaultGenerator={renderTopInner}
         date={props.date}
         dateProfile={props.dateProfile}
@@ -110,9 +110,9 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               {!renderProps.isDisabled && (props.showDayNumber || hasCustomDayCellContent(options)) && (
                 <div className="fc-daygrid-cell-header">
                   <InnerContent
-                    elTag="a"
-                    elAttrs={buildNavLinkAttrs(context, props.date)}
-                    elClassName={joinClassNames(
+                    tag="a"
+                    attrs={buildNavLinkAttrs(context, props.date)}
+                    className={joinClassNames(
                       'fc-daygrid-cell-number',
                       isMonthStart && 'fc-daygrid-month-start',
                     )}
@@ -142,7 +142,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 hiddenSegs={props.hiddenSegs}
                 alignmentElRef={this.innerElRef}
                 alignGridTop={!props.showDayNumber}
-                extraDateSpan={props.extraDateSpan}
+                dateSpanProps={props.dateSpanProps}
                 dateProfile={props.dateProfile}
                 eventSelection={props.eventSelection}
                 eventDrag={props.eventDrag}

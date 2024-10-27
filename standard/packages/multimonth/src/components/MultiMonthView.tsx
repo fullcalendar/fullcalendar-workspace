@@ -77,7 +77,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
       <NowTimer unit="day">
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <ViewContainer
-            elClassName={joinClassNames(
+            className={joinClassNames(
               'fc-multimonth-view',
               (colCount === 1) ?
                 'fc-multimonth-singlecol' :
@@ -89,7 +89,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
           >
             <Scroller
               vertical={verticalScrolling}
-              elClassName={verticalScrolling ? 'fc-liquid' : ''}
+              className={verticalScrolling ? 'fc-liquid' : ''}
               ref={this.scrollerRef}
               clientWidthRef={this.handleClientWidth}
             >

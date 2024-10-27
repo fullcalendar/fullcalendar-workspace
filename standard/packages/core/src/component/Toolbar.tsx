@@ -5,13 +5,13 @@ import { ToolbarSection, ToolbarContent } from './ToolbarSection.js'
 import { joinClassNames } from '../util/html.js'
 
 export interface ToolbarProps extends ToolbarContent {
-  extraClassName: string // wish this could be array, but easier for pureness
+  className: string // wish this could be array, but easier for pureness
   model: ToolbarModel
 }
 
 export class Toolbar extends BaseComponent<ToolbarProps> {
   render() {
-    let { model, extraClassName } = this.props
+    let { model, className } = this.props
     let forceLtr = false
     let startContent
     let endContent
@@ -34,7 +34,7 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
 
     return (
       <div className={joinClassNames(
-        extraClassName,
+        className,
         'fc-toolbar',
         forceLtr && 'fc-toolbar-ltr',
       )}>

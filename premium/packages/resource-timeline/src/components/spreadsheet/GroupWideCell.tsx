@@ -27,8 +27,8 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
     return ( // TODO: apply the top-coordinate
       <Fragment>
         <ContentContainer
-          elTag="div"
-          elAttrs={{
+          tag="div"
+          attrs={{
             // ARIA TODO: not really a columnheader
             // extremely tedious to make this aria-compliant,
             // to assign multiple headers to each cell
@@ -37,7 +37,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
             scope: 'colgroup',
           }}
           // TODO: make part of fc-resource-group so ppl can style both cells together?
-          elClassName='fc-resource-group fc-cell fc-liquid fc-shaded'
+          className='fc-resource-group fc-cell fc-liquid fc-shaded'
           renderProps={renderProps}
           generatorName="resourceGroupLabelContent"
           customGenerator={spec.labelContent}
@@ -55,8 +55,8 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
                 onExpanderClick={this.onExpanderClick}
               />
               <InnerContent
-                elTag="span"
-                elClassName='fc-cell-main'
+                tag="span"
+                className='fc-cell-main'
               />
             </div>
           )}

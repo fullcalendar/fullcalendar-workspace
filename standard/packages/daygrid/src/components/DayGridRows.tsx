@@ -191,7 +191,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
           end: cellEndDate,
         },
         allDay: true,
-        ...cell.extraDateSpan,
+        ...cell.dateSpanProps,
       },
       // HACK. TODO: This is expensive to do every hit-query
       dayEl: getCellEl(getRowEl(this.rootEl, row), col),

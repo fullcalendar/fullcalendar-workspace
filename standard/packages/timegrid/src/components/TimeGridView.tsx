@@ -98,7 +98,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
               )}
               renderHeaderContent={(cell, tierNum, innerHeightRef, colWidth) => (
                 <DateHeaderCell
-                  {...cell /* for date & extraRenderProps/etc */}
+                  {...cell /* for date & renderProps/etc */}
                   dateProfile={dateProfile}
                   todayRange={todayRange}
                   navLink={dayTableModel.colCnt > 1}

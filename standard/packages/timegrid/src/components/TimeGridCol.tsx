@@ -34,10 +34,10 @@ export interface TimeGridColProps {
   todayRange: DateRange
   date: DateMarker
   slatCnt: number
-  extraDataAttrs?: any
-  extraRenderProps?: any
-  extraClassName?: string
-  extraDateSpan?: Dictionary
+  attrs?: any
+  renderProps?: any
+  className?: string
+  dateSpanProps?: Dictionary
   forPrint: boolean
 
   // content
@@ -82,23 +82,23 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
     return (
       <DayCellContainer
-        elTag="div"
-        elClassName={joinClassNames(
-          props.extraClassName,
+        tag="div"
+        attrs={{
+          role: 'gridcell',
+          ...props.attrs,
+        }}
+        className={joinClassNames(
+          props.className,
           'fc-timegrid-col fc-cell fc-flex-column',
           props.width == null && 'fc-liquid',
         )}
-        elAttrs={{
-          role: 'gridcell',
-          ...props.extraDataAttrs,
-        }}
-        elStyle={{
+        style={{
           width: props.width
         }}
         date={props.date}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
-        extraRenderProps={props.extraRenderProps}
+        renderProps={props.renderProps}
       >
         {(InnerContent) => (
           <div className='fc-rel fc-flex-column' style={{ height: slatsTotalHeight }}>
@@ -125,8 +125,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {this.renderNowIndicator(props.nowIndicatorSegs)}
             {hasCustomDayCellContent(options) && (
               <InnerContent
-                elTag="div"
-                elClassName='fc-timegrid-col-misc'
+                tag="div"
+                className='fc-timegrid-col-misc'
               />
             )}
           </div>
@@ -234,7 +234,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   NOTE: will already have eventMinHeight applied because segEntries(?) already had it
   */
   renderHiddenGroups(hiddenGroups: SegGroup<TimeGridCoordRange>[]) {
-    let { extraDateSpan, dateProfile, todayRange, nowDate, eventSelection, eventDrag, eventResize } = this.props
+    let { dateSpanProps, dateProfile, todayRange, nowDate, eventSelection, eventDrag, eventResize } = this.props
 
     return (
       <Fragment>
@@ -249,7 +249,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               hiddenSegs={hiddenGroup.segs}
               top={fracToCssDim(startFrac)}
               height={fracToCssDim(heightFrac)}
-              extraDateSpan={extraDateSpan}
+              dateSpanProps={dateSpanProps}
               dateProfile={dateProfile}
               todayRange={todayRange}
               nowDate={nowDate}

@@ -24,7 +24,7 @@ export interface MoreLinkContainerProps extends Partial<ElProps> {
   allDayDate: DateMarker | null
   segs: EventRangeProps[]
   hiddenSegs: EventRangeProps[]
-  extraDateSpan?: Dictionary
+  dateSpanProps?: Dictionary
   alignmentElRef?: RefObject<HTMLElement> // will use internal <a> if unspecified
   alignGridTop?: boolean // for popover
   forceTimed?: boolean // for popover
@@ -82,15 +82,15 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
             <Fragment>
               {Boolean(moreCnt) && (
                 <ContentContainer
-                  elTag={props.elTag || 'a'}
+                  tag={props.tag || 'a'}
                   elRef={this.handleLinkEl}
-                  elClassName={joinClassNames(
-                    props.elClassName,
+                  className={joinClassNames(
+                    props.className,
                     'fc-more-link',
                   )}
-                  elStyle={props.elStyle}
-                  elAttrs={{
-                    ...props.elAttrs,
+                  style={props.style}
+                  attrs={{
+                    ...props.attrs,
                     ...createAriaClickAttrs(this.handleClick),
                     title: hint,
                     'aria-expanded': state.isPopoverOpen,
@@ -112,7 +112,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   endDate={range.end}
                   dateProfile={props.dateProfile}
                   todayRange={props.todayRange}
-                  extraDateSpan={props.extraDateSpan}
+                  dateSpanProps={props.dateSpanProps}
                   parentEl={this.parentEl}
                   alignmentEl={
                     props.alignmentElRef ?

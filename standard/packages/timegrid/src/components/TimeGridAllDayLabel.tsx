@@ -28,9 +28,9 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
 
     return (
       <ContentContainer
-        elTag="div"
-        elClassName='fc-timegrid-allday-label fc-timegrid-axis fc-cell fc-content-box'
-        elStyle={{
+        tag="div"
+        className='fc-timegrid-allday-label fc-timegrid-axis fc-cell fc-content-box'
+        style={{
           width: props.width,
         }}
         renderProps={renderProps}
@@ -43,8 +43,8 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
       >
         {(InnerContent) => (
           <InnerContent
-            elTag="span"
-            elClassName='fc-timegrid-axis-inner fc-cell-inner fc-padding-sm'
+            tag="span"
+            className='fc-timegrid-axis-inner fc-cell-inner fc-padding-sm'
             elRef={this.innerElRef}
           />
         )}

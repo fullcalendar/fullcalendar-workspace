@@ -9,7 +9,7 @@ export interface PopoverProps {
   elRef?: Ref<HTMLElement>
   id: string
   title: string
-  extraClassName?: string
+  className?: string
   extraAttrs?: Dictionary
   parentEl: HTMLElement
   alignmentEl: HTMLElement
@@ -35,7 +35,7 @@ export class Popover extends BaseComponent<PopoverProps> {
         {...props.extraAttrs}
         id={props.id}
         className={joinClassNames(
-          props.extraClassName,
+          props.className,
           'fc-popover',
           theme.getClass('popover'),
         )}

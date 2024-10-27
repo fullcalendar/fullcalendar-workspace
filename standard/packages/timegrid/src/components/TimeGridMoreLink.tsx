@@ -12,7 +12,7 @@ export interface TimeGridMoreLinkProps {
   hiddenSegs: (TimeGridRange & EventRangeProps)[]
   top: CssDimValue
   height: CssDimValue
-  extraDateSpan?: Dictionary
+  dateSpanProps?: Dictionary
   dateProfile: DateProfile
   todayRange: DateRange
   nowDate: DateMarker
@@ -27,15 +27,15 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
 
     return (
       <MoreLinkContainer
-        elClassName='fc-timegrid-more-link fc-abs'
-        elStyle={{
+        className='fc-timegrid-more-link fc-abs'
+        style={{
           top: props.top,
           height: props.height,
         }}
         allDayDate={null}
         segs={props.hiddenSegs}
         hiddenSegs={props.hiddenSegs}
-        extraDateSpan={props.extraDateSpan}
+        dateSpanProps={props.dateSpanProps}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
         popoverContent={() => renderPlainFgSegs(props.hiddenSegs, props)}
@@ -44,8 +44,8 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
       >
         {(InnerContent) => (
           <InnerContent
-            elTag="div"
-            elClassName='fc-timegrid-more-link-inner fc-sticky-y'
+            tag="div"
+            className='fc-timegrid-more-link-inner fc-sticky-y'
           />
         )}
       </MoreLinkContainer>

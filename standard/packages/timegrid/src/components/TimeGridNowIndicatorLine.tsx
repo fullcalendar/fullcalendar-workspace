@@ -12,8 +12,8 @@ export function TimeGridNowIndicatorLine(props: TimeGridNowIndicatorLineProps) {
   return (
     <div className="fc-timegrid-now-indicator-container">
       <NowIndicatorContainer
-        elClassName='fc-timegrid-now-indicator-line'
-        elStyle={{
+        className='fc-timegrid-now-indicator-line'
+        style={{
           top: fracToCssDim(computeDateTopFrac(props.nowDate, props.dateProfile, props.dayDate))
         }}
         isAxis={false}

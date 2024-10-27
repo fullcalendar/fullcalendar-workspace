@@ -24,9 +24,9 @@ export interface DayOfWeekHeaderCellProps {
   colSpan?: number
 
   // render hooks
-  extraRenderProps?: Dictionary
-  extraDataAttrs?: Dictionary
-  extraClassName?: string // needed?
+  renderProps?: Dictionary
+  attrs?: Dictionary
+  className?: string // needed?
 
   // dimensions
   colWidth?: number
@@ -63,21 +63,21 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
       date,
       ...dateMeta,
       view: viewApi,
-      ...props.extraRenderProps,
+      ...props.renderProps,
       text,
     }
 
     return (
       <ContentContainer
-        elTag='div'
-        elClassName={joinClassNames(
-          props.extraClassName,
+        tag='div'
+        className={joinClassNames(
+          props.className,
           'fc-header-cell fc-cell fc-flex-column fc-align-center',
           props.colWidth == null && 'fc-liquid',
           ...getDayClassNames(dateMeta, theme),
         )}
-        elAttrs={props.extraDataAttrs}
-        elStyle={{
+        attrs={props.attrs}
+        style={{
           width: props.colWidth != null // TODO: DRY
             ? props.colWidth * (props.colSpan || 1)
             : undefined,
@@ -92,11 +92,11 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
       >
         {(InnerContent) => (
           <InnerContent
-            elTag="a"
-            elAttrs={{
+            tag="a"
+            attrs={{
               'aria-label': dateEnv.format(date, WEEKDAY_FORMAT),
             }}
-            elClassName={joinClassNames(
+            className={joinClassNames(
               'fc-cell-inner fc-padding-sm',
               props.isSticky && 'fc-sticky-x',
             )}

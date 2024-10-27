@@ -21,7 +21,7 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
     return (
       <StandardEvent
         {...props}
-        elClassName={joinClassNames(
+        className={joinClassNames(
           'fc-timegrid-event',
           props.isShort && 'fc-timegrid-event-short',
           props.isInset && 'fc-timegrid-event-inset',

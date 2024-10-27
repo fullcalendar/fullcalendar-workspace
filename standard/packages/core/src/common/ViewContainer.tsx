@@ -27,9 +27,9 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
     return (
       <ContentContainer
         {...props}
-        elTag={props.elTag || 'div'}
-        elClassName={joinClassNames(
-          props.elClassName,
+        tag={props.tag || 'div'}
+        className={joinClassNames(
+          props.className,
           buildViewClassName(props.viewSpec),
         )}
         renderProps={renderProps}

@@ -27,12 +27,12 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
 
     return (
       <ResourceLabelContainer
-        elTag="div"
-        elClassName={joinClassNames(
+        tag="div"
+        className={joinClassNames(
           'fc-resource fc-header-cell fc-cell fc-flex-column fc-align-center',
           props.colWidth == null && 'fc-liquid',
         )}
-        elStyle={{
+        style={{
           width: props.colWidth != null // TODO: DRY
             ? props.colWidth * (props.colSpan || 1)
             : undefined,
@@ -42,8 +42,8 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
       >
         {(InnerContent) => (
           <InnerContent
-            elTag="span"
-            elClassName={joinClassNames(
+            tag="span"
+            className={joinClassNames(
               'fc-cell-inner fc-padding-sm',
               props.isSticky && 'fc-sticky-x',
             )}

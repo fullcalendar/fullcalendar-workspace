@@ -21,7 +21,7 @@ export interface DayGridMoreLinkProps {
   hiddenSegs: DayRowEventRange[]
   alignmentElRef: RefObject<HTMLElement>
   alignGridTop: boolean // for popover
-  extraDateSpan?: Dictionary
+  dateSpanProps?: Dictionary
   dateProfile: DateProfile
   todayRange: DateRange
   eventSelection: string
@@ -34,7 +34,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
     let { props } = this
     return (
       <MoreLinkContainer
-        elClassName='fc-daygrid-more-link'
+        className='fc-daygrid-more-link'
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
         allDayDate={props.allDayDate}
@@ -42,7 +42,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
         hiddenSegs={props.hiddenSegs}
         alignmentElRef={props.alignmentElRef}
         alignGridTop={props.alignGridTop}
-        extraDateSpan={props.extraDateSpan}
+        dateSpanProps={props.dateSpanProps}
         popoverContent={() => {
           let forcedInvisibleMap = // TODO: more convenient/DRY
             (props.eventDrag ? props.eventDrag.affectedInstances : null) ||

@@ -33,7 +33,7 @@ export const NowIndicatorContainer = (props: NowIndicatorContainerProps) => (
       return (
         <ContentContainer
           {...props /* includes children */}
-          elTag={props.elTag || 'div'}
+          tag={props.tag || 'div'}
           renderProps={renderProps}
           generatorName="nowIndicatorContent"
           customGenerator={options.nowIndicatorContent}

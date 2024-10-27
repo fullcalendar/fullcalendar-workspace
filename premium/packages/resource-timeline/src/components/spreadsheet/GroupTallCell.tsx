@@ -29,11 +29,11 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
     // `colSpec` is for the group. a GroupSpec :(
     return (
       <ContentContainer
-        elTag="div"
-        elAttrs={{
+        tag="div"
+        attrs={{
           role: 'gridcell',
         }}
-        elClassName='fc-resource-group fc-cell fc-liquid'
+        className='fc-resource-group fc-cell fc-liquid'
         renderProps={renderProps}
         generatorName="resourceGroupLabelContent"
         customGenerator={colSpec.cellContent}
@@ -44,8 +44,8 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
       >
         {(InnerContent) => (
           <InnerContent
-            elTag="div"
-            elClassName='fc-cell-inner fc-padding-lg fc-sticky-y'
+            tag="div"
+            className='fc-cell-inner fc-padding-lg fc-sticky-y'
             elRef={this.innerElRef}
           />
         )}

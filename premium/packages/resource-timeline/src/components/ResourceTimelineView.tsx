@@ -281,7 +281,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
           return (
             <ViewContainer
-              elClassName='fc-resource-timeline-view fc-flex-column fc-border'
+              className='fc-resource-timeline-view fc-flex-column fc-border'
               viewSpec={viewSpec}
             >
               <ResizableTwoCol
@@ -320,7 +320,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       <Scroller
                         horizontal
                         hideScrollbars
-                        elClassName={superHeaderRendering ? 'fc-row-border' : ''}
+                        className={superHeaderRendering ? 'fc-row-border' : ''}
                         ref={this.spreadsheetHeaderScrollerRef}
                       >
                         <div style={{ width: spreadsheetCanvasWidth }}>
@@ -348,7 +348,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       vertical={verticalScrolling}
                       horizontal
                       hideScrollbars
-                      elClassName={joinClassNames(
+                      className={joinClassNames(
                         'fc-datagrid-body fc-table-body',
                         verticalScrolling && 'fc-liquid',
                       )}
@@ -506,7 +506,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       ref={this.timeHeaderScrollerRef}
                       horizontal
                       hideScrollbars
-                      elClassName={joinClassNames(
+                      className={joinClassNames(
                         'fc-timeline-header fc-table-header',
                         stickyHeaderDates && 'fc-table-header-sticky',
                       )}
@@ -555,7 +555,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       vertical={verticalScrolling}
                       horizontal
                       hideScrollbars={stickyFooterScrollbar}
-                      elClassName={joinClassNames(
+                      className={joinClassNames(
                         'fc-timeline-body fc-table-body',
                         verticalScrolling && 'fc-liquid',
                       )}

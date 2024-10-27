@@ -41,17 +41,17 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
 
     return (
       <ContentContainer
-        elTag="div"
-        elClassName={joinClassNames(
-          'fc-resource fc-cell',
-          props.colIndex && 'fc-cell-border',
-        )}
-        elAttrs={{
+        tag="div"
+        attrs={{
           role: 'gridcell',
           'aria-colindex': props.colIndex,
           'data-resource-id': props.resource.id,
         }}
-        elStyle={{
+        className={joinClassNames(
+          'fc-resource fc-cell',
+          props.colIndex && 'fc-cell-border',
+        )}
+        style={{
           width: props.width,
         }}
         renderProps={renderProps}
@@ -73,8 +73,8 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
               />
             )}
             <InnerContent
-              elTag="span"
-              elClassName='fc-cell-main'
+              tag="span"
+              className='fc-cell-main'
             />
           </div>
         )}

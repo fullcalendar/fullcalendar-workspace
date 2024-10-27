@@ -19,7 +19,7 @@ export interface MorePopoverProps {
   alignGridTop?: boolean
   forceTimed?: boolean
   todayRange: DateRange
-  extraDateSpan: Dictionary
+  dateSpanProps: Dictionary
   children: ComponentChildren
   onClose?: () => void
 }
@@ -40,16 +40,16 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         dateProfile={dateProfile}
         todayRange={todayRange}
       >
-        {(InnerContent, renderProps, elAttrs) => (
+        {(InnerContent, renderProps, attrs) => (
           <Popover
-            elRef={elAttrs.ref}
+            elRef={attrs.ref}
             id={props.id}
             title={title}
-            extraClassName={joinClassNames(
-              elAttrs.className as string, // TODO: solve SignalLike type problem
+            className={joinClassNames(
+              attrs.className as string, // TODO: solve SignalLike type problem
               'fc-more-popover',
             )}
-            extraAttrs={elAttrs /* TODO: make these time-based when not whole-day? */}
+            extraAttrs={attrs /* TODO: make these time-based when not whole-day? */}
             parentEl={props.parentEl}
             alignmentEl={props.alignmentEl}
             alignGridTop={props.alignGridTop}
@@ -57,8 +57,8 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           >
             {hasCustomDayCellContent(options) && (
               <InnerContent
-                elTag="div"
-                elClassName='fc-more-popover-misc'
+                tag="div"
+                className='fc-more-popover-misc'
               />
             )}
             {props.children}
@@ -96,7 +96,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             start: props.startDate,
             end: props.endDate,
           },
-          ...props.extraDateSpan,
+          ...props.dateSpanProps,
         },
         dayEl: rootEl,
         rect: {
