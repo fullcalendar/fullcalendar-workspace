@@ -52,7 +52,7 @@ const FullCalendar = Vue.extend({
               tag: customRendering.tag,
               attrs: customRendering.attrs,
               className: customRendering.className,
-              style: customRendering.style,
+              elStyle: customRendering.style,
             }
           }, innerContent)
         ])

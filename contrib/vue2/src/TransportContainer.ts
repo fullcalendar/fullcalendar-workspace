@@ -8,7 +8,7 @@ const TransportContainer = Vue.extend({
     reportEl: Function, // TODO: better type
     tag: String,
     className: String,
-    style: Object,
+    elStyle: Object, // FYI: Vue2 does not allow simply `style` as a component property
     attrs: Object
   },
 
@@ -16,7 +16,7 @@ const TransportContainer = Vue.extend({
     return h(this.tag, {
       attrs: this.attrs,
       class: this.className,
-      style: this.style,
+      style: this.elStyle,
     }, this.$slots.default || [])
   },
 
