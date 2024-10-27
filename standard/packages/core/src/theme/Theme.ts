@@ -37,7 +37,7 @@ export class Theme {
     }
   }
 
-  applyIconOverridePrefix(className) {
+  applyIconOverridePrefix(className: string) {
     let prefix = this.iconOverridePrefix
 
     if (prefix && className.indexOf(prefix) !== 0) { // if not already present
@@ -47,11 +47,11 @@ export class Theme {
     return className
   }
 
-  getClass(key) {
+  getClassName(key: string) {
     return this.classes[key] || ''
   }
 
-  getIconClass(buttonName, isRtl?: boolean) {
+  getIconClass(buttonName: string, isRtl?: boolean) {
     let className
 
     if (isRtl && this.rtlIconClasses) {

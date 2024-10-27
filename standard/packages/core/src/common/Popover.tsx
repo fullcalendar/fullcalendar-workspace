@@ -37,12 +37,12 @@ export class Popover extends BaseComponent<PopoverProps> {
         className={joinClassNames(
           props.className,
           'fc-popover',
-          theme.getClass('popover'),
+          theme.getClassName('popover'),
         )}
         aria-labelledby={state.titleId}
         ref={this.handleRootEl}
       >
-        <div className={'fc-popover-header ' + theme.getClass('popoverHeader')}>
+        <div className={'fc-popover-header ' + theme.getClassName('popoverHeader')}>
           <span className="fc-popover-title" id={state.titleId}>
             {props.title}
           </span>
@@ -52,7 +52,7 @@ export class Popover extends BaseComponent<PopoverProps> {
             onClick={this.handleCloseClick}
           />
         </div>
-        <div className={'fc-popover-body ' + theme.getClass('popoverContent')}>
+        <div className={'fc-popover-body ' + theme.getClassName('popoverContent')}>
           {props.children}
         </div>
       </div>,

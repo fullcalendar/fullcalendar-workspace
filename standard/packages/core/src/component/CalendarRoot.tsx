@@ -30,7 +30,7 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
       'fc',
       forPrint ? 'fc-media-print' : 'fc-media-screen',
       `fc-direction-${options.direction}`,
-      props.theme.getClass('root'),
+      props.theme.getClassName('root'),
     ]
 
     return props.children(classNames, options.height, forPrint)

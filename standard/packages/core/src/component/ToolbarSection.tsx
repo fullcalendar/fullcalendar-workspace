@@ -58,8 +58,8 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
             aria-pressed={isPressed}
             className={joinClassNames(
               `fc-${buttonName}-button`,
-              theme.getClass('button'),
-              isPressed && theme.getClass('buttonActive'),
+              theme.getClassName('button'),
+              isPressed && theme.getClassName('buttonActive'),
             )}
             onClick={buttonClick}
           >
@@ -70,7 +70,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
     }
 
     if (children.length > 1) {
-      let groupClassName = (isOnlyButtons && theme.getClass('buttonGroup')) || ''
+      let groupClassName = (isOnlyButtons && theme.getClassName('buttonGroup')) || ''
 
       return createElement('div', { className: groupClassName }, ...children)
     }
