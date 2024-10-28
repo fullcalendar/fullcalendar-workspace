@@ -120,14 +120,15 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       props.dayMaxEventRows,
     )
 
+    const highlightSegs = this.getHighlightSegs()
+    const mirrorSegs = this.getMirrorSegs()
+
     // TODO: memoize?
     const bgEventSegsByCol = (ENABLE_STANDINS ? sliceSegsAcrossCols : organizeSegsByStartCol)(
       props.bgEventSegs,
       colCnt
     )
     const businessHoursByCol = organizeSegsByStartCol(props.businessHourSegs, colCnt)
-    const highlightSegsByCol = organizeSegsByStartCol(this.getHighlightSegs(), colCnt)
-    const mirrorSegsByCol = organizeSegsByStartCol(this.getMirrorSegs(), colCnt)
 
     const forcedInvisibleMap = // TODO: more convenient/DRY
       (props.eventDrag && props.eventDrag.affectedInstances) ||
@@ -143,7 +144,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
           props.forceVSpacing
             ? 'fc-daygrid-row-spacious'
             : props.compact
-              &&'fc-daygrid-row-compact',
+              && 'fc-daygrid-row-compact',
           props.cellGroup ? 'fc-flex-row' : 'fc-row',
           'fc-rel',
         )}
@@ -169,16 +170,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
             forcedInvisibleMap,
           )
 
-          const mirrorFgNodes = this.renderFgSegs(
-            mirrorSegsByCol[col],
-            segTops,
-            props.todayRange,
-            {}, // forcedInvisibleMap
-            Boolean(props.eventDrag),
-            Boolean(props.eventResize),
-            false, // date-selecting (because mirror is never drawn for date selection)
-          )
-
           return (
             <DayGridCell
               key={cell.key}
@@ -193,13 +184,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
               fgLiquidHeight={fgLiquidHeight}
               fg={(
                 <Fragment>
-                  <Fragment>{normalFgNodes}</Fragment>
-                  <Fragment>{mirrorFgNodes}</Fragment>
+                  {normalFgNodes}
                 </Fragment>
               )}
               bg={(
                 <Fragment>
-                  {this.renderFillSegs(highlightSegsByCol[col], 'highlight')}
                   {this.renderFillSegs(businessHoursByCol[col], 'non-business')}
                   {this.renderFillSegs(bgEventSegsByCol[col], 'bg-event')}
                 </Fragment>
@@ -224,6 +213,16 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
             />
           )
         })}
+        {this.renderFillSegs(highlightSegs, 'highlight')}
+        {this.renderFgSegs(
+          mirrorSegs,
+          segTops,
+          props.todayRange,
+          {}, // forcedInvisibleMap
+          Boolean(props.eventDrag),
+          Boolean(props.eventResize),
+          false, // date-selecting (because mirror is never drawn for date selection)
+        )}
       </div>
     )
   }

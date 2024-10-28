@@ -7,13 +7,11 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 Theming
-  did themeSystem:false ever clear the theme?
   Bootstrap color mode:
     https://github.com/fullcalendar/fullcalendar/issues/7465
     ensure minimum Bootstrap version
   in bootstrap themes, event-height line-height is very tall. normalize? then make changelog entry?
 DayGrid
-  structure: don't render selection within specific days (faster for rerender on DnD)
   bug: crazy error: throw new Error('alignGridTop not supported yet')
   bug: no matter how tall daygrid rows are filled with events, should never squish fc-daygrid-cell-main
     down to zero height. Noticed while working with repro in #6798
@@ -31,6 +29,9 @@ DayGrid
     if not a header row that has sticky inner-content, set cell's overflow:hidden
     (the canonical test would be sizing month-view down really narrow)
   for event rendering, expose an isStandin flag for if hidden behind multiday
+  structure: rethink classnames
+    fc-daygrid-row-spacious
+    fc-daygrid-row-compact
 MultiMonth
   bug: when multimonth made REALLY small, single col month gets padding
     standard/bundle/examples/responsive.html
