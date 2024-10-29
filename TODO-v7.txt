@@ -12,26 +12,22 @@ Theming
     ensure minimum Bootstrap version
   in bootstrap themes, event-height line-height is very tall. normalize? then make changelog entry?
 DayGrid
-  bug: crazy error: throw new Error('alignGridTop not supported yet')
-  bug: no matter how tall daygrid rows are filled with events, should never squish fc-daygrid-cell-main
-    down to zero height. Noticed while working with repro in #6798
-    afterwards, write automated test
-    very hard with row min-height. it misbehaves (because of basis?)
-  bug: cell -main containers don't seem to have bottom margin for events
-  bug: businessHours in month view, right side, has weird 1px gap
-    (happens because percentage left/width -- try to return to using 'right'?)
+  bug: crazy error when opening +more link in all-day area:
+    throw new Error('alignGridTop not supported yet')
   bug (should re-verify):
     events that are force to be list-item but span multiple days still take up space in later columns
   bug (print-view):
     for multi-day events, don't display title within non-start/end segs
-  ensure DayGrid events don't overlap the left border of the day-cell when 0px padding
+  bug: fill-event to right edge is 1px short of right edge
+    happens because percentage left/width -- try to return to using 'right'?
+  bug: ensure DayGrid events don't overlap the left border of the day-cell when 0px padding
+    is causing +more button to not left-align with events above it
   for daygrid/timegrid that DON'T have horizontal scroll, improve header inner-text overflow:
     if not a header row that has sticky inner-content, set cell's overflow:hidden
     (the canonical test would be sizing month-view down really narrow)
   for event rendering, expose an isStandin flag for if hidden behind multiday
-  structure: rethink classnames
-    fc-daygrid-row-spacious
-    fc-daygrid-row-compact
+  structure:
+    is all-day section's DayGridRow too nested?
 MultiMonth
   bug: when multimonth made REALLY small, single col month gets padding
     standard/bundle/examples/responsive.html
@@ -83,6 +79,7 @@ Resource Timeline
   change how column-resizing widths is distibuted?
     right now it's impossible to resize last column
     try to take width away from next column when expanding
+  optimize rendering for lane top/bottom padding
 H-Scrolling Views
   ensure col-width-syncing doesn't have 1px-off problem
     queries inner-width, but when assigning to outer-width, does it add 1px?
@@ -169,6 +166,8 @@ Support Tickets
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
     Can see forced-reflow warning here too: bundle/examples-v7/issue-7677.html
+NOTES for later
+  simplified axis with h-scrolling: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
 
 ensure automated tests for...
   positioning of sticky headers in all views. list view sticky subheaders too

@@ -24,15 +24,7 @@
 }
 
 //
-// daygrid-cell > inner
-//
-
-.fc-daygrid-cell-inner-tall { // (tall)
-  min-height: 3em;
-}
-
-//
-// daygrid-cell > inner > header
+// daygrid-cell > header
 //
 
 .fc-daygrid-cell-header {
@@ -45,7 +37,7 @@
 }
 
 //
-// daygrid-cell > inner > header > number
+// daygrid-cell > header > number
 //
 
 .fc-daygrid-cell-number {
@@ -60,19 +52,26 @@
 }
 
 //
-// daygrid-cell > inner > footer
+// daygrid-cell > main
 //
 
-.fc-daygrid-cell-footer {
-  font-size: .85em;
-
-  // control alignment of +more link
+.fc-daygrid-cell-main {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1px;
+}
+
+.fc-daygrid-cell-main-tall { // (tall)
+  min-height: 2em;
+  margin-bottom: 1em;
+}
+
+.fc-daygrid-cell-main:only-child { // (without cell header)
+  margin-top: 2px;
 }
 
 //
-// daygrid-cell > inner > footer > more-link
+// daygrid-cell > main > more-link
 //
 
 .fc-daygrid-more-link {
@@ -84,6 +83,7 @@
   padding: 2px;
   overflow: hidden;
   white-space: nowrap;
+  font-size: .85em;
   line-height: 1; // undo themes that have thick line-height
   cursor: pointer;
 
@@ -92,18 +92,18 @@
   }
 }
 
-.fc-daygrid-more-link-button {
+.fc-daygrid-more-link-button { // (button)
   align-self: flex-start;
 }
 
-.fc-daygrid-more-link-block {
+.fc-daygrid-more-link-block { // (block)
   // look like an event
   border: 1px solid var(--fc-event-border-color);
   padding: 1px;
 }
 
 //
-// daygrid-cell > inner > bg-content (???)
+// daygrid-cell > bg-content (???)
 //
 
 .fc-daygrid-cell {

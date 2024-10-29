@@ -27,7 +27,7 @@ export interface TimeGridColsProps {
   slatCnt: number
   forPrint: boolean
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
-  className?: string // TODO: better API for this?
+  className?: string
 
   // content
   fgEventSegsByCol: (TimeGridRange & EventRangeProps)[][]

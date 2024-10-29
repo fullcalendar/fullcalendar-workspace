@@ -95,6 +95,9 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
       if (this.currentClientHeight !== clientHeight) {
         setRef(props.clientHeightRef, this.currentClientHeight = clientHeight)
       }
+
+      // are these isDimsEqual calls necessary?
+
       if (!isDimsEqual(this.currentBottomScrollbarWidth, bottomScrollbarWidth)) {
         setRef(props.bottomScrollbarWidthRef, this.currentBottomScrollbarWidth = bottomScrollbarWidth)
       }

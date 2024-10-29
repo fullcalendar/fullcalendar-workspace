@@ -1,6 +1,6 @@
 import { AllDayContentArg } from '@fullcalendar/core'
 import { ComponentChild, Ref, createElement, createRef } from '@fullcalendar/core/preact'
-import { BaseComponent, ContentContainer, setRef, watchSize } from "@fullcalendar/core/internal"
+import { BaseComponent, ContentContainer, setRef, watchWidth } from "@fullcalendar/core/internal"
 
 export interface TimeGridAllDayLabelProps {
   // dimension
@@ -8,7 +8,6 @@ export interface TimeGridAllDayLabelProps {
 
   // refs
   innerWidthRef?: Ref<number>
-  innerHeightRef?: Ref<number>
 }
 
 export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps> {
@@ -57,9 +56,8 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
 
     // TODO: only attach this if refs props present
-    this.disconnectInnerSize = watchSize(innerEl, (width, height) => {
+    this.disconnectInnerSize = watchWidth(innerEl, (width) => {
       setRef(props.innerWidthRef, width)
-      setRef(props.innerHeightRef, height)
     })
   }
 
@@ -69,7 +67,6 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
     this.disconnectInnerSize()
 
     setRef(props.innerWidthRef, null)
-    setRef(props.innerHeightRef, null)
   }
 }
 

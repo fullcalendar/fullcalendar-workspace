@@ -43,7 +43,7 @@ export interface DayGridRowProps {
   showWeekNumbers?: boolean
   forPrint: boolean
   cellGroup?: boolean // bad name now
-  className?: string // TODO: better API for this
+  className?: string
   isCompact?: boolean
   isTall?: boolean
 
@@ -65,37 +65,33 @@ export interface DayGridRowProps {
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
   heightRef?: Ref<number>
-  innerHeightRef?: Ref<number> // only fired if !fgLiquidHeight (so dayMaxEvents !== true && dayMaxEventRows !== true)
-}
-
-interface DayGridRowState {
-  innerHeight?: number
-  headerHeight?: number
-  segHeightRev?: string
 }
 
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
 
 export const COMPACT_CELL_WIDTH = 80
 
-export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> {
+export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // ref
   private rootEl: HTMLElement | undefined
-  private cellInnerHeightRefMap = new RefMap<string, number>(() => {
-    afterSize(this.handleInnerHeights)
+  private headerHeightRefMap = new RefMap<string, number>(() => {
+    afterSize(this.handleSegPositioning)
   })
-  private cellHeaderHeightRefMap = new RefMap<string, number>(() => {
-    afterSize(this.handleHeaderHeights)
+  private mainHeightRefMap = new RefMap<string, number>(() => {
+    const fgLiquidHeight = this.props.dayMaxEvents === true || this.props.dayMaxEventRows === true
+    if (fgLiquidHeight) {
+      afterSize(this.handleSegPositioning)
+    }
   })
   private segHeightRefMap = new RefMap<string, number>(() => {
-    afterSize(this.handleSegHeights)
+    afterSize(this.handleSegPositioning)
   })
 
   // internal
   private disconnectHeight?: () => void
 
   render() {
-    const { props, state, context, cellInnerHeightRefMap, cellHeaderHeightRefMap } = this
+    const { props, context, headerHeightRefMap, mainHeightRefMap } = this
     const { cells } = props
     const { options } = context
 
@@ -107,18 +103,26 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     const fgEventSegs = sortEventSegs(props.fgEventSegs, options.eventOrder)
 
     // TODO: memoize?
-    const [segsByCol, hiddenSegsByCol, renderableSegsByCol, segTops, heightsByCol] = computeFgSegVerticals(
+    const [maxMainTop, minMainHeight] = this.computeFgDims() // uses headerHeightRefMap/mainHeightRefMap
+    const [segsByCol, hiddenSegsByCol, renderableSegsByCol, segTops, simpleHeightsByCol] = computeFgSegVerticals(
       fgEventSegs,
       this.segHeightRefMap.current,
       cells,
-      (fgLiquidHeight && state.innerHeight != null)
-        ? state.innerHeight - (state.headerHeight || 0) // sometimes no headers at all
-        : undefined,
+      fgLiquidHeight ? minMainHeight : undefined, // if not defined in first run, will unlimited!?
       options.eventOrderStrict,
       options.eventSlicing,
       props.dayMaxEvents,
       props.dayMaxEventRows,
     )
+    const heightsByCol: number[] = []
+    if (maxMainTop != null) {
+      let col = 0
+      for (const cell of cells) { // uses headerHeightRefMap/maxMainTop/simpleHeightsByCol
+        const cellHeaderHeight = headerHeightRefMap.current.get(cell.key)
+        const extraFgHeight = maxMainTop - cellHeaderHeight
+        heightsByCol.push(simpleHeightsByCol[col++] + extraFgHeight)
+      }
+    }
 
     const highlightSegs = this.getHighlightSegs()
     const mirrorSegs = this.getMirrorSegs()
@@ -160,6 +164,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
         )}
         {props.cells.map((cell, col) => {
           const normalFgNodes = this.renderFgSegs(
+            maxMainTop,
             renderableSegsByCol[col],
             segTops,
             props.todayRange,
@@ -206,13 +211,14 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
               width={props.colWidth}
 
               // refs
-              innerHeightRef={cellInnerHeightRefMap.createRef(cell.key)}
-              headerHeightRef={cellHeaderHeightRefMap.createRef(cell.key)}
+              headerHeightRef={headerHeightRefMap.createRef(cell.key)}
+              mainHeightRef={mainHeightRefMap.createRef(cell.key)}
             />
           )
         })}
         {this.renderFillSegs(highlightSegs, 'highlight')}
         {this.renderFgSegs(
+          maxMainTop,
           mirrorSegs,
           segTops,
           props.todayRange,
@@ -226,6 +232,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
   }
 
   renderFgSegs(
+    headerHeight: number | undefined,
     segs: DayRowEventRangePart[],
     segTops: Map<string, number>,
     todayRange: DateRange,
@@ -234,10 +241,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     isResizing?: boolean,
     isDateSelecting?: boolean,
   ): VNode[] {
-    const { props, state, context, segHeightRefMap } = this
+    const { props, context, segHeightRefMap } = this
     const { isRtl } = context
     const { colWidth, eventSelection } = props
-    const headerHeight = state.headerHeight || 0 // sometimes no header at all
 
     const colCnt = props.cells.length
     const defaultDisplayEventEnd = props.cells.length === 1
@@ -255,7 +261,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
       const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
       const localTop = segTops.get(standinFor ? getEventPartKey(standinFor) : key) ?? (isMirror ? 0 : undefined)
-      const top = localTop != null ? headerHeight + localTop : undefined
+      const top = headerHeight != null && localTop != null
+        ? headerHeight + localTop
+        : undefined
       const isInvisible = standinFor || forcedInvisibleMap[instanceId] || top == null
 
       nodes.push(
@@ -368,46 +376,44 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     this.disconnectHeight()
 
     setRef(this.props.heightRef, null)
-    setRef(this.props.innerHeightRef, null)
   }
 
-  // Sizing
-  // -----------------------------------------------------------------------------------------------
+  computeFgDims(): [maxMainTop: number | undefined, minMainHeight: number | undefined] {
+    const { cells } = this.props
+    const headerHeightMap = this.headerHeightRefMap.current
+    const mainHeightMap = this.mainHeightRefMap.current
+    let maxMainTop: number | undefined
+    let minMainBottom: number | undefined
 
-  private handleHeaderHeights = () => {
-    const cellHeaderHeightMap = this.cellHeaderHeightRefMap.current
-    let max = 0
+    for (const cell of cells) {
+      const mainTop = headerHeightMap.get(cell.key)
+      const mainHeight = mainHeightMap.get(cell.key)
 
-    for (const height of cellHeaderHeightMap.values()) {
-      max = Math.max(max, height)
-    }
+      if (mainTop != null) {
+        if (maxMainTop === undefined || mainTop > maxMainTop) {
+          maxMainTop = mainTop
+        }
 
-    if (this.state.headerHeight !== max) {
-      this.setState({ headerHeight: max })
-    }
-  }
+        if (mainHeight != null) {
+          const mainBottom = mainTop + mainHeight
 
-  private handleInnerHeights = () => {
-    const { props } = this
-    const fgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
-    const cellInnerHeightMap = this.cellInnerHeightRefMap.current
-    let max = 0
-
-    for (const height of cellInnerHeightMap.values()) {
-      max = Math.max(max, height)
-    }
-
-    if (fgLiquidHeight) {
-      if (this.state.innerHeight !== max) {
-        this.setState({ innerHeight: max }) // will trigger event rerender
+          if (minMainBottom === undefined || mainBottom < minMainBottom) {
+            minMainBottom = mainBottom
+          }
+        }
       }
-    } else {
-      setRef(props.innerHeightRef, max)
     }
+
+    return [
+      maxMainTop,
+      minMainBottom != null && maxMainTop != null
+        ? minMainBottom - maxMainTop
+        : undefined,
+    ]
   }
 
-  private handleSegHeights = () => {
-    this.setState({ segHeightRev: this.segHeightRefMap.rev }) // will trigger event rerender
+  private handleSegPositioning = () => {
+    this.forceUpdate()
   }
 
   // Utils

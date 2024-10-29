@@ -11,10 +11,11 @@ import {
   hasCustomDayCellContent,
   addMs,
   DateEnv,
-  watchHeight,
   setRef,
   SlicedCoordRange,
   joinClassNames,
+  watchSize,
+  isDimsEqual,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -56,17 +57,18 @@ export interface DayGridCellProps {
   width?: number | string
 
   // refs
-  innerHeightRef?: Ref<number> // for resource-daygrid row-height syncing
-  headerHeightRef?: Ref<number> // for event-positioning top-origin
+  headerHeightRef?: Ref<number>
+  mainHeightRef?: Ref<number> // will only fire if fgLiquidHeight
 }
 
 export class DayGridCell extends DateComponent<DayGridCellProps> {
   // ref
-  private innerElRef = createRef<HTMLDivElement>()
+  private rootElRef = createRef<HTMLElement>()
+  private mainElRef = createRef<HTMLDivElement>()
 
   // internal
-  private detachInnerHeight?: () => void
-  private detachHeaderHeight?: () => void
+  private headerHeight?: number
+  private detachMainHeight?: () => void
 
   render() {
     let { props, context } = this
@@ -91,6 +93,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         style={{
           width: props.width
         }}
+        elRef={this.rootElRef}
         renderProps={props.renderProps}
         defaultGenerator={renderTopInner}
         date={props.date}
@@ -100,16 +103,9 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         isMonthStart={isMonthStart}
       >
         {(InnerContent, renderProps) => (
-          <div
-            ref={this.innerElRef}
-            className={joinClassNames(
-              'fc-daygrid-cell-inner',
-              props.isTall && 'fc-daygrid-cell-inner-tall',
-              props.fgLiquidHeight && 'fc-liquid',
-            )}
-          >
+          <Fragment>
             {!renderProps.isDisabled && (props.showDayNumber || hasCustomDayCellContent(options)) && (
-              <div ref={this.handleHeaderEl} className="fc-daygrid-cell-header">
+              <div className="fc-daygrid-cell-header">
                 <InnerContent
                   tag="a"
                   attrs={buildNavLinkAttrs(context, props.date)}
@@ -121,27 +117,22 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               </div>
             )}
             <div
-              className="fc-daygrid-cell-main"
-              style={{
-                height: props.fgLiquidHeight ? '' : props.fgHeight
-              }}
+              className={joinClassNames(
+                'fc-daygrid-cell-main',
+                props.isTall && 'fc-daygrid-cell-main-tall',
+                props.fgLiquidHeight ? 'fc-liquid' : 'fc-grow',
+              )}
+              ref={this.mainElRef}
             >
-              {props.fg}
-            </div>
-            <div
-              className="fc-daygrid-cell-footer"
-              style={
-                props.fgLiquidHeight
-                  ? { position: 'relative', top: props.fgHeight }
-                  : {}
-              }
-            >
+              <div className='fc-daygrid-cell-events' style={{ height: props.fgHeight }}>
+                {props.fg}
+              </div>
               <DayGridMoreLink
                 isBlock={props.isCompact}
                 allDayDate={props.date}
                 segs={props.segs}
                 hiddenSegs={props.hiddenSegs}
-                alignmentElRef={this.innerElRef}
+                alignmentElRef={this.rootElRef}
                 alignGridTop={!props.showDayNumber}
                 dateSpanProps={props.dateSpanProps}
                 dateProfile={props.dateProfile}
@@ -152,37 +143,39 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               />
             </div>
             {props.bg}
-          </div>
+          </Fragment>
         )}
       </DayCellContainer>
     )
   }
 
-  handleHeaderEl = (headerEl: HTMLElement) => {
-    if (this.detachHeaderHeight) {
-      this.detachHeaderHeight()
-    }
-    if (headerEl) {
-      this.detachHeaderHeight = watchHeight(headerEl, (headerHeight) => {
-        setRef(this.props.headerHeightRef, headerHeight)
-      })
-    }
-  }
-
   componentDidMount(): void {
-    const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+    const mainEl = this.mainElRef.current
 
-    // TODO: only attach this if refs props present
-    this.detachInnerHeight = watchHeight(innerEl, (height) => {
-      setRef(this.props.innerHeightRef, height)
+    // we want to fire on ANY size change, because we do more advanced stuff
+    this.detachMainHeight = watchSize(mainEl, (_mainWidth, mainHeight) => {
+      const { props } = this
+      const mainRect = mainEl.getBoundingClientRect()
+      const rootRect = this.rootElRef.current.getBoundingClientRect()
+      const headerHeight = mainRect.top - rootRect.top
+
+      if (!isDimsEqual(this.headerHeight, headerHeight)) {
+        this.headerHeight = headerHeight
+        setRef(props.headerHeightRef, headerHeight)
+      }
+
+      if (props.fgLiquidHeight) {
+        setRef(props.mainHeightRef, mainHeight)
+      }
     })
   }
 
   componentWillUnmount(): void {
-    this.detachInnerHeight()
+    this.detachMainHeight()
 
-    setRef(this.props.innerHeightRef, null)
-    setRef(this.props.headerHeightRef, null)
+    const { props } = this
+    setRef(props.headerHeightRef, null)
+    setRef(props.mainHeightRef, null)
   }
 }
 

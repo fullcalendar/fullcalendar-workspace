@@ -5,7 +5,7 @@
 
 .fc-daygrid-event {
   z-index: $daygrid-event-z;
-  margin-top: 1px;
+  margin-bottom: 1px;
   border-radius: 3px; // dot event needs this to when selected
   font-size: var(--fc-small-font-size);
 }

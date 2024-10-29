@@ -75,7 +75,6 @@ interface TimeGridLayoutPannableState {
   bottomScrollbarWidth?: number
   axisWidth?: number
   headerTierHeights: number[]
-  allDayHeight?: number
   slatInnerHeight?: number
 }
 
@@ -98,16 +97,6 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
   private handleAllDayLabelInnerWidth = (width: number) => {
     this.allDayLabelInnerWidth = width
     afterSize(this.handleAxisWidths)
-  }
-  private allDayLabelInnerHeight?: number
-  private handleAllDayLabelInnerHeight = (height: number) => {
-    this.allDayLabelInnerHeight = height
-    afterSize(this.handleAllDayHeights)
-  }
-  private allDayMainInnerHeight?: number
-  private handleAllDayMainInnerHeight = (height: number) => {
-    this.allDayMainInnerHeight = height
-    afterSize(this.handleAllDayHeights)
   }
   private slatLabelInnerWidthRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
     afterSize(this.handleAxisWidths)
@@ -168,7 +157,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         {options.dayHeaders && (
           <div
             className={joinClassNames(
-              'fc-timegrid-header',
+              'fc-timegrid-header fc-table-header',
               stickyHeaderDates && 'fc-table-header-sticky',
               'fc-row',
             )}
@@ -228,15 +217,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         )}
         {options.allDaySlot && (
           <Fragment>
-            <div
-              className='fc-timegrid-allday fc-row fc-content-box' // a "super" row
-              style={{ height: state.allDayHeight }}
-            >
+            <div className='fc-timegrid-allday fc-flex-row'>{/* not fc-row because don't want border */}
               {/* ALL-DAY / label
               -----------------------------------------------------------------------------------*/}
               <TimeGridAllDayLabel // .fc-cell
                 innerWidthRef={this.handleAllDayLabelInnerWidth}
-                innerHeightRef={this.handleAllDayLabelInnerHeight}
                 width={axisWidth}
               />
               {/* ALL-DAY / main (horizontal scroller)
@@ -244,11 +229,11 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               <Scroller
                 horizontal
                 hideScrollbars
-                className='fc-cell fc-liquid'
+                className='fc-cell fc-flex-column fc-liquid' // fill remaining width
                 ref={this.allDayScrollerRef}
               >
                 <div
-                  className='fc-content-box'
+                  className='fc-content-box fc-flex-column fc-grow' // grow as tall as label cell
                   style={{
                     width: canvasWidth,
                     paddingLeft: state.leftScrollbarWidth,
@@ -256,6 +241,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   }}
                 >
                   <TimeGridAllDayLane
+                    className='fc-grow' // grow as tall as label cell
                     dateProfile={props.dateProfile}
                     todayRange={props.todayRange}
                     cells={props.cells}
@@ -277,9 +263,6 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     eventResize={props.eventResize}
                     dayMaxEvents={props.dayMaxEvents}
                     dayMaxEventRows={props.dayMaxEventRows}
-
-                    // refs
-                    innerHeightRef={this.handleAllDayMainInnerHeight}
 
                     // dimensions
                     colWidth={colWidth}
@@ -478,17 +461,6 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
     const { headerTierHeights } = this.state
     if (!isArraysEqual(headerTierHeights, heights)) {
       this.setState({ headerTierHeights: heights })
-    }
-  }
-
-  private handleAllDayHeights = () => {
-    let max = Math.max(
-      this.allDayLabelInnerHeight,
-      this.allDayMainInnerHeight,
-    )
-
-    if (this.state.allDayHeight !== max) {
-      this.setState({ allDayHeight: max })
     }
   }
 
