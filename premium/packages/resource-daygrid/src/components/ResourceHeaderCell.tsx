@@ -30,6 +30,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
         tag="div"
         className={joinClassNames(
           'fc-resource fc-header-cell fc-cell fc-flex-column fc-align-center',
+          !props.isSticky && 'fc-crop',
           props.colWidth == null && 'fc-liquid',
         )}
         style={{

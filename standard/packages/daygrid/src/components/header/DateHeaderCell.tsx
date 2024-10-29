@@ -67,16 +67,17 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
     return (
       <ContentContainer
         tag='div'
-        className={joinClassNames(
-          props.className,
-          'fc-header-cell fc-cell fc-flex-column fc-align-center',
-          props.colWidth == null && 'fc-liquid',
-          ...getDayClassNames(dayMeta, theme),
-        )}
         attrs={{
           ...props.attrs,
           'data-date': !dayMeta.isDisabled ? formatDayString(date) : undefined,
         }}
+        className={joinClassNames(
+          props.className,
+          'fc-header-cell fc-cell fc-flex-column fc-align-center',
+          !props.isSticky && 'fc-crop',
+          props.colWidth == null && 'fc-liquid',
+          ...getDayClassNames(dayMeta, theme),
+        )}
         style={{
           width: props.colWidth != null // TODO: DRY
             ? props.colWidth * (props.colSpan || 1)

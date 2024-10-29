@@ -18,9 +18,6 @@ DayGrid
     happens because percentage left/width -- try to return to using 'right'?
   bug: ensure DayGrid events don't overlap the left border of the day-cell when 0px padding
     is causing +more button to not left-align with events above it
-  for daygrid/timegrid that DON'T have horizontal scroll, improve header inner-text overflow:
-    if not a header row that has sticky inner-content, set cell's overflow:hidden
-    (the canonical test would be sizing month-view down really narrow)
 MultiMonth
   bug: when multimonth made REALLY small, single col month gets padding
     standard/bundle/examples/responsive.html

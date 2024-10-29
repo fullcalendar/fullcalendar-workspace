@@ -70,13 +70,14 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
     return (
       <ContentContainer
         tag='div'
+        attrs={props.attrs}
         className={joinClassNames(
           props.className,
           'fc-header-cell fc-cell fc-flex-column fc-align-center',
+          !props.isSticky && 'fc-crop',
           props.colWidth == null && 'fc-liquid',
           ...getDayClassNames(dateMeta, theme),
         )}
-        attrs={props.attrs}
         style={{
           width: props.colWidth != null // TODO: DRY
             ? props.colWidth * (props.colSpan || 1)

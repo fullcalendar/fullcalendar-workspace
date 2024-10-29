@@ -118,6 +118,10 @@ Lone cell in a row should always fill row. Makes axis widths much easier
 // Misc Utils
 // -------------------------------------------------------------------------------------------------
 
+.fc-crop {
+  overflow: hidden;
+}
+
 .fc-rel {
   position: relative;
 }
