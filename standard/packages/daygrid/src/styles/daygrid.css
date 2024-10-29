@@ -79,12 +79,11 @@
   z-index: $daygrid-topbottom-z;
   max-width: 100%;
   border-radius: 3px;
-  margin: 1px 2px;
+  margin: 0 2px 1px;
   padding: 2px;
   overflow: hidden;
   white-space: nowrap;
-  font-size: .85em;
-  line-height: 1; // undo themes that have thick line-height
+  font-size: var(--fc-small-font-size);
   cursor: pointer;
 
   &:hover {
