@@ -12,10 +12,6 @@ Theming
     ensure minimum Bootstrap version
   in bootstrap themes, event-height line-height is very tall. normalize? then make changelog entry?
 DayGrid
-  bug: crazy error when opening +more link in all-day area:
-    throw new Error('alignGridTop not supported yet')
-  bug (should re-verify):
-    events that are force to be list-item but span multiple days still take up space in later columns
   bug (print-view):
     for multi-day events, don't display title within non-start/end segs
   bug: fill-event to right edge is 1px short of right edge
@@ -25,9 +21,6 @@ DayGrid
   for daygrid/timegrid that DON'T have horizontal scroll, improve header inner-text overflow:
     if not a header row that has sticky inner-content, set cell's overflow:hidden
     (the canonical test would be sizing month-view down really narrow)
-  for event rendering, expose an isStandin flag for if hidden behind multiday
-  structure:
-    is all-day section's DayGridRow too nested?
 MultiMonth
   bug: when multimonth made REALLY small, single col month gets padding
     standard/bundle/examples/responsive.html
@@ -38,12 +31,15 @@ MultiMonth
   Since we moved to a normal Scroller instead of a force-vertical-scrollbar div,
     is there a chance of infinite dimension-to-state loop?
 TimeGrid
+  bug: crazy error when opening +more link in all-day area:
+    throw new Error('alignGridTop not supported yet')
   use pixel positioning for events (to avoid TimeGridCol height hack)
   does every timegrid event have the 'inset' border class even when not needed?
   just like scrollbar dead area should have grey bg,
     make timegrid bottom area w/o slots a grey bg
   structure: in TimeGridLayoutNormal, not nice how axis text isn't selectable
     (related to how now-indicator is rendered in axis)
+  structure: is all-day section's DayGridRow too nested?
 Timeline
   bug (no resources): can't drag-n-drop. date-selection happens instead
   bug for timeline event dragging:
@@ -166,6 +162,8 @@ Support Tickets
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
     Can see forced-reflow warning here too: bundle/examples-v7/issue-7677.html
+  Make tickets for a new view with list-view underneath month calendar
+  Check ticket for daygrid view with "dots"
 NOTES for later
   simplified axis with h-scrolling: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
 
