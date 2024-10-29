@@ -259,7 +259,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         continue
       }
 
-      const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
+      const { left, right } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
       const localTop = segTops.get(standinFor ? getEventPartKey(standinFor) : key) ?? (isMirror ? 0 : undefined)
       const top = headerHeight != null && localTop != null
         ? headerHeight + localTop
@@ -274,7 +274,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             top,
             left,
             right,
-            width,
           }}
           heightRef={
             (!standinFor && !isMirror)
@@ -325,7 +324,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     for (const seg of segs) {
       const key = buildEventRangeKey(seg.eventRange) // TODO: use different type of key than fg!?
-      const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
+      const { left, right } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
       const isVisible = !seg.standinFor
 
       nodes.push(
@@ -336,7 +335,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             visibility: isVisible ? '' : 'hidden',
             left,
             right,
-            width,
           }}
         >
           {fillType === 'bg-event' ?

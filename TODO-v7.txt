@@ -14,8 +14,6 @@ Theming
 DayGrid
   bug (print-view):
     for multi-day events, don't display title within non-start/end segs
-  bug: fill-event to right edge is 1px short of right edge
-    happens because percentage left/width -- try to return to using 'right'?
   bug: ensure DayGrid events don't overlap the left border of the day-cell when 0px padding
     is causing +more button to not left-align with events above it
 MultiMonth

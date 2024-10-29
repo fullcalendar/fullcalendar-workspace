@@ -85,6 +85,9 @@ export function computeTopFromDate(
   return top
 }
 
+/*
+FYI, `width` is not dependable for aligning completely to farside
+*/
 export function computeHorizontalsFromSeg(
   seg: SlicedCoordRange,
   colWidth: number | undefined,
@@ -93,32 +96,24 @@ export function computeHorizontalsFromSeg(
 ): {
   left: CssDimValue | undefined,
   right: CssDimValue | undefined,
-  width: CssDimValue | undefined,
 } {
-  let left: CssDimValue
-  let right: CssDimValue
-  let width: CssDimValue
+  let fromStart: CssDimValue
+  let fromEnd: CssDimValue
 
   if (colWidth != null) {
-    width = (seg.end - seg.start) * colWidth
-
-    if (isRtl) {
-      right = seg.start * colWidth
-    } else {
-      left = seg.start * colWidth
-    }
+    fromStart = seg.start * colWidth
+    fromEnd = (colCnt - seg.end) * colWidth
   } else {
     const colWidthFrac = 1 / colCnt
-    width = fracToCssDim((seg.end - seg.start) * colWidthFrac)
-
-    if (isRtl) {
-      right = fracToCssDim(seg.start * colWidthFrac)
-    } else {
-      left = fracToCssDim(seg.start * colWidthFrac)
-    }
+    fromStart = fracToCssDim(seg.start * colWidthFrac)
+    fromEnd = fracToCssDim(1 - seg.end * colWidthFrac)
   }
 
-  return { left, right, width }
+  if (isRtl) {
+    return { right: fromStart, left: fromEnd }
+  } else {
+    return { left: fromStart, right: fromEnd }
+  }
 }
 
 export function computeColFromPosition(
