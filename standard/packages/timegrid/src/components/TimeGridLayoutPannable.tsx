@@ -262,7 +262,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     showDayNumbers={false}
                     forPrint={props.forPrint}
                     isHitComboAllowed={props.isHitComboAllowed}
-                    compact={
+                    isCompact={
                       state.clientWidth != null
                         && state.clientWidth / props.cells.length < COMPACT_CELL_WIDTH
                     }

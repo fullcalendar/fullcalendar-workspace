@@ -174,7 +174,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
                 className='fc-liquid fc-cell'
-                compact={
+                isCompact={
                   (state.clientWidth != null && state.axisWidth != null)
                     && (state.clientWidth - state.axisWidth) / props.cells.length < COMPACT_CELL_WIDTH
                 }

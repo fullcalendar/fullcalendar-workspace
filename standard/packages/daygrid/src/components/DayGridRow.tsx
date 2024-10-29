@@ -44,8 +44,8 @@ export interface DayGridRowProps {
   forPrint: boolean
   cellGroup?: boolean // bad name now
   className?: string // TODO: better API for this
-  forceVSpacing?: boolean
-  compact?: boolean
+  isCompact?: boolean
+  isTall?: boolean
 
   // content
   fgEventSegs: (SlicedCoordRange & EventRangeProps)[]
@@ -111,8 +111,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       fgEventSegs,
       this.segHeightRefMap.current,
       cells,
-      (fgLiquidHeight && state.innerHeight != null && state.headerHeight != null)
-        ? state.innerHeight - state.headerHeight
+      (fgLiquidHeight && state.innerHeight != null)
+        ? state.innerHeight - (state.headerHeight || 0) // sometimes no headers at all
         : undefined,
       options.eventOrderStrict,
       options.eventSlicing,
@@ -139,14 +139,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
       <div
         role={props.cellGroup ? undefined : 'row'}
         className={joinClassNames(
-          props.className,
           'fc-daygrid-row',
-          props.forceVSpacing
-            ? 'fc-daygrid-row-spacious'
-            : props.compact
-              && 'fc-daygrid-row-compact',
           props.cellGroup ? 'fc-flex-row' : 'fc-row',
           'fc-rel',
+          props.className,
         )}
         style={{
           minHeight: props.minHeight,
@@ -177,6 +173,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
               todayRange={props.todayRange}
               date={cell.date}
               showDayNumber={props.showDayNumbers}
+              isCompact={props.isCompact}
+              isTall={props.isTall}
 
               // content
               segs={segsByCol[col]}
@@ -239,7 +237,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
     const { props, state, context, segHeightRefMap } = this
     const { isRtl } = context
     const { colWidth, eventSelection } = props
-    const { headerHeight } = state
+    const headerHeight = state.headerHeight || 0 // sometimes no header at all
 
     const colCnt = props.cells.length
     const defaultDisplayEventEnd = props.cells.length === 1
@@ -257,7 +255,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps, DayGridRowState> 
 
       const { left, right, width } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
       const localTop = segTops.get(standinFor ? getEventPartKey(standinFor) : key) ?? (isMirror ? 0 : undefined)
-      const top = (headerHeight != null && localTop != null) ? headerHeight + localTop : undefined
+      const top = localTop != null ? headerHeight + localTop : undefined
       const isInvisible = standinFor || forcedInvisibleMap[instanceId] || top == null
 
       nodes.push(

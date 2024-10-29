@@ -108,7 +108,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
             showDayNumbers={rowCnt > 1}
             showWeekNumbers={options.weekNumbers}
             forPrint={props.forPrint}
-            compact={state.width != null && (state.width / cells.length) < COMPACT_CELL_WIDTH}
+            isCompact={state.width != null && (state.width / cells.length) < COMPACT_CELL_WIDTH}
 
             // if not auto-height, distribute height of container somewhat evently to rows
             // (treat all as zero, distribute height, then ensure min-heights -- the inner content height)

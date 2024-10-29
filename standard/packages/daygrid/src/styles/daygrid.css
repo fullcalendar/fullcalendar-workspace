@@ -27,7 +27,7 @@
 // daygrid-cell > inner
 //
 
-.fc-daygrid-row-spacious .fc-daygrid-cell-inner { // (spacious)
+.fc-daygrid-cell-inner-tall { // (tall)
   min-height: 3em;
 }
 
@@ -65,20 +65,10 @@
 
 .fc-daygrid-cell-footer {
   font-size: .85em;
-  margin: 0 2px;
 
   // control alignment of +more link
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-}
-
-.fc-daygrid-row-spacious .fc-daygrid-cell-footer { // (spacious)
-  margin-bottom: 1em !important; // see below for why important
-}
-
-.fc-daygrid-row-compact .fc-daygrid-cell-footer { // (compact)
-  align-items: stretch; // undo flex-start, which aligned more-link to side
 }
 
 //
@@ -88,9 +78,9 @@
 .fc-daygrid-more-link {
   position: relative;
   z-index: $daygrid-topbottom-z;
-  margin-top: 1px;
   max-width: 100%;
   border-radius: 3px;
+  margin: 1px 2px;
   padding: 2px;
   overflow: hidden;
   white-space: nowrap;
@@ -102,7 +92,11 @@
   }
 }
 
-.fc-daygrid-row-compact .fc-daygrid-more-link { // (compact)
+.fc-daygrid-more-link-button {
+  align-self: flex-start;
+}
+
+.fc-daygrid-more-link-block {
   // look like an event
   border: 1px solid var(--fc-event-border-color);
   padding: 1px;

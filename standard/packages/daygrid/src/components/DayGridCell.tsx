@@ -32,6 +32,8 @@ export interface DayGridCellProps {
   todayRange: DateRange
   date: DateMarker
   showDayNumber: boolean
+  isCompact?: boolean
+  isTall?: boolean
 
   // content
   segs: DayRowEventRangePart[] // for +more link popover content
@@ -61,7 +63,6 @@ export interface DayGridCellProps {
 export class DayGridCell extends DateComponent<DayGridCellProps> {
   // ref
   private innerElRef = createRef<HTMLDivElement>()
-  private headerWrapElRef = createRef<HTMLDivElement>()
 
   // internal
   private detachInnerHeight?: () => void
@@ -103,23 +104,22 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             ref={this.innerElRef}
             className={joinClassNames(
               'fc-daygrid-cell-inner',
+              props.isTall && 'fc-daygrid-cell-inner-tall',
               props.fgLiquidHeight && 'fc-liquid',
             )}
           >
-            <div ref={this.headerWrapElRef} className="fc-flex-column">
-              {!renderProps.isDisabled && (props.showDayNumber || hasCustomDayCellContent(options)) && (
-                <div className="fc-daygrid-cell-header">
-                  <InnerContent
-                    tag="a"
-                    attrs={buildNavLinkAttrs(context, props.date)}
-                    className={joinClassNames(
-                      'fc-daygrid-cell-number',
-                      isMonthStart && 'fc-daygrid-month-start',
-                    )}
-                  />
-                </div>
-              )}
-            </div>
+            {!renderProps.isDisabled && (props.showDayNumber || hasCustomDayCellContent(options)) && (
+              <div ref={this.handleHeaderEl} className="fc-daygrid-cell-header">
+                <InnerContent
+                  tag="a"
+                  attrs={buildNavLinkAttrs(context, props.date)}
+                  className={joinClassNames(
+                    'fc-daygrid-cell-number',
+                    isMonthStart && 'fc-daygrid-month-start',
+                  )}
+                />
+              </div>
+            )}
             <div
               className="fc-daygrid-cell-main"
               style={{
@@ -137,6 +137,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               }
             >
               <DayGridMoreLink
+                isBlock={props.isCompact}
                 allDayDate={props.date}
                 segs={props.segs}
                 hiddenSegs={props.hiddenSegs}
@@ -157,22 +158,28 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     )
   }
 
+  handleHeaderEl = (headerEl: HTMLElement) => {
+    if (this.detachHeaderHeight) {
+      this.detachHeaderHeight()
+    }
+    if (headerEl) {
+      this.detachHeaderHeight = watchHeight(headerEl, (headerHeight) => {
+        setRef(this.props.headerHeightRef, headerHeight)
+      })
+    }
+  }
+
   componentDidMount(): void {
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
-    const headerWrapEl = this.headerWrapElRef.current // "
 
     // TODO: only attach this if refs props present
     this.detachInnerHeight = watchHeight(innerEl, (height) => {
       setRef(this.props.innerHeightRef, height)
     })
-    this.detachHeaderHeight = watchHeight(headerWrapEl, (height) => {
-      setRef(this.props.headerHeightRef, height)
-    })
   }
 
   componentWillUnmount(): void {
     this.detachInnerHeight()
-    this.detachHeaderHeight()
 
     setRef(this.props.innerHeightRef, null)
     setRef(this.props.headerHeightRef, null)

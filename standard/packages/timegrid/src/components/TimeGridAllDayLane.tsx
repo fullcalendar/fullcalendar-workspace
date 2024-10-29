@@ -17,7 +17,7 @@ export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps> {
         {...this.props}
         cellGroup
         className={this.props.className}
-        forceVSpacing
+        isTall
         rootElRef={this.handleRootEl}
         heightRef={this.heightRef}
       />
