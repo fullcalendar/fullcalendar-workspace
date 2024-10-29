@@ -79,12 +79,17 @@ Rarely used. Just inline this?
   margin: 0 !important;
   padding: 0 !important;
 }
+.fc-cell-border-fake { // best?
+  border: 0 solid transparent;
+}
 .fc-direction-ltr .fc-cell + .fc-cell,
-.fc-direction-ltr .fc-cell-border {
+.fc-direction-ltr .fc-cell-border,
+.fc-direction-ltr .fc-cell-border-fake {
   border-left-width: 1px;
 }
 .fc-direction-rtl .fc-cell + .fc-cell,
-.fc-direction-rtl .fc-cell-border {
+.fc-direction-rtl .fc-cell-border,
+.fc-direction-rtl .fc-cell-border-fake {
   border-right-width: 1px;
 }
 

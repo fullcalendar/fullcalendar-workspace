@@ -1,8 +1,9 @@
 import { Component, createRef, Ref, createElement, ComponentChildren } from '@fullcalendar/core/preact'
-import { watchHeight, setRef } from '@fullcalendar/core/internal'
+import { watchHeight, setRef, joinClassNames } from '@fullcalendar/core/internal'
 
 export interface DayGridEventHarnessProps {
   style: any // TODO
+  className?: string
   children?: ComponentChildren
 
   // ref
@@ -21,7 +22,7 @@ export class DayGridEventHarness extends Component<DayGridEventHarnessProps> {
 
     return (
       <div
-        className="fc-abs"
+        className={joinClassNames(props.className, 'fc-abs')}
         style={props.style}
         ref={this.rootElRef}
       >
