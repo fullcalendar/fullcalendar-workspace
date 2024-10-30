@@ -2,7 +2,6 @@ import { BaseComponent } from '../vdom-util.js'
 import { EventRangeProps } from '../component-util/event-rendering.js'
 import { EventInstanceHash } from '../structs/event-instance.js'
 import { Hit } from '../interactions/hit.js'
-import { elementClosest } from '../util/dom-manip.js'
 import { guid } from '../util/misc.js'
 import { Dictionary } from '../options.js'
 
@@ -40,13 +39,13 @@ export abstract class DateComponent<Props=Dictionary, State=Dictionary> extends 
   isValidSegDownEl(el: HTMLElement) {
     return !(this.props as any).eventDrag && // HACK
       !(this.props as any).eventResize && // HACK
-      !elementClosest(el, '.fc-event-mirror')
+      !el.closest('.fc-event-mirror')
   }
 
   isValidDateDownEl(el: HTMLElement) {
-    return !elementClosest(el, '.fc-event:not(.fc-bg-event)') &&
-      !elementClosest(el, '.fc-more-link') && // a "more.." link
-      !elementClosest(el, 'a[data-navlink]') && // a clickable nav link
-      !elementClosest(el, '.fc-popover') // hack
+    return !el.closest('.fc-event:not(.fc-bg-event)') &&
+      !el.closest('.fc-more-link') && // a "more.." link
+      !el.closest('a[data-navlink]') && // a clickable nav link
+      !el.closest('.fc-popover') // hack
   }
 }

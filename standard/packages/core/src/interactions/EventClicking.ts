@@ -1,6 +1,5 @@
 import { listenBySelector } from '../util/dom-event.js'
 import { EventImpl } from '../api/EventImpl.js'
-import { elementClosest } from '../util/dom-manip.js'
 import { getElEventRange } from '../component-util/event-rendering.js'
 import { Interaction, InteractionSettings } from './interaction.js'
 import { ViewApi } from '../api/ViewApi.js'
@@ -38,7 +37,7 @@ export class EventClicking extends Interaction {
     ) {
       // our way to simulate a link click for elements that can't be <a> tags
       // grab before trigger fired in case trigger trashes DOM thru rerendering
-      let hasUrlContainer = elementClosest(ev.target as HTMLElement, '.fc-event-forced-url')
+      let hasUrlContainer = (ev.target as HTMLElement).closest('.fc-event-forced-url')
       let url = hasUrlContainer ? (hasUrlContainer.querySelector('a[href]') as any).href : ''
 
       context.emitter.trigger('eventClick', {

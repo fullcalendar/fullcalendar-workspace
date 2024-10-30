@@ -3,7 +3,7 @@ import { DateRange } from '../datelib/date-range.js'
 import { addDays, DateMarker } from '../datelib/marker.js'
 import { DateProfile } from '../DateProfileGenerator.js'
 import { Dictionary } from '../options.js'
-import { elementClosest, getUniqueDomId } from '../util/dom-manip.js'
+import { getUniqueDomId } from '../util/dom-manip.js'
 import { formatWithOrdinals } from '../util/misc.js'
 import { createElement, Fragment, ComponentChild, RefObject } from '../preact.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
@@ -151,7 +151,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
 
   updateParentEl() {
     if (this.linkEl) {
-      this.parentEl = elementClosest(this.linkEl, '.fc-view-harness') // HACK. reconsider
+      this.parentEl = this.linkEl.closest('.fc-view-harness') // HACK. reconsider
     }
   }
 

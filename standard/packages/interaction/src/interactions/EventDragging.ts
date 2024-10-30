@@ -11,7 +11,6 @@ import {
   PointerDragEvent, Hit,
   EventMutation, applyMutationToEventStore,
   startOfDay,
-  elementClosest,
   EventStore, getRelevantEvents, createEmptyEventStore,
   EventInteractionState,
   diffDates, enableCursor, disableCursor,
@@ -103,14 +102,14 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
     if (options.fixedMirrorParent) {
       mirror.parentNode = options.fixedMirrorParent
     } else {
-      mirror.parentNode = elementClosest(origTarget, '.fc')
+      mirror.parentNode = origTarget.closest('.fc')
     }
 
     mirror.revertDuration = options.dragRevertDuration
 
     let isValid =
       component.isValidSegDownEl(origTarget) &&
-      !elementClosest(origTarget, '.fc-event-resizer') // NOT on a resizer
+      !origTarget.closest('.fc-event-resizer') // NOT on a resizer
 
     dragging.setIgnoreMove(!isValid)
 

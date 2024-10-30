@@ -9,25 +9,6 @@ export function removeElement(el: HTMLElement) { // removes nodes in addition to
 // Querying
 // ----------------------------------------------------------------------------------------------------------------
 
-export function elementClosest(el: HTMLElement, selector: string): HTMLElement {
-  if (el.closest) {
-    return el.closest(selector)
-
-  // really bad fallback for IE
-  // from https://developer.mozilla.org/en-US/docs/Web/API/Element/closest
-  }
-  if (!document.documentElement.contains(el)) {
-    return null
-  }
-  do {
-    if (elementMatches(el, selector)) {
-      return el
-    }
-    el = (el.parentElement || el.parentNode) as HTMLElement
-  } while (el !== null && el.nodeType === 1)
-  return null
-}
-
 export function elementMatches(el: HTMLElement, selector: string): HTMLElement {
   let method = el.matches || (el as any).matchesSelector || (el as any).msMatchesSelector
 

@@ -1,6 +1,6 @@
 import { Dictionary } from '../options.js'
 import { computeClippedClientRect } from '../util/dom-geom.js'
-import { applyStyle, elementClosest, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-manip.js'
+import { applyStyle, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-manip.js'
 import { createElement, ComponentChildren, Ref, createPortal } from '../preact.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { joinClassNames } from '../util/html.js'
@@ -112,7 +112,7 @@ export class Popover extends BaseComponent<PopoverProps> {
 
       // position relative to viewport
       let popoverTop = alignParentTop
-        ? elementClosest(alignEl, alignParentTop).getBoundingClientRect().top
+        ? alignEl.closest(alignParentTop).getBoundingClientRect().top
         : alignmentRect.top
 
       let popoverLeft = isRtl ? alignmentRect.right - popoverDims.width : alignmentRect.left

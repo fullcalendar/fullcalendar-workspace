@@ -1,4 +1,4 @@
-import { config, elementClosest, Emitter, PointerDragEvent } from '@fullcalendar/core/internal'
+import { config, Emitter, PointerDragEvent } from '@fullcalendar/core/internal'
 
 config.touchMouseIgnoreWait = 500
 
@@ -61,7 +61,7 @@ export class PointerDragging {
 
     if (
       subjectEl &&
-      (!this.handleSelector || elementClosest(downEl, this.handleSelector))
+      (!this.handleSelector || downEl.closest(this.handleSelector))
     ) {
       this.subjectEl = subjectEl
       this.isDragging = true // do this first so cancelTouchScroll will work
@@ -83,7 +83,7 @@ export class PointerDragging {
 
   querySubjectEl(ev: UIEvent): HTMLElement {
     if (this.selector) {
-      return elementClosest(ev.target as HTMLElement, this.selector)
+      return (ev.target as HTMLElement).closest(this.selector)
     }
     return this.containerEl as HTMLElement
   }

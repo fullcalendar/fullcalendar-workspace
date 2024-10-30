@@ -1,4 +1,3 @@
-import { elementClosest } from './dom-manip.js'
 
 // Stops a mouse/touch event from doing it's native browser action
 export function preventDefault(ev) {
@@ -13,7 +12,7 @@ export function buildDelegationHandler<EventType extends (Event | UIEvent)>(
   handler: (ev: EventType, matchedTarget: HTMLElement) => void,
 ) {
   return (ev: EventType) => {
-    let matchedChild = elementClosest(ev.target as HTMLElement, selector)
+    let matchedChild = (ev.target as HTMLElement).closest(selector)
 
     if (matchedChild) {
       handler.call(matchedChild, ev, matchedChild)

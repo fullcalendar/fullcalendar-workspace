@@ -58,7 +58,6 @@ export {
   removeElement,
   applyStyle,
   elementMatches,
-  elementClosest,
   getEventTargetViaRoot,
   getUniqueDomId,
 } from './util/dom-manip.js'

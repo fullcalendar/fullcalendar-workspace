@@ -8,7 +8,6 @@ import {
 import {
   Hit,
   EventMutation, applyMutationToEventStore,
-  elementClosest,
   PointerDragEvent,
   EventStore, getRelevantEvents, createEmptyEventStore,
   diffDates, enableCursor, disableCursor,
@@ -235,8 +234,8 @@ export class EventResizing extends Interaction {
     // okay to keep eventInstance around. useful to set it in handlePointerDown
   }
 
-  querySegEl(ev: PointerDragEvent) {
-    return elementClosest(ev.subjectEl as HTMLElement, '.fc-event')
+  querySegEl(ev: PointerDragEvent): HTMLElement {
+    return (ev.subjectEl as HTMLElement).closest('.fc-event')
   }
 }
 
