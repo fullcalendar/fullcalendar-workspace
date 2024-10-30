@@ -27,27 +27,6 @@ export function findElements(container: HTMLElement[] | HTMLElement | NodeListOf
   return allMatches
 }
 
-// accepts multiple subject els
-// only queries direct child elements // TODO: rename to findDirectChildren!
-export function findDirectChildren(parent: HTMLElement[] | HTMLElement, selector?: string): HTMLElement[] {
-  let parents = parent instanceof HTMLElement ? [parent] : parent
-  let allMatches = []
-
-  for (let i = 0; i < parents.length; i += 1) {
-    let childNodes = parents[i].children // only ever elements
-
-    for (let j = 0; j < childNodes.length; j += 1) {
-      let childNode = childNodes[j]
-
-      if (!selector || (childNode as HTMLElement).matches(selector)) {
-        allMatches.push(childNode)
-      }
-    }
-  }
-
-  return allMatches
-}
-
 // Style
 // ----------------------------------------------------------------------------------------------------------------
 
