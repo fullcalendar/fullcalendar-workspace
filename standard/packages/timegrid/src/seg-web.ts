@@ -224,9 +224,12 @@ function stretchWeb(topLevelNodes: SegNode[], totalThickness: number): SegNode[]
 function webToRects(topLevelNodes: SegNode[]): SegWebRect[] {
   let rects: SegWebRect[] = []
 
+  /*
+  Returns max stackForward of the node's forward children
+  */
   const processNode = cacheable(
     (node: SegNode, levelCoord: number, stackDepth: number) => getEventKey(node),
-    (node: SegNode, levelCoord: number, stackDepth: number) => { // returns forwardPressure
+    (node: SegNode, levelCoord: number, stackDepth: number) => {
       let rect: SegWebRect = {
         ...node,
         levelCoord,
@@ -236,15 +239,18 @@ function webToRects(topLevelNodes: SegNode[]): SegWebRect[] {
       rects.push(rect)
 
       return (
-        rect.stackForward = processNodes(node.nextLevelNodes, levelCoord + node.thickness, stackDepth + 1) + 1
+        rect.stackForward = processNodes(node.nextLevelNodes, levelCoord + node.thickness, stackDepth + 1)
       )
     },
   )
 
-  function processNodes(nodes: SegNode[], levelCoord: number, stackDepth: number) { // returns stackForward
+  /*
+  Returns max stackForward of all `nodes`
+  */
+  function processNodes(nodes: SegNode[], levelCoord: number, stackDepth: number) {
     let stackForward = 0
     for (let node of nodes) {
-      stackForward = Math.max(processNode(node, levelCoord, stackDepth), stackForward)
+      stackForward = Math.max(processNode(node, levelCoord, stackDepth) + 1, stackForward)
     }
     return stackForward
   }

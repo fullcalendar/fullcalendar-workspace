@@ -185,14 +185,14 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           let { eventRange } = seg
           let instanceId = eventRange.instance.instanceId // guaranteed because it's an fg event
           let segVertical: Partial<TimeGridSegVertical> = segVerticals[index] || {}
-          let setRect = segRects[index] // for horizontals. could be undefined!? HACK
+          let segRect = segRects[index] // for horizontals. could be undefined!? HACK
 
-          let hStyle = (!isMirror && setRect)
-            ? this.computeSegHStyle(setRect)
+          let hStyle = (!isMirror && segRect)
+            ? this.computeSegHStyle(segRect)
             : { left: 0, right: 0 }
 
-          let isVisible = isMirror || (setRect && !segIsInvisible[instanceId])
-          let isInset = setRect && setRect.stackForward > 0
+          let isVisible = isMirror || (segRect && !segIsInvisible[instanceId])
+          let isInset = segRect && Boolean(segRect.stackDepth)
 
           return (
             <div
@@ -341,7 +341,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       right: fracToCssDim(right),
     }
 
-    if (shouldOverlap && !segRect.stackForward) {
+    if (shouldOverlap && segRect.stackForward) {
       // add padding to the edge so that forward stacked events don't cover the resizer's icon
       props[isRtl ? 'marginLeft' : 'marginRight'] = 10 * 2 // 10 is a guesstimate of the icon's width
     }

@@ -25,7 +25,6 @@ MultiMonth
   Since we moved to a normal Scroller instead of a force-vertical-scrollbar div,
     is there a chance of infinite dimension-to-state loop?
 TimeGrid
-  does every timegrid event have the 'inset' border class even when not needed?
   just like scrollbar dead area should have grey bg,
     make timegrid bottom area w/o slots a grey bg
 Timeline
@@ -146,6 +145,9 @@ Changelog
   Add: eventSlicing (write tests too)
     eventSlicing:true (request: https://github.com/fullcalendar/fullcalendar/issues/6187)
     eventSlicing:false (request: https://fullcalendar.freshdesk.com/a/tickets/9203)
+  v6 regressions fixed
+    fc-timegrid-event-inset (white glow) was being applied to all events,
+      and the top-level events with stackForward weren't being indented on the side
   v7 regressions
     NextJS ResizeObserver error: https://github.com/fullcalendar/fullcalendar/issues/7802
     border problem fixed: https://codepen.io/arshaw/pen/PoMOwdV?editors=0010
