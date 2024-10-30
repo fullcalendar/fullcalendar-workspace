@@ -1,4 +1,4 @@
-import { removeElement, applyStyle, whenTransitionDone, Rect } from '@fullcalendar/core/internal'
+import { applyStyle, whenTransitionDone, Rect } from '@fullcalendar/core/internal'
 
 /*
 An effect in which an element follows the movement of a pointer across the screen.
@@ -97,7 +97,7 @@ export class ElementMirror {
 
   cleanup() {
     if (this.mirrorEl) {
-      removeElement(this.mirrorEl)
+      this.mirrorEl.remove()
       this.mirrorEl = null
     }
 

@@ -3,7 +3,6 @@ import { CustomContentGenerator } from '../common/render-hook.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { guid } from '../util/misc.js'
 import { isArraysEqual } from '../util/array.js'
-import { removeElement } from '../util/dom-manip.js'
 import { ViewOptions } from '../options.js'
 import { isNonHandlerPropsEqual, isPropsEqual } from '../util/object.js'
 import { joinClassNames } from '../util/html.js'
@@ -146,7 +145,9 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
     const el = this.base
 
     if (!isArraysEqual(queuedDomNodes, currentDomNodes)) {
-      currentDomNodes.forEach(removeElement)
+      for (const domNode of currentDomNodes) {
+        (domNode as Element).remove()
+      }
 
       for (let newNode of queuedDomNodes) {
         el.appendChild(newNode)

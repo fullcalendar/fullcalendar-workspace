@@ -1,11 +1,5 @@
 import { Dictionary } from '../options.js'
 
-export function removeElement(el: HTMLElement) { // removes nodes in addition to elements. bad name
-  if (el.parentNode) {
-    el.parentNode.removeChild(el)
-  }
-}
-
 // Querying
 // ----------------------------------------------------------------------------------------------------------------
 

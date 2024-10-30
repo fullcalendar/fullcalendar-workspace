@@ -1,7 +1,6 @@
 import { isDimsEqual } from '../component-util/rendering-misc.js'
 import { watchSize } from '../component-util/resize-observer.js'
 import { DateComponent } from '../component/DateComponent.js'
-import { removeElement } from '../util/dom-manip.js'
 import { joinClassNames } from '../util/html.js'
 import { setRef } from '../vdom-util.js'
 import { Dictionary } from '../options.js'
@@ -251,7 +250,7 @@ function detectRtlScrollerConfig(): RtlScrollerConfig {
 
   let rightScrollbars = innerEl.getBoundingClientRect().right < el.getBoundingClientRect().right
 
-  removeElement(el)
+  el.remove()
 
   return { system, leftScrollbars: !rightScrollbars }
 }

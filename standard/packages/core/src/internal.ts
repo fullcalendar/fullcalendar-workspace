@@ -54,7 +54,6 @@ export { mapHash, filterHash, isPropsEqual, compareObjs, collectFromHash } from 
 
 export {
   findElements,
-  removeElement,
   applyStyle,
   getEventTargetViaRoot,
   getUniqueDomId,

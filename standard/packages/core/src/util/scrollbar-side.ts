@@ -1,4 +1,4 @@
-import { removeElement, applyStyle } from './dom-manip.js'
+import { applyStyle } from './dom-manip.js'
 
 let _isRtlScrollbarOnLeft: boolean | null = null
 
@@ -26,6 +26,6 @@ function computeIsRtlScrollbarOnLeft() { // creates an offscreen test element, t
   let innerEl = outerEl.firstChild as HTMLElement
   let res = innerEl.getBoundingClientRect().left > outerEl.getBoundingClientRect().left
 
-  removeElement(outerEl)
+  outerEl.remove()
   return res
 }
