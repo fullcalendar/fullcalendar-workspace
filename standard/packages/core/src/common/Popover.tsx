@@ -9,8 +9,8 @@ export interface PopoverProps {
   elRef?: Ref<HTMLElement>
   id: string
   title: string
+  attrs?: Dictionary
   className?: string
-  extraAttrs?: Dictionary
   parentEl: HTMLElement
   alignEl: HTMLElement
   alignParentTop?: string // a CSS selector
@@ -32,7 +32,7 @@ export class Popover extends BaseComponent<PopoverProps> {
 
     return createPortal(
       <div
-        {...props.extraAttrs}
+        {...props.attrs}
         id={props.id}
         className={joinClassNames(
           props.className,
