@@ -22,7 +22,7 @@ import {
   Fragment,
 } from '@fullcalendar/core/preact'
 import { TimeGridCoordRange, TimeGridRange } from '../TimeColsSeg.js'
-import { computeFgSegVerticals } from '../event-placement.js'
+import { computeFgSegVerticals, TimeGridSegVertical } from '../event-placement.js'
 import { buildWebPositioning, SegWebRect } from '../seg-web.js'
 import { TimeGridEvent } from './TimeGridEvent.js'
 import { TimeGridMoreLink } from './TimeGridMoreLink.js'
@@ -76,10 +76,6 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
     let sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
 
-    // HACK: equired for when column is taller than slats. because all positioning of events is
-    // done via percentages. needs to be a percentage of the total slat height
-    let slatsTotalHeight = props.slatHeight != null ? props.slatHeight * props.slatCnt : undefined
-
     return (
       <DayCellContainer
         tag="div"
@@ -101,7 +97,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         renderProps={props.renderProps}
       >
         {(InnerContent) => (
-          <div className='fc-rel fc-flex-column' style={{ height: slatsTotalHeight }}>
+          <Fragment>
             {this.renderFillSegs(props.businessHourSegs, 'non-business')}
             {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
             {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
@@ -129,7 +125,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 className='fc-timegrid-col-misc'
               />
             )}
-          </div>
+          </Fragment>
         )}
       </DayCellContainer>
     )
@@ -188,7 +184,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         {segs.map((seg, index) => {
           let { eventRange } = seg
           let instanceId = eventRange.instance.instanceId // guaranteed because it's an fg event
-          let segVertical = segVerticals[index]
+          let segVertical: Partial<TimeGridSegVertical> = segVerticals[index] || {}
           let setRect = segRects[index] // for horizontals. could be undefined!? HACK
 
           let hStyle = (!isMirror && setRect)
@@ -204,8 +200,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               key={forcedKey || instanceId}
               style={{
                 visibility: isVisible ? ('' as any) : 'hidden',
-                top: fracToCssDim(segVertical.start),
-                height: fracToCssDim(segVertical.size),
+                top: segVertical.start,
+                height: segVertical.size,
                 ...hStyle,
               }}
             >
@@ -219,7 +215,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 isResizing={isResizing}
                 isDateSelecting={isDateSelecting}
                 isSelected={instanceId === eventSelection}
-                isShort={segVertical.isShort}
+                isShort={segVertical.isShort || false}
                 isInset={isInset}
                 {...getEventRangeMeta(eventRange, todayRange, nowDate)}
               />
@@ -285,8 +281,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               key={buildEventRangeKey(eventRange)}
               className="fc-timegrid-bg-harness fc-fill-x"
               style={{
-                top: fracToCssDim(segVertical.start),
-                height: fracToCssDim(segVertical.size),
+                top: segVertical.start,
+                height: segVertical.size,
               }}
             >
               {fillType === 'bg-event' ?

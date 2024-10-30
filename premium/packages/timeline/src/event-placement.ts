@@ -65,6 +65,7 @@ export function computeFgSegPlacements( // mostly horizontals
 ] {
   const segRanges: (TimelineCoordRange & EventRangeProps)[] = []
 
+  // isn't it true that there will either be ALL hcoords or NONE? can optimize
   for (const seg of segs) {
     const hcoords = segHorizontals[getEventKey(seg)]
     if (hcoords) {

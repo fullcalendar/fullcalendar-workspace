@@ -9,9 +9,9 @@ import { computeDateTopFrac } from './components/util.js'
 // -------------------------------------------------------------------------------------------------
 
 export interface TimeGridSegVertical {
-  start: number // frac
-  end: number // frac
-  size: number // frac
+  start: number // pixels
+  end: number // pixels
+  size: number // pixels
   isShort: boolean
 }
 
@@ -26,30 +26,28 @@ export function computeFgSegVerticals(
 ): TimeGridSegVertical[] {
   const res: TimeGridSegVertical[] = []
 
-  for (const seg of segs) {
-    const startFrac = computeDateTopFrac(seg.startDate, dateProfile, colDate)
-    const endFrac = computeDateTopFrac(seg.endDate, dateProfile, colDate)
-    let heightFrac = endFrac - startFrac
-    let isShort = false
+  if (slatHeight != null) {
+    const totalHeight = slatHeight * slatCnt
 
-    if (slatHeight !== undefined) {
-      const totalHeight = slatHeight * slatCnt
-      let heightPixels = heightFrac * totalHeight
+    for (const seg of segs) {
+      const startFrac = computeDateTopFrac(seg.startDate, dateProfile, colDate)
+      const endFrac = computeDateTopFrac(seg.endDate, dateProfile, colDate)
+      const startCoord = startFrac * totalHeight
+      let endCoord = endFrac * totalHeight
+      let height = endCoord - startCoord
 
-      if (eventMinHeight != null && heightPixels < eventMinHeight) {
-        heightPixels = eventMinHeight
-        heightFrac = heightPixels / totalHeight
+      if (eventMinHeight != null && height < eventMinHeight) {
+        height = eventMinHeight
+        endCoord = startCoord + height
       }
 
-      isShort = eventShortHeight != null && heightPixels < eventShortHeight
+      res.push({
+        start: startCoord,
+        end: endCoord,
+        size: height,
+        isShort: eventShortHeight != null && height < eventShortHeight
+      })
     }
-
-    res.push({
-      start: startFrac,
-      end: startFrac + heightFrac,
-      size: heightFrac,
-      isShort,
-    })
   }
 
   return res

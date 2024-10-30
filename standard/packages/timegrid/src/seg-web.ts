@@ -57,14 +57,19 @@ export function buildWebPositioning(
   segRects: SegWebRect[],
   hiddenGroups: SegGroup<TimeGridCoordRange>[]
 ] {
-  const segRanges: (TimeGridCoordRange & EventRangeProps)[] = segs.map((seg, i) => {
+  const segRanges: (TimeGridCoordRange & EventRangeProps)[] = []
+
+  // isn't it true that there will either be ALL hcoords or NONE? can optimize
+  for (let i = 0; i < segs.length; i++) {
     const segVertical = segVerticals[i]
-    return {
-      ...seg,
-      start: segVertical.start,
-      end: segVertical.start + segVertical.size,
+    if (segVertical) {
+      segRanges.push({
+        ...segs[i],
+        start: segVertical.start,
+        end: segVertical.end,
+      })
     }
-  })
+  }
 
   const hierarchy = new SegHierarchy<TimeGridCoordRange>(
     segRanges,

@@ -14,6 +14,7 @@ Theming
 DayGrid
   bug (print-view):
     for multi-day events, don't display title within non-start/end segs
+  structure: highlight is ABOVE fg events. put BELOW
 MultiMonth
   bug: when multimonth made REALLY small, single col month gets padding
     standard/bundle/examples/responsive.html
@@ -24,7 +25,6 @@ MultiMonth
   Since we moved to a normal Scroller instead of a force-vertical-scrollbar div,
     is there a chance of infinite dimension-to-state loop?
 TimeGrid
-  use pixel positioning for events (to avoid TimeGridCol height hack)
   does every timegrid event have the 'inset' border class even when not needed?
   just like scrollbar dead area should have grey bg,
     make timegrid bottom area w/o slots a grey bg
@@ -105,7 +105,8 @@ Markup/CSS/structure
   Z-INDEX issues
     solve z-index:9999 hacks
     in timegrid, background events are incorrectly covering foreground events (background-events.html)
-  fc-daygrid-cell-number is an awkward classname... fc-daygrid-day-number instead? fc-daygrid-datenumber/daynumber?
+  .fc-timegrid-col-fg -> .fc-timegrid-col-events, like DayGrid?
+  .fc-daygrid-cell-number is an awkward classname... fc-daygrid-day-number instead? fc-daygrid-datenumber/daynumber?
   .fc-cell-main doesn't need to be span anymore (within a flex parent)
     same with indent
   is text-selection disabled everywhere? was it before? (if fixed, find ticket)
@@ -122,6 +123,7 @@ Performance
     https://github.com/fullcalendar/fullcalendar/issues/5606
   hit-system: only query DOM element for handlers like dayClick at very end
   this.detachInnerHeight() // should fire a 'null' height? yes! will cleanup any map listeners
+  use css translateX/Y instead of top/left to prevent reflows
 Angular
   Building example project gives warnings like
     Ignoring this import because ".." was marked as having no side effects
@@ -140,6 +142,7 @@ Examples
 Last-minute features
   Calendar::updateSize return promise
   Drop-shadow under sticky header, timeline headers
+  In timegrid, when date-selecting with mirror event, why are we rendering highlight?
 Changelog
   Add: Calendar::updateSize no longer synchronous
   Add: all cell headers are no longer bold
