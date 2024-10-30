@@ -57,7 +57,6 @@ export {
   findDirectChildren,
   removeElement,
   applyStyle,
-  elementMatches,
   getEventTargetViaRoot,
   getUniqueDomId,
 } from './util/dom-manip.js'

@@ -9,7 +9,6 @@ import {
   DateSpan,
   EventInteractionState,
   DragMetaInput, DragMeta, parseDragMeta,
-  elementMatches,
   enableCursor, disableCursor,
   isInteractionValid,
   ElementDragging,
@@ -201,7 +200,7 @@ export class ExternalElementDragging {
     }
 
     if (typeof dropAccept === 'string' && dropAccept) {
-      return Boolean(elementMatches(el, dropAccept))
+      return el.matches(dropAccept)
     }
 
     return true

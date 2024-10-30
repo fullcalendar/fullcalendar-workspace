@@ -9,12 +9,6 @@ export function removeElement(el: HTMLElement) { // removes nodes in addition to
 // Querying
 // ----------------------------------------------------------------------------------------------------------------
 
-export function elementMatches(el: HTMLElement, selector: string): HTMLElement {
-  let method = el.matches || (el as any).matchesSelector || (el as any).msMatchesSelector
-
-  return method.call(el, selector)
-}
-
 // accepts multiple subject els
 // returns a real array. good for methods like forEach
 // TODO: accept the document
@@ -45,7 +39,7 @@ export function findDirectChildren(parent: HTMLElement[] | HTMLElement, selector
     for (let j = 0; j < childNodes.length; j += 1) {
       let childNode = childNodes[j]
 
-      if (!selector || elementMatches(childNode as HTMLElement, selector)) {
+      if (!selector || (childNode as HTMLElement).matches(selector)) {
         allMatches.push(childNode)
       }
     }
