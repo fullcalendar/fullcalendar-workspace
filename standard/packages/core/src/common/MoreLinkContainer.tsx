@@ -25,8 +25,8 @@ export interface MoreLinkContainerProps extends Partial<ElProps> {
   segs: EventRangeProps[]
   hiddenSegs: EventRangeProps[]
   dateSpanProps?: Dictionary
-  alignmentElRef?: RefObject<HTMLElement> // will use internal <a> if unspecified
-  alignGridTop?: boolean // for popover
+  alignElRef?: RefObject<HTMLElement> // will use internal <a> if unspecified
+  alignParentTop?: string // for popover
   forceTimed?: boolean // for popover
   popoverContent: () => ComponentChild
   defaultGenerator?: (renderProps: MoreLinkContentArg) => ComponentChild
@@ -114,12 +114,12 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   todayRange={props.todayRange}
                   dateSpanProps={props.dateSpanProps}
                   parentEl={this.parentEl}
-                  alignmentEl={
-                    props.alignmentElRef ?
-                      props.alignmentElRef.current :
+                  alignEl={
+                    props.alignElRef ?
+                      props.alignElRef.current :
                       this.linkEl
                   }
-                  alignGridTop={props.alignGridTop}
+                  alignParentTop={props.alignParentTop}
                   forceTimed={props.forceTimed}
                   onClose={this.handlePopoverClose}
                 >

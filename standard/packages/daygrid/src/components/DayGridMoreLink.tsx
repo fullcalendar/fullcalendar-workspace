@@ -21,8 +21,8 @@ export interface DayGridMoreLinkProps {
   allDayDate: DateMarker
   segs: DayRowEventRangePart[]
   hiddenSegs: DayRowEventRange[]
-  alignmentElRef: RefObject<HTMLElement>
-  alignGridTop: boolean // for popover
+  alignElRef: RefObject<HTMLElement>
+  alignParentTop: string // for popover
   dateSpanProps?: Dictionary
   dateProfile: DateProfile
   todayRange: DateRange
@@ -47,8 +47,8 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
         allDayDate={props.allDayDate}
         segs={props.segs}
         hiddenSegs={props.hiddenSegs}
-        alignmentElRef={props.alignmentElRef}
-        alignGridTop={props.alignGridTop}
+        alignElRef={props.alignElRef}
+        alignParentTop={props.alignParentTop}
         dateSpanProps={props.dateSpanProps}
         popoverContent={() => {
           let forcedInvisibleMap = // TODO: more convenient/DRY

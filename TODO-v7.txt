@@ -24,8 +24,6 @@ MultiMonth
   Since we moved to a normal Scroller instead of a force-vertical-scrollbar div,
     is there a chance of infinite dimension-to-state loop?
 TimeGrid
-  bug: crazy error when opening +more link in all-day area:
-    throw new Error('alignGridTop not supported yet')
   use pixel positioning for events (to avoid TimeGridCol height hack)
   does every timegrid event have the 'inset' border class even when not needed?
   just like scrollbar dead area should have grey bg,
@@ -109,7 +107,6 @@ Markup/CSS/structure
   fc-daygrid-cell-number is an awkward classname... fc-daygrid-day-number instead? fc-daygrid-datenumber/daynumber?
   .fc-cell-main doesn't need to be span anymore (within a flex parent)
     same with indent
-  position the popover -1px -1px, to overlap border
   is text-selection disabled everywhere? was it before? (if fixed, find ticket)
 Accessibility
   lack of text-selectability: https://github.com/fullcalendar/fullcalendar/issues/5628

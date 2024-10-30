@@ -15,8 +15,8 @@ export interface MorePopoverProps {
   endDate: DateMarker
   dateProfile: DateProfile
   parentEl: HTMLElement
-  alignmentEl: HTMLElement
-  alignGridTop?: boolean
+  alignEl: HTMLElement
+  alignParentTop?: string
   forceTimed?: boolean
   todayRange: DateRange
   dateSpanProps: Dictionary
@@ -51,8 +51,8 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             )}
             extraAttrs={attrs /* TODO: make these time-based when not whole-day? */}
             parentEl={props.parentEl}
-            alignmentEl={props.alignmentEl}
-            alignGridTop={props.alignGridTop}
+            alignEl={props.alignEl}
+            alignParentTop={props.alignParentTop}
             onClose={props.onClose}
           >
             {hasCustomDayCellContent(options) && (

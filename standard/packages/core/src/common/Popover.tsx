@@ -12,8 +12,8 @@ export interface PopoverProps {
   className?: string
   extraAttrs?: Dictionary
   parentEl: HTMLElement
-  alignmentEl: HTMLElement
-  alignGridTop?: boolean
+  alignEl: HTMLElement
+  alignParentTop?: string // a CSS selector
   children?: ComponentChildren
   onClose?: () => void
 }
@@ -103,21 +103,18 @@ export class Popover extends BaseComponent<PopoverProps> {
 
   private updateSize() {
     let { isRtl } = this.context
-    let { alignmentEl, alignGridTop } = this.props
+    let { alignEl, alignParentTop } = this.props
     let { rootEl } = this
 
-    let alignmentRect = computeClippedClientRect(alignmentEl)
+    let alignmentRect = computeClippedClientRect(alignEl)
     if (alignmentRect) {
       let popoverDims = rootEl.getBoundingClientRect()
 
-      if (alignGridTop) {
-        throw new Error('alignGridTop not supported yet')
-      }
-
       // position relative to viewport
-      let popoverTop = alignGridTop
-        ? elementClosest(alignmentEl, '.fc-scrollgrid').getBoundingClientRect().top // BAD!!!
+      let popoverTop = alignParentTop
+        ? elementClosest(alignEl, alignParentTop).getBoundingClientRect().top
         : alignmentRect.top
+
       let popoverLeft = isRtl ? alignmentRect.right - popoverDims.width : alignmentRect.left
 
       // constrain
