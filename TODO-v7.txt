@@ -45,7 +45,6 @@ Timeline
 Resource DayGrid
   bug w/ `bundle/examples-v7/resource-daygrid.html` when dragging event3 one day ahead,
     would result in a +more link that'd disappear when you return, but after we refactor DayGrid rendering, should be fixed
-  structure: fix ResourceTimeline super-header fc-row-border abuse
 Resource Timeline
   bug: in `examples/resource-add-remove.html`, when deleting Auditorium D, collapses strangely after
   bug: when resourceAreaHeaderContent, and multiple datagrid-columns, super-header's indent is unnecessary. looks bad
@@ -54,6 +53,7 @@ Resource Timeline
   in datagrid, move fc-resource to the fc-row (instead of each fc-cell)... add to changelog
   just like scrollbar dead area should have grey bg,
     make timeline bottom area w/o slots a grey bg
+  structure: fix ResourceTimeline super-header fc-row-border abuse
   structure: resource-row dom-structure unnecessarily complex
   get grouping via row and col simultaneously working. should be possible.
     see timeline-row-n-col-grouping-not-working.html
@@ -148,6 +148,7 @@ Changelog
   v6 regressions fixed
     fc-timegrid-event-inset (white glow) was being applied to all events,
       and the top-level events with stackForward weren't being indented on the side
+      DID SOMEONE post a bug report for this?
   v7 regressions
     NextJS ResizeObserver error: https://github.com/fullcalendar/fullcalendar/issues/7802
     border problem fixed: https://codepen.io/arshaw/pen/PoMOwdV?editors=0010
