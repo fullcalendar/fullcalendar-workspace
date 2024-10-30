@@ -31,6 +31,7 @@ TimeGrid
   structure: in TimeGridLayoutNormal, not nice how axis text isn't selectable
     (related to how now-indicator is rendered in axis)
   structure: is all-day section's DayGridRow too nested?
+  structure: .fc-timegrid-allday contains divider? weird
 Timeline
   bug (no resources): can't drag-n-drop. date-selection happens instead
   bug for timeline event dragging:
@@ -138,6 +139,7 @@ Examples
     Things are currently collapsing very strangely on a narrow screen (like stackblitz angular demo)
 Last-minute features
   Calendar::updateSize return promise
+  Drop-shadow under sticky header, timeline headers
 Changelog
   Add: Calendar::updateSize no longer synchronous
   Add: all cell headers are no longer bold
