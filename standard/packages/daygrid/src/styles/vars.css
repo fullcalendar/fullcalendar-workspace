@@ -7,8 +7,6 @@ $daygrid-weeknum-z: 5;
 $daygrid-event-z: 6;
 $daygrid-event-mirror-z: 7;
 
-$daygrid-event-inner-margin: 3px;
-
 :root {
   --fc-daygrid-event-dot-width: 8px;
 }

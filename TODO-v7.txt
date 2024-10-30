@@ -14,7 +14,6 @@ Theming
 DayGrid
   bug (print-view):
     for multi-day events, don't display title within non-start/end segs
-  structure: highlight is ABOVE fg events. put BELOW
 MultiMonth
   bug: when multimonth made REALLY small, single col month gets padding
     standard/bundle/examples/responsive.html

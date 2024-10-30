@@ -27,10 +27,10 @@
 // spacing between time and title
 // TODO: use gap, though be mindful of 3 siblings
 .fc-direction-ltr .fc-daygrid-event .fc-event-time { // (ltr) > time
-  margin-right: $daygrid-event-inner-margin;
+  margin-right: 3px;
 }
 .fc-direction-rtl .fc-daygrid-event .fc-event-time { // (rtl) > time
-  margin-left: $daygrid-event-inner-margin;
+  margin-left: 3px;
 }
 
 //

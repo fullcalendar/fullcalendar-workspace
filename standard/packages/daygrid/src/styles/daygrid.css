@@ -102,10 +102,11 @@
 }
 
 //
-// daygrid-cell > bg-content (???)
+// daygrid-row > bg-content
+// daygrid-row > cell > bg-content
 //
 
-.fc-daygrid-cell {
+.fc-daygrid-row {
   & .fc-non-business { z-index: $daygrid-non-business-z }
   & .fc-bg-event { z-index: $daygrid-bg-event-z }
   & .fc-highlight { z-index: $daygrid-highlight-z }
