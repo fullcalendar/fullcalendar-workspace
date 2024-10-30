@@ -112,6 +112,10 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
     )
     this.slatHeight = slatHeight
 
+    const axisStartCss = context.isRtl
+      ? { right: axisWidth }
+      : { left: axisWidth }
+
     return (
       <Fragment>
         {/* HEADER
@@ -235,19 +239,14 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 </div>
               ))}
             </div>
-            <div className='fc-fill fc-flex-row'>
-              <div
-                className='fc-cell fc-content-box'
-                style={{ width: axisWidth }}
-              >
-                {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
-                  <TimeGridNowIndicatorArrow
-                    nowDate={nowDate}
-                    dateProfile={props.dateProfile}
-                    totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
-                  />
-                )}
-              </div>
+            {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
+              <TimeGridNowIndicatorArrow
+                nowDate={nowDate}
+                dateProfile={props.dateProfile}
+                totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
+              />
+            )}
+            <div className='fc-fill fc-cell-border-fake fc-flex-column' style={axisStartCss}>
               <TimeGridCols
                 dateProfile={props.dateProfile}
                 nowDate={props.nowDate}

@@ -28,8 +28,6 @@ TimeGrid
   does every timegrid event have the 'inset' border class even when not needed?
   just like scrollbar dead area should have grey bg,
     make timegrid bottom area w/o slots a grey bg
-  structure: in TimeGridLayoutNormal, not nice how axis text isn't selectable
-    (related to how now-indicator is rendered in axis)
   structure: is all-day section's DayGridRow too nested?
   structure: .fc-timegrid-allday contains divider? weird
 Timeline
