@@ -2,6 +2,23 @@ export const RED_REGEX = /red|rgb\(255,\s*0,\s*0\)/
 export const GREEN_REGEX = /green|rgb\(0,\s*255,\s*0\)/
 export const BLUE_REGEX = /blue|rgb\(0,\s*0,\s*255\)/
 
+// accepts multiple subject els
+// returns a real array. good for methods like forEach
+export function findElements(container: HTMLElement[] | HTMLElement | NodeListOf<HTMLElement>, selector: string): HTMLElement[] {
+  let containers = container instanceof HTMLElement ? [container] : container
+  let allMatches: HTMLElement[] = []
+
+  for (let i = 0; i < containers.length; i += 1) {
+    let matches = containers[i].querySelectorAll(selector)
+
+    for (let j = 0; j < matches.length; j += 1) {
+      allMatches.push(matches[j] as HTMLElement)
+    }
+  }
+
+  return allMatches
+}
+
 export function getStockScrollbarWidths(direction) {
   let el = $('<div><div style="position:relative"/></div>')
     .css({

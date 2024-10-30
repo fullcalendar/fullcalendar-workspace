@@ -1,5 +1,5 @@
 import { Calendar } from '@fullcalendar/core'
-import { findElements } from '@fullcalendar/core/internal'
+import { findElements } from '../../lib/dom-misc.js'
 import { ToolbarWrapper } from './ToolbarWrapper.js'
 
 export class CalendarWrapper {

@@ -1,26 +1,5 @@
 import { Dictionary } from '../options.js'
 
-// Querying
-// ----------------------------------------------------------------------------------------------------------------
-
-// accepts multiple subject els
-// returns a real array. good for methods like forEach
-// TODO: accept the document
-export function findElements(container: HTMLElement[] | HTMLElement | NodeListOf<HTMLElement>, selector: string): HTMLElement[] {
-  let containers = container instanceof HTMLElement ? [container] : container
-  let allMatches: HTMLElement[] = []
-
-  for (let i = 0; i < containers.length; i += 1) {
-    let matches = containers[i].querySelectorAll(selector)
-
-    for (let j = 0; j < matches.length; j += 1) {
-      allMatches.push(matches[j] as HTMLElement)
-    }
-  }
-
-  return allMatches
-}
-
 // Style
 // ----------------------------------------------------------------------------------------------------------------
 

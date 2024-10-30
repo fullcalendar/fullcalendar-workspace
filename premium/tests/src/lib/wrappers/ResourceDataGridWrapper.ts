@@ -1,4 +1,4 @@
-import { findElements } from '@fullcalendar/core/internal'
+import { findElements } from '@fullcalendar-tests/standard/lib/dom-misc'
 
 export class ResourceDataGridWrapper {
   constructor(private el: HTMLElement) {

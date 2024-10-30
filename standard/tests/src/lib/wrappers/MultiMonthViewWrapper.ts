@@ -1,5 +1,5 @@
 import { Calendar } from '@fullcalendar/core'
-import { findElements } from '@fullcalendar/core/internal'
+import { findElements } from '../../lib/dom-misc.js'
 import { ViewWrapper } from './ViewWrapper.js'
 import { DayGridWrapper } from './DayGridWrapper.js'
 

@@ -53,7 +53,6 @@ export {
 export { mapHash, filterHash, isPropsEqual, compareObjs, collectFromHash } from './util/object.js'
 
 export {
-  findElements,
   applyStyle,
   getEventTargetViaRoot,
   getUniqueDomId,
