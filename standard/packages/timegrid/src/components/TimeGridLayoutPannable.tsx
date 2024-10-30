@@ -159,7 +159,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             className={joinClassNames(
               'fc-timegrid-header fc-table-header',
               stickyHeaderDates && 'fc-table-header-sticky',
-              'fc-row',
+              'fc-flex-row',
             )}
           >
             {/* HEADER / labels
@@ -217,7 +217,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         )}
         {options.allDaySlot && (
           <Fragment>
-            <div className='fc-timegrid-allday fc-flex-row'>{/* not fc-row because don't want border */}
+            {/* not fc-row because don't want border */}
+            <div className='fc-timegrid-allday fc-table-body fc-flex-row'>
               {/* ALL-DAY / label
               -----------------------------------------------------------------------------------*/}
               <TimeGridAllDayLabel // .fc-cell
@@ -274,7 +275,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           </Fragment>
         )}
         <div className={joinClassNames(
-          'fc-timegrid-body fc-row',
+          'fc-timegrid-body fc-table-body fc-flex-row',
           verticalScrolling && 'fc-liquid',
         )}>
           {/* SLATS / labels (vertical scroller)

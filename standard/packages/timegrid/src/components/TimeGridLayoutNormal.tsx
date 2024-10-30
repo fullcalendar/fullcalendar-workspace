@@ -158,45 +158,48 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         {/* ALL-DAY
         ---------------------------------------------------------------------------------------*/}
         {options.allDaySlot && (
-          <div className='fc-timegrid-allday'>{/* TODO: role="rowgroup" will here. we omit fc-table-body to avoid top-border on next fc-table-body */}
+          <Fragment>
             <div
-              className='fc-row'
+              // TODO: role="rowgroup"
+              className='fc-timegrid-allday fc-table-body'
               style={{
                 paddingLeft: state.leftScrollbarWidth,
                 paddingRight: state.rightScrollbarWidth,
               }}
             >
-              <TimeGridAllDayLabel // .fc-cell
-                width={axisWidth}
-                innerWidthRef={this.handleAllDayLabelInnerWidth}
-              />
-              <TimeGridAllDayLane
-                dateProfile={props.dateProfile}
-                todayRange={props.todayRange}
-                cells={props.cells}
-                showDayNumbers={false}
-                forPrint={props.forPrint}
-                isHitComboAllowed={props.isHitComboAllowed}
-                className='fc-liquid fc-cell'
-                isCompact={
-                  (state.clientWidth != null && state.axisWidth != null)
-                    && (state.clientWidth - state.axisWidth) / props.cells.length < COMPACT_CELL_WIDTH
-                }
+              <div className='fc-row'>
+                <TimeGridAllDayLabel // .fc-cell
+                  width={axisWidth}
+                  innerWidthRef={this.handleAllDayLabelInnerWidth}
+                />
+                <TimeGridAllDayLane
+                  dateProfile={props.dateProfile}
+                  todayRange={props.todayRange}
+                  cells={props.cells}
+                  showDayNumbers={false}
+                  forPrint={props.forPrint}
+                  isHitComboAllowed={props.isHitComboAllowed}
+                  className='fc-liquid fc-cell'
+                  isCompact={
+                    (state.clientWidth != null && state.axisWidth != null)
+                      && (state.clientWidth - state.axisWidth) / props.cells.length < COMPACT_CELL_WIDTH
+                  }
 
-                // content
-                fgEventSegs={props.fgEventSegs}
-                bgEventSegs={props.bgEventSegs}
-                businessHourSegs={props.businessHourSegs}
-                dateSelectionSegs={props.dateSelectionSegs}
-                eventDrag={props.eventDrag}
-                eventResize={props.eventResize}
-                eventSelection={props.eventSelection}
-                dayMaxEvents={props.dayMaxEvents}
-                dayMaxEventRows={props.dayMaxEventRows}
-              />
+                  // content
+                  fgEventSegs={props.fgEventSegs}
+                  bgEventSegs={props.bgEventSegs}
+                  businessHourSegs={props.businessHourSegs}
+                  dateSelectionSegs={props.dateSelectionSegs}
+                  eventDrag={props.eventDrag}
+                  eventResize={props.eventResize}
+                  eventSelection={props.eventSelection}
+                  dayMaxEvents={props.dayMaxEvents}
+                  dayMaxEventRows={props.dayMaxEventRows}
+                />
+              </div>
             </div>
             <div className='fc-rowdivider'></div>
-          </div>
+          </Fragment>
         )}
         {/* SLATS
         -----------------------------------------------------------------------------------------*/}
