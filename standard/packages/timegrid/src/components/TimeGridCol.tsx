@@ -235,16 +235,12 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     return (
       <Fragment>
         {hiddenGroups.map((hiddenGroup) => {
-          let startFrac = hiddenGroup.start
-          let endFrac = hiddenGroup.end
-          let heightFrac = endFrac - startFrac
-
           return (
             <TimeGridMoreLink
               key={hiddenGroup.key}
               hiddenSegs={hiddenGroup.segs}
-              top={fracToCssDim(startFrac)}
-              height={fracToCssDim(heightFrac)}
+              top={hiddenGroup.start}
+              height={hiddenGroup.end - hiddenGroup.start}
               dateSpanProps={dateSpanProps}
               dateProfile={dateProfile}
               todayRange={todayRange}
@@ -301,7 +297,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   }
 
   renderNowIndicator(segs: TimeGridRange[]) {
-    let { date, dateProfile } = this.props
+    let { date, dateProfile, slatHeight, slatCnt } = this.props
 
     // TODO: what if nowIndicator turned OFF??
 
@@ -310,6 +306,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         nowDate={seg.startDate}
         dayDate={date}
         dateProfile={dateProfile}
+        totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
       />
     ))
   }

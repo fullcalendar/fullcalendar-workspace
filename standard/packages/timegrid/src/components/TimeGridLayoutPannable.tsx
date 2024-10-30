@@ -318,6 +318,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 <TimeGridNowIndicatorArrow
                   nowDate={nowDate}
                   dateProfile={props.dateProfile}
+                  totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
                 />
               )}
             </div>

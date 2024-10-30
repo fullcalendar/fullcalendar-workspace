@@ -1,10 +1,11 @@
-import { DateMarker, DateProfile, fracToCssDim, NowIndicatorContainer } from "@fullcalendar/core/internal"
+import { DateMarker, DateProfile, NowIndicatorContainer } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
 import { computeDateTopFrac } from "./util.js"
 
 export interface TimeGridNowIndicatorArrowProps {
   nowDate: DateMarker
   dateProfile: DateProfile
+  totalHeight: number | undefined
 }
 
 export function TimeGridNowIndicatorArrow(props: TimeGridNowIndicatorArrowProps) {
@@ -12,7 +13,9 @@ export function TimeGridNowIndicatorArrow(props: TimeGridNowIndicatorArrowProps)
     <NowIndicatorContainer
       className='fc-timegrid-now-indicator-arrow'
       style={{
-        top: fracToCssDim(computeDateTopFrac(props.nowDate, props.dateProfile))
+        top: props.totalHeight != null
+          ? props.totalHeight * computeDateTopFrac(props.nowDate, props.dateProfile)
+          : undefined
       }}
       isAxis
       date={props.nowDate}

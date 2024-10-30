@@ -209,7 +209,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
         >
           <div className='fc-flex-column fc-grow fc-rel'>
-            {/* fc-timegrid-slots is purely for tests/old-print-view. remove somehow? */}
+            {/* the fc-timegrid-slots className is purely for tests/old-print-view. remove somehow? */}
             <div className='fc-timegrid-slots fc-flex-column fc-grow'>
               {props.slatMetas.map((slatMeta) => (
                 <div
@@ -244,6 +244,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   <TimeGridNowIndicatorArrow
                     nowDate={nowDate}
                     dateProfile={props.dateProfile}
+                    totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
                   />
                 )}
               </div>
