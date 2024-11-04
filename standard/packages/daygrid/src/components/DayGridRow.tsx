@@ -26,11 +26,11 @@ import {
   Fragment,
   Ref,
 } from '@fullcalendar/core/preact'
-import { DayRowEventRangePart, getEventPartKey, organizeSegsByStartCol } from '../TableSeg.js'
+import { DayRowEventRangePart, getEventPartKey } from '../TableSeg.js'
 import { DayGridCell } from './DayGridCell.js'
 import { DayGridListEvent } from './DayGridListEvent.js'
 import { DayGridBlockEvent } from './DayGridBlockEvent.js'
-import { computeFgSegVerticals, ENABLE_STANDINS, sliceSegsAcrossCols } from '../event-placement.js'
+import { computeFgSegVerticals } from '../event-placement.js'
 import { hasListItemDisplay } from '../event-rendering.js'
 import { computeHorizontalsFromSeg } from './util.js'
 import { DayGridEventHarness } from './DayGridEventHarness.js'
@@ -67,9 +67,11 @@ export interface DayGridRowProps {
   heightRef?: Ref<number>
 }
 
+export const COMPACT_CELL_WIDTH = 80
+
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
 
-export const COMPACT_CELL_WIDTH = 80
+const RENDER_STANDINS = false
 
 export class DayGridRow extends BaseComponent<DayGridRowProps> {
   // ref
@@ -96,7 +98,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const { options } = context
 
     const weekDate = props.cells[0].date
-    const colCnt = props.cells.length
     const fgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
 
     // TODO: memoize? sort all types of segs?
@@ -127,13 +128,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const highlightSegs = this.getHighlightSegs()
     const mirrorSegs = this.getMirrorSegs()
 
-    // TODO: memoize?
-    const bgEventSegsByCol = (ENABLE_STANDINS ? sliceSegsAcrossCols : organizeSegsByStartCol)(
-      props.bgEventSegs,
-      colCnt
-    )
-    const businessHoursByCol = organizeSegsByStartCol(props.businessHourSegs, colCnt)
-
     const forcedInvisibleMap = // TODO: more convenient/DRY
       (props.eventDrag && props.eventDrag.affectedInstances) ||
       (props.eventResize && props.eventResize.affectedInstances) ||
@@ -162,6 +156,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
           />
         )}
+        {this.renderFillSegs(props.businessHourSegs, 'non-business')}
+        {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
+        {this.renderFillSegs(highlightSegs, 'highlight')}
         {props.cells.map((cell, col) => {
           const normalFgNodes = this.renderFgSegs(
             maxMainTop,
@@ -190,12 +187,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
                   {normalFgNodes}
                 </Fragment>
               )}
-              bg={(
-                <Fragment>
-                  {this.renderFillSegs(businessHoursByCol[col], 'non-business')}
-                  {this.renderFillSegs(bgEventSegsByCol[col], 'bg-event')}
-                </Fragment>
-              )}
               eventDrag={props.eventDrag}
               eventResize={props.eventResize}
               eventSelection={props.eventSelection}
@@ -216,7 +207,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             />
           )
         })}
-        {this.renderFillSegs(highlightSegs, 'highlight')}
         {this.renderFgSegs(
           maxMainTop,
           mirrorSegs,
@@ -255,7 +245,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       const { standinFor, eventRange } = seg
       const { instanceId } = eventRange.instance
 
-      if (!ENABLE_STANDINS && standinFor) {
+      if (!RENDER_STANDINS && standinFor) {
         continue
       }
 

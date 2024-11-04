@@ -66,23 +66,6 @@ export function splitInteractionByRow(
   return byRow
 }
 
-export function organizeSegsByStartCol<R extends SlicedCoordRange>(
-  segs: R[],
-  colCnt: number
-): R[][] {
-  let byCol: (R & { standinFor?: any })[][] = []
-
-  for (let col = 0; col < colCnt; col++) {
-    byCol.push([])
-  }
-
-  for (const seg of segs) {
-    byCol[seg.start].push(seg)
-  }
-
-  return byCol
-}
-
 export function sliceStandin<R extends SlicedCoordRange>(
   seg: R,
   col: number,

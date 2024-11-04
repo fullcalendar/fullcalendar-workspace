@@ -41,7 +41,6 @@ export interface DayGridCellProps {
   hiddenSegs: DayRowEventRange[] // "
   fgLiquidHeight: boolean
   fg: ComponentChildren
-  bg: ComponentChildren
   eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null
   eventResize: EventSegUiInteractionState<SlicedCoordRange> | null
   eventSelection: string
@@ -142,7 +141,6 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 todayRange={props.todayRange}
               />
             </div>
-            {props.bg}
           </Fragment>
         )}
       </DayCellContainer>
