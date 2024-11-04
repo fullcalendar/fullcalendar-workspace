@@ -1,7 +1,6 @@
 
 @import '../../../../standard/packages/core/src/styles/constants';
 @import '../../../../standard/packages/core/src/styles/mixins';
-@import './styles/constants';
 
 @import './styles/timeline';
 @import './styles/timeline-event';

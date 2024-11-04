@@ -48,6 +48,9 @@ Rarely used. Just inline this?
 .fc-table-body.fc-flex-row {
   flex-direction: row;
 }
+.fc-row.fc-flex-column {
+  flex-direction: column;
+}
 
 .fc-table-header,
 .fc-table-body,

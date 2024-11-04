@@ -1,7 +1,7 @@
 
 // z-index overall
 // (NOTE: always prefer natural DOM order to these)
-$fg-z: 1;
+$fg-z: 1; // optional. only needed if must get higher than a bg
 $event-z: 2;
 $event-mirror-z: 3;
 $now-indicator-z: 4;

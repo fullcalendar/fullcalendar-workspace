@@ -1,6 +1,2 @@
 
-@mixin bg-z-indexes { // TODO: kill
-  & .fc-non-business { z-index: 1 }
-  & .fc-bg-event { z-index: 2 }
-  & .fc-highlight { z-index: 3 }
-}
+// TODO: maybe we'll need this file later

@@ -45,10 +45,9 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         attrs={{
           role: 'gridcell',
           'aria-colindex': props.colIndex,
-          'data-resource-id': props.resource.id,
         }}
         className={joinClassNames(
-          'fc-resource fc-cell',
+          'fc-cell',
           props.colIndex && 'fc-cell-border',
         )}
         style={{

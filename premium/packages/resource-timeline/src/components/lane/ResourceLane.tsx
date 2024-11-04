@@ -1,5 +1,5 @@
 import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef } from '@fullcalendar/core/internal'
-import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
 import { TimelineLane, TimelineLaneProps } from '@fullcalendar/timeline/internal'
 
@@ -8,12 +8,11 @@ export interface ResourceLaneProps extends TimelineLaneProps {
   slotWidth: number | undefined
 
   // refs
-  innerHeightRef?: Ref<number>
+  heightRef?: Ref<number>
 }
 
 export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
-  private innerElRef = createRef<HTMLDivElement>()
   private unwatchHeight?: () => void
 
   render() {
@@ -24,10 +23,9 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
     return (
       <ContentContainer
         tag="div"
-        className='fc-timeline-lane fc-resource'
-        attrs={{
-          'data-resource-id': props.resource.id,
-        }}
+        className='fc-timeline-lane'
+        attrs={{ role: 'cell' }}
+        elRef={this.handleRootEl}
         renderProps={renderProps}
         generatorName="resourceLaneContent"
         customGenerator={options.resourceLaneContent}
@@ -36,7 +34,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         willUnmount={options.resourceLaneWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className='fc-flex-column'>
+          <Fragment>
             <InnerContent
               tag="div"
               className='fc-timeline-lane-misc'
@@ -59,20 +57,21 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               // dimensions
               slotWidth={props.slotWidth}
             />
-          </div>
+          </Fragment>
         )}
       </ContentContainer>
     )
   }
 
-  componentDidMount(): void {
-    this.unwatchHeight = watchHeight(this.innerElRef.current, (height) => {
-      setRef(this.props.innerHeightRef, height)
-    })
-  }
-
-  componentWillUnmount(): void {
-    this.unwatchHeight()
-    setRef(this.props.innerHeightRef, null)
+  handleRootEl = (rootEl: HTMLElement) => {
+    if (this.unwatchHeight) {
+      this.unwatchHeight()
+      this.unwatchHeight = undefined
+    }
+    if (rootEl) {
+      this.unwatchHeight = watchHeight(rootEl, (height) => {
+        setRef(this.props.heightRef, height)
+      })
+    }
   }
 }

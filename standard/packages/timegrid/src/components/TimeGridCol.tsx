@@ -277,7 +277,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       <Fragment>
         {segs.map((seg, index) => {
           const { eventRange } = seg
-          const segVertical = segVerticals[index]
+          const segVertical: Partial<TimeGridSegVertical> = segVerticals[index] || {}
 
           return (
             <div

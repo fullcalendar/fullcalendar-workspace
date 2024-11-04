@@ -426,8 +426,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   key={resource.id}
                                   role='row'
                                   aria-rowindex={resourceLayout.rowIndex}
+                                  data-resource-id={resource.id}
                                   class={joinClassNames(
-                                    'fc-row',
+                                    'fc-resource fc-row',
                                     resourceLayout.rowIndex && 'fc-row-border',
                                     'fc-fill-x fc-content-box',
                                   )}
@@ -583,7 +584,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           className='fc-rel'
                           style={{ height: bodyCanvasHeight }}
                         >
-                          <div>
+                          <Fragment>
                             {flatResourceLayouts.map((resourceLayout) => {
                               const resource = resourceLayout.entity
                               return (
@@ -591,8 +592,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   key={resource.id}
                                   role='row'
                                   aria-rowindex={resourceLayout.rowIndex}
+                                  data-resource-id={resource.id}
                                   className={joinClassNames(
-                                    'fc-row',
+                                    'fc-resource fc-row fc-flex-column',
                                     resourceLayout.rowIndex && 'fc-row-border',
                                     'fc-fill-x fc-content-box',
                                   )}
@@ -612,7 +614,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                     businessHours={resource.businessHours || fallbackBusinessHours}
 
                                     // ref
-                                    innerHeightRef={this.timeEntityInnerHeightMap.createRef(resource)}
+                                    heightRef={this.timeEntityInnerHeightMap.createRef(resource)}
 
                                     // dimensions
                                     slotWidth={slotWidth}
@@ -620,9 +622,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                 </div>
                               )
                             })}
-                          </div>
-                          {/* groups hackily moved after resource-rows for z-index reasons */}
-                          <div>
+                          </Fragment>
+                          <Fragment>
                             {flatGroupRowLayouts.map((groupRowLayout) => {
                               const group = groupRowLayout.entity
                               return (
@@ -631,7 +632,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   role='row'
                                   aria-rowindex={groupRowLayout.rowIndex}
                                   class={joinClassNames(
-                                    'fc-row',
+                                    'fc-row fc-flex-column',
                                     groupRowLayout.rowIndex && 'fc-row-border',
                                     'fc-fill-x fc-content-box',
                                   )}
@@ -647,7 +648,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                 </div>
                               )
                             })}
-                          </div>
+                          </Fragment>
                         </div>
                         <div className='fc-fill'>
                           <TimelineSlats

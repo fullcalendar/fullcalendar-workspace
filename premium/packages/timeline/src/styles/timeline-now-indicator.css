@@ -4,13 +4,15 @@
 
 .fc-timeline-now-indicator-container {
   position: absolute;
-  z-index: $timeline-now-indicator-z;
+  z-index: $now-indicator-z;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   overflow: hidden;
   // ^so arrow doesn't bleed out and cause overflow. DRY this up from elsewhere?
+
+  pointer-events: none;
 }
 
 // TimelineNowIndicatorContainer > TimelineNowIndicator(Arrow|Line)
@@ -22,7 +24,6 @@
   top: 0;
   border-style: solid;
   border-color: var(--fc-now-indicator-color);
-  pointer-events: none;
 }
 
 // TimelineNowIndicatorContainer > TimelineNowIndicatorArrow
