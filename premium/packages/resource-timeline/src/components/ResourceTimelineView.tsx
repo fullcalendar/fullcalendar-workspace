@@ -168,6 +168,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       groupRowDepth,
       orderSpecs,
       colSpecs,
+      hasGroupCols,
       colWidthConfigs: initialColWidthConfigs,
       superHeaderRendering,
     } = this.processColOptions(context.options)
@@ -305,14 +306,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       {Boolean(superHeaderRendering) && (
                         <div
                           role="row"
-                          className="fc-row fc-content-box"
+                          // the fc-table-header class is simply used for the bottom border, but really a row
+                          className="fc-table-header fc-flex-row fc-content-box"
                           style={{
                             height: headerHeights.get(true), // true means superheader
                           }}
                         >
                           <SuperHeaderCell
                             renderHooks={superHeaderRendering}
-                            indent={hasNesting}
+                            indent={hasNesting && !hasGroupCols /* group-cols are leftmost, making expander alignment irrelevant */}
                             innerHeightRef={this.headerRowInnerHeightMap.createRef(true)}
                           />
                         </div>
@@ -320,7 +322,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       <Scroller
                         horizontal
                         hideScrollbars
-                        className={superHeaderRendering ? 'fc-row-border' : ''}
                         ref={this.spreadsheetHeaderScrollerRef}
                       >
                         <div style={{ width: spreadsheetCanvasWidth }}>
@@ -1120,6 +1121,7 @@ function processColOptions(options: ViewOptionsRefined) {
     groupRowDepth,
     orderSpecs: plainOrderSpecs,
     colSpecs,
+    hasGroupCols: Boolean(groupColSpecs.length),
     colWidthConfigs,
     superHeaderRendering,
   }

@@ -7,7 +7,7 @@ import { SPREADSHEET_COL_MIN_WIDTH } from "../../col-positioning.js"
 export interface HeaderRowProps {
   colSpecs: ColSpec[]
   colWidths: number[]
-  indent?: boolean
+  indent?: boolean // only for the 'main' cell
 
   // refs
   innerHeightRef?: Ref<number>
