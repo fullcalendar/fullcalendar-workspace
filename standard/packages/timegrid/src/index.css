@@ -3,8 +3,7 @@
 @import '../../core/src/styles/mixins';
 
 @import './styles/v-event';
-@import './styles/timegrid-slots';
-@import './styles/timegrid-cols';
+@import './styles/timegrid';
 @import './styles/timegrid-event';
 @import './styles/timegrid-more-link';
 @import './styles/timegrid-now-indicator';

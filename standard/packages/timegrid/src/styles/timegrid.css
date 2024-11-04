@@ -1,0 +1,66 @@
+
+//
+// timegrid-slots
+//
+
+.fc-timegrid-slots {
+  position: relative;
+  z-index: $fg-z;
+}
+
+//
+// timegrid-slots > slot
+//
+
+.fc-timegrid-slot-minor { // (minor)
+  border-style: dotted;
+}
+
+//
+// timegrid-axis
+// (applied to cells across first column, for both Normal and Pannable layouts)
+//
+
+.fc-timegrid-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // vertically
+  align-items: flex-end; // horizontally
+}
+
+.fc-timegrid-axis-inner {
+  min-height: 1.5em;
+
+  // vertical alignment for *text inside*
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // vertically
+}
+
+//
+// timegrid-col
+//
+
+.fc-timegrid-col {
+  position: relative;
+}
+
+.fc-timegrid-col.fc-day-today { // (today)
+  background-color: var(--fc-today-bg-color);
+}
+
+//
+// timegrid-col > fg
+//
+
+.fc-timegrid-col-fg {
+  z-index: $fg-z;
+}
+
+.fc-direction-ltr .fc-timegrid-col-fg { // (ltr)
+  margin: 0 2.5% 0 2px;
+}
+
+.fc-direction-rtl .fc-timegrid-col-fg { // (rtl)
+  margin: 0 2px 0 2.5%;
+}
