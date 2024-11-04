@@ -1,4 +1,11 @@
 
+// z-index overall
+$event-z: 1;
+$event-mirror-z: 2;
+$sticky-header-footer-z: 3;
+$popover-z: 4;
+
+// z-index WITHIN the event
 $event-selected-dimmer-z: 1;
 $event-main-z: 2;
 $event-selected-hit-z: 3;

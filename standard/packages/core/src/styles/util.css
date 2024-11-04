@@ -178,13 +178,13 @@ Lone cell in a row should always fill row. Makes axis widths much easier
   position: sticky;
   top: 0;
   background: var(--fc-page-bg-color);
-  z-index: 9999; // TODO: what was it before?
+  z-index: $sticky-header-footer-z;
 }
 
 .fc-sticky-footer-scrollbar {
   position: sticky;
   bottom: 0;
-  z-index: 9999; // TODO: what was it before?
+  z-index: $sticky-header-footer-z;
 }
 .fc-sticky-footer-scrollbar > .fc-scroller {
   margin-top: -1px; // HACK for 1px height...

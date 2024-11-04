@@ -4,14 +4,14 @@
 //
 
 .fc-daygrid-event {
-  z-index: $daygrid-event-z;
+  z-index: $event-z;
   margin-bottom: 1px;
   border-radius: 3px; // dot event needs this to when selected
   font-size: var(--fc-small-font-size);
 }
 
 .fc-daygrid-event.fc-event-mirror { // (mirror)
-  z-index: $daygrid-event-mirror-z;
+  z-index: $event-mirror-z;
 }
 
 .fc-direction-ltr .fc-daygrid-event.fc-event-start,
