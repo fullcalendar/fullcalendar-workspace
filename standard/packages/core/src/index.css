@@ -1,5 +1,7 @@
 
+@import './styles/constants';
 @import './styles/mixins';
+
 @import './styles/vars';
 @import './styles/calendar-root';
 @import './styles/util'; // go after calendar-root border-box for higher precedence

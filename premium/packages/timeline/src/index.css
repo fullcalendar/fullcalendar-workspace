@@ -1,6 +1,7 @@
 
+@import '../../../../standard/packages/core/src/styles/constants';
 @import '../../../../standard/packages/core/src/styles/mixins';
-@import './styles/vars';
+@import './styles/constants';
 
 @import './styles/timeline-slots';
 @import './styles/timeline-now-indicator';

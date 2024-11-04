@@ -1,5 +1,8 @@
 
+@import '../../core/src/styles/constants';
 @import '../../core/src/styles/mixins';
+@import './styles/constants';
+
 @import './styles/vars';
 @import './styles/daygrid';
 @import './styles/daygrid-event';

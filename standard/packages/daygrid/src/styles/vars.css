@@ -1,7 +1,4 @@
 
-$daygrid-event-z: 6;
-$daygrid-event-mirror-z: 7;
-
 :root {
   --fc-daygrid-event-dot-width: 8px;
 }
