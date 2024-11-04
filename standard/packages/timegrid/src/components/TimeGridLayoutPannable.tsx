@@ -290,8 +290,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             ref={this.axisScrollerRef}
           >
             <div
-              // NOTE: the fc-timegrid-slots className is purely for tests/old-print-view. remove somehow?
-              className='fc-timegrid-slots fc-grow fc-flex-column fc-rel'
+              className='fc-timegrid-slots-axis fc-grow fc-flex-column fc-rel'
               style={{
                 paddingBottom: state.bottomScrollbarWidth,
               }}
@@ -347,7 +346,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
             >
               <div className='fc-grow fc-flex-column fc-rel' style={{ width: canvasWidth }}>
-                <div className='fc-grow fc-flex-column'>
+                <div className='fc-timegrid-slots fc-flex-column fc-grow'>
                   {props.slatMetas.map((slatMeta) => (
                     <div
                       key={slatMeta.key}

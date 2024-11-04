@@ -4,7 +4,6 @@
 //
 
 .fc-timegrid-event {
-  z-index: $timegrid-col-fg-z;
   margin-bottom: 1px; // give some space from bottom
 
   // absolutely fill within harness

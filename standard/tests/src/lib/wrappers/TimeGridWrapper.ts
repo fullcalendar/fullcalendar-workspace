@@ -50,7 +50,7 @@ export class TimeGridWrapper {
   // HACK for h-scroll view
   getSeparateSlotAxisCanvas() {
     // relative to fc-timegrid-body
-    return $('> .fc-scroller > .fc-timegrid-slots', this.el)[0]
+    return $('> .fc-scroller > .fc-timegrid-slots-axis', this.el)[0]
   }
 
   getSlotElByTime(timeMs) {

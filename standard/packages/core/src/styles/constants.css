@@ -1,11 +1,15 @@
 
 // z-index overall
-$event-z: 1;
-$event-mirror-z: 2;
-$sticky-header-footer-z: 3;
-$popover-z: 4;
+// (NOTE: always prefer natural DOM order to these)
+$fg-z: 1;
+$event-z: 2;
+$event-mirror-z: 3;
+$now-indicator-z: 4;
+$sticky-header-footer-z: 5;
+$popover-z: 6;
 
 // z-index WITHIN the event
+// (TODO: way to do this with normal DOM order?)
 $event-selected-dimmer-z: 1;
 $event-main-z: 2;
 $event-selected-hit-z: 3;

@@ -1,4 +1,9 @@
 
+.fc-timegrid-slots {
+  position: relative;
+  z-index: $fg-z;
+}
+
 .fc-timegrid-axis {
   display: flex;
   flex-direction: column;

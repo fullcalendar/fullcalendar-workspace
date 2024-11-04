@@ -101,7 +101,14 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {this.renderFillSegs(props.businessHourSegs, 'non-business')}
             {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
             {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
-            <div className='fc-liquid fc-rel fc-timegrid-col-fg'>
+            {hasCustomDayCellContent(options) && (
+              <InnerContent
+                tag="div"
+                className='fc-timegrid-col-misc fc-rel'
+              />
+            )}
+            {/* has a z-index to contain all event z-indexes  */}
+            <div className='fc-timegrid-col-fg fc-fill'>
               {this.renderFgSegs(
                 sortedFgSegs,
                 interactionAffectedInstances,
@@ -109,22 +116,22 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 false,
                 false,
               )}
-              {this.renderFgSegs(
-                mirrorSegs,
-                {},
-                Boolean(props.eventDrag),
-                Boolean(props.eventResize),
-                Boolean(isSelectMirror),
-                'mirror',
-              )}
             </div>
-            {this.renderNowIndicator(props.nowIndicatorSegs)}
-            {hasCustomDayCellContent(options) && (
-              <InnerContent
-                tag="div"
-                className='fc-timegrid-col-misc'
-              />
+            {Boolean(mirrorSegs.length) && (
+              // has a z-index to be above other fg container,
+              // but only show it when there are actual mirror events, to avoid blocking clicks
+              <div className='fc-timegrid-col-fg fc-fill'>
+                {this.renderFgSegs(
+                  mirrorSegs,
+                  {},
+                  Boolean(props.eventDrag),
+                  Boolean(props.eventResize),
+                  Boolean(isSelectMirror),
+                  'mirror',
+                )}
+              </div>
             )}
+            {this.renderNowIndicator(props.nowIndicatorSegs)}
           </Fragment>
         )}
       </DayCellContainer>
@@ -275,7 +282,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           return (
             <div
               key={buildEventRangeKey(eventRange)}
-              className="fc-timegrid-bg-harness fc-fill-x"
+              className="fc-fill-x"
               style={{
                 top: segVertical.start,
                 height: segVertical.size,

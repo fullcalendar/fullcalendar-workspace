@@ -216,7 +216,6 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
         >
           <div className='fc-flex-column fc-grow fc-rel'>
-            {/* the fc-timegrid-slots className is purely for tests/old-print-view. remove somehow? */}
             <div className='fc-timegrid-slots fc-flex-column fc-grow'>
               {props.slatMetas.map((slatMeta) => (
                 <div
@@ -242,13 +241,6 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 </div>
               ))}
             </div>
-            {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
-              <TimeGridNowIndicatorArrow
-                nowDate={nowDate}
-                dateProfile={props.dateProfile}
-                totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
-              />
-            )}
             <div className='fc-fill fc-cell-border-fake fc-flex-column' style={axisStartCss}>
               <TimeGridCols
                 dateProfile={props.dateProfile}
@@ -274,6 +266,13 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 slatHeight={slatHeight}
               />
             </div>
+            {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
+              <TimeGridNowIndicatorArrow
+                nowDate={nowDate}
+                dateProfile={props.dateProfile}
+                totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
+              />
+            )}
           </div>
         </Scroller>
       </Fragment>

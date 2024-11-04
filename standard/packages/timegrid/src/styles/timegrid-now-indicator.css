@@ -18,7 +18,7 @@
 
 .fc-timegrid-now-indicator-line {
   position: absolute;
-  z-index: $timegrid-now-indicator-z;
+  z-index: $now-indicator-z;
   left: 0;
   right: 0;
   border-style: solid;
@@ -30,7 +30,7 @@
 
 .fc-timegrid-now-indicator-arrow {
   position: absolute;
-  z-index: $timegrid-now-indicator-z;
+  z-index: $now-indicator-z;
   margin-top: -5px; // vertically center on top coordinate
   border-style: solid;
   border-color: var(--fc-now-indicator-color);

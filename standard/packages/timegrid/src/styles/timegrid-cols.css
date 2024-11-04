@@ -7,15 +7,8 @@
   }
 }
 
-.fc-timegrid-bg-harness {
-  @include bg-z-indexes;
-}
-
-/*
-HACK because fc-timegrid-event isn't doing its job with z-index
-*/
-.fc-timegrid-col-fg { // has .fc-rel
-  z-index: $timegrid-col-fg-z;
+.fc-timegrid-col-fg {
+  z-index: $fg-z;
 }
 
 .fc-direction-ltr {
