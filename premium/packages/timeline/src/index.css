@@ -3,8 +3,7 @@
 @import '../../../../standard/packages/core/src/styles/mixins';
 @import './styles/constants';
 
-@import './styles/timeline-slots';
-@import './styles/timeline-now-indicator';
+@import './styles/timeline';
 @import './styles/timeline-event';
 @import './styles/timeline-more-link';
-@import './styles/timeline-bg';
+@import './styles/timeline-now-indicator';

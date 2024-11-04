@@ -1,0 +1,31 @@
+
+//
+// timeline-slots
+//
+
+.fc-timeline-slots {
+  z-index: $timeline-slots-z;
+}
+
+//
+// timeline-slots > slot
+//
+
+.fc-timeline-slot-minor { // (minor)
+  border-style: dotted;
+}
+
+//
+// timeline-bg
+//
+
+.fc-timeline-bg { // a container for bg content
+  position: absolute;
+  z-index: $timeline-bg-z;
+  top: 0;
+  bottom: 0;
+  left: 0; // will take precedence when LTR
+  right: 0; // will take precedence when RTL
+
+  @include bg-z-indexes; // TODO: remove this
+}
