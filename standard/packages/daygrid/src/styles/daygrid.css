@@ -1,21 +1,26 @@
 
 //
-// daygrid-row > week-number
+// daygrid-row
 //
 
-.fc-daygrid-week-number {
-  position: absolute;
-  z-index: $daygrid-weeknum-z;
-  top: 0;
-  padding: 2px;
-  min-width: 1.5em;
-  text-align: center;
-  background-color: var(--fc-neutral-bg-color);
-  color: var(--fc-neutral-text-color);
+.fc-daygrid-row {
 }
 
 //
-// daygrid-cell
+// daygrid-row > fg
+//
+
+.fc-daygrid-row-fg {
+  position: relative; // to get own z-index-origin
+  flex-grow: 1;
+  min-width: 0;
+  // TODO!!!
+  display: flex;
+  flex-direction: row;
+}
+
+//
+// daygrid-row > fg > cell
 //
 
 .fc-daygrid-cell.fc-day-today { // (today)
@@ -24,7 +29,7 @@
 }
 
 //
-// daygrid-cell > header
+// daygrid-row > fg > cell > header
 //
 
 .fc-daygrid-cell-header {
@@ -37,12 +42,11 @@
 }
 
 //
-// daygrid-cell > header > number
+// daygrid-row > fg > cell > header > number
 //
 
 .fc-daygrid-cell-number {
   position: relative;
-  z-index: $daygrid-topbottom-z;
   padding: 4px;
 }
 
@@ -52,7 +56,7 @@
 }
 
 //
-// daygrid-cell > main
+// daygrid-row > fg > cell > main > number
 //
 
 .fc-daygrid-cell-main {
@@ -71,12 +75,11 @@
 }
 
 //
-// daygrid-cell > main > more-link
+// daygrid-row > fg > cell > main > more-link
 //
 
 .fc-daygrid-more-link {
   position: relative;
-  z-index: $daygrid-topbottom-z;
   max-width: 100%;
   border-radius: 3px;
   margin: 0 2px 1px;
@@ -102,14 +105,17 @@
 }
 
 //
-// daygrid-row > bg-content
-// daygrid-row > cell > bg-content
+// daygrid-row > week-number
 //
 
-.fc-daygrid-row {
-  & .fc-non-business { z-index: $daygrid-non-business-z }
-  & .fc-bg-event { z-index: $daygrid-bg-event-z }
-  & .fc-highlight { z-index: $daygrid-highlight-z }
+.fc-daygrid-week-number {
+  position: absolute;
+  top: 0;
+  padding: 2px;
+  min-width: 1.5em;
+  text-align: center;
+  background-color: var(--fc-neutral-bg-color);
+  color: var(--fc-neutral-text-color);
 }
 
 //

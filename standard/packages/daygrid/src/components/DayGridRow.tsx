@@ -147,6 +147,59 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         }}
         ref={this.handleRootEl}
       >
+        {this.renderFillSegs(props.businessHourSegs, 'non-business')}
+        {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
+        {this.renderFillSegs(highlightSegs, 'highlight')}
+        <div className='fc-daygrid-row-fg'>
+          {props.cells.map((cell, col) => {
+            const normalFgNodes = this.renderFgSegs(
+              maxMainTop,
+              renderableSegsByCol[col],
+              segTops,
+              props.todayRange,
+              forcedInvisibleMap,
+            )
+
+            return (
+              <DayGridCell
+                key={cell.key}
+                dateProfile={props.dateProfile}
+                todayRange={props.todayRange}
+                date={cell.date}
+                showDayNumber={props.showDayNumbers}
+                isCompact={props.isCompact}
+                isTall={props.isTall}
+
+                // content
+                segs={segsByCol[col]}
+                hiddenSegs={hiddenSegsByCol[col]}
+                fgLiquidHeight={fgLiquidHeight}
+                fg={(
+                  <Fragment>
+                    {normalFgNodes}
+                  </Fragment>
+                )}
+                eventDrag={props.eventDrag}
+                eventResize={props.eventResize}
+                eventSelection={props.eventSelection}
+
+                // render hooks
+                renderProps={cell.renderProps}
+                dateSpanProps={cell.dateSpanProps}
+                attrs={cell.attrs}
+                className={cell.className}
+
+                // dimensions
+                fgHeight={heightsByCol[col]}
+                width={props.colWidth}
+
+                // refs
+                headerHeightRef={headerHeightRefMap.createRef(cell.key)}
+                mainHeightRef={mainHeightRefMap.createRef(cell.key)}
+              />
+            )
+          })}
+        </div>
         {props.showWeekNumbers && (
           <WeekNumberContainer
             tag="a"
@@ -156,57 +209,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
           />
         )}
-        {this.renderFillSegs(props.businessHourSegs, 'non-business')}
-        {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
-        {this.renderFillSegs(highlightSegs, 'highlight')}
-        {props.cells.map((cell, col) => {
-          const normalFgNodes = this.renderFgSegs(
-            maxMainTop,
-            renderableSegsByCol[col],
-            segTops,
-            props.todayRange,
-            forcedInvisibleMap,
-          )
-
-          return (
-            <DayGridCell
-              key={cell.key}
-              dateProfile={props.dateProfile}
-              todayRange={props.todayRange}
-              date={cell.date}
-              showDayNumber={props.showDayNumbers}
-              isCompact={props.isCompact}
-              isTall={props.isTall}
-
-              // content
-              segs={segsByCol[col]}
-              hiddenSegs={hiddenSegsByCol[col]}
-              fgLiquidHeight={fgLiquidHeight}
-              fg={(
-                <Fragment>
-                  {normalFgNodes}
-                </Fragment>
-              )}
-              eventDrag={props.eventDrag}
-              eventResize={props.eventResize}
-              eventSelection={props.eventSelection}
-
-              // render hooks
-              renderProps={cell.renderProps}
-              dateSpanProps={cell.dateSpanProps}
-              attrs={cell.attrs}
-              className={cell.className}
-
-              // dimensions
-              fgHeight={heightsByCol[col]}
-              width={props.colWidth}
-
-              // refs
-              headerHeightRef={headerHeightRefMap.createRef(cell.key)}
-              mainHeightRef={mainHeightRefMap.createRef(cell.key)}
-            />
-          )
-        })}
         {this.renderFgSegs(
           maxMainTop,
           mirrorSegs,
