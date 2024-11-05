@@ -42,7 +42,6 @@ export interface DayGridRowProps {
   showDayNumbers: boolean
   showWeekNumbers?: boolean
   forPrint: boolean
-  cellGroup?: boolean // bad name now
   className?: string
   isCompact?: boolean
   isTall?: boolean
@@ -135,11 +134,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     return (
       <div
-        role={props.cellGroup ? undefined : 'row'}
+        role='row' // TODO: audit this for all scenarios
         className={joinClassNames(
-          'fc-daygrid-row',
-          props.cellGroup ? 'fc-flex-row' : 'fc-row',
-          'fc-rel',
+          'fc-daygrid-row fc-flex-row fc-rel',
           props.className,
         )}
         style={{
@@ -169,6 +166,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
                 showDayNumber={props.showDayNumbers}
                 isCompact={props.isCompact}
                 isTall={props.isTall}
+                borderStart={Boolean(col)}
 
                 // content
                 segs={segsByCol[col]}
@@ -261,7 +259,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       nodes.push(
         <DayGridEventHarness
           key={key}
-          className={seg.start ? 'fc-cell-border-fake' : ''}
+          className={seg.start ? 'fc-border-transparent fc-border-s' : ''}
           style={{
             visibility: isInvisible ? 'hidden' : '',
             top,

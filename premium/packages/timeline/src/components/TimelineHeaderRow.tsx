@@ -1,5 +1,5 @@
 import { createElement, Ref } from '@fullcalendar/core/preact'
-import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, RefMap, setRef } from "@fullcalendar/core/internal"
+import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, joinClassNames, RefMap, setRef } from "@fullcalendar/core/internal"
 import { TimelineDateProfile, TimelineHeaderCellData } from "../timeline-date-profile.js"
 import { TimelineHeaderCell } from './TimelineHeaderCell.js'
 
@@ -37,10 +37,13 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
 
     return (
       <div
-        className='fc-row fc-content-box'
+        className={joinClassNames(
+          'fc-flex-row fc-content-box',
+          !props.isLastRow && 'fc-border-b',
+        )}
         style={{ height: props.height }}
       >
-        {props.cells.map((cell) => {
+        {props.cells.map((cell, cellI) => {
           // TODO: make this part of the cell obj?
           // TODO: rowUnit seems wrong sometimes. says 'month' when it should be day
           // TODO: rowUnit is relevant to whole row. put it on a row object, not the cells
@@ -58,6 +61,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
               nowDate={props.nowDate}
               isCentered={isCentered}
               isSticky={isSticky}
+              borderStart={Boolean(cellI)}
 
               // refs
               innerWidthRef={innerWidthRefMap.createRef(key)}

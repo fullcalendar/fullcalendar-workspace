@@ -49,7 +49,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
 
             // header content
             headerTiers={headerTiers}
-            renderHeaderContent={(model, tier, innerHeightRef, colWidth) => {
+            renderHeaderContent={(model, tier, cellI, innerHeightRef, colWidth) => {
               if ((model as DateHeaderCellObj).date) {
                 return (
                   <DateHeaderCell
@@ -60,6 +60,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
                     dayHeaderFormat={dayHeaderFormat}
                     colSpan={model.colSpan}
                     colWidth={colWidth}
+                    borderStart={Boolean(cellI)}
                   />
                 )
               } else {
@@ -69,6 +70,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
                     dayHeaderFormat={dayHeaderFormat}
                     colSpan={model.colSpan}
                     colWidth={colWidth}
+                    borderStart={Boolean(cellI)}
                   />
                 )
               }

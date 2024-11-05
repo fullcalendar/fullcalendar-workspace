@@ -32,6 +32,7 @@ export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   renderHeaderContent: (
     model: HeaderCellModel,
     tier: number,
+    cellI: number,
     innerHeightRef: Ref<number> | undefined, // unused... why do we have it then???
     width: number | undefined, // TODO: rename to colWidth
   ) => ComponentChild

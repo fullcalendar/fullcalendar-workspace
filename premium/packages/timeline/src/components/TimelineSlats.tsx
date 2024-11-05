@@ -49,6 +49,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
               todayRange={props.todayRange}
               isEm={isWeekStarts[i]}
               isDay={isDay}
+              borderStart={Boolean(i)}
 
               // ref
               innerWidthRef={innerWidthRefMap.createRef(key)}

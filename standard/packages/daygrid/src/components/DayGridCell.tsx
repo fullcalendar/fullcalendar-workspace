@@ -35,6 +35,7 @@ export interface DayGridCellProps {
   showDayNumber: boolean
   isCompact?: boolean
   isTall?: boolean
+  borderStart: boolean
 
   // content
   segs: DayRowEventRangePart[] // for +more link popover content
@@ -82,7 +83,8 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         tag="div"
         className={joinClassNames(
           props.className,
-          'fc-daygrid-cell fc-cell fc-flex-column',
+          'fc-daygrid-cell fc-flex-column',
+          props.borderStart && 'fc-border-s',
           props.width != null ? '' : 'fc-liquid',
         )}
         attrs={{
@@ -132,7 +134,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 segs={props.segs}
                 hiddenSegs={props.hiddenSegs}
                 alignElRef={this.rootElRef}
-                alignParentTop={props.showDayNumber ? '.fc-row' : '.fc-view'}
+                alignParentTop={props.showDayNumber ? '[role=row]' : '.fc-view'}
                 dateSpanProps={props.dateSpanProps}
                 dateProfile={props.dateProfile}
                 eventSelection={props.eventSelection}

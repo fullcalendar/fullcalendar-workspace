@@ -12,6 +12,7 @@ import {
   getIsHeightAuto,
   DayGridRange,
   EventRangeProps,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
@@ -112,7 +113,10 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
 
             // if not auto-height, distribute height of container somewhat evently to rows
             // (treat all as zero, distribute height, then ensure min-heights -- the inner content height)
-            className={isHeightAuto ? '' : 'fc-grow fc-basis0'}
+            className={joinClassNames(
+              !isHeightAuto && 'fc-grow fc-basis0',
+              row && 'fc-border-t',
+            )}
 
             // content
             fgEventSegs={fgEventSegsByRow[row]}

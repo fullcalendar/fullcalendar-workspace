@@ -31,6 +31,7 @@ export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   renderHeaderContent: (
     model: HeaderCellModel,
     tier: number,
+    cellI: number,
     innerHeightRef: Ref<number> | undefined, // unused
     width: number | undefined,
   ) => ComponentChild
@@ -134,9 +135,9 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
             {props.headerTiers.map((cells, tierNum) => (
               <div
                 key={tierNum}
-                className='fc-row'
+                className={joinClassNames('fc-flex-row', tierNum && 'fc-border-t')}
               >
-                {props.renderHeaderLabel( // .fc-cell
+                {props.renderHeaderLabel(
                   tierNum,
                   headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
                   undefined, // innerHeightRef
@@ -147,9 +148,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   cells={cells}
                   renderHeaderContent={props.renderHeaderContent}
                   getHeaderModelKey={props.getHeaderModelKey}
-                  cellGroup
-                  className='fc-cell fc-liquid'
-                  // ^weird we're setting 'cell' ... just have HeaderRow be HeaderCells and wrap ourselves?
+                  className='fc-border-s fc-liquid'
                 />
               </div>
             ))}
@@ -167,8 +166,8 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 paddingRight: state.rightScrollbarWidth,
               }}
             >
-              <div className='fc-row'>
-                <TimeGridAllDayLabel // .fc-cell
+              <div className='fc-flex-row'>
+                <TimeGridAllDayLabel
                   width={axisWidth}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
                 />
@@ -179,7 +178,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   showDayNumbers={false}
                   forPrint={props.forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
-                  className='fc-liquid fc-cell'
+                  className='fc-border-s fc-liquid'
                   isCompact={
                     (state.clientWidth != null && state.axisWidth != null)
                       && (state.clientWidth - state.axisWidth) / props.cells.length < COMPACT_CELL_WIDTH
@@ -217,31 +216,33 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         >
           <div className='fc-flex-column fc-grow fc-rel'>
             <div className='fc-timegrid-slots fc-flex-column fc-grow'>
-              {props.slatMetas.map((slatMeta) => (
+              {props.slatMetas.map((slatMeta, slatI) => (
                 <div
                   key={slatMeta.key}
                   className={joinClassNames(
                     ...getSlatRowClassNames(slatMeta),
+                    slatI && 'fc-border-t',
                     slatLiquid && 'fc-liquid',
                   )}
                   style={{
                     height: slatLiquid ? '' : slatHeight
                   }}
                 >
-                  <TimeGridSlatLabel // .fc-cell
+                  <TimeGridSlatLabel
                     {...slatMeta}
                     innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                     innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                     width={axisWidth}
                   />
-                  <TimeGridSlatLane // .fc-cell
+                  <TimeGridSlatLane
                     {...slatMeta}
                     innerHeightRef={slatInnerMainHeightRefMap.createRef(slatMeta.key)}
+                    borderStart
                   />
                 </div>
               ))}
             </div>
-            <div className='fc-fill fc-cell-border-fake fc-flex-column' style={axisStartCss}>
+            <div className='fc-fill fc-border-transparent fc-border-s fc-flex-column' style={axisStartCss}>
               <TimeGridCols
                 dateProfile={props.dateProfile}
                 nowDate={props.nowDate}
@@ -250,7 +251,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 slatCnt={slatCnt}
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
-                className='fc-liquid fc-cell'
+                className='fc-liquid'
 
                 // content
                 fgEventSegsByCol={props.fgEventSegsByCol}

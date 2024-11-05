@@ -44,7 +44,7 @@ export interface TimeGridColsProps {
   slatHeight: number | undefined
 }
 
-export class TimeGridCols extends DateComponent<TimeGridColsProps> {
+export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: rename to TimeGridRow
   // memo
   private processSlotOptions = memoize(processSlotOptions)
 
@@ -71,6 +71,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> {
             attrs={cell.attrs}
             dateSpanProps={cell.dateSpanProps}
             forPrint={props.forPrint}
+            borderStart={Boolean(col)}
 
             // content
             fgEventSegs={props.fgEventSegsByCol[col]}

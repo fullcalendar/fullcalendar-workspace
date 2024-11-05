@@ -7,11 +7,11 @@ export interface HeaderRowProps<Model, ModelKey> {
   renderHeaderContent: (
     model: Model,
     tier: number,
+    cellI: number,
     innerHeightRef: Ref<number> | undefined, // unused
     width: number | undefined
   ) => ComponentChild
   getHeaderModelKey: (model: Model) => ModelKey
-  cellGroup?: boolean // bad name now
   className?: string
 
   // dimensions
@@ -24,17 +24,18 @@ export class HeaderRow<Model, ModelKey> extends BaseComponent<HeaderRowProps<Mod
 
     return (
       <div
-        role={props.cellGroup ? undefined : 'row'}
+        role='row' // TODO: audit this
         className={joinClassNames(
           props.className,
-          props.cellGroup ? 'fc-flex-row' : 'fc-row',
+          'fc-flex-row',
         )}
       >
-        {props.cells.map((cell) => (
+        {props.cells.map((cell, cellI) => (
           <Fragment key={props.getHeaderModelKey(cell)}>
             {props.renderHeaderContent(
               cell,
               props.tierNum,
+              cellI,
               undefined, // innerHeightRef
               props.colWidth,
             )}

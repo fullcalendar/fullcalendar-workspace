@@ -306,8 +306,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       {Boolean(superHeaderRendering) && (
                         <div
                           role="row"
-                          // the fc-table-header class is simply used for the bottom border, but really a row
-                          className="fc-table-header fc-flex-row fc-content-box"
+                          className="fc-flex-row fc-content-box fc-border-b"
                           style={{
                             height: headerHeights.get(true), // true means superheader
                           }}
@@ -379,7 +378,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             {flatGroupColLayouts.map((groupColLayouts, colIndex) => (
                               <div
                                 key={colIndex}
-                                className='fc-cell fc-rel'
+                                className={colIndex ? 'fc-border-s' : ''}
                                 style={{
                                   width: spreadsheetColWidths[colIndex],
                                 }}
@@ -392,9 +391,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                       role='row'
                                       aria-rowindex={groupCellLayout.rowIndex}
                                       class={joinClassNames(
-                                        'fc-row',
-                                        groupCellLayout.rowIndex && 'fc-row-border',
-                                        'fc-fill-x fc-content-box'
+                                        'fc-flex-row fc-fill-x fc-content-box',
+                                        groupCellLayout.rowIndex && 'fc-border-t',
                                       )}
                                       style={{
                                         top: bodyTops.get(group),
@@ -429,9 +427,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   aria-rowindex={resourceLayout.rowIndex}
                                   data-resource-id={resource.id}
                                   class={joinClassNames(
-                                    'fc-resource fc-row',
-                                    resourceLayout.rowIndex && 'fc-row-border',
-                                    'fc-fill-x fc-content-box',
+                                    'fc-resource fc-flex-row fc-fill-x fc-content-box',
+                                    resourceLayout.rowIndex && 'fc-border-t',
                                   )}
                                   style={{
                                     top: bodyTops.get(resource),
@@ -464,9 +461,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               role='row'
                               aria-rowindex={groupRowLayout.rowIndex}
                               class={joinClassNames(
-                                'fc-row',
-                                groupRowLayout.rowIndex && 'fc-row-border',
-                                'fc-fill-x fc-content-box',
+                                'fc-flex-row fc-fill-x fc-content-box',
+                                groupRowLayout.rowIndex && 'fc-border-t',
                               )}
                               style={{
                                 top: bodyTops.get(group),
@@ -595,9 +591,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   aria-rowindex={resourceLayout.rowIndex}
                                   data-resource-id={resource.id}
                                   className={joinClassNames(
-                                    'fc-resource fc-row fc-flex-column',
-                                    resourceLayout.rowIndex && 'fc-row-border',
-                                    'fc-fill-x fc-content-box',
+                                    'fc-resource fc-flex-column fc-fill-x fc-content-box',
+                                    resourceLayout.rowIndex && 'fc-border-t',
                                   )}
                                   style={{
                                     top: bodyTops.get(resource),
@@ -633,9 +628,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   role='row'
                                   aria-rowindex={groupRowLayout.rowIndex}
                                   class={joinClassNames(
-                                    'fc-row fc-flex-column',
-                                    groupRowLayout.rowIndex && 'fc-row-border',
-                                    'fc-fill-x fc-content-box',
+                                    'fc-flex-row fc-fill-x fc-content-box',
+                                    groupRowLayout.rowIndex && 'fc-border-t',
                                   )}
                                   style={{
                                     top: bodyTops.get(group),

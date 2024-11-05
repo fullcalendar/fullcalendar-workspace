@@ -7,6 +7,7 @@ export interface DayGridHeaderProps<Model, ModelKey> {
   renderHeaderContent: (
     model: Model,
     tier: number,
+    cellI: number,
     innerHeightRef: Ref<number> | undefined, // unused
     width: number | undefined
   ) => ComponentChild
@@ -44,6 +45,7 @@ export function DayGridHeader<Model, ModelKey>(props: DayGridHeaderProps<Model, 
           renderHeaderContent={props.renderHeaderContent}
           getHeaderModelKey={props.getHeaderModelKey}
           colWidth={props.colWidth}
+          className={tierNum ? 'fc-border-t' : ''}
         />
       ))}
     </div>

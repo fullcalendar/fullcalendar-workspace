@@ -28,6 +28,7 @@ export interface DateHeaderCellProps {
   dayHeaderFormat: DateFormatter
   isSticky?: boolean
   colSpan?: number
+  borderStart: boolean
 
   // render props
   renderProps?: Dictionary
@@ -74,6 +75,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
         className={joinClassNames(
           props.className,
           'fc-header-cell fc-cell fc-flex-column fc-align-center',
+          props.borderStart && 'fc-border-s',
           !props.isSticky && 'fc-crop',
           props.colWidth == null && 'fc-liquid',
           ...getDayClassNames(dayMeta, theme),

@@ -32,6 +32,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
     return (
       <ContentContainer
         tag="div"
+        attrs={{ role: 'gridcell' }}
         // TODO: is fc-timeline-lane this the best name?
         // TODO: make part of fc-resource-group so ppl can style both cells together?
         className='fc-resource-group fc-timeline-lane fc-cell fc-liquid fc-shaded'

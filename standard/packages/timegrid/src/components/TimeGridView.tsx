@@ -83,7 +83,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
               headerTiers={dayTableModel.cellRows /* guaranteed to be one row */}
               renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width) => (
                 options.weekNumbers ? (
-                  <TimeGridWeekNumber // .fc-cell
+                  <TimeGridWeekNumber
                     dateProfile={dateProfile}
                     innerWidthRef={innerWidthRef}
                     innerHeightRef={innerHeightRef}
@@ -91,12 +91,12 @@ export class TimeGridView extends DateComponent<ViewProps> {
                   />
                 ) : (
                   <div
-                    className='fc-timegrid-axis fc-cell fc-content-box'
+                    className='fc-timegrid-axis fc-content-box'
                     style={{ width }}
                   />
                 )
               )}
-              renderHeaderContent={(cell, tierNum, innerHeightRef, colWidth) => (
+              renderHeaderContent={(cell, tierNum, cellI, innerHeightRef, colWidth) => (
                 <DateHeaderCell
                   {...cell /* for date & renderProps/etc */}
                   dateProfile={dateProfile}
@@ -105,6 +105,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
                   dayHeaderFormat={dayHeaderFormat}
                   innerHeightRef={innerHeightRef}
                   colWidth={colWidth}
+                  borderStart={Boolean(cellI)}
                 />
               )}
               getHeaderModelKey={(cell) => cell.key}

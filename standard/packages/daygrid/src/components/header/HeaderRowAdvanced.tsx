@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, RefMap, setRef } from '@fullcalendar/core/internal'
+import { afterSize, BaseComponent, joinClassNames, RefMap, setRef } from '@fullcalendar/core/internal'
 import { Fragment, ComponentChild, createElement, Ref } from '@fullcalendar/core/preact'
 
 export interface HeaderRowAdvancedProps<Model, ModelKey> {
@@ -7,6 +7,7 @@ export interface HeaderRowAdvancedProps<Model, ModelKey> {
   renderHeaderContent: ( // TODO: better name
     model: Model,
     tier: number,
+    cell: number,
     innerHeightRef: Ref<number> | undefined,
     width: number | undefined,
   ) => ComponentChild
@@ -36,14 +37,22 @@ export class HeaderRowAdvanced<Model, ModelKey> extends BaseComponent<HeaderRowA
     const { props } = this
 
     return (
-      <div role='row' className='fc-row fc-content-box' style={{ height: props.height }}>
-        {props.cells.map((cell) => {
+      <div
+        role='row'
+        className={joinClassNames(
+          'fc-flex-row fc-content-box',
+          props.tierNum && 'fc-border-t',
+        )}
+        style={{ height: props.height }}
+      >
+        {props.cells.map((cell, cellI) => {
           const key = props.getHeaderModelKey(cell)
           return (
             <Fragment key={props.getHeaderModelKey(cell)}>
               {props.renderHeaderContent(
                 cell,
                 props.tierNum,
+                cellI,
                 this.innerHeightRefMap.createRef(key), // innerHeightRef
                 props.colWidth, // width
               )}

@@ -39,6 +39,7 @@ export interface TimeGridColProps {
   className?: string
   dateSpanProps?: Dictionary
   forPrint: boolean
+  borderStart: boolean
 
   // content
   fgEventSegs: (TimeGridRange & EventRangeProps)[]
@@ -85,7 +86,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         }}
         className={joinClassNames(
           props.className,
-          'fc-timegrid-col fc-cell fc-flex-column',
+          'fc-timegrid-col fc-flex-column',
+          props.borderStart && 'fc-border-s',
           props.width == null && 'fc-liquid',
         )}
         style={{

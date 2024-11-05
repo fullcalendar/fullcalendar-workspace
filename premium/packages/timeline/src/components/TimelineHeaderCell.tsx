@@ -19,6 +19,7 @@ export interface TimelineHeaderCellProps {
   nowDate: DateMarker
   isCentered: boolean
   isSticky: boolean
+  borderStart: boolean
 
   // dimensions
   slotWidth: number | undefined // always provided. if pending, use `undefined`
@@ -64,6 +65,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
           'fc-timeline-slot-label fc-timeline-slot',
           cell.isWeekStart && 'fc-timeline-slot-em', // TODO: document this semantic className
           'fc-header-cell fc-cell fc-flex-column fc-justify-center',
+          props.borderStart && 'fc-border-s',
           props.isCentered ? 'fc-align-center' : 'fc-align-start',
           ...( // TODO: so slot classnames for week/month/bigger. see note above about rowUnit
             cell.rowUnit === 'time' ?

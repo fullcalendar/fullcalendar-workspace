@@ -58,12 +58,13 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
           </div>
           {/* TODO: somehow use HeaderRow or something? */}
           <div className='fc-multimonth-header-row fc-flex-row'>
-            {dayTableModel.headerDates.map((headerDate) => (
+            {dayTableModel.headerDates.map((headerDate, cellI) => (
               <DayOfWeekHeaderCell
                 key={headerDate.getUTCDay()}
                 dow={headerDate.getUTCDay()}
                 dayHeaderFormat={dayHeaderFormat}
                 colWidth={undefined}
+                borderStart={Boolean(cellI)}
               />
             ))}
           </div>

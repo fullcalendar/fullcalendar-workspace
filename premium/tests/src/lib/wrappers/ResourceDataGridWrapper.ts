@@ -9,20 +9,14 @@ export class ResourceDataGridWrapper {
   }
 
   getRowInfo() {
-    let trs = findElements(this.el, '.fc-row')
+    let trs = findElements(this.el, '[role=row]')
     let infos = []
 
     for (let tr of trs) {
-      let resourceCell = tr.querySelector('.fc-cell.fc-resource')
-
-      if (resourceCell) {
-        infos.push(buildResourceInfoFromCell(resourceCell))
-      } else {
-        let groupCell = tr.querySelector('.fc-cell.fc-resource-group')
-
-        if (groupCell) {
-          infos.push(buildGroupInfoFromCell(groupCell))
-        }
+      if (tr.classList.contains('fc-resource')) {
+        infos.push(buildResourceInfoFromCell(tr.firstElementChild))
+      } else if (tr.classList.contains('fc-resource-group')) {
+        infos.push(buildGroupInfoFromCell(tr.firstElementChild))
       }
     }
 
@@ -48,11 +42,11 @@ export class ResourceDataGridWrapper {
   }
 
   getResourceCellEl(resourceId) {
-    return this.el.querySelector(`.fc-cell[data-resource-id="${resourceId}"]`) as HTMLElement
+    return this.el.querySelector(`[role=gridcell][data-resource-id="${resourceId}"]`) as HTMLElement
   }
 
   getResourceCellEls(resourceId) {
-    let selector = '.fc-cell.fc-resource'
+    let selector = '[role=gridcell].fc-resource'
 
     if (resourceId) {
       selector += `[data-resource-id="${resourceId}"]`
@@ -62,7 +56,7 @@ export class ResourceDataGridWrapper {
   }
 
   getAllRows() {
-    return findElements(this.el, '.fc-row')
+    return findElements(this.el, '[role=row]')
   }
 
   clickFirstExpander() {

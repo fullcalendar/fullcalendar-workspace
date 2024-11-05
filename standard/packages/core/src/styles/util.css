@@ -1,4 +1,36 @@
 
+// Border Utils
+// -------------------------------------------------------------------------------------------------
+
+.fc-border-t,
+.fc-border-b,
+.fc-border-s,
+.fc-border-e {
+  border: 0px solid var(--fc-border-color);
+}
+
+.fc-border-transparent {
+  border-color: transparent;
+}
+
+.fc-border-t {
+  border-top-width: 1px;
+}
+
+.fc-border-b {
+  border-bottom-width: 1px;
+}
+
+.fc-direction-ltr .fc-border-s,
+.fc-direction-rtl .fc-border-e {
+  border-left-width: 1px;
+}
+
+.fc-direction-ltr .fc-border-e,
+.fc-direction-rtl .fc-border-s {
+  border-right-width: 1px;
+}
+
 // Flexbox Utils
 // -------------------------------------------------------------------------------------------------
 
@@ -48,16 +80,10 @@ Rarely used. Just inline this?
 .fc-table-body.fc-flex-row {
   flex-direction: row;
 }
-.fc-row.fc-flex-column {
-  flex-direction: column;
-}
 
 .fc-table-header,
 .fc-table-body,
-.fc-row,
-.fc-row-border, // can be used standalone
 .fc-rowdivider,
-.fc-cell,
 .fc-celldivider {
   border: 0 solid var(--fc-border-color);
 }
@@ -66,56 +92,37 @@ Rarely used. Just inline this?
   border-bottom-width: 1px;
 }
 
-.fc-table-body + .fc-table-body,
-.fc-row + .fc-row,
-.fc-row-border {
+.fc-table-body + .fc-table-body {
   border-top-width: 1px;
 }
 
-.fc-rowdivider { // TOOD: change name to fc-row-divider?
+.fc-rowdivider {
   border-width: 1px 0;
 }
 
-.fc-celldivider { // TOOD: change name to fc-cell-divider?
+.fc-celldivider {
   border-width: 0 1px;
-}
-
-.fc-row {
-  display: flex;
-  flex-direction: row;
 }
 
 .fc-cell {
   margin: 0 !important;
   padding: 0 !important;
 }
-.fc-cell-border-fake { // best?
-  border: 0 solid transparent;
-}
-.fc-direction-ltr .fc-cell + .fc-cell,
-.fc-direction-ltr .fc-cell-border,
-.fc-direction-ltr .fc-cell-border-fake {
-  border-left-width: 1px;
-}
-.fc-direction-rtl .fc-cell + .fc-cell,
-.fc-direction-rtl .fc-cell-border,
-.fc-direction-rtl .fc-cell-border-fake {
-  border-right-width: 1px;
+
+/*
+Lone cell in a row should always fill row. Makes axis widths much easier
+TODO: get rid of this!
+*/
+.fc-cell:only-child {
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: 0;
 }
 
 .fc-cell-inner {
   flex-shrink: 0; // so that cell (whose height is controlled the row) does not compress
   white-space: nowrap;
   overflow: hidden;
-}
-
-/*
-Lone cell in a row should always fill row. Makes axis widths much easier
-*/
-.fc-cell:only-child {
-  flex-grow: 1;
-  flex-basis: 0;
-  min-width: 0;
 }
 
 .fc-rowdivider,

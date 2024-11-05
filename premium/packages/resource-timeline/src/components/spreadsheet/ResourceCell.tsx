@@ -48,7 +48,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         }}
         className={joinClassNames(
           'fc-cell',
-          props.colIndex && 'fc-cell-border',
+          props.colIndex && 'fc-border-s',
         )}
         style={{
           width: props.width,

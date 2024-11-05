@@ -17,6 +17,7 @@ export interface TimelineSlatCellProps {
   todayRange: DateRange
   isDay: boolean
   isEm: boolean
+  borderStart: boolean
 
   // dimensions
   width: number | undefined // always provided. if pending, use `undefined`
@@ -61,6 +62,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
               'fc-timeline-slot-minor'
           ),
           'fc-timeline-slot-lane fc-cell fc-flex-column fc-align-start',
+          props.borderStart && 'fc-border-s',
           ...(
             props.isDay ?
               getDayClassNames(dateMeta, theme) :

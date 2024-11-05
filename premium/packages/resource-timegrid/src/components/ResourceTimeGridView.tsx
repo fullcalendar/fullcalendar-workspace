@@ -176,7 +176,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
               headerTiers={headerTiers}
               renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width) => (
                 (options.weekNumbers && tierNum === headerTiers.length - 1) ? (
-                  <TimeGridWeekNumber // .fc-cell
+                  <TimeGridWeekNumber
                     dateProfile={dateProfile}
                     innerWidthRef={innerWidthRef}
                     innerHeightRef={innerHeightRef}
@@ -184,13 +184,13 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                   />
                 ) : (
                   <div
-                    className='fc-cell'
+                    className={tierNum ? 'fc-border-s' : ''}
                     style={{ width }}
                   />
                 )
               )}
               // TODO: DRY
-              renderHeaderContent={(model, tierNum, innerHeightRef, colWidth) => {
+              renderHeaderContent={(model, tierNum, cellI, innerHeightRef, colWidth) => {
                 if ((model as ResourceDateHeaderCellObj).resource) {
                   return (
                     <ResourceHeaderCell
@@ -199,6 +199,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                       colSpan={model.colSpan}
                       colWidth={colWidth}
                       isSticky={tierNum < headerTiers.length - 1}
+                      borderStart={Boolean(cellI)}
                     />
                   )
                 } else if ((model as DateHeaderCellObj).date) {
@@ -212,6 +213,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                       innerHeightRef={innerHeightRef}
                       colSpan={model.colSpan}
                       colWidth={colWidth}
+                      borderStart={Boolean(cellI)}
                     />
                   )
                 } else {
@@ -221,6 +223,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                     innerHeightRef={innerHeightRef}
                     colSpan={model.colSpan}
                     colWidth={colWidth}
+                    borderStart={Boolean(cellI)}
                   />
                 }
               }}

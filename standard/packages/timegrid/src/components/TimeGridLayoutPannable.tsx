@@ -31,6 +31,7 @@ export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
   renderHeaderContent: (
     model: HeaderCellModel,
     tier: number,
+    cellI: number,
     innerHeightRef: Ref<number> | undefined,
     width: number | undefined,
   ) => ComponentChild
@@ -165,16 +166,19 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             {/* HEADER / labels
             -------------------------------------------------------------------------------------*/}
             <div
-              className='fc-cell fc-content-box' // a "super" cell
+              className='fc-content-box'
               style={{ width: axisWidth }}
             >
               {headerTiers.map((models, tierNum) => (
                 <div
                   key={tierNum}
-                  className='fc-row fc-content-box'
+                  className={joinClassNames(
+                    'fc-flex-row fc-content-box',
+                    tierNum && 'fc-border-t',
+                  )}
                   style={{ height: state.headerTierHeights[tierNum] }}
                 >
-                  {props.renderHeaderLabel( // .fc-cell
+                  {props.renderHeaderLabel(
                     tierNum,
                     headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
                     headerLabelInnerHeightRefMap.createRef(tierNum), // innerHeightRef
@@ -188,7 +192,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             <Scroller
               horizontal
               hideScrollbars
-              className='fc-cell fc-liquid'
+              className='fc-border-s fc-liquid'
               ref={this.headerScrollerRef}
             >
               <div
@@ -200,7 +204,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 }}
               >
                 {props.headerTiers.map((cells, tierNum) => (
-                  <HeaderRowAdvanced // .fc-row
+                  <HeaderRowAdvanced
                     key={tierNum}
                     tierNum={tierNum}
                     cells={cells}
@@ -217,11 +221,10 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
         )}
         {options.allDaySlot && (
           <Fragment>
-            {/* not fc-row because don't want border */}
             <div className='fc-timegrid-allday fc-table-body fc-flex-row'>
               {/* ALL-DAY / label
               -----------------------------------------------------------------------------------*/}
-              <TimeGridAllDayLabel // .fc-cell
+              <TimeGridAllDayLabel
                 innerWidthRef={this.handleAllDayLabelInnerWidth}
                 width={axisWidth}
               />
@@ -230,7 +233,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               <Scroller
                 horizontal
                 hideScrollbars
-                className='fc-cell fc-flex-column fc-liquid' // fill remaining width
+                className='fc-border-s fc-flex-column fc-liquid' // fill remaining width
                 ref={this.allDayScrollerRef}
               >
                 <div
@@ -283,7 +286,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           <Scroller
             vertical={verticalScrolling}
             hideScrollbars
-            className='fc-cell fc-flex-column fc-content-box'
+            className='fc-flex-column fc-content-box'
             style={{
               width: axisWidth,
             }}
@@ -295,18 +298,19 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 paddingBottom: state.bottomScrollbarWidth,
               }}
             >
-              {props.slatMetas.map((slatMeta) => (
+              {props.slatMetas.map((slatMeta, slatI) => (
                 <div
                   key={slatMeta.key}
                   className={joinClassNames(
                     ...getSlatRowClassNames(slatMeta),
+                    slatI && 'fc-border-t',
                     slatLiquid && 'fc-liquid',
                   )}
                   style={{
                     height: slatLiquid ? '' : slatHeight
                   }}
                 >
-                  <TimeGridSlatLabel // .fc-cell
+                  <TimeGridSlatLabel
                     {...slatMeta}
                     width={undefined}
                     innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
@@ -328,7 +332,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
           <div
             // we need this div because it's bad for Scroller to have left/right borders,
             // AND because we need to containt the StickyFooterScrollbar
-            className='fc-cell fc-liquid fc-flex-column' // a "super" cell
+            className='fc-border-s fc-liquid fc-flex-column'
           >
             <Scroller
               vertical={verticalScrolling}
@@ -347,18 +351,19 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             >
               <div className='fc-grow fc-flex-column fc-rel' style={{ width: canvasWidth }}>
                 <div className='fc-timegrid-slots fc-flex-column fc-grow'>
-                  {props.slatMetas.map((slatMeta) => (
+                  {props.slatMetas.map((slatMeta, slatI) => (
                     <div
                       key={slatMeta.key}
                       className={joinClassNames(
                         ...getSlatRowClassNames(slatMeta),
+                        slatI && 'fc-border-t',
                         slatLiquid && 'fc-liquid',
                       )}
                       style={{
                         height: slatLiquid ? '' : slatHeight
                       }}
                     >
-                      <TimeGridSlatLane // .fc-cell
+                      <TimeGridSlatLane
                         {...slatMeta}
                         innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
                       />

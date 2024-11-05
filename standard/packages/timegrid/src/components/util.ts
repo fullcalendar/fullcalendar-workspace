@@ -85,6 +85,6 @@ export function getSlatRowClassNames(slatMeta: TimeSlatMeta): string[] {
   return [
     'fc-timegrid-slot',
     slatMeta.isLabeled ? '' : 'fc-timegrid-slot-minor',
-    'fc-row',
+    'fc-flex-row',
   ]
 }

@@ -1,11 +1,12 @@
 import { createElement, createRef, Ref, Fragment } from '@fullcalendar/core/preact'
-import { BaseComponent, ContentContainer, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { BaseComponent, ContentContainer, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { ColSpec, ColHeaderContentArg } from '@fullcalendar/resource'
 
 export interface HeaderCellProps {
   colSpec: ColSpec
   resizer: boolean
   indent?: boolean
+  borderStart: boolean
 
   // refs
   resizerElRef?: Ref<HTMLDivElement>
@@ -23,7 +24,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
   private detachInnerHeight?: () => void
 
   render() {
-    let { colSpec, resizer, resizerElRef, width } = this.props
+    let { colSpec, resizer, resizerElRef, width, borderStart } = this.props
     let renderProps: ColHeaderContentArg = { view: this.context.viewApi }
 
     // need empty inner div for abs positioning for resizer
@@ -34,7 +35,10 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
           role: 'columnheader'
         }}
         // fc-rel for resizer abs positioning
-        className='fc-header-cell fc-cell fc-flex-column fc-justify-center fc-rel'
+        className={joinClassNames(
+          'fc-header-cell fc-cell fc-flex-column fc-justify-center fc-rel',
+          borderStart && 'fc-border-s',
+        )}
         style={{
           width,
         }}

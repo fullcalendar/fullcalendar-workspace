@@ -46,7 +46,6 @@ Resource Timeline
     See bundle/examples/responsive.html
   just like scrollbar dead area should have grey bg,
     make timeline bottom area w/o slots a grey bg
-  structure: fix ResourceTimeline super-header fc-row-border abuse
   get grouping via row and col simultaneously working. should be possible.
     see timeline-row-n-col-grouping-not-working.html
   ensure row-height-syncing doesn't have 1px-off problem
@@ -86,7 +85,6 @@ Markup/CSS/structure
   Rename fc-flex-column -> fc-flex-col (consistent with fc-timegrid-col, and tailwind)
   go back to simple classNames for views (no `*-view`)
     compare to old and then add to changelog
-  rethink .fc-cell/fc-daygrid-cell classNames
   change names to runon, like "fc-nowindicator" and "morelink" and "viewharness"
     or "view-outer"?
   .fc-timegrid-col-fg -> .fc-timegrid-col-events, like DayGrid?

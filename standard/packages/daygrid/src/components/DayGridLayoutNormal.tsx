@@ -31,6 +31,7 @@ export interface DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   renderHeaderContent: (
     model: HeaderCellModel,
     tier: number,
+    cellI: number,
     innerHeightRef: Ref<number> | undefined, // unused
     colWidth: number | undefined,
   ) => ComponentChild
