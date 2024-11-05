@@ -74,7 +74,7 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
 
             // render hooks
             className={joinClassNames(
-              'fc-daygrid-header fc-table-header',
+              'fc-daygrid-header',
               stickyHeaderDates && 'fc-table-header-sticky',
             )}
 
@@ -88,7 +88,7 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           className={joinClassNames(
-            'fc-daygrid-body fc-table-body',
+            'fc-daygrid-body fc-flex-column',
             verticalScrollbars && 'fc-liquid',
           )}
           ref={this.handleScroller}

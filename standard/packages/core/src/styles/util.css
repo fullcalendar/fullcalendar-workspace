@@ -2,6 +2,7 @@
 // Border Utils
 // -------------------------------------------------------------------------------------------------
 
+.fc-border,
 .fc-border-t,
 .fc-border-b,
 .fc-border-s,
@@ -11,6 +12,10 @@
 
 .fc-border-transparent {
   border-color: transparent;
+}
+
+.fc-border {
+  border-width: 1px;
 }
 
 .fc-border-t {
@@ -66,34 +71,9 @@ Rarely used. Just inline this?
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
-// TODO: introduce fc-table/fc-table-border classnames?
-
-.fc-table-header, // TODO: change name to just fc-header?
-.fc-table-body { // TODO: change name to just fc-body?
-  // TODO: too often elements want the borders, but override the flex-direction. what to do!?
-  display: flex;
-  flex-direction: column;
-}
-
-// HACK for precedence
-.fc-table-header.fc-flex-row,
-.fc-table-body.fc-flex-row {
-  flex-direction: row;
-}
-
-.fc-table-header,
-.fc-table-body,
 .fc-rowdivider,
 .fc-celldivider {
   border: 0 solid var(--fc-border-color);
-}
-
-.fc-table-header {
-  border-bottom-width: 1px;
-}
-
-.fc-table-body + .fc-table-body {
-  border-top-width: 1px;
 }
 
 .fc-rowdivider {
@@ -184,14 +164,14 @@ TODO: get rid of this!
   right: 0;
 }
 
-.fc-table-header-sticky {
+.fc-table-header-sticky { // rename?
   position: sticky;
   top: 0;
   background: var(--fc-page-bg-color);
   z-index: $sticky-header-footer-z;
 }
 
-.fc-sticky-footer-scrollbar {
+.fc-sticky-footer-scrollbar { // rename?
   position: sticky;
   bottom: 0;
   z-index: $sticky-header-footer-z;
@@ -208,10 +188,6 @@ Only needed when padding/border must be separate from width/height
 */
 .fc-content-box {
   box-sizing: content-box;
-}
-
-.fc-border {
-  border: 1px solid var(--fc-border-color);
 }
 
 .fc-offscreen {

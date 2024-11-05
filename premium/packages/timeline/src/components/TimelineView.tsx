@@ -110,7 +110,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 horizontal
                 hideScrollbars
                 className={joinClassNames(
-                  'fc-timeline-header fc-table-header',
+                  'fc-timeline-header fc-flex-column fc-border-b',
                   stickyHeaderDates && 'fc-table-header-sticky',
                 )}
                 ref={this.headerScrollerRef}
@@ -157,7 +157,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 vertical={verticalScrolling}
                 horizontal
                 className={joinClassNames(
-                  'fc-timeline-body fc-table-body',
+                  'fc-timeline-body fc-flex-column',
                   verticalScrolling && 'fc-liquid',
                 )}
                 ref={this.bodyScrollerRef}

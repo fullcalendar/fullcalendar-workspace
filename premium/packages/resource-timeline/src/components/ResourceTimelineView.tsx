@@ -299,7 +299,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     ---------------------------------------------------------------------------- */}
                     <div
                       className={joinClassNames(
-                        'fc-datagrid-header fc-table-header',
+                        'fc-datagrid-header fc-flex-column fc-border-b',
                         stickyHeaderDates && 'fc-table-header-sticky',
                       )}
                     >
@@ -349,7 +349,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       horizontal
                       hideScrollbars
                       className={joinClassNames(
-                        'fc-datagrid-body fc-table-body',
+                        'fc-datagrid-body fc-flex-column',
                         verticalScrolling && 'fc-liquid',
                       )}
                       ref={this.spreadsheetBodyScrollerRef}
@@ -505,7 +505,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       horizontal
                       hideScrollbars
                       className={joinClassNames(
-                        'fc-timeline-header fc-table-header',
+                        'fc-timeline-header fc-flex-column fc-border-b',
                         stickyHeaderDates && 'fc-table-header-sticky',
                       )}
                     >
@@ -554,7 +554,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       horizontal
                       hideScrollbars={stickyFooterScrollbar}
                       className={joinClassNames(
-                        'fc-timeline-body fc-table-body',
+                        'fc-timeline-body fc-flex-column',
                         verticalScrolling && 'fc-liquid',
                       )}
                       ref={this.timeBodyScrollerRef}

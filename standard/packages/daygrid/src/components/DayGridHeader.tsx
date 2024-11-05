@@ -28,7 +28,6 @@ export function DayGridHeader<Model, ModelKey>(props: DayGridHeaderProps<Model, 
     <div
       className={joinClassNames(
         props.className,
-        // fc-flex-column unnecessary if className contain fc-table-header
         'fc-flex-column fc-content-box',
       )}
       style={{
