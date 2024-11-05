@@ -54,6 +54,7 @@ Resource Timeline
     right now it's impossible to resize last column
     try to take width away from next column when expanding
   optimize rendering for lane top/bottom padding
+  when there's a superheader, and 2 headers in timeline area, padding in headers looks too thick?
 H-Scrolling Views
   ensure col-width-syncing doesn't have 1px-off problem
     queries inner-width, but when assigning to outer-width, does it add 1px?

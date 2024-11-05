@@ -45,8 +45,8 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     let { dateEnv, options, viewApi } = context
 
     let className = joinClassNames(
-      'fc-timegrid-slot-label fc-timegrid-axis fc-header-cell fc-cell fc-content-box',
-      props.isLiquid && 'fc-liquid',
+      'fc-timegrid-slot-label fc-timegrid-axis fc-header-cell fc-cell',
+      props.isLiquid ? 'fc-liquid' : 'fc-content-box',
     )
 
     if (!props.isLabeled) {

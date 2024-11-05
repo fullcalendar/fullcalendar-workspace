@@ -36,8 +36,8 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
       <WeekNumberContainer
         tag='div'
         className={joinClassNames(
-          'fc-timegrid-weeknumber fc-timegrid-axis fc-cell fc-content-box',
-          props.isLiquid && 'fc-liquid',
+          'fc-timegrid-weeknumber fc-timegrid-axis fc-cell',
+          props.isLiquid ? 'fc-liquid' : 'fc-content-box',
         )}
         style={{ width: props.width }}
         date={range.start}

@@ -188,8 +188,8 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
                   // TODO: DRY up with TimeGridView
                   <div
                     className={joinClassNames(
-                      'fc-timegrid-axis fc-content-box',
-                      isLiquid && 'fc-liquid',
+                      'fc-timegrid-axis',
+                      isLiquid ? 'fc-liquid' : 'fc-content-box',
                     )}
                     style={{ width }}
                   />
