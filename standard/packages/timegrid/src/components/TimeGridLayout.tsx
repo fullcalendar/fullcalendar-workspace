@@ -23,6 +23,7 @@ export interface TimeGridLayoutProps<HeaderCellModel, HeaderCellKey> {
     innerWidthRef: Ref<number>,
     innerHeightRef: Ref<number>,
     width: number | undefined,
+    isLiquid: boolean,
   ) => ComponentChild
   renderHeaderContent: (
     model: HeaderCellModel,

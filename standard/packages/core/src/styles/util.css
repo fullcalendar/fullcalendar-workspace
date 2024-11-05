@@ -71,6 +71,17 @@ Rarely used. Just inline this?
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
+.fc-cell {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.fc-cell-inner {
+  flex-shrink: 0; // so that cell (whose height is controlled the row) does not compress
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .fc-rowdivider,
 .fc-celldivider {
   border: 0 solid var(--fc-border-color);
@@ -82,27 +93,6 @@ Rarely used. Just inline this?
 
 .fc-celldivider {
   border-width: 0 1px;
-}
-
-.fc-cell {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/*
-Lone cell in a row should always fill row. Makes axis widths much easier
-TODO: get rid of this!
-*/
-.fc-cell:only-child {
-  flex-grow: 1;
-  flex-basis: 0;
-  min-width: 0;
-}
-
-.fc-cell-inner {
-  flex-shrink: 0; // so that cell (whose height is controlled the row) does not compress
-  white-space: nowrap;
-  overflow: hidden;
 }
 
 .fc-rowdivider,

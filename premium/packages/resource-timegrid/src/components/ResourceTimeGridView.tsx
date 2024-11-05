@@ -7,6 +7,7 @@ import {
   DateRange,
   Hit,
   NowTimer,
+  joinClassNames,
   mapHash,
   memoize,
 } from "@fullcalendar/core/internal"
@@ -174,17 +175,22 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
               // header content
               headerTiers={headerTiers}
-              renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width) => (
+              renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width, isLiquid) => (
                 (options.weekNumbers && tierNum === headerTiers.length - 1) ? (
                   <TimeGridWeekNumber
                     dateProfile={dateProfile}
                     innerWidthRef={innerWidthRef}
                     innerHeightRef={innerHeightRef}
                     width={width}
+                    isLiquid={isLiquid}
                   />
                 ) : (
+                  // TODO: DRY up with TimeGridView
                   <div
-                    className={tierNum ? 'fc-border-s' : ''}
+                    className={joinClassNames(
+                      'fc-timegrid-axis fc-content-box',
+                      isLiquid && 'fc-liquid',
+                    )}
                     style={{ width }}
                   />
                 )

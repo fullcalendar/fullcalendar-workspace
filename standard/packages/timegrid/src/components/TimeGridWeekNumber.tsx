@@ -1,4 +1,4 @@
-import { BaseComponent, DateProfile, WeekNumberContainer, buildNavLinkAttrs, createFormatter, diffDays, setRef, watchSize } from "@fullcalendar/core/internal"
+import { BaseComponent, DateProfile, WeekNumberContainer, buildNavLinkAttrs, createFormatter, diffDays, joinClassNames, setRef, watchSize } from "@fullcalendar/core/internal"
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 
 export interface TimeGridWeekNumberProps {
@@ -6,6 +6,7 @@ export interface TimeGridWeekNumberProps {
 
   // dimensions
   width: number | undefined
+  isLiquid: boolean
 
   // ref
   innerWidthRef?: Ref<number>
@@ -34,10 +35,11 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
     return (
       <WeekNumberContainer
         tag='div'
-        className='fc-timegrid-weeknumber fc-timegrid-axis fc-cell fc-content-box'
-        style={{
-          width: props.width
-        }}
+        className={joinClassNames(
+          'fc-timegrid-weeknumber fc-timegrid-axis fc-cell fc-content-box',
+          props.isLiquid && 'fc-liquid',
+        )}
+        style={{ width: props.width }}
         date={range.start}
         defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
       >

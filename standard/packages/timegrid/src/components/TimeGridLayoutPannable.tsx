@@ -27,6 +27,7 @@ export interface TimeGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
     innerWidthRef: Ref<number> | undefined,
     innerHeightRef: Ref<number> | undefined,
     width: number | undefined,
+    isLiquid: boolean,
   ) => ComponentChild
   renderHeaderContent: (
     model: HeaderCellModel,
@@ -182,6 +183,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
                     headerLabelInnerHeightRefMap.createRef(tierNum), // innerHeightRef
                     undefined, // width
+                    true, // isLiquid
                   )}
                 </div>
               ))}
@@ -224,8 +226,8 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               {/* ALL-DAY / label
               -----------------------------------------------------------------------------------*/}
               <TimeGridAllDayLabel
-                innerWidthRef={this.handleAllDayLabelInnerWidth}
                 width={axisWidth}
+                innerWidthRef={this.handleAllDayLabelInnerWidth}
               />
               {/* ALL-DAY / main (horizontal scroller)
               -----------------------------------------------------------------------------------*/}
@@ -286,9 +288,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
             vertical={verticalScrolling}
             hideScrollbars
             className='fc-flex-column fc-content-box'
-            style={{
-              width: axisWidth,
-            }}
+            style={{ width: axisWidth }}
             ref={this.axisScrollerRef}
           >
             <div
@@ -311,7 +311,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 >
                   <TimeGridSlatLabel
                     {...slatMeta}
-                    width={undefined}
+                    isLiquid={true}
                     innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                     innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                   />

@@ -27,6 +27,7 @@ export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
     innerWidthRef: Ref<number> | undefined,
     innerHeightRef: Ref<number> | undefined, // unused
     width: number | undefined,
+    isLiquid: boolean,
   ) => ComponentChild
   renderHeaderContent: (
     model: HeaderCellModel,
@@ -135,13 +136,17 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
             {props.headerTiers.map((cells, tierNum) => (
               <div
                 key={tierNum}
-                className={joinClassNames('fc-flex-row', tierNum && 'fc-border-t')}
+                className={joinClassNames(
+                  'fc-flex-row',
+                  tierNum && 'fc-border-t'
+                )}
               >
                 {props.renderHeaderLabel(
                   tierNum,
                   headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
                   undefined, // innerHeightRef
                   axisWidth, // width
+                  false, // isLiquid
                 )}
                 <HeaderRow
                   tierNum={tierNum}
@@ -236,8 +241,8 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   />
                   <TimeGridSlatLane
                     {...slatMeta}
-                    innerHeightRef={slatInnerMainHeightRefMap.createRef(slatMeta.key)}
                     borderStart
+                    innerHeightRef={slatInnerMainHeightRefMap.createRef(slatMeta.key)}
                   />
                 </div>
               ))}

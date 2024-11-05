@@ -1,4 +1,4 @@
-import { DateComponent, ViewProps, memoize, DateMarker, NowTimer, DateRange, EventRangeProps } from "@fullcalendar/core/internal"
+import { DateComponent, ViewProps, memoize, DateMarker, NowTimer, DateRange, EventRangeProps, joinClassNames } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
 import { DateHeaderCell, DayTableSlicer } from '@fullcalendar/daygrid/internal'
 import { buildDayRanges, buildTimeColsModel } from "./util.js"
@@ -81,17 +81,22 @@ export class TimeGridView extends DateComponent<ViewProps> {
 
               // header content
               headerTiers={dayTableModel.cellRows /* guaranteed to be one row */}
-              renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width) => (
+              renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width, isLiquid) => (
                 options.weekNumbers ? (
                   <TimeGridWeekNumber
                     dateProfile={dateProfile}
                     innerWidthRef={innerWidthRef}
                     innerHeightRef={innerHeightRef}
                     width={width}
+                    isLiquid={isLiquid}
                   />
                 ) : (
+                  // TODO: DRY up with ResourceTimeGridView
                   <div
-                    className='fc-timegrid-axis fc-content-box'
+                    className={joinClassNames(
+                      'fc-timegrid-axis fc-content-box',
+                      isLiquid && 'fc-liquid',
+                    )}
                     style={{ width }}
                   />
                 )

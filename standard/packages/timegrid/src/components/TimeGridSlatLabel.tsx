@@ -7,6 +7,7 @@ import {
   watchSize,
   setRef,
   BaseComponent,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -24,7 +25,8 @@ const DEFAULT_SLAT_LABEL_FORMAT = createFormatter({
 
 export interface TimeGridSlatLabelProps extends TimeSlatMeta {
   // dimensions
-  width: number | undefined
+  width?: number
+  isLiquid?: boolean
 
   // ref
   innerWidthRef?: Ref<number>
@@ -41,16 +43,18 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
   render() {
     let { props, context } = this
     let { dateEnv, options, viewApi } = context
-    let className = 'fc-timegrid-slot-label fc-timegrid-axis fc-header-cell fc-cell fc-content-box'
+
+    let className = joinClassNames(
+      'fc-timegrid-slot-label fc-timegrid-axis fc-header-cell fc-cell fc-content-box',
+      props.isLiquid && 'fc-liquid',
+    )
 
     if (!props.isLabeled) {
       return (
         <div
           data-time={props.isoTimeStr}
           className={className}
-          style={{
-            width: props.width,
-          }}
+          style={{ width: props.width }}
         />
       )
     }
@@ -75,9 +79,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
           'data-time': props.isoTimeStr,
         }}
         className={className}
-        style={{
-          width: props.width,
-        }}
+        style={{ width: props.width }}
         renderProps={renderProps}
         generatorName="slotLabelContent"
         customGenerator={options.slotLabelContent}
