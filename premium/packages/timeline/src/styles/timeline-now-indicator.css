@@ -1,47 +1,34 @@
 
-// TimelineNowIndicatorContainer
-// -------------------------------------------------------------------------------------------------
+//
+// fc-timeline-now-indicator-container
+//
 
 .fc-timeline-now-indicator-container {
-  position: absolute;
+  @include fill;
   z-index: $now-indicator-z;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  overflow: hidden;
-  // ^so arrow doesn't bleed out and cause overflow. DRY this up from elsewhere?
-
+  overflow: hidden; // so arrow doesn't bleed out and cause overflow
   pointer-events: none;
 }
 
-// TimelineNowIndicatorContainer > TimelineNowIndicator(Arrow|Line)
-// -------------------------------------------------------------------------------------------------
+//
+// fc-timeline-now-indicator-container > arrow
+//
 
-.fc-timeline-now-indicator-arrow,
+.fc-timeline-now-indicator-arrow {
+  position: absolute;
+  top: 0;
+  margin: 0 -5px; // center triangle at element origin
+  border-color: var(--fc-now-indicator-color);
+  @include arrow-down(5px, 6px);
+}
+
+//
+// fc-timeline-now-indicator-container > line
+//
+
 .fc-timeline-now-indicator-line {
   position: absolute;
   top: 0;
-  border-style: solid;
-  border-color: var(--fc-now-indicator-color);
-}
-
-// TimelineNowIndicatorContainer > TimelineNowIndicatorArrow
-// -------------------------------------------------------------------------------------------------
-
-.fc-timeline-now-indicator-arrow {
-  margin: 0 -5px; // center triangle at element origin
-
-  // triangle pointing down. TODO: mixin
-  border-width: 6px 5px 0 5px;
-  border-left-color: transparent;
-  border-right-color: transparent;
-}
-
-// TimelineNowIndicatorContainer > TimelineNowIndicatorLine
-// -------------------------------------------------------------------------------------------------
-
-.fc-timeline-now-indicator-line {
   bottom: 0;
-  border-width: 0 0 0 1px;
+  border-left: 1px solid var(--fc-now-indicator-color);
 }

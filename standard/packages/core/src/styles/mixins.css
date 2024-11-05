@@ -13,3 +13,30 @@
   min-width: 0;
   min-height: 0;
 }
+
+/*
+pointing down
+callers must set border-color themselves
+*/
+@mixin arrow-down($halfWidth, $height) {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: $height $halfWidth 0 $halfWidth;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+
+/*
+pointing at left or right
+callers must set border-color themselves
+callers must choose pointing-left/right be setting left/right border to zero
+*/
+@mixin arrow-left-right($width, $halfHeight) {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: $halfHeight $width;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+}

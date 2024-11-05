@@ -39,7 +39,7 @@
 .fc-timeline-event .fc-event-inner {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: center; // vertically centered items
   padding: 2px 1px;
 }
 
@@ -62,14 +62,8 @@
   flex-grow: 0;
   flex-shrink: 0;
   opacity: .5;
-
-  // triangle. TODO: mixin
-  width: 0;
-  height: 0;
-  margin: 0 1px;
-  border: 5px solid #000; // TODO: var
-  border-top-color: transparent;
-  border-bottom-color: transparent;
+  border-color: #000; // TODO: var
+  @include arrow-left-right(5px, 5px);
 }
 
 // (pointing left variant)

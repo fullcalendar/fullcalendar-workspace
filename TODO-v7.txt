@@ -57,6 +57,9 @@ Resource Timeline
     try to take width away from next column when expanding
   optimize rendering for lane top/bottom padding
   when there's a superheader, and 2 headers in timeline area, padding in headers looks too thick?
+  in resource-timeline splitpane,
+    should RTL scrollbars that appear on RIGHT, happen on datagrid!? yes
+      (keep in mind columns are reversed)
 H-Scrolling Views
   ensure col-width-syncing doesn't have 1px-off problem
     queries inner-width, but when assigning to outer-width, does it add 1px?
@@ -87,10 +90,14 @@ Scrollbars
 Markup/CSS/structure
   try to make css as utility-based as possible. audit all semantic CSS statements in .css files
     especially audit flex-direction statements
+    we make olden-style exceptions for events, toolbar, popover, more-link, day-headers
+      which are polymorphic and share same DOM structure. considered "components" to us
+    convert fc-view-harness
   Rename fc-flex-column -> fc-flex-col (consistent with fc-timegrid-col, and tailwind)
   go back to simple classNames for views (no `*-view`)
     compare to old and then add to changelog
   change names to runon, like "fc-nowindicator" and "morelink" and "viewharness"
+    just like 'navlink'
     or "view-outer"?
   .fc-timegrid-col-fg -> .fc-timegrid-col-events, like DayGrid?
   .fc-daygrid-cell-number is an awkward classname... fc-daygrid-day-number instead? fc-daygrid-datenumber/daynumber?

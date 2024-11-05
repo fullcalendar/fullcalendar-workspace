@@ -52,10 +52,7 @@
 //
 
 .fc-timegrid-event-short .fc-event-title-outer { // (short)
-  // liquid (like what h-event does)
-  flex-grow: 1;
-  flex-basis: 0;
-  min-width: 0;
+  @include liquid; // like what h-event does
 }
 
 //
