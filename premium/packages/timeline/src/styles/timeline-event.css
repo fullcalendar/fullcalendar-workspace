@@ -1,7 +1,7 @@
 
 //
-// timeline-events
-//   the container for multiple events
+// fc-timeline-events (extends fc-event, fc-h-event)
+//   a CONTAINER for multiple events
 //
 
 .fc-timeline-events-overlap-enabled { // (overlap-enabled)
@@ -9,18 +9,13 @@
 }
 
 //
-// timeline-event (extends h-event)
+// fc-timeline-event (extends fc-h-event)
 //
 
 .fc-timeline-event {
   border-radius: 0;
   margin-bottom: 1px;
   font-size: var(--fc-small-font-size);
-  z-index: $event-z;
-}
-
-.fc-timeline-event.fc-event-mirror { // (mirror)
-  z-index: $event-mirror-z; // scoped within container
 }
 
 .fc-direction-ltr .fc-timeline-event.fc-event-end { // (ltr+end)
@@ -38,7 +33,7 @@
 }
 
 //
-// timeline-event > inner
+// fc-timeline-event > inner
 //
 
 .fc-timeline-event .fc-event-inner {
@@ -48,8 +43,17 @@
   padding: 2px 1px;
 }
 
+.fc-timeline-event .fc-event-time { // > time
+  font-weight: bold;
+}
+
+.fc-timeline-event .fc-event-time, // > time
+.fc-timeline-event .fc-event-title { // > title-outer > title-outer
+  padding: 0 2px;
+}
+
 //
-// timeline-event > inner > arrows
+// fc-timeline-event > inner > arrows
 //
 
 .fc-timeline-event:not(.fc-event-start) .fc-event-inner:before,
@@ -78,17 +82,4 @@
 .fc-direction-ltr .fc-timeline-event:not(.fc-event-end) .fc-event-inner:after,
 .fc-direction-rtl .fc-timeline-event:not(.fc-event-start) .fc-event-inner:before {
   border-right: 0;
-}
-
-//
-// timeline-event > inner > *
-//
-
-.fc-timeline-event .fc-event-time { // > time
-  font-weight: bold;
-}
-
-.fc-timeline-event .fc-event-time, // > time
-.fc-timeline-event .fc-event-title { // > title-outer > title-outer
-  padding: 0 2px;
 }

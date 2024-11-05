@@ -1,31 +1,28 @@
 
 //
-// daygrid-event (extends h-event)
+// fc-daygrid-event
+//   a MIXIN
+//   works with different structures, like fc-daygrid-block-event and fc-daygrid-dot-event
 //
 
 .fc-daygrid-event {
-  z-index: $event-z;
   margin-bottom: 1px;
-  border-radius: 3px; // dot event needs this to when selected
+  border-radius: 3px; // dot event needs this too when selected
   font-size: var(--fc-small-font-size);
 }
 
-.fc-daygrid-event.fc-event-mirror { // (mirror)
-  z-index: $event-mirror-z;
-}
-
-.fc-direction-ltr .fc-daygrid-event.fc-event-start,
-.fc-direction-rtl .fc-daygrid-event.fc-event-end {
+// left/right margins
+.fc-direction-ltr .fc-daygrid-event.fc-event-start, // (ltr-left-terminus)
+.fc-direction-rtl .fc-daygrid-event.fc-event-end { // (rtl-left-terminus)
   margin-left: 2px;
 }
-
-.fc-direction-ltr .fc-daygrid-event.fc-event-end,
-.fc-direction-rtl .fc-daygrid-event.fc-event-start {
+.fc-direction-ltr .fc-daygrid-event.fc-event-end, // (ltr-right-terminus)
+.fc-direction-rtl .fc-daygrid-event.fc-event-start { // (rtl-right-terminus)
   margin-right: 2px;
 }
 
-// spacing between time and title
-// TODO: use gap, though be mindful of 3 siblings
+// space between time and title
+// (can't use gap b/c dot is often a first sibling)
 .fc-direction-ltr .fc-daygrid-event .fc-event-time { // (ltr) > time
   margin-right: 3px;
 }
@@ -34,19 +31,19 @@
 }
 
 //
-// daygrid-block-event (extends daygrid-event --- BUT *NOT* h-event, WEIRD, TODO)
-//   the rectangle ("block") style of event
+// fc-daygrid-block-event (extends fc-event, fc-h-event, fc-daygrid-event)
+//   the RECTANGLE style of event
 //
 
-.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-start),
-.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-end) {
+// kill left/right margin and border-radius
+.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-start), // (ltr-left-continuation)
+.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-end) { // (rtl-left-continuation)
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-left-width: 0;
 }
-
-.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-end),
-.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-start) {
+.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-end), // (ltr-right-continuation)
+.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-start) { // (rtl-right-continuation)
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-right-width: 0;
@@ -62,24 +59,32 @@
 }
 
 //
-// daygrid-dot-event (extends daygrid-event)
-//   the dot style of event
+// fc-daygrid-dot-event (extends fc-event, fc-daygrid-event)
+//   the DOT style of event
+//   does NOT extend fc-h-event, so need to complete fc-event's REQUIREMENTS
+//   does NOT ever do mirror
 //
 
 .fc-daygrid-dot-event {
-  position: relative; // HACK: related to "BUT *NOT* h-event" above
+  position: relative; // required by fc-event
+  z-index: $event-z;
+
   display: flex;
   direction: row;
   align-items: center; // vertical
   padding: 2px 0;
 }
 
-.fc-daygrid-dot-event:hover, // (hover)
-.fc-daygrid-dot-event.fc-event-mirror { // (mirror)
+.fc-daygrid-dot-event.fc-event-mirror, // (mirror)
+.fc-daygrid-dot-event:hover { // (hover)
   background: rgba(0, 0, 0, 0.1);
 }
 
-// NOTE: does NOT have .fc-event-inner, .fc-event-resizer, or .fc-event-title-outer
+.fc-daygrid-dot-event.fc-event-selected:before { // (touch-selected) > hit-area
+  // expand
+  top: -10px;
+  bottom: -10px;
+}
 
 .fc-daygrid-event-dot { // > dot
   margin: 0 4px;
@@ -97,10 +102,6 @@
 }
 
 .fc-daygrid-dot-event .fc-event-title { // > title
-  // liquid
-  flex-grow: 1;
-  flex-basis: 0;
-  min-width: 0;
-
+  @include liquid; // horizontally liquid
   font-weight: bold;
 }

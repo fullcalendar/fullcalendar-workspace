@@ -1,30 +1,10 @@
 
 //
-// daygrid-row
-//
-
-.fc-daygrid-row {
-}
-
-//
-// daygrid-row > fg
-//
-
-.fc-daygrid-row-fg {
-  position: relative; // to get own z-index-origin
-  flex-grow: 1;
-  min-width: 0;
-  // TODO!!!
-  display: flex;
-  flex-direction: row;
-}
-
-//
 // daygrid-row > fg > cell
 //
 
 .fc-daygrid-cell.fc-day-today { // (today)
-  // TODO: can we just make all fc-day-today's a bg color?
+  // only in body cells, not header cells
   background-color: var(--fc-today-bg-color);
 }
 
@@ -99,7 +79,7 @@
 }
 
 .fc-daygrid-more-link-block { // (block)
-  // look like an event
+  // looks like an event
   border: 1px solid var(--fc-event-border-color);
   padding: 1px;
 }

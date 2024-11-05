@@ -2,12 +2,8 @@
 .fc-bg-event,
 .fc-non-business,
 .fc-highlight {
-  // will always have a harness with position:relative/absolute, so absolutely expand
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  // will always have a harness with position:relative/absolute
+  @include fill;
 }
 
 .fc-non-business {

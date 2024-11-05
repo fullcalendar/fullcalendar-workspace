@@ -1,4 +1,6 @@
 
+// TODO: convert this to util classes?
+
 .fc-view-harness {
   position: relative; // for aspectratio AND for being origin for premium-message at bottom-left corner
 }
@@ -12,16 +14,9 @@
 .fc-view-harness-liquid,
 .fc-view-harness-liquid > .fc-view,
 .fc-view-harness-fixedheight > .fc-view {
-  // liquid
-  flex-basis: 0;
-  flex-grow: 1;
-  min-height: 0;
+  @include liquid;
 }
 
 .fc-view-harness-aspectratio > .fc-view {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  @include fill;
 }

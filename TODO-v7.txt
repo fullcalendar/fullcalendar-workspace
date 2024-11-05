@@ -26,6 +26,8 @@ MultiMonth
 TimeGrid
   just like scrollbar dead area should have grey bg,
     make timegrid bottom area w/o slots a grey bg
+  weird event overlapping problem (see Screenshot 2024-11-05 at 1.54.57 PM.png)
+    10am event (1 hour) gets overlapped by 8am-2pm event (6 hours)
 Timeline
   v7 regression for timeline event dragging?:
     1. have +more link with eventMaxStack
@@ -71,6 +73,7 @@ Print Mode
 General Responsive
   Hide event times (daygrid/timeline) if too small?
   should fc-padding-* classes be responsive, meaning related to font-size?
+    for fc-daygrid-cell-number/fc-daygrid-week-number too
   make ticket where popover is responsive?
 General Events
   remove <a> tags from events w/o url (or editable?)

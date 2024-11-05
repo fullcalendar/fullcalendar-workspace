@@ -1,15 +1,22 @@
 
 //
-// v-event (extends event)
+// fc-v-event (extends event)
 //   "vertical"
+//   REQUIREMENTS for subclasses:
+//   - set position:relative/absolute
 //
 
 .fc-v-event {
-  position: relative; // NOTE: subclasses should supply z-index
+  z-index: $event-z;
+
   display: flex;
   flex-direction: column;
   border: 1px solid var(--fc-event-border-color);
   background-color: var(--fc-event-bg-color);
+}
+
+.fc-v-event.fc-event-mirror { // (mirror)
+  z-index: $event-mirror-z;
 }
 
 .fc-v-event:not(.fc-event-start) { // (not-start)
@@ -24,27 +31,22 @@
   border-bottom-right-radius: 0;
 }
 
-.fc-v-event.fc-event-selected:before { // (selected) > hit-area
-  // expand hit area
+.fc-v-event.fc-event-selected:before { // (touch-selected) > hit-area
+  // expand
   left: -10px;
   right: -10px;
 }
 
 //
-// v-event > inner
+// fc-v-event > inner
 //
 
 .fc-v-event .fc-event-inner {
-  flex-grow: 1; // expand horizontally
-  min-width: 0; // can shrink regardless of inner content
+  @include liquid; // vertically liquid
   display: flex;
   flex-direction: column;
-  color: var(--fc-event-text-color); // why all this repeating?
+  color: var(--fc-event-text-color); // better to assign text-color within to bypass link color
 }
-
-//
-// v-event > inner > *
-//
 
 .fc-v-event .fc-event-time { // > time
   white-space: nowrap;
@@ -56,8 +58,7 @@
 }
 
 .fc-v-event .fc-event-title-outer { // > title-outer
-  flex-grow: 1;
-  min-width: 0;
+  @include liquid; // vertically liquid
   display: flex;
   flex-direction: column;
 }
@@ -69,7 +70,7 @@
 }
 
 //
-// v-event > resizer
+// fc-v-event > resizer
 //
 
 .fc-v-event .fc-event-resizer-start { // (start)

@@ -1,21 +1,13 @@
 
 //
-// timegrid-event (extends v-event)
+// fc-timegrid-event (extends fc-event, fc-v-event)
 //
 
 .fc-timegrid-event {
+  @include fill;
   margin-bottom: 1px; // give some space from bottom
-
-  // absolutely fill within harness
-  // (can't use fc-fill because `position` gets overriden by fc-v-event)
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  font-size: var(--fc-small-font-size);
   border-radius: 3px;
+  font-size: var(--fc-small-font-size);
 }
 
 .fc-timegrid-event-inset, // (inset)
@@ -29,7 +21,7 @@
 }
 
 //
-// timegrid-event > inner
+// fc-timegrid-event > inner
 //
 
 .fc-timegrid-event .fc-event-inner {
@@ -37,12 +29,12 @@
 }
 
 .fc-timegrid-event-short .fc-event-inner { // (short)
-  flex-direction: row; // overrides v-event!
+  flex-direction: row; // overrides fc-v-event!
   overflow: hidden;
 }
 
 //
-// timegrid-event > inner > time
+// fc-timegrid-event > inner > time
 //
 
 .fc-timegrid-event .fc-event-time {
@@ -56,7 +48,7 @@
 }
 
 //
-// timegrid-event > inner > title-outer
+// fc-timegrid-event > inner > title-outer
 //
 
 .fc-timegrid-event-short .fc-event-title-outer { // (short)
@@ -67,7 +59,7 @@
 }
 
 //
-// timegrid-event > inner > title-outer > title
+// fc-timegrid-event > inner > title-outer > title
 //
 
 .fc-timegrid-event-short .fc-event-title { // (short)

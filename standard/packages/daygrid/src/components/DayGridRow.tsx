@@ -136,7 +136,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       <div
         role='row' // TODO: audit this for all scenarios
         className={joinClassNames(
-          'fc-daygrid-row fc-flex-row fc-rel',
+          'fc-flex-row fc-rel',
           props.className,
         )}
         style={{
@@ -147,7 +147,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         {this.renderFillSegs(props.businessHourSegs, 'non-business')}
         {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
         {this.renderFillSegs(highlightSegs, 'highlight')}
-        <div className='fc-daygrid-row-fg'>
+        <div className='fc-flex-row fc-liquid fc-rel'>{/* relative to compete w/ bg z-indexes */}
           {props.cells.map((cell, col) => {
             const normalFgNodes = this.renderFgSegs(
               maxMainTop,

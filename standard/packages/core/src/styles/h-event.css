@@ -1,38 +1,38 @@
 
 //
-// h-event (extends event)
+// fc-h-event (extends fc-event)
 //   "horizontal"
 //
 
 .fc-h-event {
-  position: relative; // NOTE: subclasses should supply z-index
+  position: relative; // required by fc-event
+  z-index: $event-z;
+
   display: flex;
   flex-direction: column;
   border: 1px solid var(--fc-event-border-color);
   background-color: var(--fc-event-bg-color);
 }
 
-.fc-h-event.fc-event-selected:before { // (selected) > hit-area
-  // expand hit area
+.fc-h-event.fc-event-mirror { // (mirror)
+  z-index: $event-mirror-z;
+}
+
+.fc-h-event.fc-event-selected:before { // (touch-selected) > hit-area
+  // expand
   top: -10px;
   bottom: -10px;
 }
 
 //
-// h-event > inner
+// fc-h-event > inner
 //
 
 .fc-h-event .fc-event-inner {
-  flex-grow: 1;
-  min-width: 0;
   display: flex;
   flex-direction: row;
   color: var(--fc-event-text-color);
 }
-
-//
-// h-event > inner > *
-//
 
 .fc-h-event .fc-event-time, // > time
 .fc-h-event .fc-event-title { // > title-outer > title
@@ -41,11 +41,7 @@
 }
 
 .fc-h-event .fc-event-title-outer { // > title-outer
-  // liquid
-  flex-grow: 1;
-  flex-basis: 0;
-  min-width: 0;
-
+  @include liquid; // horizontally liquid
   display: flex;
   flex-direction: row;
 }
