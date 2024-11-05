@@ -86,6 +86,7 @@ Scrollbars
   See [scrollbar bug] for Resource Timeline
 Markup/CSS/structure
   try to make css as utility-based as possible. audit all semantic CSS statements in .css files
+    especially audit flex-direction statements
   Rename fc-flex-column -> fc-flex-col (consistent with fc-timegrid-col, and tailwind)
   go back to simple classNames for views (no `*-view`)
     compare to old and then add to changelog

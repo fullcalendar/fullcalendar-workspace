@@ -1,6 +1,6 @@
 
 //
-// timegrid-slots
+// fc-timegrid-slots
 //
 
 .fc-timegrid-slots {
@@ -9,7 +9,7 @@
 }
 
 //
-// timegrid-slots > slot
+// fc-timegrid-slots > slot
 //
 
 .fc-timegrid-slot-minor { // (minor)
@@ -17,7 +17,7 @@
 }
 
 //
-// timegrid-axis
+// fc-timegrid-axis
 // (applied to cells across first column, for both Normal and Pannable layouts)
 //
 
@@ -38,7 +38,7 @@
 }
 
 //
-// timegrid-col
+// fc-timegrid-col
 //
 
 .fc-timegrid-col {
@@ -50,7 +50,7 @@
 }
 
 //
-// timegrid-col > fg
+// fc-timegrid-col > fg
 //
 
 .fc-timegrid-col-fg {

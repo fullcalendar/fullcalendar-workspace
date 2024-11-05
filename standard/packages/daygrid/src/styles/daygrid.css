@@ -1,6 +1,6 @@
 
 //
-// daygrid-row > fg > cell
+// fc-daygrid-row > fg > cell
 //
 
 .fc-daygrid-cell.fc-day-today { // (today)
@@ -9,7 +9,7 @@
 }
 
 //
-// daygrid-row > fg > cell > header
+// fc-daygrid-row > fg > cell > header
 //
 
 .fc-daygrid-cell-header {
@@ -22,7 +22,7 @@
 }
 
 //
-// daygrid-row > fg > cell > header > number
+// fc-daygrid-row > fg > cell > header > number
 //
 
 .fc-daygrid-cell-number {
@@ -36,7 +36,7 @@
 }
 
 //
-// daygrid-row > fg > cell > main > number
+// fc-daygrid-row > fg > cell > main > number
 //
 
 .fc-daygrid-cell-main {
@@ -55,7 +55,7 @@
 }
 
 //
-// daygrid-row > fg > cell > main > more-link
+// fc-daygrid-row > fg > cell > main > more-link
 //
 
 .fc-daygrid-more-link {
@@ -85,7 +85,7 @@
 }
 
 //
-// daygrid-row > week-number
+// fc-daygrid-row > week-number
 //
 
 .fc-daygrid-week-number {

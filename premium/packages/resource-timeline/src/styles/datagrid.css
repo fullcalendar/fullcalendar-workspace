@@ -1,8 +1,6 @@
 
-// TODO: move to flex utils for most of these things?
-
 //
-// Cell > Cushion > Indent
+// fc-datagrid-indent
 //
 
 .fc-datagrid-indent {
@@ -11,24 +9,24 @@
   align-items: center; // vertical align
 }
 
-// > Icon (rightmost when LTR)
-.fc-direction-ltr .fc-datagrid-indent > .fc-icon:last-child {
-  margin-right: 3px;
-}
+//
+// fc-datagrid-indent > icon
+//
 
-// > Icon (leftmost when RTL)
-.fc-direction-rtl .fc-datagrid-indent > .fc-icon:last-child {
-  margin-left: 3px;
-}
-
-// > Icon (expander)
-.fc-datagrid-expander {
+.fc-datagrid-expander { // (expander)
   cursor: pointer;
   opacity: 0.65;
 }
 
+.fc-direction-ltr .fc-datagrid-indent > .fc-icon:last-child { // (ltr)
+  margin-right: 3px;
+}
+.fc-direction-rtl .fc-datagrid-indent > .fc-icon:last-child { // (rtl)
+  margin-left: 3px;
+}
+
 //
-// ColHeader > Resizer
+// fc-datagrid-col-resizer
 //
 
 .fc-datagrid-col-resizer {
@@ -40,12 +38,9 @@
   cursor: col-resize;
 }
 
-// (LTR)
-.fc-direction-ltr .fc-datagrid-col-resizer {
+.fc-direction-ltr .fc-datagrid-col-resizer { // (ltr)
   right: -3px;
 }
-
-// (RTL)
-.fc-direction-rtl .fc-datagrid-col-resizer {
+.fc-direction-rtl .fc-datagrid-col-resizer { // (rtl)
   left: -3px;
 }

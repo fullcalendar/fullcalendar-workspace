@@ -59,14 +59,14 @@
 
 .fc-media-screen {
   & .fc-multimonth-singlecol {
-    & .fc-multimonth-header { // > Header
+    & .fc-multimonth-header { // > header
       position: sticky;
       top: 0;
       z-index: 2;
       background: var(--fc-page-bg-color);
     }
 
-    & .fc-multimonth-body { // > Body
+    & .fc-multimonth-body { // > body
       position: relative;
       z-index: 1;
     }
