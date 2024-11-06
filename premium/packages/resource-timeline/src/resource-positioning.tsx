@@ -9,7 +9,6 @@ export function computeHeights<Entity, Key>(
   getEntityKey: (entity: Entity) => Key,
   getEntityHeight: (entityKey: Key) => number,
   minHeight?: number,
-  inbetweenSpace = 0,
 ): [
   heightMap: Map<Key, number>,
   totalHeight: number,
@@ -20,7 +19,6 @@ export function computeHeights<Entity, Key>(
     getEntityKey,
     getEntityHeight,
     heightMap,
-    inbetweenSpace,
   )
 
   if (minHeight != null && minHeight > totalHeight) {
@@ -36,7 +34,6 @@ function computeTightHeights<Entity, Key>(
   getEntityKey: (entity: Entity) => Key,
   getEntityHeight: (entityKey: Key) => number,
   heightMap: Map<Key, number>,
-  inbetweenSpace: number,
 ): [
   totalHeight: number,
   expandableCount: number,
@@ -53,7 +50,6 @@ function computeTightHeights<Entity, Key>(
       getEntityKey,
       getEntityHeight,
       heightMap,
-      inbetweenSpace
     )
 
     if (siblingNode.pooledHeight) { // 'own' is side-by-side with children
@@ -72,7 +68,7 @@ function computeTightHeights<Entity, Key>(
 
       totalHeight += ownHeight
     } else { // 'own' is above children
-      totalHeight += ownHeight + inbetweenSpace + childrenHeight
+      totalHeight += ownHeight + /* inbetweenSpace */ 1 + childrenHeight
     }
 
     heightMap.set(entityKey, ownHeight)
@@ -85,7 +81,7 @@ function computeTightHeights<Entity, Key>(
     expandableCount += childrenExpandableCount
   }
 
-  return [totalHeight + (siblingNodes.length - 1) * inbetweenSpace, expandableCount]
+  return [totalHeight + /* inbetweenSpace */ (siblingNodes.length - 1), expandableCount]
 }
 
 function expandHeights<Entity, Key>(
@@ -123,12 +119,14 @@ function computeTopsStartingAt<Entity, Key>(
   topMap: Map<Key, number>,
   top: number,
 ): number { // topAfterwards
-  for (const siblingNode of siblingNodes) {
+  for (let i = 0; i < siblingNodes.length; i++) {
+    const siblingNode = siblingNodes[i]
     const entityKey = getEntityKey(siblingNode.entity)
     topMap.set(entityKey, top)
 
     if (!siblingNode.pooledHeight) {
-      top += heightMap.get(entityKey)
+      top += (i ? 1 : 0) + // inbetweenSpace
+        heightMap.get(entityKey)
     }
 
     top = computeTopsStartingAt(siblingNode.children, getEntityKey, heightMap, topMap, top)

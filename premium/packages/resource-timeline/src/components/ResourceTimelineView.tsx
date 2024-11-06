@@ -208,9 +208,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     let [headerHeights] = computeHeights(
       headerLayouts,
       identity,
-      (entity) => this.headerRowInnerHeightMap.current.get(entity), // makes memoization impossible!
+      (entityKey) => this.headerRowInnerHeightMap.current.get(entityKey), // makes memoization impossible!
       /* minHeight = */ undefined,
-      /* inbetweenSpace = */ 1,
     )
 
     let [bodyHeights, bodyCanvasHeight] = computeHeights(
@@ -226,7 +225,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           )
         }
       },
-      (verticalScrolling && options.expandRows)
+      /* minHeight = */ (verticalScrolling && options.expandRows)
         ? state.timeClientHeight
         : undefined,
     )

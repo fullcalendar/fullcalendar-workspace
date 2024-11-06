@@ -47,8 +47,6 @@ Resource Timeline
     make timeline bottom area w/o slots a grey bg
   get grouping via row and col simultaneously working. should be possible.
     see timeline-row-n-col-grouping-not-working.html
-  ensure row-height-syncing doesn't have 1px-off problem
-    queries inner-height, but when assigning to outer-height, does it add 1px?
   change how column-resizing widths is distibuted?
     right now it's impossible to resize last column
     try to take width away from next column when expanding
