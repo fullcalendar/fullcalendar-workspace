@@ -19,7 +19,7 @@
 // toolbar > section
 //
 
-.fc-toolbar-chunk {
+.fc-toolbar-section {
   flex-shrink: 0;
   display: flex;
   flex-direction: row;

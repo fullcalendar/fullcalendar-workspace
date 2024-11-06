@@ -23,7 +23,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
 
     return createElement(
       'div', {
-        className: 'fc-toolbar-chunk fc-toolbar-' + this.props.name
+        className: 'fc-toolbar-section fc-toolbar-' + this.props.name
       },
       ...children,
     )

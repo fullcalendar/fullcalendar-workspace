@@ -34,7 +34,7 @@ export class ToolbarWrapper {
 
   getSectionContent(index) { // 0=start, 1=center, 2=end
     return processSectionItems(
-      this.el.querySelectorAll('.fc-toolbar-chunk')[index] as HTMLElement,
+      this.el.querySelectorAll('.fc-toolbar-section')[index] as HTMLElement,
     )
   }
 }
