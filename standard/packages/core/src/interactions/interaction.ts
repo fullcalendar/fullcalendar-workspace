@@ -20,6 +20,7 @@ export interface InteractionSettingsInput {
   el: HTMLElement
   useEventCenter?: boolean
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
+  disableHits?: boolean
 }
 
 export interface InteractionSettings {

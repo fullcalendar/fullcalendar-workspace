@@ -192,9 +192,12 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       EventClicking,
       EventHovering,
     ]
-    let interactionClasses: InteractionClass[] = DEFAULT_INTERACTIONS.concat(
-      this.props.pluginHooks.componentInteractions,
-    )
+
+    let interactionClasses = DEFAULT_INTERACTIONS
+    if (!settingsInput.disableHits) {
+      interactionClasses = interactionClasses.concat(this.props.pluginHooks.componentInteractions)
+    }
+
     let interactions = interactionClasses.map((TheInteractionClass) => new TheInteractionClass(settings))
 
     this.interactionsStore[component.uid] = interactions

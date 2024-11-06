@@ -92,7 +92,6 @@ Markup/CSS/structure
   .fc-daygrid-cell-number is an awkward classname... fc-daygrid-day-number instead? fc-daygrid-datenumber/daynumber?
   .fc-cell-main doesn't need to be span anymore (within a flex parent)
     same with indent
-  is text-selection disabled everywhere? was it before? (if fixed, find ticket)
   in future css className refactor:
     fc-dayGridMonth -> fc-daygridmonth (to match fc-daygrid)
     fc-dayGridMonth-button -> fc-daygridmonth-button
