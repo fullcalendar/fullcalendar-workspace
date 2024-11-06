@@ -8,8 +8,8 @@ import {
   getStickyFooterScrollbar,
   getStickyHeaderDates,
   greatestDurationDenominator,
-  guid,
   Hit,
+  identity,
   isArraysEqual,
   joinClassNames,
   memoize,
@@ -28,6 +28,7 @@ import {
   buildResourceHierarchy,
   ColSpec,
   createEntityId,
+  createGroupId,
   DEFAULT_RESOURCE_ORDER,
   Group,
   GroupSpec,
@@ -52,7 +53,6 @@ import {
   computeHeights,
   computeTopsFromHeights,
   findEntityByCoord,
-  findEntityById,
 } from '../resource-positioning.js'
 import {
   processSpreadsheetColWidthConfigs,
@@ -122,14 +122,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     afterSize(this.handleSlotInnerWidths)
   })
   private headerRowInnerHeightMap = new RefMap<boolean | number, number>(this.handleHeightChange)
-  private spreadsheetEntityInnerHeightMap = new RefMap<Resource | Group, number>(this.handleHeightChange)
-  private timeEntityInnerHeightMap = new RefMap<Resource | Group, number>(this.handleHeightChange)
+  private spreadsheetEntityInnerHeightMap = new RefMap<string, number>(this.handleHeightChange) // keyed by createEntityId
+  private timeEntityInnerHeightMap = new RefMap<string, number>(this.handleHeightChange) // keyed by createEntityId
   private tDateProfile?: TimelineDateProfile
   private timeCanvasWidth?: number
   private slotWidth?: number
   private bodyLayouts: GenericLayout<Resource | Group>[]
-  private bodyTops?: Map<Resource | Group, number>
-  private bodyHeights?: Map<Resource | Group, number>
+  private bodyTops?: Map<string, number> // keyed by createEntityId
+  private bodyHeights?: Map<string, number> // keyed by createEntityId
 
   // internal
   private resourceSplitter = new ResourceSplitter()
@@ -207,6 +207,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let [headerHeights] = computeHeights(
       headerLayouts,
+      identity,
       (entity) => this.headerRowInnerHeightMap.current.get(entity), // makes memoization impossible!
       /* minHeight = */ undefined,
       /* inbetweenSpace = */ 1,
@@ -214,13 +215,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let [bodyHeights, bodyCanvasHeight] = computeHeights(
       bodyLayouts,
-      (entity) => { // makes memoization impossible!
-        const entitySpreadsheetHeight = this.spreadsheetEntityInnerHeightMap.current.get(entity)
+      createEntityId,
+      (entityKey) => { // makes memoization impossible!
+        const entitySpreadsheetHeight = this.spreadsheetEntityInnerHeightMap.current.get(entityKey)
         if (entitySpreadsheetHeight != null) {
           return Math.max(
             entitySpreadsheetHeight,
             // map doesn't contain group-column-cell heights
-            this.timeEntityInnerHeightMap.current.get(entity) || 0,
+            this.timeEntityInnerHeightMap.current.get(entityKey) || 0,
           )
         }
       },
@@ -228,7 +230,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
         ? state.timeClientHeight
         : undefined,
     )
-    let bodyTops = computeTopsFromHeights(bodyLayouts, bodyHeights)
+    let bodyTops = computeTopsFromHeights(bodyLayouts, createEntityId, bodyHeights)
     this.bodyHeights = bodyHeights
     this.bodyTops = bodyTops
 
@@ -385,9 +387,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                               >
                                 {groupColLayouts.map((groupCellLayout) => {
                                   const group = groupCellLayout.entity
+                                  const groupKey = createGroupId(group)
                                   return (
                                     <div
-                                      key={queryObjKey(group)}
+                                      key={groupKey}
                                       role='row'
                                       aria-rowindex={groupCellLayout.rowIndex}
                                       class={joinClassNames(
@@ -395,14 +398,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                         groupCellLayout.rowIndex && 'fc-border-t',
                                       )}
                                       style={{
-                                        top: bodyTops.get(group),
-                                        height: bodyHeights.get(group),
+                                        top: bodyTops.get(groupKey),
+                                        height: bodyHeights.get(groupKey),
                                       }}
                                     >
                                       <GroupTallCell
                                         colSpec={group.spec}
                                         fieldValue={group.value}
-                                        innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
+                                        innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(groupKey)}
                                       />
                                     </div>
                                   )
@@ -431,8 +434,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                     resourceLayout.rowIndex && 'fc-border-t',
                                   )}
                                   style={{
-                                    top: bodyTops.get(resource),
-                                    height: bodyHeights.get(resource),
+                                    top: bodyTops.get(resource.id),
+                                    height: bodyHeights.get(resource.id),
                                   }}
                                 >
                                   <ResourceCells
@@ -443,7 +446,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                     isExpanded={resourceLayout.isExpanded}
                                     colStartIndex={flatGroupColLayouts.length}
                                     colSpecs={colSpecs}
-                                    innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(resource)}
+                                    innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(resource.id)}
                                     colWidths={spreadsheetColWidths}
                                   />
                                 </div>
@@ -455,9 +458,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         {/* hackily moved after resources for z-index reasons */}
                         {flatGroupRowLayouts.map((groupRowLayout) => {
                           const group = groupRowLayout.entity
+                          const groupKey = createGroupId(group)
                           return (
                             <div
-                              key={queryObjKey(group)}
+                              key={groupKey}
                               role='row'
                               aria-rowindex={groupRowLayout.rowIndex}
                               class={joinClassNames(
@@ -465,14 +469,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                 groupRowLayout.rowIndex && 'fc-border-t',
                               )}
                               style={{
-                                top: bodyTops.get(group),
-                                height: bodyHeights.get(group),
+                                top: bodyTops.get(groupKey),
+                                height: bodyHeights.get(groupKey),
                               }}
                             >
                               <GroupWideCell
                                 group={group}
                                 isExpanded={groupRowLayout.isExpanded}
-                                innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(group)}
+                                innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(groupKey)}
                               />
                             </div>
                           )
@@ -595,8 +599,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                     resourceLayout.rowIndex && 'fc-border-t',
                                   )}
                                   style={{
-                                    top: bodyTops.get(resource),
-                                    height: bodyHeights.get(resource),
+                                    top: bodyTops.get(resource.id),
+                                    height: bodyHeights.get(resource.id),
                                   }}
                                 >
                                   <ResourceLane
@@ -610,7 +614,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                     businessHours={resource.businessHours || fallbackBusinessHours}
 
                                     // ref
-                                    heightRef={this.timeEntityInnerHeightMap.createRef(resource)}
+                                    heightRef={this.timeEntityInnerHeightMap.createRef(resource.id)}
 
                                     // dimensions
                                     slotWidth={slotWidth}
@@ -622,9 +626,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           <Fragment>
                             {flatGroupRowLayouts.map((groupRowLayout) => {
                               const group = groupRowLayout.entity
+                              const groupKey = createGroupId(group)
                               return (
                                 <div
-                                  key={queryObjKey(group)}
+                                  key={groupKey}
                                   role='row'
                                   aria-rowindex={groupRowLayout.rowIndex}
                                   class={joinClassNames(
@@ -632,13 +637,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                     groupRowLayout.rowIndex && 'fc-border-t',
                                   )}
                                   style={{
-                                    top: bodyTops.get(group),
-                                    height: bodyHeights.get(group),
+                                    top: bodyTops.get(groupKey),
+                                    height: bodyHeights.get(groupKey),
                                   }}
                                 >
                                   <GroupLane
                                     group={group}
-                                    innerHeightRef={this.timeEntityInnerHeightMap.createRef(group)}
+                                    innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
                                   />
                                 </div>
                               )
@@ -876,14 +881,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   private updateEntityScroll() {
-    const { bodyLayouts, bodyTops, bodyHeights, entityScroll } = this
+    const { bodyTops, bodyHeights, entityScroll } = this
 
     if (entityScroll) {
-      const entity = findEntityById(bodyLayouts, entityScroll.entityId)
+      const top = bodyTops.get(entityScroll.entityId)
+      const height = bodyHeights.get(entityScroll.entityId)
 
-      if (entity) {
-        const top = bodyTops.get(entity)
-        const height = bodyHeights.get(entity)
+      if (top != null) {
         const bottom = top + height
 
         let scrollTop = (
@@ -1129,22 +1133,4 @@ function computeHasResourceBusinessHours(resourceLayouts: ResourceLayout[]) {
   }
 
   return false
-}
-
-// General Utils
-// -------------------------------------------------------------------------------------------------
-
-const keyMap = new WeakMap<any, string>()
-
-/*
-TODO: how does this fit in with other ID generation stuff?
-*/
-function queryObjKey(obj: any): string {
-  if (keyMap.has(obj)) {
-    return keyMap.get(obj)
-  }
-
-  const key = guid()
-  keyMap.set(obj, key)
-  return key
 }

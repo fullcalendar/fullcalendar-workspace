@@ -41,7 +41,6 @@ Timeline
 Resource DayGrid
   (none)
 Resource Timeline
-  bug: in `examples/resource-add-remove.html`, when deleting Auditorium D, collapses strangely after
   column grouping, should expand to full height, but doesn't
     See bundle/examples/responsive.html
   just like scrollbar dead area should have grey bg,
