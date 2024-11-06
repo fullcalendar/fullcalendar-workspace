@@ -13,7 +13,7 @@ export interface ResourceLaneProps extends TimelineLaneProps {
 
 export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
-  private unwatchHeight?: () => void
+  private disconnectHeight?: () => void
 
   render() {
     let { props, context } = this
@@ -64,14 +64,16 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   }
 
   handleRootEl = (rootEl: HTMLElement) => {
-    if (this.unwatchHeight) {
-      this.unwatchHeight()
-      this.unwatchHeight = undefined
+    if (this.disconnectHeight) {
+      this.disconnectHeight()
+      this.disconnectHeight = undefined
     }
     if (rootEl) {
-      this.unwatchHeight = watchHeight(rootEl, (height) => {
+      this.disconnectHeight = watchHeight(rootEl, (height) => {
         setRef(this.props.heightRef, height)
       })
+    } else {
+      setRef(this.props.heightRef, null)
     }
   }
 }

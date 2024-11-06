@@ -31,7 +31,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
-  private detachWidth?: () => void
+  private disconnectInnerWidth?: () => void
 
   render() {
     let { props, context } = this
@@ -99,14 +99,13 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
   componentDidMount(): void {
     const innerEl = this.innerElRef.current
 
-    this.detachWidth = watchWidth(innerEl, (width) => {
+    this.disconnectInnerWidth = watchWidth(innerEl, (width) => {
       setRef(this.props.innerWidthRef, width)
     })
   }
 
   componentWillUnmount(): void {
-    this.detachWidth()
-
+    this.disconnectInnerWidth()
     setRef(this.props.innerWidthRef, null)
   }
 }

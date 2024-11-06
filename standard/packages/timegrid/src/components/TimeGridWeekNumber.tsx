@@ -20,7 +20,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
-  private detachInnerSize?: () => void
+  private disconnectInnerSize?: () => void
 
   render() {
     let { props, context } = this
@@ -61,7 +61,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
 
     // TODO: only attach this if refs props present
     // TODO: handle width/height independently?
-    this.detachInnerSize = watchSize(innerEl, (width, height) => {
+    this.disconnectInnerSize = watchSize(innerEl, (width, height) => {
       setRef(props.innerWidthRef, width)
       setRef(props.innerHeightRef, height)
     })
@@ -70,8 +70,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
   componentWillUnmount(): void {
     const { props } = this
 
-    this.detachInnerSize()
-
+    this.disconnectInnerSize()
     setRef(props.innerWidthRef, null)
     setRef(props.innerHeightRef, null)
   }

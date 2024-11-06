@@ -24,7 +24,7 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
   private innerHeightRefMap = new RefMap<number, number>(() => {
     afterSize(this.handleInnerHeights)
   })
-  private currentInnerHeight?: number
+  private currentInnerHeight: number | null = null
 
   render() {
     let { props, innerHeightRefMap } = this
@@ -58,10 +58,12 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
 
   private handleInnerHeights = () => {
     const innerHeightMap = this.innerHeightRefMap.current
-    let max = 0
+    let max: number | null = null
 
     for (const innerHeight of innerHeightMap.values()) {
-      max = Math.max(max, innerHeight)
+      if (max == null || innerHeight > max) {
+        max = innerHeight
+      }
     }
 
     if (this.currentInnerHeight !== max) {

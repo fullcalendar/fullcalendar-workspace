@@ -38,7 +38,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
-  private detachInnerSize?: () => void
+  private disconnectInnerSize?: () => void
 
   render() {
     let { props, context } = this
@@ -106,7 +106,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     if (innerEl) { // could be null if !isLabeled
       // TODO: only attach this if refs props present
       // TODO: fire width/height independently?
-      this.detachInnerSize = watchSize(innerEl, (width, height) => {
+      this.disconnectInnerSize = watchSize(innerEl, (width, height) => {
         setRef(props.innerWidthRef, width)
         setRef(props.innerHeightRef, height)
       })
@@ -116,9 +116,8 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
   componentWillUnmount(): void {
     const { props } = this
 
-    if (this.detachInnerSize) {
-      this.detachInnerSize()
-
+    if (this.disconnectInnerSize) {
+      this.disconnectInnerSize()
       setRef(props.innerWidthRef, null)
       setRef(props.innerHeightRef, null)
     }

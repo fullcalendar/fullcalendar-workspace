@@ -127,7 +127,6 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
     const { props } = this
 
     this.detachSize()
-
     setRef(props.innerWidthRef, null)
     setRef(props.innerHeightRef, null)
   }

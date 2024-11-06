@@ -21,7 +21,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
-  private detachInnerHeight?: () => void
+  private disconnectInnerHeight?: () => void
 
   render() {
     let { colSpec, resizer, resizerElRef, width, borderStart } = this.props
@@ -75,13 +75,13 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
   componentDidMount(): void {
     const innerEl = this.innerElRef.current
 
-    this.detachInnerHeight = watchHeight(innerEl, (height) => {
+    this.disconnectInnerHeight = watchHeight(innerEl, (height) => {
       setRef(this.props.innerHeightRef, height)
     })
   }
 
   componentWillUnmount(): void {
-    this.detachInnerHeight()
+    this.disconnectInnerHeight()
     setRef(this.props.innerHeightRef, null)
   }
 }

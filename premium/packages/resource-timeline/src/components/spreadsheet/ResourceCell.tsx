@@ -28,7 +28,7 @@ export interface ResourceCellProps {
 export class ResourceCell extends BaseComponent<ResourceCellProps> {
   private innerElRef = createRef<HTMLDivElement>()
   private refineRenderProps = memoizeObjArg(refineRenderProps)
-  private unwatchHeight?: () => void
+  private disconnectHeight?: () => void
 
   render() {
     let { props, context } = this
@@ -82,13 +82,13 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
   }
 
   componentDidMount(): void {
-    this.unwatchHeight = watchHeight(this.innerElRef.current, (height) => {
+    this.disconnectHeight = watchHeight(this.innerElRef.current, (height) => {
       setRef(this.props.innerHeightRef, height)
     })
   }
 
   componentWillUnmount(): void {
-    this.unwatchHeight()
+    this.disconnectHeight()
     setRef(this.props.innerHeightRef, null)
   }
 

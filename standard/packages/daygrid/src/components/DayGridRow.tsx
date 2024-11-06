@@ -363,7 +363,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   componentWillUnmount(): void {
     this.disconnectHeight()
-
     setRef(this.props.heightRef, null)
   }
 

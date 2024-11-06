@@ -13,7 +13,7 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
-  private detachInnerHeight?: () => void
+  private disconnectInnerHeight?: () => void
 
   render() {
     let { props, context } = this
@@ -57,13 +57,13 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
     const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
 
     // TODO: only attach this if refs props present
-    this.detachInnerHeight = watchHeight(innerEl, (height) => {
+    this.disconnectInnerHeight = watchHeight(innerEl, (height) => {
       setRef(this.props.innerHeightRef, height)
     })
   }
 
   componentWillUnmount(): void {
-    this.detachInnerHeight()
+    this.disconnectInnerHeight()
     setRef(this.props.innerHeightRef, null)
   }
 }

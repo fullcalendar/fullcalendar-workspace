@@ -18,7 +18,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
   private innerElRef = createRef<HTMLDivElement>()
 
   // internal
-  private detachInnerHeight?: () => void
+  private disconnectInnerHeight?: () => void
 
   render() {
     let { props, context } = this
@@ -55,13 +55,13 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
   componentDidMount(): void {
     const innerEl = this.innerElRef.current
 
-    this.detachInnerHeight = watchHeight(innerEl, (height) => {
+    this.disconnectInnerHeight = watchHeight(innerEl, (height) => {
       setRef(this.props.innerHeightRef, height)
     })
   }
 
   componentWillUnmount(): void {
-    this.detachInnerHeight()
+    this.disconnectInnerHeight()
     setRef(this.props.innerHeightRef, null)
   }
 }

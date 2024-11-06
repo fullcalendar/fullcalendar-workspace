@@ -64,11 +64,11 @@ export interface DayGridCellProps {
 export class DayGridCell extends DateComponent<DayGridCellProps> {
   // ref
   private rootElRef = createRef<HTMLElement>()
-  private mainElRef = createRef<HTMLDivElement>()
+  private bodyElRef = createRef<HTMLDivElement>()
 
   // internal
   private headerHeight?: number
-  private detachMainHeight?: () => void
+  private disconnectBodyHeight?: () => void
 
   render() {
     let { props, context } = this
@@ -123,7 +123,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 props.isTall && 'fc-daygrid-day-body-tall',
                 props.fgLiquidHeight ? 'fc-liquid' : 'fc-grow',
               )}
-              ref={this.mainElRef}
+              ref={this.bodyElRef}
             >
               <div className='fc-daygrid-day-events' style={{ height: props.fgHeight }}>
                 {props.fg}
@@ -150,12 +150,12 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
   }
 
   componentDidMount(): void {
-    const mainEl = this.mainElRef.current
+    const bodyEl = this.bodyElRef.current
 
     // we want to fire on ANY size change, because we do more advanced stuff
-    this.detachMainHeight = watchSize(mainEl, (_mainWidth, mainHeight) => {
+    this.disconnectBodyHeight = watchSize(bodyEl, (_bodyWidth, bodyHeight) => {
       const { props } = this
-      const mainRect = mainEl.getBoundingClientRect()
+      const mainRect = bodyEl.getBoundingClientRect()
       const rootRect = this.rootElRef.current.getBoundingClientRect()
       const headerHeight = mainRect.top - rootRect.top
 
@@ -165,13 +165,13 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       }
 
       if (props.fgLiquidHeight) {
-        setRef(props.mainHeightRef, mainHeight)
+        setRef(props.mainHeightRef, bodyHeight)
       }
     })
   }
 
   componentWillUnmount(): void {
-    this.detachMainHeight()
+    this.disconnectBodyHeight()
 
     const { props } = this
     setRef(props.headerHeightRef, null)

@@ -15,7 +15,7 @@ export class DayGridEventHarness extends Component<DayGridEventHarnessProps> {
   private rootElRef = createRef<HTMLDivElement>()
 
   // internal
-  private detachHeight?: () => void
+  private disconnectHeight?: () => void
 
   render() {
     const { props } = this
@@ -34,13 +34,13 @@ export class DayGridEventHarness extends Component<DayGridEventHarnessProps> {
   componentDidMount(): void {
     const rootEl = this.rootElRef.current // TODO: make dynamic with useEffect
 
-    this.detachHeight = watchHeight(rootEl, (height) => {
+    this.disconnectHeight = watchHeight(rootEl, (height) => {
       setRef(this.props.heightRef, height)
     })
   }
 
   componentWillUnmount(): void {
-    this.detachHeight()
+    this.disconnectHeight()
     setRef(this.props.heightRef, null)
   }
 }

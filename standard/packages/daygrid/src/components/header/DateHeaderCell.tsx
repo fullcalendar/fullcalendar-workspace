@@ -114,13 +114,13 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
     if (this.disconectInnerHeight) {
       this.disconectInnerHeight()
       this.disconectInnerHeight = undefined
-      setRef(this.props.innerHeightRef, null)
     }
-
     if (innerEl) {
       this.disconectInnerHeight = watchHeight(innerEl, (height) => {
         setRef(this.props.innerHeightRef, height)
       })
+    } else {
+      setRef(this.props.innerHeightRef, null)
     }
   }
 }
