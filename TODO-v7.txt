@@ -88,19 +88,17 @@ Scrollbars
   Test horizontal scroll normalization (for isRTL) in variety of browsers
   See [scrollbar bug] for Resource Timeline
 Markup/CSS/structure
-  try to make css as utility-based as possible. audit all semantic CSS statements in .css files
-    especially audit flex-direction statements
-    we make olden-style exceptions for events, toolbar, popover, more-link, day-headers
-      which are polymorphic and share same DOM structure. considered "components" to us
-    convert fc-view-harness
-  change names to runon, like "fc-nowindicator" and "morelink" and "viewharness"
-    just like 'navlink'
-    or "view-outer"?
+  convert fc-view-harness to utility classes
   .fc-timegrid-col-fg -> .fc-timegrid-col-events, like DayGrid?
   .fc-daygrid-cell-number is an awkward classname... fc-daygrid-day-number instead? fc-daygrid-datenumber/daynumber?
   .fc-cell-main doesn't need to be span anymore (within a flex parent)
     same with indent
   is text-selection disabled everywhere? was it before? (if fixed, find ticket)
+  in future css className refactor:
+    fc-dayGridMonth -> fc-daygridmonth (to match fc-daygrid)
+    fc-dayGridMonth-button -> fc-daygridmonth-button
+    fc-timeline-now-indicator-arrow -> fc-timeline-nowindicator-arrow
+    fc-timeline-more-link -> fc-timeline-morelink
 Accessibility
   lack of text-selectability: https://github.com/fullcalendar/fullcalendar/issues/5628
 Performance
