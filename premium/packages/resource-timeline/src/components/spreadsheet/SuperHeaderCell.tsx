@@ -43,12 +43,12 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         {(InnerContent) => (
           <div ref={this.innerElRef} className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
             {this.props.indent && (
-              <span className="fc-datagrid-indent">
+              <div className="fc-datagrid-indent">
                 <span className="fc-icon" />
-              </span>
+              </div>
             )}
             <InnerContent
-              tag="span"
+              tag="div"
               className='fc-cell-main'
             />
           </div>

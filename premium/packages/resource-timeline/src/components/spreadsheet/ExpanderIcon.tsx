@@ -21,7 +21,7 @@ export function ExpanderIcon({ indent, hasChildren, isExpanded, onExpanderClick 
 
   if (hasChildren) {
     nodes.push(
-       <span
+      <span
         className={joinClassNames(
           'fc-datagrid-expander fc-icon',
           isExpanded
@@ -34,8 +34,8 @@ export function ExpanderIcon({ indent, hasChildren, isExpanded, onExpanderClick 
   }
 
   return (
-    <span className='fc-datagrid-indent'>
+    <div className='fc-datagrid-indent'>
       {...nodes}
-    </span>
+    </div>
   )
 }

@@ -86,8 +86,6 @@ Scrollbars
 Markup/CSS/structure
   .fc-timegrid-col-fg -> .fc-timegrid-col-events, like DayGrid?
   .fc-daygrid-cell-number is an awkward classname... fc-daygrid-day-number instead? fc-daygrid-datenumber/daynumber?
-  .fc-cell-main doesn't need to be span anymore (within a flex parent)
-    same with indent
   in future css className refactor:
     fc-dayGridMonth -> fc-daygridmonth (to match fc-daygrid)
     fc-dayGridMonth-button -> fc-daygridmonth-button

@@ -72,7 +72,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
               />
             )}
             <InnerContent
-              tag="span"
+              tag="div"
               className='fc-cell-main'
             />
           </div>

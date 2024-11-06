@@ -55,7 +55,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
                 onExpanderClick={this.onExpanderClick}
               />
               <InnerContent
-                tag="span"
+                tag="div"
                 className='fc-cell-main'
               />
             </div>
