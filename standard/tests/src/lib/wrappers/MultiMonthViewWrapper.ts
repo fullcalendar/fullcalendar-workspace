@@ -5,7 +5,7 @@ import { DayGridWrapper } from './DayGridWrapper.js'
 
 export class MultiMonthViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-multimonth-view')
+    super(calendar, 'fc-multimonth')
   }
 
   getMonths() {

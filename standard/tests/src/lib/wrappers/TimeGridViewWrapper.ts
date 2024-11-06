@@ -5,7 +5,7 @@ import { DayHeaderWrapper } from './DayHeaderWrapper.js'
 
 export class TimeGridViewWrapper extends ViewWrapper {
   constructor(calendar) {
-    super(calendar, 'fc-timegrid-view')
+    super(calendar, 'fc-timegrid')
   }
 
   get header() {

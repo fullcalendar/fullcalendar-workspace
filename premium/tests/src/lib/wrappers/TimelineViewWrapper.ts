@@ -5,7 +5,7 @@ import { TimelineHeaderWrapper } from './TimelineHeaderWrapper.js'
 
 export class TimelineViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-timeline-view')
+    super(calendar, 'fc-timeline')
   }
 
   get header() {

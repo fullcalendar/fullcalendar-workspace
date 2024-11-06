@@ -6,7 +6,7 @@ import { ResourceDayGridWrapper } from './ResourceDayGridWrapper.js'
 
 export class ResourceTimeGridViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-timegrid-view')
+    super(calendar, 'fc-timegrid')
   }
 
   get header() {

@@ -78,7 +78,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <ViewContainer
             className={joinClassNames(
-              'fc-multimonth-view',
+              'fc-multimonth',
               (colCount === 1) ?
                 'fc-multimonth-singlecol' :
                 'fc-multimonth-multicol',

@@ -7,7 +7,7 @@ export class ListViewWrapper extends ViewWrapper {
   static EVENT_DOT_CLASSNAME = 'fc-list-event-dot'
 
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-list-view')
+    super(calendar, 'fc-list')
   }
 
   getEventEls() {

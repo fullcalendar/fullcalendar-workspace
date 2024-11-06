@@ -5,7 +5,7 @@ import { DayHeaderWrapper } from './DayHeaderWrapper.js'
 
 export class DayGridViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-daygrid-view')
+    super(calendar, 'fc-daygrid')
   }
 
   get header() {

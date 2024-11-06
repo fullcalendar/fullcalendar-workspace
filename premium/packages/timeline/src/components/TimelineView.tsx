@@ -101,7 +101,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
           return (
             <ViewContainer
               viewSpec={context.viewSpec}
-              className='fc-timeline-view fc-flex-col fc-border'
+              className='fc-timeline fc-flex-col fc-border'
             >
 
               {/* HEADER
