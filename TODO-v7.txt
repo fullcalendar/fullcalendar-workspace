@@ -39,11 +39,9 @@ Timeline
     for real? matters? add to changelog?
   Did +more links in timeline always have strict order (meaning they were at bottom?). Regression?
 Resource DayGrid
-  bug w/ `bundle/examples-v7/resource-daygrid.html` when dragging event3 one day ahead,
-    would result in a +more link that'd disappear when you return, but after we refactor DayGrid rendering, should be fixed
+  (none)
 Resource Timeline
   bug: in `examples/resource-add-remove.html`, when deleting Auditorium D, collapses strangely after
-  bug: when resourceAreaHeaderContent, and multiple datagrid-columns, super-header's indent is unnecessary. looks bad
   column grouping, should expand to full height, but doesn't
     See bundle/examples/responsive.html
   just like scrollbar dead area should have grey bg,
@@ -83,15 +81,6 @@ Scrollbars
   implement scroller padding rectangles
   Test horizontal scroll normalization (for isRTL) in variety of browsers
   See [scrollbar bug] for Resource Timeline
-Markup/CSS/structure
-  in future css className refactor:
-    fc-dayGridMonth -> fc-daygridmonth (to match fc-daygrid)
-    fc-dayGridMonth-button -> fc-daygridmonth-button
-    fc-timeline-now-indicator-arrow -> fc-timeline-nowindicator-arrow
-    fc-timeline-more-link -> fc-timeline-morelink
-    NEVERMIND. we've developed a strong precedent of dash-breaking-words,
-      like week-number/day-number which needs to be both subcomponent (fc-daygrid-day>fc-daygrid-day-number)
-      and independent component (fc-daygrid-week-number)
 Performance
   why does TimelineLane::render get called 3 times initially?
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
@@ -122,9 +111,6 @@ Examples
     Things are currently collapsing very strangely on a narrow screen (like stackblitz angular demo)
 Last-minute features
   Calendar::updateSize return promise
-  Drop-shadow under sticky header, timeline headers
-  In timegrid, when date-selecting with mirror event, why are we rendering highlight?
-  For timeline event-dnd, the mirror, should have white glow just like timegrid for when overlap other events
 Changelog
   Add: Calendar::updateSize no longer synchronous
   Add: all cell headers are no longer bold
@@ -153,9 +139,21 @@ Support Tickets
 NOTES for later
   simplified axis with h-scrolling: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
 Punt
+  Drop-shadow under sticky header, timeline headers
+  In timegrid, when date-selecting with mirror event, why are we rendering highlight?
+  For timeline event-dnd, the mirror, should have white glow just like timegrid for when overlap other events
   lack of text-selectability: https://github.com/fullcalendar/fullcalendar/issues/5628
     TODO: need larger discussion on whether dates w/ dateClick or events w/ eventClick
       should allow text-selection or now
+  Markup/CSS/structure
+    in future css className refactor:
+      fc-dayGridMonth -> fc-daygridmonth (to match fc-daygrid)
+      fc-dayGridMonth-button -> fc-daygridmonth-button
+      fc-timeline-now-indicator-arrow -> fc-timeline-nowindicator-arrow
+      fc-timeline-more-link -> fc-timeline-morelink
+      NEVERMIND. we've developed a strong precedent of dash-breaking-words,
+        like week-number/day-number which needs to be both subcomponent (fc-daygrid-day>fc-daygrid-day-number)
+        and independent component (fc-daygrid-week-number)
 
 ensure automated tests for...
   positioning of sticky headers in all views. list view sticky subheaders too
