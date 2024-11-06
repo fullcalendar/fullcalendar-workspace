@@ -64,7 +64,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
         className={joinClassNames(
           'fc-timeline-slot-label fc-timeline-slot',
           cell.isWeekStart && 'fc-timeline-slot-em', // TODO: document this semantic className
-          'fc-header-cell fc-cell fc-flex-column fc-justify-center',
+          'fc-header-cell fc-cell fc-flex-col fc-justify-center',
           props.borderStart && 'fc-border-s',
           props.isCentered ? 'fc-align-center' : 'fc-align-start',
           ...( // TODO: so slot classnames for week/month/bigger. see note above about rowUnit

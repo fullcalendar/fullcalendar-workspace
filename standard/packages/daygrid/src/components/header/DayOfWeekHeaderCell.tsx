@@ -74,7 +74,7 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
         attrs={props.attrs}
         className={joinClassNames(
           props.className,
-          'fc-header-cell fc-cell fc-flex-column fc-align-center',
+          'fc-header-cell fc-cell fc-flex-col fc-align-center',
           props.borderStart && 'fc-border-s',
           !props.isSticky && 'fc-crop',
           props.colWidth == null && 'fc-liquid',

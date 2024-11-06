@@ -30,7 +30,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
       <ResourceLabelContainer
         tag="div"
         className={joinClassNames(
-          'fc-resource fc-header-cell fc-cell fc-flex-column fc-align-center',
+          'fc-resource fc-header-cell fc-cell fc-flex-col fc-align-center',
           props.borderStart && 'fc-border-s',
           !props.isSticky && 'fc-crop',
           props.colWidth == null && 'fc-liquid',

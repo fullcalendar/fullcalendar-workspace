@@ -83,7 +83,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                 'fc-multimonth-singlecol' :
                 'fc-multimonth-multicol',
               // BAD to mix fc-borderthis with size-listening?
-              'fc-border fc-flex-column',
+              'fc-border fc-flex-col',
             )}
             viewSpec={context.viewSpec}
           >

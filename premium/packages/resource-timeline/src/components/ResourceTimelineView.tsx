@@ -282,7 +282,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
           return (
             <ViewContainer
-              className='fc-resource-timeline-view fc-flex-column fc-border'
+              className='fc-resource-timeline-view fc-flex-col fc-border'
               viewSpec={viewSpec}
             >
               <ResizableTwoCol
@@ -291,7 +291,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 /* spreadsheet
                 --------------------------------------------------------------------------------- */
 
-                startClassName='fc-flex-column'
+                startClassName='fc-flex-col'
                 startContent={
                   <Fragment>
 
@@ -299,7 +299,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     ---------------------------------------------------------------------------- */}
                     <div
                       className={joinClassNames(
-                        'fc-datagrid-header fc-flex-column fc-border-b',
+                        'fc-datagrid-header fc-flex-col fc-border-b',
                         stickyHeaderDates && 'fc-table-header-sticky',
                       )}
                     >
@@ -349,7 +349,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       horizontal
                       hideScrollbars
                       className={joinClassNames(
-                        'fc-datagrid-body fc-flex-column',
+                        'fc-datagrid-body fc-flex-col',
                         verticalScrolling && 'fc-liquid',
                       )}
                       ref={this.spreadsheetBodyScrollerRef}
@@ -494,7 +494,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 /* time-area (TODO: try to make this DRY-er with TimelineView???)
                 --------------------------------------------------------------------------------- */
 
-                endClassName='fc-flex-column'
+                endClassName='fc-flex-col'
                 endContent={
                   <Fragment>
 
@@ -505,7 +505,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       horizontal
                       hideScrollbars
                       className={joinClassNames(
-                        'fc-timeline-header fc-flex-column fc-border-b',
+                        'fc-timeline-header fc-flex-col fc-border-b',
                         stickyHeaderDates && 'fc-table-header-sticky',
                       )}
                     >
@@ -554,7 +554,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       horizontal
                       hideScrollbars={stickyFooterScrollbar}
                       className={joinClassNames(
-                        'fc-timeline-body fc-flex-column',
+                        'fc-timeline-body fc-flex-col',
                         verticalScrolling && 'fc-liquid',
                       )}
                       ref={this.timeBodyScrollerRef}
@@ -591,7 +591,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                                   aria-rowindex={resourceLayout.rowIndex}
                                   data-resource-id={resource.id}
                                   className={joinClassNames(
-                                    'fc-resource fc-flex-column fc-fill-x fc-content-box',
+                                    'fc-resource fc-flex-col fc-fill-x fc-content-box',
                                     resourceLayout.rowIndex && 'fc-border-t',
                                   )}
                                   style={{

@@ -61,7 +61,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
               'fc-timeline-slot-major' :
               'fc-timeline-slot-minor'
           ),
-          'fc-timeline-slot-lane fc-cell fc-flex-column fc-align-start',
+          'fc-timeline-slot-lane fc-cell fc-flex-col fc-align-start',
           props.borderStart && 'fc-border-s',
           ...(
             props.isDay ?

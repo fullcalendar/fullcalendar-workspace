@@ -83,7 +83,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         tag="div"
         className={joinClassNames(
           props.className,
-          'fc-daygrid-cell fc-flex-column',
+          'fc-daygrid-cell fc-flex-col',
           props.borderStart && 'fc-border-s',
           props.width != null ? '' : 'fc-liquid',
         )}

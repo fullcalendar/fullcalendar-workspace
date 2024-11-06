@@ -112,7 +112,7 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           horizontal
           hideScrollbars={stickyFooterScrollbar}
           className={joinClassNames(
-            'fc-daygrid-body fc-flex-column',
+            'fc-daygrid-body fc-flex-col',
             verticalScrollbars && 'fc-liquid',
           )}
           ref={this.bodyScrollerRef}

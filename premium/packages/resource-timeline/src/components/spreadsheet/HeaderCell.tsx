@@ -36,7 +36,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         }}
         // fc-rel for resizer abs positioning
         className={joinClassNames(
-          'fc-header-cell fc-cell fc-flex-column fc-justify-center fc-rel',
+          'fc-header-cell fc-cell fc-flex-col fc-justify-center fc-rel',
           borderStart && 'fc-border-s',
         )}
         style={{

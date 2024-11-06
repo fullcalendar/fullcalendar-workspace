@@ -70,7 +70,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
           </div>
         </div>
         <div
-          className='fc-multimonth-body fc-flex-column'
+          className='fc-multimonth-body fc-flex-col'
           style={{
             marginTop: -rowHeight,
             height: forPrint ? '' : tableHeight,

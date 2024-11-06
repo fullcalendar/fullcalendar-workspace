@@ -101,7 +101,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
           return (
             <ViewContainer
               viewSpec={context.viewSpec}
-              className='fc-timeline-view fc-flex-column fc-border'
+              className='fc-timeline-view fc-flex-col fc-border'
             >
 
               {/* HEADER
@@ -110,7 +110,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 horizontal
                 hideScrollbars
                 className={joinClassNames(
-                  'fc-timeline-header fc-flex-column fc-border-b',
+                  'fc-timeline-header fc-flex-col fc-border-b',
                   stickyHeaderDates && 'fc-table-header-sticky',
                 )}
                 ref={this.headerScrollerRef}
@@ -157,7 +157,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 vertical={verticalScrolling}
                 horizontal
                 className={joinClassNames(
-                  'fc-timeline-body fc-flex-column',
+                  'fc-timeline-body fc-flex-col',
                   verticalScrolling && 'fc-liquid',
                 )}
                 ref={this.bodyScrollerRef}

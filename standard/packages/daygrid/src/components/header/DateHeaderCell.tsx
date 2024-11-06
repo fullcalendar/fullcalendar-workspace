@@ -74,7 +74,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
         }}
         className={joinClassNames(
           props.className,
-          'fc-header-cell fc-cell fc-flex-column fc-align-center',
+          'fc-header-cell fc-cell fc-flex-col fc-align-center',
           props.borderStart && 'fc-border-s',
           !props.isSticky && 'fc-crop',
           props.colWidth == null && 'fc-liquid',
@@ -99,7 +99,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
               tag="a"
               attrs={navLinkAttrs}
               className={joinClassNames(
-                'fc-cell-inner fc-flex-column fc-padding-sm',
+                'fc-cell-inner fc-flex-col fc-padding-sm',
                 props.isSticky && 'fc-sticky-x',
               )}
               elRef={this.handleInnerEl}

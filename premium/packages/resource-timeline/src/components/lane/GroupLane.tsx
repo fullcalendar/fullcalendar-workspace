@@ -44,7 +44,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
         willUnmount={groupSpec.laneWillUnmount}
       >
         {(InnerContainer) => (
-          <div ref={this.innerElRef} className='fc-flex-column'>
+          <div ref={this.innerElRef} className='fc-flex-col'>
             <InnerContainer tag="div" className='fc-cell-inner' />
           </div>
         )}

@@ -93,7 +93,6 @@ Markup/CSS/structure
     we make olden-style exceptions for events, toolbar, popover, more-link, day-headers
       which are polymorphic and share same DOM structure. considered "components" to us
     convert fc-view-harness
-  Rename fc-flex-column -> fc-flex-col (consistent with fc-timegrid-col, and tailwind)
   go back to simple classNames for views (no `*-view`)
     compare to old and then add to changelog
   change names to runon, like "fc-nowindicator" and "morelink" and "viewharness"

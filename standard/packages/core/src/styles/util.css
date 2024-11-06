@@ -44,7 +44,7 @@
   flex-direction: row;
 }
 
-.fc-flex-column {
+.fc-flex-col {
   display: flex;
   flex-direction: column;
 }

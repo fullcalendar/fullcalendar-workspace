@@ -86,7 +86,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         }}
         className={joinClassNames(
           props.className,
-          'fc-timegrid-col fc-flex-column',
+          'fc-timegrid-col fc-flex-col',
           props.borderStart && 'fc-border-s',
           props.width == null && 'fc-liquid',
         )}

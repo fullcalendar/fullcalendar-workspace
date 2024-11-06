@@ -125,7 +125,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         {options.dayHeaders && (
           <div
             className={joinClassNames(
-              'fc-timegrid-header fc-flex-column fc-border-b',
+              'fc-timegrid-header fc-flex-col fc-border-b',
               stickyHeaderDates && 'fc-table-header-sticky',
             )}
             style={{
@@ -165,7 +165,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           <Fragment>
             <div
               // TODO: role="rowgroup"
-              className='fc-timegrid-allday fc-flex-column'
+              className='fc-timegrid-allday fc-flex-col'
               style={{
                 paddingLeft: state.leftScrollbarWidth,
                 paddingRight: state.rightScrollbarWidth,
@@ -210,7 +210,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
         <Scroller
           vertical={verticalScrolling}
           className={joinClassNames(
-            'fc-timegrid-body fc-flex-column',
+            'fc-timegrid-body fc-flex-col',
             verticalScrolling && 'fc-liquid',
           )}
           ref={props.timeScrollerRef}
@@ -219,8 +219,8 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
         >
-          <div className='fc-flex-column fc-grow fc-rel'>
-            <div className='fc-timegrid-slots fc-flex-column fc-grow'>
+          <div className='fc-flex-col fc-grow fc-rel'>
+            <div className='fc-timegrid-slots fc-flex-col fc-grow'>
               {props.slatMetas.map((slatMeta, slatI) => (
                 <div
                   key={slatMeta.key}
@@ -247,7 +247,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                 </div>
               ))}
             </div>
-            <div className='fc-fill fc-border-transparent fc-border-s fc-flex-column' style={axisStartCss}>
+            <div className='fc-fill fc-border-transparent fc-border-s fc-flex-col' style={axisStartCss}>
               <TimeGridCols
                 dateProfile={props.dateProfile}
                 nowDate={props.nowDate}
