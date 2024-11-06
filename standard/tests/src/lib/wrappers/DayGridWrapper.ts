@@ -18,7 +18,7 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
   }
 
   getAllDayEls() {
-    return findElements(this.el, '.fc-daygrid-cell[data-date]')
+    return findElements(this.el, '.fc-daygrid-day[data-date]')
   }
 
   getMirrorEls() {
@@ -29,25 +29,25 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
     if (typeof date === 'string') {
       date = new Date(date)
     }
-    return this.el.querySelector('.fc-daygrid-cell[data-date="' + formatIsoDay(date) + '"]')
+    return this.el.querySelector('.fc-daygrid-day[data-date="' + formatIsoDay(date) + '"]')
   }
 
   getDayEls(date) { // TODO: return single el??? accept 'tues'
     if (typeof date === 'number') {
-      return findElements(this.el, `.fc-daygrid-cell.${CalendarWrapper.DOW_CLASSNAMES[date]}`)
+      return findElements(this.el, `.fc-daygrid-day.${CalendarWrapper.DOW_CLASSNAMES[date]}`)
     }
     if (typeof date === 'string') {
       date = new Date(date)
     }
-    return findElements(this.el, '.fc-daygrid-cell[data-date="' + formatIsoDay(date) + '"]')
+    return findElements(this.el, '.fc-daygrid-day[data-date="' + formatIsoDay(date) + '"]')
   }
 
   getDayNumberText(date) {
-    return $(this.getDayEl(date).querySelector('.fc-daygrid-cell-header')).text()
+    return $(this.getDayEl(date).querySelector('.fc-daygrid-day-header')).text()
   }
 
   getDayElsInRow(row) {
-    return findElements(this.getRowEl(row), '.fc-daygrid-cell')
+    return findElements(this.getRowEl(row), '.fc-daygrid-day')
   }
 
   // TODO: discourage use
@@ -94,7 +94,7 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
   }
 
   getNavLinkEl(date) {
-    return this.getDayEl(date).querySelector('.fc-daygrid-cell-number[data-navlink]')
+    return this.getDayEl(date).querySelector('.fc-daygrid-day-number[data-navlink]')
   }
 
   clickNavLink(date) {

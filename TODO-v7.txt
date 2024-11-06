@@ -76,7 +76,7 @@ Print Mode
 General Responsive
   Hide event times (daygrid/timeline) if too small?
   should fc-padding-* classes be responsive, meaning related to font-size?
-    for fc-daygrid-cell-number/fc-daygrid-week-number too
+    for fc-daygrid-day-number/fc-daygrid-week-number too
   make ticket where popover is responsive?
 Scrollbars
   bug: unnecessary vertical scrollbar in daygrid see issue-6749-related.html
@@ -84,13 +84,14 @@ Scrollbars
   Test horizontal scroll normalization (for isRTL) in variety of browsers
   See [scrollbar bug] for Resource Timeline
 Markup/CSS/structure
-  .fc-timegrid-col-fg -> .fc-timegrid-col-events, like DayGrid?
-  .fc-daygrid-cell-number is an awkward classname... fc-daygrid-day-number instead? fc-daygrid-datenumber/daynumber?
   in future css className refactor:
     fc-dayGridMonth -> fc-daygridmonth (to match fc-daygrid)
     fc-dayGridMonth-button -> fc-daygridmonth-button
     fc-timeline-now-indicator-arrow -> fc-timeline-nowindicator-arrow
     fc-timeline-more-link -> fc-timeline-morelink
+    NEVERMIND. we've developed a strong precedent of dash-breaking-words,
+      like week-number/day-number which needs to be both subcomponent (fc-daygrid-day>fc-daygrid-day-number)
+      and independent component (fc-daygrid-week-number)
 Performance
   why does TimelineLane::render get called 3 times initially?
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003

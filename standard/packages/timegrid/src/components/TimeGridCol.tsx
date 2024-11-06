@@ -86,7 +86,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         }}
         className={joinClassNames(
           props.className,
-          'fc-timegrid-col fc-flex-col',
+          'fc-timegrid-day fc-flex-col',
           props.borderStart && 'fc-border-s',
           props.width == null && 'fc-liquid',
         )}
@@ -106,11 +106,11 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {hasCustomDayCellContent(options) && (
               <InnerContent
                 tag="div"
-                className='fc-timegrid-col-misc fc-rel'
+                className='fc-timegrid-day-misc fc-rel'
               />
             )}
             {/* has a z-index to contain all event z-indexes  */}
-            <div className='fc-timegrid-col-fg fc-fill'>
+            <div className='fc-timegrid-day-events fc-fill'>
               {this.renderFgSegs(
                 sortedFgSegs,
                 interactionAffectedInstances,
@@ -122,7 +122,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {Boolean(mirrorSegs.length) && (
               // has a z-index to be above other fg container,
               // but only show it when there are actual mirror events, to avoid blocking clicks
-              <div className='fc-timegrid-col-fg fc-fill'>
+              <div className='fc-timegrid-day-events fc-fill'>
                 {this.renderFgSegs(
                   mirrorSegs,
                   {},

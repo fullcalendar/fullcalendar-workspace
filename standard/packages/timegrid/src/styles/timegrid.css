@@ -38,29 +38,29 @@
 }
 
 //
-// fc-timegrid-col
+// fc-timegrid-day
 //
 
-.fc-timegrid-col {
+.fc-timegrid-day {
   position: relative;
 }
 
-.fc-timegrid-col.fc-day-today { // (today)
+.fc-timegrid-day.fc-day-today { // (today)
   background-color: var(--fc-today-bg-color);
 }
 
 //
-// fc-timegrid-col > fg
+// fc-timegrid-day > fg
 //
 
-.fc-timegrid-col-fg {
+.fc-timegrid-day-events {
   z-index: $fg-z;
 }
 
-.fc-direction-ltr .fc-timegrid-col-fg { // (ltr)
+.fc-direction-ltr .fc-timegrid-day-events { // (ltr)
   margin: 0 2.5% 0 2px;
 }
 
-.fc-direction-rtl .fc-timegrid-col-fg { // (rtl)
+.fc-direction-rtl .fc-timegrid-day-events { // (rtl)
   margin: 0 2px 0 2.5%;
 }

@@ -83,7 +83,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         tag="div"
         className={joinClassNames(
           props.className,
-          'fc-daygrid-cell fc-flex-col',
+          'fc-daygrid-day fc-flex-col',
           props.borderStart && 'fc-border-s',
           props.width != null ? '' : 'fc-liquid',
         )}
@@ -106,12 +106,12 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         {(InnerContent, renderProps) => (
           <Fragment>
             {!renderProps.isDisabled && (props.showDayNumber || hasCustomDayCellContent(options)) && (
-              <div className="fc-daygrid-cell-header">
+              <div className="fc-daygrid-day-header">
                 <InnerContent
                   tag="a"
                   attrs={buildNavLinkAttrs(context, props.date)}
                   className={joinClassNames(
-                    'fc-daygrid-cell-number',
+                    'fc-daygrid-day-number',
                     isMonthStart && 'fc-daygrid-month-start',
                   )}
                 />
@@ -119,13 +119,13 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             )}
             <div
               className={joinClassNames(
-                'fc-daygrid-cell-main',
-                props.isTall && 'fc-daygrid-cell-main-tall',
+                'fc-daygrid-day-body',
+                props.isTall && 'fc-daygrid-day-body-tall',
                 props.fgLiquidHeight ? 'fc-liquid' : 'fc-grow',
               )}
               ref={this.mainElRef}
             >
-              <div className='fc-daygrid-cell-events' style={{ height: props.fgHeight }}>
+              <div className='fc-daygrid-day-events' style={{ height: props.fgHeight }}>
                 {props.fg}
               </div>
               <DayGridMoreLink

@@ -3,7 +3,7 @@
 // fc-daygrid-row > fg > cell
 //
 
-.fc-daygrid-cell.fc-day-today { // (today)
+.fc-daygrid-day.fc-day-today { // (today)
   // only in body cells, not header cells
   background-color: var(--fc-today-bg-color);
 }
@@ -12,12 +12,12 @@
 // fc-daygrid-row > fg > cell > header
 //
 
-.fc-daygrid-cell-header {
+.fc-daygrid-day-header {
   display: flex;
   flex-direction: row-reverse;
 }
 
-.fc-day-other .fc-daygrid-cell-header { // (day-other)
+.fc-day-other .fc-daygrid-day-header { // (day-other)
   opacity: 0.3;
 }
 
@@ -25,32 +25,32 @@
 // fc-daygrid-row > fg > cell > header > number
 //
 
-.fc-daygrid-cell-number {
+.fc-daygrid-day-number {
   position: relative;
   padding: 4px;
 }
 
-.fc-daygrid-month-start { // (month-start) on .fc-daygrid-cell-number
+.fc-daygrid-month-start { // (month-start) on .fc-daygrid-day-number
   font-weight: bold;
   font-size: 1.1em;
 }
 
 //
-// fc-daygrid-row > fg > cell > main > number
+// fc-daygrid-row > fg > cell > body > number
 //
 
-.fc-daygrid-cell-main {
+.fc-daygrid-day-body {
   display: flex;
   flex-direction: column;
   margin-bottom: 1px;
 }
 
-.fc-daygrid-cell-main-tall { // (tall)
+.fc-daygrid-day-body-tall { // (tall)
   min-height: 2em;
   margin-bottom: 1em;
 }
 
-.fc-daygrid-cell-main:only-child { // (without cell header)
+.fc-daygrid-day-body:only-child { // (without header)
   margin-top: 2px;
 }
 

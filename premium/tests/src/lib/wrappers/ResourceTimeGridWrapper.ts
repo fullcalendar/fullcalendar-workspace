@@ -74,13 +74,13 @@ export class ResourceTimeGridWrapper {
 
     return findElements(
       this.el,
-      '.fc-timegrid-body .fc-timegrid-col[data-date="' + formatIsoDay(date) + '"]' +
+      '.fc-timegrid-body .fc-timegrid-day[data-date="' + formatIsoDay(date) + '"]' +
       '[data-resource-id="' + resourceId + '"]',
     )
   }
 
   getAllDayEls() { // TODO: rename
-    return findElements(this.el, '.fc-timegrid-body .fc-timegrid-col[data-resource-id]')
+    return findElements(this.el, '.fc-timegrid-body .fc-timegrid-day[data-resource-id]')
   }
 
   getResourceIds() {

@@ -11,7 +11,7 @@ export class TimeGridWrapper {
   }
 
   getAllDayEls() { // TODO: rename to getColEls()
-    return findElements(this.el, '.fc-timegrid-col[data-date]')
+    return findElements(this.el, '.fc-timegrid-day[data-date]')
   }
 
   getMirrorEls() {
@@ -20,7 +20,7 @@ export class TimeGridWrapper {
 
   getDayEls(date) { // TODO: rename to getColEl()
     date = ensureDate(date)
-    return findElements(this.el, '.fc-timegrid-col[data-date="' + formatIsoDay(date) + '"]')
+    return findElements(this.el, '.fc-timegrid-day[data-date="' + formatIsoDay(date) + '"]')
   }
 
   getSlotEls() {
@@ -69,7 +69,7 @@ export class TimeGridWrapper {
   }
 
   getColEl(col) {
-    return this.el.querySelectorAll('.fc-timegrid-col:not(.fc-timegrid-axis)')[col] as HTMLElement
+    return this.el.querySelectorAll('.fc-timegrid-day')[col] as HTMLElement
   }
 
   queryBgEventsInCol(col) {
