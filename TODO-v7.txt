@@ -97,8 +97,6 @@ Markup/CSS/structure
     fc-dayGridMonth-button -> fc-daygridmonth-button
     fc-timeline-now-indicator-arrow -> fc-timeline-nowindicator-arrow
     fc-timeline-more-link -> fc-timeline-morelink
-Accessibility
-  lack of text-selectability: https://github.com/fullcalendar/fullcalendar/issues/5628
 Performance
   why does TimelineLane::render get called 3 times initially?
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
@@ -156,6 +154,10 @@ Support Tickets
   Check ticket for daygrid view with "dots"
 NOTES for later
   simplified axis with h-scrolling: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
+Punt
+  lack of text-selectability: https://github.com/fullcalendar/fullcalendar/issues/5628
+    TODO: need larger discussion on whether dates w/ dateClick or events w/ eventClick
+      should allow text-selection or now
 
 ensure automated tests for...
   positioning of sticky headers in all views. list view sticky subheaders too
