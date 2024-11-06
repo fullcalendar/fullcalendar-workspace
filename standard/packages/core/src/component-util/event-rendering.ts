@@ -377,6 +377,4 @@ export function getEventRangeAnchorAttrs(eventRange: EventRenderRange, context: 
       })
     })
   }
-
-  return {}
 }

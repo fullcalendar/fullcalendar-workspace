@@ -72,13 +72,18 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
 }
 
 function renderEventInnerContent(eventRange: EventRenderRange, context: ViewContext) {
-  let interactiveAttrs = getEventRangeAnchorAttrs(eventRange, context)
-  return (
-    <a {...interactiveAttrs}>
-      {/* TODO: document how whole row become clickable */}
-      {eventRange.def.title}
-    </a>
-  )
+  let anchorAttrs = getEventRangeAnchorAttrs(eventRange, context)
+
+  if (anchorAttrs) {
+    return (
+      <a {...anchorAttrs}>
+        {/* TODO: document how whole row become clickable */}
+        {eventRange.def.title}
+      </a>
+    )
+  }
+
+  return eventRange.def.title
 }
 
 function buildTimeContent(

@@ -47,16 +47,17 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       props.defaultDisplayEventTime,
       props.defaultDisplayEventEnd,
     )
+    let anchorAttrs = getEventRangeAnchorAttrs(eventRange, context)
 
     return (
       <EventContainer
         {...props /* includes elRef */}
-        tag="a"
+        tag={anchorAttrs ? 'a' : 'div'}
         style={{
           borderColor: ui.borderColor,
           backgroundColor: ui.backgroundColor,
         }}
-        attrs={getEventRangeAnchorAttrs(eventRange, context)}
+        attrs={anchorAttrs}
         defaultGenerator={renderInnerContent}
         timeText={timeText}
       >

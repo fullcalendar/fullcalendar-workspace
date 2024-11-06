@@ -78,10 +78,6 @@ General Responsive
   should fc-padding-* classes be responsive, meaning related to font-size?
     for fc-daygrid-cell-number/fc-daygrid-week-number too
   make ticket where popover is responsive?
-General Events
-  remove <a> tags from events w/o url (or editable?)
-    https://github.com/fullcalendar/fullcalendar/issues/7675
-    use `getEventRangeAnchorAttrs`
 Scrollbars
   bug: unnecessary vertical scrollbar in daygrid see issue-6749-related.html
   implement scroller padding rectangles
@@ -137,6 +133,9 @@ Changelog
   Add: eventSlicing (write tests too)
     eventSlicing:true (request: https://github.com/fullcalendar/fullcalendar/issues/6187)
     eventSlicing:false (request: https://fullcalendar.freshdesk.com/a/tickets/9203)
+  remove <a> tags from events w/o url
+    https://github.com/fullcalendar/fullcalendar/issues/7675
+    leverages `getEventRangeAnchorAttrs`
   v6 regressions fixed
     fc-timegrid-event-inset (white glow) was being applied to all events,
       and the top-level events with stackForward weren't being indented on the side

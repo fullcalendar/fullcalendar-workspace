@@ -38,12 +38,13 @@ export class DayGridListEvent extends BaseComponent<DayGridListEventProps> {
       true, // defaultDisplayEventTime
       props.defaultDisplayEventEnd,
     )
+    let anchorAttrs = getEventRangeAnchorAttrs(eventRange, context)
 
     return (
       <EventContainer
         {...props}
-        tag="a"
-        attrs={getEventRangeAnchorAttrs(eventRange, context)}
+        tag={anchorAttrs ? 'a' : 'div'}
+        attrs={anchorAttrs}
         className='fc-daygrid-dot-event fc-daygrid-event'
         defaultGenerator={renderInnerContent}
         timeText={timeText}
