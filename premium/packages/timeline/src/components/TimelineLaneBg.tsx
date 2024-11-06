@@ -30,12 +30,11 @@ export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
     let highlightSeg = [].concat(props.eventResizeSegs, props.dateSelectionSegs)
 
     return (
-      <div className="fc-fill">
-        {/* Fragments contain the keys */}
+      <Fragment>
         {this.renderSegs(props.businessHourSegs || [], 'non-business')}
         {this.renderSegs(props.bgEventSegs || [], 'bg-event')}
         {this.renderSegs(highlightSeg, 'highlight')}
-      </div>
+      </Fragment>
     )
   }
 

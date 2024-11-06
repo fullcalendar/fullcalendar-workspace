@@ -127,9 +127,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         <div
           className={joinClassNames(
             'fc-timeline-events',
-            options.eventOverlap === false // TODO: fix bad default
-              ? 'fc-timeline-events-overlap-disabled'
-              : 'fc-timeline-events-overlap-enabled',
+            options.eventOverlap === false ? '' : 'fc-timeline-events-no-overlap', // TODO: fix bad default
             'fc-content-box', // because height is set, and padding might be set
           )}
           style={{ height: totalHeight }}

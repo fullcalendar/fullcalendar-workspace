@@ -284,7 +284,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
           return (
             <ViewContainer
-              className='fc-resource-timeline-view fc-flex-col fc-border'
+              className='fc-resource-timeline fc-flex-col fc-border'
               viewSpec={viewSpec}
             >
               <ResizableTwoCol

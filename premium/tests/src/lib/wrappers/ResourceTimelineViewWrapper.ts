@@ -7,7 +7,7 @@ import { ResourceDataHeaderWrapper } from './ResourceDataHeaderWrapper.js'
 
 export class ResourceTimelineViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-resource-timeline-view')
+    super(calendar, 'fc-resource-timeline')
   }
 
   get header() {

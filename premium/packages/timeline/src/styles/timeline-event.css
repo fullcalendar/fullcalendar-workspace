@@ -4,7 +4,7 @@
 //   a CONTAINER for multiple events
 //
 
-.fc-timeline-events-overlap-enabled { // (overlap-enabled)
+.fc-timeline-events-no-overlap { // (no-overlap)
   padding-bottom: 10px;
 }
 
