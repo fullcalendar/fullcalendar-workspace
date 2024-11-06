@@ -4,7 +4,7 @@
 //   a CONTAINER for multiple events
 //
 
-.fc-timeline-events-no-overlap { // (no-overlap)
+.fc-timeline-events-overlap-enabled { // (overlap-enabled)
   padding-bottom: 10px;
 }
 
@@ -26,12 +26,6 @@
   margin-left: 1px;
 }
 
-.fc-timeline-event-spacious { // (spacious)
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-bottom: 0;
-}
-
 //
 // fc-timeline-event > inner
 //
@@ -41,6 +35,11 @@
   flex-direction: row;
   align-items: center; // vertically centered items
   padding: 2px 1px;
+}
+
+.fc-timeline-event-spacious .fc-event-inner { // (spacious)
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .fc-timeline-event .fc-event-time { // > time
@@ -61,6 +60,7 @@
   content: "";
   flex-grow: 0;
   flex-shrink: 0;
+  margin: 0 1px;
   opacity: .5;
   border-color: #000; // TODO: var
   @include arrow-left-right(5px, 5px);
