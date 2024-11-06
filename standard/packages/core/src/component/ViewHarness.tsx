@@ -16,13 +16,13 @@ export class ViewHarness extends Component<ViewHarnessProps> {
     return (
       <div
         className={joinClassNames(
-          'fc-view-harness',
+          'fc-view-outer',
           props.height != null
-            ? 'fc-view-harness-fixedheight'
+            ? 'fc-view-outer-static'
             : props.heightLiquid
-              ? 'fc-view-harness-liquid'
+              ? 'fc-view-outer-liquid'
               : props.aspectRatio != null
-                && 'fc-view-harness-aspectratio'
+                && 'fc-view-outer-aspect-ratio'
         )}
         style={{
           height: props.height,

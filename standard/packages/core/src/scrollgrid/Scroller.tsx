@@ -52,7 +52,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
         className={joinClassNames(
           props.className,
           'fc-scroller',
-          props.hideScrollbars && 'fc-scroller-nobars',
+          props.hideScrollbars && 'fc-scroller-no-bars',
         )}
         style={{
           ...props.style,

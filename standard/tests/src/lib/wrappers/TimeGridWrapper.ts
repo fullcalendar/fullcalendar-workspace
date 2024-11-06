@@ -103,7 +103,7 @@ export class TimeGridWrapper {
   }
 
   getMorePopoverEl() {
-    let viewWrapperEl = this.el.closest('.fc-view-harness')
+    let viewWrapperEl = this.el.closest('.fc-view-outer')
     return viewWrapperEl.querySelector('.fc-more-popover') as HTMLElement
   }
 

@@ -42,7 +42,7 @@ export class CalendarWrapper {
   }
 
   getViewContainerEl() {
-    return this.calendar.el.querySelector('.fc-view-harness') as HTMLElement
+    return this.calendar.el.querySelector('.fc-view-outer') as HTMLElement
   }
 
   getViewEl() {

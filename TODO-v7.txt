@@ -88,7 +88,6 @@ Scrollbars
   Test horizontal scroll normalization (for isRTL) in variety of browsers
   See [scrollbar bug] for Resource Timeline
 Markup/CSS/structure
-  convert fc-view-harness to utility classes
   .fc-timegrid-col-fg -> .fc-timegrid-col-events, like DayGrid?
   .fc-daygrid-cell-number is an awkward classname... fc-daygrid-day-number instead? fc-daygrid-datenumber/daynumber?
   .fc-cell-main doesn't need to be span anymore (within a flex parent)

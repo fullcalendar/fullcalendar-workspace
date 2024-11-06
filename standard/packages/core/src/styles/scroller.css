@@ -3,12 +3,12 @@
   padding: 0 !important;
 }
 
-.fc-scroller-nobars {
+.fc-scroller-no-bars {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-.fc-scroller-nobars::-webkit-scrollbar {
+.fc-scroller-no-bars::-webkit-scrollbar {
   display: none;
 }
