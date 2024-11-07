@@ -34,13 +34,13 @@ Timeline
     2. open link, begin to drag event
     3. event looses it's duration. inconsistent with how normal event dragging happens
     (will be breaking change? maybe file ticket and add changelog)
-  Is the event style in timeline-no-overlap.html too chunky?
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
   Did +more links in timeline always have strict order (meaning they were at bottom?). Regression?
 Resource DayGrid
   (none)
 Resource Timeline
+  drag-n-drop auto-scroll very glitchy
   column grouping, should expand to full height, but doesn't
     See bundle/examples/responsive.html
   just like scrollbar dead area should have grey bg,
