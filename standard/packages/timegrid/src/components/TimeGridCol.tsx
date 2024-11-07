@@ -225,6 +225,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 isSelected={instanceId === eventSelection}
                 isShort={segVertical.isShort || false}
                 isInset={isInset}
+                isLiquid
                 {...getEventRangeMeta(eventRange, todayRange, nowDate)}
               />
             </div>
@@ -382,7 +383,6 @@ export function renderPlainFgSegs(
         return (
           <div
             key={instanceId}
-            className='fc-timegrid-harness-plain'
             style={{ visibility: hiddenInstances[instanceId] ? 'hidden' : ('' as any) }}
           >
             <TimeGridEvent

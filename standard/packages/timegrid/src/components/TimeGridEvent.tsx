@@ -12,6 +12,7 @@ export interface TimeGridEventProps extends MinimalEventProps {
   segEnd: DateMarker
   isInset: boolean
   isShort: boolean
+  isLiquid?: boolean
 }
 
 export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
@@ -26,6 +27,7 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
           props.isShort && 'fc-timegrid-event-short',
           props.isInset && 'fc-timegrid-event-inset',
           'fc-v-event',
+          props.isLiquid && 'fc-fill',
         )}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
         segStart={props.segStart}

@@ -40,13 +40,17 @@
 //
 
 .fc-v-event .fc-event-inner {
-  @include liquid; // vertically liquid
+  // like liquid, but with no basis:0, so can have natural height
+  flex-grow: 1;
+  min-height: 0;
+
   display: flex;
   flex-direction: column;
   color: var(--fc-event-text-color); // better to assign text-color within to bypass link color
 }
 
 .fc-v-event .fc-event-time { // > time
+  flex-shrink: 0;
   white-space: nowrap;
 }
 
@@ -56,7 +60,11 @@
 }
 
 .fc-v-event .fc-event-title-outer { // > title-outer
-  @include liquid; // vertically liquid
+  // like liquid, but with no basis:0, so can have natural height
+  // (but needs fc-event-time sibling to have shrink:0 to work)
+  flex-grow: 1;
+  min-height: 0;
+
   display: flex;
   flex-direction: column;
 }
