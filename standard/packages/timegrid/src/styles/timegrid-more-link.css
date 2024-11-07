@@ -5,7 +5,7 @@
 //
 
 .fc-timegrid-more-link {
-  z-index: 9999; // hack
+  z-index: 9999; // HACK to get above all data-dependent z-indexes of events
   color: var(--fc-more-link-text-color);
   background: var(--fc-more-link-bg-color);
   margin-bottom: 1px; // match space below fc-timegrid-event

@@ -189,7 +189,6 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
     return (
       <Fragment>
-        {this.renderHiddenGroups(hiddenGroups)}
         {segs.map((seg, index) => {
           let { eventRange } = seg
           let instanceId = eventRange.instance.instanceId // guaranteed because it's an fg event
@@ -231,6 +230,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             </div>
           )
         })}
+        {this.renderHiddenGroups(hiddenGroups)}
       </Fragment>
     )
   }

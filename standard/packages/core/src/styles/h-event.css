@@ -6,8 +6,6 @@
 
 .fc-h-event {
   position: relative; // required by fc-event
-  z-index: $event-z;
-
   display: flex;
   flex-direction: column;
   border: 1px solid var(--fc-event-border-color);

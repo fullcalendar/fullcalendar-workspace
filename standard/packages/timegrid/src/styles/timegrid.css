@@ -54,7 +54,7 @@
 //
 
 .fc-timegrid-day-events {
-  z-index: $fg-z;
+  z-index: $event-z;
 }
 
 .fc-direction-ltr .fc-timegrid-day-events { // (ltr)
