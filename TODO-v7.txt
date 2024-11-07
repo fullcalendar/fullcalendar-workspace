@@ -26,17 +26,12 @@ MultiMonth
 TimeGrid
   just like scrollbar dead area should have grey bg,
     make timegrid bottom area w/o slots a grey bg
-  weird event overlapping problem (see Screenshot 2024-11-05 at 1.54.57 PM.png)
+  bug: weird event overlapping problem (see Screenshot 2024-11-05 at 1.54.57 PM.png)
     10am event (1 hour) gets overlapped by 8am-2pm event (6 hours)
+  bug: another event positioning bug (timegrid-views-bug.html)
 Timeline
-  v7 regression for timeline event dragging?:
-    1. have +more link with eventMaxStack
-    2. open link, begin to drag event
-    3. event looses it's duration. inconsistent with how normal event dragging happens
-    (will be breaking change? maybe file ticket and add changelog)
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
-  Did +more links in timeline always have strict order (meaning they were at bottom?). Regression?
 Resource DayGrid
   (none)
 Resource Timeline
@@ -142,6 +137,14 @@ Punt
   lack of text-selectability: https://github.com/fullcalendar/fullcalendar/issues/5628
     TODO: need larger discussion on whether dates w/ dateClick or events w/ eventClick
       should allow text-selection or now
+  file bug for strange dragging events from timeline more-link (preexists)
+    https://codepen.io/arshaw/pen/jOgeGwm?editors=0010
+  timeline event dragging loses duration:
+    1. have +more link with eventMaxStack
+    2. open link, begin to drag event
+    3. event looses it's duration. inconsistent with how normal event dragging happens
+    (will be breaking change? maybe file ticket and add changelog)
+    PREEXISTS: https://codepen.io/arshaw/pen/jOgeGwm?editors=0010
   Markup/CSS/structure
     in future css className refactor:
       fc-dayGridMonth -> fc-daygridmonth (to match fc-daygrid)
