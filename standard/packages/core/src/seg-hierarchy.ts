@@ -51,7 +51,7 @@ export class SegHierarchy<R extends SlicedCoordRange> {
     private getSegThickness = (seg: EventSeg<R>): number | undefined => {
       return 1
     },
-    private strictOrder: boolean = false,
+    public strictOrder: boolean = false, // HACK
     private maxCoord: number | undefined,
     private maxDepth: number | undefined,
     private hiddenConsumes = false, // hidden segs also hide the touchingPlacement?

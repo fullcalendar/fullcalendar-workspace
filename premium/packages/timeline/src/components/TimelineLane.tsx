@@ -216,7 +216,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           <TimelineEventHarness
             key={hiddenGroup.key}
             style={{
-              top: hiddenGroupTops[hiddenGroup.key] || 0,
+              top: hiddenGroupTops.get(hiddenGroup.key) || 0,
               ...horizontalsToCss({ // TODO: better way to do this?
                 start: hiddenGroup.start,
                 size: hiddenGroup.end - hiddenGroup.start

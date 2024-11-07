@@ -101,14 +101,15 @@ export function computeFgSegPlacements( // mostly horizontals
     if (segHeight != null) {
       if (segTop != null) {
         totalHeight = Math.max(totalHeight, segTop + segHeight)
-      } else {
-        hiddenSegs.push(segRange)
       }
     }
   }
 
   const hiddenGroups = groupIntersectingSegs(hiddenSegs)
   const hiddenGroupTops = new Map<string, number>()
+
+  // HACK for hiddenGroup findInsertion() call
+  hierarchy.strictOrder = true
 
   for (const hiddenGroup of hiddenGroups) {
     const { levelCoord: top } = hierarchy.findInsertion(hiddenGroup, 0)
