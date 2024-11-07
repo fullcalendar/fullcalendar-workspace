@@ -26,9 +26,6 @@ MultiMonth
 TimeGrid
   just like scrollbar dead area should have grey bg,
     make timegrid bottom area w/o slots a grey bg
-  bug: weird event overlapping problem (see Screenshot 2024-11-05 at 1.54.57 PM.png)
-    10am event (1 hour) gets overlapped by 8am-2pm event (6 hours)
-  bug: another event positioning bug (timegrid-views-bug.html)
 Timeline
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
@@ -103,6 +100,16 @@ Examples
     Things are currently collapsing very strangely on a narrow screen (like stackblitz angular demo)
 Last-minute features
   Calendar::updateSize return promise
+  Change how liquid-height is done for a single-expanding region
+    Normally:
+      FIXED-AREAS: nothing
+      LIQUID-AREAS: { flex-grow:1, min-height:0, flex-basis:0 }
+      Needed for horizontal equal-width cell expansion; basis0 is important
+    New technique:
+      FIXED-AREAS: { flex-shrink:0 }
+      LIQUID-AREAS: { flex-grow:1, min-height:0 }
+      Good for layouts that are conditionally liquid-height
+      Tho probably not as performant because need to compute the pre-squished AND post-squished layouts
 Changelog
   Add: Calendar::updateSize no longer synchronous
   Add: all cell headers are no longer bold
@@ -138,6 +145,7 @@ Punt
     TODO: need larger discussion on whether dates w/ dateClick or events w/ eventClick
       should allow text-selection or now
   file bug for strange dragging events from timeline more-link (preexists)
+  (same with TIMEGRID's more popover)
     https://codepen.io/arshaw/pen/jOgeGwm?editors=0010
   timeline event dragging loses duration:
     1. have +more link with eventMaxStack

@@ -193,7 +193,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           let { eventRange } = seg
           let instanceId = eventRange.instance.instanceId // guaranteed because it's an fg event
           let segVertical: Partial<TimeGridSegVertical> = segVerticals[index] || {}
-          let segRect = segRects[index] // for horizontals. could be undefined!? HACK
+          let segRect = segRects.get(instanceId) // for horizontals. could be undefined!? HACK
 
           let hStyle = (!isMirror && segRect)
             ? this.computeSegHStyle(segRect)

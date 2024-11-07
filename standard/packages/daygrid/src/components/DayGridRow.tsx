@@ -342,7 +342,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       )
     }
 
-    return createElement(Fragment, {}, ...nodes)
+    return createElement(Fragment, {}, ...nodes) // TODO: shouldn't this be an array, so keyed?
   }
 
   handleRootEl = (rootEl: HTMLElement) => {

@@ -54,7 +54,7 @@ export function buildWebPositioning(
   strictOrder?: boolean,
   maxDepth?: number,
 ): [
-  segRects: SegWebRect[],
+  segRects: Map<string, SegWebRect>,
   hiddenGroups: SegGroup<TimeGridCoordRange>[]
 ] {
   const segRanges: (TimeGridCoordRange & EventRangeProps)[] = []
@@ -221,8 +221,8 @@ function stretchWeb(topLevelNodes: SegNode[], totalThickness: number): SegNode[]
 }
 
 // not sorted in any particular order
-function webToRects(topLevelNodes: SegNode[]): SegWebRect[] {
-  let rects: SegWebRect[] = []
+function webToRects(topLevelNodes: SegNode[]): Map<string, SegWebRect> {
+  let rectMap = new Map<string, SegWebRect>()
 
   /*
   Returns max stackForward of the node's forward children
@@ -236,7 +236,7 @@ function webToRects(topLevelNodes: SegNode[]): SegWebRect[] {
         stackDepth,
         stackForward: 0, // will assign after recursing
       }
-      rects.push(rect)
+      rectMap.set(rect.eventRange.instance.instanceId, rect)
 
       return (
         rect.stackForward = processNodes(node.nextLevelNodes, levelCoord + node.thickness, stackDepth + 1)
@@ -256,7 +256,7 @@ function webToRects(topLevelNodes: SegNode[]): SegWebRect[] {
   }
 
   processNodes(topLevelNodes, 0, 0)
-  return rects // TODO: sort rects by levelCoord to be consistent with toRects?
+  return rectMap
 }
 
 // TODO: move to general util
