@@ -41,7 +41,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
     return (
       <div
         data-date={props.isoDateStr}
-        className="fc-multimonth-month fc-grow"
+        className="fc-multimonth-month fc-liquid"
+        // override fc-liquid's basis. fc-grow isn't sufficient because doesn't set min-width:0
         style={{ flexBasis: props.flexBasis }}
         ref={this.elRef}
       >
