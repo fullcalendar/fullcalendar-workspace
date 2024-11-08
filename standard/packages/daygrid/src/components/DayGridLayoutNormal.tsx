@@ -93,12 +93,13 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
           )}
           ref={this.handleScroller}
         >
-          <DayGridRows // .fc-grow
+          <DayGridRows
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cellRows={props.cellRows}
             forPrint={props.forPrint}
             isHitComboAllowed={props.isHitComboAllowed}
+            className='fc-grow'
 
             // content
             fgEventSegs={props.fgEventSegs}

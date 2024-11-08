@@ -25,6 +25,7 @@ export interface DayGridRowsProps {
   cellRows: DayTableCell[][]
   forPrint: boolean
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
+  className?: string
 
   // content
   fgEventSegs: (DayGridRange & EventRangeProps)[]
@@ -96,7 +97,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
 
     return (
       <div
-        className='fc-grow fc-flex-col'
+        className={joinClassNames('fc-flex-col', props.className)}
         style={{ width: props.width }}
         ref={this.handleRootEl}
       >

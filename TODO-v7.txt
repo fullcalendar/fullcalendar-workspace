@@ -15,14 +15,7 @@ DayGrid
   bug (print-view):
     for multi-day events, don't display title within non-start/end segs
 MultiMonth
-  bug: when multimonth made REALLY small, single col month gets padding
-    standard/bundle/examples/responsive.html
-  bug w/ responsive:
-    1. start out in different view, size window really small
-    2. switch to multimonth, size window large
-    3. multi-columns don't appear. just one column with vertically-squished months
-  Since we moved to a normal Scroller instead of a force-vertical-scrollbar div,
-    is there a chance of infinite dimension-to-state loop?
+  Improve perf while switching years
 TimeGrid
   just like scrollbar dead area should have grey bg,
     make timegrid bottom area w/o slots a grey bg

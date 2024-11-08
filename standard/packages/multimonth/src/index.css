@@ -5,16 +5,19 @@
 
 .fc-multimonth-inner {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+}
+
+.fc-multimonth-multicol .fc-multimonth-inner { // (multicol)
+  margin: 0 1.2em 1.2em;
+  row-gap: 1.2em;
+  column-gap: 2.4em;
 }
 
 //
 // multimonth > month
 //
-
-.fc-multimonth-multicol .fc-multimonth-month { // (multicol)
-  margin: 0 1.2em 1.2em;
-}
 
 .fc-multimonth-multicol .fc-multimonth-title { // (multicol) > header > title
   padding: 1em 0;
