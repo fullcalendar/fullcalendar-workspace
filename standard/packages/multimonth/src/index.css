@@ -10,21 +10,20 @@
 }
 
 .fc-multimonth-multicol .fc-multimonth-inner { // (multicol)
-  margin: 0 1.2em 1.2em;
-  row-gap: 1.2em;
-  column-gap: 2.4em;
+  margin: 1.2em;
+  gap: 2.4em;
 }
 
 //
 // multimonth > month
 //
 
-.fc-multimonth-multicol .fc-multimonth-title { // (multicol) > header > title
-  padding: 1em 0;
-}
-
 .fc-multimonth-singlecol .fc-multimonth-title { // (singlecol) > header > title
   padding: 0.5em 0;
+}
+
+.fc-multimonth-multicol .fc-multimonth-title { // (multicol) > header > title
+  padding-bottom: 1em;
 }
 
 .fc-multimonth-title { // > header > title
