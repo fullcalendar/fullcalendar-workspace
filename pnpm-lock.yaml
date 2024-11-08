@@ -31,7 +31,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ~13.3.10
-        version: 13.3.10(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.5.0(webpack@5.91.0))(karma@6.3.20)(ng-packagr@13.0.0(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.3.0)(typescript@4.6.4))(typescript@4.6.4)
+        version: 13.3.10(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.5.0(webpack@5.70.0))(karma@6.3.20)(ng-packagr@13.0.0(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.3.0)(typescript@4.6.4))(typescript@4.6.4)
       '@angular/animations':
         specifier: ~13.3.0
         version: 13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))
@@ -505,7 +505,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ~13.3.10
-        version: 13.3.10(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.5.0(webpack@5.70.0))(karma@6.3.20)(ng-packagr@13.0.0(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.4.1)(typescript@4.6.4))(typescript@4.6.4)
+        version: 13.3.10(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.5.0(webpack@5.91.0))(karma@6.3.20)(ng-packagr@13.0.0(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.4.1)(typescript@4.6.4))(typescript@4.6.4)
       '@angular/cli':
         specifier: ~13.3.10
         version: 13.3.10(chokidar@3.6.0)
@@ -3188,6 +3188,15 @@ importers:
       '@fullcalendar/core':
         specifier: workspace:7.0.0-beta.1
         version: link:../core/dist
+      '@popperjs/core':
+        specifier: ^2.11.8
+        version: 2.11.8
+      bootstrap:
+        specifier: ^5.3.0
+        version: 5.3.3(@popperjs/core@2.11.8)
+      bootstrap-icons:
+        specifier: ^1.11.3
+        version: 1.11.3
     publishDirectory: ./dist
 
   standard/packages/core:
@@ -8513,6 +8522,9 @@ packages:
   '@popperjs/core@2.11.6':
     resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
 
+  '@popperjs/core@2.11.8':
+    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
+
   '@remix-run/dev@1.14.3':
     resolution: {integrity: sha512-46mmwiA/k9YDkg0UrP90UB3azVVWRXw16NLHRSbZiaaYe8XgUkddEtBnH/nBp/IrVCtzUL3LObplUe5sFk5Z9Q==}
     engines: {node: '>=14'}
@@ -10229,6 +10241,9 @@ packages:
   bootstrap-icons@1.10.2:
     resolution: {integrity: sha512-PTPYadRn1AMGr+QTSxe4ZCc+Wzv9DGZxbi3lNse/dajqV31n2/wl/7NX78ZpkvFgRNmH4ogdIQPQmxAfhEV6nA==}
 
+  bootstrap-icons@1.11.3:
+    resolution: {integrity: sha512-+3lpHrCw/it2/7lBL15VR0HEumaBss0+f/Lb6ZvHISn1mlK83jjFpooTLsMWbIjJMDjDjOExMsTxnXSIT4k4ww==}
+
   bootstrap@4.6.2:
     resolution: {integrity: sha512-51Bbp/Uxr9aTuy6ca/8FbFloBUJZLHwnhTcnjIeRn2suQWsWzcuJhGjKDB5eppVte/8oCdOL3VuwxvZDUggwGQ==}
     peerDependencies:
@@ -10239,6 +10254,11 @@ packages:
     resolution: {integrity: sha512-dEtzMTV71n6Fhmbg4fYJzQsw1N29hJKO1js5ackCgIpDcGid2ETMGC6zwSYw09v05Y+oRdQ9loC54zB1La3hHQ==}
     peerDependencies:
       '@popperjs/core': ^2.11.6
+
+  bootstrap@5.3.3:
+    resolution: {integrity: sha512-8HLCdWgyoMguSO9o+aH+iuZ+aht+mzW0u3HIMzVu7Srrpv7EBBxTnrFlSCskwdY1+EOFQSm7uMJhNQHkdPcmjg==}
+    peerDependencies:
+      '@popperjs/core': ^2.11.8
 
   bplist-parser@0.3.2:
     resolution: {integrity: sha512-apC2+fspHGI3mMKj+dGevkGo/tCqVB8jMb6i+OX+E29p0Iposz07fABkRIfVUPNd5A5VbuOz1bZbnmkKLYF+wQ==}
@@ -20333,7 +20353,7 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@angular-devkit/build-angular@13.3.10(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.5.0(webpack@5.70.0))(karma@6.3.20)(ng-packagr@13.0.0(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.4.1)(typescript@4.6.4))(typescript@4.6.4)':
+  '@angular-devkit/build-angular@13.3.10(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.5.0(webpack@5.70.0))(karma@6.3.20)(ng-packagr@13.0.0(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.3.0)(typescript@4.6.4))(typescript@4.6.4)':
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.10(chokidar@3.6.0)
@@ -20404,7 +20424,7 @@ snapshots:
     optionalDependencies:
       esbuild: 0.14.22
       karma: 6.3.20
-      ng-packagr: 13.0.0(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.4.1)(typescript@4.6.4)
+      ng-packagr: 13.0.0(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.3.0)(typescript@4.6.4)
     transitivePeerDependencies:
       - '@swc/core'
       - '@types/express'
@@ -20420,7 +20440,7 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@angular-devkit/build-angular@13.3.10(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.5.0(webpack@5.91.0))(karma@6.3.20)(ng-packagr@13.0.0(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.3.0)(typescript@4.6.4))(typescript@4.6.4)':
+  '@angular-devkit/build-angular@13.3.10(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.5.0(webpack@5.91.0))(karma@6.3.20)(ng-packagr@13.0.0(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.4.1)(typescript@4.6.4))(typescript@4.6.4)':
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.10(chokidar@3.6.0)
@@ -20491,7 +20511,7 @@ snapshots:
     optionalDependencies:
       esbuild: 0.14.22
       karma: 6.3.20
-      ng-packagr: 13.0.0(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.3.0)(typescript@4.6.4)
+      ng-packagr: 13.0.0(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.4.1)(typescript@4.6.4)
     transitivePeerDependencies:
       - '@swc/core'
       - '@types/express'
@@ -29266,6 +29286,8 @@ snapshots:
 
   '@popperjs/core@2.11.6': {}
 
+  '@popperjs/core@2.11.8': {}
+
   '@remix-run/dev@1.14.3(@remix-run/serve@1.14.3)(@types/node@20.11.20)(encoding@0.1.13)(less@4.2.0)(sass@1.77.2)(stylus@0.59.0)(terser@5.31.0)(ts-node@10.9.1(@types/node@20.11.20)(typescript@4.9.3))':
     dependencies:
       '@babel/core': 7.24.5
@@ -31727,6 +31749,8 @@ snapshots:
 
   bootstrap-icons@1.10.2: {}
 
+  bootstrap-icons@1.11.3: {}
+
   bootstrap@4.6.2(jquery@3.6.1)(popper.js@1.16.1):
     dependencies:
       jquery: 3.6.1
@@ -31735,6 +31759,10 @@ snapshots:
   bootstrap@5.2.2(@popperjs/core@2.11.6):
     dependencies:
       '@popperjs/core': 2.11.6
+
+  bootstrap@5.3.3(@popperjs/core@2.11.8):
+    dependencies:
+      '@popperjs/core': 2.11.8
 
   bplist-parser@0.3.2:
     dependencies:

@@ -9,11 +9,15 @@
   ],
   "homepage": "https://fullcalendar.io/docs/bootstrap5",
   "peerDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.1"
+    "@fullcalendar/core": "workspace:7.0.0-beta.1",
+    "bootstrap": ">=5.2.0 <6.0.0"
   },
   "devDependencies": {
     "@fullcalendar/core": "workspace:7.0.0-beta.1",
-    "@fullcalendar-scripts/standard": "workspace:*"
+    "@fullcalendar-scripts/standard": "workspace:*",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.0",
+    "bootstrap-icons": "^1.11.3"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

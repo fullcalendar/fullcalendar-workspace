@@ -6,10 +6,6 @@ Publishing:
  Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-Theming
-  Bootstrap color mode:
-    https://github.com/fullcalendar/fullcalendar/issues/7465
-    ensure minimum Bootstrap version
 DayGrid
   prevent DayGridCell headers from overflowing? makes really small calendars look better
   bug (print-view):
@@ -106,6 +102,11 @@ Last-minute features
       Tho probably not as performant because need to compute the pre-squished AND post-squished layouts
 Changelog
   Add: Bootstrap4/5 line-height less chunky
+  Add: Bootstrap
+    Minimum Bootstrap5 version is 5.2.x
+    Bootstrap5 now a peer dependency (and popver by assoc). not the case for 4. TODO: modify docs.
+    Semantic color vars: https://github.com/fullcalendar/fullcalendar/issues/7465
+    Looks good with Dark Mode
   Add: Calendar::updateSize no longer synchronous
   Add: all cell headers are no longer bold
   Add: standin events get put through eventContent/etc

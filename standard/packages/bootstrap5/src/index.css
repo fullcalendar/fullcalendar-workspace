@@ -1,7 +1,8 @@
 
 .fc-theme-bootstrap5 {
-  --fc-border-color: var(--bs-gray-400);
-  --fc-neutral-bg-color: var(--bs-gray-200);
+  --fc-border-color: var(--bs-border-color);
+  --fc-page-bg-color: var(--bs-body-bg);
+  --fc-neutral-bg-color: var(--bs-secondary-bg);
 
   & a:not([href]) {
     color: inherit; // natural color for navlinks
