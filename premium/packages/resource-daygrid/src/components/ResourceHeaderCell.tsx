@@ -48,7 +48,7 @@ export class ResourceHeaderCell extends BaseComponent<ResourceHeaderCellProps> {
             tag="span"
             className={joinClassNames(
               'fc-cell-inner fc-padding-sm',
-              props.isSticky && 'fc-sticky-x',
+              props.isSticky && 'fc-sticky-s',
             )}
             elRef={this.innerElRef}
           />

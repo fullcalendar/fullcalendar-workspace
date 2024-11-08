@@ -101,7 +101,7 @@ export class DayOfWeekHeaderCell extends BaseComponent<DayOfWeekHeaderCellProps>
             }}
             className={joinClassNames(
               'fc-cell-inner fc-padding-sm',
-              props.isSticky && 'fc-sticky-x',
+              props.isSticky && 'fc-sticky-s',
             )}
             elRef={this.innerElRef}
           />

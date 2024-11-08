@@ -100,7 +100,7 @@ export class DateHeaderCell extends BaseComponent<DateHeaderCellProps> {
               attrs={navLinkAttrs}
               className={joinClassNames(
                 'fc-cell-inner fc-flex-col fc-padding-sm',
-                props.isSticky && 'fc-sticky-x',
+                props.isSticky && 'fc-sticky-s',
               )}
               elRef={this.handleInnerEl}
             />

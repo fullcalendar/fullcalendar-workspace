@@ -45,7 +45,7 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
         {(InnerContent) => (
           <InnerContent
             tag="div"
-            className='fc-cell-inner fc-padding-lg fc-sticky-y'
+            className='fc-cell-inner fc-padding-lg fc-sticky-t'
             elRef={this.innerElRef}
           />
         )}

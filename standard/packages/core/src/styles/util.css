@@ -135,13 +135,15 @@ Rarely used. Just inline this?
   bottom: 0;
 }
 
-.fc-sticky-y {
+.fc-sticky-t { // top
   position: sticky;
   top: 0;
-  bottom: 0;
 }
 
-.fc-sticky-x {
+/*
+Sticks to either left or right (the flex "start") depending on ltr/rtl
+*/
+.fc-sticky-s {
   position: sticky;
   left: 0;
   right: 0;
