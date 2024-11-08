@@ -4,7 +4,12 @@
   --fc-neutral-bg-color: var(--bs-gray-200);
 
   & a:not([href]) {
-    color: inherit;
-    text-decoration: inherit;
+    color: inherit; // natural color for navlinks
+    text-decoration: inherit; // undo underline
+  }
+
+  &,
+  & .popover {
+    line-height: normal; // undo thick line-height
   }
 }

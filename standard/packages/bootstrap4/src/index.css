@@ -9,4 +9,9 @@
   & .fc-more-link:hover {
     text-decoration: none;
   }
+
+  &,
+  & .popover {
+    line-height: normal; // undo thick line-height
+  }
 }

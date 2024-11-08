@@ -10,7 +10,6 @@ Theming
   Bootstrap color mode:
     https://github.com/fullcalendar/fullcalendar/issues/7465
     ensure minimum Bootstrap version
-  in bootstrap themes, event-height line-height is very tall. normalize? then make changelog entry?
 DayGrid
   prevent DayGridCell headers from overflowing? makes really small calendars look better
   bug (print-view):
@@ -106,6 +105,7 @@ Last-minute features
       Good for layouts that are conditionally liquid-height
       Tho probably not as performant because need to compute the pre-squished AND post-squished layouts
 Changelog
+  Add: Bootstrap4/5 line-height less chunky
   Add: Calendar::updateSize no longer synchronous
   Add: all cell headers are no longer bold
   Add: standin events get put through eventContent/etc
