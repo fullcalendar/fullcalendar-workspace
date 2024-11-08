@@ -164,7 +164,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
 // Public API
 // -------------------------------------------------------------------------------------------------
-// TODO: consolidate with scroll-left-norm.ts
+// We can drop normalization when support for Chromium-based <86 is dropped (see Notion)
 
 export function getNormalizedScrollX(el: HTMLElement, isRtl: boolean): number {
   const { scrollLeft } = el
@@ -205,7 +205,6 @@ function getNormalizedRtlScrollLeft(x: number, el: HTMLElement): number {
 
 // Detection
 // -------------------------------------------------------------------------------------------------
-// TODO: consolidate with scroll-left-norm.ts
 
 type RtlScrollerSystem = 'positive' | 'negative' | 'reverse'
 

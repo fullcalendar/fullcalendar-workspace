@@ -16,6 +16,7 @@ TimeGrid
   just like scrollbar dead area should have grey bg,
     make timegrid bottom area w/o slots a grey bg
 Timeline
+  initialscroll for RTL is off-by-2 in wrong direction
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
 Resource DayGrid
@@ -33,9 +34,6 @@ Resource Timeline
     try to take width away from next column when expanding
   optimize rendering for lane top/bottom padding
   when there's a superheader, and 2 headers in timeline area, padding in headers looks too thick?
-  in resource-timeline splitpane,
-    should RTL scrollbars that appear on RIGHT, happen on datagrid!? yes
-      (keep in mind columns are reversed)
 H-Scrolling Views
   ensure col-width-syncing doesn't have 1px-off problem
     queries inner-width, but when assigning to outer-width, does it add 1px?
@@ -81,13 +79,11 @@ Dist
   ensure outputted CSS doesn't have multiple :root declarations because of how we shifted vars.css around
 Manual Testing
   Touch devices
-Dev Cleanup
-  Remove unused css mixins
-  Why is week-numbers.html example in premium? has nothing to do with premium
 Examples
   In each two-column layout, give the sidebar flex-shrink:0 and the main min-width:0
     Things are currently collapsing very strangely on a narrow screen (like stackblitz angular demo)
 Last-minute features
+  Can safely assume all RTL scrollbars are on left. Optimize what Scroller reports
   Try to strip out dom-geom.ts and scrollbar-width, tho used for auto-scrolling
   Calendar::updateSize return promise
   Change how liquid-height is done for a single-expanding region
