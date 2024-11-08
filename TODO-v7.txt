@@ -12,6 +12,7 @@ Theming
     ensure minimum Bootstrap version
   in bootstrap themes, event-height line-height is very tall. normalize? then make changelog entry?
 DayGrid
+  prevent DayGridCell headers from overflowing? makes really small calendars look better
   bug (print-view):
     for multi-day events, don't display title within non-start/end segs
 MultiMonth
@@ -92,6 +93,7 @@ Examples
   In each two-column layout, give the sidebar flex-shrink:0 and the main min-width:0
     Things are currently collapsing very strangely on a narrow screen (like stackblitz angular demo)
 Last-minute features
+  Try to strip out dom-geom.ts and scrollbar-width, tho used for auto-scrolling
   Calendar::updateSize return promise
   Change how liquid-height is done for a single-expanding region
     Normally:
