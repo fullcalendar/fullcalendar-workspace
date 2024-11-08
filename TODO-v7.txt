@@ -11,6 +11,7 @@ DayGrid
   bug (print-view):
     for multi-day events, don't display title within non-start/end segs
 MultiMonth
+  bug: multi-row events cutoff when +more in next row (multimonth-view-bug.html)
   Improve perf while switching years
 TimeGrid
   just like scrollbar dead area should have grey bg,
