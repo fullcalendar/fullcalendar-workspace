@@ -148,10 +148,10 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     isDateSelecting: boolean,
     forcedKey?: string,
   ) {
-    let { props } = this
-    if (props.forPrint) {
-      return renderPlainFgSegs(sortedFgSegs, props) // TODO: test
-    }
+    // let { props } = this
+    // if (props.forPrint) {
+    //   return renderPlainFgSegs(sortedFgSegs, props) // TODO: test
+    // }
     return this.renderPositionedFgSegs(
       sortedFgSegs,
       segIsInvisible,

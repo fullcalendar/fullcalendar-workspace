@@ -19,18 +19,18 @@ function attachGlobalHandlers() {
   window.addEventListener('beforeprint', handleBeforePrint)
   window.addEventListener('afterprint', handleAfterPrint)
 
-  // // for testing
-  // let forPrint = false
-  // document.addEventListener('keypress', (ev) => {
-  //   if (ev.key === 'p') {
-  //     forPrint = !forPrint
-  //     if (forPrint) {
-  //       handleBeforePrint()
-  //     } else {
-  //       handleAfterPrint()
-  //     }
-  //   }
-  // })
+  // for testing
+  let forPrint = false
+  document.addEventListener('keypress', (ev) => {
+    if (ev.key === 'p') {
+      forPrint = !forPrint
+      if (forPrint) {
+        handleBeforePrint()
+      } else {
+        handleAfterPrint()
+      }
+    }
+  })
 }
 
 function removeGlobalHandlers() {
