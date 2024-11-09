@@ -84,7 +84,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
 
     // whether the ROW should expand in height
     // (not to be confused with whether the fg events within the row should be molded by height of row)
-    let isHeightAuto = getIsHeightAuto(options)
+    let isHeightAuto = props.forPrint || getIsHeightAuto(options)
 
     // maintain at least aspectRatio for cells?
     let rowMinHeight = (
@@ -127,7 +127,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
             eventSelection={props.eventSelection}
             eventDrag={eventDragByRow[row]}
             eventResize={eventResizeByRow[row]}
-            dayMaxEvents={options.dayMaxEvents}
+            dayMaxEvents={props.forPrint ? undefined : options.dayMaxEvents}
             dayMaxEventRows={options.dayMaxEventRows}
 
             // dimensions
