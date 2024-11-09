@@ -6,6 +6,22 @@ Publishing:
  Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+Print Mode
+  verify serious problem: does ResizeObserver not fire when print-mode activated?
+  for print, when using ResizeObserver ponyfill, should flush sizing (multiple rounds?)
+  important issues:
+    https://github.com/fullcalendar/fullcalendar/issues/7007
+    https://github.com/fullcalendar/fullcalendar/issues/6802
+    https://github.com/fullcalendar/fullcalendar/issues/5465
+  should we set business-hours daygrid as cell-bg color? (same as fc-today and fc-day-disabled)
+    begs the question.. should be go back to having bg-events and highlights ABOVE daygrid cells. probably
+  ensure no white text
+  ensure nothing sticky (except for event title-text)
+  disable sticky when media:print? or unnecessary?
+  AFTER: revert "hacks to get print-mode working, but some should be reverted"
+  NOTES:
+    Firefox looks terrible in print preview b/c lines are too thin, but actually fine
+
 DayGrid
   prevent DayGridCell headers from overflowing? makes really small calendars look better
   bug (print-view):
@@ -41,13 +57,6 @@ H-Scrolling Views
 List View
   eventually redo list-view (and find tickets -- better <a> tag wrapper. better stickiness)
     and redo empty-list message
-Print Mode
-  ensure no white text
-  ensure nothing sticky
-    (wait, maybe we want it titles sticky onscreen for h-scroll daygrid/timeline)
-  DayGrid: disable dayMaxEvents=true behavior
-  DayGrid: ensure: "event titles each day" https://github.com/fullcalendar/fullcalendar/issues/6657
-  disable sticky when media:print?
 General Responsive
   Hide event times (daygrid/timeline) if too small?
   should fc-padding-* classes be responsive, meaning related to font-size?
@@ -104,12 +113,14 @@ Changelog
     Bootstrap5 now a peer dependency (and popver by assoc). not the case for 4. TODO: modify docs.
     Semantic color vars: https://github.com/fullcalendar/fullcalendar/issues/7465
     Looks good with Dark Mode
+  Document better dark-mode abilities for anyone, with CSS vars that Bootstrap5 happens to manipulate
   Add: Calendar::updateSize no longer synchronous
   Add: all cell headers are no longer bold
   Add: standin events get put through eventContent/etc
   Add: eventSlicing (write tests too)
     eventSlicing:true (request: https://github.com/fullcalendar/fullcalendar/issues/6187)
     eventSlicing:false (request: https://fullcalendar.freshdesk.com/a/tickets/9203)
+  Add: print DayGrid "event titles each day" https://github.com/fullcalendar/fullcalendar/issues/6657
   remove <a> tags from events w/o url
     https://github.com/fullcalendar/fullcalendar/issues/7675
     leverages `getEventRangeAnchorAttrs`
