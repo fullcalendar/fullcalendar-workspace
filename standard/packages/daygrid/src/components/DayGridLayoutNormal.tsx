@@ -88,7 +88,7 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
           leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
           className={joinClassNames(
-            'fc-daygrid-body fc-flex-col',
+            'fc-daygrid-body fc-flex-col fc-print-block',
             verticalScrollbars && 'fc-liquid',
           )}
           ref={this.handleScroller}

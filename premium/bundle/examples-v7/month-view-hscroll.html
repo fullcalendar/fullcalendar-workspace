@@ -9,6 +9,10 @@
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
+      // better to show page break
+      duration: { months: 2 },
+      initialView: 'dayGrid',
+
       dayMinWidth: 300,
       height: 'auto',
       initialDate: '2023-01-12',

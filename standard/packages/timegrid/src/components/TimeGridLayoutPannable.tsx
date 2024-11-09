@@ -349,26 +349,6 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
               bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
             >
               <div className='fc-grow fc-flex-col fc-rel' style={{ width: canvasWidth }}>
-                <div className='fc-timegrid-slots fc-flex-col fc-grow'>
-                  {props.slatMetas.map((slatMeta, slatI) => (
-                    <div
-                      key={slatMeta.key}
-                      className={joinClassNames(
-                        ...getSlatRowClassNames(slatMeta),
-                        slatI && 'fc-border-t',
-                        slatLiquid && 'fc-liquid',
-                      )}
-                      style={{
-                        height: slatLiquid ? '' : slatHeight
-                      }}
-                    >
-                      <TimeGridSlatLane
-                        {...slatMeta}
-                        innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
-                      />
-                    </div>
-                  ))}
-                </div>
                 <TimeGridCols
                   dateProfile={props.dateProfile}
                   nowDate={props.nowDate}
@@ -393,6 +373,26 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                   colWidth={colWidth}
                   slatHeight={slatHeight}
                 />
+                <div className='fc-timegrid-slots fc-flex-col fc-grow'>
+                  {props.slatMetas.map((slatMeta, slatI) => (
+                    <div
+                      key={slatMeta.key}
+                      className={joinClassNames(
+                        ...getSlatRowClassNames(slatMeta),
+                        slatI && 'fc-border-t',
+                        slatLiquid && 'fc-liquid',
+                      )}
+                      style={{
+                        height: slatLiquid ? '' : slatHeight
+                      }}
+                    >
+                      <TimeGridSlatLane
+                        {...slatMeta}
+                        innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </Scroller>
             {Boolean(stickyFooterScrollbar) && (

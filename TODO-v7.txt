@@ -17,10 +17,37 @@ Print Mode
     begs the question.. should be go back to having bg-events and highlights ABOVE daygrid cells. probably
   ensure no white text
   ensure nothing sticky (except for event title-text)
-  disable sticky when media:print? or unnecessary?
+  disable sticky when media:print? or unnecessary because happens automatically?
+  should hide scrollbars (-no-bars) in print-view, so gutter in other panes isn't shown
+  should we offer a setting to KEEP vertical scrollbar containers?
   AFTER: revert "hacks to get print-mode working, but some should be reverted"
   NOTES:
     Firefox looks terrible in print preview b/c lines are too thin, but actually fine
+    You must put absolutely positioned siblings first. second, and first spans multiple pages, will end up on second page
+  EXPERIMENTS:
+    Chromium 130
+      Month             : GOOD row splitting
+      Month H-Scroll    : GOOD row splitting amidst h-scroll container
+      TimeGrid          : GOOD abs slots across pages
+      TimeGrid H-Scroll : GOOD abs slots across pages, SYNCED, but BUG with v-scroll syncing after returning from print-mode
+      Resource Timeline : GOOD abs slots across pages
+      & w/ Col Grouping   OKAYYY text shifted when resource-row split across 2 pages
+    Safari 17.6
+      Month             : GOOD row splitting
+      Month H-Scroll    : GOOD row splitting amidst h-scroll container
+      TimeGrid          : OKAYYY, but bug where scrollbar gutter in all-day and header don't get removed for print-mode
+      TimeGrid H-Scroll : GOOD abs slots across pages
+      Resource Timeline : GOOD, but bug where -no-bars isn't hiding the bottom h-scrollbars
+      & w/ Col Grouping   OKAYYY text is spliced across pages, sometimes not readable
+    Firefox 132
+      Month             : GOOD row splitting
+      Month H-Scroll    : GOOD row splitting amidst h-scroll container, BUT doesn't respect horizontal-scroll for <Scrollers>s!
+      TimeGrid          : OKAYYY, any abs that starts on first page doesn't show on second.
+                          ALSO, bug where scrollbar gutter in all-day and header don't get removed for print-mode
+                          ALSO, axis label text shifted when split across pages (like Chromium)
+      TimeGrid H-Scroll : BAD, the splitpane abs all starts on *second* page, splits axis cells across pages strangely. NO-GO!
+      Resource Timeline : BAD, the splitpane abs all starts on *second* page. NO-GO!
+      & w/ Col Grouping     NOTE: if you try to sprinkle fc-print-block everywhere, solves some problems but creates others
 
 DayGrid
   prevent DayGridCell headers from overflowing? makes really small calendars look better
@@ -32,6 +59,7 @@ MultiMonth
 TimeGrid
   just like scrollbar dead area should have grey bg,
     make timegrid bottom area w/o slots a grey bg
+  i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
 Timeline
   initialscroll for RTL is off-by-2 in wrong direction
   previously, Timeline's hit system would always return slat left/right, not snap
@@ -39,7 +67,10 @@ Timeline
 Resource DayGrid
   (none)
 Resource Timeline
-  drag-n-drop auto-scroll very glitchy
+  bug: drag-n-drop auto-scroll very glitchy
+  bug: when group-column resized really narrow, text isn't cropped like cells in resource rows
+  i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
+    TODO: do same concepct for timeline-no-resources
   column grouping, should expand to full height, but doesn't
     See bundle/examples/responsive.html
   just like scrollbar dead area should have grey bg,

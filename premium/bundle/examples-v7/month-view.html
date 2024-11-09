@@ -35,7 +35,7 @@
           start: '2023-01-16T16:00:00'
         },
         {
-          title: 'Conference Conference Conference Conference',
+          title: 'Conference Conference Conference Conference', // DEMO overflow
           start: '2023-01-11',
           end: '2023-01-13'
         },
@@ -88,6 +88,10 @@
   #calendar {
     max-width: 1100px;
     margin: 0 auto;
+  }
+
+  .fc-daygrid-block-event .fc-event-title { /* DEMO overflow */
+    white-space: normal !important;
   }
 
 </style>

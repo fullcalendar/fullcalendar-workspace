@@ -98,7 +98,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
     return (
       <div
         className={joinClassNames(
-          props.forPrint ? 'fc-block' : 'fc-flex-col',
+          'fc-flex-col fc-print-block',
           props.className,
         )}
         style={{ width: props.width }}

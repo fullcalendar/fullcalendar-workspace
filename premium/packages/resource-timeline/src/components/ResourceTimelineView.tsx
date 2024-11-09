@@ -486,11 +486,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     {/* spreadsheet FOOTER scrollbar
                     ---------------------------------------------------------------------------- */}
                     {/* TODO: this should not always be sticky! */}
-                    <StickyFooterScrollbar
-                      canvasWidth={spreadsheetCanvasWidth}
-                      scrollerRef={this.spreadsheetFooterScrollerRef}
-                      scrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
-                    />
+                    {!props.forPrint && (
+                      <StickyFooterScrollbar
+                        canvasWidth={spreadsheetCanvasWidth}
+                        scrollerRef={this.spreadsheetFooterScrollerRef}
+                        scrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
+                      />
+                    )}
                   </Fragment>
                 }
 
@@ -555,7 +557,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     <Scroller
                       vertical={verticalScrolling}
                       horizontal
-                      hideScrollbars={stickyFooterScrollbar}
+                      hideScrollbars={stickyFooterScrollbar || props.forPrint}
                       className={joinClassNames(
                         'fc-timeline-body fc-flex-col',
                         verticalScrolling && 'fc-liquid',
@@ -580,6 +582,42 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         }}
                         ref={this.handleBodyEl}
                       >
+                        <div className='fc-fill'>
+                          <TimelineSlats
+                            dateProfile={dateProfile}
+                            tDateProfile={tDateProfile}
+                            nowDate={nowDate}
+                            todayRange={todayRange}
+
+                            // ref
+                            innerWidthRef={this.handleBodySlotInnerWidth}
+
+                            // dimensions
+                            slotWidth={slotWidth}
+                          />
+                          <TimelineLaneBg
+                            tDateProfile={tDateProfile}
+                            nowDate={nowDate}
+                            todayRange={todayRange}
+
+                            // content
+                            bgEventSegs={bgSlicedProps.bgEventSegs}
+                            businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
+                            dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
+                            // empty array will result in unnecessary rerenders?...
+                            eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : [])}
+
+                            // dimensions
+                            slotWidth={slotWidth}
+                          />
+                          {enableNowIndicator && (
+                            <TimelineNowIndicatorLine
+                              tDateProfile={tDateProfile}
+                              nowDate={nowDate}
+                              slotWidth={slotWidth}
+                            />
+                          )}
+                        </div>
                         <div
                           className='fc-rel'
                           style={{ height: bodyCanvasHeight }}
@@ -649,48 +687,12 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             })}
                           </Fragment>
                         </div>
-                        <div className='fc-fill'>
-                          <TimelineSlats
-                            dateProfile={dateProfile}
-                            tDateProfile={tDateProfile}
-                            nowDate={nowDate}
-                            todayRange={todayRange}
-
-                            // ref
-                            innerWidthRef={this.handleBodySlotInnerWidth}
-
-                            // dimensions
-                            slotWidth={slotWidth}
-                          />
-                          <TimelineLaneBg
-                            tDateProfile={tDateProfile}
-                            nowDate={nowDate}
-                            todayRange={todayRange}
-
-                            // content
-                            bgEventSegs={bgSlicedProps.bgEventSegs}
-                            businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
-                            dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
-                            // empty array will result in unnecessary rerenders?...
-                            eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : [])}
-
-                            // dimensions
-                            slotWidth={slotWidth}
-                          />
-                          {enableNowIndicator && (
-                            <TimelineNowIndicatorLine
-                              tDateProfile={tDateProfile}
-                              nowDate={nowDate}
-                              slotWidth={slotWidth}
-                            />
-                          )}
-                        </div>
                       </div>
                     </Scroller>
 
                     {/* time-area FOOTER
                     ---------------------------------------------------------------------------- */}
-                    {stickyFooterScrollbar && (
+                    {stickyFooterScrollbar && !props.forPrint && (
                       <StickyFooterScrollbar
                         canvasWidth={timeCanvasWidth}
                         scrollerRef={this.timeFooterScrollerRef}

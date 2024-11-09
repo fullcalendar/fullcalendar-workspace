@@ -220,6 +220,31 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
           rightScrollbarWidthRef={this.handleRightScrollbarWidth}
         >
           <div className='fc-flex-col fc-grow fc-rel'>
+            <div className='fc-fill fc-border-transparent fc-border-s fc-flex-col' style={axisStartCss}>
+              <TimeGridCols
+                dateProfile={props.dateProfile}
+                nowDate={props.nowDate}
+                todayRange={props.todayRange}
+                cells={props.cells}
+                slatCnt={slatCnt}
+                forPrint={props.forPrint}
+                isHitComboAllowed={props.isHitComboAllowed}
+                className='fc-liquid'
+
+                // content
+                fgEventSegsByCol={props.fgEventSegsByCol}
+                bgEventSegsByCol={props.bgEventSegsByCol}
+                businessHourSegsByCol={props.businessHourSegsByCol}
+                nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
+                dateSelectionSegsByCol={props.dateSelectionSegsByCol}
+                eventDragByCol={props.eventDragByCol}
+                eventResizeByCol={props.eventResizeByCol}
+                eventSelection={props.eventSelection}
+
+                // dimensions
+                slatHeight={slatHeight}
+              />
+            </div>
             <div className='fc-timegrid-slots fc-flex-col fc-grow'>
               {props.slatMetas.map((slatMeta, slatI) => (
                 <div
@@ -246,31 +271,6 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   />
                 </div>
               ))}
-            </div>
-            <div className='fc-fill fc-border-transparent fc-border-s fc-flex-col' style={axisStartCss}>
-              <TimeGridCols
-                dateProfile={props.dateProfile}
-                nowDate={props.nowDate}
-                todayRange={props.todayRange}
-                cells={props.cells}
-                slatCnt={slatCnt}
-                forPrint={props.forPrint}
-                isHitComboAllowed={props.isHitComboAllowed}
-                className='fc-liquid'
-
-                // content
-                fgEventSegsByCol={props.fgEventSegsByCol}
-                bgEventSegsByCol={props.bgEventSegsByCol}
-                businessHourSegsByCol={props.businessHourSegsByCol}
-                nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
-                dateSelectionSegsByCol={props.dateSelectionSegsByCol}
-                eventDragByCol={props.eventDragByCol}
-                eventResizeByCol={props.eventResizeByCol}
-                eventSelection={props.eventSelection}
-
-                // dimensions
-                slatHeight={slatHeight}
-              />
             </div>
             {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
               <TimeGridNowIndicatorArrow

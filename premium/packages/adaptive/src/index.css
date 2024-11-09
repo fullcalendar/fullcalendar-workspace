@@ -23,19 +23,19 @@
   HACK to reveal problems
   */
   & .fc-daygrid-body [role=row] {
-    min-height: 13em !important;
+    min-height: 11em !important;
   }
 
   & .fc-event,
   & .fc-event-inner { // often controls the text-color
     color: #000 !important;
   }
-}
 
-/*
-Workaround for Safari needing block children for break-inside:avoid
-Instead, can simply omit fc-flex-col, right?
-*/
-.fc-block {
-  display: block;
+  /*
+  Workaround for Safari needing block children for break-inside:avoid
+  Instead, can simply omit fc-flex-col, right?
+  */
+  & .fc-flex-col.fc-print-block {
+    display: block !important;
+  }
 }
