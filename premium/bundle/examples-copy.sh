@@ -10,7 +10,7 @@ DESTINATION="arshaw@fullcalendar-origin:/home/arshaw/arshaw-test/fullcalendar-pr
 rsync -av --progress --relative \
   "$SCRIPT_DIR/./examples/"*.html \
   "$SCRIPT_DIR/./examples-v7/"*.html \
-  "$SCRIPT_DIR/./examples-print.html" \
+  "$SCRIPT_DIR/./examples-"*.html \
   "$SCRIPT_DIR/./dist/"* \
   "$DESTINATION"
 

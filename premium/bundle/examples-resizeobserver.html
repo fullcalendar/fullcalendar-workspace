@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResizeObserver Demo</title>
+  <style>
+    #resize-box {
+      border: 8px solid red;
+      padding: 20px;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test
+
+  <!-- Div to display dimensions -->
+  <div id="resize-box">Loading...</div>
+
+  <script>
+    const resizeBox = document.getElementById('resize-box');
+
+    const resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        const { inlineSize: width, blockSize: height } = entry.borderBoxSize[0];
+        updateText(width, height);
+      }
+    }, {
+      box: 'border-box'
+    });
+
+    // Observe the div for resizing
+    resizeObserver.observe(resizeBox);
+
+    function updateText(w, h) {
+      resizeBox.textContent = `${Math.round(w)} x ${Math.round(h)}`;
+    }
+
+    function updateViaReal() {
+      const { width, height } = resizeBox.getBoundingClientRect()
+      console.log('updateViaReal', width, height)
+      updateText(width, height)
+    }
+
+    window.addEventListener('beforeprint', () => {
+      updateViaReal()
+    });
+
+    window.addEventListener('afterprint', () => {
+    });
+  </script>
+
+</body>
+</html>
