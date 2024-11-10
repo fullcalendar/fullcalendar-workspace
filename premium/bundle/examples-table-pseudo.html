@@ -11,6 +11,9 @@
         border: 2px solid black;
         border-spacing: 0;
         width: 100%;
+        /* width: 2400px; */
+
+        table-layout: fixed;
       }
 
       .thead {
@@ -30,6 +33,7 @@
 
       .tr {
         display: table-row;
+        break-inside: avoid; /* probably not necessary */
       }
 
       .th:not(:first-child),
@@ -42,6 +46,7 @@
       .td {
         padding: 10px;
         border-bottom: 1px solid black;
+        /* width: 200px; */
       }
 
       .th {
@@ -50,8 +55,8 @@
 
       /*
       works for:
-        chrome
-        firefox
+        chrome (current - 75 (2019), maybe lower)
+        firefox (current - 75 (2020), maybe lower)
         XXX safari - https://bugs.webkit.org/show_bug.cgi?id=17205
       */
 
@@ -80,7 +85,7 @@
         <div class='tr'>
           <div class='td'>cell1</div>
           <div class='td'>cell2</div>
-          <div class='td'>cell3</div>
+          <div class='td' style='white-space: nowrap; overflow: hidden'>cell3 cell3 cell3 cell3 cell3 cell3</div>
           <div class='td'>cell4</div>
           <div class='td'>cell5</div>
           <div class='td'>cell6</div>
