@@ -16,7 +16,7 @@
 
   & [role=row], // HACK
   & .fc-event { // don't always want this, for timegrid-abs events for example
-    break-inside: avoid;
+    /* break-inside: avoid; -- was causing second-page abs problems for timeline */
   }
 
   /*
@@ -47,5 +47,5 @@
 }
 
 .fc-cell {
-  break-inside: avoid;
+  /* break-inside: avoid; -- was causing second-page abs problems for timeline */
 }

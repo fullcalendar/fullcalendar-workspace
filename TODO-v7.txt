@@ -12,7 +12,13 @@ Print Mode
       'basic' is always table-based
         for headers across pages
         no abs position non-critical UI (bg events or resizers)
-      auto algorithm:
+      'full' is same as screen-media
+        ironically, it shows ALL slots, so 'full' describes amount of data AND full-featuredness
+        for timegrid, CANNOT have headers across pages b/c messes up abs events on second page
+        for timeline, CANNOT have headers across pages b/c messed up vertical lines (probably)
+        TODO: devise a way to show repeated headers in 'full' mode?
+          if not possible, then maybe best to make defaults 'basic' for all views.. repeated headers are important
+      auto algorithm (TODO: question this):
         timegrid will be 'basic' just for firefox, 'full' for all other browsers
           (if users don't like slot cutover behavior, can force to 'basic')
         timeline will be 'basic' just for firefox, 'full' for all other browsers
@@ -21,6 +27,7 @@ Print Mode
           (basic is very similar to full, but WITH repeated headers and WITHOUT background events)
       bugfix: after returning from 'full' print-mode, resync scrollers. out of sync somehow
     'basic' scroll behavior (previously `printScrollTime`)
+      applicable to *timeline*, and hscroll-views, because horizontal scroll is precious
       start the slots at the first partially visible slot from 'full' view's scroll
       mainly motivated by firefox reset scroll for print-preview
       but also so that slot lines up perfectly
