@@ -7,47 +7,45 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 Print Mode
-  verify serious problem: does ResizeObserver not fire when print-mode activated?
-  for print, when using ResizeObserver ponyfill, should flush sizing (multiple rounds?)
-  important issues:
-    https://github.com/fullcalendar/fullcalendar/issues/7007
-    https://github.com/fullcalendar/fullcalendar/issues/6802
-    https://github.com/fullcalendar/fullcalendar/issues/5465
-  should we set business-hours daygrid as cell-bg color? (same as fc-today and fc-day-disabled)
-    begs the question.. should be go back to having bg-events and highlights ABOVE daygrid cells. probably
-  ensure no white text
-  ensure nothing sticky (except for event title-text)
-  disable sticky when media:print? or unnecessary because happens automatically?
-  should hide scrollbars (-no-bars) in print-view, so gutter in other panes isn't shown
-  should we offer a setting to KEEP vertical scrollbar containers?
-  AFTER: revert "hacks to get print-mode working, but some should be reverted"
-  NOTES:
-    Firefox looks terrible in print preview b/c lines are too thin, but actually fine
-    You must put absolutely positioned siblings first. second, and first spans multiple pages, will end up on second page
-  EXPERIMENTS:
-    Chromium 130
-      Month             : GOOD row splitting
-      Month H-Scroll    : GOOD row splitting amidst h-scroll container
-      TimeGrid          : GOOD abs slots across pages
-      TimeGrid H-Scroll : GOOD abs slots across pages, SYNCED, but BUG with v-scroll syncing after returning from print-mode
-      Resource Timeline : GOOD abs slots across pages
-      & w/ Col Grouping   OKAYYY text shifted when resource-row split across 2 pages
-    Safari 17.6
-      Month             : GOOD row splitting
-      Month H-Scroll    : GOOD row splitting amidst h-scroll container
-      TimeGrid          : OKAYYY, but bug where scrollbar gutter in all-day and header don't get removed for print-mode
-      TimeGrid H-Scroll : GOOD abs slots across pages
-      Resource Timeline : GOOD, but bug where -no-bars isn't hiding the bottom h-scrollbars
-      & w/ Col Grouping   OKAYYY text is spliced across pages, sometimes not readable
-    Firefox 132
-      Month             : GOOD row splitting
-      Month H-Scroll    : GOOD row splitting amidst h-scroll container, BUT doesn't respect horizontal-scroll for <Scrollers>s!
-      TimeGrid          : OKAYYY, any abs that starts on first page doesn't show on second.
-                          ALSO, bug where scrollbar gutter in all-day and header don't get removed for print-mode
-                          ALSO, axis label text shifted when split across pages (like Chromium)
-      TimeGrid H-Scroll : BAD, the splitpane abs all starts on *second* page, splits axis cells across pages strangely. NO-GO!
-      Resource Timeline : BAD, the splitpane abs all starts on *second* page. NO-GO!
-      & w/ Col Grouping     NOTE: if you try to sprinkle fc-print-block everywhere, solves some problems but creates others
+  API
+    printLayout: basic|auto|full
+      'basic' is always table-based
+        for headers across pages
+        no abs position non-critical UI (bg events or resizers)
+      auto algorithm:
+        timegrid will be 'basic' just for firefox, 'full' for all other browsers
+          (if users don't like slot cutover behavior, can force to 'basic')
+        timeline will be 'basic' just for firefox, 'full' for all other browsers
+          (if users don't like resource-row cutover behavior, can force to 'basic')
+        daygrid will be 'basic' for all browsers
+          (basic is very similar to full, but WITH repeated headers and WITHOUT background events)
+      bugfix: after returning from 'full' print-mode, resync scrollers. out of sync somehow
+    'basic' scroll behavior (previously `printScrollTime`)
+      start the slots at the first partially visible slot from 'full' view's scroll
+      mainly motivated by firefox reset scroll for print-preview
+      but also so that slot lines up perfectly
+      will need to RESTORE scroll on return to 'full' layout
+  DayGrid
+    basic & full
+      move week number within first daycell
+        better for 'basic' rendering and better for pushing down eventcontainers if big
+        either use floats (bad for react-native) or conditionally apply justify-content: flex-end/space-between
+      use margin-top to position events (better for <td> event rendering)
+        and normalize common y-position by setting top MARGIN on eventcontainers below not-so-tall dayheaders
+    basic only
+      must prevent text-wrap for all events, otherwise wrapping could occur and the dumb print-only
+        rendering mode can't adapt to positioning
+      (was thinking about making single-day events naturally flowing, but could be interspersed between multiday)
+    full only
+      put background events and highlight ABOVE cells again. can have simpler DOM
+        (unlike with 'basic', guaranteed to have top origin on row)
+  Ensure all scrollbars and their gutters don't appear in print view
+    and all sticky bottom scrollbars aren't shown
+  AFTER
+    revert "hacks to get print-mode working, but some should be reverted"
+  NOTES
+    you must put absolutely positioned siblings first
+      more guaranteed to go to second page than if after a long sibling with height
 
 DayGrid
   prevent DayGridCell headers from overflowing? makes really small calendars look better
@@ -164,12 +162,16 @@ Changelog
     border problem fixed: https://codepen.io/arshaw/pen/PoMOwdV?editors=0010
     timegrid axis is text-selectable
     timeline now-indicator div covering events: https://github.com/fullcalendar/fullcalendar/issues/7798
-Support Tickets
+Freshdesk/GHIssues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
     Can see forced-reflow warning here too: bundle/examples-v7/issue-7677.html
   Make tickets for a new view with list-view underneath month calendar
   Check ticket for daygrid view with "dots"
+  Need to split this issue
+    https://github.com/fullcalendar/fullcalendar/issues/1037
+    1. scrollreset (already implemented)
+    2. scroll to current date or time
 NOTES for later
   simplified axis with h-scrolling: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
 Punt

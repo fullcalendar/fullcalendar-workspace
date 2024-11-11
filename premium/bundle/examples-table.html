@@ -6,11 +6,15 @@
         font-size: 18px;
       }
 
-      table {
+      .border {
         border: 2px solid black;
+        overflow: hidden;
+      }
+
+      table {
         border-spacing: 0;
         width: 100%;
-        /* width: 2400px; */
+        width: 2400px;
 
         table-layout: fixed;
       }
@@ -24,7 +28,7 @@
       td {
         padding: 10px;
         border-bottom: 1px solid black;
-        /* width: 200px; */
+        width: 200px;
       }
 
       /*
@@ -32,13 +36,15 @@
         chrome (current - 75 (2019), maybe lower)
         firefox (current - 75 (2020), maybe lower)
         XXX safari - https://bugs.webkit.org/show_bug.cgi?id=17205
-          alarmingly, when forced large width, does not display all ROWS past first page
+          alarmingly, when forced large width, without overflow:hidden via the .border div,
+          does not display all ROWS past first page
       */
 
     </style>
   </head>
   <body>
 
+    <div class='border'>
     <table>
       <thead>
         <tr>
@@ -915,6 +921,7 @@
         </tr>
       </tfoot>
     </table>
+    </div><!-- END border -->
 
   </body>
 </html>

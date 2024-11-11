@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <style>
+
+      body {
+        font-size: 18px;
+      }
+
+      .border {
+        border: 2px solid black;
+        overflow: hidden;
+      }
+
+      table {
+        border-spacing: 0;
+        width: 100%;
+      }
+
+      th:not(:first-child),
+      td:not(:first-child) {
+        border-left: 1px solid black;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border-bottom: 1px solid black;
+      }
+
+      /*
+      There's nothing we can do to make the 'axis' obey a shrunken width,
+      and the other columns distribute width evenly.
+      */
+
+    </style>
+  </head>
+  <body>
+
+    <div class='border'>
+      <table>
+        <thead>
+          <tr>
+            <th style='width:1px'>header1</th>
+            <th style='width:33%'>header2</th>
+            <th style='width:33%'>header3</th>
+            <th style='width:33%'>header4</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>cell1</td>
+            <td>cell2</td>
+            <td style='overflow: hidden'>
+              <div style='white-space: nowrap'>
+                cell3 cell3 cell3 cell3 cell3 cell3
+              </div>
+            </td>
+            <td>cell4</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>footer1</td>
+            <td>footer2</td>
+            <td>footer3</td>
+            <td>footer4</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+  </body>
+</html>

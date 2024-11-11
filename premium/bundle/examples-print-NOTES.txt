@@ -1,0 +1,45 @@
+
+Firefox looks terrible in print preview b/c lines are too thin, but actually fine
+
+Sticky positioning that spans across document is never included in print
+
+Q: does ResizeObserver not fire when print-mode activated?
+  A: not only it doesn't fire, it's IMPOSSIBLE to get print-adjusted dimensions
+     rendered in different universe
+
+EXPERIMENTS:
+  Chromium 130
+    Month             : GOOD row splitting
+    Month H-Scroll    : GOOD row splitting amidst h-scroll container
+    TimeGrid          : GOOD abs slots across pages
+    TimeGrid H-Scroll : GOOD abs slots across pages, SYNCED, but BUG with v-scroll syncing after returning from print-mode
+    Resource Timeline : GOOD abs slots across pages
+    & w/ Col Grouping   OKAYYY text shifted when resource-row split across 2 pages
+  Safari 17.6
+    Month             : GOOD row splitting
+    Month H-Scroll    : GOOD row splitting amidst h-scroll container
+    TimeGrid          : OKAYYY, but bug where scrollbar gutter in all-day and header don't get removed for print-mode
+    TimeGrid H-Scroll : GOOD abs slots across pages
+    Resource Timeline : GOOD, but bug where -no-bars isn't hiding the bottom h-scrollbars
+    & w/ Col Grouping   OKAYYY text is spliced across pages, sometimes not readable
+  Firefox 132
+    Month             : GOOD row splitting
+    Month H-Scroll    : GOOD row splitting amidst h-scroll container, BUT doesn't respect horizontal-scroll for <Scrollers>s!
+    TimeGrid          : BAD, but any abs that starts on first page doesn't show on second, including events,
+                        in fact, bottom-value gets force to align with page bottom (like a "max-bottom")
+                        ALSO, bug where scrollbar gutter in all-day and header don't get removed for print-mode
+                        ALSO, axis label text shifted when split across pages (like Chromium)
+    TimeGrid H-Scroll : BAD, the splitpane abs all starts on *second* page, splits axis cells across pages strangely. NO-GO!
+    Resource Timeline : BAD, the splitpane abs all starts on *second* page. NO-GO!
+    & w/ Col Grouping     NOTE: if you try to sprinkle fc-print-block everywhere, solves some problems but creates others
+
+MORE EXPERIMENTS (results for these within the example-*.html files)
+  <table> markup shows header/footer on multiple pages
+  div with display:table-* shows header/footer on multiple pages
+    table
+    table-header-group
+    table-footer-group
+    table-row
+    table-cell
+  for either, if column widths hard coded, will they be collapsed in print view?
+  does overflow:hidden work on cells?

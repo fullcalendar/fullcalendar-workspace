@@ -15,7 +15,7 @@
   }
 
   & [role=row], // HACK
-  & .fc-event {
+  & .fc-event { // don't always want this, for timegrid-abs events for example
     break-inside: avoid;
   }
 
@@ -23,7 +23,12 @@
   HACK to reveal problems
   */
   & .fc-daygrid-body [role=row] {
-    min-height: 11em !important;
+    min-height: 6em !important; /* look good in portrait */
+  }
+
+  & .fc-daygrid-body .fc-event,
+  & .fc-daygrid-body .fc-event-title {
+    white-space: nowrap !important;
   }
 
   & .fc-event,
@@ -34,8 +39,13 @@
   /*
   Workaround for Safari needing block children for break-inside:avoid
   Instead, can simply omit fc-flex-col, right?
+  TODO: remove in favor of <table> techniques
   */
   & .fc-flex-col.fc-print-block {
     display: block !important;
   }
+}
+
+.fc-cell {
+  break-inside: avoid;
 }
