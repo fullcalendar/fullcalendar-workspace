@@ -14,9 +14,8 @@
       .table {
         display: table;
         border-spacing: 0;
-        /* width: 100%; */
-        width: 2400px;
-
+        width: 100%;
+        /* width: 2400px; */
         table-layout: fixed;
       }
 
@@ -45,7 +44,7 @@
         display: table-cell;
         padding: 10px;
         border-bottom: 1px solid black;
-        width: 200px;
+        /* width: 200px; */
       }
 
       .th:not(:first-child),
@@ -88,7 +87,10 @@
       </div>
       <div class='tbody'>
         <div class='tr'>
-          <div class='td'>cell1</div>
+          <div class='td'>
+            <div>cell1-l</div>
+            <div>cell1-r</div>
+          </div>
           <div class='td'>cell2</div>
           <div class='td' style='white-space: nowrap; overflow: hidden'>cell3 cell3 cell3 cell3 cell3 cell3</div>
           <div class='td'>cell4</div>
