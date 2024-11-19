@@ -4,7 +4,7 @@ import { DateComponent } from '../component/DateComponent.js'
 import { joinClassNames } from '../util/html.js'
 import { setRef } from '../vdom-util.js'
 import { Dictionary } from '../options.js'
-import { ComponentChildren, createElement, createRef, Ref } from '../preact.js'
+import { ComponentChildren, createElement, Ref } from '../preact.js'
 import { ScrollerInterface } from './ScrollerInterface.js'
 import { ScrollListener } from './ScrollListener.js'
 
@@ -28,7 +28,7 @@ export interface ScrollerProps {
 
 export class Scroller extends DateComponent<ScrollerProps> implements ScrollerInterface {
   // ref
-  private elRef = createRef<HTMLDivElement>()
+  private el?: HTMLDivElement
 
   // internal
   public listener: ScrollListener // public for ScrollerSyncer
@@ -48,7 +48,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
     return (
       <div
-        ref={this.elRef}
+        ref={this.handleEl}
         className={joinClassNames(
           props.className,
           'fc-scroller',
@@ -63,63 +63,65 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     )
   }
 
-  componentDidMount(): void {
-    const el = this.elRef.current // TODO: make dynamic with useEffect
-
-    this.listener = new ScrollListener(el)
-
-    this.disconnectSize = watchSize(el, (clientWidth, clientHeight) => {
-      const { props, context } = this
-      const bottomScrollbarWidth = el.offsetHeight - clientHeight
-      const horizontalScrollbarWidth = el.offsetWidth - clientWidth
-
-      let rightScrollbarWidth = 0
-      let leftScrollbarWidth = 0
-
-      /*
-      TODO: more clever way to detect RTL behavior based on current scroller's inner center of mass
-      Only do it if horizontalScrollbarWidth as well as if leftScrollbarWidthRef/rightScrollbarWidthRef,
-      meaning caller is compliant about avoiding left/right borders.
-      However, might not be worth it because still need to query RtlScrollerSystem
-      */
-      if (context.isRtl && getRtlScrollerConfig().leftScrollbars) {
-        leftScrollbarWidth = horizontalScrollbarWidth
-      } else {
-        rightScrollbarWidth = horizontalScrollbarWidth
-      }
-
-      if (this.currentClientWidth !== clientWidth) {
-        setRef(props.clientWidthRef, this.currentClientWidth = clientWidth)
-      }
-      if (this.currentClientHeight !== clientHeight) {
-        setRef(props.clientHeightRef, this.currentClientHeight = clientHeight)
-      }
-
-      // are these isDimsEqual calls necessary?
-
-      if (!isDimsEqual(this.currentBottomScrollbarWidth, bottomScrollbarWidth)) {
-        setRef(props.bottomScrollbarWidthRef, this.currentBottomScrollbarWidth = bottomScrollbarWidth)
-      }
-      if (!isDimsEqual(this.currentRightScrollbarWidth, rightScrollbarWidth)) {
-        setRef(props.rightScrollbarWidthRef, this.currentRightScrollbarWidth = rightScrollbarWidth)
-      }
-      if (!isDimsEqual(this.currentLeftScrollbarWidth, leftScrollbarWidth)) {
-        setRef(props.leftScrollbarWidthRef, this.currentLeftScrollbarWidth = leftScrollbarWidth)
-      }
-    }, /* client(width+height) = */ true)
-  }
-
-  componentWillUnmount(): void {
+  handleEl = (el: HTMLDivElement | null) => {
     const { props } = this
 
-    this.disconnectSize()
-    this.listener.destroy()
+    if (this.el) {
+      this.el = null
+      this.listener.destroy()
+      this.disconnectSize()
 
-    setRef(props.clientWidthRef, null)
-    setRef(props.clientHeightRef, null)
-    setRef(props.bottomScrollbarWidthRef, null)
-    setRef(props.rightScrollbarWidthRef, null)
-    setRef(props.leftScrollbarWidthRef, null)
+      setRef(props.clientWidthRef, null)
+      setRef(props.clientHeightRef, null)
+      setRef(props.bottomScrollbarWidthRef, null)
+      setRef(props.rightScrollbarWidthRef, null)
+      setRef(props.leftScrollbarWidthRef, null)
+    }
+
+    if (el) {
+      this.el = el
+      this.listener = new ScrollListener(el)
+
+      this.disconnectSize = watchSize(el, (clientWidth, clientHeight) => {
+        const { props, context } = this
+        const bottomScrollbarWidth = el.offsetHeight - clientHeight
+        const horizontalScrollbarWidth = el.offsetWidth - clientWidth
+
+        let rightScrollbarWidth = 0
+        let leftScrollbarWidth = 0
+
+        /*
+        TODO: more clever way to detect RTL behavior based on current scroller's inner center of mass
+        Only do it if horizontalScrollbarWidth as well as if leftScrollbarWidthRef/rightScrollbarWidthRef,
+        meaning caller is compliant about avoiding left/right borders.
+        However, might not be worth it because still need to query RtlScrollerSystem
+        */
+        if (context.isRtl && getRtlScrollerConfig().leftScrollbars) {
+          leftScrollbarWidth = horizontalScrollbarWidth
+        } else {
+          rightScrollbarWidth = horizontalScrollbarWidth
+        }
+
+        if (this.currentClientWidth !== clientWidth) {
+          setRef(props.clientWidthRef, this.currentClientWidth = clientWidth)
+        }
+        if (this.currentClientHeight !== clientHeight) {
+          setRef(props.clientHeightRef, this.currentClientHeight = clientHeight)
+        }
+
+        // are these isDimsEqual calls necessary?
+
+        if (!isDimsEqual(this.currentBottomScrollbarWidth, bottomScrollbarWidth)) {
+          setRef(props.bottomScrollbarWidthRef, this.currentBottomScrollbarWidth = bottomScrollbarWidth)
+        }
+        if (!isDimsEqual(this.currentRightScrollbarWidth, rightScrollbarWidth)) {
+          setRef(props.rightScrollbarWidthRef, this.currentRightScrollbarWidth = rightScrollbarWidth)
+        }
+        if (!isDimsEqual(this.currentLeftScrollbarWidth, leftScrollbarWidth)) {
+          setRef(props.leftScrollbarWidthRef, this.currentLeftScrollbarWidth = leftScrollbarWidth)
+        }
+      }, /* client(width+height) = */ true)
+    }
   }
 
   endScroll() {
@@ -131,25 +133,27 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
   get x(): number {
     const { isRtl } = this.context
-    const el = this.elRef.current
-    return getNormalizedScrollX(el, isRtl)
+    const { el } = this
+    return el ? getNormalizedScrollX(el, isRtl) : 0
   }
 
   get y(): number {
-    const el = this.elRef.current
-    return el.scrollTop
+    const { el } = this
+    return el ? el.scrollTop : 0
   }
 
   scrollTo({ x, y }: { x?: number, y?: number }): void {
     const { isRtl } = this.context
-    const el = this.elRef.current
+    const { el } = this
 
-    if (y != null) {
-      el.scrollTop = y
-    }
+    if (el) {
+      if (y != null) {
+        el.scrollTop = y
+      }
 
-    if (x != null) {
-      setNormalizedScrollX(el, isRtl, x)
+      if (x != null) {
+        setNormalizedScrollX(el, isRtl, x)
+      }
     }
   }
 
