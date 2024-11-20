@@ -30,4 +30,3 @@ export {
 
 export { ColSpec, GroupSpec } from './common/resource-spec.js'
 export { ResourceSplitter } from './common/ResourceSplitter.js'
-export { ResourceLabelContainer, ResourceLabelContainerProps } from './common/ResourceLabelContainer.js'

@@ -20,7 +20,7 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
   }
 
   render() {
-    let { theme, dateEnv, options, viewApi } = this.context
+    let { dateEnv, options, viewApi } = this.context
     let { cellId, dayDate, todayRange } = this.props
     let { textId } = this.state
     let stickyHeaderDates = !this.props.forPrint && getStickyHeaderDates(options)
@@ -50,7 +50,7 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
         tag="tr"
         className={joinClassNames(
           'fc-list-day',
-          ...getDayClassNames(dayMeta, theme),
+          ...getDayClassNames(dayMeta),
         )}
         attrs={{
           'data-date': formatDayString(dayDate),

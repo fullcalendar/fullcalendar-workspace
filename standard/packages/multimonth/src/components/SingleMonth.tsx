@@ -1,6 +1,6 @@
-import { DateComponent, ViewProps, memoize, DateFormatter, DateRange, watchWidth, setRef, fracToCssDim } from '@fullcalendar/core/internal'
-import { buildDayTableModel, DayTableSlicer, DayGridRows, DayOfWeekHeaderCell, createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
+import { DateComponent, DateFormatter, DateRange, fracToCssDim, memoize, setRef, ViewProps, watchWidth } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow } from '@fullcalendar/daygrid/internal'
 
 export interface SingleMonthProps extends ViewProps {
   todayRange: DateRange
@@ -14,6 +14,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
   // memo
   private buildDayTableModel = memoize(buildDayTableModel)
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
+  private buildDateRowConfig = memoize(buildDateRowConfig)
 
   // ref
   private elRef = createRef<HTMLDivElement>()
@@ -33,6 +34,14 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
       options.dayHeaderFormat,
       false, // datesRepDistinctDays
       dayTableModel.colCnt,
+    )
+    const rowConfig = this.buildDateRowConfig(
+      dayTableModel.headerDates,
+      false, // datesRepDistinctDays
+      dateProfile,
+      props.todayRange,
+      dayHeaderFormat,
+      context,
     )
 
     const invAspectRatio = 1 / options.aspectRatio
@@ -56,18 +65,10 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
               props.titleFormat,
             )}
           </div>
-          {/* TODO: somehow use HeaderRow or something? */}
-          <div className='fc-multimonth-header-row fc-flex-row'>
-            {dayTableModel.headerDates.map((headerDate, cellI) => (
-              <DayOfWeekHeaderCell
-                key={headerDate.getUTCDay()}
-                dow={headerDate.getUTCDay()}
-                dayHeaderFormat={dayHeaderFormat}
-                colWidth={undefined}
-                borderStart={Boolean(cellI)}
-              />
-            ))}
-          </div>
+          <DayGridHeaderRow
+            {...rowConfig}
+            className='fc-multimonth-header-row'
+          />
         </div>
         <div
           className='fc-multimonth-body fc-rel'

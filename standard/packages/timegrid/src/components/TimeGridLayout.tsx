@@ -1,13 +1,14 @@
 import { Duration, ViewOptions } from '@fullcalendar/core'
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, Scroller, SlicedCoordRange, ViewContainer, afterSize, joinClassNames, memoize } from "@fullcalendar/core/internal"
-import { createElement, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
+import { createElement, createRef } from '@fullcalendar/core/preact'
 import { buildSlatMetas } from "../time-slat-meta.js"
 import { TimeGridRange } from '../TimeColsSeg.js'
 import { TimeGridLayoutPannable } from './TimeGridLayoutPannable.js'
 import { TimeGridLayoutNormal } from './TimeGridLayoutNormal.js'
 import { computeTimeTopFrac } from './util.js'
+import { RowConfig } from '@fullcalendar/daygrid/internal'
 
-export interface TimeGridLayoutProps<HeaderCellModel, HeaderCellKey> {
+export interface TimeGridLayoutProps {
   dateProfile: DateProfile
   nowDate: DateMarker
   todayRange: DateRange
@@ -17,22 +18,7 @@ export interface TimeGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   className: string
 
   // header content
-  headerTiers: HeaderCellModel[][]
-  renderHeaderLabel: (
-    tier: number,
-    innerWidthRef: Ref<number>,
-    innerHeightRef: Ref<number>,
-    width: number | undefined,
-    isLiquid: boolean,
-  ) => ComponentChild
-  renderHeaderContent: (
-    model: HeaderCellModel,
-    tier: number,
-    cellI: number,
-    innerHeightRef: Ref<number>,
-    width: number | undefined // TODO: rename to colWidth
-  ) => ComponentChild
-  getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
+  headerTiers: RowConfig<{ text: string }>[]
 
   // all-day content
   fgEventSegs: (SlicedCoordRange & EventRangeProps)[],
@@ -55,7 +41,7 @@ export interface TimeGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   eventSelection: string
 }
 
-export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent<TimeGridLayoutProps<HeaderCellModel, HeaderCellKey>> {
+export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   // memo
   private buildSlatMetas = memoize(buildSlatMetas)
 
@@ -94,9 +80,6 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
 
       // header content
       headerTiers: props.headerTiers,
-      renderHeaderLabel: props.renderHeaderLabel,
-      renderHeaderContent: props.renderHeaderContent,
-      getHeaderModelKey: props.getHeaderModelKey,
 
       // all-day content
       fgEventSegs: props.fgEventSegs,
@@ -154,7 +137,7 @@ export class TimeGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponen
     this.timeScrollerRef.current.addScrollEndListener(this.clearScroll)
   }
 
-  componentDidUpdate(prevProps: TimeGridLayoutProps<unknown, unknown>) {
+  componentDidUpdate(prevProps: TimeGridLayoutProps) {
     if (prevProps.dateProfile !== this.props.dateProfile && this.context.options.scrollTimeReset) {
       this.resetScroll()
     }

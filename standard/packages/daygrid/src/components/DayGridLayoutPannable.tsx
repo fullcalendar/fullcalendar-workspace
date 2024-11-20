@@ -19,12 +19,13 @@ import {
   StickyFooterScrollbar,
   joinClassNames,
 } from '@fullcalendar/core/internal'
-import { ComponentChild, Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
+import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
 import { computeColWidth } from './util.js'
 import { DayGridHeader } from './DayGridHeader.js'
+import { RowConfig } from '../header-tier.js'
 
-export interface DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
+export interface DayGridLayoutPannableProps {
   dateProfile: DateProfile
   todayRange: DateRange
   cellRows: DayTableCell[][]
@@ -32,15 +33,7 @@ export interface DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey> {
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 
   // header content
-  headerTiers: HeaderCellModel[][]
-  renderHeaderContent: (
-    model: HeaderCellModel,
-    tier: number,
-    cellI: number,
-    innerHeightRef: Ref<number> | undefined, // unused
-    colWidth: number | undefined
-  ) => ComponentChild
-  getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
+  headerTiers: RowConfig<{ text: string }>[]
 
   // body content
   fgEventSegs: (DayGridRange & EventRangeProps)[]
@@ -65,7 +58,7 @@ interface DayGridViewState {
   rightScrollbarWidth?: number
 }
 
-export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseComponent<DayGridLayoutPannableProps<HeaderCellModel, HeaderCellKey>, DayGridViewState> {
+export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannableProps, DayGridViewState> {
   headerScrollerRef = createRef<Scroller>()
   bodyScrollerRef = createRef<Scroller>()
   footerScrollerRef = createRef<Scroller>()
@@ -96,10 +89,6 @@ export class DayGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends BaseC
           >
             <DayGridHeader
               headerTiers={props.headerTiers}
-              renderHeaderContent={props.renderHeaderContent}
-              getHeaderModelKey={props.getHeaderModelKey}
-
-              // dimensions
               colWidth={colWidth}
               width={canvasWidth}
               paddingLeft={state.leftScrollbarWidth}

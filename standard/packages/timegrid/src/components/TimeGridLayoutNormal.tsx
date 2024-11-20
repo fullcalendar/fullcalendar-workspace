@@ -1,17 +1,19 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, RefMap, getStickyHeaderDates, setRef, afterSize, getIsHeightAuto, rangeContainsMarker, SlicedCoordRange, EventRangeProps, joinClassNames } from "@fullcalendar/core/internal"
-import { Fragment, createElement, ComponentChild, Ref } from '@fullcalendar/core/preact'
-import { HeaderRow, COMPACT_CELL_WIDTH } from '@fullcalendar/daygrid/internal'
+import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, getIsHeightAuto, getStickyHeaderDates, Hit, joinClassNames, rangeContainsMarker, RefMap, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
+import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
+import { COMPACT_CELL_WIDTH, DayGridHeaderRow, RowConfig } from '@fullcalendar/daygrid/internal'
+import { TimeSlatMeta } from "../time-slat-meta.js"
+import { TimeGridRange } from "../TimeColsSeg.js"
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
 import { TimeGridAllDayLane } from "./TimeGridAllDayLane.js"
+import { TimeGridAxisEmpty } from "./TimeGridAxisEmpty.js"
+import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
-import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
-import { TimeGridCols } from "./TimeGridCols.js"
-import { TimeGridRange } from "../TimeColsSeg.js"
+import { TimeGridWeekNumber } from "./TimeGridWeekNumber.js"
 import { computeSlatHeight, getSlatRowClassNames } from './util.js'
 
-export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
+export interface TimeGridLayoutNormalProps {
   dateProfile: DateProfile
   nowDate: DateMarker
   todayRange: DateRange
@@ -21,22 +23,7 @@ export interface TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 
   // header content
-  headerTiers: HeaderCellModel[][]
-  renderHeaderLabel: (
-    tier: number,
-    innerWidthRef: Ref<number> | undefined,
-    innerHeightRef: Ref<number> | undefined, // unused
-    width: number | undefined,
-    isLiquid: boolean,
-  ) => ComponentChild
-  renderHeaderContent: (
-    model: HeaderCellModel,
-    tier: number,
-    cellI: number,
-    innerHeightRef: Ref<number> | undefined, // unused
-    width: number | undefined,
-  ) => ComponentChild
-  getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
+  headerTiers: RowConfig<{ text: string }>[]
 
   // all-day content
   fgEventSegs: (SlicedCoordRange & EventRangeProps)[]
@@ -74,7 +61,7 @@ interface TimeGridLayoutState {
   slatInnerHeight?: number
 }
 
-export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseComponent<TimeGridLayoutNormalProps<HeaderCellModel, HeaderCellKey>, TimeGridLayoutState> {
+export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProps, TimeGridLayoutState> {
   // refs
   private headerLabelInnerWidthRefMap = new RefMap<number, number>(() => { // keyed by tierNum
     afterSize(this.handleAxisInnerWidths)
@@ -133,7 +120,7 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
               paddingRight: state.rightScrollbarWidth,
             }}
           >
-            {props.headerTiers.map((cells, tierNum) => (
+            {props.headerTiers.map((rowConfig, tierNum) => (
               <div
                 key={tierNum}
                 className={joinClassNames(
@@ -141,18 +128,21 @@ export class TimeGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCo
                   tierNum && 'fc-border-t'
                 )}
               >
-                {props.renderHeaderLabel(
-                  tierNum,
-                  headerLabelInnerWidthRefMap.createRef(tierNum), // innerWidthRef
-                  undefined, // innerHeightRef
-                  axisWidth, // width
-                  false, // isLiquid
+                {tierNum === props.headerTiers.length - 1 ? ( // last row?
+                  <TimeGridWeekNumber
+                    dateProfile={props.dateProfile}
+                    innerHeightRef={headerLabelInnerWidthRefMap.createRef(tierNum)}
+                    width={axisWidth}
+                    isLiquid={false}
+                  />
+                ) : (
+                  <TimeGridAxisEmpty
+                    width={axisWidth}
+                    isLiquid={false}
+                  />
                 )}
-                <HeaderRow
-                  tierNum={tierNum}
-                  cells={cells}
-                  renderHeaderContent={props.renderHeaderContent}
-                  getHeaderModelKey={props.getHeaderModelKey}
+                <DayGridHeaderRow
+                  {...rowConfig}
                   className='fc-border-s fc-liquid'
                 />
               </div>

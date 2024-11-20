@@ -28,8 +28,8 @@ export type AllDayMountArg = MountArg<AllDayContentArg>
 
 export interface DayHeaderContentArg extends DateMeta {
   date: Date
-  view: ViewApi
   text: string
+  view: ViewApi
   [otherProp: string]: any
 }
 export type DayHeaderMountArg = MountArg<DayHeaderContentArg>

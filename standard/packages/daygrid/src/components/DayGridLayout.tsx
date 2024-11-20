@@ -14,12 +14,13 @@ import {
   EventRangeProps,
   joinClassNames
 } from '@fullcalendar/core/internal'
-import { ComponentChild, createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal.js'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable.js'
 import { computeTopFromDate } from './util.js'
+import { RowConfig } from '../header-tier.js'
 
-export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
+export interface DayGridLayoutProps {
   dateProfile: DateProfile
   todayRange: DateRange
   cellRows: DayTableCell[][]
@@ -28,15 +29,7 @@ export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   className: string
 
   // header content
-  headerTiers: HeaderCellModel[][]
-  renderHeaderContent: (
-    model: HeaderCellModel,
-    tier: number,
-    cellI: number,
-    innerHeightRef: Ref<number> | undefined, // unused... why do we have it then???
-    width: number | undefined, // TODO: rename to colWidth
-  ) => ComponentChild
-  getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
+  headerTiers: RowConfig<{ text: string }>[]
 
   // body content
   fgEventSegs: (DayGridRange & EventRangeProps)[]
@@ -48,7 +41,7 @@ export interface DayGridLayoutProps<HeaderCellModel, HeaderCellKey> {
   eventSelection: string
 }
 
-export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent<DayGridLayoutProps<HeaderCellModel, HeaderCellKey>> {
+export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
   // ref
   private scrollerRef = createRef<Scroller>()
   private rowHeightRefMap = new RefMap<string, number>(() => {
@@ -90,7 +83,7 @@ export class DayGridLayout<HeaderCellModel, HeaderCellKey> extends BaseComponent
     this.scrollerRef.current.addScrollEndListener(this.clearScroll)
   }
 
-  componentDidUpdate(prevProps: DayGridLayoutProps<unknown, unknown>) {
+  componentDidUpdate(prevProps: DayGridLayoutProps) {
     if (prevProps.dateProfile !== this.props.dateProfile && this.context.options.scrollTimeReset) {
       this.resetScroll()
     }

@@ -1,4 +1,4 @@
-import { createElement, Component, FunctionalComponent, ComponentChildren } from '../preact.js'
+import { createElement, Component, FunctionalComponent, ComponentChildren, ComponentChild } from '../preact.js'
 import { ClassNamesGenerator } from '../common/render-hook.js'
 import {
   ContentInjector,
@@ -124,4 +124,8 @@ function generateClassName<RenderProps>(
     classNameGenerator || []
 
   return typeof classNames === 'string' ? classNames : classNames.join(' ')
+}
+
+export function renderText(renderProps: { text: string }): ComponentChild {
+  return renderProps.text
 }

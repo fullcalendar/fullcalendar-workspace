@@ -7,13 +7,12 @@ import {
   DateRange,
   Hit,
   NowTimer,
-  joinClassNames,
   mapHash,
-  memoize,
+  memoize
 } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
-import { createDayHeaderFormatter, DateHeaderCell, DateHeaderCellObj, DayOfWeekHeaderCell, DayOfWeekHeaderCellObj, DayTableSlicer } from '@fullcalendar/daygrid/internal'
-import { ResourceDayTableJoiner, buildResourceHeaderTiers, ResourceHeaderCell, ResourceDateHeaderCellObj } from '@fullcalendar/resource-daygrid/internal'
+import { DayTableSlicer, createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
+import { ResourceDayTableJoiner, buildResourceRowConfigs } from '@fullcalendar/resource-daygrid/internal'
 import {
   AbstractResourceDayTableModel,
   DEFAULT_RESOURCE_ORDER,
@@ -25,7 +24,7 @@ import {
   VResourceSplitter,
   flattenResources,
 } from '@fullcalendar/resource/internal'
-import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, TimeGridWeekNumber, buildDayRanges, buildTimeColsModel, splitInteractionByCol, organizeSegsByCol } from '@fullcalendar/timegrid/internal'
+import { AllDaySplitter, DayTimeColsSlicer, TimeGridLayout, buildDayRanges, buildTimeColsModel, organizeSegsByCol, splitInteractionByCol } from '@fullcalendar/timegrid/internal'
 import { ResourceDayTimeColsJoiner } from '../ResourceDayTimeColsJoiner.js'
 
 interface ResourceTimeGridViewState {
@@ -34,9 +33,13 @@ interface ResourceTimeGridViewState {
 }
 
 export class ResourceTimeGridView extends DateComponent<ResourceViewProps, ResourceTimeGridViewState> {
+  // memo
   private flattenResources = memoize(flattenResources)
   private buildResourceTimeColsModel = memoize(buildResourceTimeColsModel)
+  private buildResourceRowConfigs = memoize(buildResourceRowConfigs)
+  private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
 
+  // internal
   private allDaySplitter = new AllDaySplitter()
 
   // for all-day-resource props
@@ -59,9 +62,6 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
   private splitDateSelectionSegs = memoize(organizeSegsByCol)
   private splitEventDrag = memoize(splitInteractionByCol)
   private splitEventResize = memoize(splitInteractionByCol)
-
-  // other memo
-  private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
 
   render() {
     let { props, context } = this
@@ -131,13 +131,6 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
     )
 
     let datesRepDistinctDays = resourceDayTableModel.dayTableModel.rowCnt === 1
-    let headerTiers = buildResourceHeaderTiers( // TODO: memoize
-      resources,
-      resourceDayTableModel.dayTableModel.headerDates,
-      options.datesAboveResources,
-      datesRepDistinctDays,
-      context,
-    )
     let dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
       datesRepDistinctDays,
@@ -163,6 +156,17 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
           let eventDragByCol = this.splitEventDrag(timedResourceJoinedProps.eventDrag, colCnt)
           let eventResizeByCol = this.splitEventResize(timedResourceJoinedProps.eventResize, colCnt)
 
+          const headerTiers = this.buildResourceRowConfigs(
+            resources,
+            options.datesAboveResources,
+            resourceDayTableModel.dayTableModel.headerDates,
+            datesRepDistinctDays,
+            props.dateProfile,
+            todayRange,
+            dayHeaderFormat,
+            context,
+          )
+
           return (
             <TimeGridLayout
               dateProfile={dateProfile}
@@ -175,71 +179,6 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
               // header content
               headerTiers={headerTiers}
-              renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width, isLiquid) => (
-                (options.weekNumbers && tierNum === headerTiers.length - 1) ? (
-                  <TimeGridWeekNumber
-                    dateProfile={dateProfile}
-                    innerWidthRef={innerWidthRef}
-                    innerHeightRef={innerHeightRef}
-                    width={width}
-                    isLiquid={isLiquid}
-                  />
-                ) : (
-                  // TODO: DRY up with TimeGridView
-                  <div
-                    className={joinClassNames(
-                      'fc-timegrid-axis',
-                      isLiquid ? 'fc-liquid' : 'fc-content-box',
-                    )}
-                    style={{ width }}
-                  />
-                )
-              )}
-              // TODO: DRY
-              renderHeaderContent={(model, tierNum, cellI, innerHeightRef, colWidth) => {
-                if ((model as ResourceDateHeaderCellObj).resource) {
-                  return (
-                    <ResourceHeaderCell
-                      {...(model as ResourceDateHeaderCellObj)}
-                      innerHeightRef={innerHeightRef}
-                      colSpan={model.colSpan}
-                      colWidth={colWidth}
-                      isSticky={tierNum < headerTiers.length - 1}
-                      borderStart={Boolean(cellI)}
-                    />
-                  )
-                } else if ((model as DateHeaderCellObj).date) {
-                  return (
-                    <DateHeaderCell
-                      {...(model as DateHeaderCellObj)}
-                      navLink={resourceDayTableModel.dayTableModel.colCnt > 1}
-                      dateProfile={props.dateProfile}
-                      todayRange={todayRange}
-                      dayHeaderFormat={dayHeaderFormat}
-                      innerHeightRef={innerHeightRef}
-                      colSpan={model.colSpan}
-                      colWidth={colWidth}
-                      borderStart={Boolean(cellI)}
-                    />
-                  )
-                } else {
-                  <DayOfWeekHeaderCell
-                    {...(model as DayOfWeekHeaderCellObj)}
-                    dayHeaderFormat={dayHeaderFormat}
-                    innerHeightRef={innerHeightRef}
-                    colSpan={model.colSpan}
-                    colWidth={colWidth}
-                    borderStart={Boolean(cellI)}
-                  />
-                }
-              }}
-              getHeaderModelKey={(model) => (
-                (model as ResourceDateHeaderCellObj).resource
-                  ? (model as ResourceDateHeaderCellObj).resource.id
-                  : (model as DateHeaderCellObj).date
-                    ? (model as DateHeaderCellObj).date.toISOString()
-                    : (model as DayOfWeekHeaderCellObj).dow
-              )}
 
               // all-day content
               fgEventSegs={allDayResourceJoinedProps.fgEventSegs}

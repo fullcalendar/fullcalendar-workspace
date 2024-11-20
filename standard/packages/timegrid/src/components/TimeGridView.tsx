@@ -1,19 +1,18 @@
-import { DateComponent, ViewProps, memoize, DateMarker, NowTimer, DateRange, EventRangeProps, joinClassNames } from "@fullcalendar/core/internal"
+import { DateComponent, DateMarker, DateRange, EventRangeProps, memoize, NowTimer, ViewProps } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
-import { DateHeaderCell, DayTableSlicer } from '@fullcalendar/daygrid/internal'
-import { buildDayRanges, buildTimeColsModel } from "./util.js"
+import { buildDateRowConfigs, createDayHeaderFormatter, DayTableSlicer } from '@fullcalendar/daygrid/internal'
 import { AllDaySplitter } from "../AllDaySplitter.js"
 import { DayTimeColsSlicer } from "../DayTimeColsSlicer.js"
-import { splitInteractionByCol, organizeSegsByCol, TimeGridRange } from "../TimeColsSeg.js"
-import { TimeGridWeekNumber } from "./TimeGridWeekNumber.js"
+import { organizeSegsByCol, splitInteractionByCol, TimeGridRange } from "../TimeColsSeg.js"
 import { TimeGridLayout } from './TimeGridLayout.js'
-import { createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
+import { buildDayRanges, buildTimeColsModel } from "./util.js"
 
 export class TimeGridView extends DateComponent<ViewProps> {
   // memo
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
   private buildTimeColsModel = memoize(buildTimeColsModel)
   private buildDayRanges = memoize(buildDayRanges)
+  private buildDateRowConfigs = memoize(buildDateRowConfigs)
   private splitFgEventSegs = memoize(organizeSegsByCol<TimeGridRange & EventRangeProps>)
   private splitBgEventSegs = memoize(organizeSegsByCol<TimeGridRange & EventRangeProps>)
   private splitBusinessHourSegs = memoize(organizeSegsByCol<TimeGridRange & EventRangeProps>)
@@ -70,6 +69,15 @@ export class TimeGridView extends DateComponent<ViewProps> {
           const eventDragByCol = this.splitEventDrag(timedProps.eventDrag, colCnt)
           const eventResizeByCol = this.splitEventResize(timedProps.eventResize, colCnt)
 
+          const headerTiers = this.buildDateRowConfigs(
+            dayTableModel.headerDates,
+            true, // datesRepDistinctDays
+            props.dateProfile,
+            todayRange,
+            dayHeaderFormat,
+            context,
+          )
+
           return (
             <TimeGridLayout
               dateProfile={dateProfile}
@@ -80,40 +88,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
               className='fc-timegrid'
 
               // header content
-              headerTiers={dayTableModel.cellRows /* guaranteed to be one row */}
-              renderHeaderLabel={(tierNum, innerWidthRef, innerHeightRef, width, isLiquid) => (
-                options.weekNumbers ? (
-                  <TimeGridWeekNumber
-                    dateProfile={dateProfile}
-                    innerWidthRef={innerWidthRef}
-                    innerHeightRef={innerHeightRef}
-                    width={width}
-                    isLiquid={isLiquid}
-                  />
-                ) : (
-                  // TODO: DRY up with ResourceTimeGridView
-                  <div
-                    className={joinClassNames(
-                      'fc-timegrid-axis',
-                      isLiquid ? 'fc-liquid' : 'fc-content-box',
-                    )}
-                    style={{ width }}
-                  />
-                )
-              )}
-              renderHeaderContent={(cell, tierNum, cellI, innerHeightRef, colWidth) => (
-                <DateHeaderCell
-                  {...cell /* for date & renderProps/etc */}
-                  dateProfile={dateProfile}
-                  todayRange={todayRange}
-                  navLink={dayTableModel.colCnt > 1}
-                  dayHeaderFormat={dayHeaderFormat}
-                  innerHeightRef={innerHeightRef}
-                  colWidth={colWidth}
-                  borderStart={Boolean(cellI)}
-                />
-              )}
-              getHeaderModelKey={(cell) => cell.key}
+              headerTiers={headerTiers}
 
               // all-day content
               fgEventSegs={allDayProps.fgEventSegs}

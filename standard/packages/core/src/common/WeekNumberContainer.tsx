@@ -4,7 +4,7 @@ import { MountArg } from './render-hook.js'
 import { createElement } from '../preact.js'
 import { DateFormatter } from '../datelib/DateFormatter.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
-import { ContentContainer, InnerContainerFunc } from '../content-inject/ContentContainer.js'
+import { ContentContainer, InnerContainerFunc, renderText } from '../content-inject/ContentContainer.js'
 
 export interface WeekNumberContainerProps extends ElProps {
   date: DateMarker
@@ -36,7 +36,7 @@ export const WeekNumberContainer = (props: WeekNumberContainerProps) => (
           renderProps={renderProps}
           generatorName="weekNumberContent"
           customGenerator={options.weekNumberContent}
-          defaultGenerator={renderInner}
+          defaultGenerator={renderText}
           classNameGenerator={options.weekNumberClassNames}
           didMount={options.weekNumberDidMount}
           willUnmount={options.weekNumberWillUnmount}
@@ -45,7 +45,3 @@ export const WeekNumberContainer = (props: WeekNumberContainerProps) => (
     }}
   </ViewContextType.Consumer>
 )
-
-function renderInner(innerProps) {
-  return innerProps.text
-}

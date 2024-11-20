@@ -65,7 +65,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           props.borderStart && 'fc-border-s',
           ...(
             props.isDay ?
-              getDayClassNames(dateMeta, theme) :
+              getDayClassNames(dateMeta) :
               getSlotClassNames(dateMeta, theme)
           ),
         )}

@@ -61,7 +61,7 @@ export class DayCellContainer extends BaseComponent<DayCellContainerProps> {
         {...props /* includes children */}
         className={joinClassNames(
           props.className,
-          ...getDayClassNames(renderProps, context.theme),
+          ...getDayClassNames(renderProps),
         )}
         attrs={{
           ...props.attrs,
@@ -73,6 +73,7 @@ export class DayCellContainer extends BaseComponent<DayCellContainerProps> {
         defaultGenerator={props.defaultGenerator}
         classNameGenerator={
           // don't use custom classNames if disabled
+          // TODO: make DRY with DayGridHeaderCell
           renderProps.isDisabled ? undefined : options.dayCellClassNames
         }
         didMount={options.dayCellDidMount}

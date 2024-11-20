@@ -43,7 +43,7 @@ export abstract class ResourcefulDayTableModel extends AbstractResourceDayTableM
           rowCells[
             this.computeCol(dateCol, resourceCol)
           ] = {
-            key: resource.id + ':' + date.toISOString(),
+            key: resource.id + ':' + date.toISOString(), // TODO: DRY up this logic with header-tier somehow
             date,
             renderProps,
             attrs,

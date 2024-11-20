@@ -70,7 +70,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
           ...( // TODO: so slot classnames for week/month/bigger. see note above about rowUnit
             cell.rowUnit === 'time' ?
               getSlotClassNames(dateMeta, context.theme) :
-              getDayClassNames(dateMeta, context.theme)
+              getDayClassNames(dateMeta)
           ),
         )}
         attrs={{

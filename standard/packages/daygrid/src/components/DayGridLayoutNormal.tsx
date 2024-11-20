@@ -15,11 +15,12 @@ import {
   EventRangeProps,
   joinClassNames,
 } from '@fullcalendar/core/internal'
-import { ComponentChild, Fragment, Ref, createElement } from '@fullcalendar/core/preact'
+import { Fragment, Ref, createElement } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
 import { DayGridHeader } from './DayGridHeader.js'
+import { RowConfig } from '../header-tier.js'
 
-export interface DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
+export interface DayGridLayoutNormalProps {
   dateProfile: DateProfile
   todayRange: DateRange
   cellRows: DayTableCell[][]
@@ -27,15 +28,7 @@ export interface DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey> {
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 
   // header content
-  headerTiers: HeaderCellModel[][]
-  renderHeaderContent: (
-    model: HeaderCellModel,
-    tier: number,
-    cellI: number,
-    innerHeightRef: Ref<number> | undefined, // unused
-    colWidth: number | undefined,
-  ) => ComponentChild
-  getHeaderModelKey: (model: HeaderCellModel) => HeaderCellKey
+  headerTiers: RowConfig<{ text: string }>[]
 
   // body content
   fgEventSegs: (DayGridRange & EventRangeProps)[]
@@ -56,7 +49,7 @@ interface DayGridViewState {
   rightScrollbarWidth?: number
 }
 
-export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseComponent<DayGridLayoutNormalProps<HeaderCellModel, HeaderCellKey>, DayGridViewState> {
+export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps, DayGridViewState> {
   render() {
     const { props, state, context } = this
     const { options } = context
@@ -69,16 +62,10 @@ export class DayGridLayoutNormal<HeaderCellModel, HeaderCellKey> extends BaseCom
         {options.dayHeaders && (
           <DayGridHeader
             headerTiers={props.headerTiers}
-            renderHeaderContent={props.renderHeaderContent}
-            getHeaderModelKey={props.getHeaderModelKey}
-
-            // render hooks
             className={joinClassNames(
               'fc-daygrid-header fc-border-b',
               stickyHeaderDates && 'fc-table-header-sticky',
             )}
-
-            // dimensions
             paddingLeft={state.leftScrollbarWidth}
             paddingRight={state.rightScrollbarWidth}
           />

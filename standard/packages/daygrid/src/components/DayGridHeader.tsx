@@ -1,19 +1,10 @@
-import { joinClassNames } from '@fullcalendar/core/internal'
-import { ComponentChild, createElement, Ref } from '@fullcalendar/core/preact'
-import { HeaderRow } from './header/HeaderRow.js'
+import { BaseComponent, joinClassNames } from '@fullcalendar/core/internal'
+import { createElement } from '@fullcalendar/core/preact'
+import { DayGridHeaderRow } from './DayGridHeaderRow.js'
+import { RowConfig } from '../header-tier.js'
 
-export interface DayGridHeaderProps<Model, ModelKey> {
-  headerTiers: Model[][]
-  renderHeaderContent: (
-    model: Model,
-    tier: number,
-    cellI: number,
-    innerHeightRef: Ref<number> | undefined, // unused
-    width: number | undefined
-  ) => ComponentChild
-  getHeaderModelKey: (model: Model) => ModelKey
-
-  // render hooks
+export interface DayGridHeaderProps {
+  headerTiers: RowConfig<{ text: string }>[]
   className?: string
 
   // dimensions
@@ -23,30 +14,30 @@ export interface DayGridHeaderProps<Model, ModelKey> {
   paddingRight?: number
 }
 
-export function DayGridHeader<Model, ModelKey>(props: DayGridHeaderProps<Model, ModelKey>) {
-  return (
-    <div
-      className={joinClassNames(
-        props.className,
-        'fc-flex-col fc-content-box',
-      )}
-      style={{
-        width: props.width,
-        paddingLeft: props.paddingLeft,
-        paddingRight: props.paddingRight,
-      }}
-    >
-      {props.headerTiers.map((cells, tierNum) => (
-        <HeaderRow
-          key={tierNum}
-          tierNum={tierNum}
-          cells={cells}
-          renderHeaderContent={props.renderHeaderContent}
-          getHeaderModelKey={props.getHeaderModelKey}
-          colWidth={props.colWidth}
-          className={tierNum ? 'fc-border-t' : ''}
-        />
-      ))}
-    </div>
-  )
+export class DayGridHeader extends BaseComponent<DayGridHeaderProps> {
+  render() {
+    const { props } = this
+    return (
+      <div
+        className={joinClassNames(
+          props.className,
+          'fc-flex-col fc-content-box',
+        )}
+        style={{
+          width: props.width,
+          paddingLeft: props.paddingLeft,
+          paddingRight: props.paddingRight,
+        }}
+      >
+        {props.headerTiers.map((rowConfig, tierNum) => (
+          <DayGridHeaderRow
+            {...rowConfig}
+            key={tierNum}
+            className={tierNum ? 'fc-border-t' : ''}
+            colWidth={props.colWidth}
+          />
+        ))}
+      </div>
+    )
+  }
 }

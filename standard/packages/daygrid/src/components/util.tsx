@@ -1,5 +1,5 @@
 import { CssDimValue, DayHeaderContentArg } from '@fullcalendar/core'
-import { DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, fracToCssDim, SlicedCoordRange } from '@fullcalendar/core/internal'
+import { createFormatter, DateFormatter, DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, fracToCssDim, SlicedCoordRange } from '@fullcalendar/core/internal'
 import { ComponentChild } from '@fullcalendar/core/preact'
 
 export function renderInner(renderProps: DayHeaderContentArg): ComponentChild {
@@ -33,24 +33,6 @@ export function computeColWidth(colCnt: number, colMinWidth: number, viewportWid
   }
 
   return [viewportWidth, undefined]
-}
-
-// Header Tier
-// -------------------------------------------------------------------------------------------------
-
-export type DateHeaderCellObj = { date: DateMarker, colSpan: number }
-export type DayOfWeekHeaderCellObj = { dow: number, colSpan: number }
-export type HeaderCellObj = DateHeaderCellObj | DayOfWeekHeaderCellObj
-
-export function buildHeaderTiers(
-  dates: DateMarker[],
-  datesRepDistinctDays: boolean,
-): HeaderCellObj[][] {
-  return [
-    datesRepDistinctDays
-      ? dates.map((date) => ({ colSpan: 1, date }))
-      : dates.map((date) => ({ colSpan: 1, dow: date.getUTCDay() }))
-  ]
 }
 
 // Positioning
@@ -174,4 +156,26 @@ export function getRowEl(rootEl: HTMLElement, row: number): HTMLElement {
 
 export function getCellEl(rowEl: HTMLElement, col: number): HTMLElement {
   return rowEl.querySelectorAll(':scope > [role=gridcell]')[col] as HTMLElement
+}
+
+// Header Formatting
+// -------------------------------------------------------------------------------------------------
+
+export function createDayHeaderFormatter(explicitFormat: DateFormatter, datesRepDistinctDays, dateCnt) {
+  return explicitFormat || computeFallbackHeaderFormat(datesRepDistinctDays, dateCnt)
+}
+
+// Computes a default column header formatting string if `colFormat` is not explicitly defined
+function computeFallbackHeaderFormat(datesRepDistinctDays: boolean, dayCnt: number): DateFormatter {
+  // if more than one week row, or if there are a lot of columns with not much space,
+  // put just the day numbers will be in each cell
+  if (!datesRepDistinctDays || dayCnt > 10) {
+    return createFormatter({ weekday: 'short' }) // "Sat"
+  }
+
+  if (dayCnt > 1) {
+    return createFormatter({ weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true }) // "Sat 11/12"
+  }
+
+  return createFormatter({ weekday: 'long' }) // "Saturday"
 }

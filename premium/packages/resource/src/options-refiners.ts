@@ -5,13 +5,14 @@ import {
 } from '@fullcalendar/core/internal'
 import {
   ResourceSourceInput,
-  ResourceLabelContentArg, ResourceLabelMountArg,
   ColSpec,
   ColHeaderContentArg, ColHeaderMountArg,
   ColCellContentArg, ColCellMountArg,
   ResourceLaneContentArg, ResourceLaneMountArg,
   ResourceApi,
   ResourceAddArg, ResourceChangeArg, ResourceRemoveArg,
+  ResourceLabelContentArg,
+  ResourceLabelMountArg,
 } from './public-types.js'
 
 export const OPTION_REFINERS = {

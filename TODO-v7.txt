@@ -1,53 +1,31 @@
 
 Publishing:
- pnpm changeset publish --no-git-tag
- (next version should be v7.0.0-beta.3 because beta.2 was taken by the angular hotfix..
- ..write release/changelog for that)
- Angular beta repro:
+  pnpm changeset publish --no-git-tag
+  (next version should be v7.0.0-beta.3 because beta.2 was taken by the angular hotfix..
+  ..write release/changelog for that)
+  Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 Print Mode
-  API
-    printLayout: basic|auto|full
-      'basic' is always table-based
-        for headers across pages
-        no abs position non-critical UI (bg events or resizers)
-      'full' is same as screen-media
-        ironically, it shows ALL slots, so 'full' describes amount of data AND full-featuredness
-        for timegrid, CANNOT have headers across pages b/c messes up abs events on second page
-        for timeline, CANNOT have headers across pages b/c messed up vertical lines (probably)
-        TODO: devise a way to show repeated headers in 'full' mode?
-          if not possible, then maybe best to make defaults 'basic' for all views.. repeated headers are important
-      auto algorithm (TODO: question this):
-        timegrid will be 'basic' just for firefox, 'full' for all other browsers
-          (if users don't like slot cutover behavior, can force to 'basic')
-        timeline will be 'basic' just for firefox, 'full' for all other browsers
-          (if users don't like resource-row cutover behavior, can force to 'basic')
-        daygrid will be 'basic' for all browsers
-          (basic is very similar to full, but WITH repeated headers and WITHOUT background events)
-      bugfix: after returning from 'full' print-mode, resync scrollers. out of sync somehow
-    'basic' scroll behavior (previously `printScrollTime`)
-      applicable to *timeline*, and hscroll-views, because horizontal scroll is precious
-      start the slots at the first partially visible slot from 'full' view's scroll
-      mainly motivated by firefox reset scroll for print-preview
-      but also so that slot lines up perfectly
-      will need to RESTORE scroll on return to 'full' layout
+  No API changes. Simply make all views more-accurately render in print-mode. Possible with new techniques.
+  There will be known-bugs:
+    - On Safari, table headers are not repeated for any view (browser bug)
+    - On Chrome, for timegrid, table headers are sometimes covered by events
+    - On Firefox, for timeline, vertical slot lines only show for first page
   DayGrid
-    basic & full
-      move week number within first daycell
-        better for 'basic' rendering and better for pushing down eventcontainers if big
-        either use floats (bad for react-native) or conditionally apply justify-content: flex-end/space-between
-      use margin-top to position events (better for <td> event rendering)
-        and normalize common y-position by setting top MARGIN on eventcontainers below not-so-tall dayheaders
-    basic only
-      must prevent text-wrap for all events, otherwise wrapping could occur and the dumb print-only
-        rendering mode can't adapt to positioning
-      (was thinking about making single-day events naturally flowing, but could be interspersed between multiday)
-    full only
-      put background events and highlight ABOVE cells again. can have simpler DOM
-        (unlike with 'basic', guaranteed to have top origin on row)
-  Ensure all scrollbars and their gutters don't appear in print view
-    and all sticky bottom scrollbars aren't shown
+    move week number within first daycell
+      better for 'basic' rendering and better for pushing down eventcontainers if big
+      either use floats (bad for react-native) or conditionally apply justify-content: flex-end/space-between
+    use margin-top to position events (better for <td> event rendering)
+      and normalize common y-position by setting top MARGIN on eventcontainers below not-so-tall dayheaders
+  print-view for multimonth will be weird
+  BUG
+    scroll not restored after print-view
+  TEST
+    on DayGridHeader, dates-BELOW-resources don't have resource ID, did they ever?
+      did their customer-render-func ever get passed a resource?
+    test that last row of DayGridHeader is sticky
+    just like events conditionally are <a> tags, should make navlinks the same
   AFTER
     revert "hacks to get print-mode working, but some should be reverted"
   NOTES
@@ -58,6 +36,7 @@ DayGrid
   prevent DayGridCell headers from overflowing? makes really small calendars look better
   bug (print-view):
     for multi-day events, don't display title within non-start/end segs
+  bug: weekNumbers on 1-row dayGrid views don't work
 MultiMonth
   bug: multi-row events cutoff when +more in next row (multimonth-view-bug.html)
   Improve perf while switching years
@@ -198,6 +177,7 @@ Punt
     (will be breaking change? maybe file ticket and add changelog)
     PREEXISTS: https://codepen.io/arshaw/pen/jOgeGwm?editors=0010
   Markup/CSS/structure
+    kill fc-header-cell classname? ppl can just target `.fc-table-header .fc-table-cell`?
     in future css className refactor:
       fc-dayGridMonth -> fc-daygridmonth (to match fc-daygrid)
       fc-dayGridMonth-button -> fc-daygridmonth-button

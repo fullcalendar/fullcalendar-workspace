@@ -11,7 +11,7 @@ import {
   memoize
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
-import { DateHeaderCell, DateHeaderCellObj, DayGridLayout, DayOfWeekHeaderCell, DayOfWeekHeaderCellObj, DayTableSlicer, buildDayTableModel, createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
+import { DayGridLayout, DayTableSlicer, buildDayTableModel, createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'
 import {
   AbstractResourceDayTableModel,
   DEFAULT_RESOURCE_ORDER,
@@ -24,14 +24,14 @@ import {
   flattenResources,
 } from '@fullcalendar/resource/internal'
 import { ResourceDayTableJoiner } from '../ResourceDayTableJoiner.js'
-import { buildResourceHeaderTiers, ResourceDateHeaderCellObj } from './header-cell-utils.js'
-import { ResourceHeaderCell } from './ResourceHeaderCell.js'
+import { buildResourceRowConfigs } from '../resource-header-tier.js'
 
 export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
   // memo
   private flattenResources = memoize(flattenResources)
   private buildResourceDayTableModel = memoize(buildResourceDayTableModel)
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
+  private buildResourceRowConfigs = memoize(buildResourceRowConfigs)
 
   private resourceDayTableModel: AbstractResourceDayTableModel
   private splitter = new VResourceSplitter()
@@ -70,17 +70,9 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
       context,
       resourceDayTableModel.dayTableModel,
     ))
-
     let joinedSlicedProps = this.joiner.joinProps(slicedProps, resourceDayTableModel)
 
     let datesRepDistinctDays = resourceDayTableModel.dayTableModel.rowCnt === 1
-    let headerTiers = buildResourceHeaderTiers( // TODO: memoize???
-      resources,
-      resourceDayTableModel.dayTableModel.headerDates,
-      options.datesAboveResources,
-      datesRepDistinctDays,
-      context,
-    )
     let dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
       datesRepDistinctDays,
@@ -89,70 +81,41 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
 
     return (
       <NowTimer unit="day">
-        {(nowDate: DateMarker, todayRange: DateRange) => (
-          <DayGridLayout
-            dateProfile={props.dateProfile}
-            todayRange={todayRange}
-            cellRows={resourceDayTableModel.cells}
-            forPrint={props.forPrint}
-            isHitComboAllowed={this.isHitComboAllowed}
-            className='fc-resource-daygrid-view'
+        {(nowDate: DateMarker, todayRange: DateRange) => {
+          const headerTiers = this.buildResourceRowConfigs(
+            resources,
+            options.datesAboveResources,
+            resourceDayTableModel.dayTableModel.headerDates,
+            datesRepDistinctDays,
+            props.dateProfile,
+            todayRange,
+            dayHeaderFormat,
+            context,
+          )
 
-            // header content
-            // TODO: DRY with ResourceDayGridView/ResourceTimeGridView
-            headerTiers={headerTiers}
-            renderHeaderContent={(model, tierNum, cellI, innerHeightRef, colWidth) => {
-              if ((model as ResourceDateHeaderCellObj).resource) {
-                return (
-                  <ResourceHeaderCell
-                    {...(model as ResourceDateHeaderCellObj)}
-                    colSpan={model.colSpan}
-                    colWidth={colWidth}
-                    isSticky={tierNum < headerTiers.length - 1}
-                    borderStart={Boolean(cellI)}
-                  />
-                )
-              } else if ((model as DateHeaderCellObj).date) {
-                return (
-                  <DateHeaderCell
-                    {...(model as DateHeaderCellObj)}
-                    navLink={resourceDayTableModel.dayTableModel.colCnt > 1}
-                    dateProfile={props.dateProfile}
-                    todayRange={todayRange}
-                    dayHeaderFormat={dayHeaderFormat}
-                    colSpan={model.colSpan}
-                    colWidth={colWidth}
-                    borderStart={Boolean(cellI)}
-                  />
-                )
-              } else {
-                <DayOfWeekHeaderCell
-                  {...(model as DayOfWeekHeaderCellObj)}
-                  dayHeaderFormat={dayHeaderFormat}
-                  colSpan={model.colSpan}
-                  colWidth={colWidth}
-                  borderStart={Boolean(cellI)}
-                />
-              }
-            }}
-            getHeaderModelKey={(model) => (
-              (model as ResourceDateHeaderCellObj).resource
-                ? (model as ResourceDateHeaderCellObj).resource.id
-                : (model as DateHeaderCellObj).date
-                  ? (model as DateHeaderCellObj).date.toISOString()
-                  : (model as DayOfWeekHeaderCellObj).dow
-            )}
+          return (
+            <DayGridLayout
+              dateProfile={props.dateProfile}
+              todayRange={todayRange}
+              cellRows={resourceDayTableModel.cells}
+              forPrint={props.forPrint}
+              isHitComboAllowed={this.isHitComboAllowed}
+              className='fc-resource-daygrid-view'
 
-            // body content
-            fgEventSegs={joinedSlicedProps.fgEventSegs}
-            bgEventSegs={joinedSlicedProps.bgEventSegs}
-            businessHourSegs={joinedSlicedProps.businessHourSegs}
-            dateSelectionSegs={joinedSlicedProps.dateSelectionSegs}
-            eventDrag={joinedSlicedProps.eventDrag}
-            eventResize={joinedSlicedProps.eventResize}
-            eventSelection={joinedSlicedProps.eventSelection}
-          />
-        )}
+              // header content
+              headerTiers={headerTiers}
+
+              // body content
+              fgEventSegs={joinedSlicedProps.fgEventSegs}
+              bgEventSegs={joinedSlicedProps.bgEventSegs}
+              businessHourSegs={joinedSlicedProps.businessHourSegs}
+              dateSelectionSegs={joinedSlicedProps.dateSelectionSegs}
+              eventDrag={joinedSlicedProps.eventDrag}
+              eventResize={joinedSlicedProps.eventResize}
+              eventSelection={joinedSlicedProps.eventSelection}
+            />
+          )
+        }}
       </NowTimer>
     )
   }
