@@ -1,6 +1,6 @@
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventSegUiInteractionState, Hit, Scroller, ScrollerInterface, ScrollerSyncerInterface, RefMap, getStickyFooterScrollbar, getStickyHeaderDates, setRef, getScrollerSyncerClass, afterSize, isArraysEqual, getIsHeightAuto, rangeContainsMarker, SlicedCoordRange, EventRangeProps, StickyFooterScrollbar, joinClassNames } from "@fullcalendar/core/internal"
 import { Fragment, createElement, createRef, ComponentChild, Ref } from '@fullcalendar/core/preact'
-import { computeColWidth, HeaderRowAdvanced, COMPACT_CELL_WIDTH } from '@fullcalendar/daygrid/internal'
+import { computeColWidth, HeaderRow, COMPACT_CELL_WIDTH } from '@fullcalendar/daygrid/internal'
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
 import { TimeGridAllDayLane } from "./TimeGridAllDayLane.js"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
@@ -205,7 +205,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                 }}
               >
                 {props.headerTiers.map((cells, tierNum) => (
-                  <HeaderRowAdvanced
+                  <HeaderRow
                     key={tierNum}
                     tierNum={tierNum}
                     cells={cells}
@@ -214,6 +214,7 @@ export class TimeGridLayoutPannable<HeaderCellModel, HeaderCellKey> extends Base
                     innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}
                     height={state.headerTierHeights[tierNum]}
                     colWidth={colWidth}
+                    className={tierNum ? 'fc-border-t' : ''}
                   />
                 ))}
               </div>

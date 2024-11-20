@@ -9,7 +9,6 @@ export { DateHeaderCell } from './components/header/DateHeaderCell.js'
 // TODO: rename to just 'header/' ?
 export { DayOfWeekHeaderCell } from './components/header/DayOfWeekHeaderCell.js'
 export { HeaderRow } from './components/header/HeaderRow.js'
-export { HeaderRowAdvanced } from './components/header/HeaderRowAdvanced.js'
 
 export { createDayHeaderFormatter } from './components/header/util.js'
 
