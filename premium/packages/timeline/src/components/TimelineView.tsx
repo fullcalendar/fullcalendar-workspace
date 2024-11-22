@@ -116,7 +116,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 ref={this.headerScrollerRef}
               >
                 <div
-                  className='fc-rel fc-liquid' // origin for now-indicator
+                  // TODO: DRY
+                  className={joinClassNames(
+                    'fc-rel', // origin for now-indicator
+                    canvasWidth == null && 'fc-liquid',
+                  )}
                   style={{ width: canvasWidth }}
                 >
                   {cellRows.map((cells, rowLevel) => {

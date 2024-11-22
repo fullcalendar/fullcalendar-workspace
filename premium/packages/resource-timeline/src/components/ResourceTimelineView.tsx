@@ -516,7 +516,11 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       )}
                     >
                       <div
-                        className='fc-rel fc-liquid' // origin for now-indicator
+                        // TODO: DRY
+                        className={joinClassNames(
+                          'fc-rel', // origin for now-indicator
+                          timeCanvasWidth == null && 'fc-liquid',
+                        )}
                         style={{ width: timeCanvasWidth }}
                       >
                         {cellRows.map((cells, rowLevel) => {
