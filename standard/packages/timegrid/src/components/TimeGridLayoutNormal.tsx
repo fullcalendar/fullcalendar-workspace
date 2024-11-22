@@ -55,8 +55,7 @@ export interface TimeGridLayoutNormalProps {
 interface TimeGridLayoutState {
   clientWidth?: number
   clientHeight?: number
-  leftScrollbarWidth?: number
-  rightScrollbarWidth?: number
+  endScrollbarWidth?: number
   axisWidth?: number
   slatInnerHeight?: number
 }
@@ -105,8 +104,6 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
       ? { right: axisWidth }
       : { left: axisWidth }
 
-    const scrollbarGutter = state.leftScrollbarWidth || state.rightScrollbarWidth
-
     return (
       <Fragment>
         {/* HEADER
@@ -143,7 +140,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   {...rowConfig}
                   className='fc-border-s fc-liquid'
                 />
-                <ScrollbarGutter width={scrollbarGutter} />
+                <ScrollbarGutter width={state.endScrollbarWidth} />
               </div>
             ))}
           </div>
@@ -185,7 +182,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   dayMaxEvents={props.dayMaxEvents}
                   dayMaxEventRows={props.dayMaxEventRows}
                 />
-                <ScrollbarGutter width={scrollbarGutter} />
+                <ScrollbarGutter width={state.endScrollbarWidth} />
               </div>
             </div>
             <div className='fc-rowdivider'></div>
@@ -202,8 +199,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           ref={props.timeScrollerRef}
           clientWidthRef={this.handleClientWidth}
           clientHeightRef={this.handleClientHeight}
-          leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
-          rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+          endScrollbarWidthRef={this.handleEndScrollbarWidth}
         >
           <div className='fc-flex-col fc-grow fc-rel'>
             <div className='fc-fill fc-border-transparent fc-border-s fc-flex-col' style={axisStartCss}>
@@ -299,12 +295,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     this.setState({ clientHeight })
   }
 
-  private handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
-    this.setState({ leftScrollbarWidth })
-  }
-
-  private handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
-    this.setState({ rightScrollbarWidth })
+  private handleEndScrollbarWidth = (endScrollbarWidth: number) => {
+    this.setState({ endScrollbarWidth })
   }
 
   private handleAxisInnerWidths = () => {

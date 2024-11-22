@@ -80,7 +80,7 @@ interface ResourceTimelineViewState {
   spreadsheetColWidthOverrides?: number[]
   timeClientWidth?: number
   timeClientHeight?: number
-  leftScrollbarWidth?: number
+  endScrollbarWidth?: number
   rightScrollbarWidth?: number
   spreadsheetBottomScrollbarWidth?: number
   timeBottomScrollbarWidth?: number
@@ -273,8 +273,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     let hasResourceBusinessHours = this.computeHasResourceBusinessHours(flatResourceLayouts)
     let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
-
-    const scrollbarGutter = state.leftScrollbarWidth || state.rightScrollbarWidth
 
     return (
       <NowTimer unit={timerUnit}>
@@ -549,7 +547,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           />
                         )}
                       </div>
-                      <ScrollbarGutter width={scrollbarGutter} />
+                      <ScrollbarGutter width={state.endScrollbarWidth} />
                     </Scroller>
 
                     {/* time-area BODY (w/ events)
@@ -565,8 +563,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       ref={this.timeBodyScrollerRef}
                       clientWidthRef={this.handleTimeClientWidth}
                       clientHeightRef={this.handleTimeClientHeight}
-                      leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
-                      rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+                      endScrollbarWidthRef={this.handleEndScrollbarWidth}
                       bottomScrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
                     >
                       <div
@@ -775,15 +772,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     })
   }
 
-  handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
+  handleEndScrollbarWidth = (endScrollbarWidth: number) => {
     this.setState({
-      leftScrollbarWidth,
-    })
-  }
-
-  handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
-    this.setState({
-      rightScrollbarWidth,
+      endScrollbarWidth,
     })
   }
 

@@ -33,8 +33,7 @@ import { TimelineNowIndicatorArrow } from './TimelineNowIndicatorArrow.js'
 
 interface TimelineViewState {
   clientWidth?: number
-  leftScrollbarWidth?: number
-  rightScrollbarWidth?: number
+  endScrollbarWidth?: number
   slotInnerWidth?: number
 }
 
@@ -91,8 +90,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     )
     this.slotWidth = slotWidth
 
-    const scrollbarGutter = state.leftScrollbarWidth || state.rightScrollbarWidth
-
     return (
       <NowTimer unit={timerUnit}>
         {(nowDate: DateMarker, todayRange: DateRange) => {
@@ -147,7 +144,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     />
                   )}
                 </div>
-                <ScrollbarGutter width={scrollbarGutter} />
+                <ScrollbarGutter width={state.endScrollbarWidth} />
               </Scroller>
 
               {/* BODY
@@ -161,8 +158,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 )}
                 ref={this.bodyScrollerRef}
                 clientWidthRef={this.handleClientWidth}
-                leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
-                rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+                endScrollbarWidthRef={this.handleEndScrollbarWidth}
               >
                 <div
                   className="fc-rel fc-grow"
@@ -279,15 +275,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     })
   }
 
-  handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
+  handleEndScrollbarWidth = (endScrollbarWidth: number) => {
     this.setState({
-      leftScrollbarWidth
-    })
-  }
-
-  handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
-    this.setState({
-      rightScrollbarWidth
+      endScrollbarWidth
     })
   }
 

@@ -21,8 +21,7 @@ export interface ScrollerProps {
   // dimensions
   clientWidthRef?: Ref<number> // for this to be accurate, element should NOT have left/right borders
   clientHeightRef?: Ref<number> // for this to be accurate, element should NOT have top/bottom borders
-  leftScrollbarWidthRef?: Ref<number>
-  rightScrollbarWidthRef?: Ref<number>
+  endScrollbarWidthRef?: Ref<number>
   bottomScrollbarWidthRef?: Ref<number>
 }
 
@@ -35,8 +34,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   private disconnectSize?: () => void
   private currentClientWidth: number
   private currentClientHeight: number
-  private currentLeftScrollbarWidth: number
-  private currentRightScrollbarWidth: number
+  private currentEndScrollbarWidth: number
   private currentBottomScrollbarWidth: number
 
   render() {
@@ -73,9 +71,8 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
       setRef(props.clientWidthRef, null)
       setRef(props.clientHeightRef, null)
+      setRef(props.endScrollbarWidthRef, null)
       setRef(props.bottomScrollbarWidthRef, null)
-      setRef(props.rightScrollbarWidthRef, null)
-      setRef(props.leftScrollbarWidthRef, null)
     }
 
     if (el) {
@@ -83,24 +80,9 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
       this.listener = new ScrollListener(el)
 
       this.disconnectSize = watchSize(el, (clientWidth, clientHeight) => {
-        const { props, context } = this
+        const { props } = this
+        const endScrollbarWidth = el.offsetWidth - clientWidth
         const bottomScrollbarWidth = el.offsetHeight - clientHeight
-        const horizontalScrollbarWidth = el.offsetWidth - clientWidth
-
-        let rightScrollbarWidth = 0
-        let leftScrollbarWidth = 0
-
-        /*
-        TODO: more clever way to detect RTL behavior based on current scroller's inner center of mass
-        Only do it if horizontalScrollbarWidth as well as if leftScrollbarWidthRef/rightScrollbarWidthRef,
-        meaning caller is compliant about avoiding left/right borders.
-        However, might not be worth it because still need to query RtlScrollerSystem
-        */
-        if (context.isRtl && getRtlScrollerConfig().leftScrollbars) {
-          leftScrollbarWidth = horizontalScrollbarWidth
-        } else {
-          rightScrollbarWidth = horizontalScrollbarWidth
-        }
 
         if (this.currentClientWidth !== clientWidth) {
           setRef(props.clientWidthRef, this.currentClientWidth = clientWidth)
@@ -114,11 +96,8 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
         if (!isDimsEqual(this.currentBottomScrollbarWidth, bottomScrollbarWidth)) {
           setRef(props.bottomScrollbarWidthRef, this.currentBottomScrollbarWidth = bottomScrollbarWidth)
         }
-        if (!isDimsEqual(this.currentRightScrollbarWidth, rightScrollbarWidth)) {
-          setRef(props.rightScrollbarWidthRef, this.currentRightScrollbarWidth = rightScrollbarWidth)
-        }
-        if (!isDimsEqual(this.currentLeftScrollbarWidth, leftScrollbarWidth)) {
-          setRef(props.leftScrollbarWidthRef, this.currentLeftScrollbarWidth = leftScrollbarWidth)
+        if (!isDimsEqual(this.currentEndScrollbarWidth, endScrollbarWidth)) {
+          setRef(props.endScrollbarWidthRef, this.currentEndScrollbarWidth = endScrollbarWidth)
         }
       }, /* client(width+height) = */ true)
     }
@@ -183,7 +162,7 @@ export function setNormalizedScrollX(el: HTMLElement, isRtl: boolean, x: number)
 Returns a value in the 'reverse' system
 */
 function getNormalizedRtlScrollX(scrollLeft: number, el: HTMLElement): number {
-  switch (getRtlScrollerConfig().system) {
+  switch (getRtlScrollerSystem()) {
     case 'positive':
       return el.scrollWidth - el.clientWidth - scrollLeft
     case 'negative':
@@ -198,7 +177,7 @@ TODO: is this really the same equations as getNormalizedRtlScrollX??? I think so
   If so, consolidate. With isRtl check too
 */
 function getNormalizedRtlScrollLeft(x: number, el: HTMLElement): number {
-  switch (getRtlScrollerConfig().system) {
+  switch (getRtlScrollerSystem()) {
     case 'positive':
       return el.scrollWidth - el.clientWidth - x
     case 'negative':
@@ -212,18 +191,16 @@ function getNormalizedRtlScrollLeft(x: number, el: HTMLElement): number {
 
 type RtlScrollerSystem = 'positive' | 'negative' | 'reverse'
 
-interface RtlScrollerConfig {
-  system: RtlScrollerSystem
-  leftScrollbars: boolean
+let _rtlScrollerSystem: RtlScrollerSystem | undefined
+
+function getRtlScrollerSystem(): RtlScrollerSystem {
+  return _rtlScrollerSystem || (_rtlScrollerSystem = detectRtlScrollerSystem())
 }
 
-let _rtlScrollerConfig: RtlScrollerConfig | undefined
-
-function getRtlScrollerConfig(): RtlScrollerConfig {
-  return _rtlScrollerConfig || (_rtlScrollerConfig = detectRtlScrollerConfig())
-}
-
-function detectRtlScrollerConfig(): RtlScrollerConfig {
+/*
+TODO: make this more minimal now that scrollbar-side detection isn't needed?
+*/
+function detectRtlScrollerSystem(): RtlScrollerSystem {
   let el = document.createElement('div')
   el.style.position = 'absolute'
   el.style.top = '-1000px'
@@ -251,9 +228,7 @@ function detectRtlScrollerConfig(): RtlScrollerConfig {
     }
   }
 
-  let rightScrollbars = innerEl.getBoundingClientRect().right < el.getBoundingClientRect().right
-
   el.remove()
 
-  return { system, leftScrollbars: !rightScrollbars }
+  return system
 }

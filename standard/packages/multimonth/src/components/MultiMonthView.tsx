@@ -38,8 +38,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
   private scrollerRef = createRef<Scroller>()
   private innerElRef = createRef<HTMLDivElement>()
   private clientWidth: number | undefined
-  private leftScrollbarWidth: number | undefined
-  private rightScrollbarWidth: number | undefined
+  private endScrollbarWidth: number | undefined
   private innerWidth: number | undefined
   private monthWidthMap = new RefMap<string, number>(() => {
     afterSize(this.handleWidths)
@@ -94,8 +93,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
               className={verticalScrolling ? 'fc-liquid' : ''}
               ref={this.scrollerRef}
               clientWidthRef={this.handleClientWidth}
-              leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
-              rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+              endScrollbarWidthRef={this.handleEndScrollbarWidth}
             >
               <div ref={this.innerElRef} className='fc-multimonth-inner'>
                 {monthDateProfiles.map((monthDateProfile) => {
@@ -159,13 +157,8 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     afterSize(this.handleWidths)
   }
 
-  handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
-    this.leftScrollbarWidth = leftScrollbarWidth
-    afterSize(this.handleWidths)
-  }
-
-  handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
-    this.rightScrollbarWidth = rightScrollbarWidth
+  handleEndScrollbarWidth = (endScrollbarWidth: number) => {
+    this.endScrollbarWidth = endScrollbarWidth
     afterSize(this.handleWidths)
   }
 
@@ -175,7 +168,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     )
 
     if (monthWidth != null) { // somehow this is undefined when switching years
-      const scrollbarWidth = this.leftScrollbarWidth + this.rightScrollbarWidth
+      const scrollbarWidth = this.endScrollbarWidth
       const innerGap = this.clientWidth - this.innerWidth
 
       const { cols } = this.state

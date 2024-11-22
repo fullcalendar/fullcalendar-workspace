@@ -46,8 +46,7 @@ export interface DayGridLayoutNormalProps {
 }
 
 interface DayGridViewState {
-  leftScrollbarWidth?: number
-  rightScrollbarWidth?: number
+  endScrollbarWidth?: number
 }
 
 export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps, DayGridViewState> {
@@ -57,8 +56,6 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
 
     const verticalScrollbars = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
-
-    const scrollbarGutter = state.leftScrollbarWidth || state.rightScrollbarWidth
 
     return (
       <Fragment>
@@ -71,13 +68,12 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
                 stickyHeaderDates && 'fc-table-header-sticky',
               )}
             />
-            <ScrollbarGutter width={scrollbarGutter} />
+            <ScrollbarGutter width={state.endScrollbarWidth} />
           </div>
         )}
         <Scroller
           vertical={verticalScrollbars}
-          leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
-          rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+          endScrollbarWidthRef={this.handleEndScrollbarWidth}
           className={joinClassNames(
             'fc-daygrid-body fc-flex-col fc-print-block',
             verticalScrollbars && 'fc-liquid',
@@ -113,11 +109,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     setRef(this.props.scrollerRef, scroller)
   }
 
-  handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
-    this.setState({ leftScrollbarWidth })
-  }
-
-  handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
-    this.setState({ rightScrollbarWidth })
+  handleEndScrollbarWidth = (endScrollbarWidth: number) => {
+    this.setState({ endScrollbarWidth })
   }
 }

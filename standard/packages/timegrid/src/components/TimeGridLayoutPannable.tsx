@@ -59,8 +59,7 @@ export interface TimeGridLayoutPannableProps {
 interface TimeGridLayoutPannableState {
   clientWidth?: number
   clientHeight?: number
-  leftScrollbarWidth?: number
-  rightScrollbarWidth?: number
+  endScrollbarWidth?: number
   bottomScrollbarWidth?: number
   axisWidth?: number
   headerTierHeights: number[]
@@ -141,8 +140,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     )
     this.slatHeight = slatHeight
 
-    const scrollbarGutter = state.leftScrollbarWidth || state.rightScrollbarWidth
-
     return (
       <Fragment>
         {options.dayHeaders && (
@@ -208,7 +205,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   />
                 ))}
               </div>
-              <ScrollbarGutter width={scrollbarGutter} />
+              <ScrollbarGutter width={state.endScrollbarWidth} />
             </Scroller>
           </div>
         )}
@@ -261,7 +258,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     colWidth={colWidth}
                   />
                 </div>
-                <ScrollbarGutter width={scrollbarGutter} />
+                <ScrollbarGutter width={state.endScrollbarWidth} />
               </Scroller>
             </div>
             <div className='fc-rowdivider'></div>
@@ -333,8 +330,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               ref={this.mainScrollerRef}
               clientWidthRef={this.handleClientWidth}
               clientHeightRef={this.handleClientHeight}
-              leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
-              rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+              endScrollbarWidthRef={this.handleEndScrollbarWidth}
               bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
             >
               <div
@@ -433,12 +429,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     this.setState({ clientHeight })
   }
 
-  private handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
-    this.setState({ leftScrollbarWidth })
-  }
-
-  private handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
-    this.setState({ rightScrollbarWidth })
+  private handleEndScrollbarWidth = (endScrollbarWidth: number) => {
+    this.setState({ endScrollbarWidth })
   }
 
   private handleBottomScrollbarWidth = (bottomScrollbarWidth: number) => {

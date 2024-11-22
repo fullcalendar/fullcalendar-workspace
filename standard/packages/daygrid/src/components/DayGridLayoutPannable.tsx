@@ -55,8 +55,7 @@ export interface DayGridLayoutPannableProps {
 
 interface DayGridViewState {
   clientWidth?: number
-  leftScrollbarWidth?: number
-  rightScrollbarWidth?: number
+  endScrollbarWidth?: number
 }
 
 export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannableProps, DayGridViewState> {
@@ -76,8 +75,6 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
     const colCnt = props.cellRows[0].length
     const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.clientWidth)
 
-    const scrollbarGutter = state.leftScrollbarWidth || state.rightScrollbarWidth
-
     return (
       <Fragment>
         {options.dayHeaders && (
@@ -95,7 +92,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
               colWidth={colWidth}
               width={canvasWidth}
             />
-            <ScrollbarGutter width={scrollbarGutter} />
+            <ScrollbarGutter width={state.endScrollbarWidth} />
           </Scroller>
         )}
         <Scroller
@@ -108,8 +105,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
           )}
           ref={this.bodyScrollerRef}
           clientWidthRef={this.handleClientWidth}
-          leftScrollbarWidthRef={this.handleLeftScrollbarWidth}
-          rightScrollbarWidthRef={this.handleRightScrollbarWidth}
+          endScrollbarWidthRef={this.handleEndScrollbarWidth}
         >
           <DayGridRows
             dateProfile={props.dateProfile}
@@ -174,12 +170,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
     this.setState({ clientWidth })
   }
 
-  handleLeftScrollbarWidth = (leftScrollbarWidth: number) => {
-    this.setState({ leftScrollbarWidth })
-  }
-
-  handleRightScrollbarWidth = (rightScrollbarWidth: number) => {
-    this.setState({ rightScrollbarWidth })
+  handleEndScrollbarWidth = (endScrollbarWidth: number) => {
+    this.setState({ endScrollbarWidth })
   }
 
   // Scrolling
