@@ -166,9 +166,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               >
                 <div
                   className="fc-rel fc-grow"
-                  style={{
-                    width: canvasWidth,
-                  }}
+                  style={{ width: canvasWidth }}
                   ref={this.handeBodyEl}
                 >
                   <TimelineSlats

@@ -358,16 +358,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       clientWidthRef={this.handleSpreadsheetClientWidth}
                     >
                       <div
-                        className='fc-rel fc-grow'
-                        style={{
-                          width: spreadsheetCanvasWidth,
-                          // weird to have same element responsible for width and veritical padding
-                          paddingBottom: Math.max(
-                            0,
-                            (state.timeBottomScrollbarWidth || 0) -
-                            (state.spreadsheetBottomScrollbarWidth || 0)
-                          )
-                        }}
+                        className='fc-rel fc-grow' // same issue as others?
+                        style={{ width: spreadsheetCanvasWidth }}
                       >
                         <div
                           className='fc-flex-row'
@@ -481,6 +473,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             </div>
                           )
                         })}
+                        <ScrollbarGutter
+                          height={Math.max(
+                            0,
+                            (state.timeBottomScrollbarWidth || 0) -
+                            (state.spreadsheetBottomScrollbarWidth || 0)
+                          )}
+                        />
                       </div>
                     </Scroller>
 
@@ -572,15 +571,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                     >
                       <div
                         className='fc-rel fc-grow'
-                        style={{
-                          width: timeCanvasWidth,
-                          // weird to have same element responsible for width and veritical padding
-                          paddingBottom: Math.max(
-                            0,
-                            (state.spreadsheetBottomScrollbarWidth || 0) -
-                            (state.timeBottomScrollbarWidth || 0)
-                          )
-                        }}
+                        style={{ width: timeCanvasWidth }}
                         ref={this.handleBodyEl}
                       >
                         <div className='fc-fill'>
@@ -688,6 +679,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             })}
                           </Fragment>
                         </div>
+                        <ScrollbarGutter
+                          height={Math.max(
+                            0,
+                            (state.spreadsheetBottomScrollbarWidth || 0) -
+                            (state.timeBottomScrollbarWidth || 0)
+                          )}
+                        />
                       </div>
                     </Scroller>
 

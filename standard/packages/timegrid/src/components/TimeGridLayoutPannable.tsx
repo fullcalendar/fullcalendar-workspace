@@ -276,12 +276,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             style={{ width: axisWidth }}
             ref={this.axisScrollerRef}
           >
-            <div
-              className='fc-timegrid-slots-axis fc-grow fc-flex-col fc-rel'
-              style={{
-                paddingBottom: state.bottomScrollbarWidth,
-              }}
-            >
+            <div className='fc-timegrid-slots-axis fc-grow fc-flex-col fc-rel'>
               {props.slatMetas.map((slatMeta, slatI) => (
                 <div
                   key={slatMeta.key}
@@ -310,6 +305,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 />
               )}
             </div>
+            <ScrollbarGutter height={state.bottomScrollbarWidth} />
           </Scroller>
           {/* SLATS / main (scroller)
           ---------------------------------------------------------------------------------------*/}
