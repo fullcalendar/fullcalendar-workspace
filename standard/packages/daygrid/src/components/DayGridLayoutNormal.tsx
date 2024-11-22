@@ -28,7 +28,7 @@ export interface DayGridLayoutNormalProps {
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 
   // header content
-  headerTiers: RowConfig<{ text: string }>[]
+  headerTiers: RowConfig<{ text: string, isDisabled: boolean }>[]
 
   // body content
   fgEventSegs: (DayGridRange & EventRangeProps)[]

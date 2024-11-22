@@ -23,7 +23,7 @@ export interface TimeGridLayoutPannableProps {
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
 
   // header content
-  headerTiers: RowConfig<{ text: string }>[]
+  headerTiers: RowConfig<{ text: string, isDisabled: boolean }>[]
 
   // all-day content
   fgEventSegs: (SlicedCoordRange & EventRangeProps)[]

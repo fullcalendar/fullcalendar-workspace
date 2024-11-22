@@ -4,7 +4,7 @@ import { DayGridHeaderRow } from './DayGridHeaderRow.js'
 import { RowConfig } from '../header-tier.js'
 
 export interface DayGridHeaderProps {
-  headerTiers: RowConfig<{ text: string }>[]
+  headerTiers: RowConfig<{ text: string, isDisabled: boolean }>[]
   className?: string
 
   // dimensions

@@ -1,7 +1,7 @@
 import { DateMarker, DAY_IDS } from '../datelib/marker.js'
 import { rangeContainsMarker, DateRange } from '../datelib/date-range.js'
 import { DateProfile } from '../DateProfileGenerator.js'
-import { Theme } from '../theme/Theme.js'
+import { joinClassNames } from '../util/html.js'
 
 export interface DateMeta {
   dow: number
@@ -23,56 +23,31 @@ export function getDateMeta(date: DateMarker, todayRange?: DateRange, nowDate?: 
   }
 }
 
-export function getDayClassNames(meta: DateMeta) {
-  let classNames: string[] = [
+export function getDayClassName(meta: DateMeta): string {
+  return joinClassNames(
     'fc-day',
     `fc-day-${DAY_IDS[meta.dow]}`,
-  ]
-
-  if (meta.isDisabled) {
-    classNames.push('fc-day-disabled')
-  } else {
-    if (meta.isToday) {
-      classNames.push('fc-day-today')
-    }
-
-    if (meta.isPast) {
-      classNames.push('fc-day-past')
-    }
-
-    if (meta.isFuture) {
-      classNames.push('fc-day-future')
-    }
-
-    if (meta.isOther) {
-      classNames.push('fc-day-other')
-    }
-  }
-
-  return classNames
+    meta.isDisabled
+      ? 'fc-day-disabled'
+      : joinClassNames(
+          meta.isToday && 'fc-day-today',
+          meta.isPast && 'fc-day-past',
+          meta.isFuture && 'fc-day-future',
+          meta.isOther && 'fc-day-other',
+        )
+  )
 }
 
-export function getSlotClassNames(meta: DateMeta, theme: Theme) {
-  let classNames: string[] = [
+export function getSlotClassName(meta: DateMeta): string {
+  return joinClassNames(
     'fc-slot',
     `fc-slot-${DAY_IDS[meta.dow]}`,
-  ]
-
-  if (meta.isDisabled) {
-    classNames.push('fc-slot-disabled')
-  } else {
-    if (meta.isToday) {
-      classNames.push('fc-slot-today')
-    }
-
-    if (meta.isPast) {
-      classNames.push('fc-slot-past')
-    }
-
-    if (meta.isFuture) {
-      classNames.push('fc-slot-future')
-    }
-  }
-
-  return classNames
+    meta.isDisabled
+      ? 'fc-slot-disabled'
+      : joinClassNames(
+        meta.isToday && 'fc-slot-today',
+        meta.isPast && 'fc-slot-past',
+        meta.isFuture && 'fc-slot-future',
+      )
+  )
 }

@@ -11,7 +11,7 @@ export interface DayGridHeaderCellProps<RenderProps> {
   innerHeightRef?: Ref<number>
 }
 
-export class DayGridHeaderCell<RenderProps extends { text: string }> extends BaseComponent<DayGridHeaderCellProps<RenderProps>> {
+export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderCellProps<RenderProps>> {
   // internal
   private disconectInnerHeight?: () => void
 
@@ -42,13 +42,13 @@ export class DayGridHeaderCell<RenderProps extends { text: string }> extends Bas
         classNameGenerator={
           // don't use custom classNames if disabled
           // TODO: make DRY with DayCellContainer
-          dataConfig.isDisabled ? undefined : renderConfig.classNameGenerator
+          dataConfig.renderProps.isDisabled ? undefined : renderConfig.classNameGenerator
         }
         didMount={renderConfig.didMount}
         willUnmount={renderConfig.willUnmount}
       >
         {(InnerContainer) => (
-          !dataConfig.isDisabled && (
+          !dataConfig.renderProps.isDisabled && (
             <InnerContainer
               tag={dataConfig.isNavLink ? 'a' : 'div'}
               attrs={dataConfig.innerAttrs}
@@ -56,7 +56,8 @@ export class DayGridHeaderCell<RenderProps extends { text: string }> extends Bas
                 'fc-cell-inner fc-flex-col fc-padding-sm',
                 props.isSticky && 'fc-sticky-s'
               )}
-              elRef={this.handleInnerEl} />
+              elRef={this.handleInnerEl}
+            />
           )
         )}
       </ContentContainer>

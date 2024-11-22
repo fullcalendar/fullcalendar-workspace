@@ -29,7 +29,7 @@ export interface DayGridLayoutProps {
   className: string
 
   // header content
-  headerTiers: RowConfig<{ text: string }>[]
+  headerTiers: RowConfig<{ text: string, isDisabled: boolean }>[]
 
   // body content
   fgEventSegs: (DayGridRange & EventRangeProps)[]

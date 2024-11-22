@@ -11,7 +11,7 @@ export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProp
   innerHeightRef?: Ref<number>
 }
 
-export class DayGridHeaderRow<RenderProps extends { text: string }> extends BaseComponent<DayGridHeaderRowProps<RenderProps>> {
+export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderRowProps<RenderProps>> {
   // ref
   private innerHeightRefMap = new RefMap<string, number>(() => {
     afterSize(this.handleInnerHeights)

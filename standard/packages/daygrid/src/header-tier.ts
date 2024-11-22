@@ -1,5 +1,5 @@
 import { ClassNamesGenerator, CustomContentGenerator, DayHeaderContentArg, DidMountHandler, WillUnmountHandler } from '@fullcalendar/core'
-import { addDays, buildNavLinkAttrs, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassNames, joinClassNames, ViewContext } from '@fullcalendar/core/internal'
+import { addDays, buildNavLinkAttrs, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, ViewContext } from '@fullcalendar/core/internal'
 
 export interface CellRenderConfig<RenderProps> {
   generatorName: string
@@ -16,7 +16,6 @@ export interface CellDataConfig<RenderProps> {
   attrs?: any // TODO
   innerAttrs?: any // TODO
   colSpan?: number // TODO: make required? easier for internal users
-  isDisabled?: boolean
   isNavLink?: boolean
 }
 
@@ -110,9 +109,8 @@ export function buildDateDataConfigs(
           attrs: { 'data-date': !dateMeta.isDisabled ? formatDayString(date) : undefined },
           innerAttrs: isNavLink ? buildNavLinkAttrs(context, date) : {},
           colSpan,
-          isDisabled: dateMeta.isDisabled, // TODO: how to test this?
           isNavLink,
-          className: joinClassNames(...getDayClassNames(dateMeta)), // TODO: better way of calling!
+          className: getDayClassName(dateMeta),
         }
       })
     : dates.map((date) => { // DayOfWeek
@@ -139,7 +137,7 @@ export function buildDateDataConfigs(
           renderProps,
           innerAttrs: { 'aria-label': dateEnv.format(normDate, WEEKDAY_FORMAT) },
           colSpan,
-          className: joinClassNames(...getDayClassNames(dayMeta)), // TODO: better way of calling!
+          className: getDayClassName(dayMeta),
         }
       })
 }

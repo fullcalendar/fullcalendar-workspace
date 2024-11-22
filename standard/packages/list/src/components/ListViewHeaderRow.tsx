@@ -1,7 +1,7 @@
 import { DayHeaderContentArg } from '@fullcalendar/core'
 import {
   BaseComponent, DateMarker, DateRange, getDateMeta,
-  getDayClassNames, formatDayString, buildNavLinkAttrs, getUniqueDomId, ContentContainer,
+  getDayClassName, formatDayString, buildNavLinkAttrs, getUniqueDomId, ContentContainer,
   getStickyHeaderDates,
   joinClassNames,
 } from '@fullcalendar/core/internal'
@@ -50,7 +50,7 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
         tag="tr"
         className={joinClassNames(
           'fc-list-day',
-          ...getDayClassNames(dayMeta),
+          getDayClassName(dayMeta),
         )}
         attrs={{
           'data-date': formatDayString(dayDate),

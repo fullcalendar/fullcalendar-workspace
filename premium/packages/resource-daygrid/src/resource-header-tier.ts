@@ -12,7 +12,7 @@ export function buildResourceRowConfigs(
   todayRange: DateRange,
   dayHeaderFormat: DateFormatter, // TODO: rename to dateHeaderFormat?
   context: ViewContext,
-): RowConfig<{ text: string }>[] {
+): RowConfig<{ text: string, isDisabled: boolean }>[] {
   if (!resources.length) {
     return [
       buildDateRowConfig(
@@ -115,6 +115,7 @@ function buildResourceDataConfigs(
       renderProps: {
         resource: resourceApi,
         text: resource.title || resourceApiId || '',
+        isDisabled: false,
         date: date ? context.dateEnv.toDate(date) : null,
         view: context.viewApi,
       },

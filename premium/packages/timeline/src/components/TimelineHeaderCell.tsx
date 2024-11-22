@@ -1,8 +1,8 @@
 import { ViewApi } from '@fullcalendar/core'
 import {
-  BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassNames,
+  BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassName,
   buildNavLinkAttrs,
-  getDayClassNames, DateProfile, memoizeObjArg, ViewContext, memoize, ContentContainer, DateEnv,
+  getDayClassName, DateProfile, memoizeObjArg, ViewContext, memoize, ContentContainer, DateEnv,
   watchSize,
   setRef,
   joinClassNames,
@@ -67,11 +67,10 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
           'fc-header-cell fc-cell fc-flex-col fc-justify-center',
           props.borderStart && 'fc-border-s',
           props.isCentered ? 'fc-align-center' : 'fc-align-start',
-          ...( // TODO: so slot classnames for week/month/bigger. see note above about rowUnit
-            cell.rowUnit === 'time' ?
-              getSlotClassNames(dateMeta, context.theme) :
-              getDayClassNames(dateMeta)
-          ),
+          // TODO: so slot classnames for week/month/bigger. see note above about rowUnit
+          cell.rowUnit === 'time' ?
+            getSlotClassName(dateMeta) :
+            getDayClassName(dateMeta),
         )}
         attrs={{
           'data-date': dateEnv.formatIso(cell.date, {

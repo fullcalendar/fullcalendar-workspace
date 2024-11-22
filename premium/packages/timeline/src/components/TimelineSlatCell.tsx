@@ -1,7 +1,7 @@
 import { SlotLaneContentArg } from '@fullcalendar/core'
 import {
-  isInt, BaseComponent, DateMarker, DateRange, getDateMeta, getSlotClassNames,
-  getDayClassNames, DateProfile, ContentContainer,
+  isInt, BaseComponent, DateMarker, DateRange, getDateMeta, getSlotClassName,
+  getDayClassName, DateProfile, ContentContainer,
   watchWidth,
   setRef,
   joinClassNames,
@@ -35,7 +35,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
 
   render() {
     let { props, context } = this
-    let { dateEnv, options, theme } = context
+    let { dateEnv, options } = context
     let { date, tDateProfile, isEm } = props
     let dateMeta = getDateMeta(props.date, props.todayRange, props.nowDate, props.dateProfile)
     let renderProps: SlotLaneContentArg = {
@@ -63,11 +63,9 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           ),
           'fc-timeline-slot-lane fc-cell fc-flex-col fc-align-start',
           props.borderStart && 'fc-border-s',
-          ...(
-            props.isDay ?
-              getDayClassNames(dateMeta) :
-              getSlotClassNames(dateMeta, theme)
-          ),
+          props.isDay ?
+            getDayClassName(dateMeta) :
+            getSlotClassName(dateMeta),
         )}
         attrs={{
           'data-date': dateEnv.formatIso(date, {

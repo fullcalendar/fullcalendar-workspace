@@ -7,6 +7,7 @@ import { MountArg } from '@fullcalendar/core/internal'
 export interface ResourceLabelContentArg {
   resource: ResourceApi
   text: string
+  isDisabled: boolean
   date?: Date
   view: ViewApi
 }
