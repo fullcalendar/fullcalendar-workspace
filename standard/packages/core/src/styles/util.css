@@ -104,6 +104,11 @@ Rarely used. Just inline this?
   padding-bottom: 2px; // can use just height if we move towards content-box!
 }
 
+.fc-scrollbar-gutter {
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
 // Misc Utils
 // -------------------------------------------------------------------------------------------------
 

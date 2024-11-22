@@ -18,6 +18,7 @@ import {
   EventRangeProps,
   StickyFooterScrollbar,
   joinClassNames,
+  ScrollbarGutter,
 } from '@fullcalendar/core/internal'
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -75,6 +76,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
     const colCnt = props.cellRows[0].length
     const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.clientWidth)
 
+    const scrollbarGutter = state.leftScrollbarWidth || state.rightScrollbarWidth
+
     return (
       <Fragment>
         {options.dayHeaders && (
@@ -82,7 +85,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             horizontal
             hideScrollbars
             className={joinClassNames(
-              'fc-daygrid-header fc-border-b',
+              'fc-daygrid-header fc-flex-row fc-border-b',
               stickyHeaderDates && 'fc-table-header-sticky',
             )}
             ref={this.headerScrollerRef}
@@ -91,9 +94,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
               headerTiers={props.headerTiers}
               colWidth={colWidth}
               width={canvasWidth}
-              paddingLeft={state.leftScrollbarWidth}
-              paddingRight={state.rightScrollbarWidth}
             />
+            <ScrollbarGutter width={scrollbarGutter} />
           </Scroller>
         )}
         <Scroller

@@ -8,12 +8,13 @@ export interface DayGridHeaderProps {
   className?: string
 
   // dimensions
-  colWidth?: number
   width?: number
-  paddingLeft?: number
-  paddingRight?: number
+  colWidth?: number
 }
 
+/*
+TODO: kill this class in favor of DayGridHeaderRows?
+*/
 export class DayGridHeader extends BaseComponent<DayGridHeaderProps> {
   render() {
     const { props } = this
@@ -21,12 +22,11 @@ export class DayGridHeader extends BaseComponent<DayGridHeaderProps> {
       <div
         className={joinClassNames(
           props.className,
-          'fc-flex-col fc-content-box',
+          'fc-flex-col',
+          props.width == null && 'fc-liquid',
         )}
         style={{
-          width: props.width,
-          paddingLeft: props.paddingLeft,
-          paddingRight: props.paddingRight,
+          width: props.width
         }}
       >
         {props.headerTiers.map((rowConfig, tierNum) => (

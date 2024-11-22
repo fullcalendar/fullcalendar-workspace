@@ -19,6 +19,7 @@ import {
   getIsHeightAuto,
   RefMap,
   joinClassNames,
+  ScrollbarGutter,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
@@ -90,6 +91,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     )
     this.slotWidth = slotWidth
 
+    const scrollbarGutter = state.leftScrollbarWidth || state.rightScrollbarWidth
+
     return (
       <NowTimer unit={timerUnit}>
         {(nowDate: DateMarker, todayRange: DateRange) => {
@@ -110,18 +113,14 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 horizontal
                 hideScrollbars
                 className={joinClassNames(
-                  'fc-timeline-header fc-flex-col fc-border-b',
+                  'fc-timeline-header fc-flex-row fc-border-b',
                   stickyHeaderDates && 'fc-table-header-sticky',
                 )}
                 ref={this.headerScrollerRef}
               >
                 <div
-                  className='fc-rel fc-content-box' // origin for now-indicator
-                  style={{
-                    width: canvasWidth,
-                    paddingLeft: state.leftScrollbarWidth,
-                    paddingRight: state.rightScrollbarWidth,
-                  }}
+                  className='fc-rel fc-liquid' // origin for now-indicator
+                  style={{ width: canvasWidth }}
                 >
                   {cellRows.map((cells, rowLevel) => {
                     const isLast = rowLevel === cellRows.length - 1
@@ -141,7 +140,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     )
                   })}
                   {enableNowIndicator && (
-                    // TODO: make this positioned WITHIN padding?
                     <TimelineNowIndicatorArrow
                       tDateProfile={tDateProfile}
                       nowDate={nowDate}
@@ -149,6 +147,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     />
                   )}
                 </div>
+                <ScrollbarGutter width={scrollbarGutter} />
               </Scroller>
 
               {/* BODY

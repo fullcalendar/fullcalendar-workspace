@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, getIsHeightAuto, getStickyHeaderDates, Hit, joinClassNames, rangeContainsMarker, RefMap, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
+import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, getIsHeightAuto, getStickyHeaderDates, Hit, joinClassNames, rangeContainsMarker, RefMap, ScrollbarGutter, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { COMPACT_CELL_WIDTH, DayGridHeaderRow, RowConfig } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
@@ -105,6 +105,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
       ? { right: axisWidth }
       : { left: axisWidth }
 
+    const scrollbarGutter = state.leftScrollbarWidth || state.rightScrollbarWidth
+
     return (
       <Fragment>
         {/* HEADER
@@ -115,10 +117,6 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               'fc-timegrid-header fc-flex-col fc-border-b',
               stickyHeaderDates && 'fc-table-header-sticky',
             )}
-            style={{
-              paddingLeft: state.leftScrollbarWidth,
-              paddingRight: state.rightScrollbarWidth,
-            }}
           >
             {props.headerTiers.map((rowConfig, tierNum) => (
               <div
@@ -145,6 +143,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   {...rowConfig}
                   className='fc-border-s fc-liquid'
                 />
+                <ScrollbarGutter width={scrollbarGutter} />
               </div>
             ))}
           </div>
@@ -156,10 +155,6 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             <div
               // TODO: role="rowgroup"
               className='fc-timegrid-allday fc-flex-col'
-              style={{
-                paddingLeft: state.leftScrollbarWidth,
-                paddingRight: state.rightScrollbarWidth,
-              }}
             >
               <div className='fc-flex-row'>
                 <TimeGridAllDayLabel
@@ -190,6 +185,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   dayMaxEvents={props.dayMaxEvents}
                   dayMaxEventRows={props.dayMaxEventRows}
                 />
+                <ScrollbarGutter width={scrollbarGutter} />
               </div>
             </div>
             <div className='fc-rowdivider'></div>

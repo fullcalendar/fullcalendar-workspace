@@ -14,6 +14,7 @@ import {
   DayGridRange,
   EventRangeProps,
   joinClassNames,
+  ScrollbarGutter,
 } from '@fullcalendar/core/internal'
 import { Fragment, Ref, createElement } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -57,18 +58,21 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     const verticalScrollbars = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
 
+    const scrollbarGutter = state.leftScrollbarWidth || state.rightScrollbarWidth
+
     return (
       <Fragment>
         {options.dayHeaders && (
-          <DayGridHeader
-            headerTiers={props.headerTiers}
-            className={joinClassNames(
-              'fc-daygrid-header fc-border-b',
-              stickyHeaderDates && 'fc-table-header-sticky',
-            )}
-            paddingLeft={state.leftScrollbarWidth}
-            paddingRight={state.rightScrollbarWidth}
-          />
+          <div className='fc-flex-row fc-border-b'>
+            <DayGridHeader
+              headerTiers={props.headerTiers}
+              className={joinClassNames(
+                'fc-daygrid-header',
+                stickyHeaderDates && 'fc-table-header-sticky',
+              )}
+            />
+            <ScrollbarGutter width={scrollbarGutter} />
+          </div>
         )}
         <Scroller
           vertical={verticalScrollbars}

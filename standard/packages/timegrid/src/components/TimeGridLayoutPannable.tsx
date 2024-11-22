@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, StickyFooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, ScrollbarGutter, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, StickyFooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef } from "@fullcalendar/core/internal"
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { COMPACT_CELL_WIDTH, DayGridHeaderRow, RowConfig, computeColWidth } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
@@ -141,6 +141,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     )
     this.slatHeight = slatHeight
 
+    const scrollbarGutter = state.leftScrollbarWidth || state.rightScrollbarWidth
+
     return (
       <Fragment>
         {options.dayHeaders && (
@@ -187,28 +189,26 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             <Scroller
               horizontal
               hideScrollbars
-              className='fc-border-s fc-liquid'
+              className='fc-flex-row fc-border-s fc-liquid'
               ref={this.headerScrollerRef}
             >
+              {/* TODO: converge with DayGridHeader */}
               <div
-                className='fc-content-box'
-                style={{
-                  width: canvasWidth,
-                  paddingLeft: state.leftScrollbarWidth,
-                  paddingRight: state.rightScrollbarWidth,
-                }}
+                className={canvasWidth == null ? 'fc-liquid' : ''}
+                style={{ width: canvasWidth }}
               >
                 {props.headerTiers.map((rowConfig, tierNum) => (
                   <DayGridHeaderRow
                     {...rowConfig}
                     key={tierNum}
-                    innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}
+                    className={tierNum ? 'fc-border-t' : ''}
                     height={state.headerTierHeights[tierNum]}
                     colWidth={colWidth}
-                    className={tierNum ? 'fc-border-t' : ''}
+                    innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}
                   />
                 ))}
               </div>
+              <ScrollbarGutter width={scrollbarGutter} />
             </Scroller>
           </div>
         )}
@@ -226,16 +226,12 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               <Scroller
                 horizontal
                 hideScrollbars
-                className='fc-border-s fc-flex-col fc-print-block fc-liquid' // fill remaining width
+                className='fc-border-s fc-flex-row fc-print-block fc-liquid' // fill remaining width
                 ref={this.allDayScrollerRef}
               >
                 <div
-                  className='fc-content-box fc-flex-col fc-print-block fc-grow' // grow as tall as label cell
-                  style={{
-                    width: canvasWidth,
-                    paddingLeft: state.leftScrollbarWidth,
-                    paddingRight: state.rightScrollbarWidth,
-                  }}
+                  className='fc-flex-col fc-print-block fc-grow' // grow as tall as label cell
+                  style={{ width: canvasWidth }}
                 >
                   <TimeGridAllDayLane
                     className='fc-grow' // grow as tall as label cell
@@ -265,6 +261,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     colWidth={colWidth}
                   />
                 </div>
+                <ScrollbarGutter width={scrollbarGutter} />
               </Scroller>
             </div>
             <div className='fc-rowdivider'></div>
@@ -340,7 +337,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               rightScrollbarWidthRef={this.handleRightScrollbarWidth}
               bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
             >
-              <div className='fc-grow fc-flex-col fc-print-block fc-rel' style={{ width: canvasWidth }}>
+              <div
+                className='fc-grow fc-flex-col fc-print-block fc-rel'
+                style={{ width: canvasWidth }}
+              >
                 <TimeGridCols
                   dateProfile={props.dateProfile}
                   nowDate={props.nowDate}

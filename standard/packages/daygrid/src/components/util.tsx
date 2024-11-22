@@ -19,7 +19,7 @@ export function buildDayTableModel(dateProfile: DateProfile, dateProfileGenerato
 }
 
 export function computeColWidth(colCnt: number, colMinWidth: number, viewportWidth: number | undefined): [
-  canvasWidth: number | undefined,
+  canvasWidth: number | undefined, // does NOT include scrollbar gutter
   colWidth: number | undefined,
 ] {
   if (viewportWidth == null) {

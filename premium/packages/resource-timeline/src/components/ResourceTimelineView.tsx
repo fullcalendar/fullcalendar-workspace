@@ -17,6 +17,7 @@ import {
   NowTimer,
   rangeContainsMarker,
   RefMap,
+  ScrollbarGutter,
   Scroller,
   ScrollerSyncerInterface,
   StickyFooterScrollbar,
@@ -273,6 +274,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     let hasResourceBusinessHours = this.computeHasResourceBusinessHours(flatResourceLayouts)
     let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
 
+    const scrollbarGutter = state.leftScrollbarWidth || state.rightScrollbarWidth
+
     return (
       <NowTimer unit={timerUnit}>
         {(nowDate: DateMarker, todayRange: DateRange) => {
@@ -510,17 +513,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       horizontal
                       hideScrollbars
                       className={joinClassNames(
-                        'fc-timeline-header fc-flex-col fc-print-block fc-border-b',
+                        'fc-timeline-header fc-flex-row fc-print-block fc-border-b',
                         stickyHeaderDates && 'fc-table-header-sticky',
                       )}
                     >
                       <div
-                        className='fc-rel fc-content-box'
-                        style={{
-                          width: timeCanvasWidth,
-                          paddingLeft: state.leftScrollbarWidth,
-                          paddingRight: state.rightScrollbarWidth,
-                        }}
+                        className='fc-rel fc-liquid' // origin for now-indicator
+                        style={{ width: timeCanvasWidth }}
                       >
                         {cellRows.map((cells, rowLevel) => {
                           const isLast = rowLevel === cellRows.length - 1
@@ -550,6 +549,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           />
                         )}
                       </div>
+                      <ScrollbarGutter width={scrollbarGutter} />
                     </Scroller>
 
                     {/* time-area BODY (w/ events)
