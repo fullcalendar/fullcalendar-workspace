@@ -223,15 +223,14 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               <Scroller
                 horizontal
                 hideScrollbars
-                className='fc-border-s fc-flex-row fc-print-block fc-liquid' // fill remaining width
+                className='fc-border-s fc-flex-row fc-liquid' // fill remaining width
                 ref={this.allDayScrollerRef}
               >
                 <div
-                  className='fc-flex-col fc-print-block fc-grow' // grow as tall as label cell
+                  className='fc-flex-col'
                   style={{ width: canvasWidth }}
                 >
                   <TimeGridAllDayLane
-                    className='fc-grow' // grow as tall as label cell
                     dateProfile={props.dateProfile}
                     todayRange={props.todayRange}
                     cells={props.cells}
@@ -273,12 +272,12 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           <Scroller
             vertical={verticalScrolling}
             hideScrollbars
-            className='fc-flex-col fc-print-block fc-content-box'
+            className='fc-flex-col fc-content-box'
             style={{ width: axisWidth }}
             ref={this.axisScrollerRef}
           >
             <div
-              className='fc-timegrid-slots-axis fc-grow fc-flex-col fc-print-block fc-rel'
+              className='fc-timegrid-slots-axis fc-grow fc-flex-col fc-rel'
               style={{
                 paddingBottom: state.bottomScrollbarWidth,
               }}
@@ -317,14 +316,14 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           <div
             // we need this div because it's bad for Scroller to have left/right borders,
             // AND because we need to containt the StickyFooterScrollbar
-            className='fc-border-s fc-liquid fc-flex-col fc-print-block'
+            className='fc-border-s fc-liquid fc-flex-col'
           >
             <Scroller
               vertical={verticalScrolling}
               horizontal
               hideScrollbars={stickyFooterScrollbar /* also means height:auto, so won't need vertical scrollbars anyway */}
               className={joinClassNames(
-                'fc-flex-col fc-print-block',
+                'fc-flex-col',
                 verticalScrolling && 'fc-liquid',
               )}
               ref={this.mainScrollerRef}
@@ -334,7 +333,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
             >
               <div
-                className='fc-grow fc-flex-col fc-print-block fc-rel'
+                className='fc-grow fc-flex-col fc-rel'
                 style={{ width: canvasWidth }}
               >
                 <TimeGridCols
@@ -361,7 +360,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   colWidth={colWidth}
                   slatHeight={slatHeight}
                 />
-                <div className='fc-timegrid-slots fc-flex-col fc-print-block fc-grow'>
+                <div className='fc-timegrid-slots fc-flex-col fc-grow'>
                   {props.slatMetas.map((slatMeta, slatI) => (
                     <div
                       key={slatMeta.key}

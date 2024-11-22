@@ -75,7 +75,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
           vertical={verticalScrollbars}
           endScrollbarWidthRef={this.handleEndScrollbarWidth}
           className={joinClassNames(
-            'fc-daygrid-body fc-flex-col fc-print-block',
+            'fc-daygrid-body fc-flex-col',
             verticalScrollbars && 'fc-liquid',
           )}
           ref={this.handleScroller}

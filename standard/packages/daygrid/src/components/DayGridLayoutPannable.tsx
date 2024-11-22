@@ -100,7 +100,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
           horizontal
           hideScrollbars={stickyFooterScrollbar}
           className={joinClassNames(
-            'fc-daygrid-body fc-flex-col fc-print-block',
+            'fc-daygrid-body fc-flex-col',
             verticalScrollbars && 'fc-liquid',
           )}
           ref={this.bodyScrollerRef}

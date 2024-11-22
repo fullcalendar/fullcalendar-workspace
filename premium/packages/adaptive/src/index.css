@@ -40,10 +40,11 @@
   Workaround for Safari needing block children for break-inside:avoid
   Instead, can simply omit fc-flex-col, right?
   TODO: remove in favor of <table> techniques
-  */
+
   & .fc-flex-col.fc-print-block {
     display: block !important;
   }
+  */
 }
 
 .fc-cell {
