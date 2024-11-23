@@ -99,6 +99,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
       state.clientHeight,
     )
     this.slatHeight = slatHeight
+    const totalSlatHeight = (slatHeight || 0) * slatCnt
 
     const axisStartCss = context.isRtl
       ? { right: axisWidth }
@@ -140,7 +141,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   {...rowConfig}
                   className='fc-border-s fc-liquid'
                 />
-                <ScrollbarGutter width={state.endScrollbarWidth} />
+                <ScrollbarGutter width={
+                  props.forPrint ? 0 : // HACK for Firefox when flushSync doesn't have time to finish
+                    state.endScrollbarWidth
+                } />
               </div>
             ))}
           </div>
@@ -182,7 +186,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   dayMaxEvents={props.dayMaxEvents}
                   dayMaxEventRows={props.dayMaxEventRows}
                 />
-                <ScrollbarGutter width={state.endScrollbarWidth} />
+                <ScrollbarGutter width={
+                  props.forPrint ? 0 : // HACK for Firefox when flushSync doesn't have time to finish
+                    state.endScrollbarWidth
+                } />
               </div>
             </div>
             <div className='fc-rowdivider'></div>
@@ -201,7 +208,15 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           clientHeightRef={this.handleClientHeight}
           endScrollbarWidthRef={this.handleEndScrollbarWidth}
         >
-          <div className='fc-flex-col fc-grow fc-rel'>
+          <div
+            className='fc-rel fc-grow fc-flex-col'
+            // in print mode, this div creates the height and everything is absolutely positioned within
+            // we need to do this so that slats positioning synces with events's positioning
+            // otherwise, get out of sync on second page
+            style={{ height: props.forPrint ? totalSlatHeight : undefined }}
+          >
+
+            {/* TODO: collapse this fill wrapper with actual TimeGridCols */}
             <div className='fc-fill fc-border-transparent fc-border-s' style={axisStartCss}>
               <TimeGridCols
                 dateProfile={props.dateProfile}
@@ -227,7 +242,12 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 slatHeight={slatHeight}
               />
             </div>
-            <div className='fc-timegrid-slots fc-flex-col fc-grow'>
+
+            <div className={joinClassNames(
+              'fc-timegrid-slots fc-flex-col',
+              verticalScrolling && options.expandRows && 'fc-grow',
+              props.forPrint ? 'fc-abs-tx' : 'fc-rel', // needs rel for zIndex
+            )}>
               {props.slatMetas.map((slatMeta, slatI) => (
                 <div
                   key={slatMeta.key}
@@ -254,6 +274,12 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 </div>
               ))}
             </div>
+
+            {verticalScrolling && !options.expandRows && (
+              // temporary filler
+              <div style={{ flexGrow: 1, flexBasis: 0, minHeight: 0, backgroundColor: '#ccc' }} />
+            )}
+
             {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
               <TimeGridNowIndicatorArrow
                 nowDate={nowDate}

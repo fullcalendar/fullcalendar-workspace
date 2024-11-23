@@ -4,7 +4,6 @@
 //
 
 .fc-timegrid-slots {
-  position: relative;
   z-index: $fg-z;
 }
 

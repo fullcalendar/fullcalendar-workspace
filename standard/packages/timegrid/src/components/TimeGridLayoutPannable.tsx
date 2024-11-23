@@ -359,7 +359,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   colWidth={colWidth}
                   slatHeight={slatHeight}
                 />
-                <div className='fc-timegrid-slots fc-flex-col fc-grow'>
+                <div className='fc-timegrid-slots fc-rel fc-flex-col fc-grow'>
                   {props.slatMetas.map((slatMeta, slatI) => (
                     <div
                       key={slatMeta.key}
