@@ -111,7 +111,13 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
       <ViewContainer
         className={joinClassNames(
           props.className,
-          'fc-border fc-flex-col fc-print-root',
+          'fc-border fc-flex-col',
+          // we don't do fc-print-root/fc-print-header here because works poorly with print:
+          // - Firefox >85ish CAN have flexboxes within it, but those cannot do absolute positioning
+          // - Chrome works okay, but abs-positioned events cover the repeated header
+          //   Also, there's weird padding on the last page at bottom of container, which matches
+          //   the height of the repeated header
+          // - Safari was never able to do repeated headers in the first place
         )}
         viewSpec={context.viewSpec}
       >

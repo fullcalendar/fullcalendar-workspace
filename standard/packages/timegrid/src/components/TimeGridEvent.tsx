@@ -27,7 +27,7 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
           props.isShort && 'fc-timegrid-event-short',
           props.isInset && 'fc-timegrid-event-inset',
           'fc-v-event',
-          props.isLiquid && 'fc-fill',
+          props.isLiquid && 'fc-liquid', // see note in TimeGridCol on why we use flexbox
         )}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
         segStart={props.segStart}

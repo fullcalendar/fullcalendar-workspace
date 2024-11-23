@@ -44,6 +44,7 @@
   flex-direction: row;
 }
 
+.fc-flex-col-forced, // not affected by print condition
 .fc-flex-col {
   display: flex;
   flex-direction: column;
@@ -126,13 +127,6 @@ Rarely used. Just inline this?
 
 .fc-fill {
   @include fill;
-}
-
-.fc-abs-tx {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
 }
 
 .fc-fill-x {

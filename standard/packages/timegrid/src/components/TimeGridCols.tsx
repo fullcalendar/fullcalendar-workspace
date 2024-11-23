@@ -9,6 +9,7 @@ import {
   EventSegUiInteractionState,
   Hit,
   addDurations,
+  isPropsEqual,
   joinClassNames,
   memoize,
   multiplyDuration,
@@ -28,6 +29,7 @@ export interface TimeGridColsProps {
   forPrint: boolean
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
   className?: string
+  style?: any // TODO: better types
 
   // content
   fgEventSegsByCol: (TimeGridRange & EventRangeProps)[][]
@@ -57,6 +59,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
     return (
       <div
         className={joinClassNames(props.className, 'fc-flex-row')}
+        style={props.style}
         ref={this.handleRootEl}
       >
         {props.cells.map((cell, col) => (
@@ -146,6 +149,10 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
     }
   }
 }
+
+TimeGridCols.addPropsEquality({
+  style: isPropsEqual,
+})
 
 // Utils
 // -------------------------------------------------------------------------------------------------

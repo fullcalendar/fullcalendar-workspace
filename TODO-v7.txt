@@ -8,6 +8,12 @@ Publishing:
 
 Print Mode
   No API changes. Simply make all views more-accurately render in print-mode. Possible with new techniques.
+  Move towards fc-print-* classNames that don't need to be conditionally applied; they are themselves conditional
+  FIX: text centering in header cells when fc-flex-col disabled on print
+  INVESTIGATE: in Safari/Chrome, Timegrid view (which doesn't do crazy print-header),
+    positions event y position off by 1px/2px on second page. happens because it forces the top
+    border on the view's root element, even when it doesn't want it!
+  todo: more investigation
   There will be known-bugs:
     - On Safari, table headers are not repeated for any view (browser bug)
     - On Chrome, for timegrid, table headers are sometimes covered by events
@@ -34,6 +40,7 @@ Print Mode
     you must put absolutely positioned siblings first
       more guaranteed to go to second page than if after a long sibling with height
     Firefox: setting a bottom coordinate will NEVER wrap to subsequent pages
+      problems with height:100% as well. height hardcoding often needed
 
 DayGrid
   prevent DayGridCell headers from overflowing? makes really small calendars look better

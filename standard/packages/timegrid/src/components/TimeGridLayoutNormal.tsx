@@ -99,7 +99,13 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
       state.clientHeight,
     )
     this.slatHeight = slatHeight
-    const totalSlatHeight = (slatHeight || 0) * slatCnt
+
+    // for printing
+    // in Chrome, slats and columns both need abs positioning within a relative container for them
+    // to sync across pages, and the relative container needs an explicit height
+    // in Firefox, same applies, but the flex-row for the cells has trouble spanning across page,
+    // so we need to set explicit height on flex-row and all parents
+    const forcedBodyHeight = props.forPrint ? (slatHeight || 0) * slatCnt : undefined
 
     const axisStartCss = context.isRtl
       ? { right: axisWidth }
@@ -112,7 +118,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
         {options.dayHeaders && (
           <div
             className={joinClassNames(
-              'fc-timegrid-header fc-flex-col fc-border-b fc-print-header',
+              // see note in TimeGridLayout about why we don't do fc-print-header
+              'fc-timegrid-header fc-flex-col fc-border-b',
               stickyHeaderDates && 'fc-table-header-sticky',
             )}
           >
@@ -213,40 +220,43 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             // in print mode, this div creates the height and everything is absolutely positioned within
             // we need to do this so that slats positioning synces with events's positioning
             // otherwise, get out of sync on second page
-            style={{ height: props.forPrint ? totalSlatHeight : undefined }}
+            style={{ height: forcedBodyHeight }}
           >
 
-            {/* TODO: collapse this fill wrapper with actual TimeGridCols */}
-            <div className='fc-fill fc-border-transparent fc-border-s' style={axisStartCss}>
-              <TimeGridCols
-                dateProfile={props.dateProfile}
-                nowDate={props.nowDate}
-                todayRange={props.todayRange}
-                cells={props.cells}
-                slatCnt={slatCnt}
-                forPrint={props.forPrint}
-                isHitComboAllowed={props.isHitComboAllowed}
-                className='fc-fill'
+            <TimeGridCols
+              dateProfile={props.dateProfile}
+              nowDate={props.nowDate}
+              todayRange={props.todayRange}
+              cells={props.cells}
+              slatCnt={slatCnt}
+              forPrint={props.forPrint}
+              isHitComboAllowed={props.isHitComboAllowed}
+              className='fc-fill fc-border-transparent fc-border-s'
+              style={{
+                ...axisStartCss,
+                height: forcedBodyHeight,
+              }}
 
-                // content
-                fgEventSegsByCol={props.fgEventSegsByCol}
-                bgEventSegsByCol={props.bgEventSegsByCol}
-                businessHourSegsByCol={props.businessHourSegsByCol}
-                nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
-                dateSelectionSegsByCol={props.dateSelectionSegsByCol}
-                eventDragByCol={props.eventDragByCol}
-                eventResizeByCol={props.eventResizeByCol}
-                eventSelection={props.eventSelection}
+              // content
+              fgEventSegsByCol={props.fgEventSegsByCol}
+              bgEventSegsByCol={props.bgEventSegsByCol}
+              businessHourSegsByCol={props.businessHourSegsByCol}
+              nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
+              dateSelectionSegsByCol={props.dateSelectionSegsByCol}
+              eventDragByCol={props.eventDragByCol}
+              eventResizeByCol={props.eventResizeByCol}
+              eventSelection={props.eventSelection}
 
-                // dimensions
-                slatHeight={slatHeight}
-              />
-            </div>
+              // dimensions
+              slatHeight={slatHeight}
+            />
 
             <div className={joinClassNames(
               'fc-timegrid-slots fc-flex-col',
               verticalScrolling && options.expandRows && 'fc-grow',
-              props.forPrint ? 'fc-abs-tx' : 'fc-rel', // needs rel for zIndex
+              props.forPrint
+                ? 'fc-fill-x' // will assume top:0, height will be decided naturally
+                : 'fc-rel', // needs abs/rel for zIndex
             )}>
               {props.slatMetas.map((slatMeta, slatI) => (
                 <div
