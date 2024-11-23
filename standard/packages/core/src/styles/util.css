@@ -128,6 +128,13 @@ Rarely used. Just inline this?
   @include fill;
 }
 
+.fc-abs-tx {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
 .fc-fill-x {
   position: absolute;
   left: 0;

@@ -37,16 +37,26 @@
   }
 
   /*
-  Workaround for Safari needing block children for break-inside:avoid
-  Instead, can simply omit fc-flex-col, right?
-  TODO: remove in favor of <table> techniques
-
-  & .fc-flex-col.fc-print-block {
+  TODO: be careful about horizontal alignment
+  */
+  & .fc-flex-col {
     display: block !important;
   }
-  */
+
+  & .fc-print-root {
+    display: table !important; // could conflict with other things. rearchitect?
+    table-layout: fixed;
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse; // so bottom-border can be put on fc-print-header
+  }
+
+  & .fc-print-header {
+    display: table-header-group !important; // could conflict with other things. rearchitect?
+    break-inside: avoid; // required
+  }
 }
 
-.fc-cell {
-  /* break-inside: avoid; -- was causing second-page abs problems for timeline */
+.fc-break-inside-avoid {
+  break-inside: avoid;
 }

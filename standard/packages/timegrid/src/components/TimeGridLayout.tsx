@@ -111,7 +111,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
       <ViewContainer
         className={joinClassNames(
           props.className,
-          'fc-border fc-flex-col',
+          'fc-border fc-flex-col fc-print-root',
         )}
         viewSpec={context.viewSpec}
       >

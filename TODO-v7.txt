@@ -18,6 +18,8 @@ Print Mode
       either use floats (bad for react-native) or conditionally apply justify-content: flex-end/space-between
     use margin-top to position events (better for <td> event rendering)
       and normalize common y-position by setting top MARGIN on eventcontainers below not-so-tall dayheaders
+    for rows, put border on bottom instead of top, so 2nd-page top border doesn't double-up with header
+      also looks better then last row has extra space at bottom of page
   print-view for multimonth will be weird
   BUG
     scroll not restored after print-view
@@ -31,6 +33,7 @@ Print Mode
   NOTES
     you must put absolutely positioned siblings first
       more guaranteed to go to second page than if after a long sibling with height
+    Firefox: setting a bottom coordinate will NEVER wrap to subsequent pages
 
 DayGrid
   prevent DayGridCell headers from overflowing? makes really small calendars look better

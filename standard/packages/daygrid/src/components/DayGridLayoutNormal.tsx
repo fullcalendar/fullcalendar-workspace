@@ -60,7 +60,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     return (
       <Fragment>
         {options.dayHeaders && (
-          <div className='fc-flex-row fc-border-b'>
+          <div className='fc-flex-row fc-border-b fc-print-header'>
             <DayGridHeader
               headerTiers={props.headerTiers}
               className={joinClassNames(

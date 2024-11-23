@@ -145,7 +145,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
         {options.dayHeaders && (
           <div
             className={joinClassNames(
-              'fc-timegrid-header fc-flex-row fc-border-b',
+              'fc-timegrid-header fc-flex-row fc-border-b fc-print-header',
               stickyHeaderDates && 'fc-table-header-sticky',
             )}
           >

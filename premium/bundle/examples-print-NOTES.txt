@@ -31,7 +31,7 @@ EXPERIMENTS:
                         ALSO, axis label text shifted when split across pages (like Chromium)
     TimeGrid H-Scroll : BAD, the splitpane abs all starts on *second* page, splits axis cells across pages strangely. NO-GO!
     Resource Timeline : BAD, the splitpane abs all starts on *second* page. NO-GO!
-    & w/ Col Grouping     NOTE: if you try to sprinkle fc-print-block everywhere, solves some problems but creates others
+    & w/ Col Grouping     NOTE: if you try to set display:block everywhere, solves some problems but creates others
 
 MORE EXPERIMENTS (results for these within the example-*.html files)
   <table> markup shows header/footer on multiple pages

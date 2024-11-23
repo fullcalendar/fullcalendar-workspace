@@ -111,7 +111,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
         {options.dayHeaders && (
           <div
             className={joinClassNames(
-              'fc-timegrid-header fc-flex-col fc-border-b',
+              'fc-timegrid-header fc-flex-col fc-border-b fc-print-header',
               stickyHeaderDates && 'fc-table-header-sticky',
             )}
           >
