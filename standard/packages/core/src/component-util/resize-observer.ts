@@ -54,7 +54,8 @@ function initNative(): [WatchSize, UpdateSizeSync] {
       if (client) {
         callback(el.clientWidth, el.clientHeight)
       } else if (entry.borderBoxSize && nativeBorderBoxEnabled) {
-        callback(entry.borderBoxSize[0].inlineSize, entry.borderBoxSize[0].blockSize)
+        const borderBoxSize: any = entry.borderBoxSize[0] || entry.borderBoxSize // HACK for Firefox
+        callback(borderBoxSize.inlineSize, borderBoxSize.blockSize)
       } else {
         const rect = el.getBoundingClientRect()
         callback(rect.width, rect.height)

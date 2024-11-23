@@ -6,6 +6,8 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+We are have cachebusting issues on cloudflare
+
 Print Mode
   No API changes. Simply make all views more-accurately render in print-mode. Possible with new techniques.
   Move towards fc-print-* classNames that don't need to be conditionally applied; they are themselves conditional
@@ -13,6 +15,7 @@ Print Mode
   INVESTIGATE: in Safari/Chrome, Timegrid view (which doesn't do crazy print-header),
     positions event y position off by 1px/2px on second page. happens because it forces the top
     border on the view's root element, even when it doesn't want it!
+    Also happens in Firefox 100 on Windows
   todo: more investigation
   There will be known-bugs:
     - On Safari, table headers are not repeated for any view (browser bug)
@@ -41,7 +44,25 @@ Print Mode
       more guaranteed to go to second page than if after a long sibling with height
     Firefox: setting a bottom coordinate will NEVER wrap to subsequent pages
       problems with height:100% as well. height hardcoding often needed
+    bugzilla flexbox issues
+      master ticket (pending): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
+      special-case fix (done): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
+        supposedly milestone 78.0a1
+    bug with flexbox AND absolute positioning wrapping to subsequent pages (our discovery)
+      ("Dinner" isn't showing up; starts on second page)
+      (NEED TO LOOK AT ACTUAL PDF - differs from print preview sometimes)
+        Firefox 120 - perfect
+        Firefox 110 - good (event y off by 1px)
+        Firefox 100 - good (event y off by 1px)
+        Firefox 97 - good (event y off by 1px) --- February 8, 2022
+        Firefox 96 - bad
+        Firefox 95 - bad
+        Firefox 90 - bad
 
+Cross-browser
+  Firefox
+    Re-address borderBoxSize HACK
+    bug: Firefox 90: timegrid header/all-day scrollbarGutter not showing
 DayGrid
   prevent DayGridCell headers from overflowing? makes really small calendars look better
   bug (print-view):
