@@ -317,7 +317,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             <Scroller
               vertical={verticalScrolling}
               horizontal
-              hideScrollbars={stickyFooterScrollbar /* also means height:auto, so won't need vertical scrollbars anyway */}
+              hideScrollbars={
+                stickyFooterScrollbar || // also means height:auto, so won't need vertical scrollbars anyway
+                props.forPrint // TODO: does this work!!??
+              }
               className={joinClassNames(
                 'fc-flex-col',
                 verticalScrolling && 'fc-liquid',

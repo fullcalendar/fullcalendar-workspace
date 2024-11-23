@@ -100,7 +100,10 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
         <Scroller
           vertical={verticalScrollbars}
           horizontal
-          hideScrollbars={stickyFooterScrollbar}
+          hideScrollbars={
+            stickyFooterScrollbar ||
+            props.forPrint // prevents blank space in print-view on Safari
+          }
           className={joinClassNames(
             'fc-daygrid-body fc-flex-col',
             verticalScrollbars && 'fc-liquid',

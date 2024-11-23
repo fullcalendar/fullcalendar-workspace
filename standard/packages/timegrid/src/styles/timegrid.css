@@ -41,10 +41,6 @@
 // fc-timegrid-day
 //
 
-.fc-timegrid-day {
-  position: relative;
-}
-
 .fc-timegrid-day.fc-day-today { // (today)
   background-color: var(--fc-today-bg-color);
 }

@@ -202,7 +202,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           endScrollbarWidthRef={this.handleEndScrollbarWidth}
         >
           <div className='fc-flex-col fc-grow fc-rel'>
-            <div className='fc-fill fc-border-transparent fc-border-s fc-flex-col' style={axisStartCss}>
+            <div className='fc-fill fc-border-transparent fc-border-s' style={axisStartCss}>
               <TimeGridCols
                 dateProfile={props.dateProfile}
                 nowDate={props.nowDate}
@@ -211,7 +211,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 slatCnt={slatCnt}
                 forPrint={props.forPrint}
                 isHitComboAllowed={props.isHitComboAllowed}
-                className='fc-liquid'
+                className='fc-fill'
 
                 // content
                 fgEventSegsByCol={props.fgEventSegsByCol}
