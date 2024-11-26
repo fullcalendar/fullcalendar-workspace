@@ -75,6 +75,8 @@ TimeGrid
   just like scrollbar dead area should have grey bg,
     make timegrid bottom area w/o slots a grey bg
   i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
+  when setting slotDuration:{hours:1}, really short body. always like this? slats had bigger min-height?
+  bug: when few slats and bottom spacer visible, axis line is only line that doesn't span full height
 Timeline
   initialscroll for RTL is off-by-2 in wrong direction
   previously, Timeline's hit system would always return slat left/right, not snap
