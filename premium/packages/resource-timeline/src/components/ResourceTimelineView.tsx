@@ -24,7 +24,6 @@ import {
   ViewContainer, ViewOptionsRefined,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
-import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import {
   buildResourceHierarchy,
   ColSpec,
@@ -38,6 +37,7 @@ import {
   ResourceSplitter,
   ResourceViewProps,
 } from '@fullcalendar/resource/internal'
+import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import {
   buildTimelineDateProfile,
   computeSlotWidth,
@@ -51,27 +51,24 @@ import {
   timeToCoord
 } from '@fullcalendar/timeline/internal'
 import {
+  ColWidthConfig,
+  isColWidthConfigListsEqual,
+  parseColWidthConfig,
+  processSpreadsheetColWidthConfigs,
+  processSpreadsheetColWidthOverrides
+} from '../col-positioning.js'
+import { buildHeaderLayouts, buildResourceLayouts, computeHasNesting, GenericLayout, ResourceLayout } from '../resource-layout.js'
+import {
   computeHeights,
   computeTopsFromHeights,
   findEntityByCoord,
 } from '../resource-positioning.js'
-import {
-  processSpreadsheetColWidthConfigs,
-  sliceSpreadsheetColWidth,
-  processSpreadsheetColWidthOverrides,
-  ColWidthConfig,
-  isColWidthConfigListsEqual,
-  parseColWidthConfig,
-} from '../col-positioning.js'
 import { GroupLane } from './lane/GroupLane.js'
 import { ResourceLane } from './lane/ResourceLane.js'
 import { ResizableTwoCol } from './ResizableTwoCol.js'
-import { GroupTallCell } from './spreadsheet/GroupTallCell.js'
-import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
+import { BodySection } from './spreadsheet/BodySection.js'
 import { HeaderRow } from './spreadsheet/HeaderRow.js'
-import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
-import { buildHeaderLayouts, buildResourceLayouts, computeHasNesting, GenericLayout, ResourceLayout } from '../resource-layout.js'
 
 interface ResourceTimelineViewState {
   slotInnerWidth?: number
@@ -213,7 +210,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       /* minHeight = */ undefined,
     )
 
-    let [bodyHeights, bodyCanvasHeight] = computeHeights(
+    let [bodyHeights, totalBodyHeight] = computeHeights(
       bodyLayouts,
       createEntityId,
       (entityKey) => { // makes memoization impossible!
@@ -248,11 +245,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       state.spreadsheetColWidthOverrides
         ? processSpreadsheetColWidthOverrides(state.spreadsheetColWidthOverrides, state.spreadsheetClientWidth)
         : processSpreadsheetColWidthConfigs(initialColWidthConfigs, state.spreadsheetClientWidth)
-
-    let spreadsheetResourceWidth = sliceSpreadsheetColWidth(
-      spreadsheetColWidths,
-      flatGroupColLayouts.length, // start slicing here
-    )
 
     /* event display */
 
@@ -358,128 +350,32 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       clientWidthRef={this.handleSpreadsheetClientWidth}
                     >
                       <div
-                        className='fc-rel fc-grow' // same issue as others?
-                        style={{ width: spreadsheetCanvasWidth }}
+                        className='fc-rel fc-grow fc-flex-col'
+                        style={{
+                          width: spreadsheetCanvasWidth,
+                          paddingTop: totalBodyHeight, // to push down filler div at end, and give height
+                        }}
                       >
-                        <div
-                          className='fc-flex-row'
-                          style={{
-                            height: bodyCanvasHeight, // why is the height on here???
-                          }}
-                        >
-                          {/* group columns */}
-                          <Fragment>{/* TODO: need Fragment for key? */}
-                            {flatGroupColLayouts.map((groupColLayouts, colIndex) => (
-                              <div
-                                key={colIndex}
-                                className={colIndex ? 'fc-border-s' : ''}
-                                style={{
-                                  width: spreadsheetColWidths[colIndex],
-                                }}
-                              >
-                                {groupColLayouts.map((groupCellLayout) => {
-                                  const group = groupCellLayout.entity
-                                  const groupKey = createGroupId(group)
-                                  return (
-                                    <div
-                                      key={groupKey}
-                                      role='row'
-                                      aria-rowindex={groupCellLayout.rowIndex}
-                                      class={joinClassNames(
-                                        'fc-flex-row fc-fill-x fc-content-box',
-                                        groupCellLayout.rowIndex && 'fc-border-t',
-                                      )}
-                                      style={{
-                                        top: bodyTops.get(groupKey),
-                                        height: bodyHeights.get(groupKey),
-                                      }}
-                                    >
-                                      <GroupTallCell
-                                        colSpec={group.spec}
-                                        fieldValue={group.value}
-                                        innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(groupKey)}
-                                      />
-                                    </div>
-                                  )
-                                })}
-                              </div>
-                            ))}
-                          </Fragment>
-                          {/* TODO: do background column stripes; add render hooks? */}
-                          {/* BADDD: this should be within something with {height:bodyCanvasHeight} */}
-                          <div
-                            className='fc-flex-row fc-rel'
-                            style={{
-                              width: spreadsheetResourceWidth
-                            }}
-                          >
-                            {flatResourceLayouts.map((resourceLayout) => {
-                              const resource = resourceLayout.entity
-                              return (
-                                <div
-                                  key={resource.id}
-                                  role='row'
-                                  aria-rowindex={resourceLayout.rowIndex}
-                                  data-resource-id={resource.id}
-                                  class={joinClassNames(
-                                    'fc-resource fc-flex-row fc-fill-x fc-content-box',
-                                    resourceLayout.rowIndex && 'fc-border-t',
-                                  )}
-                                  style={{
-                                    top: bodyTops.get(resource.id),
-                                    height: bodyHeights.get(resource.id),
-                                  }}
-                                >
-                                  <ResourceCells
-                                    resource={resource}
-                                    resourceFields={resourceLayout.resourceFields}
-                                    indent={resourceLayout.indent}
-                                    hasChildren={resourceLayout.hasChildren}
-                                    isExpanded={resourceLayout.isExpanded}
-                                    colStartIndex={flatGroupColLayouts.length}
-                                    colSpecs={colSpecs}
-                                    innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(resource.id)}
-                                    colWidths={spreadsheetColWidths}
-                                  />
-                                </div>
-                              )
-                            })}
-                          </div>
-                        </div>
-                        {/* resource-group rows */}
-                        {/* hackily moved after resources for z-index reasons */}
-                        {flatGroupRowLayouts.map((groupRowLayout) => {
-                          const group = groupRowLayout.entity
-                          const groupKey = createGroupId(group)
-                          return (
-                            <div
-                              key={groupKey}
-                              role='row'
-                              aria-rowindex={groupRowLayout.rowIndex}
-                              class={joinClassNames(
-                                'fc-flex-row fc-fill-x fc-content-box',
-                                groupRowLayout.rowIndex && 'fc-border-t',
-                              )}
-                              style={{
-                                top: bodyTops.get(groupKey),
-                                height: bodyHeights.get(groupKey),
-                              }}
-                            >
-                              <GroupWideCell
-                                group={group}
-                                isExpanded={groupRowLayout.isExpanded}
-                                innerHeightRef={this.spreadsheetEntityInnerHeightMap.createRef(groupKey)}
-                              />
-                            </div>
-                          )
-                        })}
-                        <ScrollbarGutter
-                          height={Math.max(
+                        <BodySection
+                          flatResourceLayouts={flatResourceLayouts}
+                          flatGroupRowLayouts={flatGroupRowLayouts}
+                          flatGroupColLayouts={flatGroupColLayouts}
+                          colWidths={spreadsheetColWidths}
+                          colSpecs={colSpecs}
+                          rowInnerHeightRefMap={this.spreadsheetEntityInnerHeightMap}
+                          rowTops={bodyTops}
+                          rowHeights={bodyHeights}
+                        />
+                        {/* temporary filler */}
+                        <div style={{
+                          backgroundColor: '#ccc',
+                          flexGrow: 1,
+                          height: Math.max(
                             0,
                             (state.timeBottomScrollbarWidth || 0) -
                             (state.spreadsheetBottomScrollbarWidth || 0)
-                          )}
-                        />
+                          ),
+                        }} />
                       </div>
                     </Scroller>
 
@@ -570,7 +466,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                       bottomScrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
                     >
                       <div
-                        className='fc-rel fc-grow'
+                        className='fc-rel fc-grow fc-flex-col'
                         style={{ width: timeCanvasWidth }}
                         ref={this.handleBodyEl}
                       >
@@ -612,7 +508,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                         </div>
                         <div
                           className='fc-rel'
-                          style={{ height: bodyCanvasHeight }}
+                          style={{ height: totalBodyHeight }}
                         >
                           <Fragment>
                             {flatResourceLayouts.map((resourceLayout) => {
@@ -679,13 +575,17 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                             })}
                           </Fragment>
                         </div>
-                        <ScrollbarGutter
-                          height={Math.max(
+
+                        {/* temporary filler */}
+                        <div style={{
+                          backgroundColor: '#ccc',
+                          flexGrow: 1,
+                          height: Math.max(
                             0,
                             (state.spreadsheetBottomScrollbarWidth || 0) -
                             (state.timeBottomScrollbarWidth || 0)
-                          )}
-                        />
+                          ),
+                        }} />
                       </div>
                     </Scroller>
 

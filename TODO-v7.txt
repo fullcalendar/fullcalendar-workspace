@@ -84,6 +84,13 @@ Resource DayGrid
 Resource Timeline
   bug: drag-n-drop auto-scroll very glitchy
   bug: when group-column resized really narrow, text isn't cropped like cells in resource rows
+  bug: when resizing resource-area while scrolled all the way down, bottom gutter oscillates
+    happens because spreadsheet horizontal scroll appears then disappears
+    todo: see what beta.1 did. i don't think it had that problems
+    SAME PROBLEM happens when only 3 resources, expandRows:true, and switch between 1-day and 3-day view
+  bug: in timeline-column-grouping.html
+    when changing the "Room" column to group:true, changes height, which it shouldn't!
+    some sort of off-by-one error with the top or bottom borders
   i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
     TODO: do same concepct for timeline-no-resources
   column grouping, should expand to full height, but doesn't

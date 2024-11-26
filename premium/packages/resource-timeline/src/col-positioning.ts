@@ -131,12 +131,13 @@ export function processSpreadsheetColWidthOverrides(
 
 export function sliceSpreadsheetColWidth(
   colWidths: number[],
-  startIndex: number
+  startIndex: number,
+  endIndex = colWidths.length
 ): number | undefined {
   if (colWidths.length) {
     let total = 0
 
-    for (let i = startIndex; i < colWidths.length; i++) {
+    for (let i = startIndex; i < endIndex; i++) {
       total += colWidths[i]
     }
 

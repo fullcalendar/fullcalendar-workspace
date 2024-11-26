@@ -1,0 +1,166 @@
+import { BaseComponent, joinClassNames, RefMap } from "@fullcalendar/core/internal"
+import { createElement } from '@fullcalendar/core/preact'
+import { ColSpec, createGroupId } from "@fullcalendar/resource/internal"
+import { GroupTallCell } from "./GroupTallCell.js"
+import { GroupWideCell } from "./GroupWideCell.js"
+import { ResourceCells } from "./ResourceCells.js"
+import { sliceSpreadsheetColWidth } from "../../col-positioning.js"
+import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout.js"
+
+export interface BodySectionProps {
+  flatResourceLayouts: ResourceLayout[]
+  flatGroupRowLayouts: GroupRowLayout[]
+  flatGroupColLayouts: GroupCellLayout[][]
+  colWidths: number[]
+  colSpecs: ColSpec[]
+  rowInnerHeightRefMap: RefMap<string, number>
+  rowTops: Map<string, number>
+  rowHeights: Map<string, number>
+}
+
+/*
+Takes up no vertical space. Fills itself within outer container.
+Caller is responsible for this.
+*/
+export class BodySection extends BaseComponent<BodySectionProps> {
+  render() {
+    const { props, context } = this
+    const { colWidths, rowInnerHeightRefMap, rowTops, rowHeights } = props
+
+    const groupCnt = props.flatGroupColLayouts.length
+    const resourceX = sliceSpreadsheetColWidth(colWidths, 0, groupCnt)
+    const resourceColWidths = colWidths.slice(groupCnt)
+
+    /*
+    TODO: simplify DOM structure to be more like time-area?
+    where an actual DIV creates the mass, not a paddingTop
+    */
+    return (
+      <div className='fc-flex-row fc-fill'>
+
+        {/* group columns */}
+        {props.flatGroupColLayouts.map((groupColLayouts, colIndex) => (
+          <div
+            key={colIndex}
+            className={joinClassNames(
+              'fc-rel',
+              colIndex && 'fc-border-s',
+            )}
+            style={{
+              width: colWidths[colIndex],
+            }}
+          >
+            {groupColLayouts.map((groupCellLayout) => {
+              const group = groupCellLayout.entity
+              const groupKey = createGroupId(group)
+              return (
+                <div
+                  key={groupKey}
+                  role='row'
+                  aria-rowindex={groupCellLayout.rowIndex}
+                  class={joinClassNames(
+                    'fc-flex-row fc-fill-x fc-content-box',
+                    groupCellLayout.rowIndex && 'fc-border-t',
+                  )}
+                  style={{
+                    top: rowTops.get(groupKey),
+                    height: rowHeights.get(groupKey),
+                  }}
+                >
+                  <GroupTallCell
+                    colSpec={group.spec}
+                    fieldValue={group.value}
+                    innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
+                  />
+                </div>
+              )
+            })}
+          </div>
+        ))}
+
+        {/* for resource column lines */}
+        {resourceColWidths.map((resourceColWidth, i) => (
+          <div
+            className={joinClassNames(
+              (groupCnt + i) && 'fc-border-s',
+            )}
+            style={{
+              width: resourceColWidth,
+            }}
+          />
+        ))}
+
+        {/* resource-specific cells */}
+        <div
+          className='fc-flex-row fc-rel fc-fill'
+          style={
+            context.isRtl // TODO: util for this?
+              ? { right: resourceX }
+              : { left: resourceX }
+          }
+        >
+          {props.flatResourceLayouts.map((resourceLayout) => {
+            const resource = resourceLayout.entity
+
+            return (
+              <div
+                key={resource.id}
+                role='row'
+                aria-rowindex={resourceLayout.rowIndex}
+                data-resource-id={resource.id}
+                class={joinClassNames(
+                  'fc-resource fc-flex-row fc-fill-x fc-content-box',
+                  resourceLayout.rowIndex && 'fc-border-t',
+                )}
+                style={{
+                  top: rowTops.get(resource.id),
+                  height: rowHeights.get(resource.id),
+                }}
+              >
+                <ResourceCells
+                  resource={resource}
+                  resourceFields={resourceLayout.resourceFields}
+                  indent={resourceLayout.indent}
+                  hasChildren={resourceLayout.hasChildren}
+                  isExpanded={resourceLayout.isExpanded}
+                  colStartIndex={props.flatGroupColLayouts.length}
+                  colSpecs={props.colSpecs}
+                  colWidths={colWidths}
+                  innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
+                />
+              </div>
+            )
+          })}
+        </div>
+
+        {/* resource-group rows */}
+        {props.flatGroupRowLayouts.map((groupRowLayout) => {
+          const group = groupRowLayout.entity
+          const groupKey = createGroupId(group)
+
+          return (
+            <div
+              key={groupKey}
+              role='row'
+              aria-rowindex={groupRowLayout.rowIndex}
+              class={joinClassNames(
+                'fc-flex-row fc-fill-x fc-content-box',
+                groupRowLayout.rowIndex && 'fc-border-t',
+              )}
+              style={{
+                top: rowTops.get(groupKey),
+                height: rowHeights.get(groupKey),
+              }}
+            >
+              <GroupWideCell
+                group={group}
+                isExpanded={groupRowLayout.isExpanded}
+                innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
+              />
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+}

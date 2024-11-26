@@ -112,6 +112,9 @@ export function buildResourceLayouts(
   }
 }
 
+/*
+TODO: rename to be about expanders and indentation hierarchy
+*/
 export function computeHasNesting(nodes: GenericNode[]) {
   for (let node of nodes) {
     if ((node as ResourceNode).resourceFields) {
@@ -119,7 +122,7 @@ export function computeHasNesting(nodes: GenericNode[]) {
         return true
       }
     } else { // a GroupNode
-      return true
+      return !(node as GroupNode).pooledHeight // NOT column grouping. row groups
     }
   }
 
