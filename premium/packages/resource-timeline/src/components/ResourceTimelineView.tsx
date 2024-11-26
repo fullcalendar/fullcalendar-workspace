@@ -510,70 +510,66 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                           className='fc-rel'
                           style={{ height: totalBodyHeight }}
                         >
-                          <Fragment>
-                            {flatResourceLayouts.map((resourceLayout) => {
-                              const resource = resourceLayout.entity
-                              return (
-                                <div
-                                  key={resource.id}
-                                  role='row'
-                                  aria-rowindex={resourceLayout.rowIndex}
-                                  data-resource-id={resource.id}
-                                  className={joinClassNames(
-                                    'fc-resource fc-flex-col fc-fill-x fc-content-box',
-                                    resourceLayout.rowIndex && 'fc-border-t',
-                                  )}
-                                  style={{
-                                    top: bodyTops.get(resource.id),
-                                    height: bodyHeights.get(resource.id),
-                                  }}
-                                >
-                                  <ResourceLane
-                                    {...splitProps[resource.id]}
-                                    resource={resource}
-                                    dateProfile={dateProfile}
-                                    tDateProfile={tDateProfile}
-                                    nowDate={nowDate}
-                                    todayRange={todayRange}
-                                    nextDayThreshold={context.options.nextDayThreshold}
-                                    businessHours={resource.businessHours || fallbackBusinessHours}
+                          {flatResourceLayouts.map((resourceLayout) => {
+                            const resource = resourceLayout.entity
+                            return (
+                              <div
+                                key={resource.id}
+                                role='row'
+                                aria-rowindex={resourceLayout.rowIndex}
+                                data-resource-id={resource.id}
+                                className={joinClassNames(
+                                  'fc-resource fc-flex-col fc-fill-x fc-content-box',
+                                  resourceLayout.rowIndex && 'fc-border-t',
+                                )}
+                                style={{
+                                  top: bodyTops.get(resource.id),
+                                  height: bodyHeights.get(resource.id),
+                                }}
+                              >
+                                <ResourceLane
+                                  {...splitProps[resource.id]}
+                                  resource={resource}
+                                  dateProfile={dateProfile}
+                                  tDateProfile={tDateProfile}
+                                  nowDate={nowDate}
+                                  todayRange={todayRange}
+                                  nextDayThreshold={context.options.nextDayThreshold}
+                                  businessHours={resource.businessHours || fallbackBusinessHours}
 
-                                    // ref
-                                    heightRef={this.timeEntityInnerHeightMap.createRef(resource.id)}
+                                  // ref
+                                  heightRef={this.timeEntityInnerHeightMap.createRef(resource.id)}
 
-                                    // dimensions
-                                    slotWidth={slotWidth}
-                                  />
-                                </div>
-                              )
-                            })}
-                          </Fragment>
-                          <Fragment>
-                            {flatGroupRowLayouts.map((groupRowLayout) => {
-                              const group = groupRowLayout.entity
-                              const groupKey = createGroupId(group)
-                              return (
-                                <div
-                                  key={groupKey}
-                                  role='row'
-                                  aria-rowindex={groupRowLayout.rowIndex}
-                                  class={joinClassNames(
-                                    'fc-flex-row fc-fill-x fc-content-box',
-                                    groupRowLayout.rowIndex && 'fc-border-t',
-                                  )}
-                                  style={{
-                                    top: bodyTops.get(groupKey),
-                                    height: bodyHeights.get(groupKey),
-                                  }}
-                                >
-                                  <GroupLane
-                                    group={group}
-                                    innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
-                                  />
-                                </div>
-                              )
-                            })}
-                          </Fragment>
+                                  // dimensions
+                                  slotWidth={slotWidth}
+                                />
+                              </div>
+                            )
+                          })}
+                          {flatGroupRowLayouts.map((groupRowLayout) => {
+                            const group = groupRowLayout.entity
+                            const groupKey = createGroupId(group)
+                            return (
+                              <div
+                                key={groupKey}
+                                role='row'
+                                aria-rowindex={groupRowLayout.rowIndex}
+                                class={joinClassNames(
+                                  'fc-flex-row fc-fill-x fc-content-box',
+                                  groupRowLayout.rowIndex && 'fc-border-t',
+                                )}
+                                style={{
+                                  top: bodyTops.get(groupKey),
+                                  height: bodyHeights.get(groupKey),
+                                }}
+                              >
+                                <GroupLane
+                                  group={group}
+                                  innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
+                                />
+                              </div>
+                            )
+                          })}
                         </div>
 
                         {/* temporary filler */}
