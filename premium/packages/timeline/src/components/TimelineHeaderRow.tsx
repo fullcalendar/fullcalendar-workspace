@@ -40,8 +40,11 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
         className={joinClassNames(
           'fc-flex-row fc-content-box',
           !props.isLastRow && 'fc-border-b',
+          props.height == null && 'fc-grow',
         )}
-        style={{ height: props.height }}
+        style={{
+          height: props.height,
+        }}
       >
         {props.cells.map((cell, cellI) => {
           // TODO: make this part of the cell obj?

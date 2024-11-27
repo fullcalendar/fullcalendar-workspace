@@ -1,3 +1,4 @@
+import { CssDimValue } from '@fullcalendar/core'
 import { BaseComponent, ElementDragging, PointerDragEvent, setRef, joinClassNames } from '@fullcalendar/core/internal'
 import { ComponentChildren, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 
@@ -8,6 +9,9 @@ export interface ResizableTwoColProps {
   endContent: ComponentChildren
   endClassName?: string
   elRef?: Ref<HTMLDivElement>
+
+  initialStartWidth: CssDimValue
+  startWidthRef?: Ref<CssDimValue>
 }
 
 interface ResizableTwoColState {
@@ -27,12 +31,8 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
   resizerDragging: ElementDragging
 
   render() {
-    let { props, state, context } = this
-    let { options } = context
-
-    let resourceAreaWidth = state.startWidthOverride != null
-      ? state.startWidthOverride
-      : options.resourceAreaWidth
+    const { props, state } = this
+    const resourceAreaWidth = props.initialStartWidth ?? state.startWidthOverride
 
     return (
       <div
@@ -69,21 +69,24 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
   }
 
   componentDidMount() {
-    let { isRtl, pluginHooks } = this.context
-    let ElementDraggingImpl = pluginHooks.elementDraggingImpl
+    const { props, context } = this
+    const { isRtl, pluginHooks } = context
+    const ElementDraggingImpl = pluginHooks.elementDraggingImpl
 
     if (ElementDraggingImpl) {
       let dragging = this.resizerDragging = new ElementDraggingImpl(this.resizerElRef.current)
       let dragStartWidth: number
       let viewWidth: number
+      let newWidth: number | undefined
 
       dragging.emitter.on('dragstart', () => {
         viewWidth = this.rootEl.getBoundingClientRect().width
         dragStartWidth = this.startElRef.current.getBoundingClientRect().width
+        newWidth = undefined
       })
 
       dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
-        let newWidth = dragStartWidth + pev.deltaX * (isRtl ? -1 : 1)
+        newWidth = dragStartWidth + pev.deltaX * (isRtl ? -1 : 1)
         newWidth = Math.max(newWidth, MIN_RESOURCE_AREA_WIDTH)
         newWidth = Math.min(newWidth, viewWidth - MIN_RESOURCE_AREA_WIDTH)
 
@@ -92,8 +95,16 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
         })
       })
 
+      dragging.emitter.on('dragend', () => {
+        if (newWidth != null) {
+          setRef(props.startWidthRef, newWidth)
+        }
+      })
+
       dragging.setAutoScrollEnabled(false) // because gets weird with auto-scrolling time area
     }
+
+    setRef(props.startWidthRef, props.initialStartWidth)
   }
 
   componentWillUnmount() {

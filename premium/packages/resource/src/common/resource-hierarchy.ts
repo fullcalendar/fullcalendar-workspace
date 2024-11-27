@@ -28,17 +28,16 @@ export interface ResourceNode extends GenericNode {
   children: ResourceNode[]
 }
 
-type ResourceNodeHash = {
+export type ResourceNodeHash = {
   [resourceId: string]: ResourceNode
 }
 
 export function buildResourceHierarchy(
-  resourceStore: ResourceHash,
-  orderSpecs: OrderSpec<ResourceApi>[],
+  resourceNodeHash: ResourceNodeHash,
+  orderSpecs: OrderSpec<ResourceApi>[], // why accepted when resourceNodeHash already ordered?
   groupSpecs: GroupSpec[] = [],
   groupRowDepth: number = 0,
 ): GenericNode[] {
-  let resourceNodeHash = buildResourceNodeHash(resourceStore, orderSpecs)
   let resNodes: GenericNode[] = []
 
   for (let resourceId in resourceNodeHash) {
@@ -52,7 +51,11 @@ export function buildResourceHierarchy(
   return resNodes
 }
 
-function buildResourceNodeHash(
+/*
+Builds a hash-by-id that contains ALL resources,
+but .children[] array is wired up as well
+*/
+export function buildResourceNodeHash(
   resourceStore: ResourceHash,
   orderSpecs: OrderSpec<ResourceApi>[],
 ): ResourceNodeHash {
@@ -189,7 +192,10 @@ export function flattenResources(
   resourceStore: ResourceHash,
   orderSpecs: OrderSpec<ResourceApi>[],
 ): Resource[] {
-  const hierarchy = buildResourceHierarchy(resourceStore, orderSpecs)
+  const hierarchy = buildResourceHierarchy(
+    buildResourceNodeHash(resourceStore, orderSpecs),
+    orderSpecs,
+  )
   const resResources: Resource[] = []
 
   flattenResourceHierarchy(hierarchy as ResourceNode[], resResources)

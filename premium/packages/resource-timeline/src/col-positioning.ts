@@ -32,22 +32,6 @@ export function parseColWidthConfig(width: number | string): ColWidthConfig {
   return {}
 }
 
-export function isColWidthConfigListsEqual(a: ColWidthConfig[], b: ColWidthConfig[]): boolean {
-  const { length } = a
-
-  if (b.length !== length) {
-    return false
-  }
-
-  for (let i = 0; i < length; i++) {
-    if (a[i].frac !== b[i].frac || a[i].pixels !== b[i].pixels) {
-      return false
-    }
-  }
-
-  return true
-}
-
 // Size Computations
 // -------------------------------------------------------------------------------------------------
 

@@ -1,5 +1,9 @@
 import { Group, GenericNode, Resource, ResourceEntityExpansions, ResourceNode, GroupNode, createGroupId } from '@fullcalendar/resource/internal'
 
+/*
+TODO: rename `pooledHeight` to just isVerticalGroup or something
+*/
+
 export interface GenericLayout<Entity> {
   entity: Entity
   pooledHeight?: boolean // default: false
@@ -34,13 +38,18 @@ export interface GroupCellLayout { // specific GenericLayout
   children: (ResourceLayout | GroupCellLayout)[]
 }
 
+/*
+A "layout" wraps the resource/group entity with presentation information (indent, isExpanded, etc)
+Creates a layout hierarchy (`layouts`) as well as flattened hierarchy.
+Filters away not-expanded nodes.
+*/
 export function buildResourceLayouts(
   hierarchy: GenericNode[],
   hasNesting: boolean,
   expansions: ResourceEntityExpansions,
   expansionDefault: boolean,
 ): {
-  layouts: GenericLayout<Resource | Group>[],
+  layouts: GenericLayout<Resource | Group>[], // use for height computations. web of height relationships
   flatResourceLayouts: ResourceLayout[],
   flatGroupRowLayouts: GroupRowLayout[],
   flatGroupColLayouts: GroupCellLayout[][],
@@ -76,7 +85,7 @@ export function buildResourceLayouts(
           rowIndex: rowCnt, // DON'T advance
           entity: (node as GroupNode).entity,
           pooledHeight: true,
-          children: [],
+          children: [], // populates very soon...
         }
         ;(flatGroupColLayouts[depth] || (flatGroupColLayouts[depth] = []))
           .push(groupCellLayout)
@@ -91,7 +100,7 @@ export function buildResourceLayouts(
           isExpanded,
           hasChildren: Boolean(node.children.length),
           indent,
-          children: [],
+          children: [], // populates very soon...
         }
         flatGroupRowLayouts.push(groupRowLayout)
         layouts.push(groupRowLayout)

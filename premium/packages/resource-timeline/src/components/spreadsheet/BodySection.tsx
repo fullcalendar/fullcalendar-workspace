@@ -53,6 +53,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             {groupColLayouts.map((groupCellLayout) => {
               const group = groupCellLayout.entity
               const groupKey = createGroupId(group)
+
               return (
                 <div
                   key={groupKey}
