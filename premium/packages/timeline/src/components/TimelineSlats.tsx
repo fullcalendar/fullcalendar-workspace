@@ -17,6 +17,7 @@ export interface TimelineSlatsProps {
   todayRange: DateRange
 
   // dimensions
+  height?: number
   slotWidth: number | undefined
 
   // ref
@@ -35,7 +36,10 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     let isDay = !tDateProfile.isTimeScale && !tDateProfile.largeUnit
 
     return (
-      <div className="fc-timeline-slots fc-fill fc-flex-row">
+      <div
+        className="fc-timeline-slots fc-fill fc-flex-row"
+        style={{ height: props.height }}
+      >
         {slotDates.map((slotDate, i) => {
           let key = slotDate.toISOString()
 

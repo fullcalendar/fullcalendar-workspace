@@ -32,6 +32,10 @@ export type ResourceNodeHash = {
   [resourceId: string]: ResourceNode
 }
 
+/*
+TODO: move away from pooledHeight. simply create child-parent relationships w/ groups+resource
+The groups that are row-groups VS col-groups can be determined by colGroupDepth
+*/
 export function buildResourceHierarchy(
   resourceNodeHash: ResourceNodeHash,
   orderSpecs: OrderSpec<ResourceApi>[], // why accepted when resourceNodeHash already ordered?

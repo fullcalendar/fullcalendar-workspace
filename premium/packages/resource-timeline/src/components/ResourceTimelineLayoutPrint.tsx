@@ -66,6 +66,8 @@ export interface ResourceTimelineLayoutPrintProps {
   timeAreaOffset: number
 }
 
+const BG_HEIGHT = 100000
+
 export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineLayoutPrintProps> {
   // memoized
   private computeHasNesting = memoize(computeHasNesting)
@@ -105,7 +107,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         className='fc-resource-timeline fc-flex-col fc-border fc-print-root'
         viewSpec={viewSpec}
       >
-        <div className='fc-print-header'>
+        <div className='fc-print-header fc-border-b'>
           <div className='fc-flex-row'>
 
             {/* DataGrid HEADER */}
@@ -118,8 +120,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   />
                 </div>
               )}
-              <div className='fc-crop'>
-                <div className='fc-grow' style={{ width: spreadsheetCanvasWidth }}>
+              <div className='fc-crop fc-grow fc-flex-row'>
+                <div className='fc-flex-row' style={{ width: spreadsheetCanvasWidth }}>
                   <HeaderRow
                     colSpecs={colSpecs}
                     colWidths={spreadsheetColWidths}
@@ -130,7 +132,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             </div>
 
             {/* Timeline HEADER */}
-            <div className='fc-liquid fc-flex-row fc-crop'>
+            <div className='fc-liquid fc-flex-row fc-crop fc-border-s'>
               <div
                 // the canvas, origin for now-indicator
                 className='fc-flex-col fc-rel'
@@ -168,49 +170,69 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
 
           </div>
         </div>{/* Header END */ }
-        <div className='fc-rel'>{/* Body START */}
+        {/* Body START */}
+        {/* Must crop 200% fill */}
+        <div className='fc-rel fc-crop'>
 
           {/* BACKGROUND FILL */}
+          {/* Must crop horizontally-offscreen slats and whatnot */}
           {/* TODO: more DRY */}
           <div
-            className='fc-fill'
+            className='fc-fill fc-border-s fc-border-transparent fc-crop'
             style={{
+              // HACK for print where header-height prevents absolutely-positioned events
+              // from falling short in height for subsequent pages
+              height: BG_HEIGHT,
+
               // TODO: nicer way of doing this
               left: context.isRtl ? undefined : props.resourceAreaWidth,
               right: context.isRtl ? props.resourceAreaWidth : undefined,
             }}
           >
-            <TimelineSlats
-              dateProfile={dateProfile}
-              tDateProfile={tDateProfile}
-              nowDate={nowDate}
-              todayRange={todayRange}
+            <div
+              className='fc-fill-y'
+              style={{
+                width: timeCanvasWidth,
+                height: BG_HEIGHT, // HACK
 
-              // dimensions
-              slotWidth={slotWidth}
-            />
-            <TimelineLaneBg
-              tDateProfile={tDateProfile}
-              nowDate={nowDate}
-              todayRange={todayRange}
-
-              // content
-              bgEventSegs={bgSlicedProps.bgEventSegs}
-              businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
-              dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
-              // empty array will result in unnecessary rerenders?...
-              eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : [])}
-
-              // dimensions
-              slotWidth={slotWidth}
-            />
-            {enableNowIndicator && (
-              <TimelineNowIndicatorLine
+                // TODO: nicer way of doing this
+                left: context.isRtl ? undefined : timeInnerLeft,
+                right: context.isRtl ? timeInnerLeft : undefined,
+              }}
+            >
+              <TimelineSlats
+                dateProfile={dateProfile}
                 tDateProfile={tDateProfile}
                 nowDate={nowDate}
+                todayRange={todayRange}
+                height={BG_HEIGHT} // HACK
+
+                // dimensions
                 slotWidth={slotWidth}
               />
-            )}
+              <TimelineLaneBg
+                tDateProfile={tDateProfile}
+                nowDate={nowDate}
+                todayRange={todayRange}
+
+                // content
+                bgEventSegs={bgSlicedProps.bgEventSegs}
+                businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
+                dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
+                // empty array will result in unnecessary rerenders?...
+                eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : [])}
+
+                // dimensions
+                slotWidth={slotWidth}
+              />
+              {enableNowIndicator && (
+                <TimelineNowIndicatorLine
+                  tDateProfile={tDateProfile}
+                  nowDate={nowDate}
+                  slotWidth={slotWidth}
+                />
+              )}
+            </div>
           </div>
 
           {/* BODY ROWS */}
@@ -226,7 +248,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     rowIndex && 'fc-border-t'
                   )}
                 >
-                  <div className='fc-crop' style={{ width: props.resourceAreaWidth }}>
+                  <div className='fc-crop fc-flex-row' style={{ width: props.resourceAreaWidth }}>
                     <div className='fc-flex-row' style={{ width: spreadsheetCanvasWidth }}>
                       <ResourceGroupCells
                         colGroups={(printLayout as ResourcePrintLayout).colGroups}
@@ -244,7 +266,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                       />
                     </div>
                   </div>
-                  <div className='fc-crop fc-liquid'>
+                  <div className='fc-crop fc-liquid fc-flex-row fc-border-s'>
                     <div
                       className='fc-rel'
                       style={{

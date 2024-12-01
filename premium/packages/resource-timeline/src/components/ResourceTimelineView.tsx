@@ -174,16 +174,22 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     this.setState({ spreadsheetColWidthOverrides })
   }
 
-  handleSpreadsheetClientWidth = (spreadsheetClientWidth: number) => {
-    this.setState({ spreadsheetClientWidth })
+  handleSpreadsheetClientWidth = (spreadsheetClientWidth: number | null) => {
+    if (spreadsheetClientWidth != null) {
+      this.setState({ spreadsheetClientWidth })
+    }
   }
 
-  handleSlotInnerWidth = (slotInnerWidth: number) => {
-    this.setState({ slotInnerWidth })
+  handleSlotInnerWidth = (slotInnerWidth: number | null) => {
+    if (slotInnerWidth != null) {
+      this.setState({ slotInnerWidth })
+    }
   }
 
-  handleTimeClientWidth = (timeClientWidth: number) => {
-    this.setState({ timeClientWidth })
+  handleTimeClientWidth = (timeClientWidth: number | null) => {
+    if (timeClientWidth != null) {
+      this.setState({ timeClientWidth })
+    }
   }
 }
 

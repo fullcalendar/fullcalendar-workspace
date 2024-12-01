@@ -1,4 +1,11 @@
 
+.fc-media-screen {
+  & .fc-ps-col {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 .fc-media-print {
   // & .fc-timegrid-slots,
   // & .fc-timeline-slots,
@@ -41,9 +48,12 @@
   https://stackoverflow.com/a/60256345
   TODO: be careful about horizontal alignment
   */
+  /*
   & .fc-flex-col {
     display: block !important;
   }
+  TODO: use fc-ps-col instead
+  */
 
   & .fc-print-root {
     display: table !important; // could conflict with other things. rearchitect?
@@ -56,6 +66,18 @@
   & .fc-print-header {
     display: table-header-group !important; // could conflict with other things. rearchitect?
     break-inside: avoid; // required
+
+    background: #fff; // for when absolute-positioned items in body, doesn't appear under header
+    z-index: 9999; // for when there's absolutely-positioned items in body
+    position: relative;
+  }
+
+  & a.fc-cell-inner {
+    display: block;
+  }
+
+  & .fc-ps-col {
+    display: block;
   }
 }
 
