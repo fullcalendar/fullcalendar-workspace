@@ -16,8 +16,8 @@ export type UpdateSizeSync = () => void
 type SizeConfig = { // internal only
   callback: SizeCallback
   client?: boolean // watch and report clientWidth/clientHeight?
-  width?: number // only used by fallback technique
-  height?: number // only used by fallback technique
+  width?: number // HACK: internal storage
+  height?: number // HACK: internal storage
   watchWidth: boolean // TODO: use bitwise operations
   watchHeight: boolean // "
 }
