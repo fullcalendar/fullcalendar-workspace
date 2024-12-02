@@ -4,3 +4,7 @@
 
 # Dynamically generated
 /tsconfig.json
+
+# temporary
+premium/bundle/examples-*
+premium/bundle/examples-v7
