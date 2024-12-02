@@ -253,6 +253,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                       <ResourceGroupCells
                         colGroups={(printLayout as ResourcePrintLayout).colGroups}
                         colGroupIndexes={(printLayout as ResourcePrintLayout).colGroupIndexes}
+                        colWidths={spreadsheetColWidths}
                       />
                       <ResourceCells
                         resource={resource}
