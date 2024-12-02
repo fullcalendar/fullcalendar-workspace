@@ -4,6 +4,7 @@ import { CalendarOptions, CalendarListeners } from '../options.js'
 import { Theme } from '../theme/Theme.js'
 import { Emitter } from '../common/Emitter.js'
 import { CssDimValue } from '../scrollgrid/util.js'
+import { updateSizeSync } from '../component-util/resize-observer.js'
 
 export interface CalendarRootProps {
   options: CalendarOptions
@@ -49,14 +50,14 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
   }
 
   handleBeforePrint = () => {
-    flushSync(() => {
-      this.setState({ forPrint: true })
-    })
+    this.setState({ forPrint: true })
+    flushSync(() => {}) // TODO: use noop
+    updateSizeSync()
+    flushSync(() => {}) // TODO: use noop
   }
 
   handleAfterPrint = () => {
-    flushSync(() => {
-      this.setState({ forPrint: false })
-    })
+    this.setState({ forPrint: false })
+    flushSync(() => {}) // TODO: use noop
   }
 }

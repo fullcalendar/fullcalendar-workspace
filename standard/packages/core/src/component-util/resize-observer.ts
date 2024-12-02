@@ -1,4 +1,5 @@
 import { preactOptions } from '../preact.js'
+import { isDimsEqual } from './rendering-misc.js'
 
 const nativeEnabled = true
 const nativeBorderBoxEnabled = true
@@ -9,7 +10,7 @@ const fallbackTimeout = 100
 
 export type SizeCallback = (width: number, height: number) => void
 export type DisconnectSize = () => void
-export type WatchSize = (el: HTMLElement, callback: SizeCallback, client?: boolean) => DisconnectSize
+export type WatchSize = (el: HTMLElement, callback: SizeCallback, client?: boolean, watchWidth?: boolean, watchHeight?: boolean) => DisconnectSize
 export type UpdateSizeSync = () => void
 
 type SizeConfig = { // internal only
@@ -17,6 +18,8 @@ type SizeConfig = { // internal only
   client?: boolean // watch and report clientWidth/clientHeight?
   width?: number // only used by fallback technique
   height?: number // only used by fallback technique
+  watchWidth: boolean // TODO: use bitwise operations
+  watchHeight: boolean // "
 }
 
 const configMap = new Map<Element, SizeConfig>()
@@ -39,26 +42,95 @@ function flushAfterSize() {
   }
 }
 
+/*
+A proper ResizeObserver polyfill would keep checking dimensions until all stabilized,
+to detect if a *handler* caused a new element's dimensions to change,
+while ignoring changes per-element after the first (to prevent infinite loops),
+but our Preact system does not commit to the DOM immediately, commits are batched for later,
+so we can skip this.
+*/
+function checkConfigMap() {
+  if (!isHandling) {
+    isHandling = true
+
+    const dirtyConfigs: SizeConfig[] = []
+
+    for (const [el, config] of configMap.entries()) {
+      let width: number
+      let height: number
+
+      if (config.client) {
+        width = el.clientWidth
+        height = el.clientHeight
+      } else {
+        ({ width, height } = el.getBoundingClientRect())
+      }
+
+      if (storeConfigDims(config, width, height)) {
+        dirtyConfigs.push(config)
+      }
+    }
+
+    for (const dirtyConfig of dirtyConfigs) {
+      dirtyConfig.callback(dirtyConfig.width, dirtyConfig.height)
+    }
+
+    flushAfterSize()
+    isHandling = false
+  }
+}
+
+function storeConfigDims(
+  config: SizeConfig,
+  width: number,
+  height: number,
+): boolean { // returns whether should fire
+  let shouldFire = false
+
+  // we use it because ResizeObserver's results could be slightly off from getBoundingClientRect
+
+  if (!isDimsEqual(config.width, width)) {
+    config.width = width
+    shouldFire = config.watchWidth
+  }
+
+  if (!isDimsEqual(config.height, height)) {
+    config.height = height
+    shouldFire ||= config.watchHeight
+  }
+
+  return shouldFire
+}
+
 // Native Technique ONLY
 // -------------------------------------------------------------------------------------------------
 
 function initNative(): [WatchSize, UpdateSizeSync] {
   // Single global ResizeObserver does batching and uses less memory than individuals
+  // Will always fire with delay after DOM mutation, but before repaint,
+  // thus doesn't need !isHandling check like checkConfigMap
   const globalResizeObserver = new ResizeObserver((entries) => {
     isHandling = true
 
     for (let entry of entries) {
       const el = entry.target
-      const { callback, client } = configMap.get(el)
+      const config = configMap.get(el)
+      let width: number
+      let height: number
 
-      if (client) {
-        callback(el.clientWidth, el.clientHeight)
+      if (config.client) {
+        width = el.clientWidth
+        height = el.clientHeight
       } else if (entry.borderBoxSize && nativeBorderBoxEnabled) {
         const borderBoxSize: any = entry.borderBoxSize[0] || entry.borderBoxSize // HACK for Firefox
-        callback(borderBoxSize.inlineSize, borderBoxSize.blockSize)
+        width = borderBoxSize.inlineSize
+        height = borderBoxSize.blockSize
       } else {
-        const rect = el.getBoundingClientRect()
-        callback(rect.width, rect.height)
+        ({ width, height } = el.getBoundingClientRect())
+      }
+
+      if (storeConfigDims(config, width, height)) {
+        config.callback(width, height)
       }
     }
 
@@ -70,8 +142,11 @@ function initNative(): [WatchSize, UpdateSizeSync] {
     el: HTMLElement,
     callback: SizeCallback,
     client?: boolean,
+    watchWidth = true,
+    watchHeight = true,
   ) {
-    configMap.set(el, { callback, client })
+    configMap.set(el, { callback, client, watchWidth, watchHeight })
+
     globalResizeObserver.observe(el, {
       box: !client && nativeBorderBoxEnabled
         ? 'border-box'
@@ -84,7 +159,7 @@ function initNative(): [WatchSize, UpdateSizeSync] {
     }
   }
 
-  return [watchSize, noop]
+  return [watchSize, checkConfigMap]
 }
 
 
@@ -122,63 +197,25 @@ function initFallback(): [WatchSize, UpdateSizeSync] {
   let globalMutationObserver: MutationObserver | undefined // lazily initialize for non-browser envs
   let globalMutationObserverPaused = false
 
-  const [requestCheckSizes, cancelCheckSizes] = debounce(checkSizes, fallbackTimeout)
+  const [requestCheckSizes, cancelCheckSizes] = debounce(checkConfigMap, fallbackTimeout)
 
   function requestCheckSizesSync() {
     cancelCheckSizes()
-    checkSizes()
-  }
-
-  /*
-  A proper ResizeObserver polyfill would keep checking dimensions until all stabilized,
-  to detect if a *handler* caused a new element's dimensions to change,
-  while ignoring changes per-element after the first (to prevent infinite loops),
-  but our Preact system does not commit to the DOM immediately, commits are batched for later,
-  so we can skip this.
-  */
-  function checkSizes() {
-    if (!isHandling) {
-      isHandling = true
-
-      const dirtyConfigs: SizeConfig[] = []
-
-      for (const [el, config] of configMap.entries()) {
-        let width: number
-        let height: number
-
-        if (config.client) {
-          width = el.clientWidth
-          height = el.clientHeight
-        } else {
-          ({ width, height } = el.getBoundingClientRect())
-        }
-
-        if (width !== config.width || height !== config.height) {
-          config.width = width
-          config.height = height
-          dirtyConfigs.push(config)
-        }
-      }
-
-      for (const dirtyConfig of dirtyConfigs) {
-        dirtyConfig.callback(dirtyConfig.width, dirtyConfig.height)
-      }
-
-      flushAfterSize()
-      isHandling = false
-    }
+    checkConfigMap()
   }
 
   function watchSize(
     el: HTMLElement,
     callback: SizeCallback,
     client?: boolean,
+    watchWidth = true,
+    watchHeight = true,
   ) {
     if (!configMap.size) {
       addGlobalHandlers()
     }
 
-    configMap.set(el, { callback, client })
+    configMap.set(el, { callback, client, watchWidth, watchHeight })
     requestCheckSizes()
 
     return () => {
@@ -339,24 +376,21 @@ export function watchWidth(
   el: HTMLElement,
   callback: (width: number) => void,
 ): DisconnectSize {
-  let currentWidth: number | undefined
-
-  return watchSize(el, (width) => {
-    if (currentWidth == null || currentWidth !== width) {
-      callback(currentWidth = width)
-    }
-  })
+  return watchSize(
+    el,
+    callback,
+    /* watchWidth = */ true,
+  )
 }
 
 export function watchHeight(
   el: HTMLElement,
   callback: (height: number) => void,
 ): DisconnectSize {
-  let currentHeight: number | undefined
-
-  return watchSize(el, (_width, height) => {
-    if (currentHeight == null || currentHeight !== height) {
-      callback(currentHeight = height)
-    }
-  })
+  return watchSize(
+    el,
+    (_width, height) => callback(height),
+    /* watchWidth = */ false,
+    /* watchHeight = */ true,
+  )
 }
