@@ -125,8 +125,8 @@ function computeTopsStartingAt<Entity, Key>(
     topMap.set(entityKey, top)
 
     if (!siblingNode.pooledHeight) {
-      top += (i ? 1 : 0) + // inbetweenSpace
-        heightMap.get(entityKey)
+      top += heightMap.get(entityKey) + 1 // inbetweenSpace
+      // there isn't a last-row bottom border, but won't get counted anyway
     }
 
     top = computeTopsStartingAt(siblingNode.children, getEntityKey, heightMap, topMap, top)

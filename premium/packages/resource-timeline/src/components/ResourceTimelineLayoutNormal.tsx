@@ -491,7 +491,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           data-resource-id={resource.id}
                           className={joinClassNames(
                             'fc-resource fc-flex-col fc-fill-x fc-content-box',
-                            resourceLayout.rowIndex && 'fc-border-t',
+                            resourceLayout.rowIndex < flatResourceLayouts.length - 1 && // is not last
+                              'fc-border-b',
                           )}
                           style={{
                             top: bodyTops.get(resource.id),
@@ -527,7 +528,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           aria-rowindex={groupRowLayout.rowIndex}
                           class={joinClassNames(
                             'fc-flex-row fc-fill-x fc-content-box',
-                            groupRowLayout.rowIndex && 'fc-border-t',
+                            groupRowLayout.rowIndex < flatGroupRowLayouts.length - 1 && // is not last
+                              'fc-border-b',
                           )}
                           style={{
                             top: bodyTops.get(groupKey),

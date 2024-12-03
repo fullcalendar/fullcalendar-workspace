@@ -61,7 +61,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   aria-rowindex={groupCellLayout.rowIndex}
                   class={joinClassNames(
                     'fc-flex-row fc-fill-x fc-content-box',
-                    groupCellLayout.rowIndex && 'fc-border-t',
+                    groupCellLayout.rowIndex < groupColLayouts.length - 1 && // is not last
+                      'fc-border-b',
                   )}
                   style={{
                     top: rowTops.get(groupKey),
@@ -111,7 +112,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 data-resource-id={resource.id}
                 class={joinClassNames(
                   'fc-resource fc-flex-row fc-fill-x fc-content-box',
-                  resourceLayout.rowIndex && 'fc-border-t',
+                  resourceLayout.rowIndex < props.flatResourceLayouts.length - 1 // is not last
+                    && 'fc-border-b',
                 )}
                 style={{
                   top: rowTops.get(resource.id),
@@ -146,7 +148,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
               aria-rowindex={groupRowLayout.rowIndex}
               class={joinClassNames(
                 'fc-flex-row fc-fill-x fc-content-box',
-                groupRowLayout.rowIndex && 'fc-border-t',
+                groupRowLayout.rowIndex < props.flatGroupRowLayouts.length - 1 && // is not last
+                  'fc-border-b',
               )}
               style={{
                 top: rowTops.get(groupKey),

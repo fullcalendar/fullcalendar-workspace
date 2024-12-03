@@ -237,6 +237,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
 
           {/* BODY ROWS */}
           {printLayouts.map((printLayout, rowIndex) => {
+            const isNotLast = rowIndex < printLayouts.length - 1
+
             if ((printLayout as ResourcePrintLayout).colGroups) {
               const resource = (printLayout as ResourcePrintLayout).entity
 
@@ -245,7 +247,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   key={resource.id}
                   className={joinClassNames(
                     'fc-resource fc-flex-row',
-                    rowIndex && 'fc-border-t'
+                    isNotLast && 'fc-border-b',
                   )}
                 >
                   <div className='fc-crop fc-flex-row' style={{ width: props.resourceAreaWidth }}>
@@ -300,7 +302,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   className={joinClassNames(
                     // TODO: add fc-resource-group className?
                     'fc-flex-row',
-                    rowIndex && 'fc-border-t'
+                    isNotLast && 'fc-border-b',
                   )}
                 >
                   <div className='fc-crop' style={{ width: props.resourceAreaWidth }}>
