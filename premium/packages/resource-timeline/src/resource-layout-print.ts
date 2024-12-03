@@ -4,7 +4,6 @@ export interface ResourcePrintLayout {
   entity: Resource
   resourceFields: any // !!!
   colGroups: Group[]
-  colGroupIndexes: number[]
 
   isExpanded: boolean
   hasChildren: boolean
@@ -30,13 +29,7 @@ export function buildPrintLayouts(
 ): (ResourcePrintLayout | GroupRowPrintLayout)[] {
   const layouts: (ResourcePrintLayout | GroupRowPrintLayout)[] = []
 
-  function processNodes(
-    nodes: GenericNode[],
-    indent: number,
-    rowIndexStart: number,
-    colGroups: Group[],
-    colGroupIndexes: number[]
-  ): number {
+  function processNodes(nodes: GenericNode[], indent: number, colGroups: Group[]): number {
     let totalRowCnt = 0
 
     for (const node of nodes) {
@@ -48,22 +41,19 @@ export function buildPrintLayouts(
           entity: (node as ResourceNode).entity,
           resourceFields: (node as ResourceNode).resourceFields,
           colGroups,
-          colGroupIndexes: colGroupIndexes.concat(rowIndexStart + totalRowCnt),
           isExpanded,
           hasChildren,
           indent,
         })
 
         totalRowCnt += 1
-        totalRowCnt += processNodes(node.children, indent + 1, rowIndexStart + totalRowCnt, colGroups, colGroupIndexes)
+        totalRowCnt += processNodes(node.children, indent + 1, colGroups)
 
       } else if ((node as GroupNode).pooledHeight) { // column-group
         totalRowCnt += processNodes(
           node.children,
           indent,
-          0,
           colGroups.concat((node as GroupNode).entity),
-          colGroupIndexes,
         )
 
       } else { // row-group (FYI, can't be within a column-group)
@@ -78,13 +68,13 @@ export function buildPrintLayouts(
         })
 
         totalRowCnt += 1
-        totalRowCnt += processNodes(node.children, indent + 1, 0, colGroups, colGroupIndexes)
+        totalRowCnt += processNodes(node.children, indent + 1, colGroups)
       }
     }
 
     return totalRowCnt
   }
 
-  processNodes(hierarchy, hasNesting ? 1 : 0, 0, [], [])
+  processNodes(hierarchy, hasNesting ? 1 : 0, [])
   return layouts
 }

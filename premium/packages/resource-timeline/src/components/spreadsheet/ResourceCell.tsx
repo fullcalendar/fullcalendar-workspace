@@ -23,6 +23,7 @@ export interface ResourceCellProps {
   isExpanded: boolean
   innerHeightRef?: Ref<number>
   width?: number
+  className?: string
 }
 
 export class ResourceCell extends BaseComponent<ResourceCellProps> {
@@ -49,6 +50,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         className={joinClassNames(
           'fc-cell',
           props.colIndex && 'fc-border-s',
+          props.className,
         )}
         style={{
           width: props.width,

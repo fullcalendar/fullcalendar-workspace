@@ -239,22 +239,26 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           {printLayouts.map((printLayout, rowIndex) => {
             const isNotLast = rowIndex < printLayouts.length - 1
 
+
+
             if ((printLayout as ResourcePrintLayout).colGroups) {
               const resource = (printLayout as ResourcePrintLayout).entity
+              const colGroupStats = createColGroupStats(
+                printLayout as ResourcePrintLayout,
+                printLayouts[rowIndex - 1],
+                printLayouts[rowIndex + 1]
+              )
 
               return (
                 <div
                   key={resource.id}
-                  className={joinClassNames(
-                    'fc-resource fc-flex-row',
-                    isNotLast && 'fc-border-b',
-                  )}
+                  className='fc-resource fc-flex-row'
                 >
                   <div className='fc-crop fc-flex-row' style={{ width: props.resourceAreaWidth }}>
                     <div className='fc-flex-row' style={{ width: spreadsheetCanvasWidth }}>
                       <ResourceGroupCells
                         colGroups={(printLayout as ResourcePrintLayout).colGroups}
-                        colGroupIndexes={(printLayout as ResourcePrintLayout).colGroupIndexes}
+                        colGroupStats={colGroupStats}
                         colWidths={spreadsheetColWidths}
                       />
                       <ResourceCells
@@ -266,10 +270,16 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                         colStartIndex={groupColCnt}
                         colSpecs={colSpecs}
                         colWidths={spreadsheetColWidths}
+                        className={isNotLast ? 'fc-border-b' : ''}
                       />
                     </div>
                   </div>
-                  <div className='fc-crop fc-liquid fc-flex-row fc-border-s'>
+                  <div
+                    className={joinClassNames(
+                      'fc-crop fc-liquid fc-flex-row fc-border-s',
+                      isNotLast && 'fc-border-b',
+                    )}
+                  >
                     <div
                       className='fc-rel'
                       style={{
@@ -322,4 +332,20 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
       </ViewContainer>
     )
   }
+}
+
+function createColGroupStats(
+  currentLayout: ResourcePrintLayout,
+  prevLayout: ResourcePrintLayout | GroupRowPrintLayout,
+  nextLayout: ResourcePrintLayout | GroupRowPrintLayout,
+): { render: boolean, borderBottom: boolean }[] {
+  return currentLayout.colGroups.map((colGroup, colGroupI) => ({
+    render: !prevLayout ||
+      !(prevLayout as ResourcePrintLayout).colGroups ||
+      (prevLayout as ResourcePrintLayout).colGroups[colGroupI] !== colGroup,
+    borderBottom: nextLayout && (
+      !(nextLayout as ResourcePrintLayout).colGroups ||
+      (nextLayout as ResourcePrintLayout).colGroups[colGroupI] !== colGroup
+    ),
+  }))
 }

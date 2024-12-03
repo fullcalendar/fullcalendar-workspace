@@ -11,6 +11,7 @@ export interface ResourceCellsProps {
   indent: number
   isExpanded: boolean
   hasChildren: boolean
+  className?: string
 
   // refs
   innerHeightRef?: Ref<number>
@@ -49,6 +50,7 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
               isExpanded={props.isExpanded}
               innerHeightRef={innerHeightRefMap.createRef(i)}
               width={colWidths[i]}
+              className={props.className}
             />
           )
         })}

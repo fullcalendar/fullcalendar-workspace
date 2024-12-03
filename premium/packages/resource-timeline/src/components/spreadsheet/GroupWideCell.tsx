@@ -1,4 +1,4 @@
-import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef } from '@fullcalendar/core/internal'
+import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, joinClassNames } from '@fullcalendar/core/internal'
 import { createElement, Fragment, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
 import { ColCellContentArg } from '@fullcalendar/resource'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
@@ -7,6 +7,7 @@ import { ExpanderIcon } from './ExpanderIcon.js'
 export interface GroupWideCellProps {
   group: Group
   isExpanded: boolean
+  className?: string
 
   // refs
   innerHeightRef?: Ref<number>
@@ -37,7 +38,10 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
             scope: 'colgroup',
           }}
           // TODO: make part of fc-resource-group so ppl can style both cells together?
-          className='fc-resource-group fc-cell fc-liquid fc-shaded'
+          className={joinClassNames(
+            'fc-resource-group fc-cell fc-liquid fc-shaded',
+            props.className,
+          )}
           renderProps={renderProps}
           generatorName="resourceGroupLabelContent"
           customGenerator={spec.labelContent}

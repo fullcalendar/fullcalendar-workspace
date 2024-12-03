@@ -5,28 +5,38 @@ import { GroupTallCell } from './GroupTallCell.js'
 
 export interface ResourceGroupCellsProps {
   colGroups: Group[]
-  colGroupIndexes: number[]
+  colGroupStats: { render: boolean, borderBottom: boolean }[] // TODO: type from createColGroupStats
   colWidths: number[]
 }
 
 export class ResourceGroupCells extends BaseComponent<ResourceGroupCellsProps> {
   render() {
     const { props } = this
-    const { colGroups, colGroupIndexes, colWidths } = props // TODO: colGroupIndexes
+    const { colGroups, colGroupStats, colWidths } = props
 
     return (
       <Fragment>
-        {colGroups.map((group, i) => (
-          !colGroupIndexes[i] ? (
-            <GroupTallCell
-              colSpec={group.spec}
-              fieldValue={group.value}
-              width={colWidths[i]}
-            />
-          ) : (
-            <div style={{ width: colWidths[i] }}></div>
+        {colGroups.map((colGroup, i) => {
+          const stats = colGroupStats[i]
+          const width = colWidths[i]
+          const className = stats.borderBottom ? 'fc-border-b' : ''
+
+          return (
+            stats.render ? (
+              <GroupTallCell
+                colSpec={colGroup.spec}
+                fieldValue={colGroup.value}
+                className={className}
+                width={width}
+              />
+            ) : (
+              <div
+                className={className}
+                style={{ width }}
+              />
+            )
           )
-        ))}
+        })}
       </Fragment>
     )
   }

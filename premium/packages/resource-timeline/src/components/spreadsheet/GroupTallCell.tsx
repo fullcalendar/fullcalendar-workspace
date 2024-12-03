@@ -1,5 +1,5 @@
 import { CssDimValue } from '@fullcalendar/core'
-import { BaseComponent, ContentContainer, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { BaseComponent, ContentContainer, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
 import { ColSpec, ColCellContentArg } from '@fullcalendar/resource'
 
@@ -7,6 +7,7 @@ export interface GroupTallCellProps {
   colSpec: ColSpec
   fieldValue: any
   width?: CssDimValue
+  className?: string
 
   // refs
   innerHeightRef?: Ref<number>
@@ -35,7 +36,10 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
         attrs={{
           role: 'gridcell',
         }}
-        className='fc-resource-group fc-cell fc-liquid'
+        className={joinClassNames(
+          'fc-resource-group fc-cell fc-liquid',
+          props.className,
+        )}
         style={{
           width: props.width,
         }}

@@ -68,7 +68,7 @@ function computeTightHeights<Entity, Key>(
 
       totalHeight += ownHeight
     } else { // 'own' is above children
-      totalHeight += ownHeight + /* inbetweenSpace */ 1 + childrenHeight
+      totalHeight += ownHeight + childrenHeight
     }
 
     heightMap.set(entityKey, ownHeight)
@@ -81,7 +81,7 @@ function computeTightHeights<Entity, Key>(
     expandableCount += childrenExpandableCount
   }
 
-  return [totalHeight + /* inbetweenSpace */ (siblingNodes.length - 1), expandableCount]
+  return [totalHeight, expandableCount]
 }
 
 function expandHeights<Entity, Key>(
@@ -125,8 +125,7 @@ function computeTopsStartingAt<Entity, Key>(
     topMap.set(entityKey, top)
 
     if (!siblingNode.pooledHeight) {
-      top += heightMap.get(entityKey) + 1 // inbetweenSpace
-      // there isn't a last-row bottom border, but won't get counted anyway
+      top += heightMap.get(entityKey)
     }
 
     top = computeTopsStartingAt(siblingNode.children, getEntityKey, heightMap, topMap, top)

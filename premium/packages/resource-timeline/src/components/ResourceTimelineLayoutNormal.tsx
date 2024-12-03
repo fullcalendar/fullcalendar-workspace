@@ -203,11 +203,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     let [headerHeights] = computeHeights(
       headerLayouts,
       identity,
-      (entityKey) => this.headerRowInnerHeightMap.current.get(entityKey), // makes memoization impossible!
+      (entityKey) => this.headerRowInnerHeightMap.current.get(entityKey) + 1, // makes memoization impossible!
       /* minHeight = */ undefined,
     )
 
-    let [bodyHeights, totalBodyHeight] = computeHeights(
+    let [bodyHeights, totalBodyHeight] = computeHeights( // TODO: memoize?
       bodyLayouts,
       createEntityId,
       (entityKey) => { // makes memoization impossible!
@@ -217,7 +217,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
             entitySpreadsheetHeight,
             // map doesn't contain group-column-cell heights
             this.timeEntityInnerHeightMap.current.get(entityKey) || 0,
-          )
+          ) + 1
         }
       },
       /* minHeight = */ (verticalScrolling && options.expandRows)
@@ -273,7 +273,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 {Boolean(superHeaderRendering) && (
                   <div
                     role="row"
-                    className="fc-flex-row fc-content-box fc-border-b"
+                    className="fc-flex-row fc-border-b"
                     style={{
                       height: headerHeights.get(true), // true means superheader
                     }}
@@ -300,7 +300,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       innerHeightRef={this.headerRowInnerHeightMap.createRef(false)}
 
                       // dimension
-                      height={headerHeights.get(false) /* false means normalheader */}
+                      height={maybeSubtractOne(headerHeights.get(false)) /* false means normalheader */}
 
                       // handlers
                       onColWidthOverrides={props.onSpreadsheetColWidthOverrides}
@@ -490,7 +490,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           aria-rowindex={resourceLayout.rowIndex}
                           data-resource-id={resource.id}
                           className={joinClassNames(
-                            'fc-resource fc-flex-col fc-fill-x fc-content-box',
+                            'fc-resource fc-flex-col fc-fill-x',
                             resourceLayout.rowIndex < flatResourceLayouts.length - 1 && // is not last
                               'fc-border-b',
                           )}
@@ -527,7 +527,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           role='row'
                           aria-rowindex={groupRowLayout.rowIndex}
                           class={joinClassNames(
-                            'fc-flex-row fc-fill-x fc-content-box',
+                            'fc-flex-row fc-fill-x',
                             groupRowLayout.rowIndex < flatGroupRowLayouts.length - 1 && // is not last
                               'fc-border-b',
                           )}
@@ -873,5 +873,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
 
     return null
+  }
+}
+
+// Util
+
+function maybeSubtractOne(n: number | undefined): number | undefined {
+  if (n != null) {
+    return n - 1
   }
 }

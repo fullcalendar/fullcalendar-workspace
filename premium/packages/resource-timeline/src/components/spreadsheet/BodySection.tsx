@@ -53,17 +53,14 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             {groupColLayouts.map((groupCellLayout) => {
               const group = groupCellLayout.entity
               const groupKey = createGroupId(group)
+              const isNotLast = groupCellLayout.rowIndex < groupColLayouts.length - 1
 
               return (
                 <div
                   key={groupKey}
                   role='row'
                   aria-rowindex={groupCellLayout.rowIndex}
-                  class={joinClassNames(
-                    'fc-flex-row fc-fill-x fc-content-box',
-                    groupCellLayout.rowIndex < groupColLayouts.length - 1 && // is not last
-                      'fc-border-b',
-                  )}
+                  class='fc-flex-row fc-fill-x'
                   style={{
                     top: rowTops.get(groupKey),
                     height: rowHeights.get(groupKey),
@@ -73,6 +70,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                     colSpec={group.spec}
                     fieldValue={group.value}
                     innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
+                    className={isNotLast ? 'fc-border-b' : ''}
                   />
                 </div>
               )
@@ -103,6 +101,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         >
           {props.flatResourceLayouts.map((resourceLayout) => {
             const resource = resourceLayout.entity
+            const isNotLast = resourceLayout.rowIndex < props.flatResourceLayouts.length - 1
 
             return (
               <div
@@ -110,11 +109,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 role='row'
                 aria-rowindex={resourceLayout.rowIndex}
                 data-resource-id={resource.id}
-                class={joinClassNames(
-                  'fc-resource fc-flex-row fc-fill-x fc-content-box',
-                  resourceLayout.rowIndex < props.flatResourceLayouts.length - 1 // is not last
-                    && 'fc-border-b',
-                )}
+                class='fc-flex-row fc-fill-x'
                 style={{
                   top: rowTops.get(resource.id),
                   height: rowHeights.get(resource.id),
@@ -130,6 +125,10 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   colSpecs={props.colSpecs}
                   colWidths={colWidths}
                   innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
+                  className={joinClassNames(
+                    'fc-resource',
+                    isNotLast && 'fc-border-b',
+                  )}
                 />
               </div>
             )
@@ -140,17 +139,14 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         {props.flatGroupRowLayouts.map((groupRowLayout) => {
           const group = groupRowLayout.entity
           const groupKey = createGroupId(group)
+          const isNotLast = groupRowLayout.rowIndex < props.flatGroupRowLayouts.length - 1
 
           return (
             <div
               key={groupKey}
               role='row'
               aria-rowindex={groupRowLayout.rowIndex}
-              class={joinClassNames(
-                'fc-flex-row fc-fill-x fc-content-box',
-                groupRowLayout.rowIndex < props.flatGroupRowLayouts.length - 1 && // is not last
-                  'fc-border-b',
-              )}
+              class='fc-flex-row fc-fill-x'
               style={{
                 top: rowTops.get(groupKey),
                 height: rowHeights.get(groupKey),
@@ -160,6 +156,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 group={group}
                 isExpanded={groupRowLayout.isExpanded}
                 innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
+                className={isNotLast ? 'fc-border-b' : ''}
               />
             </div>
           )
