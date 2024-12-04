@@ -31,6 +31,11 @@
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
   },
+  "dependenciesMeta": {
+    "@fullcalendar/angular": {
+      "injected": true
+    }
+  },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.0.0",
     "@angular/cli": "~15.0.0",

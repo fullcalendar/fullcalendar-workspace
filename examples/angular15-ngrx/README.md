@@ -22,16 +22,6 @@ npm run start # continously build, as a server
 
 After running the `npm run start` command, you will be given a localhost URL that can be visited in a browser.
 
-## Monorepo Quirk
-
-To get this example working within a monorepo, [this hack](https://stackoverflow.com/a/61801741/96342) was added to `tsconfig.app.json`. It can be safely removed if you're not using a monorepo.
-
-```json
-"paths": {
-  "@angular/*": ["./node_modules/@angular/*"]
-},
-```
-
 ## StackBlitz Quirk
 
 To get this example working within [StackBlitz](https://stackblitz.com/), the following hack was added to `src/main.ts`. It can be safely removed in other environments.

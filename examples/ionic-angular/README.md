@@ -8,3 +8,5 @@ To get this example working within a monorepo, [this hack](https://stackoverflow
   "@angular/*": ["./node_modules/@angular/*"]
 },
 ```
+
+This HACK is still needed because the `dependenciesMeta.*.injected` technique does not work for some reason.
