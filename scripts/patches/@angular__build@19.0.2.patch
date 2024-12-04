@@ -1,0 +1,27 @@
+diff --git a/src/utils/version.js b/src/utils/version.js
+index 69b54b18e2b61db79b6a0befb50002a0a35387b5..d4215252f6fd88fcf94a82a43f070509288ffe85 100755
+--- a/src/utils/version.js
++++ b/src/utils/version.js
+@@ -48,12 +48,17 @@ function assertCompatibleAngularVersion(projectRoot) {
+         return;
+     }
+     let supportedAngularSemver;
+-    try {
+-        supportedAngularSemver = projectRequire('@angular/build/package.json')['peerDependencies']['@angular/compiler-cli'];
+-    }
+-    catch {
++    //
++    //// This first resolution "works" somehow, even though it's called from the example project,
++    //// which doesn't explicitly depend on @angular/build. When this happens, it grabs an
++    //// unexpected version of @angular/build, with an unexpected @angular/compiler-cli version.
++    //
++    // try {
++    //     supportedAngularSemver = projectRequire('@angular/build/package.json')['peerDependencies']['@angular/compiler-cli'];
++    // }
++    // catch {
+         supportedAngularSemver = projectRequire('@angular-devkit/build-angular/package.json')['peerDependencies']['@angular/compiler-cli'];
+-    }
++    // }
+     const angularVersion = new semver_1.SemVer(angularPkgJson['version']);
+     if (!(0, semver_1.satisfies)(angularVersion, supportedAngularSemver, { includePrerelease: true })) {
+         console.error(`This version of CLI is only compatible with Angular versions ${supportedAngularSemver},\n` +

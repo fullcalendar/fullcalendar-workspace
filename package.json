@@ -48,7 +48,8 @@
       }
     },
     "patchedDependencies": {
-      "jasmine-jquery@2.1.1": "standard/scripts/patches/jasmine-jquery@2.1.1.patch"
+      "jasmine-jquery@2.1.1": "standard/scripts/patches/jasmine-jquery@2.1.1.patch",
+      "@angular/build@19.0.2": "scripts/patches/@angular__build@19.0.2.patch"
     }
   }
 }
