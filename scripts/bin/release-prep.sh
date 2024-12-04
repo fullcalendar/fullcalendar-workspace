@@ -13,11 +13,7 @@ pnpm run version-bump
 
 pnpm run build --all
 
-# NOTE: the `pnpm run test --all` command was running recursively in standard :(
-pnpm \
-  --filter '!./standard' \
-  --stream \
-  run test
+pnpm --stream run test
 
 echo
 echo "Done with release-prep!"
