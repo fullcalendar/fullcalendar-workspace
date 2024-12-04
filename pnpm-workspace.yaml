@@ -9,10 +9,6 @@ packages:
   - './scripts'
   - './contrib/*'
   - './examples/*'
-  # waiting for https://github.com/vuejs/vitepress/issues/1507#issuecomment-1465658724
-  - '!./examples/nuxt3'
   # getting confused by monorepo setup with both React 18 and React 19 somehow,
   # importing both. Eventually upgrade all to 19
   - '!./examples/t3-app'
-  # same:
-  - '!./examples/react18-jest'
