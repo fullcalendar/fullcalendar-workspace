@@ -9,6 +9,3 @@ packages:
   - './scripts'
   - './contrib/*'
   - './examples/*'
-  # getting confused by monorepo setup with both React 18 and React 19 somehow,
-  # importing both. Eventually upgrade all to 19
-  - '!./examples/t3-app'
