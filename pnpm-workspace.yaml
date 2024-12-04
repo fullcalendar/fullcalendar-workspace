@@ -9,8 +9,6 @@ packages:
   - './scripts'
   - './contrib/*'
   - './examples/*'
-  # waiting for https://github.com/nuxt/framework/issues/5411
-  - '!./examples/nuxt'
   # waiting for https://github.com/vuejs/vitepress/issues/1507#issuecomment-1465658724
   - '!./examples/nuxt3'
   # getting confused by monorepo setup with both React 18 and React 19 somehow,
