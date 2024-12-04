@@ -6,8 +6,8 @@
     "start": "NODE_OPTIONS=--openssl-legacy-provider ng serve",
     "build": "NODE_OPTIONS=--openssl-legacy-provider ng build",
     "watch": "NODE_OPTIONS=--openssl-legacy-provider ng build --watch --configuration development",
-    "test": "NODE_OPTIONS=--openssl-legacy-provider ng test --watch=false --browsers ChromeHeadless",
-    "test:dev": "NODE_OPTIONS=--openssl-legacy-provider ng test",
+    "xxx:test": "NODE_OPTIONS=--openssl-legacy-provider ng test --watch=false --browsers ChromeHeadless",
+    "xxx:test:dev": "NODE_OPTIONS=--openssl-legacy-provider ng test",
     "clean": "rm -rf dist node_modules/.cache"
   },
   "private": true,

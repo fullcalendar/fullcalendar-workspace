@@ -13,6 +13,9 @@ pnpm run version-bump
 
 pnpm run build --all
 
+# # for testing all contrib/example packages
+#pnpm --stream run test --other
+
 pnpm --stream run test
 
 echo

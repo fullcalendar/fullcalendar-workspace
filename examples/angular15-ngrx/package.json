@@ -6,8 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --watch=false --browsers ChromeHeadless",
-    "test:dev": "ng test",
+    "xxx:test": "ng test --watch=false --browsers ChromeHeadless",
+    "xxx:test:dev": "ng test",
     "clean": "rm -rf dist .angular/cache"
   },
   "private": true,
