@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "@fullcalendar/angular18-example": {
+    "@fullcalendar-examples/angular18": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/fullcalendar/angular18-example",
+            "outputPath": "dist/fullcalendar-examples/angular18",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -59,10 +59,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "@fullcalendar/angular18-example:build:production"
+              "buildTarget": "@fullcalendar-examples/angular18:build:production"
             },
             "development": {
-              "buildTarget": "@fullcalendar/angular18-example:build:development"
+              "buildTarget": "@fullcalendar-examples/angular18:build:development"
             }
           },
           "defaultConfiguration": "development"
