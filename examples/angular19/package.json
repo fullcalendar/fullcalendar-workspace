@@ -2,12 +2,12 @@
   "name": "@fullcalendar-examples/angular19",
   "version": "0.0.0",
   "scripts": {
-    "ng": "./monorepo-hack.cjs && ng",
-    "start": "./monorepo-hack.cjs && ng serve",
-    "build": "./monorepo-hack.cjs && ng build",
-    "watch": "./monorepo-hack.cjs && ng build --watch --configuration development",
-    "xxxtest": "./monorepo-hack.cjs && ng test --watch=false --browsers ChromeHeadless",
-    "xxxtest:dev": "./monorepo-hack.cjs && ng test",
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "xxxtest": "ng test --watch=false --browsers ChromeHeadless",
+    "xxxtest:dev": "ng test",
     "clean": "rm -rf dist .angular/cache"
   },
   "private": true,
