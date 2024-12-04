@@ -1,14 +1,14 @@
 
-# FullCalendar Premium Next.js Example
+# FullCalendar Next.js 12 Example
 
-FullCalendar Premium works well with the React framework [Next.js](https://nextjs.org/)
+FullCalendar works well with the React framework [Next.js](https://nextjs.org/)
 
 
 ## Installation
 
 ```bash
 git clone https://github.com/fullcalendar/fullcalendar-examples.git
-cd fullcalendar-examples/next-scheduler
+cd fullcalendar-examples/next12
 npm install
 ```
 
