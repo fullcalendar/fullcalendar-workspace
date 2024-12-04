@@ -6,7 +6,7 @@
 
 ```bash
 git clone https://github.com/fullcalendar/fullcalendar-examples.git
-cd fullcalendar-examples/react19-jest
+cd fullcalendar-examples/react18-jest
 npm install
 ```
 
