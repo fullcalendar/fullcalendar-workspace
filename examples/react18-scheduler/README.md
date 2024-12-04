@@ -1,5 +1,5 @@
 
-# FullCalendar React Example Project
+# FullCalendar React 18 Example Project (with Premium)
 
 For complete instructions on how to initialize your build system, see the [FullCalendar React Docs &raquo;](https://fullcalendar.io/docs/react)
 
@@ -10,7 +10,7 @@ For complete instructions on how to initialize your build system, see the [FullC
 
 ```bash
 git clone https://github.com/fullcalendar/fullcalendar-examples.git
-cd fullcalendar-examples/react
+cd fullcalendar-examples/react18-scheduler
 npm install
 ```
 

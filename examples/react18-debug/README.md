@@ -1,5 +1,5 @@
 
-# FullCalendar React Example Project
+# FullCalendar React 18 Example Project
 
 For debugging these issues:
 

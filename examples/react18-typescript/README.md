@@ -1,14 +1,14 @@
 
-# FullCalendar React Lazy Example Project
+# FullCalendar React 18 + TypeScript Example Project
 
-Like the standard React example, but uses `lazy` and `Suspense`.
+An example project showing how [FullCalendar's React Connector](https://fullcalendar.io/docs/react) can be used with [TypeScript](https://www.typescriptlang.org/).
 
 
 ## Installation
 
 ```bash
 git clone https://github.com/fullcalendar/fullcalendar-examples.git
-cd fullcalendar-examples/react-lazy
+cd fullcalendar-examples/react18-typescript
 npm install
 ```
 

@@ -1,12 +1,12 @@
 
-# FullCalendar React + Jest Example Project
+# FullCalendar React 18 + Jest Example Project
 
 
 ## Installation
 
 ```bash
 git clone https://github.com/fullcalendar/fullcalendar-examples.git
-cd fullcalendar-examples/jest-react
+cd fullcalendar-examples/react19-jest
 npm install
 ```
 

@@ -1032,7 +1032,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^16.0.2
-        version: 16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.0.4))(@types/node@22.10.1)(html-webpack-plugin@5.6.3(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.0.4)
+        version: 16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.0.4))(@types/node@22.10.1)(html-webpack-plugin@5.6.3(webpack@5.94.0))(jest@29.7.0(@types/node@22.10.1))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.0.4)
       '@angular/cli':
         specifier: ~16.0.2
         version: 16.0.6(chokidar@3.5.3)
@@ -1123,7 +1123,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^17.0.3
-        version: 17.3.11(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.2.2))(@types/express@4.17.21)(@types/node@22.10.1)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.2.2)
+        version: 17.3.11(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.2.2))(@types/express@4.17.21)(@types/node@22.10.1)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.94.0))(jest@29.7.0(@types/node@22.10.1))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.2.2)
       '@angular/cli':
         specifier: ^17.0.3
         version: 17.3.11(chokidar@3.6.0)
@@ -1214,7 +1214,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^18.0.2
-        version: 18.2.12(@angular/compiler-cli@18.2.13(@angular/compiler@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.4.5))(@types/node@22.10.1)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.4.5)
+        version: 18.2.12(@angular/compiler-cli@18.2.13(@angular/compiler@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.4.5))(@types/node@22.10.1)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.94.0))(jest@29.7.0(@types/node@22.10.1))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.4.5)
       '@angular/cli':
         specifier: ^18.0.2
         version: 18.2.12(chokidar@3.6.0)
@@ -1305,7 +1305,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^19.0.2
-        version: 19.0.2(@angular/compiler-cli@19.0.1(@angular/compiler@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(typescript@5.6.3))(@angular/compiler@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(@types/node@22.10.1)(chokidar@4.0.1)(html-webpack-plugin@5.6.3(webpack@5.96.1))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.6.3)(vite@5.4.11(@types/node@22.10.1)(less@4.2.0)(lightningcss@1.28.2)(sass@1.80.7)(stylus@0.59.0)(terser@5.36.0))
+        version: 19.0.2(@angular/compiler-cli@19.0.1(@angular/compiler@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(typescript@5.6.3))(@angular/compiler@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(@types/node@22.10.1)(chokidar@4.0.1)(html-webpack-plugin@5.6.3(webpack@5.96.1))(jest@29.7.0(@types/node@22.10.1))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.6.3)(vite@5.4.11(@types/node@22.10.1)(less@4.2.0)(lightningcss@1.28.2)(sass@1.80.7)(stylus@0.59.0)(terser@5.36.0))
       '@angular/cli':
         specifier: ^19.0.2
         version: 19.0.2(@types/node@22.10.1)(chokidar@4.0.1)
@@ -1775,545 +1775,6 @@ importers:
         specifier: ^2.7.0
         version: 2.13.2(@swc/helpers@0.5.15)(postcss@8.4.49)(relateurl@0.2.7)(terser@5.36.0)(typescript@5.6.3)
 
-  examples/react:
-    dependencies:
-      '@fullcalendar/core':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/react':
-        specifier: ^6.1.10
-        version: link:../../contrib/react
-      '@fullcalendar/timegrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/timegrid/dist
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.4.0
-        version: 7.26.0
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.0.0
-        version: 7.18.6(@babel/core@7.26.0)
-      '@babel/plugin-proposal-export-namespace-from':
-        specifier: ^7.0.0
-        version: 7.18.9(@babel/core@7.26.0)
-      '@babel/plugin-proposal-throw-expressions':
-        specifier: ^7.0.0
-        version: 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.0.0
-        version: 7.8.3(@babel/core@7.26.0)
-      '@babel/preset-env':
-        specifier: ^7.0.0-beta.51
-        version: 7.26.0(@babel/core@7.26.0)
-      '@babel/preset-react':
-        specifier: ^7.0.0-beta.51
-        version: 7.25.9(@babel/core@7.26.0)
-      babel-loader:
-        specifier: ^8.1.0
-        version: 8.4.1(@babel/core@7.26.0)(webpack@5.97.0)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
-
-  examples/react-cjs:
-    dependencies:
-      '@fullcalendar/core':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/react':
-        specifier: ^6.1.10
-        version: link:../../contrib/react
-      '@fullcalendar/timegrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/timegrid/dist
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.4.0
-        version: 7.26.0
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.0.0
-        version: 7.18.6(@babel/core@7.26.0)
-      '@babel/plugin-proposal-export-namespace-from':
-        specifier: ^7.0.0
-        version: 7.18.9(@babel/core@7.26.0)
-      '@babel/plugin-proposal-throw-expressions':
-        specifier: ^7.0.0
-        version: 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.0.0
-        version: 7.8.3(@babel/core@7.26.0)
-      '@babel/preset-env':
-        specifier: ^7.0.0-beta.51
-        version: 7.26.0(@babel/core@7.26.0)
-      '@babel/preset-react':
-        specifier: ^7.0.0-beta.51
-        version: 7.25.9(@babel/core@7.26.0)
-      babel-loader:
-        specifier: ^8.1.0
-        version: 8.4.1(@babel/core@7.26.0)(webpack@5.97.0)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
-
-  examples/react-debug:
-    dependencies:
-      '@fullcalendar/core':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/react':
-        specifier: ^6.1.10
-        version: link:../../contrib/react
-      '@fullcalendar/timegrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/timegrid/dist
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.4.0
-        version: 7.26.0
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.0.0
-        version: 7.18.6(@babel/core@7.26.0)
-      '@babel/plugin-proposal-export-namespace-from':
-        specifier: ^7.0.0
-        version: 7.18.9(@babel/core@7.26.0)
-      '@babel/plugin-proposal-throw-expressions':
-        specifier: ^7.0.0
-        version: 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.0.0
-        version: 7.8.3(@babel/core@7.26.0)
-      '@babel/preset-env':
-        specifier: ^7.0.0-beta.51
-        version: 7.26.0(@babel/core@7.26.0)
-      '@babel/preset-react':
-        specifier: ^7.0.0-beta.51
-        version: 7.25.9(@babel/core@7.26.0)
-      babel-loader:
-        specifier: ^8.1.0
-        version: 8.4.1(@babel/core@7.26.0)(webpack@5.97.0)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
-
-  examples/react-lazy:
-    dependencies:
-      '@fullcalendar/core':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/react':
-        specifier: ^6.1.10
-        version: link:../../contrib/react
-      '@fullcalendar/timegrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/timegrid/dist
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.4.0
-        version: 7.26.0
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.0.0
-        version: 7.18.6(@babel/core@7.26.0)
-      '@babel/plugin-proposal-export-namespace-from':
-        specifier: ^7.0.0
-        version: 7.18.9(@babel/core@7.26.0)
-      '@babel/plugin-proposal-throw-expressions':
-        specifier: ^7.0.0
-        version: 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.0.0
-        version: 7.8.3(@babel/core@7.26.0)
-      '@babel/preset-env':
-        specifier: ^7.0.0-beta.51
-        version: 7.26.0(@babel/core@7.26.0)
-      '@babel/preset-react':
-        specifier: ^7.0.0-beta.51
-        version: 7.25.9(@babel/core@7.26.0)
-      babel-loader:
-        specifier: ^8.1.0
-        version: 8.4.1(@babel/core@7.26.0)(webpack@5.97.0)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
-
-  examples/react-mobx-typescript:
-    dependencies:
-      '@fullcalendar/core':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/react':
-        specifier: ^6.1.10
-        version: link:../../contrib/react
-      '@fullcalendar/timegrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/timegrid/dist
-      mobx:
-        specifier: ^6.0.3
-        version: 6.13.5
-      mobx-react-lite:
-        specifier: ^3.0.1
-        version: 3.4.3(mobx@6.13.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@types/react':
-        specifier: ^18.3.3
-        version: 18.3.12
-      '@types/react-dom':
-        specifier: ^18.3.0
-        version: 18.3.1
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      ts-loader:
-        specifier: ^8.0.7
-        version: 8.4.0(typescript@4.8.4)(webpack@5.97.0)
-      typescript:
-        specifier: ^4.0.5
-        version: 4.8.4
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
-
-  examples/react-redux:
-    dependencies:
-      '@fullcalendar/core':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/react':
-        specifier: ^6.1.10
-        version: link:../../contrib/react
-      '@fullcalendar/timegrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/timegrid/dist
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-      react-redux:
-        specifier: ^7.2.0
-        version: 7.2.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      redux:
-        specifier: ^4.0.5
-        version: 4.2.1
-      redux-thunk:
-        specifier: ^2.3.0
-        version: 2.4.2(redux@4.2.1)
-      reselect:
-        specifier: ^4.0.0
-        version: 4.1.8
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.4.0
-        version: 7.26.0
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.0.0
-        version: 7.18.6(@babel/core@7.26.0)
-      '@babel/plugin-proposal-export-namespace-from':
-        specifier: ^7.0.0
-        version: 7.18.9(@babel/core@7.26.0)
-      '@babel/plugin-proposal-throw-expressions':
-        specifier: ^7.0.0
-        version: 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.0.0
-        version: 7.8.3(@babel/core@7.26.0)
-      '@babel/preset-env':
-        specifier: ^7.0.0-beta.51
-        version: 7.26.0(@babel/core@7.26.0)
-      '@babel/preset-react':
-        specifier: ^7.0.0-beta.51
-        version: 7.25.9(@babel/core@7.26.0)
-      babel-loader:
-        specifier: ^8.1.0
-        version: 8.4.1(@babel/core@7.26.0)(webpack@5.97.0)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
-
-  examples/react-scheduler:
-    dependencies:
-      '@fullcalendar/adaptive':
-        specifier: ^6.1.10
-        version: link:../../premium/packages/adaptive/dist
-      '@fullcalendar/core':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/react':
-        specifier: ^6.1.10
-        version: link:../../contrib/react
-      '@fullcalendar/resource':
-        specifier: ^6.1.10
-        version: link:../../premium/packages/resource/dist
-      '@fullcalendar/resource-timeline':
-        specifier: ^6.1.10
-        version: link:../../premium/packages/resource-timeline/dist
-      '@fullcalendar/timegrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/timegrid/dist
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@babel/core':
-        specifier: ^7.4.0
-        version: 7.26.0
-      '@babel/plugin-proposal-class-properties':
-        specifier: ^7.0.0
-        version: 7.18.6(@babel/core@7.26.0)
-      '@babel/plugin-proposal-export-namespace-from':
-        specifier: ^7.0.0
-        version: 7.18.9(@babel/core@7.26.0)
-      '@babel/plugin-proposal-throw-expressions':
-        specifier: ^7.0.0
-        version: 7.25.9(@babel/core@7.26.0)
-      '@babel/plugin-syntax-dynamic-import':
-        specifier: ^7.0.0
-        version: 7.8.3(@babel/core@7.26.0)
-      '@babel/preset-env':
-        specifier: ^7.0.0-beta.51
-        version: 7.26.0(@babel/core@7.26.0)
-      '@babel/preset-react':
-        specifier: ^7.0.0-beta.51
-        version: 7.25.9(@babel/core@7.26.0)
-      babel-loader:
-        specifier: ^8.1.0
-        version: 8.4.1(@babel/core@7.26.0)(webpack@5.97.0)
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
-
-  examples/react-typescript:
-    dependencies:
-      '@fullcalendar/core':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/react':
-        specifier: ^6.1.10
-        version: link:../../contrib/react
-      '@fullcalendar/timegrid':
-        specifier: ^6.1.10
-        version: link:../../standard/packages/timegrid/dist
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-    devDependencies:
-      '@types/react':
-        specifier: ^18.3.3
-        version: 18.3.12
-      '@types/react-dom':
-        specifier: ^18.3.0
-        version: 18.3.1
-      css-loader:
-        specifier: ^4.3.0
-        version: 4.3.0(webpack@5.97.0)
-      html-webpack-plugin:
-        specifier: ^4.5.0
-        version: 4.5.2(webpack@5.97.0)
-      style-loader:
-        specifier: ^2.0.0
-        version: 2.0.0(webpack@5.97.0)
-      ts-loader:
-        specifier: ^8.0.7
-        version: 8.4.0(typescript@4.8.4)(webpack@5.97.0)
-      typescript:
-        specifier: ^4.0.5
-        version: 4.8.4
-      webpack:
-        specifier: ^5.3.0
-        version: 5.97.0(webpack-cli@4.10.0)
-      webpack-cli:
-        specifier: ^4.1.0
-        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
-      webpack-dev-server:
-        specifier: ^3.11.0
-        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
-
   examples/react16:
     dependencies:
       '@fullcalendar/core':
@@ -2438,6 +1899,545 @@ importers:
       style-loader:
         specifier: ^2.0.0
         version: 2.0.0(webpack@5.97.0)
+      webpack:
+        specifier: ^5.3.0
+        version: 5.97.0(webpack-cli@4.10.0)
+      webpack-cli:
+        specifier: ^4.1.0
+        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
+      webpack-dev-server:
+        specifier: ^3.11.0
+        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+
+  examples/react18:
+    dependencies:
+      '@fullcalendar/core':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/core/dist
+      '@fullcalendar/daygrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/daygrid/dist
+      '@fullcalendar/interaction':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/interaction/dist
+      '@fullcalendar/react':
+        specifier: ^6.1.10
+        version: link:../../contrib/react
+      '@fullcalendar/timegrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/timegrid/dist
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.4.0
+        version: 7.26.0
+      '@babel/plugin-proposal-class-properties':
+        specifier: ^7.0.0
+        version: 7.18.6(@babel/core@7.26.0)
+      '@babel/plugin-proposal-export-namespace-from':
+        specifier: ^7.0.0
+        version: 7.18.9(@babel/core@7.26.0)
+      '@babel/plugin-proposal-throw-expressions':
+        specifier: ^7.0.0
+        version: 7.25.9(@babel/core@7.26.0)
+      '@babel/plugin-syntax-dynamic-import':
+        specifier: ^7.0.0
+        version: 7.8.3(@babel/core@7.26.0)
+      '@babel/preset-env':
+        specifier: ^7.0.0-beta.51
+        version: 7.26.0(@babel/core@7.26.0)
+      '@babel/preset-react':
+        specifier: ^7.0.0-beta.51
+        version: 7.25.9(@babel/core@7.26.0)
+      babel-loader:
+        specifier: ^8.1.0
+        version: 8.4.1(@babel/core@7.26.0)(webpack@5.97.0)
+      css-loader:
+        specifier: ^4.3.0
+        version: 4.3.0(webpack@5.97.0)
+      html-webpack-plugin:
+        specifier: ^4.5.0
+        version: 4.5.2(webpack@5.97.0)
+      style-loader:
+        specifier: ^2.0.0
+        version: 2.0.0(webpack@5.97.0)
+      webpack:
+        specifier: ^5.3.0
+        version: 5.97.0(webpack-cli@4.10.0)
+      webpack-cli:
+        specifier: ^4.1.0
+        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
+      webpack-dev-server:
+        specifier: ^3.11.0
+        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+
+  examples/react18-cjs:
+    dependencies:
+      '@fullcalendar/core':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/core/dist
+      '@fullcalendar/daygrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/daygrid/dist
+      '@fullcalendar/interaction':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/interaction/dist
+      '@fullcalendar/react':
+        specifier: ^6.1.10
+        version: link:../../contrib/react
+      '@fullcalendar/timegrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/timegrid/dist
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.4.0
+        version: 7.26.0
+      '@babel/plugin-proposal-class-properties':
+        specifier: ^7.0.0
+        version: 7.18.6(@babel/core@7.26.0)
+      '@babel/plugin-proposal-export-namespace-from':
+        specifier: ^7.0.0
+        version: 7.18.9(@babel/core@7.26.0)
+      '@babel/plugin-proposal-throw-expressions':
+        specifier: ^7.0.0
+        version: 7.25.9(@babel/core@7.26.0)
+      '@babel/plugin-syntax-dynamic-import':
+        specifier: ^7.0.0
+        version: 7.8.3(@babel/core@7.26.0)
+      '@babel/preset-env':
+        specifier: ^7.0.0-beta.51
+        version: 7.26.0(@babel/core@7.26.0)
+      '@babel/preset-react':
+        specifier: ^7.0.0-beta.51
+        version: 7.25.9(@babel/core@7.26.0)
+      babel-loader:
+        specifier: ^8.1.0
+        version: 8.4.1(@babel/core@7.26.0)(webpack@5.97.0)
+      css-loader:
+        specifier: ^4.3.0
+        version: 4.3.0(webpack@5.97.0)
+      html-webpack-plugin:
+        specifier: ^4.5.0
+        version: 4.5.2(webpack@5.97.0)
+      style-loader:
+        specifier: ^2.0.0
+        version: 2.0.0(webpack@5.97.0)
+      webpack:
+        specifier: ^5.3.0
+        version: 5.97.0(webpack-cli@4.10.0)
+      webpack-cli:
+        specifier: ^4.1.0
+        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
+      webpack-dev-server:
+        specifier: ^3.11.0
+        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+
+  examples/react18-debug:
+    dependencies:
+      '@fullcalendar/core':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/core/dist
+      '@fullcalendar/daygrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/daygrid/dist
+      '@fullcalendar/interaction':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/interaction/dist
+      '@fullcalendar/react':
+        specifier: ^6.1.10
+        version: link:../../contrib/react
+      '@fullcalendar/timegrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/timegrid/dist
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.4.0
+        version: 7.26.0
+      '@babel/plugin-proposal-class-properties':
+        specifier: ^7.0.0
+        version: 7.18.6(@babel/core@7.26.0)
+      '@babel/plugin-proposal-export-namespace-from':
+        specifier: ^7.0.0
+        version: 7.18.9(@babel/core@7.26.0)
+      '@babel/plugin-proposal-throw-expressions':
+        specifier: ^7.0.0
+        version: 7.25.9(@babel/core@7.26.0)
+      '@babel/plugin-syntax-dynamic-import':
+        specifier: ^7.0.0
+        version: 7.8.3(@babel/core@7.26.0)
+      '@babel/preset-env':
+        specifier: ^7.0.0-beta.51
+        version: 7.26.0(@babel/core@7.26.0)
+      '@babel/preset-react':
+        specifier: ^7.0.0-beta.51
+        version: 7.25.9(@babel/core@7.26.0)
+      babel-loader:
+        specifier: ^8.1.0
+        version: 8.4.1(@babel/core@7.26.0)(webpack@5.97.0)
+      css-loader:
+        specifier: ^4.3.0
+        version: 4.3.0(webpack@5.97.0)
+      html-webpack-plugin:
+        specifier: ^4.5.0
+        version: 4.5.2(webpack@5.97.0)
+      style-loader:
+        specifier: ^2.0.0
+        version: 2.0.0(webpack@5.97.0)
+      webpack:
+        specifier: ^5.3.0
+        version: 5.97.0(webpack-cli@4.10.0)
+      webpack-cli:
+        specifier: ^4.1.0
+        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
+      webpack-dev-server:
+        specifier: ^3.11.0
+        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+
+  examples/react18-lazy:
+    dependencies:
+      '@fullcalendar/core':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/core/dist
+      '@fullcalendar/daygrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/daygrid/dist
+      '@fullcalendar/interaction':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/interaction/dist
+      '@fullcalendar/react':
+        specifier: ^6.1.10
+        version: link:../../contrib/react
+      '@fullcalendar/timegrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/timegrid/dist
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.4.0
+        version: 7.26.0
+      '@babel/plugin-proposal-class-properties':
+        specifier: ^7.0.0
+        version: 7.18.6(@babel/core@7.26.0)
+      '@babel/plugin-proposal-export-namespace-from':
+        specifier: ^7.0.0
+        version: 7.18.9(@babel/core@7.26.0)
+      '@babel/plugin-proposal-throw-expressions':
+        specifier: ^7.0.0
+        version: 7.25.9(@babel/core@7.26.0)
+      '@babel/plugin-syntax-dynamic-import':
+        specifier: ^7.0.0
+        version: 7.8.3(@babel/core@7.26.0)
+      '@babel/preset-env':
+        specifier: ^7.0.0-beta.51
+        version: 7.26.0(@babel/core@7.26.0)
+      '@babel/preset-react':
+        specifier: ^7.0.0-beta.51
+        version: 7.25.9(@babel/core@7.26.0)
+      babel-loader:
+        specifier: ^8.1.0
+        version: 8.4.1(@babel/core@7.26.0)(webpack@5.97.0)
+      css-loader:
+        specifier: ^4.3.0
+        version: 4.3.0(webpack@5.97.0)
+      html-webpack-plugin:
+        specifier: ^4.5.0
+        version: 4.5.2(webpack@5.97.0)
+      style-loader:
+        specifier: ^2.0.0
+        version: 2.0.0(webpack@5.97.0)
+      webpack:
+        specifier: ^5.3.0
+        version: 5.97.0(webpack-cli@4.10.0)
+      webpack-cli:
+        specifier: ^4.1.0
+        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
+      webpack-dev-server:
+        specifier: ^3.11.0
+        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+
+  examples/react18-mobx-typescript:
+    dependencies:
+      '@fullcalendar/core':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/core/dist
+      '@fullcalendar/daygrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/daygrid/dist
+      '@fullcalendar/interaction':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/interaction/dist
+      '@fullcalendar/react':
+        specifier: ^6.1.10
+        version: link:../../contrib/react
+      '@fullcalendar/timegrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/timegrid/dist
+      mobx:
+        specifier: ^6.0.3
+        version: 6.13.5
+      mobx-react-lite:
+        specifier: ^3.0.1
+        version: 3.4.3(mobx@6.13.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.3
+        version: 18.3.12
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.1
+      css-loader:
+        specifier: ^4.3.0
+        version: 4.3.0(webpack@5.97.0)
+      html-webpack-plugin:
+        specifier: ^4.5.0
+        version: 4.5.2(webpack@5.97.0)
+      style-loader:
+        specifier: ^2.0.0
+        version: 2.0.0(webpack@5.97.0)
+      ts-loader:
+        specifier: ^8.0.7
+        version: 8.4.0(typescript@4.8.4)(webpack@5.97.0)
+      typescript:
+        specifier: ^4.0.5
+        version: 4.8.4
+      webpack:
+        specifier: ^5.3.0
+        version: 5.97.0(webpack-cli@4.10.0)
+      webpack-cli:
+        specifier: ^4.1.0
+        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
+      webpack-dev-server:
+        specifier: ^3.11.0
+        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+
+  examples/react18-redux:
+    dependencies:
+      '@fullcalendar/core':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/core/dist
+      '@fullcalendar/daygrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/daygrid/dist
+      '@fullcalendar/interaction':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/interaction/dist
+      '@fullcalendar/react':
+        specifier: ^6.1.10
+        version: link:../../contrib/react
+      '@fullcalendar/timegrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/timegrid/dist
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      react-redux:
+        specifier: ^7.2.0
+        version: 7.2.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      redux:
+        specifier: ^4.0.5
+        version: 4.2.1
+      redux-thunk:
+        specifier: ^2.3.0
+        version: 2.4.2(redux@4.2.1)
+      reselect:
+        specifier: ^4.0.0
+        version: 4.1.8
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.4.0
+        version: 7.26.0
+      '@babel/plugin-proposal-class-properties':
+        specifier: ^7.0.0
+        version: 7.18.6(@babel/core@7.26.0)
+      '@babel/plugin-proposal-export-namespace-from':
+        specifier: ^7.0.0
+        version: 7.18.9(@babel/core@7.26.0)
+      '@babel/plugin-proposal-throw-expressions':
+        specifier: ^7.0.0
+        version: 7.25.9(@babel/core@7.26.0)
+      '@babel/plugin-syntax-dynamic-import':
+        specifier: ^7.0.0
+        version: 7.8.3(@babel/core@7.26.0)
+      '@babel/preset-env':
+        specifier: ^7.0.0-beta.51
+        version: 7.26.0(@babel/core@7.26.0)
+      '@babel/preset-react':
+        specifier: ^7.0.0-beta.51
+        version: 7.25.9(@babel/core@7.26.0)
+      babel-loader:
+        specifier: ^8.1.0
+        version: 8.4.1(@babel/core@7.26.0)(webpack@5.97.0)
+      css-loader:
+        specifier: ^4.3.0
+        version: 4.3.0(webpack@5.97.0)
+      html-webpack-plugin:
+        specifier: ^4.5.0
+        version: 4.5.2(webpack@5.97.0)
+      style-loader:
+        specifier: ^2.0.0
+        version: 2.0.0(webpack@5.97.0)
+      webpack:
+        specifier: ^5.3.0
+        version: 5.97.0(webpack-cli@4.10.0)
+      webpack-cli:
+        specifier: ^4.1.0
+        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
+      webpack-dev-server:
+        specifier: ^3.11.0
+        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+
+  examples/react18-scheduler:
+    dependencies:
+      '@fullcalendar/adaptive':
+        specifier: ^6.1.10
+        version: link:../../premium/packages/adaptive/dist
+      '@fullcalendar/core':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/core/dist
+      '@fullcalendar/daygrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/daygrid/dist
+      '@fullcalendar/interaction':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/interaction/dist
+      '@fullcalendar/react':
+        specifier: ^6.1.10
+        version: link:../../contrib/react
+      '@fullcalendar/resource':
+        specifier: ^6.1.10
+        version: link:../../premium/packages/resource/dist
+      '@fullcalendar/resource-timeline':
+        specifier: ^6.1.10
+        version: link:../../premium/packages/resource-timeline/dist
+      '@fullcalendar/timegrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/timegrid/dist
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@babel/core':
+        specifier: ^7.4.0
+        version: 7.26.0
+      '@babel/plugin-proposal-class-properties':
+        specifier: ^7.0.0
+        version: 7.18.6(@babel/core@7.26.0)
+      '@babel/plugin-proposal-export-namespace-from':
+        specifier: ^7.0.0
+        version: 7.18.9(@babel/core@7.26.0)
+      '@babel/plugin-proposal-throw-expressions':
+        specifier: ^7.0.0
+        version: 7.25.9(@babel/core@7.26.0)
+      '@babel/plugin-syntax-dynamic-import':
+        specifier: ^7.0.0
+        version: 7.8.3(@babel/core@7.26.0)
+      '@babel/preset-env':
+        specifier: ^7.0.0-beta.51
+        version: 7.26.0(@babel/core@7.26.0)
+      '@babel/preset-react':
+        specifier: ^7.0.0-beta.51
+        version: 7.25.9(@babel/core@7.26.0)
+      babel-loader:
+        specifier: ^8.1.0
+        version: 8.4.1(@babel/core@7.26.0)(webpack@5.97.0)
+      css-loader:
+        specifier: ^4.3.0
+        version: 4.3.0(webpack@5.97.0)
+      html-webpack-plugin:
+        specifier: ^4.5.0
+        version: 4.5.2(webpack@5.97.0)
+      style-loader:
+        specifier: ^2.0.0
+        version: 2.0.0(webpack@5.97.0)
+      webpack:
+        specifier: ^5.3.0
+        version: 5.97.0(webpack-cli@4.10.0)
+      webpack-cli:
+        specifier: ^4.1.0
+        version: 4.10.0(webpack-dev-server@3.11.3)(webpack@5.97.0)
+      webpack-dev-server:
+        specifier: ^3.11.0
+        version: 3.11.3(webpack-cli@4.10.0)(webpack@5.97.0)
+
+  examples/react18-typescript:
+    dependencies:
+      '@fullcalendar/core':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/core/dist
+      '@fullcalendar/daygrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/daygrid/dist
+      '@fullcalendar/interaction':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/interaction/dist
+      '@fullcalendar/react':
+        specifier: ^6.1.10
+        version: link:../../contrib/react
+      '@fullcalendar/timegrid':
+        specifier: ^6.1.10
+        version: link:../../standard/packages/timegrid/dist
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@types/react':
+        specifier: ^18.3.3
+        version: 18.3.12
+      '@types/react-dom':
+        specifier: ^18.3.0
+        version: 18.3.1
+      css-loader:
+        specifier: ^4.3.0
+        version: 4.3.0(webpack@5.97.0)
+      html-webpack-plugin:
+        specifier: ^4.5.0
+        version: 4.5.2(webpack@5.97.0)
+      style-loader:
+        specifier: ^2.0.0
+        version: 2.0.0(webpack@5.97.0)
+      ts-loader:
+        specifier: ^8.0.7
+        version: 8.4.0(typescript@4.8.4)(webpack@5.97.0)
+      typescript:
+        specifier: ^4.0.5
+        version: 4.8.4
       webpack:
         specifier: ^5.3.0
         version: 5.97.0(webpack-cli@4.10.0)
@@ -5391,6 +5391,11 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
+  '@babel/plugin-syntax-bigint@7.8.3':
+    resolution: {integrity: sha512-wnTnFlG+YxQm3vDxpGE57Pj0srRU4sHE/mDkt1qv2YJJSeUAec2ma4WLUnUPeKjyrfntVwe/N6dCXpU+zL3Npg==}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+
   '@babel/plugin-syntax-class-properties@7.12.13':
     resolution: {integrity: sha512-fm4idjKla0YahUNgFNLCB0qySdsoPiZP3iQE3rky0mBUtMZ23yDJ9SJdg6dXTSDnulOVqiF3Hgr9nbXvXTQZYA==}
     peerDependencies:
@@ -6077,6 +6082,9 @@ packages:
   '@babel/types@7.26.0':
     resolution: {integrity: sha512-Z/yiTPj+lDVnF7lWeKCIJzaIkI0vYO87dMpZ4bg4TDrFe4XXLFWL1TbXU27gBP3QccxV9mZICCrnjnYlJjXHOA==}
     engines: {node: '>=6.9.0'}
+
+  '@bcoe/v8-coverage@0.2.3':
+    resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
   '@capacitor/app@4.1.1':
     resolution: {integrity: sha512-SJcJA1rhFQyeH6eLfUEbdKkHzAwzahJNVPNXmU88fdmXpMgM2dJGzZj1vrm6e21aQq+Z4aBVLJ2RCdj92zD7wg==}
@@ -7822,6 +7830,72 @@ packages:
     resolution: {integrity: sha512-ZXRY4jNvVgSVQ8DL3LTcakaAtXwTVUxE81hslsyD2AtoXW/wVob10HkOJ1X/pAlcI7D+2YoZKg5do8G/w6RYgA==}
     engines: {node: '>=8'}
 
+  '@jest/console@29.7.0':
+    resolution: {integrity: sha512-5Ni4CU7XHQi32IJ398EEP4RrB8eV09sXP2ROqD4bksHrnTree52PsxvX8tpL8LvTZ3pFzXyPbNQReSN41CAhOg==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  '@jest/core@29.7.0':
+    resolution: {integrity: sha512-n7aeXWKMnGtDA48y8TLWJPJmLmmZ642Ceo78cYWEpiD7FzDgmNDV/GCVRorPABdXLJZ/9wzzgZAlHjXjxDHGsg==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    peerDependencies:
+      node-notifier: ^8.0.1 || ^9.0.0 || ^10.0.0
+    peerDependenciesMeta:
+      node-notifier:
+        optional: true
+
+  '@jest/environment@29.7.0':
+    resolution: {integrity: sha512-aQIfHDq33ExsN4jP1NWGXhxgQ/wixs60gDiKO+XVMd8Mn0NWPWgc34ZQDTb2jKaUWQ7MuwoitXAsN2XVXNMpAw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  '@jest/expect-utils@29.7.0':
+    resolution: {integrity: sha512-GlsNBWiFQFCVi9QVSx7f5AgMeLxe9YCCs5PuP2O2LdjDAA8Jh9eX7lA1Jq/xdXw3Wb3hyvlFNfZIfcRetSzYcA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  '@jest/expect@29.7.0':
+    resolution: {integrity: sha512-8uMeAMycttpva3P1lBHB8VciS9V0XAr3GymPpipdyQXbBcuhkLQOSe8E/p92RyAdToS6ZD1tFkX+CkhoECE0dQ==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  '@jest/fake-timers@29.7.0':
+    resolution: {integrity: sha512-q4DH1Ha4TTFPdxLsqDXK1d3+ioSL7yL5oCMJZgDYm6i+6CygW5E5xVr/D1HdsGxjt1ZWSfUAs9OxSB/BNelWrQ==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  '@jest/globals@29.7.0':
+    resolution: {integrity: sha512-mpiz3dutLbkW2MNFubUGUEVLkTGiqW6yLVTA+JbP6fI6J5iL9Y0Nlg8k95pcF8ctKwCS7WVxteBs29hhfAotzQ==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  '@jest/reporters@29.7.0':
+    resolution: {integrity: sha512-DApq0KJbJOEzAFYjHADNNxAE3KbhxQB1y5Kplb5Waqw6zVbuWatSnMjE5gs8FUgEPmNsnZA3NCWl9NG0ia04Pg==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    peerDependencies:
+      node-notifier: ^8.0.1 || ^9.0.0 || ^10.0.0
+    peerDependenciesMeta:
+      node-notifier:
+        optional: true
+
+  '@jest/schemas@29.6.3':
+    resolution: {integrity: sha512-mo5j5X+jIZmJQveBKeS/clAueipV7KgiX1vMgCxam1RNYiqE1w62n0/tJJnHtjW8ZHcQco5gY85jA3mi0L+nSA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  '@jest/source-map@29.6.3':
+    resolution: {integrity: sha512-MHjT95QuipcPrpLM+8JMSzFx6eHp5Bm+4XeFDJlwsvVBjmKNiIAvasGK2fxz2WbGRlnvqehFbh07MMa7n3YJnw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  '@jest/test-result@29.7.0':
+    resolution: {integrity: sha512-Fdx+tv6x1zlkJPcWXmMDAG2HBnaR9XPSd5aDWQVsfrZmLVT3lU1cwyxLgRmXR9yrq4NBoEm9BMsfgFzTQAbJYA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  '@jest/test-sequencer@29.7.0':
+    resolution: {integrity: sha512-GQwJ5WZVrKnOJuiYiAF52UNUJXgTZx1NHjFSEB0qEMmSZKAkdMoIzw/Cj6x6NF4AvV23AUqDpFzQkN/eYCYTxw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  '@jest/transform@29.7.0':
+    resolution: {integrity: sha512-ok/BTPFzFKVMwO5eOHRrvnBVHdRy9IrsrW1GpMaQ9MCnilNLXQKmAX8s1YXDFaai9xJpac2ySzV0YeRRECr2Vw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  '@jest/types@29.6.3':
+    resolution: {integrity: sha512-u3UPsIilWKOM3F9CXtrG8LEJmNxwoCQC/XVj4IKYXvvpx7QIi/Kg1LI5uDmDpKlac62NUtX7eLjRh+jVZcLOzw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
   '@jridgewell/gen-mapping@0.1.1':
     resolution: {integrity: sha512-sQXCasFk+U8lWYEe66WxRDOE9PjVz4vSM51fTu3Hw+ClTpUSQb718772vH3pyS5pShp6lvQM7SxgIDXXXmOX7w==}
     engines: {node: '>=6.0.0'}
@@ -9459,6 +9533,9 @@ packages:
     resolution: {integrity: sha512-Ggtq2GsJuxFNUvQzLoXqRwS4ceRfLAJnrIHUDrzAD0GgnOhwujJkKkxM/s5Bako07c3WtAs/sZo5PJq7VHjeDg==}
     engines: {node: ^18.17.0 || >=20.5.0}
 
+  '@sinclair/typebox@0.27.8':
+    resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
+
   '@sindresorhus/is@4.6.0':
     resolution: {integrity: sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==}
     engines: {node: '>=10'}
@@ -9466,6 +9543,12 @@ packages:
   '@sindresorhus/merge-streams@2.3.0':
     resolution: {integrity: sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==}
     engines: {node: '>=18'}
+
+  '@sinonjs/commons@3.0.1':
+    resolution: {integrity: sha512-K3mCHKQ9sVh8o1C9cxkwxaOmXoAMlDxC1mYyHrjqOWEcBjYr76t96zL2zlj5dUGZ3HSw240X1qgH3Mjf1yJWpQ==}
+
+  '@sinonjs/fake-timers@10.3.0':
+    resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
 
   '@socket.io/component-emitter@3.1.2':
     resolution: {integrity: sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==}
@@ -9705,6 +9788,9 @@ packages:
   '@types/glob@7.2.0':
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
 
+  '@types/graceful-fs@4.1.9':
+    resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
+
   '@types/hast@2.3.10':
     resolution: {integrity: sha512-McWspRw8xx8J9HurkVBfYj0xKoE25tOFlHGdx4MJ5xORQrMGZNqJhVQWaIbm6Oyla5kYOXtDiopzKRJzEOkwJw==}
 
@@ -9725,6 +9811,15 @@ packages:
 
   '@types/http-proxy@1.17.15':
     resolution: {integrity: sha512-25g5atgiVNTIv0LBDTg1H74Hvayx0ajtJPLLcYE3whFv75J0pWNtOBzaXJQgDTmrX1bx5U9YC2w/n65BN1HwRQ==}
+
+  '@types/istanbul-lib-coverage@2.0.6':
+    resolution: {integrity: sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==}
+
+  '@types/istanbul-lib-report@3.0.3':
+    resolution: {integrity: sha512-NQn7AHQnk/RSLOxrBbGyJM/aVQ+pjj5HCgasFxc0K/KhoATfQ/47AyUl15I2yBUpihjmas+a+VJBOqecrFH+uA==}
+
+  '@types/istanbul-reports@3.0.4':
+    resolution: {integrity: sha512-pk2B1NWalF9toCRu6gjBzR69syFjP4Od8WRAX+0mmf9lAjCRicLOWc+ZrxZHx/0XRjotgkF9t6iaMJ+aXcOdZQ==}
 
   '@types/jasmine-jquery@1.5.37':
     resolution: {integrity: sha512-8SMS6sDRxtIAyVdrgfJTm5DqURR0eQf3jHi4whIuhTAlllVeFixrCYlkW4LxNhC/CY5QfQb94qHVBXBE1VGocA==}
@@ -9864,6 +9959,9 @@ packages:
   '@types/source-list-map@0.1.6':
     resolution: {integrity: sha512-5JcVt1u5HDmlXkwOD2nslZVllBBc7HDuOICfiZah2Z0is8M8g+ddAEawbmd3VjedfDHBzxCaXLs07QEmb7y54g==}
 
+  '@types/stack-utils@2.0.3':
+    resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
+
   '@types/tapable@1.0.12':
     resolution: {integrity: sha512-bTHG8fcxEqv1M9+TD14P8ok8hjxoOCkfKc8XXLaaD05kI7ohpeI956jtDOD3XHKBQrlyPughUtzm1jtVhHpA5Q==}
 
@@ -9887,6 +9985,12 @@ packages:
 
   '@types/ws@8.5.13':
     resolution: {integrity: sha512-osM/gWBTPKgHV8XkTunnegTRIsvF6owmf5w+JtAfOw472dptdm0dlGv4xCt6GwQRcC2XVOvvRE/0bAoQcL2QkA==}
+
+  '@types/yargs-parser@21.0.3':
+    resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
+
+  '@types/yargs@17.0.33':
+    resolution: {integrity: sha512-WpxBCKWPLr4xSsHgz511rFJAM+wS28w2zEO1QDNY5zM/S8ok70NNfztH0xwhqKyaK0OHCbN98LDAZuy1ctxDkA==}
 
   '@typescript-eslint/eslint-plugin@5.3.0':
     resolution: {integrity: sha512-ARUEJHJrq85aaiCqez7SANeahDsJTD3AEua34EoQN9pHS6S5Bq9emcIaGGySt/4X2zSi+vF5hAH52sEen7IO7g==}
@@ -10718,6 +10822,12 @@ packages:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
     engines: {node: '>= 0.4'}
 
+  babel-jest@29.7.0:
+    resolution: {integrity: sha512-BrvGY3xZSwEcCzKvKsCi2GgHqDqsYkOP4/by5xCgIwGXQxIEh+8ew3gmrE1y7XRR6LHZIj6yLYnUi/mm2KXKBg==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    peerDependencies:
+      '@babel/core': ^7.8.0
+
   babel-loader@8.2.2:
     resolution: {integrity: sha512-JvTd0/D889PQBtUXJ2PXaKU/pjZDMtHA9V2ecm+eNRmmBCMR09a+fmpGTNwnJtFmFl5Ei7Vy47LjBb+L0wQ99g==}
     engines: {node: '>= 8.9'}
@@ -10763,6 +10873,10 @@ packages:
   babel-plugin-istanbul@6.1.1:
     resolution: {integrity: sha512-Y1IQok9821cC9onCx5otgFfRm7Lm+I+wwxOx738M/WLPZ9Q42m4IG5W0FNX8WLL2gYMZo3JkuXIH2DOpWM+qwA==}
     engines: {node: '>=8'}
+
+  babel-plugin-jest-hoist@29.6.3:
+    resolution: {integrity: sha512-ESAc/RJvGTFEzRwOTT4+lNDk/GNHMkKbNzsvT0qKRfDyyYTskxB5rnU2njIDYVxXCBHHEI1c0YwHob3WaYujOg==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
   babel-plugin-polyfill-corejs2@0.2.3:
     resolution: {integrity: sha512-NDZ0auNRzmAfE1oDDPW2JhzIMXUk+FFe2ICejmt5T4ocKgiQx3e0VCRx9NCAidcMtL2RUZaWtXnmjTCkx0tcbA==}
@@ -10833,6 +10947,17 @@ packages:
     resolution: {integrity: sha512-LiWSbl4CRSIa5x/JAU6jZiG9eit9w6mz+yVMFwDE83LAWvt0AfGBoZ7HS/mkhrKuh2ZlzfVZYKoLjXdqw6Yt7Q==}
     peerDependencies:
       '@babel/core': ^7.4.0 || ^8.0.0-0 <8.0.0
+
+  babel-preset-current-node-syntax@1.1.0:
+    resolution: {integrity: sha512-ldYss8SbBlWva1bs28q78Ju5Zq1F+8BrqBZZ0VFhLBvhh6lCpC2o3gDJi/5DRLs9FgYZCnmPYIVFU4lRXCkyUw==}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+
+  babel-preset-jest@29.6.3:
+    resolution: {integrity: sha512-0B3bhxR6snWXJZtR/RliHTDPRgn1sNHOR0yVtq/IiQFyuOVjFS+wuio/R4gSNkyYmKmJB4wGZv2NZanmKmTnNA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    peerDependencies:
+      '@babel/core': ^7.0.0
 
   bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
@@ -10955,6 +11080,9 @@ packages:
     resolution: {integrity: sha512-ZIc+Q62revdMcqC6aChtW4jz3My3klmCO1fEmINZY/8J3EpBg5/A/D0AKmBveUh6pgoeycoMkVMko84tuYS+Gg==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
+
+  bser@2.1.1:
+    resolution: {integrity: sha512-gQxTNE/GAfIIrmHLUE3oJyp5FO6HRBfhjnw4/wMmA63ZGDJnWBmgY/lyQBpnDUkGmAhbSe39tx2d/iTOAfglwQ==}
 
   buffer-crc32@0.2.13:
     resolution: {integrity: sha512-VO9Ht/+p3SN7SKWqcrgEzjGbRSJYTx+Q1pTQC0wrWqHx0vpJraQ6GtHx8tvcg1rlK1byhU5gccxgOgj7B0TDkQ==}
@@ -11094,6 +11222,10 @@ packages:
     resolution: {integrity: sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
 
+  char-regex@1.0.2:
+    resolution: {integrity: sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==}
+    engines: {node: '>=10'}
+
   character-entities-html4@2.1.0:
     resolution: {integrity: sha512-1v7fgQRj6hnSwFpq1Eu0ynr/CDEw0rXo2B61qXrLNdHZmPKgb7fqS1a2JwF0rISo9q77jDI8VMEHoApn8qDoZA==}
 
@@ -11148,6 +11280,9 @@ packages:
     engines: {node: '>=6.0.0'}
     peerDependencies:
       webpack: '>=4.0.1'
+
+  cjs-module-lexer@1.4.1:
+    resolution: {integrity: sha512-cuSVIHi9/9E/+821Qjdvngor+xpnlwnuwIyZOaLmHBVdXL+gP+I6QQB9VkO7RI77YIcTV+S1W9AreJ5eN63JBA==}
 
   class-utils@0.3.6:
     resolution: {integrity: sha512-qOhPa/Fj7s6TY8H8esGu5QNpMMQxz79h+urzrNYN6mn+9BnxlDGf5QZ+XeCDsxSjPqsSR56XOZOJmpeurnLMeg==}
@@ -11220,9 +11355,16 @@ packages:
     resolution: {integrity: sha512-3Pe/CF1Nn94hyhIYpjtiLhdCoEoz0DqQ+988E9gmeEdQZlojxnOb74wctFyuwWQHzqyf9X7C7MG8juUpqBJT8w==}
     engines: {node: '>=0.8'}
 
+  co@4.6.0:
+    resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
+    engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
+
   coa@2.0.2:
     resolution: {integrity: sha512-q5/jG+YQnSy4nRTV4F7lPepBJZ8qBNJJDBuJdoejDyLXgmL7IEo+Le2JDZudFTFt7mrCqIRaSjws4ygRCTCAXA==}
     engines: {node: '>= 4.0'}
+
+  collect-v8-coverage@1.0.2:
+    resolution: {integrity: sha512-lHl4d5/ONEbLlJvaJNtsF/Lz+WvB07u2ycqTYbdrq7UypDXailES4valYb2eWiJFxZlVmpGekfqoxQhzyFdT4Q==}
 
   collection-visit@1.0.0:
     resolution: {integrity: sha512-lNkKvzEeMBBjUGHZ+q6z9pSJla0KWAQPvtzhEV9+iGyQYG+pBpl7xKDhxoNSOZH2hhv0v5k0y2yAM4o4SjoSkw==}
@@ -11658,6 +11800,11 @@ packages:
   crc32-stream@4.0.3:
     resolution: {integrity: sha512-NT7w2JVU7DFroFdYkeq8cywxrgjPHWkdX1wjpRQXPX5Asews3tA+Ght6lddQO5Mkumffp3X7GEqku3epj2toIw==}
     engines: {node: '>= 10'}
+
+  create-jest@29.7.0:
+    resolution: {integrity: sha512-Adz2bdH0Vq3F53KEMJOoftQFutWCukm6J24wbPWRO4k1kMY7gS7ds/uoJkNuV8wDCtWWnuwGcJwpWcih+zEW1Q==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    hasBin: true
 
   critters@0.0.12:
     resolution: {integrity: sha512-ujxKtKc/mWpjrOKeaACTaQ1aP0O31M0ZPWhfl85jZF1smPU4Ivb9va5Ox2poif4zVJQQo0LCFlzGtEZAsCAPcw==}
@@ -12186,6 +12333,10 @@ packages:
   di@0.0.1:
     resolution: {integrity: sha512-uJaamHkagcZtHPqCIHZxnFrXlunQXgBOsZSUOWwFw31QJCAbyTBoHMW75YOTur5ZNx8pIeAKgf6GWIgaqqiLhA==}
 
+  diff-sequences@29.6.3:
+    resolution: {integrity: sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
   diff@4.0.2:
     resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
     engines: {node: '>=0.3.1'}
@@ -12314,6 +12465,10 @@ packages:
   elementtree@0.1.7:
     resolution: {integrity: sha512-wkgGT6kugeQk/P6VZ/f4T+4HB41BVgNBq5CDIZVbQ02nvTVqAiVTbskxxu3eA/X96lMlfYOwnLQpN2v5E1zDEg==}
     engines: {node: '>= 0.4.0'}
+
+  emittery@0.13.1:
+    resolution: {integrity: sha512-DeWwawk6r5yR9jFgnDKYt4sLS0LmHJJi3ZOnb5/JdbYwj3nW+FxQnHIjhBKz8YLC7oRNPVM9NQ47I3CVx34eqQ==}
+    engines: {node: '>=12'}
 
   emoji-regex@10.4.0:
     resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
@@ -13137,6 +13292,10 @@ packages:
     resolution: {integrity: sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==}
     engines: {node: '>=0.8.0'}
 
+  escape-string-regexp@2.0.0:
+    resolution: {integrity: sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==}
+    engines: {node: '>=8'}
+
   escape-string-regexp@4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
@@ -13439,9 +13598,17 @@ packages:
     resolution: {integrity: sha512-eNTPlAD67BmP31LDINZ3U7HSF8l57TxOY2PmBJ1shpCvpnxBF93mWCE8YHBnXs8qiUZJc9WDcWIeC3a2HIAMfw==}
     engines: {node: '>=6'}
 
+  exit@0.1.2:
+    resolution: {integrity: sha512-Zk/eNKV2zbjpKzrsQ+n1G6poVbErQxJ0LBOJXaKZ1EViLzH+hrLu9cdXI4zw9dBQJslwBEpbQ2P1oS7nDxs6jQ==}
+    engines: {node: '>= 0.8.0'}
+
   expand-brackets@2.1.4:
     resolution: {integrity: sha512-w/ozOKR9Obk3qoWeY/WDi6MFta9AoMR+zud60mdnbniMcBxRuFJyDt2LdX/14A1UABeqk+Uk+LDfUpvoGKppZA==}
     engines: {node: '>=0.10.0'}
+
+  expect@29.7.0:
+    resolution: {integrity: sha512-2Zks0hf1VLFYI1kbh0I5jP3KHHyCHpkfyHBzsSXRFgl/Bg9mWYfMW8oD+PdMPlEwy5HNsR9JutYy6pMeOh61nw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
   exponential-backoff@3.1.1:
     resolution: {integrity: sha512-dX7e/LHVJ6W3DE1MHWi9S1EYzDESENfLrYohG2G++ovZrYOkm4Knwa0mc1cn84xJOR4KEU0WSchhLbd0UklbHw==}
@@ -13515,6 +13682,9 @@ packages:
   faye-websocket@0.11.4:
     resolution: {integrity: sha512-CzbClwlXAuiRQAlUyfqPgvPoNKTckTPGfwZV4ZdAhVcP2lh9KUxJg2b5GkE7XbjKQ3YJnQ9z6D9ntLAlB+tP8g==}
     engines: {node: '>=0.8.0'}
+
+  fb-watchman@2.0.2:
+    resolution: {integrity: sha512-p5161BqbuCaSnB8jIbzQHOlpgsPmK5rJVDfDKO91Axs5NC1uu3HRQm6wt9cd9/+GtQQIO53JdGXXoyDpTAsgYA==}
 
   fd-slicer@1.1.0:
     resolution: {integrity: sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==}
@@ -14540,6 +14710,10 @@ packages:
     resolution: {integrity: sha512-OVa3u9kkBbw7b8Xw5F9P+D/T9X+Z4+JruYVNapTjPYZYUznQ5YfWeFkOj606XYYW8yugTfC8Pj0hYqvi4ryAhA==}
     engines: {node: '>=18'}
 
+  is-generator-fn@2.1.0:
+    resolution: {integrity: sha512-cTIB4yPYL/Grw0EaSzASzg6bBy9gqCofvWN8okThAYIxKJZC+udlRAmGbM0XLeniEJSs8uEgHPGuHSe1XsOLSQ==}
+    engines: {node: '>=6'}
+
   is-generator-function@1.0.10:
     resolution: {integrity: sha512-jsEjy9l3yiXEQ+PsXdmBwEPcOxaXWLspKdplFUVI9vq1iZgIekeC0L167qeu86czQaxed3q/Uzuw0swL0irL8A==}
     engines: {node: '>= 0.4'}
@@ -14838,9 +15012,138 @@ packages:
   javascript-stringify@2.1.0:
     resolution: {integrity: sha512-JVAfqNPTvNq3sB/VHQJAFxN/sPgKnsKrCwyRt15zwNCdrMMJDdcEOdubuy+DuJYYdm0ox1J4uzEuYKkN+9yhVg==}
 
+  jest-changed-files@29.7.0:
+    resolution: {integrity: sha512-fEArFiwf1BpQ+4bXSprcDc3/x4HSzL4al2tozwVpDFpsxALjLYdyiIK4e5Vz66GQJIbXJ82+35PtysofptNX2w==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-circus@29.7.0:
+    resolution: {integrity: sha512-3E1nCMgipcTkCocFwM90XXQab9bS+GMsjdpmPrlelaxwD93Ad8iVEjX/vvHPdLPnFf+L40u+5+iutRdA1N9myw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-cli@29.7.0:
+    resolution: {integrity: sha512-OVVobw2IubN/GSYsxETi+gOe7Ka59EFMR/twOU3Jb2GnKKeMGJB5SGUUrEz3SFVmJASUdZUzy83sLNNQ2gZslg==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    hasBin: true
+    peerDependencies:
+      node-notifier: ^8.0.1 || ^9.0.0 || ^10.0.0
+    peerDependenciesMeta:
+      node-notifier:
+        optional: true
+
+  jest-config@29.7.0:
+    resolution: {integrity: sha512-uXbpfeQ7R6TZBqI3/TxCU4q4ttk3u0PJeC+E0zbfSoSjq6bJ7buBPxzQPL0ifrkY4DNu4JUdk0ImlBUYi840eQ==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    peerDependencies:
+      '@types/node': '*'
+      ts-node: '>=9.0.0'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      ts-node:
+        optional: true
+
+  jest-diff@29.7.0:
+    resolution: {integrity: sha512-LMIgiIrhigmPrs03JHpxUh2yISK3vLFPkAodPeo0+BuF7wA2FoQbkEg1u8gBYBThncu7e1oEDUfIXVuTqLRUjw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-docblock@29.7.0:
+    resolution: {integrity: sha512-q617Auw3A612guyaFgsbFeYpNP5t2aoUNLwBUbc/0kD1R4t9ixDbyFTHd1nok4epoVFpr7PmeWHrhvuV3XaJ4g==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-each@29.7.0:
+    resolution: {integrity: sha512-gns+Er14+ZrEoC5fhOfYCY1LOHHr0TI+rQUHZS8Ttw2l7gl+80eHc/gFf2Ktkw0+SIACDTeWvpFcv3B04VembQ==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-environment-node@29.7.0:
+    resolution: {integrity: sha512-DOSwCRqXirTOyheM+4d5YZOrWcdu0LNZ87ewUoywbcb2XR4wKgqiG8vNeYwhjFMbEkfju7wx2GYH0P2gevGvFw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-get-type@29.6.3:
+    resolution: {integrity: sha512-zrteXnqYxfQh7l5FHyL38jL39di8H8rHoecLH3JNxH3BwOrBsNeabdap5e0I23lD4HHI8W5VFBZqG4Eaq5LNcw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-haste-map@29.7.0:
+    resolution: {integrity: sha512-fP8u2pyfqx0K1rGn1R9pyE0/KTn+G7PxktWidOBTqFPLYX0b9ksaMFkhK5vrS3DVun09pckLdlx90QthlW7AmA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-leak-detector@29.7.0:
+    resolution: {integrity: sha512-kYA8IJcSYtST2BY9I+SMC32nDpBT3J2NvWJx8+JCuCdl/CR1I4EKUJROiP8XtCcxqgTTBGJNdbB1A8XRKbTetw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-matcher-utils@29.7.0:
+    resolution: {integrity: sha512-sBkD+Xi9DtcChsI3L3u0+N0opgPYnCRPtGcQYrgXmR+hmt/fYfWAL0xRXYU8eWOdfuLgBe0YCW3AFtnRLagq/g==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-message-util@29.7.0:
+    resolution: {integrity: sha512-GBEV4GRADeP+qtB2+6u61stea8mGcOT4mCtrYISZwfu9/ISHFJ/5zOMXYbpBE9RsS5+Gb63DW4FgmnKJ79Kf6w==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-mock@29.7.0:
+    resolution: {integrity: sha512-ITOMZn+UkYS4ZFh83xYAOzWStloNzJFO2s8DWrE4lhtGD+AorgnbkiKERe4wQVBydIGPx059g6riW5Btp6Llnw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-pnp-resolver@1.2.3:
+    resolution: {integrity: sha512-+3NpwQEnRoIBtx4fyhblQDPgJI0H1IEIkX7ShLUjPGA7TtUTvI1oiKi3SR4oBR0hQhQR80l4WAe5RrXBwWMA8w==}
+    engines: {node: '>=6'}
+    peerDependencies:
+      jest-resolve: '*'
+    peerDependenciesMeta:
+      jest-resolve:
+        optional: true
+
+  jest-regex-util@29.6.3:
+    resolution: {integrity: sha512-KJJBsRCyyLNWCNBOvZyRDnAIfUiRJ8v+hOBQYGn8gDyF3UegwiP4gwRR3/SDa42g1YbVycTidUF3rKjyLFDWbg==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-resolve-dependencies@29.7.0:
+    resolution: {integrity: sha512-un0zD/6qxJ+S0et7WxeI3H5XSe9lTBBR7bOHCHXkKR6luG5mwDDlIzVQ0V5cZCuoTgEdcdwzTghYkTWfubi+nA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-resolve@29.7.0:
+    resolution: {integrity: sha512-IOVhZSrg+UvVAshDSDtHyFCCBUl/Q3AAJv8iZ6ZjnZ74xzvwuzLXid9IIIPgTnY62SJjfuupMKZsZQRsCvxEgA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-runner@29.7.0:
+    resolution: {integrity: sha512-fsc4N6cPCAahybGBfTRcq5wFR6fpLznMg47sY5aDpsoejOcVYFb07AHuSnR0liMcPTgBsA3ZJL6kFOjPdoNipQ==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-runtime@29.7.0:
+    resolution: {integrity: sha512-gUnLjgwdGqW7B4LvOIkbKs9WGbn+QLqRQQ9juC6HndeDiezIwhDP+mhMwHWCEcfQ5RUXa6OPnFF8BJh5xegwwQ==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-snapshot@29.7.0:
+    resolution: {integrity: sha512-Rm0BMWtxBcioHr1/OX5YCP8Uov4riHvKPknOGs804Zg9JGZgmIBkbtlxJC/7Z4msKYVbIJtfU+tKb8xlYNfdkw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-util@29.7.0:
+    resolution: {integrity: sha512-z6EbKajIpqGKU56y5KBUgy1dt1ihhQJgWzUlZHArA/+X2ad7Cb5iF+AK1EWVL/Bo7Rz9uurpqw6SiBCefUbCGA==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-validate@29.7.0:
+    resolution: {integrity: sha512-ZB7wHqaRGVw/9hST/OuFUReG7M8vKeq0/J2egIGLdvjHCmYqGARhzXmtgi+gVeZ5uXFF219aOc3Ls2yLg27tkw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest-watcher@29.7.0:
+    resolution: {integrity: sha512-49Fg7WXkU3Vl2h6LbLtMQ/HyB6rXSIX7SqvBLQmssRBGN9I0PNvPmAmCWSOY6SOvrjhI/F7/bGAv9RtnsPA03g==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
   jest-worker@27.5.1:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
+
+  jest-worker@29.7.0:
+    resolution: {integrity: sha512-eIz2msL/EzL9UFTFFx7jBTkeZfku0yUAyZZZmJ93H2TYEiroIx2PQjEXcwYtYl8zXCxb+PAmA2hLIt/6ZEkPHw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
+  jest@29.7.0:
+    resolution: {integrity: sha512-NIy3oAFp9shda19hy4HK0HRTWKtPJmGdnvywu01nOqNC2vZg+Z+fvJDxpMQA88eb2I9EcafcdjYgsDthnYTvGw==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+    hasBin: true
+    peerDependencies:
+      node-notifier: ^8.0.1 || ^9.0.0 || ^10.0.0
+    peerDependenciesMeta:
+      node-notifier:
+        optional: true
 
   jiti@1.21.6:
     resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
@@ -15160,6 +15463,10 @@ packages:
     resolution: {integrity: sha512-CasaJidTIhWmjcqv0Uj5vccMI7pJgfD9lMkKtlnTHAdJdYK/7l8pM9tumLyJ0zhbD4KJLo/YvTj+xznQd5NBhg==}
     engines: {node: '>=6'}
     hasBin: true
+
+  leven@3.1.0:
+    resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==}
+    engines: {node: '>=6'}
 
   levn@0.3.0:
     resolution: {integrity: sha512-0OO4y2iOHix2W6ujICbKIaEQXvFQHue65vUG3pb5EUomzPI90z9hsA1VsO/dbIIpC53J8gxM9Q4Oho0jrCM/yA==}
@@ -15512,6 +15819,9 @@ packages:
   make-fetch-happen@9.1.0:
     resolution: {integrity: sha512-+zopwDy7DNknmwPQplem5lAZX/eCOzSvSNNcSKm5eVwTkOBzoktEfXsa9L23J/GIRhxRsaxzkPEhrJEpE2F4Gg==}
     engines: {node: '>= 10'}
+
+  makeerror@1.0.12:
+    resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
 
   map-age-cleaner@0.1.3:
     resolution: {integrity: sha512-bJzx6nMoP6PDLPBFmg7+xRKeFZvFboMrGlxmNj9ClvX53KrmvM5bXFXEWjbz4cz1AFn+jWJ9z/DJSz7hrs0w3w==}
@@ -16203,6 +16513,9 @@ packages:
     resolution: {integrity: sha512-OQkWKbjQKbGkMf/xqI1jjy3oCTgMKJac58G2+bjZb3fza6gW2YrCSdMQYaoTb70crvE//Gngr4f0AgVHmqHvBQ==}
     engines: {node: ^12.13 || ^14.13 || >=16}
     hasBin: true
+
+  node-int64@0.4.0:
+    resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
 
   node-releases@2.0.18:
     resolution: {integrity: sha512-d9VeXT4SJ7ZeOqGX6R5EM022wpL+eWPooLI+5UpWn2jCT1aosUQEhQP214x33Wkwx3JQMvIm+tIoVOdodFS40g==}
@@ -16900,6 +17213,10 @@ packages:
   pinkie@2.0.4:
     resolution: {integrity: sha512-MnUuEycAemtSaeFSjXKW/aroV7akBbY+Sv+RkyqFjgAe73F+MR0TBWKBRDkmfWq/HiFmdavfZ1G7h4SPZXaCSg==}
     engines: {node: '>=0.10.0'}
+
+  pirates@4.0.6:
+    resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
+    engines: {node: '>= 6'}
 
   piscina@3.1.0:
     resolution: {integrity: sha512-KTW4sjsCD34MHrUbx9eAAbuUSpVj407hQSgk/6Epkg0pbRBmv4a3UX7Sr8wxm9xYqQLnsN4mFOjqGDzHAdgKQg==}
@@ -17807,6 +18124,10 @@ packages:
     resolution: {integrity: sha512-Qb1gy5OrP5+zDf2Bvnzdl3jsTf1qXVMazbvCoKhtKqVs4/YK4ozX4gKQJJVyNe+cajNPn0KoC0MC3FUmaHWEmQ==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
 
+  pretty-format@29.7.0:
+    resolution: {integrity: sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==}
+    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+
   pretty-ms@7.0.1:
     resolution: {integrity: sha512-973driJZvxiGOQ5ONsFhOF/DtzPMOMtgC11kCpUrPGMTgqp2q/1gwzCquocrN33is0VZ5GFHXZYMM9l6h67v2Q==}
     engines: {node: '>=10'}
@@ -17907,6 +18228,9 @@ packages:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
     engines: {node: '>=6'}
 
+  pure-rand@6.1.0:
+    resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
+
   q@1.5.1:
     resolution: {integrity: sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==}
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
@@ -17977,6 +18301,9 @@ packages:
 
   react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
+
+  react-is@18.3.1:
+    resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
 
   react-redux@7.2.9:
     resolution: {integrity: sha512-Gx4L3uM182jEEayZfRbI/G11ZpYdNAnBs70lFVMNdHJI76XYtR+7m0MN+eAs7UHBPhWXcnFPaS+9owSCJQHNpQ==}
@@ -18268,6 +18595,10 @@ packages:
   resolve-url@0.2.1:
     resolution: {integrity: sha512-ZuF55hVUQaaczgOIwqWzkEcEidmlD/xl44x1UZnhOXcYuFN2S6+rcxpG+C1N3So0wvNI3DmJICUFfu2SxhBmvg==}
     deprecated: https://github.com/lydell/resolve-url#deprecated
+
+  resolve.exports@2.0.3:
+    resolution: {integrity: sha512-OcXjMsGdhL4XnbShKpAcSqPMzQoYkYyhbEaeSko47MjRP9NfEQMhZkXL1DoFlt9LWQn4YttrdnV6X2OiyzBi+A==}
+    engines: {node: '>=10'}
 
   resolve@1.20.0:
     resolution: {integrity: sha512-wENBPt4ySzg4ybFQW2TT1zMQucPK95HSh/nq2CFTZVOGut2+pQvSsgtda4d26YrYcr067wjbmzOG8byDPBX63A==}
@@ -19007,6 +19338,9 @@ packages:
     resolution: {integrity: sha512-KXBr9d/fO/bWo97NXsPIAW1bFSBOuCnjbNTBMO7N59hsv5i9yzRDfcYwwt0l04+VqnKC+EwzvJZIP/qkuMgR/w==}
     deprecated: See https://github.com/lydell/source-map-resolve#deprecated
 
+  source-map-support@0.5.13:
+    resolution: {integrity: sha512-SHSKFHadjVA5oR4PPqhtAVdcBWwRYVd6g6cAXnIbRiIwc2EhPrTuKUBdSLvlEKyIP3GCf89fltvcZiP9MMFA1w==}
+
   source-map-support@0.5.19:
     resolution: {integrity: sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==}
 
@@ -19109,6 +19443,10 @@ packages:
     resolution: {integrity: sha512-ji9qxRnOVfcuLDySj9qzhGSEFVobyt1kIOSkj1qZzYLzq7Tos/oUUWvotUPQLlrsidqsK6tBH89Bc9kL5zHA6w==}
     deprecated: 'Modern JS already guarantees Array#sort() is a stable sort, so this library is deprecated. See the compatibility table on MDN: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort#browser_compatibility'
 
+  stack-utils@2.0.6:
+    resolution: {integrity: sha512-XlkWvfIm6RmsWtNJx+uqtKLS8eqFbxUg0ZzLXqY0caEy9l7hruX8IpiDnjsLavoBgqCCR71TqWO8MaXYheJ3RQ==}
+    engines: {node: '>=10'}
+
   static-extend@0.1.2:
     resolution: {integrity: sha512-72E9+uLc27Mt718pMHt9VMNiAL4LMsmDbBva8mxWUCkT07fSzEGMYUCk0XWY6lp0j6RBAG4cJ3mWuZv2OE3s0g==}
     engines: {node: '>=0.10.0'}
@@ -19141,6 +19479,10 @@ packages:
 
   string-hash@1.1.3:
     resolution: {integrity: sha512-kJUvRUFK49aub+a7T1nNE66EJbZBMnBgoC1UbCZ5n6bsZKBRga4KgBRTMn/pFkeCZSYtNeSyMxPDM0AXWELk2A==}
+
+  string-length@4.0.2:
+    resolution: {integrity: sha512-+l6rNN5fYHNhZZy41RXsYptCjA2Igmq4EG7kZAYFQI1E1VTXarr6ZPXBg6eq7Y6eK4FEhY6AJlyuFIb/v/S0VQ==}
+    engines: {node: '>=10'}
 
   string-width@3.1.0:
     resolution: {integrity: sha512-vafcv6KjVZKSgz06oM/H6GDBrAtz8vdhQakGjFIvNrHA6y3HCF1CInLy+QLq8dTJPQ1b+KDUqDFctkdRW44e1w==}
@@ -19498,6 +19840,9 @@ packages:
     resolution: {integrity: sha512-nZD7m9iCPC5g0pYmcaxogYKggSfLsdxl8of3Q/oIbqCqLLIO9IAF0GWjX1z9NZRHPiXv8Wex4yDCaZsgEw0Y8w==}
     engines: {node: '>=14.14'}
 
+  tmpl@1.0.5:
+    resolution: {integrity: sha512-3f0uOEAQwIqGuWW2MVzYg8fV/QNnc/IpuJNG837rLuczAaLVHslWHZQj4IGiEl5Hs3kkbhwL9Ab7Hrsmuj+Smw==}
+
   to-object-path@0.3.0:
     resolution: {integrity: sha512-9mWHdnGRuh3onocaHzukyvCZhzvr6tiflAy/JRFXcJX0TjgfWA9pk9t8CMbzmBE4Jfw58pXbkngtBtqYxzNEyg==}
     engines: {node: '>=0.10.0'}
@@ -19655,6 +20000,10 @@ packages:
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
+
+  type-detect@4.0.8:
+    resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}
+    engines: {node: '>=4'}
 
   type-fest@0.20.2:
     resolution: {integrity: sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==}
@@ -19950,6 +20299,10 @@ packages:
   v8-compile-cache@2.4.0:
     resolution: {integrity: sha512-ocyWc3bAHBB/guyqJQVI5o4BZkPhznPYUG2ea80Gond/BgNWpap8TOmLSeeQG7bnh2KMISxskdADG59j7zruhw==}
 
+  v8-to-istanbul@9.3.0:
+    resolution: {integrity: sha512-kiGUalWN+rgBJ/1OHZsBtU4rXZOfj/7rKQxULKlIzwzQSvMJUUNgPwJEEh7gU6xEVxC0ahoOBvN2YI8GH6FNgA==}
+    engines: {node: '>=10.12.0'}
+
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
 
@@ -20236,6 +20589,9 @@ packages:
   w3c-xmlserializer@2.0.0:
     resolution: {integrity: sha512-4tzD0mF8iSiMiNs30BiLO3EpfGLZUT2MSX/G+o7ZywDzliWQ3OPtTZ0PTC3B3ca1UAf4cJMHB+2Bf56EriJuRA==}
     engines: {node: '>=10'}
+
+  walker@1.0.8:
+    resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
 
   watchpack@2.4.0:
     resolution: {integrity: sha512-Lcvm7MGST/4fup+ifyKi2hjyIAwcdI4HRgtvTpIUxBRhB+RFtUh8XtDOxUfctVCnhVi+QQj49i91OyvzkJl6cg==}
@@ -20630,6 +20986,10 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
+  write-file-atomic@4.0.2:
+    resolution: {integrity: sha512-7KxauUdBmSdWnmpaGFg+ppNjKF8uNLry8LyzjauQDOVONfFLNKrKvQOxZ/VuTIcS/gge/YNahf5RIIQWTSarlg==}
+    engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
+
   write-file-atomic@5.0.1:
     resolution: {integrity: sha512-+QU2zd6OTD8XWIJCbffaiQeH9U73qIqafo1x6V1snCWYGJf6cVE0cDR4D8xRzcEnfI21IFrUPzPGtcPf8AC+Rw==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -21015,7 +21375,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))
+      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
       '@angular-devkit/core': 13.3.11(chokidar@3.6.0)
       '@angular/compiler-cli': 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@babel/core': 7.16.12
@@ -21075,8 +21435,8 @@ snapshots:
       tslib: 2.3.1
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
       webpack-merge: 5.8.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
     optionalDependencies:
@@ -21102,7 +21462,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))
+      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
       '@angular-devkit/core': 13.3.11(chokidar@3.6.0)
       '@angular/compiler-cli': 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@babel/core': 7.16.12
@@ -21162,8 +21522,8 @@ snapshots:
       tslib: 2.3.1
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
       webpack-merge: 5.8.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.97.0))(webpack@5.76.1(esbuild@0.14.22))
     optionalDependencies:
@@ -21512,7 +21872,7 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@angular-devkit/build-angular@16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.0.4))(@types/node@22.10.1)(html-webpack-plugin@5.6.3(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.0.4)':
+  '@angular-devkit/build-angular@16.2.16(@angular/compiler-cli@16.2.12(@angular/compiler@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3)))(typescript@5.0.4))(@types/node@22.10.1)(html-webpack-plugin@5.6.3(webpack@5.94.0))(jest@29.7.0(@types/node@22.10.1))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.0.4)':
     dependencies:
       '@ampproject/remapping': 2.2.1
       '@angular-devkit/architect': 0.1602.16(chokidar@3.5.3)
@@ -21582,6 +21942,7 @@ snapshots:
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.94.0))(webpack@5.94.0(esbuild@0.18.17))
     optionalDependencies:
       esbuild: 0.18.17
+      jest: 29.7.0(@types/node@22.10.1)
       karma: 6.4.4
     transitivePeerDependencies:
       - '@swc/core'
@@ -21601,7 +21962,7 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@angular-devkit/build-angular@17.3.11(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.2.2))(@types/express@4.17.21)(@types/node@22.10.1)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.2.2)':
+  '@angular-devkit/build-angular@17.3.11(@angular/compiler-cli@17.3.12(@angular/compiler@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.2.2))(@types/express@4.17.21)(@types/node@22.10.1)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.94.0))(jest@29.7.0(@types/node@22.10.1))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.2.2)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.1703.11(chokidar@3.6.0)
@@ -21670,6 +22031,7 @@ snapshots:
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.94.0))(webpack@5.94.0(esbuild@0.20.1))
     optionalDependencies:
       esbuild: 0.20.1
+      jest: 29.7.0(@types/node@22.10.1)
       karma: 6.4.4
     transitivePeerDependencies:
       - '@rspack/core'
@@ -21690,7 +22052,7 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@angular-devkit/build-angular@18.2.12(@angular/compiler-cli@18.2.13(@angular/compiler@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.4.5))(@types/node@22.10.1)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.94.0))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.4.5)':
+  '@angular-devkit/build-angular@18.2.12(@angular/compiler-cli@18.2.13(@angular/compiler@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10)))(typescript@5.4.5))(@types/node@22.10.1)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.94.0))(jest@29.7.0(@types/node@22.10.1))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.4.5)':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.1802.12(chokidar@3.6.0)
@@ -21758,6 +22120,7 @@ snapshots:
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.94.0))(webpack@5.94.0(esbuild@0.23.0))
     optionalDependencies:
       esbuild: 0.23.0
+      jest: 29.7.0(@types/node@22.10.1)
       karma: 6.4.4
     transitivePeerDependencies:
       - '@rspack/core'
@@ -21777,7 +22140,7 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@angular-devkit/build-angular@19.0.2(@angular/compiler-cli@19.0.1(@angular/compiler@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(typescript@5.6.3))(@angular/compiler@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(@types/node@22.10.1)(chokidar@4.0.1)(html-webpack-plugin@5.6.3(webpack@5.96.1))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.6.3)(vite@5.4.11(@types/node@22.10.1)(less@4.2.0)(lightningcss@1.28.2)(sass@1.80.7)(stylus@0.59.0)(terser@5.36.0))':
+  '@angular-devkit/build-angular@19.0.2(@angular/compiler-cli@19.0.1(@angular/compiler@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(typescript@5.6.3))(@angular/compiler@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(@types/node@22.10.1)(chokidar@4.0.1)(html-webpack-plugin@5.6.3(webpack@5.96.1))(jest@29.7.0(@types/node@22.10.1))(karma@6.4.4)(lightningcss@1.28.2)(stylus@0.59.0)(typescript@5.6.3)(vite@5.4.11(@types/node@22.10.1)(less@4.2.0)(lightningcss@1.28.2)(sass@1.80.7)(stylus@0.59.0)(terser@5.36.0))':
     dependencies:
       '@ampproject/remapping': 2.3.0
       '@angular-devkit/architect': 0.1900.2(chokidar@4.0.1)
@@ -21838,6 +22201,7 @@ snapshots:
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.96.1))(webpack@5.96.1(esbuild@0.24.0))
     optionalDependencies:
       esbuild: 0.24.0
+      jest: 29.7.0(@types/node@22.10.1)
       karma: 6.4.4
     transitivePeerDependencies:
       - '@angular/compiler'
@@ -21874,12 +22238,12 @@ snapshots:
       webpack: 5.50.0
       webpack-dev-server: 3.11.3(webpack@5.50.0)
 
-  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))':
+  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))':
     dependencies:
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
       rxjs: 6.6.7
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
     transitivePeerDependencies:
       - chokidar
 
@@ -24810,6 +25174,18 @@ snapshots:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.25.9
 
+  '@babel/plugin-syntax-async-generators@7.8.4(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
+
+  '@babel/plugin-syntax-bigint@7.8.3(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
+
   '@babel/plugin-syntax-class-properties@7.12.13(@babel/core@7.14.8)':
     dependencies:
       '@babel/core': 7.14.8
@@ -24845,6 +25221,12 @@ snapshots:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.25.9
 
+  '@babel/plugin-syntax-class-properties@7.12.13(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
+
   '@babel/plugin-syntax-class-static-block@7.14.5(@babel/core@7.14.8)':
     dependencies:
       '@babel/core': 7.14.8
@@ -24879,6 +25261,12 @@ snapshots:
     dependencies:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.25.9
+
+  '@babel/plugin-syntax-class-static-block@7.14.5(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
 
   '@babel/plugin-syntax-dynamic-import@7.8.3(@babel/core@7.14.8)':
     dependencies:
@@ -25030,6 +25418,12 @@ snapshots:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.25.9
 
+  '@babel/plugin-syntax-import-meta@7.10.4(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
+
   '@babel/plugin-syntax-json-strings@7.8.3(@babel/core@7.14.8)':
     dependencies:
       '@babel/core': 7.14.8
@@ -25064,6 +25458,12 @@ snapshots:
     dependencies:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.25.9
+
+  '@babel/plugin-syntax-json-strings@7.8.3(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
 
   '@babel/plugin-syntax-jsx@7.25.9(@babel/core@7.26.0)':
     dependencies:
@@ -25105,6 +25505,12 @@ snapshots:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.25.9
 
+  '@babel/plugin-syntax-logical-assignment-operators@7.10.4(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
+
   '@babel/plugin-syntax-nullish-coalescing-operator@7.8.3(@babel/core@7.14.8)':
     dependencies:
       '@babel/core': 7.14.8
@@ -25139,6 +25545,12 @@ snapshots:
     dependencies:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.25.9
+
+  '@babel/plugin-syntax-nullish-coalescing-operator@7.8.3(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
 
   '@babel/plugin-syntax-numeric-separator@7.10.4(@babel/core@7.14.8)':
     dependencies:
@@ -25175,6 +25587,12 @@ snapshots:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.25.9
 
+  '@babel/plugin-syntax-numeric-separator@7.10.4(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
+
   '@babel/plugin-syntax-object-rest-spread@7.8.3(@babel/core@7.14.8)':
     dependencies:
       '@babel/core': 7.14.8
@@ -25209,6 +25627,12 @@ snapshots:
     dependencies:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.25.9
+
+  '@babel/plugin-syntax-object-rest-spread@7.8.3(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
 
   '@babel/plugin-syntax-optional-catch-binding@7.8.3(@babel/core@7.14.8)':
     dependencies:
@@ -25245,6 +25669,12 @@ snapshots:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.25.9
 
+  '@babel/plugin-syntax-optional-catch-binding@7.8.3(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
+
   '@babel/plugin-syntax-optional-chaining@7.8.3(@babel/core@7.14.8)':
     dependencies:
       '@babel/core': 7.14.8
@@ -25279,6 +25709,12 @@ snapshots:
     dependencies:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.25.9
+
+  '@babel/plugin-syntax-optional-chaining@7.8.3(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
 
   '@babel/plugin-syntax-private-property-in-object@7.14.5(@babel/core@7.14.8)':
     dependencies:
@@ -25315,6 +25751,12 @@ snapshots:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.25.9
 
+  '@babel/plugin-syntax-private-property-in-object@7.14.5(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
+
   '@babel/plugin-syntax-top-level-await@7.14.5(@babel/core@7.14.8)':
     dependencies:
       '@babel/core': 7.14.8
@@ -25349,6 +25791,12 @@ snapshots:
     dependencies:
       '@babel/core': 7.25.2
       '@babel/helper-plugin-utils': 7.25.9
+
+  '@babel/plugin-syntax-top-level-await@7.14.5(@babel/core@7.26.0)':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/helper-plugin-utils': 7.25.9
+    optional: true
 
   '@babel/plugin-syntax-typescript@7.25.9(@babel/core@7.26.0)':
     dependencies:
@@ -28480,6 +28928,9 @@ snapshots:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
 
+  '@bcoe/v8-coverage@0.2.3':
+    optional: true
+
   '@capacitor/app@4.1.1(@capacitor/core@4.7.1)':
     dependencies:
       '@capacitor/core': 4.7.1
@@ -29950,6 +30401,182 @@ snapshots:
       resolve-from: 5.0.0
 
   '@istanbuljs/schema@0.1.3': {}
+
+  '@jest/console@29.7.0':
+    dependencies:
+      '@jest/types': 29.6.3
+      '@types/node': 16.18.121
+      chalk: 4.1.2
+      jest-message-util: 29.7.0
+      jest-util: 29.7.0
+      slash: 3.0.0
+    optional: true
+
+  '@jest/core@29.7.0':
+    dependencies:
+      '@jest/console': 29.7.0
+      '@jest/reporters': 29.7.0
+      '@jest/test-result': 29.7.0
+      '@jest/transform': 29.7.0
+      '@jest/types': 29.6.3
+      '@types/node': 16.18.121
+      ansi-escapes: 4.3.2
+      chalk: 4.1.2
+      ci-info: 3.9.0
+      exit: 0.1.2
+      graceful-fs: 4.2.11
+      jest-changed-files: 29.7.0
+      jest-config: 29.7.0(@types/node@16.18.121)
+      jest-haste-map: 29.7.0
+      jest-message-util: 29.7.0
+      jest-regex-util: 29.6.3
+      jest-resolve: 29.7.0
+      jest-resolve-dependencies: 29.7.0
+      jest-runner: 29.7.0
+      jest-runtime: 29.7.0
+      jest-snapshot: 29.7.0
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      jest-watcher: 29.7.0
+      micromatch: 4.0.8
+      pretty-format: 29.7.0
+      slash: 3.0.0
+      strip-ansi: 6.0.1
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+    optional: true
+
+  '@jest/environment@29.7.0':
+    dependencies:
+      '@jest/fake-timers': 29.7.0
+      '@jest/types': 29.6.3
+      '@types/node': 16.18.121
+      jest-mock: 29.7.0
+    optional: true
+
+  '@jest/expect-utils@29.7.0':
+    dependencies:
+      jest-get-type: 29.6.3
+    optional: true
+
+  '@jest/expect@29.7.0':
+    dependencies:
+      expect: 29.7.0
+      jest-snapshot: 29.7.0
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
+  '@jest/fake-timers@29.7.0':
+    dependencies:
+      '@jest/types': 29.6.3
+      '@sinonjs/fake-timers': 10.3.0
+      '@types/node': 16.18.121
+      jest-message-util: 29.7.0
+      jest-mock: 29.7.0
+      jest-util: 29.7.0
+    optional: true
+
+  '@jest/globals@29.7.0':
+    dependencies:
+      '@jest/environment': 29.7.0
+      '@jest/expect': 29.7.0
+      '@jest/types': 29.6.3
+      jest-mock: 29.7.0
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
+  '@jest/reporters@29.7.0':
+    dependencies:
+      '@bcoe/v8-coverage': 0.2.3
+      '@jest/console': 29.7.0
+      '@jest/test-result': 29.7.0
+      '@jest/transform': 29.7.0
+      '@jest/types': 29.6.3
+      '@jridgewell/trace-mapping': 0.3.25
+      '@types/node': 16.18.121
+      chalk: 4.1.2
+      collect-v8-coverage: 1.0.2
+      exit: 0.1.2
+      glob: 7.2.3
+      graceful-fs: 4.2.11
+      istanbul-lib-coverage: 3.2.2
+      istanbul-lib-instrument: 6.0.3
+      istanbul-lib-report: 3.0.1
+      istanbul-lib-source-maps: 4.0.1
+      istanbul-reports: 3.1.7
+      jest-message-util: 29.7.0
+      jest-util: 29.7.0
+      jest-worker: 29.7.0
+      slash: 3.0.0
+      string-length: 4.0.2
+      strip-ansi: 6.0.1
+      v8-to-istanbul: 9.3.0
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
+  '@jest/schemas@29.6.3':
+    dependencies:
+      '@sinclair/typebox': 0.27.8
+    optional: true
+
+  '@jest/source-map@29.6.3':
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.25
+      callsites: 3.1.0
+      graceful-fs: 4.2.11
+    optional: true
+
+  '@jest/test-result@29.7.0':
+    dependencies:
+      '@jest/console': 29.7.0
+      '@jest/types': 29.6.3
+      '@types/istanbul-lib-coverage': 2.0.6
+      collect-v8-coverage: 1.0.2
+    optional: true
+
+  '@jest/test-sequencer@29.7.0':
+    dependencies:
+      '@jest/test-result': 29.7.0
+      graceful-fs: 4.2.11
+      jest-haste-map: 29.7.0
+      slash: 3.0.0
+    optional: true
+
+  '@jest/transform@29.7.0':
+    dependencies:
+      '@babel/core': 7.26.0
+      '@jest/types': 29.6.3
+      '@jridgewell/trace-mapping': 0.3.25
+      babel-plugin-istanbul: 6.1.1
+      chalk: 4.1.2
+      convert-source-map: 2.0.0
+      fast-json-stable-stringify: 2.1.0
+      graceful-fs: 4.2.11
+      jest-haste-map: 29.7.0
+      jest-regex-util: 29.6.3
+      jest-util: 29.7.0
+      micromatch: 4.0.8
+      pirates: 4.0.6
+      slash: 3.0.0
+      write-file-atomic: 4.0.2
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
+  '@jest/types@29.6.3':
+    dependencies:
+      '@jest/schemas': 29.6.3
+      '@types/istanbul-lib-coverage': 2.0.6
+      '@types/istanbul-reports': 3.0.4
+      '@types/node': 16.18.121
+      '@types/yargs': 17.0.33
+      chalk: 4.1.2
+    optional: true
 
   '@jridgewell/gen-mapping@0.1.1':
     dependencies:
@@ -31889,9 +32516,22 @@ snapshots:
       '@sigstore/core': 2.0.0
       '@sigstore/protobuf-specs': 0.3.2
 
+  '@sinclair/typebox@0.27.8':
+    optional: true
+
   '@sindresorhus/is@4.6.0': {}
 
   '@sindresorhus/merge-streams@2.3.0': {}
+
+  '@sinonjs/commons@3.0.1':
+    dependencies:
+      type-detect: 4.0.8
+    optional: true
+
+  '@sinonjs/fake-timers@10.3.0':
+    dependencies:
+      '@sinonjs/commons': 3.0.1
+    optional: true
 
   '@socket.io/component-emitter@3.1.2': {}
 
@@ -32060,7 +32700,7 @@ snapshots:
     dependencies:
       '@types/http-cache-semantics': 4.0.4
       '@types/keyv': 3.1.4
-      '@types/node': 18.19.67
+      '@types/node': 16.18.121
       '@types/responselike': 1.0.3
 
   '@types/connect-history-api-fallback@1.5.4':
@@ -32070,7 +32710,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 18.19.67
+      '@types/node': 16.18.121
 
   '@types/cookie@0.4.1': {}
 
@@ -32151,6 +32791,11 @@ snapshots:
       '@types/minimatch': 5.1.2
       '@types/node': 18.19.67
 
+  '@types/graceful-fs@4.1.9':
+    dependencies:
+      '@types/node': 16.18.121
+    optional: true
+
   '@types/hast@2.3.10':
     dependencies:
       '@types/unist': 2.0.11
@@ -32171,6 +32816,19 @@ snapshots:
   '@types/http-proxy@1.17.15':
     dependencies:
       '@types/node': 18.19.67
+
+  '@types/istanbul-lib-coverage@2.0.6':
+    optional: true
+
+  '@types/istanbul-lib-report@3.0.3':
+    dependencies:
+      '@types/istanbul-lib-coverage': 2.0.6
+    optional: true
+
+  '@types/istanbul-reports@3.0.4':
+    dependencies:
+      '@types/istanbul-lib-report': 3.0.3
+    optional: true
 
   '@types/jasmine-jquery@1.5.37':
     dependencies:
@@ -32206,7 +32864,7 @@ snapshots:
 
   '@types/keyv@3.1.4':
     dependencies:
-      '@types/node': 18.19.67
+      '@types/node': 16.18.121
 
   '@types/luxon@2.4.0': {}
 
@@ -32226,7 +32884,7 @@ snapshots:
 
   '@types/mute-stream@0.0.4':
     dependencies:
-      '@types/node': 18.19.67
+      '@types/node': 16.18.121
 
   '@types/node-forge@1.3.11':
     dependencies:
@@ -32280,7 +32938,7 @@ snapshots:
 
   '@types/responselike@1.0.3':
     dependencies:
-      '@types/node': 18.19.67
+      '@types/node': 16.18.121
 
   '@types/retry@0.12.0': {}
 
@@ -32312,6 +32970,9 @@ snapshots:
       '@types/node': 18.19.67
 
   '@types/source-list-map@0.1.6': {}
+
+  '@types/stack-utils@2.0.3':
+    optional: true
 
   '@types/tapable@1.0.12': {}
 
@@ -32347,6 +33008,14 @@ snapshots:
   '@types/ws@8.5.13':
     dependencies:
       '@types/node': 18.19.67
+
+  '@types/yargs-parser@21.0.3':
+    optional: true
+
+  '@types/yargs@17.0.33':
+    dependencies:
+      '@types/yargs-parser': 21.0.3
+    optional: true
 
   '@typescript-eslint/eslint-plugin@5.3.0(@typescript-eslint/parser@5.3.0(eslint@7.32.0)(typescript@4.8.4))(eslint@7.32.0)(typescript@4.8.4)':
     dependencies:
@@ -33606,6 +34275,20 @@ snapshots:
 
   axobject-query@4.1.0: {}
 
+  babel-jest@29.7.0(@babel/core@7.26.0):
+    dependencies:
+      '@babel/core': 7.26.0
+      '@jest/transform': 29.7.0
+      '@types/babel__core': 7.20.5
+      babel-plugin-istanbul: 6.1.1
+      babel-preset-jest: 29.6.3(@babel/core@7.26.0)
+      chalk: 4.1.2
+      graceful-fs: 4.2.11
+      slash: 3.0.0
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
   babel-loader@8.2.2(@babel/core@7.14.8)(webpack@5.50.0):
     dependencies:
       '@babel/core': 7.14.8
@@ -33686,6 +34369,14 @@ snapshots:
       test-exclude: 6.0.0
     transitivePeerDependencies:
       - supports-color
+
+  babel-plugin-jest-hoist@29.6.3:
+    dependencies:
+      '@babel/template': 7.25.9
+      '@babel/types': 7.26.0
+      '@types/babel__core': 7.20.5
+      '@types/babel__traverse': 7.20.6
+    optional: true
 
   babel-plugin-polyfill-corejs2@0.2.3(@babel/core@7.14.8):
     dependencies:
@@ -33879,6 +34570,33 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  babel-preset-current-node-syntax@1.1.0(@babel/core@7.26.0):
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/plugin-syntax-async-generators': 7.8.4(@babel/core@7.26.0)
+      '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.26.0)
+      '@babel/plugin-syntax-class-properties': 7.12.13(@babel/core@7.26.0)
+      '@babel/plugin-syntax-class-static-block': 7.14.5(@babel/core@7.26.0)
+      '@babel/plugin-syntax-import-attributes': 7.26.0(@babel/core@7.26.0)
+      '@babel/plugin-syntax-import-meta': 7.10.4(@babel/core@7.26.0)
+      '@babel/plugin-syntax-json-strings': 7.8.3(@babel/core@7.26.0)
+      '@babel/plugin-syntax-logical-assignment-operators': 7.10.4(@babel/core@7.26.0)
+      '@babel/plugin-syntax-nullish-coalescing-operator': 7.8.3(@babel/core@7.26.0)
+      '@babel/plugin-syntax-numeric-separator': 7.10.4(@babel/core@7.26.0)
+      '@babel/plugin-syntax-object-rest-spread': 7.8.3(@babel/core@7.26.0)
+      '@babel/plugin-syntax-optional-catch-binding': 7.8.3(@babel/core@7.26.0)
+      '@babel/plugin-syntax-optional-chaining': 7.8.3(@babel/core@7.26.0)
+      '@babel/plugin-syntax-private-property-in-object': 7.14.5(@babel/core@7.26.0)
+      '@babel/plugin-syntax-top-level-await': 7.14.5(@babel/core@7.26.0)
+    optional: true
+
+  babel-preset-jest@29.6.3(@babel/core@7.26.0):
+    dependencies:
+      '@babel/core': 7.26.0
+      babel-plugin-jest-hoist: 29.6.3
+      babel-preset-current-node-syntax: 1.1.0(@babel/core@7.26.0)
+    optional: true
+
   bail@2.0.2: {}
 
   balanced-match@1.0.2: {}
@@ -34043,6 +34761,11 @@ snapshots:
       electron-to-chromium: 1.5.68
       node-releases: 2.0.18
       update-browserslist-db: 1.1.1(browserslist@4.24.2)
+
+  bser@2.1.1:
+    dependencies:
+      node-int64: 0.4.0
+    optional: true
 
   buffer-crc32@0.2.13: {}
 
@@ -34314,6 +35037,9 @@ snapshots:
 
   chalk@5.3.0: {}
 
+  char-regex@1.0.2:
+    optional: true
+
   character-entities-html4@2.1.0: {}
 
   character-entities-legacy@3.0.0: {}
@@ -34387,6 +35113,9 @@ snapshots:
   circular-dependency-plugin@5.2.2(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       webpack: 5.76.1(esbuild@0.14.22)
+
+  cjs-module-lexer@1.4.1:
+    optional: true
 
   class-utils@0.3.6:
     dependencies:
@@ -34463,11 +35192,17 @@ snapshots:
 
   clone@2.1.2: {}
 
+  co@4.6.0:
+    optional: true
+
   coa@2.0.2:
     dependencies:
       '@types/q': 1.5.8
       chalk: 2.4.2
       q: 1.5.1
+
+  collect-v8-coverage@1.0.2:
+    optional: true
 
   collection-visit@1.0.0:
     dependencies:
@@ -34791,6 +35526,22 @@ snapshots:
     dependencies:
       crc-32: 1.2.2
       readable-stream: 3.6.2
+
+  create-jest@29.7.0(@types/node@22.10.1):
+    dependencies:
+      '@jest/types': 29.6.3
+      chalk: 4.1.2
+      exit: 0.1.2
+      graceful-fs: 4.2.11
+      jest-config: 29.7.0(@types/node@22.10.1)
+      jest-util: 29.7.0
+      prompts: 2.4.2
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+    optional: true
 
   critters@0.0.12:
     dependencies:
@@ -35471,6 +36222,9 @@ snapshots:
 
   di@0.0.1: {}
 
+  diff-sequences@29.6.3:
+    optional: true
+
   diff@4.0.2: {}
 
   diff@5.2.0: {}
@@ -35619,6 +36373,9 @@ snapshots:
   elementtree@0.1.7:
     dependencies:
       sax: 1.1.4
+
+  emittery@0.13.1:
+    optional: true
 
   emoji-regex@10.4.0: {}
 
@@ -36486,6 +37243,9 @@ snapshots:
 
   escape-string-regexp@1.0.5: {}
 
+  escape-string-regexp@2.0.0:
+    optional: true
+
   escape-string-regexp@4.0.0: {}
 
   escodegen@1.14.3:
@@ -36969,7 +37729,7 @@ snapshots:
 
   eval@0.1.8:
     dependencies:
-      '@types/node': 18.19.67
+      '@types/node': 16.18.121
       require-like: 0.1.2
 
   event-target-shim@5.0.1: {}
@@ -37008,6 +37768,9 @@ snapshots:
 
   exit-hook@2.2.1: {}
 
+  exit@0.1.2:
+    optional: true
+
   expand-brackets@2.1.4(supports-color@6.1.0):
     dependencies:
       debug: 2.6.9(supports-color@6.1.0)
@@ -37019,6 +37782,15 @@ snapshots:
       to-regex: 3.0.2
     transitivePeerDependencies:
       - supports-color
+
+  expect@29.7.0:
+    dependencies:
+      '@jest/expect-utils': 29.7.0
+      jest-get-type: 29.6.3
+      jest-matcher-utils: 29.7.0
+      jest-message-util: 29.7.0
+      jest-util: 29.7.0
+    optional: true
 
   exponential-backoff@3.1.1: {}
 
@@ -37139,6 +37911,11 @@ snapshots:
   faye-websocket@0.11.4:
     dependencies:
       websocket-driver: 0.7.4
+
+  fb-watchman@2.0.2:
+    dependencies:
+      bser: 2.1.1
+    optional: true
 
   fd-slicer@1.1.0:
     dependencies:
@@ -38406,6 +39183,9 @@ snapshots:
     dependencies:
       get-east-asian-width: 1.3.0
 
+  is-generator-fn@2.1.0:
+    optional: true
+
   is-generator-function@1.0.10:
     dependencies:
       has-tostringtag: 1.0.2
@@ -38601,7 +39381,7 @@ snapshots:
 
   istanbul-lib-instrument@6.0.3:
     dependencies:
-      '@babel/core': 7.25.2
+      '@babel/core': 7.26.0
       '@babel/parser': 7.26.2
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.2
@@ -38676,11 +39456,376 @@ snapshots:
 
   javascript-stringify@2.1.0: {}
 
+  jest-changed-files@29.7.0:
+    dependencies:
+      execa: 5.1.1
+      jest-util: 29.7.0
+      p-limit: 3.1.0
+    optional: true
+
+  jest-circus@29.7.0:
+    dependencies:
+      '@jest/environment': 29.7.0
+      '@jest/expect': 29.7.0
+      '@jest/test-result': 29.7.0
+      '@jest/types': 29.6.3
+      '@types/node': 16.18.121
+      chalk: 4.1.2
+      co: 4.6.0
+      dedent: 1.5.3
+      is-generator-fn: 2.1.0
+      jest-each: 29.7.0
+      jest-matcher-utils: 29.7.0
+      jest-message-util: 29.7.0
+      jest-runtime: 29.7.0
+      jest-snapshot: 29.7.0
+      jest-util: 29.7.0
+      p-limit: 3.1.0
+      pretty-format: 29.7.0
+      pure-rand: 6.1.0
+      slash: 3.0.0
+      stack-utils: 2.0.6
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - supports-color
+    optional: true
+
+  jest-cli@29.7.0(@types/node@22.10.1):
+    dependencies:
+      '@jest/core': 29.7.0
+      '@jest/test-result': 29.7.0
+      '@jest/types': 29.6.3
+      chalk: 4.1.2
+      create-jest: 29.7.0(@types/node@22.10.1)
+      exit: 0.1.2
+      import-local: 3.2.0
+      jest-config: 29.7.0(@types/node@22.10.1)
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      yargs: 17.7.2
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+    optional: true
+
+  jest-config@29.7.0(@types/node@16.18.121):
+    dependencies:
+      '@babel/core': 7.26.0
+      '@jest/test-sequencer': 29.7.0
+      '@jest/types': 29.6.3
+      babel-jest: 29.7.0(@babel/core@7.26.0)
+      chalk: 4.1.2
+      ci-info: 3.9.0
+      deepmerge: 4.3.1
+      glob: 7.2.3
+      graceful-fs: 4.2.11
+      jest-circus: 29.7.0
+      jest-environment-node: 29.7.0
+      jest-get-type: 29.6.3
+      jest-regex-util: 29.6.3
+      jest-resolve: 29.7.0
+      jest-runner: 29.7.0
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      micromatch: 4.0.8
+      parse-json: 5.2.0
+      pretty-format: 29.7.0
+      slash: 3.0.0
+      strip-json-comments: 3.1.1
+    optionalDependencies:
+      '@types/node': 16.18.121
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - supports-color
+    optional: true
+
+  jest-config@29.7.0(@types/node@22.10.1):
+    dependencies:
+      '@babel/core': 7.26.0
+      '@jest/test-sequencer': 29.7.0
+      '@jest/types': 29.6.3
+      babel-jest: 29.7.0(@babel/core@7.26.0)
+      chalk: 4.1.2
+      ci-info: 3.9.0
+      deepmerge: 4.3.1
+      glob: 7.2.3
+      graceful-fs: 4.2.11
+      jest-circus: 29.7.0
+      jest-environment-node: 29.7.0
+      jest-get-type: 29.6.3
+      jest-regex-util: 29.6.3
+      jest-resolve: 29.7.0
+      jest-runner: 29.7.0
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      micromatch: 4.0.8
+      parse-json: 5.2.0
+      pretty-format: 29.7.0
+      slash: 3.0.0
+      strip-json-comments: 3.1.1
+    optionalDependencies:
+      '@types/node': 22.10.1
+    transitivePeerDependencies:
+      - babel-plugin-macros
+      - supports-color
+    optional: true
+
+  jest-diff@29.7.0:
+    dependencies:
+      chalk: 4.1.2
+      diff-sequences: 29.6.3
+      jest-get-type: 29.6.3
+      pretty-format: 29.7.0
+    optional: true
+
+  jest-docblock@29.7.0:
+    dependencies:
+      detect-newline: 3.1.0
+    optional: true
+
+  jest-each@29.7.0:
+    dependencies:
+      '@jest/types': 29.6.3
+      chalk: 4.1.2
+      jest-get-type: 29.6.3
+      jest-util: 29.7.0
+      pretty-format: 29.7.0
+    optional: true
+
+  jest-environment-node@29.7.0:
+    dependencies:
+      '@jest/environment': 29.7.0
+      '@jest/fake-timers': 29.7.0
+      '@jest/types': 29.6.3
+      '@types/node': 16.18.121
+      jest-mock: 29.7.0
+      jest-util: 29.7.0
+    optional: true
+
+  jest-get-type@29.6.3:
+    optional: true
+
+  jest-haste-map@29.7.0:
+    dependencies:
+      '@jest/types': 29.6.3
+      '@types/graceful-fs': 4.1.9
+      '@types/node': 16.18.121
+      anymatch: 3.1.3
+      fb-watchman: 2.0.2
+      graceful-fs: 4.2.11
+      jest-regex-util: 29.6.3
+      jest-util: 29.7.0
+      jest-worker: 29.7.0
+      micromatch: 4.0.8
+      walker: 1.0.8
+    optionalDependencies:
+      fsevents: 2.3.3
+    optional: true
+
+  jest-leak-detector@29.7.0:
+    dependencies:
+      jest-get-type: 29.6.3
+      pretty-format: 29.7.0
+    optional: true
+
+  jest-matcher-utils@29.7.0:
+    dependencies:
+      chalk: 4.1.2
+      jest-diff: 29.7.0
+      jest-get-type: 29.6.3
+      pretty-format: 29.7.0
+    optional: true
+
+  jest-message-util@29.7.0:
+    dependencies:
+      '@babel/code-frame': 7.26.2
+      '@jest/types': 29.6.3
+      '@types/stack-utils': 2.0.3
+      chalk: 4.1.2
+      graceful-fs: 4.2.11
+      micromatch: 4.0.8
+      pretty-format: 29.7.0
+      slash: 3.0.0
+      stack-utils: 2.0.6
+    optional: true
+
+  jest-mock@29.7.0:
+    dependencies:
+      '@jest/types': 29.6.3
+      '@types/node': 16.18.121
+      jest-util: 29.7.0
+    optional: true
+
+  jest-pnp-resolver@1.2.3(jest-resolve@29.7.0):
+    optionalDependencies:
+      jest-resolve: 29.7.0
+    optional: true
+
+  jest-regex-util@29.6.3:
+    optional: true
+
+  jest-resolve-dependencies@29.7.0:
+    dependencies:
+      jest-regex-util: 29.6.3
+      jest-snapshot: 29.7.0
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
+  jest-resolve@29.7.0:
+    dependencies:
+      chalk: 4.1.2
+      graceful-fs: 4.2.11
+      jest-haste-map: 29.7.0
+      jest-pnp-resolver: 1.2.3(jest-resolve@29.7.0)
+      jest-util: 29.7.0
+      jest-validate: 29.7.0
+      resolve: 1.22.8
+      resolve.exports: 2.0.3
+      slash: 3.0.0
+    optional: true
+
+  jest-runner@29.7.0:
+    dependencies:
+      '@jest/console': 29.7.0
+      '@jest/environment': 29.7.0
+      '@jest/test-result': 29.7.0
+      '@jest/transform': 29.7.0
+      '@jest/types': 29.6.3
+      '@types/node': 16.18.121
+      chalk: 4.1.2
+      emittery: 0.13.1
+      graceful-fs: 4.2.11
+      jest-docblock: 29.7.0
+      jest-environment-node: 29.7.0
+      jest-haste-map: 29.7.0
+      jest-leak-detector: 29.7.0
+      jest-message-util: 29.7.0
+      jest-resolve: 29.7.0
+      jest-runtime: 29.7.0
+      jest-util: 29.7.0
+      jest-watcher: 29.7.0
+      jest-worker: 29.7.0
+      p-limit: 3.1.0
+      source-map-support: 0.5.13
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
+  jest-runtime@29.7.0:
+    dependencies:
+      '@jest/environment': 29.7.0
+      '@jest/fake-timers': 29.7.0
+      '@jest/globals': 29.7.0
+      '@jest/source-map': 29.6.3
+      '@jest/test-result': 29.7.0
+      '@jest/transform': 29.7.0
+      '@jest/types': 29.6.3
+      '@types/node': 16.18.121
+      chalk: 4.1.2
+      cjs-module-lexer: 1.4.1
+      collect-v8-coverage: 1.0.2
+      glob: 7.2.3
+      graceful-fs: 4.2.11
+      jest-haste-map: 29.7.0
+      jest-message-util: 29.7.0
+      jest-mock: 29.7.0
+      jest-regex-util: 29.6.3
+      jest-resolve: 29.7.0
+      jest-snapshot: 29.7.0
+      jest-util: 29.7.0
+      slash: 3.0.0
+      strip-bom: 4.0.0
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
+  jest-snapshot@29.7.0:
+    dependencies:
+      '@babel/core': 7.26.0
+      '@babel/generator': 7.26.2
+      '@babel/plugin-syntax-jsx': 7.25.9(@babel/core@7.26.0)
+      '@babel/plugin-syntax-typescript': 7.25.9(@babel/core@7.26.0)
+      '@babel/types': 7.26.0
+      '@jest/expect-utils': 29.7.0
+      '@jest/transform': 29.7.0
+      '@jest/types': 29.6.3
+      babel-preset-current-node-syntax: 1.1.0(@babel/core@7.26.0)
+      chalk: 4.1.2
+      expect: 29.7.0
+      graceful-fs: 4.2.11
+      jest-diff: 29.7.0
+      jest-get-type: 29.6.3
+      jest-matcher-utils: 29.7.0
+      jest-message-util: 29.7.0
+      jest-util: 29.7.0
+      natural-compare: 1.4.0
+      pretty-format: 29.7.0
+      semver: 7.6.3
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
+  jest-util@29.7.0:
+    dependencies:
+      '@jest/types': 29.6.3
+      '@types/node': 16.18.121
+      chalk: 4.1.2
+      ci-info: 3.9.0
+      graceful-fs: 4.2.11
+      picomatch: 2.3.1
+    optional: true
+
+  jest-validate@29.7.0:
+    dependencies:
+      '@jest/types': 29.6.3
+      camelcase: 6.3.0
+      chalk: 4.1.2
+      jest-get-type: 29.6.3
+      leven: 3.1.0
+      pretty-format: 29.7.0
+    optional: true
+
+  jest-watcher@29.7.0:
+    dependencies:
+      '@jest/test-result': 29.7.0
+      '@jest/types': 29.6.3
+      '@types/node': 16.18.121
+      ansi-escapes: 4.3.2
+      chalk: 4.1.2
+      emittery: 0.13.1
+      jest-util: 29.7.0
+      string-length: 4.0.2
+    optional: true
+
   jest-worker@27.5.1:
     dependencies:
       '@types/node': 18.19.67
       merge-stream: 2.0.0
       supports-color: 8.1.1
+
+  jest-worker@29.7.0:
+    dependencies:
+      '@types/node': 16.18.121
+      jest-util: 29.7.0
+      merge-stream: 2.0.0
+      supports-color: 8.1.1
+    optional: true
+
+  jest@29.7.0(@types/node@22.10.1):
+    dependencies:
+      '@jest/core': 29.7.0
+      '@jest/types': 29.6.3
+      import-local: 3.2.0
+      jest-cli: 29.7.0(@types/node@22.10.1)
+    transitivePeerDependencies:
+      - '@types/node'
+      - babel-plugin-macros
+      - supports-color
+      - ts-node
+    optional: true
 
   jiti@1.21.6: {}
 
@@ -39166,6 +40311,9 @@ snapshots:
       needle: 3.3.1
       source-map: 0.6.1
 
+  leven@3.1.0:
+    optional: true
+
   levn@0.3.0:
     dependencies:
       prelude-ls: 1.1.2
@@ -39638,6 +40786,11 @@ snapshots:
     transitivePeerDependencies:
       - bluebird
       - supports-color
+
+  makeerror@1.0.12:
+    dependencies:
+      tmpl: 1.0.5
+    optional: true
 
   map-age-cleaner@0.1.3:
     dependencies:
@@ -40613,6 +41766,9 @@ snapshots:
     transitivePeerDependencies:
       - bluebird
       - supports-color
+
+  node-int64@0.4.0:
+    optional: true
 
   node-releases@2.0.18: {}
 
@@ -41601,6 +42757,9 @@ snapshots:
       pinkie: 2.0.4
 
   pinkie@2.0.4: {}
+
+  pirates@4.0.6:
+    optional: true
 
   piscina@3.1.0:
     dependencies:
@@ -43067,6 +44226,13 @@ snapshots:
       ansi-styles: 5.2.0
       react-is: 17.0.2
 
+  pretty-format@29.7.0:
+    dependencies:
+      '@jest/schemas': 29.6.3
+      ansi-styles: 5.2.0
+      react-is: 18.3.1
+    optional: true
+
   pretty-ms@7.0.1:
     dependencies:
       parse-ms: 2.1.0
@@ -43163,6 +44329,9 @@ snapshots:
 
   punycode@2.3.1: {}
 
+  pure-rand@6.1.0:
+    optional: true
+
   q@1.5.1: {}
 
   qjobs@1.2.0: {}
@@ -43223,6 +44392,9 @@ snapshots:
   react-is@16.13.1: {}
 
   react-is@17.0.2: {}
+
+  react-is@18.3.1:
+    optional: true
 
   react-redux@7.2.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
@@ -43551,6 +44723,9 @@ snapshots:
       source-map: 0.6.1
 
   resolve-url@0.2.1: {}
+
+  resolve.exports@2.0.3:
+    optional: true
 
   resolve@1.20.0:
     dependencies:
@@ -44436,6 +45611,12 @@ snapshots:
       atob: 2.1.2
       decode-uri-component: 0.2.2
 
+  source-map-support@0.5.13:
+    dependencies:
+      buffer-from: 1.1.2
+      source-map: 0.6.1
+    optional: true
+
   source-map-support@0.5.19:
     dependencies:
       buffer-from: 1.1.2
@@ -44538,6 +45719,11 @@ snapshots:
 
   stable@0.1.8: {}
 
+  stack-utils@2.0.6:
+    dependencies:
+      escape-string-regexp: 2.0.0
+    optional: true
+
   static-extend@0.1.2:
     dependencies:
       define-property: 0.2.5
@@ -44566,6 +45752,12 @@ snapshots:
   streamsearch@1.1.0: {}
 
   string-hash@1.1.3: {}
+
+  string-length@4.0.2:
+    dependencies:
+      char-regex: 1.0.2
+      strip-ansi: 6.0.1
+    optional: true
 
   string-width@3.1.0:
     dependencies:
@@ -45061,6 +46253,9 @@ snapshots:
 
   tmp@0.2.3: {}
 
+  tmpl@1.0.5:
+    optional: true
+
   to-object-path@0.3.0:
     dependencies:
       kind-of: 3.2.2
@@ -45228,6 +46423,9 @@ snapshots:
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
+
+  type-detect@4.0.8:
+    optional: true
 
   type-fest@0.20.2: {}
 
@@ -45510,6 +46708,13 @@ snapshots:
       sade: 1.8.1
 
   v8-compile-cache@2.4.0: {}
+
+  v8-to-istanbul@9.3.0:
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.25
+      '@types/istanbul-lib-coverage': 2.0.6
+      convert-source-map: 2.0.0
+    optional: true
 
   validate-npm-package-license@3.0.4:
     dependencies:
@@ -45832,6 +47037,11 @@ snapshots:
     dependencies:
       xml-name-validator: 3.0.0
 
+  walker@1.0.8:
+    dependencies:
+      makeerror: 1.0.12
+    optional: true
+
   watchpack@2.4.0:
     dependencies:
       glob-to-regexp: 0.4.1
@@ -45935,7 +47145,7 @@ snapshots:
       schema-utils: 3.3.0
       webpack: 5.50.0
 
-  webpack-dev-middleware@5.3.0(webpack@5.76.1(esbuild@0.14.22)):
+  webpack-dev-middleware@5.3.0(webpack@5.76.1):
     dependencies:
       colorette: 2.0.20
       memfs: 3.5.3
@@ -46221,7 +47431,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)):
+  webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -46251,7 +47461,7 @@ snapshots:
       spdy: 4.0.2(supports-color@6.1.0)
       strip-ansi: 7.1.0
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
       ws: 8.17.1
     transitivePeerDependencies:
       - '@types/express'
@@ -46840,6 +48050,12 @@ snapshots:
       strip-ansi: 7.1.0
 
   wrappy@1.0.2: {}
+
+  write-file-atomic@4.0.2:
+    dependencies:
+      imurmurhash: 0.1.4
+      signal-exit: 3.0.7
+    optional: true
 
   write-file-atomic@5.0.1:
     dependencies:

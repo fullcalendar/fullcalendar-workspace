@@ -1,7 +1,7 @@
 {
   "private": true,
-  "name": "@fullcalendar-examples/react-lazy",
-  "title": "FullCalendar React Lazy Example Project",
+  "name": "@fullcalendar-examples/react18-lazy",
+  "title": "FullCalendar React 18 Lazy Example Project",
   "version": "0.0.0",
   "license": "ISC",
   "scripts": {

@@ -1,7 +1,7 @@
 {
   "private": true,
-  "name": "@fullcalendar-examples/react-redux",
-  "title": "FullCalendar React+Redux Example Project",
+  "name": "@fullcalendar-examples/react18-cjs",
+  "title": "FullCalendar React 18 CJS Example Project",
   "version": "0.0.0",
   "license": "ISC",
   "scripts": {
@@ -17,11 +17,7 @@
     "@fullcalendar/react": "^6.1.10",
     "@fullcalendar/timegrid": "^6.1.10",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-redux": "^7.2.0",
-    "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",

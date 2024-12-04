@@ -15,4 +15,4 @@ packages:
   # importing both. Eventually upgrade all to 19
   - '!./examples/t3-app'
   # same:
-  - '!./examples/jest-react'
+  - '!./examples/react18-jest'
