@@ -11,14 +11,19 @@ pnpm run lint --all
 
 pnpm run version-bump
 
-pnpm run build --all
+pnpm --filter '!./examples/**' run build
+
+# sync PNPM's dependenciesMeta.*.injected
+pnpm install
+
+pnpm --filter './examples/**' run build
 
 # # for testing all contrib/example packages
-#pnpm --stream run test --other
+# pnpm --stream run test --other
 
 pnpm --stream run test
 
 echo
 echo "Done with release-prep!"
-echo "Remember to clear modifications from the version-bump!"
+echo "Remember git-reset the modifications from the version-bump!"
 echo
