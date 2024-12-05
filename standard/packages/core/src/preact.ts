@@ -19,10 +19,11 @@ See examples/typescript-scheduler/src/index.ts
 */
 
 /*
-TODO: rethink this
+HACK for flushSync being a noop:
+https://github.com/preactjs/preact/issues/3929
 */
-export function flushSync(runBeforeFlush) {
-  runBeforeFlush()
+export function flushSync(renderActionToFlush) {
+  renderActionToFlush()
 
   let oldDebounceRendering = preact.options.debounceRendering // orig
   let callbackQ = []
@@ -41,12 +42,18 @@ export function flushSync(runBeforeFlush) {
   preact.options.debounceRendering = oldDebounceRendering
 }
 
+/*
+Triggers a state-change which unclogs the render queue? Needed?
+*/
 class FakeComponent extends preact.Component {
   render() { return preact.createElement('div', {}) }
   componentDidMount() { this.setState({}) }
 }
 
-// TODO: use preact/compat instead?
+/*
+HACK for Preact wrongly calling shouldComponentUpdate during context changes:
+https://github.com/preactjs/preact/issues/2510
+*/
 export function createContext<T>(defaultValue: T) {
   let ContextType = preact.createContext<T>(defaultValue)
   let origProvider = ContextType.Provider
