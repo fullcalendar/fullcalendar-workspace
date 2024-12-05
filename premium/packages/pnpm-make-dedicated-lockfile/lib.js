@@ -119,6 +119,8 @@ function filterLinkedDepsOutOfScope(importerId, snapshot, scopedDir, pkgsOutOfSc
 // -------------------------------------------------------------------------------------------------
 
 /*
+Used by the root-repo manifest to quickly update linked version numbers after a version bump.
+Looks for locators with link: and updated their specifiers to the latest (ex: '^3.3.12' -> '^3.3.13')
 HACK: pass-in readManifest because code reuse is hard. Refactor as a util within this package.
 */
 export async function relinkLockfile(rootDir, lockfile, readManifest) {
