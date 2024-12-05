@@ -6,68 +6,56 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-We are have cachebusting issues on cloudflare
+For beta.3
+  DRY-up scrollbar padding rectangles
+    also, ensure they always expand
+  bug: resource-area width resizing broken!
+  bug: resource-timeline global indent not working
+    examples/timeline-column-grouping.html
+  fix resource-timeline: don't make last resource same pixel height. subtract 1px
+  move DayGridRows' borders to bottom
+  feature: in resource-timeline print-view, put divider between all cells
+  simplify header row height-syncing for resource-timeline
+  put fc-no-break on resource-timeline rows (all except first?)
+  implement fc-ps-col, test on Safari/Firefox/Chrome
+  rename things to fc-ps-root, fc-ps-header (print-safe)
+  put fc-resource and fc-resource-group on individual cells
+  preserve y-scroll for timegrid, as negative margin. do for normal and pannable views
+  TEST:
+    ensure non-resource timeline works well
+    ensure multimonth looks okay
+    RTL for horizontal scroll. initialScroll, scroll syncing
+    scroll not restored after print-view for any browser/view?
+    print-mode with React (and React's flushSync)
+    last row of DayGridHeader should be sticky
 
-Print Mode
-  No API changes. Simply make all views more-accurately render in print-mode. Possible with new techniques.
-  Move towards fc-print-* classNames that don't need to be conditionally applied; they are themselves conditional
-  FIX: text centering in header cells when fc-flex-col disabled on print
+For beta.4
+  print-view for multimonth
+    for tiling, will need some sort of fc-ps-tile that switches between flexbox/float, for FF?
+  restructure html for List view, make print-friendly
+  daygrid liquid-event-width print-view conundrum: force event heights?
   INVESTIGATE: in Safari/Chrome, Timegrid view (which doesn't do crazy print-header),
     positions event y position off by 1px/2px on second page. happens because it forces the top
     border on the view's root element, even when it doesn't want it!
     Also happens in Firefox 100 on Windows
-  todo: more investigation
-  There will be known-bugs:
-    - On Safari, table headers are not repeated for any view (browser bug)
-    - On Chrome, for timegrid, table headers are sometimes covered by events
-    - On Firefox, for timeline, vertical slot lines only show for first page
-  DayGrid
-    move week number within first daycell
-      better for 'basic' rendering and better for pushing down eventcontainers if big
-      either use floats (bad for react-native) or conditionally apply justify-content: flex-end/space-between
-    use margin-top to position events (better for <td> event rendering)
-      and normalize common y-position by setting top MARGIN on eventcontainers below not-so-tall dayheaders
-    for rows, put border on bottom instead of top, so 2nd-page top border doesn't double-up with header
-      also looks better then last row has extra space at bottom of page
-  print-view for multimonth will be weird
-  BUG
-    scroll not restored after print-view
-  TEST
-    on DayGridHeader, dates-BELOW-resources don't have resource ID, did they ever?
-      did their customer-render-func ever get passed a resource?
-    test that last row of DayGridHeader is sticky
-    just like events conditionally are <a> tags, should make navlinks the same
-  AFTER
-    revert "hacks to get print-mode working, but some should be reverted"
-  NOTES
-    you must put absolutely positioned siblings first
-      more guaranteed to go to second page than if after a long sibling with height
-    Firefox: setting a bottom coordinate will NEVER wrap to subsequent pages
-      problems with height:100% as well. height hardcoding often needed
-    bugzilla flexbox issues
-      master ticket (pending): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
-      special-case fix (done): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
-        supposedly milestone 78.0a1
-    bug with flexbox AND absolute positioning wrapping to subsequent pages (our discovery)
-      ("Dinner" isn't showing up; starts on second page)
-      (NEED TO LOOK AT ACTUAL PDF - differs from print preview sometimes)
-        Firefox 120 - perfect
-        Firefox 110 - good (event y off by 1px)
-        Firefox 100 - good (event y off by 1px)
-        Firefox 97 - good (event y off by 1px) --- February 8, 2022
-        Firefox 96 - bad
-        Firefox 95 - bad
-        Firefox 90 - bad
 
 Cross-browser
   Firefox
     Re-address borderBoxSize HACK
     bug: Firefox 90: timegrid header/all-day scrollbarGutter not showing
+    resource-timeline header borders a little messed up
+  Safari
+    shows ResizeObserver loop warning
+Markup refactor
+  just like events conditionally are <a> tags, should make navlinks the same
 DayGrid
   prevent DayGridCell headers from overflowing? makes really small calendars look better
   bug (print-view):
     for multi-day events, don't display title within non-start/end segs
   bug: weekNumbers on 1-row dayGrid views don't work
+  simplify event positioning
+    normalize each event-container's top by applying margin-top on ones that have smaller headers
+    position each event-harness with a margin-top (in combo with existing abs positioning)
 MultiMonth
   bug: multi-row events cutoff when +more in next row (multimonth-view-bug.html)
   Improve perf while switching years
@@ -82,7 +70,8 @@ Timeline
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
 Resource DayGrid
-  (none)
+  on DayGridHeader (for TimeGrid too), dates-BELOW-resources don't have resource ID, did they ever?
+    did their customer-render-func ever get passed a resource?
 Resource Timeline
   bug: drag-n-drop auto-scroll very glitchy
   bug: when group-column resized really narrow, text isn't cropped like cells in resource rows
@@ -109,9 +98,6 @@ Resource Timeline
 H-Scrolling Views
   ensure col-width-syncing doesn't have 1px-off problem
     queries inner-width, but when assigning to outer-width, does it add 1px?
-List View
-  eventually redo list-view (and find tickets -- better <a> tag wrapper. better stickiness)
-    and redo empty-list message
 General Responsive
   Hide event times (daygrid/timeline) if too small?
   should fc-padding-* classes be responsive, meaning related to font-size?
@@ -119,8 +105,6 @@ General Responsive
   make ticket where popover is responsive?
 Scrollbars
   bug: unnecessary vertical scrollbar in daygrid see issue-6749-related.html
-  implement scroller padding rectangles
-  Test horizontal scroll normalization (for isRTL) in variety of browsers
   See [scrollbar bug] for Resource Timeline
 Performance
   why does TimelineLane::render get called 3 times initially?
@@ -161,6 +145,11 @@ Last-minute features
       LIQUID-AREAS: { flex-grow:1, min-height:0 }
       Good for layouts that are conditionally liquid-height
       Tho probably not as performant because need to compute the pre-squished AND post-squished layouts
+Before release
+  revert "hacks to get print-mode working, but some should be reverted"
+  revert temporary gitignores
+  remove the Preact createContext hack because this is now implemented:
+    https://github.com/preactjs/preact/issues/2510
 Changelog
   Add: Bootstrap4/5 line-height less chunky
   Add: Bootstrap
@@ -188,7 +177,7 @@ Changelog
     border problem fixed: https://codepen.io/arshaw/pen/PoMOwdV?editors=0010
     timegrid axis is text-selectable
     timeline now-indicator div covering events: https://github.com/fullcalendar/fullcalendar/issues/7798
-Freshdesk/GHIssues
+Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
     Can see forced-reflow warning here too: bundle/examples-v7/issue-7677.html
@@ -198,8 +187,33 @@ Freshdesk/GHIssues
     https://github.com/fullcalendar/fullcalendar/issues/1037
     1. scrollreset (already implemented)
     2. scroll to current date or time
-NOTES for later
-  simplified axis with h-scrolling: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
+  when infinite scroll-loading done
+    https://fullcalendar.freshdesk.com/a/tickets/9668
+  when virtual rendering done
+    https://fullcalendar.freshdesk.com/a/tickets/8496
+NOTES
+  flexbox row expansion works across scroll regions: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
+  Print
+    you must put absolutely positioned siblings first
+      more guaranteed to go to second page than if after a long sibling with height
+    Firefox: setting a bottom coordinate will NEVER wrap to subsequent pages
+      problems with height:100% as well. height hardcoding often needed
+    bugzilla flexbox issues
+      master ticket (pending): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
+      special-case fix (done): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
+        supposedly milestone 78.0a1
+    bug with flexbox AND absolute positioning wrapping to subsequent pages (our discovery)
+      ("Dinner" isn't showing up; starts on second page)
+      (NEED TO LOOK AT ACTUAL PDF - differs from print preview sometimes)
+        Firefox 120 - perfect
+        Firefox 110 - good (event y off by 1px)
+        Firefox 100 - good (event y off by 1px)
+        Firefox 97 - good (event y off by 1px) --- February 8, 2022
+        Firefox 96 - bad
+        Firefox 95 - bad
+        Firefox 90 - bad
+    known-bugs:
+        On Safari, table headers are not repeated for any view (browser bug)
 Punt
   Drop-shadow under sticky header, timeline headers
   In timegrid, when date-selecting with mirror event, why are we rendering highlight?
