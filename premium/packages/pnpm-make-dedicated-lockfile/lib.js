@@ -1,9 +1,10 @@
 // derived from https://github.com/pnpm/pnpm/blob/main/packages/make-dedicated-lockfile/src/index.ts
 
-import { join as joinPaths, sep as pathSep, isAbsolute } from 'path'
+import { join as joinPaths, sep as pathSep, isAbsolute, relative as getRelative } from 'path'
 import { getLockfileImporterId, readWantedLockfile, writeWantedLockfile } from '@pnpm/lockfile-file'
 import { pruneSharedLockfile } from '@pnpm/prune-lockfile'
 import { DEPENDENCIES_FIELDS } from '@pnpm/types'
+import { readFile, lstat } from 'fs/promises'
 
 export function readLockfile(rootDir, ignoreIncompatible = true) {
   return readWantedLockfile(rootDir, { ignoreIncompatible }) // needs options or fails!
@@ -59,6 +60,66 @@ export async function makeDedicatedLockfile(rootDir, scopedDir, verbose) {
     }
   }
 
+  // transfer over workspace-root dependencies,
+  // using scopedDir's manifest as a whitelist
+  if (
+    !lockfile.importers[getRelative(rootDir, scopedDir)] && // NOT already a workspace
+    await hasManifest(scopedDir)
+  ) {
+    const scopedManifest = await readManifest(scopedDir)
+    const scopedRootSnapshot = { specifiers: {} }
+    const rootImporter = lockfile.importers['.']
+
+    for (const depField of DEPENDENCIES_FIELDS) {
+      const depSpecifiers = scopedManifest[depField]
+
+      if (depSpecifiers) {
+        for (const depName in depSpecifiers) {
+          const depSpecifier = depSpecifiers[depName]
+          let depLocator = rootImporter[depField]?.[depName]
+
+          if (!depLocator) {
+            throw new Error(
+              `Scope '${scopedDir}' cannot depend on ${depName} without root also depending on it`
+            )
+          }
+
+          const depLocatorLink =
+            depLocator.startsWith(linkPrefix) &&
+            depLocator.slice(linkPrefix.length)
+
+          if (depLocatorLink) {
+            const scopedDepLocatorLink =
+              depLocatorLink.startsWith(`${baseImporterId}/`) &&
+              depLocatorLink.slice(baseImporterId.length + 1)
+
+            if (!scopedDepLocatorLink) {
+              throw new Error(
+                `Scope '${scopedDir}' cannot depend on ${depLocatorLink} if it is outside`
+              )
+            }
+
+            depLocator = linkPrefix + scopedDepLocatorLink
+          } else {
+            /*
+            TODO: for registry deps, throw error if specified version conflicts.
+            if rootImporter.specifiers[depName] !== depSpecifier
+            */
+          }
+
+          ;(
+            scopedRootSnapshot[depField] ||
+            (scopedRootSnapshot[depField] = {})
+          )[depName] = depLocator
+
+          scopedRootSnapshot.specifiers[depName] = depSpecifier
+        }
+      }
+    }
+
+    transformedImporters['.'] = scopedRootSnapshot
+  }
+
   lockfile.importers = transformedImporters
 
   const dedicatedLockfile = pruneSharedLockfile(lockfile)
@@ -83,6 +144,9 @@ const linkPrefix = 'link:'
 function filterLinkedDepsOutOfScope(importerId, snapshot, scopedDir, pkgsOutOfScope) {
   const transformedSnapshot = {}
 
+  /*
+  snapshotVal is the hash of dependends/devDependencies/etc
+  */
   for (const [snapshotKey, snapshotVal] of Object.entries(snapshot)) {
     if (!DEPENDENCIES_FIELDS.includes(snapshotKey)) {
       // not a dependency-related field. copy as-is
@@ -160,4 +224,29 @@ async function relinkDeps(rootDir, importerId, snapshot, readManifest) {
     ...snapshot,
     specifiers: transformedSpecifiers,
   }
+}
+
+// UTILS... TODO: make DRY
+// -------------------------------------------------------------------------------------------------
+
+function hasManifest(dir) {
+  return fileExists(joinPaths(dir, 'package.json'))
+}
+
+async function readManifest(dir) {
+  const manifestPath = joinPaths(dir, 'package.json')
+  return await readJson(manifestPath)
+}
+
+function fileExists(path) {
+  return lstat(path).then(
+    () => true,
+    () => false,
+  )
+}
+
+async function readJson(path) {
+  const srcJson = await readFile(path, 'utf8')
+  const srcMeta = JSON.parse(srcJson)
+  return srcMeta
 }
