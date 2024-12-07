@@ -6,9 +6,13 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+FIX: resource-timeline rowgrouping has correct borders on bottom of rows
+  even when all row groups collapsed
+FIX: put spreadsheet vertical lines below rowgroups,
+  so has more space? sure?
+  how does it work with print?
+
 For beta.3
-  bug: resource-timeline global indent not working
-    examples/timeline-column-grouping.html
   fix resource-timeline: don't make last resource same pixel height. subtract 1px
   move DayGridRows' borders to bottom
   feature: in resource-timeline print-view, put divider between all cells
@@ -240,6 +244,8 @@ Punt
         and independent component (fc-daygrid-week-number)
 
 ensure automated tests for...
+  resource-timeline rowgrouping has correct borders on bottom of rows
+    even when all row groups collapsed
   positioning of sticky headers in all views. list view sticky subheaders too
   resource-timeline indent works
   pixel # for height/contentHeight works

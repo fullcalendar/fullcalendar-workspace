@@ -27,9 +27,14 @@ export class BodySection extends BaseComponent<BodySectionProps> {
     const { props, context } = this
     const { colWidths, rowInnerHeightRefMap, rowTops, rowHeights } = props
 
-    const groupCnt = props.flatGroupColLayouts.length
-    const resourceX = sliceSpreadsheetColWidth(colWidths, 0, groupCnt)
-    const resourceColWidths = colWidths.slice(groupCnt)
+    // TODO: less-weird way to get this! more DRY with ResourceTimelineLayoutNormal
+    const groupRowCnt = props.flatGroupRowLayouts.length
+    const resourceCnt = props.flatResourceLayouts.length
+    const rowCnt = groupRowCnt + resourceCnt
+
+    const groupColCnt = props.flatGroupColLayouts.length
+    const resourceX = sliceSpreadsheetColWidth(colWidths, 0, groupColCnt)
+    const resourceColWidths = colWidths.slice(groupColCnt)
 
     /*
     TODO: simplify DOM structure to be more like time-area?
@@ -82,7 +87,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         {resourceColWidths.map((resourceColWidth, i) => (
           <div
             className={joinClassNames(
-              (groupCnt + i) && 'fc-border-s',
+              (groupColCnt + i) && 'fc-border-s',
             )}
             style={{
               width: resourceColWidth,
@@ -101,7 +106,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         >
           {props.flatResourceLayouts.map((resourceLayout) => {
             const resource = resourceLayout.entity
-            const isNotLast = resourceLayout.rowIndex < props.flatResourceLayouts.length - 1
+            const isNotLast = resourceLayout.rowIndex < rowCnt - 1
 
             return (
               <div
@@ -139,7 +144,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         {props.flatGroupRowLayouts.map((groupRowLayout) => {
           const group = groupRowLayout.entity
           const groupKey = createGroupId(group)
-          const isNotLast = groupRowLayout.rowIndex < props.flatGroupRowLayouts.length - 1
+          const isNotLast = groupRowLayout.rowIndex < rowCnt - 1
 
           return (
             <div

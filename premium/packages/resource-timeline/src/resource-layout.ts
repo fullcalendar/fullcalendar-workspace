@@ -121,23 +121,6 @@ export function buildResourceLayouts(
   }
 }
 
-/*
-TODO: rename to be about expanders and indentation hierarchy
-*/
-export function computeHasNesting(nodes: GenericNode[]) {
-  for (let node of nodes) {
-    if ((node as ResourceNode).resourceFields) {
-      if ((node as ResourceNode).children.length) {
-        return true
-      }
-    } else { // a GroupNode
-      return !(node as GroupNode).pooledHeight // NOT column grouping. row groups
-    }
-  }
-
-  return false
-}
-
 // Header Verticals (both spreadsheet & time-area)
 // -------------------------------------------------------------------------------------------------
 

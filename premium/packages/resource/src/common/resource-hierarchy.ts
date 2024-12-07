@@ -37,12 +37,13 @@ TODO: move away from pooledHeight. simply create child-parent relationships w/ g
 The groups that are row-groups VS col-groups can be determined by colGroupDepth
 */
 export function buildResourceHierarchy(
-  resourceNodeHash: ResourceNodeHash,
+  resourceStore: ResourceHash,
   orderSpecs: OrderSpec<ResourceApi>[], // why accepted when resourceNodeHash already ordered?
   groupSpecs: GroupSpec[] = [],
   groupRowDepth: number = 0,
 ): GenericNode[] {
-  let resNodes: GenericNode[] = []
+  const resourceNodeHash = buildResourceNodeHash(resourceStore, orderSpecs)
+  const resNodes: GenericNode[] = []
 
   for (let resourceId in resourceNodeHash) {
     let resourceNode = resourceNodeHash[resourceId]
@@ -59,9 +60,9 @@ export function buildResourceHierarchy(
 Builds a hash-by-id that contains ALL resources,
 but .children[] array is wired up as well
 */
-export function buildResourceNodeHash(
+function buildResourceNodeHash(
   resourceStore: ResourceHash,
-  orderSpecs: OrderSpec<ResourceApi>[],
+  orderSpecs: OrderSpec<ResourceApi>[], // why is this needed if buildResourceHierarchy does order???
 ): ResourceNodeHash {
   let nodeHash: ResourceNodeHash = {}
 
@@ -196,10 +197,7 @@ export function flattenResources(
   resourceStore: ResourceHash,
   orderSpecs: OrderSpec<ResourceApi>[],
 ): Resource[] {
-  const hierarchy = buildResourceHierarchy(
-    buildResourceNodeHash(resourceStore, orderSpecs),
-    orderSpecs,
-  )
+  const hierarchy = buildResourceHierarchy(resourceStore, orderSpecs)
   const resResources: Resource[] = []
 
   flattenResourceHierarchy(hierarchy as ResourceNode[], resResources)

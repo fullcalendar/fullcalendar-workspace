@@ -9,8 +9,9 @@ import {
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import {
   buildResourceHierarchy,
-  buildResourceNodeHash,
-  ResourceNodeHash,
+  GenericNode,
+  GroupNode,
+  ResourceNode,
   ResourceSplitter,
   ResourceViewProps
 } from '@fullcalendar/resource/internal'
@@ -39,9 +40,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   // memoized
   private buildTimelineDateProfile = memoize(buildTimelineDateProfile)
   private processColOptions = memoize(processColOptions)
-  private buildResourceNodeHash = memoize(buildResourceNodeHash)
   private buildResourceHierarchy = memoize(buildResourceHierarchy)
   private computeSlotWidth = memoize(computeSlotWidth)
+  private computeHasNesting = memoize(computeHasNesting)
   private computeHasResourceBusinessHours = memoize(computeHasResourceBusinessHours)
 
   // ref
@@ -81,13 +82,13 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     /* table hierarchy */
 
-    let resourceNodeHash = this.buildResourceNodeHash(props.resourceStore, orderSpecs)
     let resourceHierarchy = this.buildResourceHierarchy(
-      resourceNodeHash,
+      props.resourceStore,
       orderSpecs,
       groupSpecs,
       groupRowDepth,
     )
+    let hasNesting = this.computeHasNesting(resourceHierarchy)
 
     /* table positions */
 
@@ -121,7 +122,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     /* business hour display */
 
-    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(resourceNodeHash)
+    let hasResourceBusinessHours = this.computeHasResourceBusinessHours(resourceHierarchy)
     let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
 
     return (
@@ -132,6 +133,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             dateProfile,
             resourceHierarchy,
             resourceEntityExpansions: props.resourceEntityExpansions,
+            hasNesting,
             nowDate,
             todayRange,
             colSpecs,
@@ -201,11 +203,25 @@ ResourceTimelineView.addStateEquality({
   spreadsheetColWidthOverrides: isArraysEqual,
 })
 
-function computeHasResourceBusinessHours(resourceNodeHash: ResourceNodeHash): boolean {
-  for (const resourceId in resourceNodeHash) {
-    const resourceNode = resourceNodeHash[resourceId]
+function computeHasResourceBusinessHours(resourceHierarchy: GenericNode[]): boolean {
+  for (const node of resourceHierarchy) {
+    if (
+      ((node as ResourceNode).resourceFields && (node as ResourceNode).entity.businessHours) ||
+        computeHasResourceBusinessHours(node.children)
+    ) {
+      return true
+    }
+  }
 
-    if (resourceNode.entity.businessHours) {
+  return false
+}
+
+function computeHasNesting(resourceHierarchy: GenericNode[]): boolean {
+  for (const node of resourceHierarchy) {
+    if (
+      (node.children.length && !(node as GroupNode).pooledHeight) || // has children, but NOT a col-spanning group
+        computeHasNesting(node.children)
+    ) {
       return true
     }
   }

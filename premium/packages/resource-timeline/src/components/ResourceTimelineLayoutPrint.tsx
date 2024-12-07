@@ -28,7 +28,6 @@ import {
   TimelineSlats
 } from '@fullcalendar/timeline/internal'
 import { buildPrintLayouts, GroupRowPrintLayout, ResourcePrintLayout } from '../resource-layout-print.js'
-import { computeHasNesting } from '../resource-layout.js'
 import { GroupLane } from './lane/GroupLane.js'
 import { ResourceLane } from './lane/ResourceLane.js'
 import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
@@ -43,6 +42,7 @@ export interface ResourceTimelineLayoutPrintProps {
   dateProfile: DateProfile
   resourceHierarchy: GenericNode[]
   resourceEntityExpansions: ResourceEntityExpansions
+  hasNesting: boolean
 
   nowDate: DateMarker
   todayRange: DateRange
@@ -70,7 +70,6 @@ const BG_HEIGHT = 100000
 
 export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineLayoutPrintProps> {
   // memoized
-  private computeHasNesting = memoize(computeHasNesting)
   private buildPrintLayouts = memoize(buildPrintLayouts)
 
   render() {
@@ -87,10 +86,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
     const { cellRows } = tDateProfile
 
     const { resourceHierarchy } = props
-    const hasNesting = this.computeHasNesting(resourceHierarchy)
     const printLayouts = this.buildPrintLayouts(
       resourceHierarchy,
-      hasNesting,
+      props.hasNesting,
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
@@ -116,7 +114,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 <div role="row" className="fc-grow fc-flex-row fc-border-b">
                   <SuperHeaderCell
                     renderHooks={superHeaderRendering}
-                    indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
+                    indent={props.hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
                   />
                 </div>
               )}
@@ -125,7 +123,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   <HeaderRow
                     colSpecs={colSpecs}
                     colWidths={spreadsheetColWidths}
-                    indent={hasNesting}
+                    indent={props.hasNesting}
                   />
                 </div>
               </div>

@@ -46,7 +46,7 @@ import {
   TimelineSlats,
   timeToCoord
 } from '@fullcalendar/timeline/internal'
-import { buildHeaderLayouts, buildResourceLayouts, computeHasNesting, GenericLayout } from '../resource-layout.js'
+import { buildHeaderLayouts, buildResourceLayouts, GenericLayout } from '../resource-layout.js'
 import {
   computeHeights,
   computeTopsFromHeights,
@@ -64,6 +64,7 @@ interface ResourceTimelineLayoutNormalProps {
   dateProfile: DateProfile
   resourceHierarchy: GenericNode[]
   resourceEntityExpansions: ResourceEntityExpansions
+  hasNesting: boolean
 
   nowDate: DateMarker
   todayRange: DateRange
@@ -116,7 +117,6 @@ interface ResourceTimelineViewState {
 
 export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimelineLayoutNormalProps, ResourceTimelineViewState> {
   // memoized
-  private computeHasNesting = memoize(computeHasNesting)
   private buildResourceLayouts = memoize(buildResourceLayouts)
   private buildHeaderLayouts = memoize(buildHeaderLayouts)
 
@@ -179,7 +179,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     /* table display */
 
-    let hasNesting = this.computeHasNesting(resourceHierarchy)
     let {
       layouts: bodyLayouts,
       flatResourceLayouts,
@@ -187,11 +186,16 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       flatGroupColLayouts,
     } = this.buildResourceLayouts(
       resourceHierarchy,
-      hasNesting,
+      props.hasNesting,
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
     this.bodyLayouts = bodyLayouts
+
+    // TODO: less-weird way to get this! more DRY with BodySection
+    const groupRowCnt = flatGroupRowLayouts.length
+    const resourceCnt = flatResourceLayouts.length
+    const rowCnt = groupRowCnt + resourceCnt
 
     /* table positions */
 
@@ -300,7 +304,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   >
                     <SuperHeaderCell
                       renderHooks={superHeaderRendering}
-                      indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
+                      indent={props.hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
                       innerHeightRef={this.headerRowInnerHeightMap.createRef(true)}
                     />
                   </div>
@@ -314,7 +318,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     <HeaderRow
                       colSpecs={colSpecs}
                       colWidths={spreadsheetColWidths}
-                      indent={hasNesting}
+                      indent={props.hasNesting}
 
                       // refs
                       innerHeightRef={this.headerRowInnerHeightMap.createRef(false)}
@@ -512,7 +516,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           data-resource-id={resource.id}
                           className={joinClassNames(
                             'fc-resource fc-flex-col fc-fill-x',
-                            resourceLayout.rowIndex < flatResourceLayouts.length - 1 && // is not last
+                            resourceLayout.rowIndex < rowCnt - 1 && // is not last
                               'fc-border-b',
                           )}
                           style={{
@@ -549,7 +553,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           aria-rowindex={groupRowLayout.rowIndex}
                           class={joinClassNames(
                             'fc-flex-row fc-fill-x',
-                            groupRowLayout.rowIndex < flatGroupRowLayouts.length - 1 && // is not last
+                            groupRowLayout.rowIndex < rowCnt && // is not last
                               'fc-border-b',
                           )}
                           style={{

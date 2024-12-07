@@ -15,7 +15,6 @@ export {
   Group,
   GenericNode,
   buildResourceHierarchy,
-  buildResourceNodeHash,
   ResourceNodeHash,
   isEntityGroup,
   createGroupId,
