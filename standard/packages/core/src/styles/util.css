@@ -105,11 +105,6 @@ Rarely used. Just inline this?
   padding-bottom: 2px; // can use just height if we move towards content-box!
 }
 
-.fc-scrollbar-gutter {
-  flex-shrink: 0;
-  opacity: 0.5;
-}
-
 // Misc Utils
 // -------------------------------------------------------------------------------------------------
 
@@ -188,6 +183,14 @@ Only needed when padding/border must be separate from width/height
 
 .fc-shaded {
   background-color: var(--fc-neutral-bg-color);
+}
+
+/*
+NOTE: if needing a width/height, use minWidth/minHeight because this div often has fc-liquid,
+which will override width/height if shrinking. Not the case with minWidth/minHeight
+*/
+.fc-filler { // scrollbar gutter filler
+  opacity: 0.5;
 }
 
 .fc-padding-sm {

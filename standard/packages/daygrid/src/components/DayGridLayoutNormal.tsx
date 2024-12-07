@@ -14,7 +14,6 @@ import {
   DayGridRange,
   EventRangeProps,
   joinClassNames,
-  ScrollbarGutter,
 } from '@fullcalendar/core/internal'
 import { Fragment, Ref, createElement } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -68,7 +67,12 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
                 stickyHeaderDates && 'fc-table-header-sticky',
               )}
             />
-            <ScrollbarGutter width={state.endScrollbarWidth} />
+            {Boolean(state.endScrollbarWidth) && (
+              <div
+                className='fc-border-s fc-filler'
+                style={{ minWidth: state.endScrollbarWidth }}
+              />
+            )}
           </div>
         )}
         <Scroller

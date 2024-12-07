@@ -19,7 +19,6 @@ import {
   getIsHeightAuto,
   RefMap,
   joinClassNames,
-  ScrollbarGutter,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
@@ -148,7 +147,12 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     />
                   )}
                 </div>
-                <ScrollbarGutter width={state.endScrollbarWidth} />
+                {Boolean(state.endScrollbarWidth) && (
+                  <div
+                    className='fc-border-s fc-filler'
+                    style={{ minWidth: state.endScrollbarWidth }}
+                  />
+                )}
               </Scroller>
 
               {/* BODY

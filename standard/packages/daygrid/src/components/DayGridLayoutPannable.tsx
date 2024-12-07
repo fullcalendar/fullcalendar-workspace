@@ -18,7 +18,6 @@ import {
   EventRangeProps,
   StickyFooterScrollbar,
   joinClassNames,
-  ScrollbarGutter,
 } from '@fullcalendar/core/internal'
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -93,7 +92,12 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
                 colWidth={colWidth}
                 width={canvasWidth}
               />
-              <ScrollbarGutter width={state.endScrollbarWidth} />
+              {Boolean(state.endScrollbarWidth) && (
+                <div
+                  className='fc-border-s fc-filler'
+                  style={{ minWidth: state.endScrollbarWidth }}
+                />
+              )}
             </Scroller>
           </div>
         )}

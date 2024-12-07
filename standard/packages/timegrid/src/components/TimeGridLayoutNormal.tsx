@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, getIsHeightAuto, getStickyHeaderDates, Hit, joinClassNames, rangeContainsMarker, RefMap, ScrollbarGutter, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
+import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, getIsHeightAuto, getStickyHeaderDates, Hit, joinClassNames, rangeContainsMarker, RefMap, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { COMPACT_CELL_WIDTH, DayGridHeaderRow, RowConfig } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
@@ -100,12 +100,21 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     )
     this.slatHeight = slatHeight
 
+    // TODO: have computeSlatHeight return?
+    const totalSlatHeight = (slatHeight || 0) * slatCnt
+
+    // TODO: better way to get this?
+    const rowsAreExpanding = verticalScrolling && !options.expandRows &&
+      state.clientHeight != null && state.clientHeight > totalSlatHeight
+
+    const needsBottomFiller = rowsAreExpanding
+
     // for printing
     // in Chrome, slats and columns both need abs positioning within a relative container for them
     // to sync across pages, and the relative container needs an explicit height
     // in Firefox, same applies, but the flex-row for the cells has trouble spanning across page,
     // so we need to set explicit height on flex-row and all parents
-    const forcedBodyHeight = props.forPrint ? (slatHeight || 0) * slatCnt : undefined
+    const forcedBodyHeight = props.forPrint ? totalSlatHeight : undefined
 
     const axisStartCss = context.isRtl
       ? { right: axisWidth }
@@ -148,10 +157,12 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   {...rowConfig}
                   className='fc-border-s fc-liquid'
                 />
-                <ScrollbarGutter width={
-                  props.forPrint ? 0 : // HACK for Firefox when flushSync doesn't have time to finish
-                    state.endScrollbarWidth
-                } />
+                {Boolean(state.endScrollbarWidth) && (
+                  <div
+                    className='fc-border-s fc-filler'
+                    style={{ minWidth: state.endScrollbarWidth }}
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -193,10 +204,12 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   dayMaxEvents={props.dayMaxEvents}
                   dayMaxEventRows={props.dayMaxEventRows}
                 />
-                <ScrollbarGutter width={
-                  props.forPrint ? 0 : // HACK for Firefox when flushSync doesn't have time to finish
-                    state.endScrollbarWidth
-                } />
+                {Boolean(state.endScrollbarWidth) && (
+                  <div
+                    className='fc-border-s fc-filler'
+                    style={{ minWidth: state.endScrollbarWidth }}
+                  />
+                )}
               </div>
             </div>
             <div className='fc-rowdivider'></div>
@@ -231,7 +244,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               slatCnt={slatCnt}
               forPrint={props.forPrint}
               isHitComboAllowed={props.isHitComboAllowed}
-              className='fc-fill fc-border-transparent fc-border-s'
+              className='fc-fill fc-border-s'
               style={{
                 ...axisStartCss,
                 height: forcedBodyHeight,
@@ -285,9 +298,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               ))}
             </div>
 
-            {verticalScrolling && !options.expandRows && (
-              // temporary filler
-              <div style={{ flexGrow: 1, flexBasis: 0, minHeight: 0, backgroundColor: '#ccc' }} />
+            {needsBottomFiller && (
+              <div class='fc-liquid fc-border-t fc-filler' />
             )}
 
             {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (

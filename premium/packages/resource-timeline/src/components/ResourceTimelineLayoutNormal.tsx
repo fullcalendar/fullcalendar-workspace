@@ -16,7 +16,6 @@ import {
   multiplyDuration,
   rangeContainsMarker,
   RefMap,
-  ScrollbarGutter,
   Scroller,
   ScrollerSyncerInterface,
   setRef,
@@ -245,6 +244,26 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       slotWidth != null &&
       rangeContainsMarker(props.dateProfile.currentRange, props.nowDate)
 
+    /* filler */
+
+    const spreadsheetBottomFiller = Math.max(
+      0,
+      (state.timeBottomScrollbarWidth || 0) -
+        (state.spreadsheetBottomScrollbarWidth || 0),
+    )
+
+    const timelineBottomFiller = Math.max(
+      0,
+      (state.spreadsheetBottomScrollbarWidth || 0) -
+        (state.timeBottomScrollbarWidth || 0),
+    )
+
+    const rowsAreExpanding = verticalScrolling && !options.expandRows &&
+      state.timeClientHeight != null && state.timeClientHeight > totalBodyHeight
+
+    const spreadsheetNeedsBottomFiller = rowsAreExpanding || Boolean(spreadsheetBottomFiller)
+    const timelineNeedsBottomFiller = rowsAreExpanding || Boolean(timelineBottomFiller)
+
     return (
       <ViewContainer
         className='fc-resource-timeline fc-flex-col fc-border'
@@ -339,16 +358,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     rowTops={bodyTops}
                     rowHeights={bodyHeights}
                   />
-                  {/* temporary filler */}
-                  <div style={{
-                    backgroundColor: '#ccc',
-                    flexGrow: 1,
-                    height: Math.max(
-                      0,
-                      (state.timeBottomScrollbarWidth || 0) -
-                      (state.spreadsheetBottomScrollbarWidth || 0)
-                    ),
-                  }} />
+                  {spreadsheetNeedsBottomFiller && (
+                    <div
+                      className='fc-border-t fc-filler'
+                      style={{ minHeight: spreadsheetBottomFiller }}
+                    />
+                  )}
                 </div>
               </Scroller>
 
@@ -417,7 +432,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     />
                   )}
                 </div>
-                <ScrollbarGutter width={state.endScrollbarWidth} />
+                {Boolean(state.endScrollbarWidth) && (
+                  <div
+                    className='fc-border-s fc-filler'
+                    style={{ minWidth: state.endScrollbarWidth }}
+                  />
+                )}
               </Scroller>
 
               {/* time-area BODY (w/ events)
@@ -544,17 +564,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       )
                     })}
                   </div>
-
-                  {/* temporary filler */}
-                  <div style={{
-                    backgroundColor: '#ccc',
-                    flexGrow: 1,
-                    height: Math.max(
-                      0,
-                      (state.spreadsheetBottomScrollbarWidth || 0) -
-                      (state.timeBottomScrollbarWidth || 0)
-                    ),
-                  }} />
+                  {timelineNeedsBottomFiller && (
+                    <div
+                      className='fc-border-t fc-filler'
+                      style={{ minHeight: timelineBottomFiller }}
+                    />
+                  )}
                 </div>
               </Scroller>
 

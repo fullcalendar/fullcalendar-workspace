@@ -196,7 +196,6 @@ export type { DayTableCell, DayGridRange } from './common/DayTableModel.js'
 export { DayTableModel } from './common/DayTableModel.js'
 
 export { Scroller, getNormalizedScrollX, setNormalizedScrollX } from './scrollgrid/Scroller.js'
-export { ScrollbarGutter, ScrollbarGutterProps } from './scrollgrid/ScrollbarGutter.js'
 
 export type { SlicedProps } from './common/slicing-utils.js'
 export { Slicer } from './common/slicing-utils.js'

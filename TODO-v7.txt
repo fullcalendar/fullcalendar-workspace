@@ -7,8 +7,6 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
-  DRY-up scrollbar padding rectangles
-    also, ensure they always expand
   bug: resource-area width resizing broken!
   bug: resource-timeline global indent not working
     examples/timeline-column-grouping.html
@@ -18,6 +16,7 @@ For beta.3
   simplify header row height-syncing for resource-timeline
   put fc-no-break on resource-timeline rows (all except first?)
   implement fc-ps-col, test on Safari/Firefox/Chrome
+    can maybe do away with forced-height on all parent divs of flex-row?
   rename things to fc-ps-root, fc-ps-header (print-safe)
   put fc-resource and fc-resource-group on individual cells
   preserve y-scroll for timegrid, as negative margin. do for normal and pannable views
@@ -60,8 +59,6 @@ MultiMonth
   bug: multi-row events cutoff when +more in next row (multimonth-view-bug.html)
   Improve perf while switching years
 TimeGrid
-  just like scrollbar dead area should have grey bg,
-    make timegrid bottom area w/o slots a grey bg
   i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
   when setting slotDuration:{hours:1}, really short body. always like this? slats had bigger min-height?
   bug: when few slats and bottom spacer visible, axis line is only line that doesn't span full height
@@ -134,7 +131,6 @@ Examples
 Last-minute features
   Can safely assume all RTL scrollbars are on left. Optimize what Scroller reports
   Try to strip out dom-geom.ts and scrollbar-width, tho used for auto-scrolling
-  Calendar::updateSize return promise
   Change how liquid-height is done for a single-expanding region
     Normally:
       FIXED-AREAS: nothing
@@ -150,6 +146,9 @@ Before release
   revert temporary gitignores
   remove the Preact createContext hack because this is now implemented:
     https://github.com/preactjs/preact/issues/2510
+  Calendar::updateSize should call resize-observer force-check
+    Don't do async Promise idea anymore
+    Call flushSync after
 Changelog
   Add: Bootstrap4/5 line-height less chunky
   Add: Bootstrap

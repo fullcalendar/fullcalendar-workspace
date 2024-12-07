@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, ScrollbarGutter, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, StickyFooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, StickyFooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef } from "@fullcalendar/core/internal"
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { COMPACT_CELL_WIDTH, DayGridHeaderRow, RowConfig, computeColWidth } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
@@ -140,6 +140,16 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     )
     this.slatHeight = slatHeight
 
+    // TODO: have computeSlatHeight return?
+    const totalSlatHeight = (slatHeight || 0) * slatCnt
+
+    // TODO: better way to get this?
+    const rowsAreExpanding = verticalScrolling && !options.expandRows &&
+      state.clientHeight != null && state.clientHeight > totalSlatHeight
+
+    const mainNeedsBottomFiller = rowsAreExpanding
+    const axisNeedsBottomFiller = rowsAreExpanding || Boolean(state.bottomScrollbarWidth)
+
     return (
       <Fragment>
         {options.dayHeaders && (
@@ -206,7 +216,12 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   />
                 ))}
               </div>
-              <ScrollbarGutter width={state.endScrollbarWidth} />
+              {Boolean(state.endScrollbarWidth) && (
+                <div
+                  className='fc-border-s fc-filler'
+                  style={{ minWidth: state.endScrollbarWidth }}
+                />
+              )}
             </Scroller>
           </div>
         )}
@@ -258,7 +273,12 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     colWidth={colWidth}
                   />
                 </div>
-                <ScrollbarGutter width={state.endScrollbarWidth} />
+                {Boolean(state.endScrollbarWidth) && (
+                  <div
+                    className='fc-border-s fc-filler'
+                    style={{ minWidth: state.endScrollbarWidth }}
+                  />
+                )}
               </Scroller>
             </div>
             <div className='fc-rowdivider'></div>
@@ -277,7 +297,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             style={{ width: axisWidth }}
             ref={this.axisScrollerRef}
           >
-            <div className='fc-timegrid-slots-axis fc-grow fc-flex-col fc-rel'>
+            <div className='fc-timegrid-slots-axis fc-flex-col fc-rel'>
               {props.slatMetas.map((slatMeta, slatI) => (
                 <div
                   key={slatMeta.key}
@@ -306,7 +326,12 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 />
               )}
             </div>
-            <ScrollbarGutter height={state.bottomScrollbarWidth} />
+            {axisNeedsBottomFiller && (
+              <div
+                class='fc-liquid fc-border-t fc-filler'
+                style={{ minHeight: state.bottomScrollbarWidth }}
+              />
+            )}
           </Scroller>
           {/* SLATS / main (scroller)
           ---------------------------------------------------------------------------------------*/}
@@ -360,7 +385,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   colWidth={colWidth}
                   slatHeight={slatHeight}
                 />
-                <div className='fc-timegrid-slots fc-rel fc-flex-col fc-grow'>
+                <div className='fc-timegrid-slots fc-rel fc-flex-col'>
                   {props.slatMetas.map((slatMeta, slatI) => (
                     <div
                       key={slatMeta.key}
@@ -380,6 +405,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     </div>
                   ))}
                 </div>
+                {mainNeedsBottomFiller && (
+                  <div class='fc-liquid fc-border-t fc-filler' />
+                )}
               </div>
             </Scroller>
             {Boolean(stickyFooterScrollbar) && (
