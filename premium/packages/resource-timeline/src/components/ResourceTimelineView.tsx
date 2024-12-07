@@ -160,6 +160,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               onSpreadsheetColWidthOverrides={this.handleSpreadsheetColWidthOverrides}
               spreadsheetClientWidthRef={this.handleSpreadsheetClientWidth}
               slotInnerWidthRef={this.handleSlotInnerWidth}
+              initialResourceAreaWidth={
+                this.resourceAreaWidthRef.current ?? // try save-state first
+                  options.resourceAreaWidth
+              }
               resourceAreaWidthRef={this.resourceAreaWidthRef}
               scrollRef={this.scrollRef}
               initialScroll={this.scrollRef.current /* for reviving after print-view */}

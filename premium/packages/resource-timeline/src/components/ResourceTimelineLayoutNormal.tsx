@@ -89,6 +89,7 @@ interface ResourceTimelineLayoutNormalProps {
   slotInnerWidthRef: Ref<number>
 
   // resource area
+  initialResourceAreaWidth?: CssDimValue
   resourceAreaWidthRef?: Ref<CssDimValue>
 
   // scroll
@@ -270,7 +271,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         viewSpec={viewSpec}
       >
         <ResizableTwoCol
-          initialStartWidth={options.resourceAreaWidth}
+          initialStartWidth={props.initialResourceAreaWidth}
           startWidthRef={props.resourceAreaWidthRef}
           className={verticalScrolling ? 'fc-liquid' : ''}
 

@@ -32,7 +32,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
 
   render() {
     const { props, state } = this
-    const resourceAreaWidth = props.initialStartWidth ?? state.startWidthOverride
+    const resourceAreaWidth = state.startWidthOverride ?? props.initialStartWidth
 
     return (
       <div
@@ -82,7 +82,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
       dragging.emitter.on('dragstart', () => {
         viewWidth = this.rootEl.getBoundingClientRect().width
         dragStartWidth = this.startElRef.current.getBoundingClientRect().width
-        newWidth = undefined
+        newWidth = dragStartWidth
       })
 
       dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
@@ -96,7 +96,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
       })
 
       dragging.emitter.on('dragend', () => {
-        if (newWidth != null) {
+        if (newWidth !== dragStartWidth) {
           setRef(props.startWidthRef, newWidth)
         }
       })

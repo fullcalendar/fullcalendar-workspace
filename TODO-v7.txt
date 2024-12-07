@@ -7,7 +7,6 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
-  bug: resource-area width resizing broken!
   bug: resource-timeline global indent not working
     examples/timeline-column-grouping.html
   fix resource-timeline: don't make last resource same pixel height. subtract 1px
