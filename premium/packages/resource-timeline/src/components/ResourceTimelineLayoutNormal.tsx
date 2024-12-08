@@ -285,7 +285,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               ---------------------------------------------------------------------------- */}
               <div
                 className={joinClassNames(
-                  'fc-datagrid-header fc-flex-col fc-border-b',
+                  'fc-datagrid-header fc-flex-col fc-content-box fc-border-b',
                   stickyHeaderDates && 'fc-table-header-sticky',
                 )}
                 style={{
@@ -390,7 +390,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 horizontal
                 hideScrollbars
                 className={joinClassNames(
-                  'fc-timeline-header fc-flex-row fc-border-b',
+                  'fc-timeline-header fc-flex-row fc-content-box fc-border-b',
                   stickyHeaderDates && 'fc-table-header-sticky',
                 )}
                 style={{
