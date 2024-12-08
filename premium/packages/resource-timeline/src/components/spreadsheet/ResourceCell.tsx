@@ -48,7 +48,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           'aria-colindex': props.colIndex,
         }}
         className={joinClassNames(
-          'fc-cell',
+          'fc-resource fc-cell',
           props.colIndex && 'fc-border-s',
           props.className,
         )}

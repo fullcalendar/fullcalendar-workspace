@@ -1,4 +1,4 @@
-import { BaseComponent } from '@fullcalendar/core/internal'
+import { BaseComponent, joinClassNames } from '@fullcalendar/core/internal'
 import { Group } from '@fullcalendar/resource/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { GroupTallCell } from './GroupTallCell.js'
@@ -31,7 +31,8 @@ export class ResourceGroupCells extends BaseComponent<ResourceGroupCellsProps> {
               />
             ) : (
               <div
-                className={className}
+                // TODO: make className DRY somehow?
+                className={joinClassNames('fc-resource-group fc-cell', className)}
                 style={{ width }}
               />
             )

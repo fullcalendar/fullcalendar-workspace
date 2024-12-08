@@ -78,7 +78,10 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   <GroupTallCell
                     colSpec={group.spec}
                     fieldValue={group.value}
-                    className={isNotLast ? 'fc-border-b' : ''}
+                    className={joinClassNames(
+                      'fc-liquid',
+                      isNotLast && 'fc-border-b',
+                    )}
                     innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
                   />
                 </div>
@@ -137,10 +140,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   colSpecs={props.colSpecs}
                   colWidths={colWidths}
                   innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
-                  className={joinClassNames(
-                    'fc-resource',
-                    isNotLast && 'fc-border-b',
-                  )}
+                  className={isNotLast ? 'fc-border-b' : ''}
                 />
               </div>
             )

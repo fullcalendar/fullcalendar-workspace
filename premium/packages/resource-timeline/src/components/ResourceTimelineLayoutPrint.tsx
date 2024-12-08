@@ -237,8 +237,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           {printLayouts.map((printLayout, rowIndex) => {
             const isNotLast = rowIndex < printLayouts.length - 1
 
-
-
             if ((printLayout as ResourcePrintLayout).colGroups) {
               const resource = (printLayout as ResourcePrintLayout).entity
               const colGroupStats = createColGroupStats(
@@ -250,7 +248,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               return (
                 <div
                   key={resource.id}
-                  className='fc-resource fc-flex-row'
+                  className='fc-flex-row fc-break-inside-avoid'
                 >
                   <div className='fc-crop fc-flex-row' style={{ width: props.resourceAreaWidth }}>
                     <div className='fc-flex-row' style={{ width: spreadsheetCanvasWidth }}>
@@ -308,18 +306,17 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 <div
                   key={groupKey}
                   className={joinClassNames(
-                    // TODO: add fc-resource-group className?
-                    'fc-flex-row',
+                    'fc-flex-row fc-break-inside-avoid',
                     isNotLast && 'fc-border-b',
                   )}
                 >
-                  <div className='fc-crop' style={{ width: props.resourceAreaWidth }}>
+                  <div className='fc-crop fc-flex-row' style={{ width: props.resourceAreaWidth }}>
                     <GroupWideCell
                       group={group}
                       isExpanded={(printLayout as GroupRowPrintLayout).isExpanded}
                     />
                   </div>
-                  <div className='fc-crop fc-liquid'>
+                  <div className='fc-crop fc-flex-row fc-border-s fc-liquid'>
                     <GroupLane group={group} />
                   </div>
                 </div>

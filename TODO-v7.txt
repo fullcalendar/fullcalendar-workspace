@@ -9,11 +9,9 @@ Publishing:
 For beta.3
   move DayGridRows' borders to bottom
   simplify datagrid column widths, prefer percentages, better for print
-  put fc-no-break on resource-timeline rows (all except first?)
   implement fc-ps-col, test on Safari/Firefox/Chrome
     can maybe do away with forced-height on all parent divs of flex-row?
   rename things to fc-ps-root, fc-ps-header (print-safe)
-  put fc-resource and fc-resource-group on individual cells
   preserve y-scroll for timegrid, as negative margin. do for normal and pannable views
   TEST:
     ensure non-resource timeline works well
@@ -146,6 +144,8 @@ Before release
     Don't do async Promise idea anymore
     Call flushSync after
   Kill memoizeArraylike,memoizeHashlike,others
+  For resource-timeline "lanes", resource-group-rows have fc-resource-group but resource-rows
+    do no have fc-resource. Make consistent? add to changelog?
 Changelog
   Add: Bootstrap4/5 line-height less chunky
   Add: Bootstrap

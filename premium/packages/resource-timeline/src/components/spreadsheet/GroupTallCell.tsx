@@ -37,7 +37,7 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
           role: 'gridcell',
         }}
         className={joinClassNames(
-          'fc-resource-group fc-cell fc-liquid',
+          'fc-resource-group fc-cell',
           props.className,
         )}
         style={{
