@@ -207,7 +207,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     let [headerHeights] = computeHeights(
       headerLayouts,
       identity,
-      (entityKey) => this.headerRowInnerHeightMap.current.get(entityKey) + 1, // makes memoization impossible!
+      (entityKey) => this.headerRowInnerHeightMap.current.get(entityKey), // makes memoization impossible!
       /* minHeight = */ undefined,
     )
 
@@ -221,7 +221,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
             entitySpreadsheetHeight,
             // map doesn't contain group-column-cell heights
             this.timeEntityInnerHeightMap.current.get(entityKey) || 0,
-          ) + 1
+          )
         }
       },
       /* minHeight = */ (verticalScrolling && options.expandRows)
@@ -324,7 +324,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       innerHeightRef={this.headerRowInnerHeightMap.createRef(false)}
 
                       // dimension
-                      height={maybeSubtractOne(headerHeights.get(false)) /* false means normalheader */}
+                      height={headerHeights.get(false) /* false means normalheader */}
 
                       // handlers
                       onColWidthOverrides={props.onSpreadsheetColWidthOverrides}
@@ -515,7 +515,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           aria-rowindex={resourceLayout.rowIndex}
                           data-resource-id={resource.id}
                           className={joinClassNames(
-                            'fc-resource fc-flex-col fc-fill-x',
+                            'fc-resource fc-flex-col fc-fill-x fc-content-box',
                             resourceLayout.rowIndex < rowCnt - 1 && // is not last
                               'fc-border-b',
                           )}
@@ -552,7 +552,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           role='row'
                           aria-rowindex={groupRowLayout.rowIndex}
                           class={joinClassNames(
-                            'fc-flex-row fc-fill-x',
+                            'fc-flex-row fc-fill-x fc-content-box',
                             groupRowLayout.rowIndex < rowCnt - 1 && // is not last
                               'fc-border-b',
                           )}
@@ -893,13 +893,5 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     }
 
     return null
-  }
-}
-
-// Util
-
-function maybeSubtractOne(n: number | undefined): number | undefined {
-  if (n != null) {
-    return n - 1
   }
 }

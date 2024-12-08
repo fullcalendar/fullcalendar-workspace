@@ -1,6 +1,8 @@
 import { createEntityId, Group, Resource } from '@fullcalendar/resource/internal'
 import { GenericLayout } from './resource-layout.js'
 
+export const ROW_BORDER_WIDTH = 1
+
 // Resource/Group Verticals
 // -------------------------------------------------------------------------------------------------
 
@@ -68,7 +70,7 @@ function computeTightHeights<Entity, Key>(
 
       totalHeight += ownHeight
     } else { // 'own' is above children
-      totalHeight += ownHeight + childrenHeight
+      totalHeight += ownHeight + ROW_BORDER_WIDTH + childrenHeight
     }
 
     heightMap.set(entityKey, ownHeight)
@@ -81,7 +83,10 @@ function computeTightHeights<Entity, Key>(
     expandableCount += childrenExpandableCount
   }
 
-  return [totalHeight, expandableCount]
+  return [
+    totalHeight + ROW_BORDER_WIDTH * (siblingNodes.length - 1),
+    expandableCount,
+  ]
 }
 
 function expandHeights<Entity, Key>(
@@ -125,7 +130,7 @@ function computeTopsStartingAt<Entity, Key>(
     topMap.set(entityKey, top)
 
     if (!siblingNode.pooledHeight) {
-      top += heightMap.get(entityKey)
+      top += heightMap.get(entityKey) + ROW_BORDER_WIDTH
     }
 
     top = computeTopsStartingAt(siblingNode.children, getEntityKey, heightMap, topMap, top)

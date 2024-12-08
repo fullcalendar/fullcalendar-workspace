@@ -18,7 +18,7 @@ export interface TimelineHeaderRowProps {
 
   // dimensions
   slotWidth: number | undefined // TODO: rename to slatWidth
-  height?: number
+  height?: number // is content-box based
 }
 
 export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
@@ -38,12 +38,12 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
     return (
       <div
         className={joinClassNames(
-          'fc-flex-row',
+          'fc-flex-row fc-content-box',
           !props.isLastRow && 'fc-border-b',
           props.height == null && 'fc-grow',
         )}
         style={{
-          height: props.isLastRow ? maybeSubtractOne(props.height) : props.height,
+          height: props.height,
         }}
       >
         {props.cells.map((cell, cellI) => {
@@ -106,13 +106,5 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
   componentWillUnmount(): void {
     setRef(this.props.innerWidthRef, null)
     setRef(this.props.innerHeighRef, null)
-  }
-}
-
-// Util
-
-function maybeSubtractOne(n: number | undefined): number | undefined {
-  if (n != null) {
-    return n - 1
   }
 }

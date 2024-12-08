@@ -13,7 +13,7 @@ export interface HeaderRowProps {
   innerHeightRef?: Ref<number>
 
   // dimensions
-  height?: number
+  height?: number // is content-box based
 
   // handlers
   onColWidthOverrides?: (colWidthOverrides: number[]) => void

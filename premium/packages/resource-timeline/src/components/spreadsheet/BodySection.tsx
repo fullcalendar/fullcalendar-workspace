@@ -6,6 +6,7 @@ import { GroupWideCell } from "./GroupWideCell.js"
 import { ResourceCells } from "./ResourceCells.js"
 import { sliceSpreadsheetColWidth } from "../../col-positioning.js"
 import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout.js"
+import { ROW_BORDER_WIDTH } from "../../resource-positioning.js"
 
 export interface BodySectionProps {
   flatResourceLayouts: ResourceLayout[]
@@ -59,6 +60,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
               const group = groupCellLayout.entity
               const groupKey = createGroupId(group)
               const isNotLast = groupCellLayout.rowIndex < groupColLayouts.length - 1
+              const rowHeight = rowHeights.get(groupKey)
 
               return (
                 <div
@@ -68,14 +70,16 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   class='fc-flex-row fc-fill-x'
                   style={{
                     top: rowTops.get(groupKey),
-                    height: rowHeights.get(groupKey),
+                    height: (rowHeight != null && isNotLast)
+                      ? rowHeight + ROW_BORDER_WIDTH // considering bottom border, which is added to cell
+                      : rowHeight,
                   }}
                 >
                   <GroupTallCell
                     colSpec={group.spec}
                     fieldValue={group.value}
-                    innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
                     className={isNotLast ? 'fc-border-b' : ''}
+                    innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
                   />
                 </div>
               )
@@ -107,6 +111,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
           {props.flatResourceLayouts.map((resourceLayout) => {
             const resource = resourceLayout.entity
             const isNotLast = resourceLayout.rowIndex < rowCnt - 1
+            const rowHeight = rowHeights.get(resource.id)
 
             return (
               <div
@@ -117,7 +122,9 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 class='fc-flex-row fc-fill-x'
                 style={{
                   top: rowTops.get(resource.id),
-                  height: rowHeights.get(resource.id),
+                  height: (rowHeight != null && isNotLast)
+                    ? rowHeight + ROW_BORDER_WIDTH // considering bottom border, which is added to cell
+                    : rowHeight
                 }}
               >
                 <ResourceCells
@@ -151,7 +158,10 @@ export class BodySection extends BaseComponent<BodySectionProps> {
               key={groupKey}
               role='row'
               aria-rowindex={groupRowLayout.rowIndex}
-              class='fc-flex-row fc-fill-x'
+              class={joinClassNames(
+                'fc-flex-row fc-fill-x fc-content-box',
+                isNotLast && 'fc-border-b',
+              )}
               style={{
                 top: rowTops.get(groupKey),
                 height: rowHeights.get(groupKey),
@@ -161,7 +171,6 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 group={group}
                 isExpanded={groupRowLayout.isExpanded}
                 innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
-                className={isNotLast ? 'fc-border-b' : ''}
               />
             </div>
           )

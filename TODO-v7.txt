@@ -7,10 +7,10 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
-  fix resource-timeline: don't make last resource same pixel height. subtract 1px
   move DayGridRows' borders to bottom
   feature: in resource-timeline print-view, put divider between all cells
   simplify header row height-syncing for resource-timeline
+  simplify datagrid column widths, prefer percentages, better for print
   put fc-no-break on resource-timeline rows (all except first?)
   implement fc-ps-col, test on Safari/Firefox/Chrome
     can maybe do away with forced-height on all parent divs of flex-row?
@@ -147,6 +147,7 @@ Before release
   Calendar::updateSize should call resize-observer force-check
     Don't do async Promise idea anymore
     Call flushSync after
+  Kill memoizeArraylike,memoizeHashlike,others
 Changelog
   Add: Bootstrap4/5 line-height less chunky
   Add: Bootstrap

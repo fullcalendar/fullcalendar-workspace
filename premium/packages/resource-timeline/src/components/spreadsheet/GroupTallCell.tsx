@@ -7,7 +7,7 @@ export interface GroupTallCellProps {
   colSpec: ColSpec
   fieldValue: any
   width?: CssDimValue
-  className?: string
+  className?: string // needed?
 
   // refs
   innerHeightRef?: Ref<number>
