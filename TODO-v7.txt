@@ -6,12 +6,6 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-FIX: resource-timeline rowgrouping has correct borders on bottom of rows
-  even when all row groups collapsed
-FIX: put spreadsheet vertical lines below rowgroups,
-  so has more space? sure?
-  how does it work with print?
-
 For beta.3
   fix resource-timeline: don't make last resource same pixel height. subtract 1px
   move DayGridRows' borders to bottom
@@ -82,6 +76,7 @@ Resource Timeline
   bug: in timeline-column-grouping.html
     when changing the "Room" column to group:true, changes height, which it shouldn't!
     some sort of off-by-one error with the top or bottom borders
+  when no groupcols, do simplified DOM structure?
   i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
     TODO: do same concepct for timeline-no-resources
   column grouping, should expand to full height, but doesn't

@@ -553,7 +553,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           aria-rowindex={groupRowLayout.rowIndex}
                           class={joinClassNames(
                             'fc-flex-row fc-fill-x',
-                            groupRowLayout.rowIndex < rowCnt && // is not last
+                            groupRowLayout.rowIndex < rowCnt - 1 && // is not last
                               'fc-border-b',
                           )}
                           style={{
