@@ -1,29 +1,14 @@
 
-.fc-media-screen {
-  & .fc-ps-col {
-    display: flex;
-    flex-direction: column;
-  }
+.fc-break-inside-avoid {
+  break-inside: avoid;
 }
 
 .fc-media-print {
-  // & .fc-timegrid-slots,
-  // & .fc-timeline-slots,
-  & .fc-non-business,
-  & .fc-bg-event {
-    display: none;
-  }
-
   & .fc-toolbar button,
   & .fc-h-event,
   & .fc-v-event {
     color: #000 !important;
     background: #fff !important;
-  }
-
-  & [role=row], // HACK
-  & .fc-event { // don't always want this, for timegrid-abs events for example
-    /* break-inside: avoid; -- was causing second-page abs problems for timeline */
   }
 
   /*
@@ -33,54 +18,37 @@
     min-height: 6em !important; /* look good in portrait */
   }
 
-  & .fc-daygrid-body .fc-event,
-  & .fc-daygrid-body .fc-event-title {
-    white-space: nowrap !important;
-  }
-
   & .fc-event,
   & .fc-event-inner { // often controls the text-color
     color: #000 !important;
   }
 
-  /*
-  HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
-  https://stackoverflow.com/a/60256345
-  TODO: be careful about horizontal alignment
-  */
-  /*
-  & .fc-flex-col {
-    display: block !important;
-  }
-  TODO: use fc-ps-col instead
-  */
+  // Print-Safe Utils (media:print ONLY)
+  // -----------------------------------------------------------------------------------------------
 
-  & .fc-print-root {
-    display: table !important; // could conflict with other things. rearchitect?
+  & .fc-ps-root {
+    display: table;
     table-layout: fixed;
     width: 100%;
     border-spacing: 0;
-    border-collapse: collapse; // so bottom-border can be put on fc-print-header
+    border-collapse: collapse; // so bottom-border can be put on fc-ps-header
   }
 
-  & .fc-print-header {
-    display: table-header-group !important; // could conflict with other things. rearchitect?
+  & .fc-ps-header {
+    display: table-header-group;
     break-inside: avoid; // required
 
+    // TODO: make a separate className
     background: #fff; // for when absolute-positioned items in body, doesn't appear under header
     z-index: 9999; // for when there's absolutely-positioned items in body
     position: relative;
   }
 
-  & a.fc-cell-inner {
-    display: block;
-  }
-
+  /*
+  HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
+  https://stackoverflow.com/a/60256345
+  */
   & .fc-ps-col {
     display: block;
   }
-}
-
-.fc-break-inside-avoid {
-  break-inside: avoid;
 }

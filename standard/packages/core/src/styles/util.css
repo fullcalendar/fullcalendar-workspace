@@ -44,7 +44,6 @@
   flex-direction: row;
 }
 
-.fc-flex-col-forced, // not affected by print condition
 .fc-flex-col {
   display: flex;
   flex-direction: column;
@@ -64,6 +63,18 @@ Rarely used. Just inline this?
 
 .fc-liquid {
   @include liquid;
+}
+
+// Print-Safe Utils (media:screen ONLY)
+// -------------------------------------------------------------------------------------------------
+
+.fc-media-screen {
+  & .fc-ps-root,
+  & .fc-ps-header,
+  & .fc-ps-col {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 // Table Utils

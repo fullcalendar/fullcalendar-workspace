@@ -204,10 +204,9 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
           return (
             <div
-              // we use fc-flex-col-forced because works best with print
               // we would have used fc-fill, but multi-page spanning breaks in Firefox
               // we would have used height:100%, but multi-page spanning breaks in Safari
-              className='fc-abs fc-flex-col-forced'
+              className='fc-abs fc-flex-col'
               key={forcedKey || instanceId}
               style={{
                 visibility: isVisible ? ('' as any) : 'hidden',

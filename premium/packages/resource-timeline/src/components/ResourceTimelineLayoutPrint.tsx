@@ -102,10 +102,10 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
 
     return (
       <ViewContainer
-        className='fc-resource-timeline fc-flex-col fc-border fc-print-root'
+        className='fc-resource-timeline fc-ps-root fc-border'
         viewSpec={viewSpec}
       >
-        <div className='fc-print-header fc-border-b'>
+        <div className='fc-ps-header fc-border-b'>
           <div className='fc-flex-row'>
 
             {/* DataGrid HEADER */}

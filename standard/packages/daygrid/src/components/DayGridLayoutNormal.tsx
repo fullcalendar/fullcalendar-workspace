@@ -59,7 +59,10 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     return (
       <Fragment>
         {options.dayHeaders && (
-          <div className='fc-flex-row fc-border-b fc-print-header'>
+          <div className={joinClassNames(
+            props.forPrint ? 'fc-ps-header' : 'fc-flex-row', // col for print, row for screen
+            'fc-border-b',
+          )}>
             <DayGridHeader
               headerTiers={props.headerTiers}
               className={joinClassNames(
@@ -79,7 +82,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
           vertical={verticalScrollbars}
           endScrollbarWidthRef={this.handleEndScrollbarWidth}
           className={joinClassNames(
-            'fc-daygrid-body fc-flex-col',
+            'fc-daygrid-body fc-ps-col',
             verticalScrollbars && 'fc-liquid',
           )}
           ref={this.handleScroller}

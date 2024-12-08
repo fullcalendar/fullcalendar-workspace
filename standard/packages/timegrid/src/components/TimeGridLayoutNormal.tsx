@@ -127,8 +127,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
         {options.dayHeaders && (
           <div
             className={joinClassNames(
-              // see note in TimeGridLayout about why we don't do fc-print-header
-              'fc-timegrid-header fc-flex-col fc-border-b',
+              // see note in TimeGridLayout about why we don't do fc-ps-header
+              'fc-timegrid-header fc-ps-col fc-border-b',
               stickyHeaderDates && 'fc-table-header-sticky',
             )}
           >
@@ -173,7 +173,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           <Fragment>
             <div
               // TODO: role="rowgroup"
-              className='fc-timegrid-allday fc-flex-col'
+              className='fc-timegrid-allday fc-ps-col'
             >
               <div className='fc-flex-row'>
                 <TimeGridAllDayLabel
@@ -220,7 +220,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
         <Scroller
           vertical={verticalScrolling}
           className={joinClassNames(
-            'fc-timegrid-body fc-flex-col',
+            'fc-timegrid-body fc-ps-col',
             verticalScrolling && 'fc-liquid',
           )}
           ref={props.timeScrollerRef}
@@ -229,13 +229,12 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           endScrollbarWidthRef={this.handleEndScrollbarWidth}
         >
           <div
-            className='fc-rel fc-grow fc-flex-col'
+            className='fc-rel fc-grow fc-ps-col'
             // in print mode, this div creates the height and everything is absolutely positioned within
             // we need to do this so that slats positioning synces with events's positioning
             // otherwise, get out of sync on second page
             style={{ height: forcedBodyHeight }}
           >
-
             <TimeGridCols
               dateProfile={props.dateProfile}
               nowDate={props.nowDate}

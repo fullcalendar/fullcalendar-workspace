@@ -7,10 +7,10 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
+  TimeGridLayoutPannable print-mode
+    Firefox (& Safari?) very broken
+    done from print-mode, scrollers out of sync
   simplify datagrid column widths, prefer percentages, better for print
-  implement fc-ps-col, test on Safari/Firefox/Chrome
-    can maybe do away with forced-height on all parent divs of flex-row?
-  rename things to fc-ps-root, fc-ps-header (print-safe)
   preserve y-scroll for timegrid, as negative margin. do for normal and pannable views
   TEST:
     ensure non-resource timeline works well
@@ -25,20 +25,18 @@ For beta.4
     for tiling, will need some sort of fc-ps-tile that switches between flexbox/float, for FF?
   restructure html for List view, make print-friendly
   daygrid liquid-event-width print-view conundrum: force event heights?
-  INVESTIGATE: in Safari/Chrome, Timegrid view (which doesn't do crazy print-header),
-    positions event y position off by 1px/2px on second page. happens because it forces the top
-    border on the view's root element, even when it doesn't want it!
-    Also happens in Firefox 100 on Windows
 
 Cross-browser
   Firefox
     Re-address borderBoxSize HACK
     bug: Firefox 90: timegrid header/all-day scrollbarGutter not showing
     resource-timeline header borders a little messed up
+    regression: after print-view (for timegrid as least) scroll gutter filler permanently disappears
   Safari
     shows ResizeObserver loop warning
 Markup refactor
   just like events conditionally are <a> tags, should make navlinks the same
+  put fc-border on viewcontainer
 DayGrid
   prevent DayGridCell headers from overflowing? makes really small calendars look better
   bug (print-view):
