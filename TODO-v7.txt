@@ -8,8 +8,6 @@ Publishing:
 
 For beta.3
   move DayGridRows' borders to bottom
-  feature: in resource-timeline print-view, put divider between all cells
-  simplify header row height-syncing for resource-timeline
   simplify datagrid column widths, prefer percentages, better for print
   put fc-no-break on resource-timeline rows (all except first?)
   implement fc-ps-col, test on Safari/Firefox/Chrome
@@ -213,6 +211,7 @@ NOTES
     known-bugs:
         On Safari, table headers are not repeated for any view (browser bug)
 Punt
+  print: in resource-timeline print-view, put divider between all cells
   Drop-shadow under sticky header, timeline headers
   In timegrid, when date-selecting with mirror event, why are we rendering highlight?
   For timeline event-dnd, the mirror, should have white glow just like timegrid for when overlap other events

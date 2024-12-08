@@ -18,7 +18,6 @@ export interface TimelineHeaderRowProps {
 
   // dimensions
   slotWidth: number | undefined // TODO: rename to slatWidth
-  height?: number // is content-box based
 }
 
 export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
@@ -38,13 +37,9 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
     return (
       <div
         className={joinClassNames(
-          'fc-flex-row fc-content-box',
+          'fc-flex-row fc-grow', // TODO: move fc-grow to parent?
           !props.isLastRow && 'fc-border-b',
-          props.height == null && 'fc-grow',
         )}
-        style={{
-          height: props.height,
-        }}
       >
         {props.cells.map((cell, cellI) => {
           // TODO: make this part of the cell obj?

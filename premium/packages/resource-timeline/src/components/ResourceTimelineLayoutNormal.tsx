@@ -10,7 +10,6 @@ import {
   getStickyFooterScrollbar,
   getStickyHeaderDates,
   Hit,
-  identity,
   joinClassNames,
   memoize,
   multiplyDuration,
@@ -46,11 +45,12 @@ import {
   TimelineSlats,
   timeToCoord
 } from '@fullcalendar/timeline/internal'
-import { buildHeaderLayouts, buildResourceLayouts, GenericLayout } from '../resource-layout.js'
+import { buildResourceLayouts, GenericLayout } from '../resource-layout.js'
 import {
   computeHeights,
   computeTopsFromHeights,
   findEntityByCoord,
+  ROW_BORDER_WIDTH,
 } from '../resource-positioning.js'
 import { GroupLane } from './lane/GroupLane.js'
 import { ResourceLane } from './lane/ResourceLane.js'
@@ -118,7 +118,6 @@ interface ResourceTimelineViewState {
 export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimelineLayoutNormalProps, ResourceTimelineViewState> {
   // memoized
   private buildResourceLayouts = memoize(buildResourceLayouts)
-  private buildHeaderLayouts = memoize(buildHeaderLayouts)
 
   // TODO: make this nice
   // This is a means to recompute row positioning when *HeightMaps change
@@ -140,8 +139,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private headerRowInnerWidthMap = new RefMap<number, number>(() => { // just for timeline-header
     afterSize(this.handleSlotInnerWidths)
   })
-  private headerRowInnerHeightMap = new RefMap<boolean | number, number>(this.handleHeightChange)
-  private spreadsheetEntityInnerHeightMap = new RefMap<string, number>(this.handleHeightChange) // keyed by createEntityId
+  private timelineHeaderRowInnerHeightMap = new RefMap<number, number>(this.handleHeightChange)
+  private dataGridHeaderRowInnerHeightMap = new RefMap<boolean, number>(this.handleHeightChange)
+  private dataGridEntityInnerHeightMap = new RefMap<string, number>(this.handleHeightChange) // keyed by createEntityId
   private timeEntityInnerHeightMap = new RefMap<string, number>(this.handleHeightChange) // keyed by createEntityId
   private bodyLayouts: GenericLayout<Resource | Group>[]
   private bodyTops?: Map<string, number> // keyed by createEntityId
@@ -199,23 +199,18 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     /* table positions */
 
-    let headerLayouts = this.buildHeaderLayouts(
+    const headerHeight = computeHeaderHeight(
+      this.dataGridHeaderRowInnerHeightMap.current,
+      this.timelineHeaderRowInnerHeightMap.current,
       Boolean(superHeaderRendering),
       tDateProfile.cellRows.length,
-    )
-
-    let [headerHeights] = computeHeights(
-      headerLayouts,
-      identity,
-      (entityKey) => this.headerRowInnerHeightMap.current.get(entityKey), // makes memoization impossible!
-      /* minHeight = */ undefined,
     )
 
     let [bodyHeights, totalBodyHeight] = computeHeights( // TODO: memoize?
       bodyLayouts,
       createEntityId,
       (entityKey) => { // makes memoization impossible!
-        const entitySpreadsheetHeight = this.spreadsheetEntityInnerHeightMap.current.get(entityKey)
+        const entitySpreadsheetHeight = this.dataGridEntityInnerHeightMap.current.get(entityKey)
         if (entitySpreadsheetHeight != null) {
           return Math.max(
             entitySpreadsheetHeight,
@@ -293,38 +288,36 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   'fc-datagrid-header fc-flex-col fc-border-b',
                   stickyHeaderDates && 'fc-table-header-sticky',
                 )}
+                style={{
+                  height: headerHeight,
+                }}
               >
                 {Boolean(superHeaderRendering) && (
                   <div
                     role="row"
-                    className="fc-flex-row fc-border-b"
-                    style={{
-                      height: headerHeights.get(true), // true means superheader
-                    }}
+                    className="fc-flex-row fc-grow fc-border-b"
                   >
                     <SuperHeaderCell
                       renderHooks={superHeaderRendering}
                       indent={props.hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
-                      innerHeightRef={this.headerRowInnerHeightMap.createRef(true)}
+                      innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(true)}
                     />
                   </div>
                 )}
                 <Scroller
                   horizontal
                   hideScrollbars
+                  className='fc-flex-row fc-grow'
                   ref={this.spreadsheetHeaderScrollerRef}
                 >
-                  <div style={{ width: spreadsheetCanvasWidth }}>
+                  <div className='fc-flex-row' style={{ width: spreadsheetCanvasWidth }}>
                     <HeaderRow
                       colSpecs={colSpecs}
                       colWidths={spreadsheetColWidths}
                       indent={props.hasNesting}
 
                       // refs
-                      innerHeightRef={this.headerRowInnerHeightMap.createRef(false)}
-
-                      // dimension
-                      height={headerHeights.get(false) /* false means normalheader */}
+                      innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
 
                       // handlers
                       onColWidthOverrides={props.onSpreadsheetColWidthOverrides}
@@ -359,7 +352,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     flatGroupColLayouts={flatGroupColLayouts}
                     colWidths={spreadsheetColWidths}
                     colSpecs={colSpecs}
-                    rowInnerHeightRefMap={this.spreadsheetEntityInnerHeightMap}
+                    rowInnerHeightRefMap={this.dataGridEntityInnerHeightMap}
                     rowTops={bodyTops}
                     rowHeights={bodyHeights}
                   />
@@ -400,6 +393,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   'fc-timeline-header fc-flex-row fc-border-b',
                   stickyHeaderDates && 'fc-table-header-sticky',
                 )}
+                style={{
+                  height: headerHeight,
+                }}
               >
                 <div
                   // TODO: DRY
@@ -423,8 +419,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         cells={cells}
                         slotWidth={slotWidth}
                         innerWidthRef={this.headerRowInnerWidthMap.createRef(rowLevel)}
-                        innerHeighRef={this.headerRowInnerHeightMap.createRef(rowLevel)}
-                        height={headerHeights.get(rowLevel)}
+                        innerHeighRef={this.timelineHeaderRowInnerHeightMap.createRef(rowLevel)}
                       />
                     )
                   })}
@@ -894,4 +889,40 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     return null
   }
+}
+
+function computeHeaderHeight(
+  dataGridHeaderRowInnerHeightMap: Map<boolean, number>,
+  timelineHeaderRowInnerHeightMap: Map<number, number>,
+  hasDateGridSuperHeader: boolean,
+  timelineHeaderRowCnt: number,
+): number | undefined {
+  const dataGridKeys: boolean[] = (hasDateGridSuperHeader ? [true] : []).concat(false)
+  let dataGridH = 0
+
+  // TODO: use summing util?
+  for (const key of dataGridKeys) {
+    const rowHeight = dataGridHeaderRowInnerHeightMap.get(key)
+    if (rowHeight == null) {
+      return
+    }
+    dataGridH += rowHeight
+  }
+
+  let timelineH = 0
+
+  // TODO: use summing util?
+  for (let row = 0; row < timelineHeaderRowCnt; row++) {
+    const rowHeight = timelineHeaderRowInnerHeightMap.get(row)
+    if (rowHeight == null) {
+      return
+    }
+    timelineH += rowHeight
+  }
+
+  // add in-between borders too
+  return Math.max(
+    dataGridH + (hasDateGridSuperHeader ? ROW_BORDER_WIDTH : 0),
+    timelineH + ROW_BORDER_WIDTH * (timelineHeaderRowCnt - 1),
+  )
 }

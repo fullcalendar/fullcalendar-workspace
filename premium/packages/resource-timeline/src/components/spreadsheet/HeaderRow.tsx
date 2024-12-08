@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, ElementDragging, joinClassNames, PointerDragEvent, RefMap, setRef } from "@fullcalendar/core/internal"
+import { afterSize, BaseComponent, ElementDragging, PointerDragEvent, RefMap, setRef } from "@fullcalendar/core/internal"
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { ColSpec } from '@fullcalendar/resource/internal'
 import { HeaderCell } from "./HeaderCell.js"
@@ -11,9 +11,6 @@ export interface HeaderRowProps {
 
   // refs
   innerHeightRef?: Ref<number>
-
-  // dimensions
-  height?: number // is content-box based
 
   // handlers
   onColWidthOverrides?: (colWidthOverrides: number[]) => void
@@ -54,13 +51,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
     return (
       <div
         role="row"
-        className={joinClassNames(
-          'fc-flex-row fc-content-box',
-          props.height == null && 'fc-grow',
-        )}
-        style={{
-          height: props.height
-        }}
+        className='fc-flex-row'
       >
         {colSpecs.map((colSpec, colIndex) => {
           return (
