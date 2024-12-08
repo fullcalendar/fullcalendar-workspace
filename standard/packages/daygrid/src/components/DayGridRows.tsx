@@ -119,8 +119,8 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
             // (treat all as zero, distribute height, then ensure min-heights -- the inner content height)
             className={joinClassNames(
               !isHeightAuto && 'fc-grow fc-basis0',
-              row && 'fc-border-t fc-break-inside-avoid',
-              // ^don't avoid-inside-break for first row, because Firefox will put it to second page
+              rowCnt > 1 && 'fc-break-inside-avoid', // don't avoid breaks for single tall row
+              row < rowCnt - 1 && 'fc-border-b',
             )}
 
             // content

@@ -7,7 +7,6 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
-  move DayGridRows' borders to bottom
   simplify datagrid column widths, prefer percentages, better for print
   implement fc-ps-col, test on Safari/Firefox/Chrome
     can maybe do away with forced-height on all parent divs of flex-row?
