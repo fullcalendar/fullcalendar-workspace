@@ -143,6 +143,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     // TODO: have computeSlatHeight return?
     const totalSlatHeight = (slatHeight || 0) * slatCnt
 
+    const forcedBodyHeight = props.forPrint ? totalSlatHeight : undefined
+
     // TODO: better way to get this?
     const rowsAreExpanding = verticalScrolling && !options.expandRows &&
       state.clientHeight != null && state.clientHeight > totalSlatHeight
@@ -284,10 +286,15 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             <div className='fc-rowdivider'></div>
           </Fragment>
         )}
-        <div className={joinClassNames(
-          'fc-timegrid-body fc-flex-row',
-          verticalScrolling && 'fc-liquid',
-        )}>
+        <div
+          className={joinClassNames(
+            'fc-timegrid-body fc-flex-row',
+            verticalScrolling && 'fc-liquid',
+          )}
+          style={{
+            height: forcedBodyHeight,
+          }}
+        >
           {/* SLATS / labels (vertical scroller)
           ---------------------------------------------------------------------------------------*/}
           <Scroller
@@ -344,7 +351,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           >
             <Scroller
               vertical={verticalScrolling}
-              horizontal
+              horizontal={!props.forPrint /* HACK for Firefox printing */}
               hideScrollbars={
                 stickyFooterScrollbar || // also means height:auto, so won't need vertical scrollbars anyway
                 props.forPrint // TODO: does this work!!??
@@ -372,6 +379,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   forPrint={props.forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
                   className='fc-fill'
+                  style={{
+                    height: forcedBodyHeight,
+                  }}
 
                   // content
                   fgEventSegsByCol={props.fgEventSegsByCol}
