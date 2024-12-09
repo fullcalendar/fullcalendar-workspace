@@ -8,7 +8,9 @@ Publishing:
 
 For beta.3
   TimeGridLayoutPannable print-mode
-    Firefox (& Safari?) very broken
+    try to remove fc-ps-col
+    try to remove many forcedBodyHeight
+    audit fc-grow. missing?
     done from print-mode, scrollers out of sync
   simplify datagrid column widths, prefer percentages, better for print
   preserve y-scroll for timegrid, as negative margin. do for normal and pannable views
@@ -189,8 +191,13 @@ NOTES
   Print
     you must put absolutely positioned siblings first
       more guaranteed to go to second page than if after a long sibling with height
-    Firefox: setting a bottom coordinate will NEVER wrap to subsequent pages
-      problems with height:100% as well. height hardcoding often needed
+    Firefox:
+      sometimes you just need to restart Firefox and things start working :(
+      setting a bottom coordinate will NEVER wrap to subsequent pages
+        problems with height:100% as well. height hardcoding often needed
+      multi-page flexbox rows don't work. you must (even for nested!):
+        <div class='fc-rel' style={{ height: totalHeight }}>
+          <div class='fc-flex-row fc-fill' style={{ height: totalHeight }}>
     bugzilla flexbox issues
       master ticket (pending): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
       special-case fix (done): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
