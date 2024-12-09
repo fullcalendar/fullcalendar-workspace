@@ -304,8 +304,18 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             style={{ width: axisWidth }}
             ref={this.axisScrollerRef}
           >
-            <div  className='fc-ps-col fc-rel'>{/* the canvas */}
-              <div className='fc-timegrid-slots-axis fc-ps-col'>{/* label list */}
+            <div // canvas
+              className='fc-ps-col fc-rel'
+              style={{
+                height: forcedBodyHeight,
+              }}
+            >
+              <div // label list
+                className={joinClassNames(
+                  'fc-timegrid-slots-axis fc-ps-col',
+                  props.forPrint && 'fc-fill-x',
+                )}
+              >
                 {props.slatMetas.map((slatMeta, slatI) => (
                   <div
                     key={slatMeta.key}
@@ -368,7 +378,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             >
               <div // canvas
                 className='fc-ps-col fc-grow fc-rel'
-                style={{ width: canvasWidth }}
+                style={{
+                  width: canvasWidth,
+                  height: forcedBodyHeight,
+                }}
               >
                 <TimeGridCols
                   dateProfile={props.dateProfile}
@@ -398,7 +411,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   slatHeight={slatHeight}
                 />
                 <div // slot list
-                  className='fc-timegrid-slots fc-ps-col fc-rel'
+                  className={joinClassNames(
+                    'fc-timegrid-slots fc-ps-col',
+                    props.forPrint ? 'fc-fill-x' : 'fc-rel',
+                  )}
                 >
                   {props.slatMetas.map((slatMeta, slatI) => (
                     <div
