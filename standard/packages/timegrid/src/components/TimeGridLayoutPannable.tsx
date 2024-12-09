@@ -286,148 +286,47 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             <div className='fc-rowdivider'></div>
           </Fragment>
         )}
-        <div
+        <div // canvas
           className={joinClassNames(
-            'fc-timegrid-body',
+            'fc-timegrid-body fc-ps-col',
             verticalScrolling && 'fc-liquid',
-            props.forPrint ? 'fc-rel' : 'fc-flex-row',
+            props.forPrint && 'fc-rel',
           )}
           style={{
             height: forcedBodyHeight,
           }}
         >
-          {/* SLATS / labels (vertical scroller)
-          ---------------------------------------------------------------------------------------*/}
-          <Scroller
-            vertical={verticalScrolling}
-            hideScrollbars
-            className={joinClassNames(
-              'fc-ps-col fc-content-box',
-              props.forPrint && 'fc-fill-y',
-            )}
-            style={{
-              width: axisWidth,
-              height: forcedBodyHeight,
-            }}
-            ref={this.axisScrollerRef}
-          >
-            <div // canvas
-              className='fc-ps-col fc-rel'
-              style={{
-                height: forcedBodyHeight,
-              }}
-            >
-              <div // label list
-                className={joinClassNames(
-                  'fc-timegrid-slots-axis fc-ps-col',
-                  props.forPrint && 'fc-fill-x',
-                )}
-              >
-                {props.slatMetas.map((slatMeta, slatI) => (
-                  <div
-                    key={slatMeta.key}
-                    className={joinClassNames(
-                      ...getSlatRowClassNames(slatMeta),
-                      slatI && 'fc-border-t',
-                      slatLiquid && 'fc-liquid',
-                    )}
-                    style={{
-                      height: slatLiquid ? '' : slatHeight
-                    }}
-                  >
-                    <TimeGridSlatLabel
-                      {...slatMeta}
-                      isLiquid={true}
-                      innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
-                      innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
-                    />
-                  </div>
-                ))}
-              </div>
-              {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
-                <TimeGridNowIndicatorArrow
-                  nowDate={nowDate}
-                  dateProfile={props.dateProfile}
-                  totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
-                />
-              )}
-            </div>
-            {axisNeedsBottomFiller && (
-              <div
-                class='fc-liquid fc-border-t fc-filler'
-                style={{ minHeight: state.bottomScrollbarWidth }}
-              />
-            )}
-          </Scroller>
-          {/* SLATS / main (scroller)
-          ---------------------------------------------------------------------------------------*/}
           <div
-            // we need this div because it's bad for Scroller to have left/right borders,
-            // AND because we need to containt the StickyFooterScrollbar
             className={joinClassNames(
-              'fc-border-s fc-ps-col',
-              props.forPrint ? 'fc-fill' : 'fc-liquid',
+              'fc-flex-row',
+              verticalScrolling && 'fc-liquid',
+              props.forPrint && 'fc-fill',
             )}
             style={{
-              left: props.forPrint ? axisWidth : undefined,
               height: forcedBodyHeight,
             }}
           >
+            {/* SLATS / labels (vertical scroller)
+            ---------------------------------------------------------------------------------------*/}
             <Scroller
               vertical={verticalScrolling}
-              horizontal={!props.forPrint /* HACK for Firefox printing */}
-              hideScrollbars={
-                stickyFooterScrollbar || // also means height:auto, so won't need vertical scrollbars anyway
-                props.forPrint // TODO: does this work!!??
-              }
-              className={joinClassNames(
-                'fc-ps-col',
-                verticalScrolling && 'fc-liquid',
-              )}
-              ref={this.mainScrollerRef}
-              clientWidthRef={this.handleClientWidth}
-              clientHeightRef={this.handleClientHeight}
-              endScrollbarWidthRef={this.handleEndScrollbarWidth}
-              bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
+              hideScrollbars
+              className='fc-ps-col fc-content-box'
+              style={{
+                width: axisWidth,
+              }}
+              ref={this.axisScrollerRef}
             >
               <div // canvas
-                className='fc-ps-col fc-grow fc-rel'
+                className='fc-ps-col fc-rel'
                 style={{
-                  width: canvasWidth,
                   height: forcedBodyHeight,
                 }}
               >
-                <TimeGridCols
-                  dateProfile={props.dateProfile}
-                  nowDate={props.nowDate}
-                  todayRange={props.todayRange}
-                  cells={props.cells}
-                  slatCnt={slatCnt}
-                  forPrint={props.forPrint}
-                  isHitComboAllowed={props.isHitComboAllowed}
-                  className='fc-fill'
-                  style={{
-                    height: forcedBodyHeight,
-                  }}
-
-                  // content
-                  fgEventSegsByCol={props.fgEventSegsByCol}
-                  bgEventSegsByCol={props.bgEventSegsByCol}
-                  businessHourSegsByCol={props.businessHourSegsByCol}
-                  nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
-                  dateSelectionSegsByCol={props.dateSelectionSegsByCol}
-                  eventDragByCol={props.eventDragByCol}
-                  eventResizeByCol={props.eventResizeByCol}
-                  eventSelection={props.eventSelection}
-
-                  // dimensions
-                  colWidth={colWidth}
-                  slatHeight={slatHeight}
-                />
-                <div // slot list
+                <div // label list
                   className={joinClassNames(
-                    'fc-timegrid-slots fc-ps-col',
-                    props.forPrint ? 'fc-fill-x' : 'fc-rel',
+                    'fc-timegrid-slots-axis fc-ps-col',
+                    props.forPrint && 'fc-fill-x',
                   )}
                 >
                   {props.slatMetas.map((slatMeta, slatI) => (
@@ -442,24 +341,122 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         height: slatLiquid ? '' : slatHeight
                       }}
                     >
-                      <TimeGridSlatLane
+                      <TimeGridSlatLabel
                         {...slatMeta}
-                        innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
+                        isLiquid={true}
+                        innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
+                        innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                       />
                     </div>
                   ))}
                 </div>
-                {mainNeedsBottomFiller && (
-                  <div class='fc-liquid fc-border-t fc-filler' />
+                {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
+                  <TimeGridNowIndicatorArrow
+                    nowDate={nowDate}
+                    dateProfile={props.dateProfile}
+                    totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
+                  />
                 )}
               </div>
+              {axisNeedsBottomFiller && (
+                <div
+                  class='fc-liquid fc-border-t fc-filler'
+                  style={{ minHeight: state.bottomScrollbarWidth }}
+                />
+              )}
             </Scroller>
-            {Boolean(stickyFooterScrollbar) && (
-              <StickyFooterScrollbar
-                canvasWidth={canvasWidth}
-                scrollerRef={this.footScrollerRef}
-              />
-            )}
+            {/* SLATS / main (scroller)
+            ---------------------------------------------------------------------------------------*/}
+            <div
+              // we need this div because it's bad for Scroller to have left/right borders,
+              // AND because we need to containt the StickyFooterScrollbar
+              className='fc-border-s fc-ps-col fc-liquid'
+            >
+              <Scroller
+                vertical={verticalScrolling}
+                horizontal={!props.forPrint /* HACK for Firefox printing */}
+                hideScrollbars={
+                  stickyFooterScrollbar || // also means height:auto, so won't need vertical scrollbars anyway
+                  props.forPrint // TODO: does this work!!??
+                }
+                className='fc-ps-col fc-liquid'
+                ref={this.mainScrollerRef}
+                clientWidthRef={this.handleClientWidth}
+                clientHeightRef={this.handleClientHeight}
+                endScrollbarWidthRef={this.handleEndScrollbarWidth}
+                bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
+              >
+                <div // canvas
+                  className='fc-ps-col fc-grow fc-rel'
+                  style={{
+                    width: canvasWidth,
+                    height: forcedBodyHeight,
+                  }}
+                >
+                  <TimeGridCols
+                    dateProfile={props.dateProfile}
+                    nowDate={props.nowDate}
+                    todayRange={props.todayRange}
+                    cells={props.cells}
+                    slatCnt={slatCnt}
+                    forPrint={props.forPrint}
+                    isHitComboAllowed={props.isHitComboAllowed}
+                    className='fc-fill'
+                    style={{
+                      height: forcedBodyHeight,
+                    }}
+
+                    // content
+                    fgEventSegsByCol={props.fgEventSegsByCol}
+                    bgEventSegsByCol={props.bgEventSegsByCol}
+                    businessHourSegsByCol={props.businessHourSegsByCol}
+                    nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
+                    dateSelectionSegsByCol={props.dateSelectionSegsByCol}
+                    eventDragByCol={props.eventDragByCol}
+                    eventResizeByCol={props.eventResizeByCol}
+                    eventSelection={props.eventSelection}
+
+                    // dimensions
+                    colWidth={colWidth}
+                    slatHeight={slatHeight}
+                  />
+                  <div // slot list
+                    className={joinClassNames(
+                      'fc-timegrid-slots fc-ps-col',
+                      props.forPrint ? 'fc-fill-x' : 'fc-rel',
+                    )}
+                  >
+                    {props.slatMetas.map((slatMeta, slatI) => (
+                      <div
+                        key={slatMeta.key}
+                        className={joinClassNames(
+                          ...getSlatRowClassNames(slatMeta),
+                          slatI && 'fc-border-t',
+                          slatLiquid && 'fc-liquid',
+                        )}
+                        style={{
+                          height: slatLiquid ? '' : slatHeight
+                        }}
+                      >
+                        <TimeGridSlatLane
+                          {...slatMeta}
+                          innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  {mainNeedsBottomFiller && (
+                    <div class='fc-liquid fc-border-t fc-filler' />
+                  )}
+                </div>
+              </Scroller>
+              {Boolean(stickyFooterScrollbar) && (
+                <StickyFooterScrollbar
+                  canvasWidth={canvasWidth}
+                  scrollerRef={this.footScrollerRef}
+                />
+              )}
+            </div>
           </div>
         </div>
       </Fragment>
