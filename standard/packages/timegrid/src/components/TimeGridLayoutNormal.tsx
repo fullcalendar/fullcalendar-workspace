@@ -1,6 +1,6 @@
 import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, getIsHeightAuto, getStickyHeaderDates, Hit, joinClassNames, rangeContainsMarker, RefMap, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
-import { COMPACT_CELL_WIDTH, DayGridHeaderRow, RowConfig } from '@fullcalendar/daygrid/internal'
+import { computeRowHeight, DayGridHeaderRow, RowConfig } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridRange } from "../TimeColsSeg.js"
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -188,10 +188,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   forPrint={props.forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
                   className='fc-border-s fc-liquid'
-                  isCompact={
-                    (state.clientWidth != null && state.axisWidth != null)
-                      && (state.clientWidth - state.axisWidth) / props.cells.length < COMPACT_CELL_WIDTH
-                  }
+                  isCompact={computeRowHeight(state.clientWidth, 1, true, props.forPrint, options)[1]}
 
                   // content
                   fgEventSegs={props.fgEventSegs}

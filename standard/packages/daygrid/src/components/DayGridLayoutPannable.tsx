@@ -136,6 +136,11 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             // dimensions
             colWidth={colWidth}
             width={canvasWidth}
+            visibleWidth={ // TODO: DRY
+              state.clientWidth != null && state.endScrollbarWidth != null
+                ? state.clientWidth + state.endScrollbarWidth
+                : undefined
+            }
 
             // refs
             rowHeightRefMap={props.rowHeightRefMap}

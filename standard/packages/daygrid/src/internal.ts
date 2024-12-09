@@ -21,7 +21,8 @@ export {
 export { createDayHeaderFormatter } from './components/util.js'
 
 export { DayGridLayout, DayGridLayoutProps } from './components/DayGridLayout.js'
-export { DayGridRow, DayGridRowProps, COMPACT_CELL_WIDTH } from './components/DayGridRow.js'
+export { computeRowHeight } from './components/DayGridRows.js'
+export { DayGridRow, DayGridRowProps } from './components/DayGridRow.js'
 export { DayGridRows } from './components/DayGridRows.js'
 export {
   buildDayTableModel,

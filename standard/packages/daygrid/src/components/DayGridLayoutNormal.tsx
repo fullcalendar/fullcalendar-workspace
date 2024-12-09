@@ -45,6 +45,7 @@ export interface DayGridLayoutNormalProps {
 }
 
 interface DayGridViewState {
+  clientWidth?: number
   endScrollbarWidth?: number
 }
 
@@ -80,6 +81,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
         )}
         <Scroller
           vertical={verticalScrollbars}
+          clientWidthRef={this.handleClientWidth}
           endScrollbarWidthRef={this.handleEndScrollbarWidth}
           className={joinClassNames(
             'fc-daygrid-body fc-ps-col',
@@ -104,6 +106,13 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             eventResize={props.eventResize}
             eventSelection={props.eventSelection}
 
+            // dimensions
+            visibleWidth={ // TODO: DRY
+              state.clientWidth != null && state.endScrollbarWidth != null
+                ? state.clientWidth + state.endScrollbarWidth
+                : undefined
+            }
+
             // refs
             rowHeightRefMap={props.rowHeightRefMap}
           />
@@ -114,6 +123,10 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
 
   handleScroller = (scroller: Scroller) => {
     setRef(this.props.scrollerRef, scroller)
+  }
+
+  handleClientWidth = (clientWidth: number) => {
+    this.setState({ clientWidth })
   }
 
   handleEndScrollbarWidth = (endScrollbarWidth: number) => {

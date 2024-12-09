@@ -66,8 +66,6 @@ export interface DayGridRowProps {
   heightRef?: Ref<number>
 }
 
-export const COMPACT_CELL_WIDTH = 80
-
 const DEFAULT_WEEK_NUM_FORMAT = createFormatter({ week: 'narrow' })
 
 const RENDER_STANDINS = false
@@ -404,10 +402,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     this.forceUpdate()
   }
 
-  // Utils
+  // Internal Utils
   // -----------------------------------------------------------------------------------------------
 
-  getMirrorSegs(): (SlicedCoordRange & EventRangeProps)[] {
+  private getMirrorSegs(): (SlicedCoordRange & EventRangeProps)[] {
     let { props } = this
 
     if (props.eventResize && props.eventResize.segs.length) { // messy check
@@ -417,7 +415,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     return []
   }
 
-  getHighlightSegs(): (SlicedCoordRange & EventRangeProps)[] {
+  private getHighlightSegs(): (SlicedCoordRange & EventRangeProps)[] {
     let { props } = this
 
     if (props.eventDrag && props.eventDrag.segs.length) { // messy check

@@ -8,6 +8,10 @@ export interface SingleMonthProps extends ViewProps {
   titleFormat: DateFormatter
   flexBasis?: number | string
   widthRef?: Ref<number>
+
+  // for min-height and compactness
+  // should INLCUDE scrollbars to avoid oscillation
+  visibleWidth: number | undefined
 }
 
 export class SingleMonth extends DateComponent<SingleMonthProps> {
@@ -50,7 +54,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
     return (
       <div
         data-date={props.isoDateStr}
-        className="fc-multimonth-month fc-liquid"
+        className="fc-multimonth-month fc-liquid fc-break-inside-avoid"
         // override fc-liquid's basis. fc-grow isn't sufficient because doesn't set min-width:0
         style={{ flexBasis: props.flexBasis }}
         ref={this.elRef}
@@ -92,6 +96,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
             eventDrag={slicedProps.eventDrag}
             eventResize={slicedProps.eventResize}
             eventSelection={slicedProps.eventSelection}
+
+            // dimensions
+            visibleWidth={props.visibleWidth}
           />
         </div>
       </div>

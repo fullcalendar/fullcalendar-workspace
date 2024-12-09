@@ -1,3 +1,4 @@
+import { CssDimValue } from '@fullcalendar/core'
 import {
   EventSegUiInteractionState,
   DateComponent,
@@ -13,10 +14,11 @@ import {
   DayGridRange,
   EventRangeProps,
   joinClassNames,
+  ViewOptionsRefined,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
-import { COMPACT_CELL_WIDTH, DayGridRow } from './DayGridRow.js'
+import { DayGridRow } from './DayGridRow.js'
 import { computeColFromPosition, computeRowFromPosition, getCellEl, getRowEl } from './util.js'
 
 export interface DayGridRowsProps {
@@ -39,16 +41,13 @@ export interface DayGridRowsProps {
   // dimensions
   colWidth?: number
   width?: number | string // a CSS value
+  visibleWidth?: number // for row min-height
 
   // refs
   rowHeightRefMap?: RefMap<string, number>
 }
 
-interface DayGridRowsState {
-  width?: number
-}
-
-export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsState> {
+export class DayGridRows extends DateComponent<DayGridRowsProps> {
   // ref
   private rootEl: HTMLDivElement
 
@@ -71,7 +70,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
   private disconnectWidth?: () => void
 
   render() {
-    let { props, state, context, rowHeightRefMap } = this
+    let { props, context, rowHeightRefMap } = this
     let { options } = context
     let rowCnt = props.cellRows.length
 
@@ -82,18 +81,15 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
     let eventDragByRow = this.splitEventDrag(props.eventDrag, rowCnt)
     let eventResizeByRow = this.splitEventResize(props.eventResize, rowCnt)
 
-    // whether the ROW should expand in height
-    // (not to be confused with whether the fg events within the row should be molded by height of row)
-    let isHeightAuto = props.forPrint || getIsHeightAuto(options)
-
-    // maintain at least aspectRatio for cells?
-    let rowMinHeight = (
-      state.width != null && (
-        rowCnt >= 7 || // TODO: better way to infer if across single-month boundary
-        isHeightAuto
-      )
-    ) ? state.width / context.options.aspectRatio / 6 // okay to hardcode 6 (weeks) ?
-      : null
+    let isHeightAuto = getIsHeightAuto(options)
+    let rowHeightsRedistribute = !props.forPrint && !isHeightAuto
+    let [rowMinHeight, isCompact] = computeRowHeight(
+      props.visibleWidth,
+      rowCnt,
+      isHeightAuto,
+      props.forPrint,
+      options,
+    )
 
     return (
       <div
@@ -113,12 +109,12 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
             showDayNumbers={rowCnt > 1}
             showWeekNumbers={options.weekNumbers}
             forPrint={props.forPrint}
-            isCompact={state.width != null && (state.width / cells.length) < COMPACT_CELL_WIDTH}
+            isCompact={isCompact}
 
             // if not auto-height, distribute height of container somewhat evently to rows
             // (treat all as zero, distribute height, then ensure min-heights -- the inner content height)
             className={joinClassNames(
-              !isHeightAuto && 'fc-grow fc-basis0',
+              rowHeightsRedistribute && 'fc-grow fc-basis0',
               rowCnt > 1 && 'fc-break-inside-avoid', // don't avoid breaks for single tall row
               row < rowCnt - 1 && 'fc-border-b',
             )}
@@ -220,4 +216,35 @@ export class DayGridRows extends DateComponent<DayGridRowsProps, DayGridRowsStat
 
 function isSegAllDay(seg: EventRangeProps): boolean {
   return seg.eventRange.def.allDay
+}
+
+export function computeRowHeight(
+  visibleWidth: number | undefined, // should INCLUDE any scrollbar width to avoid oscillation
+  rowCnt: number,
+  isHeightAuto: boolean,
+  forPrint: boolean,
+  options: ViewOptionsRefined,
+): [minHeight: CssDimValue | undefined, isCompact: boolean] {
+  if (visibleWidth != null) {
+    // ensure a consistent row min-height modelled after a month with 6 rows respecting aspectRatio
+    // will result in same minHeight regardless of weekends, dayMinWidth, height:auto
+    const rowMinHeight = visibleWidth / options.aspectRatio / 6
+
+    return [
+      forPrint
+        // special-case for print, which condenses whole-page width without notifying
+        // this is value that looks natural on paper for portrait/landscape
+        ? '6em'
+        // don't give minHeight when single-month non-auto-height
+        // TODO: better way to detect this with DateProfile?
+        : (rowCnt > 6 || isHeightAuto)
+          ? rowMinHeight
+          : undefined,
+
+      // isCompact?: just before most lone +more links hit bottom of cell
+      rowMinHeight < 60,
+    ]
+  }
+
+  return [undefined, false]
 }

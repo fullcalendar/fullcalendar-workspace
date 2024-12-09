@@ -11,13 +11,6 @@
     background: #fff !important;
   }
 
-  /*
-  HACK to reveal problems
-  */
-  & .fc-daygrid-body [role=row] {
-    min-height: 6em !important; /* look good in portrait */
-  }
-
   & .fc-event,
   & .fc-event-inner { // often controls the text-color
     color: #000 !important;

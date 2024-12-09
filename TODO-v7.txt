@@ -135,6 +135,7 @@ Last-minute features
       Good for layouts that are conditionally liquid-height
       Tho probably not as performant because need to compute the pre-squished AND post-squished layouts
 Before release
+  DayGrid popover appears 1px too low now that we moved row border to bottom
   revert "hacks to get print-mode working, but some should be reverted"
   revert temporary gitignores
   remove the Preact createContext hack because this is now implemented:
