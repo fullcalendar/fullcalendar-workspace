@@ -246,7 +246,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               className='fc-fill fc-border-s'
               style={{
                 ...axisStartCss,
-                height: forcedBodyHeight,
+                height: forcedBodyHeight, // fc-flex-row needs this for print (for Firefox)
               }}
 
               // content
@@ -264,7 +264,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             />
 
             <div className={joinClassNames(
-              'fc-timegrid-slots fc-flex-col',
+              'fc-timegrid-slots fc-ps-col',
               verticalScrolling && options.expandRows && 'fc-grow',
               props.forPrint
                 ? 'fc-fill-x' // will assume top:0, height will be decided naturally

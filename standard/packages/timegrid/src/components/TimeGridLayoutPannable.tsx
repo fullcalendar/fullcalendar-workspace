@@ -297,27 +297,29 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             style={{ width: axisWidth }}
             ref={this.axisScrollerRef}
           >
-            <div className='fc-timegrid-slots-axis fc-ps-col fc-rel'>
-              {props.slatMetas.map((slatMeta, slatI) => (
-                <div
-                  key={slatMeta.key}
-                  className={joinClassNames(
-                    ...getSlatRowClassNames(slatMeta),
-                    slatI && 'fc-border-t',
-                    slatLiquid && 'fc-liquid',
-                  )}
-                  style={{
-                    height: slatLiquid ? '' : slatHeight
-                  }}
-                >
-                  <TimeGridSlatLabel
-                    {...slatMeta}
-                    isLiquid={true}
-                    innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
-                    innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
-                  />
-                </div>
-              ))}
+            <div  className='fc-ps-col fc-rel'>{/* the canvas */}
+              <div className='fc-timegrid-slots-axis fc-ps-col'>{/* label list */}
+                {props.slatMetas.map((slatMeta, slatI) => (
+                  <div
+                    key={slatMeta.key}
+                    className={joinClassNames(
+                      ...getSlatRowClassNames(slatMeta),
+                      slatI && 'fc-border-t',
+                      slatLiquid && 'fc-liquid',
+                    )}
+                    style={{
+                      height: slatLiquid ? '' : slatHeight
+                    }}
+                  >
+                    <TimeGridSlatLabel
+                      {...slatMeta}
+                      isLiquid={true}
+                      innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
+                      innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
+                    />
+                  </div>
+                ))}
+              </div>
               {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
                 <TimeGridNowIndicatorArrow
                   nowDate={nowDate}
@@ -357,8 +359,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               endScrollbarWidthRef={this.handleEndScrollbarWidth}
               bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
             >
-              <div
-                className='fc-grow fc-ps-col fc-rel'
+              <div // canvas
+                className='fc-ps-col fc-grow fc-rel'
                 style={{ width: canvasWidth }}
               >
                 <TimeGridCols
@@ -369,7 +371,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   slatCnt={slatCnt}
                   forPrint={props.forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
-                  className='fc-fill fc-liquid'
+                  className='fc-fill'
 
                   // content
                   fgEventSegsByCol={props.fgEventSegsByCol}
@@ -385,7 +387,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   colWidth={colWidth}
                   slatHeight={slatHeight}
                 />
-                <div className='fc-timegrid-slots fc-rel fc-ps-col'>
+                <div // slot list
+                  className='fc-timegrid-slots fc-ps-col fc-rel'
+                >
                   {props.slatMetas.map((slatMeta, slatI) => (
                     <div
                       key={slatMeta.key}
