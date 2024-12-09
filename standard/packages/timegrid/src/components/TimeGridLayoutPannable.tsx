@@ -314,6 +314,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               className='fc-ps-col fc-content-box'
               style={{
                 width: axisWidth,
+                height: forcedBodyHeight,
               }}
               ref={this.axisScrollerRef}
             >
@@ -326,8 +327,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 <div // label list
                   className={joinClassNames(
                     'fc-timegrid-slots-axis fc-ps-col',
-                    props.forPrint && 'fc-fill-x',
+                    props.forPrint && 'fc-fill',
                   )}
+                  style={{
+                    height: forcedBodyHeight,
+                  }}
                 >
                   {props.slatMetas.map((slatMeta, slatI) => (
                     <div
@@ -371,6 +375,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               // we need this div because it's bad for Scroller to have left/right borders,
               // AND because we need to containt the StickyFooterScrollbar
               className='fc-border-s fc-ps-col fc-liquid'
+              style={{
+                height: forcedBodyHeight,
+              }}
             >
               <Scroller
                 vertical={verticalScrolling}
@@ -380,6 +387,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   props.forPrint // TODO: does this work!!??
                 }
                 className='fc-ps-col fc-liquid'
+                style={{
+                  height: forcedBodyHeight,
+                }}
                 ref={this.mainScrollerRef}
                 clientWidthRef={this.handleClientWidth}
                 clientHeightRef={this.handleClientHeight}
@@ -423,8 +433,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   <div // slot list
                     className={joinClassNames(
                       'fc-timegrid-slots fc-ps-col',
-                      props.forPrint ? 'fc-fill-x' : 'fc-rel',
+                      props.forPrint ? 'fc-fill' : 'fc-rel',
                     )}
+                    style={{
+                      height: forcedBodyHeight,
+                    }}
                   >
                     {props.slatMetas.map((slatMeta, slatI) => (
                       <div
