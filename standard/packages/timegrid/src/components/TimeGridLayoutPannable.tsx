@@ -288,8 +288,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
         )}
         <div
           className={joinClassNames(
-            'fc-timegrid-body fc-flex-row',
+            'fc-timegrid-body',
             verticalScrolling && 'fc-liquid',
+            props.forPrint ? 'fc-rel' : 'fc-flex-row',
           )}
           style={{
             height: forcedBodyHeight,
@@ -300,8 +301,14 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           <Scroller
             vertical={verticalScrolling}
             hideScrollbars
-            className='fc-ps-col fc-content-box'
-            style={{ width: axisWidth }}
+            className={joinClassNames(
+              'fc-ps-col fc-content-box',
+              props.forPrint && 'fc-fill-y',
+            )}
+            style={{
+              width: axisWidth,
+              height: forcedBodyHeight,
+            }}
             ref={this.axisScrollerRef}
           >
             <div // canvas
@@ -357,7 +364,14 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           <div
             // we need this div because it's bad for Scroller to have left/right borders,
             // AND because we need to containt the StickyFooterScrollbar
-            className='fc-border-s fc-liquid fc-ps-col'
+            className={joinClassNames(
+              'fc-border-s fc-ps-col',
+              props.forPrint ? 'fc-fill' : 'fc-liquid',
+            )}
+            style={{
+              left: props.forPrint ? axisWidth : undefined,
+              height: forcedBodyHeight,
+            }}
           >
             <Scroller
               vertical={verticalScrolling}
