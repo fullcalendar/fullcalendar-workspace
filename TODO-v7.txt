@@ -7,9 +7,14 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
-  KNOWN BUG: on TimeGridLayoutNormal+TimeGridLayoutPannable,
-    third-page absolutely positioned events push down slots
-    TODO: remove TimeGridLayoutPannable that didn't work
+  MultiMonth
+    Print Strategy:
+      If 2 columns, force dayGridMaxEventRows=1
+      If 1 column, do exactly the same as normal daygrid
+      test multiMonthMaxColumns:1
+    bug: multi-row events cutoff when +more in next row
+      multimonth-view-bug.html
+      examples-v7/multimonth-view.html
   TimeGridLayoutPannable print-mode
     try to remove many forcedBodyHeight
     audit fc-grow. missing?
@@ -23,6 +28,9 @@ For beta.3
     scroll not restored after print-view for any browser/view?
     print-mode with React (and React's flushSync)
     last row of DayGridHeader should be sticky
+  KNOWN BUG: on TimeGridLayoutNormal+TimeGridLayoutPannable,
+    third-page absolutely positioned events push down slots
+    TODO: remove TimeGridLayoutPannable that didn't work
 
 For beta.4
   print-view for multimonth
@@ -50,7 +58,6 @@ DayGrid
     normalize each event-container's top by applying margin-top on ones that have smaller headers
     position each event-harness with a margin-top (in combo with existing abs positioning)
 MultiMonth
-  bug: multi-row events cutoff when +more in next row (multimonth-view-bug.html)
   Improve perf while switching years
 TimeGrid
   i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?

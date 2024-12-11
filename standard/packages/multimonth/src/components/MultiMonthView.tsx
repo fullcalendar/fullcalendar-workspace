@@ -101,6 +101,8 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     // after basis, each month will expand in width
     const monthBasis = (1 / (this.cols + 1)) * 100 + 1 + '%'
 
+    const hasLateralSiblings = this.cols > 1
+
     return (
       <NowTimer unit="day">
         {(nowDate: DateMarker, todayRange: DateRange) => (
@@ -128,7 +130,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                   return (
                     <SingleMonth
                       {...props}
-                      forPrint={false}
                       key={monthStr}
                       todayRange={todayRange}
                       isoDateStr={monthStr}
@@ -137,6 +138,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                       flexBasis={monthBasis}
                       widthRef={monthWidthMap.createRef(monthStr)}
                       visibleWidth={computedMonthWidth}
+                      hasLateralSiblings={hasLateralSiblings}
                     />
                   )
                 })}

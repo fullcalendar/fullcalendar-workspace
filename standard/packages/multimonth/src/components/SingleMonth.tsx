@@ -1,4 +1,4 @@
-import { DateComponent, DateFormatter, DateRange, fracToCssDim, memoize, setRef, ViewProps, watchWidth } from '@fullcalendar/core/internal'
+import { DateComponent, DateFormatter, DateRange, fracToCssDim, joinClassNames, memoize, setRef, ViewProps, watchWidth } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow } from '@fullcalendar/daygrid/internal'
 
@@ -12,6 +12,8 @@ export interface SingleMonthProps extends ViewProps {
   // for min-height and compactness
   // should INLCUDE scrollbars to avoid oscillation
   visibleWidth: number | undefined
+
+  hasLateralSiblings: boolean
 }
 
 export class SingleMonth extends DateComponent<SingleMonthProps> {
@@ -54,7 +56,10 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
     return (
       <div
         data-date={props.isoDateStr}
-        className="fc-multimonth-month fc-liquid fc-break-inside-avoid"
+        className={joinClassNames(
+          'fc-multimonth-month fc-liquid',
+          props.hasLateralSiblings && 'fc-break-inside-avoid',
+        )}
         // override fc-liquid's basis. fc-grow isn't sufficient because doesn't set min-width:0
         style={{ flexBasis: props.flexBasis }}
         ref={this.elRef}
@@ -85,7 +90,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cellRows={dayTableModel.cellRows}
-            forPrint={props.forPrint}
+            forPrint={false}
             className='fc-fill'
 
             // content
