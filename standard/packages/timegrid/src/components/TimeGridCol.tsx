@@ -110,7 +110,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               />
             )}
             {/* has a z-index to contain all event z-indexes  */}
-            <div className='fc-timegrid-day-events fc-fill'>
+            <div className='fc-timegrid-day-events fc-liquid fc-rel'>
               {this.renderFgSegs(
                 sortedFgSegs,
                 interactionAffectedInstances,

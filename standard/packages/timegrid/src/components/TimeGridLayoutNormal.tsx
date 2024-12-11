@@ -219,7 +219,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           vertical={verticalScrolling}
           forceCrop={props.forPrint}
           className={joinClassNames(
-            'fc-timegrid-body fc-flex-col',
+            'fc-timegrid-body',
+            !props.forPrint && 'fc-flex-col',
             verticalScrolling && 'fc-liquid',
           )}
           ref={props.timeScrollerRef}
@@ -228,7 +229,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           endScrollbarWidthRef={this.handleEndScrollbarWidth}
         >
           <div
-            className='fc-rel fc-grow fc-flex-col'
+            className={joinClassNames(
+              'fc-rel',
+              !props.forPrint && 'fc-flex-col fc-grow'
+            )}
             style={{
               // in print mode, this div creates the height and everything is absolutely positioned within
               // we need to do this so that slats positioning synces with events's positioning
