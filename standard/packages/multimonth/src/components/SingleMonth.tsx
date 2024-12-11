@@ -31,7 +31,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
 
   render() {
     const { props, context } = this
-    const { dateProfile } = props
+    const { dateProfile, forPrint } = props
     const { options } = context
     const dayTableModel = this.buildDayTableModel(dateProfile, context.dateProfileGenerator)
     const slicedProps = this.slicer.sliceProps(props, dateProfile, options.nextDayThreshold, context, dayTableModel)
@@ -66,7 +66,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
       >
         <div
           className="fc-multimonth-header"
-          style={{ marginBottom: fracToCssDim(invRowAspectRatio) }}
+          style={{
+            marginBottom: forPrint ? undefined : fracToCssDim(invRowAspectRatio),
+          }}
         >
           <div className="fc-multimonth-title">
             {context.dateEnv.format(
@@ -80,20 +82,20 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
           />
         </div>
         <div
-          className='fc-multimonth-body fc-rel'
+          className='fc-multimonth-body fc-rel' // rel only needed for aspect-ratio
           style={{
-            marginTop: fracToCssDim(-invRowAspectRatio),
-            paddingBottom: fracToCssDim(invAspectRatio),
+            marginTop: forPrint ? undefined : fracToCssDim(-invRowAspectRatio),
+            paddingBottom: (!forPrint || props.hasLateralSiblings) ? fracToCssDim(invAspectRatio) : undefined,
           }}
         >
           <DayGridRows
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cellRows={dayTableModel.cellRows}
-            forPrint={false}
-            className='fc-fill'
-            dayMaxEvents={props.forPrint ? undefined : options.dayMaxEvents}
-            dayMaxEventRows={(props.forPrint && props.hasLateralSiblings) ? 1 : options.dayMaxEventRows}
+            className={(!forPrint || props.hasLateralSiblings) ? 'fc-fill' : ''}
+            forPrint={!props.hasLateralSiblings && forPrint}
+            dayMaxEvents={forPrint ? undefined : options.dayMaxEvents}
+            dayMaxEventRows={(forPrint && props.hasLateralSiblings) ? 1 : options.dayMaxEventRows}
 
             // content
             fgEventSegs={slicedProps.fgEventSegs}

@@ -8,7 +8,6 @@ Publishing:
 
 For beta.3
   MultiMonth
-    when multiMonthMaxColumns:1, bad month breaking
     bug: multi-row events cutoff when +more in next row
       multimonth-view-bug.html
       examples-v7/multimonth-view.html
