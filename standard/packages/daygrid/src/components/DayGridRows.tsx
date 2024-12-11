@@ -28,8 +28,10 @@ export interface DayGridRowsProps {
   forPrint: boolean
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
   className?: string
+
   dayMaxEvents?: number | boolean
   dayMaxEventRows?: number | boolean
+  // NOTE: the forPrint prop is a bit muddled in meaning
 
   // content
   fgEventSegs: (DayGridRange & EventRangeProps)[]

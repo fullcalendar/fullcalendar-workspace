@@ -99,7 +99,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
 
     // gap is unknown, so make it basis as small as possible without causing the next # of columns
     // after basis, each month will expand in width
-    const monthBasis = (1 / (this.cols + 1)) * 100 + 1 + '%'
+    const monthBasis = Math.round((1 / (this.cols + 1)) * 100) + 1 + '%'
 
     const hasLateralSiblings = this.cols > 1
 

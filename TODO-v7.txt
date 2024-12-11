@@ -11,6 +11,7 @@ For beta.3
     bug: multi-row events cutoff when +more in next row
       multimonth-view-bug.html
       examples-v7/multimonth-view.html
+    bug: if odd number of months, and tiled, last months are stretched too wide
   TimeGridLayoutPannable print-mode
     try to remove many forcedBodyHeight
     audit fc-grow. missing?

@@ -13,7 +13,7 @@ export interface SingleMonthProps extends ViewProps {
   // should INLCUDE scrollbars to avoid oscillation
   visibleWidth: number | undefined
 
-  hasLateralSiblings: boolean
+  hasLateralSiblings: boolean // TODO: use lower-level indicator instead of referencing siblings
 }
 
 export class SingleMonth extends DateComponent<SingleMonthProps> {
@@ -53,6 +53,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
     const invAspectRatio = 1 / options.aspectRatio
     const invRowAspectRatio = invAspectRatio / dayTableModel.rowCnt
 
+    const isHeaderSticky = !forPrint
+    const isAspectRatio = !forPrint || props.hasLateralSiblings
+
     return (
       <div
         data-date={props.isoDateStr}
@@ -67,8 +70,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
         <div
           className="fc-multimonth-header"
           style={{
-            marginBottom: forPrint ? undefined : fracToCssDim(invRowAspectRatio),
+            marginBottom: isHeaderSticky ? fracToCssDim(invRowAspectRatio) : undefined,
           }}
+          // NOTE: sticky properties determined by CSS
         >
           <div className="fc-multimonth-title">
             {context.dateEnv.format(
@@ -82,18 +86,21 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
           />
         </div>
         <div
-          className='fc-multimonth-body fc-rel' // rel only needed for aspect-ratio
+          className={joinClassNames(
+            'fc-multimonth-body',
+            isAspectRatio && 'fc-rel',
+          )}
           style={{
-            marginTop: forPrint ? undefined : fracToCssDim(-invRowAspectRatio),
-            paddingBottom: (!forPrint || props.hasLateralSiblings) ? fracToCssDim(invAspectRatio) : undefined,
+            marginTop: isHeaderSticky ? fracToCssDim(-invRowAspectRatio) : undefined,
+            paddingBottom: isAspectRatio ? fracToCssDim(invAspectRatio) : undefined,
           }}
         >
           <DayGridRows
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cellRows={dayTableModel.cellRows}
-            className={(!forPrint || props.hasLateralSiblings) ? 'fc-fill' : ''}
-            forPrint={!props.hasLateralSiblings && forPrint}
+            className={isAspectRatio ? 'fc-fill' : ''}
+            forPrint={forPrint && !props.hasLateralSiblings}
             dayMaxEvents={forPrint ? undefined : options.dayMaxEvents}
             dayMaxEventRows={(forPrint && props.hasLateralSiblings) ? 1 : options.dayMaxEventRows}
 
