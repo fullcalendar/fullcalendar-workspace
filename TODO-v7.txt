@@ -11,7 +11,6 @@ For beta.3
     third-page absolutely positioned events push down slots
     TODO: remove TimeGridLayoutPannable that didn't work
   TimeGridLayoutPannable print-mode
-    try to remove fc-ps-col
     try to remove many forcedBodyHeight
     audit fc-grow. missing?
     done from print-mode, scrollers out of sync

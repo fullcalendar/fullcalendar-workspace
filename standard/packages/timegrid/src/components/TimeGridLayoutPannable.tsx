@@ -245,7 +245,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 ref={this.allDayScrollerRef}
               >
                 <div
-                  className='fc-ps-col'
+                  className='fc-flex-col'
                   style={{ width: canvasWidth }}
                 >
                   <TimeGridAllDayLane
@@ -285,7 +285,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
         )}
         <div // canvas
           className={joinClassNames(
-            'fc-timegrid-body fc-ps-col',
+            'fc-timegrid-body fc-flex-col',
             verticalScrolling && 'fc-liquid',
             props.forPrint && 'fc-rel',
           )}
@@ -308,7 +308,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             <Scroller
               vertical={verticalScrolling}
               hideScrollbars
-              className='fc-ps-col fc-content-box'
+              className='fc-flex-col fc-content-box'
               style={{
                 width: axisWidth,
                 height: forcedBodyHeight,
@@ -316,14 +316,14 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               ref={this.axisScrollerRef}
             >
               <div // canvas
-                className='fc-ps-col fc-rel'
+                className='fc-flex-col fc-rel'
                 style={{
                   height: forcedBodyHeight,
                 }}
               >
                 <div // label list
                   className={joinClassNames(
-                    'fc-timegrid-slots-axis fc-ps-col',
+                    'fc-timegrid-slots-axis fc-flex-col',
                     props.forPrint && 'fc-fill',
                   )}
                   style={{
@@ -371,7 +371,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             <div
               // we need this div because it's bad for Scroller to have left/right borders,
               // AND because we need to containt the StickyFooterScrollbar
-              className='fc-border-s fc-ps-col fc-liquid'
+              className='fc-border-s fc-flex-col fc-liquid'
               style={{
                 height: forcedBodyHeight,
               }}
@@ -383,7 +383,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   stickyFooterScrollbar || // also means height:auto, so won't need vertical scrollbars anyway
                   props.forPrint // TODO: does this work!!??
                 }
-                className='fc-ps-col fc-liquid'
+                className='fc-flex-col fc-liquid'
                 style={{
                   height: forcedBodyHeight,
                 }}
@@ -394,7 +394,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
               >
                 <div // canvas
-                  className='fc-ps-col fc-grow fc-rel'
+                  className='fc-flex-col fc-grow fc-rel'
                   style={{
                     width: canvasWidth,
                     height: forcedBodyHeight,
@@ -429,7 +429,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   />
                   <div // slot list
                     className={joinClassNames(
-                      'fc-timegrid-slots fc-ps-col',
+                      'fc-timegrid-slots fc-flex-col',
                       props.forPrint ? 'fc-fill' : 'fc-rel',
                     )}
                     style={{

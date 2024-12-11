@@ -70,8 +70,7 @@ Rarely used. Just inline this?
 
 .fc-media-screen {
   & .fc-ps-root,
-  & .fc-ps-header,
-  & .fc-ps-col {
+  & .fc-ps-header {
     display: flex;
     flex-direction: column;
   }
