@@ -28,6 +28,8 @@ export interface DayGridRowsProps {
   forPrint: boolean
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
   className?: string
+  dayMaxEvents?: number | boolean
+  dayMaxEventRows?: number | boolean
 
   // content
   fgEventSegs: (DayGridRange & EventRangeProps)[]
@@ -129,8 +131,8 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             eventSelection={props.eventSelection}
             eventDrag={eventDragByRow[row]}
             eventResize={eventResizeByRow[row]}
-            dayMaxEvents={props.forPrint ? undefined : options.dayMaxEvents}
-            dayMaxEventRows={options.dayMaxEventRows}
+            dayMaxEvents={props.dayMaxEvents}
+            dayMaxEventRows={props.dayMaxEventRows}
 
             // dimensions
             colWidth={props.colWidth}

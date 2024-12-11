@@ -99,6 +99,8 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             forPrint={props.forPrint}
             isHitComboAllowed={props.isHitComboAllowed}
             className='fc-grow'
+            dayMaxEvents={props.forPrint ? undefined : options.dayMaxEvents}
+            dayMaxEventRows={options.dayMaxEventRows}
 
             // content
             fgEventSegs={props.fgEventSegs}

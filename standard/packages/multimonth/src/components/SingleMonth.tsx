@@ -92,6 +92,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
             cellRows={dayTableModel.cellRows}
             forPrint={false}
             className='fc-fill'
+            dayMaxEvents={props.forPrint ? undefined : options.dayMaxEvents}
+            dayMaxEventRows={(props.forPrint && props.hasLateralSiblings) ? 1 : options.dayMaxEventRows}
 
             // content
             fgEventSegs={slicedProps.fgEventSegs}

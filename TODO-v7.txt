@@ -8,10 +8,7 @@ Publishing:
 
 For beta.3
   MultiMonth
-    Print Strategy:
-      If 2 columns, force dayGridMaxEventRows=1
-      If 1 column, do exactly the same as normal daygrid
-      test multiMonthMaxColumns:1
+    when multiMonthMaxColumns:1, bad month breaking
     bug: multi-row events cutoff when +more in next row
       multimonth-view-bug.html
       examples-v7/multimonth-view.html

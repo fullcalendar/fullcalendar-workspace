@@ -126,6 +126,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             forPrint={props.forPrint}
             isHitComboAllowed={props.isHitComboAllowed}
             className='fc-grow'
+            dayMaxEvents={props.forPrint ? undefined : options.dayMaxEvents}
+            dayMaxEventRows={options.dayMaxEventRows}
 
             // content
             fgEventSegs={props.fgEventSegs}
