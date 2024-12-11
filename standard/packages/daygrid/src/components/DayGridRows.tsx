@@ -244,7 +244,7 @@ export function computeRowHeight(
           : undefined,
 
       // isCompact?: just before most lone +more links hit bottom of cell
-      rowMinHeight < 60,
+      rowMinHeight < 70,
     ]
   }
 
