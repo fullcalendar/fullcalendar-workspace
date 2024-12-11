@@ -15,9 +15,13 @@ For beta.3
       multimonth-view-bug.html
       examples-v7/multimonth-view.html
     bug: if odd number of months, and tiled, last months are stretched too wide
-  TimeGridLayoutPannable print-mode
+  TimeGridLayoutNormal/TimeGridLayoutPannable new print-mode approach
+    for Firefox, simple show flat-list. waaay too many problems w/ abs positioning
+    undo hacks (forcedBodyHeight, forceCrop)
+    undo negative-top-margin that simulates scroll
+  TimeGridLayoutPannable
     audit fc-grow. missing?
-    done from print-mode, scrollers out of sync
+    after print-mode, scrollers out of sync
   simplify datagrid column widths, prefer percentages, better for print
   TEST:
     ensure non-resource timeline works well
@@ -26,9 +30,6 @@ For beta.3
     scroll not restored after print-view for any browser/view?
     print-mode with React (and React's flushSync)
     last row of DayGridHeader should be sticky
-  KNOWN BUG: on TimeGridLayoutNormal+TimeGridLayoutPannable,
-    third-page absolutely positioned events push down slots
-    TODO: remove TimeGridLayoutPannable backs that didn't work (forcedBodyHeight)
 
 For beta.4
   restructure html for List view, make print-friendly
@@ -195,15 +196,18 @@ Freshdesk/GH-issues
 NOTES
   flexbox row expansion works across scroll regions: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
   Print
-    you must put absolutely positioned siblings first
-      more guaranteed to go to second page than if after a long sibling with height
+    translateX/Y doesn't work when sticky items inside
+    siblings must all be absolutely positioned if they are supposed to overlap
+      and if you want them to span to subsequent pages in-sync
     Firefox:
       sometimes you just need to restart Firefox and things start working :(
       setting a bottom coordinate will NEVER wrap to subsequent pages
-        problems with height:100% as well. height hardcoding often needed
-      multi-page flexbox rows don't work. you must (even for nested!):
-        <div class='fc-rel' style={{ height: totalHeight }}>
-          <div class='fc-flex-row fc-fill' style={{ height: totalHeight }}>
+        problems with height:100% as well. hardcoded height needed
+      weird issue: if abs positioned element starts on 2nd page and spans to third,
+        makes a strange gap on 3rd page and pushes all content afterwards down
+      if there's any sort of overflow:hidden/scroll container,
+        screws up absolute positioning within, when spanning to subsequent pages. must disable
+      JUST GIVE UP on multi-page absolutely positioned items in firefox
     bugzilla flexbox issues
       master ticket (pending): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
       special-case fix (done): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
