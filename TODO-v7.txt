@@ -7,6 +7,9 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
+  KNOWN BUG: on TimeGridLayoutNormal+TimeGridLayoutPannable,
+    third-page absolutely positioned events push down slots
+    TODO: remove TimeGridLayoutPannable that didn't work
   TimeGridLayoutPannable print-mode
     try to remove fc-ps-col
     try to remove many forcedBodyHeight
