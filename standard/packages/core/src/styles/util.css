@@ -69,8 +69,8 @@ Rarely used. Just inline this?
 // -------------------------------------------------------------------------------------------------
 
 .fc-media-screen {
-  & .fc-ps-root,
-  & .fc-ps-header {
+  & .fc-print-root,
+  & .fc-print-header {
     display: flex;
     flex-direction: column;
   }

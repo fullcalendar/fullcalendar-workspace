@@ -19,15 +19,15 @@
   // Print-Safe Utils (media:print ONLY)
   // -----------------------------------------------------------------------------------------------
 
-  & .fc-ps-root {
+  & .fc-print-root {
     display: table;
     table-layout: fixed;
     width: 100%;
     border-spacing: 0;
-    border-collapse: collapse; // so bottom-border can be put on fc-ps-header
+    border-collapse: collapse; // so bottom-border can be put on fc-print-header
   }
 
-  & .fc-ps-header {
+  & .fc-print-header {
     display: table-header-group;
     break-inside: avoid; // required
 

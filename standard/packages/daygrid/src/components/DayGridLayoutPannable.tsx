@@ -77,7 +77,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
     return (
       <Fragment>
         {options.dayHeaders && (
-          <div className='fc-ps-header'>
+          <div className='fc-print-header'>
             <Scroller
               horizontal
               hideScrollbars

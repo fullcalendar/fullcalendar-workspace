@@ -61,7 +61,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
       <Fragment>
         {options.dayHeaders && (
           <div className={joinClassNames(
-            props.forPrint ? 'fc-ps-header' : 'fc-flex-row', // col for print, row for screen
+            props.forPrint ? 'fc-print-header' : 'fc-flex-row', // col for print, row for screen
             'fc-border-b',
           )}>
             <DayGridHeader
