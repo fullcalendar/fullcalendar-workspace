@@ -41,6 +41,11 @@ export interface TimeGridLayoutProps {
   eventSelection: string
 }
 
+interface TimeScroll {
+  time?: Duration
+  y?: number
+}
+
 export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   // memo
   private buildSlatMetas = memoize(buildSlatMetas)
@@ -52,7 +57,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
 
   // internal
   private currentSlatCnt?: number
-  private scrollTime: Duration | null = null
+  private scrollState: TimeScroll = {} // updated in-place
 
   render() {
     const { props, context } = this
@@ -104,6 +109,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
 
       // refs
       timeScrollerRef: this.timeScrollerRef,
+      timeScrollState: this.scrollState,
       slatHeightRef: this.handleSlatHeight,
     }
 
@@ -139,8 +145,8 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
 
   componentDidMount() {
     this.resetScroll()
-    this.context.emitter.on('_timeScrollRequest', this.handleTimeScroll)
-    this.timeScrollerRef.current.addScrollEndListener(this.clearScroll)
+    this.context.emitter.on('_timeScrollRequest', this.handleTimeScrollRequest)
+    this.timeScrollerRef.current.addScrollEndListener(this.handleTimeScrollEnd)
   }
 
   componentDidUpdate(prevProps: TimeGridLayoutProps) {
@@ -150,8 +156,8 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   }
 
   componentWillUnmount() {
-    this.context.emitter.off('_timeScrollRequest', this.handleTimeScroll)
-    this.timeScrollerRef.current.removeScrollEndListener(this.clearScroll)
+    this.context.emitter.off('_timeScrollRequest', this.handleTimeScrollRequest)
+    this.timeScrollerRef.current.removeScrollEndListener(this.handleTimeScrollEnd)
   }
 
   // Sizing
@@ -159,47 +165,63 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
 
   private handleSlatHeight = (slatHeight: number) => {
     this.slatHeight = slatHeight
-    afterSize(this.updateScroll)
+    afterSize(this.applyTimeScroll)
   }
 
   // Scrolling
   // -----------------------------------------------------------------------------------------------
 
   private resetScroll() {
-    this.handleTimeScroll(this.context.options.scrollTime)
+    this.handleTimeScrollRequest(this.context.options.scrollTime)
 
+    // also resets day scroll
     const dayScroller = this.dayScrollerRef.current
     if (dayScroller) {
       dayScroller.scrollTo({ x: 0 })
     }
   }
 
-  private handleTimeScroll = (scrollTime: Duration) => {
-    this.scrollTime = scrollTime
-    this.updateScroll()
+  private handleTimeScrollRequest = (scrollTime: Duration) => {
+    this.scrollState.time = scrollTime
+    this.scrollState.y = undefined
+    this.applyTimeScroll()
   }
 
-  private updateScroll = () => {
-    const timeScroller = this.timeScrollerRef.current
-    const { scrollTime, slatHeight } = this
+  /*
+  Captures current values
+  */
+  private handleTimeScrollEnd = () => {
+    this.scrollState.y = this.timeScrollerRef.current.y
+    this.scrollState.time = undefined
+  }
 
-    // Since updateScroll is called by handleSlatHeight, could be called with null during cleanup,
-    // and the timeScroller might not exist
-    if (timeScroller && scrollTime && slatHeight != null) {
-      let top = computeTimeTopFrac(scrollTime, this.props.dateProfile)
+  private applyTimeScroll = () => {
+    const timeScroller = this.timeScrollerRef.current
+    const { slatHeight, scrollState } = this
+    let { y, time } = scrollState
+
+    if (
+      y == null &&
+      time &&
+      slatHeight != null &&
+      // Since applyTimeScroll is called by handleSlatHeight, could be called with null during cleanup,
+      // and the timeScroller might not exist
+      timeScroller
+    ) {
+      y = computeTimeTopFrac(time, this.props.dateProfile)
         * (slatHeight * this.currentSlatCnt)
         + (this.context.isRtl ? -1 : 1) // overcome border
 
-      if (top) {
-        top++ // overcome top border
+      if (y) {
+        y++ // overcome top border
       }
 
-      timeScroller.scrollTo({ y: top })
+      scrollState.y = y // HACK: store raw pixel value
     }
-  }
 
-  private clearScroll = () => {
-    this.scrollTime = null
+    if (y != null) {
+      timeScroller.scrollTo({ y })
+    }
   }
 }
 

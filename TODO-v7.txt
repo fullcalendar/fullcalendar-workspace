@@ -7,6 +7,9 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
+  preserve y-scroll for timegrid w/ negative margin
+    bug: seems to reset on system top-of-minute
+    doesn't play well with TimeGridLayoutPannable print hacks
   MultiMonth
     bug: multi-row events cutoff when +more in next row
       multimonth-view-bug.html
@@ -16,7 +19,6 @@ For beta.3
     audit fc-grow. missing?
     done from print-mode, scrollers out of sync
   simplify datagrid column widths, prefer percentages, better for print
-  preserve y-scroll for timegrid, as negative margin. do for normal and pannable views
   TEST:
     ensure non-resource timeline works well
     ensure multimonth looks okay

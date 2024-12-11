@@ -732,15 +732,16 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private applyTimeScroll() {
     const { props, context, scroll } = this
     const { tDateProfile, slotWidth } = props
-    let { x } = scroll
+    let { x, time } = scroll
 
-    if (x == null && scroll.time != null && slotWidth != null) {
-      x = timeToCoord(scroll.time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth)
-      scroll.x = x // HACK: store raw pixel value
+    if (x == null && time && slotWidth != null) {
+      x = timeToCoord(time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth)
 
       if (x) {
         x += context.isRtl ? -1 : 1 // overcome border. TODO: DRY this up
       }
+
+      scroll.x = x // HACK: store raw pixel value
     }
 
     if (x != null) {

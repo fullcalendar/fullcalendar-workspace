@@ -11,6 +11,7 @@ import { ScrollListener } from './ScrollListener.js'
 export interface ScrollerProps {
   vertical?: boolean // true always implies 'auto' (won't show scrollbars if no overflow)
   horizontal?: boolean // (same)
+  forceCrop?: boolean
   hideScrollbars?: boolean // default: false
   children: ComponentChildren
 
@@ -42,7 +43,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
     // if there's only one axis that needs scrolling, the other axis will unintentionally have
     // scrollbars too, so we must force to 'hidden'
-    const fallbackOverflow = (props.horizontal || props.vertical) ? 'hidden' : ''
+    const fallbackOverflow = (props.horizontal || props.vertical || props.forceCrop) ? 'hidden' : ''
 
     return (
       <div

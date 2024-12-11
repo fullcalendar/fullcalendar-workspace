@@ -49,6 +49,7 @@ export interface TimeGridLayoutNormalProps {
 
   // refs
   timeScrollerRef?: Ref<ScrollerInterface>
+  timeScrollState: { y?: number }
   slatHeightRef?: Ref<number>
 }
 
@@ -216,6 +217,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
         -----------------------------------------------------------------------------------------*/}
         <Scroller
           vertical={verticalScrolling}
+          forceCrop={props.forPrint}
           className={joinClassNames(
             'fc-timegrid-body fc-flex-col',
             verticalScrolling && 'fc-liquid',
@@ -227,10 +229,17 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
         >
           <div
             className='fc-rel fc-grow fc-flex-col'
-            // in print mode, this div creates the height and everything is absolutely positioned within
-            // we need to do this so that slats positioning synces with events's positioning
-            // otherwise, get out of sync on second page
-            style={{ height: forcedBodyHeight }}
+            style={{
+              // in print mode, this div creates the height and everything is absolutely positioned within
+              // we need to do this so that slats positioning synces with events's positioning
+              // otherwise, get out of sync on second page
+              height: forcedBodyHeight,
+
+              // simulate scroll for print
+              marginTop: props.forPrint
+                ? -props.timeScrollState.y
+                : undefined,
+            }}
           >
             <TimeGridCols
               dateProfile={props.dateProfile}

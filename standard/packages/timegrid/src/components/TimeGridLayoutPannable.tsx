@@ -50,6 +50,7 @@ export interface TimeGridLayoutPannableProps {
   // refs
   dayScrollerRef?: Ref<ScrollerInterface>
   timeScrollerRef?: Ref<ScrollerInterface>
+  timeScrollState: { y?: number }
   slatHeightRef?: Ref<number>
 
   // dimensions
@@ -307,6 +308,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             ---------------------------------------------------------------------------------------*/}
             <Scroller
               vertical={verticalScrolling}
+              forceCrop={props.forPrint}
               hideScrollbars
               className='fc-flex-col fc-content-box'
               style={{
@@ -319,6 +321,12 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 className='fc-flex-col fc-rel'
                 style={{
                   height: forcedBodyHeight,
+
+                  // simulate scroll for print
+                  // TODO: DRY with main content area
+                  marginTop: props.forPrint
+                    ? -props.timeScrollState.y
+                    : undefined,
                 }}
               >
                 <div // label list
@@ -378,7 +386,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             >
               <Scroller
                 vertical={verticalScrolling}
-                horizontal={!props.forPrint /* HACK for Firefox printing */}
+                horizontal
                 hideScrollbars={
                   stickyFooterScrollbar || // also means height:auto, so won't need vertical scrollbars anyway
                   props.forPrint // TODO: does this work!!??
@@ -398,6 +406,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   style={{
                     width: canvasWidth,
                     height: forcedBodyHeight,
+
+                    // simulate scroll for print
+                    marginTop: props.forPrint
+                      ? -props.timeScrollState.y
+                      : undefined,
                   }}
                 >
                   <TimeGridCols
