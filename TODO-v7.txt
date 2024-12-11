@@ -7,14 +7,12 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
-  preserve y-scroll for timegrid w/ negative margin
-    bug: seems to reset on system top-of-minute
-    doesn't play well with TimeGridLayoutPannable print hacks
-  MultiMonth
-    bug: multi-row events cutoff when +more in next row
-      multimonth-view-bug.html
-      examples-v7/multimonth-view.html
-    bug: if odd number of months, and tiled, last months are stretched too wide
+  List
+    restructure html, make print-friendly
+  DayGrid
+    liquid-event-width print-view conundrum: force event heights?
+  ResourceTimeline
+    simplify datagrid column widths, prefer percentages, better for print
   TimeGridLayoutNormal/TimeGridLayoutPannable new print-mode approach
     for Firefox, simple show flat-list. waaay too many problems w/ abs positioning
     undo hacks (forcedBodyHeight, forceCrop)
@@ -22,7 +20,11 @@ For beta.3
   TimeGridLayoutPannable
     audit fc-grow. missing?
     after print-mode, scrollers out of sync
-  simplify datagrid column widths, prefer percentages, better for print
+  MultiMonth
+    bug: multi-row events cutoff when +more in next row
+      multimonth-view-bug.html
+      examples-v7/multimonth-view.html
+    bug: if odd number of months, and tiled, last months are stretched too wide
   TEST:
     ensure non-resource timeline works well
     ensure multimonth looks okay
@@ -30,10 +32,6 @@ For beta.3
     scroll not restored after print-view for any browser/view?
     print-mode with React (and React's flushSync)
     last row of DayGridHeader should be sticky
-
-For beta.4
-  restructure html for List view, make print-friendly
-  daygrid liquid-event-width print-view conundrum: force event heights?
 
 Cross-browser
   Firefox
