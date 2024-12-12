@@ -1,6 +1,6 @@
 import { DayHeaderContentArg } from '@fullcalendar/core'
 import { BaseComponent, buildNavLinkAttrs, ContentContainer, DateMarker, DateRange, formatDayString, getDateMeta, getDayClassName, getStickyHeaderDates, joinClassNames } from "@fullcalendar/core/internal";
-import { createElement } from '@fullcalendar/core/preact'
+import { createElement, Fragment } from '@fullcalendar/core/preact'
 
 export interface ListDayHeaderProps {
   dayDate: DateMarker
@@ -34,33 +34,25 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
 
     // TODO: make a reusable HOC for dayHeader (used in daygrid/timegrid too)
     return (
-      <ContentContainer
-        tag="div"
-        className={joinClassNames(
-          'fc-list-day',
-          getDayClassName(dayMeta),
-        )}
-        attrs={{
-          'data-date': formatDayString(dayDate),
-        }}
-        renderProps={renderProps}
-        generatorName="dayHeaderContent"
-        customGenerator={options.dayHeaderContent}
-        defaultGenerator={renderInnerContent}
-        classNameGenerator={options.dayHeaderClassNames}
-        didMount={options.dayHeaderDidMount}
-        willUnmount={options.dayHeaderWillUnmount}
-      >
-        {(InnerContent) => (
-          <InnerContent
-            tag="div"
-            className={joinClassNames(
-              'fc-list-day-cell',
-              stickyHeaderDates && 'fc-list-day-cell-sticky',
-            )}
-          />
-        )}
-      </ContentContainer>
+      <div className={stickyHeaderDates ? 'fc-list-day-outer-sticky' : ''}>
+        <ContentContainer
+          tag="div"
+          className={joinClassNames(
+            'fc-list-day',
+            getDayClassName(dayMeta),
+          )}
+          attrs={{
+            'data-date': formatDayString(dayDate),
+          }}
+          renderProps={renderProps}
+          generatorName="dayHeaderContent"
+          customGenerator={options.dayHeaderContent}
+          defaultGenerator={renderInnerContent}
+          classNameGenerator={options.dayHeaderClassNames}
+          didMount={options.dayHeaderDidMount}
+          willUnmount={options.dayHeaderWillUnmount}
+        />
+      </div>
     )
   }
 }
@@ -73,17 +65,17 @@ interface RenderProps extends DayHeaderContentArg {
 
 function renderInnerContent(props: RenderProps) {
   return (
-    <div className='fc-list-day-inner'>
+    <Fragment>
       {props.text && (
         <a id={props.textId} className="fc-list-day-text" {...props.navLinkAttrs}>
           {props.text}
         </a>
       )}
       {props.sideText && (/* not keyboard tabbable */
-        <a aria-hidden className="fc-list-day-side-text" {...props.sideNavLinkAttrs}>
+        <a className="fc-list-day-side-text" {...props.sideNavLinkAttrs}>
           {props.sideText}
         </a>
       )}
-    </div>
+    </Fragment>
   )
 }

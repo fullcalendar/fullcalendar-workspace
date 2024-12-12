@@ -1,5 +1,5 @@
 import { AllDayContentArg, EventRenderRange } from '@fullcalendar/core'
-import { BaseComponent, buildEventRangeTimeText, ContentContainer, createFormatter, DateFormatter, DateMarker, EventContainer, getEventRangeAnchorAttrs, isMultiDayRange, joinClassNames, MinimalEventProps, ViewContext } from "@fullcalendar/core/internal";
+import { BaseComponent, buildEventRangeTimeText, ContentContainer, createFormatter, DateFormatter, DateMarker, EventContainer, getEventRangeAnchorAttrs, isMultiDayRange, MinimalEventProps, ViewContext } from "@fullcalendar/core/internal";
 import { ComponentChild, ComponentChildren, createElement, Fragment } from '@fullcalendar/core/preact'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
@@ -18,17 +18,17 @@ export class ListEvent extends BaseComponent<ListEventProps> {
     let { props, context } = this
     let { eventRange  } = props
     let { options } = context
+
     let timeFormat = options.eventTimeFormat || DEFAULT_TIME_FORMAT
+    let anchorAttrs = getEventRangeAnchorAttrs(eventRange, context)
 
     return (
       <EventContainer
         {...props}
-        tag="div"
-        className={joinClassNames(
-          'fc-list-event',
-          eventRange.def.url && 'fc-event-forced-url',
-        )}
-        defaultGenerator={() => renderEventInnerContent(eventRange, context) /* weird */}
+        tag={anchorAttrs ? 'a' : 'div'}
+        attrs={anchorAttrs}
+        className='fc-list-event'
+        defaultGenerator={() => getEventRangeTitle(eventRange) /* weird */}
         eventRange={eventRange}
         timeText=""
         disableDragging={true}
@@ -37,7 +37,7 @@ export class ListEvent extends BaseComponent<ListEventProps> {
         {(InnerContent, eventContentArg) => (
           <Fragment>
             {buildTimeContent(eventRange, props.isStart, props.isEnd, props.segStart, props.segEnd, timeFormat, context)}
-            <div aria-hidden className="fc-list-event-dot-cell">
+            <div className="fc-list-event-dot-outer">
               <span
                 className="fc-list-event-dot"
                 style={{
@@ -56,19 +56,7 @@ export class ListEvent extends BaseComponent<ListEventProps> {
   }
 }
 
-
-function renderEventInnerContent(eventRange: EventRenderRange, context: ViewContext) {
-  let anchorAttrs = getEventRangeAnchorAttrs(eventRange, context)
-
-  if (anchorAttrs) {
-    return (
-      <a {...anchorAttrs}>
-        {/* TODO: document how whole row become clickable */}
-        {eventRange.def.title}
-      </a>
-    )
-  }
-
+function getEventRangeTitle(eventRange: EventRenderRange): string {
   return eventRange.def.title
 }
 

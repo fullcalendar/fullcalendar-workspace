@@ -4,14 +4,14 @@
 //
 
 .fc-list-event-time,
-.fc-list-event-dot-cell,
+.fc-list-event-dot-outer,
 .fc-list-event-title,
-.fc-list-day-inner {
+.fc-list-day {
   padding: 8px 14px;
 }
 // make the dot closer to the event title
-.fc-direction-ltr .fc-list-event-dot-cell { padding-right: 0 }
-.fc-direction-rtl .fc-list-event-dot-cell { padding-left: 0 }
+.fc-direction-ltr .fc-list-event-dot-outer { padding-right: 0 }
+.fc-direction-rtl .fc-list-event-dot-outer { padding-left: 0 }
 
 //
 // ListEmpty

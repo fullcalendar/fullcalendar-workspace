@@ -35,11 +35,6 @@ export class EventClicking extends Interaction {
       eventRange && // might be the <div> surrounding the more link
       component.isValidSegDownEl(ev.target as HTMLElement)
     ) {
-      // our way to simulate a link click for elements that can't be <a> tags
-      // grab before trigger fired in case trigger trashes DOM thru rerendering
-      let hasUrlContainer = (ev.target as HTMLElement).closest('.fc-event-forced-url')
-      let url = hasUrlContainer ? (hasUrlContainer.querySelector('a[href]') as any).href : ''
-
       context.emitter.trigger('eventClick', {
         el: segEl,
         event: new EventImpl(
@@ -50,10 +45,6 @@ export class EventClicking extends Interaction {
         jsEvent: ev as MouseEvent, // Is this always a mouse event? See #4655
         view: context.viewApi,
       } as EventClickArg)
-
-      if (url && !ev.defaultPrevented) {
-        window.location.href = url
-      }
     }
   }
 }
