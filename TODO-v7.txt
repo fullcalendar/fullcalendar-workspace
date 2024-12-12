@@ -240,7 +240,7 @@ Punt
     (will be breaking change? maybe file ticket and add changelog)
     PREEXISTS: https://codepen.io/arshaw/pen/jOgeGwm?editors=0010
   Markup/CSS/structure
-    kill fc-header-cell classname? ppl can just target `.fc-table-header .fc-table-cell`?
+    kill fc-header-cell classname?
     in future css className refactor:
       fc-dayGridMonth -> fc-daygridmonth (to match fc-daygrid)
       fc-dayGridMonth-button -> fc-daygridmonth-button

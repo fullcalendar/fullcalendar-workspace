@@ -3,7 +3,6 @@
 @import '../../core/src/styles/mixins';
 
 @import './styles/vars';
-@import './styles/table';
 @import './styles/list';
 @import './styles/list-day';
 @import './styles/list-event';

@@ -1,37 +1,33 @@
-import { ViewApi, EventRenderRange } from '@fullcalendar/core'
+import { EventRenderRange, ViewApi } from '@fullcalendar/core'
 import {
-  ViewProps,
-  Scroller,
-  DateMarker,
   addDays,
-  startOfDay,
-  DateRange,
-  intersectRanges,
-  DateProfile,
-  EventUiHash,
-  sliceEventStore,
-  EventStore,
-  memoize,
-  sortEventSegs,
-  getEventRangeMeta,
-  NowTimer,
-  ViewContainer,
-  DateComponent,
-  MountArg,
-  getUniqueDomId,
-  formatDayString,
   ContentContainer,
-  getIsHeightAuto,
+  DateComponent,
+  DateMarker,
+  DateProfile,
+  DateRange,
   EventRangeProps,
-  getEventKey,
+  EventStore,
+  EventUiHash,
+  formatDayString,
+  getIsHeightAuto,
+  intersectRanges,
+  memoize,
+  MountArg,
+  NowTimer,
+  Scroller,
+  sliceEventStore,
+  startOfDay,
+  ViewContainer,
+  ViewProps
 } from '@fullcalendar/core/internal'
 import {
   ComponentChild,
   createElement,
+  Fragment,
   VNode,
 } from '@fullcalendar/core/preact'
-import { ListViewHeaderRow } from './ListViewHeaderRow.js'
-import { ListViewEventRow } from './ListViewEventRow.js'
+import { ListDay } from './ListDay.js'
 
 export interface NoEventsContentArg {
   text: string
@@ -54,11 +50,6 @@ Responsible for the scroller, and forwarding event-related actions into the "gri
 export class ListView extends DateComponent<ViewProps> {
   private computeDateVars = memoize(computeDateVars)
   private eventStoreToSegs = memoize(this._eventStoreToSegs)
-  state = {
-    timeHeaderId: getUniqueDomId(),
-    eventHeaderId: getUniqueDomId(),
-    dateHeaderIdRoot: getUniqueDomId(),
-  }
 
   render() {
     let { props, context } = this
@@ -127,69 +118,34 @@ export class ListView extends DateComponent<ViewProps> {
   }
 
   renderSegList(allSegs: (ListSeg & EventRangeProps)[], dayDates: DateMarker[]) {
-    let { options } = this.context
-    let { timeHeaderId, eventHeaderId, dateHeaderIdRoot } = this.state
     let segsByDay = groupSegsByDay(allSegs) // sparse array
 
     return (
       <NowTimer unit="day">
         {(nowDate: DateMarker, todayRange: DateRange) => {
-          let innerNodes: VNode[] = []
+          const dayNodes: VNode[] = []
 
           for (let dayIndex = 0; dayIndex < segsByDay.length; dayIndex += 1) {
             let daySegs = segsByDay[dayIndex]
 
             if (daySegs) { // sparse array, so might be undefined
-              let dayStr = formatDayString(dayDates[dayIndex])
-              let dateHeaderId = dateHeaderIdRoot + '-' + dayStr
+              const dayDate = dayDates[dayIndex]
 
-              // append a day header
-              innerNodes.push(
-                <ListViewHeaderRow
-                  key={dayStr}
-                  forPrint={this.props.forPrint}
-                  cellId={dateHeaderId}
-                  dayDate={dayDates[dayIndex]}
+              dayNodes.push(
+                <ListDay
+                  key={formatDayString(dayDate)}
+                  dayDate={dayDate}
+                  nowDate={nowDate}
                   todayRange={todayRange}
-                />,
+                  segs={daySegs}
+                  forPrint={this.props.forPrint}
+                />
               )
-
-              daySegs = sortEventSegs(daySegs, options.eventOrder)
-
-              for (let seg of daySegs) {
-                innerNodes.push(
-                  <ListViewEventRow
-                    key={dayStr + ':' + getEventKey(seg) /* are multiple segs for an instanceId */}
-                    eventRange={seg.eventRange}
-                    isStart={seg.isStart}
-                    isEnd={seg.isEnd}
-                    segStart={seg.startDate}
-                    segEnd={seg.endDate}
-                    isDragging={false}
-                    isResizing={false}
-                    isDateSelecting={false}
-                    isSelected={false}
-                    timeHeaderId={timeHeaderId}
-                    eventHeaderId={eventHeaderId}
-                    dateHeaderId={dateHeaderId}
-                    {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
-                  />,
-                )
-              }
             }
           }
 
           return (
-            <table className='fc-table'>
-              <thead className='fc-offscreen'>
-                <tr>
-                  <th scope="col" id={timeHeaderId}>{options.timeHint}</th>
-                  <th scope="col" aria-hidden />
-                  <th scope="col" id={eventHeaderId}>{options.eventHint}</th>
-                </tr>
-              </thead>
-              <tbody>{innerNodes}</tbody>
-            </table>
+            <Fragment>{dayNodes}</Fragment>
           )
         }}
       </NowTimer>
@@ -205,8 +161,8 @@ export class ListView extends DateComponent<ViewProps> {
       sliceEventStore(
         eventStore,
         eventUiBases,
-        this.props.dateProfile.activeRange,
-        this.context.options.nextDayThreshold,
+        this.props.dateProfile.activeRange, // HACKY
+        this.context.options.nextDayThreshold, // HACKY
       ).fg,
       dayRanges,
     )

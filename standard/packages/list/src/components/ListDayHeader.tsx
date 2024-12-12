@@ -1,28 +1,17 @@
 import { DayHeaderContentArg } from '@fullcalendar/core'
-import {
-  BaseComponent, DateMarker, DateRange, getDateMeta,
-  getDayClassName, formatDayString, buildNavLinkAttrs, getUniqueDomId, ContentContainer,
-  getStickyHeaderDates,
-  joinClassNames,
-} from '@fullcalendar/core/internal'
+import { BaseComponent, buildNavLinkAttrs, ContentContainer, DateMarker, DateRange, formatDayString, getDateMeta, getDayClassName, getStickyHeaderDates, joinClassNames } from "@fullcalendar/core/internal";
 import { createElement } from '@fullcalendar/core/preact'
 
-export interface ListViewHeaderRowProps {
-  forPrint: boolean
-  cellId: string
+export interface ListDayHeaderProps {
   dayDate: DateMarker
   todayRange: DateRange
+  forPrint: boolean
 }
 
-export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
-  state = {
-    textId: getUniqueDomId(),
-  }
-
+export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
   render() {
     let { dateEnv, options, viewApi } = this.context
-    let { cellId, dayDate, todayRange } = this.props
-    let { textId } = this.state
+    let { dayDate, todayRange } = this.props
     let stickyHeaderDates = !this.props.forPrint && getStickyHeaderDates(options)
 
     let dayMeta = getDateMeta(dayDate, todayRange)
@@ -36,7 +25,6 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
     let renderProps: RenderProps = {
       date: dateEnv.toDate(dayDate),
       view: viewApi,
-      textId,
       text,
       sideText,
       navLinkAttrs: buildNavLinkAttrs(this.context, dayDate),
@@ -47,7 +35,7 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
     // TODO: make a reusable HOC for dayHeader (used in daygrid/timegrid too)
     return (
       <ContentContainer
-        tag="tr"
+        tag="div"
         className={joinClassNames(
           'fc-list-day',
           getDayClassName(dayMeta),
@@ -65,12 +53,7 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
       >
         {(InnerContent) => (
           <InnerContent
-            tag="th"
-            attrs={{
-              id: cellId,
-              colSpan: 3,
-              'aria-labelledby': textId,
-            }}
+            tag="div"
             className={joinClassNames(
               'fc-list-day-cell',
               stickyHeaderDates && 'fc-list-day-cell-sticky',
@@ -84,7 +67,6 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
 
 // doesn't enforce much since DayCellContentArg allow extra props
 interface RenderProps extends DayHeaderContentArg {
-  textId: string // for aria-labelledby
   text: string
   sideText: string
 }

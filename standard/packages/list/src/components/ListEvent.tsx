@@ -1,17 +1,6 @@
 import { AllDayContentArg, EventRenderRange } from '@fullcalendar/core'
-import {
-  MinimalEventProps, BaseComponent, ViewContext,
-  isMultiDayRange, DateFormatter, buildEventRangeTimeText, createFormatter,
-  getEventRangeAnchorAttrs, EventContainer, ContentContainer,
-  DateMarker,
-  joinClassNames,
-} from '@fullcalendar/core/internal'
-import {
-  createElement,
-  ComponentChildren,
-  Fragment,
-  ComponentChild,
-} from '@fullcalendar/core/preact'
+import { BaseComponent, buildEventRangeTimeText, ContentContainer, createFormatter, DateFormatter, DateMarker, EventContainer, getEventRangeAnchorAttrs, isMultiDayRange, joinClassNames, MinimalEventProps, ViewContext } from "@fullcalendar/core/internal";
+import { ComponentChild, ComponentChildren, createElement, Fragment } from '@fullcalendar/core/preact'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
   hour: 'numeric',
@@ -19,25 +8,22 @@ const DEFAULT_TIME_FORMAT = createFormatter({
   meridiem: 'short',
 })
 
-export interface ListViewEventRowProps extends MinimalEventProps {
-  timeHeaderId: string
-  eventHeaderId: string
-  dateHeaderId: string
+export interface ListEventProps extends MinimalEventProps {
   segStart: DateMarker | undefined
   segEnd: DateMarker | undefined
 }
 
-export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
+export class ListEvent extends BaseComponent<ListEventProps> {
   render() {
     let { props, context } = this
+    let { eventRange  } = props
     let { options } = context
-    let { eventRange, timeHeaderId, eventHeaderId, dateHeaderId } = props
     let timeFormat = options.eventTimeFormat || DEFAULT_TIME_FORMAT
 
     return (
       <EventContainer
         {...props}
-        tag="tr"
+        tag="div"
         className={joinClassNames(
           'fc-list-event',
           eventRange.def.url && 'fc-event-forced-url',
@@ -50,18 +36,17 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
       >
         {(InnerContent, eventContentArg) => (
           <Fragment>
-            {buildTimeContent(eventRange, props.isStart, props.isEnd, props.segStart, props.segEnd, timeFormat, context, timeHeaderId, dateHeaderId)}
-            <td aria-hidden className="fc-list-event-dot-cell">
+            {buildTimeContent(eventRange, props.isStart, props.isEnd, props.segStart, props.segEnd, timeFormat, context)}
+            <div aria-hidden className="fc-list-event-dot-cell">
               <span
                 className="fc-list-event-dot"
                 style={{
                   borderColor: eventContentArg.borderColor || eventContentArg.backgroundColor,
                 }}
               />
-            </td>
+            </div>
             <InnerContent
-              tag="td"
-              attrs={{ headers: `${eventHeaderId} ${dateHeaderId}` }}
+              tag="div"
               className='fc-list-event-title'
             />
           </Fragment>
@@ -70,6 +55,7 @@ export class ListViewEventRow extends BaseComponent<ListViewEventRowProps> {
     )
   }
 }
+
 
 function renderEventInnerContent(eventRange: EventRenderRange, context: ViewContext) {
   let anchorAttrs = getEventRangeAnchorAttrs(eventRange, context)
@@ -94,8 +80,6 @@ function buildTimeContent(
   segEnd: DateMarker | undefined,
   timeFormat: DateFormatter,
   context: ViewContext,
-  timeHeaderId: string,
-  dateHeaderId: string,
 ): ComponentChildren {
   let { options } = context
 
@@ -151,10 +135,7 @@ function buildTimeContent(
 
       return (
         <ContentContainer
-          tag="td"
-          attrs={{
-            headers: `${timeHeaderId} ${dateHeaderId}`,
-          }}
+          tag="div"
           className='fc-list-event-time'
           renderProps={renderProps}
           generatorName="allDayContent"
@@ -168,9 +149,9 @@ function buildTimeContent(
     }
 
     return (
-      <td className="fc-list-event-time">
+      <div className="fc-list-event-time">
         {timeText}
-      </td>
+      </div>
     )
   }
 
