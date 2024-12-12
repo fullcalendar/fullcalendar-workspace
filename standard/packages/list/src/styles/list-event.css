@@ -15,8 +15,13 @@ a.fc-list-event:hover {
   text-decoration: underline;
 }
 
-.fc-list-event:hover td {
+.fc-list-event:hover {
   background-color: var(--fc-list-event-hover-bg-color);
+}
+
+.fc-list-event-time-outer {
+  display: flex;
+  flex-direction: row;
 }
 
 // shrink certain cols

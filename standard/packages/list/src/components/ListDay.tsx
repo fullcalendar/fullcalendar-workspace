@@ -1,5 +1,5 @@
-import { BaseComponent, DateMarker, DateRange, EventRangeProps, getEventKey, getEventRangeMeta, memoize, sortEventSegs } from "@fullcalendar/core/internal"
-import { createElement } from '@fullcalendar/core/preact'
+import { afterSize, BaseComponent, DateMarker, DateRange, EventRangeProps, getEventKey, getEventRangeMeta, memoize, RefMap, setRef, sortEventSegs } from "@fullcalendar/core/internal"
+import { createElement, Ref } from '@fullcalendar/core/preact'
 import { ListDayHeader } from "./ListDayHeader.js"
 import { ListEvent } from "./ListEvent.js"
 
@@ -17,41 +17,71 @@ export interface ListDayProps {
   todayRange: DateRange
   segs: (ListSeg & EventRangeProps)[]
   forPrint: boolean
+  timeWidthRef?: Ref<number>
+  timeOuterWidth: number | undefined
 }
 
 export class ListDay extends BaseComponent<ListDayProps> {
-  sortEventSegs = memoize(sortEventSegs)
+  // memo
+  private sortEventSegs = memoize(sortEventSegs)
+
+  // ref
+  private timeWidthRefMap = new RefMap<string, number>(() => {
+    afterSize(this.handleTimeWidths)
+  })
 
   render() {
-    const { props, context } = this
+    const { props, context, timeWidthRefMap } = this
     const { nowDate, todayRange } = props
     const { options } = context
 
     const segs = this.sortEventSegs(props.segs, options.eventOrder)
 
     return (
-      <div className='fc-list-day-outer'>
+      <div className='fc-list-day-and-events'>
         <ListDayHeader
           dayDate={props.dayDate}
           todayRange={todayRange}
           forPrint={props.forPrint}
         />
-        {segs.map((seg) => (
-          <ListEvent
-            key={getEventKey(seg)}
-            eventRange={seg.eventRange}
-            isStart={seg.isStart}
-            isEnd={seg.isEnd}
-            segStart={seg.startDate}
-            segEnd={seg.endDate}
-            isDragging={false}
-            isResizing={false}
-            isDateSelecting={false}
-            isSelected={false}
-            {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
-          />
-        ))}
+        {segs.map((seg) => {
+          const key = getEventKey(seg)
+
+          return (
+            <ListEvent
+              key={key}
+              eventRange={seg.eventRange}
+              isStart={seg.isStart}
+              isEnd={seg.isEnd}
+              segStart={seg.startDate}
+              segEnd={seg.endDate}
+              timeWidthRef={timeWidthRefMap.createRef(key)}
+              timeOuterWidth={props.timeOuterWidth}
+              isDragging={false}
+              isResizing={false}
+              isDateSelecting={false}
+              isSelected={false}
+              {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
+            />
+          )
+        })}
       </div>
     )
+  }
+
+  handleTimeWidths = () => {
+    const timeWidthMap = this.timeWidthRefMap.current
+    let max = 0
+
+
+    for (const timeWidth of timeWidthMap.values()) {
+      max = Math.max(max, timeWidth)
+    }
+
+    setRef(this.props.timeWidthRef, max)
+  }
+
+  componentWillUnmount(): void {
+    setRef(this.props.timeWidthRef, null)
   }
 }

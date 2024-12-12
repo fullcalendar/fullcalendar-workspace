@@ -1,6 +1,7 @@
 import { EventRenderRange, ViewApi } from '@fullcalendar/core'
 import {
   addDays,
+  afterSize,
   ContentContainer,
   DateComponent,
   DateMarker,
@@ -15,6 +16,7 @@ import {
   memoize,
   MountArg,
   NowTimer,
+  RefMap,
   Scroller,
   sliceEventStore,
   startOfDay,
@@ -44,12 +46,22 @@ export interface ListSeg {
 
 export type NoEventsMountArg = MountArg<NoEventsContentArg>
 
+export interface ListViewState {
+  timeOuterWidth?: number
+}
+
 /*
 Responsible for the scroller, and forwarding event-related actions into the "grid".
 */
-export class ListView extends DateComponent<ViewProps> {
+export class ListView extends DateComponent<ViewProps, ListViewState> {
+  // memo
   private computeDateVars = memoize(computeDateVars)
   private eventStoreToSegs = memoize(this._eventStoreToSegs)
+
+  // ref
+  private timeWidthRefMap = new RefMap<string, number>(() => {
+    afterSize(this.handleTimeWidths)
+  })
 
   render() {
     let { props, context } = this
@@ -130,15 +142,18 @@ export class ListView extends DateComponent<ViewProps> {
 
             if (daySegs) { // sparse array, so might be undefined
               const dayDate = dayDates[dayIndex]
+              const key = formatDayString(dayDate)
 
               dayNodes.push(
                 <ListDay
-                  key={formatDayString(dayDate)}
+                  key={key}
                   dayDate={dayDate}
                   nowDate={nowDate}
                   todayRange={todayRange}
                   segs={daySegs}
                   forPrint={this.props.forPrint}
+                  timeWidthRef={this.timeWidthRefMap.createRef(key)}
+                  timeOuterWidth={this.state.timeOuterWidth}
                 />
               )
             }
@@ -228,6 +243,17 @@ export class ListView extends DateComponent<ViewProps> {
     }
 
     return segs
+  }
+
+  handleTimeWidths = () => {
+    const timeWidthMap = this.timeWidthRefMap.current
+    let max = 0
+
+    for (const timeWidth of timeWidthMap.values()) {
+      max = Math.max(max, timeWidth)
+    }
+
+    this.setState({ timeOuterWidth: max })
   }
 }
 

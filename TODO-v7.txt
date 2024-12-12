@@ -9,6 +9,7 @@ Publishing:
 For beta.3
   List
     restructure html, make print-friendly
+    bug: not slicing event ranges correctly
   DayGrid
     liquid-event-width print-view conundrum: force event heights?
   ResourceTimeline

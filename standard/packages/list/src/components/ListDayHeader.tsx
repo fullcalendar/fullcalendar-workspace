@@ -34,7 +34,10 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
 
     // TODO: make a reusable HOC for dayHeader (used in daygrid/timegrid too)
     return (
-      <div className={stickyHeaderDates ? 'fc-list-day-outer-sticky' : ''}>
+      <div className={joinClassNames(
+        'fc-list-day-outer',
+        stickyHeaderDates && 'fc-list-day-outer-sticky',
+      )}>
         <ContentContainer
           tag="div"
           className={joinClassNames(
