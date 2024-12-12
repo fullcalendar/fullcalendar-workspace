@@ -10,11 +10,6 @@ a.fc-list-event {
   text-decoration: none;
 }
 
-// underline link when hovering over any part of row
-a.fc-list-event:hover {
-  text-decoration: underline;
-}
-
 .fc-list-event:hover {
   background-color: var(--fc-list-event-hover-bg-color);
 }
@@ -37,4 +32,9 @@ a.fc-list-event:hover {
   height: 0;
   border: calc(var(--fc-list-event-dot-width) / 2) solid var(--fc-event-border-color);
   border-radius: calc(var(--fc-list-event-dot-width) / 2);
+}
+
+// underline link when hovering over any part of row
+a.fc-list-event:hover .fc-list-event-title {
+  text-decoration: underline;
 }
