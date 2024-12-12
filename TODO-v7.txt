@@ -7,9 +7,6 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
-  List
-    restructure html, make print-friendly
-    bug: not slicing event ranges correctly
   DayGrid
     liquid-event-width print-view conundrum: force event heights?
   ResourceTimeline
@@ -178,6 +175,8 @@ Changelog
     border problem fixed: https://codepen.io/arshaw/pen/PoMOwdV?editors=0010
     timegrid axis is text-selectable
     timeline now-indicator div covering events: https://github.com/fullcalendar/fullcalendar/issues/7798
+  I refactored a lot of event time-range text-generation. fixed any bugs? (esp with list-view?)
+    https://github.com/fullcalendar/fullcalendar/issues/3038
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
@@ -252,6 +251,8 @@ Punt
         and independent component (fc-daygrid-week-number)
 
 ensure automated tests for...
+  weird list-view slicing logic we removed
+    https://github.com/fullcalendar/fullcalendar/blob/9a0edaeb5eddf2cec8bd2409ecc26c4598b98a48/packages/list/src/ListView.tsx#L235-L249
   resource-timeline rowgrouping has correct borders on bottom of rows
     even when all row groups collapsed
   positioning of sticky headers in all views. list view sticky subheaders too

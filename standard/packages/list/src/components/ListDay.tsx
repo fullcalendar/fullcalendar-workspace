@@ -4,10 +4,12 @@ import { ListDayHeader } from "./ListDayHeader.js"
 import { ListEvent } from "./ListEvent.js"
 
 export interface ListSeg {
-  startDate: DateMarker
-  endDate: DateMarker
+  // view-sliced whole-day span
+  slicedStart: DateMarker
+  slicedEnd: DateMarker
   isStart: boolean
   isEnd: boolean
+
   dayIndex: number
 }
 
@@ -51,10 +53,10 @@ export class ListDay extends BaseComponent<ListDayProps> {
             <ListEvent
               key={key}
               eventRange={seg.eventRange}
+              slicedStart={seg.slicedStart}
+              slicedEnd={seg.slicedEnd}
               isStart={seg.isStart}
               isEnd={seg.isEnd}
-              segStart={seg.startDate}
-              segEnd={seg.endDate}
               timeWidthRef={timeWidthRefMap.createRef(key)}
               timeOuterWidth={props.timeOuterWidth}
               isDragging={false}

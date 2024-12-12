@@ -11,9 +11,12 @@ import {
 import { ContentContainer, InnerContainerFunc } from '../content-inject/ContentContainer.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
 import { joinClassNames } from '../util/html.js'
+import { DateMarker } from '../datelib/marker.js'
 
 export interface MinimalEventProps {
-  eventRange: EventRenderRange
+  eventRange: EventRenderRange // timed/whole-day span
+  slicedStart?: DateMarker // view-sliced timed/whole-day span
+  slicedEnd?: DateMarker // view-sliced timed/whole-day span
   isStart: boolean
   isEnd: boolean
   isDragging: boolean // rename to isMirrorDragging? make optional?

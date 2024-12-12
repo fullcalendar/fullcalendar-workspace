@@ -29,7 +29,6 @@ export {
 
 export {
   computeVisibleDayRange,
-  isMultiDayRange,
   diffDates,
 } from './util/date.js'
 

@@ -9,7 +9,7 @@ import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT } from '../event-rendering.js'
 
 export interface DayGridListEventProps {
-  eventRange: EventRenderRange
+  eventRange: EventRenderRange // timed/whole-day span
   isStart: boolean
   isEnd: boolean
   isDragging: boolean
@@ -28,14 +28,14 @@ export class DayGridListEvent extends BaseComponent<DayGridListEventProps> {
     let { eventRange } = props
     let timeFormat = options.eventTimeFormat || DEFAULT_TABLE_EVENT_TIME_FORMAT
     let timeText = buildEventRangeTimeText(
-      eventRange,
       timeFormat,
-      context,
+      eventRange,
+      /* slicedStart = */ undefined,
+      /* slicedEnd = */ undefined,
       props.isStart,
       props.isEnd,
-      null,
-      null,
-      true, // defaultDisplayEventTime
+      context,
+      /* defaultDisplayEventTime = */ true,
       props.defaultDisplayEventEnd,
     )
     let anchorAttrs = getEventRangeAnchorAttrs(eventRange, context)

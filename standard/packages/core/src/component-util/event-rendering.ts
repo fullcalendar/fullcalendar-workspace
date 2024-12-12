@@ -17,6 +17,10 @@ import { createAriaKeyboardAttrs } from '../util/dom-event.js'
 
 export interface EventRenderRange extends EventTuple {
   ui: EventUi
+
+  // a transformed version of eventInstance.range
+  // if view renders whole-days, `range` is all-day
+  // otherwise, `range` is timed
   range: DateRange
   isStart: boolean
   isEnd: boolean
@@ -230,49 +234,43 @@ export function computeEventRangeDraggable(eventRange: EventRenderRange, context
   return val
 }
 
+/*
+slicedStart/slicedEnd are optionally supplied to signal where breaks occur in view-specific segment
+a better approach is to always slice with dates and always supply this argument,
+however, daygrid only slices by row/col
+*/
 export function buildEventRangeTimeText(
-  eventRange: EventRenderRange,
   timeFormat: DateFormatter,
+  eventRange: EventRenderRange, // timed/whole-day span
+  slicedStart: DateMarker | undefined, // view-sliced timed/whole-day span
+  slicedEnd: DateMarker | undefined, // view-sliced timed/whole-day span
+  isStart: boolean,
+  isEnd: boolean,
   context: ViewContext,
-  segIsStart: boolean,
-  segIsEnd: boolean,
-  segStart?: DateMarker,
-  segEnd?: DateMarker,
   defaultDisplayEventTime = true,
   defaultDisplayEventEnd = true,
-) {
-  let { dateEnv, options } = context
+): string {
+  const { dateEnv, options } = context
+  const { def, instance } = eventRange
   let { displayEventTime, displayEventEnd } = options
-  let eventDef = eventRange.def
-  let eventInstance = eventRange.instance
 
   if (displayEventTime == null) { displayEventTime = defaultDisplayEventTime !== false }
   if (displayEventEnd == null) { displayEventEnd = defaultDisplayEventEnd !== false }
 
-  /*
-  HACK with forcing eventInstance.range.start/end when isStart/isEnd
-  Because eventRange.range.start/end seems to be aligned with the views' cells' date!?
-  It'd be better to unconditionally rely on eventRange.range.start/end
-  Or refactor-away eventRange altogether (and have it be part of DayGridEventRange/etc)
-  */
-  if (!segStart) {
-    segStart = segIsStart ? eventInstance.range.start : eventRange.range.start
-  }
-  if (!segEnd) {
-    segEnd = segIsEnd ? eventInstance.range.end : eventRange.range.end
-  }
+  const startDate = (!isStart && slicedStart) ? slicedStart : eventRange.instance.range.start
+  const endDate = (!isEnd && slicedEnd) ? slicedEnd : eventRange.instance.range.end
 
-  if (displayEventTime && !eventDef.allDay) {
-    if (displayEventEnd && (segIsStart || segIsEnd) && eventDef.hasEnd) {
-      return dateEnv.formatRange(segStart, segEnd, timeFormat, {
-        forcedStartTzo: segIsStart ? eventInstance.forcedStartTzo : null,
-        forcedEndTzo: segIsEnd ? eventInstance.forcedEndTzo : null,
+  if (displayEventTime && !def.allDay) {
+    if (displayEventEnd && (isStart || isEnd) && def.hasEnd) {
+      return dateEnv.formatRange(startDate, endDate, timeFormat, {
+        forcedStartTzo: isStart ? instance.forcedStartTzo : null,
+        forcedEndTzo: isEnd ? instance.forcedEndTzo : null,
       })
     }
 
-    if (segIsStart) {
-      return dateEnv.format(segStart, timeFormat, {
-        forcedTzo: eventInstance.forcedStartTzo,
+    if (isStart) {
+      return dateEnv.format(startDate, timeFormat, {
+        forcedTzo: instance.forcedStartTzo,
       })
     }
   }
@@ -280,7 +278,11 @@ export function buildEventRangeTimeText(
   return ''
 }
 
-export function getEventRangeMeta(eventRange: EventRenderRange, todayRange: DateRange, nowDate?: DateMarker) {
+export function getEventRangeMeta(
+  eventRange: EventRenderRange,
+  todayRange: DateRange,
+  nowDate?: DateMarker,
+) {
   let segRange = eventRange.range
 
   return {

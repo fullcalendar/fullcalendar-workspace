@@ -1,4 +1,4 @@
-import { StandardEvent, BaseComponent, MinimalEventProps, createFormatter, DateMarker, joinClassNames } from '@fullcalendar/core/internal'
+import { StandardEvent, BaseComponent, MinimalEventProps, createFormatter, joinClassNames } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
@@ -8,8 +8,6 @@ const DEFAULT_TIME_FORMAT = createFormatter({
 })
 
 export interface TimeGridEventProps extends MinimalEventProps {
-  segStart: DateMarker
-  segEnd: DateMarker
   isInset: boolean
   isShort: boolean
   isLiquid?: boolean
@@ -30,8 +28,6 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
           props.isLiquid && 'fc-liquid', // see note in TimeGridCol on why we use flexbox
         )}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
-        segStart={props.segStart}
-        segEnd={props.segEnd}
       />
     )
   }

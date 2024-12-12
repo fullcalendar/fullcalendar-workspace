@@ -217,8 +217,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             >
               <TimeGridEvent
                 eventRange={eventRange}
-                segStart={seg.startDate}
-                segEnd={seg.endDate}
+                slicedStart={seg.startDate}
+                slicedEnd={seg.endDate}
                 isStart={seg.isStart}
                 isEnd={seg.isEnd}
                 isDragging={isDragging}
@@ -376,11 +376,12 @@ export function renderPlainFgSegs(
     (eventDrag ? eventDrag.affectedInstances : null) ||
     (eventResize ? eventResize.affectedInstances : null) ||
     {}
+
   return (
     <Fragment>
       {sortedFgSegs.map((seg) => {
         let { eventRange } = seg
-        let instanceId = eventRange.instance.instanceId
+        let { instanceId } = eventRange.instance
 
         return (
           <div
@@ -389,8 +390,8 @@ export function renderPlainFgSegs(
           >
             <TimeGridEvent
               eventRange={eventRange}
-              segStart={seg.startDate}
-              segEnd={seg.endDate}
+              slicedStart={seg.startDate}
+              slicedEnd={seg.endDate}
               isStart={seg.isStart}
               isEnd={seg.isEnd}
               isDragging={false}

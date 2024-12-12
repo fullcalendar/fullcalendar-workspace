@@ -9,11 +9,11 @@ import { DateMarker } from '../datelib/marker.js'
 export interface StandardEventProps {
   elRef?: ElRef
   className?: string
-  eventRange: EventRenderRange,
-  segStart?: DateMarker
-  segEnd?: DateMarker
-  isStart: boolean
-  isEnd: boolean
+  eventRange: EventRenderRange // timed/whole-day span
+  slicedStart?: DateMarker // view-sliced timed/whole-day span
+  slicedEnd?: DateMarker // view-sliced timed/whole-day span
+  isStart: boolean // seg could have been split into small pieces
+  isEnd: boolean // "
   isDragging: boolean // rename to isMirrorDragging? make optional?
   isResizing: boolean // rename to isMirrorResizing? make optional?
   isDateSelecting: boolean // rename to isMirrorDateSelecting? make optional?
@@ -31,31 +31,30 @@ export interface StandardEventProps {
 // should not be a purecomponent
 export class StandardEvent extends BaseComponent<StandardEventProps> {
   render() {
-    let { props, context } = this
-    let { options } = context
-    let { eventRange } = props
-    let { ui } = eventRange
-    let timeFormat = options.eventTimeFormat || props.defaultTimeFormat
-    let timeText = buildEventRangeTimeText(
-      eventRange,
+    const { props, context } = this
+    const { eventRange } = props
+    const { options } = context
+    const timeFormat = options.eventTimeFormat || props.defaultTimeFormat
+    const timeText = buildEventRangeTimeText(
       timeFormat,
-      context,
+      eventRange, // just for def/instance
+      props.slicedStart,
+      props.slicedEnd,
       props.isStart,
       props.isEnd,
-      props.segStart,
-      props.segEnd,
+      context,
       props.defaultDisplayEventTime,
       props.defaultDisplayEventEnd,
     )
-    let anchorAttrs = getEventRangeAnchorAttrs(eventRange, context)
+    const anchorAttrs = getEventRangeAnchorAttrs(eventRange, context)
 
     return (
       <EventContainer
         {...props /* includes elRef */}
         tag={anchorAttrs ? 'a' : 'div'}
         style={{
-          borderColor: ui.borderColor,
-          backgroundColor: ui.backgroundColor,
+          borderColor: eventRange.ui.borderColor,
+          backgroundColor: eventRange.ui.backgroundColor,
         }}
         attrs={anchorAttrs}
         defaultGenerator={renderInnerContent}

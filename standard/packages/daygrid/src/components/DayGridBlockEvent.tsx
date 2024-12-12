@@ -3,6 +3,7 @@ import { createElement } from '@fullcalendar/core/preact'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT } from '../event-rendering.js'
 
 export interface DayGridBlockEventProps extends MinimalEventProps {
+  // dynamic because certain daygrid configurations might have extra space and want to display end
   defaultDisplayEventEnd: boolean
 }
 

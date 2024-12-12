@@ -29,19 +29,11 @@ import {
   Fragment,
   VNode,
 } from '@fullcalendar/core/preact'
-import { ListDay } from './ListDay.js'
+import { ListSeg, ListDay } from './ListDay.js'
 
 export interface NoEventsContentArg {
   text: string
   view: ViewApi
-}
-
-export interface ListSeg {
-  startDate: DateMarker
-  endDate: DateMarker
-  isStart: boolean
-  isEnd: boolean
-  dayIndex: number
 }
 
 export type NoEventsMountArg = MountArg<NoEventsContentArg>
@@ -176,69 +168,47 @@ export class ListView extends DateComponent<ViewProps, ListViewState> {
       sliceEventStore(
         eventStore,
         eventUiBases,
-        this.props.dateProfile.activeRange, // HACKY
-        this.context.options.nextDayThreshold, // HACKY
+        // HACKY to reference internal state...
+        this.props.dateProfile.activeRange,
+        this.context.options.nextDayThreshold, // activates all-day slicing
       ).fg,
       dayRanges,
     )
   }
 
   eventRangesToSegs(
-    eventRanges: EventRenderRange[],
+    fullDayEventRanges: EventRenderRange[],
     dayRanges: DateRange[],
   ): (ListSeg & EventRangeProps)[] {
     let segs: (ListSeg & EventRangeProps)[] = []
 
-    for (let eventRange of eventRanges) {
-      segs.push(...this.eventRangeToSegs(eventRange, dayRanges))
+    for (let fullDayEventRange of fullDayEventRanges) {
+      segs.push(...this.eventRangeToSegs(fullDayEventRange, dayRanges))
     }
 
     return segs
   }
 
   eventRangeToSegs(
-    eventRange: EventRenderRange,
+    fullDayEventRange: EventRenderRange,
     dayRanges: DateRange[],
   ): (ListSeg & EventRangeProps)[] {
-    let { dateEnv } = this.context
-    let { nextDayThreshold } = this.context.options
-    let range = eventRange.range
-    let allDay = eventRange.def.allDay
-    let dayIndex
-    let segRange
-    let seg: ListSeg & EventRangeProps
+    let fullDayRange = fullDayEventRange.range
+    let dayIndex: number
     let segs: (ListSeg & EventRangeProps)[] = []
 
     for (dayIndex = 0; dayIndex < dayRanges.length; dayIndex += 1) {
-      segRange = intersectRanges(range, dayRanges[dayIndex])
+      const slicedFullDayRange = intersectRanges(fullDayRange, dayRanges[dayIndex])
 
-      if (segRange) {
-        seg = {
-          eventRange,
-          startDate: segRange.start,
-          endDate: segRange.end,
-          isStart: eventRange.isStart && segRange.start.valueOf() === range.start.valueOf(),
-          isEnd: eventRange.isEnd && segRange.end.valueOf() === range.end.valueOf(),
+      if (slicedFullDayRange) {
+        segs.push({
+          eventRange: fullDayEventRange,
+          slicedStart: slicedFullDayRange.start,
+          slicedEnd: slicedFullDayRange.end,
+          isStart: fullDayEventRange.isStart && fullDayRange.start.valueOf() === slicedFullDayRange.start.valueOf(),
+          isEnd: fullDayEventRange.isEnd && fullDayRange.end.valueOf() === slicedFullDayRange.end.valueOf(),
           dayIndex,
-        }
-
-        segs.push(seg)
-
-        // detect when range won't go fully into the next day,
-        // and mutate the latest seg to the be the end.
-        if (
-          !seg.isEnd && !allDay &&
-          dayIndex + 1 < dayRanges.length &&
-          range.end <
-            dateEnv.add(
-              dayRanges[dayIndex + 1].start,
-              nextDayThreshold,
-            )
-        ) {
-          seg.endDate = range.end
-          seg.isEnd = true
-          break
-        }
+        })
       }
     }
 

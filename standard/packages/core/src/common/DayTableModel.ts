@@ -6,6 +6,8 @@ import { SlicedCoordRange } from '../coord-range.js'
 
 export interface DayGridRange extends SlicedCoordRange {
   row: number
+  // `start` is start-COLUMN
+  // `end` is end-COLUMN
 }
 
 /*
