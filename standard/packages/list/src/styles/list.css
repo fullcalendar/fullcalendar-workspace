@@ -28,3 +28,13 @@
 .fc-list-empty-inner {
   margin: 5em 0;
 }
+
+//
+// Borders
+//
+
+.fc-list-day,
+.fc-list-day-outer:not(:last-child),
+.fc-list-event:not(:last-child) {
+  border-bottom: 1px solid var(--fc-border-color);
+}

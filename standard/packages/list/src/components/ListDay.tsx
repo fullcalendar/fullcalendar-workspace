@@ -30,7 +30,7 @@ export class ListDay extends BaseComponent<ListDayProps> {
     const segs = this.sortEventSegs(props.segs, options.eventOrder)
 
     return (
-      <div>
+      <div className='fc-list-day-outer'>
         <ListDayHeader
           dayDate={props.dayDate}
           todayRange={todayRange}
