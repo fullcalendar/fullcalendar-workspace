@@ -66,7 +66,7 @@ export function splitInteractionByRow(
   return byRow
 }
 
-export function sliceStandin<R extends SlicedCoordRange>(
+export function sliceSegForCol<R extends SlicedCoordRange>(
   seg: R,
   col: number,
 ): (R & { standinFor: R }) {

@@ -1,6 +1,6 @@
 import { EventRenderRange } from '@fullcalendar/core'
 import { DayTableCell, SegHierarchy } from '@fullcalendar/core/internal'
-import { DayRowEventRange, DayRowEventRangePart, getEventPartKey, sliceStandin } from './TableSeg.js'
+import { DayRowEventRange, DayRowEventRangePart, getEventPartKey, sliceSegForCol } from './TableSeg.js'
 
 export function computeFgSegVerticals(
   segs: DayRowEventRange[],
@@ -33,9 +33,13 @@ export function computeFgSegVerticals(
     hiddenConsumes = true
   }
 
-  const slicedSegMap = new Map<EventRenderRange, DayRowEventRangePart[]>()
+  // NOTE: visibleSegsMap and hiddenSegMap map NEVER overlap for a given event
+  // once a seg has a height, the combined potentially-sliced segs will comprise the entire span of the seg
+  // if a seg does not have a height yet, it won't be inserted into either visibleSegsMap/hiddenSegMap
+  const visibleSegMap = new Map<EventRenderRange, DayRowEventRangePart[]>()
   const hiddenSegMap = new Map<EventRenderRange, DayRowEventRange[]>()
   const segTops = new Map<string, number>()
+  const isSlicedMap = new Map<EventRenderRange, boolean>()
 
   let hierarchy = new SegHierarchy<DayRowEventRange>(
     segs,
@@ -47,10 +51,11 @@ export function computeFgSegVerticals(
     allowSlicing, // will use origin-seg heights, not lookup height
   )
   hierarchy.traverseSegs((seg, segTop) => {
+    addToSegMap(visibleSegMap, seg)
+    segTops.set(getEventPartKey(seg), segTop)
+
     if (seg.isSlice) {
-      addToSegMap(slicedSegMap, seg)
-    } else {
-      segTops.set(getEventPartKey(seg), segTop)
+      isSlicedMap.set(seg.eventRange, true)
     }
   })
   for (const hiddenSeg of hierarchy.hiddenSegs) {
@@ -58,11 +63,11 @@ export function computeFgSegVerticals(
   }
 
   // recompute tops while considering slices
-  if (slicedSegMap.size) {
+  // portions of these slices might be added to hiddenSegMap
+  if (isSlicedMap.size) {
     segTops.clear()
-    hiddenSegMap.clear()
     hierarchy = new SegHierarchy<DayRowEventRange>(
-      compileVisibleSegs(segs, slicedSegMap),
+      compileSegMap(segs, visibleSegMap),
       (seg) => segHeightMap.get(getEventPartKey(seg)),
       strictOrder,
       maxCoord,
@@ -92,39 +97,31 @@ export function computeFgSegVerticals(
 
   for (const seg of segs) {
     const { eventRange } = seg
-    const slicedSegs = slicedSegMap.get(eventRange)
+    const visibleSegs = visibleSegMap.get(eventRange) || []
     const hiddenSegs = hiddenSegMap.get(eventRange) || []
-    const visibleSegs = slicedSegs || [seg]
+    const isSliced = isSlicedMap.get(eventRange) || false
 
-    if (slicedSegs) {
-      // when there are slices, the original seg must still be rendered for dimension querying
-      renderableSegsByCol[seg.start].push(seg)
-    }
+    // add orig to renderable
+    renderableSegsByCol[seg.start].push(seg)
 
-    for (const hiddenSeg of hiddenSegs) {
-      for (let col = hiddenSeg.start; col < hiddenSeg.end; col++) {
-        const standin = sliceStandin(hiddenSeg, col)
-        hiddenSegsByCol[col].push(standin)
-
-        // when there are slices, the hiddenSegs contribute to the standin coverage
-        if (slicedSegs) {
-          segsByCol[col].push(standin)
-          renderableSegsByCol[col].push(col === hiddenSeg.start ? hiddenSeg : standin)
-        }
+    // add slices to renderable
+    if (isSliced) {
+      for (const visibleSeg of visibleSegs) {
+        renderableSegsByCol[visibleSeg.start].push(visibleSeg)
       }
     }
 
+    // accumulate segsByCol/heightsByCol for visible segs
     for (const visibleSeg of visibleSegs) {
       for (let col = visibleSeg.start; col < visibleSeg.end; col++) {
-        const standin = sliceStandin(visibleSeg, col)
-        segsByCol[col].push(standin)
-        renderableSegsByCol[col].push(col === visibleSeg.start ? visibleSeg : standin)
+        const slice = sliceSegForCol(visibleSeg, col)
+        segsByCol[col].push(slice)
       }
 
       const segKey = getEventPartKey(visibleSeg)
       const segTop = segTops.get(segKey)
 
-      if (segTop != null) {
+      if (segTop != null) { // positioned?
         const segHeight = segHeightMap.get(segKey)
 
         for (let col = visibleSeg.start; col < visibleSeg.end; col++) {
@@ -132,10 +129,19 @@ export function computeFgSegVerticals(
         }
       }
     }
+
+    // accumulate segsByCol/hiddenSegsByCol for hidden segs
+    for (const hiddenSeg of hiddenSegs) {
+      for (let col = hiddenSeg.start; col < hiddenSeg.end; col++) {
+        const slice = sliceSegForCol(hiddenSeg, col)
+        segsByCol[col].push(slice)
+        hiddenSegsByCol[col].push(slice)
+      }
+    }
   }
 
   return [
-    segsByCol,
+    segsByCol, // visible and hidden
     hiddenSegsByCol,
     renderableSegsByCol,
     segTops,
@@ -154,22 +160,17 @@ function addToSegMap(map: Map<EventRenderRange, DayRowEventRange[]>, seg: DayRow
   list.push(seg)
 }
 
-function compileVisibleSegs(
+/*
+Ensures relative order of DayRowEventRange stays consistent with segs
+*/
+function compileSegMap(
   segs: DayRowEventRange[],
-  slicedSegMap: Map<EventRenderRange, DayRowEventRange[]>,
+  segMap: Map<EventRenderRange, DayRowEventRange[]>,
 ): DayRowEventRange[] {
   const res: DayRowEventRange[] = []
 
   for (const seg of segs) {
-    const slicedSegs = slicedSegMap.get(seg.eventRange)
-
-    if (slicedSegs) {
-      for (let i = 0; i < slicedSegs.length; i++) {
-        res.push(slicedSegs[i])
-      }
-    } else {
-      res.push(seg)
-    }
+    res.push(...(segMap.get(seg.eventRange) || []))
   }
 
   return res
