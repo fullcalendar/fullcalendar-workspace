@@ -7,8 +7,6 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
-  DayGrid
-    liquid-event-width print-view conundrum: force event heights?
   ResourceTimeline
     simplify datagrid column widths, prefer percentages, better for print
   TimeGridLayoutNormal/TimeGridLayoutPannable new print-mode approach
@@ -177,6 +175,7 @@ Changelog
   v7-beta.1 regressions fixed
     daygrid hierarchy stacking (shown in multimonth-view-bug bug)
     listview time text wrong
+  breaking change in list view from 12:00-12:00 -> allDay?
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
