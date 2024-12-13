@@ -23,16 +23,15 @@ export function doCoordRangesIntersect(r0: CoordRange, r1: CoordRange): boolean 
   return r0.end > r1.start && r0.start < r1.end
 }
 
-export function intersectCoordRanges<R extends SlicedCoordRange>(
-  r0: R,
+export function intersectCoordRanges(
+  r0: SlicedCoordRange,
   r1: CoordRange
-): R | undefined {
+): SlicedCoordRange {
   const start = Math.max(r0.start, r1.start)
   const end = Math.min(r0.end, r1.end)
 
   if (start < end) {
     return {
-      ...r0,
       start,
       end,
       isStart: r0.isStart && start === r0.start,

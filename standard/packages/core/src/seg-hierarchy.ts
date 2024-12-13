@@ -78,25 +78,29 @@ export class SegHierarchy<R extends SlicedCoordRange> {
         // is there a touching-seg?
         if (touchingPlacement) {
 
-          // consume the touching-seg?
+          // should we hide or reslice touchingPlacement?
           if (this.hiddenConsumes && !touchingPlacement.isZombie) {
             touchingPlacement.isZombie = true // edit in-place
+            this.hiddenSegs.push(touchingPlacement)
 
             if (this.allowSlicing) {
-              const intersection = intersectCoordRanges(touchingPlacement, seg)
-              Object.assign(touchingPlacement, intersection) // edit in-place
-              touchingPlacement.isSlice = true // edit in-place
-              this.hiddenSegs.push(touchingPlacement)
-              this.splitSeg(touchingPlacement, touchingPlacement.thickness, seg)
-            } else {
-              this.hiddenSegs.push(touchingPlacement)
+              const newSeg: EventSeg<R> = Object.assign({}, touchingPlacement) // copy
+
+              // slice touchingPlacement in-place
+              Object.assign(touchingPlacement, intersectCoordRanges(touchingPlacement, seg))
+              touchingPlacement.isSlice = true
+
+              // try to reinsert touchingPlacement's seg
+              this.splitSeg(newSeg, touchingPlacement.thickness, touchingPlacement)
             }
           }
 
-          // record seg as hidden
+          // record seg as hidden, potentially split by touchingPlacement
           if (this.allowSlicing) {
-            const intersection = intersectCoordRanges(seg, touchingPlacement)
-            this.hiddenSegs.push({ ...seg, ...intersection })
+            this.hiddenSegs.push({
+              ...seg,
+              ...intersectCoordRanges(seg, touchingPlacement),
+            })
             this.splitSeg(seg, segThickness, touchingPlacement)
           } else {
             this.hiddenSegs.push(seg)
@@ -104,7 +108,6 @@ export class SegHierarchy<R extends SlicedCoordRange> {
 
         // not touching anything
         } else {
-          // record seg as hidden
           this.hiddenSegs.push(seg)
         }
       }
@@ -120,7 +123,7 @@ export class SegHierarchy<R extends SlicedCoordRange> {
   }
 
   /*
-  Does not add to hiddenSegs
+  Does not add the portion that intersects with barrier to hiddenSegs
   */
   private splitSeg(
     seg: EventSeg<R>,

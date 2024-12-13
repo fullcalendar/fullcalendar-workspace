@@ -177,6 +177,9 @@ Changelog
     timeline now-indicator div covering events: https://github.com/fullcalendar/fullcalendar/issues/7798
   I refactored a lot of event time-range text-generation. fixed any bugs? (esp with list-view?)
     https://github.com/fullcalendar/fullcalendar/issues/3038
+  v7-beta.1 regressions fixed
+    daygrid hierarchy stacking (shown in multimonth-view-bug bug)
+    listview time text wrong
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078

@@ -60,6 +60,7 @@ export function computeFgSegVerticals(
   // recompute tops while considering slices
   if (slicedSegMap.size) {
     segTops.clear()
+    hiddenSegMap.clear()
     hierarchy = new SegHierarchy<DayRowEventRange>(
       compileVisibleSegs(segs, slicedSegMap),
       (seg) => segHeightMap.get(getEventPartKey(seg)),
@@ -126,7 +127,7 @@ export function computeFgSegVerticals(
       if (segTop != null) {
         const segHeight = segHeightMap.get(segKey)
 
-        for (let col = seg.start; col < seg.end; col++) {
+        for (let col = visibleSeg.start; col < visibleSeg.end; col++) {
           heightsByCol[col] = Math.max(heightsByCol[col], segTop + segHeight)
         }
       }
