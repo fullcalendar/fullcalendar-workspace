@@ -51,7 +51,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
     return (
       <div
         role="row"
-        className='fc-flex-row'
+        className='fc-flex-row fc-grow'
       >
         {colSpecs.map((colSpec, colIndex) => {
           return (

@@ -307,10 +307,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 <Scroller
                   horizontal
                   hideScrollbars
-                  className='fc-flex-row fc-grow'
+                  className='fc-flex-col fc-grow'
                   ref={this.spreadsheetHeaderScrollerRef}
                 >
-                  <div className='fc-flex-row' style={{ width: spreadsheetCanvasWidth }}>
+                  <div className='fc-flex-col fc-grow' style={{ width: spreadsheetCanvasWidth }}>
                     <HeaderRow
                       colSpecs={colSpecs}
                       colWidths={spreadsheetColWidths}
