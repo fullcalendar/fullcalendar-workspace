@@ -58,6 +58,7 @@ import { ResizableTwoCol } from './ResizableTwoCol.js'
 import { BodySection } from './spreadsheet/BodySection.js'
 import { HeaderRow } from './spreadsheet/HeaderRow.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
+import { pixelizeDimConfigs } from '../col-positioning.js'
 
 interface ResourceTimelineLayoutNormalProps {
   tDateProfile: TimelineDateProfile
@@ -81,17 +82,18 @@ interface ResourceTimelineLayoutNormalProps {
 
   slotWidth: number | undefined
   timeCanvasWidth: number | undefined
-  spreadsheetColWidths: number[]
-  spreadsheetCanvasWidth: number | undefined
+  spreadsheetColWidthConfigs: { pixels: number, frac: number, grow: number, min: number }[]
 
+  spreadsheetClientWidthRef?: Ref<number>
   timeClientWidthRef: Ref<number>
-  onSpreadsheetColWidthOverrides: (widths: number[]) => void
-  spreadsheetClientWidthRef: Ref<number>
   slotInnerWidthRef: Ref<number>
 
+  // handlers
+  onColResize?: (colIndex: number, newWidth: number) => void
+
   // resource area
-  initialResourceAreaWidth?: CssDimValue
-  resourceAreaWidthRef?: Ref<CssDimValue>
+  initialSpreadsheetWidth?: CssDimValue
+  spreadsheetWidthRef?: Ref<CssDimValue>
 
   // scroll
   initialScroll?: TimeScroll & EntityScroll
@@ -111,6 +113,7 @@ export interface TimeScroll {
 interface ResourceTimelineViewState {
   timeClientHeight?: number
   endScrollbarWidth?: number
+  spreadsheetClientWidth?: number
   spreadsheetBottomScrollbarWidth?: number
   timeBottomScrollbarWidth?: number
 }
@@ -118,6 +121,7 @@ interface ResourceTimelineViewState {
 export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimelineLayoutNormalProps, ResourceTimelineViewState> {
   // memoized
   private buildResourceLayouts = memoize(buildResourceLayouts)
+  private compileColWidths = memoize(compileColWidths)
 
   // TODO: make this nice
   // This is a means to recompute row positioning when *HeightMaps change
@@ -229,7 +233,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     const { timeCanvasWidth, slotWidth } = props
 
-    const { spreadsheetColWidths, spreadsheetCanvasWidth } = props
+    const [colWidthConfigs, spreadsheetCanvasWidth] = this.compileColWidths(
+      props.spreadsheetColWidthConfigs,
+      state.spreadsheetClientWidth,
+    )
 
     /* event display */
 
@@ -270,8 +277,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         viewSpec={viewSpec}
       >
         <ResizableTwoCol
-          initialStartWidth={props.initialResourceAreaWidth}
-          startWidthRef={props.resourceAreaWidthRef}
+          initialStartWidth={props.initialSpreadsheetWidth}
+          startWidthRef={props.spreadsheetWidthRef}
           className={verticalScrolling ? 'fc-liquid' : ''}
 
           /* spreadsheet
@@ -310,17 +317,15 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   className='fc-flex-col fc-grow'
                   ref={this.spreadsheetHeaderScrollerRef}
                 >
-                  <div className='fc-flex-col fc-grow' style={{ width: spreadsheetCanvasWidth }}>
+                  <div className='fc-flex-col fc-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
                     <HeaderRow
                       colSpecs={colSpecs}
-                      colWidths={spreadsheetColWidths}
+                      colWidthConfigs={colWidthConfigs}
                       indent={props.hasNesting}
 
                       // refs
                       innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
-
-                      // handlers
-                      onColWidthOverrides={props.onSpreadsheetColWidthOverrides}
+                      onColResize={props.onColResize}
                     />
                   </div>
                 </Scroller>
@@ -337,12 +342,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   verticalScrolling && 'fc-liquid',
                 )}
                 ref={this.spreadsheetBodyScrollerRef}
-                clientWidthRef={props.spreadsheetClientWidthRef}
+                clientWidthRef={this.handleSpreadsheetClientWidth}
               >
                 <div
                   className='fc-rel fc-grow fc-flex-col'
                   style={{
-                    width: spreadsheetCanvasWidth,
+                    minWidth: spreadsheetCanvasWidth,
                     paddingTop: totalBodyHeight, // to push down filler div at end, and give height
                   }}
                 >
@@ -350,7 +355,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     flatResourceLayouts={flatResourceLayouts}
                     flatGroupRowLayouts={flatGroupRowLayouts}
                     flatGroupColLayouts={flatGroupColLayouts}
-                    colWidths={spreadsheetColWidths}
+                    colWidthConfigs={colWidthConfigs}
                     colSpecs={colSpecs}
                     rowInnerHeightRefMap={this.dataGridEntityInnerHeightMap}
                     rowTops={bodyTops}
@@ -645,15 +650,22 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  handleTimeClientHeight = (height: number) => {
+  handleTimeClientHeight = (timeClientHeight: number) => {
     this.setState({
-      timeClientHeight: height,
+      timeClientHeight,
     })
   }
 
   handleEndScrollbarWidth = (endScrollbarWidth: number) => {
     this.setState({
       endScrollbarWidth,
+    })
+  }
+
+  handleSpreadsheetClientWidth = (spreadsheetClientWidth: number) => {
+    setRef(this.props.spreadsheetClientWidthRef, spreadsheetClientWidth)
+    this.setState({
+      spreadsheetClientWidth,
     })
   }
 
@@ -926,4 +938,23 @@ function computeHeaderHeight(
     dataGridH + (hasDateGridSuperHeader ? ROW_BORDER_WIDTH : 0),
     timelineH + ROW_BORDER_WIDTH * (timelineHeaderRowCnt - 1),
   )
+}
+
+function compileColWidths(
+  colWidthConfigs: { pixels: number, frac: number, grow: number, min: number }[],
+  clientWidth: number | undefined,
+): [
+  pixelConfigs: { pixels: number, grow: number }[],
+  canvasMinWidth: number,
+] {
+  if (clientWidth != null) {
+    const [colWidths, canvasMinWidth] = pixelizeDimConfigs(colWidthConfigs, clientWidth)
+
+    return [
+      colWidths.map((colWidth) => ({ pixels: colWidth, grow: 0 })),
+      canvasMinWidth,
+    ]
+  }
+
+  return [colWidthConfigs, undefined] // NOT A GREAT IDEA TO 000 !!!
 }

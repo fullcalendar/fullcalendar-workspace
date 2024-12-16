@@ -13,7 +13,7 @@ export interface HeaderCellProps {
   innerHeightRef?: Ref<number>
 
   // size
-  width?: number
+  widthConfig: { pixels: number, grow: number }
 }
 
 export class HeaderCell extends BaseComponent<HeaderCellProps> {
@@ -24,7 +24,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
   private disconnectInnerHeight?: () => void
 
   render() {
-    let { colSpec, resizer, resizerElRef, width, borderStart } = this.props
+    let { colSpec, resizer, resizerElRef, widthConfig, borderStart } = this.props
     let renderProps: ColHeaderContentArg = { view: this.context.viewApi }
 
     // need empty inner div for abs positioning for resizer
@@ -40,7 +40,9 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
           borderStart && 'fc-border-s',
         )}
         style={{
-          width,
+          minWidth: 0,
+          width: widthConfig.pixels,
+          flexGrow: widthConfig.grow,
         }}
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"

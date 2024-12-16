@@ -1,4 +1,3 @@
-import { CssDimValue } from '@fullcalendar/core'
 import { BaseComponent, ContentContainer, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
 import { ColSpec, ColCellContentArg } from '@fullcalendar/resource'
@@ -6,13 +5,16 @@ import { ColSpec, ColCellContentArg } from '@fullcalendar/resource'
 export interface GroupTallCellProps {
   colSpec: ColSpec
   fieldValue: any
-  width?: CssDimValue
+  widthConfig?: { pixels: number, grow: number }
   className?: string // needed?
 
   // refs
   innerHeightRef?: Ref<number>
 }
 
+/*
+NOT a good name anymore, because not always "tall", when in print-view
+*/
 export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
   // ref
   private innerElRef = createRef<HTMLDivElement>()
@@ -40,9 +42,11 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
           'fc-resource-group fc-cell',
           props.className,
         )}
-        style={{
-          width: props.width,
-        }}
+        style={props.widthConfig ? {
+          minWidth: 0,
+          width: props.widthConfig.pixels,
+          flexGrow: props.widthConfig.grow,
+        } : {}}
         renderProps={renderProps}
         generatorName="resourceGroupLabelContent"
         customGenerator={colSpec.cellContent}

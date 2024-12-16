@@ -20,20 +20,16 @@ import {
   computeSlotWidth,
   TimelineLaneSlicer
 } from '@fullcalendar/timeline/internal'
-import {
-  processSpreadsheetColWidthConfigs,
-  processSpreadsheetColWidthOverrides
-} from '../col-positioning.js'
 import { EntityScroll, ResourceTimelineLayoutNormal, TimeScroll } from './ResourceTimelineLayoutNormal.js'
 import { ResourceTimelineLayoutPrint } from './ResourceTimelineLayoutPrint.js'
 import { processColOptions } from '../col-options.js'
 import { CssDimValue } from '@fullcalendar/core'
 
 interface ResourceTimelineViewState {
-  spreadsheetColWidthOverrides?: number[]
-  spreadsheetClientWidth?: number
-  slotInnerWidth?: number
+  colWidthOverrides?: { pixels: number, frac: number, grow: number, min: number }[]
+  spreadsheetClientWidth?: number // pixel-width of scroll inner area
   timeClientWidth?: number
+  slotInnerWidth?: number
 }
 
 export class ResourceTimelineView extends DateComponent<ResourceViewProps, ResourceTimelineViewState> {
@@ -47,7 +43,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
   // ref
   private scrollRef = createRef<EntityScroll & TimeScroll>()
-  private resourceAreaWidthRef = createRef<CssDimValue>()
+  private spreadsheetWidthRef = createRef<CssDimValue>() // the CSS dimension. could be percent
 
   // internal
   private resourceSplitter = new ResourceSplitter()
@@ -80,6 +76,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       superHeaderRendering,
     } = this.processColOptions(context.options)
 
+    /* spreadsheet col widths */
+
+    let spreadsheetColWidthConfigs = state.colWidthOverrides || initialColWidthConfigs
+
     /* table hierarchy */
 
     let resourceHierarchy = this.buildResourceHierarchy(
@@ -99,11 +99,6 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       state.slotInnerWidth, // is ACTUALLY the last-level label width. rename?
       state.timeClientWidth
     )
-
-    let [spreadsheetColWidths, spreadsheetCanvasWidth] =
-      state.spreadsheetColWidthOverrides
-        ? processSpreadsheetColWidthOverrides(state.spreadsheetColWidthOverrides, state.spreadsheetClientWidth)
-        : processSpreadsheetColWidthConfigs(initialColWidthConfigs, state.spreadsheetClientWidth)
 
     /* event display */
 
@@ -145,30 +140,31 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             fallbackBusinessHours,
             slotWidth,
             timeCanvasWidth,
-            spreadsheetColWidths,
-            spreadsheetCanvasWidth
+            spreadsheetClientWidth: state.spreadsheetClientWidth,
+            spreadsheetColWidthConfigs,
           }
 
           return props.forPrint ? (
             <ResourceTimelineLayoutPrint
               {...baseProps}
-              resourceAreaWidth={this.resourceAreaWidthRef.current}
+              spreadsheetWidth={this.spreadsheetWidthRef.current}
+              spreadsheetClientWidth={state.spreadsheetClientWidth}
               timeAreaOffset={this.scrollRef.current.x /* for simulating horizontal scroll */}
             />
           ) : (
             <ResourceTimelineLayoutNormal
               {...baseProps}
               timeClientWidthRef={this.handleTimeClientWidth}
-              onSpreadsheetColWidthOverrides={this.handleSpreadsheetColWidthOverrides}
-              spreadsheetClientWidthRef={this.handleSpreadsheetClientWidth}
               slotInnerWidthRef={this.handleSlotInnerWidth}
-              initialResourceAreaWidth={
-                this.resourceAreaWidthRef.current ?? // try save-state first
+              initialSpreadsheetWidth={
+                this.spreadsheetWidthRef.current ?? // try save-state first
                   options.resourceAreaWidth
               }
-              resourceAreaWidthRef={this.resourceAreaWidthRef}
+              spreadsheetWidthRef={this.spreadsheetWidthRef}
+              spreadsheetClientWidthRef={this.handleSpreadsheetClientWidth}
               scrollRef={this.scrollRef}
               initialScroll={this.scrollRef.current /* for reviving after print-view */}
+              onColResize={this.handleColResize}
             />
           )
         }}
@@ -176,8 +172,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     )
   }
 
-  handleSpreadsheetColWidthOverrides = (spreadsheetColWidthOverrides: number[]) => {
-    this.setState({ spreadsheetColWidthOverrides })
+  handleColResize = (colIndex: number, newWidth: number) => {
+    console.log('resize', colIndex, newWidth)
   }
 
   handleSpreadsheetClientWidth = (spreadsheetClientWidth: number | null) => {
@@ -186,15 +182,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     }
   }
 
-  handleSlotInnerWidth = (slotInnerWidth: number | null) => {
-    if (slotInnerWidth != null) {
-      this.setState({ slotInnerWidth })
-    }
-  }
-
   handleTimeClientWidth = (timeClientWidth: number | null) => {
     if (timeClientWidth != null) {
       this.setState({ timeClientWidth })
+    }
+  }
+
+  handleSlotInnerWidth = (slotInnerWidth: number | null) => {
+    if (slotInnerWidth != null) {
+      this.setState({ slotInnerWidth })
     }
   }
 }

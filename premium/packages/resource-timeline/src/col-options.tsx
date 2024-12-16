@@ -1,7 +1,9 @@
 import { ViewOptionsRefined } from '@fullcalendar/core/internal'
 import { ColSpec } from '@fullcalendar/resource'
 import { GroupSpec, DEFAULT_RESOURCE_ORDER } from '@fullcalendar/resource/internal'
-import { ColWidthConfig, parseColWidthConfig } from './col-positioning.js'
+import { ensureDimConfigsGrow, parseSiblingDimConfig } from './col-positioning.js'
+
+const SPREADSHEET_COL_MIN_WIDTH = 50
 
 export function processColOptions(options: ViewOptionsRefined) {
   let allColSpecs: ColSpec[] = options.resourceAreaColumns || []
@@ -92,9 +94,15 @@ export function processColOptions(options: ViewOptionsRefined) {
 
   const colSpecs = groupColSpecs.concat(resourceColSpecs)
 
-  const colWidthConfigs: ColWidthConfig[] = colSpecs.map((colSpec) => (
-    parseColWidthConfig(colSpec.width)
+  const colWidthConfigs = colSpecs.map((colSpec) => (
+    parseSiblingDimConfig(
+      colSpec.width,
+      /* grow = */ undefined,
+      SPREADSHEET_COL_MIN_WIDTH,
+    )
   ))
+
+  ensureDimConfigsGrow(colWidthConfigs)
 
   return {
     groupSpecs,

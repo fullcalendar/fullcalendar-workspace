@@ -1,6 +1,7 @@
 import { CssDimValue } from '@fullcalendar/core'
-import { BaseComponent, ElementDragging, PointerDragEvent, setRef, joinClassNames } from '@fullcalendar/core/internal'
+import { BaseComponent, ElementDragging, PointerDragEvent, setRef, joinClassNames, memoize } from '@fullcalendar/core/internal'
 import { ComponentChildren, Ref, createElement, createRef } from '@fullcalendar/core/preact'
+import { parseDimConfig, resizeDimConfig, serializeDimConfig } from '../col-positioning.js'
 
 export interface ResizableTwoColProps {
   className?: string
@@ -11,28 +12,33 @@ export interface ResizableTwoColProps {
   elRef?: Ref<HTMLDivElement>
 
   initialStartWidth: CssDimValue
-  startWidthRef?: Ref<CssDimValue>
+  startWidthRef?: Ref<CssDimValue> // fires after drag end
 }
 
 interface ResizableTwoColState {
-  startWidthOverride: number | undefined
+  widthOverride: { pixels: number, frac: number, min: number }
 }
 
 const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 
 export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, ResizableTwoColState> {
+  // memo
+  parseWidthConfig = memoize(parseDimConfig)
+
+  // ref
   rootEl: null | HTMLDivElement = null
   startElRef = createRef<HTMLDivElement>()
   resizerElRef = createRef<HTMLDivElement>()
 
   // internal
-  startWidth: number // weird names, might get confused with dragging start/end
-  endWidth: number //
+  widthConfig?: { pixels: number, frac: number, min: number }
   resizerDragging: ElementDragging
 
   render() {
     const { props, state } = this
-    const resourceAreaWidth = state.startWidthOverride ?? props.initialStartWidth
+
+    const initialWidthConfig = this.parseWidthConfig(props.initialStartWidth, MIN_RESOURCE_AREA_WIDTH)
+    const widthConfig = this.widthConfig = state.widthOverride || initialWidthConfig
 
     return (
       <div
@@ -41,7 +47,9 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
       >
         <div
           class={props.startClassName}
-          style={{ width: resourceAreaWidth }}
+          style={{
+            width: serializeDimConfig(widthConfig),
+          }}
           ref={this.startElRef}
         >
           {props.startContent}
@@ -69,42 +77,40 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
   }
 
   componentDidMount() {
-    const { props, context } = this
-    const { isRtl, pluginHooks } = context
-    const ElementDraggingImpl = pluginHooks.elementDraggingImpl
+    const ElementDraggingImpl = this.context.pluginHooks.elementDraggingImpl
 
     if (ElementDraggingImpl) {
       let dragging = this.resizerDragging = new ElementDraggingImpl(this.resizerElRef.current)
-      let dragStartWidth: number
-      let viewWidth: number
-      let newWidth: number | undefined
 
       dragging.emitter.on('dragstart', () => {
-        viewWidth = this.rootEl.getBoundingClientRect().width
-        dragStartWidth = this.startElRef.current.getBoundingClientRect().width
-        newWidth = dragStartWidth
-      })
+        const viewWidth = this.rootEl.getBoundingClientRect().width
+        const origWidth = this.startElRef.current.getBoundingClientRect().width
+        const origWidthConfig = this.widthConfig
+        let newWidthConfig: { pixels: number, frac: number, min: number } | undefined
 
-      dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
-        newWidth = dragStartWidth + pev.deltaX * (isRtl ? -1 : 1)
-        newWidth = Math.max(newWidth, MIN_RESOURCE_AREA_WIDTH)
-        newWidth = Math.min(newWidth, viewWidth - MIN_RESOURCE_AREA_WIDTH)
+        dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
+          let newWidth = Math.min(
+            origWidth + pev.deltaX * (this.context.isRtl ? -1 : 1),
+            viewWidth,
+          )
+          newWidthConfig = resizeDimConfig(origWidthConfig, newWidth, viewWidth)
 
-        this.setState({
-          startWidthOverride: newWidth,
+          this.setState({
+            widthOverride: newWidthConfig,
+          })
         })
-      })
 
-      dragging.emitter.on('dragend', () => {
-        if (newWidth !== dragStartWidth) {
-          setRef(props.startWidthRef, newWidth)
-        }
-      })
+        dragging.emitter.on('dragend', () => {
+          if (newWidthConfig) {
+            setRef(this.props.startWidthRef, serializeDimConfig(newWidthConfig))
+          }
+        })
 
-      dragging.setAutoScrollEnabled(false) // because gets weird with auto-scrolling time area
+        dragging.setAutoScrollEnabled(false) // because gets weird with auto-scrolling time area
+      })
     }
 
-    setRef(props.startWidthRef, props.initialStartWidth)
+    setRef(this.props.startWidthRef, this.props.initialStartWidth)
   }
 
   componentWillUnmount() {

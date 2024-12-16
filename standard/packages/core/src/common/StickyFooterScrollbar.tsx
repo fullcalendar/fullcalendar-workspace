@@ -1,10 +1,11 @@
-import { watchHeight } from '../internal.js'
+import { CssDimValue } from '../scrollgrid/util.js'
+import { watchHeight } from '../component-util/resize-observer.js'
 import { createElement, createRef, Ref } from '../preact.js'
 import { Scroller } from '../scrollgrid/Scroller.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
 
 export interface StickyFooterScrollbarProps {
-  canvasWidth: number
+  canvasWidth: CssDimValue
   scrollerRef?: Ref<Scroller>
   scrollbarWidthRef?: Ref<number>
 }
@@ -23,7 +24,7 @@ export class StickyFooterScrollbar extends BaseComponent<StickyFooterScrollbarPr
     return (
       <div ref={this.rootElRef} className='fc-sticky-footer-scrollbar'>
         <Scroller horizontal ref={props.scrollerRef}>
-          <div style={{ width: props.canvasWidth }} />
+          <div style={{ minWidth: props.canvasWidth }} />
         </Scroller>
       </div>
     )

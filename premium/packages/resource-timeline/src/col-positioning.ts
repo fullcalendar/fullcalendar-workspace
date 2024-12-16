@@ -1,130 +1,200 @@
 
-// Config
-// -------------------------------------------------------------------------------------------------
+import { CssDimValue } from "@fullcalendar/core"
+import { fracToCssDim } from "@fullcalendar/core/internal"
 
-export interface ColWidthConfig {
-  pixels?: number
-  frac?: number
-}
+export function parseDimConfig(
+  input: CssDimValue | undefined,
+  minDim = 0,
+): { pixels: number, frac: number, min: number } | undefined {
+  if (input != null) {
+    if (typeof input === 'string') {
+      let m = input.match(/^(.*)(%|px)$/)
 
-export function parseColWidthConfig(width: number | string): ColWidthConfig {
-  if (width != null) {
-    if (typeof width === 'string') {
-      const m = width.match(/^(.*)%$/)
       if (m) {
-        const numerator = parseFloat(m[0])
-        if (!isNaN(numerator)) {
-          return { frac: numerator / 100 }
-        } else {
-          return {}
-        }
-      } else {
-        width = parseFloat(width)
-        if (isNaN(width)) {
-          return {}
+        const num = parseFloat(m[1])
+
+        if (!isNaN(num)) {
+          if (m[2] === '%') {
+            return { pixels: 0, frac: num / 100, min: minDim }
+          } else {
+            return { pixels: num, frac: 0, min: minDim }
+          }
         }
       }
-    }
-    if (typeof width === 'number') {
-      return { pixels: width }
+    } else if (typeof input === 'number' && !isNaN(input)) {
+      return { pixels: input, frac: 0, min: minDim }
     }
   }
-  return {}
 }
 
-// Size Computations
-// -------------------------------------------------------------------------------------------------
+export function parseSiblingDimConfig(
+  input: CssDimValue | undefined,
+  grow: number | undefined, // TODO: use (and sanitize)
+  minDim: number | undefined,
+): { pixels: number, frac: number, grow: number, min: number } {
+  const partialDimConfig = parseDimConfig(input, minDim)
 
-export const SPREADSHEET_COL_MIN_WIDTH = 20
-
-export function processSpreadsheetColWidthConfigs(
-  colWidthConfigs: ColWidthConfig[],
-  availableWidth: number | undefined
-): [colWidths: number[], totalWidth: number | undefined] {
-  if (availableWidth == null) {
-    return [[], undefined]
-  }
-
-  let colWidths: number[] = []
-  let totalWidth = 0
-  let fracDenom = 0
-  let numFracCols = 0
-  let numUnknownFracCols = 0
-
-  // consume pixel-based width first
-  for (const c of colWidthConfigs) {
-    if (c.pixels != null) {
-      const w = Math.max(c.pixels, SPREADSHEET_COL_MIN_WIDTH)
-      colWidths.push(w)
-      totalWidth += w
-    } else {
-      colWidths.push(0)
-      numFracCols++
-
-      if (c.frac != null) {
-        fracDenom += c.frac
-      } else {
-        numUnknownFracCols++
-      }
-    }
-  }
-
-  const defaultFrac = 1 / numFracCols
-  fracDenom += numUnknownFracCols * defaultFrac
-
-  const leftoverWidth = Math.max(0, availableWidth - totalWidth)
-  let i = 0
-
-  // leftover width goes to frac-based width
-  for (const c of colWidthConfigs) {
-    if (c.pixels == null) {
-      const frac = c.frac ?? defaultFrac
-      const w = Math.max(frac / fracDenom * leftoverWidth, SPREADSHEET_COL_MIN_WIDTH)
-      colWidths[i] = w
-      totalWidth += w
-    }
-    i++
-  }
-
-  return [colWidths, totalWidth]
+  return partialDimConfig
+    ? { ...partialDimConfig, grow: grow || 0 }
+    : { pixels: 0, frac: 0, grow: grow || 1, min: minDim }
 }
 
-export function processSpreadsheetColWidthOverrides(
-  colWidthOverrides: number[], // already ensured >= SPREADSHEET_COL_MIN_WIDTH
-  availableWidth: number | undefined,
-): [colWidth: number[], totalWidth: number | undefined] {
-  if (availableWidth == null) {
-    return [[], undefined]
+/*
+Ensure at least one column can grow
+Mutates in-place
+*/
+export function ensureDimConfigsGrow(dimConfigs: { grow: number }[]): void {
+  for (const dimConfig of dimConfigs) {
+    if (dimConfig.grow) {
+      return
+    }
   }
 
-  let colWidths: number[] = []
-  let totalWidth = 0
-
-  for (const w of colWidthOverrides) {
-    colWidths.push(w)
-    totalWidth += w
+  // make all expand equally
+  for (const dimConfig of dimConfigs) {
+    dimConfig.grow = 1
   }
-
-  if (totalWidth < availableWidth) {
-    colWidths[colWidthOverrides.length - 1] += (availableWidth - totalWidth)
-    totalWidth = availableWidth
-  }
-
-  return [colWidths, totalWidth]
 }
 
-export function sliceSpreadsheetColWidth(
-  colWidths: number[],
-  startIndex: number,
-  endIndex = colWidths.length
-): number | undefined {
-  if (colWidths.length) {
-    let total = 0
+export function pixelizeDimConfigs(
+  dimConfigs: { pixels: number, frac: number, grow: number, min: number }[],
+  clientDim: number,
+): [
+  pixelDims: number[],
+  minCanvasDim: number,
+] {
+  const pixelDims: number[] = []
+  let preGrowTotal = 0
+  let growDenom = 0
 
-    for (let i = startIndex; i < endIndex; i++) {
-      total += colWidths[i]
-    }
+  for (const dimConfig of dimConfigs) {
+    const constrainedPixels = Math.max(
+      dimConfig.pixels + (dimConfig.frac * clientDim),
+      dimConfig.min,
+    )
 
-    return total
+    pixelDims.push(constrainedPixels)
+    preGrowTotal += constrainedPixels
+    growDenom += dimConfig.grow
   }
+
+  if (preGrowTotal < clientDim) {
+    const remainder = clientDim - preGrowTotal
+
+    for (let i = 0; i < dimConfigs.length; i++) {
+      pixelDims[i] += remainder * (dimConfigs[i].grow / growDenom)
+    }
+  }
+
+  return [pixelDims, preGrowTotal]
+}
+
+export function portabilizeDimConfigs(
+  dimConfigs: { pixels: number, frac: number, grow: number, min: number }[],
+  clientDim: number,
+): [
+  portableDimConfigs: { pixels: number, grow: number }[],
+  minCanvasDim: CssDimValue,
+] {
+  const [pixelDims] = pixelizeDimConfigs(dimConfigs, clientDim)
+  const portableDimConfigs: { pixels: number, grow: number }[] = []
+
+  let pixelTotal = 0
+  let fracTotal = 0
+
+  for (let i = 0; i < dimConfigs.length; i++) {
+    const dimConfig = dimConfigs[i]
+    const constrainedPixels = Math.max(
+      dimConfig.pixels,
+      dimConfig.min,
+    )
+
+    portableDimConfigs.push({
+      pixels: constrainedPixels,
+      grow: pixelDims[i] - constrainedPixels, // a pixel value, but used as a proportion
+    })
+
+    pixelTotal += dimConfig.pixels
+    fracTotal += dimConfig.frac
+  }
+
+  const minCanvasDim = serializeDimConfig({
+    pixels: pixelTotal,
+    frac: fracTotal,
+  })
+
+  return [portableDimConfigs, minCanvasDim]
+}
+
+export function serializeDimConfig(
+  { pixels, frac }: { pixels: number, frac: number }
+): CssDimValue {
+  if (!frac) {
+    return pixels
+  }
+  if (!pixels) {
+    return fracToCssDim(frac)
+  }
+  return `calc(${fracToCssDim(frac)} + ${pixels}px)`
+}
+
+export function resizeSiblingDimConfig(
+  dimConfigs: { pixels: number, frac: number, grow: number, min: number }[],
+  pixelDims: number[],
+  clientDim: number,
+  resizeIndex: number,
+  resizeDim: number,
+): { pixels: number, frac: number, grow: number, min: number }[] {
+  const newDimConfigs: { pixels: number, frac: number, grow: number, min: number }[] = []
+
+  for (let i = 0; i < resizeIndex; i++) {
+    newDimConfigs.push(resizeDimConfig(dimConfigs[i], pixelDims[i], clientDim))
+  }
+
+  newDimConfigs.push(resizeDimConfig(dimConfigs[resizeIndex], resizeDim, clientDim))
+
+  const len = dimConfigs.length
+  let anyGrow = false
+
+  for (let i = resizeIndex + 1; i < len; i++) {
+    const dimConfig = dimConfigs[i]
+    newDimConfigs.push(dimConfig)
+
+    if (dimConfig.grow) {
+      anyGrow = true
+    }
+  }
+
+  if (!anyGrow) {
+    for (let i = resizeIndex + 1; i < len; i++) {
+      newDimConfigs[i] = Object.assign({}, newDimConfigs[i], { grow: 1 })
+    }
+  }
+
+  return newDimConfigs
+}
+
+export function resizeDimConfig(
+  dimConfig: { pixels: number, min: number },
+  newPixels: number,
+  clientDim: number,
+): { pixels: number, frac: number, grow: number, min: number } {
+  const { min } = dimConfig
+  newPixels = Math.max(min, newPixels)
+
+  if (dimConfig.pixels) {
+    return { pixels: newPixels, frac: 0, grow: 0, min }
+  }
+
+  return { pixels: 0, frac: newPixels / clientDim, grow: 0, min }
+}
+
+export function sumPixels(dimConfigs: { pixels: number }[]): number {
+  let sum = 0
+
+  for (const dimConfig of dimConfigs) {
+    sum += dimConfig.pixels
+  }
+
+  return sum
 }

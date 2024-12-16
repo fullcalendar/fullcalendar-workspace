@@ -22,7 +22,7 @@ export interface ResourceCellProps {
   hasChildren: boolean
   isExpanded: boolean
   innerHeightRef?: Ref<number>
-  width?: number
+  widthConfig: { pixels: number, grow: number }
   className?: string
 }
 
@@ -33,7 +33,8 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
 
   render() {
     let { props, context } = this
-    let { colSpec } = props
+    let { colSpec, widthConfig } = props
+
     let renderProps = this.refineRenderProps({
       resource: props.resource,
       fieldValue: props.fieldValue,
@@ -53,7 +54,9 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           props.className,
         )}
         style={{
-          width: props.width,
+          minWidth: 0,
+          width: widthConfig.pixels,
+          flexGrow: widthConfig.grow,
         }}
         renderProps={renderProps}
         generatorName={colSpec.isMain ? 'resourceLabelContent' : undefined}

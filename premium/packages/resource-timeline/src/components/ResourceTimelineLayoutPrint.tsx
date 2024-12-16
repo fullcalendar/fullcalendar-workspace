@@ -36,6 +36,7 @@ import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
 import { ResourceGroupCells } from './spreadsheet/ResourceGroupCells.js'
 import { CssDimValue } from '@fullcalendar/core'
+import { portabilizeDimConfigs } from '../col-positioning.js'
 
 export interface ResourceTimelineLayoutPrintProps {
   tDateProfile: TimelineDateProfile
@@ -57,12 +58,11 @@ export interface ResourceTimelineLayoutPrintProps {
   hasResourceBusinessHours: boolean
   fallbackBusinessHours: EventStore
 
-  slotWidth: number
-  timeCanvasWidth: number
-  spreadsheetColWidths: number[]
-  spreadsheetCanvasWidth: number
-
-  resourceAreaWidth: CssDimValue
+  slotWidth: number | undefined
+  timeCanvasWidth: number | undefined
+  spreadsheetColWidthConfigs: { pixels: number, frac: number, grow: number, min: number }[]
+  spreadsheetWidth: CssDimValue // the CSS dimension. could be percent
+  spreadsheetClientWidth: number | undefined // pixel-width of scroll inner area
   timeAreaOffset: number
 }
 
@@ -71,6 +71,7 @@ const BG_HEIGHT = 100000
 export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineLayoutPrintProps> {
   // memoized
   private buildPrintLayouts = memoize(buildPrintLayouts)
+  private compileColWidths = memoize(compileColWidths)
 
   render() {
     let { props, context } = this
@@ -78,10 +79,15 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
     let { options, viewSpec } = context
 
     const { tDateProfile, todayRange, nowDate } = props
-    const { slotWidth, timeCanvasWidth, spreadsheetColWidths, spreadsheetCanvasWidth } = props
+    const { slotWidth, timeCanvasWidth } = props
     const { hasResourceBusinessHours, fallbackBusinessHours } = props
     const { splitProps, bgSlicedProps } = props
     const { superHeaderRendering, groupColCnt, colSpecs } = props
+
+    const [colWidthConfigs, spreadsheetCanvasWidth] = this.compileColWidths(
+      props.spreadsheetColWidthConfigs,
+      props.spreadsheetClientWidth,
+    )
 
     const { cellRows } = tDateProfile
 
@@ -109,20 +115,20 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           <div className='fc-flex-row'>
 
             {/* DataGrid HEADER */}
-            <div className='fc-flex-col' style={{ width: props.resourceAreaWidth }}>
+            <div className='fc-flex-col' style={{ width: props.spreadsheetWidth }}>
               {Boolean(superHeaderRendering) && (
-                <div role="row" className="fc-grow fc-flex-row fc-border-b">
+                <div role="row" className="fc-flex-row fc-grow fc-border-b">
                   <SuperHeaderCell
                     renderHooks={superHeaderRendering}
                     indent={props.hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
                   />
                 </div>
               )}
-              <div className='fc-crop fc-grow fc-flex-row'>
-                <div className='fc-flex-row' style={{ width: spreadsheetCanvasWidth }}>
+              <div className='fc-flex-col fc-grow fc-crop'>
+                <div className='fc-flex-col fc-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
                   <HeaderRow
                     colSpecs={colSpecs}
-                    colWidths={spreadsheetColWidths}
+                    colWidthConfigs={colWidthConfigs}
                     indent={props.hasNesting}
                   />
                 </div>
@@ -183,8 +189,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               height: BG_HEIGHT,
 
               // TODO: nicer way of doing this
-              left: context.isRtl ? undefined : props.resourceAreaWidth,
-              right: context.isRtl ? props.resourceAreaWidth : undefined,
+              left: context.isRtl ? undefined : props.spreadsheetWidth,
+              right: context.isRtl ? props.spreadsheetWidth : undefined,
             }}
           >
             <div
@@ -250,12 +256,12 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   key={resource.id}
                   className='fc-flex-row fc-break-inside-avoid'
                 >
-                  <div className='fc-crop fc-flex-row' style={{ width: props.resourceAreaWidth }}>
-                    <div className='fc-flex-row' style={{ width: spreadsheetCanvasWidth }}>
+                  <div className='fc-flex-col fc-crop' style={{ width: props.spreadsheetWidth }}>
+                    <div className='fc-flex-row fc-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
                       <ResourceGroupCells
                         colGroups={(printLayout as ResourcePrintLayout).colGroups}
                         colGroupStats={colGroupStats}
-                        colWidths={spreadsheetColWidths}
+                        colWidthConfigs={colWidthConfigs}
                       />
                       <ResourceCells
                         resource={resource}
@@ -265,14 +271,14 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                         isExpanded={(printLayout as ResourcePrintLayout).isExpanded}
                         colStartIndex={groupColCnt}
                         colSpecs={colSpecs}
-                        colWidths={spreadsheetColWidths}
+                        colWidthConfigs={colWidthConfigs}
                         className={isNotLast ? 'fc-border-b' : ''}
                       />
                     </div>
                   </div>
                   <div
                     className={joinClassNames(
-                      'fc-crop fc-liquid fc-flex-row fc-border-s',
+                      'fc-flex-col fc-crop fc-liquid fc-border-s',
                       isNotLast && 'fc-border-b',
                     )}
                   >
@@ -310,7 +316,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     isNotLast && 'fc-border-b',
                   )}
                 >
-                  <div className='fc-crop fc-flex-row' style={{ width: props.resourceAreaWidth }}>
+                  <div className='fc-crop fc-flex-row' style={{ width: props.spreadsheetWidth }}>
                     <GroupWideCell
                       group={group}
                       isExpanded={(printLayout as GroupRowPrintLayout).isExpanded}
@@ -343,4 +349,18 @@ function createColGroupStats(
       (nextLayout as ResourcePrintLayout).colGroups[colGroupI] !== colGroup
     ),
   }))
+}
+
+function compileColWidths(
+  colWidthConfigs: { pixels: number, frac: number, grow: number, min: number }[],
+  clientWidth: number | undefined,
+): [
+  pixelConfigs: { pixels: number, grow: number }[],
+  canvasMinWidth: CssDimValue,
+] {
+  if (clientWidth != null) {
+    return portabilizeDimConfigs(colWidthConfigs, clientWidth)
+  }
+
+  return [colWidthConfigs, undefined] // NOT A GREAT IDEA TO 000 !!!
 }

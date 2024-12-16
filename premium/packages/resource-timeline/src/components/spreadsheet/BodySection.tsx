@@ -4,15 +4,15 @@ import { ColSpec, createGroupId } from "@fullcalendar/resource/internal"
 import { GroupTallCell } from "./GroupTallCell.js"
 import { GroupWideCell } from "./GroupWideCell.js"
 import { ResourceCells } from "./ResourceCells.js"
-import { sliceSpreadsheetColWidth } from "../../col-positioning.js"
 import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout.js"
 import { ROW_BORDER_WIDTH } from "../../resource-positioning.js"
+import { sumPixels } from "../../col-positioning.js"
 
 export interface BodySectionProps {
   flatResourceLayouts: ResourceLayout[]
   flatGroupRowLayouts: GroupRowLayout[]
   flatGroupColLayouts: GroupCellLayout[][]
-  colWidths: number[]
+  colWidthConfigs: { pixels: number, grow: number }[] // used ONLY FOR PIXELS
   colSpecs: ColSpec[]
   rowInnerHeightRefMap: RefMap<string, number>
   rowTops: Map<string, number>
@@ -26,7 +26,7 @@ Caller is responsible for this.
 export class BodySection extends BaseComponent<BodySectionProps> {
   render() {
     const { props, context } = this
-    const { colWidths, rowInnerHeightRefMap, rowTops, rowHeights } = props
+    const { colWidthConfigs, rowInnerHeightRefMap, rowTops, rowHeights } = props
 
     // TODO: less-weird way to get this! more DRY with ResourceTimelineLayoutNormal
     const groupRowCnt = props.flatGroupRowLayouts.length
@@ -34,8 +34,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
     const rowCnt = groupRowCnt + resourceCnt
 
     const groupColCnt = props.flatGroupColLayouts.length
-    const resourceX = sliceSpreadsheetColWidth(colWidths, 0, groupColCnt)
-    const resourceColWidths = colWidths.slice(groupColCnt)
+    const resourceX = sumPixels(colWidthConfigs.slice(0, groupColCnt))
+    const resourceColWidthConfigs = colWidthConfigs.slice(groupColCnt)
 
     /*
     TODO: simplify DOM structure to be more like time-area?
@@ -53,7 +53,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
               colIndex && 'fc-border-s',
             )}
             style={{
-              width: colWidths[colIndex],
+              minWidth: 0,
+              width: colWidthConfigs[colIndex].pixels,
             }}
           >
             {groupColLayouts.map((groupCellLayout) => {
@@ -91,13 +92,14 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         ))}
 
         {/* for resource column lines */}
-        {resourceColWidths.map((resourceColWidth, i) => (
+        {resourceColWidthConfigs.map((colWidthConfig, i) => (
           <div
             className={joinClassNames(
               (groupColCnt + i) && 'fc-border-s',
             )}
             style={{
-              width: resourceColWidth,
+              minWidth: 0,
+              width: colWidthConfig.pixels,
             }}
           />
         ))}
@@ -138,7 +140,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   isExpanded={resourceLayout.isExpanded}
                   colStartIndex={props.flatGroupColLayouts.length}
                   colSpecs={props.colSpecs}
-                  colWidths={colWidths}
+                  colWidthConfigs={colWidthConfigs}
                   innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
                   className={isNotLast ? 'fc-border-b' : ''}
                 />
