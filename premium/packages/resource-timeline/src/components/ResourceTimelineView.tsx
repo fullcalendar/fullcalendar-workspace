@@ -24,7 +24,7 @@ import { EntityScroll, ResourceTimelineLayoutNormal, TimeScroll } from './Resour
 import { ResourceTimelineLayoutPrint } from './ResourceTimelineLayoutPrint.js'
 import { processColOptions } from '../col-options.js'
 import { CssDimValue } from '@fullcalendar/core'
-import { pixelizeDimConfigs, SiblingDimConfig } from '../col-positioning.js'
+import { pixelizeDimConfigs, resizeSiblingDimConfig, SiblingDimConfig } from '../col-positioning.js'
 
 interface ResourceTimelineViewState {
   colWidthOverrides?: SiblingDimConfig[]
@@ -49,6 +49,8 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   // internal
   private resourceSplitter = new ResourceSplitter()
   private bgSlicer = new TimelineLaneSlicer()
+  private spreadsheetColWidthConfigs?: SiblingDimConfig[]
+  private spreadsheetColWidths?: number[]
 
   render() {
     let { props, state, context } = this
@@ -83,6 +85,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     let [spreadsheetColWidths, spreadsheetCanvasWidth] = state.spreadsheetClientWidth != null
       ? pixelizeDimConfigs(spreadsheetColWidthConfigs, state.spreadsheetClientWidth)
       : [undefined, undefined]
+
+    this.spreadsheetColWidthConfigs = spreadsheetColWidthConfigs
+    this.spreadsheetColWidths = spreadsheetColWidths
 
     /* table hierarchy */
 
@@ -181,7 +186,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   }
 
   handleColResize = (colIndex: number, newWidth: number) => {
-    console.log('resize', colIndex, newWidth)
+    const colWidthOverrides = resizeSiblingDimConfig(
+      this.spreadsheetColWidthConfigs,
+      this.spreadsheetColWidths,
+      this.state.spreadsheetClientWidth,
+      colIndex,
+      newWidth,
+    )
+
+    this.setState({ colWidthOverrides })
   }
 
   handleSpreadsheetClientWidth = (spreadsheetClientWidth: number | null) => {

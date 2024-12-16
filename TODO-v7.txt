@@ -7,8 +7,6 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
-  ResourceTimeline
-    simplify datagrid column widths, prefer percentages, better for print
   TimeGridLayoutNormal/TimeGridLayoutPannable new print-mode approach
     for Firefox, simple show flat-list. waaay too many problems w/ abs positioning
     undo hacks (forcedBodyHeight, forceCrop)
@@ -61,10 +59,6 @@ Resource DayGrid
 Resource Timeline
   bug: drag-n-drop auto-scroll very glitchy
   bug: when group-column resized really narrow, text isn't cropped like cells in resource rows
-  bug: when resizing resource-area while scrolled all the way down, bottom gutter oscillates
-    happens because spreadsheet horizontal scroll appears then disappears
-    todo: see what beta.1 did. i don't think it had that problems
-    SAME PROBLEM happens when only 3 resources, expandRows:true, and switch between 1-day and 3-day view
   bug: in timeline-column-grouping.html
     when changing the "Room" column to group:true, changes height, which it shouldn't!
     some sort of off-by-one error with the top or bottom borders
@@ -176,6 +170,7 @@ Changelog
     daygrid hierarchy stacking (shown in multimonth-view-bug bug)
     listview time text wrong
   breaking change in list view from 12:00-12:00 -> allDay?
+  resourceAreaWidth and column widths retain percentage-unit after resized
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078

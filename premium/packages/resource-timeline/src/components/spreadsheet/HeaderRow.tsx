@@ -104,16 +104,19 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
       let dragging = new ElementDraggingImpl(resizerEl)
 
       dragging.emitter.on('dragstart', () => {
-        const origWidth = this.props.colWidths[colIndex]
+        const startWidth = this.props.colWidths[colIndex]
 
         dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
           if (this.props.onColResize) {
-            const newWidth = Math.max(0, origWidth + pev.deltaX * (this.context.isRtl ? -1 : 1))
-            this.props.onColResize(colIndex, newWidth)
+            this.props.onColResize(
+              colIndex,
+              startWidth + pev.deltaX * (this.context.isRtl ? -1 : 1)
+            )
           }
         })
 
-        dragging.setAutoScrollEnabled(false) // because gets weird with auto-scrolling time area
+        // because gets weird with auto-scrolling time area
+        dragging.setAutoScrollEnabled(false)
       })
 
       return dragging
