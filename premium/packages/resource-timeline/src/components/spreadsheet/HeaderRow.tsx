@@ -5,7 +5,8 @@ import { HeaderCell } from "./HeaderCell.js"
 
 export interface HeaderRowProps {
   colSpecs: ColSpec[]
-  colWidthConfigs: { pixels: number, grow: number }[]
+  colWidths: number[] | undefined
+  colGrows?: number[]
   indent?: boolean // only for the 'main' cell
 
   // refs
@@ -45,7 +46,10 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
 
   render() {
     const { props, innerHeightRefMap, resizerElRefMap } = this
-    const { colSpecs, colWidthConfigs } = props
+    const { colSpecs } = props
+
+    const colWidths = props.colWidths || []
+    const colGrows = props.colGrows || []
 
     return (
       <div
@@ -56,7 +60,8 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
           return (
             <HeaderCell
               key={colIndex}
-              widthConfig={colWidthConfigs[colIndex]}
+              width={colWidths[colIndex]}
+              grow={colGrows[colIndex]}
               colSpec={colSpec}
               resizer={colIndex < colSpecs.length - 1}
               indent={colSpec.isMain && props.indent}
@@ -99,7 +104,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
       let dragging = new ElementDraggingImpl(resizerEl)
 
       dragging.emitter.on('dragstart', () => {
-        const origWidth = this.props.colWidthConfigs[colIndex].pixels
+        const origWidth = this.props.colWidths[colIndex]
 
         dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
           if (this.props.onColResize) {

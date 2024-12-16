@@ -13,7 +13,8 @@ export interface HeaderCellProps {
   innerHeightRef?: Ref<number>
 
   // size
-  widthConfig: { pixels: number, grow: number }
+  width: number | undefined
+  grow: number | undefined
 }
 
 export class HeaderCell extends BaseComponent<HeaderCellProps> {
@@ -24,8 +25,9 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
   private disconnectInnerHeight?: () => void
 
   render() {
-    let { colSpec, resizer, resizerElRef, widthConfig, borderStart } = this.props
-    let renderProps: ColHeaderContentArg = { view: this.context.viewApi }
+    let { props, context } = this
+    let { colSpec } = props
+    let renderProps: ColHeaderContentArg = { view: context.viewApi }
 
     // need empty inner div for abs positioning for resizer
     return (
@@ -37,12 +39,12 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         // fc-rel for resizer abs positioning
         className={joinClassNames(
           'fc-header-cell fc-cell fc-flex-col fc-justify-center fc-rel',
-          borderStart && 'fc-border-s',
+          props.borderStart && 'fc-border-s',
         )}
         style={{
           minWidth: 0,
-          width: widthConfig.pixels,
-          flexGrow: widthConfig.grow,
+          width: props.width,
+          flexGrow: props.grow,
         }}
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"
@@ -65,8 +67,8 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
                 className='fc-cell-main'
               />
             </div>
-            {resizer && (
-              <div className="fc-datagrid-col-resizer" ref={resizerElRef} />
+            {props.resizer && (
+              <div className="fc-datagrid-col-resizer" ref={props.resizerElRef} />
             )}
           </Fragment>
         )}

@@ -1,7 +1,7 @@
 import { CssDimValue } from '@fullcalendar/core'
 import { BaseComponent, ElementDragging, PointerDragEvent, setRef, joinClassNames, memoize } from '@fullcalendar/core/internal'
 import { ComponentChildren, Ref, createElement, createRef } from '@fullcalendar/core/preact'
-import { parseDimConfig, resizeDimConfig, serializeDimConfig } from '../col-positioning.js'
+import { DimConfig, parseDimConfig, resizeDimConfig, serializeDimConfig } from '../col-positioning.js'
 
 export interface ResizableTwoColProps {
   className?: string
@@ -16,7 +16,7 @@ export interface ResizableTwoColProps {
 }
 
 interface ResizableTwoColState {
-  widthOverride: { pixels: number, frac: number, min: number }
+  widthOverride: DimConfig
 }
 
 const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
@@ -31,7 +31,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
   resizerElRef = createRef<HTMLDivElement>()
 
   // internal
-  widthConfig?: { pixels: number, frac: number, min: number }
+  widthConfig?: DimConfig
   resizerDragging: ElementDragging
 
   render() {
@@ -86,7 +86,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
         const viewWidth = this.rootEl.getBoundingClientRect().width
         const origWidth = this.startElRef.current.getBoundingClientRect().width
         const origWidthConfig = this.widthConfig
-        let newWidthConfig: { pixels: number, frac: number, min: number } | undefined
+        let newWidthConfig: DimConfig | undefined
 
         dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
           let newWidth = Math.min(

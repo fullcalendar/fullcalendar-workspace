@@ -1,11 +1,20 @@
-
 import { CssDimValue } from "@fullcalendar/core"
 import { fracToCssDim } from "@fullcalendar/core/internal"
+
+export interface DimConfig {
+  pixels: number
+  frac: number
+  min: number
+}
+
+export interface SiblingDimConfig extends DimConfig {
+  grow: number
+}
 
 export function parseDimConfig(
   input: CssDimValue | undefined,
   minDim = 0,
-): { pixels: number, frac: number, min: number } | undefined {
+): DimConfig | undefined {
   if (input != null) {
     if (typeof input === 'string') {
       let m = input.match(/^(.*)(%|px)$/)
@@ -31,7 +40,7 @@ export function parseSiblingDimConfig(
   input: CssDimValue | undefined,
   grow: number | undefined, // TODO: use (and sanitize)
   minDim: number | undefined,
-): { pixels: number, frac: number, grow: number, min: number } {
+): SiblingDimConfig {
   const partialDimConfig = parseDimConfig(input, minDim)
 
   return partialDimConfig
@@ -43,7 +52,7 @@ export function parseSiblingDimConfig(
 Ensure at least one column can grow
 Mutates in-place
 */
-export function ensureDimConfigsGrow(dimConfigs: { grow: number }[]): void {
+export function ensureDimConfigsGrow(dimConfigs: SiblingDimConfig[]): void {
   for (const dimConfig of dimConfigs) {
     if (dimConfig.grow) {
       return
@@ -57,7 +66,7 @@ export function ensureDimConfigsGrow(dimConfigs: { grow: number }[]): void {
 }
 
 export function pixelizeDimConfigs(
-  dimConfigs: { pixels: number, frac: number, grow: number, min: number }[],
+  dimConfigs: SiblingDimConfig[],
   clientDim: number,
 ): [
   pixelDims: number[],
@@ -89,15 +98,16 @@ export function pixelizeDimConfigs(
   return [pixelDims, preGrowTotal]
 }
 
-export function portabilizeDimConfigs(
-  dimConfigs: { pixels: number, frac: number, grow: number, min: number }[],
-  clientDim: number,
+export function flexifyDimConfigs(
+  dimConfigs: SiblingDimConfig[],
+  pixelDims: number[],
 ): [
-  portableDimConfigs: { pixels: number, grow: number }[],
+  flexDims: number[],
+  flexGrows: number[],
   minCanvasDim: CssDimValue,
 ] {
-  const [pixelDims] = pixelizeDimConfigs(dimConfigs, clientDim)
-  const portableDimConfigs: { pixels: number, grow: number }[] = []
+  const flexDims: number[] = []
+  const flexGrows: number[] = []
 
   let pixelTotal = 0
   let fracTotal = 0
@@ -109,13 +119,11 @@ export function portabilizeDimConfigs(
       dimConfig.min,
     )
 
-    portableDimConfigs.push({
-      pixels: constrainedPixels,
-      grow: pixelDims[i] - constrainedPixels, // a pixel value, but used as a proportion
-    })
+    flexDims.push(constrainedPixels)
+    flexGrows.push(pixelDims[i] - constrainedPixels) // a pixel value, but used as a proportion
 
-    pixelTotal += dimConfig.pixels
-    fracTotal += dimConfig.frac
+    pixelTotal += dimConfig.pixels + (dimConfig.grow ? dimConfig.min : 0)
+    fracTotal += dimConfig.frac // not possible to enforce min for percentage here
   }
 
   const minCanvasDim = serializeDimConfig({
@@ -123,7 +131,7 @@ export function portabilizeDimConfigs(
     frac: fracTotal,
   })
 
-  return [portableDimConfigs, minCanvasDim]
+  return [flexDims, flexGrows, minCanvasDim]
 }
 
 export function serializeDimConfig(
@@ -139,13 +147,13 @@ export function serializeDimConfig(
 }
 
 export function resizeSiblingDimConfig(
-  dimConfigs: { pixels: number, frac: number, grow: number, min: number }[],
+  dimConfigs: SiblingDimConfig[],
   pixelDims: number[],
   clientDim: number,
   resizeIndex: number,
   resizeDim: number,
-): { pixels: number, frac: number, grow: number, min: number }[] {
-  const newDimConfigs: { pixels: number, frac: number, grow: number, min: number }[] = []
+): SiblingDimConfig[] {
+  const newDimConfigs: SiblingDimConfig[] = []
 
   for (let i = 0; i < resizeIndex; i++) {
     newDimConfigs.push(resizeDimConfig(dimConfigs[i], pixelDims[i], clientDim))
@@ -175,10 +183,10 @@ export function resizeSiblingDimConfig(
 }
 
 export function resizeDimConfig(
-  dimConfig: { pixels: number, min: number },
+  dimConfig: DimConfig,
   newPixels: number,
   clientDim: number,
-): { pixels: number, frac: number, grow: number, min: number } {
+): SiblingDimConfig {
   const { min } = dimConfig
   newPixels = Math.max(min, newPixels)
 
@@ -187,14 +195,4 @@ export function resizeDimConfig(
   }
 
   return { pixels: 0, frac: newPixels / clientDim, grow: 0, min }
-}
-
-export function sumPixels(dimConfigs: { pixels: number }[]): number {
-  let sum = 0
-
-  for (const dimConfig of dimConfigs) {
-    sum += dimConfig.pixels
-  }
-
-  return sum
 }

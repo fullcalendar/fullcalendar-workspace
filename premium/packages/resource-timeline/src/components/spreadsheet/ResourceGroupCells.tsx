@@ -6,19 +6,22 @@ import { GroupTallCell } from './GroupTallCell.js'
 export interface ResourceGroupCellsProps {
   colGroups: Group[]
   colGroupStats: { render: boolean, borderBottom: boolean }[] // TODO: type from createColGroupStats
-  colWidthConfigs: { pixels: number, grow: number }[]
+  colWidths: number[] | undefined
+  colGrows?: number[]
 }
 
 export class ResourceGroupCells extends BaseComponent<ResourceGroupCellsProps> {
   render() {
     const { props } = this
-    const { colGroups, colGroupStats, colWidthConfigs } = props
+    const { colGroups, colGroupStats } = props
+
+    const colWidths = props.colWidths || []
+    const colGrows = props.colGrows || []
 
     return (
       <Fragment>
         {colGroups.map((colGroup, i) => {
           const stats = colGroupStats[i]
-          const widthConfig = colWidthConfigs[i]
           const className = stats.borderBottom ? 'fc-border-b' : ''
 
           return (
@@ -27,7 +30,8 @@ export class ResourceGroupCells extends BaseComponent<ResourceGroupCellsProps> {
                 colSpec={colGroup.spec}
                 fieldValue={colGroup.value}
                 className={className}
-                widthConfig={widthConfig}
+                width={colWidths[i]}
+                grow={colGrows[i]}
               />
             ) : (
               <div
@@ -35,8 +39,8 @@ export class ResourceGroupCells extends BaseComponent<ResourceGroupCellsProps> {
                 className={joinClassNames('fc-resource-group fc-cell', className)}
                 style={{
                   minWidth: 0,
-                  width: widthConfig.pixels,
-                  flexGrow: widthConfig.grow,
+                  width: colWidths[i],
+                  flexGrow: colGrows[i],
                 }}
               />
             )

@@ -6,13 +6,12 @@ import { GroupWideCell } from "./GroupWideCell.js"
 import { ResourceCells } from "./ResourceCells.js"
 import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout.js"
 import { ROW_BORDER_WIDTH } from "../../resource-positioning.js"
-import { sumPixels } from "../../col-positioning.js"
 
 export interface BodySectionProps {
   flatResourceLayouts: ResourceLayout[]
   flatGroupRowLayouts: GroupRowLayout[]
   flatGroupColLayouts: GroupCellLayout[][]
-  colWidthConfigs: { pixels: number, grow: number }[] // used ONLY FOR PIXELS
+  colWidths: number[] | undefined
   colSpecs: ColSpec[]
   rowInnerHeightRefMap: RefMap<string, number>
   rowTops: Map<string, number>
@@ -26,7 +25,7 @@ Caller is responsible for this.
 export class BodySection extends BaseComponent<BodySectionProps> {
   render() {
     const { props, context } = this
-    const { colWidthConfigs, rowInnerHeightRefMap, rowTops, rowHeights } = props
+    const { rowInnerHeightRefMap, rowTops, rowHeights } = props
 
     // TODO: less-weird way to get this! more DRY with ResourceTimelineLayoutNormal
     const groupRowCnt = props.flatGroupRowLayouts.length
@@ -34,8 +33,10 @@ export class BodySection extends BaseComponent<BodySectionProps> {
     const rowCnt = groupRowCnt + resourceCnt
 
     const groupColCnt = props.flatGroupColLayouts.length
-    const resourceX = sumPixels(colWidthConfigs.slice(0, groupColCnt))
-    const resourceColWidthConfigs = colWidthConfigs.slice(groupColCnt)
+
+    const colWidths = props.colWidths || []
+    const resourceX = sumArray(colWidths.slice(0, groupColCnt))
+    const resourceColWidths = colWidths.slice(groupColCnt)
 
     /*
     TODO: simplify DOM structure to be more like time-area?
@@ -54,7 +55,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             )}
             style={{
               minWidth: 0,
-              width: colWidthConfigs[colIndex].pixels,
+              width: colWidths[colIndex],
             }}
           >
             {groupColLayouts.map((groupCellLayout) => {
@@ -92,14 +93,14 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         ))}
 
         {/* for resource column lines */}
-        {resourceColWidthConfigs.map((colWidthConfig, i) => (
+        {resourceColWidths.map((colWidth, i) => (
           <div
             className={joinClassNames(
               (groupColCnt + i) && 'fc-border-s',
             )}
             style={{
               minWidth: 0,
-              width: colWidthConfig.pixels,
+              width: colWidth,
             }}
           />
         ))}
@@ -140,7 +141,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   isExpanded={resourceLayout.isExpanded}
                   colStartIndex={props.flatGroupColLayouts.length}
                   colSpecs={props.colSpecs}
-                  colWidthConfigs={colWidthConfigs}
+                  colWidths={colWidths}
                   innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
                   className={isNotLast ? 'fc-border-b' : ''}
                 />
@@ -180,4 +181,17 @@ export class BodySection extends BaseComponent<BodySectionProps> {
       </div>
     )
   }
+}
+
+// Utils
+// -------------------------------------------------------------------------------------------------
+
+function sumArray(a: number[]): number { // TODO: move to general
+  let sum = 0
+
+  for (const num of a) {
+    sum += num
+  }
+
+  return sum
 }

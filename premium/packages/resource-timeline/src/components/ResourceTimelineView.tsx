@@ -24,9 +24,10 @@ import { EntityScroll, ResourceTimelineLayoutNormal, TimeScroll } from './Resour
 import { ResourceTimelineLayoutPrint } from './ResourceTimelineLayoutPrint.js'
 import { processColOptions } from '../col-options.js'
 import { CssDimValue } from '@fullcalendar/core'
+import { pixelizeDimConfigs, SiblingDimConfig } from '../col-positioning.js'
 
 interface ResourceTimelineViewState {
-  colWidthOverrides?: { pixels: number, frac: number, grow: number, min: number }[]
+  colWidthOverrides?: SiblingDimConfig[]
   spreadsheetClientWidth?: number // pixel-width of scroll inner area
   timeClientWidth?: number
   slotInnerWidth?: number
@@ -79,6 +80,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     /* spreadsheet col widths */
 
     let spreadsheetColWidthConfigs = state.colWidthOverrides || initialColWidthConfigs
+    let [spreadsheetColWidths, spreadsheetCanvasWidth] = state.spreadsheetClientWidth != null
+      ? pixelizeDimConfigs(spreadsheetColWidthConfigs, state.spreadsheetClientWidth)
+      : [undefined, undefined]
 
     /* table hierarchy */
 
@@ -140,15 +144,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             fallbackBusinessHours,
             slotWidth,
             timeCanvasWidth,
-            spreadsheetClientWidth: state.spreadsheetClientWidth,
-            spreadsheetColWidthConfigs,
+            spreadsheetColWidths,
           }
 
           return props.forPrint ? (
             <ResourceTimelineLayoutPrint
               {...baseProps}
               spreadsheetWidth={this.spreadsheetWidthRef.current}
-              spreadsheetClientWidth={state.spreadsheetClientWidth}
+              spreadsheetColWidthConfigs={spreadsheetColWidthConfigs}
               timeAreaOffset={this.scrollRef.current.x /* for simulating horizontal scroll */}
             />
           ) : (
@@ -160,10 +163,15 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 this.spreadsheetWidthRef.current ?? // try save-state first
                   options.resourceAreaWidth
               }
-              spreadsheetWidthRef={this.spreadsheetWidthRef}
-              spreadsheetClientWidthRef={this.handleSpreadsheetClientWidth}
-              scrollRef={this.scrollRef}
+              spreadsheetCanvasWidth={spreadsheetCanvasWidth}
               initialScroll={this.scrollRef.current /* for reviving after print-view */}
+
+              // refs
+              spreadsheetWidthRef={this.spreadsheetWidthRef} // for resource-area resize
+              spreadsheetClientWidthRef={this.handleSpreadsheetClientWidth} // for pixel value
+              scrollRef={this.scrollRef}
+
+              // handlers
               onColResize={this.handleColResize}
             />
           )

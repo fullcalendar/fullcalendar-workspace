@@ -36,7 +36,7 @@ import { ResourceCells } from './spreadsheet/ResourceCells.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
 import { ResourceGroupCells } from './spreadsheet/ResourceGroupCells.js'
 import { CssDimValue } from '@fullcalendar/core'
-import { portabilizeDimConfigs } from '../col-positioning.js'
+import { flexifyDimConfigs, SiblingDimConfig } from '../col-positioning.js'
 
 export interface ResourceTimelineLayoutPrintProps {
   tDateProfile: TimelineDateProfile
@@ -58,12 +58,12 @@ export interface ResourceTimelineLayoutPrintProps {
   hasResourceBusinessHours: boolean
   fallbackBusinessHours: EventStore
 
-  slotWidth: number | undefined
-  timeCanvasWidth: number | undefined
-  spreadsheetColWidthConfigs: { pixels: number, frac: number, grow: number, min: number }[]
   spreadsheetWidth: CssDimValue // the CSS dimension. could be percent
-  spreadsheetClientWidth: number | undefined // pixel-width of scroll inner area
+  spreadsheetColWidthConfigs: SiblingDimConfig[]
+  spreadsheetColWidths: number[]
   timeAreaOffset: number
+  timeCanvasWidth: number | undefined
+  slotWidth: number | undefined
 }
 
 const BG_HEIGHT = 100000
@@ -84,9 +84,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
     const { splitProps, bgSlicedProps } = props
     const { superHeaderRendering, groupColCnt, colSpecs } = props
 
-    const [colWidthConfigs, spreadsheetCanvasWidth] = this.compileColWidths(
+    const [colWidths, colGrows, spreadsheetCanvasWidth] = this.compileColWidths(
       props.spreadsheetColWidthConfigs,
-      props.spreadsheetClientWidth,
+      props.spreadsheetColWidths,
     )
 
     const { cellRows } = tDateProfile
@@ -128,7 +128,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 <div className='fc-flex-col fc-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
                   <HeaderRow
                     colSpecs={colSpecs}
-                    colWidthConfigs={colWidthConfigs}
+                    colWidths={colWidths}
+                    colGrows={colGrows}
                     indent={props.hasNesting}
                   />
                 </div>
@@ -261,7 +262,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                       <ResourceGroupCells
                         colGroups={(printLayout as ResourcePrintLayout).colGroups}
                         colGroupStats={colGroupStats}
-                        colWidthConfigs={colWidthConfigs}
+                        colWidths={colWidths}
+                        colGrows={colGrows}
                       />
                       <ResourceCells
                         resource={resource}
@@ -271,7 +273,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                         isExpanded={(printLayout as ResourcePrintLayout).isExpanded}
                         colStartIndex={groupColCnt}
                         colSpecs={colSpecs}
-                        colWidthConfigs={colWidthConfigs}
+                        colWidths={colWidths}
+                        colGrows={colGrows}
                         className={isNotLast ? 'fc-border-b' : ''}
                       />
                     </div>
@@ -352,15 +355,16 @@ function createColGroupStats(
 }
 
 function compileColWidths(
-  colWidthConfigs: { pixels: number, frac: number, grow: number, min: number }[],
-  clientWidth: number | undefined,
+  colWidthConfigs: SiblingDimConfig[],
+  colWidths: number[] | undefined,
 ): [
-  pixelConfigs: { pixels: number, grow: number }[],
-  canvasMinWidth: CssDimValue,
+  flexDims: number[] | undefined,
+  flexGrows: number[] | undefined,
+  canvasMinWidth: CssDimValue | undefined,
 ] {
-  if (clientWidth != null) {
-    return portabilizeDimConfigs(colWidthConfigs, clientWidth)
+  if (colWidths != null) {
+    return flexifyDimConfigs(colWidthConfigs, colWidths)
   }
 
-  return [colWidthConfigs, undefined] // NOT A GREAT IDEA TO 000 !!!
+  return [undefined, undefined, undefined]
 }

@@ -17,7 +17,8 @@ export interface ResourceCellsProps {
   innerHeightRef?: Ref<number>
 
   // sizing
-  colWidthConfigs: { pixels: number, grow: number }[] // starts at colStartIndex
+  colWidths: number[] | undefined
+  colGrows?: number[]
 }
 
 export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext> {
@@ -28,8 +29,11 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
   private currentInnerHeight: number | null = null
 
   render() {
-    let { props, innerHeightRefMap } = this
-    let { resource, resourceFields, colSpecs, colWidthConfigs } = props
+    const { props, innerHeightRefMap } = this
+    const { resource, resourceFields, colSpecs } = props
+
+    const colWidths = props.colWidths || []
+    const colGrows = props.colGrows || []
 
     return (
       <Fragment>
@@ -49,7 +53,8 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
               hasChildren={props.hasChildren}
               isExpanded={props.isExpanded}
               innerHeightRef={innerHeightRefMap.createRef(i)}
-              widthConfig={colWidthConfigs[i]}
+              width={colWidths[i]}
+              grow={colGrows[i]}
               className={props.className}
             />
           )

@@ -5,7 +5,8 @@ import { ColSpec, ColCellContentArg } from '@fullcalendar/resource'
 export interface GroupTallCellProps {
   colSpec: ColSpec
   fieldValue: any
-  widthConfig?: { pixels: number, grow: number }
+  width?: number
+  grow?: number
   className?: string // needed?
 
   // refs
@@ -42,11 +43,11 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
           'fc-resource-group fc-cell',
           props.className,
         )}
-        style={props.widthConfig ? {
+        style={{
           minWidth: 0,
-          width: props.widthConfig.pixels,
-          flexGrow: props.widthConfig.grow,
-        } : {}}
+          width: props.width,
+          flexGrow: props.grow,
+        }}
         renderProps={renderProps}
         generatorName="resourceGroupLabelContent"
         customGenerator={colSpec.cellContent}

@@ -58,7 +58,6 @@ import { ResizableTwoCol } from './ResizableTwoCol.js'
 import { BodySection } from './spreadsheet/BodySection.js'
 import { HeaderRow } from './spreadsheet/HeaderRow.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
-import { pixelizeDimConfigs } from '../col-positioning.js'
 
 interface ResourceTimelineLayoutNormalProps {
   tDateProfile: TimelineDateProfile
@@ -82,7 +81,8 @@ interface ResourceTimelineLayoutNormalProps {
 
   slotWidth: number | undefined
   timeCanvasWidth: number | undefined
-  spreadsheetColWidthConfigs: { pixels: number, frac: number, grow: number, min: number }[]
+  spreadsheetColWidths: number[] | undefined
+  spreadsheetCanvasWidth: number | undefined
 
   spreadsheetClientWidthRef?: Ref<number>
   timeClientWidthRef: Ref<number>
@@ -121,7 +121,6 @@ interface ResourceTimelineViewState {
 export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimelineLayoutNormalProps, ResourceTimelineViewState> {
   // memoized
   private buildResourceLayouts = memoize(buildResourceLayouts)
-  private compileColWidths = memoize(compileColWidths)
 
   // TODO: make this nice
   // This is a means to recompute row positioning when *HeightMaps change
@@ -233,10 +232,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     const { timeCanvasWidth, slotWidth } = props
 
-    const [colWidthConfigs, spreadsheetCanvasWidth] = this.compileColWidths(
-      props.spreadsheetColWidthConfigs,
-      state.spreadsheetClientWidth,
-    )
+    const { spreadsheetColWidths, spreadsheetCanvasWidth } = props
 
     /* event display */
 
@@ -320,7 +316,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   <div className='fc-flex-col fc-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
                     <HeaderRow
                       colSpecs={colSpecs}
-                      colWidthConfigs={colWidthConfigs}
+                      colWidths={spreadsheetColWidths}
                       indent={props.hasNesting}
 
                       // refs
@@ -355,7 +351,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     flatResourceLayouts={flatResourceLayouts}
                     flatGroupRowLayouts={flatGroupRowLayouts}
                     flatGroupColLayouts={flatGroupColLayouts}
-                    colWidthConfigs={colWidthConfigs}
+                    colWidths={spreadsheetColWidths}
                     colSpecs={colSpecs}
                     rowInnerHeightRefMap={this.dataGridEntityInnerHeightMap}
                     rowTops={bodyTops}
@@ -938,23 +934,4 @@ function computeHeaderHeight(
     dataGridH + (hasDateGridSuperHeader ? ROW_BORDER_WIDTH : 0),
     timelineH + ROW_BORDER_WIDTH * (timelineHeaderRowCnt - 1),
   )
-}
-
-function compileColWidths(
-  colWidthConfigs: { pixels: number, frac: number, grow: number, min: number }[],
-  clientWidth: number | undefined,
-): [
-  pixelConfigs: { pixels: number, grow: number }[],
-  canvasMinWidth: number,
-] {
-  if (clientWidth != null) {
-    const [colWidths, canvasMinWidth] = pixelizeDimConfigs(colWidthConfigs, clientWidth)
-
-    return [
-      colWidths.map((colWidth) => ({ pixels: colWidth, grow: 0 })),
-      canvasMinWidth,
-    ]
-  }
-
-  return [colWidthConfigs, undefined] // NOT A GREAT IDEA TO 000 !!!
 }
