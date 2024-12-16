@@ -30,6 +30,15 @@
   margin-left: 3px;
 }
 
+/*
+HACK: force for print, which has liquid-width days but event-heights don't adapt
+*/
+.fc-media-print .fc-daygrid-event .fc-event-time, // (print) > time
+.fc-media-print .fc-daygrid-event .fc-event-title { // (print) > * > title
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
 //
 // fc-daygrid-block-event (extends fc-event, fc-h-event, fc-daygrid-event)
 //   the RECTANGLE style of event
@@ -54,7 +63,7 @@
 }
 
 .fc-daygrid-block-event .fc-event-time, // > time
-.fc-daygrid-block-event .fc-event-title { // > title
+.fc-daygrid-block-event .fc-event-title { // > title-outer > title
   padding: 1px;
 }
 

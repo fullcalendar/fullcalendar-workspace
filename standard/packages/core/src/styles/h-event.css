@@ -38,15 +38,6 @@
   overflow: hidden;
 }
 
-/*
-HACK: force for print, which doesn't know how to adapt to dynamic-height events
-*/
-.fc-media-print .fc-h-event .fc-event-time, // > time
-.fc-media-print .fc-h-event .fc-event-title { // > title-outer > title
-  white-space: nowrap !important;
-  overflow: hidden !important;
-}
-
 .fc-h-event .fc-event-title-outer { // > title-outer
   @include liquid; // horizontally liquid
   display: flex;
