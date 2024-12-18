@@ -8,7 +8,6 @@ For beta.3
   remove 'p' print testing
   TEST:
     scroll not restored after print-view for any browser/view?
-    print-mode with React (and React's flushSync)
 
 Cross-browser
   Firefox
