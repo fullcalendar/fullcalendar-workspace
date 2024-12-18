@@ -7,7 +7,6 @@ Publishing:
 For beta.3
   remove 'p' print testing
   TEST:
-    ensure non-resource timeline works well
     RTL for horizontal scroll. initialScroll, scroll syncing
     scroll not restored after print-view for any browser/view?
     print-mode with React (and React's flushSync)
@@ -42,6 +41,9 @@ TimeGrid
   i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
   when setting slotDuration:{hours:1}, really short body. always like this? slats had bigger min-height?
   bug: when few slats and bottom spacer visible, axis line is only line that doesn't span full height
+  no stickyFooterScrollbars? never implemented in v6?
+  test stickyHeaderDates
+  test print header repeats
 Timeline
   initialscroll for RTL is off-by-2 in wrong direction
   previously, Timeline's hit system would always return slat left/right, not snap

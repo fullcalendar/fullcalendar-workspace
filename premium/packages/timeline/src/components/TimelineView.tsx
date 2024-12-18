@@ -100,7 +100,12 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
           return (
             <ViewContainer
               viewSpec={context.viewSpec}
-              className='fc-timeline fc-flex-col fc-border'
+              className={joinClassNames(
+                'fc-timeline fc-border',
+                // HACK for Safari print-mode, where fc-scroller-no-bars won't take effect for
+                // the below Scrollers if they have liquid flex height
+                !props.forPrint && 'fc-flex-col',
+              )}
             >
 
               {/* HEADER
@@ -160,6 +165,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               <Scroller
                 vertical={verticalScrolling}
                 horizontal
+                hideScrollbars={props.forPrint}
                 className={joinClassNames(
                   'fc-timeline-body fc-flex-col',
                   verticalScrolling && 'fc-liquid',
