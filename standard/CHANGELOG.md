@@ -1,20 +1,20 @@
 
 ## v7.0.0-beta.3
 
-:speaker: **Update!** This beta release brings improved print-view, accessibility improvements, and fixed regressions. We apologize for the delayed release, the DOM restructuring turned out to be much more extensive than originally anticipated, and print-view was particulary pesky. The next beta will focus on restoring and improving accessibility ([see tickets](https://github.com/fullcalendar/fullcalendar/issues?q=is%3Aopen+is%3Aissue+milestone%3Av7+label%3AAccessibility)). After that, all that's left is code-cleanup and restoring 100% test coverage. The next beta is expected *Jan 3rd*, the v7 release candidate is expected *Jan 17th*, and the final release is expected Feb 7th, though these dates are just approximations and may change.
+:speaker: **Update!** This beta release brings improved print-view, accessibility, and fixed regressions. We apologize for the delayed release, the DOM restructuring turned out to be much more extensive than originally anticipated, and print-view was particulary pesky. The next beta will focus on restoring and improving accessibility ([see tickets](https://github.com/fullcalendar/fullcalendar/issues?q=is%3Aopen+is%3Aissue+milestone%3Av7+label%3AAccessibility)). After that, all that remains is code-cleanup and restoring 100% test coverage. The next beta is expected *Jan 3rd*, the v7 release candidate is expected *Jan 17th*, and the final v7 release is expected Feb 7th, though these dates are just approximations and may change.
 
 ### :sparkles: Features
 
 - List-view DOM refactor, no more table markup
-- If `resourceAreaWidth` specified as percentage, will continue as percentage after user resize
+- If `resourceAreaWidth` specified as percentage, will continue as percentage after user-resize
 
 ### :printer: Printing
 
-- DayGrid event titles repeated each day in print ([#6657](https://github.com/fullcalendar/fullcalendar/issues/6657))
+- DayGrid event titles should not repeat each day in print ([#6657](https://github.com/fullcalendar/fullcalendar/issues/6657))
 - TimeGrid first page blank when multiple pages ([#7007](https://github.com/fullcalendar/fullcalendar/issues/7007))
 - TimeGrid last event cut-off when multiple pages ([#7673](https://github.com/fullcalendar/fullcalendar/issues/7673))
 - TimeGrid show all time slot lines ([#5465](https://github.com/fullcalendar/fullcalendar/issues/5465))
-- Timeline show all time slot lines ([#6636](https://github.com/fullcalendar/fullcalendar/issues/6636) and [#6802](https://github.com/fullcalendar/fullcalendar/issues/6802))
+- Timeline show all time slot lines ([#6636](https://github.com/fullcalendar/fullcalendar/issues/6636), [#6802](https://github.com/fullcalendar/fullcalendar/issues/6802))
 
 ### :accessibility: Accessibility
 
@@ -23,7 +23,7 @@
 ### :warning: Breaking Changes
 
 - The `multiMonthMinWidth` pixel value now *includes* the padding within each month tile
-- TimeGrid overlapping events that were previously spanned full column width now have a right margin. This was an accidental regression from v5 -> v6, and the v5 behavior is being restored ([#6569](https://github.com/fullcalendar/fullcalendar/issues/6569))
+- TimeGrid overlapping events that previously spanned full column width now have a right margin. This was an accidental regression from v5 -> v6, and the v5 behavior is restored ([#6569](https://github.com/fullcalendar/fullcalendar/issues/6569))
 
 ### :white_check_mark::rewind: Resolved Regressions
 
