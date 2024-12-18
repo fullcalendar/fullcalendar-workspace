@@ -1,8 +1,6 @@
 
 Publishing:
   pnpm changeset publish --no-git-tag
-  (next version should be v7.0.0-beta.3 because beta.2 was taken by the angular hotfix..
-  ..write release/changelog for that)
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
@@ -145,27 +143,12 @@ Changelog
   Add: eventSlicing (write tests too)
     eventSlicing:true (request: https://github.com/fullcalendar/fullcalendar/issues/6187)
     eventSlicing:false (request: https://fullcalendar.freshdesk.com/a/tickets/9203)
-  Add: print DayGrid "event titles each day" https://github.com/fullcalendar/fullcalendar/issues/6657
-  remove <a> tags from events w/o url
-    https://github.com/fullcalendar/fullcalendar/issues/7675
-    leverages `getEventRangeAnchorAttrs`
-  v6 regressions fixed
-    fc-timegrid-event-inset (white glow) was being applied to all events,
-      and the top-level events with stackForward weren't being indented on the side
-      DID SOMEONE post a bug report for this?
   v7 regressions
-    NextJS ResizeObserver error: https://github.com/fullcalendar/fullcalendar/issues/7802
     border problem fixed: https://codepen.io/arshaw/pen/PoMOwdV?editors=0010
-    timegrid axis is text-selectable
-    timeline now-indicator div covering events: https://github.com/fullcalendar/fullcalendar/issues/7798
   I refactored a lot of event time-range text-generation. fixed any bugs? (esp with list-view?)
-    https://github.com/fullcalendar/fullcalendar/issues/3038
-  v7-beta.1 regressions fixed
-    daygrid hierarchy stacking (shown in multimonth-view-bug bug)
-    listview time text wrong
+    https://github.com/fullcalendar/fullcalendar/issues/3038 (probably not)
   breaking change in list view from 12:00-12:00 -> allDay?
-  resourceAreaWidth and column widths retain percentage-unit after resized
-  multiMonthMinWidth not as faithfull anymore
+    NO, always worked this way: https://codepen.io/arshaw/pen/wBwJJER?editors=001
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
@@ -212,7 +195,7 @@ NOTES
         Firefox 95 - bad
         Firefox 90 - bad
     known-bugs:
-        On Safari, table headers are not repeated for any view (browser bug)
+      On Safari, table headers are not repeated for any view (browser bug)
 Punt
   print: in resource-timeline print-view, put divider between all cells
   Drop-shadow under sticky header, timeline headers
