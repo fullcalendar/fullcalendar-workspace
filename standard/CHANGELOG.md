@@ -19,7 +19,12 @@
 
 - Non-Editable Calendar Events should not be rendered as anchor tags ([#7675](https://github.com/fullcalendar/fullcalendar/issues/7675))
 
-### :rewind::white_check_mark: Resolved Regressions
+### :warning: Breaking Changes
+
+- multiMonthMinWidth not as faithfull anymore
+- timegrid visuall has non-rightmost event indented. no white glow on rightmost-event ([#6569](https://github.com/fullcalendar/fullcalendar/issues/6569))
+
+### :white_check_mark::rewind: Resolved Regressions
 
 - Minimum browser support, which was temporarily raised in 7.0.0-beta.0 to ~2020 minimum, has been lowered to ~2018 minimum because a ResizeObserver ponyfill was implemented. Exact minimum versions will be determined just prior to official v7 release.
 - timeline now-indicator div covering events ([#7798](https://github.com/fullcalendar/fullcalendar/issues/7798))
@@ -29,20 +34,15 @@
 - daygrid events occasional incorrect stacking
 - list-view time-text occasionally wrong for multi-day timed events
 
-### :warning: Breaking Changes
-
-- multiMonthMinWidth not as faithfull anymore
-- timegrid visuall has non-rightmost event indented. no white glow on rightmost-event ([#6569](https://github.com/fullcalendar/fullcalendar/issues/6569))
-
 ## 7.0.0-beta.2 (2024-10-09)
 
-### :rewind::white_check_mark: Resolved Regressions
+### :white_check_mark::rewind: Resolved Regressions
 
 - restored Angular support
 
 ## 7.0.0-beta.1 (2024-10-09)
 
-### :rewind::white_check_mark: Resolved Regressions
+### :white_check_mark::rewind: Resolved Regressions
 
 - dayGridYear no longer scrolls to current month initially ([#7787](https://github.com/fullcalendar/fullcalendar/issues/7787))
 - scrollgrid plugin not included for resource-timeline ([#7783](https://github.com/fullcalendar/fullcalendar/issues/7783))
