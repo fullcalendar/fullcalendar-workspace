@@ -320,16 +320,19 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   }
 
   renderNowIndicator(segs: TimeGridRange[]) {
-    let { date, dateProfile, slatHeight, slatCnt } = this.props
+    let { props } = this
+
+    if (props.forPrint && simplifiedTimeGridPrint) {
+      return
+    }
 
     // TODO: what if nowIndicator turned OFF??
-
     return segs.map((seg) => (
       <TimeGridNowIndicatorLine
         nowDate={seg.startDate}
-        dayDate={date}
-        dateProfile={dateProfile}
-        totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
+        dayDate={props.date}
+        dateProfile={props.dateProfile}
+        totalHeight={props.slatHeight != null ? props.slatHeight * props.slatCnt : undefined}
       />
     ))
   }
@@ -397,6 +400,7 @@ export function renderPlainFgSegs(
         return (
           <div
             key={instanceId}
+            className='fc-break-inside-avoid'
             style={{ visibility: hiddenInstances[instanceId] ? 'hidden' : ('' as any) }}
           >
             <TimeGridEvent

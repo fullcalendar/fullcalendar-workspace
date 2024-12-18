@@ -12,14 +12,14 @@
 - TimeGrid print view with all time slots ([#5465](https://github.com/fullcalendar/fullcalendar/issues/5465))
 - Timeline print view with all time slots ([#6636](https://github.com/fullcalendar/fullcalendar/issues/6636))
 - First page of print is blank (missing events) when the events fill the page height ([#7007](https://github.com/fullcalendar/fullcalendar/issues/7007))
-- Event cut-off when printing multiple pages in timeGrid view ([#7673](https://github.com/fullcalendar/fullcalendar/issues/7673)) TODO: verify this!!!
+- Event cut-off when printing multiple pages in timeGrid view ([#7673](https://github.com/fullcalendar/fullcalendar/issues/7673))
 - Time slots are missing in print version when resources don't fit on one page ([#6802](https://github.com/fullcalendar/fullcalendar/issues/6802))
 
 ### :accessibility: Accessibility
 
 - Non-Editable Calendar Events should not be rendered as anchor tags ([#7675](https://github.com/fullcalendar/fullcalendar/issues/7675))
 
-### :beetle::back::white_check_mark: Resolved Regressions
+### :rewind::white_check_mark: Resolved Regressions
 
 - Minimum browser support raised because ResizeObserver now ponyfilled:
   - rtl scrollbars always on left side

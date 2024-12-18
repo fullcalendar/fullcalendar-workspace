@@ -149,6 +149,10 @@ Changelog
     https://github.com/fullcalendar/fullcalendar/issues/3038 (probably not)
   breaking change in list view from 12:00-12:00 -> allDay?
     NO, always worked this way: https://codepen.io/arshaw/pen/wBwJJER?editors=001
+  Solved Regressions
+    Event cut-off when printing multiple pages in timeGrid view #7673
+      https://github.com/fullcalendar/fullcalendar/issues/7673
+      fixed repro: timegrid-views-many.html (in FF)
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
