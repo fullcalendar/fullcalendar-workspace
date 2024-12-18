@@ -9,7 +9,6 @@ Publishing:
 For beta.3
   TEST:
     ensure non-resource timeline works well
-    ensure multimonth looks okay
     RTL for horizontal scroll. initialScroll, scroll syncing
     scroll not restored after print-view for any browser/view?
     print-mode with React (and React's flushSync)

@@ -89,11 +89,13 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <ViewContainer
             className={joinClassNames(
-              'fc-multimonth',
+              'fc-multimonth fc-border',
               (cols === 1) ?
                 'fc-multimonth-singlecol' :
                 'fc-multimonth-multicol',
-              'fc-border fc-flex-col',
+              // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
+              // https://stackoverflow.com/a/60256345
+              !props.forPrint && 'fc-flex-col',
             )}
             viewSpec={context.viewSpec}
           >
