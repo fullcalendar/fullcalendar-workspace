@@ -61,7 +61,7 @@ export interface ResourceTimelineLayoutPrintProps {
   spreadsheetWidth: CssDimValue // the CSS dimension. could be percent
   spreadsheetColWidthConfigs: SiblingDimConfig[]
   spreadsheetColWidths: number[]
-  timeAreaOffset: number
+  timeAreaOffset: number // always positive (TODO: change to negative?)
   timeCanvasWidth: number | undefined
   slotWidth: number | undefined
 }
@@ -81,7 +81,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
     const { tDateProfile, todayRange, nowDate } = props
     const { slotWidth, timeCanvasWidth } = props
     const { hasResourceBusinessHours, fallbackBusinessHours } = props
-    const { splitProps, bgSlicedProps } = props
+    const { splitProps, bgSlicedProps, timeAreaOffset } = props
     const { superHeaderRendering, groupColCnt, colSpecs } = props
 
     const [colWidths, colGrows, spreadsheetCanvasWidth] = this.compileColWidths(
@@ -103,8 +103,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
       options.nowIndicator &&
       slotWidth != null &&
       rangeContainsMarker(props.dateProfile.currentRange, nowDate)
-
-    const timeInnerLeft = (context.isRtl ? 1 : -1) * props.timeAreaOffset
 
     return (
       <ViewContainer
@@ -143,7 +141,10 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 className='fc-flex-col fc-rel'
                 style={{
                   width: timeCanvasWidth,
-                  left: timeInnerLeft,
+
+                  // TODO: nicer way of doing this
+                  left: context.isRtl ? undefined : -timeAreaOffset,
+                  right: context.isRtl ? -timeAreaOffset : undefined,
                 }}
               >
                 {cellRows.map((cells, rowLevel) => {
@@ -201,8 +202,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 height: BG_HEIGHT, // HACK
 
                 // TODO: nicer way of doing this
-                left: context.isRtl ? undefined : timeInnerLeft,
-                right: context.isRtl ? timeInnerLeft : undefined,
+                left: context.isRtl ? undefined : -timeAreaOffset,
+                right: context.isRtl ? -timeAreaOffset : undefined,
               }}
             >
               <TimelineSlats
@@ -289,7 +290,10 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                       className='fc-rel'
                       style={{
                         width: timeCanvasWidth,
-                        left: timeInnerLeft
+
+                        // TODO: nicer way of doing this
+                        left: context.isRtl ? undefined : -timeAreaOffset,
+                        right: context.isRtl ? -timeAreaOffset : undefined,
                       }}
                     >
                       <ResourceLane

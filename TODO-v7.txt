@@ -7,7 +7,6 @@ Publishing:
 For beta.3
   remove 'p' print testing
   TEST:
-    RTL for horizontal scroll. initialScroll, scroll syncing
     scroll not restored after print-view for any browser/view?
     print-mode with React (and React's flushSync)
     last row of DayGridHeader should be sticky
@@ -175,6 +174,10 @@ NOTES
   flexbox row expansion works across scroll regions: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
   100% width within scroller applies to clientWidth only: https://codepen.io/arshaw/pen/GgKWRNZ?editors=1100
   Print
+    if you hit the debugging 'p' to force print-mode too soon after you stop scrolling,
+      scrollEnd won't have enough time to fire and scroll state likely won't be saved,
+      resulting in jump when entering print-mode. however, this isn't a realistic scenario because
+      usually users have a long time between when they stop scrolling and when they initiate printing
     translateX/Y doesn't work when sticky items inside
     siblings must all be absolutely positioned if they are supposed to overlap
       and if you want them to span to subsequent pages in-sync

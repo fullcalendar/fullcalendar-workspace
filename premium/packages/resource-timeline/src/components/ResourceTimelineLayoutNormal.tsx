@@ -746,7 +746,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       x = timeToCoord(time, context.dateEnv, props.dateProfile, tDateProfile, slotWidth)
 
       if (x) {
-        x += context.isRtl ? -1 : 1 // overcome border. TODO: DRY this up
+        x += 1 // overcome border. TODO: DRY this up
       }
 
       scroll.x = x // HACK: store raw pixel value

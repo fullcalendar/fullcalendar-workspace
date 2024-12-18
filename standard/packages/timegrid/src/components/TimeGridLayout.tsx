@@ -220,7 +220,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
     ) {
       y = computeTimeTopFrac(time, this.props.dateProfile)
         * (slatHeight * this.currentSlatCnt)
-        + (this.context.isRtl ? -1 : 1) // overcome border
+        + 1 // overcome border
 
       if (y) {
         y++ // overcome top border
