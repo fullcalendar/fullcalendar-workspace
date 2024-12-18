@@ -21,14 +21,7 @@
 
 ### :rewind::white_check_mark: Resolved Regressions
 
-- Minimum browser support raised because ResizeObserver now ponyfilled:
-  - rtl scrollbars always on left side
-    - Safari 11 - Sept 2017
-    - Firefox 49 - Sept 2016
-    - Chrome 50 - Apr 2016
-    - Edge 18 - Oct 2018
-  - flexbox print limitations
-    - Firefox 79 - July 2020
+- Minimum browser support, which was temporarily raised in 7.0.0-beta.0 to ~2020 minimum, has been lowered to ~2018 minimum because a ResizeObserver ponyfill was implemented. Exact minimum versions will be determined just prior to official v7 release.
 - timeline now-indicator div covering events ([#7798](https://github.com/fullcalendar/fullcalendar/issues/7798))
 - error with Next.js 14 "ResizeObserver is not defined" ([#7802](https://github.com/fullcalendar/fullcalendar/issues/7802))
 - timegrid left time axis is not text-selectable ([#7781](https://github.com/fullcalendar/fullcalendar/issues/7781))
@@ -39,18 +32,21 @@
 ### :warning: Breaking Changes
 
 - multiMonthMinWidth not as faithfull anymore
-- timegrid visuall has non-rightmost event indented. no white glow on rightmost-event
-  (TODO: make ticket with pictures)
+- timegrid visuall has non-rightmost event indented. no white glow on rightmost-event ([#6569](https://github.com/fullcalendar/fullcalendar/issues/6569))
 
 ## 7.0.0-beta.2 (2024-10-09)
 
-- [beta] restored Angular support
+### :rewind::white_check_mark: Resolved Regressions
+
+- restored Angular support
 
 ## 7.0.0-beta.1 (2024-10-09)
 
-- [beta] dayGridYear no longer scrolls to current month initially ([#7787](https://github.com/fullcalendar/fullcalendar/issues/7787))
-- [beta] scrollgrid plugin not included for resource-timeline ([#7783](https://github.com/fullcalendar/fullcalendar/issues/7783))
-- [beta] error: coordRes is not iterable ([#7784](https://github.com/fullcalendar/fullcalendar/issues/7784))
+### :rewind::white_check_mark: Resolved Regressions
+
+- dayGridYear no longer scrolls to current month initially ([#7787](https://github.com/fullcalendar/fullcalendar/issues/7787))
+- scrollgrid plugin not included for resource-timeline ([#7783](https://github.com/fullcalendar/fullcalendar/issues/7783))
+- error: coordRes is not iterable ([#7784](https://github.com/fullcalendar/fullcalendar/issues/7784))
 
 ## 7.0.0-beta.0 (2024-10-01)
 
