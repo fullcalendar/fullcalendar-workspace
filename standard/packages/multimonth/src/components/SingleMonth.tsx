@@ -1,13 +1,13 @@
-import { DateComponent, DateFormatter, DateRange, fracToCssDim, joinClassNames, memoize, setRef, ViewProps, watchWidth } from '@fullcalendar/core/internal'
-import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { CssDimValue } from '@fullcalendar/core'
+import { DateComponent, DateFormatter, DateRange, fracToCssDim, joinClassNames, memoize, ViewProps } from '@fullcalendar/core/internal'
+import { createElement } from '@fullcalendar/core/preact'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow } from '@fullcalendar/daygrid/internal'
 
 export interface SingleMonthProps extends ViewProps {
   todayRange: DateRange
   isoDateStr?: string
   titleFormat: DateFormatter
-  flexBasis?: number | string
-  widthRef?: Ref<number>
+  width?: CssDimValue
 
   // for min-height and compactness
   // should INLCUDE scrollbars to avoid oscillation
@@ -22,12 +22,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
   private buildDateRowConfig = memoize(buildDateRowConfig)
 
-  // ref
-  private elRef = createRef<HTMLDivElement>()
-
   // internal
   private slicer = new DayTableSlicer()
-  private disconnectWidth?: () => void
 
   render() {
     const { props, context } = this
@@ -60,12 +56,11 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
       <div
         data-date={props.isoDateStr}
         className={joinClassNames(
-          'fc-multimonth-month fc-liquid',
+          'fc-multimonth-month',
           props.hasLateralSiblings && 'fc-break-inside-avoid',
         )}
         // override fc-liquid's basis. fc-grow isn't sufficient because doesn't set min-width:0
-        style={{ flexBasis: props.flexBasis }}
-        ref={this.elRef}
+        style={{ width: props.width }}
       >
         <div
           className="fc-multimonth-header"
@@ -119,16 +114,5 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
         </div>
       </div>
     )
-  }
-
-  componentDidMount(): void {
-    this.disconnectWidth = watchWidth(this.elRef.current, (width) => {
-      setRef(this.props.widthRef, width)
-    })
-  }
-
-  componentWillUnmount(): void {
-    this.disconnectWidth()
-    setRef(this.props.widthRef, null)
   }
 }

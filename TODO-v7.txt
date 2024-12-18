@@ -15,7 +15,7 @@ For beta.3
     audit fc-grow. missing?
     after print-mode, scrollers out of sync
   MultiMonth
-    bug: if odd number of months, and tiled, last months are stretched too wide
+    bug: why does multi-month months not all have same # of rows
   TEST:
     ensure non-resource timeline works well
     ensure multimonth looks okay
@@ -43,6 +43,10 @@ DayGrid
   simplify event positioning
     normalize each event-container's top by applying margin-top on ones that have smaller headers
     position each event-harness with a margin-top (in combo with existing abs positioning)
+    after this^, we'll know the explicit min-height a row should be
+      TODO: use this to explicitly set min-height on row div, this will override the not-smart
+      "default" that the browser decides. then, force min-height:0 for all flex items (same with min-width),
+      to be more like react-native, and more intuitive
 MultiMonth
   Improve perf while switching years
 TimeGrid
@@ -171,6 +175,7 @@ Changelog
     listview time text wrong
   breaking change in list view from 12:00-12:00 -> allDay?
   resourceAreaWidth and column widths retain percentage-unit after resized
+  multiMonthMinWidth not as faithfull anymore
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
@@ -185,8 +190,10 @@ Freshdesk/GH-issues
     https://fullcalendar.freshdesk.com/a/tickets/9668
   when virtual rendering done
     https://fullcalendar.freshdesk.com/a/tickets/8496
+    https://fullcalendar.freshdesk.com/a/tickets/9701
 NOTES
   flexbox row expansion works across scroll regions: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
+  100% width within scroller applies to clientWidth only: https://codepen.io/arshaw/pen/GgKWRNZ?editors=1100
   Print
     translateX/Y doesn't work when sticky items inside
     siblings must all be absolutely positioned if they are supposed to overlap

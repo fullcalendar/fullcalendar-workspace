@@ -9,14 +9,13 @@
   flex-wrap: wrap;
 }
 
-.fc-multimonth-multicol .fc-multimonth-inner { // (multicol)
-  margin: 1.2em;
-  gap: 2.4em;
-}
-
 //
 // multimonth > month
 //
+
+.fc-multimonth-multicol .fc-multimonth-month { // (multicol)
+  padding: 1.2em;
+}
 
 .fc-multimonth-singlecol .fc-multimonth-title { // (singlecol) > header > title
   padding: 0.5em 0;
@@ -37,12 +36,8 @@
 }
 
 .fc-multimonth-header-row, // > header > row
-.fc-multimonth-month {
+.fc-multimonth-body:not(.fc-multimonth-singlecol .fc-multimonth-month:last-child .fc-multimonth-body) { // > body
   border-bottom: 1px solid var(--fc-border-color);
-}
-
-.fc-multimonth-singlecol .fc-multimonth-month:last-child { // (singlecol)
-  border-bottom: 0;
 }
 
 .fc-multimonth-multicol .fc-multimonth-header-row, // (multicol) > header > row
