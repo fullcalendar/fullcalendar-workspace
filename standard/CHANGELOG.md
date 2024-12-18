@@ -1,6 +1,26 @@
 
 ## v7.0.0-beta.3
 
+### :sparkles: Features
+
+- List view markup refactored
+- resourceAreaWidth and column widths retain percentage-unit after resized
+
+### :printer: Printing
+
+- event titles repeated each day in print ([#6657](https://github.com/fullcalendar/fullcalendar/issues/6657))
+- TimeGrid print view with all time slots ([#5465](https://github.com/fullcalendar/fullcalendar/issues/5465))
+- Timeline print view with all time slots ([#6636](https://github.com/fullcalendar/fullcalendar/issues/6636))
+- First page of print is blank (missing events) when the events fill the page height ([#7007](https://github.com/fullcalendar/fullcalendar/issues/7007))
+- Event cut-off when printing multiple pages in timeGrid view ([#7673](https://github.com/fullcalendar/fullcalendar/issues/7673)) TODO: verify this!!!
+- Time slots are missing in print version when resources don't fit on one page ([#6802](https://github.com/fullcalendar/fullcalendar/issues/6802))
+
+### :accessibility: Accessibility
+
+- Non-Editable Calendar Events should not be rendered as anchor tags ([#7675](https://github.com/fullcalendar/fullcalendar/issues/7675))
+
+### :beetle::back::white_check_mark: Resolved Regressions
+
 - Minimum browser support raised because ResizeObserver now ponyfilled:
   - rtl scrollbars always on left side
     - Safari 11 - Sept 2017
@@ -9,29 +29,18 @@
     - Edge 18 - Oct 2018
   - flexbox print limitations
     - Firefox 79 - July 2020
-- List view markup refactored
-- newly-implemented features:
-  - resourceAreaWidth and column widths retain percentage-unit after resized
-- newly-implemented bugfixes:
-  - Non-Editable Calendar Events should not be rendered as anchor tags ([#7675](https://github.com/fullcalendar/fullcalendar/issues/7675))
-- newly-introduced print improvements:
-  - event titles repeated each day in print ([#6657](https://github.com/fullcalendar/fullcalendar/issues/6657))
-  - TimeGrid print view with all time slots ([#5465](https://github.com/fullcalendar/fullcalendar/issues/5465))
-  - Timeline print view with all time slots ([#6636](https://github.com/fullcalendar/fullcalendar/issues/6636))
-  - First page of print is blank (missing events) when the events fill the page height ([#7007](https://github.com/fullcalendar/fullcalendar/issues/7007))
-  - Event cut-off when printing multiple pages in timeGrid view ([#7673](https://github.com/fullcalendar/fullcalendar/issues/7673)) TODO: verify this!!!
-  - Time slots are missing in print version when resources don't fit on one page ([#6802](https://github.com/fullcalendar/fullcalendar/issues/6802))
-- newly-introduced breaking changes:
-  - multiMonthMinWidth not as faithfull anymore
-  - timegrid visuall has non-rightmost event indented. no white glow on rightmost-event
-    (TODO: make ticket with pictures)
-- fixed v7 regressions since last beta release:
-  - timeline now-indicator div covering events ([#7798](https://github.com/fullcalendar/fullcalendar/issues/7798))
-  - error with Next.js 14 "ResizeObserver is not defined" ([#7802](https://github.com/fullcalendar/fullcalendar/issues/7802))
-  - timegrid left time axis is not text-selectable ([#7781](https://github.com/fullcalendar/fullcalendar/issues/7781))
-  - space in header to accommodate scrollbars needs better styling ([#7780](https://github.com/fullcalendar/fullcalendar/issues/7780))
-  - daygrid events occasional incorrect stacking
-  - list-view time-text occasionally wrong for multi-day timed events
+- timeline now-indicator div covering events ([#7798](https://github.com/fullcalendar/fullcalendar/issues/7798))
+- error with Next.js 14 "ResizeObserver is not defined" ([#7802](https://github.com/fullcalendar/fullcalendar/issues/7802))
+- timegrid left time axis is not text-selectable ([#7781](https://github.com/fullcalendar/fullcalendar/issues/7781))
+- space in header to accommodate scrollbars needs better styling ([#7780](https://github.com/fullcalendar/fullcalendar/issues/7780))
+- daygrid events occasional incorrect stacking
+- list-view time-text occasionally wrong for multi-day timed events
+
+### :warning: Breaking Changes
+
+- multiMonthMinWidth not as faithfull anymore
+- timegrid visuall has non-rightmost event indented. no white glow on rightmost-event
+  (TODO: make ticket with pictures)
 
 ## 7.0.0-beta.2 (2024-10-09)
 
