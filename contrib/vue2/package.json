@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/vue",
-  "version": "7.0.0-beta.1",
+  "version": "7.0.0-beta.3",
   "title": "FullCalendar Vue 2 Component",
   "description": "The official Vue 2 component for FullCalendar",
   "keywords": [
@@ -18,7 +18,7 @@
     "url": "https://github.com/fullcalendar/fullcalendar-vue2.git"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.1",
+    "@fullcalendar/core": "workspace:7.0.0-beta.3",
     "vue": "^2.6.12"
   },
   "devDependencies": {
@@ -26,11 +26,11 @@
     "@babel/plugin-transform-runtime": "^7.10.1",
     "@babel/preset-env": "^7.8.4",
     "@babel/runtime": "^7.12.1",
-    "@fullcalendar/core": "workspace:7.0.0-beta.1",
-    "@fullcalendar/daygrid": "workspace:7.0.0-beta.1",
-    "@fullcalendar/interaction": "workspace:7.0.0-beta.1",
-    "@fullcalendar/resource": "workspace:7.0.0-beta.1",
-    "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.1",
+    "@fullcalendar/core": "workspace:7.0.0-beta.3",
+    "@fullcalendar/daygrid": "workspace:7.0.0-beta.3",
+    "@fullcalendar/interaction": "workspace:7.0.0-beta.3",
+    "@fullcalendar/resource": "workspace:7.0.0-beta.3",
+    "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.3",
     "@vue/test-utils": "^1.0.3",
     "babel-loader": "^8.1.0",
     "concurrently": "^5.3.0",

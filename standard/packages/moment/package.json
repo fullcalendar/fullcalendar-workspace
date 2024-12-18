@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/moment",
-  "version": "7.0.0-beta.1",
+  "version": "7.0.0-beta.3",
   "title": "FullCalendar Moment Plugin",
   "description": "Enhanced date formatting and conversion with Moment",
   "keywords": [
@@ -8,11 +8,11 @@
   ],
   "homepage": "https://fullcalendar.io/docs/moment-plugin",
   "peerDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.1",
+    "@fullcalendar/core": "workspace:7.0.0-beta.3",
     "moment": "^2.29.1"
   },
   "devDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.1",
+    "@fullcalendar/core": "workspace:7.0.0-beta.3",
     "@fullcalendar-scripts/standard": "workspace:*",
     "moment": "^2.29.1"
   },

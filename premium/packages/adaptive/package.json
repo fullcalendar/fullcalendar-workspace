@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/adaptive",
-  "version": "7.0.0-beta.1",
+  "version": "7.0.0-beta.3",
   "title": "FullCalendar Adaptive Plugin",
   "description": "Optimizes FullCalendar for print",
   "keywords": [
@@ -8,13 +8,13 @@
   ],
   "homepage": "https://fullcalendar.io/docs/print",
   "dependencies": {
-    "@fullcalendar/premium-common": "workspace:7.0.0-beta.1"
+    "@fullcalendar/premium-common": "workspace:7.0.0-beta.3"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.1"
+    "@fullcalendar/core": "workspace:7.0.0-beta.3"
   },
   "devDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.1",
+    "@fullcalendar/core": "workspace:7.0.0-beta.3",
     "@fullcalendar-scripts/standard": "workspace:*"
   },
   "scripts": {

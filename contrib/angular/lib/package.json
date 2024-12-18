@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/angular",
-  "version": "7.0.0-beta.2",
+  "version": "7.0.0-beta.3",
   "title": "FullCalendar Angular Component",
   "description": "The official Angular component for FullCalendar",
   "keywords": [
@@ -22,6 +22,6 @@
   "peerDependencies": {
     "@angular/common": "12 - 18",
     "@angular/core": "12 - 18",
-    "@fullcalendar/core": "workspace:7.0.0-beta.1"
+    "@fullcalendar/core": "workspace:7.0.0-beta.3"
   }
 }

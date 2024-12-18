@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/list",
-  "version": "7.0.0-beta.1",
+  "version": "7.0.0-beta.3",
   "title": "FullCalendar List View Plugin",
   "description": "Display events on a calendar view that looks like a bulleted list",
   "keywords": [
@@ -8,10 +8,10 @@
   ],
   "homepage": "https://fullcalendar.io/docs/list-view",
   "peerDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.1"
+    "@fullcalendar/core": "workspace:7.0.0-beta.3"
   },
   "devDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.1",
+    "@fullcalendar/core": "workspace:7.0.0-beta.3",
     "@fullcalendar-scripts/standard": "workspace:*"
   },
   "scripts": {
