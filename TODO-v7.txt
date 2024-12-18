@@ -14,8 +14,6 @@ For beta.3
   TimeGridLayoutPannable
     audit fc-grow. missing?
     after print-mode, scrollers out of sync
-  MultiMonth
-    bug: why does multi-month months not all have same # of rows
   TEST:
     ensure non-resource timeline works well
     ensure multimonth looks okay

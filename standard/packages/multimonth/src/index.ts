@@ -19,8 +19,8 @@ export default createPlugin({
     multiMonthYear: {
       type: 'multiMonth',
       duration: { years: 1 },
-      fixedWeekCount: true,
-      showNonCurrentDates: false,
+      fixedWeekCount: true, // TODO: apply to all multi-col layouts?
+      showNonCurrentDates: false, // TODO: looks bad when single-col layout
     },
   },
 }) as PluginDef
