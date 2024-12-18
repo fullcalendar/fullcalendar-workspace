@@ -28,6 +28,8 @@ import { TimeGridEvent } from './TimeGridEvent.js'
 import { TimeGridMoreLink } from './TimeGridMoreLink.js'
 import { TimeGridNowIndicatorLine } from './TimeGridNowIndicatorLine.js'
 
+export const simplifiedTimeGridPrint = false
+
 export interface TimeGridColProps {
   dateProfile: DateProfile
   nowDate: DateMarker
@@ -148,10 +150,12 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     isDateSelecting: boolean,
     forcedKey?: string,
   ) {
-    // let { props } = this
-    // if (props.forPrint) {
-    //   return renderPlainFgSegs(sortedFgSegs, props) // TODO: test
-    // }
+    const { props } = this
+
+    if (props.forPrint && simplifiedTimeGridPrint) {
+      return renderPlainFgSegs(sortedFgSegs, props)
+    }
+
     return this.renderPositionedFgSegs(
       sortedFgSegs,
       segIsInvisible,

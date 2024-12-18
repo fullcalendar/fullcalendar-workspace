@@ -312,11 +312,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               <div // label list
                 className={joinClassNames(
                   'fc-timegrid-slots-axis fc-flex-col',
-                  props.forPrint && 'fc-fill',
+                  props.forPrint && 'fc-fill-x',
                 )}
-                style={{
-                  height: forcedBodyHeight,
-                }}
               >
                 {props.slatMetas.map((slatMeta, slatI) => (
                   <div
@@ -391,9 +388,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   forPrint={props.forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
                   className='fc-fill'
-                  style={{
-                    height: forcedBodyHeight,
-                  }}
 
                   // content
                   fgEventSegsByCol={props.fgEventSegsByCol}

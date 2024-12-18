@@ -247,10 +247,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               forPrint={props.forPrint}
               isHitComboAllowed={props.isHitComboAllowed}
               className='fc-fill fc-border-s'
-              style={{
-                ...axisStartCss,
-                height: forcedBodyHeight, // fc-flex-row needs this for print (for Firefox)
-              }}
+              style={axisStartCss}
 
               // content
               fgEventSegsByCol={props.fgEventSegsByCol}

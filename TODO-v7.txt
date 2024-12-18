@@ -9,7 +9,6 @@ Publishing:
 For beta.3
   TimeGridLayoutNormal/TimeGridLayoutPannable new print-mode approach
     for Firefox, simple show flat-list. waaay too many problems w/ abs positioning
-    undo hacks (forcedBodyHeight)
   TimeGridLayoutPannable
     audit fc-grow. missing?
   TEST:
@@ -22,10 +21,10 @@ For beta.3
 
 Cross-browser
   Firefox
-    Re-address borderBoxSize HACK
     bug: Firefox 90: timegrid header/all-day scrollbarGutter not showing
-    resource-timeline header borders a little messed up
     regression: after print-view (for timegrid as least) scroll gutter filler permanently disappears
+    Re-address borderBoxSize HACK
+    resource-timeline header borders a little messed up
   Safari
     shows ResizeObserver loop warning
 Markup refactor
