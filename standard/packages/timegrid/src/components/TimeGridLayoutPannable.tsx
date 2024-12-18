@@ -12,6 +12,7 @@ import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { computeSlatHeight, getSlatRowClassNames } from './util.js'
 import { TimeGridWeekNumber } from "./TimeGridWeekNumber.js"
 import { TimeGridAxisEmpty } from "./TimeGridAxisEmpty.js"
+import { simplifiedTimeGridPrint } from "./TimeGridCol.js"
 
 export interface TimeGridLayoutPannableProps {
   dateProfile: DateProfile
@@ -119,13 +120,16 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
       slatLabelInnerHeightRefMap,
       slatMainInnerHeightRefMap,
     } = this
-    const { nowDate, headerTiers } = props
+    const { nowDate, headerTiers, forPrint } = props
     const { axisWidth } = state
     const { options } = context
 
-    const verticalScrolling = !props.forPrint && !getIsHeightAuto(options)
-    const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
-    const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
+    const verticalScrolling = !forPrint && !getIsHeightAuto(options)
+    const stickyHeaderDates = !forPrint && getStickyHeaderDates(options)
+    const stickyFooterScrollbar = !forPrint && getStickyFooterScrollbar(options)
+
+    const absPrint = forPrint && !simplifiedTimeGridPrint
+    const simplePrint = forPrint && simplifiedTimeGridPrint
 
     const colCnt = props.cells.length
     // TODO: memo?
@@ -143,7 +147,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     // TODO: have computeSlatHeight return?
     const totalSlatHeight = (slatHeight || 0) * slatCnt
 
-    const forcedBodyHeight = props.forPrint ? totalSlatHeight : undefined
+    const forcedBodyHeight = absPrint ? totalSlatHeight : undefined
 
     // TODO: better way to get this?
     const rowsAreExpanding = verticalScrolling && !options.expandRows &&
@@ -253,9 +257,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     todayRange={props.todayRange}
                     cells={props.cells}
                     showDayNumbers={false}
-                    forPrint={props.forPrint}
+                    forPrint={forPrint}
                     isHitComboAllowed={props.isHitComboAllowed}
-                    isCompact={computeRowHeight(state.clientWidth, 1, true, props.forPrint, options)[1]}
+                    isCompact={computeRowHeight(state.clientWidth, 1, true, forPrint, options)[1]}
 
                     // content
                     fgEventSegs={props.fgEventSegs}
@@ -300,55 +304,59 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             }}
             ref={this.axisScrollerRef}
           >
-            <div // canvas
-              className={joinClassNames(
-                'fc-flex-col',
-                props.forPrint && 'fc-rel',
-              )}
-              style={{
-                height: forcedBodyHeight,
-              }}
-            >
-              <div // label list
-                className={joinClassNames(
-                  'fc-timegrid-slots-axis fc-flex-col',
-                  props.forPrint && 'fc-fill-x',
-                )}
-              >
-                {props.slatMetas.map((slatMeta, slatI) => (
-                  <div
-                    key={slatMeta.key}
+            {!simplePrint && (
+              <Fragment>
+                <div // canvas
+                  className={joinClassNames(
+                    'fc-flex-col',
+                    absPrint && 'fc-rel',
+                  )}
+                  style={{
+                    height: forcedBodyHeight,
+                  }}
+                >
+                  <div // label list
                     className={joinClassNames(
-                      ...getSlatRowClassNames(slatMeta),
-                      slatI && 'fc-border-t',
-                      slatLiquid && 'fc-liquid',
+                      'fc-timegrid-slots-axis fc-flex-col',
+                      absPrint && 'fc-fill-x',
                     )}
-                    style={{
-                      height: slatLiquid ? '' : slatHeight
-                    }}
                   >
-                    <TimeGridSlatLabel
-                      {...slatMeta}
-                      isLiquid={true}
-                      innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
-                      innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
-                    />
+                    {props.slatMetas.map((slatMeta, slatI) => (
+                      <div
+                        key={slatMeta.key}
+                        className={joinClassNames(
+                          ...getSlatRowClassNames(slatMeta),
+                          slatI && 'fc-border-t',
+                          slatLiquid && 'fc-liquid',
+                        )}
+                        style={{
+                          height: slatLiquid ? '' : slatHeight
+                        }}
+                      >
+                        <TimeGridSlatLabel
+                          {...slatMeta}
+                          isLiquid={true}
+                          innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
+                          innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
-                <TimeGridNowIndicatorArrow
-                  nowDate={nowDate}
-                  dateProfile={props.dateProfile}
-                  totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
-                />
-              )}
-            </div>
-            {axisNeedsBottomFiller && (
-              <div
-                class='fc-liquid fc-border-t fc-filler'
-                style={{ minHeight: state.bottomScrollbarWidth }}
-              />
+                  {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
+                    <TimeGridNowIndicatorArrow
+                      nowDate={nowDate}
+                      dateProfile={props.dateProfile}
+                      totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
+                    />
+                  )}
+                </div>
+                {axisNeedsBottomFiller && (
+                  <div
+                    class='fc-liquid fc-border-t fc-filler'
+                    style={{ minHeight: state.bottomScrollbarWidth }}
+                  />
+                )}
+              </Fragment>
             )}
           </Scroller>
           {/* SLATS / main (scroller)
@@ -363,9 +371,12 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               horizontal
               hideScrollbars={
                 stickyFooterScrollbar || // also means height:auto, so won't need vertical scrollbars anyway
-                props.forPrint
+                forPrint
               }
-              className='fc-flex-col fc-liquid'
+              className={joinClassNames(
+                'fc-flex-col',
+                verticalScrolling && 'fc-liquid',
+              )}
               ref={this.mainScrollerRef}
               clientWidthRef={this.handleClientWidth}
               clientHeightRef={this.handleClientHeight}
@@ -385,9 +396,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   todayRange={props.todayRange}
                   cells={props.cells}
                   slatCnt={slatCnt}
-                  forPrint={props.forPrint}
+                  forPrint={forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
-                  className='fc-fill'
+                  className={simplePrint ? '' : 'fc-fill'}
 
                   // content
                   fgEventSegsByCol={props.fgEventSegsByCol}
@@ -403,33 +414,38 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   colWidth={colWidth}
                   slatHeight={slatHeight}
                 />
-                <div // slot list
-                  className={joinClassNames(
-                    'fc-timegrid-slots fc-flex-col',
-                    props.forPrint ? 'fc-fill-x' : 'fc-rel',
-                  )}
-                >
-                  {props.slatMetas.map((slatMeta, slatI) => (
-                    <div
-                      key={slatMeta.key}
+
+                {!simplePrint && (
+                  <Fragment>
+                    <div // slot list
                       className={joinClassNames(
-                        ...getSlatRowClassNames(slatMeta),
-                        slatI && 'fc-border-t',
-                        slatLiquid && 'fc-liquid',
+                        'fc-timegrid-slots fc-flex-col',
+                        absPrint ? 'fc-fill-x' : 'fc-rel',
                       )}
-                      style={{
-                        height: slatLiquid ? '' : slatHeight
-                      }}
                     >
-                      <TimeGridSlatLane
-                        {...slatMeta}
-                        innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
-                      />
+                      {props.slatMetas.map((slatMeta, slatI) => (
+                        <div
+                          key={slatMeta.key}
+                          className={joinClassNames(
+                            ...getSlatRowClassNames(slatMeta),
+                            slatI && 'fc-border-t',
+                            slatLiquid && 'fc-liquid',
+                          )}
+                          style={{
+                            height: slatLiquid ? '' : slatHeight
+                          }}
+                        >
+                          <TimeGridSlatLane
+                            {...slatMeta}
+                            innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
+                          />
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-                {mainNeedsBottomFiller && (
-                  <div class='fc-liquid fc-border-t fc-filler' />
+                    {mainNeedsBottomFiller && (
+                      <div class='fc-liquid fc-border-t fc-filler' />
+                    )}
+                  </Fragment>
                 )}
               </div>
             </Scroller>

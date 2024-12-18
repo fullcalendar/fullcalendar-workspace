@@ -28,7 +28,9 @@ import { TimeGridEvent } from './TimeGridEvent.js'
 import { TimeGridMoreLink } from './TimeGridMoreLink.js'
 import { TimeGridNowIndicatorLine } from './TimeGridNowIndicatorLine.js'
 
-export const simplifiedTimeGridPrint = false
+// Firefox is terrible at rendering absolute elements that span across multiple print pages
+export const simplifiedTimeGridPrint = /* true || */
+  navigator.userAgent.toLowerCase().includes('firefox')
 
 export interface TimeGridColProps {
   dateProfile: DateProfile
@@ -112,7 +114,12 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               />
             )}
             {/* has a z-index to contain all event z-indexes  */}
-            <div className='fc-timegrid-day-events fc-liquid fc-rel'>
+            <div className={joinClassNames(
+              'fc-timegrid-day-events',
+              (props.forPrint && simplifiedTimeGridPrint)
+                ? 'fc-timegrid-day-events-simple'
+                : 'fc-fill',
+            )}>
               {this.renderFgSegs(
                 sortedFgSegs,
                 interactionAffectedInstances,

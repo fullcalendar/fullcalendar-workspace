@@ -59,3 +59,7 @@
 .fc-direction-rtl .fc-timegrid-day-events { // (rtl)
   margin: 0 2px 0 2.5%;
 }
+
+.fc-timegrid-day-events.fc-timegrid-day-events-simple {
+  margin: 4px;
+}

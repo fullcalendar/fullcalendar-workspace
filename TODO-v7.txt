@@ -7,8 +7,6 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
-  TimeGridLayoutNormal/TimeGridLayoutPannable new print-mode approach
-    for Firefox, simple show flat-list. waaay too many problems w/ abs positioning
   TimeGridLayoutPannable
     audit fc-grow. missing?
   TEST:
