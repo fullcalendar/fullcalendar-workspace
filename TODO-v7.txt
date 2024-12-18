@@ -9,11 +9,9 @@ Publishing:
 For beta.3
   TimeGridLayoutNormal/TimeGridLayoutPannable new print-mode approach
     for Firefox, simple show flat-list. waaay too many problems w/ abs positioning
-    undo hacks (forcedBodyHeight, forceCrop)
-    undo negative-top-margin that simulates scroll
+    undo hacks (forcedBodyHeight)
   TimeGridLayoutPannable
     audit fc-grow. missing?
-    after print-mode, scrollers out of sync
   TEST:
     ensure non-resource timeline works well
     ensure multimonth looks okay

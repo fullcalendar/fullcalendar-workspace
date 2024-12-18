@@ -153,6 +153,10 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   componentDidUpdate(prevProps: TimeGridLayoutProps) {
     if (prevProps.dateProfile !== this.props.dateProfile && this.context.options.scrollTimeReset) {
       this.resetScroll()
+    } else if (prevProps.forPrint && !this.props.forPrint) {
+      // returning from print
+      // reapply scrolling because scroll-divs were probably restored
+      this.applyTimeScroll()
     }
   }
 
@@ -192,8 +196,13 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   Captures current values
   */
   private handleTimeScrollEnd = () => {
-    this.scrollState.y = this.timeScrollerRef.current.y
-    this.scrollState.time = undefined
+    // record, but only if not forPrint, which could give bogus values in the case of
+    // TimeGridLayoutPannable, which kills y-scrolling, but retains x-scrolling,
+    // which reports as a 0 y-scroll.
+    if (!this.props.forPrint) {
+      this.scrollState.y = this.timeScrollerRef.current.y
+      this.scrollState.time = undefined
+    }
   }
 
   private applyTimeScroll = () => {
