@@ -1,7 +1,7 @@
 
 ## v7.0.0-beta.3
 
-:speaker: **Update!** This beta release brings improved print-view, accessibility, and fixed regressions. We apologize for the delayed release, the DOM restructuring turned out to be much more extensive than originally anticipated, and print-view was particulary pesky. The next beta will focus on restoring and improving accessibility ([see tickets](https://github.com/fullcalendar/fullcalendar/issues?q=is%3Aopen+is%3Aissue+milestone%3Av7+label%3AAccessibility)). After that, all that remains is code-cleanup and restoring 100% test coverage. The next beta is expected *Jan 3rd*, the v7 release candidate is expected *Jan 17th*, and the final v7 release is expected Feb 7th, though these dates are just approximations and may change.
+:speaker: **Update!** This beta release brings improved print-view, accessibility, and fixed regressions. We apologize for the delayed release, the DOM restructuring turned out to be much more extensive than originally anticipated, and print-view was particulary pesky. The next beta will focus on restoring and improving accessibility ([see tickets](https://github.com/fullcalendar/fullcalendar/issues?q=is%3Aopen+is%3Aissue+milestone%3Av7+label%3AAccessibility)). After that, all that remains is code-cleanup and restoring 100% test coverage. The next beta is expected *Jan 3rd*, the v7 release candidate is expected *Jan 17th*, and the final v7 release is expected *Feb 7th*, though these dates are just approximations and may change.
 
 ### :sparkles: Features
 

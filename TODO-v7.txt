@@ -5,6 +5,7 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
+  remove 'p' print testing
   TEST:
     ensure non-resource timeline works well
     RTL for horizontal scroll. initialScroll, scroll syncing
