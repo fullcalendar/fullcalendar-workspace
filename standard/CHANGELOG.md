@@ -1,38 +1,39 @@
 
 ## v7.0.0-beta.3
 
+:speaker: **Update!** This beta release brings improved print-view, accessibility improvements, and fixed regressions. We apologize for the delayed release, the DOM restructuring turned out to be much more extensive than originally anticipated, and print-view was particulary pesky. The next beta will focus on restoring and improving accessibility ([see tickets](https://github.com/fullcalendar/fullcalendar/issues?q=is%3Aopen+is%3Aissue+milestone%3Av7+label%3AAccessibility)). After that, all that's left is code-cleanup and restoring 100% test coverage. The next beta is expected *Jan 3rd*, the v7 release candidate is expected *Jan 17th*, and the final release is expected Feb 7th, though these dates are just approximations and may change.
+
 ### :sparkles: Features
 
-- List view markup refactored
-- resourceAreaWidth and column widths retain percentage-unit after resized
+- List-view DOM refactor, no more table markup
+- If `resourceAreaWidth` specified as percentage, will continue as percentage after user resize
 
 ### :printer: Printing
 
-- event titles repeated each day in print ([#6657](https://github.com/fullcalendar/fullcalendar/issues/6657))
-- TimeGrid print view with all time slots ([#5465](https://github.com/fullcalendar/fullcalendar/issues/5465))
-- Timeline print view with all time slots ([#6636](https://github.com/fullcalendar/fullcalendar/issues/6636))
-- First page of print is blank (missing events) when the events fill the page height ([#7007](https://github.com/fullcalendar/fullcalendar/issues/7007))
-- Event cut-off when printing multiple pages in timeGrid view ([#7673](https://github.com/fullcalendar/fullcalendar/issues/7673))
-- Time slots are missing in print version when resources don't fit on one page ([#6802](https://github.com/fullcalendar/fullcalendar/issues/6802))
+- DayGrid event titles repeated each day in print ([#6657](https://github.com/fullcalendar/fullcalendar/issues/6657))
+- TimeGrid first page blank when multiple pages ([#7007](https://github.com/fullcalendar/fullcalendar/issues/7007))
+- TimeGrid last event cut-off when multiple pages ([#7673](https://github.com/fullcalendar/fullcalendar/issues/7673))
+- TimeGrid show all time slot lines ([#5465](https://github.com/fullcalendar/fullcalendar/issues/5465))
+- Timeline show all time slot lines ([#6636](https://github.com/fullcalendar/fullcalendar/issues/6636) and [#6802](https://github.com/fullcalendar/fullcalendar/issues/6802))
 
 ### :accessibility: Accessibility
 
-- Non-Editable Calendar Events should not be rendered as anchor tags ([#7675](https://github.com/fullcalendar/fullcalendar/issues/7675))
+- Non-editable events should not be rendered as anchor tags ([#7675](https://github.com/fullcalendar/fullcalendar/issues/7675))
 
 ### :warning: Breaking Changes
 
-- multiMonthMinWidth not as faithfull anymore
-- timegrid visuall has non-rightmost event indented. no white glow on rightmost-event ([#6569](https://github.com/fullcalendar/fullcalendar/issues/6569))
+- The `multiMonthMinWidth` pixel value now *includes* the padding within each month tile
+- TimeGrid overlapping events that were previously spanned full column width now have a right margin. This was an accidental regression from v5 -> v6, and the v5 behavior is being restored ([#6569](https://github.com/fullcalendar/fullcalendar/issues/6569))
 
 ### :white_check_mark::rewind: Resolved Regressions
 
-- Minimum browser support, which was temporarily raised in 7.0.0-beta.0 to ~2020 minimum, has been lowered to ~2018 minimum because a ResizeObserver ponyfill was implemented. Exact minimum versions will be determined just prior to official v7 release.
-- timeline now-indicator div covering events ([#7798](https://github.com/fullcalendar/fullcalendar/issues/7798))
-- error with Next.js 14 "ResizeObserver is not defined" ([#7802](https://github.com/fullcalendar/fullcalendar/issues/7802))
-- timegrid left time axis is not text-selectable ([#7781](https://github.com/fullcalendar/fullcalendar/issues/7781))
-- space in header to accommodate scrollbars needs better styling ([#7780](https://github.com/fullcalendar/fullcalendar/issues/7780))
-- daygrid events occasional incorrect stacking
-- list-view time-text occasionally wrong for multi-day timed events
+- DayGrid events, occasional incorrect stacking
+- TimeGrid time-axis is not text-selectable ([#7781](https://github.com/fullcalendar/fullcalendar/issues/7781))
+- Timeline now-indicator div covering events ([#7798](https://github.com/fullcalendar/fullcalendar/issues/7798))
+- List-view time-text, occasional wrong time-text for multiday events
+- Space in header to accommodate scrollbars needs better styling ([#7780](https://github.com/fullcalendar/fullcalendar/issues/7780))
+- Error with Next.js 14, "ResizeObserver is not defined" ([#7802](https://github.com/fullcalendar/fullcalendar/issues/7802))
+- Minimum browser support, which was temporarily raised in 7.0.0-beta.0 to ~2020 minimum, has been lowered to ~2018 minimum because a `ResizeObserver` ponyfill has been implemented. Exact minimum versions will be determined just prior to final v7 release.
 
 ## 7.0.0-beta.2 (2024-10-09)
 
