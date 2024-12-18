@@ -9,7 +9,6 @@ For beta.3
   TEST:
     scroll not restored after print-view for any browser/view?
     print-mode with React (and React's flushSync)
-    last row of DayGridHeader should be sticky
 
 Cross-browser
   Firefox

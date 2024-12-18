@@ -6,7 +6,7 @@
 ### :sparkles: Features
 
 - List-view DOM refactor, no more table markup
-- If `resourceAreaWidth` specified as percentage, will continue as percentage after user-resize
+- If `resourceAreaWidth` or `resourceAreaColumns.width` specified as percentage, will persist as percentage after user-resize
 
 ### :printer: Printing
 
