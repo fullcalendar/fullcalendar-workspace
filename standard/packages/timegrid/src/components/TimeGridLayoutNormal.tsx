@@ -104,11 +104,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     // TODO: have computeSlatHeight return?
     const totalSlatHeight = (slatHeight || 0) * slatCnt
 
-    // TODO: better way to get this?
-    const rowsAreExpanding = verticalScrolling && !options.expandRows &&
+    const rowsNotExpanding = verticalScrolling && !options.expandRows &&
       state.clientHeight != null && state.clientHeight > totalSlatHeight
-
-    const needsBottomFiller = rowsAreExpanding
 
     const absPrint = forPrint && !simplifiedTimeGridPrint
     const simplePrint = forPrint && simplifiedTimeGridPrint
@@ -229,11 +226,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           clientHeightRef={this.handleClientHeight}
           endScrollbarWidthRef={this.handleEndScrollbarWidth}
         >
-          <div // canvas
-            className={joinClassNames(
-              'fc-flex-col fc-rel',
-              !forPrint && 'fc-grow',
-            )}
+          <div // canvas (grows b/c of filler at bottom)
+            className='fc-flex-col fc-grow fc-rel'
             style={{
               // in print mode, this div creates the height and everything is absolutely positioned within
               // we need to do this so that slats positioning synces with events's positioning
@@ -273,7 +267,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               <Fragment>
                 <div className={joinClassNames(
                   'fc-timegrid-slots fc-flex-col',
-                  verticalScrolling && options.expandRows && 'fc-grow',
+                  (verticalScrolling && options.expandRows) && 'fc-grow',
                   absPrint
                     ? 'fc-fill-x' // will assume top:0, height will be decided naturally
                     : 'fc-rel', // needs abs/rel for zIndex
@@ -305,7 +299,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   ))}
                 </div>
 
-                {needsBottomFiller && (
+                {rowsNotExpanding && (
                   <div class='fc-liquid fc-border-t fc-filler' />
                 )}
 

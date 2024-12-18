@@ -7,8 +7,6 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 For beta.3
-  TimeGridLayoutPannable
-    audit fc-grow. missing?
   TEST:
     ensure non-resource timeline works well
     ensure multimonth looks okay

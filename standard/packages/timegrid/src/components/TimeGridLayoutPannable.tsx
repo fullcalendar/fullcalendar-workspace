@@ -149,12 +149,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
 
     const forcedBodyHeight = absPrint ? totalSlatHeight : undefined
 
-    // TODO: better way to get this?
-    const rowsAreExpanding = verticalScrolling && !options.expandRows &&
+    const rowsNotExpanding = verticalScrolling && !options.expandRows &&
       state.clientHeight != null && state.clientHeight > totalSlatHeight
-
-    const mainNeedsBottomFiller = rowsAreExpanding
-    const axisNeedsBottomFiller = rowsAreExpanding || Boolean(state.bottomScrollbarWidth)
 
     return (
       <Fragment>
@@ -308,7 +304,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               <Fragment>
                 <div // canvas
                   className={joinClassNames(
-                    'fc-flex-col',
+                    'fc-flex-col fc-grow',
                     absPrint && 'fc-rel',
                   )}
                   style={{
@@ -318,6 +314,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   <div // label list
                     className={joinClassNames(
                       'fc-timegrid-slots-axis fc-flex-col',
+                      (verticalScrolling && options.expandRows) && 'fc-grow',
                       absPrint && 'fc-fill-x',
                     )}
                   >
@@ -349,13 +346,18 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
                     />
                   )}
+                  {Boolean(rowsNotExpanding || state.bottomScrollbarWidth) && (
+                    <div
+                      class={joinClassNames(
+                        'fc-border-t fc-filler',
+                        rowsNotExpanding && 'fc-liquid',
+                      )}
+                      style={{
+                        minHeight: state.bottomScrollbarWidth
+                      }}
+                    />
+                  )}
                 </div>
-                {axisNeedsBottomFiller && (
-                  <div
-                    class='fc-liquid fc-border-t fc-filler'
-                    style={{ minHeight: state.bottomScrollbarWidth }}
-                  />
-                )}
               </Fragment>
             )}
           </Scroller>
@@ -383,7 +385,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               endScrollbarWidthRef={this.handleEndScrollbarWidth}
               bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
             >
-              <div // canvas
+              <div // canvas (grows b/c of filler at bottom)
                 className='fc-flex-col fc-grow fc-rel'
                 style={{
                   width: canvasWidth,
@@ -420,6 +422,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     <div // slot list
                       className={joinClassNames(
                         'fc-timegrid-slots fc-flex-col',
+                        (verticalScrolling && options.expandRows) && 'fc-grow',
                         absPrint ? 'fc-fill-x' : 'fc-rel',
                       )}
                     >
@@ -442,7 +445,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         </div>
                       ))}
                     </div>
-                    {mainNeedsBottomFiller && (
+                    {rowsNotExpanding && (
                       <div class='fc-liquid fc-border-t fc-filler' />
                     )}
                   </Fragment>
