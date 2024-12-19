@@ -4,6 +4,13 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+Regression present in v7-beta.3
+  See https://codepen.io/arshaw/pen/wBwJmgg?editors=001 (via https://github.com/fullcalendar/fullcalendar/issues/7007)
+    TimeGrid events not spaced correctly
+    WeekNumber was not activated, but still present
+  When building Next 14,
+    "navigator is not defined"
+
 Cross-browser
   Firefox
     bug: Firefox 90: timegrid header/all-day scrollbarGutter not showing
