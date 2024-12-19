@@ -4,11 +4,6 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-For beta.3
-  remove 'p' print testing
-  TEST:
-    scroll not restored after print-view for any browser/view?
-
 Cross-browser
   Firefox
     bug: Firefox 90: timegrid header/all-day scrollbarGutter not showing
@@ -17,6 +12,7 @@ Cross-browser
     resource-timeline header borders a little messed up
   Safari
     shows ResizeObserver loop warning
+  scroll not restored after print-view for any browser/view?
 Markup refactor
   just like events conditionally are <a> tags, should make navlinks the same
   put fc-border on viewcontainer
