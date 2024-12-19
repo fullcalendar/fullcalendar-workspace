@@ -456,6 +456,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               <StickyFooterScrollbar
                 canvasWidth={canvasWidth}
                 scrollerRef={this.footScrollerRef}
+                scrollbarWidthRef={this.handleBottomScrollbarWidth}
               />
             )}
           </div>
