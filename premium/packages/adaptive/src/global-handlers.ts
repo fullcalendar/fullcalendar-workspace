@@ -19,6 +19,7 @@ function attachGlobalHandlers() {
   window.addEventListener('beforeprint', handleBeforePrint)
   window.addEventListener('afterprint', handleAfterPrint)
 
+  /*
   // for testing
   let forPrint = false
   document.addEventListener('keypress', (ev) => {
@@ -31,6 +32,7 @@ function attachGlobalHandlers() {
       }
     }
   })
+  */
 }
 
 function removeGlobalHandlers() {
