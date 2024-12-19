@@ -58,10 +58,10 @@ export class BodySection extends BaseComponent<BodySectionProps> {
               width: colWidths[colIndex],
             }}
           >
-            {groupColLayouts.map((groupCellLayout) => {
+            {groupColLayouts.map((groupCellLayout, groupIndex) => {
               const group = groupCellLayout.entity
               const groupKey = createGroupId(group)
-              const isNotLast = groupCellLayout.rowIndex < groupColLayouts.length - 1
+              const isNotLast = groupIndex < groupColLayouts.length - 1
               const rowHeight = rowHeights.get(groupKey)
 
               return (
