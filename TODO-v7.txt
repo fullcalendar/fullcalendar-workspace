@@ -34,6 +34,9 @@ DayGrid
       to be more like react-native, and more intuitive
 MultiMonth
   Improve perf while switching years
+  For print, force +morelink to isCompact=true
+    Starting out NOT compact in forced 2-col formation, but when gets squished to where isCompact
+    is needed, but ResizeObserver/etc doesn't adapt. examples-v7/multimonth-view.html
 TimeGrid
   i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
   when setting slotDuration:{hours:1}, really short body. always like this? slats had bigger min-height?

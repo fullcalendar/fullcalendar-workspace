@@ -10,12 +10,18 @@
 
 ### :printer: Printing
 
-- DayGrid event titles should not repeat each day in print ([#6657](https://github.com/fullcalendar/fullcalendar/issues/6657))
-- TimeGrid first page blank when multiple pages ([#7007](https://github.com/fullcalendar/fullcalendar/issues/7007))
-- TimeGrid last event cut-off when multiple pages ([#7673](https://github.com/fullcalendar/fullcalendar/issues/7673))
-- TimeGrid show all time slot lines ([#5465](https://github.com/fullcalendar/fullcalendar/issues/5465))
-- Timeline show all time slot lines ([#6636](https://github.com/fullcalendar/fullcalendar/issues/6636), [#6802](https://github.com/fullcalendar/fullcalendar/issues/6802))
-- Resource-Timeline resource rows no longer break across pages
+- DayGrid
+  - Event titles should not repeat each day ([#6657](https://github.com/fullcalendar/fullcalendar/issues/6657))
+- TimeGrid
+  - First page blank when multiple pages ([#7007](https://github.com/fullcalendar/fullcalendar/issues/7007))
+  - Last event cut-off when multiple pages ([#7673](https://github.com/fullcalendar/fullcalendar/issues/7673))
+  - Show all time slot lines ([#5465](https://github.com/fullcalendar/fullcalendar/issues/5465))
+    - NOTE: Impossible to achieve multi-page breaking in Firefox, so falls back to flat list of events without slot lines
+- Timeline
+  - Show all time slot lines ([#6636](https://github.com/fullcalendar/fullcalendar/issues/6636), [#6802](https://github.com/fullcalendar/fullcalendar/issues/6802))
+- Resource-Timeline
+  - Resource rows no longer break across pages
+  - Resource-area columns shrink-to-fit based on percentage, saving more space for timeline
 
 ### :accessibility: Accessibility
 
