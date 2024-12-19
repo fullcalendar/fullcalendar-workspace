@@ -1,7 +1,7 @@
 
-## v7.0.0-beta.3
+## v7.0.0-beta.3 (2024-12-18)
 
-:speaker: **Update!** This beta release brings improved print-view, accessibility, and fixed regressions. We apologize for the delayed release, the DOM restructuring turned out to be much more extensive than originally anticipated, and print-view was particulary pesky. The next beta will focus on restoring and improving accessibility ([see tickets](https://github.com/fullcalendar/fullcalendar/issues?q=is%3Aopen+is%3Aissue+milestone%3Av7+label%3AAccessibility)). After that, all that remains is code-cleanup and restoring 100% test coverage. The next beta is expected *Jan 3rd*, the v7 release candidate is expected *Jan 17th*, and the final v7 release is expected *Feb 7th*, though these dates are just approximations and may change.
+:speaker: **Update!** This beta release brings improved print-view, accessibility, and fixed regressions. We apologize for the delayed release, the DOM restructuring turned out to be much more extensive than originally anticipated, and print-view was particulary pesky. The next beta will focus on restoring and improving accessibility ([see tickets](https://github.com/fullcalendar/fullcalendar/issues?q=is%3Aopen+is%3Aissue+milestone%3Av7+label%3AAccessibility)). After that, three things remain: code-cleanup, restoring 100% test coverage, and improving performance. The next beta is expected *Jan 3rd*, the v7 release candidate is expected *Jan 17th*, and the final v7 release is expected *Feb 14th*, though these dates are just approximations and may change.
 
 ### :sparkles: Features
 
@@ -15,6 +15,7 @@
 - TimeGrid last event cut-off when multiple pages ([#7673](https://github.com/fullcalendar/fullcalendar/issues/7673))
 - TimeGrid show all time slot lines ([#5465](https://github.com/fullcalendar/fullcalendar/issues/5465))
 - Timeline show all time slot lines ([#6636](https://github.com/fullcalendar/fullcalendar/issues/6636), [#6802](https://github.com/fullcalendar/fullcalendar/issues/6802))
+- Resource-Timeline resource rows no longer break across pages
 
 ### :accessibility: Accessibility
 

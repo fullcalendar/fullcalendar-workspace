@@ -235,8 +235,12 @@ Punt
 ensure automated tests for...
   weird list-view slicing logic we removed
     https://github.com/fullcalendar/fullcalendar/blob/9a0edaeb5eddf2cec8bd2409ecc26c4598b98a48/packages/list/src/ListView.tsx#L235-L249
-  resource-timeline rowgrouping has correct borders on bottom of rows
-    even when all row groups collapsed
+  resource-timeline rowgrouping
+    has correct borders on bottom of rows, even when all row groups collapsed
+    when expandRows: true, groups do not expand, only resources!
+  timeline/hscroll-timeGRID, when sticky-header
+    ensure time-axis or resource area has bottom filler to match horizontal scrollbar
+  resource-timeline group cells (that run vertically) have correct border, especially 2nd and 3rd down
   positioning of sticky headers in all views. list view sticky subheaders too
   resource-timeline indent works
   pixel # for height/contentHeight works
