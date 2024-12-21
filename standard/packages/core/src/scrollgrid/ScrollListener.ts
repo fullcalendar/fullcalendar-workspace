@@ -1,8 +1,6 @@
 import { Emitter } from "../common/Emitter.js"
 import { DelayedRunner } from "../util/DelayedRunner.js"
 
-const WHEEL_EVENT_NAMES = 'wheel mousewheel DomMouseScroll MozMousePixelScroll'.split(' ')
-
 /*
 Fires:
 - scrollStart (always user)
@@ -20,17 +18,17 @@ export class ScrollListener {
   private isTouching = false // user currently has finger down?
   private isRecentlyWheeled = false
   private isRecentlyScrolled = false
-  private wheelWaiter = new DelayedRunner(this._handleWheelWaited.bind(this))
-  private scrollWaiter = new DelayedRunner(this._handleScrollWaited.bind(this))
+  private wheelWaiter: DelayedRunner
+  private scrollWaiter: DelayedRunner
 
   constructor(public el: HTMLElement) {
+    this.wheelWaiter = new DelayedRunner(this.handleWheelWaited)
+    this.scrollWaiter = new DelayedRunner(this.handleScrollWaited)
+
     el.addEventListener('scroll', this.handleScroll)
     el.addEventListener('touchstart', this.handleTouchStart, { passive: true })
     el.addEventListener('touchend', this.handleTouchEnd)
-
-    for (let eventName of WHEEL_EVENT_NAMES) {
-      el.addEventListener(eventName, this.handleWheel, { passive: true })
-    }
+    el.addEventListener('wheel', this.handleWheel)
   }
 
   destroy() {
@@ -38,10 +36,7 @@ export class ScrollListener {
     el.removeEventListener('scroll', this.handleScroll)
     el.removeEventListener('touchstart', this.handleTouchStart, { passive: true } as AddEventListenerOptions)
     el.removeEventListener('touchend', this.handleTouchEnd)
-
-    for (let eventName of WHEEL_EVENT_NAMES) {
-      el.removeEventListener(eventName, this.handleWheel, { passive: true } as AddEventListenerOptions)
-    }
+    el.removeEventListener('wheel', this.handleWheel)
   }
 
   // Start / Stop
@@ -75,7 +70,7 @@ export class ScrollListener {
     this.scrollWaiter.request(500)
   }
 
-  private _handleScrollWaited() {
+  private handleScrollWaited = () => {
     this.isRecentlyScrolled = false
 
     // only end the scroll if not currently touching.
@@ -91,7 +86,7 @@ export class ScrollListener {
     this.wheelWaiter.request(500)
   }
 
-  private _handleWheelWaited() {
+  private handleWheelWaited = () => {
     this.isRecentlyWheeled = false
   }
 
