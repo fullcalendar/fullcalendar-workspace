@@ -10,6 +10,7 @@ export interface ToolbarWidget {
   buttonIcon?: any
   buttonText?: any
   buttonHint?: string | ((navUnit: string) => string)
+  isView?: boolean
   // ^ if depends on the unit which will move forward/backward, will be a function
 }
 

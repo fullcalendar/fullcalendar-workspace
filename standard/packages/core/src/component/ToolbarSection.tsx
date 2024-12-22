@@ -33,13 +33,24 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
     let { props } = this
     let { theme } = this.context
     let children: VNode[] = []
+
     let isOnlyButtons = true
+    let isOnlyView = true
+
+    for (const widget of widgetGroup) {
+      const { buttonName, isView } = widget
+
+      if (buttonName === 'title') {
+        isOnlyButtons = false
+      } else if (!isView) {
+        isOnlyView = false
+      }
+    }
 
     for (let widget of widgetGroup) {
       let { buttonName, buttonClick, buttonText, buttonIcon, buttonHint } = widget
 
       if (buttonName === 'title') {
-        isOnlyButtons = false
         children.push(
           <h2 className="fc-toolbar-title">{props.title}</h2>,
         )
@@ -54,8 +65,12 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
           <button
             type="button"
             disabled={isDisabled}
+            {...(
+              (isOnlyButtons && isOnlyView)
+                ? { 'role': 'tab', 'aria-selected': isPressed }
+                : { 'aria-pressed': isPressed }
+            )}
             aria-label={typeof buttonHint === 'function' ? buttonHint(props.navUnit) : buttonHint}
-            aria-pressed={isPressed}
             className={joinClassNames(
               `fc-${buttonName}-button`,
               theme.getClassName('button'),
@@ -70,10 +85,13 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
     }
 
     if (children.length > 1) {
-      let groupClassName = (isOnlyButtons && theme.getClassName('buttonGroup')) || ''
-
-      return createElement('div', { className: groupClassName }, ...children)
+      return createElement('div', {
+        role: (isOnlyButtons && isOnlyView) ? 'tablist' : undefined,
+        'aria-label': (isOnlyButtons && isOnlyView) ? 'Change view' : '', // TODO: i18n
+        className: isOnlyButtons ? theme.getClassName('buttonGroup') : undefined,
+      }, ...children)
     }
+
     return children[0]
   }
 }

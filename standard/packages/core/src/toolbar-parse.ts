@@ -90,6 +90,7 @@ function parseSection(
         let buttonIcon // only one of these will be set
         let buttonText // "
         let buttonHint: string | ((navUnit: string) => string)
+        let isView = false
         // ^ for the title="" attribute, for accessibility
 
         if ((customButtonProps = calendarCustomButtons[buttonName])) {
@@ -105,6 +106,7 @@ function parseSection(
 
           buttonHint = customButtonProps.hint || customButtonProps.text
         } else if ((viewSpec = viewSpecs[buttonName])) {
+          isView = true
           viewsWithButtons.push(buttonName)
 
           buttonClick = () => {
@@ -159,7 +161,7 @@ function parseSection(
           }
         }
 
-        return { buttonName, buttonClick, buttonIcon, buttonText, buttonHint }
+        return { buttonName, buttonClick, buttonIcon, buttonText, buttonHint, isView }
       })
     ),
   )
