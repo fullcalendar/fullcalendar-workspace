@@ -135,7 +135,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
 
   componentDidMount(): void {
     this.resetScroll()
-    this.scrollerRef.current.addScrollEndListener(this.clearScroll)
+    this.scrollerRef.current.addScrollEndListener(this.handleScrollEnd)
 
     this.disconnectInnerWidth = watchWidth(this.innerElRef.current, (innerWidth: number) => {
       afterSize(() => {
@@ -150,12 +150,12 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     } else {
       // NOT optimal to update so often
       // TODO: isolate dependencies of scroll coordinate
-      this.updateScroll()
+      this.applyScroll()
     }
   }
 
   componentWillUnmount() {
-    this.scrollerRef.current.removeScrollEndListener(this.clearScroll)
+    this.scrollerRef.current.removeScrollEndListener(this.handleScrollEnd)
 
     this.disconnectInnerWidth()
   }
@@ -165,10 +165,10 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
 
   private resetScroll() {
     this.scrollDate = this.props.dateProfile.currentDate
-    this.updateScroll()
+    this.applyScroll()
   }
 
-  private updateScroll = () => {
+  private applyScroll() {
     if (
       this.scrollDate != null &&
       this.state.innerWidth != null // render completed?
@@ -185,8 +185,10 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     }
   }
 
-  private clearScroll = () => {
-    this.scrollDate = null
+  private handleScrollEnd = ({ isUser }: { isUser: boolean }) => {
+    if (isUser) {
+      this.scrollDate = null
+    }
   }
 }
 

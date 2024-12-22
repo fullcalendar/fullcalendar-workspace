@@ -2,7 +2,7 @@ import { Emitter, isArraysEqual, Scroller, ScrollerSyncerInterface } from "@full
 
 /*
 Fires:
-- scrollEnd: (x, y) => void
+- scrollEnd: ({ x, y, isUser }) => void
 */
 export class ScrollerSyncer implements ScrollerSyncerInterface {
   private emitter: Emitter<any> = new Emitter()
@@ -10,6 +10,9 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
   private destroyFuncs: (() => void)[] = []
   private masterScroller: Scroller
   private isPaused: boolean = false
+
+  private prevX: number
+  private prevY: number
 
   constructor(
     private isHorizontal = false,
@@ -57,18 +60,18 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
     this.isPaused = false
   }
 
-  addScrollEndListener(handler: (x: number, y: number) => void): void {
+  addScrollEndListener(handler: (arg: { x: number, y: number, isUser: boolean }) => void): void {
     this.emitter.on('scrollEnd', handler)
   }
 
-  removeScrollEndListener(handler: (x: number, y: number) => void): void {
+  removeScrollEndListener(handler: (arg: { x: number, y: number, isUser: boolean }) => void): void {
     this.emitter.off('scrollEnd', handler)
   }
 
   bindScroller(scroller: Scroller) {
     let { isHorizontal } = this
 
-    const onScroll = ({ isUser }: ScrollListenerArg) => {
+    const onScroll = (isUser: boolean) => {
       if (!this.isPaused) {
         if (!this.masterScroller || (this.masterScroller !== scroller && isUser)) {
           this.assignMaster(scroller)
@@ -89,10 +92,32 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
       }
     }
 
-    const onScrollEnd = () => {
+    const onScrollEnd = (isUser: boolean) => {
       if (this.masterScroller === scroller) {
         this.masterScroller = null
-        this.emitter.trigger('scrollEnd', this.x, this.y)
+
+        const { x, y } = this // new values
+        let isMoved = false
+
+        if (this.isHorizontal) {
+          if (x !== this.prevX) {
+            this.prevX = x
+            isMoved = true
+          }
+        } else {
+          if (y !== this.prevY) {
+            this.prevY = y
+            isMoved = true
+          }
+        }
+
+        if (isMoved) {
+          this.emitter.trigger('scrollEnd', {
+            x,
+            y,
+            isUser,
+          })
+        }
       }
     }
 

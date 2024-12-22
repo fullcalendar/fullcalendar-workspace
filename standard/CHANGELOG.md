@@ -1,4 +1,10 @@
 
+a11y:
+- Weekday on the list view has aria-hidden=True ([#7645](https://github.com/fullcalendar/fullcalendar/issues/7645))
+
+bugs:
+- resource-timeline scrolls down when it shouldn't, attempting to preserve scroll state ([#4443](https://github.com/fullcalendar/fullcalendar/issues/4443))
+
 ## v7.0.0-beta.3 (2024-12-18)
 
 :speaker: **Update!** This beta release brings improved print-view, accessibility, and fixed regressions. We apologize for the delayed release, the DOM restructuring turned out to be much more extensive than originally anticipated, and print-view was particulary pesky. The next beta will focus on restoring and improving accessibility ([see tickets](https://github.com/fullcalendar/fullcalendar/issues?q=is%3Aopen+is%3Aissue+milestone%3Av7+label%3AAccessibility)). After that, three things remain: code-cleanup, restoring 100% test coverage, and improving performance. The next beta is expected *Jan 3rd*, the v7 release candidate is expected *Jan 17th*, and the final v7 release is expected *Feb 14th*, though these dates are just approximations and may change.

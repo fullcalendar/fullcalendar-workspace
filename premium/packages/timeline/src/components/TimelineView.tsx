@@ -240,8 +240,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     this.syncedScroller = new ScrollerSyncer(true) // horizontal=true
     this.updateSyncedScroller()
     this.resetScroll()
-    this.context.emitter.on('_timeScrollRequest', this.handleTimeScroll)
-    this.syncedScroller.addScrollEndListener(this.clearScroll)
+    this.context.emitter.on('_timeScrollRequest', this.handleTimeScrollRequest)
+    this.syncedScroller.addScrollEndListener(this.handleTimeScrollEnd)
   }
 
   componentDidUpdate(prevProps: ViewProps) {
@@ -251,14 +251,14 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       this.resetScroll()
     } else {
       // TODO: inefficient to update so often
-      this.updateScroll()
+      this.applyTimeScroll()
     }
   }
 
   componentWillUnmount() {
     this.syncedScroller.destroy()
-    this.context.emitter.off('_timeScrollRequest', this.handleTimeScroll)
-    this.syncedScroller.removeScrollEndListener(this.clearScroll)
+    this.context.emitter.off('_timeScrollRequest', this.handleTimeScrollRequest)
+    this.syncedScroller.removeScrollEndListener(this.handleTimeScrollEnd)
   }
 
   // Sizing
@@ -305,15 +305,21 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   }
 
   private resetScroll() {
-    this.handleTimeScroll(this.context.options.scrollTime)
+    this.handleTimeScrollRequest(this.context.options.scrollTime)
   }
 
-  private handleTimeScroll = (scrollTime: Duration) => {
+  private handleTimeScrollRequest = (scrollTime: Duration) => {
     this.scrollTime = scrollTime
-    this.updateScroll()
+    this.applyTimeScroll()
   }
 
-  private updateScroll = () => {
+  private handleTimeScrollEnd = ({ isUser }: { isUser: boolean }) => {
+    if (isUser) {
+      this.scrollTime = null
+    }
+  }
+
+  private applyTimeScroll() {
     const { props, context, tDateProfile, scrollTime, slotWidth } = this
 
     if (scrollTime != null && slotWidth != null) {
@@ -325,10 +331,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
       this.syncedScroller.scrollTo({ x })
     }
-  }
-
-  private clearScroll = () => {
-    this.scrollTime = null
   }
 
   // Hit System

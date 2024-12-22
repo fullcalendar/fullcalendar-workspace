@@ -732,9 +732,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   /*
   Captures current values
   */
-  private handleTimeScrollEnd = () => {
-    this.scroll.x = this.timeScroller.x
-    this.scroll.time = undefined
+  private handleTimeScrollEnd = ({ x, isUser }: { x: number, isUser: boolean }) => {
+    if (isUser) {
+      this.scroll.x = x
+      this.scroll.time = undefined
+    }
   }
 
   private applyTimeScroll() {
@@ -769,24 +771,25 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   /*
   Captures current values
   */
-  private handleEntityScrollEnd = () => {
-    const { bodyLayouts, bodyTops, bodyHeights, scroll } = this
-    const scrollTop = this.bodyScroller.y
+  private handleEntityScrollEnd = ({ y, isUser }: { y: number, isUser: boolean }) => {
+    if (isUser) {
+      const { bodyLayouts, bodyTops, bodyHeights, scroll } = this
 
-    const coordRes = findEntityByCoord(
-      bodyLayouts,
-      bodyTops,
-      bodyHeights,
-      scrollTop,
-    )
+      const coordRes = findEntityByCoord(
+        bodyLayouts,
+        bodyTops,
+        bodyHeights,
+        y,
+      )
 
-    if (coordRes) {
-      const [entity, elTop, elHeight] = coordRes
-      const elBottom = elTop + elHeight
-      const elBottomRelScroller = elBottom - scrollTop
+      if (coordRes) {
+        const [entity, elTop, elHeight] = coordRes
 
-      scroll.entityId = createEntityId(entity)
-      scroll.fromBottom = elBottomRelScroller
+        scroll.entityId = createEntityId(entity)
+        scroll.fromBottom = y
+          ? elTop + elHeight - y
+          : undefined // if already at top, keep at top
+      }
     }
   }
 

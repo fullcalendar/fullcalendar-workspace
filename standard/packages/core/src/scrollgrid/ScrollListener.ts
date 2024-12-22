@@ -1,17 +1,11 @@
 import { Emitter } from "../common/Emitter.js"
 import { DelayedRunner } from "../util/DelayedRunner.js"
 
-export interface ScrollListenerArg {
-  isUser: boolean
-  isWheel: boolean
-  isMouse: boolean
-  isTouch: boolean
-}
-
 /*
 Fires:
-- scroll
-- scrollEnd
+- scrollStart: (isUser) => void
+- scroll: (isUser) => void
+- scrollEnd: (isUser) => void
 
 NOTE: detection is complicated (w/ touch and wheel) because ScrollerSyncer needs to know about it,
 but are we sure we can't just ignore programmatic scrollTo() calls with a flag? and determine the
@@ -26,8 +20,13 @@ export class ScrollListener {
   private isScroll = false
   private isScrollRecent = false
   private isWheelRecent = false
-  private isMouse = false // user currently has mouse down?
-  private isTouch = false // user currently has finger down?
+  private isMouseDown = false // user currently has mouse down?
+  private isTouchDown = false // user currently has finger down?
+
+  // accumulated during scroll
+  private isMouse = false
+  private isTouch = false
+  private isWheel = false
 
   constructor(public el: HTMLElement) {
     this.wheelWaiter = new DelayedRunner(this.handleWheelWait)
@@ -58,21 +57,26 @@ export class ScrollListener {
   private startScroll() {
     if (!this.isScroll) {
       this.isScroll = true
-      this.emitter.trigger('scrollStart')
+      this.emitter.trigger('scrollStart', this.getIsUser())
     }
   }
 
   endScroll() {
-    if (this.isScroll) {
-      this.emitter.trigger('scrollEnd')
-
-      this.scrollWaiter.clear()
-      this.wheelWaiter.clear()
+    if (this.isScroll) { // extra protection because might be called publicly
+      this.scrollWaiter.clear() // (same)
+      this.wheelWaiter.clear() // (same)
 
       this.isScroll = false
-      this.isScrollRecent = true
       this.isWheelRecent = false
+      this.emitter.trigger('scrollEnd', this.getIsUser())
+      this.isMouse = false
+      this.isTouch = false
+      this.isWheel = false
     }
+  }
+
+  private getIsUser() {
+    return this.isWheel || this.isMouse || this.isTouch
   }
 
   // Handlers
@@ -80,13 +84,19 @@ export class ScrollListener {
 
   private handleScroll = () => {
     this.startScroll()
-    this.emitter.trigger('scroll', {
-      isUser: this.isWheelRecent || this.isMouse || this.isTouch,
-      isWheel: this.isWheelRecent,
-      isMouse: this.isMouse,
-      isTouch: this.isTouch,
-    })
+    this.emitter.trigger('scroll', this.getIsUser())
     this.isScrollRecent = true
+
+    if (this.isMouseDown) {
+      this.isMouse = true
+    }
+    if (this.isTouchDown) {
+      this.isTouch = true
+    }
+    if (this.isWheelRecent) {
+      this.isWheel = true
+    }
+
     this.scrollWaiter.request(500)
   }
 
@@ -95,12 +105,12 @@ export class ScrollListener {
 
     // only end the scroll if not currently touching.
     // if touching, the scrolling will end later, on touchend.
-    if (!this.isTouch) {
+    if (!this.isTouchDown) {
       this.endScroll()
     }
   }
 
-  // will fire *before* the scroll event is fired (might not cause a scroll)
+  // will fire *before* the scroll event is fired (might not cause a scroll!)
   private handleWheel = () => {
     this.isWheelRecent = true
     this.wheelWaiter.request(500)
@@ -111,23 +121,24 @@ export class ScrollListener {
   }
 
   private handleMouseDown = () => {
-    this.isMouse = true
+    this.isMouseDown = true
   }
 
   private handleMouseUp = () => {
-    this.isMouse = false
+    this.isMouseDown = false
   }
 
-  // will fire *before* the scroll event is fired (might not cause a scroll)
+  // will fire *before* the scroll event is fired (might not cause a scroll!)
   private handleTouchStart = () => {
-    this.isTouch = true
+    this.isTouchDown = true
   }
 
   private handleTouchEnd = () => {
-    this.isTouch = false
+    this.isTouchDown = false
 
     // if the user ended their touch, and the scroll area wasn't moving,
-    // we consider this to be the end of the scroll (b/c of inertia?)
+    // we consider this to be the end of the scroll
+    // otherwise, wait for inertia to finish and handleScrollWait to fire
     if (!this.isScrollRecent) {
       this.endScroll()
     }

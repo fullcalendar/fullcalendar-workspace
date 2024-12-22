@@ -11,6 +11,9 @@ Regression present in v7-beta.3
   When building Next 14,
     "navigator is not defined"
 
+a11y
+  TODO: test scrolling on touch devices
+
 Cross-browser
   Firefox
     bug: Firefox 90: timegrid header/all-day scrollbarGutter not showing

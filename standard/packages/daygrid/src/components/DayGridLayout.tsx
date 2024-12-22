@@ -80,7 +80,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
 
   componentDidMount() {
     this.resetScroll()
-    this.scrollerRef.current.addScrollEndListener(this.clearScroll)
+    this.scrollerRef.current.addScrollEndListener(this.handleScrollEnd)
   }
 
   componentDidUpdate(prevProps: DayGridLayoutProps) {
@@ -90,7 +90,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
   }
 
   componentWillUnmount() {
-    this.scrollerRef.current.removeScrollEndListener(this.clearScroll)
+    this.scrollerRef.current.removeScrollEndListener(this.handleScrollEnd)
   }
 
   // Scrolling
@@ -100,7 +100,6 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
     this.scrollDate = this.props.dateProfile.currentDate
     this.updateScrollY()
 
-    // updateScrollX
     const scroller = this.scrollerRef.current
     scroller.scrollTo({ x: 0 })
   }
@@ -128,7 +127,9 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
     }
   }
 
-  clearScroll = () => {
-    this.scrollDate = null
+  handleScrollEnd = ({ isUser }: { isUser: boolean }) => {
+    if (isUser) {
+      this.scrollDate = null
+    }
   }
 }
