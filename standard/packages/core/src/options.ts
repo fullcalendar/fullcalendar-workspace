@@ -225,6 +225,7 @@ export const BASE_OPTION_REFINERS = {
   noEventsText: String,
 
   viewHint: identity as Identity<string | ((...args: any[]) => string)>,
+  viewChangeHint: String,
   navLinkHint: identity as Identity<string | ((...args: any[]) => string)>,
   closeHint: String,
   timeHint: String,

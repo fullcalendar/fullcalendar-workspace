@@ -16,6 +16,9 @@ a11y
   Why is list-view crazy blackout happening when <a> event clicked or focused?
   NOTE: semantic DayGrid table structure will be hard b/c MultiMonth
 
+i18n
+  locales should populdate viewChangeHint
+
 Cross-browser
   Firefox
     bug: Firefox 90: timegrid header/all-day scrollbarGutter not showing

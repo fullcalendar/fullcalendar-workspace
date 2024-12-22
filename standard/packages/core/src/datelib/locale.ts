@@ -67,6 +67,7 @@ const RAW_EN_LOCALE = {
     },
   },
   viewHint: '$0 view',
+  viewChangeHint: 'Change view',
   navLinkHint: 'Go to $0',
   moreLinkHint(eventCnt: number) {
     return `Show ${eventCnt} more event${eventCnt === 1 ? '' : 's'}`
