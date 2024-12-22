@@ -33,7 +33,7 @@ export class ScrollListener {
     this.scrollWaiter = new DelayedRunner(this.handleScrollWait)
 
     el.addEventListener('scroll', this.handleScroll)
-    el.addEventListener('wheel', this.handleWheel)
+    el.addEventListener('wheel', this.handleWheel, { passive: true })
     el.addEventListener('mousedown', this.handleMouseDown)
     el.addEventListener('mouseup', this.handleMouseUp)
     el.addEventListener('touchstart', this.handleTouchStart, { passive: true })
@@ -44,7 +44,7 @@ export class ScrollListener {
     let { el } = this
 
     el.removeEventListener('scroll', this.handleScroll)
-    el.removeEventListener('wheel', this.handleWheel)
+    el.removeEventListener('wheel', this.handleWheel, { passive: true } as AddEventListenerOptions)
     el.removeEventListener('mousedown', this.handleMouseDown)
     el.removeEventListener('mouseup', this.handleMouseUp)
     el.removeEventListener('touchstart', this.handleTouchStart, { passive: true } as AddEventListenerOptions)
