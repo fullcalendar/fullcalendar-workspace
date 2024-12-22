@@ -65,12 +65,10 @@ export class HitDragging {
     this.processFirstCoord(ev)
 
     if (this.initialHit || !this.requireInitial) {
-      dragging.setIgnoreMove(false)
-
       // TODO: fire this before computing processFirstCoord, so listeners can cancel. this gets fired by almost every handler :(
       this.emitter.trigger('pointerdown', ev)
     } else {
-      dragging.setIgnoreMove(true)
+      dragging.cancel()
     }
   }
 

@@ -27,12 +27,12 @@ export class FeaturefulElementDragging extends ElementDragging {
   minDistance: number = 0
   touchScrollAllowed: boolean = true // prevents drag from starting and blocks scrolling during drag
 
-  mirrorNeedsRevert: boolean = false
-  isInteracting: boolean = false // is the user validly moving the pointer? lasts until pointerup
-  isDragging: boolean = false // is it INTENTFULLY dragging? lasts until after revert animation
-  isDelayEnded: boolean = false
-  isDistanceSurpassed: boolean = false
-  delayTimeoutId: number | null = null
+  private mirrorNeedsRevert: boolean = false
+  private isInteracting: boolean = false // is the user validly moving the pointer? lasts until pointerup
+  private isDragging: boolean = false // is it INTENTFULLY dragging? lasts until after revert animation
+  private isDelayEnded: boolean = false
+  private isDistanceSurpassed: boolean = false
+  private delayTimeoutId: number | null = null
 
   constructor(private containerEl: HTMLElement, selector?: string) {
     super(containerEl)
@@ -64,22 +64,19 @@ export class FeaturefulElementDragging extends ElementDragging {
       this.isDelayEnded = false
       this.isDistanceSurpassed = false
 
-      preventSelection(document.body)
-      preventContextMenu(document.body)
-
-      // prevent links from being visited if there's an eventual drag.
-      // also prevents selection in older browsers (maybe?).
-      // not necessary for touch, besides, browser would complain about passiveness.
-      if (!ev.isTouch) {
-        ev.origEvent.preventDefault()
-      }
-
       this.emitter.trigger('pointerdown', ev)
 
-      if (
-        this.isInteracting && // not destroyed via pointerdown handler
-        !this.pointer.shouldIgnoreMove
-      ) {
+      if (this.isInteracting) { // not cancelled?
+        preventSelection(document.body)
+        preventContextMenu(document.body)
+
+        // prevent links from being visited if there's an eventual drag.
+        // also prevents selection in older browsers (maybe?).
+        // not necessary for touch, besides, browser would complain about passiveness.
+        if (!ev.isTouch) {
+          ev.origEvent.preventDefault()
+        }
+
         // actions related to initiating dragstart+dragmove+dragend...
 
         this.mirror.setIsVisible(false) // reset. caller must set-visible
@@ -195,8 +192,14 @@ export class FeaturefulElementDragging extends ElementDragging {
 
   // fill in the implementations...
 
-  setIgnoreMove(bool: boolean) {
-    this.pointer.shouldIgnoreMove = bool
+  /*
+  Can only be called by pointerdown to prevent drag
+  */
+  cancel() {
+    if (this.isInteracting) {
+      this.isInteracting = false
+      this.pointer.cancel()
+    }
   }
 
   setMirrorIsVisible(bool: boolean) {

@@ -40,10 +40,12 @@ export class DateClicking extends Interaction {
     let { dragging } = this
     let downEl = pev.origEvent.target as HTMLElement
 
-    // do this in pointerdown (not dragend) because DOM might be mutated by the time dragend is fired
-    dragging.setIgnoreMove(
-      !this.component.isValidDateDownEl(downEl),
-    )
+    const canDateClick = this.component.context.emitter.hasHandlers('dateClick') &&
+      this.component.isValidDateDownEl(downEl)
+
+    if (!canDateClick) {
+      dragging.cancel()
+    }
   }
 
   // won't even fire if moving was ignored

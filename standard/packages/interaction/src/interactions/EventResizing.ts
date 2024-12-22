@@ -78,11 +78,13 @@ export class EventResizing extends Interaction {
 
     this.dragging.minDistance = component.context.options.eventDragMinDistance
 
-    // if touch, need to be working with a selected event
-    this.dragging.setIgnoreMove(
-      !this.component.isValidSegDownEl(ev.origEvent.target as HTMLElement) ||
-      (ev.isTouch && this.component.props.eventSelection !== eventRange.instance!.instanceId),
-    )
+    const isValid =
+      this.component.isValidSegDownEl(ev.origEvent.target as HTMLElement) &&
+      !(ev.isTouch && this.component.props.eventSelection !== eventRange.instance!.instanceId)
+
+    if (!isValid) {
+      this.dragging.cancel()
+    }
   }
 
   handleDragStart = (ev: PointerDragEvent) => {

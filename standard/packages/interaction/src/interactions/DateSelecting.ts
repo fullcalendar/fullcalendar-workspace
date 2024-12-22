@@ -41,14 +41,15 @@ export class DateSelecting extends Interaction {
     let { component, dragging } = this
     let { options } = component.context
 
-    let canSelect = options.selectable &&
+    let canDateSelect = options.selectable &&
       component.isValidDateDownEl(ev.origEvent.target as HTMLElement)
 
-    // don't bother to watch expensive moves if component won't do selection
-    dragging.setIgnoreMove(!canSelect)
-
-    // if touch, require user to hold down
-    dragging.delay = ev.isTouch ? getComponentTouchDelay(component) : null
+    if (!canDateSelect) {
+      dragging.cancel()
+    } else {
+      // if touch, require user to hold down
+      dragging.delay = ev.isTouch ? getComponentTouchDelay(component) : null
+    }
   }
 
   handleDragStart = (ev: PointerDragEvent) => {

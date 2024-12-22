@@ -50,8 +50,8 @@ export class InferredElementDragging extends ElementDragging {
     }
   }
 
-  setIgnoreMove(bool: boolean) {
-    this.shouldIgnoreMove = bool
+  cancel() {
+    this.shouldIgnoreMove = true
   }
 
   setMirrorIsVisible(bool: boolean) {

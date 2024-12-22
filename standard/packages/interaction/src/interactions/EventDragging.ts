@@ -111,12 +111,14 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
       component.isValidSegDownEl(origTarget) &&
       !origTarget.closest('.fc-event-resizer') // NOT on a resizer
 
-    dragging.setIgnoreMove(!isValid)
-
-    // disable dragging for elements that are resizable (ie, selectable)
-    // but are not draggable
-    this.isDragging = isValid &&
-      (ev.subjectEl as HTMLElement).classList.contains('fc-event-draggable')
+    if (!isValid) {
+      dragging.cancel()
+    } else {
+      // disable dragging for elements that are resizable (ie, selectable)
+      // but are not draggable
+      // TODO: merge this with .cancel() ?
+      this.isDragging = (ev.subjectEl as HTMLElement).classList.contains('fc-event-draggable')
+    }
   }
 
   handleDragStart = (ev: PointerDragEvent) => {

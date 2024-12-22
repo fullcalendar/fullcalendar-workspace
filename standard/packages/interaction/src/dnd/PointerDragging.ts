@@ -31,15 +31,15 @@ export class PointerDragging {
   shouldWatchScroll: boolean = true // for simulating pointermove on scroll
 
   // internal states
-  isDragging: boolean = false
-  isTouchDragging: boolean = false
-  wasTouchScroll: boolean = false
-  origPageX: number
-  origPageY: number
-  prevPageX: number
-  prevPageY: number
-  prevScrollX: number // at time of last pointer pageX/pageY capture
-  prevScrollY: number // "
+  private isDragging: boolean = false
+  private isTouchDragging: boolean = false
+  wasTouchScroll: boolean = false // HACK public
+  private origPageX: number
+  private origPageY: number
+  private prevPageX: number
+  private prevPageY: number
+  private prevScrollX: number // at time of last pointer pageX/pageY capture
+  private prevScrollY: number // "
 
   constructor(containerEl: EventTarget) {
     this.containerEl = containerEl
@@ -53,6 +53,12 @@ export class PointerDragging {
     this.containerEl.removeEventListener('mousedown', this.handleMouseDown as EventListener)
     this.containerEl.removeEventListener('touchstart', this.handleTouchStart as EventListener, { passive: true } as AddEventListenerOptions)
     listenerDestroyed()
+  }
+
+  cancel() {
+    if (this.isDragging) {
+      this.cleanup()
+    }
   }
 
   tryStart(ev: UIEvent): boolean {
@@ -162,9 +168,11 @@ export class PointerDragging {
   }
 
   handleTouchMove = (ev: TouchEvent) => {
-    let pev = this.createEventFromTouch(ev)
-    this.recordCoords(pev)
-    this.emitter.trigger('pointermove', pev)
+    if (this.isDragging) {
+      let pev = this.createEventFromTouch(ev)
+      this.recordCoords(pev)
+      this.emitter.trigger('pointermove', pev)
+    }
   }
 
   handleTouchEnd = (ev: TouchEvent) => {

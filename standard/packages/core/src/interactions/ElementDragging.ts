@@ -23,8 +23,8 @@ export abstract class ElementDragging { // TODO: rename to *Interface?
   destroy() {
   }
 
-  // if given true, should prevent dragstart+dragmove+dragend from firing
-  abstract setIgnoreMove(bool: boolean): void
+  // Can only be called by pointerdown to prevent drag
+  abstract cancel(): void
 
   setMirrorIsVisible(bool: boolean) {
     // optional if subclass doesn't want to support a mirror

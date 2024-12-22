@@ -13,6 +13,7 @@ Regression present in v7-beta.3
 
 a11y
   TODO: test scrolling on touch devices
+  Why is list-view crazy blackout happening when <a> event clicked or focused?
 
 Cross-browser
   Firefox
