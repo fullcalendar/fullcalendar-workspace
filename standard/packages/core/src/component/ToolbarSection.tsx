@@ -53,8 +53,8 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
         children.push(
           <button
             type="button"
-            title={typeof buttonHint === 'function' ? buttonHint(props.navUnit) : buttonHint}
             disabled={isDisabled}
+            aria-label={typeof buttonHint === 'function' ? buttonHint(props.navUnit) : buttonHint}
             aria-pressed={isPressed}
             className={joinClassNames(
               `fc-${buttonName}-button`,

@@ -1,7 +1,8 @@
 
 a11y:
 - Weekday on the list view has aria-hidden=True ([#7645](https://github.com/fullcalendar/fullcalendar/issues/7645))
-- Add aria-label for "today" highlight ([#7502](https://github.com/fullcalendar/fullcalendar/issues/7502))
+- Add aria-current="date" for "today" highlight ([#7502](https://github.com/fullcalendar/fullcalendar/issues/7502))
+- use aria-label instead of title attribute ([#7502](https://github.com/fullcalendar/fullcalendar/issues/7502))
 
 bugs:
 - resource-timeline scrolls down when it shouldn't, attempting to preserve scroll state ([#4443](https://github.com/fullcalendar/fullcalendar/issues/4443))
