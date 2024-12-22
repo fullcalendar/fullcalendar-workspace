@@ -66,6 +66,7 @@ export class DayCellContainer extends BaseComponent<DayCellContainerProps> {
         attrs={{
           ...props.attrs,
           ...(renderProps.isDisabled ? {} : { 'data-date': formatDayString(props.date) }),
+          ...(renderProps.isToday ? { 'aria-current': 'date' } : {}),
         }}
         renderProps={renderProps}
         generatorName="dayCellContent"

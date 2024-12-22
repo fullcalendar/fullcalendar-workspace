@@ -106,7 +106,10 @@ export function buildDateDataConfigs(
         return {
           key: keyPrefix + date.toUTCString(),
           renderProps,
-          attrs: { 'data-date': !dateMeta.isDisabled ? formatDayString(date) : undefined },
+          attrs: {
+            'data-date': !dateMeta.isDisabled ? formatDayString(date) : undefined,
+            ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}),
+          },
           innerAttrs: isNavLink ? buildNavLinkAttrs(context, date) : {},
           colSpan,
           isNavLink,

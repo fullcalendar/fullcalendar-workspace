@@ -46,6 +46,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
           )}
           attrs={{
             'data-date': formatDayString(dayDate),
+            ...(dayMeta.isToday ? { 'aria-current': 'date' } : {}),
           }}
           renderProps={renderProps}
           generatorName="dayHeaderContent"

@@ -77,6 +77,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
             omitTime: !tDateProfile.isTimeScale,
             omitTimeZoneOffset: true,
           }),
+          ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}),
         }}
         style={{
           width: props.slotWidth != null

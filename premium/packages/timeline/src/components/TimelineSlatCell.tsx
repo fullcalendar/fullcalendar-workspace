@@ -72,6 +72,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
             omitTimeZoneOffset: true,
             omitTime: !tDateProfile.isTimeScale,
           }),
+          ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}),
         }}
         style={{
           width: props.width,
