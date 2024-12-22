@@ -6,6 +6,8 @@ a11y:
 
 bugs:
 - resource-timeline scrolls down when it shouldn't, attempting to preserve scroll state ([#4443](https://github.com/fullcalendar/fullcalendar/issues/4443))
+- certain date/time text should be text-selectable ([#5628](https://github.com/fullcalendar/fullcalendar/issues/5628))
+  - implemented for DayGrid. implemented in beta.3 for other views
 
 ## v7.0.0-beta.3 (2024-12-18)
 
