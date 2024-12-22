@@ -1,11 +1,17 @@
 import { Emitter } from "../common/Emitter.js"
 import { DelayedRunner } from "../util/DelayedRunner.js"
 
+export interface ScrollListenerArg {
+  isUser: boolean
+  isWheel: boolean
+  isMouse: boolean
+  isTouch: boolean
+}
+
 /*
 Fires:
-- scrollStart (always user)
 - scroll
-- scrollEnd (always user)
+- scrollEnd
 
 NOTE: detection is complicated (w/ touch and wheel) because ScrollerSyncer needs to know about it,
 but are we sure we can't just ignore programmatic scrollTo() calls with a flag? and determine the
@@ -14,49 +20,58 @@ the scroll-master simply by who was the newest scroller? Does passive:true do th
 export class ScrollListener {
   public emitter: Emitter<any> = new Emitter()
 
-  private isScrolling = false
-  private isTouching = false // user currently has finger down?
-  private isRecentlyWheeled = false
-  private isRecentlyScrolled = false
   private wheelWaiter: DelayedRunner
   private scrollWaiter: DelayedRunner
 
+  private isScroll = false
+  private isScrollRecent = false
+  private isWheelRecent = false
+  private isMouse = false // user currently has mouse down?
+  private isTouch = false // user currently has finger down?
+
   constructor(public el: HTMLElement) {
-    this.wheelWaiter = new DelayedRunner(this.handleWheelWaited)
-    this.scrollWaiter = new DelayedRunner(this.handleScrollWaited)
+    this.wheelWaiter = new DelayedRunner(this.handleWheelWait)
+    this.scrollWaiter = new DelayedRunner(this.handleScrollWait)
 
     el.addEventListener('scroll', this.handleScroll)
+    el.addEventListener('wheel', this.handleWheel)
+    el.addEventListener('mousedown', this.handleMouseDown)
+    el.addEventListener('mouseup', this.handleMouseUp)
     el.addEventListener('touchstart', this.handleTouchStart, { passive: true })
     el.addEventListener('touchend', this.handleTouchEnd)
-    el.addEventListener('wheel', this.handleWheel)
   }
 
   destroy() {
     let { el } = this
+
     el.removeEventListener('scroll', this.handleScroll)
+    el.removeEventListener('wheel', this.handleWheel)
+    el.removeEventListener('mousedown', this.handleMouseDown)
+    el.removeEventListener('mouseup', this.handleMouseUp)
     el.removeEventListener('touchstart', this.handleTouchStart, { passive: true } as AddEventListenerOptions)
     el.removeEventListener('touchend', this.handleTouchEnd)
-    el.removeEventListener('wheel', this.handleWheel)
   }
 
   // Start / Stop
   // ----------------------------------------------------------------------------------------------
 
   private startScroll() {
-    if (!this.isScrolling) {
-      this.isScrolling = true
-      this.emitter.trigger('scrollStart', this.isRecentlyWheeled, this.isTouching)
+    if (!this.isScroll) {
+      this.isScroll = true
+      this.emitter.trigger('scrollStart')
     }
   }
 
   endScroll() {
-    if (this.isScrolling) {
+    if (this.isScroll) {
       this.emitter.trigger('scrollEnd')
-      this.isScrolling = false
-      this.isRecentlyScrolled = true
-      this.isRecentlyWheeled = false
+
       this.scrollWaiter.clear()
       this.wheelWaiter.clear()
+
+      this.isScroll = false
+      this.isScrollRecent = true
+      this.isWheelRecent = false
     }
   }
 
@@ -65,43 +80,56 @@ export class ScrollListener {
 
   private handleScroll = () => {
     this.startScroll()
-    this.emitter.trigger('scroll', this.isRecentlyWheeled, this.isTouching)
-    this.isRecentlyScrolled = true
+    this.emitter.trigger('scroll', {
+      isUser: this.isWheelRecent || this.isMouse || this.isTouch,
+      isWheel: this.isWheelRecent,
+      isMouse: this.isMouse,
+      isTouch: this.isTouch,
+    })
+    this.isScrollRecent = true
     this.scrollWaiter.request(500)
   }
 
-  private handleScrollWaited = () => {
-    this.isRecentlyScrolled = false
+  private handleScrollWait = () => {
+    this.isScrollRecent = false
 
     // only end the scroll if not currently touching.
     // if touching, the scrolling will end later, on touchend.
-    if (!this.isTouching) {
-      this.endScroll() // won't fire if already ended
+    if (!this.isTouch) {
+      this.endScroll()
     }
   }
 
   // will fire *before* the scroll event is fired (might not cause a scroll)
   private handleWheel = () => {
-    this.isRecentlyWheeled = true
+    this.isWheelRecent = true
     this.wheelWaiter.request(500)
   }
 
-  private handleWheelWaited = () => {
-    this.isRecentlyWheeled = false
+  private handleWheelWait = () => {
+    this.isWheelRecent = false
+  }
+
+  private handleMouseDown = () => {
+    this.isMouse = true
+  }
+
+  private handleMouseUp = () => {
+    this.isMouse = false
   }
 
   // will fire *before* the scroll event is fired (might not cause a scroll)
   private handleTouchStart = () => {
-    this.isTouching = true
+    this.isTouch = true
   }
 
   private handleTouchEnd = () => {
-    this.isTouching = false
+    this.isTouch = false
 
     // if the user ended their touch, and the scroll area wasn't moving,
-    // we consider this to be the end of the scroll.
-    if (!this.isRecentlyScrolled) {
-      this.endScroll() // won't fire if already ended
+    // we consider this to be the end of the scroll (b/c of inertia?)
+    if (!this.isScrollRecent) {
+      this.endScroll()
     }
   }
 }

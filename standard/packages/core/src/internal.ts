@@ -219,6 +219,7 @@ export {
 // new
 export { ScrollerInterface } from './scrollgrid/ScrollerInterface.js'
 export { ScrollerSyncerInterface } from './scrollgrid/ScrollerSyncerInterface.js'
+export { ScrollListenerArg } from './scrollgrid/ScrollListener.js'
 
 export { getScrollbarWidths } from './util/scrollbar-width.js'
 export { RefMap } from './util/RefMap.js'

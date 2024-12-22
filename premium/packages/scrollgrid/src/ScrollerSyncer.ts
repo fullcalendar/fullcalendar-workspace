@@ -68,9 +68,9 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
   bindScroller(scroller: Scroller) {
     let { isHorizontal } = this
 
-    const onScroll = (isWheel: boolean, isTouch: boolean) => {
+    const onScroll = ({ isUser }: ScrollListenerArg) => {
       if (!this.isPaused) {
-        if (!this.masterScroller || (this.masterScroller !== scroller && (isWheel || isTouch))) {
+        if (!this.masterScroller || (this.masterScroller !== scroller && isUser)) {
           this.assignMaster(scroller)
         }
 
