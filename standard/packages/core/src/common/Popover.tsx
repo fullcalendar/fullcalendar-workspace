@@ -35,6 +35,7 @@ export class Popover extends BaseComponent<PopoverProps> {
       <div
         {...props.attrs}
         id={props.id}
+        role='dialog'
         aria-labelledby={this.titleId}
         className={joinClassNames(
           props.className,
