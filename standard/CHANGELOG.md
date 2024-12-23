@@ -8,6 +8,9 @@ a11y:
   ([#6522](https://github.com/fullcalendar/fullcalendar/issues/6522))
 - aria-labelledby for each MultiMonth month ([7537](https://github.com/fullcalendar/fullcalendar/issues/7537))
 - on event elements, if clickable, but no url, give role=button ([7567](https://github.com/fullcalendar/fullcalendar/issues/7567))
+- navlinks have role=link ([7567](https://github.com/fullcalendar/fullcalendar/issues/7567))
+- Popover close button is not tabbable ([#7157](https://github.com/fullcalendar/fullcalendar/issues/7157))
+- Navigate popover items with keyboard ([#6624](https://github.com/fullcalendar/fullcalendar/issues/6624))
 
 bugs:
 - resource-timeline scrolls down when it shouldn't, attempting to preserve scroll state ([#4443](https://github.com/fullcalendar/fullcalendar/issues/4443))
