@@ -22,13 +22,11 @@ const PADDING_FROM_VIEWPORT = 10
 
 export class Popover extends BaseComponent<PopoverProps> {
   private rootEl: HTMLElement
-  state = {
-    titleId: getUniqueDomId(),
-  }
+  private titleId = getUniqueDomId()
 
   render(): any {
     let { theme, options } = this.context
-    let { props, state } = this
+    let { props } = this
 
     return createPortal(
       <div
@@ -39,11 +37,11 @@ export class Popover extends BaseComponent<PopoverProps> {
           'fc-popover',
           theme.getClassName('popover'),
         )}
-        aria-labelledby={state.titleId}
+        aria-labelledby={this.titleId}
         ref={this.handleRootEl}
       >
         <div className={'fc-popover-header ' + theme.getClassName('popoverHeader')}>
-          <span className="fc-popover-title" id={state.titleId}>
+          <span className="fc-popover-title" id={this.titleId}>
             {props.title}
           </span>
           <span

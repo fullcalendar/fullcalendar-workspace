@@ -40,19 +40,28 @@ function parseToolbar(
   viewSpecs: ViewSpecHash,
   calendarApi: CalendarImpl,
 ) : ToolbarModel {
-  let sectionWidgets: { [sectionName: string]: ToolbarWidget[][] } = {}
+  let isRtl = calendarOptions.direction === 'rtl'
   let viewsWithButtons: string[] = []
   let hasTitle = false
 
-  for (let sectionName in sectionStrHash) {
-    let sectionStr = sectionStrHash[sectionName]
+  function processSectionStr(sectionStr: string): ToolbarWidget[][] {
     let sectionRes = parseSection(sectionStr, calendarOptions, calendarOptionOverrides, theme, viewSpecs, calendarApi)
-    sectionWidgets[sectionName] = sectionRes.widgets
     viewsWithButtons.push(...sectionRes.viewsWithButtons)
     hasTitle = hasTitle || sectionRes.hasTitle
+    return sectionRes.widgets
   }
 
-  return { sectionWidgets, viewsWithButtons, hasTitle }
+  const sectionWidgets = {
+    start: processSectionStr(sectionStrHash[isRtl ? 'right' : 'left'] || sectionStrHash.start || ''),
+    center: processSectionStr(sectionStrHash.center || ''),
+    end: processSectionStr(sectionStrHash[isRtl ? 'left' : 'right'] || sectionStrHash.end || ''),
+  }
+
+  return {
+    sectionWidgets,
+    viewsWithButtons,
+    hasTitle,
+  }
 }
 
 /*

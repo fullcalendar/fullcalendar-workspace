@@ -7,40 +7,22 @@ import { joinClassNames } from '../util/html.js'
 export interface ToolbarProps extends ToolbarContent {
   className: string // wish this could be array, but easier for pureness
   model: ToolbarModel
+  titleId?: string
 }
 
 export class Toolbar extends BaseComponent<ToolbarProps> {
   render() {
     let { model, className } = this.props
-    let forceLtr = false
-    let startContent
-    let endContent
-    let sectionWidgets = model.sectionWidgets
-    let centerContent = sectionWidgets.center
-
-    if (sectionWidgets.left) {
-      forceLtr = true
-      startContent = sectionWidgets.left
-    } else {
-      startContent = sectionWidgets.start
-    }
-
-    if (sectionWidgets.right) {
-      forceLtr = true
-      endContent = sectionWidgets.right
-    } else {
-      endContent = sectionWidgets.end
-    }
+    let { sectionWidgets } = model
 
     return (
       <div className={joinClassNames(
         className,
         'fc-toolbar',
-        forceLtr && 'fc-toolbar-ltr',
       )}>
-        {this.renderSection('start', startContent || [])}
-        {this.renderSection('center', centerContent || [])}
-        {this.renderSection('end', endContent || [])}
+        {this.renderSection('start', sectionWidgets.start)}
+        {this.renderSection('center', sectionWidgets.center)}
+        {this.renderSection('end', sectionWidgets.end)}
       </div>
     )
   }
@@ -54,6 +36,7 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
         name={key}
         widgetGroups={widgetGroups}
         title={props.title}
+        titleId={props.titleId}
         navUnit={props.navUnit}
         activeButton={props.activeButton}
         isTodayEnabled={props.isTodayEnabled}

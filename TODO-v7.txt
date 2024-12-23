@@ -15,6 +15,7 @@ a11y
   TODO: test scrolling on touch devices
   Why is list-view crazy blackout happening when <a> event clicked or focused?
   NOTE: semantic DayGrid table structure will be hard b/c MultiMonth
+  think about changing title as <h2>
 
 i18n
   locales should populdate viewChangeHint

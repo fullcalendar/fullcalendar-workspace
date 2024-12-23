@@ -14,6 +14,7 @@ import { EventStore } from '../structs/event-store.js'
 import { DateSpan } from '../structs/date-span.js'
 import { EventInteractionState } from '../interactions/event-interaction-state.js'
 import { CalendarOptionsRefined, ViewOptionsRefined, CalendarOptions, CalendarListeners } from '../options.js'
+import { ToolbarModel } from '../toolbar-struct.js'
 
 export interface CalendarDataManagerState {
   dynamicOptionOverrides: CalendarOptions
@@ -35,7 +36,7 @@ export interface CalendarDataManagerState {
 export interface CalendarOptionsData {
   localeDefaults: CalendarOptions
   calendarOptions: CalendarOptionsRefined
-  toolbarConfig: any
+  toolbarConfig: { [toolbarName: string]: ToolbarModel }
   availableRawLocales: any
   dateEnv: DateEnv
   theme: Theme

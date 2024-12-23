@@ -22,9 +22,9 @@ import { EventHovering } from '../interactions/EventHovering.js'
 import { getNow } from '../reducers/current-date.js'
 import { CalendarInteraction } from '../calendar-utils.js'
 import { PureComponent } from '../vdom-util.js'
-import { getIsHeightAuto } from '../internal.js'
+import { getUniqueDomId } from '../util/dom-manip.js'
 import { ViewHarness } from './ViewHarness.js'
-import { CssDimValue } from '../index.global.js'
+import { CssDimValue, getIsHeightAuto } from '../scrollgrid/util.js'
 
 export interface CalendarContentProps extends CalendarData {
   forPrint: boolean
@@ -36,6 +36,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
   private buildToolbarProps = memoize(buildToolbarProps)
   private interactionsStore: { [componentUid: string]: Interaction[] } = {}
   private calendarInteractions: CalendarInteraction[]
+  private viewTitleId = getUniqueDomId()
 
   /*
   renders INSIDE of an outer div
@@ -88,6 +89,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
           <Toolbar
             className="fc-header-toolbar"
             model={toolbarConfig.header}
+            titleId={this.viewTitleId}
             {...toolbarProps}
           />
         )}
@@ -95,6 +97,8 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
           height={viewHeight}
           heightLiquid={viewHeightLiquid}
           aspectRatio={viewAspectRatio}
+          label={toolbarConfig.header.hasTitle ? undefined : toolbarProps.title}
+          labelledBy={toolbarConfig.header.hasTitle ? this.viewTitleId : undefined}
         >
           {this.renderView(props)}
           {this.buildAppendContent()}

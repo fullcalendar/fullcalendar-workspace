@@ -11,10 +11,6 @@
   gap: .75em; // space between start/center/right
 }
 
-.fc-direction-rtl .fc-toolbar-ltr { // (explicitly ltr within rtl)
-  flex-direction: row-reverse; // reverse to ensure ltr
-}
-
 //
 // toolbar > section
 //
