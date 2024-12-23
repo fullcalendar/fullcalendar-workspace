@@ -94,6 +94,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                     ...createAriaClickAttrs(this.handleClick),
                     title: hint,
                     'aria-role': 'button',
+                    'aria-haspopup': 'dialog',
                     'aria-expanded': state.isPopoverOpen,
                     'aria-controls': state.isPopoverOpen ? state.popoverId : undefined,
                   }}
