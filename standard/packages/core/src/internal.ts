@@ -186,7 +186,7 @@ export {
   buildEventRangeTimeText,
   sortEventSegs,
   getEventRangeMeta, buildEventRangeKey,
-  getEventRangeAnchorAttrs,
+  getEventTagAndAttrs,
   EventRangeProps,
   getEventKey,
 } from './component-util/event-rendering.js'

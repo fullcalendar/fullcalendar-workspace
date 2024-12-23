@@ -349,12 +349,15 @@ export function buildEventRangeKey(eventRange: EventRenderRange) {
   // inverse-background events don't have specific instances. TODO: better solution
 }
 
-export function getEventRangeAnchorAttrs(eventRange: EventRenderRange, context: ViewContext) {
+export function getEventTagAndAttrs(eventRange: EventRenderRange, context: ViewContext): [
+  tag: string,
+  attrs: any, // TODO
+] {
   let { def, instance } = eventRange
   let { url } = def
 
   if (url) {
-    return { href: url }
+    return ['a', { href: url }]
   }
 
   let { emitter, options } = context
@@ -367,10 +370,12 @@ export function getEventRangeAnchorAttrs(eventRange: EventRenderRange, context: 
     }
   }
 
+  let attrs: any
+
   // mock what happens in EventClicking
   if (eventInteractive) {
     // only attach keyboard-related handlers because click handler is already done in EventClicking
-    return createAriaKeyboardAttrs((ev: UIEvent) => {
+    attrs = createAriaKeyboardAttrs((ev: UIEvent) => {
       emitter.trigger('eventClick', {
         el: ev.target as HTMLElement,
         event: new EventImpl(context, def, instance),
@@ -378,5 +383,8 @@ export function getEventRangeAnchorAttrs(eventRange: EventRenderRange, context: 
         view: context.viewApi,
       })
     })
+    attrs = { role: 'button', ...attrs }
   }
+
+  return ['div', attrs]
 }

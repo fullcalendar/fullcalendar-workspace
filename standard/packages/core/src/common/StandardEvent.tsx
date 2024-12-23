@@ -1,6 +1,6 @@
 import { createElement, Fragment } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
-import { buildEventRangeTimeText, EventContentArg, EventRenderRange, getEventRangeAnchorAttrs } from '../component-util/event-rendering.js'
+import { buildEventRangeTimeText, EventContentArg, EventRenderRange, getEventTagAndAttrs } from '../component-util/event-rendering.js'
 import { DateFormatter } from '../datelib/DateFormatter.js'
 import { EventContainer } from './EventContainer.js'
 import { ElRef } from '../content-inject/ContentInjector.js'
@@ -46,17 +46,17 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       props.defaultDisplayEventTime,
       props.defaultDisplayEventEnd,
     )
-    const anchorAttrs = getEventRangeAnchorAttrs(eventRange, context)
+    const [tag, attrs] = getEventTagAndAttrs(eventRange, context)
 
     return (
       <EventContainer
         {...props /* includes elRef */}
-        tag={anchorAttrs ? 'a' : 'div'}
+        tag={tag}
         style={{
           borderColor: eventRange.ui.borderColor,
           backgroundColor: eventRange.ui.backgroundColor,
         }}
-        attrs={anchorAttrs}
+        attrs={attrs}
         defaultGenerator={renderInnerContent}
         timeText={timeText}
       >

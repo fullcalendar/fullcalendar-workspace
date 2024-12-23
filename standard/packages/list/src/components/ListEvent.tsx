@@ -1,5 +1,5 @@
 import { AllDayContentArg, EventContentArg, EventRenderRange } from '@fullcalendar/core'
-import { BaseComponent, buildEventRangeTimeText, ContentContainer, createFormatter, DateFormatter, DateMarker, EventContainer, getEventRangeAnchorAttrs, MinimalEventProps, setRef, ViewContext, watchWidth } from "@fullcalendar/core/internal";
+import { BaseComponent, buildEventRangeTimeText, ContentContainer, createFormatter, DateFormatter, DateMarker, EventContainer, getEventTagAndAttrs, MinimalEventProps, setRef, ViewContext, watchWidth } from "@fullcalendar/core/internal";
 import { ComponentChild, ComponentChildren, createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
@@ -23,13 +23,13 @@ export class ListEvent extends BaseComponent<ListEventProps> {
     let { options } = context
 
     let timeFormat = options.eventTimeFormat || DEFAULT_TIME_FORMAT
-    let anchorAttrs = getEventRangeAnchorAttrs(eventRange, context)
+    let [tag, attrs] = getEventTagAndAttrs(eventRange, context)
 
     return (
       <EventContainer
         {...props}
-        tag={anchorAttrs ? 'a' : 'div'}
-        attrs={anchorAttrs}
+        tag={tag}
+        attrs={attrs}
         className='fc-list-event'
         defaultGenerator={renderEventTitleOnly}
         eventRange={eventRange}

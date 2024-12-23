@@ -3,7 +3,7 @@ import {
   BaseComponent,
   buildEventRangeTimeText,
   EventContainer,
-  getEventRangeAnchorAttrs,
+  getEventTagAndAttrs,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT } from '../event-rendering.js'
@@ -38,13 +38,13 @@ export class DayGridListEvent extends BaseComponent<DayGridListEventProps> {
       /* defaultDisplayEventTime = */ true,
       props.defaultDisplayEventEnd,
     )
-    let anchorAttrs = getEventRangeAnchorAttrs(eventRange, context)
+    let [tag, attrs] = getEventTagAndAttrs(eventRange, context)
 
     return (
       <EventContainer
         {...props}
-        tag={anchorAttrs ? 'a' : 'div'}
-        attrs={anchorAttrs}
+        tag={tag}
+        attrs={attrs}
         className='fc-daygrid-dot-event fc-daygrid-event'
         defaultGenerator={renderInnerContent}
         timeText={timeText}
