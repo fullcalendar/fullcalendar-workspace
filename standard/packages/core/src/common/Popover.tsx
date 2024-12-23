@@ -32,12 +32,13 @@ export class Popover extends BaseComponent<PopoverProps> {
       <div
         {...props.attrs}
         id={props.id}
+        tabindex={-1} // allow programmatic focusing
+        aria-labelledby={this.titleId}
         className={joinClassNames(
           props.className,
           'fc-popover',
           theme.getClassName('popover'),
         )}
-        aria-labelledby={this.titleId}
         ref={this.handleRootEl}
       >
         <div className={'fc-popover-header ' + theme.getClassName('popoverHeader')}>
@@ -61,12 +62,15 @@ export class Popover extends BaseComponent<PopoverProps> {
   componentDidMount() {
     document.addEventListener('mousedown', this.handleDocumentMouseDown)
     document.addEventListener('keydown', this.handleDocumentKeyDown)
+    this.rootEl.addEventListener("focusout", this.handleFocusOut)
     this.updateSize()
+    this.rootEl.focus()
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleDocumentMouseDown)
     document.removeEventListener('keydown', this.handleDocumentKeyDown)
+    this.rootEl.removeEventListener("focusout", this.handleFocusOut)
   }
 
   handleRootEl = (el: HTMLElement | null) => {
@@ -86,9 +90,19 @@ export class Popover extends BaseComponent<PopoverProps> {
     }
   }
 
-  handleDocumentKeyDown = (ev) => {
+  handleDocumentKeyDown = (ev: KeyboardEvent) => {
     if (ev.key === 'Escape') {
       this.handleCloseClick()
+    }
+  }
+
+  handleFocusOut = (ev: FocusEvent) => {
+    // even though this event fires when focus LEAVES, this value holds where it ended up
+    const relatedTarget = ev.relatedTarget as HTMLElement | null
+
+    // focuses away into something that's not within the popover?
+    if (!relatedTarget || !this.rootEl.contains(relatedTarget)) {
+      this.handleCloseClick() // HACK
     }
   }
 
