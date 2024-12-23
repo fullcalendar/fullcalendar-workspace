@@ -23,6 +23,7 @@ const PADDING_FROM_VIEWPORT = 10
 
 export class Popover extends BaseComponent<PopoverProps> {
   private rootEl: HTMLElement
+  private closeRef = createRef<HTMLSpanElement>()
   private focusStartRef = createRef<HTMLDivElement>()
   private focusEndRef = createRef<HTMLDivElement>()
   private titleId = getUniqueDomId()
@@ -58,6 +59,7 @@ export class Popover extends BaseComponent<PopoverProps> {
             aria-label={options.closeHint}
             className={'fc-popover-close ' + theme.getIconClass('close')}
             {...createAriaClickAttrs(this.handleClose)}
+            ref={this.closeRef}
           />
         </div>
         <div className={'fc-popover-body ' + theme.getClassName('popoverContent')}>
@@ -77,11 +79,9 @@ export class Popover extends BaseComponent<PopoverProps> {
     document.addEventListener('mousedown', this.handleDocumentMouseDown)
     document.addEventListener('keydown', this.handleDocumentKeyDown)
 
-    const focusStartEl = this.focusStartRef.current
-    const focusEndEl = this.focusEndRef.current
-    focusStartEl.focus({ preventScroll: true })
-    focusStartEl.addEventListener('focus', this.handleClose)
-    focusEndEl.addEventListener('focus', this.handleClose)
+    this.focusStartRef.current.addEventListener('focus', this.handleClose)
+    this.focusEndRef.current.addEventListener('focus', this.handleClose)
+    this.closeRef.current.focus({ preventScroll: true })
 
     this.updateSize()
   }
@@ -90,10 +90,8 @@ export class Popover extends BaseComponent<PopoverProps> {
     document.removeEventListener('mousedown', this.handleDocumentMouseDown)
     document.removeEventListener('keydown', this.handleDocumentKeyDown)
 
-    const focusStartEl = this.focusStartRef.current
-    const focusEndEl = this.focusEndRef.current
-    focusStartEl.removeEventListener('focus', this.handleClose)
-    focusEndEl.removeEventListener('focus', this.handleClose)
+    this.focusStartRef.current.removeEventListener('focus', this.handleClose)
+    this.focusEndRef.current.removeEventListener('focus', this.handleClose)
   }
 
   handleRootEl = (el: HTMLElement | null) => {

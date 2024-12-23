@@ -21,6 +21,9 @@ a11y
 i18n
   locales should populdate viewChangeHint
 
+misc
+  better markup for Popover title/close (no span, use flexbox)
+
 Cross-browser
   Firefox
     bug: Firefox 90: timegrid header/all-day scrollbarGutter not showing
