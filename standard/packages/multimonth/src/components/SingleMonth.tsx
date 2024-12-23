@@ -1,5 +1,5 @@
 import { CssDimValue } from '@fullcalendar/core'
-import { DateComponent, DateFormatter, DateRange, fracToCssDim, joinClassNames, memoize, ViewProps } from '@fullcalendar/core/internal'
+import { DateComponent, DateFormatter, DateRange, fracToCssDim, getUniqueDomId, joinClassNames, memoize, ViewProps } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow } from '@fullcalendar/daygrid/internal'
 
@@ -24,6 +24,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
 
   // internal
   private slicer = new DayTableSlicer()
+  private titleId = getUniqueDomId()
 
   render() {
     const { props, context } = this
@@ -54,6 +55,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
 
     return (
       <div
+        aria-labelledby={this.titleId}
         data-date={props.isoDateStr}
         className={joinClassNames(
           'fc-multimonth-month',
@@ -69,7 +71,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
           }}
           // NOTE: sticky properties determined by CSS
         >
-          <div className="fc-multimonth-title">
+          <div id={this.titleId} className="fc-multimonth-title">
             {context.dateEnv.format(
               props.dateProfile.currentRange.start,
               props.titleFormat,

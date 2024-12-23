@@ -6,6 +6,7 @@ a11y:
 - aria improvement for view-switcher within toolbar
   ([#7809](https://github.com/fullcalendar/fullcalendar/issues/7809))
   ([#6522](https://github.com/fullcalendar/fullcalendar/issues/6522))
+- aria-labelledby for each MultiMonth month ([7537](https://github.com/fullcalendar/fullcalendar/issues/7537))
 
 bugs:
 - resource-timeline scrolls down when it shouldn't, attempting to preserve scroll state ([#4443](https://github.com/fullcalendar/fullcalendar/issues/4443))
