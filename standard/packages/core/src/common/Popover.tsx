@@ -1,7 +1,7 @@
 import { Dictionary } from '../options.js'
 import { computeClippedClientRect } from '../util/dom-geom.js'
 import { applyStyle, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-manip.js'
-import { createElement, ComponentChildren, Ref, createPortal } from '../preact.js'
+import { createElement, ComponentChildren, Ref, createPortal, createRef } from '../preact.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { joinClassNames } from '../util/html.js'
 
@@ -22,6 +22,8 @@ const PADDING_FROM_VIEWPORT = 10
 
 export class Popover extends BaseComponent<PopoverProps> {
   private rootEl: HTMLElement
+  private focusStartRef = createRef<HTMLDivElement>()
+  private focusEndRef = createRef<HTMLDivElement>()
   private titleId = getUniqueDomId()
 
   render(): any {
@@ -32,7 +34,6 @@ export class Popover extends BaseComponent<PopoverProps> {
       <div
         {...props.attrs}
         id={props.id}
-        tabindex={-1} // allow programmatic focusing
         aria-labelledby={this.titleId}
         className={joinClassNames(
           props.className,
@@ -41,6 +42,11 @@ export class Popover extends BaseComponent<PopoverProps> {
         )}
         ref={this.handleRootEl}
       >
+        <div
+          tabIndex={0}
+          style={{ outline: 'none' }} // TODO: className?
+          ref={this.focusStartRef}
+        />
         <div className={'fc-popover-header ' + theme.getClassName('popoverHeader')}>
           <span className="fc-popover-title" id={this.titleId}>
             {props.title}
@@ -48,12 +54,17 @@ export class Popover extends BaseComponent<PopoverProps> {
           <span
             aria-label={options.closeHint}
             className={'fc-popover-close ' + theme.getIconClass('close')}
-            onClick={this.handleCloseClick}
+            onClick={this.handleClose}
           />
         </div>
         <div className={'fc-popover-body ' + theme.getClassName('popoverContent')}>
           {props.children}
         </div>
+        <div
+          tabIndex={0}
+          style={{ outline: 'none' }} // TODO: className?
+          ref={this.focusEndRef}
+        />
       </div>,
       props.parentEl,
     )
@@ -62,15 +73,24 @@ export class Popover extends BaseComponent<PopoverProps> {
   componentDidMount() {
     document.addEventListener('mousedown', this.handleDocumentMouseDown)
     document.addEventListener('keydown', this.handleDocumentKeyDown)
-    this.rootEl.addEventListener("focusout", this.handleFocusOut)
+
+    const focusStartEl = this.focusStartRef.current
+    const focusEndEl = this.focusEndRef.current
+    focusStartEl.focus()
+    focusStartEl.addEventListener('focus', this.handleClose)
+    focusEndEl.addEventListener('focus', this.handleClose)
+
     this.updateSize()
-    this.rootEl.focus()
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleDocumentMouseDown)
     document.removeEventListener('keydown', this.handleDocumentKeyDown)
-    this.rootEl.removeEventListener("focusout", this.handleFocusOut)
+
+    const focusStartEl = this.focusStartRef.current
+    const focusEndEl = this.focusEndRef.current
+    focusStartEl.removeEventListener('focus', this.handleClose)
+    focusEndEl.removeEventListener('focus', this.handleClose)
   }
 
   handleRootEl = (el: HTMLElement | null) => {
@@ -86,27 +106,19 @@ export class Popover extends BaseComponent<PopoverProps> {
     // only hide the popover if the click happened outside the popover
     const target = getEventTargetViaRoot(ev) as HTMLElement
     if (!this.rootEl.contains(target)) {
-      this.handleCloseClick()
+      this.handleClose()
     }
   }
 
   handleDocumentKeyDown = (ev: KeyboardEvent) => {
     if (ev.key === 'Escape') {
-      this.handleCloseClick()
+      this.handleClose()
     }
   }
 
-  handleFocusOut = (ev: FocusEvent) => {
-    // even though this event fires when focus LEAVES, this value holds where it ended up
-    const relatedTarget = ev.relatedTarget as HTMLElement | null
-
-    // focuses away into something that's not within the popover?
-    if (!relatedTarget || !this.rootEl.contains(relatedTarget)) {
-      this.handleCloseClick() // HACK
-    }
-  }
-
-  handleCloseClick = () => {
+  // for many different close techniques
+  // cannot accept params because might receive a browser Event
+  handleClose = () => {
     let { onClose } = this.props
     if (onClose) {
       onClose()

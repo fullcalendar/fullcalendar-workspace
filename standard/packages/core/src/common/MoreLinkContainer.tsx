@@ -192,6 +192,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
   }
 
   handlePopoverClose = () => {
+    this.linkEl.focus()
     this.setState({ isPopoverOpen: false })
   }
 }
