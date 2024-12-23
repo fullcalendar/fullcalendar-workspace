@@ -4,6 +4,7 @@ import { applyStyle, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-m
 import { createElement, ComponentChildren, Ref, createPortal, createRef } from '../preact.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { joinClassNames } from '../util/html.js'
+import { createAriaClickAttrs } from '../util/dom-event.js'
 
 export interface PopoverProps {
   elRef?: Ref<HTMLElement>
@@ -52,9 +53,10 @@ export class Popover extends BaseComponent<PopoverProps> {
             {props.title}
           </span>
           <span
+            role='button'
             aria-label={options.closeHint}
             className={'fc-popover-close ' + theme.getIconClass('close')}
-            onClick={this.handleClose}
+            {...createAriaClickAttrs(this.handleClose)}
           />
         </div>
         <div className={'fc-popover-body ' + theme.getClassName('popoverContent')}>
