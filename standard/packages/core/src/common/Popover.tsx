@@ -79,7 +79,7 @@ export class Popover extends BaseComponent<PopoverProps> {
 
     const focusStartEl = this.focusStartRef.current
     const focusEndEl = this.focusEndRef.current
-    focusStartEl.focus()
+    focusStartEl.focus({ preventScroll: true })
     focusStartEl.addEventListener('focus', this.handleClose)
     focusEndEl.addEventListener('focus', this.handleClose)
 
