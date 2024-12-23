@@ -12,13 +12,13 @@ import { ViewContext, ViewContextType } from '../ViewContext.js'
 import { MorePopover } from './MorePopover.js'
 import { MountArg } from './render-hook.js'
 import { ContentContainer, InnerContainerFunc } from '../content-inject/ContentContainer.js'
-import { ElProps } from '../content-inject/ContentInjector.js'
+import { ElAttrsProps } from '../content-inject/ContentInjector.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
 import { EventRangeProps } from '../component-util/event-rendering.js'
 import { computeEarliestStart, computeLatestEnd, SlicedCoordRange } from '../coord-range.js'
 import { joinClassNames } from '../util/html.js'
 
-export interface MoreLinkContainerProps extends Partial<ElProps> {
+export interface MoreLinkContainerProps extends Partial<ElAttrsProps> {
   dateProfile: DateProfile
   todayRange: DateRange
   allDayDate: DateMarker | null
@@ -82,7 +82,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
             <Fragment>
               {Boolean(moreCnt) && (
                 <ContentContainer
-                  tag={props.tag || 'a'}
+                  tag='div'
                   elRef={this.handleLinkEl}
                   className={joinClassNames(
                     props.className,
@@ -93,8 +93,9 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                     ...props.attrs,
                     ...createAriaClickAttrs(this.handleClick),
                     title: hint,
+                    'aria-role': 'button',
                     'aria-expanded': state.isPopoverOpen,
-                    'aria-controls': state.isPopoverOpen ? state.popoverId : '',
+                    'aria-controls': state.isPopoverOpen ? state.popoverId : undefined,
                   }}
                   renderProps={renderProps}
                   generatorName="moreLinkContent"
