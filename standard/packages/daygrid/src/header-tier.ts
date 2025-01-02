@@ -21,7 +21,7 @@ export interface CellDataConfig<RenderProps> {
 
 export interface RowConfig<RenderProps> {
   renderConfig: CellRenderConfig<RenderProps>
-  dataConfigs: CellDataConfig<RenderProps>[]
+  dataConfigs: CellDataConfig<RenderProps>[] // for the CELLs
 }
 
 // TODO: converge types with DayTableCell and DayCellContainer (the component) and refineRenderProps

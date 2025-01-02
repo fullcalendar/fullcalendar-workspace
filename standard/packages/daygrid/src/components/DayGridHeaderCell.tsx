@@ -22,7 +22,11 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
     return (
       <ContentContainer
         tag='div'
-        attrs={dataConfig.attrs}
+        attrs={{
+          role: 'columnheader',
+          'aria-colspan': dataConfig.colSpan,
+          ...dataConfig.attrs,
+        }}
         className={joinClassNames(
           'fc-header-cell fc-cell fc-flex-col fc-align-center',
           props.borderStart && 'fc-border-s',

@@ -9,6 +9,7 @@ import { joinClassNames } from '../util/html.js'
 
 export interface ViewContainerProps extends Partial<ElProps> {
   viewSpec: ViewSpec
+  attrs?: any // TODO
   children: ComponentChildren
 }
 
@@ -28,6 +29,7 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
       <ContentContainer
         {...props}
         tag={props.tag || 'div'}
+        attrs={props.attrs}
         className={joinClassNames(
           props.className,
           buildViewClassName(props.viewSpec),

@@ -20,6 +20,7 @@ export class DayGridHeader extends BaseComponent<DayGridHeaderProps> {
     const { props } = this
     return (
       <div
+        role='rowgroup'
         className={joinClassNames(
           props.className,
           'fc-flex-col',
