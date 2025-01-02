@@ -166,156 +166,164 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             ))}
           </div>
         )}
-        {/* ALL-DAY
-        ---------------------------------------------------------------------------------------*/}
-        {options.allDaySlot && (
-          <Fragment>
-            <div role='row' className='fc-timegrid-allday fc-flex-row'>
-              <TimeGridAllDayLabel
-                width={axisWidth}
-                innerWidthRef={this.handleAllDayLabelInnerWidth}
-              />
-              <TimeGridAllDayLane
-                dateProfile={props.dateProfile}
-                todayRange={props.todayRange}
-                cells={props.cells}
-                showDayNumbers={false}
-                forPrint={forPrint}
-                isHitComboAllowed={props.isHitComboAllowed}
-                className='fc-border-s fc-liquid'
-                isCompact={computeRowHeight(state.clientWidth, 1, true, forPrint, options)[1]}
-
-                // content
-                fgEventSegs={props.fgEventSegs}
-                bgEventSegs={props.bgEventSegs}
-                businessHourSegs={props.businessHourSegs}
-                dateSelectionSegs={props.dateSelectionSegs}
-                eventDrag={props.eventDrag}
-                eventResize={props.eventResize}
-                eventSelection={props.eventSelection}
-                dayMaxEvents={props.dayMaxEvents}
-                dayMaxEventRows={props.dayMaxEventRows}
-              />
-              {Boolean(state.endScrollbarWidth) && (
-                <div
-                  className='fc-border-s fc-filler'
-                  style={{ minWidth: state.endScrollbarWidth }}
-                />
-              )}
-            </div>
-            <div className='fc-rowdivider'></div>
-          </Fragment>
-        )}
-        {/* SLATS
-        -----------------------------------------------------------------------------------------*/}
-        <Scroller
-          vertical={verticalScrolling}
+        <div // the "body"
+          role='rowgroup'
           className={joinClassNames(
-            'fc-timegrid-body fc-flex-col',
+            'fc-flex-col',
             verticalScrolling && 'fc-liquid',
           )}
-          ref={props.timeScrollerRef}
-          clientWidthRef={this.handleClientWidth}
-          clientHeightRef={this.handleClientHeight}
-          endScrollbarWidthRef={this.handleEndScrollbarWidth}
         >
-          <div // canvas (grows b/c of filler at bottom)
-            className='fc-flex-col fc-grow fc-rel'
-            style={{
-              // in print mode, this div creates the height and everything is absolutely positioned within
-              // we need to do this so that slats positioning synces with events's positioning
-              // otherwise, get out of sync on second page
-              height: forcedBodyHeight,
-            }}
-          >
-            <div
-              role='row'
-              className={joinClassNames(
-                'fc-flex-row',
-                !simplePrint && 'fc-fill',
-              )}
-            >
-              <div
-                role='rowheader'
-                className='fc-content-box'
-                style={{ width: axisWidth }}
-              />
-              <TimeGridCols
-                dateProfile={props.dateProfile}
-                nowDate={props.nowDate}
-                todayRange={props.todayRange}
-                cells={props.cells}
-                slatCnt={slatCnt}
-                forPrint={forPrint}
-                isHitComboAllowed={props.isHitComboAllowed}
-                className='fc-liquid fc-border-s'
+          {/* ALL-DAY
+          ---------------------------------------------------------------------------------------*/}
+          {options.allDaySlot && (
+            <Fragment>
+              <div role='row' className='fc-timegrid-allday fc-flex-row'>
+                <TimeGridAllDayLabel
+                  width={axisWidth}
+                  innerWidthRef={this.handleAllDayLabelInnerWidth}
+                />
+                <TimeGridAllDayLane
+                  dateProfile={props.dateProfile}
+                  todayRange={props.todayRange}
+                  cells={props.cells}
+                  showDayNumbers={false}
+                  forPrint={forPrint}
+                  isHitComboAllowed={props.isHitComboAllowed}
+                  className='fc-border-s fc-liquid'
+                  isCompact={computeRowHeight(state.clientWidth, 1, true, forPrint, options)[1]}
 
-                // content
-                fgEventSegsByCol={props.fgEventSegsByCol}
-                bgEventSegsByCol={props.bgEventSegsByCol}
-                businessHourSegsByCol={props.businessHourSegsByCol}
-                nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
-                dateSelectionSegsByCol={props.dateSelectionSegsByCol}
-                eventDragByCol={props.eventDragByCol}
-                eventResizeByCol={props.eventResizeByCol}
-                eventSelection={props.eventSelection}
-
-                // dimensions
-                slatHeight={slatHeight}
-              />
-            </div>
-
-            {!simplePrint && (
-              <Fragment>
-                <div className={joinClassNames(
-                  'fc-timegrid-slots fc-flex-col',
-                  (verticalScrolling && options.expandRows) && 'fc-grow',
-                  absPrint
-                    ? 'fc-fill-x' // will assume top:0, height will be decided naturally
-                    : 'fc-rel', // needs abs/rel for zIndex
-                )}>
-                  {props.slatMetas.map((slatMeta, slatI) => (
-                    <div
-                      key={slatMeta.key}
-                      className={joinClassNames(
-                        ...getSlatRowClassNames(slatMeta),
-                        slatI && 'fc-border-t',
-                        slatLiquid && 'fc-liquid',
-                      )}
-                      style={{
-                        height: slatLiquid ? '' : slatHeight
-                      }}
-                    >
-                      <TimeGridSlatLabel
-                        {...slatMeta}
-                        innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
-                        innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
-                        width={axisWidth}
-                      />
-                      <TimeGridSlatLane
-                        {...slatMeta}
-                        borderStart
-                        innerHeightRef={slatInnerMainHeightRefMap.createRef(slatMeta.key)}
-                      />
-                    </div>
-                  ))}
-                </div>
-
-                {rowsNotExpanding && (
-                  <div class='fc-liquid fc-border-t fc-filler' />
-                )}
-
-                {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
-                  <TimeGridNowIndicatorArrow
-                    nowDate={nowDate}
-                    dateProfile={props.dateProfile}
-                    totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
+                  // content
+                  fgEventSegs={props.fgEventSegs}
+                  bgEventSegs={props.bgEventSegs}
+                  businessHourSegs={props.businessHourSegs}
+                  dateSelectionSegs={props.dateSelectionSegs}
+                  eventDrag={props.eventDrag}
+                  eventResize={props.eventResize}
+                  eventSelection={props.eventSelection}
+                  dayMaxEvents={props.dayMaxEvents}
+                  dayMaxEventRows={props.dayMaxEventRows}
+                />
+                {Boolean(state.endScrollbarWidth) && (
+                  <div
+                    className='fc-border-s fc-filler'
+                    style={{ minWidth: state.endScrollbarWidth }}
                   />
                 )}
-              </Fragment>
+              </div>
+              <div className='fc-rowdivider'></div>
+            </Fragment>
+          )}
+          {/* SLATS
+          -----------------------------------------------------------------------------------------*/}
+          <Scroller
+            vertical={verticalScrolling}
+            className={joinClassNames(
+              'fc-timegrid-body fc-flex-col',
+              verticalScrolling && 'fc-liquid',
             )}
-          </div>
-        </Scroller>
+            ref={props.timeScrollerRef}
+            clientWidthRef={this.handleClientWidth}
+            clientHeightRef={this.handleClientHeight}
+            endScrollbarWidthRef={this.handleEndScrollbarWidth}
+          >
+            <div // canvas (grows b/c of filler at bottom)
+              className='fc-flex-col fc-grow fc-rel'
+              style={{
+                // in print mode, this div creates the height and everything is absolutely positioned within
+                // we need to do this so that slats positioning synces with events's positioning
+                // otherwise, get out of sync on second page
+                height: forcedBodyHeight,
+              }}
+            >
+              <div
+                role='row'
+                className={joinClassNames(
+                  'fc-flex-row',
+                  !simplePrint && 'fc-fill',
+                )}
+              >
+                <div
+                  role='rowheader'
+                  className='fc-content-box'
+                  style={{ width: axisWidth }}
+                />
+                <TimeGridCols
+                  dateProfile={props.dateProfile}
+                  nowDate={props.nowDate}
+                  todayRange={props.todayRange}
+                  cells={props.cells}
+                  slatCnt={slatCnt}
+                  forPrint={forPrint}
+                  isHitComboAllowed={props.isHitComboAllowed}
+                  className='fc-liquid fc-border-s'
+
+                  // content
+                  fgEventSegsByCol={props.fgEventSegsByCol}
+                  bgEventSegsByCol={props.bgEventSegsByCol}
+                  businessHourSegsByCol={props.businessHourSegsByCol}
+                  nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
+                  dateSelectionSegsByCol={props.dateSelectionSegsByCol}
+                  eventDragByCol={props.eventDragByCol}
+                  eventResizeByCol={props.eventResizeByCol}
+                  eventSelection={props.eventSelection}
+
+                  // dimensions
+                  slatHeight={slatHeight}
+                />
+              </div>
+
+              {!simplePrint && (
+                <Fragment>
+                  <div className={joinClassNames(
+                    'fc-timegrid-slots fc-flex-col',
+                    (verticalScrolling && options.expandRows) && 'fc-grow',
+                    absPrint
+                      ? 'fc-fill-x' // will assume top:0, height will be decided naturally
+                      : 'fc-rel', // needs abs/rel for zIndex
+                  )}>
+                    {props.slatMetas.map((slatMeta, slatI) => (
+                      <div
+                        key={slatMeta.key}
+                        className={joinClassNames(
+                          ...getSlatRowClassNames(slatMeta),
+                          slatI && 'fc-border-t',
+                          slatLiquid && 'fc-liquid',
+                        )}
+                        style={{
+                          height: slatLiquid ? '' : slatHeight
+                        }}
+                      >
+                        <TimeGridSlatLabel
+                          {...slatMeta}
+                          innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
+                          innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
+                          width={axisWidth}
+                        />
+                        <TimeGridSlatLane
+                          {...slatMeta}
+                          borderStart
+                          innerHeightRef={slatInnerMainHeightRefMap.createRef(slatMeta.key)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  {rowsNotExpanding && (
+                    <div class='fc-liquid fc-border-t fc-filler' />
+                  )}
+
+                  {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
+                    <TimeGridNowIndicatorArrow
+                      nowDate={nowDate}
+                      dateProfile={props.dateProfile}
+                      totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
+                    />
+                  )}
+                </Fragment>
+              )}
+            </div>
+          </Scroller>
+        </div>
       </Fragment>
     )
   }
