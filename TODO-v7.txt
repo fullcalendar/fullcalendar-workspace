@@ -17,18 +17,26 @@ a11y
   NOTE: semantic DayGrid table structure will be hard b/c MultiMonth
   think about changing title as <h2>
   weekNumbers in daygrid should be in DOM-order before cells
+  timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit z-indexes
+  figure out empty rowheader cells, give aria-label
+  make all-day row and timed-row part of same rowgroup
+  for vertical resource views,
+    aria-label is like "September 7, 2020" and doesn't reference resource at all. should it?
+  status for views:
+    [x] daygrid
+    [x] daygrid hscroll
+    [x] timegrid
+    [x] timegrid hscroll
+    [ ] multimonth
+    [ ] list view
+    [ ] timeline (no resources)
+    [ ] resource-timeline
 
 i18n
   locales should populdate viewChangeHint
 
 misc
   better markup for Popover title/close (no span, use flexbox)
-
-timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit z-indexes
-figure out empty rowheader cells, give aria-label
-make all-day row and timed-row part of same rowgroup
-for vertical resource views,
-  aria-label is like "September 7, 2020" and doesn't reference resource at all. should it?
 
 Cross-browser
   Firefox
