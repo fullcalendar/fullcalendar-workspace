@@ -27,7 +27,7 @@ a11y
     [x] daygrid hscroll
     [x] timegrid
     [x] timegrid hscroll
-    [ ] multimonth
+    [x] multimonth
     [ ] list view
     [ ] timeline (no resources)
     [ ] resource-timeline

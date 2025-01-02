@@ -55,6 +55,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
 
     return (
       <div
+        role='listitem'
         aria-labelledby={this.titleId}
         data-date={props.isoDateStr}
         className={joinClassNames(
@@ -65,6 +66,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
         style={{ width: props.width }}
       >
         <div
+          role='rowgroup'
           className="fc-multimonth-header"
           style={{
             marginBottom: isHeaderSticky ? fracToCssDim(invRowAspectRatio) : undefined,

@@ -104,7 +104,11 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
               className={verticalScrolling ? 'fc-liquid' : ''}
               ref={this.scrollerRef}
             >
-              <div ref={this.innerElRef} className='fc-multimonth-inner'>
+              <div
+                role='list'
+                className='fc-multimonth-inner'
+                ref={this.innerElRef}
+              >
                 {monthDateProfiles.map((monthDateProfile) => {
                   const monthStr = formatIsoMonthStr(monthDateProfile.currentRange.start)
 
