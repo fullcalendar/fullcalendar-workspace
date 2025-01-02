@@ -7,14 +7,22 @@ import { ViewContext } from '../ViewContext.js'
 const DAY_FORMAT = createFormatter({ year: 'numeric', month: 'long', day: 'numeric' })
 const WEEK_FORMAT = createFormatter({ week: 'long' })
 
+export function buildDateStr(
+  context: ViewContext,
+  dateMarker: DateMarker,
+  viewType = 'day',
+): string {
+  return context.dateEnv.format(dateMarker, viewType === 'week' ? WEEK_FORMAT : DAY_FORMAT)
+}
+
 export function buildNavLinkAttrs(
   context: ViewContext,
   dateMarker: DateMarker,
   viewType = 'day',
   isTabbable = true,
+  dateStr = buildDateStr(context, dateMarker, viewType),
 ) {
   const { dateEnv, options, calendarApi } = context
-  let dateStr = dateEnv.format(dateMarker, viewType === 'week' ? WEEK_FORMAT : DAY_FORMAT)
 
   if (options.navLinks) {
     let zonedDate = dateEnv.toDate(dateMarker)

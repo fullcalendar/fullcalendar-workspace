@@ -183,7 +183,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
                 renderProps={cell.renderProps}
                 dateSpanProps={cell.dateSpanProps}
                 attrs={cell.attrs}
-                className={cell.className}
+                className={cell.className} // just semantic classname. if discarded because of disabled cell, okay
 
                 // dimensions
                 fgHeight={heightsByCol[col]}

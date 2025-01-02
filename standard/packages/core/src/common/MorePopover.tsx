@@ -8,6 +8,7 @@ import { Dictionary } from '../options.js'
 import { createElement, ComponentChildren } from '../preact.js'
 import { DayCellContainer, hasCustomDayCellContent } from './DayCellContainer.js'
 import { Popover } from './Popover.js'
+import { getDateMeta } from '../component-util/date-rendering.js'
 
 export interface MorePopoverProps {
   id: string
@@ -31,14 +32,17 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     let { options, dateEnv } = this.context
     let { props } = this
     let { startDate, todayRange, dateProfile } = props
+
+    // TODO: memoize?
+    let detaMeta = getDateMeta(startDate, todayRange, null, dateProfile)
+
     let title = dateEnv.format(startDate, options.dayPopoverFormat)
 
     return (
       <DayCellContainer
         elRef={this.handleRootEl}
         date={startDate}
-        dateProfile={dateProfile}
-        todayRange={todayRange}
+        dateMeta={detaMeta}
       >
         {(InnerContent, renderProps, attrs) => (
           <Popover

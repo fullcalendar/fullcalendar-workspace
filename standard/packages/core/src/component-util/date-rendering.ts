@@ -26,25 +26,25 @@ export function getDateMeta(date: DateMarker, todayRange?: DateRange, nowDate?: 
 export function getDayClassName(meta: DateMeta): string {
   return joinClassNames(
     'fc-day',
-    `fc-day-${DAY_IDS[meta.dow]}`,
     meta.isDisabled
       ? 'fc-day-disabled'
       : joinClassNames(
-          meta.isToday && 'fc-day-today',
-          meta.isPast && 'fc-day-past',
-          meta.isFuture && 'fc-day-future',
-          meta.isOther && 'fc-day-other',
-        )
+        `fc-day-${DAY_IDS[meta.dow]}`,
+        meta.isToday && 'fc-day-today',
+        meta.isPast && 'fc-day-past',
+        meta.isFuture && 'fc-day-future',
+        meta.isOther && 'fc-day-other',
+      ),
   )
 }
 
 export function getSlotClassName(meta: DateMeta): string {
   return joinClassNames(
     'fc-slot',
-    `fc-slot-${DAY_IDS[meta.dow]}`,
     meta.isDisabled
       ? 'fc-slot-disabled'
       : joinClassNames(
+        `fc-slot-${DAY_IDS[meta.dow]}`,
         meta.isToday && 'fc-slot-today',
         meta.isPast && 'fc-slot-past',
         meta.isFuture && 'fc-slot-future',

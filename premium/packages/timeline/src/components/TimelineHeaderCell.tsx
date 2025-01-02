@@ -2,7 +2,7 @@ import { ViewApi } from '@fullcalendar/core'
 import {
   BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassName,
   buildNavLinkAttrs,
-  getDayClassName, DateProfile, memoizeObjArg, ViewContext, memoize, ContentContainer, DateEnv,
+  getDayClassName, DateProfile, memoizeObjArg, ContentContainer, DateEnv,
   watchSize,
   setRef,
   joinClassNames,
@@ -32,7 +32,6 @@ export interface TimelineHeaderCellProps {
 export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
   // memo
   private refineRenderProps = memoizeObjArg(refineRenderProps)
-  private buildCellNavLinkAttrs = memoize(buildCellNavLinkAttrs)
 
   // ref
   private innerElRef = createRef<HTMLDivElement>()
@@ -57,6 +56,8 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
       dateEnv: context.dateEnv,
       viewApi: context.viewApi,
     })
+
+    let isNavLink = !dateMeta.isDisabled && (cell.rowUnit && cell.rowUnit !== 'time')
 
     return (
       <ContentContainer
@@ -94,8 +95,8 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
       >
         {(InnerContent) => (
           <InnerContent
-            tag="a"
-            attrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
+            tag={isNavLink ? 'a' : 'div'}
+            attrs={isNavLink ? buildNavLinkAttrs(context, cell.date, cell.rowUnit) : {}}
             className={joinClassNames(
               'fc-cell-inner fc-padding-md',
               props.isSticky && 'fc-sticky-s',
@@ -134,12 +135,6 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
 
 // Utils
 // -------------------------------------------------------------------------------------------------
-
-function buildCellNavLinkAttrs(context: ViewContext, cellDate: DateMarker, rowUnit: string): any {
-  return (rowUnit && rowUnit !== 'time')
-    ? buildNavLinkAttrs(context, cellDate, rowUnit)
-    : {}
-}
 
 function renderInnerContent(renderProps: RenderProps) {
   return renderProps.text

@@ -1,14 +1,12 @@
 import { ComponentChild, createElement } from '../preact.js'
 import { DateMarker } from '../datelib/marker.js'
-import { DateRange } from '../datelib/date-range.js'
-import { getDateMeta, DateMeta, getDayClassName } from '../component-util/date-rendering.js'
+import { DateMeta, getDayClassName } from '../component-util/date-rendering.js'
 import { createFormatter } from '../datelib/formatting.js'
 import { DateFormatter } from '../datelib/DateFormatter.js'
 import { formatDayString } from '../datelib/formatting-utils.js'
 import { MountArg } from './render-hook.js'
 import { ViewApi } from '../api/ViewApi.js'
 import { BaseComponent } from '../vdom-util.js'
-import { DateProfile } from '../DateProfileGenerator.js'
 import { memoizeObjArg } from '../util/memoize.js'
 import { Dictionary, ViewOptions } from '../options.js'
 import { DateEnv } from '../datelib/env.js'
@@ -27,11 +25,10 @@ export type DayCellMountArg = MountArg<DayCellContentArg>
 
 export interface DayCellContainerProps extends Partial<ElProps> {
   date: DateMarker
-  dateProfile: DateProfile
-  todayRange: DateRange
+  dateMeta: DateMeta
   isMonthStart?: boolean
   showDayNumber?: boolean // defaults to false
-  renderProps?: Dictionary
+  renderProps?: Dictionary // for EXTRA render props
   defaultGenerator?: (renderProps: DayCellContentArg) => ComponentChild
   children?: InnerContainerFunc<DayCellContentArg>
 }
@@ -46,8 +43,7 @@ export class DayCellContainer extends BaseComponent<DayCellContainerProps> {
     let { options } = context
     let renderProps = this.refineRenderProps({
       date: props.date,
-      dateProfile: props.dateProfile,
-      todayRange: props.todayRange,
+      dateMeta: props.dateMeta,
       isMonthStart: props.isMonthStart || false,
       showDayNumber: props.showDayNumber,
       renderProps: props.renderProps,
@@ -65,18 +61,14 @@ export class DayCellContainer extends BaseComponent<DayCellContainerProps> {
         )}
         attrs={{
           ...props.attrs,
-          ...(renderProps.isDisabled ? {} : { 'data-date': formatDayString(props.date) }),
+          'data-date': formatDayString(props.date),
           ...(renderProps.isToday ? { 'aria-current': 'date' } : {}),
         }}
         renderProps={renderProps}
         generatorName="dayCellContent"
         customGenerator={options.dayCellContent}
         defaultGenerator={props.defaultGenerator}
-        classNameGenerator={
-          // don't use custom classNames if disabled
-          // TODO: make DRY with DayGridHeaderCell
-          renderProps.isDisabled ? undefined : options.dayCellClassNames
-        }
+        classNameGenerator={options.dayCellClassNames}
         didMount={options.dayCellDidMount}
         willUnmount={options.dayCellWillUnmount}
       />
@@ -92,8 +84,7 @@ export function hasCustomDayCellContent(options: ViewOptions): boolean {
 
 interface DayCellRenderPropsInput {
   date: DateMarker // generic
-  dateProfile: DateProfile
-  todayRange: DateRange
+  dateMeta: DateMeta
   dateEnv: DateEnv
   viewApi: ViewApi
   monthStartFormat: DateFormatter
@@ -103,8 +94,7 @@ interface DayCellRenderPropsInput {
 }
 
 function refineRenderProps(raw: DayCellRenderPropsInput): DayCellContentArg {
-  let { date, dateEnv, dateProfile, isMonthStart } = raw
-  let dayMeta = getDateMeta(date, raw.todayRange, null, dateProfile)
+  let { date, dateEnv, isMonthStart } = raw
   let dayNumberText = raw.showDayNumber ? (
     dateEnv.format(date, isMonthStart ? raw.monthStartFormat : DAY_NUM_FORMAT)
   ) : ''
@@ -112,7 +102,7 @@ function refineRenderProps(raw: DayCellRenderPropsInput): DayCellContentArg {
   return {
     date: dateEnv.toDate(date),
     view: raw.viewApi,
-    ...dayMeta,
+    ...raw.dateMeta,
     isMonthStart,
     dayNumberText,
     ...raw.renderProps,

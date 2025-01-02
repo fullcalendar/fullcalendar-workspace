@@ -1,6 +1,7 @@
 import {
   BaseComponent,
   BgEvent,
+  buildDateStr,
   buildEventRangeKey,
   DateMarker,
   DateProfile,
@@ -9,6 +10,7 @@ import {
   EventRangeProps,
   EventSegUiInteractionState,
   fracToCssDim,
+  getDateMeta,
   getEventRangeMeta,
   hasCustomDayCellContent,
   joinClassNames,
@@ -40,7 +42,6 @@ export interface TimeGridColProps {
   slatCnt: number
   attrs?: any
   renderProps?: any
-  className?: string
   dateSpanProps?: Dictionary
   forPrint: boolean
   borderStart: boolean
@@ -79,27 +80,45 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       (props.eventResize && props.eventResize.affectedInstances) ||
       {}
 
+    // TODO: memoize
+    let dateMeta = getDateMeta(props.date, props.todayRange, null, props.dateProfile)
+
+    const baseClassName = joinClassNames(
+      'fc-timegrid-day',
+      props.borderStart && 'fc-border-s',
+      props.width == null && 'fc-liquid',
+      'fc-flex-col fc-rel',
+    )
+
+    if (dateMeta.isDisabled) {
+      return (
+        <div
+          role='gridcell'
+          aria-disabled
+          className={joinClassNames(baseClassName, 'fc-day-disabled')}
+          style={{
+            width: props.width
+          }}
+        />
+      )
+    }
+
     let sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
 
     return (
       <DayCellContainer
         tag="div"
         attrs={{
-          role: 'gridcell',
           ...props.attrs,
+          role: 'gridcell',
+          'aria-label': buildDateStr(context, props.date),
         }}
-        className={joinClassNames(
-          props.className,
-          'fc-timegrid-day fc-flex-col fc-rel',
-          props.borderStart && 'fc-border-s',
-          props.width == null && 'fc-liquid',
-        )}
+        className={baseClassName}
         style={{
           width: props.width
         }}
         date={props.date}
-        dateProfile={props.dateProfile}
-        todayRange={props.todayRange}
+        dateMeta={dateMeta}
         renderProps={props.renderProps}
       >
         {(InnerContent) => (

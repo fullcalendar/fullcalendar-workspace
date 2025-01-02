@@ -273,3 +273,21 @@ ensure automated tests for...
   multiple tiers of headers line-up across scrollers
     timegrid h-scroll. with and without weekNumber
     resource-timeline. w/ datagrid/timeline headers: 1/2, 2/1
+  disabled days
+    do NOT render navlinks (header or obviously day number)
+    the headers WILL render data-date, fc-day-disabled (but not dayofweek, past, future classNames)
+
+scratch
+  "invalid" dates aka "disabled" dates
+    DayGridMONTH: https://codepen.io/arshaw/pen/EaYXWPM?editors=0010
+      normal weekday header
+      empty cells
+    DayGridWEEK: https://codepen.io/arshaw/pen/mybwWEE?editors=0010
+      empty header --> change to rendered headers!
+      empty cells
+    TimeGrid: https://codepen.io/arshaw/pen/pvzweyV?editors=001
+      empty header --> change to rendered headers!
+      empty cells
+    Timeline: https://codepen.io/arshaw/pen/WbeOpwX?editors=0010 (must scroll left after load)
+      normal header
+      empty cell

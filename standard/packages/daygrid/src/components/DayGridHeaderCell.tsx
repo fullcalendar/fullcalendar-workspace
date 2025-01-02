@@ -24,11 +24,11 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
         tag='div'
         attrs={dataConfig.attrs}
         className={joinClassNames(
-          dataConfig.className,
           'fc-header-cell fc-cell fc-flex-col fc-align-center',
           props.borderStart && 'fc-border-s',
           !props.isSticky && 'fc-crop',
-          props.colWidth == null && 'fc-liquid'
+          props.colWidth == null && 'fc-liquid',
+          dataConfig.className,
         )}
         style={{
           width: props.colWidth != null
@@ -48,17 +48,15 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
         willUnmount={renderConfig.willUnmount}
       >
         {(InnerContainer) => (
-          !dataConfig.renderProps.isDisabled && (
-            <InnerContainer
-              tag={dataConfig.isNavLink ? 'a' : 'div'}
-              attrs={dataConfig.innerAttrs}
-              className={joinClassNames(
-                'fc-cell-inner fc-flex-col fc-padding-sm',
-                props.isSticky && 'fc-sticky-s'
-              )}
-              elRef={this.handleInnerEl}
-            />
-          )
+          <InnerContainer
+            tag={dataConfig.isNavLink ? 'a' : 'div'}
+            attrs={dataConfig.innerAttrs}
+            className={joinClassNames(
+              'fc-cell-inner fc-flex-col fc-padding-sm',
+              props.isSticky && 'fc-sticky-s'
+            )}
+            elRef={this.handleInnerEl}
+          />
         )}
       </ContentContainer>
     )

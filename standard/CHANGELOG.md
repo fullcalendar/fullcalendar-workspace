@@ -11,6 +11,7 @@ a11y:
 - navlinks have role=link ([7567](https://github.com/fullcalendar/fullcalendar/issues/7567))
 - Popover close button is not tabbable ([#7157](https://github.com/fullcalendar/fullcalendar/issues/7157))
 - Navigate popover items with keyboard ([#6624](https://github.com/fullcalendar/fullcalendar/issues/6624))
+- multiMonthYear disabled day cells have broken ARIA references ([#7379](https://github.com/fullcalendar/fullcalendar/issues/7379))
 
 bugs:
 - resource-timeline scrolls down when it shouldn't, attempting to preserve scroll state ([#4443](https://github.com/fullcalendar/fullcalendar/issues/4443))
@@ -19,6 +20,8 @@ bugs:
 
 breaking:
 - for headerToolbar/footerToolbar, specifying left/right when direction:rtl, will render items within each section of the toolbar right-to-left
+- disabled days in timegrid and daygrid(non-month) render content within the headers
+  as opposed to being completely blank. timeline always did this
 
 ## v7.0.0-beta.3 (2024-12-18)
 

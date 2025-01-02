@@ -16,6 +16,9 @@ import {
   joinClassNames,
   watchSize,
   isDimsEqual,
+  getUniqueDomId,
+  getDateMeta,
+  buildDateStr,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -50,7 +53,7 @@ export interface DayGridCellProps {
   renderProps?: Dictionary
   dateSpanProps?: Dictionary
   attrs?: Dictionary
-  className?: string
+  className?: string // just semantic className
 
   // dimensions
   fgHeight: number | undefined
@@ -64,11 +67,11 @@ export interface DayGridCellProps {
 export class DayGridCell extends DateComponent<DayGridCellProps> {
   // ref
   private rootElRef = createRef<HTMLElement>()
-  private bodyElRef = createRef<HTMLDivElement>()
 
   // internal
   private headerHeight?: number
   private disconnectBodyHeight?: () => void
+  private dayNumberId = getUniqueDomId()
 
   render() {
     let { props, context } = this
@@ -78,18 +81,45 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     const isMonthStart = props.showDayNumber &&
       shouldDisplayMonthStart(props.date, props.dateProfile.currentRange, dateEnv)
 
+    // TODO: memoize this
+    const dateMeta = getDateMeta(props.date, props.todayRange, null, props.dateProfile)
+
+    const baseClassName = joinClassNames(
+      'fc-daygrid-day',
+      props.borderStart && 'fc-border-s',
+      props.width != null ? '' : 'fc-liquid',
+      'fc-flex-col',
+    )
+
+    if (dateMeta.isDisabled) {
+      return (
+        <div
+          role='gridcell'
+          aria-disabled
+          className={joinClassNames(baseClassName, 'fc-day-disabled')}
+          style={{
+            width: props.width
+          }}
+        />
+      )
+    }
+
+    const hasDayNumber = props.showDayNumber || hasCustomDayCellContent(options)
+
+    const dateStr = buildDateStr(context, props.date)
+
     return (
       <DayCellContainer
         tag="div"
         className={joinClassNames(
-          props.className,
-          'fc-daygrid-day fc-flex-col',
-          props.borderStart && 'fc-border-s',
-          props.width != null ? '' : 'fc-liquid',
+          baseClassName,
+          props.className, // semantic classNames
         )}
         attrs={{
           ...props.attrs,
           role: 'gridcell',
+          'aria-label': hasDayNumber ? undefined : dateStr,
+          'aria-labelledby': hasDayNumber ? this.dayNumberId : undefined,
         }}
         style={{
           width: props.width
@@ -98,18 +128,20 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         renderProps={props.renderProps}
         defaultGenerator={renderTopInner}
         date={props.date}
-        dateProfile={props.dateProfile}
-        todayRange={props.todayRange}
+        dateMeta={dateMeta}
         showDayNumber={props.showDayNumber}
         isMonthStart={isMonthStart}
       >
-        {(InnerContent, renderProps) => (
+        {(InnerContent) => (
           <Fragment>
-            {!renderProps.isDisabled && (props.showDayNumber || hasCustomDayCellContent(options)) && (
+            {hasDayNumber && (
               <div className="fc-daygrid-day-header">
                 <InnerContent
                   tag="a"
-                  attrs={buildNavLinkAttrs(context, props.date)}
+                  attrs={{
+                    id: this.dayNumberId,
+                    ...buildNavLinkAttrs(context, props.date, undefined, undefined, dateStr),
+                  }}
                   className={joinClassNames(
                     'fc-daygrid-day-number',
                     isMonthStart && 'fc-daygrid-month-start',
@@ -123,7 +155,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 props.isTall && 'fc-daygrid-day-body-tall',
                 props.fgLiquidHeight ? 'fc-liquid' : 'fc-grow',
               )}
-              ref={this.bodyElRef}
+              ref={this.handleBodyEl}
             >
               <div className='fc-daygrid-day-events' style={{ height: props.fgHeight }}>
                 {props.fg}
@@ -149,33 +181,29 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     )
   }
 
-  componentDidMount(): void {
-    const bodyEl = this.bodyElRef.current
+  handleBodyEl = (bodyEl: HTMLElement | null) => {
+    if (!bodyEl) {
+      this.disconnectBodyHeight()
+      setRef(this.props.headerHeightRef, null)
+      setRef(this.props.mainHeightRef, null)
+    } else {
+      // we want to fire on ANY size change, because we do more advanced stuff
+      this.disconnectBodyHeight = watchSize(bodyEl, (_bodyWidth, bodyHeight) => {
+        const { props } = this
+        const mainRect = bodyEl.getBoundingClientRect()
+        const rootRect = this.rootElRef.current.getBoundingClientRect()
+        const headerHeight = mainRect.top - rootRect.top
 
-    // we want to fire on ANY size change, because we do more advanced stuff
-    this.disconnectBodyHeight = watchSize(bodyEl, (_bodyWidth, bodyHeight) => {
-      const { props } = this
-      const mainRect = bodyEl.getBoundingClientRect()
-      const rootRect = this.rootElRef.current.getBoundingClientRect()
-      const headerHeight = mainRect.top - rootRect.top
+        if (!isDimsEqual(this.headerHeight, headerHeight)) {
+          this.headerHeight = headerHeight
+          setRef(props.headerHeightRef, headerHeight)
+        }
 
-      if (!isDimsEqual(this.headerHeight, headerHeight)) {
-        this.headerHeight = headerHeight
-        setRef(props.headerHeightRef, headerHeight)
-      }
-
-      if (props.fgLiquidHeight) {
-        setRef(props.mainHeightRef, bodyHeight)
-      }
-    })
-  }
-
-  componentWillUnmount(): void {
-    this.disconnectBodyHeight()
-
-    const { props } = this
-    setRef(props.headerHeightRef, null)
-    setRef(props.mainHeightRef, null)
+        if (props.fgLiquidHeight) {
+          setRef(props.mainHeightRef, bodyHeight)
+        }
+      })
+    }
   }
 }
 
