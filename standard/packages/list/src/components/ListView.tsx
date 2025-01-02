@@ -102,6 +102,9 @@ export class ListView extends DateComponent<ViewProps, ListViewState> {
     return (
       <ContentContainer
         tag="div"
+        attrs={{
+          role: 'status',
+        }}
         className='fc-list-empty'
         renderProps={renderProps}
         generatorName="noEventsContent"
@@ -125,37 +128,39 @@ export class ListView extends DateComponent<ViewProps, ListViewState> {
     let segsByDay = groupSegsByDay(allSegs) // sparse array
 
     return (
-      <NowTimer unit="day">
-        {(nowDate: DateMarker, todayRange: DateRange) => {
-          const dayNodes: VNode[] = []
+      <div role='list'>
+        <NowTimer unit="day">
+          {(nowDate: DateMarker, todayRange: DateRange) => {
+            const dayNodes: VNode[] = []
 
-          for (let dayIndex = 0; dayIndex < segsByDay.length; dayIndex += 1) {
-            let daySegs = segsByDay[dayIndex]
+            for (let dayIndex = 0; dayIndex < segsByDay.length; dayIndex += 1) {
+              let daySegs = segsByDay[dayIndex]
 
-            if (daySegs) { // sparse array, so might be undefined
-              const dayDate = dayDates[dayIndex]
-              const key = formatDayString(dayDate)
+              if (daySegs) { // sparse array, so might be undefined
+                const dayDate = dayDates[dayIndex]
+                const key = formatDayString(dayDate)
 
-              dayNodes.push(
-                <ListDay
-                  key={key}
-                  dayDate={dayDate}
-                  nowDate={nowDate}
-                  todayRange={todayRange}
-                  segs={daySegs}
-                  forPrint={this.props.forPrint}
-                  timeWidthRef={this.timeWidthRefMap.createRef(key)}
-                  timeOuterWidth={this.state.timeOuterWidth}
-                />
-              )
+                dayNodes.push(
+                  <ListDay
+                    key={key}
+                    dayDate={dayDate}
+                    nowDate={nowDate}
+                    todayRange={todayRange}
+                    segs={daySegs}
+                    forPrint={this.props.forPrint}
+                    timeWidthRef={this.timeWidthRefMap.createRef(key)}
+                    timeOuterWidth={this.state.timeOuterWidth}
+                  />
+                )
+              }
             }
-          }
 
-          return (
-            <Fragment>{dayNodes}</Fragment>
-          )
-        }}
-      </NowTimer>
+            return (
+              <Fragment>{dayNodes}</Fragment>
+            )
+          }}
+        </NowTimer>
+      </div>
     )
   }
 

@@ -6,6 +6,7 @@ export interface ListDayHeaderProps {
   dayDate: DateMarker
   todayRange: DateRange
   forPrint: boolean
+  textId: string
 }
 
 export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
@@ -26,6 +27,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
       date: dateEnv.toDate(dayDate),
       view: viewApi,
       text,
+      textId: this.props.textId,
       sideText,
       navLinkAttrs: buildNavLinkAttrs(this.context, dayDate),
       sideNavLinkAttrs: buildNavLinkAttrs(this.context, dayDate, 'day', false),

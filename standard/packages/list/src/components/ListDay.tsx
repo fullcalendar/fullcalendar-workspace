@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, DateMarker, DateRange, EventRangeProps, getEventKey, getEventRangeMeta, memoize, RefMap, setRef, sortEventSegs } from "@fullcalendar/core/internal"
+import { afterSize, BaseComponent, DateMarker, DateRange, EventRangeProps, getEventKey, getEventRangeMeta, getUniqueDomId, memoize, RefMap, setRef, sortEventSegs } from "@fullcalendar/core/internal"
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { ListDayHeader } from "./ListDayHeader.js"
 import { ListEvent } from "./ListEvent.js"
@@ -32,6 +32,9 @@ export class ListDay extends BaseComponent<ListDayProps> {
     afterSize(this.handleTimeWidths)
   })
 
+  // internal
+  private headerId = getUniqueDomId()
+
   render() {
     const { props, context, timeWidthRefMap } = this
     const { nowDate, todayRange } = props
@@ -40,33 +43,40 @@ export class ListDay extends BaseComponent<ListDayProps> {
     const segs = this.sortEventSegs(props.segs, options.eventOrder)
 
     return (
-      <div className='fc-list-day-and-events'>
+      <div
+        role='listitem'
+        aria-labelledby={this.headerId}
+        className='fc-list-day-and-events'
+      >
         <ListDayHeader
           dayDate={props.dayDate}
           todayRange={todayRange}
           forPrint={props.forPrint}
+          textId={this.headerId}
         />
-        {segs.map((seg) => {
-          const key = getEventKey(seg)
+        <div role='list'>
+          {segs.map((seg) => {
+            const key = getEventKey(seg)
 
-          return (
-            <ListEvent
-              key={key}
-              eventRange={seg.eventRange}
-              slicedStart={seg.slicedStart}
-              slicedEnd={seg.slicedEnd}
-              isStart={seg.isStart}
-              isEnd={seg.isEnd}
-              timeWidthRef={timeWidthRefMap.createRef(key)}
-              timeOuterWidth={props.timeOuterWidth}
-              isDragging={false}
-              isResizing={false}
-              isDateSelecting={false}
-              isSelected={false}
-              {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
-            />
-          )
-        })}
+            return (
+              <ListEvent
+                key={key}
+                eventRange={seg.eventRange}
+                slicedStart={seg.slicedStart}
+                slicedEnd={seg.slicedEnd}
+                isStart={seg.isStart}
+                isEnd={seg.isEnd}
+                timeWidthRef={timeWidthRefMap.createRef(key)}
+                timeOuterWidth={props.timeOuterWidth}
+                isDragging={false}
+                isResizing={false}
+                isDateSelecting={false}
+                isSelected={false}
+                {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
+              />
+            )
+          })}
+        </div>
       </div>
     )
   }

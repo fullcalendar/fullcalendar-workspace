@@ -29,7 +29,10 @@ export class ListEvent extends BaseComponent<ListEventProps> {
       <EventContainer
         {...props}
         tag={tag}
-        attrs={attrs}
+        attrs={{
+          role: 'listitem',
+          ...attrs,
+        }}
         className='fc-list-event'
         defaultGenerator={renderEventTitleOnly}
         eventRange={eventRange}

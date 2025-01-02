@@ -22,13 +22,17 @@ a11y
   make all-day row and timed-row part of same rowgroup
   for vertical resource views,
     aria-label is like "September 7, 2020" and doesn't reference resource at all. should it?
+  for list view,
+    create a aria-label for the event list
+  when rigging up CI,
+    test list-view empty state
   status for views:
     [x] daygrid
     [x] daygrid hscroll
     [x] timegrid
     [x] timegrid hscroll
     [x] multimonth
-    [ ] list view
+    [x] list view
     [ ] timeline (no resources)
     [ ] resource-timeline
 
