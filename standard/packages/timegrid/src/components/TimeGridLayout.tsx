@@ -115,6 +115,9 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
 
     return (
       <ViewContainer
+        attrs={{
+          role: 'grid',
+        }}
         className={joinClassNames(
           props.className,
           'fc-border',

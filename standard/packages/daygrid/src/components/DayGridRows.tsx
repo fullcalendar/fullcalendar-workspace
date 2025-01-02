@@ -110,6 +110,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
         {props.cellRows.map((cells, row) => (
           <DayGridRow
             key={cells[0].key}
+            role='row'
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cells={cells}

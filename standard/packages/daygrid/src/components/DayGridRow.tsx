@@ -45,6 +45,7 @@ export interface DayGridRowProps {
   className?: string
   isCompact?: boolean
   isTall?: boolean
+  role?: string
 
   // content
   fgEventSegs: (SlicedCoordRange & EventRangeProps)[]
@@ -132,7 +133,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     return (
       <div
-        role='row' // TODO: audit this for all scenarios
+        role={props.role as any /* !!! */}
         className={joinClassNames(
           'fc-flex-row fc-rel',
           props.className,

@@ -152,10 +152,13 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     const rowsNotExpanding = verticalScrolling && !options.expandRows &&
       state.clientHeight != null && state.clientHeight > totalSlatHeight
 
+    const firstBodyRowIndex = options.dayHeaders ? headerTiers.length + 1 : 1
+
     return (
       <Fragment>
         {options.dayHeaders && (
           <div
+            role='rowgroup'
             className={joinClassNames(
               // see note in TimeGridLayout about why we don't do fc-print-header
               'fc-timegrid-header fc-flex-row fc-border-b',
@@ -171,6 +174,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               {headerTiers.map((models, tierNum) => (
                 <div
                   key={tierNum}
+                  role='row'
+                  aria-rowindex={tierNum + 1}
                   className={joinClassNames(
                     'fc-flex-row fc-content-box',
                     tierNum && 'fc-border-t',
@@ -211,6 +216,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   <DayGridHeaderRow
                     {...rowConfig}
                     key={tierNum}
+                    role='row'
+                    rowIndex={tierNum + 1}
                     className={tierNum ? 'fc-border-t' : ''}
                     height={state.headerTierHeights[tierNum]}
                     colWidth={colWidth}
@@ -229,7 +236,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
         )}
         {options.allDaySlot && (
           <Fragment>
-            <div className='fc-timegrid-allday fc-flex-row'>
+            <div
+              role='row'
+              aria-rowindex={firstBodyRowIndex}
+              className='fc-timegrid-allday fc-flex-row'
+            >
               {/* ALL-DAY / label
               -----------------------------------------------------------------------------------*/}
               <TimeGridAllDayLabel
@@ -284,6 +295,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           </Fragment>
         )}
         <div
+          role='row'
+          aria-rowindex={firstBodyRowIndex + (options.allDaySlot ? 1 : 0)}
           className={joinClassNames(
             'fc-timegrid-body fc-flex-row',
             verticalScrolling && 'fc-liquid',
@@ -303,6 +316,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             {!simplePrint && (
               <Fragment>
                 <div // canvas
+                  role='rowheader'
                   className={joinClassNames(
                     'fc-flex-col fc-grow',
                     absPrint && 'fc-rel',

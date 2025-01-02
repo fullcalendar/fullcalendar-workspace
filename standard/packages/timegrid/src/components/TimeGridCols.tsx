@@ -28,8 +28,8 @@ export interface TimeGridColsProps {
   slatCnt: number
   forPrint: boolean
   isHitComboAllowed?: (hit0: Hit, hit1: Hit) => boolean
+  role?: string
   className?: string
-  style?: any // TODO: better types
 
   // content
   fgEventSegsByCol: (TimeGridRange & EventRangeProps)[][]
@@ -58,8 +58,8 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
 
     return (
       <div
+        role={props.role as any /* !!! */}
         className={joinClassNames(props.className, 'fc-flex-row')}
-        style={props.style}
         ref={this.handleRootEl}
       >
         {props.cells.map((cell, col) => (

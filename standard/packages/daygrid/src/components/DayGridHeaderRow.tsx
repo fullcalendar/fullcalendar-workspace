@@ -9,6 +9,8 @@ export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProp
   height?: number
   colWidth?: number
   innerHeightRef?: Ref<number>
+  role?: string
+  rowIndex?: number
 }
 
 export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderRowProps<RenderProps>> {
@@ -24,7 +26,8 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
     const { props } = this
     return (
       <div
-        role='row'
+        role={props.role as any /* !!! */}
+        aria-rowindex={props.rowIndex}
         className={joinClassNames(
           'fc-flex-row fc-content-box',
           props.className,

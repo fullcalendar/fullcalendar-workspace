@@ -24,6 +24,12 @@ i18n
 misc
   better markup for Popover title/close (no span, use flexbox)
 
+timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit z-indexes
+figure out empty rowheader cells, give aria-label
+make all-day row and timed-row part of same rowgroup
+for vertical resource views,
+  aria-label is like "September 7, 2020" and doesn't reference resource at all. should it?
+
 Cross-browser
   Firefox
     bug: Firefox 90: timegrid header/all-day scrollbarGutter not showing

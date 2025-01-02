@@ -117,16 +117,13 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     // so we need to set explicit height on flex-row and all parents
     const forcedBodyHeight = absPrint ? totalSlatHeight : undefined
 
-    const axisStartCss = context.isRtl
-      ? { marginRight: axisWidth }
-      : { marginLeft: axisWidth }
-
     return (
       <Fragment>
         {/* HEADER
         ---------------------------------------------------------------------------------------*/}
         {options.dayHeaders && (
           <div
+            role='rowgroup'
             className={joinClassNames(
               // see note in TimeGridLayout about why we don't do fc-print-header
               'fc-timegrid-header fc-flex-col fc-border-b',
@@ -136,6 +133,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             {props.headerTiers.map((rowConfig, tierNum) => (
               <div
                 key={tierNum}
+                role='row'
                 className={joinClassNames(
                   'fc-flex-row',
                   tierNum && 'fc-border-t'
@@ -172,43 +170,38 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
         ---------------------------------------------------------------------------------------*/}
         {options.allDaySlot && (
           <Fragment>
-            <div
-              // TODO: role="rowgroup"
-              className='fc-timegrid-allday fc-flex-col'
-            >
-              <div className='fc-flex-row'>
-                <TimeGridAllDayLabel
-                  width={axisWidth}
-                  innerWidthRef={this.handleAllDayLabelInnerWidth}
-                />
-                <TimeGridAllDayLane
-                  dateProfile={props.dateProfile}
-                  todayRange={props.todayRange}
-                  cells={props.cells}
-                  showDayNumbers={false}
-                  forPrint={forPrint}
-                  isHitComboAllowed={props.isHitComboAllowed}
-                  className='fc-border-s fc-liquid'
-                  isCompact={computeRowHeight(state.clientWidth, 1, true, forPrint, options)[1]}
+            <div role='row' className='fc-timegrid-allday fc-flex-row'>
+              <TimeGridAllDayLabel
+                width={axisWidth}
+                innerWidthRef={this.handleAllDayLabelInnerWidth}
+              />
+              <TimeGridAllDayLane
+                dateProfile={props.dateProfile}
+                todayRange={props.todayRange}
+                cells={props.cells}
+                showDayNumbers={false}
+                forPrint={forPrint}
+                isHitComboAllowed={props.isHitComboAllowed}
+                className='fc-border-s fc-liquid'
+                isCompact={computeRowHeight(state.clientWidth, 1, true, forPrint, options)[1]}
 
-                  // content
-                  fgEventSegs={props.fgEventSegs}
-                  bgEventSegs={props.bgEventSegs}
-                  businessHourSegs={props.businessHourSegs}
-                  dateSelectionSegs={props.dateSelectionSegs}
-                  eventDrag={props.eventDrag}
-                  eventResize={props.eventResize}
-                  eventSelection={props.eventSelection}
-                  dayMaxEvents={props.dayMaxEvents}
-                  dayMaxEventRows={props.dayMaxEventRows}
+                // content
+                fgEventSegs={props.fgEventSegs}
+                bgEventSegs={props.bgEventSegs}
+                businessHourSegs={props.businessHourSegs}
+                dateSelectionSegs={props.dateSelectionSegs}
+                eventDrag={props.eventDrag}
+                eventResize={props.eventResize}
+                eventSelection={props.eventSelection}
+                dayMaxEvents={props.dayMaxEvents}
+                dayMaxEventRows={props.dayMaxEventRows}
+              />
+              {Boolean(state.endScrollbarWidth) && (
+                <div
+                  className='fc-border-s fc-filler'
+                  style={{ minWidth: state.endScrollbarWidth }}
                 />
-                {Boolean(state.endScrollbarWidth) && (
-                  <div
-                    className='fc-border-s fc-filler'
-                    style={{ minWidth: state.endScrollbarWidth }}
-                  />
-                )}
-              </div>
+              )}
             </div>
             <div className='fc-rowdivider'></div>
           </Fragment>
@@ -235,33 +228,42 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               height: forcedBodyHeight,
             }}
           >
-            <TimeGridCols
-              dateProfile={props.dateProfile}
-              nowDate={props.nowDate}
-              todayRange={props.todayRange}
-              cells={props.cells}
-              slatCnt={slatCnt}
-              forPrint={forPrint}
-              isHitComboAllowed={props.isHitComboAllowed}
+            <div
+              role='row'
               className={joinClassNames(
-                'fc-border-s',
+                'fc-flex-row',
                 !simplePrint && 'fc-fill',
               )}
-              style={axisStartCss}
+            >
+              <div
+                role='rowheader'
+                className='fc-content-box'
+                style={{ width: axisWidth }}
+              />
+              <TimeGridCols
+                dateProfile={props.dateProfile}
+                nowDate={props.nowDate}
+                todayRange={props.todayRange}
+                cells={props.cells}
+                slatCnt={slatCnt}
+                forPrint={forPrint}
+                isHitComboAllowed={props.isHitComboAllowed}
+                className='fc-liquid fc-border-s'
 
-              // content
-              fgEventSegsByCol={props.fgEventSegsByCol}
-              bgEventSegsByCol={props.bgEventSegsByCol}
-              businessHourSegsByCol={props.businessHourSegsByCol}
-              nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
-              dateSelectionSegsByCol={props.dateSelectionSegsByCol}
-              eventDragByCol={props.eventDragByCol}
-              eventResizeByCol={props.eventResizeByCol}
-              eventSelection={props.eventSelection}
+                // content
+                fgEventSegsByCol={props.fgEventSegsByCol}
+                bgEventSegsByCol={props.bgEventSegsByCol}
+                businessHourSegsByCol={props.businessHourSegsByCol}
+                nowIndicatorSegsByCol={props.nowIndicatorSegsByCol}
+                dateSelectionSegsByCol={props.dateSelectionSegsByCol}
+                eventDragByCol={props.eventDragByCol}
+                eventResizeByCol={props.eventResizeByCol}
+                eventSelection={props.eventSelection}
 
-              // dimensions
-              slatHeight={slatHeight}
-            />
+                // dimensions
+                slatHeight={slatHeight}
+              />
+            </div>
 
             {!simplePrint && (
               <Fragment>

@@ -28,6 +28,9 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
     return (
       <ContentContainer
         tag="div"
+        attrs={{
+          role: 'rowheader',
+        }}
         className='fc-timegrid-allday-label fc-timegrid-axis fc-cell fc-content-box'
         style={{
           width: props.width,

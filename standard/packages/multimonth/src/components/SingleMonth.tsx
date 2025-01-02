@@ -79,6 +79,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
           </div>
           <DayGridHeaderRow
             {...rowConfig}
+            role='row'
             className='fc-multimonth-header-row'
           />
         </div>

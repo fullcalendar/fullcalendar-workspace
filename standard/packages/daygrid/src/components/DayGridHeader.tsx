@@ -34,6 +34,7 @@ export class DayGridHeader extends BaseComponent<DayGridHeaderProps> {
           <DayGridHeaderRow
             {...rowConfig}
             key={tierNum}
+            role='row'
             className={tierNum ? 'fc-border-t' : ''}
             colWidth={props.colWidth}
           />
