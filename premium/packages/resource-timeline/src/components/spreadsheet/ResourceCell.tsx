@@ -49,7 +49,6 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         }}
         className={joinClassNames(
           'fc-resource fc-cell',
-          !colSpec.isMain && 'fc-border-s', // abuse of isMain? we just want isFirst
           props.className,
         )}
         style={{
