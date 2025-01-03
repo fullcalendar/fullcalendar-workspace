@@ -80,6 +80,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 >
                   <GroupTallCell
                     colSpec={group.spec}
+                    rowSpan={groupCellLayout.rowSpan}
                     fieldValue={group.value}
                     className={joinClassNames(
                       'fc-liquid',

@@ -10,6 +10,9 @@ export interface ResourceGroupCellsProps {
   colGrows?: number[]
 }
 
+/*
+Just for print
+*/
 export class ResourceGroupCells extends BaseComponent<ResourceGroupCellsProps> {
   render() {
     const { props } = this

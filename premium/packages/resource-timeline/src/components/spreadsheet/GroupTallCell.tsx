@@ -5,6 +5,7 @@ import { ColSpec, ColCellContentArg } from '@fullcalendar/resource'
 export interface GroupTallCellProps {
   colSpec: ColSpec
   fieldValue: any
+  rowSpan?: number
   width?: number
   grow?: number
   className?: string // needed?
@@ -38,6 +39,7 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
         tag="div"
         attrs={{
           role: 'rowheader',
+          'aria-rowspan': props.rowSpan,
         }}
         className={joinClassNames(
           'fc-resource-group fc-cell',

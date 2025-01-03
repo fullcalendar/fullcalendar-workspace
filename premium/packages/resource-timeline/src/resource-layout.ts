@@ -11,7 +11,7 @@ export interface GenericLayout<Entity> {
 }
 
 export interface ResourceLayout { // specific GenericLayout
-  rowIndex: number
+  rowIndex: number // is 0-based. TODO: make 1-based?
   entity: Resource
   pooledHeight?: boolean // should NOT be defined!
   resourceFields: any
@@ -32,7 +32,8 @@ export interface GroupRowLayout { // specific GenericLayout
 }
 
 export interface GroupCellLayout { // specific GenericLayout
-  rowIndex: number
+  rowIndex: number // is 0-based. TODO: make 1-based?
+  rowSpan: number
   entity: Group
   pooledHeight: true
   children: (ResourceLayout | GroupCellLayout)[]
@@ -42,6 +43,8 @@ export interface GroupCellLayout { // specific GenericLayout
 A "layout" wraps the resource/group entity with presentation information (indent, isExpanded, etc)
 Creates a layout hierarchy (`layouts`) as well as flattened hierarchy.
 Filters away not-expanded nodes.
+
+TODO: even when a row is collapsed, consistent global rowIndex
 */
 export function buildResourceLayouts(
   hierarchy: GenericNode[],
@@ -57,17 +60,27 @@ export function buildResourceLayouts(
   const flatResourceLayouts: ResourceLayout[] = []
   const flatGroupRowLayouts: GroupRowLayout[] = []
   const flatGroupColLayouts: GroupCellLayout[][] = []
-  let rowCnt = 0
 
-  function processNodes(nodes: GenericNode[], depth: number, indent: number): GenericLayout<Resource | Group>[] {
+  function processNodes(
+    nodes: GenericNode[],
+    startingIndex: number, // zero-based
+    depth: number,
+    indent: number,
+  ): [
+    processNodes: GenericLayout<Resource | Group>[],
+    deepNodeCnt: number,
+  ] {
     const layouts: GenericLayout<Resource | Group>[] = []
+    let localRowCnt = 0
 
     // TODO: more DRY within
     for (const node of nodes) {
+
+      // ResourceRow
       if ((node as ResourceNode).resourceFields) {
         const isExpanded = expansions[(node as ResourceNode).entity.id] ?? expansionDefault
         const resourceLayout: ResourceLayout = {
-          rowIndex: rowCnt++,
+          rowIndex: startingIndex + localRowCnt++,
           entity: (node as ResourceNode).entity,
           resourceFields: (node as ResourceNode).resourceFields,
           isExpanded,
@@ -78,11 +91,16 @@ export function buildResourceLayouts(
         flatResourceLayouts.push(resourceLayout)
         layouts.push(resourceLayout)
         if (isExpanded) {
-          resourceLayout.children = processNodes(node.children, depth + 1, indent + 1) as ResourceLayout[]
+          const [localChildren, subtreeNodeCnt] = processNodes(node.children, startingIndex + localRowCnt, depth + 1, indent + 1)
+          resourceLayout.children = localChildren as ResourceLayout[]
+          localRowCnt += subtreeNodeCnt
         }
+
+      // GroupCell
       } else if ((node as GroupNode).pooledHeight) {
         const groupCellLayout: GroupCellLayout = {
-          rowIndex: rowCnt, // DON'T advance
+          rowIndex: startingIndex + localRowCnt, // DON'T advance
+          rowSpan: 0, // populated very soon...
           entity: (node as GroupNode).entity,
           pooledHeight: true,
           children: [], // populates very soon...
@@ -90,11 +108,16 @@ export function buildResourceLayouts(
         ;(flatGroupColLayouts[depth] || (flatGroupColLayouts[depth] = []))
           .push(groupCellLayout)
         layouts.push(groupCellLayout)
-        groupCellLayout.children = processNodes(node.children, depth + 1, indent) as (ResourceLayout | GroupCellLayout)[]
+        const [localChildren, subtreeNodeCnt] = processNodes(node.children, startingIndex + localRowCnt, depth + 1, indent)
+        groupCellLayout.children = localChildren as (ResourceLayout | GroupCellLayout)[]
+        groupCellLayout.rowSpan = subtreeNodeCnt
+        localRowCnt += subtreeNodeCnt
+
+      // GroupRow
       } else {
         const isExpanded = expansions[createGroupId((node as GroupRowLayout).entity)] ?? expansionDefault
         const groupRowLayout: GroupRowLayout = {
-          rowIndex: rowCnt++,
+          rowIndex: startingIndex + localRowCnt++,
           entity: (node as GroupNode).entity,
           pooledHeight: false,
           isExpanded,
@@ -105,16 +128,18 @@ export function buildResourceLayouts(
         flatGroupRowLayouts.push(groupRowLayout)
         layouts.push(groupRowLayout)
         if (isExpanded) {
-          groupRowLayout.children = processNodes(node.children, depth + 1, indent + 1) as (ResourceLayout | GroupRowLayout | GroupCellLayout)[]
+          const [localChildren, subtreeNodeCnt] = processNodes(node.children, startingIndex + localRowCnt, depth + 1, indent + 1)
+          groupRowLayout.children = localChildren as (ResourceLayout | GroupRowLayout | GroupCellLayout)[]
+          localRowCnt += subtreeNodeCnt
         }
       }
     }
 
-    return layouts
+    return [layouts, localRowCnt]
   }
 
   return {
-    layouts: processNodes(hierarchy, 0, hasNesting ? 1 : 0),
+    layouts: processNodes(hierarchy, 0, 0, hasNesting ? 1 : 0)[0],
     flatResourceLayouts,
     flatGroupRowLayouts,
     flatGroupColLayouts,

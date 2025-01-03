@@ -38,6 +38,7 @@ a11y
   make all of our rowIndexes 0-based
   write aria-colcount/rowcount on root table?
   give time-area columnheader an aria description
+  "even when a row is collapsed, consistent global rowIndex" (aria-rowindex)
 
 i18n
   locales should populdate viewChangeHint
