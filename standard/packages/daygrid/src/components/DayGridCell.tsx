@@ -182,11 +182,13 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
   }
 
   handleBodyEl = (bodyEl: HTMLElement | null) => {
-    if (!bodyEl) {
+    if (this.disconnectBodyHeight) {
       this.disconnectBodyHeight()
       setRef(this.props.headerHeightRef, null)
       setRef(this.props.mainHeightRef, null)
-    } else {
+    }
+
+    if (bodyEl) {
       // we want to fire on ANY size change, because we do more advanced stuff
       this.disconnectBodyHeight = watchSize(bodyEl, (_bodyWidth, bodyHeight) => {
         const { props } = this
