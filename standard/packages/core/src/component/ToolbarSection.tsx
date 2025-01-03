@@ -79,7 +79,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
             )}
             onClick={buttonClick}
           >
-            {buttonText || (buttonIcon ? <span className={buttonIcon} role="img" /> : '')}
+            {buttonText || (buttonIcon ? <span className={buttonIcon} aria-hidden /> : '')}
           </button>,
         )
       }
