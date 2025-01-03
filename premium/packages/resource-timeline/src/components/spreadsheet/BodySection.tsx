@@ -16,6 +16,7 @@ export interface BodySectionProps {
   rowInnerHeightRefMap: RefMap<string, number>
   rowTops: Map<string, number>
   rowHeights: Map<string, number>
+  headerRowSpan: number
 }
 
 /*
@@ -25,7 +26,7 @@ Caller is responsible for this.
 export class BodySection extends BaseComponent<BodySectionProps> {
   render() {
     const { props, context } = this
-    const { rowInnerHeightRefMap, rowTops, rowHeights } = props
+    const { rowInnerHeightRefMap, rowTops, rowHeights, headerRowSpan } = props
 
     // TODO: less-weird way to get this! more DRY with ResourceTimelineLayoutNormal
     const groupRowCnt = props.flatGroupRowLayouts.length
@@ -43,7 +44,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
     where an actual DIV creates the mass, not a paddingTop
     */
     return (
-      <div className='fc-flex-row fc-fill'>
+      <div role='rowgroup' className='fc-flex-row fc-fill'>
 
         {/* group columns */}
         {props.flatGroupColLayouts.map((groupColLayouts, colIndex) => (
@@ -68,7 +69,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 <div
                   key={groupKey}
                   role='row'
-                  aria-rowindex={groupCellLayout.rowIndex}
+                  aria-rowindex={headerRowSpan + groupCellLayout.rowIndex + 1 /* make 1-based */}
                   class='fc-flex-row fc-fill-x'
                   style={{
                     top: rowTops.get(groupKey),
@@ -123,7 +124,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
               <div
                 key={resource.id}
                 role='row'
-                aria-rowindex={resourceLayout.rowIndex}
+                aria-rowindex={headerRowSpan + resourceLayout.rowIndex + 1 /* make 1-based */}
                 data-resource-id={resource.id}
                 class='fc-flex-row fc-fill-x'
                 style={{
@@ -160,7 +161,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             <div
               key={groupKey}
               role='row'
-              aria-rowindex={groupRowLayout.rowIndex}
+              aria-rowindex={headerRowSpan + groupRowLayout.rowIndex + 1 /* make 1-based */}
               class={joinClassNames(
                 'fc-flex-row fc-fill-x fc-content-box',
                 isNotLast && 'fc-border-b',
@@ -174,6 +175,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 group={group}
                 isExpanded={groupRowLayout.isExpanded}
                 innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
+                colSpan={props.colSpecs.length}
               />
             </div>
           )

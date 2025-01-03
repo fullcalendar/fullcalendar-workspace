@@ -45,7 +45,6 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
           return (
             <ResourceCell
               key={i} // eslint-disable-line react/no-array-index-key
-              colIndex={i}
               colSpec={colSpec}
               resource={resource}
               fieldValue={fieldValue}

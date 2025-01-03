@@ -22,7 +22,7 @@ export interface ResourceLayout { // specific GenericLayout
 }
 
 export interface GroupRowLayout { // specific GenericLayout
-  rowIndex: number
+  rowIndex: number // is 0-based. TODO: make 1-based?
   entity: Group
   pooledHeight: false
   isExpanded: boolean

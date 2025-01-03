@@ -7,6 +7,7 @@ import { ExpanderIcon } from './ExpanderIcon.js'
 export interface GroupWideCellProps {
   group: Group
   isExpanded: boolean
+  colSpan: number
 
   // refs
   innerHeightRef?: Ref<number>
@@ -34,7 +35,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
             // to assign multiple headers to each cell
             // https://www.w3.org/WAI/tutorials/tables/multi-level/
             role: 'columnheader',
-            scope: 'colgroup',
+            'aria-colspan': props.colSpan,
           }}
           // TODO: make part of fc-resource-group so ppl can style both cells together?
           className='fc-resource-group fc-cell fc-liquid fc-shaded'

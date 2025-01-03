@@ -37,7 +37,7 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
       <ContentContainer
         tag="div"
         attrs={{
-          role: 'gridcell',
+          role: 'rowheader',
         }}
         className={joinClassNames(
           'fc-resource-group fc-cell',

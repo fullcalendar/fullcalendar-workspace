@@ -35,6 +35,9 @@ a11y
     [x] list view
     [ ] timeline (no resources)
     [ ] resource-timeline
+  make all of our rowIndexes 0-based
+  write aria-colcount/rowcount on root table?
+  give time-area columnheader an aria description
 
 i18n
   locales should populdate viewChangeHint

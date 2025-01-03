@@ -14,7 +14,6 @@ import { Resource, ColSpec } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
 
 export interface ResourceCellProps {
-  colIndex: number
   colSpec: ColSpec
   resource: Resource
   fieldValue: any
@@ -46,12 +45,11 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
       <ContentContainer
         tag="div"
         attrs={{
-          role: 'gridcell',
-          'aria-colindex': props.colIndex,
+          role: colSpec.isMain ? 'rowheader' : 'gridcell',
         }}
         className={joinClassNames(
           'fc-resource fc-cell',
-          props.colIndex && 'fc-border-s',
+          !colSpec.isMain && 'fc-border-s', // abuse of isMain? we just want isFirst
           props.className,
         )}
         style={{

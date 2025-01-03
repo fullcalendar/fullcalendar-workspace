@@ -108,17 +108,21 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
       <ViewContainer
         className='fc-resource-timeline fc-print-root fc-border'
         viewSpec={viewSpec}
+        attrs={{
+          role: 'grid',
+        }}
       >
-        <div className='fc-print-header fc-border-b'>
+        <div role='rowgroup' className='fc-print-header fc-border-b'>
           <div className='fc-flex-row'>
 
             {/* DataGrid HEADER */}
             <div className='fc-flex-col' style={{ width: props.spreadsheetWidth }}>
               {Boolean(superHeaderRendering) && (
-                <div role="row" className="fc-flex-row fc-grow fc-border-b">
+                <div role='row' className="fc-flex-row fc-grow fc-border-b">
                   <SuperHeaderCell
                     renderHooks={superHeaderRendering}
                     indent={props.hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
+                    colSpan={colSpecs.length}
                   />
                 </div>
               )}
@@ -136,12 +140,10 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
 
             {/* Timeline HEADER */}
             <div className='fc-liquid fc-flex-row fc-crop fc-border-s'>
-              <div
-                // the canvas, origin for now-indicator
+              <div // the canvas, origin for now-indicator
                 className='fc-flex-col fc-rel'
                 style={{
                   width: timeCanvasWidth,
-
                   // TODO: nicer way of doing this
                   left: context.isRtl ? undefined : -timeAreaOffset,
                   right: context.isRtl ? -timeAreaOffset : undefined,
@@ -178,7 +180,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         </div>{/* Header END */ }
         {/* Body START */}
         {/* Must crop 200% fill */}
-        <div className='fc-rel fc-crop'>
+        <div role='rowgroup' className='fc-rel fc-crop'>
 
           {/* BACKGROUND FILL */}
           {/* Must crop horizontally-offscreen slats and whatnot */}
@@ -256,6 +258,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               return (
                 <div
                   key={resource.id}
+                  role='row'
                   className='fc-flex-row fc-break-inside-avoid'
                 >
                   <div className='fc-flex-col fc-crop' style={{ width: props.spreadsheetWidth }}>
@@ -318,6 +321,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               return (
                 <div
                   key={groupKey}
+                  role='row'
                   className={joinClassNames(
                     'fc-flex-row fc-break-inside-avoid',
                     isNotLast && 'fc-border-b',
@@ -327,6 +331,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     <GroupWideCell
                       group={group}
                       isExpanded={(printLayout as GroupRowPrintLayout).isExpanded}
+                      colSpan={props.colSpecs.length}
                     />
                   </div>
                   <div className='fc-crop fc-flex-row fc-border-s fc-liquid'>

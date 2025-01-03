@@ -180,6 +180,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     const { resourceHierarchy } = props
 
+    const headerRowSpan = 1 + (superHeaderRendering ? 1 : 0)
+
     /* table display */
 
     let {
@@ -271,6 +273,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       <ViewContainer
         className='fc-resource-timeline fc-flex-col fc-border'
         viewSpec={viewSpec}
+        attrs={{
+          role: 'grid',
+        }}
       >
         <ResizableTwoCol
           initialStartWidth={props.initialSpreadsheetWidth}
@@ -287,6 +292,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {/* spreadsheet HEADER
               ---------------------------------------------------------------------------- */}
               <div
+                role='rowgroup'
                 className={joinClassNames(
                   'fc-datagrid-header fc-flex-col fc-content-box fc-border-b',
                   stickyHeaderDates && 'fc-table-header-sticky',
@@ -298,12 +304,14 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 {Boolean(superHeaderRendering) && (
                   <div
                     role="row"
+                    aria-rowindex={1}
                     className="fc-flex-row fc-grow fc-border-b"
                   >
                     <SuperHeaderCell
                       renderHooks={superHeaderRendering}
                       indent={props.hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
                       innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(true)}
+                      colSpan={colSpecs.length}
                     />
                   </div>
                 )}
@@ -318,6 +326,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       colSpecs={colSpecs}
                       colWidths={spreadsheetColWidths}
                       indent={props.hasNesting}
+                      rowIndex={headerRowSpan /* will be 1-based */}
 
                       // refs
                       innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
@@ -356,6 +365,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     rowInnerHeightRefMap={this.dataGridEntityInnerHeightMap}
                     rowTops={bodyTops}
                     rowHeights={bodyHeights}
+                    headerRowSpan={headerRowSpan}
                   />
                   {spreadsheetNeedsBottomFiller && (
                     <div
@@ -385,9 +395,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
             <Fragment>
 
               {/* time-area HEADER
+              // TODO: how to do role='rowgroup' ?
               ---------------------------------------------------------------------------- */}
               <Scroller
                 ref={this.timeHeaderScrollerRef}
+                role='row'
+                rowIndex={1}
                 horizontal
                 hideScrollbars
                 className={joinClassNames(
@@ -398,9 +411,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   height: headerHeight,
                 }}
               >
-                <div
-                  // TODO: DRY
-                  className={joinClassNames(
+                <div // the canvas
+                  role='columnheader'
+                  aria-rowspan={colSpecs.length}
+                  className={joinClassNames( // TODO: DRY
                     'fc-flex-col fc-rel', // origin for now-indicator
                     timeCanvasWidth == null && 'fc-liquid',
                   )}
@@ -499,6 +513,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     )}
                   </div>
                   <div
+                    role='rowgroup'
                     className='fc-rel'
                     style={{ height: totalBodyHeight }}
                   >
@@ -508,7 +523,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         <div
                           key={resource.id}
                           role='row'
-                          aria-rowindex={resourceLayout.rowIndex}
+                          aria-rowindex={headerRowSpan + resourceLayout.rowIndex + 1 /* make 1-based */}
                           data-resource-id={resource.id}
                           className={joinClassNames(
                             'fc-resource fc-flex-col fc-fill-x fc-content-box',
@@ -546,7 +561,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         <div
                           key={groupKey}
                           role='row'
-                          aria-rowindex={groupRowLayout.rowIndex}
+                          aria-rowindex={headerRowSpan + groupRowLayout.rowIndex + 1 /* make 1-based */}
                           class={joinClassNames(
                             'fc-flex-row fc-fill-x fc-content-box',
                             groupRowLayout.rowIndex < rowCnt - 1 && // is not last

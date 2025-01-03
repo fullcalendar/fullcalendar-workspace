@@ -8,6 +8,7 @@ export interface HeaderRowProps {
   colWidths: number[] | undefined
   colGrows?: number[]
   indent?: boolean // only for the 'main' cell
+  rowIndex?: number // 1-based
 
   // refs
   innerHeightRef?: Ref<number>
@@ -54,6 +55,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
     return (
       <div
         role="row"
+        aria-rowindex={props.rowIndex}
         className='fc-flex-row fc-grow'
       >
         {colSpecs.map((colSpec, colIndex) => {
