@@ -395,12 +395,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
             <Fragment>
 
               {/* time-area HEADER
-              // TODO: how to do role='rowgroup' ?
               ---------------------------------------------------------------------------- */}
               <Scroller
                 ref={this.timeHeaderScrollerRef}
-                role='row'
-                rowIndex={1}
                 horizontal
                 hideScrollbars
                 className={joinClassNames(
@@ -413,7 +410,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               >
                 <div // the canvas
                   role='columnheader'
-                  aria-rowspan={colSpecs.length}
+                  // put row and col indexes on this lone cell, which might confuse screenreaders,
+                  // but honestly this column header isn't very meaningful
+                  aria-rowindex={1}
+                  aria-rowspan={headerRowSpan}
+                  aria-colindex={colSpecs.length + 1}
+
                   className={joinClassNames( // TODO: DRY
                     'fc-flex-col fc-rel', // origin for now-indicator
                     timeCanvasWidth == null && 'fc-liquid',

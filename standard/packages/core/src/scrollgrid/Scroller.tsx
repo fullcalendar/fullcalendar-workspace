@@ -17,8 +17,6 @@ export interface ScrollerProps {
   // el hooks
   className?: string
   style?: Dictionary
-  role?: string // weird
-  rowIndex?: number // weird
 
   // dimensions
   clientWidthRef?: Ref<number> // for this to be accurate, element should NOT have left/right borders
@@ -49,8 +47,6 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     return (
       <div
         ref={this.handleEl}
-        role={props.role as any /* !!! */}
-        aria-rowindex={props.rowIndex}
         className={joinClassNames(
           props.className,
           'fc-scroller',
