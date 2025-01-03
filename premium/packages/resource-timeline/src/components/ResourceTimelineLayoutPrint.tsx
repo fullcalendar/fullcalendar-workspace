@@ -244,15 +244,15 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           </div>
 
           {/* BODY ROWS */}
-          {printLayouts.map((printLayout, rowIndex) => {
-            const isNotLast = rowIndex < printLayouts.length - 1
+          {printLayouts.map((printLayout, rowIndex0) => { // index is 0-based
+            const isNotLast = rowIndex0 < printLayouts.length - 1
 
             if ((printLayout as ResourcePrintLayout).colGroups) {
               const resource = (printLayout as ResourcePrintLayout).entity
               const colGroupStats = createColGroupStats(
                 printLayout as ResourcePrintLayout,
-                printLayouts[rowIndex - 1],
-                printLayouts[rowIndex + 1]
+                printLayouts[rowIndex0 - 1],
+                printLayouts[rowIndex0 + 1]
               )
 
               return (

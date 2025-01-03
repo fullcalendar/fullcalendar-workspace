@@ -523,11 +523,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         <div
                           key={resource.id}
                           role='row'
-                          aria-rowindex={headerRowSpan + resourceLayout.rowIndex + 1 /* make 1-based */}
+                          aria-rowindex={headerRowSpan + resourceLayout.rowIndex}
                           data-resource-id={resource.id}
                           className={joinClassNames(
                             'fc-resource fc-flex-col fc-fill-x fc-content-box',
-                            resourceLayout.rowIndex < rowCnt - 1 && // is not last
+                            resourceLayout.rowIndex < rowCnt && // is not last (rowIndex is 1-based)
                               'fc-border-b',
                           )}
                           style={{
@@ -561,10 +561,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         <div
                           key={groupKey}
                           role='row'
-                          aria-rowindex={headerRowSpan + groupRowLayout.rowIndex + 1 /* make 1-based */}
+                          aria-rowindex={headerRowSpan + groupRowLayout.rowIndex}
                           class={joinClassNames(
                             'fc-flex-row fc-fill-x fc-content-box',
-                            groupRowLayout.rowIndex < rowCnt - 1 && // is not last
+                            groupRowLayout.rowIndex < rowCnt && // is not last (rowIndex is 1-based)
                               'fc-border-b',
                           )}
                           style={{

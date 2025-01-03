@@ -10,7 +10,7 @@ export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProp
   colWidth?: number
   innerHeightRef?: Ref<number>
   role?: string
-  rowIndex?: number
+  rowIndex?: number // 1-based
 }
 
 export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderRowProps<RenderProps>> {

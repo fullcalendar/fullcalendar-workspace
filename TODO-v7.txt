@@ -38,13 +38,19 @@ a11y
   make all of our rowIndexes 0-based
   write aria-colcount/rowcount on root table?
   give time-area columnheader an aria description
+  additional aria
+    aria-level (depth)
+    aria-posinset (index in current set)
+    aria-setsize (current set size, not child size)
   "even when a row is collapsed, consistent global rowIndex" (aria-rowindex)
+    will have troubles with `rowIndex < rowCnt`
 
 i18n
   locales should populdate viewChangeHint
 
 misc
   better markup for Popover title/close (no span, use flexbox)
+  been having issues with scrollwheel getting scrollsyncing out of whack!?
 
 Cross-browser
   Firefox

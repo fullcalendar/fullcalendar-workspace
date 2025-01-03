@@ -217,7 +217,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     {...rowConfig}
                     key={tierNum}
                     role='row'
-                    rowIndex={tierNum + 1}
+                    rowIndex={tierNum + 1 /* make 1-based */}
                     className={tierNum ? 'fc-border-t' : ''}
                     height={state.headerTierHeights[tierNum]}
                     colWidth={colWidth}
