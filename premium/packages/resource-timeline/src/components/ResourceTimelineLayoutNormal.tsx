@@ -180,7 +180,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     const { resourceHierarchy } = props
 
-    const headerRowSpan = 1 + (superHeaderRendering ? 1 : 0)
+    const superHeaderRowSpan = superHeaderRendering ? 1 : 0
+    const totalHeaderRowSpan = superHeaderRowSpan + 1
 
     /* table display */
 
@@ -326,7 +327,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       colSpecs={colSpecs}
                       colWidths={spreadsheetColWidths}
                       indent={props.hasNesting}
-                      rowIndex={headerRowSpan /* will be 1-based */}
+                      rowIndex={1 + superHeaderRowSpan}
 
                       // refs
                       innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
@@ -365,7 +366,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     rowInnerHeightRefMap={this.dataGridEntityInnerHeightMap}
                     rowTops={bodyTops}
                     rowHeights={bodyHeights}
-                    headerRowSpan={headerRowSpan}
+                    headerRowSpan={totalHeaderRowSpan}
                   />
                   {spreadsheetNeedsBottomFiller && (
                     <div
@@ -413,7 +414,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   // put row and col indexes on this lone cell, which might confuse screenreaders,
                   // but honestly this column header isn't very meaningful
                   aria-rowindex={1}
-                  aria-rowspan={headerRowSpan}
+                  aria-rowspan={totalHeaderRowSpan}
                   aria-colindex={colSpecs.length + 1}
 
                   className={joinClassNames( // TODO: DRY
@@ -525,11 +526,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         <div
                           key={resource.id}
                           role='row'
-                          aria-rowindex={headerRowSpan + resourceLayout.rowIndex}
+                          aria-rowindex={1 + totalHeaderRowSpan + resourceLayout.rowIndex}
                           data-resource-id={resource.id}
                           className={joinClassNames(
                             'fc-resource fc-flex-col fc-fill-x fc-content-box',
-                            resourceLayout.rowIndex < rowCnt && // is not last (rowIndex is 1-based)
+                            resourceLayout.rowIndex < rowCnt - 1 && // is not last
                               'fc-border-b',
                           )}
                           style={{
@@ -563,10 +564,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         <div
                           key={groupKey}
                           role='row'
-                          aria-rowindex={headerRowSpan + groupRowLayout.rowIndex}
+                          aria-rowindex={1 + totalHeaderRowSpan + groupRowLayout.rowIndex}
                           class={joinClassNames(
                             'fc-flex-row fc-fill-x fc-content-box',
-                            groupRowLayout.rowIndex < rowCnt && // is not last (rowIndex is 1-based)
+                            groupRowLayout.rowIndex < rowCnt - 1 && // is not last
                               'fc-border-b',
                           )}
                           style={{

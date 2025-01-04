@@ -13,7 +13,7 @@ export interface GenericLayout<Entity> {
 export interface ResourceLayout { // specific GenericLayout
   indexes: number[] // is 0-based
   parentGroupIndexes: number[] // is 0-based
-  rowIndex: number // is 1-based
+  rowIndex: number // is 0-based
   entity: Resource
   pooledHeight?: boolean // should NOT be defined!
   resourceFields: any
@@ -27,7 +27,7 @@ export interface ResourceLayout { // specific GenericLayout
 export interface GroupRowLayout { // specific GenericLayout
   indexes: number[] // is 0-based
   parentGroupIndexes: number[] // is 0-based
-  rowIndex: number // is 1-based
+  rowIndex: number // is 0-based
   entity: Group
   pooledHeight: false
   isExpanded: boolean
@@ -40,7 +40,7 @@ export interface GroupRowLayout { // specific GenericLayout
 export interface GroupCellLayout { // specific GenericLayout
   indexes: number[] // is 0-based
   parentGroupIndexes: number[] // is 0-based
-  rowIndex: number // is 1-based
+  rowIndex: number // is 0-based
   rowSpan: number
   entity: Group
   pooledHeight: true
@@ -73,7 +73,7 @@ export function buildResourceLayouts(
     nodes: GenericNode[],
     parentIndexes: number[],
     parentGroupIndexes: number[],
-    startingIndex: number, // zero-based
+    startingIndex: number,
     depth: number,
     indent: number,
   ): [
@@ -187,7 +187,7 @@ export function buildResourceLayouts(
   }
 
   return {
-    layouts: processNodes(hierarchy, [], [], 1, 0, hasNesting ? 1 : 0)[0],
+    layouts: processNodes(hierarchy, [], [], 0, 0, hasNesting ? 1 : 0)[0],
     flatResourceLayouts,
     flatGroupRowLayouts,
     flatGroupColLayouts,

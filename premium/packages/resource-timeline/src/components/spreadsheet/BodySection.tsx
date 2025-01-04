@@ -71,7 +71,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 <div
                   key={groupKey}
                   role='row'
-                  aria-rowindex={headerRowSpan + groupCellLayout.rowIndex}
+                  aria-rowindex={1 + headerRowSpan + groupCellLayout.rowIndex}
                   class='fc-flex-row fc-fill-x'
                   style={{
                     top: rowTops.get(groupKey),
@@ -121,15 +121,15 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         >
           {props.flatResourceLayouts.map((resourceLayout) => {
             const resource = resourceLayout.entity
-            const isNotLast = resourceLayout.rowIndex < rowCnt // (rowIndex is 1-based)
+            const isNotLast = resourceLayout.rowIndex < rowCnt - 1
             const rowHeight = rowHeights.get(resource.id)
 
             return (
               <div
                 key={resource.id}
                 role='row'
-                aria-rowindex={headerRowSpan + resourceLayout.rowIndex}
-                aria-level={resourceLayout.depth + 1}
+                aria-rowindex={1 + headerRowSpan + resourceLayout.rowIndex}
+                aria-level={1 + resourceLayout.depth}
                 data-resource-id={resource.id}
                 class='fc-flex-row fc-fill-x'
                 style={{
@@ -162,14 +162,14 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         {props.flatGroupRowLayouts.map((groupRowLayout) => {
           const group = groupRowLayout.entity
           const groupKey = createGroupId(group)
-          const isNotLast = groupRowLayout.rowIndex < rowCnt // rowIndex is 1-based
+          const isNotLast = groupRowLayout.rowIndex < rowCnt - 1
 
           return (
             <div
               key={groupKey}
               role='row'
-              aria-rowindex={headerRowSpan + groupRowLayout.rowIndex}
-              aria-level={groupRowLayout.depth + 1}
+              aria-rowindex={1 + headerRowSpan + groupRowLayout.rowIndex}
+              aria-level={1 + groupRowLayout.depth}
               class={joinClassNames(
                 'fc-flex-row fc-fill-x fc-content-box',
                 isNotLast && 'fc-border-b',
