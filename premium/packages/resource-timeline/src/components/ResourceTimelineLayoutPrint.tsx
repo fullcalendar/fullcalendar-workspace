@@ -68,6 +68,11 @@ export interface ResourceTimelineLayoutPrintProps {
 
 const BG_HEIGHT = 100000
 
+/*
+ARIA considerations:
+try to put correct role="" on things, just for readability, but it's pointless to pursue more
+complex things like indexes, level, complex-header relationships (via aria-labelledby)
+*/
 export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineLayoutPrintProps> {
   // memoized
   private buildPrintLayouts = memoize(buildPrintLayouts)

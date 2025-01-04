@@ -8,6 +8,7 @@ export interface GroupWideCellProps {
   group: Group
   isExpanded: boolean
   colSpan: number
+  domId?: string // used for cell ID
 
   // refs
   innerHeightRef?: Ref<number>
@@ -36,6 +37,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
             // https://www.w3.org/WAI/tutorials/tables/multi-level/
             role: 'columnheader',
             'aria-colspan': props.colSpan,
+            id: props.domId,
           }}
           // TODO: make part of fc-resource-group so ppl can style both cells together?
           className='fc-resource-group fc-cell fc-liquid fc-shaded'

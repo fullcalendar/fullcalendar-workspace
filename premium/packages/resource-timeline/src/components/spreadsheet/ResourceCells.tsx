@@ -12,6 +12,8 @@ export interface ResourceCellsProps {
   isExpanded: boolean
   hasChildren: boolean
   className?: string
+  domId?: string // used for rowheader cell's ID
+  labelIds?: string
 
   // refs
   innerHeightRef?: Ref<number>
@@ -58,6 +60,8 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
                 props.className,
                 i && 'fc-border-s',
               )}
+              domId={props.domId}
+              labelIds={props.labelIds}
             />
           )
         })}
