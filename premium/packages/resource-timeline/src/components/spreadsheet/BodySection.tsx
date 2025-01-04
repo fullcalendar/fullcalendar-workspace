@@ -126,6 +126,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 key={resource.id}
                 role='row'
                 aria-rowindex={headerRowSpan + resourceLayout.rowIndex}
+                aria-level={resourceLayout.depth + 1}
                 data-resource-id={resource.id}
                 class='fc-flex-row fc-fill-x'
                 style={{
@@ -163,6 +164,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
               key={groupKey}
               role='row'
               aria-rowindex={headerRowSpan + groupRowLayout.rowIndex}
+              aria-level={groupRowLayout.depth + 1}
               class={joinClassNames(
                 'fc-flex-row fc-fill-x fc-content-box',
                 isNotLast && 'fc-border-b',

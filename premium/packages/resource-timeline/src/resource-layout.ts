@@ -18,6 +18,7 @@ export interface ResourceLayout { // specific GenericLayout
   isExpanded: boolean
   hasChildren: boolean // if has *any* children
   indent: number
+  depth: number // TODO: converge with indent
   children: ResourceLayout[] // only *visible* children
 }
 
@@ -28,6 +29,7 @@ export interface GroupRowLayout { // specific GenericLayout
   isExpanded: boolean
   hasChildren: boolean // if has *any* children
   indent: number
+  depth: number // TODO: converge with indent
   children: (ResourceLayout | GroupRowLayout | GroupCellLayout)[]
 }
 
@@ -85,6 +87,7 @@ export function buildResourceLayouts(
           resourceFields: (node as ResourceNode).resourceFields,
           isExpanded,
           hasChildren: Boolean(node.children.length),
+          depth,
           indent,
           children: [],
         }
@@ -122,6 +125,7 @@ export function buildResourceLayouts(
           pooledHeight: false,
           isExpanded,
           hasChildren: Boolean(node.children.length),
+          depth,
           indent,
           children: [], // populates very soon...
         }
