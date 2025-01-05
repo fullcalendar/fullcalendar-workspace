@@ -18,8 +18,6 @@ a11y
   think about changing title as <h2>
   weekNumbers in daygrid should be in DOM-order before cells
   timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit z-indexes
-  figure out empty rowheader cells, give aria-label
-  make all-day row and timed-row part of same rowgroup
   for vertical resource views,
     aria-label is like "September 7, 2020" and doesn't reference resource at all. should it?
   for list view,
@@ -35,6 +33,7 @@ a11y
     [x] list view
     [ ] timeline (no resources)
     [ ] resource-timeline
+  *** correct grid/treegrid on resource-timeline
   *** write aria-colcount/rowcount on root table?
     for resource-timeline
     for daygrid/timegrid h-scroll (colcount)
