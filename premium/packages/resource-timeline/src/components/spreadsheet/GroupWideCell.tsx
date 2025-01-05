@@ -32,6 +32,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
           attrs={{
             role: 'rowheader',
             'aria-colspan': props.colSpan,
+            'aria-expanded': props.isExpanded,
           }}
           // TODO: make part of fc-resource-group so ppl can style both cells together?
           className='fc-resource-group fc-cell fc-liquid fc-shaded'

@@ -531,6 +531,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           key={groupKey}
                           role='row'
                           aria-rowindex={1 + totalHeaderRowSpan + groupRowLayout.rowIndex}
+                          aria-expanded={groupRowLayout.isExpanded}
                           class={joinClassNames(
                             'fc-flex-row fc-fill-x fc-content-box',
                             groupRowLayout.rowIndex < rowCnt - 1 && // is not last
@@ -557,6 +558,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           key={resource.id}
                           role='row'
                           aria-rowindex={1 + totalHeaderRowSpan + resourceLayout.rowIndex}
+                          aria-expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
                           data-resource-id={resource.id}
                           className={joinClassNames(
                             'fc-resource fc-flex-col fc-fill-x fc-content-box',
