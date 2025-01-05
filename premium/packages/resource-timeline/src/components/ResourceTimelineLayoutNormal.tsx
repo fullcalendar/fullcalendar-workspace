@@ -9,6 +9,7 @@ import {
   getIsHeightAuto,
   getStickyFooterScrollbar,
   getStickyHeaderDates,
+  getUniqueDomId,
   Hit,
   joinClassNames,
   memoize,
@@ -157,6 +158,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private bodyScroller: ScrollerSyncerInterface
   private spreadsheetScroller: ScrollerSyncerInterface
   private scroll: EntityScroll & TimeScroll = {} // updated in-place
+  private hierarchyDomIdScope = getUniqueDomId()
 
   render() {
     let { props, state, context } = this
@@ -367,6 +369,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     rowTops={bodyTops}
                     rowHeights={bodyHeights}
                     headerRowSpan={totalHeaderRowSpan}
+                    domIdScope={this.hierarchyDomIdScope}
                   />
                   {spreadsheetNeedsBottomFiller && (
                     <div

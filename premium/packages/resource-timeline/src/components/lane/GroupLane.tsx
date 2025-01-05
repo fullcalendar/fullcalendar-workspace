@@ -5,6 +5,7 @@ import { Group } from '@fullcalendar/resource/internal'
 
 export interface GroupLaneProps {
   group: Group
+  domId?: string
 
   // refs
   innerHeightRef?: Ref<number>
@@ -32,7 +33,10 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
     return (
       <ContentContainer
         tag="div"
-        attrs={{ role: 'gridcell' }}
+        attrs={{
+          role: 'gridcell',
+          id: props.domId,
+        }}
         // TODO: is fc-timeline-lane this the best name?
         // TODO: make part of fc-resource-group so ppl can style both cells together?
         className='fc-resource-group fc-timeline-lane fc-cell fc-liquid fc-shaded'

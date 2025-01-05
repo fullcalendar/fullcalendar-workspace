@@ -24,7 +24,9 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
       <ContentContainer
         tag="div"
         className='fc-timeline-lane fc-flex-col'
-        attrs={{ role: 'gridcell' }}
+        attrs={{
+          role: 'gridcell',
+        }}
         elRef={this.handleRootEl}
         renderProps={renderProps}
         generatorName="resourceLaneContent"
