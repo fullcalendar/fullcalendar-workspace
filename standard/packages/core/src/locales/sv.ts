@@ -38,5 +38,5 @@ export default {
   moreLinkText: 'till',
   noEventsText: 'Inga händelser att visa',
   closeHint: 'Stäng',
-  eventHint: 'Händelse',
+  eventsHint: 'Händelser',
 } as LocaleInput

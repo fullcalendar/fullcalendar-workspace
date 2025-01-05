@@ -228,7 +228,7 @@ export const BASE_OPTION_REFINERS = {
   viewChangeHint: String,
   navLinkHint: identity as Identity<string | ((...args: any[]) => string)>,
   closeHint: String,
-  eventHint: String,
+  eventsHint: String,
 
   moreLinkClick: identity as Identity<MoreLinkAction>,
   moreLinkClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,

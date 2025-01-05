@@ -55,5 +55,5 @@ export default {
       eventCnt + ' weitere Ereignisse')
   },
   closeHint: 'Schließen',
-  eventHint: 'Ereignis',
+  eventsHint: 'Ereignisse',
 } as LocaleInput

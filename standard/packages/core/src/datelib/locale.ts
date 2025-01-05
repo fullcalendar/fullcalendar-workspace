@@ -46,7 +46,7 @@ const MINIMAL_RAW_EN_LOCALE = {
   weekText: 'W',
   weekTextLong: 'Week',
   closeHint: 'Close',
-  eventHint: 'Event',
+  eventsHint: 'Events',
   allDayText: 'all-day',
   moreLinkText: 'more',
   noEventsText: 'No events to display',

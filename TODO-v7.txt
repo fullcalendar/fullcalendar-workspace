@@ -42,7 +42,6 @@ a11y
     NO, because not focusable, however, how would screenreader user expand?
       they'd use keyboard shortcuts we make for roving tab index
       *** fyi, ag-grid puts aria-expanded=true/false on both the row AND the cell that holds the expander
-  *** give time-area columnheader an aria description
   *** "even when a row is collapsed, consistent global rowIndex" (aria-rowindex)
     will have troubles with `rowIndex < rowCnt` to know whether visually last, for bottom border
   aria-expanded & aria-controls on resource-timeline parent-toggler
@@ -56,6 +55,8 @@ i18n
   locales should populate viewChangeHint
   removed timeHint
     TODO: use <time> instead for screenreaders
+    document in changelog
+  repurposed eventHint to eventsHint for resource-timeline
     document in changelog
 
 misc

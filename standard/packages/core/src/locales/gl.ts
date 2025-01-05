@@ -37,5 +37,5 @@ export default {
   noEventsText: 'Non hai eventos para amosar',
   navLinkHint: 'Ir ao $0',
   closeHint: 'Pechar',
-  eventHint: 'Evento',
+  eventsHint: 'Eventos',
 } as LocaleInput

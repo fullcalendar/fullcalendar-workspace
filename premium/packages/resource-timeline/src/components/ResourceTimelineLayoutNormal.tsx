@@ -411,6 +411,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               >
                 <div // the canvas
                   role='columnheader'
+                  aria-label={options.eventsHint}
+
                   // put row and col indexes on this lone cell, which might confuse screenreaders,
                   // but honestly this column header isn't very meaningful
                   aria-rowindex={1}
