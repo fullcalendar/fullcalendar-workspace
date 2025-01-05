@@ -11,8 +11,6 @@ export interface GenericLayout<Entity> {
 }
 
 export interface ResourceLayout { // specific GenericLayout
-  indexes: number[] // is 0-based
-  parentGroupIndexes: number[] // is 0-based
   rowIndex: number // is 0-based
   entity: Resource
   pooledHeight?: boolean // should NOT be defined!
@@ -25,8 +23,6 @@ export interface ResourceLayout { // specific GenericLayout
 }
 
 export interface GroupRowLayout { // specific GenericLayout
-  indexes: number[] // is 0-based
-  parentGroupIndexes: number[] // is 0-based
   rowIndex: number // is 0-based
   entity: Group
   pooledHeight: false
@@ -38,8 +34,6 @@ export interface GroupRowLayout { // specific GenericLayout
 }
 
 export interface GroupCellLayout { // specific GenericLayout
-  indexes: number[] // is 0-based
-  parentGroupIndexes: number[] // is 0-based
   rowIndex: number // is 0-based
   rowSpan: number
   entity: Group
@@ -71,8 +65,6 @@ export function buildResourceLayouts(
 
   function processNodes(
     nodes: GenericNode[],
-    parentIndexes: number[],
-    parentGroupIndexes: number[],
     startingIndex: number,
     depth: number,
     indent: number,
@@ -81,7 +73,6 @@ export function buildResourceLayouts(
     deepNodeCnt: number,
   ] {
     const layouts: GenericLayout<Resource | Group>[] = []
-    let localNodeCnt = 0
     let localRowCnt = 0
 
     // TODO: more DRY within
@@ -90,11 +81,8 @@ export function buildResourceLayouts(
       // ResourceRow
       if ((node as ResourceNode).resourceFields) {
         const isExpanded = expansions[(node as ResourceNode).entity.id] ?? expansionDefault
-        const indexes = parentIndexes.concat(localNodeCnt)
         const rowIndex = startingIndex + localRowCnt++
         const resourceLayout: ResourceLayout = {
-          indexes,
-          parentGroupIndexes,
           rowIndex,
           entity: (node as ResourceNode).entity,
           resourceFields: (node as ResourceNode).resourceFields,
@@ -109,8 +97,6 @@ export function buildResourceLayouts(
         if (isExpanded) {
           const [localChildren, subtreeNodeCnt] = processNodes(
             node.children,
-            indexes,
-            parentGroupIndexes,
             startingIndex + localRowCnt,
             depth + 1,
             indent + 1,
@@ -121,11 +107,8 @@ export function buildResourceLayouts(
 
       // GroupCell
       } else if ((node as GroupNode).pooledHeight) {
-        const indexes = parentIndexes.concat(localNodeCnt)
         const rowIndex = startingIndex + localRowCnt // DON'T advance
         const groupCellLayout: GroupCellLayout = {
-          indexes,
-          parentGroupIndexes,
           rowIndex,
           rowSpan: 0, // populated very soon...
           entity: (node as GroupNode).entity,
@@ -137,8 +120,6 @@ export function buildResourceLayouts(
         layouts.push(groupCellLayout)
         const [localChildren, subtreeNodeCnt] = processNodes(
           node.children,
-          indexes,
-          parentGroupIndexes.concat(localNodeCnt),
           startingIndex + localRowCnt,
           depth + 1,
           indent,
@@ -150,11 +131,8 @@ export function buildResourceLayouts(
       // GroupRow
       } else {
         const isExpanded = expansions[createGroupId((node as GroupRowLayout).entity)] ?? expansionDefault
-        const indexes = parentIndexes.concat(localNodeCnt)
         const rowIndex = startingIndex + localRowCnt++
         const groupRowLayout: GroupRowLayout = {
-          indexes,
-          parentGroupIndexes,
           rowIndex,
           entity: (node as GroupNode).entity,
           pooledHeight: false,
@@ -169,8 +147,6 @@ export function buildResourceLayouts(
         if (isExpanded) {
           const [localChildren, subtreeNodeCnt] = processNodes(
             node.children,
-            indexes,
-            parentGroupIndexes.concat(localNodeCnt),
             startingIndex + localRowCnt,
             depth + 1,
             indent + 1,
@@ -179,31 +155,15 @@ export function buildResourceLayouts(
           localRowCnt += subtreeNodeCnt
         }
       }
-
-      localNodeCnt++
     }
 
     return [layouts, localRowCnt]
   }
 
   return {
-    layouts: processNodes(hierarchy, [], [], 0, 0, hasNesting ? 1 : 0)[0],
+    layouts: processNodes(hierarchy, 0, 0, hasNesting ? 1 : 0)[0],
     flatResourceLayouts,
     flatGroupRowLayouts,
     flatGroupColLayouts,
   }
-}
-
-export function generateGroupLabelIds(
-  domScope: string,
-  parentGroupIndexes: number[],
-): string {
-  const parts: string[] = []
-  const len = parentGroupIndexes.length
-
-  for (let i = 0; i < len; i++) {
-    parts.push(domScope + '-' + parentGroupIndexes.slice(0, i + 1).join('-'))
-  }
-
-  return parts.join(' ')
 }

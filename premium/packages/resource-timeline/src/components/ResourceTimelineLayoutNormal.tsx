@@ -9,7 +9,6 @@ import {
   getIsHeightAuto,
   getStickyFooterScrollbar,
   getStickyHeaderDates,
-  getUniqueDomId,
   Hit,
   joinClassNames,
   memoize,
@@ -46,7 +45,7 @@ import {
   TimelineSlats,
   timeToCoord
 } from '@fullcalendar/timeline/internal'
-import { buildResourceLayouts, generateGroupLabelIds, GenericLayout } from '../resource-layout.js'
+import { buildResourceLayouts, GenericLayout } from '../resource-layout.js'
 import {
   computeHeights,
   computeTopsFromHeights,
@@ -158,9 +157,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private bodyScroller: ScrollerSyncerInterface
   private spreadsheetScroller: ScrollerSyncerInterface
   private scroll: EntityScroll & TimeScroll = {} // updated in-place
-  private hierarchyDomIdScope = getUniqueDomId()
-  private colDomIdScope = getUniqueDomId()
-  private timeHeaderDomId = getUniqueDomId()
 
   render() {
     let { props, state, context } = this
@@ -317,7 +313,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       indent={props.hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
                       innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(true)}
                       colSpan={colSpecs.length}
-                      domId={this.colDomIdScope}
                     />
                   </div>
                 )}
@@ -333,7 +328,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       colWidths={spreadsheetColWidths}
                       indent={props.hasNesting}
                       rowIndex={1 + superHeaderRowSpan}
-                      colDomIdScope={this.colDomIdScope}
 
                       // refs
                       innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
@@ -373,9 +367,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     rowTops={bodyTops}
                     rowHeights={bodyHeights}
                     headerRowSpan={totalHeaderRowSpan}
-                    hierarchyDomIdScope={this.hierarchyDomIdScope}
-                    colDomIdScope={this.colDomIdScope}
-                    hasSuperHeader={Boolean(superHeaderRendering)}
                   />
                   {spreadsheetNeedsBottomFiller && (
                     <div
@@ -426,7 +417,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   aria-colindex={colSpecs.length + 1}
                   aria-rowspan={totalHeaderRowSpan}
 
-                  id={this.timeHeaderDomId}
                   className={joinClassNames( // TODO: DRY
                     'fc-flex-col fc-rel', // origin for now-indicator
                     timeCanvasWidth == null && 'fc-liquid',
@@ -557,12 +547,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                             todayRange={props.todayRange}
                             nextDayThreshold={context.options.nextDayThreshold}
                             businessHours={resource.businessHours || fallbackBusinessHours}
-                            labelIds={joinClassNames(
-                              superHeaderRendering && this.colDomIdScope, // super header
-                              generateGroupLabelIds(this.hierarchyDomIdScope, resourceLayout.parentGroupIndexes),
-                              this.hierarchyDomIdScope + '-' + resourceLayout.indexes.join('-'),
-                              this.timeHeaderDomId, // column header
-                            )}
 
                             // ref
                             heightRef={this.timeEntityInnerHeightMap.createRef(resource.id)}
@@ -594,12 +578,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           <GroupLane
                             group={group}
                             innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
-                            labelIds={joinClassNames( // abuse
-                              superHeaderRendering && this.colDomIdScope, // super header
-                              generateGroupLabelIds(this.hierarchyDomIdScope, groupRowLayout.parentGroupIndexes),
-                              this.hierarchyDomIdScope + '-' + groupRowLayout.indexes.join('-'),
-                              this.timeHeaderDomId, // column header
-                            )}
                           />
                         </div>
                       )

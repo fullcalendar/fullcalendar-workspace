@@ -6,7 +6,6 @@ import { TimelineLane, TimelineLaneProps } from '@fullcalendar/timeline/internal
 export interface ResourceLaneProps extends TimelineLaneProps {
   resource: Resource
   slotWidth: number | undefined
-  labelIds?: string
 
   // refs
   heightRef?: Ref<number>
@@ -27,7 +26,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         className='fc-timeline-lane fc-flex-col'
         attrs={{
           role: 'gridcell',
-          'aria-labelledby': props.labelIds,
         }}
         elRef={this.handleRootEl}
         renderProps={renderProps}

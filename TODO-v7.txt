@@ -35,23 +35,23 @@ a11y
     [x] list view
     [ ] timeline (no resources)
     [ ] resource-timeline
-  write aria-colcount/rowcount on root table?
+  *** write aria-colcount/rowcount on root table?
     for resource-timeline
     for daygrid/timegrid h-scroll (colcount)
   put aria tags on row expander icon?
     NO, because not focusable, however, how would screenreader user expand?
       they'd use keyboard shortcuts we make for roving tab index
-      fyi, ag-grid puts aria-expanded=true/false on both the row AND the cell that holds the expander
-  give time-area columnheader an aria description
+      *** fyi, ag-grid puts aria-expanded=true/false on both the row AND the cell that holds the expander
+  *** give time-area columnheader an aria description
+  *** "even when a row is collapsed, consistent global rowIndex" (aria-rowindex)
+    will have troubles with `rowIndex < rowCnt` to know whether visually last, for bottom border
+  *** move role=rowgroup to tightly wrap each section of rows, even tho federated, says chatgpt
+  aria-expanded & aria-controls on resource-timeline parent-toggler
+    aria-controls can wait for v2
   additional aria
     aria-level (depth)
     aria-posinset (index in current set)
     aria-setsize (current set size, not child size)
-  "even when a row is collapsed, consistent global rowIndex" (aria-rowindex)
-    will have troubles with `rowIndex < rowCnt` to know whether visually last, for bottom border
-  aria-expanded & aria-controls on resource-timeline parent-toggler
-    aria-controls can wait for v2
-  move role=rowgroup to tightly wrap each section of rows, even tho federated, says chatgpt
 
 i18n
   locales should populdate viewChangeHint

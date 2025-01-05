@@ -24,9 +24,6 @@ export interface ResourceCellProps {
   width: number | undefined
   grow: number | undefined
   className?: string
-  domId?: string
-  hierarchyLabelIds?: string
-  colLabelIds?: string
 }
 
 export class ResourceCell extends BaseComponent<ResourceCellProps> {
@@ -49,12 +46,6 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         tag="div"
         attrs={{
           role: colSpec.isMain ? 'rowheader' : 'gridcell',
-          id: colSpec.isMain ? props.domId : undefined,
-          'aria-labelledby': joinClassNames( // abuse
-            props.hierarchyLabelIds,
-            !colSpec.isMain && props.domId,
-            props.colLabelIds,
-          ),
         }}
         className={joinClassNames(
           'fc-resource fc-cell',

@@ -4,7 +4,7 @@ import { ColSpec, createGroupId } from "@fullcalendar/resource/internal"
 import { GroupTallCell } from "./GroupTallCell.js"
 import { GroupWideCell } from "./GroupWideCell.js"
 import { ResourceCells } from "./ResourceCells.js"
-import { generateGroupLabelIds, GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout.js"
+import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout.js"
 import { ROW_BORDER_WIDTH } from "../../resource-positioning.js"
 
 export interface BodySectionProps {
@@ -17,9 +17,6 @@ export interface BodySectionProps {
   rowTops: Map<string, number>
   rowHeights: Map<string, number>
   headerRowSpan: number
-  hierarchyDomIdScope: string
-  colDomIdScope: string
-  hasSuperHeader: boolean
 }
 
 /*
@@ -89,11 +86,6 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                       'fc-liquid',
                       isNotLast && 'fc-border-b',
                     )}
-                    labelIds={joinClassNames( // abuse
-                      props.hasSuperHeader && props.colDomIdScope, // super header
-                      props.colDomIdScope != null && props.colDomIdScope + '-' + groupIndex,
-                    )}
-                    domId={props.hierarchyDomIdScope + '-' + groupCellLayout.indexes.join('-')}
                     innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
                   />
                 </div>
@@ -155,12 +147,6 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   colWidths={colWidths}
                   innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
                   className={isNotLast ? 'fc-border-b' : ''}
-                  hierarchyLabelIds={joinClassNames( // abuse
-                    props.hasSuperHeader && props.colDomIdScope, // super header
-                    generateGroupLabelIds(props.hierarchyDomIdScope, resourceLayout.parentGroupIndexes),
-                  )}
-                  domId={props.hierarchyDomIdScope + '-' + resourceLayout.indexes.join('-')}
-                  colDomIdScope={props.colDomIdScope}
                 />
               </div>
             )
@@ -193,7 +179,6 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 isExpanded={groupRowLayout.isExpanded}
                 innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
                 colSpan={props.colSpecs.length}
-                domId={props.hierarchyDomIdScope + '-' + groupRowLayout.indexes.join('-')}
               />
             </div>
           )
