@@ -1,7 +1,6 @@
 import {
   BaseComponent,
   BgEvent,
-  buildDateStr,
   buildEventRangeKey,
   DateMarker,
   DateProfile,
@@ -111,7 +110,6 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         attrs={{
           ...props.attrs,
           role: 'gridcell',
-          'aria-label': buildDateStr(context, props.date),
         }}
         className={baseClassName}
         style={{

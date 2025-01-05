@@ -118,7 +118,6 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         attrs={{
           ...props.attrs,
           role: 'gridcell',
-          'aria-label': hasDayNumber ? undefined : dateStr,
           'aria-labelledby': hasDayNumber ? this.dayNumberId : undefined,
         }}
         style={{

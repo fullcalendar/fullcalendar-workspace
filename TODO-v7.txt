@@ -17,8 +17,6 @@ a11y
   for vertical resource views,
     aria-label is like "September 7, 2020" and doesn't reference resource at all. should it?
     ACTIONABLE:
-      always have non-abbrev lable on daygrid/timegrid header cells
-      ONLY have label on daygrid/timegrid body cells if multi-row (hasowndinvididualcells or whatever)
       does week number header cell (timegrid) have correct un-abbrev label?
   when rigging up CI,
     test list-view empty state
