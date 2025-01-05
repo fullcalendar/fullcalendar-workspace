@@ -53,7 +53,10 @@ a11y
     aria-setsize (current set size, not child size)
 
 i18n
-  locales should populdate viewChangeHint
+  locales should populate viewChangeHint
+  removed timeHint
+    TODO: use <time> instead for screenreaders
+    document in changelog
 
 misc
   better markup for Popover title/close (no span, use flexbox)

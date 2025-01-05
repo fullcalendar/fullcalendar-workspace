@@ -38,6 +38,5 @@ export default {
   moreLinkText: 'till',
   noEventsText: 'Inga händelser att visa',
   closeHint: 'Stäng',
-  timeHint: 'Klockan',
   eventHint: 'Händelse',
 } as LocaleInput

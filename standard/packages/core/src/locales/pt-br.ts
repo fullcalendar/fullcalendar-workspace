@@ -37,6 +37,5 @@ export default {
   noEventsText: 'Não há eventos para mostrar',
   navLinkHint: 'Ir para $0',
   closeHint: 'Fechar',
-  timeHint: 'A hora',
   eventHint: 'Evento',
 } as LocaleInput
