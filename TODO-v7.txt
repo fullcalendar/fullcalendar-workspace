@@ -11,9 +11,12 @@ Regression present in v7-beta.3
     "navigator is not defined"
 
 a11y
-  think about changing title as <h2> (isn't there a ticket for this)
-  when rigging up CI,
-    test list-view empty state
+  think about changing title as <h2>
+    calendar title: https://github.com/fullcalendar/fullcalendar/issues/6972
+    multimonth titles: https://github.com/fullcalendar/fullcalendar/issues/7537
+    change to role='heading' for neutral default styles,
+      but make aria-level configurable (default to "2")
+  rigging up CI (see list of views below)
   status for views:
     [x] daygrid
     [x] daygrid hscroll
@@ -21,16 +24,11 @@ a11y
     [x] timegrid hscroll
     [x] multimonth
     [x] list view
+    [x] list view empty
     [ ] timeline (no resources)
     [ ] resource-timeline
   *** "even when a row is collapsed, consistent global rowIndex" (aria-rowindex)
     will have troubles with `rowIndex < rowCnt` to know whether visually last, for bottom border
-  aria-expanded & aria-controls on resource-timeline parent-toggler
-    aria-controls can wait for v2
-  additional aria
-    aria-level (depth)
-    aria-posinset (index in current set)
-    aria-setsize (current set size, not child size)
 
 i18n
   locales should populate viewChangeHint
@@ -251,6 +249,16 @@ NOTES
         Firefox 90 - bad
     known-bugs:
       On Safari, table headers are not repeated for any view (browser bug)
+  a11y tree considerations
+    aria-controls on resource-timeline parent-toggler
+      is difficult because a parent row could control MANY child rows, and we don't have wrappers for
+      those children, so aria-controls would need to be a huge dynamic list of tokens
+    additional aria
+      aria-level (depth)
+      aria-posinset (index in current set)
+      aria-setsize (current set size, not child size)
+      ***I wanted to do this, but if rows out of order (because of virtualization),
+        then no way to establish parent/child relationshipds
 Punt
   print: in resource-timeline print-view, put divider between all cells
   Drop-shadow under sticky header, timeline headers
