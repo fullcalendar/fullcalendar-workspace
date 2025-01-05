@@ -19,6 +19,7 @@ import {
   SlicedCoordRange,
   EventRangeProps,
   joinClassNames,
+  getUniqueDomId,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -89,6 +90,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   // internal
   private disconnectHeight?: () => void
+  private titleDomId = getUniqueDomId()
 
   render() {
     const { props, context, headerHeightRefMap, mainHeightRefMap } = this
@@ -134,6 +136,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     return (
       <div
         role={props.role as any /* !!! */}
+        aria-labelledby={props.showWeekNumbers ? this.titleDomId : undefined}
         className={joinClassNames(
           'fc-flex-row fc-rel',
           props.className,
@@ -200,7 +203,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         {props.showWeekNumbers && (
           <WeekNumberContainer
             tag={options.navLinks ? 'a' : 'div'}
-            attrs={buildNavLinkAttrs(context, weekDate, 'week')}
+            attrs={{
+              id: this.titleDomId,
+              ...buildNavLinkAttrs(context, weekDate, 'week'),
+            }}
             className='fc-daygrid-week-number'
             date={weekDate}
             defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
