@@ -276,6 +276,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         viewSpec={viewSpec}
         attrs={{
           role: 'grid',
+          'aria-rowcount': totalHeaderRowSpan + rowCnt,
         }}
       >
         <ResizableTwoCol

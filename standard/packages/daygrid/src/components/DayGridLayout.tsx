@@ -66,6 +66,8 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
         viewSpec={context.viewSpec}
         attrs={{
           role: 'grid',
+          'aria-rowcount': props.headerTiers.length + props.cellRows.length,
+          'aria-colcount': props.cellRows[0].length,
         }}
         className={joinClassNames(props.className, 'fc-print-root fc-border')}
       >

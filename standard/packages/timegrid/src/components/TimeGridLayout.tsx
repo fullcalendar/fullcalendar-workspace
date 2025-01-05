@@ -117,6 +117,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
       <ViewContainer
         attrs={{
           role: 'grid',
+          'aria-colcount': props.cells.length,
         }}
         className={joinClassNames(
           props.className,

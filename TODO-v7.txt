@@ -21,7 +21,7 @@ a11y
   for vertical resource views,
     aria-label is like "September 7, 2020" and doesn't reference resource at all. should it?
   for list view,
-    create a aria-label for the event list
+    *** create a aria-label for the event list
   when rigging up CI,
     test list-view empty state
   status for views:
@@ -34,9 +34,6 @@ a11y
     [ ] timeline (no resources)
     [ ] resource-timeline
   *** correct grid/treegrid on resource-timeline
-  *** write aria-colcount/rowcount on root table?
-    for resource-timeline
-    for daygrid/timegrid h-scroll (colcount)
   *** "even when a row is collapsed, consistent global rowIndex" (aria-rowindex)
     will have troubles with `rowIndex < rowCnt` to know whether visually last, for bottom border
   aria-expanded & aria-controls on resource-timeline parent-toggler
