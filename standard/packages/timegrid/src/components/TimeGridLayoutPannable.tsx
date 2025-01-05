@@ -182,7 +182,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   )}
                   style={{ height: state.headerTierHeights[tierNum] }}
                 >
-                  {tierNum === headerTiers.length - 1 ? ( // last row?
+                  {(options.weekNumbers && tierNum === headerTiers.length - 1) ? ( // last row?
                     <TimeGridWeekNumber
                       dateProfile={props.dateProfile}
                       innerWidthRef={headerLabelInnerWidthRefMap.createRef(tierNum)}

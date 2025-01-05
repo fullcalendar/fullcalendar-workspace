@@ -139,7 +139,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   tierNum && 'fc-border-t'
                 )}
               >
-                {tierNum === props.headerTiers.length - 1 ? ( // last row?
+                {(options.weekNumbers && tierNum === props.headerTiers.length - 1 ) ? ( // last row?
                   <TimeGridWeekNumber
                     dateProfile={props.dateProfile}
                     innerHeightRef={headerLabelInnerWidthRefMap.createRef(tierNum)}

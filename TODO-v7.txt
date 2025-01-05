@@ -202,6 +202,8 @@ Changelog
     Event cut-off when printing multiple pages in timeGrid view #7673
       https://github.com/fullcalendar/fullcalendar/issues/7673
       fixed repro: timegrid-views-many.html (in FF)
+  Solved Regressions (in Jan 2025)
+    Always show week numbers in timegrid view
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
