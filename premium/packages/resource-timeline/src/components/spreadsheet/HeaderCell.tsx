@@ -7,6 +7,7 @@ export interface HeaderCellProps {
   resizer: boolean
   indent?: boolean
   borderStart: boolean
+  domId?: string
 
   // refs
   resizerElRef?: Ref<HTMLDivElement>
@@ -34,7 +35,8 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
       <ContentContainer
         tag="div"
         attrs={{
-          role: 'columnheader'
+          role: 'columnheader',
+          id: props.domId,
         }}
         // fc-rel for resizer abs positioning
         className={joinClassNames(

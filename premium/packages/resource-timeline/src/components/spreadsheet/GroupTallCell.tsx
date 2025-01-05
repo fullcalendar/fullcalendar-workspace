@@ -9,6 +9,7 @@ export interface GroupTallCellProps {
   width?: number
   grow?: number
   className?: string // needed?
+  labelIds?: string,
   domId?: string
 
   // refs
@@ -41,6 +42,7 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
         attrs={{
           role: 'rowheader',
           'aria-rowspan': props.rowSpan,
+          'aria-labelledby': props.labelIds,
           id: props.domId,
         }}
         className={joinClassNames(

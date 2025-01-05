@@ -6,6 +6,7 @@ export interface SuperHeaderCellProps {
   renderHooks: ColHeaderRenderHooks
   indent?: boolean
   colSpan: number
+  domId?: string
 
   // refs
   innerHeightRef?: Ref<number>
@@ -31,6 +32,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         attrs={{
           role: 'columnheader',
           'aria-colspan': this.props.colSpan,
+          id: this.props.domId,
         }}
         className='fc-header-cell fc-cell fc-flex-col fc-justify-center fc-liquid'
         renderProps={renderProps}

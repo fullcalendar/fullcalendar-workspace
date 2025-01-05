@@ -9,6 +9,7 @@ export interface HeaderRowProps {
   colGrows?: number[]
   indent?: boolean // only for the 'main' cell
   rowIndex?: number // 0-based
+  colDomIdScope?: string
 
   // refs
   innerHeightRef?: Ref<number>
@@ -70,6 +71,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
               resizerElRef={resizerElRefMap.createRef(colIndex)}
               innerHeightRef={innerHeightRefMap.createRef(colIndex)}
               borderStart={Boolean(colIndex)}
+              domId={props.colDomIdScope != null ? props.colDomIdScope + '-' + colIndex : undefined}
             />
           )
         })}
