@@ -56,66 +56,69 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
     return (
       <div
         role='listitem'
-        aria-labelledby={this.titleId}
-        data-date={props.isoDateStr}
-        className={joinClassNames(
-          'fc-multimonth-month',
-          props.hasLateralSiblings && 'fc-break-inside-avoid',
-        )}
-        // override fc-liquid's basis. fc-grow isn't sufficient because doesn't set min-width:0
+        className='fc-multimonth-month-outer'
         style={{ width: props.width }}
       >
         <div
-          role='rowgroup'
-          className="fc-multimonth-header"
-          style={{
-            marginBottom: isHeaderSticky ? fracToCssDim(invRowAspectRatio) : undefined,
-          }}
-          // NOTE: sticky properties determined by CSS
-        >
-          <div id={this.titleId} className="fc-multimonth-title">
-            {context.dateEnv.format(
-              props.dateProfile.currentRange.start,
-              props.titleFormat,
-            )}
-          </div>
-          <DayGridHeaderRow
-            {...rowConfig}
-            role='row'
-            className='fc-multimonth-header-row'
-          />
-        </div>
-        <div
+          role='grid'
+          aria-labelledby={this.titleId}
+          data-date={props.isoDateStr}
           className={joinClassNames(
-            'fc-multimonth-body',
-            isAspectRatio && 'fc-rel',
+            'fc-multimonth-month',
+            props.hasLateralSiblings && 'fc-break-inside-avoid',
           )}
-          style={{
-            marginTop: isHeaderSticky ? fracToCssDim(-invRowAspectRatio) : undefined,
-            paddingBottom: isAspectRatio ? fracToCssDim(invAspectRatio) : undefined,
-          }}
         >
-          <DayGridRows
-            dateProfile={props.dateProfile}
-            todayRange={props.todayRange}
-            cellRows={dayTableModel.cellRows}
-            className={isAspectRatio ? 'fc-fill' : ''}
-            forPrint={forPrint && !props.hasLateralSiblings}
-            dayMaxEvents={forPrint ? undefined : options.dayMaxEvents}
-            dayMaxEventRows={(forPrint && props.hasLateralSiblings) ? 1 : options.dayMaxEventRows}
+          <div
+            className="fc-multimonth-header"
+            style={{
+              marginBottom: isHeaderSticky ? fracToCssDim(invRowAspectRatio) : undefined,
+            }}
+            // NOTE: sticky properties determined by CSS
+          >
+            <div id={this.titleId} className="fc-multimonth-title">
+              {context.dateEnv.format(
+                props.dateProfile.currentRange.start,
+                props.titleFormat,
+              )}
+            </div>
+            <DayGridHeaderRow
+              {...rowConfig}
+              role='row'
+              className='fc-multimonth-header-row'
+            />
+          </div>
+          <div
+            className={joinClassNames(
+              'fc-multimonth-body',
+              isAspectRatio && 'fc-rel',
+            )}
+            style={{
+              marginTop: isHeaderSticky ? fracToCssDim(-invRowAspectRatio) : undefined,
+              paddingBottom: isAspectRatio ? fracToCssDim(invAspectRatio) : undefined,
+            }}
+          >
+            <DayGridRows
+              dateProfile={props.dateProfile}
+              todayRange={props.todayRange}
+              cellRows={dayTableModel.cellRows}
+              className={isAspectRatio ? 'fc-fill' : ''}
+              forPrint={forPrint && !props.hasLateralSiblings}
+              dayMaxEvents={forPrint ? undefined : options.dayMaxEvents}
+              dayMaxEventRows={(forPrint && props.hasLateralSiblings) ? 1 : options.dayMaxEventRows}
 
-            // content
-            fgEventSegs={slicedProps.fgEventSegs}
-            bgEventSegs={slicedProps.bgEventSegs}
-            businessHourSegs={slicedProps.businessHourSegs}
-            dateSelectionSegs={slicedProps.dateSelectionSegs}
-            eventDrag={slicedProps.eventDrag}
-            eventResize={slicedProps.eventResize}
-            eventSelection={slicedProps.eventSelection}
+              // content
+              fgEventSegs={slicedProps.fgEventSegs}
+              bgEventSegs={slicedProps.bgEventSegs}
+              businessHourSegs={slicedProps.businessHourSegs}
+              dateSelectionSegs={slicedProps.dateSelectionSegs}
+              eventDrag={slicedProps.eventDrag}
+              eventResize={slicedProps.eventResize}
+              eventSelection={slicedProps.eventSelection}
 
-            // dimensions
-            visibleWidth={props.visibleWidth}
-          />
+              // dimensions
+              visibleWidth={props.visibleWidth}
+            />
+          </div>
         </div>
       </div>
     )

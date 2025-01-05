@@ -158,7 +158,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
       <Fragment>
         {options.dayHeaders && (
           <div
-            role='rowgroup'
             className={joinClassNames(
               // see note in TimeGridLayout about why we don't do fc-print-header
               'fc-timegrid-header fc-flex-row fc-border-b',
@@ -168,6 +167,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             {/* HEADER / labels
             -------------------------------------------------------------------------------------*/}
             <div
+              role='rowgroup'
               className='fc-content-box'
               style={{ width: axisWidth }}
             >
@@ -209,6 +209,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             >
               {/* TODO: converge with DayGridHeader */}
               <div
+                role='rowgroup'
                 className={canvasWidth == null ? 'fc-liquid' : ''}
                 style={{ width: canvasWidth }}
               >

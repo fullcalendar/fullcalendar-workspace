@@ -55,7 +55,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
     return (
       <div
         role="row"
-        aria-rowindex={1 + props.rowIndex}
+        aria-rowindex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
         className='fc-flex-row fc-grow'
       >
         {colSpecs.map((colSpec, colIndex) => {

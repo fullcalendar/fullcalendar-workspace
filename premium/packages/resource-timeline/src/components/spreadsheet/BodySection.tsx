@@ -44,12 +44,13 @@ export class BodySection extends BaseComponent<BodySectionProps> {
     where an actual DIV creates the mass, not a paddingTop
     */
     return (
-      <div role='rowgroup' className='fc-flex-row fc-fill'>
+      <div className='fc-flex-row fc-fill'>
 
         {/* group columns */}
         {props.flatGroupColLayouts.map((groupColLayouts, colIndex) => (
           <div
             key={colIndex}
+            role='rowgroup'
             className={joinClassNames(
               'fc-rel',
               colIndex && 'fc-border-s',
@@ -97,6 +98,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         {/* for resource column lines */}
         {resourceColWidths.map((colWidth, i) => (
           <div
+            aria-hidden
             className={joinClassNames(
               (groupColCnt + i) && 'fc-border-s',
             )}
@@ -109,7 +111,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
 
         {/* resource-specific cells */}
         <div
-          className='fc-flex-row fc-rel fc-fill'
+          role='rowgroup'
+          className='fc-fill fc-rel'
           style={
             context.isRtl // TODO: util for this?
               ? { right: resourceX }

@@ -27,7 +27,7 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
     return (
       <div
         role={props.role as any /* !!! */}
-        aria-rowindex={1 + props.rowIndex}
+        aria-rowindex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
         className={joinClassNames(
           'fc-flex-row fc-content-box',
           props.className,

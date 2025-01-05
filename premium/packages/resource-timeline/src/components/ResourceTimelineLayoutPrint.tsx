@@ -117,11 +117,11 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           role: 'grid',
         }}
       >
-        <div role='rowgroup' className='fc-print-header fc-border-b'>
+        <div className='fc-print-header fc-border-b'>
           <div className='fc-flex-row'>
 
             {/* DataGrid HEADER */}
-            <div className='fc-flex-col' style={{ width: props.spreadsheetWidth }}>
+            <div role='rowgroup' className='fc-flex-col' style={{ width: props.spreadsheetWidth }}>
               {Boolean(superHeaderRendering) && (
                 <div role='row' className="fc-flex-row fc-grow fc-border-b">
                   <SuperHeaderCell
@@ -184,13 +184,14 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           </div>
         </div>{/* Header END */ }
         {/* Body START */}
-        {/* Must crop 200% fill */}
+        {/* Must crop the 200% vertical-line fill */}
         <div role='rowgroup' className='fc-rel fc-crop'>
 
           {/* BACKGROUND FILL */}
           {/* Must crop horizontally-offscreen slats and whatnot */}
           {/* TODO: more DRY */}
           <div
+            aria-hidden
             className='fc-fill fc-border-s fc-border-transparent fc-crop'
             style={{
               // HACK for print where header-height prevents absolutely-positioned events

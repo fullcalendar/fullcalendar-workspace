@@ -36,6 +36,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
 
     return (
       <div
+        aria-hidden // the entire timeline-header is considered one cell, ignoring axis slots
         className={joinClassNames(
           'fc-flex-row fc-grow', // TODO: move fc-grow to parent?
           !props.isLastRow && 'fc-border-b',

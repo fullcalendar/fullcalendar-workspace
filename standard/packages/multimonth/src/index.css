@@ -52,7 +52,7 @@ https://stackoverflow.com/a/60256345
 }
 
 .fc-multimonth-header-row, // > header > row
-.fc-multimonth-body:not(.fc-multimonth-singlecol .fc-multimonth-month:last-child .fc-multimonth-body) { // > body
+.fc-multimonth-body:not(.fc-multimonth-singlecol .fc-multimonth-month-outer:last-child .fc-multimonth-body) { // > body
   border-bottom: 1px solid var(--fc-border-color);
 }
 

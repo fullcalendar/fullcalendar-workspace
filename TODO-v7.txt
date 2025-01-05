@@ -45,7 +45,7 @@ a11y
   *** give time-area columnheader an aria description
   *** "even when a row is collapsed, consistent global rowIndex" (aria-rowindex)
     will have troubles with `rowIndex < rowCnt` to know whether visually last, for bottom border
-  *** move role=rowgroup to tightly wrap each section of rows, even tho federated, says chatgpt
+  *** mark as slot-containers as aria-hidden
   aria-expanded & aria-controls on resource-timeline parent-toggler
     aria-controls can wait for v2
   additional aria
