@@ -274,13 +274,16 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
 
               {!simplePrint && (
                 <Fragment>
-                  <div className={joinClassNames(
-                    'fc-timegrid-slots fc-flex-col',
-                    (verticalScrolling && options.expandRows) && 'fc-grow',
-                    absPrint
-                      ? 'fc-fill-x' // will assume top:0, height will be decided naturally
-                      : 'fc-rel', // needs abs/rel for zIndex
-                  )}>
+                  <div
+                    aria-hidden
+                    className={joinClassNames(
+                      'fc-timegrid-slots fc-flex-col',
+                      (verticalScrolling && options.expandRows) && 'fc-grow',
+                      absPrint
+                        ? 'fc-fill-x' // will assume top:0, height will be decided naturally
+                        : 'fc-rel', // needs abs/rel for zIndex
+                    )}
+                  >
                     {props.slatMetas.map((slatMeta, slatI) => (
                       <div
                         key={slatMeta.key}

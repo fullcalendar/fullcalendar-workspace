@@ -42,6 +42,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
     /*
     TODO: simplify DOM structure to be more like time-area?
     where an actual DIV creates the mass, not a paddingTop
+
+    TODO: this outer div can be discarded and parent should be canvas directly
     */
     return (
       <div className='fc-flex-row fc-fill'>
@@ -154,38 +156,38 @@ export class BodySection extends BaseComponent<BodySectionProps> {
               </div>
             )
           })}
+
+          {/* resource-group rows */}
+          {props.flatGroupRowLayouts.map((groupRowLayout) => {
+            const group = groupRowLayout.entity
+            const groupKey = createGroupId(group)
+            const isNotLast = groupRowLayout.rowIndex < rowCnt - 1
+
+            return (
+              <div
+                key={groupKey}
+                role='row'
+                aria-rowindex={1 + headerRowSpan + groupRowLayout.rowIndex}
+                aria-level={1 + groupRowLayout.depth}
+                class={joinClassNames(
+                  'fc-flex-row fc-fill-x fc-content-box',
+                  isNotLast && 'fc-border-b',
+                )}
+                style={{
+                  top: rowTops.get(groupKey),
+                  height: rowHeights.get(groupKey),
+                }}
+              >
+                <GroupWideCell
+                  group={group}
+                  isExpanded={groupRowLayout.isExpanded}
+                  innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
+                  colSpan={props.colSpecs.length}
+                />
+              </div>
+            )
+          })}
         </div>
-
-        {/* resource-group rows */}
-        {props.flatGroupRowLayouts.map((groupRowLayout) => {
-          const group = groupRowLayout.entity
-          const groupKey = createGroupId(group)
-          const isNotLast = groupRowLayout.rowIndex < rowCnt - 1
-
-          return (
-            <div
-              key={groupKey}
-              role='row'
-              aria-rowindex={1 + headerRowSpan + groupRowLayout.rowIndex}
-              aria-level={1 + groupRowLayout.depth}
-              class={joinClassNames(
-                'fc-flex-row fc-fill-x fc-content-box',
-                isNotLast && 'fc-border-b',
-              )}
-              style={{
-                top: rowTops.get(groupKey),
-                height: rowHeights.get(groupKey),
-              }}
-            >
-              <GroupWideCell
-                group={group}
-                isExpanded={groupRowLayout.isExpanded}
-                innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
-                colSpan={props.colSpecs.length}
-              />
-            </div>
-          )
-        })}
       </div>
     )
   }

@@ -334,6 +334,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     }}
                   >
                     <div // label list
+                      aria-hidden
                       className={joinClassNames(
                         'fc-timegrid-slots-axis fc-flex-col',
                         (verticalScrolling && options.expandRows) && 'fc-grow',
@@ -442,6 +443,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   {!simplePrint && (
                     <Fragment>
                       <div // slot list
+                        aria-hidden
                         className={joinClassNames(
                           'fc-timegrid-slots fc-flex-col',
                           (verticalScrolling && options.expandRows) && 'fc-grow',
