@@ -522,6 +522,34 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     className='fc-rel'
                     style={{ height: totalBodyHeight }}
                   >
+                    {/* group rows */}
+                    {flatGroupRowLayouts.map((groupRowLayout) => {
+                      const group = groupRowLayout.entity
+                      const groupKey = createGroupId(group)
+                      return (
+                        <div
+                          key={groupKey}
+                          role='row'
+                          aria-rowindex={1 + totalHeaderRowSpan + groupRowLayout.rowIndex}
+                          class={joinClassNames(
+                            'fc-flex-row fc-fill-x fc-content-box',
+                            groupRowLayout.rowIndex < rowCnt - 1 && // is not last
+                              'fc-border-b',
+                          )}
+                          style={{
+                            top: bodyTops.get(groupKey),
+                            height: bodyHeights.get(groupKey),
+                          }}
+                        >
+                          <GroupLane
+                            group={group}
+                            innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
+                          />
+                        </div>
+                      )
+                    })}
+
+                    {/* resource-specific cells */}
                     {flatResourceLayouts.map((resourceLayout) => {
                       const resource = resourceLayout.entity
                       return (
@@ -555,31 +583,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
                             // dimensions
                             slotWidth={slotWidth}
-                          />
-                        </div>
-                      )
-                    })}
-                    {flatGroupRowLayouts.map((groupRowLayout) => {
-                      const group = groupRowLayout.entity
-                      const groupKey = createGroupId(group)
-                      return (
-                        <div
-                          key={groupKey}
-                          role='row'
-                          aria-rowindex={1 + totalHeaderRowSpan + groupRowLayout.rowIndex}
-                          class={joinClassNames(
-                            'fc-flex-row fc-fill-x fc-content-box',
-                            groupRowLayout.rowIndex < rowCnt - 1 && // is not last
-                              'fc-border-b',
-                          )}
-                          style={{
-                            top: bodyTops.get(groupKey),
-                            height: bodyHeights.get(groupKey),
-                          }}
-                        >
-                          <GroupLane
-                            group={group}
-                            innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
                           />
                         </div>
                       )

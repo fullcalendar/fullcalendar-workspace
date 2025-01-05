@@ -22,6 +22,7 @@ export function ExpanderIcon({ indent, hasChildren, isExpanded, onExpanderClick 
   if (hasChildren) {
     nodes.push(
       <span
+        aria-hidden // TODO: better a11y when doing roving tabindex
         className={joinClassNames(
           'fc-datagrid-expander fc-icon',
           isExpanded

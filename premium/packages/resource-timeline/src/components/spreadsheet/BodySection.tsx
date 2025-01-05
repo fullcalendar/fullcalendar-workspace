@@ -111,7 +111,6 @@ export class BodySection extends BaseComponent<BodySectionProps> {
           />
         ))}
 
-        {/* resource-specific cells */}
         <div
           role='rowgroup'
           className='fc-fill fc-rel'
@@ -121,6 +120,38 @@ export class BodySection extends BaseComponent<BodySectionProps> {
               : { left: resourceX }
           }
         >
+          {/* group rows */}
+          {props.flatGroupRowLayouts.map((groupRowLayout) => {
+            const group = groupRowLayout.entity
+            const groupKey = createGroupId(group)
+            const isNotLast = groupRowLayout.rowIndex < rowCnt - 1
+
+            return (
+              <div
+                key={groupKey}
+                role='row'
+                aria-rowindex={1 + headerRowSpan + groupRowLayout.rowIndex}
+                aria-level={1 + groupRowLayout.depth}
+                class={joinClassNames(
+                  'fc-flex-row fc-fill-x fc-content-box',
+                  isNotLast && 'fc-border-b',
+                )}
+                style={{
+                  top: rowTops.get(groupKey),
+                  height: rowHeights.get(groupKey),
+                }}
+              >
+                <GroupWideCell
+                  group={group}
+                  isExpanded={groupRowLayout.isExpanded}
+                  innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
+                  colSpan={props.colSpecs.length}
+                />
+              </div>
+            )
+          })}
+
+          {/* resource-specific cells */}
           {props.flatResourceLayouts.map((resourceLayout) => {
             const resource = resourceLayout.entity
             const isNotLast = resourceLayout.rowIndex < rowCnt - 1
@@ -152,37 +183,6 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   colWidths={colWidths}
                   innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
                   className={isNotLast ? 'fc-border-b' : ''}
-                />
-              </div>
-            )
-          })}
-
-          {/* resource-group rows */}
-          {props.flatGroupRowLayouts.map((groupRowLayout) => {
-            const group = groupRowLayout.entity
-            const groupKey = createGroupId(group)
-            const isNotLast = groupRowLayout.rowIndex < rowCnt - 1
-
-            return (
-              <div
-                key={groupKey}
-                role='row'
-                aria-rowindex={1 + headerRowSpan + groupRowLayout.rowIndex}
-                aria-level={1 + groupRowLayout.depth}
-                class={joinClassNames(
-                  'fc-flex-row fc-fill-x fc-content-box',
-                  isNotLast && 'fc-border-b',
-                )}
-                style={{
-                  top: rowTops.get(groupKey),
-                  height: rowHeights.get(groupKey),
-                }}
-              >
-                <GroupWideCell
-                  group={group}
-                  isExpanded={groupRowLayout.isExpanded}
-                  innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
-                  colSpan={props.colSpecs.length}
                 />
               </div>
             )
