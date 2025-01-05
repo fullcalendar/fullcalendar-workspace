@@ -19,7 +19,7 @@ export function buildNavLinkAttrs(
   context: ViewContext,
   dateMarker: DateMarker,
   viewType = 'day',
-  isTabbable = true,
+  isTabbable = true, // aka "should be part of a11y tree?"
   dateStr = buildDateStr(context, dateMarker, viewType),
 ) {
   const { dateEnv, options, calendarApi } = context
@@ -44,7 +44,8 @@ export function buildNavLinkAttrs(
 
     return {
       title: formatWithOrdinals(options.navLinkHint, [dateStr, zonedDate], dateStr),
-      role: 'link' as any, // TODO: use AriaRole type?
+      role: (isTabbable ? 'link' : undefined) as any, // TODO: use AriaRole type?
+      'aria-hidden': (isTabbable ? undefined : true),
       'data-navlink': '', // for legacy selectors. TODO: use className?
       ...(isTabbable
         ? createAriaClickAttrs(handleInteraction)

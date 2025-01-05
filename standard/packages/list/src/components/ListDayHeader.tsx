@@ -73,12 +73,19 @@ function renderInnerContent(props: RenderProps) {
   return (
     <Fragment>
       {props.text && (
-        <a id={props.textId} className="fc-list-day-text" {...props.navLinkAttrs}>
+        <a
+          id={props.textId}
+          className="fc-list-day-text"
+          {...props.navLinkAttrs}
+        >
           {props.text}
         </a>
       )}
-      {props.sideText && (/* not keyboard tabbable */
-        <a className="fc-list-day-side-text" {...props.sideNavLinkAttrs}>
+      {props.sideText && (
+        <a
+          className="fc-list-day-side-text"
+          {...props.sideNavLinkAttrs}
+        >
           {props.sideText}
         </a>
       )}

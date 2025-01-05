@@ -54,7 +54,10 @@ export class ListDay extends BaseComponent<ListDayProps> {
           forPrint={props.forPrint}
           textId={this.headerId}
         />
-        <div role='list'>
+        <div
+          role='list'
+          aria-label={options.eventsHint}
+        >
           {segs.map((seg) => {
             const key = getEventKey(seg)
 
