@@ -199,7 +199,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         </div>
         {props.showWeekNumbers && (
           <WeekNumberContainer
-            tag="a"
+            tag={options.navLinks ? 'a' : 'div'}
             attrs={buildNavLinkAttrs(context, weekDate, 'week')}
             className='fc-daygrid-week-number'
             date={weekDate}

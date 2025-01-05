@@ -1,4 +1,4 @@
-import { BaseComponent, DateProfile, WeekNumberContainer, buildNavLinkAttrs, createFormatter, diffDays, joinClassNames, setRef, watchSize } from "@fullcalendar/core/internal"
+import { BaseComponent, DateProfile, WeekNumberContainer, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, joinClassNames, setRef, watchSize } from "@fullcalendar/core/internal"
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 
 export interface TimeGridWeekNumberProps {
@@ -30,7 +30,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
     // only do in day views (to avoid doing in week views that dont need it)
     let navLinkAttrs = (dayCnt === 1)
       ? buildNavLinkAttrs(context, range.start, 'week')
-      : {}
+      : { 'aria-label': buildDateStr(context, range.start, 'week') } // TODO: DRY
 
     return (
       <WeekNumberContainer
