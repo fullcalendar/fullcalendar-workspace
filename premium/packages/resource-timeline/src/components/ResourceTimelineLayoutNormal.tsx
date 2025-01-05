@@ -275,7 +275,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         className='fc-resource-timeline fc-flex-col fc-border'
         viewSpec={viewSpec}
         attrs={{
-          role: 'grid',
+          role: props.hasNesting ? 'treegrid' : 'grid', // TODO: DRY
           'aria-rowcount': totalHeaderRowSpan + rowCnt,
         }}
       >

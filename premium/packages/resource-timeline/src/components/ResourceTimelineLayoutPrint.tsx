@@ -114,7 +114,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         className='fc-resource-timeline fc-print-root fc-border'
         viewSpec={viewSpec}
         attrs={{
-          role: 'grid',
+          role: props.hasNesting ? 'treegrid' : 'grid', // TODO: DRY
         }}
       >
         <div className='fc-print-header fc-border-b'>

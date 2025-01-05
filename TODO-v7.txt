@@ -33,7 +33,6 @@ a11y
     [x] list view
     [ ] timeline (no resources)
     [ ] resource-timeline
-  *** correct grid/treegrid on resource-timeline
   *** "even when a row is collapsed, consistent global rowIndex" (aria-rowindex)
     will have troubles with `rowIndex < rowCnt` to know whether visually last, for bottom border
   aria-expanded & aria-controls on resource-timeline parent-toggler
