@@ -12,14 +12,14 @@ Regression present in v7-beta.3
     "navigator is not defined"
 
 a11y
-  TODO: test scrolling on touch devices
-  Why is list-view crazy blackout happening when <a> event clicked or focused?
-  NOTE: semantic DayGrid table structure will be hard b/c MultiMonth
-  think about changing title as <h2>
+  think about changing title as <h2> (isn't there a ticket for this)
   weekNumbers in daygrid should be in DOM-order before cells
-  timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit z-indexes
   for vertical resource views,
     aria-label is like "September 7, 2020" and doesn't reference resource at all. should it?
+    ACTIONABLE:
+      always have non-abbrev lable on daygrid/timegrid header cells
+      ONLY have label on daygrid/timegrid body cells if multi-row (hasowndinvididualcells or whatever)
+      does week number header cell (timegrid) have correct un-abbrev label?
   when rigging up CI,
     test list-view empty state
   status for views:
@@ -49,8 +49,11 @@ i18n
     document in changelog
 
 misc
+  timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit z-indexes
+  Why is list-view crazy blackout happening when <a> event clicked or focused?
   better markup for Popover title/close (no span, use flexbox)
   been having issues with scrollwheel getting scrollsyncing out of whack!?
+    TODO: test scrolling on touch devices
 
 Cross-browser
   Firefox
