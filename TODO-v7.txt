@@ -7,14 +7,11 @@ Publishing:
 Regression present in v7-beta.3
   See https://codepen.io/arshaw/pen/wBwJmgg?editors=001 (via https://github.com/fullcalendar/fullcalendar/issues/7007)
     TimeGrid events not spaced correctly
-    WeekNumber was not activated, but still present
   When building Next 14,
     "navigator is not defined"
 
 a11y
   think about changing title as <h2> (isn't there a ticket for this)
-  weekNumbers in daygrid should be in DOM-order before cells
-    maybe make have pretend column?
   when rigging up CI,
     test list-view empty state
   status for views:
@@ -50,6 +47,7 @@ misc
   been having issues with scrollwheel getting scrollsyncing out of whack!?
     TODO: test scrolling on touch devices
   why doesn't daygrid weeknumber have rounded corner anymore?
+  weekNumbers in daygrid should be in DOM-order before cells
 
 Cross-browser
   Firefox
