@@ -10,9 +10,6 @@ Regression present in v7-beta.3
 
 a11y
   rig up CI
-  button aria for prev/next just says "Next " or "Previous "
-  regressed with icon role=img?
-    https://github.com/fullcalendar/fullcalendar/issues/7501
   no empty header cells. audit all
     https://github.com/fullcalendar/fullcalendar/issues/2536#issuecomment-703825166
   can get rid of fc-sr-only completely? using aria-label?
@@ -26,6 +23,7 @@ i18n
     document in changelog
 
 misc
+  change <button> to role=button for fewer css reset collision?
   put navlink on multimonth month header text?
   move data-navlink to a className
   rethink how listview has data-date on which element
@@ -37,6 +35,9 @@ misc
     TODO: test scrolling on touch devices
   why doesn't daygrid weeknumber have rounded corner anymore?
   weekNumbers in daygrid should be in DOM-order before cells
+  file bug:
+    non-singular view duration unit has weird hints on buttons "This ", "Next ", "Previous "
+    https://codepen.io/arshaw/pen/yyBpopg?editors=0010
 
 Cross-browser
   Firefox
