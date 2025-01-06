@@ -13,13 +13,14 @@ import {
   RefMap,
   createFormatter,
   WeekNumberContainer,
-  buildNavLinkAttrs,
   watchHeight,
   afterSize,
   SlicedCoordRange,
   EventRangeProps,
   joinClassNames,
-  getUniqueDomId,
+  buildDateStr,
+  buildNavLinkAttrs,
+  ARIA_HIDDEN_ATTRS,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -90,7 +91,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
   // internal
   private disconnectHeight?: () => void
-  private titleDomId = getUniqueDomId()
 
   render() {
     const { props, context, headerHeightRefMap, mainHeightRefMap } = this
@@ -133,10 +133,13 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       (props.eventResize && props.eventResize.affectedInstances) ||
       {}
 
+    const isNavLink = options.navLinks
+    const fullWeekStr = buildDateStr(context, weekDate, 'week')
+
     return (
       <div
         role={props.role as any /* !!! */}
-        aria-labelledby={props.showWeekNumbers ? this.titleDomId : undefined}
+        aria-label={fullWeekStr}
         className={joinClassNames(
           'fc-flex-row fc-rel',
           props.className,
@@ -202,11 +205,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         </div>
         {props.showWeekNumbers && (
           <WeekNumberContainer
-            tag={options.navLinks ? 'a' : 'div'}
-            attrs={{
-              id: this.titleDomId,
-              ...buildNavLinkAttrs(context, weekDate, 'week'),
-            }}
+            tag='div'
+            attrs={
+              isNavLink
+                ? buildNavLinkAttrs(context, weekDate, 'week', fullWeekStr)
+                : ARIA_HIDDEN_ATTRS
+            }
             className='fc-daygrid-week-number'
             date={weekDate}
             defaultFormat={DEFAULT_WEEK_NUM_FORMAT}

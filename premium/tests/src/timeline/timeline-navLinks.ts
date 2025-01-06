@@ -19,7 +19,7 @@ describe('timeline navLinks', () => {
   }, () => {
     it('has at least one navLink', () => {
       initCalendar()
-      expect($('a[data-navlink]').length).toBeGreaterThan(0)
+      expect($('[data-navlink]').length).toBeGreaterThan(0)
     })
   })
 })

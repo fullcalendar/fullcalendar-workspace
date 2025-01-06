@@ -15,44 +15,44 @@ export function buildDateStr(
   return context.dateEnv.format(dateMarker, viewType === 'week' ? WEEK_FORMAT : DAY_FORMAT)
 }
 
+export const ARIA_HIDDEN_ATTRS = { 'aria-hidden': true }
+
+/*
+Assumes navLinks enabled
+Always hidden to screen readers. Do not point aria-labelledby at this. Use aria-label instead.
+*/
 export function buildNavLinkAttrs(
   context: ViewContext,
   dateMarker: DateMarker,
   viewType = 'day',
-  isTabbable = true, // aka "should be part of a11y tree?"
   dateStr = buildDateStr(context, dateMarker, viewType),
+  isTabbable = true,
 ) {
   const { dateEnv, options, calendarApi } = context
+  const zonedDate = dateEnv.toDate(dateMarker)
 
-  if (options.navLinks) {
-    let zonedDate = dateEnv.toDate(dateMarker)
+  const handleInteraction = (ev: UIEvent) => {
+    let customAction =
+      viewType === 'day' ? options.navLinkDayClick :
+        viewType === 'week' ? options.navLinkWeekClick : null
 
-    const handleInteraction = (ev: UIEvent) => {
-      let customAction =
-        viewType === 'day' ? options.navLinkDayClick :
-          viewType === 'week' ? options.navLinkWeekClick : null
-
-      if (typeof customAction === 'function') {
-        customAction.call(calendarApi, dateEnv.toDate(dateMarker), ev)
-      } else {
-        if (typeof customAction === 'string') {
-          viewType = customAction
-        }
-        calendarApi.zoomTo(dateMarker, viewType)
+    if (typeof customAction === 'function') {
+      customAction.call(calendarApi, dateEnv.toDate(dateMarker), ev)
+    } else {
+      if (typeof customAction === 'string') {
+        viewType = customAction
       }
-    }
-
-    return {
-      title: formatWithOrdinals(options.navLinkHint, [dateStr, zonedDate], dateStr),
-      role: (isTabbable ? 'link' : undefined) as any, // TODO: use AriaRole type?
-      'aria-hidden': (isTabbable ? undefined : true),
-      'data-navlink': '', // for legacy selectors. TODO: use className?
-      ...(isTabbable
-        ? createAriaClickAttrs(handleInteraction)
-        : { onClick: handleInteraction }
-      ),
+      calendarApi.zoomTo(dateMarker, viewType)
     }
   }
 
-  return { 'aria-label': dateStr }
+  return {
+    ...ARIA_HIDDEN_ATTRS, // never allow screen readers to navigate into because full info already available in current view
+    title: formatWithOrdinals(options.navLinkHint, [dateStr, zonedDate], dateStr),
+    'data-navlink': '', // for legacy selectors. TODO: use className?
+    ...(isTabbable
+      ? createAriaClickAttrs(handleInteraction)
+      : { onClick: handleInteraction }
+    ),
+  }
 }

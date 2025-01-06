@@ -1,11 +1,11 @@
 import { ViewApi } from '@fullcalendar/core'
 import {
   BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassName,
-  buildNavLinkAttrs,
   getDayClassName, DateProfile, memoizeObjArg, ContentContainer, DateEnv,
   watchSize,
   setRef,
   joinClassNames,
+  buildNavLinkAttrs,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile.js'
@@ -95,8 +95,12 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
       >
         {(InnerContent) => (
           <InnerContent
-            tag={isNavLink ? 'a' : 'div'}
-            attrs={isNavLink ? buildNavLinkAttrs(context, cell.date, cell.rowUnit) : {}}
+            tag='div'
+            attrs={
+              isNavLink
+                ? buildNavLinkAttrs(context, cell.date, cell.rowUnit)
+                : {} // don't need ARIA_HIDDEN_ATTRS because parent already aria-hidden
+            }
             className={joinClassNames(
               'fc-cell-inner fc-padding-md',
               props.isSticky && 'fc-sticky-s',

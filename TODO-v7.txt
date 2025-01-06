@@ -10,6 +10,12 @@ Regression present in v7-beta.3
 
 a11y
   rig up CI
+  button aria for prev/next just says "Next " or "Previous "
+  regressed with icon role=img?
+    https://github.com/fullcalendar/fullcalendar/issues/7501
+  no empty header cells. audit all
+    https://github.com/fullcalendar/fullcalendar/issues/2536#issuecomment-703825166
+  can get rid of fc-sr-only completely? using aria-label?
 
 i18n
   locales should populate viewChangeHint
@@ -20,6 +26,10 @@ i18n
     document in changelog
 
 misc
+  put navlink on multimonth month header text?
+  move data-navlink to a className
+  rethink how listview has data-date on which element
+  don't need theme-system style reset for navlinks
   timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit z-indexes
   Why is list-view crazy blackout happening when <a> event clicked or focused?
   better markup for Popover title/close (no span, use flexbox)
@@ -167,25 +177,7 @@ Changelog
   Add: eventSlicing (write tests too)
     eventSlicing:true (request: https://github.com/fullcalendar/fullcalendar/issues/6187)
     eventSlicing:false (request: https://fullcalendar.freshdesk.com/a/tickets/9203)
-  v7 regressions
-    border problem fixed: https://codepen.io/arshaw/pen/PoMOwdV?editors=0010
-  I refactored a lot of event time-range text-generation. fixed any bugs? (esp with list-view?)
-    https://github.com/fullcalendar/fullcalendar/issues/3038 (probably not)
-  breaking change in list view from 12:00-12:00 -> allDay?
-    NO, always worked this way: https://codepen.io/arshaw/pen/wBwJJER?editors=001
-  Solved Regressions
-    Event cut-off when printing multiple pages in timeGrid view #7673
-      https://github.com/fullcalendar/fullcalendar/issues/7673
-      fixed repro: timegrid-views-many.html (in FF)
-  Solved Regressions (in Jan 2025)
-    Always show week numbers in timegrid view
-  headingLevel
-    calendar title: https://github.com/fullcalendar/fullcalendar/issues/6972
-    WONTFIX: multimonth titles: https://github.com/fullcalendar/fullcalendar/issues/7537
-      because within a listitem/grid, which is discourage to put headings. headings are for main content flow
-    and markup for fc-toolbar-title no longer H2
-  fixed: When building Next 14,
-    "navigator is not defined"
+  Add: no longer use semantic tags (a for navlink, h2 for title), instead using aria
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
@@ -299,6 +291,10 @@ ensure automated tests for...
   disabled days
     do NOT render navlinks (header or obviously day number)
     the headers WILL render data-date, fc-day-disabled (but not dayofweek, past, future classNames)
+  audit all past a11y bugs that aren't picked up by audit tool
+    such as https://github.com/fullcalendar/fullcalendar/issues/7566
+    "The div and span elements have an implicit role of generic and cannot be named unless they have a role attribute."
+  aria-current='date' on today
 
 scratch
   "invalid" dates aka "disabled" dates

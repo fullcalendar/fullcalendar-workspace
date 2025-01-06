@@ -1,5 +1,5 @@
 import { ClassNamesGenerator, CustomContentGenerator, DayHeaderContentArg, DidMountHandler, WillUnmountHandler } from '@fullcalendar/core'
-import { addDays, buildDateStr, buildNavLinkAttrs, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, ViewContext } from '@fullcalendar/core/internal'
+import { addDays, ARIA_HIDDEN_ATTRS, buildDateStr, buildNavLinkAttrs, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, ViewContext } from '@fullcalendar/core/internal'
 
 export interface CellRenderConfig<RenderProps> {
   generatorName: string
@@ -102,17 +102,20 @@ export function buildDateDataConfigs(
           text,
         }
         const isNavLink = options.navLinks && !dateMeta.isDisabled
+        const fullDateStr = buildDateStr(context, date)
 
+        // for DayGridHeaderCell
         return {
           key: keyPrefix + date.toUTCString(),
           renderProps,
           attrs: {
-            'data-date': formatDayString(date),
+            'aria-label': fullDateStr,
             ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}),
+            'data-date': formatDayString(date),
           },
           innerAttrs: isNavLink
-            ? buildNavLinkAttrs(context, date)
-            : { 'aria-label': buildDateStr(context, date) },
+            ? buildNavLinkAttrs(context, date, undefined, fullDateStr)
+            : ARIA_HIDDEN_ATTRS,
           colSpan,
           isNavLink,
           className: getDayClassName(dateMeta),
@@ -136,11 +139,15 @@ export function buildDateDataConfigs(
           view: viewApi,
           text,
         }
+        const fullWeekDayStr = dateEnv.format(normDate, WEEKDAY_FORMAT)
 
+        // for DayGridHeaderCell
         return {
           key: keyPrefix + String(dow),
           renderProps,
-          innerAttrs: { 'aria-label': dateEnv.format(normDate, WEEKDAY_FORMAT) },
+          attrs: {
+            'aria-label': fullWeekDayStr,
+          },
           colSpan,
           className: getDayClassName(dayMeta),
         }

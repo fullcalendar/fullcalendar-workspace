@@ -1,12 +1,12 @@
 import { DayHeaderContentArg } from '@fullcalendar/core'
-import { BaseComponent, buildNavLinkAttrs, ContentContainer, DateMarker, DateRange, formatDayString, getDateMeta, getDayClassName, getStickyHeaderDates, joinClassNames } from "@fullcalendar/core/internal";
+import { ARIA_HIDDEN_ATTRS, BaseComponent, buildNavLinkAttrs, ContentContainer, DateMarker, DateRange, formatDayString, getDateMeta, getDayClassName, getStickyHeaderDates, joinClassNames } from "@fullcalendar/core/internal";
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 
 export interface ListDayHeaderProps {
   dayDate: DateMarker
   todayRange: DateRange
   forPrint: boolean
-  textId: string
+  fullDateStr: string
 }
 
 export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
@@ -23,14 +23,19 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
     // will ever be falsy? also, BAD NAME "alt"
     let sideText = options.listDaySideFormat ? dateEnv.format(dayDate, options.listDaySideFormat) : ''
 
+    let isNavLink = options.navLinks
+
     let renderProps: RenderProps = {
       date: dateEnv.toDate(dayDate),
       view: viewApi,
       text,
-      textId: this.props.textId,
       sideText,
-      navLinkAttrs: buildNavLinkAttrs(this.context, dayDate),
-      sideNavLinkAttrs: buildNavLinkAttrs(this.context, dayDate, 'day', false),
+      navLinkAttrs: isNavLink
+        ? buildNavLinkAttrs(this.context, dayDate, undefined, this.props.fullDateStr)
+        : ARIA_HIDDEN_ATTRS,
+      sideNavLinkAttrs: isNavLink
+        ? buildNavLinkAttrs(this.context, dayDate, undefined, this.props.fullDateStr, /* isTabbable = */ false)
+        : ARIA_HIDDEN_ATTRS,
       ...dayMeta,
     }
 
@@ -73,21 +78,20 @@ function renderInnerContent(props: RenderProps) {
   return (
     <Fragment>
       {props.text && (
-        <a
-          id={props.textId}
+        <div
           className="fc-list-day-text"
           {...props.navLinkAttrs}
         >
           {props.text}
-        </a>
+        </div>
       )}
       {props.sideText && (
-        <a
+        <div
           className="fc-list-day-side-text"
           {...props.sideNavLinkAttrs}
         >
           {props.sideText}
-        </a>
+        </div>
       )}
     </Fragment>
   )

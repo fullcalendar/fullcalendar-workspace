@@ -19,6 +19,12 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
     const { props } = this
     const { renderConfig, dataConfig } = props
 
+    // HACK
+    const isDisabled = dataConfig.renderProps.isDisabled
+
+    // HACK. models what buildDateDataConfigs does
+    const isNavLink = !isDisabled && dataConfig.isNavLink
+
     return (
       <ContentContainer
         tag='div'
@@ -46,14 +52,14 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
         classNameGenerator={
           // don't use custom classNames if disabled
           // TODO: make DRY with DayCellContainer
-          dataConfig.renderProps.isDisabled ? undefined : renderConfig.classNameGenerator
+          isDisabled ? undefined : renderConfig.classNameGenerator
         }
         didMount={renderConfig.didMount}
         willUnmount={renderConfig.willUnmount}
       >
         {(InnerContainer) => (
           <InnerContainer
-            tag={dataConfig.isNavLink ? 'a' : 'div'}
+            tag={isNavLink ? 'a' : 'div'}
             attrs={dataConfig.innerAttrs}
             className={joinClassNames(
               'fc-cell-inner fc-flex-col fc-padding-sm',

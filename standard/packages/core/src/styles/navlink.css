@@ -1,8 +1,8 @@
 
-.fc a[data-navlink] {
+.fc [data-navlink] {
   cursor: pointer;
 }
 
-.fc a[data-navlink]:hover {
+.fc [data-navlink]:hover {
   text-decoration: underline;
 }

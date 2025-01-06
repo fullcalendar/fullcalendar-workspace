@@ -1,4 +1,4 @@
-import { BaseComponent, DateProfile, WeekNumberContainer, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, joinClassNames, setRef, watchSize } from "@fullcalendar/core/internal"
+import { ARIA_HIDDEN_ATTRS, BaseComponent, DateProfile, WeekNumberContainer, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, joinClassNames, setRef, watchSize } from "@fullcalendar/core/internal"
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 
 export interface TimeGridWeekNumberProps {
@@ -27,16 +27,17 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
     let range = props.dateProfile.renderRange
     let dayCnt = diffDays(range.start, range.end)
 
-    // only do in day views (to avoid doing in week views that dont need it)
-    let navLinkAttrs = (dayCnt === 1)
-      ? buildNavLinkAttrs(context, range.start, 'week')
-      : { 'aria-label': buildDateStr(context, range.start, 'week') } // TODO: DRY
+    // HACK: only make week-number a nav-link when NOT in week-view
+    let isNavLink = dayCnt === 1 && context.options.navLinks
+
+    let fullDateStr = buildDateStr(context, range.start, 'week')
 
     return (
       <WeekNumberContainer
         tag='div'
         attrs={{
           role: 'rowheader',
+          'aria-label': fullDateStr,
         }}
         className={joinClassNames(
           'fc-timegrid-weeknumber fc-timegrid-axis fc-cell',
@@ -48,8 +49,12 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
       >
         {(InnerContent) => (
           <InnerContent
-            tag="a"
-            attrs={navLinkAttrs}
+            tag='div'
+            attrs={
+              isNavLink
+                ? buildNavLinkAttrs(context, range.start, 'week', fullDateStr)
+                : ARIA_HIDDEN_ATTRS
+            }
             className='fc-timegrid-axis-inner fc-cell-inner fc-padding-sm'
             elRef={this.innerElRef}
           />

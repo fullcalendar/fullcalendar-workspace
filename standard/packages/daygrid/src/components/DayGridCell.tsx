@@ -3,7 +3,6 @@ import {
   DateMarker,
   DateComponent,
   DateRange,
-  buildNavLinkAttrs,
   DayCellContainer,
   DateProfile,
   Dictionary,
@@ -16,9 +15,10 @@ import {
   joinClassNames,
   watchSize,
   isDimsEqual,
-  getUniqueDomId,
   getDateMeta,
   buildDateStr,
+  buildNavLinkAttrs,
+  ARIA_HIDDEN_ATTRS,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -71,7 +71,6 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
   // internal
   private headerHeight?: number
   private disconnectBodyHeight?: () => void
-  private dayNumberId = getUniqueDomId()
 
   render() {
     let { props, context } = this
@@ -106,7 +105,8 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
 
     const hasDayNumber = props.showDayNumber || hasCustomDayCellContent(options)
 
-    const dateStr = buildDateStr(context, props.date)
+    const isNavLink = options.navLinks
+    const fullDateStr = buildDateStr(context, props.date)
 
     return (
       <DayCellContainer
@@ -118,7 +118,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         attrs={{
           ...props.attrs,
           role: 'gridcell',
-          'aria-labelledby': hasDayNumber ? this.dayNumberId : undefined,
+          'aria-label': fullDateStr,
         }}
         style={{
           width: props.width
@@ -136,11 +136,12 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             {hasDayNumber && (
               <div className="fc-daygrid-day-header">
                 <InnerContent
-                  tag="a"
-                  attrs={{
-                    id: this.dayNumberId,
-                    ...buildNavLinkAttrs(context, props.date, undefined, undefined, dateStr),
-                  }}
+                  tag='div'
+                  attrs={
+                    isNavLink
+                      ? buildNavLinkAttrs(context, props.date, undefined, fullDateStr)
+                      : ARIA_HIDDEN_ATTRS
+                  }
                   className={joinClassNames(
                     'fc-daygrid-day-number',
                     isMonthStart && 'fc-daygrid-month-start',

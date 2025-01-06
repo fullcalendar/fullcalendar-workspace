@@ -1,5 +1,8 @@
 
-a11y:
+## v7.0.0-beta.4
+
+### :accessibility: Accessibility
+
 - Weekday on the list view has aria-hidden=True ([#7645](https://github.com/fullcalendar/fullcalendar/issues/7645))
 - Add aria-current="date" for "today" highlight ([#7502](https://github.com/fullcalendar/fullcalendar/issues/7502))
 - use aria-label instead of title attribute ([#7502](https://github.com/fullcalendar/fullcalendar/issues/7502))
@@ -12,16 +15,29 @@ a11y:
 - Popover close button is not tabbable ([#7157](https://github.com/fullcalendar/fullcalendar/issues/7157))
 - Navigate popover items with keyboard ([#6624](https://github.com/fullcalendar/fullcalendar/issues/6624))
 - multiMonthYear disabled day cells have broken ARIA references ([#7379](https://github.com/fullcalendar/fullcalendar/issues/7379))
+- headingLevel
+  - calendar title: https://github.com/fullcalendar/fullcalendar/issues/6972
+  - WONTFIX: multimonth titles: https://github.com/fullcalendar/fullcalendar/issues/7537
+    because within a listitem/grid, which is discourage to put headings. headings are for main content flow
+  - and markup for fc-toolbar-title no longer H2
 
-bugs:
+### :beetle: Bugfixes
+
 - resource-timeline scrolls down when it shouldn't, attempting to preserve scroll state ([#4443](https://github.com/fullcalendar/fullcalendar/issues/4443))
 - certain date/time text should be text-selectable ([#5628](https://github.com/fullcalendar/fullcalendar/issues/5628))
   - implemented for DayGrid. implemented in beta.3 for other views
 
-breaking:
+### :warning: Breaking Changes
+
 - for headerToolbar/footerToolbar, specifying left/right when direction:rtl, will render items within each section of the toolbar right-to-left
 - disabled days in timegrid and daygrid(non-month) render content within the headers
   as opposed to being completely blank. timeline always did this
+
+### :white_check_mark::rewind: Resolved Regressions
+
+- bug: Always show week numbers in timegrid view
+- fixed: When building Next 14,
+  "navigator is not defined"
 
 ## v7.0.0-beta.3 (2024-12-18)
 
