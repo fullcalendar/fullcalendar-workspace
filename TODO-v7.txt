@@ -11,11 +11,6 @@ Regression present in v7-beta.3
     "navigator is not defined"
 
 a11y
-  think about changing title as <h2>
-    calendar title: https://github.com/fullcalendar/fullcalendar/issues/6972
-    multimonth titles: https://github.com/fullcalendar/fullcalendar/issues/7537
-    change to role='heading' for neutral default styles,
-      but make aria-level configurable (default to "2")
   rigging up CI (see list of views below)
   status for views:
     [x] daygrid
@@ -196,6 +191,10 @@ Changelog
       fixed repro: timegrid-views-many.html (in FF)
   Solved Regressions (in Jan 2025)
     Always show week numbers in timegrid view
+  headingLevel
+    calendar title: https://github.com/fullcalendar/fullcalendar/issues/6972
+    multimonth titles: https://github.com/fullcalendar/fullcalendar/issues/7537
+    and markup for fc-toolbar-title no longer H2
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078

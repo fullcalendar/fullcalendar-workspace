@@ -28,6 +28,6 @@
 
 .fc-toolbar-title {
   font-size: 1.75em;
-  margin: 0;
+  font-weight: bold;
   white-space: nowrap;
 }

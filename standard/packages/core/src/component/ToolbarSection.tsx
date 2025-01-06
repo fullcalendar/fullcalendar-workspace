@@ -53,7 +53,12 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
 
       if (buttonName === 'title') {
         children.push(
-          <h2 className="fc-toolbar-title" id={props.titleId}>{props.title}</h2>,
+          <div
+            role='heading'
+            aria-level={options.headingLevel}
+            id={props.titleId}
+            className='fc-toolbar-title'
+          >{props.title}</div>,
         )
       } else {
         let isPressed = buttonName === props.activeButton

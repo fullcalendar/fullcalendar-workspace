@@ -75,7 +75,12 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
             }}
             // NOTE: sticky properties determined by CSS
           >
-            <div id={this.titleId} className="fc-multimonth-title">
+            <div
+              role='heading'
+              aria-level={options.headingLevel + 1}
+              id={this.titleId}
+              className='fc-multimonth-title'
+            >
               {context.dateEnv.format(
                 props.dateProfile.currentRange.start,
                 props.titleFormat,

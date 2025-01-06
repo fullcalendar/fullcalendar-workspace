@@ -230,6 +230,8 @@ export const BASE_OPTION_REFINERS = {
   closeHint: String,
   eventsHint: String,
 
+  headingLevel: Number,
+
   moreLinkClick: identity as Identity<MoreLinkAction>,
   moreLinkClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
   moreLinkContent: identity as Identity<CustomContentGenerator<MoreLinkContentArg>>,
@@ -307,6 +309,7 @@ export const BASE_OPTION_DEFAULTS = {
   eventMinWidth: 30,
   eventShortHeight: 30,
   monthStartFormat: { month: 'long', day: 'numeric' },
+  headingLevel: 2, // like H2
 }
 
 export type BaseOptionsRefined = DefaultedRefinedOptions<
