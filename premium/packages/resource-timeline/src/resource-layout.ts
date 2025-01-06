@@ -5,6 +5,8 @@ TODO: rename `pooledHeight` to just isVerticalGroup or something
 */
 
 export interface GenericLayout<Entity> {
+  rowIndex: number // visible or not
+  visibleIndex: number // just for rows
   entity: Entity
   pooledHeight?: boolean // default: false
   children: GenericLayout<Entity>[]
@@ -12,6 +14,7 @@ export interface GenericLayout<Entity> {
 
 export interface ResourceLayout { // specific GenericLayout
   rowIndex: number // is 0-based
+  visibleIndex: number // just for rows
   entity: Resource
   pooledHeight?: boolean // should NOT be defined!
   resourceFields: any
@@ -19,22 +22,26 @@ export interface ResourceLayout { // specific GenericLayout
   hasChildren: boolean // if has *any* children
   indent: number
   depth: number // TODO: converge with indent
+  rowDepth: number
   children: ResourceLayout[] // only *visible* children
 }
 
 export interface GroupRowLayout { // specific GenericLayout
   rowIndex: number // is 0-based
+  visibleIndex: number // just for rows
   entity: Group
   pooledHeight: false
   isExpanded: boolean
   hasChildren: boolean // if has *any* children
   indent: number
   depth: number // TODO: converge with indent
+  rowDepth: number
   children: (ResourceLayout | GroupRowLayout | GroupCellLayout)[]
 }
 
 export interface GroupCellLayout { // specific GenericLayout
   rowIndex: number // is 0-based
+  visibleIndex: number // just for rows
   rowSpan: number
   entity: Group
   pooledHeight: true
@@ -55,9 +62,10 @@ export function buildResourceLayouts(
   expansionDefault: boolean,
 ): {
   layouts: GenericLayout<Resource | Group>[], // use for height computations. web of height relationships
-  flatResourceLayouts: ResourceLayout[],
-  flatGroupRowLayouts: GroupRowLayout[],
-  flatGroupColLayouts: GroupCellLayout[][],
+  flatResourceLayouts: ResourceLayout[], // visible only
+  flatGroupRowLayouts: GroupRowLayout[], // visible only
+  flatGroupColLayouts: GroupCellLayout[][], // visible only
+  totalCnt: number,
 } {
   const flatResourceLayouts: ResourceLayout[] = []
   const flatGroupRowLayouts: GroupRowLayout[] = []
@@ -66,14 +74,19 @@ export function buildResourceLayouts(
   function processNodes(
     nodes: GenericNode[],
     startingIndex: number,
+    startingVisibleIndex: number,
     depth: number,
+    rowDepth: number,
     indent: number,
+    isVisible: boolean,
   ): [
     processNodes: GenericLayout<Resource | Group>[],
-    deepNodeCnt: number,
+    totalCnt: number, // deep. visible or not
+    visibleCnt: number,
   ] {
     const layouts: GenericLayout<Resource | Group>[] = []
-    let localRowCnt = 0
+    let totalCnt = 0 // visible or not
+    let visibleCnt = 0
 
     // TODO: more DRY within
     for (const node of nodes) {
@@ -81,89 +94,120 @@ export function buildResourceLayouts(
       // ResourceRow
       if ((node as ResourceNode).resourceFields) {
         const isExpanded = expansions[(node as ResourceNode).entity.id] ?? expansionDefault
-        const rowIndex = startingIndex + localRowCnt++
+        const rowIndex = startingIndex + totalCnt++
+        const visibleIndex = startingVisibleIndex + visibleCnt++
         const resourceLayout: ResourceLayout = {
           rowIndex,
+          visibleIndex,
           entity: (node as ResourceNode).entity,
           resourceFields: (node as ResourceNode).resourceFields,
           isExpanded,
           hasChildren: Boolean(node.children.length),
           depth,
+          rowDepth,
           indent,
           children: [],
         }
-        flatResourceLayouts.push(resourceLayout)
-        layouts.push(resourceLayout)
-        if (isExpanded) {
-          const [localChildren, subtreeNodeCnt] = processNodes(
-            node.children,
-            startingIndex + localRowCnt,
-            depth + 1,
-            indent + 1,
-          )
-          resourceLayout.children = localChildren as ResourceLayout[]
-          localRowCnt += subtreeNodeCnt
+        if (isVisible) {
+          flatResourceLayouts.push(resourceLayout)
+          layouts.push(resourceLayout)
         }
+        const [localChildren, subtreeTotalCnt, subtreeVisibleCnt] = processNodes(
+          node.children,
+          startingIndex + totalCnt,
+          startingVisibleIndex + visibleCnt,
+          depth + 1,
+          rowDepth + 1,
+          indent + 1,
+          isVisible && isExpanded,
+        )
+        if (isVisible && isExpanded) {
+          resourceLayout.children = localChildren as ResourceLayout[]
+          visibleCnt += subtreeVisibleCnt
+        }
+        totalCnt += subtreeTotalCnt
 
       // GroupCell
       } else if ((node as GroupNode).pooledHeight) {
-        const rowIndex = startingIndex + localRowCnt // DON'T advance
+        const rowIndex = startingIndex + totalCnt // DON'T advance
+        const visibleIndex = startingVisibleIndex + visibleCnt // DON'T advance
         const groupCellLayout: GroupCellLayout = {
           rowIndex,
+          visibleIndex,
           rowSpan: 0, // populated very soon...
           entity: (node as GroupNode).entity,
           pooledHeight: true,
           children: [], // populates very soon...
         }
-        ;(flatGroupColLayouts[depth] || (flatGroupColLayouts[depth] = []))
-          .push(groupCellLayout)
-        layouts.push(groupCellLayout)
-        const [localChildren, subtreeNodeCnt] = processNodes(
+        if (isVisible) {
+          ;(flatGroupColLayouts[depth] || (flatGroupColLayouts[depth] = []))
+            .push(groupCellLayout)
+          layouts.push(groupCellLayout)
+        }
+        const [localChildren, subtreeTotalCnt, subtreeVisibleCnt] = processNodes(
           node.children,
-          startingIndex + localRowCnt,
+          startingIndex + totalCnt,
+          startingVisibleIndex + visibleCnt,
           depth + 1,
+          rowDepth, // do NOT advance
           indent,
+          isVisible,
         )
-        groupCellLayout.children = localChildren as (ResourceLayout | GroupCellLayout)[]
-        groupCellLayout.rowSpan = subtreeNodeCnt
-        localRowCnt += subtreeNodeCnt
+        if (isVisible) {
+          groupCellLayout.children = localChildren as (ResourceLayout | GroupCellLayout)[]
+          groupCellLayout.rowSpan = subtreeTotalCnt
+          visibleCnt += subtreeVisibleCnt
+        }
+        totalCnt += subtreeTotalCnt
 
       // GroupRow
       } else {
         const isExpanded = expansions[createGroupId((node as GroupRowLayout).entity)] ?? expansionDefault
-        const rowIndex = startingIndex + localRowCnt++
+        const rowIndex = startingIndex + totalCnt++
+        const visibleIndex = startingVisibleIndex + visibleCnt++
         const groupRowLayout: GroupRowLayout = {
           rowIndex,
+          visibleIndex,
           entity: (node as GroupNode).entity,
           pooledHeight: false,
           isExpanded,
           hasChildren: Boolean(node.children.length),
           depth,
+          rowDepth,
           indent,
           children: [], // populates very soon...
         }
-        flatGroupRowLayouts.push(groupRowLayout)
-        layouts.push(groupRowLayout)
-        if (isExpanded) {
-          const [localChildren, subtreeNodeCnt] = processNodes(
-            node.children,
-            startingIndex + localRowCnt,
-            depth + 1,
-            indent + 1,
-          )
-          groupRowLayout.children = localChildren as (ResourceLayout | GroupRowLayout | GroupCellLayout)[]
-          localRowCnt += subtreeNodeCnt
+        if (isVisible) {
+          flatGroupRowLayouts.push(groupRowLayout)
+          layouts.push(groupRowLayout)
         }
+        const [localChildren, subtreeTotalCnt, subtreeVisibleCnt] = processNodes(
+          node.children,
+          startingIndex + totalCnt,
+          startingVisibleIndex + visibleCnt,
+          depth + 1,
+          rowDepth + 1,
+          indent + 1,
+          isVisible && isExpanded,
+        )
+        if (isVisible && isExpanded) {
+          groupRowLayout.children = localChildren as (ResourceLayout | GroupRowLayout | GroupCellLayout)[]
+          visibleCnt += subtreeVisibleCnt
+        }
+        totalCnt += subtreeTotalCnt
       }
     }
 
-    return [layouts, localRowCnt]
+    return [layouts, totalCnt, visibleCnt]
   }
 
+  const [layouts, totalCnt] = processNodes(hierarchy, 0, 0, 0, 0, hasNesting ? 1 : 0, true)
+
   return {
-    layouts: processNodes(hierarchy, 0, 0, hasNesting ? 1 : 0)[0],
+    layouts,
     flatResourceLayouts,
     flatGroupRowLayouts,
     flatGroupColLayouts,
+    totalCnt,
   }
 }

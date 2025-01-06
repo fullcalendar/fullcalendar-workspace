@@ -190,6 +190,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       flatResourceLayouts,
       flatGroupRowLayouts,
       flatGroupColLayouts,
+      totalCnt,
     } = this.buildResourceLayouts(
       resourceHierarchy,
       props.hasNesting,
@@ -201,7 +202,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     // TODO: less-weird way to get this! more DRY with BodySection
     const groupRowCnt = flatGroupRowLayouts.length
     const resourceCnt = flatResourceLayouts.length
-    const rowCnt = groupRowCnt + resourceCnt
+    const visibleRowCnt = groupRowCnt + resourceCnt
 
     /* table positions */
 
@@ -276,7 +277,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         viewSpec={viewSpec}
         attrs={{
           role: props.hasNesting ? 'treegrid' : 'grid', // TODO: DRY
-          'aria-rowcount': totalHeaderRowSpan + rowCnt,
+          'aria-rowcount': totalHeaderRowSpan + totalCnt,
         }}
       >
         <ResizableTwoCol
@@ -532,10 +533,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           key={groupKey}
                           role='row'
                           aria-rowindex={1 + totalHeaderRowSpan + groupRowLayout.rowIndex}
+                          aria-level={1 + groupRowLayout.rowDepth}
                           aria-expanded={groupRowLayout.isExpanded}
                           class={joinClassNames(
                             'fc-flex-row fc-fill-x fc-content-box',
-                            groupRowLayout.rowIndex < rowCnt - 1 && // is not last
+                            groupRowLayout.visibleIndex < visibleRowCnt - 1 && // is not last
                               'fc-border-b',
                           )}
                           style={{
@@ -559,11 +561,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           key={resource.id}
                           role='row'
                           aria-rowindex={1 + totalHeaderRowSpan + resourceLayout.rowIndex}
+                          aria-level={1 + resourceLayout.rowDepth}
                           aria-expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
                           data-resource-id={resource.id}
                           className={joinClassNames(
                             'fc-resource fc-flex-col fc-fill-x fc-content-box',
-                            resourceLayout.rowIndex < rowCnt - 1 && // is not last
+                            resourceLayout.visibleIndex < visibleRowCnt - 1 && // is not last
                               'fc-border-b',
                           )}
                           style={{

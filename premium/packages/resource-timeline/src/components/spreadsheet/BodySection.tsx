@@ -31,7 +31,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
     // TODO: less-weird way to get this! more DRY with ResourceTimelineLayoutNormal
     const groupRowCnt = props.flatGroupRowLayouts.length
     const resourceCnt = props.flatResourceLayouts.length
-    const rowCnt = groupRowCnt + resourceCnt
+    const visibleRowCnt = groupRowCnt + resourceCnt
 
     const groupColCnt = props.flatGroupColLayouts.length
 
@@ -124,14 +124,14 @@ export class BodySection extends BaseComponent<BodySectionProps> {
           {props.flatGroupRowLayouts.map((groupRowLayout) => {
             const group = groupRowLayout.entity
             const groupKey = createGroupId(group)
-            const isNotLast = groupRowLayout.rowIndex < rowCnt - 1
+            const isNotLast = groupRowLayout.visibleIndex < visibleRowCnt - 1
 
             return (
               <div
                 key={groupKey}
                 role='row'
                 aria-rowindex={1 + headerRowSpan + groupRowLayout.rowIndex}
-                aria-level={1 + groupRowLayout.depth}
+                aria-level={1 + groupRowLayout.rowDepth}
                 aria-expanded={groupRowLayout.isExpanded}
                 class={joinClassNames(
                   'fc-flex-row fc-fill-x fc-content-box',
@@ -155,7 +155,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
           {/* resource-specific cells */}
           {props.flatResourceLayouts.map((resourceLayout) => {
             const resource = resourceLayout.entity
-            const isNotLast = resourceLayout.rowIndex < rowCnt - 1
+            const isNotLast = resourceLayout.visibleIndex < visibleRowCnt - 1
             const rowHeight = rowHeights.get(resource.id)
 
             return (
@@ -163,7 +163,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 key={resource.id}
                 role='row'
                 aria-rowindex={1 + headerRowSpan + resourceLayout.rowIndex}
-                aria-level={1 + resourceLayout.depth}
+                aria-level={1 + resourceLayout.rowDepth}
                 aria-expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
                 data-resource-id={resource.id}
                 class='fc-flex-row fc-fill-x'
