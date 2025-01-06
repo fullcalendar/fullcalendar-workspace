@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
 <head>
 <meta charset='utf-8' />
+<title>Horizontally-Scrolling Resource DayGrid Example</title>
 <script src='../dist/index.global.js'></script>
 <script>
 
@@ -9,8 +10,8 @@
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-      dayMinWidth: 300,
-      initialView: 'resourceTimeGridTwoDay',
+      dayMinWidth: 200,
+      initialView: 'resourceDayGridTwoDay',
       initialDate: '2020-09-07',
       editable: true,
       selectable: true,
@@ -18,18 +19,15 @@
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'resourceTimeGridDay,resourceTimeGridTwoDay,timeGridWeek'
+        right: 'resourceDayGridDay,resourceDayGridTwoDay,timeGridWeek,dayGridMonth'
       },
       views: {
-        resourceTimeGridTwoDay: {
-          type: 'resourceTimeGrid',
+        resourceDayGridTwoDay: {
+          type: 'resourceDayGrid',
           duration: { days: 2 },
           buttonText: '2 days',
         }
       },
-
-      // better for print zoom and forcing multi-page, for some reason
-      slotDuration: { minutes: 15 },
 
       //// uncomment this line to hide the all-day slot
       //allDaySlot: false,

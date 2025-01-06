@@ -11,17 +11,7 @@ Regression present in v7-beta.3
     "navigator is not defined"
 
 a11y
-  rigging up CI (see list of views below)
-  status for views:
-    [x] daygrid
-    [x] daygrid hscroll
-    [x] timegrid
-    [x] timegrid hscroll
-    [x] multimonth
-    [x] list view
-    [x] list view empty
-    [x] timeline (no resources)
-    [x] resource-timeline
+  rig up CI
 
 i18n
   locales should populate viewChangeHint
