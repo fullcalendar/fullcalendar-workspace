@@ -25,7 +25,7 @@ a11y
     [x] multimonth
     [x] list view
     [x] list view empty
-    [ ] timeline (no resources)
+    [x] timeline (no resources)
     [x] resource-timeline
 
 i18n

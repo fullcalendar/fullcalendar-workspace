@@ -175,6 +175,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 endScrollbarWidthRef={this.handleEndScrollbarWidth}
               >
                 <div
+                  aria-label={options.eventsHint}
                   className="fc-rel fc-grow"
                   style={{ width: canvasWidth }}
                   ref={this.handeBodyEl}
