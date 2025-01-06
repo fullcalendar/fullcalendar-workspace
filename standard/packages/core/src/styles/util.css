@@ -224,3 +224,17 @@ which will override width/height if shrinking. Not the case with minWidth/minHei
 .fc-align-start {
   align-items: flex-start;
 }
+
+// Screen-reader-only
+
+.fc-sr-only {
+  position: absolute; /* Remove from document flow */
+  width: 1px; /* Make it as small as possible */
+  height: 1px;
+  padding: 0; /* Remove any padding */
+  margin: -1px; /* Avoid affecting layout */
+  overflow: hidden; /* Hide overflowing content */
+  clip: rect(0, 0, 0, 0); /* Clip the element */
+  white-space: nowrap; /* Prevent text wrapping */
+  border: 0; /* Remove any borders */
+}
