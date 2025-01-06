@@ -160,7 +160,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
   render() {
     let { props, state, context } = this
-    let { dateProfile } = props
+    let { dateProfile, hasNesting } = props
     let { options, viewSpec } = context
 
     /* date */
@@ -193,7 +193,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       totalCnt,
     } = this.buildResourceLayouts(
       resourceHierarchy,
-      props.hasNesting,
+      hasNesting,
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
@@ -276,7 +276,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         className='fc-resource-timeline fc-flex-col fc-border'
         viewSpec={viewSpec}
         attrs={{
-          role: props.hasNesting ? 'treegrid' : 'grid', // TODO: DRY
+          role: hasNesting ? 'treegrid' : 'grid', // TODO: DRY
           'aria-rowcount': totalHeaderRowSpan + totalCnt,
         }}
       >
@@ -312,7 +312,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   >
                     <SuperHeaderCell
                       renderHooks={superHeaderRendering}
-                      indent={props.hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
+                      indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
                       innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(true)}
                       colSpan={colSpecs.length}
                     />
@@ -328,7 +328,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     <HeaderRow
                       colSpecs={colSpecs}
                       colWidths={spreadsheetColWidths}
-                      indent={props.hasNesting}
+                      indent={hasNesting}
                       rowIndex={1 + superHeaderRowSpan}
 
                       // refs
@@ -369,6 +369,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     rowTops={bodyTops}
                     rowHeights={bodyHeights}
                     headerRowSpan={totalHeaderRowSpan}
+                    hasNesting={hasNesting}
                   />
                   {spreadsheetNeedsBottomFiller && (
                     <div
@@ -533,7 +534,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           key={groupKey}
                           role='row'
                           aria-rowindex={1 + totalHeaderRowSpan + groupRowLayout.rowIndex}
-                          aria-level={1 + groupRowLayout.rowDepth}
+                          aria-level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
                           aria-expanded={groupRowLayout.isExpanded}
                           class={joinClassNames(
                             'fc-flex-row fc-fill-x fc-content-box',
@@ -561,7 +562,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           key={resource.id}
                           role='row'
                           aria-rowindex={1 + totalHeaderRowSpan + resourceLayout.rowIndex}
-                          aria-level={1 + resourceLayout.rowDepth}
+                          aria-level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
                           aria-expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
                           data-resource-id={resource.id}
                           className={joinClassNames(

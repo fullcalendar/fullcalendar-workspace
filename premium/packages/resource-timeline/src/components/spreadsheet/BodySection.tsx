@@ -17,6 +17,7 @@ export interface BodySectionProps {
   rowTops: Map<string, number>
   rowHeights: Map<string, number>
   headerRowSpan: number
+  hasNesting: boolean
 }
 
 /*
@@ -26,7 +27,7 @@ Caller is responsible for this.
 export class BodySection extends BaseComponent<BodySectionProps> {
   render() {
     const { props, context } = this
-    const { rowInnerHeightRefMap, rowTops, rowHeights, headerRowSpan } = props
+    const { rowInnerHeightRefMap, rowTops, rowHeights, headerRowSpan, hasNesting } = props
 
     // TODO: less-weird way to get this! more DRY with ResourceTimelineLayoutNormal
     const groupRowCnt = props.flatGroupRowLayouts.length
@@ -73,7 +74,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   key={groupKey}
                   role='row'
                   aria-rowindex={1 + headerRowSpan + groupCellLayout.rowIndex}
-                  aria-level={1} // the resource-specific row at this rowindex is always depth 0
+                  aria-level={hasNesting ? 1 : undefined} // the resource-specific row at this rowindex is always depth 0
                   class='fc-flex-row fc-fill-x'
                   style={{
                     top: rowTops.get(groupKey),
@@ -132,7 +133,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 key={groupKey}
                 role='row'
                 aria-rowindex={1 + headerRowSpan + groupRowLayout.rowIndex}
-                aria-level={1 + groupRowLayout.rowDepth}
+                aria-level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
                 aria-expanded={groupRowLayout.isExpanded}
                 class={joinClassNames(
                   'fc-flex-row fc-fill-x fc-content-box',
@@ -164,7 +165,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 key={resource.id}
                 role='row'
                 aria-rowindex={1 + headerRowSpan + resourceLayout.rowIndex}
-                aria-level={1 + resourceLayout.rowDepth}
+                aria-level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
                 aria-expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
                 data-resource-id={resource.id}
                 class='fc-flex-row fc-fill-x'

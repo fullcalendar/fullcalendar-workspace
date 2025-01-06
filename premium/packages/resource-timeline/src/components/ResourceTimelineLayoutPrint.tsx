@@ -83,7 +83,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
     let { dateProfile } = props
     let { options, viewSpec } = context
 
-    const { tDateProfile, todayRange, nowDate } = props
+    const { tDateProfile, todayRange, nowDate, hasNesting } = props
     const { slotWidth, timeCanvasWidth } = props
     const { hasResourceBusinessHours, fallbackBusinessHours } = props
     const { splitProps, bgSlicedProps, timeAreaOffset } = props
@@ -99,7 +99,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
     const { resourceHierarchy } = props
     const printLayouts = this.buildPrintLayouts(
       resourceHierarchy,
-      props.hasNesting,
+      hasNesting,
       props.resourceEntityExpansions,
       options.resourcesInitiallyExpanded,
     )
@@ -114,7 +114,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         className='fc-resource-timeline fc-print-root fc-border'
         viewSpec={viewSpec}
         attrs={{
-          role: props.hasNesting ? 'treegrid' : 'grid', // TODO: DRY
+          role: hasNesting ? 'treegrid' : 'grid', // TODO: DRY
         }}
       >
         <div className='fc-print-header fc-border-b'>
@@ -126,7 +126,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 <div role='row' className="fc-flex-row fc-grow fc-border-b">
                   <SuperHeaderCell
                     renderHooks={superHeaderRendering}
-                    indent={props.hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
+                    indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
                     colSpan={colSpecs.length}
                   />
                 </div>
@@ -137,7 +137,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     colSpecs={colSpecs}
                     colWidths={colWidths}
                     colGrows={colGrows}
-                    indent={props.hasNesting}
+                    indent={hasNesting}
                   />
                 </div>
               </div>
@@ -265,6 +265,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 <div
                   key={resource.id}
                   role='row'
+                  // sort-of a HACK to use .indent, but works out fine b/c 1-based
+                  aria-level={hasNesting ? printLayout.indent : undefined}
                   className='fc-flex-row fc-break-inside-avoid'
                 >
                   <div className='fc-flex-col fc-crop' style={{ width: props.spreadsheetWidth }}>
