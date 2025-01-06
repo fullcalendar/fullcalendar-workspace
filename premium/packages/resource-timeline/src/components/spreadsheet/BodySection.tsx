@@ -73,6 +73,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   key={groupKey}
                   role='row'
                   aria-rowindex={1 + headerRowSpan + groupCellLayout.rowIndex}
+                  aria-level={1} // the resource-specific row at this rowindex is always depth 0
                   class='fc-flex-row fc-fill-x'
                   style={{
                     top: rowTops.get(groupKey),
