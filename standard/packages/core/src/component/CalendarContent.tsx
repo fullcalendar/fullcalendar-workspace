@@ -97,8 +97,8 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
           height={viewHeight}
           heightLiquid={viewHeightLiquid}
           aspectRatio={viewAspectRatio}
-          label={toolbarConfig.header.hasTitle ? undefined : toolbarProps.title}
-          labelledBy={toolbarConfig.header.hasTitle ? this.viewTitleId : undefined}
+          label={toolbarConfig.header && toolbarConfig.header.hasTitle ? undefined : toolbarProps.title}
+          labelledBy={toolbarConfig.header && toolbarConfig.header.hasTitle ? this.viewTitleId : undefined}
         >
           {this.renderView(props)}
           {this.buildAppendContent()}
