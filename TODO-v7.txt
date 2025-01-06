@@ -7,8 +7,6 @@ Publishing:
 Regression present in v7-beta.3
   See https://codepen.io/arshaw/pen/wBwJmgg?editors=001 (via https://github.com/fullcalendar/fullcalendar/issues/7007)
     TimeGrid events not spaced correctly
-  When building Next 14,
-    "navigator is not defined"
 
 a11y
   rig up CI
@@ -186,6 +184,8 @@ Changelog
     WONTFIX: multimonth titles: https://github.com/fullcalendar/fullcalendar/issues/7537
       because within a listitem/grid, which is discourage to put headings. headings are for main content flow
     and markup for fc-toolbar-title no longer H2
+  fixed: When building Next 14,
+    "navigator is not defined"
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078

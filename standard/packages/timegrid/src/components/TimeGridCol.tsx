@@ -30,8 +30,10 @@ import { TimeGridMoreLink } from './TimeGridMoreLink.js'
 import { TimeGridNowIndicatorLine } from './TimeGridNowIndicatorLine.js'
 
 // Firefox is terrible at rendering absolute elements that span across multiple print pages
-export const simplifiedTimeGridPrint = /* true || */
+export const simplifiedTimeGridPrint = /* true || */ (
+  typeof navigator !== 'undefined' &&
   navigator.userAgent.toLowerCase().includes('firefox')
+)
 
 export interface TimeGridColProps {
   dateProfile: DateProfile
