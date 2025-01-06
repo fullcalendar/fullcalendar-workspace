@@ -193,7 +193,8 @@ Changelog
     Always show week numbers in timegrid view
   headingLevel
     calendar title: https://github.com/fullcalendar/fullcalendar/issues/6972
-    multimonth titles: https://github.com/fullcalendar/fullcalendar/issues/7537
+    WONTFIX: multimonth titles: https://github.com/fullcalendar/fullcalendar/issues/7537
+      because within a listitem/grid, which is discourage to put headings. headings are for main content flow
     and markup for fc-toolbar-title no longer H2
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
