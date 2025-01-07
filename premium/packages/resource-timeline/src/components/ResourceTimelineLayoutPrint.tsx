@@ -39,6 +39,9 @@ import { CssDimValue } from '@fullcalendar/core'
 import { flexifyDimConfigs, SiblingDimConfig } from '../col-positioning.js'
 
 export interface ResourceTimelineLayoutPrintProps {
+  labelId: string | undefined
+  labelStr: string | undefined
+
   tDateProfile: TimelineDateProfile
   dateProfile: DateProfile
   resourceHierarchy: GenericNode[]
@@ -115,6 +118,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         viewSpec={viewSpec}
         attrs={{
           role: hasNesting ? 'treegrid' : 'grid', // TODO: DRY
+          'aria-label': props.labelStr,
+          'aria-labelledby': props.labelId,
         }}
       >
         <div className='fc-print-header fc-border-b'>

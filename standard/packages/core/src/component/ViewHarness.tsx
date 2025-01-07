@@ -7,8 +7,6 @@ export interface ViewHarnessProps {
   heightLiquid?: boolean
   aspectRatio?: number
   children: ComponentChildren
-  label?: string
-  labelledBy?: string
 }
 
 export class ViewHarness extends Component<ViewHarnessProps> {
@@ -32,8 +30,6 @@ export class ViewHarness extends Component<ViewHarnessProps> {
             ? `${(1 / props.aspectRatio) * 100}%`
             : undefined
         }}
-        aria-label={props.label}
-        aria-labelledby={props.labelledBy}
       >
         {props.children}
       </div>

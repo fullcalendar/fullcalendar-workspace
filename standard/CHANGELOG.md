@@ -20,6 +20,7 @@
   - WONTFIX: multimonth titles: https://github.com/fullcalendar/fullcalendar/issues/7537
     because within a listitem/grid, which is discourage to put headings. headings are for main content flow
   - and markup for fc-toolbar-title no longer H2
+- Cannot use aria-label or aria-labelledby on elements and roles that prohibit naming ([#7566](https://github.com/fullcalendar/fullcalendar/issues/7566))
 
 ### :beetle: Bugfixes
 

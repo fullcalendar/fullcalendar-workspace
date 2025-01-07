@@ -97,10 +97,8 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
           height={viewHeight}
           heightLiquid={viewHeightLiquid}
           aspectRatio={viewAspectRatio}
-          label={toolbarConfig.header && toolbarConfig.header.hasTitle ? undefined : toolbarProps.title}
-          labelledBy={toolbarConfig.header && toolbarConfig.header.hasTitle ? this.viewTitleId : undefined}
         >
-          {this.renderView(props)}
+          {this.renderView(props, toolbarProps.title)}
           {this.buildAppendContent()}
         </ViewHarness>
         {toolbarConfig.footer && (
@@ -155,9 +153,9 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
     return createElement(Fragment, {}, ...children)
   }
 
-  renderView(props: CalendarContentProps) {
+  renderView(props: CalendarContentProps, title: string) {
     let { pluginHooks } = props
-    let { viewSpec } = props
+    let { viewSpec, toolbarConfig } = props
 
     let viewProps: ViewProps = {
       dateProfile: props.dateProfile,
@@ -169,6 +167,8 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       eventDrag: props.eventDrag,
       eventResize: props.eventResize,
       forPrint: props.forPrint,
+      labelId: toolbarConfig.header && toolbarConfig.header.hasTitle ? this.viewTitleId : undefined,
+      labelStr: toolbarConfig.header && toolbarConfig.header.hasTitle ? undefined : title,
     }
 
     let transformers = this.buildViewPropTransformers(pluginHooks.viewPropsTransformers)

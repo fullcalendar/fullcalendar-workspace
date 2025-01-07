@@ -88,6 +88,11 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
       <NowTimer unit="day">
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <ViewContainer
+            viewSpec={context.viewSpec}
+            attrs={{
+              'aria-labelledby': props.labelId,
+              'aria-label': props.labelStr,
+            }}
             className={joinClassNames(
               'fc-multimonth fc-border',
               (cols === 1) ?
@@ -97,7 +102,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
               // https://stackoverflow.com/a/60256345
               !props.forPrint && 'fc-flex-col',
             )}
-            viewSpec={context.viewSpec}
           >
             <Scroller
               vertical={verticalScrolling}

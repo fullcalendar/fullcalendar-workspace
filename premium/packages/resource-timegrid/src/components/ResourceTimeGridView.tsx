@@ -169,6 +169,9 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
           return (
             <TimeGridLayout
+              labelId={props.labelId}
+              labelStr={props.labelStr}
+
               dateProfile={dateProfile}
               nowDate={nowDate}
               todayRange={todayRange}

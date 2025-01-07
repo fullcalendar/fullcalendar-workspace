@@ -60,6 +60,9 @@ import { HeaderRow } from './spreadsheet/HeaderRow.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
 
 interface ResourceTimelineLayoutNormalProps {
+  labelId: string | undefined
+  labelStr: string | undefined
+
   tDateProfile: TimelineDateProfile
   dateProfile: DateProfile
   resourceHierarchy: GenericNode[]
@@ -278,6 +281,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         attrs={{
           role: hasNesting ? 'treegrid' : 'grid', // TODO: DRY
           'aria-rowcount': totalHeaderRowSpan + totalCnt,
+          'aria-label': props.labelStr,
+          'aria-labelledby': props.labelId,
         }}
       >
         <ResizableTwoCol

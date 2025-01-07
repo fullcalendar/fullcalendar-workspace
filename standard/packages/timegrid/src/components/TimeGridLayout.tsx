@@ -9,6 +9,9 @@ import { computeTimeTopFrac } from './util.js'
 import { RowConfig } from '@fullcalendar/daygrid/internal'
 
 export interface TimeGridLayoutProps {
+  labelId: string | undefined
+  labelStr: string | undefined
+
   dateProfile: DateProfile
   nowDate: DateMarker
   todayRange: DateRange
@@ -118,6 +121,8 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
         attrs={{
           role: 'grid',
           'aria-colcount': props.cells.length,
+          'aria-labelledby': props.labelId,
+          'aria-label': props.labelStr,
         }}
         className={joinClassNames(
           props.className,

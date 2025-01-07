@@ -65,9 +65,13 @@ export class ListView extends DateComponent<ViewProps, ListViewState> {
 
     return (
       <ViewContainer
-        elRef={this.setRootEl}
-        className='fc-list fc-flex-col fc-border'
         viewSpec={context.viewSpec}
+        attrs={{
+          'aria-labelledby': props.labelId,
+          'aria-label': props.labelStr,
+        }}
+        className='fc-list fc-flex-col fc-border'
+        elRef={this.setRootEl}
       >
         <Scroller // TODO: don't need heavyweight component
           vertical={verticalScrolling}

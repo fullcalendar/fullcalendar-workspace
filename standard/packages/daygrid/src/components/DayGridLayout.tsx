@@ -21,6 +21,9 @@ import { computeTopFromDate } from './util.js'
 import { RowConfig } from '../header-tier.js'
 
 export interface DayGridLayoutProps {
+  labelId: string | undefined
+  labelStr: string | undefined
+
   dateProfile: DateProfile
   todayRange: DateRange
   cellRows: DayTableCell[][]
@@ -68,6 +71,8 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
           role: 'grid',
           'aria-rowcount': props.headerTiers.length + props.cellRows.length,
           'aria-colcount': props.cellRows[0].length,
+          'aria-labelledby': props.labelId,
+          'aria-label': props.labelStr,
         }}
         className={joinClassNames(props.className, 'fc-print-root fc-border')}
       >

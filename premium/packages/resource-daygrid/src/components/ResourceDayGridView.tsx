@@ -95,6 +95,9 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
 
           return (
             <DayGridLayout
+              labelId={props.labelId}
+              labelStr={props.labelStr}
+
               dateProfile={props.dateProfile}
               todayRange={todayRange}
               cellRows={resourceDayTableModel.cells}

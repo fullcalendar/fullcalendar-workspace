@@ -155,6 +155,7 @@ export function buildDateDataConfigs(
           attrs: {
             'aria-label': fullWeekDayStr,
           },
+          innerAttrs: ARIA_HIDDEN_ATTRS,
           colSpan,
           className: getDayClassName(dayMeta),
         }

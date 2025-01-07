@@ -80,6 +80,9 @@ export class TimeGridView extends DateComponent<ViewProps> {
 
           return (
             <TimeGridLayout
+              labelId={props.labelId}
+              labelStr={props.labelStr}
+
               dateProfile={dateProfile}
               nowDate={nowDate}
               todayRange={todayRange}

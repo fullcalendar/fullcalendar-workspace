@@ -48,6 +48,8 @@ export class DayGridView extends BaseComponent<ViewProps> {
 
           return (
             <DayGridLayout
+              labelId={props.labelId}
+              labelStr={props.labelStr}
               dateProfile={props.dateProfile}
               todayRange={todayRange}
               cellRows={dayTableModel.cellRows}

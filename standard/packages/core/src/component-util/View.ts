@@ -16,6 +16,10 @@ export interface ViewProps {
   eventDrag: EventInteractionState | null
   eventResize: EventInteractionState | null
   forPrint: boolean
+
+  // only useful for top-level View, not nested components
+  labelId: string | undefined
+  labelStr: string | undefined
 }
 
 // HELPERS
