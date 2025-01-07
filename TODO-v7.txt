@@ -10,6 +10,10 @@ Regression present in v7-beta.3
 
 a11y
   rig up CI
+  intentional violation "ARIA hidden element must not be focusable or contain focusable elements"
+    navigating to scoped-down view via navlinks does not offer a better experience than simply
+    iterating events in current view. however, for sighted users, we want them to be able to drill
+    down to alleviate clutter of visually extraneous events
 
 i18n
   locales should populate viewChangeHint

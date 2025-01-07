@@ -139,7 +139,11 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     return (
       <div
         role={props.role as any /* !!! */}
-        aria-label={fullWeekStr}
+        aria-label={
+          props.role === 'row' // HACK
+            ? fullWeekStr
+            : undefined // can't have label on non-role div
+        }
         className={joinClassNames(
           'fc-flex-row fc-rel',
           props.className,
