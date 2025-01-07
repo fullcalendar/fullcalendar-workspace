@@ -67,6 +67,10 @@ export function buildDateRowConfig(
   }
 }
 
+/*
+For header cells: how to connect w/ custom rendering
+Applies to all cells in a row
+*/
 export function buildDateRenderConfig(context: ViewContext): CellRenderConfig<DayHeaderContentArg> {
   const { options } = context
 
@@ -79,6 +83,9 @@ export function buildDateRenderConfig(context: ViewContext): CellRenderConfig<Da
   }
 }
 
+/*
+For header cells: data
+*/
 export function buildDateDataConfigs(
   dates: DateMarker[],
   datesRepDistinctDays: boolean,
@@ -110,7 +117,7 @@ export function buildDateDataConfigs(
           renderProps,
           attrs: {
             'aria-label': fullDateStr,
-            ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}),
+            ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}), // TODO: assign undefined for nonexistent
             'data-date': formatDayString(date),
           },
           innerAttrs: isNavLink
