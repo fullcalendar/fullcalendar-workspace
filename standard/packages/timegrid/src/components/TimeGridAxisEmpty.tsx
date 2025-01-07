@@ -9,7 +9,7 @@ export interface TimeGridAxisEmptyProps {
 export function TimeGridAxisEmpty(props: TimeGridAxisEmptyProps) {
   return (
     <div
-      role='rowheader'
+      role='gridcell' // is empty so can't be rowheader/columnheader
       className={joinClassNames(
         'fc-timegrid-axis',
         props.isLiquid ? 'fc-liquid' : 'fc-content-box',

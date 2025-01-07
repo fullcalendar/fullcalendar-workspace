@@ -10,8 +10,9 @@ Regression present in v7-beta.3
 
 a11y
   rig up CI
-  no empty header cells. audit all
-    https://github.com/fullcalendar/fullcalendar/issues/2536#issuecomment-703825166
+  move labelledby to grid, and others
+    https://github.com/fullcalendar/fullcalendar/issues/7566
+  proper label for timegrid slot axis
   can get rid of fc-sr-only completely? using aria-label?
 
 i18n
@@ -296,6 +297,8 @@ ensure automated tests for...
     such as https://github.com/fullcalendar/fullcalendar/issues/7566
     "The div and span elements have an implicit role of generic and cannot be named unless they have a role attribute."
   aria-current='date' on today
+  no empty header cells
+    https://github.com/fullcalendar/fullcalendar/issues/2536#issuecomment-703825166
 
 scratch
   "invalid" dates aka "disabled" dates

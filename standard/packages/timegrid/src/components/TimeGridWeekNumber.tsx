@@ -36,7 +36,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
       <WeekNumberContainer
         tag='div'
         attrs={{
-          role: 'rowheader',
+          role: 'gridcell', // doesn't always describe other cells in row, so make generic
           'aria-label': fullDateStr,
         }}
         className={joinClassNames(
