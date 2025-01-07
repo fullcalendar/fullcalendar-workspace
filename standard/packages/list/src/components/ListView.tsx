@@ -66,10 +66,6 @@ export class ListView extends DateComponent<ViewProps, ListViewState> {
     return (
       <ViewContainer
         viewSpec={context.viewSpec}
-        attrs={{
-          'aria-labelledby': props.labelId,
-          'aria-label': props.labelStr,
-        }}
         className='fc-list fc-flex-col fc-border'
         elRef={this.setRootEl}
       >
@@ -77,9 +73,8 @@ export class ListView extends DateComponent<ViewProps, ListViewState> {
           vertical={verticalScrolling}
           className={verticalScrolling ? 'fc-liquid' : ''}
         >
-          {eventSegs.length > 0 ?
-            this.renderSegList(eventSegs, dayDates) :
-            this.renderEmptyMessage()}
+          {this.renderSegList(eventSegs, dayDates)}
+          {!eventSegs.length && this.renderEmptyMessage()}
         </Scroller>
       </ViewContainer>
     )
@@ -107,7 +102,7 @@ export class ListView extends DateComponent<ViewProps, ListViewState> {
       <ContentContainer
         tag="div"
         attrs={{
-          role: 'status',
+          role: 'status', // does a polite announcement
         }}
         className='fc-list-empty'
         renderProps={renderProps}
@@ -132,7 +127,11 @@ export class ListView extends DateComponent<ViewProps, ListViewState> {
     let segsByDay = groupSegsByDay(allSegs) // sparse array
 
     return (
-      <div role='list'>
+      <div
+        role='list'
+        aria-labelledby={this.props.labelId}
+        aria-label={this.props.labelStr}
+      >
         <NowTimer unit="day">
           {(nowDate: DateMarker, todayRange: DateRange) => {
             const dayNodes: VNode[] = []

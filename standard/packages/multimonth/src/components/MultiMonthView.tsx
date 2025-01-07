@@ -89,10 +89,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <ViewContainer
             viewSpec={context.viewSpec}
-            attrs={{
-              'aria-labelledby': props.labelId,
-              'aria-label': props.labelStr,
-            }}
             className={joinClassNames(
               'fc-multimonth fc-border',
               (cols === 1) ?
@@ -110,6 +106,8 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
             >
               <div
                 role='list'
+                aria-labelledby={props.labelId}
+                aria-label={props.labelStr}
                 className='fc-multimonth-inner'
                 ref={this.innerElRef}
               >
