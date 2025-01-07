@@ -11,7 +11,6 @@ Regression present in v7-beta.3
 a11y
   rig up CI
   proper label for timegrid slot axis
-  can get rid of fc-sr-only completely? using aria-label?
 
 i18n
   locales should populate viewChangeHint

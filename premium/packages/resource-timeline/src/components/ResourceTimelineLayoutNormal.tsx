@@ -417,11 +417,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   height: headerHeight,
                 }}
               >
-                {/* for screen reader users */}
-                <div role='row' aria-rowindex={1} className='fc-sr-only'>
-                  <div role='columnheader' aria-rowspan={totalHeaderRowSpan}>
-                    {options.eventsHint}
-                  </div>
+                {/* for screen reader users. zero-height */}
+                <div role='row' aria-rowindex={1}>
+                  <div
+                    role='columnheader'
+                    aria-rowspan={totalHeaderRowSpan}
+                    aria-label={options.eventsHint}
+                  />
                 </div>
 
                 {/* for sighted users */}
