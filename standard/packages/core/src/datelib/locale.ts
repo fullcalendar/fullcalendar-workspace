@@ -48,6 +48,7 @@ const MINIMAL_RAW_EN_LOCALE = {
   closeHint: 'Close',
   eventsHint: 'Events',
   allDayText: 'all-day',
+  timedText: 'timed',
   moreLinkText: 'more',
   noEventsText: 'No events to display',
 }

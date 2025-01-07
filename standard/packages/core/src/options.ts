@@ -191,6 +191,8 @@ export const BASE_OPTION_REFINERS = {
   allDayDidMount: identity as Identity<DidMountHandler<AllDayMountArg>>,
   allDayWillUnmount: identity as Identity<WillUnmountHandler<AllDayMountArg>>,
 
+  timedText: String,
+
   slotMinWidth: Number, // move to timeline?
   navLinks: Boolean,
   eventTimeFormat: createFormatter,

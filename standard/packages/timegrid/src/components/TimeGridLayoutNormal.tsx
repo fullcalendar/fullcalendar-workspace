@@ -244,6 +244,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               >
                 <div
                   role='rowheader'
+                  aria-label={options.timedText}
                   className='fc-content-box'
                   style={{ width: axisWidth }}
                 />

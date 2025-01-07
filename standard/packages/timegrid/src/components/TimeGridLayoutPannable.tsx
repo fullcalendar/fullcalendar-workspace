@@ -325,6 +325,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 <Fragment>
                   <div // canvas
                     role='rowheader'
+                    aria-label={options.timedText}
                     className={joinClassNames(
                       'fc-flex-col fc-grow',
                       absPrint && 'fc-rel',

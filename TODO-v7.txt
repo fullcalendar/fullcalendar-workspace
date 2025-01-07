@@ -10,7 +10,6 @@ Regression present in v7-beta.3
 
 a11y
   rig up CI
-  proper label for timegrid slot axis
 
 i18n
   locales should populate viewChangeHint
@@ -18,6 +17,8 @@ i18n
     TODO: use <time> instead for screenreaders
     document in changelog
   repurposed eventHint to eventsHint for resource-timeline
+    document in changelog
+  new timedText for timegrid axis label
     document in changelog
 
 misc
