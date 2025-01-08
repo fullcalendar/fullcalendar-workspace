@@ -5,10 +5,11 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 a11y
-  don't have rowheader cell in header row
   later
     "Note: The aria-rowindex must be added to each row, but is optional on the cells, except for cells that span rows: the aria-rowindex attribute is required on all spanning cells."
-    https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-rowindex
+      https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-rowindex
+    don't have rowheader cell in header row
+      should always be a colheader
 
 misc
   Regression present in v7-beta.3
