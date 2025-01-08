@@ -4,8 +4,6 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-week number can't be displayed on one-row daygrid
-
 a11y
   don't have rowheader cell in header row
   later
@@ -182,6 +180,7 @@ Changelog
     TODO: update all locales
   Add: i18n: added timedText for rowHeader on timegrid timed-event row
     TODO: update all locales
+  Add: week-numbers no longer shown when only one DayGrid row
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078

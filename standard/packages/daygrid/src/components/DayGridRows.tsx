@@ -115,7 +115,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             todayRange={props.todayRange}
             cells={cells}
             showDayNumbers={rowCnt > 1}
-            showWeekNumbers={options.weekNumbers}
+            showWeekNumbers={rowCnt > 1 && options.weekNumbers}
             forPrint={props.forPrint}
             isCompact={isCompact}
 
