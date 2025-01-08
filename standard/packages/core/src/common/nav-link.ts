@@ -15,8 +15,6 @@ export function buildDateStr(
   return context.dateEnv.format(dateMarker, viewType === 'week' ? WEEK_FORMAT : DAY_FORMAT)
 }
 
-export const ARIA_HIDDEN_ATTRS = { 'aria-hidden': true }
-
 /*
 Assumes navLinks enabled
 Always hidden to screen readers. Do not point aria-labelledby at this. Use aria-label instead.
@@ -47,8 +45,8 @@ export function buildNavLinkAttrs(
   }
 
   return {
-    ...ARIA_HIDDEN_ATTRS, // never allow screen readers to navigate into because full info already available in current view
-    title: formatWithOrdinals(options.navLinkHint, [dateStr, zonedDate], dateStr),
+    'role': ('link' as any), // TODO
+    'aria-label': formatWithOrdinals(options.navLinkHint, [dateStr, zonedDate], dateStr),
     'data-navlink': '', // for legacy selectors. TODO: use className?
     ...(isTabbable
       ? createAriaClickAttrs(handleInteraction)

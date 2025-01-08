@@ -73,7 +73,7 @@ export { getDayClassName, getDateMeta, getSlotClassName, DateMeta } from './comp
 export { isDimsEqual } from './component-util/rendering-misc.js'
 export { watchSize, watchWidth, watchHeight, afterSize } from './component-util/resize-observer.js'
 
-export { buildNavLinkAttrs, buildDateStr, ARIA_HIDDEN_ATTRS } from './common/nav-link.js'
+export { buildNavLinkAttrs, buildDateStr } from './common/nav-link.js'
 
 export {
   preventDefault,

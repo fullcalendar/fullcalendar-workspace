@@ -18,7 +18,6 @@ import {
   getDateMeta,
   buildDateStr,
   buildNavLinkAttrs,
-  ARIA_HIDDEN_ATTRS,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -140,7 +139,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                   attrs={
                     isNavLink
                       ? buildNavLinkAttrs(context, props.date, undefined, fullDateStr)
-                      : ARIA_HIDDEN_ATTRS
+                      : { 'aria-hidden': true } // label already on cell
                   }
                   className={joinClassNames(
                     'fc-daygrid-day-number',

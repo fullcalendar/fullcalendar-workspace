@@ -98,8 +98,9 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
             tag='div'
             attrs={
               isNavLink
-                ? buildNavLinkAttrs(context, cell.date, cell.rowUnit)
-                : {} // don't need ARIA_HIDDEN_ATTRS because parent already aria-hidden
+                // not tabbable because parent is aria-hidden
+                ? buildNavLinkAttrs(context, cell.date, cell.rowUnit, undefined, /* isTabbable = */ false)
+                : {} // don't bother with aria-hidden because parent already hidden
             }
             className={joinClassNames(
               'fc-cell-inner fc-padding-md',

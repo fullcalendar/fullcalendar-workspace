@@ -1,5 +1,5 @@
 import { ClassNamesGenerator, CustomContentGenerator, DayHeaderContentArg, DidMountHandler, WillUnmountHandler } from '@fullcalendar/core'
-import { addDays, ARIA_HIDDEN_ATTRS, buildDateStr, buildNavLinkAttrs, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, ViewContext } from '@fullcalendar/core/internal'
+import { addDays, buildDateStr, buildNavLinkAttrs, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, ViewContext } from '@fullcalendar/core/internal'
 
 export interface CellRenderConfig<RenderProps> {
   generatorName: string
@@ -120,9 +120,10 @@ export function buildDateDataConfigs(
             ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}), // TODO: assign undefined for nonexistent
             'data-date': formatDayString(date),
           },
+          // for navlink
           innerAttrs: isNavLink
             ? buildNavLinkAttrs(context, date, undefined, fullDateStr)
-            : ARIA_HIDDEN_ATTRS,
+            : { 'aria-hidden': true }, // label already on cell
           colSpan,
           isNavLink,
           className: getDayClassName(dateMeta),
@@ -155,7 +156,10 @@ export function buildDateDataConfigs(
           attrs: {
             'aria-label': fullWeekDayStr,
           },
-          innerAttrs: ARIA_HIDDEN_ATTRS,
+          // for navlink
+          innerAttrs: {
+            'aria-hidden': true, // label already on cell
+          },
           colSpan,
           className: getDayClassName(dayMeta),
         }

@@ -1,4 +1,4 @@
-import { ARIA_HIDDEN_ATTRS, BaseComponent, DateProfile, WeekNumberContainer, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, joinClassNames, setRef, watchSize } from "@fullcalendar/core/internal"
+import { BaseComponent, DateProfile, WeekNumberContainer, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, joinClassNames, setRef, watchSize } from "@fullcalendar/core/internal"
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 
 export interface TimeGridWeekNumberProps {
@@ -53,7 +53,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
             attrs={
               isNavLink
                 ? buildNavLinkAttrs(context, range.start, 'week', fullDateStr)
-                : ARIA_HIDDEN_ATTRS
+                : { 'aria-label': fullDateStr }
             }
             className='fc-timegrid-axis-inner fc-cell-inner fc-padding-sm'
             elRef={this.innerElRef}

@@ -4,22 +4,19 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-Regression present in v7-beta.3
-  See https://codepen.io/arshaw/pen/wBwJmgg?editors=001 (via https://github.com/fullcalendar/fullcalendar/issues/7007)
-    TimeGrid events not spaced correctly
+month-weeknumbers-navlinks.html
+week number can't be displayed on one-row daygrid
 
 a11y
   don't have rowheader cell in header row
-  intentional violation "ARIA hidden element must not be focusable or contain focusable elements"
-    navigating to scoped-down view via navlinks does not offer a better experience than simply
-    iterating events in current view. however, for sighted users, we want them to be able to drill
-    down to alleviate clutter of visually extraneous events
-    ...nevermind... even Chrome gives errors
   later
     "Note: The aria-rowindex must be added to each row, but is optional on the cells, except for cells that span rows: the aria-rowindex attribute is required on all spanning cells."
     https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-rowindex
 
 misc
+  Regression present in v7-beta.3
+    See https://codepen.io/arshaw/pen/wBwJmgg?editors=001 (via https://github.com/fullcalendar/fullcalendar/issues/7007)
+      TimeGrid events not spaced correctly
   [v7-beta] Day cells do not expand to fit events in dayGridYear #7852
     https://github.com/fullcalendar/fullcalendar/issues/7852
   Reana's Safari doesn't render columns correctly. ResizeObserver missed notification error.

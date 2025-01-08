@@ -1,5 +1,5 @@
 import { DayHeaderContentArg } from '@fullcalendar/core'
-import { ARIA_HIDDEN_ATTRS, BaseComponent, buildNavLinkAttrs, ContentContainer, DateMarker, DateRange, formatDayString, getDateMeta, getDayClassName, getStickyHeaderDates, joinClassNames } from "@fullcalendar/core/internal";
+import { BaseComponent, buildNavLinkAttrs, ContentContainer, DateMarker, DateRange, formatDayString, getDateMeta, getDayClassName, getStickyHeaderDates, joinClassNames } from "@fullcalendar/core/internal";
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 
 export interface ListDayHeaderProps {
@@ -32,10 +32,10 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
       sideText,
       navLinkAttrs: isNavLink
         ? buildNavLinkAttrs(this.context, dayDate, undefined, this.props.fullDateStr)
-        : ARIA_HIDDEN_ATTRS,
+        : {},
       sideNavLinkAttrs: isNavLink
         ? buildNavLinkAttrs(this.context, dayDate, undefined, this.props.fullDateStr, /* isTabbable = */ false)
-        : ARIA_HIDDEN_ATTRS,
+        : { 'aria-hidden': true }, // first navLink offers same functionality
       ...dayMeta,
     }
 
