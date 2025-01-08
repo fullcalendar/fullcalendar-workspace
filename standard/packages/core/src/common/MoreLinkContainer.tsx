@@ -192,7 +192,9 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
   }
 
   handlePopoverClose = () => {
-    this.linkEl.focus()
+    if (this.linkEl) { // was null sometimes when initiating drag-n-drop would hide the popover
+      this.linkEl.focus()
+    }
     this.setState({ isPopoverOpen: false })
   }
 }

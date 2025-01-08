@@ -334,7 +334,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       colSpecs={colSpecs}
                       colWidths={spreadsheetColWidths}
                       indent={hasNesting}
-                      rowIndex={1 + superHeaderRowSpan}
+                      rowIndex={superHeaderRowSpan}
 
                       // refs
                       innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
