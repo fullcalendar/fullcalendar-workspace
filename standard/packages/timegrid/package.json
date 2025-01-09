@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/timegrid",
-  "version": "7.0.0-beta.3",
+  "version": "7.0.0-beta.4",
   "title": "FullCalendar Time Grid Plugin",
   "description": "Display events on time slots",
   "keywords": [
@@ -9,13 +9,13 @@
   ],
   "homepage": "https://fullcalendar.io/docs/timegrid-view",
   "dependencies": {
-    "@fullcalendar/daygrid": "workspace:7.0.0-beta.3"
+    "@fullcalendar/daygrid": "workspace:7.0.0-beta.4"
   },
   "peerDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.3"
+    "@fullcalendar/core": "workspace:7.0.0-beta.4"
   },
   "devDependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.3",
+    "@fullcalendar/core": "workspace:7.0.0-beta.4",
     "@fullcalendar-scripts/standard": "workspace:*"
   },
   "scripts": {

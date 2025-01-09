@@ -10,16 +10,16 @@
     "clean": "rm -rf dist tsc"
   },
   "dependencies": {
-    "@fullcalendar/adaptive": "workspace:7.0.0-beta.3",
-    "@fullcalendar/core": "workspace:7.0.0-beta.3",
-    "@fullcalendar/daygrid": "workspace:7.0.0-beta.3",
-    "@fullcalendar/interaction": "workspace:7.0.0-beta.3",
-    "@fullcalendar/list": "workspace:7.0.0-beta.3",
-    "@fullcalendar/premium-common": "workspace:7.0.0-beta.3",
-    "@fullcalendar/resource": "workspace:7.0.0-beta.3",
-    "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.3",
-    "@fullcalendar/timegrid": "workspace:7.0.0-beta.3",
-    "@fullcalendar/timeline": "workspace:7.0.0-beta.3"
+    "@fullcalendar/adaptive": "workspace:7.0.0-beta.4",
+    "@fullcalendar/core": "workspace:7.0.0-beta.4",
+    "@fullcalendar/daygrid": "workspace:7.0.0-beta.4",
+    "@fullcalendar/interaction": "workspace:7.0.0-beta.4",
+    "@fullcalendar/list": "workspace:7.0.0-beta.4",
+    "@fullcalendar/premium-common": "workspace:7.0.0-beta.4",
+    "@fullcalendar/resource": "workspace:7.0.0-beta.4",
+    "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.4",
+    "@fullcalendar/timegrid": "workspace:7.0.0-beta.4",
+    "@fullcalendar/timeline": "workspace:7.0.0-beta.4"
   },
   "devDependencies": {
     "css-loader": "^4.3.0",

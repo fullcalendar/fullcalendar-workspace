@@ -1,23 +1,23 @@
 {
   "name": "fullcalendar-scheduler",
-  "version": "7.0.0-beta.3",
+  "version": "7.0.0-beta.4",
   "title": "FullCalendar Premium Bundle",
   "description": "Easily render a full-sized drag & drop calendar with a combination of standard & premium plugins",
   "homepage": "https://fullcalendar.io/docs/initialize-globals",
   "dependencies": {
-    "@fullcalendar/adaptive": "workspace:7.0.0-beta.3",
-    "@fullcalendar/core": "workspace:7.0.0-beta.3",
-    "@fullcalendar/daygrid": "workspace:7.0.0-beta.3",
-    "@fullcalendar/interaction": "workspace:7.0.0-beta.3",
-    "@fullcalendar/list": "workspace:7.0.0-beta.3",
-    "@fullcalendar/multimonth": "workspace:7.0.0-beta.3",
-    "@fullcalendar/resource": "workspace:7.0.0-beta.3",
-    "@fullcalendar/resource-daygrid": "workspace:7.0.0-beta.3",
-    "@fullcalendar/resource-timegrid": "workspace:7.0.0-beta.3",
-    "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.3",
-    "@fullcalendar/scrollgrid": "workspace:7.0.0-beta.3",
-    "@fullcalendar/timegrid": "workspace:7.0.0-beta.3",
-    "@fullcalendar/timeline": "workspace:7.0.0-beta.3"
+    "@fullcalendar/adaptive": "workspace:7.0.0-beta.4",
+    "@fullcalendar/core": "workspace:7.0.0-beta.4",
+    "@fullcalendar/daygrid": "workspace:7.0.0-beta.4",
+    "@fullcalendar/interaction": "workspace:7.0.0-beta.4",
+    "@fullcalendar/list": "workspace:7.0.0-beta.4",
+    "@fullcalendar/multimonth": "workspace:7.0.0-beta.4",
+    "@fullcalendar/resource": "workspace:7.0.0-beta.4",
+    "@fullcalendar/resource-daygrid": "workspace:7.0.0-beta.4",
+    "@fullcalendar/resource-timegrid": "workspace:7.0.0-beta.4",
+    "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.4",
+    "@fullcalendar/scrollgrid": "workspace:7.0.0-beta.4",
+    "@fullcalendar/timegrid": "workspace:7.0.0-beta.4",
+    "@fullcalendar/timeline": "workspace:7.0.0-beta.4"
   },
   "devDependencies": {
     "@fullcalendar-scripts/standard": "workspace:*"
