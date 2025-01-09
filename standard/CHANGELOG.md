@@ -3,42 +3,36 @@
 
 ### :accessibility: Accessibility
 
-- Weekday on the list view has aria-hidden=True ([#7645](https://github.com/fullcalendar/fullcalendar/issues/7645))
+- Better table semantics for screen readers ([#6641](https://github.com/fullcalendar/fullcalendar/issues/6641), [#7656](https://github.com/fullcalendar/fullcalendar/issues/7656), [#7455](https://github.com/fullcalendar/fullcalendar/issues/7455))
+- List-view weekday navLinks should not have aria-hidden ([#7645](https://github.com/fullcalendar/fullcalendar/issues/7645))
 - Add aria-current="date" for "today" highlight ([#7502](https://github.com/fullcalendar/fullcalendar/issues/7502))
-- use aria-label instead of title attribute ([#7502](https://github.com/fullcalendar/fullcalendar/issues/7502))
-- aria improvement for view-switcher within toolbar
-  ([#7809](https://github.com/fullcalendar/fullcalendar/issues/7809))
-  ([#6522](https://github.com/fullcalendar/fullcalendar/issues/6522))
-- aria-labelledby for each MultiMonth month ([7537](https://github.com/fullcalendar/fullcalendar/issues/7537))
-- on event elements, if clickable, but no url, give role=button ([7567](https://github.com/fullcalendar/fullcalendar/issues/7567))
-- navlinks have role=link ([7567](https://github.com/fullcalendar/fullcalendar/issues/7567))
-- Popover close button is not tabbable ([#7157](https://github.com/fullcalendar/fullcalendar/issues/7157))
+- Use aria-label instead of title attribute ([#7584](https://github.com/fullcalendar/fullcalendar/issues/7584))
+- Aria improvement for view-switcher within toolbar ([#7809](https://github.com/fullcalendar/fullcalendar/issues/7809), [#6522](https://github.com/fullcalendar/fullcalendar/issues/6522))
+- Customizable heading hierarchy level via `headingLevel` ([#6972](https://github.com/fullcalendar/fullcalendar/issues/6972))
+- Improve MultiMonth title hierarchy via role=list ([7537](https://github.com/fullcalendar/fullcalendar/issues/7537))
+- Improve +more link popover-like aria attributes ([7567](https://github.com/fullcalendar/fullcalendar/issues/7567))
+- Improve navLink aria attributes, give role=link ([7567](https://github.com/fullcalendar/fullcalendar/issues/7567))
+- Give role=button to clickable event elements w/o urls ([7567](https://github.com/fullcalendar/fullcalendar/issues/7567))
+- Tabbable popover close button ([#7157](https://github.com/fullcalendar/fullcalendar/issues/7157))
 - Navigate popover items with keyboard ([#6624](https://github.com/fullcalendar/fullcalendar/issues/6624))
-- multiMonthYear disabled day cells have broken ARIA references ([#7379](https://github.com/fullcalendar/fullcalendar/issues/7379))
-- headingLevel
-  - calendar title: https://github.com/fullcalendar/fullcalendar/issues/6972
-  - WONTFIX: multimonth titles: https://github.com/fullcalendar/fullcalendar/issues/7537
-    because within a listitem/grid, which is discourage to put headings. headings are for main content flow
-  - and markup for fc-toolbar-title no longer H2
-- Cannot use aria-label or aria-labelledby on elements and roles that prohibit naming ([#7566](https://github.com/fullcalendar/fullcalendar/issues/7566))
+- Disabled day cells have broken ARIA references ([#7379](https://github.com/fullcalendar/fullcalendar/issues/7379))
+- Move aria-label/labelledby away from invalid elements to cells ([#7566](https://github.com/fullcalendar/fullcalendar/issues/7566))
+- Elements contain aria-hidden children which are not allowed by their ARIA role ([#7455](https://github.com/fullcalendar/fullcalendar/issues/7455))
 
 ### :beetle: Bugfixes
 
-- resource-timeline scrolls down when it shouldn't, attempting to preserve scroll state ([#4443](https://github.com/fullcalendar/fullcalendar/issues/4443))
-- certain date/time text should be text-selectable ([#5628](https://github.com/fullcalendar/fullcalendar/issues/5628))
-  - implemented for DayGrid. implemented in beta.3 for other views
+- Resource-Timeline scrolls down when it shouldn't, attempting to preserve scroll state ([#4443](https://github.com/fullcalendar/fullcalendar/issues/4443))
+- Certain date/time text should be text-selectable ([#5628](https://github.com/fullcalendar/fullcalendar/issues/5628))
 
 ### :warning: Breaking Changes
 
-- for headerToolbar/footerToolbar, specifying left/right when direction:rtl, will render items within each section of the toolbar right-to-left
-- disabled days in timegrid and daygrid(non-month) render content within the headers
-  as opposed to being completely blank. timeline always did this
+- For headerToolbar/footerToolbar for RTL calendars, elements within toolbar sections now span right-to-left
+- Disabled days (via `validRange`) now display text in TimeGrid and DayGrid header cells. Still no content within body cells.
 
 ### :white_check_mark::rewind: Resolved Regressions
 
-- bug: Always show week numbers in timegrid view
-- fixed: When building Next 14,
-  "navigator is not defined"
+- Fixed Next 14 error "navigator is not defined" ([#7802](https://github.com/fullcalendar/fullcalendar/issues/7802))
+- Fixed week-numbers being displayed when `weekNumbers: false`
 
 ## v7.0.0-beta.3 (2024-12-18)
 
