@@ -19,3 +19,6 @@ packages:
   - '!./examples/t3-app'
   # same:
   - '!./examples/jest-react'
+  # Error "The 'compilation' argument must be an instance of Compilation"
+  # https://stackoverflow.com/questions/67727180/the-compilation-argument-must-be-an-instance-of-compilation
+  - '!./examples/react16'
