@@ -477,14 +477,14 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   )}
                 </div>
               </Scroller>
+              {Boolean(stickyFooterScrollbar) && (
+                <StickyFooterScrollbar
+                  canvasWidth={canvasWidth}
+                  scrollerRef={this.footScrollerRef}
+                  scrollbarWidthRef={this.handleBottomScrollbarWidth}
+                />
+              )}
             </div>
-            {Boolean(stickyFooterScrollbar) && (
-              <StickyFooterScrollbar
-                canvasWidth={canvasWidth}
-                scrollerRef={this.footScrollerRef}
-                scrollbarWidthRef={this.handleBottomScrollbarWidth}
-              />
-            )}
           </div>
         </div>
       </Fragment>

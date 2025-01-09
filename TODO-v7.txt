@@ -12,6 +12,11 @@ a11y
       should always be a colheader
 
 misc
+  bug with timeline sticky multi-tier date text
+    premium/bundle/examples/timeline-sticky-header.html
+    1. Click 3-day view
+    2. Resize resource area
+    3. "Sat 1/7" flickers and changes position
   Regression present in v7-beta.3
     See https://codepen.io/arshaw/pen/wBwJmgg?editors=001 (via https://github.com/fullcalendar/fullcalendar/issues/7007)
       TimeGrid events not spaced correctly
