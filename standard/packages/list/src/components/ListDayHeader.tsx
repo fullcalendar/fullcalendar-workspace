@@ -6,7 +6,6 @@ export interface ListDayHeaderProps {
   dayDate: DateMarker
   todayRange: DateRange
   forPrint: boolean
-  fullDateStr: string
 }
 
 export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
@@ -31,11 +30,12 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
       text,
       sideText,
       navLinkAttrs: isNavLink
-        ? buildNavLinkAttrs(this.context, dayDate, undefined, this.props.fullDateStr)
+        ? buildNavLinkAttrs(this.context, dayDate, undefined, text)
         : {},
       sideNavLinkAttrs: isNavLink
-        ? buildNavLinkAttrs(this.context, dayDate, undefined, this.props.fullDateStr, /* isTabbable = */ false)
-        : { 'aria-hidden': true }, // first navLink offers same functionality
+        // duplicate navLink, so does not need to be tabbable
+        ? buildNavLinkAttrs(this.context, dayDate, undefined, sideText, /* isTabbable = */ false)
+        : {},
       ...dayMeta,
     }
 

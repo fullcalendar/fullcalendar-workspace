@@ -50,7 +50,6 @@ export class ListDay extends BaseComponent<ListDayProps> {
           dayDate={props.dayDate}
           todayRange={todayRange}
           forPrint={props.forPrint}
-          fullDateStr={fullDateStr}
         />
         <div
           role='list'
