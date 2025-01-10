@@ -769,9 +769,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   /*
   Captures current values
   */
-  private handleTimeScrollEnd = ({ x, isUser }: { x: number, isUser: boolean }) => {
+  private handleTimeScrollEnd = (isUser: boolean) => {
     if (isUser) {
-      this.scroll.x = x
+      this.scroll.x = this.timeScroller.x
       this.scroll.time = undefined
     }
   }
@@ -808,9 +808,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   /*
   Captures current values
   */
-  private handleEntityScrollEnd = ({ y, isUser }: { y: number, isUser: boolean }) => {
+  private handleEntityScrollEnd = (isUser: boolean) => {
     if (isUser) {
       const { bodyLayouts, bodyTops, bodyHeights, scroll } = this
+      const y = this.bodyScroller.y
 
       const coordRes = findEntityByCoord(
         bodyLayouts,

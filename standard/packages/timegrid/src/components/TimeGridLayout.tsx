@@ -204,8 +204,10 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   /*
   Captures current values
   */
-  private handleTimeScrollEnd = ({ y, isUser }: { y: number, isUser: boolean }) => {
+  private handleTimeScrollEnd = (isUser: boolean) => {
     if (isUser) {
+      const y = this.timeScrollerRef.current.y
+
       // record, but only if not forPrint, which could give bogus values in the case of
       // TimeGridLayoutPannable, which kills y-scrolling, but retains x-scrolling,
       // which reports as a 0 y-scroll.

@@ -314,7 +314,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     this.applyTimeScroll()
   }
 
-  private handleTimeScrollEnd = ({ isUser }: { isUser: boolean }) => {
+  private handleTimeScrollEnd = (isUser: boolean) => {
     if (isUser) {
       this.scrollTime = null
     }

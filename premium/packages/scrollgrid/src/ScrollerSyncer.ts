@@ -1,11 +1,9 @@
 import { Emitter, isArraysEqual, Scroller, ScrollerSyncerInterface } from "@fullcalendar/core/internal"
 
-/*
-Fires:
-- scrollEnd: ({ x, y, isUser }) => void
-*/
 export class ScrollerSyncer implements ScrollerSyncerInterface {
-  private emitter: Emitter<any> = new Emitter()
+  private emitter: Emitter<{
+    scrollEnd: (isUser: boolean) => void
+  }> = new Emitter()
   private scrollers: Scroller[] = []
   private destroyFuncs: (() => void)[] = []
   private masterScroller: Scroller
@@ -60,11 +58,11 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
     this.isPaused = false
   }
 
-  addScrollEndListener(handler: (arg: { x: number, y: number, isUser: boolean }) => void): void {
+  addScrollEndListener(handler: (isUser: boolean) => void): void {
     this.emitter.on('scrollEnd', handler)
   }
 
-  removeScrollEndListener(handler: (arg: { x: number, y: number, isUser: boolean }) => void): void {
+  removeScrollEndListener(handler: (isUser: boolean) => void): void {
     this.emitter.off('scrollEnd', handler)
   }
 
@@ -112,11 +110,7 @@ export class ScrollerSyncer implements ScrollerSyncerInterface {
         }
 
         if (isMoved) {
-          this.emitter.trigger('scrollEnd', {
-            x,
-            y,
-            isUser,
-          })
+          this.emitter.trigger('scrollEnd', isUser)
         }
       }
     }

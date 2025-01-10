@@ -12,7 +12,11 @@ but are we sure we can't just ignore programmatic scrollTo() calls with a flag? 
 the scroll-master simply by who was the newest scroller? Does passive:true do things asynchronously?
 */
 export class ScrollListener {
-  public emitter: Emitter<any> = new Emitter()
+  public emitter: Emitter<{
+    scrollStart: (isUser: boolean) => void
+    scroll: (isUser: boolean) => void
+    scrollEnd: (isUser: boolean) => void
+  }> = new Emitter()
 
   private wheelWaiter: DelayedRunner
   private scrollWaiter: DelayedRunner

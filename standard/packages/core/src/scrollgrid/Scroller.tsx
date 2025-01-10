@@ -136,11 +136,11 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     }
   }
 
-  addScrollEndListener(handler: (arg: { x: number, y: number, isUser: boolean }) => void): void {
+  addScrollEndListener(handler: (isUser: boolean) => void): void {
     this.listener.emitter.on('scrollEnd', handler)
   }
 
-  removeScrollEndListener(handler: (arg: { x: number, y: number, isUser: boolean }) => void): void {
+  removeScrollEndListener(handler: (isUser: boolean) => void): void {
     this.listener.emitter.off('scrollEnd', handler)
   }
 }

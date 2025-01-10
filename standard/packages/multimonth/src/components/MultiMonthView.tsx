@@ -191,7 +191,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     }
   }
 
-  private handleScrollEnd = ({ isUser }: { isUser: boolean }) => {
+  private handleScrollEnd = (isUser: boolean) => {
     if (isUser) {
       this.scrollDate = null
     }

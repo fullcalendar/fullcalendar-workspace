@@ -20,9 +20,6 @@ Cross-browser
     [bug] Reana's Safari doesn't render columns correctly. ResizeObserver missed notification error.
     [bug] shows ResizeObserver loop warning: https://github.com/fullcalendar/fullcalendar/issues/7861
 DayGrid
-  [bug]: unnecessary vertical scrollbar in daygrid see issue-6749-related.html
-  [bug]: on multiweek-view.html,
-    when DnD events and it changes row heights, unnecessarily resets scroll
   why doesn't daygrid weeknumber have rounded corner anymore?
   weekNumbers in daygrid should be in DOM-order before cells
   prevent DayGridCell headers from overflowing? makes really small calendars look better
