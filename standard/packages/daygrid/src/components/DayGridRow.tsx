@@ -61,7 +61,7 @@ export interface DayGridRowProps {
 
   // dimensions
   colWidth?: number
-  basis?: number | string // height basis (before growing)
+  basis?: number // height before growing
 
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
@@ -144,6 +144,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             : undefined // can't have label on non-role div
         }
         className={joinClassNames(
+          'fc-daygrid-row',
           'fc-flex-row fc-rel',
           props.className,
         )}

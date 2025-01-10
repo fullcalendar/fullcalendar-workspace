@@ -1,5 +1,16 @@
 
 //
+// fc-daygrid-row
+//
+
+.fc-media-print .fc-daygrid-row { // (print)
+  // Print view squishes width which results in overly tall cells that can't adapt to new width
+  // hardcode a value that looks good in portrait and landscape
+  // In print view, the row <div> is NOT flexbox, so no interference with expanding algorithm
+  min-height: 6em;
+}
+
+//
 // fc-daygrid-row > fg > cell
 //
 

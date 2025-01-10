@@ -1,4 +1,3 @@
-import { CssDimValue } from '@fullcalendar/core'
 import {
   EventSegUiInteractionState,
   DateComponent,
@@ -87,13 +86,14 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
 
     let isHeightAuto = getIsHeightAuto(options)
     let rowHeightsRedistribute = !props.forPrint && !isHeightAuto
-    let [rowMinHeight, isCompact] = computeRowHeight(
+
+    let rowBasis = computeRowBasis(
       props.visibleWidth,
       rowCnt,
       isHeightAuto,
-      props.forPrint,
       options,
     )
+    let isCompact = computeRowIsCompact(props.visibleWidth, options)
 
     return (
       <div
@@ -140,7 +140,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
 
             // dimensions
             colWidth={props.colWidth}
-            basis={rowMinHeight || 0}
+            basis={rowBasis}
 
             // refs
             heightRef={rowHeightRefMap.createRef(cells[0].key)}
@@ -226,33 +226,44 @@ function isSegAllDay(seg: EventRangeProps): boolean {
   return seg.eventRange.def.allDay
 }
 
-export function computeRowHeight(
+/*
+Amount of height a row should consume prior to expanding
+We don't want to use min-height with flexbox because we leverage min-height:auto,
+which yields value based on natural height of events
+*/
+export function computeRowBasis(
   visibleWidth: number | undefined, // should INCLUDE any scrollbar width to avoid oscillation
   rowCnt: number,
   isHeightAuto: boolean,
-  forPrint: boolean,
   options: ViewOptionsRefined,
-): [minHeight: CssDimValue | undefined, isCompact: boolean] {
+): number {
   if (visibleWidth != null) {
     // ensure a consistent row min-height modelled after a month with 6 rows respecting aspectRatio
     // will result in same minHeight regardless of weekends, dayMinWidth, height:auto
-    const rowMinHeight = visibleWidth / options.aspectRatio / 6
+    const rowBasis = visibleWidth / options.aspectRatio / 6
 
-    return [
-      forPrint
-        // special-case for print, which condenses whole-page width without notifying
-        // this is value that looks natural on paper for portrait/landscape
-        ? '6em'
-        // don't give minHeight when single-month non-auto-height
-        // TODO: better way to detect this with DateProfile?
-        : (rowCnt > 6 || isHeightAuto)
-          ? rowMinHeight
-          : undefined,
-
-      // isCompact?: just before most lone +more links hit bottom of cell
-      rowMinHeight < 70,
-    ]
+    // don't give minHeight when single-month non-auto-height
+    // TODO: better way to detect this with DateProfile?
+    return (rowCnt > 6 || isHeightAuto) ? rowBasis : 0
   }
 
-  return [undefined, false]
+  return 0
+}
+
+/*
+Infers cell height based on overall width
+*/
+export function computeRowIsCompact(
+  visibleWidth: number | undefined, // should INCLUDE any scrollbar width to avoid oscillation
+  options: ViewOptionsRefined,
+): boolean {
+  if (visibleWidth != null) {
+    // ensure a consistent row min-height modelled after a month with 6 rows respecting aspectRatio
+    // will result in same minHeight regardless of weekends, dayMinWidth, height:auto
+    const rowBasis = visibleWidth / options.aspectRatio / 6
+
+    return rowBasis < 70
+  }
+
+  return false
 }

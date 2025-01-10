@@ -23,8 +23,6 @@ Markup refactor
   put fc-border on viewcontainer
 DayGrid
   [bug][print-view]:
-    bad row min-height in print view
-  [bug][print-view]:
     bad daygrid text overflow in examples-v7/month-view.html
   [bug]: unnecessary vertical scrollbar in daygrid see issue-6749-related.html
   [bug]: on multiweek-view.html,
