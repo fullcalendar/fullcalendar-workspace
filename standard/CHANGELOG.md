@@ -17,7 +17,6 @@
 - Navigate popover items with keyboard ([#6624](https://github.com/fullcalendar/fullcalendar/issues/6624))
 - Disabled day cells have broken ARIA references ([#7379](https://github.com/fullcalendar/fullcalendar/issues/7379))
 - Move aria-label/labelledby away from invalid elements to cells ([#7566](https://github.com/fullcalendar/fullcalendar/issues/7566))
-- Elements contain aria-hidden children which are not allowed by their ARIA role ([#7455](https://github.com/fullcalendar/fullcalendar/issues/7455))
 
 ### :beetle: Bugfixes
 
