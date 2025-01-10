@@ -11,14 +11,6 @@
   font-size: var(--fc-small-font-size);
 }
 
-/*
-HACK: force for print, which has liquid-width days but event-heights don't adapt
-*/
-.fc-media-print .fc-daygrid-event {
-  white-space: nowrap !important;
-  overflow: hidden !important;
-}
-
 // left/right margins
 .fc-direction-ltr .fc-daygrid-event.fc-event-start, // (ltr-left-terminus)
 .fc-direction-rtl .fc-daygrid-event.fc-event-end { // (rtl-left-terminus)
@@ -105,8 +97,15 @@ HACK: force for print, which has liquid-width days but event-heights don't adapt
 
 .fc-daygrid-dot-event .fc-event-time, // > time
 .fc-daygrid-dot-event .fc-event-title { // > title
+  // CAN be overridden
   white-space: nowrap;
   overflow: hidden;
+}
+.fc-media-print .fc-daygrid-dot-event .fc-event-time, // (print) > time
+.fc-media-print .fc-daygrid-dot-event .fc-event-title { // (print) > title
+  // CANNOT be overridden. print view depends on width-independent height
+  white-space: nowrap !important;
+  overflow: hidden !important;
 }
 
 .fc-daygrid-dot-event .fc-event-title { // > title

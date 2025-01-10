@@ -34,8 +34,15 @@
 
 .fc-h-event .fc-event-time, // > time
 .fc-h-event .fc-event-title { // > title-outer > title
+  // CAN be overridden
   white-space: nowrap;
   overflow: hidden;
+}
+.fc-media-print .fc-h-event .fc-event-time, // (print) > time
+.fc-media-print .fc-h-event .fc-event-title { // (print) > title-outer > title
+  // CANNOT be overridden. print view depends on width-independent height
+  white-space: nowrap !important;
+  overflow: hidden !important;
 }
 
 .fc-h-event .fc-event-title-outer { // > title-outer

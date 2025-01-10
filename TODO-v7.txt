@@ -8,6 +8,7 @@ General Markup
   move data-navlink to a className
   don't need theme-system style reset for navlinks
   better markup for Popover title/close (no span, use flexbox)
+  put fc-border on viewcontainer
 Cross-browser
   [bug] scroll not restored after print-view for any browser/view?
   Firefox
@@ -18,12 +19,7 @@ Cross-browser
   Safari
     [bug] Reana's Safari doesn't render columns correctly. ResizeObserver missed notification error.
     [bug] shows ResizeObserver loop warning: https://github.com/fullcalendar/fullcalendar/issues/7861
-Markup refactor
-  just like events conditionally are <a> tags, should make navlinks the same
-  put fc-border on viewcontainer
 DayGrid
-  [bug][print-view]:
-    bad daygrid text overflow in examples-v7/month-view.html
   [bug]: unnecessary vertical scrollbar in daygrid see issue-6749-related.html
   [bug]: on multiweek-view.html,
     when DnD events and it changes row heights, unnecessarily resets scroll
