@@ -11,7 +11,7 @@ General Markup
 Cross-browser
   [bug] scroll not restored after print-view for any browser/view?
   Firefox
-    bug: Firefox 90: timegrid header/all-day scrollbarGutter not showing
+    [bug]: Firefox 90: timegrid header/all-day scrollbarGutter not showing
     regression: after print-view (for timegrid as least) scroll gutter filler permanently disappears
     Re-address borderBoxSize HACK
     resource-timeline header borders a little messed up
@@ -24,9 +24,9 @@ Markup refactor
 DayGrid
   [bug][print-view]:
     for multi-day events, don't display title within non-start/end segs
-  [bug][v7-beta] Day cells do not expand to fit events in dayGridYear #7852
-    https://github.com/fullcalendar/fullcalendar/issues/7852
   [bug]: unnecessary vertical scrollbar in daygrid see issue-6749-related.html
+  [bug]: on multiweek-view.html,
+    when DnD events and it changes row heights, unnecessarily resets scroll
   why doesn't daygrid weeknumber have rounded corner anymore?
   weekNumbers in daygrid should be in DOM-order before cells
   prevent DayGridCell headers from overflowing? makes really small calendars look better
@@ -169,6 +169,8 @@ Changelog
   Add: i18n: added timedText for rowHeader on timegrid timed-event row
     TODO: update all locales
   Add: week-numbers no longer shown when only one DayGrid row
+  Regression: [v7-beta] Day cells do not expand to fit events in dayGridYear #7852
+    https://github.com/fullcalendar/fullcalendar/issues/7852
 Freshdesk/GH-issues
   Fixed this issue of mousedown taking long time to recalculate style?
     https://fullcalendar.freshdesk.com/a/tickets/9078
@@ -299,6 +301,8 @@ ensure automated tests for...
   aria-current='date' on today
   no empty header cells
     https://github.com/fullcalendar/fullcalendar/issues/2536#issuecomment-703825166
+  [v7-beta] Day cells do not expand to fit events in dayGridYear
+    https://github.com/fullcalendar/fullcalendar/issues/7852
 
 scratch
   "invalid" dates aka "disabled" dates

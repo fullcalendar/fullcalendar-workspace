@@ -122,7 +122,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             // if not auto-height, distribute height of container somewhat evently to rows
             // (treat all as zero, distribute height, then ensure min-heights -- the inner content height)
             className={joinClassNames(
-              rowHeightsRedistribute && 'fc-grow fc-basis0',
+              rowHeightsRedistribute && 'fc-grow',
               rowCnt > 1 && 'fc-break-inside-avoid', // don't avoid breaks for single tall row
               row < rowCnt - 1 && 'fc-border-b',
             )}
@@ -140,7 +140,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
 
             // dimensions
             colWidth={props.colWidth}
-            minHeight={rowMinHeight}
+            basis={rowMinHeight || 0}
 
             // refs
             heightRef={rowHeightRefMap.createRef(cells[0].key)}

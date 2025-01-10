@@ -61,7 +61,7 @@ export interface DayGridRowProps {
 
   // dimensions
   colWidth?: number
-  minHeight?: number | string
+  basis?: number | string // height basis (before growing)
 
   // refs
   rootElRef?: Ref<HTMLElement> // needed by TimeGrid, to attach Hit system
@@ -148,7 +148,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           props.className,
         )}
         style={{
-          minHeight: props.minHeight,
+          'flex-basis': props.basis,
         }}
         ref={this.handleRootEl}
       >
