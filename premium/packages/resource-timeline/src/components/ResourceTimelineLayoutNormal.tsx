@@ -127,7 +127,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
   // TODO: make this nice
   // This is a means to recompute row positioning when *HeightMaps change
+  private queuedHeightChange = false
   handleHeightChange = () => {
+    this.queuedHeightChange = true
     afterSize(this.handleHeightChangeXXX)
   }
   handleHeightChangeXXX = () => {
@@ -655,17 +657,30 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   }
 
   componentDidUpdate(prevProps: ResourceTimelineLayoutNormalProps) {
+    const { props } = this
     const { options } = this.context
 
     this.updateScrollersSyncers()
 
-    if (prevProps.dateProfile !== this.props.dateProfile && options.scrollTimeReset) {
-      this.resetTimeScroll()
-    } else {
-      this.applyTimeScroll() // TODO: inefficient to do so often
+    const dateProfileChange = prevProps.dateProfile !== props.dateProfile
+    const slotWidthChange = prevProps.slotWidth !== props.slotWidth
+
+    if (dateProfileChange || slotWidthChange) {
+      if (dateProfileChange && options.scrollTimeReset) {
+        this.resetTimeScroll()
+      } else {
+        this.applyTimeScroll()
+      }
     }
 
-    this.applyEntityScroll() // TODO: inefficient to do so often
+    /*
+    Unfortunately this will execute after auto-scroll finished but before scrollEnd can record
+    the updated scroll positioning, causing a scroll-jump to the last recorded entityScroll.
+    */
+    if (this.queuedHeightChange) {
+      this.queuedHeightChange = false
+      this.applyEntityScroll()
+    }
   }
 
   componentWillUnmount() {
@@ -864,6 +879,15 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     } else {
       this.context.unregisterInteractiveComponent(this)
     }
+  }
+
+  prepareHits(): void {
+    /*
+    HACK for queuedHeightChange usage in componentDidUpdate
+    This executes when a drag/resize starts and clears the last recorded entity scroll
+    */
+    this.scroll.entityId = undefined
+    this.scroll.fromBottom = undefined
   }
 
   queryHit(positionLeft: number, positionTop: number): Hit {

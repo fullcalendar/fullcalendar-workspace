@@ -55,11 +55,6 @@ Resource DayGrid
   on DayGridHeader (for TimeGrid too), dates-BELOW-resources don't have resource ID, did they ever?
     did their customer-render-func ever get passed a resource?
 Resource Timeline
-  [bug]: drag-n-drop auto-scroll very glitchy
-  [bug]: when group-column resized really narrow, text isn't cropped like cells in resource rows
-  [bug]: in timeline-column-grouping.html
-    when changing the "Room" column to group:true, changes height, which it shouldn't!
-    some sort of off-by-one error with the top or bottom borders
   when no groupcols, do simplified DOM structure?
   i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
     TODO: do same concept for timeline-no-resources
