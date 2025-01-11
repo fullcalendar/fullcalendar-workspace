@@ -271,14 +271,15 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   }
 
   handleSlotInnerWidths = () => {
-    const { state } = this
-    const slotInnerWidth = Math.max(
-      this.headerRowInnerWidthMap.current.get(this.tDateProfile.cellRows.length - 1) || 0,
-      this.bodySlotInnerWidth,
-    )
+    const headerSlotInnerWidth = this.headerRowInnerWidthMap.current.get(this.tDateProfile.cellRows.length - 1)
+    const { bodySlotInnerWidth } = this
 
-    if (state.slotInnerWidth !== slotInnerWidth) {
-      this.setState({ slotInnerWidth })
+    if (headerSlotInnerWidth != null && bodySlotInnerWidth != null) {
+      const slotInnerWidth = Math.max(headerSlotInnerWidth, bodySlotInnerWidth)
+
+      if (slotInnerWidth !== this.state.slotInnerWidth) {
+        this.setState({ slotInnerWidth })
+      }
     }
   }
 

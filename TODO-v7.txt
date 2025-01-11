@@ -10,7 +10,6 @@ General Markup
   better markup for Popover title/close (no span, use flexbox)
   put fc-border on viewcontainer
 Cross-browser
-  [bug] scroll not restored after print-view for any browser/view?
   Firefox
     [bug]: Firefox 90: timegrid header/all-day scrollbarGutter not showing
     regression: after print-view (for timegrid as least) scroll gutter filler permanently disappears
@@ -18,6 +17,7 @@ Cross-browser
     resource-timeline header borders a little messed up
   Safari
     [bug] Reana's Safari doesn't render columns correctly. ResizeObserver missed notification error.
+      Safari 16.4, Mar 2023 (mine is 17.6)
     [bug] shows ResizeObserver loop warning: https://github.com/fullcalendar/fullcalendar/issues/7861
   Chrome
     [bug] with timeline sticky multi-tier date text

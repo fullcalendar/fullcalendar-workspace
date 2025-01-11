@@ -735,14 +735,17 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   }
 
   handleSlotInnerWidths = () => {
-    const slotInnerWidth = Math.max(
-      this.headerRowInnerWidthMap.current.get(this.props.tDateProfile.cellRows.length - 1) || 0,
-      this.bodySlotInnerWidth,
-    )
+    // TODO: do same for
+    const headerSlotInnerWidth = this.headerRowInnerWidthMap.current.get(this.props.tDateProfile.cellRows.length - 1)
+    const { bodySlotInnerWidth } = this
 
-    if (slotInnerWidth !== this.slotInnerWidth) {
-      this.slotInnerWidth = slotInnerWidth
-      setRef(this.props.slotInnerWidthRef, slotInnerWidth)
+    if (headerSlotInnerWidth != null && bodySlotInnerWidth != null) {
+      const slotInnerWidth = Math.max(headerSlotInnerWidth, bodySlotInnerWidth)
+
+      if (slotInnerWidth !== this.slotInnerWidth) {
+        this.slotInnerWidth = slotInnerWidth
+        setRef(this.props.slotInnerWidthRef, slotInnerWidth)
+      }
     }
   }
 
