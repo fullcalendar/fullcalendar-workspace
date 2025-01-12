@@ -16,11 +16,10 @@ Cross-browser
     Re-address borderBoxSize HACK
     resource-timeline header borders a little messed up
   Safari
-    [bug] Reana's Safari doesn't render columns correctly. ResizeObserver missed notification error.
-      Safari 16.4, Mar 2023 (mine is 17.6)
     [bug] shows ResizeObserver loop warning
       fixed DayGrid with height:auto (https://github.com/fullcalendar/fullcalendar/issues/7861)
-      still ResourceTimeline when going prev/next
+      still ResourceTimeline when going prev/next (only when passing by time period with many events)
+      still ResourceTimeline when switching TO a multi-tier time header
   Chrome
     [bug] with timeline sticky multi-tier date text
       premium/bundle/examples/timeline-sticky-header.html

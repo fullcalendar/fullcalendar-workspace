@@ -88,6 +88,11 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           <InnerContent
             tag="div"
             className='fc-cell-inner'
+            style={{
+              // HACK for Safari 16.4,
+              // which can't use ResizeObserver on elements with natural width 0
+              minWidth: 1,
+            }}
             elRef={this.innerElRef}
           />
         )}
