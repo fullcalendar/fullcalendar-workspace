@@ -17,9 +17,13 @@ Cross-browser
     resource-timeline header borders a little messed up
   Safari
     [bug] shows ResizeObserver loop warning
-      fixed DayGrid with height:auto (https://github.com/fullcalendar/fullcalendar/issues/7861)
-      still ResourceTimeline when going prev/next (only when passing by time period with many events)
-      still ResourceTimeline when switching TO a multi-tier time header
+      when moving past time-period (any resource-timeline view) that has events
+        when .fc-timeline-events gets taller (not shorter)
+        probably related to ResourceLane watching height which is connected to inner TimelineLane
+      when moving from resourceTimelineDay -> resourceTimelineThreeDays
+        when timeline header gains a level and gets taller
+        probably related to totalBodyOuterHeight hackiness
+      [fixed] DayGrid with height:auto (https://github.com/fullcalendar/fullcalendar/issues/7861)
   Chrome
     [bug] with timeline sticky multi-tier date text
       premium/bundle/examples/timeline-sticky-header.html
