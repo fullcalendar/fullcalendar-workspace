@@ -17,9 +17,6 @@ Cross-browser
     resource-timeline header borders a little messed up
   Safari
     [bug] shows ResizeObserver loop warning
-      when moving past time-period (any resource-timeline view) that has events
-        when .fc-timeline-events gets taller (not shorter)
-        probably related to ResourceLane watching height which is connected to inner TimelineLane
       when moving from resourceTimelineDay -> resourceTimelineThreeDays
         when timeline header gains a level and gets taller
         probably related to totalBodyOuterHeight hackiness
@@ -72,7 +69,6 @@ Resource Timeline
   change how column-resizing widths is distibuted?
     right now it's impossible to resize last column
     try to take width away from next column when expanding
-  optimize rendering for lane top/bottom padding
   when there's a superheader, and 2 headers in timeline area, padding in headers looks too thick?
 H-Scrolling Views
   ensure col-width-syncing doesn't have 1px-off problem

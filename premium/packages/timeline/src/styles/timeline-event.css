@@ -1,14 +1,5 @@
 
 //
-// fc-timeline-events (extends fc-event, fc-h-event)
-//   a CONTAINER for multiple events
-//
-
-.fc-timeline-events-overlap-enabled { // (overlap-enabled)
-  padding-bottom: 10px;
-}
-
-//
 // fc-timeline-event (extends fc-h-event)
 //
 

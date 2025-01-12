@@ -5,3 +5,7 @@
   position: relative;
   z-index: $event-z; // above fc-timeline-slots
 }
+
+.fc-timeline-lane-overlap-enabled .fc-timeline-lane-footer {
+  padding-bottom: 10px;
+}

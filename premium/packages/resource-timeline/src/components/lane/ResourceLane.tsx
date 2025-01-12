@@ -1,4 +1,4 @@
-import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef } from '@fullcalendar/core/internal'
+import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames } from '@fullcalendar/core/internal'
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
 import { TimelineLane, TimelineLaneProps } from '@fullcalendar/timeline/internal'
@@ -13,7 +13,9 @@ export interface ResourceLaneProps extends TimelineLaneProps {
 
 export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
-  private disconnectHeight?: () => void
+  private disconnectFooterHeight?: () => void
+  private eventsHeight?: number
+  private footerHeight?: number
 
   render() {
     let { props, context } = this
@@ -23,11 +25,16 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
     return (
       <ContentContainer
         tag="div"
-        className='fc-timeline-lane fc-flex-col'
+        className={joinClassNames(
+          'fc-timeline-lane',
+          options.eventOverlap === false // TODO: fix bad default
+            ? 'fc-timeline-lane-overlap-disabled'
+            : 'fc-timeline-lane-overlap-enabled',
+          'fc-flex-col',
+        )}
         attrs={{
           role: 'gridcell',
         }}
-        elRef={this.handleRootEl}
         renderProps={renderProps}
         generatorName="resourceLaneContent"
         customGenerator={options.resourceLaneContent}
@@ -58,6 +65,13 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
 
               // dimensions
               slotWidth={props.slotWidth}
+
+              // ref
+              heightRef={this.handleEventsHeight}
+            />
+            <div
+              ref={this.handleFooterEl}
+              className='fc-timeline-lane-footer'
             />
           </Fragment>
         )}
@@ -65,17 +79,29 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
     )
   }
 
-  handleRootEl = (rootEl: HTMLElement) => {
-    if (this.disconnectHeight) {
-      this.disconnectHeight()
-      this.disconnectHeight = undefined
+  handleEventsHeight = (eventsHeight: number) => { // already executing "after size"
+    this.eventsHeight = eventsHeight
+    afterSize(this.handleHeight)
+  }
+
+  handleFooterEl = (footerEl: HTMLElement) => {
+    if (this.disconnectFooterHeight) {
+      this.disconnectFooterHeight()
+      this.disconnectFooterHeight = undefined
     }
-    if (rootEl) {
-      this.disconnectHeight = watchHeight(rootEl, (height) => {
-        setRef(this.props.heightRef, height)
+    if (footerEl) {
+      this.disconnectFooterHeight = watchHeight(footerEl, (footerHeight) => {
+        this.footerHeight = footerHeight
+        afterSize(this.handleHeight)
       })
-    } else {
-      setRef(this.props.heightRef, null)
+    }
+  }
+
+  handleHeight = () => {
+    const { eventsHeight, footerHeight } = this
+
+    if (eventsHeight != null && footerHeight != null) {
+      setRef(this.props.heightRef, eventsHeight + footerHeight)
     }
   }
 }

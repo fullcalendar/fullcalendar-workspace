@@ -9,8 +9,9 @@ import {
   EventRangeProps,
   CoordSpan,
   joinClassNames,
+  setRef,
 } from '@fullcalendar/core/internal'
-import { createElement, Fragment } from '@fullcalendar/core/preact'
+import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 import { horizontalsToCss } from '../TimelineCoords.js'
 import { TimelineLaneBg } from './TimelineLaneBg.js'
@@ -39,6 +40,9 @@ export interface TimelineLaneProps {
 
   // dimensions
   slotWidth: number | undefined
+
+  // ref
+  heightRef?: Ref<number>
 }
 
 interface TimelineLaneState {
@@ -63,6 +67,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
 
   // internal
   private slicer = new TimelineLaneSlicer()
+  private totalHeight?: number
+  private firedTotalHeight?: number
 
   /*
   TODO: lots of memoization needed here!
@@ -102,6 +108,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
       options.eventOrderStrict,
       options.eventMaxStack,
     )
+    this.totalHeight = totalHeight
 
     let forcedInvisibleMap = // TODO: more convenient/DRY
       (slicedProps.eventDrag ? slicedProps.eventDrag.affectedInstances : null) ||
@@ -127,9 +134,6 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         <div
           className={joinClassNames(
             'fc-timeline-events',
-            options.eventOverlap === false // TODO: fix bad default
-              ? 'fc-timeline-events-overlap-disabled'
-              : 'fc-timeline-events-overlap-enabled',
             'fc-content-box', // because height is set, and padding might be set
           )}
           style={{ height: totalHeight }}
@@ -246,5 +250,22 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
 
   private handleSegHeights = () => {
     this.setState({ segHeightRev: this.segHeightRefMap.rev }) // will trigger rerender
+  }
+
+  /*
+  componentDidMount(): void {
+    // might want to do firedTotalHeight, but won't be ready on first render
+  }
+  */
+
+  componentDidUpdate(): void {
+    if (this.totalHeight !== this.firedTotalHeight) {
+      this.firedTotalHeight = this.totalHeight
+      setRef(this.props.heightRef, this.totalHeight)
+    }
+  }
+
+  componentWillUnmount(): void {
+    setRef(this.props.heightRef, null)
   }
 }
