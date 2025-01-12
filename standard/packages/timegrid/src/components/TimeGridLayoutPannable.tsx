@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, StickyFooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Ruler, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, StickyFooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef } from "@fullcalendar/core/internal"
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridHeaderRow, RowConfig, computeColWidth, computeRowIsCompact } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
@@ -58,10 +58,11 @@ export interface TimeGridLayoutPannableProps {
 }
 
 interface TimeGridLayoutPannableState {
+  totalWidth?: number
   clientWidth?: number
+  bodyHeight?: number
   clientHeight?: number
-  endScrollbarWidth?: number
-  bottomScrollbarWidth?: number
+  stickyFooterScrollbarWidth?: number
   axisWidth?: number
   headerTierHeights: number[]
   slatInnerHeight?: number
@@ -121,8 +122,18 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
       slatMainInnerHeightRefMap,
     } = this
     const { nowDate, headerTiers, forPrint } = props
-    const { axisWidth } = state
+    const { axisWidth, totalWidth, clientWidth, bodyHeight, clientHeight, stickyFooterScrollbarWidth } = state
     const { options } = context
+
+    const endScrollbarWidth = (totalWidth != null && clientWidth != null)
+      ? totalWidth - clientWidth
+      : undefined
+
+    const bottomScrollbarWidth = stickyFooterScrollbarWidth != null
+      ? stickyFooterScrollbarWidth
+      : (bodyHeight != null && clientHeight != null)
+        ? bodyHeight - clientHeight
+        : undefined
 
     const verticalScrolling = !forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !forPrint && getStickyHeaderDates(options)
@@ -133,14 +144,14 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
 
     const colCnt = props.cells.length
     // TODO: memo?
-    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.clientWidth)
+    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, clientWidth)
 
     const slatCnt = props.slatMetas.length
     const [slatHeight, slatLiquid] = computeSlatHeight( // TODO: memo?
       verticalScrolling && options.expandRows,
       slatCnt,
       state.slatInnerHeight,
-      state.clientHeight,
+      clientHeight,
     )
     this.slatHeight = slatHeight
 
@@ -150,7 +161,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     const forcedBodyHeight = absPrint ? totalSlatHeight : undefined
 
     const rowsNotExpanding = verticalScrolling && !options.expandRows &&
-      state.clientHeight != null && state.clientHeight > totalSlatHeight
+      clientHeight != null && clientHeight > totalSlatHeight
 
     const firstBodyRowIndex = options.dayHeaders ? headerTiers.length + 1 : 1
 
@@ -226,10 +237,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   />
                 ))}
               </div>
-              {Boolean(state.endScrollbarWidth) && (
+              {Boolean(endScrollbarWidth) && (
                 <div
                   className='fc-border-s fc-filler'
-                  style={{ minWidth: state.endScrollbarWidth }}
+                  style={{ minWidth: endScrollbarWidth }}
                 />
               )}
             </Scroller>
@@ -274,7 +285,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       showDayNumbers={false}
                       forPrint={forPrint}
                       isHitComboAllowed={props.isHitComboAllowed}
-                      isCompact={computeRowIsCompact(state.clientWidth, options)}
+                      isCompact={computeRowIsCompact(clientWidth, options)}
 
                       // content
                       fgEventSegs={props.fgEventSegs}
@@ -291,10 +302,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       colWidth={colWidth}
                     />
                   </div>
-                  {Boolean(state.endScrollbarWidth) && (
+                  {Boolean(endScrollbarWidth) && (
                     <div
                       className='fc-border-s fc-filler'
-                      style={{ minWidth: state.endScrollbarWidth }}
+                      style={{ minWidth: endScrollbarWidth }}
                     />
                   )}
                 </Scroller>
@@ -306,7 +317,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             role='row'
             aria-rowindex={firstBodyRowIndex + (options.allDaySlot ? 1 : 0)}
             className={joinClassNames(
-              'fc-timegrid-body fc-flex-row', // TODO: rename away from "body"? (because we have another "body" div above)
+              'fc-timegrid-body fc-flex-row fc-rel', // TODO: rename away from "body"? (because we have another "body" div above)
+              // fc-rel for Ruler.fc-fill-start
               verticalScrolling && 'fc-liquid',
             )}
           >
@@ -370,14 +382,14 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         totalHeight={slatHeight != null ? slatHeight * slatCnt : undefined}
                       />
                     )}
-                    {Boolean(rowsNotExpanding || state.bottomScrollbarWidth) && (
+                    {Boolean(rowsNotExpanding || bottomScrollbarWidth) && (
                       <div
                         class={joinClassNames(
                           'fc-border-t fc-filler',
                           rowsNotExpanding && 'fc-liquid',
                         )}
                         style={{
-                          minHeight: state.bottomScrollbarWidth
+                          minHeight: bottomScrollbarWidth
                         }}
                       />
                     )}
@@ -400,14 +412,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   forPrint
                 }
                 className={joinClassNames(
-                  'fc-flex-col',
+                  'fc-flex-col fc-rel', // fc-rel for Ruler.fc-fill-start
                   verticalScrolling && 'fc-liquid',
                 )}
                 ref={this.mainScrollerRef}
-                clientWidthRef={this.handleClientWidth}
-                clientHeightRef={this.handleClientHeight}
-                endScrollbarWidthRef={this.handleEndScrollbarWidth}
-                bottomScrollbarWidthRef={this.handleBottomScrollbarWidth}
               >
                 <div // canvas (grows b/c of filler at bottom)
                   className='fc-flex-col fc-grow fc-rel'
@@ -476,17 +484,21 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     </Fragment>
                   )}
                 </div>
+                <Ruler widthRef={this.handleClientWidth} />
+                <Ruler heightRef={this.handleClientHeight} className='fc-fill-start' />
               </Scroller>
               {Boolean(stickyFooterScrollbar) && (
                 <StickyFooterScrollbar
                   canvasWidth={canvasWidth}
                   scrollerRef={this.footScrollerRef}
-                  scrollbarWidthRef={this.handleBottomScrollbarWidth}
+                  scrollbarWidthRef={this.handleStickyFooterScrollbarWidth}
                 />
               )}
             </div>
-          </div>
-        </div>
+            <Ruler heightRef={this.handleBodyHeight} className='fc-fill-start' />
+          </div>{/* END timed row */}
+        </div>{/* END rowgroup */}
+        <Ruler widthRef={this.handleTotalWidth} />
       </Fragment>
     )
   }
@@ -517,20 +529,24 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
+  private handleTotalWidth = (totalWidth: number) => {
+    this.setState({ totalWidth })
+  }
+
   private handleClientWidth = (clientWidth: number) => {
     this.setState({ clientWidth })
+  }
+
+  private handleBodyHeight = (bodyHeight: number) => {
+    this.setState({ bodyHeight })
   }
 
   private handleClientHeight = (clientHeight: number) => {
     this.setState({ clientHeight })
   }
 
-  private handleEndScrollbarWidth = (endScrollbarWidth: number) => {
-    this.setState({ endScrollbarWidth })
-  }
-
-  private handleBottomScrollbarWidth = (bottomScrollbarWidth: number) => {
-    this.setState({ bottomScrollbarWidth })
+  private handleStickyFooterScrollbarWidth = (stickyFooterScrollbarWidth: number) => {
+    this.setState({ stickyFooterScrollbarWidth })
   }
 
   private handleHeaderHeights = () => {

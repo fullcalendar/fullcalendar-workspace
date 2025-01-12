@@ -1,10 +1,7 @@
-import { isDimsEqual } from '../component-util/rendering-misc.js'
-import { watchSize } from '../component-util/resize-observer.js'
 import { DateComponent } from '../component/DateComponent.js'
-import { joinClassNames } from '../util/html.js'
-import { setRef } from '../vdom-util.js'
 import { Dictionary } from '../options.js'
-import { ComponentChildren, createElement, Ref } from '../preact.js'
+import { ComponentChildren, createElement } from '../preact.js'
+import { joinClassNames } from '../util/html.js'
 import { ScrollerInterface } from './ScrollerInterface.js'
 import { ScrollListener } from './ScrollListener.js'
 
@@ -17,12 +14,6 @@ export interface ScrollerProps {
   // el hooks
   className?: string
   style?: Dictionary
-
-  // dimensions
-  clientWidthRef?: Ref<number> // for this to be accurate, element should NOT have left/right borders
-  clientHeightRef?: Ref<number> // for this to be accurate, element should NOT have top/bottom borders
-  endScrollbarWidthRef?: Ref<number>
-  bottomScrollbarWidthRef?: Ref<number>
 }
 
 export class Scroller extends DateComponent<ScrollerProps> implements ScrollerInterface {
@@ -31,11 +22,6 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
   // internal
   public listener: ScrollListener // public for ScrollerSyncer
-  private disconnectSize?: () => void
-  private currentClientWidth: number
-  private currentClientHeight: number
-  private currentEndScrollbarWidth: number
-  private currentBottomScrollbarWidth: number
 
   render() {
     const { props } = this
@@ -62,44 +48,14 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   }
 
   handleEl = (el: HTMLDivElement | null) => {
-    const { props } = this
-
     if (this.el) {
       this.el = null
       this.listener.destroy()
-      this.disconnectSize()
-
-      setRef(props.clientWidthRef, null)
-      setRef(props.clientHeightRef, null)
-      setRef(props.endScrollbarWidthRef, null)
-      setRef(props.bottomScrollbarWidthRef, null)
     }
 
     if (el) {
       this.el = el
       this.listener = new ScrollListener(el)
-
-      this.disconnectSize = watchSize(el, (clientWidth, clientHeight) => {
-        const { props } = this
-        const endScrollbarWidth = el.offsetWidth - clientWidth
-        const bottomScrollbarWidth = el.offsetHeight - clientHeight
-
-        if (this.currentClientWidth !== clientWidth) {
-          setRef(props.clientWidthRef, this.currentClientWidth = clientWidth)
-        }
-        if (this.currentClientHeight !== clientHeight) {
-          setRef(props.clientHeightRef, this.currentClientHeight = clientHeight)
-        }
-
-        // are these isDimsEqual calls necessary?
-
-        if (!isDimsEqual(this.currentBottomScrollbarWidth, bottomScrollbarWidth)) {
-          setRef(props.bottomScrollbarWidthRef, this.currentBottomScrollbarWidth = bottomScrollbarWidth)
-        }
-        if (!isDimsEqual(this.currentEndScrollbarWidth, endScrollbarWidth)) {
-          setRef(props.endScrollbarWidthRef, this.currentEndScrollbarWidth = endScrollbarWidth)
-        }
-      }, /* client(width+height) = */ true)
     }
   }
 

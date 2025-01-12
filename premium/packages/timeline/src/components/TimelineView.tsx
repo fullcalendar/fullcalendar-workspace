@@ -19,6 +19,7 @@ import {
   getIsHeightAuto,
   RefMap,
   joinClassNames,
+  Ruler,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
@@ -31,8 +32,8 @@ import { TimelineNowIndicatorLine } from './TimelineNowIndicatorLine.js'
 import { TimelineNowIndicatorArrow } from './TimelineNowIndicatorArrow.js'
 
 interface TimelineViewState {
+  totalWidth?: number
   clientWidth?: number
-  endScrollbarWidth?: number
   slotInnerWidth?: number
 }
 
@@ -61,6 +62,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     const { props, state, context } = this
     const { options } = context
 
+    const { totalWidth, clientWidth } = state
+    const endScrollbarWidth = (totalWidth != null && clientWidth != null)
+      ? totalWidth - clientWidth
+      : undefined
+
     /* date */
 
     const tDateProfile = this.tDateProfile = this.buildTimelineDateProfile(
@@ -85,7 +91,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       tDateProfile.slotsPerLabel,
       options.slotMinWidth,
       state.slotInnerWidth, // is ACTUALLY the label width. rename?
-      state.clientWidth,
+      clientWidth,
     )
     this.slotWidth = slotWidth
 
@@ -152,10 +158,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     />
                   )}
                 </div>
-                {Boolean(state.endScrollbarWidth) && (
+                {Boolean(endScrollbarWidth) && (
                   <div
                     className='fc-border-s fc-filler'
-                    style={{ minWidth: state.endScrollbarWidth }}
+                    style={{ minWidth: endScrollbarWidth }}
                   />
                 )}
               </Scroller>
@@ -171,8 +177,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   verticalScrolling && 'fc-liquid',
                 )}
                 ref={this.bodyScrollerRef}
-                clientWidthRef={this.handleClientWidth}
-                endScrollbarWidthRef={this.handleEndScrollbarWidth}
               >
                 <div
                   aria-label={options.eventsHint}
@@ -215,6 +219,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     />
                   )}
                 </div>
+                <Ruler widthRef={this.handleClientWidth} />
               </Scroller>
 
               {/* FOOTER scrollbar
@@ -227,6 +232,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   <div style={{ width: canvasWidth }}/>
                 </Scroller>
               )}
+
+              <Ruler widthRef={this.handleTotalWidth} />
             </ViewContainer>
           )
         }}
@@ -283,15 +290,15 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     }
   }
 
-  handleClientWidth = (clientWidth: number) => {
+  handleTotalWidth = (totalWidth: number) => {
     this.setState({
-      clientWidth,
+      totalWidth,
     })
   }
 
-  handleEndScrollbarWidth = (endScrollbarWidth: number) => {
+  handleClientWidth = (clientWidth: number) => {
     this.setState({
-      endScrollbarWidth
+      clientWidth,
     })
   }
 

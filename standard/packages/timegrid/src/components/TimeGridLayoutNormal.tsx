@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, getIsHeightAuto, getStickyHeaderDates, Hit, joinClassNames, rangeContainsMarker, RefMap, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
+import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, getIsHeightAuto, getStickyHeaderDates, Hit, joinClassNames, rangeContainsMarker, RefMap, Ruler, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { DayGridHeaderRow, RowConfig, computeRowIsCompact } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
@@ -54,9 +54,9 @@ export interface TimeGridLayoutNormalProps {
 }
 
 interface TimeGridLayoutState {
+  totalWidth?: number
   clientWidth?: number
   clientHeight?: number
-  endScrollbarWidth?: number
   axisWidth?: number
   slatInnerHeight?: number
 }
@@ -86,8 +86,12 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
   render() {
     const { props, state, context, slatLabelInnerWidthRefMap, slatLabelInnerHeightRefMap, slatInnerMainHeightRefMap, headerLabelInnerWidthRefMap } = this
     const { nowDate, forPrint } = props
-    const { axisWidth } = state
+    const { axisWidth, clientWidth, totalWidth } = state
     const { options } = context
+
+    const endScrollbarWidth = (totalWidth != null && clientWidth != null)
+      ? totalWidth - clientWidth
+      : undefined
 
     const verticalScrolling = !forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !forPrint && getStickyHeaderDates(options)
@@ -156,10 +160,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   {...rowConfig}
                   className='fc-border-s fc-liquid'
                 />
-                {Boolean(state.endScrollbarWidth) && (
+                {Boolean(endScrollbarWidth) && (
                   <div
                     className='fc-border-s fc-filler'
-                    style={{ minWidth: state.endScrollbarWidth }}
+                    style={{ minWidth: endScrollbarWidth }}
                   />
                 )}
               </div>
@@ -190,7 +194,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   forPrint={forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
                   className='fc-border-s fc-liquid'
-                  isCompact={computeRowIsCompact(state.clientWidth, options)}
+                  isCompact={computeRowIsCompact(clientWidth, options)}
 
                   // content
                   fgEventSegs={props.fgEventSegs}
@@ -203,10 +207,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   dayMaxEvents={props.dayMaxEvents}
                   dayMaxEventRows={props.dayMaxEventRows}
                 />
-                {Boolean(state.endScrollbarWidth) && (
+                {Boolean(endScrollbarWidth) && (
                   <div
                     className='fc-border-s fc-filler'
-                    style={{ minWidth: state.endScrollbarWidth }}
+                    style={{ minWidth: endScrollbarWidth }}
                   />
                 )}
               </div>
@@ -218,13 +222,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           <Scroller
             vertical={verticalScrolling}
             className={joinClassNames(
-              'fc-timegrid-body fc-flex-col',
+              'fc-timegrid-body fc-flex-col fc-rel', // fc-rel for Ruler.fc-fill-start
               verticalScrolling && 'fc-liquid',
             )}
             ref={props.timeScrollerRef}
-            clientWidthRef={this.handleClientWidth}
-            clientHeightRef={this.handleClientHeight}
-            endScrollbarWidthRef={this.handleEndScrollbarWidth}
           >
             <div // canvas (grows b/c of filler at bottom)
               className='fc-flex-col fc-grow fc-rel'
@@ -326,8 +327,11 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 </Fragment>
               )}
             </div>
+            <Ruler widthRef={this.handleClientWidth} />
+            <Ruler heightRef={this.handleClientHeight} className='fc-fill-start' />
           </Scroller>
         </div>
+        <Ruler widthRef={this.handleTotalWidth} />
       </Fragment>
     )
   }
@@ -352,16 +356,16 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
+  private handleTotalWidth = (totalWidth: number) => {
+    this.setState({ totalWidth })
+  }
+
   private handleClientWidth = (clientWidth: number) => {
     this.setState({ clientWidth })
   }
 
   private handleClientHeight = (clientHeight: number) => {
     this.setState({ clientHeight })
-  }
-
-  private handleEndScrollbarWidth = (endScrollbarWidth: number) => {
-    this.setState({ endScrollbarWidth })
   }
 
   private handleAxisInnerWidths = () => {

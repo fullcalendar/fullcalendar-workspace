@@ -14,6 +14,7 @@ import {
   DayGridRange,
   EventRangeProps,
   joinClassNames,
+  Ruler,
 } from '@fullcalendar/core/internal'
 import { Fragment, Ref, createElement } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -45,14 +46,19 @@ export interface DayGridLayoutNormalProps {
 }
 
 interface DayGridViewState {
+  totalWidth?: number
   clientWidth?: number
-  endScrollbarWidth?: number
 }
 
 export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps, DayGridViewState> {
   render() {
     const { props, state, context } = this
     const { options } = context
+
+    const { totalWidth, clientWidth } = state
+    const endScrollbarWidth = (totalWidth != null && clientWidth != null)
+      ? totalWidth - clientWidth
+      : undefined
 
     const verticalScrollbars = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
@@ -71,18 +77,16 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
                 stickyHeaderDates && 'fc-table-header-sticky',
               )}
             />
-            {Boolean(state.endScrollbarWidth) && (
+            {Boolean(endScrollbarWidth) && (
               <div
                 className='fc-border-s fc-filler'
-                style={{ minWidth: state.endScrollbarWidth }}
+                style={{ minWidth: endScrollbarWidth }}
               />
             )}
           </div>
         )}
         <Scroller
           vertical={verticalScrollbars}
-          clientWidthRef={this.handleClientWidth}
-          endScrollbarWidthRef={this.handleEndScrollbarWidth}
           className={joinClassNames(
             'fc-daygrid-body',
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
@@ -112,16 +116,14 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             eventSelection={props.eventSelection}
 
             // dimensions
-            visibleWidth={ // TODO: DRY
-              state.clientWidth != null && state.endScrollbarWidth != null
-                ? state.clientWidth + state.endScrollbarWidth
-                : undefined
-            }
+            visibleWidth={totalWidth}
 
             // refs
             rowHeightRefMap={props.rowHeightRefMap}
           />
+          <Ruler widthRef={this.handleClientWidth} />
         </Scroller>
+        <Ruler widthRef={this.handleTotalWidth} />
       </Fragment>
     )
   }
@@ -130,11 +132,11 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     setRef(this.props.scrollerRef, scroller)
   }
 
-  handleClientWidth = (clientWidth: number) => {
-    this.setState({ clientWidth })
+  handleTotalWidth = (totalWidth: number) => {
+    this.setState({ totalWidth })
   }
 
-  handleEndScrollbarWidth = (endScrollbarWidth: number) => {
-    this.setState({ endScrollbarWidth })
+  handleClientWidth = (clientWidth: number) => {
+    this.setState({ clientWidth })
   }
 }

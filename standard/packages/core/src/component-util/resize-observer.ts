@@ -10,12 +10,11 @@ const fallbackTimeout = 100
 
 export type SizeCallback = (width: number, height: number) => void
 export type DisconnectSize = () => void
-export type WatchSize = (el: HTMLElement, callback: SizeCallback, client?: boolean, watchWidth?: boolean, watchHeight?: boolean) => DisconnectSize
+export type WatchSize = (el: HTMLElement, callback: SizeCallback, watchWidth?: boolean, watchHeight?: boolean) => DisconnectSize
 export type UpdateSizeSync = () => void
 
 type SizeConfig = { // internal only
   callback: SizeCallback
-  client?: boolean // watch and report clientWidth/clientHeight?
   width?: number // HACK: internal storage
   height?: number // HACK: internal storage
   watchWidth: boolean // TODO: use bitwise operations
@@ -56,15 +55,7 @@ function checkConfigMap() {
     const dirtyConfigs: SizeConfig[] = []
 
     for (const [el, config] of configMap.entries()) {
-      let width: number
-      let height: number
-
-      if (config.client) {
-        width = el.clientWidth
-        height = el.clientHeight
-      } else {
-        ({ width, height } = el.getBoundingClientRect())
-      }
+      const { width, height } = el.getBoundingClientRect()
 
       if (storeConfigDims(config, width, height)) {
         dirtyConfigs.push(config)
@@ -118,10 +109,7 @@ function initNative(): [WatchSize, UpdateSizeSync] {
       let width: number
       let height: number
 
-      if (config.client) {
-        width = el.clientWidth
-        height = el.clientHeight
-      } else if (entry.borderBoxSize && nativeBorderBoxEnabled) {
+      if (entry.borderBoxSize && nativeBorderBoxEnabled) {
         const borderBoxSize: any = entry.borderBoxSize[0] || entry.borderBoxSize // HACK for Firefox
         width = borderBoxSize.inlineSize
         height = borderBoxSize.blockSize
@@ -141,14 +129,13 @@ function initNative(): [WatchSize, UpdateSizeSync] {
   function watchSize(
     el: HTMLElement,
     callback: SizeCallback,
-    client?: boolean,
     watchWidth = true,
     watchHeight = true,
   ) {
-    configMap.set(el, { callback, client, watchWidth, watchHeight })
+    configMap.set(el, { callback, watchWidth, watchHeight })
 
     globalResizeObserver.observe(el, {
-      box: !client && nativeBorderBoxEnabled
+      box: nativeBorderBoxEnabled
         ? 'border-box'
         : undefined // default is 'content-box'
     })
@@ -207,7 +194,6 @@ function initFallback(): [WatchSize, UpdateSizeSync] {
   function watchSize(
     el: HTMLElement,
     callback: SizeCallback,
-    client?: boolean,
     watchWidth = true,
     watchHeight = true,
   ) {
@@ -215,7 +201,7 @@ function initFallback(): [WatchSize, UpdateSizeSync] {
       addGlobalHandlers()
     }
 
-    configMap.set(el, { callback, client, watchWidth, watchHeight })
+    configMap.set(el, { callback, watchWidth, watchHeight })
     requestCheckSizes()
 
     return () => {

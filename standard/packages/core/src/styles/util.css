@@ -140,10 +140,17 @@ Rarely used. Just inline this?
   right: 0;
 }
 
-.fc-fill-y {
+.fc-fill-y,
+.fc-fill-start {
   position: absolute;
   top: 0;
   bottom: 0;
+}
+
+.fc-fill-start {
+  left: 0;
+  right: 0;
+  width: 0; // because of this, dir=ltr/rtl will respect one of left or right
 }
 
 .fc-sticky-t { // top

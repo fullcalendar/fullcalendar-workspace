@@ -2,7 +2,10 @@
 // TODO: convert this to util classes?
 
 .fc-view-outer {
-  position: relative; // for aspect-ratio AND for being origin for premium-message at bottom-left corner
+  // for aspect-ratio
+  // AND for being origin for premium-message at bottom-left corner
+  // AND Ruler.fc-fill-start in ResourceTimelineView
+  position: relative;
 }
 
 .fc-view-outer-liquid,

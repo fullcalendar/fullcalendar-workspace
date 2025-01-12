@@ -18,7 +18,9 @@ Cross-browser
   Safari
     [bug] Reana's Safari doesn't render columns correctly. ResizeObserver missed notification error.
       Safari 16.4, Mar 2023 (mine is 17.6)
-    [bug] shows ResizeObserver loop warning: https://github.com/fullcalendar/fullcalendar/issues/7861
+    [bug] shows ResizeObserver loop warning
+      fixed DayGrid with height:auto (https://github.com/fullcalendar/fullcalendar/issues/7861)
+      still ResourceTimeline when going prev/next
   Chrome
     [bug] with timeline sticky multi-tier date text
       premium/bundle/examples/timeline-sticky-header.html
@@ -214,7 +216,12 @@ NOTES
       aria-posinset (index in current set)
       aria-setsize (current set size, not child size)
       ***I wanted to do this, but if rows out of order (because of virtualization),
-        then no way to establish parent/child relationshipds
+        then no way to establish parent/child relationships
+  Why we need to use a <Ruler> to measure dimensions
+    ResizeObserver does NOT synchronously handle dimension changes to self or ancestors while
+    handling current element's dimensions. Will give a "ResizeObserver loop completed with undelivered notifications"
+    error. Quintessential example is implementing an aspect-ratio element, which sets height of self after reading
+    width of self. <Ruler> detangles dimension relationships and is very portable.
 Punt
   print: in resource-timeline print-view, put divider between all cells
   Drop-shadow under sticky header, timeline headers

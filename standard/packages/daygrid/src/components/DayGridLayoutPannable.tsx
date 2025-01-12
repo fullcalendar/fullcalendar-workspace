@@ -18,6 +18,7 @@ import {
   EventRangeProps,
   StickyFooterScrollbar,
   joinClassNames,
+  Ruler,
 } from '@fullcalendar/core/internal'
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -53,8 +54,8 @@ export interface DayGridLayoutPannableProps {
 }
 
 interface DayGridViewState {
+  totalWidth?: number
   clientWidth?: number
-  endScrollbarWidth?: number
 }
 
 export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannableProps, DayGridViewState> {
@@ -67,12 +68,17 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
     const { props, state, context } = this
     const { options } = context
 
+    const { totalWidth, clientWidth } = state
+    const endScrollbarWidth = (totalWidth != null && clientWidth != null)
+      ? totalWidth - clientWidth
+      : undefined
+
     const verticalScrollbars = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
     const colCnt = props.cellRows[0].length
-    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, state.clientWidth)
+    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, clientWidth)
 
     return (
       <Fragment>
@@ -92,10 +98,10 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
                 colWidth={colWidth}
                 width={canvasWidth}
               />
-              {Boolean(state.endScrollbarWidth) && (
+              {Boolean(endScrollbarWidth) && (
                 <div
                   className='fc-border-s fc-filler'
-                  style={{ minWidth: state.endScrollbarWidth }}
+                  style={{ minWidth: endScrollbarWidth }}
                 />
               )}
             </Scroller>
@@ -116,8 +122,6 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             verticalScrollbars && 'fc-liquid',
           )}
           ref={this.bodyScrollerRef}
-          clientWidthRef={this.handleClientWidth}
-          endScrollbarWidthRef={this.handleEndScrollbarWidth}
         >
           <DayGridRows
             dateProfile={props.dateProfile}
@@ -141,22 +145,23 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             // dimensions
             colWidth={colWidth}
             width={canvasWidth}
-            visibleWidth={ // TODO: DRY
-              state.clientWidth != null && state.endScrollbarWidth != null
-                ? state.clientWidth + state.endScrollbarWidth
-                : undefined
-            }
+            visibleWidth={totalWidth}
 
             // refs
             rowHeightRefMap={props.rowHeightRefMap}
           />
+
+          <Ruler widthRef={this.handleClientWidth} />
         </Scroller>
+
         {Boolean(stickyFooterScrollbar) && (
           <StickyFooterScrollbar
             canvasWidth={canvasWidth}
             scrollerRef={this.footerScrollerRef}
           />
         )}
+
+        <Ruler widthRef={this.handleTotalWidth} />
       </Fragment>
     )
   }
@@ -185,12 +190,12 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  handleClientWidth = (clientWidth: number) => {
-    this.setState({ clientWidth })
+  handleTotalWidth = (totalWidth: number) => {
+    this.setState({ totalWidth })
   }
 
-  handleEndScrollbarWidth = (endScrollbarWidth: number) => {
-    this.setState({ endScrollbarWidth })
+  handleClientWidth = (clientWidth: number) => {
+    this.setState({ clientWidth })
   }
 
   // Scrolling
