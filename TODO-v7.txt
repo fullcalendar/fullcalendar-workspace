@@ -12,10 +12,32 @@ General Markup
   don't need theme-system style reset for navlinks
   better markup for Popover title/close (no span, use flexbox)
   put fc-border on viewcontainer
+General Performance
+  why does TimelineLane::render get called 3 times initially?
+  [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
+    not rerendinering events that didn't change --- not fixed in v6 or v7-beta
+  [?] https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
+    V6 repro: https://codepen.io/arshaw/pen/OJKMLRR?editors=0010
+    V7 has no real improvement
+  "Maximum update depth exceeded" error after resizing many times in Chrome --- reemerged?
+    https://github.com/fullcalendar/fullcalendar/issues/5606
+  hit-system: only query DOM element for handlers like dayClick at very end
+  this.detachInnerHeight() // should fire a 'null' height? yes! will cleanup any map listeners
+General Code Cleanup
+  Try to strip out dom-geom.ts and scrollbar-width, tho used for auto-scrolling
+  remove the Preact createContext hack because this is now implemented:
+    https://github.com/preactjs/preact/issues/2510
+  Calendar::updateSize should call resize-observer force-check
+    Don't do async Promise idea anymore
+    Call flushSync after
+  Kill memoizeArraylike,memoizeHashlike,others
+General [manual-test]
+  Touch devices
+  been having issues with scrollwheel getting scrollsyncing out of whack!?
 DayGrid
+  +more popover appears 1px too low now that we moved row border to bottom
   why doesn't daygrid weeknumber have rounded corner anymore?
   weekNumbers in daygrid should be in DOM-order before cells
-  prevent DayGridCell headers from overflowing? makes really small calendars look better
   simplify event positioning
     normalize each event-container's top by applying margin-top on ones that have smaller headers
     position each event-harness with a margin-top (in combo with existing abs positioning)
@@ -33,8 +55,8 @@ MultiMonth
   when setting slotDuration:{hours:1}, really short body. always like this? slats had bigger min-height?
   timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit z-indexes
   no stickyFooterScrollbars? never implemented in v6?
-  test stickyHeaderDates
-  test print header repeats
+  [manual-test] stickyHeaderDates
+  [manual-test] print header repeats
 Timeline
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
@@ -45,79 +67,27 @@ Resource Timeline
   when no groupcols, do simplified DOM structure?
   i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
     TODO: do same concept for timeline-no-resources
-  column grouping, should expand to full height, but doesn't
-    See bundle/examples/responsive.html
-  just like scrollbar dead area should have grey bg,
-    make timeline bottom area w/o slots a grey bg
-  get grouping via row and col simultaneously working. should be possible.
-    see timeline-row-n-col-grouping-not-working.html
-  change how column-resizing widths is distibuted?
-    right now it's impossible to resize last column
-    try to take width away from next column when expanding
   when there's a superheader, and 2 headers in timeline area, padding in headers looks too thick?
+  For resource-timeline "lanes", resource-group-rows have fc-resource-group but resource-rows
+    do no have fc-resource. Make consistent? add to changelog?
 H-Scrolling Views
   ensure col-width-syncing doesn't have 1px-off problem
     queries inner-width, but when assigning to outer-width, does it add 1px?
 List
   rethink how listview has data-date on which element
   Why is list-view crazy blackout happening when <a> event clicked or focused?
-General Responsive
-  Hide event times (daygrid/timeline) if too small?
-  should fc-padding-* classes be responsive, meaning related to font-size?
-    for fc-daygrid-day-number/fc-daygrid-week-number too
-  make ticket where popover is responsive?
-Performance
-  why does TimelineLane::render get called 3 times initially?
-  [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
-    not rerendinering events that didn't change --- not fixed in v6 or v7-beta
-  [?] https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
-    V6 repro: https://codepen.io/arshaw/pen/OJKMLRR?editors=0010
-    V7 has no real improvement
-  "Maximum update depth exceeded" error after resizing many times in Chrome --- reemerged?
-    https://github.com/fullcalendar/fullcalendar/issues/5606
-  hit-system: only query DOM element for handlers like dayClick at very end
-  this.detachInnerHeight() // should fire a 'null' height? yes! will cleanup any map listeners
-  use css translateX/Y instead of top/left to prevent reflows
-  user IntersectionObserver for DnD?
-Angular
-  Building example project gives warnings like
-    Ignoring this import because ".." was marked as having no side effects
 Locales
   audit all allDayText. there's no more max-width in the CSS. use allDayHtml with breaks if needed
-Dist
-  ensure outputted CSS doesn't have multiple :root declarations because of how we shifted vars.css around
-Manual Testing
-  Touch devices
 Examples
   In each two-column layout, give the sidebar flex-shrink:0 and the main min-width:0
     Things are currently collapsing very strangely on a narrow screen (like stackblitz angular demo)
-Last-minute
-  Can safely assume all RTL scrollbars are on left. Optimize what Scroller reports
-  Try to strip out dom-geom.ts and scrollbar-width, tho used for auto-scrolling
-  Change how liquid-height is done for a single-expanding region
-    Normally:
-      FIXED-AREAS: nothing
-      LIQUID-AREAS: { flex-grow:1, min-height:0, flex-basis:0 }
-      Needed for horizontal equal-width cell expansion; basis0 is important
-    New technique:
-      FIXED-AREAS: { flex-shrink:0 }
-      LIQUID-AREAS: { flex-grow:1, min-height:0 }
-      Good for layouts that are conditionally liquid-height
-      Tho probably not as performant because need to compute the pre-squished AND post-squished layouts
-  been having issues with scrollwheel getting scrollsyncing out of whack!?
-    TODO: test scrolling on touch devices
-Before release
-  DayGrid popover appears 1px too low now that we moved row border to bottom
-  revert "hacks to get print-mode working, but some should be reverted"
-  revert temporary gitignores
-  remove the Preact createContext hack because this is now implemented:
-    https://github.com/preactjs/preact/issues/2510
-  Calendar::updateSize should call resize-observer force-check
-    Don't do async Promise idea anymore
-    Call flushSync after
-  Kill memoizeArraylike,memoizeHashlike,others
-  For resource-timeline "lanes", resource-group-rows have fc-resource-group but resource-rows
-    do no have fc-resource. Make consistent? add to changelog?
+
+Release Prep
+------------
+
+ensure outputted CSS doesn't have multiple :root declarations because of how we shifted vars.css around
+revert "hacks to get print-mode working, but some should be reverted"
+revert temporary gitignores
 
 Automated Test TODO
 -------------------
@@ -198,27 +168,30 @@ when infinite scroll-loading done
 when virtual rendering done
   https://fullcalendar.freshdesk.com/a/tickets/8496
   https://fullcalendar.freshdesk.com/a/tickets/9701
-
-Punt
-----
-
-print: in resource-timeline print-view, put divider between all cells
-Drop-shadow under sticky header, timeline headers
-In timegrid, when date-selecting with mirror event, why are we rendering highlight?
-For timeline event-dnd, the mirror, should have white glow just like timegrid for when overlap other events
-lack of text-selectability: https://github.com/fullcalendar/fullcalendar/issues/5628
-  TODO: need larger discussion on whether dates w/ dateClick or events w/ eventClick
-    should allow text-selection or now
+make ticket where +more popover is responsive? (takes up whole phone screen)
 file bug for strange dragging events from timeline more-link (preexists)
-(same with TIMEGRID's more popover)
-  https://codepen.io/arshaw/pen/jOgeGwm?editors=0010
 timeline event dragging loses duration:
   1. have +more link with eventMaxStack
   2. open link, begin to drag event
   3. event looses it's duration. inconsistent with how normal event dragging happens
   (will be breaking change? maybe file ticket and add changelog)
   PREEXISTS: https://codepen.io/arshaw/pen/jOgeGwm?editors=0010
-Markup/CSS/structure
+file preexisting v6 bug:
+  non-singular view duration unit has weird hints on buttons "This ", "Next ", "Previous "
+  https://codepen.io/arshaw/pen/yyBpopg?editors=0010
+TimeGrid
+  Known visual regression with event positioning
+    After implementing restored v4 timegrid event spacing (https://github.com/fullcalendar/fullcalendar/issues/6569),
+    Events squish too much:
+      v4: https://codepen.io/arshaw/pen/pvzLNKr?editors=001 (BAD)
+      v5: https://codepen.io/arshaw/pen/YPKapao?editors=0010 (GOOD)
+      v6: https://codepen.io/arshaw/pen/NPKYbYb?editors=0010 (GOOD)
+      v7: https://codepen.io/arshaw/pen/wBwJmgg?editors=001 (BAD)
+
+Punt
+----
+
+General Markup
   kill fc-header-cell classname?
   in future css className refactor:
     fc-dayGridMonth -> fc-daygridmonth (to match fc-daygrid)
@@ -228,24 +201,37 @@ Markup/CSS/structure
     NEVERMIND. we've developed a strong precedent of dash-breaking-words,
       like week-number/day-number which needs to be both subcomponent (fc-daygrid-day>fc-daygrid-day-number)
       and independent component (fc-daygrid-week-number)
-have separate settings for date-format hints? out of whack
-  view's aria-label (if no headerToolbar) is "Sep 7 – 8, 2020" (bad that it's abbreviated)
-  week-view's column headers have hint "September 7, 2020" which don't include day of week (like real text "Mon 9/7")
-change <button> to role=button for fewer css reset collision?
-put navlink on multimonth month header text?
-file preexisting v6 bug:
-  non-singular view duration unit has weird hints on buttons "This ", "Next ", "Previous "
-  https://codepen.io/arshaw/pen/yyBpopg?editors=0010
-a11y
+  Drop-shadow under sticky header, timeline headers
+General Responsive
+  Hide event times (daygrid/timeline) if too small?
+  should fc-padding-* classes be responsive, meaning related to font-size?
+    for fc-daygrid-day-number/fc-daygrid-week-number too
+General Performance
+  use css translateX/Y instead of top/left to prevent reflows
+  user IntersectionObserver for DnD?
+General a11y
+  have separate settings for date-format hints? out of whack
+    view's aria-label (if no headerToolbar) is "Sep 7 – 8, 2020" (bad that it's abbreviated)
+    week-view's column headers have hint "September 7, 2020" which don't include day of week (like real text "Mon 9/7")
+  change <button> to role=button for fewer css reset collision?
   "Note: The aria-rowindex must be added to each row, but is optional on the cells, except for cells that span rows: the aria-rowindex attribute is required on all spanning cells."
     https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-rowindex
-TimeGrid [known visual regression]
-  After implementing restored v4 timegrid event spacing (https://github.com/fullcalendar/fullcalendar/issues/6569),
-  Events squish too much:
-    v4: https://codepen.io/arshaw/pen/pvzLNKr?editors=001 (BAD)
-    v5: https://codepen.io/arshaw/pen/YPKapao?editors=0010 (GOOD)
-    v6: https://codepen.io/arshaw/pen/NPKYbYb?editors=0010 (GOOD)
-    v7: https://codepen.io/arshaw/pen/wBwJmgg?editors=001 (BAD)
+DayGrid
+  prevent DayGridCell headers from overflowing? makes really small calendars look better
+Resource Timeline
+  get grouping via row and col simultaneously working. should be possible.
+    see timeline-row-n-col-grouping-not-working.html
+Angular
+  Building example project gives warnings like
+    Ignoring this import because ".." was marked as having no side effects
+TimeGrid
+  when date-selecting with mirror event, why are we rendering highlight?
+  for timeline event-dnd, the mirror, should have white glow just like timegrid for when overlap other events
+    https://codepen.io/arshaw/pen/jOgeGwm?editors=0010
+Timeline
+  for timeline event-dnd, the mirror, should have white glow just like timegrid for when overlap other events
+MultiMonth
+  put navlink on multimonth month header text?
 Cross-browser
   Firefox
     [bug][regression]: after print-view (for timegrid as least) scroll gutter filler permanently disappears
@@ -330,3 +316,13 @@ Why we need to use a <Ruler> to measure dimensions
   Timeline: https://codepen.io/arshaw/pen/WbeOpwX?editors=0010 (must scroll left after load)
     normal header
     empty cell
+How to do liquid-width/height, multiple technique
+  Classic performant technique (currently used):
+    FIXED-AREAS: nothing
+    LIQUID-AREAS: { flex-grow:1, min-height:0, flex-basis:0 }
+    Needed for horizontal equal-width cell expansion; basis0 is important
+  Experimental:
+    FIXED-AREAS: { flex-shrink:0 }
+    LIQUID-AREAS: { flex-grow:1, min-height:0 }
+    Good for layouts that are conditionally liquid-height
+    Tho probably not as performant because need to compute the pre-squished AND post-squished layouts
