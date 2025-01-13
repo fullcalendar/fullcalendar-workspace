@@ -12,6 +12,7 @@ General Markup
   don't need theme-system style reset for navlinks
   better markup for Popover title/close (no span, use flexbox)
   put fc-border on viewcontainer
+  z-index util classNames
 General Performance
   why does TimelineLane::render get called 3 times initially?
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
@@ -34,6 +35,8 @@ General Code Cleanup
 General [manual-test]
   Touch devices
   been having issues with scrollwheel getting scrollsyncing out of whack!?
+  stickyHeaderDates in all views
+  stickyFooterScrollbars in all views
 DayGrid
   +more popover appears 1px too low now that we moved row border to bottom
   why doesn't daygrid weeknumber have rounded corner anymore?
@@ -51,12 +54,9 @@ MultiMonth
   For print, force +morelink to isCompact=true
     Starting out NOT compact in forced 2-col formation, but when gets squished to where isCompact
     is needed, but ResizeObserver/etc doesn't adapt. examples-v7/multimonth-view.html
-  i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
+TimeGrid
   when setting slotDuration:{hours:1}, really short body. always like this? slats had bigger min-height?
   timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit z-indexes
-  no stickyFooterScrollbars? never implemented in v6?
-  [manual-test] stickyHeaderDates
-  [manual-test] print header repeats
 Timeline
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
