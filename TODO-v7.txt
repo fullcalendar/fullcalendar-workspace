@@ -4,6 +4,9 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+ASAP
+----
+
 General Markup
   move data-navlink to a className
   don't need theme-system style reset for navlinks
@@ -115,203 +118,215 @@ Before release
   Kill memoizeArraylike,memoizeHashlike,others
   For resource-timeline "lanes", resource-group-rows have fc-resource-group but resource-rows
     do no have fc-resource. Make consistent? add to changelog?
-Changelog
-  Add: Bootstrap4/5 line-height less chunky
-  Add: Bootstrap
-    Minimum Bootstrap5 version is 5.2.x
-    Bootstrap5 now a peer dependency (and popver by assoc). not the case for 4. TODO: modify docs.
-    Semantic color vars: https://github.com/fullcalendar/fullcalendar/issues/7465
-    Looks good with Dark Mode
-  Document better dark-mode abilities for anyone, with CSS vars that Bootstrap5 happens to manipulate
-  Add: Calendar::updateSize no longer synchronous
-  Add: all cell headers are no longer bold
-  Add: standin events get put through eventContent/etc
-  Add: eventSlicing (write tests too)
-    eventSlicing:true (request: https://github.com/fullcalendar/fullcalendar/issues/6187)
-    eventSlicing:false (request: https://fullcalendar.freshdesk.com/a/tickets/9203)
-  Add: no longer use semantic tags (a for navlink, h2 for title), instead using aria
-  Add: i18n: removed eventHint/timeHint - were put on list-view fake column headers
-    TODO: update all locales
-  Add: i18n: added timedText for rowHeader on timegrid timed-event row
-    TODO: update all locales
-  Add: week-numbers no longer shown when only one DayGrid row
-  Regression: [v7-beta] Day cells do not expand to fit events in dayGridYear #7852
-    https://github.com/fullcalendar/fullcalendar/issues/7852
-  [fixed v7] DayGrid with height:auto "shows ResizeObserver loop warning"
-    https://github.com/fullcalendar/fullcalendar/issues/7861
+
+Automated Test TODO
+-------------------
+
+how an event can render as a/div/div[role=button]
+weird list-view slicing logic we removed
+  https://github.com/fullcalendar/fullcalendar/blob/9a0edaeb5eddf2cec8bd2409ecc26c4598b98a48/packages/list/src/ListView.tsx#L235-L249
+resource-timeline rowgrouping
+  has correct borders on bottom of rows, even when all row groups collapsed
+  when expandRows: true, groups do not expand, only resources!
+timeline/hscroll-timeGRID, when sticky-header
+  ensure time-axis or resource area has bottom filler to match horizontal scrollbar
+resource-timeline group cells (that run vertically) have correct border, especially 2nd and 3rd down
+positioning of sticky headers in all views. list view sticky subheaders too
+resource-timeline indent works
+pixel # for height/contentHeight works
+correct header row heights for multi-header resource-TIMEgrid row with horizontal scrolling
+when nowIndicator is OFF, doesn't render in DOM at all
+percentage-based resource-timeline spreadsheet-column resizing
+that expandRows works enabled/disabled for timegrid/resource-timeline views
+test datagrid with h scroll, but timeline area WITHOUT h scroll
+multiple tiers of headers line-up across scrollers
+  timegrid h-scroll. with and without weekNumber
+  resource-timeline. w/ datagrid/timeline headers: 1/2, 2/1
+disabled days
+  do NOT render navlinks (header or obviously day number)
+  the headers WILL render data-date, fc-day-disabled (but not dayofweek, past, future classNames)
+audit all past a11y bugs that aren't picked up by audit tool
+  such as https://github.com/fullcalendar/fullcalendar/issues/7566
+  "The div and span elements have an implicit role of generic and cannot be named unless they have a role attribute."
+aria-current='date' on today
+no empty header cells
+  https://github.com/fullcalendar/fullcalendar/issues/2536#issuecomment-703825166
+[v7-beta] Day cells do not expand to fit events in dayGridYear
+  https://github.com/fullcalendar/fullcalendar/issues/7852
+
+Changelog TODO
+--------------
+
+Add: Bootstrap4/5 line-height less chunky
+Add: Bootstrap
+  Minimum Bootstrap5 version is 5.2.x
+  Bootstrap5 now a peer dependency (and popver by assoc). not the case for 4. TODO: modify docs.
+  Semantic color vars: https://github.com/fullcalendar/fullcalendar/issues/7465
+  Looks good with Dark Mode
+Document better dark-mode abilities for anyone, with CSS vars that Bootstrap5 happens to manipulate
+Add: Calendar::updateSize no longer synchronous
+Add: all cell headers are no longer bold
+Add: standin events get put through eventContent/etc
+Add: eventSlicing (write tests too)
+  eventSlicing:true (request: https://github.com/fullcalendar/fullcalendar/issues/6187)
+  eventSlicing:false (request: https://fullcalendar.freshdesk.com/a/tickets/9203)
+Add: no longer use semantic tags (a for navlink, h2 for title), instead using aria
+Add: i18n: removed eventHint/timeHint - were put on list-view fake column headers
+  TODO: update all locales
+Add: i18n: added timedText for rowHeader on timegrid timed-event row
+  TODO: update all locales
+Add: week-numbers no longer shown when only one DayGrid row
+Regression: [v7-beta] Day cells do not expand to fit events in dayGridYear #7852
+  https://github.com/fullcalendar/fullcalendar/issues/7852
+[fixed v7] DayGrid with height:auto "shows ResizeObserver loop warning"
+  https://github.com/fullcalendar/fullcalendar/issues/7861
+
 Freshdesk/GH-issues
-  Fixed this issue of mousedown taking long time to recalculate style?
-    https://fullcalendar.freshdesk.com/a/tickets/9078
-    Can see forced-reflow warning here too: bundle/examples-v7/issue-7677.html
-  Make tickets for a new view with list-view underneath month calendar
-  Check ticket for daygrid view with "dots"
-  Need to split this issue
-    https://github.com/fullcalendar/fullcalendar/issues/1037
-    1. scrollreset (already implemented)
-    2. scroll to current date or time
-  when infinite scroll-loading done
-    https://fullcalendar.freshdesk.com/a/tickets/9668
-  when virtual rendering done
-    https://fullcalendar.freshdesk.com/a/tickets/8496
-    https://fullcalendar.freshdesk.com/a/tickets/9701
-NOTES
-  flexbox row expansion works across scroll regions: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
-  100% width within scroller applies to clientWidth only: https://codepen.io/arshaw/pen/GgKWRNZ?editors=1100
-  Print
-    if you hit the debugging 'p' to force print-mode too soon after you stop scrolling,
-      scrollEnd won't have enough time to fire and scroll state likely won't be saved,
-      resulting in jump when entering print-mode. however, this isn't a realistic scenario because
-      usually users have a long time between when they stop scrolling and when they initiate printing
-    translateX/Y doesn't work when sticky items inside
-    siblings must all be absolutely positioned if they are supposed to overlap
-      and if you want them to span to subsequent pages in-sync
-    Firefox:
-      sometimes you just need to restart Firefox and things start working :(
-      setting a bottom coordinate will NEVER wrap to subsequent pages
-        problems with height:100% as well. hardcoded height needed
-      weird issue: if abs positioned element starts on 2nd page and spans to third,
-        makes a strange gap on 3rd page and pushes all content afterwards down
-      if there's any sort of overflow:hidden/scroll container,
-        screws up absolute positioning within, when spanning to subsequent pages. must disable
-      JUST GIVE UP on multi-page absolutely positioned items in firefox
-    bugzilla flexbox issues
-      master ticket (pending): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
-      special-case fix (done): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
-        supposedly milestone 78.0a1
-    bug with flexbox AND absolute positioning wrapping to subsequent pages (our discovery)
-      ("Dinner" isn't showing up; starts on second page)
-      (NEED TO LOOK AT ACTUAL PDF - differs from print preview sometimes)
-        Firefox 120 - perfect
-        Firefox 110 - good (event y off by 1px)
-        Firefox 100 - good (event y off by 1px)
-        Firefox 97 - good (event y off by 1px) --- February 8, 2022
-        Firefox 96 - bad
-        Firefox 95 - bad
-        Firefox 90 - bad
-    known-bugs:
-      On Safari, table headers are not repeated for any view (browser bug)
-  a11y tree considerations
-    aria-controls on resource-timeline parent-toggler
-      is difficult because a parent row could control MANY child rows, and we don't have wrappers for
-      those children, so aria-controls would need to be a huge dynamic list of tokens
-    additional aria
-      aria-level (depth)
-      aria-posinset (index in current set)
-      aria-setsize (current set size, not child size)
-      ***I wanted to do this, but if rows out of order (because of virtualization),
-        then no way to establish parent/child relationships
-  Why we need to use a <Ruler> to measure dimensions
-    ResizeObserver does NOT synchronously handle dimension changes to self or ancestors while
-    handling current element's dimensions. Will give a "ResizeObserver loop completed with undelivered notifications"
-    error. Quintessential example is implementing an aspect-ratio element, which sets height of self after reading
-    width of self. <Ruler> detangles dimension relationships and is very portable.
+-------------------
+
+Fixed this issue of mousedown taking long time to recalculate style?
+  https://fullcalendar.freshdesk.com/a/tickets/9078
+  Can see forced-reflow warning here too: bundle/examples-v7/issue-7677.html
+Make tickets for a new view with list-view underneath month calendar
+Check ticket for daygrid view with "dots"
+Need to split this issue
+  https://github.com/fullcalendar/fullcalendar/issues/1037
+  1. scrollreset (already implemented)
+  2. scroll to current date or time
+when infinite scroll-loading done
+  https://fullcalendar.freshdesk.com/a/tickets/9668
+when virtual rendering done
+  https://fullcalendar.freshdesk.com/a/tickets/8496
+  https://fullcalendar.freshdesk.com/a/tickets/9701
+
 Punt
-  print: in resource-timeline print-view, put divider between all cells
-  Drop-shadow under sticky header, timeline headers
-  In timegrid, when date-selecting with mirror event, why are we rendering highlight?
-  For timeline event-dnd, the mirror, should have white glow just like timegrid for when overlap other events
-  lack of text-selectability: https://github.com/fullcalendar/fullcalendar/issues/5628
-    TODO: need larger discussion on whether dates w/ dateClick or events w/ eventClick
-      should allow text-selection or now
-  file bug for strange dragging events from timeline more-link (preexists)
-  (same with TIMEGRID's more popover)
-    https://codepen.io/arshaw/pen/jOgeGwm?editors=0010
-  timeline event dragging loses duration:
-    1. have +more link with eventMaxStack
-    2. open link, begin to drag event
-    3. event looses it's duration. inconsistent with how normal event dragging happens
-    (will be breaking change? maybe file ticket and add changelog)
-    PREEXISTS: https://codepen.io/arshaw/pen/jOgeGwm?editors=0010
-  Markup/CSS/structure
-    kill fc-header-cell classname?
-    in future css className refactor:
-      fc-dayGridMonth -> fc-daygridmonth (to match fc-daygrid)
-      fc-dayGridMonth-button -> fc-daygridmonth-button
-      fc-timeline-now-indicator-arrow -> fc-timeline-nowindicator-arrow
-      fc-timeline-more-link -> fc-timeline-morelink
-      NEVERMIND. we've developed a strong precedent of dash-breaking-words,
-        like week-number/day-number which needs to be both subcomponent (fc-daygrid-day>fc-daygrid-day-number)
-        and independent component (fc-daygrid-week-number)
-  have separate settings for date-format hints? out of whack
-    view's aria-label (if no headerToolbar) is "Sep 7 – 8, 2020" (bad that it's abbreviated)
-    week-view's column headers have hint "September 7, 2020" which don't include day of week (like real text "Mon 9/7")
-  change <button> to role=button for fewer css reset collision?
-  put navlink on multimonth month header text?
-  file preexisting v6 bug:
-    non-singular view duration unit has weird hints on buttons "This ", "Next ", "Previous "
-    https://codepen.io/arshaw/pen/yyBpopg?editors=0010
-  a11y
-    "Note: The aria-rowindex must be added to each row, but is optional on the cells, except for cells that span rows: the aria-rowindex attribute is required on all spanning cells."
-      https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-rowindex
-  TimeGrid [known visual regression]
-    After implementing restored v4 timegrid event spacing (https://github.com/fullcalendar/fullcalendar/issues/6569),
-    Events squish too much:
-      v4: https://codepen.io/arshaw/pen/pvzLNKr?editors=001 (BAD)
-      v5: https://codepen.io/arshaw/pen/YPKapao?editors=0010 (GOOD)
-      v6: https://codepen.io/arshaw/pen/NPKYbYb?editors=0010 (GOOD)
-      v7: https://codepen.io/arshaw/pen/wBwJmgg?editors=001 (BAD)
-  Cross-browser
-    Firefox
-      [bug][regression]: after print-view (for timegrid as least) scroll gutter filler permanently disappears
-        does not happen when rigging up "P" keystroke
-      Re-address borderBoxSize HACK
-      resource-timeline header borders a little messed up
-    Safari
-      [bug] shows ResizeObserver loop warning
-        when moving from resourceTimelineDay -> resourceTimelineThreeDays
-          when timeline header gains a level and gets taller
-          probably related to totalBodyOuterHeight hackiness
-    Chrome
-      [bug] with timeline sticky multi-tier date text
-        premium/bundle/examples/timeline-sticky-header.html
-        1. Click 3-day view
-        2. Resize resource area
-        3. "Sat 1/7" flickers and changes position
+----
 
-ensure automated tests for...
-  how an event can render as a/div/div[role=button]
-  weird list-view slicing logic we removed
-    https://github.com/fullcalendar/fullcalendar/blob/9a0edaeb5eddf2cec8bd2409ecc26c4598b98a48/packages/list/src/ListView.tsx#L235-L249
-  resource-timeline rowgrouping
-    has correct borders on bottom of rows, even when all row groups collapsed
-    when expandRows: true, groups do not expand, only resources!
-  timeline/hscroll-timeGRID, when sticky-header
-    ensure time-axis or resource area has bottom filler to match horizontal scrollbar
-  resource-timeline group cells (that run vertically) have correct border, especially 2nd and 3rd down
-  positioning of sticky headers in all views. list view sticky subheaders too
-  resource-timeline indent works
-  pixel # for height/contentHeight works
-  correct header row heights for multi-header resource-TIMEgrid row with horizontal scrolling
-  when nowIndicator is OFF, doesn't render in DOM at all
-  percentage-based resource-timeline spreadsheet-column resizing
-  that expandRows works enabled/disabled for timegrid/resource-timeline views
-  test datagrid with h scroll, but timeline area WITHOUT h scroll
-  multiple tiers of headers line-up across scrollers
-    timegrid h-scroll. with and without weekNumber
-    resource-timeline. w/ datagrid/timeline headers: 1/2, 2/1
-  disabled days
-    do NOT render navlinks (header or obviously day number)
-    the headers WILL render data-date, fc-day-disabled (but not dayofweek, past, future classNames)
-  audit all past a11y bugs that aren't picked up by audit tool
-    such as https://github.com/fullcalendar/fullcalendar/issues/7566
-    "The div and span elements have an implicit role of generic and cannot be named unless they have a role attribute."
-  aria-current='date' on today
-  no empty header cells
-    https://github.com/fullcalendar/fullcalendar/issues/2536#issuecomment-703825166
-  [v7-beta] Day cells do not expand to fit events in dayGridYear
-    https://github.com/fullcalendar/fullcalendar/issues/7852
+print: in resource-timeline print-view, put divider between all cells
+Drop-shadow under sticky header, timeline headers
+In timegrid, when date-selecting with mirror event, why are we rendering highlight?
+For timeline event-dnd, the mirror, should have white glow just like timegrid for when overlap other events
+lack of text-selectability: https://github.com/fullcalendar/fullcalendar/issues/5628
+  TODO: need larger discussion on whether dates w/ dateClick or events w/ eventClick
+    should allow text-selection or now
+file bug for strange dragging events from timeline more-link (preexists)
+(same with TIMEGRID's more popover)
+  https://codepen.io/arshaw/pen/jOgeGwm?editors=0010
+timeline event dragging loses duration:
+  1. have +more link with eventMaxStack
+  2. open link, begin to drag event
+  3. event looses it's duration. inconsistent with how normal event dragging happens
+  (will be breaking change? maybe file ticket and add changelog)
+  PREEXISTS: https://codepen.io/arshaw/pen/jOgeGwm?editors=0010
+Markup/CSS/structure
+  kill fc-header-cell classname?
+  in future css className refactor:
+    fc-dayGridMonth -> fc-daygridmonth (to match fc-daygrid)
+    fc-dayGridMonth-button -> fc-daygridmonth-button
+    fc-timeline-now-indicator-arrow -> fc-timeline-nowindicator-arrow
+    fc-timeline-more-link -> fc-timeline-morelink
+    NEVERMIND. we've developed a strong precedent of dash-breaking-words,
+      like week-number/day-number which needs to be both subcomponent (fc-daygrid-day>fc-daygrid-day-number)
+      and independent component (fc-daygrid-week-number)
+have separate settings for date-format hints? out of whack
+  view's aria-label (if no headerToolbar) is "Sep 7 – 8, 2020" (bad that it's abbreviated)
+  week-view's column headers have hint "September 7, 2020" which don't include day of week (like real text "Mon 9/7")
+change <button> to role=button for fewer css reset collision?
+put navlink on multimonth month header text?
+file preexisting v6 bug:
+  non-singular view duration unit has weird hints on buttons "This ", "Next ", "Previous "
+  https://codepen.io/arshaw/pen/yyBpopg?editors=0010
+a11y
+  "Note: The aria-rowindex must be added to each row, but is optional on the cells, except for cells that span rows: the aria-rowindex attribute is required on all spanning cells."
+    https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-rowindex
+TimeGrid [known visual regression]
+  After implementing restored v4 timegrid event spacing (https://github.com/fullcalendar/fullcalendar/issues/6569),
+  Events squish too much:
+    v4: https://codepen.io/arshaw/pen/pvzLNKr?editors=001 (BAD)
+    v5: https://codepen.io/arshaw/pen/YPKapao?editors=0010 (GOOD)
+    v6: https://codepen.io/arshaw/pen/NPKYbYb?editors=0010 (GOOD)
+    v7: https://codepen.io/arshaw/pen/wBwJmgg?editors=001 (BAD)
+Cross-browser
+  Firefox
+    [bug][regression]: after print-view (for timegrid as least) scroll gutter filler permanently disappears
+      does not happen when rigging up "P" keystroke
+    Re-address borderBoxSize HACK
+    resource-timeline header borders a little messed up
+  Safari
+    [bug] shows ResizeObserver loop warning
+      when moving from resourceTimelineDay -> resourceTimelineThreeDays
+        when timeline header gains a level and gets taller
+        probably related to totalBodyOuterHeight hackiness
+  Chrome
+    [bug] with timeline sticky multi-tier date text
+      premium/bundle/examples/timeline-sticky-header.html
+      1. Click 3-day view
+      2. Resize resource area
+      3. "Sat 1/7" flickers and changes position
 
-scratch
-  "invalid" dates aka "disabled" dates
-    DayGridMONTH: https://codepen.io/arshaw/pen/EaYXWPM?editors=0010
-      normal weekday header
-      empty cells
-    DayGridWEEK: https://codepen.io/arshaw/pen/mybwWEE?editors=0010
-      empty header --> change to rendered headers!
-      empty cells
-    TimeGrid: https://codepen.io/arshaw/pen/pvzweyV?editors=001
-      empty header --> change to rendered headers!
-      empty cells
-    Timeline: https://codepen.io/arshaw/pen/WbeOpwX?editors=0010 (must scroll left after load)
-      normal header
-      empty cell
+Notes
+-----
+
+flexbox row expansion works across scroll regions: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
+100% width within scroller applies to clientWidth only: https://codepen.io/arshaw/pen/GgKWRNZ?editors=1100
+Print
+  if you hit the debugging 'p' to force print-mode too soon after you stop scrolling,
+    scrollEnd won't have enough time to fire and scroll state likely won't be saved,
+    resulting in jump when entering print-mode. however, this isn't a realistic scenario because
+    usually users have a long time between when they stop scrolling and when they initiate printing
+  translateX/Y doesn't work when sticky items inside
+  siblings must all be absolutely positioned if they are supposed to overlap
+    and if you want them to span to subsequent pages in-sync
+  Firefox:
+    sometimes you just need to restart Firefox and things start working :(
+    setting a bottom coordinate will NEVER wrap to subsequent pages
+      problems with height:100% as well. hardcoded height needed
+    weird issue: if abs positioned element starts on 2nd page and spans to third,
+      makes a strange gap on 3rd page and pushes all content afterwards down
+    if there's any sort of overflow:hidden/scroll container,
+      screws up absolute positioning within, when spanning to subsequent pages. must disable
+    JUST GIVE UP on multi-page absolutely positioned items in firefox
+  bugzilla flexbox issues
+    master ticket (pending): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
+    special-case fix (done): https://bugzilla.mozilla.org/show_bug.cgi?id=939897
+      supposedly milestone 78.0a1
+  bug with flexbox AND absolute positioning wrapping to subsequent pages (our discovery)
+    ("Dinner" isn't showing up; starts on second page)
+    (NEED TO LOOK AT ACTUAL PDF - differs from print preview sometimes)
+      Firefox 120 - perfect
+      Firefox 110 - good (event y off by 1px)
+      Firefox 100 - good (event y off by 1px)
+      Firefox 97 - good (event y off by 1px) --- February 8, 2022
+      Firefox 96 - bad
+      Firefox 95 - bad
+      Firefox 90 - bad
+  known-bugs:
+    On Safari, table headers are not repeated for any view (browser bug)
+a11y tree considerations
+  aria-controls on resource-timeline parent-toggler
+    is difficult because a parent row could control MANY child rows, and we don't have wrappers for
+    those children, so aria-controls would need to be a huge dynamic list of tokens
+  additional aria
+    aria-level (depth)
+    aria-posinset (index in current set)
+    aria-setsize (current set size, not child size)
+    ***I wanted to do this, but if rows out of order (because of virtualization),
+      then no way to establish parent/child relationships
+Why we need to use a <Ruler> to measure dimensions
+  ResizeObserver does NOT synchronously handle dimension changes to self or ancestors while
+  handling current element's dimensions. Will give a "ResizeObserver loop completed with undelivered notifications"
+  error. Quintessential example is implementing an aspect-ratio element, which sets height of self after reading
+  width of self. <Ruler> detangles dimension relationships and is very portable.
+"invalid" dates aka "disabled" dates
+  DayGridMONTH: https://codepen.io/arshaw/pen/EaYXWPM?editors=0010
+    normal weekday header
+    empty cells
+  DayGridWEEK: https://codepen.io/arshaw/pen/mybwWEE?editors=0010
+    empty header --> change to rendered headers!
+    empty cells
+  TimeGrid: https://codepen.io/arshaw/pen/pvzweyV?editors=001
+    empty header --> change to rendered headers!
+    empty cells
+  Timeline: https://codepen.io/arshaw/pen/WbeOpwX?editors=0010 (must scroll left after load)
+    normal header
+    empty cell
