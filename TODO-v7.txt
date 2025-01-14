@@ -11,7 +11,7 @@ General Markup
   viewcontainer
     use fc-border
     implement aspect-ratio more literally
-  z-index util classNames
+  [z-indexes] util classNames
 General Performance
   why does TimelineLane::render get called 3 times initially?
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
@@ -41,8 +41,7 @@ MultiMonth
     Starting out NOT compact in forced 2-col formation, but when gets squished to where isCompact
     is needed, but ResizeObserver/etc doesn't adapt. examples-v7/multimonth-view.html
 TimeGrid
-  when setting slotDuration:{hours:1}, really short body. always like this? slats had bigger min-height?
-  timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit z-indexes
+  [z-indexes] timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit
 Timeline
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
