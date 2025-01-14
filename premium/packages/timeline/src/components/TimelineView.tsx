@@ -215,6 +215,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     eventSelection={props.eventSelection}
                     slotWidth={slotWidth}
                   />
+                  <div className='fc-timeline-lane-footer' />{/* TODO: DRY */}
                   {enableNowIndicator && (
                     <TimelineNowIndicatorLine
                       tDateProfile={tDateProfile}

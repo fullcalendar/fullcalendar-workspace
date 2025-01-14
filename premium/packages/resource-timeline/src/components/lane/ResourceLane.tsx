@@ -26,10 +26,11 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
       <ContentContainer
         tag="div"
         className={joinClassNames(
+          // very strange how this className is not on TimelineLane!!!
           'fc-timeline-lane',
           options.eventOverlap === false // TODO: fix bad default
-            ? 'fc-timeline-lane-overlap-disabled'
-            : 'fc-timeline-lane-overlap-enabled',
+            ? 'fc-timeline-overlap-disabled'
+            : 'fc-timeline-overlap-enabled',
           'fc-flex-col',
         )}
         attrs={{

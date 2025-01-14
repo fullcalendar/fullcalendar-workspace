@@ -45,7 +45,6 @@ TimeGrid
 Timeline
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
-  when height:auto, and empty events, body is 0 height. always like this?
 Resource DayGrid
   on DayGridHeader (for TimeGrid too), dates-BELOW-resources don't have resource ID, did they ever?
     did their customer-render-func ever get passed a resource?
@@ -109,6 +108,8 @@ no empty header cells
   https://github.com/fullcalendar/fullcalendar/issues/2536#issuecomment-703825166
 [v7-beta] Day cells do not expand to fit events in dayGridYear
   https://github.com/fullcalendar/fullcalendar/issues/7852
+[resource-timeline] timeline-lane-footer has padding when eventOverlap:true, no padding when false
+[timeline-no-resources] always has timeline-lane-footer, especially for when zero events and height:auto
 
 Changelog TODO
 --------------

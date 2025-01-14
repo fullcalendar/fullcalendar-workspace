@@ -1,4 +1,12 @@
 
+.fc-timeline-lane-footer {
+  padding-bottom: 10px;
+}
+
+.fc-timeline-overlap-disabled .fc-timeline-lane-footer { // use by resource-timeline only
+  padding-bottom: 0;
+}
+
 //
 // fc-timeline-slots
 //
