@@ -57,7 +57,11 @@ Resource Timeline
 List
   rethink how listview has data-date on which element
 Locales
-  audit all allDayText. there's no more max-width in the CSS. use allDayHtml with breaks if needed
+  [bug] ar-dz (which is RTL) has TimeGrid weekNumber text offscreen
+    we are likely ignoring its natural width
+  give TimeGrid all-day cell white-space:pre
+    then, put newlines in following big strings: fr, ka, lb, ms, sq
+    then, text-align right (for ltr), looks better for second line
 
 Release Prep
 ------------
