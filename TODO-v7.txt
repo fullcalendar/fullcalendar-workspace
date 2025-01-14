@@ -8,7 +8,6 @@ ASAP
 ----
 
 General Markup
-  don't need theme-system style reset for navlinks
   better markup for Popover title/close (no span, use flexbox)
   put fc-border on viewcontainer
   z-index util classNames

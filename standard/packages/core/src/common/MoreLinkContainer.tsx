@@ -25,7 +25,7 @@ export interface MoreLinkContainerProps extends Partial<ElAttrsProps> {
   segs: EventRangeProps[]
   hiddenSegs: EventRangeProps[]
   dateSpanProps?: Dictionary
-  alignElRef?: RefObject<HTMLElement> // will use internal <a> if unspecified
+  alignElRef?: RefObject<HTMLElement> // will use click-target if unspecified
   alignParentTop?: string // for popover
   forceTimed?: boolean // for popover
   popoverContent: () => ComponentChild

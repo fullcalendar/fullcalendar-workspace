@@ -4,11 +4,6 @@
   --fc-page-bg-color: var(--bs-body-bg);
   --fc-neutral-bg-color: var(--bs-secondary-bg);
 
-  & a:not([href]) {
-    color: inherit; // natural color for navlinks
-    text-decoration: inherit; // undo underline
-  }
-
   &,
   & .popover {
     line-height: normal; // undo thick line-height
