@@ -21,6 +21,8 @@ export interface PopoverProps {
 
 const PADDING_FROM_VIEWPORT = 10
 
+const ROW_BORDER_WIDTH = 1
+
 export class Popover extends BaseComponent<PopoverProps> {
   private rootEl: HTMLElement
   private closeRef = createRef<HTMLSpanElement>()
@@ -137,7 +139,8 @@ export class Popover extends BaseComponent<PopoverProps> {
 
       // position relative to viewport
       let popoverTop = alignParentTop
-        ? alignEl.closest(alignParentTop).getBoundingClientRect().top
+        // HACK: subtract 1 for DayGrid, which has borders on row-bottom. Only view that uses alignParentTop
+        ? alignEl.closest(alignParentTop).getBoundingClientRect().top - ROW_BORDER_WIDTH
         : alignmentRect.top
 
       let popoverLeft = isRtl ? alignmentRect.right - popoverDims.width : alignmentRect.left

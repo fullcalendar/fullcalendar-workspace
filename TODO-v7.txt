@@ -38,7 +38,6 @@ General [manual-test]
   stickyHeaderDates in all views
   stickyFooterScrollbars in all views
 DayGrid
-  +more popover appears 1px too low now that we moved row border to bottom
   why doesn't daygrid weeknumber have rounded corner anymore?
   weekNumbers in daygrid should be in DOM-order before cells
   simplify event positioning
