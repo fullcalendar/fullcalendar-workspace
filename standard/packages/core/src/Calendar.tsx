@@ -12,6 +12,7 @@ import { applyStyleProp } from './util/dom-manip.js'
 import { RenderId } from './content-inject/RenderId.js'
 import { CalendarImpl } from './api/CalendarImpl.js'
 import { ensureElHasStyles } from './styleUtils.js'
+import { updateSizeSync } from './component-util/resize-observer.js'
 
 /*
 Vanilla JS API
@@ -114,6 +115,8 @@ export class Calendar extends CalendarImpl {
 
   updateSize(): void {
     super.updateSize()
+    flushUpdates()
+    updateSizeSync()
     flushUpdates()
   }
 
