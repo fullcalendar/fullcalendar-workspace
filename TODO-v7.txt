@@ -46,26 +46,18 @@ Timeline
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
 Resource DayGrid
-  on DayGridHeader (for TimeGrid too), dates-BELOW-resources don't have resource ID, did they ever?
-    did their customer-render-func ever get passed a resource?
+  on DayGridHeader (for TimeGrid too)
+    [bug] dates-BELOW-resources need data-resource attribute
+    [bug] customer-render-func not getting passed a resource render-prop
 Resource Timeline
   [bug] when height:auto, infinite height increase
-  when no groupcols, do simplified DOM structure?
-  i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
+  [z-index] i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
     TODO: do same concept for timeline-no-resources
-  when there's a superheader, and 2 headers in timeline area, padding in headers looks too thick?
-  For resource-timeline "lanes", resource-group-rows have fc-resource-group but resource-rows
-    do no have fc-resource. Make consistent? add to changelog?
-H-Scrolling Views
-  ensure col-width-syncing doesn't have 1px-off problem
-    queries inner-width, but when assigning to outer-width, does it add 1px?
+  when no groupcols, do simplified DOM structure?
 List
   rethink how listview has data-date on which element
 Locales
   audit all allDayText. there's no more max-width in the CSS. use allDayHtml with breaks if needed
-Examples
-  In each two-column layout, give the sidebar flex-shrink:0 and the main min-width:0
-    Things are currently collapsing very strangely on a narrow screen (like stackblitz angular demo)
 
 Release Prep
 ------------
@@ -121,7 +113,7 @@ Add: Bootstrap
   Semantic color vars: https://github.com/fullcalendar/fullcalendar/issues/7465
   Looks good with Dark Mode
 Document better dark-mode abilities for anyone, with CSS vars that Bootstrap5 happens to manipulate
-Add: all cell headers are no longer bold
+Add: all cell headers, in all views, are no longer bold
 Add: list-view nicer-looking stickyHeaderDates
 Add: standin events get put through eventContent/etc
 Add: eventSlicing (write tests too)
@@ -238,6 +230,9 @@ Cross-browser
       1. Click 3-day view
       2. Resize resource area
       3. "Sat 1/7" flickers and changes position
+Example Projects
+  In each two-column layout, give the sidebar flex-shrink:0 and the main min-width:0
+    Things are currently collapsing very strangely on a narrow screen (like stackblitz angular demo)
 
 Notes
 -----
