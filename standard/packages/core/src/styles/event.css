@@ -31,7 +31,7 @@ a.fc-event:hover { // (anchor:hover)
 }
 
 .fc-event-selected, // (touch-selected)
-.fc-event:focus { // (tab-focused)
+.fc-event:focus:not(.fc-list-event) { // (tab-focused) --- HACK to blacklist list-view
   // shadow
   // TODO: improve focus-styling for .fc-daygrid-dot-event
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
