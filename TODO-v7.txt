@@ -27,7 +27,6 @@ General [manual-test]
   Touch devices
   been having issues with scrollwheel getting scrollsyncing out of whack!?
 DayGrid
-  why doesn't daygrid weeknumber have rounded corner anymore?
   weekNumbers in daygrid should be in DOM-order before cells
   simplify event positioning
     normalize each event-container's top by applying margin-top on ones that have smaller headers
@@ -136,6 +135,7 @@ Add: i18n: added timedText for rowHeader on timegrid timed-event row
   TODO: update all locales
 Add: week-numbers no longer shown when only one DayGrid row
 Add: removed data-navlink attribute in favor of fc-navlink className
+Add: no longer use <a> tags in markup. instead use role=link/button
 Regression: [v7-beta] Day cells do not expand to fit events in dayGridYear #7852
   https://github.com/fullcalendar/fullcalendar/issues/7852
 [fixed v7] DayGrid with height:auto "shows ResizeObserver loop warning"

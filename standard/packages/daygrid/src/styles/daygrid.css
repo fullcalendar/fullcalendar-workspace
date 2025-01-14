@@ -109,6 +109,14 @@
   color: var(--fc-neutral-text-color);
 }
 
+.fc-direction-ltr .fc-daygrid-week-number { // (ltr)
+  border-radius: 0 0 3px;
+}
+
+.fc-direction-rtl .fc-daygrid-week-number { // (rtl)
+  border-radius: 0 0 0 3px;
+}
+
 //
 // more-popover > body
 //
