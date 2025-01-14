@@ -47,7 +47,7 @@ export function buildNavLinkAttrs(
   return {
     'role': ('link' as any), // TODO
     'aria-label': formatWithOrdinals(options.navLinkHint, [dateStr, zonedDate], dateStr),
-    'data-navlink': '', // for legacy selectors. TODO: use className?
+    'className': 'fc-navlink',
     ...(isTabbable
       ? createAriaClickAttrs(handleInteraction)
       : { onClick: handleInteraction }

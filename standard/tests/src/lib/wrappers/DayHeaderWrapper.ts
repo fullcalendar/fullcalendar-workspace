@@ -38,7 +38,7 @@ export class DayHeaderWrapper {
   }
 
   getNavLinkEls() {
-    return findElements(this.el, '[role=gridcell][data-date] [data-navlink]')
+    return findElements(this.el, '[role=gridcell][data-date] .fc-navlink')
   }
 
   getNavLinkEl(dayDate) {

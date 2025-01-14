@@ -8,7 +8,6 @@ ASAP
 ----
 
 General Markup
-  move data-navlink to a className
   don't need theme-system style reset for navlinks
   better markup for Popover title/close (no span, use flexbox)
   put fc-border on viewcontainer
@@ -145,6 +144,7 @@ Add: i18n: removed eventHint/timeHint - were put on list-view fake column header
 Add: i18n: added timedText for rowHeader on timegrid timed-event row
   TODO: update all locales
 Add: week-numbers no longer shown when only one DayGrid row
+Add: removed data-navlink attribute in favor of fc-navlink className
 Regression: [v7-beta] Day cells do not expand to fit events in dayGridYear #7852
   https://github.com/fullcalendar/fullcalendar/issues/7852
 [fixed v7] DayGrid with height:auto "shows ResizeObserver loop warning"

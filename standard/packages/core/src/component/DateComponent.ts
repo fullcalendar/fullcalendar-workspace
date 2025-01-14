@@ -45,7 +45,7 @@ export abstract class DateComponent<Props=Dictionary, State=Dictionary> extends 
   isValidDateDownEl(el: HTMLElement) {
     return !el.closest('.fc-event:not(.fc-bg-event)') &&
       !el.closest('.fc-more-link') && // a "more.." link
-      !el.closest('[data-navlink]') && // a clickable nav link
+      !el.closest('.fc-navlink') && // a clickable nav link
       !el.closest('.fc-popover') // hack
   }
 }

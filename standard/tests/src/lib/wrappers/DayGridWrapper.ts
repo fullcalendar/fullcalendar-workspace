@@ -78,7 +78,7 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
   }
 
   getWeekNavLinkEls() {
-    return findElements(this.el, '.fc-daygrid-week-number[data-navlink]')
+    return findElements(this.el, '.fc-daygrid-week-number.fc-navlink')
   }
 
   getWeekNumberEls() {
@@ -94,7 +94,7 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
   }
 
   getNavLinkEl(date) {
-    return this.getDayEl(date).querySelector('.fc-daygrid-day-number[data-navlink]')
+    return this.getDayEl(date).querySelector('.fc-daygrid-day-number.fc-navlink')
   }
 
   clickNavLink(date) {
