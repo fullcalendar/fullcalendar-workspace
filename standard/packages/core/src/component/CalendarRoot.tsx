@@ -1,4 +1,4 @@
-import { ComponentChildren, flushSync } from '../preact.js'
+import { ComponentChildren, flushUpdates } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
 import { CalendarOptions, CalendarListeners } from '../options.js'
 import { Theme } from '../theme/Theme.js'
@@ -51,13 +51,13 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
 
   handleBeforePrint = () => {
     this.setState({ forPrint: true })
-    flushSync(() => {}) // TODO: use noop
+    flushUpdates()
     updateSizeSync()
-    flushSync(() => {}) // TODO: use noop
+    flushUpdates()
   }
 
   handleAfterPrint = () => {
     this.setState({ forPrint: false })
-    flushSync(() => {}) // TODO: use noop
+    flushUpdates()
   }
 }

@@ -26,7 +26,7 @@ General Performance
 General Code Cleanup
   Calendar::updateSize should call resize-observer force-check
     Don't do async Promise idea anymore
-    Call flushSync after
+    Call flushUpdates after
 General [manual-test]
   Touch devices
   been having issues with scrollwheel getting scrollsyncing out of whack!?

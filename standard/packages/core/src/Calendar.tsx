@@ -5,7 +5,7 @@ import { Action } from './reducers/Action.js'
 import { CalendarData } from './reducers/data-types.js'
 import { CalendarRoot } from './component/CalendarRoot.js'
 import { CalendarContent } from './component/CalendarContent.js'
-import { createElement, render, flushSync } from './preact.js'
+import { createElement, render, flushSync, flushUpdates } from './preact.js'
 import { isArraysEqual } from './util/array.js'
 import { CssDimValue } from './scrollgrid/util.js'
 import { applyStyleProp } from './util/dom-manip.js'
@@ -113,9 +113,8 @@ export class Calendar extends CalendarImpl {
   }
 
   updateSize(): void {
-    flushSync(() => {
-      super.updateSize()
-    })
+    super.updateSize()
+    flushUpdates()
   }
 
   batchRendering(func): void {

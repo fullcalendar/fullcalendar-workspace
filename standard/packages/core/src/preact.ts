@@ -14,17 +14,10 @@ declare global {
 }
 
 /*
-NOTE: this can be a public API, especially createElement for hooks.
-See examples/typescript-scheduler/src/index.ts
+Like flushSync, but flushes ALL pending updates, not only those initiated in a callback
+BTW, flushSync doesn't work in Preact: https://github.com/preactjs/preact/issues/3929
 */
-
-/*
-HACK for flushSync being a noop:
-https://github.com/preactjs/preact/issues/3929
-*/
-export function flushSync(renderActionToFlush) {
-  renderActionToFlush()
-
+export function flushUpdates() {
   let oldDebounceRendering = preact.options.debounceRendering // orig
   let callbackQ = []
 
@@ -40,6 +33,11 @@ export function flushSync(renderActionToFlush) {
   }
 
   preact.options.debounceRendering = oldDebounceRendering
+}
+
+export function flushSync(f: () => void): void {
+  f()
+  flushUpdates()
 }
 
 /*
