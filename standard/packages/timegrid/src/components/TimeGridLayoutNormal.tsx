@@ -347,6 +347,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     this.updateSlatHeight()
   }
 
+  componentWillUnmount(): void {
+    setRef(this.props.slatHeightRef, null)
+  }
+
   updateSlatHeight() {
     if (this.prevSlatHeight !== this.slatHeight) {
       setRef(this.props.slatHeightRef, this.prevSlatHeight = this.slatHeight)

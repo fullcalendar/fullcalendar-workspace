@@ -177,9 +177,12 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  private handleSlatHeight = (slatHeight: number) => {
+  private handleSlatHeight = (slatHeight: number | null) => {
     this.slatHeight = slatHeight
-    afterSize(this.applyTimeScroll)
+
+    if (slatHeight != null) {
+      afterSize(this.applyTimeScroll)
+    }
   }
 
   // Scrolling

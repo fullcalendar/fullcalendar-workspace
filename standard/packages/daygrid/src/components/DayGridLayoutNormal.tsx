@@ -126,7 +126,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     )
   }
 
-  handleScroller = (scroller: Scroller) => {
+  handleScroller = (scroller: Scroller | null) => {
     setRef(this.props.scrollerRef, scroller)
   }
 

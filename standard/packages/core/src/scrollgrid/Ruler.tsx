@@ -37,5 +37,13 @@ export class Ruler extends BaseComponent<RulerProps> {
     if (this.disconnectDim) {
       this.disconnectDim()
     }
+
+    const { props } = this
+
+    if (props.widthRef) {
+      setRef(props.widthRef, null)
+    } else if (props.heightRef) {
+      setRef(props.heightRef, null)
+    }
   }
 }

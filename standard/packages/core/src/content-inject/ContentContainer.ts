@@ -57,7 +57,7 @@ export class ContentContainer<RenderProps> extends Component<ContentContainerPro
     }
   }
 
-  handleEl = (el: HTMLElement) => {
+  handleEl = (el: HTMLElement | null) => {
     this.el = el
 
     if (this.props.elRef) {

@@ -22,7 +22,6 @@ General Performance
   "Maximum update depth exceeded" error after resizing many times in Chrome --- reemerged?
     https://github.com/fullcalendar/fullcalendar/issues/5606
   hit-system: only query DOM element for handlers like dayClick at very end
-  this.detachInnerHeight() // should fire a 'null' height? yes! will cleanup any map listeners
 General [manual-test]
   Touch devices
   been having issues with scrollwheel getting scrollsyncing out of whack!?
