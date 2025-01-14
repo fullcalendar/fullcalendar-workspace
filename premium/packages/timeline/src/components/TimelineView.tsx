@@ -20,6 +20,7 @@ import {
   RefMap,
   joinClassNames,
   Ruler,
+  StickyFooterScrollbar,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
@@ -171,7 +172,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               <Scroller
                 vertical={verticalScrolling}
                 horizontal
-                hideScrollbars={props.forPrint}
+                hideScrollbars={
+                  stickyFooterScrollbar ||
+                  props.forPrint // prevents blank space in print-view on Safari
+                }
                 className={joinClassNames(
                   'fc-timeline-body fc-flex-col',
                   verticalScrolling && 'fc-liquid',
@@ -224,13 +228,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
               {/* FOOTER scrollbar
               ---------------------------------------------------------------------------------- */}
-              {stickyFooterScrollbar && (
-                <Scroller
-                  ref={this.footerScrollerRef}
-                  horizontal
-                >
-                  <div style={{ width: canvasWidth }}/>
-                </Scroller>
+              {Boolean(stickyFooterScrollbar) && (
+                <StickyFooterScrollbar
+                  canvasWidth={canvasWidth}
+                  scrollerRef={this.footerScrollerRef}
+                />
               )}
 
               <Ruler widthRef={this.handleTotalWidth} />

@@ -510,7 +510,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               <Scroller
                 vertical={verticalScrolling}
                 horizontal
-                hideScrollbars={stickyFooterScrollbar}
+                hideScrollbars={stickyFooterScrollbar /* FYI, this view is never print */}
                 className={joinClassNames(
                   'fc-timeline-body fc-flex-col fc-rel', // fc-rel for Ruler.fc-fill-start
                   verticalScrolling && 'fc-liquid',

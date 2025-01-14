@@ -83,14 +83,14 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
     return (
       <Fragment>
         {options.dayHeaders && (
-          <div className='fc-print-header'>
+          <div className={joinClassNames(
+            'fc-print-header',
+            stickyHeaderDates && 'fc-table-header-sticky',
+          )}>
             <Scroller
               horizontal
               hideScrollbars
-              className={joinClassNames(
-                'fc-daygrid-header fc-flex-row fc-border-b',
-                stickyHeaderDates && 'fc-table-header-sticky',
-              )}
+              className='fc-daygrid-header fc-flex-row fc-border-b'
               ref={this.headerScrollerRef}
             >
               <DayGridHeader

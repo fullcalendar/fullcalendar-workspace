@@ -35,8 +35,6 @@ General Code Cleanup
 General [manual-test]
   Touch devices
   been having issues with scrollwheel getting scrollsyncing out of whack!?
-  stickyHeaderDates in all views
-  stickyFooterScrollbars in all views
 DayGrid
   why doesn't daygrid weeknumber have rounded corner anymore?
   weekNumbers in daygrid should be in DOM-order before cells
@@ -59,10 +57,12 @@ TimeGrid
 Timeline
   previously, Timeline's hit system would always return slat left/right, not snap
     for real? matters? add to changelog?
+  when height:auto, and empty events, body is 0 height. always like this?
 Resource DayGrid
   on DayGridHeader (for TimeGrid too), dates-BELOW-resources don't have resource ID, did they ever?
     did their customer-render-func ever get passed a resource?
 Resource Timeline
+  [bug] when height:auto, infinite height increase
   when no groupcols, do simplified DOM structure?
   i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
     TODO: do same concept for timeline-no-resources
@@ -134,6 +134,7 @@ Add: Bootstrap
 Document better dark-mode abilities for anyone, with CSS vars that Bootstrap5 happens to manipulate
 Add: Calendar::updateSize no longer synchronous
 Add: all cell headers are no longer bold
+Add: list-view nicer-looking stickyHeaderDates
 Add: standin events get put through eventContent/etc
 Add: eventSlicing (write tests too)
   eventSlicing:true (request: https://github.com/fullcalendar/fullcalendar/issues/6187)

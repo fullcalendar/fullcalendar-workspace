@@ -68,14 +68,12 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
         {options.dayHeaders && (
           <div className={joinClassNames(
             props.forPrint ? 'fc-print-header' : 'fc-flex-row', // col for print, row for screen
+            stickyHeaderDates && 'fc-table-header-sticky',
             'fc-border-b',
           )}>
             <DayGridHeader
               headerTiers={props.headerTiers}
-              className={joinClassNames(
-                'fc-daygrid-header',
-                stickyHeaderDates && 'fc-table-header-sticky',
-              )}
+              className='fc-daygrid-header'
             />
             {Boolean(endScrollbarWidth) && (
               <div
