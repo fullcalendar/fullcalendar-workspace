@@ -37,8 +37,7 @@ export {
   isArraysEqual,
 } from './util/array.js'
 
-export type { MemoizeHashFunc, MemoiseArrayFunc } from './util/memoize.js'
-export { memoize, memoizeObjArg, memoizeArraylike, memoizeHashlike } from './util/memoize.js'
+export { memoize, memoizeObjArg } from './util/memoize.js'
 
 export type { Rect, Point } from './util/geom.js'
 export {
