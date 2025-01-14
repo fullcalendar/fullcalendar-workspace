@@ -153,9 +153,6 @@ function getRtlScrollerSystem(): RtlScrollerSystem {
   return _rtlScrollerSystem || (_rtlScrollerSystem = detectRtlScrollerSystem())
 }
 
-/*
-TODO: make this more minimal now that scrollbar-side detection isn't needed?
-*/
 function detectRtlScrollerSystem(): RtlScrollerSystem {
   let el = document.createElement('div')
   el.style.position = 'absolute'

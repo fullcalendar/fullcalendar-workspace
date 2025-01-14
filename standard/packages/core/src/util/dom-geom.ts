@@ -1,6 +1,4 @@
 import { intersectRects, Rect } from './geom.js'
-import { getIsRtlScrollbarOnLeft } from './scrollbar-side.js'
-import { computeScrollbarWidthsForEl } from './scrollbar-width.js'
 
 export interface EdgeInfo {
   borderLeft: number
@@ -36,7 +34,7 @@ export function computeEdges(el: HTMLElement, getPadding = false): EdgeInfo { //
     scrollbarRight: 0,
   }
 
-  if (getIsRtlScrollbarOnLeft() && computedStyle.direction === 'rtl') { // is the scrollbar on the left side?
+  if (computedStyle.direction === 'rtl') {
     res.scrollbarLeft = scrollbarLeftRight
   } else {
     res.scrollbarRight = scrollbarLeftRight
@@ -129,4 +127,17 @@ export function getClippingParents(el: HTMLElement): HTMLElement[] {
   }
 
   return parents
+}
+
+interface ScrollbarWidths {
+  x: number
+  y: number // TODO: rename to vertical. less confusing when dealing with width/height verbage
+}
+
+// WARNING: will include border
+function computeScrollbarWidthsForEl(el: HTMLElement): ScrollbarWidths {
+  return {
+    x: el.offsetHeight - el.clientHeight,
+    y: el.offsetWidth - el.clientWidth,
+  }
 }
