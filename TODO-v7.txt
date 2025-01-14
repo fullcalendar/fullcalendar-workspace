@@ -8,8 +8,9 @@ ASAP
 ----
 
 General Markup
-  better markup for Popover title/close (no span, use flexbox)
-  put fc-border on viewcontainer
+  viewcontainer
+    use fc-border
+    implement aspect-ratio more literally
   z-index util classNames
 General Performance
   why does TimelineLane::render get called 3 times initially?

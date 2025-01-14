@@ -25,7 +25,7 @@ const ROW_BORDER_WIDTH = 1
 
 export class Popover extends BaseComponent<PopoverProps> {
   private rootEl: HTMLElement
-  private closeRef = createRef<HTMLSpanElement>()
+  private closeRef = createRef<HTMLDivElement>()
   private focusStartRef = createRef<HTMLDivElement>()
   private focusEndRef = createRef<HTMLDivElement>()
   private titleId = getUniqueDomId()
@@ -53,10 +53,10 @@ export class Popover extends BaseComponent<PopoverProps> {
           ref={this.focusStartRef}
         />
         <div className={'fc-popover-header ' + theme.getClassName('popoverHeader')}>
-          <span className="fc-popover-title" id={this.titleId}>
+          <div className="fc-popover-title" id={this.titleId}>
             {props.title}
-          </span>
-          <span
+          </div>
+          <div
             role='button'
             aria-label={options.closeHint}
             className={'fc-popover-close ' + theme.getIconClass('close')}
