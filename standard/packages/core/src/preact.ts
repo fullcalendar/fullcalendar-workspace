@@ -50,44 +50,6 @@ class FakeComponent extends preact.Component {
   componentDidMount() { this.setState({}) }
 }
 
-/*
-HACK for Preact wrongly calling shouldComponentUpdate during context changes:
-https://github.com/preactjs/preact/issues/2510
-*/
-export function createContext<T>(defaultValue: T) {
-  let ContextType = preact.createContext<T>(defaultValue)
-  let origProvider = ContextType.Provider
-
-  ContextType.Provider = function () { // eslint-disable-line func-names
-    let isNew = !this.getChildContext
-    let children = origProvider.apply(this, arguments as any) // eslint-disable-line prefer-rest-params
-
-    if (isNew) {
-      let subs = []
-
-      this.shouldComponentUpdate = (_props) => {
-        if (this.props.value !== _props.value) {
-          subs.forEach((c) => {
-            c.context = _props.value
-            c.forceUpdate()
-          })
-        }
-      }
-
-      this.sub = (c) => {
-        subs.push(c)
-        let old = c.componentWillUnmount
-        c.componentWillUnmount = () => {
-          subs.splice(subs.indexOf(c), 1)
-          old && old.call(c)
-        }
-      }
-    }
-
-    return children
-  }
-
-  return ContextType
-}
+export const createContext = preact.createContext
 
 export const preactOptions = preact.options

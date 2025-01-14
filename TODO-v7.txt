@@ -24,9 +24,6 @@ General Performance
   hit-system: only query DOM element for handlers like dayClick at very end
   this.detachInnerHeight() // should fire a 'null' height? yes! will cleanup any map listeners
 General Code Cleanup
-  Try to strip out dom-geom.ts and scrollbar-width, tho used for auto-scrolling
-  remove the Preact createContext hack because this is now implemented:
-    https://github.com/preactjs/preact/issues/2510
   Calendar::updateSize should call resize-observer force-check
     Don't do async Promise idea anymore
     Call flushSync after
