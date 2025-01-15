@@ -1002,8 +1002,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               top,
               bottom,
             },
-            // HACK. TODO: This is expensive to do every hit-query
-            dayEl: getTimelineSlotEl(this.bodyEl, slatIndex),
+            getDayEl: () => getTimelineSlotEl(this.bodyEl, slatIndex),
             layer: 0,
           }
         }

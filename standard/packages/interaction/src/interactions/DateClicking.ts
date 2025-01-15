@@ -60,7 +60,7 @@ export class DateClicking extends Interaction {
         let { context } = component
         let arg: DateClickArg = {
           ...buildDatePointApiWithContext(initialHit.dateSpan, context),
-          dayEl: initialHit.dayEl,
+          dayEl: initialHit.getDayEl(),
           jsEvent: ev.origEvent as MouseEvent,
           view: context.viewApi || context.calendarApi.view,
         }

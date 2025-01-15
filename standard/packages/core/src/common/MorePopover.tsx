@@ -102,7 +102,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           },
           ...props.dateSpanProps,
         },
-        dayEl: rootEl,
+        getDayEl: () => rootEl,
         rect: {
           left: 0,
           top: 0,

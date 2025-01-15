@@ -8,7 +8,7 @@ export interface Hit {
   context?: ViewContext // will be set by HitDragging
   dateProfile: DateProfile
   dateSpan: DateSpan
-  dayEl: HTMLElement
+  getDayEl: () => HTMLElement
   rect: Rect
   layer: number
   largeUnit?: string // TODO: have timeline set this!

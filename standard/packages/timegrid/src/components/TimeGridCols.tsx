@@ -137,8 +137,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
         allDay: false,
         ...cell.dateSpanProps,
       },
-      // HACK. TODO: This is expensive to do every hit-query
-      dayEl: getCellEl(this.rootEl, col),
+      getDayEl: () => getCellEl(this.rootEl, col),
       rect: {
         left,
         right,

@@ -151,11 +151,11 @@ export function computeRowFromPosition(
 // -------------------------------------------------------------------------------------------------
 
 export function getRowEl(rootEl: HTMLElement, row: number): HTMLElement {
-  return rootEl.querySelectorAll(':scope > [role=row]')[row] as HTMLElement
+  return rootEl.querySelectorAll('[role=row]')[row] as HTMLElement
 }
 
 export function getCellEl(rowEl: HTMLElement, col: number): HTMLElement {
-  return rowEl.querySelectorAll(':scope > [role=gridcell]')[col] as HTMLElement
+  return rowEl.querySelectorAll('[role=gridcell]')[col] as HTMLElement
 }
 
 // Header Formatting
