@@ -33,14 +33,8 @@ DayGrid
       to be more like react-native, and more intuitive
 MultiMonth
   Improve perf while switching years
-  For print, force +morelink to isCompact=true
-    Starting out NOT compact in forced 2-col formation, but when gets squished to where isCompact
-    is needed, but ResizeObserver/etc doesn't adapt. examples-v7/multimonth-view.html
 TimeGrid
   [z-indexes] timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit
-Timeline
-  previously, Timeline's hit system would always return slat left/right, not snap
-    for real? matters? add to changelog?
 Resource DayGrid
   on DayGridHeader (for TimeGrid too)
     [bug] dates-BELOW-resources need data-resource attribute
@@ -216,6 +210,9 @@ Timeline
   for timeline event-dnd, the mirror, should have white glow just like timegrid for when overlap other events
 MultiMonth
   put navlink on multimonth month header text?
+  For print, force +morelink to isCompact=true
+    Starting out NOT compact in forced 2-col formation, but when gets squished to where isCompact
+    is needed, but ResizeObserver/etc doesn't adapt. examples-v7/multimonth-view.html
 Cross-browser
   Firefox
     [bug][regression]: after print-view (for timegrid as least) scroll gutter filler permanently disappears
