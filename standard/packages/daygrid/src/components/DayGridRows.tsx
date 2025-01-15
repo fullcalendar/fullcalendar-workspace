@@ -120,7 +120,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             isCompact={isCompact}
 
             // if not auto-height, distribute height of container somewhat evently to rows
-            // (treat all as zero, distribute height, then ensure min-heights -- the inner content height)
             className={joinClassNames(
               rowHeightsRedistribute && 'fc-grow',
               rowCnt > 1 && 'fc-break-inside-avoid', // don't avoid breaks for single tall row

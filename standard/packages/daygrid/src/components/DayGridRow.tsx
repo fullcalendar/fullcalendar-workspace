@@ -145,6 +145,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         }
         className={joinClassNames(
           'fc-daygrid-row',
+          props.forPrint && 'fc-daygrid-row-print',
           'fc-flex-row fc-rel',
           props.className,
         )}
