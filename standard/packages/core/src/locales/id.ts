@@ -17,7 +17,7 @@ export default {
     list: 'Agenda',
   },
   weekText: 'Mg',
-  allDayText: 'Sehari penuh',
+  allDayText: 'Sehari\npenuh',
   moreLinkText: 'lebih',
   noEventsText: 'Tidak ada acara untuk ditampilkan',
 } as LocaleInput

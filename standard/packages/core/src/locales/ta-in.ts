@@ -17,7 +17,7 @@ export default {
     list: 'தினசரி அட்டவணை',
   },
   weekText: 'வாரம்',
-  allDayText: 'நாள் முழுவதும்',
+  allDayText: 'நாள்\nமுழுவதும்',
   moreLinkText(n) {
     return '+ மேலும் ' + n
   },

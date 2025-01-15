@@ -17,7 +17,7 @@ export default {
     list: 'Rhestr',
   },
   weekText: 'Wythnos',
-  allDayText: 'Trwy\'r dydd',
+  allDayText: 'Trwy\'r\ndydd',
   moreLinkText: 'Mwy',
   noEventsText: 'Dim digwyddiadau',
 } as LocaleInput

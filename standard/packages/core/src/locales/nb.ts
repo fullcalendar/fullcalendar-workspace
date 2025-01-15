@@ -18,7 +18,7 @@ export default {
   },
   weekText: 'Uke',
   weekTextLong: 'Uke',
-  allDayText: 'Hele dagen',
+  allDayText: 'Hele\ndagen',
   moreLinkText: 'til',
   noEventsText: 'Ingen hendelser å vise',
   buttonHints: {

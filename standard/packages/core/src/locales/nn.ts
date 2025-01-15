@@ -17,7 +17,7 @@ export default {
     list: 'Agenda',
   },
   weekText: 'Veke',
-  allDayText: 'Heile dagen',
+  allDayText: 'Heile\ndagen',
   moreLinkText: 'til',
   noEventsText: 'Ingen hendelser å vise',
 } as LocaleInput

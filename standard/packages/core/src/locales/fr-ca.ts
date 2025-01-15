@@ -13,7 +13,7 @@ export default {
     list: 'Mon planning',
   },
   weekText: 'Sem.',
-  allDayText: 'Toute la journée',
+  allDayText: 'Toute la\njournée',
   moreLinkText: 'en plus',
   noEventsText: 'Aucun évènement à afficher',
 } as LocaleInput

@@ -17,7 +17,7 @@ export default {
     list: 'Agenda',
   },
   weekText: 'Mg',
-  allDayText: 'Sepanjang hari',
+  allDayText: 'Sepanjang\nhari',
   moreLinkText(n) {
     return 'masih ada ' + n + ' acara'
   },

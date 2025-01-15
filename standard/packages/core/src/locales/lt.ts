@@ -17,7 +17,7 @@ export default {
     list: 'Darbotvarkė',
   },
   weekText: 'SAV',
-  allDayText: 'Visą dieną',
+  allDayText: 'Visą\ndieną',
   moreLinkText: 'daugiau',
   noEventsText: 'Nėra įvykių rodyti',
 } as LocaleInput

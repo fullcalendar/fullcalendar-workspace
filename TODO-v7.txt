@@ -46,10 +46,6 @@ Resource Timeline
   when no groupcols, do simplified DOM structure?
 List
   rethink how listview has data-date on which element
-Locales
-  give TimeGrid all-day cell white-space:pre
-    then, put newlines in following big strings: fr, ka, lb, ms, sq
-    then, text-align right (for ltr), looks better for second line
 
 Release Prep
 ------------
@@ -123,6 +119,8 @@ Regression: [v7-beta] Day cells do not expand to fit events in dayGridYear #7852
   https://github.com/fullcalendar/fullcalendar/issues/7852
 [fixed v7] DayGrid with height:auto "shows ResizeObserver loop warning"
   https://github.com/fullcalendar/fullcalendar/issues/7861
+Add: "all-day" text in TimeGrid respects newlines in locales' allDayText, looks better
+  Also, better text-align looks better
 
 Freshdesk/GH-issues
 -------------------

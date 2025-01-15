@@ -17,7 +17,7 @@ export default {
     list: 'Terminiwwersiicht',
   },
   weekText: 'W',
-  allDayText: 'Ganzen Dag',
+  allDayText: 'Ganzen\nDag',
   moreLinkText: 'méi',
   noEventsText: 'Nee Evenementer ze affichéieren',
 } as LocaleInput

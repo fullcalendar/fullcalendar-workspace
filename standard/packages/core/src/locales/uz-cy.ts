@@ -16,7 +16,7 @@ export default {
     list: 'Кун тартиби',
   },
   weekText: 'Ҳафта',
-  allDayText: 'Кун бўйича',
+  allDayText: 'Кун\nбўйича',
   moreLinkText(n) {
     return '+ яна ' + n
   },

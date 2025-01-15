@@ -17,7 +17,7 @@ export default {
     list: 'Повестка дня',
   },
   weekText: 'Нед',
-  allDayText: 'Весь день',
+  allDayText: 'Весь\nдень',
   moreLinkText(n) {
     return '+ ещё ' + n
   },

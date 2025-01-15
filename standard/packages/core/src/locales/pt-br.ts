@@ -27,7 +27,7 @@ export default {
   },
   weekText: 'Sm',
   weekTextLong: 'Semana',
-  allDayText: 'dia inteiro',
+  allDayText: 'dia\ninteiro',
   moreLinkText(n) {
     return 'mais +' + n
   },

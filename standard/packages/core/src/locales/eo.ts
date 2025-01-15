@@ -17,7 +17,7 @@ export default {
     list: 'Tagordo',
   },
   weekText: 'Sm',
-  allDayText: 'Tuta tago',
+  allDayText: 'Tuta\ntago',
   moreLinkText: 'pli',
   noEventsText: 'Neniuj eventoj por montri',
 } as LocaleInput

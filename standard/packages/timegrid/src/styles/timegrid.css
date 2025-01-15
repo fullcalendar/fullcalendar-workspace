@@ -36,6 +36,23 @@
   justify-content: center; // vertically
 }
 
+// for line-breaks in text, text-align compliments align-items
+.fc-direction-ltr .fc-timegrid-axis-inner { // (ltr)
+  text-align: right;
+}
+.fc-direction-rtl .fc-timegrid-axis-inner { // (rtl)
+  text-align: left;
+}
+
+//
+// timegrid-allday-label
+//
+
+.fc-timegrid-allday-label-inner { // > inner
+  // respect newlines in long text like "Toute la journée", meant to break
+  white-space: pre;
+}
+
 //
 // fc-timegrid-day
 //

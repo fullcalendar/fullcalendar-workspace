@@ -17,7 +17,7 @@ export default {
     list: 'Plan dnia',
   },
   weekText: 'Tydz',
-  allDayText: 'Cały dzień',
+  allDayText: 'Cały\ndzień',
   moreLinkText: 'więcej',
   noEventsText: 'Brak wydarzeń do wyświetlenia',
 } as LocaleInput

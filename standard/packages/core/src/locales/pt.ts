@@ -17,7 +17,7 @@ export default {
     list: 'Agenda',
   },
   weekText: 'Sem',
-  allDayText: 'Todo o dia',
+  allDayText: 'Todo\no dia',
   moreLinkText: 'mais',
   noEventsText: 'Não há eventos para mostrar',
 } as LocaleInput

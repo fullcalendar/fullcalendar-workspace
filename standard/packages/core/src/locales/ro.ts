@@ -17,7 +17,7 @@ export default {
     list: 'Agendă',
   },
   weekText: 'Săpt',
-  allDayText: 'Toată ziua',
+  allDayText: 'Toată\nziua',
   moreLinkText(n) {
     return '+alte ' + n
   },

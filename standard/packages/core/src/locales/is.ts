@@ -17,7 +17,7 @@ export default {
     list: 'Dagskrá',
   },
   weekText: 'Vika',
-  allDayText: 'Allan daginn',
+  allDayText: 'Allan\ndaginn',
   moreLinkText: 'meira',
   noEventsText: 'Engir viðburðir til að sýna',
 } as LocaleInput

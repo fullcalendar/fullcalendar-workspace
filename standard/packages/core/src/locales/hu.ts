@@ -17,7 +17,7 @@ export default {
     list: 'Lista',
   },
   weekText: 'Hét',
-  allDayText: 'Egész nap',
+  allDayText: 'Egész\nnap',
   moreLinkText: 'további',
   noEventsText: 'Nincs megjeleníthető esemény',
 } as LocaleInput

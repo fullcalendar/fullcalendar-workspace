@@ -17,7 +17,7 @@ export default {
     list: 'Agenda',
   },
   weekText: 'As',
-  allDayText: 'Egun osoa',
+  allDayText: 'Egun\nosoa',
   moreLinkText: 'gehiago',
   noEventsText: 'Ez dago ekitaldirik erakusteko',
 } as LocaleInput

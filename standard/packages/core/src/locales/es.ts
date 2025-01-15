@@ -29,7 +29,7 @@ export default {
   },
   weekText: 'Sm',
   weekTextLong: 'Semana',
-  allDayText: 'Todo el día',
+  allDayText: 'Todo\nel día',
   moreLinkText: 'más',
   moreLinkHint(eventCnt) {
     return `Mostrar ${eventCnt} eventos más`

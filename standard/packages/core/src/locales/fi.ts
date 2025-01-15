@@ -17,7 +17,7 @@ export default {
     list: 'Tapahtumat',
   },
   weekText: 'Vk',
-  allDayText: 'Koko päivä',
+  allDayText: 'Koko\npäivä',
   moreLinkText: 'lisää',
   noEventsText: 'Ei näytettäviä tapahtumia',
 } as LocaleInput

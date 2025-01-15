@@ -17,7 +17,7 @@ export default {
     list: 'Порядок денний',
   },
   weekText: 'Тиж',
-  allDayText: 'Увесь день',
+  allDayText: 'Увесь\nдень',
   moreLinkText(n) {
     return '+ще ' + n + '...'
   },
