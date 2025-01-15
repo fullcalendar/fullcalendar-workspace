@@ -37,6 +37,7 @@ import {
 } from '@fullcalendar/resource/internal'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import {
+  getTimelineSlotEl,
   TimelineDateProfile,
   TimelineHeaderRow,
   TimelineLaneBg,
@@ -1002,7 +1003,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               bottom,
             },
             // HACK. TODO: This is expensive to do every hit-query
-            dayEl: this.bodyEl.querySelectorAll('.fc-timeline-slot')[slatIndex] as HTMLElement, // TODO!
+            dayEl: getTimelineSlotEl(this.bodyEl, slatIndex),
             layer: 0,
           }
         }

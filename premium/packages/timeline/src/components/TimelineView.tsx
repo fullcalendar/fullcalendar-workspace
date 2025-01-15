@@ -31,6 +31,7 @@ import { TimelineHeaderRow } from './TimelineHeaderRow.js'
 import { computeSlotWidth, timeToCoord } from '../timeline-positioning.js'
 import { TimelineNowIndicatorLine } from './TimelineNowIndicatorLine.js'
 import { TimelineNowIndicatorArrow } from './TimelineNowIndicatorArrow.js'
+import { getTimelineSlotEl } from './util.js'
 
 interface TimelineViewState {
   totalWidth?: number
@@ -403,7 +404,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
           bottom: elHeight,
         },
         // HACK. TODO: This is expensive to do every hit-query
-        dayEl: this.bodyEl.querySelectorAll('.fc-timeline-slot')[slatIndex] as HTMLElement, // TODO!
+        dayEl: getTimelineSlotEl(this.bodyEl, slatIndex),
         layer: 0,
       }
     }
