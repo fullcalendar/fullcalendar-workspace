@@ -71,6 +71,11 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     this.allDayLabelInnerWidth = width
     afterSize(this.handleAxisInnerWidths)
   }
+  private weekNumberInnerWidth?: number
+  private handleWeekNumberInnerWidth = (width: number) => {
+    this.weekNumberInnerWidth = width
+    afterSize(this.handleAxisInnerWidths)
+  }
   private slatLabelInnerWidthRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
     afterSize(this.handleAxisInnerWidths)
   })
@@ -146,6 +151,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 {(options.weekNumbers && tierNum === props.headerTiers.length - 1 ) ? ( // last row?
                   <TimeGridWeekNumber
                     dateProfile={props.dateProfile}
+                    innerWidthRef={this.handleWeekNumberInnerWidth}
                     innerHeightRef={headerLabelInnerWidthRefMap.createRef(tierNum)}
                     width={axisWidth}
                     isLiquid={false}
@@ -375,7 +381,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
   private handleAxisInnerWidths = () => {
     const headerLabelInnerWidthMap = this.headerLabelInnerWidthRefMap.current
     const slatLabelInnerWidthMap = this.slatLabelInnerWidthRefMap.current
-    let max = this.allDayLabelInnerWidth || 0 // guard against all-day slot hidden
+    let max = Math.max(
+      this.weekNumberInnerWidth || 0, // might not exist
+      this.allDayLabelInnerWidth || 0 // guard against all-day slot hidden
+    )
 
     for (const headerLabelInnerWidth of headerLabelInnerWidthMap.values()) {
       max = Math.max(max, headerLabelInnerWidth)
