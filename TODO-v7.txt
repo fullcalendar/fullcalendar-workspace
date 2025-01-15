@@ -44,8 +44,6 @@ Resource Timeline
   [z-index] i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
     TODO: do same concept for timeline-no-resources
   when no groupcols, do simplified DOM structure?
-List
-  rethink how listview has data-date on which element
 
 Release Prep
 ------------
