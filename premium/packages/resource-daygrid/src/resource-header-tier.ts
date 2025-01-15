@@ -38,6 +38,7 @@ export function buildResourceRowConfigs(
     })
 
     return [
+      // date row
       buildDateRowConfig(
         dates,
         datesRepDistinctDays,
@@ -47,6 +48,7 @@ export function buildResourceRowConfigs(
         context,
         /* colSpan = */ resources.length,
       ),
+      // resource row
       {
         renderConfig: buildResourceRenderConfig(context),
         dataConfigs: [].concat(...resourceDataConfigsPerDate), // flatten
@@ -54,6 +56,9 @@ export function buildResourceRowConfigs(
     ]
   } else {
     const dateDataConfigsPerResource = resources.map((resource) => {
+      const resourceApi = new ResourceApi(context, resource)
+      const resourceApiId = resourceApi.id
+
       return buildDateDataConfigs(
         dates,
         datesRepDistinctDays,
@@ -62,12 +67,20 @@ export function buildResourceRowConfigs(
         dayHeaderFormat,
         context,
         1, // rowSpan
-        resource.id + ':',
+        resourceApiId + ':',
+        { // extraRenderProps
+          resource: resourceApi,
+        },
+        { // extraAttrs
+          'data-resource-id': resourceApiId,
+        }
       )
     })
 
     return [
+      // resource row
       buildResourceRowConfig(resources, undefined, context, /* colSpan = */ dates.length),
+      // date row
       {
         renderConfig: buildDateRenderConfig(context),
         dataConfigs: [].concat(...dateDataConfigsPerResource), // flatten
@@ -76,6 +89,9 @@ export function buildResourceRowConfigs(
   }
 }
 
+/*
+Single row, just resources (might be under dates, might not)
+*/
 function buildResourceRowConfig(
   resources: Resource[],
   date: DateMarker | undefined,
@@ -120,7 +136,6 @@ function buildResourceDataConfigs(
         view: context.viewApi,
       },
       attrs: {
-        // will these NOT render if values are undefined? I hope so
         'data-resource-id': resourceApiId,
         'data-date': date ? formatDayString(date) : undefined,
       },

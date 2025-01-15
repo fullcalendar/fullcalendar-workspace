@@ -95,6 +95,8 @@ export function buildDateDataConfigs(
   context: ViewContext,
   colSpan = 1,
   keyPrefix = '',
+  extraRenderProps: any = {}, // TODO
+  extraAttrs: any = {}, // TODO
 ): CellDataConfig<DayHeaderContentArg>[] {
   const { dateEnv, viewApi, options } = context
 
@@ -107,6 +109,7 @@ export function buildDateDataConfigs(
           date: dateEnv.toDate(date),
           view: viewApi,
           text,
+          ...extraRenderProps,
         }
         const isNavLink = options.navLinks && !dateMeta.isDisabled
         const fullDateStr = buildDateStr(context, date)
@@ -119,6 +122,7 @@ export function buildDateDataConfigs(
             'aria-label': fullDateStr,
             ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}), // TODO: assign undefined for nonexistent
             'data-date': formatDayString(date),
+            ...extraAttrs,
           },
           // for navlink
           innerAttrs: isNavLink
@@ -146,6 +150,7 @@ export function buildDateDataConfigs(
           date,
           view: viewApi,
           text,
+          ...extraRenderProps,
         }
         const fullWeekDayStr = dateEnv.format(normDate, WEEKDAY_FORMAT)
 
@@ -155,6 +160,7 @@ export function buildDateDataConfigs(
           renderProps,
           attrs: {
             'aria-label': fullWeekDayStr,
+            ...extraAttrs,
           },
           // for navlink
           innerAttrs: {

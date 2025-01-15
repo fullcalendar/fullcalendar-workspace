@@ -34,10 +34,6 @@ MultiMonth
   Improve perf while switching years
 TimeGrid
   [z-indexes] timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit
-Resource DayGrid
-  on DayGridHeader (for TimeGrid too)
-    [bug] dates-BELOW-resources need data-resource attribute
-    [bug] customer-render-func not getting passed a resource render-prop
 Resource Timeline
   [bug] when height:auto, infinite height increase
   [z-index] i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
