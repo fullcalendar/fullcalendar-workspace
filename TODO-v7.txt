@@ -8,9 +8,6 @@ ASAP
 ----
 
 General Markup
-  viewcontainer
-    use fc-border
-    implement aspect-ratio more literally
   [z-indexes] util classNames
 General Performance
   why does TimelineLane::render get called 3 times initially?
@@ -176,6 +173,9 @@ Punt
 ----
 
 General Markup
+  viewharness
+    implement aspect-ratio more literally
+    maybe put fc-border on viewharness or viewcontainer
   kill fc-header-cell classname?
   in future css className refactor:
     fc-dayGridMonth -> fc-daygridmonth (to match fc-daygrid)
