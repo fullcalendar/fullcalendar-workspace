@@ -8,7 +8,6 @@ import {
   Hit,
   DayTableCell,
   RefMap,
-  watchWidth,
   getIsHeightAuto,
   DayGridRange,
   EventRangeProps,
@@ -70,7 +69,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
       rowHeightRefMap.handleValue(height, key)
     }
   })
-  private disconnectWidth?: () => void
 
   render() {
     let { props, context, rowHeightRefMap } = this
@@ -160,16 +158,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     } else {
       this.context.unregisterInteractiveComponent(this)
     }
-  }
-
-  componentDidMount(): void {
-    this.disconnectWidth = watchWidth(this.rootEl, (width) => {
-      this.setState({ width })
-    })
-  }
-
-  componentWillUnmount(): void {
-    this.disconnectWidth()
   }
 
   // Hit System

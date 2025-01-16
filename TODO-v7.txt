@@ -176,6 +176,9 @@ General Responsive
 General Performance
   use css translateX/Y instead of top/left to prevent reflows
   user IntersectionObserver for DnD?
+  when there's no ref watching a dimension, don't attach resize observer to element
+    example: simple Month-view always listens to header heights (innerHeightRef) because TimeGrid
+    needs to sync height with all-day cell
 General a11y
   have separate settings for date-format hints? out of whack
     view's aria-label (if no headerToolbar) is "Sep 7 – 8, 2020" (bad that it's abbreviated)
