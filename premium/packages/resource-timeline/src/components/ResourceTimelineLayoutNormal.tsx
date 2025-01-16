@@ -400,14 +400,17 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               </Scroller>
 
               {/* spreadsheet FOOTER scrollbar
-              ---------------------------------------------------------------------------- */}
-              {Boolean(stickyFooterScrollbar) && (
-                <StickyFooterScrollbar
-                  canvasWidth={spreadsheetCanvasWidth}
-                  scrollerRef={this.spreadsheetFooterScrollerRef}
-                  scrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
-                />
-              )}
+              ----------------------------------------------------------------------------
+              Not just for stickyFooterScrollbar:true,
+              also just for normal horizontal scrolling,
+              because we need to hide the vertical scrollbar, but can't solely show the horizontal one
+              */}
+              <StickyFooterScrollbar
+                canvasWidth={spreadsheetCanvasWidth}
+                scrollerRef={this.spreadsheetFooterScrollerRef}
+                scrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
+                isSticky={stickyFooterScrollbar}
+              />
             </Fragment>
           }
 

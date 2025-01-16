@@ -3,11 +3,13 @@ import { watchHeight } from '../component-util/resize-observer.js'
 import { createElement, createRef, Ref } from '../preact.js'
 import { Scroller } from '../scrollgrid/Scroller.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
+import { joinClassNames } from '../util/html.js'
 
 export interface StickyFooterScrollbarProps {
   canvasWidth: CssDimValue
   scrollerRef?: Ref<Scroller>
   scrollbarWidthRef?: Ref<number>
+  isSticky?: boolean // default: true
 }
 
 export class StickyFooterScrollbar extends BaseComponent<StickyFooterScrollbarProps> {
@@ -22,7 +24,13 @@ export class StickyFooterScrollbar extends BaseComponent<StickyFooterScrollbarPr
     // dimension-watching, when used in ponyfill-mode, can't fire on border-box change, so we
     // workaround it by monitoring dimensions of a wrapper instead
     return (
-      <div ref={this.rootElRef} className='fc-sticky-footer-scrollbar'>
+      <div
+        ref={this.rootElRef}
+        className={joinClassNames(
+          'fc-footer-scrollbar',
+          props.isSticky !== false && 'fc-footer-scrollbar-sticky',
+        )}
+      >
         <Scroller horizontal ref={props.scrollerRef}>
           <div style={{ minWidth: props.canvasWidth }} />
         </Scroller>

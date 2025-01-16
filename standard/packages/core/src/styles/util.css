@@ -179,18 +179,6 @@ Sticks to either left or right (the flex "start") depending on ltr/rtl
   z-index: $sticky-header-footer-z;
 }
 
-.fc-sticky-footer-scrollbar { // rename?
-  position: sticky;
-  bottom: 0;
-  z-index: $sticky-header-footer-z;
-}
-.fc-sticky-footer-scrollbar > .fc-scroller {
-  margin-top: -1px; // HACK for 1px height...
-}
-.fc-sticky-footer-scrollbar > .fc-scroller > * {
-  height: 1px; // ...needs 1px height or else scrollbars will never appear
-}
-
 /*
 Only needed when padding/border must be separate from width/height
 */
@@ -235,4 +223,21 @@ which will override width/height if shrinking. Not the case with minWidth/minHei
 
 .fc-align-start {
   align-items: flex-start;
+}
+
+// Footer Scrollbar
+// -------------------------------------------------------------------------------------------------
+
+.fc-footer-scrollbar-sticky {
+  position: sticky;
+  bottom: 0;
+  z-index: $sticky-header-footer-z;
+}
+
+.fc-footer-scrollbar > .fc-scroller { // > scroller
+  margin-top: -1px; // HACK for 1px height...
+}
+
+.fc-footer-scrollbar > .fc-scroller > * { // > scroller > canvas
+  height: 1px; // ...needs 1px height or else scrollbars will never appear
 }
