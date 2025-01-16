@@ -18,10 +18,6 @@ General Performance
     V7 has no real improvement
   "Maximum update depth exceeded" error after resizing many times in Chrome --- reemerged?
     https://github.com/fullcalendar/fullcalendar/issues/5606
-General [manual-test]
-  Touch devices
-  been having issues with scrollwheel getting scrollsyncing out of whack!?
-  sticky footer scrollbars for resource-timeline datagrid area?
 DayGrid
   weekNumbers in daygrid should be in DOM-order before cells
   simplify event positioning
@@ -36,9 +32,15 @@ MultiMonth
 TimeGrid
   [z-indexes] timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit
 Resource Timeline
-  [z-index] i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
+  [z-indexes] i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
     TODO: do same concept for timeline-no-resources
   when no groupcols, do simplified DOM structure?
+
+Manual Test
+-----------
+
+Touch devices
+been having issues with scrollwheel getting scrollsyncing out of whack!?
 
 Release Prep
 ------------
