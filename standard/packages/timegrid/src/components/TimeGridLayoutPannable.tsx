@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Ruler, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, StickyFooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Ruler, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, FooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef } from "@fullcalendar/core/internal"
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridHeaderRow, RowConfig, computeColWidth, computeRowIsCompact } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
@@ -394,7 +394,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             ---------------------------------------------------------------------------------------*/}
             <div
               // we need this div because it's bad for Scroller to have left/right borders,
-              // AND because we need to containt the StickyFooterScrollbar
+              // AND because we need to containt the FooterScrollbar
               className='fc-border-s fc-flex-col fc-liquid'
             >
               <Scroller
@@ -481,7 +481,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 </div>
               </Scroller>
               {Boolean(stickyFooterScrollbar) && (
-                <StickyFooterScrollbar
+                <FooterScrollbar
+                  isSticky
                   canvasWidth={canvasWidth}
                   scrollerRef={this.footScrollerRef}
                   scrollbarWidthRef={this.handleBottomScrollbarWidth}

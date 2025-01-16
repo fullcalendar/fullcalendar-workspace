@@ -21,7 +21,7 @@ import {
   setRef,
   SlicedProps,
   SplittableProps,
-  StickyFooterScrollbar,
+  FooterScrollbar,
   ViewContainer
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
@@ -405,11 +405,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               also just for normal horizontal scrolling,
               because we need to hide the vertical scrollbar, but can't solely show the horizontal one
               */}
-              <StickyFooterScrollbar
+              <FooterScrollbar
+                isSticky={stickyFooterScrollbar}
                 canvasWidth={spreadsheetCanvasWidth}
                 scrollerRef={this.spreadsheetFooterScrollerRef}
                 scrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
-                isSticky={stickyFooterScrollbar}
               />
             </Fragment>
           }
@@ -632,7 +632,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {/* time-area FOOTER
               ---------------------------------------------------------------------------- */}
               {Boolean(stickyFooterScrollbar) && (
-                <StickyFooterScrollbar
+                <FooterScrollbar
+                  isSticky
                   canvasWidth={timeCanvasWidth}
                   scrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
                   scrollerRef={this.timeFooterScrollerRef}

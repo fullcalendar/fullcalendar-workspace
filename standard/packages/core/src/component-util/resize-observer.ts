@@ -345,7 +345,7 @@ function debounce(fn: () => void, ms: number): [
 PRECONDITION: element can only have one listener attached
 
 NOTE: If we ever kill the fallback technique and use ResizeObserver unconditionally with full
-border-box support, we no longer need wrappers around the <StickyFooterScrollbar>'s <Scroller>
+border-box support, we no longer need wrappers around the <FooterScrollbar>'s <Scroller>
 */
 
 export const [watchSize, updateSizeSync] =

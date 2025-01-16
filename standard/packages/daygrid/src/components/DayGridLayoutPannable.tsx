@@ -16,7 +16,7 @@ import {
   RefMap,
   DayGridRange,
   EventRangeProps,
-  StickyFooterScrollbar,
+  FooterScrollbar,
   joinClassNames,
   Ruler,
 } from '@fullcalendar/core/internal'
@@ -154,7 +154,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
         </Scroller>
 
         {Boolean(stickyFooterScrollbar) && (
-          <StickyFooterScrollbar
+          <FooterScrollbar
+            isSticky
             canvasWidth={canvasWidth}
             scrollerRef={this.footerScrollerRef}
           />

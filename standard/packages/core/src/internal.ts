@@ -262,4 +262,4 @@ export {
   getCoordRangeEnd,
 } from './coord-range.js'
 
-export { StickyFooterScrollbar } from './common/StickyFooterScrollbar.js'
+export { FooterScrollbar } from './common/FooterScrollbar.js'

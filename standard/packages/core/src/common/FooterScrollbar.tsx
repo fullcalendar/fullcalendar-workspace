@@ -5,14 +5,14 @@ import { Scroller } from '../scrollgrid/Scroller.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { joinClassNames } from '../util/html.js'
 
-export interface StickyFooterScrollbarProps {
+export interface FooterScrollbarProps {
+  isSticky?: boolean
   canvasWidth: CssDimValue
   scrollerRef?: Ref<Scroller>
   scrollbarWidthRef?: Ref<number>
-  isSticky?: boolean // default: true
 }
 
-export class StickyFooterScrollbar extends BaseComponent<StickyFooterScrollbarProps> {
+export class FooterScrollbar extends BaseComponent<FooterScrollbarProps> {
   rootElRef = createRef<HTMLDivElement>()
   disconnectHeight?: () => void
 
@@ -28,7 +28,7 @@ export class StickyFooterScrollbar extends BaseComponent<StickyFooterScrollbarPr
         ref={this.rootElRef}
         className={joinClassNames(
           'fc-footer-scrollbar',
-          props.isSticky !== false && 'fc-footer-scrollbar-sticky',
+          props.isSticky && 'fc-footer-scrollbar-sticky',
         )}
       >
         <Scroller horizontal ref={props.scrollerRef}>

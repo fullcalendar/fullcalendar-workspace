@@ -20,7 +20,7 @@ import {
   RefMap,
   joinClassNames,
   Ruler,
-  StickyFooterScrollbar,
+  FooterScrollbar,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
@@ -231,7 +231,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               {/* FOOTER scrollbar
               ---------------------------------------------------------------------------------- */}
               {Boolean(stickyFooterScrollbar) && (
-                <StickyFooterScrollbar
+                <FooterScrollbar
+                  isSticky
                   canvasWidth={canvasWidth}
                   scrollerRef={this.footerScrollerRef}
                 />
