@@ -134,6 +134,7 @@ Rarely used. Just inline this?
   @include fill;
 }
 
+.fc-fill-top,
 .fc-fill-x {
   position: absolute;
   left: 0;
@@ -145,6 +146,10 @@ Rarely used. Just inline this?
   position: absolute;
   top: 0;
   bottom: 0;
+}
+
+.fc-fill-top {
+  top: 0;
 }
 
 .fc-fill-start {

@@ -14,7 +14,6 @@ import {
   DayGridRange,
   EventRangeProps,
   joinClassNames,
-  Ruler,
 } from '@fullcalendar/core/internal'
 import { Fragment, Ref, createElement } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -46,8 +45,8 @@ export interface DayGridLayoutNormalProps {
 }
 
 interface DayGridViewState {
-  totalWidth?: number
   clientWidth?: number
+  endScrollbarWidth?: number
 }
 
 export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps, DayGridViewState> {
@@ -55,10 +54,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     const { props, state, context } = this
     const { options } = context
 
-    const { totalWidth, clientWidth } = state
-    const endScrollbarWidth = (totalWidth != null && clientWidth != null)
-      ? totalWidth - clientWidth
-      : undefined
+    const { clientWidth, endScrollbarWidth } = state
 
     const verticalScrollbars = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
@@ -93,6 +89,8 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             verticalScrollbars && 'fc-liquid',
           )}
           ref={this.handleScroller}
+          clientWidthRef={this.handleClientWidth}
+          endScrollbarWidthRef={this.handleEndScrollbarWidth}
         >
           <DayGridRows
             dateProfile={props.dateProfile}
@@ -114,14 +112,16 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             eventSelection={props.eventSelection}
 
             // dimensions
-            visibleWidth={totalWidth}
+            visibleWidth={
+              (clientWidth != null && endScrollbarWidth != null)
+                ? clientWidth + endScrollbarWidth
+                : undefined
+            }
 
             // refs
             rowHeightRefMap={props.rowHeightRefMap}
           />
-          <Ruler widthRef={this.handleClientWidth} />
         </Scroller>
-        <Ruler widthRef={this.handleTotalWidth} />
       </Fragment>
     )
   }
@@ -130,11 +130,11 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     setRef(this.props.scrollerRef, scroller)
   }
 
-  handleTotalWidth = (totalWidth: number) => {
-    this.setState({ totalWidth })
+  handleClientWidth = (clientWidth: number | null) => {
+    this.setState({ clientWidth })
   }
 
-  handleClientWidth = (clientWidth: number) => {
-    this.setState({ clientWidth })
+  handleEndScrollbarWidth = (endScrollbarWidth: number) => {
+    this.setState({ endScrollbarWidth })
   }
 }

@@ -1,6 +1,7 @@
 import { DateComponent } from '../component/DateComponent.js'
+import { setRef, watchHeight, watchWidth } from '../internal.js'
 import { Dictionary } from '../options.js'
-import { ComponentChildren, createElement } from '../preact.js'
+import { ComponentChildren, createElement, Ref } from '../preact.js'
 import { joinClassNames } from '../util/html.js'
 import { ScrollerInterface } from './ScrollerInterface.js'
 import { ScrollListener } from './ScrollListener.js'
@@ -10,6 +11,12 @@ export interface ScrollerProps {
   horizontal?: boolean // (same)
   hideScrollbars?: boolean // default: false
   children: ComponentChildren
+
+  // dimension refs
+  clientWidthRef?: Ref<number>
+  clientHeightRef?: Ref<number>
+  endScrollbarWidthRef?: Ref<number>
+  bottomScrollbarWidthRef?: Ref<number>
 
   // el hooks
   className?: string
@@ -22,6 +29,14 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 
   // internal
   public listener: ScrollListener // public for ScrollerSyncer
+  private disconnectHRuler?: () => void
+  private disconnectVRuler?: () => void
+
+  // current values
+  private clientWidth?: number
+  private clientHeight?: number
+  private endScrollbarWidth?: number
+  private bottomScrollbarWidth?: number
 
   render() {
     const { props } = this
@@ -35,7 +50,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
         ref={this.handleEl}
         className={joinClassNames(
           props.className,
-          'fc-scroller',
+          'fc-scroller fc-rel', // fc-rel for children fc-fill-top/start
           props.hideScrollbars && 'fc-scroller-no-bars',
         )}
         style={{
@@ -43,7 +58,15 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
           overflowX: props.horizontal ? 'auto' : fallbackOverflow,
           overflowY: props.vertical ? 'auto' : fallbackOverflow,
         }}
-      >{props.children}</div>
+      >
+        {props.children}
+        {Boolean(props.clientWidthRef || props.endScrollbarWidthRef) && (
+          <div ref={this.handleHRuler} className='fc-fill-top' />
+        )}
+        {Boolean(props.clientHeightRef || props.bottomScrollbarWidthRef) && (
+          <div ref={this.handleVRuler} className='fc-fill-start' />
+        )}
+      </div>
     )
   }
 
@@ -56,6 +79,65 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
     if (el) {
       this.el = el
       this.listener = new ScrollListener(el)
+    }
+  }
+
+  handleHRuler = (el: HTMLDivElement | null) => {
+    if (this.disconnectHRuler) {
+      this.disconnectHRuler()
+      this.disconnectHRuler = undefined
+
+      if (this.clientWidth !== undefined) {
+        this.clientWidth = undefined
+        setRef(this.props.clientWidthRef, null)
+      }
+
+      if (this.endScrollbarWidth !== undefined) {
+        this.endScrollbarWidth = undefined
+        setRef(this.props.endScrollbarWidthRef, null)
+      }
+    }
+
+    if (el) {
+      this.disconnectHRuler = watchWidth(el, (clientWidth) => {
+        if (clientWidth !== this.clientWidth) {
+          this.clientWidth = clientWidth
+          setRef(this.props.clientWidthRef, clientWidth)
+        }
+
+        const endScrollbarWidth = Math.round(this.el.getBoundingClientRect().width - clientWidth)
+        if (endScrollbarWidth !== this.endScrollbarWidth) {
+          this.endScrollbarWidth = endScrollbarWidth
+          setRef(this.props.endScrollbarWidthRef, endScrollbarWidth)
+        }
+      })
+    }
+  }
+
+  handleVRuler = (el: HTMLDivElement | null) => {
+    if (this.disconnectVRuler) {
+      this.disconnectVRuler()
+      this.disconnectVRuler = undefined
+
+      if (this.clientHeight !== undefined) {
+        this.clientHeight = undefined
+        setRef(this.props.clientHeightRef, null)
+      }
+    }
+
+    if (el) {
+      this.disconnectVRuler = watchHeight(el, (clientHeight) => {
+        if (clientHeight !== this.clientHeight) {
+          this.clientHeight = clientHeight
+          setRef(this.props.clientHeightRef, clientHeight)
+        }
+
+        const bottomScrollbarWidth = Math.round(this.el.getBoundingClientRect().height - clientHeight)
+        if (bottomScrollbarWidth !== this.bottomScrollbarWidth) {
+          this.bottomScrollbarWidth = bottomScrollbarWidth
+          setRef(this.props.bottomScrollbarWidthRef, bottomScrollbarWidth)
+        }
+      })
     }
   }
 
