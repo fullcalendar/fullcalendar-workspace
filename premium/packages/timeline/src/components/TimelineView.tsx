@@ -182,6 +182,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   verticalScrolling && 'fc-liquid',
                 )}
                 ref={this.bodyScrollerRef}
+                clientWidthRef={this.handleClientWidth}
               >
                 <div
                   aria-label={options.eventsHint}
@@ -225,7 +226,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     />
                   )}
                 </div>
-                <Ruler widthRef={this.handleClientWidth} />
               </Scroller>
 
               {/* FOOTER scrollbar

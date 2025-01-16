@@ -116,15 +116,13 @@ export interface TimeScroll {
 }
 
 interface ResourceTimelineViewState {
-  totalHeight?: number
-
-  spreadsheetClientHeight?: number
-  timeClientHeight?: number
+  spreadsheetBottomScrollbarWidth?: number
 
   timeTotalWidth?: number
+  timeClientHeight?: number
   timeClientWidth?: number
-
-  timeStickyScrollbarWidth?: number
+  timeEndScrollbarWidth?: number
+  timeBottomScrollbarWidth?: number
 }
 
 export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimelineLayoutNormalProps, ResourceTimelineViewState> {
@@ -173,7 +171,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     let { props, state, context } = this
     let { dateProfile, hasNesting } = props
     let { options, viewSpec } = context
-    let { timeTotalWidth, timeClientWidth, timeClientHeight, spreadsheetClientHeight, totalHeight } = state
+    let { spreadsheetBottomScrollbarWidth, timeTotalWidth, timeClientWidth, timeClientHeight, timeBottomScrollbarWidth } = state
 
     /* date */
 
@@ -226,25 +224,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       tDateProfile.cellRows.length,
     )
 
-    // height of the scrollers
-    // current DOM might not be rendering this yet,
-    // thus, if doing math, ensure does result in negative value
-    let totalBodyOuterHeight = (totalHeight != null && headerHeight != null)
-      ? totalHeight - (headerHeight + ROW_BORDER_WIDTH)
-      : undefined
-
     let endScrollbarWidth = (timeTotalWidth != null && timeClientWidth != null)
       ? timeTotalWidth - timeClientWidth
-      : undefined
-
-    let timeBottomScrollbarWidth = state.timeStickyScrollbarWidth != null
-      ? state.timeStickyScrollbarWidth
-      : (totalBodyOuterHeight != null && timeClientHeight != null)
-        ? Math.max(0, totalBodyOuterHeight - timeClientHeight)
-        : undefined
-
-    let spreadsheetBottomScrollbarWidth = (totalBodyOuterHeight != null && spreadsheetClientHeight != null)
-      ? Math.max(0, totalBodyOuterHeight - spreadsheetClientHeight)
       : undefined
 
     // totalBodyHeight is the height WITHIN the scrollers
@@ -387,6 +368,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   verticalScrolling && 'fc-liquid',
                 )}
                 ref={this.spreadsheetBodyScrollerRef}
+                clientWidthRef={this.handleSpreadsheetClientWidth}
+                bottomScrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
               >
                 <div
                   className='fc-rel fc-grow fc-flex-col'
@@ -414,7 +397,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     />
                   )}
                 </div>
-                <Ruler heightRef={this.handleSpreadsheetClientHeight} className='fc-fill-start' />
               </Scroller>
 
               {/* spreadsheet FOOTER scrollbar
@@ -423,11 +405,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 <StickyFooterScrollbar
                   canvasWidth={spreadsheetCanvasWidth}
                   scrollerRef={this.spreadsheetFooterScrollerRef}
-                  scrollbarWidthRef={this.handleTimeStickyScrollbarWidth}
+                  scrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
                 />
               )}
-
-              <Ruler widthRef={this.handleSpreadsheetClientWidth} />
             </Fragment>
           }
 
@@ -517,6 +497,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   verticalScrolling && 'fc-liquid',
                 )}
                 ref={this.timeBodyScrollerRef}
+                clientWidthRef={this.handleTimeClientWidth}
+                clientHeightRef={this.handleTimeClientHeight}
+                bottomScrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
               >
                 <div
                   className='fc-rel fc-grow fc-flex-col'
@@ -641,9 +624,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     />
                   )}
                 </div>
-
-                <Ruler widthRef={this.handleTimeClientWidth} />
-                <Ruler heightRef={this.handleTimeClientHeight} className='fc-fill-start' />
               </Scroller>
 
               {/* time-area FOOTER
@@ -651,6 +631,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {Boolean(stickyFooterScrollbar) && (
                 <StickyFooterScrollbar
                   canvasWidth={timeCanvasWidth}
+                  scrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
                   scrollerRef={this.timeFooterScrollerRef}
                 />
               )}
@@ -659,7 +640,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
             </Fragment>
           }
         />
-        <Ruler heightRef={this.handleTotalHeight} className='fc-fill-start' />
       </ViewContainer>
     )
   }
@@ -734,25 +714,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  private handleTotalHeight = (totalHeight: number) => {
-    this.setState({
-      totalHeight,
-    })
-  }
-
   private handleSpreadsheetClientWidth = (spreadsheetClientWidth: number) => {
     setRef(this.props.spreadsheetClientWidthRef, spreadsheetClientWidth)
   }
 
-  private handleSpreadsheetClientHeight = (spreadsheetClientHeight: number) => {
+  private handleSpreadsheetBottomScrollbarWidth = (spreadsheetBottomScrollbarWidth: number) => {
     this.setState({
-      spreadsheetClientHeight,
-    })
-  }
-
-  private handleTimeClientHeight = (timeClientHeight: number) => {
-    this.setState({
-      timeClientHeight,
+      spreadsheetBottomScrollbarWidth,
     })
   }
 
@@ -770,9 +738,15 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     })
   }
 
-  private handleTimeStickyScrollbarWidth = (timeStickyScrollbarWidth: number) => {
+  private handleTimeClientHeight = (timeClientHeight: number) => {
     this.setState({
-      timeStickyScrollbarWidth,
+      timeClientHeight,
+    })
+  }
+
+  private handleTimeBottomScrollbarWidth = (timeBottomScrollbarWidth: number) => {
+    this.setState({
+      timeBottomScrollbarWidth,
     })
   }
 

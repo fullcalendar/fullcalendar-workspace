@@ -21,6 +21,7 @@ General Performance
 General [manual-test]
   Touch devices
   been having issues with scrollwheel getting scrollsyncing out of whack!?
+  sticky footer scrollbars for resource-timeline datagrid area?
 DayGrid
   weekNumbers in daygrid should be in DOM-order before cells
   simplify event positioning
@@ -35,7 +36,6 @@ MultiMonth
 TimeGrid
   [z-indexes] timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit
 Resource Timeline
-  [bug] when height:auto, infinite height increase
   [z-index] i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
     TODO: do same concept for timeline-no-resources
   when no groupcols, do simplified DOM structure?
@@ -229,6 +229,7 @@ Example Projects
 Notes
 -----
 
+we really do care about minimizing resizerobserver loops, prevents flicker. so, safari is valuable
 flexbox row expansion works across scroll regions: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
 100% width within scroller applies to clientWidth only: https://codepen.io/arshaw/pen/GgKWRNZ?editors=1100
 Print

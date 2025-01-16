@@ -15,8 +15,17 @@ export interface ScrollerProps {
   // dimension refs
   clientWidthRef?: Ref<number>
   clientHeightRef?: Ref<number>
-  endScrollbarWidthRef?: Ref<number>
   bottomScrollbarWidthRef?: Ref<number>
+  /*
+  NOTE: a `endScrollbarWidthRef` is not offered
+  Instead, use a <Ruler> to get to the total width, subtract the clientWidth
+  Originally, `endScrollbarWidthRef` was implemented as you might expect,
+  but yielded Safari ResizeObserver loop warnings.
+  Something about it being outside the scroller, near the bottom of the calendar view
+  guarantees is doesn't interfere with other size watching. IDK.
+  Ultimate solution is to do what ag-grid does: know the scrollbar width ahead of time,
+  know the available height, total content height, in order to predict scollbars without querying dom.
+  */
 
   // el hooks
   className?: string
@@ -35,7 +44,6 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   // current values
   private clientWidth?: number
   private clientHeight?: number
-  private endScrollbarWidth?: number
   private bottomScrollbarWidth?: number
 
   render() {
@@ -60,7 +68,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
         }}
       >
         {props.children}
-        {Boolean(props.clientWidthRef || props.endScrollbarWidthRef) && (
+        {Boolean(props.clientWidthRef) && (
           <div ref={this.handleHRuler} className='fc-fill-top' />
         )}
         {Boolean(props.clientHeightRef || props.bottomScrollbarWidthRef) && (
@@ -91,11 +99,6 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
         this.clientWidth = undefined
         setRef(this.props.clientWidthRef, null)
       }
-
-      if (this.endScrollbarWidth !== undefined) {
-        this.endScrollbarWidth = undefined
-        setRef(this.props.endScrollbarWidthRef, null)
-      }
     }
 
     if (el) {
@@ -103,12 +106,6 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
         if (clientWidth !== this.clientWidth) {
           this.clientWidth = clientWidth
           setRef(this.props.clientWidthRef, clientWidth)
-        }
-
-        const endScrollbarWidth = Math.round(this.el.getBoundingClientRect().width - clientWidth)
-        if (endScrollbarWidth !== this.endScrollbarWidth) {
-          this.endScrollbarWidth = endScrollbarWidth
-          setRef(this.props.endScrollbarWidthRef, endScrollbarWidth)
         }
       })
     }

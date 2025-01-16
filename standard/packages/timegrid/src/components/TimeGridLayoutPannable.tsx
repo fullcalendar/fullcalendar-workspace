@@ -60,9 +60,8 @@ export interface TimeGridLayoutPannableProps {
 interface TimeGridLayoutPannableState {
   totalWidth?: number
   clientWidth?: number
-  bodyHeight?: number
   clientHeight?: number
-  stickyFooterScrollbarWidth?: number
+  bottomScrollbarWidth?: number
   axisWidth?: number
   headerTierHeights: number[]
   slatInnerHeight?: number
@@ -122,18 +121,12 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
       slatMainInnerHeightRefMap,
     } = this
     const { nowDate, headerTiers, forPrint } = props
-    const { axisWidth, totalWidth, clientWidth, bodyHeight, clientHeight, stickyFooterScrollbarWidth } = state
+    const { axisWidth, totalWidth, clientWidth, clientHeight, bottomScrollbarWidth } = state
     const { options } = context
 
     const endScrollbarWidth = (totalWidth != null && clientWidth != null)
       ? totalWidth - clientWidth
       : undefined
-
-    const bottomScrollbarWidth = stickyFooterScrollbarWidth != null
-      ? stickyFooterScrollbarWidth
-      : (bodyHeight != null && clientHeight != null)
-        ? bodyHeight - clientHeight
-        : undefined
 
     const verticalScrolling = !forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !forPrint && getStickyHeaderDates(options)
@@ -416,6 +409,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   verticalScrolling && 'fc-liquid',
                 )}
                 ref={this.mainScrollerRef}
+                clientWidthRef={this.handleClientWidth}
+                clientHeightRef={this.handleClientHeight}
               >
                 <div // canvas (grows b/c of filler at bottom)
                   className='fc-flex-col fc-grow fc-rel'
@@ -484,18 +479,15 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     </Fragment>
                   )}
                 </div>
-                <Ruler widthRef={this.handleClientWidth} />
-                <Ruler heightRef={this.handleClientHeight} className='fc-fill-start' />
               </Scroller>
               {Boolean(stickyFooterScrollbar) && (
                 <StickyFooterScrollbar
                   canvasWidth={canvasWidth}
                   scrollerRef={this.footScrollerRef}
-                  scrollbarWidthRef={this.handleStickyFooterScrollbarWidth}
+                  scrollbarWidthRef={this.handleBottomScrollbarWidth}
                 />
               )}
             </div>
-            <Ruler heightRef={this.handleBodyHeight} className='fc-fill-start' />
           </div>{/* END timed row */}
         </div>{/* END rowgroup */}
         <Ruler widthRef={this.handleTotalWidth} />
@@ -539,16 +531,12 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     this.setState({ clientWidth })
   }
 
-  private handleBodyHeight = (bodyHeight: number) => {
-    this.setState({ bodyHeight })
-  }
-
   private handleClientHeight = (clientHeight: number) => {
     this.setState({ clientHeight })
   }
 
-  private handleStickyFooterScrollbarWidth = (stickyFooterScrollbarWidth: number) => {
-    this.setState({ stickyFooterScrollbarWidth })
+  private handleBottomScrollbarWidth = (bottomScrollbarWidth: number) => {
+    this.setState({ bottomScrollbarWidth })
   }
 
   private handleHeaderHeights = () => {

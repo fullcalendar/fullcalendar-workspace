@@ -1,20 +1,18 @@
-import { watchHeight, watchWidth } from '../internal.js'
+import { watchWidth } from '../internal.js'
 import { createRef, Ref, createElement } from '../preact.js'
-import { BaseComponent, setRef } from "../vdom-util.js"
+import { BaseComponent, setRef } from '../vdom-util.js'
 
 export interface RulerProps {
-  className?: string
-  widthRef?: Ref<number>
-  heightRef?: Ref<number>
+  widthRef: Ref<number>
 }
 
 export class Ruler extends BaseComponent<RulerProps> {
   private elRef = createRef<HTMLDivElement>()
-  private disconnectDim?: () => void
+  private disconnectWidth?: () => void
 
   render() {
     return (
-      <div ref={this.elRef} className={this.props.className} />
+      <div ref={this.elRef} />
     )
   }
 
@@ -22,28 +20,18 @@ export class Ruler extends BaseComponent<RulerProps> {
     const { props } = this
     const el = this.elRef.current
 
-    if (props.widthRef) {
-      this.disconnectDim = watchWidth(el, (width) => {
-        setRef(props.widthRef, width)
-      })
-    } else if (props.heightRef) {
-      this.disconnectDim = watchHeight(el, (height) => {
-        setRef(props.heightRef, height)
-      })
-    }
+    this.disconnectWidth = watchWidth(el, (width) => {
+      setRef(props.widthRef, width)
+    })
   }
 
   componentWillUnmount(): void {
-    if (this.disconnectDim) {
-      this.disconnectDim()
-    }
+    this.disconnectWidth()
 
     const { props } = this
 
     if (props.widthRef) {
       setRef(props.widthRef, null)
-    } else if (props.heightRef) {
-      setRef(props.heightRef, null)
     }
   }
 }

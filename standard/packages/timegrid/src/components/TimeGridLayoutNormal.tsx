@@ -232,6 +232,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               verticalScrolling && 'fc-liquid',
             )}
             ref={props.timeScrollerRef}
+            clientWidthRef={this.handleClientWidth}
+            clientHeightRef={this.handleClientHeight}
           >
             <div // canvas (grows b/c of filler at bottom)
               className='fc-flex-col fc-grow fc-rel'
@@ -333,8 +335,6 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 </Fragment>
               )}
             </div>
-            <Ruler widthRef={this.handleClientWidth} />
-            <Ruler heightRef={this.handleClientHeight} className='fc-fill-start' />
           </Scroller>
         </div>
         <Ruler widthRef={this.handleTotalWidth} />
@@ -367,7 +367,11 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
   // -----------------------------------------------------------------------------------------------
 
   private handleTotalWidth = (totalWidth: number) => {
-    this.setState({ totalWidth })
+    // Must delay the rerender because might change the width of the all-day DayGridRow events,
+    // which shows a ResizeObserver loop warning
+    requestAnimationFrame(() => {
+      this.setState({ totalWidth })
+    })
   }
 
   private handleClientWidth = (clientWidth: number) => {

@@ -122,6 +122,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             verticalScrollbars && 'fc-liquid',
           )}
           ref={this.bodyScrollerRef}
+          clientWidthRef={this.handleClientWidth}
         >
           <DayGridRows
             dateProfile={props.dateProfile}
@@ -150,8 +151,6 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             // refs
             rowHeightRefMap={props.rowHeightRefMap}
           />
-
-          <Ruler widthRef={this.handleClientWidth} />
         </Scroller>
 
         {Boolean(stickyFooterScrollbar) && (

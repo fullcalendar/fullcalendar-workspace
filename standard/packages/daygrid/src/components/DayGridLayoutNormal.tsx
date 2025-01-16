@@ -14,6 +14,7 @@ import {
   DayGridRange,
   EventRangeProps,
   joinClassNames,
+  Ruler,
 } from '@fullcalendar/core/internal'
 import { Fragment, Ref, createElement } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -45,8 +46,8 @@ export interface DayGridLayoutNormalProps {
 }
 
 interface DayGridViewState {
+  totalWidth?: number
   clientWidth?: number
-  endScrollbarWidth?: number
 }
 
 export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps, DayGridViewState> {
@@ -54,7 +55,11 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     const { props, state, context } = this
     const { options } = context
 
-    const { clientWidth, endScrollbarWidth } = state
+    const { totalWidth, clientWidth } = state
+
+    const endScrollbarWidth = (totalWidth != null && clientWidth != null)
+      ? totalWidth - clientWidth
+      : undefined
 
     const verticalScrollbars = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
@@ -90,7 +95,6 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
           )}
           ref={this.handleScroller}
           clientWidthRef={this.handleClientWidth}
-          endScrollbarWidthRef={this.handleEndScrollbarWidth}
         >
           <DayGridRows
             dateProfile={props.dateProfile}
@@ -112,29 +116,26 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             eventSelection={props.eventSelection}
 
             // dimensions
-            visibleWidth={
-              (clientWidth != null && endScrollbarWidth != null)
-                ? clientWidth + endScrollbarWidth
-                : undefined
-            }
+            visibleWidth={totalWidth}
 
             // refs
             rowHeightRefMap={props.rowHeightRefMap}
           />
         </Scroller>
+        <Ruler widthRef={this.handleTotalWidth} />
       </Fragment>
     )
   }
 
-  handleScroller = (scroller: Scroller | null) => {
+  private handleScroller = (scroller: Scroller | null) => {
     setRef(this.props.scrollerRef, scroller)
   }
 
-  handleClientWidth = (clientWidth: number | null) => {
-    this.setState({ clientWidth })
+  private handleTotalWidth = (totalWidth: number) => {
+    this.setState({ totalWidth })
   }
 
-  handleEndScrollbarWidth = (endScrollbarWidth: number) => {
-    this.setState({ endScrollbarWidth })
+  private handleClientWidth = (clientWidth: number) => {
+    this.setState({ clientWidth })
   }
 }
