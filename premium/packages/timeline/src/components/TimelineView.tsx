@@ -26,12 +26,14 @@ import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import { buildTimelineDateProfile, TimelineDateProfile } from '../timeline-date-profile.js'
 import { TimelineSlats } from './TimelineSlats.js'
-import { TimelineLane } from './TimelineLane.js'
 import { TimelineHeaderRow } from './TimelineHeaderRow.js'
 import { computeSlotWidth, timeToCoord } from '../timeline-positioning.js'
 import { TimelineNowIndicatorLine } from './TimelineNowIndicatorLine.js'
 import { TimelineNowIndicatorArrow } from './TimelineNowIndicatorArrow.js'
 import { getTimelineSlotEl } from './util.js'
+import { TimelineLaneSlicer } from '../TimelineLaneSlicer.js'
+import { TimelineEvents } from './TimelineEvents.js'
+import { TimelineLaneBg } from './TimelineLaneBg.js'
 
 interface TimelineViewState {
   totalWidth?: number
@@ -59,6 +61,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   // internal
   private syncedScroller: ScrollerSyncerInterface
   private scrollTime: Duration | null = null
+  private slicer = new TimelineLaneSlicer()
 
   render() {
     const { props, state, context } = this
@@ -96,6 +99,19 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       clientWidth,
     )
     this.slotWidth = slotWidth
+
+    /* sliced */
+
+    let slicedProps = this.slicer.sliceProps(
+      props,
+      props.dateProfile,
+      tDateProfile.isTimeScale ? null : options.nextDayThreshold,
+      context, // wish we didn't have to pass in the rest of the args...
+      props.dateProfile,
+      context.dateProfileGenerator,
+      tDateProfile,
+      context.dateEnv,
+    )
 
     return (
       <NowTimer unit={timerUnit}>
@@ -202,22 +218,32 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     // dimensions
                     slotWidth={slotWidth}
                   />
-                  <TimelineLane
+                  <TimelineLaneBg
+                    tDateProfile={tDateProfile}
+                    nowDate={nowDate}
+                    todayRange={todayRange}
+
+                    // content
+                    bgEventSegs={slicedProps.bgEventSegs}
+                    businessHourSegs={slicedProps.businessHourSegs}
+                    dateSelectionSegs={slicedProps.dateSelectionSegs}
+                    eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : [] /* bad new empty array? */}
+
+                    // dimensions
+                    slotWidth={slotWidth}
+                  />
+                  <TimelineEvents
                     dateProfile={props.dateProfile}
                     tDateProfile={tDateProfile}
                     nowDate={nowDate}
                     todayRange={todayRange}
-                    nextDayThreshold={options.nextDayThreshold}
-                    eventStore={props.eventStore}
-                    eventUiBases={props.eventUiBases}
-                    businessHours={props.businessHours}
-                    dateSelection={props.dateSelection}
-                    eventDrag={props.eventDrag}
-                    eventResize={props.eventResize}
-                    eventSelection={props.eventSelection}
+                    fgEventSegs={slicedProps.fgEventSegs}
+                    eventDrag={slicedProps.eventDrag}
+                    eventResize={slicedProps.eventResize}
+                    eventSelection={slicedProps.eventSelection}
                     slotWidth={slotWidth}
                   />
-                  <div className='fc-timeline-lane-footer' />{/* TODO: DRY */}
+                  <div className='fc-timeline-lane-footer' />
                   {enableNowIndicator && (
                     <TimelineNowIndicatorLine
                       tDateProfile={tDateProfile}

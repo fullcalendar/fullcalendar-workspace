@@ -319,7 +319,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                         tDateProfile={tDateProfile}
                         nowDate={nowDate}
                         todayRange={todayRange}
-                        nextDayThreshold={context.options.nextDayThreshold}
                         businessHours={resource.businessHours || fallbackBusinessHours}
                         slotWidth={slotWidth}
                       />

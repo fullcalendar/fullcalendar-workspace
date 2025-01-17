@@ -607,7 +607,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                             tDateProfile={tDateProfile}
                             nowDate={props.nowDate}
                             todayRange={props.todayRange}
-                            nextDayThreshold={context.options.nextDayThreshold}
                             businessHours={resource.businessHours || fallbackBusinessHours}
 
                             // ref

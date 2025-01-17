@@ -1,6 +1,4 @@
-import { Duration } from '@fullcalendar/core'
 import {
-  EventStore, EventUiHash, DateSpan, EventInteractionState,
   BaseComponent, memoize,
   getEventRangeMeta, DateMarker, DateRange, DateProfile, sortEventSegs,
   RefMap,
@@ -9,31 +7,27 @@ import {
   EventRangeProps,
   CoordSpan,
   setRef,
+  EventSegUiInteractionState,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 import { horizontalsToCss } from '../TimelineCoords.js'
-import { TimelineLaneBg } from './TimelineLaneBg.js'
-import { TimelineCoordRange, TimelineLaneSlicer, TimelineRange } from '../TimelineLaneSlicer.js'
+import { TimelineCoordRange, TimelineRange } from '../TimelineLaneSlicer.js'
 import { TimelineEvent } from './TimelineEvent.js'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink.js'
 import { computeFgSegPlacements, computeManySegHorizontals } from '../event-placement.js'
 import { TimelineEventHarness } from './TimelineEventHarness.js'
 
-export interface TimelineLaneProps {
+export interface TimelineEventsProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
-  nextDayThreshold: Duration
 
   // content
-  eventStore: EventStore | null
-  eventUiBases: EventUiHash
-  businessHours: EventStore | null
-  dateSelection: DateSpan | null
-  eventDrag: EventInteractionState | null
-  eventResize: EventInteractionState | null
+  fgEventSegs: (TimelineRange & EventRangeProps)[]
+  eventDrag: EventSegUiInteractionState<TimelineRange> | null
+  eventResize: EventSegUiInteractionState<TimelineRange> | null
   eventSelection: string
   resourceId?: string // hack
 
@@ -49,10 +43,7 @@ interface TimelineLaneState {
   moreLinkHeightRev?: string
 }
 
-/*
-TODO: split TimelineLaneBg and TimelineLaneFg?
-*/
-export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneState> {
+export class TimelineEvents extends BaseComponent<TimelineEventsProps, TimelineLaneState> {
   // memo
   private sortEventSegs = memoize(sortEventSegs)
 
@@ -65,7 +56,6 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   })
 
   // internal
-  private slicer = new TimelineLaneSlicer()
   private totalHeight?: number
   private firedTotalHeight?: number
 
@@ -75,25 +65,14 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
   render() {
     let { props, context, segHeightRefMap, moreLinkHeightRefMap } = this
     let { options } = context
-    let { dateProfile, tDateProfile } = props
-
-    let slicedProps = this.slicer.sliceProps(
-      props,
-      dateProfile,
-      tDateProfile.isTimeScale ? null : props.nextDayThreshold,
-      context, // wish we didn't have to pass in the rest of the args...
-      dateProfile,
-      context.dateProfileGenerator,
-      tDateProfile,
-      context.dateEnv,
-    )
+    let { tDateProfile } = props
 
     let mirrorSegs =
-      (slicedProps.eventDrag ? slicedProps.eventDrag.segs : null) ||
-      (slicedProps.eventResize ? slicedProps.eventResize.segs : null) ||
+      (props.eventDrag ? props.eventDrag.segs : null) ||
+      (props.eventResize ? props.eventResize.segs : null) ||
       []
 
-    let fgSegs = this.sortEventSegs(slicedProps.fgEventSegs, options.eventOrder)
+    let fgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
 
     let fgSegHorizontals = props.slotWidth != null
       ? computeManySegHorizontals(fgSegs, options.eventMinWidth, context.dateEnv, tDateProfile, props.slotWidth)
@@ -110,57 +89,41 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
     this.totalHeight = totalHeight
 
     let forcedInvisibleMap = // TODO: more convenient/DRY
-      (slicedProps.eventDrag ? slicedProps.eventDrag.affectedInstances : null) ||
-      (slicedProps.eventResize ? slicedProps.eventResize.affectedInstances : null) ||
+      (props.eventDrag ? props.eventDrag.affectedInstances : null) ||
+      (props.eventResize ? props.eventResize.affectedInstances : null) ||
       {}
 
     return (
-      <Fragment>
-        <TimelineLaneBg
-          tDateProfile={tDateProfile}
-          nowDate={props.nowDate}
-          todayRange={props.todayRange}
-
-          // content
-          bgEventSegs={slicedProps.bgEventSegs}
-          businessHourSegs={slicedProps.businessHourSegs}
-          dateSelectionSegs={slicedProps.dateSelectionSegs}
-          eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : [] /* bad new empty array? */}
-
-          // dimensions
-          slotWidth={props.slotWidth}
-        />
-        <div
-          // fc-content-box because height is set, and padding might be set
-          className='fc-timeline-events fc-content-box fc-rel'
-          style={{ height: totalHeight }}
-        >
-          {this.renderFgSegs(
-            fgSegs,
-            fgSegHorizontals,
-            fgSegTops,
-            forcedInvisibleMap,
-            hiddenGroups,
-            hiddenGroupTops,
-            false, // isDragging
-            false, // isResizing
-            false, // isDateSelecting
-          )}
-          {this.renderFgSegs(
-            mirrorSegs,
-            props.slotWidth // TODO: memoize
-              ? computeManySegHorizontals(mirrorSegs, options.eventMinWidth, context.dateEnv, tDateProfile, props.slotWidth)
-              : {},
-            fgSegTops,
-            {}, // forcedInvisibleMap
-            [], // hiddenGroups
-            new Map(), // hiddenGroupTops
-            Boolean(slicedProps.eventDrag),
-            Boolean(slicedProps.eventResize),
-            false, // isDateSelecting. because mirror is never drawn for date selection
-          )}
-        </div>
-      </Fragment>
+      <div
+        // fc-content-box because height is set, and padding might be set
+        className='fc-timeline-events fc-content-box fc-rel'
+        style={{ height: totalHeight }}
+      >
+        {this.renderFgSegs(
+          fgSegs,
+          fgSegHorizontals,
+          fgSegTops,
+          forcedInvisibleMap,
+          hiddenGroups,
+          hiddenGroupTops,
+          false, // isDragging
+          false, // isResizing
+          false, // isDateSelecting
+        )}
+        {this.renderFgSegs(
+          mirrorSegs,
+          props.slotWidth // TODO: memoize
+            ? computeManySegHorizontals(mirrorSegs, options.eventMinWidth, context.dateEnv, tDateProfile, props.slotWidth)
+            : {},
+          fgSegTops,
+          {}, // forcedInvisibleMap
+          [], // hiddenGroups
+          new Map(), // hiddenGroupTops
+          Boolean(props.eventDrag),
+          Boolean(props.eventResize),
+          false, // isDateSelecting. because mirror is never drawn for date selection
+        )}
+      </div>
     )
   }
 

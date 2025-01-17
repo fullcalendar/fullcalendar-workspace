@@ -1,10 +1,25 @@
-import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames } from '@fullcalendar/core/internal'
+import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/core/internal'
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
-import { TimelineLane, TimelineLaneProps } from '@fullcalendar/timeline/internal'
+import { TimelineDateProfile, TimelineEvents, TimelineLaneBg, TimelineLaneSlicer } from '@fullcalendar/timeline/internal'
 
-export interface ResourceLaneProps extends TimelineLaneProps {
+export interface ResourceLaneProps {
+  dateProfile: DateProfile
+  tDateProfile: TimelineDateProfile
+  nowDate: DateMarker
+  todayRange: DateRange
+
+  // content
+  eventStore: EventStore | null
+  eventUiBases: EventUiHash
+  businessHours: EventStore | null
+  dateSelection: DateSpan | null
+  eventDrag: EventInteractionState | null
+  eventResize: EventInteractionState | null
+  eventSelection: string
   resource: Resource
+
+  // dimensions
   slotWidth: number | undefined
 
   // refs
@@ -12,23 +27,39 @@ export interface ResourceLaneProps extends TimelineLaneProps {
 }
 
 export class ResourceLane extends BaseComponent<ResourceLaneProps> {
+  // memo
   private refineRenderProps = memoizeObjArg(refineRenderProps)
+
+  // internal
   private disconnectFooterHeight?: () => void
   private eventsHeight?: number
   private footerHeight?: number
+  private slicer = new TimelineLaneSlicer()
 
   render() {
     let { props, context } = this
     let { options } = context
     let renderProps = this.refineRenderProps({ resource: props.resource, context })
 
+    /* sliced */
+
+    let slicedProps = this.slicer.sliceProps(
+      props,
+      props.dateProfile,
+      props.tDateProfile.isTimeScale ? null : options.nextDayThreshold,
+      context, // wish we didn't have to pass in the rest of the args...
+      props.dateProfile,
+      context.dateProfileGenerator,
+      props.tDateProfile,
+      context.dateEnv,
+    )
+
     return (
       <ContentContainer
         tag="div"
         className={joinClassNames(
           'fc-resource',
-          // very strange how this className is not on TimelineLane!!!
-          'fc-timeline-lane',
+          'fc-timeline-lane', // okay???
           options.eventOverlap === false // TODO: fix bad default
             ? 'fc-timeline-overlap-disabled'
             : 'fc-timeline-overlap-enabled',
@@ -50,19 +81,31 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               tag="div"
               className='fc-timeline-lane-misc fc-rel fc-fg-z'
             />
-            <TimelineLane
+            <TimelineLaneBg
+              tDateProfile={props.tDateProfile}
+              nowDate={props.nowDate}
+              todayRange={props.todayRange}
+
+              // content
+              bgEventSegs={slicedProps.bgEventSegs}
+              businessHourSegs={slicedProps.businessHourSegs}
+              dateSelectionSegs={slicedProps.dateSelectionSegs}
+              eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : [] /* bad new empty array? */}
+
+              // dimensions
+              slotWidth={props.slotWidth}
+            />
+            <TimelineEvents
               dateProfile={props.dateProfile}
               tDateProfile={props.tDateProfile}
               nowDate={props.nowDate}
               todayRange={props.todayRange}
-              nextDayThreshold={props.nextDayThreshold}
-              businessHours={props.businessHours}
-              eventStore={props.eventStore}
-              eventUiBases={props.eventUiBases}
-              dateSelection={props.dateSelection}
-              eventSelection={props.eventSelection}
-              eventDrag={props.eventDrag}
-              eventResize={props.eventResize}
+
+              // content
+              fgEventSegs={slicedProps.fgEventSegs}
+              eventDrag={slicedProps.eventDrag}
+              eventResize={slicedProps.eventResize}
+              eventSelection={slicedProps.eventSelection}
               resourceId={props.resource.id}
 
               // dimensions

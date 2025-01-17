@@ -1,7 +1,7 @@
 import './index.css'
 
 export { TimelineView } from './components/TimelineView.js'
-export { TimelineLane, TimelineLaneProps } from './components/TimelineLane.js'
+export { TimelineEvents } from './components/TimelineEvents.js'
 export { TimelineLaneBg } from './components/TimelineLaneBg.js'
 export { TimelineSlats } from './components/TimelineSlats.js'
 export { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-profile.js'
