@@ -1,8 +1,8 @@
 import './index.css'
 
 export { TimelineView } from './components/TimelineView.js'
-export { TimelineEvents } from './components/TimelineEvents.js'
-export { TimelineLaneBg } from './components/TimelineLaneBg.js'
+export { TimelineFg } from './components/TimelineFg.js'
+export { TimelineBg } from './components/TimelineBg.js'
 export { TimelineSlats } from './components/TimelineSlats.js'
 export { TimelineDateProfile, buildTimelineDateProfile } from './timeline-date-profile.js'
 export { createVerticalStyle, createHorizontalStyle, computeSlotWidth, timeToCoord } from './timeline-positioning.js'

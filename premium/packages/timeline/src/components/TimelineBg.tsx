@@ -9,7 +9,7 @@ import { horizontalsToCss } from '../TimelineCoords.js'
 import { TimelineRange } from '../TimelineLaneSlicer.js'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 
-export interface TimelineLaneBgProps {
+export interface TimelineBgProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
@@ -24,7 +24,7 @@ export interface TimelineLaneBgProps {
   slotWidth: number | undefined
 }
 
-export class TimelineLaneBg extends BaseComponent<TimelineLaneBgProps> {
+export class TimelineBg extends BaseComponent<TimelineBgProps> {
   render() {
     let { props } = this
     let highlightSeg = [].concat(props.eventResizeSegs, props.dateSelectionSegs)

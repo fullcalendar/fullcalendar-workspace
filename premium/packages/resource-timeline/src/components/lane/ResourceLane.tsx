@@ -1,7 +1,7 @@
 import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/core/internal'
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
-import { TimelineDateProfile, TimelineEvents, TimelineLaneBg, TimelineLaneSlicer } from '@fullcalendar/timeline/internal'
+import { TimelineDateProfile, TimelineFg, TimelineBg, TimelineLaneSlicer } from '@fullcalendar/timeline/internal'
 
 export interface ResourceLaneProps {
   dateProfile: DateProfile
@@ -81,7 +81,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               tag="div"
               className='fc-timeline-lane-misc fc-rel fc-fg-z'
             />
-            <TimelineLaneBg
+            <TimelineBg
               tDateProfile={props.tDateProfile}
               nowDate={props.nowDate}
               todayRange={props.todayRange}
@@ -95,7 +95,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               // dimensions
               slotWidth={props.slotWidth}
             />
-            <TimelineEvents
+            <TimelineFg
               dateProfile={props.dateProfile}
               tDateProfile={props.tDateProfile}
               nowDate={props.nowDate}

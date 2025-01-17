@@ -32,8 +32,8 @@ import { TimelineNowIndicatorLine } from './TimelineNowIndicatorLine.js'
 import { TimelineNowIndicatorArrow } from './TimelineNowIndicatorArrow.js'
 import { getTimelineSlotEl } from './util.js'
 import { TimelineLaneSlicer } from '../TimelineLaneSlicer.js'
-import { TimelineEvents } from './TimelineEvents.js'
-import { TimelineLaneBg } from './TimelineLaneBg.js'
+import { TimelineFg } from './TimelineFg.js'
+import { TimelineBg } from './TimelineBg.js'
 
 interface TimelineViewState {
   totalWidth?: number
@@ -218,7 +218,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     // dimensions
                     slotWidth={slotWidth}
                   />
-                  <TimelineLaneBg
+                  <TimelineBg
                     tDateProfile={tDateProfile}
                     nowDate={nowDate}
                     todayRange={todayRange}
@@ -232,7 +232,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     // dimensions
                     slotWidth={slotWidth}
                   />
-                  <TimelineEvents
+                  <TimelineFg
                     dateProfile={props.dateProfile}
                     tDateProfile={tDateProfile}
                     nowDate={nowDate}

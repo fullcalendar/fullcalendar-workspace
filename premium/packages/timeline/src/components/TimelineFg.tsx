@@ -18,7 +18,7 @@ import { TimelineLaneMoreLink } from './TimelineLaneMoreLink.js'
 import { computeFgSegPlacements, computeManySegHorizontals } from '../event-placement.js'
 import { TimelineEventHarness } from './TimelineEventHarness.js'
 
-export interface TimelineEventsProps {
+export interface TimelineFgProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
@@ -38,12 +38,12 @@ export interface TimelineEventsProps {
   heightRef?: Ref<number>
 }
 
-interface TimelineLaneState {
+interface TimelineFgState {
   segHeightRev?: string
   moreLinkHeightRev?: string
 }
 
-export class TimelineEvents extends BaseComponent<TimelineEventsProps, TimelineLaneState> {
+export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> {
   // memo
   private sortEventSegs = memoize(sortEventSegs)
 

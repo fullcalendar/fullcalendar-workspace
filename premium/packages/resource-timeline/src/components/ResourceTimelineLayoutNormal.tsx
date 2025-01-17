@@ -40,7 +40,7 @@ import {
   getTimelineSlotEl,
   TimelineDateProfile,
   TimelineHeaderRow,
-  TimelineLaneBg,
+  TimelineBg,
   TimelineNowIndicatorArrow,
   TimelineNowIndicatorLine,
   TimelineRange,
@@ -522,7 +522,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       // dimensions
                       slotWidth={slotWidth}
                     />
-                    <TimelineLaneBg
+                    <TimelineBg
                       tDateProfile={tDateProfile}
                       nowDate={props.nowDate}
                       todayRange={props.todayRange}

@@ -21,7 +21,7 @@ import {
 import {
   TimelineDateProfile,
   TimelineHeaderRow,
-  TimelineLaneBg,
+  TimelineBg,
   TimelineNowIndicatorArrow,
   TimelineNowIndicatorLine,
   TimelineRange,
@@ -229,7 +229,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 // dimensions
                 slotWidth={slotWidth}
               />
-              <TimelineLaneBg
+              <TimelineBg
                 tDateProfile={tDateProfile}
                 nowDate={nowDate}
                 todayRange={todayRange}
