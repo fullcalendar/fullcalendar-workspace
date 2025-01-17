@@ -1,4 +1,7 @@
 
+/*
+NOTE: prefer using z-index util classes like .fc-fg-z
+*/
 // z-indexes :: view structure
 $fg-z: 1; // optional. only needed if must get higher than a bg
 $event-z: 2;

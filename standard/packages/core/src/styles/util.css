@@ -241,3 +241,14 @@ which will override width/height if shrinking. Not the case with minWidth/minHei
 .fc-footer-scrollbar > .fc-scroller > * { // > scroller > canvas
   height: 1px; // ...needs 1px height or else scrollbars will never appear
 }
+
+// z-index
+// -------------------------------------------------------------------------------------------------
+
+.fc-fg-z {
+  z-index: $fg-z;
+}
+
+.fc-event-z {
+  z-index: $event-z;
+}

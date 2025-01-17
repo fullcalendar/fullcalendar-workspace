@@ -8,23 +8,6 @@
 }
 
 //
-// fc-timeline-slots
-//
-
-.fc-timeline-slots { // already position:absolute (fc-fill)
-  z-index: $fg-z;
-}
-
-//
-// fc-timeline-events
-//
-
-.fc-timeline-events {
-  position: relative;
-  z-index: $event-z;
-}
-
-//
 // fc-timeline-slots > slot
 //
 

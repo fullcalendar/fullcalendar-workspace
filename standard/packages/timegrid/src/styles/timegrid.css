@@ -1,13 +1,5 @@
 
 //
-// fc-timegrid-slots
-//
-
-.fc-timegrid-slots {
-  z-index: $fg-z;
-}
-
-//
 // fc-timegrid-slots > slot
 //
 
@@ -64,10 +56,6 @@
 //
 // fc-timegrid-day > fg
 //
-
-.fc-timegrid-day-events {
-  z-index: $event-z;
-}
 
 .fc-direction-ltr .fc-timegrid-day-events { // (ltr)
   margin: 0 2.5% 0 2px;

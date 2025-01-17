@@ -8,7 +8,6 @@ import {
   SegGroup,
   EventRangeProps,
   CoordSpan,
-  joinClassNames,
   setRef,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
@@ -132,10 +131,8 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
           slotWidth={props.slotWidth}
         />
         <div
-          className={joinClassNames(
-            'fc-timeline-events',
-            'fc-content-box', // because height is set, and padding might be set
-          )}
+          // fc-content-box because height is set, and padding might be set
+          className='fc-timeline-events fc-content-box fc-rel fc-event-z'
           style={{ height: totalHeight }}
         >
           {this.renderFgSegs(

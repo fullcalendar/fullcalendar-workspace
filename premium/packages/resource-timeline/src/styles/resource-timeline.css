@@ -1,7 +1,0 @@
-
-// HACK to get fc-timeline-lane-misc above the background but under the events container
-// We can't insert fc-timeline-lane-misc inbetween DOM-wise because TimelineLane is one Fragment
-.fc-timeline-lane-misc {
-  position: relative;
-  z-index: $event-z; // above fc-timeline-slots
-}

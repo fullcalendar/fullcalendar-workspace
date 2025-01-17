@@ -7,8 +7,6 @@ Publishing:
 ASAP
 ----
 
-General Markup
-  [z-indexes] util classNames
 General Performance
   why does TimelineLane::render get called 3 times initially?
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
