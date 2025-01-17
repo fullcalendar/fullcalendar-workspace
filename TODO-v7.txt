@@ -7,10 +7,11 @@ Publishing:
 ASAP
 ----
 
-test now-indicators
-solve fc-timeline-lane-misc HACK
-problem with eventResizeSegs= empty array
+figure out fc-timeline-lane* namespacing
+figure out fc-timeline-lane-misc/fc-timegrid-day-misc fc-fill-top??? fc-abs???
 test fc-timeline-lane-misc
+problem with eventResizeSegs= empty array
+test now-indicators
 
 General Performance
   why does TimelineLane::render get called 3 times initially?

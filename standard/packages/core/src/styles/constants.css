@@ -1,14 +1,10 @@
 
-/*
-NOTE: prefer using z-index util classes like .fc-fg-z
-*/
 // z-indexes :: view structure
-$fg-z: 1; // optional. only needed if must get higher than a bg
-$event-z: 2;
-$event-mirror-z: 3;
-$now-indicator-z: 4;
-$sticky-header-footer-z: 5;
-$popover-z: 6;
+$event-z: 1;
+$event-mirror-z: 2;
+$now-indicator-z: 3;
+$sticky-header-footer-z: 4;
+$popover-z: 5;
 
 // z-indexes :: subparts within events
 // NOTE: would be nice to rely on natural DOM order, but :before complicates that

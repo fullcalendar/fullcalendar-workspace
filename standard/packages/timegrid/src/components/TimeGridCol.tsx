@@ -88,8 +88,13 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       'fc-timegrid-day',
       props.borderStart && 'fc-border-s',
       props.width == null && 'fc-liquid',
-      'fc-flex-col fc-rel fc-fg-z',
+      'fc-flex-col fc-rel',
     )
+
+    const baseStyle = {
+      width: props.width,
+      zIndex: 1, // get above slots
+    }
 
     if (dateMeta.isDisabled) {
       return (
@@ -97,9 +102,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           role='gridcell'
           aria-disabled
           className={joinClassNames(baseClassName, 'fc-day-disabled')}
-          style={{
-            width: props.width
-          }}
+          style={baseStyle}
         />
       )
     }
@@ -114,9 +117,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           role: 'gridcell',
         }}
         className={baseClassName}
-        style={{
-          width: props.width
-        }}
+        style={baseStyle}
         date={props.date}
         dateMeta={dateMeta}
         renderProps={props.renderProps}
@@ -129,7 +130,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {hasCustomDayCellContent(options) && (
               <InnerContent
                 tag="div"
-                className='fc-timegrid-day-misc fc-rel'
+                className='fc-timegrid-day-misc fc-fill-top'
               />
             )}
             {/* has a z-index to contain all event z-indexes  */}

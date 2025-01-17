@@ -93,7 +93,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
             />
             <InnerContent
               tag="div"
-              className='fc-timeline-lane-misc fc-rel fc-fg-z'
+              className='fc-timeline-lane-misc fc-fill-top'
             />
             <TimelineFg
               dateProfile={props.dateProfile}
