@@ -132,7 +132,7 @@ export class TimelineLane extends BaseComponent<TimelineLaneProps, TimelineLaneS
         />
         <div
           // fc-content-box because height is set, and padding might be set
-          className='fc-timeline-events fc-content-box fc-rel fc-event-z'
+          className='fc-timeline-events fc-content-box fc-rel'
           style={{ height: totalHeight }}
         >
           {this.renderFgSegs(

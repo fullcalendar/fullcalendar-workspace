@@ -88,7 +88,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       'fc-timegrid-day',
       props.borderStart && 'fc-border-s',
       props.width == null && 'fc-liquid',
-      'fc-flex-col fc-rel',
+      'fc-flex-col fc-rel fc-fg-z',
     )
 
     if (dateMeta.isDisabled) {
@@ -134,7 +134,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             )}
             {/* has a z-index to contain all event z-indexes  */}
             <div className={joinClassNames(
-              'fc-timegrid-day-events fc-fill fc-event-z',
+              'fc-timegrid-day-events',
               (props.forPrint && simplifiedTimeGridPrint)
                 ? 'fc-timegrid-day-events-simple'
                 : 'fc-fill',
@@ -148,9 +148,9 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               )}
             </div>
             {Boolean(mirrorSegs.length) && (
-              // has a z-index to be above other fg container,
+              // has natural z-index to be above other fg container,
               // but only show it when there are actual mirror events, to avoid blocking clicks
-              <div className='fc-timegrid-day-events fc-fill fc-event-z'>
+              <div className='fc-timegrid-day-events fc-fill'>
                 {this.renderFgSegs(
                   mirrorSegs,
                   {},

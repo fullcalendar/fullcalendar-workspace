@@ -248,7 +248,3 @@ which will override width/height if shrinking. Not the case with minWidth/minHei
 .fc-fg-z {
   z-index: $fg-z;
 }
-
-.fc-event-z {
-  z-index: $event-z;
-}

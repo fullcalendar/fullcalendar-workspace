@@ -7,6 +7,9 @@ Publishing:
 ASAP
 ----
 
+test now-indicators
+solve fc-timeline-lane-misc HACK
+
 General Performance
   why does TimelineLane::render get called 3 times initially?
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003

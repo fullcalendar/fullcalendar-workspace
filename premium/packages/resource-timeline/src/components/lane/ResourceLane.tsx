@@ -48,11 +48,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
           <Fragment>
             <InnerContent
               tag="div"
-              // fc-rel and fc-event-z are...
-              // HACK to get fc-timeline-lane-misc above the background but under the events container
-              // We can't insert fc-timeline-lane-misc inbetween DOM-wise because TimelineLane is one Fragment
-              // fc-event-z is above fc-timeline-slots
-              className='fc-timeline-lane-misc fc-rel fc-event-z'
+              className='fc-timeline-lane-misc fc-rel fc-fg-z'
             />
             <TimelineLane
               dateProfile={props.dateProfile}

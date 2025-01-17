@@ -287,7 +287,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   <div
                     aria-hidden
                     className={joinClassNames(
-                      'fc-timegrid-slots fc-flex-col fc-fg-z',
+                      'fc-timegrid-slots fc-flex-col',
                       (verticalScrolling && options.expandRows) && 'fc-grow',
                       absPrint
                         ? 'fc-fill-x' // will assume top:0, height will be decided naturally
