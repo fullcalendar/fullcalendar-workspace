@@ -237,10 +237,14 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     tDateProfile={tDateProfile}
                     nowDate={nowDate}
                     todayRange={todayRange}
+
+                    // content
                     fgEventSegs={slicedProps.fgEventSegs}
                     eventDrag={slicedProps.eventDrag}
                     eventResize={slicedProps.eventResize}
                     eventSelection={slicedProps.eventSelection}
+
+                    // dimensions
                     slotWidth={slotWidth}
                   />
                   <div className='fc-timeline-lane-footer' />

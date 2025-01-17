@@ -77,10 +77,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
       >
         {(InnerContent) => (
           <Fragment>
-            <InnerContent
-              tag="div"
-              className='fc-timeline-lane-misc fc-rel fc-fg-z'
-            />
             <TimelineBg
               tDateProfile={props.tDateProfile}
               nowDate={props.nowDate}
@@ -94,6 +90,10 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
 
               // dimensions
               slotWidth={props.slotWidth}
+            />
+            <InnerContent
+              tag="div"
+              className='fc-timeline-lane-misc fc-rel fc-fg-z'
             />
             <TimelineFg
               dateProfile={props.dateProfile}
