@@ -590,7 +590,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           aria-expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
                           data-resource-id={resource.id}
                           className={joinClassNames(
-                            'fc-resource fc-flex-col fc-fill-x fc-content-box',
+                            'fc-flex-row fc-fill-x fc-content-box',
                             resourceLayout.visibleIndex < visibleRowCnt - 1 && // is not last
                               'fc-border-b',
                           )}

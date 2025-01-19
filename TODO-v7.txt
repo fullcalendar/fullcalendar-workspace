@@ -7,9 +7,6 @@ Publishing:
 ASAP
 ----
 
-figure out fc-timeline-lane* namespacing
-figure out fc-timeline-lane-misc/fc-timegrid-day-misc fc-fill-top??? fc-abs???
-test fc-timeline-lane-misc
 test now-indicators
 
 General Performance

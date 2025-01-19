@@ -57,17 +57,15 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
     return (
       <ContentContainer
         tag="div"
-        className={joinClassNames(
-          'fc-resource',
-          'fc-timeline-lane', // okay???
-          options.eventOverlap === false // TODO: fix bad default
-            ? 'fc-timeline-overlap-disabled'
-            : 'fc-timeline-overlap-enabled',
-          'fc-flex-col',
-        )}
         attrs={{
           role: 'gridcell',
         }}
+        className={joinClassNames(
+          'fc-resource fc-liquid fc-flex-col fc-timeline-lane fc-rel', // fc-rel is for fc-fill-top
+          options.eventOverlap === false // TODO: fix bad default
+            ? 'fc-timeline-overlap-disabled'
+            : 'fc-timeline-overlap-enabled',
+        )}
         renderProps={renderProps}
         generatorName="resourceLaneContent"
         customGenerator={options.resourceLaneContent}
@@ -93,7 +91,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
             />
             <InnerContent
               tag="div"
-              className='fc-timeline-lane-misc fc-fill-top'
+              className='fc-timeline-lane-misc fc-flex-col fc-fill-top'
             />
             <TimelineFg
               dateProfile={props.dateProfile}

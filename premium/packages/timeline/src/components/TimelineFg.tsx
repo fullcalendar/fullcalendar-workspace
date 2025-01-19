@@ -95,8 +95,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
     return (
       <div
-        // fc-content-box because height is set, and padding might be set
-        className='fc-timeline-events fc-content-box fc-rel'
+        className='fc-timeline-events fc-rel'
         style={{ height: totalHeight }}
       >
         {this.renderFgSegs(
