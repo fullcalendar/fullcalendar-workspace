@@ -1,10 +1,9 @@
 
 // z-indexes :: view structure
-$event-z: 1;
-$event-mirror-z: 2;
-$now-indicator-z: 3;
-$sticky-header-footer-z: 4;
-$popover-z: 5;
+$event-mirror-z: 1;
+$now-indicator-z: 2;
+$sticky-header-footer-z: 3;
+$popover-z: 4;
 
 // z-indexes :: subparts within events
 // NOTE: would be nice to rely on natural DOM order, but :before complicates that

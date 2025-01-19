@@ -7,8 +7,6 @@ Publishing:
 ASAP
 ----
 
-test now-indicators
-
 General Performance
   why does TimelineLane::render get called 3 times initially?
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
@@ -29,11 +27,7 @@ DayGrid
       to be more like react-native, and more intuitive
 MultiMonth
   Improve perf while switching years
-TimeGrid
-  [z-indexes] timegrid axis cell was reintroduced to avoid margin-left/right. text still selectable? audit
 Resource Timeline
-  [z-indexes] i flipped the natural DOM order of slats and resource-lanes.. has any bad effects?
-    TODO: do same concept for timeline-no-resources
   when no groupcols, do simplified DOM structure?
 
 Manual Test
