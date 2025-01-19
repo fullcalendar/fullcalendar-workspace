@@ -227,7 +227,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     bgEventSegs={slicedProps.bgEventSegs}
                     businessHourSegs={slicedProps.businessHourSegs}
                     dateSelectionSegs={slicedProps.dateSelectionSegs}
-                    eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : [] /* bad new empty array? */}
+                    eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : null}
 
                     // dimensions
                     slotWidth={slotWidth}

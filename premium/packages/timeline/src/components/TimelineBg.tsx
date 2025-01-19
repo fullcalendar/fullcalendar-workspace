@@ -18,7 +18,7 @@ export interface TimelineBgProps {
   bgEventSegs: (TimelineRange & EventRangeProps)[] | null // can be null :(
   businessHourSegs: (TimelineRange & EventRangeProps)[] | null // can be null :(
   dateSelectionSegs: (TimelineRange & EventRangeProps)[]
-  eventResizeSegs: (TimelineRange & EventRangeProps)[]
+  eventResizeSegs: (TimelineRange & EventRangeProps)[] | null
 
   // dimensions
   slotWidth: number | undefined
@@ -27,7 +27,7 @@ export interface TimelineBgProps {
 export class TimelineBg extends BaseComponent<TimelineBgProps> {
   render() {
     let { props } = this
-    let highlightSeg = [].concat(props.eventResizeSegs, props.dateSelectionSegs)
+    let highlightSeg = [].concat(props.eventResizeSegs || [], props.dateSelectionSegs)
 
     return (
       <Fragment>

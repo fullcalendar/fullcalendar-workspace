@@ -86,7 +86,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               bgEventSegs={slicedProps.bgEventSegs}
               businessHourSegs={slicedProps.businessHourSegs}
               dateSelectionSegs={slicedProps.dateSelectionSegs}
-              eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : [] /* bad new empty array? */}
+              eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : null}
 
               // dimensions
               slotWidth={props.slotWidth}

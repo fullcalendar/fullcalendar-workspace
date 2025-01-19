@@ -238,8 +238,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 bgEventSegs={bgSlicedProps.bgEventSegs}
                 businessHourSegs={hasResourceBusinessHours ? null : bgSlicedProps.businessHourSegs}
                 dateSelectionSegs={bgSlicedProps.dateSelectionSegs}
-                // empty array will result in unnecessary rerenders?...
-                eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : [])}
+                eventResizeSegs={(bgSlicedProps.eventResize ? bgSlicedProps.eventResize.segs : null)}
 
                 // dimensions
                 slotWidth={slotWidth}
