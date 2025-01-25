@@ -121,7 +121,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
     const slatTop = slatIndex * slatHeight
     const partial = (positionTop - slatTop) / slatHeight // floating point number between 0 and 1
     const localSnapIndex = Math.floor(partial * snapsPerSlot) // the snap # relative to start of slat
-    const snapIndex = slatIndex + localSnapIndex * snapsPerSlot
+    const snapIndex = slatIndex * snapsPerSlot + localSnapIndex;
 
     const time = addDurations(
       dateProfile.slotMinTime,
