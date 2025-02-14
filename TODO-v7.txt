@@ -9,11 +9,6 @@ Automated Test Scratch
 
 IGNORES:
   DayGrid
-    why doesn't event reslicing work with dayMaxEventRows?
-      'will render a pertially hidden single-day event'
-      'will render a partially multi-day hidden event'
-      ...and other tests in that file
-      'renders more-links correctly when first obscured event is longer than event before it'
     when month-view, and don't represent distinct dates, shouldn't rerender
       daygrid-rerenders.ts, the dayHeaderRenderCnt counting
   TimeGrid
@@ -39,6 +34,7 @@ IGNORES:
 FIX LATER:
   Calendar::updateSize hacks within handlers to prevent ResizeObserver errors
   multiMonth-events.ts -- repeated calls to updateSize to get event positioning to settle
+    also in more-link.ts, dayGrid-events.ts
   Google Calendar xdescribe -- fixed in main
 RESTRUCTURE:
   on datagrid, if fc-resource is on the cells, data-resource-id should NOT be on the row

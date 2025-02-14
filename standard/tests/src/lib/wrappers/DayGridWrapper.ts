@@ -143,7 +143,11 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
   }
 
   getRowEl(i) {
-    return this.el.querySelector(`[role=row]:nth-child(${i + 1})`) as HTMLElement // nth-child is 1-indexed!
+    if (!i && this.el.getAttribute('role') === 'row') {
+      return this.el // if el IS the row
+    } else {
+      return this.el.querySelector(`[role=row]:nth-child(${i + 1})`) as HTMLElement // nth-child is 1-indexed!
+    }
   }
 
   getRowEls() {

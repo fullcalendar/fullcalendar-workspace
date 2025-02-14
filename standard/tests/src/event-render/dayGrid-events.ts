@@ -42,6 +42,9 @@ describe('dayGrid advanced event rendering', () => {
       ],
     })
 
+    // HACK to get event positioning to settle
+    calendar.updateSize()
+
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     let eventEls = dayGridWrapper.getEventEls()
     let visibleEventEls = filterVisibleEls(eventEls)
