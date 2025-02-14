@@ -44,7 +44,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
   // ref
   private scrollRef = createRef<EntityScroll & TimeScroll>()
-  private spreadsheetWidthRef = createRef<CssDimValue>() // the CSS dimension. could be percent
+  private spreadsheetResizedWidthRef = createRef<CssDimValue>() // the CSS dimension. could be percent
 
   // internal
   private resourceSplitter = new ResourceSplitter()
@@ -157,7 +157,10 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
           return props.forPrint ? (
             <ResourceTimelineLayoutPrint
               {...baseProps}
-              spreadsheetWidth={this.spreadsheetWidthRef.current}
+              spreadsheetWidth={
+                this.spreadsheetResizedWidthRef.current ??
+                  options.resourceAreaWidth
+              }
               spreadsheetColWidthConfigs={spreadsheetColWidthConfigs}
               timeAreaOffset={this.scrollRef.current.x /* for simulating horizontal scroll */}
             />
@@ -167,14 +170,14 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               timeClientWidthRef={this.handleTimeClientWidth}
               slotInnerWidthRef={this.handleSlotInnerWidth}
               initialSpreadsheetWidth={
-                this.spreadsheetWidthRef.current ?? // try save-state first
+                this.spreadsheetResizedWidthRef.current ??
                   options.resourceAreaWidth
               }
               spreadsheetCanvasWidth={spreadsheetCanvasWidth}
               initialScroll={this.scrollRef.current /* for reviving after print-view */}
 
               // refs
-              spreadsheetWidthRef={this.spreadsheetWidthRef} // for resource-area resize
+              spreadsheetResizedWidthRef={this.spreadsheetResizedWidthRef} // for resource-area resize
               spreadsheetClientWidthRef={this.handleSpreadsheetClientWidth} // for pixel value
               scrollRef={this.scrollRef}
 

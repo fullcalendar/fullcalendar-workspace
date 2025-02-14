@@ -40,8 +40,6 @@ IGNORES:
       'condenses events even when left/right are not computed as integers'
     event resizing
       does NOT work with touch (timeline-event-resizing.ts)
-  ResourceTimeline
-    resourceAreaWidth can't be dynamically changed
 FIX LATER:
   Calendar::updateSize hacks within handlers to prevent ResizeObserver errors
   Google Calendar xdescribe -- fixed in main

@@ -98,7 +98,7 @@ interface ResourceTimelineLayoutNormalProps {
 
   // resource area
   initialSpreadsheetWidth?: CssDimValue
-  spreadsheetWidthRef?: Ref<CssDimValue>
+  spreadsheetResizedWidthRef?: Ref<CssDimValue>
 
   // scroll
   initialScroll?: TimeScroll & EntityScroll
@@ -300,7 +300,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
       >
         <ResizableTwoCol
           initialStartWidth={props.initialSpreadsheetWidth}
-          startWidthRef={props.spreadsheetWidthRef} // is a CssDim value for storage
+          resizedWidthRef={props.spreadsheetResizedWidthRef} // is a CssDim value for storage
           className={verticalScrolling ? 'fc-liquid' : ''}
 
           /* spreadsheet

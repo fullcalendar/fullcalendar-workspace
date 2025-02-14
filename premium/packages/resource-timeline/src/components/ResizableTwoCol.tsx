@@ -12,7 +12,7 @@ export interface ResizableTwoColProps {
   elRef?: Ref<HTMLDivElement>
 
   initialStartWidth: CssDimValue
-  startWidthRef?: Ref<CssDimValue> // fires after drag end
+  resizedWidthRef?: Ref<CssDimValue> // fires after drag end
 }
 
 interface ResizableTwoColState {
@@ -102,15 +102,13 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
 
         dragging.emitter.on('dragend', () => {
           if (newWidthConfig) {
-            setRef(this.props.startWidthRef, serializeDimConfig(newWidthConfig))
+            setRef(this.props.resizedWidthRef, serializeDimConfig(newWidthConfig))
           }
         })
 
         dragging.setAutoScrollEnabled(false) // because gets weird with auto-scrolling time area
       })
     }
-
-    setRef(this.props.startWidthRef, this.props.initialStartWidth)
   }
 
   componentWillUnmount() {
