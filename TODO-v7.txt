@@ -8,8 +8,6 @@ Automated Test Scratch
 ----------------------
 
 IGNORES:
-  MultiMonth
-    multiMonth-events --- fix bug where multimonth expands rows based on events
   DayGrid
     why doesn't event reslicing work with dayMaxEventRows?
       'will render a pertially hidden single-day event'
@@ -40,6 +38,7 @@ IGNORES:
       does NOT work with touch (timeline-event-resizing.ts)
 FIX LATER:
   Calendar::updateSize hacks within handlers to prevent ResizeObserver errors
+  multiMonth-events.ts -- repeated calls to updateSize to get event positioning to settle
   Google Calendar xdescribe -- fixed in main
 RESTRUCTURE:
   on datagrid, if fc-resource is on the cells, data-resource-id should NOT be on the row

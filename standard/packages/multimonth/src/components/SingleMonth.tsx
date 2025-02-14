@@ -103,8 +103,11 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
               cellRows={dayTableModel.cellRows}
               className={isAspectRatio ? 'fc-fill' : ''}
               forPrint={forPrint && !props.hasLateralSiblings}
-              dayMaxEvents={forPrint ? undefined : options.dayMaxEvents}
-              dayMaxEventRows={(forPrint && props.hasLateralSiblings) ? 1 : options.dayMaxEventRows}
+              dayMaxEventRows={
+                (forPrint && props.hasLateralSiblings)
+                  ? 1 // for side-by-side multimonths, limit to one row
+                  : true // otherwise, always do +more link, never expand rows
+              }
 
               // content
               fgEventSegs={slicedProps.fgEventSegs}

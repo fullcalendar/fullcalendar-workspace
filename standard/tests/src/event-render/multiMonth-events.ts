@@ -5,8 +5,8 @@ describe('multi-month-view event rendering', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/7573
   it('will not incorrectly put events under +more link', () => {
     const calendarEl = document.createElement('div')
-    calendarEl.style.width = '1200px'
-    calendarEl.style.maxWidth = '1200px'
+    calendarEl.style.width = '1000px'
+    calendarEl.style.maxWidth = '1000px'
     document.body.appendChild(calendarEl)
 
     const calendar = initCalendar({
@@ -30,6 +30,10 @@ describe('multi-month-view event rendering', () => {
         },
       ],
     }, calendarEl)
+
+    // HACK to get event positioning to settle
+    calendar.updateSize()
+    calendar.updateSize()
 
     const viewWrapper = new MultiMonthViewWrapper(calendar)
     const dayGridWrapper = viewWrapper.getDayGrid(0)
