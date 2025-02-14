@@ -42,8 +42,6 @@ IGNORES:
       does NOT work with touch (timeline-event-resizing.ts)
   ResourceTimeline
     resourceAreaWidth can't be dynamically changed
-    datagrid column dynamic setting broken
-      timeline-column-resizing.ts
 FIX LATER:
   Calendar::updateSize hacks within handlers to prevent ResizeObserver errors
   Google Calendar xdescribe -- fixed in main

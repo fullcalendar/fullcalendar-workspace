@@ -5,7 +5,7 @@ export class ResourceDataHeaderWrapper {
   }
 
   getCellEls() {
-    return findElements(this.el, '[role=gridcell]')
+    return findElements(this.el, '[role=columnheader]')
   }
 
   getColResizerEls() {

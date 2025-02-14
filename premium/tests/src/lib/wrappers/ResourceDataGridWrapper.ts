@@ -60,7 +60,7 @@ export class ResourceDataGridWrapper {
   }
 
   getResourceCellEls(resourceId) {
-    let selector = '[role=row].fc-resource'
+    let selector = '[role=row]'
 
     if (resourceId) {
       selector += `[data-resource-id="${resourceId}"]`
