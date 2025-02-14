@@ -4,9 +4,72 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+Automated Test Scratch
+----------------------
+
+IGNORES:
+  toolbar
+    triage new RTL behavior
+      'renders left and right literally'
+  multi-month
+    multiMonth-events --- fix bug where multimonth expands rows based on events
+  daygrid
+    when month-view, and don't represent distinct dates, shouldn't rerender
+      daygrid-rerenders.ts, the dayHeaderRenderCnt counting
+    why doesn't event reslicing work with dayMaxEventRows?
+      'will render a pertially hidden single-day event'
+      'will render a partially multi-day hidden event'
+      ...and other tests in that file
+      'renders more-links correctly when first obscured event is longer than event before it'
+  timegrid
+    scrollTime:0
+      doesn't actually start out as 0. write automated test?
+    multi-day event
+      time text bug: 'shows time-text as original event start time'
+    header
+      week numbers are always in lowest row (agenda-weekNumbers.ts) a bug? desired?
+        same: weekNumberCalculations.ts: // CHANGELOG: no longer display week numbers here
+      tests having trouble doing height-syncing (column-structure.ts)
+        'resyncs header row heights when horizontal scrolling and dynamic resources'
+        outdated because header-canvas contains all header rows, not just single-row
+        SAME with agenda-height: 'timegrid height with horizontal scrolling'
+    (problem with test or app?)
+      agenda-dateClick: problem with clicking starting before dateClick attached, thus not fired
+  timegrid/daygrid-DAY
+    should not have navlink in header
+      'does not have a clickable day header'
+  list
+    rerenders events too often
+      eventRenderCnt, because of ListEvent timeOuterWidth
+  timeline
+    event rerendering (rerenders.ts)
+      because TimelineSlatCell width changes, ContentContainer called twice, doubles calls
+    event positioning should be side-by-side
+      'condenses events even when left/right are not computed as integers'
+    event resizing
+      does NOT work with touch (timeline-event-resizing.ts)
+  resource-timeline
+    resourceAreaWidth can't be dynamically changed
+    datagrid column dynamic setting broken
+      timeline-column-resizing.ts
+FIX LATER:
+  Calendar::updateSize hacks within handlers to prevent ResizeObserver errors
+  Google Calendar xdescribe -- fixed in main
+RESTRUCTURE:
+  on datagrid, if fc-resource is on the cells, data-resource-id should NOT be on the row
+  put data-time on fc-timegrid-slot div (the "row" with the border)
+    will need to modify TimeGridWrapper::getTimeAxisInfo classNames
+  should be fc-timegrid(-view) on fc-resource-timegrid(-view)
+  dumb how there's a fc-resource-daygrid-view and fc-daygrid. pick one or the other!
+CHANGELOG:
+  for daygrid/timegrid header,
+    resources under days have day classnames now, and data-date
+    days under resources have fc-resource now, and data-resource-id
+
 ASAP
 ----
 
+Easily remove border from view-area. Possible in prior versions.
 General Performance
   why does TimelineLane::render get called 3 times initially?
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
