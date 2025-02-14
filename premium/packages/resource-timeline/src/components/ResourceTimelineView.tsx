@@ -147,6 +147,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             superHeaderRendering,
             splitProps,
             bgSlicedProps,
+            eventSelection: props.eventSelection,
             hasResourceBusinessHours,
             fallbackBusinessHours,
             slotWidth,

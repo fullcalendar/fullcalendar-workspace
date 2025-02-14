@@ -80,6 +80,7 @@ interface ResourceTimelineLayoutNormalProps {
 
   splitProps: { [key: string]: SplittableProps }
   bgSlicedProps: SlicedProps<TimelineRange>
+  eventSelection: string | undefined | null // HACK for EventDragging::handlePointerDown
 
   hasResourceBusinessHours: boolean
   fallbackBusinessHours: EventStore

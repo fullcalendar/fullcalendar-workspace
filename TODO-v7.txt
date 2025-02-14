@@ -29,8 +29,6 @@ IGNORES:
   Timeline
     event rerendering (rerenders.ts)
       because TimelineSlatCell width changes, ContentContainer called twice, doubles calls
-    event resizing
-      does NOT work with touch (timeline-event-resizing.ts)
 FIX LATER:
   Calendar::updateSize hacks within handlers to prevent ResizeObserver errors
   multiMonth-events.ts -- repeated calls to updateSize to get event positioning to settle
