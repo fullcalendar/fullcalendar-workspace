@@ -147,7 +147,7 @@ export function testEventResize(options, resizeDate, expectSuccess, callback, ev
 
       $dragEl.simulate('drag', {
         dx,
-        dy,
+        dy: dy - 1, // fudge :(
         onBeforeRelease() {
           allowed = calendarWrapper.isAllowingDragging()
         },

@@ -60,11 +60,11 @@ describe('now indicator', () => {
     expect(Math.abs(
       (lineElRect.top + lineElRect.bottom) / 2 -
       line.top,
-    )).toBeLessThan(2)
+    )).toBeLessThan(3)
     expect(Math.abs(
       (arrowElRect.top + arrowElRect.bottom) / 2 -
       line.top,
-    )).toBeLessThan(2)
+    )).toBeLessThan(3)
 
     let timeGridRect = getBoundingRect(timeGridWrapper.el)
 

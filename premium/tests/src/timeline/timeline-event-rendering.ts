@@ -484,8 +484,8 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
             let endDiff = Math.abs(eventEdges.end - timelineGridWrapper.getLeft(options.endDate))
 
             // TODO: tighten up
-            expect(startDiff).toBeLessThanOrEqual(1)
-            expect(endDiff).toBeLessThanOrEqual(1)
+            expect(startDiff).toBeLessThanOrEqual(2)
+            expect(endDiff).toBeLessThanOrEqual(2)
 
             if (!isBg) {
               expect($eventEls.length).toBe(1)

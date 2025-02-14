@@ -25,12 +25,19 @@ describe('timeline resource rerendering', () => {
     let laneTd = view.timelineGrid.getResourceLaneEls()[0]
     let origHeight = dataTd.offsetHeight
 
-    expect(origHeight).toBe(laneTd.offsetHeight)
+    expect(
+      // fudge because bottom border applied to cell in datagrid, but row in lanes
+      Math.abs(origHeight - laneTd.offsetHeight),
+    ).toBeLessThanOrEqual(1)
 
     isBig = true
     calendar.render()
 
     expect(dataTd.offsetHeight).toBeGreaterThan(origHeight)
-    expect(dataTd.offsetHeight).toBe(laneTd.offsetHeight)
+
+    expect(
+      // fudge because bottom border applied to cell in datagrid, but row in lanes
+      Math.abs(dataTd.offsetHeight - laneTd.offsetHeight),
+    ).toBeLessThanOrEqual(1)
   })
 })

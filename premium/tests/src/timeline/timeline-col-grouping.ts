@@ -46,10 +46,11 @@ describe('timeline column grouping', () => {
       let resourceLaneCell = resourceLaneCells[i]
 
       expect(
-        Math.round(resourceDataCell.offsetHeight),
-      ).toBe(
-        Math.round(resourceLaneCell.offsetHeight),
-      )
+        Math.abs(
+          Math.round(resourceDataCell.offsetHeight) -
+            Math.round(resourceLaneCell.offsetHeight),
+        )
+      ).toBeLessThanOrEqual(1) // fudge because lane has bottom border, but data cell doesn't
     }
   })
 

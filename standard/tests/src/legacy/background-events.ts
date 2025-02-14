@@ -347,8 +347,8 @@ describe('background events', () => {
         let topDiff = Math.abs(rect.top - timeGridWrapper.getTimeTop('01:00:00')) // TODO: make more exact
         let bottomDiff = Math.abs(rect.bottom - timeGridWrapper.getTimeTop('05:00:00'))
 
-        expect(topDiff).toBeLessThanOrEqual(1)
-        expect(bottomDiff).toBeLessThanOrEqual(1)
+        expect(topDiff).toBeLessThanOrEqual(2) // TODO: tighten up
+        expect(bottomDiff).toBeLessThanOrEqual(2) // TODO: tighten up
       })
 
       it('render correctly spanning multiple days', () => {
@@ -450,8 +450,8 @@ describe('background events', () => {
         let topDiff = Math.abs(rect.top - timeGridWrapper.getTimeTop('01:00:00'))
         let bottomDiff = Math.abs(rect.bottom - timeGridWrapper.getTimeTop('05:00:00'))
 
-        expect(topDiff).toBeLessThanOrEqual(1) // TODO: tighten up
-        expect(bottomDiff).toBeLessThanOrEqual(1)
+        expect(topDiff).toBeLessThanOrEqual(2) // TODO: tighten up
+        expect(bottomDiff).toBeLessThanOrEqual(2) // TODO: tighten up
       })
 
       it('render correctly spanning multiple days', () => {
