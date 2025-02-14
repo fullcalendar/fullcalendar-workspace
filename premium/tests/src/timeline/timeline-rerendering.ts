@@ -110,6 +110,7 @@ describe('timeline view rerendering', () => {
       resources(arg, callback) {
         setTimeout(() => {
           callback(getResources())
+          calendar.updateSize() // HACK to prevent ResizeObserver error (warning?) that ends test
         }, 100)
       },
     })
@@ -143,6 +144,7 @@ describe('timeline view rerendering', () => {
       resources(arg, callback) {
         setTimeout(() => {
           callback(getResources())
+          calendar.updateSize() // HACK to prevent ResizeObserver error (warning?) that ends test
         }, 100)
       },
     })
@@ -179,6 +181,7 @@ describe('timeline view rerendering', () => {
           let id = resourceFetchCnt
           resourceFetchCnt += 1
           callback(getResources(id)) // parameter will affect text
+          calendar.updateSize() // HACK to prevent ResizeObserver error (warning?) that ends test
         }, 100)
       },
     })
