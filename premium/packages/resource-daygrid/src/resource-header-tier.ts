@@ -54,7 +54,7 @@ export function buildResourceRowConfigs(
         dataConfigs: [].concat(...resourceDataConfigsPerDate), // flatten
       }
     ]
-  } else {
+  } else { // resources above dates
     const dateDataConfigsPerResource = resources.map((resource) => {
       const resourceApi = new ResourceApi(context, resource)
       const resourceApiId = resourceApi.id

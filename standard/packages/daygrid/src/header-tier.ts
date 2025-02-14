@@ -112,7 +112,8 @@ export function buildDateDataConfigs(
           text,
           ...extraRenderProps,
         }
-        const isNavLink = options.navLinks && !dateMeta.isDisabled
+        const isNavLink = options.navLinks && !dateMeta.isDisabled &&
+          dates.length > 1 // don't show navlink to day if only one day
         const fullDateStr = buildDateStr(context, date)
 
         // for DayGridHeaderCell
@@ -163,7 +164,7 @@ export function buildDateDataConfigs(
             'aria-label': fullWeekDayStr,
             ...extraAttrs,
           },
-          // for navlink
+          // NOT a navlink
           innerAttrs: {
             'aria-hidden': true, // label already on cell
           },
