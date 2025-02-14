@@ -8,9 +8,6 @@ Automated Test Scratch
 ----------------------
 
 IGNORES:
-  toolbar
-    triage new RTL behavior
-      'renders left and right literally'
   multi-month
     multiMonth-events --- fix bug where multimonth expands rows based on events
   daygrid

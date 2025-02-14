@@ -97,16 +97,17 @@ describe('headerToolbar rendering', () => { // TODO: rename file
         },
       })
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
+      let itemSets = toolbarWrapper.getSectionContentsByLeft()
 
-      expect(toolbarWrapper.getSectionContent(0)).toEqual([
+      expect(itemSets[0]).toEqual([
         { type: 'button', name: 'prev' },
       ])
 
-      expect(toolbarWrapper.getSectionContent(1)).toEqual([
+      expect(itemSets[1]).toEqual([
         { type: 'button', name: 'today' },
       ])
 
-      expect(toolbarWrapper.getSectionContent(2)).toEqual([
+      expect(itemSets[2]).toEqual([
         { type: 'button', name: 'next' },
       ])
     })

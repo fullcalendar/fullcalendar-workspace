@@ -1,3 +1,5 @@
+import { findElements } from "../dom-misc.js"
+
 export class ToolbarWrapper {
   constructor(private el: HTMLElement) {
   }
@@ -36,6 +38,20 @@ export class ToolbarWrapper {
     return processSectionItems(
       this.el.querySelectorAll('.fc-toolbar-section')[index] as HTMLElement,
     )
+  }
+
+  getSectionContentsByLeft() {
+    const sectionInfos = []
+
+    for (const sectionEl of findElements(this.el, '.fc-toolbar-section')) {
+      const items = processSectionItems(sectionEl)
+      const sectionInfo = { items, left: sectionEl.getBoundingClientRect().left }
+      sectionInfos.push(sectionInfo)
+    }
+
+    sectionInfos.sort((a, b) => a.left - b.left)
+
+    return sectionInfos.map((sectionInfo) => sectionInfo.items)
   }
 }
 
