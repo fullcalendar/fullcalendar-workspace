@@ -10,7 +10,7 @@ import { EventUi, EventUiHash, combineEventUis } from './event-ui.js'
 import { mapHash } from '../util/object.js'
 import { ViewContext } from '../ViewContext.js'
 import { DateFormatter } from '../datelib/DateFormatter.js'
-import { DateMarker } from '../datelib/marker.js'
+import { addMs, DateMarker, startOfDay } from '../datelib/marker.js'
 import { ViewApi } from '../api/ViewApi.js'
 import { MountArg } from '../common/render-hook.js'
 import { createAriaKeyboardAttrs } from '../util/dom-event.js'
@@ -257,8 +257,24 @@ export function buildEventRangeTimeText(
   if (displayEventTime == null) { displayEventTime = defaultDisplayEventTime !== false }
   if (displayEventEnd == null) { displayEventEnd = defaultDisplayEventEnd !== false }
 
-  const startDate = (!isStart && slicedStart) ? slicedStart : eventRange.instance.range.start
-  const endDate = (!isEnd && slicedEnd) ? slicedEnd : eventRange.instance.range.end
+  const startDate = (
+    !isStart &&
+    slicedStart &&
+    // if seg is the first seg, but start-date cut-off by slotMinTime, (technically isStart=false)
+    // we still want to display the original start-time
+    startOfDay(slicedStart).valueOf() !== startOfDay(eventRange.instance.range.start).valueOf()
+  )
+    ? slicedStart
+    : eventRange.instance.range.start
+
+  const endDate = (
+    !isEnd &&
+    slicedEnd &&
+    // See above HACK, but for end-time
+    startOfDay(addMs(slicedEnd, -1)).valueOf() !== startOfDay(addMs(eventRange.instance.range.end, -1)).valueOf()
+  )
+    ? slicedEnd
+    : eventRange.instance.range.end
 
   if (displayEventTime && !def.allDay) {
     if (displayEventEnd && (isStart || isEnd) && def.hasEnd) {

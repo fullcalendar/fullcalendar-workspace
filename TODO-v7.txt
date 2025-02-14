@@ -12,8 +12,6 @@ IGNORES:
     when month-view, and don't represent distinct dates, shouldn't rerender
       daygrid-rerenders.ts, the dayHeaderRenderCnt counting
   TimeGrid
-    multi-day event
-      time text bug: 'shows time-text as original event start time'
     header
       week numbers are always in lowest row (agenda-weekNumbers.ts) a bug? desired?
         same: weekNumberCalculations.ts: // CHANGELOG: no longer display week numbers here
