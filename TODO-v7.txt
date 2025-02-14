@@ -36,8 +36,6 @@ IGNORES:
   Timeline
     event rerendering (rerenders.ts)
       because TimelineSlatCell width changes, ContentContainer called twice, doubles calls
-    event positioning should be side-by-side
-      'condenses events even when left/right are not computed as integers'
     event resizing
       does NOT work with touch (timeline-event-resizing.ts)
 FIX LATER:
@@ -53,6 +51,9 @@ CHANGELOG:
   for daygrid/timegrid header,
     resources under days have day classnames now, and data-date
     days under resources have fc-resource now, and data-resource-id
+WRITE TESTS LATER:
+  timeline-event-rendering.ts, disabled test because flawed.
+    about zoom and event aligning w/ start and end
 
 ASAP
 ----
