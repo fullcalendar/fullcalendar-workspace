@@ -172,7 +172,9 @@ describe('refetchResourcesOnNavigate', () => {
 
     currentCalendar.changeView('resourceTimeGridTwoDay')
 
-    expect(getResourceTitles()).toEqual(['resource a-2', 'resource b-2'])
+    expect(
+      getResourceTitles().slice(0, 2), // omit the resource+day cells in second header row
+    ).toEqual(['resource a-2', 'resource b-2'])
     expect($('.day1event').length).toBe(2)
     expect($('.day2event').length).toBe(2)
   })

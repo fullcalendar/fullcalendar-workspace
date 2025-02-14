@@ -51,12 +51,15 @@ describe('navLinks', () => {
 
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
         dayGridWrapper.clickNavLink('2016-08-09')
+        calendar.updateSize()
         expectDayView(calendar, 'timeGridDay', tz.parseDate('2016-08-09'))
         expect(dateClickSpy).not.toHaveBeenCalled()
 
         calendar.changeView('dayGridMonth')
+        calendar.updateSize()
         let dayGridWrapper2 = new DayGridViewWrapper(calendar).dayGrid
         dayGridWrapper2.clickNavLink('2016-08-10')
+        calendar.updateSize()
         expectDayView(calendar, 'timeGridDay', tz.parseDate('2016-08-10'))
       })
 

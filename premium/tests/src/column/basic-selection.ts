@@ -1,5 +1,6 @@
 import { getLeadingBoundingRect, getTrailingBoundingRect, sortBoundingRects } from '@fullcalendar-tests/standard/lib/dom-geom'
 import { DayGridViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/DayGridViewWrapper'
+import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper.js'
 
 describe('dayGrid-view selection', () => {
   pushOptions({
@@ -69,7 +70,7 @@ describe('dayGrid-view selection', () => {
         },
       })
 
-      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
       let sunAEl = $(getLeadingBoundingRect(dayGridWrapper.getDowEls('sun')).node)
       let monAEl = $(getLeadingBoundingRect(dayGridWrapper.getDowEls('mon')).node)
 
@@ -90,7 +91,7 @@ describe('dayGrid-view selection', () => {
         },
       })
 
-      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
       let sunAEl = $(getLeadingBoundingRect(dayGridWrapper.getDowEls('sun')).node)
       let monBEl = $(getTrailingBoundingRect(dayGridWrapper.getDowEls('mon')).node)
 
@@ -123,7 +124,7 @@ describe('dayGrid-view selection', () => {
         },
       })
 
-      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
       let monRects = sortBoundingRects(dayGridWrapper.getDowEls('mon'))
       let monBEl = $(monRects[1].node)
       let satRects = sortBoundingRects(dayGridWrapper.getDowEls('sat'))
@@ -146,7 +147,7 @@ describe('dayGrid-view selection', () => {
         },
       })
 
-      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
       let monRects = sortBoundingRects(dayGridWrapper.getDowEls('mon'))
       let monBEl = $(monRects[1].node)
       let satRects = sortBoundingRects(dayGridWrapper.getDowEls('sat'))

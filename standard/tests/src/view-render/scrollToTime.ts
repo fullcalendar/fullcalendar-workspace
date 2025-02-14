@@ -11,7 +11,8 @@ describe('scrollToTime method', () => {
     calendar.scrollToTime({ hours: 2 })
 
     // NOTE: c&p'd from scrollTime tests
-    let slotTop = viewWrapper.timeGrid.getTimeTop('02:00:00') - viewWrapper.timeGrid.el.getBoundingClientRect().top
+    let slotTop = viewWrapper.timeGrid.getTimeTop('02:00:00') -
+      viewWrapper.timeGrid.getCanvasEl().getBoundingClientRect().top
     let scrollEl = viewWrapper.getScrollerEl()
     let scrollTop = scrollEl.scrollTop
     let diff = Math.abs(slotTop - scrollTop)

@@ -23,7 +23,6 @@ describe('themeSystem', () => {
     expect(calendar.el).toHaveClass(CalendarWrapper.UNTHEMED_CLASSNAME)
     expect(calendar.el).not.toHaveClass(CalendarWrapper.BOOTSTRAP_CLASSNAME)
     expect(buttonInfo.iconName).toBeTruthy()
-    expect($('.table-bordered').length).toBe(0)
 
     let viewWrapper = new TimeGridViewWrapper(calendar)
     let scrollEl = viewWrapper.getScrollerEl()
@@ -38,7 +37,6 @@ describe('themeSystem', () => {
     expect(calendar.el).toHaveClass(CalendarWrapper.BOOTSTRAP_CLASSNAME)
     expect(calendar.el).not.toHaveClass(CalendarWrapper.UNTHEMED_CLASSNAME)
     expect(buttonInfo.iconName).toBeTruthy()
-    expect($('.table-bordered').length).toBeGreaterThan(0)
 
     // make sure scrolled down at least just a little bit
     // since we don't have the bootstrap stylesheet loaded, this will be janky

@@ -14,7 +14,7 @@ export class MultiMonthViewWrapper extends ViewWrapper {
     return monthEls.map((monthEl) => ({
       el: monthEl,
       title: (monthEl.querySelector('.fc-multimonth-title') as HTMLElement).innerText,
-      columnCnt: monthEl.querySelectorAll('.fc-multimonth-header-row [role=gridcell]').length,
+      columnCnt: monthEl.querySelectorAll('.fc-multimonth-header-row [role=columnheader]').length,
     }))
   }
 
@@ -28,6 +28,6 @@ export class MultiMonthViewWrapper extends ViewWrapper {
   }
 
   getScrollerEl() {
-    return this.el // the view itself
+    return this.el.querySelector('.fc-scroller')
   }
 }

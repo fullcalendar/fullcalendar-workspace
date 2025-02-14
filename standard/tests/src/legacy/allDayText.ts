@@ -50,7 +50,7 @@ describe('allDayText', () => {
           allDaySlot: true,
           locale: ptBrLocale,
         })
-        expectAllDayTextToBe(calendar, 'dia inteiro')
+        expectAllDayTextToBe(calendar, 'dia\ninteiro')
       })
     })
     describe('in day', () => {
@@ -60,7 +60,7 @@ describe('allDayText', () => {
           allDaySlot: true,
           locale: ptBrLocale,
         })
-        expectAllDayTextToBe(calendar, 'dia inteiro')
+        expectAllDayTextToBe(calendar, 'dia\ninteiro')
       })
     })
   })

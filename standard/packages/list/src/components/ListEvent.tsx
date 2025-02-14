@@ -35,7 +35,6 @@ export class ListEvent extends BaseComponent<ListEventProps> {
         }}
         className='fc-list-event'
         defaultGenerator={renderEventTitleOnly}
-        eventRange={eventRange}
         timeText=""
         disableDragging
         disableResizing

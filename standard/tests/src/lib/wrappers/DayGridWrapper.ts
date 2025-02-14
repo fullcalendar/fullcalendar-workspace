@@ -58,7 +58,7 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
   // example: gets all the Mondays in the first row of days
   // TODO: discourage use
   getDowEls(dayAbbrev) {
-    return findElements(this.el, `[role=row] > .fc-day-${dayAbbrev}`)
+    return findElements(this.el, `[role=row] .fc-day-${dayAbbrev}`)
   }
 
   getMonthStartEls() {
@@ -82,11 +82,11 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
   }
 
   getWeekNumberEls() {
-    return findElements(this.el, '.fcday-daygrid-week-number')
+    return findElements(this.el, '.fc-daygrid-week-number')
   }
 
   getWeekNumberEl(rowIndex) {
-    return this.getRowEl(rowIndex).querySelector('.fcday-daygrid-week-number')
+    return this.getRowEl(rowIndex).querySelector('.fc-daygrid-week-number')
   }
 
   getWeekNumberText(rowIndex) {
@@ -147,6 +147,9 @@ export class DayGridWrapper { // TODO: rename to DayGridBodyWrapper
   }
 
   getRowEls() {
+    if (this.el.getAttribute('role') === 'row') { // for single-row all-day in timegrid
+      return [this.el]
+    }
     return findElements(this.el, '[role=row]')
   }
 

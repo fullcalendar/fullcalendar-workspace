@@ -12,7 +12,7 @@ describe('scrollTime', () => {
     })
     let viewWrapper = new TimeGridViewWrapper(calendar)
     let timeGridWrapper = viewWrapper.timeGrid
-    let slotTop = viewWrapper.timeGrid.getTimeTop('02:00:00') - $(timeGridWrapper.el).offset().top
+    let slotTop = viewWrapper.timeGrid.getTimeTop('02:00:00') - $(timeGridWrapper.getCanvasEl()).offset().top
     let scrollTop = viewWrapper.getScrollerEl().scrollTop
     let diff = Math.abs(slotTop - scrollTop)
 
@@ -28,7 +28,7 @@ describe('scrollTime', () => {
     })
     let viewWrapper = new TimeGridViewWrapper(calendar)
     let timeGridWrapper = viewWrapper.timeGrid
-    let slotTop = timeGridWrapper.getTimeTop('02:00:00') - $(timeGridWrapper.el).offset().top
+    let slotTop = timeGridWrapper.getTimeTop('02:00:00') - $(timeGridWrapper.getCanvasEl()).offset().top
     let scrollTop = viewWrapper.getScrollerEl().scrollTop
     let diff = Math.abs(slotTop - scrollTop)
 

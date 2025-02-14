@@ -72,6 +72,7 @@ describe('timeline dragging events between calendars', () => {
 
     calendar0.render()
     calendar1.render()
+    calendar1.updateSize()
 
     let timelineGrid0 = new ResourceTimelineViewWrapper(calendar0).timelineGrid
     let timelineGrid1 = new ResourceTimelineViewWrapper(calendar1).timelineGrid

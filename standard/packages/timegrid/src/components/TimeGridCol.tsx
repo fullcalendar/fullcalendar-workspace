@@ -64,6 +64,7 @@ export interface TimeGridColProps {
 
 export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   sortEventSegs: typeof sortEventSegs = memoize(sortEventSegs)
+  getDateMeta = memoize(getDateMeta)
 
   render() {
     let { props, context } = this
@@ -81,8 +82,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       (props.eventResize && props.eventResize.affectedInstances) ||
       {}
 
-    // TODO: memoize
-    let dateMeta = getDateMeta(props.date, props.todayRange, null, props.dateProfile)
+    let dateMeta = this.getDateMeta(props.date, props.todayRange, null, props.dateProfile)
 
     const baseClassName = joinClassNames(
       'fc-timegrid-day',
@@ -231,7 +231,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             : { left: 0, right: 0 }
 
           let isVisible = isMirror || (segRect && !segIsInvisible[instanceId])
-          let isInset = segRect && Boolean(segRect.stackDepth)
+          let isInset = segRect ? Boolean(segRect.stackDepth) : false
 
           return (
             <div

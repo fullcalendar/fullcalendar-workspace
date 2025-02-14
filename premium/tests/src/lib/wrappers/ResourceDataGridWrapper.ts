@@ -8,17 +8,31 @@ export class ResourceDataGridWrapper {
     return this.el
   }
 
+  /*
+  Must have positioning determined first
+  */
   getRowInfo() {
-    let trs = findElements(this.el, '[role=row]')
+    let rowEls = findElements(this.el, '[role=row]')
     let infos = []
 
-    for (let tr of trs) {
-      if (tr.classList.contains('fc-resource')) {
-        infos.push(buildResourceInfoFromCell(tr.firstElementChild))
-      } else if (tr.classList.contains('fc-resource-group')) {
-        infos.push(buildGroupInfoFromCell(tr.firstElementChild))
+    for (let rowEl of rowEls) {
+      let theInfo
+
+      if (rowEl.querySelector('.fc-resource')) {
+        theInfo = buildResourceInfoFromRow(rowEl)
+      } else if (rowEl.querySelector('.fc-resource-group')) {
+        theInfo = buildGroupInfoFromRow(rowEl)
+      }
+
+      if (theInfo) {
+        theInfo.top = rowEl.getBoundingClientRect().top
+        infos.push(theInfo)
       }
     }
+
+    infos.sort((a, b) => {
+      return a.top - b.top
+    })
 
     return infos
   }
@@ -35,22 +49,26 @@ export class ResourceDataGridWrapper {
     let cellEl = this.getResourceCellEl(resourceId)
 
     if (cellEl) {
-      return buildResourceInfoFromCell(cellEl)
+      return buildResourceInfoFromRow(cellEl)
     }
 
     return null
   }
 
   getResourceCellEl(resourceId) {
-    return this.el.querySelector(`[role=gridcell][data-resource-id="${resourceId}"]`) as HTMLElement
+    return this.el.querySelector(`[role=row][data-resource-id="${resourceId}"] > *`) as HTMLElement
   }
 
   getResourceCellEls(resourceId) {
-    let selector = '[role=gridcell].fc-resource'
+    let selector = '[role=row].fc-resource'
 
     if (resourceId) {
       selector += `[data-resource-id="${resourceId}"]`
+    } else {
+      selector += '[data-resource-id]'
     }
+
+    selector += ' > *'
 
     return findElements(this.el, selector)
   }
@@ -72,7 +90,7 @@ export class ResourceDataGridWrapper {
   }
 
   isRowExpanded(resourceId) {
-    let iconEl = this.getExpanderEl(resourceId).querySelector('.fc-icon')
+    let iconEl = this.getExpanderEl(resourceId)
 
     if (iconEl.classList.contains('fc-icon-plus-square')) {
       return false
@@ -90,21 +108,23 @@ export class ResourceDataGridWrapper {
   }
 }
 
-function buildResourceInfoFromCell(cellEl) {
+function buildResourceInfoFromRow(rowEl) {
+  const cellEl = rowEl.firstElementChild
   return {
     type: 'resource',
-    resourceId: cellEl.getAttribute('data-resource-id'),
-    text: $(cellEl.querySelector('.fc-cell-main')).text(),
+    resourceId: rowEl.getAttribute('data-resource-id'),
+    text: $(rowEl.querySelector('.fc-cell-main')).text(),
     cellEl,
-    rowEl: cellEl.parentNode,
+    rowEl,
   }
 }
 
-function buildGroupInfoFromCell(cellEl) {
+function buildGroupInfoFromRow(rowEl) {
+  const cellEl = rowEl.firstElementChild
   return {
     type: 'group',
     text: $(cellEl.querySelector('.fc-cell-main')).text(),
     cellEl,
-    rowEl: cellEl.parentNode,
+    rowEl,
   }
 }

@@ -7,7 +7,11 @@ import { addPoints } from '../geom.js'
 import { CalendarWrapper } from './CalendarWrapper.js'
 
 export class TimeGridWrapper {
-  constructor(public el: HTMLElement) {
+  constructor(public el: HTMLElement) { // el is the scroller
+  }
+
+  getCanvasEl() {
+    return this.el.firstElementChild
   }
 
   getAllDayEls() { // TODO: rename to getColEls()
@@ -131,10 +135,14 @@ export class TimeGridWrapper {
   }
 
   getTimeAxisInfo() {
-    return $('.fc-timegrid-slot-label[data-time]', this.el).map((i, td) => ({
-      text: $(td).text(),
-      isMajor: !$(td).hasClass('fc-timegrid-slot-minor'),
-    })).get()
+    return $('.fc-timegrid-slot-label[data-time]', this.el).map((i, labelEl) => {
+      const $labelEl = $(labelEl)
+      const $rowEl = $labelEl.parent()
+      return {
+        text: $labelEl.text(),
+        isMajor: !$rowEl.hasClass('fc-timegrid-slot-minor'),
+      }
+    }).get()
   }
 
   getLastMajorAxisInfo() {
@@ -244,8 +252,10 @@ export class TimeGridWrapper {
   }
 
   clickDate(date) {
+    const dayEls = this.getDayEls(date)
     return new Promise<void>((resolve) => {
-      $(this.getDayEls(date)).simulate('drag', {
+      $(dayEls).simulate('drag', {
+        debug: true,
         point: this.getPoint(date),
         onRelease: () => resolve(),
       })

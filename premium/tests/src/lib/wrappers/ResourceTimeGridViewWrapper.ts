@@ -6,7 +6,7 @@ import { ResourceDayGridWrapper } from './ResourceDayGridWrapper.js'
 
 export class ResourceTimeGridViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-timegrid')
+    super(calendar, 'fc-resource-timegrid-view')
   }
 
   get header() {
@@ -19,7 +19,7 @@ export class ResourceTimeGridViewWrapper extends ViewWrapper {
   }
 
   get dayGrid() {
-    let dayGridEl = this.el.querySelector('.fc-daygrid-body') as HTMLElement
+    let dayGridEl = this.el.querySelector('.fc-timegrid-allday') as HTMLElement
     return dayGridEl ? new ResourceDayGridWrapper(dayGridEl) : null
   }
 

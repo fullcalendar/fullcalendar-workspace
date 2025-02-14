@@ -31,11 +31,11 @@ export class TimeGridViewWrapper extends ViewWrapper {
   }
 
   getHeaderWeekNumberLink() {
-    return this.getHeaderAxisEl().querySelector('a')
+    return this.getHeaderAxisEl().querySelector('[role=link]')
   }
 
   getHeaderWeekText() { // the title
-    return $(this.getHeaderWeekNumberLink()).text()
+    return $(this.getHeaderAxisEl()).text()
   }
 
   getAllDayAxisEl() {

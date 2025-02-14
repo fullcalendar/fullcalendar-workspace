@@ -47,6 +47,10 @@ export class TimelineGridWrapper {
     })
   }
 
+  getCanvasEl() {
+    return this.el.firstElementChild as HTMLElement
+  }
+
   getHighlightEls() {
     return findElements(this.el, '.fc-highlight')
   }
@@ -81,7 +85,7 @@ export class TimelineGridWrapper {
   getRect(start, end) {
     let coord0 = this.getLeft(start)
     let coord1 = this.getLeft(end)
-    let canvasRect = getBoundingRect(this.el)
+    let canvasRect = getBoundingRect(this.getCanvasEl())
 
     return {
       left: Math.min(coord0, coord1),

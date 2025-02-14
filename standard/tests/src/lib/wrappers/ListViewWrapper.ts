@@ -37,7 +37,7 @@ export class ListViewWrapper extends ViewWrapper {
   }
 
   getScrollerEl() {
-    return this.el // it IS a scroller
+    return this.el.querySelector('.fc-scroller')
   }
 
   hasEmptyMessage() {
@@ -48,7 +48,7 @@ export class ListViewWrapper extends ViewWrapper {
     if (typeof dayDate === 'string') {
       dayDate = new Date(dayDate)
     }
-    return this.el.querySelector('.fc-list-day[data-date="' + formatIsoDay(dayDate) + '"] a.fc-list-day-text')
+    return this.el.querySelector('.fc-list-day[data-date="' + formatIsoDay(dayDate) + '"] .fc-navlink')
   }
 
   clickNavLink(dayDate) {

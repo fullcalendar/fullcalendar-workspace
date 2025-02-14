@@ -90,6 +90,7 @@ describe('dragging events between calendars', () => {
 
     calendar0.render()
     calendar1.render()
+    calendar1.updateSize()
 
     let dayGridWrapper0 = new DayGridViewWrapper(calendar0).dayGrid
     let dayGridWrapper1 = new DayGridViewWrapper(calendar1).dayGrid
@@ -136,6 +137,7 @@ describe('dragging events between calendars', () => {
 
     calendar0.render()
     calendar1.render()
+    calendar1.updateSize()
 
     let eventEl = new CalendarWrapper(calendar0).getEventEls()[0] // of the source calendar
     let destViewWrapper = new TimeGridViewWrapper(calendar1)

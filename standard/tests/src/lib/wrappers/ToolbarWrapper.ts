@@ -55,7 +55,7 @@ function processSectionItems(sectionEl: HTMLElement) {
         children: processSectionItems(childEl),
       }
     }
-    if (childEl.nodeName === 'H2') {
+    if (childEl.classList.contains('fc-toolbar-title')) {
       return {
         type: 'title',
       }

@@ -18,6 +18,7 @@ import {
   getDateMeta,
   buildDateStr,
   buildNavLinkAttrs,
+  memoize,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -64,6 +65,9 @@ export interface DayGridCellProps {
 }
 
 export class DayGridCell extends DateComponent<DayGridCellProps> {
+  // memo
+  getDateMeta = memoize(getDateMeta)
+
   // ref
   private rootElRef = createRef<HTMLElement>()
 
@@ -79,8 +83,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     const isMonthStart = props.showDayNumber &&
       shouldDisplayMonthStart(props.date, props.dateProfile.currentRange, dateEnv)
 
-    // TODO: memoize this
-    const dateMeta = getDateMeta(props.date, props.todayRange, null, props.dateProfile)
+    const dateMeta = this.getDateMeta(props.date, props.todayRange, null, props.dateProfile)
 
     const baseClassName = joinClassNames(
       'fc-daygrid-day',

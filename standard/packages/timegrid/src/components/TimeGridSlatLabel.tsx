@@ -1,5 +1,7 @@
 import {
+  Duration,
   SlotLabelContentArg,
+  ViewApi,
 } from '@fullcalendar/core'
 import {
   createFormatter,
@@ -8,6 +10,10 @@ import {
   setRef,
   BaseComponent,
   joinClassNames,
+  DateFormatter,
+  DateMarker,
+  DateEnv,
+  memoize,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -33,7 +39,26 @@ export interface TimeGridSlatLabelProps extends TimeSlatMeta {
   innerHeightRef?: Ref<number>
 }
 
+function createRenderProps(
+  date: DateMarker,
+  time: Duration,
+  labelFormat: DateFormatter,
+  dateEnv: DateEnv,
+  viewApi: ViewApi,
+): SlotLabelContentArg {
+  return {
+    level: 0, // QUESTION!!!: what is this?
+    time: time,
+    date: dateEnv.toDate(date),
+    view: viewApi,
+    text: dateEnv.format(date, labelFormat),
+  }
+}
+
 export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
+  // memo
+  private createRenderProps = memoize(createRenderProps)
+
   // ref
   private innerElRef = createRef<HTMLDivElement>()
 
@@ -64,13 +89,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
         Array.isArray(options.slotLabelFormat) ? createFormatter(options.slotLabelFormat[0]) :
           createFormatter(options.slotLabelFormat)
 
-    let renderProps: SlotLabelContentArg = {
-      level: 0, // QUESTION!!!: what is this?
-      time: props.time,
-      date: dateEnv.toDate(props.date),
-      view: viewApi,
-      text: dateEnv.format(props.date, labelFormat),
-    }
+    let renderProps = this.createRenderProps(props.date, props.time, labelFormat, dateEnv, viewApi)
 
     return (
       <ContentContainer

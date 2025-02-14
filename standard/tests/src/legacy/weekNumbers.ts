@@ -74,7 +74,7 @@ describe('weekNumbers', () => {
       it('should display week numbers in the top left corner only', () => {
         let calendar = initCalendar()
         let viewWrapper = new TimeGridViewWrapper(calendar)
-        expect(viewWrapper.getHeaderWeekNumberLink()).toBeTruthy()
+        expect(viewWrapper.getHeaderWeekText()).toBeTruthy()
       })
     })
   })

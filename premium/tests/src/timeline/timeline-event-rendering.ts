@@ -272,7 +272,7 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
                 })
 
                 let eventEl = $('.event1')[0]
-                let canvasEl = new ViewWrapper(calendar).timelineGrid.el
+                let canvasEl = new ViewWrapper(calendar).timelineGrid.getCanvasEl()
                 expect(eventEl.offsetHeight).toBeCloseTo(canvasEl.offsetHeight)
               })
             }
@@ -477,7 +477,7 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
             let viewWrapper = new ViewWrapper(calendar)
             let timelineGridWrapper = viewWrapper.timelineGrid
             let $eventEls = $('.' + eventClassName, viewWrapper.el)
-            let eventEdges = getEventEdges($eventEls, timelineGridWrapper.el)
+            let eventEdges = getEventEdges($eventEls, timelineGridWrapper.getCanvasEl())
             let isBg = Boolean(eventDisplay)
 
             let startDiff = Math.abs(eventEdges.start - timelineGridWrapper.getLeft(options.startDate))
@@ -614,7 +614,7 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
     })
     let timelineViewWrapper = new TimelineViewWrapper(calendar)
     let scrollEl = timelineViewWrapper.getBodyScrollerEl()
-    let gridEl = timelineViewWrapper.timelineGrid.el
+    let gridEl = timelineViewWrapper.timelineGrid.getCanvasEl()
     expect(
       gridEl.offsetHeight - // should be be bigger than scroll height...
       scrollEl.offsetHeight,
@@ -653,7 +653,7 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
         },
       ],
     })
-    let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
+    let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
     let eventEls = timelineGridWrapper.getEventEls()
     let eventTop0 = eventEls[0].getBoundingClientRect().top
     let eventTop1 = eventEls[1].getBoundingClientRect().top
@@ -718,7 +718,7 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
         },
       ],
     })
-    let timelineGridWrapper = new TimelineViewWrapper(calendar).timelineGrid
+    let timelineGridWrapper = new ResourceTimelineViewWrapper(calendar).timelineGrid
     let eventEls = timelineGridWrapper.getEventEls()
     let visibleEventEls = filterVisibleEls(eventEls)
     expect(visibleEventEls.length).toBe(7)

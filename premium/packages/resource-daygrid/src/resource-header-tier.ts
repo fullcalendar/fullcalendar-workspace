@@ -1,4 +1,4 @@
-import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, ViewContext } from '@fullcalendar/core/internal'
+import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, joinClassNames, ViewContext } from '@fullcalendar/core/internal'
 import { CellDataConfig, CellRenderConfig, RowConfig, buildDateDataConfigs, buildDateRenderConfig, buildDateRowConfig } from '@fullcalendar/daygrid/internal'
 import { ResourceApi, ResourceLabelContentArg } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
@@ -28,13 +28,13 @@ export function buildResourceRowConfigs(
 
   if (dates.length === 1) {
     return [
-      buildResourceRowConfig(resources, undefined, context)
+      buildResourceRowConfig(resources, dates[0], dateProfile, todayRange, context)
     ]
   }
 
   if (datesAboveResources) {
     const resourceDataConfigsPerDate = dates.map((date) => {
-      return buildResourceDataConfigs(resources, date, context)
+      return buildResourceDataConfigs(resources, date, dateProfile, todayRange, context)
     })
 
     return [
@@ -73,13 +73,14 @@ export function buildResourceRowConfigs(
         },
         { // extraAttrs
           'data-resource-id': resourceApiId,
-        }
+        },
+        'fc-resource',
       )
     })
 
     return [
       // resource row
-      buildResourceRowConfig(resources, undefined, context, /* colSpan = */ dates.length),
+      buildResourceRowConfig(resources, undefined, undefined, undefined, context, /* colSpan = */ dates.length),
       // date row
       {
         renderConfig: buildDateRenderConfig(context),
@@ -95,12 +96,14 @@ Single row, just resources (might be under dates, might not)
 function buildResourceRowConfig(
   resources: Resource[],
   date: DateMarker | undefined,
+  dateProfile: DateProfile,
+  todayRange: DateRange,
   context: ViewContext,
   colSpan?: number,
 ): RowConfig<ResourceLabelContentArg> {
   return {
     renderConfig: buildResourceRenderConfig(context),
-    dataConfigs: buildResourceDataConfigs(resources, date, context, colSpan),
+    dataConfigs: buildResourceDataConfigs(resources, date, dateProfile, todayRange, context, colSpan),
   }
 }
 
@@ -119,9 +122,13 @@ function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<Resou
 function buildResourceDataConfigs(
   resources: Resource[],
   date: DateMarker | undefined,
+  dateProfile: DateProfile | undefined,
+  todayRange: DateRange | undefined,
   context: ViewContext,
   colSpan = 1,
 ): CellDataConfig<ResourceLabelContentArg>[] {
+  const dateMeta = date ? getDateMeta(date, todayRange, null, dateProfile) : undefined
+
   return resources.map((resource) => {
     const resourceApi = new ResourceApi(context, resource)
     const resourceApiId = resourceApi.id
@@ -140,6 +147,10 @@ function buildResourceDataConfigs(
         'data-date': date ? formatDayString(date) : undefined,
       },
       colSpan,
+      className: joinClassNames(
+        'fc-resource',
+        dateMeta ? getDayClassName(dateMeta) : '',
+      ),
     }
   })
 }

@@ -556,8 +556,10 @@ describe('more-link popover', () => {
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     dayGridWrapper.openMorePopover()
+    calendar.updateSize()
     setTimeout(() => {
       calendar.refetchEvents()
+      calendar.updateSize()
       let eventEls = dayGridWrapper.getMorePopoverEventEls()
       let eventInfo = DayGridWrapper.getEventElInfo(eventEls[2])
       expect(eventInfo.title).toBe(newTitle)

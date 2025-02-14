@@ -13,15 +13,23 @@ export class TimelineHeaderWrapper {
   }
 
   getDateRowCnt() {
-    return this.el.querySelectorAll('[role=row]').length
+    return this.el.firstElementChild // canvas
+      .childElementCount // rows
   }
 
   getDateEls(dateRow = 0) {
-    return findElements(this.el, `[role=row]:nth-child(${dateRow + 1}) > [role=gridcell][data-date]`)
+    return findElements(
+      this.el.firstElementChild // canvas
+        .childNodes[dateRow] as HTMLElement,
+      '.fc-timeline-slot-label'
+    )
   }
 
   getDateElByDate(dateStr, dateRow = 0) {
-    return this.el.querySelector(`[role=row]:nth-child(${dateRow + 1}) > [role=gridcell][data-date="${dateStr}"]`)
+    return (
+      this.el.firstElementChild // canvas
+        .childNodes[dateRow] as HTMLElement
+    ).querySelector(`.fc-timeline-slot-label[data-date="${dateStr}"]`)
   }
 
   getCellInfo(dateRow = 0) {

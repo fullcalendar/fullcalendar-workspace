@@ -18,6 +18,7 @@ describe('businessHours', () => {
     currentCalendar.changeView('timeGridWeek')
     currentCalendar.next() // move out of the original month range...
     currentCalendar.next() // ... out. should render correctly.
+    currentCalendar.updateSize()
 
     // whole days
     let dayGridWrapper = new TimeGridViewWrapper(calendar).dayGrid

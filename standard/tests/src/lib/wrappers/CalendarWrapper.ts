@@ -90,7 +90,7 @@ export class CalendarWrapper {
   }
 
   getDateCellEl(dateStr: string) {
-    return this.calendar.el.querySelector('td.fc-day[data-date="' + dateStr + '"]')
+    return this.calendar.el.querySelector('.fc-day[role=gridcell][data-date="' + dateStr + '"]')
   }
 
   getLicenseMessage() {

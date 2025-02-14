@@ -141,7 +141,6 @@ export const BASE_OPTION_REFINERS = {
   eventDataTransform: identity as Identity<EventInputTransformer>,
   stickyHeaderDates: identity as Identity<boolean | 'auto'>,
   stickyFooterScrollbar: identity as Identity<boolean | 'auto'>,
-  viewHeight: identity as Identity<CssDimValue>,
   defaultAllDay: Boolean,
   eventSourceFailure: identity as Identity<(this: CalendarApi, error: any) => void>,
   eventSourceSuccess: identity as Identity<(this: CalendarApi, eventsInput: EventInput[], response?: Response) => EventInput[] | void>,

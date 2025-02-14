@@ -4,14 +4,14 @@ export type CssDimValue = string | number // TODO: move to more general file
 
 export function getIsHeightAuto(options: {
   height?: CssDimValue,
-  viewHeight?: CssDimValue
+  contentHeight?: CssDimValue
 }): boolean {
-  return options.height === 'auto' || options.viewHeight === 'auto'
+  return options.height === 'auto' || options.contentHeight === 'auto'
 }
 
 export function getStickyHeaderDates(options: {
   height?: CssDimValue,
-  viewHeight?: CssDimValue,
+  contentHeight?: CssDimValue,
   stickyHeaderDates?: boolean | 'auto'
 }): boolean {
   let { stickyHeaderDates } = options
@@ -25,7 +25,7 @@ export function getStickyHeaderDates(options: {
 
 export function getStickyFooterScrollbar(options: {
   height?: CssDimValue,
-  viewHeight?: CssDimValue,
+  contentHeight?: CssDimValue,
   stickyFooterScrollbar?: boolean | 'auto'
 }): boolean {
   let { stickyFooterScrollbar } = options

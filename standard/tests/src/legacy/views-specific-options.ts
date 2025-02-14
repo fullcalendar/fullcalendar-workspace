@@ -16,7 +16,7 @@ describe('view-specific options', () => {
   function testEachView(viewsAndVals) {
     $.each(viewsAndVals, (view: string, val) => {
       currentCalendar.changeView(view)
-      expect($('h2')).toHaveText(val)
+      expect($('.fc-toolbar-title')).toHaveText(val)
     })
   }
 

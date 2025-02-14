@@ -120,7 +120,7 @@ describe('vresource structure', () => {
 
           const monEl = headerWrapper.getDowEls('mon')
           const monRect = getBoundingRect(monEl)
-          expect(monEl.length).toBe(1)
+          expect(monEl.length).toBe(5)
           const aEls = headerWrapper.getResourceEls('a')
           const bEls = headerWrapper.getResourceEls('b')
           expect(aEls.length).toBe(2)
@@ -199,15 +199,15 @@ describe('vresource structure', () => {
         let headerWrapper = viewWrapper.header
         let dayGridWrapper = viewWrapper.dayGrid
 
-        expect(headerWrapper.getResourceEls('a').length).toBe(1)
-        expect(headerWrapper.getResourceEls('b').length).toBe(1)
+        expect(headerWrapper.getResourceEls('a').length).toBe(8)
+        expect(headerWrapper.getResourceEls('b').length).toBe(8)
         expect(headerWrapper.getDowEls('sun').length).toBe(2)
         expect(dayGridWrapper.getRowEls().length).toBe(6)
 
-        const firstADayRect = getLeadingBoundingRect('td[data-date="2015-11-01"]', direction)
-        const lastADayRect = getLeadingBoundingRect('td[data-date="2015-12-12"]', direction)
-        const firstBDayRect = getTrailingBoundingRect('td[data-date="2015-11-01"]', direction)
-        const lastBDayRect = getTrailingBoundingRect('td[data-date="2015-12-12"]', direction)
+        const firstADayRect = getLeadingBoundingRect('[role=gridcell][data-date="2015-11-01"]', direction)
+        const lastADayRect = getLeadingBoundingRect('[role=gridcell][data-date="2015-12-12"]', direction)
+        const firstBDayRect = getTrailingBoundingRect('[role=gridcell][data-date="2015-11-01"]', direction)
+        const lastBDayRect = getTrailingBoundingRect('[role=gridcell][data-date="2015-12-12"]', direction)
         const aDayRect = joinRects(firstADayRect, lastADayRect)
         aDayRect.right -= 1 // might share a pixel
         aDayRect.left += 1 // ditto, but for rtl

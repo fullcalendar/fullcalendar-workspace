@@ -36,7 +36,6 @@ describe('column-view resourceLabelDidMount trigger', () => { // TODO: rename th
           initCalendar({
             resourceLabelDidMount(arg) {
               if (arg.resource.id === 'a') {
-                expect(arg.el instanceof HTMLTableCellElement).toBe(true)
                 expect(arg.el).toContainText('Resource A')
                 callCnt += 1
               }
@@ -61,7 +60,6 @@ describe('column-view resourceLabelDidMount trigger', () => { // TODO: rename th
           initCalendar({
             resourceLabelDidMount(arg) {
               if (arg.resource.id === 'a') {
-                expect(arg.el instanceof HTMLTableCellElement).toBe(true)
                 expect(arg.el).toContainText('Resource A')
                 callCnt += 1
               }
@@ -81,7 +79,6 @@ describe('column-view resourceLabelDidMount trigger', () => { // TODO: rename th
           initCalendar({
             resourceLabelDidMount(arg) {
               if (arg.resource.id === 'a') {
-                expect(arg.el instanceof HTMLTableCellElement).toBe(true)
                 expect(arg.el).toContainText('Resource A')
                 callCnt += 1
               }

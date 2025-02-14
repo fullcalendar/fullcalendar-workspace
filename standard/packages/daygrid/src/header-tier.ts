@@ -1,5 +1,5 @@
 import { ClassNamesGenerator, CustomContentGenerator, DayHeaderContentArg, DidMountHandler, WillUnmountHandler } from '@fullcalendar/core'
-import { addDays, buildDateStr, buildNavLinkAttrs, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, ViewContext } from '@fullcalendar/core/internal'
+import { addDays, buildDateStr, buildNavLinkAttrs, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, joinClassNames, ViewContext } from '@fullcalendar/core/internal'
 
 export interface CellRenderConfig<RenderProps> {
   generatorName: string
@@ -97,6 +97,7 @@ export function buildDateDataConfigs(
   keyPrefix = '',
   extraRenderProps: any = {}, // TODO
   extraAttrs: any = {}, // TODO
+  className = '',
 ): CellDataConfig<DayHeaderContentArg>[] {
   const { dateEnv, viewApi, options } = context
 
@@ -130,7 +131,7 @@ export function buildDateDataConfigs(
             : { 'aria-hidden': true }, // label already on cell
           colSpan,
           isNavLink,
-          className: getDayClassName(dateMeta),
+          className: joinClassNames(className, getDayClassName(dateMeta)),
         }
       })
     : dates.map((date) => { // DayOfWeek
@@ -167,7 +168,7 @@ export function buildDateDataConfigs(
             'aria-hidden': true, // label already on cell
           },
           colSpan,
-          className: getDayClassName(dayMeta),
+          className: joinClassNames(className, getDayClassName(dayMeta)),
         }
       })
 }

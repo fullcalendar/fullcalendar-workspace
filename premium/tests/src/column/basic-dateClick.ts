@@ -1,5 +1,6 @@
 import { getLeadingBoundingRect, sortBoundingRects } from '@fullcalendar-tests/standard/lib/dom-geom'
 import { DayGridViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/DayGridViewWrapper'
+import { ResourceDayGridViewWrapper } from '../lib/wrappers/ResourceDayGridViewWrapper.js'
 
 describe('dayGrid-view dateClick', () => {
   pushOptions({
@@ -63,7 +64,7 @@ describe('dayGrid-view dateClick', () => {
         },
       })
 
-      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
       let sunAEl = $(getLeadingBoundingRect(dayGridWrapper.getDowEls('sun')).node)
 
       sunAEl.simulate('drag', {
@@ -93,7 +94,7 @@ describe('dayGrid-view dateClick', () => {
         },
       })
 
-      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+      let dayGridWrapper = new ResourceDayGridViewWrapper(calendar).dayGrid
       let rects = sortBoundingRects(dayGridWrapper.getDowEls('mon'))
 
       let monBEl = $(rects[1].node)

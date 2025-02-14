@@ -84,6 +84,7 @@ function initCalendar(moreOptions?: CalendarOptions, el?) {
 
   if (newCalendar === window.currentCalendar) {
     newCalendar.render()
+    newCalendar.updateSize()
   } else {
     newCalendar.destroy()
   }

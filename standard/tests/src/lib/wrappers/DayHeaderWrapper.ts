@@ -12,17 +12,17 @@ export class DayHeaderWrapper {
   }
 
   getCellEls() {
-    return findElements(this.el, '[role=gridcell]')
+    return findElements(this.el, '[role=columnheader]')
   }
 
   getCellEl(dateOrDow) {
     if (typeof dateOrDow === 'number') {
-      return this.el.querySelector(`[role=gridcell].${CalendarWrapper.DOW_CLASSNAMES[dateOrDow]}`)
+      return this.el.querySelector(`[role=columnheader].${CalendarWrapper.DOW_CLASSNAMES[dateOrDow]}`)
     }
     if (typeof dateOrDow === 'string') {
       dateOrDow = parseUtcDate(dateOrDow)
     }
-    return this.el.querySelector(`[role=gridcell][data-date="${formatIsoDay(dateOrDow)}"]`)
+    return this.el.querySelector(`[role=columnheader][data-date="${formatIsoDay(dateOrDow)}"]`)
   }
 
   getCellText(dateOrDow) {
@@ -38,14 +38,14 @@ export class DayHeaderWrapper {
   }
 
   getNavLinkEls() {
-    return findElements(this.el, '[role=gridcell][data-date] .fc-navlink')
+    return findElements(this.el, '[role=columnheader][data-date] .fc-navlink')
   }
 
   getNavLinkEl(dayDate) {
     if (typeof dayDate === 'string') {
       dayDate = new Date(dayDate)
     }
-    return this.el.querySelector('[role=gridcell][data-date="' + formatIsoDay(dayDate) + '"] a')
+    return this.el.querySelector('[role=columnheader][data-date="' + formatIsoDay(dayDate) + '"] .fc-navlink')
   }
 
   clickNavLink(date) {

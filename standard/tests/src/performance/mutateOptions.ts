@@ -33,6 +33,7 @@ describe('mutateOptions', () => { // TODO: rename file
   it('will react to a single option and keep scroll', () => {
     calendar = new Calendar($calendarEl[0], buildOptions())
     calendar.render()
+    calendar.updateSize()
 
     let viewWrapper = new TimeGridViewWrapper(calendar)
     let scrollEl = viewWrapper.getScrollerEl()
@@ -42,6 +43,7 @@ describe('mutateOptions', () => { // TODO: rename file
     expect(scrollTop).toBeGreaterThan(0)
 
     calendar.setOption('allDaySlot', false)
+    calendar.updateSize()
 
     expect(calendar.getOption('allDaySlot')).toBe(false)
     expect(viewWrapper.dayGrid).toBeFalsy()

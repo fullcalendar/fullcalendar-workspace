@@ -30,6 +30,7 @@ describe('event dragging on repeating events', () => {
     // event range needs out large (month) then scope down (week)
     // so that the new view receives out-of-range events.
     currentCalendar.changeView('timeGridWeek')
+    currentCalendar.updateSize()
 
     let eventEl = new CalendarWrapper(calendar).getFirstEventEl()
     let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid

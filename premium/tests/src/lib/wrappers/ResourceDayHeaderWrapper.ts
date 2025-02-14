@@ -19,30 +19,33 @@ export class ResourceDayHeaderWrapper {
       datePart = '[data-date="' + formatIsoDay(date) + '"]'
     }
 
-    return findElements(this.el, '[role=gridcell].fc-resource[data-resource-id="' + resourceId + '"]' + datePart)
+    return findElements(this.el, '[role=columnheader].fc-resource[data-resource-id="' + resourceId + '"]' + datePart)
   }
 
-  getAllResourceEls() {
-    return findElements(this.el, '[role=gridcell].fc-resource')
+  /*
+  INCLUDES date cells below resources
+  */
+  private getAllResourceEls() {
+    return findElements(this.el, '[role=columnheader].fc-resource[data-resource-id]')
   }
 
   getResourceIds() {
-    return this.getAllResourceEls().map((th) => (
-      th.getAttribute('data-resource-id')
+    return this.getAllResourceEls().map((resourceEl) => (
+      resourceEl.getAttribute('data-resource-id')
     ))
   }
 
   // TODO: make new func to query a specific resource
   // some places are abusing this via getResourceInfo()[0]
   getResourceInfo() {
-    return this.getAllResourceEls().map((th) => ({
-      id: th.getAttribute('data-resource-id'),
-      text: $(th).text(),
+    return this.getAllResourceEls().map((resourceEl) => ({
+      id: resourceEl.getAttribute('data-resource-id'),
+      text: $(resourceEl).text(),
     }))
   }
 
   getDowEls(dayAbbrev) {
-    return findElements(this.el, `[role=gridcell].fc-day-${dayAbbrev}`)
+    return findElements(this.el, `[role=columnheader].fc-day-${dayAbbrev}`)
   }
 
   getWeekNumberStrings() {

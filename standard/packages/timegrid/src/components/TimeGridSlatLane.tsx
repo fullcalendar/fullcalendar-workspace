@@ -29,7 +29,7 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
         tag="div"
         // TODO: have lane classNames like 'fc-timegrid-lane'/'fc-timegrid-slot-lane'/'fc-timegrid-slat-lane'
         className={joinClassNames(
-          'fc-cell fc-liquid',
+          'fc-timegrid-slot-lane fc-cell fc-liquid',
           props.borderStart && 'fc-border-s',
         )}
         attrs={{

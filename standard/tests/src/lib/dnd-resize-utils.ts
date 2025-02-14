@@ -184,7 +184,6 @@ export function testSelection(options, start, end, expectSuccess, callback) {
   let $lastSlatEl
   let dx
   let dy
-  let $dragEl
   let allowed
   let allDay = false
   let meta
@@ -211,6 +210,7 @@ export function testSelection(options, start, end, expectSuccess, callback) {
 
   let calendar = initCalendar(options)
   let calendarWrapper = new CalendarWrapper(calendar)
+  let startPoint
 
   if (!allDay) {
     let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
@@ -222,21 +222,29 @@ export function testSelection(options, start, end, expectSuccess, callback) {
     $lastSlatEl = $(timeGridWrapper.getSlotElByIndex(lastSlatIndex))
     expect($firstSlatEl.length).toBe(1)
     expect($lastSlatEl.length).toBe(1)
-    dy = $lastSlatEl.offset().top - $firstSlatEl.offset().top
-    $dragEl = $firstSlatEl
+
+    const firstDayRect = $firstDayEl[0].getBoundingClientRect()
+    const firstSlatRect = $firstSlatEl[0].getBoundingClientRect()
+    const lastSlatRect = $lastSlatEl[0].getBoundingClientRect()
+
+    dy = lastSlatRect.top - firstSlatRect.top
+    startPoint = {
+      top: firstSlatRect.top + firstSlatRect.height / 2,
+      left: firstDayRect.left + firstDayRect.width / 2,
+    }
   } else {
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
     $firstDayEl = $(dayGridWrapper.getDayEl(start))
     $lastDayEl = $(dayGridWrapper.getDayEl(new Date(end.valueOf() - 1))) // inclusive
     dy = $lastDayEl.offset().top - $firstDayEl.offset().top
-    $dragEl = $firstDayEl
   }
 
   expect($firstDayEl.length).toBe(1)
   expect($lastDayEl.length).toBe(1)
   dx = $lastDayEl.offset().left - $firstDayEl.offset().left
 
-  $dragEl.simulate('drag', {
+  $firstDayEl.simulate('drag', {
+    point: startPoint,
     dx,
     dy,
     onBeforeRelease() {

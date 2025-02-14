@@ -175,6 +175,7 @@ describe('timeline businessHours', () => {
     calendar.changeView('dayGridMonth')
 
     calendar.changeView('resourceTimelineDay')
+    calendar.updateSize()
     viewWrapper = new ResourceTimelineViewWrapper(calendar)
     expectResourceOverride(viewWrapper)
   })
