@@ -20,6 +20,7 @@ export interface CellDataConfig<RenderProps> {
 }
 
 export interface RowConfig<RenderProps> {
+  isDateRow: boolean
   renderConfig: CellRenderConfig<RenderProps>
   dataConfigs: CellDataConfig<RenderProps>[] // for the CELLs
 }
@@ -54,6 +55,7 @@ export function buildDateRowConfig(
   colSpan?: number,
 ): RowConfig<DayHeaderContentArg> {
   return {
+    isDateRow: true,
     renderConfig: buildDateRenderConfig(context),
     dataConfigs: buildDateDataConfigs(
       dates,

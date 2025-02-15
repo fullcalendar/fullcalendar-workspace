@@ -8,7 +8,7 @@ describe('weekNumberCalculation', () => {
   })
 
   describeOptions('initialView', {
-    'when in day-grid': 'dayGridDay',
+    // 'when in day-grid': 'dayGridDay', // we no longer display week numbers
     'when in time-grid': 'timeGridDay',
   }, (viewName) => {
     let getWeekNumberText = viewName.match(/^dayGrid/)

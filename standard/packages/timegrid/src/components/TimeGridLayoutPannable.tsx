@@ -175,7 +175,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               className='fc-content-box'
               style={{ width: axisWidth }}
             >
-              {headerTiers.map((models, tierNum) => (
+              {headerTiers.map((rowConfig, tierNum) => (
                 <div
                   key={tierNum}
                   role='row'
@@ -186,7 +186,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   )}
                   style={{ height: state.headerTierHeights[tierNum] }}
                 >
-                  {(options.weekNumbers && tierNum === headerTiers.length - 1) ? ( // last row?
+                  {(options.weekNumbers && rowConfig.isDateRow) ? (
                     <TimeGridWeekNumber
                       dateProfile={props.dateProfile}
                       innerWidthRef={headerLabelInnerWidthRefMap.createRef(tierNum)}

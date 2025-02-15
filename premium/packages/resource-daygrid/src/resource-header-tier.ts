@@ -50,6 +50,7 @@ export function buildResourceRowConfigs(
       ),
       // resource row
       {
+        isDateRow: false,
         renderConfig: buildResourceRenderConfig(context),
         dataConfigs: [].concat(...resourceDataConfigsPerDate), // flatten
       }
@@ -83,6 +84,7 @@ export function buildResourceRowConfigs(
       buildResourceRowConfig(resources, undefined, undefined, undefined, context, /* colSpan = */ dates.length),
       // date row
       {
+        isDateRow: true,
         renderConfig: buildDateRenderConfig(context),
         dataConfigs: [].concat(...dateDataConfigsPerResource), // flatten
       }
@@ -102,6 +104,7 @@ function buildResourceRowConfig(
   colSpan?: number,
 ): RowConfig<ResourceLabelContentArg> {
   return {
+    isDateRow: false,
     renderConfig: buildResourceRenderConfig(context),
     dataConfigs: buildResourceDataConfigs(resources, date, dateProfile, todayRange, context, colSpan),
   }

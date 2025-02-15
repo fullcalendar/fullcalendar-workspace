@@ -13,8 +13,6 @@ IGNORES:
       daygrid-rerenders.ts, the dayHeaderRenderCnt counting
   TimeGrid
     header
-      week numbers are always in lowest row (agenda-weekNumbers.ts) a bug? desired?
-        same: weekNumberCalculations.ts: // CHANGELOG: no longer display week numbers here
       tests having trouble doing height-syncing (column-structure.ts)
         'resyncs header row heights when horizontal scrolling and dynamic resources'
         outdated because header-canvas contains all header rows, not just single-row
@@ -42,6 +40,11 @@ CHANGELOG:
   for daygrid/timegrid header,
     resources under days have day classnames now, and data-date
     days under resources have fc-resource now, and data-resource-id
+  for dayGrid-DAY,
+    no longer displays week number (because no space to put it)
+  for resource-timeGrid-DAY
+    no longer displays week number (because would be alongside the resource headers)
+
 WRITE TESTS LATER:
   timeline-event-rendering.ts, disabled test because flawed.
     about zoom and event aligning w/ start and end
