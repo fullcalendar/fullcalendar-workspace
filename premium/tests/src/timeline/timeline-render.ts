@@ -29,9 +29,7 @@ describe('timeline rendering', () => {
     expect(spreadsheetEl.scrollHeight).toBeGreaterThan(0)
     expect(timeEl.scrollHeight).toBeGreaterThan(0)
 
-    let gutter = timeEl.clientHeight - spreadsheetEl.clientHeight
-    expect(spreadsheetEl.scrollHeight + gutter)
-      .toEqual(timeEl.scrollHeight)
+    expect(spreadsheetEl.scrollHeight).toEqual(timeEl.scrollHeight)
   })
 
   it('renders time slots localized', () => {
@@ -135,7 +133,10 @@ describe('timeline rendering', () => {
     setTimeout(() => {
       let dataGridHeight = dataGridWrapper.getRootEl().offsetHeight
       let timelineGridHeight = timelineGridWrapper.getRootEl().offsetHeight
-      expect(Math.abs(dataGridHeight - timelineGridHeight)).toBeLessThan(1)
+
+      // similar size, disregard scrollbar
+      expect(Math.abs(dataGridHeight - timelineGridHeight)).toBeLessThan(20)
+
       done()
     }, 200)
   })
