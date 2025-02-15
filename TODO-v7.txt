@@ -12,11 +12,6 @@ IGNORES:
     when month-view, and don't represent distinct dates, shouldn't rerender
       daygrid-rerenders.ts, the dayHeaderRenderCnt counting
   TimeGrid
-    header
-      tests having trouble doing height-syncing (column-structure.ts)
-        'resyncs header row heights when horizontal scrolling and dynamic resources'
-        outdated because header-canvas contains all header rows, not just single-row
-        SAME with agenda-height: 'timegrid height with horizontal scrolling'
     (problem with test or app?)
       agenda-dateClick: problem with clicking starting before dateClick attached, thus not fired
   List
@@ -37,6 +32,7 @@ RESTRUCTURE:
   should be fc-timegrid(-view) on fc-resource-timegrid(-view)
   dumb how there's a fc-resource-daygrid-view and fc-daygrid. pick one or the other!
 CHANGELOG:
+  (TODO: make difference between API-breaking changes and Visually-breaking changes)
   for daygrid/timegrid header,
     resources under days have day classnames now, and data-date
     days under resources have fc-resource now, and data-resource-id

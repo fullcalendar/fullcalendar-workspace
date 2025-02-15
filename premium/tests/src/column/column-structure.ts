@@ -240,17 +240,10 @@ describe('vresource structure', () => {
     let viewWrapper = new ResourceTimeGridViewWrapper(calendar)
 
     setTimeout(() => {
-      expect(
-        viewWrapper.getHeaderAxisCanvas().offsetHeight,
-      ).toBe(
-        viewWrapper.header.getCanvasEl().offsetHeight,
-      )
+      const rowElsByIndex = viewWrapper.getHeaderRowsGroupByRowIndex()
 
-      expect(
-        viewWrapper.getAllDayAxisCanvas().offsetHeight,
-      ).toBe(
-        viewWrapper.dayGrid.getCanvasEl().offsetHeight,
-      )
+      expect(rowElsByIndex['1'][0].offsetHeight).toBe(rowElsByIndex['1'][1].offsetHeight)
+      expect(rowElsByIndex['2'][0].offsetHeight).toBe(rowElsByIndex['2'][1].offsetHeight)
 
       done()
     }, 200)

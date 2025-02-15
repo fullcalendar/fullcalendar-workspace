@@ -2,6 +2,7 @@ import { ViewWrapper } from './ViewWrapper.js'
 import { TimeGridWrapper } from './TimeGridWrapper.js'
 import { DayGridWrapper } from './DayGridWrapper.js'
 import { DayHeaderWrapper } from './DayHeaderWrapper.js'
+import { findElements } from '../dom-misc.js'
 
 export class TimeGridViewWrapper extends ViewWrapper {
   constructor(calendar) {
@@ -44,5 +45,25 @@ export class TimeGridViewWrapper extends ViewWrapper {
 
   getAllDayAxisElText() {
     return $(this.getAllDayAxisEl()).text()
+  }
+
+  /*
+  TODO: DRY with ResourceTimeGridViewWrapper
+  */
+  getHeaderRowsGroupByRowIndex() {
+    const rowEls = findElements(this.el, '.fc-timegrid-header [role=row][aria-rowindex]')
+    const byRowIndex = {}
+
+    for (const rowEl of rowEls) {
+      const rowIndex = rowEl.getAttribute('aria-rowindex')
+
+      if (!byRowIndex[rowIndex]) {
+        byRowIndex[rowIndex] = []
+      }
+
+      byRowIndex[rowIndex].push(rowEl)
+    }
+
+    return byRowIndex
   }
 }

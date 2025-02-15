@@ -47,16 +47,6 @@ export class TimeGridWrapper {
     return $(`.fc-timegrid-slots .fc-timegrid-slot:eq(${index})`, this.el).get()
   }
 
-  getMainSlotCanvas() {
-    return $('.fc-timegrid-slots', this.el)[0]
-  }
-
-  // HACK for h-scroll view
-  getSeparateSlotAxisCanvas() {
-    // relative to fc-timegrid-body
-    return $('> .fc-scroller > .fc-timegrid-slots-axis', this.el)[0]
-  }
-
   getSlotElByTime(timeMs) {
     let date = parseUtcDate('2016-01-01')
     date = new Date(date.valueOf() + timeMs)

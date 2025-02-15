@@ -24,9 +24,13 @@ describe('timegrid height with horizontal scrolling', () => {
   })
 
   function expectSlotsEqualHeight(calendar) {
-    let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-    expect(timeGridWrapper.getMainSlotCanvas().offsetHeight).toBe(
-      timeGridWrapper.getSeparateSlotAxisCanvas().offsetHeight,
-    )
+    let viewWrapper = new TimeGridViewWrapper(calendar)
+    let rowElsByIndex = viewWrapper.getHeaderRowsGroupByRowIndex()
+
+    for (const rowIndex in rowElsByIndex) {
+      const rowEls = rowElsByIndex[rowIndex]
+
+      expect(rowEls[0].offsetHeight).toBe(rowEls[1].offsetHeight)
+    }
   }
 })
