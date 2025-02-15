@@ -31,10 +31,6 @@ describe('multi-month-view event rendering', () => {
       ],
     }, calendarEl)
 
-    // HACK to get event positioning to settle
-    calendar.updateSize()
-    calendar.updateSize()
-
     const viewWrapper = new MultiMonthViewWrapper(calendar)
     const dayGridWrapper = viewWrapper.getDayGrid(0)
     const visibleEventEls = filterVisibleEls(dayGridWrapper.getEventEls())

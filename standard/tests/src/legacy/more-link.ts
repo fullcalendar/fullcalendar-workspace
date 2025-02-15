@@ -83,9 +83,6 @@ describe('dayMaxEventRows', () => {
           ],
         })
 
-        // HACK to get event positioning to settle
-        calendar.updateSize()
-
         let dayGridWrapper = new ViewWrapper(calendar).dayGrid
         let eventEls = dayGridWrapper.getEventEls()
         let visibleEventEls = filterVisibleEls(eventEls)

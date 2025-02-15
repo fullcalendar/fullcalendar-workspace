@@ -11,7 +11,7 @@ const fallbackTimeout = 100
 export type SizeCallback = (width: number, height: number) => void
 export type DisconnectSize = () => void
 export type WatchSize = (el: HTMLElement, callback: SizeCallback, watchWidth?: boolean, watchHeight?: boolean) => DisconnectSize
-export type UpdateSizeSync = () => void
+export type UpdateSizeSync = () => boolean // returns whether any dirty
 
 type SizeConfig = { // internal only
   callback: SizeCallback
@@ -48,7 +48,9 @@ while ignoring changes per-element after the first (to prevent infinite loops),
 but our Preact system does not commit to the DOM immediately, commits are batched for later,
 so we can skip this.
 */
-function checkConfigMap() {
+function checkConfigMap(): boolean {
+  let anyDirty = true
+
   if (!isHandling) {
     isHandling = true
 
@@ -59,6 +61,7 @@ function checkConfigMap() {
 
       if (storeConfigDims(config, width, height)) {
         dirtyConfigs.push(config)
+        anyDirty = true
       }
     }
 
@@ -69,13 +72,15 @@ function checkConfigMap() {
     flushAfterSize()
     isHandling = false
   }
+
+  return anyDirty
 }
 
 function storeConfigDims(
   config: SizeConfig,
   width: number,
   height: number,
-): boolean { // returns whether should fire
+): boolean { // returns whether dirty
   let shouldFire = false
 
   // we use it because ResizeObserver's results could be slightly off from getBoundingClientRect
@@ -188,7 +193,7 @@ function initFallback(): [WatchSize, UpdateSizeSync] {
 
   function requestCheckSizesSync() {
     cancelCheckSizes()
-    checkConfigMap()
+    return checkConfigMap()
   }
 
   function watchSize(

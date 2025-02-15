@@ -28,6 +28,7 @@ import {
   EventInput,
 } from './structs.js'
 import { updateSizeSync } from '../component-util/resize-observer.js'
+import { flushUpdates } from '../preact.js'
 
 /*
 Calendar instance for ALL frameworks
@@ -50,7 +51,11 @@ export class CalendarImpl implements CalendarApi {
   }
 
   updateSize(): void {
-    requestAnimationFrame(updateSizeSync)
+    let cycleCount = 0
+
+    while (cycleCount++ < 3 && updateSizeSync()) {
+      flushUpdates()
+    }
   }
 
   // Options
