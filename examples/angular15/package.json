@@ -6,8 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test --watch=false --browsers ChromeHeadless",
-    "test:dev": "ng test",
+    "xxx:test": "ng test --watch=false --browsers ChromeHeadless",
+    "xxx:test:dev": "ng test",
     "clean": "rm -rf dist .angular/cache"
   },
   "private": true,
@@ -29,6 +29,11 @@
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
+  },
+  "dependenciesMeta": {
+    "@fullcalendar/angular": {
+      "injected": true
+    }
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.0.0",

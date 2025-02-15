@@ -19,6 +19,11 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
+  "dependenciesMeta": {
+    "@fullcalendar/react": {
+      "injected": true
+    }
+  },
   "devDependencies": {
     "@babel/core": "^7.4.0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",

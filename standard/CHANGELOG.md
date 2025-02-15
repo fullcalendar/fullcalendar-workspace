@@ -205,6 +205,12 @@ Unfortunately we didn't have time to do these but will implement them in a follo
 
 - Improve resource timeline performance with virtual rendering ([#5673](https://github.com/fullcalendar/fullcalendar/issues/5673))
 
+### 6.1.16 (2024-12-04)
+
+### Angular
+
+- Angular 19 support (#7824)
+
 ## 6.1.15 (2024-07-12)
 
 ### General

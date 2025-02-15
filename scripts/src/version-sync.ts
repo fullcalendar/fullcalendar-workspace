@@ -8,7 +8,9 @@ export default async function() {
   const monorepoDir = process.cwd()
   const subrepoSubdirs = await querySubrepoPkgs(monorepoDir)
 
-  await syncManifestVersions(monorepoDir, subrepoSubdirs)
+  //// temporarily disable syncing version numbers across packages
+  // await syncManifestVersions(monorepoDir, subrepoSubdirs)
+
   await syncAngularLibManifest(monorepoDir)
 }
 

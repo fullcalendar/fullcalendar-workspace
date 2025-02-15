@@ -24,7 +24,7 @@ jobs:
       - name: Setup PNPM
         uses: pnpm/action-setup@v2.4.1
         with:
-          version: 8.6.3
+          version: 9.14.4
 
       - name: Setup Node
         uses: actions/setup-node@v3
@@ -42,7 +42,6 @@ jobs:
       - name: Install Dependencies
         run: |
           pnpm \
-            --filter '!./standard' \
             --filter '!./examples/**' \
             --filter '!@fullcalendar/angular' \
             --filter '!@fullcalendar-tests/*' \
@@ -51,7 +50,6 @@ jobs:
       - name: Lint
         run: |
           pnpm \
-            --filter '!./standard' \
             --filter '!./examples/**' \
             --filter '!@fullcalendar/angular' \
             --filter '!@fullcalendar-tests/*' \
@@ -60,7 +58,6 @@ jobs:
       - name: Build
         run: |
           pnpm \
-            --filter '!./standard' \
             --filter '!./examples/**' \
             --filter '!@fullcalendar/angular' \
             --filter '!@fullcalendar-tests/*' \

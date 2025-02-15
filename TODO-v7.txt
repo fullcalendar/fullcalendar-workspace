@@ -9,6 +9,7 @@ ASAP
 
 Merge main
   Will fix Google Calendar xdescribe
+  Audit all dependency workspace: protocols
 General Positioning Quirkiness
   Calendar::updateSize should have a flushSync and run in a loop
     Wouldn't need repeated updateSize hacks, (multiMonth-events.ts, more-link.ts, dayGrid-events.ts)

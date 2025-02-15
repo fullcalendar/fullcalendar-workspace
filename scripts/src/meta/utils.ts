@@ -69,6 +69,10 @@ export async function getSubrepos(monorepoDir: string, singleName?: string) {
 // -------------------------------------------------------------------------------------------------
 // TODO: DRY with writeDistPkgJsons maybe?
 
+export async function hasManifest(dir: string): Promise<boolean> {
+  return fileExists(joinPaths(dir, 'package.json'))
+}
+
 export async function readManifest(dir: string): Promise<any> {
   const manifestPath = joinPaths(dir, 'package.json')
   return await readJson(manifestPath)
