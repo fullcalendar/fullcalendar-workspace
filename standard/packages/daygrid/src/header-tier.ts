@@ -85,6 +85,12 @@ export function buildDateRenderConfig(context: ViewContext): CellRenderConfig<Da
   }
 }
 
+const dowDates: Date[] = []
+
+for (let dow = 0; dow < 7; dow++) {
+  dowDates.push(addDays(new Date(259200000), dow)) // start with Sun, 04 Jan 1970 00:00:00 GMT)
+}
+
 /*
 For header cells: data
 */
@@ -151,7 +157,7 @@ export function buildDateDataConfigs(
         const text = dateEnv.format(normDate, dayHeaderFormat)
         const renderProps: DayHeaderContentArg = {
           ...dayMeta,
-          date,
+          date: dowDates[dow],
           view: viewApi,
           text,
           ...extraRenderProps,

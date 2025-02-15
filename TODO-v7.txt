@@ -8,9 +8,6 @@ Automated Test Scratch
 ----------------------
 
 IGNORES:
-  DayGrid
-    when month-view, and don't represent distinct dates, shouldn't rerender
-      daygrid-rerenders.ts, the dayHeaderRenderCnt counting
   List
     rerenders events too often
       eventRenderCnt, because of ListEvent timeOuterWidth
@@ -33,7 +30,7 @@ CHANGELOG:
   for daygrid/timegrid header,
     resources under days have day classnames now, and data-date
     days under resources have fc-resource now, and data-resource-id
-  for dayGrid-DAY,
+  for dayGrid-DAY, AND dayGrid that has single-row
     no longer displays week number (because no space to put it)
   for resource-timeGrid-DAY
     no longer displays week number (because would be alongside the resource headers)
