@@ -11,9 +11,6 @@ IGNORES:
   DayGrid
     when month-view, and don't represent distinct dates, shouldn't rerender
       daygrid-rerenders.ts, the dayHeaderRenderCnt counting
-  TimeGrid
-    (problem with test or app?)
-      agenda-dateClick: problem with clicking starting before dateClick attached, thus not fired
   List
     rerenders events too often
       eventRenderCnt, because of ListEvent timeOuterWidth

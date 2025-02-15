@@ -40,6 +40,9 @@ export class DateClicking extends Interaction {
     let { dragging } = this
     let downEl = pev.origEvent.target as HTMLElement
 
+    /*
+    If no dateClick, allow text on dates to be text-selectable
+    */
     const canDateClick = this.component.context.emitter.hasHandlers('dateClick') &&
       this.component.isValidDateDownEl(downEl)
 

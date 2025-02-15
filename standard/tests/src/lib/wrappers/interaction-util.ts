@@ -87,19 +87,3 @@ export function waitDateSelect(calendar: Calendar, dragging: Promise<any>) {
     })
   })
 }
-
-export function waitDateClick(calendar: Calendar, dragging: Promise<any>) {
-  return new Promise<any>((resolve) => {
-    let dateClickArg = null
-
-    calendar.on('dateClick', (arg) => {
-      dateClickArg = arg
-    })
-
-    dragging.then(() => {
-      setTimeout(() => { // wait for dateClick to fire
-        resolve(dateClickArg)
-      })
-    })
-  })
-}

@@ -1,4 +1,3 @@
-import { waitDateClick } from '@fullcalendar-tests/standard/lib/wrappers/interaction-util'
 import { TimeGridViewWrapper } from '@fullcalendar-tests/standard/lib/wrappers/TimeGridViewWrapper'
 import { ResourceTimeGridViewWrapper } from '../lib/wrappers/ResourceTimeGridViewWrapper.js'
 
@@ -24,17 +23,24 @@ describe('timeGrid-view dateClick', () => {
     })
 
     it('allows non-resource clicks', (done) => {
-      let calendar = initCalendar()
+      let dateClickArg = null
+
+      let calendar = initCalendar({
+        dateClick(arg) {
+          dateClickArg = arg
+        }
+      })
 
       let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-      let clicking = timeGridWrapper.clickDate('2015-11-23T09:00:00')
 
-      waitDateClick(calendar, clicking).then((dateClickArg) => {
-        expect(dateClickArg.date).toEqualDate('2015-11-23T09:00:00Z')
-        expect(typeof dateClickArg.jsEvent).toBe('object')
-        expect(typeof dateClickArg.view).toBe('object')
-        expect(dateClickArg.resource).toBeFalsy()
-        done()
+      timeGridWrapper.clickDate('2015-11-23T09:00:00').then(() => {
+        setTimeout(() => { // wait for dateClick to fire
+          expect(dateClickArg.date).toEqualDate('2015-11-23T09:00:00Z')
+          expect(typeof dateClickArg.jsEvent).toBe('object')
+          expect(typeof dateClickArg.view).toBe('object')
+          expect(dateClickArg.resource).toBeFalsy()
+          done()
+        })
       })
     })
   })

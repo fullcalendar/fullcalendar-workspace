@@ -245,7 +245,6 @@ export class TimeGridWrapper {
     const dayEls = this.getDayEls(date)
     return new Promise<void>((resolve) => {
       $(dayEls).simulate('drag', {
-        debug: true,
         point: this.getPoint(date),
         onRelease: () => resolve(),
       })
