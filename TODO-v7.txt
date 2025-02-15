@@ -15,14 +15,11 @@ General Positioning Quirkiness
   ResizeObserver errors, solved by Calendar::updateSize calls in callback
     Investigate why
 General Performance
-  [ ] why does TimelineLane::render get called 3 times initially?
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
     not rerendinering events that didn't change --- not fixed in v6 or v7-beta
   [?] https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
     V6 repro: https://codepen.io/arshaw/pen/OJKMLRR?editors=0010
     V7 has no real improvement
-  "Maximum update depth exceeded" error after resizing many times in Chrome --- reemerged?
-    https://github.com/fullcalendar/fullcalendar/issues/5606
 General Structure
   should be fc-timegrid(-view) on fc-resource-timegrid(-view), etc?
     similar: dumb how there's a fc-resource-daygrid-view and fc-daygrid. pick one or the other!
@@ -41,8 +38,6 @@ TimeGrid
     doesn't actually start out as 0. write automated test?
   [structure] put data-time on fc-timegrid-slot div (the "row" with the border)
     will need to modify TimeGridWrapper::getTimeAxisInfo classNames
-MultiMonth
-  Improve perf while switching years
 Resource Timeline
   [structure] when no groupcols, do simplified DOM structure?
   [structure] on datagrid, if fc-resource is on the cells, data-resource-id should NOT be on the row
@@ -137,6 +132,7 @@ TODO: for dayGrid-DAY, AND dayGrid that has single-row
   no longer displays week number (because no space to put it)
 TODO: for resource-timeGrid-DAY
   no longer displays week number (because would be alongside the resource headers)
+Perf: switching multi-month years prev/next feels much snappier
 
 Freshdesk/GH-issues
 -------------------
