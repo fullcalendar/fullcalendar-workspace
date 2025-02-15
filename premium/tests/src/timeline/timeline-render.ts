@@ -29,7 +29,9 @@ describe('timeline rendering', () => {
     expect(spreadsheetEl.scrollHeight).toBeGreaterThan(0)
     expect(timeEl.scrollHeight).toBeGreaterThan(0)
 
-    expect(spreadsheetEl.scrollHeight).toEqual(timeEl.scrollHeight)
+    let gutter = timeEl.clientHeight - spreadsheetEl.clientHeight
+    expect(spreadsheetEl.scrollHeight + gutter)
+      .toEqual(timeEl.scrollHeight)
   })
 
   it('renders time slots localized', () => {
