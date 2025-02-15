@@ -107,6 +107,10 @@ describe('dayMaxEventRows', () => {
             { title: 'event4', start: '2014-07-29', end: '2014-07-31' },
           ],
         })
+
+        // HACK for multiple rounds of sizing
+        calendar.updateSize()
+
         let dayGridWrapper = new ViewWrapper(calendar).dayGrid
         let eventEls = dayGridWrapper.getEventEls()
         let visibleEventEls = filterVisibleEls(eventEls)
