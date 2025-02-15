@@ -5,6 +5,8 @@ import {
   watchWidth,
   setRef,
   joinClassNames,
+  memoize,
+  DateEnv,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
@@ -27,6 +29,11 @@ export interface TimelineSlatCellProps {
 }
 
 export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
+  // memo
+  private getPublicDate = memoize(
+    (dateEnv: DateEnv, date: DateMarker) => dateEnv.toDate(date)
+  )
+
   // ref
   private innerElRef = createRef<HTMLDivElement>()
 
@@ -39,7 +46,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
     let { date, tDateProfile, isEm } = props
     let dateMeta = getDateMeta(props.date, props.todayRange, props.nowDate, props.dateProfile)
     let renderProps: SlotLaneContentArg = {
-      date: dateEnv.toDate(props.date),
+      date: this.getPublicDate(dateEnv, props.date), // stable (everything else is atomic)
       ...dateMeta,
       view: context.viewApi,
     }
