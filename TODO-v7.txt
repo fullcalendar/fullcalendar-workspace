@@ -7,9 +7,6 @@ Publishing:
 ASAP
 ----
 
-Merge main
-  Will fix Google Calendar xdescribe
-  Audit all dependency workspace: protocols
 General Positioning Quirkiness
   Calendar::updateSize should have a flushSync and run in a loop
     Wouldn't need repeated updateSize hacks, (multiMonth-events.ts, more-link.ts, dayGrid-events.ts)
@@ -55,6 +52,7 @@ Release Prep
 ensure outputted CSS doesn't have multiple :root declarations because of how we shifted vars.css around
 revert "hacks to get print-mode working, but some should be reverted"
 revert temporary gitignores
+audit all dependency workspace: protocols
 
 Automated Test TODO
 -------------------
