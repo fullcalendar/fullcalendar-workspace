@@ -4,40 +4,18 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-Automated Test Scratch
-----------------------
-
-FIX LATER:
-  Calendar::updateSize hacks within handlers to prevent ResizeObserver errors
-  multiMonth-events.ts -- repeated calls to updateSize to get event positioning to settle
-    also in more-link.ts, dayGrid-events.ts
-  Google Calendar xdescribe -- fixed in main
-RESTRUCTURE:
-  on datagrid, if fc-resource is on the cells, data-resource-id should NOT be on the row
-  put data-time on fc-timegrid-slot div (the "row" with the border)
-    will need to modify TimeGridWrapper::getTimeAxisInfo classNames
-  should be fc-timegrid(-view) on fc-resource-timegrid(-view)
-  dumb how there's a fc-resource-daygrid-view and fc-daygrid. pick one or the other!
-CHANGELOG:
-  (TODO: make difference between API-breaking changes and Visually-breaking changes)
-  for daygrid/timegrid header,
-    resources under days have day classnames now, and data-date
-    days under resources have fc-resource now, and data-resource-id
-  for dayGrid-DAY, AND dayGrid that has single-row
-    no longer displays week number (because no space to put it)
-  for resource-timeGrid-DAY
-    no longer displays week number (because would be alongside the resource headers)
-
-WRITE TESTS LATER:
-  timeline-event-rendering.ts, disabled test because flawed.
-    about zoom and event aligning w/ start and end
-
 ASAP
 ----
 
-Easily remove border from view-area. Possible in prior versions.
+Merge main
+  Will fix Google Calendar xdescribe
+General Positioning Quirkiness
+  Calendar::updateSize should have a flushSync and run in a loop
+    Wouldn't need repeated updateSize hacks, (multiMonth-events.ts, more-link.ts, dayGrid-events.ts)
+  ResizeObserver errors, solved by Calendar::updateSize calls in callback
+    Investigate why
 General Performance
-  why does TimelineLane::render get called 3 times initially?
+  [ ] why does TimelineLane::render get called 3 times initially?
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
     not rerendinering events that didn't change --- not fixed in v6 or v7-beta
   [?] https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
@@ -45,9 +23,13 @@ General Performance
     V7 has no real improvement
   "Maximum update depth exceeded" error after resizing many times in Chrome --- reemerged?
     https://github.com/fullcalendar/fullcalendar/issues/5606
+General Structure
+  should be fc-timegrid(-view) on fc-resource-timegrid(-view), etc?
+    similar: dumb how there's a fc-resource-daygrid-view and fc-daygrid. pick one or the other!
+  Easily remove border from view-area. Possible in prior versions
 DayGrid
-  weekNumbers in daygrid should be in DOM-order before cells
-  simplify event positioning
+  [structure] weekNumbers in daygrid should be in DOM-order before cells
+  [structure] simplify event positioning
     normalize each event-container's top by applying margin-top on ones that have smaller headers
     position each event-harness with a margin-top (in combo with existing abs positioning)
     after this^, we'll know the explicit min-height a row should be
@@ -57,10 +39,13 @@ DayGrid
 TimeGrid
   scrollTime:0
     doesn't actually start out as 0. write automated test?
+  [structure] put data-time on fc-timegrid-slot div (the "row" with the border)
+    will need to modify TimeGridWrapper::getTimeAxisInfo classNames
 MultiMonth
   Improve perf while switching years
 Resource Timeline
-  when no groupcols, do simplified DOM structure?
+  [structure] when no groupcols, do simplified DOM structure?
+  [structure] on datagrid, if fc-resource is on the cells, data-resource-id should NOT be on the row
 
 Manual Test
 -----------
@@ -111,10 +96,13 @@ no empty header cells
   https://github.com/fullcalendar/fullcalendar/issues/7852
 [resource-timeline] timeline-lane-footer has padding when eventOverlap:true, no padding when false
 [timeline-no-resources] always has timeline-lane-footer, especially for when zero events and height:auto
+timeline-event-rendering.ts, disabled test because flawed
+  about zoom and event aligning w/ start and end
 
 Changelog TODO
 --------------
 
+Make difference between API-breaking changes and Visually-breaking changes
 Add: Bootstrap4/5 line-height less chunky
 Add: Bootstrap
   Minimum Bootstrap5 version is 5.2.x
@@ -142,6 +130,13 @@ Regression: [v7-beta] Day cells do not expand to fit events in dayGridYear #7852
   https://github.com/fullcalendar/fullcalendar/issues/7861
 Add: "all-day" text in TimeGrid respects newlines in locales' allDayText, looks better
   Also, better text-align looks better
+TODO: for daygrid/timegrid header,
+  resources under days have day classnames now, and data-date
+  days under resources have fc-resource now, and data-resource-id
+TODO: for dayGrid-DAY, AND dayGrid that has single-row
+  no longer displays week number (because no space to put it)
+TODO: for resource-timeGrid-DAY
+  no longer displays week number (because would be alongside the resource headers)
 
 Freshdesk/GH-issues
 -------------------
