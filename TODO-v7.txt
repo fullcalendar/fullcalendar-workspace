@@ -11,7 +11,8 @@ General Positioning Quirkiness
   Calendar::updateSize should have a flushSync and run in a loop
     Wouldn't need repeated updateSize hacks, (multiMonth-events.ts, more-link.ts, dayGrid-events.ts)
   ResizeObserver errors, solved by Calendar::updateSize calls in callback
-    Investigate why
+    Complicated problem with height:auto and ResourceTimelineView.ts/ResourceTimelineLayoutNormal.ts
+    main-scroller heights are changing due to dynamic content, as well as footerscrollbars
 General Performance
   [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
     not rerendinering events that didn't change --- not fixed in v6 or v7-beta
@@ -53,6 +54,7 @@ ensure outputted CSS doesn't have multiple :root declarations because of how we 
 revert "hacks to get print-mode working, but some should be reverted"
 revert temporary gitignores
 audit all dependency workspace: protocols
+run all tests with fallback resize-observer
 
 Automated Test TODO
 -------------------
