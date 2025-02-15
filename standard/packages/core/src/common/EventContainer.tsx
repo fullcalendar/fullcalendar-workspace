@@ -12,6 +12,8 @@ import { ContentContainer, InnerContainerFunc } from '../content-inject/ContentC
 import { ElProps } from '../content-inject/ContentInjector.js'
 import { joinClassNames } from '../util/html.js'
 import { DateMarker } from '../datelib/marker.js'
+import { memoize } from '../util/memoize.js'
+import { ViewContext } from '../ViewContext.js'
 
 export interface MinimalEventProps {
   eventRange: EventRenderRange // timed/whole-day span
@@ -37,6 +39,11 @@ export type EventContainerProps = ElProps & MinimalEventProps & {
 }
 
 export class EventContainer extends BaseComponent<EventContainerProps> {
+  // memo
+  private buildPublicEvent = memoize(
+    (context: ViewContext, eventRange: EventRenderRange) => new EventImpl(context, eventRange.def, eventRange.instance)
+  )
+
   el: HTMLElement
 
   render() {
@@ -46,7 +53,7 @@ export class EventContainer extends BaseComponent<EventContainerProps> {
     const { ui } = eventRange
 
     const renderProps: EventContentArg = {
-      event: new EventImpl(context, eventRange.def, eventRange.instance),
+      event: this.buildPublicEvent(context, eventRange), // make stable. everything else atomic
       view: context.viewApi,
       timeText: props.timeText,
       textColor: ui.textColor,

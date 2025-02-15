@@ -7,10 +7,6 @@ Publishing:
 Automated Test Scratch
 ----------------------
 
-IGNORES:
-  List
-    rerenders events too often
-      eventRenderCnt, because of ListEvent timeOuterWidth
 FIX LATER:
   Calendar::updateSize hacks within handlers to prevent ResizeObserver errors
   multiMonth-events.ts -- repeated calls to updateSize to get event positioning to settle
