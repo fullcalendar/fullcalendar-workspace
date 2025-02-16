@@ -7,9 +7,6 @@ Publishing:
 ASAP
 ----
 
-General Structure
-  should be fc-timegrid(-view) on fc-resource-timegrid(-view), etc?
-    similar: dumb how there's a fc-resource-daygrid-view and fc-daygrid. pick one or the other!
 DayGrid
   [structure] weekNumbers in daygrid should be in DOM-order before cells
   [structure] simplify event positioning

@@ -5,7 +5,7 @@ import { ResourceDayHeaderWrapper } from './ResourceDayHeaderWrapper.js'
 
 export class ResourceDayGridViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-resource-daygrid-view')
+    super(calendar, 'fc-resource-daygrid')
   }
 
   get header() {

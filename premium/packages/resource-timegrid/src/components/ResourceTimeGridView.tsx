@@ -178,7 +178,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
               cells={resourceDayTableModel.cells[0]}
               forPrint={props.forPrint}
               isHitComboAllowed={this.isHitComboAllowed}
-              className='fc-resource-timegrid-view'
+              className='fc-resource-timegrid fc-timegrid'
 
               // header content
               headerTiers={headerTiers}

@@ -7,7 +7,7 @@ import { ResourceDayGridWrapper } from './ResourceDayGridWrapper.js'
 
 export class ResourceTimeGridViewWrapper extends ViewWrapper {
   constructor(calendar: Calendar) {
-    super(calendar, 'fc-resource-timegrid-view')
+    super(calendar, 'fc-resource-timegrid')
   }
 
   get header() { // just for DayGrid purposes. does not have timegrid axis
