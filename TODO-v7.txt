@@ -250,7 +250,12 @@ Example Projects
 Notes
 -----
 
-we really do care about minimizing resizerobserver loops, prevents flicker. so, safari is valuable
+we really do care about minimizing ResizeObserver loops, prevents flicker. so, safari is valuable
+how to debug ResizeObserver errors
+  1. set breakpoints at start/end of globalResizeObserver's handler
+  2. wait until warning happens
+  3. see entries that are passed to handler AFTER the warning,
+     these elements had size changed a second time in same loop
 flexbox row expansion works across scroll regions: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
 100% width within scroller applies to clientWidth only: https://codepen.io/arshaw/pen/GgKWRNZ?editors=1100
 Print
