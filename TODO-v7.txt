@@ -7,9 +7,6 @@ Publishing:
 ASAP
 ----
 
-DayGrid
-  [structure] weekNumbers in daygrid should be in DOM-order before cells
-  [structure] don't wrap cells in a flex-row
 TimeGrid
   [structure] put data-time on fc-timegrid-slot div (the "row" with the border)
     will need to modify TimeGridWrapper::getTimeAxisInfo classNames
@@ -192,6 +189,7 @@ General Positioning Quirkiness
     main-scroller heights are changing due to dynamic content, as well as footerscrollbars
     see ResourceTimelineView.ts/ResourceTimelineLayoutNormal.ts
 General a11y
+  Week numbers should be tabbable
   have separate settings for date-format hints? out of whack
     view's aria-label (if no headerToolbar) is "Sep 7 – 8, 2020" (bad that it's abbreviated)
     week-view's column headers have hint "September 7, 2020" which don't include day of week (like real text "Mon 9/7")
