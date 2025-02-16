@@ -28,7 +28,7 @@ export class TimeGridWrapper {
   }
 
   getSlotEls() {
-    return findElements(this.el, '.fc-timegrid-slot-label[data-time]')
+    return findElements(this.el, '.fc-timegrid-slot[data-time]')
   }
 
   getAxisTexts() {
@@ -36,11 +36,11 @@ export class TimeGridWrapper {
   }
 
   getSlotAxisEls() { // TODO: rename to label
-    return findElements(this.el, '.fc-timegrid-slot-label[data-time]')
+    return findElements(this.el, '.fc-timegrid-slot[data-time] .fc-timegrid-slot-label')
   }
 
   getSlotLaneEls() {
-    return findElements(this.el, '.fc-timegrid-slot-lane[data-time]')
+    return findElements(this.el, '.fc-timegrid-slot[data-time] .fc-timegrid-slot-lane')
   }
 
   getSlotElByIndex(index) {
@@ -52,7 +52,7 @@ export class TimeGridWrapper {
     date = new Date(date.valueOf() + timeMs)
 
     if (date.getUTCDate() === 1) { // ensure no time overflow/underflow
-      return this.el.querySelector('.fc-timegrid-slot-label[data-time="' + formatIsoTime(date) + '"]')
+      return this.el.querySelector('.fc-timegrid-slot[data-time="' + formatIsoTime(date) + '"]')
     }
 
     return null
@@ -125,9 +125,9 @@ export class TimeGridWrapper {
   }
 
   getTimeAxisInfo() {
-    return $('.fc-timegrid-slot-label[data-time]', this.el).map((i, labelEl) => {
-      const $labelEl = $(labelEl)
-      const $rowEl = $labelEl.parent()
+    return $('.fc-timegrid-slot[data-time]', this.el).map((i, rowEl) => {
+      const $rowEl = $(rowEl)
+      const $labelEl = $rowEl.find('.fc-timegrid-slot-label')
       return {
         text: $labelEl.text(),
         isMajor: !$rowEl.hasClass('fc-timegrid-slot-minor'),

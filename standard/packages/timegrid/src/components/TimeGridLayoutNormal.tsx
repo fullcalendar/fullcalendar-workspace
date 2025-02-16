@@ -297,6 +297,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                     {props.slatMetas.map((slatMeta, slatI) => (
                       <div
                         key={slatMeta.key}
+                        data-time={slatMeta.isoTimeStr}
                         className={joinClassNames(
                           ...getSlatRowClassNames(slatMeta),
                           slatI && 'fc-border-t',
@@ -307,13 +308,13 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                         }}
                       >
                         <TimeGridSlatLabel
-                          {...slatMeta}
+                          {...slatMeta /* FYI doesn't need isoTimeStr */}
                           innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                           innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                           width={axisWidth}
                         />
                         <TimeGridSlatLane
-                          {...slatMeta}
+                          {...slatMeta /* FYI doesn't need isoTimeStr */}
                           borderStart
                           innerHeightRef={slatInnerMainHeightRefMap.createRef(slatMeta.key)}
                         />

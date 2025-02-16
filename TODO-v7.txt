@@ -7,9 +7,6 @@ Publishing:
 ASAP
 ----
 
-TimeGrid
-  [structure] put data-time on fc-timegrid-slot div (the "row" with the border)
-    will need to modify TimeGridWrapper::getTimeAxisInfo classNames
 Resource Timeline
   [structure] when no groupcols, do simplified DOM structure?
   [structure] on datagrid, if fc-resource is on the cells, data-resource-id should NOT be on the row
@@ -17,6 +14,7 @@ Resource Timeline
 Manual Test
 -----------
 
+Rerun axe tests
 Touch devices
 been having issues with scrollwheel getting scrollsyncing out of whack!?
 

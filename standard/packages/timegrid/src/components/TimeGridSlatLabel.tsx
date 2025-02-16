@@ -77,7 +77,6 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     if (!props.isLabeled) {
       return (
         <div
-          data-time={props.isoTimeStr}
           className={className}
           style={{ width: props.width }}
         />
@@ -94,9 +93,6 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     return (
       <ContentContainer
         tag="div"
-        attrs={{
-          'data-time': props.isoTimeStr,
-        }}
         className={className}
         style={{ width: props.width }}
         renderProps={renderProps}

@@ -32,9 +32,6 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
           'fc-timegrid-slot-lane fc-cell fc-liquid',
           props.borderStart && 'fc-border-s',
         )}
-        attrs={{
-          'data-time': props.isoTimeStr,
-        }}
         renderProps={renderProps}
         generatorName="slotLaneContent"
         customGenerator={options.slotLaneContent}

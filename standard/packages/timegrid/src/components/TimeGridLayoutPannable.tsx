@@ -348,6 +348,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       {props.slatMetas.map((slatMeta, slatI) => (
                         <div
                           key={slatMeta.key}
+                          data-time={slatMeta.isoTimeStr}
                           className={joinClassNames(
                             ...getSlatRowClassNames(slatMeta),
                             slatI && 'fc-border-t',
@@ -358,7 +359,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                           }}
                         >
                           <TimeGridSlatLabel
-                            {...slatMeta}
+                            {...slatMeta /* FYI doesn't need isoTimeStr */}
                             isLiquid={true}
                             innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                             innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
@@ -455,6 +456,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         {props.slatMetas.map((slatMeta, slatI) => (
                           <div
                             key={slatMeta.key}
+                            data-time={slatMeta.isoTimeStr}
                             className={joinClassNames(
                               ...getSlatRowClassNames(slatMeta),
                               slatI && 'fc-border-t',
@@ -465,7 +467,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                             }}
                           >
                             <TimeGridSlatLane
-                              {...slatMeta}
+                              {...slatMeta /* FYI doesn't need isoTimeStr */}
                               innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
                             />
                           </div>
