@@ -9,13 +9,7 @@ ASAP
 
 DayGrid
   [structure] weekNumbers in daygrid should be in DOM-order before cells
-  [structure] simplify event positioning
-    normalize each event-container's top by applying margin-top on ones that have smaller headers
-    position each event-harness with a margin-top (in combo with existing abs positioning)
-    after this^, we'll know the explicit min-height a row should be
-      TODO: use this to explicitly set min-height on row div, this will override the not-smart
-      "default" that the browser decides. then, force min-height:0 for all flex items (same with min-width),
-      to be more like react-native, and more intuitive
+  [structure] don't wrap cells in a flex-row
 TimeGrid
   [structure] put data-time on fc-timegrid-slot div (the "row" with the border)
     will need to modify TimeGridWrapper::getTimeAxisInfo classNames
@@ -177,6 +171,7 @@ General Markup
       like week-number/day-number which needs to be both subcomponent (fc-daygrid-day>fc-daygrid-day-number)
       and independent component (fc-daygrid-week-number)
   Drop-shadow under sticky header, timeline headers
+  Give fc-border to fc-view-outer. we didn't because it broke a lot of tests
 General Responsive
   Hide event times (daygrid/timeline) if too small?
   should fc-padding-* classes be responsive, meaning related to font-size?
@@ -205,6 +200,13 @@ General a11y
     https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-rowindex
 DayGrid
   prevent DayGridCell headers from overflowing? makes really small calendars look better
+  [structure] simplify event positioning
+    normalize each event-container's top by applying margin-top on ones that have smaller headers
+    position each event-harness with a margin-top (in combo with existing abs positioning)
+    after this^, we'll know the explicit min-height a row should be
+      TODO: use this to explicitly set min-height on row div, this will override the not-smart
+      "default" that the browser decides. then, force min-height:0 for all flex items (same with min-width),
+      to be more like react-native, and more intuitive
 Resource Timeline
   get grouping via row and col simultaneously working. should be possible.
     see timeline-row-n-col-grouping-not-working.html
