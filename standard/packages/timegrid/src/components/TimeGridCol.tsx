@@ -63,8 +63,8 @@ export interface TimeGridColProps {
 }
 
 export class TimeGridCol extends BaseComponent<TimeGridColProps> {
-  sortEventSegs: typeof sortEventSegs = memoize(sortEventSegs)
-  getDateMeta = memoize(getDateMeta)
+  private sortEventSegs: typeof sortEventSegs = memoize(sortEventSegs)
+  private getDateMeta = memoize(getDateMeta)
 
   render() {
     let { props, context } = this

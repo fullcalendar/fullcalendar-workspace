@@ -65,6 +65,7 @@ TimeGrid scrollTime:0 initially scrolls to 0 (a solved regression)
 Changelog TODO
 --------------
 
+Remove Angular 12 support?
 Make difference between API-breaking changes and Visually-breaking changes
 Add: Bootstrap4/5 line-height less chunky
 Add: Bootstrap

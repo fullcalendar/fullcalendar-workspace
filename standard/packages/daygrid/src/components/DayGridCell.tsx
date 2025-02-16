@@ -66,7 +66,7 @@ export interface DayGridCellProps {
 
 export class DayGridCell extends DateComponent<DayGridCellProps> {
   // memo
-  getDateMeta = memoize(getDateMeta)
+  private getDateMeta = memoize(getDateMeta)
 
   // ref
   private rootElRef = createRef<HTMLElement>()
