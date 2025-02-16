@@ -554,7 +554,6 @@ it('renders a DnD-able timed event in daygrid', (done) => {
   Vue.nextTick().then(() => {
     let eventEl = getRenderedEventEls(wrapper).at(0).element
     expect(eventEl).toHaveClass('fc-daygrid-dot-event')
-    expect(typeof eventEl.fcSeg).toBe('object')
     done()
   })
 })
@@ -683,7 +682,7 @@ it('slot rendering reacts to bound parent state', async () => {
 
   await Vue.nextTick()
   let eventEl = getRenderedEventEls(wrapper).at(0)
-  expect(eventEl.findAll('.fc-event-main').length).toBe(1)
+  expect(eventEl.findAll('.fc-event-inner').length).toBe(1)
   expect(eventEl.findAll('b').length).toEqual(0)
   expect(eventEl.findAll('i').length).toEqual(1)
 

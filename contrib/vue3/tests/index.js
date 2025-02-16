@@ -532,13 +532,15 @@ const COMPONENT_WITH_SLOTS_MULTIDAY_EVENTS = {
   }
 }
 
-it('renders two multi-day events positioned correctly', async () => {
+it('renders two multi-day events positioned correctly', (done) => {
   let wrapper = mount(COMPONENT_WITH_SLOTS_MULTIDAY_EVENTS)
-  await nextTick()
 
-  let eventEls = getRenderedEventEls(wrapper).map((wrapper) => wrapper.element)
-  expect(eventEls.length).toBe(2)
-  expect(anyElsIntersect(eventEls)).toBe(false)
+  setTimeout(() => {
+    let eventEls = getRenderedEventEls(wrapper).map((wrapper) => wrapper.element)
+    expect(eventEls.length).toBe(2)
+    expect(anyElsIntersect(eventEls)).toBe(false)
+    done()
+  }, 100)
 })
 
 // component with eventContent (multi-day & timed)
@@ -568,13 +570,15 @@ const COMPONENT_WITH_SLOTS_MULTIDAY_AND_TIMED = {
   }
 }
 
-it('renders a multi-day and timed event positioned correctly', async () => {
+it('renders a multi-day and timed event positioned correctly', async (done) => {
   let wrapper = mount(COMPONENT_WITH_SLOTS_MULTIDAY_AND_TIMED)
-  await nextTick()
 
-  let eventEls = getRenderedEventEls(wrapper).map((wrapper) => wrapper.element)
-  expect(eventEls.length).toBe(2)
-  expect(anyElsIntersect(eventEls)).toBe(false)
+  setTimeout(() => {
+    let eventEls = getRenderedEventEls(wrapper).map((wrapper) => wrapper.element)
+    expect(eventEls.length).toBe(2)
+    expect(anyElsIntersect(eventEls)).toBe(false)
+    done()
+  }, 100)
 })
 
 // component with vue slots AND custom render func

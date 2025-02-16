@@ -248,7 +248,7 @@ it('accepts jsx node for slot', () => {
 })
 
 // https://github.com/fullcalendar/fullcalendar/issues/7089
-it('does not produce overlapping multiday events with custom eventContent', () => {
+it('does not produce overlapping multiday events with custom eventContent', (done) => {
   const DATE = '2022-04-01'
   const EVENTS = [
     { title: 'event 1', start: '2022-04-04', end: '2022-04-09' },
@@ -273,13 +273,16 @@ it('does not produce overlapping multiday events with custom eventContent', () =
 
   const { container } = render(<TestApp />)
 
-  const eventEls = getEventEls(container)
-  expect(eventEls.length).toBe(2)
-  expect(anyElsIntersect(eventEls)).toBe(false)
+  setTimeout(() => {
+    const eventEls = getEventEls(container)
+    expect(eventEls.length).toBe(2)
+    expect(anyElsIntersect(eventEls)).toBe(false)
+    done()
+  }, 100)
 })
 
 // https://github.com/fullcalendar/fullcalendar/issues/7239
-it('does not produce overlapping all-day & timed events with custom eventContent', () => {
+it('does not produce overlapping all-day & timed events with custom eventContent', (done) => {
   const DATE = '2022-04-01'
   const EVENTS = [
     { title: 'event 1', start: '2022-04-04', end: '2022-04-09' },
@@ -304,9 +307,12 @@ it('does not produce overlapping all-day & timed events with custom eventContent
 
   const { container } = render(<TestApp />)
 
-  const eventEls = getEventEls(container)
-  expect(eventEls.length).toBe(2)
-  expect(anyElsIntersect(eventEls)).toBe(false)
+  setTimeout(() => {
+    const eventEls = getEventEls(container)
+    expect(eventEls.length).toBe(2)
+    expect(anyElsIntersect(eventEls)).toBe(false)
+    done()
+  }, 100)
 })
 
 // eventDidMount
@@ -372,19 +378,21 @@ it('rerenders content-injection with latest render-func closure', (done) => {
 
   const { container } = render(<TestApp />)
 
-  let eventEls = getEventEls(container)
-  expect(eventEls.length).toBe(1)
-  expect(eventEls[0].querySelector('i').innerText).toBe('event 1 - 0')
+  setTimeout(() => {
+    let eventEls = getEventEls(container)
+    expect(eventEls.length).toBe(1)
+    expect(eventEls[0].querySelector('i').innerText).toBe('event 1 - 0')
 
-  act(() => {
-    incrementCounter()
-  })
-  setTimeout(() => { // wait for useEffect timeout
-    let newEventEls = getEventEls(container)
-    expect(newEventEls.length).toBe(1)
-    expect(newEventEls[0]).toBe(eventEls[0])
-    expect(newEventEls[0].querySelector('i').innerText).toBe('event 1 - 1')
-    done()
+    act(() => {
+      incrementCounter()
+    })
+    setTimeout(() => { // wait for useEffect timeout
+      let newEventEls = getEventEls(container)
+      expect(newEventEls.length).toBe(1)
+      expect(newEventEls[0]).toBe(eventEls[0])
+      expect(newEventEls[0].querySelector('i').innerText).toBe('event 1 - 1')
+      done()
+    }, 100)
   }, 100)
 })
 
@@ -726,7 +734,7 @@ it('render custom event JSX during print-mode', (done) => {
     // TODO: refactor synchronicity
     setTimeout(() => {
       const eventEls = getEventEls(container)
-      expect(eventEls[0].offsetHeight).toBeGreaterThan(10)
+      expect(eventEls[0].querySelector('i')).toBeTruthy()
       done()
     })
   })

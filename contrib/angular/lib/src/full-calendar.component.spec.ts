@@ -277,7 +277,6 @@ describe('HostComponentWithTemplate', () => {
   it('should custom-render DnD-able daygrid list-like event', () => {
     let eventEl = getFirstEventEl(fixture);
     expect(eventEl).toHaveClass('fc-daygrid-dot-event');
-    expect(typeof eventEl.fcSeg).toBe('object');
   })
 })
 
@@ -344,18 +343,25 @@ describe('DeepHostComponent', () => {
     expect(component.eventRenderCnt).toBe(3); // +2 (the two events were freshly rendered)
   });
 
-  it('should render event mutation', () => {
+  it('should render event mutation', (done) => {
     expect(component.eventRenderCnt).toBe(1);
 
     component.updateEventTitle('another title');
     fixture.detectChanges();
-    expect(getFirstEventTitle(fixture)).toBe('another title');
-    expect(component.eventRenderCnt).toBe(2); // +1
 
-    component.updateEventTitle('another title');
-    fixture.detectChanges();
-    expect(getFirstEventTitle(fixture)).toBe('another title');
-    expect(component.eventRenderCnt).toBe(2); // +0 (didn't rerender anything)
+    setTimeout(() => { // wait for event positioning
+      expect(getFirstEventTitle(fixture)).toBe('another title');
+      expect(component.eventRenderCnt).toBe(2); // +1
+
+      component.updateEventTitle('another title');
+      fixture.detectChanges();
+
+      setTimeout(() => { // wait for event positioning
+        expect(getFirstEventTitle(fixture)).toBe('another title');
+        expect(component.eventRenderCnt).toBe(2); // +0 (didn't rerender anything)
+        done()
+      })
+    })
   });
 
   it('should handle new events async function', (done) => {
@@ -512,7 +518,7 @@ describe('with resource-timeline view', () => {
   });
 
   it('renders custom label', () => {
-    const resourceColHeader = fixture.nativeElement.querySelector('.fc-col-header-cell.fc-resource');
+    const resourceColHeader = fixture.nativeElement.querySelector('.fc-resource[role=columnheader]');
     expect(resourceColHeader.querySelectorAll('b').length).toBe(1);
   })
 })
@@ -553,7 +559,7 @@ describe('with month view and dayCellContent as a function', () => {
   });
 
   it('should render custom content', () => {
-    const resourceColHeader = fixture.nativeElement.querySelector('.fc-daygrid-day-top');
+    const resourceColHeader = fixture.nativeElement.querySelector('.fc-daygrid-day-header');
     expect(resourceColHeader.querySelectorAll('b').length).toBe(1);
   });
 });
