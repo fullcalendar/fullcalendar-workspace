@@ -7,13 +7,13 @@ Publishing:
 Manual Test
 -----------
 
-Rerun axe tests
-Touch devices
+Touch devices, not just simulator
 been having issues with scrollwheel getting scrollsyncing out of whack!?
 
 Release Prep
 ------------
 
+ensure linting passes
 ensure outputted CSS doesn't have multiple :root declarations because of how we shifted vars.css around
 revert "hacks to get print-mode working, but some should be reverted"
 revert temporary gitignores
