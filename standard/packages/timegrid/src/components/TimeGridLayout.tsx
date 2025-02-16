@@ -235,7 +235,6 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
     ) {
       y = computeTimeTopFrac(time, this.props.dateProfile)
         * (slatHeight * this.currentSlatCnt)
-        + 1 // overcome border
 
       if (y) {
         y++ // overcome top border

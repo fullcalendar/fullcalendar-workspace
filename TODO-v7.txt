@@ -20,8 +20,6 @@ DayGrid
       "default" that the browser decides. then, force min-height:0 for all flex items (same with min-width),
       to be more like react-native, and more intuitive
 TimeGrid
-  scrollTime:0
-    doesn't actually start out as 0. write automated test?
   [structure] put data-time on fc-timegrid-slot div (the "row" with the border)
     will need to modify TimeGridWrapper::getTimeAxisInfo classNames
 Resource Timeline
@@ -83,6 +81,7 @@ timeline-event-rendering.ts, disabled test because flawed
   about zoom and event aligning w/ start and end
 Perf: not rerendinering events that didn't change
   https://github.com/fullcalendar/fullcalendar/issues/3003
+TimeGrid scrollTime:0 initially scrolls to 0 (a solved regression)
 
 Changelog TODO
 --------------
