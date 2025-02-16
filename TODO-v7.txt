@@ -12,8 +12,6 @@ General Positioning Quirkiness
     Complicated problem with height:auto and ResourceTimelineView.ts/ResourceTimelineLayoutNormal.ts
     main-scroller heights are changing due to dynamic content, as well as footerscrollbars
 General Performance
-  [ ] https://github.com/fullcalendar/fullcalendar/issues/3003
-    not rerendinering events that didn't change --- not fixed in v6 or v7-beta
   [?] https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
     V6 repro: https://codepen.io/arshaw/pen/OJKMLRR?editors=0010
     V7 has no real improvement
@@ -92,6 +90,8 @@ no empty header cells
 [timeline-no-resources] always has timeline-lane-footer, especially for when zero events and height:auto
 timeline-event-rendering.ts, disabled test because flawed
   about zoom and event aligning w/ start and end
+Perf: not rerendinering events that didn't change
+  https://github.com/fullcalendar/fullcalendar/issues/3003
 
 Changelog TODO
 --------------
@@ -131,7 +131,9 @@ TODO: for dayGrid-DAY, AND dayGrid that has single-row
   no longer displays week number (because no space to put it)
 TODO: for resource-timeGrid-DAY
   no longer displays week number (because would be alongside the resource headers)
-Perf: switching multi-month years prev/next feels much snappier
+TODO: switching multi-month years prev/next feels much snappier (must add this?)
+TODO: not rerendinering events that didn't change
+  https://github.com/fullcalendar/fullcalendar/issues/3003
 
 Freshdesk/GH-issues
 -------------------

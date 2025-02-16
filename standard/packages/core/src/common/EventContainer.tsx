@@ -14,6 +14,8 @@ import { joinClassNames } from '../util/html.js'
 import { DateMarker } from '../datelib/marker.js'
 import { memoize } from '../util/memoize.js'
 import { ViewContext } from '../ViewContext.js'
+import { EventDef } from '../structs/event-def.js'
+import { EventInstance } from '../structs/event-instance.js'
 
 export interface MinimalEventProps {
   eventRange: EventRenderRange // timed/whole-day span
@@ -41,7 +43,7 @@ export type EventContainerProps = ElProps & MinimalEventProps & {
 export class EventContainer extends BaseComponent<EventContainerProps> {
   // memo
   private buildPublicEvent = memoize(
-    (context: ViewContext, eventRange: EventRenderRange) => new EventImpl(context, eventRange.def, eventRange.instance)
+    (context: ViewContext, eventDef: EventDef, eventInstance: EventInstance) => new EventImpl(context, eventDef, eventInstance)
   )
 
   el: HTMLElement
@@ -53,7 +55,10 @@ export class EventContainer extends BaseComponent<EventContainerProps> {
     const { ui } = eventRange
 
     const renderProps: EventContentArg = {
-      event: this.buildPublicEvent(context, eventRange), // make stable. everything else atomic
+      // make stable. everything else atomic
+      // FYI, eventRange unfortunately gets reconstructed a lot, but def/instance is stable
+      event: this.buildPublicEvent(context, eventRange.def, eventRange.instance),
+
       view: context.viewApi,
       timeText: props.timeText,
       textColor: ui.textColor,
@@ -75,21 +80,23 @@ export class EventContainer extends BaseComponent<EventContainerProps> {
 
     return (
       <ContentContainer
-        {...props /* contains children */}
-        elRef={this.handleEl}
+        attrs={props.attrs}
         className={joinClassNames(
           props.className,
           ...getEventClassNames(renderProps),
           ...eventRange.ui.classNames,
         )}
+        style={props.style}
+        elRef={this.handleEl}
         renderProps={renderProps}
         generatorName="eventContent"
         customGenerator={options.eventContent}
         defaultGenerator={props.defaultGenerator}
+        tag={props.tag}
         classNameGenerator={options.eventClassNames}
         didMount={options.eventDidMount}
         willUnmount={options.eventWillUnmount}
-      />
+      >{props.children}</ContentContainer>
     )
   }
 
