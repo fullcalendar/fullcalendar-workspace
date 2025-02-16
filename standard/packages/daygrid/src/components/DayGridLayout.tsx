@@ -74,7 +74,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
           'aria-labelledby': props.labelId,
           'aria-label': props.labelStr,
         }}
-        className={joinClassNames(props.className, 'fc-print-root fc-border')}
+        className={joinClassNames(props.className, 'fc-print-root')}
       >
         {options.dayMinWidth ? (
           <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />

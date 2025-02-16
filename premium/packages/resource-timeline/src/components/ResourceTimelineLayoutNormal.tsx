@@ -290,7 +290,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     return (
       <ViewContainer
-        className='fc-resource-timeline fc-flex-col fc-border'
+        className='fc-resource-timeline fc-flex-col'
         viewSpec={viewSpec}
         attrs={{
           role: hasNesting ? 'treegrid' : 'grid', // TODO: DRY

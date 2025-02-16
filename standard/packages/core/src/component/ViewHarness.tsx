@@ -16,7 +16,7 @@ export class ViewHarness extends Component<ViewHarnessProps> {
     return (
       <div
         className={joinClassNames(
-          'fc-view-outer',
+          'fc-view-outer fc-border',
           props.height != null
             ? 'fc-view-outer-static'
             : props.heightLiquid

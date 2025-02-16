@@ -10,7 +10,6 @@ ASAP
 General Structure
   should be fc-timegrid(-view) on fc-resource-timegrid(-view), etc?
     similar: dumb how there's a fc-resource-daygrid-view and fc-daygrid. pick one or the other!
-  Easily remove border from view-area. Possible in prior versions
 DayGrid
   [structure] weekNumbers in daygrid should be in DOM-order before cells
   [structure] simplify event positioning
@@ -126,6 +125,7 @@ TODO: for resource-timeGrid-DAY
 TODO: switching multi-month years prev/next feels much snappier (must add this?)
 TODO: not rerendinering events that didn't change
   https://github.com/fullcalendar/fullcalendar/issues/3003
+TODO: view border is on fc-view-outer div, can easily be removed by CSS override
 
 Freshdesk/GH-issues
 -------------------

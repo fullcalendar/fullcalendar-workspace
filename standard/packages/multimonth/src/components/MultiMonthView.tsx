@@ -90,7 +90,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
           <ViewContainer
             viewSpec={context.viewSpec}
             className={joinClassNames(
-              'fc-multimonth fc-border',
+              'fc-multimonth',
               (cols === 1) ?
                 'fc-multimonth-singlecol' :
                 'fc-multimonth-multicol',
