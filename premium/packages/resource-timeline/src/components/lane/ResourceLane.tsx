@@ -59,6 +59,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         tag="div"
         attrs={{
           role: 'gridcell',
+          'data-resource-id': props.resource.id,
         }}
         className={joinClassNames(
           'fc-resource fc-liquid fc-flex-col fc-timeline-lane fc-rel', // fc-rel is for fc-fill-top

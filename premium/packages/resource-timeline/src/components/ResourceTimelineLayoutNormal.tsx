@@ -589,7 +589,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           aria-rowindex={1 + totalHeaderRowSpan + resourceLayout.rowIndex}
                           aria-level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
                           aria-expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
-                          data-resource-id={resource.id}
                           className={joinClassNames(
                             'fc-flex-row fc-fill-x fc-content-box',
                             resourceLayout.visibleIndex < visibleRowCnt - 1 && // is not last

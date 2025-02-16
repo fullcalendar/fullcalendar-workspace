@@ -56,19 +56,17 @@ export class ResourceDataGridWrapper {
   }
 
   getResourceCellEl(resourceId) {
-    return this.el.querySelector(`[role=row][data-resource-id="${resourceId}"] > *`) as HTMLElement
+    return this.el.querySelector(`.fc-cell.fc-resource[data-resource-id="${resourceId}"]`) as HTMLElement
   }
 
   getResourceCellEls(resourceId) {
-    let selector = '[role=row]'
+    let selector = '.fc-cell.fc-resource'
 
     if (resourceId) {
       selector += `[data-resource-id="${resourceId}"]`
     } else {
       selector += '[data-resource-id]'
     }
-
-    selector += ' > *'
 
     return findElements(this.el, selector)
   }
@@ -112,8 +110,8 @@ function buildResourceInfoFromRow(rowEl) {
   const cellEl = rowEl.firstElementChild
   return {
     type: 'resource',
-    resourceId: rowEl.getAttribute('data-resource-id'),
-    text: $(rowEl.querySelector('.fc-cell-main')).text(),
+    resourceId: cellEl.getAttribute('data-resource-id'),
+    text: $(cellEl.querySelector('.fc-cell-main')).text(),
     cellEl,
     rowEl,
   }

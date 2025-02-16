@@ -167,7 +167,6 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 aria-rowindex={1 + headerRowSpan + resourceLayout.rowIndex}
                 aria-level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
                 aria-expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
-                data-resource-id={resource.id}
                 class='fc-flex-row fc-fill-x'
                 style={{
                   top: rowTops.get(resource.id),

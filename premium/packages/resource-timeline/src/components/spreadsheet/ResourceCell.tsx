@@ -47,6 +47,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         attrs={{
           role: colSpec.isMain ? 'rowheader' : 'gridcell',
           'aria-expanded': (colSpec.isMain && props.hasChildren) ? props.isExpanded : undefined,
+          'data-resource-id': props.resource.id,
         }}
         className={joinClassNames(
           'fc-resource fc-cell',

@@ -116,7 +116,7 @@ export class ResourceTimelineGridWrapper {
 
   getResourceIds() {
     return this.getResourceLaneEls().map((rowEl) => (
-      rowEl.parentElement.getAttribute('data-resource-id')
+      rowEl.getAttribute('data-resource-id')
     ))
   }
 
@@ -125,11 +125,11 @@ export class ResourceTimelineGridWrapper {
   }
 
   getResourceLaneEl(resourceId) {
-    return this.el.querySelector(`[role=row][data-resource-id="${resourceId}"] .fc-timeline-lane`) as HTMLElement
+    return this.el.querySelector(`.fc-timeline-lane[data-resource-id="${resourceId}"]`) as HTMLElement
   }
 
   getResourceLaneEls() {
-    return findElements(this.el, '[role=row][data-resource-id] .fc-timeline-lane')
+    return findElements(this.el, '.fc-timeline-lane[data-resource-id]')
   }
 
   getLeft(targetDate) {

@@ -4,13 +4,6 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-ASAP
-----
-
-Resource Timeline
-  [structure] when no groupcols, do simplified DOM structure?
-  [structure] on datagrid, if fc-resource is on the cells, data-resource-id should NOT be on the row
-
 Manual Test
 -----------
 
@@ -111,6 +104,7 @@ TODO: switching multi-month years prev/next feels much snappier (must add this?)
 TODO: not rerendinering events that didn't change
   https://github.com/fullcalendar/fullcalendar/issues/3003
 TODO: view border is on fc-view-outer div, can easily be removed by CSS override
+Maybe: DOM-positions of data-resource-id and data-time change?
 
 Freshdesk/GH-issues
 -------------------
@@ -204,6 +198,7 @@ DayGrid
       "default" that the browser decides. then, force min-height:0 for all flex items (same with min-width),
       to be more like react-native, and more intuitive
 Resource Timeline
+  [structure] when no groupcols, do simplified DOM structure?
   get grouping via row and col simultaneously working. should be possible.
     see timeline-row-n-col-grouping-not-working.html
 Angular
