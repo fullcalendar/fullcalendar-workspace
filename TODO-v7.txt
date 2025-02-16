@@ -7,14 +7,6 @@ Publishing:
 ASAP
 ----
 
-General Positioning Quirkiness
-  ResizeObserver errors, solved by Calendar::updateSize calls in callback
-    Complicated problem with height:auto and ResourceTimelineView.ts/ResourceTimelineLayoutNormal.ts
-    main-scroller heights are changing due to dynamic content, as well as footerscrollbars
-General Performance
-  [?] https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
-    V6 repro: https://codepen.io/arshaw/pen/OJKMLRR?editors=0010
-    V7 has no real improvement
 General Structure
   should be fc-timegrid(-view) on fc-resource-timegrid(-view), etc?
     similar: dumb how there's a fc-resource-daygrid-view and fc-daygrid. pick one or the other!
@@ -199,6 +191,15 @@ General Performance
   when there's no ref watching a dimension, don't attach resize observer to element
     example: simple Month-view always listens to header heights (innerHeightRef) because TimeGrid
     needs to sync height with all-day cell
+  TEST AFTER RELEASE - dayClick slow
+    https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
+    V6 repro: https://codepen.io/arshaw/pen/OJKMLRR?editors=0010
+    V7 has no real improvement
+General Positioning Quirkiness
+  ResourceTimeline with height:auto, ResizeObserver errors
+    HACK in tests with Calendar::updateSize calls in callback, ULTIMATELY UNDO THOSE
+    main-scroller heights are changing due to dynamic content, as well as footerscrollbars
+    see ResourceTimelineView.ts/ResourceTimelineLayoutNormal.ts
 General a11y
   have separate settings for date-format hints? out of whack
     view's aria-label (if no headerToolbar) is "Sep 7 – 8, 2020" (bad that it's abbreviated)
