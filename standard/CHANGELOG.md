@@ -3,7 +3,7 @@
 
 ### Performance
 
-- Not rerendinering events that didn't change, ERR, CALLING eventContent at least ([3003](https://github.com/fullcalendar/fullcalendar/issues/3003))
+- Not rerendinering events that didn't change, ERR, CALLING eventContent at least, maybe other content-injectors ([#3003](https://github.com/fullcalendar/fullcalendar/issues/3003), [#7650](https://github.com/fullcalendar/fullcalendar/issues/7650))
 
 ### Features
 
