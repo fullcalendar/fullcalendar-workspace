@@ -1,3 +1,5 @@
+import dayGridPlugin from '@fullcalendar/daygrid'
+import momentTimeZonePlugin from '@fullcalendar/moment-timezone'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 
 describe('moreLinkClick', () => {
@@ -136,6 +138,7 @@ describe('moreLinkClick', () => {
   })
 
   it('works with custom function and all the arguments are correct', (done) => {
+    let handled = false
     let calendar = initCalendar({
       moreLinkClick(arg) {
         expect(typeof arg).toBe('object')
@@ -143,12 +146,16 @@ describe('moreLinkClick', () => {
         expect(arg.hiddenSegs.length).toBe(2)
         expect(arg.allSegs.length).toBe(4)
         expect(typeof arg.jsEvent).toBe('object')
+        handled = true
       },
     })
     let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
 
     dayGridWrapper.openMorePopover()
-    setTimeout(done)
+    setTimeout(() => {
+      expect(handled).toBe(true)
+      done()
+    })
   })
 
   it('works with custom function, and can return a view name', (done) => {
@@ -164,6 +171,31 @@ describe('moreLinkClick', () => {
       let view = currentCalendar.view
       expect(view.type).toBe('timeGridDay')
       done()
+    })
+  })
+
+  describe('with moment-timezone resolution', () => {
+    pushOptions({
+      plugins: [dayGridPlugin, momentTimeZonePlugin],
+      timeZone: 'Asia/Hong_Kong',
+    })
+
+    it('gives date arg correct timezone', (done) => {
+      let handled = false
+      let calendar = initCalendar({
+        moreLinkClick(arg) {
+          expect(typeof arg).toBe('object')
+          expect(arg.date).toEqualDate('2014-07-28T16:00:00')
+          handled = true
+        },
+      })
+      let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
+
+      dayGridWrapper.openMorePopover()
+      setTimeout(() => {
+        expect(handled).toBe(true)
+        done()
+      })
     })
   })
 })

@@ -159,15 +159,16 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
 
   handleClick = (ev: MouseEvent) => {
     let { props, context } = this
-    let { moreLinkClick } = context.options
+    let { dateEnv, options } = context
+    let { moreLinkClick } = options
     let date = computeRange(props).start
 
     function buildPublicSeg(seg: SlicedCoordRange & EventRangeProps) {
       let { def, instance, range } = seg.eventRange
       return {
         event: new EventImpl(context, def, instance),
-        start: context.dateEnv.toDate(range.start),
-        end: context.dateEnv.toDate(range.end),
+        start: dateEnv.toDate(range.start),
+        end: dateEnv.toDate(range.end),
         isStart: seg.isStart,
         isEnd: seg.isEnd,
       }
@@ -175,7 +176,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
 
     if (typeof moreLinkClick === 'function') {
       moreLinkClick = moreLinkClick({
-        date,
+        date: dateEnv.toDate(date),
         allDay: Boolean(props.allDayDate),
         allSegs: props.segs.map(buildPublicSeg),
         hiddenSegs: props.hiddenSegs.map(buildPublicSeg),

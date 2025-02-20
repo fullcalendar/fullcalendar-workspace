@@ -11,10 +11,12 @@
 
 ### Bugfixes
 
+- `moreLinkClick` date is not adjusted for moment timezone ([#7314](https://github.com/fullcalendar/fullcalendar/issues/7314))
 - The "all-day" text in TimeGrid looks better, better text align
 
 ### Breaking Changes
 
+- See `moreLinkClick` bugfix above. Determine if your implementation depends on UTC `date` even when a time zone plugin is present.
 - Upgrade to peerDep ical.js v2 ([#7734](https://github.com/fullcalendar/fullcalendar/issues/7734))
 - week-numbers no longer shown when only one DayGrid row (ACTUALLY ADDED IN v7.0.0-beta.4)
 - for dayGrid-DAY, AND dayGrid that has single-row, no longer displays week number (because no space to put it)
