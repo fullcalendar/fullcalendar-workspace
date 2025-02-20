@@ -1,4 +1,35 @@
 
+## v7.0.0-rc.1
+
+### Performance
+
+- Not rerendinering events that didn't change, ERR, CALLING eventContent at least ([3003](https://github.com/fullcalendar/fullcalendar/issues/3003))
+
+### Features
+
+- Improve Bootstrap 5 theme color mode, use of semantic color vars (ACTUALLY ADDED IN v7.0.0-beta.3) ([#7465](https://github.com/fullcalendar/fullcalendar/issues/7465))
+
+### Bugfixes
+
+- The "all-day" text in TimeGrid looks better, better text align
+
+### Breaking Changes
+
+- week-numbers no longer shown when only one DayGrid row (ACTUALLY ADDED IN v7.0.0-beta.4)
+- for dayGrid-DAY, AND dayGrid that has single-row, no longer displays week number (because no space to put it)
+- for resource-timeGrid-DAY, no longer displays week number (because would be alongside the resource headers)
+- Newlines in `allDayText` rendered as line-breaks in TimeGrid
+- Minor markup-related changes
+  - removed data-navlink attribute in favor of fc-navlink className
+  - no longer use `<a>` tags in markup. instead use role=link/button
+  - in vertical-resource view, resources under days have day classnames now, and data-date
+  - in vertical-resource view, days under resources have fc-resource now, and data-resource-id
+
+### Resolved Regressions
+
+- Day cells do not expand to fit events in dayGridYear ([#7852](https://github.com/fullcalendar/fullcalendar/issues/7852))
+- height: 'auto' causes "ResizeObserver loop completed with undelivered notifications." warning in Safari ([#7861](https://github.com/fullcalendar/fullcalendar/issues/7861))
+
 ## v7.0.0-beta.4
 
 ### :accessibility: Accessibility
@@ -27,6 +58,7 @@
 
 - For headerToolbar/footerToolbar for RTL calendars, elements within toolbar sections now span right-to-left
 - Disabled days (via `validRange`) now display text in TimeGrid and DayGrid header cells. Still no content within body cells.
+- Week-numbers no longer shown when only one DayGrid row
 
 ### :white_check_mark::rewind: Resolved Regressions
 
@@ -41,6 +73,7 @@
 
 - List-view DOM refactor, no more table markup
 - If `resourceAreaWidth` or `resourceAreaColumns.width` specified as percentage, will persist as percentage after user-resize
+- Improve Bootstrap 5 theme color mode, use of semantic color vars ([#7465](https://github.com/fullcalendar/fullcalendar/issues/7465))
 
 ### :printer: Printing
 

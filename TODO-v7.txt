@@ -71,8 +71,6 @@ Add: Bootstrap4/5 line-height less chunky
 Add: Bootstrap
   Minimum Bootstrap5 version is 5.2.x
   Bootstrap5 now a peer dependency (and popver by assoc). not the case for 4. TODO: modify docs.
-  Semantic color vars: https://github.com/fullcalendar/fullcalendar/issues/7465
-  Looks good with Dark Mode
 Document better dark-mode abilities for anyone, with CSS vars that Bootstrap5 happens to manipulate
 Add: all cell headers, in all views, are no longer bold
 Add: list-view nicer-looking stickyHeaderDates
@@ -85,26 +83,7 @@ Add: i18n: removed eventHint/timeHint - were put on list-view fake column header
   TODO: update all locales
 Add: i18n: added timedText for rowHeader on timegrid timed-event row
   TODO: update all locales
-Add: week-numbers no longer shown when only one DayGrid row
-Add: removed data-navlink attribute in favor of fc-navlink className
-Add: no longer use <a> tags in markup. instead use role=link/button
-Regression: [v7-beta] Day cells do not expand to fit events in dayGridYear #7852
-  https://github.com/fullcalendar/fullcalendar/issues/7852
-[fixed v7] DayGrid with height:auto "shows ResizeObserver loop warning"
-  https://github.com/fullcalendar/fullcalendar/issues/7861
-Add: "all-day" text in TimeGrid respects newlines in locales' allDayText, looks better
-  Also, better text-align looks better
-TODO: for daygrid/timegrid header,
-  resources under days have day classnames now, and data-date
-  days under resources have fc-resource now, and data-resource-id
-TODO: for dayGrid-DAY, AND dayGrid that has single-row
-  no longer displays week number (because no space to put it)
-TODO: for resource-timeGrid-DAY
-  no longer displays week number (because would be alongside the resource headers)
 TODO: switching multi-month years prev/next feels much snappier (must add this?)
-TODO: not rerendinering events that didn't change
-  https://github.com/fullcalendar/fullcalendar/issues/3003
-TODO: view border is on fc-view-outer div, can easily be removed by CSS override
 Maybe: DOM-positions of data-resource-id and data-time change?
 
 Freshdesk/GH-issues
