@@ -15,6 +15,7 @@
 
 ### Breaking Changes
 
+- Upgrade to peerDep ical.js v2 ([#7734](https://github.com/fullcalendar/fullcalendar/issues/7734))
 - week-numbers no longer shown when only one DayGrid row (ACTUALLY ADDED IN v7.0.0-beta.4)
 - for dayGrid-DAY, AND dayGrid that has single-row, no longer displays week number (because no space to put it)
 - for resource-timeGrid-DAY, no longer displays week number (because would be alongside the resource headers)

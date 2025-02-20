@@ -10,12 +10,12 @@
   "homepage": "https://fullcalendar.io/docs/icalendar",
   "peerDependencies": {
     "@fullcalendar/core": "workspace:7.0.0-beta.4",
-    "ical.js": "^1.4.0"
+    "ical.js": "^2.0.0"
   },
   "devDependencies": {
     "@fullcalendar/core": "workspace:7.0.0-beta.4",
     "@fullcalendar-scripts/standard": "workspace:*",
-    "ical.js": "^1.4.0"
+    "ical.js": "^2.0.0"
   },
   "scripts": {
     "build": "standard-scripts pkg:build",

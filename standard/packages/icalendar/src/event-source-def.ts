@@ -1,6 +1,6 @@
 import { EventInput } from '@fullcalendar/core'
 import { EventSourceDef, DateRange, addDays } from '@fullcalendar/core/internal'
-import * as ICAL from 'ical.js'
+import ICAL from 'ical.js'
 import { IcalExpander } from './ical-expander/IcalExpander.js'
 
 interface ICalFeedMeta {
@@ -116,7 +116,7 @@ function buildNonDateProps(iCalEvent: ICAL.Event): EventInput {
 
 function extractEventUrl(iCalEvent: ICAL.Event): string {
   let urlProp = iCalEvent.component.getFirstProperty('url')
-  return urlProp ? urlProp.getFirstValue() : ''
+  return urlProp ? urlProp.getFirstValue() as string : ''
 }
 
 function specifiesEnd(iCalEvent: ICAL.Event) {
