@@ -27,6 +27,8 @@
   - no longer use `<a>` tags in markup. instead use role=link/button
   - in vertical-resource view, resources under days have day classnames now, and data-date
   - in vertical-resource view, days under resources have fc-resource now, and data-resource-id
+- Premium Packages: now dual licensed under AGPLv3 + Commercial as opposed to GPLv3 + Commercial
+  (this does not affect the Standard packages, which remain MIT)
 
 ### Resolved Regressions
 
