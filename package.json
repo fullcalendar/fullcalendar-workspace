@@ -24,7 +24,9 @@
     "sync-repos": "workspace-scripts sync-repos",
     "archive": "standard-scripts archive",
     "tag-and-release": "workspace-scripts tag-and-release",
-    "publish": "changeset publish --no-git-tag"
+    "publish": "changeset publish --no-git-tag",
+    "classnames": "workspace-scripts classnames",
+    "filesizes": "workspace-scripts filesizes"
   },
   "type": "module",
   "monorepoConfig": {
