@@ -4,7 +4,6 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-Switchover to "RC" prerelease system
 New linting system
 Ensure `private` on all private class members
 Ensure built types don't leak internal structurs
