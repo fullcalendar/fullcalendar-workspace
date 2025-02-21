@@ -62,7 +62,7 @@ describe('schedulerLicenseKey', () => {
 
     it('is valid when AGPL', () => {
       let calendar = initCalendar({
-        schedulerLicenseKey: 'AGPL-My-Frontend-And-Backend-Is-Open-Source',
+        schedulerLicenseKey: 'AGPL-My-Frontend-And-Backend-Are-Open-Source',
       })
       expectValid(calendar)
     })

@@ -13,7 +13,7 @@ pnpm run version-bump
 
 pnpm --filter '!./examples/**' run build
 
-# sync PNPM's dependenciesMeta.*.injected
+# sync PNPM's dependenciesMeta.*.injected --- important!!!
 pnpm install
 
 pnpm --filter './examples/**' run build

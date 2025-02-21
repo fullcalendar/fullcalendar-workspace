@@ -60,11 +60,15 @@ While the STANDARD FullCalendar packages have been, and always will be, licensed
 | Open-source      | For-profit     | GPLv3 copyleft license
 | Open-source      | Not-for-profit | GPLv3 copyleft license
 
-In v7, [AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html) is replacing GPLv3 as the copyleft license used for open-source projects.
+In v7, [AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html) is replacing GPLv3 as the copyleft license used for open-source projects. If your project's frontend and backend are open-source and AGPLv3-compliant, use the following license key:
+
+```js
+schedulerLicenseKey: 'AGPL-My-Frontend-And-Backend-Are-Open-Source'
+```
 
 We've discovered a few instances of for-profit companies using FullCalendar Premium in closed-source projects, claiming to be GPLv3-compliant via the [SaaS loophole](https://www.mend.io/blog/the-saas-loophole-in-gpl-open-source-licenses/). By switching to AGPLv3, we are closing this loophole and forcing such companies to either purchase a commercial license or stay on v6.
 
-If you are the author of a GPL'd SaaS project that uses FullCalendar Premium and are concerned that you cannot upgrade to v7 due to the license change, please consider switching your project's license to AGPLv3 to avoid abuse of the SaaS loophole.
+If you are the author of a GPL'd SaaS project that uses FullCalendar Premium and are concerned that you cannot upgrade to v7 due to the license change, please consider the benefits of switching to AGPLv3 yourself.
 
 ## v7.0.0-beta.4
 
