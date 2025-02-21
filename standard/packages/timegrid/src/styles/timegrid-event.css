@@ -4,6 +4,8 @@
 //
 
 .fc-timegrid-event {
+  position: relative; // required by fc-event
+
   border-radius: 3px;
   font-size: var(--fc-small-font-size);
 }

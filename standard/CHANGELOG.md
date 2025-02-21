@@ -34,6 +34,7 @@
 
 - Day cells do not expand to fit events in dayGridYear ([#7852](https://github.com/fullcalendar/fullcalendar/issues/7852))
 - height: 'auto' causes "ResizeObserver loop completed with undelivered notifications." warning in Safari ([#7861](https://github.com/fullcalendar/fullcalendar/issues/7861))
+- Resource-TimeGrid event dragging/resizing, "select" event doesn't persist
 
 ## v7.0.0-beta.4
 

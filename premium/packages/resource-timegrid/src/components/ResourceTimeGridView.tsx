@@ -112,7 +112,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
       dateSelection: splitProps.timed.dateSelection,
       eventStore: splitProps.timed.eventStore,
       eventUiBases: splitProps.timed.eventUiBases,
-      eventSelection: splitProps.timed.eventSelection,
+      eventSelection: splitProps.timed.eventSelection, // result not used
       eventDrag: splitProps.timed.eventDrag,
       eventResize: splitProps.timed.eventResize,
       resourceDayTableModel,
@@ -201,7 +201,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
               eventResizeByCol={eventResizeByCol}
 
               // universal content
-              eventSelection={allDayResourceJoinedProps.eventSelection}
+              eventSelection={allDayResourceJoinedProps.eventSelection || splitProps.timed.eventSelection}
             />
           )
         }}
