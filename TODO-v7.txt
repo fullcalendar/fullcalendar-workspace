@@ -63,25 +63,6 @@ Changelog TODO
 --------------
 
 Remove Angular 12 support?
-Make difference between API-breaking changes and Visually-breaking changes
-Add: Bootstrap4/5 line-height less chunky
-Add: Bootstrap
-  Minimum Bootstrap5 version is 5.2.x
-  Bootstrap5 now a peer dependency (and popver by assoc). not the case for 4. TODO: modify docs.
-Document better dark-mode abilities for anyone, with CSS vars that Bootstrap5 happens to manipulate
-Add: all cell headers, in all views, are no longer bold
-Add: list-view nicer-looking stickyHeaderDates
-Add: standin events get put through eventContent/etc
-Add: eventSlicing (write tests too)
-  eventSlicing:true (request: https://github.com/fullcalendar/fullcalendar/issues/6187)
-  eventSlicing:false (request: https://fullcalendar.freshdesk.com/a/tickets/9203)
-Add: no longer use semantic tags (a for navlink, h2 for title), instead using aria
-Add: i18n: removed eventHint/timeHint - were put on list-view fake column headers
-  TODO: update all locales
-Add: i18n: added timedText for rowHeader on timegrid timed-event row
-  TODO: update all locales
-TODO: switching multi-month years prev/next feels much snappier (must add this?)
-Maybe: DOM-positions of data-resource-id and data-time change?
 
 Freshdesk/GH-issues
 -------------------
