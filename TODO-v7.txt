@@ -59,11 +59,6 @@ Perf: not rerendinering events that didn't change
   https://github.com/fullcalendar/fullcalendar/issues/3003
 TimeGrid scrollTime:0 initially scrolls to 0 (a solved regression)
 
-Changelog TODO
---------------
-
-Remove Angular 12 support?
-
 Freshdesk/GH-issues
 -------------------
 

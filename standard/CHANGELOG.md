@@ -56,7 +56,7 @@ While the STANDARD FullCalendar packages have been, and always will be, licensed
 | Application Type | Company Type   | v6 Premium License
 | ---------------- | -------------- | ------------------
 | Closed-source    | For-profit     | Custom commercial license
-| Closed-source    | Not-for-profit | Creative-commons non-commercial license
+| Closed-source    | Not-for-profit | Creative Commons non-commercial license
 | Open-source      | For-profit     | GPLv3 copyleft license
 | Open-source      | Not-for-profit | GPLv3 copyleft license
 
