@@ -9,13 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.4",
-    "@fullcalendar/daygrid": "workspace:7.0.0-beta.4",
-    "@fullcalendar/interaction": "workspace:7.0.0-beta.4",
-    "@fullcalendar/react": "workspace:7.0.0-beta.4",
-    "@fullcalendar/resource": "workspace:7.0.0-beta.4",
-    "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.4",
-    "@fullcalendar/timegrid": "workspace:7.0.0-beta.4",
+    "@fullcalendar/core": "workspace:7.0.0-rc.0",
+    "@fullcalendar/daygrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/interaction": "workspace:7.0.0-rc.0",
+    "@fullcalendar/react": "workspace:7.0.0-rc.0",
+    "@fullcalendar/resource": "workspace:7.0.0-rc.0",
+    "@fullcalendar/resource-timeline": "workspace:7.0.0-rc.0",
+    "@fullcalendar/timegrid": "workspace:7.0.0-rc.0",
     "next": "^12.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

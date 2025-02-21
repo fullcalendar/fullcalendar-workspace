@@ -1,6 +1,6 @@
 {
   "name": "@fullcalendar/angular",
-  "version": "7.0.0-beta.4",
+  "version": "7.0.0-rc.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -18,7 +18,7 @@
   "peerDependencies": {
     "@angular/common": "12 - 19",
     "@angular/core": "12 - 19",
-    "@fullcalendar/core": "workspace:7.0.0-beta.4"
+    "@fullcalendar/core": "workspace:7.0.0-rc.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.3.10",
@@ -32,13 +32,13 @@
     "@angular/platform-browser": "~13.3.0",
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
-    "@fullcalendar/core": "workspace:7.0.0-beta.4",
-    "@fullcalendar/daygrid": "workspace:7.0.0-beta.4",
-    "@fullcalendar/interaction": "workspace:7.0.0-beta.4",
-    "@fullcalendar/list": "workspace:7.0.0-beta.4",
-    "@fullcalendar/resource": "workspace:7.0.0-beta.4",
-    "@fullcalendar/resource-timegrid": "workspace:7.0.0-beta.4",
-    "@fullcalendar/resource-timeline": "workspace:7.0.0-beta.4",
+    "@fullcalendar/core": "workspace:7.0.0-rc.0",
+    "@fullcalendar/daygrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/interaction": "workspace:7.0.0-rc.0",
+    "@fullcalendar/list": "workspace:7.0.0-rc.0",
+    "@fullcalendar/resource": "workspace:7.0.0-rc.0",
+    "@fullcalendar/resource-timegrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/resource-timeline": "workspace:7.0.0-rc.0",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
     "jasmine-core": "~4.0.0",

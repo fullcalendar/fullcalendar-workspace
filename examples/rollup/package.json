@@ -10,11 +10,11 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.4",
-    "@fullcalendar/daygrid": "workspace:7.0.0-beta.4",
-    "@fullcalendar/interaction": "workspace:7.0.0-beta.4",
-    "@fullcalendar/list": "workspace:7.0.0-beta.4",
-    "@fullcalendar/timegrid": "workspace:7.0.0-beta.4"
+    "@fullcalendar/core": "workspace:7.0.0-rc.0",
+    "@fullcalendar/daygrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/interaction": "workspace:7.0.0-rc.0",
+    "@fullcalendar/list": "workspace:7.0.0-rc.0",
+    "@fullcalendar/timegrid": "workspace:7.0.0-rc.0"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^14.0.1",

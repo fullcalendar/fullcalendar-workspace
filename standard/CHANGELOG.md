@@ -1,5 +1,5 @@
 
-## v7.0.0-rc.1
+## v7.0.0-rc.0
 
 ### Performance
 

@@ -12,11 +12,11 @@
     "clean": "rm -rf build public/build .cache"
   },
   "dependencies": {
-    "@fullcalendar/core": "workspace:7.0.0-beta.4",
-    "@fullcalendar/daygrid": "workspace:7.0.0-beta.4",
-    "@fullcalendar/interaction": "workspace:7.0.0-beta.4",
-    "@fullcalendar/react": "workspace:7.0.0-beta.4",
-    "@fullcalendar/timegrid": "workspace:7.0.0-beta.4",
+    "@fullcalendar/core": "workspace:7.0.0-rc.0",
+    "@fullcalendar/daygrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/interaction": "workspace:7.0.0-rc.0",
+    "@fullcalendar/react": "workspace:7.0.0-rc.0",
+    "@fullcalendar/timegrid": "workspace:7.0.0-rc.0",
     "@remix-run/node": "~1.14.2",
     "@remix-run/react": "~1.14.2",
     "@remix-run/serve": "~1.14.2",
