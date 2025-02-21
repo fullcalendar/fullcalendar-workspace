@@ -9,6 +9,3 @@ packages:
   - './scripts'
   - './contrib/*'
   - './examples/*'
-
-  # build errors with preact
-  - '!./examples/angular12'

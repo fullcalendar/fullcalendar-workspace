@@ -96,6 +96,7 @@ v7 is designed to be backwards-compatible with v6, but with the following minor 
   - `windowResizeDelay` setting removed
   - `handleWindowResize` callback removed
   - The `moreLinkClick` date will be adjusted to a timezone plugin's offset, no longer unconditionally UTC
+  - Removed Angular 12 support <!-- TODO: add to docs -->
   - Users of `@fullcalendar/icalendar` must upgrade their `ical.js` peerDependency to v2 ([#7734](https://github.com/fullcalendar/fullcalendar/issues/7734))
   - Users of `@fullcalendar/bootstrap5` must upgrade `bootstrap` to 5.2.x or newer and explicitly list it as as peerDependency
 - Visual-only changes

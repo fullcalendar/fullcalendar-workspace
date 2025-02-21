@@ -35,6 +35,7 @@ npm install @fullcalendar/core@rc @fullcalendar/daygrid@rc
 
 ### :warning: Breaking Changes
 
+- Removed Angular 12 support
 - The `moreLinkClick` date will be adjusted to a timezone plugin's offset, no longer unconditionally UTC
 - Newlines in `allDayText` will be displayed as line breaks in TimeGrid
 - Users of `@fullcalendar/icalendar` must upgrade their `ical.js` peerDependency to v2 ([#7734](https://github.com/fullcalendar/fullcalendar/issues/7734))
