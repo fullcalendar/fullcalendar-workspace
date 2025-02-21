@@ -4,18 +4,18 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-New linting system
-Ensure `private` on all private class members
-Ensure built types don't leak internal structurs
-Tame all scratch example files
-
 Release Prep
 ------------
 
-ensure outputted CSS doesn't have multiple :root declarations because of how we shifted vars.css around
-revert "hacks to get print-mode working, but some should be reverted"
-revert temporary gitignores
-audit all dependency workspace: protocols
+New linting system
+Ensure `private` on all private class members
+Ensure built types don't leak internal structures
+Tame all scratch example files
+Remove outdated .changeset transactions
+Ensure outputted CSS doesn't have multiple :root declarations because of how we shifted vars.css around
+Revert "hacks to get print-mode working, but some should be reverted"
+Revert temporary gitignores
+Audit all dependency workspace: protocols
 
 Automated Test TODO
 -------------------
