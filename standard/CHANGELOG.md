@@ -12,7 +12,7 @@
 ### :white_check_mark::rewind: Resolved Regressions
 
 - Day cells do not expand to fit events in dayGridYear ([#7852](https://github.com/fullcalendar/fullcalendar/issues/7852))
-- height: 'auto' causes "ResizeObserver loop completed with undelivered notifications." warning in Safari ([#7861](https://github.com/fullcalendar/fullcalendar/issues/7861))
+- `height:auto` causes ResizeObserver warning in Safari ([#7861](https://github.com/fullcalendar/fullcalendar/issues/7861))
 - Resource-TimeGrid event dragging/resizing, "select" event doesn't persist
 
 ### :beetle: Bugfixes
@@ -39,8 +39,8 @@
 
 While the STANDARD FullCalendar packages have been, and always will be, licensed under the permissive MIT license, the PREMIUM packages have more complex licensing:
 
-| Application Type | Company Type   | v6 License
-| ---------------- | -------------- | ----------
+| Application Type | Company Type   | v6 Premium License
+| ---------------- | -------------- | ------------------
 | Closed-source    | For-profit     | Custom commercial license
 | Closed-source    | Not-for-profit | Creative-commons non-commercial license
 | Open-source      | For-profit     | GPLv3 copyleft license
