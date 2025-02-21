@@ -1,5 +1,18 @@
 
-## v7.0.0-rc.0
+:speaker: **Update!** We have finally reached the release-candidate phase where no further code changes are expected. We will monitor for bug reports over the next week or two while improving the docs, restoring linting, updating the browser-support matrix, and improving the upgrade guide, including creating a className/HTML upgrade guide for those with advanced calendar styling.
+
+[**See the final compiled v7 changelog &raquo;**](CHANGELOG-v7.md)
+
+```sh
+# Installation options:
+
+# A) use NPM and append the @rc tag to all packages:
+npm install @fullcalendar/core@rc @fullcalendar/daygrid@rc
+
+# B) download the .ZIP archives at the footer of this release
+```
+
+## v7.0.0-rc.0 (changes from v7.0.0-beta.4 -> v7.0.0-rc.0)
 
 ### :watch: Performance
 
@@ -164,8 +177,6 @@ Please test things out! and report bugs on the [issue tracker](https://github.co
 
 You can find the source code at the [v7-dev branch in the fullcalendar-workspace repo](https://github.com/fullcalendar/fullcalendar-workspace/tree/v7-dev).
 
-<!-- ENSURE all tickets have status "Staged" -->
-
 ### :sparkles: Features
 
 - More streamlined HTML skeleton and more flexbox-based CSS (as opposed to table-based)
@@ -244,8 +255,6 @@ These will be addressed before v7 official release. No need to report bugs relat
 
 These will be addressed before v7 official release:
 
-<!-- ENSURE all tickets have status "In progress" or Null -->
-
 - All remaining `a11y-*` in the v7 milestone of the [GitHub Project](https://github.com/orgs/fullcalendar/projects/1/views/2)
 - Event titles repeated each day in print ([#6657](https://github.com/fullcalendar/fullcalendar/issues/6657))
 - Upgrade to peerDep ical.js v2 ([#7734](https://github.com/fullcalendar/fullcalendar/issues/7734))
@@ -256,11 +265,9 @@ These will be addressed before v7 official release:
 
 Unfortunately we didn't have time to do these but will implement them in a follow-up minor release:
 
-<!-- ENSURE removed from v7 milestone -->
-
 - Improve resource timeline performance with virtual rendering ([#5673](https://github.com/fullcalendar/fullcalendar/issues/5673))
 
-### 6.1.16 (2024-12-04)
+## 6.1.16 (2024-12-04)
 
 ### Angular
 
