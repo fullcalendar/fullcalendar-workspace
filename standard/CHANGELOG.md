@@ -1,40 +1,56 @@
 
 ## v7.0.0-rc.0
 
-### Performance
+### :watch: Performance
 
-- Not rerendinering events that didn't change, ERR, CALLING eventContent at least, maybe other content-injectors ([#3003](https://github.com/fullcalendar/fullcalendar/issues/3003), [#7650](https://github.com/fullcalendar/fullcalendar/issues/7650))
+- Fixed unnecessary event rendering and calling of `eventContent` when unrelated events change ([#3003](https://github.com/fullcalendar/fullcalendar/issues/3003), [#7650](https://github.com/fullcalendar/fullcalendar/issues/7650))
 
-### Features
+### :sparkles: Features
 
-- Improve Bootstrap 5 theme color mode, use of semantic color vars (ACTUALLY ADDED IN v7.0.0-beta.3) ([#7465](https://github.com/fullcalendar/fullcalendar/issues/7465))
+- Improve Bootstrap 5 theme color mode, use of semantic color vars ([#7465](https://github.com/fullcalendar/fullcalendar/issues/7465)) (added in v7.0.0-beta.3, documented here)
 
-### Bugfixes
-
-- `moreLinkClick` date is not adjusted for moment timezone ([#7314](https://github.com/fullcalendar/fullcalendar/issues/7314))
-- The "all-day" text in TimeGrid looks better, better text align
-
-### Breaking Changes
-
-- See `moreLinkClick` bugfix above. Determine if your implementation depends on UTC `date` even when a time zone plugin is present.
-- Upgrade to peerDep ical.js v2 ([#7734](https://github.com/fullcalendar/fullcalendar/issues/7734))
-- week-numbers no longer shown when only one DayGrid row (ACTUALLY ADDED IN v7.0.0-beta.4)
-- for dayGrid-DAY, AND dayGrid that has single-row, no longer displays week number (because no space to put it)
-- for resource-timeGrid-DAY, no longer displays week number (because would be alongside the resource headers)
-- Newlines in `allDayText` rendered as line-breaks in TimeGrid
-- Minor markup-related changes
-  - removed data-navlink attribute in favor of fc-navlink className
-  - no longer use `<a>` tags in markup. instead use role=link/button
-  - in vertical-resource view, resources under days have day classnames now, and data-date
-  - in vertical-resource view, days under resources have fc-resource now, and data-resource-id
-- Premium Packages: now dual licensed under AGPLv3 + Commercial as opposed to GPLv3 + Commercial
-  (this does not affect the Standard packages, which remain MIT)
-
-### Resolved Regressions
+### :white_check_mark::rewind: Resolved Regressions
 
 - Day cells do not expand to fit events in dayGridYear ([#7852](https://github.com/fullcalendar/fullcalendar/issues/7852))
 - height: 'auto' causes "ResizeObserver loop completed with undelivered notifications." warning in Safari ([#7861](https://github.com/fullcalendar/fullcalendar/issues/7861))
 - Resource-TimeGrid event dragging/resizing, "select" event doesn't persist
+
+### :beetle: Bugfixes
+
+- The `moreLinkClick` date is always UTC, not adjusted by timezone plugins ([#7314](https://github.com/fullcalendar/fullcalendar/issues/7314))
+- TimeGrid "all-day" text is better aligned, better split across multiple lines
+
+### :warning: Breaking Changes
+
+- The `moreLinkClick` date will be adjusted to a timezone plugin's offset, no longer unconditionally UTC
+- Newlines in `allDayText` will be displayed as line breaks in TimeGrid
+- Users of `@fullcalendar/icalendar` must upgrade their `ical.js` peerDependency to v2 ([#7734](https://github.com/fullcalendar/fullcalendar/issues/7734))
+- The `weekNumbers:true` setting no longer displays week numbers in certain cases:
+  - `resourceTimeGridDay` view, because x-axis header cell alongside resource names is reserved for a future label
+  - `dayGridDay` view, `dayGridWeek` view, or any dayGrid-based view with only one row
+- Minor markup-related changes
+  - Removed `data-navlink` attribute in favor of `fc-navlink` className
+  - Using `role=link` instead of `<a>` to avoid accidentally inheriting styles
+  - In `resourceDayGrid`-based views, and `resourceTimeGrid`-based views
+    - When `datesAboveResources:true`, the header resource below the header dates have `data-date` attributes
+    - When `datesAboveResources:false`, the header dates below the header resources have `data-resource-id` attributes
+
+### :scroll: License Change to Premium Packages
+
+While the STANDARD FullCalendar packages have been, and always will be, licensed under the permissive MIT license, the PREMIUM packages have more complex licensing:
+
+| Application Type | Company Type   | v6 License
+| ---------------- | -------------- | ----------
+| Closed-source    | For-profit     | Custom commercial license
+| Closed-source    | Not-for-profit | Creative-commons non-commercial license
+| Open-source      | For-profit     | GPLv3 copyleft license
+| Open-source      | Not-for-profit | GPLv3 copyleft license
+
+In v7, [AGPLv3](https://www.gnu.org/licenses/agpl-3.0.en.html) is replacing GPLv3 as the copyleft license used for open-source projects.
+
+We've discovered a few instances of for-profit companies using FullCalendar Premium in closed-source projects, claiming to be GPLv3-compliant via the [SaaS loophole](https://www.mend.io/blog/the-saas-loophole-in-gpl-open-source-licenses/). By switching to AGPLv3, we are closing this loophole and forcing such companies to either purchase a commercial license or stay on v6.
+
+If you are the author of a GPL'd SaaS project that uses FullCalendar Premium and are concerned that you cannot upgrade to v7 due to the license change, please consider switching your project's license to AGPLv3 to avoid abuse of the SaaS loophole.
 
 ## v7.0.0-beta.4
 
