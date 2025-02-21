@@ -4,6 +4,7 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+Switchover to "RC" prerelease system
 New linting system
 Ensure `private` on all private class members
 Ensure built types don't leak internal structurs
@@ -16,7 +17,6 @@ ensure outputted CSS doesn't have multiple :root declarations because of how we 
 revert "hacks to get print-mode working, but some should be reverted"
 revert temporary gitignores
 audit all dependency workspace: protocols
-run all tests with fallback resize-observer
 
 Automated Test TODO
 -------------------
