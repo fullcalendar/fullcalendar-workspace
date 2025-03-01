@@ -19,7 +19,3 @@ npm run start # continously build, as a server
 ```
 
 After running the `npm run start` command, you will be given a localhost URL that can be visited in a browser.
-
-## TODO: fix StackBlitz Problems
-
-Unlike the Angular 17 project, this project dies in StackBlitz. Figure out why.
