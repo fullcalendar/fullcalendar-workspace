@@ -100,7 +100,7 @@ v7 is designed to be backwards-compatible with v6, but with the following minor 
   - Users of `@fullcalendar/icalendar` must upgrade their `ical.js` peerDependency to v2 ([#7734](https://github.com/fullcalendar/fullcalendar/issues/7734))
   - Users of `@fullcalendar/bootstrap5` must upgrade `bootstrap` to 5.2.x or newer and explicitly list it as as peerDependency
 - Visual-only changes
-  - For all table headers, no longer bold styling by default
+  - For all table headers, no longer bold styling by default. To restore, use the following CSS: `.fc-header-cell { font-weight: bold }`
   - Newlines in `allDayText` will be displayed as line breaks in TimeGrid
   - Disabled days (via `validRange`) now display text in TimeGrid and DayGrid header cells. Still no content within body cells.
   - The `multiMonthMinWidth` pixel value now *includes* the padding within each month tile
@@ -110,13 +110,8 @@ v7 is designed to be backwards-compatible with v6, but with the following minor 
   - The `weekNumbers:true` setting no longer displays week numbers in certain cases:
     - `resourceTimeGridDay` view, because x-axis header cell alongside resource names is reserved for a future label
     - `dayGridDay` view, `dayGridWeek` view, or any dayGrid-based view with only one row
-- Minor markup-related changes
-  - Removed `data-navlink` attribute in favor of `fc-navlink` className
-  - Using `role=link` instead of `<a>` to avoid accidentally inheriting styles
-  - Using `role=heading` instead of `<h2>` in toolbar title
-  - In `resourceDayGrid`-based views, and `resourceTimeGrid`-based views
-    - When `datesAboveResources:true`, the header resource below the header dates have `data-date` attributes
-    - When `datesAboveResources:false`, the header dates below the header resources have `data-resource-id` attributes
+- Markup-related changes
+  - See `MIGRATION-CUSTOM-CSS.md` for how to upgrade your custom CSS
 - FullCalendar-internal exports
   - `DayTable` from `'@fullcalendar/daygrid/internal'` removed
   - `DayTableView` from `'@fullcalendar/daygrid/internal'` renamed to `DayGridView`

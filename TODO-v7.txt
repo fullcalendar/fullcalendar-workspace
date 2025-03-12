@@ -4,6 +4,11 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+
+Must address https://github.com/fullcalendar/fullcalendar/issues/7852
+  "[v7-beta] Day cells do not expand to fit events in dayGridYear"
+
+
 Release Prep
 ------------
 

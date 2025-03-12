@@ -27,7 +27,7 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
     return (
       <ContentContainer
         tag="div"
-        // TODO: have lane classNames like 'fc-timegrid-lane'/'fc-timegrid-slot-lane'/'fc-timegrid-slat-lane'
+        // TODO: have lane classNames like 'fc-timegrid-lane'/'fc-timegrid-slot-lane'
         className={joinClassNames(
           'fc-timegrid-slot-lane fc-cell fc-liquid',
           props.borderStart && 'fc-border-s',
