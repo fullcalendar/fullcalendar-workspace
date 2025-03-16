@@ -1,4 +1,14 @@
 
+# next
+
+- put border on fc-view-outer div instead of fc-view div
+- removed classNames:
+  - fc-view-outer-liquid
+  - fc-view-outer-static
+  - fc-view-outer-aspect-ratio
+
+### END next
+
 :speaker: **Update!** We have finally reached the release-candidate phase where no further code changes are expected. We will monitor for bug reports over the next week or two while improving the docs, restoring linting, updating the browser-support matrix, and improving the upgrade guide, including creating a className/HTML upgrade guide for those with advanced calendar styling.
 
 [**See the final compiled v7 changelog &raquo;**](CHANGELOG-v7.md)
