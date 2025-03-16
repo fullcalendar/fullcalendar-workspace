@@ -25,12 +25,19 @@ const configMap = new Map<Element, SizeConfig>()
 const afterSizeCallbacks = new Set<() => void>()
 
 let isHandling = false // utilized by both techniques
+let isStalling = false
 
 export function afterSize(callback: () => void) {
-  if (isHandling) {
-    afterSizeCallbacks.add(callback)
-  } else {
-    callback() // TODO: should we queue microtask?
+  afterSizeCallbacks.add(callback)
+
+  // batch & then flush when not within ResizeObserver handler loop
+  // happens for watchers that die and report `null` as dimension
+  if (!isHandling && !isStalling) {
+    isStalling = true
+    requestAnimationFrame(() => {
+      isStalling = false
+      flushAfterSize()
+    })
   }
 }
 
