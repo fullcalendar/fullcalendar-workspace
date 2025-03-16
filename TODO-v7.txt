@@ -5,8 +5,66 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 
-Must address https://github.com/fullcalendar/fullcalendar/issues/7852
-  "[v7-beta] Day cells do not expand to fit events in dayGridYear"
+ASAP
+----
+
+css:
+  .fc-navlink -> .fc-nav-link
+  .fc-celldivider -> .fc-cell-divider
+  .fc-rowdivider -> .fc-row-divider
+  .fc-fill-start -> .fc-fill-s
+  .fc-fill-top -> .fc-fill-t
+  .fc-fill-x -> .fc-fill-h
+  .fc-fill-y -> .fc-fill-v
+  unused .fc-offscreen
+
+<ViewContainer>
+  have it set height?.. think about this more, how it works with 100% calendar-height
+  put border on .fc-view
+
+ResizeObserver problems
+  ResourceTimeline height:auto
+    premium/bundle/a11y-ci/resource-timeline-flat-height-auto.html
+    Not exactly sure why fixed-scrollbar would cause this
+    Comment-out all Scroller vertical watching,
+      then toggle time-area footer fixed-scrollbar. toggles problem
+  ResourceTimeline switching resourceTimelineDay -> resourceTimelineThreeDays
+    premium/bundle/a11y-ci/resource-timeline-flat-height.html
+    Happening when timeline-header height increases,
+      needs to change height of data-grid header, thus data-grid body
+  AFTER:
+    HACK in tests with Calendar::updateSize calls in callback, ULTIMATELY UNDO THOSE
+    Check https://codesandbox.io/p/sandbox/3vxvhg?file=%2Fsrc%2FApp.js
+
+css:
+  do .fci prefix
+  try to flatten all selectors
+  rethink unbolding heading cells
+  TimeGrid cols should be below slats:
+    https://fullcalendar.freshdesk.com/a/tickets/9203
+    Same with DayGrid, putting background-events underneath lines?
+    we don't want to force people to do semi-transparent colors
+  expose an equiv for fc-timegrid-event-harness-inset, to adjust padding
+  .fc-week-number?
+  .fc-timegrid-weeknumber -> .fc-timegrid-week-number (to match with .fc-daygrid-week-number)
+  .fc-table-header renamed?
+  .fc-timegrid-slots needed?
+  .fc-timegrid-slots-axis needed?
+  .fc-timeline-slots needed?
+  Change???
+    .fc-timegrid-allday-label-inner -> .fc-timegrid-allday-label .fc-cell-inner
+    .fc-timegrid-axis-inner         -> .fc-timegrid-axis .fc-cell-inner
+  use .fc-cell everywhere? .fc-row too? what's the objective?
+    update to include list-view, which uses th/td as well
+      put .fc-header-cell on days?
+      have left-to-right items be .fc-cell-inner?
+
+docs & site:
+  talk about updateSize doesn't needed because of ResizeObserver
+  Create aXe scrollbar workaround
+  Create new issues for various things, update total
+  write cookbook on common css customizations. .fc prefix not needed
+  Update roadmap
 
 
 Release Prep
@@ -133,11 +191,6 @@ General Performance
     https://github.com/fullcalendar/fullcalendar/issues/6199 (dateClick)
     V6 repro: https://codepen.io/arshaw/pen/OJKMLRR?editors=0010
     V7 has no real improvement
-General Positioning Quirkiness
-  ResourceTimeline with height:auto, ResizeObserver errors
-    HACK in tests with Calendar::updateSize calls in callback, ULTIMATELY UNDO THOSE
-    main-scroller heights are changing due to dynamic content, as well as footerscrollbars
-    see ResourceTimelineView.ts/ResourceTimelineLayoutNormal.ts
 General a11y
   Week numbers should be tabbable
   have separate settings for date-format hints? out of whack
@@ -179,11 +232,6 @@ Cross-browser
       does not happen when rigging up "P" keystroke
     Re-address borderBoxSize HACK
     resource-timeline header borders a little messed up
-  Safari
-    [bug] shows ResizeObserver loop warning
-      when moving from resourceTimelineDay -> resourceTimelineThreeDays
-        when timeline header gains a level and gets taller
-        probably related to totalBodyOuterHeight hackiness
   Chrome
     [bug] with timeline sticky multi-tier date text
       premium/bundle/examples/timeline-sticky-header.html
@@ -198,11 +246,6 @@ Notes
 -----
 
 we really do care about minimizing ResizeObserver loops, prevents flicker. so, safari is valuable
-how to debug ResizeObserver errors
-  1. set breakpoints at start/end of globalResizeObserver's handler
-  2. wait until warning happens
-  3. see entries that are passed to handler AFTER the warning,
-     these elements had size changed a second time in same loop
 flexbox row expansion works across scroll regions: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
 100% width within scroller applies to clientWidth only: https://codepen.io/arshaw/pen/GgKWRNZ?editors=1100
 Print
