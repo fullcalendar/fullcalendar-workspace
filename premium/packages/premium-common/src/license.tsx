@@ -11,8 +11,8 @@ const PRESET_LICENSE_KEYS = [
 const CSS = {
   position: 'absolute',
   zIndex: 99999,
-  bottom: '1px',
-  left: '1px',
+  bottom: '0',
+  left: '0',
   background: '#eee',
   borderColor: '#ddd',
   borderStyle: 'solid',

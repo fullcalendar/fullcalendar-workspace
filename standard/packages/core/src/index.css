@@ -6,7 +6,6 @@
 @import './styles/calendar-root';
 @import './styles/util'; // go after calendar-root border-box for higher precedence
 @import './styles/navlink';
-@import './styles/view-harness';
 @import './styles/event';
 @import './styles/bg';
 @import './styles/h-event';

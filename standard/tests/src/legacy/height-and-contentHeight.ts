@@ -47,7 +47,7 @@ import '../lib/dom-misc'
       if (heightProp === 'height') {
         heightEl = calendar.el
       } else {
-        heightEl = new CalendarWrapper(calendar).getViewEl()
+        heightEl = new CalendarWrapper(calendar).getViewOuterEl()
       }
 
       return calendar

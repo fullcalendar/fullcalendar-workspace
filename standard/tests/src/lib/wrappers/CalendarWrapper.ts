@@ -41,7 +41,7 @@ export class CalendarWrapper {
     return toolbarEl ? new ToolbarWrapper(toolbarEl) : null
   }
 
-  getViewContainerEl() {
+  getViewOuterEl() {
     return this.calendar.el.querySelector('.fc-view-outer') as HTMLElement
   }
 

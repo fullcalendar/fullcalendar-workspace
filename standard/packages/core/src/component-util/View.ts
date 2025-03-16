@@ -7,6 +7,7 @@ import { EventInteractionState } from '../interactions/event-interaction-state.j
 import { Duration } from '../datelib/duration.js'
 
 export interface ViewProps {
+  className?: string
   dateProfile: DateProfile
   businessHours: EventStore
   eventStore: EventStore

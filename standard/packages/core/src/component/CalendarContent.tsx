@@ -23,8 +23,8 @@ import { getNow } from '../reducers/current-date.js'
 import { CalendarInteraction } from '../calendar-utils.js'
 import { PureComponent } from '../vdom-util.js'
 import { getUniqueDomId } from '../util/dom-manip.js'
-import { ViewHarness } from './ViewHarness.js'
 import { CssDimValue, getIsHeightAuto } from '../scrollgrid/util.js'
+import { joinClassNames } from '../internal.js'
 
 export interface CalendarContentProps extends CalendarData {
   forPrint: boolean
@@ -93,14 +93,28 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
             {...toolbarProps}
           />
         )}
-        <ViewHarness
-          height={viewHeight}
-          heightLiquid={viewHeightLiquid}
-          aspectRatio={viewAspectRatio}
+        <div
+          className={joinClassNames(
+            'fc-view-outer fc-border fc-flex-col fc-rel',
+            viewHeightLiquid && 'fc-liquid',
+          )}
+          style={{ height: viewHeight }}
         >
-          {this.renderView(props, toolbarProps.title)}
+          {this.renderView(
+            props,
+            joinClassNames(
+              'fc-view',
+              (viewHeightLiquid || viewHeight) && 'fc-liquid',
+              viewAspectRatio != null && 'fc-fill',
+            ),
+            toolbarProps.title,
+          )}
           {this.buildAppendContent()}
-        </ViewHarness>
+          {/* Gives area within borders the aspect-ratio */}
+          {viewAspectRatio != null && (
+            <div style={{ paddingBottom: `${(1 / viewAspectRatio) * 100}%` }} />
+          )}
+        </div>
         {toolbarConfig.footer && (
           <Toolbar
             className="fc-footer-toolbar"
@@ -153,11 +167,12 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
     return createElement(Fragment, {}, ...children)
   }
 
-  renderView(props: CalendarContentProps, title: string) {
+  renderView(props: CalendarContentProps, className: string, title: string) {
     let { pluginHooks } = props
     let { viewSpec, toolbarConfig } = props
 
     let viewProps: ViewProps = {
+      className,
       dateProfile: props.dateProfile,
       businessHours: props.businessHours,
       eventStore: props.renderableEventStore, // !

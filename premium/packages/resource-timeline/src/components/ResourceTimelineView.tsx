@@ -133,6 +133,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
       <NowTimer unit={timerUnit}>
         {(nowDate: DateMarker, todayRange: DateRange) => {
           const baseProps = {
+            className: props.className,
             labelId: props.labelId,
             labelStr: props.labelStr,
             tDateProfile,

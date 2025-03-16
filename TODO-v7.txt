@@ -18,9 +18,9 @@ css:
   .fc-fill-y -> .fc-fill-v
   unused .fc-offscreen
 
-<ViewContainer>
-  have it set height?.. think about this more, how it works with 100% calendar-height
-  put border on .fc-view
+don't use <Scroller> when not necessary
+  ListView
+  MultiMonth
 
 ResizeObserver problems
   ResourceTimeline height:auto

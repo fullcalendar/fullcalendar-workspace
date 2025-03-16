@@ -1,4 +1,4 @@
-import { DateComponent, DateMarker, DateRange, EventRangeProps, memoize, NowTimer, ViewProps } from "@fullcalendar/core/internal"
+import { DateComponent, DateMarker, DateRange, EventRangeProps, joinClassNames, memoize, NowTimer, ViewProps } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
 import { buildDateRowConfigs, createDayHeaderFormatter, DayTableSlicer } from '@fullcalendar/daygrid/internal'
 import { AllDaySplitter } from "../AllDaySplitter.js"
@@ -88,7 +88,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
               todayRange={todayRange}
               cells={dayTableModel.cellRows[0]}
               forPrint={props.forPrint}
-              className='fc-timegrid'
+              className={joinClassNames('fc-timegrid', props.className)}
 
               // header content
               headerTiers={headerTiers}

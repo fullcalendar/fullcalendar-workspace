@@ -62,6 +62,7 @@ import { HeaderRow } from './spreadsheet/HeaderRow.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
 
 interface ResourceTimelineLayoutNormalProps {
+  className?: string
   labelId: string | undefined
   labelStr: string | undefined
 
@@ -290,7 +291,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
     return (
       <ViewContainer
-        className='fc-resource-timeline fc-flex-col fc-border'
         viewSpec={viewSpec}
         attrs={{
           role: hasNesting ? 'treegrid' : 'grid', // TODO: DRY
@@ -298,6 +298,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           'aria-label': props.labelStr,
           'aria-labelledby': props.labelId,
         }}
+        className={joinClassNames(
+          'fc-resource-timeline fc-flex-col',
+          props.className,
+        )}
       >
         <ResizableTwoCol
           initialStartWidth={props.initialSpreadsheetWidth}

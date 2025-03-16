@@ -13,6 +13,7 @@ import {
   formatDayString,
   getIsHeightAuto,
   intersectRanges,
+  joinClassNames,
   memoize,
   MountArg,
   NowTimer,
@@ -66,7 +67,7 @@ export class ListView extends DateComponent<ViewProps, ListViewState> {
     return (
       <ViewContainer
         viewSpec={context.viewSpec}
-        className='fc-list fc-flex-col fc-border'
+        className={joinClassNames('fc-list fc-flex-col', props.className)}
         elRef={this.setRootEl}
       >
         <Scroller // TODO: don't need heavyweight component

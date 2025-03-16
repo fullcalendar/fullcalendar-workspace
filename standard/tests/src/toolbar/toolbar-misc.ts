@@ -24,7 +24,7 @@ describe('toolbar rendering', () => {
     })
 
     const calendarWrapper = new CalendarWrapper(calendar)
-    const viewContainerEl = calendarWrapper.getViewContainerEl()
+    const viewContainerEl = calendarWrapper.getViewOuterEl()
 
     expect(viewContainerEl).not.toHaveAttr('aria-labelledby')
   })

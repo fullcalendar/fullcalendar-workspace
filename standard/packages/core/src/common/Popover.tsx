@@ -150,7 +150,10 @@ export class Popover extends BaseComponent<PopoverProps> {
       popoverLeft = Math.min(popoverLeft, document.documentElement.clientWidth - PADDING_FROM_VIEWPORT - popoverDims.width)
       popoverLeft = Math.max(popoverLeft, PADDING_FROM_VIEWPORT)
 
-      let origin = rootEl.offsetParent.getBoundingClientRect()
+      // HACK
+      // could use .offsetParent, however, the bounding rect includes border, so off-by-one
+      let origin = alignEl.closest('.fc-view').getBoundingClientRect()
+
       applyStyle(rootEl, {
         top: popoverTop - origin.top,
         left: popoverLeft - origin.left,

@@ -11,7 +11,7 @@ describe('updateSize method', () => {
 
     $el.show()
     calendar.updateSize()
-    expect(calendarWrapper.getViewContainerEl().offsetHeight).toBeCloseTo(600, 0)
+    expect(calendarWrapper.getViewOuterEl().offsetHeight).toBeCloseTo(600, 0)
 
     $el.remove()
   })

@@ -56,7 +56,7 @@ describe('constructor', () => {
     it('should contain a view-container el', () => {
       let calendar = initCalendar()
       let calendarWrapper = new CalendarWrapper(calendar)
-      expect(calendarWrapper.getViewContainerEl()).toBeTruthy()
+      expect(calendarWrapper.getViewOuterEl()).toBeTruthy()
     })
   })
 })
