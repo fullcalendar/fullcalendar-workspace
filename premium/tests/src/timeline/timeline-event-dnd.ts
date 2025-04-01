@@ -290,6 +290,7 @@ describe('timeline-view event drag-n-drop', () => {
         events: [
           { title: 'event0', className: 'event0', start: '2015-11-27T09:00', end: '2015-11-27T10:00', resourceId: 'b' },
         ],
+        scrollTime: '04:00:00',
         eventDrop:
           (dropSpy = spyCall((arg) => {
             expect(arg.event.start).toEqualDate('2015-11-27T05:00Z')
