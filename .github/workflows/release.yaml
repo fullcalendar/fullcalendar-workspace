@@ -77,7 +77,7 @@ jobs:
         if: success() && !inputs.skip_version_bump
         run: |
           pnpm run version-sync
-          git diff-index --quiet HEAD || \
+          git diff --cached --quiet || \
             git commit -m 'sync versions'
 
       - name: Build
@@ -110,7 +110,7 @@ jobs:
 
           echo "Updating subrepo configs..."
           pnpm run meta:update
-          git diff-index --quiet HEAD || \
+          git diff --cached --quiet || \
             git commit -m 'meta:update'
 
           echo "Checking Git status (for sync-repos debugging)..."
