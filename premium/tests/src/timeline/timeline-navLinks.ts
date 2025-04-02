@@ -34,7 +34,7 @@ describe('timeline navLinks', () => {
           left: 'prev,next',
           center: 'title',
           // determines the views that are available to switch to
-          right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth'
+          right: 'resourceTimelineDay,resourceTimelineWeek,resourceTimelineMonth',
         },
       })
       $('a[data-navlink]').simulate('click')
