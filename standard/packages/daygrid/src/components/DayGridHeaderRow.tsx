@@ -42,7 +42,7 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
             isSticky={props.isSticky}
             borderStart={Boolean(cellI)}
             colWidth={props.colWidth}
-            innerHeightRef={props.innerHeightRef}
+            innerHeightRef={this.innerHeightRefMap.createRef(dataConfig.key)}
           />
         ))}
       </div>
