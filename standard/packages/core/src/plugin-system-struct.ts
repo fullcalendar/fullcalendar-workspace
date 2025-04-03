@@ -18,7 +18,7 @@ import { RecurringType } from './structs/recurring-event.js'
 import { NamedTimeZoneImplClass } from './datelib/timezone.js'
 import { ElementDraggingClass } from './interactions/ElementDragging.js'
 import { ComponentChildren } from './preact.js'
-import { GenericRefiners, GenericListenerRefiners, Dictionary } from './options.js'
+import { GenericRefiners, GenericListenerRefiners, Dictionary, CalendarOptions } from './options.js'
 import { CalendarData } from './reducers/data-types.js'
 import { ScrollerSyncerClass } from './scrollgrid/ScrollerSyncerInterface.js'
 
@@ -59,6 +59,7 @@ export interface PluginDefInput {
   scrollerSyncerClass?: ScrollerSyncerClass
   listenerRefiners?: GenericListenerRefiners
   optionRefiners?: GenericRefiners
+  optionDefaults?: CalendarOptions
   propSetHandlers?: { [propName: string]: (val: any, context: CalendarData) => void } // TODO: make better types
 }
 
@@ -95,6 +96,7 @@ export interface PluginHooks {
   scrollerSyncerClass: ScrollerSyncerClass | null
   listenerRefiners: GenericListenerRefiners
   optionRefiners: GenericRefiners
+  optionDefaults: CalendarOptions[]
   propSetHandlers: { [propName: string]: (val: any, context: CalendarData) => void }
 }
 

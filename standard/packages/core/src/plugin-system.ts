@@ -1,6 +1,7 @@
 import { guid } from './util/misc.js'
 import { PluginDefInput, PluginDef, PluginHooks } from './plugin-system-struct.js'
 import { isArraysEqual } from './util/array.js'
+import { CalendarOptions } from './options.js'
 
 // TODO: easier way to add new hooks? need to update a million things
 
@@ -41,6 +42,7 @@ export function createPlugin(input: PluginDefInput): PluginDef {
     scrollerSyncerClass: input.scrollerSyncerClass || null,
     listenerRefiners: input.listenerRefiners || {},
     optionRefiners: input.optionRefiners || {},
+    optionDefaults: input.optionDefaults ? [input.optionDefaults] : [],
     propSetHandlers: input.propSetHandlers || {},
   }
 }
@@ -80,6 +82,7 @@ function buildPluginHooks(pluginDefs: PluginDef[], globalDefs: PluginDef[]): Plu
     scrollerSyncerClass: null,
     listenerRefiners: {},
     optionRefiners: {},
+    optionDefaults: [],
     propSetHandlers: {},
   }
 
@@ -123,6 +126,16 @@ export function buildBuildPluginHooks() { // memoizes
   }
 }
 
+export function extractPluginOptionsDefaults(pluginDefs: PluginDef[] = []): CalendarOptions[] {
+  const res: CalendarOptions[] = []
+
+  for (const pluginDef of pluginDefs) {
+    res.push(...pluginDef.optionDefaults)
+  }
+
+  return res
+}
+
 function combineHooks(hooks0: PluginHooks, hooks1: PluginHooks): PluginHooks {
   return {
     premiumReleaseDate: compareOptionalDates(hooks0.premiumReleaseDate, hooks1.premiumReleaseDate),
@@ -157,6 +170,7 @@ function combineHooks(hooks0: PluginHooks, hooks1: PluginHooks): PluginHooks {
     scrollerSyncerClass: hooks0.scrollerSyncerClass || hooks1.scrollerSyncerClass,
     listenerRefiners: { ...hooks0.listenerRefiners, ...hooks1.listenerRefiners },
     optionRefiners: { ...hooks0.optionRefiners, ...hooks1.optionRefiners },
+    optionDefaults: hooks0.optionDefaults.concat(hooks1.optionDefaults),
     propSetHandlers: { ...hooks0.propSetHandlers, ...hooks1.propSetHandlers },
   }
 }

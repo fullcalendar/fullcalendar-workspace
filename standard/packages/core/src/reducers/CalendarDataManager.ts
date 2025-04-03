@@ -1,7 +1,7 @@
 import { buildLocale, RawLocaleInfo, organizeRawLocales, LocaleSingularArg } from '../datelib/locale.js'
 import { memoize, memoizeObjArg } from '../util/memoize.js'
 import { Action } from './Action.js'
-import { buildBuildPluginHooks } from '../plugin-system.js'
+import { buildBuildPluginHooks, extractPluginOptionsDefaults } from '../plugin-system.js'
 import { PluginHooks } from '../plugin-system-struct.js'
 import { DateEnv } from '../datelib/env.js'
 import { CalendarImpl } from '../api/CalendarImpl.js'
@@ -373,7 +373,7 @@ export class CalendarDataManager {
     }
 
     let {
-      refinedOptions, pluginHooks, localeDefaults, availableLocaleData, extra,
+      refinedOptions, pluginHooks, pluginOptionDefaults, localeDefaults, availableLocaleData, extra,
     } = this.processRawCalendarOptions(optionOverrides, dynamicOptionOverrides)
 
     warnUnknownOptions(extra)
@@ -396,6 +396,7 @@ export class CalendarDataManager {
     return this.stableCalendarOptionsData = {
       calendarOptions: refinedOptions,
       pluginHooks,
+      pluginOptionDefaults,
       dateEnv,
       viewSpecs,
       theme,
@@ -416,6 +417,7 @@ export class CalendarDataManager {
     let availableRawLocales = availableLocaleData.map
     let localeDefaults = this.buildLocale(locale || availableLocaleData.defaultCode, availableRawLocales).options
     let pluginHooks = this.buildPluginHooks(optionOverrides.plugins || [], globalPlugins)
+    let pluginOptionDefaults = extractPluginOptionsDefaults((optionOverrides.plugins || []).concat(globalPlugins))
     let refiners = this.currentCalendarOptionsRefiners = {
       ...BASE_OPTION_REFINERS,
       ...CALENDAR_LISTENER_REFINERS,
@@ -427,6 +429,7 @@ export class CalendarDataManager {
 
     let raw = mergeRawOptions([
       BASE_OPTION_DEFAULTS,
+      ...pluginOptionDefaults,
       localeDefaults,
       optionOverrides,
       dynamicOptionOverrides,
@@ -470,6 +473,7 @@ export class CalendarDataManager {
       rawOptions: this.currentCalendarOptionsInput,
       refinedOptions: this.currentCalendarOptionsRefined,
       pluginHooks,
+      pluginOptionDefaults,
       availableLocaleData,
       localeDefaults,
       extra,
@@ -491,6 +495,7 @@ export class CalendarDataManager {
     let { refinedOptions, extra } = this.processRawViewOptions(
       viewSpec,
       optionsData.pluginHooks,
+      optionsData.pluginOptionDefaults,
       optionsData.localeDefaults,
       optionOverrides,
       dynamicOptionOverrides,
@@ -527,12 +532,14 @@ export class CalendarDataManager {
   processRawViewOptions(
     viewSpec: ViewSpec,
     pluginHooks: PluginHooks,
+    pluginOptionDefaults: CalendarOptions[],
     localeDefaults: CalendarOptions,
     optionOverrides: CalendarOptions,
     dynamicOptionOverrides: CalendarOptions,
   ) {
     let raw = mergeRawOptions([
       BASE_OPTION_DEFAULTS,
+      ...pluginOptionDefaults,
       viewSpec.optionDefaults,
       localeDefaults,
       optionOverrides,

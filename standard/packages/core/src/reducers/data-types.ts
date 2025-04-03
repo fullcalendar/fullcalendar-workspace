@@ -41,6 +41,7 @@ export interface CalendarOptionsData {
   dateEnv: DateEnv
   theme: Theme
   pluginHooks: PluginHooks
+  pluginOptionDefaults: CalendarOptions[]
   viewSpecs: ViewSpecHash
 }
 
