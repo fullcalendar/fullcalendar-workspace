@@ -79,15 +79,15 @@ Rarely used. Just inline this?
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
-.fc-cell {
+.fc-cell { /* fc-tight... should be on row too??? */
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.fc-cell-inner {
-  flex-shrink: 0; // so that cell (whose height is controlled the row) does not compress
+.fc-cell-inner { /* fc-rigid ? */
+  flex-shrink: 0; // so that cell (whose height is controlled by the row) does not compress
   white-space: nowrap;
-  overflow: hidden;
+  overflow: hidden; // should this be on here?
 }
 
 .fc-rowdivider,

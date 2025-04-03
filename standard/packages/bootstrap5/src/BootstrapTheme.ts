@@ -13,7 +13,7 @@ BootstrapTheme.prototype.classes = {
   popoverContent: 'popover-body',
 }
 
-BootstrapTheme.prototype.baseIconClass = 'bi'
+BootstrapTheme.prototype.baseIconClass = 'bi' // TODO: kill
 BootstrapTheme.prototype.iconClasses = {
   close: 'bi-x-lg',
   prev: 'bi-chevron-left',
@@ -28,7 +28,18 @@ BootstrapTheme.prototype.rtlIconClasses = {
   nextYear: 'bi-chevron-double-left',
 }
 
-// wtf
+/*
+Allows: {
+  buttonIcons: {
+    next: 'chevron-left' // -> 'bi-chevron-left
+  },
+  customButtons: {
+    somethingCool: {
+      icon: 'chevron-right' // -> 'bi-chevron-right
+    }
+  }
+}
+*/
 BootstrapTheme.prototype.iconOverrideOption = 'buttonIcons' // TODO: make TS-friendly
 BootstrapTheme.prototype.iconOverrideCustomButtonOption = 'icon'
 BootstrapTheme.prototype.iconOverridePrefix = 'bi-'

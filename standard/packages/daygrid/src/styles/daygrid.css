@@ -3,6 +3,9 @@
 // fc-daygrid-row
 //
 
+/*
+CORE somehow
+*/
 .fc-daygrid-row-print { // (print)
   // Print view squishes width which results in overly tall cells that can't adapt to new width
   // hardcode a value that looks good in portrait and landscape
@@ -14,6 +17,10 @@
 // fc-daygrid-row > fg > cell
 //
 
+/*
+THEME
+dayCellClassNames({ isToday })
+*/
 .fc-daygrid-day.fc-day-today { // (today)
   // only in body cells, not header cells
   background-color: var(--fc-today-bg-color);
@@ -23,11 +30,27 @@
 // fc-daygrid-row > fg > cell > header
 //
 
+/*
+THEME
+
+classNames: {
+  dayNumberOuter: 'asdf'
+  dayNumber: 'asdf'
+}
+
+dayNumberOuterClassName
+dayNumberClassName --- rename from...!?? --- dayCellClassNames --- already for day-NUMBER, not for the day "top" area
+  but TimeGrid allows injecting content this way
+*/
 .fc-daygrid-day-header {
   display: flex;
   flex-direction: row-reverse;
 }
 
+/*
+THEME
+NEW: dayNumberOuterClassName({ isToday })
+*/
 .fc-day-other .fc-daygrid-day-header { // (day-other)
   opacity: 0.3;
 }
@@ -36,11 +59,19 @@
 // fc-daygrid-row > fg > cell > header > number
 //
 
+/*
+THEME
+dayNumberClassName
+*/
 .fc-daygrid-day-number {
   position: relative;
   padding: 4px;
 }
 
+/*
+THEME
+monthAndDayNumberClassName
+*/
 .fc-daygrid-month-start { // (month-start) on .fc-daygrid-day-number
   font-weight: bold;
   font-size: 1.1em;
@@ -51,16 +82,26 @@
 //
 
 .fc-daygrid-day-body {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1px;
+  display: flex; // CORE
+  flex-direction: column; // CORE
+  margin-bottom: 1px; /* THEME
+    NEED TO RETHINK how sizing works in JS first
+    use its own element, for measurement
+  */
 }
 
+/*
+for all-day i think
+NEED TO RETHINK how sizing works in JS first
+*/
 .fc-daygrid-day-body-tall { // (tall)
   min-height: 2em;
   margin-bottom: 1em;
 }
 
+/*
+NEED TO RETHINK how sizing works in JS first
+*/
 .fc-daygrid-day-body:only-child { // (without header)
   margin-top: 2px;
 }
@@ -69,6 +110,14 @@
 // fc-daygrid-row > fg > cell > main > more-link
 //
 
+/*
+THEME
+views: {
+  dayGrid: {
+    moreLinkClassName: ''
+  }
+}
+*/
 .fc-daygrid-more-link {
   position: relative;
   max-width: 100%;
@@ -85,10 +134,21 @@
   }
 }
 
+/*
+THEME
+views: {
+  dayGrid: {
+    moreLinkClassName({ cellWidth }) {
+      // based on arbitrary width threshold!!??
+    }
+  }
+}
+*/
 .fc-daygrid-more-link-button { // (button)
   align-self: flex-start;
 }
 
+// SAME
 .fc-daygrid-more-link-block { // (block)
   // looks like an event
   border: 1px solid var(--fc-event-border-color);
@@ -99,6 +159,14 @@
 // fc-daygrid-row > week-number
 //
 
+/*
+THEME
+views: {
+  dayGrid: {
+    weekNumberClassName: ''
+  }
+}
+*/
 .fc-daygrid-week-number {
   position: absolute;
   z-index: 1; // HACK
@@ -122,6 +190,9 @@
 // more-popover > body
 //
 
+/*
+THEME
+*/
 .fc-more-popover .fc-popover-body {
   min-width: 220px;
   padding: 10px;
