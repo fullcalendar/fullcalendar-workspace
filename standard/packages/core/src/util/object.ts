@@ -1,5 +1,5 @@
 import { isMaybeObjectsEqual } from '../options.js'
-import { joinComplexClassNames } from './html.js'
+import { joinClassNames } from './html.js'
 import { CustomContentGenerator } from '../common/render-hook.js'
 
 const { hasOwnProperty } = Object.prototype
@@ -47,7 +47,7 @@ export function mergeProps(propObjs, complexPropsMap?): any {
       if (name in dest) {
         // special-case merging
         if (classNamesRe.test(name)) {
-          dest[name] = joinComplexClassNames(props[name], dest[name])
+          dest[name] = joinFuncishClassNames(props[name], dest[name])
         } else if (contentRe.test(name)) {
           dest[name] = mergeContentInjectors(props[name], dest[name])
         } else if (lifecycleRe.test(name)) {
@@ -250,6 +250,44 @@ export function collectFromHash<Item>(
 
 // Special-case handling
 // -------------------------------------------------------------------------------------------------
+
+type Falsy = false | null | undefined
+type ClassName = string | number | Falsy
+type ArrayishClassNames = ClassName[] | ClassName
+type FuncishClassNames = ((arg: any) => ArrayishClassNames) | ArrayishClassNames
+
+function joinFuncishClassNames(
+  input0: FuncishClassNames, // added first
+  input1: FuncishClassNames, // added second
+): FuncishClassNames {
+  const isFunc0 = typeof input0 === 'function'
+  const isFunc1 = typeof input1 === 'function'
+
+  if (isFunc0 || isFunc1) {
+    return (arg: any) => {
+      return joinArrayishClassNames(
+        isFunc0 ? input0(arg) : input0,
+        isFunc1 ? input1(arg) : input1,
+      )
+    }
+  }
+
+  return joinArrayishClassNames(input0 as ArrayishClassNames, input1 as ArrayishClassNames)
+}
+
+function joinArrayishClassNames(...args: ArrayishClassNames[]): string {
+  const simpleArgs: ClassName[] = []
+
+  for (const arg of args) {
+    if (Array.isArray(arg)) {
+      simpleArgs.push(...arg)
+    } else {
+      simpleArgs.push(arg)
+    }
+  }
+
+  return joinClassNames(...simpleArgs)
+}
 
 function mergeContentInjectors(
   contentGenerator0: CustomContentGenerator<any>, // fallback

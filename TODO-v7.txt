@@ -80,6 +80,7 @@ Upgrade Guide
 -------------
 
 Note that scrollgrid will be removed in v7
+Accept falsy className inputs. will remove
 
 Release Prep
 ------------
