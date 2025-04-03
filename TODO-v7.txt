@@ -9,6 +9,7 @@ ASAP
 ----
 
 package.json for classic-theme
+importmap.public.html needs to be updated. accesses published files
 
 Sticky header dates look terrible in timegrid/daygrid
 Look for emphasizeWeeks/fc-timeline-slot-em ... should become ({ isMajor })

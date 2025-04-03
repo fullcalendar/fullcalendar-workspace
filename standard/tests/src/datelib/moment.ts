@@ -1,5 +1,6 @@
 import { Calendar } from '@fullcalendar/core'
 import momentPlugin, { toMoment, toMomentDuration } from '@fullcalendar/moment'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import 'moment/locale/es' // only test spanish
@@ -7,14 +8,14 @@ import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 
 describe('moment plugin', () => {
-  const PLUGINS = [dayGridPlugin, timeGridPlugin, momentPlugin]
+  const PLUGINS = [classicThemePlugin, dayGridPlugin, timeGridPlugin, momentPlugin]
   pushOptions({ plugins: PLUGINS })
 
   describe('toMoment', () => {
     describe('timezone handling', () => {
       it('transfers UTC', () => {
         let calendar = new Calendar(document.createElement('div'), {
-          plugins: [dayGridPlugin],
+          plugins: [classicThemePlugin, dayGridPlugin],
           events: [{ start: '2018-09-05T12:00:00', end: '2018-09-05T18:00:00' }],
           timeZone: 'UTC',
         })
@@ -27,7 +28,7 @@ describe('moment plugin', () => {
 
       it('transfers local', () => {
         let calendar = new Calendar(document.createElement('div'), {
-          plugins: [dayGridPlugin],
+          plugins: [classicThemePlugin, dayGridPlugin],
           events: [{ start: '2018-09-05T12:00:00', end: '2018-09-05T18:00:00' }],
           timeZone: 'local',
         })
@@ -41,7 +42,7 @@ describe('moment plugin', () => {
 
     it('transfers locale', () => {
       let calendar = new Calendar(document.createElement('div'), {
-        plugins: [dayGridPlugin],
+        plugins: [classicThemePlugin, dayGridPlugin],
         events: [{ start: '2018-09-05T12:00:00', end: '2018-09-05T18:00:00' }],
         locale: 'es',
       })
@@ -54,7 +55,7 @@ describe('moment plugin', () => {
   describe('toDuration', () => {
     it('converts correctly', () => {
       let calendar = new Calendar(document.createElement('div'), {
-        plugins: [dayGridPlugin],
+        plugins: [classicThemePlugin, dayGridPlugin],
         defaultTimedEventDuration: '05:00',
         defaultAllDayEventDuration: { days: 3 },
       })

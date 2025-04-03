@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventInput } from '@fullcalendar/core';
+import classicThemePlugin from '@fullcalendar/classic-theme';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -17,6 +18,7 @@ import * as CalendarActions from './actions';
 export class AppComponent {
   calendarOptions: CalendarOptions = {
     plugins: [
+      classicThemePlugin,
       interactionPlugin,
       dayGridPlugin,
       timeGridPlugin,

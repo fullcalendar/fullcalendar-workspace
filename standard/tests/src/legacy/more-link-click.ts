@@ -1,5 +1,6 @@
 import dayGridPlugin from '@fullcalendar/daygrid'
 import momentTimeZonePlugin from '@fullcalendar/moment-timezone'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 
 describe('moreLinkClick', () => {
@@ -176,7 +177,7 @@ describe('moreLinkClick', () => {
 
   describe('with moment-timezone resolution', () => {
     pushOptions({
-      plugins: [dayGridPlugin, momentTimeZonePlugin],
+      plugins: [classicThemePlugin, dayGridPlugin, momentTimeZonePlugin],
       timeZone: 'Asia/Hong_Kong',
     })
 

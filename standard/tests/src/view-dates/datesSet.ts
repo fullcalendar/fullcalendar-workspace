@@ -1,4 +1,5 @@
 import { Calendar } from '@fullcalendar/core'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
 describe('datesSet', () => {
@@ -60,7 +61,7 @@ describe('datesSet', () => {
     let fireCnt = 0
     let options = {
       ...getCurrentOptions(),
-      plugins: [dayGridPlugin],
+      plugins: [classicThemePlugin, dayGridPlugin],
       datesSet() {
         fireCnt += 1
       },
@@ -71,7 +72,7 @@ describe('datesSet', () => {
     expect(fireCnt).toBe(1)
     calendar.resetOptions({
       ...options,
-      plugins: [dayGridPlugin],
+      plugins: [classicThemePlugin, dayGridPlugin],
     })
     expect(fireCnt).toBe(1)
     calendar.destroy()

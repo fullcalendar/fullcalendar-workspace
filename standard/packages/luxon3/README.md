@@ -25,12 +25,14 @@ Instantiate a Calendar with the necessary plugin:
 import { Calendar } from '@fullcalendar/core'
 import luxon3Plugin from '@fullcalendar/luxon3'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
   plugins: [
     luxon3Plugin,
-    dayGridPlugin
+    dayGridPlugin,
+    classicThemePlugin
   ],
   initialView: 'dayGridMonth',
   titleFormat: 'LLLL d, yyyy', // use Luxon format strings

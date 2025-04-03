@@ -1,6 +1,7 @@
 <script lang='ts'>
 import { Component, Vue } from 'vue-property-decorator'
 import { CalendarOptions, EventApi, DateSelectArg, EventClickArg } from '@fullcalendar/core'
+import classicThemePlugin from '@fullcalendar/classic-theme';
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -16,6 +17,7 @@ export default class DemoApp extends Vue {
 
   private calendarOptions: CalendarOptions = {
     plugins: [
+      classicThemePlugin,
       dayGridPlugin,
       timeGridPlugin,
       interactionPlugin // needed for dateClick

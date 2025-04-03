@@ -34,14 +34,16 @@ Instantiate a Calendar with plugins and options:
 
 ```js
 import { Calendar } from '@fullcalendar/core'
-import interactionPlugin from '@fullcalendar/interaction'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import interactionPlugin from '@fullcalendar/interaction'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
   plugins: [
-    interactionPlugin,
-    dayGridPlugin
+    classicThemePlugin,
+    dayGridPlugin,
+    interactionPlugin
   ],
   initialView: 'timeGridWeek',
   editable: true,

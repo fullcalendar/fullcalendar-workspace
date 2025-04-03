@@ -1,11 +1,12 @@
 import { Calendar } from '@fullcalendar/core'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
 function buildOptions() {
   return {
-    plugins: [timeGridPlugin],
+    plugins: [timeGridPlugin, classicThemePlugin],
     initialView: 'timeGridWeek',
     initialDate: '2019-04-01',
     scrollTime: '00:00',

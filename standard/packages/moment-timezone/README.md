@@ -25,12 +25,14 @@ Instantiate a Calendar with the necessary plugin:
 import { Calendar } from '@fullcalendar/core'
 import momentTimezonePlugin from '@fullcalendar/moment-timezone'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
   plugins: [
     momentTimezonePlugin,
-    dayGridPlugin
+    dayGridPlugin,
+    classicThemePlugin
   ],
   initialView: 'dayGridMonth',
   timeZone: 'America/New_York' // enhance named time zones

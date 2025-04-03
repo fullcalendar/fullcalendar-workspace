@@ -1,4 +1,5 @@
 import { Calendar } from '@fullcalendar/core'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import interactionPlugin from '@fullcalendar/interaction'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -44,7 +45,7 @@ describe('dragging events between calendars', () => {
     let eventEl
 
     calendar0 = new Calendar(el0, {
-      plugins: [interactionPlugin, dayGridPlugin],
+      plugins: [classicThemePlugin, interactionPlugin, dayGridPlugin],
       timeZone: 'UTC',
       initialDate: DEFAULT_DATE,
       initialView: 'dayGridMonth',
@@ -62,7 +63,7 @@ describe('dragging events between calendars', () => {
     })
 
     calendar1 = new Calendar(el1, {
-      plugins: [interactionPlugin, dayGridPlugin],
+      plugins: [classicThemePlugin, interactionPlugin, dayGridPlugin],
       timeZone: 'UTC',
       initialDate: DEFAULT_DATE,
       initialView: 'dayGridMonth',
@@ -111,7 +112,7 @@ describe('dragging events between calendars', () => {
 
   it('works between timeGrid views', (done) => {
     calendar0 = new Calendar(el0, {
-      plugins: [interactionPlugin, timeGridPlugin],
+      plugins: [classicThemePlugin, interactionPlugin, timeGridPlugin],
       scrollTime: '00:00',
       timeZone: 'UTC',
       initialDate: DEFAULT_DATE,
@@ -123,7 +124,7 @@ describe('dragging events between calendars', () => {
     })
 
     calendar1 = new Calendar(el1, {
-      plugins: [interactionPlugin, timeGridPlugin],
+      plugins: [classicThemePlugin, interactionPlugin, timeGridPlugin],
       scrollTime: '00:00',
       timeZone: 'UTC',
       initialDate: DEFAULT_DATE,

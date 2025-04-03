@@ -24,6 +24,7 @@
 import { mapGetters, mapActions } from 'vuex'
 
 import FullCalendar from '@fullcalendar/vue'
+import classicThemePlugin from '@fullcalendar/classic-theme';
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -53,7 +54,12 @@ export default {
         dayMaxEvents: true,
         events: this.events,
         weekends: this.weekendsVisible,
-        plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+        plugins: [
+          classicThemePlugin,
+          dayGridPlugin,
+          timeGridPlugin,
+          interactionPlugin,
+        ],
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',

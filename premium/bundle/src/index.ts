@@ -1,4 +1,5 @@
 import { globalPlugins } from '@fullcalendar/core'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import interactionPlugin from '@fullcalendar/interaction'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -13,6 +14,7 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 
 globalPlugins.push(
+  classicThemePlugin,
   interactionPlugin,
   dayGridPlugin,
   timeGridPlugin,

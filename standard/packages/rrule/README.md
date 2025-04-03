@@ -25,12 +25,14 @@ Instantiate a Calendar with the necessary plugin:
 import { Calendar } from '@fullcalendar/core'
 import rrulePlugin from '@fullcalendar/rrule'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
   plugins: [
     rrulePlugin,
-    dayGridPlugin
+    dayGridPlugin,
+    classicThemePlugin
   ],
   initialView: 'dayGridMonth',
   events: [

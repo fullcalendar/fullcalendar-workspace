@@ -19,12 +19,14 @@ Instantiate a Calendar with the necessary plugins and options:
 import { Calendar } from '@fullcalendar/core'
 import interactionPlugin from '@fullcalendar/interaction'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
   plugins: [
     interactionPlugin,
-    dayGridPlugin
+    dayGridPlugin,
+    classicThemePlugin
   ],
   initialView: 'dayGridMonth',
   editable: true, // important for activating event interactions!

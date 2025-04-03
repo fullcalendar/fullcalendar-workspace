@@ -1,4 +1,5 @@
 import { Calendar } from '@fullcalendar/core';
+import classicThemePlugin from '@fullcalendar/classic-theme';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -10,7 +11,14 @@ document.addEventListener('DOMContentLoaded', function() {
   let calendarEl = document.getElementById('calendar');
 
   let calendar = new Calendar(calendarEl, {
-    plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin, momentPlugin ],
+    plugins: [
+      classicThemePlugin,
+      interactionPlugin,
+      dayGridPlugin,
+      timeGridPlugin,
+      listPlugin,
+      momentPlugin,
+    ],
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',

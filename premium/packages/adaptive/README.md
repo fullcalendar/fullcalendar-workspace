@@ -18,12 +18,14 @@ Instantiate a Calendar with the necessary plugin:
 ```js
 import { Calendar } from '@fullcalendar/core'
 import adaptivePlugin from '@fullcalendar/adaptive'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
   plugins: [
     adaptivePlugin,
+    classicThemePlugin,
     dayGridPlugin
   ],
   initialView: 'dayGridMonth'

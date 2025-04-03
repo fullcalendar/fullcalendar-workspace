@@ -26,6 +26,7 @@
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
     "@fullcalendar/adaptive": "workspace:7.0.0-rc.0",
+    "@fullcalendar/classic-theme": "workspace:7.0.0-rc.0",
     "@fullcalendar/core": "workspace:7.0.0-rc.0",
     "@fullcalendar/daygrid": "workspace:7.0.0-rc.0",
     "@fullcalendar/list": "workspace:7.0.0-rc.0",

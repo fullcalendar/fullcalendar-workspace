@@ -2,11 +2,12 @@ import { Calendar } from '@fullcalendar/core'
 import esLocale from '@fullcalendar/core/locales/es'
 import luxonPlugin, { toLuxonDateTime, toLuxonDuration } from '@fullcalendar/luxon3'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import { testTimeZoneImpl } from '../lib/timeZoneImpl.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
 describe('luxon plugin', () => {
-  const PLUGINS = [luxonPlugin, dayGridPlugin] // for `new Calendar`
+  const PLUGINS = [luxonPlugin, dayGridPlugin, classicThemePlugin] // for `new Calendar`
 
   pushOptions({ // for initCalendar
     plugins: PLUGINS,

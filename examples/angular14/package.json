@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^14.1.0",
     "@angular/router": "^14.1.0",
     "@fullcalendar/angular": "workspace:7.0.0-rc.0",
+    "@fullcalendar/classic-theme": "workspace:7.0.0-rc.0",
     "@fullcalendar/core": "workspace:7.0.0-rc.0",
     "@fullcalendar/daygrid": "workspace:7.0.0-rc.0",
     "@fullcalendar/interaction": "workspace:7.0.0-rc.0",

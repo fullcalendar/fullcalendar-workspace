@@ -19,12 +19,14 @@ Instantiate a Calendar with the necessary plugin:
 import { Calendar } from '@fullcalendar/core'
 import googleCalendarPlugin from '@fullcalendar/google-calendar'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
   plugins: [
     googleCalendarPlugin,
-    dayGridPlugin
+    dayGridPlugin,
+    classicThemePlugin
   ],
   initialView: 'dayGridMonth',
   events: {

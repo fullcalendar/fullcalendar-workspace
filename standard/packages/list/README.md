@@ -18,10 +18,11 @@ Instantiate a Calendar with the necessary plugin:
 ```js
 import { Calendar } from '@fullcalendar/core'
 import listPlugin from '@fullcalendar/list'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
-  plugins: [listPlugin],
+  plugins: [listPlugin, classicThemePlugin],
   initialView: 'listWeek',
   events: [
     { title: 'Meeting', start: new Date() }

@@ -8,6 +8,7 @@ import {
   diffWholeDays,
   diffDayAndTime,
 } from '@fullcalendar/core/internal'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { getDSTDeadZone } from '../lib/dst-dead-zone.js'
 import { formatPrettyTimeZoneOffset, formatIsoTimeZoneOffset, formatIsoWithoutTz } from '../lib/datelib-utils.js'
@@ -17,7 +18,7 @@ describe('datelib', () => {
 
   beforeEach(() => {
     enLocale = new Calendar(document.createElement('div'), { // HACK
-      plugins: [dayGridPlugin],
+      plugins: [classicThemePlugin, dayGridPlugin],
     }).getCurrentData().dateEnv.locale
   })
 

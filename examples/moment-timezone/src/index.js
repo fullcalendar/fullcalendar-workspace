@@ -1,4 +1,5 @@
 import { Calendar } from '@fullcalendar/core';
+import classicThemePlugin from '@fullcalendar/classic-theme';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import momentTimezonePlugin from '@fullcalendar/moment-timezone';
@@ -10,7 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar');
 
   var calendar = new Calendar(calendarEl, {
-    plugins: [ interactionPlugin, dayGridPlugin, momentTimezonePlugin ],
+    plugins: [
+      classicThemePlugin,
+      interactionPlugin,
+      dayGridPlugin,
+      momentTimezonePlugin,
+    ],
     timeZone: 'Europe/Madrid',
     initialDate: '2018-01-12',
     navLinks: true, // can click day/week names to navigate views

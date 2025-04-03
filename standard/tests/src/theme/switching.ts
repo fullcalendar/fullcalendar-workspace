@@ -1,10 +1,11 @@
 import bootstrapPlugin from '@fullcalendar/bootstrap'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
 describe('theme switching', () => {
   pushOptions({
-    plugins: [bootstrapPlugin, dayGridPlugin],
+    plugins: [bootstrapPlugin, classicThemePlugin, dayGridPlugin],
   })
 
   it('can switch from standard to bootstrap', () => {

@@ -31,12 +31,14 @@ Instantiate a Calendar with plugins and options:
 
 ```js
 import { Calendar } from '@fullcalendar/core'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
   plugins: [
+    classicThemePlugin,
     interactionPlugin,
     resourceTimelinePlugin
   ],

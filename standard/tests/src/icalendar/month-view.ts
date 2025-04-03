@@ -1,6 +1,7 @@
 import fetchMock from 'fetch-mock'
 import dayGridMonth from '@fullcalendar/daygrid'
 import { EventSourceInput } from '@fullcalendar/core'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import iCalendarPlugin from '@fullcalendar/icalendar'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 import alldayEvent from './data/alldayEvent.js'
@@ -17,7 +18,7 @@ describe('addICalEventSource with month view', () => {
   const ICAL_MIME_TYPE = 'text/calendar'
 
   pushOptions({
-    plugins: [iCalendarPlugin, dayGridMonth],
+    plugins: [iCalendarPlugin, dayGridMonth, classicThemePlugin],
     initialDate: '2019-04-10', // the start of the three-day event in the feed
     initialView: 'dayGridMonth',
   })

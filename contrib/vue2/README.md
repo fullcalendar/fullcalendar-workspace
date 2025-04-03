@@ -20,6 +20,7 @@ Render a `FullCalendar` component, supplying an [options](https://fullcalendar.i
 ```vue
 <script>
 import FullCalendar from '@fullcalendar/vue'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
 export default {
@@ -29,7 +30,7 @@ export default {
   data: function() {
     return {
       calendarOptions: {
-        plugins: [dayGridPlugin],
+        plugins: [classicThemePlugin, dayGridPlugin],
         initialView: 'dayGridMonth',
         weekends: false,
         events: [

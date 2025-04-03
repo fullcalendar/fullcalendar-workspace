@@ -1,5 +1,6 @@
 import { mount as _mount } from '@vue/test-utils'
 import FullCalendar from '../dist/index.js'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
@@ -11,7 +12,7 @@ const DEFAULT_OPTIONS = {
   initialDate: INITIAL_DATE,
   initialView: 'dayGridMonth',
   timeZone: 'UTC',
-  plugins: [dayGridPlugin, interactionPlugin],
+  plugins: [classicThemePlugin, dayGridPlugin, interactionPlugin],
   editable: true,
 }
 
@@ -720,7 +721,7 @@ describe('with resource-timeline view', () => {
       data() {
         return {
           calendarOptions: {
-            plugins: [resourceTimelinePlugin],
+            plugins: [classicThemePlugin, resourceTimelinePlugin],
             initialView: 'resourceTimelineWeek',
             resources: [{ id: 'a', title: 'a' }]
           }

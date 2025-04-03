@@ -3,6 +3,7 @@ import { render } from '@testing-library/react'
 import FullCalendar from '../dist/index.js'
 import adaptivePlugin from '@fullcalendar/adaptive'
 import { sliceEvents } from '@fullcalendar/core'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import listPlugin from '@fullcalendar/list'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
@@ -11,7 +12,7 @@ import { anyElsIntersect } from './utils.js'
 
 const NOW_DATE = new Date()
 const DEFAULT_OPTIONS = {
-  plugins: [dayGridPlugin, listPlugin]
+  plugins: [classicThemePlugin, dayGridPlugin, listPlugin]
 }
 
 it('should render without crashing', () => {

@@ -2,6 +2,7 @@ import { nextTick, defineAsyncComponent, h } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { mount as _mount } from '@vue/test-utils'
 import FullCalendar from '../dist/index.js'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
 const INITIAL_DATE = '2019-05-15'
@@ -10,7 +11,7 @@ const DEFAULT_OPTIONS = {
   initialDate: INITIAL_DATE,
   initialView: 'dayGridMonth',
   timeZone: 'UTC',
-  plugins: [ dayGridPlugin ]
+  plugins: [ classicThemePlugin, dayGridPlugin ]
 }
 
 let currentWrapper

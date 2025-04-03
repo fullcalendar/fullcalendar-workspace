@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -20,6 +21,7 @@ export class AppComponent {
   calendarVisible = signal(true);
   calendarOptions = signal<CalendarOptions>({
     plugins: [
+      classicThemePlugin,
       interactionPlugin,
       dayGridPlugin,
       timeGridPlugin,

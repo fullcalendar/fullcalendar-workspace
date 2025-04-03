@@ -1,11 +1,12 @@
 import { Calendar } from '@fullcalendar/core'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import { CalendarWrapper } from '@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper'
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 function buildOptions() {
   return {
-    plugins: [resourceTimelinePlugin],
+    plugins: [classicThemePlugin, resourceTimelinePlugin],
     initialView: 'resourceTimelineDay',
     initialDate: '2019-04-01',
     resources: [

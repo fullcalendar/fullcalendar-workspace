@@ -1,4 +1,5 @@
 import { createPlugin } from '@fullcalendar/core'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
 describe('view-specific options', () => {
@@ -126,6 +127,7 @@ describe('view-specific options', () => {
     initCalendar({
       plugins: [
         dayGridPlugin,
+        classicThemePlugin,
         createPlugin({
           name: 'test-plugin',
           views: {

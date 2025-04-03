@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
+import classicThemePlugin from '@fullcalendar/classic-theme';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
@@ -11,6 +12,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 export class HomePage {
   calendarOptions: CalendarOptions = {
     plugins: [
+      classicThemePlugin,
       dayGridPlugin,
       timeGridPlugin,
     ],

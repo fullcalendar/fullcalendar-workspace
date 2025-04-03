@@ -1,3 +1,4 @@
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import rrulePlugin from '@fullcalendar/rrule'
 import luxonPlugin from '@fullcalendar/luxon3'
@@ -6,7 +7,7 @@ import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 
 describe('rrule plugin', () => {
   pushOptions({
-    plugins: [rrulePlugin, dayGridPlugin],
+    plugins: [classicThemePlugin, rrulePlugin, dayGridPlugin],
     initialView: 'dayGridMonth',
     now: '2018-09-07',
     timeZone: 'UTC',
@@ -496,7 +497,7 @@ describe('rrule plugin', () => {
     // https://github.com/fullcalendar/fullcalendar/issues/5993
     it('won\'t accidentally clip dates when calendar has non-UTC timezone', () => {
       let calendar = initCalendar({
-        plugins: [rrulePlugin, dayGridPlugin, luxonPlugin],
+        plugins: [classicThemePlugin, rrulePlugin, dayGridPlugin, luxonPlugin],
         initialDate: '2020-11-01',
         timeZone: 'Asia/Manila',
         events: [
@@ -527,7 +528,7 @@ describe('rrule plugin', () => {
       }
 
       let calendar = initCalendar({
-        plugins: [rrulePlugin, dayGridPlugin],
+        plugins: [classicThemePlugin, rrulePlugin, dayGridPlugin],
         initialDate: '2023-03-10',
         initialView: 'dayGridMonth',
         events: [recurringEventDef],
@@ -554,7 +555,7 @@ describe('rrule plugin', () => {
     const timeTexts = []
 
     const calendar = initCalendar({
-      plugins: [rrulePlugin, dayGridPlugin, luxonPlugin],
+      plugins: [classicThemePlugin, rrulePlugin, dayGridPlugin, luxonPlugin],
       timeZone: 'America/New_York',
       initialDate: '2023-02-10',
       initialView: 'dayGridMonth',

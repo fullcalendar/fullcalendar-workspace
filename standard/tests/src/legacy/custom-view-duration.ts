@@ -1,5 +1,6 @@
 import frLocale from '@fullcalendar/core/locales/fr'
 import { createPlugin } from '@fullcalendar/core'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
@@ -411,6 +412,7 @@ describe('custom view', () => {
 
       let calendar = initCalendar({
         plugins: [
+          classicThemePlugin,
           createPlugin({
             name: 'test-plugin',
             views: {

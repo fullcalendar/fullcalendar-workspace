@@ -26,6 +26,7 @@ Instantiate a Calendar with the necessary plugins and options:
 ```js
 import { Calendar } from '@fullcalendar/core'
 import bootstrapPlugin from '@fullcalendar/bootstrap'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
 // import third-party stylesheets directly from your JS
@@ -36,6 +37,7 @@ const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
   plugins: [
     bootstrapPlugin,
+    classicThemePlugin,
     dayGridPlugin
   ],
   themeSystem: 'bootstrap', // important!

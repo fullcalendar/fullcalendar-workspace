@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, forwardRef } from '@angular/core';
 import { CalendarOptions, Calendar, EventClickArg } from '@fullcalendar/core';
+import classicThemePlugin from '@fullcalendar/classic-theme';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { DateClickArg, EventDragStopArg } from '@fullcalendar/interaction';
 import { FullCalendarComponent } from '@fullcalendar/angular';
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
     forwardRef(() => Calendar);
 
     this.calendarOptions = {
-      plugins: [dayGridPlugin, interactionPlugin],
+      plugins: [classicThemePlugin, dayGridPlugin, interactionPlugin],
       editable: true,
       customButtons: {
         myCustomButton: {

@@ -1,6 +1,7 @@
 <script lang='ts'>
 import { defineComponent } from 'vue'
 import { CalendarOptions, EventApi, DateSelectArg, EventClickArg } from '@fullcalendar/core'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -15,6 +16,7 @@ export default defineComponent({
     return {
       calendarOptions: {
         plugins: [
+          classicThemePlugin,
           dayGridPlugin,
           timeGridPlugin,
           interactionPlugin // needed for dateClick

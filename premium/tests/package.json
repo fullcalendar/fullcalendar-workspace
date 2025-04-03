@@ -3,6 +3,7 @@
   "name": "@fullcalendar-tests/premium",
   "version": "0.0.3-beta.1",
   "dependencies": {
+    "@fullcalendar/classic-theme": "workspace:*",
     "@fullcalendar/core": "workspace:*",
     "@fullcalendar/daygrid": "workspace:*",
     "@fullcalendar/interaction": "workspace:*",

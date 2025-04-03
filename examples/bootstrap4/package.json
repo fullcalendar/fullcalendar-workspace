@@ -12,6 +12,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.1",
     "@fullcalendar/bootstrap": "workspace:7.0.0-rc.0",
+    "@fullcalendar/classic-theme": "workspace:7.0.0-rc.0",
     "@fullcalendar/core": "workspace:7.0.0-rc.0",
     "@fullcalendar/daygrid": "workspace:7.0.0-rc.0",
     "@fullcalendar/interaction": "workspace:7.0.0-rc.0",

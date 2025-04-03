@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FullCalendarModule } from './full-calendar.module';
 import { FullCalendarComponent } from './full-calendar.component';
 import { CalendarOptions } from '@fullcalendar/core';
+import classicThemePlugin from '@fullcalendar/classic-theme';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
@@ -10,7 +11,7 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 
 const DEFAULT_OPTIONS = {
-  plugins: [dayGridPlugin, interactionPlugin],
+  plugins: [classicThemePlugin, dayGridPlugin, interactionPlugin],
   editable: true,
 };
 

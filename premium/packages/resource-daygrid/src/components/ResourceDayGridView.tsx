@@ -9,7 +9,7 @@ import {
   NowTimer,
   joinClassNames,
   mapHash,
-  memoize
+  memoize,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { DayGridLayout, DayTableSlicer, buildDayTableModel, createDayHeaderFormatter } from '@fullcalendar/daygrid/internal'

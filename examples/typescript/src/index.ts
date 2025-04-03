@@ -1,5 +1,6 @@
 import { Calendar, DayHeaderContentArg } from '@fullcalendar/core';
 import { Component, createElement } from '@fullcalendar/core/preact';
+import classicThemePlugin from '@fullcalendar/classic-theme';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -16,7 +17,13 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   let calendar = new Calendar(calendarEl, {
-    plugins: [ interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin ],
+    plugins: [
+      classicThemePlugin,
+      interactionPlugin,
+      dayGridPlugin,
+      timeGridPlugin,
+      listPlugin,
+    ],
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',

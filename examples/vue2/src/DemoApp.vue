@@ -1,5 +1,6 @@
 <script>
 import FullCalendar from '@fullcalendar/vue'
+import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -15,6 +16,7 @@ export default {
     return {
       calendarOptions: {
         plugins: [
+          classicThemePlugin,
           dayGridPlugin,
           timeGridPlugin,
           interactionPlugin // needed for dateClick
