@@ -8,6 +8,10 @@ Publishing:
 ASAP
 ----
 
+Sticky header dates look terrible in timegrid/daygrid
+Look for emphasizeWeeks/fc-timeline-slot-em ... should become ({ isMajor })
+Should we still have data-date attributes on elements?
+
 css:
   .fc-navlink -> .fc-nav-link
   .fc-celldivider -> .fc-cell-divider
@@ -69,6 +73,10 @@ docs & site:
   write cookbook on common css customizations. .fc prefix not needed
   Update roadmap
 
+Upgrade Guide
+-------------
+
+Note that scrollgrid will be removed in v7
 
 Release Prep
 ------------
@@ -124,6 +132,7 @@ timeline-event-rendering.ts, disabled test because flawed
 Perf: not rerendinering events that didn't change
   https://github.com/fullcalendar/fullcalendar/issues/3003
 TimeGrid scrollTime:0 initially scrolls to 0 (a solved regression)
+Tests for auto-scroll (not necessarily v7)
 
 Freshdesk/GH-issues
 -------------------
