@@ -8,6 +8,8 @@ Publishing:
 ASAP
 ----
 
+package.json for classic-theme
+
 Sticky header dates look terrible in timegrid/daygrid
 Look for emphasizeWeeks/fc-timeline-slot-em ... should become ({ isMajor })
 Should we still have data-date attributes on elements?
