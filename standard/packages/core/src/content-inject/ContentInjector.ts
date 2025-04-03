@@ -56,6 +56,7 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
 
       if (customGeneratorRes === true) {
         useDefault = true
+        // NOTE: see how mergeContentInjectors also uses `true` to signal useDefault
       } else {
         const isObject = customGeneratorRes && typeof customGeneratorRes === 'object' // non-null
 

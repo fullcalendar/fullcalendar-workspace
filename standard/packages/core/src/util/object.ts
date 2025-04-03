@@ -1,6 +1,13 @@
 import { isMaybeObjectsEqual } from '../options.js'
+import { joinComplexClassNames } from './html.js'
+import { CustomContentGenerator } from '../common/render-hook.js'
 
 const { hasOwnProperty } = Object.prototype
+
+// special-cases
+const classNamesRe = /ClassNames$/
+const contentRe = /Content$/
+const lifecycleRe = /(DidMount|WillUnmount)$/
 
 // Merges an array of objects into a single object.
 // The second argument allows for an array of property names who's object values will be merged together.
@@ -37,7 +44,17 @@ export function mergeProps(propObjs, complexPropsMap?): any {
     let props = propObjs[i]
 
     for (let name in props) {
-      if (!(name in dest)) { // if already assigned by previous props or complex props, don't reassign
+      if (name in dest) {
+        // special-case merging
+        if (classNamesRe.test(name)) {
+          dest[name] = joinComplexClassNames(props[name], dest[name])
+        } else if (contentRe.test(name)) {
+          dest[name] = mergeContentInjectors(props[name], dest[name])
+        } else if (lifecycleRe.test(name)) {
+          dest[name] = mergeLifecycleCallbacks(props[name], dest[name])
+        }
+        // otherwise, don't use
+      } else {
         dest[name] = props[name]
       }
     }
@@ -229,4 +246,46 @@ export function collectFromHash<Item>(
   }
 
   return res
+}
+
+// Special-case handling
+// -------------------------------------------------------------------------------------------------
+
+function mergeContentInjectors(
+  contentGenerator0: CustomContentGenerator<any>, // fallback
+  contentGenerator1: CustomContentGenerator<any>, // override
+): CustomContentGenerator<any> {
+  if (typeof contentGenerator1 === 'function') {
+    // fabricate new function
+    return (renderProps: any, createElement: any) => {
+      const res = contentGenerator1(renderProps, createElement)
+      if (res === true) { // `true` indicates use-fallback
+        if (typeof contentGenerator0 === 'function') {
+          return contentGenerator0(renderProps, createElement)
+        }
+        return contentGenerator0
+      }
+      return res
+    }
+  }
+
+  if (contentGenerator1 != null) {
+    return contentGenerator1
+  }
+
+  return contentGenerator0
+}
+
+function mergeLifecycleCallbacks(
+  fn0: (...args: any[]) => any, // called first
+  fn1: (...args: any[]) => any, // called second
+): (...args: any[]) => any {
+  if (fn0 && fn1) {
+    // fabricate new function
+    return (...args: any[]) => {
+      fn0(...args)
+      fn1(...args)
+    }
+  }
+  return fn0 || fn1
 }
