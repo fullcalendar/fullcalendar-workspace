@@ -7,7 +7,6 @@ import {
   DateRange,
   Hit,
   NowTimer,
-  joinClassNames,
   mapHash,
   memoize,
 } from '@fullcalendar/core/internal'
@@ -104,7 +103,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
               cellRows={resourceDayTableModel.cells}
               forPrint={props.forPrint}
               isHitComboAllowed={this.isHitComboAllowed}
-              className={joinClassNames('fc-resource-daygrid fc-daygrid', props.className)}
+              className={props.className}
 
               // header content
               headerTiers={headerTiers}

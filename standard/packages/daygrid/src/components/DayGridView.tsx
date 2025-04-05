@@ -2,7 +2,6 @@ import {
   BaseComponent,
   DateMarker,
   DateRange,
-  joinClassNames,
   memoize,
   NowTimer,
   ViewProps
@@ -55,7 +54,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
               todayRange={todayRange}
               cellRows={dayTableModel.cellRows}
               forPrint={props.forPrint}
-              className={joinClassNames('fc-daygrid', props.className)}
+              className={props.className}
 
               // header content
               headerTiers={headerTiers}

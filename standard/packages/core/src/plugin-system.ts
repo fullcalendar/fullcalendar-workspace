@@ -1,7 +1,8 @@
 import { guid } from './util/misc.js'
 import { PluginDefInput, PluginDef, PluginHooks } from './plugin-system-struct.js'
 import { isArraysEqual } from './util/array.js'
-import { CalendarOptions } from './options.js'
+import { CalendarOptions, mergeRawOptions } from './options.js'
+import { ViewConfigInputHash } from './structs/view-config.js'
 
 // TODO: easier way to add new hooks? need to update a million things
 
@@ -151,7 +152,7 @@ function combineHooks(hooks0: PluginHooks, hooks1: PluginHooks): PluginHooks {
     dateSelectionTransformers: hooks0.dateSelectionTransformers.concat(hooks1.dateSelectionTransformers),
     datePointTransforms: hooks0.datePointTransforms.concat(hooks1.datePointTransforms),
     dateSpanTransforms: hooks0.dateSpanTransforms.concat(hooks1.dateSpanTransforms),
-    views: { ...hooks0.views, ...hooks1.views },
+    views: mergeViewMaps(hooks0.views, hooks1.views),
     viewPropsTransformers: hooks0.viewPropsTransformers.concat(hooks1.viewPropsTransformers),
     isPropsValid: hooks1.isPropsValid || hooks0.isPropsValid,
     externalDefTransforms: hooks0.externalDefTransforms.concat(hooks1.externalDefTransforms),
@@ -186,4 +187,22 @@ function compareOptionalDates(
     return date0
   }
   return new Date(Math.max(date0.valueOf(), date1.valueOf()))
+}
+
+function mergeViewMaps(...hashes: ViewConfigInputHash[]): ViewConfigInputHash {
+  const merged: ViewConfigInputHash = {}
+
+  for (const hash of hashes) {
+    for (const viewName in hash) {
+      const viewOptions = hash[viewName]
+
+      if (!merged[viewName]) {
+        merged[viewName] = viewOptions
+      } else {
+        merged[viewName] = mergeRawOptions([merged[viewName], viewOptions])
+      }
+    }
+  }
+
+  return merged
 }

@@ -1,13 +1,13 @@
 import { ViewProps } from '../component-util/View.js'
 import { mapHash } from '../util/object.js'
 import { ComponentType, Component, createElement } from '../preact.js'
-import { buildViewClassName } from '../common/ViewContainer.js'
 import { MountArg } from '../common/render-hook.js'
 import { ViewContext, ViewContextType } from '../ViewContext.js'
 import { ViewOptions } from '../options.js'
 import { Duration } from '../datelib/duration.js'
-import { ContentContainer } from '../content-inject/ContentContainer.js'
+import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
 import { BaseComponent } from '../vdom-util.js'
+import { ViewApi } from '../api/ViewApi.js'
 
 /*
 A view-config represents information for either:
@@ -67,10 +67,15 @@ function createViewHookComponent(options: ViewOptions) {
       {(context: ViewContext) => (
         <ContentContainer
           tag="div"
-          className={buildViewClassName(context.viewSpec)}
+          className={
+            generateClassName(
+              options.viewClassNames,
+              { type: context.viewSpec.type } as ViewApi // HACK
+            )
+          }
           renderProps={{
             ...viewProps,
-            nextDayThreshold: context.options.nextDayThreshold,
+            nextDayThreshold: options.nextDayThreshold,
           }}
           generatorName={undefined}
           customGenerator={options.content as any}

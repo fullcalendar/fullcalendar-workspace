@@ -26,7 +26,7 @@ import {
   AllDayContentArg, AllDayMountArg,
   DayHeaderContentArg, DayHeaderMountArg,
   DayCellContentArg, DayCellMountArg,
-  ViewContentArg, ViewMountArg,
+  ViewMountArg,
   EventClickArg,
   EventHoveringArg,
   DateSelectArg, DateUnselectArg,
@@ -43,6 +43,7 @@ import {
   CustomRenderingHandler,
 } from './api/structs.js'
 import { ClassNamesInput } from './util/html.js'
+import { ViewApi } from './api/ViewApi.js'
 
 // base options
 // ------------
@@ -95,7 +96,7 @@ export const BASE_OPTION_REFINERS = {
 
   editable: Boolean,
 
-  viewClassNames: identity as Identity<ClassNamesGenerator<ViewContentArg>>,
+  viewClassNames: identity as Identity<ClassNamesGenerator<ViewApi>>,
   viewDidMount: identity as Identity<DidMountHandler<ViewMountArg>>,
   viewWillUnmount: identity as Identity<WillUnmountHandler<ViewMountArg>>,
 

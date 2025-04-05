@@ -103,7 +103,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
           {this.renderView(
             props,
             joinClassNames(
-              'fc-view',
               (viewHeightLiquid || viewHeight) && 'fc-liquid',
               viewAspectRatio != null && 'fc-fill',
             ),

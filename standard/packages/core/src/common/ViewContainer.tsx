@@ -5,7 +5,6 @@ import { BaseComponent } from '../vdom-util.js'
 import { ViewApi } from '../api/ViewApi.js'
 import { ContentContainer } from '../content-inject/ContentContainer.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
-import { joinClassNames } from '../util/html.js'
 
 export interface ViewContainerProps extends Partial<ElProps> {
   viewSpec: ViewSpec
@@ -13,28 +12,20 @@ export interface ViewContainerProps extends Partial<ElProps> {
   children: ComponentChildren
 }
 
-export interface ViewContentArg {
-  view: ViewApi
-}
-
-export type ViewMountArg = MountArg<ViewContentArg>
+export type ViewMountArg = MountArg<ViewApi>
 
 export class ViewContainer extends BaseComponent<ViewContainerProps> {
   render() {
     let { props, context } = this
     let { options } = context
-    let renderProps: ViewContentArg = { view: context.viewApi }
 
     return (
       <ContentContainer
         {...props}
         tag={props.tag || 'div'}
         attrs={props.attrs}
-        className={joinClassNames(
-          props.className,
-          buildViewClassName(props.viewSpec),
-        )}
-        renderProps={renderProps}
+        className={props.className}
+        renderProps={context.viewApi}
         classNameGenerator={options.viewClassNames}
         generatorName={undefined}
         didMount={options.viewDidMount}
@@ -44,8 +35,4 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
       </ContentContainer>
     )
   }
-}
-
-export function buildViewClassName(viewSpec: ViewSpec): string {
-  return `fc-${viewSpec.type}-view fc-view`
 }

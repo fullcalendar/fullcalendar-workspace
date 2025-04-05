@@ -8,6 +8,8 @@ Publishing:
 ASAP
 ----
 
+breaking: viewClass* hooks receives single View argument, NOT { view }
+
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files
 

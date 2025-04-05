@@ -11,8 +11,35 @@ export default createPlugin({
     classNames: ['fc', 'fc-theme-bootstrap'],
     directionClassNames: (direction) => `fc-direction-${direction}`,
     mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
+    viewClassNames: (view) => ['fc-view', `fc-${view.type}-view`],
     popoverClassNames: ['fc-popover', 'popover'],
     popoverHeaderClassNames: ['fc-popover-header', 'popover-header'],
     popoverBodyClassNames: ['fc-popover-body', 'popover-body'],
+  },
+  views: {
+    dayGrid: {
+      viewClassNames: 'fc-daygrid',
+    },
+    timeGrid: {
+      viewClassNames: 'fc-timegrid',
+    },
+    list: {
+      viewClassNames: 'fc-list',
+    },
+    multiMonth: {
+      viewClassNames: 'fc-multimonth',
+    },
+    timeline: {
+      viewClassNames: 'fc-timeline',
+    },
+    resourceDayGrid: {
+      viewClassNames: 'fc-resource-daygrid', // also inherits dayGrid
+    },
+    resourceTimeGrid: {
+      viewClassNames: 'fc-resource-timegrid', // also inherits timeGrid
+    },
+    resourceTimeline: {
+      viewClassNames: 'fc-resource-timeline',
+    },
   },
 }) as PluginDef

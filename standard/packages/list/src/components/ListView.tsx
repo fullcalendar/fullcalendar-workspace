@@ -67,7 +67,7 @@ export class ListView extends DateComponent<ViewProps, ListViewState> {
     return (
       <ViewContainer
         viewSpec={context.viewSpec}
-        className={joinClassNames('fc-list fc-flex-col', props.className)}
+        className={joinClassNames('fc-flex-col', props.className)}
         elRef={this.setRootEl}
       >
         <Scroller // TODO: don't need heavyweight component

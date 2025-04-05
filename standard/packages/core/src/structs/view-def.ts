@@ -1,5 +1,5 @@
 import { ViewConfigHash, ViewComponentType } from './view-config.js'
-import { ViewOptions } from '../options.js'
+import { mergeRawOptions, ViewOptions } from '../options.js'
 
 /*
 Represents information for an instantiatable View class along with settings
@@ -85,13 +85,13 @@ function buildViewDef(
   return {
     type: viewType,
     component: theComponent,
-    defaults: {
-      ...(superDef ? superDef.defaults : {}),
-      ...(defaultConfig ? defaultConfig.rawOptions : {}),
-    },
-    overrides: {
-      ...(superDef ? superDef.overrides : {}),
-      ...(overrideConfig ? overrideConfig.rawOptions : {}),
-    },
+    defaults: mergeRawOptions([
+      superDef ? superDef.defaults : {},
+      defaultConfig ? defaultConfig.rawOptions : {},
+    ]),
+    overrides: mergeRawOptions([
+      superDef ? superDef.overrides : {},
+      overrideConfig ? overrideConfig.rawOptions : {},
+    ]),
   }
 }

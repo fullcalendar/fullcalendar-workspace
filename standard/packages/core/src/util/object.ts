@@ -5,7 +5,7 @@ import { CustomContentGenerator } from '../common/render-hook.js'
 const { hasOwnProperty } = Object.prototype
 
 // special-cases
-const classNamesRe = /ClassNames$/
+const classNamesRe = /(^c|C)lassNames$/
 const contentRe = /Content$/
 const lifecycleRe = /(DidMount|WillUnmount)$/
 

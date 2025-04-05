@@ -122,7 +122,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           'aria-labelledby': props.labelId,
         }}
         className={joinClassNames(
-          'fc-resource-timeline fc-print-root',
+          'fc-print-root',
           props.className,
         )}
       >

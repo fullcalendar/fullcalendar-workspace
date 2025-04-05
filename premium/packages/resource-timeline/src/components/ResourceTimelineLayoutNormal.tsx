@@ -299,7 +299,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           'aria-labelledby': props.labelId,
         }}
         className={joinClassNames(
-          'fc-resource-timeline fc-flex-col',
+          'fc-flex-col',
           props.className,
         )}
       >
