@@ -17,11 +17,14 @@ export interface CalendarRootProps {
 
 interface CalendarRootState {
   forPrint: boolean
+  isDarkDetected: boolean
 }
 
 export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootState> {
+  darkDetector = window.matchMedia('(prefers-color-scheme: dark)')
   state: CalendarRootState = {
     forPrint: false,
+    isDarkDetected: this.darkDetector.matches,
   }
 
   render() {
@@ -29,10 +32,14 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
     let { options } = props
     let { forPrint } = state
 
+    let { colorScheme } = options
+    let isDark = colorScheme === 'dark' || (colorScheme === 'auto' && state.isDarkDetected)
+
     let className = joinArrayishClassNames(
       options.classNames,
       generateClassName(options.directionClassNames, options.direction),
       generateClassName(options.mediaTypeClassNames, forPrint ? 'print' : 'screen'),
+      generateClassName(options.colorSchemeClassNames, isDark ? 'dark' : 'light'),
     )
 
     return props.children(className, options.height, forPrint)
@@ -40,14 +47,20 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
 
   componentDidMount() {
     let { emitter } = this.props
+
     emitter.on('_beforeprint', this.handleBeforePrint)
     emitter.on('_afterprint', this.handleAfterPrint)
+
+    this.darkDetector.addEventListener('change', this.handleDarkChange)
   }
 
   componentWillUnmount() {
     let { emitter } = this.props
+
     emitter.off('_beforeprint', this.handleBeforePrint)
     emitter.off('_afterprint', this.handleAfterPrint)
+
+    this.darkDetector.removeEventListener('change', this.handleDarkChange)
   }
 
   handleBeforePrint = () => {
@@ -60,5 +73,9 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
   handleAfterPrint = () => {
     this.setState({ forPrint: false })
     flushUpdates()
+  }
+
+  handleDarkChange = () => {
+    this.setState({ isDarkDetected: this.darkDetector.matches })
   }
 }

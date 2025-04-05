@@ -252,6 +252,8 @@ export const BASE_OPTION_REFINERS = {
   classNames: identity as Identity<ClassNamesInput>,
   directionClassNames: identity as Identity<ClassNamesGenerator<string>>,
   mediaTypeClassNames: identity as Identity<ClassNamesGenerator<string>>,
+  colorScheme: identity as Identity<'auto' | 'light' | 'dark'>,
+  colorSchemeClassNames: identity as Identity<ClassNamesGenerator<'light' | 'dark'>>,
 }
 
 type BuiltInBaseOptionRefiners = typeof BASE_OPTION_REFINERS
