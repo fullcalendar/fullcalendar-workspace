@@ -4,7 +4,6 @@ export class BootstrapTheme extends Theme {
 }
 
 BootstrapTheme.prototype.classes = {
-  root: 'fc-theme-bootstrap5',
   buttonGroup: 'btn-group',
   button: 'btn btn-primary',
   buttonActive: 'active',

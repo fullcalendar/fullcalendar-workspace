@@ -6,6 +6,7 @@ import { Emitter } from '../common/Emitter.js'
 import { CssDimValue } from '../scrollgrid/util.js'
 import { updateSizeSync } from '../component-util/resize-observer.js'
 import { joinArrayishClassNames } from '../util/html.js'
+import { generateClassName } from '../content-inject/ContentContainer.js'
 
 export interface CalendarRootProps {
   options: CalendarOptions
@@ -29,11 +30,9 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
     let { forPrint } = state
 
     let className = joinArrayishClassNames(
-      'fc',
-      forPrint ? 'fc-media-print' : 'fc-media-screen',
-      `fc-direction-${options.direction}`,
-      props.theme.getClassName('root'),
-      options.classNames, // new
+      options.classNames,
+      generateClassName(options.directionClassNames, options.direction),
+      generateClassName(options.mediaTypeClassNames, forPrint ? 'print' : 'screen'),
     )
 
     return props.children(className, options.height, forPrint)

@@ -4,6 +4,8 @@ import './index.css'
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
-    classNames: 'fc-classic-theme',
+    classNames: ['fc', 'fc-standard-theme'],
+    directionClassNames: (direction) => `fc-direction-${direction}`,
+    mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
   },
 }) as PluginDef

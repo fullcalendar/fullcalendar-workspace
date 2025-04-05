@@ -7,4 +7,9 @@ export default createPlugin({
   themeClasses: {
     bootstrap5: BootstrapTheme,
   },
+  optionDefaults: {
+    classNames: ['fc', 'fc-theme-bootstrap5'],
+    directionClassNames: (direction) => `fc-direction-${direction}`,
+    mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
+  }
 }) as PluginDef

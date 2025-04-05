@@ -115,7 +115,7 @@ function InnerContentInjector<RenderProps>(
 
 // Utils
 
-function generateClassName<RenderProps>(
+export function generateClassName<RenderProps>(
   classNameGenerator: ClassNamesGenerator<RenderProps> | undefined,
   renderProps: RenderProps,
 ): string {
