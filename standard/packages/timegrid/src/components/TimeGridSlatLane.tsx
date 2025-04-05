@@ -19,8 +19,10 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
     let { props, context } = this
     let { options } = context
     let renderProps: SlotLaneContentArg = {
-      time: props.time,
       date: context.dateEnv.toDate(props.date),
+      time: props.time,
+      isMajor: false,
+      isMinor: false, // TODO
       view: context.viewApi,
     }
 

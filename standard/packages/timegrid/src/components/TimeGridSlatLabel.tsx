@@ -47,9 +47,11 @@ function createRenderProps(
   viewApi: ViewApi,
 ): SlotLabelContentArg {
   return {
-    level: 0, // QUESTION!!!: what is this?
-    time: time,
+    level: 0, // axis level (for when multiple axes)
     date: dateEnv.toDate(date),
+    time: time,
+    isMajor: false,
+    isMinor: false, // TODO
     view: viewApi,
     text: dateEnv.format(date, labelFormat),
   }

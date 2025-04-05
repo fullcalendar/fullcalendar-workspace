@@ -18,7 +18,7 @@ export interface TimelineSlatCellProps {
   nowDate: DateMarker
   todayRange: DateRange
   isDay: boolean
-  isEm: boolean
+  isMajor: boolean
   borderStart: boolean
 
   // dimensions
@@ -43,11 +43,13 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
   render() {
     let { props, context } = this
     let { dateEnv, options } = context
-    let { date, tDateProfile, isEm } = props
+    let { date, tDateProfile, isMajor } = props
     let dateMeta = getDateMeta(props.date, props.todayRange, props.nowDate, props.dateProfile)
     let renderProps: SlotLaneContentArg = {
       date: this.getPublicDate(dateEnv, props.date), // stable (everything else is atomic)
       ...dateMeta,
+      isMajor,
+      isMinor: false,
       view: context.viewApi,
     }
 
@@ -58,7 +60,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         // TODO: document this semantic className fc-timeline-slot-em
         className={joinClassNames(
           'fc-timeline-slot',
-          isEm && 'fc-timeline-slot-em',
+          isMajor && 'fc-timeline-slot-em',
           tDateProfile.isTimeScale && (
             isInt(dateEnv.countDurationsBetween( // best to do this here?
               tDateProfile.normalizedRange.start,

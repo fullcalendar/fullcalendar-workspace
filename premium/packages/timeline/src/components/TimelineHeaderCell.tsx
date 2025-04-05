@@ -1,4 +1,4 @@
-import { ViewApi } from '@fullcalendar/core'
+import { SlotLabelContentArg, ViewApi } from '@fullcalendar/core'
 import {
   BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassName,
   getDayClassName, DateProfile, memoizeObjArg, ContentContainer, DateEnv,
@@ -52,6 +52,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
     let renderProps = this.refineRenderProps({
       level: props.rowLevel,
       dateMarker: cell.date,
+      isMajor: cell.isWeekStart,
       text: cell.text,
       dateEnv: context.dateEnv,
       viewApi: context.viewApi,
@@ -141,7 +142,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
 // Utils
 // -------------------------------------------------------------------------------------------------
 
-function renderInnerContent(renderProps: RenderProps) {
+function renderInnerContent(renderProps: SlotLabelContentArg) {
   return renderProps.text
 }
 
@@ -150,22 +151,18 @@ function renderInnerContent(renderProps: RenderProps) {
 export interface RenderPropsInput {
   level: number
   dateMarker: DateMarker
+  isMajor: boolean
   text: string
   dateEnv: DateEnv
   viewApi: ViewApi
 }
 
-export interface RenderProps {
-  level: number
-  date: DateMarker // localized
-  view: ViewApi
-  text: string
-}
-
-export function refineRenderProps(input: RenderPropsInput): RenderProps {
+export function refineRenderProps(input: RenderPropsInput): SlotLabelContentArg {
   return {
     level: input.level,
     date: input.dateEnv.toDate(input.dateMarker),
+    isMajor: input.isMajor,
+    isMinor: false,
     view: input.viewApi,
     text: input.text,
   }

@@ -52,7 +52,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
               tDateProfile={tDateProfile}
               nowDate={props.nowDate}
               todayRange={props.todayRange}
-              isEm={isWeekStarts[i]}
+              isMajor={isWeekStarts[i]}
               isDay={isDay}
               borderStart={Boolean(i)}
 
