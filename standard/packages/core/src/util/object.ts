@@ -1,5 +1,5 @@
 import { isMaybeObjectsEqual } from '../options.js'
-import { joinClassNames } from './html.js'
+import { joinArrayishClassNames } from './html.js'
 import { CustomContentGenerator } from '../common/render-hook.js'
 
 const { hasOwnProperty } = Object.prototype
@@ -252,9 +252,9 @@ export function collectFromHash<Item>(
 // -------------------------------------------------------------------------------------------------
 
 type Falsy = false | null | undefined
-type ClassName = string | number | Falsy
-type ArrayishClassNames = ClassName[] | ClassName
-type FuncishClassNames = ((arg: any) => ArrayishClassNames) | ArrayishClassNames
+type ClassNameInput = string | number | Falsy
+type ClassNamesInput = ClassNameInput[] | ClassNameInput
+type FuncishClassNames = ((arg: any) => ClassNamesInput) | ClassNamesInput
 
 function joinFuncishClassNames(
   input0: FuncishClassNames, // added first
@@ -272,21 +272,7 @@ function joinFuncishClassNames(
     }
   }
 
-  return joinArrayishClassNames(input0 as ArrayishClassNames, input1 as ArrayishClassNames)
-}
-
-function joinArrayishClassNames(...args: ArrayishClassNames[]): string {
-  const simpleArgs: ClassName[] = []
-
-  for (const arg of args) {
-    if (Array.isArray(arg)) {
-      simpleArgs.push(...arg)
-    } else {
-      simpleArgs.push(arg)
-    }
-  }
-
-  return joinClassNames(...simpleArgs)
+  return joinArrayishClassNames(input0 as ClassNamesInput, input1 as ClassNamesInput)
 }
 
 function mergeContentInjectors(

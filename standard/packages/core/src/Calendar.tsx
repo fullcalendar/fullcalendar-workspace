@@ -6,7 +6,6 @@ import { CalendarData } from './reducers/data-types.js'
 import { CalendarRoot } from './component/CalendarRoot.js'
 import { CalendarContent } from './component/CalendarContent.js'
 import { createElement, render, flushSync } from './preact.js'
-import { isArraysEqual } from './util/array.js'
 import { CssDimValue } from './scrollgrid/util.js'
 import { applyStyleProp } from './util/dom-manip.js'
 import { RenderId } from './content-inject/RenderId.js'
@@ -23,7 +22,7 @@ export class Calendar extends CalendarImpl {
   private renderRunner: DelayedRunner
   private isRendering = false
   private isRendered = false
-  private currentClassNames: string[] = []
+  private currentClassName = ''
   private customContentRenderId = 0
 
   constructor(el: HTMLElement, optionOverrides: CalendarOptions = {}) {
@@ -63,8 +62,8 @@ export class Calendar extends CalendarImpl {
       flushSync(() => {
         render(
           <CalendarRoot options={currentData.calendarOptions} theme={currentData.theme} emitter={currentData.emitter}>
-            {(classNames, height, forPrint) => {
-              this.setClassNames(classNames)
+            {(className: string, height: number, forPrint: boolean) => {
+              this.setClassName(className)
               this.setHeight(height)
 
               return (
@@ -84,7 +83,7 @@ export class Calendar extends CalendarImpl {
       this.isRendered = false
       render(null, this.el)
 
-      this.setClassNames([])
+      this.setClassName('')
       this.setHeight('')
     }
   }
@@ -130,19 +129,23 @@ export class Calendar extends CalendarImpl {
     this.currentDataManager.resetOptions(optionOverrides, changedOptionNames)
   }
 
-  private setClassNames(classNames: string[]) {
-    if (!isArraysEqual(classNames, this.currentClassNames)) {
+  private setClassName(className: string) {
+    if (className !== this.currentClassName) {
       let { classList } = this.el
 
-      for (let className of this.currentClassNames) {
-        classList.remove(className)
+      for (let singleClassName of this.currentClassName.split(' ')) {
+        if (singleClassName) {
+          classList.remove(singleClassName)
+        }
       }
 
-      for (let className of classNames) {
-        classList.add(className)
+      for (let singleClassName of className.split(' ')) {
+        if (singleClassName) {
+          classList.add(singleClassName)
+        }
       }
 
-      this.currentClassNames = classNames
+      this.currentClassName = className
     }
   }
 

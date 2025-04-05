@@ -5,12 +5,13 @@ import { Theme } from '../theme/Theme.js'
 import { Emitter } from '../common/Emitter.js'
 import { CssDimValue } from '../scrollgrid/util.js'
 import { updateSizeSync } from '../component-util/resize-observer.js'
+import { joinArrayishClassNames } from '../util/html.js'
 
 export interface CalendarRootProps {
   options: CalendarOptions
   theme: Theme
   emitter: Emitter<CalendarListeners>
-  children: (classNames: string[], height: CssDimValue | undefined, forPrint: boolean) => ComponentChildren
+  children: (className: string, height: CssDimValue | undefined, forPrint: boolean) => ComponentChildren
 }
 
 interface CalendarRootState {
@@ -27,14 +28,15 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
     let { options } = props
     let { forPrint } = state
 
-    let classNames: string[] = [
+    let className = joinArrayishClassNames(
       'fc',
       forPrint ? 'fc-media-print' : 'fc-media-screen',
       `fc-direction-${options.direction}`,
       props.theme.getClassName('root'),
-    ]
+      options.classNames, // new
+    )
 
-    return props.children(classNames, options.height, forPrint)
+    return props.children(className, options.height, forPrint)
   }
 
   componentDidMount() {

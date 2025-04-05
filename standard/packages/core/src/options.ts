@@ -42,6 +42,7 @@ import {
   ButtonHintCompoundInput,
   CustomRenderingHandler,
 } from './api/structs.js'
+import { ClassNamesInput } from './util/html.js'
 
 // base options
 // ------------
@@ -246,6 +247,9 @@ export const BASE_OPTION_REFINERS = {
   handleCustomRendering: identity as Identity<CustomRenderingHandler<any>>,
   customRenderingMetaMap: identity as Identity<{ [optionName: string]: any }>,
   customRenderingReplaces: Boolean,
+
+  // new
+  classNames: identity as Identity<ClassNamesInput>,
 }
 
 type BuiltInBaseOptionRefiners = typeof BASE_OPTION_REFINERS

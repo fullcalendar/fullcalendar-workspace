@@ -10,7 +10,7 @@ import {
 } from './ContentInjector.js'
 import { RenderId } from './RenderId.js'
 import { setRef } from '../vdom-util.js'
-import { joinClassNames } from '../util/html.js'
+import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
 
 /*
 The `children` prop is a function that defines inner wrappers (ex: ResourceCell)
@@ -123,7 +123,7 @@ function generateClassName<RenderProps>(
     classNameGenerator(renderProps) :
     classNameGenerator || []
 
-  return typeof classNames === 'string' ? classNames : classNames.join(' ')
+  return joinArrayishClassNames(classNames)
 }
 
 export function renderText(renderProps: { text: string }): ComponentChild {

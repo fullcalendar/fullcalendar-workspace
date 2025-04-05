@@ -3,5 +3,7 @@ import './index.css'
 
 export default createPlugin({
   name: '<%= pkgName %>',
-  optionDefaults: {}
+  optionDefaults: {
+    classNames: 'fc-classic-theme',
+  },
 }) as PluginDef
