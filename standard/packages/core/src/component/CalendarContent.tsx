@@ -95,10 +95,15 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
         )}
         <div
           className={joinClassNames(
-            'fc-view-outer fc-border fc-flex-col fc-rel',
+            'fc-view-outer fc-flex-col fc-rel',
             viewHeightLiquid && 'fc-liquid',
           )}
-          style={{ height: viewHeight }}
+          style={{
+            height: viewHeight,
+            paddingBottom: viewAspectRatio != null
+              ? `${(1 / viewAspectRatio) * 100}%`
+              : undefined
+          }}
         >
           {this.renderView(
             props,
@@ -109,10 +114,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
             toolbarProps.title,
           )}
           {this.buildAppendContent()}
-          {/* Gives area within borders the aspect-ratio */}
-          {viewAspectRatio != null && (
-            <div style={{ paddingBottom: `${(1 / viewAspectRatio) * 100}%` }} />
-          )}
         </div>
         {toolbarConfig.footer && (
           <Toolbar
