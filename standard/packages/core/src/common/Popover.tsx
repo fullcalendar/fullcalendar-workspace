@@ -3,7 +3,7 @@ import { computeClippedClientRect } from '../util/dom-geom.js'
 import { applyStyle, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-manip.js'
 import { createElement, ComponentChildren, Ref, createPortal, createRef } from '../preact.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
-import { joinClassNames } from '../util/html.js'
+import { joinArrayishClassNames } from '../util/html.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
 
 export interface PopoverProps {
@@ -40,10 +40,9 @@ export class Popover extends BaseComponent<PopoverProps> {
         id={props.id}
         role='dialog'
         aria-labelledby={this.titleId}
-        className={joinClassNames(
+        className={joinArrayishClassNames(
+          options.popoverClassNames,
           props.className,
-          'fc-popover',
-          theme.getClassName('popover'),
         )}
         ref={this.handleRootEl}
       >
@@ -52,7 +51,7 @@ export class Popover extends BaseComponent<PopoverProps> {
           style={{ outline: 'none' }} // TODO: className?
           ref={this.focusStartRef}
         />
-        <div className={'fc-popover-header ' + theme.getClassName('popoverHeader')}>
+        <div className={joinArrayishClassNames(options.popoverHeaderClassNames)}>
           <div className="fc-popover-title" id={this.titleId}>
             {props.title}
           </div>
@@ -64,7 +63,7 @@ export class Popover extends BaseComponent<PopoverProps> {
             ref={this.closeRef}
           />
         </div>
-        <div className={'fc-popover-body ' + theme.getClassName('popoverContent')}>
+        <div className={joinArrayishClassNames(options.popoverBodyClassNames)}>
           {props.children}
         </div>
         <div

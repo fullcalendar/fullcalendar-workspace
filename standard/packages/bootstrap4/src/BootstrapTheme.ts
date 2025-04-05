@@ -7,9 +7,6 @@ BootstrapTheme.prototype.classes = {
   buttonGroup: 'btn-group',
   button: 'btn btn-primary',
   buttonActive: 'active',
-  popover: 'popover',
-  popoverHeader: 'popover-header',
-  popoverContent: 'popover-body',
 }
 
 BootstrapTheme.prototype.baseIconClass = 'fa'

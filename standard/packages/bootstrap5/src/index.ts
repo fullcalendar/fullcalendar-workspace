@@ -11,5 +11,8 @@ export default createPlugin({
     classNames: ['fc', 'fc-theme-bootstrap5'],
     directionClassNames: (direction) => `fc-direction-${direction}`,
     mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
+    popoverClassNames: ['fc-popover', 'popover'],
+    popoverHeaderClassNames: ['fc-popover-header', 'popover-header'],
+    popoverBodyClassNames: ['fc-popover-body', 'popover-body'],
   }
 }) as PluginDef
