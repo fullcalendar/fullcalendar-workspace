@@ -26,6 +26,7 @@ export type {
   DayHeaderMountArg,
 } from '../render-hook-misc.js'
 export type { DayCellContentArg, DayCellMountArg } from '../common/DayCellContainer.js'
+export type { DayLaneContentArg, DayLaneMountArg } from '../common/DayLaneContainer.js'
 export type { ViewMountArg } from '../common/ViewContainer.js'
 export type { EventClickArg } from '../interactions/EventClicking.js'
 export type { EventHoveringArg } from '../interactions/EventHovering.js'

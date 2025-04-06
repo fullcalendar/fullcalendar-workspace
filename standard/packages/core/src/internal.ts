@@ -235,6 +235,7 @@ export { StandardEvent } from './common/StandardEvent.js'
 export { NowIndicatorContainer } from './common/NowIndicatorContainer.js'
 
 export { DayCellContainer, hasCustomDayCellContent } from './common/DayCellContainer.js'
+export { DayLaneContainer, hasCustomDayLaneContent } from './common/DayLaneContainer.js'
 export type { MinimalEventProps } from './common/EventContainer.js'
 export { EventContainer } from './common/EventContainer.js'
 export { renderFill, BgEvent } from './common/bg-fill.js'

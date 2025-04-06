@@ -95,7 +95,7 @@ export class DayTableModel {
   }
 
   protected cellIsMajor(dateMarker: DateMarker): boolean {
-    return this.majorUnit && isMajorUnit(dateMarker, this.majorUnit, this.dateEnv)
+    return this.majorUnit ? isMajorUnit(dateMarker, this.majorUnit, this.dateEnv) : false
   }
 
   private buildHeaderDates() {

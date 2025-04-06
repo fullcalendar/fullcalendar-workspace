@@ -4,14 +4,15 @@ import {
   buildEventRangeKey,
   DateMarker,
   DateProfile,
-  DateRange, DayCellContainer,
+  DateRange,
+  DayLaneContainer,
   Dictionary,
   EventRangeProps,
   EventSegUiInteractionState,
   fracToCssDim,
   getDateMeta,
   getEventRangeMeta,
-  hasCustomDayCellContent,
+  hasCustomDayLaneContent,
   joinClassNames,
   memoize,
   renderFill,
@@ -111,7 +112,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     let sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
 
     return (
-      <DayCellContainer
+      <DayLaneContainer
         tag="div"
         attrs={{
           ...props.attrs,
@@ -129,7 +130,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {this.renderFillSegs(props.businessHourSegs, 'non-business')}
             {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
             {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
-            {hasCustomDayCellContent(options) && (
+            {hasCustomDayLaneContent(options) && (
               <InnerContent
                 tag="div"
                 className='fc-timegrid-day-misc fc-fill-top'
@@ -167,7 +168,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {this.renderNowIndicator(props.nowIndicatorSegs)}
           </Fragment>
         )}
-      </DayCellContainer>
+      </DayLaneContainer>
     )
   }
 

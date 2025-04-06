@@ -20,6 +20,9 @@ breaking: column hooks, instead of groupValue/text, uses fieldValue
 breaking: resourceAreaHeaderClassNames apply to normal col-headers now too
 todo: calendar-wide resourceColumnHeader* hooks don't receive column definition
 bug: expander icon indent is wrong -- resource-timeline-row-grouping.html
+breaking: dayLane* separated from dayCell*
+spec-out: how did we decide a theme would determine if daygrid-week-view/etc
+  would have day-numbers in the cell? dayCellAboveClassNames?
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

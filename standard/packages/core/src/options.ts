@@ -41,6 +41,8 @@ import {
   MoreLinkAction,
   ButtonHintCompoundInput,
   CustomRenderingHandler,
+  DayLaneContentArg,
+  DayLaneMountArg,
 } from './api/structs.js'
 import { ClassNamesInput } from './util/html.js'
 import { ViewApi } from './api/ViewApi.js'
@@ -82,6 +84,11 @@ export const BASE_OPTION_REFINERS = {
   dayCellContent: identity as Identity<CustomContentGenerator<DayCellContentArg>>,
   dayCellDidMount: identity as Identity<DidMountHandler<DayCellMountArg>>,
   dayCellWillUnmount: identity as Identity<WillUnmountHandler<DayCellMountArg>>,
+
+  dayLaneClassNames: identity as Identity<ClassNamesGenerator<DayLaneContentArg>>,
+  dayLaneContent: identity as Identity<CustomContentGenerator<DayLaneContentArg>>,
+  dayLaneDidMount: identity as Identity<DidMountHandler<DayLaneMountArg>>,
+  dayLaneWillUnmount: identity as Identity<WillUnmountHandler<DayLaneMountArg>>,
 
   initialView: String,
   aspectRatio: Number,
