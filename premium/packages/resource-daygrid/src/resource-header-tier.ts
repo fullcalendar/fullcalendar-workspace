@@ -125,11 +125,11 @@ function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<Resou
   const { options } = context
 
   return {
-    generatorName: 'resourceLabelContent',
-    customGenerator: options.resourceLabelContent,
-    classNameGenerator: options.resourceLabelClassNames,
-    didMount: options.resourceLabelDidMount,
-    willUnmount: options.resourceLabelWillUnmount,
+    generatorName: 'resourceDayHeaderContent',
+    customGenerator: options.resourceDayHeaderContent,
+    classNameGenerator: options.resourceDayHeaderClassNames,
+    didMount: options.resourceDayHeaderDidMount,
+    willUnmount: options.resourceDayHeaderWillUnmount,
   }
 }
 

@@ -2,8 +2,7 @@ import { ViewApi } from '@fullcalendar/core'
 import { ResourceApi } from '../api/ResourceApi.js'
 import { MountArg } from '@fullcalendar/core/internal'
 
-// TODO: relocate these types now that Component no longer exists?
-
+// TODO: kill these
 export interface ResourceLabelContentArg {
   resource: ResourceApi
   text: string
@@ -11,5 +10,14 @@ export interface ResourceLabelContentArg {
   date?: Date
   view: ViewApi
 }
-
 export type ResourceLabelMountArg = MountArg<ResourceLabelContentArg>
+
+// new
+export interface ResourceDayHeaderContentArg {
+  resource: ResourceApi
+  text: string
+  isDisabled: boolean
+  date?: Date
+  view: ViewApi
+}
+export type ResourceDayHeaderMountArg = MountArg<ResourceDayHeaderContentArg>

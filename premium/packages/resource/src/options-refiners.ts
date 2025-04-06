@@ -13,6 +13,8 @@ import {
   ResourceAddArg, ResourceChangeArg, ResourceRemoveArg,
   ResourceLabelContentArg,
   ResourceLabelMountArg,
+  ResourceDayHeaderContentArg,
+  ResourceDayHeaderMountArg,
 } from './public-types.js'
 
 export const OPTION_REFINERS = {
@@ -40,10 +42,17 @@ export const OPTION_REFINERS = {
   resourceGroupLabelDidMount: identity as Identity<DidMountHandler<ColCellMountArg>>,
   resourceGroupLabelWillUnmount: identity as Identity<WillUnmountHandler<ColCellMountArg>>,
 
+  // TODO: kill these
   resourceLabelClassNames: identity as Identity<ClassNamesGenerator<ResourceLabelContentArg>>,
   resourceLabelContent: identity as Identity<CustomContentGenerator<ResourceLabelContentArg>>,
   resourceLabelDidMount: identity as Identity<DidMountHandler<ResourceLabelMountArg>>,
   resourceLabelWillUnmount: identity as Identity<WillUnmountHandler<ResourceLabelMountArg>>,
+
+  // new
+  resourceDayHeaderClassNames: identity as Identity<ClassNamesGenerator<ResourceDayHeaderContentArg>>,
+  resourceDayHeaderContent: identity as Identity<CustomContentGenerator<ResourceDayHeaderContentArg>>,
+  resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderMountArg>>,
+  resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderMountArg>>,
 
   resourceLaneClassNames: identity as Identity<ClassNamesGenerator<ResourceLaneContentArg>>,
   resourceLaneContent: identity as Identity<CustomContentGenerator<ResourceLaneContentArg>>,
