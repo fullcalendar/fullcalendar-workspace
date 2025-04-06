@@ -1,4 +1,3 @@
-import { ViewApi } from '@fullcalendar/core'
 import {
   BaseComponent,
   memoizeObjArg,
@@ -9,7 +8,7 @@ import {
   joinClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment, ComponentChild, createRef, Ref } from '@fullcalendar/core/preact'
-import { ResourceApi } from '@fullcalendar/resource'
+import { ResourceApi, ResourceCellContentArg } from '@fullcalendar/resource'
 import { Resource, ColSpec } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
 
@@ -59,7 +58,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           flexGrow: props.grow,
         }}
         renderProps={renderProps}
-        generatorName={colSpec.isMain ? 'resourceLabelContent' : undefined}
+        generatorName='resourceCellContent'
         customGenerator={colSpec.cellContent}
         defaultGenerator={renderResourceInner}
         classNameGenerator={colSpec.cellClassNames}
@@ -110,7 +109,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
   }
 }
 
-function renderResourceInner(renderProps: RenderProps): ComponentChild {
+function renderResourceInner(renderProps: ResourceCellContentArg): ComponentChild {
   return renderProps.fieldValue || <Fragment>&nbsp;</Fragment>
 }
 
@@ -122,13 +121,7 @@ interface RenderPropsInput {
   context: ViewContext
 }
 
-interface RenderProps {
-  resource: ResourceApi
-  fieldValue: any
-  view: ViewApi
-}
-
-function refineRenderProps(input: RenderPropsInput): RenderProps {
+function refineRenderProps(input: RenderPropsInput): ResourceCellContentArg {
   return {
     resource: new ResourceApi(input.context, input.resource),
     fieldValue: input.fieldValue,

@@ -6,15 +6,18 @@ import {
 import {
   ResourceSourceInput,
   ColSpec,
-  ColHeaderContentArg, ColHeaderMountArg,
-  ColCellContentArg, ColCellMountArg,
+  ResourceColumnHeaderContentArg, ResourceColumnHeaderMountArg,
   ResourceLaneContentArg, ResourceLaneMountArg,
   ResourceApi,
   ResourceAddArg, ResourceChangeArg, ResourceRemoveArg,
-  ResourceLabelContentArg,
-  ResourceLabelMountArg,
   ResourceDayHeaderContentArg,
   ResourceDayHeaderMountArg,
+  ResourceCellContentArg,
+  ResourceCellMountArg,
+  ResourceGroupHeaderContentArg,
+  ResourceGroupHeaderMountArg,
+  ResourceGroupLaneContentArg,
+  ResourceGroupLaneMountArg,
 } from './public-types.js'
 
 export const OPTION_REFINERS = {
@@ -32,37 +35,41 @@ export const OPTION_REFINERS = {
   datesAboveResources: Boolean,
   needsResourceData: Boolean, // internal-only
 
-  resourceAreaHeaderClassNames: identity as Identity<ClassNamesGenerator<ColHeaderContentArg>>,
-  resourceAreaHeaderContent: identity as Identity<CustomContentGenerator<ColHeaderContentArg>>,
-  resourceAreaHeaderDidMount: identity as Identity<DidMountHandler<ColHeaderMountArg>>,
-  resourceAreaHeaderWillUnmount: identity as Identity<WillUnmountHandler<ColHeaderMountArg>>,
-
-  resourceGroupLabelClassNames: identity as Identity<ClassNamesGenerator<ColCellContentArg>>,
-  resourceGroupLabelContent: identity as Identity<CustomContentGenerator<ColCellContentArg>>,
-  resourceGroupLabelDidMount: identity as Identity<DidMountHandler<ColCellMountArg>>,
-  resourceGroupLabelWillUnmount: identity as Identity<WillUnmountHandler<ColCellMountArg>>,
-
-  // TODO: kill these
-  resourceLabelClassNames: identity as Identity<ClassNamesGenerator<ResourceLabelContentArg>>,
-  resourceLabelContent: identity as Identity<CustomContentGenerator<ResourceLabelContentArg>>,
-  resourceLabelDidMount: identity as Identity<DidMountHandler<ResourceLabelMountArg>>,
-  resourceLabelWillUnmount: identity as Identity<WillUnmountHandler<ResourceLabelMountArg>>,
-
-  // new
+  // for vresource view
   resourceDayHeaderClassNames: identity as Identity<ClassNamesGenerator<ResourceDayHeaderContentArg>>,
   resourceDayHeaderContent: identity as Identity<CustomContentGenerator<ResourceDayHeaderContentArg>>,
   resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderMountArg>>,
   resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderMountArg>>,
 
+  // datagrid super-header & normal column headers
+  resourceAreaHeaderClassNames: identity as Identity<ClassNamesGenerator<ResourceColumnHeaderContentArg>>,
+  resourceAreaHeaderContent: identity as Identity<CustomContentGenerator<ResourceColumnHeaderContentArg>>,
+  resourceAreaHeaderDidMount: identity as Identity<DidMountHandler<ResourceColumnHeaderMountArg>>,
+  resourceAreaHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceColumnHeaderMountArg>>,
+
+  // datagrid cells, for both resources & resource-GROUP
+  resourceCellClassNames: identity as Identity<ClassNamesGenerator<ResourceCellContentArg>>,
+  resourceCellContent: identity as Identity<CustomContentGenerator<ResourceCellContentArg>>,
+  resourceCellDidMount: identity as Identity<DidMountHandler<ResourceCellMountArg>>,
+  resourceCellWillUnmount: identity as Identity<WillUnmountHandler<ResourceCellMountArg>>,
+
+  // datagrid, for resource-GROUP entire row
+  resourceGroupHeaderClassNames: identity as Identity<ClassNamesGenerator<ResourceGroupHeaderContentArg>>,
+  resourceGroupHeaderContent: identity as Identity<CustomContentGenerator<ResourceGroupHeaderContentArg>>,
+  resourceGroupHeaderDidMount: identity as Identity<DidMountHandler<ResourceGroupHeaderMountArg>>,
+  resourceGroupHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupHeaderMountArg>>,
+
+  // timeline lane, for resource-GROUP
+  resourceGroupLaneClassNames: identity as Identity<ClassNamesGenerator<ResourceGroupLaneContentArg>>,
+  resourceGroupLaneContent: identity as Identity<CustomContentGenerator<ResourceGroupLaneContentArg>>,
+  resourceGroupLaneDidMount: identity as Identity<DidMountHandler<ResourceGroupLaneMountArg>>,
+  resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupLaneMountArg>>,
+
+  // timeline, lane, for resource
   resourceLaneClassNames: identity as Identity<ClassNamesGenerator<ResourceLaneContentArg>>,
   resourceLaneContent: identity as Identity<CustomContentGenerator<ResourceLaneContentArg>>,
   resourceLaneDidMount: identity as Identity<DidMountHandler<ResourceLaneMountArg>>,
   resourceLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceLaneMountArg>>,
-
-  resourceGroupLaneClassNames: identity as Identity<ClassNamesGenerator<ColCellContentArg>>,
-  resourceGroupLaneContent: identity as Identity<CustomContentGenerator<ColCellContentArg>>,
-  resourceGroupLaneDidMount: identity as Identity<DidMountHandler<ColCellMountArg>>,
-  resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ColCellMountArg>>,
 }
 
 export const LISTENER_REFINERS = {

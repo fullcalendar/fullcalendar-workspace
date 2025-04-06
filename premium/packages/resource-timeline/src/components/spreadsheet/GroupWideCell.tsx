@@ -1,6 +1,6 @@
 import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef } from '@fullcalendar/core/internal'
 import { createElement, Fragment, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
-import { ColCellContentArg } from '@fullcalendar/resource'
+import { ResourceGroupHeaderContentArg } from '@fullcalendar/resource'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
 
@@ -22,7 +22,10 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
 
   render() {
     let { props, context } = this
-    let renderProps: ColCellContentArg = { groupValue: props.group.value, view: context.viewApi }
+    let renderProps: ResourceGroupHeaderContentArg = {
+      fieldValue: props.group.value,
+      view: context.viewApi,
+    }
     let spec = props.group.spec
 
     return ( // TODO: apply the top-coordinate
@@ -37,7 +40,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
           // TODO: make part of fc-resource-group so ppl can style both cells together?
           className='fc-resource-group fc-cell fc-liquid fc-shaded'
           renderProps={renderProps}
-          generatorName="resourceGroupLabelContent"
+          generatorName="resourceGroupHeaderContent"
           customGenerator={spec.labelContent}
           defaultGenerator={renderCellInner}
           classNameGenerator={spec.labelClassNames}
@@ -91,6 +94,6 @@ GroupWideCell.addPropsEquality({
   group: isGroupsEqual,
 })
 
-function renderCellInner(renderProps: ColCellContentArg): ComponentChild {
-  return renderProps.groupValue || <Fragment>&nbsp;</Fragment>
+function renderCellInner(renderProps: ResourceGroupHeaderContentArg): ComponentChild {
+  return renderProps.fieldValue || <Fragment>&nbsp;</Fragment>
 }

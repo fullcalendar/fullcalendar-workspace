@@ -48,7 +48,12 @@ export {
   translateRect,
 } from './util/geom.js'
 
-export { mapHash, filterHash, isPropsEqual, compareObjs, collectFromHash } from './util/object.js'
+export {
+  mapHash, filterHash, isPropsEqual, compareObjs, collectFromHash,
+  joinFuncishClassNames,
+  mergeContentInjectors,
+  mergeLifecycleCallbacks,
+} from './util/object.js'
 
 export {
   applyStyle,

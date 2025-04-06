@@ -1,4 +1,4 @@
-import { ViewOptionsRefined } from '@fullcalendar/core/internal'
+import { joinFuncishClassNames, mergeContentInjectors, mergeLifecycleCallbacks, ViewOptionsRefined } from '@fullcalendar/core/internal'
 import { ColSpec } from '@fullcalendar/resource'
 import { GroupSpec, DEFAULT_RESOURCE_ORDER } from '@fullcalendar/resource/internal'
 import { ensureDimConfigsGrow, parseSiblingDimConfig } from './col-positioning.js'
@@ -11,11 +11,7 @@ export function processColOptions(options: ViewOptionsRefined) {
 
   if (!allColSpecs.length) {
     allColSpecs.push({
-      headerClassNames: options.resourceAreaHeaderClassNames,
-      headerContent: options.resourceAreaHeaderContent,
       headerDefault: () => 'Resources', // TODO: view.defaults
-      headerDidMount: options.resourceAreaHeaderDidMount,
-      headerWillUnmount: options.resourceAreaHeaderWillUnmount,
     })
   } else if (options.resourceAreaHeaderContent) { // weird way to determine if content
     superHeaderRendering = {
@@ -32,26 +28,20 @@ export function processColOptions(options: ViewOptionsRefined) {
   let groupRowDepth = 0
 
   for (let colSpec of allColSpecs) {
-    if (colSpec.group) {
-      groupColSpecs.push({
-        ...colSpec,
-        cellClassNames: colSpec.cellClassNames || options.resourceGroupLabelClassNames,
-        cellContent: colSpec.cellContent || options.resourceGroupLabelContent,
-        cellDidMount: colSpec.cellDidMount || options.resourceGroupLabelDidMount,
-        cellWillUnmount: colSpec.cellWillUnmount || options.resourceGroupLaneWillUnmount,
-      })
-    } else {
-      resourceColSpecs.push(colSpec)
-    }
-  }
+    (colSpec.group ? groupColSpecs : resourceColSpecs).push({
+      ...colSpec,
 
-  // BAD: mutates a user-supplied option
-  let mainColSpec = resourceColSpecs[0]
-  mainColSpec.isMain = true
-  mainColSpec.cellClassNames = mainColSpec.cellClassNames || options.resourceLabelClassNames
-  mainColSpec.cellContent = mainColSpec.cellContent || options.resourceLabelContent
-  mainColSpec.cellDidMount = mainColSpec.cellDidMount || options.resourceLabelDidMount
-  mainColSpec.cellWillUnmount = mainColSpec.cellWillUnmount || options.resourceLabelWillUnmount
+      headerClassNames: joinFuncishClassNames(options.resourceAreaHeaderClassNames, colSpec.headerClassNames),
+      headerContent: mergeContentInjectors(options.resourceAreaHeaderContent, colSpec.headerContent),
+      headerDidMount: mergeLifecycleCallbacks(options.resourceAreaHeaderDidMount, colSpec.headerDidMount),
+      headerWillUnmount: mergeLifecycleCallbacks(options.resourceAreaHeaderWillUnmount, colSpec.headerWillUnmount),
+
+      cellClassNames: joinFuncishClassNames(options.resourceCellClassNames, colSpec.cellClassNames),
+      cellContent: mergeContentInjectors(options.resourceCellContent, colSpec.cellContent),
+      cellDidMount: mergeLifecycleCallbacks(options.resourceCellDidMount, colSpec.cellDidMount),
+      cellWillUnmount: mergeLifecycleCallbacks(options.resourceCellWillUnmount, colSpec.cellWillUnmount),
+    })
+  }
 
   if (groupColSpecs.length) {
     groupSpecs = groupColSpecs
@@ -62,10 +52,10 @@ export function processColOptions(options: ViewOptionsRefined) {
       groupSpecs.push({
         field: hGroupField,
 
-        labelClassNames: options.resourceGroupLabelClassNames,
-        labelContent: options.resourceGroupLabelContent,
-        labelDidMount: options.resourceGroupLabelDidMount,
-        labelWillUnmount: options.resourceGroupLabelWillUnmount,
+        labelClassNames: options.resourceGroupHeaderClassNames,
+        labelContent: options.resourceGroupHeaderContent,
+        labelDidMount: options.resourceGroupHeaderDidMount,
+        labelWillUnmount: options.resourceGroupHeaderWillUnmount,
 
         laneClassNames: options.resourceGroupLaneClassNames,
         laneContent: options.resourceGroupLaneContent,

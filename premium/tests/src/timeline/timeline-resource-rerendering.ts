@@ -10,7 +10,7 @@ describe('timeline resource rerendering', () => {
         { id: 'a', title: 'Resource A ' },
         { id: 'b', title: 'Resource B' },
       ],
-      resourceLabelContent(info) {
+      resourceCellContent(info) {
         let html = 'line0<br>line1'
 
         if (info.resource.id === 'a' && isBig) {

@@ -1,6 +1,6 @@
 import { BaseComponent, ContentContainer, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
-import { ColCellContentArg } from '@fullcalendar/resource'
+import { ResourceGroupLaneContentArg } from '@fullcalendar/resource'
 import { Group } from '@fullcalendar/resource/internal'
 
 export interface GroupLaneProps {
@@ -24,8 +24,8 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
     let { props, context } = this
     let { group } = props
     let groupSpec = group.spec
-    let renderProps: ColCellContentArg = {
-      groupValue: group.value,
+    let renderProps: ResourceGroupLaneContentArg = {
+      fieldValue: group.value,
       view: context.viewApi,
     }
 

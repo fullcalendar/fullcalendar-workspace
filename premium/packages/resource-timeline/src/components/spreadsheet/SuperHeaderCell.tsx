@@ -1,6 +1,6 @@
 import { BaseComponent, ContentContainer, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
-import { ColHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource'
+import { ResourceColumnHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource'
 
 export interface SuperHeaderCellProps {
   renderHooks: ColHeaderRenderHooks
@@ -23,7 +23,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
 
   render() {
     let { renderHooks } = this.props
-    let renderProps: ColHeaderContentArg = { view: this.context.viewApi }
+    let renderProps: ResourceColumnHeaderContentArg = { view: this.context.viewApi }
 
     return (
       <ContentContainer

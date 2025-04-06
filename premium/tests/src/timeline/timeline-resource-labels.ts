@@ -1,13 +1,13 @@
 import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineViewWrapper.js'
 
 describe('timeline resource labels', () => {
-  describe('resourceLabelContent', () => {
+  describe('resourceCellContent', () => {
     // https://github.com/fullcalendar/fullcalendar/issues/5586
     it('can inject new HTML when Calendar::render is called', () => {
       let renderCnt = 0
       let calendar = initCalendar({
         initialView: 'resourceTimelineDay',
-        resourceLabelContent() {
+        resourceCellContent() {
           renderCnt += 1
           return { html: 'test' + renderCnt }
         },

@@ -713,7 +713,7 @@ describe('with resource-timeline view', () => {
       },
       template: `
         <FullCalendar ref='calendar' :options='calendarOptions'>
-          <template v-slot:resourceLabelContent="arg">
+          <template v-slot:resourceCellContent="arg">
             <b>{{ arg.resource.title }}</b>
           </template>
         </FullCalendar>

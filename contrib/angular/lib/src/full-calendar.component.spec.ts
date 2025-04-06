@@ -439,7 +439,7 @@ describe('with list-view, customContent, and state mutation in datesSet', () => 
 @Component({
   template: `
     <full-calendar #calendar [options]="calendarOptions">
-      <ng-template #resourceLabelContent let-arg>
+      <ng-template #resourceCellContent let-arg>
         <b>{{ arg.resource.title }}</b>
       </ng-template>
     </full-calendar>
@@ -489,7 +489,7 @@ describe('with resource-timeline view', () => {
 @Component({
   template: `
     <full-calendar #calendar [options]="calendarOptions">
-      <ng-template #resourceLabelContent let-arg>
+      <ng-template #resourceCellContent let-arg>
         <b>{{ arg.resource.title }}</b>
       </ng-template>
     </full-calendar>

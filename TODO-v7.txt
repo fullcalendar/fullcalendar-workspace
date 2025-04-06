@@ -16,6 +16,10 @@ todo: move bottom-borders to cells!
   - timegrid slats
 bug: scroll to bottom of resource-timegrid-hscroll.html, scrollers out of sync
 tests: for all places isMajor emitted
+breaking: column hooks, instead of groupValue/text, uses fieldValue
+breaking: resourceAreaHeaderClassNames apply to normal col-headers now too
+todo: calendar-wide resourceColumnHeader* hooks don't receive column definition
+bug: expander icon indent is wrong -- resource-timeline-row-grouping.html
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

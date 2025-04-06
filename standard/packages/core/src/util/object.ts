@@ -256,7 +256,7 @@ type ClassNameInput = string | number | Falsy
 type ClassNamesInput = ClassNameInput[] | ClassNameInput
 type FuncishClassNames = ((arg: any) => ClassNamesInput) | ClassNamesInput
 
-function joinFuncishClassNames(
+export function joinFuncishClassNames(
   input0: FuncishClassNames, // added first
   input1: FuncishClassNames, // added second
 ): FuncishClassNames {
@@ -275,7 +275,7 @@ function joinFuncishClassNames(
   return joinArrayishClassNames(input0 as ClassNamesInput, input1 as ClassNamesInput)
 }
 
-function mergeContentInjectors(
+export function mergeContentInjectors(
   contentGenerator0: CustomContentGenerator<any>, // fallback
   contentGenerator1: CustomContentGenerator<any>, // override
 ): CustomContentGenerator<any> {
@@ -300,7 +300,7 @@ function mergeContentInjectors(
   return contentGenerator0
 }
 
-function mergeLifecycleCallbacks(
+export function mergeLifecycleCallbacks(
   fn0: (...args: any[]) => any, // called first
   fn1: (...args: any[]) => any, // called second
 ): (...args: any[]) => any {

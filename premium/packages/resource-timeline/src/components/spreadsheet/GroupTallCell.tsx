@@ -1,6 +1,6 @@
 import { BaseComponent, ContentContainer, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
-import { ColSpec, ColCellContentArg } from '@fullcalendar/resource'
+import { ColSpec, ResourceGroupHeaderContentArg } from '@fullcalendar/resource'
 
 export interface GroupTallCellProps {
   colSpec: ColSpec
@@ -27,8 +27,8 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
   render() {
     let { props, context } = this
     let { colSpec } = props
-    let renderProps: ColCellContentArg = {
-      groupValue: props.fieldValue,
+    let renderProps: ResourceGroupHeaderContentArg = {
+      fieldValue: props.fieldValue,
       view: context.viewApi,
     }
 
@@ -51,7 +51,7 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
           flexGrow: props.grow,
         }}
         renderProps={renderProps}
-        generatorName="resourceGroupLabelContent"
+        generatorName="resourceGroupHeaderContent"
         customGenerator={colSpec.cellContent}
         defaultGenerator={renderGroupInner}
         classNameGenerator={colSpec.cellClassNames}
@@ -83,6 +83,6 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
   }
 }
 
-function renderGroupInner(renderProps: ColCellContentArg): ComponentChild {
-  return renderProps.groupValue || <Fragment>&nbsp;</Fragment>
+function renderGroupInner(renderProps: ResourceGroupHeaderContentArg): ComponentChild {
+  return renderProps.fieldValue || <Fragment>&nbsp;</Fragment>
 }

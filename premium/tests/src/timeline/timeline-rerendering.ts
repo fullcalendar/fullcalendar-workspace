@@ -75,7 +75,7 @@ describe('timeline view rerendering', () => {
     it('doesnt rerender them when navigating dates', () => {
       let resourceRenderCnt = 0
       let calendar = initCalendar({
-        resourceLabelContent() {
+        resourceCellContent() {
           resourceRenderCnt += 1
         },
       })

@@ -36,7 +36,7 @@ describe('rerender performance for resource timeline', () => {
         slotLaneRenderCnt += 1
       },
 
-      resourceLabelContent() {
+      resourceCellContent() {
         resourceLabelRenderCnt += 1
       },
       resourceLaneContent() {

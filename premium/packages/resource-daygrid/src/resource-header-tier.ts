@@ -1,6 +1,6 @@
 import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, joinClassNames, ViewContext } from '@fullcalendar/core/internal'
 import { CellDataConfig, CellRenderConfig, RowConfig, buildDateDataConfigs, buildDateRenderConfig, buildDateRowConfig } from '@fullcalendar/daygrid/internal'
-import { ResourceApi, ResourceLabelContentArg } from '@fullcalendar/resource'
+import { ResourceApi, ResourceDayHeaderContentArg } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
 
 export function buildResourceRowConfigs(
@@ -113,7 +113,7 @@ function buildResourceRowConfig(
   context: ViewContext,
   colSpan?: number,
   isMajorMod?: number,
-): RowConfig<ResourceLabelContentArg> {
+): RowConfig<ResourceDayHeaderContentArg> {
   return {
     isDateRow: false,
     renderConfig: buildResourceRenderConfig(context),
@@ -121,7 +121,7 @@ function buildResourceRowConfig(
   }
 }
 
-function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<ResourceLabelContentArg> {
+function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<ResourceDayHeaderContentArg> {
   const { options } = context
 
   return {
@@ -141,7 +141,7 @@ function buildResourceDataConfigs(
   context: ViewContext,
   colSpan = 1,
   isMajorMod?: number,
-): CellDataConfig<ResourceLabelContentArg>[] {
+): CellDataConfig<ResourceDayHeaderContentArg>[] {
   const dateMeta = dateMarker ? getDateMeta(dateMarker, todayRange, null, dateProfile) : undefined
 
   return resources.map((resource, i) => {

@@ -86,10 +86,10 @@ describe('timeline resource grouping', () => {
     ])
   })
 
-  it('renders base off resourceGroupLabelContent function', () => {
+  it('renders base off resourceGroupHeaderContent function', () => {
     let calendar = initCalendar({
-      resourceGroupLabelContent(arg) {
-        return `Group ${arg.groupValue}`
+      resourceGroupHeaderContent(arg) {
+        return `Group ${arg.fieldValue}`
       },
     })
 
