@@ -8,6 +8,11 @@ export class DayResourceTableModel extends ResourcefulDayTableModel {
     return dateI * this.resources.length + resourceI
   }
 
+  colIsMajor(col: number): boolean {
+    const resourceCnt = this.resources.length
+    return resourceCnt > 1 && !(col % resourceCnt)
+  }
+
   /*
   every single day is broken up
   */

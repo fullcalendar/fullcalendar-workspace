@@ -34,7 +34,7 @@ export function buildResourceRowConfigs(
 
   if (datesAboveResources) {
     const resourceDataConfigsPerDate = dates.map((date) => {
-      return buildResourceDataConfigs(resources, date, dateProfile, todayRange, context)
+      return buildResourceDataConfigs(resources, date, dateProfile, todayRange, context, 1, resources.length)
     })
 
     return [
@@ -47,6 +47,7 @@ export function buildResourceRowConfigs(
         dayHeaderFormat,
         context,
         /* colSpan = */ resources.length,
+        1, // each cell is major, mod%1 always yields 0 (yes)
       ),
       // resource row
       {
@@ -76,12 +77,21 @@ export function buildResourceRowConfigs(
           'data-resource-id': resourceApiId,
         },
         'fc-resource',
+        resources.length,
       )
     })
 
     return [
       // resource row
-      buildResourceRowConfig(resources, undefined, undefined, undefined, context, /* colSpan = */ dates.length),
+      buildResourceRowConfig(
+        resources,
+        undefined,
+        undefined,
+        undefined,
+        context,
+        /* colSpan = */ dates.length,
+        1, // each cell is major, mod%1 always yields 0 (yes)
+      ),
       // date row
       {
         isDateRow: true,
@@ -97,16 +107,17 @@ Single row, just resources (might be under dates, might not)
 */
 function buildResourceRowConfig(
   resources: Resource[],
-  date: DateMarker | undefined,
+  dateMarker: DateMarker | undefined,
   dateProfile: DateProfile,
   todayRange: DateRange,
   context: ViewContext,
   colSpan?: number,
+  isMajorMod?: number,
 ): RowConfig<ResourceLabelContentArg> {
   return {
     isDateRow: false,
     renderConfig: buildResourceRenderConfig(context),
-    dataConfigs: buildResourceDataConfigs(resources, date, dateProfile, todayRange, context, colSpan),
+    dataConfigs: buildResourceDataConfigs(resources, dateMarker, dateProfile, todayRange, context, colSpan, isMajorMod),
   }
 }
 
@@ -124,30 +135,33 @@ function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<Resou
 
 function buildResourceDataConfigs(
   resources: Resource[],
-  date: DateMarker | undefined,
+  dateMarker: DateMarker | undefined,
   dateProfile: DateProfile | undefined,
   todayRange: DateRange | undefined,
   context: ViewContext,
   colSpan = 1,
+  isMajorMod?: number,
 ): CellDataConfig<ResourceLabelContentArg>[] {
-  const dateMeta = date ? getDateMeta(date, todayRange, null, dateProfile) : undefined
+  const dateMeta = dateMarker ? getDateMeta(dateMarker, todayRange, null, dateProfile) : undefined
 
-  return resources.map((resource) => {
+  return resources.map((resource, i) => {
     const resourceApi = new ResourceApi(context, resource)
     const resourceApiId = resourceApi.id
 
     return {
-      key: (date ? date.toUTCString() + ':' : '') + resource.id,
+      key: (dateMarker ? dateMarker.toUTCString() + ':' : '') + resource.id,
+      dateMarker,
       renderProps: {
         resource: resourceApi,
+        isMajor: isMajorMod != null && !(i % isMajorMod),
         text: resource.title || resourceApiId || '',
         isDisabled: false,
-        date: date ? context.dateEnv.toDate(date) : null,
+        date: dateMarker ? context.dateEnv.toDate(dateMarker) : null,
         view: context.viewApi,
       },
       attrs: {
         'data-resource-id': resourceApiId,
-        'data-date': date ? formatDayString(date) : undefined,
+        'data-date': dateMarker ? formatDayString(dateMarker) : undefined,
       },
       colSpan,
       className: joinClassNames(

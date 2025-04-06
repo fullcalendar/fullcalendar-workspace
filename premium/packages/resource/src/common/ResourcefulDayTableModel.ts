@@ -22,11 +22,14 @@ export abstract class ResourcefulDayTableModel extends AbstractResourceDayTableM
 
   abstract computeCol(dateI: number, resourceI: number): number
 
+  abstract colIsMajor(col: number): boolean
+
   abstract computeColRanges(dateStartI: number, dateEndI: number, resourceI: number): SlicedCoordRange[]
 
   buildCells(): DayTableCell[][] {
     let { rowCnt, dayTableModel, resources } = this
     let rows: DayTableCell[][] = []
+    let hasMajor = resources.length > 1 && dayTableModel.colCnt > 1
 
     for (let row = 0; row < rowCnt; row += 1) {
       let rowCells: DayTableCell[] = []
@@ -39,12 +42,12 @@ export abstract class ResourcefulDayTableModel extends AbstractResourceDayTableM
           let attrs = { 'data-resource-id': resource.id }
           let className = 'fc-resource'
           let dateSpanProps = { resourceId: resource.id }
+          let realCol = this.computeCol(dateCol, resourceCol)
 
-          rowCells[
-            this.computeCol(dateCol, resourceCol)
-          ] = {
+          rowCells[realCol] = {
             key: resource.id + ':' + date.toISOString(), // TODO: DRY up this logic with header-tier somehow
             date,
+            isMajor: hasMajor && this.colIsMajor(realCol),
             renderProps,
             attrs,
             className,

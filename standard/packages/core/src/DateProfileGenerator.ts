@@ -1,4 +1,4 @@
-import { DateMarker, startOfDay, addDays } from './datelib/marker.js'
+import { DateMarker, startOfDay, addDays, diffWholeWeeks, diffWholeDays } from './datelib/marker.js'
 import { Duration, createDuration, asRoughDays, asRoughMs, greatestDurationDenominator } from './datelib/duration.js'
 import {
   DateRange,
@@ -452,4 +452,49 @@ export class DateProfileGenerator { // only publicly used for isHiddenDay :(
     }
     return date
   }
+}
+
+// Utils
+// -------------------------------------------------------------------------------------------------
+
+export function computeMajorUnit(dateProfile: DateProfile, dateEnv: DateEnv): string | undefined {
+  const { currentRange } = dateProfile
+
+  if (dateProfile.currentRangeUnit === 'year') {
+    if (dateEnv.diffWholeYears(currentRange.start, currentRange.end) > 1) {
+      return 'year'
+    } else {
+      return 'month'
+    }
+  } else if (dateProfile.currentRangeUnit === 'month') {
+    if (dateEnv.diffWholeMonths(currentRange.start, currentRange.end) > 1) {
+      return 'month'
+    }
+  } else if (dateProfile.currentRangeUnit === 'week') {
+    if (diffWholeWeeks(currentRange.start, currentRange.end) > 1) {
+      return 'week'
+    }
+  } else if (dateProfile.currentRangeUnit === 'day') {
+    if (diffWholeDays(currentRange.start, currentRange.end) > 1) {
+      return 'day'
+    }
+  }
+}
+
+export function isMajorUnit(dateMarker: DateMarker, majorUnit: string, dateEnv: DateEnv): boolean {
+  const isStartOfDay = dateMarker.valueOf() === startOfDay(dateMarker).valueOf()
+
+  if (isStartOfDay) {
+    if (majorUnit === 'year') {
+      return !dateEnv.getMonth(dateMarker) && dateEnv.getDay(dateMarker) === 1
+    } else if (majorUnit === 'month') {
+      return dateEnv.getDay(dateMarker) === 1
+    } else if (majorUnit === 'week') {
+      return dateMarker.getUTCDay() === dateEnv.weekDow
+    } else if (majorUnit === 'day') {
+      return true
+    }
+  }
+
+  return false
 }

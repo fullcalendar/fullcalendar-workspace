@@ -1,21 +1,21 @@
 import { CssDimValue, DayHeaderContentArg } from '@fullcalendar/core'
-import { createFormatter, DateFormatter, DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, fracToCssDim, SlicedCoordRange } from '@fullcalendar/core/internal'
+import { computeMajorUnit, createFormatter, DateEnv, DateFormatter, DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, fracToCssDim, SlicedCoordRange } from '@fullcalendar/core/internal'
 import { ComponentChild } from '@fullcalendar/core/preact'
 
 export function renderInner(renderProps: DayHeaderContentArg): ComponentChild {
   return renderProps.text
 }
 
-/*
-TODO: move this so @fullcalendar/daygrid
-*/
-export function buildDayTableModel(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
-  let daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
+export function buildDayTableModel(
+  dateProfile: DateProfile,
+  dateProfileGenerator: DateProfileGenerator,
+  dateEnv: DateEnv,
+) {
+  const daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
+  const breakOnWeeks = /year|month|week/.test(dateProfile.currentRangeUnit)
+  const majorUnit = !breakOnWeeks && computeMajorUnit(dateProfile, dateEnv)
 
-  return new DayTableModel(
-    daySeries,
-    /year|month|week/.test(dateProfile.currentRangeUnit),
-  )
+  return new DayTableModel(daySeries, breakOnWeeks, dateEnv, majorUnit)
 }
 
 export function computeColWidth(colCnt: number, colMinWidth: number, viewportWidth: number | undefined): [

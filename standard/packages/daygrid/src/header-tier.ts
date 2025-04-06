@@ -1,5 +1,5 @@
 import { ClassNamesGenerator, CustomContentGenerator, DayHeaderContentArg, DidMountHandler, WillUnmountHandler } from '@fullcalendar/core'
-import { addDays, buildDateStr, buildNavLinkAttrs, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, joinClassNames, ViewContext } from '@fullcalendar/core/internal'
+import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, isMajorUnit, joinClassNames, ViewContext } from '@fullcalendar/core/internal'
 
 export interface CellRenderConfig<RenderProps> {
   generatorName: string
@@ -11,6 +11,7 @@ export interface CellRenderConfig<RenderProps> {
 
 export interface CellDataConfig<RenderProps> {
   key: string
+  dateMarker: DateMarker
   renderProps: RenderProps
   className?: string
   attrs?: any // TODO
@@ -36,9 +37,31 @@ const WEEKDAY_FORMAT = createFormatter({ weekday: 'long' })
 const firstSunday = new Date(259200000)
 
 export function buildDateRowConfigs(
-  ...args: Parameters<typeof buildDateRowConfig>
+  dates: DateMarker[],
+  datesRepDistinctDays: boolean,
+  dateProfile: DateProfile,
+  todayRange: DateRange,
+  dayHeaderFormat: DateFormatter, // TODO: rename to dateHeaderFormat?
+  context: ViewContext,
 ): RowConfig<DayHeaderContentArg>[] {
-  return [buildDateRowConfig(...args)]
+  const rowConfig = buildDateRowConfig(
+    dates,
+    datesRepDistinctDays,
+    dateProfile,
+    todayRange,
+    dayHeaderFormat,
+    context,
+  )
+  const majorUnit = computeMajorUnit(dateProfile, context.dateEnv)
+
+  // HACK mutate isMajor
+  for (const dataConfig of rowConfig.dataConfigs) {
+    if (isMajorUnit(dataConfig.dateMarker, majorUnit, context.dateEnv)) {
+      dataConfig.renderProps.isMajor = true
+    }
+  }
+
+  return [rowConfig]
 }
 
 /*
@@ -46,25 +69,31 @@ Should this receive resource data attributes?
 Or ResourceApi object itself?
 */
 export function buildDateRowConfig(
-  dates: DateMarker[],
+  dateMarkers: DateMarker[],
   datesRepDistinctDays: boolean,
   dateProfile: DateProfile,
   todayRange: DateRange,
   dayHeaderFormat: DateFormatter, // TODO: rename to dateHeaderFormat?
   context: ViewContext,
   colSpan?: number,
+  isMajorMod?: number,
 ): RowConfig<DayHeaderContentArg> {
   return {
     isDateRow: true,
     renderConfig: buildDateRenderConfig(context),
     dataConfigs: buildDateDataConfigs(
-      dates,
+      dateMarkers,
       datesRepDistinctDays,
       dateProfile,
       todayRange,
       dayHeaderFormat,
       context,
       colSpan,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      isMajorMod,
     )
   }
 }
@@ -95,7 +124,7 @@ for (let dow = 0; dow < 7; dow++) {
 For header cells: data
 */
 export function buildDateDataConfigs(
-  dates: DateMarker[],
+  dateMarkers: DateMarker[],
   datesRepDistinctDays: boolean,
   dateProfile: DateProfile,
   todayRange: DateRange,
@@ -106,45 +135,49 @@ export function buildDateDataConfigs(
   extraRenderProps: any = {}, // TODO
   extraAttrs: any = {}, // TODO
   className = '',
+  isMajorMod?: number,
 ): CellDataConfig<DayHeaderContentArg>[] {
   const { dateEnv, viewApi, options } = context
 
   return datesRepDistinctDays
-    ? dates.map((date) => { // Date
-        const dateMeta = getDateMeta(date, todayRange, null, dateProfile)
-        const text = dateEnv.format(date, dayHeaderFormat)
+    ? dateMarkers.map((dateMarker, i) => { // Date
+        const dateMeta = getDateMeta(dateMarker, todayRange, null, dateProfile)
+        const isMajor = isMajorMod != null && !(i % isMajorMod)
+        const text = dateEnv.format(dateMarker, dayHeaderFormat)
         const renderProps: DayHeaderContentArg = {
           ...dateMeta,
-          date: dateEnv.toDate(date),
+          date: dateEnv.toDate(dateMarker),
+          isMajor,
           view: viewApi,
           text,
           ...extraRenderProps,
         }
         const isNavLink = options.navLinks && !dateMeta.isDisabled &&
-          dates.length > 1 // don't show navlink to day if only one day
-        const fullDateStr = buildDateStr(context, date)
+          dateMarkers.length > 1 // don't show navlink to day if only one day
+        const fullDateStr = buildDateStr(context, dateMarker)
 
         // for DayGridHeaderCell
         return {
-          key: keyPrefix + date.toUTCString(),
+          key: keyPrefix + dateMarker.toUTCString(),
+          dateMarker,
           renderProps,
           attrs: {
             'aria-label': fullDateStr,
             ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}), // TODO: assign undefined for nonexistent
-            'data-date': formatDayString(date),
+            'data-date': formatDayString(dateMarker),
             ...extraAttrs,
           },
           // for navlink
           innerAttrs: isNavLink
-            ? buildNavLinkAttrs(context, date, undefined, fullDateStr)
+            ? buildNavLinkAttrs(context, dateMarker, undefined, fullDateStr)
             : { 'aria-hidden': true }, // label already on cell
           colSpan,
           isNavLink,
           className: joinClassNames(className, getDayClassName(dateMeta)),
         }
       })
-    : dates.map((date) => { // DayOfWeek
-        const dow = date.getUTCDay()
+    : dateMarkers.map((dateMarker, i) => { // DayOfWeek
+        const dow = dateMarker.getUTCDay()
         const normDate = addDays(firstSunday, dow)
         const dayMeta: DateMeta = {
           dow,
@@ -154,10 +187,12 @@ export function buildDateDataConfigs(
           isToday: false,
           isOther: false,
         }
+        const isMajor = isMajorMod != null && !(i % isMajorMod)
         const text = dateEnv.format(normDate, dayHeaderFormat)
         const renderProps: DayHeaderContentArg = {
           ...dayMeta,
           date: dowDates[dow],
+          isMajor,
           view: viewApi,
           text,
           ...extraRenderProps,
@@ -167,6 +202,7 @@ export function buildDateDataConfigs(
         // for DayGridHeaderCell
         return {
           key: keyPrefix + String(dow),
+          dateMarker,
           renderProps,
           attrs: {
             'aria-label': fullWeekDayStr,

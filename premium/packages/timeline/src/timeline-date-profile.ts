@@ -3,6 +3,8 @@ import {
   config, computeVisibleDayRange, DateProfile, asCleanDays, addDays, wholeDivideDurations, DateMarker,
   startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator,
   asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator, BaseOptionsRefined,
+  computeMajorUnit,
+  isMajorUnit,
 } from '@fullcalendar/core/internal'
 
 export interface TimelineDateProfile {
@@ -12,13 +14,12 @@ export interface TimelineDateProfile {
   headerFormats: any
   isTimeScale: boolean
   largeUnit: string
-  emphasizeWeeks: boolean
   snapDuration: Duration
   snapsPerSlot: number
   normalizedRange: DateRange // snaps to unit. adds in slotMinTime/slotMaxTime
   timeWindowMs: number
   slotDates: DateMarker[]
-  isWeekStarts: boolean[]
+  slotDatesMajor: boolean[]
   snapDiffToIndex: number[]
   snapIndexToDiff: number[]
   snapCnt: number
@@ -28,10 +29,10 @@ export interface TimelineDateProfile {
 
 export interface TimelineHeaderCellData {
   date: DateMarker
+  isMajor: boolean
   text: string
   rowUnit: string
   colspan: number
-  isWeekStart: boolean
 }
 
 const MIN_AUTO_LABELS = 18 // more than `12` months but less that `24` hours
@@ -96,11 +97,6 @@ export function buildTimelineDateProfile(
 
   tDateProfile.largeUnit = largeUnit
 
-  tDateProfile.emphasizeWeeks =
-    asCleanDays(tDateProfile.slotDuration) === 1 &&
-    currentRangeAs('weeks', dateProfile, dateEnv) >= 2 &&
-    !allOptions.businessHours
-
   /*
   console.log('label interval =', timelineView.labelInterval.humanize())
   console.log('slot duration =', timelineView.slotDuration.humanize())
@@ -148,16 +144,21 @@ export function buildTimelineDateProfile(
   tDateProfile.timeWindowMs = timeWindowMs
   tDateProfile.normalizedRange = { start: normalizedStart, end: normalizedEnd }
 
-  let slotDates = []
+  let slotDates: DateMarker[] = []
+  let slotDatesMajor: boolean[] = []
   let date = normalizedStart
+  let majorUnit = computeMajorUnit(dateProfile, dateEnv)
+
   while (date < normalizedEnd) {
     if (isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator)) {
       slotDates.push(date)
+      slotDatesMajor.push(isMajorUnit(date, majorUnit, dateEnv))
     }
     date = dateEnv.add(date, tDateProfile.slotDuration)
   }
 
   tDateProfile.slotDates = slotDates
+  tDateProfile.slotDatesMajor = slotDatesMajor
 
   // more...
 
@@ -187,8 +188,7 @@ export function buildTimelineDateProfile(
 
   // more...
 
-  tDateProfile.isWeekStarts = buildIsWeekStarts(tDateProfile, dateEnv)
-  tDateProfile.cellRows = buildCellRows(tDateProfile, dateEnv)
+  tDateProfile.cellRows = buildCellRows(tDateProfile, dateEnv, majorUnit)
   tDateProfile.slotsPerLabel = wholeDivideDurations(tDateProfile.labelInterval, tDateProfile.slotDuration)
 
   return tDateProfile
@@ -396,6 +396,7 @@ function computeHeaderFormats(
   let format1
   let format2
   const { labelInterval } = tDateProfile
+  const { currentRange } = dateProfile
   let unit = greatestDurationDenominator(labelInterval).unit
   const weekNumbersVisible = allOptions.weekNumbers
   let format0 = (format1 = (format2 = null))
@@ -412,7 +413,7 @@ function computeHeaderFormats(
       break
 
     case 'month':
-      if (currentRangeAs('years', dateProfile, dateEnv) > 1) {
+      if (dateEnv.diffWholeYears(currentRange.start, currentRange.end) > 1) {
         format0 = { year: 'numeric' } // '2015'
       }
 
@@ -420,7 +421,7 @@ function computeHeaderFormats(
       break
 
     case 'week':
-      if (currentRangeAs('years', dateProfile, dateEnv) > 1) {
+      if (dateEnv.diffWholeYears(currentRange.start, currentRange.end) > 1) {
         format0 = { year: 'numeric' } // '2015'
       }
 
@@ -428,9 +429,9 @@ function computeHeaderFormats(
       break
 
     case 'day':
-      if (currentRangeAs('years', dateProfile, dateEnv) > 1) {
+      if (dateEnv.diffWholeYears(currentRange.start, currentRange.end) > 1) {
         format0 = { year: 'numeric', month: 'long' } // 'January 2014'
-      } else if (currentRangeAs('months', dateProfile, dateEnv) > 1) {
+      } else if (dateEnv.diffWholeMonths(currentRange.start, currentRange.end) > 1) {
         format0 = { month: 'long' } // 'January'
       }
 
@@ -446,7 +447,7 @@ function computeHeaderFormats(
         format0 = { week: 'short' } // 'Wk 4'
       }
 
-      if (currentRangeAs('days', dateProfile, dateEnv) > 1) {
+      if (diffWholeDays(currentRange.start, currentRange.end) > 1) {
         format1 = { weekday: 'short', day: 'numeric', month: 'numeric', omitCommas: true } // Sat 4/7
       }
 
@@ -500,43 +501,11 @@ function computeHeaderFormats(
   return [].concat(format0 || [], format1 || [], format2 || [])
 }
 
-// Compute the number of the give units in the "current" range.
-// Won't go more precise than days.
-// Will return `0` if there's not a clean whole interval.
-function currentRangeAs(unit: string, dateProfile: DateProfile, dateEnv: DateEnv) {
-  let range = dateProfile.currentRange
-  let res = null
-
-  if (unit === 'years') {
-    res = dateEnv.diffWholeYears(range.start, range.end)
-  } else if (unit === 'months') {
-    res = dateEnv.diffWholeMonths(range.start, range.end)
-  } else if (unit === 'weeks') {
-    res = dateEnv.diffWholeMonths(range.start, range.end)
-  } else if (unit === 'days') {
-    res = diffWholeDays(range.start, range.end)
-  }
-
-  return res || 0
-}
-
-function buildIsWeekStarts(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
-  let { slotDates, emphasizeWeeks } = tDateProfile
-  let prevWeekNumber = null
-  let isWeekStarts: boolean[] = []
-
-  for (let slotDate of slotDates) {
-    let weekNumber = dateEnv.computeWeekNumber(slotDate)
-    let isWeekStart = emphasizeWeeks && (prevWeekNumber !== null) && (prevWeekNumber !== weekNumber)
-    prevWeekNumber = weekNumber
-
-    isWeekStarts.push(isWeekStart)
-  }
-
-  return isWeekStarts
-}
-
-function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
+function buildCellRows(
+  tDateProfile: TimelineDateProfile,
+  dateEnv: DateEnv,
+  majorUnit: string,
+) {
   let slotDates = tDateProfile.slotDates
   let formats = tDateProfile.headerFormats
   let cellRows = formats.map(() => []) // indexed by row,col
@@ -554,7 +523,6 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
   // builds cellRows and slotCells
   for (let i = 0; i < slotDates.length; i += 1) {
     let date = slotDates[i]
-    let isWeekStart = tDateProfile.isWeekStarts[i]
 
     for (let row = 0; row < formats.length; row += 1) {
       let format = formats[row]
@@ -562,13 +530,14 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
       let leadingCell = rowCells[rowCells.length - 1]
       let isLastRow = row === formats.length - 1
       let isSuperRow = formats.length > 1 && !isLastRow // more than one row and not the last
+      let isMajor = isMajorUnit(date, majorUnit, dateEnv)
       let newCell = null
       let rowUnit = rowUnitsFromFormats[row] || (isLastRow ? guessedSlotUnit : null)
 
       if (isSuperRow) {
         let text = dateEnv.format(date, format)
         if (!leadingCell || (leadingCell.text !== text)) {
-          newCell = buildCellObject(date, text, rowUnit)
+          newCell = buildCellObject(date, isMajor, text, rowUnit)
         } else {
           leadingCell.colspan += 1
         }
@@ -581,13 +550,12 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
         ))
       ) {
         let text = dateEnv.format(date, format)
-        newCell = buildCellObject(date, text, rowUnit)
+        newCell = buildCellObject(date, isMajor, text, rowUnit)
       } else {
         leadingCell.colspan += 1
       }
 
       if (newCell) {
-        newCell.weekStart = isWeekStart
         rowCells.push(newCell)
       }
     }
@@ -596,6 +564,6 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
   return cellRows
 }
 
-function buildCellObject(date: DateMarker, text, rowUnit): TimelineHeaderCellData {
-  return { date, text, rowUnit, colspan: 1, isWeekStart: false }
+function buildCellObject(date: DateMarker, isMajor: boolean, text: string, rowUnit: string): TimelineHeaderCellData {
+  return { date, isMajor, text, rowUnit, colspan: 1 } // colspan mutated later
 }

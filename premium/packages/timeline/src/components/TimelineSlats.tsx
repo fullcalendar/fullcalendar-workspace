@@ -32,7 +32,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   render() {
     let { props, innerWidthRefMap } = this
     let { tDateProfile, slotWidth } = props
-    let { slotDates, isWeekStarts } = tDateProfile
+    let { slotDates, slotDatesMajor } = tDateProfile
     let isDay = !tDateProfile.isTimeScale && !tDateProfile.largeUnit
 
     return (
@@ -52,7 +52,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
               tDateProfile={tDateProfile}
               nowDate={props.nowDate}
               todayRange={props.todayRange}
-              isMajor={isWeekStarts[i]}
+              isMajor={slotDatesMajor[i]}
               isDay={isDay}
               borderStart={Boolean(i)}
 

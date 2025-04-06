@@ -4,7 +4,7 @@ import {
   DateRange,
   memoize,
   NowTimer,
-  ViewProps
+  ViewProps,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { DayTableSlicer } from '../DayTableSlicer.js'
@@ -24,15 +24,16 @@ export class DayGridView extends BaseComponent<ViewProps> {
 
   render() {
     const { props, context } = this
-    const { options } = context
-    const dayTableModel = this.buildDayTableModel(props.dateProfile, context.dateProfileGenerator)
+    const { dateProfile } = props
+    const { options, dateEnv } = context
+    const dayTableModel = this.buildDayTableModel(dateProfile, context.dateProfileGenerator, dateEnv)
     const datesRepDistinctDays = dayTableModel.rowCnt === 1
     const dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
       datesRepDistinctDays,
       dayTableModel.colCnt,
     )
-    const slicedProps = this.slicer.sliceProps(props, props.dateProfile, options.nextDayThreshold, context, dayTableModel)
+    const slicedProps = this.slicer.sliceProps(props, dateProfile, options.nextDayThreshold, context, dayTableModel)
 
     return (
       <NowTimer unit="day">
@@ -40,7 +41,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
           const headerTiers = this.buildDateRowConfigs(
             dayTableModel.headerDates,
             datesRepDistinctDays,
-            props.dateProfile,
+            dateProfile,
             todayRange,
             dayHeaderFormat,
             context,
@@ -50,7 +51,7 @@ export class DayGridView extends BaseComponent<ViewProps> {
             <DayGridLayout
               labelId={props.labelId}
               labelStr={props.labelStr}
-              dateProfile={props.dateProfile}
+              dateProfile={dateProfile}
               todayRange={todayRange}
               cellRows={dayTableModel.cellRows}
               forPrint={props.forPrint}

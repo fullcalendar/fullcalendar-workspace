@@ -43,6 +43,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         elRef={this.handleRootEl}
         date={startDate}
         dateMeta={detaMeta}
+        isMajor={false}
       >
         {(InnerContent, renderProps, attrs) => (
           <Popover

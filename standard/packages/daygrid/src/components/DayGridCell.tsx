@@ -35,6 +35,7 @@ export interface DayGridCellProps {
   dateProfile: DateProfile
   todayRange: DateRange
   date: DateMarker
+  isMajor: boolean
   showDayNumber: boolean
   isCompact?: boolean
   isTall?: boolean
@@ -129,6 +130,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         renderProps={props.renderProps}
         defaultGenerator={renderTopInner}
         date={props.date}
+        isMajor={props.isMajor}
         dateMeta={dateMeta}
         showDayNumber={props.showDayNumber}
         isMonthStart={isMonthStart}

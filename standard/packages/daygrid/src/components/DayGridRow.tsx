@@ -189,6 +189,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               dateProfile={props.dateProfile}
               todayRange={props.todayRange}
               date={cell.date}
+              isMajor={cell.isMajor}
               showDayNumber={props.showDayNumbers}
               isCompact={props.isCompact}
               isTall={props.isTall}

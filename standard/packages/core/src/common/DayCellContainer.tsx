@@ -16,6 +16,7 @@ import { joinClassNames } from '../util/html.js'
 
 export interface DayCellContentArg extends DateMeta {
   date: DateMarker // localized
+  isMajor: boolean
   view: ViewApi
   dayNumberText: string
   [extraProp: string]: any // so can include a resource
@@ -26,6 +27,7 @@ export type DayCellMountArg = MountArg<DayCellContentArg>
 export interface DayCellContainerProps extends Partial<ElProps> {
   date: DateMarker
   dateMeta: DateMeta
+  isMajor: boolean
   isMonthStart?: boolean
   showDayNumber?: boolean // defaults to false
   renderProps?: Dictionary // for EXTRA render props
@@ -43,6 +45,7 @@ export class DayCellContainer extends BaseComponent<DayCellContainerProps> {
     let { options } = context
     let renderProps = this.refineRenderProps({
       date: props.date,
+      isMajor: props.isMajor,
       dateMeta: props.dateMeta,
       isMonthStart: props.isMonthStart || false,
       showDayNumber: props.showDayNumber,
@@ -84,6 +87,7 @@ export function hasCustomDayCellContent(options: ViewOptions): boolean {
 
 interface DayCellRenderPropsInput {
   date: DateMarker // generic
+  isMajor: boolean
   dateMeta: DateMeta
   dateEnv: DateEnv
   viewApi: ViewApi
@@ -101,6 +105,7 @@ function refineRenderProps(raw: DayCellRenderPropsInput): DayCellContentArg {
 
   return {
     date: dateEnv.toDate(date),
+    isMajor: raw.isMajor,
     view: raw.viewApi,
     ...raw.dateMeta,
     isMonthStart,

@@ -40,6 +40,7 @@ export interface TimeGridColProps {
   nowDate: DateMarker
   todayRange: DateRange
   date: DateMarker
+  isMajor: boolean
   slatCnt: number
   attrs?: any
   renderProps?: any
@@ -119,6 +120,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         className={baseClassName}
         style={baseStyle}
         date={props.date}
+        isMajor={props.isMajor}
         dateMeta={dateMeta}
         renderProps={props.renderProps}
       >

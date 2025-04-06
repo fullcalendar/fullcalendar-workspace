@@ -9,6 +9,13 @@ ASAP
 ----
 
 breaking: viewClass* hooks receives single View argument, NOT { view }
+todo: move bottom-borders to cells!
+  - [done] datagrid
+  - timeline resource lanes
+  - timeline slats
+  - timegrid slats
+bug: scroll to bottom of resource-timegrid-hscroll.html, scrollers out of sync
+tests: for all places isMajor emitted
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

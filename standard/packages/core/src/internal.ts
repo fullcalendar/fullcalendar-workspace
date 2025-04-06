@@ -102,7 +102,7 @@ export type { CalendarData } from './reducers/data-types.js'
 export type { ViewProps } from './component-util/View.js'
 
 export type { DateProfile } from './DateProfileGenerator.js'
-export { DateProfileGenerator } from './DateProfileGenerator.js'
+export { DateProfileGenerator, computeMajorUnit, isMajorUnit } from './DateProfileGenerator.js'
 export type { ViewSpec } from './structs/view-spec.js'
 export type { DateSpan } from './structs/date-span.js'
 export { isDateSpansEqual } from './structs/date-span.js'

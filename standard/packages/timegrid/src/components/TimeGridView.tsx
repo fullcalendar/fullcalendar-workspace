@@ -31,7 +31,7 @@ export class TimeGridView extends DateComponent<ViewProps> {
     const { dateProfile } = props
     const { options, dateProfileGenerator } = context
 
-    const dayTableModel = this.buildTimeColsModel(dateProfile, dateProfileGenerator)
+    const dayTableModel = this.buildTimeColsModel(dateProfile, dateProfileGenerator, context.dateEnv)
     const dayRanges = this.buildDayRanges(dayTableModel, dateProfile, context.dateEnv)
     const splitProps = this.allDaySplitter.splitProps(props)
     const allDayProps = this.dayTableSlicer.sliceProps(

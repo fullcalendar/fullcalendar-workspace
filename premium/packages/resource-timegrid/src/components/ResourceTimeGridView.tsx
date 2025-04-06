@@ -225,7 +225,7 @@ function buildResourceTimeColsModel(
   datesAboveResources: boolean,
   context: CalendarContext,
 ): AbstractResourceDayTableModel {
-  let dayTable = buildTimeColsModel(dateProfile, dateProfileGenerator)
+  let dayTable = buildTimeColsModel(dateProfile, dateProfileGenerator, context.dateEnv)
 
   if (!resources.length) {
     return new ResourcelessDayTableModel(dayTable)

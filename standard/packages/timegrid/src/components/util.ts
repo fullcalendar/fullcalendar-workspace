@@ -2,10 +2,10 @@ import { Duration } from '@fullcalendar/core'
 import { asRoughMs, createDuration, DateEnv, DateMarker, DateProfile, DateProfileGenerator, DateRange, DaySeriesModel, DayTableModel, startOfDay } from "@fullcalendar/core/internal"
 import { TimeSlatMeta } from '../time-slat-meta.js'
 
-export function buildTimeColsModel(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator) {
+export function buildTimeColsModel(dateProfile: DateProfile, dateProfileGenerator: DateProfileGenerator, dateEnv: DateEnv) {
   let daySeries = new DaySeriesModel(dateProfile.renderRange, dateProfileGenerator)
 
-  return new DayTableModel(daySeries, false)
+  return new DayTableModel(daySeries, false, dateEnv)
 }
 
 export function buildDayRanges(dayTableModel: DayTableModel, dateProfile: DateProfile, dateEnv: DateEnv): DateRange[] {

@@ -32,6 +32,7 @@ export type AllDayMountArg = MountArg<AllDayContentArg>
 
 export interface DayHeaderContentArg extends DateMeta {
   date: Date
+  isMajor: boolean
   text: string
   view: ViewApi
   [otherProp: string]: any

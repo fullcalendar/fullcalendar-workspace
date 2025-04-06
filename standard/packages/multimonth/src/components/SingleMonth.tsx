@@ -29,8 +29,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
   render() {
     const { props, context } = this
     const { dateProfile, forPrint } = props
-    const { options } = context
-    const dayTableModel = this.buildDayTableModel(dateProfile, context.dateProfileGenerator)
+    const { options, dateEnv } = context
+    const dayTableModel = this.buildDayTableModel(dateProfile, context.dateProfileGenerator, dateEnv)
     const slicedProps = this.slicer.sliceProps(props, dateProfile, options.nextDayThreshold, context, dayTableModel)
 
     const dayHeaderFormat = this.createDayHeaderFormatter(
@@ -76,7 +76,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
             // NOTE: sticky properties determined by CSS
           >
             <div id={this.titleId} className='fc-multimonth-title'>
-              {context.dateEnv.format(
+              {dateEnv.format(
                 props.dateProfile.currentRange.start,
                 props.titleFormat,
               )}

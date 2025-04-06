@@ -69,6 +69,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
             nowDate={props.nowDate}
             todayRange={props.todayRange}
             date={cell.date}
+            isMajor={cell.isMajor}
             slatCnt={props.slatCnt}
             renderProps={cell.renderProps}
             attrs={cell.attrs}

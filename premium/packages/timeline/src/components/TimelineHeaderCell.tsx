@@ -52,7 +52,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
     let renderProps = this.refineRenderProps({
       level: props.rowLevel,
       dateMarker: cell.date,
-      isMajor: cell.isWeekStart,
+      isMajor: cell.isMajor,
       text: cell.text,
       dateEnv: context.dateEnv,
       viewApi: context.viewApi,
@@ -65,7 +65,6 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
         tag="div"
         className={joinClassNames(
           'fc-timeline-slot-label fc-timeline-slot',
-          cell.isWeekStart && 'fc-timeline-slot-em', // TODO: document this semantic className
           'fc-header-cell fc-cell fc-flex-col fc-justify-center',
           props.borderStart && 'fc-border-s',
           props.isCentered ? 'fc-align-center' : 'fc-align-start',

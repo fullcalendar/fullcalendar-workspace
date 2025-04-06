@@ -3,6 +3,8 @@ import { DateRange } from '../datelib/date-range.js'
 import { DateMarker } from '../datelib/marker.js'
 import { Dictionary } from '../options.js'
 import { SlicedCoordRange } from '../coord-range.js'
+import { DateEnv } from '../datelib/env.js'
+import { isMajorUnit } from '../DateProfileGenerator.js'
 
 export interface DayGridRange extends SlicedCoordRange {
   row: number
@@ -17,6 +19,7 @@ TODO: DRY-up these types and utils with header-tier
 export interface DayTableCell {
   key: string // probably just the serialized date, but could be other metadata if this col is specific to another entity
   date: DateMarker
+  isMajor: boolean
   renderProps?: Dictionary
   attrs?: Dictionary
   className?: string
@@ -31,7 +34,12 @@ export class DayTableModel {
 
   private daySeries: DaySeriesModel
 
-  constructor(daySeries: DaySeriesModel, breakOnWeeks: boolean) {
+  constructor(
+    daySeries: DaySeriesModel,
+    breakOnWeeks: boolean,
+    private dateEnv: DateEnv,
+    private majorUnit = '',
+  ) {
     let { dates } = daySeries
     let daysPerRow: number
     let firstDay: number
@@ -78,10 +86,16 @@ export class DayTableModel {
 
   private buildCell(row, col): DayTableCell {
     let date = this.daySeries.dates[row * this.colCnt + col]
+
     return {
       key: date.toISOString(),
       date,
+      isMajor: this.cellIsMajor(date),
     }
+  }
+
+  protected cellIsMajor(dateMarker: DateMarker): boolean {
+    return this.majorUnit && isMajorUnit(dateMarker, this.majorUnit, this.dateEnv)
   }
 
   private buildHeaderDates() {

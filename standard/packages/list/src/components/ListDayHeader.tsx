@@ -26,6 +26,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
 
     let renderProps: RenderProps = {
       date: dateEnv.toDate(dayDate),
+      isMajor: false,
       view: viewApi,
       text,
       sideText,
