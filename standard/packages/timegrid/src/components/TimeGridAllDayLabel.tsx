@@ -36,12 +36,12 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
           width: props.width,
         }}
         renderProps={renderProps}
-        generatorName="allDayContent"
-        customGenerator={options.allDayContent}
+        generatorName="allDayHeaderContent"
+        customGenerator={options.allDayHeaderContent}
         defaultGenerator={renderAllDayInner}
-        classNameGenerator={options.allDayClassNames}
-        didMount={options.allDayDidMount}
-        willUnmount={options.allDayWillUnmount}
+        classNameGenerator={options.allDayHeaderClassNames}
+        didMount={options.allDayHeaderDidMount}
+        willUnmount={options.allDayHeaderWillUnmount}
       >
         {(InnerContent) => (
           <InnerContent

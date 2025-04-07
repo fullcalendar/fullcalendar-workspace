@@ -1,6 +1,6 @@
-import { AllDayContentArg, EventContentArg, EventRenderRange } from '@fullcalendar/core'
-import { BaseComponent, buildEventRangeTimeText, ContentContainer, createFormatter, DateFormatter, DateMarker, EventContainer, getEventTagAndAttrs, MinimalEventProps, setRef, ViewContext, watchWidth } from "@fullcalendar/core/internal";
-import { ComponentChild, ComponentChildren, createElement, Fragment, Ref } from '@fullcalendar/core/preact'
+import { EventContentArg } from '@fullcalendar/core'
+import { BaseComponent, buildEventRangeTimeText, createFormatter, EventContainer, getEventTagAndAttrs, MinimalEventProps, setRef, watchWidth } from "@fullcalendar/core/internal";
+import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
   hour: 'numeric',
@@ -15,15 +15,26 @@ export interface ListEventProps extends MinimalEventProps {
 
 export class ListEvent extends BaseComponent<ListEventProps> {
   // internal
-  private disconnectTitleWidth?: () => void
+  private disconnectTimeWidth?: () => void
 
   render() {
     let { props, context } = this
     let { eventRange } = props
     let { options } = context
 
-    let timeFormat = options.eventTimeFormat || DEFAULT_TIME_FORMAT
     let [tag, attrs] = getEventTagAndAttrs(eventRange, context)
+    let timeFormat = options.eventTimeFormat || DEFAULT_TIME_FORMAT
+    let timeText = (eventRange.def.allDay || (!props.isStart && !props.isEnd))
+      ? context.options.allDayText
+      : buildEventRangeTimeText(
+          timeFormat,
+          eventRange,
+          props.slicedStart,
+          props.slicedEnd,
+          props.isStart,
+          props.isEnd,
+          context,
+        )
 
     return (
       <EventContainer
@@ -35,21 +46,17 @@ export class ListEvent extends BaseComponent<ListEventProps> {
         }}
         className='fc-list-event'
         defaultGenerator={renderEventTitleOnly}
-        timeText=""
+        timeText={timeText}
         disableDragging
         disableResizing
       >
         {(InnerContent, eventContentArg) => (
           <Fragment>
             <div className='fc-list-event-time-outer' style={{ width: props.timeOuterWidth }}>
-              {this.buildTimeContent(
-                eventRange,
-                props.slicedStart,
-                props.slicedEnd,
-                props.isStart,
-                props.isEnd,
-                timeFormat,
-                context,
+              {(options.displayEventTime !== false) && (
+                <div className="fc-list-event-time" ref={this.handleTimeEl}>
+                  {timeText}
+                </div>
               )}
             </div>
             <div className="fc-list-event-dot-outer">
@@ -70,64 +77,12 @@ export class ListEvent extends BaseComponent<ListEventProps> {
     )
   }
 
-  buildTimeContent(
-    eventRange: EventRenderRange, // whole-day span
-    slicedStart: DateMarker, // view-sliced whole-day span
-    slicedEnd: DateMarker, // view-sliced whole-day span
-    isStart: boolean,
-    isEnd: boolean,
-    timeFormat: DateFormatter,
-    context: ViewContext,
-  ): ComponentChildren {
-    let { options } = context
-
-    if (options.displayEventTime !== false) {
-      if (eventRange.def.allDay || (!isStart && !isEnd)) {
-        let renderProps: AllDayContentArg = {
-          text: context.options.allDayText,
-          view: context.viewApi,
-        }
-
-        return (
-          <ContentContainer
-            tag="div"
-            className='fc-list-event-time'
-            renderProps={renderProps}
-            elRef={this.handleTitleEl}
-            generatorName="allDayContent"
-            customGenerator={options.allDayContent}
-            defaultGenerator={renderAllDayInner}
-            classNameGenerator={options.allDayClassNames}
-            didMount={options.allDayDidMount}
-            willUnmount={options.allDayWillUnmount}
-          />
-        )
-      } else {
-        return (
-          <div className="fc-list-event-time" ref={this.handleTitleEl}>
-            {buildEventRangeTimeText(
-              timeFormat,
-              eventRange,
-              slicedStart,
-              slicedEnd,
-              isStart,
-              isEnd,
-              context,
-            )}
-          </div>
-        )
-      }
-    }
-
-    return null
-  }
-
-  private handleTitleEl = (titleEl: HTMLElement | null) => {
-    if (this.disconnectTitleWidth) {
-      this.disconnectTitleWidth()
+  private handleTimeEl = (titleEl: HTMLElement | null) => {
+    if (this.disconnectTimeWidth) {
+      this.disconnectTimeWidth()
     }
     if (titleEl) {
-      this.disconnectTitleWidth = watchWidth(titleEl, (titleWidth) => {
+      this.disconnectTimeWidth = watchWidth(titleEl, (titleWidth) => {
         setRef(this.props.timeWidthRef, titleWidth)
       })
     }
@@ -140,8 +95,4 @@ export class ListEvent extends BaseComponent<ListEventProps> {
 
 function renderEventTitleOnly(renderProps: EventContentArg): string {
   return renderProps.event.title
-}
-
-function renderAllDayInner(renderProps: AllDayContentArg): ComponentChild {
-  return renderProps.text
 }

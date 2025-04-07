@@ -194,10 +194,10 @@ export const BASE_OPTION_REFINERS = {
   slotLabelInterval: createDuration,
 
   allDayText: String,
-  allDayClassNames: identity as Identity<ClassNamesGenerator<AllDayContentArg>>,
-  allDayContent: identity as Identity<CustomContentGenerator<AllDayContentArg>>,
-  allDayDidMount: identity as Identity<DidMountHandler<AllDayMountArg>>,
-  allDayWillUnmount: identity as Identity<WillUnmountHandler<AllDayMountArg>>,
+  allDayHeaderClassNames: identity as Identity<ClassNamesGenerator<AllDayContentArg>>,
+  allDayHeaderContent: identity as Identity<CustomContentGenerator<AllDayContentArg>>,
+  allDayHeaderDidMount: identity as Identity<DidMountHandler<AllDayMountArg>>,
+  allDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<AllDayMountArg>>,
 
   timedText: String,
 
