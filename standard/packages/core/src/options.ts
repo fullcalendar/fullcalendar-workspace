@@ -19,7 +19,6 @@ import {
   ViewComponentType,
   SpecificViewContentArg, SpecificViewMountArg,
   ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler,
-  NowIndicatorContentArg, NowIndicatorMountArg,
   WeekNumberContentArg, WeekNumberMountArg,
   SlotLaneContentArg, SlotLaneMountArg,
   SlotLabelContentArg, SlotLabelMountArg,
@@ -43,6 +42,10 @@ import {
   CustomRenderingHandler,
   DayLaneContentArg,
   DayLaneMountArg,
+  NowIndicatorLabelContentArg,
+  NowIndicatorLabelMountArg,
+  NowIndicatorLineContentArg,
+  NowIndicatorLineMountArg,
 } from './api/structs.js'
 import { ClassNamesInput } from './util/html.js'
 import { ViewApi } from './api/ViewApi.js'
@@ -108,10 +111,16 @@ export const BASE_OPTION_REFINERS = {
   viewWillUnmount: identity as Identity<WillUnmountHandler<ViewMountArg>>,
 
   nowIndicator: Boolean,
-  nowIndicatorClassNames: identity as Identity<ClassNamesGenerator<NowIndicatorContentArg>>,
-  nowIndicatorContent: identity as Identity<CustomContentGenerator<NowIndicatorContentArg>>,
-  nowIndicatorDidMount: identity as Identity<DidMountHandler<NowIndicatorMountArg>>,
-  nowIndicatorWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorMountArg>>,
+
+  nowIndicatorLabelClassNames: identity as Identity<ClassNamesGenerator<NowIndicatorLabelContentArg>>,
+  nowIndicatorLabelContent: identity as Identity<CustomContentGenerator<NowIndicatorLabelContentArg>>,
+  nowIndicatorLabelDidMount: identity as Identity<DidMountHandler<NowIndicatorLabelMountArg>>,
+  nowIndicatorLabelWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorLabelMountArg>>,
+
+  nowIndicatorLineClassNames: identity as Identity<ClassNamesGenerator<NowIndicatorLineContentArg>>,
+  nowIndicatorLineContent: identity as Identity<CustomContentGenerator<NowIndicatorLineContentArg>>,
+  nowIndicatorLinelDidMount: identity as Identity<DidMountHandler<NowIndicatorLineMountArg>>,
+  nowIndicatorLineWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorLineMountArg>>,
 
   showNonCurrentDates: Boolean,
   lazyFetching: Boolean,

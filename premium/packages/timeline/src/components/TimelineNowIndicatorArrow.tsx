@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, NowIndicatorContainer } from '@fullcalendar/core/internal'
+import { BaseComponent, DateMarker, NowIndicatorLabelContainer } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 import { horizontalCoordToCss } from '../TimelineCoords.js'
@@ -18,7 +18,7 @@ export class TimelineNowIndicatorArrow extends BaseComponent<TimelineNowIndicato
 
     return (
       <div className="fc-timeline-now-indicator-container">
-        <NowIndicatorContainer
+        <NowIndicatorLabelContainer
           className='fc-timeline-now-indicator-arrow'
           style={
             props.slotWidth != null
@@ -28,7 +28,6 @@ export class TimelineNowIndicatorArrow extends BaseComponent<TimelineNowIndicato
                 )
               : {}
           }
-          isAxis={true}
           date={props.nowDate}
         />
       </div>

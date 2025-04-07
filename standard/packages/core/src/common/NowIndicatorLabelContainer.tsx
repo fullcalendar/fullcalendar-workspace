@@ -6,26 +6,23 @@ import { ViewApi } from '../api/ViewApi.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
 import { InnerContainerFunc, ContentContainer } from '../content-inject/ContentContainer.js'
 
-export interface NowIndicatorContainerProps extends Partial<ElProps> {
-  isAxis: boolean
+export interface NowIndicatorLabelContainerProps extends Partial<ElProps> {
   date: DateMarker
-  children?: InnerContainerFunc<NowIndicatorContentArg>
+  children?: InnerContainerFunc<NowIndicatorLabelContentArg>
 }
 
-export interface NowIndicatorContentArg {
-  isAxis: boolean
+export interface NowIndicatorLabelContentArg {
   date: Date
   view: ViewApi
 }
 
-export type NowIndicatorMountArg = MountArg<NowIndicatorContentArg>
+export type NowIndicatorLabelMountArg = MountArg<NowIndicatorLabelContentArg>
 
-export const NowIndicatorContainer = (props: NowIndicatorContainerProps) => (
+export const NowIndicatorLabelContainer = (props: NowIndicatorLabelContainerProps) => (
   <ViewContextType.Consumer>
     {(context: ViewContext) => {
       let { options } = context
-      let renderProps: NowIndicatorContentArg = {
-        isAxis: props.isAxis,
+      let renderProps: NowIndicatorLabelContentArg = {
         date: context.dateEnv.toDate(props.date),
         view: context.viewApi,
       }
@@ -35,11 +32,11 @@ export const NowIndicatorContainer = (props: NowIndicatorContainerProps) => (
           {...props /* includes children */}
           tag={props.tag || 'div'}
           renderProps={renderProps}
-          generatorName="nowIndicatorContent"
-          customGenerator={options.nowIndicatorContent}
-          classNameGenerator={options.nowIndicatorClassNames}
-          didMount={options.nowIndicatorDidMount}
-          willUnmount={options.nowIndicatorWillUnmount}
+          generatorName="nowIndicatorLabelContent"
+          customGenerator={options.nowIndicatorLabelContent}
+          classNameGenerator={options.nowIndicatorLabelClassNames}
+          didMount={options.nowIndicatorLabelDidMount}
+          willUnmount={options.nowIndicatorLabelWillUnmount}
         />
       )
     }}

@@ -232,7 +232,8 @@ export type {
   CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountArg,
 } from './common/render-hook.js'
 export { StandardEvent } from './common/StandardEvent.js'
-export { NowIndicatorContainer } from './common/NowIndicatorContainer.js'
+export { NowIndicatorLabelContainer } from './common/NowIndicatorLabelContainer.js'
+export { NowIndicatorLineContainer } from './common/NowIndicatorLineContainer.js'
 
 export { DayCellContainer, hasCustomDayCellContent } from './common/DayCellContainer.js'
 export { DayLaneContainer, hasCustomDayLaneContent } from './common/DayLaneContainer.js'
