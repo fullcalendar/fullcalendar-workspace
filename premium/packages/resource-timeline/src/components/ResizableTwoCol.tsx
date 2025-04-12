@@ -1,5 +1,5 @@
 import { CssDimValue } from '@fullcalendar/core'
-import { BaseComponent, ElementDragging, PointerDragEvent, setRef, joinClassNames, memoize } from '@fullcalendar/core/internal'
+import { BaseComponent, ElementDragging, PointerDragEvent, setRef, joinClassNames, memoize, joinArrayishClassNames } from '@fullcalendar/core/internal'
 import { ComponentChildren, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DimConfig, parseDimConfig, resizeDimConfig, serializeDimConfig } from '../col-positioning.js'
 
@@ -35,7 +35,8 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
   resizerDragging: ElementDragging
 
   render() {
-    const { props, state } = this
+    const { props, state, context } = this
+    const { options } = context
 
     const initialWidthConfig = this.parseWidthConfig(props.initialStartWidth, MIN_RESOURCE_AREA_WIDTH)
     const widthConfig = this.widthConfig = state.widthOverride || initialWidthConfig
@@ -55,7 +56,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
           {props.startContent}
         </div>
         <div
-          className='fc-celldivider'
+          className={joinArrayishClassNames('fc-celldivider', options.resourceAreaDividerClassNames)}
           // TODO: make a className somehow?...
           // TODO: what if not resizable?
           style={{ cursor: 'col-resize' }}

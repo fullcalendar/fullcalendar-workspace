@@ -81,6 +81,7 @@ export const OPTION_REFINERS = {
   // TODO: move to resource-timeline?
   resourceLaneTopClassNames: identity as Identity<ClassNamesInput>,
   resourceLaneBottomClassNames: identity as Identity<ClassNamesInput>,
+  resourceAreaDividerClassNames: identity as Identity<ClassNamesInput>,
 }
 
 export const LISTENER_REFINERS = {
