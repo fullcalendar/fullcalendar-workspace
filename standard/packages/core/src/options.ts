@@ -91,6 +91,7 @@ export const BASE_OPTION_REFINERS = {
   dayCellWillUnmount: identity as Identity<WillUnmountHandler<DayCellMountArg>>,
 
   dayLaneClassNames: identity as Identity<ClassNamesGenerator<DayLaneContentArg>>,
+  dayLaneInnerClassNames: identity as Identity<ClassNamesInput>, // does not accept arg!
   dayLaneContent: identity as Identity<CustomContentGenerator<DayLaneContentArg>>,
   dayLaneDidMount: identity as Identity<DidMountHandler<DayLaneMountArg>>,
   dayLaneWillUnmount: identity as Identity<WillUnmountHandler<DayLaneMountArg>>,
