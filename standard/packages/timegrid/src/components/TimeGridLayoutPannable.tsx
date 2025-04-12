@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Ruler, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, FooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Ruler, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, FooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef, generateClassName } from "@fullcalendar/core/internal"
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridHeaderRow, RowConfig, computeColWidth, computeRowIsCompact } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
@@ -55,6 +55,8 @@ export interface TimeGridLayoutPannableProps {
 
   // dimensions
   dayMinWidth: number
+
+  borderX: boolean
 }
 
 interface TimeGridLayoutPannableState {
@@ -166,6 +168,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               // see note in TimeGridLayout about why we don't do fc-print-header
               'fc-timegrid-header fc-flex-row fc-border-b',
               stickyHeaderDates && 'fc-table-header-sticky',
+              generateClassName(options.viewHeaderClassNames, {
+                borderX: props.borderX,
+                isSticky: stickyHeaderDates,
+              }),
             )}
           >
             {/* HEADER / labels

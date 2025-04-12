@@ -21,6 +21,7 @@ import {
   joinClassNames,
   Ruler,
   FooterScrollbar,
+  generateClassName,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
@@ -143,6 +144,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 className={joinClassNames(
                   'fc-timeline-header fc-flex-row fc-border-b',
                   stickyHeaderDates && 'fc-table-header-sticky',
+                  generateClassName(options.viewHeaderClassNames, {
+                    borderX: props.borderX,
+                    isSticky: stickyHeaderDates,
+                  }),
                 )}
                 ref={this.headerScrollerRef}
               >

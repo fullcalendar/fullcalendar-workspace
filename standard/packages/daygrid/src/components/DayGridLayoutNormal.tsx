@@ -15,6 +15,7 @@ import {
   EventRangeProps,
   joinClassNames,
   Ruler,
+  generateClassName,
 } from '@fullcalendar/core/internal'
 import { Fragment, Ref, createElement } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -43,6 +44,8 @@ export interface DayGridLayoutNormalProps {
   // refs
   scrollerRef?: Ref<ScrollerInterface>
   rowHeightRefMap?: RefMap<string, number>
+
+  borderX: boolean
 }
 
 interface DayGridViewState {
@@ -71,6 +74,10 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             props.forPrint ? 'fc-print-header' : 'fc-flex-row', // col for print, row for screen
             stickyHeaderDates && 'fc-table-header-sticky',
             'fc-border-b',
+            generateClassName(options.viewHeaderClassNames, {
+              borderX: props.borderX,
+              isSticky: stickyHeaderDates,
+            }),
           )}>
             <DayGridHeader
               headerTiers={props.headerTiers}

@@ -19,6 +19,7 @@ import {
   FooterScrollbar,
   joinClassNames,
   Ruler,
+  generateClassName,
 } from '@fullcalendar/core/internal'
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -51,6 +52,8 @@ export interface DayGridLayoutPannableProps {
   // refs
   scrollerRef?: Ref<ScrollerInterface>
   rowHeightRefMap?: RefMap<string, number>
+
+  borderX: boolean
 }
 
 interface DayGridViewState {
@@ -86,6 +89,10 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
           <div className={joinClassNames(
             'fc-print-header',
             stickyHeaderDates && 'fc-table-header-sticky',
+            generateClassName(options.viewHeaderClassNames, {
+              borderX: props.borderX,
+              isSticky: stickyHeaderDates,
+            }),
           )}>
             <Scroller
               horizontal

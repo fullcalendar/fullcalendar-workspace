@@ -118,6 +118,8 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
       timeScrollerRef: this.timeScrollerRef,
       timeScrollState: this.scrollState,
       slatHeightRef: this.handleSlatHeight,
+
+      borderX: props.borderX,
     }
 
     return (

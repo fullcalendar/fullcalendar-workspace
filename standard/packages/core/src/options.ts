@@ -49,6 +49,7 @@ import {
   ViewContentArg,
 } from './api/structs.js'
 import { ClassNamesInput } from './util/html.js'
+import { ViewBodyContentArg, ViewHeaderContentArg } from './common/ViewSubsections.js'
 
 // base options
 // ------------
@@ -283,6 +284,9 @@ export const BASE_OPTION_REFINERS = {
   toolbarClassNames: identity as Identity<ClassNamesInput>,
   headerToolbarClassNames: identity as Identity<ClassNamesInput>,
   footerToolbarClassNames: identity as Identity<ClassNamesInput>,
+
+  viewHeaderClassNames: identity as Identity<ClassNamesGenerator<ViewHeaderContentArg>>,
+  viewBodyClassNames: identity as Identity<ClassNamesGenerator<ViewBodyContentArg>>,
 }
 
 type BuiltInBaseOptionRefiners = typeof BASE_OPTION_REFINERS

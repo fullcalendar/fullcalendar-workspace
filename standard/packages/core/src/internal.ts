@@ -256,7 +256,7 @@ export { EventImpl, buildEventApis } from './api/EventImpl.js'
 export type { ElProps } from './content-inject/ContentInjector.js'
 export { buildElAttrs } from './content-inject/ContentInjector.js'
 export type { InnerContainerFunc } from './content-inject/ContentContainer.js'
-export { ContentContainer, renderText } from './content-inject/ContentContainer.js'
+export { ContentContainer, renderText, generateClassName } from './content-inject/ContentContainer.js'
 export type { CustomRendering } from './content-inject/CustomRenderingStore.js'
 export { CustomRenderingStore } from './content-inject/CustomRenderingStore.js'
 

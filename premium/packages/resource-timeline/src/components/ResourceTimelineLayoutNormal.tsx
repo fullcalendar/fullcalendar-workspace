@@ -22,7 +22,8 @@ import {
   SlicedProps,
   SplittableProps,
   FooterScrollbar,
-  ViewContainer
+  ViewContainer,
+  generateClassName
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
 import {
@@ -329,6 +330,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 className={joinClassNames(
                   'fc-datagrid-header fc-flex-col fc-content-box fc-border-b',
                   stickyHeaderDates && 'fc-table-header-sticky',
+                  generateClassName(options.viewHeaderClassNames, {
+                    borderX: props.borderX,
+                    isSticky: stickyHeaderDates,
+                  }),
                 )}
                 style={{
                   height: headerHeight,

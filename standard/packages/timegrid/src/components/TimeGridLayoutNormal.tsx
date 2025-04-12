@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, getIsHeightAuto, getStickyHeaderDates, Hit, joinClassNames, rangeContainsMarker, RefMap, Ruler, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
+import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, generateClassName, getIsHeightAuto, getStickyHeaderDates, Hit, joinClassNames, rangeContainsMarker, RefMap, Ruler, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { DayGridHeaderRow, RowConfig, computeRowIsCompact } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
@@ -51,6 +51,8 @@ export interface TimeGridLayoutNormalProps {
   // refs
   timeScrollerRef?: Ref<ScrollerInterface>
   slatHeightRef?: Ref<number>
+
+  borderX: boolean
 }
 
 interface TimeGridLayoutState {
@@ -137,6 +139,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               // see note in TimeGridLayout about why we don't do fc-print-header
               'fc-timegrid-header fc-flex-col fc-border-b',
               stickyHeaderDates && 'fc-table-header-sticky',
+              generateClassName(options.viewHeaderClassNames, {
+                borderX: props.borderX,
+                isSticky: stickyHeaderDates,
+              }),
             )}
           >
             {props.headerTiers.map((rowConfig, tierNum) => (

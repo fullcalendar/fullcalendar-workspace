@@ -4,6 +4,7 @@ import {
   DateProfile,
   DateRange,
   EventStore,
+  generateClassName,
   joinClassNames,
   memoize,
   rangeContainsMarker,
@@ -133,7 +134,13 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         borderTop={props.borderTop}
         borderBottom={props.borderBottom}
       >
-        <div className='fc-print-header fc-border-b'>
+        <div className={joinClassNames(
+          'fc-print-header fc-border-b',
+          generateClassName(options.viewHeaderClassNames, {
+            borderX: props.borderX,
+            isSticky: false,
+          }),
+        )}>
           <div className='fc-flex-row'>
 
             {/* DataGrid HEADER */}
