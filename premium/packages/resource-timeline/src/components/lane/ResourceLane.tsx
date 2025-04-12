@@ -1,4 +1,4 @@
-import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState } from '@fullcalendar/core/internal'
+import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinArrayishClassNames } from '@fullcalendar/core/internal'
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
 import { TimelineDateProfile, TimelineFg, TimelineBg, TimelineLaneSlicer } from '@fullcalendar/timeline/internal'
@@ -90,9 +90,14 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               // dimensions
               slotWidth={props.slotWidth}
             />
-            <InnerContent
+            <InnerContent // TODO: make fully filled
               tag="div"
               className='fc-timeline-lane-misc fc-flex-col fc-fill-top'
+            />
+            <div // TODO: track height
+              className={joinArrayishClassNames(
+                options.resourceLaneTopClassNames,
+              )}
             />
             <TimelineFg
               dateProfile={props.dateProfile}
@@ -115,7 +120,10 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
             />
             <div
               ref={this.handleFooterEl}
-              className='fc-timeline-lane-footer'
+              className={joinArrayishClassNames(
+                'fc-timeline-lane-footer',
+                options.resourceLaneBottomClassNames,
+              )}
             />
           </Fragment>
         )}

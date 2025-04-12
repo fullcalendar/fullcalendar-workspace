@@ -1,4 +1,4 @@
-import { ClassNamesGenerator, CssDimValue } from '@fullcalendar/core'
+import { ClassNamesGenerator, ClassNamesInput, CssDimValue } from '@fullcalendar/core'
 import {
   Identity, identity, parseFieldSpecs,
   CustomContentGenerator, DidMountHandler, WillUnmountHandler,
@@ -64,6 +64,7 @@ export const OPTION_REFINERS = {
   resourceGroupHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupHeaderMountArg>>,
 
   // timeline lane, for resource-GROUP
+  // TODO: move to resource-timeline?
   resourceGroupLaneClassNames: identity as Identity<ClassNamesGenerator<ResourceGroupLaneContentArg>>,
   resourceGroupLaneInnerClassNames: identity as Identity<ClassNamesGenerator<ResourceGroupLaneContentArg>>,
   resourceGroupLaneContent: identity as Identity<CustomContentGenerator<ResourceGroupLaneContentArg>>,
@@ -71,10 +72,15 @@ export const OPTION_REFINERS = {
   resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupLaneMountArg>>,
 
   // timeline, lane, for resource
+  // TODO: move to resource-timeline?
   resourceLaneClassNames: identity as Identity<ClassNamesGenerator<ResourceLaneContentArg>>,
   resourceLaneContent: identity as Identity<CustomContentGenerator<ResourceLaneContentArg>>,
   resourceLaneDidMount: identity as Identity<DidMountHandler<ResourceLaneMountArg>>,
   resourceLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceLaneMountArg>>,
+
+  // TODO: move to resource-timeline?
+  resourceLaneTopClassNames: identity as Identity<ClassNamesInput>,
+  resourceLaneBottomClassNames: identity as Identity<ClassNamesInput>,
 }
 
 export const LISTENER_REFINERS = {
