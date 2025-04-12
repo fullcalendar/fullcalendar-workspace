@@ -187,6 +187,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           className={joinClassNames(
             'fc-flex-col',
             verticalScrolling && 'fc-liquid',
+            generateClassName(options.viewBodyClassNames, {
+              borderX: props.borderX,
+            }),
           )}
         >
           {/* ALL-DAY

@@ -208,7 +208,15 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         </div>{/* Header END */ }
         {/* Body START */}
         {/* Must crop the 200% vertical-line fill */}
-        <div role='rowgroup' className='fc-rel fc-crop'>
+        <div
+          role='rowgroup'
+          className={joinClassNames(
+            'fc-rel fc-crop',
+            generateClassName(options.viewBodyClassNames, {
+              borderX: props.borderX,
+            }),
+          )}
+        >
 
           {/* BACKGROUND FILL */}
           {/* Must crop horizontally-offscreen slats and whatnot */}

@@ -250,6 +250,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           className={joinClassNames(
             'fc-flex-col',
             verticalScrolling && 'fc-liquid',
+            generateClassName(options.viewBodyClassNames, {
+              borderX: props.borderX,
+            }),
           )}
         >
           {options.allDaySlot && (

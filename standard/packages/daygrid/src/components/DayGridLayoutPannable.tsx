@@ -127,6 +127,9 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             // https://stackoverflow.com/a/60256345
             !props.forPrint && 'fc-flex-col',
             verticalScrollbars && 'fc-liquid',
+            generateClassName(options.viewBodyClassNames, {
+              borderX: props.borderX,
+            }),
           )}
           ref={this.bodyScrollerRef}
           clientWidthRef={this.handleClientWidth}

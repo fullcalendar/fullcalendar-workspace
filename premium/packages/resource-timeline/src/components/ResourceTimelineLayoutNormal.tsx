@@ -383,6 +383,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 className={joinClassNames(
                   'fc-datagrid-body fc-flex-col fc-rel', // fc-rel needed for Ruler.fc-fill-start
                   verticalScrolling && 'fc-liquid',
+                  generateClassName(options.viewBodyClassNames, {
+                    borderX: props.borderX,
+                  }),
                 )}
                 ref={this.spreadsheetBodyScrollerRef}
                 clientWidthRef={this.handleSpreadsheetClientWidth}

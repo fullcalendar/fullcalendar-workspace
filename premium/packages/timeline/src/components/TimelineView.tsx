@@ -204,6 +204,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 className={joinClassNames(
                   'fc-timeline-body fc-flex-col',
                   verticalScrolling && 'fc-liquid',
+                  generateClassName(options.viewBodyClassNames, {
+                    borderX: props.borderX,
+                  }),
                 )}
                 ref={this.bodyScrollerRef}
                 clientWidthRef={this.handleClientWidth}
