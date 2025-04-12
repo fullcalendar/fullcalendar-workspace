@@ -1,4 +1,4 @@
-import { BaseComponent, ContentContainer, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
 import { ColSpec, ResourceGroupHeaderContentArg } from '@fullcalendar/resource'
 
@@ -61,7 +61,10 @@ export class GroupTallCell extends BaseComponent<GroupTallCellProps> {
         {(InnerContent) => (
           <InnerContent
             tag="div"
-            className='fc-cell-inner fc-padding-lg fc-sticky-t'
+            className={joinClassNames(
+              'fc-cell-inner fc-padding-lg fc-sticky-t',
+              generateClassName(colSpec.cellInnerClassNames, renderProps),
+            )}
             elRef={this.innerElRef}
           />
         )}

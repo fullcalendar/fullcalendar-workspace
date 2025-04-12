@@ -61,6 +61,7 @@ export interface ColSpec extends ColHeaderRenderHooks {
   field?: string
 
   cellClassNames?: ClassNamesGenerator<ResourceCellContentArg>
+  cellInnerClassNames?: ClassNamesGenerator<ResourceCellContentArg>
   cellContent?: CustomContentGenerator<ResourceCellContentArg>
   cellDidMount?: DidMountHandler<ResourceCellMountArg>
   cellWillUnmount?: WillUnmountHandler<ResourceCellMountArg>

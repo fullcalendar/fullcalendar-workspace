@@ -6,6 +6,7 @@ import {
   watchHeight,
   setRef,
   joinClassNames,
+  generateClassName,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment, ComponentChild, createRef, Ref } from '@fullcalendar/core/preact'
 import { ResourceApi, ResourceCellContentArg } from '@fullcalendar/resource'
@@ -66,7 +67,13 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
+          <div
+            ref={this.innerElRef}
+            className={joinClassNames(
+              "fc-cell-inner fc-padding-lg fc-flex-row fc-align-center",
+              generateClassName(colSpec.cellInnerClassNames, renderProps),
+            )}
+          >
             {colSpec.isMain && (
               <ExpanderIcon
                 indent={props.indent}

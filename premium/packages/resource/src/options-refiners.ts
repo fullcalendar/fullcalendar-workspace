@@ -51,6 +51,7 @@ export const OPTION_REFINERS = {
 
   // datagrid cells, for both resources & resource-GROUP
   resourceCellClassNames: identity as Identity<ClassNamesGenerator<ResourceCellContentArg>>,
+  resourceCellInnerClassNames: identity as Identity<ClassNamesGenerator<ResourceCellContentArg>>,
   resourceCellContent: identity as Identity<CustomContentGenerator<ResourceCellContentArg>>,
   resourceCellDidMount: identity as Identity<DidMountHandler<ResourceCellMountArg>>,
   resourceCellWillUnmount: identity as Identity<WillUnmountHandler<ResourceCellMountArg>>,

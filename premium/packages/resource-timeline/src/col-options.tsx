@@ -39,6 +39,7 @@ export function processColOptions(options: ViewOptionsRefined) {
       headerWillUnmount: mergeLifecycleCallbacks(options.resourceAreaHeaderWillUnmount, colSpec.headerWillUnmount),
 
       cellClassNames: joinFuncishClassNames(options.resourceCellClassNames, colSpec.cellClassNames),
+      cellInnerClassNames: joinFuncishClassNames(options.resourceCellInnerClassNames, colSpec.cellInnerClassNames),
       cellContent: mergeContentInjectors(options.resourceCellContent, colSpec.cellContent),
       cellDidMount: mergeLifecycleCallbacks(options.resourceCellDidMount, colSpec.cellDidMount),
       cellWillUnmount: mergeLifecycleCallbacks(options.resourceCellWillUnmount, colSpec.cellWillUnmount),
