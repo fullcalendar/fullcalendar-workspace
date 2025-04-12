@@ -23,8 +23,6 @@ import {
   SlotLaneContentArg, SlotLaneMountArg,
   SlotLabelContentArg, SlotLabelMountArg,
   AllDayContentArg, AllDayMountArg,
-  DayHeaderContentArg, DayHeaderMountArg,
-  DayCellContentArg, DayCellMountArg,
   ViewMountArg,
   EventClickArg,
   EventHoveringArg,
@@ -77,22 +75,7 @@ export const BASE_OPTION_REFINERS = {
   titleRangeSeparator: String,
   forceEventDuration: Boolean,
 
-  dayHeaders: Boolean,
-  dayHeaderFormat: createFormatter,
-  dayHeaderClassNames: identity as Identity<ClassNamesGenerator<DayHeaderContentArg>>,
-  dayHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<DayHeaderContentArg>>,
-  dayHeaderContent: identity as Identity<CustomContentGenerator<DayHeaderContentArg>>,
-  dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderMountArg>>,
-  dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderMountArg>>,
-
-  dayHeaderRowClassNames: identity as Identity<ClassNamesInput>,
-  dayRowClassNames: identity as Identity<ClassNamesInput>,
-
-  dayCellClassNames: identity as Identity<ClassNamesGenerator<DayCellContentArg>>,
-  dayCellContent: identity as Identity<CustomContentGenerator<DayCellContentArg>>,
-  dayCellDidMount: identity as Identity<DidMountHandler<DayCellMountArg>>,
-  dayCellWillUnmount: identity as Identity<WillUnmountHandler<DayCellMountArg>>,
-
+  // TODO: move to timegrid
   dayLaneClassNames: identity as Identity<ClassNamesGenerator<DayLaneContentArg>>,
   dayLaneInnerClassNames: identity as Identity<ClassNamesInput>, // does not accept arg!
   dayLaneContent: identity as Identity<CustomContentGenerator<DayLaneContentArg>>,
@@ -324,7 +307,6 @@ export const BASE_OPTION_DEFAULTS = {
   defaultAllDayEventDuration: { day: 1 },
   forceEventDuration: false,
   nextDayThreshold: '00:00:00',
-  dayHeaders: true,
   initialView: '',
   aspectRatio: 1.35,
   headerToolbar: {

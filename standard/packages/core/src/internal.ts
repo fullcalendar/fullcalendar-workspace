@@ -235,7 +235,6 @@ export { StandardEvent } from './common/StandardEvent.js'
 export { NowIndicatorLabelContainer } from './common/NowIndicatorLabelContainer.js'
 export { NowIndicatorLineContainer } from './common/NowIndicatorLineContainer.js'
 
-export { DayCellContainer, hasCustomDayCellContent } from './common/DayCellContainer.js'
 export { DayLaneContainer, hasCustomDayLaneContent } from './common/DayLaneContainer.js'
 export type { MinimalEventProps } from './common/EventContainer.js'
 export { EventContainer } from './common/EventContainer.js'

@@ -30,6 +30,8 @@ fix createViewHookComponent HACKS
   viewApi is in context. use it!
 slotLaneContent/slotLaneInnerClassNames -- what's the point? remove? needs cell-inner padding?
 why do we need fc-list-day-outer?
+changelog: dayCellContent (now called dayCellTopContent) no longer injected into daypopover
+changelog: dayCellClassNames/DidMount/WillUnmount no longer called on daypopover
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

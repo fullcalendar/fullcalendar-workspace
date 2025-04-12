@@ -23,10 +23,7 @@ export type {
   SlotLaneContentArg, SlotLaneMountArg,
   SlotLabelContentArg, SlotLabelMountArg,
   AllDayContentArg, AllDayMountArg,
-  DayHeaderContentArg,
-  DayHeaderMountArg,
 } from '../render-hook-misc.js'
-export type { DayCellContentArg, DayCellMountArg } from '../common/DayCellContainer.js'
 export type { DayLaneContentArg, DayLaneMountArg } from '../common/DayLaneContainer.js'
 export type { ViewContentArg, ViewMountArg } from '../common/ViewContainer.js'
 export type { EventClickArg } from '../interactions/EventClicking.js'

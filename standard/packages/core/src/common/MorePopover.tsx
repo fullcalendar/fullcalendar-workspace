@@ -3,12 +3,11 @@ import { DateRange } from '../datelib/date-range.js'
 import { DateMarker } from '../datelib/marker.js'
 import { DateProfile } from '../DateProfileGenerator.js'
 import { Hit } from '../interactions/hit.js'
-import { joinClassNames } from '../util/html.js'
 import { Dictionary } from '../options.js'
 import { createElement, ComponentChildren } from '../preact.js'
-import { DayCellContainer, hasCustomDayCellContent } from './DayCellContainer.js'
 import { Popover } from './Popover.js'
 import { getDateMeta } from '../component-util/date-rendering.js'
+import { formatDayString } from '../datelib/formatting-utils.js'
 
 export interface MorePopoverProps {
   id: string
@@ -35,41 +34,26 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
 
     // TODO: memoize?
     let detaMeta = getDateMeta(startDate, todayRange, null, dateProfile)
+    ;(detaMeta); // TODO: use for dayClassNames
 
     let title = dateEnv.format(startDate, options.dayPopoverFormat)
 
     return (
-      <DayCellContainer
+      <Popover
         elRef={this.handleRootEl}
-        date={startDate}
-        dateMeta={detaMeta}
-        isMajor={false}
+        id={props.id}
+        title={title}
+        attrs={{
+          'data-date': formatDayString(startDate),
+        }}
+        className='fc-more-popover'
+        parentEl={props.parentEl}
+        alignEl={props.alignEl}
+        alignParentTop={props.alignParentTop}
+        onClose={props.onClose}
       >
-        {(InnerContent, renderProps, attrs) => (
-          <Popover
-            elRef={attrs.ref}
-            id={props.id}
-            title={title}
-            attrs={attrs /* TODO: make these time-based when not whole-day? */}
-            className={joinClassNames(
-              attrs.className as string, // TODO: solve SignalLike type problem
-              'fc-more-popover',
-            )}
-            parentEl={props.parentEl}
-            alignEl={props.alignEl}
-            alignParentTop={props.alignParentTop}
-            onClose={props.onClose}
-          >
-            {hasCustomDayCellContent(options) && (
-              <InnerContent
-                tag="div"
-                className='fc-more-popover-misc'
-              />
-            )}
-            {props.children}
-          </Popover>
-        )}
-      </DayCellContainer>
+        {props.children}
+      </Popover>
     )
   }
 

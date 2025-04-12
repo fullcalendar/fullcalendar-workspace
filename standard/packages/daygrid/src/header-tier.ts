@@ -1,5 +1,6 @@
-import { ClassNamesGenerator, CustomContentGenerator, DayHeaderContentArg, DidMountHandler, WillUnmountHandler } from '@fullcalendar/core'
+import { ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '@fullcalendar/core'
 import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, isMajorUnit, joinClassNames, ViewContext } from '@fullcalendar/core/internal'
+import { DayHeaderContentArg } from './structs.js'
 
 export interface CellRenderConfig<RenderProps> {
   generatorName: string

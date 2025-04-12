@@ -1,13 +1,11 @@
-import { DayCellContentArg } from '@fullcalendar/core'
+import { ViewApi } from '@fullcalendar/core'
 import {
   DateMarker,
   DateComponent,
   DateRange,
-  DayCellContainer,
   DateProfile,
   Dictionary,
   EventSegUiInteractionState,
-  hasCustomDayCellContent,
   addMs,
   DateEnv,
   setRef,
@@ -19,6 +17,11 @@ import {
   buildDateStr,
   buildNavLinkAttrs,
   memoize,
+  DateFormatter,
+  DateMeta,
+  memoizeObjArg,
+  ContentContainer,
+  formatDayString,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -30,6 +33,7 @@ import {
 } from '@fullcalendar/core/preact'
 import { DayGridMoreLink } from './DayGridMoreLink.js'
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg.js'
+import { DayCellContentArg } from '../structs.js'
 
 export interface DayGridCellProps {
   dateProfile: DateProfile
@@ -68,6 +72,7 @@ export interface DayGridCellProps {
 export class DayGridCell extends DateComponent<DayGridCellProps> {
   // memo
   private getDateMeta = memoize(getDateMeta)
+  private refineRenderProps = memoizeObjArg(refineRenderProps)
 
   // ref
   private rootElRef = createRef<HTMLElement>()
@@ -106,14 +111,26 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       )
     }
 
-    const hasDayNumber = props.showDayNumber || hasCustomDayCellContent(options)
-
     const isNavLink = options.navLinks
     const fullDateStr = buildDateStr(context, props.date)
 
+    const renderProps = this.refineRenderProps({
+      date: props.date,
+      isMajor: props.isMajor,
+      dateMeta: dateMeta,
+      isMonthStart: isMonthStart || false,
+      showDayNumber: props.showDayNumber,
+      renderProps: props.renderProps,
+      viewApi: context.viewApi,
+      dateEnv: context.dateEnv,
+      monthStartFormat: options.monthStartFormat,
+      dayCellFormat: options.dayCellFormat,
+    })
+
     return (
-      <DayCellContainer
+      <ContentContainer
         tag="div"
+        elRef={this.rootElRef}
         className={joinClassNames(
           baseClassName,
           props.className, // semantic classNames
@@ -122,22 +139,20 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
           ...props.attrs,
           role: 'gridcell',
           'aria-label': fullDateStr,
+          ...(renderProps.isToday ? { 'aria-current': 'date' } : {}),
+          'data-date': formatDayString(props.date),
         }}
-        style={{
-          width: props.width
-        }}
-        elRef={this.rootElRef}
-        renderProps={props.renderProps}
+        renderProps={renderProps}
+        generatorName="dayCellContent"
+        customGenerator={options.dayCellContent}
         defaultGenerator={renderTopInner}
-        date={props.date}
-        isMajor={props.isMajor}
-        dateMeta={dateMeta}
-        showDayNumber={props.showDayNumber}
-        isMonthStart={isMonthStart}
+        classNameGenerator={options.dayCellClassNames}
+        didMount={options.dayCellDidMount}
+        willUnmount={options.dayCellWillUnmount}
       >
         {(InnerContent) => (
           <Fragment>
-            {hasDayNumber && (
+            {props.showDayNumber && (
               <div className="fc-daygrid-day-header">
                 <InnerContent
                   tag='div'
@@ -181,7 +196,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             </div>
           </Fragment>
         )}
-      </DayCellContainer>
+      </ContentContainer>
     )
   }
 
@@ -237,4 +252,34 @@ function shouldDisplayMonthStart(date: DateMarker, currentRange: DateRange, date
       // a month-start that's within the current range?
       (dateEnv.getDay(date) === 1 && date.valueOf() < currentEnd.valueOf()),
     )
+}
+
+interface DayCellRenderPropsInput {
+  date: DateMarker // generic
+  isMajor: boolean
+  dateMeta: DateMeta
+  dateEnv: DateEnv
+  viewApi: ViewApi
+  dayCellFormat: DateFormatter
+  monthStartFormat: DateFormatter
+  isMonthStart: boolean // defaults to false
+  showDayNumber?: boolean // defaults to false
+  renderProps?: Dictionary // so can include a resource
+}
+
+function refineRenderProps(raw: DayCellRenderPropsInput): DayCellContentArg {
+  let { date, dateEnv, isMonthStart } = raw
+  let dayNumberText = raw.showDayNumber ? (
+    dateEnv.format(date, isMonthStart ? raw.monthStartFormat : raw.dayCellFormat)
+  ) : ''
+
+  return {
+    date: dateEnv.toDate(date),
+    isMajor: raw.isMajor,
+    view: raw.viewApi,
+    ...raw.dateMeta,
+    isMonthStart,
+    dayNumberText,
+    ...raw.renderProps,
+  }
 }

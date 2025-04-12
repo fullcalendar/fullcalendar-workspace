@@ -1,6 +1,4 @@
-import '@fullcalendar/daygrid'
-
-import { OPTION_REFINERS } from './options-refiners.js'
+import { OPTION_REFINERS } from './options.js'
 
 type ExtraOptionRefiners = typeof OPTION_REFINERS
 
