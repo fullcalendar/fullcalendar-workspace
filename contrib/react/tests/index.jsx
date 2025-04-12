@@ -474,7 +474,7 @@ it('no unnecessary rerenders, using eventSources, when parent rerenders', () => 
 })
 
 // https://github.com/fullcalendar/fullcalendar/issues/7107
-it('does not infinite loop on navLinks w/ dayCellContent', () => {
+it('does not infinite loop on navLinks w/ dayCellTopContent', () => {
   function CustomDayCellContent() {
     return <div>hello world</div>
   }
@@ -485,7 +485,7 @@ it('does not infinite loop on navLinks w/ dayCellContent', () => {
         plugins={[dayGridPlugin]}
         initialView='dayGridWeek'
         navLinks
-        dayCellContent={() => <CustomDayCellContent />}
+        dayCellTopContent={() => <CustomDayCellContent />}
       />
     );
   }

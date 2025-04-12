@@ -14,7 +14,7 @@ it('timegrid view rerenders well', (done) => {
     dayHeaderContent() {
       dayHeaderRenderCnt += 1
     },
-    dayCellContent() {
+    dayCellTopContent() {
       dayCellRenderCnt += 1
     },
     slotLabelContent() {

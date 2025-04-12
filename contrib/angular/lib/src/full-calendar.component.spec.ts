@@ -525,7 +525,7 @@ describe('with resource-timeline view', () => {
 })
 
 
-// Supplying content-injection as a function for dayCellContent
+// Supplying content-injection as a function for dayCellTopContent
 // https://github.com/fullcalendar/fullcalendar/issues/7187
 
 
@@ -538,13 +538,13 @@ class MonthComponent {
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin],
     initialView: 'dayGridMonth',
-    dayCellContent(arg) {
+    dayCellTopContent(arg) {
       return { html: `<b>${arg.dayNumberText}</b>` }
     },
   };
 }
 
-describe('with month view and dayCellContent as a function', () => {
+describe('with month view and dayCellTopContent as a function', () => {
   let component: MonthComponent;
   let fixture: ComponentFixture<MonthComponent>;
 

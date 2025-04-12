@@ -16,9 +16,11 @@ export const OPTION_REFINERS = {
   dayRowClassNames: identity as Identity<ClassNamesInput>,
 
   dayCellClassNames: identity as Identity<ClassNamesGenerator<DayCellContentArg>>,
-  dayCellContent: identity as Identity<CustomContentGenerator<DayCellContentArg>>,
   dayCellDidMount: identity as Identity<DidMountHandler<DayCellMountArg>>,
   dayCellWillUnmount: identity as Identity<WillUnmountHandler<DayCellMountArg>>,
+  dayCellTopContent: identity as Identity<CustomContentGenerator<DayCellContentArg>>,
+  dayCellTopClassNames: identity as Identity<ClassNamesGenerator<DayCellContentArg>>,
+  dayCellBottomClassNames: identity as Identity<ClassNamesGenerator<DayCellContentArg>>,
 }
 
 export const OPTION_DEFAULTS = {

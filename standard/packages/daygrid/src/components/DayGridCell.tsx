@@ -22,6 +22,7 @@ import {
   memoizeObjArg,
   ContentContainer,
   formatDayString,
+  generateClassName,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -143,8 +144,8 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
           'data-date': formatDayString(props.date),
         }}
         renderProps={renderProps}
-        generatorName="dayCellContent"
-        customGenerator={options.dayCellContent}
+        generatorName="dayCellTopContent" // !!! for top
+        customGenerator={options.dayCellTopContent /* !!! for top */}
         defaultGenerator={renderTopInner}
         classNameGenerator={options.dayCellClassNames}
         didMount={options.dayCellDidMount}
@@ -153,8 +154,8 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         {(InnerContent) => (
           <Fragment>
             {props.showDayNumber && (
-              <div className="fc-daygrid-day-header">
-                <InnerContent
+              <div className="fc-daygrid-day-header">{/* TODO: use this div for measurement only */}
+                <InnerContent // the dayCellTopContent
                   tag='div'
                   attrs={
                     isNavLink
@@ -164,6 +165,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                   className={joinClassNames(
                     'fc-daygrid-day-number',
                     isMonthStart && 'fc-daygrid-month-start',
+                    generateClassName(options.dayCellTopClassNames, renderProps),
                   )}
                 />
               </div>
@@ -194,6 +196,9 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 todayRange={props.todayRange}
               />
             </div>
+            <div
+              className={generateClassName(options.dayCellBottomClassNames, renderProps)}
+            />
           </Fragment>
         )}
       </ContentContainer>
