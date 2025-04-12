@@ -1,5 +1,5 @@
 import { CssDimValue } from '@fullcalendar/core'
-import { DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinClassNames, memoize, ViewProps } from '@fullcalendar/core/internal'
+import { DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, joinClassNames, memoize, ViewProps } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow } from '@fullcalendar/daygrid/internal'
 import { SingleMonthContentArg } from '../structs.js'
@@ -82,28 +82,43 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
           )}
         >
           <div
-            className="fc-multimonth-header"
+            className="fc-multimonth-header" // TODO: will go away
             style={{
               marginBottom: isHeaderSticky ? fracToCssDim(invRowAspectRatio) : undefined,
             }}
             // NOTE: sticky properties determined by CSS
           >
-            <div id={this.titleId} className='fc-multimonth-title'>
+            <div
+              id={this.titleId}
+              className={joinClassNames(
+                'fc-multimonth-title',
+                generateClassName(options.singleMonthTitleClassNames, {
+                  isSticky: isHeaderSticky,
+                }),
+              )}
+            >
               {dateEnv.format(
                 props.dateProfile.currentRange.start,
                 props.titleFormat,
               )}
             </div>
-            <DayGridHeaderRow
-              {...rowConfig}
-              role='row'
-              className='fc-multimonth-header-row'
-            />
+            <div
+              className={generateClassName(options.singleMonthHeaderClassNames, {
+                isSticky: isHeaderSticky,
+              })}
+            >
+              <DayGridHeaderRow
+                {...rowConfig}
+                role='row'
+                className='fc-multimonth-header-row'
+              />
+            </div>
           </div>
           <div
-            className={joinClassNames(
+            className={joinArrayishClassNames(
               'fc-multimonth-body',
               isAspectRatio && 'fc-rel',
+              options.singleMonthBodyClassNames,
             )}
             style={{
               marginTop: isHeaderSticky ? fracToCssDim(-invRowAspectRatio) : undefined,

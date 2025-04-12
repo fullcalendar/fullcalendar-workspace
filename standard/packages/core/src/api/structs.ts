@@ -41,6 +41,7 @@ export type { ButtonHintCompoundInput } from '../toolbar-struct.js'
 export type { CustomRenderingHandler, CustomRenderingStore } from '../content-inject/CustomRenderingStore.js'
 export type { DateSpanApi, DatePointApi } from '../structs/date-span.js'
 export type { DateSelectionApi } from '../calendar-utils.js'
+export type { ClassNamesInput } from '../util/html.js'
 
 // used by some args
 export type { Duration } from '../datelib/duration.js'

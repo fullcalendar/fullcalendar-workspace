@@ -7,3 +7,11 @@ export interface SingleMonthContentArg {
 }
 
 export type SingleMonthMountArg = MountArg<SingleMonthContentArg>
+
+export interface SingleMonthTitleArg {
+  isSticky: boolean
+}
+
+export interface SingleMonthHeaderArg {
+  isSticky: boolean
+}
