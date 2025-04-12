@@ -248,6 +248,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     // dimensions
                     slotWidth={slotWidth}
                   />
+                  <div
+                    className={joinArrayishClassNames(
+                      options.timelineTopClassNames,
+                    )}
+                  />
                   <TimelineFg
                     dateProfile={props.dateProfile}
                     tDateProfile={tDateProfile}
@@ -263,7 +268,12 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     // dimensions
                     slotWidth={slotWidth}
                   />
-                  <div className='fc-timeline-lane-footer' />
+                  <div
+                    className={joinArrayishClassNames(
+                      'fc-timeline-lane-footer',
+                      options.timelineBottomClassNames,
+                    )}
+                  />
                   {enableNowIndicator && (
                     <TimelineNowIndicatorLine
                       tDateProfile={tDateProfile}
