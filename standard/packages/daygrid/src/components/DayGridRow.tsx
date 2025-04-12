@@ -17,9 +17,9 @@ import {
   afterSize,
   SlicedCoordRange,
   EventRangeProps,
-  joinClassNames,
   buildDateStr,
   buildNavLinkAttrs,
+  joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -143,11 +143,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             ? fullWeekStr
             : undefined // can't have label on non-role div
         }
-        className={joinClassNames(
+        className={joinArrayishClassNames(
           'fc-daygrid-row',
           props.forPrint && 'fc-daygrid-row-print',
           'fc-flex-row fc-rel',
           props.className,
+          options.dayRowClassNames,
         )}
         style={{
           'flex-basis': props.basis,

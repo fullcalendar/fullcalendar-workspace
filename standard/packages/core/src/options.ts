@@ -85,6 +85,9 @@ export const BASE_OPTION_REFINERS = {
   dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderMountArg>>,
   dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderMountArg>>,
 
+  dayHeaderRowClassNames: identity as Identity<ClassNamesInput>,
+  dayRowClassNames: identity as Identity<ClassNamesInput>,
+
   dayCellClassNames: identity as Identity<ClassNamesGenerator<DayCellContentArg>>,
   dayCellContent: identity as Identity<CustomContentGenerator<DayCellContentArg>>,
   dayCellDidMount: identity as Identity<DidMountHandler<DayCellMountArg>>,

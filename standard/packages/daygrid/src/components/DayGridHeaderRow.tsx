@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, joinClassNames, RefMap, setRef } from '@fullcalendar/core/internal'
+import { afterSize, BaseComponent, joinArrayishClassNames, RefMap, setRef } from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { RowConfig } from '../header-tier.js'
 import { DayGridHeaderCell } from './DayGridHeaderCell.js'
@@ -23,14 +23,17 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
   private currentInnerHeight?: number
 
   render() {
-    const { props } = this
+    const { props, context } = this
+    const { options } = context
+
     return (
       <div
         role={props.role as any /* !!! */}
         aria-rowindex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
-        className={joinClassNames(
+        className={joinArrayishClassNames(
           'fc-flex-row fc-content-box',
           props.className,
+          options.dayHeaderRowClassNames,
         )}
         style={{ height: props.height }}
       >
