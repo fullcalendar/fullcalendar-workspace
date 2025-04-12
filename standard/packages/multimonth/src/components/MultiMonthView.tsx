@@ -114,7 +114,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                 className='fc-multimonth-inner'
                 ref={this.innerElRef}
               >
-                {monthDateProfiles.map((monthDateProfile) => {
+                {monthDateProfiles.map((monthDateProfile, i) => {
                   const monthStr = formatIsoMonthStr(monthDateProfile.currentRange.start)
 
                   return (
@@ -126,6 +126,9 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                       titleFormat={monthTitleFormat}
                       dateProfile={monthDateProfile}
                       width={cssMonthWidth}
+                      colCnt={cols}
+                      isFirst={!i}
+                      isLast={i === monthDateProfiles.length - 1}
                       visibleWidth={computedMonthWidth}
                       hasLateralSiblings={hasLateralSiblings}
                     />

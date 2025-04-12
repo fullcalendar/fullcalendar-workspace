@@ -24,3 +24,5 @@ export default createPlugin({
     },
   },
 }) as PluginDef
+
+export { SingleMonthContentArg, SingleMonthMountArg } from './structs.js'

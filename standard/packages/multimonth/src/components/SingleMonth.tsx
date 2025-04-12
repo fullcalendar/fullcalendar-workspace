@@ -1,13 +1,17 @@
 import { CssDimValue } from '@fullcalendar/core'
-import { DateComponent, DateFormatter, DateRange, fracToCssDim, getUniqueDomId, joinClassNames, memoize, ViewProps } from '@fullcalendar/core/internal'
+import { DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinClassNames, memoize, ViewProps } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow } from '@fullcalendar/daygrid/internal'
+import { SingleMonthContentArg } from '../structs.js'
 
 export interface SingleMonthProps extends ViewProps {
   todayRange: DateRange
   isoDateStr?: string
   titleFormat: DateFormatter
   width?: CssDimValue
+  colCnt?: number
+  isFirst: boolean
+  isLast: boolean
 
   // for min-height and compactness
   // should INLCUDE scrollbars to avoid oscillation
@@ -25,6 +29,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
   // internal
   private slicer = new DayTableSlicer()
   private titleId = getUniqueDomId()
+  private rootEl?: HTMLElement
+  private renderProps?: SingleMonthContentArg
 
   render() {
     const { props, context } = this
@@ -53,6 +59,12 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
     const isHeaderSticky = !forPrint
     const isAspectRatio = !forPrint || props.hasLateralSiblings
 
+    const renderProps = this.renderProps = {
+      colCnt: props.colCnt,
+      isFirst: props.isFirst,
+      isLast: props.isLast,
+    }
+
     return (
       <div
         role='listitem'
@@ -66,6 +78,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
           className={joinClassNames(
             'fc-multimonth-month',
             props.hasLateralSiblings && 'fc-break-inside-avoid',
+            generateClassName(options.singleMonthClassNames, renderProps),
           )}
         >
           <div
@@ -125,5 +138,27 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
         </div>
       </div>
     )
+  }
+
+  handleEl = (el: HTMLElement) => {
+    const { options } = this.context
+
+    if (el) {
+      this.rootEl = el
+
+      options.singleMonthDidMount?.({
+        el: this.rootEl,
+        ...this.renderProps!,
+      })
+    }
+  }
+
+  componentWillUnmount(): void {
+    const { options } = this.context
+
+    options.singleMonthWillUnmount?.({
+      el: this.rootEl,
+      ...this.renderProps!,
+    })
   }
 }
