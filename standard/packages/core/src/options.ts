@@ -191,6 +191,7 @@ export const BASE_OPTION_REFINERS = {
   slotLabelFormat: identity as Identity<FormatterInput | FormatterInput[]>,
 
   slotLaneClassNames: identity as Identity<ClassNamesGenerator<SlotLaneContentArg>>,
+  slotLaneInnerClassNames: identity as Identity<ClassNamesInput>, // no args!
   slotLaneContent: identity as Identity<CustomContentGenerator<SlotLaneContentArg>>,
   slotLaneDidMount: identity as Identity<DidMountHandler<SlotLaneMountArg>>,
   slotLaneWillUnmount: identity as Identity<WillUnmountHandler<SlotLaneMountArg>>,

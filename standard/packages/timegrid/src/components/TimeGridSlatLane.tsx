@@ -1,5 +1,5 @@
 import { SlotLaneContentArg } from '@fullcalendar/core'
-import { BaseComponent, ContentContainer, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { BaseComponent, ContentContainer, joinArrayishClassNames, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { TimeSlatMeta } from '../time-slat-meta.js'
 
@@ -44,7 +44,10 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
         {(InnerContent) => (
           <InnerContent
             tag="div"
-            className='fc-cell-inner'
+            className={joinArrayishClassNames(
+              'fc-cell-inner',
+              options.slotLaneInnerClassNames,
+            )}
             elRef={this.innerElRef}
           />
         )}

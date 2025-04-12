@@ -7,6 +7,7 @@ import {
   joinClassNames,
   memoize,
   DateEnv,
+  joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
@@ -96,7 +97,10 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         {(InnerContent) => (
           <InnerContent
             tag="div"
-            className='fc-cell-inner'
+            className={joinArrayishClassNames(
+              'fc-cell-inner',
+              options.slotLaneInnerClassNames,
+            )}
             style={{
               // HACK for Safari 16.4,
               // which can't use ResizeObserver on elements with natural width 0
