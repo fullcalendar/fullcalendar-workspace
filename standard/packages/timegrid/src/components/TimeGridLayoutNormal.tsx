@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, generateClassName, getIsHeightAuto, getStickyHeaderDates, Hit, joinClassNames, rangeContainsMarker, RefMap, Ruler, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
+import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, generateClassName, getIsHeightAuto, getStickyHeaderDates, Hit, joinArrayishClassNames, joinClassNames, rangeContainsMarker, RefMap, Ruler, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { DayGridHeaderRow, RowConfig, computeRowIsCompact } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
@@ -174,7 +174,11 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div
-                    className='fc-border-s fc-filler'
+                    className={joinArrayishClassNames(
+                      'fc-border-s fc-filler',
+                      options.fillerClassNames,
+                      options.fillerXClassNames,
+                    )}
                     style={{ minWidth: endScrollbarWidth }}
                   />
                 )}
@@ -224,7 +228,11 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div
-                    className='fc-border-s fc-filler'
+                    className={joinArrayishClassNames(
+                      'fc-border-s fc-filler',
+                      options.fillerClassNames,
+                      options.fillerXClassNames,
+                    )}
                     style={{ minWidth: endScrollbarWidth }}
                   />
                 )}
@@ -332,7 +340,13 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   </div>
 
                   {rowsNotExpanding && (
-                    <div class='fc-liquid fc-border-t fc-filler' />
+                    <div
+                      class={joinArrayishClassNames(
+                        'fc-liquid fc-border-t fc-filler',
+                        options.fillerClassNames,
+                        options.fillerYClassNames,
+                      )}
+                    />
                   )}
 
                   {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (

@@ -291,6 +291,10 @@ export const BASE_OPTION_REFINERS = {
   outerBorderTop: Boolean,
   outerBorderBottom: Boolean,
 
+  fillerClassNames: identity as Identity<ClassNamesInput>,
+  fillerXClassNames: identity as Identity<ClassNamesInput>,
+  fillerYClassNames: identity as Identity<ClassNamesInput>,
+
   toolbarClassNames: identity as Identity<ClassNamesInput>,
   headerToolbarClassNames: identity as Identity<ClassNamesInput>,
   footerToolbarClassNames: identity as Identity<ClassNamesInput>,

@@ -23,7 +23,8 @@ import {
   SplittableProps,
   FooterScrollbar,
   ViewContainer,
-  generateClassName
+  generateClassName,
+  joinArrayishClassNames
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
 import {
@@ -412,7 +413,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   />
                   {spreadsheetNeedsBottomFiller && (
                     <div
-                      className='fc-border-t fc-filler'
+                      className={joinArrayishClassNames(
+                        'fc-border-t fc-filler',
+                        options.fillerClassNames,
+                        options.fillerYClassNames,
+                      )}
                       style={{ minHeight: spreadsheetBottomFiller }}
                     />
                   )}
@@ -503,7 +508,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
                 {Boolean(endScrollbarWidth) && (
                   <div
-                    className='fc-border-s fc-filler'
+                    className={joinArrayishClassNames(
+                      'fc-border-s fc-filler',
+                      options.fillerClassNames,
+                      options.fillerXClassNames,
+                    )}
                     style={{ minWidth: endScrollbarWidth }}
                   />
                 )}
@@ -639,7 +648,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   </div>
                   {timelineNeedsBottomFiller && (
                     <div
-                      className='fc-border-t fc-filler'
+                      className={joinArrayishClassNames(
+                        'fc-border-t fc-filler',
+                        options.fillerClassNames,
+                        options.fillerYClassNames,
+                      )}
                       style={{ minHeight: timelineBottomFiller }}
                     />
                   )}

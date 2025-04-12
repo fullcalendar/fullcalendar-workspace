@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Ruler, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, FooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef, generateClassName } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Ruler, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, FooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef, generateClassName, joinArrayishClassNames } from "@fullcalendar/core/internal"
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridHeaderRow, RowConfig, computeColWidth, computeRowIsCompact } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
@@ -238,7 +238,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               </div>
               {Boolean(endScrollbarWidth) && (
                 <div
-                  className='fc-border-s fc-filler'
+                  className={joinArrayishClassNames(
+                    'fc-border-s fc-filler',
+                    options.fillerClassNames,
+                    options.fillerXClassNames,
+                  )}
                   style={{ minWidth: endScrollbarWidth }}
                 />
               )}
@@ -306,7 +310,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   </div>
                   {Boolean(endScrollbarWidth) && (
                     <div
-                      className='fc-border-s fc-filler'
+                      className={joinArrayishClassNames(
+                        'fc-border-s fc-filler',
+                        options.fillerClassNames,
+                        options.fillerXClassNames,
+                      )}
                       style={{ minWidth: endScrollbarWidth }}
                     />
                   )}
@@ -385,9 +393,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     )}
                     {Boolean(rowsNotExpanding || bottomScrollbarWidth) && (
                       <div
-                        class={joinClassNames(
-                          'fc-border-t fc-filler',
+                        class={joinArrayishClassNames(
                           rowsNotExpanding && 'fc-liquid',
+                          'fc-border-t fc-filler',
+                          options.fillerClassNames,
+                          options.fillerYClassNames,
                         )}
                         style={{
                           minHeight: bottomScrollbarWidth
@@ -483,7 +493,13 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         ))}
                       </div>
                       {rowsNotExpanding && (
-                        <div class='fc-liquid fc-border-t fc-filler' />
+                        <div
+                          class={joinArrayishClassNames(
+                            'fc-liquid fc-border-t fc-filler',
+                            options.fillerClassNames,
+                            options.fillerYClassNames,
+                          )}
+                        />
                       )}
                     </Fragment>
                   )}

@@ -20,6 +20,7 @@ import {
   joinClassNames,
   Ruler,
   generateClassName,
+  joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
@@ -107,7 +108,11 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
               />
               {Boolean(endScrollbarWidth) && (
                 <div
-                  className='fc-border-s fc-filler'
+                  className={joinArrayishClassNames(
+                    'fc-border-s fc-filler',
+                    options.fillerClassNames,
+                    options.fillerXClassNames,
+                  )}
                   style={{ minWidth: endScrollbarWidth }}
                 />
               )}

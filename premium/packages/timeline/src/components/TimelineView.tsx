@@ -22,6 +22,7 @@ import {
   Ruler,
   FooterScrollbar,
   generateClassName,
+  joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
@@ -186,7 +187,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 </div>
                 {Boolean(endScrollbarWidth) && (
                   <div
-                    className='fc-border-s fc-filler'
+                    className={joinArrayishClassNames(
+                      'fc-border-s fc-filler',
+                      options.fillerClassNames,
+                      options.fillerXClassNames,
+                    )}
                     style={{ minWidth: endScrollbarWidth }}
                   />
                 )}
