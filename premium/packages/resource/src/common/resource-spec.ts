@@ -47,6 +47,7 @@ export type ResourceGroupLaneMountArg = MountArg<ResourceGroupLaneContentArg>
 
 export interface ColHeaderRenderHooks {
   headerClassNames?: ClassNamesGenerator<ResourceColumnHeaderContentArg>
+  headerInnerClassNames?: ClassNamesGenerator<ResourceColumnHeaderContentArg>
   headerContent?: CustomContentGenerator<ResourceColumnHeaderContentArg>
   headerDefault?: (renderProps: ResourceColumnHeaderContentArg) => ComponentChild
   headerDidMount?: DidMountHandler<ResourceColumnHeaderMountArg>

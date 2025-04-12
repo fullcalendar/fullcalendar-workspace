@@ -1,5 +1,5 @@
 import { createElement, createRef, Ref, Fragment } from '@fullcalendar/core/preact'
-import { BaseComponent, ContentContainer, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNames, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { ColSpec, ResourceColumnHeaderContentArg } from '@fullcalendar/resource'
 
 export interface HeaderCellProps {
@@ -56,7 +56,13 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
       >
         {(InnerContent) => (
           <Fragment>
-            <div ref={this.innerElRef} className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
+            <div
+              ref={this.innerElRef}
+              className={joinArrayishClassNames(
+                'fc-cell-inner fc-padding-lg fc-flex-row fc-align-center',
+                generateClassName(colSpec.headerInnerClassNames, renderProps),
+              )}
+            >
               {this.props.indent && (
                 <div className="fc-datagrid-indent">
                   <span className="fc-icon" />

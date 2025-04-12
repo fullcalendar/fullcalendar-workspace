@@ -1,4 +1,4 @@
-import { BaseComponent, ContentContainer, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { ResourceColumnHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource'
 
@@ -42,7 +42,13 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         willUnmount={renderHooks.headerWillUnmount}
       >
         {(InnerContent) => (
-          <div ref={this.innerElRef} className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
+          <div
+            ref={this.innerElRef}
+            className={joinClassNames(
+              "fc-cell-inner fc-padding-lg fc-flex-row fc-align-center",
+              generateClassName(renderHooks.headerInnerClassNames, renderProps),
+            )}
+          >
             {this.props.indent && (
               <div className="fc-datagrid-indent">
                 <span className="fc-icon" />

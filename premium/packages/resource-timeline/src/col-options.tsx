@@ -16,6 +16,7 @@ export function processColOptions(options: ViewOptionsRefined) {
   } else if (options.resourceAreaHeaderContent) { // weird way to determine if content
     superHeaderRendering = {
       headerClassNames: options.resourceAreaHeaderClassNames,
+      headerInnerClassNames: options.resourceAreaHeaderInnerClassNames,
       headerContent: options.resourceAreaHeaderContent,
       headerDidMount: options.resourceAreaHeaderDidMount,
       headerWillUnmount: options.resourceAreaHeaderWillUnmount,
@@ -32,6 +33,7 @@ export function processColOptions(options: ViewOptionsRefined) {
       ...colSpec,
 
       headerClassNames: joinFuncishClassNames(options.resourceAreaHeaderClassNames, colSpec.headerClassNames),
+      headerInnerClassNames: joinFuncishClassNames(options.resourceAreaHeaderInnerClassNames, colSpec.headerInnerClassNames),
       headerContent: mergeContentInjectors(options.resourceAreaHeaderContent, colSpec.headerContent),
       headerDidMount: mergeLifecycleCallbacks(options.resourceAreaHeaderDidMount, colSpec.headerDidMount),
       headerWillUnmount: mergeLifecycleCallbacks(options.resourceAreaHeaderWillUnmount, colSpec.headerWillUnmount),
