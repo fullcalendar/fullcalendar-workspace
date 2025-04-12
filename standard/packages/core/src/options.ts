@@ -80,6 +80,7 @@ export const BASE_OPTION_REFINERS = {
   dayHeaders: Boolean,
   dayHeaderFormat: createFormatter,
   dayHeaderClassNames: identity as Identity<ClassNamesGenerator<DayHeaderContentArg>>,
+  dayHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<DayHeaderContentArg>>,
   dayHeaderContent: identity as Identity<CustomContentGenerator<DayHeaderContentArg>>,
   dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderMountArg>>,
   dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderMountArg>>,

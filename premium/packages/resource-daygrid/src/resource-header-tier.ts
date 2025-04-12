@@ -127,6 +127,7 @@ function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<Resou
   return {
     generatorName: 'resourceDayHeaderContent',
     customGenerator: options.resourceDayHeaderContent,
+    innerClassNameGenerator: options.resourceDayHeaderInnerClassNames,
     classNameGenerator: options.resourceDayHeaderClassNames,
     didMount: options.resourceDayHeaderDidMount,
     willUnmount: options.resourceDayHeaderWillUnmount,

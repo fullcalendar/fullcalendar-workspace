@@ -37,6 +37,7 @@ export const OPTION_REFINERS = {
 
   // for vresource view
   resourceDayHeaderClassNames: identity as Identity<ClassNamesGenerator<ResourceDayHeaderContentArg>>,
+  resourceDayHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<ResourceDayHeaderContentArg>>,
   resourceDayHeaderContent: identity as Identity<CustomContentGenerator<ResourceDayHeaderContentArg>>,
   resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderMountArg>>,
   resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderMountArg>>,

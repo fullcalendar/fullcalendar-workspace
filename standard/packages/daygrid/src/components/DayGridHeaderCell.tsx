@@ -1,4 +1,4 @@
-import { ContentContainer, joinClassNames, watchHeight, setRef, renderText, BaseComponent } from '@fullcalendar/core/internal'
+import { ContentContainer, joinClassNames, watchHeight, setRef, renderText, BaseComponent, generateClassName } from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { CellDataConfig, CellRenderConfig } from '../header-tier.js'
 
@@ -60,7 +60,8 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
             attrs={dataConfig.innerAttrs}
             className={joinClassNames(
               'fc-cell-inner fc-flex-col fc-padding-sm',
-              props.isSticky && 'fc-sticky-s'
+              props.isSticky && 'fc-sticky-s',
+              generateClassName(renderConfig.innerClassNameGenerator, dataConfig.renderProps),
             )}
             elRef={this.handleInnerEl}
           />

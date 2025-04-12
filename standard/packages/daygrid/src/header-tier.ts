@@ -4,6 +4,7 @@ import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, createForma
 export interface CellRenderConfig<RenderProps> {
   generatorName: string
   customGenerator: CustomContentGenerator<RenderProps>
+  innerClassNameGenerator: ClassNamesGenerator<RenderProps>
   classNameGenerator: ClassNamesGenerator<RenderProps>
   didMount: DidMountHandler<RenderProps & { el: HTMLElement }>
   willUnmount: WillUnmountHandler<RenderProps & { el: HTMLElement }>
@@ -109,6 +110,7 @@ export function buildDateRenderConfig(context: ViewContext): CellRenderConfig<Da
     generatorName: 'dayHeaderContent',
     customGenerator: options.dayHeaderContent,
     classNameGenerator: options.dayHeaderClassNames,
+    innerClassNameGenerator: options.dayHeaderInnerClassNames,
     didMount: options.dayHeaderDidMount,
     willUnmount: options.dayHeaderWillUnmount,
   }
