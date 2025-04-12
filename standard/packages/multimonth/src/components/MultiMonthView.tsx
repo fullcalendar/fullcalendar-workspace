@@ -98,6 +98,9 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
               !props.forPrint && 'fc-flex-col',
               props.className,
             )}
+            borderX={props.borderX}
+            borderTop={props.borderTop}
+            borderBottom={props.borderBottom}
           >
             <Scroller
               vertical={verticalScrolling}

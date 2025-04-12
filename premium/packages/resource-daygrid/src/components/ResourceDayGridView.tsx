@@ -116,6 +116,10 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
               eventDrag={joinedSlicedProps.eventDrag}
               eventResize={joinedSlicedProps.eventResize}
               eventSelection={joinedSlicedProps.eventSelection}
+
+              borderX={props.borderX}
+              borderTop={props.borderTop}
+              borderBottom={props.borderBottom}
             />
           )
         }}

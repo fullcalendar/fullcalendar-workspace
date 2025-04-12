@@ -7,7 +7,7 @@ export default createPlugin({
     classNames: ['fc', 'fc-theme-standard'],
     directionClassNames: (direction) => `fc-direction-${direction}`,
     mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
-    viewClassNames: (view) => ['fc-view', `fc-${view.type}-view`, 'fc-border'],
+    viewClassNames: (arg) => ['fc-view', `fc-${arg.view.type}-view`, 'fc-border'],
     popoverClassNames: 'fc-popover',
     popoverHeaderClassNames: 'fc-popover-header',
     popoverBodyClassNames: 'fc-popover-body',

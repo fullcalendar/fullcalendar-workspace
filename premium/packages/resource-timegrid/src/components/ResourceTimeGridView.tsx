@@ -202,6 +202,10 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
 
               // universal content
               eventSelection={allDayResourceJoinedProps.eventSelection || splitProps.timed.eventSelection}
+
+              borderX={props.borderX}
+              borderTop={props.borderTop}
+              borderBottom={props.borderBottom}
             />
           )
         }}

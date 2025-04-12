@@ -68,6 +68,10 @@ export interface ResourceTimelineLayoutPrintProps {
   timeAreaOffset: number // always positive (TODO: change to negative?)
   timeCanvasWidth: number | undefined
   slotWidth: number | undefined
+
+  borderX: boolean
+  borderTop: boolean
+  borderBottom: boolean
 }
 
 const BG_HEIGHT = 100000
@@ -125,6 +129,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           'fc-print-root',
           props.className,
         )}
+        borderX={props.borderX}
+        borderTop={props.borderTop}
+        borderBottom={props.borderBottom}
       >
         <div className='fc-print-header fc-border-b'>
           <div className='fc-flex-row'>

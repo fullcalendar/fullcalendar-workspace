@@ -42,6 +42,10 @@ export interface DayGridLayoutProps {
   eventDrag: EventSegUiInteractionState<DayGridRange> | null
   eventResize: EventSegUiInteractionState<DayGridRange> | null
   eventSelection: string
+
+  borderX: boolean
+  borderTop: boolean
+  borderBottom: boolean
 }
 
 export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
@@ -75,6 +79,9 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
           'aria-label': props.labelStr,
         }}
         className={joinClassNames(props.className, 'fc-print-root')}
+        borderX={props.borderX}
+        borderTop={props.borderTop}
+        borderBottom={props.borderBottom}
       >
         {options.dayMinWidth ? (
           <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />

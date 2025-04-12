@@ -42,6 +42,10 @@ export interface TimeGridLayoutProps {
 
   // universal content
   eventSelection: string
+
+  borderX: boolean
+  borderTop: boolean
+  borderBottom: boolean
 }
 
 interface TimeScroll {
@@ -135,6 +139,9 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
           // - Safari was never able to do repeated headers in the first place
         )}
         viewSpec={context.viewSpec}
+        borderX={props.borderX}
+        borderTop={props.borderTop}
+        borderBottom={props.borderBottom}
       >
         {dayMinWidth ? (
           <TimeGridLayoutPannable

@@ -130,6 +130,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 !props.forPrint && 'fc-flex-col',
                 props.className,
               )}
+              borderX={props.borderX}
+              borderTop={props.borderTop}
+              borderBottom={props.borderBottom}
             >
 
               {/* HEADER

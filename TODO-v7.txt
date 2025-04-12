@@ -23,6 +23,10 @@ bug: expander icon indent is wrong -- resource-timeline-row-grouping.html
 breaking: dayLane* separated from dayCell*
 spec-out: how did we decide a theme would determine if daygrid-week-view/etc
   would have day-numbers in the cell? dayCellAboveClassNames?
+if colorSchemed set to 'dark', but on a light page,
+  the css prop of some root ancestor should be color-scheme:dark (see ag-grid's scrollbars)
+fix createViewHookComponent HACKS
+  we're giving crap values to ppl who rely on custom view rendering
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

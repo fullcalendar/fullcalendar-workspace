@@ -46,9 +46,9 @@ import {
   NowIndicatorLabelMountArg,
   NowIndicatorLineContentArg,
   NowIndicatorLineMountArg,
+  ViewContentArg,
 } from './api/structs.js'
 import { ClassNamesInput } from './util/html.js'
-import { ViewApi } from './api/ViewApi.js'
 
 // base options
 // ------------
@@ -106,7 +106,7 @@ export const BASE_OPTION_REFINERS = {
 
   editable: Boolean,
 
-  viewClassNames: identity as Identity<ClassNamesGenerator<ViewApi>>,
+  viewClassNames: identity as Identity<ClassNamesGenerator<ViewContentArg>>,
   viewDidMount: identity as Identity<DidMountHandler<ViewMountArg>>,
   viewWillUnmount: identity as Identity<WillUnmountHandler<ViewMountArg>>,
 
@@ -274,6 +274,15 @@ export const BASE_OPTION_REFINERS = {
   popoverClassNames: identity as Identity<ClassNamesInput>,
   popoverHeaderClassNames: identity as Identity<ClassNamesInput>,
   popoverBodyClassNames: identity as Identity<ClassNamesInput>,
+
+  outerBorder: Boolean,
+  outerBorderX: Boolean,
+  outerBorderTop: Boolean,
+  outerBorderBottom: Boolean,
+
+  toolbarClassNames: identity as Identity<ClassNamesInput>,
+  headerToolbarClassNames: identity as Identity<ClassNamesInput>,
+  footerToolbarClassNames: identity as Identity<ClassNamesInput>,
 }
 
 type BuiltInBaseOptionRefiners = typeof BASE_OPTION_REFINERS
@@ -339,6 +348,7 @@ export const BASE_OPTION_DEFAULTS = {
   eventShortHeight: 30,
   monthStartFormat: { month: 'long', day: 'numeric' },
   headingLevel: 2, // like H2
+  outerBorder: true,
 }
 
 export type BaseOptionsRefined = DefaultedRefinedOptions<

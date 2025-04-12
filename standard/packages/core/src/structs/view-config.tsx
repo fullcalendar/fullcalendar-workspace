@@ -68,10 +68,13 @@ function createViewHookComponent(options: ViewOptions) {
         <ContentContainer
           tag="div"
           className={
-            generateClassName(
-              options.viewClassNames,
-              { type: context.viewSpec.type } as ViewApi // HACK
-            )
+            generateClassName(options.viewClassNames, {
+              // HACK
+              view: { type: context.viewSpec.type } as ViewApi,
+              borderX: true,
+              borderTop: true,
+              borderBottom: true,
+            })
           }
           renderProps={{
             ...viewProps,

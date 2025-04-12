@@ -105,6 +105,10 @@ interface ResourceTimelineLayoutNormalProps {
   // scroll
   initialScroll?: TimeScroll & EntityScroll
   scrollRef?: Ref<TimeScroll & EntityScroll> // NOTE: only an object allowed
+
+  borderX: boolean
+  borderTop: boolean
+  borderBottom: boolean
 }
 
 export interface EntityScroll {
@@ -302,6 +306,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           'fc-flex-col',
           props.className,
         )}
+        borderX={props.borderX}
+        borderTop={props.borderTop}
+        borderBottom={props.borderBottom}
       >
         <ResizableTwoCol
           initialStartWidth={props.initialSpreadsheetWidth}

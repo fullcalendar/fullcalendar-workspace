@@ -112,6 +112,10 @@ export class TimeGridView extends DateComponent<ViewProps> {
 
               // universal content
               eventSelection={props.eventSelection}
+
+              borderX={props.borderX}
+              borderTop={props.borderTop}
+              borderBottom={props.borderBottom}
             />
           )
         }}

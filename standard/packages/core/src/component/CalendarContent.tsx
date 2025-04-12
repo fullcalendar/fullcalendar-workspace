@@ -25,6 +25,7 @@ import { PureComponent } from '../vdom-util.js'
 import { getUniqueDomId } from '../util/dom-manip.js'
 import { CssDimValue, getIsHeightAuto } from '../scrollgrid/util.js'
 import { joinClassNames } from '../internal.js'
+import { joinArrayishClassNames } from '../util/html.js'
 
 export interface CalendarContentProps extends CalendarData {
   forPrint: boolean
@@ -87,7 +88,10 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       <ViewContextType.Provider value={viewContext}>
         {toolbarConfig.header && (
           <Toolbar
-            className="fc-header-toolbar"
+            className={joinArrayishClassNames(
+              'fc-header-toolbar',
+              options.headerToolbarClassNames,
+            )}
             model={toolbarConfig.header}
             titleId={this.viewTitleId}
             {...toolbarProps}
@@ -106,7 +110,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
           }}
         >
           {this.renderView(
-            props,
             joinClassNames(
               (viewHeightLiquid || viewHeight) && 'fc-liquid',
               viewAspectRatio != null && 'fc-fill',
@@ -117,7 +120,10 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
         </div>
         {toolbarConfig.footer && (
           <Toolbar
-            className="fc-footer-toolbar"
+            className={joinArrayishClassNames(
+              'fc-footer-toolbar',
+              options.footerToolbarClassNames,
+            )}
             model={toolbarConfig.footer}
             {...toolbarProps}
           />
@@ -167,9 +173,10 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
     return createElement(Fragment, {}, ...children)
   }
 
-  renderView(props: CalendarContentProps, className: string, title: string) {
-    let { pluginHooks } = props
-    let { viewSpec, toolbarConfig } = props
+  renderView(className: string, title: string) {
+    let { props } = this
+    let { pluginHooks, viewSpec, toolbarConfig, options } = props
+    let { outerBorder } = options
 
     let viewProps: ViewProps = {
       className,
@@ -184,6 +191,10 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       forPrint: props.forPrint,
       labelId: toolbarConfig.header && toolbarConfig.header.hasTitle ? this.viewTitleId : undefined,
       labelStr: toolbarConfig.header && toolbarConfig.header.hasTitle ? undefined : title,
+
+      borderX: (options.outerBorderX ?? outerBorder),
+      borderTop: toolbarConfig.header ? true : (options.outerBorderTop ?? outerBorder),
+      borderBottom: toolbarConfig.footer ? true : (options.outerBorderBottom ?? outerBorder),
     }
 
     let transformers = this.buildViewPropTransformers(pluginHooks.viewPropsTransformers)
