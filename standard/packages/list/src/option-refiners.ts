@@ -9,6 +9,8 @@ import {
   DateFormatter,
 } from '@fullcalendar/core/internal'
 import {
+  ListDayHeaderContentArg,
+  ListDayHeaderMountArg,
   NoEventsContentArg,
   NoEventsMountArg,
 } from './public-types.js'
@@ -16,6 +18,11 @@ import {
 export const OPTION_REFINERS = {
   listDayFormat: createFalsableFormatter, // defaults specified in list plugins
   listDaySideFormat: createFalsableFormatter, // "
+
+  listDayHeaderClassNames: identity as Identity<ClassNamesGenerator<ListDayHeaderContentArg>>,
+  listDayHeaderContent: identity as Identity<CustomContentGenerator<ListDayHeaderContentArg>>,
+  listDayHeaderDidMount: identity as Identity<DidMountHandler<ListDayHeaderMountArg>>,
+  listDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ListDayHeaderMountArg>>,
 
   noEventsClassNames: identity as Identity<ClassNamesGenerator<NoEventsContentArg>>,
   noEventsInnerClassNames: identity as Identity<ClassNamesGenerator<NoEventsContentArg>>,

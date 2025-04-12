@@ -27,7 +27,9 @@ if colorSchemed set to 'dark', but on a light page,
   the css prop of some root ancestor should be color-scheme:dark (see ag-grid's scrollbars)
 fix createViewHookComponent HACKS
   we're giving crap values to ppl who rely on custom view rendering
+  viewApi is in context. use it!
 slotLaneContent/slotLaneInnerClassNames -- what's the point? remove? needs cell-inner padding?
+why do we need fc-list-day-outer?
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

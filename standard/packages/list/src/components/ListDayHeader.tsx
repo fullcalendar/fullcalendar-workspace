@@ -1,6 +1,6 @@
-import { DayHeaderContentArg } from '@fullcalendar/core'
 import { BaseComponent, buildNavLinkAttrs, ContentContainer, DateMarker, DateRange, formatDayString, getDateMeta, getDayClassName, getStickyHeaderDates, joinClassNames } from "@fullcalendar/core/internal";
 import { createElement, Fragment } from '@fullcalendar/core/preact'
+import { ListDayHeaderContentArg } from '../structs.js'
 
 export interface ListDayHeaderProps {
   dayDate: DateMarker
@@ -24,7 +24,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
 
     let isNavLink = options.navLinks
 
-    let renderProps: RenderProps = {
+    let renderProps: ListDayHeaderContentArg = {
       date: dateEnv.toDate(dayDate),
       isMajor: false,
       view: viewApi,
@@ -57,25 +57,19 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
             ...(dayMeta.isToday ? { 'aria-current': 'date' } : {}),
           }}
           renderProps={renderProps}
-          generatorName="dayHeaderContent"
-          customGenerator={options.dayHeaderContent}
+          generatorName="listDayHeaderContent"
+          customGenerator={options.listDayHeaderContent}
           defaultGenerator={renderInnerContent}
-          classNameGenerator={options.dayHeaderClassNames}
-          didMount={options.dayHeaderDidMount}
-          willUnmount={options.dayHeaderWillUnmount}
+          classNameGenerator={options.listDayHeaderClassNames}
+          didMount={options.listDayHeaderDidMount}
+          willUnmount={options.listDayHeaderWillUnmount}
         />
       </div>
     )
   }
 }
 
-// doesn't enforce much since DayCellContentArg allow extra props
-interface RenderProps extends DayHeaderContentArg {
-  text: string
-  sideText: string
-}
-
-function renderInnerContent(props: RenderProps) {
+function renderInnerContent(props: ListDayHeaderContentArg) {
   return (
     <Fragment>
       {props.text && (
