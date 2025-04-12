@@ -11,6 +11,7 @@ import {
   EventStore,
   EventUiHash,
   formatDayString,
+  generateClassName,
   getIsHeightAuto,
   intersectRanges,
   joinClassNames,
@@ -120,7 +121,10 @@ export class ListView extends DateComponent<ViewProps, ListViewState> {
         {(InnerContent) => (
           <InnerContent
             tag="div"
-            className='fc-list-empty-inner'
+            className={joinClassNames(
+              'fc-list-empty-inner',
+              generateClassName(options.noEventsInnerClassNames, renderProps),
+            )}
           />
         )}
       </ContentContainer>

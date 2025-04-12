@@ -18,6 +18,7 @@ export const OPTION_REFINERS = {
   listDaySideFormat: createFalsableFormatter, // "
 
   noEventsClassNames: identity as Identity<ClassNamesGenerator<NoEventsContentArg>>,
+  noEventsInnerClassNames: identity as Identity<ClassNamesGenerator<NoEventsContentArg>>,
   noEventsContent: identity as Identity<CustomContentGenerator<NoEventsContentArg>>,
   noEventsDidMount: identity as Identity<DidMountHandler<NoEventsMountArg>>,
   noEventsWillUnmount: identity as Identity<WillUnmountHandler<NoEventsMountArg>>,
