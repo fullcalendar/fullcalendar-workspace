@@ -58,12 +58,14 @@ export const OPTION_REFINERS = {
 
   // datagrid, for resource-GROUP entire row
   resourceGroupHeaderClassNames: identity as Identity<ClassNamesGenerator<ResourceGroupHeaderContentArg>>,
+  resourceGroupHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<ResourceGroupHeaderContentArg>>,
   resourceGroupHeaderContent: identity as Identity<CustomContentGenerator<ResourceGroupHeaderContentArg>>,
   resourceGroupHeaderDidMount: identity as Identity<DidMountHandler<ResourceGroupHeaderMountArg>>,
   resourceGroupHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupHeaderMountArg>>,
 
   // timeline lane, for resource-GROUP
   resourceGroupLaneClassNames: identity as Identity<ClassNamesGenerator<ResourceGroupLaneContentArg>>,
+  resourceGroupLaneInnerClassNames: identity as Identity<ClassNamesGenerator<ResourceGroupLaneContentArg>>,
   resourceGroupLaneContent: identity as Identity<CustomContentGenerator<ResourceGroupLaneContentArg>>,
   resourceGroupLaneDidMount: identity as Identity<DidMountHandler<ResourceGroupLaneMountArg>>,
   resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupLaneMountArg>>,

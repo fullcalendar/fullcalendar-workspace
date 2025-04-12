@@ -69,6 +69,7 @@ export interface ColSpec extends ColHeaderRenderHooks {
 
 export interface GroupLaneRenderHooks {
   laneClassNames?: ClassNamesGenerator<ResourceCellContentArg>
+  laneInnerClassNames?: ClassNamesGenerator<ResourceCellContentArg>
   laneContent?: CustomContentGenerator<ResourceCellContentArg>
   laneDidMount?: DidMountHandler<ResourceCellMountArg>
   laneWillUnmount?: WillUnmountHandler<ResourceCellMountArg>
@@ -79,6 +80,7 @@ export interface GroupSpec extends GroupLaneRenderHooks { // best place for this
   order?: number
 
   labelClassNames?: ClassNamesGenerator<ResourceCellContentArg>
+  labelInnerClassNames?: ClassNamesGenerator<ResourceCellContentArg>
   labelContent?: CustomContentGenerator<ResourceCellContentArg>
   labelDidMount?: DidMountHandler<ResourceCellMountArg>
   labelWillUnmount?: WillUnmountHandler<ResourceCellMountArg>

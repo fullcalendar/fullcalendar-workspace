@@ -1,4 +1,4 @@
-import { BaseComponent, ContentContainer, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { ResourceGroupLaneContentArg } from '@fullcalendar/resource'
 import { Group } from '@fullcalendar/resource/internal'
@@ -46,7 +46,10 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
         {(InnerContainer) => (
           <InnerContainer
             tag="div"
-            className='fc-flex-col'
+            className={joinClassNames(
+              'fc-flex-col',
+              generateClassName(groupSpec.laneInnerClassNames, renderProps),
+            )}
             elRef={this.innerElRef}
           />
         )}

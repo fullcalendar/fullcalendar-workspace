@@ -1,4 +1,4 @@
-import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef } from '@fullcalendar/core/internal'
+import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, joinClassNames, generateClassName } from '@fullcalendar/core/internal'
 import { createElement, Fragment, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
 import { ResourceGroupHeaderContentArg } from '@fullcalendar/resource'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
@@ -48,7 +48,13 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
           willUnmount={spec.labelWillUnmount}
         >
           {(InnerContent) => (
-            <div ref={this.innerElRef} className="fc-cell-inner fc-padding-lg fc-flex-row fc-align-center">
+            <div
+              ref={this.innerElRef}
+              className={joinClassNames(
+                "fc-cell-inner fc-padding-lg fc-flex-row fc-align-center",
+                generateClassName(spec.labelInnerClassNames, renderProps),
+              )}
+            >
               <ExpanderIcon
                 indent={0}
                 hasChildren

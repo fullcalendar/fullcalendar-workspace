@@ -56,11 +56,13 @@ export function processColOptions(options: ViewOptionsRefined) {
         field: hGroupField,
 
         labelClassNames: options.resourceGroupHeaderClassNames,
+        labelInnerClassNames: options.resourceGroupHeaderInnerClassNames,
         labelContent: options.resourceGroupHeaderContent,
         labelDidMount: options.resourceGroupHeaderDidMount,
         labelWillUnmount: options.resourceGroupHeaderWillUnmount,
 
         laneClassNames: options.resourceGroupLaneClassNames,
+        laneInnerClassNames: options.resourceGroupLaneInnerClassNames,
         laneContent: options.resourceGroupLaneContent,
         laneDidMount: options.resourceGroupLaneDidMount,
         laneWillUnmount: options.resourceGroupLaneWillUnmount,
