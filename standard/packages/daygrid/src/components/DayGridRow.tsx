@@ -20,6 +20,7 @@ import {
   buildDateStr,
   buildNavLinkAttrs,
   joinArrayishClassNames,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -40,11 +41,11 @@ export interface DayGridRowProps {
   dateProfile: DateProfile
   todayRange: DateRange
   cells: DayTableCell[]
+  cellClassName?: string // in addition to each cell.className
   showDayNumbers: boolean
   showWeekNumbers?: boolean
   forPrint: boolean
   className?: string
-  isCompact?: boolean
   isTall?: boolean
   role?: string
 
@@ -60,7 +61,7 @@ export interface DayGridRowProps {
   dayMaxEventRows: boolean | number
 
   // dimensions
-  colWidth?: number
+  colWidth?: number // the applied width (NOT the computed width)
   basis?: number // height before growing
 
   // refs
@@ -192,7 +193,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               date={cell.date}
               isMajor={cell.isMajor}
               showDayNumber={props.showDayNumbers}
-              isCompact={props.isCompact}
               isTall={props.isTall}
               borderStart={Boolean(col)}
 
@@ -213,7 +213,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               renderProps={cell.renderProps}
               dateSpanProps={cell.dateSpanProps}
               attrs={cell.attrs}
-              className={cell.className} // just semantic classname. if discarded because of disabled cell, okay
+              className={joinClassNames(cell.className, props.cellClassName)}
 
               // dimensions
               fgHeight={heightsByCol[col]}

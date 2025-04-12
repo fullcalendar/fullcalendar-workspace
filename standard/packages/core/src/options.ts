@@ -269,6 +269,9 @@ export const BASE_OPTION_REFINERS = {
   popoverClassNames: identity as Identity<ClassNamesInput>,
   popoverHeaderClassNames: identity as Identity<ClassNamesInput>,
   popoverBodyClassNames: identity as Identity<ClassNamesInput>,
+  dayNarrowWidth: Number,
+  dayNarrowClassNames: identity as Identity<ClassNamesInput>,
+  dayNotNarrowClassNames: identity as Identity<ClassNamesInput>,
 
   outerBorder: Boolean,
   outerBorderX: Boolean,
@@ -351,6 +354,7 @@ export const BASE_OPTION_DEFAULTS = {
   dayCellFormat: { day: 'numeric' },
   headingLevel: 2, // like H2
   outerBorder: true,
+  dayNarrowWidth: 0,
 }
 
 export type BaseOptionsRefined = DefaultedRefinedOptions<

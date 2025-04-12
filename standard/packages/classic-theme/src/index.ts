@@ -11,6 +11,9 @@ export default createPlugin({
     popoverClassNames: 'fc-popover',
     popoverHeaderClassNames: 'fc-popover-header',
     popoverBodyClassNames: 'fc-popover-body',
+    dayNarrowWidth: 70,
+    dayNarrowClassNames: 'fc-day-narrow',
+    dayNotNarrowClassNames: 'fc-day-not-narrow',
   },
   views: {
     dayGrid: {

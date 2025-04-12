@@ -8,7 +8,6 @@ import {
   EventSegUiInteractionState,
   getEventRangeMeta,
   SlicedCoordRange,
-  joinClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement, RefObject, Fragment } from '@fullcalendar/core/preact'
 import { hasListItemDisplay } from '../event-rendering.js'
@@ -17,7 +16,6 @@ import { DayGridListEvent } from './DayGridListEvent.js'
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg.js'
 
 export interface DayGridMoreLinkProps {
-  isBlock: boolean
   allDayDate: DateMarker
   segs: DayRowEventRangePart[]
   hiddenSegs: DayRowEventRange[]
@@ -36,12 +34,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
     let { props } = this
     return (
       <MoreLinkContainer
-        className={joinClassNames(
-          'fc-daygrid-more-link',
-          props.isBlock
-            ? 'fc-daygrid-more-link-block'
-            : 'fc-daygrid-more-link-button'
-        )}
+        className='fc-daygrid-more-link'
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
         allDayDate={props.allDayDate}

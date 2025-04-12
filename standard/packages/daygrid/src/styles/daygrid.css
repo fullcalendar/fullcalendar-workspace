@@ -134,22 +134,11 @@ views: {
   }
 }
 
-/*
-THEME
-views: {
-  dayGrid: {
-    moreLinkClassName({ cellWidth }) {
-      // based on arbitrary width threshold!!??
-    }
-  }
-}
-*/
-.fc-daygrid-more-link-button { // (button)
+.fc-day-not-narrow .fc-daygrid-more-link { // (button)
   align-self: flex-start;
 }
 
-// SAME
-.fc-daygrid-more-link-block { // (block)
+.fc-day-narrow .fc-daygrid-more-link { // (block)
   // looks like an event
   border: 1px solid var(--fc-event-border-color);
   padding: 1px;

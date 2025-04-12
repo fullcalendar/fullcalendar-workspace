@@ -42,7 +42,6 @@ export interface DayGridCellProps {
   date: DateMarker
   isMajor: boolean
   showDayNumber: boolean
-  isCompact?: boolean
   isTall?: boolean
   borderStart: boolean
 
@@ -59,7 +58,7 @@ export interface DayGridCellProps {
   renderProps?: Dictionary
   dateSpanProps?: Dictionary
   attrs?: Dictionary
-  className?: string // just semantic className
+  className?: string
 
   // dimensions
   fgHeight: number | undefined
@@ -104,7 +103,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         <div
           role='gridcell'
           aria-disabled
-          className={joinClassNames(baseClassName, 'fc-day-disabled')}
+          className={joinClassNames(baseClassName, 'fc-day-disabled', props.className)}
           style={{
             width: props.width
           }}
@@ -132,10 +131,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       <ContentContainer
         tag="div"
         elRef={this.rootElRef}
-        className={joinClassNames(
-          baseClassName,
-          props.className, // semantic classNames
-        )}
+        className={joinClassNames(baseClassName, props.className)}
         attrs={{
           ...props.attrs,
           role: 'gridcell',
@@ -173,6 +169,8 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             <div
               className={joinClassNames(
                 'fc-daygrid-day-body',
+                // TODO: use dayCellBottomClassName for this (for thick bottom padding)
+                // and introduce a new setting (allDaySlotMinHeight)
                 props.isTall && 'fc-daygrid-day-body-tall',
                 props.fgLiquidHeight ? 'fc-liquid' : 'fc-grow',
               )}
@@ -182,7 +180,6 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 {props.fg}
               </div>
               <DayGridMoreLink
-                isBlock={props.isCompact}
                 allDayDate={props.date}
                 segs={props.segs}
                 hiddenSegs={props.hiddenSegs}

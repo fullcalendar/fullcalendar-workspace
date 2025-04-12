@@ -13,6 +13,7 @@ import {
   EventRangeProps,
   joinClassNames,
   ViewOptionsRefined,
+  joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
@@ -74,6 +75,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     let { props, context, rowHeightRefMap } = this
     let { options } = context
     let rowCnt = props.cellRows.length
+    let colCnt = props.cellRows[0].length
 
     let fgEventSegsByRow = this.splitFgEventSegs(props.fgEventSegs, rowCnt)
     let bgEventSegsByRow = this.splitBgEventSegs(props.bgEventSegs, rowCnt)
@@ -91,7 +93,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
       isHeightAuto,
       options,
     )
-    let isCompact = computeRowIsCompact(props.visibleWidth, options)
 
     return (
       <div
@@ -112,10 +113,10 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cells={cells}
+            cellClassName={getDayNarrowClassName(props.visibleWidth, colCnt, options)}
             showDayNumbers={rowCnt > 1}
             showWeekNumbers={rowCnt > 1 && options.weekNumbers}
             forPrint={props.forPrint}
-            isCompact={isCompact}
 
             // if not auto-height, distribute height of container somewhat evently to rows
             className={joinClassNames(
@@ -236,20 +237,14 @@ export function computeRowBasis(
   return 0
 }
 
-/*
-Infers cell height based on overall width
-*/
-export function computeRowIsCompact(
-  visibleWidth: number | undefined, // should INCLUDE any scrollbar width to avoid oscillation
+export function getDayNarrowClassName(
+  visibleWidth: number,
+  colCnt: number,
   options: ViewOptionsRefined,
-): boolean {
-  if (visibleWidth != null) {
-    // ensure a consistent row min-height modelled after a month with 6 rows respecting aspectRatio
-    // will result in same minHeight regardless of weekends, dayMinWidth, height:auto
-    const rowBasis = visibleWidth / options.aspectRatio / 6
-
-    return rowBasis < 70
-  }
-
-  return false
+): string {
+  return joinArrayishClassNames(
+    visibleWidth / colCnt <= options.dayNarrowWidth
+      ? options.dayNarrowClassNames
+      : options.dayNotNarrowClassNames
+  )
 }
