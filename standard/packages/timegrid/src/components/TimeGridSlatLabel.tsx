@@ -14,6 +14,7 @@ import {
   DateMarker,
   DateEnv,
   memoize,
+  generateClassName,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -108,7 +109,10 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
         {(InnerContent) => (
           <InnerContent
             tag="div"
-            className='fc-timegrid-axis-inner fc-cell-inner fc-padding-sm'
+            className={joinClassNames(
+              'fc-timegrid-axis-inner fc-cell-inner fc-padding-sm',
+              generateClassName(options.slotLabelInnerClassNames, renderProps),
+            )}
             elRef={this.innerElRef}
           />
         )}

@@ -197,6 +197,7 @@ export const BASE_OPTION_REFINERS = {
   slotLaneWillUnmount: identity as Identity<WillUnmountHandler<SlotLaneMountArg>>,
 
   slotLabelClassNames: identity as Identity<ClassNamesGenerator<SlotLabelContentArg>>,
+  slotLabelInnerClassNames: identity as Identity<ClassNamesGenerator<SlotLabelContentArg>>,
   slotLabelContent: identity as Identity<CustomContentGenerator<SlotLabelContentArg>>,
   slotLabelDidMount: identity as Identity<DidMountHandler<SlotLabelMountArg>>,
   slotLabelWillUnmount: identity as Identity<WillUnmountHandler<SlotLabelMountArg>>,

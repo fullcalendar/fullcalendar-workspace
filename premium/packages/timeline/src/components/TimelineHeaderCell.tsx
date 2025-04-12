@@ -6,6 +6,7 @@ import {
   setRef,
   joinClassNames,
   buildNavLinkAttrs,
+  generateClassName,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile.js'
@@ -105,6 +106,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
             className={joinClassNames(
               'fc-cell-inner fc-padding-md',
               props.isSticky && 'fc-sticky-s',
+              generateClassName(options.slotLabelInnerClassNames, renderProps),
             )}
             elRef={this.innerElRef}
           />
