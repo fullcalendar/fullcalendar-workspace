@@ -56,9 +56,9 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
       options.showNonCurrentDates,
     )
 
-    const monthTitleFormat = this.buildMonthFormat(options.multiMonthTitleFormat, monthDateProfiles)
+    const monthTitleFormat = this.buildMonthFormat(options.singleMonthTitleFormat, monthDateProfiles)
 
-    const { multiMonthMinWidth, multiMonthMaxColumns } = options
+    const { multiMonthMaxColumns, singleMonthMinWidth } = options
     const { innerWidth } = state
 
     let cols: number | undefined
@@ -71,7 +71,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
         1,
         Math.min(
           multiMonthMaxColumns,
-          Math.floor(innerWidth / multiMonthMinWidth),
+          Math.floor(innerWidth / singleMonthMinWidth),
         ),
       )
 

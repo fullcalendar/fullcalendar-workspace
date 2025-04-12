@@ -23,11 +23,11 @@ describe('multimonth view', () => {
     expect(calendar.view.currentEnd).toEqualDate('2023-08-01')
   })
 
-  it('having small multiMonthMinWidth results in side-by-side months', () => {
+  it('having small singleMonthMinWidth results in side-by-side months', () => {
     const calendar = initCalendar({
       initialDate: '2023-06-01',
       initialView: 'multiMonthYear',
-      multiMonthMinWidth: 100,
+      singleMonthMinWidth: 100,
     })
 
     const monthWrappers = new MultiMonthViewWrapper(calendar).getMonths()
@@ -35,11 +35,11 @@ describe('multimonth view', () => {
     expect(monthWrappers[0].el).toBeLeftOf(monthWrappers[1].el)
   })
 
-  it('having large multiMonthMinWidth results in stacking months', () => {
+  it('having large singleMonthMinWidth results in stacking months', () => {
     const calendar = initCalendar({
       initialDate: '2023-06-01',
       initialView: 'multiMonthYear',
-      multiMonthMinWidth: 600,
+      singleMonthMinWidth: 600,
     })
 
     const monthWrappers = new MultiMonthViewWrapper(calendar).getMonths()
@@ -105,11 +105,11 @@ describe('multimonth view', () => {
     expect(viewWrapper.getEventEls().length).toBe(1)
   })
 
-  it('has customizable multiMonthTitleFormat', () => {
+  it('has customizable singleMonthTitleFormat', () => {
     const calendar = initCalendar({
       initialDate: '2023-06-01',
       initialView: 'multiMonthYear',
-      multiMonthTitleFormat: { month: 'short', year: 'numeric' },
+      singleMonthTitleFormat: { month: 'short', year: 'numeric' },
     })
 
     const monthWrappers = new MultiMonthViewWrapper(calendar).getMonths()
@@ -120,7 +120,7 @@ describe('multimonth view', () => {
     const calendar = initCalendar({
       initialDate: '2023-06-01',
       initialView: 'multiMonthYear',
-      multiMonthTitleFormat: { month: 'short', year: 'numeric' },
+      singleMonthTitleFormat: { month: 'short', year: 'numeric' },
     })
 
     const viewWrapper = new MultiMonthViewWrapper(calendar)

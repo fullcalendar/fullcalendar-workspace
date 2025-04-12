@@ -13,8 +13,8 @@ export default createPlugin({
     multiMonth: {
       component: MultiMonthView,
       dateProfileGeneratorClass: TableDateProfileGenerator,
-      multiMonthMinWidth: 375,
       multiMonthMaxColumns: 3,
+      singleMonthMinWidth: 375,
     },
     multiMonthYear: {
       type: 'multiMonth',
