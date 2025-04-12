@@ -205,6 +205,8 @@ export const BASE_OPTION_REFINERS = {
   slotLabelDidMount: identity as Identity<DidMountHandler<SlotLabelMountArg>>,
   slotLabelWillUnmount: identity as Identity<WillUnmountHandler<SlotLabelMountArg>>,
 
+  slotLabelRowClassNames: identity as Identity<ClassNamesInput>,
+
   dayMaxEvents: identity as Identity<boolean | number>,
   dayMaxEventRows: identity as Identity<boolean | number>,
   dayMinWidth: Number,
