@@ -206,6 +206,7 @@ export const BASE_OPTION_REFINERS = {
 
   allDayText: String,
   allDayHeaderClassNames: identity as Identity<ClassNamesGenerator<AllDayContentArg>>,
+  allDayHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<AllDayContentArg>>,
   allDayHeaderContent: identity as Identity<CustomContentGenerator<AllDayContentArg>>,
   allDayHeaderDidMount: identity as Identity<DidMountHandler<AllDayMountArg>>,
   allDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<AllDayMountArg>>,

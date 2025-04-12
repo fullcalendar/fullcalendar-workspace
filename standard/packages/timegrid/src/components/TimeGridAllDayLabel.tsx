@@ -1,6 +1,6 @@
 import { AllDayContentArg } from '@fullcalendar/core'
 import { ComponentChild, Ref, createElement, createRef } from '@fullcalendar/core/preact'
-import { BaseComponent, ContentContainer, setRef, watchWidth } from "@fullcalendar/core/internal"
+import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchWidth } from "@fullcalendar/core/internal"
 
 export interface TimeGridAllDayLabelProps {
   // dimension
@@ -46,7 +46,10 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
         {(InnerContent) => (
           <InnerContent
             tag="span"
-            className='fc-timegrid-allday-label-inner fc-timegrid-axis-inner fc-cell-inner fc-padding-sm'
+            className={joinClassNames(
+              'fc-timegrid-allday-label-inner fc-timegrid-axis-inner fc-cell-inner fc-padding-sm',
+              generateClassName(options.allDayHeaderInnerClassNames, renderProps),
+            )}
             elRef={this.innerElRef}
           />
         )}
