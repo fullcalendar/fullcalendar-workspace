@@ -269,6 +269,7 @@ export const BASE_OPTION_REFINERS = {
   moreLinkWillUnmount: identity as Identity<WillUnmountHandler<MoreLinkMountArg>>,
 
   monthStartFormat: createFormatter,
+  dayCellFormat: createFormatter,
 
   // for connectors
   // (can't be part of plugin system b/c must be provided at runtime)
@@ -365,6 +366,7 @@ export const BASE_OPTION_DEFAULTS = {
   eventMinWidth: 30,
   eventShortHeight: 30,
   monthStartFormat: { month: 'long', day: 'numeric' },
+  dayCellFormat: { day: 'numeric' },
   headingLevel: 2, // like H2
   outerBorder: true,
 }

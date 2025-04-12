@@ -1,7 +1,6 @@
 import { ComponentChild, createElement } from '../preact.js'
 import { DateMarker } from '../datelib/marker.js'
 import { DateMeta, getDayClassName } from '../component-util/date-rendering.js'
-import { createFormatter } from '../datelib/formatting.js'
 import { DateFormatter } from '../datelib/DateFormatter.js'
 import { formatDayString } from '../datelib/formatting-utils.js'
 import { MountArg } from './render-hook.js'
@@ -35,8 +34,6 @@ export interface DayCellContainerProps extends Partial<ElProps> {
   children?: InnerContainerFunc<DayCellContentArg>
 }
 
-const DAY_NUM_FORMAT = createFormatter({ day: 'numeric' })
-
 export class DayCellContainer extends BaseComponent<DayCellContainerProps> {
   refineRenderProps = memoizeObjArg(refineRenderProps)
 
@@ -53,6 +50,7 @@ export class DayCellContainer extends BaseComponent<DayCellContainerProps> {
       viewApi: context.viewApi,
       dateEnv: context.dateEnv,
       monthStartFormat: options.monthStartFormat,
+      dayCellFormat: options.dayCellFormat,
     })
 
     return (
@@ -91,6 +89,7 @@ interface DayCellRenderPropsInput {
   dateMeta: DateMeta
   dateEnv: DateEnv
   viewApi: ViewApi
+  dayCellFormat: DateFormatter
   monthStartFormat: DateFormatter
   isMonthStart: boolean // defaults to false
   showDayNumber?: boolean // defaults to false
@@ -100,7 +99,7 @@ interface DayCellRenderPropsInput {
 function refineRenderProps(raw: DayCellRenderPropsInput): DayCellContentArg {
   let { date, dateEnv, isMonthStart } = raw
   let dayNumberText = raw.showDayNumber ? (
-    dateEnv.format(date, isMonthStart ? raw.monthStartFormat : DAY_NUM_FORMAT)
+    dateEnv.format(date, isMonthStart ? raw.monthStartFormat : raw.dayCellFormat)
   ) : ''
 
   return {
