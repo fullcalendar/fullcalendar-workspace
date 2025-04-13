@@ -8,11 +8,10 @@ import {
   EventSegUiInteractionState,
   getEventRangeMeta,
   SlicedCoordRange,
+  StandardEvent2,
 } from '@fullcalendar/core/internal'
 import { createElement, RefObject, Fragment } from '@fullcalendar/core/preact'
-import { hasListItemDisplay } from '../event-rendering.js'
-import { DayGridBlockEvent } from './DayGridBlockEvent.js'
-import { DayGridListEvent } from './DayGridListEvent.js'
+import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering.js'
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg.js'
 
 export interface DayGridMoreLinkProps {
@@ -62,29 +61,19 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
                       visibility: forcedInvisibleMap[instanceId] ? 'hidden' : '',
                     }}
                   >
-                    {hasListItemDisplay(seg) ? (
-                      <DayGridListEvent
-                        eventRange={eventRange}
-                        isStart={seg.isStart}
-                        isEnd={seg.isEnd}
-                        isDragging={false}
-                        isSelected={instanceId === props.eventSelection}
-                        defaultDisplayEventEnd={false}
-                        {...getEventRangeMeta(eventRange, props.todayRange)}
-                      />
-                    ) : (
-                      <DayGridBlockEvent
-                        eventRange={eventRange}
-                        isStart={seg.isStart}
-                        isEnd={seg.isEnd}
-                        isDragging={false}
-                        isResizing={false}
-                        isDateSelecting={false}
-                        isSelected={instanceId === props.eventSelection}
-                        defaultDisplayEventEnd={false}
-                        {...getEventRangeMeta(eventRange, props.todayRange)}
-                      />
-                    )}
+                    <StandardEvent2
+                      eventRange={eventRange}
+                      isStart={seg.isStart}
+                      isEnd={seg.isEnd}
+                      isDragging={false}
+                      isResizing={false}
+                      isDateSelecting={false}
+                      isSelected={instanceId === props.eventSelection}
+                      defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
+                      defaultDisplayEventEnd={false}
+                      isListItem={hasListItemDisplay(seg)}
+                      {...getEventRangeMeta(eventRange, props.todayRange)}
+                    />
                   </div>
                 )
               })}

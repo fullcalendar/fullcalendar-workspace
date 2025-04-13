@@ -94,20 +94,26 @@
   border-radius: calc(var(--fc-daygrid-event-dot-width) / 2);
 }
 
-.fc-daygrid-dot-event .fc-event-time, // > time
-.fc-daygrid-dot-event .fc-event-title { // > title
+.fc-daygrid-dot-event .fc-event-inner { // > inner
+  display: flex;
+  direction: row;
+  align-items: center; // vertical
+}
+
+.fc-daygrid-dot-event .fc-event-time, // inner > time
+.fc-daygrid-dot-event .fc-event-title { // inner > title-outer > title
   // CAN be overridden
   white-space: nowrap;
   overflow: hidden;
 }
-.fc-media-print .fc-daygrid-dot-event .fc-event-time, // (print) > time
-.fc-media-print .fc-daygrid-dot-event .fc-event-title { // (print) > title
+.fc-media-print .fc-daygrid-dot-event .fc-event-time, // (print) > inner > time
+.fc-media-print .fc-daygrid-dot-event .fc-event-title { // (print) > inner > title-outer > title
   // CANNOT be overridden. print view depends on width-independent height
   white-space: nowrap !important;
   overflow: hidden !important;
 }
 
-.fc-daygrid-dot-event .fc-event-title { // > title
+.fc-daygrid-dot-event .fc-event-title { // > inner > title-outer > title
   @include liquid; // horizontally liquid
   font-weight: bold;
 }

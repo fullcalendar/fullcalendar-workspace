@@ -23,6 +23,7 @@ import {
   joinClassNames,
   renderText,
   ContentContainer,
+  StandardEvent2,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -32,10 +33,8 @@ import {
 } from '@fullcalendar/core/preact'
 import { DayRowEventRangePart, getEventPartKey } from '../TableSeg.js'
 import { DayGridCell } from './DayGridCell.js'
-import { DayGridListEvent } from './DayGridListEvent.js'
-import { DayGridBlockEvent } from './DayGridBlockEvent.js'
 import { computeFgSegVerticals } from '../event-placement.js'
-import { hasListItemDisplay } from '../event-rendering.js'
+import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering.js'
 import { computeHorizontalsFromSeg } from './util.js'
 import { DayGridEventHarness } from './DayGridEventHarness.js'
 
@@ -306,29 +305,19 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               : null
           }
         >
-          {hasListItemDisplay(seg) ? (
-            <DayGridListEvent
-              eventRange={eventRange}
-              isStart={seg.isStart}
-              isEnd={seg.isEnd}
-              isDragging={isDragging}
-              isSelected={instanceId === eventSelection}
-              defaultDisplayEventEnd={defaultDisplayEventEnd}
-              {...getEventRangeMeta(eventRange, todayRange)}
-            />
-          ) : (
-            <DayGridBlockEvent
-              eventRange={eventRange}
-              isStart={seg.isStart}
-              isEnd={seg.isEnd}
-              isDragging={isDragging}
-              isResizing={isResizing}
-              isDateSelecting={isDateSelecting}
-              isSelected={instanceId === eventSelection}
-              defaultDisplayEventEnd={defaultDisplayEventEnd}
-              {...getEventRangeMeta(eventRange, todayRange)}
-            />
-          )}
+          <StandardEvent2
+            eventRange={eventRange}
+            isStart={seg.isStart}
+            isEnd={seg.isEnd}
+            isDragging={isDragging}
+            isResizing={isResizing}
+            isDateSelecting={isDateSelecting}
+            isSelected={instanceId === eventSelection}
+            defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
+            defaultDisplayEventEnd={defaultDisplayEventEnd}
+            isListItem={hasListItemDisplay(seg)}
+            {...getEventRangeMeta(eventRange, todayRange)}
+          />
         </DayGridEventHarness>,
       )
     }

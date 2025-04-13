@@ -44,6 +44,13 @@ bug: date given to week-number hooks is not zoned!!!
 for bootstrap theme,
   offer separate fontawesome icons plugin?
   offer separate boostrap-icons plugin
+resolve confusion over event-element "color"
+  will need to make separate `color` property in EventUi. other props set on `style`
+changelog: new EventContentArg props
+bug: why does display:background not work on a 'Repeating Event'
+  because it's a timed event. todo: document this better?
+todo: background-events must be implemented with StandardEvent2
+  - daygrid
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

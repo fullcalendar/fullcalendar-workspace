@@ -217,6 +217,12 @@ export interface EventContentArg { // for *Content handlers
   isDragging: boolean
   isResizing: boolean
   view: ViewApi // specifically for the API
+
+  // TODO: make required!
+  isListItem?: boolean
+  timeClassName?: string
+  titleClassName?: string
+  titleOuterClassName?: string // eventually remove!
 }
 
 export type EventMountArg = MountArg<EventContentArg>
@@ -308,6 +314,9 @@ export function getEventRangeMeta(
   }
 }
 
+/*
+TODO: this done by theme. remove
+*/
 export function getEventClassNames(props: EventContentArg) { // weird that we use this interface, but convenient
   let classNames: string[] = ['fc-event']
 
