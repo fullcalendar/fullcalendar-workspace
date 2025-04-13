@@ -1,4 +1,4 @@
-import { BaseComponent, joinClassNames, RefMap } from "@fullcalendar/core/internal"
+import { BaseComponent, joinArrayishClassNames, joinClassNames, RefMap } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
 import { ColSpec, createGroupId } from "@fullcalendar/resource/internal"
 import { GroupTallCell } from "./GroupTallCell.js"
@@ -27,6 +27,7 @@ Caller is responsible for this.
 export class BodySection extends BaseComponent<BodySectionProps> {
   render() {
     const { props, context } = this
+    const { options } = context
     const { rowInnerHeightRefMap, rowTops, rowHeights, headerRowSpan, hasNesting } = props
 
     // TODO: less-weird way to get this! more DRY with ResourceTimelineLayoutNormal
@@ -89,7 +90,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                     fieldValue={group.value}
                     className={joinClassNames(
                       'fc-liquid',
-                      isNotLast && 'fc-border-b',
+                      isNotLast && 'fc-border-b', // TODO: use options.resourceAreaRowClassNames
                     )}
                     innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
                   />
@@ -135,9 +136,10 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 aria-rowindex={1 + headerRowSpan + groupRowLayout.rowIndex}
                 aria-level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
                 aria-expanded={groupRowLayout.isExpanded}
-                class={joinClassNames(
+                class={joinArrayishClassNames(
                   'fc-flex-row fc-fill-x fc-content-box',
                   isNotLast && 'fc-border-b',
+                  options.resourceAreaRowClassNames,
                 )}
                 style={{
                   top: rowTops.get(groupKey),

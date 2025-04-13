@@ -147,7 +147,13 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             {/* DataGrid HEADER */}
             <div role='rowgroup' className='fc-flex-col' style={{ width: props.spreadsheetWidth }}>
               {Boolean(superHeaderRendering) && (
-                <div role='row' className="fc-flex-row fc-grow fc-border-b">
+                <div
+                  role='row'
+                  className={joinArrayishClassNames(
+                    "fc-flex-row fc-grow fc-border-b",
+                    options.resourceAreaHeaderRowClassNames,
+                  )}
+                >
                   <SuperHeaderCell
                     renderHooks={superHeaderRendering}
                     indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
@@ -307,8 +313,15 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   aria-level={hasNesting ? printLayout.indent : undefined}
                   className='fc-flex-row fc-break-inside-avoid'
                 >
+                  {/*
+                    TODO put options.resourceAreaRowClassNames on this sub-row-container element
+                  */}
                   <div className='fc-flex-col fc-crop' style={{ width: props.spreadsheetWidth }}>
                     <div className='fc-flex-row fc-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
+                      {/*
+                        instead of conditionally adding border via colGroupStats[].colGroupStats
+                        use options.resourceAreaRowClassNames
+                      */}
                       <ResourceGroupCells
                         colGroups={(printLayout as ResourcePrintLayout).colGroups}
                         colGroupStats={colGroupStats}
@@ -325,7 +338,10 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                         colSpecs={colSpecs}
                         colWidths={colWidths}
                         colGrows={colGrows}
-                        className={isNotLast ? 'fc-border-b' : ''}
+                        className={joinArrayishClassNames(
+                          isNotLast && 'fc-border-b',
+                          options.resourceAreaRowClassNames,
+                        )}
                       />
                     </div>
                   </div>

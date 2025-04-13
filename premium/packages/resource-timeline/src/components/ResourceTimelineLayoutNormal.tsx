@@ -347,7 +347,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     <div
                       role="row"
                       aria-rowindex={1}
-                      className="fc-flex-row fc-grow fc-border-b"
+                      className={joinArrayishClassNames(
+                        "fc-flex-row fc-grow fc-border-b",
+                        options.resourceAreaHeaderRowClassNames,
+                      )}
                     >
                       <SuperHeaderCell
                         renderHooks={superHeaderRendering}
