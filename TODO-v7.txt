@@ -51,6 +51,8 @@ bug: why does display:background not work on a 'Repeating Event'
   because it's a timed event. todo: document this better?
 todo: background-events must be implemented with StandardEvent2
   - daygrid
+bug: multi-month dot-events overflow too much
+bug: all-day section events too close to top
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

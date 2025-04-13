@@ -1,4 +1,4 @@
-import { createPlugin, PluginDef } from '@fullcalendar/core'
+import { createPlugin, EventContentArg, PluginDef } from '@fullcalendar/core'
 import './index.css'
 
 export default createPlugin({
@@ -34,26 +34,27 @@ export default createPlugin({
     eventTitleClassNames: 'fc-event-title',
   },
   views: {
-    dayGrid: { // will this apply to multi-month???
+    dayGrid: {
       viewClassNames: 'fc-daygrid',
-      eventClassNames: (arg) => (
-        arg.event.display === 'background' ? '' :
-        arg.isListItem ? 'fc-daygrid-dot-event fc-daygrid-event' :
-        'fc-daygrid-block-event fc-daygrid-event fc-h-event'
-      ),
-      eventColorClassNames: (arg) => (
-        arg.isListItem
-          && 'fc-daygrid-event-dot'
-      )
+      eventClassNames: getDayGridEventClassNames,
+      eventColorClassNames: getDayGridEventColorClassNames,
     },
     timeGrid: {
       viewClassNames: 'fc-timegrid',
+      eventClassNames: (arg) => (
+        arg.event.allDay ? getDayGridEventClassNames(arg) : ''
+      ),
+      eventColorClassNames: (arg) => (
+        arg.event.allDay ? getDayGridEventColorClassNames(arg) : ''
+      ),
     },
     list: {
       viewClassNames: 'fc-list',
     },
     multiMonth: {
       viewClassNames: 'fc-multimonth',
+      eventClassNames: getDayGridEventClassNames,
+      eventColorClassNames: getDayGridEventColorClassNames,
     },
     timeline: {
       viewClassNames: 'fc-timeline',
@@ -69,3 +70,13 @@ export default createPlugin({
     },
   },
 }) as PluginDef
+
+function getDayGridEventClassNames(arg: EventContentArg) {
+  return arg.event.display === 'background' ? '' :
+    arg.isListItem ? 'fc-daygrid-dot-event fc-daygrid-event' :
+    'fc-daygrid-block-event fc-daygrid-event fc-h-event'
+}
+
+function getDayGridEventColorClassNames(arg: EventContentArg) {
+  return arg.isListItem && 'fc-daygrid-event-dot'
+}
