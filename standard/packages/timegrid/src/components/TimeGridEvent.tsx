@@ -1,4 +1,4 @@
-import { StandardEvent, BaseComponent, MinimalEventProps, createFormatter, joinClassNames } from '@fullcalendar/core/internal'
+import { BaseComponent, MinimalEventProps, createFormatter, joinClassNames, StandardEvent2 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
@@ -18,14 +18,15 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
     const { props } = this
 
     return (
-      <StandardEvent
+      <StandardEvent2
         {...props}
         className={joinClassNames(
-          'fc-timegrid-event',
+          // TODO: move to theme system somehow
           props.isShort && 'fc-timegrid-event-short',
           props.isInset && 'fc-timegrid-event-inset',
-          'fc-v-event',
-          props.isLiquid && 'fc-liquid', // see note in TimeGridCol on why we use flexbox
+
+          // see note in TimeGridCol on why we use flexbox
+          props.isLiquid && 'fc-liquid',
         )}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
       />

@@ -42,7 +42,9 @@ export default createPlugin({
     timeGrid: {
       viewClassNames: 'fc-timegrid',
       eventClassNames: (arg) => (
-        arg.event.allDay ? getDayGridEventClassNames(arg) : ''
+        arg.event.allDay ? getDayGridEventClassNames(arg) :
+        arg.event.display === 'background' ? '' :
+        'fc-timegrid-event fc-v-event'
       ),
       eventColorClassNames: (arg) => (
         arg.event.allDay ? getDayGridEventColorClassNames(arg) : ''
