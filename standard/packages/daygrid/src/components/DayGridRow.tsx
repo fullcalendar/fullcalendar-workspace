@@ -172,7 +172,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               'role': undefined, // HACK: a 'link' role can't be child of 'row' role
               'aria-hidden': true, // HACK: never part of a11y tree because row already has label and role not allowed
             }}
-            className='fc-daygrid-week-number'
+            className={joinArrayishClassNames(
+              'fc-daygrid-week-number',
+              options.weekNumberInnerClassNames
+            )}
             renderProps={{
               num: weekNum,
               text: weekNumText,

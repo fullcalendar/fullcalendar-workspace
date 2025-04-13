@@ -89,6 +89,7 @@ export const BASE_OPTION_REFINERS = {
   weekNumberCalculation: identity as Identity<WeekNumberCalculation>,
   weekNumbers: Boolean,
   weekNumberClassNames: identity as Identity<ClassNamesGenerator<WeekNumberContentArg>>,
+  weekNumberInnerClassNames: identity as Identity<ClassNamesInput>, // TODO: give the arg?
   weekNumberContent: identity as Identity<CustomContentGenerator<WeekNumberContentArg>>,
   weekNumberDidMount: identity as Identity<DidMountHandler<WeekNumberMountArg>>,
   weekNumberWillUnmount: identity as Identity<WillUnmountHandler<WeekNumberMountArg>>,
