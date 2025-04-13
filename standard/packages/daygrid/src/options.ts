@@ -12,6 +12,7 @@ export const OPTION_REFINERS = {
   dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderMountArg>>,
   dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderMountArg>>,
 
+  dayHeaderDividerClassNames: identity as Identity<ClassNamesInput>,
   dayHeaderRowClassNames: identity as Identity<ClassNamesInput>,
   dayRowClassNames: identity as Identity<ClassNamesInput>,
 

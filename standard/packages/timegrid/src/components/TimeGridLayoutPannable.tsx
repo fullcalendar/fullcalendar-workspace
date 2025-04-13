@@ -166,7 +166,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           <div
             className={joinClassNames(
               // see note in TimeGridLayout about why we don't do fc-print-header
-              'fc-timegrid-header fc-flex-row fc-border-b',
+              'fc-timegrid-header fc-border-b',
               stickyHeaderDates && 'fc-table-header-sticky',
               generateClassName(options.viewHeaderClassNames, {
                 borderX: props.borderX,
@@ -174,79 +174,82 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               }),
             )}
           >
-            {/* HEADER / labels
-            -------------------------------------------------------------------------------------*/}
-            <div
-              role='rowgroup'
-              className='fc-content-box'
-              style={{ width: axisWidth }}
-            >
-              {headerTiers.map((rowConfig, tierNum) => (
-                <div
-                  key={tierNum}
-                  role='row'
-                  aria-rowindex={tierNum + 1}
-                  className={joinClassNames(
-                    'fc-flex-row fc-content-box',
-                    tierNum && 'fc-border-t',
-                  )}
-                  style={{ height: state.headerTierHeights[tierNum] }}
-                >
-                  {(options.weekNumbers && rowConfig.isDateRow) ? (
-                    <TimeGridWeekNumber
-                      dateProfile={props.dateProfile}
-                      innerWidthRef={headerLabelInnerWidthRefMap.createRef(tierNum)}
-                      innerHeightRef={headerLabelInnerHeightRefMap.createRef(tierNum)}
-                      width={undefined}
-                      isLiquid={true}
-                    />
-                  ) : (
-                    <TimeGridAxisEmpty
-                      width={undefined}
-                      isLiquid={true}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-            {/* HEADER / main (horizontal scroller)
-            -------------------------------------------------------------------------------------*/}
-            <Scroller
-              horizontal
-              hideScrollbars
-              className='fc-flex-row fc-border-s fc-liquid'
-              ref={this.headerScrollerRef}
-            >
-              {/* TODO: converge with DayGridHeader */}
+            <div className='fc-flex-row'>
+              {/* HEADER / labels
+              -------------------------------------------------------------------------------------*/}
               <div
                 role='rowgroup'
-                className={canvasWidth == null ? 'fc-liquid' : ''}
-                style={{ width: canvasWidth }}
+                className='fc-content-box'
+                style={{ width: axisWidth }}
               >
-                {props.headerTiers.map((rowConfig, tierNum) => (
-                  <DayGridHeaderRow
-                    {...rowConfig}
+                {headerTiers.map((rowConfig, tierNum) => (
+                  <div
                     key={tierNum}
                     role='row'
-                    rowIndex={tierNum}
-                    className={tierNum ? 'fc-border-t' : ''}
-                    height={state.headerTierHeights[tierNum]}
-                    colWidth={colWidth}
-                    innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}
-                  />
+                    aria-rowindex={tierNum + 1}
+                    className={joinClassNames(
+                      'fc-flex-row fc-content-box',
+                      tierNum && 'fc-border-t',
+                    )}
+                    style={{ height: state.headerTierHeights[tierNum] }}
+                  >
+                    {(options.weekNumbers && rowConfig.isDateRow) ? (
+                      <TimeGridWeekNumber
+                        dateProfile={props.dateProfile}
+                        innerWidthRef={headerLabelInnerWidthRefMap.createRef(tierNum)}
+                        innerHeightRef={headerLabelInnerHeightRefMap.createRef(tierNum)}
+                        width={undefined}
+                        isLiquid={true}
+                      />
+                    ) : (
+                      <TimeGridAxisEmpty
+                        width={undefined}
+                        isLiquid={true}
+                      />
+                    )}
+                  </div>
                 ))}
               </div>
-              {Boolean(endScrollbarWidth) && (
+              {/* HEADER / main (horizontal scroller)
+              -------------------------------------------------------------------------------------*/}
+              <Scroller
+                horizontal
+                hideScrollbars
+                className='fc-flex-row fc-border-s fc-liquid'
+                ref={this.headerScrollerRef}
+              >
+                {/* TODO: converge with DayGridHeader */}
                 <div
-                  className={joinArrayishClassNames(
-                    'fc-border-s fc-filler',
-                    options.fillerClassNames,
-                    options.fillerXClassNames,
-                  )}
-                  style={{ minWidth: endScrollbarWidth }}
-                />
-              )}
-            </Scroller>
+                  role='rowgroup'
+                  className={canvasWidth == null ? 'fc-liquid' : ''}
+                  style={{ width: canvasWidth }}
+                >
+                  {props.headerTiers.map((rowConfig, tierNum) => (
+                    <DayGridHeaderRow
+                      {...rowConfig}
+                      key={tierNum}
+                      role='row'
+                      rowIndex={tierNum}
+                      className={tierNum ? 'fc-border-t' : ''}
+                      height={state.headerTierHeights[tierNum]}
+                      colWidth={colWidth}
+                      innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}
+                    />
+                  ))}
+                </div>
+                {Boolean(endScrollbarWidth) && (
+                  <div
+                    className={joinArrayishClassNames(
+                      'fc-border-s fc-filler',
+                      options.fillerClassNames,
+                      options.fillerXClassNames,
+                    )}
+                    style={{ minWidth: endScrollbarWidth }}
+                  />
+                )}
+              </Scroller>
+            </div>
+            <div className={joinArrayishClassNames(options.dayHeaderDividerClassNames)} />
           </div>
         )}
         <div // the "body"

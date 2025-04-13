@@ -72,28 +72,30 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
       <Fragment>
         {options.dayHeaders && (
           <div className={joinClassNames(
-            props.forPrint ? 'fc-print-header' : 'fc-flex-row', // col for print, row for screen
+            'fc-print-header fc-border-b',
             stickyHeaderDates && 'fc-table-header-sticky',
-            'fc-border-b',
             generateClassName(options.viewHeaderClassNames, {
               borderX: props.borderX,
               isSticky: stickyHeaderDates,
             }),
           )}>
-            <DayGridHeader
-              headerTiers={props.headerTiers}
-              className='fc-daygrid-header'
-            />
-            {Boolean(endScrollbarWidth) && (
-              <div
-                className={joinArrayishClassNames(
-                  'fc-border-s fc-filler',
-                  options.fillerClassNames,
-                  options.fillerXClassNames,
-                )}
-                style={{ minWidth: endScrollbarWidth }}
+            <div className='fc-flex-row'>
+              <DayGridHeader
+                headerTiers={props.headerTiers}
+                className='fc-daygrid-header'
               />
-            )}
+              {Boolean(endScrollbarWidth) && (
+                <div
+                  className={joinArrayishClassNames(
+                    'fc-border-s fc-filler',
+                    options.fillerClassNames,
+                    options.fillerXClassNames,
+                  )}
+                  style={{ minWidth: endScrollbarWidth }}
+                />
+              )}
+            </div>
+            <div className={joinArrayishClassNames(options.dayHeaderDividerClassNames)} />
           </div>
         )}
         <Scroller

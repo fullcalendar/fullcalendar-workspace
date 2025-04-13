@@ -184,6 +184,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 )}
               </div>
             ))}
+            <div className={joinArrayishClassNames(options.dayHeaderDividerClassNames)} />
           </div>
         )}
         <div // the "body"
