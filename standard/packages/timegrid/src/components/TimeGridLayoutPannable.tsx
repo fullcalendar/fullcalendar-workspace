@@ -210,6 +210,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   </div>
                 ))}
               </div>
+              <div
+                className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+              />
               {/* HEADER / main (horizontal scroller)
               -------------------------------------------------------------------------------------*/}
               <Scroller
@@ -274,6 +277,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 <TimeGridAllDayLabel
                   width={axisWidth}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
+                />
+                <div
+                  className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
                 />
                 {/* ALL-DAY / main (horizontal scroller)
                 -----------------------------------------------------------------------------------*/}
@@ -412,6 +418,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 </Fragment>
               )}
             </Scroller>
+            <div
+              className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+            />
             {/* SLATS / main (scroller)
             ---------------------------------------------------------------------------------------*/}
             <div

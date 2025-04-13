@@ -15,6 +15,8 @@ todo: move bottom-borders to cells!
   - timeline slats
   - timegrid slats
 bug: scroll to bottom of resource-timegrid-hscroll.html, scrollers out of sync
+bug: a11y-ci/resource-timegrid-hscroll.html, filler on top header, when scrolled all the way right
+  is waaay too big
 tests: for all places isMajor emitted
 breaking: column hooks, instead of groupValue/text, uses fieldValue
 breaking: resourceAreaHeaderClassNames apply to normal col-headers now too

@@ -168,6 +168,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                     isLiquid={false}
                   />
                 )}
+                <div
+                  className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+                />
                 <DayGridHeaderRow
                   {...rowConfig}
                   className='fc-border-s fc-liquid'
@@ -205,6 +208,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 <TimeGridAllDayLabel
                   width={axisWidth}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
+                />
+                <div
+                  className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
                 />
                 <TimeGridAllDayLane
                   dateProfile={props.dateProfile}
@@ -277,6 +283,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   aria-label={options.timedText}
                   className='fc-content-box'
                   style={{ width: axisWidth }}
+                />
+                <div
+                  className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
                 />
                 <TimeGridCols
                   dateProfile={props.dateProfile}
