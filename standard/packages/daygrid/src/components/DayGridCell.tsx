@@ -139,6 +139,9 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
           ...(renderProps.isToday ? { 'aria-current': 'date' } : {}),
           'data-date': formatDayString(props.date),
         }}
+        style={{
+          width: props.width,
+        }}
         renderProps={renderProps}
         generatorName="dayCellTopContent" // !!! for top
         customGenerator={options.dayCellTopContent /* !!! for top */}

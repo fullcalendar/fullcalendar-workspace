@@ -33,6 +33,9 @@ why do we need fc-list-day-outer?
 changelog: dayCellContent (now called dayCellTopContent) no longer injected into daypopover
 changelog: dayCellClassNames/DidMount/WillUnmount no longer called on daypopover
 todo: normalize hooks that accept `text` (not `dayNumberText`)
+should resourceDayHeaderClassNames inherit from dayHeaderClassNames?
+  would be easier for theming to not reference premium options
+test print-view extensively after theme refactor
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files
