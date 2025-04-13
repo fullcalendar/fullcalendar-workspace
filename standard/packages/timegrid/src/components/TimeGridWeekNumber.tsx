@@ -1,4 +1,5 @@
-import { BaseComponent, DateProfile, WeekNumberContainer, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, joinClassNames, setRef, watchSize } from "@fullcalendar/core/internal"
+import { WeekNumberContentArg } from '@fullcalendar/core'
+import { BaseComponent, ContentContainer, DateProfile, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, joinClassNames, renderText, setRef, watchSize } from "@fullcalendar/core/internal"
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 
 export interface TimeGridWeekNumberProps {
@@ -24,16 +25,20 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
 
   render() {
     let { props, context } = this
+    let { options, dateEnv } = context
     let range = props.dateProfile.renderRange
     let dayCnt = diffDays(range.start, range.end)
 
     // HACK: only make week-number a nav-link when NOT in week-view
-    let isNavLink = dayCnt === 1 && context.options.navLinks
+    let isNavLink = dayCnt === 1 && options.navLinks
 
-    let fullDateStr = buildDateStr(context, range.start, 'week')
+    let weekDate = range.start
+    let fullDateStr = buildDateStr(context, weekDate, 'week')
+    let weekNum = dateEnv.computeWeekNumber(weekDate)
+    let weekText = dateEnv.format(weekDate, options.weekNumberFormat || DEFAULT_WEEK_NUM_FORMAT)
 
     return (
-      <WeekNumberContainer
+      <ContentContainer<WeekNumberContentArg>
         tag='div'
         attrs={{
           role: 'gridcell', // doesn't always describe other cells in row, so make generic
@@ -44,8 +49,17 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
           props.isLiquid ? 'fc-liquid' : 'fc-content-box',
         )}
         style={{ width: props.width }}
-        date={range.start}
-        defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
+        renderProps={{
+          num: weekNum,
+          text: weekText,
+          date: weekDate, // TODO: must be zoned!
+        }}
+        generatorName="weekNumberContent"
+        customGenerator={options.weekNumberContent}
+        defaultGenerator={renderText}
+        classNameGenerator={options.weekNumberClassNames}
+        didMount={options.weekNumberDidMount}
+        willUnmount={options.weekNumberWillUnmount}
       >
         {(InnerContent) => (
           <InnerContent
@@ -59,7 +73,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
             elRef={this.innerElRef}
           />
         )}
-      </WeekNumberContainer>
+      </ContentContainer>
     )
   }
 

@@ -239,7 +239,6 @@ export { DayLaneContainer, hasCustomDayLaneContent } from './common/DayLaneConta
 export type { MinimalEventProps } from './common/EventContainer.js'
 export { EventContainer } from './common/EventContainer.js'
 export { renderFill, BgEvent } from './common/bg-fill.js'
-export { WeekNumberContainerProps, WeekNumberContainer } from './common/WeekNumberContainer.js'
 export { MoreLinkContainer } from './common/MoreLinkContainer.js'
 
 export type { ViewContainerProps } from './common/ViewContainer.js'

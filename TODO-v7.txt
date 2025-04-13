@@ -39,6 +39,8 @@ should resourceDayHeaderClassNames inherit from dayHeaderClassNames?
   would be easier for theming to not reference premium options
 test print-view extensively after theme refactor
 put slotLabelDividerClassNames on timegrid print-view? it's on the timeline print view
+ensure all new settings are put on the Angular connector!
+bug: date given to week-number hooks is not zoned!!!
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

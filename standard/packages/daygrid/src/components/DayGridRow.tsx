@@ -1,3 +1,4 @@
+import { WeekNumberContentArg } from '@fullcalendar/core'
 import {
   EventSegUiInteractionState,
   BaseComponent,
@@ -12,7 +13,6 @@ import {
   setRef,
   RefMap,
   createFormatter,
-  WeekNumberContainer,
   watchHeight,
   afterSize,
   SlicedCoordRange,
@@ -21,6 +21,8 @@ import {
   buildNavLinkAttrs,
   joinArrayishClassNames,
   joinClassNames,
+  renderText,
+  ContentContainer,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -95,7 +97,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
   render() {
     const { props, context, headerHeightRefMap, mainHeightRefMap } = this
     const { cells } = props
-    const { options } = context
+    const { options, dateEnv } = context
 
     const weekDate = props.cells[0].date
     const fgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
@@ -135,6 +137,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     const isNavLink = options.navLinks
     const fullWeekStr = buildDateStr(context, weekDate, 'week')
+    const weekNum = dateEnv.computeWeekNumber(weekDate)
+    const weekNumText = dateEnv.format(weekDate, options.weekNumberFormat || DEFAULT_WEEK_NUM_FORMAT)
 
     return (
       <div
@@ -157,7 +161,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         ref={this.handleRootEl}
       >
         {props.showWeekNumbers && (
-          <WeekNumberContainer
+          <ContentContainer<WeekNumberContentArg>
             tag='div'
             attrs={{
               ...(
@@ -169,8 +173,17 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               'aria-hidden': true, // HACK: never part of a11y tree because row already has label and role not allowed
             }}
             className='fc-daygrid-week-number'
-            date={weekDate}
-            defaultFormat={DEFAULT_WEEK_NUM_FORMAT}
+            renderProps={{
+              num: weekNum,
+              text: weekNumText,
+              date: weekDate, // TODO: must be zoned!
+            }}
+            generatorName="weekNumberContent"
+            customGenerator={options.weekNumberContent}
+            defaultGenerator={renderText}
+            classNameGenerator={options.weekNumberClassNames}
+            didMount={options.weekNumberDidMount}
+            willUnmount={options.weekNumberWillUnmount}
           />
         )}
         {this.renderFillSegs(props.businessHourSegs, 'non-business')}
