@@ -38,6 +38,7 @@ todo: normalize hooks that accept `text` (not `dayNumberText`)
 should resourceDayHeaderClassNames inherit from dayHeaderClassNames?
   would be easier for theming to not reference premium options
 test print-view extensively after theme refactor
+put slotLabelDividerClassNames on timegrid print-view? it's on the timeline print view
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

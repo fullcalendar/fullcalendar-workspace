@@ -139,63 +139,68 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
               {/* HEADER
               ---------------------------------------------------------------------------------- */}
-              <Scroller
-                horizontal
-                hideScrollbars
-                className={joinClassNames(
-                  'fc-timeline-header fc-flex-row fc-border-b',
-                  stickyHeaderDates && 'fc-table-header-sticky',
-                  generateClassName(options.viewHeaderClassNames, {
-                    borderX: props.borderX,
-                    isSticky: stickyHeaderDates,
-                  }),
-                )}
-                ref={this.headerScrollerRef}
-              >
-                <div
-                  // TODO: DRY
-                  className={joinClassNames(
-                    'fc-rel', // origin for now-indicator
-                    canvasWidth == null && 'fc-liquid',
-                  )}
-                  style={{ width: canvasWidth }}
+              <div className={joinClassNames(
+                'fc-timeline-header fc-border-b',
+                stickyHeaderDates && 'fc-table-header-sticky',
+                generateClassName(options.viewHeaderClassNames, {
+                  borderX: props.borderX,
+                  isSticky: stickyHeaderDates,
+                }),
+              )}>
+                <Scroller
+                  horizontal
+                  hideScrollbars
+                  className='fc-flex-row'
+                  ref={this.headerScrollerRef}
                 >
-                  {cellRows.map((cells, rowLevel) => {
-                    const isLast = rowLevel === cellRows.length - 1
-                    return (
-                      <TimelineHeaderRow
-                        key={rowLevel}
-                        dateProfile={props.dateProfile}
+                  <div
+                    // TODO: DRY
+                    className={joinClassNames(
+                      'fc-rel', // origin for now-indicator
+                      canvasWidth == null && 'fc-liquid',
+                    )}
+                    style={{ width: canvasWidth }}
+                  >
+                    {cellRows.map((cells, rowLevel) => {
+                      const isLast = rowLevel === cellRows.length - 1
+                      return (
+                        <TimelineHeaderRow
+                          key={rowLevel}
+                          dateProfile={props.dateProfile}
+                          tDateProfile={tDateProfile}
+                          nowDate={nowDate}
+                          todayRange={todayRange}
+                          rowLevel={rowLevel}
+                          isLastRow={isLast}
+                          cells={cells}
+                          slotWidth={slotWidth}
+                          innerWidthRef={this.headerRowInnerWidthMap.createRef(rowLevel)}
+                        />
+                      )
+                    })}
+                    {enableNowIndicator && (
+                      <TimelineNowIndicatorArrow
                         tDateProfile={tDateProfile}
                         nowDate={nowDate}
-                        todayRange={todayRange}
-                        rowLevel={rowLevel}
-                        isLastRow={isLast}
-                        cells={cells}
                         slotWidth={slotWidth}
-                        innerWidthRef={this.headerRowInnerWidthMap.createRef(rowLevel)}
                       />
-                    )
-                  })}
-                  {enableNowIndicator && (
-                    <TimelineNowIndicatorArrow
-                      tDateProfile={tDateProfile}
-                      nowDate={nowDate}
-                      slotWidth={slotWidth}
+                    )}
+                  </div>
+                  {Boolean(endScrollbarWidth) && (
+                    <div
+                      className={joinArrayishClassNames(
+                        'fc-border-s fc-filler',
+                        options.fillerClassNames,
+                        options.fillerXClassNames,
+                      )}
+                      style={{ minWidth: endScrollbarWidth }}
                     />
                   )}
-                </div>
-                {Boolean(endScrollbarWidth) && (
-                  <div
-                    className={joinArrayishClassNames(
-                      'fc-border-s fc-filler',
-                      options.fillerClassNames,
-                      options.fillerXClassNames,
-                    )}
-                    style={{ minWidth: endScrollbarWidth }}
-                  />
-                )}
-              </Scroller>
+                </Scroller>
+                <div
+                  className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+                />
+              </div>
 
               {/* BODY
               ---------------------------------------------------------------------------------- */}

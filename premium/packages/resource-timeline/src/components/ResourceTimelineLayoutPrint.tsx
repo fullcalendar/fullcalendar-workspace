@@ -5,6 +5,7 @@ import {
   DateRange,
   EventStore,
   generateClassName,
+  joinArrayishClassNames,
   joinClassNames,
   memoize,
   rangeContainsMarker,
@@ -166,6 +167,10 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               </div>
             </div>
 
+            <div
+              className={joinArrayishClassNames(options.resourceAreaDividerClassNames)}
+            />
+
             {/* Timeline HEADER */}
             <div className='fc-liquid fc-flex-row fc-crop fc-border-s'>
               <div // the canvas, origin for now-indicator
@@ -205,6 +210,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             </div>
 
           </div>
+          <div
+            className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+          />
         </div>{/* Header END */ }
         {/* Body START */}
         {/* Must crop the 200% vertical-line fill */}
@@ -321,6 +329,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                       />
                     </div>
                   </div>
+                  <div
+                    className={joinArrayishClassNames(options.resourceAreaDividerClassNames)}
+                  />
                   <div
                     className={joinClassNames(
                       'fc-flex-col fc-crop fc-liquid fc-border-s',

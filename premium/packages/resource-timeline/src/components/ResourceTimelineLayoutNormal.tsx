@@ -329,50 +329,57 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               <div
                 role='rowgroup'
                 className={joinClassNames(
-                  'fc-datagrid-header fc-flex-col fc-content-box fc-border-b',
+                  'fc-datagrid-header fc-flex-col fc-border-b',
                   stickyHeaderDates && 'fc-table-header-sticky',
                   generateClassName(options.viewHeaderClassNames, {
                     borderX: props.borderX,
                     isSticky: stickyHeaderDates,
                   }),
                 )}
-                style={{
-                  height: headerHeight,
-                }}
               >
-                {Boolean(superHeaderRendering) && (
-                  <div
-                    role="row"
-                    aria-rowindex={1}
-                    className="fc-flex-row fc-grow fc-border-b"
-                  >
-                    <SuperHeaderCell
-                      renderHooks={superHeaderRendering}
-                      indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
-                      innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(true)}
-                      colSpan={colSpecs.length}
-                    />
-                  </div>
-                )}
-                <Scroller
-                  horizontal
-                  hideScrollbars
-                  className='fc-flex-col fc-grow'
-                  ref={this.spreadsheetHeaderScrollerRef}
+                <div
+                  className='fc-flex-col fc-content-box'
+                  style={{
+                    height: headerHeight,
+                  }}
                 >
-                  <div className='fc-flex-col fc-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
-                    <HeaderRow
-                      colSpecs={colSpecs}
-                      colWidths={spreadsheetColWidths}
-                      indent={hasNesting}
-                      rowIndex={superHeaderRowSpan}
+                  {Boolean(superHeaderRendering) && (
+                    <div
+                      role="row"
+                      aria-rowindex={1}
+                      className="fc-flex-row fc-grow fc-border-b"
+                    >
+                      <SuperHeaderCell
+                        renderHooks={superHeaderRendering}
+                        indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
+                        innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(true)}
+                        colSpan={colSpecs.length}
+                      />
+                    </div>
+                  )}
+                  <Scroller
+                    horizontal
+                    hideScrollbars
+                    className='fc-flex-col fc-grow'
+                    ref={this.spreadsheetHeaderScrollerRef}
+                  >
+                    <div className='fc-flex-col fc-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
+                      <HeaderRow
+                        colSpecs={colSpecs}
+                        colWidths={spreadsheetColWidths}
+                        indent={hasNesting}
+                        rowIndex={superHeaderRowSpan}
 
-                      // refs
-                      innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
-                      onColResize={props.onColResize}
-                    />
-                  </div>
-                </Scroller>
+                        // refs
+                        innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(false)}
+                        onColResize={props.onColResize}
+                      />
+                    </div>
+                  </Scroller>
+                </div>
+                <div
+                  className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+                />
               </div>
 
               {/* spreadsheet BODY
@@ -448,75 +455,80 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
 
               {/* time-area HEADER
               ---------------------------------------------------------------------------- */}
-              <Scroller
-                ref={this.timeHeaderScrollerRef}
-                horizontal
-                hideScrollbars
-                className={joinClassNames(
-                  'fc-timeline-header fc-flex-row fc-content-box fc-border-b',
-                  stickyHeaderDates && 'fc-table-header-sticky',
-                )}
-                style={{
-                  height: headerHeight,
-                }}
-              >
-                {/* for screen reader users. zero-height */}
-                <div role='row' aria-rowindex={1}>
-                  <div
-                    role='columnheader'
-                    aria-rowspan={totalHeaderRowSpan}
-                    aria-label={options.eventsHint}
-                  />
-                </div>
-
-                {/* for sighted users */}
-                <div // the canvas
-                  aria-hidden
-                  className={joinClassNames( // TODO: DRY
-                    'fc-flex-col fc-rel', // origin for now-indicator
-                    timeCanvasWidth == null && 'fc-liquid',
-                  )}
-                  style={{ width: timeCanvasWidth }}
+              <div className={joinClassNames(
+                'fc-timeline-header fc-border-b',
+                stickyHeaderDates && 'fc-table-header-sticky',
+              )}>
+                <Scroller
+                  ref={this.timeHeaderScrollerRef}
+                  horizontal
+                  hideScrollbars
+                  className='fc-flex-row fc-content-box'
+                  style={{
+                    height: headerHeight,
+                  }}
                 >
-                  {cellRows.map((cells, rowLevel) => {
-                    const isLast = rowLevel === cellRows.length - 1
-                    return (
-                      <TimelineHeaderRow
-                        key={rowLevel}
-                        dateProfile={props.dateProfile}
+                  {/* for screen reader users. zero-height */}
+                  <div role='row' aria-rowindex={1}>
+                    <div
+                      role='columnheader'
+                      aria-rowspan={totalHeaderRowSpan}
+                      aria-label={options.eventsHint}
+                    />
+                  </div>
+
+                  {/* for sighted users */}
+                  <div // the canvas
+                    aria-hidden
+                    className={joinClassNames( // TODO: DRY
+                      'fc-flex-col fc-rel', // origin for now-indicator
+                      timeCanvasWidth == null && 'fc-liquid',
+                    )}
+                    style={{ width: timeCanvasWidth }}
+                  >
+                    {cellRows.map((cells, rowLevel) => {
+                      const isLast = rowLevel === cellRows.length - 1
+                      return (
+                        <TimelineHeaderRow
+                          key={rowLevel}
+                          dateProfile={props.dateProfile}
+                          tDateProfile={tDateProfile}
+                          nowDate={props.nowDate}
+                          todayRange={props.todayRange}
+                          rowLevel={rowLevel}
+                          isLastRow={isLast}
+                          cells={cells}
+                          slotWidth={slotWidth}
+                          innerWidthRef={this.headerRowInnerWidthMap.createRef(rowLevel)}
+                          innerHeighRef={this.timelineHeaderRowInnerHeightMap.createRef(rowLevel)}
+                        />
+                      )
+                    })}
+                    {enableNowIndicator && (
+                      // TODO: make this positioned WITHIN padding
+                      <TimelineNowIndicatorArrow
                         tDateProfile={tDateProfile}
                         nowDate={props.nowDate}
-                        todayRange={props.todayRange}
-                        rowLevel={rowLevel}
-                        isLastRow={isLast}
-                        cells={cells}
                         slotWidth={slotWidth}
-                        innerWidthRef={this.headerRowInnerWidthMap.createRef(rowLevel)}
-                        innerHeighRef={this.timelineHeaderRowInnerHeightMap.createRef(rowLevel)}
                       />
-                    )
-                  })}
-                  {enableNowIndicator && (
-                    // TODO: make this positioned WITHIN padding
-                    <TimelineNowIndicatorArrow
-                      tDateProfile={tDateProfile}
-                      nowDate={props.nowDate}
-                      slotWidth={slotWidth}
+                    )}
+                  </div>
+
+                  {Boolean(endScrollbarWidth) && (
+                    <div
+                      className={joinArrayishClassNames(
+                        'fc-border-s fc-filler',
+                        options.fillerClassNames,
+                        options.fillerXClassNames,
+                      )}
+                      style={{ minWidth: endScrollbarWidth }}
                     />
                   )}
-                </div>
-
-                {Boolean(endScrollbarWidth) && (
-                  <div
-                    className={joinArrayishClassNames(
-                      'fc-border-s fc-filler',
-                      options.fillerClassNames,
-                      options.fillerXClassNames,
-                    )}
-                    style={{ minWidth: endScrollbarWidth }}
-                  />
-                )}
-              </Scroller>
+                </Scroller>
+                <div
+                  className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+                />
+              </div>
 
               {/* time-area BODY (w/ events)
               ---------------------------------------------------------------------------- */}
