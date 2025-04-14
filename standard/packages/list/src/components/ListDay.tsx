@@ -1,5 +1,5 @@
-import { afterSize, BaseComponent, buildDateStr, DateMarker, DateRange, EventRangeProps, getEventKey, getEventRangeMeta, memoize, RefMap, setRef, sortEventSegs } from "@fullcalendar/core/internal"
-import { createElement, Ref } from '@fullcalendar/core/preact'
+import { BaseComponent, buildDateStr, DateMarker, DateRange, EventRangeProps, getEventKey, getEventRangeMeta, memoize, sortEventSegs } from "@fullcalendar/core/internal"
+import { createElement } from '@fullcalendar/core/preact'
 import { ListDayHeader } from "./ListDayHeader.js"
 import { ListEvent } from "./ListEvent.js"
 
@@ -19,21 +19,14 @@ export interface ListDayProps {
   todayRange: DateRange
   segs: (ListSeg & EventRangeProps)[]
   forPrint: boolean
-  timeWidthRef?: Ref<number>
-  timeOuterWidth: number | undefined
 }
 
 export class ListDay extends BaseComponent<ListDayProps> {
   // memo
   private sortEventSegs = memoize(sortEventSegs)
 
-  // ref
-  private timeWidthRefMap = new RefMap<string, number>(() => {
-    afterSize(this.handleTimeWidths)
-  })
-
   render() {
-    const { props, context, timeWidthRefMap } = this
+    const { props, context } = this
     const { nowDate, todayRange } = props
     const { options } = context
 
@@ -66,8 +59,6 @@ export class ListDay extends BaseComponent<ListDayProps> {
                 slicedEnd={seg.slicedEnd}
                 isStart={seg.isStart}
                 isEnd={seg.isEnd}
-                timeWidthRef={timeWidthRefMap.createRef(key)}
-                timeOuterWidth={props.timeOuterWidth}
                 isDragging={false}
                 isResizing={false}
                 isDateSelecting={false}
@@ -79,21 +70,5 @@ export class ListDay extends BaseComponent<ListDayProps> {
         </div>
       </div>
     )
-  }
-
-  handleTimeWidths = () => {
-    const timeWidthMap = this.timeWidthRefMap.current
-    let max = 0
-
-
-    for (const timeWidth of timeWidthMap.values()) {
-      max = Math.max(max, timeWidth)
-    }
-
-    setRef(this.props.timeWidthRef, max)
-  }
-
-  componentWillUnmount(): void {
-    setRef(this.props.timeWidthRef, null)
   }
 }

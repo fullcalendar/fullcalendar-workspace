@@ -15,8 +15,7 @@ a.fc-list-event {
 }
 
 .fc-list-event-time-outer {
-  display: flex;
-  flex-direction: row;
+  width: 165px;
 }
 
 // shrink certain cols

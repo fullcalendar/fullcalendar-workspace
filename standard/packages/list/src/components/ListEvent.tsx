@@ -1,6 +1,6 @@
 import { EventContentArg } from '@fullcalendar/core'
-import { BaseComponent, buildEventRangeTimeText, createFormatter, EventContainer, getEventTagAndAttrs, MinimalEventProps, setRef, watchWidth } from "@fullcalendar/core/internal";
-import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
+import { BaseComponent, buildEventRangeTimeText, createFormatter, EventContainer, getEventTagAndAttrs, MinimalEventProps } from "@fullcalendar/core/internal";
+import { createElement, Fragment } from '@fullcalendar/core/preact'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
   hour: 'numeric',
@@ -9,14 +9,9 @@ const DEFAULT_TIME_FORMAT = createFormatter({
 })
 
 export interface ListEventProps extends MinimalEventProps {
-  timeWidthRef: Ref<number>
-  timeOuterWidth: number | undefined
 }
 
 export class ListEvent extends BaseComponent<ListEventProps> {
-  // internal
-  private disconnectTimeWidth?: () => void
-
   render() {
     let { props, context } = this
     let { eventRange } = props
@@ -52,9 +47,9 @@ export class ListEvent extends BaseComponent<ListEventProps> {
       >
         {(InnerContent, eventContentArg) => (
           <Fragment>
-            <div className='fc-list-event-time-outer' style={{ width: props.timeOuterWidth }}>
+            <div className='fc-list-event-time-outer'>
               {(options.displayEventTime !== false) && (
-                <div className="fc-list-event-time" ref={this.handleTimeEl}>
+                <div className="fc-list-event-time">
                   {timeText}
                 </div>
               )}
@@ -75,21 +70,6 @@ export class ListEvent extends BaseComponent<ListEventProps> {
         )}
       </EventContainer>
     )
-  }
-
-  private handleTimeEl = (titleEl: HTMLElement | null) => {
-    if (this.disconnectTimeWidth) {
-      this.disconnectTimeWidth()
-    }
-    if (titleEl) {
-      this.disconnectTimeWidth = watchWidth(titleEl, (titleWidth) => {
-        setRef(this.props.timeWidthRef, titleWidth)
-      })
-    }
-  }
-
-  componentWillUnmount(): void {
-    setRef(this.props.timeWidthRef, null)
   }
 }
 

@@ -1,7 +1,6 @@
 import { EventRenderRange, ViewApi } from '@fullcalendar/core'
 import {
   addDays,
-  afterSize,
   ContentContainer,
   DateComponent,
   DateMarker,
@@ -18,7 +17,6 @@ import {
   memoize,
   MountArg,
   NowTimer,
-  RefMap,
   Scroller,
   sliceEventStore,
   startOfDay,
@@ -31,7 +29,7 @@ import {
   Fragment,
   VNode,
 } from '@fullcalendar/core/preact'
-import { ListSeg, ListDay } from './ListDay.js'
+import { ListDay, ListSeg } from './ListDay.js'
 
 export interface NoEventsContentArg {
   text: string
@@ -40,22 +38,13 @@ export interface NoEventsContentArg {
 
 export type NoEventsMountArg = MountArg<NoEventsContentArg>
 
-export interface ListViewState {
-  timeOuterWidth?: number
-}
-
 /*
 Responsible for the scroller, and forwarding event-related actions into the "grid".
 */
-export class ListView extends DateComponent<ViewProps, ListViewState> {
+export class ListView extends DateComponent<ViewProps> {
   // memo
   private computeDateVars = memoize(computeDateVars)
   private eventStoreToSegs = memoize(this._eventStoreToSegs)
-
-  // ref
-  private timeWidthRefMap = new RefMap<string, number>(() => {
-    afterSize(this.handleTimeWidths)
-  })
 
   render() {
     let { props, context } = this
@@ -159,8 +148,6 @@ export class ListView extends DateComponent<ViewProps, ListViewState> {
                     todayRange={todayRange}
                     segs={daySegs}
                     forPrint={this.props.forPrint}
-                    timeWidthRef={this.timeWidthRefMap.createRef(key)}
-                    timeOuterWidth={this.state.timeOuterWidth}
                   />
                 )
               }
@@ -229,17 +216,6 @@ export class ListView extends DateComponent<ViewProps, ListViewState> {
     }
 
     return segs
-  }
-
-  handleTimeWidths = () => {
-    const timeWidthMap = this.timeWidthRefMap.current
-    let max = 0
-
-    for (const timeWidth of timeWidthMap.values()) {
-      max = Math.max(max, timeWidth)
-    }
-
-    this.setState({ timeOuterWidth: max })
   }
 }
 
