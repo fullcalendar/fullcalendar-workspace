@@ -1,10 +1,11 @@
-import { DateMarker, DAY_IDS } from '../datelib/marker.js'
-import { rangeContainsMarker, DateRange } from '../datelib/date-range.js'
+import { DateRange, rangeContainsMarker } from '../datelib/date-range.js'
+import { DateEnv } from '../datelib/env.js'
+import { DateMarker } from '../datelib/marker.js'
 import { DateProfile } from '../DateProfileGenerator.js'
-import { joinClassNames } from '../util/html.js'
 
 export interface DateMeta {
   dow: number
+  date: Date // the zoned date
   isDisabled: boolean
   isOther: boolean // like, is it in the non-current "other" month
   isToday: boolean
@@ -12,42 +13,20 @@ export interface DateMeta {
   isFuture: boolean
 }
 
-export function getDateMeta(date: DateMarker, todayRange?: DateRange, nowDate?: DateMarker, dateProfile?: DateProfile): DateMeta {
+export function getDateMeta(
+  dateMarker: DateMarker,
+  dateEnv: DateEnv,
+  dateProfile?: DateProfile,
+  todayRange?: DateRange,
+  nowDate?: DateMarker,
+): DateMeta {
   return {
-    dow: date.getUTCDay(),
-    isDisabled: Boolean(dateProfile && !rangeContainsMarker(dateProfile.activeRange, date)),
-    isOther: Boolean(dateProfile && !rangeContainsMarker(dateProfile.currentRange, date)),
-    isToday: Boolean(todayRange && rangeContainsMarker(todayRange, date)),
-    isPast: Boolean(nowDate ? (date < nowDate) : todayRange ? (date < todayRange.start) : false),
-    isFuture: Boolean(nowDate ? (date > nowDate) : todayRange ? (date >= todayRange.end) : false),
+    date: dateEnv.toDate(dateMarker),
+    dow: dateMarker.getUTCDay(),
+    isDisabled: Boolean(dateProfile && !rangeContainsMarker(dateProfile.activeRange, dateMarker)),
+    isOther: Boolean(dateProfile && !rangeContainsMarker(dateProfile.currentRange, dateMarker)),
+    isToday: Boolean(todayRange && rangeContainsMarker(todayRange, dateMarker)),
+    isPast: Boolean(nowDate ? (dateMarker < nowDate) : todayRange ? (dateMarker < todayRange.start) : false),
+    isFuture: Boolean(nowDate ? (dateMarker > nowDate) : todayRange ? (dateMarker >= todayRange.end) : false),
   }
-}
-
-export function getDayClassName(meta: DateMeta): string {
-  return joinClassNames(
-    'fc-day',
-    meta.isDisabled
-      ? 'fc-day-disabled'
-      : joinClassNames(
-        `fc-day-${DAY_IDS[meta.dow]}`,
-        meta.isToday && 'fc-day-today',
-        meta.isPast && 'fc-day-past',
-        meta.isFuture && 'fc-day-future',
-        meta.isOther && 'fc-day-other',
-      ),
-  )
-}
-
-export function getSlotClassName(meta: DateMeta): string {
-  return joinClassNames(
-    'fc-slot',
-    meta.isDisabled
-      ? 'fc-slot-disabled'
-      : joinClassNames(
-        `fc-slot-${DAY_IDS[meta.dow]}`,
-        meta.isToday && 'fc-slot-today',
-        meta.isPast && 'fc-slot-past',
-        meta.isFuture && 'fc-slot-future',
-      )
-  )
 }

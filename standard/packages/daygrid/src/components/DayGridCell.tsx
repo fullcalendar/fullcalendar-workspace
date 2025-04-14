@@ -89,7 +89,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     const isMonthStart = props.showDayNumber &&
       shouldDisplayMonthStart(props.date, props.dateProfile.currentRange, dateEnv)
 
-    const dateMeta = this.getDateMeta(props.date, props.todayRange, null, props.dateProfile)
+    const dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange)
 
     const baseClassName = joinClassNames(
       'fc-daygrid-day',
@@ -279,12 +279,11 @@ function refineRenderProps(raw: DayCellRenderPropsInput): DayCellContentArg {
   ) : ''
 
   return {
-    date: dateEnv.toDate(date),
-    isMajor: raw.isMajor,
-    view: raw.viewApi,
     ...raw.dateMeta,
-    isMonthStart,
-    dayNumberText,
     ...raw.renderProps,
+    dayNumberText,
+    isMajor: raw.isMajor,
+    isMonthStart,
+    view: raw.viewApi,
   }
 }

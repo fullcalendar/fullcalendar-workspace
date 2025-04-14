@@ -71,7 +71,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
   render() {
     let { props, context } = this
-    let { options } = context
+    let { options, dateEnv } = context
     let isSelectMirror = options.selectMirror
 
     let mirrorSegs: (TimeGridRange & EventRangeProps)[] = // yuck
@@ -85,7 +85,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       (props.eventResize && props.eventResize.affectedInstances) ||
       {}
 
-    let dateMeta = this.getDateMeta(props.date, props.todayRange, null, props.dateProfile)
+    let dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange)
 
     const baseClassName = joinClassNames(
       'fc-timegrid-day',

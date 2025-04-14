@@ -1,7 +1,11 @@
-import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, joinClassNames, ViewContext } from '@fullcalendar/core/internal'
-import { CellDataConfig, CellRenderConfig, RowConfig, buildDateDataConfigs, buildDateRenderConfig, buildDateRowConfig } from '@fullcalendar/daygrid/internal'
+import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, getDateMeta, ViewContext } from '@fullcalendar/core/internal'
+import { buildDateDataConfigs, buildDateRenderConfig, buildDateRowConfig, CellDataConfig, CellRenderConfig, RowConfig } from '@fullcalendar/daygrid/internal'
 import { ResourceApi, ResourceDayHeaderContentArg } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
+
+// TODO: figure out plugin-types
+// import { DayHeaderContentArg } from '../../../../standard/packages/daygrid/src/structs.js'
+type DayHeaderContentArg = any
 
 export function buildResourceRowConfigs(
   resources: Resource[],
@@ -12,7 +16,7 @@ export function buildResourceRowConfigs(
   todayRange: DateRange,
   dayHeaderFormat: DateFormatter, // TODO: rename to dateHeaderFormat?
   context: ViewContext,
-): RowConfig<{ text: string, isDisabled: boolean }>[] {
+): RowConfig<DayHeaderContentArg | ResourceDayHeaderContentArg>[] {
   if (!resources.length) {
     return [
       buildDateRowConfig(
@@ -143,7 +147,9 @@ function buildResourceDataConfigs(
   colSpan = 1,
   isMajorMod?: number,
 ): CellDataConfig<ResourceDayHeaderContentArg>[] {
-  const dateMeta = dateMarker ? getDateMeta(dateMarker, todayRange, null, dateProfile) : undefined
+  const dateMeta = dateMarker
+    ? getDateMeta(dateMarker, context.dateEnv, dateProfile, todayRange)
+    : {}
 
   return resources.map((resource, i) => {
     const resourceApi = new ResourceApi(context, resource)
@@ -153,11 +159,10 @@ function buildResourceDataConfigs(
       key: (dateMarker ? dateMarker.toUTCString() + ':' : '') + resource.id,
       dateMarker,
       renderProps: {
+        ...dateMeta,
         resource: resourceApi,
         isMajor: isMajorMod != null && !(i % isMajorMod),
         text: resource.title || resourceApiId || '',
-        isDisabled: false,
-        date: dateMarker ? context.dateEnv.toDate(dateMarker) : null,
         view: context.viewApi,
       },
       attrs: {
@@ -165,10 +170,7 @@ function buildResourceDataConfigs(
         'data-date': dateMarker ? formatDayString(dateMarker) : undefined,
       },
       colSpan,
-      className: joinClassNames(
-        'fc-resource',
-        dateMeta ? getDayClassName(dateMeta) : '',
-      ),
+      className: 'fc-resource',
     }
   })
 }

@@ -1,12 +1,17 @@
-import { SlotLabelContentArg, ViewApi } from '@fullcalendar/core'
+import { SlotLabelContentArg } from '@fullcalendar/core'
 import {
-  BaseComponent, DateRange, DateMarker, getDateMeta, getSlotClassName,
-  getDayClassName, DateProfile, memoizeObjArg, ContentContainer, DateEnv,
-  watchSize,
-  setRef,
-  joinClassNames,
+  BaseComponent,
   buildNavLinkAttrs,
+  ContentContainer,
+  DateMarker,
+  DateProfile,
+  DateRange,
   generateClassName,
+  getDateMeta,
+  joinClassNames,
+  memoize,
+  setRef,
+  watchSize
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile.js'
@@ -32,7 +37,7 @@ export interface TimelineHeaderCellProps {
 
 export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
   // memo
-  private refineRenderProps = memoizeObjArg(refineRenderProps)
+  private getDateMeta = memoize(getDateMeta)
 
   // ref
   private innerElRef = createRef<HTMLDivElement>()
@@ -49,15 +54,15 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
     // giving 'month' for a 3-day view
     // workaround: to infer day, do NOT time
 
-    let dateMeta = getDateMeta(cell.date, props.todayRange, props.nowDate, dateProfile)
-    let renderProps = this.refineRenderProps({
+    let dateMeta = this.getDateMeta(cell.date, dateEnv, dateProfile, props.todayRange, props.nowDate)
+    let renderProps = {
+      ...dateMeta,
       level: props.rowLevel,
-      dateMarker: cell.date,
       isMajor: cell.isMajor,
+      isMinor: false,
       text: cell.text,
-      dateEnv: context.dateEnv,
-      viewApi: context.viewApi,
-    })
+      view: context.viewApi,
+    }
 
     let isNavLink = !dateMeta.isDisabled && (cell.rowUnit && cell.rowUnit !== 'time')
 
@@ -69,10 +74,6 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
           'fc-header-cell fc-cell fc-flex-col fc-justify-center',
           props.borderStart && 'fc-border-s',
           props.isCentered ? 'fc-align-center' : 'fc-align-start',
-          // TODO: so slot classnames for week/month/bigger. see note above about rowUnit
-          cell.rowUnit === 'time' ?
-            getSlotClassName(dateMeta) :
-            getDayClassName(dateMeta),
         )}
         attrs={{
           'data-date': dateEnv.formatIso(cell.date, {
@@ -145,26 +146,4 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
 
 function renderInnerContent(renderProps: SlotLabelContentArg) {
   return renderProps.text
-}
-
-// Render Props
-
-export interface RenderPropsInput {
-  level: number
-  dateMarker: DateMarker
-  isMajor: boolean
-  text: string
-  dateEnv: DateEnv
-  viewApi: ViewApi
-}
-
-export function refineRenderProps(input: RenderPropsInput): SlotLabelContentArg {
-  return {
-    level: input.level,
-    date: input.dateEnv.toDate(input.dateMarker),
-    isMajor: input.isMajor,
-    isMinor: false,
-    view: input.viewApi,
-    text: input.text,
-  }
 }

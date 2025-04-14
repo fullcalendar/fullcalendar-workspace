@@ -45,6 +45,7 @@ import {
   NowIndicatorLineContentArg,
   NowIndicatorLineMountArg,
   ViewContentArg,
+  DayPopoverContentArg,
 } from './api/structs.js'
 import { ClassNamesInput } from './util/html.js'
 import { ViewBodyContentArg, ViewHeaderContentArg } from './common/ViewSubsections.js'
@@ -278,6 +279,7 @@ export const BASE_OPTION_REFINERS = {
   mediaTypeClassNames: identity as Identity<ClassNamesGenerator<string>>,
   colorScheme: identity as Identity<'auto' | 'light' | 'dark'>,
   colorSchemeClassNames: identity as Identity<ClassNamesGenerator<'light' | 'dark'>>,
+  dayPopoverClassNames: identity as Identity<ClassNamesGenerator<DayPopoverContentArg>>,
   popoverClassNames: identity as Identity<ClassNamesInput>,
   popoverHeaderClassNames: identity as Identity<ClassNamesInput>,
   popoverBodyClassNames: identity as Identity<ClassNamesInput>,

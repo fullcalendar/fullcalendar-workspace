@@ -73,7 +73,7 @@ export type { EventUiHash, EventUi } from './component-util/event-ui.js'
 export { combineEventUis, createEventUi } from './component-util/event-ui.js'
 export type { SplittableProps } from './component-util/event-splitting.js'
 export { Splitter } from './component-util/event-splitting.js'
-export { getDayClassName, getDateMeta, getSlotClassName, DateMeta } from './component-util/date-rendering.js'
+export { getDateMeta, DateMeta } from './component-util/date-rendering.js'
 export { isDimsEqual } from './component-util/rendering-misc.js'
 export { watchSize, watchWidth, watchHeight, afterSize } from './component-util/resize-observer.js'
 

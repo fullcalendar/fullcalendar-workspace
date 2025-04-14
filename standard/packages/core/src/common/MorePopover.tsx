@@ -6,8 +6,11 @@ import { Hit } from '../interactions/hit.js'
 import { Dictionary } from '../options.js'
 import { createElement, ComponentChildren } from '../preact.js'
 import { Popover } from './Popover.js'
-import { getDateMeta } from '../component-util/date-rendering.js'
+import { DateMeta, getDateMeta } from '../component-util/date-rendering.js'
 import { formatDayString } from '../datelib/formatting-utils.js'
+import { memoize } from '../util/memoize.js'
+import { joinClassNames } from '../util/html.js'
+import { generateClassName } from '../content-inject/ContentContainer.js'
 
 export interface MorePopoverProps {
   id: string
@@ -24,18 +27,20 @@ export interface MorePopoverProps {
   onClose?: () => void
 }
 
+export type DayPopoverContentArg = DateMeta // TODO: rename
+
 export class MorePopover extends DateComponent<MorePopoverProps> {
-  rootEl: HTMLElement
+  // memo
+  private getDateMeta = memoize(getDateMeta)
+
+  // ref
+  private rootEl: HTMLElement
 
   render() {
     let { options, dateEnv } = this.context
     let { props } = this
     let { startDate, todayRange, dateProfile } = props
-
-    // TODO: memoize?
-    let detaMeta = getDateMeta(startDate, todayRange, null, dateProfile)
-    ;(detaMeta); // TODO: use for dayClassNames
-
+    let dateMeta = this.getDateMeta(startDate, dateEnv, dateProfile, todayRange)
     let title = dateEnv.format(startDate, options.dayPopoverFormat)
 
     return (
@@ -46,7 +51,10 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         attrs={{
           'data-date': formatDayString(startDate),
         }}
-        className='fc-more-popover'
+        className={joinClassNames(
+          'fc-more-popover',
+          generateClassName(options.dayPopoverClassNames, dateMeta),
+        )}
         parentEl={props.parentEl}
         alignEl={props.alignEl}
         alignParentTop={props.alignParentTop}

@@ -59,6 +59,9 @@ todo: theme must be able to style business hours
 todo: if no resizer classnames for StandardEvent2, don't render them!
 todo: kill ALL fullcalendar CSS variables
 seriously rethink renaming eventClassNames(s) to just eventClass ????
+make note in component anatomy that disabled slots/daycells/daylanes need to be specially handled
+breaking: timelineheader would previously use fc-day- instead of fc-slot- if rowUnit was >time
+  now, uses fc-slot- no matter what (for classic theme)
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

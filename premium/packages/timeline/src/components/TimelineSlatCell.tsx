@@ -1,13 +1,16 @@
 import { SlotLaneContentArg } from '@fullcalendar/core'
 import {
-  isInt, BaseComponent, DateMarker, DateRange, getDateMeta, getSlotClassName,
-  getDayClassName, DateProfile, ContentContainer,
-  watchWidth,
-  setRef,
+  BaseComponent,
+  ContentContainer,
+  DateMarker,
+  DateProfile,
+  DateRange, getDateMeta,
+  isInt,
+  joinArrayishClassNames,
   joinClassNames,
   memoize,
-  DateEnv,
-  joinArrayishClassNames,
+  setRef,
+  watchWidth
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
@@ -18,7 +21,6 @@ export interface TimelineSlatCellProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
-  isDay: boolean
   isMajor: boolean
   borderStart: boolean
 
@@ -31,9 +33,7 @@ export interface TimelineSlatCellProps {
 
 export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
   // memo
-  private getPublicDate = memoize(
-    (dateEnv: DateEnv, date: DateMarker) => dateEnv.toDate(date)
-  )
+  private getDateMeta = memoize(getDateMeta)
 
   // ref
   private innerElRef = createRef<HTMLDivElement>()
@@ -45,9 +45,8 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
     let { props, context } = this
     let { dateEnv, options } = context
     let { date, tDateProfile, isMajor } = props
-    let dateMeta = getDateMeta(props.date, props.todayRange, props.nowDate, props.dateProfile)
+    let dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange, props.nowDate)
     let renderProps: SlotLaneContentArg = {
-      date: this.getPublicDate(dateEnv, props.date), // stable (everything else is atomic)
       ...dateMeta,
       isMajor,
       isMinor: false,
@@ -73,9 +72,6 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           ),
           'fc-timeline-slot-lane fc-cell fc-flex-col fc-align-start',
           props.borderStart && 'fc-border-s',
-          props.isDay ?
-            getDayClassName(dateMeta) :
-            getSlotClassName(dateMeta),
         )}
         attrs={{
           'data-date': dateEnv.formatIso(date, {

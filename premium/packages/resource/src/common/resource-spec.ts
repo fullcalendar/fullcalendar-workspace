@@ -1,16 +1,15 @@
 import { ViewApi, ClassNamesGenerator } from '@fullcalendar/core'
-import { CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountArg } from '@fullcalendar/core/internal'
+import { CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountArg, DateMeta } from '@fullcalendar/core/internal'
 import { ComponentChild } from '@fullcalendar/core/preact'
 import { ResourceApi } from '../api/ResourceApi.js'
 
 // NOTE: strange to reference columns in resource-common
 
 // vresource header
-export interface ResourceDayHeaderContentArg {
+// uses Partial<DateMeta> because might not be date-specific
+export interface ResourceDayHeaderContentArg extends Partial<DateMeta> {
   resource: ResourceApi
   text: string
-  isDisabled: boolean
-  date?: Date
   view: ViewApi
 }
 export type ResourceDayHeaderMountArg = MountArg<ResourceDayHeaderContentArg>

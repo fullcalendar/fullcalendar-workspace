@@ -1,5 +1,5 @@
 import { ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '@fullcalendar/core'
-import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, getDayClassName, isMajorUnit, joinClassNames, ViewContext } from '@fullcalendar/core/internal'
+import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, isMajorUnit, ViewContext } from '@fullcalendar/core/internal'
 import { DayHeaderContentArg } from './structs.js'
 
 export interface CellRenderConfig<RenderProps> {
@@ -144,16 +144,15 @@ export function buildDateDataConfigs(
 
   return datesRepDistinctDays
     ? dateMarkers.map((dateMarker, i) => { // Date
-        const dateMeta = getDateMeta(dateMarker, todayRange, null, dateProfile)
+        const dateMeta = getDateMeta(dateMarker, dateEnv, dateProfile, todayRange)
         const isMajor = isMajorMod != null && !(i % isMajorMod)
         const text = dateEnv.format(dateMarker, dayHeaderFormat)
         const renderProps: DayHeaderContentArg = {
           ...dateMeta,
-          date: dateEnv.toDate(dateMarker),
+          ...extraRenderProps,
+          text,
           isMajor,
           view: viewApi,
-          text,
-          ...extraRenderProps,
         }
         const isNavLink = options.navLinks && !dateMeta.isDisabled &&
           dateMarkers.length > 1 // don't show navlink to day if only one day
@@ -176,13 +175,14 @@ export function buildDateDataConfigs(
             : { 'aria-hidden': true }, // label already on cell
           colSpan,
           isNavLink,
-          className: joinClassNames(className, getDayClassName(dateMeta)),
+          className,
         }
       })
     : dateMarkers.map((dateMarker, i) => { // DayOfWeek
         const dow = dateMarker.getUTCDay()
         const normDate = addDays(firstSunday, dow)
-        const dayMeta: DateMeta = {
+        const dateMeta: DateMeta = {
+          date: dateEnv.toDate(dateMarker),
           dow,
           isDisabled: false,
           isFuture: false,
@@ -193,7 +193,7 @@ export function buildDateDataConfigs(
         const isMajor = isMajorMod != null && !(i % isMajorMod)
         const text = dateEnv.format(normDate, dayHeaderFormat)
         const renderProps: DayHeaderContentArg = {
-          ...dayMeta,
+          ...dateMeta,
           date: dowDates[dow],
           isMajor,
           view: viewApi,
@@ -216,7 +216,7 @@ export function buildDateDataConfigs(
             'aria-hidden': true, // label already on cell
           },
           colSpan,
-          className: joinClassNames(className, getDayClassName(dayMeta)),
+          className,
         }
       })
 }

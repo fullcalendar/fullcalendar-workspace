@@ -1,6 +1,14 @@
 import { createPlugin, EventContentArg, PluginDef } from '@fullcalendar/core'
 import './index.css'
 
+// TODO: better solution for this
+// Also figure out resource-header-tier.ts
+const PLUGIN_SPECIFIC_SETTINGS: any = {
+  dayHeaderClassNames: (arg) => getDayClassNames(arg),
+  dayCellClassNames: (arg) => getDayClassNames(arg),
+  dayLaneClassNames: (arg) => getDayClassNames(arg),
+}
+
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
@@ -33,6 +41,10 @@ export default createPlugin({
     eventTimeClassNames: 'fc-event-time',
     eventTitleOuterClassNames: 'fc-event-title-outer',
     eventTitleClassNames: 'fc-event-title',
+    dayPopoverClassNames: (arg) => getDayClassNames(arg),
+    slotLabelClassNames: (arg) => getSlotClassNames(arg),
+    slotLaneClassNames: (arg) => getSlotClassNames(arg),
+    ...PLUGIN_SPECIFIC_SETTINGS,
   },
   views: {
     dayGrid: {
@@ -85,4 +97,38 @@ function getDayGridEventClassNames(arg: EventContentArg) {
 
 function getDayGridEventColorClassNames(arg: EventContentArg) {
   return arg.isListItem && 'fc-daygrid-event-dot'
+}
+
+const DAY_IDS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+
+function getDayClassNames(arg: any) {
+  return arg.isDisabled
+    ? [
+      'fc-day',
+      'fc-day-disabled',
+    ]
+    : [
+      'fc-day',
+      `fc-day-${DAY_IDS[arg.dow]}`,
+      arg.isToday && 'fc-day-today',
+      arg.isPast && 'fc-day-past',
+      arg.isFuture && 'fc-day-future',
+      arg.isOther && 'fc-day-other',
+    ]
+}
+
+function getSlotClassNames(arg: any) {
+  return arg.isDisabled
+    ? [
+      'fc-slot',
+      'fc-slot-disabled',
+    ]
+    : [
+      'fc-slot',
+      `fc-slot-${DAY_IDS[arg.dow]}`,
+      arg.isToday && 'fc-slot-today',
+      arg.isPast && 'fc-slot-past',
+      arg.isFuture && 'fc-slot-future',
+      arg.isOther && 'fc-slot-other',
+    ]
 }

@@ -1,25 +1,25 @@
 import {
   Duration,
-  SlotLabelContentArg,
-  ViewApi,
+  SlotLabelContentArg
 } from '@fullcalendar/core'
 import {
-  createFormatter,
-  ContentContainer,
-  watchSize,
-  setRef,
   BaseComponent,
-  joinClassNames,
+  ContentContainer,
+  createFormatter,
   DateFormatter,
   DateMarker,
-  DateEnv,
-  memoize,
   generateClassName,
+  getDateMeta,
+  joinClassNames,
+  memoize,
+  setRef,
+  ViewContext,
+  watchSize
 } from '@fullcalendar/core/internal'
 import {
-  Ref,
   createElement,
   createRef,
+  Ref,
 } from '@fullcalendar/core/preact'
 import { TimeSlatMeta } from '../time-slat-meta.js'
 
@@ -40,24 +40,6 @@ export interface TimeGridSlatLabelProps extends TimeSlatMeta {
   innerHeightRef?: Ref<number>
 }
 
-function createRenderProps(
-  date: DateMarker,
-  time: Duration,
-  labelFormat: DateFormatter,
-  dateEnv: DateEnv,
-  viewApi: ViewApi,
-): SlotLabelContentArg {
-  return {
-    level: 0, // axis level (for when multiple axes)
-    date: dateEnv.toDate(date),
-    time: time,
-    isMajor: false,
-    isMinor: false, // TODO
-    view: viewApi,
-    text: dateEnv.format(date, labelFormat),
-  }
-}
-
 export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
   // memo
   private createRenderProps = memoize(createRenderProps)
@@ -70,7 +52,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
 
   render() {
     let { props, context } = this
-    let { dateEnv, options, viewApi } = context
+    let { options } = context
 
     let className = joinClassNames(
       'fc-timegrid-slot-label fc-timegrid-axis fc-header-cell fc-cell',
@@ -91,7 +73,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
         Array.isArray(options.slotLabelFormat) ? createFormatter(options.slotLabelFormat[0]) :
           createFormatter(options.slotLabelFormat)
 
-    let renderProps = this.createRenderProps(props.date, props.time, labelFormat, dateEnv, viewApi)
+    let renderProps = this.createRenderProps(props.date, props.time, labelFormat, context)
 
     return (
       <ContentContainer
@@ -142,6 +124,25 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
       setRef(props.innerWidthRef, null)
       setRef(props.innerHeightRef, null)
     }
+  }
+}
+
+function createRenderProps(
+  date: DateMarker,
+  time: Duration,
+  labelFormat: DateFormatter,
+  context: ViewContext,
+): SlotLabelContentArg {
+  return {
+    // this is a time-specific slot. not day-specific, so don't do today/nowRange
+    ...getDateMeta(date, context.dateEnv),
+
+    level: 0, // axis level (for when multiple axes)
+    text: context.dateEnv.format(date, labelFormat),
+    time: time,
+    isMajor: false,
+    isMinor: false, // TODO!!!
+    view: context.viewApi,
   }
 }
 

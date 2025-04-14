@@ -3,23 +3,16 @@ import { Duration } from './datelib/duration.js'
 import { ViewApi } from './api/ViewApi.js'
 import { MountArg } from './common/render-hook.js'
 
-export interface SlotLaneContentArg extends Partial<DateMeta> { // TODO: move?
-  date: Date
+export interface SlotLaneContentArg extends DateMeta {
   time?: Duration
   isMajor: boolean
   isMinor: boolean
   view: ViewApi
-  // this interface is for date-specific slots AND time-general slots. make an OR?
 }
 export type SlotLaneMountArg = MountArg<SlotLaneContentArg>
 
-export interface SlotLabelContentArg { // TODO: move?
+export interface SlotLabelContentArg extends SlotLaneContentArg {
   level: number
-  date: Date
-  time?: Duration
-  isMajor: boolean
-  isMinor: boolean
-  view: ViewApi
   text: string
 }
 export type SlotLabelMountArg = MountArg<SlotLabelContentArg>

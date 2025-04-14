@@ -1,4 +1,4 @@
-import { BaseComponent, buildNavLinkAttrs, ContentContainer, DateMarker, DateRange, formatDayString, getDateMeta, getDayClassName, getStickyHeaderDates, joinClassNames } from "@fullcalendar/core/internal";
+import { BaseComponent, buildNavLinkAttrs, ContentContainer, DateMarker, DateRange, formatDayString, getDateMeta, getStickyHeaderDates, joinClassNames } from "@fullcalendar/core/internal";
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { ListDayHeaderContentArg } from '../structs.js'
 
@@ -14,7 +14,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
     let { dayDate, todayRange } = this.props
     let stickyHeaderDates = !this.props.forPrint && getStickyHeaderDates(options)
 
-    let dayMeta = getDateMeta(dayDate, todayRange)
+    let dateMeta = getDateMeta(dayDate, dateEnv, undefined, todayRange)
 
     // will ever be falsy?
     let text = options.listDayFormat ? dateEnv.format(dayDate, options.listDayFormat) : ''
@@ -25,11 +25,11 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
     let isNavLink = options.navLinks
 
     let renderProps: ListDayHeaderContentArg = {
-      date: dateEnv.toDate(dayDate),
+      ...dateMeta,
       isMajor: false,
-      view: viewApi,
       text,
       sideText,
+      view: viewApi,
       navLinkAttrs: isNavLink
         ? buildNavLinkAttrs(this.context, dayDate, undefined, text)
         : {},
@@ -37,7 +37,6 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
         // duplicate navLink, so does not need to be tabbable
         ? buildNavLinkAttrs(this.context, dayDate, undefined, sideText, /* isTabbable = */ false)
         : {},
-      ...dayMeta,
     }
 
     // TODO: make a reusable HOC for dayHeader (used in daygrid/timegrid too)
@@ -48,13 +47,10 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
       )}>
         <ContentContainer
           tag="div"
-          className={joinClassNames(
-            'fc-list-day',
-            getDayClassName(dayMeta),
-          )}
+          className='fc-list-day'
           attrs={{
             'data-date': formatDayString(dayDate),
-            ...(dayMeta.isToday ? { 'aria-current': 'date' } : {}),
+            ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}),
           }}
           renderProps={renderProps}
           generatorName="listDayHeaderContent"
