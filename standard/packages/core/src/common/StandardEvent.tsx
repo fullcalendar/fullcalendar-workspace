@@ -12,7 +12,7 @@ import { EventImpl } from '../api/EventImpl.js'
 import { ViewContext } from '../ViewContext.js'
 import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
 
-export interface StandardEvent2Props {
+export interface StandardEventProps {
   elRef?: ElRef
   attrs?: any
   className?: string
@@ -42,7 +42,7 @@ Is this for background events too!!??
 */
 
 // should not be a purecomponent
-export class StandardEvent2 extends BaseComponent<StandardEvent2Props> {
+export class StandardEvent extends BaseComponent<StandardEventProps> {
   // memo
   private buildPublicEvent = memoize(
     (context: ViewContext, eventDef: EventDef, eventInstance: EventInstance) => new EventImpl(context, eventDef, eventInstance)
@@ -176,7 +176,7 @@ export class StandardEvent2 extends BaseComponent<StandardEvent2Props> {
     }
   }
 
-  componentDidUpdate(prevProps: StandardEvent2Props): void {
+  componentDidUpdate(prevProps: StandardEventProps): void {
     if (this.el && this.props.eventRange !== prevProps.eventRange) {
       setElEventRange(this.el, this.props.eventRange)
     }

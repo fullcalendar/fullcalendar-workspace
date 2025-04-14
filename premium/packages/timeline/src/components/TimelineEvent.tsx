@@ -1,4 +1,4 @@
-import { MinimalEventProps, BaseComponent, createFormatter, joinClassNames, StandardEvent2 } from '@fullcalendar/core/internal'
+import { MinimalEventProps, BaseComponent, createFormatter, joinClassNames, StandardEvent } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 
 export interface TimelineEventProps extends MinimalEventProps {
@@ -18,7 +18,7 @@ export class TimelineEvent extends BaseComponent<TimelineEventProps> {
     let { options } = context
 
     return (
-      <StandardEvent2
+      <StandardEvent
         {...props}
         className={joinClassNames(
           // TODO: theme should be responsible for classname somehow...

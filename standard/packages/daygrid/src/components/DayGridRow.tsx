@@ -23,7 +23,7 @@ import {
   joinClassNames,
   renderText,
   ContentContainer,
-  StandardEvent2,
+  StandardEvent,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -305,7 +305,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               : null
           }
         >
-          <StandardEvent2
+          <StandardEvent
             eventRange={eventRange}
             isStart={seg.isStart}
             isEnd={seg.isEnd}

@@ -49,14 +49,14 @@ resolve confusion over event-element "color"
 changelog: new EventContentArg props
 bug: why does display:background not work on a 'Repeating Event'
   because it's a timed event. todo: document this better?
-todo: background-events must be implemented with StandardEvent2
+todo: background-events must be implemented with StandardEvent
   - daygrid
 bug: multi-month dot-events overflow too much
 bug: all-day section events too close to top
 todo: don't let the event* hooks apply to background events!? better DX
 todo: theme must be able to style business hours
   and other bg-fill stuff, like selection
-todo: if no resizer classnames for StandardEvent2, don't render them!
+todo: if no resizer classnames for StandardEvent, don't render them!
 todo: kill ALL fullcalendar CSS variables
 seriously rethink renaming eventClassNames(s) to just eventClass ????
 make note in component anatomy that disabled slots/daycells/daylanes need to be specially handled

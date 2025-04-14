@@ -1,4 +1,4 @@
-import { BaseComponent, MinimalEventProps, createFormatter, joinClassNames, StandardEvent2 } from '@fullcalendar/core/internal'
+import { BaseComponent, MinimalEventProps, createFormatter, joinClassNames, StandardEvent } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 
 const DEFAULT_TIME_FORMAT = createFormatter({
@@ -18,7 +18,7 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
     const { props } = this
 
     return (
-      <StandardEvent2
+      <StandardEvent
         {...props}
         className={joinClassNames(
           // TODO: move to theme system somehow

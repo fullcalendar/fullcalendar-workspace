@@ -1,4 +1,4 @@
-import { BaseComponent, createFormatter, MinimalEventProps, StandardEvent2 } from "@fullcalendar/core/internal";
+import { BaseComponent, createFormatter, MinimalEventProps, StandardEvent } from "@fullcalendar/core/internal";
 import { createElement } from '@fullcalendar/core/preact';
 
 const DEFAULT_TIME_FORMAT = createFormatter({
@@ -20,7 +20,7 @@ export class ListEvent extends BaseComponent<ListEventProps> {
       : undefined
 
     return (
-      <StandardEvent2
+      <StandardEvent
         {...props}
         attrs={{
           role: 'listitem',

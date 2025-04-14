@@ -8,7 +8,7 @@ import {
   EventSegUiInteractionState,
   getEventRangeMeta,
   SlicedCoordRange,
-  StandardEvent2,
+  StandardEvent,
 } from '@fullcalendar/core/internal'
 import { createElement, RefObject, Fragment } from '@fullcalendar/core/preact'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering.js'
@@ -61,7 +61,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
                       visibility: forcedInvisibleMap[instanceId] ? 'hidden' : '',
                     }}
                   >
-                    <StandardEvent2
+                    <StandardEvent
                       eventRange={eventRange}
                       isStart={seg.isStart}
                       isEnd={seg.isEnd}
