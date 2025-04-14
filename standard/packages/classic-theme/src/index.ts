@@ -60,6 +60,7 @@ export default createPlugin({
     },
     timeline: {
       viewClassNames: 'fc-timeline',
+      eventClassNames: 'fc-timeline-event fc-h-event',
     },
     resourceDayGrid: {
       viewClassNames: 'fc-resource-daygrid', // also inherits dayGrid
@@ -68,7 +69,7 @@ export default createPlugin({
       viewClassNames: 'fc-resource-timegrid', // also inherits timeGrid
     },
     resourceTimeline: {
-      viewClassNames: 'fc-resource-timeline',
+      viewClassNames: 'fc-resource-timeline', // also inherits timeline
     },
   },
 }) as PluginDef

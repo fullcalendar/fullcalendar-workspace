@@ -32,7 +32,7 @@ export interface StandardEvent2Props {
   defaultTimeFormat: DateFormatter
   defaultDisplayEventTime?: boolean // default true
   defaultDisplayEventEnd?: boolean // default true
-  isListItem?: boolean
+  isListItem?: boolean // default false
 }
 
 /*

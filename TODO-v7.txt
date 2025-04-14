@@ -54,6 +54,8 @@ todo: background-events must be implemented with StandardEvent2
 bug: multi-month dot-events overflow too much
 bug: all-day section events too close to top
 todo: don't let the event* hooks apply to background events!? better DX
+todo: theme must be able to style business hours
+  and other bg-fill stuff, like selection
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files
