@@ -198,6 +198,21 @@ export function buildSegCompareObj<S extends EventRangeProps>(seg: S) {
 
 // other stuff
 
+export interface MinimalEventProps {
+  eventRange: EventRenderRange // timed/whole-day span
+  slicedStart?: DateMarker // view-sliced timed/whole-day span
+  slicedEnd?: DateMarker // view-sliced timed/whole-day span
+  isStart: boolean
+  isEnd: boolean
+  isDragging: boolean // rename to isMirrorDragging? make optional?
+  isResizing: boolean // rename to isMirrorResizing? make optional?
+  isDateSelecting: boolean // rename to isMirrorDateSelecting? make optional?
+  isSelected: boolean
+  isPast: boolean
+  isFuture: boolean
+  isToday: boolean
+}
+
 export interface EventContentArg { // for *Content handlers
   event: EventImpl
   timeText: string
@@ -312,59 +327,6 @@ export function getEventRangeMeta(
     isFuture: segRange.start >= (nowDate || todayRange.end),
     isToday: todayRange && rangeContainsMarker(todayRange, segRange.start),
   }
-}
-
-/*
-TODO: this done by theme. remove
-*/
-export function getEventClassNames(props: EventContentArg) { // weird that we use this interface, but convenient
-  let classNames: string[] = ['fc-event']
-
-  if (props.isMirror) {
-    classNames.push('fc-event-mirror')
-  }
-
-  if (props.isDraggable) {
-    classNames.push('fc-event-draggable')
-  }
-
-  if (props.isStartResizable || props.isEndResizable) {
-    classNames.push('fc-event-resizable')
-  }
-
-  if (props.isDragging) {
-    classNames.push('fc-event-dragging')
-  }
-
-  if (props.isResizing) {
-    classNames.push('fc-event-resizing')
-  }
-
-  if (props.isSelected) {
-    classNames.push('fc-event-selected')
-  }
-
-  if (props.isStart) {
-    classNames.push('fc-event-start')
-  }
-
-  if (props.isEnd) {
-    classNames.push('fc-event-end')
-  }
-
-  if (props.isPast) {
-    classNames.push('fc-event-past')
-  }
-
-  if (props.isToday) {
-    classNames.push('fc-event-today')
-  }
-
-  if (props.isFuture) {
-    classNames.push('fc-event-future')
-  }
-
-  return classNames
 }
 
 export function buildEventRangeKey(eventRange: EventRenderRange) {

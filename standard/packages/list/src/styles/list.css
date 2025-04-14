@@ -3,9 +3,7 @@
 // Common
 //
 
-.fc-list-event-time,
-.fc-list-event-dot-outer,
-.fc-list-event-title,
+.fc-list-event,
 .fc-list-day {
   padding: 8px 14px;
 }

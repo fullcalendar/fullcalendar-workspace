@@ -14,6 +14,7 @@ import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
 
 export interface StandardEvent2Props {
   elRef?: ElRef
+  attrs?: any
   className?: string
   eventRange: EventRenderRange // timed/whole-day span
   slicedStart?: DateMarker // view-sliced timed/whole-day span
@@ -33,6 +34,7 @@ export interface StandardEvent2Props {
   defaultDisplayEventTime?: boolean // default true
   defaultDisplayEventEnd?: boolean // default true
   isListItem?: boolean // default false
+  forcedTimeText?: string
 }
 
 /*
@@ -55,7 +57,7 @@ export class StandardEvent2 extends BaseComponent<StandardEvent2Props> {
     const { eventRange } = props
     const eventUi = eventRange.ui
     const timeFormat = options.eventTimeFormat || props.defaultTimeFormat
-    const timeText = buildEventRangeTimeText(
+    const timeText = props.forcedTimeText ?? buildEventRangeTimeText(
       timeFormat,
       eventRange, // just for def/instance
       props.slicedStart,
@@ -96,12 +98,16 @@ export class StandardEvent2 extends BaseComponent<StandardEvent2Props> {
       titleOuterClassName: joinArrayishClassNames(options.eventTitleOuterClassNames),
     }
 
+    // TODO: we'd like to put this in EventContentArg, but it needs EventContentArg renderProps!
     const colorClassNames = generateClassName(options.eventColorClassNames, renderProps)
 
     return (
       <ContentContainer<EventContentArg>
         tag={tag}
-        attrs={attrs}
+        attrs={{
+          ...props.attrs,
+          ...attrs,
+        }}
         className={joinClassNames(
           props.className,
           ...eventUi.classNames,

@@ -1,6 +1,5 @@
-import { EventContentArg } from '@fullcalendar/core'
-import { BaseComponent, buildEventRangeTimeText, createFormatter, EventContainer, getEventTagAndAttrs, MinimalEventProps } from "@fullcalendar/core/internal";
-import { createElement, Fragment } from '@fullcalendar/core/preact'
+import { BaseComponent, createFormatter, MinimalEventProps, StandardEvent2 } from "@fullcalendar/core/internal";
+import { createElement } from '@fullcalendar/core/preact';
 
 const DEFAULT_TIME_FORMAT = createFormatter({
   hour: 'numeric',
@@ -15,64 +14,22 @@ export class ListEvent extends BaseComponent<ListEventProps> {
   render() {
     let { props, context } = this
     let { eventRange } = props
-    let { options } = context
 
-    let [tag, attrs] = getEventTagAndAttrs(eventRange, context)
-    let timeFormat = options.eventTimeFormat || DEFAULT_TIME_FORMAT
-    let timeText = (eventRange.def.allDay || (!props.isStart && !props.isEnd))
+    let forcedTimeText = (eventRange.def.allDay || (!props.isStart && !props.isEnd))
       ? context.options.allDayText
-      : buildEventRangeTimeText(
-          timeFormat,
-          eventRange,
-          props.slicedStart,
-          props.slicedEnd,
-          props.isStart,
-          props.isEnd,
-          context,
-        )
+      : undefined
 
     return (
-      <EventContainer
+      <StandardEvent2
         {...props}
-        tag={tag}
         attrs={{
           role: 'listitem',
-          ...attrs,
         }}
-        className='fc-list-event'
-        defaultGenerator={renderEventTitleOnly}
-        timeText={timeText}
+        forcedTimeText={forcedTimeText}
+        defaultTimeFormat={DEFAULT_TIME_FORMAT}
         disableDragging
         disableResizing
-      >
-        {(InnerContent, eventContentArg) => (
-          <Fragment>
-            <div className='fc-list-event-time-outer'>
-              {(options.displayEventTime !== false) && (
-                <div className="fc-list-event-time">
-                  {timeText}
-                </div>
-              )}
-            </div>
-            <div className="fc-list-event-dot-outer">
-              <span
-                className="fc-list-event-dot"
-                style={{
-                  borderColor: eventContentArg.borderColor || eventContentArg.backgroundColor,
-                }}
-              />
-            </div>
-            <InnerContent
-              tag="div"
-              className='fc-list-event-title'
-            />
-          </Fragment>
-        )}
-      </EventContainer>
+      />
     )
   }
-}
-
-function renderEventTitleOnly(renderProps: EventContentArg): string {
-  return renderProps.event.title
 }

@@ -193,6 +193,7 @@ export {
   getEventTagAndAttrs,
   EventRangeProps,
   getEventKey,
+  MinimalEventProps,
 } from './component-util/event-rendering.js'
 
 export type { DayTableCell, DayGridRange } from './common/DayTableModel.js'
@@ -236,8 +237,6 @@ export { NowIndicatorLabelContainer } from './common/NowIndicatorLabelContainer.
 export { NowIndicatorLineContainer } from './common/NowIndicatorLineContainer.js'
 
 export { DayLaneContainer, hasCustomDayLaneContent } from './common/DayLaneContainer.js'
-export type { MinimalEventProps } from './common/EventContainer.js'
-export { EventContainer } from './common/EventContainer.js'
 export { renderFill, BgEvent } from './common/bg-fill.js'
 export { MoreLinkContainer } from './common/MoreLinkContainer.js'
 

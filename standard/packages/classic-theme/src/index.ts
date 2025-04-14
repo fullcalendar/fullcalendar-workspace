@@ -15,6 +15,7 @@ export default createPlugin({
     dayNarrowClassNames: 'fc-day-narrow',
     dayNotNarrowClassNames: 'fc-day-not-narrow',
     eventClassNames: (arg) => [
+      arg.event.display === 'background' && 'fc-bg-event',
       'fc-event',
       arg.isMirror && 'fc-event-mirror',
       arg.isDraggable && 'fc-event-draggable',
@@ -52,6 +53,8 @@ export default createPlugin({
     },
     list: {
       viewClassNames: 'fc-list',
+      eventClassNames: 'fc-list-event',
+      eventColorClassNames: 'fc-list-event-dot',
     },
     multiMonth: {
       viewClassNames: 'fc-multimonth',

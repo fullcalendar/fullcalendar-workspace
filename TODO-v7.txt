@@ -58,6 +58,7 @@ todo: theme must be able to style business hours
   and other bg-fill stuff, like selection
 todo: if no resizer classnames for StandardEvent2, don't render them!
 todo: kill ALL fullcalendar CSS variables
+seriously rethink renaming eventClassNames(s) to just eventClass ????
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files
