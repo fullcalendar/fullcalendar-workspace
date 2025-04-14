@@ -62,6 +62,19 @@ seriously rethink renaming eventClassNames(s) to just eventClass ????
 make note in component anatomy that disabled slots/daycells/daylanes need to be specially handled
 breaking: timelineheader would previously use fc-day- instead of fc-slot- if rowUnit was >time
   now, uses fc-slot- no matter what (for classic theme)
+docs: we will not be implementing "easier way to inject default eventContent"
+  https://github.com/fullcalendar/fullcalendar/issues/5927
+  I was hoping to use eventElement to affect outer rendering, but complications about any new
+  provided top-level event div not having correct aria-roles and flex-css.
+  In reality, tooltip libs like these..
+  - https://mui.com/material-ui/react-tooltip/
+  - https://chakra-ui.com/docs/components/tooltip
+  ..don't create a wrapper div, they just somehow mark the provided top level element(s) with
+  handlers and aria attributes, and the revealed tooltip is rooted somewhere else in the DOM.
+  So, an inner-wrapper is okay, assuming dev is okay not having tooltip on outer 1px border
+  (or they can inject a flex-grow wrapper)
+  SOLUTION to accessing default content:
+  Tell people they can just recreate the very simple markup from StandardEvent's renderInnerContent
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

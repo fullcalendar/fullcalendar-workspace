@@ -19,9 +19,9 @@ export type ContentContainerProps<RenderProps> =
   ElAttrsProps &
   ContentGeneratorProps<RenderProps> & {
     tag?: string
-    classNameGenerator: ClassNamesGenerator<RenderProps> | undefined
-    didMount: ((renderProps: RenderProps & { el: HTMLElement }) => void) | undefined
-    willUnmount: ((renderProps: RenderProps & { el: HTMLElement }) => void) | undefined
+    classNameGenerator?: ClassNamesGenerator<RenderProps> | undefined
+    didMount?: ((renderProps: RenderProps & { el: HTMLElement }) => void) | undefined
+    willUnmount?: ((renderProps: RenderProps & { el: HTMLElement }) => void) | undefined
     children?: InnerContainerFunc<RenderProps>
   }
 

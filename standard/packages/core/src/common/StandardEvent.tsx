@@ -37,10 +37,6 @@ export interface StandardEventProps {
   forcedTimeText?: string
 }
 
-/*
-Is this for background events too!!??
-*/
-
 // should not be a purecomponent
 export class StandardEvent extends BaseComponent<StandardEventProps> {
   // memo
