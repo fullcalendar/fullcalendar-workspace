@@ -32,11 +32,11 @@ describe('buttonIcons', () => {
 
   describe('when buttonIcons is set and theme is falsy', () => {
     pushOptions({
-      buttonIcons: {
-        prev: 'some-icon-left',
-        next: 'some-icon-right',
-        prevYear: 'some-icon-leftYear',
-        nextYear: 'some-icon-rightYear',
+      buttons: {
+        prev: { text: 'some-icon-left' },
+        next: { text: 'some-icon-right' },
+        prevYear: { text: 'some-icon-leftYear' },
+        nextYear: { text: 'some-icon-rightYear' },
       },
     })
 

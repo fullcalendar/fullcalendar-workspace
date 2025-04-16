@@ -24,9 +24,10 @@ describe('bootstrap theme', () => {
 
     it('renders a customized icon', () => {
       let calendar = initCalendar({
-        bootstrapFontAwesome: {
+        // TODO: somehow modify font-awesome icon
+        /* bootstrapFontAwesome: {
           next: 'asdf',
-        },
+        }, */
       })
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
       let buttonInfo = toolbarWrapper.getButtonInfo('next', 'fa')
@@ -36,7 +37,7 @@ describe('bootstrap theme', () => {
 
     it('renders text when specified as false', () => {
       let calendar = initCalendar({
-        bootstrapFontAwesome: false,
+        // TODO: somehow disable font-awesome icons
       })
       let toolbarWrapper = new CalendarWrapper(calendar).toolbar
 

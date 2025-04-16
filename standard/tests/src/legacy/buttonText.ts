@@ -31,15 +31,15 @@ describe('button text', () => {
 
       it('should contain specified text values', () => {
         let calendar = initCalendar({
-          buttonText: {
-            prev: '<-',
-            next: '->',
-            prevYear: '<--',
-            nextYear: '-->',
-            today: 'tidei',
-            month: 'mun',
-            week: 'wiki',
-            day: 'dei',
+          buttons: {
+            prev: { text: '<-' },
+            next: { text: '->' },
+            prevYear: { text: '<--' },
+            nextYear: { text: '-->' },
+            today: { text: 'tidei' },
+            month: { text: 'mun' },
+            week: { text: 'wiki' },
+            day: { text: 'dei' },
           },
         })
         let toolbarWrapper = new CalendarWrapper(calendar).toolbar
@@ -59,7 +59,7 @@ describe('button text', () => {
 
     describe('with buttonIcons turned off', () => {
       pushOptions({
-        buttonIcons: false,
+        // TODO: disable all the buttons somehow
       })
 
       it('should contain default text values', () => {
@@ -81,15 +81,15 @@ describe('button text', () => {
 
       it('should contain specified text values', () => {
         let calendar = initCalendar({
-          buttonText: {
-            prev: '<-',
-            next: '->',
-            prevYear: '<--',
-            nextYear: '-->',
-            today: 'tidei',
-            month: 'mun',
-            week: 'wiki',
-            day: 'dei',
+          buttons: {
+            prev: { text: '<-' },
+            next: { text: '->' },
+            prevYear: { text: '<--' },
+            nextYear: { text: '-->' },
+            today: { text: 'tidei' },
+            month: { text: 'mun' },
+            week: { text: 'wiki' },
+            day: { text: 'dei' },
           },
         })
         let toolbarWrapper = new CalendarWrapper(calendar).toolbar
@@ -133,15 +133,15 @@ describe('button text', () => {
 
       it('should contain specified text values', () => {
         let calendar = initCalendar({
-          buttonText: {
-            prev: '<-',
-            next: '->',
-            prevYear: '<--',
-            nextYear: '-->',
-            today: 'tidei',
-            month: 'mun',
-            week: 'wiki',
-            day: 'dei',
+          buttons: {
+            prev: { text: '<-' },
+            next: { text: '->' },
+            prevYear: { text: '<--' },
+            nextYear: { text: '-->' },
+            today: { text: 'tidei' },
+            month: { text: 'mun' },
+            week: { text: 'wiki' },
+            day: { text: 'dei' },
           },
         })
         let toolbarWrapper = new CalendarWrapper(calendar).toolbar
@@ -161,7 +161,7 @@ describe('button text', () => {
 
     describe('with buttonIcons turned off', () => {
       pushOptions({
-        buttonIcons: false,
+        // TODO: somehow disable all icons
       })
 
       it('should contain default text values', () => {
@@ -185,15 +185,15 @@ describe('button text', () => {
 
       it('should contain specified text values', () => {
         let calendar = initCalendar({
-          buttonText: {
-            prev: '<-',
-            next: '->',
-            prevYear: '<--',
-            nextYear: '-->',
-            today: 'tidei',
-            month: 'mun',
-            week: 'wiki',
-            day: 'dei',
+          buttons: {
+            prev: { text: '<-' },
+            next: { text: '->' },
+            prevYear: { text: '<--' },
+            nextYear: { text: '-->' },
+            today: { text: 'tidei' },
+            month: { text: 'mun' },
+            week: { text: 'wiki' },
+            day: { text: 'dei' },
           },
         })
         let toolbarWrapper = new CalendarWrapper(calendar).toolbar

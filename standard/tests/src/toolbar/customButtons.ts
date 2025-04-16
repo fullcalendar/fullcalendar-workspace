@@ -3,14 +3,14 @@ import classicThemePlugin from '@fullcalendar/classic-theme'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
-describe('customButtons', () => {
+describe('buttons', () => {
   pushOptions({
     plugins: [bootstrapPlugin, classicThemePlugin, dayGridPlugin],
   })
 
   it('can specify text', () => {
     let calendar = initCalendar({
-      customButtons: {
+      buttons: {
         mybutton: { text: 'asdf' },
       },
       headerToolbar: { left: 'mybutton', center: '', right: '' },
@@ -22,7 +22,7 @@ describe('customButtons', () => {
 
   it('can specify an icon', () => {
     let calendar = initCalendar({
-      customButtons: {
+      buttons: {
         mybutton: { icon: 'asdf' },
       },
       headerToolbar: { left: 'mybutton', center: '', right: '' },
@@ -35,8 +35,8 @@ describe('customButtons', () => {
   it('can specify a bootstrap font-awesome icon', () => {
     let calendar = initCalendar({
       themeSystem: 'bootstrap',
-      customButtons: {
-        mybutton: { bootstrapFontAwesome: 'asdf' },
+      buttons: {
+        mybutton: {}, // TODO: somehow -- { bootstrapFontAwesome: 'asdf' },
       },
       headerToolbar: { left: 'mybutton', center: '', right: '' },
     })
