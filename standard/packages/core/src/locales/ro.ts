@@ -6,17 +6,15 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 7, // The week that contains Jan 1st is the first week of the year.
   },
-  buttonText: {
-    prev: 'precedentă',
-    next: 'următoare',
-    today: 'Azi',
-    year: 'An',
-    month: 'Lună',
-    week: 'Săptămână',
-    day: 'Zi',
-    list: 'Agendă',
-  },
-  weekText: 'Săpt',
+  prevText: 'precedentă',
+  nextText: 'următoare',
+  todayText: 'Azi',
+  yearText: 'An',
+  monthText: 'Lună',
+  weekText: 'Săptămână',
+  weekTextShort: 'Săpt',
+  dayText: 'Zi',
+  listText: 'Agendă',
   allDayText: 'Toată\nziua',
   moreLinkText(n) {
     return '+alte ' + n

@@ -6,17 +6,14 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 4, // The week that contains Jan 4th is the first week of the year.
   },
-  buttonText: {
-    prev: 'Əvvəl',
-    next: 'Sonra',
-    today: 'Bu Gün',
-    year: 'Il',
-    month: 'Ay',
-    week: 'Həftə',
-    day: 'Gün',
-    list: 'Gündəm',
-  },
+  prevText: 'Əvvəl',
+  nextText: 'Sonra',
+  todayText: 'Bu Gün',
+  yearText: 'Il',
+  monthText: 'Ay',
   weekText: 'Həftə',
+  dayText: 'Gün',
+  listText: 'Gündəm',
   allDayText: 'Bütün\nGün',
   moreLinkText(n) {
     return '+ daha çox ' + n

@@ -6,17 +6,15 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 4, // The week that contains Jan 4th is the first week of the year.
   },
-  buttonText: {
-    prev: 'Trước',
-    next: 'Tiếp',
-    today: 'Hôm nay',
-    year: 'Năm',
-    month: 'Tháng',
-    week: 'Tuần',
-    day: 'Ngày',
-    list: 'Lịch biểu',
-  },
-  weekText: 'Tu',
+  prevText: 'Trước',
+  nextText: 'Tiếp',
+  todayText: 'Hôm nay',
+  yearText: 'Năm',
+  monthText: 'Tháng',
+  weekText: 'Tuần',
+  weekTextShort: 'Tu',
+  dayText: 'Ngày',
+  listText: 'Lịch biểu',
   allDayText: 'Cả ngày',
   moreLinkText(n) {
     return '+ thêm ' + n

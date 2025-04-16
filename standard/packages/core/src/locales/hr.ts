@@ -6,17 +6,15 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 7, // The week that contains Jan 1st is the first week of the year.
   },
-  buttonText: {
-    prev: 'Prijašnji',
-    next: 'Sljedeći',
-    today: 'Danas',
-    year: 'Godina',
-    month: 'Mjesec',
-    week: 'Tjedan',
-    day: 'Dan',
-    list: 'Raspored',
-  },
-  weekText: 'Tje',
+  prevText: 'Prijašnji',
+  nextText: 'Sljedeći',
+  todayText: 'Danas',
+  yearText: 'Godina',
+  monthText: 'Mjesec',
+  weekText: 'Tjedan',
+  weekTextShort: 'Tje',
+  dayText: 'Dan',
+  listText: 'Raspored',
   allDayText: 'Cijeli\ndan',
   moreLinkText(n) {
     return '+ još ' + n

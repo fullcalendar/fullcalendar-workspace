@@ -7,17 +7,15 @@ export default {
     doy: 12, // The week that contains Jan 1st is the first week of the year.
   },
   direction: 'rtl',
-  buttonText: {
-    prev: 'قبلی',
-    next: 'بعدی',
-    today: 'امروز',
-    year: 'سال',
-    month: 'ماه',
-    week: 'هفته',
-    day: 'روز',
-    list: 'برنامه',
-  },
-  weekText: 'هف',
+  prevText: 'قبلی',
+  nextText: 'بعدی',
+  todayText: 'امروز',
+  yearText: 'سال',
+  monthText: 'ماه',
+  weekText: 'هفته',
+  weekTextShort: 'هف',
+  dayText: 'روز',
+  listText: 'برنامه',
   allDayText: 'تمام روز',
   moreLinkText(n) {
     return 'بیش از ' + n

@@ -2,15 +2,13 @@ import { LocaleInput } from '../index.js'
 
 export default {
   code: 'ug',
-  buttonText: {
-    prev: 'ئالدىنقى',
-    next: 'كېيىنكى',
-    today: 'بۈگۈن',
-    year: 'يىل',
-    month: 'ئاي',
-    week: 'ھەپتە',
-    day: 'كۈن',
-    list: 'كۈنتەرتىپ',
-  },
+  prevText: 'ئالدىنقى',
+  nextText: 'كېيىنكى',
+  todayText: 'بۈگۈن',
+  yearText: 'يىل',
+  monthText: 'ئاي',
+  weekText: 'ھەپتە',
+  dayText: 'كۈن',
+  listText: 'كۈنتەرتىپ',
   allDayText: 'پۈتۈن كۈن',
 } as LocaleInput

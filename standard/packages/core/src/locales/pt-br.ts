@@ -2,32 +2,27 @@ import { LocaleInput } from '../index.js'
 
 export default {
   code: 'pt-br',
-  buttonText: {
-    prev: 'Anterior',
-    next: 'Próximo',
-    prevYear: 'Ano anterior',
-    nextYear: 'Próximo ano',
-    year: 'Ano',
-    today: 'Hoje',
-    month: 'Mês',
-    week: 'Semana',
-    day: 'Dia',
-    list: 'Lista',
+  prevText: 'Anterior',
+  nextText: 'Próximo',
+  prevYearText: 'Ano anterior',
+  nextYearText: 'Próximo ano',
+  yearText: 'Ano',
+  todayText: 'Hoje',
+  monthText: 'Mês',
+  weekText: 'Semana',
+  weekTextShort: 'Sm',
+  dayText: 'Dia',
+  listText: 'Lista',
+  prevHint: '$0 Anterior',
+  nextHint: 'Próximo $0',
+  todayHint(unitText, unit) {
+    return (unit === 'day') ? 'Hoje' :
+      ((unit === 'week') ? 'Esta' : 'Este') + ' ' + unitText.toLocaleLowerCase()
   },
-  buttonHints: {
-    prev: '$0 Anterior',
-    next: 'Próximo $0',
-    today(buttonText) {
-      return (buttonText === 'Dia') ? 'Hoje' :
-        ((buttonText === 'Semana') ? 'Esta' : 'Este') + ' ' + buttonText.toLocaleLowerCase()
-    },
+  viewHint(unitText, unit) {
+    return 'Visualizar ' + (unit === 'week' ? 'a' : 'o') + ' ' + unitText.toLocaleLowerCase()
   },
-  viewHint(buttonText) {
-    return 'Visualizar ' + (buttonText === 'Semana' ? 'a' : 'o') + ' ' + buttonText.toLocaleLowerCase()
-  },
-  weekText: 'Sm',
-  weekTextLong: 'Semana',
-  allDayText: 'dia\ninteiro',
+  allDayText: 'Dia\ninteiro',
   moreLinkText(n) {
     return 'mais +' + n
   },

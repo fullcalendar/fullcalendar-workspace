@@ -6,17 +6,14 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 4, // The week that contains Jan 4th is the first week of the year.
   },
-  buttonText: {
-    prev: 'முந்தைய',
-    next: 'அடுத்தது',
-    today: 'இன்று',
-    year: 'ஆண்டு',
-    month: 'மாதம்',
-    week: 'வாரம்',
-    day: 'நாள்',
-    list: 'தினசரி அட்டவணை',
-  },
+  prevText: 'முந்தைய',
+  nextText: 'அடுத்தது',
+  todayText: 'இன்று',
+  yearText: 'ஆண்டு',
+  monthText: 'மாதம்',
   weekText: 'வாரம்',
+  dayText: 'நாள்',
+  listText: 'தினசரி அட்டவணை',
   allDayText: 'நாள்\nமுழுவதும்',
   moreLinkText(n) {
     return '+ மேலும் ' + n

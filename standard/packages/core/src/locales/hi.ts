@@ -6,17 +6,15 @@ export default {
     dow: 0, // Sunday is the first day of the week.
     doy: 6, // The week that contains Jan 1st is the first week of the year.
   },
-  buttonText: {
-    prev: 'पिछला',
-    next: 'अगला',
-    today: 'आज',
-    year: 'वर्ष',
-    month: 'महीना',
-    week: 'सप्ताह',
-    day: 'दिन',
-    list: 'कार्यसूची',
-  },
-  weekText: 'हफ्ता',
+  prevText: 'पिछला',
+  nextText: 'अगला',
+  todayText: 'आज',
+  yearText: 'वर्ष',
+  monthText: 'महीना',
+  weekText: 'सप्ताह',
+  weekTextShort: 'हफ्ता',
+  dayText: 'दिन',
+  listText: 'कार्यसूची',
   allDayText: 'सभी दिन',
   moreLinkText(n) {
     return '+अधिक ' + n

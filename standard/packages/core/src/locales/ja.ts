@@ -2,17 +2,14 @@ import { LocaleInput } from '../index.js'
 
 export default {
   code: 'ja',
-  buttonText: {
-    prev: '前',
-    next: '次',
-    today: '今日',
-    year: '年',
-    month: '月',
-    week: '週',
-    day: '日',
-    list: '予定リスト',
-  },
+  prevText: '前',
+  nextText: '次',
+  todayText: '今日',
+  yearText: '年',
+  monthText: '月',
   weekText: '週',
+  dayText: '日',
+  listText: '予定リスト',
   allDayText: '終日',
   moreLinkText(n) {
     return '他 ' + n + ' 件'

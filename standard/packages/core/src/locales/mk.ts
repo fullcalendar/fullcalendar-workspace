@@ -2,17 +2,15 @@ import { LocaleInput } from '../index.js'
 
 export default {
   code: 'mk',
-  buttonText: {
-    prev: 'претходно',
-    next: 'следно',
-    today: 'Денес',
-    year: 'година',
-    month: 'Месец',
-    week: 'Недела',
-    day: 'Ден',
-    list: 'График',
-  },
-  weekText: 'Сед',
+  prevText: 'претходно',
+  nextText: 'следно',
+  todayText: 'Денес',
+  yearText: 'година',
+  monthText: 'Месец',
+  weekText: 'Недела',
+  weekTextShort: 'Сед',
+  dayText: 'Ден',
+  listText: 'График',
   allDayText: 'Цел ден',
   moreLinkText(n) {
     return '+повеќе ' + n

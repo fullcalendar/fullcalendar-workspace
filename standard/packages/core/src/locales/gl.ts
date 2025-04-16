@@ -6,29 +6,24 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 4, // The week that contains Jan 4th is the first week of the year.
   },
-  buttonText: {
-    prev: 'Ant',
-    next: 'Seg',
-    today: 'Hoxe',
-    year: 'Ano',
-    month: 'Mes',
-    week: 'Semana',
-    day: 'Día',
-    list: 'Axenda',
-  },
-  buttonHints: {
-    prev: '$0 antes',
-    next: '$0 seguinte',
-    today(buttonText) {
-      return (buttonText === 'Día') ? 'Hoxe' :
-        ((buttonText === 'Semana') ? 'Esta' : 'Este') + ' ' + buttonText.toLocaleLowerCase()
-    },
+  prevText: 'Ant',
+  nextText: 'Seg',
+  todayText: 'Hoxe',
+  yearText: 'Ano',
+  monthText: 'Mes',
+  weekText: 'Semana',
+  weekTextShort: 'Sm',
+  dayText: 'Día',
+  listText: 'Axenda',
+  prevHint: '$0 antes',
+  nextHint: '$0 seguinte',
+  todayHint(buttonText) {
+    return (buttonText === 'Día') ? 'Hoxe' :
+      ((buttonText === 'Semana') ? 'Esta' : 'Este') + ' ' + buttonText.toLocaleLowerCase()
   },
   viewHint(buttonText) {
     return 'Vista ' + (buttonText === 'Semana' ? 'da' : 'do') + ' ' + buttonText.toLocaleLowerCase()
   },
-  weekText: 'Sm',
-  weekTextLong: 'Semana',
   allDayText: 'Todo\no día',
   moreLinkText: 'máis',
   moreLinkHint(eventCnt) {

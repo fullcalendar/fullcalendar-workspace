@@ -6,17 +6,15 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 7, // The week that contains Jan 1st is the first week of the year.
   },
-  buttonText: {
-    prev: 'Попередній',
-    next: 'далі',
-    today: 'Сьогодні',
-    year: 'рік',
-    month: 'Місяць',
-    week: 'Тиждень',
-    day: 'День',
-    list: 'Порядок денний',
-  },
-  weekText: 'Тиж',
+  prevText: 'Попередній',
+  nextText: 'далі',
+  todayText: 'Сьогодні',
+  yearText: 'рік',
+  monthText: 'Місяць',
+  weekText: 'Тиждень',
+  weekTextShort: 'Тиж',
+  dayText: 'День',
+  listText: 'Порядок денний',
   allDayText: 'Увесь\nдень',
   moreLinkText(n) {
     return '+ще ' + n + '...'

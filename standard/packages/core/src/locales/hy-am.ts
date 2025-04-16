@@ -6,17 +6,15 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 4, // The week that contains Jan 4th is the first week of the year.
   },
-  buttonText: {
-    prev: 'Նախորդ',
-    next: 'Հաջորդ',
-    today: 'Այսօր',
-    year: 'Տարի',
-    month: 'Ամիս',
-    week: 'Շաբաթ',
-    day: 'Օր',
-    list: 'Օրվա ցուցակ',
-  },
-  weekText: 'Շաբ',
+  prevText: 'Նախորդ',
+  nextText: 'Հաջորդ',
+  todayText: 'Այսօր',
+  yearText: 'Տարի',
+  monthText: 'Ամիս',
+  weekText: 'Շաբաթ',
+  weekTextShort: 'Շաբ',
+  dayText: 'Օր',
+  listText: 'Օրվա ցուցակ',
   allDayText: 'Ամբողջ օր',
   moreLinkText(n) {
     return '+ ևս ' + n

@@ -6,17 +6,15 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 4, // The week that contains Jan 4th is the first week of the year.
   },
-  buttonText: {
-    prev: 'mbrapa',
-    next: 'Përpara',
-    today: 'Sot',
-    year: 'Viti',
-    month: 'Muaj',
-    week: 'Javë',
-    day: 'Ditë',
-    list: 'Listë',
-  },
-  weekText: 'Ja',
+  prevText: 'mbrapa',
+  nextText: 'Përpara',
+  todayText: 'Sot',
+  yearText: 'Viti',
+  monthText: 'Muaj',
+  weekText: 'Javë',
+  weekTextShort: 'Ja',
+  dayText: 'Ditë',
+  listText: 'Listë',
   allDayText: 'Gjithë\nditën',
   moreLinkText(n) {
     return '+më tepër ' + n

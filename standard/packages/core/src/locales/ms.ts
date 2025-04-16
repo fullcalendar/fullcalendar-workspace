@@ -6,17 +6,15 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 7, // The week that contains Jan 1st is the first week of the year.
   },
-  buttonText: {
-    prev: 'Sebelum',
-    next: 'Selepas',
-    today: 'hari ini',
-    year: 'Tahun',
-    month: 'Bulan',
-    week: 'Minggu',
-    day: 'Hari',
-    list: 'Agenda',
-  },
-  weekText: 'Mg',
+  prevText: 'Sebelum',
+  nextText: 'Selepas',
+  todayText: 'hari ini',
+  yearText: 'Tahun',
+  monthText: 'Bulan',
+  weekText: 'Minggu',
+  weekTextShort: 'Mg',
+  dayText: 'Hari',
+  listText: 'Agenda',
   allDayText: 'Sepanjang\nhari',
   moreLinkText(n) {
     return 'masih ada ' + n + ' acara'

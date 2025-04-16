@@ -6,34 +6,29 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 4, // The week that contains Jan 4th is the first week of the year.
   },
-  buttonText: {
-    prev: 'Förra',
-    next: 'Nästa',
-    today: 'Idag',
-    year: 'År',
-    month: 'Månad',
-    week: 'Vecka',
-    day: 'Dag',
-    list: 'Program',
+  prevText: 'Förra',
+  nextText: 'Nästa',
+  todayText: 'Idag',
+  yearText: 'År',
+  monthText: 'Månad',
+  weekText: 'Vecka',
+  weekTextShort: 'v.',
+  dayText: 'Dag',
+  listText: 'Program',
+  prevHint(unitText) {
+    return `Föregående ${unitText.toLocaleLowerCase()}`
   },
-  buttonHints: {
-    prev(buttonText) {
-      return `Föregående ${buttonText.toLocaleLowerCase()}`
-    },
-    next(buttonText) {
-      return `Nästa ${buttonText.toLocaleLowerCase()}`
-    },
-    today(buttonText) {
-      return (buttonText === 'Program' ? 'Detta' : 'Denna') + ' ' + buttonText.toLocaleLowerCase()
-    },
+  nextHint(unitText) {
+    return `Nästa ${unitText.toLocaleLowerCase()}`
+  },
+  todayHint(unitText) {
+    return (unitText === 'Program' ? 'Detta' : 'Denna') + ' ' + unitText.toLocaleLowerCase()
   },
   viewHint: '$0 vy',
   navLinkHint: 'Gå till $0',
   moreLinkHint(eventCnt: number) {
     return `Visa ytterligare ${eventCnt} händelse${eventCnt === 1 ? '' : 'r'}`
   },
-  weekText: 'v.',
-  weekTextLong: 'Vecka',
   allDayText: 'Heldag',
   moreLinkText: 'till',
   noEventsText: 'Inga händelser att visa',

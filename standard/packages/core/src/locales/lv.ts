@@ -6,17 +6,15 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 4, // The week that contains Jan 4th is the first week of the year.
   },
-  buttonText: {
-    prev: 'Iepr.',
-    next: 'Nāk.',
-    today: 'Šodien',
-    year: 'Gads',
-    month: 'Mēnesis',
-    week: 'Nedēļa',
-    day: 'Diena',
-    list: 'Dienas kārtība',
-  },
-  weekText: 'Ned.',
+  prevText: 'Iepr.',
+  nextText: 'Nāk.',
+  todayText: 'Šodien',
+  yearText: 'Gads',
+  monthText: 'Mēnesis',
+  weekText: 'Nedēļa',
+  weekTextShort: 'Ned.',
+  dayText: 'Diena',
+  listText: 'Dienas kārtība',
   allDayText: 'Visu\ndienu',
   moreLinkText(n) {
     return '+vēl ' + n

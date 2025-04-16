@@ -31,41 +31,41 @@ const MINIMAL_RAW_EN_LOCALE = {
     doy: 4, // 4 days need to be within the year to be considered the first week
   },
   direction: 'ltr' as ('ltr' | 'rtl'), // TODO: make a real type for this
-  buttonText: {
-    prev: 'prev',
-    next: 'next',
-    prevYear: 'prev year',
-    nextYear: 'next year',
-    year: 'year',
-    today: 'today',
-    month: 'month',
-    week: 'week',
-    day: 'day',
-    list: 'list',
-  },
-  weekText: 'W',
-  weekTextLong: 'Week',
+  todayText: 'Today',
+  prevText: 'Prev',
+  nextText: 'Next',
+  prevYearText: 'Prev year',
+  nextYearText: 'Next year',
+  yearText: 'Year',
+  monthText: 'Month',
+  weekText: 'Week',
+  dayText: 'Day',
+  listText: 'List',
   closeHint: 'Close',
   eventsHint: 'Events',
-  allDayText: 'all-day',
-  timedText: 'timed',
+  allDayText: 'All-day',
+  timedText: 'Timed',
   moreLinkText: 'more',
   noEventsText: 'No events to display',
 }
 
+/*
+Includes things we don't want other locales to inherit,
+things that derive from other translatable strings.
+*/
 const RAW_EN_LOCALE = {
   ...MINIMAL_RAW_EN_LOCALE,
-  // Includes things we don't want other locales to inherit,
-  // things that derive from other translatable strings.
-  buttonHints: {
-    prev: 'Previous $0',
-    next: 'Next $0',
-    today(buttonText, unit) {
-      return (unit === 'day')
-        ? 'Today'
-        : `This ${buttonText}`
-    },
+
+  // if a locale doesn't define this, fall back to weekText, don't use EN
+  weekTextShort: 'W',
+
+  todayHint: (unitText: string, unit: string) => {
+    return (unit === 'day')
+      ? 'Today'
+      : `This ${unitText}`
   },
+  prevHint: 'Previous $0',
+  nextHint: 'Next $0',
   viewHint: '$0 view',
   viewChangeHint: 'Change view',
   navLinkHint: 'Go to $0',

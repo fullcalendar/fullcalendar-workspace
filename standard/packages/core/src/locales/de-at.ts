@@ -1,6 +1,6 @@
 import { LocaleInput } from '../index.js'
 
-function affix(buttonText: 'Tag' | 'Woche' | 'Monat' | 'Jahr'): string {
+function affix(buttonText: string): string {
   return (buttonText === 'Tag' || buttonText === 'Monat') ? 'r' :
     buttonText === 'Jahr' ? 's' : ''
 }
@@ -11,37 +11,32 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 4, // The week that contains Jan 4th is the first week of the year.
   },
-  buttonText: {
-    prev: 'Zurück',
-    next: 'Vor',
-    today: 'Heute',
-    year: 'Jahr',
-    month: 'Monat',
-    week: 'Woche',
-    day: 'Tag',
-    list: 'Terminübersicht',
-  },
-  weekText: 'KW',
-  weekTextLong: 'Woche',
+  prevText: 'Zurück',
+  nextText: 'Vor',
+  todayText: 'Heute',
+  yearText: 'Jahr',
+  monthText: 'Monat',
+  weekText: 'Woche',
+  weekTextShort: 'KW',
+  dayText: 'Tag',
+  listText: 'Terminübersicht',
   allDayText: 'Ganztägig',
   moreLinkText(n) {
     return '+ weitere ' + n
   },
   noEventsText: 'Keine Ereignisse anzuzeigen',
-  buttonHints: {
-    prev(buttonText) {
-      return `Vorherige${affix(buttonText)} ${buttonText}`
-    },
-    next(buttonText) {
-      return `Nächste${affix(buttonText)} ${buttonText}`
-    },
-    today(buttonText) {
-      // → Heute, Diese Woche, Dieser Monat, Dieses Jahr
-      if (buttonText === 'Tag') {
-        return 'Heute'
-      }
-      return `Diese${affix(buttonText)} ${buttonText}`
-    },
+  prevHint(buttonText) {
+    return `Vorherige${affix(buttonText)} ${buttonText}`
+  },
+  nextHint(buttonText) {
+    return `Nächste${affix(buttonText)} ${buttonText}`
+  },
+  todayHint(buttonText) {
+    // → Heute, Diese Woche, Dieser Monat, Dieses Jahr
+    if (buttonText === 'Tag') {
+      return 'Heute'
+    }
+    return `Diese${affix(buttonText)} ${buttonText}`
   },
   viewHint(buttonText) {
     // → Tagesansicht, Wochenansicht, Monatsansicht, Jahresansicht

@@ -6,29 +6,24 @@ export default {
     dow: 1, // Monday is the first day of the week.
     doy: 4, // The week that contains Jan 4th is the first week of the year.
   },
-  buttonText: {
-    prev: 'Ant',
-    next: 'Sig',
-    today: 'Hoy',
-    year: 'Año',
-    month: 'Mes',
-    week: 'Semana',
-    day: 'Día',
-    list: 'Agenda',
+  prevText: 'Ant',
+  nextText: 'Sig',
+  todayText: 'Hoy',
+  yearText: 'Año',
+  monthText: 'Mes',
+  weekText: 'Semana',
+  weekTextShort: 'Sm',
+  dayText: 'Día',
+  listText: 'Agenda',
+  prevHint: '$0 antes',
+  nextHint: '$0 siguiente',
+  todayHint: (unitText) => {
+    return (unitText === 'Día') ? 'Hoy' :
+      ((unitText === 'Semana') ? 'Esta' : 'Este') + ' ' + unitText.toLocaleLowerCase()
   },
-  buttonHints: {
-    prev: '$0 antes',
-    next: '$0 siguiente',
-    today(buttonText) {
-      return (buttonText === 'Día') ? 'Hoy' :
-        ((buttonText === 'Semana') ? 'Esta' : 'Este') + ' ' + buttonText.toLocaleLowerCase()
-    },
+  viewHint(unitText) {
+    return 'Vista ' + (unitText === 'Semana' ? 'de la' : 'del') + ' ' + unitText.toLocaleLowerCase()
   },
-  viewHint(buttonText) {
-    return 'Vista ' + (buttonText === 'Semana' ? 'de la' : 'del') + ' ' + buttonText.toLocaleLowerCase()
-  },
-  weekText: 'Sm',
-  weekTextLong: 'Semana',
   allDayText: 'Todo\nel día',
   moreLinkText: 'más',
   moreLinkHint(eventCnt) {
