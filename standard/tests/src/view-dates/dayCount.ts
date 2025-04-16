@@ -71,9 +71,13 @@ describe('dayCount', () => {
           type: 'timeGrid',
           dayCount: 2,
           dateIncrement: { days: 1 },
-          buttonText: '2 days',
         },
       },
+      buttons: {
+        timeGridTwoDay: {
+          text: '2 days',
+        }
+      }
     })
     currentCalendar.prev()
     expectActiveRange('2018-06-08', '2018-06-12')
