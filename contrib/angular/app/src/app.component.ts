@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
     this.calendarOptions = {
       plugins: [classicThemePlugin, dayGridPlugin, interactionPlugin],
       editable: true,
-      customButtons: {
+      buttons: {
         myCustomButton: {
           text: 'custom!',
           click: function () {

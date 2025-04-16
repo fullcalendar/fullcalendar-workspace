@@ -21,11 +21,15 @@
         right: 'timelineDay,timelineThreeDays,timeGridWeek,dayGridMonth'
       },
       initialView: 'timelineDay',
+      buttons: {
+        timelineThreeDays: {
+          text: '3 days',
+        }
+      },
       views: {
         timelineThreeDays: {
           type: 'timeline',
           duration: { days: 3 },
-          buttonText: '3 days'
         }
       },
       events: [

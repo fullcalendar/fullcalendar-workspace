@@ -11,6 +11,7 @@
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialDate: '2023-01-07',
+      initialView: 'resourceTimelineDay',
       editable: true,
       selectable: true,
       nowIndicator: true,
@@ -21,12 +22,15 @@
         center: 'title',
         right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth'
       },
-      initialView: 'resourceTimelineDay',
+      buttons: {
+        resourceTimelineThreeDays: {
+          text: '3 days',
+        }
+      },
       views: {
         resourceTimelineThreeDays: {
           type: 'resourceTimeline',
           duration: { days: 3 },
-          buttonText: '3 days'
         }
       },
       resourceAreaWidth: '40%',
