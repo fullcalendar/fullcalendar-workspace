@@ -36,7 +36,11 @@ document.addEventListener('DOMContentLoaded', function() {
       resourceTimelineThreeDays: {
         type: 'resourceTimeline',
         duration: { days: 3 },
-        buttonText: '3 day'
+      }
+    },
+    buttons: {
+      resourceTimelineThreeDays: {
+        text: '3 day',
       }
     },
     resourceAreaHeaderContent: 'Rooms',

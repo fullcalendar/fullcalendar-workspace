@@ -11,20 +11,12 @@
     var calendar = new FullCalendar.Calendar(calendarEl, {
       height: 'auto',
       // stickyHeaderDates: false, // for disabling
-
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
         right: 'listMonth,listYear'
       },
-
-      // customize the button names,
-      // otherwise they'd all just say "list"
-      views: {
-        listMonth: { buttonText: 'list month' },
-        listYear: { buttonText: 'list year' }
-      },
-
+      listText: false, // don't show "List" for each button, show the view duration
       initialView: 'listYear',
       initialDate: '2023-01-12',
       navLinks: true, // can click day/week names to navigate views

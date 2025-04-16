@@ -28,13 +28,16 @@ document.addEventListener('DOMContentLoaded', function() {
       arLocale,
     ],
     locale: initialLocaleCode,
+    initialDate: '2019-01-12',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
     },
-    initialDate: '2019-01-12',
-    buttonIcons: false, // show the prev/next text
+    buttons: {
+      prev: { icon: false },
+      next: { icon: false },
+    },
     weekNumbers: true,
     navLinks: true, // can click day/week names to navigate views
     editable: true,

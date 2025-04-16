@@ -27,8 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
     },
+    buttons: {
+      prev: { icon: false },
+      next: { icon: false },
+    },
     initialDate: '2019-01-12',
-    buttonIcons: false, // show the prev/next text
     weekNumbers: true,
     navLinks: true, // can click day/week names to navigate views
     editable: true,

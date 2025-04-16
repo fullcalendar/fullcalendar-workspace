@@ -21,14 +21,20 @@
       initialView: 'resourceTimelineDay',
       views: {
         resourceTimelineDay: {
-          buttonText: ':15 slots',
           slotDuration: '00:15'
         },
         resourceTimelineTenDay: {
           type: 'resourceTimeline',
           duration: { days: 10 },
-          buttonText: '10 days'
         }
+      },
+      buttons: {
+        resourceTimelineDay: {
+          text: ':15 slots',
+        },
+        resourceTimelineTenDay: {
+          text: '10 days',
+        },
       },
       navLinks: true,
       resourceAreaWidth: '25%',
