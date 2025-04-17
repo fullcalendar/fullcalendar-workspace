@@ -1,12 +1,13 @@
 import { createElement, VNode } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
 import { ToolbarWidget } from '../toolbar-struct.js'
-import { joinClassNames } from '../util/html.js'
+import { joinArrayishClassNames } from '../util/html.js'
+import { generateClassName } from '../content-inject/ContentContainer.js'
 
 export interface ToolbarContent {
   title: string
   navUnit: string
-  activeButton: string
+  selectedButton: string
   isTodayEnabled: boolean
   isPrevEnabled: boolean
   isNextEnabled: boolean
@@ -39,9 +40,9 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
     let isOnlyView = true
 
     for (const widget of widgetGroup) {
-      const { buttonName, isView } = widget
+      const { name, isView } = widget
 
-      if (buttonName === 'title') {
+      if (name === 'title') {
         isOnlyButtons = false
       } else if (!isView) {
         isOnlyView = false
@@ -49,9 +50,9 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
     }
 
     for (let widget of widgetGroup) {
-      let { buttonName, buttonText, buttonIcon, buttonHint, buttonClick } = widget
+      let { name, buttonText, buttonIcon, buttonHint, buttonClick } = widget
 
-      if (buttonName === 'title') {
+      if (name === 'title') {
         children.push(
           <div
             role='heading'
@@ -61,11 +62,11 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
           >{props.title}</div>,
         )
       } else {
-        let isPressed = buttonName === props.activeButton
+        let isSelected = name === props.selectedButton
         let isDisabled =
-          (!props.isTodayEnabled && buttonName === 'today') ||
-          (!props.isPrevEnabled && buttonName === 'prev') ||
-          (!props.isNextEnabled && buttonName === 'next')
+          (!props.isTodayEnabled && name === 'today') ||
+          (!props.isPrevEnabled && name === 'prev') ||
+          (!props.isNextEnabled && name === 'next')
 
         children.push(
           <button
@@ -73,14 +74,14 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
             disabled={isDisabled}
             {...(
               (isOnlyButtons && isOnlyView)
-                ? { 'role': 'tab', 'aria-selected': isPressed }
-                : { 'aria-pressed': isPressed }
+                ? { 'role': 'tab', 'aria-selected': isSelected }
+                : { 'aria-pressed': isSelected }
             )}
             aria-label={typeof buttonHint === 'function' ? buttonHint(props.navUnit) : buttonHint}
-            className={joinClassNames(
-              `fc-${buttonName}-button`,
-              theme.getClassName('button'),
-              isPressed && theme.getClassName('buttonActive'),
+            className={joinArrayishClassNames(
+              `fc-${name}-button`,
+              generateClassName(options.buttonClassNames, { isSelected }),
+              generateClassName(widget.buttonClassNames, { isSelected }),
             )}
             onClick={buttonClick}
           >

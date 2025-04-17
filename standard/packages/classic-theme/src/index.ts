@@ -16,6 +16,11 @@ export default createPlugin({
     directionClassNames: (direction) => `fc-direction-${direction}`,
     mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
     viewClassNames: (arg) => ['fc-view', `fc-${arg.view.type}-view`, 'fc-border'],
+    buttonClassNames: (arg) => [
+      'fc-button',
+      'fc-button-primary',
+      arg.isSelected && 'fc-button-active',
+    ],
     popoverClassNames: 'fc-popover',
     popoverHeaderClassNames: 'fc-popover-header',
     popoverBodyClassNames: 'fc-popover-body',

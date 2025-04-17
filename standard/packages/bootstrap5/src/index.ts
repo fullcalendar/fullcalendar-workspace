@@ -15,6 +15,11 @@ export default createPlugin({
     popoverClassNames: ['fc-popover', 'popover'],
     popoverHeaderClassNames: ['fc-popover-header', 'popover-header'],
     popoverBodyClassNames: ['fc-popover-body', 'popover-body'],
+    buttonClassNames: (arg) => [
+      'btn',
+      'btn-primary',
+      arg.isSelected && 'active',
+    ],
     dayNarrowWidth: 70,
     dayNarrowClassNames: 'fc-day-narrow',
     dayNotNarrowClassNames: 'fc-day-not-narrow',

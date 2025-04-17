@@ -5,8 +5,6 @@ export class StandardTheme extends Theme {
 
 StandardTheme.prototype.classes = {
   buttonGroup: 'fc-button-group',
-  button: 'fc-button fc-button-primary',
-  buttonActive: 'fc-button-active',
 }
 
 StandardTheme.prototype.baseIconClass = 'fc-icon'

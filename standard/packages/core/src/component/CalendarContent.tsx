@@ -263,7 +263,7 @@ function buildToolbarProps(
 
   return {
     title,
-    activeButton: viewSpec.type,
+    selectedButton: viewSpec.type,
     navUnit: viewSpec.singleUnit,
     isTodayEnabled: todayInfo.isValid && !rangeContainsMarker(dateProfile.currentRange, now),
     isPrevEnabled: prevInfo.isValid,

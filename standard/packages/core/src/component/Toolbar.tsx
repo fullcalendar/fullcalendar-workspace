@@ -42,7 +42,7 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
         title={props.title}
         titleId={props.titleId}
         navUnit={props.navUnit}
-        activeButton={props.activeButton}
+        selectedButton={props.selectedButton}
         isTodayEnabled={props.isTodayEnabled}
         isPrevEnabled={props.isPrevEnabled}
         isNextEnabled={props.isNextEnabled}

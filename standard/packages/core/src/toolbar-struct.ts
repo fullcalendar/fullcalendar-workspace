@@ -18,8 +18,9 @@ viewOrUnitName:
 
 // Info for internal rendering
 export interface ToolbarWidget {
+  name: string
   isView?: boolean
-  buttonName: string
+  buttonClassNames?: ClassNamesGenerator<ButtonArg>
   buttonText?: string
   buttonHint?: string | ((currentUnit: string) => string)
   buttonIcon?: string | false
@@ -35,10 +36,15 @@ export interface ToolbarInput {
 }
 
 export interface ButtonInput {
+  classNames?: ClassNamesGenerator<ButtonArg>
   text?: string
   hint?: string | ((viewOrCurrentUnitText: string, viewOrCurrentUnit: string) => string)
   icon?: string | false
   click?: (ev: MouseEvent) => void
+}
+
+export interface ButtonArg {
+  isSelected: boolean
 }
 
 export type IconInput = CustomContentGenerator<IconArg> | {

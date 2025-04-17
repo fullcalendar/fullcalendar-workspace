@@ -71,27 +71,28 @@ function parseSection(
 
   let widgets = sectionSubstrs.map(
     (buttonGroupStr): ToolbarWidget[] => (
-      buttonGroupStr.split(',').map((buttonName): ToolbarWidget => {
-        if (buttonName === 'title') {
+      buttonGroupStr.split(',').map((name): ToolbarWidget => {
+        if (name === 'title') {
           hasTitle = true
-          return { buttonName }
+          return { name }
         }
 
         let viewSpec: ViewSpec
-        let buttonInput = calendarButtons[buttonName] || {}
+        let buttonInput = calendarButtons[name] || {}
+        let buttonClassNames = buttonInput.classNames
         let buttonText: string
         let buttonIcon = buttonInput.icon
         let buttonHint: string | ((unitText: string) => string)
         let buttonClick: (ev: MouseEvent) => void
 
-        if ((viewSpec = viewSpecs[buttonName])) {
-          viewsWithButtons.push(buttonName)
+        if ((viewSpec = viewSpecs[name])) {
+          viewsWithButtons.push(name)
           const buttonTextKey = viewSpec.optionDefaults.buttonTextKey as string
 
           buttonText = buttonInput.text ||
             (buttonTextKey ? calendarOptions[buttonTextKey] : '') ||
             (viewSpec.singleUnit ? calendarOptions[viewSpec.singleUnit + 'Text'] : '') ||
-            buttonName
+            name
 
           /*
           buttons{}.hint(viewButtonText, viewName)
@@ -99,20 +100,20 @@ function parseSection(
           */
           buttonHint = formatWithOrdinals(
             buttonInput.hint || calendarOptions.viewHint,
-            [buttonText, buttonName], // ordinal arguments
+            [buttonText, name], // ordinal arguments
             buttonText, // fallback text
           )
 
           buttonClick = (ev: MouseEvent) => {
             buttonInput?.click?.(ev)
             if (!ev.defaultPrevented) {
-              calendarApi.changeView(buttonName)
+              calendarApi.changeView(name)
             }
           }
-        } else if (calendarApi[buttonName]) {
+        } else if (calendarApi[name]) {
           buttonText = buttonInput.text ||
-            calendarOptions[buttonName + 'Text'] ||
-            buttonName
+            calendarOptions[name + 'Text'] ||
+            name
 
           /*
           button{}.hint(currentUnitText, currentUnit)
@@ -120,13 +121,13 @@ function parseSection(
           nextHint -- same
           todayHint -- same
           */
-          if (buttonName === 'prevYear') {
+          if (name === 'prevYear') {
             buttonHint = formatWithOrdinals(
               buttonInput.hint || calendarOptions.prevHint,
               [calendarOptions.yearText, 'year'],
               buttonText,
             )
-          } else if (buttonName === 'nextYear') {
+          } else if (name === 'nextYear') {
             buttonHint = formatWithOrdinals(
               buttonInput.hint || calendarOptions.nextHint,
               [calendarOptions.yearText, 'year'],
@@ -135,7 +136,7 @@ function parseSection(
           } else {
             buttonHint = (currentUnit: string) => { // dynamic
               return formatWithOrdinals(
-                buttonInput.hint || calendarOptions[buttonName + 'Hint'], // todayHint/prevHint/nextHint
+                buttonInput.hint || calendarOptions[name + 'Hint'], // todayHint/prevHint/nextHint
                 [calendarOptions[currentUnit + 'Text'], currentUnit], // ordinal arguments
                 buttonText, // fallback text
               )
@@ -145,14 +146,15 @@ function parseSection(
           buttonClick = (ev: MouseEvent) => {
             buttonInput?.click?.(ev)
             if (!ev.defaultPrevented) {
-              calendarApi[buttonName]()
+              calendarApi[name]()
             }
           }
         }
 
         return {
+          name,
           isView: Boolean(viewSpec),
-          buttonName,
+          buttonClassNames,
           buttonText,
           buttonHint,
           buttonIcon,
