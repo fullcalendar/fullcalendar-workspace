@@ -385,6 +385,7 @@ export class CalendarDataManager {
       refinedOptions.weekNumberCalculation,
       refinedOptions.firstDay,
       refinedOptions.weekText,
+      refinedOptions.weekTextShort,
       pluginHooks,
       availableLocaleData,
       refinedOptions.defaultRangeSeparator,
@@ -606,6 +607,7 @@ function buildDateEnv(
   weekNumberCalculation,
   firstDay: number | undefined,
   weekText,
+  weekTextShort,
   pluginHooks: PluginHooks,
   availableLocaleData: RawLocaleInfo,
   defaultSeparator: string,
@@ -620,6 +622,7 @@ function buildDateEnv(
     weekNumberCalculation,
     firstDay,
     weekText,
+    weekTextShort,
     cmdFormatter: pluginHooks.cmdFormatter,
     defaultSeparator,
   })
