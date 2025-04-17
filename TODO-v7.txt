@@ -75,6 +75,35 @@ docs: we will not be implementing "easier way to inject default eventContent"
   (or they can inject a flex-grow wrapper)
   SOLUTION to accessing default content:
   Tell people they can just recreate the very simple markup from StandardEvent's renderInnerContent
+    (remind them background events have different markup. simpler. converge them?)
+docs: instead of buttonElements hook, which would require users to inject correct aria-attributes,
+  disabled-attribute, and click handler,
+  Have Shadcn inject only classNames via `buttonVariants` (https://ui.shadcn.com/docs/components/button#primary)
+  Button-groups are hard to do anyway.
+  Realistically, best way to do a button-group and customize buttons is to have developer,
+  build custom toolbar from scratch (using our soon-to-be-improved datesSet callback)
+for Bootstrap5 icons, use glyphicons still. SVGs have too many ways to inject,
+  easier to use classNames on icons. people include their own stylesheet
+  if they really want SVGs, they can override icons{} somehow,
+  most likely with {html:''} content-injector
+in toolbars, remove left/right keys? force start/end keys?
+decision: change direction -> dir everywhere?
+decision: buttons{}.click -> .handleClick ?
+changelog: ViewSpec's buttonText is gone... for people declaring custom views
+changelog: feature: to disable "List" buttons while returning i18n, set listText:false
+changelog: the hint functions receive different args now???
+docs: previous docs said button.click would receive second argument as HTMLElement, but doesn't seem so
+automated-test: button click handler can cancel default
+automated-test: button hint arguments of all kinds
+adjust transpilation settings. es2016 okay now, with null coalescing operator?
+
+NEXT:
+  Remove the Theme class
+  Hook up ButtonInput.classNames to UI
+  isSelected better than isPressed
+  put content/didMount/WillUnmount in ButtonInput
+  implement icons
+    buttons should look up icons of same-name if undefined
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

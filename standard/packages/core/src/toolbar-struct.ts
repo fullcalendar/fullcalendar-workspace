@@ -42,7 +42,7 @@ export interface ButtonInput {
 }
 
 export type IconInput = CustomContentGenerator<IconArg> | {
-  className?: ClassNamesGenerator<IconArg>
+  classNames?: ClassNamesGenerator<IconArg>
 }
 
 export interface IconArg {
