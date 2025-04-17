@@ -100,9 +100,6 @@ drop Bootstrap 4
 
 NEXT:
   Remove the Theme class
-  Hook up ButtonInput.classNames to UI
-  isSelected better than isPressed
-  put content/didMount/WillUnmount in ButtonInput
   implement icons
     buttons should look up icons of same-name if undefined
 

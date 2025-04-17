@@ -1,4 +1,4 @@
-import { ClassNamesGenerator, CustomContentGenerator } from './common/render-hook.js'
+import { ClassNamesGenerator, CustomContentGenerator, DidMountHandler, MountArg, WillUnmountHandler } from './common/render-hook.js'
 
 export interface ToolbarModel {
   sectionWidgets: {
@@ -10,21 +10,41 @@ export interface ToolbarModel {
   hasTitle: boolean
 }
 
-/*
-viewOrUnitName:
-- if a view-button, the viewName like "dayGridWeek"
-- if an api-method, like prev/next, the current view's unit, like "week"
-*/
+// Button / Toolbar
+// -------------------------------------------------------------------------------------------------
+
+export interface ButtonContentArg {
+  icon: string | false
+  text: string
+  isSelected: boolean
+  isDisabled: boolean
+}
+
+export type ButtonMountArg = MountArg<ButtonContentArg>
+
+export interface ButtonInput {
+  text?: string
+  hint?: string | ((viewOrCurrentUnitText: string, viewOrCurrentUnit: string) => string)
+  icon?: string | false
+  click?: (ev: MouseEvent) => void
+  classNames?: ClassNamesGenerator<ButtonContentArg>
+  content?: CustomContentGenerator<ButtonContentArg>
+  didMount?: DidMountHandler<ButtonMountArg>
+  willUnmount?: DidMountHandler<ButtonMountArg>
+}
 
 // Info for internal rendering
 export interface ToolbarWidget {
   name: string
   isView?: boolean
-  buttonClassNames?: ClassNamesGenerator<ButtonArg>
   buttonText?: string
   buttonHint?: string | ((currentUnit: string) => string)
   buttonIcon?: string | false
   buttonClick?: (ev: MouseEvent) => void
+  buttonClassNames?: ClassNamesGenerator<ButtonContentArg>
+  buttonContent?: CustomContentGenerator<ButtonContentArg>
+  buttonDidMount?: DidMountHandler<ButtonMountArg>
+  buttonWillUnmount?: WillUnmountHandler<ButtonMountArg>
 }
 
 export interface ToolbarInput {
@@ -35,22 +55,13 @@ export interface ToolbarInput {
   end?: string
 }
 
-export interface ButtonInput {
-  classNames?: ClassNamesGenerator<ButtonArg>
-  text?: string
-  hint?: string | ((viewOrCurrentUnitText: string, viewOrCurrentUnit: string) => string)
-  icon?: string | false
-  click?: (ev: MouseEvent) => void
-}
+// Icon
+// -------------------------------------------------------------------------------------------------
 
-export interface ButtonArg {
-  isSelected: boolean
+export interface IconArg {
+  direction: 'ltr' | 'rtl' // TODO: DRY
 }
 
 export type IconInput = CustomContentGenerator<IconArg> | {
   classNames?: ClassNamesGenerator<IconArg>
-}
-
-export interface IconArg {
-  direction: 'ltr' | 'rtl' // TODO: DRY
 }

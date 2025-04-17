@@ -51,7 +51,7 @@ import {
   WeekNumberContentArg, WeekNumberMountArg,
   WillUnmountHandler,
   IconInput,
-  ButtonArg,
+  ButtonContentArg,
 } from './api/structs.js'
 import { ViewBodyContentArg, ViewHeaderContentArg } from './common/ViewSubsections.js'
 import { createDuration, Duration } from './datelib/duration.js'
@@ -109,7 +109,8 @@ export const BASE_OPTION_REFINERS = {
   nextHint: identity as Identity<string | ((currentUnitText: string, currentUnit: string) => string)>,
 
   buttonGroupClassNames: identity as Identity<ClassNamesInput>,
-  buttonClassNames: identity as Identity<ClassNamesGenerator<ButtonArg>>,
+  buttonClassNames: identity as Identity<ClassNamesGenerator<ButtonContentArg>>,
+  buttonContent: identity as Identity<CustomContentGenerator<ButtonContentArg>>,
 
   defaultAllDayEventDuration: createDuration,
   defaultTimedEventDuration: createDuration,

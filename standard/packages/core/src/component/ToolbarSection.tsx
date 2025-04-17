@@ -1,8 +1,8 @@
 import { createElement, VNode } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
-import { ToolbarWidget } from '../toolbar-struct.js'
+import { ToolbarWidget, ButtonContentArg } from '../toolbar-struct.js'
 import { joinArrayishClassNames } from '../util/html.js'
-import { generateClassName } from '../content-inject/ContentContainer.js'
+import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
 
 export interface ToolbarContent {
   title: string
@@ -50,7 +50,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
     }
 
     for (let widget of widgetGroup) {
-      let { name, buttonText, buttonIcon, buttonHint, buttonClick } = widget
+      let { name, buttonHint } = widget
 
       if (name === 'title') {
         children.push(
@@ -68,25 +68,41 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
           (!props.isPrevEnabled && name === 'prev') ||
           (!props.isNextEnabled && name === 'next')
 
+        let renderProps: ButtonContentArg = {
+          icon: widget.buttonIcon,
+          text: widget.buttonText,
+          isSelected,
+          isDisabled,
+        }
+
         children.push(
-          <button
-            type="button"
-            disabled={isDisabled}
-            {...(
-              (isOnlyButtons && isOnlyView)
-                ? { 'role': 'tab', 'aria-selected': isSelected }
-                : { 'aria-pressed': isSelected }
-            )}
-            aria-label={typeof buttonHint === 'function' ? buttonHint(props.navUnit) : buttonHint}
+          <ContentContainer<ButtonContentArg>
+            tag='button'
+            attrs={{
+              type: 'button',
+              disabled: isDisabled,
+              ...(
+                (isOnlyButtons && isOnlyView)
+                  ? { 'role': 'tab', 'aria-selected': isSelected }
+                  : { 'aria-pressed': isSelected }
+              ),
+              'aria-label': typeof buttonHint === 'function'
+                ? buttonHint(props.navUnit)
+                : buttonHint,
+              onClick: widget.buttonClick,
+            }}
             className={joinArrayishClassNames(
               `fc-${name}-button`,
-              generateClassName(options.buttonClassNames, { isSelected }),
-              generateClassName(widget.buttonClassNames, { isSelected }),
+              generateClassName(options.buttonClassNames, renderProps), // calendar-wide
             )}
-            onClick={buttonClick}
-          >
-            {buttonText || (buttonIcon ? <span className={buttonIcon} aria-hidden /> : '')}
-          </button>,
+            renderProps={renderProps}
+            generatorName='buttonContent'
+            customGenerator={widget.buttonContent || options.buttonContent}
+            defaultGenerator={renderButtonContent}
+            classNameGenerator={widget.buttonClassNames}
+            didMount={widget.buttonDidMount}
+            willUnmount={widget.buttonWillUnmount}
+          />
         )
       }
     }
@@ -103,4 +119,10 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
 
     return children[0]
   }
+}
+
+function renderButtonContent(arg: ButtonContentArg) {
+  return (
+    arg.text || (arg.icon ? <span className={arg.icon} aria-hidden /> : '')
+  )
 }

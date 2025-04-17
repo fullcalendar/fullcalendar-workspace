@@ -22,27 +22,11 @@
     ></ng-container>
   </a>
 </ng-template>
-<ng-template [ngIf]="tag == 'tr'">
-  <tr #rootEl [ngClass]="className || ''" [ngStyle]="style || null">
+<ng-template [ngIf]="tag == 'button'">
+  <button #rootEl [ngClass]="className || ''" [ngStyle]="style || null">
     <ng-container
       [ngTemplateOutlet]="template"
       [ngTemplateOutletContext]="{ $implicit: renderProps }"
     ></ng-container>
-  </tr>
-</ng-template>
-<ng-template [ngIf]="tag == 'th'">
-  <th #rootEl [ngClass]="className || ''" [ngStyle]="style || null">
-    <ng-container
-      [ngTemplateOutlet]="template"
-      [ngTemplateOutletContext]="{ $implicit: renderProps }"
-    ></ng-container>
-  </th>
-</ng-template>
-<ng-template [ngIf]="tag == 'td'">
-  <td #rootEl [ngClass]="className || ''" [ngStyle]="style || null">
-    <ng-container
-      [ngTemplateOutlet]="template"
-      [ngTemplateOutletContext]="{ $implicit: renderProps }"
-    ></ng-container>
-  </td>
+  </button>
 </ng-template>
