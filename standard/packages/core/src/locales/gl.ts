@@ -17,12 +17,12 @@ export default {
   listText: 'Axenda',
   prevHint: '$0 antes',
   nextHint: '$0 seguinte',
-  todayHint(buttonText) {
-    return (buttonText === 'Día') ? 'Hoxe' :
-      ((buttonText === 'Semana') ? 'Esta' : 'Este') + ' ' + buttonText.toLocaleLowerCase()
+  todayHint(unitText, unit) {
+    return (unit === 'day') ? 'Hoxe' :
+      ((unit === 'week') ? 'Esta' : 'Este') + ' ' + unitText.toLocaleLowerCase()
   },
-  viewHint(buttonText) {
-    return 'Vista ' + (buttonText === 'Semana' ? 'da' : 'do') + ' ' + buttonText.toLocaleLowerCase()
+  viewHint(unitText, unit) {
+    return 'Vista ' + (unit === 'week' ? 'da' : 'do') + ' ' + unitText.toLocaleLowerCase()
   },
   allDayText: 'Todo\no día',
   moreLinkText: 'máis',

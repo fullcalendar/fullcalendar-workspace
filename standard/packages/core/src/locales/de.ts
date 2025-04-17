@@ -1,8 +1,8 @@
 import { LocaleInput } from '../index.js'
 
-function affix(buttonText: string): string {
-  return (buttonText === 'Tag' || buttonText === 'Monat') ? 'r' :
-    buttonText === 'Jahr' ? 's' : ''
+function affix(unitText: string): string {
+  return (unitText === 'Tag' || unitText === 'Monat') ? 'r' :
+    unitText === 'Jahr' ? 's' : ''
 }
 
 export default {
@@ -25,23 +25,23 @@ export default {
     return '+ weitere ' + n
   },
   noEventsText: 'Keine Ereignisse anzuzeigen',
-  prevHint(buttonText) {
-    return `Vorherige${affix(buttonText)} ${buttonText}`
+  prevHint(unitText) {
+    return `Vorherige${affix(unitText)} ${unitText}`
   },
-  nextHint(buttonText) {
-    return `Nächste${affix(buttonText)} ${buttonText}`
+  nextHint(unitText) {
+    return `Nächste${affix(unitText)} ${unitText}`
   },
-  todayHint(buttonText) {
+  todayHint(unitText) {
     // → Heute, Diese Woche, Dieser Monat, Dieses Jahr
-    if (buttonText === 'Tag') {
+    if (unitText === 'Tag') {
       return 'Heute'
     }
-    return `Diese${affix(buttonText)} ${buttonText}`
+    return `Diese${affix(unitText)} ${unitText}`
   },
-  viewHint(buttonText) {
+  viewHint(unitText) {
     // → Tagesansicht, Wochenansicht, Monatsansicht, Jahresansicht
-    const glue = buttonText === 'Woche' ? 'n' : buttonText === 'Monat' ? 's' : 'es'
-    return buttonText + glue + 'ansicht'
+    const glue = unitText === 'Woche' ? 'n' : unitText === 'Monat' ? 's' : 'es'
+    return unitText + glue + 'ansicht'
   },
   navLinkHint: 'Gehe zu $0',
   moreLinkHint(eventCnt: number) {

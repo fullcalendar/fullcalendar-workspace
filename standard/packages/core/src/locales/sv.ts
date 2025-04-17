@@ -21,8 +21,8 @@ export default {
   nextHint(unitText) {
     return `Nästa ${unitText.toLocaleLowerCase()}`
   },
-  todayHint(unitText) {
-    return (unitText === 'Program' ? 'Detta' : 'Denna') + ' ' + unitText.toLocaleLowerCase()
+  todayHint(unitText, unit) {
+    return (unit === 'year' ? 'I' : 'Denna') + ' ' + unitText.toLocaleLowerCase()
   },
   viewHint: '$0 vy',
   navLinkHint: 'Gå till $0',

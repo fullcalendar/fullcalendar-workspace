@@ -17,12 +17,12 @@ export default {
   listText: 'Agenda',
   prevHint: '$0 antes',
   nextHint: '$0 siguiente',
-  todayHint: (unitText) => {
-    return (unitText === 'Día') ? 'Hoy' :
-      ((unitText === 'Semana') ? 'Esta' : 'Este') + ' ' + unitText.toLocaleLowerCase()
+  todayHint(unitText, unit) {
+    return (unit === 'day') ? 'Hoy' :
+      ((unit === 'week') ? 'Esta' : 'Este') + ' ' + unitText.toLocaleLowerCase()
   },
-  viewHint(unitText) {
-    return 'Vista ' + (unitText === 'Semana' ? 'de la' : 'del') + ' ' + unitText.toLocaleLowerCase()
+  viewHint(unitText, unit) {
+    return 'Vista ' + (unit === 'week' ? 'de la' : 'del') + ' ' + unitText.toLocaleLowerCase()
   },
   allDayText: 'Todo\nel día',
   moreLinkText: 'más',
