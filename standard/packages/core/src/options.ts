@@ -57,7 +57,7 @@ import { createDuration, Duration } from './datelib/duration.js'
 import { createFormatter } from './datelib/formatting.js'
 import { ClassNamesInput } from './util/html.js'
 import { parseFieldSpecs } from './util/misc.js'
-import { isMaybePropsEqualShallow, isPropsEqualDepth1 } from './util/object.js'
+import { isMaybePropsEqualShallow, isMaybePropsEqualDepth1 } from './util/object.js'
 import { isMaybeArraysEqual } from './util/array.js'
 
 // base options
@@ -485,11 +485,12 @@ export type CalendarOptionsRefined =
 export const COMPLEX_OPTION_COMPARATORS: {
   [optionName in keyof CalendarOptions]: (a: CalendarOptions[optionName], b: CalendarOptions[optionName]) => boolean
 } = {
+  // Unfortunately always need 'maybe' to handle undefined inital value, because of CalendarDataManager
   headerToolbar: isMaybePropsEqualShallow,
   footerToolbar: isMaybePropsEqualShallow,
   dateIncrement: isMaybePropsEqualShallow,
-  buttons: isPropsEqualDepth1,
-  icons: isPropsEqualDepth1,
+  buttons: isMaybePropsEqualDepth1,
+  icons: isMaybePropsEqualDepth1,
   plugins: isMaybeArraysEqual,
   events: isMaybeArraysEqual,
   eventSources: isMaybeArraysEqual,

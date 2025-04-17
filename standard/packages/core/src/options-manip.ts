@@ -1,6 +1,6 @@
 import { CustomContentGenerator } from './internal.js'
 import { ClassNamesInput, joinArrayishClassNames } from './util/html.js'
-import { getUnequalProps, mergeMaybePropsShallow, mergePropsDepth1 } from './util/object.js'
+import { getUnequalProps, mergeMaybePropsShallow, mergeMaybePropsDepth1 } from './util/object.js'
 
 type FuncishClassNames = ((arg: any) => ClassNamesInput) | ClassNamesInput
 
@@ -10,11 +10,12 @@ const lifecycleRe = /(DidMount|WillUnmount)$/
 const handlerRe = /^on[A-Z]/
 
 // Somewhat tracks COMPLEX_OPTION_COMPARATORS
+// Unfortunately always need 'maybe' to handle undefined inital value, because of CalendarDataManager
 const customMergeFuncs = {
   headerToolbar: mergeMaybePropsShallow,
   footerToolbar: mergeMaybePropsShallow,
-  buttons: mergePropsDepth1,
-  icons: mergePropsDepth1,
+  buttons: mergeMaybePropsDepth1,
+  icons: mergeMaybePropsDepth1,
 }
 
 /*

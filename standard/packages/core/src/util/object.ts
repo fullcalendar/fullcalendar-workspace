@@ -74,8 +74,15 @@ export function buildHashFromArray<Item, ItemRes>(
 // Equality
 // -------------------------------------------------------------------------------------------------
 
-export function isPropsEqualDepth1(props0: any, props1: any) {
-  return isPropsEqualWithFunc(props0, props1, isPropsEqualShallow)
+export function isMaybePropsEqualDepth1(props0: any, props1: any) {
+  if (
+    typeof props0 === 'object' &&
+    typeof props1 === 'object' &&
+    props0 && props1 // both non-null objects
+  ) {
+    return isPropsEqualWithFunc(props0, props1, isPropsEqualShallow)
+  }
+  return props0 === props1
 }
 
 export function isPropsEqualWithFunc(
@@ -168,7 +175,10 @@ export function getUnequalProps(props0, props1) {
 // Merge
 // -------------------------------------------------------------------------------------------------
 
-export function mergePropsDepth1(props0: any, props1: any) {
+export function mergeMaybePropsDepth1(props0: any, props1: any) {
+  if (!props0) {
+    return props1
+  }
   return mergePropsWithFunc(props0, props1, mergePropsShallow)
 }
 
