@@ -108,6 +108,7 @@ export const BASE_OPTION_REFINERS = {
   prevHint: identity as Identity<string | ((currentUnitText: string, currentUnit: string) => string)>,
   nextHint: identity as Identity<string | ((currentUnitText: string, currentUnit: string) => string)>,
 
+  buttonGroupClassNames: identity as Identity<ClassNamesInput>,
   buttonClassNames: identity as Identity<ClassNamesGenerator<ButtonArg>>,
 
   defaultAllDayEventDuration: createDuration,

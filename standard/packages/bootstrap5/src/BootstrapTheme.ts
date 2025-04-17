@@ -4,7 +4,6 @@ export class BootstrapTheme extends Theme {
 }
 
 BootstrapTheme.prototype.classes = {
-  buttonGroup: 'btn-group',
 }
 
 BootstrapTheme.prototype.baseIconClass = 'bi' // TODO: kill

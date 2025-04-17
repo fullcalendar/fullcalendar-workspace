@@ -96,6 +96,7 @@ docs: previous docs said button.click would receive second argument as HTMLEleme
 automated-test: button click handler can cancel default
 automated-test: button hint arguments of all kinds
 adjust transpilation settings. es2016 okay now, with null coalescing operator?
+drop Bootstrap 4
 
 NEXT:
   Remove the Theme class

@@ -33,7 +33,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
 
   renderWidgetGroup(widgetGroup: ToolbarWidget[]): any {
     let { props, context } = this
-    let { options, theme } = context
+    let { options } = context
     let children: VNode[] = []
 
     let isOnlyButtons = true
@@ -95,7 +95,9 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
       return createElement('div', {
         role: (isOnlyButtons && isOnlyView) ? 'tablist' : undefined,
         'aria-label': (isOnlyButtons && isOnlyView) ? options.viewChangeHint : undefined,
-        className: isOnlyButtons ? theme.getClassName('buttonGroup') : undefined,
+        className: isOnlyButtons
+          ? joinArrayishClassNames(options.buttonGroupClassNames)
+          : undefined,
       }, ...children)
     }
 

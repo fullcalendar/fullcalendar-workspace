@@ -15,6 +15,7 @@ export default createPlugin({
     popoverClassNames: ['fc-popover', 'popover'],
     popoverHeaderClassNames: ['fc-popover-header', 'popover-header'],
     popoverBodyClassNames: ['fc-popover-body', 'popover-body'],
+    buttonGroupClassNames: 'btn-group',
     buttonClassNames: (arg) => [
       'btn',
       'btn-primary',

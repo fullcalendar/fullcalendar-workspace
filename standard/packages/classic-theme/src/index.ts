@@ -16,6 +16,7 @@ export default createPlugin({
     directionClassNames: (direction) => `fc-direction-${direction}`,
     mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
     viewClassNames: (arg) => ['fc-view', `fc-${arg.view.type}-view`, 'fc-border'],
+    buttonGroupClassNames: 'fc-button-group',
     buttonClassNames: (arg) => [
       'fc-button',
       'fc-button-primary',
