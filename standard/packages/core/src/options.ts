@@ -111,6 +111,7 @@ export const BASE_OPTION_REFINERS = {
   buttonGroupClassNames: identity as Identity<ClassNamesInput>,
   buttonClassNames: identity as Identity<ClassNamesGenerator<ButtonContentArg>>,
   buttonContent: identity as Identity<CustomContentGenerator<ButtonContentArg>>,
+  iconClassNames: identity as Identity<ClassNamesInput>,
 
   defaultAllDayEventDuration: createDuration,
   defaultTimedEventDuration: createDuration,

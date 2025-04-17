@@ -1,8 +1,9 @@
-import { createElement, VNode } from '../preact.js'
+import { createElement, Fragment, VNode } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
-import { ToolbarWidget, ButtonContentArg } from '../toolbar-struct.js'
+import { ToolbarWidget, ButtonContentArg, IconArg } from '../toolbar-struct.js'
 import { joinArrayishClassNames } from '../util/html.js'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
+import { ClassNamesGenerator } from '../common/render-hook.js'
 
 export interface ToolbarContent {
   title: string
@@ -21,13 +22,14 @@ export interface ToolbarSectionProps extends ToolbarContent {
 
 export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
   render(): any {
-    let children = this.props.widgetGroups.map((widgetGroup) => this.renderWidgetGroup(widgetGroup))
+    let { props } = this
+    let children = props.widgetGroups.map((widgetGroup) => this.renderWidgetGroup(widgetGroup))
 
     return createElement(
       'div', {
-        className: 'fc-toolbar-section fc-toolbar-' + this.props.name
+        className: 'fc-toolbar-section fc-toolbar-' + props.name
       },
-      ...children,
+      ...children, // spread, so no React key errors
     )
   }
 
@@ -123,6 +125,56 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
 
 function renderButtonContent(arg: ButtonContentArg) {
   return (
-    arg.text || (arg.icon ? <span className={arg.icon} aria-hidden /> : '')
+    <ToolbarButton icon={arg.icon} text={arg.text} />
   )
 }
+
+// ToolbarButton
+// -------------------------------------------------------------------------------------------------
+
+interface ToolbarButtonProps {
+  icon: string | false
+  text: string
+}
+
+class ToolbarButton extends BaseComponent<ToolbarButtonProps> {
+  render() {
+    const { options } = this.context
+    const { icon, text } = this.props
+    const iconConfigs = options.icons || {}
+    const iconConfig = icon && iconConfigs[icon]
+    const renderProps = { direction: options.direction }
+
+    return (
+      <Fragment>
+        {iconConfig ? (
+          typeof iconConfig === 'function' ? (
+            <ContentContainer<IconArg>
+              tag='span'
+              style={{ display: 'contents' }}
+              attrs={{ 'aria-hidden': true }}
+              renderProps={renderProps}
+              generatorName={undefined}
+              customGenerator={iconConfig}
+            />
+          ) : (
+            <span
+              aria-hidden
+              className={joinArrayishClassNames(
+                options.iconClassNames,
+                generateClassName(
+                  (iconConfig as { classNames: ClassNamesGenerator<IconArg> }).classNames,
+                  renderProps,
+                )
+              )}
+            />
+          )
+        ) : (
+          text
+        )}
+      </Fragment>
+    )
+  }
+}
+
+// TODO: break out for X close in popover!

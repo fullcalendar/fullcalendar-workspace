@@ -21,6 +21,14 @@ export default createPlugin({
       'btn-primary',
       arg.isSelected && 'active',
     ],
+    iconClassNames: 'bi',
+    icons: {
+      close: { classNames: 'bi-x-lg' },
+      prev: { classNames: (arg) => `bi-chevron-${startSide(arg.direction)}` },
+      next: { classNames: (arg) => `bi-chevron-${endSide(arg.direction)}` },
+      prevYear: { classNames: (arg) => `bi-chevron-double-${startSide(arg.direction)}` },
+      nextYear: { classNames: (arg) => `bi-chevron-double-${endSide(arg.direction)}` },
+    },
     dayNarrowWidth: 70,
     dayNarrowClassNames: 'fc-day-narrow',
     dayNotNarrowClassNames: 'fc-day-not-narrow',
@@ -52,3 +60,12 @@ export default createPlugin({
     },
   },
 }) as PluginDef
+
+
+function startSide(direction: 'ltr' | 'rtl'): string {
+  return direction === 'ltr' ? 'left' : 'right'
+}
+
+function endSide(direction: 'ltr' | 'rtl'): string {
+  return direction === 'ltr' ? 'right' : 'left'
+}
