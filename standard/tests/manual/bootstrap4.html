@@ -25,7 +25,7 @@
       buttons: {
         myCustomButton: {
           text: 'custom!',
-          bootstrapFontAwesome: 'fa-bell',
+          icon: 'bell',
           click: function() {
             alert('clicked the custom button!');
           }
@@ -37,13 +37,14 @@
         right: 'multiMonthYear,dayGridMonth,timeGridWeek,listMonth'
       },
       themeSystem: 'bootstrap',
-      bootstrapFontAwesome: {
-        close: 'fa-times-circle',
-        prev: 'fa-caret-left',
-        next: 'fa-caret-right',
-        prevYear: 'fa-arrow-left',
-        nextYear: 'fa-arrow-right',
-        month: 'fa-calendar'
+      icons: {
+        bell: { className: 'fa-bell' },
+        close: { className: 'fa-times-circle' },
+        prev: { className: 'fa-caret-left' },
+        next: { className: 'fa-caret-right' },
+        prevYear: { className: 'fa-arrow-left' },
+        nextYear: { className: 'fa-arrow-right' },
+        month: { className: 'fa-calendar' },
       },
       initialDate: '2014-08-12',
       editable: true,
