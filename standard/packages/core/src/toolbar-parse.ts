@@ -79,6 +79,7 @@ function parseSection(
 
         let viewSpec: ViewSpec
         let buttonInput = calendarButtons[name] || {}
+        let buttonIcon = buttonInput.icon
         let buttonText: string
         let buttonHint: string | ((unitText: string) => string)
         let buttonClick: (ev: MouseEvent) => void
@@ -154,7 +155,7 @@ function parseSection(
           isView: Boolean(viewSpec),
           buttonText,
           buttonHint,
-          buttonIcon: buttonInput.icon || name,
+          buttonIcon: buttonIcon === false ? buttonIcon : (buttonIcon || name),
           buttonClick,
           buttonClassNames: buttonInput.classNames,
           buttonContent: buttonInput.content,
