@@ -22,16 +22,6 @@ describe('destroy', () => {
     })
   })
 
-  describeOptions('themeSystem', {
-    'when bootstrap theme': 'bootstrap',
-  }, () => {
-    it('cleans up all classNames on the root element', () => {
-      initCalendar()
-      currentCalendar.destroy()
-      expect(currentCalendar.el.className).toBe('')
-    })
-  })
-
   pushOptions({
     initialDate: '2014-12-01',
     droppable: true, // likely to attach document handler

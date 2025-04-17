@@ -54,18 +54,4 @@ describe('buttonIcons', () => {
       expect(nextYearBtn.iconName).toBe('some-icon-rightYear')
     })
   })
-
-  describe('when theme is set', () => {
-    pushOptions({
-      themeSystem: 'bootstrap',
-    })
-
-    it('buttonIcons is ignored', () => {
-      let calendar = initCalendar()
-      let toolbarWrapper = new CalendarWrapper(calendar).toolbar
-      let prevButtonInfo = toolbarWrapper.getButtonInfo('prev') // NOT called with 'fa'
-
-      expect(prevButtonInfo.iconName).toBeFalsy()
-    })
-  })
 })

@@ -5,7 +5,6 @@ import { buildBuildPluginHooks, extractPluginOptionsDefaults } from '../plugin-s
 import { PluginHooks } from '../plugin-system-struct.js'
 import { DateEnv } from '../datelib/env.js'
 import { CalendarImpl } from '../api/CalendarImpl.js'
-import { StandardTheme } from '../theme/StandardTheme.js'
 import { EventSourceHash } from '../structs/event-source.js'
 import { buildViewSpecs, ViewSpec } from '../structs/view-spec.js'
 import { mapHash, isPropsEqualShallow } from '../util/object.js'
@@ -65,7 +64,6 @@ export class CalendarDataManager {
   private buildLocale = memoize(buildLocale)
   private buildPluginHooks = buildBuildPluginHooks()
   private buildDateEnv = memoize(buildDateEnv)
-  private buildTheme = memoize(buildTheme)
   private parseToolbars = memoize(parseToolbars)
   private buildViewSpecs = memoize(buildViewSpecs)
   private buildDateProfileGenerator = memoizeObjArg(buildDateProfileGenerator)
@@ -392,7 +390,6 @@ export class CalendarDataManager {
     )
 
     let viewSpecs = this.buildViewSpecs(pluginHooks.views, this.stableOptionOverrides, this.stableDynamicOptionOverrides)
-    let theme = this.buildTheme(refinedOptions, pluginHooks)
     let toolbarConfig = this.parseToolbars(refinedOptions, viewSpecs, calendarApi)
 
     return this.stableCalendarOptionsData = {
@@ -401,7 +398,6 @@ export class CalendarDataManager {
       pluginOptionDefaults,
       dateEnv,
       viewSpecs,
-      theme,
       toolbarConfig,
       localeDefaults,
       availableRawLocales: availableLocaleData.map,
@@ -626,12 +622,6 @@ function buildDateEnv(
     cmdFormatter: pluginHooks.cmdFormatter,
     defaultSeparator,
   })
-}
-
-function buildTheme(options: CalendarOptionsRefined, pluginHooks: PluginHooks) {
-  let ThemeClass = pluginHooks.themeClasses[options.themeSystem] || StandardTheme
-
-  return new ThemeClass(options)
 }
 
 function buildDateProfileGenerator(props: DateProfileGeneratorProps): DateProfileGenerator {

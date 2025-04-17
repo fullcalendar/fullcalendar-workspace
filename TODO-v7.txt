@@ -99,9 +99,9 @@ adjust transpilation settings. es2016 okay now, with null coalescing operator?
 drop Bootstrap 4
 
 NEXT:
-  Remove the Theme class
-  implement icons
-    buttons should look up icons of same-name if undefined
+  X icon on popover
+  test *theming.html,
+    how to switch? plugin list must be dynamic? works?
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

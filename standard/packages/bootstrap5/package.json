@@ -39,12 +39,10 @@
     "exports": {
       ".": {
         "iife": true
-      },
-      "./internal": {}
+      }
     },
     "iifeGlobals": {
-      ".": "FullCalendar.Bootstrap5",
-      "./internal": "FullCalendar.Bootstrap5.Internal"
+      ".": "FullCalendar.Bootstrap5"
     }
   },
   "publishConfig": {

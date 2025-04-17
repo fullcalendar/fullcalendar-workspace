@@ -40,7 +40,6 @@ const calendar = new Calendar(calendarEl, {
     classicThemePlugin,
     dayGridPlugin
   ],
-  themeSystem: 'bootstrap', // important!
   initialView: 'dayGridMonth'
 })
 

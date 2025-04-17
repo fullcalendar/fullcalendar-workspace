@@ -34,7 +34,6 @@ describe('buttons', () => {
 
   it('can specify a bootstrap font-awesome icon', () => {
     let calendar = initCalendar({
-      themeSystem: 'bootstrap',
       buttons: {
         mybutton: {}, // TODO: somehow -- { bootstrapFontAwesome: 'asdf' },
       },

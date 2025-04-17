@@ -1,7 +1,6 @@
 import { ComponentChildren, flushUpdates } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
 import { CalendarOptions, CalendarListeners } from '../options.js'
-import { Theme } from '../theme/Theme.js'
 import { Emitter } from '../common/Emitter.js'
 import { CssDimValue } from '../scrollgrid/util.js'
 import { updateSizeSync } from '../component-util/resize-observer.js'
@@ -10,7 +9,6 @@ import { generateClassName } from '../content-inject/ContentContainer.js'
 
 export interface CalendarRootProps {
   options: CalendarOptions
-  theme: Theme
   emitter: Emitter<CalendarListeners>
   children: (className: string, height: CssDimValue | undefined, forPrint: boolean) => ComponentChildren
 }

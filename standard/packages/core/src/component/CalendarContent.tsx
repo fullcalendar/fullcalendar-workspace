@@ -75,7 +75,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       props.options,
       props.dateProfileGenerator,
       props.dateEnv,
-      props.theme,
       props.pluginHooks,
       props.dispatch,
       props.getCurrentData,

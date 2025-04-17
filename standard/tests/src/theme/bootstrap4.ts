@@ -6,7 +6,6 @@ import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 describe('bootstrap theme', () => {
   pushOptions({
     plugins: [bootstrapPlugin, classicThemePlugin, dayGridPlugin],
-    themeSystem: 'bootstrap',
   })
 
   describe('fa', () => {

@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
       listPlugin,
       bootstrapPlugin
     ],
-    themeSystem: 'bootstrap',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',

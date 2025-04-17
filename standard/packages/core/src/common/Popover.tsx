@@ -31,7 +31,7 @@ export class Popover extends BaseComponent<PopoverProps> {
   private titleId = getUniqueDomId()
 
   render(): any {
-    let { theme, options } = this.context
+    let { options } = this.context
     let { props } = this
 
     return createPortal(
@@ -58,7 +58,7 @@ export class Popover extends BaseComponent<PopoverProps> {
           <div
             role='button'
             aria-label={options.closeHint}
-            className={'fc-popover-close ' + theme.getIconClass('close')}
+            className={'fc-popover-close'}
             {...createAriaClickAttrs(this.handleClose)}
             ref={this.closeRef}
           />

@@ -11,7 +11,6 @@ import { eventDragMutationMassager, eventIsDraggableTransformer, EventDropTransf
 import { dateSelectionJoinTransformer } from './interactions/date-selecting.js'
 import { ExternalDefTransform } from './interactions/external-element-dragging.js'
 import { InteractionClass } from './interactions/interaction.js'
-import { ThemeClass } from './theme/Theme.js'
 import { EventSourceDef } from './structs/event-source-def.js'
 import { CmdFormatterFunc } from './datelib/DateFormatter.js'
 import { RecurringType } from './structs/recurring-event.js'
@@ -48,7 +47,6 @@ export interface PluginDefInput {
   eventDropTransformers?: EventDropTransformers[]
   componentInteractions?: InteractionClass[]
   calendarInteractions?: CalendarInteractionClass[]
-  themeClasses?: { [themeSystemName: string]: ThemeClass }
   eventSourceDefs?: EventSourceDef<any>[]
   cmdFormatter?: CmdFormatterFunc
   recurringTypes?: RecurringType<any>[]
@@ -85,7 +83,6 @@ export interface PluginHooks {
   eventDropTransformers: EventDropTransformers[]
   componentInteractions: InteractionClass[]
   calendarInteractions: CalendarInteractionClass[]
-  themeClasses: { [themeSystemName: string]: ThemeClass }
   eventSourceDefs: EventSourceDef<any>[]
   cmdFormatter?: CmdFormatterFunc
   recurringTypes: RecurringType<any>[]

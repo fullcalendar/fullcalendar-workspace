@@ -9,7 +9,6 @@ import { Emitter } from '../common/Emitter.js'
 import { EventUiHash, EventUi } from '../component-util/event-ui.js'
 import { DateMarker } from '../datelib/marker.js'
 import { ViewImpl } from '../api/ViewImpl.js'
-import { Theme } from '../theme/Theme.js'
 import { EventStore } from '../structs/event-store.js'
 import { DateSpan } from '../structs/date-span.js'
 import { EventInteractionState } from '../interactions/event-interaction-state.js'
@@ -39,7 +38,6 @@ export interface CalendarOptionsData {
   toolbarConfig: { [toolbarName: string]: ToolbarModel }
   availableRawLocales: any
   dateEnv: DateEnv
-  theme: Theme
   pluginHooks: PluginHooks
   pluginOptionDefaults: CalendarOptions[]
   viewSpecs: ViewSpecHash

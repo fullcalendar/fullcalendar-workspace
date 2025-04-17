@@ -1,6 +1,5 @@
 import { CalendarImpl } from './api/CalendarImpl.js'
 import { ViewImpl } from './api/ViewImpl.js'
-import { Theme } from './theme/Theme.js'
 import { DateEnv } from './datelib/env.js'
 import { PluginHooks } from './plugin-system-struct.js'
 import { createContext, Context } from './preact.js'
@@ -23,7 +22,6 @@ can pass in their ViewContext to util functions that accept CalendarContext.
 */
 export interface ViewContext extends CalendarContext {
   options: ViewOptionsRefined // more specific than BaseOptionsRefined
-  theme: Theme
   isRtl: boolean
   dateProfileGenerator: DateProfileGenerator
   viewSpec: ViewSpec
@@ -38,7 +36,6 @@ export function buildViewContext(
   viewOptions: ViewOptionsRefined,
   dateProfileGenerator: DateProfileGenerator,
   dateEnv: DateEnv,
-  theme: Theme,
   pluginHooks: PluginHooks,
   dispatch: (action: Action) => void,
   getCurrentData: () => CalendarData,
@@ -58,7 +55,6 @@ export function buildViewContext(
     viewSpec,
     viewApi,
     dateProfileGenerator,
-    theme,
     isRtl: viewOptions.direction === 'rtl',
     registerInteractiveComponent,
     unregisterInteractiveComponent,

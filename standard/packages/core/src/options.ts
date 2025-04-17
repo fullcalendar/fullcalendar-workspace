@@ -174,7 +174,6 @@ export const BASE_OPTION_REFINERS = {
   timeZone: String,
   locales: identity as Identity<LocaleInput[]>,
   locale: identity as Identity<LocaleSingularArg>,
-  themeSystem: String as Identity<'standard' | string>,
   dragRevertDuration: Number,
   dragScroll: Boolean,
   allDayMaintainDuration: Boolean,
@@ -399,7 +398,6 @@ export const BASE_OPTION_DEFAULTS = {
   timeZone: 'local', // TODO: throw error if given falsy value?
   locales: [],
   locale: '', // blank values means it will compute based off locales[]
-  themeSystem: 'standard',
   dragRevertDuration: 500,
   dragScroll: true,
   allDayMaintainDuration: false,

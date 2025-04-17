@@ -61,7 +61,7 @@ export class Calendar extends CalendarImpl {
 
       flushSync(() => {
         render(
-          <CalendarRoot options={currentData.calendarOptions} theme={currentData.theme} emitter={currentData.emitter}>
+          <CalendarRoot options={currentData.calendarOptions} emitter={currentData.emitter}>
             {(className: string, height: number, forPrint: boolean) => {
               this.setClassName(className)
               this.setHeight(height)
