@@ -2,8 +2,13 @@
 
 import { Component, Ref } from './preact.js'
 import { ViewContextType, ViewContext } from './ViewContext.js'
-import { compareObjs, EqualityFuncs, getUnequalProps } from './util/object.js'
+import { isPropsEqualWithMap, getUnequalProps } from './util/object.js'
 import { Dictionary } from './options.js'
+
+export type EqualityFunc<T> = (a: T, b: T) => boolean
+export type EqualityFuncs<P> = {
+  [K in keyof P]?: EqualityFunc<P[K]>
+}
 
 export abstract class PureComponent<Props=Dictionary, State=Dictionary> extends Component<Props, State> {
   static addPropsEquality = addPropsEquality
@@ -22,8 +27,8 @@ export abstract class PureComponent<Props=Dictionary, State=Dictionary> extends 
       console.log(getUnequalProps(nextProps, this.props), getUnequalProps(nextState, this.state))
     }
 
-    return !compareObjs(this.props, nextProps, this.propEquality) ||
-      !compareObjs(this.state, nextState, this.stateEquality)
+    return !isPropsEqualWithMap(this.props, nextProps, this.propEquality) ||
+      !isPropsEqualWithMap(this.state, nextState, this.stateEquality)
   }
 }
 

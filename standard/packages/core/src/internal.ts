@@ -49,11 +49,14 @@ export {
 } from './util/geom.js'
 
 export {
-  mapHash, filterHash, isPropsEqual, compareObjs, collectFromHash,
+  mapHash, filterHash, isPropsEqualShallow, isPropsEqualWithMap,
+} from './util/object.js'
+
+export {
   joinFuncishClassNames,
   mergeContentInjectors,
   mergeLifecycleCallbacks,
-} from './util/object.js'
+} from './options-manip.js'
 
 export {
   applyStyle,

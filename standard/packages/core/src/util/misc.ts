@@ -1,5 +1,7 @@
 import { preventDefault } from './dom-event.js'
 
+export type Falsy = false | null | undefined // TODO: 0 ?
+
 export type GenericHash = { [key: string]: any } // already did this somewhere
 
 let guidNumber = 0
@@ -175,4 +177,8 @@ export function firstDefined(...args) {
     }
   }
   return undefined
+}
+
+export function valuesIdentical<T>(a: T, b: T): boolean {
+  return a === b
 }

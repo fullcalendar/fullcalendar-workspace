@@ -1,7 +1,8 @@
 import { guid } from './util/misc.js'
 import { PluginDefInput, PluginDef, PluginHooks } from './plugin-system-struct.js'
 import { isArraysEqual } from './util/array.js'
-import { CalendarOptions, mergeRawOptions } from './options.js'
+import { CalendarOptions } from './options.js'
+import { mergeRawOptions } from './options-manip.js'
 import { ViewConfigInputHash } from './structs/view-config.js'
 
 // TODO: easier way to add new hooks? need to update a million things

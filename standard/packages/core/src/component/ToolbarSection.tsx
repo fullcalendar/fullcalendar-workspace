@@ -49,7 +49,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
     }
 
     for (let widget of widgetGroup) {
-      let { buttonName, buttonClick, buttonText, buttonIcon, buttonHint } = widget
+      let { buttonName, buttonText, buttonIcon, buttonHint, buttonClick } = widget
 
       if (buttonName === 'title') {
         children.push(

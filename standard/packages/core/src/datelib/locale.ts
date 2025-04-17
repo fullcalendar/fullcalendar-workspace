@@ -1,6 +1,6 @@
-import { mergeProps } from '../util/object.js'
-import { globalLocales } from '../global-locales.js' // weird to be importing this
-import { CalendarOptions, CalendarOptionsRefined, isMaybeObjectsEqual } from '../options.js'
+import { globalLocales } from '../global-locales.js'; // weird to be importing this
+import { CalendarOptions, CalendarOptionsRefined } from '../options.js'
+import { mergeRawOptions } from '../options-manip.js';
 
 export type LocaleCodeArg = string | string[]
 export type LocaleSingularArg = LocaleCodeArg | LocaleInput
@@ -125,7 +125,7 @@ function queryRawLocale(codes: string[], available: LocaleInputMap): LocaleInput
 }
 
 function parseLocale(codeArg: LocaleCodeArg, codes: string[], raw: LocaleInput): Locale {
-  let merged = mergeProps([MINIMAL_RAW_EN_LOCALE, raw], { buttonText: isMaybeObjectsEqual })
+  let merged = mergeRawOptions([MINIMAL_RAW_EN_LOCALE, raw])
 
   delete merged.code // don't want this part of the options
   let { week } = merged

@@ -1,54 +1,64 @@
-import { createDuration, Duration } from './datelib/duration.js'
-import { mergeProps, isPropsEqual } from './util/object.js'
-import { isArraysEqual } from './util/array.js'
-import { createFormatter } from './datelib/formatting.js'
-import { parseFieldSpecs } from './util/misc.js'
 import { DateProfileGeneratorClass } from './DateProfileGenerator.js'
 import { CalendarApi } from './api/CalendarApi.js'
 import { EventApi } from './api/EventApi.js'
 import {
+  AllDayContentArg, AllDayMountArg,
+  AllowFunc,
+  BusinessHoursInput,
+  ButtonInput,
+  ClassNamesGenerator,
+  ConstraintInput,
   CssDimValue,
+  CustomContentGenerator,
+  CustomRenderingHandler,
   DateInput,
   DateRangeInput,
-  BusinessHoursInput,
-  EventSourceInput,
-  LocaleSingularArg, LocaleInput,
-  EventInput, EventInputTransformer,
-  OverlapFunc, ConstraintInput, AllowFunc,
-  PluginDef,
-  ViewComponentType,
-  SpecificViewContentArg, SpecificViewMountArg,
-  ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler,
-  WeekNumberContentArg, WeekNumberMountArg,
-  SlotLaneContentArg, SlotLaneMountArg,
-  SlotLabelContentArg, SlotLabelMountArg,
-  AllDayContentArg, AllDayMountArg,
-  ViewMountArg,
-  EventClickArg,
-  EventHoveringArg,
-  DateSelectArg, DateUnselectArg,
-  WeekNumberCalculation,
-  FormatterInput,
-  ToolbarInput, CustomButtonInput, ButtonIconsInput, ButtonTextCompoundInput,
-  EventContentArg, EventMountArg,
+  DateSelectArg,
   DatesSetArg,
-  EventAddArg, EventChangeArg, EventRemoveArg,
-  MoreLinkContentArg,
-  MoreLinkMountArg,
-  MoreLinkAction,
-  ButtonHintCompoundInput,
-  CustomRenderingHandler,
+  DateUnselectArg,
   DayLaneContentArg,
   DayLaneMountArg,
+  DayPopoverContentArg,
+  DidMountHandler,
+  EventAddArg, EventChangeArg,
+  EventClickArg,
+  EventContentArg,
+  EventHoveringArg,
+  EventInput, EventInputTransformer,
+  EventMountArg,
+  EventRemoveArg,
+  EventSourceInput,
+  FormatterInput,
+  LocaleInput,
+  LocaleSingularArg,
+  MoreLinkAction,
+  MoreLinkContentArg,
+  MoreLinkMountArg,
   NowIndicatorLabelContentArg,
   NowIndicatorLabelMountArg,
   NowIndicatorLineContentArg,
   NowIndicatorLineMountArg,
+  OverlapFunc,
+  PluginDef,
+  SlotLabelContentArg, SlotLabelMountArg,
+  SlotLaneContentArg, SlotLaneMountArg,
+  SpecificViewContentArg, SpecificViewMountArg,
+  ToolbarInput,
+  ViewComponentType,
   ViewContentArg,
-  DayPopoverContentArg,
+  ViewMountArg,
+  WeekNumberCalculation,
+  WeekNumberContentArg, WeekNumberMountArg,
+  WillUnmountHandler,
+  IconInput,
 } from './api/structs.js'
-import { ClassNamesInput } from './util/html.js'
 import { ViewBodyContentArg, ViewHeaderContentArg } from './common/ViewSubsections.js'
+import { createDuration, Duration } from './datelib/duration.js'
+import { createFormatter } from './datelib/formatting.js'
+import { ClassNamesInput } from './util/html.js'
+import { parseFieldSpecs } from './util/misc.js'
+import { isMaybePropsEqualShallow, isPropsEqualDepth1 } from './util/object.js'
+import { isMaybeArraysEqual } from './util/array.js'
 
 // base options
 // ------------
@@ -57,9 +67,46 @@ export const BASE_OPTION_REFINERS = {
   navLinkDayClick: identity as Identity<string | ((this: CalendarApi, date: Date, jsEvent: UIEvent) => void)>,
   navLinkWeekClick: identity as Identity<string | ((this: CalendarApi, weekStart: Date, jsEvent: UIEvent) => void)>,
   duration: createDuration,
-  bootstrapFontAwesome: identity as Identity<ButtonIconsInput | false>, // TODO: move to bootstrap plugin
-  buttonIcons: identity as Identity<ButtonIconsInput | false>,
-  customButtons: identity as Identity<{ [name: string]: CustomButtonInput }>,
+
+  buttons: identity as Identity<{
+    today?: ButtonInput
+    prev?: ButtonInput
+    next?: ButtonInput
+    prevYear?: ButtonInput
+    nextYear?: ButtonInput
+    year?: ButtonInput
+    month?: ButtonInput
+    week?: ButtonInput
+    day?: ButtonInput
+    [buttonName: string]: ButtonInput
+  }>,
+  icons: identity as Identity<{
+    today?: IconInput
+    prev?: IconInput
+    next?: IconInput
+    prevYear?: IconInput
+    nextYear?: IconInput
+    year?: IconInput
+    month?: IconInput
+    week?: IconInput
+    day?: IconInput
+    [buttonName: string]: IconInput
+  }>,
+  prevText: String,
+  nextText: String,
+  prevYearText: String,
+  nextYearText: String,
+  todayText: String,
+  yearText: String,
+  monthText: String,
+  weekText: String,
+  weekTextShort: String,
+  dayText: String,
+  listText: identity as Identity<string | false>,
+  todayHint: identity as Identity<string | ((currentUnitText: string, currentUnit: string) => string)>,
+  prevHint: identity as Identity<string | ((currentUnitText: string, currentUnit: string) => string)>,
+  nextHint: identity as Identity<string | ((currentUnitText: string, currentUnit: string) => string)>,
+
   defaultAllDayEventDuration: createDuration,
   defaultTimedEventDuration: createDuration,
   nextDayThreshold: createDuration,
@@ -141,8 +188,6 @@ export const BASE_OPTION_REFINERS = {
   eventResizableFromStart: Boolean,
   displayEventTime: Boolean,
   displayEventEnd: Boolean,
-  weekText: String, // the short version
-  weekTextLong: String, // falls back to weekText
   progressiveEventRendering: Boolean,
   businessHours: identity as Identity<BusinessHoursInput>,
   initialDate: identity as Identity<DateInput>,
@@ -250,9 +295,9 @@ export const BASE_OPTION_REFINERS = {
   // only used by list-view, but languages define the value, so we need it in base options
   noEventsText: String,
 
-  viewHint: identity as Identity<string | ((...args: any[]) => string)>,
-  viewChangeHint: String,
-  navLinkHint: identity as Identity<string | ((...args: any[]) => string)>,
+  viewHint: identity as Identity<string | ((viewButtonText: string, viewName: string) => string)>,
+  viewChangeHint: String, // for the tab container
+  navLinkHint: identity as Identity<string | ((dateText: string, date: Date) => string)>,
   closeHint: String,
   eventsHint: String,
 
@@ -414,8 +459,6 @@ export type CalendarListeners = Required<CalendarListenersLoose> // much more co
 // -------------------------
 
 export const CALENDAR_OPTION_REFINERS = { // does not include base nor calendar listeners
-  buttonText: identity as Identity<ButtonTextCompoundInput>,
-  buttonHints: identity as Identity<ButtonHintCompoundInput>,
   views: identity as Identity<{ [viewId: string]: ViewOptions }>,
   plugins: identity as Identity<PluginDef[]>,
   initialEvents: identity as Identity<EventSourceInput>,
@@ -442,30 +485,15 @@ export type CalendarOptionsRefined =
 export const COMPLEX_OPTION_COMPARATORS: {
   [optionName in keyof CalendarOptions]: (a: CalendarOptions[optionName], b: CalendarOptions[optionName]) => boolean
 } = {
-  headerToolbar: isMaybeObjectsEqual,
-  footerToolbar: isMaybeObjectsEqual,
-  buttonText: isMaybeObjectsEqual,
-  buttonHints: isMaybeObjectsEqual,
-  buttonIcons: isMaybeObjectsEqual,
-  dateIncrement: isMaybeObjectsEqual,
+  headerToolbar: isMaybePropsEqualShallow,
+  footerToolbar: isMaybePropsEqualShallow,
+  dateIncrement: isMaybePropsEqualShallow,
+  buttons: isPropsEqualDepth1,
+  icons: isPropsEqualDepth1,
   plugins: isMaybeArraysEqual,
   events: isMaybeArraysEqual,
   eventSources: isMaybeArraysEqual,
   ['resources' as any]: isMaybeArraysEqual,
-}
-
-export function isMaybeObjectsEqual(a, b) {
-  if (typeof a === 'object' && typeof b === 'object' && a && b) { // both non-null objects
-    return isPropsEqual(a, b)
-  }
-  return a === b
-}
-
-function isMaybeArraysEqual(a, b) {
-  if (Array.isArray(a) && Array.isArray(b)) {
-    return isArraysEqual(a, b)
-  }
-  return a === b
 }
 
 // view-specific options
@@ -476,7 +504,6 @@ export const VIEW_OPTION_REFINERS: {
 } = {
   type: String,
   component: identity as Identity<ViewComponentType>,
-  buttonText: String,
   buttonTextKey: String, // internal only
   dateProfileGeneratorClass: identity as Identity<DateProfileGeneratorClass>,
   usesMinMaxTime: Boolean, // internal only
@@ -504,10 +531,6 @@ export type ViewOptionsRefined =
 
 // util funcs
 // ----------------------------------------------------------------------------------------------------
-
-export function mergeRawOptions(optionSets: Dictionary[]) {
-  return mergeProps(optionSets, COMPLEX_OPTION_COMPARATORS)
-}
 
 export function refineProps<Refiners extends GenericRefiners, Raw extends RawOptionsFromRefiners<Refiners>>(
   input: Raw,

@@ -1,30 +1,23 @@
-import { ViewSpec, ViewSpecHash } from './structs/view-spec.js'
-import { Theme } from './theme/Theme.js'
 import { CalendarImpl } from './api/CalendarImpl.js'
-import { CalendarOptionsRefined, CalendarOptions } from './options.js'
-import { ToolbarInput, ToolbarModel, ToolbarWidget, CustomButtonInput } from './toolbar-struct.js'
+import { CalendarOptionsRefined } from './options.js'
+import { ViewSpec, ViewSpecHash } from './structs/view-spec.js'
+import { ToolbarInput, ToolbarModel, ToolbarWidget } from './toolbar-struct.js'
 import { formatWithOrdinals } from './util/misc.js'
 
 export function parseToolbars(
   calendarOptions: CalendarOptionsRefined,
-  calendarOptionOverrides: CalendarOptions,
-  theme: Theme,
   viewSpecs: ViewSpecHash,
   calendarApi: CalendarImpl,
 ) {
   let header = calendarOptions.headerToolbar ? parseToolbar(
     calendarOptions.headerToolbar,
     calendarOptions,
-    calendarOptionOverrides,
-    theme,
     viewSpecs,
     calendarApi,
   ) : null
   let footer = calendarOptions.footerToolbar ? parseToolbar(
     calendarOptions.footerToolbar,
     calendarOptions,
-    calendarOptionOverrides,
-    theme,
     viewSpecs,
     calendarApi,
   ) : null
@@ -35,8 +28,6 @@ export function parseToolbars(
 function parseToolbar(
   sectionStrHash: ToolbarInput,
   calendarOptions: CalendarOptionsRefined,
-  calendarOptionOverrides: CalendarOptions,
-  theme: Theme,
   viewSpecs: ViewSpecHash,
   calendarApi: CalendarImpl,
 ) : ToolbarModel {
@@ -45,7 +36,7 @@ function parseToolbar(
   let hasTitle = false
 
   function processSectionStr(sectionStr: string): ToolbarWidget[][] {
-    let sectionRes = parseSection(sectionStr, calendarOptions, calendarOptionOverrides, theme, viewSpecs, calendarApi)
+    let sectionRes = parseSection(sectionStr, calendarOptions, viewSpecs, calendarApi)
     viewsWithButtons.push(...sectionRes.viewsWithButtons)
     hasTitle = hasTitle || sectionRes.hasTitle
     return sectionRes.widgets
@@ -69,18 +60,11 @@ BAD: querying icons and text here. should be done at render time
 */
 function parseSection(
   sectionStr: string,
-  calendarOptions: CalendarOptionsRefined, // defaults+overrides, then refined
-  calendarOptionOverrides: CalendarOptions, // overrides only!, unrefined :(
-  theme: Theme,
+  calendarOptions: CalendarOptionsRefined,
   viewSpecs: ViewSpecHash,
   calendarApi: CalendarImpl,
 ): { widgets: ToolbarWidget[][], viewsWithButtons: string[], hasTitle: boolean } {
-  let isRtl = calendarOptions.direction === 'rtl'
-  let calendarCustomButtons = calendarOptions.customButtons || {}
-  let calendarButtonTextOverrides = calendarOptionOverrides.buttonText || {}
-  let calendarButtonText = calendarOptions.buttonText || {}
-  let calendarButtonHintOverrides = calendarOptionOverrides.buttonHints || {}
-  let calendarButtonHints = calendarOptions.buttonHints || {}
+  let calendarButtons = calendarOptions.buttons || {}
   let sectionSubstrs = sectionStr ? sectionStr.split(' ') : []
   let viewsWithButtons: string[] = []
   let hasTitle = false
@@ -93,84 +77,87 @@ function parseSection(
           return { buttonName }
         }
 
-        let customButtonProps: CustomButtonInput
         let viewSpec: ViewSpec
-        let buttonClick
-        let buttonIcon // only one of these will be set
-        let buttonText // "
-        let buttonHint: string | ((navUnit: string) => string)
-        let isView = false
-        // ^ for the title="" attribute, for accessibility
+        let buttonInput = calendarButtons[buttonName] || {}
+        let buttonText: string
+        let buttonIcon = buttonInput.icon
+        let buttonHint: string | ((unitText: string) => string)
+        let buttonClick: (ev: MouseEvent) => void
 
-        if ((customButtonProps = calendarCustomButtons[buttonName])) {
-          buttonClick = (ev: UIEvent) => {
-            if (customButtonProps.click) {
-              customButtonProps.click.call(ev.target, ev, ev.target) // TODO: use Calendar this context?
-            }
-          };
-
-          (buttonIcon = theme.getCustomButtonIconClass(customButtonProps)) ||
-            (buttonIcon = theme.getIconClass(buttonName, isRtl)) ||
-            (buttonText = customButtonProps.text)
-
-          buttonHint = customButtonProps.hint || customButtonProps.text
-        } else if ((viewSpec = viewSpecs[buttonName])) {
-          isView = true
+        if ((viewSpec = viewSpecs[buttonName])) {
           viewsWithButtons.push(buttonName)
+          const buttonTextKey = viewSpec.optionDefaults.buttonTextKey as string
 
-          buttonClick = () => {
-            calendarApi.changeView(buttonName)
-          };
+          buttonText = buttonInput.text ||
+            (buttonTextKey ? calendarOptions[buttonTextKey] : '') ||
+            (viewSpec.singleUnit ? calendarOptions[viewSpec.singleUnit + 'Text'] : '') ||
+            buttonName
 
-          (buttonText = viewSpec.buttonTextOverride) ||
-            (buttonIcon = theme.getIconClass(buttonName, isRtl)) ||
-            (buttonText = viewSpec.buttonTextDefault)
-
-          let textFallback =
-            viewSpec.buttonTextOverride ||
-            viewSpec.buttonTextDefault
-
+          /*
+          buttons{}.hint(viewButtonText, viewName)
+          viewHint(viewButtonText, viewName)
+          */
           buttonHint = formatWithOrdinals(
-            viewSpec.buttonTitleOverride ||
-            viewSpec.buttonTitleDefault ||
-            calendarOptions.viewHint,
-            [textFallback, buttonName], // view-name = buttonName
-            textFallback,
+            buttonInput.hint || calendarOptions.viewHint,
+            [buttonText, buttonName], // ordinal arguments
+            buttonText, // fallback text
           )
-        } else if (calendarApi[buttonName]) { // a calendarApi method
-          buttonClick = () => {
-            calendarApi[buttonName]()
-          };
 
-          (buttonText = calendarButtonTextOverrides[buttonName]) ||
-            (buttonIcon = theme.getIconClass(buttonName, isRtl)) ||
-            (buttonText = calendarButtonText[buttonName]) // everything else is considered default
+          buttonClick = (ev: MouseEvent) => {
+            buttonInput?.click?.(ev)
+            if (!ev.defaultPrevented) {
+              calendarApi.changeView(buttonName)
+            }
+          }
+        } else if (calendarApi[buttonName]) {
+          buttonText = buttonInput.text ||
+            calendarOptions[buttonName + 'Text'] ||
+            buttonName
 
-          if (buttonName === 'prevYear' || buttonName === 'nextYear') {
-            let prevOrNext = buttonName === 'prevYear' ? 'prev' : 'next'
+          /*
+          button{}.hint(currentUnitText, currentUnit)
+          prevHint(currentUnitUnitext, currentUnit)
+          nextHint -- same
+          todayHint -- same
+          */
+          if (buttonName === 'prevYear') {
             buttonHint = formatWithOrdinals(
-              calendarButtonHintOverrides[prevOrNext] ||
-              calendarButtonHints[prevOrNext],
-              [
-                calendarButtonText.year || 'year', // localize unit
-                'year',
-              ],
-              calendarButtonText[buttonName],
+              buttonInput.hint || calendarOptions.prevHint,
+              [calendarOptions.yearText, 'year'],
+              buttonText,
+            )
+          } else if (buttonName === 'nextYear') {
+            buttonHint = formatWithOrdinals(
+              buttonInput.hint || calendarOptions.nextHint,
+              [calendarOptions.yearText, 'year'],
+              buttonText,
             )
           } else {
-            buttonHint = (navUnit: string) => formatWithOrdinals(
-              calendarButtonHintOverrides[buttonName] ||
-              calendarButtonHints[buttonName],
-              [
-                calendarButtonText[navUnit] || navUnit, // localized unit
-                navUnit,
-              ],
-              calendarButtonText[buttonName],
-            )
+            buttonHint = (currentUnit: string) => { // dynamic
+              return formatWithOrdinals(
+                buttonInput.hint || calendarOptions[buttonName + 'Hint'], // todayHint/prevHint/nextHint
+                [calendarOptions[currentUnit + 'Text'], currentUnit], // ordinal arguments
+                buttonText, // fallback text
+              )
+            }
+          }
+
+          buttonClick = (ev: MouseEvent) => {
+            buttonInput?.click?.(ev)
+            if (!ev.defaultPrevented) {
+              calendarApi[buttonName]()
+            }
           }
         }
 
-        return { buttonName, buttonClick, buttonIcon, buttonText, buttonHint, isView }
+        return {
+          isView: Boolean(viewSpec),
+          buttonName,
+          buttonText,
+          buttonHint,
+          buttonIcon,
+          buttonClick,
+        }
       })
     ),
   )

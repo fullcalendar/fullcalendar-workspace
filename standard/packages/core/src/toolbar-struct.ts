@@ -1,3 +1,5 @@
+import { ClassNamesGenerator, CustomContentGenerator } from './common/render-hook.js'
+
 export interface ToolbarModel {
   sectionWidgets: {
     start: ToolbarWidget[][]
@@ -8,14 +10,20 @@ export interface ToolbarModel {
   hasTitle: boolean
 }
 
+/*
+viewOrUnitName:
+- if a view-button, the viewName like "dayGridWeek"
+- if an api-method, like prev/next, the current view's unit, like "week"
+*/
+
+// Info for internal rendering
 export interface ToolbarWidget {
-  buttonName: string
-  buttonClick?: any
-  buttonIcon?: any
-  buttonText?: any
-  buttonHint?: string | ((navUnit: string) => string)
   isView?: boolean
-  // ^ if depends on the unit which will move forward/backward, will be a function
+  buttonName: string
+  buttonText?: string
+  buttonHint?: string | ((currentUnit: string) => string)
+  buttonIcon?: string | false
+  buttonClick?: (ev: MouseEvent) => void
 }
 
 export interface ToolbarInput {
@@ -26,44 +34,17 @@ export interface ToolbarInput {
   end?: string
 }
 
-export interface CustomButtonInput {
+export interface ButtonInput {
   text?: string
-  hint?: string
-  icon?: string
-  themeIcon?: string
-  bootstrapFontAwesome?: string
-  click?(ev: MouseEvent, element: HTMLElement): void
+  hint?: string | ((viewOrCurrentUnitText: string, viewOrCurrentUnit: string) => string)
+  icon?: string | false
+  click?: (ev: MouseEvent) => void
 }
 
-export interface ButtonIconsInput {
-  prev?: string
-  next?: string
-  prevYear?: string
-  nextYear?: string
-  today?: string
-  [viewOrCustomButton: string]: string | undefined
+export type IconInput = CustomContentGenerator<IconArg> | {
+  className?: ClassNamesGenerator<IconArg>
 }
 
-export interface ButtonTextCompoundInput {
-  prev?: string
-  next?: string
-  prevYear?: string // derive these somehow?
-  nextYear?: string
-  today?: string
-  month?: string
-  week?: string
-  day?: string
-  [viewOrCustomButton: string]: string | undefined // needed b/c of other optional types
-}
-
-export interface ButtonHintCompoundInput { // not DRY with ButtonTextCompoundInput
-  prev?: string | ((...args: any[]) => string)
-  next?: string | ((...args: any[]) => string)
-  prevYear?: string | ((...args: any[]) => string)
-  nextYear?: string | ((...args: any[]) => string)
-  today?: string | ((...args: any[]) => string)
-  month?: string | ((...args: any[]) => string)
-  week?: string | ((...args: any[]) => string)
-  day?: string | ((...args: any[]) => string)
-  [viewOrCustomButton: string]: string | ((...args: any[]) => string) | undefined // needed b/c of other optional types
+export interface IconArg {
+  direction: 'ltr' | 'rtl' // TODO: DRY
 }

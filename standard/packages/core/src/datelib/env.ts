@@ -23,7 +23,7 @@ export interface DateEnvSettings {
   weekNumberCalculation?: WeekNumberCalculation
   firstDay?: number, // will override what the locale wants
   weekText?: string,
-  weekTextLong?: string
+  weekTextShort?: string
   cmdFormatter?: CmdFormatterFunc
   defaultSeparator?: string
 }
@@ -47,7 +47,7 @@ export class DateEnv {
   weekDoy: number // which day must be within the year, for computing the first week number
   weekNumberFunc: any
   weekText: string // DON'T LIKE how options are confused with local
-  weekTextLong: string
+  weekTextShort: string
   cmdFormatter?: CmdFormatterFunc
   defaultSeparator: string
 
@@ -79,8 +79,8 @@ export class DateEnv {
       this.weekNumberFunc = settings.weekNumberCalculation
     }
 
-    this.weekText = settings.weekText != null ? settings.weekText : settings.locale.options.weekText
-    this.weekTextLong = (settings.weekTextLong != null ? settings.weekTextLong : settings.locale.options.weekTextLong) || this.weekText
+    this.weekText = settings.weekText
+    this.weekTextShort = settings.weekTextShort ?? settings.weekText
 
     this.cmdFormatter = settings.cmdFormatter
     this.defaultSeparator = settings.defaultSeparator

@@ -10,7 +10,7 @@ export default createPlugin({
   views: {
     list: {
       component: ListView,
-      buttonTextKey: 'list', // what to lookup in locale files
+      buttonTextKey: 'listText', // what to lookup in locale files
       listDayFormat: { month: 'long', day: 'numeric', year: 'numeric' }, // like "January 1, 2016"
     },
     listDay: {

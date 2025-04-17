@@ -1,7 +1,9 @@
+import { valuesIdentical } from './misc.js'
+
 // TODO: new util arrayify?
 // Array.prototype.slice.call(
 
-export function removeMatching(array, testFunc) {
+export function removeMatching(array: any[], testFunc) {
   let removeCnt = 0
   let i = 0
 
@@ -17,12 +19,12 @@ export function removeMatching(array, testFunc) {
   return removeCnt
 }
 
-export function removeExact(array, exactVal) {
+export function removeExact(array: any[], exactItem) {
   let removeCnt = 0
   let i = 0
 
   while (i < array.length) {
-    if (array[i] === exactVal) {
+    if (array[i] === exactItem) {
       array.splice(i, 1)
       removeCnt += 1
     } else {
@@ -33,20 +35,31 @@ export function removeExact(array, exactVal) {
   return removeCnt
 }
 
-export function isArraysEqual(a0, a1, equalityFunc?: (v0, v1) => boolean) { // TODO: better typing
-  if (a0 === a1) {
+export function isMaybeArraysEqual(array0: any[], array1: any[]) {
+  if (Array.isArray(array0) && Array.isArray(array1)) {
+    return isArraysEqual(array0, array1)
+  }
+  return array0 === array1
+}
+
+export function isArraysEqual(
+  array0: any[],
+  array1: any[],
+  itemsEqual = valuesIdentical,
+) {
+  if (array0 === array1) {
     return true
   }
 
-  let len = a0.length
+  let len = array0.length
   let i
 
-  if (len !== a1.length) { // not array? or not same length?
+  if (len !== array1.length) { // not array? or not same length?
     return false
   }
 
   for (i = 0; i < len; i += 1) {
-    if (!(equalityFunc ? equalityFunc(a0[i], a1[i]) : a0[i] === a1[i])) {
+    if (!itemsEqual(array0[i], array1[i])) {
       return false
     }
   }

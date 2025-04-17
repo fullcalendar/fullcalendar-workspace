@@ -8,7 +8,7 @@ import { CalendarImpl } from '../api/CalendarImpl.js'
 import { StandardTheme } from '../theme/StandardTheme.js'
 import { EventSourceHash } from '../structs/event-source.js'
 import { buildViewSpecs, ViewSpec } from '../structs/view-spec.js'
-import { mapHash, isPropsEqual } from '../util/object.js'
+import { mapHash, isPropsEqualShallow } from '../util/object.js'
 import { DateProfileGenerator, DateProfileGeneratorProps } from '../DateProfileGenerator.js'
 import { reduceViewType } from './view-type.js'
 import { getInitialDate, reduceCurrentDate } from './current-date.js'
@@ -28,10 +28,11 @@ import {
   CalendarOptionsRefined, CalendarOptions,
   CALENDAR_OPTION_REFINERS, COMPLEX_OPTION_COMPARATORS,
   ViewOptions, ViewOptionsRefined,
-  BASE_OPTION_DEFAULTS, mergeRawOptions,
+  BASE_OPTION_DEFAULTS,
   BASE_OPTION_REFINERS, VIEW_OPTION_REFINERS,
   CalendarListeners, CALENDAR_LISTENER_REFINERS, Dictionary,
 } from '../options.js'
+import { mergeRawOptions } from '../options-manip.js'
 import { rangeContainsMarker } from '../datelib/date-range.js'
 import { ViewImpl } from '../api/ViewImpl.js'
 import { parseBusinessHours } from '../structs/business-hours.js'
@@ -70,7 +71,7 @@ export class CalendarDataManager {
   private buildDateProfileGenerator = memoizeObjArg(buildDateProfileGenerator)
   private buildViewApi = memoize(buildViewApi)
   private buildViewUiProps = memoizeObjArg(buildViewUiProps)
-  private buildEventUiBySource = memoize(buildEventUiBySource, isPropsEqual)
+  private buildEventUiBySource = memoize(buildEventUiBySource, isPropsEqualShallow)
   private buildEventUiBases = memoize(buildEventUiBases)
   private parseContextBusinessHours = memoizeObjArg(parseContextBusinessHours)
   private buildTitle = memoize(buildTitle)
@@ -389,9 +390,9 @@ export class CalendarDataManager {
       refinedOptions.defaultRangeSeparator,
     )
 
-    let viewSpecs = this.buildViewSpecs(pluginHooks.views, this.stableOptionOverrides, this.stableDynamicOptionOverrides, localeDefaults)
+    let viewSpecs = this.buildViewSpecs(pluginHooks.views, this.stableOptionOverrides, this.stableDynamicOptionOverrides)
     let theme = this.buildTheme(refinedOptions, pluginHooks)
-    let toolbarConfig = this.parseToolbars(refinedOptions, this.stableOptionOverrides, theme, viewSpecs, calendarApi)
+    let toolbarConfig = this.parseToolbars(refinedOptions, viewSpecs, calendarApi)
 
     return this.stableCalendarOptionsData = {
       calendarOptions: refinedOptions,

@@ -151,7 +151,7 @@ function buildFormattingFunc(
       formatWeekNumber(
         context.computeWeekNumber(date.marker),
         context.weekText,
-        context.weekTextLong,
+        context.weekTextShort,
         context.locale,
         extendedSettings.week,
       )
@@ -279,16 +279,16 @@ function injectTzoStr(s: string, tzoStr: string): string {
 function formatWeekNumber(
   num: number,
   weekText: string,
-  weekTextLong: string,
+  weekTextShort: string,
   locale: Locale,
   display?: 'numeric' | 'narrow' | 'short' | 'long',
 ): string {
   let parts = []
 
   if (display === 'long') {
-    parts.push(weekTextLong)
-  } else if (display === 'short' || display === 'narrow') {
     parts.push(weekText)
+  } else if (display === 'short' || display === 'narrow') {
+    parts.push(weekTextShort)
   }
 
   if (display === 'long' || display === 'short') {

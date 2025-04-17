@@ -1,6 +1,6 @@
+import { Falsy } from './misc.js'
 
-type Falsy = false | null | undefined
-type ClassNameInput = string | number | Falsy
+export type ClassNameInput = string | number | Falsy
 export type ClassNamesInput = ClassNameInput[] | ClassNameInput // possibly an array
 
 export function joinArrayishClassNames(...args: ClassNamesInput[]): string {

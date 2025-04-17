@@ -1,5 +1,5 @@
 import { isArraysEqual } from './array.js'
-import { isPropsEqual } from './object.js'
+import { isPropsEqualShallow } from './object.js'
 import { Dictionary } from '../options.js'
 
 export function memoize<Args extends any[], Res>(
@@ -42,7 +42,7 @@ export function memoizeObjArg<Arg extends Dictionary, Res>(
   return (newArg: Arg) => {
     if (!currentArg) {
       currentRes = workerFunc.call(this, newArg)
-    } else if (!isPropsEqual(currentArg, newArg)) {
+    } else if (!isPropsEqualShallow(currentArg, newArg)) {
       if (teardownFunc) {
         teardownFunc(currentRes)
       }

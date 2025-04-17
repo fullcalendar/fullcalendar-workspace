@@ -9,7 +9,7 @@ import {
   EventSegUiInteractionState,
   Hit,
   addDurations,
-  isPropsEqual,
+  isPropsEqualShallow,
   joinClassNames,
   memoize,
   multiplyDuration,
@@ -151,7 +151,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
 }
 
 TimeGridCols.addPropsEquality({
-  style: isPropsEqual,
+  style: isPropsEqualShallow,
 })
 
 // Utils

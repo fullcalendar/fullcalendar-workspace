@@ -4,7 +4,8 @@ import { BaseComponent, setRef } from '../vdom-util.js'
 import { guid } from '../util/misc.js'
 import { isArraysEqual } from '../util/array.js'
 import { ViewOptions } from '../options.js'
-import { isNonHandlerPropsEqual, isPropsEqual } from '../util/object.js'
+import { isPropsEqualShallow } from '../util/object.js'
+import { isNonHandlerPropsEqual } from '../options-manip.js'
 import { joinClassNames } from '../util/html.js'
 
 export type ElRef = Ref<HTMLElement>
@@ -160,9 +161,9 @@ export class ContentInjector<RenderProps> extends BaseComponent<ContentInjectorP
 }
 
 ContentInjector.addPropsEquality({
-  renderProps: isPropsEqual,
+  renderProps: isPropsEqualShallow,
   attrs: isNonHandlerPropsEqual,
-  style: isPropsEqual,
+  style: isPropsEqualShallow,
 })
 
 // Util

@@ -1,5 +1,6 @@
 import { ViewConfigHash, ViewComponentType } from './view-config.js'
-import { mergeRawOptions, ViewOptions } from '../options.js'
+import { ViewOptions } from '../options.js'
+import { mergeRawOptions } from '../options-manip.js'
 
 /*
 Represents information for an instantiatable View class along with settings
