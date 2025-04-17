@@ -24,7 +24,6 @@ declare -a publish_dirs=( \
   "$root_dir/standard/packages/bootstrap5" \
   "$root_dir/standard/packages/daygrid" \
   "$root_dir/standard/packages/timegrid" \
-  "$root_dir/standard/packages/bootstrap4" \
   "$root_dir/standard/packages/google-calendar" \
   "$root_dir/standard/packages/icalendar" \
   "$root_dir/standard/packages/interaction" \

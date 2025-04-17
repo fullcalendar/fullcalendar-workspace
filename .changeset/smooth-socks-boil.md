@@ -10,7 +10,6 @@
 "@fullcalendar-examples/next13-app-scheduler": patch
 "@fullcalendar-examples/typescript-scheduler": patch
 "@fullcalendar/interaction": patch
-"@fullcalendar/bootstrap": patch
 "@fullcalendar/bootstrap5": patch
 "@fullcalendar/multimonth": patch
 "@fullcalendar/scrollgrid": patch
@@ -40,7 +39,6 @@
 "@fullcalendar/list": patch
 "@fullcalendar-examples/react-debug": patch
 "@fullcalendar-examples/react-redux": patch
-"@fullcalendar-examples/bootstrap4": patch
 "@fullcalendar-examples/bootstrap5": patch
 "@fullcalendar-examples/react-lazy": patch
 "@fullcalendar-examples/typescript": patch

@@ -1,9 +1,0 @@
-
-.fc-theme-bootstrap {
-  // use FullCalendar's default colors. Bootstrap 4's colors aren't very versatile
-
-  &,
-  & .popover {
-    line-height: normal; // undo thick line-height
-  }
-}

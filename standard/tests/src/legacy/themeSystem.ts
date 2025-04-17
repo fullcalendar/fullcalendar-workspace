@@ -1,4 +1,4 @@
-import bootstrapPlugin from '@fullcalendar/bootstrap'
+import bootstrapPlugin from '@fullcalendar/bootstrap5'
 import classicThemePlugin from '@fullcalendar/classic-theme'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'

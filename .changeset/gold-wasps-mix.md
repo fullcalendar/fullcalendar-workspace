@@ -2,7 +2,6 @@
 "@fullcalendar/resource-timegrid": major
 "@fullcalendar/resource-timeline": major
 "@fullcalendar/resource-daygrid": major
-"@fullcalendar/bootstrap": major
 "@fullcalendar/bootstrap5": major
 "@fullcalendar/multimonth": major
 "@fullcalendar/scrollgrid": major
