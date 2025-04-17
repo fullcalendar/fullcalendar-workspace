@@ -1,9 +1,9 @@
-import { createElement, Fragment, VNode } from '../preact.js'
+import { createElement, VNode } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
-import { ToolbarWidget, ButtonContentArg, IconArg } from '../toolbar-struct.js'
+import { ToolbarWidget, ButtonContentArg } from '../toolbar-struct.js'
 import { joinArrayishClassNames } from '../util/html.js'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
-import { ClassNamesGenerator } from '../common/render-hook.js'
+import { Icon } from './Icon.js'
 
 export interface ToolbarContent {
   title: string
@@ -141,40 +141,15 @@ class ToolbarButton extends BaseComponent<ToolbarButtonProps> {
   render() {
     const { options } = this.context
     const { icon, text } = this.props
-    const iconConfigs = options.icons || {}
-    const iconConfig = icon && iconConfigs[icon]
-    const renderProps = { direction: options.direction }
+    const iconInputs = options.icons || {}
+    const iconInput = icon && iconInputs[icon]
 
-    return (
-      <Fragment>
-        {iconConfig ? (
-          typeof iconConfig === 'function' ? (
-            <ContentContainer<IconArg>
-              tag='span'
-              style={{ display: 'contents' }}
-              attrs={{ 'aria-hidden': true }}
-              renderProps={renderProps}
-              generatorName={undefined}
-              customGenerator={iconConfig}
-            />
-          ) : (
-            <span
-              aria-hidden
-              className={joinArrayishClassNames(
-                options.iconClassNames,
-                generateClassName(
-                  (iconConfig as { classNames: ClassNamesGenerator<IconArg> }).classNames,
-                  renderProps,
-                )
-              )}
-            />
-          )
-        ) : (
-          text
-        )}
-      </Fragment>
-    )
+    if (iconInput) {
+      return (
+        <Icon input={iconInput} />
+      )
+    }
+
+    return text
   }
 }
-
-// TODO: break out for X close in popover!

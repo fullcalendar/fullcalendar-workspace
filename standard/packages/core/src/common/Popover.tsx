@@ -5,6 +5,7 @@ import { createElement, ComponentChildren, Ref, createPortal, createRef } from '
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { joinArrayishClassNames } from '../util/html.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
+import { Icon } from '../component/Icon.js'
 
 export interface PopoverProps {
   elRef?: Ref<HTMLElement>
@@ -33,6 +34,7 @@ export class Popover extends BaseComponent<PopoverProps> {
   render(): any {
     let { options } = this.context
     let { props } = this
+    let closeIconInput = options.icons?.close
 
     return createPortal(
       <div
@@ -55,13 +57,17 @@ export class Popover extends BaseComponent<PopoverProps> {
           <div className="fc-popover-title" id={this.titleId}>
             {props.title}
           </div>
-          <div
-            role='button'
-            aria-label={options.closeHint}
-            className={'fc-popover-close'}
-            {...createAriaClickAttrs(this.handleClose)}
-            ref={this.closeRef}
-          />
+          {Boolean(closeIconInput) && (
+            <div
+              role='button'
+              aria-label={options.closeHint}
+              className='fc-popover-close'
+              {...createAriaClickAttrs(this.handleClose)}
+              ref={this.closeRef}
+            >
+              <Icon input={closeIconInput} />
+            </div>
+          )}
         </div>
         <div className={joinArrayishClassNames(options.popoverBodyClassNames)}>
           {props.children}
