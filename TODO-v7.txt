@@ -99,11 +99,6 @@ adjust transpilation settings. es2016 okay now, with null coalescing operator?
 changelog: dropped Bootstrap 4
 changelog: shape of a locale
 
-NEXT:
-  X icon on popover
-  test *theming.html,
-    how to switch? plugin list must be dynamic? works?
-
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files
 
