@@ -1,8 +1,6 @@
 
 .fc-button-group {
   position: relative;
-  display: inline-flex;
-  vertical-align: middle;
 }
 
 .fc-button-group > .fc-button {

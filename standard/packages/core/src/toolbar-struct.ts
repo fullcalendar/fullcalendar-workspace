@@ -37,6 +37,7 @@ export interface ButtonInput {
 export interface ToolbarWidget {
   name: string
   isView?: boolean
+  customElement?: ToolbarElementInput
   buttonText?: string
   buttonHint?: string | ((currentUnit: string) => string)
   buttonIcon?: string | false
@@ -65,3 +66,8 @@ export interface IconArg {
 export type IconInput = CustomContentGenerator<IconArg> | {
   classNames?: ClassNamesGenerator<IconArg>
 }
+
+// Custom Elements
+// -------------------------------------------------------------------------------------------------
+
+export type ToolbarElementInput = CustomContentGenerator<{}>

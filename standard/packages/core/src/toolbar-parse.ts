@@ -15,6 +15,7 @@ export function parseToolbars(
     viewSpecs,
     calendarApi,
   ) : null
+
   let footer = calendarOptions.footerToolbar ? parseToolbar(
     calendarOptions.footerToolbar,
     calendarOptions,
@@ -65,6 +66,7 @@ function parseSection(
   calendarApi: CalendarImpl,
 ): { widgets: ToolbarWidget[][], viewsWithButtons: string[], hasTitle: boolean } {
   let calendarButtons = calendarOptions.buttons || {}
+  let customElements = calendarOptions.toolbarElements || {}
   let sectionSubstrs = sectionStr ? sectionStr.split(' ') : []
   let viewsWithButtons: string[] = []
   let hasTitle = false
@@ -75,6 +77,9 @@ function parseSection(
         if (name === 'title') {
           hasTitle = true
           return { name }
+        }
+        if (customElements[name]) {
+          return { name, customElement: customElements[name] }
         }
 
         let viewSpec: ViewSpec

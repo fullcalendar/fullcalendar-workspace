@@ -52,6 +52,7 @@ import {
   WillUnmountHandler,
   IconInput,
   ButtonContentArg,
+  ToolbarElementInput,
 } from './api/structs.js'
 import { ViewBodyContentArg, ViewHeaderContentArg } from './common/ViewSubsections.js'
 import { createDuration, Duration } from './datelib/duration.js'
@@ -92,6 +93,9 @@ export const BASE_OPTION_REFINERS = {
     week?: IconInput
     day?: IconInput
     [buttonName: string]: IconInput
+  }>,
+  toolbarElements: identity as Identity<{
+    [elementName: string]: ToolbarElementInput
   }>,
   prevText: String,
   nextText: String,

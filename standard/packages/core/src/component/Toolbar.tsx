@@ -20,7 +20,7 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
       <div
         className={joinArrayishClassNames(
           className,
-          'fc-toolbar',
+          'fc-toolbar fc-align-center',
           options.toolbarClassNames,
         )}
       >

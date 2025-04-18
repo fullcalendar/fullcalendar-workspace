@@ -27,7 +27,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
 
     return createElement(
       'div', {
-        className: 'fc-toolbar-section fc-toolbar-' + props.name
+        className: `fc-toolbar-section fc-toolbar-${props.name} fc-flex-row fc-align-center`
       },
       ...children, // spread, so no React key errors
     )
@@ -52,7 +52,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
     }
 
     for (let widget of widgetGroup) {
-      let { name, buttonHint } = widget
+      let { name, customElement, buttonHint } = widget
 
       if (name === 'title') {
         children.push(
@@ -62,6 +62,16 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
             id={props.titleId}
             className='fc-toolbar-title'
           >{props.title}</div>,
+        )
+      } else if (customElement) {
+        children.push(
+          <ContentContainer
+            tag='span'
+            style={{ display: 'contents' }}
+            renderProps={{}}
+            generatorName={undefined}
+            customGenerator={customElement}
+          />
         )
       } else {
         let isSelected = name === props.selectedButton
@@ -113,9 +123,12 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
       return createElement('div', {
         role: (isOnlyButtons && isOnlyView) ? 'tablist' : undefined,
         'aria-label': (isOnlyButtons && isOnlyView) ? options.viewChangeHint : undefined,
-        className: isOnlyButtons
-          ? joinArrayishClassNames(options.buttonGroupClassNames)
-          : undefined,
+        className: joinArrayishClassNames(
+          'fc-flex-row',
+          isOnlyButtons
+            ? options.buttonGroupClassNames
+            : 'fc-align-center',
+        ),
       }, ...children)
     }
 
