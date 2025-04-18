@@ -3,95 +3,82 @@
 <head>
 <meta charset='utf-8' />
 
-<!-- for Bootstrap 5 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
 
 <script src='../../bundle/dist/index.global.js'></script>
 <script src='../../../standard/packages/bootstrap5/dist/index.global.js'></script>
+
 <script src='../../../standard/tests/manual/js/theme-chooser.js'></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
-    var calendar;
-
-    initThemeChooser({
-
-      init: function(themeSystem) {
-        calendar = new FullCalendar.Calendar(calendarEl, {
-          themeSystem: themeSystem,
-          now: '2020-09-07',
-          editable: true, // enable draggable events
-          selectable: true,
-          nowIndicator: true,
-          aspectRatio: 1.8,
-          scrollTime: '00:00', // undo default 6am scrollTime
-          headerToolbar: {
-            left: 'today prev,next',
-            center: 'title',
-            right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth,listWeek'
-          },
-          initialView: 'resourceTimelineDay',
-          buttons: {
-            resourceTimelineThreeDays: {
-              text: '3 days',
-            },
-          },
-          views: {
-            resourceTimelineThreeDays: {
-              type: 'resourceTimeline',
-              duration: { days: 3 },
-            }
-          },
-          resourceAreaHeaderContent: 'Rooms',
-          resources: [
-            { id: 'a', title: 'Auditorium A' },
-            { id: 'b', title: 'Auditorium B', eventColor: 'green' },
-            { id: 'c', title: 'Auditorium C', eventColor: 'orange' },
-            { id: 'd', title: 'Auditorium D', children: [
-              { id: 'd1', title: 'Room D1' },
-              { id: 'd2', title: 'Room D2' }
-            ] },
-            { id: 'e', title: 'Auditorium E' },
-            { id: 'f', title: 'Auditorium F', eventColor: 'red' },
-            { id: 'g', title: 'Auditorium G' },
-            { id: 'h', title: 'Auditorium H' },
-            { id: 'i', title: 'Auditorium I' },
-            { id: 'j', title: 'Auditorium J' },
-            { id: 'k', title: 'Auditorium K' },
-            { id: 'l', title: 'Auditorium L' },
-            { id: 'm', title: 'Auditorium M' },
-            { id: 'n', title: 'Auditorium N' },
-            { id: 'o', title: 'Auditorium O' },
-            { id: 'p', title: 'Auditorium P' },
-            { id: 'q', title: 'Auditorium Q' },
-            { id: 'r', title: 'Auditorium R' },
-            { id: 's', title: 'Auditorium S' },
-            { id: 't', title: 'Auditorium T' },
-            { id: 'u', title: 'Auditorium U' },
-            { id: 'v', title: 'Auditorium V' },
-            { id: 'w', title: 'Auditorium W' },
-            { id: 'x', title: 'Auditorium X' },
-            { id: 'y', title: 'Auditorium Y' },
-            { id: 'z', title: 'Auditorium Z' }
-          ],
-          events: [
-            { id: '1', resourceId: 'b', start: '2020-09-07T02:00:00', end: '2020-09-07T07:00:00', title: 'event 1' },
-            { id: '2', resourceId: 'c', start: '2020-09-07T05:00:00', end: '2020-09-07T22:00:00', title: 'event 2' },
-            { id: '3', resourceId: 'd', start: '2020-09-06', end: '2020-09-08', title: 'event 3' },
-            { id: '4', resourceId: 'e', start: '2020-09-07T03:00:00', end: '2020-09-07T08:00:00', title: 'event 4' },
-            { id: '5', resourceId: 'f', start: '2020-09-07T00:30:00', end: '2020-09-07T02:30:00', title: 'Click for Google', url: 'https://google.com' }
-          ]
-        });
-        calendar.render();
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      now: '2020-09-07',
+      editable: true, // enable draggable events
+      selectable: true,
+      nowIndicator: true,
+      aspectRatio: 1.8,
+      scrollTime: '00:00', // undo default 6am scrollTime
+      headerToolbar: {
+        left: 'today prev,next',
+        center: 'title',
+        right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth,listWeek'
       },
-
-      change: function(themeSystem) {
-        calendar.setOption('themeSystem', themeSystem);
-      }
-
+      initialView: 'resourceTimelineDay',
+      buttons: {
+        resourceTimelineThreeDays: {
+          text: '3 days',
+        },
+      },
+      views: {
+        resourceTimelineThreeDays: {
+          type: 'resourceTimeline',
+          duration: { days: 3 },
+        }
+      },
+      resourceAreaHeaderContent: 'Rooms',
+      resources: [
+        { id: 'a', title: 'Auditorium A' },
+        { id: 'b', title: 'Auditorium B', eventColor: 'green' },
+        { id: 'c', title: 'Auditorium C', eventColor: 'orange' },
+        { id: 'd', title: 'Auditorium D', children: [
+          { id: 'd1', title: 'Room D1' },
+          { id: 'd2', title: 'Room D2' }
+        ] },
+        { id: 'e', title: 'Auditorium E' },
+        { id: 'f', title: 'Auditorium F', eventColor: 'red' },
+        { id: 'g', title: 'Auditorium G' },
+        { id: 'h', title: 'Auditorium H' },
+        { id: 'i', title: 'Auditorium I' },
+        { id: 'j', title: 'Auditorium J' },
+        { id: 'k', title: 'Auditorium K' },
+        { id: 'l', title: 'Auditorium L' },
+        { id: 'm', title: 'Auditorium M' },
+        { id: 'n', title: 'Auditorium N' },
+        { id: 'o', title: 'Auditorium O' },
+        { id: 'p', title: 'Auditorium P' },
+        { id: 'q', title: 'Auditorium Q' },
+        { id: 'r', title: 'Auditorium R' },
+        { id: 's', title: 'Auditorium S' },
+        { id: 't', title: 'Auditorium T' },
+        { id: 'u', title: 'Auditorium U' },
+        { id: 'v', title: 'Auditorium V' },
+        { id: 'w', title: 'Auditorium W' },
+        { id: 'x', title: 'Auditorium X' },
+        { id: 'y', title: 'Auditorium Y' },
+        { id: 'z', title: 'Auditorium Z' }
+      ],
+      events: [
+        { id: '1', resourceId: 'b', start: '2020-09-07T02:00:00', end: '2020-09-07T07:00:00', title: 'event 1' },
+        { id: '2', resourceId: 'c', start: '2020-09-07T05:00:00', end: '2020-09-07T22:00:00', title: 'event 2' },
+        { id: '3', resourceId: 'd', start: '2020-09-06', end: '2020-09-08', title: 'event 3' },
+        { id: '4', resourceId: 'e', start: '2020-09-07T03:00:00', end: '2020-09-07T08:00:00', title: 'event 4' },
+        { id: '5', resourceId: 'f', start: '2020-09-07T00:30:00', end: '2020-09-07T02:30:00', title: 'Click for Google', url: 'https://google.com' }
+      ]
     });
-
+    calendar.render();
+    initThemeChooser();
   });
 
 </script>
@@ -141,19 +128,9 @@
 <body>
 
   <div id='top'>
-
     <div class='left'>
-
-      <div id='theme-system-selector' class='selector'>
-        Theme System:
-        <select>
-          <option value='bootstrap5' selected>Bootstrap 5</option>
-          <option value='standard'>unthemed</option>
-        </select>
-      </div>
-
-      <div data-theme-system="bootstrap,bootstrap5" class='selector' style='display:none'>
-        Theme Name:
+      <div class='selector'>
+        Bootstrap Theme:
         <select>
           <option value='' selected>Default</option>
           <option value='cerulean'>Cerulean</option>
@@ -179,14 +156,12 @@
           <option value='yeti'>Yeti</option>
         </select>
       </div>
-
       <span id='loading' style='display:none'>loading theme...</span>
-
     </div>
 
     <div class='right'>
-      <span class='credits' data-credit-id='bootstrap-standard' style='display:none'>
-        <a href='https://getbootstrap.com/docs/3.3/' target='_blank'>Theme by Bootstrap</a>
+      <span class='credits' data-credit-id='bootstrap' style='display:none'>
+        <a href='https://getbootstrap.com/' target='_blank'>Theme by Bootstrap</a>
       </span>
       <span class='credits' data-credit-id='bootstrap-custom' style='display:none'>
         <a href='https://bootswatch.com/' target='_blank'>Theme by Bootswatch</a>

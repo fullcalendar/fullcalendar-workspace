@@ -3,6 +3,10 @@
 <head>
 <meta charset='utf-8' />
 
+<link href='../../packages/bootstrap5/node_modules/bootstrap-icons/font/bootstrap-icons.min.css' rel='stylesheet'>
+<link href='../../packages/bootstrap5/node_modules/bootstrap/dist/css/bootstrap.min.css' rel='stylesheet'>
+<script src='../../packages/bootstrap5/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'></script>
+
 <script src='../../packages/core/dist/index.global.js'></script>
 <script src='../../packages/interaction/dist/index.global.js'></script>
 <script src='../../packages/daygrid/dist/index.global.js'></script>
@@ -10,10 +14,6 @@
 <script src='../../packages/list/dist/index.global.js'></script>
 <script src='../../packages/multimonth/dist/index.global.js'></script>
 <script src='../../packages/bootstrap5/dist/index.global.js'></script>
-
-<link href='../../packages/bootstrap5/node_modules/bootstrap-icons/font/bootstrap-icons.min.css' rel='stylesheet'>
-<link href='../../packages/bootstrap5/node_modules/bootstrap/dist/css/bootstrap.min.css' rel='stylesheet'>
-<script src='../../packages/bootstrap5/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'></script>
 
 <script>
 
@@ -40,12 +40,12 @@
         right: 'multiMonthYear,dayGridMonth,timeGridWeek,listMonth'
       },
       icons: {
-        bell: 'bi-bell',
-        close: 'bi-x-octagon',
-        prev: 'bi-arrow-left-circle-fill',
-        next: 'bi-arrow-right-circle-fill',
-        prevYear: 'bi-arrow-return-left',
-        nextYear: 'bi-arrow-return-right'
+        bell: { classNames: 'bi-bell' },
+        close: { classNames: 'bi-x-octagon' },
+        prev: { classNames: 'bi-arrow-left-circle-fill' },
+        next: { classNames: 'bi-arrow-right-circle-fill' },
+        prevYear: { classNames: 'bi-arrow-return-left' },
+        nextYear: { classNames: 'bi-arrow-return-right' },
       },
       initialDate: '2014-08-12',
       editable: true,
