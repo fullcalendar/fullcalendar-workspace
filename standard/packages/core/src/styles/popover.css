@@ -19,8 +19,16 @@
 
 .fc-popover-close {
   cursor: pointer;
+  vertical-align: middle;
+  line-height: 1.357em;
+}
+
+.fc-popover-close svg { // icon. TODO: DRY with fc-button
+  vertical-align: middle;
+  font-size: 1.357em;
+  width: 1em;
+  height: 1em;
   opacity: 0.65;
-  font-size: 1.1em;
 }
 
 .fc-theme-standard {

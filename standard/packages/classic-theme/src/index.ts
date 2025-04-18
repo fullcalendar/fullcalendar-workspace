@@ -1,4 +1,5 @@
 import { createPlugin, EventContentArg, PluginDef } from '@fullcalendar/core'
+import * as svgIcons from './svgIcons.js'
 import './index.css'
 
 // TODO: better solution for this
@@ -25,13 +26,12 @@ export default createPlugin({
       'fc-button-primary',
       arg.isSelected && 'fc-button-active',
     ],
-    iconClassNames: 'fc-icon',
     icons: {
-      close: { classNames: 'fc-icon-x' },
-      prev: { classNames: (arg) => `fc-icon-chevron-${startSide(arg.direction)}` },
-      next: { classNames: (arg) => `fc-icon-chevron-${endSide(arg.direction)}` },
-      prevYear: { classNames: (arg) => `fc-icon-chevrons-${startSide(arg.direction)}` },
-      nextYear: { classNames: (arg) => `fc-icon-chevrons-${endSide(arg.direction)}` },
+      close: () => svgIcons.x,
+      prev: (arg) => arg.direction === 'ltr' ? svgIcons.chevronLeft : svgIcons.chevronRight,
+      next: (arg) => arg.direction === 'ltr' ? svgIcons.chevronRight : svgIcons.chevronLeft,
+      prevYear: (arg) => arg.direction === 'ltr' ? svgIcons.chevronsLeft : svgIcons.chevronsRight,
+      nextYear: (arg) => arg.direction === 'ltr' ? svgIcons.chevronsRight : svgIcons.chevronsLeft,
     },
     dayNarrowWidth: 70,
     dayNarrowClassNames: 'fc-day-narrow',
@@ -145,12 +145,4 @@ function getSlotClassNames(arg: any) {
       arg.isFuture && 'fc-slot-future',
       arg.isOther && 'fc-slot-other',
     ]
-}
-
-function startSide(direction: 'ltr' | 'rtl'): string {
-  return direction === 'ltr' ? 'left' : 'right'
-}
-
-function endSide(direction: 'ltr' | 'rtl'): string {
-  return direction === 'ltr' ? 'right' : 'left'
 }

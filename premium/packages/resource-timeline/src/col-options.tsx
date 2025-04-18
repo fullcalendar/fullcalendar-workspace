@@ -27,10 +27,16 @@ export function processColOptions(options: ViewOptionsRefined) {
   let groupColSpecs: ColSpec[] = [] // part of the colSpecs, but filtered out in order to put first
   let groupSpecs: GroupSpec[] = []
   let groupRowDepth = 0
+  let foundMainColSpec = false
 
   for (let colSpec of allColSpecs) {
     (colSpec.group ? groupColSpecs : resourceColSpecs).push({
       ...colSpec,
+      isMain: (
+        (!colSpec.group && !foundMainColSpec)
+          ? (foundMainColSpec = true)
+          : false
+      ),
 
       headerClassNames: joinFuncishClassNames(options.resourceAreaHeaderClassNames, colSpec.headerClassNames),
       headerInnerClassNames: joinFuncishClassNames(options.resourceAreaHeaderInnerClassNames, colSpec.headerInnerClassNames),
