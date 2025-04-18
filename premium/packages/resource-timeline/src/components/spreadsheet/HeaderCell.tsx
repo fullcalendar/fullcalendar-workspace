@@ -65,7 +65,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
             >
               {this.props.indent && (
                 <div className="fc-datagrid-indent">
-                  <span className="fc-icon" />
+                  <span className="fc-datagrid-icon" />
                 </div>
               )}
               <InnerContent

@@ -6,38 +6,41 @@ import { BaseComponent } from '../vdom-util.js'
 import { joinArrayishClassNames } from '../util/html.js'
 
 interface IconProps {
-  input: IconInput
+  input?: IconInput // accomodate undefined if theme doesn't support it
 }
 
 export class Icon extends BaseComponent<IconProps> {
   render() {
     const { options } = this.context
     const iconInput = this.props.input
-    const renderProps = { direction: options.direction }
 
-    if (typeof iconInput === 'function') {
+    if (iconInput) {
+      const renderProps = { direction: options.direction }
+
+      if (typeof iconInput === 'function') {
+        return (
+          <ContentContainer<IconArg>
+            tag='span'
+            style={{ display: 'contents' }}
+            attrs={{ 'aria-hidden': true }}
+            renderProps={renderProps}
+            generatorName={undefined}
+            customGenerator={iconInput} />
+        )
+      }
+
       return (
-        <ContentContainer<IconArg>
-          tag='span'
-          style={{ display: 'contents' }}
-          attrs={{ 'aria-hidden': true }}
-          renderProps={renderProps}
-          generatorName={undefined}
-          customGenerator={iconInput} />
+        <span
+          aria-hidden
+          className={joinArrayishClassNames(
+            options.iconClassNames,
+            generateClassName(
+              (iconInput as { classNames: ClassNamesGenerator<IconArg> }).classNames,
+              renderProps
+            )
+          )}
+        />
       )
     }
-
-    return (
-      <span
-        aria-hidden
-        className={joinArrayishClassNames(
-          options.iconClassNames,
-          generateClassName(
-            (iconInput as { classNames: ClassNamesGenerator<IconArg> }).classNames,
-            renderProps
-          )
-        )}
-      />
-    )
   }
 }

@@ -76,7 +76,7 @@ export class ResourceDataGridWrapper {
   }
 
   clickFirstExpander() {
-    $(this.el.querySelector('.fc-datagrid-expander')).simulate('click')
+    $(this.el.querySelector('.fc-datagrid-icon-expander')).simulate('click')
   }
 
   clickExpander(resourceId) {
@@ -84,7 +84,7 @@ export class ResourceDataGridWrapper {
   }
 
   getExpanderEl(resourceId) {
-    return this.getResourceCellEl(resourceId).querySelector('.fc-datagrid-expander')
+    return this.getResourceCellEl(resourceId).querySelector('.fc-datagrid-icon-expander')
   }
 
   isRowExpanded(resourceId) {

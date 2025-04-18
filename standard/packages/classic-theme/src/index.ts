@@ -32,6 +32,8 @@ export default createPlugin({
       next: (arg) => arg.direction === 'ltr' ? svgIcons.chevronRight : svgIcons.chevronLeft,
       prevYear: (arg) => arg.direction === 'ltr' ? svgIcons.chevronsLeft : svgIcons.chevronsRight,
       nextYear: (arg) => arg.direction === 'ltr' ? svgIcons.chevronsRight : svgIcons.chevronsLeft,
+      expand: () => svgIcons.plusSquare,
+      collapse: () => svgIcons.minusSquare,
     },
     dayNarrowWidth: 70,
     dayNarrowClassNames: 'fc-day-narrow',

@@ -51,7 +51,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           >
             {this.props.indent && (
               <div className="fc-datagrid-indent">
-                <span className="fc-icon" />
+                <span className="fc-datagrid-icon" />
               </div>
             )}
             <InnerContent

@@ -57,17 +57,15 @@ export class Popover extends BaseComponent<PopoverProps> {
           <div className="fc-popover-title" id={this.titleId}>
             {props.title}
           </div>
-          {Boolean(closeIconInput) && (
-            <div
-              role='button'
-              aria-label={options.closeHint}
-              className='fc-popover-close'
-              {...createAriaClickAttrs(this.handleClose)}
-              ref={this.closeRef}
-            >
-              <Icon input={closeIconInput} />
-            </div>
-          )}
+          <div
+            role='button'
+            aria-label={options.closeHint}
+            className='fc-popover-close'
+            {...createAriaClickAttrs(this.handleClose)}
+            ref={this.closeRef}
+          >
+            <Icon input={closeIconInput} />
+          </div>
         </div>
         <div className={joinArrayishClassNames(options.popoverBodyClassNames)}>
           {props.children}

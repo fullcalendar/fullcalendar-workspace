@@ -13,15 +13,21 @@
 // fc-datagrid-indent > icon
 //
 
-.fc-datagrid-expander { // (expander)
+.fc-datagrid-icon,
+.fc-datagrid-icon svg { // > svg
+  width: 1em;
+  height: 1em;
+}
+
+.fc-datagrid-icon-expander { // (expander)
   cursor: pointer;
   opacity: 0.65;
 }
 
-.fc-direction-ltr .fc-datagrid-indent > .fc-icon:last-child { // (ltr)
+.fc-direction-ltr .fc-datagrid-indent > .fc-datagrid-icon:last-child { // (ltr)
   margin-right: 3px;
 }
-.fc-direction-rtl .fc-datagrid-indent > .fc-icon:last-child { // (rtl)
+.fc-direction-rtl .fc-datagrid-indent > .fc-datagrid-icon:last-child { // (rtl)
   margin-left: 3px;
 }
 
