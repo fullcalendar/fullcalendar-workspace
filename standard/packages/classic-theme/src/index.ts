@@ -9,6 +9,7 @@ const PLUGIN_SPECIFIC_SETTINGS: any = {
   dayCellClassNames: (arg) => getDayClassNames(arg),
   dayLaneClassNames: (arg) => getDayClassNames(arg),
   dayHeaderDividerClassNames: 'fc-day-header-divider',
+  resourceAreaDividerClassNames: 'fc-resource-area-divider',
 }
 
 export default createPlugin({
