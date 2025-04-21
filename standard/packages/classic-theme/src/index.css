@@ -14,3 +14,7 @@
 .fc-direction-rtl .fc-filler-x {
   border-right: 1px solid var(--fc-border-color);
 }
+
+.fc-day-header-divider {
+  border-top: 1px solid var(--fc-border-color);
+}

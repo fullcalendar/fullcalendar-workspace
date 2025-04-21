@@ -72,8 +72,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
       <Fragment>
         {options.dayHeaders && (
           <div className={joinClassNames(
-            'fc-row-bordered', // TODO: temporary
-            'fc-print-header fc-border-only-b',
+            'fc-print-header',
             stickyHeaderDates && 'fc-table-header-sticky',
             generateClassName(options.viewHeaderClassNames, {
               borderX: props.borderX,

@@ -136,9 +136,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           <div
             role='rowgroup'
             className={joinClassNames(
-              'fc-row-bordered', // TODO: temporary
               // see note in TimeGridLayout about why we don't do fc-print-header
-              'fc-timegrid-header fc-flex-col fc-border-only-b',
+              'fc-timegrid-header fc-flex-col',
               stickyHeaderDates && 'fc-table-header-sticky',
               generateClassName(options.viewHeaderClassNames, {
                 borderX: props.borderX,
