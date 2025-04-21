@@ -150,8 +150,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 key={tierNum}
                 role='row'
                 className={joinClassNames(
+                  'fc-row-bordered', // TODO: temporary
                   'fc-flex-row',
-                  tierNum && 'fc-border-t'
+                  tierNum ? 'fc-border-only-t' : 'fc-border-none'
                 )}
               >
                 {(options.weekNumbers && rowConfig.isDateRow) ? (
@@ -173,7 +174,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 />
                 <DayGridHeaderRow
                   {...rowConfig}
-                  className='fc-border-s fc-liquid'
+                  className='fc-border-only-s fc-liquid'
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div
@@ -328,7 +329,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                         data-time={slatMeta.isoTimeStr}
                         className={joinClassNames(
                           ...getSlatRowClassNames(slatMeta),
-                          slatI && 'fc-border-t',
+                          'fc-row-bordered', // TODO: temporary
+                          slatI ? 'fc-border-only-t' : 'fc-border-none',
                           slatLiquid && 'fc-liquid',
                         )}
                         style={{

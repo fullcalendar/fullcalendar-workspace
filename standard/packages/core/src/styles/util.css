@@ -3,7 +3,6 @@
 // -------------------------------------------------------------------------------------------------
 
 .fc-border,
-.fc-border-t,
 .fc-border-b,
 .fc-border-s,
 .fc-border-e {
@@ -18,10 +17,6 @@
   border-width: 1px;
 }
 
-.fc-border-t {
-  border-top-width: 1px;
-}
-
 .fc-border-b {
   border-bottom-width: 1px;
 }
@@ -34,6 +29,50 @@
 .fc-direction-ltr .fc-border-e,
 .fc-direction-rtl .fc-border-s {
   border-right-width: 1px;
+}
+
+.fc-row-bordered { // temporary
+  border: 1px solid var(--fc-border-color);
+}
+
+.fc-cell-bordered { // temporary
+  border: 1px solid var(--fc-border-color);
+}
+
+.fc-border-none {
+  border: 0 !important;
+}
+
+.fc-border-only-t {
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.fc-border-only-b {
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+}
+
+.fc-border-only-s,
+.fc-border-only-e {
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+}
+
+.fc-direction-ltr .fc-border-only-s {
+  border-right: 0 !important;
+}
+.fc-direction-rtl .fc-border-only-s {
+  border-left: 0 !important;
+}
+
+.fc-direction-ltr .fc-border-only-e {
+  border-left: 0 !important;
+}
+.fc-direction-rtl .fc-border-only-e {
+  border-right: 0 !important;
 }
 
 // Flexbox Utils

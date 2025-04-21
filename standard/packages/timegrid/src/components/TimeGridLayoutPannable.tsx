@@ -188,8 +188,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     role='row'
                     aria-rowindex={tierNum + 1}
                     className={joinClassNames(
+                      'fc-row-bordered', // TODO: temporary
                       'fc-flex-row fc-content-box',
-                      tierNum && 'fc-border-t',
+                      tierNum ? 'fc-border-only-t' : 'fc-border-none',
                     )}
                     style={{ height: state.headerTierHeights[tierNum] }}
                   >
@@ -233,7 +234,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       key={tierNum}
                       role='row'
                       rowIndex={tierNum}
-                      className={tierNum ? 'fc-border-t' : ''}
+                      className={tierNum ? 'fc-border-only-t' : 'fc-border-none'}
                       height={state.headerTierHeights[tierNum]}
                       colWidth={colWidth}
                       innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}
@@ -376,7 +377,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                           data-time={slatMeta.isoTimeStr}
                           className={joinClassNames(
                             ...getSlatRowClassNames(slatMeta),
-                            slatI && 'fc-border-t',
+                            'fc-row-bordered', // TODO: temporary
+                            slatI ? 'fc-border-only-t' : 'fc-border-none',
                             slatLiquid && 'fc-liquid',
                           )}
                           style={{
@@ -488,7 +490,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                             data-time={slatMeta.isoTimeStr}
                             className={joinClassNames(
                               ...getSlatRowClassNames(slatMeta),
-                              slatI && 'fc-border-t',
+                              'fc-row-bordered', // TODO: temporary
+                              slatI ? 'fc-border-only-t' : 'fc-border-none',
                               slatLiquid && 'fc-liquid',
                             )}
                             style={{
