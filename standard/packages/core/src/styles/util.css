@@ -124,31 +124,6 @@ Rarely used. Just inline this?
   overflow: hidden; // should this be on here?
 }
 
-.fc-rowdivider,
-.fc-celldivider {
-  border: 0 solid var(--fc-border-color);
-}
-
-.fc-rowdivider {
-  border-width: 1px 0;
-}
-
-.fc-celldivider {
-  border-width: 0 1px;
-}
-
-.fc-rowdivider,
-.fc-celldivider {
-  background: var(--fc-neutral-bg-color);
-}
-
-.fc-celldivider {
-  padding-left: 2px;
-}
-.fc-rowdivider {
-  padding-bottom: 2px; // can use just height if we move towards content-box!
-}
-
 // Misc Utils
 // -------------------------------------------------------------------------------------------------
 

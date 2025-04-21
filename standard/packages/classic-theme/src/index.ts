@@ -65,6 +65,8 @@ export default createPlugin({
     fillerClassNames: 'fc-filler',
     fillerXClassNames: 'fc-filler-x',
     fillerYClassNames: 'fc-filler-y',
+    allDayDividerClassNames: 'fc-all-day-divider',
+    slotLabelDividerClassNames: '',
     ...PLUGIN_SPECIFIC_SETTINGS,
   },
   views: {

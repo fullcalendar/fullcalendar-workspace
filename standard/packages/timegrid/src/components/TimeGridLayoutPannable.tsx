@@ -329,7 +329,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 </Scroller>
               </div>
               {/* TODO: don't show div if no classname */}
-              <div className={joinArrayishClassNames('fc-rowdivider', options.allDayDividerClassNames)} />
+              <div className={joinArrayishClassNames(options.allDayDividerClassNames)} />
             </Fragment>
           )}
           <div

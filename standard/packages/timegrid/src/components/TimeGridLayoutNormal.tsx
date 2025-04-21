@@ -246,7 +246,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 )}
               </div>
               {/* TODO: don't show div if no classname */}
-              <div className={joinArrayishClassNames('fc-rowdivider', options.allDayDividerClassNames)} />
+              <div className={joinArrayishClassNames(options.allDayDividerClassNames)} />
             </Fragment>
           )}
           {/* SLATS
