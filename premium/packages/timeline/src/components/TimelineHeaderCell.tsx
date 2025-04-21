@@ -72,7 +72,8 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
         className={joinClassNames(
           'fc-timeline-slot-label fc-timeline-slot',
           'fc-header-cell fc-cell fc-flex-col fc-justify-center',
-          props.borderStart && 'fc-border-s',
+          'fc-cell-bordered', // TODO: temporary
+          props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
           props.isCentered ? 'fc-align-center' : 'fc-align-start',
         )}
         attrs={{

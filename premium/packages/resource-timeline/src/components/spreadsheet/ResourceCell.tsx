@@ -51,6 +51,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         }}
         className={joinClassNames(
           'fc-resource fc-cell',
+          'fc-cell-bordered', // TODO: temporary
           props.className,
         )}
         style={{

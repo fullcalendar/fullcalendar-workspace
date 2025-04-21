@@ -71,7 +71,8 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
               'fc-timeline-slot-minor'
           ),
           'fc-timeline-slot-lane fc-cell fc-flex-col fc-align-start',
-          props.borderStart && 'fc-border-s',
+          'fc-cell-bordered', // TODO: temporary
+          props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
         )}
         attrs={{
           'data-date': dateEnv.formatIso(date, {

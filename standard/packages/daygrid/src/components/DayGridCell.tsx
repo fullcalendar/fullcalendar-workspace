@@ -93,7 +93,8 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
 
     const baseClassName = joinClassNames(
       'fc-daygrid-day',
-      props.borderStart && 'fc-border-s',
+      'fc-cell-bordered', // TODO: temporary
+      props.borderStart ? 'fc-border-only-s' : 'fc-border-only',
       props.width != null ? '' : 'fc-liquid',
       'fc-flex-col',
     )

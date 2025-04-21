@@ -57,7 +57,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             role='rowgroup'
             className={joinClassNames(
               'fc-rel',
-              colIndex && 'fc-border-s',
+              'fc-cell-bordere', // TODO: temporary
+              colIndex ? 'fc-border-only-s' : 'fc-border-none',
             )}
             style={{
               minWidth: 0,
@@ -109,7 +110,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
           <div
             aria-hidden
             className={joinClassNames(
-              (groupColCnt + i) && 'fc-border-s',
+              'fc-cell-bordered',
+              (groupColCnt + i) ? 'fc-border-only-s' : 'fc-border-none',
             )}
             style={{
               minWidth: 0,

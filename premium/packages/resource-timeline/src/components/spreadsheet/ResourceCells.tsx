@@ -56,7 +56,7 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
               grow={colGrows[i]}
               className={joinClassNames(
                 props.className,
-                i && 'fc-border-s',
+                i ? 'fc-border-only-s' : 'fc-border-none',
               )}
             />
           )

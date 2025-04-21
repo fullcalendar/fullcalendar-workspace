@@ -89,7 +89,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
     const baseClassName = joinClassNames(
       'fc-timegrid-day',
-      props.borderStart && 'fc-border-s',
+      'fc-cell-bordered', // TODO: temporary
+      props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
       props.width == null && 'fc-liquid',
       'fc-flex-col fc-rel',
     )

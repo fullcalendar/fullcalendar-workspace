@@ -179,7 +179,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             />
 
             {/* Timeline HEADER */}
-            <div className='fc-liquid fc-flex-row fc-crop fc-border-s'>
+            <div className='fc-liquid fc-flex-row fc-crop'>
               <div // the canvas, origin for now-indicator
                 className='fc-flex-col fc-rel'
                 style={{
@@ -238,7 +238,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           {/* TODO: more DRY */}
           <div
             aria-hidden
-            className='fc-fill fc-border-s fc-border-transparent fc-crop'
+            className='fc-fill fc-crop'
             style={{
               // HACK for print where header-height prevents absolutely-positioned events
               // from falling short in height for subsequent pages
@@ -247,6 +247,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               // TODO: nicer way of doing this
               left: context.isRtl ? undefined : props.spreadsheetWidth,
               right: context.isRtl ? props.spreadsheetWidth : undefined,
+              // TODO: add the divider width too!!!
             }}
           >
             <div
@@ -352,7 +353,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   />
                   <div
                     className={joinClassNames(
-                      'fc-flex-col fc-crop fc-liquid fc-border-s',
+                      'fc-flex-col fc-crop fc-liquid',
                       'fc-row-bordered', // TODO: temporary
                       isNotLast ? 'fc-border-only-b' : 'fc-border-none',
                     )}

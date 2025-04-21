@@ -3,7 +3,6 @@
 // -------------------------------------------------------------------------------------------------
 
 .fc-border,
-.fc-border-s,
 .fc-border-e {
   border: 0px solid var(--fc-border-color);
 }
@@ -16,13 +15,11 @@
   border-width: 1px;
 }
 
-.fc-direction-ltr .fc-border-s,
 .fc-direction-rtl .fc-border-e {
   border-left-width: 1px;
 }
 
-.fc-direction-ltr .fc-border-e,
-.fc-direction-rtl .fc-border-s {
+.fc-direction-ltr .fc-border-e {
   border-right-width: 1px;
 }
 
@@ -68,6 +65,14 @@
 }
 .fc-direction-rtl .fc-border-only-e {
   border-right: 0 !important;
+}
+
+// for matching cell start-border, assumed to be 1px, which can't be guaranteed
+.fc-direction-ltr .fc-fake-border-s {
+  border-left: 1px solid transparent;
+}
+.fc-direction-rtl .fc-fake-border-s {
+  border-right: 1px solid transparent;
 }
 
 // Flexbox Utils

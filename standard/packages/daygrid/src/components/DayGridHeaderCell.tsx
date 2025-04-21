@@ -32,7 +32,8 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
         }}
         className={joinClassNames(
           'fc-header-cell fc-cell fc-flex-col fc-align-center',
-          props.borderStart && 'fc-border-s',
+          'fc-cell-bordered', // TODO: temporary
+          props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
           !props.isSticky && 'fc-crop',
           props.colWidth == null && 'fc-liquid',
           dataConfig.className,

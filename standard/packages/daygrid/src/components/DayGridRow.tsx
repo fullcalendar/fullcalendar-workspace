@@ -293,7 +293,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       nodes.push(
         <DayGridEventHarness
           key={key}
-          className={seg.start ? 'fc-border-transparent fc-border-s' : ''}
+          className={seg.start ? 'fc-fake-border-s' : ''}
           style={{
             visibility: isInvisible ? 'hidden' : '',
             top,
