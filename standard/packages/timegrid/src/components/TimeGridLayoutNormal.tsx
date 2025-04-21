@@ -178,7 +178,6 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 {Boolean(endScrollbarWidth) && (
                   <div
                     className={joinArrayishClassNames(
-                      'fc-border-s fc-filler',
                       options.fillerClassNames,
                       options.fillerXClassNames,
                     )}
@@ -238,7 +237,6 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 {Boolean(endScrollbarWidth) && (
                   <div
                     className={joinArrayishClassNames(
-                      'fc-border-s fc-filler',
                       options.fillerClassNames,
                       options.fillerXClassNames,
                     )}
@@ -355,7 +353,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   {rowsNotExpanding && (
                     <div
                       class={joinArrayishClassNames(
-                        'fc-liquid fc-border-t fc-filler',
+                        'fc-liquid',
                         options.fillerClassNames,
                         options.fillerYClassNames,
                       )}

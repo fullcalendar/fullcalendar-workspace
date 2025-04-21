@@ -189,7 +189,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   {Boolean(endScrollbarWidth) && (
                     <div
                       className={joinArrayishClassNames(
-                        'fc-border-s fc-filler',
                         options.fillerClassNames,
                         options.fillerXClassNames,
                       )}

@@ -1,0 +1,16 @@
+
+.fc-filler { // scrollbar gutter filler
+  opacity: 0.5;
+}
+
+.fc-filler-y {
+  border-top: 1px solid var(--fc-border-color);
+}
+
+.fc-direction-ltr .fc-filler-x {
+  border-left: 1px solid var(--fc-border-color);
+}
+
+.fc-direction-rtl .fc-filler-x {
+  border-right: 1px solid var(--fc-border-color);
+}

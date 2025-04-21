@@ -195,14 +195,6 @@ Only needed when padding/border must be separate from width/height
   background-color: var(--fc-neutral-bg-color);
 }
 
-/*
-NOTE: if needing a width/height, use minWidth/minHeight because this div often has fc-liquid,
-which will override width/height if shrinking. Not the case with minWidth/minHeight
-*/
-.fc-filler { // scrollbar gutter filler
-  opacity: 0.5;
-}
-
 .fc-padding-sm {
   padding: 2px 4px;
 }

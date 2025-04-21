@@ -243,7 +243,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 {Boolean(endScrollbarWidth) && (
                   <div
                     className={joinArrayishClassNames(
-                      'fc-border-s fc-filler',
                       options.fillerClassNames,
                       options.fillerXClassNames,
                     )}
@@ -320,7 +319,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   {Boolean(endScrollbarWidth) && (
                     <div
                       className={joinArrayishClassNames(
-                        'fc-border-s fc-filler',
                         options.fillerClassNames,
                         options.fillerXClassNames,
                       )}
@@ -405,7 +403,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       <div
                         class={joinArrayishClassNames(
                           rowsNotExpanding && 'fc-liquid',
-                          'fc-border-t fc-filler',
                           options.fillerClassNames,
                           options.fillerYClassNames,
                         )}
@@ -508,7 +505,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       {rowsNotExpanding && (
                         <div
                           class={joinArrayishClassNames(
-                            'fc-liquid fc-border-t fc-filler',
+                            'fc-liquid',
                             options.fillerClassNames,
                             options.fillerYClassNames,
                           )}

@@ -424,7 +424,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   {spreadsheetNeedsBottomFiller && (
                     <div
                       className={joinArrayishClassNames(
-                        'fc-border-t fc-filler',
                         options.fillerClassNames,
                         options.fillerYClassNames,
                       )}
@@ -520,7 +519,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   {Boolean(endScrollbarWidth) && (
                     <div
                       className={joinArrayishClassNames(
-                        'fc-border-s fc-filler',
                         options.fillerClassNames,
                         options.fillerXClassNames,
                       )}
@@ -664,7 +662,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   {timelineNeedsBottomFiller && (
                     <div
                       className={joinArrayishClassNames(
-                        'fc-border-t fc-filler',
                         options.fillerClassNames,
                         options.fillerYClassNames,
                       )}

@@ -60,6 +60,9 @@ export default createPlugin({
     dayPopoverClassNames: (arg) => getDayClassNames(arg),
     slotLabelClassNames: (arg) => getSlotClassNames(arg),
     slotLaneClassNames: (arg) => getSlotClassNames(arg),
+    fillerClassNames: 'fc-filler',
+    fillerXClassNames: 'fc-filler-x',
+    fillerYClassNames: 'fc-filler-y',
     ...PLUGIN_SPECIFIC_SETTINGS,
   },
   views: {

@@ -87,7 +87,6 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
               {Boolean(endScrollbarWidth) && (
                 <div
                   className={joinArrayishClassNames(
-                    'fc-border-s fc-filler',
                     options.fillerClassNames,
                     options.fillerXClassNames,
                   )}
