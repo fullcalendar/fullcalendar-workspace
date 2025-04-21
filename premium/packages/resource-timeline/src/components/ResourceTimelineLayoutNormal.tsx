@@ -329,8 +329,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               <div
                 role='rowgroup'
                 className={joinClassNames(
-                  'fc-row-bordered', // TODO: temporary -- especially with borderX
-                  'fc-datagrid-header fc-flex-col fc-border-only-b',
+                  'fc-datagrid-header fc-flex-col',
                   stickyHeaderDates && 'fc-table-header-sticky',
                   generateClassName(options.viewHeaderClassNames, {
                     borderX: props.borderX,
@@ -368,7 +367,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     className='fc-flex-col fc-grow'
                     ref={this.spreadsheetHeaderScrollerRef}
                   >
-                    <div className='fc-flex-col fc-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
+                    <div
+                      className='fc-flex-col fc-grow'
+                      style={{ minWidth: spreadsheetCanvasWidth }}
+                    >
                       <HeaderRow
                         colSpecs={colSpecs}
                         colWidths={spreadsheetColWidths}
@@ -460,8 +462,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {/* time-area HEADER
               ---------------------------------------------------------------------------- */}
               <div className={joinClassNames(
-                'fc-row-bordered', // TODO: temporary
-                'fc-timeline-header fc-border-only-b',
+                'fc-timeline-header',
                 stickyHeaderDates && 'fc-table-header-sticky',
               )}>
                 <Scroller

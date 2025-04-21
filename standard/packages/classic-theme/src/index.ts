@@ -66,7 +66,6 @@ export default createPlugin({
     fillerXClassNames: 'fc-filler-x',
     fillerYClassNames: 'fc-filler-y',
     allDayDividerClassNames: 'fc-all-day-divider',
-    slotLabelDividerClassNames: '',
     ...PLUGIN_SPECIFIC_SETTINGS,
   },
   views: {
@@ -77,6 +76,7 @@ export default createPlugin({
     },
     timeGrid: {
       viewClassNames: 'fc-timegrid',
+      slotLabelDividerClassNames: 'fc-timegrid-slot-label-divider',
       eventClassNames: (arg) => (
         arg.event.allDay ? getDayGridEventClassNames(arg) :
         arg.event.display === 'background' ? '' :
@@ -98,6 +98,7 @@ export default createPlugin({
     },
     timeline: {
       viewClassNames: 'fc-timeline',
+      slotLabelDividerClassNames: 'fc-timeline-slot-label-divider',
       eventClassNames: 'fc-timeline-event fc-h-event',
     },
     resourceDayGrid: {

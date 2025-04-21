@@ -174,7 +174,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 />
                 <DayGridHeaderRow
                   {...rowConfig}
-                  className='fc-border-only-s fc-liquid'
+                  className='fc-border-none fc-liquid'
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div
@@ -220,7 +220,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   forPrint={forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
                   className={joinClassNames(
-                    'fc-border-s fc-liquid',
+                    'fc-liquid',
                     getDayNarrowClassName(clientWidth, props.cells.length, options),
                   )}
 
@@ -294,7 +294,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   slatCnt={slatCnt}
                   forPrint={forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
-                  className='fc-liquid fc-border-s'
+                  className='fc-liquid'
 
                   // content
                   fgEventSegsByCol={props.fgEventSegsByCol}

@@ -219,7 +219,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               <Scroller
                 horizontal
                 hideScrollbars
-                className='fc-flex-row fc-border-s fc-liquid'
+                className='fc-flex-row fc-liquid'
                 ref={this.headerScrollerRef}
               >
                 {/* TODO: converge with DayGridHeader */}
@@ -286,7 +286,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 <Scroller
                   horizontal
                   hideScrollbars
-                  className='fc-border-s fc-flex-row fc-liquid' // fill remaining width
+                  className='fc-flex-row fc-liquid' // fill remaining width
                   ref={this.allDayScrollerRef}
                 >
                   <div
@@ -425,7 +425,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             <div
               // we need this div because it's bad for Scroller to have left/right borders,
               // AND because we need to containt the FooterScrollbar
-              className='fc-border-s fc-flex-col fc-liquid'
+              className='fc-flex-col fc-liquid'
             >
               <Scroller
                 vertical={verticalScrolling}

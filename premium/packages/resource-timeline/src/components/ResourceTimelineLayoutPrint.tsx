@@ -136,8 +136,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         borderBottom={props.borderBottom}
       >
         <div className={joinClassNames(
-          'fc-row-bordered', // TODO: temporary -- especially with borderX
-          'fc-print-header fc-border-only-b',
+          'fc-print-header',
           generateClassName(options.viewHeaderClassNames, {
             borderX: props.borderX,
             isSticky: false,
