@@ -1,4 +1,8 @@
 
+.fc-view-bordered {
+  border: 1px solid var(--fc-border-color);
+}
+
 .fc-filler { // scrollbar gutter filler
   opacity: 0.5;
 }

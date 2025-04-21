@@ -2,27 +2,6 @@
 // Border Utils
 // -------------------------------------------------------------------------------------------------
 
-.fc-border,
-.fc-border-e {
-  border: 0px solid var(--fc-border-color);
-}
-
-.fc-border-transparent {
-  border-color: transparent;
-}
-
-.fc-border {
-  border-width: 1px;
-}
-
-.fc-direction-rtl .fc-border-e {
-  border-left-width: 1px;
-}
-
-.fc-direction-ltr .fc-border-e {
-  border-right-width: 1px;
-}
-
 .fc-row-bordered { // temporary
   border: 1px solid var(--fc-border-color);
 }
