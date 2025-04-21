@@ -10,6 +10,8 @@
   border: 1px solid var(--fc-border-color);
 }
 
+// TODO: break-out to x and y. don't have "only" all
+
 .fc-border-none {
   border: 0 !important;
 }

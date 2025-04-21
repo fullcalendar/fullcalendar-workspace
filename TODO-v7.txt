@@ -99,6 +99,8 @@ adjust transpilation settings. es2016 okay now, with null coalescing operator?
 changelog: dropped Bootstrap 4
 changelog: shape of a locale
 bug: bottom filler isn't working in a11y-ci/resource-timeline-row-grouping.html
+kill all role=rowgroup ... a11y says it's optional. makes code confusing
+rename to LESS... borderless, borderlessX, borderlessY
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files
