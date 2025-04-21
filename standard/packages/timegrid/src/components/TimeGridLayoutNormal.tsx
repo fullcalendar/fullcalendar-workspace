@@ -221,6 +221,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   isHitComboAllowed={props.isHitComboAllowed}
                   className={joinClassNames(
                     'fc-liquid',
+                    'fc-border-none',
                     getDayNarrowClassName(clientWidth, props.cells.length, options),
                   )}
 

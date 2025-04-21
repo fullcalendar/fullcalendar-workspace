@@ -29,7 +29,9 @@
 
 .fc-all-day-divider {
   border-top: 1px solid var(--fc-border-color);
+  border-bottom: 1px solid var(--fc-border-color);
   padding-bottom: 2px; // can use just height if we move towards content-box!
+  background-color: var(--fc-neutral-bg-color);
 }
 
 .fc-timegrid-slot-label-divider {
