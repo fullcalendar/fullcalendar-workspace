@@ -122,7 +122,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             className={joinClassNames(
               rowHeightsRedistribute && 'fc-grow',
               rowCnt > 1 && 'fc-break-inside-avoid', // don't avoid breaks for single tall row
-              row < rowCnt - 1 && 'fc-border-b',
+              row < rowCnt - 1 ? 'fc-border-only-b' : 'fc-border-none',
             )}
 
             // content

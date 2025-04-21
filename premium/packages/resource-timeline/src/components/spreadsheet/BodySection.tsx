@@ -76,7 +76,10 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   role='row'
                   aria-rowindex={1 + headerRowSpan + groupCellLayout.rowIndex}
                   aria-level={hasNesting ? 1 : undefined} // the resource-specific row at this rowindex is always depth 0
-                  class='fc-flex-row fc-fill-x'
+                  class={joinArrayishClassNames(
+                    'fc-flex-row fc-fill-x',
+                    // TODO: options.resourceAreaRowClassNames
+                  )}
                   style={{
                     top: rowTops.get(groupKey),
                     height: (rowHeight != null && isNotLast)
@@ -90,7 +93,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                     fieldValue={group.value}
                     className={joinClassNames(
                       'fc-liquid',
-                      isNotLast && 'fc-border-b', // TODO: use options.resourceAreaRowClassNames
+                      'fc-row-bordered', // TODO: temporary
+                      isNotLast ? 'fc-border-only-b' : 'fc-border-none',
                     )}
                     innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
                   />
@@ -138,7 +142,8 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 aria-expanded={groupRowLayout.isExpanded}
                 class={joinArrayishClassNames(
                   'fc-flex-row fc-fill-x fc-content-box',
-                  isNotLast && 'fc-border-b',
+                  'fc-row-bordered', // TODO: temporary
+                  isNotLast ? 'fc-border-only-b' : 'fc-border-none',
                   options.resourceAreaRowClassNames,
                 )}
                 style={{
@@ -169,7 +174,10 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 aria-rowindex={1 + headerRowSpan + resourceLayout.rowIndex}
                 aria-level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
                 aria-expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
-                class='fc-flex-row fc-fill-x'
+                class={joinArrayishClassNames(
+                  'fc-flex-row fc-fill-x'
+                  // TODO: options.resourceAreaRowClassNames,
+                )}
                 style={{
                   top: rowTops.get(resource.id),
                   height: (rowHeight != null && isNotLast)
@@ -187,7 +195,10 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   colSpecs={props.colSpecs}
                   colWidths={colWidths}
                   innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
-                  className={isNotLast ? 'fc-border-b' : ''}
+                  className={joinClassNames(
+                    'fc-row-bordered', // TODO: temporary
+                    isNotLast ? 'fc-border-only-b' : 'fc-border-none',
+                  )}
                 />
               </div>
             )

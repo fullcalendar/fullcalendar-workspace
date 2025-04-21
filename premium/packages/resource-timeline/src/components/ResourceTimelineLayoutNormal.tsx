@@ -329,7 +329,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               <div
                 role='rowgroup'
                 className={joinClassNames(
-                  'fc-datagrid-header fc-flex-col fc-border-b',
+                  'fc-row-bordered', // TODO: temporary -- especially with borderX
+                  'fc-datagrid-header fc-flex-col fc-border-only-b',
                   stickyHeaderDates && 'fc-table-header-sticky',
                   generateClassName(options.viewHeaderClassNames, {
                     borderX: props.borderX,
@@ -348,7 +349,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       role="row"
                       aria-rowindex={1}
                       className={joinArrayishClassNames(
-                        "fc-flex-row fc-grow fc-border-b",
+                        'fc-row-bordered', // TODO: temporary
+                        'fc-flex-row fc-grow fc-border-only-b',
                         options.resourceAreaHeaderRowClassNames,
                       )}
                     >
@@ -458,7 +460,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {/* time-area HEADER
               ---------------------------------------------------------------------------- */}
               <div className={joinClassNames(
-                'fc-timeline-header fc-border-b',
+                'fc-row-bordered', // TODO: temporary
+                'fc-timeline-header fc-border-only-b',
                 stickyHeaderDates && 'fc-table-header-sticky',
               )}>
                 <Scroller
@@ -604,8 +607,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           aria-expanded={groupRowLayout.isExpanded}
                           class={joinClassNames(
                             'fc-flex-row fc-fill-x fc-content-box',
-                            groupRowLayout.visibleIndex < visibleRowCnt - 1 && // is not last
-                              'fc-border-b',
+                            'fc-row-bordered', // TODO: temporary
+                            groupRowLayout.visibleIndex < visibleRowCnt - 1 // is not last?
+                              ? 'fc-border-only-b'
+                              : 'fc-border-none',
                           )}
                           style={{
                             top: bodyTops.get(groupKey),
@@ -632,8 +637,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           aria-expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
                           className={joinClassNames(
                             'fc-flex-row fc-fill-x fc-content-box',
-                            resourceLayout.visibleIndex < visibleRowCnt - 1 && // is not last
-                              'fc-border-b',
+                            'fc-row-bordered', // TODO: temporary
+                            resourceLayout.visibleIndex < visibleRowCnt - 1 // is not last?
+                              ? 'fc-border-only-b'
+                              : 'fc-border-none',
                           )}
                           style={{
                             top: bodyTops.get(resource.id),

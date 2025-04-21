@@ -25,7 +25,8 @@ export class ResourceGroupCells extends BaseComponent<ResourceGroupCellsProps> {
       <Fragment>
         {colGroups.map((colGroup, i) => {
           const stats = colGroupStats[i]
-          const className = stats.borderBottom ? 'fc-border-b' : ''
+          // TODO: use fc-row-bordered somehow
+          const className = stats.borderBottom ? 'fc-border-only-b' : 'fc-border-none'
 
           return (
             stats.render ? (

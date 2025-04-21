@@ -140,7 +140,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               {/* HEADER
               ---------------------------------------------------------------------------------- */}
               <div className={joinClassNames(
-                'fc-timeline-header fc-border-b',
+                'fc-row-bordered', // TODO: temporary
+                'fc-timeline-header fc-border-only-b',
                 stickyHeaderDates && 'fc-table-header-sticky',
                 generateClassName(options.viewHeaderClassNames, {
                   borderX: props.borderX,

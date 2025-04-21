@@ -136,7 +136,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         borderBottom={props.borderBottom}
       >
         <div className={joinClassNames(
-          'fc-print-header fc-border-b',
+          'fc-row-bordered', // TODO: temporary -- especially with borderX
+          'fc-print-header fc-border-only-b',
           generateClassName(options.viewHeaderClassNames, {
             borderX: props.borderX,
             isSticky: false,
@@ -150,7 +151,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 <div
                   role='row'
                   className={joinArrayishClassNames(
-                    "fc-flex-row fc-grow fc-border-b",
+                    'fc-row-bordered', // TODO: temporary
+                    'fc-flex-row fc-grow fc-border-only-b',
                     options.resourceAreaHeaderRowClassNames,
                   )}
                 >
@@ -339,7 +341,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                         colWidths={colWidths}
                         colGrows={colGrows}
                         className={joinArrayishClassNames(
-                          isNotLast && 'fc-border-b',
+                          'fc-row-bordered', // TODO: temporary
+                          isNotLast ? 'fc-border-only-b' : 'fc-border-none',
                           options.resourceAreaRowClassNames,
                         )}
                       />
@@ -351,7 +354,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   <div
                     className={joinClassNames(
                       'fc-flex-col fc-crop fc-liquid fc-border-s',
-                      isNotLast && 'fc-border-b',
+                      'fc-row-bordered', // TODO: temporary
+                      isNotLast ? 'fc-border-only-b' : 'fc-border-none',
                     )}
                   >
                     <div
@@ -388,7 +392,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   role='row'
                   className={joinClassNames(
                     'fc-flex-row fc-break-inside-avoid',
-                    isNotLast && 'fc-border-b',
+                    'fc-row-bordered', // TODO: temporary
+                    isNotLast ? 'fc-border-only-b' : 'fc-border-none',
                   )}
                 >
                   <div className='fc-crop fc-flex-row' style={{ width: props.spreadsheetWidth }}>

@@ -3,7 +3,6 @@
 // -------------------------------------------------------------------------------------------------
 
 .fc-border,
-.fc-border-b,
 .fc-border-s,
 .fc-border-e {
   border: 0px solid var(--fc-border-color);
@@ -15,10 +14,6 @@
 
 .fc-border {
   border-width: 1px;
-}
-
-.fc-border-b {
-  border-bottom-width: 1px;
 }
 
 .fc-direction-ltr .fc-border-s,
