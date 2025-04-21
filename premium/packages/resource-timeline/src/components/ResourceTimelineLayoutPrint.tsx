@@ -403,7 +403,10 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                       colSpan={props.colSpecs.length}
                     />
                   </div>
-                  <div className='fc-crop fc-flex-row fc-border-s fc-liquid'>
+                  <div
+                    className={joinArrayishClassNames(options.resourceAreaDividerClassNames)}
+                  />
+                  <div className='fc-crop fc-flex-row fc-liquid'>
                     <GroupLane group={group} />
                   </div>
                 </div>
