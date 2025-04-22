@@ -1,13 +1,5 @@
 
 //
-// fc-timegrid-slots > slot
-//
-
-.fc-timegrid-slot-minor { // (minor)
-  border-style: dotted;
-}
-
-//
 // fc-timegrid-axis
 // (applied to cells across first column, for both Normal and Pannable layouts)
 //

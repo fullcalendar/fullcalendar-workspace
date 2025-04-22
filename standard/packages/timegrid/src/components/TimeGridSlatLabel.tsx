@@ -33,7 +33,8 @@ const DEFAULT_SLAT_LABEL_FORMAT = createFormatter({
 export interface TimeGridSlatLabelProps extends TimeSlatMeta {
   // dimensions
   width?: number
-  isLiquid?: boolean
+  isLiquid?: boolean // liquid *width* cell?
+  borderTop: boolean
 
   // ref
   innerWidthRef?: Ref<number>
@@ -54,30 +55,37 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     let { props, context } = this
     let { options } = context
 
-    let className = joinClassNames(
-      'fc-timegrid-slot-label fc-timegrid-axis fc-header-cell fc-cell',
-      props.isLiquid ? 'fc-liquid' : 'fc-content-box',
-    )
-
-    if (!props.isLabeled) {
-      return (
-        <div
-          className={className}
-          style={{ width: props.width }}
-        />
-      )
-    }
-
     let labelFormat = // TODO: fully pre-parse
       options.slotLabelFormat == null ? DEFAULT_SLAT_LABEL_FORMAT :
         Array.isArray(options.slotLabelFormat) ? createFormatter(options.slotLabelFormat[0]) :
           createFormatter(options.slotLabelFormat)
 
-    let renderProps = this.createRenderProps(props.date, props.time, labelFormat, context)
+    let renderProps = this.createRenderProps(props.date, props.time, !props.isLabeled, labelFormat, context)
+
+    let className = joinClassNames(
+      'fc-timegrid-slot-label fc-timegrid-axis fc-header-cell fc-cell',
+      props.isLiquid ? 'fc-liquid' : 'fc-content-box',
+      props.borderTop ? 'fc-border-only-t' : 'fc-border-none',
+    )
+
+    if (!props.isLabeled) {
+      return (
+        <div
+          className={joinClassNames(
+            className,
+            generateClassName(options.slotLabelClassNames, renderProps),
+          )}
+          style={{ width: props.width }}
+        />
+      )
+    }
 
     return (
       <ContentContainer
         tag="div"
+        attrs={{
+          'data-time': props.isoTimeStr,
+        }}
         className={className}
         style={{ width: props.width }}
         renderProps={renderProps}
@@ -130,6 +138,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
 function createRenderProps(
   date: DateMarker,
   time: Duration,
+  isMinor: boolean,
   labelFormat: DateFormatter,
   context: ViewContext,
 ): SlotLabelContentArg {
@@ -141,7 +150,7 @@ function createRenderProps(
     text: context.dateEnv.format(date, labelFormat),
     time: time,
     isMajor: false,
-    isMinor: false, // TODO!!!
+    isMinor,
     view: context.viewApi,
   }
 }

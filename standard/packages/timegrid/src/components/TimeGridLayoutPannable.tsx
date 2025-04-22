@@ -9,7 +9,7 @@ import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
 import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
-import { computeSlatHeight, getSlatRowClassNames } from './util.js'
+import { computeSlatHeight } from './util.js'
 import { TimeGridWeekNumber } from "./TimeGridWeekNumber.js"
 import { TimeGridAxisEmpty } from "./TimeGridAxisEmpty.js"
 import { simplifiedTimeGridPrint } from "./TimeGridCol.js"
@@ -300,6 +300,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       showDayNumbers={false}
                       forPrint={forPrint}
                       isHitComboAllowed={props.isHitComboAllowed}
+                      className='fc-border-none'
                       cellClassName={getDayNarrowClassName(clientWidth, colCnt, options)}
 
                       // content
@@ -374,11 +375,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       {props.slatMetas.map((slatMeta, slatI) => (
                         <div
                           key={slatMeta.key}
-                          data-time={slatMeta.isoTimeStr}
                           className={joinClassNames(
-                            ...getSlatRowClassNames(slatMeta),
-                            'fc-row-bordered', // TODO: temporary
-                            slatI ? 'fc-border-only-t' : 'fc-border-none',
+                            'fc-flex-row',
                             slatLiquid && 'fc-liquid',
                           )}
                           style={{
@@ -390,6 +388,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                             isLiquid={true}
                             innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                             innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
+                            borderTop={Boolean(slatI)}
                           />
                         </div>
                       ))}
@@ -487,11 +486,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         {props.slatMetas.map((slatMeta, slatI) => (
                           <div
                             key={slatMeta.key}
-                            data-time={slatMeta.isoTimeStr}
                             className={joinClassNames(
-                              ...getSlatRowClassNames(slatMeta),
-                              'fc-row-bordered', // TODO: temporary
-                              slatI ? 'fc-border-only-t' : 'fc-border-none',
+                              'fc-flex-row',
                               slatLiquid && 'fc-liquid',
                             )}
                             style={{
@@ -501,6 +497,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                             <TimeGridSlatLane
                               {...slatMeta /* FYI doesn't need isoTimeStr */}
                               innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
+                              borderTop={Boolean(slatI)}
                             />
                           </div>
                         ))}

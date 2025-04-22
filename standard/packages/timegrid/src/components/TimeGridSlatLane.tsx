@@ -5,7 +5,7 @@ import { TimeSlatMeta } from '../time-slat-meta.js'
 
 export interface TimeGridSlatLaneProps extends TimeSlatMeta {
   innerHeightRef?: Ref<number>
-  borderStart?: boolean
+  borderTop: boolean
 }
 
 export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
@@ -27,18 +27,20 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
 
       time: props.time,
       isMajor: false,
-      isMinor: false, // TODO!!!
+      isMinor: !props.isLabeled,
       view: context.viewApi,
     }
 
     return (
       <ContentContainer
         tag="div"
-        // TODO: have lane classNames like 'fc-timegrid-lane'/'fc-timegrid-slot-lane'
+        attrs={{
+          'data-time': props.isoTimeStr,
+        }}
         className={joinClassNames(
-          'fc-timegrid-slot-lane fc-cell fc-liquid',
+          'fc-cell fc-liquid',
           'fc-cell-bordered', // TODO: temporary
-          props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
+          props.borderTop ? 'fc-border-only-t' : 'fc-border-none',
         )}
         renderProps={renderProps}
         generatorName="slotLaneContent"

@@ -72,8 +72,6 @@ export default createPlugin({
     ],
     slotLaneClassNames: (arg) => [
       'fc-slot-lane',
-      arg.isMajor && 'fc-slot-lane-major',
-      arg.isMinor && 'fc-slot-lane-minor',
       ...getSlotClassNames(arg),
     ],
     fillerClassNames: 'fc-filler',
@@ -164,6 +162,8 @@ function getSlotClassNames(arg: any) {
     ]
     : [
       'fc-slot',
+      arg.isMajor && 'fc-slot-major',
+      arg.isMinor && 'fc-slot-minor',
       `fc-slot-${DAY_IDS[arg.dow]}`,
       arg.isToday && 'fc-slot-today',
       arg.isPast && 'fc-slot-past',

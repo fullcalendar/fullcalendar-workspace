@@ -11,7 +11,7 @@ import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
 import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridWeekNumber } from "./TimeGridWeekNumber.js"
-import { computeSlatHeight, getSlatRowClassNames } from './util.js'
+import { computeSlatHeight } from './util.js'
 import { simplifiedTimeGridPrint } from './TimeGridCol.js'
 
 export interface TimeGridLayoutNormalProps {
@@ -327,11 +327,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                     {props.slatMetas.map((slatMeta, slatI) => (
                       <div
                         key={slatMeta.key}
-                        data-time={slatMeta.isoTimeStr}
                         className={joinClassNames(
-                          ...getSlatRowClassNames(slatMeta),
-                          'fc-row-bordered', // TODO: temporary
-                          slatI ? 'fc-border-only-t' : 'fc-border-none',
+                          'fc-flex-row',
                           slatLiquid && 'fc-liquid',
                         )}
                         style={{
@@ -343,11 +340,16 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                           innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                           innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                           width={axisWidth}
+                          borderTop={Boolean(slatI)}
+                        />
+                        <div
+                          className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+                          style={{ visibility: 'hidden' }} // TODO: className?
                         />
                         <TimeGridSlatLane
                           {...slatMeta /* FYI doesn't need isoTimeStr */}
-                          borderStart
                           innerHeightRef={slatInnerMainHeightRefMap.createRef(slatMeta.key)}
+                          borderTop={Boolean(slatI)}
                         />
                       </div>
                     ))}
