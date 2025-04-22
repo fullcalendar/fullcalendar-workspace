@@ -348,9 +348,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       role="row"
                       aria-rowindex={1}
                       className={joinArrayishClassNames(
-                        'fc-row-bordered', // TODO: temporary
-                        'fc-flex-row fc-grow fc-border-only-b',
                         options.resourceAreaHeaderRowClassNames,
+                        'fc-flex-row fc-grow fc-border-only-b',
                       )}
                     >
                       <SuperHeaderCell
@@ -600,29 +599,18 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       const group = groupRowLayout.entity
                       const groupKey = createGroupId(group)
                       return (
-                        <div
+                        <GroupLane
                           key={groupKey}
                           role='row'
-                          aria-rowindex={1 + totalHeaderRowSpan + groupRowLayout.rowIndex}
-                          aria-level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
-                          aria-expanded={groupRowLayout.isExpanded}
-                          class={joinClassNames(
-                            'fc-flex-row fc-fill-x fc-content-box',
-                            'fc-row-bordered', // TODO: temporary
-                            groupRowLayout.visibleIndex < visibleRowCnt - 1 // is not last?
-                              ? 'fc-border-only-b'
-                              : 'fc-border-none',
-                          )}
-                          style={{
-                            top: bodyTops.get(groupKey),
-                            height: bodyHeights.get(groupKey),
-                          }}
-                        >
-                          <GroupLane
-                            group={group}
-                            innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
-                          />
-                        </div>
+                          group={group}
+                          rowIndex={1 + totalHeaderRowSpan + groupRowLayout.rowIndex}
+                          level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
+                          expanded={groupRowLayout.isExpanded}
+                          borderBottom={groupRowLayout.visibleIndex < visibleRowCnt - 1}
+                          innerHeightRef={this.timeEntityInnerHeightMap.createRef(groupKey)}
+                          top={bodyTops.get(groupKey)}
+                          height={bodyHeights.get(groupKey)}
+                        />
                       )
                     })}
 
@@ -630,40 +618,32 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     {flatResourceLayouts.map((resourceLayout) => {
                       const resource = resourceLayout.entity
                       return (
-                        <div
+                        <ResourceLane
+                          {...splitProps[resource.id]}
                           key={resource.id}
                           role='row'
-                          aria-rowindex={1 + totalHeaderRowSpan + resourceLayout.rowIndex}
-                          aria-level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
-                          aria-expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
-                          className={joinClassNames(
-                            'fc-flex-row fc-fill-x fc-content-box',
-                            'fc-row-bordered', // TODO: temporary
-                            resourceLayout.visibleIndex < visibleRowCnt - 1 // is not last?
-                              ? 'fc-border-only-b'
-                              : 'fc-border-none',
-                          )}
-                          style={{
-                            top: bodyTops.get(resource.id),
-                            height: bodyHeights.get(resource.id),
-                          }}
-                        >
-                          <ResourceLane
-                            {...splitProps[resource.id]}
-                            resource={resource}
-                            dateProfile={dateProfile}
-                            tDateProfile={tDateProfile}
-                            nowDate={props.nowDate}
-                            todayRange={props.todayRange}
-                            businessHours={resource.businessHours || fallbackBusinessHours}
+                          className='fc-fill-x'
+                          resource={resource}
+                          dateProfile={dateProfile}
+                          tDateProfile={tDateProfile}
+                          nowDate={props.nowDate}
+                          todayRange={props.todayRange}
+                          businessHours={resource.businessHours || fallbackBusinessHours}
+                          borderBottom={resourceLayout.visibleIndex < visibleRowCnt - 1}
+                          rowIndex={1 + totalHeaderRowSpan + resourceLayout.rowIndex}
+                          level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
+                          expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
 
-                            // ref
-                            heightRef={this.timeEntityInnerHeightMap.createRef(resource.id)}
+                          // ref
+                          heightRef={this.timeEntityInnerHeightMap.createRef(resource.id)}
 
-                            // dimensions
-                            slotWidth={slotWidth}
-                          />
-                        </div>
+                          // dimensions
+                          slotWidth={slotWidth}
+
+                          // position
+                          top={bodyTops.get(resource.id)}
+                          height={bodyHeights.get(resource.id)}
+                        />
                       )
                     })}
                   </div>

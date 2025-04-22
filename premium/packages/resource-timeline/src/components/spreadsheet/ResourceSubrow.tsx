@@ -1,9 +1,9 @@
-import { afterSize, BaseComponent, isArraysEqual, joinClassNames, RefMap, setRef, ViewContext } from '@fullcalendar/core/internal'
-import { Fragment, Ref, createElement } from '@fullcalendar/core/preact'
+import { afterSize, BaseComponent, isArraysEqual, joinArrayishClassNames, RefMap, setRef, ViewContext } from '@fullcalendar/core/internal'
+import { Ref, createElement } from '@fullcalendar/core/preact'
 import { Resource, ColSpec, getPublicId } from '@fullcalendar/resource/internal'
 import { ResourceCell } from './ResourceCell.js'
 
-export interface ResourceCellsProps {
+export interface ResourceSubrowProps {
   resource: Resource
   resourceFields: any
   colStartIndex: number
@@ -12,6 +12,13 @@ export interface ResourceCellsProps {
   isExpanded: boolean
   hasChildren: boolean
   className?: string
+  borderBottom: boolean | undefined
+
+  // aria
+  role?: string
+  rowIndex?: number
+  level?: number
+  expanded?: boolean
 
   // refs
   innerHeightRef?: Ref<number>
@@ -19,9 +26,13 @@ export interface ResourceCellsProps {
   // sizing
   colWidths: number[] | undefined
   colGrows?: number[]
+
+  // positioning
+  top?: number
+  height?: number
 }
 
-export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext> {
+export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewContext> {
   // refs
   private innerHeightRefMap = new RefMap<number, number>(() => {
     afterSize(this.handleInnerHeights)
@@ -31,12 +42,30 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
   render() {
     const { props, innerHeightRefMap } = this
     const { resource, resourceFields, colSpecs } = props
+    const { options } = this.context
 
     const colWidths = props.colWidths || []
     const colGrows = props.colGrows || []
 
     return (
-      <Fragment>
+      <div
+        role={props.role as any} // !!!
+        aria-rowindex={props.rowIndex}
+        aria-level={props.level}
+        aria-expanded={props.expanded}
+        data-resource-id={resource.id}
+        className={joinArrayishClassNames(
+          props.className, // what for???
+          options.resourceAreaRowClassNames,
+          'fc-resource',
+          'fc-flex-row',
+          props.borderBottom ? 'fc-border-only-b' : 'fc-border-none',
+        )}
+        style={{
+          top: props.top,
+          height: props.height,
+        }}
+      >
         {mapRange(props.colStartIndex, colSpecs.length, (i) => {
           const colSpec = colSpecs[i]
           const fieldValue = colSpec.field ? resourceFields[colSpec.field] :
@@ -54,14 +83,11 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
               innerHeightRef={innerHeightRefMap.createRef(i)}
               width={colWidths[i]}
               grow={colGrows[i]}
-              className={joinClassNames(
-                props.className,
-                i ? 'fc-border-only-s' : 'fc-border-none',
-              )}
+              className={i ? 'fc-border-only-s' : 'fc-border-none'}
             />
           )
         })}
-      </Fragment>
+      </div>
     )
   }
 
@@ -82,7 +108,7 @@ export class ResourceCells extends BaseComponent<ResourceCellsProps, ViewContext
   }
 }
 
-ResourceCells.addPropsEquality({
+ResourceSubrow.addPropsEquality({
   colWidths: isArraysEqual,
 })
 

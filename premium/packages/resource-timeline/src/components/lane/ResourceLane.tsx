@@ -1,5 +1,5 @@
 import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinArrayishClassNames } from '@fullcalendar/core/internal'
-import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
+import { createElement, Ref } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
 import { TimelineDateProfile, TimelineFg, TimelineBg, TimelineLaneSlicer } from '@fullcalendar/timeline/internal'
 
@@ -8,6 +8,12 @@ export interface ResourceLaneProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
+  borderBottom: boolean
+  role?: string // aria
+  rowIndex?: number // aria
+  level?: number // aria
+  expanded?: boolean // aria
+  className?: string
 
   // content
   eventStore: EventStore | null
@@ -20,7 +26,14 @@ export interface ResourceLaneProps {
   resource: Resource
 
   // dimensions
+  width?: number
   slotWidth: number | undefined
+
+  // position
+  top?: number
+  height?: number
+  left?: number
+  right?: number
 
   // refs
   heightRef?: Ref<number>
@@ -38,8 +51,9 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
 
   render() {
     let { props, context } = this
+    let { resource } = props
     let { options } = context
-    let renderProps = this.refineRenderProps({ resource: props.resource, context })
+    let renderProps = this.refineRenderProps({ resource, context })
 
     /* sliced */
 
@@ -58,15 +72,25 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
       <ContentContainer
         tag="div"
         attrs={{
-          role: 'gridcell',
-          'data-resource-id': props.resource.id,
+          role: props.role as any, // !!!
+          'aria-rowindex': props.rowIndex,
+          'aria-level': props.level,
+          'aria-expanded': props.expanded,
+          'data-resource-id': resource.id,
         }}
         className={joinClassNames(
-          'fc-resource fc-liquid fc-flex-col fc-timeline-lane fc-rel', // fc-rel is for fc-fill-top
-          options.eventOverlap === false // TODO: fix bad default
-            ? 'fc-timeline-overlap-disabled'
-            : 'fc-timeline-overlap-enabled',
+          'fc-resource fc-timeline-lane',
+          props.className,
+          'fc-flex-row fc-content-box',
+          props.borderBottom ? 'fc-border-only-b' : 'fc-border-none',
         )}
+        style={{
+          top: props.top,
+          left: props.left,
+          right: props.right,
+          width: props.width,
+          height: props.height,
+        }}
         renderProps={renderProps}
         generatorName="resourceLaneContent"
         customGenerator={options.resourceLaneContent}
@@ -75,7 +99,15 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         willUnmount={options.resourceLaneWillUnmount}
       >
         {(InnerContent) => (
-          <Fragment>
+          <div
+            role='gridcell'
+            className={joinClassNames(
+              'fc-liquid fc-flex-col fc-rel', // fc-rel is for fc-fill-top
+              options.eventOverlap === false // TODO: fix bad default
+                ? 'fc-timeline-overlap-disabled'
+                : 'fc-timeline-overlap-enabled',
+            )}
+          >
             <TimelineBg
               tDateProfile={props.tDateProfile}
               nowDate={props.nowDate}
@@ -110,7 +142,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               eventDrag={slicedProps.eventDrag}
               eventResize={slicedProps.eventResize}
               eventSelection={slicedProps.eventSelection}
-              resourceId={props.resource.id}
+              resourceId={resource.id}
 
               // dimensions
               slotWidth={props.slotWidth}
@@ -125,7 +157,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                 options.resourceLaneBottomClassNames,
               )}
             />
-          </Fragment>
+          </div>
         )}
       </ContentContainer>
     )

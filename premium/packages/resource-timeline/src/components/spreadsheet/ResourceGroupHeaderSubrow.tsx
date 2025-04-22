@@ -1,19 +1,30 @@
-import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, joinClassNames, generateClassName } from '@fullcalendar/core/internal'
+import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, joinClassNames, generateClassName, joinArrayishClassNames } from '@fullcalendar/core/internal'
 import { createElement, Fragment, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
 import { ResourceGroupHeaderContentArg } from '@fullcalendar/resource'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ExpanderIcon } from './ExpanderIcon.js'
 
-export interface GroupWideCellProps {
+export interface ResourceGroupHeaderSubrowProps {
   group: Group
-  isExpanded: boolean
-  colSpan: number
+  isExpanded: boolean // for aria
+  colSpan: number // for aria
+  borderBottom: boolean
+  className?: string
+
+  // aria
+  role?: string
+  rowIndex?: number
+  level?: number
 
   // refs
   innerHeightRef?: Ref<number>
+
+  // position
+  top?: number
+  height?: number
 }
 
-export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext> {
+export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeaderSubrowProps, ViewContext> {
   // ref
   private innerElRef = createRef<HTMLDivElement>()
 
@@ -22,14 +33,31 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
 
   render() {
     let { props, context } = this
+    let { options } = context
     let renderProps: ResourceGroupHeaderContentArg = {
       fieldValue: props.group.value,
       view: context.viewApi,
     }
     let spec = props.group.spec
 
-    return ( // TODO: apply the top-coordinate
-      <Fragment>
+    return (
+      <div
+        role={props.role as any} // !!!
+        aria-rowindex={props.rowIndex}
+        aria-level={props.level}
+        aria-expanded={props.isExpanded}
+        className={joinArrayishClassNames(
+          'fc-resource-group',
+          options.resourceAreaRowClassNames,
+          props.className,
+          props.borderBottom ? 'fc-border-only-b' : 'fc-border-none',
+          'fc-flex-row fc-content-box',
+        )}
+        style={{
+          top: props.top,
+          height: props.height
+        }}
+      >
         <ContentContainer
           tag="div"
           attrs={{
@@ -37,8 +65,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
             'aria-colspan': props.colSpan,
             'aria-expanded': props.isExpanded,
           }}
-          // TODO: make part of fc-resource-group so ppl can style both cells together?
-          className='fc-resource-group fc-cell fc-liquid fc-shaded'
+          className='fc-cell fc-liquid fc-shaded'
           renderProps={renderProps}
           generatorName="resourceGroupHeaderContent"
           customGenerator={spec.labelContent}
@@ -68,7 +95,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
             </div>
           )}
         </ContentContainer>
-      </Fragment>
+      </div>
     )
   }
 
@@ -96,7 +123,7 @@ export class GroupWideCell extends BaseComponent<GroupWideCellProps, ViewContext
   }
 }
 
-GroupWideCell.addPropsEquality({
+ResourceGroupHeaderSubrow.addPropsEquality({
   group: isGroupsEqual,
 })
 

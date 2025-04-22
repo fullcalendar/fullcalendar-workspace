@@ -4,12 +4,18 @@ import './index.css'
 
 // TODO: better solution for this
 // Also figure out resource-header-tier.ts
+// BAD::: gives errors if specific plugins not loaded
 const PLUGIN_SPECIFIC_SETTINGS: any = {
   dayHeaderClassNames: (arg) => getDayClassNames(arg),
   dayCellClassNames: (arg) => getDayClassNames(arg),
   dayLaneClassNames: (arg) => getDayClassNames(arg),
   dayHeaderDividerClassNames: 'fc-day-header-divider',
   resourceAreaDividerClassNames: 'fc-resource-area-divider',
+  resourceAreaHeaderRowClassNames: 'fc-resource-area-header-row',
+  resourceAreaHeaderClassNames: 'fc-resource-area-header',
+  resourceAreaRowClassNames: 'fc-resource-area-row',
+  resourceLaneClassNames: 'fc-resource-lane',
+  resourceGroupLaneClassNames: 'fc-resource-group-lane',
 }
 
 export default createPlugin({
@@ -66,6 +72,7 @@ export default createPlugin({
     fillerXClassNames: 'fc-filler-x',
     fillerYClassNames: 'fc-filler-y',
     allDayDividerClassNames: 'fc-all-day-divider',
+    slotLabelRowClassNames: 'fc-slot-label-row',
     ...PLUGIN_SPECIFIC_SETTINGS,
   },
   views: {
@@ -100,6 +107,11 @@ export default createPlugin({
       viewClassNames: 'fc-timeline',
       slotLabelDividerClassNames: 'fc-timeline-slot-label-divider',
       eventClassNames: 'fc-timeline-event fc-h-event',
+      slotLaneClassNames: (arg) => [
+        'fc-timeline-slot-lane',
+        arg.isMajor && 'fc-timeline-slot-lane-major',
+        arg.isMinor && 'fc-timeline-slot-lane-minor',
+      ],
     },
     resourceDayGrid: {
       viewClassNames: 'fc-resource-daygrid', // also inherits dayGrid

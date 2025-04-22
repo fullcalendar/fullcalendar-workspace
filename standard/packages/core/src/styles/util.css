@@ -11,6 +11,7 @@
 }
 
 // TODO: break-out to x and y. don't have "only" all
+// TODO: instead of "border" utils, call them "borderless" to subtract?
 
 .fc-border-none {
   border: 0 !important;

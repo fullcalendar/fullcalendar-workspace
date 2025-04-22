@@ -39,7 +39,6 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         // fc-rel for resizer abs positioning
         className={joinClassNames(
           'fc-header-cell fc-cell fc-flex-col fc-justify-center fc-rel',
-          'fc-cell-bordered', // TODO: temporary
           props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
         )}
         style={{

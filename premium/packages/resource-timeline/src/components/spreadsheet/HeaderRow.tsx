@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, ElementDragging, PointerDragEvent, RefMap, setRef } from "@fullcalendar/core/internal"
+import { afterSize, BaseComponent, ElementDragging, joinArrayishClassNames, PointerDragEvent, RefMap, setRef } from "@fullcalendar/core/internal"
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { ColSpec } from '@fullcalendar/resource/internal'
 import { HeaderCell } from "./HeaderCell.js"
@@ -48,6 +48,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
   render() {
     const { props, innerHeightRefMap, resizerElRefMap } = this
     const { colSpecs } = props
+    const { options } = this.context
 
     const colWidths = props.colWidths || []
     const colGrows = props.colGrows || []
@@ -56,7 +57,10 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
       <div
         role="row"
         aria-rowindex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
-        className='fc-flex-row fc-grow' // TODO: fc-row-bordered
+        className={joinArrayishClassNames(
+          options.resourceAreaHeaderRowClassNames,
+          'fc-flex-row fc-grow fc-border-none',
+        )}
       >
         {colSpecs.map((colSpec, colIndex) => {
           return (

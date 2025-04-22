@@ -32,7 +32,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           role: 'columnheader',
           'aria-colspan': this.props.colSpan,
         }}
-        className='fc-header-cell fc-cell fc-flex-col fc-justify-center fc-liquid'
+        className='fc-header-cell fc-cell fc-border-none fc-flex-col fc-justify-center fc-liquid'
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"
         customGenerator={renderHooks.headerContent}

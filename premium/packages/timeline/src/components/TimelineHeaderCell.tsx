@@ -8,6 +8,7 @@ import {
   DateRange,
   generateClassName,
   getDateMeta,
+  joinArrayishClassNames,
   joinClassNames,
   memoize,
   setRef,
@@ -69,12 +70,12 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
     return (
       <ContentContainer
         tag="div"
-        className={joinClassNames(
-          'fc-timeline-slot-label fc-timeline-slot',
-          'fc-header-cell fc-cell fc-flex-col fc-justify-center',
-          'fc-cell-bordered', // TODO: temporary
+        className={joinArrayishClassNames(
+          options.slotLabelRowClassNames,
           props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
           props.isCentered ? 'fc-align-center' : 'fc-align-start',
+          'fc-timeline-slot-label fc-timeline-slot',
+          'fc-header-cell fc-cell fc-flex-col fc-justify-center',
         )}
         attrs={{
           'data-date': dateEnv.formatIso(cell.date, {

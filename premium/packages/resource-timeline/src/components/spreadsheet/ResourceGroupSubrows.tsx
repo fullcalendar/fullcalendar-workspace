@@ -1,9 +1,9 @@
 import { BaseComponent, joinClassNames } from '@fullcalendar/core/internal'
 import { Group } from '@fullcalendar/resource/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
-import { GroupTallCell } from './GroupTallCell.js'
+import { ResourceGroupSubrow } from './ResourceGroupSubrow.js'
 
-export interface ResourceGroupCellsProps {
+export interface ResourceGroupSubrowsProps {
   colGroups: Group[]
   colGroupStats: { render: boolean, borderBottom: boolean }[] // TODO: type from createColGroupStats
   colWidths: number[] | undefined
@@ -13,7 +13,7 @@ export interface ResourceGroupCellsProps {
 /*
 Just for print
 */
-export class ResourceGroupCells extends BaseComponent<ResourceGroupCellsProps> {
+export class ResourceGroupSubrows extends BaseComponent<ResourceGroupSubrowsProps> {
   render() {
     const { props } = this
     const { colGroups, colGroupStats } = props
@@ -25,22 +25,23 @@ export class ResourceGroupCells extends BaseComponent<ResourceGroupCellsProps> {
       <Fragment>
         {colGroups.map((colGroup, i) => {
           const stats = colGroupStats[i]
-          // TODO: use fc-row-bordered somehow
-          const className = stats.borderBottom ? 'fc-border-only-b' : 'fc-border-none'
 
           return (
             stats.render ? (
-              <GroupTallCell
+              <ResourceGroupSubrow
                 colSpec={colGroup.spec}
                 fieldValue={colGroup.value}
-                className={className}
                 width={colWidths[i]}
                 grow={colGrows[i]}
+                borderBottom={stats.borderBottom}
               />
             ) : (
               <div
                 // TODO: make className DRY somehow?
-                className={joinClassNames('fc-resource-group fc-cell', className)}
+                className={joinClassNames(
+                  'fc-resource-group',
+                  stats.borderBottom ? 'fc-border-only-b' : 'fc-border-none'
+                )}
                 style={{
                   minWidth: 0,
                   width: colWidths[i],

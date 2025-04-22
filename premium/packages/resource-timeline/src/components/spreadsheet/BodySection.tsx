@@ -1,9 +1,9 @@
-import { BaseComponent, joinArrayishClassNames, joinClassNames, RefMap } from "@fullcalendar/core/internal"
+import { BaseComponent, joinClassNames, RefMap } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
 import { ColSpec, createGroupId } from "@fullcalendar/resource/internal"
-import { GroupTallCell } from "./GroupTallCell.js"
-import { GroupWideCell } from "./GroupWideCell.js"
-import { ResourceCells } from "./ResourceCells.js"
+import { ResourceGroupSubrow } from "./ResourceGroupSubrow.js"
+import { ResourceGroupHeaderSubrow } from "./ResourceGroupHeaderSubrow.js"
+import { ResourceSubrow } from "./ResourceSubrow.js"
 import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout.js"
 import { ROW_BORDER_WIDTH } from "../../resource-positioning.js"
 
@@ -27,7 +27,6 @@ Caller is responsible for this.
 export class BodySection extends BaseComponent<BodySectionProps> {
   render() {
     const { props, context } = this
-    const { options } = context
     const { rowInnerHeightRefMap, rowTops, rowHeights, headerRowSpan, hasNesting } = props
 
     // TODO: less-weird way to get this! more DRY with ResourceTimelineLayoutNormal
@@ -57,7 +56,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             role='rowgroup'
             className={joinClassNames(
               'fc-rel',
-              'fc-cell-bordere', // TODO: temporary
+              'fc-cell-bordered', // TODO: temporary
               colIndex ? 'fc-border-only-s' : 'fc-border-none',
             )}
             style={{
@@ -72,34 +71,24 @@ export class BodySection extends BaseComponent<BodySectionProps> {
               const rowHeight = rowHeights.get(groupKey)
 
               return (
-                <div
+                <ResourceGroupSubrow
                   key={groupKey}
+                  colSpec={group.spec}
+                  rowSpan={groupCellLayout.rowSpan}
+                  fieldValue={group.value}
+                  className='fc-fill-x'
+                  borderBottom={isNotLast}
                   role='row'
-                  aria-rowindex={1 + headerRowSpan + groupCellLayout.rowIndex}
-                  aria-level={hasNesting ? 1 : undefined} // the resource-specific row at this rowindex is always depth 0
-                  class={joinArrayishClassNames(
-                    'fc-flex-row fc-fill-x',
-                    // TODO: options.resourceAreaRowClassNames
-                  )}
-                  style={{
-                    top: rowTops.get(groupKey),
-                    height: (rowHeight != null && isNotLast)
+                  rowIndex={1 + headerRowSpan + groupCellLayout.rowIndex}
+                  level={hasNesting ? 1 : undefined} // the resource-specific row at this rowindex is always depth 0
+                  innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
+                  top={rowTops.get(groupKey)}
+                  height={
+                    (rowHeight != null && isNotLast)
                       ? rowHeight + ROW_BORDER_WIDTH // considering bottom border, which is added to cell
-                      : rowHeight,
-                  }}
-                >
-                  <GroupTallCell
-                    colSpec={group.spec}
-                    rowSpan={groupCellLayout.rowSpan}
-                    fieldValue={group.value}
-                    className={joinClassNames(
-                      'fc-liquid',
-                      'fc-row-bordered', // TODO: temporary
-                      isNotLast ? 'fc-border-only-b' : 'fc-border-none',
-                    )}
-                    innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
-                  />
-                </div>
+                      : rowHeight
+                  }
+                />
               )
             })}
           </div>
@@ -136,30 +125,20 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             const isNotLast = groupRowLayout.visibleIndex < visibleRowCnt - 1
 
             return (
-              <div
+              <ResourceGroupHeaderSubrow
                 key={groupKey}
+                group={group}
+                isExpanded={groupRowLayout.isExpanded}
+                innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
                 role='row'
-                aria-rowindex={1 + headerRowSpan + groupRowLayout.rowIndex}
-                aria-level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
-                aria-expanded={groupRowLayout.isExpanded}
-                class={joinArrayishClassNames(
-                  'fc-flex-row fc-fill-x fc-content-box',
-                  'fc-row-bordered', // TODO: temporary
-                  isNotLast ? 'fc-border-only-b' : 'fc-border-none',
-                  options.resourceAreaRowClassNames,
-                )}
-                style={{
-                  top: rowTops.get(groupKey),
-                  height: rowHeights.get(groupKey),
-                }}
-              >
-                <GroupWideCell
-                  group={group}
-                  isExpanded={groupRowLayout.isExpanded}
-                  innerHeightRef={rowInnerHeightRefMap.createRef(groupKey)}
-                  colSpan={props.colSpecs.length}
-                />
-              </div>
+                rowIndex={1 + headerRowSpan + groupRowLayout.rowIndex}
+                level={hasNesting ? 1 + groupRowLayout.rowDepth : undefined}
+                colSpan={props.colSpecs.length}
+                borderBottom={isNotLast}
+                top={rowTops.get(groupKey)}
+                height={rowHeights.get(groupKey)}
+                className='fc-fill-x'
+              />
             )
           })}
 
@@ -170,39 +149,30 @@ export class BodySection extends BaseComponent<BodySectionProps> {
             const rowHeight = rowHeights.get(resource.id)
 
             return (
-              <div
+              <ResourceSubrow
                 key={resource.id}
+                resource={resource}
+                resourceFields={resourceLayout.resourceFields}
+                indent={resourceLayout.indent}
+                hasChildren={resourceLayout.hasChildren}
+                isExpanded={resourceLayout.isExpanded}
+                colStartIndex={props.flatGroupColLayouts.length}
+                colSpecs={props.colSpecs}
+                colWidths={colWidths}
+                innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
+                className='fc-fill-x'
+                borderBottom={isNotLast}
                 role='row'
-                aria-rowindex={1 + headerRowSpan + resourceLayout.rowIndex}
-                aria-level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
-                aria-expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
-                class={joinArrayishClassNames(
-                  'fc-flex-row fc-fill-x'
-                  // TODO: options.resourceAreaRowClassNames,
-                )}
-                style={{
-                  top: rowTops.get(resource.id),
-                  height: (rowHeight != null && isNotLast)
+                rowIndex={1 + headerRowSpan + resourceLayout.rowIndex}
+                level={hasNesting ? 1 + resourceLayout.rowDepth : undefined}
+                expanded={resourceLayout.hasChildren ? resourceLayout.isExpanded : undefined}
+                top={rowTops.get(resource.id)}
+                height={
+                  (rowHeight != null && isNotLast)
                     ? rowHeight + ROW_BORDER_WIDTH // considering bottom border, which is added to cell
                     : rowHeight
-                }}
-              >
-                <ResourceCells
-                  resource={resource}
-                  resourceFields={resourceLayout.resourceFields}
-                  indent={resourceLayout.indent}
-                  hasChildren={resourceLayout.hasChildren}
-                  isExpanded={resourceLayout.isExpanded}
-                  colStartIndex={props.flatGroupColLayouts.length}
-                  colSpecs={props.colSpecs}
-                  colWidths={colWidths}
-                  innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
-                  className={joinClassNames(
-                    'fc-row-bordered', // TODO: temporary
-                    isNotLast ? 'fc-border-only-b' : 'fc-border-none',
-                  )}
-                />
-              </div>
+                }
+              />
             )
           })}
         </div>

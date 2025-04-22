@@ -1,6 +1,17 @@
 
+.fc-resource-area-header-row,
+.fc-resource-area-header,
+.fc-resource-area-row,
+.fc-slot-label-row,
+.fc-timeline-slot-lane,
+.fc-resource-lane,
+.fc-resource-group-lane,
 .fc-view-bordered {
   border: 1px solid var(--fc-border-color);
+}
+
+.fc-timeline-slot-lane-minor {
+  border-style: dotted;
 }
 
 // Filler

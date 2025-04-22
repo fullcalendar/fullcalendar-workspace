@@ -32,11 +32,11 @@ import {
 import { buildPrintLayouts, GroupRowPrintLayout, ResourcePrintLayout } from '../resource-layout-print.js'
 import { GroupLane } from './lane/GroupLane.js'
 import { ResourceLane } from './lane/ResourceLane.js'
-import { GroupWideCell } from './spreadsheet/GroupWideCell.js'
+import { ResourceGroupHeaderSubrow } from './spreadsheet/ResourceGroupHeaderSubrow.js'
 import { HeaderRow } from './spreadsheet/HeaderRow.js'
-import { ResourceCells } from './spreadsheet/ResourceCells.js'
+import { ResourceSubrow } from './spreadsheet/ResourceSubrow.js'
 import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
-import { ResourceGroupCells } from './spreadsheet/ResourceGroupCells.js'
+import { ResourceGroupSubrows } from './spreadsheet/ResourceGroupSubrows.js'
 import { CssDimValue } from '@fullcalendar/core'
 import { flexifyDimConfigs, SiblingDimConfig } from '../col-positioning.js'
 
@@ -150,9 +150,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 <div
                   role='row'
                   className={joinArrayishClassNames(
-                    'fc-row-bordered', // TODO: temporary
-                    'fc-flex-row fc-grow fc-border-only-b',
                     options.resourceAreaHeaderRowClassNames,
+                    'fc-flex-row fc-grow fc-border-only-b',
                   )}
                 >
                   <SuperHeaderCell
@@ -315,22 +314,15 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   aria-level={hasNesting ? printLayout.indent : undefined}
                   className='fc-flex-row fc-break-inside-avoid'
                 >
-                  {/*
-                    TODO put options.resourceAreaRowClassNames on this sub-row-container element
-                  */}
                   <div className='fc-flex-col fc-crop' style={{ width: props.spreadsheetWidth }}>
                     <div className='fc-flex-row fc-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
-                      {/*
-                        instead of conditionally adding border via colGroupStats[].colGroupStats
-                        use options.resourceAreaRowClassNames
-                      */}
-                      <ResourceGroupCells
+                      <ResourceGroupSubrows
                         colGroups={(printLayout as ResourcePrintLayout).colGroups}
                         colGroupStats={colGroupStats}
                         colWidths={colWidths}
                         colGrows={colGrows}
                       />
-                      <ResourceCells
+                      <ResourceSubrow
                         resource={resource}
                         resourceFields={(printLayout as ResourcePrintLayout).resourceFields}
                         indent={(printLayout as ResourcePrintLayout).indent}
@@ -340,45 +332,29 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                         colSpecs={colSpecs}
                         colWidths={colWidths}
                         colGrows={colGrows}
-                        className={joinArrayishClassNames(
-                          'fc-row-bordered', // TODO: temporary
-                          isNotLast ? 'fc-border-only-b' : 'fc-border-none',
-                          options.resourceAreaRowClassNames,
-                        )}
+                        borderBottom={isNotLast}
                       />
                     </div>
                   </div>
                   <div
                     className={joinArrayishClassNames(options.resourceAreaDividerClassNames)}
                   />
-                  <div
-                    className={joinClassNames(
-                      'fc-flex-col fc-crop fc-liquid',
-                      'fc-row-bordered', // TODO: temporary
-                      isNotLast ? 'fc-border-only-b' : 'fc-border-none',
-                    )}
-                  >
-                    <div
+                  <div className='fc-flex-col fc-crop fc-liquid'>
+                    <ResourceLane
+                      {...splitProps[resource.id]}
                       className='fc-rel'
-                      style={{
-                        width: timeCanvasWidth,
-
-                        // TODO: nicer way of doing this
-                        left: context.isRtl ? undefined : -timeAreaOffset,
-                        right: context.isRtl ? -timeAreaOffset : undefined,
-                      }}
-                    >
-                      <ResourceLane
-                        {...splitProps[resource.id]}
-                        resource={resource}
-                        dateProfile={dateProfile}
-                        tDateProfile={tDateProfile}
-                        nowDate={nowDate}
-                        todayRange={todayRange}
-                        businessHours={resource.businessHours || fallbackBusinessHours}
-                        slotWidth={slotWidth}
-                      />
-                    </div>
+                      resource={resource}
+                      dateProfile={dateProfile}
+                      tDateProfile={tDateProfile}
+                      nowDate={nowDate}
+                      todayRange={todayRange}
+                      businessHours={resource.businessHours || fallbackBusinessHours}
+                      width={timeCanvasWidth}
+                      slotWidth={slotWidth}
+                      left={context.isRtl ? undefined : -timeAreaOffset}
+                      right={context.isRtl ? -timeAreaOffset : undefined}
+                      borderBottom={isNotLast}
+                    />
                   </div>
                 </div>
               )
@@ -390,24 +366,24 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 <div
                   key={groupKey}
                   role='row'
-                  className={joinClassNames(
-                    'fc-flex-row fc-break-inside-avoid',
-                    'fc-row-bordered', // TODO: temporary
-                    isNotLast ? 'fc-border-only-b' : 'fc-border-none',
-                  )}
+                  className='fc-flex-row fc-break-inside-avoid'
                 >
                   <div className='fc-crop fc-flex-row' style={{ width: props.spreadsheetWidth }}>
-                    <GroupWideCell
+                    <ResourceGroupHeaderSubrow
                       group={group}
                       isExpanded={(printLayout as GroupRowPrintLayout).isExpanded}
                       colSpan={props.colSpecs.length}
+                      borderBottom={isNotLast}
                     />
                   </div>
                   <div
                     className={joinArrayishClassNames(options.resourceAreaDividerClassNames)}
                   />
                   <div className='fc-crop fc-flex-row fc-liquid'>
-                    <GroupLane group={group} />
+                    <GroupLane
+                      group={group}
+                      borderBottom={isNotLast}
+                    />
                   </div>
                 </div>
               )

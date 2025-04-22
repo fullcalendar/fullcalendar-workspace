@@ -46,10 +46,20 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
     let { dateEnv, options } = context
     let { date, tDateProfile, isMajor } = props
     let dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange, props.nowDate)
+
+    let isMinor = !(
+      tDateProfile.isTimeScale &&
+      isInt(dateEnv.countDurationsBetween(
+        tDateProfile.normalizedRange.start,
+        props.date,
+        tDateProfile.labelInterval,
+      ))
+    )
+
     let renderProps: SlotLaneContentArg = {
       ...dateMeta,
       isMajor,
-      isMinor: false,
+      isMinor,
       view: context.viewApi,
     }
 
@@ -57,21 +67,9 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
       <ContentContainer
         tag="div"
         // fc-align-start shrinks width of InnerContent
-        // TODO: document this semantic className fc-timeline-slot-em
         className={joinClassNames(
           'fc-timeline-slot',
-          isMajor && 'fc-timeline-slot-em',
-          tDateProfile.isTimeScale && (
-            isInt(dateEnv.countDurationsBetween( // best to do this here?
-              tDateProfile.normalizedRange.start,
-              props.date,
-              tDateProfile.labelInterval,
-            )) ?
-              'fc-timeline-slot-major' :
-              'fc-timeline-slot-minor'
-          ),
           'fc-timeline-slot-lane fc-cell fc-flex-col fc-align-start',
-          'fc-cell-bordered', // TODO: temporary
           props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
         )}
         attrs={{

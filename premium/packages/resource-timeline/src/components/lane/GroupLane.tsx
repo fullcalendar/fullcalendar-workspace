@@ -5,13 +5,23 @@ import { Group } from '@fullcalendar/resource/internal'
 
 export interface GroupLaneProps {
   group: Group
+  role?: string // aria
+  rowIndex?: number // aria
+  level?: number // aria
+  expanded?: boolean // aria
+  borderBottom: boolean
 
   // refs
   innerHeightRef?: Ref<number>
+
+  // positioning
+  top?: number
+  width?: number
+  height?: number
 }
 
 /*
-parallels the GroupWideCell
+parallels the ResourceGroupHeaderSubrow
 */
 export class GroupLane extends BaseComponent<GroupLaneProps> {
   // ref
@@ -33,9 +43,23 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
       <ContentContainer
         tag="div"
         attrs={{
-          role: 'gridcell',
+          role: props.role as any, // !!!
+          'aria-rowindex': props.rowIndex,
+          'aria-level': props.level,
+          'aria-expanded': props.expanded,
         }}
-        className='fc-resource-group fc-liquid fc-flex-col fc-timeline-lane fc-shaded'
+        className={joinClassNames(
+          'fc-resource-group fc-timeline-lane fc-shaded',
+          'fc-flex-row fc-fill-x fc-content-box',
+          props.borderBottom
+            ? 'fc-border-only-b'
+            : 'fc-border-none',
+        )}
+        style={{
+          top: props.top,
+          width: props.width,
+          height: props.height,
+        }}
         renderProps={renderProps}
         generatorName="resourceGroupLaneContent"
         customGenerator={groupSpec.laneContent}
@@ -46,8 +70,11 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
         {(InnerContainer) => (
           <InnerContainer
             tag="div"
+            attrs={{
+              role: 'gridcell',
+            }}
             className={joinClassNames(
-              'fc-flex-col',
+              'fc-flex-col fc-liquid fc-flex-col',
               generateClassName(groupSpec.laneInnerClassNames, renderProps),
             )}
             elRef={this.innerElRef}
