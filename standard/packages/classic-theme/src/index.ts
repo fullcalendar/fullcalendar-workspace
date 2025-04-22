@@ -66,8 +66,16 @@ export default createPlugin({
     eventTitleOuterClassNames: 'fc-event-title-outer',
     eventTitleClassNames: 'fc-event-title',
     dayPopoverClassNames: (arg) => getDayClassNames(arg),
-    slotLabelClassNames: (arg) => getSlotClassNames(arg),
-    slotLaneClassNames: (arg) => getSlotClassNames(arg),
+    slotLabelClassNames: (arg) => [
+      'fc-slot-label',
+      ...getSlotClassNames(arg),
+    ],
+    slotLaneClassNames: (arg) => [
+      'fc-slot-lane',
+      arg.isMajor && 'fc-slot-lane-major',
+      arg.isMinor && 'fc-slot-lane-minor',
+      ...getSlotClassNames(arg),
+    ],
     fillerClassNames: 'fc-filler',
     fillerXClassNames: 'fc-filler-x',
     fillerYClassNames: 'fc-filler-y',
@@ -107,11 +115,6 @@ export default createPlugin({
       viewClassNames: 'fc-timeline',
       slotLabelDividerClassNames: 'fc-timeline-slot-label-divider',
       eventClassNames: 'fc-timeline-event fc-h-event',
-      slotLaneClassNames: (arg) => [
-        'fc-timeline-slot-lane',
-        arg.isMajor && 'fc-timeline-slot-lane-major',
-        arg.isMinor && 'fc-timeline-slot-lane-minor',
-      ],
     },
     resourceDayGrid: {
       viewClassNames: 'fc-resource-daygrid', // also inherits dayGrid

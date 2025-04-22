@@ -71,7 +71,6 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
       <ContentContainer
         tag="div"
         className={joinArrayishClassNames(
-          options.slotLabelRowClassNames,
           props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
           props.isCentered ? 'fc-align-center' : 'fc-align-start',
           'fc-timeline-slot-label fc-timeline-slot',
