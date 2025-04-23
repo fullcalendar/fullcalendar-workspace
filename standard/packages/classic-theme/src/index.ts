@@ -6,7 +6,9 @@ import './index.css'
 // Also figure out resource-header-tier.ts
 // BAD::: gives errors if specific plugins not loaded
 const PLUGIN_SPECIFIC_SETTINGS: any = {
+  dayHeaderRowClassNames: 'fc-day-header-row',
   dayHeaderClassNames: (arg) => getDayClassNames(arg),
+  dayRowClassNames: 'fc-day-row',
   dayCellClassNames: (arg) => getDayClassNames(arg),
   dayLaneClassNames: (arg) => getDayClassNames(arg),
   dayHeaderDividerClassNames: 'fc-day-header-divider',

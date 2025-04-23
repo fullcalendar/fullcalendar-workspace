@@ -187,12 +187,16 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     key={tierNum}
                     role='row'
                     aria-rowindex={tierNum + 1}
-                    className={joinClassNames(
-                      'fc-row-bordered', // TODO: temporary
+                    className={joinArrayishClassNames(
+                      options.dayHeaderRowClassNames,
                       'fc-flex-row fc-content-box',
-                      tierNum ? 'fc-border-only-t' : 'fc-border-none',
+                      tierNum < props.headerTiers.length - 1
+                        ? 'fc-border-only-b'
+                        : 'fc-border-none'
                     )}
-                    style={{ height: state.headerTierHeights[tierNum] }}
+                    style={{
+                      height: state.headerTierHeights[tierNum]
+                    }}
                   >
                     {(options.weekNumbers && rowConfig.isDateRow) ? (
                       <TimeGridWeekNumber
@@ -234,7 +238,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       key={tierNum}
                       role='row'
                       rowIndex={tierNum}
-                      className={tierNum ? 'fc-border-only-t' : 'fc-border-none'}
+                      borderBottom={tierNum < props.headerTiers.length - 1}
                       height={state.headerTierHeights[tierNum]}
                       colWidth={colWidth}
                       innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}

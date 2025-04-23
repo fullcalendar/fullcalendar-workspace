@@ -152,7 +152,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           props.forPrint && 'fc-daygrid-row-print',
           'fc-flex-row fc-rel',
           props.className,
-          'fc-row-bordered', // TODO: temporary
           options.dayRowClassNames,
         )}
         style={{

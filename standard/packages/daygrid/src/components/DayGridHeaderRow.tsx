@@ -11,6 +11,7 @@ export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProp
   innerHeightRef?: Ref<number>
   role?: string
   rowIndex?: number // 0-based
+  borderBottom?: boolean
 }
 
 export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderRowProps<RenderProps>> {
@@ -31,10 +32,10 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
         role={props.role as any /* !!! */}
         aria-rowindex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
         className={joinArrayishClassNames(
-          'fc-row-bordered', // TODO: temporary
           'fc-flex-row fc-content-box',
-          props.className,
+          props.borderBottom ? 'fc-border-only-b' : 'fc-border-none',
           options.dayHeaderRowClassNames,
+          props.className,
         )}
         style={{ height: props.height }}
       >

@@ -149,32 +149,39 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               <div
                 key={tierNum}
                 role='row'
-                className={joinClassNames(
-                  'fc-row-bordered', // TODO: temporary
-                  'fc-flex-row',
-                  tierNum ? 'fc-border-only-t' : 'fc-border-none'
-                )}
+                className='fc-flex-row'
               >
-                {(options.weekNumbers && rowConfig.isDateRow) ? (
-                  <TimeGridWeekNumber
-                    dateProfile={props.dateProfile}
-                    innerWidthRef={this.handleWeekNumberInnerWidth}
-                    innerHeightRef={headerLabelInnerWidthRefMap.createRef(tierNum)}
-                    width={axisWidth}
-                    isLiquid={false}
-                  />
-                ) : (
-                  <TimeGridAxisEmpty
-                    width={axisWidth}
-                    isLiquid={false}
-                  />
-                )}
+                <div
+                  className={joinArrayishClassNames(
+                    options.dayHeaderRowClassNames,
+                    'fc-flex-row',
+                    tierNum < props.headerTiers.length - 1
+                      ? 'fc-border-only-b'
+                      : 'fc-border-none'
+                  )}
+                >
+                  {(options.weekNumbers && rowConfig.isDateRow) ? (
+                    <TimeGridWeekNumber
+                      dateProfile={props.dateProfile}
+                      innerWidthRef={this.handleWeekNumberInnerWidth}
+                      innerHeightRef={headerLabelInnerWidthRefMap.createRef(tierNum)}
+                      width={axisWidth}
+                      isLiquid={false}
+                    />
+                  ) : (
+                    <TimeGridAxisEmpty
+                      width={axisWidth}
+                      isLiquid={false}
+                    />
+                  )}
+                </div>
                 <div
                   className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
                 />
                 <DayGridHeaderRow
                   {...rowConfig}
-                  className='fc-border-none fc-liquid'
+                  className='fc-liquid'
+                  borderBottom={tierNum < props.headerTiers.length - 1}
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div

@@ -111,6 +111,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
                 {...rowConfig}
                 role='row'
                 className='fc-multimonth-header-row'
+                borderBottom={false}
               />
             </div>
           </div>
