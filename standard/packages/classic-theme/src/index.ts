@@ -7,10 +7,19 @@ import './index.css'
 // BAD::: gives errors if specific plugins not loaded
 const PLUGIN_SPECIFIC_SETTINGS: any = {
   dayHeaderRowClassNames: 'fc-day-header-row',
-  dayHeaderClassNames: (arg) => getDayClassNames(arg),
+  dayHeaderClassNames: (arg) => [
+    'fc-day-header-cell',
+    ...getDayClassNames(arg)
+  ],
   dayRowClassNames: 'fc-day-row',
-  dayCellClassNames: (arg) => getDayClassNames(arg),
-  dayLaneClassNames: (arg) => getDayClassNames(arg),
+  dayCellClassNames: (arg) => [
+    'fc-day-cell',
+    ...getDayClassNames(arg),
+  ],
+  dayLaneClassNames: (arg) => [
+    'fc-day-lane',
+    ...getDayClassNames(arg),
+  ],
   dayHeaderDividerClassNames: 'fc-day-header-divider',
   resourceAreaDividerClassNames: 'fc-resource-area-divider',
   resourceAreaHeaderRowClassNames: 'fc-resource-area-header-row',
@@ -18,6 +27,8 @@ const PLUGIN_SPECIFIC_SETTINGS: any = {
   resourceAreaRowClassNames: 'fc-resource-area-row',
   resourceLaneClassNames: 'fc-resource-lane',
   resourceGroupLaneClassNames: 'fc-resource-group-lane',
+  resourceDayHeaderClassNames: 'fc-resource-day-header',
+  resourceCellClassNames: 'fc-resource-cell',
 }
 
 export default createPlugin({

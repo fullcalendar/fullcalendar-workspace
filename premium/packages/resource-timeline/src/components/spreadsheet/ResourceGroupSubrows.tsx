@@ -33,6 +33,7 @@ export class ResourceGroupSubrows extends BaseComponent<ResourceGroupSubrowsProp
                 fieldValue={colGroup.value}
                 width={colWidths[i]}
                 grow={colGrows[i]}
+                borderStart={Boolean(i)}
                 borderBottom={stats.borderBottom}
               />
             ) : (

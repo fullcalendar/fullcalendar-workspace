@@ -2,10 +2,6 @@
 // Border Utils
 // -------------------------------------------------------------------------------------------------
 
-.fc-cell-bordered { // temporary
-  border: 1px solid var(--fc-border-color);
-}
-
 // TODO: break-out to x and y. don't have "only" all
 // TODO: instead of "border" utils, call them "borderless" to subtract?
 

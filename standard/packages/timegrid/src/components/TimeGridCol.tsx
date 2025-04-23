@@ -1,21 +1,26 @@
+import { ViewApi } from '@fullcalendar/core'
 import {
   BaseComponent,
   BgEvent,
   buildEventRangeKey,
+  ContentContainer,
   DateMarker,
+  DateMeta,
   DateProfile,
   DateRange,
-  DayLaneContainer,
   Dictionary,
   EventRangeProps,
   EventSegUiInteractionState,
+  formatDayString,
   fracToCssDim,
+  generateClassName,
   getDateMeta,
   getEventRangeMeta,
   hasCustomDayLaneContent,
   joinArrayishClassNames,
   joinClassNames,
   memoize,
+  MountArg,
   renderFill,
   SegGroup,
   sortEventSegs
@@ -65,6 +70,15 @@ export interface TimeGridColProps {
   slatHeight: number | undefined
 }
 
+export interface DayLaneContentArg extends DateMeta {
+  date: DateMarker // localized
+  isMajor: boolean
+  view: ViewApi
+  [extraProp: string]: any // so can include a resource
+}
+
+export type DayLaneMountArg = MountArg<DayLaneContentArg>
+
 export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   private sortEventSegs: typeof sortEventSegs = memoize(sortEventSegs)
   private getDateMeta = memoize(getDateMeta)
@@ -89,7 +103,6 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
     const baseClassName = joinClassNames(
       'fc-timegrid-day',
-      'fc-cell-bordered', // TODO: temporary
       props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
       props.width == null && 'fc-liquid',
       'fc-flex-col fc-rel',
@@ -100,12 +113,23 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       zIndex: 1, // get above slots
     }
 
+    const renderProps = {
+      ...dateMeta,
+      ...props.renderProps,
+      isMajor: props.isMajor,
+      view: context.viewApi,
+    }
+
     if (dateMeta.isDisabled) {
       return (
         <div
           role='gridcell'
           aria-disabled
-          className={joinClassNames(baseClassName, 'fc-day-disabled')}
+          className={joinClassNames(
+            baseClassName,
+            'fc-day-disabled',
+            generateClassName(options.dayLaneClassNames, renderProps),
+          )}
           style={baseStyle}
         />
       )
@@ -114,18 +138,22 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     let sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
 
     return (
-      <DayLaneContainer
+      <ContentContainer
         tag="div"
         attrs={{
           ...props.attrs,
           role: 'gridcell',
+          ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}),
+          'data-date': formatDayString(props.date),
         }}
         className={baseClassName}
         style={baseStyle}
-        date={props.date}
-        isMajor={props.isMajor}
-        dateMeta={dateMeta}
-        renderProps={props.renderProps}
+        renderProps={renderProps}
+        generatorName="dayLaneContent"
+        customGenerator={options.dayLaneContent}
+        classNameGenerator={options.dayLaneClassNames}
+        didMount={options.dayLaneDidMount}
+        willUnmount={options.dayLaneWillUnmount}
       >
         {(InnerContent) => (
           <Fragment>
@@ -174,7 +202,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {this.renderNowIndicator(props.nowIndicatorSegs)}
           </Fragment>
         )}
-      </DayLaneContainer>
+      </ContentContainer>
     )
   }
 

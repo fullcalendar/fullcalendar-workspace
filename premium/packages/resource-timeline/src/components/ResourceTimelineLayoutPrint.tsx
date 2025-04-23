@@ -332,6 +332,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                         colSpecs={colSpecs}
                         colWidths={colWidths}
                         colGrows={colGrows}
+                        borderStart={Boolean(groupColCnt)}
                         borderBottom={isNotLast}
                       />
                     </div>

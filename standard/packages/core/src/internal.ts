@@ -238,7 +238,7 @@ export { StandardEvent, StandardEventProps } from './common/StandardEvent.js'
 export { NowIndicatorLabelContainer } from './common/NowIndicatorLabelContainer.js'
 export { NowIndicatorLineContainer } from './common/NowIndicatorLineContainer.js'
 
-export { DayLaneContainer, hasCustomDayLaneContent } from './common/DayLaneContainer.js'
+export { hasCustomDayLaneContent } from './common/DayLaneContainer.js'
 export { renderFill, BgEvent } from './common/bg-fill.js'
 export { MoreLinkContainer } from './common/MoreLinkContainer.js'
 

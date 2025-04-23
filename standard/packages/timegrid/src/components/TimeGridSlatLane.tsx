@@ -39,7 +39,6 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
         }}
         className={joinClassNames(
           'fc-cell fc-liquid',
-          'fc-cell-bordered', // TODO: temporary
           props.borderTop ? 'fc-border-only-t' : 'fc-border-none',
         )}
         renderProps={renderProps}

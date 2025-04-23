@@ -23,6 +23,7 @@ import {
   ContentContainer,
   formatDayString,
   generateClassName,
+  joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
 import {
   Ref,
@@ -93,27 +94,10 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
 
     const baseClassName = joinClassNames(
       'fc-daygrid-day',
-      'fc-cell-bordered', // TODO: temporary
       props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
       props.width != null ? '' : 'fc-liquid',
       'fc-flex-col',
     )
-
-    if (dateMeta.isDisabled) {
-      return (
-        <div
-          role='gridcell'
-          aria-disabled
-          className={joinClassNames(baseClassName, 'fc-day-disabled', props.className)}
-          style={{
-            width: props.width
-          }}
-        />
-      )
-    }
-
-    const isNavLink = options.navLinks
-    const fullDateStr = buildDateStr(context, props.date)
 
     const renderProps = this.refineRenderProps({
       date: props.date,
@@ -127,6 +111,27 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       monthStartFormat: options.monthStartFormat,
       dayCellFormat: options.dayCellFormat,
     })
+
+    if (dateMeta.isDisabled) {
+      return (
+        <div
+          role='gridcell'
+          aria-disabled
+          className={joinArrayishClassNames(
+            baseClassName,
+            'fc-day-disabled',
+            props.className,
+            generateClassName(options.dayCellClassNames, renderProps),
+          )}
+          style={{
+            width: props.width
+          }}
+        />
+      )
+    }
+
+    const isNavLink = options.navLinks
+    const fullDateStr = buildDateStr(context, props.date)
 
     return (
       <ContentContainer

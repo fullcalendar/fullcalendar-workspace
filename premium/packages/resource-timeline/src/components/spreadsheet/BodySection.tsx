@@ -1,4 +1,4 @@
-import { BaseComponent, joinClassNames, RefMap } from "@fullcalendar/core/internal"
+import { BaseComponent, RefMap } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
 import { ColSpec, createGroupId } from "@fullcalendar/resource/internal"
 import { ResourceGroupSubrow } from "./ResourceGroupSubrow.js"
@@ -38,7 +38,6 @@ export class BodySection extends BaseComponent<BodySectionProps> {
 
     const colWidths = props.colWidths || []
     const resourceX = sumArray(colWidths.slice(0, groupColCnt))
-    const resourceColWidths = colWidths.slice(groupColCnt)
 
     /*
     TODO: simplify DOM structure to be more like time-area?
@@ -54,11 +53,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
           <div
             key={colIndex}
             role='rowgroup'
-            className={joinClassNames(
-              'fc-rel',
-              'fc-cell-bordered', // TODO: temporary
-              colIndex ? 'fc-border-only-s' : 'fc-border-none',
-            )}
+            className='fc-rel'
             style={{
               minWidth: 0,
               width: colWidths[colIndex],
@@ -77,6 +72,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   rowSpan={groupCellLayout.rowSpan}
                   fieldValue={group.value}
                   className='fc-fill-x'
+                  borderStart={Boolean(colIndex)}
                   borderBottom={isNotLast}
                   role='row'
                   rowIndex={1 + headerRowSpan + groupCellLayout.rowIndex}
@@ -92,21 +88,6 @@ export class BodySection extends BaseComponent<BodySectionProps> {
               )
             })}
           </div>
-        ))}
-
-        {/* for resource column lines */}
-        {resourceColWidths.map((colWidth, i) => (
-          <div
-            aria-hidden
-            className={joinClassNames(
-              'fc-cell-bordered',
-              (groupColCnt + i) ? 'fc-border-only-s' : 'fc-border-none',
-            )}
-            style={{
-              minWidth: 0,
-              width: colWidth,
-            }}
-          />
         ))}
 
         <div
@@ -161,6 +142,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 colWidths={colWidths}
                 innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
                 className='fc-fill-x'
+                borderStart={Boolean(groupColCnt)}
                 borderBottom={isNotLast}
                 role='row'
                 rowIndex={1 + headerRowSpan + resourceLayout.rowIndex}

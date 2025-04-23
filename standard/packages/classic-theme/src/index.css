@@ -2,13 +2,18 @@
 .fc-resource-area-header-row,
 .fc-resource-area-header,
 .fc-resource-area-row,
+.fc-resource-cell,
 .fc-slot-label-row,
 .fc-slot-label,
 .fc-slot-lane,
 .fc-resource-lane,
 .fc-resource-group-lane,
 .fc-day-header-row,
+.fc-day-header-cell,
 .fc-day-row,
+.fc-day-cell,
+.fc-day-lane,
+.fc-resource-day-header,
 .fc-view-bordered {
   border: 1px solid var(--fc-border-color);
 }
@@ -45,6 +50,9 @@
 
 .fc-resource-area-divider {
   border-left: 1px solid var(--fc-border-color);
+  border-right: 1px solid var(--fc-border-color);
+  padding-left: 2px;
+  background-color: var(--fc-neutral-bg-color);
 }
 
 .fc-all-day-divider {

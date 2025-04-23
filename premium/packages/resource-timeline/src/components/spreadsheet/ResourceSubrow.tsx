@@ -13,6 +13,7 @@ export interface ResourceSubrowProps {
   hasChildren: boolean
   className?: string
   borderBottom: boolean | undefined
+  borderStart: boolean
 
   // aria
   role?: string
@@ -83,7 +84,7 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
               innerHeightRef={innerHeightRefMap.createRef(i)}
               width={colWidths[i]}
               grow={colGrows[i]}
-              className={i ? 'fc-border-only-s' : 'fc-border-none'}
+              borderStart={props.borderStart || Boolean(i)}
             />
           )
         })}

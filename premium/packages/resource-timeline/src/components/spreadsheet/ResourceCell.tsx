@@ -23,7 +23,7 @@ export interface ResourceCellProps {
   innerHeightRef?: Ref<number>
   width: number | undefined
   grow: number | undefined
-  className?: string
+  borderStart: boolean
 }
 
 export class ResourceCell extends BaseComponent<ResourceCellProps> {
@@ -50,8 +50,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         }}
         className={joinClassNames(
           'fc-cell',
-          'fc-cell-bordered', // TODO: temporary
-          props.className,
+          props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
         )}
         style={{
           minWidth: 0,

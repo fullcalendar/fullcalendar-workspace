@@ -9,6 +9,7 @@ export interface ResourceGroupSubrowProps {
   width?: number
   grow?: number
   className?: string
+  borderStart: boolean
   borderBottom: boolean
 
   // aria
@@ -71,7 +72,10 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
             role: 'rowheader',
             'aria-rowspan': props.rowSpan,
           }}
-          className='fc-cell fc-liquid'
+          className={joinClassNames(
+            'fc-cell fc-liquid',
+            props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
+          )}
           renderProps={renderProps}
           generatorName="resourceGroupHeaderContent"
           customGenerator={colSpec.cellContent}
