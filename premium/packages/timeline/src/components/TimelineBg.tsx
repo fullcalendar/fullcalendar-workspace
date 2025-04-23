@@ -40,7 +40,7 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
 
   renderSegs(segs: (TimelineRange & EventRangeProps)[], fillType: string) {
     let { tDateProfile, todayRange, nowDate, slotWidth } = this.props
-    let { dateEnv, isRtl } = this.context
+    let { dateEnv, isRtl, options } = this.context
 
     return (
       <Fragment>
@@ -58,16 +58,16 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
               className="fc-fill-y"
               style={hStyle}
             >
-              {fillType === 'bg-event' ?
+              {fillType === 'bg-event' ? (
                 <BgEvent
                   eventRange={seg.eventRange}
                   isStart={seg.isStart}
                   isEnd={seg.isEnd}
                   {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
-                /> : (
-                  renderFill(fillType)
-                )
-              }
+                />
+              ) : (
+                renderFill(fillType, options)
+              )}
             </div>
           )
         })}

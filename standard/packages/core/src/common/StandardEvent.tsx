@@ -66,10 +66,11 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
     )
     const [tag, attrs] = getEventTagAndAttrs(eventRange, context)
 
+    const eventApi = this.buildPublicEvent(context, eventRange.def, eventRange.instance)
     const renderProps: EventContentArg = {
       // make stable. everything else atomic
       // FYI, eventRange unfortunately gets reconstructed a lot, but def/instance is stable
-      event: this.buildPublicEvent(context, eventRange.def, eventRange.instance),
+      event: eventApi,
 
       view: context.viewApi,
       timeText: timeText,
@@ -90,8 +91,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isResizing: Boolean(props.isResizing),
       isListItem: props.isListItem || false,
       timeClassName: joinArrayishClassNames(options.eventTimeClassNames),
-      titleClassName: joinArrayishClassNames(options.eventTitleClassNames),
       titleOuterClassName: joinArrayishClassNames(options.eventTitleOuterClassNames),
+      titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi }),
     }
 
     // TODO: we'd like to put this in EventContentArg, but it needs EventContentArg renderProps!

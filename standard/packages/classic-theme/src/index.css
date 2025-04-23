@@ -48,6 +48,10 @@
   white-space: nowrap;
 }
 
+.fc-day-disabled {
+  background: var(--fc-neutral-bg-color);
+}
+
 // Popover
 // -------------------------------------------------------------------------------------------------
 
@@ -340,4 +344,26 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 
 .fc-timeline-slot-label-divider {
   border-top: 1px solid var(--fc-border-color);
+}
+
+// Fills & BG event
+// -------------------------------------------------------------------------------------------------
+
+.fc-non-business {
+  background: var(--fc-non-business-color);
+}
+
+.fc-highlight {
+  background: var(--fc-highlight-color);
+}
+
+.fc-bg-event {
+  background: var(--fc-bg-event-color);
+  opacity: var(--fc-bg-event-opacity);
+}
+
+.fc-bg-event-title {
+  margin: .5em;
+  font-size: var(--fc-small-font-size);
+  font-style: italic;
 }

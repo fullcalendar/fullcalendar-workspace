@@ -111,7 +111,10 @@ export default createPlugin({
     eventInnerClassNames: 'fc-event-inner',
     eventTimeClassNames: 'fc-event-time',
     eventTitleOuterClassNames: 'fc-event-title-outer',
-    eventTitleClassNames: 'fc-event-title',
+    eventTitleClassNames: (arg) => [
+      arg.event.display === 'background' && 'fc-bg-event-title',
+      'fc-event-title',
+    ],
     navLinkClassNames: 'fc-navlink',
     dayPopoverClassNames: (arg) => getDayClassNames(arg),
     slotLabelClassNames: (arg) => [
@@ -127,6 +130,8 @@ export default createPlugin({
     fillerYClassNames: 'fc-filler-y',
     allDayDividerClassNames: 'fc-all-day-divider',
     slotLabelRowClassNames: 'fc-slot-label-row',
+    nonBusinessClassNames: 'fc-non-business',
+    highlightClassNames: 'fc-highlight',
     ...PLUGIN_SPECIFIC_SETTINGS,
   },
   views: {

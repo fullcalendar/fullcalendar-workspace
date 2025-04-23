@@ -230,7 +230,7 @@ export const BASE_OPTION_REFINERS = {
   eventInnerClassNames: identity as Identity<ClassNamesInput>,
   eventTimeClassNames: identity as Identity<ClassNamesInput>,
   eventTitleOuterClassNames: identity as Identity<ClassNamesInput>, // TODO: eventually remove!
-  eventTitleClassNames: identity as Identity<ClassNamesInput>,
+  eventTitleClassNames: identity as Identity<ClassNamesGenerator<{ event: EventApi }>>,
   eventResizerClassNames: identity as Identity<ClassNamesInput>,
   eventResizerStartClassNames: identity as Identity<ClassNamesInput>,
   eventResizerEndClassNames: identity as Identity<ClassNamesInput>,
@@ -362,6 +362,9 @@ export const BASE_OPTION_REFINERS = {
 
   viewHeaderClassNames: identity as Identity<ClassNamesGenerator<ViewHeaderContentArg>>,
   viewBodyClassNames: identity as Identity<ClassNamesGenerator<ViewBodyContentArg>>,
+
+  nonBusinessClassNames: identity as Identity<ClassNamesInput>,
+  highlightClassNames: identity as Identity<ClassNamesInput>,
 }
 
 type BuiltInBaseOptionRefiners = typeof BASE_OPTION_REFINERS

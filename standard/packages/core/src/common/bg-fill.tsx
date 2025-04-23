@@ -7,7 +7,8 @@ import { EventInstance } from '../structs/event-instance.js'
 import { EventImpl } from '../api/EventImpl.js'
 import { ViewContext } from '../ViewContext.js'
 import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
-import { ContentContainer } from '../content-inject/ContentContainer.js'
+import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
+import { ViewOptionsRefined } from '../options.js'
 
 export interface BgEventProps {
   eventRange: EventRenderRange
@@ -33,8 +34,9 @@ export class BgEvent extends BaseComponent<BgEventProps> {
     let { options } = context
     let eventUi = eventRange.ui
 
+    let eventApi = this.buildPublicEvent(context, eventRange.def, eventRange.instance)
     let renderProps: EventContentArg = {
-      event: this.buildPublicEvent(context, eventRange.def, eventRange.instance),
+      event: eventApi,
       view: context.viewApi,
       timeText: '', // never display time
       textColor: eventUi.textColor,
@@ -54,14 +56,14 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       isResizing: false,
       isListItem: false,
       timeClassName: '', // never display time
-      titleClassName: joinArrayishClassNames(options.eventTitleClassNames),
       titleOuterClassName: joinArrayishClassNames(options.eventTitleOuterClassNames),
+      titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi }),
     }
 
     return (
       <ContentContainer
         tag='div'
-        className={joinClassNames(...eventUi.classNames)}
+        className={joinClassNames('fc-fill', ...eventUi.classNames)}
         style={{
           backgroundColor: eventUi.backgroundColor,
         }}
@@ -102,8 +104,15 @@ function renderInnerContent(props: EventContentArg) {
   )
 }
 
-export function renderFill(fillType: string) {
+// Other types of fills
+// -------------------------------------------------------------------------------------------------
+
+export function renderFill(fillType: string, options: ViewOptionsRefined) {
   return (
-    <div className={`fc-${fillType}`} />
+    <div className={joinArrayishClassNames(
+      'fc-fill',
+      fillType === 'non-business' ? options.nonBusinessClassNames :
+        fillType === 'highlight' ? options.highlightClassNames : undefined
+    )} />
   )
 }

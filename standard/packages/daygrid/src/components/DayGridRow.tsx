@@ -358,7 +358,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               isEnd={seg.isEnd}
               {...getEventRangeMeta(seg.eventRange, todayRange)}
             /> : (
-              renderFill(fillType)
+              renderFill(fillType, context.options)
             )
           }
         </div>,
