@@ -104,6 +104,9 @@ rename to LESS... borderless, borderlessX, borderlessY
 changelog: classic-theme capitalizes strings
 bug with resource-timeline doing multiple group columns. positioning broken
 check multimonth at end
+our classic-theme should work with a "borderless" setting
+move away from isSticky naming -> sticky/stickyWhatever
+bug: initial-scroll for multi-month is wrong now that we switched from padding -> margin
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

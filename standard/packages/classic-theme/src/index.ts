@@ -29,6 +29,28 @@ const PLUGIN_SPECIFIC_SETTINGS: any = {
   resourceGroupLaneClassNames: 'fc-resource-group-lane',
   resourceDayHeaderClassNames: 'fc-resource-day-header',
   resourceCellClassNames: 'fc-resource-cell',
+  singleMonthClassNames: (arg) => [
+    'fc-single-month',
+    arg.colCnt > 1 && 'fc-single-month-multicol',
+  ],
+  singleMonthTitleClassNames: (arg) => [
+    'fc-single-month-title',
+    arg.colCnt > 1
+      ? 'fc-single-month-title-multicol'
+      : 'fc-single-month-title-singlecol',
+    arg.sticky && 'fc-single-month-title-sticky',
+  ],
+  singleMonthTableClassNames: (arg) => [
+    'fc-single-month-table',
+    arg.colCnt > 1 && 'fc-single-month-table-borderx',
+    (arg.colCnt > 1 || !arg.isLast) && 'fc-single-month-table-borderbottom',
+    !arg.stickyTitle && 'fc-single-month-table-bordertop',
+  ],
+  singleMonthTableHeaderClassNames: (arg) => [
+    'fc-single-month-table-header',
+    arg.sticky && 'fc-single-month-table-header-sticky',
+  ],
+  singleMonthTableBodyClassNames: 'fc-single-month-table-body',
 }
 
 export default createPlugin({

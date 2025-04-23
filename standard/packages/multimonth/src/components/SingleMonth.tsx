@@ -1,6 +1,6 @@
 import { CssDimValue } from '@fullcalendar/core'
-import { DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, joinClassNames, memoize, ViewProps } from '@fullcalendar/core/internal'
-import { createElement } from '@fullcalendar/core/preact'
+import { DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, joinClassNames, memoize, ViewProps, watchHeight } from '@fullcalendar/core/internal'
+import { createElement, createRef } from '@fullcalendar/core/preact'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow } from '@fullcalendar/daygrid/internal'
 import { SingleMonthContentArg } from '../structs.js'
 
@@ -20,20 +20,31 @@ export interface SingleMonthProps extends ViewProps {
   hasLateralSiblings: boolean // TODO: use lower-level indicator instead of referencing siblings
 }
 
-export class SingleMonth extends DateComponent<SingleMonthProps> {
+interface SingleMonthState {
+  titleHeight?: number
+  tableHeaderHeight?: number
+}
+
+export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthState> {
   // memo
   private buildDayTableModel = memoize(buildDayTableModel)
   private createDayHeaderFormatter = memoize(createDayHeaderFormatter)
   private buildDateRowConfig = memoize(buildDateRowConfig)
+
+  // ref
+  private titleElRef = createRef<HTMLDivElement>()
+  private tableHeaderElRef = createRef<HTMLDivElement>()
 
   // internal
   private slicer = new DayTableSlicer()
   private titleId = getUniqueDomId()
   private rootEl?: HTMLElement
   private renderProps?: SingleMonthContentArg
+  private disconnectTitleHeight?: () => void
+  private disconnectTableHeaderHeight?: () => void
 
   render() {
-    const { props, context } = this
+    const { props, state, context } = this
     const { dateProfile, forPrint } = props
     const { options, dateEnv } = context
     const dayTableModel = this.buildDayTableModel(dateProfile, context.dateProfileGenerator, dateEnv)
@@ -53,11 +64,21 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
       context,
     )
 
-    const invAspectRatio = 1 / options.aspectRatio
-    const invRowAspectRatio = invAspectRatio / dayTableModel.rowCnt
-
-    const isHeaderSticky = !forPrint
+    const isTitleAndHeaderSticky = !forPrint && props.colCnt === 1
     const isAspectRatio = !forPrint || props.hasLateralSiblings
+    const invAspectRatio = 1 / options.aspectRatio
+
+    const rowHeightGuess = props.visibleWidth != null
+      ? invAspectRatio * props.visibleWidth / 6
+      : undefined
+
+    const headerStickyBottom = isTitleAndHeaderSticky
+      ? rowHeightGuess
+      : undefined
+
+    const titleStickyBottom = isTitleAndHeaderSticky && rowHeightGuess != null && state.tableHeaderHeight != null
+      ? rowHeightGuess + state.tableHeaderHeight + 1
+      : undefined
 
     const renderProps = this.renderProps = {
       colCnt: props.colCnt,
@@ -68,7 +89,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
     return (
       <div
         role='listitem'
-        className='fc-multimonth-month-outer'
         style={{ width: props.width }}
       >
         <div
@@ -76,80 +96,107 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
           aria-labelledby={this.titleId}
           data-date={props.isoDateStr}
           className={joinClassNames(
-            'fc-multimonth-month',
+            'fc-flex-col',
             props.hasLateralSiblings && 'fc-break-inside-avoid',
             generateClassName(options.singleMonthClassNames, renderProps),
           )}
         >
           <div
-            className="fc-multimonth-header" // TODO: will go away
+            id={this.titleId}
+            ref={this.titleElRef}
+            className={joinClassNames(
+              isTitleAndHeaderSticky && 'fc-sticky-t',
+              generateClassName(options.singleMonthTitleClassNames, {
+                sticky: isTitleAndHeaderSticky,
+                colCnt: props.colCnt,
+              })
+            )}
             style={{
-              marginBottom: isHeaderSticky ? fracToCssDim(invRowAspectRatio) : undefined,
+              // HACK to keep zIndex above table-header,
+              // because in Chrome, something about position:sticky on this title div
+              // causes its bottom border to no be considered part of its mass,
+              // and would get overlapped and hidden by the table-header div
+              zIndex: isTitleAndHeaderSticky ? 3 : undefined, // TODO: className?
+              marginBottom: titleStickyBottom,
             }}
-            // NOTE: sticky properties determined by CSS
+          >
+            {dateEnv.format(
+              props.dateProfile.currentRange.start,
+              props.titleFormat,
+            )}
+          </div>
+          <div
+            className={joinClassNames(
+              'fc-flex-col',
+              generateClassName(options.singleMonthTableClassNames, {
+                ...renderProps,
+                stickyTitle: isTitleAndHeaderSticky,
+              }),
+            )}
+            style={{
+              marginTop: titleStickyBottom != null ? -titleStickyBottom : undefined
+            }}
           >
             <div
-              id={this.titleId}
+              ref={this.tableHeaderElRef}
               className={joinClassNames(
-                'fc-multimonth-title',
-                generateClassName(options.singleMonthTitleClassNames, {
-                  isSticky: isHeaderSticky,
+                isTitleAndHeaderSticky && 'fc-sticky-t',
+                generateClassName(options.singleMonthTableHeaderClassNames, {
+                  sticky: isTitleAndHeaderSticky,
+                  colCnt: props.colCnt,
                 }),
               )}
-            >
-              {dateEnv.format(
-                props.dateProfile.currentRange.start,
-                props.titleFormat,
-              )}
-            </div>
-            <div
-              className={generateClassName(options.singleMonthHeaderClassNames, {
-                isSticky: isHeaderSticky,
-              })}
+              style={{
+                zIndex: isTitleAndHeaderSticky ? 2 : undefined, // TODO: className?
+                top: isTitleAndHeaderSticky ? state.titleHeight : undefined,
+                marginBottom: headerStickyBottom,
+              }}
             >
               <DayGridHeaderRow
                 {...rowConfig}
                 role='row'
-                className='fc-multimonth-header-row'
                 borderBottom={false}
               />
+              <div className={joinArrayishClassNames(options.dayHeaderDividerClassNames)} />
             </div>
-          </div>
-          <div
-            className={joinArrayishClassNames(
-              'fc-multimonth-body',
-              isAspectRatio && 'fc-rel',
-              options.singleMonthBodyClassNames,
-            )}
-            style={{
-              marginTop: isHeaderSticky ? fracToCssDim(-invRowAspectRatio) : undefined,
-              paddingBottom: isAspectRatio ? fracToCssDim(invAspectRatio) : undefined,
-            }}
-          >
-            <DayGridRows
-              dateProfile={props.dateProfile}
-              todayRange={props.todayRange}
-              cellRows={dayTableModel.cellRows}
-              className={isAspectRatio ? 'fc-fill' : ''}
-              forPrint={forPrint && !props.hasLateralSiblings}
-              dayMaxEventRows={
-                (forPrint && props.hasLateralSiblings)
-                  ? 1 // for side-by-side multimonths, limit to one row
-                  : true // otherwise, always do +more link, never expand rows
-              }
+            <div
+              className={joinClassNames(
+                isAspectRatio && 'fc-rel',
+                generateClassName(options.singleMonthTableBodyClassNames, {
+                  colCnt: props.colCnt,
+                })
+              )}
+              style={{
+                zIndex: isTitleAndHeaderSticky ? 1 : undefined, // TODO: className?
+                marginTop: headerStickyBottom != null ? -headerStickyBottom : undefined,
+                paddingBottom: isAspectRatio ? fracToCssDim(invAspectRatio) : undefined,
+              }}
+            >
+              <DayGridRows
+                dateProfile={props.dateProfile}
+                todayRange={props.todayRange}
+                cellRows={dayTableModel.cellRows}
+                className={isAspectRatio ? 'fc-fill' : ''}
+                forPrint={forPrint && !props.hasLateralSiblings}
+                dayMaxEventRows={
+                  (forPrint && props.hasLateralSiblings)
+                    ? 1 // for side-by-side multimonths, limit to one row
+                    : true // otherwise, always do +more link, never expand rows
+                }
 
-              // content
-              fgEventSegs={slicedProps.fgEventSegs}
-              bgEventSegs={slicedProps.bgEventSegs}
-              businessHourSegs={slicedProps.businessHourSegs}
-              dateSelectionSegs={slicedProps.dateSelectionSegs}
-              eventDrag={slicedProps.eventDrag}
-              eventResize={slicedProps.eventResize}
-              eventSelection={slicedProps.eventSelection}
+                // content
+                fgEventSegs={slicedProps.fgEventSegs}
+                bgEventSegs={slicedProps.bgEventSegs}
+                businessHourSegs={slicedProps.businessHourSegs}
+                dateSelectionSegs={slicedProps.dateSelectionSegs}
+                eventDrag={slicedProps.eventDrag}
+                eventResize={slicedProps.eventResize}
+                eventSelection={slicedProps.eventSelection}
 
-              // dimensions
-              visibleWidth={props.visibleWidth}
-            />
+                // dimensions
+                visibleWidth={props.visibleWidth}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -169,8 +216,21 @@ export class SingleMonth extends DateComponent<SingleMonthProps> {
     }
   }
 
+  componentDidMount(): void {
+    this.disconnectTitleHeight = watchHeight(this.titleElRef.current, (height) => {
+      this.setState({ titleHeight: height })
+    })
+
+    this.disconnectTableHeaderHeight = watchHeight(this.tableHeaderElRef.current, (height) => {
+      this.setState({ tableHeaderHeight: height })
+    })
+  }
+
   componentWillUnmount(): void {
     const { options } = this.context
+
+    this.disconnectTitleHeight()
+    this.disconnectTableHeaderHeight()
 
     options.singleMonthWillUnmount?.({
       el: this.rootEl,

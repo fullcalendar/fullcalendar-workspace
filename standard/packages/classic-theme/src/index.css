@@ -22,6 +22,56 @@
   border-style: dotted;
 }
 
+// MultiMonth
+// -------------------------------------------------------------------------------------------------
+
+.fc-single-month-multicol {
+  margin: 1.2em;
+}
+
+.fc-single-month-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.fc-single-month-title-singlecol {
+  padding: 0.5em 0;
+}
+
+.fc-single-month-title-multicol {
+  padding-bottom: 1em;
+}
+
+.fc-single-month-title-sticky {
+  border-bottom: 1px solid var(--fc-border-color);
+  background: var(--fc-page-bg-color);
+}
+
+.fc-single-month-table {
+  // shrink font
+  font-size: 0.9em;
+  line-height: 1;
+}
+
+.fc-single-month-table-borderx {
+  border-left: 1px solid var(--fc-border-color);
+  border-right: 1px solid var(--fc-border-color);
+}
+
+.fc-single-month-table-bordertop {
+  border-top: 1px solid var(--fc-border-color);
+}
+
+.fc-single-month-table-borderbottom {
+  border-bottom: 1px solid var(--fc-border-color);
+}
+
+.fc-single-month-title-sticky,
+.fc-single-month-table-header-sticky {
+  background: var(--fc-page-bg-color);
+}
+
 // Filler
 // -------------------------------------------------------------------------------------------------
 

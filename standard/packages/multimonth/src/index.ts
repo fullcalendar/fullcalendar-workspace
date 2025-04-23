@@ -29,5 +29,7 @@ export {
   SingleMonthContentArg,
   SingleMonthMountArg,
   SingleMonthTitleArg,
-  SingleMonthHeaderArg,
+  SingleMonthTableArg,
+  SingleMonthTableHeaderArg,
+  SingleMonthTableBodyArg,
 } from './structs.js'
