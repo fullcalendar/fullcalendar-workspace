@@ -3,7 +3,7 @@
 $event-mirror-z: 1;
 $now-indicator-z: 2;
 $sticky-header-footer-z: 3;
-$popover-z: 4;
+// $popover-z: 4; -- already inlined
 
 // z-indexes :: subparts within events
 // NOTE: would be nice to rely on natural DOM order, but :before complicates that

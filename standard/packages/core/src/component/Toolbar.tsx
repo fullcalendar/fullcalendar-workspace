@@ -3,25 +3,25 @@ import { BaseComponent } from '../vdom-util.js'
 import { ToolbarModel, ToolbarWidget } from '../toolbar-struct.js'
 import { ToolbarSection, ToolbarContent } from './ToolbarSection.js'
 import { joinArrayishClassNames } from '../util/html.js'
+import { generateClassName } from '../internal.js'
 
 export interface ToolbarProps extends ToolbarContent {
-  className: string // wish this could be array, but easier for pureness
+  name: string
   model: ToolbarModel
   titleId?: string
 }
 
 export class Toolbar extends BaseComponent<ToolbarProps> {
   render() {
+    let { props } = this
     let options = this.context.options
-    let { model, className } = this.props
-    let { sectionWidgets } = model
+    let { sectionWidgets } = props.model
 
     return (
       <div
         className={joinArrayishClassNames(
-          className,
-          'fc-toolbar fc-align-center',
-          options.toolbarClassNames,
+          generateClassName(options.toolbarClassNames, { name: props.name }),
+          'fc-flex-row fc-justify-space-between fc-align-center',
         )}
       >
         {this.renderSection('start', sectionWidgets.start)}

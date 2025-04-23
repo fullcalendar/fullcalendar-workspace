@@ -25,7 +25,6 @@ import { PureComponent } from '../vdom-util.js'
 import { getUniqueDomId } from '../util/dom-manip.js'
 import { CssDimValue, getIsHeightAuto } from '../scrollgrid/util.js'
 import { joinClassNames } from '../internal.js'
-import { joinArrayishClassNames } from '../util/html.js'
 
 export interface CalendarContentProps extends CalendarData {
   forPrint: boolean
@@ -87,10 +86,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       <ViewContextType.Provider value={viewContext}>
         {toolbarConfig.header && (
           <Toolbar
-            className={joinArrayishClassNames(
-              'fc-header-toolbar',
-              options.headerToolbarClassNames,
-            )}
+            name='header'
             model={toolbarConfig.header}
             titleId={this.viewTitleId}
             {...toolbarProps}
@@ -119,10 +115,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
         </div>
         {toolbarConfig.footer && (
           <Toolbar
-            className={joinArrayishClassNames(
-              'fc-footer-toolbar',
-              options.footerToolbarClassNames,
-            )}
+            name='footer'
             model={toolbarConfig.footer}
             {...toolbarProps}
           />

@@ -35,6 +35,8 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
 
     let className = joinArrayishClassNames(
       options.classNames,
+      'fc-border-box-root fc-flex-col',
+      `fc-${options.direction}-root`,
       generateClassName(options.directionClassNames, options.direction),
       generateClassName(options.mediaTypeClassNames, forPrint ? 'print' : 'screen'),
       generateClassName(options.colorSchemeClassNames, isDark ? 'dark' : 'light'),

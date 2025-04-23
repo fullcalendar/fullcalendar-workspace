@@ -1,5 +1,6 @@
 import { createFormatter } from '../datelib/formatting.js'
 import { DateMarker } from '../datelib/marker.js'
+import { joinArrayishClassNames } from '../internal.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
 import { formatWithOrdinals } from '../util/misc.js'
 import { ViewContext } from '../ViewContext.js'
@@ -47,7 +48,7 @@ export function buildNavLinkAttrs(
   return {
     'role': ('link' as any), // TODO
     'aria-label': formatWithOrdinals(options.navLinkHint, [dateStr, zonedDate], dateStr),
-    'className': 'fc-navlink',
+    'className': joinArrayishClassNames(options.navLinkClassNames),
     ...(isTabbable
       ? createAriaClickAttrs(handleInteraction)
       : { onClick: handleInteraction }

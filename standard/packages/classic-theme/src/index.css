@@ -22,6 +22,228 @@
   border-style: dotted;
 }
 
+.fc {
+  gap: 1.5em; // space between toolbars and view
+}
+
+.fc-navlink {
+  cursor: pointer;
+}
+
+.fc-navlink:hover {
+  text-decoration: underline;
+}
+
+.fc-toolbar {
+  gap: .75em; // space between start/center/right
+}
+
+.fc-toolbar-section {
+  gap: .75em; // space between items
+}
+
+.fc-toolbar-title {
+  font-size: 1.75em;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+// Popover
+// -------------------------------------------------------------------------------------------------
+
+.fc-popover {
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  border: 1px solid var(--fc-border-color);
+  background: var(--fc-page-bg-color);
+}
+
+.fc-popover-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 4px;
+  background: var(--fc-neutral-bg-color);
+}
+
+.fc-popover-title {
+  margin: 0 2px;
+}
+
+.fc-popover-close {
+  cursor: pointer;
+  vertical-align: middle;
+  line-height: 1.357em;
+}
+
+.fc-popover-close svg { // icon. TODO: DRY with fc-button
+  vertical-align: middle;
+  font-size: 1.357em;
+  width: 1em;
+  height: 1em;
+  opacity: 0.65;
+}
+
+// Button Group
+// -------------------------------------------------------------------------------------------------
+
+.fc-button-group {
+  position: relative;
+}
+
+.fc-button-group > .fc-button {
+  position: relative;
+  flex: 1 1 auto;
+}
+
+.fc-button-group > .fc-button:hover {
+  z-index: 1;
+}
+
+.fc-button-group > .fc-button:focus,
+.fc-button-group > .fc-button:active,
+.fc-button-group > .fc-button.fc-button-active {
+  z-index: 1;
+}
+
+.fc-direction-ltr {
+
+  & .fc-button-group > .fc-button:not(:first-child) {
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  & .fc-button-group > .fc-button:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+}
+
+.fc-direction-rtl {
+
+  & .fc-button-group > .fc-button:not(:first-child) {
+    margin-right: -1px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  & .fc-button-group > .fc-button:not(:last-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+}
+
+// Button
+// -------------------------------------------------------------------------------------------------
+/*
+Lots taken from Flatly (MIT): https://bootswatch.com/4/flatly/bootstrap.css
+
+These styles only apply when the standard-theme is activated.
+When it's NOT activated, the fc-button classes won't even be in the DOM.
+*/
+
+// reset
+
+.fc-button {
+  border-radius: 0;
+  overflow: visible;
+  text-transform: none;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.fc-button:focus {
+  outline: 1px dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+}
+
+.fc-button {
+  -webkit-appearance: button;
+}
+
+.fc-button:not(:disabled) {
+  cursor: pointer;
+}
+
+// theme
+
+.fc-button {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.4em 0.65em;
+  font-size: 1em;
+  line-height: 1.5;
+  border-radius: 0.25em;
+}
+
+.fc-button:hover {
+  text-decoration: none;
+}
+
+.fc-button:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
+}
+
+.fc-button:disabled {
+  opacity: 0.65;
+}
+
+// "primary" coloring
+
+.fc-button-primary {
+  color: var(--fc-button-text-color);
+  background-color: var(--fc-button-bg-color);
+  border-color: var(--fc-button-border-color);
+}
+
+.fc-button-primary:hover {
+  color: var(--fc-button-text-color);
+  background-color: var(--fc-button-hover-bg-color);
+  border-color: var(--fc-button-hover-border-color);
+}
+
+.fc-button-primary:disabled { // not DRY
+  color: var(--fc-button-text-color);
+  background-color: var(--fc-button-bg-color);
+  border-color: var(--fc-button-border-color); // overrides :hover
+}
+
+.fc-button-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
+}
+
+.fc-button-primary:not(:disabled):active,
+.fc-button-primary:not(:disabled).fc-button-active {
+  color: var(--fc-button-text-color);
+  background-color: var(--fc-button-active-bg-color);
+  border-color: var(--fc-button-active-border-color);
+}
+
+.fc-button-primary:not(:disabled):active:focus,
+.fc-button-primary:not(:disabled).fc-button-active:focus {
+  box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
+}
+
+// icons within buttons
+
+.fc-button svg {
+  vertical-align: middle;
+  font-size: 1.5em; // bump up the size (but don't make it bigger than line-height of button, which is 1.5em also)
+  width: 1em;
+  height: 1em;
+}
+
 // MultiMonth
 // -------------------------------------------------------------------------------------------------
 

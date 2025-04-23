@@ -10,10 +10,20 @@ export interface ToolbarModel {
   hasTitle: boolean
 }
 
+export interface ToolbarArg {
+  name: string
+  // TODO: sticky
+}
+
+export interface ToolbarSectionArg {
+  name: string
+}
+
 // Button / Toolbar
 // -------------------------------------------------------------------------------------------------
 
 export interface ButtonContentArg {
+  name: string
   icon: string | false
   text: string
   isSelected: boolean

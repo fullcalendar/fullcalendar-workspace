@@ -53,6 +53,8 @@ import {
   IconInput,
   ButtonContentArg,
   ToolbarElementInput,
+  ToolbarSectionArg,
+  ToolbarArg,
 } from './api/structs.js'
 import { ViewBodyContentArg, ViewHeaderContentArg } from './common/ViewSubsections.js'
 import { createDuration, Duration } from './datelib/duration.js'
@@ -318,6 +320,8 @@ export const BASE_OPTION_REFINERS = {
   moreLinkDidMount: identity as Identity<DidMountHandler<MoreLinkMountArg>>,
   moreLinkWillUnmount: identity as Identity<WillUnmountHandler<MoreLinkMountArg>>,
 
+  navLinkClassNames: identity as Identity<ClassNamesInput>,
+
   monthStartFormat: createFormatter,
   dayCellFormat: createFormatter,
 
@@ -336,6 +340,8 @@ export const BASE_OPTION_REFINERS = {
   dayPopoverClassNames: identity as Identity<ClassNamesGenerator<DayPopoverContentArg>>,
   popoverClassNames: identity as Identity<ClassNamesInput>,
   popoverHeaderClassNames: identity as Identity<ClassNamesInput>,
+  popoverTitleClassNames: identity as Identity<ClassNamesInput>,
+  popoverCloseClassNames: identity as Identity<ClassNamesInput>,
   popoverBodyClassNames: identity as Identity<ClassNamesInput>,
   dayNarrowWidth: Number,
   dayNarrowClassNames: identity as Identity<ClassNamesInput>,
@@ -350,9 +356,9 @@ export const BASE_OPTION_REFINERS = {
   fillerXClassNames: identity as Identity<ClassNamesInput>,
   fillerYClassNames: identity as Identity<ClassNamesInput>,
 
-  toolbarClassNames: identity as Identity<ClassNamesInput>,
-  headerToolbarClassNames: identity as Identity<ClassNamesInput>,
-  footerToolbarClassNames: identity as Identity<ClassNamesInput>,
+  toolbarClassNames: identity as Identity<ClassNamesGenerator<ToolbarArg>>,
+  toolbarSectionClassNames: identity as Identity<ClassNamesGenerator<ToolbarSectionArg>>,
+  toolbarTitleClassNames: identity as Identity<ClassNamesInput>,
 
   viewHeaderClassNames: identity as Identity<ClassNamesGenerator<ViewHeaderContentArg>>,
   viewBodyClassNames: identity as Identity<ClassNamesGenerator<ViewBodyContentArg>>,

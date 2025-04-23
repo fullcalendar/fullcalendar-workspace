@@ -62,9 +62,21 @@ export default createPlugin({
     viewClassNames: (arg) => ['fc-view', `fc-${arg.view.type}-view`, 'fc-view-bordered'],
     popoverClassNames: 'fc-popover',
     popoverHeaderClassNames: 'fc-popover-header',
+    popoverTitleClassNames: 'fc-popover-title',
+    popoverCloseClassNames: 'fc-popover-close',
     popoverBodyClassNames: 'fc-popover-body',
+    toolbarClassNames: (arg) => [
+      `fc-${arg.name}-toolbar`,
+      'fc-toolbar',
+    ],
+    toolbarSectionClassNames: (arg) => [
+      'fc-toolbar-section',
+      `fc-toolbar-${arg.name}`, // TODO: do section- ?
+    ],
+    toolbarTitleClassNames: 'fc-toolbar-title',
     buttonGroupClassNames: 'fc-button-group',
     buttonClassNames: (arg) => [
+      `fc-${arg.name}-button`,
       'fc-button',
       'fc-button-primary',
       arg.isSelected && 'fc-button-active',
@@ -100,6 +112,7 @@ export default createPlugin({
     eventTimeClassNames: 'fc-event-time',
     eventTitleOuterClassNames: 'fc-event-title-outer',
     eventTitleClassNames: 'fc-event-title',
+    navLinkClassNames: 'fc-navlink',
     dayPopoverClassNames: (arg) => getDayClassNames(arg),
     slotLabelClassNames: (arg) => [
       'fc-slot-label',

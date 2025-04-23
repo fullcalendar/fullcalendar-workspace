@@ -1,4 +1,47 @@
 
+.fc-border-box-root {
+  &,
+  & *,
+  & *:before,
+  & *:after {
+    box-sizing: border-box;
+  }
+}
+
+.fc-ltr-root {
+  direction: ltr;
+  text-align: left;
+}
+
+.fc-rtl-root {
+  direction: rtl;
+  text-align: right;
+}
+
+// classes attached to <body>
+.fc-not-allowed,
+.fc-not-allowed * { // override events' custom cursors
+  cursor: not-allowed;
+}
+
+.fc-no-padding { // TODO: use more elsewhere
+  padding: 0 !important;
+}
+
+.fc-no-scrollbars {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.fc-no-scrollbars::-webkit-scrollbar {
+  display: none;
+}
+
+.fc-no-shrink {
+  flex-shrink: 0;
+}
+
 // Border Utils
 // -------------------------------------------------------------------------------------------------
 
@@ -197,6 +240,10 @@ Only needed when padding/border must be separate from width/height
   justify-content: center;
 }
 
+.fc-justify-space-between {
+  justify-content: space-between;
+}
+
 .fc-align-center {
   align-items: center;
 }
@@ -214,10 +261,10 @@ Only needed when padding/border must be separate from width/height
   z-index: $sticky-header-footer-z;
 }
 
-.fc-footer-scrollbar > .fc-scroller { // > scroller
+.fc-footer-scrollbar > * { // > scroller
   margin-top: -1px; // HACK for 1px height...
 }
 
-.fc-footer-scrollbar > .fc-scroller > * { // > scroller > canvas
+.fc-footer-scrollbar > * > * { // > scroller > canvas
   height: 1px; // ...needs 1px height or else scrollbars will never appear
 }

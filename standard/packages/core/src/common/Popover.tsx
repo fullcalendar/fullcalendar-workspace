@@ -43,9 +43,13 @@ export class Popover extends BaseComponent<PopoverProps> {
         role='dialog'
         aria-labelledby={this.titleId}
         className={joinArrayishClassNames(
+          'fc-abs',
           options.popoverClassNames,
           props.className,
         )}
+        style={{
+          zIndex: 4, // NOTE: was $popover-z
+        }}
         ref={this.handleRootEl}
       >
         <div
@@ -54,13 +58,16 @@ export class Popover extends BaseComponent<PopoverProps> {
           ref={this.focusStartRef}
         />
         <div className={joinArrayishClassNames(options.popoverHeaderClassNames)}>
-          <div className="fc-popover-title" id={this.titleId}>
+          <div
+            id={this.titleId}
+            className={joinArrayishClassNames(options.popoverTitleClassNames)}
+          >
             {props.title}
           </div>
           <div
             role='button'
             aria-label={options.closeHint}
-            className='fc-popover-close'
+            className={joinArrayishClassNames(options.popoverCloseClassNames)}
             {...createAriaClickAttrs(this.handleClose)}
             ref={this.closeRef}
           >

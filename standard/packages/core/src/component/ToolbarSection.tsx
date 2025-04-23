@@ -1,7 +1,7 @@
 import { createElement, VNode } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
 import { ToolbarWidget, ButtonContentArg } from '../toolbar-struct.js'
-import { joinArrayishClassNames } from '../util/html.js'
+import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
 import { Icon } from './Icon.js'
 
@@ -23,11 +23,15 @@ export interface ToolbarSectionProps extends ToolbarContent {
 export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
   render(): any {
     let { props } = this
+    let { options } = this.context
     let children = props.widgetGroups.map((widgetGroup) => this.renderWidgetGroup(widgetGroup))
 
     return createElement(
       'div', {
-        className: `fc-toolbar-section fc-toolbar-${props.name} fc-flex-row fc-align-center`
+        className: joinClassNames(
+          generateClassName(options.toolbarSectionClassNames, { name: props.name }),
+          'fc-flex-row fc-no-shrink fc-align-center',
+        ),
       },
       ...children, // spread, so no React key errors
     )
@@ -60,7 +64,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
             role='heading'
             aria-level={options.headingLevel}
             id={props.titleId}
-            className='fc-toolbar-title'
+            className={joinArrayishClassNames(options.toolbarTitleClassNames)}
           >{props.title}</div>,
         )
       } else if (customElement) {
@@ -81,6 +85,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
           (!props.isNextEnabled && name === 'next')
 
         let renderProps: ButtonContentArg = {
+          name,
           icon: widget.buttonIcon,
           text: widget.buttonText,
           isSelected,
@@ -103,10 +108,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
                 : buttonHint,
               onClick: widget.buttonClick,
             }}
-            className={joinArrayishClassNames(
-              `fc-${name}-button`,
-              generateClassName(options.buttonClassNames, renderProps), // calendar-wide
-            )}
+            className={generateClassName(options.buttonClassNames, renderProps)}
             renderProps={renderProps}
             generatorName='buttonContent'
             customGenerator={widget.buttonContent || options.buttonContent}
