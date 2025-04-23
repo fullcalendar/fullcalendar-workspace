@@ -31,8 +31,11 @@
 // Borders
 //
 
-.fc-list-day-and-events:not(:last-child),
 .fc-list-day,
-.fc-list-event:not(:last-child) {
+.fc-list-event {
   border-bottom: 1px solid var(--fc-border-color);
+}
+
+.fc-list-day-and-events:last-child .fc-list-event:last-child {
+  border-bottom: 0;
 }
