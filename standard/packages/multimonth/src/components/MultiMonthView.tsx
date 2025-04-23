@@ -189,7 +189,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
       const innerEl = this.innerElRef.current
       const monthEl = innerEl.querySelector(`[data-date="${formatIsoMonthStr(this.scrollDate)}"]`)
       const scrollTop = Math.ceil( // for fractions, err on the side of scrolling further
-        monthEl.getBoundingClientRect().top -
+        (monthEl.parentNode as HTMLElement).getBoundingClientRect().top -
         innerEl.getBoundingClientRect().top
       )
 
