@@ -54,6 +54,7 @@ const PLUGIN_SPECIFIC_SETTINGS: any = {
   singleMonthTableBodyClassNames: 'fc-single-month-table-body',
   listDayClassName: 'fc-list-day',
   listDayHeaderClassNames: 'fc-list-day-header',
+  listDayHeaderInnerClassNames: 'fc-list-day-header-inner',
 }
 
 export default createPlugin({

@@ -564,12 +564,16 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 
 .fc-list-day-header,
 .fc-list-event {
-  padding: 8px 14px;
   border-bottom: 1px solid var(--fc-border-color);
 }
 
 .fc-list-day:last-child .fc-list-event:last-child {
   border-bottom: 0;
+}
+
+.fc-list-day-header-inner,
+.fc-list-event {
+  padding: 8px 14px;
 }
 
 .fc-list-day-header {
