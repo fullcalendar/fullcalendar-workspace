@@ -21,6 +21,7 @@ export const OPTION_REFINERS = {
   dayCellWillUnmount: identity as Identity<WillUnmountHandler<DayCellMountArg>>,
   dayCellTopContent: identity as Identity<CustomContentGenerator<DayCellContentArg>>,
   dayCellTopClassNames: identity as Identity<ClassNamesGenerator<DayCellContentArg>>,
+  dayCellTopInnerClassNames: identity as Identity<ClassNamesGenerator<DayCellContentArg>>,
   dayCellBottomClassNames: identity as Identity<ClassNamesGenerator<DayCellContentArg>>,
 }
 

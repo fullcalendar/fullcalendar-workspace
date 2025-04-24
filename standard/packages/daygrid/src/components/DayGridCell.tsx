@@ -93,7 +93,6 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     const dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange)
 
     const baseClassName = joinClassNames(
-      'fc-daygrid-day',
       props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
       props.width != null ? '' : 'fc-liquid',
       'fc-flex-col',
@@ -159,7 +158,11 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         {(InnerContent) => (
           <Fragment>
             {props.showDayNumber && (
-              <div className="fc-daygrid-day-header">{/* TODO: use this div for measurement only */}
+              // TODO: add wrapper div around this for measurement
+              // because we should allow the top-div to have bottom margin
+              <div
+                className={generateClassName(options.dayCellTopClassNames, renderProps)}
+              >
                 <InnerContent // the dayCellTopContent
                   tag='div'
                   attrs={
@@ -167,11 +170,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                       ? buildNavLinkAttrs(context, props.date, undefined, fullDateStr)
                       : { 'aria-hidden': true } // label already on cell
                   }
-                  className={joinClassNames(
-                    'fc-daygrid-day-number',
-                    isMonthStart && 'fc-daygrid-month-start',
-                    generateClassName(options.dayCellTopClassNames, renderProps),
-                  )}
+                  className={generateClassName(options.dayCellTopInnerClassNames, renderProps)}
                 />
               </div>
             )}

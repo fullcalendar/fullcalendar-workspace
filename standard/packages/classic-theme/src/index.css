@@ -88,6 +88,12 @@
   opacity: 0.65;
 }
 
+// ONLY the more-popover
+.fc-more-popover .fc-popover-body {
+  min-width: 220px;
+  padding: 10px; // TODO: make this for all popovers?
+}
+
 // Button Group
 // -------------------------------------------------------------------------------------------------
 
@@ -366,4 +372,76 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   margin: .5em;
   font-size: var(--fc-small-font-size);
   font-style: italic;
+}
+
+// DayGrid
+// -------------------------------------------------------------------------------------------------
+
+.fc-day-cell.fc-day-today { // (today) -- TODO: remove compound selector?
+  // only in body cells, not header cells
+  background-color: var(--fc-today-bg-color);
+}
+
+.fc-day-cell-top {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.fc-day-other .fc-day-cell-top { // TODO: remove compound selector?
+  opacity: 0.3;
+}
+
+.fc-day-cell-top-inner {
+  position: relative;
+  padding: 4px;
+}
+
+.fc-day-cell-top-inner-monthstart {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.fc-daygrid-more-link {
+  position: relative;
+  max-width: 100%;
+  border-radius: 3px;
+  margin: 0 2px 1px;
+  padding: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: var(--fc-small-font-size);
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.fc-day-not-narrow .fc-daygrid-more-link { // (button)
+  align-self: flex-start;
+}
+
+.fc-day-narrow .fc-daygrid-more-link { // (block)
+  // looks like an event
+  border: 1px solid var(--fc-event-border-color);
+  padding: 1px;
+}
+
+.fc-daygrid-week-number {
+  position: absolute;
+  z-index: 1; // HACK
+  top: 0;
+  padding: 2px;
+  min-width: 1.5em;
+  text-align: center;
+  background-color: var(--fc-neutral-bg-color);
+  color: var(--fc-neutral-text-color);
+}
+
+.fc-direction-ltr .fc-daygrid-week-number { // (ltr)
+  border-radius: 0 0 3px;
+}
+
+.fc-direction-rtl .fc-daygrid-week-number { // (rtl)
+  border-radius: 0 0 0 3px;
 }

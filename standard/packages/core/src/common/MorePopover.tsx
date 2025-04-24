@@ -9,7 +9,6 @@ import { Popover } from './Popover.js'
 import { DateMeta, getDateMeta } from '../component-util/date-rendering.js'
 import { formatDayString } from '../datelib/formatting-utils.js'
 import { memoize } from '../util/memoize.js'
-import { joinClassNames } from '../util/html.js'
 import { generateClassName } from '../content-inject/ContentContainer.js'
 
 export interface MorePopoverProps {
@@ -51,10 +50,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         attrs={{
           'data-date': formatDayString(startDate),
         }}
-        className={joinClassNames(
-          'fc-more-popover',
-          generateClassName(options.dayPopoverClassNames, dateMeta),
-        )}
+        className={generateClassName(options.dayPopoverClassNames, dateMeta)}
         parentEl={props.parentEl}
         alignEl={props.alignEl}
         alignParentTop={props.alignParentTop}

@@ -16,6 +16,11 @@ const PLUGIN_SPECIFIC_SETTINGS: any = {
     'fc-day-cell',
     ...getDayClassNames(arg),
   ],
+  dayCellTopClassNames: 'fc-day-cell-top',
+  dayCellTopInnerClassNames: (arg) => [
+    'fc-day-cell-top-inner',
+    arg.isMonthStart && 'fc-day-cell-top-inner-monthstart',
+  ],
   dayLaneClassNames: (arg) => [
     'fc-day-lane',
     ...getDayClassNames(arg),
@@ -116,7 +121,10 @@ export default createPlugin({
       'fc-event-title',
     ],
     navLinkClassNames: 'fc-navlink',
-    dayPopoverClassNames: (arg) => getDayClassNames(arg),
+    dayPopoverClassNames: (arg) => [
+      'fc-more-popover',
+      ...getDayClassNames(arg),
+    ],
     slotLabelClassNames: (arg) => [
       'fc-slot-label',
       ...getSlotClassNames(arg),
@@ -132,6 +140,8 @@ export default createPlugin({
     slotLabelRowClassNames: 'fc-slot-label-row',
     nonBusinessClassNames: 'fc-non-business',
     highlightClassNames: 'fc-highlight',
+    moreLinkClassNames: 'fc-more-link',
+    weekNumberClassNames: 'fc-week-number',
     ...PLUGIN_SPECIFIC_SETTINGS,
   },
   views: {
@@ -139,6 +149,8 @@ export default createPlugin({
       viewClassNames: 'fc-daygrid',
       eventClassNames: getDayGridEventClassNames,
       eventColorClassNames: getDayGridEventColorClassNames,
+      moreLinkClassNames: 'fc-daygrid-more-link',
+      weekNumberClassNames: 'fc-daygrid-week-number',
     },
     timeGrid: {
       viewClassNames: 'fc-timegrid',
