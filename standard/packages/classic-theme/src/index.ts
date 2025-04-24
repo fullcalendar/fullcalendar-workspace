@@ -52,6 +52,8 @@ const PLUGIN_SPECIFIC_SETTINGS: any = {
     arg.sticky && 'fc-single-month-table-header-sticky',
   ],
   singleMonthTableBodyClassNames: 'fc-single-month-table-body',
+  listDayClassName: 'fc-list-day',
+  listDayHeaderClassNames: 'fc-list-day-header',
 }
 
 export default createPlugin({
@@ -181,6 +183,8 @@ export default createPlugin({
       viewClassNames: 'fc-list',
       eventClassNames: 'fc-list-event',
       eventColorClassNames: 'fc-list-event-dot',
+      noEventsContent: 'fc-list-empty',
+      noEventsInnerClassNames: 'fc-list-empty-inner',
     },
     multiMonth: {
       viewClassNames: 'fc-multimonth',

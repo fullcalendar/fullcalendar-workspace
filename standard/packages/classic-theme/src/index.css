@@ -558,3 +558,36 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   right: 0;
   border-top: 1px solid var(--fc-now-indicator-color);
 }
+
+// List
+// -------------------------------------------------------------------------------------------------
+
+.fc-list-day-header,
+.fc-list-event {
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--fc-border-color);
+}
+
+.fc-list-day:last-child .fc-list-event:last-child {
+  border-bottom: 0;
+}
+
+.fc-list-day-header {
+  display: flex;
+  justify-content: space-between;
+  background: var(--fc-neutral-bg-color);
+  // TODO: somehow layer-in when sticky: background: var(--fc-page-bg-color);
+  font-weight: bold;
+}
+
+.fc-list-empty {
+  background-color: var(--fc-neutral-bg-color);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center; // vertically aligns fc-list-empty-inner
+}
+
+.fc-list-empty-inner {
+  margin: 5em 0;
+}

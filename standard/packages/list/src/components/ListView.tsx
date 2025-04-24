@@ -98,7 +98,6 @@ export class ListView extends DateComponent<ViewProps> {
         attrs={{
           role: 'status', // does a polite announcement
         }}
-        className='fc-list-empty'
         renderProps={renderProps}
         generatorName="noEventsContent"
         customGenerator={options.noEventsContent}
@@ -110,10 +109,7 @@ export class ListView extends DateComponent<ViewProps> {
         {(InnerContent) => (
           <InnerContent
             tag="div"
-            className={joinClassNames(
-              'fc-list-empty-inner',
-              generateClassName(options.noEventsInnerClassNames, renderProps),
-            )}
+            className={generateClassName(options.noEventsInnerClassNames, renderProps)}
           />
         )}
       </ContentContainer>

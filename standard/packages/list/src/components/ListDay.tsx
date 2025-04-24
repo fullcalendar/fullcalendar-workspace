@@ -1,4 +1,4 @@
-import { BaseComponent, buildDateStr, DateMarker, DateRange, EventRangeProps, getEventKey, getEventRangeMeta, memoize, sortEventSegs } from "@fullcalendar/core/internal"
+import { BaseComponent, buildDateStr, DateMarker, DateRange, EventRangeProps, generateClassName, getDateMeta, getEventKey, getEventRangeMeta, memoize, sortEventSegs } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
 import { ListDayHeader } from "./ListDayHeader.js"
 import { ListEvent } from "./ListEvent.js"
@@ -23,6 +23,7 @@ export interface ListDayProps {
 
 export class ListDay extends BaseComponent<ListDayProps> {
   // memo
+  private getDateMeta = memoize(getDateMeta)
   private sortEventSegs = memoize(sortEventSegs)
 
   render() {
@@ -30,6 +31,7 @@ export class ListDay extends BaseComponent<ListDayProps> {
     const { nowDate, todayRange } = props
     const { options } = context
 
+    const dateMeta = this.getDateMeta(props.dayDate, context.dateEnv, undefined, todayRange)
     const segs = this.sortEventSegs(props.segs, options.eventOrder)
     const fullDateStr = buildDateStr(this.context, props.dayDate)
 
@@ -37,11 +39,13 @@ export class ListDay extends BaseComponent<ListDayProps> {
       <div
         role='listitem'
         aria-label={fullDateStr}
-        className='fc-list-day-and-events'
+        className={generateClassName(options.listDayClassName, {
+          date: dateMeta.date,
+        })}
       >
         <ListDayHeader
           dayDate={props.dayDate}
-          todayRange={todayRange}
+          dateMeta={dateMeta}
           forPrint={props.forPrint}
         />
         <div

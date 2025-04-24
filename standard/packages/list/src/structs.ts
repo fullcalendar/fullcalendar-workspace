@@ -1,9 +1,13 @@
 import { ViewApi } from '@fullcalendar/core'
 import { MountArg } from '@fullcalendar/core/internal'
 
+export interface ListDayArg {
+  date: Date
+}
+
 export interface ListDayHeaderContentArg {
   date: Date
-  isMajor: boolean
+  sticky: boolean
   text: string
   sideText: string
   view: ViewApi
