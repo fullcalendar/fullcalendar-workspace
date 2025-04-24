@@ -148,6 +148,11 @@ export default createPlugin({
     dayLaneInnerClassNames: 'fc-day-lane-inner',
     allDayHeaderClassNames: 'fc-all-day-header',
     allDayHeaderInnerClassNames: 'fc-all-day-header-inner',
+    timelineBottomClassNames: 'fc-timeline-bottom',
+    resourceLaneBottomClassNames: (arg) => [
+      'fc-resource-lane-bottom',
+      arg.isCompact && 'fc-resource-lane-bottom-compact',
+    ],
     ...PLUGIN_SPECIFIC_SETTINGS,
   },
   views: {
@@ -195,9 +200,14 @@ export default createPlugin({
     timeline: {
       viewClassNames: 'fc-timeline',
       slotLabelDividerClassNames: 'fc-timeline-slot-label-divider',
-      eventClassNames: 'fc-timeline-event fc-h-event',
+      eventClassNames: (arg) => [
+        'fc-timeline-event fc-h-event',
+        arg.isSpacious && 'fc-timeline-event-spacious',
+      ],
       moreLinkClassNames: 'fc-timeline-more-link',
       moreLinkInnerClassNames: 'fc-timeline-more-link-inner',
+      nowIndicatorLabelClassNames: 'fc-timeline-now-indicator-label',
+      nowIndicatorLineClassNames: 'fc-timeline-now-indicator-line',
     },
     resourceDayGrid: {
       viewClassNames: 'fc-resource-daygrid', // also inherits dayGrid

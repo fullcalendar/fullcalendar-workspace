@@ -1,4 +1,4 @@
-import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinArrayishClassNames } from '@fullcalendar/core/internal'
+import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinArrayishClassNames, generateClassName } from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
 import { TimelineDateProfile, TimelineFg, TimelineBg, TimelineLaneSlicer } from '@fullcalendar/timeline/internal'
@@ -103,9 +103,9 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
             role='gridcell'
             className={joinClassNames(
               'fc-liquid fc-flex-col fc-rel', // fc-rel is for fc-fill-top
-              options.eventOverlap === false // TODO: fix bad default
-                ? 'fc-timeline-overlap-disabled'
-                : 'fc-timeline-overlap-enabled',
+              options.eventOverlap
+                ? 'fc-timeline-overlap-enabled'
+                : 'fc-timeline-overlap-disabled',
             )}
           >
             <TimelineBg
@@ -152,10 +152,9 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
             />
             <div
               ref={this.handleFooterEl}
-              className={joinArrayishClassNames(
-                'fc-timeline-lane-footer',
-                options.resourceLaneBottomClassNames,
-              )}
+              className={generateClassName(options.resourceLaneBottomClassNames, {
+                isCompact: !options.eventOverlap,
+              })}
             />
           </div>
         )}

@@ -432,6 +432,7 @@ export const BASE_OPTION_DEFAULTS = {
   headingLevel: 2, // like H2
   outerBorder: true,
   dayNarrowWidth: 0,
+  eventOverlap: true,
 }
 
 export type BaseOptionsRefined = DefaultedRefinedOptions<

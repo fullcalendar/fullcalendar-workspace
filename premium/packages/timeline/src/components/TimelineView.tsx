@@ -274,7 +274,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   />
                   <div
                     className={joinArrayishClassNames(
-                      'fc-timeline-lane-footer',
                       options.timelineBottomClassNames,
                     )}
                   />

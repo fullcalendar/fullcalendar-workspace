@@ -1,6 +1,7 @@
 import { createPlugin, PluginDef } from '@fullcalendar/core'
 import premiumCommonPlugin from '@fullcalendar/premium-common'
 import { TimelineView } from './components/TimelineView.js'
+import { OPTION_REFINERS } from './option-refiners.js'
 import './ambient.js'
 import './index.css'
 
@@ -9,6 +10,7 @@ export default createPlugin({
   premiumReleaseDate: '<%= releaseDate %>',
   deps: [premiumCommonPlugin],
   initialView: 'timelineDay',
+  optionRefiners: OPTION_REFINERS,
   views: {
     timeline: {
       component: TimelineView,

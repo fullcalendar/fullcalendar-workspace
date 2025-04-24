@@ -595,3 +595,59 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 .fc-list-empty-inner {
   margin: 5em 0;
 }
+
+// Timeline
+// -------------------------------------------------------------------------------------------------
+
+.fc-timeline-now-indicator-label {
+  position: absolute;
+  top: 0;
+  margin: 0 -5px; // center triangle at element origin
+  border-color: var(--fc-now-indicator-color);
+  @include arrow-down(5px, 6px);
+}
+
+.fc-timeline-now-indicator-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid var(--fc-now-indicator-color);
+}
+
+.fc-timeline-more-link {
+  font-size: var(--fc-small-font-size);
+  color: var(--fc-more-link-text-color);
+  background: var(--fc-more-link-bg-color);
+  padding: 1px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.fc-direction-ltr .fc-timeline-more-link { // (ltr)
+  margin-right: 1px; // TODO: DRY with timeline-event?
+}
+
+.fc-direction-rtl .fc-timeline-more-link { // (rtl)
+  margin-left: 1px; // TODO: DRY with timeline-event?
+}
+
+.fc-timeline-more-link-inner {
+  padding: 2px;
+}
+
+.fc-timeline-bottom {
+  padding-bottom: 10px;
+}
+
+// Resource Timeline
+// -------------------------------------------------------------------------------------------------
+
+.fc-resource-lane-bottom {
+  padding-bottom: 10px;
+}
+
+.fc-resource-lane-bottom-compact {
+  padding-bottom: 0;
+}

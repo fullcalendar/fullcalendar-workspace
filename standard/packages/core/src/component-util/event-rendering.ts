@@ -234,6 +234,7 @@ export interface EventContentArg { // for *Content handlers
   view: ViewApi // specifically for the API
 
   // TODO: make required!
+  isSpacious?: boolean
   isListItem?: boolean
   timeClassName?: string
   titleClassName?: string
