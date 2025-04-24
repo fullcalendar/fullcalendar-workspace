@@ -42,6 +42,27 @@
   flex-shrink: 0;
 }
 
+.fc-calendar-screen-root .fc-safe-tiles {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+/*
+HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
+https://stackoverflow.com/a/60256345
+*/
+.fc-calendar-print-root.fc-ltr-root .fc-safe-tiles > * {
+  float: left;
+}
+.fc-calendar-print-root.fc-rtl-root .fc-safe-tiles > * {
+  float: right;
+}
+.fc-calendar-print-root .fc-safe-tiles::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
 // Border Utils
 // -------------------------------------------------------------------------------------------------
 

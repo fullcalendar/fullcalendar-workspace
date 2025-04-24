@@ -3,7 +3,6 @@ import { TableDateProfileGenerator } from '@fullcalendar/daygrid/internal'
 import { MultiMonthView } from './components/MultiMonthView.js'
 import { OPTION_REFINERS } from './options-refiners.js'
 import './ambient.js'
-import './index.css'
 
 export default createPlugin({
   name: '<%= pkgName %>',

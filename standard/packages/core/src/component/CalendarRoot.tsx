@@ -37,6 +37,7 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
       options.classNames,
       'fc-border-box-root fc-flex-col',
       `fc-${options.direction}-root`,
+      `fc-calendar-${forPrint ? 'print' : 'screen'}-root`, // NOTE: already a fc-print-root!
       generateClassName(options.directionClassNames, options.direction),
       generateClassName(options.mediaTypeClassNames, forPrint ? 'print' : 'screen'),
       generateClassName(options.colorSchemeClassNames, isDark ? 'dark' : 'light'),

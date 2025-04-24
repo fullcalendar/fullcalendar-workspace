@@ -90,9 +90,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
           <ViewContainer
             viewSpec={context.viewSpec}
             className={joinClassNames(
-              (cols === 1) ?
-                'fc-multimonth-singlecol' :
-                'fc-multimonth-multicol',
               // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
               // https://stackoverflow.com/a/60256345
               !props.forPrint && 'fc-flex-col',
@@ -111,7 +108,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                 role='list'
                 aria-labelledby={props.labelId}
                 aria-label={props.labelStr}
-                className='fc-multimonth-inner'
+                className='fc-safe-tiles'
                 ref={this.innerElRef}
               >
                 {monthDateProfiles.map((monthDateProfile, i) => {
