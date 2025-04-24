@@ -8,11 +8,21 @@ export interface TimeGridNowIndicatorArrowProps {
   totalHeight: number | undefined
 }
 
+/*
+TODO: DRY with other NowIndicator components
+*/
 export function TimeGridNowIndicatorArrow(props: TimeGridNowIndicatorArrowProps) {
   return (
-    <div className="fc-timegrid-now-indicator-container">
+    <div
+      // crop any overflow that the arrow/line might cause
+      // TODO: just do this on the entire canvas within the scroller
+      className="fc-fill fc-crop"
+      style={{
+        zIndex: 2, // inlined from $now-indicator-z
+        pointerEvents: 'none', // TODO: className
+      }}
+    >
       <NowIndicatorLabelContainer
-        className='fc-timegrid-now-indicator-arrow'
         style={{
           top: props.totalHeight != null
             ? props.totalHeight * computeDateTopFrac(props.nowDate, props.dateProfile)

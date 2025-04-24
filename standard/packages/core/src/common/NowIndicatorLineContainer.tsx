@@ -32,11 +32,11 @@ export const NowIndicatorLineContainer = (props: NowIndicatorLineContainerProps)
           {...props /* includes children */}
           tag={props.tag || 'div'}
           renderProps={renderProps}
-          generatorName="nowIndicatorLabelContent"
-          customGenerator={options.nowIndicatorLabelContent}
-          classNameGenerator={options.nowIndicatorLabelClassNames}
-          didMount={options.nowIndicatorLabelDidMount}
-          willUnmount={options.nowIndicatorLabelWillUnmount}
+          generatorName="nowIndicatorLineContent"
+          customGenerator={options.nowIndicatorLineContent}
+          classNameGenerator={options.nowIndicatorLineClassNames}
+          didMount={options.nowIndicatorLineDidMount}
+          willUnmount={options.nowIndicatorLineWillUnmount}
         />
       )
     }}

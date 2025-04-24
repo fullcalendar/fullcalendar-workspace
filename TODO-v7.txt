@@ -106,6 +106,7 @@ bug with resource-timeline doing multiple group columns. positioning broken
 check multimonth at end
 our classic-theme should work with a "borderless" setting
 move away from isSticky naming -> sticky/stickyWhatever
+make setting where week number can be a column. how does this affect theming?
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

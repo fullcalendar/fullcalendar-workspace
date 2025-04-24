@@ -2,6 +2,7 @@ import {
   BaseComponent, MoreLinkContainer,
   DateProfile, DateRange, DateMarker, getEventRangeMeta,
   EventRangeProps,
+  joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { TimelineEvent } from './TimelineEvent.js'
@@ -23,12 +24,12 @@ export interface TimelineLaneMoreLinkProps {
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
   render() {
     let { props } = this
+    let { options } = this.context
     let { hiddenSegs, resourceId, forcedInvisibleMap } = props
     let dateSpanProps = resourceId ? { resourceId } : {}
 
     return (
       <MoreLinkContainer
-        className='fc-timeline-more-link'
         allDayDate={null}
         segs={hiddenSegs}
         hiddenSegs={hiddenSegs}
@@ -65,8 +66,11 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
       >
         {(InnerContent) => (
           <InnerContent
-            tag="div"
-            className='fc-timeline-more-link-inner fc-sticky-s'
+            tag='div'
+            className={joinArrayishClassNames(
+              options.moreLinkInnerClassNames,
+              'fc-sticky-s',
+            )}
           />
         )}
       </MoreLinkContainer>

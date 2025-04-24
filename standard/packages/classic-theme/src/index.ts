@@ -21,10 +21,6 @@ const PLUGIN_SPECIFIC_SETTINGS: any = {
     'fc-day-cell-top-inner',
     arg.isMonthStart && 'fc-day-cell-top-inner-monthstart',
   ],
-  dayLaneClassNames: (arg) => [
-    'fc-day-lane',
-    ...getDayClassNames(arg),
-  ],
   dayHeaderDividerClassNames: 'fc-day-header-divider',
   resourceAreaDividerClassNames: 'fc-resource-area-divider',
   resourceAreaHeaderRowClassNames: 'fc-resource-area-header-row',
@@ -142,6 +138,13 @@ export default createPlugin({
     highlightClassNames: 'fc-highlight',
     moreLinkClassNames: 'fc-more-link',
     weekNumberClassNames: 'fc-week-number',
+    dayLaneClassNames: (arg) => [
+      'fc-day-lane',
+      ...getDayClassNames(arg),
+    ],
+    dayLaneInnerClassNames: 'fc-day-lane-inner',
+    allDayHeaderClassNames: 'fc-all-day-header',
+    allDayHeaderInnerClassNames: 'fc-all-day-header-inner',
     ...PLUGIN_SPECIFIC_SETTINGS,
   },
   views: {
@@ -163,6 +166,16 @@ export default createPlugin({
       eventColorClassNames: (arg) => (
         arg.event.allDay ? getDayGridEventColorClassNames(arg) : ''
       ),
+      allDayHeaderClassNames: 'fc-timegrid-axis',
+      allDayHeaderInnerClassNames: 'fc-timegrid-axis-inner',
+      weekNumberClassNames: 'fc-timegrid-axis',
+      weekNumberInnerClassNames: 'fc-timegrid-axis-inner',
+      slotLabelClassNames: 'fc-timegrid-axis',
+      slotLabelInnerClassNames: 'fc-timegrid-axis-inner',
+      moreLinkClassNames: 'fc-timegrid-more-link',
+      moreLinkInnerClassNames: 'fc-timegrid-more-link-inner',
+      nowIndicatorLabelClassNames: 'fc-timegrid-now-indicator-label',
+      nowIndicatorLineClassNames: 'fc-timegrid-now-indicator-line',
     },
     list: {
       viewClassNames: 'fc-list',
@@ -178,6 +191,8 @@ export default createPlugin({
       viewClassNames: 'fc-timeline',
       slotLabelDividerClassNames: 'fc-timeline-slot-label-divider',
       eventClassNames: 'fc-timeline-event fc-h-event',
+      moreLinkClassNames: 'fc-timeline-more-link',
+      moreLinkInnerClassNames: 'fc-timeline-more-link-inner',
     },
     resourceDayGrid: {
       viewClassNames: 'fc-resource-daygrid', // also inherits dayGrid

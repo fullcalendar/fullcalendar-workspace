@@ -3,6 +3,7 @@ import {
   MoreLinkContainer, BaseComponent,
   Dictionary, DateProfile, DateRange, DateMarker, EventSegUiInteractionState,
   EventRangeProps,
+  joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { renderPlainFgSegs } from './TimeGridCol.js' // BAD
@@ -24,10 +25,11 @@ export interface TimeGridMoreLinkProps {
 export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
   render() {
     let { props } = this
+    let { options } = this.context
 
     return (
       <MoreLinkContainer
-        className='fc-timegrid-more-link fc-abs'
+        className='fc-abs'
         style={{
           top: props.top,
           height: props.height,
@@ -45,7 +47,10 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
         {(InnerContent) => (
           <InnerContent
             tag="div"
-            className='fc-timegrid-more-link-inner fc-sticky-t'
+            className={joinArrayishClassNames(
+              options.moreLinkInnerClassNames,
+              'fc-sticky-t',
+            )}
           />
         )}
       </MoreLinkContainer>

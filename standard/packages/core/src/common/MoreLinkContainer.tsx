@@ -46,6 +46,10 @@ interface MoreLinkContainerState {
   popoverId: string
 }
 
+/*
+IMPORTANT: caller is responsible for injecting moreLinkInnerClassNames,
+either on root `classNames` or within inner element
+*/
 export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, MoreLinkContainerState> {
   private linkEl: HTMLElement
   private parentEl: HTMLElement

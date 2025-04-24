@@ -1,4 +1,7 @@
 
+// DayGrid
+// -------------------------------------------------------------------------------------------------
+
 .fc-daygrid-row-print { // (print)
   // Print view squishes width which results in overly tall cells that can't adapt to new width
   // hardcode a value that looks good in portrait and landscape
@@ -19,4 +22,11 @@
 
 .fc-daygrid-day-body:only-child { // (without header)
   margin-top: 2px;
+}
+
+// TimeGrid
+// -------------------------------------------------------------------------------------------------
+
+.fc-timegrid-day-events-simple { // print-view in FF, when events are flat list
+  margin: 4px !important;
 }

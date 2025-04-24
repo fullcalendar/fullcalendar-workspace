@@ -169,7 +169,7 @@ export const BASE_OPTION_REFINERS = {
 
   nowIndicatorLineClassNames: identity as Identity<ClassNamesGenerator<NowIndicatorLineContentArg>>,
   nowIndicatorLineContent: identity as Identity<CustomContentGenerator<NowIndicatorLineContentArg>>,
-  nowIndicatorLinelDidMount: identity as Identity<DidMountHandler<NowIndicatorLineMountArg>>,
+  nowIndicatorLineDidMount: identity as Identity<DidMountHandler<NowIndicatorLineMountArg>>,
   nowIndicatorLineWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorLineMountArg>>,
 
   showNonCurrentDates: Boolean,
@@ -316,6 +316,7 @@ export const BASE_OPTION_REFINERS = {
 
   moreLinkClick: identity as Identity<MoreLinkAction>,
   moreLinkClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
+  moreLinkInnerClassNames: identity as Identity<ClassNamesInput>, // TODO: accept arg
   moreLinkContent: identity as Identity<CustomContentGenerator<MoreLinkContentArg>>,
   moreLinkDidMount: identity as Identity<DidMountHandler<MoreLinkMountArg>>,
   moreLinkWillUnmount: identity as Identity<WillUnmountHandler<MoreLinkMountArg>>,

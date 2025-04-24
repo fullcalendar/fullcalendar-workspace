@@ -1,4 +1,31 @@
 
+/*
+pointing down
+callers must set border-color themselves
+*/
+@mixin arrow-down($halfWidth, $height) {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: $height $halfWidth 0 $halfWidth;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+
+/*
+pointing at left or right
+callers must set border-color themselves
+callers must choose pointing-left/right be setting left/right border to zero
+*/
+@mixin arrow-left-right($width, $halfHeight) {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: $halfHeight $width;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+}
+
 .fc-resource-area-header-row,
 .fc-resource-area-header,
 .fc-resource-area-row,
@@ -444,4 +471,90 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 
 .fc-direction-rtl .fc-daygrid-week-number { // (rtl)
   border-radius: 0 0 0 3px;
+}
+
+// TimeGrid
+// -------------------------------------------------------------------------------------------------
+
+.fc-day-lane.fc-day-today { // (today)
+  background-color: var(--fc-today-bg-color);
+}
+
+.fc-direction-ltr .fc-day-lane-inner { // (ltr)
+  margin: 0 2.5% 0 2px;
+}
+
+.fc-direction-rtl .fc-day-lane-inner { // (rtl)
+  margin: 0 2px 0 2.5%;
+}
+
+.fc-all-day-header-inner {
+  // respect newlines in long text like "Toute la journée", meant to break
+  white-space: pre;
+}
+
+.fc-timegrid-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // vertically
+  align-items: flex-end; // horizontally
+}
+
+.fc-timegrid-axis-inner {
+  text-align: end;
+  min-height: 1.5em;
+
+  // vertical alignment for *text inside*
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // vertically
+}
+
+.fc-timegrid-more-link {
+  z-index: 9999; // HACK to get above all data-dependent z-indexes of events
+  color: var(--fc-more-link-text-color);
+  background: var(--fc-more-link-bg-color);
+  margin-bottom: 1px; // match space below fc-timegrid-event
+  cursor: pointer;
+
+  // TODO: DRY with timegrid-event?
+  box-shadow: 0px 0px 0px 1px var(--fc-page-bg-color);
+  font-size: var(--fc-small-font-size);
+  border-radius: 3px;
+}
+
+.fc-direction-ltr .fc-timegrid-more-link {
+  right: 0; // alignment within column. has natural width
+}
+
+.fc-direction-rtl .fc-timegrid-more-link {
+  left: 0; // alignment within column. has natural width
+}
+
+.fc-timegrid-more-link-inner {
+  padding: 3px 2px;
+}
+
+.fc-timegrid-now-indicator-label {
+  position: absolute;
+  margin-top: -5px; // vertically center on top coordinate
+  border-color: var(--fc-now-indicator-color);
+  @include arrow-left-right(6px, 5px);
+}
+
+.fc-direction-ltr .fc-timegrid-now-indicator-label { // (ltr)
+  left: 0;
+  border-right: 0;
+}
+
+.fc-direction-rtl .fc-timegrid-now-indicator-label { // (rtl)
+  right: 0;
+  border-left: 0;
+}
+
+.fc-timegrid-now-indicator-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px solid var(--fc-now-indicator-color);
 }
