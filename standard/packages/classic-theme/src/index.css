@@ -659,6 +659,9 @@ a.fc-event:hover { // (anchor:hover)
   border: 1px solid var(--fc-event-border-color);
   background-color: var(--fc-event-bg-color);
 }
+.fc-media-print .fc-daygrid-block-event { // (print)
+  background: #fff !important;
+}
 
 // kill left/right margin and border-radius
 .fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-start), // (ltr-left-continuation)
@@ -675,7 +678,10 @@ a.fc-event:hover { // (anchor:hover)
 }
 
 .fc-daygrid-block-event .fc-event-inner {
-  color: var(--fc-event-text-color);
+  color: var(--fc-event-text-color); // better to assign text-color within to bypass link color
+}
+.fc-media-print .fc-daygrid-block-event .fc-event-inner { // (print)
+  color: #000 !important;
 }
 
 .fc-daygrid-block-event .fc-event-time { // > time
@@ -720,6 +726,9 @@ a.fc-event:hover { // (anchor:hover)
   background-color: var(--fc-event-bg-color);
   font-size: var(--fc-small-font-size);
 }
+.fc-media-print .fc-timegrid-event { // (print)
+  background: #fff !important;
+}
 
 // kill top border and radius when not-start
 .fc-timegrid-event:not(.fc-event-start) {
@@ -747,6 +756,9 @@ a.fc-event:hover { // (anchor:hover)
 .fc-timegrid-event .fc-event-inner {
   padding: 1px 1px 0;
   color: var(--fc-event-text-color); // better to assign text-color within to bypass link color
+}
+.fc-media-print .fc-timegrid-event .fc-event-inner { // (print)
+  color: #000 !important;
 }
 
 .fc-timegrid-event .fc-event-time {
@@ -779,9 +791,8 @@ a.fc-event:hover { // (anchor:hover)
   margin-bottom: 1px;
   font-size: var(--fc-small-font-size);
 }
-
-.fc-timeline-event .fc-event-inner {
-  color: var(--fc-event-text-color); // better to assign text-color within to bypass link color
+.fc-media-print .fc-timeline-event { // (print)
+  background: #fff !important;
 }
 
 .fc-direction-ltr .fc-timeline-event.fc-event-end { // (ltr+end)
@@ -793,10 +804,11 @@ a.fc-event:hover { // (anchor:hover)
 
 // > inner
 .fc-timeline-event .fc-event-inner {
-  display: flex;
-  flex-direction: row;
-  align-items: center; // vertically centered items
   padding: 2px 1px;
+  color: var(--fc-event-text-color); // better to assign text-color within to bypass link color
+}
+.fc-media-print .fc-timeline-event .fc-event-inner {
+  color: #000 !important;
 }
 
 // > inner (spacious)

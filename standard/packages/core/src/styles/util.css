@@ -358,3 +358,30 @@ Only needed when padding/border must be separate from width/height
 .fc-footer-scrollbar > * > * { // > scroller > canvas
   height: 1px; // ...needs 1px height or else scrollbars will never appear
 }
+
+// Print-Safe Utils
+// -------------------------------------------------------------------------------------------------
+
+.fc-calendar-print-root {
+  & .fc-break-inside-avoid {
+    break-inside: avoid;
+  }
+
+  & .fc-print-root {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse; // so bottom-border can be put on fc-print-header
+  }
+
+  & .fc-print-header {
+    display: table-header-group;
+    break-inside: avoid; // required
+
+    // TODO: make a separate className
+    background: #fff; // for when absolute-positioned items in body, doesn't appear under header
+    z-index: 9999; // for when there's absolutely-positioned items in body
+    position: relative;
+  }
+}

@@ -114,7 +114,6 @@ eventMaxStack:1 is pretty dumb for two events:
 rename isSticky->sticky, but we still have isStart/isToday/etc !!??
 resourceArea resizer of resourceAreaDivider is small or not specified?
 have theme define col-resizer. see notes
-the adaptive plugin still has CSS and hardcoded classNames for events!!! change
 the event background "dimmer" goes over event time accidentally
 in timegrid, touch-selected event doesn't go above other. supposed to?
 
