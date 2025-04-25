@@ -1,4 +1,3 @@
-import './index.css'
 
 export { TimelineView } from './components/TimelineView.js'
 export { TimelineFg } from './components/TimelineFg.js'

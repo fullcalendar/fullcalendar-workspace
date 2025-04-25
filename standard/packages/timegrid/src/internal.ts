@@ -1,4 +1,3 @@
-import './index.css'
 
 export { TimeGridRange, organizeSegsByCol, splitInteractionByCol } from './TimeColsSeg.js'
 export { DayTimeColsSlicer } from './DayTimeColsSlicer.js'

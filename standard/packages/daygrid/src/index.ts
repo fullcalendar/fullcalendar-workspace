@@ -3,7 +3,6 @@ import { DayGridView } from './components/DayGridView.js'
 import { TableDateProfileGenerator } from './TableDateProfileGenerator.js'
 import { OPTION_DEFAULTS, OPTION_REFINERS } from './options.js'
 import './ambient.js'
-import './index.css'
 
 export default createPlugin({
   name: '<%= pkgName %>',

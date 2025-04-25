@@ -53,7 +53,6 @@ export default createPlugin({
     ],
     eventInnerClassNames: 'fc-event-inner',
     eventTimeClassNames: 'fc-event-time',
-    eventTitleOuterClassNames: 'fc-event-title-outer',
     eventTitleClassNames: 'fc-event-title',
     dayPopoverClassNames: (arg) => getDayClassNames(arg),
     slotLabelClassNames: (arg) => getSlotClassNames(arg),

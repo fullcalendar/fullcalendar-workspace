@@ -238,7 +238,6 @@ export interface EventContentArg { // for *Content handlers
   isListItem?: boolean
   timeClassName?: string
   titleClassName?: string
-  titleOuterClassName?: string // eventually remove!
 }
 
 export type EventMountArg = MountArg<EventContentArg>

@@ -56,7 +56,6 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       isResizing: false,
       isListItem: false,
       timeClassName: '', // never display time
-      titleOuterClassName: joinArrayishClassNames(options.eventTitleOuterClassNames),
       titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi }),
     }
 
@@ -98,9 +97,7 @@ function renderInnerContent(props: EventContentArg) {
   let { title } = props.event
 
   return title && (
-    <div className={props.titleOuterClassName}>
-      <div className={props.titleClassName}>{props.event.title}</div>
-    </div>
+    <div className={props.titleClassName}>{props.event.title}</div>
   )
 }
 

@@ -94,7 +94,6 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isListItem: props.isListItem || false,
       isSpacious: props.isSpacious || false,
       timeClassName: joinArrayishClassNames(options.eventTimeClassNames),
-      titleOuterClassName: joinArrayishClassNames(options.eventTitleOuterClassNames),
       titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi }),
     }
 
@@ -206,10 +205,8 @@ function renderInnerContent(innerProps: EventContentArg) {
       {innerProps.timeText && (
         <div className={innerProps.timeClassName}>{innerProps.timeText}</div>
       )}
-      <div className={innerProps.titleOuterClassName}>
-        <div className={innerProps.titleClassName}>
-          {innerProps.event.title || <Fragment>&nbsp;</Fragment>}
-        </div>
+      <div className={innerProps.titleClassName}>
+        {innerProps.event.title || <Fragment>&nbsp;</Fragment>}
       </div>
     </Fragment>
   )

@@ -3,7 +3,6 @@ import premiumCommonPlugin from '@fullcalendar/premium-common'
 import { TimelineView } from './components/TimelineView.js'
 import { OPTION_REFINERS } from './option-refiners.js'
 import './ambient.js'
-import './index.css'
 
 export default createPlugin({
   name: '<%= pkgName %>',

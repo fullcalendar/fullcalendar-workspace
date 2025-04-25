@@ -229,7 +229,6 @@ export const BASE_OPTION_REFINERS = {
   eventColorClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
   eventInnerClassNames: identity as Identity<ClassNamesInput>,
   eventTimeClassNames: identity as Identity<ClassNamesInput>,
-  eventTitleOuterClassNames: identity as Identity<ClassNamesInput>, // TODO: eventually remove!
   eventTitleClassNames: identity as Identity<ClassNamesGenerator<{ event: EventApi }>>,
   eventResizerClassNames: identity as Identity<ClassNamesInput>,
   eventResizerStartClassNames: identity as Identity<ClassNamesInput>,

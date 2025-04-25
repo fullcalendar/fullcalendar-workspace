@@ -4,7 +4,5 @@
 
 @import './styles/vars';
 @import './styles/util'; // go after calendar-root border-box for higher precedence
-@import './styles/event';
-@import './styles/h-event';
 
 @import './styles/hacks';

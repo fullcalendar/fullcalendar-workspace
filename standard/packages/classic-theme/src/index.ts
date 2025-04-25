@@ -114,9 +114,11 @@ export default createPlugin({
       arg.isFuture && 'fc-event-future',
       arg.isToday && 'fc-event-today',
     ],
+    eventResizerClassNames: 'fc-event-resizer',
+    eventResizerStartClassNames: 'fc-event-resizer-start',
+    eventResizerEndClassNames: 'fc-event-resizer-end',
     eventInnerClassNames: 'fc-event-inner',
     eventTimeClassNames: 'fc-event-time',
-    eventTitleOuterClassNames: 'fc-event-title-outer',
     eventTitleClassNames: (arg) => [
       arg.event.display === 'background' && 'fc-bg-event-title',
       'fc-event-title',
@@ -171,7 +173,7 @@ export default createPlugin({
       eventClassNames: (arg) => (
         arg.event.allDay ? getDayGridEventClassNames(arg) :
         arg.event.display === 'background' ? '' :
-        'fc-timegrid-event fc-v-event'
+        'fc-timegrid-event fc-event-y'
       ),
       eventColorClassNames: (arg) => (
         arg.event.allDay ? getDayGridEventColorClassNames(arg) : ''
@@ -203,7 +205,7 @@ export default createPlugin({
       viewClassNames: 'fc-timeline',
       slotLabelDividerClassNames: 'fc-timeline-slot-label-divider',
       eventClassNames: (arg) => [
-        'fc-timeline-event fc-h-event',
+        'fc-timeline-event fc-event-x',
         arg.isSpacious && 'fc-timeline-event-spacious',
       ],
       moreLinkClassNames: 'fc-timeline-more-link',
@@ -225,8 +227,8 @@ export default createPlugin({
 
 function getDayGridEventClassNames(arg: EventContentArg) {
   return arg.event.display === 'background' ? '' :
-    arg.isListItem ? 'fc-daygrid-dot-event fc-daygrid-event' :
-    'fc-daygrid-block-event fc-daygrid-event fc-h-event'
+    arg.isListItem ? 'fc-daygrid-dot-event fc-daygrid-event fc-event-x' :
+    'fc-daygrid-block-event fc-daygrid-event fc-event-x'
 }
 
 function getDayGridEventColorClassNames(arg: EventContentArg) {

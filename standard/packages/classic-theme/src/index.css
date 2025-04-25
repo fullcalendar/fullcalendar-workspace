@@ -1,4 +1,19 @@
 
+@mixin liquid {
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+@mixin fill($inset: 0) {
+  position: absolute;
+  top: $inset;
+  left: $inset;
+  right: $inset;
+  bottom: $inset;
+}
+
 /*
 pointing down
 callers must set border-color themselves
@@ -399,6 +414,478 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
   margin: .5em;
   font-size: var(--fc-small-font-size);
   font-style: italic;
+}
+
+// General Event
+// -------------------------------------------------------------------------------------------------
+
+// reset underline when events <a>
+a.fc-event, // (anchor)
+a.fc-event:hover { // (anchor:hover)
+  text-decoration: none;
+}
+
+// transparent when mouse dragging
+.fc-event-dragging:not(.fc-event-selected) {
+  opacity: 0.75;
+}
+
+// box-shadow when touch dragging
+.fc-event-dragging.fc-event-selected {
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+}
+
+// FYI: will only be present on fc-event-x/y
+.fc-event-resizer {
+  position: absolute;
+  z-index: 2; // one above sticky title
+  display: none; // hide
+}
+
+.fc-event:hover .fc-event-resizer, // mouse hover
+.fc-event-selected .fc-event-resizer { // touch select
+  display: block; // reveal
+}
+
+// touch resizer dot
+.fc-event-selected .fc-event-resizer {
+  border-radius: calc(var(--fc-event-resizer-dot-total-width) / 2);
+  border-width: var(--fc-event-resizer-dot-border-width);
+  width: var(--fc-event-resizer-dot-total-width);
+  height: var(--fc-event-resizer-dot-total-width);
+  border-style: solid;
+  border-color: inherit;
+  background: var(--fc-page-bg-color);
+}
+
+// Axis events
+// -------------------------------------------------------------------------------------------------
+
+.fc-event-x,
+.fc-event-y {
+  position: relative; // origin for resizers
+}
+
+.fc-event-selected, // touch-selected
+.fc-event-x:focus, // tab-focused
+.fc-event-y:focus {
+  // shadow
+  // TODO: improve focus-styling for .fc-daygrid-dot-event
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+  // > dimmer-effect
+  // TODO: problematic because covers most elements
+  // Coincidence that sticky elements get put above
+  // Give non-sticky elements position:relative!
+  &:before {
+    // assume there's a border on all sides. overcome it.
+    // sometimes there's NOT a border, in which case the dimmer will go over
+    // an adjacent border, which looks fine.
+    @include fill(-1px);
+
+    content: "";
+    background: var(--fc-event-selected-overlay-color);
+  }
+}
+
+// X-axis event
+// -------------------------------------------------------------------------------------------------
+
+.fc-event-x,
+.fc-event-x .fc-event-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center; // vertical
+}
+
+.fc-event-x .fc-event-inner {
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: 0;
+}
+
+.fc-event-x .fc-event-time,
+.fc-event-x .fc-event-title {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.fc-event-x .fc-event-time {
+  flex-shrink: 0;
+  max-width: 100%;
+}
+
+.fc-event-x .fc-event-title {
+  flex-shrink: 1;
+  position: sticky;
+  z-index: 1;
+  left: 0;
+  right: 0;
+}
+
+// resizer positioning for mouse
+.fc-event-x:not(.fc-event-selected) .fc-event-resizer {
+  top: 0;
+  bottom: 0;
+  width: var(--fc-event-resizer-thickness);
+}
+.fc-direction-ltr .fc-event-x:not(.fc-event-selected) .fc-event-resizer-start,
+.fc-direction-rtl .fc-event-x:not(.fc-event-selected) .fc-event-resizer-end {
+  left: calc(-0.5 * var(--fc-event-resizer-thickness));
+}
+.fc-direction-ltr .fc-event-x:not(.fc-event-selected) .fc-event-resizer-end,
+.fc-direction-rtl .fc-event-x:not(.fc-event-selected) .fc-event-resizer-start {
+  right: calc(-0.5 * var(--fc-event-resizer-thickness));
+}
+
+// resizer dot positioning for touch
+.fc-event-x.fc-event-selected .fc-event-resizer {
+  top: 50%;
+  margin-top: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
+}
+.fc-direction-ltr .fc-event-x.fc-event-selected .fc-event-resizer-start,
+.fc-direction-rtl .fc-event-x.fc-event-selected .fc-event-resizer-end {
+  left: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
+}
+.fc-direction-ltr .fc-event-x.fc-event-selected .fc-event-resizer-end,
+.fc-direction-rtl .fc-event-x.fc-event-selected .fc-event-resizer-start {
+  right: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
+}
+
+// Y-axis event
+// -------------------------------------------------------------------------------------------------
+
+.fc-event-y,
+.fc-event-y .fc-event-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.fc-event-y .fc-event-inner {
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: 0;
+}
+
+.fc-event-y .fc-event-time {
+  flex-shrink: 0;
+  max-height: 100%;
+}
+
+.fc-event-y .fc-event-title {
+  flex-shrink: 1;
+  position: sticky;
+  z-index: 1;
+  top: 0;
+}
+
+.fc-event-y .fc-event-time,
+.fc-event-y .fc-event-title {
+  // CAN be overridden
+  white-space: nowrap;
+  overflow: hidden;
+}
+.fc-media-print .fc-event-y .fc-event-time,
+.fc-media-print .fc-event-y .fc-event-title {
+  // CANNOT be overridden. print view depends on width-independent height
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+// mouse resizing
+.fc-event-y:not(.fc-event-selected) { // (mouse)
+  & .fc-event-resizer {
+    height: var(--fc-event-resizer-thickness);
+    left: 0;
+    right: 0;
+  }
+  & .fc-event-resizer-start { // (start)
+    top: calc(var(--fc-event-resizer-thickness) / -2);
+  }
+  & .fc-event-resizer-end { // (end)
+    bottom: calc(var(--fc-event-resizer-thickness) / -2);
+  }
+}
+
+// touch resizing with dot
+.fc-event-y.fc-event-selected { // (touch)
+  & .fc-event-resizer {
+    left: 50%;
+    margin-left: calc(var(--fc-event-resizer-dot-total-width) / -2);
+  }
+  & .fc-event-resizer-start { // (start)
+    top: calc(var(--fc-event-resizer-dot-total-width) / -2);
+  }
+  & .fc-event-resizer-end { // (end)
+    bottom: calc(var(--fc-event-resizer-dot-total-width) / -2);
+  }
+}
+
+// DayGrid Event
+// -------------------------------------------------------------------------------------------------
+
+:root {
+  --fc-daygrid-event-dot-width: 8px;
+}
+
+.fc-daygrid-event {
+  margin-bottom: 1px;
+  border-radius: 3px; // dot event needs this too when selected
+  font-size: var(--fc-small-font-size);
+}
+
+// left/right margins
+.fc-direction-ltr .fc-daygrid-event.fc-event-start, // (ltr-left-terminus)
+.fc-direction-rtl .fc-daygrid-event.fc-event-end { // (rtl-left-terminus)
+  margin-left: 2px;
+}
+.fc-direction-ltr .fc-daygrid-event.fc-event-end, // (ltr-right-terminus)
+.fc-direction-rtl .fc-daygrid-event.fc-event-start { // (rtl-right-terminus)
+  margin-right: 2px;
+}
+
+// space between time and title
+// (can't use gap b/c dot is often a first sibling)
+.fc-direction-ltr .fc-daygrid-event .fc-event-time { // (ltr) > time
+  margin-right: 3px;
+}
+.fc-direction-rtl .fc-daygrid-event .fc-event-time { // (rtl) > time
+  margin-left: 3px;
+}
+
+// BLOCK style
+
+.fc-daygrid-block-event {
+  border: 1px solid var(--fc-event-border-color);
+  background-color: var(--fc-event-bg-color);
+}
+
+// kill left/right margin and border-radius
+.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-start), // (ltr-left-continuation)
+.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-end) { // (rtl-left-continuation)
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left-width: 0;
+}
+.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-end), // (ltr-right-continuation)
+.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-start) { // (rtl-right-continuation)
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right-width: 0;
+}
+
+.fc-daygrid-block-event .fc-event-inner {
+  color: var(--fc-event-text-color);
+}
+
+.fc-daygrid-block-event .fc-event-time { // > time
+  font-weight: bold;
+}
+
+.fc-daygrid-block-event .fc-event-time, // > time
+.fc-daygrid-block-event .fc-event-title { // > title
+  padding: 1px;
+}
+
+// DOT style
+
+.fc-daygrid-dot-event {
+  padding: 2px 0;
+}
+
+.fc-daygrid-dot-event.fc-event-mirror, // (mirror)
+.fc-daygrid-dot-event:hover { // (hover)
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.fc-daygrid-dot-event .fc-event-title {
+  font-weight: bold;
+}
+
+.fc-daygrid-event-dot { // > dot
+  margin: 0 4px;
+  box-sizing: content-box;
+  width: 0;
+  height: 0;
+  border: calc(var(--fc-daygrid-event-dot-width) / 2) solid var(--fc-event-border-color);
+  border-radius: calc(var(--fc-daygrid-event-dot-width) / 2);
+}
+
+// TimeGrid Event
+// -------------------------------------------------------------------------------------------------
+
+.fc-timegrid-event {
+  border-radius: 3px;
+  border: 1px solid var(--fc-event-border-color);
+  background-color: var(--fc-event-bg-color);
+  font-size: var(--fc-small-font-size);
+}
+
+// kill top border and radius when not-start
+.fc-timegrid-event:not(.fc-event-start) {
+  border-top-width: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+// kill bottom border and radius when not-end
+.fc-timegrid-event:not(.fc-event-end) {
+  border-bottom-width: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.fc-timegrid-event.fc-event-end {
+  margin-bottom: 1px; // give some space from bottom
+}
+
+.fc-timegrid-event-inset, // (inset) --- HACK --- TODO: move className generation to theme
+.fc-timegrid-event.fc-event-mirror { // (mirror)
+  box-shadow: 0px 0px 0px 1px var(--fc-page-bg-color); // apply border w/o mass
+}
+
+.fc-timegrid-event .fc-event-inner {
+  padding: 1px 1px 0;
+  color: var(--fc-event-text-color); // better to assign text-color within to bypass link color
+}
+
+.fc-timegrid-event .fc-event-time {
+  white-space: nowrap;
+  font-size: var(--fc-small-font-size);
+  margin-bottom: 1px;
+}
+
+// SHORT variation --- HACK --- TODO: move className generation to theme
+
+.fc-timegrid-event-short .fc-event-inner {
+  flex-direction: row; // overrides fc-event-x!
+  overflow: hidden;
+}
+
+.fc-timegrid-event-short .fc-event-time:after {
+  content: '\00a0-\00a0'; // dash surrounded by non-breaking spaces
+}
+
+.fc-timegrid-event-short .fc-event-title {
+  font-size: var(--fc-small-font-size);
+}
+
+// Timeline Event
+// -------------------------------------------------------------------------------------------------
+
+.fc-timeline-event {
+  border: 1px solid var(--fc-event-border-color);
+  background-color: var(--fc-event-bg-color);
+  margin-bottom: 1px;
+  font-size: var(--fc-small-font-size);
+}
+
+.fc-timeline-event .fc-event-inner {
+  color: var(--fc-event-text-color); // better to assign text-color within to bypass link color
+}
+
+.fc-direction-ltr .fc-timeline-event.fc-event-end { // (ltr+end)
+  margin-right: 1px;
+}
+.fc-direction-rtl .fc-timeline-event.fc-event-end { // (rtl+end)
+  margin-left: 1px;
+}
+
+// > inner
+.fc-timeline-event .fc-event-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center; // vertically centered items
+  padding: 2px 1px;
+}
+
+// > inner (spacious)
+.fc-timeline-event-spacious .fc-event-inner {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+// > inner > time
+.fc-timeline-event .fc-event-time {
+  font-weight: bold;
+}
+
+// > inner > time
+// > inner > title
+.fc-timeline-event .fc-event-time,
+.fc-timeline-event .fc-event-title {
+  padding: 0 2px;
+}
+
+// arrows
+
+.fc-timeline-event:not(.fc-event-start):before,
+.fc-timeline-event:not(.fc-event-end):after {
+  content: "";
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin: 0 1px;
+  opacity: .5;
+  border-color: #000; // TODO: var
+  @include arrow-left-right(5px, 5px);
+}
+// (pointing left variant)
+.fc-direction-ltr .fc-timeline-event:not(.fc-event-start):before,
+.fc-direction-rtl .fc-timeline-event:not(.fc-event-end):after {
+  border-left: 0;
+}
+// (pointing right variant)
+.fc-direction-ltr .fc-timeline-event:not(.fc-event-end):after,
+.fc-direction-rtl .fc-timeline-event:not(.fc-event-start):before {
+  border-right: 0;
+}
+
+// List Event
+// -------------------------------------------------------------------------------------------------
+
+:root {
+  --fc-list-event-dot-width: 10px;
+  --fc-list-event-hover-bg-color: #f5f5f5;
+}
+
+.fc-list-event {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+}
+
+.fc-list-event:hover {
+  background-color: var(--fc-list-event-hover-bg-color);
+}
+
+.fc-list-event .fc-event-inner {
+  display: contents;
+}
+
+.fc-list-event .fc-event-time {
+  order: -1;
+  width: 165px;
+}
+
+.fc-list-event-dot {
+  display: inline-block;
+  box-sizing: content-box;
+  width: 0;
+  height: 0;
+  border: calc(var(--fc-list-event-dot-width) / 2) solid var(--fc-event-border-color);
+  border-radius: calc(var(--fc-list-event-dot-width) / 2);
+}
+
+// reset <a> styling
+a.fc-list-event {
+  color: inherit;
+  text-decoration: none;
+}
+
+// underline link when hovering over any part of row
+a.fc-list-event:hover .fc-event-title {
+  text-decoration: underline;
 }
 
 // DayGrid

@@ -1,4 +1,3 @@
-import './index.css'
 
 export { DayTableSlicer } from './DayTableSlicer.js'
 export { TableDateProfileGenerator, buildDayTableRenderRange } from './TableDateProfileGenerator.js'
