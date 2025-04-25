@@ -1031,6 +1031,10 @@ a.fc-list-event:hover .fc-event-title {
   margin: 0 2px 0 2.5%;
 }
 
+.fc-day-lane-inner-simple { // print-view in FF, when events are flat list
+  margin: 4px !important;
+}
+
 .fc-all-day-header-inner {
   // respect newlines in long text like "Toute la journée", meant to break
   white-space: pre;

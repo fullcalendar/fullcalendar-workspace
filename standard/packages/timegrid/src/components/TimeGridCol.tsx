@@ -1,11 +1,10 @@
-import { ViewApi } from '@fullcalendar/core'
+import { DayLaneContentArg } from '@fullcalendar/core'
 import {
   BaseComponent,
   BgEvent,
   buildEventRangeKey,
   ContentContainer,
   DateMarker,
-  DateMeta,
   DateProfile,
   DateRange,
   Dictionary,
@@ -17,10 +16,8 @@ import {
   getDateMeta,
   getEventRangeMeta,
   hasCustomDayLaneContent,
-  joinArrayishClassNames,
   joinClassNames,
   memoize,
-  MountArg,
   renderFill,
   SegGroup,
   sortEventSegs
@@ -70,15 +67,6 @@ export interface TimeGridColProps {
   slatHeight: number | undefined
 }
 
-export interface DayLaneContentArg extends DateMeta {
-  date: DateMarker // localized
-  isMajor: boolean
-  view: ViewApi
-  [extraProp: string]: any // so can include a resource
-}
-
-export type DayLaneMountArg = MountArg<DayLaneContentArg>
-
 export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   private sortEventSegs: typeof sortEventSegs = memoize(sortEventSegs)
   private getDateMeta = memoize(getDateMeta)
@@ -112,9 +100,11 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       zIndex: 1, // get above slots
     }
 
-    const renderProps = {
+    const isSimple = props.forPrint && simplifiedTimeGridPrint
+    const renderProps: DayLaneContentArg = {
       ...dateMeta,
       ...props.renderProps,
+      isSimple,
       isMajor: props.isMajor,
       view: context.viewApi,
     }
@@ -134,7 +124,12 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       )
     }
 
-    let sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
+    const innerClassName = joinClassNames(
+      !isSimple && 'fc-fill',
+      generateClassName(options.dayLaneInnerClassNames, renderProps)
+    )
+
+    const sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
 
     return (
       <ContentContainer
@@ -166,12 +161,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               />
             )}
             <div
-              className={joinArrayishClassNames(
-                options.dayLaneInnerClassNames,
-                (props.forPrint && simplifiedTimeGridPrint)
-                  ? 'fc-timegrid-day-events-simple'
-                  : 'fc-fill',
-              )}
+              className={innerClassName}
               style={{ zIndex: 1 }} // scope event z-indexes
             >
               {this.renderFgSegs(
@@ -185,10 +175,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {Boolean(mirrorSegs.length) && (
               // but only show it when there are actual mirror events, to avoid blocking clicks
               <div
-                className={joinArrayishClassNames(
-                  options.dayLaneInnerClassNames,
-                  'fc-fill',
-                )}
+                className={innerClassName}
                 style={{ zIndex: 1 }} // scope event z-indexes
               >
                 {this.renderFgSegs(

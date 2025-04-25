@@ -151,7 +151,10 @@ export default createPlugin({
       'fc-day-lane',
       ...getDayClassNames(arg),
     ],
-    dayLaneInnerClassNames: 'fc-day-lane-inner',
+    dayLaneInnerClassNames: (arg) => [
+      'fc-day-lane-inner',
+      arg.isSimple && 'fc-day-lane-inner-simple',
+    ],
     allDayHeaderClassNames: 'fc-all-day-header',
     allDayHeaderInnerClassNames: 'fc-all-day-header-inner',
     timelineBottomClassNames: 'fc-timeline-bottom',

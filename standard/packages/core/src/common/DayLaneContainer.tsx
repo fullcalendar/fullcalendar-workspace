@@ -7,6 +7,7 @@ import { MountArg } from './render-hook.js'
 
 export interface DayLaneContentArg extends DateMeta {
   date: DateMarker // localized
+  isSimple: boolean
   isMajor: boolean
   view: ViewApi
   [extraProp: string]: any // so can include a resource
