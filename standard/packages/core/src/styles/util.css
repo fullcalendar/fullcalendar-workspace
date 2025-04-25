@@ -155,25 +155,25 @@ https://stackoverflow.com/a/60256345
   border-bottom: 0 !important;
 }
 
-.fc-direction-ltr .fc-border-only-s {
+.fc-ltr-root .fc-border-only-s {
   border-right: 0 !important;
 }
-.fc-direction-rtl .fc-border-only-s {
+.fc-rtl-root .fc-border-only-s {
   border-left: 0 !important;
 }
 
-.fc-direction-ltr .fc-border-only-e {
+.fc-ltr-root .fc-border-only-e {
   border-left: 0 !important;
 }
-.fc-direction-rtl .fc-border-only-e {
+.fc-rtl-root .fc-border-only-e {
   border-right: 0 !important;
 }
 
 // for matching cell start-border, assumed to be 1px, which can't be guaranteed
-.fc-direction-ltr .fc-fake-border-s {
+.fc-ltr-root .fc-fake-border-s {
   border-left: 1px solid transparent;
 }
-.fc-direction-rtl .fc-fake-border-s {
+.fc-rtl-root .fc-fake-border-s {
   border-right: 1px solid transparent;
 }
 
@@ -212,7 +212,7 @@ Rarely used. Just inline this?
 // Print-Safe Utils (media:screen ONLY)
 // -------------------------------------------------------------------------------------------------
 
-.fc-media-screen {
+.fc-calendar-screen-root {
   & .fc-print-root,
   & .fc-print-header {
     display: flex;
