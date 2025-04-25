@@ -67,7 +67,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
             'aria-colspan': props.colSpan,
             'aria-expanded': props.isExpanded,
           }}
-          className='fc-cell fc-liquid fc-shaded'
+          className='fc-cell fc-liquid'
           renderProps={renderProps}
           generatorName="resourceGroupHeaderContent"
           customGenerator={spec.labelContent}

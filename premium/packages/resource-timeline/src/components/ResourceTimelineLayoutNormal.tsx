@@ -467,6 +467,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               <div className={joinClassNames(
                 'fc-timeline-header',
                 stickyHeaderDates && 'fc-table-header-sticky',
+                generateClassName(options.viewHeaderClassNames, {
+                  borderX: props.borderX,
+                  isSticky: stickyHeaderDates,
+                }),
               )}>
                 <Scroller
                   ref={this.timeHeaderScrollerRef}

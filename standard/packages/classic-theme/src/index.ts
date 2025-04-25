@@ -27,6 +27,7 @@ const PLUGIN_SPECIFIC_SETTINGS: any = {
   resourceAreaHeaderClassNames: 'fc-resource-area-header',
   resourceAreaRowClassNames: 'fc-resource-area-row',
   resourceLaneClassNames: 'fc-resource-lane',
+  resourceGroupHeaderClassNames: 'fc-resource-group-header',
   resourceGroupLaneClassNames: 'fc-resource-group-lane',
   resourceDayHeaderClassNames: 'fc-resource-day-header',
   resourceCellClassNames: 'fc-resource-cell',
@@ -66,6 +67,7 @@ export default createPlugin({
     directionClassNames: (direction) => `fc-direction-${direction}`,
     mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
     viewClassNames: (arg) => ['fc-view', `fc-${arg.view.type}-view`, 'fc-view-bordered'],
+    viewHeaderClassNames: (arg) => arg.isSticky && 'fc-view-header-sticky',
     popoverClassNames: 'fc-popover',
     popoverHeaderClassNames: 'fc-popover-header',
     popoverTitleClassNames: 'fc-popover-title',
@@ -200,6 +202,7 @@ export default createPlugin({
       viewClassNames: 'fc-multimonth',
       eventClassNames: getDayGridEventClassNames,
       eventColorClassNames: getDayGridEventColorClassNames,
+      moreLinkClassNames: 'fc-daygrid-more-link', // TODO: DRY?
     },
     timeline: {
       viewClassNames: 'fc-timeline',

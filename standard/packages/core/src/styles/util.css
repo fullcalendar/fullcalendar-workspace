@@ -1,4 +1,7 @@
 
+$sticky-header-footer-z: 3;
+// $popover-z: 4; -- TODO: reintroduce
+
 .fc-border-box-root {
   &,
   & *,
@@ -204,7 +207,10 @@ Rarely used. Just inline this?
 }
 
 .fc-liquid {
-  @include liquid;
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: 0;
+  min-height: 0;
 }
 
 // Print-Safe Utils (media:screen ONLY)
@@ -248,7 +254,11 @@ Rarely used. Just inline this?
 }
 
 .fc-fill {
-  @include fill;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .fc-fill-top,
@@ -292,7 +302,6 @@ Sticks to either left or right (the flex "start") depending on ltr/rtl
 .fc-table-header-sticky { // rename?
   position: sticky;
   top: 0;
-  background: var(--fc-page-bg-color);
   z-index: $sticky-header-footer-z;
 }
 
@@ -308,10 +317,9 @@ Only needed when padding/border must be separate from width/height
   left: -10000px;
 }
 
-.fc-shaded {
-  background-color: var(--fc-neutral-bg-color);
-}
+// TODO: add the no-margin, no-padding utils
 
+// TODO: get these out of here!!!
 .fc-padding-sm {
   padding: 2px 4px;
 }

@@ -49,7 +49,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
           'aria-expanded': props.expanded,
         }}
         className={joinClassNames(
-          'fc-resource-group fc-timeline-lane fc-shaded',
+          'fc-resource-group fc-timeline-lane',
           'fc-flex-row fc-fill-x fc-content-box',
           props.borderBottom
             ? 'fc-border-only-b'
