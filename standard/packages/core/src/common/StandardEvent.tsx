@@ -16,7 +16,7 @@ export interface StandardEventProps {
   elRef?: ElRef
   attrs?: any
   className?: string
-  hitClassName?: string // for expanding main hit area when selected
+  axis?: 'x' | 'y'
   eventRange: EventRenderRange // timed/whole-day span
   slicedStart?: DateMarker // view-sliced timed/whole-day span
   slicedEnd?: DateMarker // view-sliced timed/whole-day span
@@ -130,18 +130,24 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       >
         {(InnerContent) => (
           <Fragment>
-            {Boolean(renderProps.isSelected && props.hitClassName) && (
-              <div className={props.hitClassName} />
+            {Boolean(renderProps.isSelected && props.axis != null) && (
+              <div
+                // expand orthogonally
+                className={props.axis === 'x' ? 'y' : 'x'}
+              />
             )}
-            {Boolean(renderProps.isStartResizable) && (
+            {Boolean(renderProps.isStartResizable && props.axis != null) && (
               <div
                 className={joinArrayishClassNames(
                   'fc-event-resizer fc-event-resizer-start', // these classnames required for dnd
                   options.eventResizerClassNames,
                   options.eventResizerStartClassNames,
+                  props.axis === 'x' ? 'fc-cursor-resize-s' : 'fc-cursor-resize-t'
                 )}
               >
-                <div className='fc-hit' />
+                {Boolean(renderProps.isSelected) && (
+                  <div className='fc-hit' />
+                )}
               </div>
             )}
             {Boolean(colorClassNames) && (
@@ -159,15 +165,18 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                 color: renderProps.textColor,
               }}
             />
-            {Boolean(renderProps.isEndResizable) && (
+            {Boolean(renderProps.isEndResizable && props.axis != null) && (
               <div
                 className={joinArrayishClassNames(
                   "fc-event-resizer fc-event-resizer-end", // these classnames required for dnd
                   options.eventResizerClassNames,
                   options.eventResizerEndClassNames,
+                  props.axis === 'x' ? 'fc-cursor-resize-e' : 'fc-cursor-resize-b'
                 )}
               >
-                <div className='fc-hit' />
+                {Boolean(renderProps.isSelected) && (
+                  <div className='fc-hit' />
+                )}
               </div>
             )}
           </Fragment>

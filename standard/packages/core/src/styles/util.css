@@ -71,15 +71,33 @@ https://stackoverflow.com/a/60256345
   width: 5px;
   cursor: col-resize;
 }
-.fc-direction-ltr .fc-col-resizer { // (ltr)
+.fc-ltr-root .fc-col-resizer { // (ltr)
   right: -3px;
 }
-.fc-direction-rtl .fc-col-resizer { // (rtl)
+.fc-rtl-root .fc-col-resizer { // (rtl)
   left: -3px;
 }
 
 .fc-cursor-pointer {
   cursor: pointer;
+}
+
+.fc-cursor-resize-t {
+  cursor: n-resize;
+}
+
+.fc-cursor-resize-b {
+  cursor: s-resize;
+}
+
+.fc-ltr-root .fc-cursor-resize-s,
+.fc-rtl-root .fc-cursor-resize-e {
+  cursor: w-resize;
+}
+
+.fc-ltr-root .fc-cursor-resize-e,
+.fc-rtl-root .fc-cursor-resize-s {
+  cursor: e-resize;
 }
 
 .fc-hit,

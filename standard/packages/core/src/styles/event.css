@@ -54,6 +54,7 @@ a.fc-event:hover { // (anchor:hover)
 .fc-event-resizer {
   display: none; // hide
   position: absolute;
+  z-index: 2; // one above sticky title
 }
 
 // THEME: revealing when active

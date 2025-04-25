@@ -20,6 +20,7 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
     return (
       <StandardEvent
         {...props}
+        axis='y'
         className={joinClassNames(
           // TODO: move to theme system somehow
           props.isShort && 'fc-timegrid-event-short',
@@ -28,7 +29,6 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
           // see note in TimeGridCol on why we use flexbox
           props.isLiquid && 'fc-liquid',
         )}
-        hitClassName='fc-hit-x'
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
       />
     )

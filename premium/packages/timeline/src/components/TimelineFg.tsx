@@ -155,6 +155,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
               key={instanceId}
               style={{
                 visibility: isVisible ? '' : 'hidden',
+                zIndex: 1, // scope z-indexes within
                 top: segTop || 0,
                 ...horizontalsToCss(segHorizontal, context.isRtl),
               }}

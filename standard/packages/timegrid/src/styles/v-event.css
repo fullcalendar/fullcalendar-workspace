@@ -69,6 +69,7 @@
 // THEME should decide whether to put stickiness on title-div or inner-div
 .fc-v-event .fc-event-title { // > title-outer > title
   position: sticky;
+  z-index: 1;
   top: 0;
   bottom: 0;
 }
@@ -76,16 +77,6 @@
 //
 // fc-v-event > resizer
 //
-
-// THEME
-.fc-v-event .fc-event-resizer-start { // (start)
-  cursor: n-resize;
-}
-
-// THEME
-.fc-v-event .fc-event-resizer-end { // (end)
-  cursor: s-resize;
-}
 
 // THEME: mouse resizing
 .fc-v-event:not(.fc-event-selected) { // (mouse)
