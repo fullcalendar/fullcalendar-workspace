@@ -18,6 +18,7 @@ export interface BodySectionProps {
   rowHeights: Map<string, number>
   headerRowSpan: number
   hasNesting: boolean
+  indentWidth: number | undefined
 }
 
 /*
@@ -118,6 +119,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 borderBottom={isNotLast}
                 top={rowTops.get(groupKey)}
                 height={rowHeights.get(groupKey)}
+                indentWidth={props.indentWidth}
                 className='fc-fill-x'
               />
             )
@@ -154,6 +156,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                     ? rowHeight + ROW_BORDER_WIDTH // considering bottom border, which is added to cell
                     : rowHeight
                 }
+                indentWidth={props.indentWidth}
               />
             )
           })}

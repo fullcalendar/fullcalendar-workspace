@@ -85,6 +85,9 @@ export const OPTION_REFINERS = {
   resourceLaneTopClassNames: identity as Identity<ClassNamesInput>,
   resourceLaneBottomClassNames: identity as Identity<ClassNamesGenerator<{ isCompact: boolean }>>,
   resourceAreaDividerClassNames: identity as Identity<ClassNamesInput>,
+
+  resourceIndentClassNames: identity as Identity<ClassNamesInput>,
+  resourceExpanderClassNames: identity as Identity<ClassNamesInput>,
 }
 
 export const LISTENER_REFINERS = {

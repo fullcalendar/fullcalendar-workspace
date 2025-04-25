@@ -4,7 +4,6 @@ import timelinePlugin from '@fullcalendar/timeline'
 import resourcePlugin from '@fullcalendar/resource'
 import { ResourceTimelineView } from './components/ResourceTimelineView.js'
 import './ambient.js'
-import './index.css'
 
 export default createPlugin({
   name: '<%= pkgName %>',

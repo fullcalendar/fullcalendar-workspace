@@ -1,10 +1,12 @@
 import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { ResourceColumnHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource'
+import { ResourceIndent } from './ResourceIndent.js'
 
 export interface SuperHeaderCellProps {
   renderHooks: ColHeaderRenderHooks
   indent?: boolean
+  indentWidth: number | undefined
   colSpan: number
 
   // refs
@@ -50,14 +52,12 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
             )}
           >
             {this.props.indent && (
-              <div className="fc-datagrid-indent">
-                <span className="fc-datagrid-icon" />
-              </div>
+              <ResourceIndent
+                level={1}
+                indentWidth={this.props.indentWidth}
+              />
             )}
-            <InnerContent
-              tag="div"
-              className='fc-cell-main'
-            />
+            <InnerContent tag="div" />
           </div>
         )}
       </ContentContainer>

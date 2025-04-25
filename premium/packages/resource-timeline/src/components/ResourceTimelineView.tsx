@@ -5,8 +5,10 @@ import {
   greatestDurationDenominator,
   isArraysEqual,
   memoize,
-  NowTimer} from '@fullcalendar/core/internal'
-import { createElement, createRef } from '@fullcalendar/core/preact'
+  NowTimer,
+  watchWidth
+} from '@fullcalendar/core/internal'
+import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
   buildResourceHierarchy,
   GenericNode,
@@ -25,12 +27,14 @@ import { ResourceTimelineLayoutPrint } from './ResourceTimelineLayoutPrint.js'
 import { processColOptions } from '../col-options.js'
 import { CssDimValue } from '@fullcalendar/core'
 import { pixelizeDimConfigs, resizeSiblingDimConfig, SiblingDimConfig } from '../col-positioning.js'
+import { ResourceExpander } from './spreadsheet/ResourceExpander.js'
 
 interface ResourceTimelineViewState {
   colWidthOverrides?: SiblingDimConfig[]
   spreadsheetClientWidth?: number // pixel-width of scroll inner area
   timeClientWidth?: number
   slotInnerWidth?: number
+  expanderWidth?: number
 }
 
 export class ResourceTimelineView extends DateComponent<ResourceViewProps, ResourceTimelineViewState> {
@@ -51,6 +55,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   private bgSlicer = new TimelineLaneSlicer()
   private spreadsheetColWidthConfigs?: SiblingDimConfig[]
   private spreadsheetColWidths?: number[]
+  private disconnectExpanderWidth?: () => void
 
   render() {
     let { props, state, context } = this
@@ -130,68 +135,77 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
     let fallbackBusinessHours = hasResourceBusinessHours ? props.businessHours : null
 
     return (
-      <NowTimer unit={timerUnit}>
-        {(nowDate: DateMarker, todayRange: DateRange) => {
-          const baseProps = {
-            className: props.className,
-            labelId: props.labelId,
-            labelStr: props.labelStr,
-            tDateProfile,
-            dateProfile,
-            resourceHierarchy,
-            resourceEntityExpansions: props.resourceEntityExpansions,
-            hasNesting,
-            nowDate,
-            todayRange,
-            colSpecs,
-            groupColCnt,
-            superHeaderRendering,
-            splitProps,
-            bgSlicedProps,
-            eventSelection: props.eventSelection,
-            hasResourceBusinessHours,
-            fallbackBusinessHours,
-            slotWidth,
-            timeCanvasWidth,
-            spreadsheetColWidths,
-            borderX: props.borderX,
-            borderTop: props.borderTop,
-            borderBottom: props.borderBottom,
-          }
+      <Fragment>
+        <NowTimer unit={timerUnit}>
+          {(nowDate: DateMarker, todayRange: DateRange) => {
+            const baseProps = {
+              className: props.className,
+              labelId: props.labelId,
+              labelStr: props.labelStr,
+              tDateProfile,
+              dateProfile,
+              resourceHierarchy,
+              resourceEntityExpansions: props.resourceEntityExpansions,
+              hasNesting,
+              nowDate,
+              todayRange,
+              colSpecs,
+              groupColCnt,
+              superHeaderRendering,
+              splitProps,
+              bgSlicedProps,
+              eventSelection: props.eventSelection,
+              hasResourceBusinessHours,
+              fallbackBusinessHours,
+              slotWidth,
+              timeCanvasWidth,
+              spreadsheetColWidths,
+              borderX: props.borderX,
+              borderTop: props.borderTop,
+              borderBottom: props.borderBottom,
+            }
 
-          return props.forPrint ? (
-            <ResourceTimelineLayoutPrint
-              {...baseProps}
-              spreadsheetWidth={
-                this.spreadsheetResizedWidthRef.current ??
-                  options.resourceAreaWidth
-              }
-              spreadsheetColWidthConfigs={spreadsheetColWidthConfigs}
-              timeAreaOffset={this.scrollRef.current.x /* for simulating horizontal scroll */}
-            />
-          ) : (
-            <ResourceTimelineLayoutNormal
-              {...baseProps}
-              timeClientWidthRef={this.handleTimeClientWidth}
-              slotInnerWidthRef={this.handleSlotInnerWidth}
-              initialSpreadsheetWidth={
-                this.spreadsheetResizedWidthRef.current ??
-                  options.resourceAreaWidth
-              }
-              spreadsheetCanvasWidth={spreadsheetCanvasWidth}
-              initialScroll={this.scrollRef.current /* for reviving after print-view */}
+            return props.forPrint ? (
+              <ResourceTimelineLayoutPrint
+                {...baseProps}
+                spreadsheetWidth={
+                  this.spreadsheetResizedWidthRef.current ??
+                    options.resourceAreaWidth
+                }
+                spreadsheetColWidthConfigs={spreadsheetColWidthConfigs}
+                timeAreaOffset={this.scrollRef.current.x /* for simulating horizontal scroll */}
+                indentWidth={state.expanderWidth}
+              />
+            ) : (
+              <ResourceTimelineLayoutNormal
+                {...baseProps}
+                timeClientWidthRef={this.handleTimeClientWidth}
+                slotInnerWidthRef={this.handleSlotInnerWidth}
+                initialSpreadsheetWidth={
+                  this.spreadsheetResizedWidthRef.current ??
+                    options.resourceAreaWidth
+                }
+                spreadsheetCanvasWidth={spreadsheetCanvasWidth}
+                initialScroll={this.scrollRef.current /* for reviving after print-view */}
 
-              // refs
-              spreadsheetResizedWidthRef={this.spreadsheetResizedWidthRef} // for resource-area resize
-              spreadsheetClientWidthRef={this.handleSpreadsheetClientWidth} // for pixel value
-              scrollRef={this.scrollRef}
+                // refs
+                spreadsheetResizedWidthRef={this.spreadsheetResizedWidthRef} // for resource-area resize
+                spreadsheetClientWidthRef={this.handleSpreadsheetClientWidth} // for pixel value
+                scrollRef={this.scrollRef}
 
-              // handlers
-              onColResize={this.handleColResize}
-            />
-          )
-        }}
-      </NowTimer>
+                // handlers
+                onColResize={this.handleColResize}
+                indentWidth={state.expanderWidth}
+              />
+            )
+          }}
+        </NowTimer>
+        <ResourceExpander // for probing size
+          isExpanded
+          elRef={this.handleExpanderEl}
+          className='fc-offscreen'
+        />
+      </Fragment>
     )
   }
 
@@ -222,6 +236,19 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
   handleSlotInnerWidth = (slotInnerWidth: number | null) => {
     if (slotInnerWidth != null) {
       this.setState({ slotInnerWidth })
+    }
+  }
+
+  handleExpanderEl = (expanderEl: HTMLElement | null) => {
+    if (this.disconnectExpanderWidth) {
+      this.disconnectExpanderWidth()
+      this.disconnectExpanderWidth = undefined
+    }
+
+    if (expanderEl) {
+      this.disconnectExpanderWidth = watchWidth(expanderEl, (width) => {
+        this.setState({ expanderWidth: width })
+      })
     }
   }
 }

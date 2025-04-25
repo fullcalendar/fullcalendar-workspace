@@ -2,7 +2,8 @@ import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, join
 import { createElement, Fragment, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
 import { ResourceGroupHeaderContentArg } from '@fullcalendar/resource'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
-import { ExpanderIcon } from './ExpanderIcon.js'
+import { ResourceIndent } from './ResourceIndent.js'
+import { ResourceExpander } from './ResourceExpander.js'
 
 export interface ResourceGroupHeaderSubrowProps {
   group: Group
@@ -10,6 +11,7 @@ export interface ResourceGroupHeaderSubrowProps {
   colSpan: number // for aria
   borderBottom: boolean
   className?: string
+  indentWidth: number | undefined
 
   // aria
   role?: string
@@ -82,16 +84,13 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
                 generateClassName(spec.labelInnerClassNames, renderProps),
               )}
             >
-              <ExpanderIcon
-                indent={0}
-                hasChildren
-                isExpanded={props.isExpanded}
-                onExpanderClick={this.onExpanderClick}
-              />
-              <InnerContent
-                tag="div"
-                className='fc-cell-main'
-              />
+              <ResourceIndent level={1} indentWidth={props.indentWidth}>
+                <ResourceExpander
+                  isExpanded={props.isExpanded}
+                  onExpanderClick={this.onExpanderClick}
+                />
+              </ResourceIndent>
+              <InnerContent tag="div" />
             </div>
           )}
         </ContentContainer>

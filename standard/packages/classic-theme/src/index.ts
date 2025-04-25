@@ -55,6 +55,8 @@ const PLUGIN_SPECIFIC_SETTINGS: any = {
   listDayClassName: 'fc-list-day',
   listDayHeaderClassNames: 'fc-list-day-header',
   listDayHeaderInnerClassNames: 'fc-list-day-header-inner',
+  resourceIndentClassNames: 'fc-resource-indent',
+  resourceExpanderClassNames: 'fc-resource-expander',
 }
 
 export default createPlugin({

@@ -11,7 +11,8 @@ import {
 import { createElement, Fragment, ComponentChild, createRef, Ref } from '@fullcalendar/core/preact'
 import { ResourceApi, ResourceCellContentArg } from '@fullcalendar/resource'
 import { Resource, ColSpec } from '@fullcalendar/resource/internal'
-import { ExpanderIcon } from './ExpanderIcon.js'
+import { ResourceIndent } from './ResourceIndent.js'
+import { ResourceExpander } from './ResourceExpander.js'
 
 export interface ResourceCellProps {
   colSpec: ColSpec
@@ -22,6 +23,7 @@ export interface ResourceCellProps {
   isExpanded: boolean
   innerHeightRef?: Ref<number>
   width: number | undefined
+  indentWidth: number | undefined
   grow: number | undefined
   borderStart: boolean
 }
@@ -74,17 +76,16 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
             )}
           >
             {colSpec.isMain && (
-              <ExpanderIcon
-                indent={props.indent}
-                hasChildren={props.hasChildren}
-                isExpanded={props.isExpanded}
-                onExpanderClick={this.onExpanderClick}
-              />
+              <ResourceIndent level={props.indent} indentWidth={props.indentWidth}>
+                {props.hasChildren && (
+                  <ResourceExpander
+                    isExpanded={props.isExpanded}
+                    onExpanderClick={this.onExpanderClick}
+                  />
+                )}
+              </ResourceIndent>
             )}
-            <InnerContent
-              tag="div"
-              className='fc-cell-main'
-            />
+            <InnerContent tag="div" />
           </div>
         )}
       </ContentContainer>

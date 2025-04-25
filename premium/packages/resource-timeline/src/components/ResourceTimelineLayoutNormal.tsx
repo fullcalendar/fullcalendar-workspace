@@ -92,6 +92,7 @@ interface ResourceTimelineLayoutNormalProps {
   timeCanvasWidth: number | undefined
   spreadsheetColWidths: number[] | undefined
   spreadsheetCanvasWidth: number | undefined
+  indentWidth: number | undefined
 
   spreadsheetClientWidthRef?: Ref<number>
   timeClientWidthRef: Ref<number>
@@ -357,6 +358,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
                         innerHeightRef={this.dataGridHeaderRowInnerHeightMap.createRef(true)}
                         colSpan={colSpecs.length}
+                        indentWidth={props.indentWidth}
                       />
                     </div>
                   )}
@@ -374,6 +376,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                         colSpecs={colSpecs}
                         colWidths={spreadsheetColWidths}
                         indent={hasNesting}
+                        indentWidth={props.indentWidth}
                         rowIndex={superHeaderRowSpan}
 
                         // refs
@@ -423,6 +426,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     rowHeights={bodyHeights}
                     headerRowSpan={totalHeaderRowSpan}
                     hasNesting={hasNesting}
+                    indentWidth={props.indentWidth}
                   />
                   {spreadsheetNeedsBottomFiller && (
                     <div

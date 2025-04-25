@@ -651,3 +651,21 @@ When it's NOT activated, the fc-button classes won't even be in the DOM.
 .fc-resource-lane-bottom-compact {
   padding-bottom: 0;
 }
+
+.fc-resource-expander {
+  cursor: pointer;
+  opacity: 0.65;
+}
+
+.fc-resource-expander,
+.fc-resource-expander svg {
+  width: 1em;
+  height: 1em;
+}
+
+.fc-direction-ltr .fc-resource-indent { // (ltr)
+  margin-right: 3px;
+}
+.fc-direction-rtl .fc-resource-indent { // (rtl)
+  margin-left: 3px;
+}

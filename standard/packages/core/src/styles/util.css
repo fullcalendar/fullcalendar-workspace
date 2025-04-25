@@ -63,6 +63,21 @@ https://stackoverflow.com/a/60256345
   clear: both;
 }
 
+.fc-col-resizer {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  cursor: col-resize;
+}
+.fc-direction-ltr .fc-col-resizer { // (ltr)
+  right: -3px;
+}
+.fc-direction-rtl .fc-col-resizer { // (rtl)
+  left: -3px;
+}
+
 // Border Utils
 // -------------------------------------------------------------------------------------------------
 
@@ -263,6 +278,10 @@ Only needed when padding/border must be separate from width/height
 
 .fc-justify-space-between {
   justify-content: space-between;
+}
+
+.fc-justify-end {
+  justify-content: flex-end;
 }
 
 .fc-align-center {

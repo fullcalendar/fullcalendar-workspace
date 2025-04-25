@@ -27,6 +27,7 @@ export interface ResourceSubrowProps {
   // sizing
   colWidths: number[] | undefined
   colGrows?: number[]
+  indentWidth: number | undefined
 
   // positioning
   top?: number
@@ -83,6 +84,7 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
               isExpanded={props.isExpanded}
               innerHeightRef={innerHeightRefMap.createRef(i)}
               width={colWidths[i]}
+              indentWidth={props.indentWidth}
               grow={colGrows[i]}
               borderStart={props.borderStart || Boolean(i)}
             />

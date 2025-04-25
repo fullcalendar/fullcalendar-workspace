@@ -8,6 +8,7 @@ export interface HeaderRowProps {
   colWidths: number[] | undefined
   colGrows?: number[]
   indent?: boolean // only for the 'main' cell
+  indentWidth: number | undefined
   rowIndex?: number // 0-based
 
   // refs
@@ -74,6 +75,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
               resizerElRef={resizerElRefMap.createRef(colIndex)}
               innerHeightRef={innerHeightRefMap.createRef(colIndex)}
               borderStart={Boolean(colIndex)}
+              indentWidth={props.indentWidth}
             />
           )
         })}

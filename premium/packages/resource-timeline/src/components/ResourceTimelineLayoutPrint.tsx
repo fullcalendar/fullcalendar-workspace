@@ -70,6 +70,7 @@ export interface ResourceTimelineLayoutPrintProps {
   timeAreaOffset: number // always positive (TODO: change to negative?)
   timeCanvasWidth: number | undefined
   slotWidth: number | undefined
+  indentWidth: number | undefined
 
   borderX: boolean
   borderTop: boolean
@@ -158,6 +159,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     renderHooks={superHeaderRendering}
                     indent={hasNesting && !groupColCnt /* group-cols are leftmost, making expander alignment irrelevant */}
                     colSpan={colSpecs.length}
+                    indentWidth={props.indentWidth}
                   />
                 </div>
               )}
@@ -168,6 +170,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     colWidths={colWidths}
                     colGrows={colGrows}
                     indent={hasNesting}
+                    indentWidth={props.indentWidth}
                   />
                 </div>
               </div>
@@ -334,6 +337,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                         colGrows={colGrows}
                         borderStart={Boolean(groupColCnt)}
                         borderBottom={isNotLast}
+                        indentWidth={props.indentWidth}
                       />
                     </div>
                   </div>
@@ -375,6 +379,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                       isExpanded={(printLayout as GroupRowPrintLayout).isExpanded}
                       colSpan={props.colSpecs.length}
                       borderBottom={isNotLast}
+                      indentWidth={props.indentWidth}
                     />
                   </div>
                   <div
