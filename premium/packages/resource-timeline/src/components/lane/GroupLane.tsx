@@ -50,10 +50,10 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
         }}
         className={joinClassNames(
           'fc-resource-group fc-timeline-lane',
-          'fc-flex-row fc-fill-x fc-content-box',
+          'fcu-flex-row fcu-fill-x fcu-content-box',
           props.borderBottom
-            ? 'fc-border-only-b'
-            : 'fc-border-none',
+            ? 'fcu-border-only-b'
+            : 'fcu-border-none',
         )}
         style={{
           top: props.top,
@@ -74,7 +74,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
               role: 'gridcell',
             }}
             className={joinClassNames(
-              'fc-flex-col fc-liquid fc-flex-col',
+              'fcu-flex-col fcu-liquid fcu-flex-col',
               generateClassName(groupSpec.laneInnerClassNames, renderProps),
             )}
             elRef={this.innerElRef}

@@ -44,7 +44,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
     return (
       <div
         ref={this.handleRootEl}
-        class={joinClassNames(props.className, 'fc-flex-row')}
+        class={joinClassNames(props.className, 'fcu-flex-row')}
       >
         <div
           class={props.startClassName}
@@ -62,7 +62,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
           style={{ cursor: 'col-resize' }}
           ref={this.resizerElRef}
         />
-        <div class={joinClassNames(props.endClassName, 'fc-liquid')}>
+        <div class={joinClassNames(props.endClassName, 'fcu-liquid')}>
           {props.endContent}
         </div>
       </div>

@@ -59,7 +59,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
     return (
       <div
         role={props.role as any /* !!! */}
-        className={joinClassNames(props.className, 'fc-flex-row')}
+        className={joinClassNames(props.className, 'fcu-flex-row')}
         ref={this.handleRootEl}
       >
         {props.cells.map((cell, col) => (

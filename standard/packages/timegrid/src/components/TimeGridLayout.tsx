@@ -131,9 +131,9 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
           'aria-label': props.labelStr,
         }}
         className={joinClassNames(
-          !props.forPrint && 'fc-flex-col',
+          !props.forPrint && 'fcu-flex-col',
           props.className,
-          // we don't do fc-print-root/fc-print-header here because works poorly with print:
+          // we don't do fcu-print-root/fcu-print-header here because works poorly with print:
           // - Firefox >85ish CAN have flexboxes within it, but those cannot do absolute positioning
           // - Chrome works okay, but abs-positioned events cover the repeated header
           //   Also, there's weird padding on the last page at bottom of container, which matches

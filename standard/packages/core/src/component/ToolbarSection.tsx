@@ -30,7 +30,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
       'div', {
         className: joinClassNames(
           generateClassName(options.toolbarSectionClassNames, { name: props.name }),
-          'fc-flex-row fc-no-shrink fc-align-center',
+          'fcu-flex-row fcu-no-shrink fcu-align-center',
         ),
       },
       ...children, // spread, so no React key errors
@@ -126,10 +126,10 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
         role: (isOnlyButtons && isOnlyView) ? 'tablist' : undefined,
         'aria-label': (isOnlyButtons && isOnlyView) ? options.viewChangeHint : undefined,
         className: joinArrayishClassNames(
-          'fc-flex-row',
+          'fcu-flex-row',
           isOnlyButtons
             ? options.buttonGroupClassNames
-            : 'fc-align-center',
+            : 'fcu-align-center',
         ),
       }, ...children)
     }

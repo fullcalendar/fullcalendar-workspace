@@ -27,7 +27,7 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
           props.isInset && 'fc-timegrid-event-inset',
 
           // see note in TimeGridCol on why we use flexbox
-          props.isLiquid && 'fc-liquid',
+          props.isLiquid && 'fcu-liquid',
         )}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
       />

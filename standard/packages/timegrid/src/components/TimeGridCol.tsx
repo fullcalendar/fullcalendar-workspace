@@ -90,9 +90,9 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     let dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange)
 
     const baseClassName = joinClassNames(
-      props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
-      props.width == null && 'fc-liquid',
-      'fc-flex-col fc-rel',
+      props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
+      props.width == null && 'fcu-liquid',
+      'fcu-flex-col fcu-rel',
     )
 
     const baseStyle = {
@@ -125,7 +125,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     }
 
     const innerClassName = joinClassNames(
-      !isSimple && 'fc-fill',
+      !isSimple && 'fcu-fill',
       generateClassName(options.dayLaneInnerClassNames, renderProps)
     )
 
@@ -157,7 +157,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {hasCustomDayLaneContent(options) && (
               <InnerContent
                 tag="div"
-                className='fc-timegrid-day-misc fc-fill-top'
+                className='fc-timegrid-day-misc fcu-fill-top'
               />
             )}
             <div
@@ -261,9 +261,9 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
           return (
             <div
-              // we would have used fc-fill, but multi-page spanning breaks in Firefox
+              // we would have used fcu-fill, but multi-page spanning breaks in Firefox
               // we would have used height:100%, but multi-page spanning breaks in Safari
-              className='fc-abs fc-flex-col'
+              className='fcu-abs fcu-flex-col'
               key={forcedKey || instanceId}
               style={{
                 visibility: isVisible ? ('' as any) : 'hidden',
@@ -344,7 +344,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           return (
             <div
               key={buildEventRangeKey(eventRange)}
-              className="fc-fill-x"
+              className="fcu-fill-x"
               style={{
                 top: segVertical.start,
                 height: segVertical.size,
@@ -446,7 +446,7 @@ export function renderPlainFgSegs(
         return (
           <div
             key={instanceId}
-            className='fc-break-inside-avoid'
+            className='fcu-break-inside-avoid'
             style={{ visibility: hiddenInstances[instanceId] ? 'hidden' : ('' as any) }}
           >
             <TimeGridEvent

@@ -69,7 +69,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
             tag='div'
             className={joinArrayishClassNames(
               options.moreLinkInnerClassNames,
-              'fc-sticky-s',
+              'fcu-sticky-s',
             )}
           />
         )}

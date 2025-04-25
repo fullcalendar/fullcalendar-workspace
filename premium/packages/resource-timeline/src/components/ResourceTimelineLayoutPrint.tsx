@@ -129,7 +129,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           'aria-labelledby': props.labelId,
         }}
         className={joinClassNames(
-          'fc-print-root',
+          'fcu-print-root',
           props.className,
         )}
         borderX={props.borderX}
@@ -137,22 +137,22 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         borderBottom={props.borderBottom}
       >
         <div className={joinClassNames(
-          'fc-print-header',
+          'fcu-print-header',
           generateClassName(options.viewHeaderClassNames, {
             borderX: props.borderX,
             isSticky: false,
           }),
         )}>
-          <div className='fc-flex-row'>
+          <div className='fcu-flex-row'>
 
             {/* DataGrid HEADER */}
-            <div role='rowgroup' className='fc-flex-col' style={{ width: props.spreadsheetWidth }}>
+            <div role='rowgroup' className='fcu-flex-col' style={{ width: props.spreadsheetWidth }}>
               {Boolean(superHeaderRendering) && (
                 <div
                   role='row'
                   className={joinArrayishClassNames(
                     options.resourceAreaHeaderRowClassNames,
-                    'fc-flex-row fc-grow fc-border-only-b',
+                    'fcu-flex-row fcu-grow fcu-border-only-b',
                   )}
                 >
                   <SuperHeaderCell
@@ -163,8 +163,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   />
                 </div>
               )}
-              <div className='fc-flex-col fc-grow fc-crop'>
-                <div className='fc-flex-col fc-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
+              <div className='fcu-flex-col fcu-grow fcu-crop'>
+                <div className='fcu-flex-col fcu-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
                   <HeaderRow
                     colSpecs={colSpecs}
                     colWidths={colWidths}
@@ -181,9 +181,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             />
 
             {/* Timeline HEADER */}
-            <div className='fc-liquid fc-flex-row fc-crop'>
+            <div className='fcu-liquid fcu-flex-row fcu-crop'>
               <div // the canvas, origin for now-indicator
-                className='fc-flex-col fc-rel'
+                className='fcu-flex-col fcu-rel'
                 style={{
                   width: timeCanvasWidth,
                   // TODO: nicer way of doing this
@@ -228,7 +228,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         <div
           role='rowgroup'
           className={joinClassNames(
-            'fc-rel fc-crop',
+            'fcu-rel fcu-crop',
             generateClassName(options.viewBodyClassNames, {
               borderX: props.borderX,
             }),
@@ -240,7 +240,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           {/* TODO: more DRY */}
           <div
             aria-hidden
-            className='fc-fill fc-crop'
+            className='fcu-fill fcu-crop'
             style={{
               // HACK for print where header-height prevents absolutely-positioned events
               // from falling short in height for subsequent pages
@@ -253,7 +253,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             }}
           >
             <div
-              className='fc-fill-y'
+              className='fcu-fill-y'
               style={{
                 width: timeCanvasWidth,
                 height: BG_HEIGHT, // HACK
@@ -315,10 +315,10 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   role='row'
                   // sort-of a HACK to use .indent, but works out fine b/c 1-based
                   aria-level={hasNesting ? printLayout.indent : undefined}
-                  className='fc-flex-row fc-break-inside-avoid'
+                  className='fcu-flex-row fcu-break-inside-avoid'
                 >
-                  <div className='fc-flex-col fc-crop' style={{ width: props.spreadsheetWidth }}>
-                    <div className='fc-flex-row fc-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
+                  <div className='fcu-flex-col fcu-crop' style={{ width: props.spreadsheetWidth }}>
+                    <div className='fcu-flex-row fcu-grow' style={{ minWidth: spreadsheetCanvasWidth }}>
                       <ResourceGroupSubrows
                         colGroups={(printLayout as ResourcePrintLayout).colGroups}
                         colGroupStats={colGroupStats}
@@ -344,10 +344,10 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   <div
                     className={joinArrayishClassNames(options.resourceAreaDividerClassNames)}
                   />
-                  <div className='fc-flex-col fc-crop fc-liquid'>
+                  <div className='fcu-flex-col fcu-crop fcu-liquid'>
                     <ResourceLane
                       {...splitProps[resource.id]}
-                      className='fc-rel'
+                      className='fcu-rel'
                       resource={resource}
                       dateProfile={dateProfile}
                       tDateProfile={tDateProfile}
@@ -371,9 +371,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 <div
                   key={groupKey}
                   role='row'
-                  className='fc-flex-row fc-break-inside-avoid'
+                  className='fcu-flex-row fcu-break-inside-avoid'
                 >
-                  <div className='fc-crop fc-flex-row' style={{ width: props.spreadsheetWidth }}>
+                  <div className='fcu-crop fcu-flex-row' style={{ width: props.spreadsheetWidth }}>
                     <ResourceGroupHeaderSubrow
                       group={group}
                       isExpanded={(printLayout as GroupRowPrintLayout).isExpanded}
@@ -385,7 +385,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   <div
                     className={joinArrayishClassNames(options.resourceAreaDividerClassNames)}
                   />
-                  <div className='fc-crop fc-flex-row fc-liquid'>
+                  <div className='fcu-crop fcu-flex-row fcu-liquid'>
                     <GroupLane
                       group={group}
                       borderBottom={isNotLast}

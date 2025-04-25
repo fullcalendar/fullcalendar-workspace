@@ -55,7 +55,7 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
           return (
             <div
               key={buildEventRangeKey(seg.eventRange)}
-              className="fc-fill-y"
+              className="fcu-fill-y"
               style={hStyle}
             >
               {fillType === 'bg-event' ? (

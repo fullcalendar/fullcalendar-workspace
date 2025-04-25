@@ -23,7 +23,7 @@ export class TimelineNowIndicatorLine extends BaseComponent<TimelineNowIndicator
       <div
         // crop any overflow that the arrow/line might cause
         // TODO: just do this on the entire canvas within the scroller
-        className="fc-fill fc-crop"
+        className="fcu-fill fcu-crop"
         style={{
           zIndex: 2, // inlined from $now-indicator-z
           pointerEvents: 'none', // TODO: className

@@ -60,7 +60,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
         aria-rowindex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
         className={joinArrayishClassNames(
           options.resourceAreaHeaderRowClassNames,
-          'fc-flex-row fc-grow fc-border-none',
+          'fcu-flex-row fcu-grow fcu-border-none',
         )}
       >
         {colSpecs.map((colSpec, colIndex) => {

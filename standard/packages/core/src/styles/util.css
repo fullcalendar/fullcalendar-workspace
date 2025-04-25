@@ -2,7 +2,7 @@
 $sticky-header-footer-z: 3;
 // $popover-z: 4; -- TODO: reintroduce
 
-.fc-border-box-root {
+.fcu-border-box-root {
   &,
   & *,
   & *:before,
@@ -11,37 +11,37 @@ $sticky-header-footer-z: 3;
   }
 }
 
-.fc-ltr-root {
+.fcu-ltr-root {
   direction: ltr;
   text-align: left;
 }
 
-.fc-rtl-root {
+.fcu-rtl-root {
   direction: rtl;
   text-align: right;
 }
 
 // classes attached to <body>
-.fc-not-allowed,
-.fc-not-allowed * { // override events' custom cursors
+.fcu-not-allowed,
+.fcu-not-allowed * { // override events' custom cursors
   cursor: not-allowed;
 }
 
-.fc-no-scrollbars {
+.fcu-no-scrollbars {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-.fc-no-scrollbars::-webkit-scrollbar {
+.fcu-no-scrollbars::-webkit-scrollbar {
   display: none;
 }
 
-.fc-no-shrink {
+.fcu-no-shrink {
   flex-shrink: 0;
 }
 
-.fc-calendar-screen-root .fc-safe-tiles {
+.fcu-calendar-screen-root .fcu-safe-tiles {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -50,19 +50,19 @@ $sticky-header-footer-z: 3;
 HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
 https://stackoverflow.com/a/60256345
 */
-.fc-calendar-print-root.fc-ltr-root .fc-safe-tiles > * {
+.fcu-calendar-print-root.fcu-ltr-root .fcu-safe-tiles > * {
   float: left;
 }
-.fc-calendar-print-root.fc-rtl-root .fc-safe-tiles > * {
+.fcu-calendar-print-root.fcu-rtl-root .fcu-safe-tiles > * {
   float: right;
 }
-.fc-calendar-print-root .fc-safe-tiles::after {
+.fcu-calendar-print-root .fcu-safe-tiles::after {
   content: "";
   display: block;
   clear: both;
 }
 
-.fc-col-resizer { // TODO: maybe have theme define this. might want grippy texture or hover effect
+.fcu-col-resizer { // TODO: maybe have theme define this. might want grippy texture or hover effect
   position: absolute;
   z-index: 1;
   top: 0;
@@ -70,57 +70,57 @@ https://stackoverflow.com/a/60256345
   width: 5px;
   cursor: col-resize;
 }
-.fc-ltr-root .fc-col-resizer { // (ltr)
+.fcu-ltr-root .fcu-col-resizer { // (ltr)
   right: -3px;
 }
-.fc-rtl-root .fc-col-resizer { // (rtl)
+.fcu-rtl-root .fcu-col-resizer { // (rtl)
   left: -3px;
 }
 
-.fc-cursor-pointer {
+.fcu-cursor-pointer {
   cursor: pointer;
 }
 
-.fc-cursor-resize-t {
+.fcu-cursor-resize-t {
   cursor: n-resize;
 }
 
-.fc-cursor-resize-b {
+.fcu-cursor-resize-b {
   cursor: s-resize;
 }
 
-.fc-ltr-root .fc-cursor-resize-s,
-.fc-rtl-root .fc-cursor-resize-e {
+.fcu-ltr-root .fcu-cursor-resize-s,
+.fcu-rtl-root .fcu-cursor-resize-e {
   cursor: w-resize;
 }
 
-.fc-ltr-root .fc-cursor-resize-e,
-.fc-rtl-root .fc-cursor-resize-s {
+.fcu-ltr-root .fcu-cursor-resize-e,
+.fcu-rtl-root .fcu-cursor-resize-s {
   cursor: e-resize;
 }
 
-.fc-hit,
-.fc-hit-x,
-.fc-hit-y {
+.fcu-hit,
+.fcu-hit-x,
+.fcu-hit-y {
   position: absolute;
   box-sizing: content-box;
   width: 100%;
   height: 100%;
 }
 
-.fc-hit {
+.fcu-hit {
   padding: 10px;
   margin: -10px;
 }
 
-.fc-hit-x {
+.fcu-hit-x {
   padding-left: 10px;
   padding-right: 10px;
   margin-left: -10px;
   margin-right: -10px;
 }
 
-.fc-hit-y {
+.fcu-hit-y {
   padding-top: 10px;
   padding-bottom: 10px;
   margin-top: -10px;
@@ -133,76 +133,68 @@ https://stackoverflow.com/a/60256345
 // TODO: break-out to x and y. don't have "only" all
 // TODO: instead of "border" utils, call them "borderless" to subtract?
 
-.fc-border-none {
+.fcu-border-none {
   border: 0 !important;
 }
 
-.fc-border-only-t {
+.fcu-border-only-t {
   border-left: 0 !important;
   border-right: 0 !important;
   border-bottom: 0 !important;
 }
 
-.fc-border-only-b {
+.fcu-border-only-b {
   border-top: 0 !important;
   border-left: 0 !important;
   border-right: 0 !important;
 }
 
-.fc-border-only-s,
-.fc-border-only-e {
+.fcu-border-only-s,
+.fcu-border-only-e {
   border-top: 0 !important;
   border-bottom: 0 !important;
 }
 
-.fc-ltr-root .fc-border-only-s {
+.fcu-ltr-root .fcu-border-only-s {
   border-right: 0 !important;
 }
-.fc-rtl-root .fc-border-only-s {
+.fcu-rtl-root .fcu-border-only-s {
   border-left: 0 !important;
 }
 
-.fc-ltr-root .fc-border-only-e {
+.fcu-ltr-root .fcu-border-only-e {
   border-left: 0 !important;
 }
-.fc-rtl-root .fc-border-only-e {
+.fcu-rtl-root .fcu-border-only-e {
   border-right: 0 !important;
 }
 
 // for matching cell start-border, assumed to be 1px, which can't be guaranteed
-.fc-ltr-root .fc-fake-border-s {
+.fcu-ltr-root .fcu-fake-border-s {
   border-left: 1px solid transparent;
 }
-.fc-rtl-root .fc-fake-border-s {
+.fcu-rtl-root .fcu-fake-border-s {
   border-right: 1px solid transparent;
 }
 
 // Flexbox Utils
 // -------------------------------------------------------------------------------------------------
 
-.fc-flex-row {
+.fcu-flex-row {
   display: flex;
   flex-direction: row;
 }
 
-.fc-flex-col {
+.fcu-flex-col {
   display: flex;
   flex-direction: column;
 }
 
-.fc-grow {
+.fcu-grow {
   flex-grow: 1;
 }
 
-/*
-Only important if there are siblings that are expanding too.
-Rarely used. Just inline this?
-*/
-.fc-basis0 {
-  flex-basis: 0;
-}
-
-.fc-liquid {
+.fcu-liquid {
   flex-grow: 1;
   flex-basis: 0;
   min-width: 0;
@@ -212,9 +204,9 @@ Rarely used. Just inline this?
 // Print-Safe Utils (media:screen ONLY)
 // -------------------------------------------------------------------------------------------------
 
-.fc-calendar-screen-root {
-  & .fc-print-root,
-  & .fc-print-header {
+.fcu-calendar-screen-root {
+  & .fcu-print-root,
+  & .fcu-print-header {
     display: flex;
     flex-direction: column;
   }
@@ -223,20 +215,20 @@ Rarely used. Just inline this?
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
-.fc-tight {
+.fcu-tight {
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.fc-no-padding {
+.fcu-no-padding {
   padding: 0 !important;
 }
 
-.fc-no-margin { // used?
+.fcu-no-margin { // used?
   margin: 0 !important;
 }
 
-.fc-rigid {
+.fcu-rigid {
   flex-shrink: 0; // so that cell (whose height is controlled by the row) does not compress
   white-space: nowrap;
   overflow: hidden; // should this be on here?
@@ -245,19 +237,19 @@ Rarely used. Just inline this?
 // Misc Utils
 // -------------------------------------------------------------------------------------------------
 
-.fc-crop {
+.fcu-crop {
   overflow: hidden;
 }
 
-.fc-rel {
+.fcu-rel {
   position: relative;
 }
 
-.fc-abs {
+.fcu-abs {
   position: absolute;
 }
 
-.fc-fill {
+.fcu-fill {
   position: absolute;
   top: 0;
   left: 0;
@@ -265,31 +257,31 @@ Rarely used. Just inline this?
   bottom: 0;
 }
 
-.fc-fill-top,
-.fc-fill-x {
+.fcu-fill-top,
+.fcu-fill-x {
   position: absolute;
   left: 0;
   right: 0;
 }
 
-.fc-fill-y,
-.fc-fill-start {
+.fcu-fill-y,
+.fcu-fill-start {
   position: absolute;
   top: 0;
   bottom: 0;
 }
 
-.fc-fill-top {
+.fcu-fill-top {
   top: 0;
 }
 
-.fc-fill-start {
+.fcu-fill-start {
   left: 0;
   right: 0;
   width: 0; // because of this, dir=ltr/rtl will respect one of left or right
 }
 
-.fc-sticky-t { // top
+.fcu-sticky-t { // top
   position: sticky;
   top: 0;
 }
@@ -297,13 +289,13 @@ Rarely used. Just inline this?
 /*
 Sticks to either left or right (the flex "start") depending on ltr/rtl
 */
-.fc-sticky-s {
+.fcu-sticky-s {
   position: sticky;
   left: 0;
   right: 0;
 }
 
-.fc-table-header-sticky { // rename?
+.fcu-table-header-sticky { // rename?
   position: sticky;
   top: 0;
   z-index: $sticky-header-footer-z;
@@ -312,71 +304,71 @@ Sticks to either left or right (the flex "start") depending on ltr/rtl
 /*
 Only needed when padding/border must be separate from width/height
 */
-.fc-content-box {
+.fcu-content-box {
   box-sizing: content-box;
 }
 
-.fc-offscreen {
+.fcu-offscreen { // TODO: just use visibility:hidden with position:absolute?
   position: absolute;
   left: -10000px;
 }
 
 // TODO: add the no-margin, no-padding utils
 
-.fc-justify-center {
+.fcu-justify-center {
   justify-content: center;
 }
 
-.fc-justify-space-between {
+.fcu-justify-centerspace-between {
   justify-content: space-between;
 }
 
-.fc-justify-end {
+.fcu-justify-centerend {
   justify-content: flex-end;
 }
 
-.fc-align-center {
+.fcu-align-center {
   align-items: center;
 }
 
-.fc-align-start {
+.fcu-align-start {
   align-items: flex-start;
 }
 
 // Footer Scrollbar
 // -------------------------------------------------------------------------------------------------
 
-.fc-footer-scrollbar-sticky {
+.fcu-footer-scrollbar-sticky {
   position: sticky;
   bottom: 0;
   z-index: $sticky-header-footer-z;
 }
 
-.fc-footer-scrollbar > * { // > scroller
+.fcu-footer-scrollbar > * { // > scroller
   margin-top: -1px; // HACK for 1px height...
 }
 
-.fc-footer-scrollbar > * > * { // > scroller > canvas
+.fcu-footer-scrollbar > * > * { // > scroller > canvas
   height: 1px; // ...needs 1px height or else scrollbars will never appear
 }
 
 // Print-Safe Utils
 // -------------------------------------------------------------------------------------------------
 
-.fc-calendar-print-root {
-  & .fc-break-inside-avoid {
+.fcu-calendar-print-root {
+  & .fcu-break-inside-avoid {
     break-inside: avoid;
   }
 
-  & .fc-print-root {
+  & .fcu-print-root {
     display: table;
     table-layout: fixed;
     width: 100%;
     border-spacing: 0;
-    border-collapse: collapse; // so bottom-border can be put on fc-print-header
+    border-collapse: collapse; // so bottom-border can be put on fcu-print-header
   }
 
-  & .fc-print-header {
+  & .fcu-print-header {
     display: table-header-group;
     break-inside: avoid; // required
 

@@ -52,8 +52,8 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
           'fc-resource-group',
           options.resourceAreaRowClassNames,
           props.className,
-          props.borderBottom ? 'fc-border-only-b' : 'fc-border-none',
-          'fc-flex-row fc-content-box',
+          props.borderBottom ? 'fcu-border-only-b' : 'fcu-border-none',
+          'fcu-flex-row fcu-content-box',
         )}
         style={{
           top: props.top,
@@ -67,7 +67,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
             'aria-colspan': props.colSpan,
             'aria-expanded': props.isExpanded,
           }}
-          className='fc-tight fc-liquid'
+          className='fcu-tight fcu-liquid'
           renderProps={renderProps}
           generatorName="resourceGroupHeaderContent"
           customGenerator={spec.labelContent}
@@ -80,7 +80,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
             <div
               ref={this.innerElRef}
               className={joinClassNames(
-                "fc-rigid fc-flex-row fc-align-center",
+                "fcu-rigid fcu-flex-row fcu-align-center",
                 generateClassName(spec.labelInnerClassNames, renderProps),
               )}
             >

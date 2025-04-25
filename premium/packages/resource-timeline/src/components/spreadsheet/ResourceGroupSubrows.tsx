@@ -41,7 +41,7 @@ export class ResourceGroupSubrows extends BaseComponent<ResourceGroupSubrowsProp
                 // TODO: make className DRY somehow?
                 className={joinClassNames(
                   'fc-resource-group',
-                  stats.borderBottom ? 'fc-border-only-b' : 'fc-border-none'
+                  stats.borderBottom ? 'fcu-border-only-b' : 'fcu-border-none'
                 )}
                 style={{
                   minWidth: 0,

@@ -100,7 +100,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
         className={joinClassNames(
           // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
           // https://stackoverflow.com/a/60256345
-          !props.forPrint && 'fc-flex-col',
+          !props.forPrint && 'fcu-flex-col',
           props.className,
         )}
         style={{ width: props.width }}
@@ -120,9 +120,9 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
 
             // if not auto-height, distribute height of container somewhat evently to rows
             className={joinClassNames(
-              rowHeightsRedistribute && 'fc-grow',
-              rowCnt > 1 && 'fc-break-inside-avoid', // don't avoid breaks for single tall row
-              row < rowCnt - 1 ? 'fc-border-only-b' : 'fc-border-none',
+              rowHeightsRedistribute && 'fcu-grow',
+              rowCnt > 1 && 'fcu-break-inside-avoid', // don't avoid breaks for single tall row
+              row < rowCnt - 1 ? 'fcu-border-only-b' : 'fcu-border-none',
             )}
 
             // content

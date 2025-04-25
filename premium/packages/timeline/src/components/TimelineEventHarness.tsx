@@ -24,7 +24,7 @@ export class TimelineEventHarness extends Component<TimelineEventHarnessProps> {
 
     return (
       <div
-        className="fc-abs"
+        className="fcu-abs"
         style={props.style}
         ref={this.rootElRef}
       >

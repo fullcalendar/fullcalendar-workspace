@@ -127,9 +127,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
             <ViewContainer
               viewSpec={context.viewSpec}
               className={joinClassNames(
-                // HACK for Safari print-mode, where fc-no-scrollbars won't take effect for
+                // HACK for Safari print-mode, where fcu-no-scrollbars won't take effect for
                 // the below Scrollers if they have liquid flex height
-                !props.forPrint && 'fc-flex-col',
+                !props.forPrint && 'fcu-flex-col',
                 props.className,
               )}
               borderX={props.borderX}
@@ -141,7 +141,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               ---------------------------------------------------------------------------------- */}
               <div className={joinClassNames(
                 'fc-timeline-header',
-                stickyHeaderDates && 'fc-table-header-sticky',
+                stickyHeaderDates && 'fcu-table-header-sticky',
                 generateClassName(options.viewHeaderClassNames, {
                   borderX: props.borderX,
                   isSticky: stickyHeaderDates,
@@ -150,14 +150,14 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 <Scroller
                   horizontal
                   hideScrollbars
-                  className='fc-flex-row'
+                  className='fcu-flex-row'
                   ref={this.headerScrollerRef}
                 >
                   <div
                     // TODO: DRY
                     className={joinClassNames(
-                      'fc-rel', // origin for now-indicator
-                      canvasWidth == null && 'fc-liquid',
+                      'fcu-rel', // origin for now-indicator
+                      canvasWidth == null && 'fcu-liquid',
                     )}
                     style={{ width: canvasWidth }}
                   >
@@ -211,8 +211,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   props.forPrint // prevents blank space in print-view on Safari
                 }
                 className={joinClassNames(
-                  'fc-timeline-body fc-flex-col',
-                  verticalScrolling && 'fc-liquid',
+                  'fc-timeline-body fcu-flex-col',
+                  verticalScrolling && 'fcu-liquid',
                   generateClassName(options.viewBodyClassNames, {
                     borderX: props.borderX,
                   }),
@@ -222,7 +222,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               >
                 <div
                   aria-label={options.eventsHint}
-                  className="fc-rel fc-grow"
+                  className="fcu-rel fcu-grow"
                   style={{ width: canvasWidth }}
                   ref={this.handeBodyEl}
                 >

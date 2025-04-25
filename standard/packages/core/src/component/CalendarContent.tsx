@@ -94,8 +94,8 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
         )}
         <div
           className={joinClassNames(
-            'fc-view-outer fc-flex-col fc-rel',
-            viewHeightLiquid && 'fc-liquid',
+            'fc-view-outer fcu-flex-col fcu-rel',
+            viewHeightLiquid && 'fcu-liquid',
           )}
           style={{
             height: viewHeight,
@@ -106,8 +106,8 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
         >
           {this.renderView(
             joinClassNames(
-              (viewHeightLiquid || viewHeight) && 'fc-liquid',
-              viewAspectRatio != null && 'fc-fill',
+              (viewHeightLiquid || viewHeight) && 'fcu-liquid',
+              viewAspectRatio != null && 'fcu-fill',
             ),
             toolbarProps.title,
           )}

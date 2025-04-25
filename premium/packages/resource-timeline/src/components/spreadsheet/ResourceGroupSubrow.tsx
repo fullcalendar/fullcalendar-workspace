@@ -55,8 +55,8 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
           'fc-resource-group',
           props.className,
           options.resourceAreaRowClassNames,
-          'fc-flex-row',
-          props.borderBottom ? 'fc-border-only-b' : 'fc-border-none',
+          'fcu-flex-row',
+          props.borderBottom ? 'fcu-border-only-b' : 'fcu-border-none',
         )}
         style={{
           top: props.top,
@@ -73,8 +73,8 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
             'aria-rowspan': props.rowSpan,
           }}
           className={joinClassNames(
-            'fc-tight fc-liquid',
-            props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
+            'fcu-tight fcu-liquid',
+            props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
           )}
           renderProps={renderProps}
           generatorName="resourceGroupHeaderContent"
@@ -88,7 +88,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
             <InnerContent
               tag="div"
               className={joinClassNames(
-                'fc-rigid fc-sticky-t',
+                'fcu-rigid fcu-sticky-t',
                 generateClassName(colSpec.cellInnerClassNames, renderProps),
               )}
               elRef={this.innerElRef}

@@ -47,14 +47,14 @@ export class BodySection extends BaseComponent<BodySectionProps> {
     TODO: this outer div can be discarded and parent should be canvas directly
     */
     return (
-      <div className='fc-flex-row fc-fill'>
+      <div className='fcu-flex-row fcu-fill'>
 
         {/* group columns */}
         {props.flatGroupColLayouts.map((groupColLayouts, colIndex) => (
           <div
             key={colIndex}
             role='rowgroup'
-            className='fc-rel'
+            className='fcu-rel'
             style={{
               minWidth: 0,
               width: colWidths[colIndex],
@@ -72,7 +72,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   colSpec={group.spec}
                   rowSpan={groupCellLayout.rowSpan}
                   fieldValue={group.value}
-                  className='fc-fill-x'
+                  className='fcu-fill-x'
                   borderStart={Boolean(colIndex)}
                   borderBottom={isNotLast}
                   role='row'
@@ -93,7 +93,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
 
         <div
           role='rowgroup'
-          className='fc-fill fc-rel'
+          className='fcu-fill fcu-rel'
           style={
             context.isRtl // TODO: util for this?
               ? { right: resourceX }
@@ -120,7 +120,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 top={rowTops.get(groupKey)}
                 height={rowHeights.get(groupKey)}
                 indentWidth={props.indentWidth}
-                className='fc-fill-x'
+                className='fcu-fill-x'
               />
             )
           })}
@@ -143,7 +143,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 colSpecs={props.colSpecs}
                 colWidths={colWidths}
                 innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
-                className='fc-fill-x'
+                className='fcu-fill-x'
                 borderStart={Boolean(groupColCnt)}
                 borderBottom={isNotLast}
                 role='row'

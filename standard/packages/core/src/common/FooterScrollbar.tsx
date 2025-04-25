@@ -27,8 +27,8 @@ export class FooterScrollbar extends BaseComponent<FooterScrollbarProps> {
       <div
         ref={this.rootElRef}
         className={joinClassNames(
-          'fc-footer-scrollbar',
-          props.isSticky && 'fc-footer-scrollbar-sticky',
+          'fcu-footer-scrollbar',
+          props.isSticky && 'fcu-footer-scrollbar-sticky',
         )}
       >
         <Scroller horizontal ref={props.scrollerRef}>

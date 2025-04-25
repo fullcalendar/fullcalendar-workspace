@@ -45,8 +45,8 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
           'aria-label': fullDateStr,
         }}
         className={joinClassNames(
-          'fc-tight',
-          props.isLiquid ? 'fc-liquid' : 'fc-content-box',
+          'fcu-tight',
+          props.isLiquid ? 'fcu-liquid' : 'fcu-content-box',
         )}
         style={{ width: props.width }}
         renderProps={{
@@ -70,7 +70,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
                 : { 'aria-label': fullDateStr }
             }
             className={joinArrayishClassNames(
-              'fc-rigid',
+              'fcu-rigid',
               options.weekNumberInnerClassNames,
             )}
             elRef={this.innerElRef}

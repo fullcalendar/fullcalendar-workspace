@@ -92,7 +92,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
             className={joinClassNames(
               // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
               // https://stackoverflow.com/a/60256345
-              !props.forPrint && 'fc-flex-col',
+              !props.forPrint && 'fcu-flex-col',
               props.className,
             )}
             borderX={props.borderX}
@@ -101,14 +101,14 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
           >
             <Scroller
               vertical={verticalScrolling}
-              className={verticalScrolling ? 'fc-liquid' : ''}
+              className={verticalScrolling ? 'fcu-liquid' : ''}
               ref={this.scrollerRef}
             >
               <div
                 role='list'
                 aria-labelledby={props.labelId}
                 aria-label={props.labelStr}
-                className='fc-safe-tiles'
+                className='fcu-safe-tiles'
                 ref={this.innerElRef}
               >
                 {monthDateProfiles.map((monthDateProfile, i) => {

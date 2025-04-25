@@ -95,7 +95,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
     return (
       <div
-        className='fc-timeline-events fc-rel'
+        className='fc-timeline-events fcu-rel'
         style={{ height: totalHeight }}
       >
         {this.renderFgSegs(

@@ -38,10 +38,10 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         attrs={{
           role: 'columnheader',
         }}
-        // fc-rel for resizer abs positioning
+        // fcu-rel for resizer abs positioning
         className={joinClassNames(
-          'fc-tight fc-flex-col fc-justify-center fc-rel',
-          props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
+          'fcu-tight fcu-flex-col fcu-justify-center fcu-rel',
+          props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
         )}
         style={{
           minWidth: 0,
@@ -61,7 +61,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
             <div
               ref={this.innerElRef}
               className={joinArrayishClassNames(
-                'fc-rigid fc-flex-row fc-align-center',
+                'fcu-rigid fcu-flex-row fcu-align-center',
                 generateClassName(colSpec.headerInnerClassNames, renderProps),
               )}
             >
@@ -74,7 +74,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
               <InnerContent tag="div" />
             </div>
             {props.resizer && (
-              <div className="fc-col-resizer" ref={props.resizerElRef} />
+              <div className="fcu-col-resizer" ref={props.resizerElRef} />
             )}
           </Fragment>
         )}

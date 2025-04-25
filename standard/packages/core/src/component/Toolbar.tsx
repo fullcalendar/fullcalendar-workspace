@@ -21,7 +21,7 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
       <div
         className={joinArrayishClassNames(
           generateClassName(options.toolbarClassNames, { name: props.name }),
-          'fc-flex-row fc-justify-space-between fc-align-center',
+          'fcu-flex-row fcu-justify-centerspace-between fcu-align-center',
         )}
       >
         {this.renderSection('start', sectionWidgets.start)}

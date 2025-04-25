@@ -128,11 +128,11 @@ css:
   .fc-navlink -> .fc-nav-link
   .fc-celldivider -> .fc-cell-divider
   .fc-rowdivider -> .fc-row-divider
-  .fc-fill-start -> .fc-fill-s
-  .fc-fill-top -> .fc-fill-t
-  .fc-fill-x -> .fc-fill-h
-  .fc-fill-y -> .fc-fill-v
-  unused .fc-offscreen
+  .fcu-fill-start -> .fcu-fill-s
+  .fcu-fill-top -> .fcu-fill-t
+  .fcu-fill-x -> .fcu-fill-h
+  .fcu-fill-y -> .fcu-fill-v
+  unused .fcu-offscreen
 
 don't use <Scroller> when not necessary
   ListView

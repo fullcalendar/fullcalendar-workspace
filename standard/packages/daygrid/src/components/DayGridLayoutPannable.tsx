@@ -88,8 +88,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
       <Fragment>
         {options.dayHeaders && (
           <div className={joinClassNames(
-            'fc-print-header',
-            stickyHeaderDates && 'fc-table-header-sticky',
+            'fcu-print-header',
+            stickyHeaderDates && 'fcu-table-header-sticky',
             generateClassName(options.viewHeaderClassNames, {
               borderX: props.borderX,
               isSticky: stickyHeaderDates,
@@ -98,7 +98,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             <Scroller
               horizontal
               hideScrollbars
-              className='fc-daygrid-header fc-flex-row'
+              className='fc-daygrid-header fcu-flex-row'
               ref={this.headerScrollerRef}
             >
               <DayGridHeader
@@ -130,8 +130,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             'fc-daygrid-body',
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345
-            !props.forPrint && 'fc-flex-col',
-            verticalScrollbars && 'fc-liquid',
+            !props.forPrint && 'fcu-flex-col',
+            verticalScrollbars && 'fcu-liquid',
             generateClassName(options.viewBodyClassNames, {
               borderX: props.borderX,
             }),
@@ -145,7 +145,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             cellRows={props.cellRows}
             forPrint={props.forPrint}
             isHitComboAllowed={props.isHitComboAllowed}
-            className='fc-grow'
+            className='fcu-grow'
             dayMaxEvents={props.forPrint ? undefined : options.dayMaxEvents}
             dayMaxEventRows={options.dayMaxEventRows}
 

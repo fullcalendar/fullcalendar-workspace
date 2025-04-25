@@ -34,7 +34,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           role: 'columnheader',
           'aria-colspan': this.props.colSpan,
         }}
-        className='fc-tight fc-border-none fc-flex-col fc-justify-center fc-liquid'
+        className='fcu-tight fcu-border-none fcu-flex-col fcu-justify-center fcu-liquid'
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"
         customGenerator={renderHooks.headerContent}
@@ -47,7 +47,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           <div
             ref={this.innerElRef}
             className={joinClassNames(
-              "fc-rigid fc-flex-row fc-align-center",
+              "fcu-rigid fcu-flex-row fcu-align-center",
               generateClassName(renderHooks.headerInnerClassNames, renderProps),
             )}
           >

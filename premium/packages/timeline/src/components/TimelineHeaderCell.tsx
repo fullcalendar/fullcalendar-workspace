@@ -71,10 +71,10 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
       <ContentContainer
         tag="div"
         className={joinArrayishClassNames(
-          props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
-          props.isCentered ? 'fc-align-center' : 'fc-align-start',
+          props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
+          props.isCentered ? 'fcu-align-center' : 'fcu-align-start',
           'fc-timeline-slot-label fc-timeline-slot',
-          'fc-tight fc-flex-col fc-justify-center',
+          'fcu-tight fcu-flex-col fcu-justify-center',
         )}
         attrs={{
           'data-date': dateEnv.formatIso(cell.date, {
@@ -106,8 +106,8 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
                 : {} // don't bother with aria-hidden because parent already hidden
             }
             className={joinClassNames(
-              'fc-rigid',
-              props.isSticky && 'fc-sticky-s',
+              'fcu-rigid',
+              props.isSticky && 'fcu-sticky-s',
               generateClassName(options.slotLabelInnerClassNames, renderProps),
             )}
             elRef={this.innerElRef}

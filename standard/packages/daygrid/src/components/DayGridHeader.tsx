@@ -23,8 +23,8 @@ export class DayGridHeader extends BaseComponent<DayGridHeaderProps> {
         role='rowgroup'
         className={joinClassNames(
           props.className,
-          'fc-flex-col',
-          props.width == null && 'fc-liquid',
+          'fcu-flex-col',
+          props.width == null && 'fcu-liquid',
         )}
         style={{
           width: props.width

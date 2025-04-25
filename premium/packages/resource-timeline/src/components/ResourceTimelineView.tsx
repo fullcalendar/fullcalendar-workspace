@@ -203,7 +203,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
         <ResourceExpander // for probing size
           isExpanded
           elRef={this.handleExpanderEl}
-          className='fc-offscreen'
+          className='fcu-offscreen'
         />
       </Fragment>
     )

@@ -22,7 +22,7 @@ export class DayGridEventHarness extends Component<DayGridEventHarnessProps> {
 
     return (
       <div
-        className={joinClassNames(props.className, 'fc-abs')}
+        className={joinClassNames(props.className, 'fcu-abs')}
         style={props.style}
         ref={this.rootElRef}
       >

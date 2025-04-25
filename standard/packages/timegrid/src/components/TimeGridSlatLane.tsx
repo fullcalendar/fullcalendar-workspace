@@ -38,8 +38,8 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
           'data-time': props.isoTimeStr,
         }}
         className={joinClassNames(
-          'fc-tight fc-liquid',
-          props.borderTop ? 'fc-border-only-t' : 'fc-border-none',
+          'fcu-tight fcu-liquid',
+          props.borderTop ? 'fcu-border-only-t' : 'fcu-border-none',
         )}
         renderProps={renderProps}
         generatorName="slotLaneContent"
@@ -52,7 +52,7 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
           <InnerContent
             tag="div"
             className={joinArrayishClassNames(
-              'fc-rigid',
+              'fcu-rigid',
               options.slotLaneInnerClassNames,
             )}
             elRef={this.innerElRef}

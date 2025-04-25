@@ -29,7 +29,7 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
 
     return (
       <MoreLinkContainer
-        className='fc-abs'
+        className='fcu-abs'
         style={{
           top: props.top,
           height: props.height,
@@ -49,7 +49,7 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
             tag="div"
             className={joinArrayishClassNames(
               options.moreLinkInnerClassNames,
-              'fc-sticky-t',
+              'fcu-sticky-t',
             )}
           />
         )}

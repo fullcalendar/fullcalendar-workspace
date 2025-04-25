@@ -1,5 +1,5 @@
 
-.fc-daygrid-row-print { // (print)
+.fcu-daygrid-row-print { // (print)
   // Print view squishes width which results in overly tall cells that can't adapt to new width
   // hardcode a value that looks good in portrait and landscape
   // In print view, the row <div> is NOT a flexbox child, so no interference with expanding algorithm
@@ -11,8 +11,8 @@
   min-height: 6em;
 }
 
-.fc-daygrid-day-body {
-  // TODO: use fc-flex-row, or maybe remove this element
+.fcu-daygrid-day-body {
+  // TODO: use fcu-flex-row, or maybe remove this element
   display: flex;
   flex-direction: column;
 
@@ -20,7 +20,7 @@
   margin-bottom: 1px;
 }
 
-.fc-daygrid-day-body-tall { // (tall) -- extra spaciout for ALL-DAY SECTION
+.fcu-daygrid-day-body-tall { // (tall) -- extra spaciout for ALL-DAY SECTION
   /*
   TODO: make this new setting dayRowMinHeight, always pixels
   In the theme, have view-specific setting...
@@ -47,7 +47,7 @@ SOLUTION: have the dayCellTop wrapper be responsible for this space,
 Always have this div, even if no content within it.
 Give it min-height of 2px.
 */
-.fc-daygrid-day-body:only-child { // (without header)
+.fcu-daygrid-day-body:only-child { // (without header)
   margin-top: 2px;
 }
 

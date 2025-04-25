@@ -43,7 +43,7 @@ export class Popover extends BaseComponent<PopoverProps> {
         role='dialog'
         aria-labelledby={this.titleId}
         className={joinArrayishClassNames(
-          'fc-abs',
+          'fcu-abs',
           options.popoverClassNames,
           props.className,
         )}

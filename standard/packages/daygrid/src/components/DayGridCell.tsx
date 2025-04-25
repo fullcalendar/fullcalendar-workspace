@@ -93,9 +93,9 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     const dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange)
 
     const baseClassName = joinClassNames(
-      props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
-      props.width != null ? '' : 'fc-liquid',
-      'fc-flex-col',
+      props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
+      props.width != null ? '' : 'fcu-liquid',
+      'fcu-flex-col',
     )
 
     const renderProps = this.refineRenderProps({
@@ -176,11 +176,11 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             )}
             <div
               className={joinClassNames(
-                'fc-daygrid-day-body',
+                'fcu-daygrid-day-body',
                 // TODO: use dayCellBottomClassName for this (for thick bottom padding)
                 // and introduce a new setting (allDaySlotMinHeight)
-                props.isTall && 'fc-daygrid-day-body-tall',
-                props.fgLiquidHeight ? 'fc-liquid' : 'fc-grow',
+                props.isTall && 'fcu-daygrid-day-body-tall',
+                props.fgLiquidHeight ? 'fcu-liquid' : 'fcu-grow',
               )}
               ref={this.handleBodyEl}
             >

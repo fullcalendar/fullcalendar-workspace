@@ -62,7 +62,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
     return (
       <ContentContainer
         tag='div'
-        className={joinClassNames('fc-fill', ...eventUi.classNames)}
+        className={joinClassNames('fcu-fill', ...eventUi.classNames)}
         style={{
           backgroundColor: eventUi.backgroundColor,
         }}
@@ -107,7 +107,7 @@ function renderInnerContent(props: EventContentArg) {
 export function renderFill(fillType: string, options: ViewOptionsRefined) {
   return (
     <div className={joinArrayishClassNames(
-      'fc-fill',
+      'fcu-fill',
       fillType === 'non-business' ? options.nonBusinessClassNames :
         fillType === 'highlight' ? options.highlightClassNames : undefined
     )} />

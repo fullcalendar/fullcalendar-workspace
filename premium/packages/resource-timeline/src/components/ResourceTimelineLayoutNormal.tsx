@@ -306,7 +306,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           'aria-labelledby': props.labelId,
         }}
         className={joinClassNames(
-          'fc-flex-col',
+          'fcu-flex-col',
           props.className,
         )}
         borderX={props.borderX}
@@ -316,12 +316,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         <ResizableTwoCol
           initialStartWidth={props.initialSpreadsheetWidth}
           resizedWidthRef={props.spreadsheetResizedWidthRef} // is a CssDim value for storage
-          className={verticalScrolling ? 'fc-liquid' : ''}
+          className={verticalScrolling ? 'fcu-liquid' : ''}
 
           /* spreadsheet
           --------------------------------------------------------------------------------- */
 
-          startClassName='fc-flex-col'
+          startClassName='fcu-flex-col'
           startContent={
             <Fragment>
 
@@ -330,8 +330,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               <div
                 role='rowgroup'
                 className={joinClassNames(
-                  'fc-datagrid-header fc-flex-col',
-                  stickyHeaderDates && 'fc-table-header-sticky',
+                  'fc-datagrid-header fcu-flex-col',
+                  stickyHeaderDates && 'fcu-table-header-sticky',
                   generateClassName(options.viewHeaderClassNames, {
                     borderX: props.borderX,
                     isSticky: stickyHeaderDates,
@@ -339,7 +339,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 )}
               >
                 <div
-                  className='fc-flex-col fc-content-box'
+                  className='fcu-flex-col fcu-content-box'
                   style={{
                     height: headerHeight,
                   }}
@@ -350,7 +350,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       aria-rowindex={1}
                       className={joinArrayishClassNames(
                         options.resourceAreaHeaderRowClassNames,
-                        'fc-flex-row fc-grow fc-border-only-b',
+                        'fcu-flex-row fcu-grow fcu-border-only-b',
                       )}
                     >
                       <SuperHeaderCell
@@ -365,11 +365,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   <Scroller
                     horizontal
                     hideScrollbars
-                    className='fc-flex-col fc-grow'
+                    className='fcu-flex-col fcu-grow'
                     ref={this.spreadsheetHeaderScrollerRef}
                   >
                     <div
-                      className='fc-flex-col fc-grow'
+                      className='fcu-flex-col fcu-grow'
                       style={{ minWidth: spreadsheetCanvasWidth }}
                     >
                       <HeaderRow
@@ -398,8 +398,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 horizontal
                 hideScrollbars
                 className={joinClassNames(
-                  'fc-datagrid-body fc-flex-col fc-rel', // fc-rel needed for Ruler.fc-fill-start
-                  verticalScrolling && 'fc-liquid',
+                  'fc-datagrid-body fcu-flex-col fcu-rel', // fcu-rel needed for Ruler.fcu-fill-start
+                  verticalScrolling && 'fcu-liquid',
                   generateClassName(options.viewBodyClassNames, {
                     borderX: props.borderX,
                   }),
@@ -409,7 +409,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 bottomScrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
               >
                 <div
-                  className='fc-rel fc-grow fc-flex-col'
+                  className='fcu-rel fcu-grow fcu-flex-col'
                   style={{
                     minWidth: spreadsheetCanvasWidth,
                     paddingTop: totalBodyHeight, // to push down filler div at end, and give height
@@ -458,7 +458,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           /* time-area (TODO: try to make this DRY-er with TimelineView???)
           --------------------------------------------------------------------------------- */
 
-          endClassName='fc-flex-col'
+          endClassName='fcu-flex-col'
           endContent={
             <Fragment>
 
@@ -466,7 +466,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               ---------------------------------------------------------------------------- */}
               <div className={joinClassNames(
                 'fc-timeline-header',
-                stickyHeaderDates && 'fc-table-header-sticky',
+                stickyHeaderDates && 'fcu-table-header-sticky',
                 generateClassName(options.viewHeaderClassNames, {
                   borderX: props.borderX,
                   isSticky: stickyHeaderDates,
@@ -476,7 +476,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   ref={this.timeHeaderScrollerRef}
                   horizontal
                   hideScrollbars
-                  className='fc-flex-row fc-content-box'
+                  className='fcu-flex-row fcu-content-box'
                   style={{
                     height: headerHeight,
                   }}
@@ -494,8 +494,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   <div // the canvas
                     aria-hidden
                     className={joinClassNames( // TODO: DRY
-                      'fc-flex-col fc-rel', // origin for now-indicator
-                      timeCanvasWidth == null && 'fc-liquid',
+                      'fcu-flex-col fcu-rel', // origin for now-indicator
+                      timeCanvasWidth == null && 'fcu-liquid',
                     )}
                     style={{ width: timeCanvasWidth }}
                   >
@@ -549,8 +549,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 horizontal
                 hideScrollbars={stickyFooterScrollbar /* FYI, this view is never print */}
                 className={joinClassNames(
-                  'fc-timeline-body fc-flex-col fc-rel', // fc-rel for Ruler.fc-fill-start
-                  verticalScrolling && 'fc-liquid',
+                  'fc-timeline-body fcu-flex-col fcu-rel', // fcu-rel for Ruler.fcu-fill-start
+                  verticalScrolling && 'fcu-liquid',
                 )}
                 ref={this.timeBodyScrollerRef}
                 clientWidthRef={this.handleTimeClientWidth}
@@ -558,11 +558,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 bottomScrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
               >
                 <div
-                  className='fc-rel fc-grow fc-flex-col'
+                  className='fcu-rel fcu-grow fcu-flex-col'
                   style={{ width: timeCanvasWidth }}
                   ref={this.handleBodyEl}
                 >
-                  <div className='fc-fill'>
+                  <div className='fcu-fill'>
                     <TimelineSlats
                       dateProfile={dateProfile}
                       tDateProfile={tDateProfile}
@@ -599,7 +599,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   </div>
                   <div
                     role='rowgroup'
-                    className='fc-rel'
+                    className='fcu-rel'
                     style={{ height: totalBodyHeight }}
                   >
                     {/* group rows */}
@@ -630,7 +630,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           {...splitProps[resource.id]}
                           key={resource.id}
                           role='row'
-                          className='fc-fill-x'
+                          className='fcu-fill-x'
                           resource={resource}
                           dateProfile={dateProfile}
                           tDateProfile={tDateProfile}

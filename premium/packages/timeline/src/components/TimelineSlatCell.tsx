@@ -66,11 +66,11 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
     return (
       <ContentContainer
         tag="div"
-        // fc-align-start shrinks width of InnerContent
+        // fcu-align-start shrinks width of InnerContent
         className={joinClassNames(
           'fc-timeline-slot',
-          'fc-timeline-slot-lane fc-tight fc-flex-col fc-align-start',
-          props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
+          'fc-timeline-slot-lane fcu-tight fcu-flex-col fcu-align-start',
+          props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
         )}
         attrs={{
           'data-date': dateEnv.formatIso(date, {
@@ -93,7 +93,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           <InnerContent
             tag="div"
             className={joinArrayishClassNames(
-              'fc-rigid',
+              'fcu-rigid',
               options.slotLaneInnerClassNames,
             )}
             style={{

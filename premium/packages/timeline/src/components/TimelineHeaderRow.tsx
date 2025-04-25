@@ -39,8 +39,8 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
       <div
         className={joinArrayishClassNames(
           options.slotLabelRowClassNames,
-          !props.isLastRow ? 'fc-border-only-b' : 'fc-border-none',
-          'fc-flex-row fc-grow',
+          !props.isLastRow ? 'fcu-border-only-b' : 'fcu-border-none',
+          'fcu-flex-row fcu-grow',
         )}
       >
         {props.cells.map((cell, cellI) => {

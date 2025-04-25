@@ -96,8 +96,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           aria-labelledby={this.titleId}
           data-date={props.isoDateStr}
           className={joinClassNames(
-            'fc-flex-col',
-            props.hasLateralSiblings && 'fc-break-inside-avoid',
+            'fcu-flex-col',
+            props.hasLateralSiblings && 'fcu-break-inside-avoid',
             generateClassName(options.singleMonthClassNames, renderProps),
           )}
         >
@@ -105,7 +105,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             id={this.titleId}
             ref={this.titleElRef}
             className={joinClassNames(
-              isTitleAndHeaderSticky && 'fc-sticky-t',
+              isTitleAndHeaderSticky && 'fcu-sticky-t',
               generateClassName(options.singleMonthTitleClassNames, {
                 sticky: isTitleAndHeaderSticky,
                 colCnt: props.colCnt,
@@ -127,7 +127,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           </div>
           <div
             className={joinClassNames(
-              'fc-flex-col',
+              'fcu-flex-col',
               generateClassName(options.singleMonthTableClassNames, {
                 ...renderProps,
                 stickyTitle: isTitleAndHeaderSticky,
@@ -140,7 +140,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             <div
               ref={this.tableHeaderElRef}
               className={joinClassNames(
-                isTitleAndHeaderSticky && 'fc-sticky-t',
+                isTitleAndHeaderSticky && 'fcu-sticky-t',
                 generateClassName(options.singleMonthTableHeaderClassNames, {
                   sticky: isTitleAndHeaderSticky,
                   colCnt: props.colCnt,
@@ -161,7 +161,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             </div>
             <div
               className={joinClassNames(
-                isAspectRatio && 'fc-rel',
+                isAspectRatio && 'fcu-rel',
                 generateClassName(options.singleMonthTableBodyClassNames, {
                   colCnt: props.colCnt,
                 })
@@ -176,7 +176,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 dateProfile={props.dateProfile}
                 todayRange={props.todayRange}
                 cellRows={dayTableModel.cellRows}
-                className={isAspectRatio ? 'fc-fill' : ''}
+                className={isAspectRatio ? 'fcu-fill' : ''}
                 forPrint={forPrint && !props.hasLateralSiblings}
                 dayMaxEventRows={
                   (forPrint && props.hasLateralSiblings)

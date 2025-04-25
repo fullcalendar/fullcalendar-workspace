@@ -51,8 +51,8 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           'aria-expanded': (colSpec.isMain && props.hasChildren) ? props.isExpanded : undefined,
         }}
         className={joinClassNames(
-          'fc-tight',
-          props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
+          'fcu-tight',
+          props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
         )}
         style={{
           minWidth: 0,
@@ -71,7 +71,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           <div
             ref={this.innerElRef}
             className={joinClassNames(
-              "fc-rigid fc-flex-row fc-align-center",
+              "fcu-rigid fcu-flex-row fcu-align-center",
               generateClassName(colSpec.cellInnerClassNames, renderProps),
             )}
           >

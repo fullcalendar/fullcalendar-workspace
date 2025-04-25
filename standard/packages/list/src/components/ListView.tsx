@@ -57,7 +57,7 @@ export class ListView extends DateComponent<ViewProps> {
     return (
       <ViewContainer
         viewSpec={context.viewSpec}
-        className={joinClassNames('fc-flex-col', props.className)}
+        className={joinClassNames('fcu-flex-col', props.className)}
         elRef={this.setRootEl}
         borderX={props.borderX}
         borderTop={props.borderTop}
@@ -65,7 +65,7 @@ export class ListView extends DateComponent<ViewProps> {
       >
         <Scroller // TODO: don't need heavyweight component
           vertical={verticalScrolling}
-          className={verticalScrolling ? 'fc-liquid' : ''}
+          className={verticalScrolling ? 'fcu-liquid' : ''}
         >
           {this.renderSegList(eventSegs, dayDates)}
           {!eventSegs.length && this.renderEmptyMessage()}

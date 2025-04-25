@@ -37,7 +37,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     return (
       <div
         aria-hidden
-        className="fc-timeline-slots fc-flex-row fc-fill"
+        className="fc-timeline-slots fcu-flex-row fcu-fill"
         style={{ height: props.height }}
       >
         {slotDates.map((slotDate, i) => {

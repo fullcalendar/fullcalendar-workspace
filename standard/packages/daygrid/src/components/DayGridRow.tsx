@@ -149,8 +149,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         }
         className={joinArrayishClassNames(
           'fc-daygrid-row',
-          props.forPrint && 'fc-daygrid-row-print',
-          'fc-flex-row fc-rel',
+          props.forPrint && 'fcu-daygrid-row-print',
+          'fcu-flex-row fcu-rel',
           props.className,
           options.dayRowClassNames,
         )}
@@ -290,7 +290,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       nodes.push(
         <DayGridEventHarness
           key={key}
-          className={seg.start ? 'fc-fake-border-s' : ''}
+          className={seg.start ? 'fcu-fake-border-s' : ''}
           style={{
             visibility: isInvisible ? 'hidden' : '',
             top,
@@ -343,7 +343,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       nodes.push(
         <div
           key={key}
-          className="fc-fill-y"
+          className="fcu-fill-y"
           style={{
             visibility: isVisible ? '' : 'hidden',
             left,

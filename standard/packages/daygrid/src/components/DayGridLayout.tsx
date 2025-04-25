@@ -78,7 +78,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
           'aria-labelledby': props.labelId,
           'aria-label': props.labelStr,
         }}
-        className={joinClassNames(props.className, 'fc-print-root')}
+        className={joinClassNames(props.className, 'fcu-print-root')}
         borderX={props.borderX}
         borderTop={props.borderTop}
         borderBottom={props.borderBottom}
