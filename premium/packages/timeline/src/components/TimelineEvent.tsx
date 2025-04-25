@@ -20,6 +20,7 @@ export class TimelineEvent extends BaseComponent<TimelineEventProps> {
     return (
       <StandardEvent
         {...props}
+        hitClassName='fc-hit-y'
         isSpacious={!options.eventOverlap}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
         defaultDisplayEventTime={!props.isTimeScale}

@@ -6,72 +6,63 @@
 //   - expand the hit-area
 //
 
+// THEME: reset underline when events <a>
 a.fc-event, // (anchor)
 a.fc-event:hover { // (anchor:hover)
   text-decoration: none;
 }
 
-.fc-event[href], // (link)
-.fc-event.fc-event-draggable { // (draggable)
-  cursor: pointer;
-}
-
+// THEME: transparent when non-touch dragging
 .fc-event-dragging:not(.fc-event-selected) { // (dragging)
   opacity: 0.75;
 }
 
+// THEME: add box-shadow when dragging
 .fc-event-dragging.fc-event-selected { // (touch-selected)
   box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
 }
 
-.fc-event-selected:before { // (touch-selected) > hit-area
-  @include fill;
-  content: "";
-  z-index: $event-selected-hit-z;
-}
-
+// THEME: selected or tabbable event
+// The box-shadow and dimmer to make it stand out
+//
 .fc-event-selected, // (touch-selected)
 .fc-event:focus:not(.fc-list-event) { // (tab-focused) --- HACK to blacklist list-view
   // shadow
   // TODO: improve focus-styling for .fc-daygrid-dot-event
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 
-  &:after { // > dimmer-effect
+  // > dimmer-effect
+  // TODO: problematic because covers most elements
+  // Coincidence that sticky elements get put above
+  // Give non-sticky elements position:relative!
+  &:before {
     // assume there's a border on all sides. overcome it.
     // sometimes there's NOT a border, in which case the dimmer will go over
     // an adjacent border, which looks fine.
     @include fill(-1px);
 
     content: "";
-    z-index: $event-selected-dimmer-z;
     background: var(--fc-event-selected-overlay-color);
   }
-}
-
-//
-// fc-event > inner
-//
-
-.fc-event-inner {
-  position: relative;
-  z-index: $event-main-z;
 }
 
 //
 // fc-event > resizer
 //
 
+// THEME: common positioning, hiding when inactive
 .fc-event-resizer {
   display: none; // hide
   position: absolute;
-  z-index: $event-resizer-z;
 }
 
+// THEME: revealing when active
 .fc-event:hover .fc-event-resizer, // (hover)
 .fc-event-selected .fc-event-resizer { // (touch-selected)
   display: block; // reveal
 }
 
+// THEME: resizer dots for touch specifically
 .fc-event-selected .fc-event-resizer { // (touch-selected)
   border-radius: calc(var(--fc-event-resizer-dot-total-width) / 2);
   border-width: var(--fc-event-resizer-dot-border-width);
@@ -80,10 +71,4 @@ a.fc-event:hover { // (anchor:hover)
   border-style: solid;
   border-color: inherit;
   background: var(--fc-page-bg-color);
-
-  // expand hit area
-  &:before {
-    @include fill(-20px);
-    content: '';
-  }
 }

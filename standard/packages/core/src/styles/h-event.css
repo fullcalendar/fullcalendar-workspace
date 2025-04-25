@@ -4,6 +4,7 @@
 //   "horizontal"
 //
 
+// THEME
 .fc-h-event {
   position: relative; // required by fc-event
   display: flex;
@@ -12,26 +13,18 @@
   background-color: var(--fc-event-bg-color);
 }
 
-.fc-h-event.fc-event-mirror { // (mirror)
-  z-index: $event-mirror-z;
-}
-
-.fc-h-event.fc-event-selected:before { // (touch-selected) > hit-area
-  // expand
-  top: -10px;
-  bottom: -10px;
-}
-
 //
 // fc-h-event > inner
 //
 
+// THEME
 .fc-h-event .fc-event-inner {
   display: flex;
   flex-direction: row;
   color: var(--fc-event-text-color);
 }
 
+// THEME
 .fc-h-event .fc-event-time, // > time
 .fc-h-event .fc-event-title { // > title-outer > title
   // CAN be overridden
@@ -45,12 +38,14 @@
   overflow: hidden !important;
 }
 
+// THEME
 .fc-h-event .fc-event-title-outer { // > title-outer
   @include liquid; // horizontally liquid
   display: flex;
   flex-direction: row;
 }
 
+// THEME should decide whether to put stickiness on title-div or inner-div
 .fc-h-event .fc-event-title { // > title-outer > title
   position: sticky;
   left: 0;
@@ -61,6 +56,7 @@
 // h-event > resizer
 //
 
+// THEME: general left/right resizer positioning
 .fc-h-event:not(.fc-event-selected) .fc-event-resizer {
   top: 0;
   bottom: 0;
@@ -69,12 +65,14 @@
 
 // (mouse)
 
+// THEME: more specific mouse resizer
 .fc-direction-ltr .fc-h-event:not(.fc-event-selected) .fc-event-resizer-start,
 .fc-direction-rtl .fc-h-event:not(.fc-event-selected) .fc-event-resizer-end {
   cursor: w-resize;
   left: calc(-0.5 * var(--fc-event-resizer-thickness));
 }
 
+// THEME: more specific mouse resizer
 .fc-direction-ltr .fc-h-event:not(.fc-event-selected) .fc-event-resizer-end,
 .fc-direction-rtl .fc-h-event:not(.fc-event-selected) .fc-event-resizer-start {
   cursor: e-resize;
@@ -82,6 +80,9 @@
 }
 
 // (touch)
+//
+// THEME: resizer dot for touch
+//
 
 .fc-h-event.fc-event-selected .fc-event-resizer {
   top: 50%;

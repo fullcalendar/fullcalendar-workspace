@@ -16,6 +16,7 @@ export interface StandardEventProps {
   elRef?: ElRef
   attrs?: any
   className?: string
+  hitClassName?: string // for expanding main hit area when selected
   eventRange: EventRenderRange // timed/whole-day span
   slicedStart?: DateMarker // view-sliced timed/whole-day span
   slicedEnd?: DateMarker // view-sliced timed/whole-day span
@@ -38,7 +39,6 @@ export interface StandardEventProps {
   forcedTimeText?: string
 }
 
-// should not be a purecomponent
 export class StandardEvent extends BaseComponent<StandardEventProps> {
   // memo
   private buildPublicEvent = memoize(
@@ -68,6 +68,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
     const [tag, attrs] = getEventTagAndAttrs(eventRange, context)
 
     const eventApi = this.buildPublicEvent(context, eventRange.def, eventRange.instance)
+    const isDraggable = !props.disableDragging && computeEventRangeDraggable(eventRange, context)
     const renderProps: EventContentArg = {
       // make stable. everything else atomic
       // FYI, eventRange unfortunately gets reconstructed a lot, but def/instance is stable
@@ -78,7 +79,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       textColor: eventUi.textColor,
       backgroundColor: eventUi.backgroundColor,
       borderColor: eventUi.borderColor,
-      isDraggable: !props.disableDragging && computeEventRangeDraggable(eventRange, context),
+      isDraggable,
       isStartResizable: !props.disableResizing && props.isStart && eventUi.durationEditable && options.eventResizableFromStart,
       isEndResizable: !props.disableResizing && props.isEnd && eventUi.durationEditable,
       isMirror: Boolean(props.isDragging || props.isResizing || props.isDateSelecting),
@@ -110,6 +111,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
         className={joinClassNames(
           props.className,
           ...eventUi.classNames,
+          (eventRange.def.url || isDraggable) && 'fc-cursor-pointer',
         )}
         style={{
           borderColor: eventUi.borderColor,
@@ -128,6 +130,9 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       >
         {(InnerContent) => (
           <Fragment>
+            {Boolean(renderProps.isSelected && props.hitClassName) && (
+              <div className={props.hitClassName} />
+            )}
             {Boolean(renderProps.isStartResizable) && (
               <div
                 className={joinArrayishClassNames(
@@ -135,7 +140,9 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                   options.eventResizerClassNames,
                   options.eventResizerStartClassNames,
                 )}
-              />
+              >
+                <div className='fc-hit' />
+              </div>
             )}
             {Boolean(colorClassNames) && (
               <div
@@ -159,7 +166,9 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                   options.eventResizerClassNames,
                   options.eventResizerEndClassNames,
                 )}
-              />
+              >
+                <div className='fc-hit' />
+              </div>
             )}
           </Fragment>
         )}

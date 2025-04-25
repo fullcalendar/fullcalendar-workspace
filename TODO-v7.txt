@@ -112,6 +112,8 @@ remove the 'Content' in names like ListHeaderContentArg,
 eventMaxStack:1 is pretty dumb for two events:
   just displays the second event as a +more link, not saving space!!!
 rename isSticky->sticky, but we still have isStart/isToday/etc !!??
+resourceArea resizer of resourceAreaDivider is small or not specified?
+have theme define col-resizer. see notes
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

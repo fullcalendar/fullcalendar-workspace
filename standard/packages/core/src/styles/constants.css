@@ -1,6 +1,6 @@
 
 // z-indexes :: view structure
-$event-mirror-z: 1;
+// $event-mirror-z: 1; -- already inlined or stripped
 // $now-indicator-z: 2; -- already inlined
 $sticky-header-footer-z: 3;
 // $popover-z: 4; -- already inlined

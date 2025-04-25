@@ -28,6 +28,7 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
           // see note in TimeGridCol on why we use flexbox
           props.isLiquid && 'fc-liquid',
         )}
+        hitClassName='fc-hit-x'
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
       />
     )

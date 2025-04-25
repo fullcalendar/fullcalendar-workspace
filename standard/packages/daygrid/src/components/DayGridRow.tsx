@@ -304,6 +304,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           }
         >
           <StandardEvent
+            hitClassName='fc-hit-y'
             eventRange={eventRange}
             isStart={seg.isStart}
             isEnd={seg.isEnd}

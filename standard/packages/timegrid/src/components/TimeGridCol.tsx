@@ -165,13 +165,15 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 className='fc-timegrid-day-misc fc-fill-top'
               />
             )}
-            {/* has a z-index to contain all event z-indexes  */}
-            <div className={joinArrayishClassNames(
-              options.dayLaneInnerClassNames,
-              (props.forPrint && simplifiedTimeGridPrint)
-                ? 'fc-timegrid-day-events-simple'
-                : 'fc-fill',
-            )}>
+            <div
+              className={joinArrayishClassNames(
+                options.dayLaneInnerClassNames,
+                (props.forPrint && simplifiedTimeGridPrint)
+                  ? 'fc-timegrid-day-events-simple'
+                  : 'fc-fill',
+              )}
+              style={{ zIndex: 1 }} // scope event z-indexes
+            >
               {this.renderFgSegs(
                 sortedFgSegs,
                 interactionAffectedInstances,
@@ -181,12 +183,14 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               )}
             </div>
             {Boolean(mirrorSegs.length) && (
-              // has natural z-index to be above other fg container,
               // but only show it when there are actual mirror events, to avoid blocking clicks
-              <div className={joinArrayishClassNames(
-                options.dayLaneInnerClassNames,
-                'fc-fill',
-              )}>
+              <div
+                className={joinArrayishClassNames(
+                  options.dayLaneInnerClassNames,
+                  'fc-fill',
+                )}
+                style={{ zIndex: 1 }} // scope event z-indexes
+              >
                 {this.renderFgSegs(
                   mirrorSegs,
                   {},

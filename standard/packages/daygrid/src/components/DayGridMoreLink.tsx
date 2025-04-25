@@ -67,6 +67,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
                     }}
                   >
                     <StandardEvent
+                      hitClassName='fc-hit-y'
                       eventRange={eventRange}
                       isStart={seg.isStart}
                       isEnd={seg.isEnd}
