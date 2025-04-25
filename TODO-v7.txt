@@ -173,10 +173,6 @@ css:
   Change???
     .fc-timegrid-allday-label-inner -> .fc-timegrid-allday-label .fc-cell-inner
     .fc-timegrid-axis-inner         -> .fc-timegrid-axis .fc-cell-inner
-  use .fc-cell everywhere? .fc-row too? what's the objective?
-    update to include list-view, which uses th/td as well
-      put .fc-header-cell on days?
-      have left-to-right items be .fc-cell-inner?
 
 docs & site:
   talk about updateSize doesn't needed because of ResizeObserver

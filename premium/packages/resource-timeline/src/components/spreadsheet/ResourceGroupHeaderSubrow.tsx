@@ -67,7 +67,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
             'aria-colspan': props.colSpan,
             'aria-expanded': props.isExpanded,
           }}
-          className='fc-cell fc-liquid'
+          className='fc-tight fc-liquid'
           renderProps={renderProps}
           generatorName="resourceGroupHeaderContent"
           customGenerator={spec.labelContent}
@@ -80,7 +80,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
             <div
               ref={this.innerElRef}
               className={joinClassNames(
-                "fc-cell-inner fc-flex-row fc-align-center",
+                "fc-rigid fc-flex-row fc-align-center",
                 generateClassName(spec.labelInnerClassNames, renderProps),
               )}
             >

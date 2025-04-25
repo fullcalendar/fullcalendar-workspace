@@ -40,7 +40,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         }}
         // fc-rel for resizer abs positioning
         className={joinClassNames(
-          'fc-header-cell fc-cell fc-flex-col fc-justify-center fc-rel',
+          'fc-tight fc-flex-col fc-justify-center fc-rel',
           props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
         )}
         style={{
@@ -61,7 +61,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
             <div
               ref={this.innerElRef}
               className={joinArrayishClassNames(
-                'fc-cell-inner fc-flex-row fc-align-center',
+                'fc-rigid fc-flex-row fc-align-center',
                 generateClassName(colSpec.headerInnerClassNames, renderProps),
               )}
             >

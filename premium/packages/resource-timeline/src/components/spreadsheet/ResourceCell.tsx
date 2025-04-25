@@ -51,7 +51,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           'aria-expanded': (colSpec.isMain && props.hasChildren) ? props.isExpanded : undefined,
         }}
         className={joinClassNames(
-          'fc-cell',
+          'fc-tight',
           props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
         )}
         style={{
@@ -71,7 +71,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           <div
             ref={this.innerElRef}
             className={joinClassNames(
-              "fc-cell-inner fc-flex-row fc-align-center",
+              "fc-rigid fc-flex-row fc-align-center",
               generateClassName(colSpec.cellInnerClassNames, renderProps),
             )}
           >

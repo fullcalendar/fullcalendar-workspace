@@ -73,7 +73,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
             'aria-rowspan': props.rowSpan,
           }}
           className={joinClassNames(
-            'fc-cell fc-liquid',
+            'fc-tight fc-liquid',
             props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
           )}
           renderProps={renderProps}
@@ -88,7 +88,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
             <InnerContent
               tag="div"
               className={joinClassNames(
-                'fc-cell-inner fc-sticky-t',
+                'fc-rigid fc-sticky-t',
                 generateClassName(colSpec.cellInnerClassNames, renderProps),
               )}
               elRef={this.innerElRef}

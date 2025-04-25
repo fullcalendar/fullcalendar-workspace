@@ -69,7 +69,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         // fc-align-start shrinks width of InnerContent
         className={joinClassNames(
           'fc-timeline-slot',
-          'fc-timeline-slot-lane fc-cell fc-flex-col fc-align-start',
+          'fc-timeline-slot-lane fc-tight fc-flex-col fc-align-start',
           props.borderStart ? 'fc-border-only-s' : 'fc-border-none',
         )}
         attrs={{
@@ -93,7 +93,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           <InnerContent
             tag="div"
             className={joinArrayishClassNames(
-              'fc-cell-inner',
+              'fc-rigid',
               options.slotLaneInnerClassNames,
             )}
             style={{

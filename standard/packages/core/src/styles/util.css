@@ -27,10 +27,6 @@ $sticky-header-footer-z: 3;
   cursor: not-allowed;
 }
 
-.fc-no-padding { // TODO: use more elsewhere
-  padding: 0 !important;
-}
-
 .fc-no-scrollbars {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
@@ -227,12 +223,20 @@ Rarely used. Just inline this?
 // Table Utils
 // -------------------------------------------------------------------------------------------------
 
-.fc-cell { /* fc-tight... should be on row too??? */
+.fc-tight {
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.fc-cell-inner { /* fc-rigid ? */
+.fc-no-padding {
+  padding: 0 !important;
+}
+
+.fc-no-margin { // used?
+  margin: 0 !important;
+}
+
+.fc-rigid {
   flex-shrink: 0; // so that cell (whose height is controlled by the row) does not compress
   white-space: nowrap;
   overflow: hidden; // should this be on here?

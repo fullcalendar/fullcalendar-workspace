@@ -63,7 +63,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     let renderProps = this.createRenderProps(props.date, props.time, !props.isLabeled, labelFormat, context)
 
     let className = joinClassNames(
-      'fc-header-cell fc-cell',
+      'fc-tight',
       props.isLiquid ? 'fc-liquid' : 'fc-content-box',
       props.borderTop ? 'fc-border-only-t' : 'fc-border-none',
     )
@@ -100,7 +100,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
           <InnerContent
             tag="div"
             className={joinClassNames(
-              'fc-cell-inner',
+              'fc-rigid',
               generateClassName(options.slotLabelInnerClassNames, renderProps),
             )}
             elRef={this.innerElRef}

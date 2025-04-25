@@ -31,7 +31,7 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
         attrs={{
           role: 'rowheader',
         }}
-        className='fc-cell fc-content-box'
+        className='fc-tight fc-content-box'
         style={{
           width: props.width,
         }}
@@ -47,7 +47,7 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
           <InnerContent
             tag="span"
             className={joinClassNames(
-              'fc-cell-inner',
+              'fc-rigid',
               generateClassName(options.allDayHeaderInnerClassNames, renderProps),
             )}
             elRef={this.innerElRef}
