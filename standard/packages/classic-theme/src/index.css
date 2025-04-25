@@ -134,6 +134,16 @@ callers must choose pointing-left/right be setting left/right border to zero
   background: var(--fc-neutral-bg-color);
 }
 
+.fc-padding-sm {
+  padding: 2px 4px;
+}
+.fc-padding-md {
+  padding: 4px 5px;
+}
+.fc-padding-lg {
+  padding: 8px;
+}
+
 // Popover
 // -------------------------------------------------------------------------------------------------
 

@@ -47,7 +47,7 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
           <InnerContent
             tag="span"
             className={joinClassNames(
-              'fc-cell-inner fc-padding-sm',
+              'fc-cell-inner',
               generateClassName(options.allDayHeaderInnerClassNames, renderProps),
             )}
             elRef={this.innerElRef}

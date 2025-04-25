@@ -11,6 +11,7 @@ const PLUGIN_SPECIFIC_SETTINGS: any = {
     'fc-day-header-cell',
     ...getDayClassNames(arg)
   ],
+  dayHeaderInnerClassNames: 'fc-padding-sm',
   dayRowClassNames: 'fc-day-row',
   dayCellClassNames: (arg) => [
     'fc-day-cell',
@@ -30,6 +31,7 @@ const PLUGIN_SPECIFIC_SETTINGS: any = {
   resourceGroupHeaderClassNames: 'fc-resource-group-header',
   resourceGroupLaneClassNames: 'fc-resource-group-lane',
   resourceDayHeaderClassNames: 'fc-resource-day-header',
+  resourceDayHeaderInnerClassNames: 'fc-padding-sm',
   resourceCellClassNames: 'fc-resource-cell',
   singleMonthClassNames: (arg) => [
     'fc-single-month',
@@ -156,12 +158,15 @@ export default createPlugin({
       arg.isSimple && 'fc-day-lane-inner-simple',
     ],
     allDayHeaderClassNames: 'fc-all-day-header',
-    allDayHeaderInnerClassNames: 'fc-all-day-header-inner',
+    allDayHeaderInnerClassNames: 'fc-all-day-header-inner fc-padding-sm',
     timelineBottomClassNames: 'fc-timeline-bottom',
     resourceLaneBottomClassNames: (arg) => [
       'fc-resource-lane-bottom',
       arg.isCompact && 'fc-resource-lane-bottom-compact',
     ],
+    resourceAreaHeaderInnerClassNames: 'fc-padding-lg',
+    resourceCellInnerClassNames: 'fc-padding-lg',
+    resourceGroupHeaderInnerClassNames: 'fc-padding-lg',
     ...PLUGIN_SPECIFIC_SETTINGS,
   },
   views: {
@@ -186,9 +191,9 @@ export default createPlugin({
       allDayHeaderClassNames: 'fc-timegrid-axis',
       allDayHeaderInnerClassNames: 'fc-timegrid-axis-inner',
       weekNumberClassNames: 'fc-timegrid-axis',
-      weekNumberInnerClassNames: 'fc-timegrid-axis-inner',
+      weekNumberInnerClassNames: 'fc-timegrid-axis-inner fc-padding-sm',
       slotLabelClassNames: 'fc-timegrid-axis',
-      slotLabelInnerClassNames: 'fc-timegrid-axis-inner',
+      slotLabelInnerClassNames: 'fc-timegrid-axis-inner fc-padding-sm',
       moreLinkClassNames: 'fc-timegrid-more-link',
       moreLinkInnerClassNames: 'fc-timegrid-more-link-inner',
       nowIndicatorLabelClassNames: 'fc-timegrid-now-indicator-label',
@@ -218,6 +223,7 @@ export default createPlugin({
       moreLinkInnerClassNames: 'fc-timeline-more-link-inner',
       nowIndicatorLabelClassNames: 'fc-timeline-now-indicator-label',
       nowIndicatorLineClassNames: 'fc-timeline-now-indicator-line',
+      slotLabelInnerClassNames: 'fc-padding-md',
     },
     resourceDayGrid: {
       viewClassNames: 'fc-resource-daygrid', // also inherits dayGrid

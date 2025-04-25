@@ -100,7 +100,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
           <InnerContent
             tag="div"
             className={joinClassNames(
-              'fc-cell-inner fc-padding-sm',
+              'fc-cell-inner',
               generateClassName(options.slotLabelInnerClassNames, renderProps),
             )}
             elRef={this.innerElRef}

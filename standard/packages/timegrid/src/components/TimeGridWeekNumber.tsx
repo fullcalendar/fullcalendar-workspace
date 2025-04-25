@@ -70,7 +70,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
                 : { 'aria-label': fullDateStr }
             }
             className={joinArrayishClassNames(
-              'fc-cell-inner fc-padding-sm',
+              'fc-cell-inner',
               options.weekNumberInnerClassNames,
             )}
             elRef={this.innerElRef}

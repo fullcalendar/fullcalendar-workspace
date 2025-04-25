@@ -319,17 +319,6 @@ Only needed when padding/border must be separate from width/height
 
 // TODO: add the no-margin, no-padding utils
 
-// TODO: get these out of here!!!
-.fc-padding-sm {
-  padding: 2px 4px;
-}
-.fc-padding-md {
-  padding: 4px 5px;
-}
-.fc-padding-lg {
-  padding: 8px;
-}
-
 .fc-justify-center {
   justify-content: center;
 }

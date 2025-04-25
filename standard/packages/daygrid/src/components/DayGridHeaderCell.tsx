@@ -59,7 +59,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
             tag='div'
             attrs={dataConfig.innerAttrs}
             className={joinClassNames(
-              'fc-cell-inner fc-flex-col fc-padding-sm',
+              'fc-cell-inner fc-flex-col',
               props.isSticky && 'fc-sticky-s',
               generateClassName(renderConfig.innerClassNameGenerator, dataConfig.renderProps),
             )}

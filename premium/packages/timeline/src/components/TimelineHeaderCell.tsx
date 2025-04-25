@@ -106,7 +106,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
                 : {} // don't bother with aria-hidden because parent already hidden
             }
             className={joinClassNames(
-              'fc-cell-inner fc-padding-md',
+              'fc-cell-inner',
               props.isSticky && 'fc-sticky-s',
               generateClassName(options.slotLabelInnerClassNames, renderProps),
             )}

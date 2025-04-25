@@ -61,7 +61,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
             <div
               ref={this.innerElRef}
               className={joinArrayishClassNames(
-                'fc-cell-inner fc-padding-lg fc-flex-row fc-align-center',
+                'fc-cell-inner fc-flex-row fc-align-center',
                 generateClassName(colSpec.headerInnerClassNames, renderProps),
               )}
             >

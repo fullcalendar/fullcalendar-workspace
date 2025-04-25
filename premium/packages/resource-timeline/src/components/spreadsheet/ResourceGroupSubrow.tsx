@@ -88,7 +88,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
             <InnerContent
               tag="div"
               className={joinClassNames(
-                'fc-cell-inner fc-padding-lg fc-sticky-t',
+                'fc-cell-inner fc-sticky-t',
                 generateClassName(colSpec.cellInnerClassNames, renderProps),
               )}
               elRef={this.innerElRef}

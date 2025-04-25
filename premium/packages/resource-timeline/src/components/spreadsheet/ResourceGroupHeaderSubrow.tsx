@@ -80,7 +80,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
             <div
               ref={this.innerElRef}
               className={joinClassNames(
-                "fc-cell-inner fc-padding-lg fc-flex-row fc-align-center",
+                "fc-cell-inner fc-flex-row fc-align-center",
                 generateClassName(spec.labelInnerClassNames, renderProps),
               )}
             >
