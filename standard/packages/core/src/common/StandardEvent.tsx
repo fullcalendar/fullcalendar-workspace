@@ -35,6 +35,7 @@ export interface StandardEventProps {
   defaultDisplayEventTime?: boolean // default true
   defaultDisplayEventEnd?: boolean // default true
   isListItem?: boolean // default false
+  isCompact?: boolean // default false
   isSpacious?: boolean // default false
   forcedTimeText?: string
 }
@@ -92,6 +93,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isDragging: Boolean(props.isDragging),
       isResizing: Boolean(props.isResizing),
       isListItem: props.isListItem || false,
+      isCompact: props.isCompact || false,
       isSpacious: props.isSpacious || false,
       timeClassName: joinArrayishClassNames(options.eventTimeClassNames),
       titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi }),

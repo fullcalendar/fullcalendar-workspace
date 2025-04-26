@@ -54,6 +54,8 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       isSelected: false,
       isDragging: false,
       isResizing: false,
+      isCompact: false,
+      isSpacious: false,
       isListItem: false,
       timeClassName: '', // never display time
       titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi }),

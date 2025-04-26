@@ -9,7 +9,7 @@ const DEFAULT_TIME_FORMAT = createFormatter({
 
 export interface TimeGridEventProps extends MinimalEventProps {
   isInset: boolean
-  isShort: boolean
+  isCompact: boolean
   isLiquid?: boolean
 }
 
@@ -21,9 +21,8 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
       <StandardEvent
         {...props}
         axis='y'
+        isCompact={props.isCompact}
         className={joinClassNames(
-          // TODO: move to theme system somehow
-          props.isShort && 'fc-timegrid-event-short',
           props.isInset && 'fc-timegrid-event-inset',
 
           // see note in TimeGridCol on why we use flexbox

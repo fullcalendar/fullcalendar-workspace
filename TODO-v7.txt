@@ -117,7 +117,7 @@ have theme define col-resizer. see notes
 the event background "dimmer" goes over event time accidentally
 in timegrid, touch-selected event doesn't go above other. supposed to?
 deal with fci- elements
-fc-timegrid-event-short
+changelog: eventShortHeight (ever documented?) -> eventCompactHeight
 fc-timegrid-event-inset
 
 package.json for classic-theme

@@ -233,11 +233,11 @@ export interface EventContentArg { // for *Content handlers
   isResizing: boolean
   view: ViewApi // specifically for the API
 
-  // TODO: make required!
-  isSpacious?: boolean
-  isListItem?: boolean
-  timeClassName?: string
-  titleClassName?: string
+  isCompact: boolean
+  isSpacious: boolean
+  isListItem: boolean
+  timeClassName: string
+  titleClassName: string
 }
 
 export type EventMountArg = MountArg<EventContentArg>

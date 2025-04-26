@@ -287,7 +287,7 @@ export const BASE_OPTION_REFINERS = {
   eventMaxStack: Number,
   eventMinHeight: Number,
   eventMinWidth: Number,
-  eventShortHeight: Number,
+  eventCompactHeight: Number,
   slotEventOverlap: Boolean,
   plugins: identity as Identity<PluginDef[]>,
   firstDay: Number,
@@ -423,7 +423,7 @@ export const BASE_OPTION_DEFAULTS = {
   selectable: false,
   eventMinHeight: 15,
   eventMinWidth: 30,
-  eventShortHeight: 30,
+  eventCompactHeight: 30,
   monthStartFormat: { month: 'long', day: 'numeric' },
   dayCellFormat: { day: 'numeric' },
   headingLevel: 2, // like H2

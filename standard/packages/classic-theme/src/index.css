@@ -825,20 +825,15 @@ Sooo, it has a box-shadow to visually separate from other events
   margin-bottom: 1px;
 }
 
-/*
-TODO: eventCompactHeight
-TODO: eventCompactClassNames
-What is the `isSpacious` EventContentArg property doing???
-*/
-// SHORT variation --- HACK --- TODO: move className generation to theme
-.fc-timegrid-event-short .fc-event-inner {
+// SHORT variation
+.fc-timegrid-event-compact .fc-event-inner {
   flex-direction: row; // overrides fc-event-x!
   overflow: hidden;
 }
-.fc-timegrid-event-short .fc-event-time:after {
+.fc-timegrid-event-compact .fc-event-time:after {
   content: '\00a0-\00a0'; // dash surrounded by non-breaking spaces
 }
-.fc-timegrid-event-short .fc-event-title {
+.fc-timegrid-event-compact .fc-event-title {
   font-size: var(--fc-small-font-size);
 }
 

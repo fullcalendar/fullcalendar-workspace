@@ -12,7 +12,7 @@ export interface TimeGridSegVertical {
   start: number // pixels
   end: number // pixels
   size: number // pixels
-  isShort: boolean
+  isCompact: boolean
 }
 
 export function computeFgSegVerticals(
@@ -22,7 +22,7 @@ export function computeFgSegVerticals(
   slatCnt: number,
   slatHeight: number | undefined, // in pixels
   eventMinHeight: number | undefined, // in pixels
-  eventShortHeight?: number, // in pixels
+  eventCompactHeight: number, // in pixels
 ): TimeGridSegVertical[] {
   const res: TimeGridSegVertical[] = []
 
@@ -45,7 +45,7 @@ export function computeFgSegVerticals(
         start: startCoord,
         end: endCoord,
         size: height,
-        isShort: eventShortHeight != null && height < eventShortHeight
+        isCompact: height <= eventCompactHeight
       })
     }
   }

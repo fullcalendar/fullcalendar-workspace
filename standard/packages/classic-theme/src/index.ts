@@ -179,11 +179,12 @@ export default createPlugin({
     timeGrid: {
       viewClassNames: 'fc-timegrid',
       slotLabelDividerClassNames: 'fc-timegrid-slot-label-divider',
-      eventClassNames: (arg) => (
+      eventClassNames: (arg) => [
         arg.event.allDay ? getDayGridEventClassNames(arg) :
-        arg.event.display === 'background' ? '' :
-        'fc-timegrid-event fc-event-y'
-      ),
+          arg.event.display === 'background' ? '' :
+            'fc-timegrid-event fc-event-y',
+        arg.isCompact && 'fc-timegrid-event-compact',
+      ],
       eventColorClassNames: (arg) => (
         arg.event.allDay ? getDayGridEventColorClassNames(arg) : ''
       ),

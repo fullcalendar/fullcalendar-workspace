@@ -228,7 +228,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   ) {
     let { props, context } = this
     let { date, dateProfile, eventSelection, todayRange, nowDate } = props
-    let { eventMaxStack, eventShortHeight, eventOrderStrict, eventMinHeight } = context.options
+    let { eventMaxStack, eventCompactHeight, eventOrderStrict, eventMinHeight } = context.options
 
     // TODO: memoize this?
     let segVerticals = computeFgSegVerticals(
@@ -238,7 +238,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       props.slatCnt,
       props.slatHeight,
       eventMinHeight,
-      eventShortHeight,
+      eventCompactHeight,
     )
     let [segRects, hiddenGroups] = buildWebPositioning(segs, segVerticals, eventOrderStrict, eventMaxStack)
     let isMirror = isDragging || isResizing || isDateSelecting
@@ -281,7 +281,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 isResizing={isResizing}
                 isDateSelecting={isDateSelecting}
                 isSelected={instanceId === eventSelection}
-                isShort={segVertical.isShort || false}
+                isCompact={segVertical.isCompact || false}
                 isInset={isInset}
                 isLiquid
                 {...getEventRangeMeta(eventRange, todayRange, nowDate)}
@@ -332,6 +332,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       props.slatCnt,
       props.slatHeight,
       context.options.eventMinHeight,
+      0, // eventCompactHeight
     )
 
     return (
@@ -458,7 +459,7 @@ export function renderPlainFgSegs(
               isResizing={false}
               isDateSelecting={false}
               isSelected={instanceId === eventSelection}
-              isShort={false}
+              isCompact={false}
               isInset={false}
               {...getEventRangeMeta(eventRange, todayRange, nowDate)}
             />
