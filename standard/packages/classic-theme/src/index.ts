@@ -16,6 +16,7 @@ const PLUGIN_SPECIFIC_SETTINGS: any = {
   dayCellClassNames: (arg) => [
     'fc-day-cell',
     ...getDayClassNames(arg),
+    arg.isCompact ? 'fc-day-cell-compact' : 'fc-day-cell-not-compact',
   ],
   dayCellTopClassNames: 'fc-day-cell-top',
   dayCellTopInnerClassNames: (arg) => [
@@ -100,9 +101,7 @@ export default createPlugin({
       expand: () => svgIcons.plusSquare,
       collapse: () => svgIcons.minusSquare,
     },
-    dayNarrowWidth: 70,
-    dayNarrowClassNames: 'fc-day-narrow',
-    dayNotNarrowClassNames: 'fc-day-not-narrow',
+    dayCompactWidth: 70,
     eventClassNames: (arg) => [
       arg.event.display === 'background' && 'fc-bg-event',
       'fc-event',

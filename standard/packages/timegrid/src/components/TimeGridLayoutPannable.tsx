@@ -1,6 +1,6 @@
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Ruler, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, FooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef, generateClassName, joinArrayishClassNames } from "@fullcalendar/core/internal"
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
-import { DayGridHeaderRow, RowConfig, computeColWidth, getDayNarrowClassName } from '@fullcalendar/daygrid/internal'
+import { DayGridHeaderRow, RowConfig, computeColWidth } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridRange } from "../TimeColsSeg.js"
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -304,7 +304,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       forPrint={forPrint}
                       isHitComboAllowed={props.isHitComboAllowed}
                       className='fcu-border-none'
-                      cellClassName={getDayNarrowClassName(clientWidth, colCnt, options)}
+                      cellIsCompact={clientWidth / colCnt <= options.dayCompactWidth}
 
                       // content
                       fgEventSegs={props.fgEventSegs}

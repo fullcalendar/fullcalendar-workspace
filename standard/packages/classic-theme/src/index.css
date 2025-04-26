@@ -826,7 +826,7 @@ Sooo, it has a box-shadow to visually separate from other events
 }
 
 /*
-TODO: eventCompactHeight (TODO: rename dayNarrowWidth -> dayCompactWidth?)
+TODO: eventCompactHeight
 TODO: eventCompactClassNames
 What is the `isSpacious` EventContentArg property doing???
 */
@@ -1003,11 +1003,11 @@ a.fc-list-event:hover .fc-event-title {
   }
 }
 
-.fc-day-not-narrow .fc-daygrid-more-link { // (button)
+.fc-day-cell-not-compact .fc-daygrid-more-link { // (button)
   align-self: flex-start;
 }
 
-.fc-day-narrow .fc-daygrid-more-link { // (block)
+.fc-day-cell-compact .fc-daygrid-more-link { // (block)
   // looks like an event
   border: 1px solid var(--fc-event-border-color);
   padding: 1px;

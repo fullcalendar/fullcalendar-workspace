@@ -20,7 +20,6 @@ import {
   buildDateStr,
   buildNavLinkAttrs,
   joinArrayishClassNames,
-  joinClassNames,
   renderText,
   ContentContainer,
   StandardEvent,
@@ -42,7 +41,7 @@ export interface DayGridRowProps {
   dateProfile: DateProfile
   todayRange: DateRange
   cells: DayTableCell[]
-  cellClassName?: string // in addition to each cell.className
+  cellIsCompact: boolean
   showDayNumbers: boolean
   showWeekNumbers?: boolean
   forPrint: boolean
@@ -206,6 +205,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               isMajor={cell.isMajor}
               showDayNumber={props.showDayNumbers}
               isTall={props.isTall}
+              isCompact={props.cellIsCompact}
               borderStart={Boolean(col)}
 
               // content
@@ -225,7 +225,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               renderProps={cell.renderProps}
               dateSpanProps={cell.dateSpanProps}
               attrs={cell.attrs}
-              className={joinClassNames(cell.className, props.cellClassName)}
+              className={cell.className}
 
               // dimensions
               fgHeight={heightsByCol[col]}

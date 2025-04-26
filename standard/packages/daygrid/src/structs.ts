@@ -13,6 +13,7 @@ export type DayHeaderMountArg = MountArg<DayHeaderContentArg>
 export interface DayCellContentArg extends DateMeta {
   date: DateMarker // localized
   isMajor: boolean
+  isCompact: boolean
   view: ViewApi
   dayNumberText: string
   [extraProp: string]: any // so can include a resource

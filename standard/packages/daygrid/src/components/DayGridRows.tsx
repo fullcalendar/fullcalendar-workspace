@@ -13,7 +13,6 @@ import {
   EventRangeProps,
   joinClassNames,
   ViewOptionsRefined,
-  joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
@@ -113,7 +112,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cells={cells}
-            cellClassName={getDayNarrowClassName(props.visibleWidth, colCnt, options)}
+            cellIsCompact={props.visibleWidth / colCnt <= options.dayCompactWidth}
             showDayNumbers={rowCnt > 1}
             showWeekNumbers={rowCnt > 1 && options.weekNumbers}
             forPrint={props.forPrint}
@@ -235,16 +234,4 @@ export function computeRowBasis(
   }
 
   return 0
-}
-
-export function getDayNarrowClassName(
-  visibleWidth: number,
-  colCnt: number,
-  options: ViewOptionsRefined,
-): string {
-  return joinArrayishClassNames(
-    visibleWidth / colCnt <= options.dayNarrowWidth
-      ? options.dayNarrowClassNames
-      : options.dayNotNarrowClassNames
-  )
 }
