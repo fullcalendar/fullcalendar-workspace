@@ -120,6 +120,11 @@ deal with fci- elements
 changelog: eventShortHeight (ever documented?) -> eventCompactHeight
 future plan: give non-zero `level` for EventContentArg for all views, not just timegrid
 
+way to search for fc- classnames:
+  query: fc-
+  include: standard,premium
+  exclude: *Wrapper*,*.txt,*.md,classic-theme,dist,*.html,bootstrap5,tests
+
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files
 
