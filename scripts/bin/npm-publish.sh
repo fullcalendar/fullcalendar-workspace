@@ -49,7 +49,6 @@ declare -a publish_dirs=( \
   "$root_dir/contrib/react" \
   "$root_dir/contrib/angular" \
   "$root_dir/contrib/vue3" \
-  "$root_dir/contrib/vue2" \
 )
 
 for publish_dir in ${publish_dirs[@]}; do

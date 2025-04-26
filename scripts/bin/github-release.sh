@@ -10,7 +10,6 @@ declare -a tag_dirs=( \
   "$root_dir/standard" \
   "$root_dir/contrib/angular" \
   "$root_dir/contrib/react" \
-  "$root_dir/contrib/vue2" \
   "$root_dir/contrib/vue3" \
   "$root_dir" \
 )
@@ -26,7 +25,6 @@ declare -a release_repos=( \
   "fullcalendar/fullcalendar-angular" \
   "fullcalendar/fullcalendar-react" \
   "fullcalendar/fullcalendar-vue" \
-  "fullcalendar/fullcalendar-vue2" \
   "fullcalendar/fullcalendar-workspace" \
 )
 

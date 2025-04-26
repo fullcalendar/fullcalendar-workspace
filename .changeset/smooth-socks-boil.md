@@ -25,7 +25,6 @@
 "@fullcalendar/daygrid": patch
 "@fullcalendar-examples/moment-timezone": patch
 "@fullcalendar-examples/react-scheduler": patch
-"@fullcalendar-examples/vue2-typescript": patch
 "@fullcalendar-examples/vue3-typescript": patch
 "@fullcalendar/luxon3": patch
 "@fullcalendar/moment": patch
@@ -48,7 +47,6 @@
 "@fullcalendar-examples/angular17": patch
 "@fullcalendar-examples/angular18": patch
 "@fullcalendar-examples/react-cjs": patch
-"@fullcalendar-examples/vue2-vuex": patch
 "@fullcalendar-examples/locales": patch
 "@fullcalendar-examples/react16": patch
 "@fullcalendar-examples/react17": patch
@@ -67,7 +65,6 @@
 "@fullcalendar-tests/standard": patch
 "@fullcalendar/react": patch
 "@fullcalendar-examples/next": patch
-"@fullcalendar-examples/vue2": patch
 "@fullcalendar-examples/vue3": patch
 "@fullcalendar-tests/premium": patch
 "@fullcalendar/vue": patch

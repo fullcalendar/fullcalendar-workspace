@@ -1,9 +1,0 @@
-
-# Package manager
-node_modules
-
-# Generated
-dist
-
-# Outer monorepo
-.turbo
