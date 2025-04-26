@@ -22,8 +22,6 @@
 "@fullcalendar/google-calendar": major
 "@fullcalendar/icalendar": major
 "@fullcalendar/interaction": major
-"@fullcalendar/luxon": major
-"@fullcalendar/luxon2": major
 "@fullcalendar/luxon3": major
 "@fullcalendar/moment": major
 "@fullcalendar/moment-timezone": major

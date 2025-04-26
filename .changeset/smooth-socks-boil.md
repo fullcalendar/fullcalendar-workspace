@@ -27,8 +27,6 @@
 "@fullcalendar-examples/react-scheduler": patch
 "@fullcalendar-examples/vue2-typescript": patch
 "@fullcalendar-examples/vue3-typescript": patch
-"@fullcalendar/luxon": patch
-"@fullcalendar/luxon2": patch
 "@fullcalendar/luxon3": patch
 "@fullcalendar/moment": patch
 "@fullcalendar-examples/angular15-ngrx": patch

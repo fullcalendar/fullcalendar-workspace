@@ -72,8 +72,6 @@
     "@fullcalendar/icalendar": "7.0.0-beta.4",
     "@fullcalendar/interaction": "7.0.0-beta.4",
     "@fullcalendar/list": "7.0.0-beta.4",
-    "@fullcalendar/luxon": "7.0.0-beta.4",
-    "@fullcalendar/luxon2": "7.0.0-beta.4",
     "@fullcalendar/luxon3": "7.0.0-beta.4",
     "@fullcalendar/moment": "7.0.0-beta.4",
     "@fullcalendar/moment-timezone": "7.0.0-beta.4",

@@ -119,6 +119,7 @@ in timegrid, touch-selected event doesn't go above other. supposed to?
 deal with fci- elements
 changelog: eventShortHeight (ever documented?) -> eventCompactHeight
 future plan: give non-zero `level` for EventContentArg for all views, not just timegrid
+changelog: remove luxon1/2
 
 way to search for fc- classnames:
   query: fc-
