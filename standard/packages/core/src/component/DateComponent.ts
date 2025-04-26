@@ -39,13 +39,13 @@ export abstract class DateComponent<Props=Dictionary, State=Dictionary> extends 
   isValidSegDownEl(el: HTMLElement) {
     return !(this.props as any).eventDrag && // HACK
       !(this.props as any).eventResize && // HACK
-      !el.closest('.fc-event-mirror')
+      !el.closest('.fci-event-mirror')
   }
 
   isValidDateDownEl(el: HTMLElement) {
-    return !el.closest('.fc-event:not(.fc-bg-event)') &&
-      !el.closest('.fc-more-link') && // a "more.." link
-      !el.closest('.fc-navlink') && // a clickable nav link
-      !el.closest('.fc-popover') // hack
+    return !el.closest('.fci-event:not(.fci-bg-event)') &&
+      !el.closest('.fci-more-link') && // a "more.." link
+      !el.closest('.fci-navlink') && // a clickable nav link
+      !el.closest('.fci-popover') // hack
   }
 }

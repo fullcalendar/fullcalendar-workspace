@@ -40,7 +40,7 @@ export interface EventDragArg {
 export class EventDragging extends Interaction { // TODO: rename to EventSelectingAndDragging
   // TODO: test this in IE11
   // QUESTION: why do we need it on the resizable???
-  static SELECTOR = '.fc-event-draggable, .fc-event-resizable'
+  static SELECTOR = '.fci-event-draggable, .fci-event-resizable'
 
   dragging: FeaturefulElementDragging
   hitDragging: HitDragging
@@ -109,7 +109,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
 
     let isValid =
       component.isValidSegDownEl(origTarget) &&
-      !origTarget.closest('.fc-event-resizer') // NOT on a resizer
+      !origTarget.closest('.fci-event-resizer') // NOT on a resizer
 
     if (!isValid) {
       dragging.cancel()
@@ -117,7 +117,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
       // disable dragging for elements that are resizable (ie, selectable)
       // but are not draggable
       // TODO: merge this with .cancel() ?
-      this.isDragging = (ev.subjectEl as HTMLElement).classList.contains('fc-event-draggable')
+      this.isDragging = (ev.subjectEl as HTMLElement).classList.contains('fci-event-draggable')
     }
   }
 
@@ -224,7 +224,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
       // render the mirror if no already-rendered mirror
       // TODO: wish we could somehow wait for dispatch to guarantee render
       this.dragging.setMirrorIsVisible(
-        !hit || !(this.subjectEl.getRootNode() as ParentNode).querySelector('.fc-event-mirror'), // TODO: turn className into constant
+        !hit || !(this.subjectEl.getRootNode() as ParentNode).querySelector('.fci-event-mirror'), // TODO: turn className into constant
       )
 
       // assign states based on new hit

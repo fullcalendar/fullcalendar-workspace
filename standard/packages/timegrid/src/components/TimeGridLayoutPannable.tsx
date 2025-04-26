@@ -166,7 +166,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           <div
             className={joinClassNames(
               // see note in TimeGridLayout about why we don't do fcu-print-header
-              'fc-timegrid-header',
               stickyHeaderDates && 'fcu-table-header-sticky',
               generateClassName(options.viewHeaderClassNames, {
                 borderX: props.borderX,
@@ -274,7 +273,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               <div
                 role='row'
                 aria-rowindex={firstBodyRowIndex}
-                className='fc-timegrid-allday fcu-flex-row'
+                className='fcu-flex-row'
               >
                 {/* ALL-DAY / label
                 -----------------------------------------------------------------------------------*/}
@@ -341,8 +340,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             role='row'
             aria-rowindex={firstBodyRowIndex + (options.allDaySlot ? 1 : 0)}
             className={joinClassNames(
-              'fc-timegrid-body fcu-flex-row fcu-rel', // TODO: rename away from "body"? (because we have another "body" div above)
-              // fcu-rel for Ruler.fcu-fill-start
+              'fcu-flex-row fcu-rel', // fcu-rel for Ruler.fcu-fill-start
               verticalScrolling && 'fcu-liquid',
             )}
           >
@@ -371,7 +369,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     <div // label list
                       aria-hidden
                       className={joinClassNames(
-                        'fc-timegrid-slots-axis fcu-flex-col',
+                        'fcu-flex-col',
                         (verticalScrolling && options.expandRows) && 'fcu-grow',
                         absPrint && 'fcu-fill-x',
                       )}
@@ -482,7 +480,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       <div // slot list
                         aria-hidden
                         className={joinClassNames(
-                          'fc-timegrid-slots fcu-flex-col',
+                          'fcu-flex-col',
                           (verticalScrolling && options.expandRows) && 'fcu-grow',
                           absPrint ? 'fcu-fill-x' : 'fcu-rel',
                         )}

@@ -68,8 +68,8 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         tag="div"
         // fcu-align-start shrinks width of InnerContent
         className={joinClassNames(
-          'fc-timeline-slot',
-          'fc-timeline-slot-lane fcu-tight fcu-flex-col fcu-align-start',
+          'fci-timeline-slot',
+          'fcu-tight fcu-flex-col fcu-align-start',
           props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
         )}
         attrs={{

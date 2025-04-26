@@ -6,6 +6,7 @@ import { Dictionary } from '../options.js'
 import { getUniqueDomId } from '../util/dom-manip.js'
 import { formatWithOrdinals } from '../util/misc.js'
 import { createElement, Fragment, ComponentChild, RefObject } from '../preact.js'
+import { joinClassNames } from '../util/html.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { ViewApi } from '../api/ViewApi.js'
 import { ViewContext, ViewContextType } from '../ViewContext.js'
@@ -87,7 +88,10 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                 <ContentContainer
                   tag='div'
                   elRef={this.handleLinkEl}
-                  className={props.className}
+                  className={joinClassNames(
+                    'fci-more-link',
+                    props.className,
+                  )}
                   style={props.style}
                   attrs={{
                     ...props.attrs,
@@ -153,7 +157,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
 
   updateParentEl() {
     if (this.linkEl) {
-      this.parentEl = this.linkEl.closest('.fc-view-outer') // HACK. reconsider
+      this.parentEl = this.linkEl.closest('.fci-view-outer') // HACK. reconsider
     }
   }
 

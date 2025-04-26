@@ -27,7 +27,7 @@ import { createElement, createRef } from '@fullcalendar/core/preact'
 import { SingleMonth } from './SingleMonth.js'
 
 interface MultiMonthViewState {
-  innerWidth?: number // of .fc-multimonth-inner
+  innerWidth?: number
 }
 
 export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState> {
@@ -37,7 +37,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
 
   // ref
   private scrollerRef = createRef<Scroller>()
-  private innerElRef = createRef<HTMLDivElement>() // .fc-multimonth-inner
+  private innerElRef = createRef<HTMLDivElement>()
 
   // internal
   private disconnectInnerWidth?: () => void

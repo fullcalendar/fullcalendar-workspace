@@ -148,7 +148,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             : undefined // can't have label on non-role div
         }
         className={joinArrayishClassNames(
-          'fc-daygrid-row',
           props.forPrint && 'fcu-daygrid-row-print',
           'fcu-flex-row fcu-rel',
           props.className,

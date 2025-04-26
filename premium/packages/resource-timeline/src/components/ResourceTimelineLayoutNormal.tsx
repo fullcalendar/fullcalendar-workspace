@@ -330,7 +330,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               <div
                 role='rowgroup'
                 className={joinClassNames(
-                  'fc-datagrid-header fcu-flex-col',
+                  'fcu-flex-col',
                   stickyHeaderDates && 'fcu-table-header-sticky',
                   generateClassName(options.viewHeaderClassNames, {
                     borderX: props.borderX,
@@ -398,7 +398,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 horizontal
                 hideScrollbars
                 className={joinClassNames(
-                  'fc-datagrid-body fcu-flex-col fcu-rel', // fcu-rel needed for Ruler.fcu-fill-start
+                  'fcu-flex-col fcu-rel', // fcu-rel needed for Ruler.fcu-fill-start
                   verticalScrolling && 'fcu-liquid',
                   generateClassName(options.viewBodyClassNames, {
                     borderX: props.borderX,
@@ -465,7 +465,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {/* time-area HEADER
               ---------------------------------------------------------------------------- */}
               <div className={joinClassNames(
-                'fc-timeline-header',
                 stickyHeaderDates && 'fcu-table-header-sticky',
                 generateClassName(options.viewHeaderClassNames, {
                   borderX: props.borderX,
@@ -549,7 +548,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 horizontal
                 hideScrollbars={stickyFooterScrollbar /* FYI, this view is never print */}
                 className={joinClassNames(
-                  'fc-timeline-body fcu-flex-col fcu-rel', // fcu-rel for Ruler.fcu-fill-start
+                  'fcu-flex-col fcu-rel', // fcu-rel for Ruler.fcu-fill-start
                   verticalScrolling && 'fcu-liquid',
                 )}
                 ref={this.timeBodyScrollerRef}

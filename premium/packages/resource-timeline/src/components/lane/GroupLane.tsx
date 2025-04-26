@@ -49,7 +49,6 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
           'aria-expanded': props.expanded,
         }}
         className={joinClassNames(
-          'fc-resource-group fc-timeline-lane',
           'fcu-flex-row fcu-fill-x fcu-content-box',
           props.borderBottom
             ? 'fcu-border-only-b'

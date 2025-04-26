@@ -802,6 +802,10 @@ a.fc-event:hover { // (anchor:hover)
   margin-bottom: 1px; // give some space from bottom
 }
 
+/*
+FYI, "inset" means not at the rightmost edge of the column, and probably overlapping another event
+Sooo, it has a box-shadow to visually separate from other events
+*/
 .fc-timegrid-event-inset, // (inset) --- HACK --- TODO: move className generation to theme
 .fc-timegrid-event.fc-event-mirror { // (mirror)
   box-shadow: 0px 0px 0px 1px var(--fc-page-bg-color); // apply border w/o mass
@@ -821,17 +825,19 @@ a.fc-event:hover { // (anchor:hover)
   margin-bottom: 1px;
 }
 
+/*
+TODO: eventCompactHeight (TODO: rename dayNarrowWidth -> dayCompactWidth?)
+TODO: eventCompactClassNames
+What is the `isSpacious` EventContentArg property doing???
+*/
 // SHORT variation --- HACK --- TODO: move className generation to theme
-
 .fc-timegrid-event-short .fc-event-inner {
   flex-direction: row; // overrides fc-event-x!
   overflow: hidden;
 }
-
 .fc-timegrid-event-short .fc-event-time:after {
   content: '\00a0-\00a0'; // dash surrounded by non-breaking spaces
 }
-
 .fc-timegrid-event-short .fc-event-title {
   font-size: var(--fc-small-font-size);
 }

@@ -40,7 +40,6 @@ export abstract class ResourcefulDayTableModel extends AbstractResourceDayTableM
           let date = dayTableModel.cellRows[row][dateCol].date
           let renderProps = { resource: new ResourceApi(this.context, resource) }
           let attrs = { 'data-resource-id': resource.id }
-          let className = 'fc-resource'
           let dateSpanProps = { resourceId: resource.id }
           let realCol = this.computeCol(dateCol, resourceCol)
 
@@ -50,7 +49,7 @@ export abstract class ResourcefulDayTableModel extends AbstractResourceDayTableM
             isMajor: hasMajor && this.colIsMajor(realCol),
             renderProps,
             attrs,
-            className,
+            className: '', // kill this property?
             dateSpanProps,
           }
         }

@@ -73,7 +73,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
         className={joinArrayishClassNames(
           props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
           props.isCentered ? 'fcu-align-center' : 'fcu-align-start',
-          'fc-timeline-slot-label fc-timeline-slot',
+          'fci-timeline-slot',
           'fcu-tight fcu-flex-col fcu-justify-center',
         )}
         attrs={{

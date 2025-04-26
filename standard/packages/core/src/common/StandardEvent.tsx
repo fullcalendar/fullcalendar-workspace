@@ -111,6 +111,12 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
           props.className,
           ...eventUi.classNames,
           (eventRange.def.url || isDraggable) && 'fcu-cursor-pointer',
+          'fci-event',
+          renderProps.isMirror && 'fci-event-mirror',
+          renderProps.isDraggable && 'fci-event-draggable',
+          renderProps.isDragging && 'fci-event-dragging',
+          renderProps.isSelected && 'fci-event-selected',
+          (renderProps.isStartResizable || renderProps.isEndResizable) && 'fci-event-resizable',
         )}
         style={{
           borderColor: eventUi.borderColor,
@@ -138,7 +144,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
             {Boolean(renderProps.isStartResizable && props.axis != null) && (
               <div
                 className={joinArrayishClassNames(
-                  'fc-event-resizer fc-event-resizer-start', // these classnames required for dnd
+                  'fci-event-resizer fci-event-resizer-start', // these classnames required for dnd
                   options.eventResizerClassNames,
                   options.eventResizerStartClassNames,
                   props.axis === 'x' ? 'fcu-cursor-resize-s' : 'fcu-cursor-resize-t'
@@ -167,7 +173,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
             {Boolean(renderProps.isEndResizable && props.axis != null) && (
               <div
                 className={joinArrayishClassNames(
-                  "fc-event-resizer fc-event-resizer-end", // these classnames required for dnd
+                  'fci-event-resizer fci-event-resizer-end', // these classnames required for dnd
                   options.eventResizerClassNames,
                   options.eventResizerEndClassNames,
                   props.axis === 'x' ? 'fcu-cursor-resize-e' : 'fcu-cursor-resize-b'

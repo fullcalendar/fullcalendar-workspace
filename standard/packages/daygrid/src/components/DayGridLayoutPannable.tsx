@@ -98,7 +98,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             <Scroller
               horizontal
               hideScrollbars
-              className='fc-daygrid-header fcu-flex-row'
+              className='fcu-flex-row'
               ref={this.headerScrollerRef}
             >
               <DayGridHeader
@@ -127,7 +127,6 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             props.forPrint // prevents blank space in print-view on Safari
           }
           className={joinClassNames(
-            'fc-daygrid-body',
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345
             !props.forPrint && 'fcu-flex-col',

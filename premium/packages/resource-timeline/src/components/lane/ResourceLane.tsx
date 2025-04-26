@@ -79,7 +79,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
           'data-resource-id': resource.id,
         }}
         className={joinClassNames(
-          'fc-resource fc-timeline-lane',
           props.className,
           'fcu-flex-row fcu-content-box',
           props.borderBottom ? 'fcu-border-only-b' : 'fcu-border-none',
@@ -101,12 +100,10 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         {(InnerContent) => (
           <div
             role='gridcell'
-            className={joinClassNames(
-              'fcu-liquid fcu-flex-col fcu-rel', // fcu-rel is for fcu-fill-top
-              options.eventOverlap
-                ? 'fc-timeline-overlap-enabled'
-                : 'fc-timeline-overlap-disabled',
-            )}
+            className={
+               // fcu-rel is for fcu-fill-top
+              'fcu-liquid fcu-flex-col fcu-rel'
+            }
           >
             <TimelineBg
               tDateProfile={props.tDateProfile}
@@ -124,7 +121,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
             />
             <InnerContent // TODO: make fully filled
               tag="div"
-              className='fc-timeline-lane-misc fcu-flex-col fcu-fill-top'
+              className='fcu-flex-col fcu-fill-top'
             />
             <div // TODO: track height
               className={joinArrayishClassNames(

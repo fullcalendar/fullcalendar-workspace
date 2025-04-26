@@ -43,7 +43,7 @@ export class Popover extends BaseComponent<PopoverProps> {
         role='dialog'
         aria-labelledby={this.titleId}
         className={joinArrayishClassNames(
-          'fcu-abs',
+          'fci-popover fcu-abs',
           options.popoverClassNames,
           props.className,
         )}
@@ -162,7 +162,7 @@ export class Popover extends BaseComponent<PopoverProps> {
 
       // HACK
       // could use .offsetParent, however, the bounding rect includes border, so off-by-one
-      let origin = alignEl.closest('.fc-view').getBoundingClientRect()
+      let origin = alignEl.closest('.fci-view').getBoundingClientRect()
 
       applyStyle(rootEl, {
         top: popoverTop - origin.top,

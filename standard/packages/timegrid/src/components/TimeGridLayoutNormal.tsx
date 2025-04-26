@@ -137,7 +137,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             role='rowgroup'
             className={joinClassNames(
               // see note in TimeGridLayout about why we don't do fcu-print-header
-              'fc-timegrid-header fcu-flex-col',
+              'fcu-flex-col',
               stickyHeaderDates && 'fcu-table-header-sticky',
               generateClassName(options.viewHeaderClassNames, {
                 borderX: props.borderX,
@@ -211,7 +211,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           ---------------------------------------------------------------------------------------*/}
           {options.allDaySlot && (
             <Fragment>
-              <div role='row' className='fc-timegrid-allday fcu-flex-row'>
+              <div role='row' className='fcu-flex-row'>
                 <TimeGridAllDayLabel
                   width={axisWidth}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
@@ -262,7 +262,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           <Scroller
             vertical={verticalScrolling}
             className={joinClassNames(
-              'fc-timegrid-body fcu-flex-col fcu-rel', // fcu-rel for Ruler.fcu-fill-start
+              'fcu-flex-col fcu-rel', // fcu-rel for Ruler.fcu-fill-start
               verticalScrolling && 'fcu-liquid',
             )}
             ref={props.timeScrollerRef}
@@ -324,7 +324,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   <div
                     aria-hidden
                     className={joinClassNames(
-                      'fc-timegrid-slots fcu-flex-col',
+                      'fcu-flex-col',
                       (verticalScrolling && options.expandRows) && 'fcu-grow',
                       absPrint
                         ? 'fcu-fill-x' // will assume top:0, height will be decided naturally

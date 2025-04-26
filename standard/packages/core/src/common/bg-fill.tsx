@@ -62,7 +62,10 @@ export class BgEvent extends BaseComponent<BgEventProps> {
     return (
       <ContentContainer
         tag='div'
-        className={joinClassNames('fcu-fill', ...eventUi.classNames)}
+        className={joinClassNames(
+          'fci-event fci-bg-event fcu-fill',
+          ...eventUi.classNames,
+        )}
         style={{
           backgroundColor: eventUi.backgroundColor,
         }}

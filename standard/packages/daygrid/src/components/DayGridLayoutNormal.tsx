@@ -82,7 +82,6 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             <div className='fcu-flex-row'>
               <DayGridHeader
                 headerTiers={props.headerTiers}
-                className='fc-daygrid-header'
               />
               {Boolean(endScrollbarWidth) && (
                 <div
@@ -100,7 +99,6 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
         <Scroller
           vertical={verticalScrollbars}
           className={joinClassNames(
-            'fc-daygrid-body',
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345
             !props.forPrint && 'fcu-flex-col',

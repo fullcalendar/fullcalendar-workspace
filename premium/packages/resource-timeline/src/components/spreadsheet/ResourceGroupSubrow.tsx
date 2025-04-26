@@ -52,7 +52,6 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
         aria-rowindex={props.rowIndex}
         aria-level={props.level}
         className={joinArrayishClassNames(
-          'fc-resource-group',
           props.className,
           options.resourceAreaRowClassNames,
           'fcu-flex-row',

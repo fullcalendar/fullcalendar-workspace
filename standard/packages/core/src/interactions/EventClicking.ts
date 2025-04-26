@@ -21,7 +21,7 @@ export class EventClicking extends Interaction {
     this.destroy = listenBySelector(
       settings.el,
       'click',
-      '.fc-event', // on both fg and bg events
+      '.fci-event', // on both fg and bg events
       this.handleSegClick,
     )
   }

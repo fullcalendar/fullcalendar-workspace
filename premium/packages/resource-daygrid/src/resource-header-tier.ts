@@ -80,7 +80,7 @@ export function buildResourceRowConfigs(
         { // extraAttrs
           'data-resource-id': resourceApiId,
         },
-        'fc-resource',
+        undefined, // className. TODO: remove
         resources.length,
       )
     })
@@ -170,7 +170,7 @@ function buildResourceDataConfigs(
         'data-date': dateMarker ? formatDayString(dateMarker) : undefined,
       },
       colSpan,
-      className: 'fc-resource',
+      className: '', // TODO: remove this prop
     }
   })
 }

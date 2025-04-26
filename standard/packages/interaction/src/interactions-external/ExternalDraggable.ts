@@ -58,9 +58,9 @@ export class ExternalDraggable {
     if (
       ev.isTouch &&
       this.dragging.delay &&
-      (ev.subjectEl as HTMLElement).classList.contains('fc-event')
+      (ev.subjectEl as HTMLElement).classList.contains('fci-event')
     ) {
-      this.dragging.mirror.getMirrorEl().classList.add('fc-event-selected')
+      this.dragging.mirror.getMirrorEl().classList.add('fci-event-selected')
     }
   }
 

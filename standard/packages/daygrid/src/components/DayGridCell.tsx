@@ -118,7 +118,6 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
           aria-disabled
           className={joinArrayishClassNames(
             baseClassName,
-            'fc-day-disabled',
             props.className,
             generateClassName(options.dayCellClassNames, renderProps),
           )}
@@ -184,7 +183,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               )}
               ref={this.handleBodyEl}
             >
-              <div className='fc-daygrid-day-events' style={{ height: props.fgHeight }}>
+              <div style={{ height: props.fgHeight }}>
                 {props.fg}
               </div>
               <DayGridMoreLink
@@ -192,7 +191,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 segs={props.segs}
                 hiddenSegs={props.hiddenSegs}
                 alignElRef={this.rootElRef}
-                alignParentTop={props.showDayNumber ? '[role=row]' : '.fc-view'}
+                alignParentTop={props.showDayNumber ? '[role=row]' : '.fci-view'}
                 dateSpanProps={props.dateSpanProps}
                 dateProfile={props.dateProfile}
                 eventSelection={props.eventSelection}

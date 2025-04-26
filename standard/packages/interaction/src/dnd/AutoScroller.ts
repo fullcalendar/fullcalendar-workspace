@@ -22,7 +22,7 @@ The caller must call start + handleMove + stop.
 export class AutoScroller {
   // options that can be set by caller
   isEnabled: boolean = true
-  scrollQuery: (Window | string)[] = [window, '.fc-scroller']
+  scrollQuery: (Window | string)[] = [window, '.fci-scroller']
   edgeThreshold: number = 50 // pixels
   maxVelocity: number = 300 // pixels per second
 

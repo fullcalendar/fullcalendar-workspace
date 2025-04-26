@@ -49,7 +49,6 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
         aria-level={props.level}
         aria-expanded={props.isExpanded}
         className={joinArrayishClassNames(
-          'fc-resource-group',
           options.resourceAreaRowClassNames,
           props.className,
           props.borderBottom ? 'fcu-border-only-b' : 'fcu-border-none',

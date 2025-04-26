@@ -116,6 +116,9 @@ resourceArea resizer of resourceAreaDivider is small or not specified?
 have theme define col-resizer. see notes
 the event background "dimmer" goes over event time accidentally
 in timegrid, touch-selected event doesn't go above other. supposed to?
+deal with fci- elements
+fc-timegrid-event-short
+fc-timegrid-event-inset
 
 package.json for classic-theme
 importmap.public.html needs to be updated. accesses published files

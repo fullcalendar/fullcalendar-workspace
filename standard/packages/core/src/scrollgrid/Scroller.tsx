@@ -60,6 +60,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
           props.className,
           'fcu-no-padding fcu-rel', // fcu-rel for children fcu-fill-top/start
           props.hideScrollbars && 'fcu-no-scrollbars',
+          'fci-scroller',
         )}
         style={{
           ...props.style,

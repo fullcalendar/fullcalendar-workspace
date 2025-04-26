@@ -116,7 +116,6 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           aria-disabled
           className={joinClassNames(
             baseClassName,
-            'fc-day-disabled',
             generateClassName(options.dayLaneClassNames, renderProps),
           )}
           style={baseStyle}
@@ -157,7 +156,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {hasCustomDayLaneContent(options) && (
               <InnerContent
                 tag="div"
-                className='fc-timegrid-day-misc fcu-fill-top'
+                className='fcu-fill-top'
               />
             )}
             <div
