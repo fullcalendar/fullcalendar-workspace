@@ -184,6 +184,7 @@ export default createPlugin({
           arg.event.display === 'background' ? '' :
             'fc-timegrid-event fc-event-y',
         arg.isCompact && 'fc-timegrid-event-compact',
+        arg.level && 'fc-timegrid-event-inset',
       ],
       eventColorClassNames: (arg) => (
         arg.event.allDay ? getDayGridEventColorClassNames(arg) : ''

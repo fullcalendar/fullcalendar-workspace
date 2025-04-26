@@ -256,7 +256,6 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             : { left: 0, right: 0 }
 
           let isVisible = isMirror || (segRect && !segIsInvisible[instanceId])
-          let isInset = segRect ? Boolean(segRect.stackDepth) : false
 
           return (
             <div
@@ -281,8 +280,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 isResizing={isResizing}
                 isDateSelecting={isDateSelecting}
                 isSelected={instanceId === eventSelection}
+                level={segRect ? segRect.stackDepth : 0}
                 isCompact={segVertical.isCompact || false}
-                isInset={isInset}
                 isLiquid
                 {...getEventRangeMeta(eventRange, todayRange, nowDate)}
               />
@@ -459,8 +458,8 @@ export function renderPlainFgSegs(
               isResizing={false}
               isDateSelecting={false}
               isSelected={instanceId === eventSelection}
+              level={0}
               isCompact={false}
-              isInset={false}
               {...getEventRangeMeta(eventRange, todayRange, nowDate)}
             />
           </div>

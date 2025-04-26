@@ -37,6 +37,7 @@ export interface StandardEventProps {
   isListItem?: boolean // default false
   isCompact?: boolean // default false
   isSpacious?: boolean // default false
+  level?: number // default 0
   forcedTimeText?: string
 }
 
@@ -95,6 +96,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isListItem: props.isListItem || false,
       isCompact: props.isCompact || false,
       isSpacious: props.isSpacious || false,
+      level: props.level || 0,
       timeClassName: joinArrayishClassNames(options.eventTimeClassNames),
       titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi }),
     }

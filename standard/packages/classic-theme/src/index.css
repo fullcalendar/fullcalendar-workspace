@@ -802,11 +802,7 @@ a.fc-event:hover { // (anchor:hover)
   margin-bottom: 1px; // give some space from bottom
 }
 
-/*
-FYI, "inset" means not at the rightmost edge of the column, and probably overlapping another event
-Sooo, it has a box-shadow to visually separate from other events
-*/
-.fc-timegrid-event-inset, // (inset) --- HACK --- TODO: move className generation to theme
+.fc-timegrid-event-inset, // (inset)
 .fc-timegrid-event.fc-event-mirror { // (mirror)
   box-shadow: 0px 0px 0px 1px var(--fc-page-bg-color); // apply border w/o mass
 }
