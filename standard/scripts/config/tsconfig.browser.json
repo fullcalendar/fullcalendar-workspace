@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "es2016",
     "module": "es2015",
     "moduleResolution": "node16",
     "allowJs": true,
     "lib": [
-      "es2015",
+      "es2017",
       "dom"
     ],
     "noUnusedLocals": true,
