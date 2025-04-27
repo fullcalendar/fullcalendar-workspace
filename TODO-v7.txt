@@ -129,7 +129,7 @@ changelog:
     listDayHeaderContent
 TODO: create singleMonthTitleContent and give textParts to it?
 TODO: rename text->dateText and textParts->dateParts?
-
+TODO: write tests with moment/luxon textParts
 
 way to search for fc- classnames:
   query: fc-

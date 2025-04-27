@@ -26,11 +26,15 @@ export function formatWithCmdStr(
     )
   }
 
-  return arrayToLuxon(
+  const lux = arrayToLuxon(
     arg.date.array,
     arg.timeZone,
     arg.localeCodes[0],
-  ).toFormat(cmd.whole)
+  )
+  const singleCmdStr = cmd.whole
+  const singleOutStr = lux.toFormat(singleCmdStr)
+
+  return emulateParts(singleCmdStr, singleOutStr) || singleOutStr
 }
 
 /* Range Formatting (duplicate code as other date plugins)
@@ -95,4 +99,47 @@ function formatRange(
   }
 
   return startWhole + separator + endWhole
+}
+
+function emulateParts(cmdStr: string, outStr: string): Intl.DateTimeFormatPart[] | undefined {
+  const numParts = getSingleNumberParts(outStr)
+
+  if (numParts) {
+    const numType = getSingleNumberType(cmdStr)
+
+    if (numType) {
+      const [head, numStr, tail] = numParts
+      const parts: Intl.DateTimeFormatPart[] = []
+
+      if (head) {
+        parts.push({ type: 'literal', value: head })
+      }
+
+      parts.push({ type: numType, value: numStr })
+
+      if (tail) {
+        parts.push({ type: 'literal', value: tail })
+      }
+
+      return parts
+    }
+  }
+}
+
+function getSingleNumberParts(
+  outStr: string
+): [head: string, numStr: string, tail: string] | undefined {
+  const parts = outStr.split(/(\d+)/) // capture group keeps match within parts
+
+  if (parts.length === 3) {
+    return parts as [head: string, middle: string, tail: string]
+  }
+}
+
+function getSingleNumberType(cmdStr: string): 'day' | undefined {
+  const m = cmdStr.match(/d+/) // d/dd -- day-of-month
+
+  if (m) {
+    return 'day'
+  }
 }
