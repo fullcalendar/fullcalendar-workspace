@@ -244,7 +244,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
 // -------------------------------------------------------------------------------------------------
 
 function renderTopInner(props: DayCellContentArg): ComponentChild {
-  return props.dayNumberText || <Fragment>&nbsp;</Fragment>
+  return props.text || <Fragment>&nbsp;</Fragment> // TODO: DRY?
 }
 
 function shouldDisplayMonthStart(date: DateMarker, currentRange: DateRange, dateEnv: DateEnv): boolean {

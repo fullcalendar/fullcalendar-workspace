@@ -205,12 +205,17 @@ function buildNativeFormattingFunc(
     }
 
     let parts = format.formatToParts(marker)
+    let revisedParts: Intl.DateTimeFormatPart[] = []
 
     for (const part of parts) {
-      part.value = postProcess(part.value, date, standardDateProps, extendedSettings, context)
+      const revisedStr = postProcess(part.value, date, standardDateProps, extendedSettings, context)
+
+      if (revisedStr) {
+        revisedParts.push({ ...part, value: revisedStr })
+      }
     }
 
-    return parts
+    return revisedParts
   }
 }
 
@@ -250,7 +255,7 @@ function postProcess(s: string, date: ZonedMarker, standardDateProps, extendedSe
   }
 
   if (extendedSettings.omitCommas) {
-    s = s.replace(COMMA_RE, '').trim()
+    s = s.replace(COMMA_RE, '')
   }
 
   if (extendedSettings.omitZeroMinute) {
@@ -261,7 +266,7 @@ function postProcess(s: string, date: ZonedMarker, standardDateProps, extendedSe
   // because MERIDIEM_RE likes to eat up leading spaces
 
   if (extendedSettings.meridiem === false) {
-    s = s.replace(MERIDIEM_RE, '').trim()
+    s = s.replace(MERIDIEM_RE, '')
   } else if (extendedSettings.meridiem === 'narrow') { // a/p
     s = s.replace(MERIDIEM_RE, (m0, m1) => m1.toLocaleLowerCase())
   } else if (extendedSettings.meridiem === 'short') { // am/pm
@@ -271,7 +276,6 @@ function postProcess(s: string, date: ZonedMarker, standardDateProps, extendedSe
   }
 
   s = s.replace(MULTI_SPACE_RE, ' ')
-  s = s.trim()
 
   return s
 }

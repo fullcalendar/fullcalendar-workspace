@@ -539,7 +539,7 @@ class MonthComponent {
     plugins: [dayGridPlugin],
     initialView: 'dayGridMonth',
     dayCellTopContent(arg) {
-      return { html: `<b>${arg.dayNumberText}</b>` }
+      return { html: `<b>${arg.text}</b>` }
     },
   };
 }
