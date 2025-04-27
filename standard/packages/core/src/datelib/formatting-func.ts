@@ -10,11 +10,27 @@ export class FuncFormatter implements DateFormatter {
     this.func = func
   }
 
-  format(date: ZonedMarker, context: DateFormattingContext, betterDefaultSeparator?: string) {
-    return this.func(createVerboseFormattingArg(date, null, context, betterDefaultSeparator))
+  format(
+    date: ZonedMarker,
+    context: DateFormattingContext,
+    betterDefaultSeparator?: string
+  ): [string, Intl.DateTimeFormatPart[]] {
+    const str = this.func(createVerboseFormattingArg(date, null, context, betterDefaultSeparator))
+
+    return [
+      str,
+      // HACK. In future versions, allow func-formatters to return parts?
+      [{ type: 'literal', value: str }],
+    ]
   }
 
-  formatRange(start: ZonedMarker, end: ZonedMarker, context: DateFormattingContext, betterDefaultSeparator?: string) {
+  // Unlike format(), returns plain string!
+  formatRange(
+    start: ZonedMarker,
+    end: ZonedMarker,
+    context: DateFormattingContext,
+    betterDefaultSeparator?: string,
+  ): string {
     return this.func(createVerboseFormattingArg(start, end, context, betterDefaultSeparator))
   }
 }

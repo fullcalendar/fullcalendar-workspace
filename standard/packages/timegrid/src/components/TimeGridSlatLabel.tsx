@@ -147,7 +147,7 @@ function createRenderProps(
     ...getDateMeta(date, context.dateEnv),
 
     level: 0, // axis level (for when multiple axes)
-    text: context.dateEnv.format(date, labelFormat),
+    text: context.dateEnv.format(date, labelFormat)[0],
     time: time,
     isMajor: false,
     isMinor,

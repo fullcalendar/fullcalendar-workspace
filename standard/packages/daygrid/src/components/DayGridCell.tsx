@@ -281,14 +281,15 @@ interface DayCellRenderPropsInput {
 
 function refineRenderProps(raw: DayCellRenderPropsInput): DayCellContentArg {
   let { date, dateEnv, isMonthStart } = raw
-  let dayNumberText = raw.showDayNumber ? (
-    dateEnv.format(date, isMonthStart ? raw.monthStartFormat : raw.dayCellFormat)
-  ) : ''
+  let [text, textParts] = raw.showDayNumber
+    ? dateEnv.format(date, isMonthStart ? raw.monthStartFormat : raw.dayCellFormat)
+    : ['', []]
 
   return {
     ...raw.dateMeta,
     ...raw.renderProps,
-    dayNumberText,
+    text,
+    textParts,
     isMajor: raw.isMajor,
     isCompact: raw.isCompact,
     isMonthStart,

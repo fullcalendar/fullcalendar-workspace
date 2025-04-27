@@ -52,3 +52,15 @@ export function formatTimeZoneOffset(minutes: number, doIso = false) {
   }
   return `GMT${sign}${hours}${mins ? `:${padStart(mins, 2)}` : ''}`
 }
+
+export function joinDateTimeFormatParts(
+  parts: { value: string }[], // intentionally flexible, for DateTimeFormatPartWithWeek
+): string {
+  let s = ''
+
+  for (const part of parts) {
+    s += part.value
+  }
+
+  return s
+}

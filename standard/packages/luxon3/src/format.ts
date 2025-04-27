@@ -1,7 +1,10 @@
 import { VerboseFormattingArg } from '@fullcalendar/core/internal'
 import { arrayToLuxon } from './convert.js'
 
-export function formatWithCmdStr(cmdStr: string, arg: VerboseFormattingArg): string {
+export function formatWithCmdStr(
+  cmdStr: string,
+  arg: VerboseFormattingArg,
+): string | Intl.DateTimeFormatPart[] {
   let cmd = parseCmdStr(cmdStr)
 
   if (arg.end) {

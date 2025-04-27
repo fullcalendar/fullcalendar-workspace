@@ -40,7 +40,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     let { props } = this
     let { startDate, todayRange, dateProfile } = props
     let dateMeta = this.getDateMeta(startDate, dateEnv, dateProfile, todayRange)
-    let title = dateEnv.format(startDate, options.dayPopoverFormat)
+    let title = dateEnv.format(startDate, options.dayPopoverFormat)[0]
 
     return (
       <Popover

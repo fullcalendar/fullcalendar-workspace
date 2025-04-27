@@ -136,7 +136,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const isNavLink = options.navLinks
     const fullWeekStr = buildDateStr(context, weekDate, 'week')
     const weekNum = dateEnv.computeWeekNumber(weekDate)
-    const weekNumText = dateEnv.format(weekDate, options.weekNumberFormat || DEFAULT_WEEK_NUM_FORMAT)
+    const [weekNumText, weekNumTextParts] = dateEnv.format(
+      weekDate,
+      options.weekNumberFormat || DEFAULT_WEEK_NUM_FORMAT
+    )
 
     return (
       <div
@@ -174,6 +177,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             renderProps={{
               num: weekNum,
               text: weekNumText,
+              textParts: weekNumTextParts,
               date: weekDate, // TODO: must be zoned!
             }}
             generatorName="weekNumberContent"

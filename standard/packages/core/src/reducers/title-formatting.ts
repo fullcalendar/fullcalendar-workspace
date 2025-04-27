@@ -6,7 +6,11 @@ import { DateEnv } from '../datelib/env.js'
 import { BaseOptions } from '../options.js'
 
 // Computes what the title at the top of the calendarApi should be for this view
-export function buildTitle(dateProfile: DateProfile, viewOptions: BaseOptions, dateEnv: DateEnv) {
+export function buildTitle(
+  dateProfile: DateProfile,
+  viewOptions: BaseOptions,
+  dateEnv: DateEnv,
+): string {
   let range: DateRange
 
   // for views that span a large unit of time, show the proper interval, ignoring stray days before and after

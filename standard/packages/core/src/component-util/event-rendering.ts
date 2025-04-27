@@ -303,13 +303,13 @@ export function buildEventRangeTimeText(
       return dateEnv.formatRange(startDate, endDate, timeFormat, {
         forcedStartTzo: isStart ? instance.forcedStartTzo : null,
         forcedEndTzo: isEnd ? instance.forcedEndTzo : null,
-      })
+      })[0]
     }
 
     if (isStart) {
       return dateEnv.format(startDate, timeFormat, {
         forcedTzo: instance.forcedStartTzo,
-      })
+      })[0]
     }
   }
 

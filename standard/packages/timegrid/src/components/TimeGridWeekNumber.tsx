@@ -35,7 +35,10 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
     let weekDate = range.start
     let fullDateStr = buildDateStr(context, weekDate, 'week')
     let weekNum = dateEnv.computeWeekNumber(weekDate)
-    let weekText = dateEnv.format(weekDate, options.weekNumberFormat || DEFAULT_WEEK_NUM_FORMAT)
+    let [weekText, weekTextParts] = dateEnv.format(
+      weekDate,
+      options.weekNumberFormat || DEFAULT_WEEK_NUM_FORMAT
+    )
 
     return (
       <ContentContainer<WeekNumberContentArg>
@@ -52,6 +55,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
         renderProps={{
           num: weekNum,
           text: weekText,
+          textParts: weekTextParts,
           date: weekDate, // TODO: must be zoned!
         }}
         generatorName="weekNumberContent"

@@ -372,12 +372,13 @@ export class DateEnv {
     )
   }
 
+  // Unlike format(), returns plain string!
   formatRange(
     start: DateMarker,
     end: DateMarker,
     formatter: DateFormatter,
     dateOptions: { forcedStartTzo?: number, forcedEndTzo?: number, isEndExclusive?: boolean, defaultSeparator?: string } = {},
-  ) {
+  ): string {
     if (dateOptions.isEndExclusive) {
       end = addMs(end, -1)
     }

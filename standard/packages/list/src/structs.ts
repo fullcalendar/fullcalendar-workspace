@@ -12,4 +12,5 @@ export type ListDayHeaderMountArg = MountArg<ListDayHeaderArg>
 
 export interface ListDayHeaderInnerArg extends ListDayArg {
   text: string
+  textParts: Intl.DateTimeFormatPart[]
 }

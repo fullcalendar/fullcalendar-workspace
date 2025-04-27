@@ -13,12 +13,13 @@ export class ListDayHeaderInner extends BaseComponent<ListDayHeaderInnerProps> {
   render() {
     const { props, context } = this
     const { options } = context
-    const text = context.dateEnv.format(props.dayDate, props.dayFormat)
+    const [text, textParts] = context.dateEnv.format(props.dayDate, props.dayFormat)
 
     const renderProps: ListDayHeaderInnerArg = {
       ...props.dateMeta,
       view: context.viewApi,
       text,
+      textParts,
     }
 
     const navLinkAttrs = options.navLinks

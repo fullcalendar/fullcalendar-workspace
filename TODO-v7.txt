@@ -120,6 +120,16 @@ deal with fci- elements
 changelog: eventShortHeight (ever documented?) -> eventCompactHeight
 future plan: give non-zero `level` for EventContentArg for all views, not just timegrid
 changelog: remove luxon1/2
+changelog:
+  dayCellContent/etc prop `dayNumberText` renamed to just `text`
+  textParts added to:
+    dayHeaderContent
+    dayCellTopContent
+    weekNumberContent
+    listDayHeaderContent
+TODO: create singleMonthTitleContent and give textParts to it?
+TODO: rename text->dateText and textParts->dateParts?
+
 
 way to search for fc- classnames:
   query: fc-

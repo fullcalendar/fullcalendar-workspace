@@ -535,7 +535,7 @@ function buildCellRows(
       let rowUnit = rowUnitsFromFormats[row] || (isLastRow ? guessedSlotUnit : null)
 
       if (isSuperRow) {
-        let text = dateEnv.format(date, format)
+        let [text] = dateEnv.format(date, format)
         if (!leadingCell || (leadingCell.text !== text)) {
           newCell = buildCellObject(date, isMajor, text, rowUnit)
         } else {
@@ -549,7 +549,7 @@ function buildCellRows(
           tDateProfile.labelInterval,
         ))
       ) {
-        let text = dateEnv.format(date, format)
+        let [text] = dateEnv.format(date, format)
         newCell = buildCellObject(date, isMajor, text, rowUnit)
       } else {
         leadingCell.colspan += 1

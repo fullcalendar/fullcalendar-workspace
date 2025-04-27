@@ -3,8 +3,9 @@ import { CalendarSystem } from './calendar-system.js'
 import { Locale } from './locale.js'
 import { DateFormatter, DateFormattingContext } from './DateFormatter.js'
 import { ZonedMarker } from './zoned-marker.js'
-import { formatTimeZoneOffset } from './formatting-utils.js'
+import { formatTimeZoneOffset, joinDateTimeFormatParts } from './formatting-utils.js'
 import { memoize } from '../util/memoize.js'
+import { DateTimeFormatPartWithWeek } from '../common/WeekNumberContainer.js'
 
 const EXTENDED_SETTINGS_AND_SEVERITIES = {
   week: 3,
@@ -71,16 +72,26 @@ export class NativeFormatter implements DateFormatter {
     this.buildFormattingFunc = memoize(buildFormattingFunc)
   }
 
-  format(date: ZonedMarker, context: DateFormattingContext) {
-    return this.buildFormattingFunc(this.standardDateProps, this.extendedSettings, context)(date)
+  format(
+    date: ZonedMarker,
+    context: DateFormattingContext
+  ): [string, Intl.DateTimeFormatPart[]] {
+    const parts = this.buildFormattingFunc(this.standardDateProps, this.extendedSettings, context)(date)
+    return [joinDateTimeFormatParts(parts), parts as Intl.DateTimeFormatPart[]]
   }
 
-  formatRange(start: ZonedMarker, end: ZonedMarker, context: DateFormattingContext, betterDefaultSeparator?: string) {
+  // Unlike format(), returns plain string!
+  formatRange(
+    start: ZonedMarker,
+    end: ZonedMarker,
+    context: DateFormattingContext,
+    betterDefaultSeparator?: string,
+  ): string {
     let { standardDateProps, extendedSettings } = this
 
     let diffSeverity = computeMarkerDiffSeverity(start.marker, end.marker, context.calendarSystem)
     if (!diffSeverity) {
-      return this.format(start, context)
+      return this.format(start, context)[0]
     }
 
     let biggestUnitForPartial = diffSeverity
@@ -93,8 +104,8 @@ export class NativeFormatter implements DateFormatter {
       biggestUnitForPartial = 1 // make it look like the dates are only different in terms of time
     }
 
-    let full0 = this.format(start, context)
-    let full1 = this.format(end, context)
+    let [full0] = this.format(start, context)
+    let [full1] = this.format(end, context)
 
     if (full0 === full1) {
       return full0
@@ -137,18 +148,19 @@ function buildFormattingFunc(
   standardDateProps,
   extendedSettings,
   context: DateFormattingContext,
-): (date: ZonedMarker) => string {
+): (date: ZonedMarker) => DateTimeFormatPartWithWeek[] {
   let standardDatePropCnt = Object.keys(standardDateProps).length
 
   if (standardDatePropCnt === 1 && standardDateProps.timeZoneName === 'short') {
-    return (date: ZonedMarker) => (
-      formatTimeZoneOffset(date.timeZoneOffset)
-    )
+    return (date: ZonedMarker) => [{
+      type: 'timeZoneName',
+      value: formatTimeZoneOffset(date.timeZoneOffset)
+    }]
   }
 
   if (standardDatePropCnt === 0 && extendedSettings.week) {
     return (date: ZonedMarker) => (
-      formatWeekNumber(
+      formatWeekNumberParts(
         context.computeWeekNumber(date.marker),
         context.weekText,
         context.weekTextShort,
@@ -165,7 +177,7 @@ function buildNativeFormattingFunc(
   standardDateProps,
   extendedSettings,
   context: DateFormattingContext,
-): (date: ZonedMarker) => string {
+): (date: ZonedMarker) => Intl.DateTimeFormatPart[] {
   standardDateProps = { ...standardDateProps } // copy
   extendedSettings = { ...extendedSettings } // copy
 
@@ -174,7 +186,7 @@ function buildNativeFormattingFunc(
   standardDateProps.timeZone = 'UTC' // we leverage the only guaranteed timeZone for our UTC markers
 
   let normalFormat = new Intl.DateTimeFormat(context.locale.codes, standardDateProps)
-  let zeroFormat // needed?
+  let zeroFormat: Intl.DateTimeFormat // needed?
 
   if (extendedSettings.omitZeroMinute) {
     let zeroProps = { ...standardDateProps }
@@ -184,7 +196,7 @@ function buildNativeFormattingFunc(
 
   return (date: ZonedMarker) => {
     let { marker } = date
-    let format
+    let format: Intl.DateTimeFormat
 
     if (zeroFormat && !marker.getUTCMinutes()) {
       format = zeroFormat
@@ -192,9 +204,13 @@ function buildNativeFormattingFunc(
       format = normalFormat
     }
 
-    let s = format.format(marker)
+    let parts = format.formatToParts(marker)
 
-    return postProcess(s, date, standardDateProps, extendedSettings, context)
+    for (const part of parts) {
+      part.value = postProcess(part.value, date, standardDateProps, extendedSettings, context)
+    }
+
+    return parts
   }
 }
 
@@ -242,7 +258,7 @@ function postProcess(s: string, date: ZonedMarker, standardDateProps, extendedSe
   }
 
   // ^ do anything that might create adjacent spaces before this point,
-  // because MERIDIEM_RE likes to eat up loading spaces
+  // because MERIDIEM_RE likes to eat up leading spaces
 
   if (extendedSettings.meridiem === false) {
     s = s.replace(MERIDIEM_RE, '').trim()
@@ -276,32 +292,37 @@ function injectTzoStr(s: string, tzoStr: string): string {
   return s
 }
 
-function formatWeekNumber(
+function formatWeekNumberParts(
   num: number,
   weekText: string,
   weekTextShort: string,
   locale: Locale,
   display?: 'numeric' | 'narrow' | 'short' | 'long',
-): string {
-  let parts = []
+): DateTimeFormatPartWithWeek[] {
+  let parts: DateTimeFormatPartWithWeek[] = []
 
   if (display === 'long') {
-    parts.push(weekText)
+    parts.push({ type: 'literal', value: weekText })
   } else if (display === 'short' || display === 'narrow') {
-    parts.push(weekTextShort)
+    parts.push({ type: 'literal', value: weekTextShort })
   }
 
+  // TODO: probably not okay to have consecutive literals?
+  // (but need it for RTL, right?)
   if (display === 'long' || display === 'short') {
-    parts.push(' ')
+    parts.push({ type: 'literal', value: ' ' })
   }
 
-  parts.push(locale.simpleNumberFormat.format(num))
+  parts.push({
+    type: 'week',
+    value: locale.simpleNumberFormat.format(num),
+  })
 
   if (locale.options.direction === 'rtl') { // TODO: use control characters instead?
     parts.reverse()
   }
 
-  return parts.join('')
+  return parts
 }
 
 // Range Formatting Utils

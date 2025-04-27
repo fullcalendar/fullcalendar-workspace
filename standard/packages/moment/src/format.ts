@@ -1,7 +1,10 @@
 import { VerboseFormattingArg } from '@fullcalendar/core/internal'
 import { convertToMoment } from './convert.js'
 
-export function formatWithCmdStr(cmdStr: string, arg: VerboseFormattingArg): string {
+export function formatWithCmdStr(
+  cmdStr: string,
+  arg: VerboseFormattingArg,
+): string | Intl.DateTimeFormatPart[] {
   let cmd = parseCmdStr(cmdStr)
 
   if (arg.end) {
@@ -34,7 +37,7 @@ export function formatWithCmdStr(cmdStr: string, arg: VerboseFormattingArg): str
 }
 
 function createMomentFormatFunc(mom: moment.Moment) {
-  return (cmdStr) => (
+  return (cmdStr: string) => (
     cmdStr ? mom.format(cmdStr) : '' // because calling with blank string results in ISO8601 :(
   )
 }

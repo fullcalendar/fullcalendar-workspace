@@ -16,7 +16,7 @@ export interface FormatRangeOptions extends FormatDateOptions {
   isEndExclusive?: boolean
 }
 
-export function formatDate(dateInput: DateInput, options: FormatDateOptions = {}) {
+export function formatDate(dateInput: DateInput, options: FormatDateOptions = {}): string {
   let dateEnv = buildDateEnv(options)
   let formatter = createFormatter(options)
   let dateMeta = dateEnv.createMarkerMeta(dateInput)
@@ -27,14 +27,14 @@ export function formatDate(dateInput: DateInput, options: FormatDateOptions = {}
 
   return dateEnv.format(dateMeta.marker, formatter, {
     forcedTzo: dateMeta.forcedTzo,
-  })
+  })[0]
 }
 
 export function formatRange(
   startInput: DateInput,
   endInput: DateInput,
   options: FormatRangeOptions, // mixture of env and formatter settings
-) {
+): string {
   let dateEnv = buildDateEnv(typeof options === 'object' && options ? options : {}) // pass in if non-null object
   let formatter = createFormatter(options)
   let startMeta = dateEnv.createMarkerMeta(startInput)
@@ -49,7 +49,7 @@ export function formatRange(
     forcedEndTzo: endMeta.forcedTzo,
     isEndExclusive: options.isEndExclusive,
     defaultSeparator: BASE_OPTION_DEFAULTS.defaultRangeSeparator,
-  })
+  })[0]
 }
 
 // TODO: more DRY and optimized

@@ -8,12 +8,15 @@ import { ViewContext } from '../ViewContext.js'
 const DAY_FORMAT = createFormatter({ year: 'numeric', month: 'long', day: 'numeric' })
 const WEEK_FORMAT = createFormatter({ week: 'long' })
 
+/*
+TODO: just have this return the string?
+*/
 export function buildDateStr(
   context: ViewContext,
   dateMarker: DateMarker,
   viewType = 'day',
 ): string {
-  return context.dateEnv.format(dateMarker, viewType === 'week' ? WEEK_FORMAT : DAY_FORMAT)
+  return context.dateEnv.format(dateMarker, viewType === 'week' ? WEEK_FORMAT : DAY_FORMAT)[0]
 }
 
 /*

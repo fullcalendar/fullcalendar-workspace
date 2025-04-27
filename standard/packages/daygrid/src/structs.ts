@@ -5,6 +5,7 @@ export interface DayHeaderContentArg extends DateMeta {
   date: Date
   isMajor: boolean
   text: string
+  textParts: Intl.DateTimeFormatPart[]
   view: ViewApi
   [otherProp: string]: any
 }
@@ -15,7 +16,8 @@ export interface DayCellContentArg extends DateMeta {
   isMajor: boolean
   isCompact: boolean
   view: ViewApi
-  dayNumberText: string
+  text: string
+  textParts: Intl.DateTimeFormatPart[]
   [extraProp: string]: any // so can include a resource
 }
 

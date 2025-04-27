@@ -1,5 +1,5 @@
 import { ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '@fullcalendar/core'
-import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, formatDayString, getDateMeta, isMajorUnit, ViewContext } from '@fullcalendar/core/internal'
+import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, Dictionary, formatDayString, getDateMeta, isMajorUnit, ViewContext } from '@fullcalendar/core/internal'
 import { DayHeaderContentArg } from './structs.js'
 
 export interface CellRenderConfig<RenderProps> {
@@ -135,8 +135,8 @@ export function buildDateDataConfigs(
   context: ViewContext,
   colSpan = 1,
   keyPrefix = '',
-  extraRenderProps: any = {}, // TODO
-  extraAttrs: any = {}, // TODO
+  extraRenderProps: Dictionary = {}, // TODO
+  extraAttrs: Dictionary = {}, // TODO
   className = '',
   isMajorMod?: number,
 ): CellDataConfig<DayHeaderContentArg>[] {
@@ -146,11 +146,12 @@ export function buildDateDataConfigs(
     ? dateMarkers.map((dateMarker, i) => { // Date
         const dateMeta = getDateMeta(dateMarker, dateEnv, dateProfile, todayRange)
         const isMajor = isMajorMod != null && !(i % isMajorMod)
-        const text = dateEnv.format(dateMarker, dayHeaderFormat)
+        const [text, textParts] = dateEnv.format(dateMarker, dayHeaderFormat)
         const renderProps: DayHeaderContentArg = {
           ...dateMeta,
           ...extraRenderProps,
           text,
+          textParts,
           isMajor,
           view: viewApi,
         }
@@ -191,13 +192,14 @@ export function buildDateDataConfigs(
           isOther: false,
         }
         const isMajor = isMajorMod != null && !(i % isMajorMod)
-        const text = dateEnv.format(normDate, dayHeaderFormat)
+        const [text, textParts] = dateEnv.format(normDate, dayHeaderFormat)
         const renderProps: DayHeaderContentArg = {
           ...dateMeta,
           date: dowDates[dow],
           isMajor,
           view: viewApi,
           text,
+          textParts,
           ...extraRenderProps,
         }
         const fullWeekDayStr = dateEnv.format(normDate, WEEKDAY_FORMAT)

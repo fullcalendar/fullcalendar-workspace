@@ -31,7 +31,10 @@ export function createVerboseFormattingArg(
   }
 }
 
-export type CmdFormatterFunc = (cmd: string, arg: VerboseFormattingArg) => string
+export type CmdFormatterFunc = (
+  cmd: string,
+  arg: VerboseFormattingArg,
+) => string | Intl.DateTimeFormatPart[]
 
 export interface DateFormattingContext {
   timeZone: string,
@@ -45,6 +48,16 @@ export interface DateFormattingContext {
 }
 
 export interface DateFormatter {
-  format(date: ZonedMarker, context: DateFormattingContext): string
-  formatRange(start: ZonedMarker, end: ZonedMarker, context: DateFormattingContext, betterDefaultSeparator?: string): string
+  format(
+    date: ZonedMarker,
+    context: DateFormattingContext
+  ): [string, Intl.DateTimeFormatPart[]]
+
+  // Unlike format(), returns plain string!
+  formatRange(
+    start: ZonedMarker,
+    end: ZonedMarker,
+    context: DateFormattingContext,
+    betterDefaultSeparator?: string
+  ): string
 }

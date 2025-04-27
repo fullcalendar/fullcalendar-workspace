@@ -316,8 +316,9 @@ export class CalendarDataManager {
       state.dynamicOptionOverrides,
     )
 
+    let viewTitle = this.buildTitle(state.dateProfile, currentViewData.options, optionsData.dateEnv)
     let data: CalendarData = this.data = {
-      viewTitle: this.buildTitle(state.dateProfile, currentViewData.options, optionsData.dateEnv),
+      viewTitle,
       calendarApi: props.calendarApi,
       dispatch: this.dispatch,
       emitter: this.emitter,
