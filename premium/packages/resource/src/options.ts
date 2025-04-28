@@ -1,4 +1,4 @@
-import { Identity, identity, parseFieldSpecs } from '@fullcalendar/core/internal'
+import { Identity, identity, parseFieldSpecs, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core/internal'
 import {
   ResourceSourceInput,
   ResourceApi,
@@ -20,6 +20,10 @@ export const OPTION_REFINERS = {
   needsResourceData: Boolean, // internal-only
 }
 
+type ResourceOptionRefiners = typeof OPTION_REFINERS
+export type ResourceOptions = RawOptionsFromRefiners<ResourceOptionRefiners>
+export type ResourceOptionsRefined = RefinedOptionsFromRefiners<ResourceOptionRefiners>
+
 export const LISTENER_REFINERS = {
   resourcesSet: identity as Identity<(resources: ResourceApi[]) => void>,
   resourceAdd: identity as Identity<(arg: ResourceAddArg) => void>,
@@ -29,3 +33,7 @@ export const LISTENER_REFINERS = {
   // internal
   _resourceScrollRequest: identity as Identity<(resourceId: string) => void>
 }
+
+type ResourceListenerRefiners = typeof LISTENER_REFINERS
+export type ResourceListeners = RawOptionsFromRefiners<ResourceListenerRefiners>
+export type ResourceListenersRefined = RefinedOptionsFromRefiners<ResourceListenerRefiners>

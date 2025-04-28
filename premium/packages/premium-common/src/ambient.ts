@@ -1,7 +1,6 @@
-import { OPTION_REFINERS } from './options-refiners.js'
-
-type ExtraOptionRefiners = typeof OPTION_REFINERS
+import { PremiumOptions, PremiumOptionsRefined } from './options.js'
 
 declare module '@fullcalendar/core/internal' {
-  interface BaseOptionRefiners extends ExtraOptionRefiners {}
+  interface BaseOptions extends PremiumOptions {}
+  interface BaseOptionsRefined extends PremiumOptionsRefined {}
 }

@@ -2,6 +2,8 @@ import { ClassNamesGenerator, ClassNamesInput, CssDimValue } from '@fullcalendar
 import {
   Identity, identity,
   CustomContentGenerator, DidMountHandler, WillUnmountHandler,
+  RawOptionsFromRefiners,
+  RefinedOptionsFromRefiners,
 } from '@fullcalendar/core/internal'
 import {
   ResourceColumnHeaderContentArg,
@@ -63,3 +65,7 @@ export const OPTION_REFINERS = {
   resourceIndentClassNames: identity as Identity<ClassNamesInput>,
   resourceExpanderClassNames: identity as Identity<ClassNamesInput>,
 }
+
+type ResourceTimelineOptionRefiners = typeof OPTION_REFINERS
+export type ResourceTimelineOptions = RawOptionsFromRefiners<ResourceTimelineOptionRefiners>
+export type ResourceTimelineOptionsRefined = RefinedOptionsFromRefiners<ResourceTimelineOptionRefiners>

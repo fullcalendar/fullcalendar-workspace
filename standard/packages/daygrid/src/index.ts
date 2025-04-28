@@ -40,3 +40,5 @@ export {
   DayCellContentArg,
   DayCellMountArg,
 } from './structs.js'
+
+export { DayGridOptions } from './options.js'

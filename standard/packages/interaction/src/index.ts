@@ -5,7 +5,7 @@ import { EventDragging } from './interactions/EventDragging.js'
 import { EventResizing } from './interactions/EventResizing.js'
 import { UnselectAuto } from './interactions/UnselectAuto.js'
 import { FeaturefulElementDragging } from './dnd/FeaturefulElementDragging.js'
-import { OPTION_REFINERS, LISTENER_REFINERS } from './option-refiners.js'
+import { OPTION_REFINERS, LISTENER_REFINERS } from './options.js'
 import './ambient.js'
 
 export default createPlugin({

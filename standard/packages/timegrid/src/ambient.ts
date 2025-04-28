@@ -1,10 +1,9 @@
-import { OPTION_REFINERS } from './options-refiners.js'
+import { TimeGridOptions, TimeGridOptionsRefined } from './options.js'
 
 // all dependencies except core
 import '@fullcalendar/daygrid'
 
-type ExtraOptionRefiners = typeof OPTION_REFINERS
-
 declare module '@fullcalendar/core/internal' {
-  interface BaseOptionRefiners extends ExtraOptionRefiners {}
+  interface BaseOptions extends TimeGridOptions {}
+  interface BaseOptionsRefined extends TimeGridOptionsRefined {}
 }

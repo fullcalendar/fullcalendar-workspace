@@ -1,4 +1,5 @@
 
+export { InteractionOptions, InteractionListeners } from './options.js'
 export { DateClickArg } from './interactions/DateClicking.js'
 export { EventDragStartArg, EventDragStopArg } from './interactions/EventDragging.js'
 export { EventResizeStartArg, EventResizeStopArg, EventResizeDoneArg } from './interactions/EventResizing.js'

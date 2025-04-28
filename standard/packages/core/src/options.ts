@@ -365,15 +365,15 @@ export const BASE_OPTION_REFINERS = {
   highlightClassNames: identity as Identity<ClassNamesInput>,
 }
 
-type BuiltInBaseOptionRefiners = typeof BASE_OPTION_REFINERS
+type BaseOptionRefiners = typeof BASE_OPTION_REFINERS
 
-export interface BaseOptionRefiners extends BuiltInBaseOptionRefiners {
-  // for ambient-extending
+export interface BaseOptions extends RawOptionsFromRefiners<BaseOptionRefiners> {
+  // for ambient extending
 }
 
-export type BaseOptions = RawOptionsFromRefiners< // as RawOptions
-  Required<BaseOptionRefiners> // Required is a hack for "Index signature is missing"
->
+export interface BaseOptionsRefined extends RefinedOptionsFromRefiners<BaseOptionRefiners> {
+  // for ambient extending
+}
 
 // do NOT give a type here. need `typeof BASE_OPTION_DEFAULTS` to give real results.
 // raw values.
@@ -432,11 +432,6 @@ export const BASE_OPTION_DEFAULTS = {
   eventOverlap: true,
 }
 
-export type BaseOptionsRefined = DefaultedRefinedOptions<
-  RefinedOptionsFromRefiners<Required<BaseOptionRefiners>>, // Required is a hack for "Index signature is missing"
-  keyof typeof BASE_OPTION_DEFAULTS
->
-
 // calendar listeners
 // ------------------
 
@@ -462,19 +457,20 @@ export const CALENDAR_LISTENER_REFINERS = {
   _timeScrollRequest: identity as Identity<(time: Duration) => void>,
 }
 
-type BuiltInCalendarListenerRefiners = typeof CALENDAR_LISTENER_REFINERS
+type CalendarListenerRefiners = typeof CALENDAR_LISTENER_REFINERS
 
-export interface CalendarListenerRefiners extends BuiltInCalendarListenerRefiners {
+export interface CalendarListeners extends RawOptionsFromRefiners<CalendarListenerRefiners> {
   // for ambient extending
 }
 
-type CalendarListenersLoose = RefinedOptionsFromRefiners<Required<CalendarListenerRefiners>> // Required hack
-export type CalendarListeners = Required<CalendarListenersLoose> // much more convenient for Emitters and whatnot
+export interface CalendarListenersRefined extends RefinedOptionsFromRefiners<CalendarListenerRefiners> {
+  // for ambient extending
+}
 
-// calendar-specific options
-// -------------------------
+// calendar-only options (not for view-specific)
+// ---------------------------------------------
 
-export const CALENDAR_OPTION_REFINERS = { // does not include base nor calendar listeners
+export const CALENDAR_ONLY_OPTION_REFINERS = { // does not include base nor calendar listeners
   views: identity as Identity<{ [viewId: string]: ViewOptions }>,
   plugins: identity as Identity<PluginDef[]>,
   initialEvents: identity as Identity<EventSourceInput>,
@@ -482,21 +478,53 @@ export const CALENDAR_OPTION_REFINERS = { // does not include base nor calendar 
   eventSources: identity as Identity<EventSourceInput[]>,
 }
 
-type BuiltInCalendarOptionRefiners = typeof CALENDAR_OPTION_REFINERS
+type CalendarOnlyOptionRefiners = typeof CALENDAR_ONLY_OPTION_REFINERS
+type CalendarOnlyOptions = RawOptionsFromRefiners<CalendarOnlyOptionRefiners>
+type CalendarOnlyOptionsRefined = RefinedOptionsFromRefiners<CalendarOnlyOptionRefiners>
 
-export interface CalendarOptionRefiners extends BuiltInCalendarOptionRefiners {
-  // for ambient-extending
+// view-specific options
+// ---------------------
+
+export const VIEW_ONLY_OPTION_REFINERS: {
+  [name: string]: any
+} = {
+  type: String,
+  component: identity as Identity<ViewComponentType>,
+  buttonTextKey: String, // internal only
+  dateProfileGeneratorClass: identity as Identity<DateProfileGeneratorClass>,
+  usesMinMaxTime: Boolean, // internal only
+  classNames: identity as Identity<ClassNamesGenerator<SpecificViewContentArg>>,
+  content: identity as Identity<CustomContentGenerator<SpecificViewContentArg>>,
+  didMount: identity as Identity<DidMountHandler<SpecificViewMountArg>>,
+  willUnmount: identity as Identity<WillUnmountHandler<SpecificViewMountArg>>,
 }
+
+type ViewOnlyRefiners = typeof VIEW_ONLY_OPTION_REFINERS
+type ViewOnlyOptions = RawOptionsFromRefiners<ViewOnlyRefiners>
+type ViewOnlyOptionsRefined = RefinedOptionsFromRefiners<ViewOnlyRefiners>
+
+export type ViewOptions =
+  BaseOptions &
+  CalendarListeners &
+  ViewOnlyOptions
+
+export type ViewOptionsRefined =
+  BaseOptionsRefined &
+  CalendarListenersRefined &
+  ViewOnlyOptionsRefined
+
+// top-level calendar options
+// --------------------------
 
 export type CalendarOptions =
   BaseOptions &
-  CalendarListenersLoose &
-  RawOptionsFromRefiners<Required<CalendarOptionRefiners>> // Required hack https://github.com/microsoft/TypeScript/issues/15300
+  CalendarListeners &
+  CalendarOnlyOptions
 
 export type CalendarOptionsRefined =
   BaseOptionsRefined &
-  CalendarListenersLoose &
-  RefinedOptionsFromRefiners<Required<CalendarOptionRefiners>> // Required hack
+  CalendarListenersRefined &
+  CalendarOnlyOptionsRefined
 
 export const COMPLEX_OPTION_COMPARATORS: {
   [optionName in keyof CalendarOptions]: (a: CalendarOptions[optionName], b: CalendarOptions[optionName]) => boolean
@@ -512,39 +540,6 @@ export const COMPLEX_OPTION_COMPARATORS: {
   eventSources: isMaybeArraysEqual,
   ['resources' as any]: isMaybeArraysEqual,
 }
-
-// view-specific options
-// ---------------------
-
-export const VIEW_OPTION_REFINERS: {
-  [name: string]: any
-} = {
-  type: String,
-  component: identity as Identity<ViewComponentType>,
-  buttonTextKey: String, // internal only
-  dateProfileGeneratorClass: identity as Identity<DateProfileGeneratorClass>,
-  usesMinMaxTime: Boolean, // internal only
-  classNames: identity as Identity<ClassNamesGenerator<SpecificViewContentArg>>,
-  content: identity as Identity<CustomContentGenerator<SpecificViewContentArg>>,
-  didMount: identity as Identity<DidMountHandler<SpecificViewMountArg>>,
-  willUnmount: identity as Identity<WillUnmountHandler<SpecificViewMountArg>>,
-}
-
-type BuiltInViewOptionRefiners = typeof VIEW_OPTION_REFINERS
-
-export interface ViewOptionRefiners extends BuiltInViewOptionRefiners {
-  // for ambient-extending
-}
-
-export type ViewOptions =
-  BaseOptions &
-  CalendarListenersLoose &
-  RawOptionsFromRefiners<Required<ViewOptionRefiners>> // Required hack
-
-export type ViewOptionsRefined =
-  BaseOptionsRefined &
-  CalendarListenersLoose &
-  RefinedOptionsFromRefiners<Required<ViewOptionRefiners>> // Required hack
 
 // util funcs
 // ----------------------------------------------------------------------------------------------------
@@ -600,6 +595,9 @@ export type RefinedOptionsFromRefiners<Refiners extends GenericRefiners> = {
 export type DefaultedRefinedOptions<RefinedOptions extends Dictionary, DefaultKey extends keyof RefinedOptions> =
   Required<Pick<RefinedOptions, DefaultKey>> &
   Partial<Omit<RefinedOptions, DefaultKey>>
+
+// lang utils
+// ----------------------------------------------------------------------------------------------------
 
 export type Dictionary = Record<string, any>
 

@@ -1,11 +1,19 @@
 import './index.css'
 
 export {
-  Identity, Dictionary,
-  BaseOptionRefiners, BaseOptionsRefined,
-  ViewOptionsRefined, RawOptionsFromRefiners, RefinedOptionsFromRefiners,
-  CalendarListenerRefiners,
-  BASE_OPTION_DEFAULTS, identity, refineProps,
+  BaseOptions,
+  BaseOptionsRefined,
+  BASE_OPTION_DEFAULTS,
+  CalendarListeners,
+  CalendarListenersRefined,
+  ViewOptions,
+  ViewOptionsRefined,
+  RawOptionsFromRefiners,
+  RefinedOptionsFromRefiners,
+  Identity,
+  Dictionary,
+  identity,
+  refineProps,
 } from './options.js'
 
 export type { EventDef, EventDefHash } from './structs/event-def.js'
@@ -148,7 +156,7 @@ export { parse as parseMarker } from './datelib/parsing.js'
 
 export type { EventSourceDef } from './structs/event-source-def.js'
 export type { EventSourceRefined } from './structs/event-source-parse.js'
-export { EventSourceRefiners } from './structs/event-source-parse.js'
+export type { EventSourceOptions, EventSourceOptionsRefined } from './structs/event-source-parse.js'
 
 export {
   EventPlacement,

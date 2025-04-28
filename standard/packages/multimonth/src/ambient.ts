@@ -1,9 +1,8 @@
 import '@fullcalendar/daygrid'
 
-import { OPTION_REFINERS } from './options-refiners.js'
-
-type ExtraOptionRefiners = typeof OPTION_REFINERS
+import { MultiMonthOptions, MultiMonthOptionsRefined } from './options.js'
 
 declare module '@fullcalendar/core/internal' {
-  interface BaseOptionRefiners extends ExtraOptionRefiners {}
+  interface BaseOptions extends MultiMonthOptions {}
+  interface BaseOptionsRefined extends MultiMonthOptionsRefined {}
 }

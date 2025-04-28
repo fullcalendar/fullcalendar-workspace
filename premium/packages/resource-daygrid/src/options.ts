@@ -5,6 +5,8 @@ import {
   CustomContentGenerator,
   DidMountHandler,
   WillUnmountHandler,
+  RawOptionsFromRefiners,
+  RefinedOptionsFromRefiners,
 } from '@fullcalendar/core/internal'
 import {
   ResourceDayHeaderContentArg,
@@ -18,3 +20,7 @@ export const OPTION_REFINERS = {
   resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderMountArg>>,
   resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderMountArg>>,
 }
+
+type ResourceDayGridOptionRefiners = typeof OPTION_REFINERS
+export type ResourceDayGridOptions = RawOptionsFromRefiners<ResourceDayGridOptionRefiners>
+export type ResourceDayGridOptionsRefined = RefinedOptionsFromRefiners<ResourceDayGridOptionRefiners>

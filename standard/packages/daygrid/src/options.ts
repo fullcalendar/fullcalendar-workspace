@@ -1,5 +1,5 @@
 import { ClassNamesGenerator, ClassNamesInput, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '@fullcalendar/core'
-import { createFormatter, Identity, identity } from '@fullcalendar/core/internal'
+import { createFormatter, Identity, identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core/internal'
 import { DayCellContentArg, DayCellMountArg, DayHeaderContentArg, DayHeaderMountArg } from './structs.js'
 
 export const OPTION_REFINERS = {
@@ -24,6 +24,10 @@ export const OPTION_REFINERS = {
   dayCellTopInnerClassNames: identity as Identity<ClassNamesGenerator<DayCellContentArg>>,
   dayCellBottomClassNames: identity as Identity<ClassNamesGenerator<DayCellContentArg>>,
 }
+
+type DayGridOptionRefiners = typeof OPTION_REFINERS
+export type DayGridOptions = RawOptionsFromRefiners<DayGridOptionRefiners>
+export type DayGridOptionsRefined = RefinedOptionsFromRefiners<DayGridOptionRefiners>
 
 export const OPTION_DEFAULTS = {
   dayHeaders: true,

@@ -3,7 +3,7 @@ import premiumCommonPlugin from '@fullcalendar/premium-common'
 import resourcePlugin from '@fullcalendar/resource'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { ResourceDayGridView } from './components/ResourceDayGridView.js'
-import { OPTION_REFINERS } from './option-refiners.js'
+import { OPTION_REFINERS } from './options.js'
 import './ambient.js'
 
 export default createPlugin({
@@ -39,3 +39,4 @@ export default createPlugin({
 }) as PluginDef
 
 export * from './structs.js'
+export { ResourceDayGridOptions } from './options.js'

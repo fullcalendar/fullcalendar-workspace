@@ -4,10 +4,10 @@ import '@fullcalendar/resource'
 import '@fullcalendar/scrollgrid'
 import '@fullcalendar/timeline'
 
-import { OPTION_REFINERS } from './option-refiners.js'
+import { ResourceTimelineOptions, ResourceTimelineOptionsRefined } from './options.js'
 
-type ExtraOptionRefiners = typeof OPTION_REFINERS
 
 declare module '@fullcalendar/core/internal' {
-  interface BaseOptionRefiners extends ExtraOptionRefiners {}
+  interface BaseOptions extends ResourceTimelineOptions {}
+  interface BaseOptionsRefined extends ResourceTimelineOptionsRefined {}
 }

@@ -23,13 +23,17 @@ const EVENT_SOURCE_REFINERS = { // does NOT include EVENT_UI_REFINERS
 type BuiltInEventSourceRefiners = typeof EVENT_SOURCE_REFINERS &
   typeof JSON_FEED_EVENT_SOURCE_REFINERS
 
-export interface EventSourceRefiners extends BuiltInEventSourceRefiners {
-  // for extending
+export interface EventSourceOptions extends RawOptionsFromRefiners<BuiltInEventSourceRefiners> {
+  // for ambient extending
+}
+
+export interface EventSourceOptionsRefined extends RefinedOptionsFromRefiners<BuiltInEventSourceRefiners> {
+  // for ambient extending
 }
 
 export type EventSourceInputObject =
   EventUiInput &
-  RawOptionsFromRefiners<Required<EventSourceRefiners>> // Required hack
+  EventSourceOptions
 
 export type EventSourceInput =
   EventSourceInputObject | // object in extended form
@@ -39,7 +43,7 @@ export type EventSourceInput =
 
 export type EventSourceRefined =
   EventUiRefined &
-  RefinedOptionsFromRefiners<Required<EventSourceRefiners>> // Required hack
+  EventSourceOptionsRefined
 
 export function parseEventSource(
   raw: EventSourceInput,

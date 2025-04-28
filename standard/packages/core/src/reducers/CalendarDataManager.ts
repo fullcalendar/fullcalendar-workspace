@@ -25,10 +25,10 @@ import { EventDefHash } from '../structs/event-def.js'
 import { parseToolbars } from '../toolbar-parse.js'
 import {
   CalendarOptionsRefined, CalendarOptions,
-  CALENDAR_OPTION_REFINERS, COMPLEX_OPTION_COMPARATORS,
+  CALENDAR_ONLY_OPTION_REFINERS, COMPLEX_OPTION_COMPARATORS,
   ViewOptions, ViewOptionsRefined,
   BASE_OPTION_DEFAULTS,
-  BASE_OPTION_REFINERS, VIEW_OPTION_REFINERS,
+  BASE_OPTION_REFINERS, VIEW_ONLY_OPTION_REFINERS,
   CalendarListeners, CALENDAR_LISTENER_REFINERS, Dictionary,
 } from '../options.js'
 import { mergeRawOptions } from '../options-manip.js'
@@ -420,7 +420,7 @@ export class CalendarDataManager {
     let refiners = this.currentCalendarOptionsRefiners = {
       ...BASE_OPTION_REFINERS,
       ...CALENDAR_LISTENER_REFINERS,
-      ...CALENDAR_OPTION_REFINERS,
+      ...CALENDAR_ONLY_OPTION_REFINERS,
       ...pluginHooks.listenerRefiners,
       ...pluginHooks.optionRefiners,
     }
@@ -548,8 +548,8 @@ export class CalendarDataManager {
     let refiners = {
       ...BASE_OPTION_REFINERS,
       ...CALENDAR_LISTENER_REFINERS,
-      ...CALENDAR_OPTION_REFINERS,
-      ...VIEW_OPTION_REFINERS,
+      ...CALENDAR_ONLY_OPTION_REFINERS,
+      ...VIEW_ONLY_OPTION_REFINERS,
       ...pluginHooks.listenerRefiners,
       ...pluginHooks.optionRefiners,
     }

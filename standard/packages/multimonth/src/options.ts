@@ -1,5 +1,5 @@
 import { ClassNamesGenerator } from '@fullcalendar/core'
-import { createFormatter, DidMountHandler, Identity, identity, WillUnmountHandler } from '@fullcalendar/core/internal'
+import { createFormatter, DidMountHandler, Identity, identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners, WillUnmountHandler } from '@fullcalendar/core/internal'
 import { SingleMonthContentArg, SingleMonthTableHeaderArg, SingleMonthMountArg, SingleMonthTitleArg, SingleMonthTableBodyArg, SingleMonthTableArg } from './structs.js'
 
 export const OPTION_REFINERS = {
@@ -15,3 +15,7 @@ export const OPTION_REFINERS = {
   singleMonthTableHeaderClassNames: identity as Identity<ClassNamesGenerator<SingleMonthTableHeaderArg>>,
   singleMonthTableBodyClassNames: identity as Identity<ClassNamesGenerator<SingleMonthTableBodyArg>>,
 }
+
+type MultiMonthOptionRefiners = typeof OPTION_REFINERS
+export type MultiMonthOptions = RawOptionsFromRefiners<MultiMonthOptionRefiners>
+export type MultiMonthOptionsRefined = RefinedOptionsFromRefiners<MultiMonthOptionRefiners>

@@ -3,14 +3,17 @@ import { ResourceSource } from './structs/resource-source.js'
 import { ResourceHash } from './structs/resource.js'
 import { ResourceEntityExpansions } from './reducers/resourceEntityExpansions.js'
 import { ResourceAction } from './reducers/resource-action.js'
-import { OPTION_REFINERS, LISTENER_REFINERS } from './options-refiners.js'
+import {
+  ResourceOptions,
+  ResourceOptionsRefined,
+  ResourceListeners,
+  ResourceListenersRefined,
+} from './options.js'
 import { EVENT_REFINERS } from './structs/event-parse.js'
 
 // all dependencies except core
 import '@fullcalendar/premium-common'
 
-type ExtraOptionRefiners = typeof OPTION_REFINERS
-type ExtraListenerRefiners = typeof LISTENER_REFINERS
 type ExtraEventRefiners = typeof EVENT_REFINERS
 
 declare module '@fullcalendar/core' {
@@ -29,8 +32,11 @@ declare module '@fullcalendar/core' {
 }
 
 declare module '@fullcalendar/core/internal' {
-  interface BaseOptionRefiners extends ExtraOptionRefiners {}
-  interface CalendarListenerRefiners extends ExtraListenerRefiners {}
+  interface BaseOptions extends ResourceOptions {}
+  interface BaseOptionsRefined extends ResourceOptionsRefined {}
+  interface CalendarListeners extends ResourceListeners {}
+  interface CalendarListenersRefined extends ResourceListenersRefined {}
+
   interface EventRefiners extends ExtraEventRefiners {}
 
   interface CalendarContext {

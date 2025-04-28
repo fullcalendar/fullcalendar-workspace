@@ -7,6 +7,8 @@ import {
   WillUnmountHandler,
   createFormatter,
   DateFormatter,
+  RawOptionsFromRefiners,
+  RefinedOptionsFromRefiners,
 } from '@fullcalendar/core/internal'
 import {
   ListDayArg,
@@ -37,6 +39,10 @@ export const OPTION_REFINERS = {
 
   // noEventsText is defined in base options
 }
+
+type ListOptionRefiners = typeof OPTION_REFINERS
+export type ListOptions = RawOptionsFromRefiners<ListOptionRefiners>
+export type ListOptionsRefined = RefinedOptionsFromRefiners<ListOptionRefiners>
 
 function createFalsableFormatter(input: FormatterInput | false): DateFormatter {
   return input === false ? null : createFormatter(input)

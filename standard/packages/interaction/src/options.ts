@@ -1,5 +1,5 @@
 import { EventDropArg } from '@fullcalendar/core'
-import { identity, Identity } from '@fullcalendar/core/internal'
+import { identity, Identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core/internal'
 import {
   DateClickArg,
   EventDragStartArg, EventDragStopArg,
@@ -10,6 +10,10 @@ import {
 export const OPTION_REFINERS = {
   fixedMirrorParent: identity as Identity<HTMLElement>,
 }
+
+type InteractionOptionRefiners = typeof OPTION_REFINERS
+export type InteractionOptions = RawOptionsFromRefiners<InteractionOptionRefiners>
+export type InteractionOptionsRefined = RefinedOptionsFromRefiners<InteractionOptionRefiners>
 
 export const LISTENER_REFINERS = {
   dateClick: identity as Identity<(arg: DateClickArg) => void>,
@@ -23,3 +27,7 @@ export const LISTENER_REFINERS = {
   eventReceive: identity as Identity<(arg: EventReceiveArg) => void>,
   eventLeave: identity as Identity<(arg: EventLeaveArg) => void>,
 }
+
+type InteractionListenerRefiners = typeof LISTENER_REFINERS
+export type InteractionListeners = RawOptionsFromRefiners<InteractionListenerRefiners>
+export type InteractionListenersRefined = RefinedOptionsFromRefiners<InteractionListenerRefiners>

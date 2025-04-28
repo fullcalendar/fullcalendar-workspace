@@ -1,9 +1,14 @@
-import { OPTION_REFINERS, LISTENER_REFINERS } from './option-refiners.js'
-
-type ExtraOptionRefiners = typeof OPTION_REFINERS
-type ExtraListenerRefiners = typeof LISTENER_REFINERS
+import {
+  InteractionOptions,
+  InteractionOptionsRefined,
+  InteractionListeners,
+  InteractionListenersRefined,
+} from './options.js'
 
 declare module '@fullcalendar/core/internal' {
-  interface BaseOptionRefiners extends ExtraOptionRefiners {}
-  interface CalendarListenerRefiners extends ExtraListenerRefiners {}
+  interface BaseOptions extends InteractionOptions {}
+  interface BaseOptionsRefined extends InteractionOptionsRefined {}
+
+  interface CalendarListeners extends InteractionListeners {}
+  interface CalendarListenersRefined extends InteractionListenersRefined {}
 }
