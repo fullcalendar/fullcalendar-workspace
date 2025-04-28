@@ -373,10 +373,8 @@ export class CalendarDataManager {
     }
 
     let {
-      refinedOptions, pluginHooks, pluginOptionDefaults, localeDefaults, availableLocaleData, extra,
+      refinedOptions, pluginHooks, pluginOptionDefaults, localeDefaults, availableLocaleData,
     } = this.processRawCalendarOptions(optionOverrides, dynamicOptionOverrides)
-
-    warnUnknownOptions(extra)
 
     let dateEnv = this.buildDateEnv(
       refinedOptions.timeZone,
@@ -417,6 +415,7 @@ export class CalendarDataManager {
     let localeDefaults = this.buildLocale(locale || availableLocaleData.defaultCode, availableRawLocales).options
     let pluginHooks = this.buildPluginHooks(optionOverrides.plugins || [], globalPlugins)
     let pluginOptionDefaults = extractPluginOptionsDefaults((optionOverrides.plugins || []).concat(globalPlugins))
+
     let refiners = this.currentCalendarOptionsRefiners = {
       ...BASE_OPTION_REFINERS,
       ...CALENDAR_LISTENER_REFINERS,
@@ -424,15 +423,19 @@ export class CalendarDataManager {
       ...pluginHooks.listenerRefiners,
       ...pluginHooks.optionRefiners,
     }
-    let extra = {}
-
     let raw = mergeRawOptions([
       BASE_OPTION_DEFAULTS,
       ...pluginOptionDefaults,
       localeDefaults,
-      optionOverrides,
-      dynamicOptionOverrides,
+      filterKnownOptions(
+        mergeRawOptions([
+          optionOverrides,
+          dynamicOptionOverrides,
+        ]),
+        refiners,
+      )
     ])
+
     let refined: Partial<CalendarOptionsRefined> = {}
     let currentRaw = this.currentCalendarOptionsInput
     let currentRefined = this.currentCalendarOptionsRefined
@@ -452,8 +455,6 @@ export class CalendarDataManager {
       } else if (refiners[optionName]) {
         refined[optionName] = refiners[optionName](raw[optionName])
         anyChanges = true
-      } else {
-        extra[optionName] = currentRaw[optionName]
       }
     }
 
@@ -475,7 +476,6 @@ export class CalendarDataManager {
       pluginOptionDefaults,
       availableLocaleData,
       localeDefaults,
-      extra,
     }
   }
 
@@ -491,7 +491,7 @@ export class CalendarDataManager {
       throw new Error(`viewType "${viewType}" is not available. Please make sure you've loaded all neccessary plugins`)
     }
 
-    let { refinedOptions, extra } = this.processRawViewOptions(
+    let { refinedOptions } = this.processRawViewOptions(
       viewSpec,
       optionsData.pluginHooks,
       optionsData.pluginOptionDefaults,
@@ -499,8 +499,6 @@ export class CalendarDataManager {
       optionOverrides,
       dynamicOptionOverrides,
     )
-
-    warnUnknownOptions(extra)
 
     let dateProfileGenerator = this.buildDateProfileGenerator({
       dateProfileGeneratorClass: viewSpec.optionDefaults.dateProfileGeneratorClass as any,
@@ -536,15 +534,6 @@ export class CalendarDataManager {
     optionOverrides: CalendarOptions,
     dynamicOptionOverrides: CalendarOptions,
   ) {
-    let raw = mergeRawOptions([
-      BASE_OPTION_DEFAULTS,
-      ...pluginOptionDefaults,
-      viewSpec.optionDefaults,
-      localeDefaults,
-      optionOverrides,
-      viewSpec.optionOverrides,
-      dynamicOptionOverrides,
-    ])
     let refiners = {
       ...BASE_OPTION_REFINERS,
       ...CALENDAR_LISTENER_REFINERS,
@@ -553,11 +542,24 @@ export class CalendarDataManager {
       ...pluginHooks.listenerRefiners,
       ...pluginHooks.optionRefiners,
     }
+    let raw = mergeRawOptions([
+      BASE_OPTION_DEFAULTS,
+      ...pluginOptionDefaults,
+      viewSpec.optionDefaults,
+      localeDefaults,
+      filterKnownOptions(
+        mergeRawOptions([
+          optionOverrides,
+          viewSpec.optionOverrides,
+          dynamicOptionOverrides,
+        ]),
+        refiners,
+      ),
+    ])
     let refined: Partial<ViewOptionsRefined> = {}
     let currentRaw = this.currentViewOptionsInput
     let currentRefined = this.currentViewOptionsRefined
     let anyChanges = false
-    let extra = {}
 
     for (let optionName in raw) {
       if (
@@ -577,8 +579,6 @@ export class CalendarDataManager {
           }
         } else if (refiners[optionName]) {
           refined[optionName] = refiners[optionName](raw[optionName])
-        } else {
-          extra[optionName] = raw[optionName]
         }
 
         anyChanges = true
@@ -593,7 +593,6 @@ export class CalendarDataManager {
     return {
       rawOptions: this.currentViewOptionsInput,
       refinedOptions: this.currentViewOptionsRefined,
-      extra,
     }
   }
 }
@@ -699,11 +698,19 @@ function parseContextBusinessHours(calendarContext: CalendarContext) {
   return parseBusinessHours(calendarContext.options.businessHours, calendarContext)
 }
 
-function warnUnknownOptions(options: any, viewName?: string) {
-  for (let optionName in options) {
-    console.warn(
-      `Unknown option '${optionName}'` +
-      (viewName ? ` for view '${viewName}'` : ''),
-    )
+const reportedUnknownOptions: any = {}
+
+function filterKnownOptions(options: any, optionRefiners: any): any {
+  const knownOptions: any = {}
+
+  for (const optionName in options) {
+    if (optionRefiners[optionName]) {
+      knownOptions[optionName] = options[optionName]
+    } else if (!reportedUnknownOptions[optionName]) {
+      console.warn(`Unknown option '${optionName}'`)
+      reportedUnknownOptions[optionName] = true
+    }
   }
+
+  return knownOptions
 }
