@@ -279,7 +279,7 @@ export class CalendarImpl implements CalendarApi {
       dateEnv.createMarker(d1),
       createFormatter(settings),
       settings,
-    )[0]
+    )
   }
 
   formatIso(d: DateInput, omitTime?: boolean): string {

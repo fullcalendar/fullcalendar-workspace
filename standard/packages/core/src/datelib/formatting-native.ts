@@ -6,6 +6,7 @@ import { ZonedMarker } from './zoned-marker.js'
 import { formatTimeZoneOffset, joinDateTimeFormatParts } from './formatting-utils.js'
 import { memoize } from '../util/memoize.js'
 import { DateTimeFormatPartWithWeek } from '../common/WeekNumberContainer.js'
+import { trimEnd } from '../util/misc.js'
 
 const EXTENDED_SETTINGS_AND_SEVERITIES = {
   week: 3,
@@ -27,11 +28,10 @@ const STANDARD_DATE_PROP_SEVERITIES = {
   second: 1,
 }
 
-const MERIDIEM_RE = /\s*([ap])\.?m\.?/i // eats up leading spaces too
+const MERIDIEM_RE = /([ap])\.?m\.?/i
 const COMMA_RE = /,/g // we need re for globalness
 const MULTI_SPACE_RE = /\s+/g
 const LTR_RE = /\u200e/g // control character
-const UTC_RE = /UTC|GMT/
 
 export interface NativeFormatterOptions extends Intl.DateTimeFormatOptions {
   week?: 'long' | 'short' | 'narrow' | 'numeric'
@@ -205,17 +205,7 @@ function buildNativeFormattingFunc(
     }
 
     let parts = format.formatToParts(marker)
-    let revisedParts: Intl.DateTimeFormatPart[] = []
-
-    for (const part of parts) {
-      const revisedStr = postProcess(part.value, date, standardDateProps, extendedSettings, context)
-
-      if (revisedStr) {
-        revisedParts.push({ ...part, value: revisedStr })
-      }
-    }
-
-    return revisedParts
+    return postProcessParts(parts, date, standardDateProps, extendedSettings, context)
   }
 }
 
@@ -242,58 +232,75 @@ function sanitizeSettings(standardDateProps, extendedSettings) {
   }
 }
 
-function postProcess(s: string, date: ZonedMarker, standardDateProps, extendedSettings, context: DateFormattingContext): string {
-  s = s.replace(LTR_RE, '') // remove left-to-right control chars. do first. good for other regexes
+function postProcessParts(
+  parts: Intl.DateTimeFormatPart[],
+  date: ZonedMarker,
+  standardDateProps,
+  extendedSettings,
+  context: DateFormattingContext,
+): Intl.DateTimeFormatPart[] {
+  let injectableTz = standardDateProps.timeZoneName === 'short' && (
+    (context.timeZone === 'UTC' || date.timeZoneOffset == null)
+      ? 'UTC' // important to normalize for IE, which does "GMT"
+      : formatTimeZoneOffset(date.timeZoneOffset)
+  )
+  let injectedTz = false
+  let priorLiteral: Intl.DateTimeFormatPart | undefined
 
-  if (standardDateProps.timeZoneName === 'short') {
-    s = injectTzoStr(
-      s,
-      (context.timeZone === 'UTC' || date.timeZoneOffset == null) ?
-        'UTC' : // important to normalize for IE, which does "GMT"
-        formatTimeZoneOffset(date.timeZoneOffset),
-    )
+  for (const part of parts) {
+    const isLiteral = part.type === 'literal'
+
+    if (isLiteral || part.type === 'dayPeriod') {
+      let s = part.value
+
+      // remove left-to-right control chars. do first. good for other regexes
+      s = s.replace(LTR_RE, '')
+
+      if (extendedSettings.omitCommas) {
+        s = s.replace(COMMA_RE, '')
+      }
+
+      if (!isLiteral) { // dayPeriod
+        const { meridiem } = extendedSettings
+
+        if (meridiem === false) {
+          s = s.replace(MERIDIEM_RE, '')
+        } else if (meridiem === 'narrow') { // a/p
+          s = s.replace(MERIDIEM_RE, (m0, m1) => m1.toLocaleLowerCase())
+        } else if (meridiem === 'short') { // am/pm
+          s = s.replace(MERIDIEM_RE, (m0, m1) => `${m1.toLocaleLowerCase()}m`)
+        } else if (meridiem === 'lowercase') { // other meridiem transformers already converted to lowercase
+          s = s.replace(MERIDIEM_RE, (m0) => m0.toLocaleLowerCase())
+        }
+
+        // remove prior space. Makes "7 pm" -> "7pm"
+        if (priorLiteral) {
+          priorLiteral.value = trimEnd(priorLiteral.value)
+        }
+      }
+
+      s = s.replace(MULTI_SPACE_RE, ' ')
+      part.value = s
+
+    } else if (part.type === 'timeZoneName' && injectableTz) {
+      part.value = injectableTz
+      injectedTz = true
+    }
+
+    priorLiteral = isLiteral ? part : undefined
   }
 
-  if (extendedSettings.omitCommas) {
-    s = s.replace(COMMA_RE, '')
+  if (injectableTz && !injectedTz) {
+    if (priorLiteral) {
+      priorLiteral.value += ' '
+    } else {
+      parts.push({ type: 'literal', value: ' ' })
+    }
+
+    parts.push({ type: 'timeZoneName', value: injectableTz })
   }
 
-  if (extendedSettings.omitZeroMinute) {
-    s = s.replace(':00', '') // zeroFormat doesn't always achieve this
-  }
-
-  // ^ do anything that might create adjacent spaces before this point,
-  // because MERIDIEM_RE likes to eat up leading spaces
-
-  if (extendedSettings.meridiem === false) {
-    s = s.replace(MERIDIEM_RE, '')
-  } else if (extendedSettings.meridiem === 'narrow') { // a/p
-    s = s.replace(MERIDIEM_RE, (m0, m1) => m1.toLocaleLowerCase())
-  } else if (extendedSettings.meridiem === 'short') { // am/pm
-    s = s.replace(MERIDIEM_RE, (m0, m1) => `${m1.toLocaleLowerCase()}m`)
-  } else if (extendedSettings.meridiem === 'lowercase') { // other meridiem transformers already converted to lowercase
-    s = s.replace(MERIDIEM_RE, (m0) => m0.toLocaleLowerCase())
-  }
-
-  s = s.replace(MULTI_SPACE_RE, ' ')
-
-  return s
-}
-
-function injectTzoStr(s: string, tzoStr: string): string {
-  let replaced = false
-
-  s = s.replace(UTC_RE, () => {
-    replaced = true
-    return tzoStr
-  })
-
-  // IE11 doesn't include UTC/GMT in the original string, so append to end
-  if (!replaced) {
-    s += ` ${tzoStr}`
-  }
-
-  return s
+  return parts.filter((part) => part.value) // filter empty parts
 }
 
 function formatWeekNumberParts(

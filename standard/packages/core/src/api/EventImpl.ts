@@ -204,7 +204,7 @@ export class EventImpl implements EventApi {
       return dateEnv.formatRange(instance.range.start, instance.range.end, formatter, {
         forcedStartTzo: instance.forcedStartTzo,
         forcedEndTzo: instance.forcedEndTzo,
-      })[0]
+      })
     }
     return dateEnv.format(instance.range.start, formatter, {
       forcedTzo: instance.forcedStartTzo,

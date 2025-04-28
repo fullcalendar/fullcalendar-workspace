@@ -49,7 +49,7 @@ export function formatRange(
     forcedEndTzo: endMeta.forcedTzo,
     isEndExclusive: options.isEndExclusive,
     defaultSeparator: BASE_OPTION_DEFAULTS.defaultRangeSeparator,
-  })[0]
+  })
 }
 
 // TODO: more DRY and optimized
