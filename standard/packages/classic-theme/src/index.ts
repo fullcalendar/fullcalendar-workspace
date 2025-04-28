@@ -2,66 +2,13 @@ import { createPlugin, EventContentArg, PluginDef } from '@fullcalendar/core'
 import * as svgIcons from './svgIcons.js'
 import './index.css'
 
-// TODO: better solution for this
-// Also figure out resource-header-tier.ts
-// BAD::: gives errors if specific plugins not loaded
-const PLUGIN_SPECIFIC_SETTINGS: any = {
-  dayHeaderRowClassNames: 'fc-day-header-row',
-  dayHeaderClassNames: (arg) => [
-    'fc-day-header-cell',
-    ...getDayClassNames(arg)
-  ],
-  dayHeaderInnerClassNames: 'fc-padding-sm',
-  dayRowClassNames: 'fc-day-row',
-  dayCellClassNames: (arg) => [
-    'fc-day-cell',
-    ...getDayClassNames(arg),
-    arg.isCompact ? 'fc-day-cell-compact' : 'fc-day-cell-not-compact',
-  ],
-  dayCellTopClassNames: 'fc-day-cell-top',
-  dayCellTopInnerClassNames: (arg) => [
-    'fc-day-cell-top-inner',
-    arg.isMonthStart && 'fc-day-cell-top-inner-monthstart',
-  ],
-  dayHeaderDividerClassNames: 'fc-day-header-divider',
-  resourceAreaDividerClassNames: 'fc-resource-area-divider',
-  resourceAreaHeaderRowClassNames: 'fc-resource-area-header-row',
-  resourceAreaHeaderClassNames: 'fc-resource-area-header',
-  resourceAreaRowClassNames: 'fc-resource-area-row',
-  resourceLaneClassNames: 'fc-resource-lane',
-  resourceGroupHeaderClassNames: 'fc-resource-group-header',
-  resourceGroupLaneClassNames: 'fc-resource-group-lane',
-  resourceDayHeaderClassNames: 'fc-resource-day-header',
-  resourceDayHeaderInnerClassNames: 'fc-padding-sm',
-  resourceCellClassNames: 'fc-resource-cell',
-  singleMonthClassNames: (arg) => [
-    'fc-single-month',
-    arg.colCnt > 1 && 'fc-single-month-multicol',
-  ],
-  singleMonthTitleClassNames: (arg) => [
-    'fc-single-month-title',
-    arg.colCnt > 1
-      ? 'fc-single-month-title-multicol'
-      : 'fc-single-month-title-singlecol',
-    arg.sticky && 'fc-single-month-title-sticky',
-  ],
-  singleMonthTableClassNames: (arg) => [
-    'fc-single-month-table',
-    arg.colCnt > 1 && 'fc-single-month-table-borderx',
-    (arg.colCnt > 1 || !arg.isLast) && 'fc-single-month-table-borderbottom',
-    !arg.stickyTitle && 'fc-single-month-table-bordertop',
-  ],
-  singleMonthTableHeaderClassNames: (arg) => [
-    'fc-single-month-table-header',
-    arg.sticky && 'fc-single-month-table-header-sticky',
-  ],
-  singleMonthTableBodyClassNames: 'fc-single-month-table-body',
-  listDayClassName: 'fc-list-day',
-  listDayHeaderClassNames: 'fc-list-day-header',
-  listDayHeaderInnerClassNames: 'fc-list-day-header-inner',
-  resourceIndentClassNames: 'fc-resource-indent',
-  resourceExpanderClassNames: 'fc-resource-expander',
-}
+// Will import ambient types during dev but strip out for build
+import {} from '@fullcalendar/timegrid'
+import {} from '@fullcalendar/timeline'
+import {} from '@fullcalendar/list'
+import {} from '@fullcalendar/multimonth'
+import {} from '@fullcalendar/resource-daygrid'
+import {} from '@fullcalendar/resource-timeline'
 
 export default createPlugin({
   name: '<%= pkgName %>',
@@ -166,7 +113,65 @@ export default createPlugin({
     resourceAreaHeaderInnerClassNames: 'fc-padding-lg',
     resourceCellInnerClassNames: 'fc-padding-lg',
     resourceGroupHeaderInnerClassNames: 'fc-padding-lg',
-    ...PLUGIN_SPECIFIC_SETTINGS,
+
+    dayHeaderRowClassNames: 'fc-day-header-row',
+    dayHeaderClassNames: (arg) => [
+      'fc-day-header-cell',
+      ...getDayClassNames(arg)
+    ],
+    dayHeaderInnerClassNames: 'fc-padding-sm',
+    dayRowClassNames: 'fc-day-row',
+    dayCellClassNames: (arg) => [
+      'fc-day-cell',
+      ...getDayClassNames(arg),
+      arg.isCompact ? 'fc-day-cell-compact' : 'fc-day-cell-not-compact',
+    ],
+    dayCellTopClassNames: 'fc-day-cell-top',
+    dayCellTopInnerClassNames: (arg) => [
+      'fc-day-cell-top-inner',
+      arg.isMonthStart && 'fc-day-cell-top-inner-monthstart',
+    ],
+    dayHeaderDividerClassNames: 'fc-day-header-divider',
+
+    resourceAreaDividerClassNames: 'fc-resource-area-divider',
+    resourceAreaHeaderRowClassNames: 'fc-resource-area-header-row',
+    resourceAreaHeaderClassNames: 'fc-resource-area-header',
+    resourceAreaRowClassNames: 'fc-resource-area-row',
+    resourceLaneClassNames: 'fc-resource-lane',
+    resourceGroupHeaderClassNames: 'fc-resource-group-header',
+    resourceGroupLaneClassNames: 'fc-resource-group-lane',
+
+    resourceDayHeaderClassNames: 'fc-resource-day-header',
+    resourceDayHeaderInnerClassNames: 'fc-padding-sm',
+    resourceCellClassNames: 'fc-resource-cell',
+
+    singleMonthClassNames: (arg) => [
+      'fc-single-month',
+      arg.colCnt > 1 && 'fc-single-month-multicol',
+    ],
+    singleMonthTitleClassNames: (arg) => [
+      'fc-single-month-title',
+      arg.colCnt > 1
+        ? 'fc-single-month-title-multicol'
+        : 'fc-single-month-title-singlecol',
+      arg.sticky && 'fc-single-month-title-sticky',
+    ],
+    singleMonthTableClassNames: (arg) => [
+      'fc-single-month-table',
+      arg.colCnt > 1 && 'fc-single-month-table-borderx',
+      (arg.colCnt > 1 || !arg.isLast) && 'fc-single-month-table-borderbottom',
+      !arg.stickyTitle && 'fc-single-month-table-bordertop',
+    ],
+    singleMonthTableHeaderClassNames: (arg) => [
+      'fc-single-month-table-header',
+      arg.sticky && 'fc-single-month-table-header-sticky',
+    ],
+    singleMonthTableBodyClassNames: 'fc-single-month-table-body',
+    listDayClassName: 'fc-list-day',
+    listDayHeaderClassNames: 'fc-list-day-header',
+    listDayHeaderInnerClassNames: 'fc-list-day-header-inner',
+    resourceIndentClassNames: 'fc-resource-indent',
+    resourceExpanderClassNames: 'fc-resource-expander',
   },
   views: {
     dayGrid: {
