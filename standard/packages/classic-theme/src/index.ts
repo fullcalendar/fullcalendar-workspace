@@ -10,19 +10,19 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/resource-daygrid'
 import {} from '@fullcalendar/resource-timeline'
 
+const dayGridCommon = {
+  eventClassNames: getDayGridEventClassNames,
+  eventColorClassNames: getDayGridEventColorClassNames,
+  weekNumberClassNames: 'fc-daygrid-week-number',
+  moreLinkClassNames: 'fc-daygrid-more-link',
+}
+
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
     classNames: ['fc', 'fc-theme-standard'],
     directionClassNames: (direction) => `fc-direction-${direction}`,
     mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
-    viewClassNames: (arg) => ['fc-view', `fc-${arg.view.type}-view`, 'fc-view-bordered'],
-    viewHeaderClassNames: (arg) => arg.isSticky && 'fc-view-header-sticky',
-    popoverClassNames: 'fc-popover',
-    popoverHeaderClassNames: 'fc-popover-header',
-    popoverTitleClassNames: 'fc-popover-title',
-    popoverCloseClassNames: 'fc-popover-close',
-    popoverBodyClassNames: 'fc-popover-body',
     toolbarClassNames: (arg) => [
       `fc-${arg.name}-toolbar`,
       'fc-toolbar',
@@ -32,13 +32,18 @@ export default createPlugin({
       `fc-toolbar-${arg.name}`, // TODO: do section- ?
     ],
     toolbarTitleClassNames: 'fc-toolbar-title',
-    buttonGroupClassNames: 'fc-button-group',
-    buttonClassNames: (arg) => [
-      `fc-${arg.name}-button`,
-      'fc-button',
-      'fc-button-primary',
-      arg.isSelected && 'fc-button-active',
+    viewClassNames: (arg) => [
+      'fc-view',
+      `fc-${arg.view.type}-view`,
+      'fc-view-bordered',
     ],
+    viewHeaderClassNames: (arg) => [
+      arg.isSticky && 'fc-view-header-sticky'
+    ],
+
+    // UI Fundamentals
+    // ---------------------------------------------------------------------------------------------
+
     icons: {
       close: () => svgIcons.x,
       prev: (arg) => arg.direction === 'ltr' ? svgIcons.chevronLeft : svgIcons.chevronRight,
@@ -48,7 +53,44 @@ export default createPlugin({
       expand: () => svgIcons.plusSquare,
       collapse: () => svgIcons.minusSquare,
     },
+
+    buttonClassNames: (arg) => [
+      `fc-${arg.name}-button`,
+      'fc-button',
+      'fc-button-primary',
+      arg.isSelected && 'fc-button-active',
+    ],
+    buttonGroupClassNames: 'fc-button-group',
+
+    popoverClassNames: 'fc-popover', // see also: dayPopoverClassNames
+    popoverHeaderClassNames: 'fc-popover-header',
+    popoverTitleClassNames: 'fc-popover-title',
+    popoverCloseClassNames: 'fc-popover-close',
+    popoverBodyClassNames: 'fc-popover-body',
+
+    // Cross-view
+    // ---------------------------------------------------------------------------------------------
+
+    weekNumberClassNames: 'fc-week-number',
+    navLinkClassNames: 'fc-navlink', // TODO: fc-nav-link ?
+    moreLinkClassNames: 'fc-more-link',
+
     dayCompactWidth: 70,
+    dayPopoverClassNames: (arg) => [
+      'fc-more-popover',
+      ...getDayClassNames(arg),
+    ],
+
+    fillerClassNames: 'fc-filler',
+    fillerXClassNames: 'fc-filler-x',
+    fillerYClassNames: 'fc-filler-y',
+
+    nonBusinessClassNames: 'fc-non-business',
+    highlightClassNames: 'fc-highlight',
+
+    // General Event
+    // ---------------------------------------------------------------------------------------------
+
     eventClassNames: (arg) => [
       arg.event.display === 'background' && 'fc-bg-event',
       'fc-event',
@@ -64,55 +106,18 @@ export default createPlugin({
       arg.isFuture && 'fc-event-future',
       arg.isToday && 'fc-event-today',
     ],
-    eventResizerClassNames: 'fc-event-resizer',
-    eventResizerStartClassNames: 'fc-event-resizer-start',
-    eventResizerEndClassNames: 'fc-event-resizer-end',
     eventInnerClassNames: 'fc-event-inner',
     eventTimeClassNames: 'fc-event-time',
     eventTitleClassNames: (arg) => [
       arg.event.display === 'background' && 'fc-bg-event-title',
       'fc-event-title',
     ],
-    navLinkClassNames: 'fc-navlink',
-    dayPopoverClassNames: (arg) => [
-      'fc-more-popover',
-      ...getDayClassNames(arg),
-    ],
-    slotLabelClassNames: (arg) => [
-      'fc-slot-label',
-      ...getSlotClassNames(arg),
-    ],
-    slotLaneClassNames: (arg) => [
-      'fc-slot-lane',
-      ...getSlotClassNames(arg),
-    ],
-    fillerClassNames: 'fc-filler',
-    fillerXClassNames: 'fc-filler-x',
-    fillerYClassNames: 'fc-filler-y',
-    allDayDividerClassNames: 'fc-all-day-divider',
-    slotLabelRowClassNames: 'fc-slot-label-row',
-    nonBusinessClassNames: 'fc-non-business',
-    highlightClassNames: 'fc-highlight',
-    moreLinkClassNames: 'fc-more-link',
-    weekNumberClassNames: 'fc-week-number',
-    dayLaneClassNames: (arg) => [
-      'fc-day-lane',
-      ...getDayClassNames(arg),
-    ],
-    dayLaneInnerClassNames: (arg) => [
-      'fc-day-lane-inner',
-      arg.isSimple && 'fc-day-lane-inner-simple',
-    ],
-    allDayHeaderClassNames: 'fc-all-day-header',
-    allDayHeaderInnerClassNames: 'fc-all-day-header-inner fc-padding-sm',
-    timelineBottomClassNames: 'fc-timeline-bottom',
-    resourceLaneBottomClassNames: (arg) => [
-      'fc-resource-lane-bottom',
-      arg.isCompact && 'fc-resource-lane-bottom-compact',
-    ],
-    resourceAreaHeaderInnerClassNames: 'fc-padding-lg',
-    resourceCellInnerClassNames: 'fc-padding-lg',
-    resourceGroupHeaderInnerClassNames: 'fc-padding-lg',
+    eventResizerClassNames: 'fc-event-resizer',
+    eventResizerStartClassNames: 'fc-event-resizer-start',
+    eventResizerEndClassNames: 'fc-event-resizer-end',
+
+    // Day-Headers (DayGrid & MultiMonth & TimeGrid)
+    // ---------------------------------------------------------------------------------------------
 
     dayHeaderRowClassNames: 'fc-day-header-row',
     dayHeaderClassNames: (arg) => [
@@ -120,30 +125,30 @@ export default createPlugin({
       ...getDayClassNames(arg)
     ],
     dayHeaderInnerClassNames: 'fc-padding-sm',
+    dayHeaderDividerClassNames: 'fc-day-header-divider',
+
+    // for resource views only
+    resourceDayHeaderClassNames: 'fc-resource-day-header',
+    resourceDayHeaderInnerClassNames: 'fc-padding-sm',
+
+    // Day-Cells (DayGrid & MultiMonth & TimeGrid "all-day" section)
+    // ---------------------------------------------------------------------------------------------
+
     dayRowClassNames: 'fc-day-row',
     dayCellClassNames: (arg) => [
       'fc-day-cell',
       ...getDayClassNames(arg),
       arg.isCompact ? 'fc-day-cell-compact' : 'fc-day-cell-not-compact',
     ],
+
     dayCellTopClassNames: 'fc-day-cell-top',
     dayCellTopInnerClassNames: (arg) => [
       'fc-day-cell-top-inner',
       arg.isMonthStart && 'fc-day-cell-top-inner-monthstart',
     ],
-    dayHeaderDividerClassNames: 'fc-day-header-divider',
 
-    resourceAreaDividerClassNames: 'fc-resource-area-divider',
-    resourceAreaHeaderRowClassNames: 'fc-resource-area-header-row',
-    resourceAreaHeaderClassNames: 'fc-resource-area-header',
-    resourceAreaRowClassNames: 'fc-resource-area-row',
-    resourceLaneClassNames: 'fc-resource-lane',
-    resourceGroupHeaderClassNames: 'fc-resource-group-header',
-    resourceGroupLaneClassNames: 'fc-resource-group-lane',
-
-    resourceDayHeaderClassNames: 'fc-resource-day-header',
-    resourceDayHeaderInnerClassNames: 'fc-padding-sm',
-    resourceCellClassNames: 'fc-resource-cell',
+    // MultiMonth
+    // ---------------------------------------------------------------------------------------------
 
     singleMonthClassNames: (arg) => [
       'fc-single-month',
@@ -167,23 +172,85 @@ export default createPlugin({
       arg.sticky && 'fc-single-month-table-header-sticky',
     ],
     singleMonthTableBodyClassNames: 'fc-single-month-table-body',
+
+    // TimeGrid
+    // ---------------------------------------------------------------------------------------------
+
+    allDayHeaderClassNames: 'fc-all-day-header',
+    allDayHeaderInnerClassNames: 'fc-all-day-header-inner fc-padding-sm',
+    allDayDividerClassNames: 'fc-all-day-divider',
+
+    dayLaneClassNames: (arg) => [
+      'fc-day-lane',
+      ...getDayClassNames(arg),
+    ],
+    dayLaneInnerClassNames: (arg) => [
+      'fc-day-lane-inner',
+      arg.isSimple && 'fc-day-lane-inner-simple',
+    ],
+
+    // Slots (TimeGrid & Timeline)
+    // ---------------------------------------------------------------------------------------------
+
+    slotLabelClassNames: (arg) => [
+      'fc-slot-label',
+      ...getSlotClassNames(arg),
+    ],
+    slotLaneClassNames: (arg) => [
+      'fc-slot-lane',
+      ...getSlotClassNames(arg),
+    ],
+
+    // only for (resource-)timeline
+    slotLabelRowClassNames: 'fc-slot-label-row',
+
+    // Resource Timeline
+    // ---------------------------------------------------------------------------------------------
+
+    resourceAreaHeaderRowClassNames: 'fc-resource-area-header-row',
+    resourceAreaHeaderClassNames: 'fc-resource-area-header',
+    resourceAreaHeaderInnerClassNames: 'fc-padding-lg',
+    resourceAreaDividerClassNames: 'fc-resource-area-divider',
+
+    resourceAreaRowClassNames: 'fc-resource-area-row',
+    resourceIndentClassNames: 'fc-resource-indent',
+    resourceExpanderClassNames: 'fc-resource-expander',
+
+    resourceGroupHeaderClassNames: 'fc-resource-group-header',
+    resourceGroupHeaderInnerClassNames: 'fc-padding-lg',
+    resourceGroupLaneClassNames: 'fc-resource-group-lane',
+
+    resourceCellClassNames: 'fc-resource-cell',
+    resourceCellInnerClassNames: 'fc-padding-lg',
+    resourceLaneClassNames: 'fc-resource-lane',
+    resourceLaneBottomClassNames: (arg) => [
+      'fc-resource-lane-bottom',
+      arg.isCompact && 'fc-resource-lane-bottom-compact',
+    ],
+
+    // Timeline WITHOUT resources
+    // ---------------------------------------------------------------------------------------------
+
+    timelineBottomClassNames: 'fc-timeline-bottom',
+
+    // List View
+    // ---------------------------------------------------------------------------------------------
+
     listDayClassName: 'fc-list-day',
     listDayHeaderClassNames: 'fc-list-day-header',
     listDayHeaderInnerClassNames: 'fc-list-day-header-inner',
-    resourceIndentClassNames: 'fc-resource-indent',
-    resourceExpanderClassNames: 'fc-resource-expander',
   },
   views: {
     dayGrid: {
       viewClassNames: 'fc-daygrid',
-      eventClassNames: getDayGridEventClassNames,
-      eventColorClassNames: getDayGridEventColorClassNames,
-      moreLinkClassNames: 'fc-daygrid-more-link',
-      weekNumberClassNames: 'fc-daygrid-week-number',
+      ...dayGridCommon,
+    },
+    multiMonth: {
+      viewClassNames: 'fc-multimonth',
+      ...dayGridCommon,
     },
     timeGrid: {
       viewClassNames: 'fc-timegrid',
-      slotLabelDividerClassNames: 'fc-timegrid-slot-label-divider',
       eventClassNames: (arg) => [
         arg.event.allDay ? getDayGridEventClassNames(arg) :
           arg.event.display === 'background' ? '' :
@@ -198,12 +265,26 @@ export default createPlugin({
       allDayHeaderInnerClassNames: 'fc-timegrid-axis-inner',
       weekNumberClassNames: 'fc-timegrid-axis',
       weekNumberInnerClassNames: 'fc-timegrid-axis-inner fc-padding-sm',
-      slotLabelClassNames: 'fc-timegrid-axis',
-      slotLabelInnerClassNames: 'fc-timegrid-axis-inner fc-padding-sm',
       moreLinkClassNames: 'fc-timegrid-more-link',
       moreLinkInnerClassNames: 'fc-timegrid-more-link-inner',
+      slotLabelClassNames: 'fc-timegrid-axis',
+      slotLabelInnerClassNames: 'fc-timegrid-axis-inner fc-padding-sm',
+      slotLabelDividerClassNames: 'fc-timegrid-slot-label-divider',
       nowIndicatorLabelClassNames: 'fc-timegrid-now-indicator-label',
       nowIndicatorLineClassNames: 'fc-timegrid-now-indicator-line',
+    },
+    timeline: {
+      viewClassNames: 'fc-timeline',
+      eventClassNames: (arg) => [
+        'fc-timeline-event fc-event-x',
+        arg.isSpacious && 'fc-timeline-event-spacious',
+      ],
+      moreLinkClassNames: 'fc-timeline-more-link',
+      moreLinkInnerClassNames: 'fc-timeline-more-link-inner',
+      slotLabelInnerClassNames: 'fc-padding-md',
+      slotLabelDividerClassNames: 'fc-timeline-slot-label-divider',
+      nowIndicatorLabelClassNames: 'fc-timeline-now-indicator-label',
+      nowIndicatorLineClassNames: 'fc-timeline-now-indicator-line',
     },
     list: {
       viewClassNames: 'fc-list',
@@ -212,36 +293,20 @@ export default createPlugin({
       noEventsContent: 'fc-list-empty',
       noEventsInnerClassNames: 'fc-list-empty-inner',
     },
-    multiMonth: {
-      viewClassNames: 'fc-multimonth',
-      eventClassNames: getDayGridEventClassNames,
-      eventColorClassNames: getDayGridEventColorClassNames,
-      moreLinkClassNames: 'fc-daygrid-more-link', // TODO: DRY?
+    resourceDayGrid: { // inherits dayGrid
+      viewClassNames: 'fc-resource-daygrid',
     },
-    timeline: {
-      viewClassNames: 'fc-timeline',
-      slotLabelDividerClassNames: 'fc-timeline-slot-label-divider',
-      eventClassNames: (arg) => [
-        'fc-timeline-event fc-event-x',
-        arg.isSpacious && 'fc-timeline-event-spacious',
-      ],
-      moreLinkClassNames: 'fc-timeline-more-link',
-      moreLinkInnerClassNames: 'fc-timeline-more-link-inner',
-      nowIndicatorLabelClassNames: 'fc-timeline-now-indicator-label',
-      nowIndicatorLineClassNames: 'fc-timeline-now-indicator-line',
-      slotLabelInnerClassNames: 'fc-padding-md',
+    resourceTimeGrid: { // inherits timeGrid
+      viewClassNames: 'fc-resource-timegrid',
     },
-    resourceDayGrid: {
-      viewClassNames: 'fc-resource-daygrid', // also inherits dayGrid
-    },
-    resourceTimeGrid: {
-      viewClassNames: 'fc-resource-timegrid', // also inherits timeGrid
-    },
-    resourceTimeline: {
-      viewClassNames: 'fc-resource-timeline', // also inherits timeline
+    resourceTimeline: { // inherits timeline
+      viewClassNames: 'fc-resource-timeline',
     },
   },
 }) as PluginDef
+
+// Utils
+// -------------------------------------------------------------------------------------------------
 
 function getDayGridEventClassNames(arg: EventContentArg) {
   return arg.event.display === 'background' ? '' :

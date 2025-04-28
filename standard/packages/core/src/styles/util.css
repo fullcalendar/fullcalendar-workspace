@@ -1,6 +1,12 @@
 
-$sticky-header-footer-z: 3;
-// $popover-z: 4; -- TODO: reintroduce
+:root {
+  --fc-sticky-header-footer-z: 3;
+  --fc-popover-z: 4;
+}
+
+.fcu-popover-z {
+  z-index: var(--fc-popover-z);
+}
 
 .fcu-border-box-root {
   &,
@@ -298,7 +304,7 @@ Sticks to either left or right (the flex "start") depending on ltr/rtl
 .fcu-table-header-sticky { // rename?
   position: sticky;
   top: 0;
-  z-index: $sticky-header-footer-z;
+  z-index: var(--fc-sticky-header-footer-z);
 }
 
 /*
@@ -341,7 +347,7 @@ Only needed when padding/border must be separate from width/height
 .fcu-footer-scrollbar-sticky {
   position: sticky;
   bottom: 0;
-  z-index: $sticky-header-footer-z;
+  z-index: var(--fc-sticky-header-footer-z);
 }
 
 .fcu-footer-scrollbar > * { // > scroller
