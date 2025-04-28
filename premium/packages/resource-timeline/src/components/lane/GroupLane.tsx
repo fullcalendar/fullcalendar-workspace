@@ -73,8 +73,8 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
               role: 'gridcell',
             }}
             className={joinClassNames(
-              'fcu-flex-col fcu-liquid fcu-flex-col',
               generateClassName(groupSpec.laneInnerClassNames, renderProps),
+              'fcu-flex-col fcu-liquid fcu-flex-col',
             )}
             elRef={this.innerElRef}
           />

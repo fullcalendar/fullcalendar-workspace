@@ -88,12 +88,12 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
       <Fragment>
         {options.dayHeaders && (
           <div className={joinClassNames(
-            'fcu-print-header',
-            stickyHeaderDates && 'fcu-table-header-sticky',
             generateClassName(options.viewHeaderClassNames, {
               borderX: props.borderX,
               isSticky: stickyHeaderDates,
             }),
+            'fcu-print-header',
+            stickyHeaderDates && 'fcu-table-header-sticky',
           )}>
             <Scroller
               horizontal
@@ -127,13 +127,13 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             props.forPrint // prevents blank space in print-view on Safari
           }
           className={joinClassNames(
+            generateClassName(options.viewBodyClassNames, {
+              borderX: props.borderX,
+            }),
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345
             !props.forPrint && 'fcu-flex-col',
             verticalScrollbars && 'fcu-liquid',
-            generateClassName(options.viewBodyClassNames, {
-              borderX: props.borderX,
-            }),
           )}
           ref={this.bodyScrollerRef}
           clientWidthRef={this.handleClientWidth}

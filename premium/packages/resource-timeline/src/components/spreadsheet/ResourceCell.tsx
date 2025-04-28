@@ -72,8 +72,8 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           <div
             ref={this.innerElRef}
             className={joinClassNames(
-              "fcu-rigid fcu-flex-row fcu-align-center",
               generateClassName(colSpec.cellInnerClassNames, renderProps),
+              'fcu-rigid fcu-flex-row fcu-align-center',
             )}
           >
             {colSpec.isMain && (

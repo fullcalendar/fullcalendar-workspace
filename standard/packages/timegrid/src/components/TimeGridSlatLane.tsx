@@ -52,8 +52,8 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
           <InnerContent
             tag="div"
             className={joinArrayishClassNames(
-              'fcu-rigid',
               options.slotLaneInnerClassNames,
+              'fcu-rigid',
             )}
             elRef={this.innerElRef}
           />

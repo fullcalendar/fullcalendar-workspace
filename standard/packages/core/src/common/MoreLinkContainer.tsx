@@ -89,8 +89,8 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   tag='div'
                   elRef={this.handleLinkEl}
                   className={joinClassNames(
-                    'fci-more-link',
                     props.className,
+                    'fci-more-link',
                   )}
                   style={props.style}
                   attrs={{

@@ -129,19 +129,19 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           'aria-labelledby': props.labelId,
         }}
         className={joinClassNames(
-          'fcu-print-root',
           props.className,
+          'fcu-print-root',
         )}
         borderX={props.borderX}
         borderTop={props.borderTop}
         borderBottom={props.borderBottom}
       >
         <div className={joinClassNames(
-          'fcu-print-header',
           generateClassName(options.viewHeaderClassNames, {
             borderX: props.borderX,
             isSticky: false,
           }),
+          'fcu-print-header',
         )}>
           <div className='fcu-flex-row'>
 
@@ -228,10 +228,10 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         <div
           role='rowgroup'
           className={joinClassNames(
-            'fcu-rel fcu-crop',
             generateClassName(options.viewBodyClassNames, {
               borderX: props.borderX,
             }),
+            'fcu-rel fcu-crop',
           )}
         >
 

@@ -71,10 +71,10 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
       <ContentContainer
         tag="div"
         className={joinArrayishClassNames(
+          'fcu-tight fcu-flex-col fcu-justify-center',
           props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
           props.isCentered ? 'fcu-align-center' : 'fcu-align-start',
           'fci-timeline-slot',
-          'fcu-tight fcu-flex-col fcu-justify-center',
         )}
         attrs={{
           'data-date': dateEnv.formatIso(cell.date, {
@@ -106,9 +106,9 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
                 : {} // don't bother with aria-hidden because parent already hidden
             }
             className={joinClassNames(
+              generateClassName(options.slotLabelInnerClassNames, renderProps),
               'fcu-rigid',
               props.isSticky && 'fcu-sticky-s',
-              generateClassName(options.slotLabelInnerClassNames, renderProps),
             )}
             elRef={this.innerElRef}
           />

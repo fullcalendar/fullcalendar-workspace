@@ -96,20 +96,20 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           aria-labelledby={this.titleId}
           data-date={props.isoDateStr}
           className={joinClassNames(
+            generateClassName(options.singleMonthClassNames, renderProps),
             'fcu-flex-col',
             props.hasLateralSiblings && 'fcu-break-inside-avoid',
-            generateClassName(options.singleMonthClassNames, renderProps),
           )}
         >
           <div
             id={this.titleId}
             ref={this.titleElRef}
             className={joinClassNames(
-              isTitleAndHeaderSticky && 'fcu-sticky-t',
               generateClassName(options.singleMonthTitleClassNames, {
                 sticky: isTitleAndHeaderSticky,
                 colCnt: props.colCnt,
-              })
+              }),
+              isTitleAndHeaderSticky && 'fcu-sticky-t',
             )}
             style={{
               // HACK to keep zIndex above table-header,
@@ -127,11 +127,11 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           </div>
           <div
             className={joinClassNames(
-              'fcu-flex-col',
               generateClassName(options.singleMonthTableClassNames, {
                 ...renderProps,
                 stickyTitle: isTitleAndHeaderSticky,
               }),
+              'fcu-flex-col',
             )}
             style={{
               marginTop: titleStickyBottom != null ? -titleStickyBottom : undefined
@@ -140,11 +140,11 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             <div
               ref={this.tableHeaderElRef}
               className={joinClassNames(
-                isTitleAndHeaderSticky && 'fcu-sticky-t',
                 generateClassName(options.singleMonthTableHeaderClassNames, {
                   sticky: isTitleAndHeaderSticky,
                   colCnt: props.colCnt,
                 }),
+                isTitleAndHeaderSticky && 'fcu-sticky-t',
               )}
               style={{
                 zIndex: isTitleAndHeaderSticky ? 2 : undefined, // TODO: className?

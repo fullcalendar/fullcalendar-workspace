@@ -165,12 +165,12 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
         {options.dayHeaders && (
           <div
             className={joinClassNames(
-              // see note in TimeGridLayout about why we don't do fcu-print-header
-              stickyHeaderDates && 'fcu-table-header-sticky',
               generateClassName(options.viewHeaderClassNames, {
                 borderX: props.borderX,
                 isSticky: stickyHeaderDates,
               }),
+              // see note in TimeGridLayout about why we don't do fcu-print-header
+              stickyHeaderDates && 'fcu-table-header-sticky',
             )}
           >
             <div className='fcu-flex-row'>
@@ -261,11 +261,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
         <div // the "body"
           role='rowgroup'
           className={joinClassNames(
-            'fcu-flex-col',
-            verticalScrolling && 'fcu-liquid',
             generateClassName(options.viewBodyClassNames, {
               borderX: props.borderX,
             }),
+            'fcu-flex-col',
+            verticalScrolling && 'fcu-liquid',
           )}
         >
           {options.allDaySlot && (
@@ -405,9 +405,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     {Boolean(rowsNotExpanding || bottomScrollbarWidth) && (
                       <div
                         class={joinArrayishClassNames(
-                          rowsNotExpanding && 'fcu-liquid',
                           options.fillerClassNames,
                           options.fillerYClassNames,
+                          rowsNotExpanding && 'fcu-liquid',
                         )}
                         style={{
                           minHeight: bottomScrollbarWidth
@@ -507,9 +507,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       {rowsNotExpanding && (
                         <div
                           class={joinArrayishClassNames(
-                            'fcu-liquid',
                             options.fillerClassNames,
                             options.fillerYClassNames,
+                            'fcu-liquid',
                           )}
                         />
                       )}

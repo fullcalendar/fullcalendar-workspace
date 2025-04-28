@@ -52,8 +52,8 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
         aria-rowindex={props.rowIndex}
         aria-level={props.level}
         className={joinArrayishClassNames(
-          props.className,
           options.resourceAreaRowClassNames,
+          props.className,
           'fcu-flex-row',
           props.borderBottom ? 'fcu-border-only-b' : 'fcu-border-none',
         )}
@@ -87,8 +87,8 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
             <InnerContent
               tag="div"
               className={joinClassNames(
-                'fcu-rigid fcu-sticky-t',
                 generateClassName(colSpec.cellInnerClassNames, renderProps),
+                'fcu-rigid fcu-sticky-t',
               )}
               elRef={this.innerElRef}
             />

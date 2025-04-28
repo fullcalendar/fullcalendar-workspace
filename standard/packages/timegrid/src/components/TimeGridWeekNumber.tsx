@@ -74,8 +74,8 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
                 : { 'aria-label': fullDateStr }
             }
             className={joinArrayishClassNames(
-              'fcu-rigid',
               options.weekNumberInnerClassNames,
+              'fcu-rigid',
             )}
             elRef={this.innerElRef}
           />

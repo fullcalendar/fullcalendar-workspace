@@ -47,8 +47,8 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
           <InnerContent
             tag="span"
             className={joinClassNames(
-              'fcu-rigid',
               generateClassName(options.allDayHeaderInnerClassNames, renderProps),
+              'fcu-rigid',
             )}
             elRef={this.innerElRef}
           />

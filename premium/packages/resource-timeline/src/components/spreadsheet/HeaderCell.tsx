@@ -61,8 +61,8 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
             <div
               ref={this.innerElRef}
               className={joinArrayishClassNames(
-                'fcu-rigid fcu-flex-row fcu-align-center',
                 generateClassName(colSpec.headerInnerClassNames, renderProps),
+                'fcu-rigid fcu-flex-row fcu-align-center',
               )}
             >
               {this.props.indent && (

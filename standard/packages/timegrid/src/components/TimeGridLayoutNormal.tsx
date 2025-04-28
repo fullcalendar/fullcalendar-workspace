@@ -136,13 +136,13 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           <div
             role='rowgroup'
             className={joinClassNames(
-              // see note in TimeGridLayout about why we don't do fcu-print-header
-              'fcu-flex-col',
-              stickyHeaderDates && 'fcu-table-header-sticky',
               generateClassName(options.viewHeaderClassNames, {
                 borderX: props.borderX,
                 isSticky: stickyHeaderDates,
               }),
+              // see note in TimeGridLayout about why we don't do fcu-print-header
+              'fcu-flex-col',
+              stickyHeaderDates && 'fcu-table-header-sticky',
             )}
           >
             {props.headerTiers.map((rowConfig, tierNum) => (
@@ -200,11 +200,11 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
         <div // the "body"
           role='rowgroup'
           className={joinClassNames(
-            'fcu-flex-col',
-            verticalScrolling && 'fcu-liquid',
             generateClassName(options.viewBodyClassNames, {
               borderX: props.borderX,
             }),
+            'fcu-flex-col',
+            verticalScrolling && 'fcu-liquid',
           )}
         >
           {/* ALL-DAY
@@ -226,10 +226,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   showDayNumbers={false}
                   forPrint={forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
-                  className={joinClassNames(
-                    'fcu-liquid',
-                    'fcu-border-none',
-                  )}
+                  className='fcu-liquid fcu-border-none'
                   cellIsCompact={clientWidth / props.cells.length <= options.dayCompactWidth}
                   // content
                   fgEventSegs={props.fgEventSegs}
@@ -364,9 +361,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   {rowsNotExpanding && (
                     <div
                       class={joinArrayishClassNames(
-                        'fcu-liquid',
                         options.fillerClassNames,
                         options.fillerYClassNames,
+                        'fcu-liquid',
                       )}
                     />
                   )}

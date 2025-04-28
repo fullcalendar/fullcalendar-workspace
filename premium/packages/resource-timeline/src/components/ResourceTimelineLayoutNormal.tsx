@@ -306,8 +306,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           'aria-labelledby': props.labelId,
         }}
         className={joinClassNames(
-          'fcu-flex-col',
           props.className,
+          'fcu-flex-col',
         )}
         borderX={props.borderX}
         borderTop={props.borderTop}
@@ -330,12 +330,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               <div
                 role='rowgroup'
                 className={joinClassNames(
-                  'fcu-flex-col',
-                  stickyHeaderDates && 'fcu-table-header-sticky',
                   generateClassName(options.viewHeaderClassNames, {
                     borderX: props.borderX,
                     isSticky: stickyHeaderDates,
                   }),
+                  'fcu-flex-col',
+                  stickyHeaderDates && 'fcu-table-header-sticky',
                 )}
               >
                 <div
@@ -398,11 +398,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 horizontal
                 hideScrollbars
                 className={joinClassNames(
-                  'fcu-flex-col fcu-rel', // fcu-rel needed for Ruler.fcu-fill-start
-                  verticalScrolling && 'fcu-liquid',
                   generateClassName(options.viewBodyClassNames, {
                     borderX: props.borderX,
                   }),
+                  'fcu-flex-col fcu-rel', // fcu-rel needed for Ruler.fcu-fill-start
+                  verticalScrolling && 'fcu-liquid',
                 )}
                 ref={this.spreadsheetBodyScrollerRef}
                 clientWidthRef={this.handleSpreadsheetClientWidth}
@@ -465,11 +465,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {/* time-area HEADER
               ---------------------------------------------------------------------------- */}
               <div className={joinClassNames(
-                stickyHeaderDates && 'fcu-table-header-sticky',
                 generateClassName(options.viewHeaderClassNames, {
                   borderX: props.borderX,
                   isSticky: stickyHeaderDates,
                 }),
+                stickyHeaderDates && 'fcu-table-header-sticky',
               )}>
                 <Scroller
                   ref={this.timeHeaderScrollerRef}

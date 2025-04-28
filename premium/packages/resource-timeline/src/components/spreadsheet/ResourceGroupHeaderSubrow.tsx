@@ -79,8 +79,8 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
             <div
               ref={this.innerElRef}
               className={joinClassNames(
-                "fcu-rigid fcu-flex-row fcu-align-center",
                 generateClassName(spec.labelInnerClassNames, renderProps),
+                "fcu-rigid fcu-flex-row fcu-align-center",
               )}
             >
               <ResourceIndent level={1} indentWidth={props.indentWidth}>

@@ -47,8 +47,8 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           <div
             ref={this.innerElRef}
             className={joinClassNames(
-              "fcu-rigid fcu-flex-row fcu-align-center",
               generateClassName(renderHooks.headerInnerClassNames, renderProps),
+              'fcu-rigid fcu-flex-row fcu-align-center',
             )}
           >
             {this.props.indent && (

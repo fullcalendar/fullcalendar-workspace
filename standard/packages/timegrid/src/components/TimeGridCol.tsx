@@ -115,8 +115,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           role='gridcell'
           aria-disabled
           className={joinClassNames(
-            baseClassName,
             generateClassName(options.dayLaneClassNames, renderProps),
+            baseClassName,
           )}
           style={baseStyle}
         />
@@ -124,8 +124,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     }
 
     const innerClassName = joinClassNames(
+      generateClassName(options.dayLaneInnerClassNames, renderProps),
       !isSimple && 'fcu-fill',
-      generateClassName(options.dayLaneInnerClassNames, renderProps)
     )
 
     const sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)

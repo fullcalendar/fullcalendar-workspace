@@ -97,10 +97,10 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
       <div
         role='rowgroup'
         className={joinClassNames(
+          props.className,
           // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
           // https://stackoverflow.com/a/60256345
           !props.forPrint && 'fcu-flex-col',
-          props.className,
         )}
         style={{ width: props.width }}
         ref={this.handleRootEl}

@@ -58,8 +58,8 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
         aria-expanded={props.expanded}
         data-resource-id={resource.id}
         className={joinArrayishClassNames(
-          props.className, // what for???
           options.resourceAreaRowClassNames,
+          props.className, // what for???
           'fcu-flex-row',
           props.borderBottom ? 'fcu-border-only-b' : 'fcu-border-none',
         )}

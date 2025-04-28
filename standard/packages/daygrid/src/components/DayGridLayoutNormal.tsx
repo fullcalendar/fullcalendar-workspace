@@ -72,12 +72,12 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
       <Fragment>
         {options.dayHeaders && (
           <div className={joinClassNames(
-            'fcu-print-header',
-            stickyHeaderDates && 'fcu-table-header-sticky',
             generateClassName(options.viewHeaderClassNames, {
               borderX: props.borderX,
               isSticky: stickyHeaderDates,
             }),
+            'fcu-print-header',
+            stickyHeaderDates && 'fcu-table-header-sticky',
           )}>
             <div className='fcu-flex-row'>
               <DayGridHeader
@@ -99,13 +99,13 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
         <Scroller
           vertical={verticalScrollbars}
           className={joinClassNames(
+            generateClassName(options.viewBodyClassNames, {
+              borderX: props.borderX,
+            }),
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345
             !props.forPrint && 'fcu-flex-col',
             verticalScrollbars && 'fcu-liquid',
-            generateClassName(options.viewBodyClassNames, {
-              borderX: props.borderX,
-            }),
           )}
           ref={this.handleScroller}
           clientWidthRef={this.handleClientWidth}

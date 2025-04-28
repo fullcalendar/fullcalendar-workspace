@@ -119,9 +119,9 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
           role='gridcell'
           aria-disabled
           className={joinArrayishClassNames(
-            baseClassName,
-            props.className,
             generateClassName(options.dayCellClassNames, renderProps),
+            props.className,
+            baseClassName,
           )}
           style={{
             width: props.width
@@ -137,7 +137,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       <ContentContainer
         tag="div"
         elRef={this.rootElRef}
-        className={joinClassNames(baseClassName, props.className)}
+        className={joinClassNames(props.className, baseClassName)}
         attrs={{
           ...props.attrs,
           role: 'gridcell',

@@ -57,7 +57,7 @@ export class ListView extends DateComponent<ViewProps> {
     return (
       <ViewContainer
         viewSpec={context.viewSpec}
-        className={joinClassNames('fcu-flex-col', props.className)}
+        className={joinClassNames(props.className, 'fcu-flex-col')}
         elRef={this.setRootEl}
         borderX={props.borderX}
         borderTop={props.borderTop}

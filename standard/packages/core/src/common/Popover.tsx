@@ -43,9 +43,9 @@ export class Popover extends BaseComponent<PopoverProps> {
         role='dialog'
         aria-labelledby={this.titleId}
         className={joinArrayishClassNames(
-          'fci-popover fcu-popover-z fcu-abs',
           options.popoverClassNames,
           props.className,
+          'fcu-popover-z fcu-abs fci-popover',
         )}
         ref={this.handleRootEl}
       >

@@ -68,9 +68,9 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         tag="div"
         // fcu-align-start shrinks width of InnerContent
         className={joinClassNames(
-          'fci-timeline-slot',
           'fcu-tight fcu-flex-col fcu-align-start',
           props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
+          'fci-timeline-slot',
         )}
         attrs={{
           'data-date': dateEnv.formatIso(date, {
@@ -93,8 +93,8 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           <InnerContent
             tag="div"
             className={joinArrayishClassNames(
-              'fcu-rigid',
               options.slotLaneInnerClassNames,
+              'fcu-rigid',
             )}
             style={{
               // HACK for Safari 16.4,

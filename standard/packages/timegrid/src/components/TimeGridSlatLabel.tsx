@@ -100,8 +100,8 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
           <InnerContent
             tag="div"
             className={joinClassNames(
-              'fcu-rigid',
               generateClassName(options.slotLabelInnerClassNames, renderProps),
+              'fcu-rigid',
             )}
             elRef={this.innerElRef}
           />

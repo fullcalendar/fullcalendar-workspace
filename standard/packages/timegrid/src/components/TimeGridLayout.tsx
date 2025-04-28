@@ -131,7 +131,6 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
           'aria-label': props.labelStr,
         }}
         className={joinClassNames(
-          !props.forPrint && 'fcu-flex-col',
           props.className,
           // we don't do fcu-print-root/fcu-print-header here because works poorly with print:
           // - Firefox >85ish CAN have flexboxes within it, but those cannot do absolute positioning
@@ -139,6 +138,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
           //   Also, there's weird padding on the last page at bottom of container, which matches
           //   the height of the repeated header
           // - Safari was never able to do repeated headers in the first place
+          !props.forPrint && 'fcu-flex-col',
         )}
         viewSpec={context.viewSpec}
         borderX={props.borderX}

@@ -35,12 +35,12 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
 
     let className = joinArrayishClassNames(
       options.classNames,
-      'fcu-border-box-root fcu-flex-col',
-      `fcu-${options.direction}-root`,
-      `fcu-calendar-${forPrint ? 'print' : 'screen'}-root`, // NOTE: already a fcu-print-root!
       generateClassName(options.directionClassNames, options.direction),
       generateClassName(options.mediaTypeClassNames, forPrint ? 'print' : 'screen'),
       generateClassName(options.colorSchemeClassNames, isDark ? 'dark' : 'light'),
+      'fcu-border-box-root fcu-flex-col',
+      `fcu-${options.direction}-root`,
+      `fcu-calendar-${forPrint ? 'print' : 'screen'}-root`, // NOTE: already a fcu-print-root!
     )
 
     return props.children(className, options.height, forPrint)

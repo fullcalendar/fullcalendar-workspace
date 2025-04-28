@@ -140,11 +140,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               {/* HEADER
               ---------------------------------------------------------------------------------- */}
               <div className={joinClassNames(
-                stickyHeaderDates && 'fcu-table-header-sticky',
                 generateClassName(options.viewHeaderClassNames, {
                   borderX: props.borderX,
                   isSticky: stickyHeaderDates,
                 }),
+                stickyHeaderDates && 'fcu-table-header-sticky',
               )}>
                 <Scroller
                   horizontal
@@ -210,11 +210,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   props.forPrint // prevents blank space in print-view on Safari
                 }
                 className={joinClassNames(
-                  'fcu-flex-col',
-                  verticalScrolling && 'fcu-liquid',
                   generateClassName(options.viewBodyClassNames, {
                     borderX: props.borderX,
                   }),
+                  'fcu-flex-col',
+                  verticalScrolling && 'fcu-liquid',
                 )}
                 ref={this.bodyScrollerRef}
                 clientWidthRef={this.handleClientWidth}
