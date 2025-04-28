@@ -3,6 +3,7 @@ import premiumCommonPlugin from '@fullcalendar/premium-common'
 import timelinePlugin from '@fullcalendar/timeline'
 import resourcePlugin from '@fullcalendar/resource'
 import { ResourceTimelineView } from './components/ResourceTimelineView.js'
+import { OPTION_REFINERS } from './option-refiners.js'
 import './ambient.js'
 
 export default createPlugin({
@@ -40,4 +41,7 @@ export default createPlugin({
       duration: { years: 1 },
     },
   },
+  optionRefiners: OPTION_REFINERS,
 }) as PluginDef
+
+export * from './structs.js'

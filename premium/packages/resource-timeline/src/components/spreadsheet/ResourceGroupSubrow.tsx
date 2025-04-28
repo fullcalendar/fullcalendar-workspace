@@ -1,6 +1,6 @@
 import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNames, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { ComponentChild, createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
-import { ColSpec, ResourceGroupHeaderContentArg } from '@fullcalendar/resource'
+import { ColSpec, ResourceGroupHeaderContentArg } from '../../structs.js'
 
 export interface ResourceGroupSubrowProps {
   colSpec: ColSpec

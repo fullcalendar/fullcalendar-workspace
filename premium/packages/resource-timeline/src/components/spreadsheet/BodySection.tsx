@@ -1,11 +1,12 @@
 import { BaseComponent, RefMap } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
-import { ColSpec, createGroupId } from "@fullcalendar/resource/internal"
+import { createGroupId } from "@fullcalendar/resource/internal"
 import { ResourceGroupSubrow } from "./ResourceGroupSubrow.js"
 import { ResourceGroupHeaderSubrow } from "./ResourceGroupHeaderSubrow.js"
 import { ResourceSubrow } from "./ResourceSubrow.js"
 import { GroupCellLayout, GroupRowLayout, ResourceLayout } from "../../resource-layout.js"
-import { ROW_BORDER_WIDTH } from "../../resource-positioning.js"
+import { ROW_BORDER_WIDTH } from '../../resource-positioning.js'
+import { ColSpec } from '../../structs.js'
 
 export interface BodySectionProps {
   flatResourceLayouts: ResourceLayout[]

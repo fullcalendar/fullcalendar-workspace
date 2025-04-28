@@ -1,5 +1,4 @@
 
-export { refineRenderProps } from './render-hooks.js'
 export { DEFAULT_RESOURCE_ORDER } from './resources-crud.js'
 export { AbstractResourceDayTableModel } from './common/AbstractResourceDayTableModel.js'
 export { ResourcelessDayTableModel } from './common/ResourcelessDayTableModel.js'
@@ -29,5 +28,4 @@ export {
   ResourceEntityExpansions,
 } from './reducers/resourceEntityExpansions.js'
 
-export { ColSpec, GroupSpec } from './common/resource-spec.js'
 export { ResourceSplitter } from './common/ResourceSplitter.js'

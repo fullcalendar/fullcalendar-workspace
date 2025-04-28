@@ -1,6 +1,6 @@
 import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
-import { ResourceColumnHeaderContentArg, ColHeaderRenderHooks } from '@fullcalendar/resource'
+import { ResourceColumnHeaderContentArg, ColHeaderRenderHooks } from '../../structs.js'
 import { ResourceIndent } from './ResourceIndent.js'
 
 export interface SuperHeaderCellProps {

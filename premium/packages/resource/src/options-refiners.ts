@@ -1,23 +1,8 @@
-import { ClassNamesGenerator, ClassNamesInput, CssDimValue } from '@fullcalendar/core'
-import {
-  Identity, identity, parseFieldSpecs,
-  CustomContentGenerator, DidMountHandler, WillUnmountHandler,
-} from '@fullcalendar/core/internal'
+import { Identity, identity, parseFieldSpecs } from '@fullcalendar/core/internal'
 import {
   ResourceSourceInput,
-  ColSpec,
-  ResourceColumnHeaderContentArg, ResourceColumnHeaderMountArg,
-  ResourceLaneContentArg, ResourceLaneMountArg,
   ResourceApi,
   ResourceAddArg, ResourceChangeArg, ResourceRemoveArg,
-  ResourceDayHeaderContentArg,
-  ResourceDayHeaderMountArg,
-  ResourceCellContentArg,
-  ResourceCellMountArg,
-  ResourceGroupHeaderContentArg,
-  ResourceGroupHeaderMountArg,
-  ResourceGroupLaneContentArg,
-  ResourceGroupLaneMountArg,
 } from './public-types.js'
 
 export const OPTION_REFINERS = {
@@ -29,65 +14,10 @@ export const OPTION_REFINERS = {
   resourceOrder: parseFieldSpecs,
   filterResourcesWithEvents: Boolean,
   resourceGroupField: String,
-  resourceAreaWidth: identity as Identity<CssDimValue>,
-  resourceAreaColumns: identity as Identity<ColSpec[]>,
+
   resourcesInitiallyExpanded: Boolean,
   datesAboveResources: Boolean,
   needsResourceData: Boolean, // internal-only
-
-  // for vresource view
-  resourceDayHeaderClassNames: identity as Identity<ClassNamesGenerator<ResourceDayHeaderContentArg>>,
-  resourceDayHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<ResourceDayHeaderContentArg>>,
-  resourceDayHeaderContent: identity as Identity<CustomContentGenerator<ResourceDayHeaderContentArg>>,
-  resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderMountArg>>,
-  resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderMountArg>>,
-
-  // datagrid super-header & normal column headers
-  resourceAreaHeaderClassNames: identity as Identity<ClassNamesGenerator<ResourceColumnHeaderContentArg>>,
-  resourceAreaHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<ResourceColumnHeaderContentArg>>,
-  resourceAreaHeaderContent: identity as Identity<CustomContentGenerator<ResourceColumnHeaderContentArg>>,
-  resourceAreaHeaderDidMount: identity as Identity<DidMountHandler<ResourceColumnHeaderMountArg>>,
-  resourceAreaHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceColumnHeaderMountArg>>,
-
-  resourceAreaHeaderRowClassNames: identity as Identity<ClassNamesInput>, // between super-header and normal headers
-  resourceAreaRowClassNames: identity as Identity<ClassNamesInput>,
-
-  // datagrid cells, for both resources & resource-GROUP
-  resourceCellClassNames: identity as Identity<ClassNamesGenerator<ResourceCellContentArg>>,
-  resourceCellInnerClassNames: identity as Identity<ClassNamesGenerator<ResourceCellContentArg>>,
-  resourceCellContent: identity as Identity<CustomContentGenerator<ResourceCellContentArg>>,
-  resourceCellDidMount: identity as Identity<DidMountHandler<ResourceCellMountArg>>,
-  resourceCellWillUnmount: identity as Identity<WillUnmountHandler<ResourceCellMountArg>>,
-
-  // datagrid, for resource-GROUP entire row
-  resourceGroupHeaderClassNames: identity as Identity<ClassNamesGenerator<ResourceGroupHeaderContentArg>>,
-  resourceGroupHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<ResourceGroupHeaderContentArg>>,
-  resourceGroupHeaderContent: identity as Identity<CustomContentGenerator<ResourceGroupHeaderContentArg>>,
-  resourceGroupHeaderDidMount: identity as Identity<DidMountHandler<ResourceGroupHeaderMountArg>>,
-  resourceGroupHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupHeaderMountArg>>,
-
-  // timeline lane, for resource-GROUP
-  // TODO: move to resource-timeline?
-  resourceGroupLaneClassNames: identity as Identity<ClassNamesGenerator<ResourceGroupLaneContentArg>>,
-  resourceGroupLaneInnerClassNames: identity as Identity<ClassNamesGenerator<ResourceGroupLaneContentArg>>,
-  resourceGroupLaneContent: identity as Identity<CustomContentGenerator<ResourceGroupLaneContentArg>>,
-  resourceGroupLaneDidMount: identity as Identity<DidMountHandler<ResourceGroupLaneMountArg>>,
-  resourceGroupLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceGroupLaneMountArg>>,
-
-  // timeline, lane, for resource
-  // TODO: move to resource-timeline?
-  resourceLaneClassNames: identity as Identity<ClassNamesGenerator<ResourceLaneContentArg>>,
-  resourceLaneContent: identity as Identity<CustomContentGenerator<ResourceLaneContentArg>>,
-  resourceLaneDidMount: identity as Identity<DidMountHandler<ResourceLaneMountArg>>,
-  resourceLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceLaneMountArg>>,
-
-  // TODO: move to resource-timeline?
-  resourceLaneTopClassNames: identity as Identity<ClassNamesInput>,
-  resourceLaneBottomClassNames: identity as Identity<ClassNamesGenerator<{ isCompact: boolean }>>,
-  resourceAreaDividerClassNames: identity as Identity<ClassNamesInput>,
-
-  resourceIndentClassNames: identity as Identity<ClassNamesInput>,
-  resourceExpanderClassNames: identity as Identity<ClassNamesInput>,
 }
 
 export const LISTENER_REFINERS = {

@@ -1,7 +1,7 @@
 import { afterSize, BaseComponent, ElementDragging, joinArrayishClassNames, PointerDragEvent, RefMap, setRef } from "@fullcalendar/core/internal"
 import { createElement, Ref } from '@fullcalendar/core/preact'
-import { ColSpec } from '@fullcalendar/resource/internal'
-import { HeaderCell } from "./HeaderCell.js"
+import { ColSpec } from '../../structs.js'
+import { HeaderCell } from './HeaderCell.js'
 
 export interface HeaderRowProps {
   colSpecs: ColSpec[]

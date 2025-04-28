@@ -1,10 +1,14 @@
 import { compareByFieldSpecs, flexibleCompare, OrderSpec } from '@fullcalendar/core/internal'
 import { Resource, ResourceHash } from '../structs/resource.js'
-import { GroupSpec } from './resource-spec.js'
 import { ResourceApi } from '../public-types.js'
 
+interface GenericGroupSpec { // best place for this?
+  field?: string
+  order?: number
+}
+
 export interface Group { // TODO: move somewhere more general?
-  spec: GroupSpec
+  spec: GenericGroupSpec
   value: any
 }
 
@@ -39,7 +43,7 @@ The groups that are row-groups VS col-groups can be determined by colGroupDepth
 export function buildResourceHierarchy(
   resourceStore: ResourceHash,
   orderSpecs: OrderSpec<ResourceApi>[], // why accepted when resourceNodeHash already ordered?
-  groupSpecs: GroupSpec[] = [],
+  groupSpecs: GenericGroupSpec[] = [],
   groupRowDepth: number = 0,
 ): GenericNode[] {
   const resourceNodeHash = buildResourceNodeHash(resourceStore, orderSpecs)
@@ -94,7 +98,7 @@ function buildResourceNodeHash(
 function insertResourceNode(
   resourceNode: ResourceNode,
   orderSpecs: OrderSpec<ResourceApi>[],
-  groupSpecs: GroupSpec[],
+  groupSpecs: GenericGroupSpec[],
   groupRowDepth: number,
   resNodes: GenericNode[],
 ) {
@@ -109,7 +113,7 @@ function insertResourceNode(
 
 function ensureGroupNodes(
   resourceNode: ResourceNode,
-  groupSpec: GroupSpec,
+  groupSpec: GenericGroupSpec,
   pooledHeight: boolean,
   resNodes: GenericNode[],
 ): GenericNode {

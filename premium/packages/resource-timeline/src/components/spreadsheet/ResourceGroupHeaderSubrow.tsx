@@ -1,9 +1,9 @@
 import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, joinClassNames, generateClassName, joinArrayishClassNames } from '@fullcalendar/core/internal'
 import { createElement, Fragment, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
-import { ResourceGroupHeaderContentArg } from '@fullcalendar/resource'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ResourceIndent } from './ResourceIndent.js'
 import { ResourceExpander } from './ResourceExpander.js'
+import { ResourceGroupHeaderContentArg, GroupSpec } from '../../structs.js'
 
 export interface ResourceGroupHeaderSubrowProps {
   group: Group
@@ -40,7 +40,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
       fieldValue: props.group.value,
       view: context.viewApi,
     }
-    let spec = props.group.spec
+    let spec = props.group.spec as GroupSpec // type HACK
 
     return (
       <div

@@ -15,7 +15,6 @@ import {
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import {
-  ColSpec,
   createGroupId,
   GenericNode,
   ResourceEntityExpansions
@@ -39,6 +38,7 @@ import { SuperHeaderCell } from './spreadsheet/SuperHeaderCell.js'
 import { ResourceGroupSubrows } from './spreadsheet/ResourceGroupSubrows.js'
 import { CssDimValue } from '@fullcalendar/core'
 import { flexifyDimConfigs, SiblingDimConfig } from '../col-positioning.js'
+import { ColSpec } from '../structs.js'
 
 export interface ResourceTimelineLayoutPrintProps {
   className?: string

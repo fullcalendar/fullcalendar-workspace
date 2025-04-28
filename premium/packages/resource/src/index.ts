@@ -49,10 +49,3 @@ export default createPlugin({
 
 export * from './public-types.js'
 export { ResourceApi } from './api/ResourceApi.js'
-export { ResourceLaneContentArg, ResourceLaneContentArgInput } from './render-hooks.js'
-export {
-  ResourceColumnHeaderContentArg,
-  ResourceColumnHeaderMountArg,
-  ColHeaderRenderHooks,
-  GroupLaneRenderHooks,
-} from './common/resource-spec.js'

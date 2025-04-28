@@ -3,6 +3,7 @@ import premiumCommonPlugin from '@fullcalendar/premium-common'
 import resourcePlugin from '@fullcalendar/resource'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { ResourceDayGridView } from './components/ResourceDayGridView.js'
+import { OPTION_REFINERS } from './option-refiners.js'
 import './ambient.js'
 
 export default createPlugin({
@@ -34,4 +35,7 @@ export default createPlugin({
       fixedWeekCount: true,
     },
   },
+  optionRefiners: OPTION_REFINERS,
 }) as PluginDef
+
+export * from './structs.js'

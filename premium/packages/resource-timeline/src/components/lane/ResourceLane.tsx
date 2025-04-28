@@ -1,7 +1,8 @@
 import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinArrayishClassNames, generateClassName } from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
-import { Resource, refineRenderProps } from '@fullcalendar/resource/internal'
+import { Resource } from '@fullcalendar/resource/internal'
 import { TimelineDateProfile, TimelineFg, TimelineBg, TimelineLaneSlicer } from '@fullcalendar/timeline/internal'
+import { refineRenderProps } from '../../structs.js'
 
 export interface ResourceLaneProps {
   dateProfile: DateProfile

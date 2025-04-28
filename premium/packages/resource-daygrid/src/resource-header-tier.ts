@@ -1,7 +1,8 @@
 import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, getDateMeta, ViewContext } from '@fullcalendar/core/internal'
 import { buildDateDataConfigs, buildDateRenderConfig, buildDateRowConfig, CellDataConfig, CellRenderConfig, RowConfig } from '@fullcalendar/daygrid/internal'
-import { ResourceApi, ResourceDayHeaderContentArg } from '@fullcalendar/resource'
+import { ResourceApi } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
+import { ResourceDayHeaderContentArg } from './structs.js'
 
 // TODO: figure out plugin-types
 // import { DayHeaderContentArg } from '../../../../standard/packages/daygrid/src/structs.js'

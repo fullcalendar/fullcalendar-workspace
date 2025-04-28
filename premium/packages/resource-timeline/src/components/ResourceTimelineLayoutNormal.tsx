@@ -28,7 +28,6 @@ import {
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
 import {
-  ColSpec,
   createEntityId,
   createGroupId,
   GenericNode,
@@ -56,6 +55,7 @@ import {
   findEntityByCoord,
   ROW_BORDER_WIDTH,
 } from '../resource-positioning.js'
+import { ColSpec } from '../structs.js'
 import { GroupLane } from './lane/GroupLane.js'
 import { ResourceLane } from './lane/ResourceLane.js'
 import { ResizableTwoCol } from './ResizableTwoCol.js'

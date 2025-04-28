@@ -9,10 +9,11 @@ import {
   generateClassName,
 } from '@fullcalendar/core/internal'
 import { createElement, Fragment, ComponentChild, createRef, Ref } from '@fullcalendar/core/preact'
-import { ResourceApi, ResourceCellContentArg } from '@fullcalendar/resource'
-import { Resource, ColSpec } from '@fullcalendar/resource/internal'
+import { ResourceApi } from '@fullcalendar/resource'
+import { Resource } from '@fullcalendar/resource/internal'
 import { ResourceIndent } from './ResourceIndent.js'
 import { ResourceExpander } from './ResourceExpander.js'
+import { ResourceCellContentArg, ColSpec } from '../../structs.js'
 
 export interface ResourceCellProps {
   colSpec: ColSpec

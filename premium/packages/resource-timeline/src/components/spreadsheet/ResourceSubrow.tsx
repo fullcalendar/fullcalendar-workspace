@@ -1,7 +1,8 @@
 import { afterSize, BaseComponent, isArraysEqual, joinArrayishClassNames, RefMap, setRef, ViewContext } from '@fullcalendar/core/internal'
 import { Ref, createElement } from '@fullcalendar/core/preact'
-import { Resource, ColSpec, getPublicId } from '@fullcalendar/resource/internal'
+import { Resource, getPublicId } from '@fullcalendar/resource/internal'
 import { ResourceCell } from './ResourceCell.js'
+import { ColSpec } from '../../structs.js'
 
 export interface ResourceSubrowProps {
   resource: Resource

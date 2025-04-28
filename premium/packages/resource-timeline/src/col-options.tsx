@@ -1,7 +1,7 @@
 import { joinFuncishClassNames, mergeContentInjectors, mergeLifecycleCallbacks, ViewOptionsRefined } from '@fullcalendar/core/internal'
-import { ColSpec } from '@fullcalendar/resource'
-import { GroupSpec, DEFAULT_RESOURCE_ORDER } from '@fullcalendar/resource/internal'
+import { DEFAULT_RESOURCE_ORDER } from '@fullcalendar/resource/internal'
 import { ensureDimConfigsGrow, parseSiblingDimConfig } from './col-positioning.js'
+import { GroupSpec, ColSpec } from './structs.js'
 
 const SPREADSHEET_COL_MIN_WIDTH = 50
 
