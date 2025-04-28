@@ -1,46 +1,4 @@
 
-@mixin liquid {
-  flex-grow: 1;
-  flex-basis: 0;
-  min-width: 0;
-  min-height: 0;
-}
-
-@mixin fill($inset: 0) {
-  position: absolute;
-  top: $inset;
-  left: $inset;
-  right: $inset;
-  bottom: $inset;
-}
-
-/*
-pointing down
-callers must set border-color themselves
-*/
-@mixin arrow-down($halfWidth, $height) {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: $height $halfWidth 0 $halfWidth;
-  border-left-color: transparent;
-  border-right-color: transparent;
-}
-
-/*
-pointing at left or right
-callers must set border-color themselves
-callers must choose pointing-left/right be setting left/right border to zero
-*/
-@mixin arrow-left-right($width, $halfHeight) {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: $halfHeight $width;
-  border-top-color: transparent;
-  border-bottom-color: transparent;
-}
-
 :root {
   --fc-page-bg-color: #fff;
   --fc-neutral-bg-color: rgba(208, 208, 208, 0.3);
@@ -890,17 +848,24 @@ a.fc-event:hover { // (anchor:hover)
   margin: 0 1px;
   opacity: .5;
   border-color: #000; // TODO: var
-  @include arrow-left-right(5px, 5px);
+
+  // arrow left or right
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 5px;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
 }
 // (pointing left variant)
 .fc-direction-ltr .fc-timeline-event:not(.fc-event-start):before,
 .fc-direction-rtl .fc-timeline-event:not(.fc-event-end):after {
-  border-left: 0;
+  border-left: 0; // complete arrow left
 }
 // (pointing right variant)
 .fc-direction-ltr .fc-timeline-event:not(.fc-event-end):after,
 .fc-direction-rtl .fc-timeline-event:not(.fc-event-start):before {
-  border-right: 0;
+  border-right: 0; // complete arrow right
 }
 
 // List Event
@@ -1093,17 +1058,24 @@ a.fc-list-event:hover .fc-event-title {
   position: absolute;
   margin-top: -5px; // vertically center on top coordinate
   border-color: var(--fc-now-indicator-color);
-  @include arrow-left-right(6px, 5px);
+
+  // arrow left or right
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 6px;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
 }
 
 .fc-direction-ltr .fc-timegrid-now-indicator-label { // (ltr)
   left: 0;
-  border-right: 0;
+  border-right: 0; // complete arrow right
 }
 
 .fc-direction-rtl .fc-timegrid-now-indicator-label { // (rtl)
   right: 0;
-  border-left: 0;
+  border-left: 0; // complete arrow left
 }
 
 .fc-timegrid-now-indicator-line {
@@ -1158,7 +1130,14 @@ a.fc-list-event:hover .fc-event-title {
   top: 0;
   margin: 0 -5px; // center triangle at element origin
   border-color: var(--fc-now-indicator-color);
-  @include arrow-down(5px, 6px);
+
+  // arrow down
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 5px 0 5px;
+  border-left-color: transparent;
+  border-right-color: transparent;
 }
 
 .fc-timeline-now-indicator-line {
