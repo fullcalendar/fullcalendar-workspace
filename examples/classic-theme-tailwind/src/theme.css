@@ -1,0 +1,1195 @@
+
+/*
+buttonClassName: (arg) => [
+  arg.isSelected
+    ? 'text-red-500 bg-pink-500 border-blue-500'
+    : 'active:text-red-500 active:bg-pink-500 active active:border-blue-500'
+]
+*/
+
+:root {
+  --fc-page-bg-color: #fff;
+  --fc-neutral-bg-color: rgba(208, 208, 208, 0.3);
+
+  --fc-small-font-size: .85em;
+  --fc-neutral-text-color: #808080;
+  --fc-border-color: #ddd;
+
+  --fc-button-text-color: #fff;
+  --fc-button-bg-color: #2C3E50;
+  --fc-button-border-color: #2C3E50;
+  --fc-button-hover-bg-color: #1e2b37;
+  --fc-button-hover-border-color: #1a252f;
+  --fc-button-active-bg-color: #1a252f;
+  --fc-button-active-border-color: #151e27;
+
+  --fc-event-bg-color: #3788d8;
+  --fc-event-border-color: #3788d8;
+  --fc-event-text-color: #fff;
+  --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
+  --fc-event-resizer-thickness: 8px;
+  --fc-event-resizer-dot-total-width: 8px;
+  --fc-event-resizer-dot-border-width: 1px;
+
+  --fc-bg-event-color: rgb(143, 223, 130);
+  --fc-bg-event-opacity: 0.3;
+  --fc-non-business-color: rgba(215, 215, 215, 0.3);
+  --fc-highlight-color: rgba(188, 232, 241, 0.3);
+  --fc-today-bg-color: rgba(255, 220, 40, 0.15);
+
+  --fc-more-link-bg-color: #d0d0d0;
+  --fc-more-link-text-color: inherit;
+  --fc-now-indicator-color: red;
+
+  --fc-daygrid-event-dot-width: 8px;
+
+  --fc-list-event-dot-width: 10px;
+  --fc-list-event-hover-bg-color: #f5f5f5;
+}
+
+.fc {
+  gap: 1.5em; /* space between toolbars and view */
+}
+
+.fc-toolbar {
+  gap: .75em; /* space between start/center/right */
+}
+
+.fc-toolbar-section {
+  gap: .75em; /* space between items */
+}
+
+.fc-toolbar-title {
+  font-size: 1.75em;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.fc-view-header-sticky {
+  background: var(--fc-page-bg-color);
+}
+
+/* UI Fundamentals > Button */
+/* ------------------------------------------------------------------------------------------------- */
+/* Heavily inspired by https://bootswatch.com/4/flatly/bootstrap.css */
+
+.fc-button {
+  border-radius: 0;
+  overflow: visible;
+  text-transform: none;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.fc-button:focus {
+  outline: 1px dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+}
+
+.fc-button {
+  -webkit-appearance: button;
+}
+
+.fc-button:not(:disabled) {
+  cursor: pointer;
+}
+
+.fc-button {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.4em 0.65em;
+  font-size: 1em;
+  line-height: 1.5;
+  border-radius: 0.25em;
+}
+
+.fc-button:hover {
+  text-decoration: none;
+}
+
+.fc-button:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
+}
+
+.fc-button:disabled {
+  opacity: 0.65;
+}
+
+/* "primary" coloring */
+
+.fc-button-primary {
+  color: var(--fc-button-text-color);
+  background-color: var(--fc-button-bg-color);
+  border-color: var(--fc-button-border-color);
+}
+
+.fc-button-primary:hover {
+  color: var(--fc-button-text-color);
+  background-color: var(--fc-button-hover-bg-color);
+  border-color: var(--fc-button-hover-border-color);
+}
+
+.fc-button-primary:disabled { /* not DRY */
+  color: var(--fc-button-text-color);
+  background-color: var(--fc-button-bg-color);
+  border-color: var(--fc-button-border-color); /* overrides :hover */
+}
+
+.fc-button-primary:focus {
+  box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
+}
+
+.fc-button-primary:not(:disabled):active,
+.fc-button-primary:not(:disabled).fc-button-active {
+  color: var(--fc-button-text-color);
+  background-color: var(--fc-button-active-bg-color);
+  border-color: var(--fc-button-active-border-color);
+}
+
+.fc-button-primary:not(:disabled):active:focus,
+.fc-button-primary:not(:disabled).fc-button-active:focus {
+  box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
+}
+
+/* icons within buttons... BEST? */
+
+.fc-button svg {
+  vertical-align: middle;
+  font-size: 1.5em; /* bump up the size (but don't make it bigger than line-height of button, which is 1.5em also) */
+  width: 1em;
+  height: 1em;
+}
+
+/* UI Fundamentals > Button Group */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-button-group {
+  position: relative;
+}
+
+.fc-button-group > .fc-button {
+  position: relative;
+  flex: 1 1 auto;
+}
+
+.fc-button-group > .fc-button:hover {
+  z-index: 1;
+}
+
+.fc-button-group > .fc-button:focus,
+.fc-button-group > .fc-button:active,
+.fc-button-group > .fc-button.fc-button-active {
+  z-index: 1;
+}
+
+.fc-direction-ltr .fc-button-group > .fc-button:not(:first-child) {
+  margin-left: -1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.fc-direction-rtl .fc-button-group > .fc-button:not(:first-child) {
+  margin-right: -1px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.fc-direction-rtl .fc-button-group > .fc-button:not(:last-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* UI Fundamentals > Popover */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-popover {
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  border: 1px solid var(--fc-border-color);
+  background: var(--fc-page-bg-color);
+}
+
+.fc-popover-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 4px;
+  background: var(--fc-neutral-bg-color);
+}
+
+.fc-popover-title {
+  margin: 0 2px;
+}
+
+.fc-popover-close {
+  cursor: pointer;
+  vertical-align: middle;
+  line-height: 1.357em;
+}
+
+.fc-popover-close svg { /* icon. TODO: DRY with fc-button */
+  vertical-align: middle;
+  font-size: 1.357em;
+  width: 1em;
+  height: 1em;
+  opacity: 0.65;
+}
+
+/* ONLY the more-popover... TODO: move! */
+.fc-more-popover .fc-popover-body {
+  min-width: 220px;
+  padding: 10px; /* TODO: make this for all popovers? */
+}
+
+/* Cross-view */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-navlink {
+  cursor: pointer;
+}
+
+.fc-navlink:hover {
+  text-decoration: underline;
+}
+
+.fc-day-disabled {
+  background: var(--fc-neutral-bg-color);
+}
+
+.fc-day-header-divider {
+  border-top: 1px solid var(--fc-border-color);
+}
+
+/* cell-like */
+.fc-resource-area-header-row,
+.fc-resource-area-header,
+.fc-resource-area-row,
+.fc-resource-cell,
+.fc-slot-label-row,
+.fc-slot-label,
+.fc-slot-lane,
+.fc-resource-lane,
+.fc-resource-group-lane,
+.fc-day-header-row,
+.fc-day-header-cell,
+.fc-day-row,
+.fc-day-cell,
+.fc-day-lane,
+.fc-resource-day-header,
+.fc-view-bordered {
+  border: 1px solid var(--fc-border-color);
+}
+
+.fc-slot-minor {
+  border-style: dotted;
+}
+
+.fc-padding-sm {
+  padding: 2px 4px;
+}
+
+.fc-padding-md {
+  padding: 4px 5px;
+}
+
+.fc-padding-lg {
+  padding: 8px;
+}
+
+/* Cross-view > Filler */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-filler { /* scrollbar gutter filler */
+  opacity: 0.5;
+}
+
+.fc-filler-y {
+  border-top: 1px solid var(--fc-border-color);
+}
+
+.fc-direction-ltr .fc-filler-x {
+  border-left: 1px solid var(--fc-border-color);
+}
+
+.fc-direction-rtl .fc-filler-x {
+  border-right: 1px solid var(--fc-border-color);
+}
+
+/* Cross-view > Fills & BG Event */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-non-business {
+  background: var(--fc-non-business-color);
+}
+
+.fc-highlight {
+  background: var(--fc-highlight-color);
+}
+
+.fc-bg-event {
+  background: var(--fc-bg-event-color);
+  opacity: var(--fc-bg-event-opacity);
+}
+
+.fc-bg-event-title {
+  margin: .5em;
+  font-size: var(--fc-small-font-size);
+  font-style: italic;
+}
+
+/* General Event */
+/* ------------------------------------------------------------------------------------------------- */
+
+/* reset underline when events <a> */
+a.fc-event, /* (anchor) */
+a.fc-event:hover { /* (anchor:hover) */
+  text-decoration: none;
+}
+
+/* transparent when mouse dragging */
+.fc-event-dragging:not(.fc-event-selected) {
+  opacity: 0.75;
+}
+
+/* box-shadow when touch dragging */
+.fc-event-dragging.fc-event-selected {
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
+}
+
+/* FYI: will only be present on fc-event-x/y */
+.fc-event-resizer {
+  position: absolute;
+  z-index: 2; /* one above sticky title */
+  display: none; /* hide */
+}
+
+.fc-event:hover .fc-event-resizer, /* mouse hover */
+.fc-event-selected .fc-event-resizer { /* touch select */
+  display: block; /* reveal */
+}
+
+/* touch resizer dot */
+.fc-event-selected .fc-event-resizer {
+  border-radius: calc(var(--fc-event-resizer-dot-total-width) / 2);
+  border-width: var(--fc-event-resizer-dot-border-width);
+  width: var(--fc-event-resizer-dot-total-width);
+  height: var(--fc-event-resizer-dot-total-width);
+  border-style: solid;
+  border-color: inherit;
+  background: var(--fc-page-bg-color);
+}
+
+/* X & Y-axis Events */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-event-x,
+.fc-event-y {
+  position: relative; /* origin for resizers */
+}
+
+.fc-event-selected, /* touch-selected */
+.fc-event-x:focus, /* tab-focused */
+.fc-event-y:focus {
+  /* shadow */
+  /* TODO: improve focus-styling for .fc-daygrid-dot-event */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* > dimmer-effect */
+/* TODO: problematic because covers most elements */
+/* Coincidence that sticky elements get put above */
+/* Give non-sticky elements position:relative! */
+.fc-event-selected:before, /* touch-selected */
+.fc-event-x:focus:before, /* tab-focused */
+.fc-event-y:focus:before {
+  /* assume there's a border on all sides. overcome it. */
+  /* sometimes there's NOT a border, in which case the dimmer will go over */
+  /* an adjacent border, which looks fine. */
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+
+  content: "";
+  background: var(--fc-event-selected-overlay-color);
+}
+
+/* X-axis Event */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-event-x,
+.fc-event-x .fc-event-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* vertical */
+}
+
+.fc-event-x .fc-event-inner {
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: 0;
+}
+
+.fc-event-x .fc-event-time,
+.fc-event-x .fc-event-title {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.fc-event-x .fc-event-time {
+  flex-shrink: 0;
+  max-width: 100%;
+}
+
+.fc-event-x .fc-event-title {
+  flex-shrink: 1;
+  position: sticky;
+  z-index: 1;
+  left: 0;
+  right: 0;
+}
+
+/* resizer positioning for mouse */
+.fc-event-x:not(.fc-event-selected) .fc-event-resizer {
+  top: 0;
+  bottom: 0;
+  width: var(--fc-event-resizer-thickness);
+}
+.fc-direction-ltr .fc-event-x:not(.fc-event-selected) .fc-event-resizer-start,
+.fc-direction-rtl .fc-event-x:not(.fc-event-selected) .fc-event-resizer-end {
+  left: calc(-0.5 * var(--fc-event-resizer-thickness));
+}
+.fc-direction-ltr .fc-event-x:not(.fc-event-selected) .fc-event-resizer-end,
+.fc-direction-rtl .fc-event-x:not(.fc-event-selected) .fc-event-resizer-start {
+  right: calc(-0.5 * var(--fc-event-resizer-thickness));
+}
+
+/* resizer dot positioning for touch */
+.fc-event-x.fc-event-selected .fc-event-resizer {
+  top: 50%;
+  margin-top: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
+}
+.fc-direction-ltr .fc-event-x.fc-event-selected .fc-event-resizer-start,
+.fc-direction-rtl .fc-event-x.fc-event-selected .fc-event-resizer-end {
+  left: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
+}
+.fc-direction-ltr .fc-event-x.fc-event-selected .fc-event-resizer-end,
+.fc-direction-rtl .fc-event-x.fc-event-selected .fc-event-resizer-start {
+  right: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
+}
+
+/* Y-axis Event */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-event-y,
+.fc-event-y .fc-event-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.fc-event-y .fc-event-inner {
+  flex-grow: 1;
+  flex-basis: 0;
+  min-width: 0;
+}
+
+.fc-event-y .fc-event-time {
+  flex-shrink: 0;
+  max-height: 100%;
+}
+
+.fc-event-y .fc-event-title {
+  flex-shrink: 1;
+  position: sticky;
+  z-index: 1;
+  top: 0;
+}
+
+.fc-event-y .fc-event-time,
+.fc-event-y .fc-event-title {
+  /* CAN be overridden */
+  white-space: nowrap;
+  overflow: hidden;
+}
+.fc-media-print .fc-event-y .fc-event-time,
+.fc-media-print .fc-event-y .fc-event-title {
+  /* CANNOT be overridden. print view depends on width-independent height */
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+/* mouse resizing */
+.fc-event-y:not(.fc-event-selected) .fc-event-resizer {
+  height: var(--fc-event-resizer-thickness);
+  left: 0;
+  right: 0;
+}
+.fc-event-y:not(.fc-event-selected) .fc-event-resizer-start { /* (start) */
+  top: calc(var(--fc-event-resizer-thickness) / -2);
+}
+.fc-event-y:not(.fc-event-selected) .fc-event-resizer-end { /* (end) */
+  bottom: calc(var(--fc-event-resizer-thickness) / -2);
+}
+
+/* touch resizing with dot */
+.fc-event-y.fc-event-selected .fc-event-resizer {
+  left: 50%;
+  margin-left: calc(var(--fc-event-resizer-dot-total-width) / -2);
+}
+.fc-event-y.fc-event-selected .fc-event-resizer-start { /* (start) */
+  top: calc(var(--fc-event-resizer-dot-total-width) / -2);
+}
+.fc-event-y.fc-event-selected .fc-event-resizer-end { /* (end) */
+  bottom: calc(var(--fc-event-resizer-dot-total-width) / -2);
+}
+
+/* DayGrid */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-day-cell.fc-day-today { /* (today) -- TODO: remove compound selector? */
+  /* only in body cells, not header cells */
+  background-color: var(--fc-today-bg-color);
+}
+
+.fc-day-cell-top {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.fc-day-other .fc-day-cell-top { /* TODO: remove compound selector? */
+  opacity: 0.3;
+}
+
+.fc-day-cell-top-inner {
+  position: relative;
+  padding: 4px;
+}
+
+.fc-day-cell-top-inner-monthstart {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.fc-daygrid-more-link {
+  position: relative;
+  max-width: 100%;
+  border-radius: 3px;
+  margin: 0 2px 1px;
+  padding: 2px;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: var(--fc-small-font-size);
+  cursor: pointer;
+}
+.fc-daygrid-more-link:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.fc-day-cell-not-compact .fc-daygrid-more-link { /* (button) */
+  align-self: flex-start;
+}
+
+.fc-day-cell-compact .fc-daygrid-more-link { /* (block) */
+  /* looks like an event */
+  border: 1px solid var(--fc-event-border-color);
+  padding: 1px;
+}
+
+.fc-daygrid-week-number {
+  position: absolute;
+  z-index: 1; /* HACK */
+  top: 0;
+  padding: 2px;
+  min-width: 1.5em;
+  text-align: center;
+  background-color: var(--fc-neutral-bg-color);
+  color: var(--fc-neutral-text-color);
+}
+
+.fc-direction-ltr .fc-daygrid-week-number { /* (ltr) */
+  border-radius: 0 0 3px;
+}
+
+.fc-direction-rtl .fc-daygrid-week-number { /* (rtl) */
+  border-radius: 0 0 0 3px;
+}
+
+/* DayGrid > Event */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-daygrid-event {
+  margin-bottom: 1px;
+  border-radius: 3px; /* dot event needs this too when selected */
+  font-size: var(--fc-small-font-size);
+}
+
+/* left/right margins */
+.fc-direction-ltr .fc-daygrid-event.fc-event-start, /* (ltr-left-terminus) */
+.fc-direction-rtl .fc-daygrid-event.fc-event-end { /* (rtl-left-terminus) */
+  margin-left: 2px;
+}
+.fc-direction-ltr .fc-daygrid-event.fc-event-end, /* (ltr-right-terminus) */
+.fc-direction-rtl .fc-daygrid-event.fc-event-start { /* (rtl-right-terminus) */
+  margin-right: 2px;
+}
+
+/* space between time and title */
+/* (can't use gap b/c dot is often a first sibling) */
+.fc-direction-ltr .fc-daygrid-event .fc-event-time { /* (ltr) > time */
+  margin-right: 3px;
+}
+.fc-direction-rtl .fc-daygrid-event .fc-event-time { /* (rtl) > time */
+  margin-left: 3px;
+}
+
+/* BLOCK style */
+
+.fc-daygrid-block-event {
+  border: 1px solid var(--fc-event-border-color);
+  background-color: var(--fc-event-bg-color);
+}
+.fc-media-print .fc-daygrid-block-event { /* (print) */
+  background: #fff !important;
+}
+
+/* kill left/right margin and border-radius */
+.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-start), /* (ltr-left-continuation) */
+.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-end) { /* (rtl-left-continuation) */
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left-width: 0;
+}
+.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-end), /* (ltr-right-continuation) */
+.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-start) { /* (rtl-right-continuation) */
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right-width: 0;
+}
+
+.fc-daygrid-block-event .fc-event-inner {
+  color: var(--fc-event-text-color); /* better to assign text-color within to bypass link color */
+}
+.fc-media-print .fc-daygrid-block-event .fc-event-inner { /* (print) */
+  color: #000 !important;
+}
+
+.fc-daygrid-block-event .fc-event-time { /* > time */
+  font-weight: bold;
+}
+
+.fc-daygrid-block-event .fc-event-time, /* > time */
+.fc-daygrid-block-event .fc-event-title { /* > title */
+  padding: 1px;
+}
+
+/* DOT style */
+
+.fc-daygrid-dot-event {
+  padding: 2px 0;
+}
+
+.fc-daygrid-dot-event.fc-event-mirror, /* (mirror) */
+.fc-daygrid-dot-event:hover { /* (hover) */
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.fc-daygrid-dot-event .fc-event-title {
+  font-weight: bold;
+}
+
+.fc-daygrid-event-dot { /* > dot */
+  margin: 0 4px;
+  box-sizing: content-box;
+  width: 0;
+  height: 0;
+  border: calc(var(--fc-daygrid-event-dot-width) / 2) solid var(--fc-event-border-color);
+  border-radius: calc(var(--fc-daygrid-event-dot-width) / 2);
+}
+
+/* MultiMonth */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-single-month-multicol {
+  margin: 1.2em;
+}
+
+.fc-single-month-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.fc-single-month-title-singlecol {
+  padding: 0.5em 0;
+}
+
+.fc-single-month-title-multicol {
+  padding-bottom: 1em;
+}
+
+.fc-single-month-title-sticky {
+  border-bottom: 1px solid var(--fc-border-color);
+  background: var(--fc-page-bg-color);
+}
+
+.fc-single-month-table {
+  /* shrink font */
+  font-size: 0.9em;
+  line-height: 1;
+}
+
+.fc-single-month-table-borderx {
+  border-left: 1px solid var(--fc-border-color);
+  border-right: 1px solid var(--fc-border-color);
+}
+
+.fc-single-month-table-bordertop {
+  border-top: 1px solid var(--fc-border-color);
+}
+
+.fc-single-month-table-borderbottom {
+  border-bottom: 1px solid var(--fc-border-color);
+}
+
+.fc-single-month-title-sticky,
+.fc-single-month-table-header-sticky {
+  background: var(--fc-page-bg-color);
+}
+
+/* TimeGrid */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-timegrid-slot-label-divider {
+  border-left: 1px solid var(--fc-border-color);
+}
+
+.fc-all-day-divider {
+  border-top: 1px solid var(--fc-border-color);
+  border-bottom: 1px solid var(--fc-border-color);
+  padding-bottom: 2px; /* can use just height if we move towards content-box! */
+  background-color: var(--fc-neutral-bg-color);
+}
+
+.fc-day-lane.fc-day-today { /* (today) */
+  background-color: var(--fc-today-bg-color);
+}
+
+.fc-direction-ltr .fc-day-lane-inner { /* (ltr) */
+  margin: 0 2.5% 0 2px;
+}
+
+.fc-direction-rtl .fc-day-lane-inner { /* (rtl) */
+  margin: 0 2px 0 2.5%;
+}
+
+.fc-day-lane-inner-simple { /* print-view in FF, when events are flat list */
+  margin: 4px !important;
+}
+
+.fc-all-day-header-inner {
+  /* respect newlines in long text like "Toute la journée", meant to break */
+  white-space: pre;
+}
+
+.fc-timegrid-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* vertically */
+  align-items: flex-end; /* horizontally */
+}
+
+.fc-timegrid-axis-inner {
+  text-align: end;
+  min-height: 1.5em;
+
+  /* vertical alignment for *text inside* */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* vertically */
+}
+
+.fc-timegrid-more-link {
+  z-index: 9999; /* HACK to get above all data-dependent z-indexes of events */
+  color: var(--fc-more-link-text-color);
+  background: var(--fc-more-link-bg-color);
+  margin-bottom: 1px; /* match space below fc-timegrid-event */
+  cursor: pointer;
+
+  /* TODO: DRY with timegrid-event? */
+  box-shadow: 0px 0px 0px 1px var(--fc-page-bg-color);
+  font-size: var(--fc-small-font-size);
+  border-radius: 3px;
+}
+
+.fc-direction-ltr .fc-timegrid-more-link {
+  right: 0; /* alignment within column. has natural width */
+}
+
+.fc-direction-rtl .fc-timegrid-more-link {
+  left: 0; /* alignment within column. has natural width */
+}
+
+.fc-timegrid-more-link-inner {
+  padding: 3px 2px;
+}
+
+.fc-timegrid-now-indicator-label {
+  position: absolute;
+  margin-top: -5px; /* vertically center on top coordinate */
+  border-color: var(--fc-now-indicator-color);
+
+  /* arrow left or right */
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 6px;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+}
+
+.fc-direction-ltr .fc-timegrid-now-indicator-label { /* (ltr) */
+  left: 0;
+  border-right: 0; /* complete arrow right */
+}
+
+.fc-direction-rtl .fc-timegrid-now-indicator-label { /* (rtl) */
+  right: 0;
+  border-left: 0; /* complete arrow left */
+}
+
+.fc-timegrid-now-indicator-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px solid var(--fc-now-indicator-color);
+}
+
+/* TimeGrid > Event */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-timegrid-event {
+  border-radius: 3px;
+  border: 1px solid var(--fc-event-border-color);
+  background-color: var(--fc-event-bg-color);
+  font-size: var(--fc-small-font-size);
+}
+.fc-media-print .fc-timegrid-event { /* (print) */
+  background: #fff !important;
+}
+
+/* kill top border and radius when not-start */
+.fc-timegrid-event:not(.fc-event-start) {
+  border-top-width: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* kill bottom border and radius when not-end */
+.fc-timegrid-event:not(.fc-event-end) {
+  border-bottom-width: 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.fc-timegrid-event.fc-event-end {
+  margin-bottom: 1px; /* give some space from bottom */
+}
+
+.fc-timegrid-event-inset, /* (inset) */
+.fc-timegrid-event.fc-event-mirror { /* (mirror) */
+  box-shadow: 0px 0px 0px 1px var(--fc-page-bg-color); /* apply border w/o mass */
+}
+
+.fc-timegrid-event .fc-event-inner {
+  padding: 1px 1px 0;
+  color: var(--fc-event-text-color); /* better to assign text-color within to bypass link color */
+}
+.fc-media-print .fc-timegrid-event .fc-event-inner { /* (print) */
+  color: #000 !important;
+}
+
+.fc-timegrid-event .fc-event-time {
+  white-space: nowrap;
+  font-size: var(--fc-small-font-size);
+  margin-bottom: 1px;
+}
+
+/* SHORT variation */
+.fc-timegrid-event-compact .fc-event-inner {
+  flex-direction: row; /* overrides fc-event-x! */
+  overflow: hidden;
+}
+.fc-timegrid-event-compact .fc-event-time:after {
+  content: '\00a0-\00a0'; /* dash surrounded by non-breaking spaces */
+}
+.fc-timegrid-event-compact .fc-event-title {
+  font-size: var(--fc-small-font-size);
+}
+
+/* List */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-list-day-header,
+.fc-list-event {
+  border-bottom: 1px solid var(--fc-border-color);
+}
+
+.fc-list-day:last-child .fc-list-event:last-child {
+  border-bottom: 0;
+}
+
+.fc-list-day-header-inner,
+.fc-list-event {
+  padding: 8px 14px;
+}
+
+.fc-list-day-header {
+  display: flex;
+  justify-content: space-between;
+  background: var(--fc-neutral-bg-color);
+  /* TODO: somehow layer-in when sticky: background: var(--fc-page-bg-color); */
+  font-weight: bold;
+}
+
+.fc-list-empty {
+  background-color: var(--fc-neutral-bg-color);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* vertically aligns fc-list-empty-inner */
+}
+
+.fc-list-empty-inner {
+  margin: 5em 0;
+}
+
+/* List > Event */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-list-event {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+}
+
+.fc-list-event:hover {
+  background-color: var(--fc-list-event-hover-bg-color);
+}
+
+.fc-list-event .fc-event-inner {
+  display: contents;
+}
+
+.fc-list-event .fc-event-time {
+  order: -1;
+  width: 165px;
+}
+
+.fc-list-event-dot {
+  display: inline-block;
+  box-sizing: content-box;
+  width: 0;
+  height: 0;
+  border: calc(var(--fc-list-event-dot-width) / 2) solid var(--fc-event-border-color);
+  border-radius: calc(var(--fc-list-event-dot-width) / 2);
+}
+
+/* reset <a> styling */
+a.fc-list-event {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* underline link when hovering over any part of row */
+a.fc-list-event:hover .fc-event-title {
+  text-decoration: underline;
+}
+
+/* Timeline */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-timeline-slot-label-divider {
+  border-top: 1px solid var(--fc-border-color);
+}
+
+.fc-timeline-now-indicator-label {
+  position: absolute;
+  top: 0;
+  margin: 0 -5px; /* center triangle at element origin */
+  border-color: var(--fc-now-indicator-color);
+
+  /* arrow down */
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 6px 5px 0 5px;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+
+.fc-timeline-now-indicator-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid var(--fc-now-indicator-color);
+}
+
+.fc-timeline-more-link {
+  font-size: var(--fc-small-font-size);
+  color: var(--fc-more-link-text-color);
+  background: var(--fc-more-link-bg-color);
+  padding: 1px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.fc-direction-ltr .fc-timeline-more-link { /* (ltr) */
+  margin-right: 1px; /* TODO: DRY with timeline-event? */
+}
+
+.fc-direction-rtl .fc-timeline-more-link { /* (rtl) */
+  margin-left: 1px; /* TODO: DRY with timeline-event? */
+}
+
+.fc-timeline-more-link-inner {
+  padding: 2px;
+}
+
+.fc-timeline-bottom {
+  padding-bottom: 10px;
+}
+
+/* Timeline > Event */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-timeline-event {
+  border: 1px solid var(--fc-event-border-color);
+  background-color: var(--fc-event-bg-color);
+  margin-bottom: 1px;
+  font-size: var(--fc-small-font-size);
+}
+.fc-media-print .fc-timeline-event { /* (print) */
+  background: #fff !important;
+}
+
+.fc-direction-ltr .fc-timeline-event.fc-event-end { /* (ltr+end) */
+  margin-right: 1px;
+}
+.fc-direction-rtl .fc-timeline-event.fc-event-end { /* (rtl+end) */
+  margin-left: 1px;
+}
+
+/* > inner */
+.fc-timeline-event .fc-event-inner {
+  padding: 2px 1px;
+  color: var(--fc-event-text-color); /* better to assign text-color within to bypass link color */
+}
+.fc-media-print .fc-timeline-event .fc-event-inner {
+  color: #000 !important;
+}
+
+/* > inner (spacious) */
+.fc-timeline-event-spacious .fc-event-inner {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+/* > inner > time */
+.fc-timeline-event .fc-event-time {
+  font-weight: bold;
+}
+
+/* > inner > time */
+/* > inner > title */
+.fc-timeline-event .fc-event-time,
+.fc-timeline-event .fc-event-title {
+  padding: 0 2px;
+}
+
+/* arrows */
+
+.fc-timeline-event:not(.fc-event-start):before,
+.fc-timeline-event:not(.fc-event-end):after {
+  content: "";
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin: 0 1px;
+  opacity: .5;
+  border-color: #000; /* TODO: var */
+
+  /* arrow left or right */
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 5px;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+}
+/* (pointing left variant) */
+.fc-direction-ltr .fc-timeline-event:not(.fc-event-start):before,
+.fc-direction-rtl .fc-timeline-event:not(.fc-event-end):after {
+  border-left: 0; /* complete arrow left */
+}
+/* (pointing right variant) */
+.fc-direction-ltr .fc-timeline-event:not(.fc-event-end):after,
+.fc-direction-rtl .fc-timeline-event:not(.fc-event-start):before {
+  border-right: 0; /* complete arrow right */
+}
+
+/* Resource Timeline */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fc-resource-area-divider {
+  border-left: 1px solid var(--fc-border-color);
+  border-right: 1px solid var(--fc-border-color);
+  padding-left: 2px;
+  background-color: var(--fc-neutral-bg-color);
+}
+
+.fc-resource-lane-bottom {
+  padding-bottom: 10px;
+}
+
+.fc-resource-lane-bottom-compact {
+  padding-bottom: 0;
+}
+
+.fc-resource-expander {
+  cursor: pointer;
+  opacity: 0.65;
+}
+
+.fc-resource-expander,
+.fc-resource-expander svg {
+  width: 1em;
+  height: 1em;
+}
+
+.fc-direction-ltr .fc-resource-indent { /* (ltr) */
+  margin-right: 3px;
+}
+.fc-direction-rtl .fc-resource-indent { /* (rtl) */
+  margin-left: 3px;
+}
+
+.fc-resource-group-header,
+.fc-resource-group-lane {
+  background-color: var(--fc-neutral-bg-color);
+}

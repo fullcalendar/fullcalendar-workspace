@@ -15,6 +15,7 @@
     "@fullcalendar/timeline": "workspace:7.0.0-rc.0",
     "@fullcalendar/list": "workspace:7.0.0-rc.0",
     "@fullcalendar/multimonth": "workspace:7.0.0-rc.0",
+    "@fullcalendar/resource": "workspace:7.0.0-rc.0",
     "@fullcalendar/resource-daygrid": "workspace:7.0.0-rc.0",
     "@fullcalendar/resource-timeline": "workspace:7.0.0-rc.0",
     "@fullcalendar-scripts/standard": "workspace:*"

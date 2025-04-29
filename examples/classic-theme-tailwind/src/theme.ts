@@ -1,6 +1,6 @@
 import { createPlugin, EventContentArg, PluginDef } from '@fullcalendar/core'
-import * as svgIcons from './svgIcons.js'
-import './index.css'
+import * as svgIcons from './svgIcons'
+import './theme.css'
 
 // Will import ambient types during dev but strip out for build
 import {} from '@fullcalendar/timegrid'
@@ -152,19 +152,19 @@ export default createPlugin({
 
     singleMonthClassNames: (arg) => [
       'fc-single-month',
-      arg.colCnt > 1 && 'fc-single-month-multicol',
+      (arg.colCnt || 0) > 1 && 'fc-single-month-multicol',
     ],
     singleMonthTitleClassNames: (arg) => [
       'fc-single-month-title',
-      arg.colCnt > 1
+      (arg.colCnt || 0) > 1
         ? 'fc-single-month-title-multicol'
         : 'fc-single-month-title-singlecol',
       arg.sticky && 'fc-single-month-title-sticky',
     ],
     singleMonthTableClassNames: (arg) => [
       'fc-single-month-table',
-      arg.colCnt > 1 && 'fc-single-month-table-borderx',
-      (arg.colCnt > 1 || !arg.isLast) && 'fc-single-month-table-borderbottom',
+      (arg.colCnt || 0) > 1 && 'fc-single-month-table-borderx',
+      ((arg.colCnt || 0) > 1 || !arg.isLast) && 'fc-single-month-table-borderbottom',
       !arg.stickyTitle && 'fc-single-month-table-bordertop',
     ],
     singleMonthTableHeaderClassNames: (arg) => [
