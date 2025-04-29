@@ -13,7 +13,6 @@ export class ButtonIcon extends BaseComponent<IconProps> {
   render() {
     const { contentGenerator, classNameGenerator } = this.props
     const { options } = this.context
-
     const renderProps: ButtonIconArg = {
       direction: options.direction,
     }

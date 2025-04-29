@@ -17,6 +17,8 @@ const dayGridCommon = {
   moreLinkClassNames: 'fc-daygrid-more-link',
 }
 
+const buttonIconClassName = 'text-[1.5em] w-[1em] h-[1em]'
+
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
@@ -41,33 +43,32 @@ export default createPlugin({
     buttons: {
       prev: {
         iconContent: (arg) => arg.direction === 'ltr'
-          ? svgIcons.chevronLeft
-          : svgIcons.chevronRight,
+          ? svgIcons.chevronLeft(buttonIconClassName)
+          : svgIcons.chevronRight(buttonIconClassName),
       },
       next: {
         iconContent: (arg) => arg.direction === 'ltr'
-          ? svgIcons.chevronRight
-          : svgIcons.chevronLeft,
+          ? svgIcons.chevronRight(buttonIconClassName)
+          : svgIcons.chevronLeft(buttonIconClassName),
       },
       prevYear: {
         iconContent: (arg) => arg.direction === 'ltr'
-          ? svgIcons.chevronsLeft
-          : svgIcons.chevronsRight,
+          ? svgIcons.chevronsLeft(buttonIconClassName)
+          : svgIcons.chevronsRight(buttonIconClassName),
       },
       nextYear: {
         iconContent: (arg) => arg.direction === 'ltr'
-          ? svgIcons.chevronsRight
-          : svgIcons.chevronsLeft,
+          ? svgIcons.chevronsRight(buttonIconClassName)
+          : svgIcons.chevronsLeft(buttonIconClassName),
       },
     },
-    popoverCloseContent: () => svgIcons.x,
+    popoverCloseContent: () => svgIcons.x(),
     resourceExpanderContent: (arg) => arg.isExpanded
-      ? svgIcons.minusSquare
-      : svgIcons.plusSquare,
+      ? svgIcons.minusSquare()
+      : svgIcons.plusSquare(),
 
     buttonGroupClassNames: 'relative z-0', // contain other z-indexes
     buttonClassNames: (arg) => [
-      'fc-button',
       'inline-flex items-center px-4 py-2 border text-sm text-white cursor-pointer',
       arg.inGroup
         ? 'first:rounded-s-sm last:rounded-e-sm relative' // in button-group

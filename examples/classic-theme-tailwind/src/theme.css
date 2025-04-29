@@ -39,17 +39,6 @@ buttonClassName: (arg) => [
   --fc-list-event-hover-bg-color: #f5f5f5;
 }
 
-/* UI Fundamentals > Button */
-/* ------------------------------------------------------------------------------------------------- */
-
-/* icons within buttons... BEST? */
-
-.fc-button svg {
-  font-size: 1.5em; /* bump up the size */
-  width: 1em;
-  height: 1em;
-}
-
 /* UI Fundamentals > Popover */
 /* ------------------------------------------------------------------------------------------------- */
 
