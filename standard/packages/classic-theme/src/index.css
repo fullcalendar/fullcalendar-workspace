@@ -31,9 +31,12 @@
 
   --fc-more-link-bg-color: #d0d0d0;
   --fc-more-link-text-color: inherit;
-
   --fc-now-indicator-color: red;
+
   --fc-daygrid-event-dot-width: 8px;
+
+  --fc-list-event-dot-width: 10px;
+  --fc-list-event-hover-bg-color: #f5f5f5;
 }
 
 .fc {
@@ -975,11 +978,6 @@ a.fc-event:hover { // (anchor:hover)
 
 // List > Event
 // -------------------------------------------------------------------------------------------------
-
-:root {
-  --fc-list-event-dot-width: 10px;
-  --fc-list-event-hover-bg-color: #f5f5f5;
-}
 
 .fc-list-event {
   display: flex;
