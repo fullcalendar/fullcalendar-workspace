@@ -31,7 +31,7 @@ export default createPlugin({
       'fc-toolbar-section',
       `fc-toolbar-${arg.name}`, // TODO: do section- ?
     ],
-    toolbarTitleClassNames: 'fc-toolbar-title',
+    toolbarTitleClassNames: 'fc-toolbar-title underline', // Tailwind!!!
     viewClassNames: (arg) => [
       'fc-view',
       `fc-${arg.view.type}-view`,
