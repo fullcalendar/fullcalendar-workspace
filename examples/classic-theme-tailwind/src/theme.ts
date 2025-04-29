@@ -32,7 +32,7 @@ export default createPlugin({
       'fc-view-bordered',
     ],
     viewHeaderClassNames: (arg) => [
-      arg.isSticky && 'fc-view-header-sticky'
+      arg.isSticky && 'bg-white'
     ],
 
     // UI Fundamentals
@@ -50,8 +50,15 @@ export default createPlugin({
 
     buttonClassNames: (arg) => [
       'fc-button',
-      'inline-flex items-center border rounded-sm px-4 py-2 cursor-pointer text-sm outline-none focus:ring-3 ring-slate-600/50 disabled:opacity-65 disabled:pointer-events-none',
-      arg.isSelected && 'fc-button-selected',
+      'inline-flex items-center rounded-sm px-4 py-2 border outline-none cursor-pointer',
+      !arg.isSelected
+        ? 'border-transparent bg-slate-700' // default
+        : 'border-slate-900 bg-slate-800 fc-button-selected', // selected
+      'active:border-slate-900 active:bg-slate-800', // active
+      'hover:border-slate-900 hover:bg-slate-800', // hover
+      'focus:ring-3 ring-slate-600/50', // focus
+      'disabled:opacity-65 disabled:pointer-events-none', // disabled
+      'text-sm text-white',
     ],
     buttonGroupClassNames: 'fc-button-group',
 

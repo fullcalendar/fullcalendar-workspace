@@ -8,14 +8,13 @@ buttonClassName: (arg) => [
 */
 
 :root {
-  --fc-page-bg-color: #fff;
+  --fc-page-bg-color: #fff; // tailwind = bg-white
   --fc-neutral-bg-color: rgba(208, 208, 208, 0.3);
 
   --fc-small-font-size: .85em;
   --fc-neutral-text-color: #808080;
   --fc-border-color: #ddd;
 
-  --fc-button-text-color: #fff;
   --fc-button-bg-color: #2C3E50;
   --fc-button-border-color: #2C3E50;
   --fc-button-hover-bg-color: #1e2b37;
@@ -47,30 +46,8 @@ buttonClassName: (arg) => [
   --fc-list-event-hover-bg-color: #f5f5f5;
 }
 
-.fc-view-header-sticky {
-  background: var(--fc-page-bg-color);
-}
-
 /* UI Fundamentals > Button */
 /* ------------------------------------------------------------------------------------------------- */
-/* Heavily inspired by https://bootswatch.com/4/flatly/bootstrap.css */
-
-.fc-button {
-  color: var(--fc-button-text-color);
-  background-color: var(--fc-button-bg-color);
-  border-color: var(--fc-button-border-color);
-}
-
-.fc-button:active,
-.fc-button.fc-button-selected {
-  background-color: var(--fc-button-selected-bg-color);
-  border-color: var(--fc-button-selected-border-color);
-}
-
-.fc-button:hover {
-  background-color: var(--fc-button-hover-bg-color);
-  border-color: var(--fc-button-hover-border-color);
-}
 
 /* icons within buttons... BEST? */
 
@@ -92,10 +69,7 @@ buttonClassName: (arg) => [
   flex: 1 1 auto;
 }
 
-.fc-button-group > .fc-button:hover {
-  z-index: 1;
-}
-
+.fc-button-group > .fc-button:hover,
 .fc-button-group > .fc-button:focus,
 .fc-button-group > .fc-button:active,
 .fc-button-group > .fc-button.fc-button-selected {
@@ -103,7 +77,6 @@ buttonClassName: (arg) => [
 }
 
 .fc-direction-ltr .fc-button-group > .fc-button:not(:first-child) {
-  margin-left: -1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -114,7 +87,6 @@ buttonClassName: (arg) => [
 }
 
 .fc-direction-rtl .fc-button-group > .fc-button:not(:first-child) {
-  margin-right: -1px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
