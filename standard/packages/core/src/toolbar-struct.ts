@@ -28,6 +28,7 @@ export interface ButtonContentArg {
   text: string
   isSelected: boolean
   isDisabled: boolean
+  inGroup: boolean
 }
 
 export type ButtonMountArg = MountArg<ButtonContentArg>

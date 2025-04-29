@@ -15,13 +15,6 @@ buttonClassName: (arg) => [
   --fc-neutral-text-color: #808080;
   --fc-border-color: #ddd;
 
-  --fc-button-bg-color: #2C3E50;
-  --fc-button-border-color: #2C3E50;
-  --fc-button-hover-bg-color: #1e2b37;
-  --fc-button-hover-border-color: #1a252f;
-  --fc-button-selected-bg-color: #1a252f;
-  --fc-button-selected-border-color: #151e27;
-
   --fc-event-bg-color: #3788d8;
   --fc-event-border-color: #3788d8;
   --fc-event-text-color: #fff;
@@ -55,45 +48,6 @@ buttonClassName: (arg) => [
   font-size: 1.5em; /* bump up the size */
   width: 1em;
   height: 1em;
-}
-
-/* UI Fundamentals > Button Group */
-/* ------------------------------------------------------------------------------------------------- */
-
-.fc-button-group {
-  position: relative;
-}
-
-.fc-button-group > .fc-button {
-  position: relative;
-  flex: 1 1 auto;
-}
-
-.fc-button-group > .fc-button:hover,
-.fc-button-group > .fc-button:focus,
-.fc-button-group > .fc-button:active,
-.fc-button-group > .fc-button.fc-button-selected {
-  z-index: 1;
-}
-
-.fc-direction-ltr .fc-button-group > .fc-button:not(:first-child) {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.fc-direction-ltr .fc-button-group > .fc-button:not(:last-child) {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.fc-direction-rtl .fc-button-group > .fc-button:not(:first-child) {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.fc-direction-rtl .fc-button-group > .fc-button:not(:last-child) {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
 }
 
 /* UI Fundamentals > Popover */

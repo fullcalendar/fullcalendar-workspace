@@ -90,6 +90,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
           text: widget.buttonText,
           isSelected,
           isDisabled,
+          inGroup: widgetGroup.length > 1 && isOnlyButtons,
         }
 
         children.push(

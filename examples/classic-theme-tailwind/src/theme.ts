@@ -48,19 +48,23 @@ export default createPlugin({
       collapse: () => svgIcons.minusSquare,
     },
 
+    buttonGroupClassNames: 'relative z-0', // contain other z-indexes
     buttonClassNames: (arg) => [
       'fc-button',
-      'inline-flex items-center rounded-sm px-4 py-2 border outline-none cursor-pointer',
-      !arg.isSelected
-        ? 'border-transparent bg-slate-700' // default
-        : 'border-slate-900 bg-slate-800 fc-button-selected', // selected
-      'active:border-slate-900 active:bg-slate-800', // active
+      'inline-flex items-center px-4 py-2 border text-sm text-white cursor-pointer',
+      arg.inGroup
+        ? 'first:rounded-s-sm last:rounded-e-sm relative' // in button-group
+        : 'rounded-sm', // alone
+      arg.isSelected
+        ? 'border-slate-900 bg-slate-800 z-10' // selected
+        : 'border-transparent bg-slate-700', // not-selected
+      arg.isDisabled
+        ? 'opacity-65 pointer-events-none' // disabled
+        : '',
+      'active:border-slate-900 active:bg-slate-800 active:z-20', // active (similar to selected)
       'hover:border-slate-900 hover:bg-slate-800', // hover
-      'focus:ring-3 ring-slate-600/50', // focus
-      'disabled:opacity-65 disabled:pointer-events-none', // disabled
-      'text-sm text-white',
+      'focus:outline-3 outline-slate-600/50 focus:z-10', // focus
     ],
-    buttonGroupClassNames: 'fc-button-group',
 
     popoverClassNames: 'fc-popover', // see also: dayPopoverClassNames
     popoverHeaderClassNames: 'fc-popover-header',
