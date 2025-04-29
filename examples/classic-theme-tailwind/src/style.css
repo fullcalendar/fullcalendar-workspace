@@ -8,11 +8,6 @@ body {
   font-size: 14px;
 }
 
-/* Undo tailwind reset. TODO: better solution */
-html, body {
-  line-height: inherit;
-}
-
 #calendar {
   max-width: 1100px;
   margin: 0 auto;

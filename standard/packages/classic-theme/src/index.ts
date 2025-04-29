@@ -20,7 +20,7 @@ const dayGridCommon = {
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
-    classNames: ['fc', 'fc-theme-standard'],
+    classNames: 'fc',
     directionClassNames: (direction) => `fc-direction-${direction}`,
     mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
     toolbarClassNames: (arg) => [

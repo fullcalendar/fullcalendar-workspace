@@ -20,18 +20,12 @@ const dayGridCommon = {
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
-    classNames: ['fc', 'fc-theme-standard'],
+    classNames: 'gap-5',
     directionClassNames: (direction) => `fc-direction-${direction}`,
     mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
-    toolbarClassNames: (arg) => [
-      `fc-${arg.name}-toolbar`,
-      'fc-toolbar',
-    ],
-    toolbarSectionClassNames: (arg) => [
-      'fc-toolbar-section',
-      `fc-toolbar-${arg.name}`, // TODO: do section- ?
-    ],
-    toolbarTitleClassNames: 'fc-toolbar-title underline', // Tailwind!!!
+    toolbarClassNames: 'gap-3',
+    toolbarSectionClassNames: 'gap-3',
+    toolbarTitleClassNames: 'text-2xl font-bold whitespace-nowrap',
     viewClassNames: (arg) => [
       'fc-view',
       `fc-${arg.view.type}-view`,
@@ -55,10 +49,9 @@ export default createPlugin({
     },
 
     buttonClassNames: (arg) => [
-      `fc-${arg.name}-button`,
       'fc-button',
-      'fc-button-primary',
-      arg.isSelected && 'fc-button-active',
+      'inline-flex items-center border rounded-sm px-4 py-2 cursor-pointer text-sm outline-none focus:ring-3 ring-slate-600/50 disabled:opacity-65 disabled:pointer-events-none',
+      arg.isSelected && 'fc-button-selected',
     ],
     buttonGroupClassNames: 'fc-button-group',
 

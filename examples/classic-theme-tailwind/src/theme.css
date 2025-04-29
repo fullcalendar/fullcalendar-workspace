@@ -20,8 +20,8 @@ buttonClassName: (arg) => [
   --fc-button-border-color: #2C3E50;
   --fc-button-hover-bg-color: #1e2b37;
   --fc-button-hover-border-color: #1a252f;
-  --fc-button-active-bg-color: #1a252f;
-  --fc-button-active-border-color: #151e27;
+  --fc-button-selected-bg-color: #1a252f;
+  --fc-button-selected-border-color: #151e27;
 
   --fc-event-bg-color: #3788d8;
   --fc-event-border-color: #3788d8;
@@ -47,24 +47,6 @@ buttonClassName: (arg) => [
   --fc-list-event-hover-bg-color: #f5f5f5;
 }
 
-.fc {
-  gap: 1.5em; /* space between toolbars and view */
-}
-
-.fc-toolbar {
-  gap: .75em; /* space between start/center/right */
-}
-
-.fc-toolbar-section {
-  gap: .75em; /* space between items */
-}
-
-.fc-toolbar-title {
-  font-size: 1.75em;
-  font-weight: bold;
-  white-space: nowrap;
-}
-
 .fc-view-header-sticky {
   background: var(--fc-page-bg-color);
 }
@@ -74,96 +56,26 @@ buttonClassName: (arg) => [
 /* Heavily inspired by https://bootswatch.com/4/flatly/bootstrap.css */
 
 .fc-button {
-  border-radius: 0;
-  overflow: visible;
-  text-transform: none;
-  margin: 0;
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
-}
-
-.fc-button:focus {
-  outline: 1px dotted;
-  outline: 5px auto -webkit-focus-ring-color;
-}
-
-.fc-button {
-  -webkit-appearance: button;
-}
-
-.fc-button:not(:disabled) {
-  cursor: pointer;
-}
-
-.fc-button {
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  vertical-align: middle;
-  user-select: none;
-  background-color: transparent;
-  border: 1px solid transparent;
-  padding: 0.4em 0.65em;
-  font-size: 1em;
-  line-height: 1.5;
-  border-radius: 0.25em;
-}
-
-.fc-button:hover {
-  text-decoration: none;
-}
-
-.fc-button:focus {
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
-}
-
-.fc-button:disabled {
-  opacity: 0.65;
-}
-
-/* "primary" coloring */
-
-.fc-button-primary {
   color: var(--fc-button-text-color);
   background-color: var(--fc-button-bg-color);
   border-color: var(--fc-button-border-color);
 }
 
-.fc-button-primary:hover {
-  color: var(--fc-button-text-color);
+.fc-button:active,
+.fc-button.fc-button-selected {
+  background-color: var(--fc-button-selected-bg-color);
+  border-color: var(--fc-button-selected-border-color);
+}
+
+.fc-button:hover {
   background-color: var(--fc-button-hover-bg-color);
   border-color: var(--fc-button-hover-border-color);
-}
-
-.fc-button-primary:disabled { /* not DRY */
-  color: var(--fc-button-text-color);
-  background-color: var(--fc-button-bg-color);
-  border-color: var(--fc-button-border-color); /* overrides :hover */
-}
-
-.fc-button-primary:focus {
-  box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
-}
-
-.fc-button-primary:not(:disabled):active,
-.fc-button-primary:not(:disabled).fc-button-active {
-  color: var(--fc-button-text-color);
-  background-color: var(--fc-button-active-bg-color);
-  border-color: var(--fc-button-active-border-color);
-}
-
-.fc-button-primary:not(:disabled):active:focus,
-.fc-button-primary:not(:disabled).fc-button-active:focus {
-  box-shadow: 0 0 0 0.2rem rgba(76, 91, 106, 0.5);
 }
 
 /* icons within buttons... BEST? */
 
 .fc-button svg {
-  vertical-align: middle;
-  font-size: 1.5em; /* bump up the size (but don't make it bigger than line-height of button, which is 1.5em also) */
+  font-size: 1.5em; /* bump up the size */
   width: 1em;
   height: 1em;
 }
@@ -186,7 +98,7 @@ buttonClassName: (arg) => [
 
 .fc-button-group > .fc-button:focus,
 .fc-button-group > .fc-button:active,
-.fc-button-group > .fc-button.fc-button-active {
+.fc-button-group > .fc-button.fc-button-selected {
   z-index: 1;
 }
 
