@@ -1,9 +1,9 @@
-import { createElement, VNode } from '../preact.js'
+import { ComponentChild, createElement, Fragment, VNode } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
 import { ToolbarWidget, ButtonContentArg } from '../toolbar-struct.js'
 import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
-import { Icon } from './Icon.js'
+import { ButtonIcon } from './ButtonIcon.js'
 
 export interface ToolbarContent {
   title: string
@@ -84,9 +84,25 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
           (!props.isPrevEnabled && name === 'prev') ||
           (!props.isNextEnabled && name === 'next')
 
+        let buttonDisplay = widget.buttonDisplay ?? options.buttonDisplay
+        if (buttonDisplay === 'auto') {
+          buttonDisplay = (widget.buttonIconContent || widget.buttonIconClassNames)
+            ? 'icon'
+            : 'text'
+        }
+
+        let iconNode: ComponentChild
+        if (buttonDisplay !== 'text') {
+          iconNode = (
+            <ButtonIcon
+              classNameGenerator={widget.buttonIconClassNames}
+              contentGenerator={widget.buttonIconContent}
+            />
+          )
+        }
+
         let renderProps: ButtonContentArg = {
           name,
-          icon: widget.buttonIcon,
           text: widget.buttonText,
           isSelected,
           isDisabled,
@@ -111,13 +127,19 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
             }}
             className={generateClassName(options.buttonClassNames, renderProps)}
             renderProps={renderProps}
-            generatorName='buttonContent'
-            customGenerator={widget.buttonContent || options.buttonContent}
-            defaultGenerator={renderButtonContent}
+            generatorName={undefined}
             classNameGenerator={widget.buttonClassNames}
             didMount={widget.buttonDidMount}
             willUnmount={widget.buttonWillUnmount}
-          />
+          >{() => (
+            buttonDisplay === 'text'
+              ? widget.buttonText
+              : buttonDisplay === 'icon'
+                ? iconNode
+                : buttonDisplay === 'icon-text'
+                  ? (<Fragment>{iconNode}{widget.buttonText}</Fragment>)
+                  : (<Fragment>{widget.buttonText}{iconNode}</Fragment>) // text-icon
+          )}</ContentContainer>
         )
       }
     }
@@ -136,36 +158,5 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
     }
 
     return children[0]
-  }
-}
-
-function renderButtonContent(arg: ButtonContentArg) {
-  return (
-    <ToolbarButton icon={arg.icon} text={arg.text} />
-  )
-}
-
-// ToolbarButton
-// -------------------------------------------------------------------------------------------------
-
-interface ToolbarButtonProps {
-  icon: string | false
-  text: string
-}
-
-class ToolbarButton extends BaseComponent<ToolbarButtonProps> {
-  render() {
-    const { options } = this.context
-    const { icon, text } = this.props
-    const iconInputs = options.icons || {}
-    const iconInput = icon && iconInputs[icon]
-
-    if (iconInput) {
-      return (
-        <Icon input={iconInput} />
-      )
-    }
-
-    return text
   }
 }

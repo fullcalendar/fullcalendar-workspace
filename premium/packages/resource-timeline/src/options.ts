@@ -17,6 +17,7 @@ import {
   ResourceLaneContentArg,
   ResourceLaneMountArg,
   ColSpec,
+  ResourceExpanderArg,
 } from './structs.js'
 
 export const OPTION_REFINERS = {
@@ -63,7 +64,8 @@ export const OPTION_REFINERS = {
   resourceAreaDividerClassNames: identity as Identity<ClassNamesInput>,
 
   resourceIndentClassNames: identity as Identity<ClassNamesInput>,
-  resourceExpanderClassNames: identity as Identity<ClassNamesInput>,
+  resourceExpanderClassNames: identity as Identity<ClassNamesGenerator<ResourceExpanderArg>>,
+  resourceExpanderContent: identity as Identity<CustomContentGenerator<ResourceExpanderArg>>,
 }
 
 type ResourceTimelineOptionRefiners = typeof OPTION_REFINERS

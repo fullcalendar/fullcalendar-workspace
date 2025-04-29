@@ -38,15 +38,32 @@ export default createPlugin({
     // UI Fundamentals
     // ---------------------------------------------------------------------------------------------
 
-    icons: {
-      close: () => svgIcons.x,
-      prev: (arg) => arg.direction === 'ltr' ? svgIcons.chevronLeft : svgIcons.chevronRight,
-      next: (arg) => arg.direction === 'ltr' ? svgIcons.chevronRight : svgIcons.chevronLeft,
-      prevYear: (arg) => arg.direction === 'ltr' ? svgIcons.chevronsLeft : svgIcons.chevronsRight,
-      nextYear: (arg) => arg.direction === 'ltr' ? svgIcons.chevronsRight : svgIcons.chevronsLeft,
-      expand: () => svgIcons.plusSquare,
-      collapse: () => svgIcons.minusSquare,
+    buttons: {
+      prev: {
+        iconContent: (arg) => arg.direction === 'ltr'
+          ? svgIcons.chevronLeft
+          : svgIcons.chevronRight,
+      },
+      next: {
+        iconContent: (arg) => arg.direction === 'ltr'
+          ? svgIcons.chevronRight
+          : svgIcons.chevronLeft,
+      },
+      prevYear: {
+        iconContent: (arg) => arg.direction === 'ltr'
+          ? svgIcons.chevronsLeft
+          : svgIcons.chevronsRight,
+      },
+      nextYear: {
+        iconContent: (arg) => arg.direction === 'ltr'
+          ? svgIcons.chevronsRight
+          : svgIcons.chevronsLeft,
+      },
     },
+    popoverCloseContent: () => svgIcons.x,
+    resourceExpanderContent: (arg) => arg.isExpanded
+      ? svgIcons.minusSquare
+      : svgIcons.plusSquare,
 
     buttonGroupClassNames: 'relative z-0', // contain other z-indexes
     buttonClassNames: (arg) => [

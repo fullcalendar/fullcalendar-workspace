@@ -231,6 +231,7 @@
 }
 
 .fc-popover-close {
+  border: 0; // for <button>
   cursor: pointer;
   vertical-align: middle;
   line-height: 1.357em;

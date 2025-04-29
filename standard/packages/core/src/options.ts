@@ -50,11 +50,11 @@ import {
   WeekNumberCalculation,
   WeekNumberContentArg, WeekNumberMountArg,
   WillUnmountHandler,
-  IconInput,
   ButtonContentArg,
   ToolbarElementInput,
   ToolbarSectionArg,
   ToolbarArg,
+  ButtonDisplay,
 } from './api/structs.js'
 import { ViewBodyContentArg, ViewHeaderContentArg } from './common/ViewSubsections.js'
 import { createDuration, Duration } from './datelib/duration.js'
@@ -84,18 +84,6 @@ export const BASE_OPTION_REFINERS = {
     day?: ButtonInput
     [buttonName: string]: ButtonInput
   }>,
-  icons: identity as Identity<{
-    today?: IconInput
-    prev?: IconInput
-    next?: IconInput
-    prevYear?: IconInput
-    nextYear?: IconInput
-    year?: IconInput
-    month?: IconInput
-    week?: IconInput
-    day?: IconInput
-    [buttonName: string]: IconInput
-  }>,
   toolbarElements: identity as Identity<{
     [elementName: string]: ToolbarElementInput
   }>,
@@ -114,10 +102,9 @@ export const BASE_OPTION_REFINERS = {
   prevHint: identity as Identity<string | ((currentUnitText: string, currentUnit: string) => string)>,
   nextHint: identity as Identity<string | ((currentUnitText: string, currentUnit: string) => string)>,
 
+  buttonDisplay: identity as Identity<ButtonDisplay>,
   buttonGroupClassNames: identity as Identity<ClassNamesInput>,
   buttonClassNames: identity as Identity<ClassNamesGenerator<ButtonContentArg>>,
-  buttonContent: identity as Identity<CustomContentGenerator<ButtonContentArg>>,
-  iconClassNames: identity as Identity<ClassNamesInput>,
 
   defaultAllDayEventDuration: createDuration,
   defaultTimedEventDuration: createDuration,
@@ -342,6 +329,7 @@ export const BASE_OPTION_REFINERS = {
   popoverHeaderClassNames: identity as Identity<ClassNamesInput>,
   popoverTitleClassNames: identity as Identity<ClassNamesInput>,
   popoverCloseClassNames: identity as Identity<ClassNamesInput>,
+  popoverCloseContent: identity as Identity<CustomContentGenerator<{}>>,
   popoverBodyClassNames: identity as Identity<ClassNamesInput>,
   dayCompactWidth: Number,
 
@@ -378,6 +366,7 @@ export interface BaseOptionsRefined extends RefinedOptionsFromRefiners<BaseOptio
 // do NOT give a type here. need `typeof BASE_OPTION_DEFAULTS` to give real results.
 // raw values.
 export const BASE_OPTION_DEFAULTS = {
+  buttonDisplay: 'auto',
   eventDisplay: 'auto',
   defaultRangeSeparator: ' - ',
   titleRangeSeparator: ' \u2013 ', // en dash
@@ -534,7 +523,6 @@ export const COMPLEX_OPTION_COMPARATORS: {
   footerToolbar: isMaybePropsEqualShallow,
   dateIncrement: isMaybePropsEqualShallow,
   buttons: isMaybePropsEqualDepth1,
-  icons: isMaybePropsEqualDepth1,
   plugins: isMaybeArraysEqual,
   events: isMaybeArraysEqual,
   eventSources: isMaybeArraysEqual,

@@ -277,5 +277,3 @@ export {
 } from './coord-range.js'
 
 export { FooterScrollbar } from './common/FooterScrollbar.js'
-
-export { Icon } from './component/Icon.js'

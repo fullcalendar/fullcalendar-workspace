@@ -23,7 +23,7 @@ describe('buttons', () => {
   it('can specify an icon', () => {
     let calendar = initCalendar({
       buttons: {
-        mybutton: { icon: 'asdf' },
+        mybutton: { iconContent: 'asdf' },
       },
       headerToolbar: { left: 'mybutton', center: '', right: '' },
     })

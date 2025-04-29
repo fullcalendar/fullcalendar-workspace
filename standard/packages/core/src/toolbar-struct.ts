@@ -24,7 +24,6 @@ export interface ToolbarSectionArg {
 
 export interface ButtonContentArg {
   name: string
-  icon: string | false
   text: string
   isSelected: boolean
   isDisabled: boolean
@@ -33,15 +32,22 @@ export interface ButtonContentArg {
 
 export type ButtonMountArg = MountArg<ButtonContentArg>
 
+export type ButtonDisplay = 'auto' | 'icon' | 'text' | 'icon-text' | 'text-icon'
+
+export interface ButtonIconArg {
+  direction: 'ltr' | 'rtl' // TODO: DRY
+}
+
 export interface ButtonInput {
-  text?: string
-  hint?: string | ((viewOrCurrentUnitText: string, viewOrCurrentUnit: string) => string)
-  icon?: string | false
-  click?: (ev: MouseEvent) => void
-  classNames?: ClassNamesGenerator<ButtonContentArg>
-  content?: CustomContentGenerator<ButtonContentArg>
   didMount?: DidMountHandler<ButtonMountArg>
   willUnmount?: DidMountHandler<ButtonMountArg>
+  click?: (ev: MouseEvent) => void
+  hint?: string | ((viewOrCurrentUnitText: string, viewOrCurrentUnit: string) => string)
+  classNames?: ClassNamesGenerator<ButtonContentArg>
+  display?: ButtonDisplay
+  iconClassNames?: ClassNamesGenerator<ButtonIconArg>,
+  iconContent?: CustomContentGenerator<ButtonIconArg>,
+  text?: string
 }
 
 // Info for internal rendering
@@ -51,10 +57,11 @@ export interface ToolbarWidget {
   customElement?: ToolbarElementInput
   buttonText?: string
   buttonHint?: string | ((currentUnit: string) => string)
-  buttonIcon?: string | false
+  buttonDisplay?: ButtonDisplay
+  buttonIconClassNames?: ClassNamesGenerator<ButtonIconArg>
+  buttonIconContent?: CustomContentGenerator<ButtonIconArg>
   buttonClick?: (ev: MouseEvent) => void
   buttonClassNames?: ClassNamesGenerator<ButtonContentArg>
-  buttonContent?: CustomContentGenerator<ButtonContentArg>
   buttonDidMount?: DidMountHandler<ButtonMountArg>
   buttonWillUnmount?: WillUnmountHandler<ButtonMountArg>
 }
@@ -65,17 +72,6 @@ export interface ToolbarInput {
   right?: string
   start?: string
   end?: string
-}
-
-// Icon
-// -------------------------------------------------------------------------------------------------
-
-export interface IconArg {
-  direction: 'ltr' | 'rtl' // TODO: DRY
-}
-
-export type IconInput = CustomContentGenerator<IconArg> | {
-  classNames?: ClassNamesGenerator<IconArg>
 }
 
 // Custom Elements

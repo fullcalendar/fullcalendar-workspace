@@ -5,7 +5,7 @@ import { createElement, ComponentChildren, Ref, createPortal, createRef } from '
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { joinArrayishClassNames } from '../util/html.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
-import { Icon } from '../component/Icon.js'
+import { ContentContainer } from '../content-inject/ContentContainer.js'
 
 export interface PopoverProps {
   elRef?: Ref<HTMLElement>
@@ -32,9 +32,8 @@ export class Popover extends BaseComponent<PopoverProps> {
   private titleId = getUniqueDomId()
 
   render(): any {
-    let { options } = this.context
     let { props } = this
-    let closeIconInput = options.icons?.close
+    let { options } = this.context
 
     return createPortal(
       <div
@@ -61,15 +60,18 @@ export class Popover extends BaseComponent<PopoverProps> {
           >
             {props.title}
           </div>
-          <div
-            role='button'
-            aria-label={options.closeHint}
+          <ContentContainer
+            tag='button'
+            attrs={{
+              'aria-label': options.closeHint,
+              ...createAriaClickAttrs(this.handleClose)
+            }}
+            elRef={this.closeRef}
             className={joinArrayishClassNames(options.popoverCloseClassNames)}
-            {...createAriaClickAttrs(this.handleClose)}
-            ref={this.closeRef}
-          >
-            <Icon input={closeIconInput} />
-          </div>
+            renderProps={{}}
+            customGenerator={options.popoverCloseContent}
+            generatorName='popoverCloseContent'
+          />
         </div>
         <div className={joinArrayishClassNames(options.popoverBodyClassNames)}>
           {props.children}

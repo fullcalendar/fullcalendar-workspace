@@ -133,6 +133,17 @@ TODO: write tests with moment/luxon textParts
 changelog: move many types from @fullcalendar/resource
   to @fullcalendar/resource-timeline
   and @fullcalendar/resource-daygrid
+Check why unthemed timegrid (even tho ugly) doesn't sync width for "all-day" section
+test glyph-icons
+implement global buttonDisplay setting
+
+
+ASAP THEME
+----------
+dark view for classic theme
+test outerBorder settings (maybe rename to borderless)
+  make theme with no borders in header area (and maybe not multimonth header either)
+
 
 way to search for fc- classnames:
   query: fc-

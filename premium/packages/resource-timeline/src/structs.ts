@@ -45,6 +45,11 @@ export function refineRenderProps(input: ResourceLaneContentArgInput): ResourceL
   }
 }
 
+export interface ResourceExpanderArg {
+  isExpanded: boolean
+  direction: 'ltr' | 'rtl' // TODO: DRY
+}
+
 // resourceAreaColumns
 // -------------------------------------------------------------------------------------------------
 
