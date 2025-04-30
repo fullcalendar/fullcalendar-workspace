@@ -30,6 +30,7 @@ export interface MoreLinkContainerProps extends Partial<ElAttrsProps> {
   forceTimed?: boolean // for popover
   popoverContent: () => ComponentChild
   defaultGenerator?: (renderProps: MoreLinkContentArg) => ComponentChild
+  isCompact: boolean
   children?: InnerContainerFunc<MoreLinkContentArg>
 }
 
@@ -37,6 +38,7 @@ export interface MoreLinkContentArg {
   num: number
   text: string
   shortText: string
+  isCompact: boolean
   view: ViewApi
 }
 
@@ -79,6 +81,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
             num: moreCnt,
             shortText: `+${moreCnt}`, // TODO: offer hook or i18n?
             text,
+            isCompact: props.isCompact,
             view: viewApi,
           }
 

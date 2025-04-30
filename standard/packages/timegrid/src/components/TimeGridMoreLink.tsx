@@ -25,7 +25,7 @@ export interface TimeGridMoreLinkProps {
 export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
   render() {
     let { props } = this
-    let { options } = this.context
+    let { options, isRtl } = this.context
 
     return (
       <MoreLinkContainer
@@ -33,6 +33,13 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
         style={{
           top: props.top,
           height: props.height,
+
+          // HACKS. move to className?
+          zIndex: 9999,
+          ...(isRtl
+            ? { left: 0 }
+            : { right: 0 }
+          )
         }}
         allDayDate={null}
         segs={props.hiddenSegs}
@@ -43,6 +50,7 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
         popoverContent={() => renderPlainFgSegs(props.hiddenSegs, props)}
         defaultGenerator={renderMoreLinkInner}
         forceTimed={true}
+        isCompact={false}
       >
         {(InnerContent) => (
           <InnerContent

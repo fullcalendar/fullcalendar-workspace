@@ -135,7 +135,8 @@ changelog: move many types from @fullcalendar/resource
   and @fullcalendar/resource-daygrid
 Check why unthemed timegrid (even tho ugly) doesn't sync width for "all-day" section
 test glyph-icons
-implement global buttonDisplay setting
+timegrid all-day background events are displayed in both all-day and timed
+  if there's a title, shows twice. doesn't look good
 
 
 ASAP THEME

@@ -10,7 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
   var calendarEl = document.getElementById('calendar')!
 
   var calendar = new Calendar(calendarEl, {
-    stickyHeaderDates: true,
+    // stickyHeaderDates: true, -- makes things broken sometimes!
+    weekNumbers: true,
     plugins: [
       dayGridPlugin,
       timeGridPlugin,
@@ -19,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
       themePlugin,
     ],
     initialDate: '2023-01-12',
-    initialView: 'dayGridMonth',
+    initialView: 'timeGridWeek',
     nowIndicator: true,
     headerToolbar: {
       left: 'prev,next today',
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     selectMirror: true,
     dayMaxEvents: true, // allow "more" link when too many events
     // businessHours: true, // looks whack, covering lots of things
+    eventMaxStack: 1,
     events: [
       {
         title: 'All Day Event',
@@ -60,8 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
       },
       {
         title: 'Meeting',
-        start: '2023-01-12T10:30:00',
-        end: '2023-01-12T12:30:00'
+        start: '2023-01-12T12:00:00'
       },
       {
         title: 'Lunch',

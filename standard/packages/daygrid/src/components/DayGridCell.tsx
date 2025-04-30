@@ -200,6 +200,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 eventDrag={props.eventDrag}
                 eventResize={props.eventResize}
                 todayRange={props.todayRange}
+                isCompact={props.isCompact}
               />
             </div>
             <div

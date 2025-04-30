@@ -11,21 +11,20 @@ buttonClassName: (arg) => [
   --fc-page-bg-color: #fff; // tailwind = bg-white
   --fc-neutral-bg-color: rgba(208, 208, 208, 0.3); // tailwind = bg-gray-100
 
-  --fc-small-font-size: .85em;
-  --fc-neutral-text-color: #808080;
+  --fc-small-font-size: .85em; // tailwind = text-xs
   --fc-border-color: #ddd;
 
-  --fc-event-bg-color: #3788d8;
-  --fc-event-border-color: #3788d8;
+  --fc-event-bg-color: #3788d8; // tailwind = blue-600
+  --fc-event-border-color: #3788d8; //
   --fc-event-text-color: #fff;
   --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
   --fc-event-resizer-thickness: 8px;
   --fc-event-resizer-dot-total-width: 8px;
   --fc-event-resizer-dot-border-width: 1px;
 
-  --fc-today-bg-color: rgba(255, 220, 40, 0.15);
+  --fc-today-bg-color: rgba(255, 220, 40, 0.15); // tailwind = bg-yellow-400/15
 
-  --fc-more-link-bg-color: #d0d0d0;
+  --fc-more-link-bg-color: #d0d0d0; // tailwind = bg-gray-300
   --fc-more-link-text-color: inherit;
   --fc-now-indicator-color: red;
 
@@ -242,77 +241,6 @@ a.fc-event:hover { /* (anchor:hover) */
   bottom: calc(var(--fc-event-resizer-dot-total-width) / -2);
 }
 
-/* DayGrid */
-/* ------------------------------------------------------------------------------------------------- */
-
-.fc-day-cell.fc-day-today { /* (today) -- TODO: remove compound selector? */
-  /* only in body cells, not header cells */
-  background-color: var(--fc-today-bg-color);
-}
-
-.fc-day-cell-top {
-  display: flex;
-  flex-direction: row-reverse;
-}
-
-.fc-day-other .fc-day-cell-top { /* TODO: remove compound selector? */
-  opacity: 0.3;
-}
-
-.fc-day-cell-top-inner {
-  position: relative;
-  padding: 4px;
-}
-
-.fc-day-cell-top-inner-monthstart {
-  font-weight: bold;
-  font-size: 1.1em;
-}
-
-.fc-daygrid-more-link {
-  position: relative;
-  max-width: 100%;
-  border-radius: 3px;
-  margin: 0 2px 1px;
-  padding: 2px;
-  overflow: hidden;
-  white-space: nowrap;
-  font-size: var(--fc-small-font-size);
-  cursor: pointer;
-}
-.fc-daygrid-more-link:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.fc-day-cell-not-compact .fc-daygrid-more-link { /* (button) */
-  align-self: flex-start;
-}
-
-.fc-day-cell-compact .fc-daygrid-more-link { /* (block) */
-  /* looks like an event */
-  border: 1px solid var(--fc-event-border-color);
-  padding: 1px;
-}
-
-.fc-daygrid-week-number {
-  position: absolute;
-  z-index: 1; /* HACK */
-  top: 0;
-  padding: 2px;
-  min-width: 1.5em;
-  text-align: center;
-  background-color: var(--fc-neutral-bg-color);
-  color: var(--fc-neutral-text-color);
-}
-
-.fc-direction-ltr .fc-daygrid-week-number { /* (ltr) */
-  border-radius: 0 0 3px;
-}
-
-.fc-direction-rtl .fc-daygrid-week-number { /* (rtl) */
-  border-radius: 0 0 0 3px;
-}
-
 /* DayGrid > Event */
 /* ------------------------------------------------------------------------------------------------- */
 
@@ -458,80 +386,6 @@ a.fc-event:hover { /* (anchor:hover) */
 /* TimeGrid */
 /* ------------------------------------------------------------------------------------------------- */
 
-.fc-timegrid-slot-label-divider {
-  border-left: 1px solid var(--fc-border-color);
-}
-
-.fc-all-day-divider {
-  border-top: 1px solid var(--fc-border-color);
-  border-bottom: 1px solid var(--fc-border-color);
-  padding-bottom: 2px; /* can use just height if we move towards content-box! */
-  background-color: var(--fc-neutral-bg-color);
-}
-
-.fc-day-lane.fc-day-today { /* (today) */
-  background-color: var(--fc-today-bg-color);
-}
-
-.fc-direction-ltr .fc-day-lane-inner { /* (ltr) */
-  margin: 0 2.5% 0 2px;
-}
-
-.fc-direction-rtl .fc-day-lane-inner { /* (rtl) */
-  margin: 0 2px 0 2.5%;
-}
-
-.fc-day-lane-inner-simple { /* print-view in FF, when events are flat list */
-  margin: 4px !important;
-}
-
-.fc-all-day-header-inner {
-  /* respect newlines in long text like "Toute la journée", meant to break */
-  white-space: pre;
-}
-
-.fc-timegrid-axis {
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* vertically */
-  align-items: flex-end; /* horizontally */
-}
-
-.fc-timegrid-axis-inner {
-  text-align: end;
-  min-height: 1.5em;
-
-  /* vertical alignment for *text inside* */
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* vertically */
-}
-
-.fc-timegrid-more-link {
-  z-index: 9999; /* HACK to get above all data-dependent z-indexes of events */
-  color: var(--fc-more-link-text-color);
-  background: var(--fc-more-link-bg-color);
-  margin-bottom: 1px; /* match space below fc-timegrid-event */
-  cursor: pointer;
-
-  /* TODO: DRY with timegrid-event? */
-  box-shadow: 0px 0px 0px 1px var(--fc-page-bg-color);
-  font-size: var(--fc-small-font-size);
-  border-radius: 3px;
-}
-
-.fc-direction-ltr .fc-timegrid-more-link {
-  right: 0; /* alignment within column. has natural width */
-}
-
-.fc-direction-rtl .fc-timegrid-more-link {
-  left: 0; /* alignment within column. has natural width */
-}
-
-.fc-timegrid-more-link-inner {
-  padding: 3px 2px;
-}
-
 .fc-timegrid-now-indicator-label {
   position: absolute;
   margin-top: -5px; /* vertically center on top coordinate */
@@ -554,13 +408,6 @@ a.fc-event:hover { /* (anchor:hover) */
 .fc-direction-rtl .fc-timegrid-now-indicator-label { /* (rtl) */
   right: 0;
   border-left: 0; /* complete arrow left */
-}
-
-.fc-timegrid-now-indicator-line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  border-top: 1px solid var(--fc-now-indicator-color);
 }
 
 /* TimeGrid > Event */

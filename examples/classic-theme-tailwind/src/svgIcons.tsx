@@ -8,6 +8,7 @@ export function chevronLeft(className?: string) {
   return svgIcon(className, <polyline points="15 18 9 12 15 6"></polyline>)
 }
 
+// TODO: just use rotate?
 export function chevronRight(className?: string) {
   return svgIcon(className, <polyline points="9 18 15 12 9 6"></polyline>)
 }
@@ -16,6 +17,7 @@ export function chevronsLeft(className?: string) {
   return svgIcon(className, <Fragment><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></Fragment>)
 }
 
+// TODO: just use rotate?
 export function chevronsRight(className?: string) {
   return svgIcon(className, <Fragment><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></Fragment>)
 }

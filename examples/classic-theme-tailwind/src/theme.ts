@@ -10,16 +10,35 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/resource-daygrid'
 import {} from '@fullcalendar/resource-timeline'
 
-const dayGridCommon = {
+const dayGridCommon = { // TODO: add type to avoid `any`
   eventClassNames: getDayGridEventClassNames,
   eventColorClassNames: getDayGridEventColorClassNames,
-  weekNumberClassNames: 'fc-daygrid-week-number',
-  moreLinkClassNames: 'fc-daygrid-more-link',
+  weekNumberClassNames: [
+    'absolute z-10 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center bg-gray-100 text-gray-500',
+  ],
+  moreLinkClassNames: (arg: any) => [
+    'cursor-pointer text-xs p-0.5 rounded-xs mx-0.5 mb-px',
+    // TODO: somehow make this core? will go away with measurement refactor?
+    'relative max-w-full overflow-hidden whitespace-nowrap',
+    'hover:bg-black/10',
+    arg.isCompact
+      ? 'border border-blue-600 p-px'
+      : 'self-start',
+  ],
 }
 
 const buttonIconClassName = 'text-[1.5em] w-[1em] h-[1em]'
 
 const cellClassName = 'border border-gray-300'
+
+// a column that aligns right (aka end) and vertically centered
+const axisClassNames = 'flex flex-col justify-center items-end'
+
+// align text right (aka end) for when multiline
+const axisInnerClassNames = [
+  'text-end min-h-[1.5em]',
+  'flex flex-col justify-center', // vertically align text if min-height takes effect
+]
 
 export default createPlugin({
   name: '<%= pkgName %>',
@@ -100,10 +119,7 @@ export default createPlugin({
     moreLinkClassNames: 'fc-more-link',
 
     dayCompactWidth: 70,
-    dayPopoverClassNames: (arg) => [
-      'fc-more-popover',
-      ...getDayClassNames(arg),
-    ],
+    dayPopoverClassNames: getDayClassNames, // needed?
 
     fillerClassNames: 'opacity-50 border-gray-300',
     fillerXClassNames: 'border-s',
@@ -130,7 +146,7 @@ export default createPlugin({
       arg.isFuture && 'fc-event-future',
       arg.isToday && 'fc-event-today',
     ],
-    eventInnerClassNames: 'fc-event-inner',
+    eventInnerClassNames: 'fc-event-inner', // TODO: put font-size on here?
     eventTimeClassNames: 'fc-event-time',
     eventTitleClassNames: (arg) => [
       arg.event.display === 'background' && 'm-2 text-xs italic',
@@ -146,6 +162,7 @@ export default createPlugin({
     dayHeaderRowClassNames: cellClassName,
     dayHeaderClassNames: (arg) => [
       cellClassName,
+      arg.isDisabled && 'bg-gray-100',
       ...getDayClassNames(arg)
     ],
     dayHeaderInnerClassNames: 'px-1 py-0.5',
@@ -160,16 +177,20 @@ export default createPlugin({
 
     dayRowClassNames: cellClassName,
     dayCellClassNames: (arg) => [
-      'fc-day-cell',
+      arg.isToday && 'bg-yellow-400/15',
       cellClassName,
+      arg.isDisabled && 'bg-gray-100',
       ...getDayClassNames(arg),
       arg.isCompact ? 'fc-day-cell-compact' : 'fc-day-cell-not-compact',
     ],
 
-    dayCellTopClassNames: 'fc-day-cell-top',
+    dayCellTopClassNames: (arg) => [
+      'flex flex-row-reverse relative', // relative for z-index above bg events
+      arg.isOther && 'opacity-30',
+    ],
     dayCellTopInnerClassNames: (arg) => [
-      'fc-day-cell-top-inner',
-      arg.isMonthStart && 'fc-day-cell-top-inner-monthstart',
+      'p-1',
+      arg.isMonthStart && 'text-base font-bold',
     ],
 
     // MultiMonth
@@ -202,17 +223,20 @@ export default createPlugin({
     // ---------------------------------------------------------------------------------------------
 
     allDayHeaderClassNames: 'fc-all-day-header',
-    allDayHeaderInnerClassNames: 'fc-all-day-header-inner px-1 py-0.5',
-    allDayDividerClassNames: 'fc-all-day-divider',
+    // whitespace-pre respects newlines in long text like "Toute la journée", meant to break
+    allDayDividerClassNames: 'bg-gray-100 pb-0.5 border-t border-b border-gray-300', // padding creates inner-height
 
     dayLaneClassNames: (arg) => [
       'fc-day-lane',
       cellClassName,
+      arg.isDisabled && 'bg-gray-100',
+      arg.isToday && 'bg-yellow-400/15',
       ...getDayClassNames(arg),
     ],
     dayLaneInnerClassNames: (arg) => [
-      'fc-day-lane-inner',
-      arg.isSimple && 'fc-day-lane-inner-simple',
+      arg.isSimple
+        ? 'm-1'
+        : 'ms-0.5 me-[2.5%]'
     ],
 
     // Slots (TimeGrid & Timeline)
@@ -281,17 +305,17 @@ export default createPlugin({
       eventColorClassNames: (arg) => (
         arg.event.allDay ? getDayGridEventColorClassNames(arg) : ''
       ),
-      allDayHeaderClassNames: 'fc-timegrid-axis',
-      allDayHeaderInnerClassNames: 'fc-timegrid-axis-inner',
-      weekNumberClassNames: 'fc-timegrid-axis',
-      weekNumberInnerClassNames: 'fc-timegrid-axis-inner px-1 py-0.5',
-      moreLinkClassNames: 'fc-timegrid-more-link',
-      moreLinkInnerClassNames: 'fc-timegrid-more-link-inner',
-      slotLabelClassNames: 'fc-timegrid-axis',
-      slotLabelInnerClassNames: 'fc-timegrid-axis-inner px-1 py-0.5',
-      slotLabelDividerClassNames: 'fc-timegrid-slot-label-divider',
+      allDayHeaderClassNames: axisClassNames,
+      allDayHeaderInnerClassNames: `${axisInnerClassNames} whitespace-pre px-1 py-0.5`, // TODO: keep here our move to general section?
+      weekNumberClassNames: axisClassNames,
+      weekNumberInnerClassNames: `${axisInnerClassNames} px-1 py-0.5`,
+      moreLinkClassNames: 'mb-px rounded-xs text-xs ring ring-white bg-gray-300 cursor-pointer',
+      moreLinkInnerClassNames: 'px-0.5 py-1',
+      slotLabelClassNames: axisClassNames,
+      slotLabelInnerClassNames: `${axisInnerClassNames} px-1 py-0.5`,
+      slotLabelDividerClassNames: 'border-l border-gray-300',
       nowIndicatorLabelClassNames: 'fc-timegrid-now-indicator-label',
-      nowIndicatorLineClassNames: 'fc-timegrid-now-indicator-line',
+      nowIndicatorLineClassNames: 'absolute left-0 right-0 border-t border-red-500',
     },
     timeline: {
       viewClassNames: 'fc-timeline',
@@ -344,7 +368,6 @@ function getDayClassNames(arg: any) {
   return arg.isDisabled
     ? [
       'fc-day',
-      'bg-gray-100',
     ]
     : [
       'fc-day',

@@ -27,6 +27,7 @@ export interface DayGridMoreLinkProps {
   eventSelection: string
   eventDrag: EventSegUiInteractionState<SlicedCoordRange> | null
   eventResize: EventSegUiInteractionState<SlicedCoordRange> | null
+  isCompact: boolean
 }
 
 export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
@@ -38,6 +39,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
       <MoreLinkContainer
         // effectively moreLinkClassNames + moreLinkInnerClassNames
         className={joinArrayishClassNames(options.moreLinkInnerClassNames)}
+        isCompact={props.isCompact}
 
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
