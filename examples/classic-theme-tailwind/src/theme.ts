@@ -19,6 +19,8 @@ const dayGridCommon = {
 
 const buttonIconClassName = 'text-[1.5em] w-[1em] h-[1em]'
 
+const cellClassName = 'border border-gray-300'
+
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
@@ -31,7 +33,7 @@ export default createPlugin({
     viewClassNames: (arg) => [
       'fc-view',
       `fc-${arg.view.type}-view`,
-      'fc-view-bordered',
+      cellClassName,
     ],
     viewHeaderClassNames: (arg) => [
       arg.isSticky && 'bg-white'
@@ -62,12 +64,11 @@ export default createPlugin({
           : svgIcons.chevronsLeft(buttonIconClassName),
       },
     },
-    popoverCloseContent: () => svgIcons.x(),
     resourceExpanderContent: (arg) => arg.isExpanded
       ? svgIcons.minusSquare()
       : svgIcons.plusSquare(),
 
-    buttonGroupClassNames: 'relative z-0', // contain other z-indexes
+    buttonGroupClassNames: 'isolate',
     buttonClassNames: (arg) => [
       'inline-flex items-center px-4 py-2 border text-sm text-white cursor-pointer',
       arg.inGroup
@@ -84,17 +85,18 @@ export default createPlugin({
       'focus:outline-3 outline-slate-600/50 focus:z-10', // focus
     ],
 
-    popoverClassNames: 'fc-popover', // see also: dayPopoverClassNames
-    popoverHeaderClassNames: 'fc-popover-header',
-    popoverTitleClassNames: 'fc-popover-title',
-    popoverCloseClassNames: 'fc-popover-close',
-    popoverBodyClassNames: 'fc-popover-body',
+    popoverClassNames: `bg-white shadow-md ${cellClassName}`, // see also: dayPopoverClassNames
+    popoverHeaderClassNames: 'flex flex-row justify-between items-center bg-gray-100 px-1 py-1',
+    popoverTitleClassNames: 'px-1',
+    popoverCloseClassNames: 'cursor-pointer', // TODO: have core do all cursors!!??
+    popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
+    popoverBodyClassNames: 'p-2 min-w-[220px]',
 
     // Cross-view
     // ---------------------------------------------------------------------------------------------
 
     weekNumberClassNames: 'fc-week-number',
-    navLinkClassNames: 'fc-navlink', // TODO: fc-nav-link ?
+    navLinkClassNames: 'cursor-pointer hover:underline',
     moreLinkClassNames: 'fc-more-link',
 
     dayCompactWidth: 70,
@@ -103,18 +105,18 @@ export default createPlugin({
       ...getDayClassNames(arg),
     ],
 
-    fillerClassNames: 'fc-filler',
-    fillerXClassNames: 'fc-filler-x',
-    fillerYClassNames: 'fc-filler-y',
+    fillerClassNames: 'opacity-50 border-gray-300',
+    fillerXClassNames: 'border-s',
+    fillerYClassNames: 'border-t',
 
-    nonBusinessClassNames: 'fc-non-business',
-    highlightClassNames: 'fc-highlight',
+    nonBusinessClassNames: 'bg-gray-100', // TODO: fix bug: covers the borders!!! add fake border? move UNDER?
+    highlightClassNames: 'bg-cyan-100/30',
 
     // General Event
     // ---------------------------------------------------------------------------------------------
 
     eventClassNames: (arg) => [
-      arg.event.display === 'background' && 'fc-bg-event',
+      arg.event.display === 'background' && 'bg-green-300 opacity-30',
       'fc-event',
       arg.isMirror && 'fc-event-mirror',
       arg.isDraggable && 'fc-event-draggable',
@@ -131,7 +133,7 @@ export default createPlugin({
     eventInnerClassNames: 'fc-event-inner',
     eventTimeClassNames: 'fc-event-time',
     eventTitleClassNames: (arg) => [
-      arg.event.display === 'background' && 'fc-bg-event-title',
+      arg.event.display === 'background' && 'm-2 text-xs italic',
       'fc-event-title',
     ],
     eventResizerClassNames: 'fc-event-resizer',
@@ -141,24 +143,25 @@ export default createPlugin({
     // Day-Headers (DayGrid & MultiMonth & TimeGrid)
     // ---------------------------------------------------------------------------------------------
 
-    dayHeaderRowClassNames: 'fc-day-header-row',
+    dayHeaderRowClassNames: cellClassName,
     dayHeaderClassNames: (arg) => [
-      'fc-day-header-cell',
+      cellClassName,
       ...getDayClassNames(arg)
     ],
-    dayHeaderInnerClassNames: 'fc-padding-sm',
-    dayHeaderDividerClassNames: 'fc-day-header-divider',
+    dayHeaderInnerClassNames: 'px-1 py-0.5',
+    dayHeaderDividerClassNames: 'border-t border-gray-300',
 
     // for resource views only
-    resourceDayHeaderClassNames: 'fc-resource-day-header',
-    resourceDayHeaderInnerClassNames: 'fc-padding-sm',
+    resourceDayHeaderClassNames: cellClassName,
+    resourceDayHeaderInnerClassNames: 'px-1 py-0.5',
 
     // Day-Cells (DayGrid & MultiMonth & TimeGrid "all-day" section)
     // ---------------------------------------------------------------------------------------------
 
-    dayRowClassNames: 'fc-day-row',
+    dayRowClassNames: cellClassName,
     dayCellClassNames: (arg) => [
       'fc-day-cell',
+      cellClassName,
       ...getDayClassNames(arg),
       arg.isCompact ? 'fc-day-cell-compact' : 'fc-day-cell-not-compact',
     ],
@@ -199,11 +202,12 @@ export default createPlugin({
     // ---------------------------------------------------------------------------------------------
 
     allDayHeaderClassNames: 'fc-all-day-header',
-    allDayHeaderInnerClassNames: 'fc-all-day-header-inner fc-padding-sm',
+    allDayHeaderInnerClassNames: 'fc-all-day-header-inner px-1 py-0.5',
     allDayDividerClassNames: 'fc-all-day-divider',
 
     dayLaneClassNames: (arg) => [
       'fc-day-lane',
+      cellClassName,
       ...getDayClassNames(arg),
     ],
     dayLaneInnerClassNames: (arg) => [
@@ -214,37 +218,31 @@ export default createPlugin({
     // Slots (TimeGrid & Timeline)
     // ---------------------------------------------------------------------------------------------
 
-    slotLabelClassNames: (arg) => [
-      'fc-slot-label',
-      ...getSlotClassNames(arg),
-    ],
-    slotLaneClassNames: (arg) => [
-      'fc-slot-lane',
-      ...getSlotClassNames(arg),
-    ],
+    slotLabelClassNames: getSlotClassNames,
+    slotLaneClassNames: getSlotClassNames,
 
     // only for (resource-)timeline
-    slotLabelRowClassNames: 'fc-slot-label-row',
+    slotLabelRowClassNames: cellClassName,
 
     // Resource Timeline
     // ---------------------------------------------------------------------------------------------
 
-    resourceAreaHeaderRowClassNames: 'fc-resource-area-header-row',
-    resourceAreaHeaderClassNames: 'fc-resource-area-header',
-    resourceAreaHeaderInnerClassNames: 'fc-padding-lg',
+    resourceAreaHeaderRowClassNames: cellClassName,
+    resourceAreaHeaderClassNames: cellClassName,
+    resourceAreaHeaderInnerClassNames: 'p-2',
     resourceAreaDividerClassNames: 'fc-resource-area-divider',
 
-    resourceAreaRowClassNames: 'fc-resource-area-row',
+    resourceAreaRowClassNames: cellClassName,
     resourceIndentClassNames: 'fc-resource-indent',
     resourceExpanderClassNames: 'fc-resource-expander',
 
     resourceGroupHeaderClassNames: 'fc-resource-group-header',
-    resourceGroupHeaderInnerClassNames: 'fc-padding-lg',
-    resourceGroupLaneClassNames: 'fc-resource-group-lane',
+    resourceGroupHeaderInnerClassNames: 'p-2',
+    resourceGroupLaneClassNames: `fc-resource-group-lane ${cellClassName}`,
 
-    resourceCellClassNames: 'fc-resource-cell',
-    resourceCellInnerClassNames: 'fc-padding-lg',
-    resourceLaneClassNames: 'fc-resource-lane',
+    resourceCellClassNames: cellClassName,
+    resourceCellInnerClassNames: 'p-2',
+    resourceLaneClassNames: cellClassName,
     resourceLaneBottomClassNames: (arg) => [
       'fc-resource-lane-bottom',
       arg.isCompact && 'fc-resource-lane-bottom-compact',
@@ -286,11 +284,11 @@ export default createPlugin({
       allDayHeaderClassNames: 'fc-timegrid-axis',
       allDayHeaderInnerClassNames: 'fc-timegrid-axis-inner',
       weekNumberClassNames: 'fc-timegrid-axis',
-      weekNumberInnerClassNames: 'fc-timegrid-axis-inner fc-padding-sm',
+      weekNumberInnerClassNames: 'fc-timegrid-axis-inner px-1 py-0.5',
       moreLinkClassNames: 'fc-timegrid-more-link',
       moreLinkInnerClassNames: 'fc-timegrid-more-link-inner',
       slotLabelClassNames: 'fc-timegrid-axis',
-      slotLabelInnerClassNames: 'fc-timegrid-axis-inner fc-padding-sm',
+      slotLabelInnerClassNames: 'fc-timegrid-axis-inner px-1 py-0.5',
       slotLabelDividerClassNames: 'fc-timegrid-slot-label-divider',
       nowIndicatorLabelClassNames: 'fc-timegrid-now-indicator-label',
       nowIndicatorLineClassNames: 'fc-timegrid-now-indicator-line',
@@ -303,7 +301,7 @@ export default createPlugin({
       ],
       moreLinkClassNames: 'fc-timeline-more-link',
       moreLinkInnerClassNames: 'fc-timeline-more-link-inner',
-      slotLabelInnerClassNames: 'fc-padding-md',
+      slotLabelInnerClassNames: 'p-1',
       slotLabelDividerClassNames: 'fc-timeline-slot-label-divider',
       nowIndicatorLabelClassNames: 'fc-timeline-now-indicator-label',
       nowIndicatorLineClassNames: 'fc-timeline-now-indicator-line',
@@ -346,7 +344,7 @@ function getDayClassNames(arg: any) {
   return arg.isDisabled
     ? [
       'fc-day',
-      'fc-day-disabled',
+      'bg-gray-100',
     ]
     : [
       'fc-day',
@@ -359,19 +357,11 @@ function getDayClassNames(arg: any) {
 }
 
 function getSlotClassNames(arg: any) {
-  return arg.isDisabled
-    ? [
-      'fc-slot',
-      'fc-slot-disabled',
-    ]
-    : [
-      'fc-slot',
-      arg.isMajor && 'fc-slot-major',
-      arg.isMinor && 'fc-slot-minor',
-      `fc-slot-${DAY_IDS[arg.dow]}`,
-      arg.isToday && 'fc-slot-today',
-      arg.isPast && 'fc-slot-past',
-      arg.isFuture && 'fc-slot-future',
-      arg.isOther && 'fc-slot-other',
-    ]
+  return [
+    cellClassName,
+    arg.isMinor && 'border-dotted',
+  ]
+  /*
+  NOTE: give conditional styles based on arg.isToday, etc...
+  */
 }

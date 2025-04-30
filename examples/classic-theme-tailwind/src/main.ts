@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
       themePlugin,
     ],
     initialDate: '2023-01-12',
-    initialView: 'timeGridWeek',
+    initialView: 'dayGridMonth',
     nowIndicator: true,
     headerToolbar: {
       left: 'prev,next today',
@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true, // allow "more" link when too many events
+    // businessHours: true, // looks whack, covering lots of things
     events: [
       {
         title: 'All Day Event',
@@ -54,7 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
       {
         title: 'Conference',
         start: '2023-01-11',
-        end: '2023-01-13'
+        end: '2023-01-13',
+        display: 'background',
       },
       {
         title: 'Meeting',
