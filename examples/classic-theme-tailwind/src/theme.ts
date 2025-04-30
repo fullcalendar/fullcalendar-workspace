@@ -199,27 +199,24 @@ export default createPlugin({
     // ---------------------------------------------------------------------------------------------
 
     singleMonthClassNames: (arg) => [
-      'fc-single-month',
-      (arg.colCnt || 0) > 1 && 'fc-single-month-multicol',
+      (arg.colCnt || 0) > 1 && 'm-4',
     ],
     singleMonthTitleClassNames: (arg) => [
-      'fc-single-month-title',
+      'text-center font-bold text-lg',
       (arg.colCnt || 0) > 1
-        ? 'fc-single-month-title-multicol'
-        : 'fc-single-month-title-singlecol',
-      arg.sticky && 'fc-single-month-title-sticky',
+        ? 'pb-4' // multicol
+        : 'py-2', // singlecol
+      arg.sticky && 'border-b border-gray-300 bg-white',
     ],
     singleMonthTableClassNames: (arg) => [
-      'fc-single-month-table',
-      (arg.colCnt || 0) > 1 && 'fc-single-month-table-borderx',
-      ((arg.colCnt || 0) > 1 || !arg.isLast) && 'fc-single-month-table-borderbottom',
-      !arg.stickyTitle && 'fc-single-month-table-bordertop',
+      'border-gray-300',
+      (arg.colCnt || 0) > 1 && 'border-x text-xs',
+      ((arg.colCnt || 0) > 1 || !arg.isLast) && 'border-b',
+      !arg.stickyTitle && 'border-t',
     ],
     singleMonthTableHeaderClassNames: (arg) => [
-      'fc-single-month-table-header',
-      arg.sticky && 'fc-single-month-table-header-sticky',
+      arg.sticky && 'bg-white',
     ],
-    singleMonthTableBodyClassNames: 'fc-single-month-table-body',
 
     // TimeGrid
     // ---------------------------------------------------------------------------------------------

@@ -2,6 +2,7 @@ import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
+import multiMonthPlugin from '@fullcalendar/multimonth'
 import interactionPlugin from '@fullcalendar/interaction'
 import themePlugin from './theme'
 import './style.css'
@@ -17,15 +18,16 @@ document.addEventListener('DOMContentLoaded', function() {
       timeGridPlugin,
       listPlugin,
       interactionPlugin,
+      multiMonthPlugin,
       themePlugin,
     ],
     initialDate: '2023-01-12',
-    initialView: 'listWeek',
+    initialView: 'multiMonthYear',
     nowIndicator: true,
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek,multiMonthYear'
     },
     navLinks: true, // can click day/week names to navigate views
     editable: true,
