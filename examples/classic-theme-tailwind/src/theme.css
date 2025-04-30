@@ -472,43 +472,6 @@ a.fc-event:hover { /* (anchor:hover) */
   font-size: var(--fc-small-font-size);
 }
 
-/* List */
-/* ------------------------------------------------------------------------------------------------- */
-
-.fc-list-day-header,
-.fc-list-event {
-  border-bottom: 1px solid var(--fc-border-color);
-}
-
-.fc-list-day:last-child .fc-list-event:last-child {
-  border-bottom: 0;
-}
-
-.fc-list-day-header-inner,
-.fc-list-event {
-  padding: 8px 14px;
-}
-
-.fc-list-day-header {
-  display: flex;
-  justify-content: space-between;
-  background: var(--fc-neutral-bg-color);
-  /* TODO: somehow layer-in when sticky: background: var(--fc-page-bg-color); */
-  font-weight: bold;
-}
-
-.fc-list-empty {
-  background-color: var(--fc-neutral-bg-color);
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center; /* vertically aligns fc-list-empty-inner */
-}
-
-.fc-list-empty-inner {
-  margin: 5em 0;
-}
-
 /* List > Event */
 /* ------------------------------------------------------------------------------------------------- */
 

@@ -40,6 +40,8 @@ const axisInnerClassNames = [
   'flex flex-col justify-center', // vertically align text if min-height takes effect
 ]
 
+const listItemInnerCommon = 'px-3 py-2'
+
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
@@ -280,9 +282,9 @@ export default createPlugin({
     // List View
     // ---------------------------------------------------------------------------------------------
 
-    listDayClassName: 'fc-list-day',
-    listDayHeaderClassNames: 'fc-list-day-header',
-    listDayHeaderInnerClassNames: 'fc-list-day-header-inner',
+    listDayClassName: 'fc-list-day not-last:border-b border-gray-300',
+    listDayHeaderClassNames: 'border-b border-gray-300 flex flex-row justify-between font-bold bg-gray-100',
+    listDayHeaderInnerClassNames: `${listItemInnerCommon} fc-list-day-header-inner`,
   },
   views: {
     dayGrid: {
@@ -332,10 +334,13 @@ export default createPlugin({
     },
     list: {
       viewClassNames: 'fc-list',
-      eventClassNames: 'fc-list-event',
+      eventClassNames: `fc-list-event not-last:border-b border-gray-300 ${listItemInnerCommon}`,
       eventColorClassNames: 'fc-list-event-dot',
-      noEventsClassNames: 'fc-list-empty',
-      noEventsInnerClassNames: 'fc-list-empty-inner',
+
+      // TODO: put these settings in root config?
+      // TODO: rename to listEmptyClassNames/listEmptyInnerClassNames?
+      // ALSO: why do we need an "inner" ???
+      noEventsClassNames: 'flex flex-grow justify-center items-center bg-gray-100 py-15',
     },
     resourceDayGrid: { // inherits dayGrid
       viewClassNames: 'fc-resource-daygrid',

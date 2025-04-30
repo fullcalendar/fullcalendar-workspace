@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
       themePlugin,
     ],
     initialDate: '2023-01-12',
-    initialView: 'timeGridWeek',
+    initialView: 'listWeek',
     nowIndicator: true,
     headerToolbar: {
       left: 'prev,next today',

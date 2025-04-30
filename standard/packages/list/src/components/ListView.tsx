@@ -65,7 +65,10 @@ export class ListView extends DateComponent<ViewProps> {
       >
         <Scroller // TODO: don't need heavyweight component
           vertical={verticalScrolling}
-          className={verticalScrolling ? 'fcu-liquid' : ''}
+          className={joinClassNames(
+            'fcu-flex-col',
+            verticalScrolling ? 'fcu-liquid' : ''
+          )}
         >
           {this.renderSegList(eventSegs, dayDates)}
           {!eventSegs.length && this.renderEmptyMessage()}
