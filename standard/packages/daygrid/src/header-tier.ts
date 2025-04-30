@@ -202,7 +202,7 @@ export function buildDateDataConfigs(
           textParts,
           ...extraRenderProps,
         }
-        const fullWeekDayStr = dateEnv.format(normDate, WEEKDAY_FORMAT)
+        const fullWeekDayStr = dateEnv.format(normDate, WEEKDAY_FORMAT)[0]
 
         // for DayGridHeaderCell
         return {
