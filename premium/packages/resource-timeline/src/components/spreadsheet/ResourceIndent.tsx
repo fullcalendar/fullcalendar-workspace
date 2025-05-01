@@ -15,7 +15,7 @@ export class ResourceIndent extends BaseComponent<ResourceIndentProps> {
       <div
         className={joinArrayishClassNames(
           context.options.resourceIndentClassNames,
-          'fcu-flex-row fcu-justify-centerend',
+          'fcu-no-shrink fcu-flex-row fcu-justify-centerend',
         )}
         style={{
           width: props.indentWidth != null

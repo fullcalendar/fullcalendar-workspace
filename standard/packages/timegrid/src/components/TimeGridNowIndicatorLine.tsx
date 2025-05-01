@@ -24,6 +24,7 @@ export function TimeGridNowIndicatorLine(props: TimeGridNowIndicatorLineProps) {
       }}
     >
       <NowIndicatorLineContainer
+        className='fcu-fill-x'
         style={{
           top: props.totalHeight != null
             ? props.totalHeight * computeDateTopFrac(props.nowDate, props.dateProfile, props.dayDate)

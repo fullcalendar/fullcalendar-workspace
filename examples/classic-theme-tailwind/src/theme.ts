@@ -85,9 +85,6 @@ export default createPlugin({
           : svgIcons.chevronsLeft(buttonIconClassName),
       },
     },
-    resourceExpanderContent: (arg) => arg.isExpanded
-      ? svgIcons.minusSquare()
-      : svgIcons.plusSquare(),
 
     buttonGroupClassNames: 'isolate',
     buttonClassNames: (arg) => [
@@ -253,35 +250,37 @@ export default createPlugin({
     resourceAreaHeaderRowClassNames: cellClassName,
     resourceAreaHeaderClassNames: cellClassName,
     resourceAreaHeaderInnerClassNames: 'p-2',
-    resourceAreaDividerClassNames: 'fc-resource-area-divider',
+    resourceAreaDividerClassNames: 'pl-0.5 bg-gray-100 border-x border-gray-300',
 
     resourceAreaRowClassNames: cellClassName,
-    resourceIndentClassNames: 'fc-resource-indent',
-    resourceExpanderClassNames: 'fc-resource-expander',
+    resourceIndentClassNames: 'fc-resource-indent me-1',
+    resourceExpanderClassNames: 'cursor-pointer opacity-65',
+    resourceExpanderContent: (arg) => arg.isExpanded
+      ? svgIcons.minusSquare('w-[1em] h-[1em]')
+      : svgIcons.plusSquare('w-[1em] h-[1em]'),
 
-    resourceGroupHeaderClassNames: 'fc-resource-group-header',
+    resourceGroupHeaderClassNames: 'bg-gray-100',
     resourceGroupHeaderInnerClassNames: 'p-2',
-    resourceGroupLaneClassNames: `fc-resource-group-lane ${cellClassName}`,
+    resourceGroupLaneClassNames: `bg-gray-100 ${cellClassName}`,
 
     resourceCellClassNames: cellClassName,
     resourceCellInnerClassNames: 'p-2',
     resourceLaneClassNames: cellClassName,
     resourceLaneBottomClassNames: (arg) => [
-      'fc-resource-lane-bottom',
-      arg.isCompact && 'fc-resource-lane-bottom-compact',
+      !arg.isCompact && 'pb-3'
     ],
 
     // Timeline WITHOUT resources
     // ---------------------------------------------------------------------------------------------
 
-    timelineBottomClassNames: 'fc-timeline-bottom',
+    timelineBottomClassNames: 'pb-3',
 
     // List View
     // ---------------------------------------------------------------------------------------------
 
-    listDayClassName: 'fc-list-day not-last:border-b border-gray-300',
+    listDayClassName: 'not-last:border-b border-gray-300',
     listDayHeaderClassNames: 'border-b border-gray-300 flex flex-row justify-between font-bold bg-gray-100',
-    listDayHeaderInnerClassNames: `${listItemInnerCommon} fc-list-day-header-inner`,
+    listDayHeaderInnerClassNames: listItemInnerCommon,
   },
   views: {
     dayGrid: {
@@ -314,7 +313,7 @@ export default createPlugin({
       slotLabelInnerClassNames: `${axisInnerClassNames} px-1 py-0.5`,
       slotLabelDividerClassNames: 'border-l border-gray-300',
       nowIndicatorLabelClassNames: 'fc-timegrid-now-indicator-label',
-      nowIndicatorLineClassNames: 'absolute left-0 right-0 border-t border-red-500',
+      nowIndicatorLineClassNames: 'border-t border-red-500', // put color on master setting?
     },
     timeline: {
       viewClassNames: 'fc-timeline',
@@ -322,12 +321,12 @@ export default createPlugin({
         'fc-timeline-event fc-event-x',
         arg.isSpacious && 'fc-timeline-event-spacious',
       ],
-      moreLinkClassNames: 'fc-timeline-more-link',
-      moreLinkInnerClassNames: 'fc-timeline-more-link-inner',
+      moreLinkClassNames: 'flex flex-col items-start text-xs bg-gray-300 p-px cursor-pointer me-px',
+      moreLinkInnerClassNames: 'p-0.5',
       slotLabelInnerClassNames: 'p-1',
-      slotLabelDividerClassNames: 'fc-timeline-slot-label-divider',
+      slotLabelDividerClassNames: 'border-b border-gray-300',
       nowIndicatorLabelClassNames: 'fc-timeline-now-indicator-label',
-      nowIndicatorLineClassNames: 'fc-timeline-now-indicator-line',
+      nowIndicatorLineClassNames: 'border-l border-red-500', // put color on master setting?
     },
     list: {
       viewClassNames: 'fc-list',

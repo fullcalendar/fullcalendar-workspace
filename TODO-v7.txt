@@ -137,7 +137,9 @@ Check why unthemed timegrid (even tho ugly) doesn't sync width for "all-day" sec
 test glyph-icons
 timegrid all-day background events are displayed in both all-day and timed
   if there's a title, shows twice. doesn't look good
-
+should core be responsible for stickiness?
+  more-link -- in timeline, core does it .... theme should do it if already does events
+  resource-group-cell ... core does it
 
 ASAP THEME
 ----------

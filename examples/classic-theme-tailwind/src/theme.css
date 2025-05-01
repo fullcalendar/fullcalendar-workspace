@@ -1,18 +1,8 @@
 
-/*
-buttonClassName: (arg) => [
-  arg.isSelected
-    ? 'text-red-500 bg-pink-500 border-blue-500'
-    : 'active:text-red-500 active:bg-pink-500 active active:border-blue-500'
-]
-*/
-
 :root {
   --fc-page-bg-color: #fff; // tailwind = bg-white
-  --fc-neutral-bg-color: rgba(208, 208, 208, 0.3); // tailwind = bg-gray-100
 
   --fc-small-font-size: .85em; // tailwind = text-xs
-  --fc-border-color: #ddd;
 
   --fc-event-bg-color: #3788d8; // tailwind = blue-600
   --fc-event-border-color: #3788d8; //
@@ -22,10 +12,6 @@ buttonClassName: (arg) => [
   --fc-event-resizer-dot-total-width: 8px;
   --fc-event-resizer-dot-border-width: 1px;
 
-  --fc-today-bg-color: rgba(255, 220, 40, 0.15); // tailwind = bg-yellow-400/15
-
-  --fc-more-link-bg-color: #d0d0d0; // tailwind = bg-gray-300
-  --fc-more-link-text-color: inherit;
   --fc-now-indicator-color: red;
 
   --fc-daygrid-event-dot-width: 8px;
@@ -468,10 +454,6 @@ a.fc-list-event:hover .fc-event-title {
 /* Timeline */
 /* ------------------------------------------------------------------------------------------------- */
 
-.fc-timeline-slot-label-divider {
-  border-top: 1px solid var(--fc-border-color);
-}
-
 .fc-timeline-now-indicator-label {
   position: absolute;
   top: 0;
@@ -485,40 +467,6 @@ a.fc-list-event:hover .fc-event-title {
   border-width: 6px 5px 0 5px;
   border-left-color: transparent;
   border-right-color: transparent;
-}
-
-.fc-timeline-now-indicator-line {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  border-left: 1px solid var(--fc-now-indicator-color);
-}
-
-.fc-timeline-more-link {
-  font-size: var(--fc-small-font-size);
-  color: var(--fc-more-link-text-color);
-  background: var(--fc-more-link-bg-color);
-  padding: 1px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.fc-direction-ltr .fc-timeline-more-link { /* (ltr) */
-  margin-right: 1px; /* TODO: DRY with timeline-event? */
-}
-
-.fc-direction-rtl .fc-timeline-more-link { /* (rtl) */
-  margin-left: 1px; /* TODO: DRY with timeline-event? */
-}
-
-.fc-timeline-more-link-inner {
-  padding: 2px;
-}
-
-.fc-timeline-bottom {
-  padding-bottom: 10px;
 }
 
 /* Timeline > Event */
@@ -596,45 +544,4 @@ a.fc-list-event:hover .fc-event-title {
 .fc-direction-ltr .fc-timeline-event:not(.fc-event-end):after,
 .fc-direction-rtl .fc-timeline-event:not(.fc-event-start):before {
   border-right: 0; /* complete arrow right */
-}
-
-/* Resource Timeline */
-/* ------------------------------------------------------------------------------------------------- */
-
-.fc-resource-area-divider {
-  border-left: 1px solid var(--fc-border-color);
-  border-right: 1px solid var(--fc-border-color);
-  padding-left: 2px;
-  background-color: var(--fc-neutral-bg-color);
-}
-
-.fc-resource-lane-bottom {
-  padding-bottom: 10px;
-}
-
-.fc-resource-lane-bottom-compact {
-  padding-bottom: 0;
-}
-
-.fc-resource-expander {
-  cursor: pointer;
-  opacity: 0.65;
-}
-
-.fc-resource-expander,
-.fc-resource-expander svg {
-  width: 1em;
-  height: 1em;
-}
-
-.fc-direction-ltr .fc-resource-indent { /* (ltr) */
-  margin-right: 3px;
-}
-.fc-direction-rtl .fc-resource-indent { /* (rtl) */
-  margin-left: 3px;
-}
-
-.fc-resource-group-header,
-.fc-resource-group-lane {
-  background-color: var(--fc-neutral-bg-color);
 }

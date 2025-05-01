@@ -30,6 +30,7 @@ export class TimelineNowIndicatorLine extends BaseComponent<TimelineNowIndicator
         }}
       >
         <NowIndicatorLineContainer
+          className='fcu-fill-y'
           style={
             props.slotWidth != null
               ? horizontalCoordToCss(

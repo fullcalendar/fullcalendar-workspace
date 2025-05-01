@@ -129,10 +129,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       },
       resourceAreaWidth: '40%',
-      // resourceGroupField: 'building', // --- THIS
+      resourceGroupField: 'building', // --- THIS
       resourceAreaColumns: [
         {
-          group: true, // --- OR THIS
+          // group: true, // --- OR THIS
           headerContent: 'Building',
           field: 'building'
         },
@@ -181,8 +181,10 @@ document.addEventListener('DOMContentLoaded', function() {
         { id: '2', resourceId: 'c', start: '2023-01-07T05:00:00', end: '2023-01-07T22:00:00', title: 'event 2' },
         { id: '3', resourceId: 'd', start: '2023-01-06', end: '2023-01-08', title: 'event 3' },
         { id: '4', resourceId: 'e', start: '2023-01-07T03:00:00', end: '2023-01-07T08:00:00', title: 'event 4' },
-        { id: '5', resourceId: 'f', start: '2023-01-07T00:30:00', end: '2023-01-07T02:30:00', title: 'event 5' }
-      ]
+        { id: '5', resourceId: 'f', start: '2023-01-07T00:30:00', end: '2023-01-07T02:30:00', title: 'event 5' },
+        { id: '5', resourceId: 'f', start: '2023-01-07T00:30:00', end: '2023-01-07T02:30:00', title: 'event 5' },
+      ],
+      eventMaxStack: 1,
     })
   }
 
