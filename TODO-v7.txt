@@ -161,16 +161,6 @@ Sticky header dates look terrible in timegrid/daygrid
 Look for emphasizeWeeks/fc-timeline-slot-em ... should become ({ isMajor })
 Should we still have data-date attributes on elements?
 
-css:
-  .fc-navlink -> .fc-nav-link
-  .fc-celldivider -> .fc-cell-divider
-  .fc-rowdivider -> .fc-row-divider
-  .fcu-fill-start -> .fcu-fill-s
-  .fcu-fill-top -> .fcu-fill-t
-  .fcu-fill-x -> .fcu-fill-h
-  .fcu-fill-y -> .fcu-fill-v
-  unused .fcu-offscreen
-
 don't use <Scroller> when not necessary
   ListView
   MultiMonth
