@@ -5,6 +5,7 @@ import { ComponentChildren, createElement, Ref } from '../preact.js'
 import { joinClassNames } from '../util/html.js'
 import { ScrollerInterface } from './ScrollerInterface.js'
 import { ScrollListener } from './ScrollListener.js'
+import classNames from '../internal-classnames.js'
 
 export interface ScrollerProps {
   vertical?: boolean // true always implies 'auto' (won't show scrollbars if no overflow)
@@ -58,6 +59,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
         ref={this.handleEl}
         className={joinClassNames(
           props.className,
+          classNames.blueBgColor,
           'fcu-no-padding fcu-rel', // fcu-rel for children fcu-fill-top/start
           props.hideScrollbars && 'fcu-no-scrollbars',
           'fci-scroller',

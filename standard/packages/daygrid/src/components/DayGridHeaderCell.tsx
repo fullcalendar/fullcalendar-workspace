@@ -1,6 +1,7 @@
 import { ContentContainer, joinClassNames, watchHeight, setRef, renderText, BaseComponent, generateClassName } from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { CellDataConfig, CellRenderConfig } from '../header-tier.js'
+import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderCellProps<RenderProps> {
   renderConfig: CellRenderConfig<RenderProps>
@@ -32,6 +33,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
         }}
         className={joinClassNames(
           dataConfig.className,
+          classNames.redBgColor,
           'fcu-tight fcu-flex-col fcu-align-center',
           props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
           !props.isSticky && 'fcu-crop',

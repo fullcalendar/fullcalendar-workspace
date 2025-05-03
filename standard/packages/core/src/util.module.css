@@ -1,0 +1,11 @@
+/*
+NOTE: import internal-classnames from core instead of this file directly
+*/
+
+.redBgColor {
+  background: red;
+}
+
+.blueBgColor {
+  background: blue;
+}

@@ -390,6 +390,9 @@ function cssPlugin(options?: { inject?: CssInjector | boolean }): Plugin {
       path: joinPaths(standardScriptsDir, 'config/postcss.config.cjs'),
       ctx: {}, // arguments given to config file
     },
+    modules: {
+      generateScopedName: 'fc-[hash:base64:5]',
+    },
     inject: typeof inject === 'object' ?
       (cssVarName: string) => {
         return `import { ${inject.importProp} } from ${JSON.stringify(inject.importId)};\n` +

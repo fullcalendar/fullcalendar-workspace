@@ -24,6 +24,8 @@
       "outDir": "./dist/.tsout"
     },
     "include": [
+      "./src/global-types.d.ts",
+      "./src/util.module.css",
       "./src/**/*"
     ]
   },
@@ -34,6 +36,7 @@
       },
       "./preact": {},
       "./internal": {},
+      "./internal-classnames": {},
       "./locales-all": {
         "iife": true,
         "generator": "./scripts/generate-locales-all.js"
@@ -47,6 +50,7 @@
       ".": "FullCalendar",
       "./preact": "FullCalendar.Preact",
       "./internal": "FullCalendar.Internal",
+      "./internal-classnames": "FullCalendar.InternalClassNames",
       "preact": "",
       "preact/compat": ""
     }
