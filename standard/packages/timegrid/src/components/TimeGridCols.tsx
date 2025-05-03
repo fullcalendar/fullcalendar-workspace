@@ -16,6 +16,7 @@ import {
   wholeDivideDurations,
 } from '@fullcalendar/core/internal'
 import { computeColFromPosition, getCellEl } from '@fullcalendar/daygrid/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
 import { TimeGridRange } from '../TimeColsSeg.js'
 import { TimeGridCol } from './TimeGridCol.js'
@@ -59,7 +60,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
     return (
       <div
         role={props.role as any /* !!! */}
-        className={joinClassNames(props.className, 'fcu-flex-row')}
+        className={joinClassNames(props.className, classNames.flexRow)}
         ref={this.handleRootEl}
       >
         {props.cells.map((cell, col) => (

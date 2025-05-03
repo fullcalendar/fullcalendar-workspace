@@ -16,6 +16,7 @@ import {
   ViewContext,
   watchSize
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import {
   createElement,
   createRef,
@@ -63,17 +64,17 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     let renderProps = this.createRenderProps(props.date, props.time, !props.isLabeled, labelFormat, context)
 
     let className = joinClassNames(
-      'fcu-tight',
-      props.isLiquid ? 'fcu-liquid' : 'fcu-content-box',
-      props.borderTop ? 'fcu-border-only-t' : 'fcu-border-none',
+      classNames.tight,
+      props.isLiquid ? classNames.liquid : classNames.contentBox,
+      props.borderTop ? classNames.borderOnlyT : classNames.borderNone,
     )
 
     if (!props.isLabeled) {
       return (
         <div
           className={joinClassNames(
-            className,
             generateClassName(options.slotLabelClassNames, renderProps),
+            className,
           )}
           style={{ width: props.width }}
         />
@@ -101,7 +102,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
             tag="div"
             className={joinClassNames(
               generateClassName(options.slotLabelInnerClassNames, renderProps),
-              'fcu-rigid',
+              classNames.rigid,
             )}
             elRef={this.innerElRef}
           />

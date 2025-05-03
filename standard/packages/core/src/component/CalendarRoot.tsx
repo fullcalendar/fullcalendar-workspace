@@ -39,16 +39,11 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
       generateClassName(options.directionClassNames, options.direction),
       generateClassName(options.mediaTypeClassNames, forPrint ? 'print' : 'screen'),
       generateClassName(options.colorSchemeClassNames, isDark ? 'dark' : 'light'),
-      //
-      // OLD:
-      'fcu-border-box-root fcu-flex-col',
-      `fcu-${options.direction}-root`,
-      `fcu-calendar-${forPrint ? 'print' : 'screen'}-root`, // NOTE: already a fcu-print-root!
-      'fci',
-      //
-      // NEW:
+      classNames.borderBoxRoot,
+      classNames.flexCol,
       options.direction === 'ltr' ? classNames.ltrRoot : classNames.rtlRoot,
       forPrint ? classNames.calendarPrintRoot : classNames.calendarScreenRoot,
+      'fci',
     )
 
     return props.children(className, options.height, forPrint)

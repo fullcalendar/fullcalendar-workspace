@@ -2,6 +2,7 @@ import { SlotLaneContentArg } from '@fullcalendar/core'
 import { BaseComponent, ContentContainer, getDateMeta, joinArrayishClassNames, joinClassNames, memoize, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { TimeSlatMeta } from '../time-slat-meta.js'
+import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface TimeGridSlatLaneProps extends TimeSlatMeta {
   innerHeightRef?: Ref<number>
@@ -38,8 +39,9 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
           'data-time': props.isoTimeStr,
         }}
         className={joinClassNames(
-          'fcu-tight fcu-liquid',
-          props.borderTop ? 'fcu-border-only-t' : 'fcu-border-none',
+          classNames.tight,
+          classNames.liquid,
+          props.borderTop ? classNames.borderOnlyT : classNames.borderNone,
         )}
         renderProps={renderProps}
         generatorName="slotLaneContent"
@@ -53,7 +55,7 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
             tag="div"
             className={joinArrayishClassNames(
               options.slotLaneInnerClassNames,
-              'fcu-rigid',
+              classNames.rigid,
             )}
             elRef={this.innerElRef}
           />

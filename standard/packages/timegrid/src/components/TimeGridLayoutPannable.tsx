@@ -1,5 +1,6 @@
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Ruler, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, FooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef, generateClassName, joinArrayishClassNames } from "@fullcalendar/core/internal"
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { DayGridHeaderRow, RowConfig, computeColWidth } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridRange } from "../TimeColsSeg.js"
@@ -170,15 +171,15 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 isSticky: stickyHeaderDates,
               }),
               // see note in TimeGridLayout about why we don't do fcu-print-header
-              stickyHeaderDates && 'fcu-table-header-sticky',
+              stickyHeaderDates && classNames.tableHeaderSticky,
             )}
           >
-            <div className='fcu-flex-row'>
+            <div className={classNames.flexRow}>
               {/* HEADER / labels
               -------------------------------------------------------------------------------------*/}
               <div
                 role='rowgroup'
-                className='fcu-content-box'
+                className={classNames.contentBox}
                 style={{ width: axisWidth }}
               >
                 {headerTiers.map((rowConfig, tierNum) => (
@@ -188,10 +189,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     aria-rowindex={tierNum + 1}
                     className={joinArrayishClassNames(
                       options.dayHeaderRowClassNames,
-                      'fcu-flex-row fcu-content-box',
+                      classNames.flexRow,
+                      classNames.contentBox,
                       tierNum < props.headerTiers.length - 1
-                        ? 'fcu-border-only-b'
-                        : 'fcu-border-none'
+                        ? classNames.borderOnlyB
+                        : classNames.borderNone
                     )}
                     style={{
                       height: state.headerTierHeights[tierNum]
@@ -222,13 +224,13 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               <Scroller
                 horizontal
                 hideScrollbars
-                className='fcu-flex-row fcu-liquid'
+                className={joinClassNames(classNames.flexRow, classNames.liquid)}
                 ref={this.headerScrollerRef}
               >
                 {/* TODO: converge with DayGridHeader */}
                 <div
                   role='rowgroup'
-                  className={canvasWidth == null ? 'fcu-liquid' : ''}
+                  className={canvasWidth == null ? classNames.liquid : ''}
                   style={{ width: canvasWidth }}
                 >
                   {props.headerTiers.map((rowConfig, tierNum) => (
@@ -264,8 +266,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             generateClassName(options.viewBodyClassNames, {
               borderX: props.borderX,
             }),
-            'fcu-flex-col',
-            verticalScrolling && 'fcu-liquid',
+            classNames.flexCol,
+            verticalScrolling && classNames.liquid,
           )}
         >
           {options.allDaySlot && (
@@ -273,7 +275,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               <div
                 role='row'
                 aria-rowindex={firstBodyRowIndex}
-                className='fcu-flex-row'
+                className={classNames.flexRow}
               >
                 {/* ALL-DAY / label
                 -----------------------------------------------------------------------------------*/}
@@ -289,7 +291,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 <Scroller
                   horizontal
                   hideScrollbars
-                  className='fcu-flex-row fcu-liquid' // fill remaining width
+                  // fill remaining width
+                  className={joinClassNames(classNames.flexRow, classNames.liquid)}
                   ref={this.allDayScrollerRef}
                 >
                   <div
@@ -303,7 +306,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       showDayNumbers={false}
                       forPrint={forPrint}
                       isHitComboAllowed={props.isHitComboAllowed}
-                      className='fcu-border-none'
+                      className={classNames.borderNone}
                       cellIsCompact={clientWidth / colCnt <= options.dayCompactWidth}
 
                       // content
@@ -340,8 +343,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             role='row'
             aria-rowindex={firstBodyRowIndex + (options.allDaySlot ? 1 : 0)}
             className={joinClassNames(
-              'fcu-flex-row fcu-rel', // fcu-rel for Ruler.fcu-fill-start
-              verticalScrolling && 'fcu-liquid',
+              classNames.flexRow,
+              classNames.rel, // for Ruler.fcu-fill-start
+              verticalScrolling && classNames.liquid,
             )}
           >
             {/* SLATS / labels (vertical scroller)
@@ -349,7 +353,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             <Scroller
               vertical={verticalScrolling}
               hideScrollbars
-              className='fcu-flex-col fcu-content-box'
+              className={joinClassNames(classNames.flexCol, classNames.contentBox)}
               style={{
                 width: axisWidth,
               }}
@@ -360,8 +364,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   <div // canvas
                     role='rowheader'
                     aria-label={options.timedText}
-                    // fcu-rel is for absPrint AND TimeGridNowIndicatorArrow
-                    className='fcu-flex-col fcu-grow fcu-rel'
+                    className={joinClassNames(
+                      classNames.flexCol,
+                      classNames.grow,
+                      classNames.rel, // for absPrint and TimeGridNowIndicatorArrow
+                    )}
                     style={{
                       height: forcedBodyHeight,
                     }}
@@ -369,17 +376,17 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     <div // label list
                       aria-hidden
                       className={joinClassNames(
-                        'fcu-flex-col',
-                        (verticalScrolling && options.expandRows) && 'fcu-grow',
-                        absPrint && 'fcu-fill-x',
+                        classNames.flexCol,
+                        (verticalScrolling && options.expandRows) && classNames.grow,
+                        absPrint && classNames.fillX,
                       )}
                     >
                       {props.slatMetas.map((slatMeta, slatI) => (
                         <div
                           key={slatMeta.key}
                           className={joinClassNames(
-                            'fcu-flex-row',
-                            slatLiquid && 'fcu-liquid',
+                            classNames.flexRow,
+                            slatLiquid && classNames.liquid,
                           )}
                           style={{
                             height: slatLiquid ? '' : slatHeight
@@ -407,7 +414,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         class={joinArrayishClassNames(
                           options.fillerClassNames,
                           options.fillerYClassNames,
-                          rowsNotExpanding && 'fcu-liquid',
+                          rowsNotExpanding && classNames.liquid,
                         )}
                         style={{
                           minHeight: bottomScrollbarWidth
@@ -426,7 +433,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             <div
               // we need this div because it's bad for Scroller to have left/right borders,
               // AND because we need to containt the FooterScrollbar
-              className='fcu-flex-col fcu-liquid'
+              className={joinClassNames(classNames.flexCol, classNames.liquid)}
             >
               <Scroller
                 vertical={verticalScrolling}
@@ -436,15 +443,16 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   forPrint
                 }
                 className={joinClassNames(
-                  'fcu-flex-col fcu-rel', // fcu-rel for Ruler.fcu-fill-start
-                  verticalScrolling && 'fcu-liquid',
+                  classNames.flexCol,
+                  classNames.rel, // for Ruler.fillStart
+                  verticalScrolling && classNames.liquid,
                 )}
                 ref={this.mainScrollerRef}
                 clientWidthRef={this.handleClientWidth}
                 clientHeightRef={this.handleClientHeight}
               >
                 <div // canvas (grows b/c of filler at bottom)
-                  className='fcu-flex-col fcu-grow fcu-rel'
+                  className={joinClassNames(classNames.flexCol, classNames.grow, classNames.rel)}
                   style={{
                     width: canvasWidth,
                     height: forcedBodyHeight,
@@ -458,7 +466,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     slatCnt={slatCnt}
                     forPrint={forPrint}
                     isHitComboAllowed={props.isHitComboAllowed}
-                    className={simplePrint ? '' : 'fcu-fill'}
+                    className={simplePrint ? '' : classNames.fill}
 
                     // content
                     fgEventSegsByCol={props.fgEventSegsByCol}
@@ -480,17 +488,17 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       <div // slot list
                         aria-hidden
                         className={joinClassNames(
-                          'fcu-flex-col',
-                          (verticalScrolling && options.expandRows) && 'fcu-grow',
-                          absPrint ? 'fcu-fill-x' : 'fcu-rel',
+                          classNames.flexCol,
+                          (verticalScrolling && options.expandRows) && classNames.grow,
+                          absPrint ? classNames.fillX : classNames.rel,
                         )}
                       >
                         {props.slatMetas.map((slatMeta, slatI) => (
                           <div
                             key={slatMeta.key}
                             className={joinClassNames(
-                              'fcu-flex-row',
-                              slatLiquid && 'fcu-liquid',
+                              classNames.flexRow,
+                              slatLiquid && classNames.liquid,
                             )}
                             style={{
                               height: slatLiquid ? '' : slatHeight
@@ -509,7 +517,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                           class={joinArrayishClassNames(
                             options.fillerClassNames,
                             options.fillerYClassNames,
-                            'fcu-liquid',
+                            classNames.liquid,
                           )}
                         />
                       )}

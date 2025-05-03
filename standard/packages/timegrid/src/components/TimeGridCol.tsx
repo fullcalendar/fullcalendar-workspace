@@ -22,6 +22,7 @@ import {
   SegGroup,
   sortEventSegs
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import {
   createElement,
   Fragment,
@@ -90,9 +91,10 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     let dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange)
 
     const baseClassName = joinClassNames(
-      props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
-      props.width == null && 'fcu-liquid',
-      'fcu-flex-col fcu-rel',
+      props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
+      props.width == null && classNames.liquid,
+      classNames.flexCol,
+      classNames.rel,
     )
 
     const baseStyle = {
@@ -125,7 +127,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
     const innerClassName = joinClassNames(
       generateClassName(options.dayLaneInnerClassNames, renderProps),
-      !isSimple && 'fcu-fill',
+      !isSimple && classNames.fill,
     )
 
     const sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
@@ -156,7 +158,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             {hasCustomDayLaneContent(options) && (
               <InnerContent
                 tag="div"
-                className='fcu-fill-top'
+                className={classNames.fillTop}
               />
             )}
             <div
@@ -261,7 +263,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             <div
               // we would have used fcu-fill, but multi-page spanning breaks in Firefox
               // we would have used height:100%, but multi-page spanning breaks in Safari
-              className='fcu-abs fcu-flex-col'
+              className={joinClassNames(classNames.abs, classNames.flexCol)}
               key={forcedKey || instanceId}
               style={{
                 visibility: isVisible ? ('' as any) : 'hidden',
@@ -343,7 +345,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           return (
             <div
               key={buildEventRangeKey(eventRange)}
-              className="fcu-fill-x"
+              className={classNames.fillX}
               style={{
                 top: segVertical.start,
                 height: segVertical.size,
@@ -445,7 +447,7 @@ export function renderPlainFgSegs(
         return (
           <div
             key={instanceId}
-            className='fcu-break-inside-avoid'
+            className={classNames.breakInsideAvoid}
             style={{ visibility: hiddenInstances[instanceId] ? 'hidden' : ('' as any) }}
           >
             <TimeGridEvent

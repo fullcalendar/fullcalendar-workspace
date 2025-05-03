@@ -24,7 +24,8 @@ import { CalendarInteraction } from '../calendar-utils.js'
 import { PureComponent } from '../vdom-util.js'
 import { getUniqueDomId } from '../util/dom-manip.js'
 import { CssDimValue, getIsHeightAuto } from '../scrollgrid/util.js'
-import { joinClassNames } from '../internal.js'
+import { joinClassNames } from '../util/html.js'
+import classNames from '../internal-classnames.js'
 
 export interface CalendarContentProps extends CalendarData {
   forPrint: boolean
@@ -94,8 +95,9 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
         )}
         <div
           className={joinClassNames(
-            'fcu-flex-col fcu-rel',
-            viewHeightLiquid && 'fcu-liquid',
+            classNames.flexCol,
+            classNames.rel,
+            viewHeightLiquid && classNames.liquid,
             'fci-view-outer',
           )}
           style={{
@@ -107,8 +109,8 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
         >
           {this.renderView(
             joinClassNames(
-              (viewHeightLiquid || viewHeight) && 'fcu-liquid',
-              viewAspectRatio != null && 'fcu-fill',
+              (viewHeightLiquid || viewHeight) && classNames.liquid,
+              viewAspectRatio != null && classNames.fill,
               'fci-view',
             ),
             toolbarProps.title,

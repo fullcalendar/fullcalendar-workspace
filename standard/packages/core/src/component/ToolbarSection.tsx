@@ -4,6 +4,7 @@ import { ToolbarWidget, ButtonContentArg } from '../toolbar-struct.js'
 import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
 import { ButtonIcon } from './ButtonIcon.js'
+import classNames from '../internal-classnames.js'
 
 export interface ToolbarContent {
   title: string
@@ -30,7 +31,9 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
       'div', {
         className: joinClassNames(
           generateClassName(options.toolbarSectionClassNames, { name: props.name }),
-          'fcu-flex-row fcu-no-shrink fcu-align-center',
+          classNames.flexRow,
+          classNames.noShrink,
+          classNames.alignCenter,
         ),
       },
       ...children, // spread, so no React key errors
@@ -149,10 +152,10 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
         role: (isOnlyButtons && isOnlyView) ? 'tablist' : undefined,
         'aria-label': (isOnlyButtons && isOnlyView) ? options.viewChangeHint : undefined,
         className: joinArrayishClassNames(
-          'fcu-flex-row',
+          classNames.flexRow,
           isOnlyButtons
             ? options.buttonGroupClassNames
-            : 'fcu-align-center',
+            : classNames.alignCenter,
         ),
       }, ...children)
     }

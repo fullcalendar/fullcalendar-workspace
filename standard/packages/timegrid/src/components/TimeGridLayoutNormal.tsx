@@ -1,5 +1,6 @@
 import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, generateClassName, getIsHeightAuto, getStickyHeaderDates, Hit, joinArrayishClassNames, joinClassNames, rangeContainsMarker, RefMap, Ruler, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { DayGridHeaderRow, RowConfig } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridRange } from "../TimeColsSeg.js"
@@ -140,24 +141,24 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 borderX: props.borderX,
                 isSticky: stickyHeaderDates,
               }),
-              // see note in TimeGridLayout about why we don't do fcu-print-header
-              'fcu-flex-col',
-              stickyHeaderDates && 'fcu-table-header-sticky',
+              // see note in TimeGridLayout about why we don't do classNames.printHeader
+              classNames.flexCol,
+              stickyHeaderDates && classNames.tableHeaderSticky,
             )}
           >
             {props.headerTiers.map((rowConfig, tierNum) => (
               <div
                 key={tierNum}
                 role='row'
-                className='fcu-flex-row'
+                className={classNames.flexRow}
               >
                 <div
                   className={joinArrayishClassNames(
                     options.dayHeaderRowClassNames,
-                    'fcu-flex-row',
+                    classNames.flexRow,
                     tierNum < props.headerTiers.length - 1
-                      ? 'fcu-border-only-b'
-                      : 'fcu-border-none'
+                      ? classNames.borderOnlyB
+                      : classNames.borderNone
                   )}
                 >
                   {(options.weekNumbers && rowConfig.isDateRow) ? (
@@ -180,7 +181,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 />
                 <DayGridHeaderRow
                   {...rowConfig}
-                  className='fcu-liquid'
+                  className={classNames.liquid}
                   borderBottom={tierNum < props.headerTiers.length - 1}
                 />
                 {Boolean(endScrollbarWidth) && (
@@ -203,15 +204,15 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             generateClassName(options.viewBodyClassNames, {
               borderX: props.borderX,
             }),
-            'fcu-flex-col',
-            verticalScrolling && 'fcu-liquid',
+            classNames.flexCol,
+            verticalScrolling && classNames.liquid,
           )}
         >
           {/* ALL-DAY
           ---------------------------------------------------------------------------------------*/}
           {options.allDaySlot && (
             <Fragment>
-              <div role='row' className='fcu-flex-row'>
+              <div role='row' className={classNames.flexRow}>
                 <TimeGridAllDayLabel
                   width={axisWidth}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
@@ -226,7 +227,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   showDayNumbers={false}
                   forPrint={forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
-                  className='fcu-liquid fcu-border-none'
+                  className={joinClassNames(classNames.liquid, classNames.borderNone)}
                   cellIsCompact={clientWidth / props.cells.length <= options.dayCompactWidth}
                   // content
                   fgEventSegs={props.fgEventSegs}
@@ -258,15 +259,20 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           <Scroller
             vertical={verticalScrolling}
             className={joinClassNames(
-              'fcu-flex-col fcu-rel', // fcu-rel for Ruler.fcu-fill-start
-              verticalScrolling && 'fcu-liquid',
+              classNames.flexCol,
+              classNames.rel, // for Ruler.fillStart
+              verticalScrolling && classNames.liquid,
             )}
             ref={props.timeScrollerRef}
             clientWidthRef={this.handleClientWidth}
             clientHeightRef={this.handleClientHeight}
           >
             <div // canvas (grows b/c of filler at bottom)
-              className='fcu-flex-col fcu-grow fcu-rel'
+              className={joinClassNames(
+                classNames.flexCol,
+                classNames.grow,
+                classNames.rel,
+              )}
               style={{
                 // in print mode, this div creates the height and everything is absolutely positioned within
                 // we need to do this so that slats positioning synces with events's positioning
@@ -277,14 +283,14 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               <div
                 role='row'
                 className={joinClassNames(
-                  'fcu-flex-row',
-                  !simplePrint && 'fcu-fill',
+                  classNames.flexRow,
+                  !simplePrint && classNames.fill,
                 )}
               >
                 <div
                   role='rowheader'
                   aria-label={options.timedText}
-                  className='fcu-content-box'
+                  className={classNames.contentBox}
                   style={{ width: axisWidth }}
                 />
                 <div
@@ -298,7 +304,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   slatCnt={slatCnt}
                   forPrint={forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
-                  className='fcu-liquid'
+                  className={classNames.liquid}
 
                   // content
                   fgEventSegsByCol={props.fgEventSegsByCol}
@@ -320,19 +326,19 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   <div
                     aria-hidden
                     className={joinClassNames(
-                      'fcu-flex-col',
-                      (verticalScrolling && options.expandRows) && 'fcu-grow',
+                      classNames.flexCol,
+                      (verticalScrolling && options.expandRows) && classNames.grow,
                       absPrint
-                        ? 'fcu-fill-x' // will assume top:0, height will be decided naturally
-                        : 'fcu-rel', // needs abs/rel for zIndex
+                        ? classNames.fillX // will assume top:0, height will be decided naturally
+                        : classNames.rel, // needs abs/rel for zIndex
                     )}
                   >
                     {props.slatMetas.map((slatMeta, slatI) => (
                       <div
                         key={slatMeta.key}
                         className={joinClassNames(
-                          'fcu-flex-row',
-                          slatLiquid && 'fcu-liquid',
+                          classNames.flexRow,
+                          slatLiquid && classNames.liquid,
                         )}
                         style={{
                           height: slatLiquid ? '' : slatHeight
@@ -363,7 +369,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                       class={joinArrayishClassNames(
                         options.fillerClassNames,
                         options.fillerYClassNames,
-                        'fcu-liquid',
+                        classNames.liquid,
                       )}
                     />
                   )}

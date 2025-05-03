@@ -1,4 +1,5 @@
-import { DateMarker, DateProfile, NowIndicatorLineContainer } from "@fullcalendar/core/internal"
+import { DateMarker, DateProfile, NowIndicatorLineContainer, joinClassNames } from "@fullcalendar/core/internal"
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
 import { computeDateTopFrac } from "./util.js"
 
@@ -17,14 +18,14 @@ export function TimeGridNowIndicatorLine(props: TimeGridNowIndicatorLineProps) {
     <div
       // crop any overflow that the arrow/line might cause
       // TODO: just do this on the entire canvas within the scroller
-      className="fcu-fill fcu-crop"
+      className={joinClassNames(classNames.fill, classNames.crop)}
       style={{
         zIndex: 2, // inlined from $now-indicator-z
         pointerEvents: 'none', // TODO: className
       }}
     >
       <NowIndicatorLineContainer
-        className='fcu-fill-x'
+        className={classNames.fillX}
         style={{
           top: props.totalHeight != null
             ? props.totalHeight * computeDateTopFrac(props.nowDate, props.dateProfile, props.dayDate)

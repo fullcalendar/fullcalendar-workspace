@@ -1,6 +1,7 @@
 import { Duration, ViewOptions } from '@fullcalendar/core'
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, Scroller, SlicedCoordRange, ViewContainer, afterSize, joinClassNames, memoize } from "@fullcalendar/core/internal"
 import { createElement, createRef } from '@fullcalendar/core/preact'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { buildSlatMetas } from "../time-slat-meta.js"
 import { TimeGridRange } from '../TimeColsSeg.js'
 import { TimeGridLayoutPannable } from './TimeGridLayoutPannable.js'
@@ -132,13 +133,13 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
         }}
         className={joinClassNames(
           props.className,
-          // we don't do fcu-print-root/fcu-print-header here because works poorly with print:
+          // we don't do classNames.printRoot/classNames.printHeader here because works poorly with print:
           // - Firefox >85ish CAN have flexboxes within it, but those cannot do absolute positioning
           // - Chrome works okay, but abs-positioned events cover the repeated header
           //   Also, there's weird padding on the last page at bottom of container, which matches
           //   the height of the repeated header
           // - Safari was never able to do repeated headers in the first place
-          !props.forPrint && 'fcu-flex-col',
+          !props.forPrint && classNames.flexCol,
         )}
         viewSpec={context.viewSpec}
         borderX={props.borderX}

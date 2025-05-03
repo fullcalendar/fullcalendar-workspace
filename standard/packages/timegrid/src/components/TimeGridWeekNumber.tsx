@@ -1,5 +1,6 @@
 import { WeekNumberContentArg } from '@fullcalendar/core'
 import { BaseComponent, ContentContainer, DateProfile, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, joinArrayishClassNames, joinClassNames, renderText, setRef, watchSize } from "@fullcalendar/core/internal"
+import classNames from '@fullcalendar/core/internal-classnames'
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 
 export interface TimeGridWeekNumberProps {
@@ -48,8 +49,8 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
           'aria-label': fullDateStr,
         }}
         className={joinClassNames(
-          'fcu-tight',
-          props.isLiquid ? 'fcu-liquid' : 'fcu-content-box',
+          classNames.tight,
+          props.isLiquid ? classNames.liquid : classNames.contentBox,
         )}
         style={{ width: props.width }}
         renderProps={{
@@ -75,7 +76,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
             }
             className={joinArrayishClassNames(
               options.weekNumberInnerClassNames,
-              'fcu-rigid',
+              classNames.rigid,
             )}
             elRef={this.innerElRef}
           />

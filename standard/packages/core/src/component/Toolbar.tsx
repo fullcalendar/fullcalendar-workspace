@@ -3,7 +3,8 @@ import { BaseComponent } from '../vdom-util.js'
 import { ToolbarModel, ToolbarWidget } from '../toolbar-struct.js'
 import { ToolbarSection, ToolbarContent } from './ToolbarSection.js'
 import { joinArrayishClassNames } from '../util/html.js'
-import { generateClassName } from '../internal.js'
+import { generateClassName } from '../content-inject/ContentContainer.js'
+import classNames from '../internal-classnames.js'
 
 export interface ToolbarProps extends ToolbarContent {
   name: string
@@ -21,7 +22,9 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
       <div
         className={joinArrayishClassNames(
           generateClassName(options.toolbarClassNames, { name: props.name }),
-          'fcu-flex-row fcu-justify-centerspace-between fcu-align-center',
+          classNames.flexRow,
+          classNames.justifyCenterspaceBetween,
+          classNames.alignCenter,
         )}
       >
         {this.renderSection('start', sectionWidgets.start)}

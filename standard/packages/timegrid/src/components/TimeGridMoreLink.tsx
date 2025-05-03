@@ -5,6 +5,7 @@ import {
   EventRangeProps,
   joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
 import { renderPlainFgSegs } from './TimeGridCol.js' // BAD
 import { TimeGridRange } from '../TimeColsSeg.js'
@@ -29,7 +30,7 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
 
     return (
       <MoreLinkContainer
-        className='fcu-abs'
+        className={classNames.abs}
         style={{
           top: props.top,
           height: props.height,
@@ -57,7 +58,7 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
             tag="div"
             className={joinArrayishClassNames(
               options.moreLinkInnerClassNames,
-              'fcu-sticky-t',
+              classNames.stickyT, // fcu-sticky-t
             )}
           />
         )}
