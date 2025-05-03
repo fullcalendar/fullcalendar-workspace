@@ -1,11 +1,11 @@
 
 :root {
-  --fc-page-bg-color: #fff; // tailwind = bg-white
+  --fc-page-bg-color: #fff; /* tailwind = bg-white */
 
-  --fc-small-font-size: .85em; // tailwind = text-xs
+  --fc-small-font-size: .85em; /* tailwind = text-xs */
 
-  --fc-event-bg-color: #3788d8; // tailwind = blue-600
-  --fc-event-border-color: #3788d8; //
+  --fc-event-bg-color: #3788d8; /* tailwind = blue-600 */
+  --fc-event-border-color: #3788d8; /* same */
   --fc-event-text-color: #fff;
   --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
   --fc-event-resizer-thickness: 8px;
