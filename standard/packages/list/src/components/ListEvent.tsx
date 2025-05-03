@@ -29,6 +29,7 @@ export class ListEvent extends BaseComponent<ListEventProps> {
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
         disableDragging
         disableResizing
+        // TODO: give isListItem=true? LOL
       />
     )
   }
