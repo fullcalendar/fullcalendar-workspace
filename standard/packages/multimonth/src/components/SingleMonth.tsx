@@ -1,5 +1,6 @@
 import { CssDimValue } from '@fullcalendar/core'
 import { DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, joinClassNames, memoize, ViewProps, watchHeight } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow } from '@fullcalendar/daygrid/internal'
 import { SingleMonthContentArg } from '../structs.js'
@@ -97,8 +98,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           data-date={props.isoDateStr}
           className={joinClassNames(
             generateClassName(options.singleMonthClassNames, renderProps),
-            'fcu-flex-col',
-            props.hasLateralSiblings && 'fcu-break-inside-avoid',
+            classNames.flexCol,
+            props.hasLateralSiblings && classNames.breakInsideAvoid,
           )}
         >
           <div
@@ -109,7 +110,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 sticky: isTitleAndHeaderSticky,
                 colCnt: props.colCnt,
               }),
-              isTitleAndHeaderSticky && 'fcu-sticky-t',
+              isTitleAndHeaderSticky && classNames.stickyT,
             )}
             style={{
               // HACK to keep zIndex above table-header,
@@ -131,7 +132,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 ...renderProps,
                 stickyTitle: isTitleAndHeaderSticky,
               }),
-              'fcu-flex-col',
+              classNames.flexCol,
             )}
             style={{
               marginTop: titleStickyBottom != null ? -titleStickyBottom : undefined
@@ -144,7 +145,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                   sticky: isTitleAndHeaderSticky,
                   colCnt: props.colCnt,
                 }),
-                isTitleAndHeaderSticky && 'fcu-sticky-t',
+                isTitleAndHeaderSticky && classNames.stickyT,
               )}
               style={{
                 zIndex: isTitleAndHeaderSticky ? 2 : undefined, // TODO: className?
@@ -161,7 +162,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             </div>
             <div
               className={joinClassNames(
-                isAspectRatio && 'fcu-rel',
+                isAspectRatio && classNames.rel,
                 generateClassName(options.singleMonthTableBodyClassNames, {
                   colCnt: props.colCnt,
                 })
@@ -176,7 +177,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 dateProfile={props.dateProfile}
                 todayRange={props.todayRange}
                 cellRows={dayTableModel.cellRows}
-                className={isAspectRatio ? 'fcu-fill' : ''}
+                className={isAspectRatio ? classNames.fill : ''}
                 forPrint={forPrint && !props.hasLateralSiblings}
                 dayMaxEventRows={
                   (forPrint && props.hasLateralSiblings)

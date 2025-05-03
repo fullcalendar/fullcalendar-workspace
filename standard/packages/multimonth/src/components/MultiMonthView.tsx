@@ -22,6 +22,7 @@ import {
   watchWidth,
   fracToCssDim,
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { buildDayTableRenderRange } from '@fullcalendar/daygrid/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { SingleMonth } from './SingleMonth.js'
@@ -92,7 +93,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
             className={joinClassNames(
               // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
               // https://stackoverflow.com/a/60256345
-              !props.forPrint && 'fcu-flex-col',
+              !props.forPrint && classNames.flexCol,
               props.className,
             )}
             borderX={props.borderX}
@@ -101,14 +102,14 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
           >
             <Scroller
               vertical={verticalScrolling}
-              className={verticalScrolling ? 'fcu-liquid' : ''}
+              className={verticalScrolling ? classNames.liquid : ''}
               ref={this.scrollerRef}
             >
               <div
                 role='list'
                 aria-labelledby={props.labelId}
                 aria-label={props.labelStr}
-                className='fcu-safe-tiles'
+                className={classNames.safeTiles}
                 ref={this.innerElRef}
               >
                 {monthDateProfiles.map((monthDateProfile, i) => {
