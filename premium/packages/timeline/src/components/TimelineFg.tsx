@@ -9,6 +9,7 @@ import {
   setRef,
   EventSegUiInteractionState,
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 import { horizontalsToCss } from '../TimelineCoords.js'
@@ -95,7 +96,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
     return (
       <div
-        className='fcu-rel'
+        className={classNames.rel}
         style={{ height: totalHeight }}
       >
         {this.renderFgSegs(

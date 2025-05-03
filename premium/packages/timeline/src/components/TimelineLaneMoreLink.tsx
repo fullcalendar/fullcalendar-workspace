@@ -4,6 +4,7 @@ import {
   EventRangeProps,
   joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { TimelineEvent } from './TimelineEvent.js'
 import { TimelineRange } from '../TimelineLaneSlicer.js'
@@ -70,7 +71,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
             tag='div'
             className={joinArrayishClassNames(
               options.moreLinkInnerClassNames,
-              'fcu-sticky-s',
+              classNames.stickyS,
             )}
           />
         )}

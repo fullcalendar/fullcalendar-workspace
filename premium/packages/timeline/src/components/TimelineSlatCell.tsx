@@ -12,6 +12,7 @@ import {
   setRef,
   watchWidth
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 
@@ -68,8 +69,10 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         tag="div"
         // fcu-align-start shrinks width of InnerContent
         className={joinClassNames(
-          'fcu-tight fcu-flex-col fcu-align-start',
-          props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
+          classNames.tight,
+          classNames.flexCol,
+          classNames.alignStart,
+          props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           'fci-timeline-slot',
         )}
         attrs={{
@@ -94,7 +97,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
             tag="div"
             className={joinArrayishClassNames(
               options.slotLaneInnerClassNames,
-              'fcu-rigid',
+              classNames.rigid,
             )}
             style={{
               // HACK for Safari 16.4,

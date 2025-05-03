@@ -5,7 +5,9 @@ import {
   DateRange,
   RefMap,
   setRef,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { TimelineSlatCell } from './TimelineSlatCell.js'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
@@ -37,7 +39,10 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     return (
       <div
         aria-hidden
-        className="fcu-flex-row fcu-fill"
+        className={joinClassNames(
+          classNames.flexRow,
+          classNames.fill
+        )}
         style={{ height: props.height }}
       >
         {slotDates.map((slotDate, i) => {

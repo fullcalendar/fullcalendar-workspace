@@ -3,6 +3,7 @@ import {
   getEventRangeMeta, DateRange, DateMarker, buildEventRangeKey,
   EventRangeProps,
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { computeSegHorizontals } from '../event-placement.js'
 import { horizontalsToCss } from '../TimelineCoords.js'
@@ -55,7 +56,7 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
           return (
             <div
               key={buildEventRangeKey(seg.eventRange)}
-              className="fcu-fill-y"
+              className={classNames.fillY}
               style={hStyle}
             >
               {fillType === 'bg-event' ? (

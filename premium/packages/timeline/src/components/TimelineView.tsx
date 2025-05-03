@@ -24,6 +24,7 @@ import {
   generateClassName,
   joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollerSyncer } from '@fullcalendar/scrollgrid/internal'
 import { buildTimelineDateProfile, TimelineDateProfile } from '../timeline-date-profile.js'
@@ -129,7 +130,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               className={joinClassNames(
                 // HACK for Safari print-mode, where fcu-no-scrollbars won't take effect for
                 // the below Scrollers if they have liquid flex height
-                !props.forPrint && 'fcu-flex-col',
+                !props.forPrint && classNames.flexCol,
                 props.className,
               )}
               borderX={props.borderX}
@@ -144,19 +145,19 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   borderX: props.borderX,
                   isSticky: stickyHeaderDates,
                 }),
-                stickyHeaderDates && 'fcu-table-header-sticky',
+                stickyHeaderDates && classNames.tableHeaderSticky,
               )}>
                 <Scroller
                   horizontal
                   hideScrollbars
-                  className='fcu-flex-row'
+                  className={classNames.flexRow} // fcu-flex-row
                   ref={this.headerScrollerRef}
                 >
                   <div
                     // TODO: DRY
                     className={joinClassNames(
-                      'fcu-rel', // origin for now-indicator
-                      canvasWidth == null && 'fcu-liquid',
+                      classNames.rel, // origin for now-indicator
+                      canvasWidth == null && classNames.liquid,
                     )}
                     style={{ width: canvasWidth }}
                   >
@@ -213,15 +214,18 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   generateClassName(options.viewBodyClassNames, {
                     borderX: props.borderX,
                   }),
-                  'fcu-flex-col',
-                  verticalScrolling && 'fcu-liquid',
+                  classNames.flexCol,
+                  verticalScrolling && classNames.liquid,
                 )}
                 ref={this.bodyScrollerRef}
                 clientWidthRef={this.handleClientWidth}
               >
                 <div
                   aria-label={options.eventsHint}
-                  className="fcu-rel fcu-grow"
+                  className={joinClassNames(
+                    classNames.rel,
+                    classNames.grow,
+                  )}
                   style={{ width: canvasWidth }}
                   ref={this.handeBodyEl}
                 >

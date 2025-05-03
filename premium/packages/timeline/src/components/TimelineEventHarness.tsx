@@ -1,5 +1,6 @@
 import { Component, createRef, Ref, createElement, ComponentChildren } from '@fullcalendar/core/preact'
 import { watchHeight, setRef } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface TimelineEventHarnessProps {
   style: any // should set top/left/right/width
@@ -24,7 +25,7 @@ export class TimelineEventHarness extends Component<TimelineEventHarnessProps> {
 
     return (
       <div
-        className="fcu-abs"
+        className={classNames.abs}
         style={props.style}
         ref={this.rootElRef}
       >

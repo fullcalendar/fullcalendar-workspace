@@ -1,4 +1,5 @@
-import { BaseComponent, DateMarker, NowIndicatorLineContainer } from '@fullcalendar/core/internal'
+import { BaseComponent, DateMarker, joinClassNames, NowIndicatorLineContainer } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 import { horizontalCoordToCss } from '../TimelineCoords.js'
@@ -23,14 +24,14 @@ export class TimelineNowIndicatorLine extends BaseComponent<TimelineNowIndicator
       <div
         // crop any overflow that the arrow/line might cause
         // TODO: just do this on the entire canvas within the scroller
-        className="fcu-fill fcu-crop"
+        className={joinClassNames(classNames.fill, classNames.crop)}
         style={{
           zIndex: 2, // inlined from $now-indicator-z
           pointerEvents: 'none', // TODO: className
         }}
       >
         <NowIndicatorLineContainer
-          className='fcu-fill-y'
+          className={classNames.fillY}
           style={
             props.slotWidth != null
               ? horizontalCoordToCss(

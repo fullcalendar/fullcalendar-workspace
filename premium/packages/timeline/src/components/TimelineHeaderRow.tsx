@@ -1,5 +1,6 @@
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, joinArrayishClassNames, RefMap, setRef } from "@fullcalendar/core/internal"
+import classNames from '@fullcalendar/core/internal-classnames'
 import { TimelineDateProfile, TimelineHeaderCellData } from "../timeline-date-profile.js"
 import { TimelineHeaderCell } from './TimelineHeaderCell.js'
 
@@ -39,8 +40,9 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
       <div
         className={joinArrayishClassNames(
           options.slotLabelRowClassNames,
-          'fcu-flex-row fcu-grow',
-          !props.isLastRow ? 'fcu-border-only-b' : 'fcu-border-none',
+          classNames.flexRow,
+          classNames.grow,
+          !props.isLastRow ? classNames.borderOnlyB : classNames.borderNone,
         )}
       >
         {props.cells.map((cell, cellI) => {

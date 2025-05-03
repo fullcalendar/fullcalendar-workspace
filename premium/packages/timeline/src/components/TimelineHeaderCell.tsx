@@ -16,6 +16,7 @@ import {
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile, TimelineHeaderCellData } from '../timeline-date-profile.js'
+import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface TimelineHeaderCellProps {
   dateProfile: DateProfile
@@ -71,9 +72,11 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
       <ContentContainer
         tag="div"
         className={joinArrayishClassNames(
-          'fcu-tight fcu-flex-col fcu-justify-center',
-          props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
-          props.isCentered ? 'fcu-align-center' : 'fcu-align-start',
+          classNames.tight,
+          classNames.flexCol,
+          classNames.justifyCenter,
+          props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
+          props.isCentered ? classNames.alignCenter : classNames.alignStart,
           'fci-timeline-slot',
         )}
         attrs={{
@@ -107,8 +110,8 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
             }
             className={joinClassNames(
               generateClassName(options.slotLabelInnerClassNames, renderProps),
-              'fcu-rigid',
-              props.isSticky && 'fcu-sticky-s',
+              classNames.rigid,
+              props.isSticky && classNames.stickyS,
             )}
             elRef={this.innerElRef}
           />
