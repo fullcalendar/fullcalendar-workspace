@@ -1,4 +1,5 @@
 import { readFile } from 'fs/promises'
+import { readFileSync } from 'fs'
 import { join as joinPaths } from 'path'
 import { createHash } from 'crypto'
 import { RollupOptions, Plugin, OutputOptions, RollupWarning } from 'rollup'
@@ -244,7 +245,7 @@ function buildModulePlugins(
   pkgBundleStruct: PkgBundleStruct,
   monorepoStruct: MonorepoStruct,
   forceOurExtension: string,
-  sourcemap: boolean,
+  sourcemap: boolean, // BAD: used as a proxy for isDev!
 ): Plugin[] {
   const { pkgDir, entryStructMap } = pkgBundleStruct
   const { ourPkgNames, theirPkgNames } = splitPkgNames(
@@ -264,7 +265,7 @@ function buildModulePlugins(
     generatedContentPlugin(
       entryStructsToContentMap(entryStructMap),
     ),
-    ...buildJsPlugins(pkgBundleStruct),
+    ...buildJsPlugins(pkgBundleStruct, sourcemap), // isDev=sourcemap
     ...(sourcemap ? [sourcemapsPlugin()] : []), // load preexisting sourcemaps
   ]
 }
@@ -276,7 +277,7 @@ function buildIifePlugins(
   currentEntryStruct: EntryStruct,
   pkgBundleStruct: PkgBundleStruct,
   iifeContentMap: { [path: string]: string },
-  sourcemap: boolean,
+  sourcemap: boolean, // BAD: used as a proxy for isDev
   minify: boolean,
 ): Plugin[] {
   const { pkgDir, entryStructMap } = pkgBundleStruct
@@ -294,7 +295,7 @@ function buildIifePlugins(
       ...iifeContentMap,
     }),
     simpleDotAssignment(),
-    ...buildJsPlugins(pkgBundleStruct),
+    ...buildJsPlugins(pkgBundleStruct, sourcemap), // isDev=sourcemap
     ...(sourcemap ? [sourcemapsPlugin()] : []),
     ...(minify ? [minifySeparatelyPlugin()] : []),
   ]
@@ -319,17 +320,17 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
   ]
 }
 
-function buildJsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
+function buildJsPlugins(pkgBundleStruct: PkgBundleStruct, isDev: boolean): Plugin[] {
   const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
 
   if (pkgAnalysis.isTests) {
     return buildTestJsPlugins()
   } else {
-    return buildNormalJsPlugins(pkgBundleStruct)
+    return buildNormalJsPlugins(pkgBundleStruct, isDev)
   }
 }
 
-function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
+function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, isDev: boolean): Plugin[] {
   const { pkgDir, pkgJson } = pkgBundleStruct
 
   return [
@@ -343,6 +344,7 @@ function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
           '@fullcalendar/core/internal',
         importProp: 'injectStyles',
       },
+      obfuscate: !isDev,
     }),
     replacePlugin({
       delimiters: ['<%= ', ' %>'],
@@ -383,8 +385,11 @@ interface CssInjector {
   importProp: string
 }
 
-function cssPlugin(options?: { inject?: CssInjector | boolean }): Plugin {
-  const { inject } = options || {}
+function cssPlugin(options?: {
+  inject?: CssInjector | boolean,
+  obfuscate?: boolean,
+}): Plugin {
+  const { inject, obfuscate } = options || {}
 
   return postcssPlugin({
     config: {
@@ -393,7 +398,9 @@ function cssPlugin(options?: { inject?: CssInjector | boolean }): Plugin {
     },
     modules: {
       generateScopedName(localName: string, resourcePath: string) {
-        return 'fc-' + hashGenerator.generate(localName + resourcePath)
+        return obfuscate
+          ? 'fc-' + hashGenerator.generate(localName + resourcePath)
+          : 'f-' + localName
       },
     },
     inject: typeof inject === 'object' ?
@@ -504,4 +511,9 @@ function hashToAlphaNumeric(input: string) {
   return result
 }
 
-const hashGenerator = new HashGenerator(2, 'adamiscool')
+const pkgManifestJson = readFileSync('./package.json', 'utf8')
+const pkgManifest = JSON.parse(pkgManifestJson)
+if (!pkgManifest.version) {
+  throw new Error('Must have package.json#version')
+}
+const hashGenerator = new HashGenerator(2, pkgManifest.version)
