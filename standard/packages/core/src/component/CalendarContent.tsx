@@ -98,7 +98,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
             classNames.flexCol,
             classNames.rel,
             viewHeightLiquid && classNames.liquid,
-            'fci-view-outer',
+            classNames.internalViewOuter,
           )}
           style={{
             height: viewHeight,
@@ -111,7 +111,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
             joinClassNames(
               (viewHeightLiquid || viewHeight) && classNames.liquid,
               viewAspectRatio != null && classNames.fill,
-              'fci-view',
+              classNames.internalView,
             ),
             toolbarProps.title,
           )}

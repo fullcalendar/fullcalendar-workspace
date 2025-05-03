@@ -17,6 +17,7 @@ import { ElAttrsProps } from '../content-inject/ContentInjector.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
 import { EventRangeProps } from '../component-util/event-rendering.js'
 import { computeEarliestStart, computeLatestEnd, SlicedCoordRange } from '../coord-range.js'
+import classNames from '../internal-classnames.js'
 
 export interface MoreLinkContainerProps extends Partial<ElAttrsProps> {
   dateProfile: DateProfile
@@ -93,7 +94,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   elRef={this.handleLinkEl}
                   className={joinClassNames(
                     props.className,
-                    'fci-more-link',
+                    classNames.internalMoreLink,
                   )}
                   style={props.style}
                   attrs={{
@@ -160,7 +161,9 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
 
   updateParentEl() {
     if (this.linkEl) {
-      this.parentEl = this.linkEl.closest('.fci-view-outer') // HACK. reconsider
+      this.parentEl = this.linkEl.closest(
+        `.${classNames.internalViewOuter}`, // HACK. reconsider
+      )
     }
   }
 

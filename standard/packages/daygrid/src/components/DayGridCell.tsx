@@ -194,7 +194,11 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 segs={props.segs}
                 hiddenSegs={props.hiddenSegs}
                 alignElRef={this.rootElRef}
-                alignParentTop={props.showDayNumber ? '[role=row]' : '.fci-view'}
+                alignParentTop={
+                  props.showDayNumber
+                    ? '[role=row]'
+                    : `.${classNames.internalView}`
+                }
                 dateSpanProps={props.dateSpanProps}
                 dateProfile={props.dateProfile}
                 eventSelection={props.eventSelection}

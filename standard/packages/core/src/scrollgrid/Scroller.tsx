@@ -62,7 +62,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
           classNames.noPadding,
           classNames.rel, // for children fillTop/fillStart
           props.hideScrollbars && classNames.noScrollbars,
-          'fci-scroller',
+          classNames.internalScroller,
         )}
         style={{
           ...props.style,

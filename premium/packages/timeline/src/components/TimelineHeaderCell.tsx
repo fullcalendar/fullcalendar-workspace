@@ -77,7 +77,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
           classNames.justifyCenter,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           props.isCentered ? classNames.alignCenter : classNames.alignStart,
-          'fci-timeline-slot',
+          classNames.internalTimelineSlot,
         )}
         attrs={{
           'data-date': dateEnv.formatIso(cell.date, {

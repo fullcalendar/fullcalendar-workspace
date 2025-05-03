@@ -3,6 +3,7 @@ import { EventImpl } from '../api/EventImpl.js'
 import { getElEventRange } from '../component-util/event-rendering.js'
 import { Interaction, InteractionSettings } from './interaction.js'
 import { ViewApi } from '../api/ViewApi.js'
+import classNames from '../internal-classnames.js'
 
 export interface EventClickArg {
   el: HTMLElement
@@ -21,7 +22,7 @@ export class EventClicking extends Interaction {
     this.destroy = listenBySelector(
       settings.el,
       'click',
-      '.fci-event', // on both fg and bg events
+      `.${classNames.internalEvent}`, // on both fg and bg events
       this.handleSegClick,
     )
   }

@@ -47,7 +47,7 @@ export class Popover extends BaseComponent<PopoverProps> {
           props.className,
           classNames.popoverZ,
           classNames.abs,
-          'fci-popover',
+          classNames.internalPopover,
         )}
         ref={this.handleRootEl}
       >
@@ -164,7 +164,7 @@ export class Popover extends BaseComponent<PopoverProps> {
 
       // HACK
       // could use .offsetParent, however, the bounding rect includes border, so off-by-one
-      let origin = alignEl.closest('.fci-view').getBoundingClientRect()
+      let origin = alignEl.closest(`.${classNames.internalView}`).getBoundingClientRect()
 
       applyStyle(rootEl, {
         top: popoverTop - origin.top,

@@ -1,3 +1,4 @@
+import classNames from '@fullcalendar/core/internal-classnames'
 import { ScrollGeomCache } from '../ScrollGeomCache.js'
 import { ElementScrollGeomCache } from '../ElementScrollGeomCache.js'
 import { WindowScrollGeomCache } from '../WindowScrollGeomCache.js'
@@ -22,7 +23,7 @@ The caller must call start + handleMove + stop.
 export class AutoScroller {
   // options that can be set by caller
   isEnabled: boolean = true
-  scrollQuery: (Window | string)[] = [window, '.fci-scroller']
+  scrollQuery: (Window | string)[] = [window, `.${classNames.internalScroller}`]
   edgeThreshold: number = 50 // pixels
   maxVelocity: number = 300 // pixels per second
 

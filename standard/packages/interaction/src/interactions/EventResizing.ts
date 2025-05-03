@@ -18,6 +18,7 @@ import {
   Interaction, InteractionSettings, interactionSettingsToStore, buildEventApis, isInteractionValid,
   EventImpl,
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { HitDragging, isHitsEqual } from './HitDragging.js'
 import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging.js'
 
@@ -56,7 +57,7 @@ export class EventResizing extends Interaction {
     let { component } = settings
 
     let dragging = this.dragging = new FeaturefulElementDragging(settings.el)
-    dragging.pointer.selector = '.fci-event-resizer'
+    dragging.pointer.selector = `.${classNames.internalEventResizer}`
     dragging.touchScrollAllowed = false
     dragging.autoScroller.isEnabled = component.context.options.dragScroll
 
@@ -132,7 +133,7 @@ export class EventResizing extends Interaction {
         mutation = computeMutation(
           initialHit,
           hit,
-          (ev.subjectEl as HTMLElement).classList.contains('fci-event-resizer-start'),
+          (ev.subjectEl as HTMLElement).classList.contains(classNames.internalEventResizerStart),
           eventInstance.range,
         )
       }
@@ -237,7 +238,7 @@ export class EventResizing extends Interaction {
   }
 
   querySegEl(ev: PointerDragEvent): HTMLElement {
-    return (ev.subjectEl as HTMLElement).closest('.fci-event')
+    return (ev.subjectEl as HTMLElement).closest(`.${classNames.internalEvent}`)
   }
 }
 

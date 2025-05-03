@@ -69,8 +69,8 @@ export class BgEvent extends BaseComponent<BgEventProps> {
         className={joinClassNames(
           ...eventUi.classNames,
           classNames.fill,
-          'fci-event',
-          'fci-bg-event',
+          classNames.internalEvent,
+          classNames.internalBgEvent,
         )}
         style={{
           backgroundColor: eventUi.backgroundColor,

@@ -17,6 +17,7 @@ import {
   refineEventDef,
   EventImpl,
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { HitDragging } from '../interactions/HitDragging.js'
 import { buildDatePointApiWithContext } from '../utils.js'
 
@@ -100,7 +101,9 @@ export class ExternalElementDragging {
     // show mirror if no already-rendered mirror element OR if we are shutting down the mirror (?)
     // TODO: wish we could somehow wait for dispatch to guarantee render
     dragging.setMirrorIsVisible(
-      isFinal || !droppableEvent || !document.querySelector('.fci-event-mirror'), // TODO: turn className into constant
+      isFinal ||
+      !droppableEvent ||
+      !document.querySelector(`.${classNames.internalEventMirror}`),
       // TODO: somehow query FullCalendars WITHIN shadow-roots for existing event-mirror els
     )
 

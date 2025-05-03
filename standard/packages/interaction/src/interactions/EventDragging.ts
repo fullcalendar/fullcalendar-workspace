@@ -23,6 +23,7 @@ import {
   isInteractionValid,
   EventImpl,
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { HitDragging, isHitsEqual } from './HitDragging.js'
 import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging.js'
 import { buildDatePointApiWithContext } from '../utils.js'
@@ -40,7 +41,7 @@ export interface EventDragArg {
 export class EventDragging extends Interaction { // TODO: rename to EventSelectingAndDragging
   // TODO: test this in IE11
   // QUESTION: why do we need it on the resizable???
-  static SELECTOR = '.fci-event-draggable, .fci-event-resizable'
+  static SELECTOR = `.${classNames.internalEventDraggable}, .${classNames.internalEventResizable}`
 
   dragging: FeaturefulElementDragging
   hitDragging: HitDragging
@@ -102,14 +103,14 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
     if (options.fixedMirrorParent) {
       mirror.parentNode = options.fixedMirrorParent
     } else {
-      mirror.parentNode = origTarget.closest('.fci')
+      mirror.parentNode = origTarget.closest(`.${classNames.internalRoot}`)
     }
 
     mirror.revertDuration = options.dragRevertDuration
 
     let isValid =
       component.isValidSegDownEl(origTarget) &&
-      !origTarget.closest('.fci-event-resizer') // NOT on a resizer
+      !origTarget.closest(`.${classNames.internalEventResizer}`) // NOT on a resizer
 
     if (!isValid) {
       dragging.cancel()
@@ -117,7 +118,8 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
       // disable dragging for elements that are resizable (ie, selectable)
       // but are not draggable
       // TODO: merge this with .cancel() ?
-      this.isDragging = (ev.subjectEl as HTMLElement).classList.contains('fci-event-draggable')
+      this.isDragging = (ev.subjectEl as HTMLElement)
+        .classList.contains(classNames.internalEventDraggable)
     }
   }
 
@@ -224,7 +226,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
       // render the mirror if no already-rendered mirror
       // TODO: wish we could somehow wait for dispatch to guarantee render
       this.dragging.setMirrorIsVisible(
-        !hit || !(this.subjectEl.getRootNode() as ParentNode).querySelector('.fci-event-mirror'), // TODO: turn className into constant
+        !hit || !(this.subjectEl.getRootNode() as ParentNode).querySelector(`.${classNames.internalEventMirror}`), // TODO: turn className into constant
       )
 
       // assign states based on new hit

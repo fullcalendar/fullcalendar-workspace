@@ -3,6 +3,7 @@ import { EventImpl } from '../api/EventImpl.js'
 import { getElEventRange } from '../component-util/event-rendering.js'
 import { Interaction, InteractionSettings } from './interaction.js'
 import { ViewApi } from '../api/ViewApi.js'
+import classNames from '../internal-classnames.js'
 
 export interface EventHoveringArg {
   el: HTMLElement
@@ -25,7 +26,7 @@ export class EventHovering extends Interaction {
 
     this.removeHoverListeners = listenToHoverBySelector(
       settings.el,
-      '.fci-event', // on both fg and bg events
+      `.${classNames.internalEvent}`, // on both fg and bg events
       this.handleSegEnter,
       this.handleSegLeave,
     )

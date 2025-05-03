@@ -72,7 +72,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           classNames.flexCol,
           classNames.alignStart, // shrinks width of InnerContent
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
-          'fci-timeline-slot',
+          classNames.internalTimelineSlot,
         )}
         attrs={{
           'data-date': dateEnv.formatIso(date, {

@@ -43,7 +43,7 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
       classNames.flexCol,
       options.direction === 'ltr' ? classNames.ltrRoot : classNames.rtlRoot,
       forPrint ? classNames.calendarPrintRoot : classNames.calendarScreenRoot,
-      'fci',
+      classNames.internalRoot,
     )
 
     return props.children(className, options.height, forPrint)

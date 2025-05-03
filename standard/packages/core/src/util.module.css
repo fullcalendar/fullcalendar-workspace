@@ -1,3 +1,4 @@
+
 :root {
   --fc-sticky-header-footer-z: 3;
   --fc-popover-z: 4;
@@ -440,3 +441,35 @@ put the more-link in the dayCellBottom, or its own wrapper just before it.
 This will allow themes to put liquid-expandable height on the event container (w/o +more link)
 so the more-link can move to the bottom
 */
+
+/* INTERNAL MARKER -- used to mark an element for internal significance */
+/* ------------------------------------------------------------------------------------------------- */
+
+.internalRoot {}
+
+.internalTimelineSlot {}
+
+.internalEvent {}
+.internalEventMirror {}
+.internalEventDraggable {}
+.internalEventDragging {}
+.internalEventSelected {}
+.internalEventResizable {}
+.internalEventResizer {}
+.internalEventResizerStart {}
+.internalEventResizerEnd {}
+
+.internalBgEvent {}
+
+.internalMoreLink {}
+
+.internalNavLink {}
+
+.internalViewOuter {}
+
+.internalPopover {}
+
+.internalView {}
+.internalViewOuter {}
+
+.internalScroller {}

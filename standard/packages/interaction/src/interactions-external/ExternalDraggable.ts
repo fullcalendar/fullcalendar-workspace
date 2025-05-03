@@ -1,4 +1,5 @@
 import { BASE_OPTION_DEFAULTS, PointerDragEvent } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging.js'
 import { ExternalElementDragging, DragMetaGenerator } from './ExternalElementDragging.js'
 
@@ -58,9 +59,9 @@ export class ExternalDraggable {
     if (
       ev.isTouch &&
       this.dragging.delay &&
-      (ev.subjectEl as HTMLElement).classList.contains('fci-event')
+      (ev.subjectEl as HTMLElement).classList.contains(classNames.internalEvent)
     ) {
-      this.dragging.mirror.getMirrorEl().classList.add('fci-event-selected')
+      this.dragging.mirror.getMirrorEl().classList.add(classNames.internalEventSelected)
     }
   }
 

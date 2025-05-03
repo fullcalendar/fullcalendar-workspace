@@ -116,12 +116,12 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
           ...eventUi.classNames,
           props.className,
           (eventRange.def.url || isDraggable) && classNames.cursorPointer,
-          'fci-event',
-          renderProps.isMirror && 'fci-event-mirror',
-          renderProps.isDraggable && 'fci-event-draggable',
-          renderProps.isDragging && 'fci-event-dragging',
-          renderProps.isSelected && 'fci-event-selected',
-          (renderProps.isStartResizable || renderProps.isEndResizable) && 'fci-event-resizable',
+          classNames.internalEvent,
+          renderProps.isMirror && classNames.internalEventMirror,
+          renderProps.isDraggable && classNames.internalEventDraggable,
+          renderProps.isDragging && classNames.internalEventDragging,
+          renderProps.isSelected && classNames.internalEventSelected,
+          (renderProps.isStartResizable || renderProps.isEndResizable) && classNames.internalEventResizable,
         )}
         style={{
           borderColor: eventUi.borderColor,
@@ -151,10 +151,12 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                 className={joinArrayishClassNames(
                   options.eventResizerClassNames,
                   options.eventResizerStartClassNames,
-                  'fci-event-resizer fci-event-resizer-start', // these classnames required for dnd
                   props.axis === 'x'
                     ? classNames.cursorResizeS
-                    : classNames.cursorResizeT
+                    : classNames.cursorResizeT,
+                  // these classnames required for dnd
+                  classNames.internalEventResizer,
+                  classNames.internalEventResizerStart,
                 )}
               >
                 {Boolean(renderProps.isSelected) && (
@@ -182,10 +184,12 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                 className={joinArrayishClassNames(
                   options.eventResizerClassNames,
                   options.eventResizerEndClassNames,
-                  'fci-event-resizer fci-event-resizer-end', // these classnames required for dnd
                   props.axis === 'x'
                     ? classNames.cursorResizeE
-                    : classNames.cursorResizeB
+                    : classNames.cursorResizeB,
+                  // these classnames required for dnd
+                  classNames.internalEventResizer,
+                  classNames.internalEventResizerEnd,
                 )}
               >
                 {Boolean(renderProps.isSelected) && (
