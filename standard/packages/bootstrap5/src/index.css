@@ -3,9 +3,9 @@
   --fc-border-color: var(--bs-border-color);
   --fc-page-bg-color: var(--bs-body-bg);
   --fc-neutral-bg-color: var(--bs-secondary-bg);
+}
 
-  &,
-  & .popover {
-    line-height: normal; // undo thick line-height
-  }
+.fc-theme-bootstrap5,
+.fc-theme-bootstrap5 .popover {
+  line-height: normal; /* undo thick line-height */
 }
