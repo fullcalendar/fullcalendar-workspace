@@ -1,4 +1,5 @@
 import { afterSize, BaseComponent, isArraysEqual, joinArrayishClassNames, RefMap, setRef, ViewContext } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { Ref, createElement } from '@fullcalendar/core/preact'
 import { Resource, getPublicId } from '@fullcalendar/resource/internal'
 import { ResourceCell } from './ResourceCell.js'
@@ -60,8 +61,8 @@ export class ResourceSubrow extends BaseComponent<ResourceSubrowProps, ViewConte
         className={joinArrayishClassNames(
           options.resourceAreaRowClassNames,
           props.className, // what for???
-          'fcu-flex-row',
-          props.borderBottom ? 'fcu-border-only-b' : 'fcu-border-none',
+          classNames.flexRow,
+          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
         )}
         style={{
           top: props.top,

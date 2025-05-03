@@ -4,6 +4,7 @@ import { createElement, createRef, Ref } from '../preact.js'
 import { Scroller } from '../scrollgrid/Scroller.js'
 import { BaseComponent, setRef } from '../vdom-util.js'
 import { joinClassNames } from '../util/html.js'
+import classNames from '../internal-classnames.js'
 
 export interface FooterScrollbarProps {
   isSticky?: boolean
@@ -27,8 +28,8 @@ export class FooterScrollbar extends BaseComponent<FooterScrollbarProps> {
       <div
         ref={this.rootElRef}
         className={joinClassNames(
-          'fcu-footer-scrollbar',
-          props.isSticky && 'fcu-footer-scrollbar-sticky',
+          classNames.footerScrollbar,
+          props.isSticky && classNames.footerScrollbarSticky,
         )}
       >
         <Scroller horizontal ref={props.scrollerRef}>

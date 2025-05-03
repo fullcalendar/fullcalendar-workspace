@@ -6,6 +6,7 @@ import { BaseComponent, setRef } from '../vdom-util.js'
 import { joinArrayishClassNames } from '../util/html.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
 import { ContentContainer } from '../content-inject/ContentContainer.js'
+import classNames from '../internal-classnames.js'
 
 export interface PopoverProps {
   elRef?: Ref<HTMLElement>
@@ -44,7 +45,9 @@ export class Popover extends BaseComponent<PopoverProps> {
         className={joinArrayishClassNames(
           options.popoverClassNames,
           props.className,
-          'fcu-popover-z fcu-abs fci-popover',
+          classNames.popoverZ,
+          classNames.abs,
+          'fci-popover',
         )}
         ref={this.handleRootEl}
       >

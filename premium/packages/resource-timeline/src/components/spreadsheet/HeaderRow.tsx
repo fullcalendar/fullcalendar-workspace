@@ -1,4 +1,5 @@
 import { afterSize, BaseComponent, ElementDragging, joinArrayishClassNames, PointerDragEvent, RefMap, setRef } from "@fullcalendar/core/internal"
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { ColSpec } from '../../structs.js'
 import { HeaderCell } from './HeaderCell.js'
@@ -60,7 +61,9 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
         aria-rowindex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
         className={joinArrayishClassNames(
           options.resourceAreaHeaderRowClassNames,
-          'fcu-flex-row fcu-grow fcu-border-none',
+          classNames.flexRow,
+          classNames.grow,
+          classNames.borderNone,
         )}
       >
         {colSpecs.map((colSpec, colIndex) => {

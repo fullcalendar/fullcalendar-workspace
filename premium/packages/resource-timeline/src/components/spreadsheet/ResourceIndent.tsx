@@ -1,4 +1,5 @@
 import { BaseComponent, joinArrayishClassNames } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { ComponentChildren, createElement } from '@fullcalendar/core/preact'
 
 export interface ResourceIndentProps {
@@ -15,7 +16,9 @@ export class ResourceIndent extends BaseComponent<ResourceIndentProps> {
       <div
         className={joinArrayishClassNames(
           context.options.resourceIndentClassNames,
-          'fcu-no-shrink fcu-flex-row fcu-justify-centerend',
+          classNames.noShrink,
+          classNames.flexRow,
+          classNames.justifyCenterend,
         )}
         style={{
           width: props.indentWidth != null

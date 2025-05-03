@@ -9,6 +9,7 @@ import { ViewContext } from '../ViewContext.js'
 import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
 import { ViewOptionsRefined } from '../options.js'
+import classNames from '../internal-classnames.js'
 
 export interface BgEventProps {
   eventRange: EventRenderRange
@@ -67,7 +68,9 @@ export class BgEvent extends BaseComponent<BgEventProps> {
         tag='div'
         className={joinClassNames(
           ...eventUi.classNames,
-          'fcu-fill fci-event fci-bg-event',
+          classNames.fill,
+          'fci-event',
+          'fci-bg-event',
         )}
         style={{
           backgroundColor: eventUi.backgroundColor,
@@ -115,7 +118,7 @@ export function renderFill(fillType: string, options: ViewOptionsRefined) {
     <div className={joinArrayishClassNames(
       fillType === 'non-business' ? options.nonBusinessClassNames :
         fillType === 'highlight' ? options.highlightClassNames : undefined,
-      'fcu-fill',
+      classNames.fill,
     )} />
   )
 }

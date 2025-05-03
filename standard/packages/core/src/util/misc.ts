@@ -1,4 +1,5 @@
 import { preventDefault } from './dom-event.js'
+import classNames from '../internal-classnames.js'
 
 export type Falsy = false | null | undefined // TODO: 0 ?
 
@@ -16,12 +17,12 @@ export function guid() {
 
 // Make the mouse cursor express that an event is not allowed in the current area
 export function disableCursor() {
-  document.body.classList.add('fcu-not-allowed')
+  document.body.classList.add(classNames.notAllowed)
 }
 
 // Returns the mouse cursor to its original look
 export function enableCursor() {
-  document.body.classList.remove('fcu-not-allowed')
+  document.body.classList.remove(classNames.notAllowed)
 }
 
 /* Selection

@@ -1,5 +1,6 @@
 import { CssDimValue } from '@fullcalendar/core'
 import { BaseComponent, ElementDragging, PointerDragEvent, setRef, joinClassNames, memoize, joinArrayishClassNames } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { ComponentChildren, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DimConfig, parseDimConfig, resizeDimConfig, serializeDimConfig } from '../col-positioning.js'
 
@@ -44,7 +45,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
     return (
       <div
         ref={this.handleRootEl}
-        class={joinClassNames(props.className, 'fcu-flex-row')}
+        class={joinClassNames(props.className, classNames.flexRow)}
       >
         <div
           class={props.startClassName}
@@ -62,7 +63,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
           style={{ cursor: 'col-resize' }}
           ref={this.resizerElRef}
         />
-        <div class={joinClassNames(props.endClassName, 'fcu-liquid')}>
+        <div class={joinClassNames(props.endClassName, classNames.liquid)}>
           {props.endContent}
         </div>
       </div>

@@ -8,6 +8,7 @@ import {
   joinClassNames,
   generateClassName,
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Fragment, ComponentChild, createRef, Ref } from '@fullcalendar/core/preact'
 import { ResourceApi } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
@@ -52,8 +53,8 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           'aria-expanded': (colSpec.isMain && props.hasChildren) ? props.isExpanded : undefined,
         }}
         className={joinClassNames(
-          'fcu-tight',
-          props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
+          classNames.tight,
+          props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
         )}
         style={{
           minWidth: 0,
@@ -73,7 +74,9 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
             ref={this.innerElRef}
             className={joinClassNames(
               generateClassName(colSpec.cellInnerClassNames, renderProps),
-              'fcu-rigid fcu-flex-row fcu-align-center',
+              classNames.rigid,
+              classNames.flexRow,
+              classNames.alignCenter,
             )}
           >
             {colSpec.isMain && (

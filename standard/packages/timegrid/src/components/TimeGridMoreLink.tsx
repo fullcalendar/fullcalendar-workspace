@@ -58,7 +58,7 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
             tag="div"
             className={joinArrayishClassNames(
               options.moreLinkInnerClassNames,
-              classNames.stickyT, // fcu-sticky-t
+              classNames.stickyT,
             )}
           />
         )}

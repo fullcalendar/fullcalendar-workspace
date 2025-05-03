@@ -1,4 +1,5 @@
 import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { ResourceColumnHeaderContentArg, ColHeaderRenderHooks } from '../../structs.js'
 import { ResourceIndent } from './ResourceIndent.js'
@@ -34,7 +35,13 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           role: 'columnheader',
           'aria-colspan': this.props.colSpan,
         }}
-        className='fcu-tight fcu-border-none fcu-flex-col fcu-justify-center fcu-liquid'
+        className={joinClassNames(
+          classNames.tight,
+          classNames.borderNone,
+          classNames.flexCol,
+          classNames.justifyCenter,
+          classNames.liquid,
+        )}
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"
         customGenerator={renderHooks.headerContent}
@@ -48,7 +55,9 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
             ref={this.innerElRef}
             className={joinClassNames(
               generateClassName(renderHooks.headerInnerClassNames, renderProps),
-              'fcu-rigid fcu-flex-row fcu-align-center',
+              classNames.rigid,
+              classNames.flexRow,
+              classNames.alignCenter,
             )}
           >
             {this.props.indent && (

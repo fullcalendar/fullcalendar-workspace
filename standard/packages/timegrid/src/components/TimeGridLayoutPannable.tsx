@@ -170,7 +170,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 borderX: props.borderX,
                 isSticky: stickyHeaderDates,
               }),
-              // see note in TimeGridLayout about why we don't do fcu-print-header
+              // see note in TimeGridLayout about why we don't do classNames.printHeader
               stickyHeaderDates && classNames.tableHeaderSticky,
             )}
           >
@@ -296,7 +296,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   ref={this.allDayScrollerRef}
                 >
                   <div
-                    className='fcu-flex-col'
+                    className={classNames.flexCol}
                     style={{ width: canvasWidth }}
                   >
                     <TimeGridAllDayLane
@@ -344,7 +344,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             aria-rowindex={firstBodyRowIndex + (options.allDaySlot ? 1 : 0)}
             className={joinClassNames(
               classNames.flexRow,
-              classNames.rel, // for Ruler.fcu-fill-start
+              classNames.rel, // for Ruler.fillStart
               verticalScrolling && classNames.liquid,
             )}
           >

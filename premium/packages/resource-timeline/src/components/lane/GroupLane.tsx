@@ -1,4 +1,5 @@
 import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { Group } from '@fullcalendar/resource/internal'
 import { GroupSpec, ResourceGroupLaneContentArg } from '../../structs.js'
@@ -49,10 +50,12 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
           'aria-expanded': props.expanded,
         }}
         className={joinClassNames(
-          'fcu-flex-row fcu-fill-x fcu-content-box',
+          classNames.flexRow,
+          classNames.fillX,
+          classNames.contentBox,
           props.borderBottom
-            ? 'fcu-border-only-b'
-            : 'fcu-border-none',
+            ? classNames.borderOnlyB
+            : classNames.borderNone,
         )}
         style={{
           top: props.top,
@@ -74,7 +77,8 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
             }}
             className={joinClassNames(
               generateClassName(groupSpec.laneInnerClassNames, renderProps),
-              'fcu-flex-col fcu-liquid fcu-flex-col',
+              classNames.flexCol,
+              classNames.liquid,
             )}
             elRef={this.innerElRef}
           />

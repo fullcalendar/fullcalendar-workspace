@@ -261,7 +261,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
           return (
             <div
-              // we would have used fcu-fill, but multi-page spanning breaks in Firefox
+              // we would have used classNames.fill, but multi-page spanning breaks in Firefox
               // we would have used height:100%, but multi-page spanning breaks in Safari
               className={joinClassNames(classNames.abs, classNames.flexCol)}
               key={forcedKey || instanceId}

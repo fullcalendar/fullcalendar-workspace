@@ -1,4 +1,5 @@
 import { BaseComponent } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { Group } from '@fullcalendar/resource/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { ResourceGroupSubrow } from './ResourceGroupSubrow.js'
@@ -39,7 +40,7 @@ export class ResourceGroupSubrows extends BaseComponent<ResourceGroupSubrowsProp
             ) : (
               <div
                 // TODO: make className DRY somehow?
-                className={stats.borderBottom ? 'fcu-border-only-b' : 'fcu-border-none'}
+                className={stats.borderBottom ? classNames.borderOnlyB : classNames.borderNone}
                 style={{
                   minWidth: 0,
                   width: colWidths[i],

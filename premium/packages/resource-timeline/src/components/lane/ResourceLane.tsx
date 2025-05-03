@@ -1,4 +1,5 @@
 import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinArrayishClassNames, generateClassName } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { Resource } from '@fullcalendar/resource/internal'
 import { TimelineDateProfile, TimelineFg, TimelineBg, TimelineLaneSlicer } from '@fullcalendar/timeline/internal'
@@ -81,8 +82,9 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         }}
         className={joinClassNames(
           props.className,
-          'fcu-flex-row fcu-content-box',
-          props.borderBottom ? 'fcu-border-only-b' : 'fcu-border-none',
+          classNames.flexRow,
+          classNames.contentBox,
+          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
         )}
         style={{
           top: props.top,
@@ -101,10 +103,11 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         {(InnerContent) => (
           <div
             role='gridcell'
-            className={
-               // fcu-rel is for fcu-fill-top
-              'fcu-liquid fcu-flex-col fcu-rel'
-            }
+            className={joinClassNames(
+              classNames.liquid,
+              classNames.flexCol,
+              classNames.rel, // for fillTop
+            )}
           >
             <TimelineBg
               tDateProfile={props.tDateProfile}
@@ -122,7 +125,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
             />
             <InnerContent // TODO: make fully filled
               tag="div"
-              className='fcu-flex-col fcu-fill-top'
+              className={joinClassNames(classNames.flexCol, classNames.fillTop)}
             />
             <div // TODO: track height
               className={joinArrayishClassNames(

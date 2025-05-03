@@ -1,4 +1,5 @@
 import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNames, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { ComponentChild, createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
 import { ColSpec, ResourceGroupHeaderContentArg } from '../../structs.js'
 
@@ -54,8 +55,8 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
         className={joinArrayishClassNames(
           options.resourceAreaRowClassNames,
           props.className,
-          'fcu-flex-row',
-          props.borderBottom ? 'fcu-border-only-b' : 'fcu-border-none',
+          classNames.flexRow,
+          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
         )}
         style={{
           top: props.top,
@@ -72,8 +73,9 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
             'aria-rowspan': props.rowSpan,
           }}
           className={joinClassNames(
-            'fcu-tight fcu-liquid',
-            props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
+            classNames.tight,
+            classNames.liquid,
+            props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           )}
           renderProps={renderProps}
           generatorName="resourceGroupHeaderContent"
@@ -88,7 +90,8 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
               tag="div"
               className={joinClassNames(
                 generateClassName(colSpec.cellInnerClassNames, renderProps),
-                'fcu-rigid fcu-sticky-t',
+                classNames.rigid,
+                classNames.stickyT,
               )}
               elRef={this.innerElRef}
             />

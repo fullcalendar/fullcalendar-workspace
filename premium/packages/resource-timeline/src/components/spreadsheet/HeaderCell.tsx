@@ -1,5 +1,6 @@
 import { createElement, createRef, Ref, Fragment } from '@fullcalendar/core/preact'
 import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNames, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { ColSpec, ResourceColumnHeaderContentArg } from '../../structs.js'
 import { ResourceIndent } from './ResourceIndent.js'
 
@@ -38,10 +39,12 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         attrs={{
           role: 'columnheader',
         }}
-        // fcu-rel for resizer abs positioning
         className={joinClassNames(
-          'fcu-tight fcu-flex-col fcu-justify-center fcu-rel',
-          props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
+          classNames.tight,
+          classNames.flexCol,
+          classNames.justifyCenter,
+          classNames.rel, // for resizer abs positioning
+          props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
         )}
         style={{
           minWidth: 0,
@@ -62,7 +65,9 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
               ref={this.innerElRef}
               className={joinArrayishClassNames(
                 generateClassName(colSpec.headerInnerClassNames, renderProps),
-                'fcu-rigid fcu-flex-row fcu-align-center',
+                classNames.rigid,
+                classNames.flexRow,
+                classNames.alignCenter,
               )}
             >
               {this.props.indent && (
@@ -74,7 +79,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
               <InnerContent tag="div" />
             </div>
             {props.resizer && (
-              <div className="fcu-col-resizer" ref={props.resizerElRef} />
+              <div className={classNames.colResizer} ref={props.resizerElRef} />
             )}
           </Fragment>
         )}

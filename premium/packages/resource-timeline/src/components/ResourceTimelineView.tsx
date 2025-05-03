@@ -8,6 +8,7 @@ import {
   NowTimer,
   watchWidth
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef, Fragment } from '@fullcalendar/core/preact'
 import {
   buildResourceHierarchy,
@@ -203,7 +204,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
         <ResourceExpander // for probing size
           isExpanded
           elRef={this.handleExpanderEl}
-          className='fcu-offscreen'
+          className={classNames.offscreen}
         />
       </Fragment>
     )

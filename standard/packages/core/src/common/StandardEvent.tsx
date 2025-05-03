@@ -11,6 +11,7 @@ import { EventInstance } from '../structs/event-instance.js'
 import { EventImpl } from '../api/EventImpl.js'
 import { ViewContext } from '../ViewContext.js'
 import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
+import classNames from '../internal-classnames.js'
 
 export interface StandardEventProps {
   elRef?: ElRef
@@ -114,7 +115,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
         className={joinClassNames(
           ...eventUi.classNames,
           props.className,
-          (eventRange.def.url || isDraggable) && 'fcu-cursor-pointer',
+          (eventRange.def.url || isDraggable) && classNames.cursorPointer,
           'fci-event',
           renderProps.isMirror && 'fci-event-mirror',
           renderProps.isDraggable && 'fci-event-draggable',
@@ -151,11 +152,13 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                   options.eventResizerClassNames,
                   options.eventResizerStartClassNames,
                   'fci-event-resizer fci-event-resizer-start', // these classnames required for dnd
-                  props.axis === 'x' ? 'fcu-cursor-resize-s' : 'fcu-cursor-resize-t'
+                  props.axis === 'x'
+                    ? classNames.cursorResizeS
+                    : classNames.cursorResizeT
                 )}
               >
                 {Boolean(renderProps.isSelected) && (
-                  <div className='fcu-hit' />
+                  <div className={classNames.hit} />
                 )}
               </div>
             )}
@@ -180,11 +183,13 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                   options.eventResizerClassNames,
                   options.eventResizerEndClassNames,
                   'fci-event-resizer fci-event-resizer-end', // these classnames required for dnd
-                  props.axis === 'x' ? 'fcu-cursor-resize-e' : 'fcu-cursor-resize-b'
+                  props.axis === 'x'
+                    ? classNames.cursorResizeE
+                    : classNames.cursorResizeB
                 )}
               >
                 {Boolean(renderProps.isSelected) && (
-                  <div className='fcu-hit' />
+                  <div className={classNames.hit} />
                 )}
               </div>
             )}

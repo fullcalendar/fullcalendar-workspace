@@ -1,4 +1,5 @@
-import { BaseComponent, RefMap } from "@fullcalendar/core/internal"
+import { BaseComponent, joinClassNames, RefMap } from "@fullcalendar/core/internal"
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
 import { createGroupId } from "@fullcalendar/resource/internal"
 import { ResourceGroupSubrow } from "./ResourceGroupSubrow.js"
@@ -48,14 +49,14 @@ export class BodySection extends BaseComponent<BodySectionProps> {
     TODO: this outer div can be discarded and parent should be canvas directly
     */
     return (
-      <div className='fcu-flex-row fcu-fill'>
+      <div className={joinClassNames(classNames.flexRow, classNames.fill)}>
 
         {/* group columns */}
         {props.flatGroupColLayouts.map((groupColLayouts, colIndex) => (
           <div
             key={colIndex}
             role='rowgroup'
-            className='fcu-rel'
+            className={classNames.rel}
             style={{
               minWidth: 0,
               width: colWidths[colIndex],
@@ -73,7 +74,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                   colSpec={group.spec}
                   rowSpan={groupCellLayout.rowSpan}
                   fieldValue={group.value}
-                  className='fcu-fill-x'
+                  className={classNames.fillX}
                   borderStart={Boolean(colIndex)}
                   borderBottom={isNotLast}
                   role='row'
@@ -94,7 +95,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
 
         <div
           role='rowgroup'
-          className='fcu-fill fcu-rel'
+          className={joinClassNames(classNames.fill, classNames.rel)}
           style={
             context.isRtl // TODO: util for this?
               ? { right: resourceX }
@@ -121,7 +122,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 top={rowTops.get(groupKey)}
                 height={rowHeights.get(groupKey)}
                 indentWidth={props.indentWidth}
-                className='fcu-fill-x'
+                className={classNames.fillX}
               />
             )
           })}
@@ -144,7 +145,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
                 colSpecs={props.colSpecs}
                 colWidths={colWidths}
                 innerHeightRef={rowInnerHeightRefMap.createRef(resource.id)}
-                className='fcu-fill-x'
+                className={classNames.fillX}
                 borderStart={Boolean(groupColCnt)}
                 borderBottom={isNotLast}
                 role='row'

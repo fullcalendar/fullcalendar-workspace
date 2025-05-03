@@ -128,7 +128,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
             <ViewContainer
               viewSpec={context.viewSpec}
               className={joinClassNames(
-                // HACK for Safari print-mode, where fcu-no-scrollbars won't take effect for
+                // HACK for Safari print-mode, where noScrollbars won't take effect for
                 // the below Scrollers if they have liquid flex height
                 !props.forPrint && classNames.flexCol,
                 props.className,
@@ -150,7 +150,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 <Scroller
                   horizontal
                   hideScrollbars
-                  className={classNames.flexRow} // fcu-flex-row
+                  className={classNames.flexRow}
                   ref={this.headerScrollerRef}
                 >
                   <div

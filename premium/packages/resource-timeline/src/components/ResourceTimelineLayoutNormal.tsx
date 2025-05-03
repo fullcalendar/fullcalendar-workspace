@@ -26,6 +26,7 @@ import {
   generateClassName,
   joinArrayishClassNames
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
 import {
   createEntityId,
@@ -307,7 +308,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         }}
         className={joinClassNames(
           props.className,
-          'fcu-flex-col',
+          classNames.flexCol,
         )}
         borderX={props.borderX}
         borderTop={props.borderTop}
@@ -316,12 +317,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         <ResizableTwoCol
           initialStartWidth={props.initialSpreadsheetWidth}
           resizedWidthRef={props.spreadsheetResizedWidthRef} // is a CssDim value for storage
-          className={verticalScrolling ? 'fcu-liquid' : ''}
+          className={verticalScrolling ? classNames.liquid : ''}
 
           /* spreadsheet
           --------------------------------------------------------------------------------- */
 
-          startClassName='fcu-flex-col'
+          startClassName={classNames.flexCol}
           startContent={
             <Fragment>
 
@@ -334,12 +335,15 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     borderX: props.borderX,
                     isSticky: stickyHeaderDates,
                   }),
-                  'fcu-flex-col',
-                  stickyHeaderDates && 'fcu-table-header-sticky',
+                  classNames.flexCol,
+                  stickyHeaderDates && classNames.tableHeaderSticky,
                 )}
               >
                 <div
-                  className='fcu-flex-col fcu-content-box'
+                  className={joinClassNames(
+                    classNames.flexCol,
+                    classNames.contentBox,
+                  )}
                   style={{
                     height: headerHeight,
                   }}
@@ -350,7 +354,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       aria-rowindex={1}
                       className={joinArrayishClassNames(
                         options.resourceAreaHeaderRowClassNames,
-                        'fcu-flex-row fcu-grow fcu-border-only-b',
+                        classNames.flexRow,
+                        classNames.grow,
+                        classNames.borderOnlyB,
                       )}
                     >
                       <SuperHeaderCell
@@ -365,11 +371,11 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   <Scroller
                     horizontal
                     hideScrollbars
-                    className='fcu-flex-col fcu-grow'
+                    className={joinClassNames(classNames.flexCol, classNames.grow)}
                     ref={this.spreadsheetHeaderScrollerRef}
                   >
                     <div
-                      className='fcu-flex-col fcu-grow'
+                      className={joinClassNames(classNames.flexCol, classNames.grow)}
                       style={{ minWidth: spreadsheetCanvasWidth }}
                     >
                       <HeaderRow
@@ -401,15 +407,20 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   generateClassName(options.viewBodyClassNames, {
                     borderX: props.borderX,
                   }),
-                  'fcu-flex-col fcu-rel', // fcu-rel needed for Ruler.fcu-fill-start
-                  verticalScrolling && 'fcu-liquid',
+                  classNames.flexCol,
+                  classNames.rel, // for Ruler.fillStart
+                  verticalScrolling && classNames.liquid,
                 )}
                 ref={this.spreadsheetBodyScrollerRef}
                 clientWidthRef={this.handleSpreadsheetClientWidth}
                 bottomScrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
               >
                 <div
-                  className='fcu-rel fcu-grow fcu-flex-col'
+                  className={joinClassNames(
+                    classNames.rel,
+                    classNames.grow,
+                    classNames.flexCol,
+                  )}
                   style={{
                     minWidth: spreadsheetCanvasWidth,
                     paddingTop: totalBodyHeight, // to push down filler div at end, and give height
@@ -458,7 +469,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           /* time-area (TODO: try to make this DRY-er with TimelineView???)
           --------------------------------------------------------------------------------- */
 
-          endClassName='fcu-flex-col'
+          endClassName={classNames.flexCol}
           endContent={
             <Fragment>
 
@@ -469,13 +480,16 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   borderX: props.borderX,
                   isSticky: stickyHeaderDates,
                 }),
-                stickyHeaderDates && 'fcu-table-header-sticky',
+                stickyHeaderDates && classNames.tableHeaderSticky,
               )}>
                 <Scroller
                   ref={this.timeHeaderScrollerRef}
                   horizontal
                   hideScrollbars
-                  className='fcu-flex-row fcu-content-box'
+                  className={joinClassNames(
+                    classNames.flexRow,
+                    classNames.contentBox,
+                  )}
                   style={{
                     height: headerHeight,
                   }}
@@ -493,8 +507,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   <div // the canvas
                     aria-hidden
                     className={joinClassNames( // TODO: DRY
-                      'fcu-flex-col fcu-rel', // origin for now-indicator
-                      timeCanvasWidth == null && 'fcu-liquid',
+                      classNames.flexCol,
+                      classNames.rel, // origin for now-indicator
+                      timeCanvasWidth == null && classNames.liquid,
                     )}
                     style={{ width: timeCanvasWidth }}
                   >
@@ -548,8 +563,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 horizontal
                 hideScrollbars={stickyFooterScrollbar /* FYI, this view is never print */}
                 className={joinClassNames(
-                  'fcu-flex-col fcu-rel', // fcu-rel for Ruler.fcu-fill-start
-                  verticalScrolling && 'fcu-liquid',
+                  classNames.flexCol,
+                  classNames.rel, // for Ruler.fillStart
+                  verticalScrolling && classNames.liquid,
                 )}
                 ref={this.timeBodyScrollerRef}
                 clientWidthRef={this.handleTimeClientWidth}
@@ -557,11 +573,15 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 bottomScrollbarWidthRef={this.handleTimeBottomScrollbarWidth}
               >
                 <div
-                  className='fcu-rel fcu-grow fcu-flex-col'
+                  className={joinClassNames(
+                    classNames.rel,
+                    classNames.grow,
+                    classNames.flexCol,
+                  )}
                   style={{ width: timeCanvasWidth }}
                   ref={this.handleBodyEl}
                 >
-                  <div className='fcu-fill'>
+                  <div className={classNames.fill}>
                     <TimelineSlats
                       dateProfile={dateProfile}
                       tDateProfile={tDateProfile}
@@ -598,7 +618,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   </div>
                   <div
                     role='rowgroup'
-                    className='fcu-rel'
+                    className={classNames.rel}
                     style={{ height: totalBodyHeight }}
                   >
                     {/* group rows */}
@@ -629,7 +649,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           {...splitProps[resource.id]}
                           key={resource.id}
                           role='row'
-                          className='fcu-fill-x'
+                          className={classNames.fillX}
                           resource={resource}
                           dateProfile={dateProfile}
                           tDateProfile={tDateProfile}

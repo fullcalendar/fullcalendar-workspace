@@ -1,4 +1,5 @@
 import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, joinClassNames, generateClassName, joinArrayishClassNames } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Fragment, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ResourceIndent } from './ResourceIndent.js'
@@ -51,8 +52,9 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
         className={joinArrayishClassNames(
           options.resourceAreaRowClassNames,
           props.className,
-          props.borderBottom ? 'fcu-border-only-b' : 'fcu-border-none',
-          'fcu-flex-row fcu-content-box',
+          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
+          classNames.flexRow,
+          classNames.contentBox,
         )}
         style={{
           top: props.top,
@@ -66,7 +68,10 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
             'aria-colspan': props.colSpan,
             'aria-expanded': props.isExpanded,
           }}
-          className='fcu-tight fcu-liquid'
+          className={joinClassNames(
+            classNames.tight,
+            classNames.liquid,
+          )}
           renderProps={renderProps}
           generatorName="resourceGroupHeaderContent"
           customGenerator={spec.labelContent}
@@ -80,7 +85,9 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
               ref={this.innerElRef}
               className={joinClassNames(
                 generateClassName(spec.labelInnerClassNames, renderProps),
-                "fcu-rigid fcu-flex-row fcu-align-center",
+                classNames.rigid,
+                classNames.flexRow,
+                classNames.alignCenter,
               )}
             >
               <ResourceIndent level={1} indentWidth={props.indentWidth}>
