@@ -264,24 +264,6 @@ export function computeIifeExternalPkgs(pkgBundleStruct: PkgBundleStruct): strin
     ))
 }
 
-export function splitPkgNames(
-  pkgNames: string[],
-  monorepoStruct: MonorepoStruct,
-): { ourPkgNames: string[], theirPkgNames: string[] } {
-  const ourPkgNames: string[] = []
-  const theirPkgNames: string[] = []
-
-  for (let pkgName of pkgNames) {
-    if (monorepoStruct.pkgNameToDir[pkgName]) {
-      ourPkgNames.push(pkgName)
-    } else {
-      theirPkgNames.push(pkgName)
-    }
-  }
-
-  return { ourPkgNames, theirPkgNames }
-}
-
 // External File Paths
 // -------------------------------------------------------------------------------------------------
 

@@ -36,7 +36,6 @@ import {
   entryStructsToContentMap,
   generateIifeContent,
   PkgBundleStruct,
-  splitPkgNames,
 } from './bundle-struct.js'
 import {
   externalizeExtensionsPlugin,
@@ -59,12 +58,11 @@ TODO: converge with buildCjsOptions and just have multiple outputs?
 */
 export function buildEsmOptions(
   pkgBundleStruct: PkgBundleStruct,
-  monorepoStruct: MonorepoStruct,
   sourcemap: boolean,
 ): RollupOptions {
   return {
     input: buildModuleInput(pkgBundleStruct),
-    plugins: buildModulePlugins(pkgBundleStruct, monorepoStruct, esmExtension, sourcemap),
+    plugins: buildModulePlugins(pkgBundleStruct, sourcemap),
     output: buildEsmOutputOptions(pkgBundleStruct, sourcemap),
     onwarn,
   }
@@ -72,12 +70,11 @@ export function buildEsmOptions(
 
 export function buildCjsOptions(
   pkgBundleStruct: PkgBundleStruct,
-  monorepoStruct: MonorepoStruct,
   sourcemap: boolean,
 ): RollupOptions {
   return {
     input: buildModuleInput(pkgBundleStruct),
-    plugins: buildModulePlugins(pkgBundleStruct, monorepoStruct, cjsExtension, sourcemap),
+    plugins: buildModulePlugins(pkgBundleStruct, sourcemap),
     output: buildCjsOutputOptions(pkgBundleStruct, sourcemap),
     onwarn,
   }
@@ -243,24 +240,14 @@ function buildManualChunks(
 
 function buildModulePlugins(
   pkgBundleStruct: PkgBundleStruct,
-  monorepoStruct: MonorepoStruct,
-  forceOurExtension: string,
   sourcemap: boolean, // BAD: used as a proxy for isDev!
 ): Plugin[] {
   const { pkgDir, entryStructMap } = pkgBundleStruct
-  const { ourPkgNames, theirPkgNames } = splitPkgNames(
-    computeExternalPkgs(pkgBundleStruct),
-    monorepoStruct,
-  )
 
   return [
     rerootAssetsPlugin(pkgDir),
     externalizePkgsPlugin({
-      pkgNames: theirPkgNames,
-    }),
-    externalizePkgsPlugin({
-      pkgNames: ourPkgNames,
-      forceExtension: forceOurExtension,
+      pkgNames: computeExternalPkgs(pkgBundleStruct),
     }),
     generatedContentPlugin(
       entryStructsToContentMap(entryStructMap),

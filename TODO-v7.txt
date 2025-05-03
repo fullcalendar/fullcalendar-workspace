@@ -140,6 +140,7 @@ should core be responsible for stickiness?
   more-link -- in timeline, core does it .... theme should do it if already does events
   resource-group-cell ... core does it
 TODO: add !important to all rules in util.css?... YES. Nothing is meant to be overridden
+workaround "dual-package hazard" ?
 
 ASAP THEME
 ----------

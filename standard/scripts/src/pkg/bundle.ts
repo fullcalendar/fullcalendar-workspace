@@ -106,8 +106,8 @@ async function buildRollupOptionObjs(
   const dts = !isDev && !isTests
 
   return [
-    ...(esm ? [buildEsmOptions(pkgBundleStruct, monorepoStruct, moduleSourcemap)] : []),
-    ...(cjs ? [buildCjsOptions(pkgBundleStruct, monorepoStruct, moduleSourcemap)] : []),
+    ...(esm ? [buildEsmOptions(pkgBundleStruct, moduleSourcemap)] : []),
+    ...(cjs ? [buildCjsOptions(pkgBundleStruct, moduleSourcemap)] : []),
     ...(iife ? await buildIifeOptions(pkgBundleStruct, monorepoStruct, iifeMinify, iifeSourcemap) : []),
     ...(dts ? [buildDtsOptions(pkgBundleStruct)] : []),
   ]

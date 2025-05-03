@@ -18,7 +18,7 @@ export default [
       exports: 'named',
     },
     plugins: [
-      externalizePkgsPlugin(ourPkgNames, '.cjs'),
+      externalizePkgsPlugin(ourPkgNames),
       externalizePkgsPlugin(otherPkgNames),
     ],
   },
@@ -77,20 +77,13 @@ function getDepNames() {
   return [ourPkgNames, otherPkgNames]
 }
 
-function externalizePkgsPlugin(pkgNames, forceExtension) {
+function externalizePkgsPlugin(pkgNames) {
   return {
     name: 'externalize-pkgs',
     resolveId(importId) {
       if (!isImportRelative(importId)) {
         for (const pkgName of pkgNames) {
           if (importId === pkgName || importId.startsWith(pkgName + '/')) {
-            if (forceExtension) {
-              if (importId === pkgName) {
-                importId += '/index' + forceExtension
-              } else {
-                importId += forceExtension
-              }
-            }
             return { id: importId, external: true }
           }
         }
