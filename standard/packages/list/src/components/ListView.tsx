@@ -23,6 +23,7 @@ import {
   ViewContainer,
   ViewProps
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import {
   ComponentChild,
   createElement,
@@ -57,7 +58,7 @@ export class ListView extends DateComponent<ViewProps> {
     return (
       <ViewContainer
         viewSpec={context.viewSpec}
-        className={joinClassNames(props.className, 'fcu-flex-col')}
+        className={joinClassNames(props.className, classNames.flexCol)}
         elRef={this.setRootEl}
         borderX={props.borderX}
         borderTop={props.borderTop}
@@ -66,8 +67,8 @@ export class ListView extends DateComponent<ViewProps> {
         <Scroller // TODO: don't need heavyweight component
           vertical={verticalScrolling}
           className={joinClassNames(
-            'fcu-flex-col',
-            verticalScrolling ? 'fcu-liquid' : ''
+            classNames.flexCol,
+            verticalScrolling ? classNames.liquid : ''
           )}
         >
           {this.renderSegList(eventSegs, dayDates)}

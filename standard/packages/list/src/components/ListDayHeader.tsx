@@ -1,5 +1,6 @@
 import { BaseComponent, ContentContainer, DateMarker, DateMeta, formatDayString, getStickyHeaderDates } from "@fullcalendar/core/internal";
 import { createElement, Fragment } from '@fullcalendar/core/preact'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { ListDayHeaderArg } from '../structs.js'
 import { ListDayHeaderInner } from "./ListDayHeaderInner.js";
 
@@ -24,7 +25,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
     return (
       <ContentContainer
         tag="div"
-        className={stickyHeaderDates ? 'fcu-sticky-t' : ''}
+        className={stickyHeaderDates ? classNames.stickyT : ''}
         attrs={{
           'data-date': formatDayString(dayDate),
           ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}),
