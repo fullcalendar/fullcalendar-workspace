@@ -22,6 +22,7 @@ import { Fragment, Ref, createElement } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
 import { DayGridHeader } from './DayGridHeader.js'
 import { RowConfig } from '../header-tier.js'
+import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridLayoutNormalProps {
   dateProfile: DateProfile
@@ -76,10 +77,10 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
               borderX: props.borderX,
               isSticky: stickyHeaderDates,
             }),
-            'fcu-print-header',
-            stickyHeaderDates && 'fcu-table-header-sticky',
+            classNames.printHeader,
+            stickyHeaderDates && classNames.tableHeaderSticky,
           )}>
-            <div className='fcu-flex-row'>
+            <div className={classNames.flexRow}>
               <DayGridHeader
                 headerTiers={props.headerTiers}
               />
@@ -104,8 +105,8 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             }),
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345
-            !props.forPrint && 'fcu-flex-col',
-            verticalScrollbars && 'fcu-liquid',
+            !props.forPrint && classNames.flexCol,
+            verticalScrollbars && classNames.liquid,
           )}
           ref={this.handleScroller}
           clientWidthRef={this.handleClientWidth}
@@ -116,7 +117,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             cellRows={props.cellRows}
             forPrint={props.forPrint}
             isHitComboAllowed={props.isHitComboAllowed}
-            className='fcu-grow'
+            className={classNames.grow}
             dayMaxEvents={props.forPrint ? undefined : options.dayMaxEvents}
             dayMaxEventRows={options.dayMaxEventRows}
 

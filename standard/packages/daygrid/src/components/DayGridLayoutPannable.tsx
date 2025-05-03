@@ -27,6 +27,7 @@ import { DayGridRows } from './DayGridRows.js'
 import { computeColWidth } from './util.js'
 import { DayGridHeader } from './DayGridHeader.js'
 import { RowConfig } from '../header-tier.js'
+import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridLayoutPannableProps {
   dateProfile: DateProfile
@@ -92,13 +93,13 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
               borderX: props.borderX,
               isSticky: stickyHeaderDates,
             }),
-            'fcu-print-header',
-            stickyHeaderDates && 'fcu-table-header-sticky',
+            classNames.printHeader,
+            stickyHeaderDates && classNames.tableHeaderSticky,
           )}>
             <Scroller
               horizontal
               hideScrollbars
-              className='fcu-flex-row'
+              className={classNames.flexRow}
               ref={this.headerScrollerRef}
             >
               <DayGridHeader
@@ -132,8 +133,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             }),
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345
-            !props.forPrint && 'fcu-flex-col',
-            verticalScrollbars && 'fcu-liquid',
+            !props.forPrint && classNames.flexCol,
+            verticalScrollbars && classNames.liquid,
           )}
           ref={this.bodyScrollerRef}
           clientWidthRef={this.handleClientWidth}
@@ -144,7 +145,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             cellRows={props.cellRows}
             forPrint={props.forPrint}
             isHitComboAllowed={props.isHitComboAllowed}
-            className='fcu-grow'
+            className={classNames.grow}
             dayMaxEvents={props.forPrint ? undefined : options.dayMaxEvents}
             dayMaxEventRows={options.dayMaxEventRows}
 

@@ -36,6 +36,7 @@ import { computeFgSegVerticals } from '../event-placement.js'
 import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-rendering.js'
 import { computeHorizontalsFromSeg } from './util.js'
 import { DayGridEventHarness } from './DayGridEventHarness.js'
+import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridRowProps {
   dateProfile: DateProfile
@@ -152,8 +153,9 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         className={joinArrayishClassNames(
           options.dayRowClassNames,
           props.className,
-          'fcu-flex-row fcu-rel',
-          props.forPrint && 'fcu-daygrid-row-print',
+          classNames.flexRow,
+          classNames.rel,
+          props.forPrint && classNames.dayGridRowPrint,
         )}
         style={{
           'flex-basis': props.basis,
@@ -293,7 +295,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       nodes.push(
         <DayGridEventHarness
           key={key}
-          className={seg.start ? 'fcu-fake-border-s' : ''}
+          className={seg.start ? classNames.fakeBorderS : ''}
           style={{
             visibility: isInvisible ? 'hidden' : '',
             top,
@@ -346,7 +348,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       nodes.push(
         <div
           key={key}
-          className="fcu-fill-y"
+          className={classNames.fillY}
           style={{
             visibility: isVisible ? '' : 'hidden',
             left,

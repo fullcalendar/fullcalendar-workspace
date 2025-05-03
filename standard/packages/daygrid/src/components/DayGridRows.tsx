@@ -18,6 +18,7 @@ import { createElement } from '@fullcalendar/core/preact'
 import { splitSegsByRow, splitInteractionByRow } from '../TableSeg.js'
 import { DayGridRow } from './DayGridRow.js'
 import { computeColFromPosition, computeRowFromPosition, getCellEl, getRowEl } from './util.js'
+import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridRowsProps {
   dateProfile: DateProfile
@@ -100,7 +101,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
           props.className,
           // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
           // https://stackoverflow.com/a/60256345
-          !props.forPrint && 'fcu-flex-col',
+          !props.forPrint && classNames.flexCol,
         )}
         style={{ width: props.width }}
         ref={this.handleRootEl}
@@ -119,9 +120,9 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
 
             // if not auto-height, distribute height of container somewhat evently to rows
             className={joinClassNames(
-              rowHeightsRedistribute && 'fcu-grow',
-              rowCnt > 1 && 'fcu-break-inside-avoid', // don't avoid breaks for single tall row
-              row < rowCnt - 1 ? 'fcu-border-only-b' : 'fcu-border-none',
+              rowHeightsRedistribute && classNames.grow,
+              rowCnt > 1 && classNames.breakInsideAvoid, // don't avoid breaks for single tall row
+              row < rowCnt - 1 ? classNames.borderOnlyB : classNames.borderNone,
             )}
 
             // content

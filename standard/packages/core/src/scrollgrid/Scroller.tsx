@@ -59,9 +59,9 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
         ref={this.handleEl}
         className={joinClassNames(
           props.className,
-          classNames.blueBgColor,
-          'fcu-no-padding fcu-rel', // fcu-rel for children fcu-fill-top/start
-          props.hideScrollbars && 'fcu-no-scrollbars',
+          classNames.noPadding,
+          classNames.rel, // for children fillTop/fillStart
+          props.hideScrollbars && classNames.noScrollbars,
           'fci-scroller',
         )}
         style={{
@@ -72,10 +72,10 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
       >
         {props.children}
         {Boolean(props.clientWidthRef) && (
-          <div ref={this.handleHRuler} className='fcu-fill-top' />
+          <div ref={this.handleHRuler} className={classNames.fillTop} />
         )}
         {Boolean(props.clientHeightRef || props.bottomScrollbarWidthRef) && (
-          <div ref={this.handleVRuler} className='fcu-fill-start' />
+          <div ref={this.handleVRuler} className={classNames.fillStart} />
         )}
       </div>
     )

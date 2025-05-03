@@ -33,11 +33,12 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
         }}
         className={joinClassNames(
           dataConfig.className,
-          classNames.redBgColor,
-          'fcu-tight fcu-flex-col fcu-align-center',
-          props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
-          !props.isSticky && 'fcu-crop',
-          props.colWidth == null && 'fcu-liquid',
+          classNames.tight,
+          classNames.flexCol,
+          classNames.alignCenter,
+          props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
+          !props.isSticky && classNames.crop,
+          props.colWidth == null && classNames.liquid,
         )}
         style={{
           width: props.colWidth != null
@@ -62,8 +63,9 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
             attrs={dataConfig.innerAttrs}
             className={joinClassNames(
               generateClassName(renderConfig.innerClassNameGenerator, dataConfig.renderProps),
-              'fcu-rigid fcu-flex-col',
-              props.isSticky && 'fcu-sticky-s',
+              classNames.rigid,
+              classNames.flexCol,
+              props.isSticky && classNames.stickyS,
             )}
             elRef={this.handleInnerEl}
           />

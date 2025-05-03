@@ -25,6 +25,7 @@ import {
   generateClassName,
   joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import {
   Ref,
   ComponentChildren,
@@ -94,9 +95,9 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     const dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange)
 
     const baseClassName = joinClassNames(
-      props.borderStart ? 'fcu-border-only-s' : 'fcu-border-none',
-      props.width != null ? '' : 'fcu-liquid',
-      'fcu-flex-col',
+      props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
+      props.width != null ? '' : classNames.liquid,
+      classNames.flexCol,
     )
 
     const renderProps = this.refineRenderProps({
@@ -177,11 +178,11 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             )}
             <div
               className={joinClassNames(
-                'fcu-daygrid-day-body',
+                classNames.dayGridDayBody,
                 // TODO: use dayCellBottomClassName for this (for thick bottom padding)
                 // and introduce a new setting (allDaySlotMinHeight)
-                props.isTall && 'fcu-daygrid-day-body-tall',
-                props.fgLiquidHeight ? 'fcu-liquid' : 'fcu-grow',
+                props.isTall && classNames.dayGridDayBodyTall,
+                props.fgLiquidHeight ? classNames.liquid : classNames.grow,
               )}
               ref={this.handleBodyEl}
             >

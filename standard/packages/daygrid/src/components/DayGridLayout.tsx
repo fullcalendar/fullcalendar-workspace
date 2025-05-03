@@ -19,6 +19,7 @@ import { DayGridLayoutNormal } from './DayGridLayoutNormal.js'
 import { DayGridLayoutPannable } from './DayGridLayoutPannable.js'
 import { computeTopFromDate } from './util.js'
 import { RowConfig } from '../header-tier.js'
+import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridLayoutProps {
   labelId: string | undefined
@@ -78,7 +79,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
           'aria-labelledby': props.labelId,
           'aria-label': props.labelStr,
         }}
-        className={joinClassNames(props.className, 'fcu-print-root')}
+        className={joinClassNames(props.className, classNames.printRoot)}
         borderX={props.borderX}
         borderTop={props.borderTop}
         borderBottom={props.borderBottom}

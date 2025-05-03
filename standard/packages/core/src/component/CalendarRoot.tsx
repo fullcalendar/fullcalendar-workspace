@@ -6,6 +6,7 @@ import { CssDimValue } from '../scrollgrid/util.js'
 import { updateSizeSync } from '../component-util/resize-observer.js'
 import { joinArrayishClassNames } from '../util/html.js'
 import { generateClassName } from '../content-inject/ContentContainer.js'
+import classNames from '../internal-classnames.js'
 
 export interface CalendarRootProps {
   options: CalendarOptions
@@ -38,10 +39,16 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
       generateClassName(options.directionClassNames, options.direction),
       generateClassName(options.mediaTypeClassNames, forPrint ? 'print' : 'screen'),
       generateClassName(options.colorSchemeClassNames, isDark ? 'dark' : 'light'),
+      //
+      // OLD:
       'fcu-border-box-root fcu-flex-col',
       `fcu-${options.direction}-root`,
       `fcu-calendar-${forPrint ? 'print' : 'screen'}-root`, // NOTE: already a fcu-print-root!
       'fci',
+      //
+      // NEW:
+      options.direction === 'ltr' ? classNames.ltrRoot : classNames.rtlRoot,
+      forPrint ? classNames.calendarPrintRoot : classNames.calendarScreenRoot,
     )
 
     return props.children(className, options.height, forPrint)

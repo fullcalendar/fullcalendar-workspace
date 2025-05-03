@@ -2,6 +2,7 @@ import { BaseComponent, joinClassNames } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { DayGridHeaderRow } from './DayGridHeaderRow.js'
 import { RowConfig } from '../header-tier.js'
+import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderProps {
   headerTiers: RowConfig<{ text: string, isDisabled: boolean }>[]
@@ -23,8 +24,8 @@ export class DayGridHeader extends BaseComponent<DayGridHeaderProps> {
         role='rowgroup'
         className={joinClassNames(
           props.className,
-          'fcu-flex-col',
-          props.width == null && 'fcu-liquid',
+          classNames.flexCol, // replaces 'fcu-flex-col'
+          props.width == null && classNames.liquid, // replaces 'fcu-liquid'
         )}
         style={{
           width: props.width

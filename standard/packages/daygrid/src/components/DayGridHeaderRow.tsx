@@ -2,6 +2,7 @@ import { afterSize, BaseComponent, joinArrayishClassNames, RefMap, setRef } from
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { RowConfig } from '../header-tier.js'
 import { DayGridHeaderCell } from './DayGridHeaderCell.js'
+import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProps> {
   isSticky?: boolean
@@ -34,8 +35,9 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
         className={joinArrayishClassNames(
           options.dayHeaderRowClassNames,
           props.className,
-          'fcu-flex-row fcu-content-box',
-          props.borderBottom ? 'fcu-border-only-b' : 'fcu-border-none',
+          classNames.flexRow,
+          classNames.contentBox,
+          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
         )}
         style={{ height: props.height }}
       >
