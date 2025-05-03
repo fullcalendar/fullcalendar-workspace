@@ -391,7 +391,7 @@ function cssPlugin(options?: { inject?: CssInjector | boolean }): Plugin {
       ctx: {}, // arguments given to config file
     },
     modules: {
-      generateScopedName: 'fc-[hash:base64:5]',
+      generateScopedName: 'fc-[local]__[hash:base64:5]',
     },
     inject: typeof inject === 'object' ?
       (cssVarName: string) => {
