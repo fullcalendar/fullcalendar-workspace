@@ -36,11 +36,15 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.ICalendar"
+      },
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.ICalendar"
       }
     },
-    "iifeGlobals": {
-      ".": "FullCalendar.ICalendar",
+    "dependencyGlobalVars": {
       "ical.js": "ICAL"
     }
   },

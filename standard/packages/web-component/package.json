@@ -34,12 +34,12 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true
       },
-      "./global": {}
-    },
-    "iifeGlobals": {
-      ".": ""
+      "./global": {
+        "module": true,
+        "iife": true
+      }
     }
   },
   "sideEffects": true,

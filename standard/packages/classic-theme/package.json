@@ -39,11 +39,13 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.ClassicTheme"
+      },
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.ClassicTheme"
       }
-    },
-    "iifeGlobals": {
-      ".": "FullCalendar.ClassicTheme"
     }
   },
   "publishConfig": {

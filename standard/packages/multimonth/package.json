@@ -36,11 +36,13 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.MultiMonth"
+      },
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.MultiMonth"
       }
-    },
-    "iifeGlobals": {
-      ".": "FullCalendar.MultiMonth"
     }
   },
   "publishConfig": {

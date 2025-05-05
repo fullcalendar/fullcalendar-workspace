@@ -32,16 +32,20 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "module": true
+        "module": true,
+        "globalVar": "FullCalendar"
       },
       "./preact": {
-        "module": true
+        "module": true,
+        "globalVar": "FullCalendar.Preact"
       },
       "./internal": {
-        "module": true
+        "module": true,
+        "globalVar": "FullCalendar.Internal"
       },
       "./internal-classnames": {
-        "module": true
+        "module": true,
+        "globalVar": "FullCalendar.InternalClassNames"
       },
       "./locales-all": {
         "generator": "./scripts/generate-locales-all.js",
@@ -51,7 +55,8 @@
         "module": true
       },
       "./global": {
-        "iife": true
+        "iife": true,
+        "globalVar": "FullCalendar"
       },
       "./global/locales-all": {
         "iife": true
@@ -61,12 +66,7 @@
         "iife": true
       }
     },
-    "iifeGlobals": {
-      ".": "FullCalendar",
-      "./global": "FullCalendar",
-      "./preact": "FullCalendar.Preact",
-      "./internal": "FullCalendar.Internal",
-      "./internal-classnames": "FullCalendar.InternalClassNames",
+    "dependencyGlobalVars": {
       "preact": "",
       "preact/compat": ""
     }

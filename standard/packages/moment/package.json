@@ -35,11 +35,15 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.Moment"
+      },
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.Moment"
       }
     },
-    "iifeGlobals": {
-      ".": "FullCalendar.Moment",
+    "dependencyGlobalVars": {
       "moment": "moment"
     }
   },

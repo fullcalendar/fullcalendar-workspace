@@ -33,13 +33,17 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.List"
       },
-      "./internal": {}
-    },
-    "iifeGlobals": {
-      ".": "FullCalendar.List",
-      "./internal": "FullCalendar.List.Internal"
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.List"
+      },
+      "./internal": {
+        "module": true,
+        "globalVar": "FullCalendar.List.Internal"
+      }
     }
   },
   "publishConfig": {

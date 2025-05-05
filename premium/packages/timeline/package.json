@@ -38,13 +38,17 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.Timeline"
       },
-      "./internal": {}
-    },
-    "iifeGlobals": {
-      ".": "FullCalendar.Timeline",
-      "./internal": "FullCalendar.Timeline.Internal"
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.Timeline"
+      },
+      "./internal": {
+        "module": true,
+        "globalVar": "FullCalendar.Timeline.Internal"
+      }
     }
   },
   "publishConfig": {

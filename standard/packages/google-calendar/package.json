@@ -33,11 +33,13 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.GoogleCalendar"
+      },
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.GoogleCalendar"
       }
-    },
-    "iifeGlobals": {
-      ".": "FullCalendar.GoogleCalendar"
     }
   },
   "publishConfig": {

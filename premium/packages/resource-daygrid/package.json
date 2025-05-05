@@ -40,13 +40,17 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.ResourceDayGrid"
       },
-      "./internal": {}
-    },
-    "iifeGlobals": {
-      ".": "FullCalendar.ResourceDayGrid",
-      "./internal": "FullCalendar.ResourceDayGrid.Internal"
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.ResourceDayGrid"
+      },
+      "./internal": {
+        "module": true,
+        "globalVar": "FullCalendar.ResourceDayGrid.Internal"
+      }
     }
   },
   "publishConfig": {

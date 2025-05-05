@@ -35,11 +35,15 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.RRule"
+      },
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.RRule"
       }
     },
-    "iifeGlobals": {
-      ".": "FullCalendar.RRule",
+    "dependencyGlobalVars": {
       "rrule": "rrule"
     }
   },

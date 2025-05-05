@@ -32,13 +32,17 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.ScrollGrid"
       },
-      "./internal": {}
-    },
-    "iifeGlobals": {
-      ".": "FullCalendar.ScrollGrid",
-      "./internal": "FullCalendar.ScrollGrid.Internal"
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.ScrollGrid"
+      },
+      "./internal": {
+        "module": true,
+        "globalVar": "FullCalendar.ScrollGrid.Internal"
+      }
     }
   },
   "publishConfig": {

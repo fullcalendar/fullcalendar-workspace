@@ -42,13 +42,17 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.ResourceTimeGrid"
       },
-      "./internal": {}
-    },
-    "iifeGlobals": {
-      ".": "FullCalendar.ResourceTimeGrid",
-      "./internal": "FullCalendar.ResourceTimeGrid.Internal"
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.ResourceTimeGrid"
+      },
+      "./internal": {
+        "module": true,
+        "globalVar": "FullCalendar.ResourceTimeGrid.Internal"
+      }
     }
   },
   "publishConfig": {

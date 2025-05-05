@@ -36,11 +36,13 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.Adaptive"
+      },
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.Adaptive"
       }
-    },
-    "iifeGlobals": {
-      ".": "FullCalendar.Adaptive"
     }
   },
   "publishConfig": {

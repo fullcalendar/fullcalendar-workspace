@@ -37,13 +37,17 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.TimeGrid"
       },
-      "./internal": {}
-    },
-    "iifeGlobals": {
-      ".": "FullCalendar.TimeGrid",
-      "./internal": "FullCalendar.TimeGrid.Internal"
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.TimeGrid"
+      },
+      "./internal": {
+        "module": true,
+        "globalVar": "FullCalendar.TimeGrid.Internal"
+      }
     }
   },
   "publishConfig": {

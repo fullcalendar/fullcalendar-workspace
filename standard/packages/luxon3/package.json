@@ -38,11 +38,15 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.Luxon3"
+      },
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.Luxon3"
       }
     },
-    "iifeGlobals": {
-      ".": "FullCalendar.Luxon3",
+    "dependencyGlobalVars": {
       "luxon": "luxon"
     }
   },

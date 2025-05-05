@@ -52,11 +52,11 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true,
-        "iifeGenerator": "./scripts/generate-index-iife.js"
+        "generator": "./scripts/generate-index.js",
+        "iife": true
       }
     },
-    "iifeGlobals": {
+    "dependencyGlobalVars": {
       "*": ""
     }
   },

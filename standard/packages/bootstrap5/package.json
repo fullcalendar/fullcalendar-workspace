@@ -38,11 +38,13 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.Bootstrap5"
+      },
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.Bootstrap5"
       }
-    },
-    "iifeGlobals": {
-      ".": "FullCalendar.Bootstrap5"
     }
   },
   "publishConfig": {

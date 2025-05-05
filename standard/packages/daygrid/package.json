@@ -34,13 +34,17 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.DayGrid"
       },
-      "./internal": {}
-    },
-    "iifeGlobals": {
-      ".": "FullCalendar.DayGrid",
-      "./internal": "FullCalendar.DayGrid.Internal"
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.DayGrid"
+      },
+      "./internal": {
+        "module": true,
+        "globalVar": "FullCalendar.DayGrid.Internal"
+      }
     }
   },
   "publishConfig": {

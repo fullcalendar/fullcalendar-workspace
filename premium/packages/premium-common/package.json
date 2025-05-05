@@ -29,11 +29,13 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true,
+        "globalVar": "FullCalendar.PremiumCommon"
+      },
+      "./global": {
+        "iife": true,
+        "globalVar": "FullCalendar.PremiumCommon"
       }
-    },
-    "iifeGlobals": {
-      ".": "FullCalendar.PremiumCommon"
     }
   },
   "publishConfig": {
