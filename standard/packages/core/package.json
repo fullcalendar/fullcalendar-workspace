@@ -32,22 +32,38 @@
   "buildConfig": {
     "exports": {
       ".": {
-        "iife": true
+        "module": true
       },
-      "./preact": {},
-      "./internal": {},
-      "./internal-classnames": {},
+      "./preact": {
+        "module": true
+      },
+      "./internal": {
+        "module": true
+      },
+      "./internal-classnames": {
+        "module": true
+      },
       "./locales-all": {
-        "iife": true,
-        "generator": "./scripts/generate-locales-all.js"
+        "generator": "./scripts/generate-locales-all.js",
+        "module": true
       },
       "./locales/*": {
-        "iife": true,
-        "iifeGenerator": "./scripts/generate-locale-iife.js"
+        "module": true
+      },
+      "./global": {
+        "iife": true
+      },
+      "./global/locales-all": {
+        "iife": true
+      },
+      "./global/locales/*": {
+        "generator": "./scripts/generate-global-locale.js",
+        "iife": true
       }
     },
     "iifeGlobals": {
       ".": "FullCalendar",
+      "./global": "FullCalendar",
       "./preact": "FullCalendar.Preact",
       "./internal": "FullCalendar.Internal",
       "./internal-classnames": "FullCalendar.InternalClassNames",

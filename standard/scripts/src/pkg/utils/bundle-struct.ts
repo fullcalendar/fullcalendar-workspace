@@ -3,7 +3,7 @@ import { globby } from 'globby'
 import { MonorepoStruct, computeLocalDepDirs } from '../../utils/monorepo-struct.js'
 import { filterProps } from '../../utils/lang.js'
 import { pkgLog } from '../../utils/log.js'
-import { srcExtensions, transpiledSubdir, transpiledExtension, srcIifeSubextension } from './config.js'
+import { srcExtensions, transpiledSubdir, transpiledExtension } from './config.js'
 
 export interface PkgBundleStruct {
   pkgDir: string,
@@ -16,7 +16,7 @@ export interface PkgBundleStruct {
 
 export interface EntryConfig {
   generator?: string
-  iifeGenerator?: string
+  module?: boolean
   iife?: boolean
 }
 
@@ -131,7 +131,7 @@ async function generateEntryStructMap(
 
   if (typeof generatorRes === 'string') {
     if (entryGlob.includes('*')) {
-      throw new Error('Generator string output can\'t have blob entrypoint name')
+      throw new Error('Generator string output can\'t have glob entrypoint name')
     }
 
     const entrySrcBase = joinPaths(transpiledDir, entryGlob)
@@ -145,8 +145,8 @@ async function generateEntryStructMap(
       content: generatorRes,
     }
   } else if (typeof generatorRes === 'object') {
-    if (entryGlob.includes('*')) {
-      throw new Error('Generator object output must have blob entrypoint name')
+    if (!entryGlob.includes('*')) {
+      throw new Error('Generator object output must have glob entrypoint name')
     }
 
     for (const key in generatorRes) {
@@ -183,55 +183,6 @@ export function entryStructsToContentMap(
 
     if (typeof entryStruct.content === 'string') {
       contentMap[entryStruct.entrySrcPath] = entryStruct.content
-    }
-  }
-
-  return contentMap
-}
-
-export async function generateIifeContent(
-  pkgBundleStruct: PkgBundleStruct,
-): Promise<{ [path: string]: string }> {
-  const { pkgDir, entryConfigMap, entryStructMap } = pkgBundleStruct
-  const contentMap: { [path: string]: string } = {}
-
-  for (const entryAlias in entryStructMap) {
-    const entryStruct = entryStructMap[entryAlias]
-    const entryConfig = entryConfigMap[entryStruct.entryGlob]
-    const { iifeGenerator } = entryConfig
-
-    if (iifeGenerator) {
-      const iifeGeneratorPath = joinPaths(pkgDir, iifeGenerator)
-      const iifeGeneratorExports = await import(iifeGeneratorPath)
-      const iifeGeneratorFunc: IifeGeneratorFunc = iifeGeneratorExports.default
-
-      if (typeof iifeGeneratorFunc !== 'function') {
-        throw new Error('iifeGenerator must have a default function export')
-      }
-
-      const iifeGeneratorConfig = {
-        pkgDir,
-        entryAlias,
-        log: pkgLog.bind(undefined, pkgBundleStruct.pkgJson.name),
-      }
-      const iifeGeneratorRes = await iifeGeneratorFunc(iifeGeneratorConfig)
-
-      if (typeof iifeGeneratorRes !== 'string') {
-        throw new Error('iifeGenerator must return a string')
-      }
-
-      const transpiledDir = joinPaths(pkgDir, transpiledSubdir)
-      const transpiledPath = joinPaths(transpiledDir, entryAlias) +
-        srcIifeSubextension + transpiledExtension
-
-      contentMap[transpiledPath] = iifeGeneratorRes
-
-      pkgBundleStruct.miscWatchPaths.push( // HACK: modify passed-in struct
-        iifeGeneratorPath,
-        ...(iifeGeneratorExports.getWatchPaths ?
-          iifeGeneratorExports.getWatchPaths(iifeGeneratorConfig) :
-          []),
-      )
     }
   }
 

@@ -3,7 +3,7 @@ import { mkdir } from 'fs/promises'
 import { analyzePkg } from '../utils/pkg-analysis.js'
 import { readPkgJson, writePkgJson } from '../utils/pkg-json.js'
 import { ScriptContext } from '../utils/script-runner.js'
-import { cjsExtension, esmExtension, iifeSubextension } from './utils/config.js'
+import { cjsExtension, esmExtension, iifeExtension } from './utils/config.js'
 
 const cdnFields = [
   'unpkg',
@@ -34,7 +34,7 @@ export async function writeDistPkgJson(
 
   const pkgAnalysis = analyzePkg(pkgDir)
   const basePkgJson = await readPkgJson(pkgAnalysis.metaRootDir)
-  const typesRoot = isDev ? './.tsout' : '.' // TODO: make config var for .tsout?
+  const typesRoot = isDev ? './.tsout' : './esm' // TODO: make config var for .tsout?
 
   const entryConfigMap = buildConfig.exports
   const exportsMap: any = {
@@ -42,12 +42,16 @@ export async function writeDistPkgJson(
   }
 
   for (const entryName in entryConfigMap) {
-    const entrySubpath = entryName === '.' ? './index' : entryName
+    const entryConfig = entryConfigMap[entryName]
 
-    exportsMap[entryName] = {
-      types: entrySubpath.replace(/^\./, typesRoot) + '.d.ts', // tsc likes this first
-      require: entrySubpath + cjsExtension,
-      import: entrySubpath + esmExtension,
+    if (entryConfig.module) {
+      const entrySubpath = entryName === '.' ? './index' : entryName
+
+      exportsMap[entryName] = {
+        types: entrySubpath.replace(/^\./, typesRoot) + '.d.ts', // tsc likes this first
+        import: entrySubpath.replace(/^\./, './esm') + esmExtension,
+        require: entrySubpath.replace(/^\./, './cjs') + cjsExtension,
+      }
     }
   }
 
@@ -57,11 +61,11 @@ export async function writeDistPkgJson(
     ...pkgJson, // overrides base
     keywords: (basePkgJson.keywords || []).concat(pkgJson.keywords || []),
     types: `${typesRoot}/index.d.ts`,
-    main: './index' + cjsExtension,
-    module: './index' + esmExtension,
+    module: './esm/index' + esmExtension,
+    main: './cjs/index' + cjsExtension,
     ...cdnFields.reduce(
       (props, cdnField) => Object.assign(props, {
-        [cdnField]: './index' + iifeSubextension + '.min.js',
+        [cdnField]: './global.min' + iifeExtension,
       }),
       {},
     ),

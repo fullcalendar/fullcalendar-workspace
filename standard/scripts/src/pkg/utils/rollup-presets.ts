@@ -21,9 +21,8 @@ import {
   transpiledSubdir,
   cjsExtension,
   esmExtension,
-  iifeSubextension,
+  iifeExtension,
   assetExtensions,
-  srcIifeSubextension,
   manualChunkEntryAliases,
 } from './config.js'
 import {
@@ -34,7 +33,6 @@ import {
   computeOwnIifeExternalPaths,
   EntryStruct,
   entryStructsToContentMap,
-  generateIifeContent,
   PkgBundleStruct,
 } from './bundle-struct.js'
 import {
@@ -88,7 +86,6 @@ export async function buildIifeOptions(
 ): Promise<RollupOptions[]> {
   const { entryConfigMap, entryStructMap } = pkgBundleStruct
   const banner = await buildBanner(pkgBundleStruct)
-  const iifeContentMap = await generateIifeContent(pkgBundleStruct)
   const optionsObjs: RollupOptions[] = []
 
   for (let entryAlias in entryStructMap) {
@@ -98,7 +95,7 @@ export async function buildIifeOptions(
     if (entryConfig.iife) {
       optionsObjs.push({
         input: buildIifeInput(entryStruct),
-        plugins: buildIifePlugins(entryStruct, pkgBundleStruct, iifeContentMap, sourcemap, minify),
+        plugins: buildIifePlugins(entryStruct, pkgBundleStruct, sourcemap, minify),
         output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, monorepoStruct, banner, sourcemap),
         onwarn,
       })
@@ -123,19 +120,39 @@ export function buildDtsOptions(pkgBundleStruct: PkgBundleStruct): RollupOptions
 type InputMap = { [entryAlias: string]: string }
 
 function buildModuleInput(pkgBundleStruct: PkgBundleStruct): InputMap {
-  return mapProps(pkgBundleStruct.entryStructMap, (entryStruct: EntryStruct) => {
-    return entryStruct.entrySrcPath
-  })
+  const { entryConfigMap, entryStructMap } = pkgBundleStruct
+  let inputMap: InputMap = {}
+
+  for (let entryAlias in entryStructMap) {
+    const entryStruct = entryStructMap[entryAlias]
+    const entryConfig = entryConfigMap[entryStruct.entryGlob]
+
+    if (entryConfig.module) {
+      inputMap[entryAlias] = entryStruct.entrySrcPath
+    }
+  }
+
+  return inputMap
 }
 
 function buildIifeInput(entryStruct: EntryStruct): string {
-  return entryStruct.entrySrcBase + srcIifeSubextension + transpiledExtension
+  return entryStruct.entrySrcBase + transpiledExtension
 }
 
 function buildDtsInput(pkgBundleStruct: PkgBundleStruct): InputMap {
-  return mapProps(pkgBundleStruct.entryStructMap, (entryStruct: EntryStruct) => {
-    return entryStruct.entrySrcBase + '.d.ts'
-  })
+  const { entryConfigMap, entryStructMap } = pkgBundleStruct
+  let inputMap: InputMap = {}
+
+  for (let entryAlias in entryStructMap) {
+    const entryStruct = entryStructMap[entryAlias]
+    const entryConfig = entryConfigMap[entryStruct.entryGlob]
+
+    if (entryConfig.module) {
+      inputMap[entryAlias] = entryStruct.entrySrcBase + '.d.ts'
+    }
+  }
+
+  return inputMap
 }
 
 // Output
@@ -148,8 +165,8 @@ function buildEsmOutputOptions(
   return {
     format: 'esm',
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
-    entryFileNames: '[name]' + esmExtension,
-    chunkFileNames: '[name]' + esmExtension,
+    entryFileNames: 'esm/[name]' + esmExtension,
+    chunkFileNames: 'esm/[name]' + esmExtension,
     manualChunks: buildManualChunks(pkgBundleStruct, transpiledExtension),
     sourcemap,
   }
@@ -163,8 +180,8 @@ function buildCjsOutputOptions(
     format: 'cjs',
     exports: 'named',
     dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
-    entryFileNames: '[name]' + cjsExtension,
-    chunkFileNames: '[name]' + cjsExtension,
+    entryFileNames: 'cjs/[name]' + cjsExtension,
+    chunkFileNames: 'cjs/[name]' + cjsExtension,
     manualChunks: buildManualChunks(pkgBundleStruct, transpiledExtension),
     sourcemap,
   }
@@ -184,7 +201,7 @@ function buildIifeOutputOptions(
   return {
     format: 'iife',
     banner,
-    file: joinPaths(pkgDir, 'dist', entryAlias) + iifeSubextension + '.js',
+    file: joinPaths(pkgDir, 'dist', entryAlias) + iifeExtension,
     globals: computeIifeGlobals(pkgBundleStruct, monorepoStruct),
     ...(
       globalName
@@ -200,7 +217,7 @@ function buildIifeOutputOptions(
 function buildDtsOutputOptions(pkgBundleStruct: PkgBundleStruct): OutputOptions {
   return {
     format: 'esm',
-    dir: joinPaths(pkgBundleStruct.pkgDir, 'dist'),
+    dir: joinPaths(pkgBundleStruct.pkgDir, 'dist/esm'),
     entryFileNames: '[name].d.ts',
     chunkFileNames: '[name].d.ts',
     manualChunks: buildManualChunks(pkgBundleStruct, '.d.ts'),
@@ -263,7 +280,6 @@ TODO: inefficient to repeatedly generate all this?
 function buildIifePlugins(
   currentEntryStruct: EntryStruct,
   pkgBundleStruct: PkgBundleStruct,
-  iifeContentMap: { [path: string]: string },
   sourcemap: boolean, // BAD: used as a proxy for isDev
   minify: boolean,
 ): Plugin[] {
@@ -277,10 +293,7 @@ function buildIifePlugins(
     externalizePathsPlugin({
       paths: computeOwnIifeExternalPaths(currentEntryStruct, pkgBundleStruct),
     }),
-    generatedContentPlugin({
-      ...entryStructsToContentMap(entryStructMap),
-      ...iifeContentMap,
-    }),
+    generatedContentPlugin(entryStructsToContentMap(entryStructMap)),
     simpleDotAssignment(),
     ...buildJsPlugins(pkgBundleStruct, sourcemap), // isDev=sourcemap
     ...(sourcemap ? [sourcemapsPlugin()] : []),
