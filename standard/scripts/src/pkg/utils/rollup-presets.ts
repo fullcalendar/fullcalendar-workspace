@@ -28,12 +28,13 @@ import {
 import {
   computeExternalPkgs,
   computeIifeExternalPkgs,
-  computeIifeGlobals,
+  computeGlobals,
   computeOwnExternalPaths,
   computeOwnIifeExternalPaths,
   EntryStruct,
   entryStructsToContentMap,
   PkgBundleStruct,
+  GlobalVarMap,
 } from './bundle-struct.js'
 import {
   externalizeExtensionsPlugin,
@@ -85,6 +86,7 @@ export async function buildIifeOptions(
   sourcemap: boolean,
 ): Promise<RollupOptions[]> {
   const { entryConfigMap, entryStructMap } = pkgBundleStruct
+  const globalVarMap = computeGlobals(pkgBundleStruct, monorepoStruct)
   const banner = await buildBanner(pkgBundleStruct)
   const optionsObjs: RollupOptions[] = []
 
@@ -96,7 +98,7 @@ export async function buildIifeOptions(
       optionsObjs.push({
         input: buildIifeInput(entryStruct),
         plugins: buildIifePlugins(entryStruct, pkgBundleStruct, sourcemap, minify),
-        output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, monorepoStruct, banner, sourcemap),
+        output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, globalVarMap, banner, sourcemap),
         onwarn,
       })
     }
@@ -191,21 +193,21 @@ function buildIifeOutputOptions(
   entryStruct: EntryStruct,
   entryAlias: string,
   pkgBundleStruct: PkgBundleStruct,
-  monorepoStruct: MonorepoStruct,
+  globalVarMap: GlobalVarMap,
   banner: string,
   sourcemap: boolean,
 ): OutputOptions {
-  const { pkgDir, iifeGlobalsMap } = pkgBundleStruct
-  const globalName = iifeGlobalsMap[entryStruct.entryGlob]
+  const { pkgDir, entryConfigMap } = pkgBundleStruct
+  const globalVar = entryConfigMap[entryStruct.entryGlob].globalVar
 
   return {
     format: 'iife',
     banner,
     file: joinPaths(pkgDir, 'dist', entryAlias) + iifeExtension,
-    globals: computeIifeGlobals(pkgBundleStruct, monorepoStruct),
+    globals: globalVarMap,
     ...(
-      globalName
-        ? { exports: 'named', name: globalName }
+      globalVar
+        ? { exports: 'named', name: globalVar }
         : { exports: 'none' }
     ),
     interop: 'auto',

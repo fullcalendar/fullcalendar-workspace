@@ -10,7 +10,7 @@ export interface PkgBundleStruct {
   pkgJson: any
   entryConfigMap: EntryConfigMap
   entryStructMap: { [entryAlias: string]: EntryStruct } // entryAlias like "index"
-  iifeGlobalsMap: IifeGlobalsMap
+  dependencyGlobalVarMap: GlobalVarMap
   miscWatchPaths: string[]
 }
 
@@ -18,6 +18,7 @@ export interface EntryConfig {
   generator?: string
   module?: boolean
   iife?: boolean
+  globalVar?: string
 }
 
 export interface EntryStruct {
@@ -29,12 +30,12 @@ export interface EntryStruct {
 
 export interface PkgJsonBuildConfig {
   exports?: EntryConfigMap
-  iifeGlobals?: IifeGlobalsMap
+  dependencyGlobalVars?: GlobalVarMap
 }
 
 export type EntryConfigMap = { [entryGlob: string]: EntryConfig }
 export type EntryStructMap = { [entryAlias: string]: EntryStruct }
-export type IifeGlobalsMap = { [importPath: string]: string }
+export type GlobalVarMap = { [importPath: string]: string }
 
 export type GeneratorFunc = (
   config: { pkgDir: string, entryGlob: string, log: (message: string) => void }
@@ -53,7 +54,7 @@ export async function buildPkgBundleStruct(
   const buildConfig: PkgJsonBuildConfig = pkgJson.buildConfig || {}
   const entryConfigMap: EntryConfigMap = buildConfig.exports || {}
   const entryStructMap: { [entryAlias: string]: EntryStruct } = {}
-  const iifeGlobalsMap: IifeGlobalsMap = buildConfig.iifeGlobals || {}
+  const dependencyGlobalVarMap: GlobalVarMap = buildConfig.dependencyGlobalVars || {}
   const miscWatchPaths: string[] = []
 
   await Promise.all(
@@ -67,7 +68,7 @@ export async function buildPkgBundleStruct(
     }),
   )
 
-  return { pkgDir, pkgJson, entryConfigMap, entryStructMap, iifeGlobalsMap, miscWatchPaths }
+  return { pkgDir, pkgJson, entryConfigMap, entryStructMap, dependencyGlobalVarMap, miscWatchPaths }
 }
 
 // Source-File Entrypoints
@@ -134,9 +135,9 @@ async function generateEntryStructMap(
       throw new Error('Generator string output can\'t have glob entrypoint name')
     }
 
-    const entrySrcBase = joinPaths(transpiledDir, entryGlob)
+    const entryAlias = entryGlob === '.' ? 'index' : removeDotSlash(entryGlob)
+    const entrySrcBase = joinPaths(transpiledDir, entryAlias)
     const entrySrcPath = entrySrcBase + transpiledExtension
-    const entryAlias = removeDotSlash(entryGlob)
 
     entryStructMap[entryAlias] = {
       entryGlob,
@@ -206,13 +207,15 @@ export function computeExternalPkgs(pkgBundleStruct: PkgBundleStruct): string[] 
 For IIFE, some third-party packages are bundled
 */
 export function computeIifeExternalPkgs(pkgBundleStruct: PkgBundleStruct): string[] {
-  const { iifeGlobalsMap } = pkgBundleStruct
+  const { dependencyGlobalVarMap } = pkgBundleStruct
 
-  return computeExternalPkgs(pkgBundleStruct)
+  const res = computeExternalPkgs(pkgBundleStruct)
     .filter((pkgName) => (
-      iifeGlobalsMap[pkgName] !== '' &&
-      iifeGlobalsMap['*'] !== ''
+      dependencyGlobalVarMap[pkgName] !== '' &&
+      dependencyGlobalVarMap['*'] !== ''
     ))
+
+  return res
 }
 
 // External File Paths
@@ -227,19 +230,22 @@ export function computeOwnIifeExternalPaths(
   currentEntryStruct: EntryStruct,
   pkgBundleStruct: PkgBundleStruct,
 ): string[] {
-  const { entryStructMap, iifeGlobalsMap } = pkgBundleStruct
-  const currentGlobalName = iifeGlobalsMap[currentEntryStruct.entryGlob]
+  const { entryStructMap, entryConfigMap } = pkgBundleStruct
+  const currentGlobalVar = entryConfigMap[currentEntryStruct.entryGlob].globalVar
 
   const iifeEntryStructMap = filterProps(entryStructMap, (entryStruct) => {
-    const globalName = iifeGlobalsMap[entryStruct.entryGlob]
+    const globalVar = entryConfigMap[entryStruct.entryGlob].globalVar
 
     return Boolean(
       // not the current entrypoint
       entryStruct.entryGlob !== currentEntryStruct.entryGlob &&
       // has a global variable
-      globalName &&
-      // not nested within current global variable
-      (!currentGlobalName || !globalName.startsWith(currentGlobalName + '.')),
+      globalVar &&
+      // not equal to or nested within current global var
+      (!currentGlobalVar || !(
+        globalVar === currentGlobalVar ||
+        globalVar.startsWith(currentGlobalVar + '.')
+      )),
     )
   })
 
@@ -250,39 +256,37 @@ export function computeOwnIifeExternalPaths(
 // IIFE Browser Globals
 // -------------------------------------------------------------------------------------------------
 
-export function computeIifeGlobals(
+export function computeGlobals(
   pkgBundleStruct: PkgBundleStruct,
   monorepoStruct: MonorepoStruct,
-): IifeGlobalsMap {
-  const allGlobalsMap: IifeGlobalsMap = {}
+): GlobalVarMap {
+  const allGlobalVars: GlobalVarMap = {}
 
-  const { pkgJson, entryStructMap, iifeGlobalsMap } = pkgBundleStruct
+  const { pkgJson, entryStructMap, entryConfigMap, dependencyGlobalVarMap } = pkgBundleStruct
   const pkgName = pkgJson.name
 
   // scan the package's own unglobbed entrypoints
   for (const entryAlias in entryStructMap) {
     const { entrySrcPath, entryGlob } = entryStructMap[entryAlias]
-    const globalName = iifeGlobalsMap[entryGlob]
+    const globalVar = entryConfigMap[entryGlob].globalVar
 
-    if (globalName) {
+    if (globalVar) {
       const fullImportId = entryGlob === '.' ?
         pkgName :
         pkgName + '/' + entryAlias
 
-      allGlobalsMap[fullImportId] = globalName
-      allGlobalsMap[entrySrcPath] = globalName // add file path too
+      allGlobalVars[fullImportId] = globalVar
+      allGlobalVars[entrySrcPath] = globalVar // add file path too
     }
   }
 
-  // scan the package's external dependencies
+  // scan the package's third-party dependencies
   // TODO: scan dependencies of dependencies (or just do a global scan)
-  for (const importId in iifeGlobalsMap) {
-    const globalName = iifeGlobalsMap[importId]
+  for (const importId in dependencyGlobalVarMap) {
+    const globalName = dependencyGlobalVarMap[importId]
 
     if (globalName) {
-      if (importId !== '.' && !importId.startsWith('./')) {
-        allGlobalsMap[importId] = globalName
-      }
+      allGlobalVars[importId] = globalName
     }
   }
 
@@ -293,22 +297,22 @@ export function computeIifeGlobals(
   for (const depPkgJson of depPkgJsons) {
     const depPkgName = depPkgJson.name
     const depBuildConfig: PkgJsonBuildConfig = depPkgJson.buildConfig || {}
-    const depIifeGlobalsMap = depBuildConfig.iifeGlobals || {}
+    const depExportsMap = depBuildConfig.exports || {}
 
-    for (const importId in depIifeGlobalsMap) {
-      const globalName = depIifeGlobalsMap[importId]
+    for (const exportId in depExportsMap) {
+      const globalVar = depExportsMap[exportId].globalVar
 
-      if (globalName) {
-        if (importId === '.') {
-          allGlobalsMap[depPkgName] = globalName
-        } else if (importId.startsWith('./')) {
-          allGlobalsMap[depPkgName + importId.substring(1)] = globalName
+      if (globalVar) {
+        if (exportId === '.') {
+          allGlobalVars[depPkgName] = globalVar
+        } else if (exportId.startsWith('./')) {
+          allGlobalVars[depPkgName + exportId.substring(1)] = globalVar
         }
       }
     }
   }
 
-  return allGlobalsMap
+  return allGlobalVars
 }
 
 // Utils

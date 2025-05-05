@@ -55,7 +55,10 @@ async function createArchive(rootDir: string): Promise<void> {
   )
 
   const subpaths = await globby(
-    `packages/*/dist/global/**/*.+(js|min.js)`,
+    [
+      `packages/*/dist/global.+(js|min.js)`,
+      `packages/*/dist/global/**/*.+(js|min.js)`,
+    ],
     { cwd: rootDir },
   )
 
