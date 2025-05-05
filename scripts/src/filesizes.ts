@@ -8,7 +8,7 @@ import { glob } from "glob"
 const gzipAsync = promisify(gzip)
 
 async function getMinifiedGzipSize(dirPath: string): Promise<{ path: string, size: number } | null> {
-  const filePath = join(dirPath, "dist/index.global.js")
+  const filePath = join(dirPath, "dist/global.js")
 
   try {
     // Read the file content

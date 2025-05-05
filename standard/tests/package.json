@@ -69,36 +69,36 @@
     "suites": {
       "default": {
         "files": [
-          "./dist/index.global.js"
+          "./dist/index.js"
         ]
       },
       "pkg:global:locale": {
         "files": [
-          "./node_modules/@fullcalendar/core/index.global.js",
-          "./node_modules/@fullcalendar/core/locales/ar.global.js",
-          "./node_modules/@fullcalendar/daygrid/index.global.js",
+          "./node_modules/@fullcalendar/core/global.js",
+          "./node_modules/@fullcalendar/core/global/locales/ar.js",
+          "./node_modules/@fullcalendar/daygrid/global.js",
           "./src/global-locale.js"
         ]
       },
       "pkg:global:locales-all": {
         "files": [
-          "./node_modules/@fullcalendar/core/index.global.js",
-          "./node_modules/@fullcalendar/core/locales-all.global.js",
-          "./node_modules/@fullcalendar/daygrid/index.global.js",
+          "./node_modules/@fullcalendar/core/global.js",
+          "./node_modules/@fullcalendar/core/global/locales-all.js",
+          "./node_modules/@fullcalendar/daygrid/global.js",
           "./src/global-locales-all.js"
         ]
       },
       "bundle:global:locale": {
         "files": [
-          "./node_modules/fullcalendar/index.global.js",
-          "./node_modules/@fullcalendar/core/locales/ar.global.js",
+          "./node_modules/fullcalendar/global.js",
+          "./node_modules/@fullcalendar/core/global/locales/ar.js",
           "./src/global-locale.js"
         ]
       },
       "bundle:global:locales-all": {
         "files": [
-          "./node_modules/fullcalendar/index.global.js",
-          "./node_modules/@fullcalendar/core/locales-all.global.js",
+          "./node_modules/fullcalendar/global.js",
+          "./node_modules/@fullcalendar/core/global/locales-all.js",
           "./src/global-locales-all.js"
         ]
       }

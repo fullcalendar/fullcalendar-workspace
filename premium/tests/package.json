@@ -62,7 +62,7 @@
   },
   "karmaConfig": {
     "files": [
-      "./dist/index.global.js"
+      "./dist/index.js"
     ]
   }
 }
