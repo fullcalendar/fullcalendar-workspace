@@ -26,7 +26,7 @@ export default [
   {
     input: 'dist/index.js',
     output: {
-      file: 'dist/index.global.js',
+      file: 'dist/global.js',
       format: 'iife',
       name: 'FullCalendar.Vue',
       exports: 'named',

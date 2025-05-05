@@ -141,6 +141,7 @@ should core be responsible for stickiness?
   resource-group-cell ... core does it
 TODO: add !important to all rules in util.css?... YES. Nothing is meant to be overridden
 workaround "dual-package hazard" ?
+changelog: Vue3 path to global.js changed from index.global.js
 
 ASAP THEME
 ----------
