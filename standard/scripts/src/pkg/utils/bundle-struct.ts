@@ -19,6 +19,7 @@ export interface EntryConfig {
   module?: boolean
   iife?: boolean
   globalVar?: string
+  css?: boolean
 }
 
 export interface EntryStruct {

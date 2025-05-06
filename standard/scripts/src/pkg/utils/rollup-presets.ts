@@ -99,7 +99,7 @@ export async function buildIifeOptions(
     if (entryConfig.iife) {
       optionsObjs.push({
         input: buildIifeInput(entryStruct),
-        plugins: buildIifePlugins(entryStruct, pkgBundleStruct, sourcemap, minify),
+        plugins: buildIifePlugins(entryStruct, pkgBundleStruct, sourcemap, Boolean(entryConfig.css), minify),
         output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, globalVarMap, banner, sourcemap),
         onwarn,
       })
@@ -274,7 +274,7 @@ function buildModulePlugins(
     generatedContentPlugin(
       entryStructsToContentMap(entryStructMap),
     ),
-    ...buildJsPlugins(pkgBundleStruct, minifyCss),
+    ...buildJsPlugins(pkgBundleStruct, false, minifyCss),
     ...(sourcemap ? [sourcemapsPlugin()] : []), // load preexisting sourcemaps
   ]
 }
@@ -286,6 +286,7 @@ function buildIifePlugins(
   currentEntryStruct: EntryStruct,
   pkgBundleStruct: PkgBundleStruct,
   sourcemap: boolean,
+  extractCss: boolean,
   minify: boolean,
 ): Plugin[] {
   const { pkgDir, entryStructMap } = pkgBundleStruct
@@ -300,7 +301,7 @@ function buildIifePlugins(
     }),
     generatedContentPlugin(entryStructsToContentMap(entryStructMap)),
     simpleDotAssignment(),
-    ...buildJsPlugins(pkgBundleStruct, minify),
+    ...buildJsPlugins(pkgBundleStruct, extractCss, minify),
     ...(sourcemap ? [sourcemapsPlugin()] : []),
     ...(minify ? [minifySeparatelyPlugin()] : []),
   ]
@@ -325,30 +326,25 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
   ]
 }
 
-function buildJsPlugins(pkgBundleStruct: PkgBundleStruct, minifyCss: boolean): Plugin[] {
+function buildJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean, minifyCss: boolean): Plugin[] {
   const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
 
   if (pkgAnalysis.isTests) {
     return buildTestJsPlugins()
   } else {
-    return buildNormalJsPlugins(pkgBundleStruct, minifyCss)
+    return buildNormalJsPlugins(pkgBundleStruct, extractCss, minifyCss)
   }
 }
 
-function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, minifyCss: boolean): Plugin[] {
-  const { pkgDir, pkgJson } = pkgBundleStruct
+function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean, minifyCss: boolean): Plugin[] {
+  const { pkgJson } = pkgBundleStruct
 
   return [
     nodeResolvePlugin({
       ignoreSideEffectsForRoot: true,
     }),
     cssPlugin({
-      inject: {
-        importId: pkgJson.name === '@fullcalendar/core' ?
-          joinPaths(pkgDir, transpiledSubdir, 'styleUtils' + transpiledExtension) :
-          '@fullcalendar/core/internal',
-        importProp: 'injectStyles',
-      },
+      extract: extractCss,
       minify: minifyCss,
     }),
     replacePlugin({
@@ -372,7 +368,7 @@ function buildTestJsPlugins(): Plugin[] {
     }),
     commonjsPlugin(), // for moment and moment-timezone
     jsonPlugin(), // for moment-timezone
-    cssPlugin({ inject: true }),
+    cssPlugin({ extract: true }),
     replacePlugin({
       preventAssignment: true,
       values: {
@@ -385,16 +381,11 @@ function buildTestJsPlugins(): Plugin[] {
 // Plugins Wrappers
 // -------------------------------------------------------------------------------------------------
 
-interface CssInjector {
-  importId: string
-  importProp: string
-}
-
 function cssPlugin(options?: {
-  inject?: CssInjector | boolean,
+  extract?: boolean,
   minify?: boolean,
 }): Plugin {
-  const { inject, minify } = options || {}
+  const { extract, minify } = options || {}
 
   return postcssPlugin({
     config: {
@@ -408,13 +399,9 @@ function cssPlugin(options?: {
           : 'f-' + localName
       },
     },
-    inject: typeof inject === 'object' ?
-      (cssVarName: string) => {
-        return `import { ${inject.importProp} } from ${JSON.stringify(inject.importId)};\n` +
-          `injectStyles(${cssVarName});\n`
-      } :
-      (inject || false),
-    minimize: true,
+    extract,
+    inject: false,
+    minimize: minify,
   })
 }
 

@@ -56,7 +56,8 @@
       },
       "./global": {
         "iife": true,
-        "globalVar": "FullCalendar"
+        "globalVar": "FullCalendar",
+        "css": true
       },
       "./global/locales-all": {
         "iife": true
