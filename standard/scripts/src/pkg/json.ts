@@ -42,18 +42,43 @@ export async function writeDistPkgJson(
     './package.json': './package.json',
   }
 
+  const sideEffects: string[] = []
+
   for (const entryName in entryConfigMap) {
     const entryConfig = entryConfigMap[entryName]
     const entrySubpath = entryName === '.' ? './index' : entryName
 
     if (entryConfig.module) {
+      const typesPath = entrySubpath.replace(/^\./, typesRoot) + '.d.ts' // tsc likes this first
+      const esmPath = entrySubpath.replace(/^\./, './esm') + esmExtension
+      const cjsPath = entrySubpath.replace(/^\./, './cjs') + cjsExtension
+
       exportsMap[entryName] = {
-        types: entrySubpath.replace(/^\./, typesRoot) + '.d.ts', // tsc likes this first
-        import: entrySubpath.replace(/^\./, './esm') + esmExtension,
-        require: entrySubpath.replace(/^\./, './cjs') + cjsExtension,
+        types: typesPath,
+        import: esmPath,
+        require: cjsPath,
       }
-    } else if (entryConfig.css) {
-      exportsMap[entryName + '.css'] = entrySubpath + '.css'
+
+      if (entryConfig.iife) { // has side effects?
+        sideEffects.push(esmPath, cjsPath)
+      }
+    }
+
+    if (entryConfig.iife) {
+      const iifePath = entrySubpath + iifeExtension
+      const iifeMinPath = entrySubpath + '.min' + iifeExtension
+
+      sideEffects.push(iifePath, iifeMinPath)
+
+      if (entryConfig.css) { // only works for iife (for now)
+        const cssPath = entrySubpath + '.css'
+        const cssJsPath = entrySubpath + '.css.js'
+
+        exportsMap[cssPath] = cssPath
+        exportsMap[cssJsPath] = cssJsPath
+
+        sideEffects.push(cssJsPath)
+      }
     }
   }
 
@@ -88,12 +113,8 @@ export async function writeDistPkgJson(
     finalPkgJson.typesVersions = { '*': typeVersionsEntryMap }
   }
 
-  if (
-    pkgJson.sideEffects === undefined &&
-    !pkgAnalysis.isTests &&
-    !pkgAnalysis.isBundle
-  ) {
-    finalPkgJson.sideEffects = false
+  if (pkgJson.sideEffects === undefined) {
+    finalPkgJson.sideEffects = !sideEffects.length ? false : sideEffects
   }
 
   finalPkgJson.repository.directory =

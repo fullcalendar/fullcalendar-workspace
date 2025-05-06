@@ -42,7 +42,6 @@
       }
     }
   },
-  "sideEffects": true,
   "publishConfig": {
     "directory": "./dist",
     "linkDirectory": true
