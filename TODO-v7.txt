@@ -143,7 +143,7 @@ TODO: add !important to all rules in util.css?... YES. Nothing is meant to be ov
 workaround "dual-package hazard" ?
 changelog: Vue3 path to global.js changed from index.global.js
 TODO: update examples in web-component README
-TODO: kill nonce example
+changelog: how to do importmap.html is way different
 
 ASAP THEME
 ----------
