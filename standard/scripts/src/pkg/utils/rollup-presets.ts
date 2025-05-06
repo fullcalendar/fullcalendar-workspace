@@ -11,7 +11,6 @@ import commonjsPluginLib from '@rollup/plugin-commonjs'
 import jsonPluginLib from '@rollup/plugin-json'
 import postcssPluginLib from 'rollup-plugin-postcss'
 import replacePluginLib from '@rollup/plugin-replace'
-import { mapProps } from '../../utils/lang.js'
 import { MonorepoStruct } from '../../utils/monorepo-struct.js'
 import { analyzePkg } from '../../utils/pkg-analysis.js'
 import { readPkgJson } from '../../utils/pkg-json.js'
@@ -45,6 +44,7 @@ import {
   massageDtsPlugin,
   rerootPlugin,
   simpleDotAssignment,
+  injectCssSeparatelyPlugin,
 } from './rollup-plugins.js'
 
 const commonjsPlugin = cjsInterop(commonjsPluginLib)
@@ -99,7 +99,7 @@ export async function buildIifeOptions(
     if (entryConfig.iife) {
       optionsObjs.push({
         input: buildIifeInput(entryStruct),
-        plugins: buildIifePlugins(entryStruct, pkgBundleStruct, sourcemap, Boolean(entryConfig.css), minify),
+        plugins: await buildIifePlugins(entryStruct, pkgBundleStruct, sourcemap, Boolean(entryConfig.css), minify),
         output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, globalVarMap, banner, sourcemap),
         onwarn,
       })
@@ -282,13 +282,13 @@ function buildModulePlugins(
 /*
 TODO: inefficient to repeatedly generate all this?
 */
-function buildIifePlugins(
+async function buildIifePlugins(
   currentEntryStruct: EntryStruct,
   pkgBundleStruct: PkgBundleStruct,
   sourcemap: boolean,
   extractCss: boolean,
   minify: boolean,
-): Plugin[] {
+): Promise<Plugin[]> {
   const { pkgDir, entryStructMap } = pkgBundleStruct
 
   return [
@@ -302,6 +302,7 @@ function buildIifePlugins(
     generatedContentPlugin(entryStructsToContentMap(entryStructMap)),
     simpleDotAssignment(),
     ...buildJsPlugins(pkgBundleStruct, extractCss, minify),
+    ...(extractCss ? [await injectCssSeparatelyPlugin()] : []),
     ...(sourcemap ? [sourcemapsPlugin()] : []),
     ...(minify ? [minifySeparatelyPlugin()] : []),
   ]

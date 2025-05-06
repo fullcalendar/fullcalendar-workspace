@@ -1,3 +1,6 @@
+import '@fullcalendar/core/global.css'
+import '@fullcalendar/classic-theme/global.css'
+
 import { globalPlugins } from '@fullcalendar/core'
 import classicThemePlugin from '@fullcalendar/classic-theme'
 import interactionPlugin from '@fullcalendar/interaction'

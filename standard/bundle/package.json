@@ -40,7 +40,8 @@
       },
       "./global": {
         "iife": true,
-        "globalVar": "FullCalendar"
+        "globalVar": "FullCalendar",
+        "css": true
       }
     },
     "dependencyGlobalVars": {

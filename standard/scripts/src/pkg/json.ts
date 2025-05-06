@@ -4,6 +4,7 @@ import { analyzePkg } from '../utils/pkg-analysis.js'
 import { readPkgJson, writePkgJson } from '../utils/pkg-json.js'
 import { ScriptContext } from '../utils/script-runner.js'
 import { cjsExtension, esmExtension, iifeExtension } from './utils/config.js'
+import { EntryConfigMap } from './utils/bundle-struct.js'
 
 const cdnFields = [
   'unpkg',
@@ -36,22 +37,23 @@ export async function writeDistPkgJson(
   const basePkgJson = await readPkgJson(pkgAnalysis.metaRootDir)
   const typesRoot = isDev ? './.tsout' : './esm' // TODO: make config var for .tsout?
 
-  const entryConfigMap = buildConfig.exports
+  const entryConfigMap = buildConfig.exports as EntryConfigMap
   const exportsMap: any = {
     './package.json': './package.json',
   }
 
   for (const entryName in entryConfigMap) {
     const entryConfig = entryConfigMap[entryName]
+    const entrySubpath = entryName === '.' ? './index' : entryName
 
     if (entryConfig.module) {
-      const entrySubpath = entryName === '.' ? './index' : entryName
-
       exportsMap[entryName] = {
         types: entrySubpath.replace(/^\./, typesRoot) + '.d.ts', // tsc likes this first
         import: entrySubpath.replace(/^\./, './esm') + esmExtension,
         require: entrySubpath.replace(/^\./, './cjs') + cjsExtension,
       }
+    } else if (entryConfig.css) {
+      exportsMap[entryName + '.css'] = entrySubpath + '.css'
     }
   }
 

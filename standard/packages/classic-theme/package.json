@@ -44,7 +44,8 @@
       },
       "./global": {
         "iife": true,
-        "globalVar": "FullCalendar.ClassicTheme"
+        "globalVar": "FullCalendar.ClassicTheme",
+        "css": true
       }
     }
   },

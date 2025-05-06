@@ -43,7 +43,8 @@
       },
       "./global": {
         "iife": true,
-        "globalVar": "FullCalendar.Bootstrap5"
+        "globalVar": "FullCalendar.Bootstrap5",
+        "css": true
       }
     }
   },

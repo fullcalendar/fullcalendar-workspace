@@ -5,7 +5,9 @@ import {
   sep as pathSep,
   isAbsolute,
 } from 'path'
+import { readFile } from 'fs/promises'
 import { Plugin } from 'rollup'
+import handlebars from 'handlebars'
 import { execLive } from '../../utils/exec.js'
 import { strsToProps } from '../../utils/lang.js'
 import { standardScriptsDir } from '../../utils/script-runner.js'
@@ -221,6 +223,35 @@ async function minifySeparately(path: string): Promise<void> {
   ], {
     cwd: standardScriptsDir,
   })
+}
+
+// Inject CSS as Style Tag, Separately
+// -------------------------------------------------------------------------------------------------
+
+export async function injectCssSeparatelyPlugin(): Promise<Plugin> {
+  const templatePath = joinPaths(standardScriptsDir, 'config/inject-css.tpl')
+  const templateText = await readFile(templatePath, 'utf8')
+  const template = handlebars.compile(templateText)
+
+  return {
+    name: 'inject-css-separately',
+    generateBundle(options, bundle) {
+      for (const [fileName, chunkOrAsset] of Object.entries(bundle)) {
+        if (fileName.endsWith('.css') && chunkOrAsset.type === 'asset') {
+          const cssText =
+            typeof chunkOrAsset.source === 'string'
+              ? chunkOrAsset.source
+              : Buffer.from(chunkOrAsset.source).toString('utf8')
+
+          this.emitFile({
+            type: 'asset',
+            fileName: fileName.replace(/\.css$/, '.css.js'),
+            source: template({ cssTextAsJson: JSON.stringify(cssText) })
+          })
+        }
+      }
+    }
+  }
 }
 
 // .d.ts
