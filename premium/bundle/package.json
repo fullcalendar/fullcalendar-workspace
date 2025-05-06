@@ -6,7 +6,6 @@
   "homepage": "https://fullcalendar.io/docs/initialize-globals",
   "dependencies": {
     "@fullcalendar/adaptive": "workspace:7.0.0-rc.0",
-    "@fullcalendar/classic-theme": "workspace:7.0.0-rc.0",
     "@fullcalendar/core": "workspace:7.0.0-rc.0",
     "@fullcalendar/daygrid": "workspace:7.0.0-rc.0",
     "@fullcalendar/interaction": "workspace:7.0.0-rc.0",
@@ -47,7 +46,8 @@
       },
       "./global": {
         "iife": true,
-        "globalVar": "FullCalendar"
+        "globalVar": "FullCalendar",
+        "css": true
       }
     },
     "dependencyGlobalVars": {

@@ -5,7 +5,6 @@
   "description": "Easily render a full-sized drag & drop calendar with a combination of standard plugins",
   "homepage": "https://fullcalendar.io/docs/initialize-globals",
   "dependencies": {
-    "@fullcalendar/classic-theme": "workspace:7.0.0-rc.0",
     "@fullcalendar/core": "workspace:7.0.0-rc.0",
     "@fullcalendar/daygrid": "workspace:7.0.0-rc.0",
     "@fullcalendar/interaction": "workspace:7.0.0-rc.0",
