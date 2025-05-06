@@ -58,10 +58,11 @@ TODO: converge with buildCjsOptions and just have multiple outputs?
 export function buildEsmOptions(
   pkgBundleStruct: PkgBundleStruct,
   sourcemap: boolean,
+  minifyCss: boolean,
 ): RollupOptions {
   return {
     input: buildModuleInput(pkgBundleStruct),
-    plugins: buildModulePlugins(pkgBundleStruct, sourcemap),
+    plugins: buildModulePlugins(pkgBundleStruct, sourcemap, minifyCss),
     output: buildEsmOutputOptions(pkgBundleStruct, sourcemap),
     onwarn,
   }
@@ -70,10 +71,11 @@ export function buildEsmOptions(
 export function buildCjsOptions(
   pkgBundleStruct: PkgBundleStruct,
   sourcemap: boolean,
+  minifyCss: boolean,
 ): RollupOptions {
   return {
     input: buildModuleInput(pkgBundleStruct),
-    plugins: buildModulePlugins(pkgBundleStruct, sourcemap),
+    plugins: buildModulePlugins(pkgBundleStruct, sourcemap, minifyCss),
     output: buildCjsOutputOptions(pkgBundleStruct, sourcemap),
     onwarn,
   }
@@ -259,7 +261,8 @@ function buildManualChunks(
 
 function buildModulePlugins(
   pkgBundleStruct: PkgBundleStruct,
-  sourcemap: boolean, // BAD: used as a proxy for isDev!
+  sourcemap: boolean,
+  minifyCss: boolean,
 ): Plugin[] {
   const { pkgDir, entryStructMap } = pkgBundleStruct
 
@@ -271,7 +274,7 @@ function buildModulePlugins(
     generatedContentPlugin(
       entryStructsToContentMap(entryStructMap),
     ),
-    ...buildJsPlugins(pkgBundleStruct, sourcemap), // isDev=sourcemap
+    ...buildJsPlugins(pkgBundleStruct, minifyCss),
     ...(sourcemap ? [sourcemapsPlugin()] : []), // load preexisting sourcemaps
   ]
 }
@@ -282,7 +285,7 @@ TODO: inefficient to repeatedly generate all this?
 function buildIifePlugins(
   currentEntryStruct: EntryStruct,
   pkgBundleStruct: PkgBundleStruct,
-  sourcemap: boolean, // BAD: used as a proxy for isDev
+  sourcemap: boolean,
   minify: boolean,
 ): Plugin[] {
   const { pkgDir, entryStructMap } = pkgBundleStruct
@@ -297,7 +300,7 @@ function buildIifePlugins(
     }),
     generatedContentPlugin(entryStructsToContentMap(entryStructMap)),
     simpleDotAssignment(),
-    ...buildJsPlugins(pkgBundleStruct, sourcemap), // isDev=sourcemap
+    ...buildJsPlugins(pkgBundleStruct, minify),
     ...(sourcemap ? [sourcemapsPlugin()] : []),
     ...(minify ? [minifySeparatelyPlugin()] : []),
   ]
@@ -322,17 +325,17 @@ function buildDtsPlugins(pkgBundleStruct: PkgBundleStruct): Plugin[] {
   ]
 }
 
-function buildJsPlugins(pkgBundleStruct: PkgBundleStruct, isDev: boolean): Plugin[] {
+function buildJsPlugins(pkgBundleStruct: PkgBundleStruct, minifyCss: boolean): Plugin[] {
   const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
 
   if (pkgAnalysis.isTests) {
     return buildTestJsPlugins()
   } else {
-    return buildNormalJsPlugins(pkgBundleStruct, isDev)
+    return buildNormalJsPlugins(pkgBundleStruct, minifyCss)
   }
 }
 
-function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, isDev: boolean): Plugin[] {
+function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, minifyCss: boolean): Plugin[] {
   const { pkgDir, pkgJson } = pkgBundleStruct
 
   return [
@@ -346,7 +349,7 @@ function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, isDev: boolean):
           '@fullcalendar/core/internal',
         importProp: 'injectStyles',
       },
-      obfuscate: !isDev,
+      minify: minifyCss,
     }),
     replacePlugin({
       delimiters: ['<%= ', ' %>'],
@@ -389,9 +392,9 @@ interface CssInjector {
 
 function cssPlugin(options?: {
   inject?: CssInjector | boolean,
-  obfuscate?: boolean,
+  minify?: boolean,
 }): Plugin {
-  const { inject, obfuscate } = options || {}
+  const { inject, minify } = options || {}
 
   return postcssPlugin({
     config: {
@@ -400,7 +403,7 @@ function cssPlugin(options?: {
     },
     modules: {
       generateScopedName(localName: string, resourcePath: string) {
-        return obfuscate
+        return minify
           ? 'fc-' + hashGenerator.generate(localName + resourcePath)
           : 'f-' + localName
       },

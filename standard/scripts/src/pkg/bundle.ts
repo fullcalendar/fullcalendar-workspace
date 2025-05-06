@@ -100,14 +100,15 @@ async function buildRollupOptionObjs(
   const esm = !isTests
   const cjs = !isDev && !isTests
   const moduleSourcemap = isDev || isTests
+  const moduleCssMinify = !isDev
   const iife = true // !isDev || isBundle || isTests
   const iifeMinify = !isDev && !isTests
   const iifeSourcemap = (isBundle && isDev) || isTests
   const dts = !isDev && !isTests
 
   return [
-    ...(esm ? [buildEsmOptions(pkgBundleStruct, moduleSourcemap)] : []),
-    ...(cjs ? [buildCjsOptions(pkgBundleStruct, moduleSourcemap)] : []),
+    ...(esm ? [buildEsmOptions(pkgBundleStruct, moduleSourcemap, moduleCssMinify)] : []),
+    ...(cjs ? [buildCjsOptions(pkgBundleStruct, moduleSourcemap, moduleCssMinify)] : []),
     ...(iife ? await buildIifeOptions(pkgBundleStruct, monorepoStruct, iifeMinify, iifeSourcemap) : []),
     ...(dts ? [buildDtsOptions(pkgBundleStruct)] : []),
   ]
