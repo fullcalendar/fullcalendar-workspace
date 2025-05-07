@@ -1,5 +1,5 @@
 import { createPlugin, EventContentArg, PluginDef } from '@fullcalendar/core'
-import * as svgIcons from './svgIcons'
+import * as svgIcons from './svgIcons.js'
 import './theme.css'
 
 // Will import ambient types during dev but strip out for build
