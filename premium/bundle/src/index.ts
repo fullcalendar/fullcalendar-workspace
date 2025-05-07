@@ -29,5 +29,6 @@ globalPlugins.push(
   resourceTimelinePlugin,
 )
 
+export { globalPlugins } // HACK to ensure side-effect isn't tree-shaken
 export * from '@fullcalendar/core'
 export * from '@fullcalendar/interaction' // for Draggable

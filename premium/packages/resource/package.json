@@ -33,7 +33,6 @@
       "./src/**/*"
     ]
   },
-  "sideEffects": true,
   "buildConfig": {
     "exports": {
       ".": {

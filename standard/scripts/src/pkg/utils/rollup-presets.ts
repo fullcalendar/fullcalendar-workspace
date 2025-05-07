@@ -64,7 +64,11 @@ export function buildEsmOptions(
     input: buildModuleInput(pkgBundleStruct),
     plugins: buildModulePlugins(pkgBundleStruct, sourcemap, minifyCss),
     output: buildEsmOutputOptions(pkgBundleStruct, sourcemap),
-    onwarn,
+    onwarn(warning) {
+      if (warning.code !== 'CIRCULAR_DEPENDENCY') {
+        console.error(`${pkgBundleStruct.pkgDir}(esm): ${warning}`)
+      }
+    }
   }
 }
 
@@ -77,7 +81,11 @@ export function buildCjsOptions(
     input: buildModuleInput(pkgBundleStruct),
     plugins: buildModulePlugins(pkgBundleStruct, sourcemap, minifyCss),
     output: buildCjsOutputOptions(pkgBundleStruct, sourcemap),
-    onwarn,
+    onwarn(warning) {
+      if (warning.code !== 'CIRCULAR_DEPENDENCY') {
+        console.error(`${pkgBundleStruct.pkgDir}(cjs): ${warning}`)
+      }
+    }
   }
 }
 
@@ -88,6 +96,7 @@ export async function buildIifeOptions(
   sourcemap: boolean,
 ): Promise<RollupOptions[]> {
   const { entryConfigMap, entryStructMap } = pkgBundleStruct
+  const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
   const globalVarMap = computeGlobals(pkgBundleStruct, monorepoStruct)
   const banner = await buildBanner(pkgBundleStruct)
   const optionsObjs: RollupOptions[] = []
@@ -101,7 +110,14 @@ export async function buildIifeOptions(
         input: buildIifeInput(entryStruct),
         plugins: await buildIifePlugins(entryStruct, pkgBundleStruct, sourcemap, Boolean(entryConfig.css), minify),
         output: buildIifeOutputOptions(entryStruct, entryAlias, pkgBundleStruct, globalVarMap, banner, sourcemap),
-        onwarn,
+        onwarn(warning) {
+          if (warning.code !== 'CIRCULAR_DEPENDENCY') {
+            console.error(`${pkgBundleStruct.pkgDir}(iife): ${warning}`)
+          }
+        },
+
+        // Workaround for rollup being aggressive about tree-shacking
+        treeshake: !pkgAnalysis.isTests,
       })
     }
   }
@@ -114,7 +130,11 @@ export function buildDtsOptions(pkgBundleStruct: PkgBundleStruct): RollupOptions
     input: buildDtsInput(pkgBundleStruct),
     plugins: buildDtsPlugins(pkgBundleStruct),
     output: buildDtsOutputOptions(pkgBundleStruct),
-    onwarn,
+    onwarn(warning) {
+      if (warning.code !== 'CIRCULAR_DEPENDENCY') {
+        console.error(`${pkgBundleStruct.pkgDir}(dts): ${warning}`)
+      }
+    },
   }
 }
 
@@ -434,12 +454,6 @@ async function buildBanner(pkgBundleStruct: PkgBundleStruct): Promise<string> {
   const template = handlebars.compile(templateText)
 
   return template(fullPkgJson).trim()
-}
-
-function onwarn(warning: RollupWarning) {
-  if (warning.code !== 'CIRCULAR_DEPENDENCY') {
-    console.error(warning.toString())
-  }
 }
 
 function cjsInterop<DefaultExport>(namespace: { default: DefaultExport }): DefaultExport {
