@@ -278,7 +278,7 @@ export default createPlugin({
     // List View
     // ---------------------------------------------------------------------------------------------
 
-    listDayClassName: 'not-last:border-b border-gray-300',
+    listDayClassNames: 'not-last:border-b border-gray-300',
     listDayHeaderClassNames: 'border-b border-gray-300 flex flex-row justify-between font-bold bg-gray-100',
     listDayHeaderInnerClassNames: listItemInnerCommon,
   },

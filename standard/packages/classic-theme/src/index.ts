@@ -253,7 +253,7 @@ export default createPlugin({
     // List View
     // ---------------------------------------------------------------------------------------------
 
-    listDayClassName: 'fc-list-day',
+    listDayClassNames: 'fc-list-day',
     listDayHeaderClassNames: 'fc-list-day-header',
     listDayHeaderInnerClassNames: 'fc-list-day-header-inner',
   },

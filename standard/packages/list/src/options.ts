@@ -20,7 +20,7 @@ import {
 } from './public-types.js'
 
 export const OPTION_REFINERS = {
-  listDayClassName: identity as Identity<ClassNamesGenerator<ListDayArg>>,
+  listDayClassNames: identity as Identity<ClassNamesGenerator<ListDayArg>>,
 
   listDayFormat: createFalsableFormatter, // defaults specified in list plugins
   listDaySideFormat: createFalsableFormatter, // "

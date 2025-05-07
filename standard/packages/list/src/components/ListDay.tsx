@@ -39,7 +39,7 @@ export class ListDay extends BaseComponent<ListDayProps> {
       <div
         role='listitem'
         aria-label={fullDateStr}
-        className={generateClassName(options.listDayClassName, {
+        className={generateClassName(options.listDayClassNames, {
           ...dateMeta,
           view: context.viewApi,
         })}
