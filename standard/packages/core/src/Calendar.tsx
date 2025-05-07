@@ -26,7 +26,6 @@ export class Calendar extends CalendarImpl {
 
   constructor(el: HTMLElement, optionOverrides: CalendarOptions = {}) {
     super()
-    // ensureElHasStyles(el)
 
     this.el = el
     this.renderRunner = new DelayedRunner(this.handleRenderRequest)

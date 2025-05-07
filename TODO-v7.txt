@@ -144,6 +144,7 @@ workaround "dual-package hazard" ?
 changelog: Vue3 path to global.js changed from index.global.js
 TODO: update examples in web-component README
 changelog: how to do importmap.html is way different
+changelog: removed web-component 'shadow' setting
 
 ASAP THEME
 ----------

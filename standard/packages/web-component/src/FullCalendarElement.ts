@@ -4,6 +4,17 @@ export class FullCalendarElement extends HTMLElement {
   _calendar: Calendar | null = null
   _options: CalendarOptions | null = null
 
+  constructor() {
+    super()
+    this.attachShadow({ mode: 'open' })
+
+    if ((globalThis as any).__applyFullCalendarStyles) {
+      (globalThis as any).__applyFullCalendarStyles(this.shadowRoot)
+    } else {
+      throw new Error('FullCalendar styles for Shadow DOM must be included via global.css.js')
+    }
+  }
+
   connectedCallback() {
     this._handleOptionsStr(this.getAttribute('options'))
   }
@@ -42,20 +53,9 @@ export class FullCalendarElement extends HTMLElement {
       if (this._calendar) {
         this._calendar.resetOptions(options)
       } else {
-        let root: ShadowRoot | HTMLElement
-
-        if (this.hasAttribute('shadow')) {
-          this.attachShadow({ mode: 'open' })
-          root = this.shadowRoot
-        } else {
-          // eslint-disable-next-line @typescript-eslint/no-this-alias
-          root = this
-        }
-
-        root.innerHTML = '<div></div>'
-        let calendarEl = root.querySelector('div')
-
-        let calendar = new Calendar(calendarEl, options)
+        const calendarEl = document.createElement('div')
+        this.shadowRoot.appendChild(calendarEl)
+        const calendar = new Calendar(calendarEl, options)
         calendar.render()
         this._calendar = calendar
       }
