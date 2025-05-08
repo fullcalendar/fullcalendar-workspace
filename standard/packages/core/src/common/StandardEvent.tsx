@@ -25,7 +25,7 @@ export interface StandardEventProps {
   isEnd: boolean // "
   isDragging: boolean // rename to isMirrorDragging? make optional?
   isResizing: boolean // rename to isMirrorResizing? make optional?
-  isDateSelecting: boolean // rename to isMirrorDateSelecting? make optional?
+  isMirror: boolean
   isSelected: boolean
   isPast: boolean
   isFuture: boolean
@@ -85,7 +85,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isDraggable,
       isStartResizable: !props.disableResizing && props.isStart && eventUi.durationEditable && options.eventResizableFromStart,
       isEndResizable: !props.disableResizing && props.isEnd && eventUi.durationEditable,
-      isMirror: Boolean(props.isDragging || props.isResizing || props.isDateSelecting),
+      isMirror: props.isMirror,
       isStart: Boolean(props.isStart),
       isEnd: Boolean(props.isEnd),
       isPast: Boolean(props.isPast), // TODO: don't cast. getDateMeta does it
@@ -118,9 +118,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
           props.className,
           (eventRange.def.url || isDraggable) && classNames.cursorPointer,
           classNames.internalEvent,
-          renderProps.isMirror && classNames.internalEventMirror,
-          renderProps.isDraggable && classNames.internalEventDraggable,
-          renderProps.isDragging && classNames.internalEventDragging,
+          props.isMirror && classNames.internalEventMirror,
+          isDraggable && classNames.internalEventDraggable,
           renderProps.isSelected && classNames.internalEventSelected,
           (renderProps.isStartResizable || renderProps.isEndResizable) && classNames.internalEventResizable,
         )}

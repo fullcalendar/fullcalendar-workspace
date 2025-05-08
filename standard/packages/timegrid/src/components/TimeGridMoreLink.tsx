@@ -48,7 +48,7 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
         dateSpanProps={props.dateSpanProps}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
-        popoverContent={() => renderPlainFgSegs(props.hiddenSegs, props)}
+        popoverContent={() => renderPlainFgSegs(props.hiddenSegs, props, /* isMirror = */ false)}
         defaultGenerator={renderMoreLinkInner}
         forceTimed={true}
         isCompact={false}

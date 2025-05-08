@@ -49,45 +49,41 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
         alignElRef={props.alignElRef}
         alignParentTop={props.alignParentTop}
         dateSpanProps={props.dateSpanProps}
-        popoverContent={() => {
-          let forcedInvisibleMap = // TODO: more convenient/DRY
-            (props.eventDrag ? props.eventDrag.affectedInstances : null) ||
-            (props.eventResize ? props.eventResize.affectedInstances : null) ||
-            {}
+        popoverContent={() => (
+          <Fragment>
+            {props.segs.map((seg) => {
+              let { eventRange } = seg
+              let { instanceId } = eventRange.instance
+              let isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
+              let isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
+              let isInvisible = isDragging || isResizing
 
-          return (
-            <Fragment>
-              {props.segs.map((seg) => {
-                let { eventRange } = seg
-                let { instanceId } = eventRange.instance
-
-                return (
-                  <div
-                    key={instanceId}
-                    style={{
-                      visibility: forcedInvisibleMap[instanceId] ? 'hidden' : '',
-                    }}
-                  >
-                    <StandardEvent
-                      axis='x'
-                      eventRange={eventRange}
-                      isStart={seg.isStart}
-                      isEnd={seg.isEnd}
-                      isDragging={false}
-                      isResizing={false}
-                      isDateSelecting={false}
-                      isSelected={instanceId === props.eventSelection}
-                      defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
-                      defaultDisplayEventEnd={false}
-                      isListItem={hasListItemDisplay(seg)}
-                      {...getEventRangeMeta(eventRange, props.todayRange)}
-                    />
-                  </div>
-                )
-              })}
-            </Fragment>
-          )
-        }}
+              return (
+                <div
+                  key={instanceId}
+                  style={{
+                    visibility: isInvisible ? 'hidden' : undefined,
+                  }}
+                >
+                  <StandardEvent
+                    axis='x'
+                    eventRange={eventRange}
+                    isStart={seg.isStart}
+                    isEnd={seg.isEnd}
+                    isDragging={isDragging}
+                    isResizing={isResizing}
+                    isMirror={false}
+                    isSelected={instanceId === props.eventSelection}
+                    defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
+                    defaultDisplayEventEnd={false}
+                    isListItem={hasListItemDisplay(seg)}
+                    {...getEventRangeMeta(eventRange, props.todayRange)}
+                  />
+                </div>
+              )
+            })}
+          </Fragment>
+        )}
       />
     )
   }

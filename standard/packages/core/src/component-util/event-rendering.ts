@@ -206,7 +206,7 @@ export interface MinimalEventProps {
   isEnd: boolean
   isDragging: boolean // rename to isMirrorDragging? make optional?
   isResizing: boolean // rename to isMirrorResizing? make optional?
-  isDateSelecting: boolean // rename to isMirrorDateSelecting? make optional?
+  isMirror: boolean
   isSelected: boolean
   isPast: boolean
   isFuture: boolean

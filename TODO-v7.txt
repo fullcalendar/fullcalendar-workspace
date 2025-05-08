@@ -145,6 +145,9 @@ changelog: Vue3 path to global.js changed from index.global.js
 TODO: update examples in web-component README
 changelog: how to do importmap.html is way different
 changelog: removed web-component 'shadow' setting
+changelog: event hooks' .isDragging/isResizing might be subtly different for mirror or regular
+recreation: did daygrid event-resizing get sloppier in recent versions?
+  previously, you'd drag over half-a-cell to trigger +1day. Now, it happens as soon as there's pixel overlap
 
 ASAP THEME
 ----------

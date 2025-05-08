@@ -3,6 +3,7 @@ import {
   DateProfile, DateRange, DateMarker, getEventRangeMeta,
   EventRangeProps,
   joinArrayishClassNames,
+  EventSegUiInteractionState,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
@@ -17,8 +18,9 @@ export interface TimelineLaneMoreLinkProps {
 
   // content
   hiddenSegs: (TimelineRange & EventRangeProps)[]
+  eventDrag: EventSegUiInteractionState<TimelineRange> | null
+  eventResize: EventSegUiInteractionState<TimelineRange> | null
   eventSelection: string
-  forcedInvisibleMap: { [instanceId: string]: any }
   resourceId?: string // HACK... make a generic keyval like renderProps
 }
 
@@ -26,7 +28,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
   render() {
     let { props } = this
     let { options } = this.context
-    let { hiddenSegs, resourceId, forcedInvisibleMap } = props
+    let { hiddenSegs, resourceId } = props
     let dateSpanProps = resourceId ? { resourceId } : {}
 
     return (
@@ -42,21 +44,24 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
           <Fragment>
             {hiddenSegs.map((seg) => {
               let { eventRange } = seg
-              let instanceId = eventRange.instance.instanceId
+              let { instanceId } = eventRange.instance
+              let isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
+              let isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
+              let isInvisible = isDragging || isResizing
 
               return (
                 <div
                   key={instanceId}
-                  style={{ visibility: forcedInvisibleMap[instanceId] ? 'hidden' : '' }}
+                  style={{ visibility: isInvisible ? 'hidden' : undefined }}
                 >
                   <TimelineEvent
                     isTimeScale={props.isTimeScale}
                     eventRange={eventRange}
                     isStart={seg.isStart}
                     isEnd={seg.isEnd}
-                    isDragging={false}
-                    isResizing={false}
-                    isDateSelecting={false}
+                    isDragging={isDragging}
+                    isResizing={isResizing}
+                    isMirror={false}
                     isSelected={instanceId === props.eventSelection}
                     {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate)}
                   />

@@ -83,11 +83,6 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       (isSelectMirror && props.dateSelectionSegs) ||
       []
 
-    let interactionAffectedInstances = // TODO: messy way to compute this
-      (props.eventDrag && props.eventDrag.affectedInstances) ||
-      (props.eventResize && props.eventResize.affectedInstances) ||
-      {}
-
     let dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange)
 
     const baseClassName = joinClassNames(
@@ -167,10 +162,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             >
               {this.renderFgSegs(
                 sortedFgSegs,
-                interactionAffectedInstances,
-                false,
-                false,
-                false,
+                /* isMirror = */ false,
               )}
             </div>
             {Boolean(mirrorSegs.length) && (
@@ -181,11 +173,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               >
                 {this.renderFgSegs(
                   mirrorSegs,
-                  {},
-                  Boolean(props.eventDrag),
-                  Boolean(props.eventResize),
-                  Boolean(isSelectMirror),
-                  'mirror',
+                  /* isMirror = */ true,
                 )}
               </div>
             )}
@@ -198,35 +186,20 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
   renderFgSegs(
     sortedFgSegs: (TimeGridRange & EventRangeProps)[],
-    segIsInvisible: { [instanceId: string]: any },
-    isDragging: boolean,
-    isResizing: boolean,
-    isDateSelecting: boolean,
-    forcedKey?: string,
+    isMirror: boolean,
   ) {
     const { props } = this
 
     if (props.forPrint && simplifiedTimeGridPrint) {
-      return renderPlainFgSegs(sortedFgSegs, props)
+      return renderPlainFgSegs(sortedFgSegs, props, isMirror)
     }
 
-    return this.renderPositionedFgSegs(
-      sortedFgSegs,
-      segIsInvisible,
-      isDragging,
-      isResizing,
-      isDateSelecting,
-      forcedKey,
-    )
+    return this.renderPositionedFgSegs(sortedFgSegs, isMirror)
   }
 
   renderPositionedFgSegs(
     segs: (TimeGridRange & EventRangeProps)[], // if not mirror, needs to be sorted
-    segIsInvisible: { [instanceId: string]: any },
-    isDragging: boolean,
-    isResizing: boolean,
-    isDateSelecting: boolean,
-    forcedKey?: string,
+    isMirror: boolean,
   ) {
     let { props, context } = this
     let { date, dateProfile, eventSelection, todayRange, nowDate } = props
@@ -243,13 +216,12 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       eventCompactHeight,
     )
     let [segRects, hiddenGroups] = buildWebPositioning(segs, segVerticals, eventOrderStrict, eventMaxStack)
-    let isMirror = isDragging || isResizing || isDateSelecting
 
     return (
       <Fragment>
         {segs.map((seg, index) => {
           let { eventRange } = seg
-          let instanceId = eventRange.instance.instanceId // guaranteed because it's an fg event
+          let { instanceId } = eventRange.instance // guaranteed because it's an fg event
           let segVertical: Partial<TimeGridSegVertical> = segVerticals[index] || {}
           let segRect = segRects.get(instanceId) // for horizontals. could be undefined!? HACK
 
@@ -257,16 +229,18 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
             ? this.computeSegHStyle(segRect)
             : { left: 0, right: 0 }
 
-          let isVisible = isMirror || (segRect && !segIsInvisible[instanceId])
+          let isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
+          let isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
+          let isInvisible = !isMirror && (isDragging || isResizing || !segRect)
 
           return (
             <div
               // we would have used classNames.fill, but multi-page spanning breaks in Firefox
               // we would have used height:100%, but multi-page spanning breaks in Safari
               className={joinClassNames(classNames.abs, classNames.flexCol)}
-              key={forcedKey || instanceId}
+              key={instanceId}
               style={{
-                visibility: isVisible ? ('' as any) : 'hidden',
+                visibility: isInvisible ? 'hidden' : undefined,
                 top: segVertical.start,
                 height: segVertical.size,
                 ...hStyle,
@@ -280,7 +254,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 isEnd={seg.isEnd}
                 isDragging={isDragging}
                 isResizing={isResizing}
-                isDateSelecting={isDateSelecting}
+                isMirror={isMirror}
                 isSelected={instanceId === eventSelection}
                 level={segRect ? segRect.stackDepth : 0}
                 isCompact={segVertical.isCompact || false}
@@ -432,23 +406,22 @@ export function renderPlainFgSegs(
     eventDrag: EventSegUiInteractionState<TimeGridRange> | null
     eventResize: EventSegUiInteractionState<TimeGridRange> | null
   },
+  isMirror: boolean,
 ) {
-  let hiddenInstances =
-    (eventDrag ? eventDrag.affectedInstances : null) ||
-    (eventResize ? eventResize.affectedInstances : null) ||
-    {}
-
   return (
     <Fragment>
       {sortedFgSegs.map((seg) => {
         let { eventRange } = seg
         let { instanceId } = eventRange.instance
+        let isDragging = Boolean(eventDrag && eventDrag.affectedInstances[instanceId])
+        let isResizing = Boolean(eventResize && eventResize.affectedInstances[instanceId])
+        let isInvisible = isDragging || isResizing
 
         return (
           <div
             key={instanceId}
             className={classNames.breakInsideAvoid}
-            style={{ visibility: hiddenInstances[instanceId] ? 'hidden' : ('' as any) }}
+            style={{ visibility: isInvisible ? 'hidden' : undefined }}
           >
             <TimeGridEvent
               eventRange={eventRange}
@@ -456,9 +429,9 @@ export function renderPlainFgSegs(
               slicedEnd={seg.endDate}
               isStart={seg.isStart}
               isEnd={seg.isEnd}
-              isDragging={false}
-              isResizing={false}
-              isDateSelecting={false}
+              isDragging={isDragging}
+              isResizing={isResizing}
+              isMirror={isMirror}
               isSelected={instanceId === eventSelection}
               level={0}
               isCompact={false}

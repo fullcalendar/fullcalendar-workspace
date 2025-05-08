@@ -66,7 +66,7 @@ export class ListDay extends BaseComponent<ListDayProps> {
                 isEnd={seg.isEnd}
                 isDragging={false}
                 isResizing={false}
-                isDateSelecting={false}
+                isMirror={false}
                 isSelected={false}
                 {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
               />

@@ -226,7 +226,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
       // render the mirror if no already-rendered mirror
       // TODO: wish we could somehow wait for dispatch to guarantee render
       this.dragging.setMirrorIsVisible(
-        !hit || !(this.subjectEl.getRootNode() as ParentNode).querySelector(`.${classNames.internalEventMirror}`), // TODO: turn className into constant
+        !hit || !(this.subjectEl.getRootNode() as ParentNode).querySelector(`.${classNames.internalEventMirror}`),
       )
 
       // assign states based on new hit

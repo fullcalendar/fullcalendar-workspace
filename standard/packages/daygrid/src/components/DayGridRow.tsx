@@ -129,11 +129,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const highlightSegs = this.getHighlightSegs()
     const mirrorSegs = this.getMirrorSegs()
 
-    const forcedInvisibleMap = // TODO: more convenient/DRY
-      (props.eventDrag && props.eventDrag.affectedInstances) ||
-      (props.eventResize && props.eventResize.affectedInstances) ||
-      {}
-
     const isNavLink = options.navLinks
     const fullWeekStr = buildDateStr(context, weekDate, 'week')
     const weekNum = dateEnv.computeWeekNumber(weekDate)
@@ -199,7 +194,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             renderableSegsByCol[col],
             segTops,
             props.todayRange,
-            forcedInvisibleMap,
+            /* isMirror = */ false,
           )
 
           return (
@@ -248,10 +243,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           mirrorSegs,
           segTops,
           props.todayRange,
-          {}, // forcedInvisibleMap
-          Boolean(props.eventDrag),
-          Boolean(props.eventResize),
-          false, // date-selecting (because mirror is never drawn for date selection)
+          /* isMirror = */ true,
         )}
       </div>
     )
@@ -262,10 +254,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     segs: DayRowEventRangePart[],
     segTops: Map<string, number>,
     todayRange: DateRange,
-    forcedInvisibleMap: { [instanceId: string]: any },
-    isDragging?: boolean,
-    isResizing?: boolean,
-    isDateSelecting?: boolean,
+    isMirror: boolean,
   ): VNode[] {
     const { props, context, segHeightRefMap } = this
     const { isRtl } = context
@@ -273,7 +262,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     const colCnt = props.cells.length
     const defaultDisplayEventEnd = props.cells.length === 1
-    const isMirror = isDragging || isResizing || isDateSelecting
     const nodes: VNode[] = []
 
     for (const seg of segs) {
@@ -290,7 +278,10 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
       const top = headerHeight != null && localTop != null
         ? headerHeight + localTop
         : undefined
-      const isInvisible = standinFor || forcedInvisibleMap[instanceId] || top == null
+
+      const isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
+      const isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
+      const isInvisible = !isMirror && (isDragging || isResizing || standinFor || top == null)
       const isListItem = hasListItemDisplay(seg)
 
       nodes.push(
@@ -298,7 +289,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           key={key}
           className={seg.start ? classNames.fakeBorderS : ''}
           style={{
-            visibility: isInvisible ? 'hidden' : '',
+            visibility: isInvisible ? 'hidden' : undefined,
             top,
             left,
             right,
@@ -316,7 +307,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             isEnd={seg.isEnd}
             isDragging={isDragging}
             isResizing={isResizing}
-            isDateSelecting={isDateSelecting}
+            isMirror={isMirror}
             isSelected={instanceId === eventSelection}
             defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
             defaultDisplayEventEnd={defaultDisplayEventEnd}

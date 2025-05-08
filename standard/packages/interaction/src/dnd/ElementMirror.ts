@@ -1,5 +1,4 @@
 import { applyStyle, whenTransitionDone, Rect } from '@fullcalendar/core/internal'
-import className from '@fullcalendar/core/internal-classnames'
 
 /*
 An effect in which an element follows the movement of a pointer across the screen.
@@ -123,11 +122,10 @@ export class ElementMirror {
 
       // we don't want long taps or any mouse interaction causing selection/menus.
       // would use preventSelection(), but that prevents selectstart, causing problems.
+      // TODO: make className for this?
       mirrorEl.style.userSelect = 'none'
       mirrorEl.style.webkitUserSelect = 'none'
       mirrorEl.style.pointerEvents = 'none'
-
-      mirrorEl.classList.add(className.internalEventDragging)
 
       applyStyle(mirrorEl, {
         position: 'fixed',

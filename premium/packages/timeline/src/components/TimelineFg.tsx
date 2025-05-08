@@ -89,11 +89,6 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     )
     this.totalHeight = totalHeight
 
-    let forcedInvisibleMap = // TODO: more convenient/DRY
-      (props.eventDrag ? props.eventDrag.affectedInstances : null) ||
-      (props.eventResize ? props.eventResize.affectedInstances : null) ||
-      {}
-
     return (
       <div
         className={classNames.rel}
@@ -103,12 +98,9 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
           fgSegs,
           fgSegHorizontals,
           fgSegTops,
-          forcedInvisibleMap,
           hiddenGroups,
           hiddenGroupTops,
-          false, // isDragging
-          false, // isResizing
-          false, // isDateSelecting
+          /* isMirror = */ false,
         )}
         {this.renderFgSegs(
           mirrorSegs,
@@ -116,12 +108,9 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
             ? computeManySegHorizontals(mirrorSegs, options.eventMinWidth, context.dateEnv, tDateProfile, props.slotWidth)
             : {},
           fgSegTops,
-          {}, // forcedInvisibleMap
-          [], // hiddenGroups
-          new Map(), // hiddenGroupTops
-          Boolean(props.eventDrag),
-          Boolean(props.eventResize),
-          false, // isDateSelecting. because mirror is never drawn for date selection
+          /* hiddenGroups = */ [],
+          /* hiddenGroupTops = */ new Map(),
+          /* isMirror = */ true,
         )}
       </div>
     )
@@ -131,15 +120,11 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     segs: (TimelineRange & EventRangeProps)[],
     segHorizontals: { [instanceId: string]: CoordSpan },
     segTops: Map<string, number>,
-    forcedInvisibleMap: { [instanceId: string]: any },
     hiddenGroups: SegGroup<TimelineCoordRange>[],
     hiddenGroupTops: Map<string, number>,
-    isDragging: boolean,
-    isResizing: boolean,
-    isDateSelecting: boolean,
+    isMirror: boolean,
   ) {
     let { props, context, segHeightRefMap, moreLinkHeightRefMap } = this
-    let isMirror = isDragging || isResizing || isDateSelecting
 
     return (
       <Fragment>
@@ -148,14 +133,16 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
           const { instanceId } = eventRange.instance
           const segTop = segTops.get(instanceId)
           const segHorizontal = segHorizontals[instanceId]
-          const isVisible = isMirror ||
-            (segHorizontal && segTop != null && !forcedInvisibleMap[instanceId])
+
+          const isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
+          const isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
+          const isInvisible = !isMirror && (isDragging || isResizing || !segHorizontal || segTop == null)
 
           return (
             <TimelineEventHarness
               key={instanceId}
               style={{
-                visibility: isVisible ? '' : 'hidden',
+                visibility: isInvisible ? 'hidden' : undefined,
                 zIndex: 1, // scope z-indexes within
                 top: segTop || 0,
                 ...horizontalsToCss(segHorizontal, context.isRtl),
@@ -169,8 +156,8 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
                 isEnd={seg.isEnd}
                 isDragging={isDragging}
                 isResizing={isResizing}
-                isDateSelecting={isDateSelecting}
-                isSelected={instanceId === props.eventSelection /* TODO: bad for mirror? */}
+                isMirror={isMirror}
+                isSelected={instanceId === props.eventSelection}
                 {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate)}
               />
             </TimelineEventHarness>
@@ -195,9 +182,10 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
               nowDate={props.nowDate}
               todayRange={props.todayRange}
               isTimeScale={props.tDateProfile.isTimeScale}
+              eventDrag={props.eventDrag}
+              eventResize={props.eventResize}
               eventSelection={props.eventSelection}
               resourceId={props.resourceId}
-              forcedInvisibleMap={forcedInvisibleMap}
             />
           </TimelineEventHarness>
         ))}
