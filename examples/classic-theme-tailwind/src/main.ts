@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
       selectMirror: true,
       dayMaxEvents: true, // allow "more" link when too many events
       // businessHours: true, // looks whack, covering lots of things
-      eventMaxStack: 1,
+      // eventMaxStack: 1,
       events: [
         {
           title: 'All Day Event',

@@ -23,16 +23,6 @@
 /* General Event */
 /* ------------------------------------------------------------------------------------------------- */
 
-/* transparent when mouse dragging */
-.fc-event-dragging:not(.fc-event-selected) {
-  opacity: 0.75;
-}
-
-/* box-shadow when touch dragging */
-.fc-event-dragging.fc-event-selected {
-  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.3);
-}
-
 /* FYI: will only be present on fc-event-x/y */
 .fc-event-resizer {
   position: absolute;
@@ -58,19 +48,6 @@
 
 /* X & Y-axis Events */
 /* ------------------------------------------------------------------------------------------------- */
-
-.fc-event-x,
-.fc-event-y {
-  position: relative; /* origin for resizers */
-}
-
-.fc-event-selected, /* touch-selected */
-.fc-event-x:focus, /* tab-focused */
-.fc-event-y:focus {
-  /* shadow */
-  /* TODO: improve focus-styling for .fc-daygrid-dot-event */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
 
 /* > dimmer-effect */
 /* TODO: problematic because covers most elements */
@@ -371,9 +348,8 @@
   margin-bottom: 1px; /* give some space from bottom */
 }
 
-.fc-timegrid-event-inset, /* (inset) */
-.fc-timegrid-event.fc-event-mirror { /* (mirror) */
-  box-shadow: 0px 0px 0px 1px var(--fc-page-bg-color); /* apply border w/o mass */
+.fc-timegrid-event-inset {
+  outline: 1px solid var(--fc-page-bg-color); /* apply border w/o mass */
 }
 
 .fc-timegrid-event .fc-event-inner {

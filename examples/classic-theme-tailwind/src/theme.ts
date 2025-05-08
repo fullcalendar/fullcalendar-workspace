@@ -132,8 +132,9 @@ export default createPlugin({
 
     eventClassNames: (arg) => [
       arg.event.url && 'no-underline hover:no-underline', // a reset. put elsewhere?
-
+      (arg.isDragging && !arg.isSelected) && 'opacity-75',
       arg.event.display === 'background' && 'bg-green-300 opacity-30',
+
       'fc-event',
       arg.isMirror && 'fc-event-mirror',
       arg.isDraggable && 'fc-event-draggable',
@@ -299,9 +300,18 @@ export default createPlugin({
     timeGrid: {
       viewClassNames: 'fc-timegrid',
       eventClassNames: (arg) => [
-        arg.event.allDay ? getDayGridEventClassNames(arg) :
-          arg.event.display === 'background' ? '' :
-            'fc-timegrid-event fc-event-y',
+        ...(
+          arg.event.allDay
+            ? getDayGridEventClassNames(arg)
+            : arg.event.display === 'background'
+              ? []
+              : [
+                'fc-timegrid-event fc-event-y relative',
+                arg.isSelected
+                  ? (arg.isDragging ? 'shadow-lg' : 'shadow-md')
+                  : 'focus:shadow-md'
+              ]
+        ),
         arg.isCompact && 'fc-timegrid-event-compact',
         arg.level && 'fc-timegrid-event-inset',
       ],
@@ -323,7 +333,10 @@ export default createPlugin({
     timeline: {
       viewClassNames: 'fc-timeline',
       eventClassNames: (arg) => [
-        'fc-timeline-event fc-event-x',
+        'fc-timeline-event fc-event-x relative',
+        arg.isSelected
+          ? (arg.isDragging ? 'shadow-lg' : 'shadow-md')
+          : 'focus:shadow-md',
         arg.isSpacious && 'fc-timeline-event-spacious',
       ],
       moreLinkClassNames: 'flex flex-col items-start text-xs bg-gray-300 p-px cursor-pointer me-px',
@@ -358,10 +371,16 @@ export default createPlugin({
 // Utils
 // -------------------------------------------------------------------------------------------------
 
-function getDayGridEventClassNames(arg: EventContentArg) {
-  return arg.event.display === 'background' ? '' :
-    arg.isListItem ? 'fc-daygrid-dot-event fc-daygrid-event fc-event-x' :
-    'fc-daygrid-block-event fc-daygrid-event fc-event-x'
+function getDayGridEventClassNames(arg: EventContentArg): string[] {
+  return arg.event.display === 'background'
+    ? []
+    : [
+      arg.isListItem ? 'fc-daygrid-dot-event' : 'fc-daygrid-block-event',
+      'fc-daygrid-event fc-event-x relative',
+      arg.isSelected
+        ? (arg.isDragging ? 'shadow-lg' : 'shadow-md')
+        : 'focus:shadow-md'
+    ]
 }
 
 function getDayGridEventColorClassNames(arg: EventContentArg) {
