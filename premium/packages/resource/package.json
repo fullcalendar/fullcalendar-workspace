@@ -49,6 +49,10 @@
       }
     }
   },
+  "sideEffects": true,
+  "sideEffects#comment": [
+    "Rollup incorrectly treeshakes the registerResourceSourceDef system"
+  ],
   "publishConfig": {
     "directory": "./dist",
     "linkDirectory": true
