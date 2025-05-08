@@ -129,9 +129,12 @@ export default createPlugin({
       arg.event.display === 'background' && 'fc-bg-event-title',
       'fc-event-title',
     ],
-    eventResizerClassNames: 'fc-event-resizer',
-    eventResizerStartClassNames: 'fc-event-resizer-start',
-    eventResizerEndClassNames: 'fc-event-resizer-end',
+    eventBeforeClassNames: (arg) => [
+      arg.isStartResizable && 'fc-event-resizer fc-event-resizer-start',
+    ],
+    eventAfterClassNames: (arg) => [
+      arg.isEndResizable && 'fc-event-resizer fc-event-resizer-end',
+    ],
 
     // Day-Headers (DayGrid & MultiMonth & TimeGrid)
     // ---------------------------------------------------------------------------------------------

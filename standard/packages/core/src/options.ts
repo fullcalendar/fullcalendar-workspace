@@ -207,19 +207,16 @@ export const BASE_OPTION_REFINERS = {
   eventBorderColor: String,
   eventTextColor: String,
   eventColor: String,
-  eventClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
-  eventContent: identity as Identity<CustomContentGenerator<EventContentArg>>,
   eventDidMount: identity as Identity<DidMountHandler<EventMountArg>>,
   eventWillUnmount: identity as Identity<WillUnmountHandler<EventMountArg>>,
-
-  // TODO: maybe have these accept args
+  eventContent: identity as Identity<CustomContentGenerator<EventContentArg>>,
+  eventClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
   eventColorClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
   eventInnerClassNames: identity as Identity<ClassNamesInput>,
   eventTimeClassNames: identity as Identity<ClassNamesInput>,
   eventTitleClassNames: identity as Identity<ClassNamesGenerator<{ event: EventApi }>>,
-  eventResizerClassNames: identity as Identity<ClassNamesInput>,
-  eventResizerStartClassNames: identity as Identity<ClassNamesInput>,
-  eventResizerEndClassNames: identity as Identity<ClassNamesInput>,
+  eventBeforeClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
+  eventAfterClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
 
   selectConstraint: identity as Identity<ConstraintInput>,
   selectOverlap: identity as Identity<boolean | OverlapFunc>,

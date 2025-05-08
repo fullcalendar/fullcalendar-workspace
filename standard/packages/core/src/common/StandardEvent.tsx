@@ -102,7 +102,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi }),
     }
 
-    // TODO: we'd like to put this in EventContentArg, but it needs EventContentArg renderProps!
+    const beforeClassNames = generateClassName(options.eventBeforeClassNames, renderProps)
+    const afterClassNames = generateClassName(options.eventAfterClassNames, renderProps)
     const colorClassNames = generateClassName(options.eventColorClassNames, renderProps)
 
     return (
@@ -140,30 +141,37 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       >
         {(InnerContent) => (
           <Fragment>
+            {/* hit expander */}
             {Boolean(renderProps.isSelected && props.axis != null) && (
               <div
-                // expand orthogonally
-                className={props.axis === 'x' ? 'y' : 'x'}
+                className={
+                  props.axis === 'x' // expand orthogonally
+                    ? classNames.hitY
+                    : classNames.hitX
+                }
               />
             )}
-            {Boolean(renderProps.isStartResizable && props.axis != null) && (
+            {/* "before" element (resizer or left-arrow) */}
+            {beforeClassNames && (
               <div
-                className={joinArrayishClassNames(
-                  options.eventResizerClassNames,
-                  options.eventResizerStartClassNames,
-                  props.axis === 'x'
-                    ? classNames.cursorResizeS
-                    : classNames.cursorResizeT,
-                  // these classnames required for dnd
-                  classNames.internalEventResizer,
-                  classNames.internalEventResizerStart,
+                className={joinClassNames(
+                  beforeClassNames,
+                  renderProps.isStartResizable && joinClassNames(
+                    props.axis === 'x'
+                      ? classNames.cursorResizeS
+                      : classNames.cursorResizeT,
+                    // these classnames required for dnd
+                    classNames.internalEventResizer,
+                    classNames.internalEventResizerStart,
+                  )
                 )}
               >
-                {Boolean(renderProps.isSelected) && (
+                {Boolean(renderProps.isStartResizable && renderProps.isSelected) && (
                   <div className={classNames.hit} />
                 )}
               </div>
             )}
+            {/* color element */}
             {Boolean(colorClassNames) && (
               <div
                 className={colorClassNames}
@@ -172,6 +180,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                 }}
               />
             )}
+            {/* inner element */}
             <InnerContent
               tag="div"
               className={joinArrayishClassNames(options.eventInnerClassNames)}
@@ -179,20 +188,22 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                 color: renderProps.textColor,
               }}
             />
-            {Boolean(renderProps.isEndResizable && props.axis != null) && (
+            {/* "after" element (resizer or left-arrow) */}
+            {afterClassNames && (
               <div
-                className={joinArrayishClassNames(
-                  options.eventResizerClassNames,
-                  options.eventResizerEndClassNames,
-                  props.axis === 'x'
-                    ? classNames.cursorResizeE
-                    : classNames.cursorResizeB,
-                  // these classnames required for dnd
-                  classNames.internalEventResizer,
-                  classNames.internalEventResizerEnd,
+                className={joinClassNames(
+                  afterClassNames,
+                  renderProps.isEndResizable && joinClassNames(
+                    props.axis === 'x'
+                      ? classNames.cursorResizeE
+                      : classNames.cursorResizeB,
+                    // these classnames required for dnd
+                    classNames.internalEventResizer,
+                    classNames.internalEventResizerEnd,
+                  )
                 )}
               >
-                {Boolean(renderProps.isSelected) && (
+                {Boolean(renderProps.isEndResizable && renderProps.isSelected) && (
                   <div className={classNames.hit} />
                 )}
               </div>
