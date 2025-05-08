@@ -291,6 +291,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         ? headerHeight + localTop
         : undefined
       const isInvisible = standinFor || forcedInvisibleMap[instanceId] || top == null
+      const isListItem = hasListItemDisplay(seg)
 
       nodes.push(
         <DayGridEventHarness
@@ -319,7 +320,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             isSelected={instanceId === eventSelection}
             defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
             defaultDisplayEventEnd={defaultDisplayEventEnd}
-            isListItem={hasListItemDisplay(seg)}
+            disableResizing={isListItem}
+            isListItem={isListItem}
             {...getEventRangeMeta(eventRange, todayRange)}
           />
         </DayGridEventHarness>,
