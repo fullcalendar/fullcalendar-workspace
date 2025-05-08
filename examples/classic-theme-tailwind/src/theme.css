@@ -23,12 +23,6 @@
 /* General Event */
 /* ------------------------------------------------------------------------------------------------- */
 
-/* reset underline when events <a> */
-a.fc-event, /* (anchor) */
-a.fc-event:hover { /* (anchor:hover) */
-  text-decoration: none;
-}
-
 /* transparent when mouse dragging */
 .fc-event-dragging:not(.fc-event-selected) {
   opacity: 0.75;

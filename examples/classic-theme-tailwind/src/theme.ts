@@ -131,6 +131,8 @@ export default createPlugin({
     // ---------------------------------------------------------------------------------------------
 
     eventClassNames: (arg) => [
+      arg.event.url && 'no-underline hover:no-underline', // a reset. put elsewhere?
+
       arg.event.display === 'background' && 'bg-green-300 opacity-30',
       'fc-event',
       arg.isMirror && 'fc-event-mirror',

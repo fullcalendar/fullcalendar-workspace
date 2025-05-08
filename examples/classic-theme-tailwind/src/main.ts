@@ -10,7 +10,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import themePlugin from './theme.js'
 
-const enablePremium = true
+const enablePremium = false
 
 document.addEventListener('DOMContentLoaded', function() {
   const calendarEl = document.getElementById('calendar')!
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
         themePlugin,
       ],
       initialDate: '2023-01-12',
-      initialView: 'multiMonthYear',
+      initialView: 'dayGridMonth',
       nowIndicator: true,
       headerToolbar: {
         left: 'prev,next today',
