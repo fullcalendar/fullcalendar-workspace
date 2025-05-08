@@ -1,3 +1,6 @@
+import '@fullcalendar/core/global.css'
+import './style.css'
+
 import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -5,8 +8,7 @@ import listPlugin from '@fullcalendar/list'
 import multiMonthPlugin from '@fullcalendar/multimonth'
 import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import themePlugin from './theme'
-import './style.css'
+import themePlugin from './theme.js'
 
 const enablePremium = true
 
