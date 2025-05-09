@@ -12,12 +12,19 @@ import themePlugin from './theme.js'
 
 const enablePremium = false
 
+/*
+Resizing timeline events is whack
+when drawn as a mirror-event in another resource lane
+TODO: rename "mirror"?
+*/
+
 document.addEventListener('DOMContentLoaded', function() {
   const calendarEl = document.getElementById('calendar')!
   let calendar: Calendar
 
   if (!enablePremium) {
     calendar = new Calendar(calendarEl, {
+      eventResizableFromStart: true,
       // stickyHeaderDates: true, -- makes things broken sometimes!
       weekNumbers: true,
       plugins: [
@@ -29,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
         themePlugin,
       ],
       initialDate: '2023-01-12',
-      initialView: 'dayGridMonth',
+      initialView: 'timeGridWeek',
       nowIndicator: true,
       headerToolbar: {
         left: 'prev,next today',

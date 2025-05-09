@@ -20,32 +20,6 @@
   --fc-list-event-hover-bg-color: #f5f5f5;
 }
 
-/* General Event */
-/* ------------------------------------------------------------------------------------------------- */
-
-/* FYI: will only be present on fc-event-x/y */
-.fc-event-resizer {
-  position: absolute;
-  z-index: 2; /* one above sticky title */
-  display: none; /* hide */
-}
-
-.fc-event:hover .fc-event-resizer, /* mouse hover */
-.fc-event-selected .fc-event-resizer { /* touch select */
-  display: block; /* reveal */
-}
-
-/* touch resizer dot */
-.fc-event-selected .fc-event-resizer {
-  border-radius: calc(var(--fc-event-resizer-dot-total-width) / 2);
-  border-width: var(--fc-event-resizer-dot-border-width);
-  width: var(--fc-event-resizer-dot-total-width);
-  height: var(--fc-event-resizer-dot-total-width);
-  border-style: solid;
-  border-color: inherit;
-  background: var(--fc-page-bg-color);
-}
-
 /* X & Y-axis Events */
 /* ------------------------------------------------------------------------------------------------- */
 
@@ -104,35 +78,6 @@
   right: 0;
 }
 
-/* resizer positioning for mouse */
-.fc-event-x:not(.fc-event-selected) .fc-event-resizer {
-  top: 0;
-  bottom: 0;
-  width: var(--fc-event-resizer-thickness);
-}
-.fc-direction-ltr .fc-event-x:not(.fc-event-selected) .fc-event-resizer-start,
-.fc-direction-rtl .fc-event-x:not(.fc-event-selected) .fc-event-resizer-end {
-  left: calc(-0.5 * var(--fc-event-resizer-thickness));
-}
-.fc-direction-ltr .fc-event-x:not(.fc-event-selected) .fc-event-resizer-end,
-.fc-direction-rtl .fc-event-x:not(.fc-event-selected) .fc-event-resizer-start {
-  right: calc(-0.5 * var(--fc-event-resizer-thickness));
-}
-
-/* resizer dot positioning for touch */
-.fc-event-x.fc-event-selected .fc-event-resizer {
-  top: 50%;
-  margin-top: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
-}
-.fc-direction-ltr .fc-event-x.fc-event-selected .fc-event-resizer-start,
-.fc-direction-rtl .fc-event-x.fc-event-selected .fc-event-resizer-end {
-  left: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
-}
-.fc-direction-ltr .fc-event-x.fc-event-selected .fc-event-resizer-end,
-.fc-direction-rtl .fc-event-x.fc-event-selected .fc-event-resizer-start {
-  right: calc(-0.5 * var(--fc-event-resizer-dot-total-width));
-}
-
 /* Y-axis Event */
 /* ------------------------------------------------------------------------------------------------- */
 
@@ -171,31 +116,6 @@
   /* CANNOT be overridden. print view depends on width-independent height */
   white-space: nowrap !important;
   overflow: hidden !important;
-}
-
-/* mouse resizing */
-.fc-event-y:not(.fc-event-selected) .fc-event-resizer {
-  height: var(--fc-event-resizer-thickness);
-  left: 0;
-  right: 0;
-}
-.fc-event-y:not(.fc-event-selected) .fc-event-resizer-start { /* (start) */
-  top: calc(var(--fc-event-resizer-thickness) / -2);
-}
-.fc-event-y:not(.fc-event-selected) .fc-event-resizer-end { /* (end) */
-  bottom: calc(var(--fc-event-resizer-thickness) / -2);
-}
-
-/* touch resizing with dot */
-.fc-event-y.fc-event-selected .fc-event-resizer {
-  left: 50%;
-  margin-left: calc(var(--fc-event-resizer-dot-total-width) / -2);
-}
-.fc-event-y.fc-event-selected .fc-event-resizer-start { /* (start) */
-  top: calc(var(--fc-event-resizer-dot-total-width) / -2);
-}
-.fc-event-y.fc-event-selected .fc-event-resizer-end { /* (end) */
-  bottom: calc(var(--fc-event-resizer-dot-total-width) / -2);
 }
 
 /* DayGrid > Event */

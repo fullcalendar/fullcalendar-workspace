@@ -1,4 +1,4 @@
-import { createPlugin, EventContentArg, PluginDef } from '@fullcalendar/core'
+import { CalendarOptions, createPlugin, EventContentArg, PluginDef } from '@fullcalendar/core'
 import * as svgIcons from './svgIcons.js'
 import './theme.css'
 
@@ -10,13 +10,34 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/resource-daygrid'
 import {} from '@fullcalendar/resource-timeline'
 
-const dayGridCommon = { // TODO: add type to avoid `any`
-  eventClassNames: getDayGridEventClassNames,
+const dayGridCommon: CalendarOptions = {
+  eventClassNames: getDayGridEventClassNames, // has 'group'
   eventColorClassNames: getDayGridEventColorClassNames,
+  eventBeforeClassNames: (arg) => [
+    // TODO: for dot, use event color
+    // TODO: remove bg-red-500
+    'absolute z-10 inset-y-0',
+    arg.isStartResizable && (
+      arg.isSelected
+        ? '-start-1 w-2 h-2 rounded border border-solid border-blue-500 bg-white top-1/2 -mt-1'
+        : '-start-1 w-2 hidden group-hover:block bg-red-500'
+    ),
+  ],
+  eventAfterClassNames: (arg) => [
+    // TODO: for dot, use event color
+    // TODO: remove bg-red-500
+    'absolute z-10 inset-y-0',
+    arg.isEndResizable && (
+      arg.isSelected
+        ? '-end-1 w-2 h-2 rounded border border-solid border-blue-500 bg-white top-1/2 -mt-1'
+        : '-end-1 w-2 hidden group-hover:block bg-red-500'
+    ),
+  ],
+
   weekNumberClassNames: [
     'absolute z-10 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center bg-gray-100 text-gray-500',
   ],
-  moreLinkClassNames: (arg: any) => [
+  moreLinkClassNames: (arg) => [
     'cursor-pointer text-xs p-0.5 rounded-xs mx-0.5 mb-px',
     // TODO: somehow make this core? will go away with measurement refactor?
     'relative max-w-full overflow-hidden whitespace-nowrap',
@@ -299,6 +320,7 @@ export default createPlugin({
     },
     timeGrid: {
       viewClassNames: 'fc-timegrid',
+
       eventClassNames: (arg) => [
         ...(
           arg.event.allDay
@@ -314,10 +336,32 @@ export default createPlugin({
         ),
         arg.isCompact && 'fc-timegrid-event-compact',
         arg.level && 'fc-timegrid-event-inset',
+        'group',
+      ],
+      eventBeforeClassNames: (arg) => [
+        // TODO: for dot, use event color
+        // TODO: remove bg-red-500
+        'absolute z-10 inset-x-0',
+        arg.isStartResizable && (
+          arg.isSelected
+            ? '-top-1 h-2 w-2 rounded border border-solid border-blue-500 bg-white left-1/2 -ms-1'
+            : '-top-1 h-2 hidden group-hover:block bg-red-500'
+        ),
+      ],
+      eventAfterClassNames: (arg) => [
+        // TODO: for dot, use event color
+        // TODO: remove bg-red-500
+        'absolute z-10 inset-x-0',
+        arg.isEndResizable && (
+          arg.isSelected
+            ? '-bottom-1 h-2 w-2 rounded border border-solid border-blue-500 bg-white left-1/2 -ms-1'
+            : '-bottom-1 h-2 hidden group-hover:block bg-red-500'
+        ),
       ],
       eventColorClassNames: (arg) => (
         arg.event.allDay ? getDayGridEventColorClassNames(arg) : ''
       ),
+
       allDayHeaderClassNames: axisClassNames,
       allDayHeaderInnerClassNames: `${axisInnerClassNames} whitespace-pre px-1 py-0.5`, // TODO: keep here our move to general section?
       weekNumberClassNames: axisClassNames,
@@ -332,13 +376,35 @@ export default createPlugin({
     },
     timeline: {
       viewClassNames: 'fc-timeline',
+
       eventClassNames: (arg) => [
-        'fc-timeline-event fc-event-x relative',
+        'fc-timeline-event fc-event-x relative group',
         arg.isSelected
           ? (arg.isDragging ? 'shadow-lg' : 'shadow-md')
           : 'focus:shadow-md',
         arg.isSpacious && 'fc-timeline-event-spacious',
       ],
+      eventBeforeClassNames: (arg) => [
+        // TODO: for dot, use event color
+        // TODO: remove bg-red-500
+        'absolute z-10 inset-y-0',
+        arg.isStartResizable && (
+          arg.isSelected
+            ? '-start-1 w-2 h-2 rounded border border-solid border-blue-500 bg-white top-1/2 -mt-1'
+            : '-start-1 w-2 hidden group-hover:block bg-red-500'
+        ),
+      ],
+      eventAfterClassNames: (arg) => [
+        // TODO: for dot, use event color
+        // TODO: remove bg-red-500
+        'absolute z-10 inset-y-0',
+        arg.isEndResizable && (
+          arg.isSelected
+            ? '-end-1 w-2 h-2 rounded border border-solid border-blue-500 bg-white top-1/2 -mt-1'
+            : '-end-1 w-2 hidden group-hover:block bg-red-500'
+        ),
+      ],
+
       moreLinkClassNames: 'flex flex-col items-start text-xs bg-gray-300 p-px cursor-pointer me-px',
       moreLinkInnerClassNames: 'p-0.5',
       slotLabelInnerClassNames: 'p-1',
@@ -377,6 +443,7 @@ function getDayGridEventClassNames(arg: EventContentArg): string[] {
     : [
       arg.isListItem ? 'fc-daygrid-dot-event' : 'fc-daygrid-block-event',
       'fc-daygrid-event fc-event-x relative',
+      'group',
       arg.isSelected
         ? (arg.isDragging ? 'shadow-lg' : 'shadow-md')
         : 'focus:shadow-md'
