@@ -10,6 +10,10 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/resource-daygrid'
 import {} from '@fullcalendar/resource-timeline'
 
+/*
+TODO: search all "blue"
+*/
+
 const dayGridCommon: CalendarOptions = {
   eventClassNames: getDayGridEventClassNames, // has 'group'
   eventColorClassNames: getDayGridEventColorClassNames,
@@ -424,8 +428,18 @@ export default createPlugin({
     },
     list: {
       viewClassNames: 'fc-list',
-      eventClassNames: `fc-list-event not-last:border-b border-gray-300 ${listItemInnerCommon}`,
-      eventColorClassNames: 'fc-list-event-dot',
+      eventClassNames: [
+        `fc-list-event not-last:border-b border-gray-300 ${listItemInnerCommon}`,
+        'hover:bg-gray-50',
+        'flex flex-row items-center gap-3',
+        'group',
+      ],
+      eventColorClassNames: 'w-[10px] h-[10px] rounded-full bg-blue-500',
+      eventInnerClassNames: '[display:contents]',
+      eventTimeClassNames: 'order-[-1] w-[165px]',
+      eventTitleClassNames: (arg) => [
+        arg.event.url && 'group-hover:underline',
+      ],
 
       // TODO: put these settings in root config?
       // TODO: rename to listEmptyClassNames/listEmptyInnerClassNames?

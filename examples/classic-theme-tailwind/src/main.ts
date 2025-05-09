@@ -11,7 +11,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import themePlugin from './theme.js'
 
-const enablePremium = true
+const enablePremium = false
 
 /*
 Resizing timeline events is whack
@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
         multiMonthPlugin,
         themePlugin,
       ],
-      // initialDate: '2023-01-12',
-      initialView: 'timeGridWeek',
+      initialDate: '2023-01-12',
+      initialView: 'listWeek',
       nowIndicator: true,
       headerToolbar: {
         left: 'prev,next today',
