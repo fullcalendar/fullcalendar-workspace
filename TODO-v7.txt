@@ -149,6 +149,7 @@ changelog: event hooks' .isDragging/isResizing might be subtly different for mir
 recreation: did daygrid event-resizing get sloppier in recent versions?
   previously, you'd drag over half-a-cell to trigger +1day. Now, it happens as soon as there's pixel overlap
 TEST: date-selecting with mirror
+TODO: for v7, remove concept for eventBorder/Background... theme decides what to do with color
 
 ASAP THEME
 ----------

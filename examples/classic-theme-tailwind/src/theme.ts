@@ -17,7 +17,7 @@ TODO: search all "blue"
 const dayGridCommon: CalendarOptions = {
   eventClassNames: getDayGridEventClassNames, // has 'group'
   eventColorClassNames: getDayGridEventColorClassNames,
-  eventBeforeClassNames: (arg) => [
+  eventBeforeClassNames: (arg) => [ // won't get called for bg event!?
     // TODO: for dot, use event color
     // TODO: remove bg-red-500
     'absolute z-20 inset-y-0',
@@ -27,7 +27,7 @@ const dayGridCommon: CalendarOptions = {
         : '-start-1 w-2 hidden group-hover:block bg-red-500'
     ),
   ],
-  eventAfterClassNames: (arg) => [
+  eventAfterClassNames: (arg) => [ // won't get called for bg event!?
     // TODO: for dot, use event color
     // TODO: remove bg-red-500
     'absolute z-20 inset-y-0',
@@ -37,9 +37,13 @@ const dayGridCommon: CalendarOptions = {
         : '-end-1 w-2 hidden group-hover:block bg-red-500'
     ),
   ],
+  // won't get called for bg event!?
   eventInnerClassNames: 'flex flex-row items-center',
+  // won't get called for bg event!?
   eventTimeClassNames: 'whitespace-nowrap overflow-hidden flex-shrink-0 max-w-full',
-  eventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink sticky z-10 inset-x-0',
+  eventTitleClassNames: (arg) => [
+    !arg.event.allDay && 'whitespace-nowrap overflow-hidden flex-shrink sticky z-10 inset-x-0'
+  ],
 
   weekNumberClassNames: [
     'absolute z-20 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center bg-gray-100 text-gray-500',
@@ -73,7 +77,7 @@ const listItemInnerCommon = 'px-3 py-2'
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
-    classNames: 'gap-5',
+    classNames: 'gap-5 [--fc-event-color:green]',
     directionClassNames: (direction) => `fc-direction-${direction}`,
     mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
     toolbarClassNames: 'gap-3',
@@ -129,6 +133,9 @@ export default createPlugin({
       'active:border-slate-900 active:bg-slate-800 active:z-20', // active (similar to selected)
       'hover:border-slate-900 hover:bg-slate-800', // hover
       'focus:outline-3 outline-slate-600/50 focus:z-10', // focus
+      /*
+      what about print!?
+      */
     ],
 
     popoverClassNames: `bg-white shadow-md ${cellClassName}`, // see also: dayPopoverClassNames
@@ -335,17 +342,15 @@ export default createPlugin({
             : arg.event.display === 'background'
               ? []
               : [
-                'fc-timegrid-event fc-event-y relative',
+                'relative text-xs text-white mb-px',
                 arg.isSelected
                   ? (arg.isDragging ? 'shadow-lg' : 'shadow-md')
                   : 'focus:shadow-md'
               ]
         ),
-        arg.isCompact && 'fc-timegrid-event-compact',
-        arg.level && 'fc-timegrid-event-inset',
         'group',
       ],
-      eventBeforeClassNames: (arg) => [
+      eventBeforeClassNames: (arg) => [ // TODO: conditional for DayGrid events!
         // TODO: for dot, use event color
         // TODO: remove bg-red-500
         'absolute z-20 inset-x-0',
@@ -355,7 +360,7 @@ export default createPlugin({
             : '-top-1 h-2 hidden group-hover:block bg-red-500'
         ),
       ],
-      eventAfterClassNames: (arg) => [
+      eventAfterClassNames: (arg) => [ // TODO: conditional for DayGrid events!
         // TODO: for dot, use event color
         // TODO: remove bg-red-500
         'absolute z-20 inset-x-0',
@@ -366,11 +371,40 @@ export default createPlugin({
         ),
       ],
       eventColorClassNames: (arg) => (
-        arg.event.allDay ? getDayGridEventColorClassNames(arg) : ''
+        arg.event.allDay
+          ? getDayGridEventColorClassNames(arg)
+          : [
+            'absolute z-0 inset-0 bg-(--fc-event-color)',
+            arg.isStart && 'rounded-t-sm',
+            arg.isEnd && 'rounded-b-sm',
+            arg.level && 'outline outline-color-white',
+            arg.isSelected ? 'brightness-75' : 'group-focus:brightness-75',
+          ]
       ),
-      eventInnerClassNames: 'flex flex-col',
-      eventTimeClassNames: 'whitespace-nowrap overflow-hidden flex-shrink-0 max-h-full',
-      eventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink sticky z-10 top-0',
+      eventInnerClassNames: (arg) => (
+        (!arg.event.allDay && arg.event.display !== 'background')
+          && [
+            'relative z-10 flex',
+            arg.isCompact
+              ? 'flex-row overflow-hidden gap-1'
+              : 'flex-col p-0.5 gap-px',
+          ]
+      ),
+      eventTimeClassNames: (arg) => (
+        (!arg.event.allDay && arg.event.display !== 'background')
+          && [
+            'whitespace-nowrap overflow-hidden flex-shrink-0',
+            'text-[0.9em]',
+            arg.isCompact ? 'max-w-full' : 'max-h-full'
+          ]
+      ),
+      eventTitleClassNames: (arg) => (
+        (!arg.event.allDay && arg.event.display !== 'background')
+          && [
+            !arg.event.allDay && 'whitespace-nowrap overflow-hidden flex-shrink sticky top-0',
+            arg.isCompact && 'text-[0.9em]',
+          ]
+      ),
 
       allDayHeaderClassNames: axisClassNames,
       allDayHeaderInnerClassNames: `${axisInnerClassNames} whitespace-pre px-1 py-0.5`, // TODO: keep here our move to general section?
@@ -434,7 +468,7 @@ export default createPlugin({
         'flex flex-row items-center gap-3',
         'group',
       ],
-      eventColorClassNames: 'w-[10px] h-[10px] rounded-full bg-blue-500',
+      eventColorClassNames: 'w-[10px] h-[10px] rounded-full bg-(--fc-event-color)',
       eventInnerClassNames: '[display:contents]',
       eventTimeClassNames: 'order-[-1] w-[165px]',
       eventTitleClassNames: (arg) => [

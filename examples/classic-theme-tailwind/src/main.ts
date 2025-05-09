@@ -38,8 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
         multiMonthPlugin,
         themePlugin,
       ],
+      eventInteractive: true,
       initialDate: '2023-01-12',
-      initialView: 'listWeek',
+      initialView: 'timeGridWeek',
       nowIndicator: true,
       headerToolbar: {
         left: 'prev,next today',
@@ -61,7 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
         {
           title: 'Long Event',
           start: '2023-01-07',
-          end: '2023-01-10'
+          end: '2023-01-10',
+          color: 'red',
         },
         {
           groupId: '999',

@@ -10,7 +10,7 @@ import { EventDef } from '../structs/event-def.js'
 import { EventInstance } from '../structs/event-instance.js'
 import { EventImpl } from '../api/EventImpl.js'
 import { ViewContext } from '../ViewContext.js'
-import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
+import { joinClassNames } from '../util/html.js'
 import classNames from '../internal-classnames.js'
 
 export interface StandardEventProps {
@@ -98,8 +98,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isCompact: props.isCompact || false,
       isSpacious: props.isSpacious || false,
       level: props.level || 0,
-      timeClassName: joinArrayishClassNames(options.eventTimeClassNames),
-      titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi }),
+      timeClassName: generateClassName(options.eventTimeClassNames, { event: eventApi, isCompact: props.isCompact || false }),
+      titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi, isCompact: props.isCompact || false }),
     }
 
     const beforeClassNames = generateClassName(options.eventBeforeClassNames, renderProps)
@@ -126,10 +126,9 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
           (renderProps.isStartResizable || renderProps.isEndResizable) && classNames.internalEventResizable,
         )}
         style={{
-          borderColor: eventUi.borderColor,
-          backgroundColor: colorClassNames
-            ? undefined // color will be injected below
-            : eventUi.backgroundColor, // TODO: move to just "color"
+          '--fc-event-color': eventUi.backgroundColor, // TODO: move to just "color"
+          // borderColor: eventUi.borderColor, // ???
+          // backgroundColor: colorClassNames, // ???
         }}
         elRef={this.handleEl}
         renderProps={renderProps}
@@ -173,13 +172,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
               </div>
             )}
             {/* color element */}
-            {Boolean(colorClassNames) && (
-              <div
-                className={colorClassNames}
-                style={{
-                  backgroundColor: renderProps.backgroundColor, // TODO: move to just "color"
-                }}
-              />
+            {colorClassNames && (
+              <div className={colorClassNames} />
             )}
             {/* inner element */}
             <InnerContent

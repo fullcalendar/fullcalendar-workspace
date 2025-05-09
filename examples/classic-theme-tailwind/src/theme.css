@@ -27,9 +27,9 @@
 /* TODO: problematic because covers most elements */
 /* Coincidence that sticky elements get put above */
 /* Give non-sticky elements position:relative! */
-.fc-event-selected:before, /* touch-selected */
-.fc-event-x:focus:before, /* tab-focused */
-.fc-event-y:focus:before {
+xxx.fc-event-selected:before, /* touch-selected */
+xxx.fc-event-x:focus:before, /* tab-focused */
+xxx.fc-event-y:focus:before {
   /* assume there's a border on all sides. overcome it. */
   /* sometimes there's NOT a border, in which case the dimmer will go over */
   /* an adjacent border, which looks fine. */
@@ -138,62 +138,11 @@
 /* TimeGrid > Event */
 /* ------------------------------------------------------------------------------------------------- */
 
-.fc-timegrid-event {
-  border-radius: 3px;
-  border: 1px solid var(--fc-event-border-color);
-  background-color: var(--fc-event-bg-color);
-  font-size: var(--fc-small-font-size);
-}
-.fc-media-print .fc-timegrid-event { /* (print) */
+xxx.fc-media-print .fc-timegrid-event {
   background: #fff !important;
 }
-
-/* kill top border and radius when not-start */
-.fc-timegrid-event:not(.fc-event-start) {
-  border-top-width: 0;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-/* kill bottom border and radius when not-end */
-.fc-timegrid-event:not(.fc-event-end) {
-  border-bottom-width: 0;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.fc-timegrid-event.fc-event-end {
-  margin-bottom: 1px; /* give some space from bottom */
-}
-
-.fc-timegrid-event-inset {
-  outline: 1px solid var(--fc-page-bg-color); /* apply border w/o mass */
-}
-
-.fc-timegrid-event .fc-event-inner {
-  padding: 1px 1px 0;
-  color: var(--fc-event-text-color); /* better to assign text-color within to bypass link color */
-}
-.fc-media-print .fc-timegrid-event .fc-event-inner { /* (print) */
+xxx.fc-media-print .fc-timegrid-event .fc-event-inner {
   color: #000 !important;
-}
-
-.fc-timegrid-event .fc-event-time {
-  white-space: nowrap;
-  font-size: var(--fc-small-font-size);
-  margin-bottom: 1px;
-}
-
-/* SHORT variation */
-.fc-timegrid-event-compact .fc-event-inner {
-  flex-direction: row; /* overrides fc-event-x! */
-  overflow: hidden;
-}
-.fc-timegrid-event-compact .fc-event-time:after {
-  content: '\00a0-\00a0'; /* dash surrounded by non-breaking spaces */
-}
-.fc-timegrid-event-compact .fc-event-title {
-  font-size: var(--fc-small-font-size);
 }
 
 /* Timeline > Event */
