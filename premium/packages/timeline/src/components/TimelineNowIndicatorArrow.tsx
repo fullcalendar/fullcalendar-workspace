@@ -31,6 +31,7 @@ export class TimelineNowIndicatorArrow extends BaseComponent<TimelineNowIndicato
         }}
       >
         <NowIndicatorLabelContainer
+          className={classNames.abs}
           style={
             props.slotWidth != null
               ? horizontalCoordToCss(

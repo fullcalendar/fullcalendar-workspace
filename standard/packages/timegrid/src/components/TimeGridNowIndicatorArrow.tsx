@@ -24,6 +24,7 @@ export function TimeGridNowIndicatorArrow(props: TimeGridNowIndicatorArrowProps)
       }}
     >
       <NowIndicatorLabelContainer
+        className={classNames.abs}
         style={{
           top: props.totalHeight != null
             ? props.totalHeight * computeDateTopFrac(props.nowDate, props.dateProfile)

@@ -11,7 +11,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import themePlugin from './theme.js'
 
-const enablePremium = false
+const enablePremium = true
 
 /*
 Resizing timeline events is whack
@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (!enablePremium) {
     calendar = new Calendar(calendarEl, {
+      // direction: 'rtl',
       eventResizableFromStart: true,
       // stickyHeaderDates: true, -- makes things broken sometimes!
       weekNumbers: true,
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
         multiMonthPlugin,
         themePlugin,
       ],
-      initialDate: '2023-01-12',
+      // initialDate: '2023-01-12',
       initialView: 'timeGridWeek',
       nowIndicator: true,
       headerToolbar: {

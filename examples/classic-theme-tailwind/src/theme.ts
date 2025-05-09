@@ -377,7 +377,7 @@ export default createPlugin({
       slotLabelClassNames: axisClassNames,
       slotLabelInnerClassNames: `${axisInnerClassNames} px-1 py-0.5`,
       slotLabelDividerClassNames: 'border-l border-gray-300',
-      nowIndicatorLabelClassNames: 'fc-timegrid-now-indicator-label',
+      nowIndicatorLabelClassNames: 'start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] border-s-red-500',
       nowIndicatorLineClassNames: 'border-t border-red-500', // put color on master setting?
     },
     timeline: {
@@ -419,7 +419,7 @@ export default createPlugin({
       moreLinkInnerClassNames: 'p-0.5',
       slotLabelInnerClassNames: 'p-1',
       slotLabelDividerClassNames: 'border-b border-gray-300',
-      nowIndicatorLabelClassNames: 'fc-timeline-now-indicator-label',
+      nowIndicatorLabelClassNames: 'top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-t-red-500',
       nowIndicatorLineClassNames: 'border-l border-red-500', // put color on master setting?
     },
     list: {

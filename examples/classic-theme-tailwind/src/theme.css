@@ -135,33 +135,6 @@
   border-radius: calc(var(--fc-daygrid-event-dot-width) / 2);
 }
 
-/* TimeGrid */
-/* ------------------------------------------------------------------------------------------------- */
-
-.fc-timegrid-now-indicator-label {
-  position: absolute;
-  margin-top: -5px; /* vertically center on top coordinate */
-  border-color: var(--fc-now-indicator-color);
-
-  /* arrow left or right */
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 5px 6px;
-  border-top-color: transparent;
-  border-bottom-color: transparent;
-}
-
-.fc-direction-ltr .fc-timegrid-now-indicator-label { /* (ltr) */
-  left: 0;
-  border-right: 0; /* complete arrow right */
-}
-
-.fc-direction-rtl .fc-timegrid-now-indicator-label { /* (rtl) */
-  right: 0;
-  border-left: 0; /* complete arrow left */
-}
-
 /* TimeGrid > Event */
 /* ------------------------------------------------------------------------------------------------- */
 
@@ -264,24 +237,6 @@ a.fc-list-event {
 /* underline link when hovering over any part of row */
 a.fc-list-event:hover .fc-event-title {
   text-decoration: underline;
-}
-
-/* Timeline */
-/* ------------------------------------------------------------------------------------------------- */
-
-.fc-timeline-now-indicator-label {
-  position: absolute;
-  top: 0;
-  margin: 0 -5px; /* center triangle at element origin */
-  border-color: var(--fc-now-indicator-color);
-
-  /* arrow down */
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 6px 5px 0 5px;
-  border-left-color: transparent;
-  border-right-color: transparent;
 }
 
 /* Timeline > Event */
