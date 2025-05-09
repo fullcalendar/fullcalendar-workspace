@@ -43,74 +43,9 @@
   background: var(--fc-event-selected-overlay-color);
 }
 
-/* X-axis Event */
-/* ------------------------------------------------------------------------------------------------- */
-
-.fc-event-x,
-.fc-event-x .fc-event-inner {
-  display: flex;
-  flex-direction: row;
-  align-items: center; /* vertical */
-}
-
-.fc-event-x .fc-event-inner {
-  flex-grow: 1;
-  flex-basis: 0;
-  min-width: 0;
-}
-
-.fc-event-x .fc-event-time,
-.fc-event-x .fc-event-title {
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.fc-event-x .fc-event-time {
-  flex-shrink: 0;
-  max-width: 100%;
-}
-
-.fc-event-x .fc-event-title {
-  flex-shrink: 1;
-  position: sticky;
-  z-index: 1;
-  left: 0;
-  right: 0;
-}
-
 /* Y-axis Event */
 /* ------------------------------------------------------------------------------------------------- */
 
-.fc-event-y,
-.fc-event-y .fc-event-inner {
-  display: flex;
-  flex-direction: column;
-}
-
-.fc-event-y .fc-event-inner {
-  flex-grow: 1;
-  flex-basis: 0;
-  min-width: 0;
-}
-
-.fc-event-y .fc-event-time {
-  flex-shrink: 0;
-  max-height: 100%;
-}
-
-.fc-event-y .fc-event-title {
-  flex-shrink: 1;
-  position: sticky;
-  z-index: 1;
-  top: 0;
-}
-
-.fc-event-y .fc-event-time,
-.fc-event-y .fc-event-title {
-  /* CAN be overridden */
-  white-space: nowrap;
-  overflow: hidden;
-}
 .fc-media-print .fc-event-y .fc-event-time,
 .fc-media-print .fc-event-y .fc-event-title {
   /* CANNOT be overridden. print view depends on width-independent height */

@@ -16,7 +16,7 @@ const dayGridCommon: CalendarOptions = {
   eventBeforeClassNames: (arg) => [
     // TODO: for dot, use event color
     // TODO: remove bg-red-500
-    'absolute z-10 inset-y-0',
+    'absolute z-20 inset-y-0',
     arg.isStartResizable && (
       arg.isSelected
         ? '-start-1 w-2 h-2 rounded border border-solid border-blue-500 bg-white top-1/2 -mt-1'
@@ -26,16 +26,19 @@ const dayGridCommon: CalendarOptions = {
   eventAfterClassNames: (arg) => [
     // TODO: for dot, use event color
     // TODO: remove bg-red-500
-    'absolute z-10 inset-y-0',
+    'absolute z-20 inset-y-0',
     arg.isEndResizable && (
       arg.isSelected
         ? '-end-1 w-2 h-2 rounded border border-solid border-blue-500 bg-white top-1/2 -mt-1'
         : '-end-1 w-2 hidden group-hover:block bg-red-500'
     ),
   ],
+  eventInnerClassNames: 'flex flex-row items-center',
+  eventTimeClassNames: 'whitespace-nowrap overflow-hidden flex-shrink-0 max-w-full',
+  eventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink sticky z-10 inset-x-0',
 
   weekNumberClassNames: [
-    'absolute z-10 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center bg-gray-100 text-gray-500',
+    'absolute z-20 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center bg-gray-100 text-gray-500',
   ],
   moreLinkClassNames: (arg) => [
     'cursor-pointer text-xs p-0.5 rounded-xs mx-0.5 mb-px',
@@ -341,7 +344,7 @@ export default createPlugin({
       eventBeforeClassNames: (arg) => [
         // TODO: for dot, use event color
         // TODO: remove bg-red-500
-        'absolute z-10 inset-x-0',
+        'absolute z-20 inset-x-0',
         arg.isStartResizable && (
           arg.isSelected
             ? '-top-1 h-2 w-2 rounded border border-solid border-blue-500 bg-white left-1/2 -ms-1'
@@ -351,7 +354,7 @@ export default createPlugin({
       eventAfterClassNames: (arg) => [
         // TODO: for dot, use event color
         // TODO: remove bg-red-500
-        'absolute z-10 inset-x-0',
+        'absolute z-20 inset-x-0',
         arg.isEndResizable && (
           arg.isSelected
             ? '-bottom-1 h-2 w-2 rounded border border-solid border-blue-500 bg-white left-1/2 -ms-1'
@@ -361,6 +364,9 @@ export default createPlugin({
       eventColorClassNames: (arg) => (
         arg.event.allDay ? getDayGridEventColorClassNames(arg) : ''
       ),
+      eventInnerClassNames: 'flex flex-col',
+      eventTimeClassNames: 'whitespace-nowrap overflow-hidden flex-shrink-0 max-h-full',
+      eventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink sticky z-10 top-0',
 
       allDayHeaderClassNames: axisClassNames,
       allDayHeaderInnerClassNames: `${axisInnerClassNames} whitespace-pre px-1 py-0.5`, // TODO: keep here our move to general section?
@@ -383,11 +389,12 @@ export default createPlugin({
           ? (arg.isDragging ? 'shadow-lg' : 'shadow-md')
           : 'focus:shadow-md',
         arg.isSpacious && 'fc-timeline-event-spacious',
+        'items-center', // for aligning little arrows
       ],
       eventBeforeClassNames: (arg) => [
         // TODO: for dot, use event color
         // TODO: remove bg-red-500
-        'absolute z-10 inset-y-0',
+        'absolute z-20 inset-y-0',
         arg.isStartResizable && (
           arg.isSelected
             ? '-start-1 w-2 h-2 rounded border border-solid border-blue-500 bg-white top-1/2 -mt-1'
@@ -397,13 +404,16 @@ export default createPlugin({
       eventAfterClassNames: (arg) => [
         // TODO: for dot, use event color
         // TODO: remove bg-red-500
-        'absolute z-10 inset-y-0',
+        'absolute z-20 inset-y-0',
         arg.isEndResizable && (
           arg.isSelected
             ? '-end-1 w-2 h-2 rounded border border-solid border-blue-500 bg-white top-1/2 -mt-1'
             : '-end-1 w-2 hidden group-hover:block bg-red-500'
         ),
       ],
+      eventInnerClassNames: 'flex flex-row items-center',
+      eventTimeClassNames: 'whitespace-nowrap overflow-hidden flex-shrink-0 max-w-full',
+      eventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink sticky z-10 inset-x-0',
 
       moreLinkClassNames: 'flex flex-col items-start text-xs bg-gray-300 p-px cursor-pointer me-px',
       moreLinkInnerClassNames: 'p-0.5',
@@ -444,6 +454,7 @@ function getDayGridEventClassNames(arg: EventContentArg): string[] {
       arg.isListItem ? 'fc-daygrid-dot-event' : 'fc-daygrid-block-event',
       'fc-daygrid-event fc-event-x relative',
       'group',
+      'items-center', // for dot-style event only!
       arg.isSelected
         ? (arg.isDragging ? 'shadow-lg' : 'shadow-md')
         : 'focus:shadow-md'

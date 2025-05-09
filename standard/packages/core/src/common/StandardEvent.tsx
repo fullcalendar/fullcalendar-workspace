@@ -116,6 +116,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
         className={joinClassNames(
           ...eventUi.classNames,
           props.className,
+          props.axis === 'x' && classNames.flexRow,
+          props.axis === 'y' && classNames.flexCol,
           (eventRange.def.url || isDraggable) && classNames.cursorPointer,
           classNames.internalEvent,
           props.isMirror && classNames.internalEventMirror,
@@ -182,7 +184,10 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
             {/* inner element */}
             <InnerContent
               tag="div"
-              className={joinArrayishClassNames(options.eventInnerClassNames)}
+              className={joinClassNames(
+                generateClassName(options.eventInnerClassNames, renderProps),
+                props.axis != null && classNames.liquid,
+              )}
               style={{
                 color: renderProps.textColor,
               }}

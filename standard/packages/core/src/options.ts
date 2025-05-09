@@ -212,7 +212,7 @@ export const BASE_OPTION_REFINERS = {
   eventContent: identity as Identity<CustomContentGenerator<EventContentArg>>,
   eventClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
   eventColorClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
-  eventInnerClassNames: identity as Identity<ClassNamesInput>,
+  eventInnerClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
   eventTimeClassNames: identity as Identity<ClassNamesInput>,
   eventTitleClassNames: identity as Identity<ClassNamesGenerator<{ event: EventApi }>>,
   eventBeforeClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
