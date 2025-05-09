@@ -43,16 +43,6 @@
   background: var(--fc-event-selected-overlay-color);
 }
 
-/* Y-axis Event */
-/* ------------------------------------------------------------------------------------------------- */
-
-.fc-media-print .fc-event-y .fc-event-time,
-.fc-media-print .fc-event-y .fc-event-title {
-  /* CANNOT be overridden. print view depends on width-independent height */
-  white-space: nowrap !important;
-  overflow: hidden !important;
-}
-
 /* DayGrid > Event */
 /* ------------------------------------------------------------------------------------------------- */
 

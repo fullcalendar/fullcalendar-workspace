@@ -250,6 +250,16 @@
   overflow: hidden;
 }
 
+/*
+TODO: eventually use this on daygrid/timegrid events' inner, time, and title, FOR PRINT
+Needed to prevent wrapping to multiple lines, increasing height, throwing off print-positioning,
+which can't rely on dynamic height detection after print-flag activated.
+*/
+.cropNowrap {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
 .rel {
   position: relative;
 }

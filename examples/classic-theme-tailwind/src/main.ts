@@ -2,6 +2,7 @@ import '@fullcalendar/core/global.css'
 import './style.css'
 
 import { Calendar } from '@fullcalendar/core'
+import adaptivePlugin from '@fullcalendar/adaptive'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
@@ -10,7 +11,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import themePlugin from './theme.js'
 
-const enablePremium = true
+const enablePremium = false
 
 /*
 Resizing timeline events is whack
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // stickyHeaderDates: true, -- makes things broken sometimes!
       weekNumbers: true,
       plugins: [
+        adaptivePlugin,
         dayGridPlugin,
         timeGridPlugin,
         listPlugin,
