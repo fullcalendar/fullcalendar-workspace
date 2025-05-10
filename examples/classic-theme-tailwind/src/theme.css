@@ -1,25 +1,4 @@
 
-:root {
-  --fc-page-bg-color: #fff; /* tailwind = bg-white */
-
-  --fc-small-font-size: .85em; /* tailwind = text-xs */
-
-  --fc-event-bg-color: #3788d8; /* tailwind = blue-600 */
-  --fc-event-border-color: #3788d8; /* same */
-  --fc-event-text-color: #fff;
-  --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
-  --fc-event-resizer-thickness: 8px;
-  --fc-event-resizer-dot-total-width: 8px;
-  --fc-event-resizer-dot-border-width: 1px;
-
-  --fc-now-indicator-color: red;
-
-  --fc-daygrid-event-dot-width: 8px;
-
-  --fc-list-event-dot-width: 10px;
-  --fc-list-event-hover-bg-color: #f5f5f5;
-}
-
 /* DayGrid > Event */
 /* ------------------------------------------------------------------------------------------------- */
 
@@ -51,34 +30,4 @@ xxx.fc-media-print .fc-timeline-event {
 xxx.fc-media-print .fc-timeline-event .fc-event-inner {
    /* better to assign text-color within to bypass link color */
   color: #000 !important;
-}
-
-/* arrows */
-
-xxx.fc-timeline-event:not(.fc-event-start):before,
-xxx.fc-timeline-event:not(.fc-event-end):after {
-  content: "";
-  flex-grow: 0;
-  flex-shrink: 0;
-  margin: 0 1px;
-  opacity: .5;
-  border-color: #000; /* TODO: var */
-
-  /* arrow left or right */
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 5px 5px;
-  border-top-color: transparent;
-  border-bottom-color: transparent;
-}
-/* (pointing left variant) */
-xxx.fc-direction-ltr .fc-timeline-event:not(.fc-event-start):before,
-xxx.fc-direction-rtl .fc-timeline-event:not(.fc-event-end):after {
-  border-left: 0; /* complete arrow left */
-}
-/* (pointing right variant) */
-xxx.fc-direction-ltr .fc-timeline-event:not(.fc-event-end):after,
-xxx.fc-direction-rtl .fc-timeline-event:not(.fc-event-start):before {
-  border-right: 0; /* complete arrow right */
 }

@@ -17,88 +17,82 @@ TODO: convert 2px to 0.5tw
 
 const dayGridCommon: CalendarOptions = {
   eventClassNames: (arg) => (
-    arg.event.display === 'background' ? [
-      ...getBackgroundEventClassNames(arg),
-    ] : arg.isListItem ? [
-      // daygrid-specific list-event
-      'me-[2px] p-px rounded-sm items-center',
-      arg.isSelected
-        ? 'bg-black/30'
-        : 'hover:bg-black/10 focus:bg-black/20',
-    ] : [
-      ...getBlockEventClassNames(arg),
-      ...getRowEventClassNames(arg),
-      arg.isStart && 'ms-[2px]',
-      arg.isEnd && 'me-[2px]',
-    ]
+    arg.event.display === 'background'
+      ? getBackgroundEventClassNames(arg)
+      : arg.isListItem
+        ? [
+          // daygrid-specific list-event
+          'me-[2px] p-px rounded-sm items-center',
+          arg.isSelected
+            ? 'bg-black/30'
+            : 'hover:bg-black/10 focus:bg-black/20',
+        ]
+        : [
+          ...getRowEventClassNames(arg),
+          // daygrid-specific row-event
+          arg.isStart && 'ms-[2px]',
+          arg.isEnd && 'me-[2px]',
+        ]
   ),
   eventBeforeClassNames: (arg) => (
-    arg.event.display === 'background' ? [
-      // nothing
-    ] : arg.isListItem ? [
-      // nothing
-    ] : [
-      ...getBlockEventBeforeClassNames(arg),
-      ...getRowEventBeforeClassNames(arg),
-    ]
+    arg.event.display === 'background'
+      ? []
+      : arg.isListItem
+        ? []
+        : arg.isStartResizable ? getRowEventStartResizerClassNames(arg) : []
   ),
   eventAfterClassNames: (arg) => (
-    arg.event.display === 'background' ? [
-      // nothing
-    ] : arg.isListItem ? [
-      // nothing
-    ] : [
-      ...getBlockEventAfterClassNames(arg),
-      ...getRowEventAfterClassNames(arg),
-    ]
+    arg.event.display === 'background'
+      ? []
+      : arg.isListItem
+        ? []
+        : arg.isEndResizable ? getRowEventEndResizerClassNames(arg) : []
   ),
   eventColorClassNames: (arg) => (
-    arg.event.display === 'background' ? [
-      // nothing
-    ] : arg.isListItem ? [
-      ...getListItemEventColorClassNames(),
-      // daygrid-specific list-event
-      'w-[8px] h-[8px] mx-1',
-    ] : [
-      ...getBlockEventColorClassNames(arg),
-      ...getRowEventColorClassNames(arg),
-      // daygrid-specific block event
-      arg.isStart && 'rounded-s-sm',
-      arg.isEnd && 'rounded-e-sm',
-    ]
+    arg.event.display === 'background'
+      ? []
+      : arg.isListItem
+        ? [
+          ...getListItemEventColorClassNames(),
+          // daygrid-specific list-event
+          'w-[8px] h-[8px] mx-1',
+        ]
+        : [
+          ...getRowEventColorClassNames(arg),
+          // daygrid-specific block event
+          arg.isStart && 'rounded-s-sm',
+          arg.isEnd && 'rounded-e-sm',
+        ]
   ),
   eventInnerClassNames: (arg) => (
-    arg.event.display === 'background' ? [
-      // nothing
-    ] : arg.isListItem ? [
-      // daygrid-specific list-event
-      'flex flex-row items-center text-xs',
-    ] : [
-      ...getBlockEventInnerClassNames(arg),
-      ...getRowEventInnerClassNames(arg),
-    ]
+    arg.event.display === 'background'
+      ? []
+      : arg.isListItem
+        ? [
+          // daygrid-specific list-event
+          'flex flex-row items-center text-xs',
+        ]
+        : getRowEventInnerClassNames(arg)
   ),
   eventTimeClassNames: (arg) => (
-    arg.event.display === 'background' ? [
-      // nothing
-    ] : arg.isListItem ? [
-      // daygrid-specific list-event
-      'p-px',
-    ] : [
-      ...getBlockEventTimeClassNames(),
-      ...getRowEventTimeClassNames(),
-    ]
+    arg.event.display === 'background'
+      ? []
+      : arg.isListItem
+        ? [
+          // daygrid-specific list-event
+          'p-px',
+        ]
+        : getRowEventTimeClassNames()
   ),
   eventTitleClassNames: (arg) => (
-    arg.event.display === 'background' ? [
-      ...getBackgroundEventTitleClassNames(arg),
-    ] : arg.isListItem ? [
-      // daygrid-specific list-event
-      'p-px font-bold',
-    ] : [
-      ...getBlockEventTitleClassNames(),
-      ...getRowEventTitleClassNames(),
-    ]
+    arg.event.display === 'background'
+      ? getBackgroundEventTitleClassNames(arg)
+      : arg.isListItem
+        ? [
+          // daygrid-specific list-event
+          'p-px font-bold',
+        ]
+        : getRowEventTitleClassNames()
   ),
 
   weekNumberClassNames: [
@@ -355,82 +349,56 @@ export default createPlugin({
     },
     timeGrid: {
       eventClassNames: (arg) => (
-        arg.event.display === 'background' ? [
-          ...getBackgroundEventClassNames(arg),
-        ] : arg.event.allDay ? [
-          ...getBlockEventClassNames(arg),
-          ...getRowEventClassNames(arg),
-        ] : [
-          ...getBlockEventClassNames(arg),
-          ...getColEventClassNames(arg),
-        ]
+        arg.event.display === 'background'
+          ? getBackgroundEventClassNames(arg)
+          : arg.event.allDay
+            ? getRowEventClassNames(arg)
+            : getColEventClassNames(arg)
       ),
       eventBeforeClassNames: (arg) => (
-        arg.event.display === 'background' ? [
-          // nothing
-        ] : arg.event.allDay ? [
-          ...getBlockEventBeforeClassNames(arg),
-          ...getRowEventBeforeClassNames(arg),
-        ] : [
-          ...getBlockEventBeforeClassNames(arg),
-          ...getColEventBeforeClassNames(arg),
-        ]
+        arg.event.display === 'background'
+          ? []
+          : arg.event.allDay
+            ? arg.isStartResizable ? getRowEventStartResizerClassNames(arg) : []
+            : arg.isStartResizable ? getColEventStartResizerClassNames(arg) : []
       ),
       eventAfterClassNames: (arg) => (
-        arg.event.display === 'background' ? [
-          // nothing
-        ] : arg.event.allDay ? [
-          ...getBlockEventAfterClassNames(arg),
-          ...getRowEventAfterClassNames(arg),
-        ] : [
-          ...getBlockEventAfterClassNames(arg),
-          ...getColEventAfterClassNames(arg),
-        ]
+        arg.event.display === 'background'
+          ? []
+          : arg.event.allDay
+            ? arg.isEndResizable ? getRowEventEndResizerClassNames(arg) : []
+            : arg.isEndResizable ? getColEventEndResizerClassNames(arg) : []
       ),
       eventColorClassNames: (arg) => (
-        arg.event.display === 'background' ? [
-          // nothing
-        ] : arg.event.allDay ? [
-          ...getBlockEventColorClassNames(arg),
-          ...getRowEventColorClassNames(arg),
-        ] : [
-          ...getBlockEventColorClassNames(arg),
-          ...getColEventColorClassNames(arg),
-          arg.level && 'outline outline-white',
-        ]
+        arg.event.display === 'background'
+          ? []
+          : arg.event.allDay
+            ? getRowEventColorClassNames(arg)
+            : [
+              ...getColEventColorClassNames(arg),
+              arg.level && 'outline outline-white',
+            ]
       ),
       eventInnerClassNames: (arg) => (
-        arg.event.display === 'background' ? [
-          // nothing
-        ] : arg.event.allDay ? [
-          ...getBlockEventInnerClassNames(arg),
-          ...getRowEventInnerClassNames(arg),
-        ] : [
-          ...getBlockEventInnerClassNames(arg),
-          ...getColEventInnerClassNames(arg),
-        ]
+        arg.event.display === 'background'
+          ? []
+          : arg.event.allDay
+            ? getRowEventInnerClassNames(arg)
+            : getColEventInnerClassNames(arg)
       ),
       eventTimeClassNames: (arg) => (
-        arg.event.display === 'background' ? [
-          // nothing
-        ] : arg.event.allDay ? [
-          ...getBlockEventTimeClassNames(),
-          ...getRowEventTimeClassNames(),
-        ] : [
-          ...getBlockEventTimeClassNames(),
-          ...getColEventTimeClassNames(),
-        ]
+        arg.event.display === 'background'
+          ? []
+          : arg.event.allDay
+            ? getRowEventTimeClassNames()
+            : getColEventTimeClassNames()
       ),
       eventTitleClassNames: (arg) => (
-        arg.event.display === 'background' ? [
-          // nothing
-        ] : arg.event.allDay ? [
-          ...getBlockEventTitleClassNames(),
-          ...getRowEventTitleClassNames(),
-        ] : [
-          ...getBlockEventTitleClassNames(),
-          ...getColEventTitleClassNames(arg),
-        ]
+        arg.event.display === 'background'
+          ? []
+          : arg.event.allDay
+            ? getRowEventTitleClassNames()
+            : getColEventTitleClassNames(arg)
       ),
 
       allDayHeaderClassNames: axisClassNames,
@@ -450,7 +418,6 @@ export default createPlugin({
         arg.event.display === 'background' ? [
           ...getBackgroundEventClassNames(arg),
         ] : [
-          ...getBlockEventClassNames(arg),
           ...getRowEventClassNames(arg),
           // timeline-specific
           'items-center', // for aligning little arrows
@@ -458,61 +425,53 @@ export default createPlugin({
         ]
       ),
       eventBeforeClassNames: (arg) => (
-        arg.event.display === 'background' ? [
-          // nothing
-        ] : [
-          ...getBlockEventBeforeClassNames(arg),
-          ...getRowEventBeforeClassNames(arg),
-          // timeline-specific
-          // ...
-        ]
+        arg.event.display === 'background'
+          ? []
+          : arg.isStartResizable
+            ? getRowEventStartResizerClassNames(arg)
+            : [
+              // timeline-specific
+              'relative z-10 mx-px',
+              'border-y-[5px] border-y-transparent border-e-[5px] border-e-black opacity-50',
+            ]
       ),
       eventAfterClassNames: (arg) => (
-        arg.event.display === 'background' ? [
-          // nothing
-        ] : [
-          ...getBlockEventAfterClassNames(arg),
-          ...getRowEventAfterClassNames(arg),
-          // timeline-specific
-          // ...
-        ]
+        arg.event.display === 'background'
+          ? []
+          : arg.isEndResizable
+            ? getRowEventEndResizerClassNames(arg)
+            : [
+              // timeline-specific
+              'relative z-10 mx-px',
+              'border-y-[5px] border-y-transparent border-s-[5px] border-s-black opacity-50',
+            ]
       ),
       eventColorClassNames: (arg) => (
-        arg.event.display === 'background' ? [
-          // nothing
-        ] : [
-          ...getBlockEventColorClassNames(arg),
-          ...getRowEventColorClassNames(arg),
-        ]
+        arg.event.display === 'background'
+          ? []
+          : getRowEventColorClassNames(arg)
       ),
       eventInnerClassNames: (arg) => (
-        arg.event.display === 'background' ? [
-          // nothing
-        ] : [
-          ...getBlockEventInnerClassNames(arg),
-          ...getRowEventInnerClassNames(arg),
-          // timeline-specific
-          'px-px',
-          arg.isSpacious
-            ? 'py-1'
-            : 'py-px',
-        ]
+        arg.event.display === 'background'
+          ? []
+          : [
+            ...getRowEventInnerClassNames(arg),
+            // timeline-specific
+            'px-px',
+            arg.isSpacious
+              ? 'py-1'
+              : 'py-px',
+          ]
       ),
       eventTimeClassNames: (arg) => (
-        arg.event.display === 'background' ? [
-          // nothing
-        ] : [
-          ...getBlockEventTimeClassNames(),
-          ...getRowEventTimeClassNames(),
-        ]
+        arg.event.display === 'background'
+          ? []
+          : getRowEventTimeClassNames()
       ),
       eventTitleClassNames: (arg) => (
-        arg.event.display === 'background' ? [
-          ...getBackgroundEventTitleClassNames(arg),
-        ] : [
-          ...getBlockEventTitleClassNames(),
-          ...getRowEventTitleClassNames(),
-        ]
+        arg.event.display === 'background'
+          ? getBackgroundEventTitleClassNames(arg)
+          : getRowEventTitleClassNames()
       ),
 
       moreLinkClassNames: 'flex flex-col items-start text-xs bg-gray-300 p-px cursor-pointer me-px',
@@ -599,22 +558,9 @@ function getBlockEventClassNames(arg: EventContentArg): (string | false)[] {
   ]
 }
 
-function getBlockEventBeforeClassNames(arg: EventContentArg): (string | false)[] {
-  return [
-    'absolute z-20',
-    ...(arg.isStartResizable ? getBlockEventResizerClassNames(arg): []),
-  ]
-}
-
-function getBlockEventAfterClassNames(arg: EventContentArg): string[] {
-  return [
-    'absolute z-20',
-    ...(arg.isEndResizable ? getBlockEventResizerClassNames(arg): []),
-  ]
-}
-
 function getBlockEventResizerClassNames(arg: EventContentArg): string[] {
   return [
+    'absolute z-20',
     arg.isSelected
       // circle resizer for touch
       ? 'h-2 w-2 rounded border border-solid border-blue-500 bg-white'
@@ -654,35 +600,30 @@ function getBlockEventTitleClassNames(): string[] {
 // Row Event
 // -------------------------------------------------------------------------------------------------
 
-function getRowEventClassNames(_arg: EventContentArg): string[] {
+function getRowEventClassNames(arg: EventContentArg): (string | false)[] {
   return [
+    ...getBlockEventClassNames(arg),
     'mb-px' // okay to have on all row events, but lateral spacing is view-specific
   ]
 }
 
-// should not be called for any list-item rendering
-function getRowEventBeforeClassNames(arg: EventContentArg): (string | false)[] {
+function getRowEventStartResizerClassNames(arg: EventContentArg): (string | false)[] {
   return [
+    ...getRowEventResizerClassNames(arg),
     '-start-1',
-    ...(arg.isStartResizable ? getRowEventResizerClassNames(arg) : []),
   ]
 }
 
-// should not be called for any list-item rendering
-function getRowEventAfterClassNames(arg: EventContentArg): (string | false)[] {
+function getRowEventEndResizerClassNames(arg: EventContentArg): (string | false)[] {
   return [
+    ...getRowEventResizerClassNames(arg),
     '-end-1',
-    ...(arg.isEndResizable ? getRowEventResizerClassNames(arg) : []),
-  ]
-}
-
-function getRowEventColorClassNames(_arg: EventContentArg): (string | false)[] {
-  return [
   ]
 }
 
 function getRowEventResizerClassNames(arg: EventContentArg): (string | false)[] {
   return [
+    ...getBlockEventResizerClassNames(arg),
     arg.isSelected
       // POSITION: circle resizer for touch
       ? 'top-1/2 -mt-1'
@@ -691,20 +632,31 @@ function getRowEventResizerClassNames(arg: EventContentArg): (string | false)[] 
   ]
 }
 
-function getRowEventInnerClassNames(_arg: EventContentArg): string[] {
+function getRowEventColorClassNames(arg: EventContentArg): (string | false)[] {
   return [
+    ...getBlockEventColorClassNames(arg),
+    // nothing. would normally be responsible for rounded corners on left/right,
+    // but unfortunately our daygrid/timeline events look very different
+  ]
+}
+
+function getRowEventInnerClassNames(arg: EventContentArg): string[] {
+  return [
+    ...getBlockEventInnerClassNames(arg),
     'flex-row items-center text-xs',
   ]
 }
 
 function getRowEventTimeClassNames(): string[] {
   return [
+    ...getBlockEventTimeClassNames(),
     'p-px font-bold',
   ]
 }
 
 function getRowEventTitleClassNames(): string[] {
   return [
+    ...getBlockEventTitleClassNames(),
     'p-px',
   ]
 }
@@ -712,35 +664,38 @@ function getRowEventTitleClassNames(): string[] {
 // Col Event
 // -------------------------------------------------------------------------------------------------
 
-function getColEventClassNames(_arg: EventContentArg): string[] {
+function getColEventClassNames(arg: EventContentArg): (string | false)[] {
   return [
+    ...getBlockEventClassNames(arg),
     'mb-px',
   ]
 }
 
 function getColEventColorClassNames(arg: EventContentArg): (string | false)[] {
   return [
+    ...getBlockEventColorClassNames(arg),
     arg.isStart && 'rounded-t-sm',
     arg.isEnd && 'rounded-b-sm',
   ]
 }
 
-function getColEventBeforeClassNames(arg: EventContentArg): (string | false)[] {
+function getColEventStartResizerClassNames(arg: EventContentArg): (string | false)[] {
   return [
+    ...getColEventResizerClassNames(arg),
     '-top-1',
-    ...(arg.isStartResizable ? getColEventResizerClassNames(arg) : []),
   ]
 }
 
-function getColEventAfterClassNames(arg: EventContentArg): (string | false)[] {
+function getColEventEndResizerClassNames(arg: EventContentArg): (string | false)[] {
   return [
+    ...getColEventResizerClassNames(arg),
     '-bottom-1',
-    ...(arg.isEndResizable ? getColEventResizerClassNames(arg) : []),
   ]
 }
 
 function getColEventResizerClassNames(arg: EventContentArg): (string | false)[] {
   return [
+    ...getBlockEventResizerClassNames(arg),
     arg.isSelected
       // POSITION: circle resizer for touch
       ? 'left-1/2 -ml-1'
@@ -751,6 +706,7 @@ function getColEventResizerClassNames(arg: EventContentArg): (string | false)[] 
 
 function getColEventInnerClassNames(arg: EventContentArg): string[] {
   return [
+    ...getBlockEventInnerClassNames(arg),
     'p-px text-xs',
     arg.isCompact
       ? 'flex-row gap-1 overflow-hidden' // one line
@@ -760,12 +716,14 @@ function getColEventInnerClassNames(arg: EventContentArg): string[] {
 
 function getColEventTimeClassNames(): string[] {
   return [
+    ...getBlockEventTimeClassNames(),
     'text-[0.9em]',
   ]
 }
 
 function getColEventTitleClassNames(arg: { isCompact: boolean }): (string | false)[] {
   return [
+    ...getBlockEventTitleClassNames(),
     arg.isCompact && 'text-[0.9em]',
   ]
 }
