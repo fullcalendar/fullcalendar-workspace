@@ -46,87 +46,66 @@ xxx.fc-event-y:focus:before {
 /* DayGrid > Event */
 /* ------------------------------------------------------------------------------------------------- */
 
-.fc-daygrid-event {
-  margin-bottom: 1px;
-  border-radius: 3px; /* dot event needs this too when selected */
+xxx.fc-daygrid-event {
   font-size: var(--fc-small-font-size);
-}
-
-/* left/right margins */
-.fc-direction-ltr .fc-daygrid-event.fc-event-start, /* (ltr-left-terminus) */
-.fc-direction-rtl .fc-daygrid-event.fc-event-end { /* (rtl-left-terminus) */
-  margin-left: 2px;
-}
-.fc-direction-ltr .fc-daygrid-event.fc-event-end, /* (ltr-right-terminus) */
-.fc-direction-rtl .fc-daygrid-event.fc-event-start { /* (rtl-right-terminus) */
-  margin-right: 2px;
-}
-
-/* space between time and title */
-/* (can't use gap b/c dot is often a first sibling) */
-.fc-direction-ltr .fc-daygrid-event .fc-event-time { /* (ltr) > time */
-  margin-right: 3px;
-}
-.fc-direction-rtl .fc-daygrid-event .fc-event-time { /* (rtl) > time */
-  margin-left: 3px;
 }
 
 /* BLOCK style */
 
-.fc-daygrid-block-event {
+xxx.fc-daygrid-block-event {
   border: 1px solid var(--fc-event-border-color);
   background-color: var(--fc-event-bg-color);
 }
-.fc-media-print .fc-daygrid-block-event { /* (print) */
+xxx.fc-media-print .fc-daygrid-block-event { /* (print) */
   background: #fff !important;
 }
 
 /* kill left/right margin and border-radius */
-.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-start), /* (ltr-left-continuation) */
-.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-end) { /* (rtl-left-continuation) */
+xxx.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-start), /* (ltr-left-continuation) */
+xxx.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-end) { /* (rtl-left-continuation) */
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-left-width: 0;
 }
-.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-end), /* (ltr-right-continuation) */
-.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-start) { /* (rtl-right-continuation) */
+xxx.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-end), /* (ltr-right-continuation) */
+xxx.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-start) { /* (rtl-right-continuation) */
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border-right-width: 0;
 }
 
-.fc-daygrid-block-event .fc-event-inner {
+xxx.fc-daygrid-block-event .fc-event-inner {
   color: var(--fc-event-text-color); /* better to assign text-color within to bypass link color */
 }
-.fc-media-print .fc-daygrid-block-event .fc-event-inner { /* (print) */
+xxx.fc-media-print .fc-daygrid-block-event .fc-event-inner { /* (print) */
   color: #000 !important;
 }
 
-.fc-daygrid-block-event .fc-event-time { /* > time */
+xxx.fc-daygrid-block-event .fc-event-time { /* > time */
   font-weight: bold;
 }
 
-.fc-daygrid-block-event .fc-event-time, /* > time */
-.fc-daygrid-block-event .fc-event-title { /* > title */
+xxx.fc-daygrid-block-event .fc-event-time, /* > time */
+xxx.fc-daygrid-block-event .fc-event-title { /* > title */
   padding: 1px;
 }
 
 /* DOT style */
 
-.fc-daygrid-dot-event {
+xxx.fc-daygrid-dot-event {
   padding: 2px 0;
 }
 
-.fc-daygrid-dot-event.fc-event-mirror, /* (mirror) */
-.fc-daygrid-dot-event:hover { /* (hover) */
+xxx.fc-daygrid-dot-event.fc-event-mirror, /* (mirror) */
+xxx.fc-daygrid-dot-event:hover { /* (hover) */
   background: rgba(0, 0, 0, 0.1);
 }
 
-.fc-daygrid-dot-event .fc-event-title {
+xxx.fc-daygrid-dot-event .fc-event-title {
   font-weight: bold;
 }
 
-.fc-daygrid-event-dot { /* > dot */
+xxx.fc-daygrid-event-dot { /* > dot */
   margin: 0 4px;
   box-sizing: content-box;
   width: 0;
@@ -148,54 +127,54 @@ xxx.fc-media-print .fc-timegrid-event .fc-event-inner {
 /* Timeline > Event */
 /* ------------------------------------------------------------------------------------------------- */
 
-.fc-timeline-event {
+xxx.fc-timeline-event {
   border: 1px solid var(--fc-event-border-color);
   background-color: var(--fc-event-bg-color);
   margin-bottom: 1px;
   font-size: var(--fc-small-font-size);
 }
-.fc-media-print .fc-timeline-event { /* (print) */
+xxx.fc-media-print .fc-timeline-event { /* (print) */
   background: #fff !important;
 }
 
-.fc-direction-ltr .fc-timeline-event.fc-event-end { /* (ltr+end) */
+xxx.fc-direction-ltr .fc-timeline-event.fc-event-end { /* (ltr+end) */
   margin-right: 1px;
 }
-.fc-direction-rtl .fc-timeline-event.fc-event-end { /* (rtl+end) */
+xxx.fc-direction-rtl .fc-timeline-event.fc-event-end { /* (rtl+end) */
   margin-left: 1px;
 }
 
 /* > inner */
-.fc-timeline-event .fc-event-inner {
+xxx.fc-timeline-event .fc-event-inner {
   padding: 2px 1px;
   color: var(--fc-event-text-color); /* better to assign text-color within to bypass link color */
 }
-.fc-media-print .fc-timeline-event .fc-event-inner {
+xxx.fc-media-print .fc-timeline-event .fc-event-inner {
   color: #000 !important;
 }
 
 /* > inner (spacious) */
-.fc-timeline-event-spacious .fc-event-inner {
+xxx.fc-timeline-event-spacious .fc-event-inner {
   padding-top: 5px;
   padding-bottom: 5px;
 }
 
 /* > inner > time */
-.fc-timeline-event .fc-event-time {
+xxx.fc-timeline-event .fc-event-time {
   font-weight: bold;
 }
 
 /* > inner > time */
 /* > inner > title */
-.fc-timeline-event .fc-event-time,
-.fc-timeline-event .fc-event-title {
+xxx.fc-timeline-event .fc-event-time,
+xxx.fc-timeline-event .fc-event-title {
   padding: 0 2px;
 }
 
 /* arrows */
 
-.fc-timeline-event:not(.fc-event-start):before,
-.fc-timeline-event:not(.fc-event-end):after {
+xxx.fc-timeline-event:not(.fc-event-start):before,
+xxx.fc-timeline-event:not(.fc-event-end):after {
   content: "";
   flex-grow: 0;
   flex-shrink: 0;
@@ -212,12 +191,12 @@ xxx.fc-media-print .fc-timegrid-event .fc-event-inner {
   border-bottom-color: transparent;
 }
 /* (pointing left variant) */
-.fc-direction-ltr .fc-timeline-event:not(.fc-event-start):before,
-.fc-direction-rtl .fc-timeline-event:not(.fc-event-end):after {
+xxx.fc-direction-ltr .fc-timeline-event:not(.fc-event-start):before,
+xxx.fc-direction-rtl .fc-timeline-event:not(.fc-event-end):after {
   border-left: 0; /* complete arrow left */
 }
 /* (pointing right variant) */
-.fc-direction-ltr .fc-timeline-event:not(.fc-event-end):after,
-.fc-direction-rtl .fc-timeline-event:not(.fc-event-start):before {
+xxx.fc-direction-ltr .fc-timeline-event:not(.fc-event-end):after,
+xxx.fc-direction-rtl .fc-timeline-event:not(.fc-event-start):before {
   border-right: 0; /* complete arrow right */
 }

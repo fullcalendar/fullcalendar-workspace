@@ -60,7 +60,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       isSpacious: false,
       isListItem: false,
       timeClassName: '', // never display time
-      titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi, isCompact: false }),
+      titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi, isCompact: false, isListItem: false }),
     }
 
     return (

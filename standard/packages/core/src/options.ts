@@ -213,8 +213,8 @@ export const BASE_OPTION_REFINERS = {
   eventClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
   eventColorClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
   eventInnerClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
-  eventTimeClassNames: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
-  eventTitleClassNames: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
+  eventTimeClassNames: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean, isListItem: boolean }>>,
+  eventTitleClassNames: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean, isListItem: boolean }>>,
   eventBeforeClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
   eventAfterClassNames: identity as Identity<ClassNamesGenerator<EventContentArg>>,
 

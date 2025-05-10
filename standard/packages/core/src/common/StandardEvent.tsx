@@ -98,8 +98,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isCompact: props.isCompact || false,
       isSpacious: props.isSpacious || false,
       level: props.level || 0,
-      timeClassName: generateClassName(options.eventTimeClassNames, { event: eventApi, isCompact: props.isCompact || false }),
-      titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi, isCompact: props.isCompact || false }),
+      timeClassName: generateClassName(options.eventTimeClassNames, { event: eventApi, isCompact: props.isCompact || false, isListItem: props.isListItem || false }),
+      titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi, isCompact: props.isCompact || false, isListItem: props.isListItem || false }),
     }
 
     const beforeClassNames = generateClassName(options.eventBeforeClassNames, renderProps)
