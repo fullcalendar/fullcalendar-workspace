@@ -12,6 +12,7 @@ import {} from '@fullcalendar/resource-timeline'
 
 /*
 TODO: search all "blue"
+TODO: convert 2px to 0.5tw
 */
 
 const dayGridCommon: CalendarOptions = {
@@ -19,9 +20,11 @@ const dayGridCommon: CalendarOptions = {
     arg.event.display === 'background' ? [
       ...getBackgroundEventClassNames(arg),
     ] : arg.isListItem ? [
-      'items-center',
-      'mx-[2px]',
-      'gap-[3px]',
+      // daygrid-specific list-event
+      'me-[2px] p-px rounded-sm items-center',
+      arg.isSelected
+        ? 'bg-black/30'
+        : 'hover:bg-black/10 focus:bg-black/20',
     ] : [
       ...getBlockEventClassNames(arg),
       ...getRowEventClassNames(arg),
@@ -54,18 +57,22 @@ const dayGridCommon: CalendarOptions = {
       // nothing
     ] : arg.isListItem ? [
       ...getListItemEventColorClassNames(),
-      'w-[8px] h-[8px]',
+      // daygrid-specific list-event
+      'w-[8px] h-[8px] mx-1',
     ] : [
       ...getBlockEventColorClassNames(arg),
       ...getRowEventColorClassNames(arg),
+      // daygrid-specific block event
+      arg.isStart && 'rounded-s-sm',
+      arg.isEnd && 'rounded-e-sm',
     ]
   ),
   eventInnerClassNames: (arg) => (
     arg.event.display === 'background' ? [
       // nothing
     ] : arg.isListItem ? [
+      // daygrid-specific list-event
       'flex flex-row items-center text-xs',
-      'gap-[3px]',
     ] : [
       ...getBlockEventInnerClassNames(arg),
       ...getRowEventInnerClassNames(arg),
@@ -75,19 +82,22 @@ const dayGridCommon: CalendarOptions = {
     arg.event.display === 'background' ? [
       // nothing
     ] : arg.isListItem ? [
-      // nothing
+      // daygrid-specific list-event
+      'p-px',
     ] : [
       ...getBlockEventTimeClassNames(),
-      'font-bold',
+      ...getRowEventTimeClassNames(),
     ]
   ),
   eventTitleClassNames: (arg) => (
     arg.event.display === 'background' ? [
       ...getBackgroundEventTitleClassNames(arg),
     ] : arg.isListItem ? [
-      'font-bold',
+      // daygrid-specific list-event
+      'p-px font-bold',
     ] : [
       ...getBlockEventTitleClassNames(),
+      ...getRowEventTitleClassNames(),
     ]
   ),
 
@@ -405,6 +415,7 @@ export default createPlugin({
           // nothing
         ] : arg.event.allDay ? [
           ...getBlockEventTimeClassNames(),
+          ...getRowEventTimeClassNames(),
         ] : [
           ...getBlockEventTimeClassNames(),
           ...getColEventTimeClassNames(),
@@ -415,6 +426,7 @@ export default createPlugin({
           // nothing
         ] : arg.event.allDay ? [
           ...getBlockEventTitleClassNames(),
+          ...getRowEventTitleClassNames(),
         ] : [
           ...getBlockEventTitleClassNames(),
           ...getColEventTitleClassNames(arg),
@@ -440,8 +452,9 @@ export default createPlugin({
         ] : [
           ...getBlockEventClassNames(arg),
           ...getRowEventClassNames(arg),
+          // timeline-specific
           'items-center', // for aligning little arrows
-          arg.isSpacious && 'fc-timeline-event-spacious', // TODO
+          'me-px',
         ]
       ),
       eventBeforeClassNames: (arg) => (
@@ -450,6 +463,8 @@ export default createPlugin({
         ] : [
           ...getBlockEventBeforeClassNames(arg),
           ...getRowEventBeforeClassNames(arg),
+          // timeline-specific
+          // ...
         ]
       ),
       eventAfterClassNames: (arg) => (
@@ -458,6 +473,8 @@ export default createPlugin({
         ] : [
           ...getBlockEventAfterClassNames(arg),
           ...getRowEventAfterClassNames(arg),
+          // timeline-specific
+          // ...
         ]
       ),
       eventColorClassNames: (arg) => (
@@ -474,6 +491,11 @@ export default createPlugin({
         ] : [
           ...getBlockEventInnerClassNames(arg),
           ...getRowEventInnerClassNames(arg),
+          // timeline-specific
+          'px-px',
+          arg.isSpacious
+            ? 'py-1'
+            : 'py-px',
         ]
       ),
       eventTimeClassNames: (arg) => (
@@ -481,6 +503,7 @@ export default createPlugin({
           // nothing
         ] : [
           ...getBlockEventTimeClassNames(),
+          ...getRowEventTimeClassNames(),
         ]
       ),
       eventTitleClassNames: (arg) => (
@@ -488,6 +511,7 @@ export default createPlugin({
           ...getBackgroundEventTitleClassNames(arg),
         ] : [
           ...getBlockEventTitleClassNames(),
+          ...getRowEventTitleClassNames(),
         ]
       ),
 
@@ -617,13 +641,13 @@ function getBlockEventInnerClassNames(_arg: EventContentArg): string[] {
 
 function getBlockEventTimeClassNames(): string[] {
   return [
-    'whitespace-nowrap overflow-hidden flex-shrink-0 max-w-full max-h-full p-px',
+    'whitespace-nowrap overflow-hidden flex-shrink-0 max-w-full max-h-full',
   ]
 }
 
 function getBlockEventTitleClassNames(): string[] {
   return [
-    'whitespace-nowrap overflow-hidden flex-shrink sticky top-0 start-0 p-px',
+    'whitespace-nowrap overflow-hidden flex-shrink sticky top-0 start-0',
   ]
 }
 
@@ -632,7 +656,7 @@ function getBlockEventTitleClassNames(): string[] {
 
 function getRowEventClassNames(_arg: EventContentArg): string[] {
   return [
-    'mb-px'
+    'mb-px' // okay to have on all row events, but lateral spacing is view-specific
   ]
 }
 
@@ -652,10 +676,8 @@ function getRowEventAfterClassNames(arg: EventContentArg): (string | false)[] {
   ]
 }
 
-function getRowEventColorClassNames(arg: EventContentArg): (string | false)[] {
+function getRowEventColorClassNames(_arg: EventContentArg): (string | false)[] {
   return [
-    arg.isStart && 'rounded-s-sm',
-    arg.isEnd && 'rounded-e-sm',
   ]
 }
 
@@ -672,6 +694,18 @@ function getRowEventResizerClassNames(arg: EventContentArg): (string | false)[] 
 function getRowEventInnerClassNames(_arg: EventContentArg): string[] {
   return [
     'flex-row items-center text-xs',
+  ]
+}
+
+function getRowEventTimeClassNames(): string[] {
+  return [
+    'p-px font-bold',
+  ]
+}
+
+function getRowEventTitleClassNames(): string[] {
+  return [
+    'p-px',
   ]
 }
 
@@ -717,7 +751,7 @@ function getColEventResizerClassNames(arg: EventContentArg): (string | false)[] 
 
 function getColEventInnerClassNames(arg: EventContentArg): string[] {
   return [
-    'p-0.5 text-xs',
+    'p-px text-xs',
     arg.isCompact
       ? 'flex-row gap-1 overflow-hidden' // one line
       : 'flex-col gap-px', // two lines

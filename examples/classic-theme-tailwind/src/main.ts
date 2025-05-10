@@ -11,7 +11,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import themePlugin from './theme.js'
 
-const enablePremium = false
+const enablePremium = true
 
 /*
 Resizing timeline events is whack
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
       ],
       eventInteractive: true,
       initialDate: '2023-01-12',
-      initialView: 'timeGridWeek',
+      initialView: 'dayGridMonth',
       nowIndicator: true,
       headerToolbar: {
         left: 'prev,next today',
@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
         { id: '5', resourceId: 'f', start: '2023-01-07T00:30:00', end: '2023-01-07T02:30:00', title: 'event 5' },
         { id: '5', resourceId: 'f', start: '2023-01-07T00:30:00', end: '2023-01-07T02:30:00', title: 'event 5' },
       ],
-      eventMaxStack: 1,
+      // eventMaxStack: 1,
     })
   }
 

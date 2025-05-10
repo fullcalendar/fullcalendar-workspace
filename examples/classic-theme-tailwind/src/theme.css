@@ -20,98 +20,15 @@
   --fc-list-event-hover-bg-color: #f5f5f5;
 }
 
-/* X & Y-axis Events */
-/* ------------------------------------------------------------------------------------------------- */
-
-/* > dimmer-effect */
-/* TODO: problematic because covers most elements */
-/* Coincidence that sticky elements get put above */
-/* Give non-sticky elements position:relative! */
-xxx.fc-event-selected:before, /* touch-selected */
-xxx.fc-event-x:focus:before, /* tab-focused */
-xxx.fc-event-y:focus:before {
-  /* assume there's a border on all sides. overcome it. */
-  /* sometimes there's NOT a border, in which case the dimmer will go over */
-  /* an adjacent border, which looks fine. */
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  right: -1px;
-  bottom: -1px;
-
-  content: "";
-  background: var(--fc-event-selected-overlay-color);
-}
-
 /* DayGrid > Event */
 /* ------------------------------------------------------------------------------------------------- */
 
-xxx.fc-daygrid-event {
-  font-size: var(--fc-small-font-size);
-}
-
-/* BLOCK style */
-
-xxx.fc-daygrid-block-event {
-  border: 1px solid var(--fc-event-border-color);
-  background-color: var(--fc-event-bg-color);
-}
-xxx.fc-media-print .fc-daygrid-block-event { /* (print) */
+xxx.fc-media-print .fc-daygrid-block-event {
   background: #fff !important;
 }
-
-/* kill left/right margin and border-radius */
-xxx.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-start), /* (ltr-left-continuation) */
-xxx.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-end) { /* (rtl-left-continuation) */
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-left-width: 0;
-}
-xxx.fc-direction-ltr .fc-daygrid-block-event:not(.fc-event-end), /* (ltr-right-continuation) */
-xxx.fc-direction-rtl .fc-daygrid-block-event:not(.fc-event-start) { /* (rtl-right-continuation) */
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  border-right-width: 0;
-}
-
-xxx.fc-daygrid-block-event .fc-event-inner {
-  color: var(--fc-event-text-color); /* better to assign text-color within to bypass link color */
-}
-xxx.fc-media-print .fc-daygrid-block-event .fc-event-inner { /* (print) */
+xxx.fc-media-print .fc-daygrid-block-event .fc-event-inner {
+  /* better to assign text-color within to bypass link color */
   color: #000 !important;
-}
-
-xxx.fc-daygrid-block-event .fc-event-time { /* > time */
-  font-weight: bold;
-}
-
-xxx.fc-daygrid-block-event .fc-event-time, /* > time */
-xxx.fc-daygrid-block-event .fc-event-title { /* > title */
-  padding: 1px;
-}
-
-/* DOT style */
-
-xxx.fc-daygrid-dot-event {
-  padding: 2px 0;
-}
-
-xxx.fc-daygrid-dot-event.fc-event-mirror, /* (mirror) */
-xxx.fc-daygrid-dot-event:hover { /* (hover) */
-  background: rgba(0, 0, 0, 0.1);
-}
-
-xxx.fc-daygrid-dot-event .fc-event-title {
-  font-weight: bold;
-}
-
-xxx.fc-daygrid-event-dot { /* > dot */
-  margin: 0 4px;
-  box-sizing: content-box;
-  width: 0;
-  height: 0;
-  border: calc(var(--fc-daygrid-event-dot-width) / 2) solid var(--fc-event-border-color);
-  border-radius: calc(var(--fc-daygrid-event-dot-width) / 2);
 }
 
 /* TimeGrid > Event */
@@ -121,54 +38,19 @@ xxx.fc-media-print .fc-timegrid-event {
   background: #fff !important;
 }
 xxx.fc-media-print .fc-timegrid-event .fc-event-inner {
+  /* better to assign text-color within to bypass link color */
   color: #000 !important;
 }
 
 /* Timeline > Event */
 /* ------------------------------------------------------------------------------------------------- */
 
-xxx.fc-timeline-event {
-  border: 1px solid var(--fc-event-border-color);
-  background-color: var(--fc-event-bg-color);
-  margin-bottom: 1px;
-  font-size: var(--fc-small-font-size);
-}
-xxx.fc-media-print .fc-timeline-event { /* (print) */
+xxx.fc-media-print .fc-timeline-event {
   background: #fff !important;
 }
-
-xxx.fc-direction-ltr .fc-timeline-event.fc-event-end { /* (ltr+end) */
-  margin-right: 1px;
-}
-xxx.fc-direction-rtl .fc-timeline-event.fc-event-end { /* (rtl+end) */
-  margin-left: 1px;
-}
-
-/* > inner */
-xxx.fc-timeline-event .fc-event-inner {
-  padding: 2px 1px;
-  color: var(--fc-event-text-color); /* better to assign text-color within to bypass link color */
-}
 xxx.fc-media-print .fc-timeline-event .fc-event-inner {
+   /* better to assign text-color within to bypass link color */
   color: #000 !important;
-}
-
-/* > inner (spacious) */
-xxx.fc-timeline-event-spacious .fc-event-inner {
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
-/* > inner > time */
-xxx.fc-timeline-event .fc-event-time {
-  font-weight: bold;
-}
-
-/* > inner > time */
-/* > inner > title */
-xxx.fc-timeline-event .fc-event-time,
-xxx.fc-timeline-event .fc-event-title {
-  padding: 0 2px;
 }
 
 /* arrows */
