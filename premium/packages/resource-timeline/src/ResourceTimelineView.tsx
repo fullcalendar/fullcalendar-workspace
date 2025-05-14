@@ -23,7 +23,9 @@ import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
+  actionsAreaWidth: CssDimValue
   spreadsheetColWidths: number[]
+  actionsColWidths?: number[]
   slatCoords?: TimelineCoords
   slotCushionMaxWidth?: number
 }
@@ -54,6 +56,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
     this.state = {
       resourceAreaWidth: context.options.resourceAreaWidth,
+      actionsAreaWidth: context.options.actionsAreaWidth,
       spreadsheetColWidths: [],
     }
   }
@@ -61,7 +64,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
   render() {
     let { props, state, context } = this
     let { options, viewSpec } = context
-    let { superHeaderRendering, groupSpecs, orderSpecs, isVGrouping, colSpecs } = this.processColOptions(context.options)
+    let { superHeaderRendering, groupSpecs, orderSpecs, isVGrouping, colSpecs, actionColSpecs } = this.processColOptions(context.options)
 
     let tDateProfile = this.buildTimelineDateProfile(
       props.dateProfile,
@@ -81,6 +84,26 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
     let { slotMinWidth } = options
     let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
+
+    let actions = undefined;
+    if (actionColSpecs.length > 0) {
+      actions = {
+        actionsCols:buildSpreadsheetCols(actionColSpecs, state.actionsColWidths, ''),
+        actionsHeaderRows: (contentArg: ChunkContentCallbackArgs) => (
+          <SpreadsheetHeader // TODO: rename to SpreadsheetHeaderRows
+            superHeaderRendering={superHeaderRendering}
+            colSpecs={actionColSpecs}
+            onColWidthChange={this.handleColWidthChange}
+            rowInnerHeights={contentArg.rowSyncHeights}
+          />
+        ),
+        actionsBodyRows: (contentArg: ChunkContentCallbackArgs) => (
+          <Fragment>
+            {this.renderSpreadsheetRows(rowNodes, actionColSpecs, contentArg.rowSyncHeights)}
+          </Fragment>
+        ),
+      };
+    }
 
     return (
       <ViewContainer
@@ -114,6 +137,7 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
               {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights)}
             </Fragment>
           )}
+          actions={actions}
           timeCols={slatCols}
           timeHeaderContent={(contentArg: ChunkContentCallbackArgs) => (
             <TimelineHeader
@@ -346,6 +370,7 @@ function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
 
 function processColOptions(options: ViewOptionsRefined) {
   let allColSpecs: ColSpec[] = options.resourceAreaColumns || []
+  let allActionColSpecs: ColSpec[] = options.actionAreaColumns || []
   let superHeaderRendering = null
 
   if (!allColSpecs.length) {
@@ -437,5 +462,6 @@ function processColOptions(options: ViewOptionsRefined) {
     groupSpecs,
     colSpecs: groupColSpecs.concat(plainColSpecs),
     orderSpecs: plainOrderSpecs,
+    actionColSpecs: allActionColSpecs,
   }
 }

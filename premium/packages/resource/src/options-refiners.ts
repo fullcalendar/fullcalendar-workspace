@@ -25,6 +25,8 @@ export const OPTION_REFINERS = {
   resourceGroupField: String,
   resourceAreaWidth: identity as Identity<CssDimValue>,
   resourceAreaColumns: identity as Identity<ColSpec[]>,
+  actionsAreaWidth: identity as Identity<CssDimValue>,
+  actionAreaColumns: identity as Identity<ColSpec[]>,
   resourcesInitiallyExpanded: Boolean,
   datesAboveResources: Boolean,
   needsResourceData: Boolean, // internal-only
