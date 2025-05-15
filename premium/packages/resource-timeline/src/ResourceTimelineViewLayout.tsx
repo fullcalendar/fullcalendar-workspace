@@ -4,7 +4,7 @@ import {
   renderScrollShim,
   getStickyHeaderDates,
   getStickyFooterScrollbar,
-  config, ScrollGridChunkConfig,
+  config,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollGrid } from '@fullcalendar/scrollgrid/internal'
@@ -53,9 +53,6 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
     let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
     let actions = props.actions;
 
-    const filterActions = (chunk:ScrollGridChunkConfig) =>
-      chunk.key !== 'actions' || !!actions;
-
     let sections: ScrollGridSectionConfig[] = [
       {
         type: 'header',
@@ -79,13 +76,8 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
           {
             key: 'timeline',
             content: props.timeHeaderContent,
-          },
-          {
-            key: 'actions',
-            tableClassName: 'fc-datagrid-header',
-            rowContent: actions ? actions.actionsHeaderRows : null,
           }
-        ].filter(filterActions),
+        ],
       },
       {
         type: 'body',
@@ -109,13 +101,8 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
             key: 'timeline',
             scrollerElRef: this.timeBodyScrollerElRef,
             content: props.timeBodyContent,
-          },
-          {
-            key: 'actions',
-            tableClassName: 'fc-datagrid-body',
-            rowContent: actions ? actions.actionsBodyRows : null,
           }
-        ].filter(filterActions),
+        ],
       },
     ]
 
@@ -138,12 +125,8 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
           {
             key: 'timeline',
             content: renderScrollShim,
-          },
-          {
-            key: 'actions',
-            content: renderScrollShim,
           }
-        ].filter(filterActions),
+        ],
       })
     }
 
@@ -162,7 +145,51 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
     ];
 
     if (actions) {
-      colGroups.push({ cols: actions.actionsCols, width: actionAreaWidth })
+      colGroups.push({ cols: [] }); // for the divider
+      colGroups.push({ cols: actions.actionsCols, width: actionAreaWidth });
+      const headerIndex = sections.findIndex(section => section.key === 'header')
+      const bodyIndex = sections.findIndex(section => section.key === 'body')
+      const footerIndex = sections.findIndex(section => section.key === 'footer')
+
+      sections[headerIndex].chunks.push({
+        key: 'actions-divider',
+        outerContent: (
+          <td role="presentation" className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
+        ),
+      });
+
+      sections[headerIndex].chunks.push({
+        key: 'actions',
+        tableClassName: 'fc-datagrid-header',
+        rowContent: actions.actionsHeaderRows,
+      });
+
+      sections[bodyIndex].chunks.push({
+        key: 'actions-divider',
+        outerContent: (
+          <td role="presentation" className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
+        ),
+      });
+
+      sections[bodyIndex].chunks.push({
+        key: 'actions',
+        tableClassName: 'fc-datagrid-body',
+        rowContent: actions.actionsBodyRows,
+      });
+
+      if (stickyFooterScrollbar && footerIndex !== -1) {
+        sections[footerIndex].chunks.push({
+          key: 'actions-divider',
+          outerContent: (
+            <td role="presentation" className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
+          )
+        });
+
+        sections[footerIndex].chunks.push({
+          key: 'actions',
+          content: renderScrollShim,
+        });
+      }
     }
 
     return (
