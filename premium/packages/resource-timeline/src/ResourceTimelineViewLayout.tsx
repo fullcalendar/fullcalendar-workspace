@@ -4,7 +4,7 @@ import {
   renderScrollShim,
   getStickyHeaderDates,
   getStickyFooterScrollbar,
-  config,
+  config, ScrollGridChunkConfig,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { ScrollGrid } from '@fullcalendar/scrollgrid/internal'
@@ -29,7 +29,7 @@ export interface ResourceTimelineViewLayoutProps {
 
 interface ResourceTimelineViewLayoutState {
   resourceAreaWidthOverride: number | null
-  actionsAreaWidthOverride: number | null
+  actionAreaWidthOverride: number | null
 }
 
 // RENAME?
@@ -43,7 +43,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
 
   state = {
     resourceAreaWidthOverride: null,
-    actionsAreaWidthOverride: null,
+    actionAreaWidthOverride: null,
   }
 
   render() {
@@ -52,6 +52,9 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
     let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
     let actions = props.actions;
+
+    const filterActions = (chunk:ScrollGridChunkConfig) =>
+      chunk.key !== 'actions' || !!actions;
 
     let sections: ScrollGridSectionConfig[] = [
       {
@@ -82,7 +85,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
             tableClassName: 'fc-datagrid-header',
             rowContent: actions ? actions.actionsHeaderRows : null,
           }
-        ],
+        ].filter(filterActions),
       },
       {
         type: 'body',
@@ -112,7 +115,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
             tableClassName: 'fc-datagrid-body',
             rowContent: actions ? actions.actionsBodyRows : null,
           }
-        ],
+        ].filter(filterActions),
       },
     ]
 
@@ -140,7 +143,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
             key: 'actions',
             content: renderScrollShim,
           }
-        ],
+        ].filter(filterActions),
       })
     }
 
@@ -148,16 +151,19 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
       ? state.resourceAreaWidthOverride
       : options.resourceAreaWidth
 
-    let actionsAreaWidth = state.actionsAreaWidthOverride != null
-      ? state.actionsAreaWidthOverride
-      : options.actionsAreaWidth
+    let actionAreaWidth = state.actionAreaWidthOverride != null
+      ? state.actionAreaWidthOverride
+      : options.actionAreaWidth
 
     let colGroups = [
       { cols: props.spreadsheetCols, width: resourceAreaWidth },
       { cols: [] }, // for the divider
       { cols: props.timeCols },
-      { cols: actions ? actions.actionsCols : [], width: actionsAreaWidth  }
     ];
+
+    if (actions) {
+      colGroups.push({ cols: actions.actionsCols, width: actionAreaWidth })
+    }
 
     return (
       <ScrollGrid

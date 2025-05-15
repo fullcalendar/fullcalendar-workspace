@@ -23,9 +23,9 @@ import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
-  actionsAreaWidth: CssDimValue
+  actionAreaWidth: CssDimValue
   spreadsheetColWidths: number[]
-  actionsColWidths?: number[]
+  actionsColWidths: number[]
   slatCoords?: TimelineCoords
   slotCushionMaxWidth?: number
 }
@@ -56,8 +56,9 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
     this.state = {
       resourceAreaWidth: context.options.resourceAreaWidth,
-      actionsAreaWidth: context.options.actionsAreaWidth,
+      actionAreaWidth: context.options.actionAreaWidth,
       spreadsheetColWidths: [],
+      actionsColWidths: [],
     }
   }
 
