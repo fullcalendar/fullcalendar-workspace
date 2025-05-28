@@ -12,7 +12,6 @@ import {} from '@fullcalendar/resource-timeline'
 
 /*
 TODO: search all "blue"
-TODO: convert 2px to 0.5tw
 */
 
 // General Utils
@@ -60,7 +59,7 @@ const axisInnerClassName = 'text-end min-h-[1.5em] flex flex-col justify-center'
 
 const dayGridOverrides: CalendarOptions = {
   listItemEventClassNames: (arg) => [
-    'me-[2px] p-px rounded-sm items-center',
+    'me-0.5 p-px rounded-sm items-center',
     arg.isSelected
       ? 'bg-black/30'
       : 'hover:bg-black/10 focus:bg-black/20',
@@ -71,8 +70,8 @@ const dayGridOverrides: CalendarOptions = {
   listItemEventTitleClassNames: 'p-px font-bold',
 
   rowEventClassNames: (arg) => [
-    arg.isStart && 'ms-[2px]',
-    arg.isEnd && 'me-[2px]',
+    arg.isStart && 'ms-0.5',
+    arg.isEnd && 'me-0.5',
   ],
   rowEventColorClassNames: (arg) => [
     arg.isStart && 'rounded-s-sm',
