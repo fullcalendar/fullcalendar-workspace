@@ -10,10 +10,6 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/resource-daygrid'
 import {} from '@fullcalendar/resource-timeline'
 
-/*
-TODO: search all "blue"
-*/
-
 // General Utils
 // -------------------------------------------------------------------------------------------------
 
@@ -28,7 +24,7 @@ const rowPointerResizerClassName = `${blockPointerResizerClassName} inset-y-0 w-
 const columnPointerResizerClassName = `${blockPointerResizerClassName} inset-x-0 h-2`
 
 // circle resizer for touch
-const blockTouchResizerClassName = `absolute z-20 h-2 w-2 rounded border border-solid border-blue-500 bg-white`
+const blockTouchResizerClassName = `absolute z-20 h-2 w-2 rounded border border-solid border-(--fc-event-color) bg-white`
 const rowTouchResizerClassName = `${blockTouchResizerClassName} top-1/2 -mt-1`
 const columnTouchResizerClassName = `${blockTouchResizerClassName} left-1/2 -ml-1`
 
@@ -84,7 +80,7 @@ const dayGridOverrides: CalendarOptions = {
     'relative max-w-full overflow-hidden whitespace-nowrap',
     'hover:bg-black/10',
     arg.isCompact
-      ? 'border border-blue-600 p-px'
+      ? 'border border-(--fc-event-color) p-px'
       : 'self-start',
   ],
 }
