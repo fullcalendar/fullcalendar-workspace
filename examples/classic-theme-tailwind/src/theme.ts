@@ -15,27 +15,16 @@ TODO: search all "blue"
 TODO: convert 2px to 0.5tw
 */
 
-// Common Utils
+// General Utils
 // -------------------------------------------------------------------------------------------------
 
 const buttonIconClassName = 'text-[1.5em] w-[1em] h-[1em]'
 
-const cellClassName = 'border border-gray-300'
-
-// a column that aligns right (aka end) and vertically centered
-const axisClassNames = 'flex flex-col justify-center items-end'
-
-// align text right (aka end) for when multiline
-const axisInnerClassNames = [
-  'text-end min-h-[1.5em]',
-  'flex flex-col justify-center', // vertically align text if min-height takes effect
-]
-
-const listItemClassNames = 'px-3 py-2' // in list view, any type of row-ish thing
+const borderClassName = 'border border-gray-300'
 
 function getSlotClassNames(arg: any) {
   return [
-    cellClassName,
+    borderClassName,
     arg.isMinor && 'border-dotted',
   ]
 }
@@ -44,10 +33,8 @@ function getBlockEventResizerClassNames(arg: EventContentArg): string[] {
   return [
     'absolute z-20',
     arg.isSelected
-      // circle resizer for touch
-      ? 'h-2 w-2 rounded border border-solid border-blue-500 bg-white'
-      // transparent resizer for mouse
-      : 'hidden group-hover:block bg-red-500'
+      ? 'h-2 w-2 rounded border border-solid border-blue-500 bg-white' // circle resizer for touch
+      : 'hidden group-hover:block bg-red-500' // transparent resizer for mouse
   ]
 }
 
@@ -55,10 +42,8 @@ function getRowEventResizerClassNames(arg: EventContentArg): (string | false)[] 
   return [
     ...getBlockEventResizerClassNames(arg),
     arg.isSelected
-      // POSITION: circle resizer for touch
-      ? 'top-1/2 -mt-1'
-      // POSITION: transparent resizer for mouse
-      : 'inset-y-0 w-2'
+      ? 'top-1/2 -mt-1' // POSITION: circle resizer for touch
+      : 'inset-y-0 w-2' // POSITION: transparent resizer for mouse
   ]
 }
 
@@ -66,17 +51,30 @@ function getColumnEventResizerClassNames(arg: EventContentArg): (string | false)
   return [
     ...getBlockEventResizerClassNames(arg),
     arg.isSelected
-      // POSITION: circle resizer for touch
-      ? 'left-1/2 -ml-1'
-      // POSITION: transparent resizer for mouse
-      : 'inset-x-0 h-2'
+      ? 'left-1/2 -ml-1' // POSITION: circle resizer for touch
+      : 'inset-x-0 h-2' // POSITION: transparent resizer for mouse
   ]
 }
 
-// DayGrid common
+// List View Util
 // -------------------------------------------------------------------------------------------------
 
-const dayGridCommon: CalendarOptions = {
+const listItemClassName = 'px-3 py-2' // in list view, any type of row-ish thing
+
+// TimeGrid Util
+// -------------------------------------------------------------------------------------------------
+
+// a column that aligns right (aka end) and vertically centered
+const axisClassName = 'flex flex-col justify-center items-end'
+
+// align text right (aka end) for when multiline
+// vertically align text if min-height takes effect
+const axisInnerClassName = 'text-end min-h-[1.5em] flex flex-col justify-center'
+
+// DayGrid Util
+// -------------------------------------------------------------------------------------------------
+
+const dayGridOverrides: CalendarOptions = {
   listItemEventClassNames: (arg) => [
     'me-[2px] p-px rounded-sm items-center',
     arg.isSelected
@@ -99,7 +97,7 @@ const dayGridCommon: CalendarOptions = {
 
   moreLinkClassNames: (arg) => [
     'cursor-pointer text-xs p-0.5 rounded-xs mx-0.5 mb-px',
-    // TODO: somehow make this core? will go away with measurement refactor?
+    // TODO: this more-link manual positioning will go away with measurement refactor
     'relative max-w-full overflow-hidden whitespace-nowrap',
     'hover:bg-black/10',
     arg.isCompact
@@ -108,7 +106,9 @@ const dayGridCommon: CalendarOptions = {
   ],
 }
 
-const dayGridRowWeekNumberClassNames = 'absolute z-20 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center bg-gray-100 text-gray-500'
+const dayGridWeekNumberOverrides: CalendarOptions = {
+  weekNumberClassNames: 'absolute z-20 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center bg-gray-100 text-gray-500',
+}
 
 // Plugin
 // -------------------------------------------------------------------------------------------------
@@ -117,16 +117,10 @@ export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
     classNames: 'gap-5 [--fc-event-color:green]',
-    directionClassNames: (direction) => `fc-direction-${direction}`,
-    mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
     toolbarClassNames: 'gap-3',
     toolbarSectionClassNames: 'gap-3',
     toolbarTitleClassNames: 'text-2xl font-bold whitespace-nowrap',
-    viewClassNames: (arg) => [
-      'fc-view',
-      `fc-${arg.view.type}-view`,
-      cellClassName,
-    ],
+    viewClassNames: borderClassName,
     viewHeaderClassNames: (arg) => [
       arg.isSticky && 'bg-white'
     ],
@@ -177,7 +171,7 @@ export default createPlugin({
       */
     ],
 
-    popoverClassNames: `bg-white shadow-md ${cellClassName}`, // see also: dayPopoverClassNames
+    popoverClassNames: [borderClassName, 'bg-white shadow-md'],
     popoverHeaderClassNames: 'flex flex-row justify-between items-center bg-gray-100 px-1 py-1',
     popoverTitleClassNames: 'px-1',
     popoverCloseClassNames: 'cursor-pointer', // TODO: have core do all cursors!!??
@@ -288,25 +282,25 @@ export default createPlugin({
     // Day-Headers (DayGrid & MultiMonth & TimeGrid)
     // ---------------------------------------------------------------------------------------------
 
-    dayHeaderRowClassNames: cellClassName,
+    dayHeaderRowClassNames: borderClassName,
     dayHeaderClassNames: (arg) => [
-      cellClassName,
+      borderClassName,
       arg.isDisabled && 'bg-gray-100',
     ],
     dayHeaderInnerClassNames: 'px-1 py-0.5',
     dayHeaderDividerClassNames: 'border-t border-gray-300',
 
     // for resource views only
-    resourceDayHeaderClassNames: cellClassName,
+    resourceDayHeaderClassNames: borderClassName,
     resourceDayHeaderInnerClassNames: 'px-1 py-0.5',
 
     // Day-Cells (DayGrid & MultiMonth & TimeGrid "all-day" section)
     // ---------------------------------------------------------------------------------------------
 
-    dayRowClassNames: cellClassName,
+    dayRowClassNames: borderClassName,
     dayCellClassNames: (arg) => [
       arg.isToday && 'bg-yellow-400/15',
-      cellClassName,
+      borderClassName,
       arg.isDisabled && 'bg-gray-100',
     ],
 
@@ -350,14 +344,12 @@ export default createPlugin({
     allDayDividerClassNames: 'bg-gray-100 pb-0.5 border-t border-b border-gray-300',
 
     dayLaneClassNames: (arg) => [
-      cellClassName,
+      borderClassName,
       arg.isDisabled && 'bg-gray-100',
       arg.isToday && 'bg-yellow-400/15',
     ],
     dayLaneInnerClassNames: (arg) => [
-      arg.isSimple
-        ? 'm-1'
-        : 'ms-0.5 me-[2.5%]'
+      arg.isSimple ? 'm-1' : 'ms-0.5 me-[2.5%]'
     ],
 
     // Slots (TimeGrid & Timeline)
@@ -367,17 +359,17 @@ export default createPlugin({
     slotLaneClassNames: getSlotClassNames,
 
     // only for (resource-)timeline
-    slotLabelRowClassNames: cellClassName,
+    slotLabelRowClassNames: borderClassName,
 
     // Resource Timeline
     // ---------------------------------------------------------------------------------------------
 
-    resourceAreaHeaderRowClassNames: cellClassName,
-    resourceAreaHeaderClassNames: cellClassName,
+    resourceAreaHeaderRowClassNames: borderClassName,
+    resourceAreaHeaderClassNames: borderClassName,
     resourceAreaHeaderInnerClassNames: 'p-2',
     resourceAreaDividerClassNames: 'pl-0.5 bg-gray-100 border-x border-gray-300',
 
-    resourceAreaRowClassNames: cellClassName,
+    resourceAreaRowClassNames: borderClassName,
     resourceIndentClassNames: 'me-1',
     resourceExpanderClassNames: 'cursor-pointer opacity-65',
     resourceExpanderContent: (arg) => arg.isExpanded
@@ -386,11 +378,11 @@ export default createPlugin({
 
     resourceGroupHeaderClassNames: 'bg-gray-100',
     resourceGroupHeaderInnerClassNames: 'p-2',
-    resourceGroupLaneClassNames: `bg-gray-100 ${cellClassName}`,
+    resourceGroupLaneClassNames: [borderClassName, 'bg-gray-100'],
 
-    resourceCellClassNames: cellClassName,
+    resourceCellClassNames: borderClassName,
     resourceCellInnerClassNames: 'p-2',
-    resourceLaneClassNames: cellClassName,
+    resourceLaneClassNames: borderClassName,
     resourceLaneBottomClassNames: (arg) => [
       !arg.isCompact && 'pb-3'
     ],
@@ -405,7 +397,7 @@ export default createPlugin({
 
     listDayClassNames: 'not-last:border-b border-gray-300',
     listDayHeaderClassNames: 'border-b border-gray-300 flex flex-row justify-between font-bold bg-gray-100',
-    listDayHeaderInnerClassNames: listItemClassNames,
+    listDayHeaderInnerClassNames: listItemClassName,
   },
 
   // View-specific overrides for shared elements
@@ -413,23 +405,23 @@ export default createPlugin({
 
   views: {
     dayGrid: {
-      ...dayGridCommon,
-      weekNumberClassNames: dayGridRowWeekNumberClassNames,
+      ...dayGridOverrides,
+      ...dayGridWeekNumberOverrides,
     },
     multiMonth: {
-      ...dayGridCommon,
-      weekNumberClassNames: dayGridRowWeekNumberClassNames,
+      ...dayGridOverrides,
+      ...dayGridWeekNumberOverrides,
     },
     timeGrid: {
-      ...dayGridCommon,
-      allDayHeaderClassNames: axisClassNames,
-      allDayHeaderInnerClassNames: `${axisInnerClassNames} whitespace-pre px-1 py-0.5`, // TODO: keep here our move to general section?
-      weekNumberClassNames: axisClassNames,
-      weekNumberInnerClassNames: `${axisInnerClassNames} px-1 py-0.5`,
+      ...dayGridOverrides,
+      allDayHeaderClassNames: axisClassName,
+      allDayHeaderInnerClassNames: [axisInnerClassName, 'whitespace-pre px-1 py-0.5'],
+      weekNumberClassNames: axisClassName,
+      weekNumberInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
       moreLinkClassNames: 'mb-px rounded-xs text-xs ring ring-white bg-gray-300 cursor-pointer',
       moreLinkInnerClassNames: 'px-0.5 py-1',
-      slotLabelClassNames: axisClassNames,
-      slotLabelInnerClassNames: `${axisInnerClassNames} px-1 py-0.5`,
+      slotLabelClassNames: axisClassName,
+      slotLabelInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
       slotLabelDividerClassNames: 'border-l border-gray-300',
       nowIndicatorLabelClassNames: 'start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] border-s-red-500',
       nowIndicatorLineClassNames: 'border-t border-red-500', // put color on master setting?
@@ -457,7 +449,7 @@ export default createPlugin({
     },
     list: {
       listItemEventClassNames: [
-        listItemClassNames,
+        listItemClassName,
         'not-last:border-b border-gray-300 hover:bg-gray-50',
         'flex flex-row items-center gap-3',
         'group',
