@@ -95,6 +95,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   className={joinClassNames(
                     props.className,
                     classNames.internalMoreLink,
+                    classNames.cursorPointer,
                   )}
                   style={props.style}
                   attrs={{

@@ -84,10 +84,6 @@
   -webkit-appearance: button;
 }
 
-.fc-button:not(:disabled) {
-  cursor: pointer;
-}
-
 .fc-button {
   display: inline-block;
   font-weight: 400;
@@ -226,7 +222,6 @@
 
 .fc-popover-close {
   border: 0; /* for <button> */
-  cursor: pointer;
   vertical-align: middle;
   line-height: 1.357em;
 }
@@ -247,10 +242,6 @@
 
 /* Cross-view */
 /* ------------------------------------------------------------------------------------------------- */
-
-.fc-navlink {
-  cursor: pointer;
-}
 
 .fc-navlink:hover {
   text-decoration: underline;
@@ -1163,7 +1154,6 @@ a.fc-list-event:hover .fc-event-title {
 }
 
 .fc-resource-expander {
-  cursor: pointer;
   opacity: 0.65;
 }
 

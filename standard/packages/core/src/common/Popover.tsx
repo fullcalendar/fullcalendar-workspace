@@ -70,7 +70,10 @@ export class Popover extends BaseComponent<PopoverProps> {
               ...createAriaClickAttrs(this.handleClose)
             }}
             elRef={this.closeRef}
-            className={joinArrayishClassNames(options.popoverCloseClassNames)}
+            className={joinArrayishClassNames(
+              options.popoverCloseClassNames,
+              classNames.cursorPointer,
+            )}
             renderProps={{}}
             customGenerator={options.popoverCloseContent}
             generatorName='popoverCloseContent'

@@ -128,7 +128,10 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
                 : buttonHint,
               onClick: widget.buttonClick,
             }}
-            className={generateClassName(options.buttonClassNames, renderProps)}
+            className={joinClassNames(
+              generateClassName(options.buttonClassNames, renderProps),
+              !isDisabled && classNames.cursorPointer,
+            )}
             renderProps={renderProps}
             generatorName={undefined}
             classNameGenerator={widget.buttonClassNames}

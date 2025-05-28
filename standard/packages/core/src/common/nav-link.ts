@@ -54,6 +54,7 @@ export function buildNavLinkAttrs(
     'aria-label': formatWithOrdinals(options.navLinkHint, [dateStr, zonedDate], dateStr),
     'className': joinArrayishClassNames(
       options.navLinkClassNames,
+      classNames.cursorPointer,
       classNames.internalNavLink,
     ),
     ...(isTabbable

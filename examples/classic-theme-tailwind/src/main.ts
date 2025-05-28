@@ -11,7 +11,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import themePlugin from './theme.js'
 
-const enablePremium = false
+const enablePremium = true
 
 /*
 Resizing timeline events is whack

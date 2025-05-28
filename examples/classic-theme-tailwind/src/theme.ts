@@ -96,7 +96,7 @@ const dayGridOverrides: CalendarOptions = {
   ],
 
   moreLinkClassNames: (arg) => [
-    'cursor-pointer text-xs p-0.5 rounded-xs mx-0.5 mb-px',
+    'text-xs p-0.5 rounded-xs mx-0.5 mb-px',
     // TODO: this more-link manual positioning will go away with measurement refactor
     'relative max-w-full overflow-hidden whitespace-nowrap',
     'hover:bg-black/10',
@@ -153,7 +153,7 @@ export default createPlugin({
 
     buttonGroupClassNames: 'isolate',
     buttonClassNames: (arg) => [
-      'inline-flex items-center px-4 py-2 border text-sm text-white cursor-pointer',
+      'inline-flex items-center px-4 py-2 border text-sm text-white',
       arg.inGroup
         ? 'first:rounded-s-sm last:rounded-e-sm relative' // in button-group
         : 'rounded-sm', // alone
@@ -174,16 +174,13 @@ export default createPlugin({
     popoverClassNames: [borderClassName, 'bg-white shadow-md'],
     popoverHeaderClassNames: 'flex flex-row justify-between items-center bg-gray-100 px-1 py-1',
     popoverTitleClassNames: 'px-1',
-    popoverCloseClassNames: 'cursor-pointer', // TODO: have core do all cursors!!??
     popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
     popoverBodyClassNames: 'p-2 min-w-[220px]',
 
     // Cross-view
     // ---------------------------------------------------------------------------------------------
 
-    weekNumberClassNames: 'fc-week-number',
-    navLinkClassNames: 'cursor-pointer hover:underline',
-    moreLinkClassNames: 'fc-more-link',
+    navLinkClassNames: 'hover:underline',
 
     dayCompactWidth: 70,
 
@@ -371,7 +368,7 @@ export default createPlugin({
 
     resourceAreaRowClassNames: borderClassName,
     resourceIndentClassNames: 'me-1',
-    resourceExpanderClassNames: 'cursor-pointer opacity-65',
+    resourceExpanderClassNames: 'opacity-65',
     resourceExpanderContent: (arg) => arg.isExpanded
       ? svgIcons.minusSquare('w-[1em] h-[1em]')
       : svgIcons.plusSquare('w-[1em] h-[1em]'),
@@ -418,7 +415,7 @@ export default createPlugin({
       allDayHeaderInnerClassNames: [axisInnerClassName, 'whitespace-pre px-1 py-0.5'],
       weekNumberClassNames: axisClassName,
       weekNumberInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
-      moreLinkClassNames: 'mb-px rounded-xs text-xs ring ring-white bg-gray-300 cursor-pointer',
+      moreLinkClassNames: 'mb-px rounded-xs text-xs ring ring-white bg-gray-300',
       moreLinkInnerClassNames: 'px-0.5 py-1',
       slotLabelClassNames: axisClassName,
       slotLabelInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
@@ -440,7 +437,7 @@ export default createPlugin({
         'px-px',
         arg.isSpacious ? 'py-1' : 'py-px',
       ],
-      moreLinkClassNames: 'flex flex-col items-start text-xs bg-gray-300 p-px cursor-pointer me-px',
+      moreLinkClassNames: 'flex flex-col items-start text-xs bg-gray-300 p-px me-px',
       moreLinkInnerClassNames: 'p-0.5',
       slotLabelInnerClassNames: 'p-1',
       slotLabelDividerClassNames: 'border-b border-gray-300',

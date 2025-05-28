@@ -1,4 +1,5 @@
 import { BaseComponent, ContentContainer, generateClassName, joinClassNames } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { ResourceExpanderArg } from '../../structs.js'
 
@@ -26,6 +27,7 @@ export class ResourceExpander extends BaseComponent<ResourceExpanderProps> {
         aria-hidden // TODO: better a11y when doing roving tabindex
         className={joinClassNames(
           generateClassName(classNameGenerator, renderProps),
+          classNames.cursorPointer,
           props.className,
         )}
         onClick={props.onExpanderClick}
