@@ -236,7 +236,6 @@ export interface EventContentArg { // for *Content handlers
   isCompact: boolean
   isSpacious: boolean
   level: number
-  isListItem: boolean
   timeClassName: string
   titleClassName: string
 }

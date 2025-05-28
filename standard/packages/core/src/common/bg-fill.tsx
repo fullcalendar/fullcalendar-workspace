@@ -30,13 +30,17 @@ export class BgEvent extends BaseComponent<BgEventProps> {
   private el: HTMLElement
 
   render() {
-    let { props, context } = this
-    let { eventRange } = props
-    let { options } = context
-    let eventUi = eventRange.ui
+    const { props, context } = this
+    const { eventRange } = props
+    const { options } = context
+    const eventUi = eventRange.ui
 
-    let eventApi = this.buildPublicEvent(context, eventRange.def, eventRange.instance)
-    let renderProps: EventContentArg = {
+    const eventApi = this.buildPublicEvent(context, eventRange.def, eventRange.instance)
+    const subcontentRenderProps = {
+      event: eventApi,
+      isCompact: false,
+    }
+    const renderProps: EventContentArg = {
       event: eventApi,
       view: context.viewApi,
       timeText: '', // never display time
@@ -58,20 +62,24 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       level: 0,
       isCompact: false,
       isSpacious: false,
-      isListItem: false,
       timeClassName: '', // never display time
-      titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi, isCompact: false, isListItem: false }),
+      titleClassName: joinClassNames(
+        generateClassName(options.eventTitleClassNames, subcontentRenderProps),
+        generateClassName(options.backgroundEventTitleClassNames, subcontentRenderProps),
+      ),
     }
+    const outerClassNames = joinClassNames( // already includes eventClassNames below
+      generateClassName(options.backgroundEventClassNames, renderProps),
+      ...eventUi.classNames,
+      classNames.fill,
+      classNames.internalEvent,
+      classNames.internalBgEvent,
+    )
 
     return (
       <ContentContainer
         tag='div'
-        className={joinClassNames(
-          ...eventUi.classNames,
-          classNames.fill,
-          classNames.internalEvent,
-          classNames.internalBgEvent,
-        )}
+        className={outerClassNames}
         style={{
           backgroundColor: eventUi.backgroundColor,
         }}

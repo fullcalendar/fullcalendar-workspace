@@ -66,7 +66,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
                   }}
                 >
                   <StandardEvent
-                    axis='x'
+                    display={hasListItemDisplay(seg) ? 'list-item' : 'row'}
                     eventRange={eventRange}
                     isStart={seg.isStart}
                     isEnd={seg.isEnd}
@@ -76,7 +76,6 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
                     isSelected={instanceId === props.eventSelection}
                     defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
                     defaultDisplayEventEnd={false}
-                    isListItem={hasListItemDisplay(seg)}
                     {...getEventRangeMeta(eventRange, props.todayRange)}
                   />
                 </div>

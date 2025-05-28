@@ -301,7 +301,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           }
         >
           <StandardEvent
-            axis='x'
+            display={isListItem ? 'list-item' : 'row'}
             eventRange={eventRange}
             isStart={seg.isStart}
             isEnd={seg.isEnd}
@@ -312,7 +312,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
             defaultDisplayEventEnd={defaultDisplayEventEnd}
             disableResizing={isListItem}
-            isListItem={isListItem}
             {...getEventRangeMeta(eventRange, todayRange)}
           />
         </DayGridEventHarness>,

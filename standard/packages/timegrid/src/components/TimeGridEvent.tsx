@@ -21,7 +21,7 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
     return (
       <StandardEvent
         {...props}
-        axis='y'
+        display='column'
         level={props.level}
         isCompact={props.isCompact}
         className={

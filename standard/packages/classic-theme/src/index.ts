@@ -1,4 +1,4 @@
-import { createPlugin, EventContentArg, PluginDef } from '@fullcalendar/core'
+import { createPlugin, PluginDef } from '@fullcalendar/core'
 import * as svgIcons from './svgIcons.js'
 import './index.css'
 
@@ -10,9 +10,12 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/resource-daygrid'
 import {} from '@fullcalendar/resource-timeline'
 
+const dayGridBlockEventClassNames = 'fc-daygrid-block-event fc-daygrid-event fc-event-x'
+const dayGridListItemEventClassNames = 'fc-daygrid-dot-event fc-daygrid-event fc-event-x'
+
 const dayGridCommon = {
-  eventClassNames: getDayGridEventClassNames,
-  eventColorClassNames: getDayGridEventColorClassNames,
+  rowEventClassNames: dayGridBlockEventClassNames,
+  listEventClassNames: dayGridListItemEventClassNames,
   weekNumberClassNames: 'fc-daygrid-week-number',
   moreLinkClassNames: 'fc-daygrid-more-link',
 }
@@ -272,15 +275,13 @@ export default createPlugin({
     timeGrid: {
       viewClassNames: 'fc-timegrid',
       eventClassNames: (arg) => [
-        arg.event.allDay ? getDayGridEventClassNames(arg) :
-          arg.event.display === 'background' ? '' :
-            'fc-timegrid-event fc-event-y',
         arg.isCompact && 'fc-timegrid-event-compact',
         arg.level && 'fc-timegrid-event-inset',
       ],
-      eventColorClassNames: (arg) => (
-        arg.event.allDay ? getDayGridEventColorClassNames(arg) : ''
-      ),
+      rowEventClassNames: dayGridBlockEventClassNames,
+      listItemEventClassNames: dayGridListItemEventClassNames,
+      listItemEventColorClassNames: 'fc-daygrid-event-dot',
+      columnEventClassNames: 'fc-timegrid-event fc-event-y',
       allDayHeaderClassNames: 'fc-timegrid-axis',
       allDayHeaderInnerClassNames: 'fc-timegrid-axis-inner',
       weekNumberClassNames: 'fc-timegrid-axis',
@@ -327,16 +328,6 @@ export default createPlugin({
 
 // Utils
 // -------------------------------------------------------------------------------------------------
-
-function getDayGridEventClassNames(arg: EventContentArg) {
-  return arg.event.display === 'background' ? '' :
-    arg.isListItem ? 'fc-daygrid-dot-event fc-daygrid-event fc-event-x' :
-    'fc-daygrid-block-event fc-daygrid-event fc-event-x'
-}
-
-function getDayGridEventColorClassNames(arg: EventContentArg) {
-  return arg.isListItem && 'fc-daygrid-event-dot'
-}
 
 const DAY_IDS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 

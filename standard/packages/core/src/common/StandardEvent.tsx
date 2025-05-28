@@ -17,7 +17,7 @@ export interface StandardEventProps {
   elRef?: ElRef
   attrs?: any
   className?: string
-  axis?: 'x' | 'y'
+  display: 'list-item' | 'row' | 'column'
   eventRange: EventRenderRange // timed/whole-day span
   slicedStart?: DateMarker // view-sliced timed/whole-day span
   slicedEnd?: DateMarker // view-sliced timed/whole-day span
@@ -35,7 +35,6 @@ export interface StandardEventProps {
   defaultTimeFormat: DateFormatter
   defaultDisplayEventTime?: boolean // default true
   defaultDisplayEventEnd?: boolean // default true
-  isListItem?: boolean // default false
   isCompact?: boolean // default false
   isSpacious?: boolean // default false
   level?: number // default 0
@@ -72,11 +71,13 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
 
     const eventApi = this.buildPublicEvent(context, eventRange.def, eventRange.instance)
     const isDraggable = !props.disableDragging && computeEventRangeDraggable(eventRange, context)
-    const renderProps: EventContentArg = {
-      // make stable. everything else atomic
-      // FYI, eventRange unfortunately gets reconstructed a lot, but def/instance is stable
+    const isBlock = /row|column/.test(props.display)
+    const subcontentRenderProps = {
       event: eventApi,
-
+      isCompact: props.isCompact || false,
+    }
+    const renderProps: EventContentArg = {
+      event: eventApi, // make stable. everything else atomic. FYI, eventRange unfortunately gets reconstructed a lot, but def/instance is stable
       view: context.viewApi,
       timeText: timeText,
       textColor: eventUi.textColor,
@@ -94,17 +95,70 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isSelected: Boolean(props.isSelected),
       isDragging: Boolean(props.isDragging),
       isResizing: Boolean(props.isResizing),
-      isListItem: props.isListItem || false,
       isCompact: props.isCompact || false,
       isSpacious: props.isSpacious || false,
       level: props.level || 0,
-      timeClassName: generateClassName(options.eventTimeClassNames, { event: eventApi, isCompact: props.isCompact || false, isListItem: props.isListItem || false }),
-      titleClassName: generateClassName(options.eventTitleClassNames, { event: eventApi, isCompact: props.isCompact || false, isListItem: props.isListItem || false }),
+      timeClassName: joinClassNames(
+        generateClassName(options.eventTimeClassNames, subcontentRenderProps),
+        isBlock && generateClassName(options.blockEventTimeClassNames, subcontentRenderProps),
+        props.display === 'row' && generateClassName(options.rowEventTimeClassNames, subcontentRenderProps),
+        props.display === 'column' && generateClassName(options.columnEventTimeClassNames, subcontentRenderProps),
+        props.display === 'list-item' && generateClassName(options.listItemEventTimeClassNames, subcontentRenderProps),
+      ),
+      titleClassName: joinClassNames(
+        generateClassName(options.eventTitleClassNames, subcontentRenderProps),
+        isBlock && generateClassName(options.blockEventTitleClassNames, subcontentRenderProps),
+        props.display === 'row' && generateClassName(options.rowEventTitleClassNames, subcontentRenderProps),
+        props.display === 'column' && generateClassName(options.columnEventTitleClassNames, subcontentRenderProps),
+        props.display === 'list-item' && generateClassName(options.listItemEventTitleClassNames, subcontentRenderProps),
+      ),
     }
-
-    const beforeClassNames = generateClassName(options.eventBeforeClassNames, renderProps)
-    const afterClassNames = generateClassName(options.eventAfterClassNames, renderProps)
-    const colorClassNames = generateClassName(options.eventColorClassNames, renderProps)
+    const outerClassNames = joinClassNames( // already includes eventClassNames below
+      isBlock && generateClassName(options.blockEventClassNames, renderProps),
+      props.display === 'row' && generateClassName(options.rowEventClassNames, renderProps),
+      props.display === 'column' && generateClassName(options.columnEventClassNames, renderProps),
+      props.display === 'list-item' && generateClassName(options.listItemEventClassNames, renderProps),
+      ...eventUi.classNames,
+      props.className,
+      props.display === 'column'
+        ? classNames.flexCol
+        : classNames.flexRow,
+      (eventRange.def.url || isDraggable) && classNames.cursorPointer,
+      classNames.internalEvent,
+      props.isMirror && classNames.internalEventMirror,
+      isDraggable && classNames.internalEventDraggable,
+      renderProps.isSelected && classNames.internalEventSelected,
+      (renderProps.isStartResizable || renderProps.isEndResizable) && classNames.internalEventResizable,
+    )
+    const beforeClassNames = joinClassNames(
+      generateClassName(options.eventBeforeClassNames, renderProps),
+      isBlock && generateClassName(options.blockEventBeforeClassNames, renderProps),
+      props.display === 'row' && generateClassName(options.rowEventBeforeClassNames, renderProps),
+      props.display === 'column' && generateClassName(options.columnEventBeforeClassNames, renderProps),
+      props.display === 'list-item' && generateClassName(options.listItemEventBeforeClassNames, renderProps),
+    )
+    const afterClassNames = joinClassNames(
+      generateClassName(options.eventAfterClassNames, renderProps),
+      isBlock && generateClassName(options.blockEventAfterClassNames, renderProps),
+      props.display === 'row' && generateClassName(options.rowEventAfterClassNames, renderProps),
+      props.display === 'column' && generateClassName(options.columnEventAfterClassNames, renderProps),
+      props.display === 'list-item' && generateClassName(options.listItemEventAfterClassNames, renderProps),
+    )
+    const colorClassNames = joinClassNames(
+      generateClassName(options.eventColorClassNames, renderProps),
+      isBlock && generateClassName(options.blockEventColorClassNames, renderProps),
+      props.display === 'row' && generateClassName(options.rowEventColorClassNames, renderProps),
+      props.display === 'column' && generateClassName(options.columnEventColorClassNames, renderProps),
+      props.display === 'list-item' && generateClassName(options.listItemEventColorClassNames, renderProps),
+    )
+    const innerClassNames = joinClassNames(
+      generateClassName(options.eventInnerClassNames, renderProps),
+      isBlock && generateClassName(options.blockEventInnerClassNames, renderProps),
+      props.display === 'row' && generateClassName(options.rowEventInnerClassNames, renderProps),
+      props.display === 'column' && generateClassName(options.columnEventInnerClassNames, renderProps),
+      props.display === 'list-item' && generateClassName(options.listItemEventInnerClassNames, renderProps),
+      isBlock && classNames.liquid,
+    )
 
     return (
       <ContentContainer<EventContentArg>
@@ -113,18 +167,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
           ...props.attrs,
           ...attrs,
         }}
-        className={joinClassNames(
-          ...eventUi.classNames,
-          props.className,
-          props.axis === 'x' && classNames.flexRow,
-          props.axis === 'y' && classNames.flexCol,
-          (eventRange.def.url || isDraggable) && classNames.cursorPointer,
-          classNames.internalEvent,
-          props.isMirror && classNames.internalEventMirror,
-          isDraggable && classNames.internalEventDraggable,
-          renderProps.isSelected && classNames.internalEventSelected,
-          (renderProps.isStartResizable || renderProps.isEndResizable) && classNames.internalEventResizable,
-        )}
+        className={outerClassNames}
         style={{
           '--fc-event-color': eventUi.backgroundColor, // TODO: move to just "color"
           // borderColor: eventUi.borderColor, // ???
@@ -142,12 +185,12 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
         {(InnerContent) => (
           <Fragment>
             {/* hit expander */}
-            {Boolean(renderProps.isSelected && props.axis != null) && (
+            {Boolean(renderProps.isSelected && isBlock) && (
               <div
                 className={
-                  props.axis === 'x' // expand orthogonally
-                    ? classNames.hitY
-                    : classNames.hitX
+                  props.display === 'column'
+                    ? classNames.hitX
+                    : classNames.hitY
                 }
               />
             )}
@@ -157,9 +200,9 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                 className={joinClassNames(
                   beforeClassNames,
                   renderProps.isStartResizable && joinClassNames(
-                    props.axis === 'x'
-                      ? classNames.cursorResizeS
-                      : classNames.cursorResizeT,
+                    props.display === 'column'
+                      ? classNames.cursorResizeT
+                      : classNames.cursorResizeS,
                     // these classnames required for dnd
                     classNames.internalEventResizer,
                     classNames.internalEventResizerStart,
@@ -178,10 +221,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
             {/* inner element */}
             <InnerContent
               tag="div"
-              className={joinClassNames(
-                generateClassName(options.eventInnerClassNames, renderProps),
-                props.axis != null && classNames.liquid,
-              )}
+              className={innerClassNames}
               style={{
                 color: renderProps.textColor,
               }}
@@ -192,9 +232,9 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                 className={joinClassNames(
                   afterClassNames,
                   renderProps.isEndResizable && joinClassNames(
-                    props.axis === 'x'
-                      ? classNames.cursorResizeE
-                      : classNames.cursorResizeB,
+                    props.display === 'column'
+                      ? classNames.cursorResizeB
+                      : classNames.cursorResizeE,
                     // these classnames required for dnd
                     classNames.internalEventResizer,
                     classNames.internalEventResizerEnd,

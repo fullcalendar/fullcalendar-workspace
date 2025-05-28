@@ -101,13 +101,15 @@ export default createPlugin({
 }) as PluginDef
 
 function getDayGridEventClassNames(arg: EventContentArg) {
-  return arg.event.display === 'background' ? '' :
-    arg.isListItem ? 'fc-daygrid-dot-event fc-daygrid-event' :
-    'fc-daygrid-block-event fc-daygrid-event fc-h-event'
+  return ''
+  // return arg.event.display === 'background' ? '' :
+  //   arg.isListItem ? 'fc-daygrid-dot-event fc-daygrid-event' :
+  //   'fc-daygrid-block-event fc-daygrid-event fc-h-event'
 }
 
 function getDayGridEventColorClassNames(arg: EventContentArg) {
-  return arg.isListItem && 'fc-daygrid-event-dot'
+  return ''
+  // return arg.isListItem && 'fc-daygrid-event-dot'
 }
 
 const DAY_IDS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
