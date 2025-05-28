@@ -150,6 +150,8 @@ recreation: did daygrid event-resizing get sloppier in recent versions?
   previously, you'd drag over half-a-cell to trigger +1day. Now, it happens as soon as there's pixel overlap
 TEST: date-selecting with mirror
 TODO: for v7, remove concept for eventBorder/Background... theme decides what to do with color
+try to kill noEventsInnerClassNames in future. for vertically-centering "no events" text
+we still need to do the cell-bottom slash more-link-positioning refactor
 
 ASAP THEME
 ----------

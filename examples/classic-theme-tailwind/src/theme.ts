@@ -1,4 +1,4 @@
-import { CalendarOptions, createPlugin, EventContentArg, PluginDef } from '@fullcalendar/core'
+import { CalendarOptions, createPlugin, PluginDef } from '@fullcalendar/core'
 import * as svgIcons from './svgIcons.js'
 import './theme.css'
 
@@ -22,6 +22,17 @@ const buttonIconClassName = 'text-[1.5em] w-[1em] h-[1em]'
 
 const borderClassName = 'border border-gray-300'
 
+// transparent resizer for mouse
+// must have 'group' on the event, for group-hover
+const blockPointerResizerClassName = `absolute z-20 hidden group-hover:block bg-yellow-500`
+const rowPointerResizerClassName = `${blockPointerResizerClassName} inset-y-0 w-2`
+const columnPointerResizerClassName = `${blockPointerResizerClassName} inset-x-0 h-2`
+
+// circle resizer for touch
+const blockTouchResizerClassName = `absolute z-20 h-2 w-2 rounded border border-solid border-blue-500 bg-white`
+const rowTouchResizerClassName = `${blockTouchResizerClassName} top-1/2 -mt-1`
+const columnTouchResizerClassName = `${blockTouchResizerClassName} left-1/2 -ml-1`
+
 function getSlotClassNames(arg: any) {
   return [
     borderClassName,
@@ -29,37 +40,10 @@ function getSlotClassNames(arg: any) {
   ]
 }
 
-function getBlockEventResizerClassNames(arg: EventContentArg): string[] {
-  return [
-    'absolute z-20',
-    arg.isSelected
-      ? 'h-2 w-2 rounded border border-solid border-blue-500 bg-white' // circle resizer for touch
-      : 'hidden group-hover:block bg-red-500' // transparent resizer for mouse
-  ]
-}
-
-function getRowEventResizerClassNames(arg: EventContentArg): (string | false)[] {
-  return [
-    ...getBlockEventResizerClassNames(arg),
-    arg.isSelected
-      ? 'top-1/2 -mt-1' // POSITION: circle resizer for touch
-      : 'inset-y-0 w-2' // POSITION: transparent resizer for mouse
-  ]
-}
-
-function getColumnEventResizerClassNames(arg: EventContentArg): (string | false)[] {
-  return [
-    ...getBlockEventResizerClassNames(arg),
-    arg.isSelected
-      ? 'left-1/2 -ml-1' // POSITION: circle resizer for touch
-      : 'inset-x-0 h-2' // POSITION: transparent resizer for mouse
-  ]
-}
-
 // List View Util
 // -------------------------------------------------------------------------------------------------
 
-const listItemClassName = 'px-3 py-2' // in list view, any type of row-ish thing
+const listViewItemClassName = 'px-3 py-2' // in list view, any type of row-ish thing
 
 // TimeGrid Util
 // -------------------------------------------------------------------------------------------------
@@ -237,11 +221,11 @@ export default createPlugin({
 
     rowEventClassNames: 'mb-px', // okay to have on all row events, but lateral spacing is view-specific
     rowEventBeforeClassNames: (arg) => arg.isStartResizable && [
-      ...getRowEventResizerClassNames(arg),
+      arg.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
       '-start-1',
     ],
     rowEventAfterClassNames: (arg) => arg.isEndResizable && [
-      ...getRowEventResizerClassNames(arg),
+      arg.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
       '-end-1',
     ],
     rowEventInnerClassNames: 'flex-row items-center text-xs',
@@ -253,11 +237,11 @@ export default createPlugin({
 
     columnEventClassNames: 'mb-px',
     columnEventBeforeClassNames: (arg) => arg.isStartResizable && [
-      ...getColumnEventResizerClassNames(arg),
+      arg.isSelected ? columnTouchResizerClassName : columnPointerResizerClassName,
       '-top-1',
     ],
     columnEventAfterClassNames: (arg) => arg.isEndResizable && [
-      ...getColumnEventResizerClassNames(arg),
+      arg.isSelected ? columnTouchResizerClassName : columnPointerResizerClassName,
       '-bottom-1',
     ],
     columnEventColorClassNames: (arg) => [
@@ -394,7 +378,7 @@ export default createPlugin({
 
     listDayClassNames: 'not-last:border-b border-gray-300',
     listDayHeaderClassNames: 'border-b border-gray-300 flex flex-row justify-between font-bold bg-gray-100',
-    listDayHeaderInnerClassNames: listItemClassName,
+    listDayHeaderInnerClassNames: listViewItemClassName,
   },
 
   // View-specific overrides for shared elements
@@ -446,7 +430,7 @@ export default createPlugin({
     },
     list: {
       listItemEventClassNames: [
-        listItemClassName,
+        listViewItemClassName,
         'not-last:border-b border-gray-300 hover:bg-gray-50',
         'flex flex-row items-center gap-3',
         'group',
@@ -457,9 +441,6 @@ export default createPlugin({
       listItemEventTitleClassNames: (arg) => [
         arg.event.url && 'group-hover:underline',
       ],
-      // TODO: put these settings in root config?
-      // TODO: rename to listEmptyClassNames/listEmptyInnerClassNames?
-      // ALSO: why do we need an "inner" ???
       noEventsClassNames: 'flex flex-grow justify-center items-center bg-gray-100 py-15',
     },
   },
