@@ -8,175 +8,88 @@ Publishing:
 ASAP
 ----
 
-breaking: viewClass* hooks receives single View argument, NOT { view }
-todo: move bottom-borders to cells!
-  - [done] datagrid
-  - timeline resource lanes
-  - timeline slats
-  - timegrid slats
+manual-test: does dayGridWeek view do week-numbers somehow? or did we kill that functionality? changelog?
+manual-test: for all places isMajor emitted
+manual-test: test print-view extensively after theme refactor
+manual-test: slotLabelDividerClassNames on timegrid print-view? it's on the timeline print view
+manual-test: the hint functions receive different args now???
+manual-test: have theme define col-resizer? how currently done!?
+manual-test: did daygrid event-resizing get sloppier in recent versions?
+  previously, you'd drag over half-a-cell to trigger +1day. Now, it happens as soon as there's pixel overlap
+manual-test: date-selecting with mirror
+
 bug: scroll to bottom of resource-timegrid-hscroll.html, scrollers out of sync
 bug: a11y-ci/resource-timegrid-hscroll.html, filler on top header, when scrolled all the way right
   is waaay too big
-tests: for all places isMajor emitted
-breaking: column hooks, instead of groupValue/text, uses fieldValue
-breaking: resourceAreaHeaderClassNames apply to normal col-headers now too
-todo: calendar-wide resourceColumnHeader* hooks don't receive column definition
 bug: expander icon indent is wrong -- resource-timeline-row-grouping.html
-breaking: dayLane* separated from dayCell*
-spec-out: how did we decide a theme would determine if daygrid-week-view/etc
-  would have day-numbers in the cell? dayCellAboveClassNames?
-if colorSchemed set to 'dark', but on a light page,
-  the css prop of some root ancestor should be color-scheme:dark (see ag-grid's scrollbars)
-fix createViewHookComponent HACKS
-  we're giving crap values to ppl who rely on custom view rendering
-  viewApi is in context. use it!
-slotLaneContent/slotLaneInnerClassNames -- what's the point? remove? needs cell-inner padding?
-changelog: dayCellContent (now called dayCellTopContent) no longer injected into daypopover
-changelog: dayCellClassNames/DidMount/WillUnmount no longer called on daypopover
-todo: normalize hooks that accept `text` (not `dayNumberText`)
-should resourceDayHeaderClassNames inherit from dayHeaderClassNames?
-  would be easier for theming to not reference premium options
-test print-view extensively after theme refactor
-put slotLabelDividerClassNames on timegrid print-view? it's on the timeline print view
-ensure all new settings are put on the Angular connector!
 bug: date given to week-number hooks is not zoned!!!
-for bootstrap theme,
-  offer separate fontawesome icons plugin?
-  offer separate boostrap-icons plugin
-resolve confusion over event-element "color"
-  will need to make separate `color` property in EventUi. other props set on `style`
-changelog: new EventContentArg props
-bug: why does display:background not work on a 'Repeating Event'
-  because it's a timed event. todo: document this better?
-todo: background-events must be implemented with StandardEvent
-  - daygrid
 bug: multi-month dot-events overflow too much
 bug: all-day section events too close to top
-todo: don't let the event* hooks apply to background events!? better DX
-todo: theme must be able to style business hours
-  and other bg-fill stuff, like selection
-todo: if no resizer classnames for StandardEvent, don't render them!
-todo: kill ALL fullcalendar CSS variables
-seriously rethink renaming eventClassNames(s) to just eventClass ????
-make note in component anatomy that disabled slots/daycells/daylanes need to be specially handled
-breaking: timelineheader would previously use fc-day- instead of fc-slot- if rowUnit was >time
-  now, uses fc-slot- no matter what (for classic theme)
-docs: we will not be implementing "easier way to inject default eventContent"
-  https://github.com/fullcalendar/fullcalendar/issues/5927
-  I was hoping to use eventElement to affect outer rendering, but complications about any new
-  provided top-level event div not having correct aria-roles and flex-css.
-  In reality, tooltip libs like these..
-  - https://mui.com/material-ui/react-tooltip/
-  - https://chakra-ui.com/docs/components/tooltip
-  ..don't create a wrapper div, they just somehow mark the provided top level element(s) with
-  handlers and aria attributes, and the revealed tooltip is rooted somewhere else in the DOM.
-  So, an inner-wrapper is okay, assuming dev is okay not having tooltip on outer 1px border
-  (or they can inject a flex-grow wrapper)
-  SOLUTION to accessing default content:
-  Tell people they can just recreate the very simple markup from StandardEvent's renderInnerContent
-    (remind them background events have different markup. simpler. converge them?)
-docs: instead of buttonElements hook, which would require users to inject correct aria-attributes,
-  disabled-attribute, and click handler,
-  Have Shadcn inject only classNames via `buttonVariants` (https://ui.shadcn.com/docs/components/button#primary)
-  Button-groups are hard to do anyway.
-  Realistically, best way to do a button-group and customize buttons is to have developer,
-  build custom toolbar from scratch (using our soon-to-be-improved datesSet callback)
-for Bootstrap5 icons, use glyphicons still. SVGs have too many ways to inject,
-  easier to use classNames on icons. people include their own stylesheet
-  if they really want SVGs, they can override icons{} somehow,
-  most likely with {html:''} content-injector
-in toolbars, remove left/right keys? force start/end keys?
-decision: change direction -> dir everywhere?
-decision: buttons{}.click -> .handleClick ?
-changelog: ViewSpec's buttonText is gone... for people declaring custom views
-changelog: feature: to disable "List" buttons while returning i18n, set listText:false
-changelog: the hint functions receive different args now???
-docs: previous docs said button.click would receive second argument as HTMLElement, but doesn't seem so
-automated-test: button click handler can cancel default
-automated-test: button hint arguments of all kinds
-adjust transpilation settings. es2016 okay now, with null coalescing operator?
-changelog: dropped Bootstrap 4
-changelog: shape of a locale
 bug: bottom filler isn't working in a11y-ci/resource-timeline-row-grouping.html
-kill all role=rowgroup ... a11y says it's optional. makes code confusing
-rename to LESS... borderless, borderlessX, borderlessY
-changelog: classic-theme capitalizes strings
-bug with resource-timeline doing multiple group columns. positioning broken
-check multimonth at end
-our classic-theme should work with a "borderless" setting
-move away from isSticky naming -> sticky/stickyWhatever
-make setting where week number can be a column. how does this affect theming?
-correct fc-list-day-header sticky bg color transparency problem
-remove the 'Content' in names like ListHeaderContentArg,
-  so just have ListHeaderArg and ListHeaderMountArg
-eventMaxStack:1 is pretty dumb for two events:
-  just displays the second event as a +more link, not saving space!!!
-rename isSticky->sticky, but we still have isStart/isToday/etc !!??
-resourceArea resizer of resourceAreaDivider is small or not specified?
-have theme define col-resizer. see notes
-the event background "dimmer" goes over event time accidentally
-in timegrid, touch-selected event doesn't go above other. supposed to?
-changelog: eventShortHeight (ever documented?) -> eventCompactHeight
-future plan: give non-zero `level` for EventContentArg for all views, not just timegrid
-changelog: remove luxon1/2
-changelog:
-  dayCellContent/etc prop `dayNumberText` renamed to just `text`
-  textParts added to:
-    dayHeaderContent
-    dayCellTopContent
-    weekNumberContent
-    listDayHeaderContent
-TODO: create singleMonthTitleContent and give textParts to it?
-TODO: rename text->dateText and textParts->dateParts?
-TODO: write tests with moment/luxon textParts
-changelog: move many types from @fullcalendar/resource
-  to @fullcalendar/resource-timeline
-  and @fullcalendar/resource-daygrid
-Check why unthemed timegrid (even tho ugly) doesn't sync width for "all-day" section
-test glyph-icons
-timegrid all-day background events are displayed in both all-day and timed
-  if there's a title, shows twice. doesn't look good
-should core be responsible for stickiness?
-  more-link -- in timeline, core does it .... theme should do it if already does events
-  resource-group-cell ... core does it
-TODO: add !important to all rules in util.css?... YES. Nothing is meant to be overridden
-workaround "dual-package hazard" ?
-changelog: Vue3 path to global.js changed from index.global.js
-TODO: update examples in web-component README
-changelog: how to do importmap.html is way different
-changelog: removed web-component 'shadow' setting
-changelog: event hooks' .isDragging/isResizing might be subtly different for mirror or regular
-recreation: did daygrid event-resizing get sloppier in recent versions?
-  previously, you'd drag over half-a-cell to trigger +1day. Now, it happens as soon as there's pixel overlap
-TEST: date-selecting with mirror
-TODO: for v7, remove concept for eventBorder/Background... theme decides what to do with color
-try to kill noEventsInnerClassNames in future. for vertically-centering "no events" text
-we still need to do the cell-bottom slash more-link-positioning refactor
+bug: with resource-timeline doing multiple group columns. positioning broken
+bug: check why unthemed timegrid (even tho ugly) doesn't sync width for "all-day" section
+bug: sticky header dates look terrible in timegrid/daygrid
 
-ASAP THEME
-----------
-dark view for classic theme
-test outerBorder settings (maybe rename to borderless)
-  make theme with no borders in header area (and maybe not multimonth header either)
+high-level todo:
+  kill remaining css in tailwind theme
+    related to [print] and white-out bg, black-out borders & text. what atomic css utils?
+  [darkmode] dark view for classic theme
+    if colorSchemed set to 'dark', but on a light page,
+    the css prop of some root ancestor should be color-scheme:dark (see ag-grid's scrollbars)
+  ResizeObserver refactor
+  more-link and cell-bottom refactor (depends on ResizeObserver refactor)
+  revive classic-theme[NORMAL-CSS], backport from tailwind example
+  hire designer for schematics
+  rerun a11y tester
+  borderless system (see recent notes)
+    check multimonth at end
+    redo singleMonth* settings
+    add tableClassNames/tableHeaderClassNames/tableBodyClassNames, remove viewHeaderClassNames/viewBodyClassNames
+  use isSticky instead of just sticky
+  z-index issues with highlight/bg-events over slats/days
+    note: the event background "dimmer" goes over event time accidentally
+    note: in timegrid, touch-selected event doesn't go above other. supposed to?
+    note: TimeGrid cols should be below slats:
+      https://fullcalendar.freshdesk.com/a/tickets/9203
+      Same with DayGrid, putting background-events underneath lines?
+      we don't want to force people to do semi-transparent colors
+  test out theme-defined textParts
+  resolve confusion over event-element "color"
+    will need to make separate `color` property in EventUi. other props set on `style`
+    note: remove concept for eventBorder/Background... theme decides what to do with color
 
+low-level todo:
+  don't have separate directionClassNames / mediaTypeClassNames / colorSchemeClassNames?
+    just have it be root className with flags
+  remove the 'Content' in names like ListHeaderContentArg,
+    so just have ListHeaderArg and ListHeaderMountArg
+  correct fc-list-day-header sticky bg color transparency problem
+  adjust transpilation settings. es2016 okay now, with null coalescing operator?
+  change all *ClassNames to singular *ClassName
+  fix createViewHookComponent HACKS
+    we're giving crap values to ppl who rely on custom view rendering
+    viewApi is in context. use it!
+  ensure all new settings are put on the Angular connector!
+  bootstrap5 theme needs to use bootstrap-icons
+    i think i implemented this, but uses old iconClassNames map
+    use glyphicons still. easier instructions for importing font stylesheet as opposed to svgs
+  in toolbars, remove left/right keys? force start/end keys?
+  add !important to all rules in util.css?... YES. Nothing is meant to be overridden
+  [stickiness] theme should be responsible for moreLink stickiness (currently core does it)
+    (because theme is already responsible for events stickiness)
+  move cell border to flex-end
+    better for infinite horiztonal scroll later
+    rows have it on bottom because better for print, breaking to second page
 
-way to search for fc- classnames:
-  query: fc-
-  include: standard,premium
-  exclude: *Wrapper*,*.txt,*.md,classic-theme,dist,*.html,bootstrap5,tests
+shacdn
+  instead of buttonElements hook, which would require users to inject correct aria-attributes,
+    disabled-attribute, and click handler,
+    Have Shadcn inject only classNames via `buttonVariants` (https://ui.shadcn.com/docs/components/button#primary)
+    Button-groups are hard to do anyway.
+    Realistically, best way to do a button-group and customize buttons is to have developer,
+    build custom toolbar from scratch (using our soon-to-be-improved datesSet callback)
 
-package.json for classic-theme
-importmap.public.html needs to be updated. accesses published files
-
-Sticky header dates look terrible in timegrid/daygrid
-Look for emphasizeWeeks/fc-timeline-slot-em ... should become ({ isMajor })
-Should we still have data-date attributes on elements?
-
-don't use <Scroller> when not necessary
-  ListView
-  MultiMonth
-
-ResizeObserver problems
+ResizeObserver problems (!!! should be fixed after ResizeObserver refactor !!!)
   ResourceTimeline height:auto
     premium/bundle/a11y-ci/resource-timeline-flat-height-auto.html
     Not exactly sure why fixed-scrollbar would cause this
@@ -190,40 +103,62 @@ ResizeObserver problems
     HACK in tests with Calendar::updateSize calls in callback, ULTIMATELY UNDO THOSE
     Check https://codesandbox.io/p/sandbox/3vxvhg?file=%2Fsrc%2FApp.js
 
-css:
-  move cell border to flex-end
-    better for infinite horiztonal scroll later
-    rows have it on bottom because better for print, breaking to second page
-  do .fci prefix
-  try to flatten all selectors
-  rethink unbolding heading cells
-  TimeGrid cols should be below slats:
-    https://fullcalendar.freshdesk.com/a/tickets/9203
-    Same with DayGrid, putting background-events underneath lines?
-    we don't want to force people to do semi-transparent colors
-  expose an equiv for fc-timegrid-event-harness-inset, to adjust padding
-  .fc-week-number?
-  .fc-timegrid-weeknumber -> .fc-timegrid-week-number (to match with .fc-daygrid-week-number)
-  .fc-table-header renamed?
-  .fc-timegrid-slots needed?
-  .fc-timegrid-slots-axis needed?
-  .fc-timeline-slots needed?
-  Change???
-    .fc-timegrid-allday-label-inner -> .fc-timegrid-allday-label .fc-cell-inner
-    .fc-timegrid-axis-inner         -> .fc-timegrid-axis .fc-cell-inner
-
-docs & site:
-  talk about updateSize doesn't needed because of ResizeObserver
-  Create aXe scrollbar workaround
-  Create new issues for various things, update total
-  write cookbook on common css customizations. .fc prefix not needed
-  Update roadmap
-
-Upgrade Guide
--------------
+Changelog
+---------
 
 Note that scrollgrid will be removed in v7
 Accept falsy className inputs. will remove
+breaking: column hooks, instead of groupValue/text, uses fieldValue
+breaking: resourceAreaHeaderClassNames apply to normal col-headers now too
+breaking: dayLane* separated from dayCell*
+breaking: dayCellContent (now called dayCellTopContent) no longer injected into daypopover
+breaking: dayCellClassNames/DidMount/WillUnmount no longer called on daypopover
+changelog: new EventContentArg props
+breaking: timelineheader would previously use fc-day- instead of fc-slot- if rowUnit was >time
+  now, uses fc-slot- no matter what (for classic theme)
+changelog: new toolbar-button-display setting? (icons-before-text whatever)
+breaking: ViewSpec's buttonText is gone... for people declaring custom views
+changelog: feature: to disable "List" buttons while returning i18n, set listText:false
+changelog: dropped Bootstrap 4
+changelog: shape of a locale
+changelog: classic-theme visually capitalizes button name strings, like "Today" versus old "today"
+changelog: eventShortHeight -> eventCompactHeight
+changelog: EventContentArg `level`
+changelog: remove luxon1/2
+changelog:
+  dayCellContent/etc prop `dayNumberText` renamed to just `text`
+  textParts added to:
+    dayHeaderContent
+    dayCellTopContent
+    weekNumberContent
+    listDayHeaderContent
+changelog: Vue3 path to global.js changed from index.global.js
+changelog: how importmap (ex: importmap.html) must reference */esm/* files
+changelog: removed web-component 'shadow' setting
+changelog: event hooks' .isDragging/isResizing might be subtly different for mirror or regular
+  TODO: figure out how
+
+Docs
+----
+
+make note in component anatomy that disabled slots/daycells/daylanes need to be specifically handled
+we will not be implementing "easier way to inject default eventContent"
+  https://github.com/fullcalendar/fullcalendar/issues/5927
+  I was hoping to use eventElement to affect outer rendering, but complications about any new
+  provided top-level event div not having correct aria-roles and flex-css.
+  In reality, tooltip libs like these..
+  - https://mui.com/material-ui/react-tooltip/
+  - https://chakra-ui.com/docs/components/tooltip
+  ..don't create a wrapper div, they just somehow mark the provided top level element(s) with
+  handlers and aria attributes, and the revealed tooltip is rooted somewhere else in the DOM.
+  So, an inner-wrapper is okay, assuming dev is okay not having tooltip on outer 1px border
+  (or they can inject a flex-grow wrapper)
+  SOLUTION to accessing default content:
+  Tell people they can just recreate the very simple markup from StandardEvent's renderInnerContent
+    (remind them background events have different markup. simpler. converge them?)
+previous docs said button.click would receive second argument as HTMLElement, but doesn't seem so
+update examples in web-component README
+talk about updateSize doesn't needed because of ResizeObserver
 
 Release Prep
 ------------
@@ -237,6 +172,13 @@ Ensure outputted CSS doesn't have multiple :root declarations because of how we 
 Revert "hacks to get print-mode working, but some should be reverted"
 Revert temporary gitignores
 Audit all dependency workspace: protocols
+complete package.json for classic-theme
+Create aXe scrollbar workaround
+
+After Launch
+------------
+
+importmap.public.html needs to be updated. accesses published files
 
 Automated Test TODO
 -------------------
@@ -280,6 +222,9 @@ Perf: not rerendinering events that didn't change
   https://github.com/fullcalendar/fullcalendar/issues/3003
 TimeGrid scrollTime:0 initially scrolls to 0 (a solved regression)
 Tests for auto-scroll (not necessarily v7)
+automated-test: button click handler can cancel default
+automated-test: button hint arguments of all kinds
+automated-test: write tests with moment/luxon textParts
 
 Freshdesk/GH-issues
 -------------------
@@ -395,6 +340,28 @@ Cross-browser
 Example Projects
   In each two-column layout, give the sidebar flex-shrink:0 and the main min-width:0
     Things are currently collapsing very strangely on a narrow screen (like stackblitz angular demo)
+punt: calendar-wide resourceColumnHeader* hooks should receive column definition
+punt: audit all *Content hooks that accept `text` argument
+  we like this pattern
+  text is computed from translation or Intl
+punt: bug: why does display:background not work on a 'Repeating Event'
+  because it's a timed event. todo: document this better?
+punt: decision: change direction -> dir everywhere?
+punt: decision: buttons{}.click -> .handleClick ?
+punt: kill all role=rowgroup ... a11y says it's optional. makes code confusing
+punt: make setting where week number can be a column. how does this affect theming?
+punt: [existing bug] eventMaxStack:1 is pretty dumb for two events:
+  just displays the second event as a +more link, not saving space!!!
+punt: timegrid all-day background events are displayed in both all-day and timed
+  if there's a title, shows twice. doesn't look good
+punt: create singleMonthTitleContent and give textParts to it?
+punt: rename text->dateText and textParts->dateParts?
+punt: workaround "dual-package hazard"? see the recommendation in temporal polyfill repo
+punt: try to kill noEventsInnerClassNames in future. for vertically-centering "no events" text
+punt: Should we still have data-date attributes on elements?
+punt: don't use <Scroller> when not necessary
+  ListView
+  MultiMonth
 
 Notes
 -----

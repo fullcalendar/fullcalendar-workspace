@@ -268,7 +268,7 @@ export default createPlugin({
 
     // for resource views only
     resourceDayHeaderClassNames: borderClassName,
-    resourceDayHeaderInnerClassNames: 'px-1 py-0.5',
+    resourceDayHeaderInnerClassNames: 'px-1 py-0.5', // TODO: make this a constant... standard inner padding!
 
     // Day-Cells (DayGrid & MultiMonth & TimeGrid "all-day" section)
     // ---------------------------------------------------------------------------------------------
