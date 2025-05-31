@@ -23,6 +23,7 @@ import {
   renderText,
   ContentContainer,
   StandardEvent,
+  memoize,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -37,6 +38,8 @@ import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-re
 import { computeHorizontalsFromSeg } from './util.js'
 import { DayGridEventHarness } from './DayGridEventHarness.js'
 import classNames from '@fullcalendar/core/internal-classnames'
+import { DateMarker } from '@fullcalendar/core/internal'
+import { ViewContext } from '@fullcalendar/core/internal'
 
 export interface DayGridRowProps {
   dateProfile: DateProfile
@@ -90,15 +93,18 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     afterSize(this.handleSegPositioning)
   })
 
+  // memo
+  private buildWeekNumberRenderProps = memoize(buildWeekNumberRenderProps)
+
   // internal
   private disconnectHeight?: () => void
 
   render() {
     const { props, context, headerHeightRefMap, mainHeightRefMap } = this
     const { cells } = props
-    const { options, dateEnv } = context
+    const { options } = context
 
-    const weekDate = props.cells[0].date
+    const weekDateMarker = props.cells[0].date
     const fgLiquidHeight = props.dayMaxEvents === true || props.dayMaxEventRows === true
 
     // TODO: memoize? sort all types of segs?
@@ -130,12 +136,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const mirrorSegs = this.getMirrorSegs()
 
     const isNavLink = options.navLinks
-    const fullWeekStr = buildDateStr(context, weekDate, 'week')
-    const weekNum = dateEnv.computeWeekNumber(weekDate)
-    const [weekNumText, weekNumTextParts] = dateEnv.format(
-      weekDate,
-      options.weekNumberFormat || DEFAULT_WEEK_NUM_FORMAT
-    )
+    const fullWeekStr = buildDateStr(context, weekDateMarker, 'week')
 
     return (
       <div
@@ -163,7 +164,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             attrs={{
               ...(
                 isNavLink
-                  ? buildNavLinkAttrs(context, weekDate, 'week', fullWeekStr, /* isTabbable = */ false)
+                  ? buildNavLinkAttrs(context, weekDateMarker, 'week', fullWeekStr, /* isTabbable = */ false)
                   : {}
               ),
               'role': undefined, // HACK: a 'link' role can't be child of 'row' role
@@ -171,12 +172,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             }}
             // will result in weekNumberClassNames + weekNumberInnerClassNames
             className={joinArrayishClassNames(options.weekNumberInnerClassNames)}
-            renderProps={{
-              num: weekNum,
-              text: weekNumText,
-              textParts: weekNumTextParts,
-              date: weekDate, // TODO: must be zoned!
-            }}
+            renderProps={this.buildWeekNumberRenderProps(weekDateMarker, context)}
             generatorName="weekNumberContent"
             customGenerator={options.weekNumberContent}
             defaultGenerator={renderText}
@@ -448,5 +444,24 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     }
 
     return props.dateSelectionSegs
+  }
+}
+
+// Utils
+// -------------------------------------------------------------------------------------------------
+
+function buildWeekNumberRenderProps(weekDateMarker: DateMarker, context: ViewContext) {
+  const { dateEnv, options } = context
+  const weekNum = dateEnv.computeWeekNumber(weekDateMarker)
+  const [weekNumText, weekNumTextParts] = dateEnv.format(
+    weekDateMarker,
+    options.weekNumberFormat || DEFAULT_WEEK_NUM_FORMAT
+  )
+  const weekDateZoned = dateEnv.toDate(weekDateMarker)
+  return {
+    num: weekNum,
+    text: weekNumText,
+    textParts: weekNumTextParts,
+    date: weekDateZoned,
   }
 }

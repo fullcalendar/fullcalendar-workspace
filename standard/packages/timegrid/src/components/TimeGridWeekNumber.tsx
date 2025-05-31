@@ -33,13 +33,15 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
     // HACK: only make week-number a nav-link when NOT in week-view
     let isNavLink = dayCnt === 1 && options.navLinks
 
-    let weekDate = range.start
-    let fullDateStr = buildDateStr(context, weekDate, 'week')
-    let weekNum = dateEnv.computeWeekNumber(weekDate)
+    let weekDateMarker = range.start
+    let fullDateStr = buildDateStr(context, weekDateMarker, 'week')
+
+    let weekNum = dateEnv.computeWeekNumber(weekDateMarker)
     let [weekText, weekTextParts] = dateEnv.format(
-      weekDate,
+      weekDateMarker,
       options.weekNumberFormat || DEFAULT_WEEK_NUM_FORMAT
     )
+    let weekDateZoned = dateEnv.toDate(weekDateMarker)
 
     return (
       <ContentContainer<WeekNumberContentArg>
@@ -57,7 +59,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
           num: weekNum,
           text: weekText,
           textParts: weekTextParts,
-          date: weekDate, // TODO: must be zoned!
+          date: weekDateZoned,
         }}
         generatorName="weekNumberContent"
         customGenerator={options.weekNumberContent}

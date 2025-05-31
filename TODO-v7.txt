@@ -8,11 +8,6 @@ Publishing:
 ASAP
 ----
 
-bug: scroll to bottom of resource-timegrid-hscroll.html, scrollers out of sync
-bug: a11y-ci/resource-timegrid-hscroll.html, filler on top header, when scrolled all the way right
-  is waaay too big
-bug: expander icon indent is wrong -- resource-timeline-row-grouping.html
-bug: date given to week-number hooks is not zoned!!!
 bug: multi-month dot-events overflow too much
 bug: all-day section events too close to top
 bug: bottom filler isn't working in a11y-ci/resource-timeline-row-grouping.html
@@ -42,6 +37,8 @@ high-level todo:
     will need to make separate `color` property in EventUi. other props set on `style`
     note: remove concept for eventBorder/Background... theme decides what to do with color
   backport tailwind classic theme -> normal classic theme
+    address bugs:
+      bug: eventColor not working in resource-timeline-row-grouping.html
   backport to bootstrap5 theme
     also: needs to use bootstrap-icons
       i think i implemented this, but uses old iconClassNames map
@@ -87,6 +84,9 @@ project: ResizeObserver problems (!!! should be fixed after ResizeObserver refac
   AFTER:
     HACK in tests with Calendar::updateSize calls in callback, ULTIMATELY UNDO THOSE
     Check https://codesandbox.io/p/sandbox/3vxvhg?file=%2Fsrc%2FApp.js
+  AFTER check bugs:
+    bug: scroll to bottom of resource-timegrid-hscroll.html, scrollers out of sync
+    bug: a11y-ci/resource-timegrid-hscroll.html, filler on top header, when scrolled all the way right. is waaay too big
 
 Changelog
 ---------
@@ -133,6 +133,7 @@ changelog: hints
   args --- todayHint(unitText, unit) -- "
   args --- viewHint(unitText, unit) -- "
   (second arg is new!)
+bugfix: date given to week-number hooks was never zoned
 
 Docs
 ----
