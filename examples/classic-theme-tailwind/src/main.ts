@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // stickyHeaderDates: true, -- makes things broken sometimes!
       weekNumbers: true,
       plugins: [
-        adaptivePlugin,
+        adaptivePlugin, // even for standard
         dayGridPlugin,
         timeGridPlugin,
         listPlugin,

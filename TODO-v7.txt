@@ -8,17 +8,6 @@ Publishing:
 ASAP
 ----
 
-manual-test: does dayGridWeek view do week-numbers somehow? or did we kill that functionality? changelog?
-manual-test: for all places isMajor emitted
-manual-test: test print-view extensively after theme refactor
-manual-test: slotLabelDividerClassNames on timegrid print-view? it's on the timeline print view
-manual-test: the hint functions receive different args now???
-manual-test: have theme define col-resizer? how currently done!?
-manual-test: did daygrid event-resizing get sloppier in recent versions?
-  previously, you'd drag over half-a-cell to trigger +1day. Now, it happens as soon as there's pixel overlap
-manual-test: date-selecting with mirror
-manual-test: test out theme-defined textParts
-
 bug: scroll to bottom of resource-timegrid-hscroll.html, scrollers out of sync
 bug: a11y-ci/resource-timegrid-hscroll.html, filler on top header, when scrolled all the way right
   is waaay too big
@@ -133,6 +122,17 @@ changelog: how importmap (ex: importmap.html) must reference */esm/* files
 changelog: removed web-component 'shadow' setting
 changelog: event hooks' .isDragging/isResizing might be subtly different for mirror or regular
   TODO: figure out how
+breaking: single-row dayGrid (like dayGridWeek) no longer shows week numbers
+changelog: do "isMajor/isMinor API additions"
+changelog: buttonDisplay (and buttons.display)
+changelog: hints
+  xxx buttonHints -> prevHint, nextHint, todayHint,
+  xxx timeHint (aria is done differently now, as list)
+  args --- prevHint(unitText, unit) -- gets unitText via yearText, monthText, weekText, dayText
+  args --- nextHint(unitText, unit) -- "
+  args --- todayHint(unitText, unit) -- "
+  args --- viewHint(unitText, unit) -- "
+  (second arg is new!)
 
 Docs
 ----
@@ -175,6 +175,7 @@ hire designer for schematics
 somehow publish classic tailwind theme?
 adjust transpilation settings. es2016 okay now, with null coalescing operator?
 ensure all new settings are put on the Angular connector!
+test print-view extensively after theme refactor
 
 After Launch
 ------------
@@ -184,6 +185,7 @@ importmap.public.html needs to be updated. accesses published files
 Automated Test TODO
 -------------------
 
+automated-tests: do "isMajor/isMinor API additions"
 how an event can render as a/div/div[role=button]
 weird list-view slicing logic we removed
   https://github.com/fullcalendar/fullcalendar/blob/9a0edaeb5eddf2cec8bd2409ecc26c4598b98a48/packages/list/src/ListView.tsx#L235-L249
@@ -363,10 +365,23 @@ punt: Should we still have data-date attributes on elements?
 punt: don't use <Scroller> when not necessary
   ListView
   MultiMonth
+punt: have theme define col-resizer (both for resource-area columns and whole area)
+punt: our daygrid event-resizing get sloppier in some recent versions.
+  previously, you'd drag over half-a-cell to trigger +1day. Now, it happens as soon as there's pixel overlap
 
 Notes
 -----
 
+isMajor/isMinor API additions:
+  isMajor
+    + slotLane
+    + slotLabel
+    + dayLane
+    + dayHeader
+    + dayCell
+  isMinor
+    + slotLane
+    + slotLabel
 we really do care about minimizing ResizeObserver loops, prevents flicker. so, safari is valuable
 flexbox row expansion works across scroll regions: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
 100% width within scroller applies to clientWidth only: https://codepen.io/arshaw/pen/GgKWRNZ?editors=1100
