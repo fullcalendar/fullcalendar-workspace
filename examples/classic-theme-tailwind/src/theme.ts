@@ -62,8 +62,8 @@ const dayGridOverrides: CalendarOptions = {
   ],
   listItemEventColorClassNames: 'w-[8px] h-[8px] mx-1',
   listItemEventInnerClassNames: 'flex flex-row items-center text-xs',
-  listItemEventTimeClassNames: 'p-px',
-  listItemEventTitleClassNames: 'p-px font-bold',
+  listItemEventTimeClassNames: 'whitespace-nowrap overflow-hidden flex-shrink-0 max-w-full p-px',
+  listItemEventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink p-px font-bold',
 
   rowEventClassNames: (arg) => [
     arg.isStart && 'ms-0.5',
@@ -184,7 +184,7 @@ export default createPlugin({
     backgroundEventClassNames: 'bg-green-300 opacity-30',
     backgroundEventTitleClassNames: 'm-2 text-xs italic',
 
-    // List Event
+    // List-Item Event
     // ---------------------------------------------------------------------------------------------
 
     listItemEventColorClassNames: 'rounded-full bg-(--fc-event-color)',

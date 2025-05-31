@@ -8,12 +8,14 @@ Publishing:
 ASAP
 ----
 
-bug: multi-month dot-events overflow too much
 bug: all-day section events too close to top
 bug: bottom filler isn't working in a11y-ci/resource-timeline-row-grouping.html
 bug: with resource-timeline doing multiple group columns. positioning broken
 bug: check why unthemed timegrid (even tho ugly) doesn't sync width for "all-day" section
 bug: sticky header dates look terrible in timegrid/daygrid
+
+cleanup tailwind theme
+  multimonth: font sizes not small enough
 
 high-level todo:
   kill remaining css in tailwind classic theme
@@ -134,6 +136,7 @@ changelog: hints
   args --- viewHint(unitText, unit) -- "
   (second arg is new!)
 bugfix: date given to week-number hooks was never zoned
+changelog: list-event time "column" is hardcoded as 165px width
 
 Docs
 ----

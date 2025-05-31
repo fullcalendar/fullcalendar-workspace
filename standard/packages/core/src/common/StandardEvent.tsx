@@ -157,7 +157,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       props.display === 'row' && generateClassName(options.rowEventInnerClassNames, renderProps),
       props.display === 'column' && generateClassName(options.columnEventInnerClassNames, renderProps),
       props.display === 'list-item' && generateClassName(options.listItemEventInnerClassNames, renderProps),
-      isBlock && classNames.liquid,
+      classNames.liquid,
     )
 
     return (
