@@ -54,8 +54,10 @@ const axisInnerClassName = 'text-end min-h-[1.5em] flex flex-col justify-center'
 // -------------------------------------------------------------------------------------------------
 
 const dayGridOverrides: CalendarOptions = {
+  dayCellBottomClassNames: 'min-h-[1px]',
+
   listItemEventClassNames: (arg) => [
-    'me-0.5 p-px rounded-sm items-center',
+    'mt-px me-0.5 p-px rounded-sm items-center',
     arg.isSelected
       ? 'bg-black/30'
       : 'hover:bg-black/10 focus:bg-black/20',
@@ -66,6 +68,7 @@ const dayGridOverrides: CalendarOptions = {
   listItemEventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink p-px font-bold',
 
   rowEventClassNames: (arg) => [
+    'mt-px',
     arg.isStart && 'ms-0.5',
     arg.isEnd && 'me-0.5',
   ],
@@ -75,7 +78,7 @@ const dayGridOverrides: CalendarOptions = {
   ],
 
   moreLinkClassNames: (arg) => [
-    'text-xs p-0.5 rounded-xs mx-0.5 mb-px',
+    'mt-px text-xs p-0.5 rounded-xs mx-0.5',
     // TODO: this more-link manual positioning will go away with measurement refactor
     'relative max-w-full overflow-hidden whitespace-nowrap',
     'hover:bg-black/10',
@@ -214,7 +217,6 @@ export default createPlugin({
     // Block Event > Row Event
     // ---------------------------------------------------------------------------------------------
 
-    rowEventClassNames: 'mb-px', // okay to have on all row events, but lateral spacing is view-specific
     rowEventBeforeClassNames: (arg) => arg.isStartResizable && [
       arg.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
       '-start-1',
