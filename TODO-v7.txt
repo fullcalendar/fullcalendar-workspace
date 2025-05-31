@@ -17,6 +17,7 @@ manual-test: have theme define col-resizer? how currently done!?
 manual-test: did daygrid event-resizing get sloppier in recent versions?
   previously, you'd drag over half-a-cell to trigger +1day. Now, it happens as soon as there's pixel overlap
 manual-test: date-selecting with mirror
+manual-test: test out theme-defined textParts
 
 bug: scroll to bottom of resource-timegrid-hscroll.html, scrollers out of sync
 bug: a11y-ci/resource-timegrid-hscroll.html, filler on top header, when scrolled all the way right
@@ -31,21 +32,15 @@ bug: check why unthemed timegrid (even tho ugly) doesn't sync width for "all-day
 bug: sticky header dates look terrible in timegrid/daygrid
 
 high-level todo:
-  kill remaining css in tailwind theme
+  kill remaining css in tailwind classic theme
     related to [print] and white-out bg, black-out borders & text. what atomic css utils?
-  [darkmode] dark view for classic theme
-    if colorSchemed set to 'dark', but on a light page,
-    the css prop of some root ancestor should be color-scheme:dark (see ag-grid's scrollbars)
-  ResizeObserver refactor
-  more-link and cell-bottom refactor (depends on ResizeObserver refactor)
-  revive classic-theme[NORMAL-CSS], backport from tailwind example
-  hire designer for schematics
-  rerun a11y tester
   borderless system (see recent notes)
     check multimonth at end
     redo singleMonth* settings
     add tableClassNames/tableHeaderClassNames/tableBodyClassNames, remove viewHeaderClassNames/viewBodyClassNames
-  use isSticky instead of just sticky
+  darkmode for tailwind classic theme
+    edgecase: if colorSchemed set to 'dark', but on a light page,
+      the css prop of some root ancestor should be color-scheme:dark (see ag-grid's scrollbars)
   z-index issues with highlight/bg-events over slats/days
     note: the event background "dimmer" goes over event time accidentally
     note: in timegrid, touch-selected event doesn't go above other. supposed to?
@@ -53,27 +48,28 @@ high-level todo:
       https://fullcalendar.freshdesk.com/a/tickets/9203
       Same with DayGrid, putting background-events underneath lines?
       we don't want to force people to do semi-transparent colors
-  test out theme-defined textParts
+    related: correct fc-list-day-header sticky bg color transparency problem!
   resolve confusion over event-element "color"
     will need to make separate `color` property in EventUi. other props set on `style`
     note: remove concept for eventBorder/Background... theme decides what to do with color
+  backport tailwind classic theme -> normal classic theme
+  backport to bootstrap5 theme
+    also: needs to use bootstrap-icons
+      i think i implemented this, but uses old iconClassNames map
+      use glyphicons still. easier instructions for importing font stylesheet as opposed to svgs
+  ResizeObserver refactor
+  more-link and cell-bottom refactor (depends on ResizeObserver refactor)
 
 low-level todo:
+  [rename] use isSticky instead of just sticky
+  [rename] remove the 'Content' in names like ListHeaderContentArg, so just have ListHeaderArg and ListHeaderMountArg
+  [rename] change all *ClassNames to singular *ClassName
   don't have separate directionClassNames / mediaTypeClassNames / colorSchemeClassNames?
     just have it be root className with flags
-  remove the 'Content' in names like ListHeaderContentArg,
-    so just have ListHeaderArg and ListHeaderMountArg
-  correct fc-list-day-header sticky bg color transparency problem
-  adjust transpilation settings. es2016 okay now, with null coalescing operator?
-  change all *ClassNames to singular *ClassName
   fix createViewHookComponent HACKS
     we're giving crap values to ppl who rely on custom view rendering
     viewApi is in context. use it!
-  ensure all new settings are put on the Angular connector!
-  bootstrap5 theme needs to use bootstrap-icons
-    i think i implemented this, but uses old iconClassNames map
-    use glyphicons still. easier instructions for importing font stylesheet as opposed to svgs
-  in toolbars, remove left/right keys? force start/end keys?
+  in toolbars, remove left/right keys. force start/end keys (then add to changelog)
   add !important to all rules in util.css?... YES. Nothing is meant to be overridden
   [stickiness] theme should be responsible for moreLink stickiness (currently core does it)
     (because theme is already responsible for events stickiness)
@@ -81,7 +77,7 @@ low-level todo:
     better for infinite horiztonal scroll later
     rows have it on bottom because better for print, breaking to second page
 
-shacdn
+project: shacdn
   instead of buttonElements hook, which would require users to inject correct aria-attributes,
     disabled-attribute, and click handler,
     Have Shadcn inject only classNames via `buttonVariants` (https://ui.shadcn.com/docs/components/button#primary)
@@ -89,7 +85,7 @@ shacdn
     Realistically, best way to do a button-group and customize buttons is to have developer,
     build custom toolbar from scratch (using our soon-to-be-improved datesSet callback)
 
-ResizeObserver problems (!!! should be fixed after ResizeObserver refactor !!!)
+project: ResizeObserver problems (!!! should be fixed after ResizeObserver refactor !!!)
   ResourceTimeline height:auto
     premium/bundle/a11y-ci/resource-timeline-flat-height-auto.html
     Not exactly sure why fixed-scrollbar would cause this
@@ -174,6 +170,11 @@ Revert temporary gitignores
 Audit all dependency workspace: protocols
 complete package.json for classic-theme
 Create aXe scrollbar workaround
+Rerun aXe tests
+hire designer for schematics
+somehow publish classic tailwind theme?
+adjust transpilation settings. es2016 okay now, with null coalescing operator?
+ensure all new settings are put on the Angular connector!
 
 After Launch
 ------------
