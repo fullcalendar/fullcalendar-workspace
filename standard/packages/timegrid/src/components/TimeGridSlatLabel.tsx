@@ -33,8 +33,6 @@ const DEFAULT_SLAT_LABEL_FORMAT = createFormatter({
 
 export interface TimeGridSlatLabelProps extends TimeSlatMeta {
   // dimensions
-  width?: number
-  isLiquid?: boolean // liquid *width* cell?
   borderTop: boolean
 
   // ref
@@ -64,8 +62,9 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     let renderProps = this.createRenderProps(props.date, props.time, !props.isLabeled, labelFormat, context)
 
     let className = joinClassNames(
+      classNames.flexRow,
       classNames.tight,
-      props.isLiquid ? classNames.liquid : classNames.contentBox,
+      classNames.contentBox,
       props.borderTop ? classNames.borderOnlyT : classNames.borderNone,
     )
 
@@ -76,7 +75,6 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
             generateClassName(options.slotLabelClassNames, renderProps),
             className,
           )}
-          style={{ width: props.width }}
         />
       )
     }
@@ -88,7 +86,6 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
           'data-time': props.isoTimeStr,
         }}
         className={className}
-        style={{ width: props.width }}
         renderProps={renderProps}
         generatorName="slotLabelContent"
         customGenerator={options.slotLabelContent}

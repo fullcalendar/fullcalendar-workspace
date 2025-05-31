@@ -9,6 +9,7 @@ import listPlugin from '@fullcalendar/list'
 import multiMonthPlugin from '@fullcalendar/multimonth'
 import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import themePlugin from './theme.js'
 
 const enablePremium = false
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // stickyHeaderDates: true, -- makes things broken sometimes!
       weekNumbers: true,
       plugins: [
+        scrollGridPlugin, // even for standard
         adaptivePlugin, // even for standard
         dayGridPlugin,
         timeGridPlugin,
@@ -38,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
         multiMonthPlugin,
         themePlugin,
       ],
+      // dayMinWidth: 200,
       eventInteractive: true,
       initialDate: '2023-01-12',
       initialView: 'dayGridMonth',

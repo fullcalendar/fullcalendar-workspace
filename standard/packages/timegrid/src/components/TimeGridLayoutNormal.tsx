@@ -344,16 +344,22 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                           height: slatLiquid ? '' : slatHeight
                         }}
                       >
-                        <TimeGridSlatLabel
-                          {...slatMeta /* FYI doesn't need isoTimeStr */}
-                          innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
-                          innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
-                          width={axisWidth}
-                          borderTop={Boolean(slatI)}
-                        />
+                        <div
+                          className={classNames.flexCol}
+                          style={{ width: axisWidth }}
+                        >
+                          <TimeGridSlatLabel
+                            {...slatMeta /* FYI doesn't need isoTimeStr */}
+                            innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
+                            innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
+                            borderTop={Boolean(slatI)}
+                          />
+                        </div>
                         <div
                           className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
-                          style={{ visibility: 'hidden' }} // TODO: className?
+                          style={{ visibility: 'hidden' }}
+                          // ^TODO: className?
+                          // invisible because dayLanes show the line
                         />
                         <TimeGridSlatLane
                           {...slatMeta /* FYI doesn't need isoTimeStr */}

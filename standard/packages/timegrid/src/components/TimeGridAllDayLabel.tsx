@@ -33,6 +33,7 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
           role: 'rowheader',
         }}
         className={joinClassNames(
+          classNames.flexRow,
           classNames.tight,
           classNames.contentBox,
         )}
@@ -49,7 +50,7 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
       >
         {(InnerContent) => (
           <InnerContent
-            tag="span"
+            tag='div'
             className={joinClassNames(
               generateClassName(options.allDayHeaderInnerClassNames, renderProps),
               classNames.rigid,

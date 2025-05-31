@@ -43,12 +43,9 @@ const listViewItemClassName = 'px-3 py-2' // in list view, any type of row-ish t
 // TimeGrid Util
 // -------------------------------------------------------------------------------------------------
 
-// a column that aligns right (aka end) and vertically centered
-const axisClassName = 'flex flex-col justify-center items-end'
+const axisClassName = 'justify-end' // align inner-content right
 
-// align text right (aka end) for when multiline
-// vertically align text if min-height takes effect
-const axisInnerClassName = 'text-end min-h-[1.5em] flex flex-col justify-center'
+const axisInnerClassName = 'text-end min-h-[1.5em]' // align text right (aka end) for when multiline
 
 // DayGrid Util
 // -------------------------------------------------------------------------------------------------
@@ -392,13 +389,13 @@ export default createPlugin({
     },
     timeGrid: {
       ...dayGridOverrides,
-      allDayHeaderClassNames: axisClassName,
+      allDayHeaderClassNames: [axisClassName, /* vertical-align = */ 'items-center'],
       allDayHeaderInnerClassNames: [axisInnerClassName, 'whitespace-pre px-1 py-0.5'],
       weekNumberClassNames: axisClassName,
       weekNumberInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
       moreLinkClassNames: 'mb-px rounded-xs text-xs ring ring-white bg-gray-300',
       moreLinkInnerClassNames: 'px-0.5 py-1',
-      slotLabelClassNames: axisClassName,
+      slotLabelClassNames: [axisClassName, /* tick-marks = 'w-2 self-end' */],
       slotLabelInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
       slotLabelDividerClassNames: 'border-l border-gray-300',
       nowIndicatorLabelClassNames: 'start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] border-s-red-500',

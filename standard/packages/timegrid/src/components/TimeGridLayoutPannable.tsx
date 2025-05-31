@@ -385,8 +385,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         <div
                           key={slatMeta.key}
                           className={joinClassNames(
-                            classNames.flexRow,
                             slatLiquid && classNames.liquid,
+                            classNames.flexCol,
                           )}
                           style={{
                             height: slatLiquid ? '' : slatHeight
@@ -394,7 +394,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         >
                           <TimeGridSlatLabel
                             {...slatMeta /* FYI doesn't need isoTimeStr */}
-                            isLiquid={true}
                             innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                             innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                             borderTop={Boolean(slatI)}
