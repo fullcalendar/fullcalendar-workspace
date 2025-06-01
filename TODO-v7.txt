@@ -23,8 +23,6 @@ high-level todo:
   darkmode for tailwind classic theme
     edgecase: if colorSchemed set to 'dark', but on a light page,
       the css prop of some root ancestor should be color-scheme:dark (see ag-grid's scrollbars)
-  theme with large < and > on event-continuations
-    or at least test out that it's possible on classic theme
   z-index issues with highlight/bg-events over slats/days
     note: the event background "dimmer" goes over event time accidentally
     note: in timegrid, touch-selected event doesn't go above other. supposed to?

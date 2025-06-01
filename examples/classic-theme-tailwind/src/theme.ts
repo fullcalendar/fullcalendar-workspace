@@ -444,3 +444,29 @@ export default createPlugin({
     },
   },
 }) as PluginDef
+
+/*
+Event continuation arrows experiment.
+Looks great in Firefox. Clip-path is fuzzy in Chrome. TODO: use SVG?
+Need to refactor inner-padding in event element, b/c the before/after need entire height
+
+  rowEventClassNames: 'mb-px',
+  rowEventBeforeClassNames: (arg) => arg.isStartResizable ? [
+    arg.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
+    '-start-1',
+  ] : [
+    // continuation arrow
+    !arg.isStart && 'w-[6px] bg-(--fc-event-color) [clip-path:polygon(100%_0,0_50%,100%_100%)]',
+  ],
+  rowEventAfterClassNames: (arg) => arg.isEndResizable ? [
+    arg.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
+    '-end-1',
+  ] : [
+    // continuation arrow
+    !arg.isEnd && 'w-[6px] bg-(--fc-event-color) [clip-path:polygon(0_0,100%_50%,0_100%)]',
+  ],
+  rowEventColorClassNames: (arg) => [
+    !arg.isStart && 'ms-[6px]',
+    !arg.isEnd && 'me-[6px]',
+  ],
+*/
