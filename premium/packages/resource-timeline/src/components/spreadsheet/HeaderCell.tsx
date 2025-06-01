@@ -42,7 +42,6 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         className={joinClassNames(
           classNames.tight,
           classNames.flexCol,
-          classNames.justifyCenter,
           classNames.rel, // for resizer abs positioning
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
         )}

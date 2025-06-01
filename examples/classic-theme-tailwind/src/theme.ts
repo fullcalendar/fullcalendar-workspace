@@ -65,7 +65,8 @@ const dayGridOverrides: CalendarOptions = {
   listItemEventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink p-px font-bold',
 
   rowEventClassNames: (arg) => [
-    'mt-px',
+    'mt-px', // TODO: move towards making all event margins be on bottom
+      // the reason we do this is hack for spacing from dayCellTop
     arg.isStart && 'ms-0.5',
     arg.isEnd && 'me-0.5',
   ],
@@ -340,7 +341,7 @@ export default createPlugin({
     // ---------------------------------------------------------------------------------------------
 
     resourceAreaHeaderRowClassNames: borderClassName,
-    resourceAreaHeaderClassNames: borderClassName,
+    resourceAreaHeaderClassNames: [borderClassName, /* valign = */ 'justify-center'],
     resourceAreaHeaderInnerClassNames: 'p-2',
     resourceAreaDividerClassNames: 'pl-0.5 bg-gray-100 border-x border-gray-300',
 
@@ -402,7 +403,7 @@ export default createPlugin({
       nowIndicatorLineClassNames: 'border-t border-red-500', // put color on master setting?
     },
     timeline: {
-      rowEventClassNames: 'me-px items-center', // for aligning continuation arrows
+      rowEventClassNames: 'mb-px me-px items-center', // for aligning continuation arrows
       rowEventBeforeClassNames: (arg) => !arg.isStartResizable && [
         // continuation arrow
         'relative z-10 mx-px border-y-[5px] border-y-transparent border-e-[5px] border-e-black opacity-50',
@@ -414,6 +415,10 @@ export default createPlugin({
       rowEventInnerClassNames: (arg) => [
         'px-px',
         arg.isSpacious ? 'py-1' : 'py-px',
+      ],
+      slotLabelClassNames: [
+        /* tick-marks = 'h-2 self-end justify-end', */
+        'justify-center'
       ],
       moreLinkClassNames: 'flex flex-col items-start text-xs bg-gray-300 p-px me-px',
       moreLinkInnerClassNames: 'p-0.5',

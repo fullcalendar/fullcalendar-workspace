@@ -12,7 +12,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import themePlugin from './theme.js'
 
-const enablePremium = false
+const enablePremium = true
 
 /*
 Resizing timeline events is whack
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
         themePlugin,
       ],
       initialDate: '2023-01-07',
-      initialView: 'resourceTimelineDay',
+      initialView: 'resourceTimelineThreeDays',
       editable: true,
       selectable: true,
       nowIndicator: true,
@@ -145,6 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
           duration: { days: 3 },
         }
       },
+      resourceAreaHeaderContent: 'yooo',
       resourceAreaWidth: '40%',
       resourceGroupField: 'building', // --- THIS
       resourceAreaColumns: [

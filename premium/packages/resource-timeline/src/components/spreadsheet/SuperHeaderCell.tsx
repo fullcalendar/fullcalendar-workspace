@@ -39,7 +39,6 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           classNames.tight,
           classNames.borderNone,
           classNames.flexCol,
-          classNames.justifyCenter,
           classNames.liquid,
         )}
         renderProps={renderProps}

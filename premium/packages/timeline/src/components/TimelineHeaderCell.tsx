@@ -74,7 +74,6 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
         className={joinArrayishClassNames(
           classNames.tight,
           classNames.flexCol,
-          classNames.justifyCenter,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           props.isCentered ? classNames.alignCenter : classNames.alignStart,
           classNames.internalTimelineSlot,

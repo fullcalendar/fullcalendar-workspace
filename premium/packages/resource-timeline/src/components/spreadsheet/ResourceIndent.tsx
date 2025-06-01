@@ -18,7 +18,7 @@ export class ResourceIndent extends BaseComponent<ResourceIndentProps> {
           context.options.resourceIndentClassNames,
           classNames.noShrink,
           classNames.flexRow,
-          classNames.justifyCenterend,
+          classNames.justifyEnd,
         )}
         style={{
           width: props.indentWidth != null

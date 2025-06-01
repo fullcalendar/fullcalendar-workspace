@@ -23,7 +23,7 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
         className={joinArrayishClassNames(
           generateClassName(options.toolbarClassNames, { name: props.name }),
           classNames.flexRow,
-          classNames.justifyCenterspaceBetween,
+          classNames.justifyBetween,
           classNames.alignCenter,
         )}
       >

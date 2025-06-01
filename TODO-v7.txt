@@ -8,8 +8,6 @@ Publishing:
 ASAP
 ----
 
-bug: with resource-timeline doing multiple group columns. positioning broken
-
 cleanup tailwind theme
   multimonth: font sizes not small enough
 
@@ -26,8 +24,6 @@ high-level todo:
     edgecase: if colorSchemed set to 'dark', but on a light page,
       the css prop of some root ancestor should be color-scheme:dark (see ag-grid's scrollbars)
   theme with large < and > on event-continuations
-    or at least test out that it's possible on classic theme
-  theme with stubline axis labels
     or at least test out that it's possible on classic theme
   z-index issues with highlight/bg-events over slats/days
     note: the event background "dimmer" goes over event time accidentally
@@ -49,6 +45,7 @@ high-level todo:
       use glyphicons still. easier instructions for importing font stylesheet as opposed to svgs
   ResizeObserver refactor
   more-link and cell-bottom refactor (depends on ResizeObserver refactor)
+  have all rowEventClassName do margin-bottom (dayGrid does top to space away from dayCellTop)
 
 low-level todo:
   [rename] use isSticky instead of just sticky
@@ -66,6 +63,12 @@ low-level todo:
   move cell border to flex-end
     better for infinite horiztonal scroll later
     rows have it on bottom because better for print, breaking to second page
+
+BUGs later:
+  bug: resource-timeline doing multiple group columns. positioning broken (bundle/a11y-ci/resource-timeline-col-grouping.html)
+    will require refactor of how resource-timeline "entities" IDs are created: createEntityId / getEntityKey
+    automated-test: two nested group, across different parents, with same group value
+  bug: resource-timeline print-view with multiple columns; broken positioning
 
 project: shacdn
   instead of buttonElements hook, which would require users to inject correct aria-attributes,
