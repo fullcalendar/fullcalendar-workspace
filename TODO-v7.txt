@@ -12,8 +12,6 @@ cleanup tailwind theme
   multimonth: font sizes not small enough
 
 high-level todo:
-  kill remaining css in tailwind classic theme
-    related to [print] and white-out bg, black-out borders & text. what atomic css utils?
   borderless system (see recent notes)
     check multimonth at end
     redo singleMonth* settings
@@ -34,6 +32,7 @@ high-level todo:
   resolve confusion over event-element "color"
     will need to make separate `color` property in EventUi. other props set on `style`
     note: remove concept for eventBorder/Background... theme decides what to do with color
+    consider contrasting text color!
   backport tailwind classic theme -> normal classic theme
     address bugs:
       bug: eventColor not working in resource-timeline-row-grouping.html
@@ -61,6 +60,8 @@ low-level todo:
   move cell border to flex-end
     better for infinite horiztonal scroll later
     rows have it on bottom because better for print, breaking to second page
+  instead of position:relative/absolute an z-index:0,
+    use isolation:isolate (well supported)
 
 BUGs later:
   bug: resource-timeline doing multiple group columns. positioning broken (bundle/a11y-ci/resource-timeline-col-grouping.html)
