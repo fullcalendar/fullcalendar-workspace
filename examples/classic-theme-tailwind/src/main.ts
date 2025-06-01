@@ -26,6 +26,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (!enablePremium) {
     calendar = new Calendar(calendarEl, {
+      /*
+      Tailwind implementations should not use this setting.
+      Instead, see html.dark classname in index.html, configured by `@custom-variant dark`
+      */
+      // colorScheme: 'dark',
+
       // direction: 'rtl',
       eventResizableFromStart: true,
       // stickyHeaderDates: true, -- makes things broken sometimes!

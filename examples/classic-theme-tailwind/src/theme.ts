@@ -148,7 +148,7 @@ export default createPlugin({
       'print:bg-white print:border-slate-900 print:text-black', // print
     ],
 
-    popoverClassNames: [borderClassName, 'bg-white shadow-md z-9'],
+    popoverClassNames: [borderClassName, 'bg-white shadow-md'],
     popoverHeaderClassNames: 'flex flex-row justify-between items-center bg-gray-100 px-1 py-1',
     popoverTitleClassNames: 'px-1',
     popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),

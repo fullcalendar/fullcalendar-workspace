@@ -16,11 +16,10 @@ high-level todo:
     check multimonth at end
     redo singleMonth* settings
     add tableClassNames/tableHeaderClassNames/tableBodyClassNames, remove viewHeaderClassNames/viewBodyClassNames
+    void-out the borders inbetween list-view items. simplifies tailwind code
     address bugs:
       bug: sticky header dates look terrible in timegrid/daygrid
   darkmode for tailwind classic theme
-    edgecase: if colorSchemed set to 'dark', but on a light page,
-      the css prop of some root ancestor should be color-scheme:dark (see ag-grid's scrollbars)
   z-index issues with highlight/bg-events over slats/days
     note: the event background "dimmer" goes over event time accidentally
     note: in timegrid, touch-selected event doesn't go above other. supposed to?
@@ -62,6 +61,7 @@ low-level todo:
     rows have it on bottom because better for print, breaking to second page
   instead of position:relative/absolute an z-index:0,
     use isolation:isolate (well supported)
+  remove view-specific hacks in util.module.css
 
 BUGs later:
   bug: resource-timeline doing multiple group columns. positioning broken (bundle/a11y-ci/resource-timeline-col-grouping.html)
@@ -142,6 +142,8 @@ changelog: hints
   (second arg is new!)
 bugfix: date given to week-number hooks was never zoned
 changelog: list-event time "column" is hardcoded as 165px width
+note: for tailwind themes, don't use JS colorScheme setting, just use dark: classname prefixes
+  and configure your darkmode manually: https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually
 
 Docs
 ----
