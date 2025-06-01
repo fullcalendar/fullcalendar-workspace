@@ -1,6 +1,5 @@
 import { CalendarOptions, createPlugin, PluginDef } from '@fullcalendar/core'
 import * as svgIcons from './svgIcons.js'
-import './theme.css'
 
 // Will import ambient types during dev but strip out for build
 import {} from '@fullcalendar/timegrid'
@@ -59,7 +58,7 @@ const dayGridOverrides: CalendarOptions = {
       ? 'bg-black/30'
       : 'hover:bg-black/10 focus:bg-black/20',
   ],
-  listItemEventColorClassNames: 'w-[8px] h-[8px] mx-1',
+  listItemEventColorClassNames: 'border-[4px] mx-1', // 8px diameter (border shows up in print)
   listItemEventInnerClassNames: 'flex flex-row items-center text-xs',
   listItemEventTimeClassNames: 'whitespace-nowrap overflow-hidden flex-shrink-0 max-w-full p-px',
   listItemEventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink p-px font-bold',
@@ -146,9 +145,7 @@ export default createPlugin({
       'active:border-slate-900 active:bg-slate-800 active:z-20', // active (similar to selected)
       'hover:border-slate-900 hover:bg-slate-800', // hover
       'focus:outline-3 outline-slate-600/50 focus:z-10', // focus
-      /*
-      what about print!?
-      */
+      'print:bg-white print:border-slate-900 print:text-black', // print
     ],
 
     popoverClassNames: [borderClassName, 'bg-white shadow-md'],
@@ -188,7 +185,7 @@ export default createPlugin({
     // List-Item Event
     // ---------------------------------------------------------------------------------------------
 
-    listItemEventColorClassNames: 'rounded-full bg-(--fc-event-color)',
+    listItemEventColorClassNames: 'rounded-full border-(--fc-event-color)',
 
     // Block Event
     // ---------------------------------------------------------------------------------------------
@@ -204,11 +201,12 @@ export default createPlugin({
     ],
     blockEventColorClassNames: (arg) => [
       'absolute z-0 inset-0 bg-(--fc-event-color)',
+      'print:border print:border-(--fc-event-color) print:bg-white',
       arg.isSelected
         ? 'brightness-75'
         : 'group-focus:brightness-75',
     ],
-    blockEventInnerClassNames: 'relative z-10 text-white flex gap-[3px]', // subclasses will decide flex-direction
+    blockEventInnerClassNames: 'relative z-10 text-white print:text-black flex gap-[3px]', // subclasses will decide flex-direction
     blockEventTimeClassNames: 'whitespace-nowrap overflow-hidden flex-shrink-0 max-w-full max-h-full',
     blockEventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink sticky top-0 start-0',
 
@@ -222,6 +220,10 @@ export default createPlugin({
     rowEventAfterClassNames: (arg) => arg.isEndResizable && [
       arg.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
       '-end-1',
+    ],
+    rowEventColorClassNames: (arg) => [
+      !arg.isStart && 'print:border-s-0',
+      !arg.isEnd && 'print:border-e-0',
     ],
     rowEventInnerClassNames: 'flex-row items-center text-xs',
     rowEventTimeClassNames: 'p-px font-bold',
@@ -434,7 +436,7 @@ export default createPlugin({
         'flex flex-row items-center gap-3',
         'group',
       ],
-      listItemEventColorClassNames: 'w-[10px] h-[10px]',
+      listItemEventColorClassNames: 'border-[5px]', // 5px radius = 10px width (border shows up in print!)
       listItemEventInnerClassNames: '[display:contents]',
       listItemEventTimeClassNames: 'order-[-1] w-[165px]',
       listItemEventTitleClassNames: (arg) => [

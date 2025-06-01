@@ -12,7 +12,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import themePlugin from './theme.js'
 
-const enablePremium = true
+const enablePremium = false
 
 /*
 Resizing timeline events is whack
@@ -118,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
   } else {
     calendar = new Calendar(calendarEl, {
       plugins: [
+        adaptivePlugin,
         resourceTimelinePlugin,
         interactionPlugin,
         themePlugin,
