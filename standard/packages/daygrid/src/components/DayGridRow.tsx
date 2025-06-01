@@ -289,6 +289,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             top,
             left,
             right,
+            zIndex: 0, // container inner z-indexes
           }}
           heightRef={
             (!standinFor && !isMirror)
