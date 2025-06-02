@@ -28,6 +28,7 @@ export const OPTION_REFINERS = {
   listDayHeaderDidMount: identity as Identity<DidMountHandler<ListDayHeaderMountArg>>,
   listDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ListDayHeaderMountArg>>,
   listDayHeaderClassNames: identity as Identity<ClassNamesGenerator<ListDayHeaderArg>>,
+  listDayHeaderBeforeClassNames: identity as Identity<ClassNamesGenerator<ListDayHeaderArg>>,
   listDayHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<ListDayHeaderInnerArg>>,
   listDayHeaderContent: identity as Identity<CustomContentGenerator<ListDayHeaderInnerArg>>,
 

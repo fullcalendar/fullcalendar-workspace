@@ -14,29 +14,24 @@ import themePlugin from './theme.js'
 
 /*
 Dark-mode TODO:
-  Buttons
-    find stock tailwind theme, see how colors are done
-  the canvas background color
-    - sticky-headers (incl)
-      - list view (hard) --- add listDayHeaderBeforeClassNames ... and do abs fill
-    - event resizer-dots
+  buttons: remove top/bottom dark-inline
   bg-event title text. Just do opacity
   bg-event color, very dull... override saturation or something?
   highlight-selection very dull... override saturation or something?
 
+bug: < > buttons have too much space
 make a weekNumberInnerClassName ... put opacity on that
 bug: timegrid... day lane, dark line between looks bad
 visual-quirk: make weeknumber valign with daycell number (on multimonth too)
   also background-event title
 feature: way to put nonBusinessHours on Sun+Sat header
-punt: test dark mode that turns into print
 bug: sticky list-view header, scrolldown accumulates double border
 bug: daygrid touch-selecting doesn't do drop-shadow anymore (only for list-item events)
-punt: rename "mirror"?
+multimonth: font sizes not small enough
 */
 
 const enablePremium = false
-const enableDark = false
+const enableDark = true
 
 if (enableDark) {
   document.documentElement.classList.add('dark')
@@ -48,13 +43,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (!enablePremium) {
     calendar = new Calendar(calendarEl, {
-      /*
-      Tailwind implementations should not use this setting.
-      Instead, see html.dark classname in index.html, configured by `@custom-variant dark`
-      */
+      /* Tailwind implementations should not use this setting */
       // colorScheme: 'dark',
 
-      height: 'auto',
+      // height: 'auto',
       // eventMaxStack: 1,
       // direction: 'rtl',
       eventResizableFromStart: true,

@@ -8,13 +8,8 @@ Publishing:
 ASAP
 ----
 
-manual-test: Resizing timeline events is whack
-  when drawn as a mirror-event in another resource lane
-
-cleanup tailwind theme
-  multimonth: font sizes not small enough
-
 high-level todo:
+  darkmode for tailwind classic theme
   borderless system (see recent notes)
     check multimonth at end
     redo singleMonth* settings
@@ -22,7 +17,6 @@ high-level todo:
     void-out the borders inbetween list-view items. simplifies tailwind code
     address bugs:
       bug: sticky header dates look terrible in timegrid/daygrid
-  darkmode for tailwind classic theme
   z-index issues with highlight/bg-events over slats/days
     note: the event background "dimmer" goes over event time accidentally
     note: in timegrid, touch-selected event doesn't go above other. supposed to?
@@ -385,6 +379,8 @@ punt: don't use <Scroller> when not necessary
 punt: have theme define col-resizer (both for resource-area columns and whole area)
 punt: our daygrid event-resizing get sloppier in some recent versions.
   previously, you'd drag over half-a-cell to trigger +1day. Now, it happens as soon as there's pixel overlap
+punt: test dark mode that turns into print
+punt: rename "mirror"?
 
 Notes
 -----

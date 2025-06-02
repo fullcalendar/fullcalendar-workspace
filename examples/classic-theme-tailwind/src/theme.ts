@@ -377,8 +377,12 @@ export default createPlugin({
     // ---------------------------------------------------------------------------------------------
 
     listDayClassNames: `not-last:border-b ${borderColorClassNames}`,
-    listDayHeaderClassNames: `border-b ${borderColorClassNames} flex flex-row justify-between font-bold ${neutralBgClassNames}`,
-    listDayHeaderInnerClassNames: listViewItemClassName,
+    listDayHeaderClassNames: (arg) => [
+      `border-b ${borderColorClassNames} flex flex-row justify-between font-bold relative`,
+      arg.sticky && 'bg-(--fc-canvas-color)',
+    ],
+    listDayHeaderBeforeClassNames: `${neutralBgClassNames} absolute inset-0`,
+    listDayHeaderInnerClassNames: `${listViewItemClassName} relative`,
   },
 
   // View-specific overrides for shared elements
