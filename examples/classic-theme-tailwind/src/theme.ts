@@ -21,7 +21,7 @@ const neutralBgClassNames = 'bg-gray-500/10' // un-make this variable. always do
 
 // transparent resizer for mouse
 // must have 'group' on the event, for group-hover
-const blockPointerResizerClassName = `absolute z-20 hidden group-hover:block bg-yellow-500`
+const blockPointerResizerClassName = `absolute z-20 hidden group-hover:block`
 const rowPointerResizerClassName = `${blockPointerResizerClassName} inset-y-0 w-2`
 const columnPointerResizerClassName = `${blockPointerResizerClassName} inset-x-0 h-2`
 
@@ -404,7 +404,7 @@ export default createPlugin({
       allDayHeaderInnerClassNames: [axisInnerClassName, 'whitespace-pre px-1 py-0.5'],
       weekNumberClassNames: axisClassName,
       weekNumberInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
-      moreLinkClassNames: `mb-px rounded-xs text-xs outline outline-(--fc-canvas-color) bg-gray-500`,
+      moreLinkClassNames: `mb-px rounded-xs text-xs outline outline-(--fc-canvas-color) bg-gray-300 dark:bg-gray-600`,
       moreLinkInnerClassNames: 'px-0.5 py-1',
       slotLabelClassNames: [axisClassName, /* tick-marks = 'w-2 self-end' */],
       slotLabelInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],

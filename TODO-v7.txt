@@ -9,7 +9,6 @@ ASAP
 ----
 
 high-level todo:
-  darkmode for tailwind classic theme
   borderless system (see recent notes)
     check multimonth at end
     redo singleMonth* settings
@@ -25,6 +24,8 @@ high-level todo:
       https://fullcalendar.freshdesk.com/a/tickets/9203
       Same with DayGrid, putting background-events underneath lines?
       we don't want to force people to do semi-transparent colors
+    bug: timegrid (especially in dark mode), when 2 days BG event
+      line-between looks better in all-day section, different & too light in timed section
     related: correct fc-list-day-header sticky bg color transparency problem!
   resolve confusion over event-element "color"
     will need to make separate `color` property in EventUi. other props set on `style`
@@ -45,6 +46,7 @@ low-level todo:
   [rename] use isSticky instead of just sticky
   [rename] remove the 'Content' in names like ListHeaderContentArg, so just have ListHeaderArg and ListHeaderMountArg
   [rename] change all *ClassNames to singular *ClassName
+  kill fillerXClassNames/fillerYClassNames... only use fillerClassNames, with border-supression
   don't have separate directionClassNames / mediaTypeClassNames / colorSchemeClassNames?
     just have it be root className with flags
   fix createViewHookComponent HACKS
@@ -62,6 +64,13 @@ low-level todo:
   remove view-specific hacks in util.module.css
   style license warning better
   resource-timeline expander icons should align to baseline
+
+visual theme cleanup
+  bug: daygrid touch-selecting doesn't do drop-shadow anymore (only for list-item events)
+  bug: multimonth: font sizes not small enough
+  bug: license-warning in darkmode looks crap
+  bug: make weeknumber valign with daycell number (on multimonth too)
+    also background-event title
 
 BUGs later:
   bug: resource-timeline doing multiple group columns. positioning broken (bundle/a11y-ci/resource-timeline-col-grouping.html)
@@ -383,6 +392,8 @@ punt: our daygrid event-resizing get sloppier in some recent versions.
   previously, you'd drag over half-a-cell to trigger +1day. Now, it happens as soon as there's pixel overlap
 punt: test dark mode that turns into print
 punt: rename "mirror"?
+punt: sticky list-view header, scrolldown accumulates double border
+punt: way to put nonBusinessHours on Sun+Sat header (awkward to do with abs fill like dayLane)
 
 Notes
 -----

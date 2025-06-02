@@ -12,18 +12,8 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import themePlugin from './theme.js'
 
-/*
-bug: make weeknumber valign with daycell number (on multimonth too)
-  also background-event title
-bug: timegrid... day lane, dark line between looks bad
-bug: sticky list-view header, scrolldown accumulates double border
-bug: daygrid touch-selecting doesn't do drop-shadow anymore (only for list-item events)
-bug: multimonth: font sizes not small enough
-punt: way to put nonBusinessHours on Sun+Sat header (awkward to do with abs fill like dayLane)
-*/
-
 const enablePremium = false
-const enableDark = false
+const enableDark = true
 
 if (enableDark) {
   document.documentElement.classList.add('dark')

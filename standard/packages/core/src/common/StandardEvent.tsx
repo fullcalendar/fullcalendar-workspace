@@ -39,6 +39,7 @@ export interface StandardEventProps {
   isSpacious?: boolean // default false
   level?: number // default 0
   forcedTimeText?: string
+  disableLiquid?: boolean // for inner-element
 }
 
 export class StandardEvent extends BaseComponent<StandardEventProps> {
@@ -157,7 +158,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       props.display === 'row' && generateClassName(options.rowEventInnerClassNames, renderProps),
       props.display === 'column' && generateClassName(options.columnEventInnerClassNames, renderProps),
       props.display === 'list-item' && generateClassName(options.listItemEventInnerClassNames, renderProps),
-      classNames.liquid,
+      !props.disableLiquid && classNames.liquid, // timegrid hack
     )
 
     return (

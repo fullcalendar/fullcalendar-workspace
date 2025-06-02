@@ -12,6 +12,7 @@ export interface TimeGridEventProps extends MinimalEventProps {
   level: number
   isCompact: boolean
   isLiquid?: boolean
+  disableResizing?: boolean // HACK
 }
 
 export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
@@ -28,6 +29,7 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
           // see note in TimeGridCol on why we use flexbox
           props.isLiquid ? classNames.liquid : ''
         }
+        disableLiquid={!props.isLiquid}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
       />
     )

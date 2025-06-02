@@ -435,6 +435,7 @@ export function renderPlainFgSegs(
               isSelected={instanceId === eventSelection}
               level={0}
               isCompact={false}
+              disableResizing
               {...getEventRangeMeta(eventRange, todayRange, nowDate)}
             />
           </div>
