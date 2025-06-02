@@ -161,17 +161,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         {props.showWeekNumbers && (
           <ContentContainer<WeekNumberContentArg>
             tag='div'
-            attrs={{
-              ...(
-                isNavLink
-                  ? buildNavLinkAttrs(context, weekDateMarker, 'week', fullWeekStr, /* isTabbable = */ false)
-                  : {}
-              ),
-              'role': undefined, // HACK: a 'link' role can't be child of 'row' role
-              'aria-hidden': true, // HACK: never part of a11y tree because row already has label and role not allowed
-            }}
-            // will result in weekNumberClassNames + weekNumberInnerClassNames
-            className={joinArrayishClassNames(options.weekNumberInnerClassNames)}
             renderProps={this.buildWeekNumberRenderProps(weekDateMarker, context)}
             generatorName="weekNumberContent"
             customGenerator={options.weekNumberContent}
@@ -179,7 +168,23 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             classNameGenerator={options.weekNumberClassNames}
             didMount={options.weekNumberDidMount}
             willUnmount={options.weekNumberWillUnmount}
-          />
+          >
+            {(InnerContent) => (
+              <InnerContent
+                tag='div'
+                attrs={{
+                  ...(
+                    isNavLink
+                      ? buildNavLinkAttrs(context, weekDateMarker, 'week', fullWeekStr, /* isTabbable = */ false)
+                      : {}
+                  ),
+                  'role': undefined, // HACK: a 'link' role can't be child of 'row' role
+                  'aria-hidden': true, // HACK: never part of a11y tree because row already has label and role not allowed
+                }}
+                className={joinArrayishClassNames(options.weekNumberInnerClassNames)}
+              />
+            )}
+          </ContentContainer>
         )}
         {this.renderFillSegs(props.businessHourSegs, 'non-business')}
         {this.renderFillSegs(props.bgEventSegs, 'bg-event')}

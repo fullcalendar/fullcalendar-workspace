@@ -89,7 +89,8 @@ const dayGridOverrides: CalendarOptions = {
 }
 
 const dayGridWeekNumberOverrides: CalendarOptions = {
-  weekNumberClassNames: 'absolute z-20 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center bg-gray-100 dark:bg-gray-800 opacity-80',
+  weekNumberClassNames: `absolute z-20 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center ${neutralBgClassNames}`,
+  weekNumberInnerClassNames: 'opacity-60',
 }
 
 // Plugin

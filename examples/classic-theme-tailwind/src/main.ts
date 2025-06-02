@@ -13,18 +13,17 @@ import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import themePlugin from './theme.js'
 
 /*
-make a weekNumberInnerClassName ... put opacity on that
-bug: timegrid... day lane, dark line between looks bad
-visual-quirk: make weeknumber valign with daycell number (on multimonth too)
+bug: make weeknumber valign with daycell number (on multimonth too)
   also background-event title
-feature: way to put nonBusinessHours on Sun+Sat header
+bug: timegrid... day lane, dark line between looks bad
 bug: sticky list-view header, scrolldown accumulates double border
 bug: daygrid touch-selecting doesn't do drop-shadow anymore (only for list-item events)
-multimonth: font sizes not small enough
+bug: multimonth: font sizes not small enough
+punt: way to put nonBusinessHours on Sun+Sat header (awkward to do with abs fill like dayLane)
 */
 
 const enablePremium = false
-const enableDark = true
+const enableDark = false
 
 if (enableDark) {
   document.documentElement.classList.add('dark')
@@ -70,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
       selectable: true,
       selectMirror: true,
       dayMaxEvents: true, // allow "more" link when too many events
-      businessHours: true, // looks whack, covering lots of things
+      // businessHours: true, // looks whack, covering lots of things
       // eventMaxStack: 1,
       events: [
         {
