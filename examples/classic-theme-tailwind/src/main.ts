@@ -12,13 +12,35 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import themePlugin from './theme.js'
 
-const enablePremium = false
-
 /*
-Resizing timeline events is whack
-when drawn as a mirror-event in another resource lane
-TODO: rename "mirror"?
+Dark-mode TODO:
+  Buttons
+    find stock tailwind theme, see how colors are done
+  the canvas background color
+    - sticky-headers (incl)
+      - list view (hard) --- add listDayHeaderBeforeClassNames ... and do abs fill
+    - event resizer-dots
+  bg-event title text. Just do opacity
+  bg-event color, very dull... override saturation or something?
+  highlight-selection very dull... override saturation or something?
+
+make a weekNumberInnerClassName ... put opacity on that
+bug: timegrid... day lane, dark line between looks bad
+visual-quirk: make weeknumber valign with daycell number (on multimonth too)
+  also background-event title
+feature: way to put nonBusinessHours on Sun+Sat header
+punt: test dark mode that turns into print
+bug: sticky list-view header, scrolldown accumulates double border
+bug: daygrid touch-selecting doesn't do drop-shadow anymore (only for list-item events)
+punt: rename "mirror"?
 */
+
+const enablePremium = false
+const enableDark = false
+
+if (enableDark) {
+  document.documentElement.classList.add('dark')
+}
 
 document.addEventListener('DOMContentLoaded', function() {
   const calendarEl = document.getElementById('calendar')!
@@ -32,6 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
       */
       // colorScheme: 'dark',
 
+      height: 'auto',
+      // eventMaxStack: 1,
       // direction: 'rtl',
       eventResizableFromStart: true,
       // stickyHeaderDates: true, -- makes things broken sometimes!
@@ -61,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
       selectable: true,
       selectMirror: true,
       dayMaxEvents: true, // allow "more" link when too many events
-      // businessHours: true, // looks whack, covering lots of things
+      businessHours: true, // looks whack, covering lots of things
       // eventMaxStack: 1,
       events: [
         {

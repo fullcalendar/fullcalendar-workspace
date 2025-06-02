@@ -2,6 +2,15 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+html {
+  --fc-canvas-color: var(--color-white);
+}
+
+html.dark {
+  @apply bg-gray-950 text-gray-200 scheme-dark;
+  --fc-canvas-color: var(--color-gray-950);
+}
+
 body {
   margin: 40px 10px;
   padding: 0;

@@ -14,7 +14,10 @@ import {} from '@fullcalendar/resource-timeline'
 
 const buttonIconClassName = 'text-[1.5em] w-[1em] h-[1em]'
 
-const borderClassName = 'border border-gray-300'
+const borderColorClassNames = 'border-gray-300 dark:border-gray-800'
+const borderClassName = `border ${borderColorClassNames}`
+
+const neutralBgClassNames = 'bg-gray-500/10' // un-make this variable. always do shades of gray-500
 
 // transparent resizer for mouse
 // must have 'group' on the event, for group-hover
@@ -23,7 +26,7 @@ const rowPointerResizerClassName = `${blockPointerResizerClassName} inset-y-0 w-
 const columnPointerResizerClassName = `${blockPointerResizerClassName} inset-x-0 h-2`
 
 // circle resizer for touch
-const blockTouchResizerClassName = `absolute z-20 h-2 w-2 rounded border border-solid border-(--fc-event-color) bg-white`
+const blockTouchResizerClassName = `absolute z-20 h-2 w-2 rounded border border-solid border-(--fc-event-color) bg-(--fc-canvas-color)`
 const rowTouchResizerClassName = `${blockTouchResizerClassName} top-1/2 -mt-1`
 const columnTouchResizerClassName = `${blockTouchResizerClassName} left-1/2 -ml-1`
 
@@ -55,8 +58,8 @@ const dayGridOverrides: CalendarOptions = {
   listItemEventClassNames: (arg) => [
     'mt-px me-0.5 p-px rounded-sm items-center',
     arg.isSelected
-      ? 'bg-black/30'
-      : 'hover:bg-black/10 focus:bg-black/20',
+      ? 'bg-gray-500/40'
+      : 'hover:bg-gray-500/20 focus:bg-gray-500/30',
   ],
   listItemEventColorClassNames: 'border-[4px] mx-1', // 8px diameter (border shows up in print)
   listItemEventInnerClassNames: 'flex flex-row items-center text-xs',
@@ -86,7 +89,7 @@ const dayGridOverrides: CalendarOptions = {
 }
 
 const dayGridWeekNumberOverrides: CalendarOptions = {
-  weekNumberClassNames: 'absolute z-20 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center bg-gray-100 text-gray-500',
+  weekNumberClassNames: 'absolute z-20 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center bg-gray-100 dark:bg-gray-800 opacity-80',
 }
 
 // Plugin
@@ -101,7 +104,7 @@ export default createPlugin({
     toolbarTitleClassNames: 'text-2xl font-bold whitespace-nowrap',
     viewClassNames: borderClassName,
     viewHeaderClassNames: (arg) => [
-      arg.isSticky && 'bg-white'
+      arg.isSticky && 'bg-(--fc-canvas-color)'
     ],
 
     // UI Fundamentals
@@ -148,8 +151,8 @@ export default createPlugin({
       'print:bg-white print:border-slate-900 print:text-black', // print
     ],
 
-    popoverClassNames: [borderClassName, 'bg-white shadow-md'],
-    popoverHeaderClassNames: 'flex flex-row justify-between items-center bg-gray-100 px-1 py-1',
+    popoverClassNames: [borderClassName, 'bg-(--fc-canvas-color) shadow-md'],
+    popoverHeaderClassNames: `flex flex-row justify-between items-center ${neutralBgClassNames} px-1 py-1`,
     popoverTitleClassNames: 'px-1',
     popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
     popoverBodyClassNames: 'p-2 min-w-[220px]',
@@ -161,11 +164,11 @@ export default createPlugin({
 
     dayCompactWidth: 70,
 
-    fillerClassNames: 'opacity-50 border-gray-300',
+    fillerClassNames: `opacity-50 ${borderColorClassNames}`,
     fillerXClassNames: 'border-s',
     fillerYClassNames: 'border-t',
 
-    nonBusinessClassNames: 'bg-gray-100', // TODO: fix bug: covers the borders!!! add fake border? move UNDER?
+    nonBusinessClassNames: neutralBgClassNames,
     highlightClassNames: 'bg-cyan-100/30',
 
     // All Events
@@ -244,7 +247,7 @@ export default createPlugin({
     columnEventColorClassNames: (arg) => [
       arg.isStart && 'rounded-t-sm',
       arg.isEnd && 'rounded-b-sm',
-      arg.level && 'outline outline-white',
+      arg.level && 'outline outline-(--fc-canvas-color)',
     ],
     columnEventInnerClassNames: (arg) => [
       'p-px text-xs',
@@ -263,10 +266,10 @@ export default createPlugin({
     dayHeaderRowClassNames: borderClassName,
     dayHeaderClassNames: (arg) => [
       borderClassName,
-      arg.isDisabled && 'bg-gray-100',
+      arg.isDisabled && neutralBgClassNames,
     ],
     dayHeaderInnerClassNames: 'px-1 py-0.5',
-    dayHeaderDividerClassNames: 'border-t border-gray-300',
+    dayHeaderDividerClassNames: ['border-t', borderColorClassNames],
 
     // for resource views only
     resourceDayHeaderClassNames: borderClassName,
@@ -279,7 +282,7 @@ export default createPlugin({
     dayCellClassNames: (arg) => [
       arg.isToday && 'bg-yellow-400/15',
       borderClassName,
-      arg.isDisabled && 'bg-gray-100',
+      arg.isDisabled && neutralBgClassNames,
     ],
 
     dayCellTopClassNames: (arg) => [
@@ -302,16 +305,16 @@ export default createPlugin({
       (arg.colCnt || 0) > 1
         ? 'pb-4' // multicol
         : 'py-2', // singlecol
-      arg.sticky && 'border-b border-gray-300 bg-white',
+      arg.sticky && `border-b ${borderColorClassNames} bg-(--fc-canvas-color)`,
     ],
     singleMonthTableClassNames: (arg) => [
-      'border-gray-300',
+      borderColorClassNames,
       (arg.colCnt || 0) > 1 && 'border-x text-xs',
       ((arg.colCnt || 0) > 1 || !arg.isLast) && 'border-b',
       !arg.stickyTitle && 'border-t',
     ],
     singleMonthTableHeaderClassNames: (arg) => [
-      arg.sticky && 'bg-white',
+      arg.sticky && 'bg-(--fc-canvas-color)',
     ],
 
     // TimeGrid
@@ -319,11 +322,11 @@ export default createPlugin({
 
     // whitespace-pre respects newlines in long text like "Toute la journée", meant to break
     // padding creates inner-height
-    allDayDividerClassNames: 'bg-gray-100 pb-0.5 border-t border-b border-gray-300',
+    allDayDividerClassNames: `${neutralBgClassNames} pb-0.5 border-t border-b ${borderColorClassNames}`,
 
     dayLaneClassNames: (arg) => [
       borderClassName,
-      arg.isDisabled && 'bg-gray-100',
+      arg.isDisabled && neutralBgClassNames,
       arg.isToday && 'bg-yellow-400/15',
     ],
     dayLaneInnerClassNames: (arg) => [
@@ -345,7 +348,7 @@ export default createPlugin({
     resourceAreaHeaderRowClassNames: borderClassName,
     resourceAreaHeaderClassNames: [borderClassName, /* valign = */ 'justify-center'],
     resourceAreaHeaderInnerClassNames: 'p-2',
-    resourceAreaDividerClassNames: 'pl-0.5 bg-gray-100 border-x border-gray-300',
+    resourceAreaDividerClassNames: `pl-0.5 ${neutralBgClassNames} border-x ${borderColorClassNames}`,
 
     resourceAreaRowClassNames: borderClassName,
     resourceIndentClassNames: 'me-1',
@@ -354,9 +357,9 @@ export default createPlugin({
       ? svgIcons.minusSquare('w-[1em] h-[1em]')
       : svgIcons.plusSquare('w-[1em] h-[1em]'),
 
-    resourceGroupHeaderClassNames: 'bg-gray-100',
+    resourceGroupHeaderClassNames: neutralBgClassNames,
     resourceGroupHeaderInnerClassNames: 'p-2',
-    resourceGroupLaneClassNames: [borderClassName, 'bg-gray-100'],
+    resourceGroupLaneClassNames: [borderClassName, neutralBgClassNames],
 
     resourceCellClassNames: borderClassName,
     resourceCellInnerClassNames: 'p-2',
@@ -373,8 +376,8 @@ export default createPlugin({
     // List View
     // ---------------------------------------------------------------------------------------------
 
-    listDayClassNames: 'not-last:border-b border-gray-300',
-    listDayHeaderClassNames: 'border-b border-gray-300 flex flex-row justify-between font-bold bg-gray-100',
+    listDayClassNames: `not-last:border-b ${borderColorClassNames}`,
+    listDayHeaderClassNames: `border-b ${borderColorClassNames} flex flex-row justify-between font-bold ${neutralBgClassNames}`,
     listDayHeaderInnerClassNames: listViewItemClassName,
   },
 
@@ -396,11 +399,11 @@ export default createPlugin({
       allDayHeaderInnerClassNames: [axisInnerClassName, 'whitespace-pre px-1 py-0.5'],
       weekNumberClassNames: axisClassName,
       weekNumberInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
-      moreLinkClassNames: 'mb-px rounded-xs text-xs ring ring-white bg-gray-300',
+      moreLinkClassNames: `mb-px rounded-xs text-xs outline outline-(--fc-canvas-color) bg-gray-500`,
       moreLinkInnerClassNames: 'px-0.5 py-1',
       slotLabelClassNames: [axisClassName, /* tick-marks = 'w-2 self-end' */],
       slotLabelInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
-      slotLabelDividerClassNames: 'border-l border-gray-300',
+      slotLabelDividerClassNames: `border-l ${borderColorClassNames}`,
       nowIndicatorLabelClassNames: 'start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] border-s-red-500',
       nowIndicatorLineClassNames: 'border-t border-red-500', // put color on master setting?
     },
@@ -422,17 +425,17 @@ export default createPlugin({
         /* tick-marks = 'h-2 self-end justify-end', */
         'justify-center'
       ],
-      moreLinkClassNames: 'flex flex-col items-start text-xs bg-gray-300 p-px me-px',
+      moreLinkClassNames: `flex flex-col items-start text-xs ${neutralBgClassNames} p-px me-px`,
       moreLinkInnerClassNames: 'p-0.5',
       slotLabelInnerClassNames: 'p-1',
-      slotLabelDividerClassNames: 'border-b border-gray-300',
+      slotLabelDividerClassNames: `border-b ${borderColorClassNames}`,
       nowIndicatorLabelClassNames: 'top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-t-red-500',
       nowIndicatorLineClassNames: 'border-l border-red-500', // put color on master setting?
     },
     list: {
       listItemEventClassNames: [
         listViewItemClassName,
-        'not-last:border-b border-gray-300 hover:bg-gray-50',
+        `not-last:border-b ${borderColorClassNames} hover:bg-gray-500/20`,
         'flex flex-row items-center gap-3',
         'group',
       ],
@@ -442,7 +445,7 @@ export default createPlugin({
       listItemEventTitleClassNames: (arg) => [
         arg.event.url && 'group-hover:underline',
       ],
-      noEventsClassNames: 'flex flex-grow justify-center items-center bg-gray-100 py-15',
+      noEventsClassNames: `flex flex-grow justify-center items-center ${neutralBgClassNames} py-15`,
     },
   },
 }) as PluginDef
