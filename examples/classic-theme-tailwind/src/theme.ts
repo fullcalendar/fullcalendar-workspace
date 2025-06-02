@@ -169,7 +169,7 @@ export default createPlugin({
     fillerYClassNames: 'border-t',
 
     nonBusinessClassNames: neutralBgClassNames,
-    highlightClassNames: 'bg-cyan-100/30',
+    highlightClassNames: 'bg-cyan-100/30 dark:bg-blue-500/20',
 
     // All Events
     // ---------------------------------------------------------------------------------------------
@@ -182,8 +182,8 @@ export default createPlugin({
     // Background Event
     // ---------------------------------------------------------------------------------------------
 
-    backgroundEventClassNames: 'bg-green-300 opacity-30',
-    backgroundEventTitleClassNames: 'm-2 text-xs italic',
+    backgroundEventColorClassNames: 'bg-(--fc-event-color) brightness-150 opacity-15',
+    backgroundEventTitleClassNames: 'm-2 text-xs italic opacity-50',
 
     // List-Item Event
     // ---------------------------------------------------------------------------------------------

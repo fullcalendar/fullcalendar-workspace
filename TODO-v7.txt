@@ -18,6 +18,7 @@ high-level todo:
     address bugs:
       bug: sticky header dates look terrible in timegrid/daygrid
   z-index issues with highlight/bg-events over slats/days
+    question: how will daygrid z-index where daynumbers above bg-event work in react-native?
     note: the event background "dimmer" goes over event time accidentally
     note: in timegrid, touch-selected event doesn't go above other. supposed to?
     note: TimeGrid cols should be below slats:
@@ -143,6 +144,7 @@ bugfix: date given to week-number hooks was never zoned
 changelog: list-event time "column" is hardcoded as 165px width
 note: for tailwind themes, don't use JS colorScheme setting, just use dark: classname prefixes
   and configure your darkmode manually: https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually
+changelog: transforms on event bg(colors) via CSS filters
 
 Docs
 ----

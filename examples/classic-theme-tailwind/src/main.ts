@@ -13,11 +13,6 @@ import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import themePlugin from './theme.js'
 
 /*
-Dark-mode TODO:
-  bg-event title text. Just do opacity
-  bg-event color, very dull... override saturation or something?
-  highlight-selection very dull... override saturation or something?
-
 make a weekNumberInnerClassName ... put opacity on that
 bug: timegrid... day lane, dark line between looks bad
 visual-quirk: make weeknumber valign with daycell number (on multimonth too)
