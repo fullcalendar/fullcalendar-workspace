@@ -14,12 +14,10 @@ import themePlugin from './theme.js'
 
 /*
 Dark-mode TODO:
-  buttons: remove top/bottom dark-inline
   bg-event title text. Just do opacity
   bg-event color, very dull... override saturation or something?
   highlight-selection very dull... override saturation or something?
 
-bug: < > buttons have too much space
 make a weekNumberInnerClassName ... put opacity on that
 bug: timegrid... day lane, dark line between looks bad
 visual-quirk: make weeknumber valign with daycell number (on multimonth too)

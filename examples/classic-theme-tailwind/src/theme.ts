@@ -135,7 +135,7 @@ export default createPlugin({
 
     buttonGroupClassNames: 'isolate',
     buttonClassNames: (arg) => [
-      'inline-flex items-center px-4 py-2 border text-sm text-white',
+      'inline-flex items-center px-3 py-2 border-x text-sm text-white',
       arg.inGroup
         ? 'first:rounded-s-sm last:rounded-e-sm relative' // in button-group
         : 'rounded-sm', // alone
@@ -143,7 +143,7 @@ export default createPlugin({
         ? 'border-slate-900 bg-slate-800 z-10' // selected
         : 'border-transparent bg-slate-700', // not-selected
       arg.isDisabled
-        ? 'opacity-65 pointer-events-none' // disabled
+        ? 'opacity-65 pointer-events-none' // disabled. TODO: why do we care about pointer-events?
         : '',
       'active:border-slate-900 active:bg-slate-800 active:z-20', // active (similar to selected)
       'hover:border-slate-900 hover:bg-slate-800', // hover
