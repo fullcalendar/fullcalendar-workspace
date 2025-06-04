@@ -44,9 +44,8 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       event: eventApi,
       view: context.viewApi,
       timeText: '', // never display time
-      textColor: eventUi.textColor,
-      backgroundColor: eventUi.backgroundColor,
-      borderColor: eventUi.borderColor,
+      color: eventUi.color,
+      contrastColor: eventUi.contrastColor,
       isDraggable: false,
       isStartResizable: false,
       isEndResizable: false,
@@ -82,7 +81,8 @@ export class BgEvent extends BaseComponent<BgEventProps> {
         tag='div'
         className={outerClassNames}
         style={{
-          '--fc-event-color': eventUi.backgroundColor, // TODO: move to just "color"
+          '--fc-event-color': eventUi.color,
+          '--fc-event-contrast-color': eventUi.contrastColor,
         }}
         defaultGenerator={renderInnerContent}
         elRef={this.handleEl}

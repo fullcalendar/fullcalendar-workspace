@@ -23,9 +23,8 @@ export interface EventApi {
   constraint: any // TODO: better
   overlap: boolean
   allow: any // TODO: better
-  backgroundColor: string
-  borderColor: string
-  textColor: string
+  color: string
+  contrastColor: string
   classNames: string[]
   extendedProps: Dictionary
 
@@ -40,6 +39,6 @@ export interface EventApi {
   setAllDay(allDay: boolean, options?: { maintainDuration?: boolean }): void
   formatRange(formatInput: FormatterInput)
   remove(): void
-  toPlainObject(settings?: { collapseExtendedProps?: boolean, collapseColor?: boolean }): Dictionary
+  toPlainObject(settings?: { collapseExtendedProps?: boolean }): Dictionary
   toJSON(): Dictionary
 }

@@ -227,9 +227,8 @@ export class EventImpl implements EventApi {
           constraints: [],
           overlap: null,
           allows: [],
-          backgroundColor: '',
-          borderColor: '',
-          textColor: '',
+          color: '',
+          contrastColor: '',
           classNames: [],
         },
       } as EventUiHash
@@ -339,15 +338,14 @@ export class EventImpl implements EventApi {
   get constraint() { return this._def.ui.constraints[0] || null }
   get overlap() { return this._def.ui.overlap }
   get allow() { return this._def.ui.allows[0] || null }
-  get backgroundColor() { return this._def.ui.backgroundColor }
-  get borderColor() { return this._def.ui.borderColor }
-  get textColor() { return this._def.ui.textColor }
+  get color() { return this._def.ui.color }
+  get contrastColor() { return this._def.ui.contrastColor }
 
   // NOTE: user can't modify these because Object.freeze was called in event-def parsing
   get classNames() { return this._def.ui.classNames }
   get extendedProps() { return this._def.extendedProps }
 
-  toPlainObject(settings: { collapseExtendedProps?: boolean, collapseColor?: boolean } = {}): Dictionary {
+  toPlainObject(settings: { collapseExtendedProps?: boolean } = {}): Dictionary {
     let def = this._def
     let { ui } = def
     let { startStr, endStr } = this
@@ -386,19 +384,12 @@ export class EventImpl implements EventApi {
     // TODO: what about recurring-event properties???
     // TODO: include startEditable/durationEditable/constraint/overlap/allow
 
-    if (settings.collapseColor && ui.backgroundColor && ui.backgroundColor === ui.borderColor) {
-      res.color = ui.backgroundColor
-    } else {
-      if (ui.backgroundColor) {
-        res.backgroundColor = ui.backgroundColor
-      }
-      if (ui.borderColor) {
-        res.borderColor = ui.borderColor
-      }
+    if (ui.color) {
+      res.color = ui.color
     }
 
-    if (ui.textColor) {
-      res.textColor = ui.textColor
+    if (ui.contrastColor) {
+      res.contrastColor = ui.contrastColor
     }
 
     if (ui.classNames.length) {

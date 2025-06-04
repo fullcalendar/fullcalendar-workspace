@@ -100,7 +100,7 @@ describe('eventContent', () => {
     function expectEventDataChanged(id) {
       let event = calendar.getEventById(id)
       expect(event.title).toBe('name changed')
-      expect(event.backgroundColor).toBe('red')
+      expect(event.color).toBe('red')
     }
 
     let viewWrapper = new TimeGridViewWrapper(calendar).timeGrid

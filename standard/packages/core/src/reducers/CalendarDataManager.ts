@@ -665,10 +665,8 @@ function buildViewUiProps(calendarContext: CalendarContext) {
         constraint: options.eventConstraint,
         overlap: typeof options.eventOverlap === 'boolean' ? options.eventOverlap : undefined,
         allow: options.eventAllow,
-        backgroundColor: options.eventBackgroundColor,
-        borderColor: options.eventBorderColor,
-        textColor: options.eventTextColor,
         color: options.eventColor,
+        contrastColor: options.eventContrastColor,
         // classNames: options.eventClassNames // render hook will handle this
       },
       calendarContext,

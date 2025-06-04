@@ -137,15 +137,14 @@ export class ResourceApi {
   get eventConstraint(): any { return this._resource.ui.constraints[0] || null } // TODO: better type
   get eventOverlap(): boolean { return this._resource.ui.overlap }
   get eventAllow(): any { return this._resource.ui.allows[0] || null } // TODO: better type
-  get eventBackgroundColor(): string { return this._resource.ui.backgroundColor }
-  get eventBorderColor(): string { return this._resource.ui.borderColor }
-  get eventTextColor(): string { return this._resource.ui.textColor }
+  get eventColor(): string { return this._resource.ui.color }
+  get eventContrastColor(): string { return this._resource.ui.contrastColor }
 
   // NOTE: user can't modify these because Object.freeze was called in event-def parsing
   get eventClassNames() { return this._resource.ui.classNames }
   get extendedProps() { return this._resource.extendedProps }
 
-  toPlainObject(settings: { collapseExtendedProps?: boolean, collapseEventColor?: boolean } = {}) {
+  toPlainObject(settings: { collapseExtendedProps?: boolean } = {}) {
     let internal = this._resource
     let { ui } = internal
     let publicId = this.id
@@ -159,19 +158,12 @@ export class ResourceApi {
       res.title = internal.title
     }
 
-    if (settings.collapseEventColor && ui.backgroundColor && ui.backgroundColor === ui.borderColor) {
-      res.eventColor = ui.backgroundColor
-    } else {
-      if (ui.backgroundColor) {
-        res.eventBackgroundColor = ui.backgroundColor
-      }
-      if (ui.borderColor) {
-        res.eventBorderColor = ui.borderColor
-      }
+    if (ui.contrastColor) {
+      res.eventContrastColor = ui.contrastColor
     }
 
-    if (ui.textColor) {
-      res.eventTextColor = ui.textColor
+    if (ui.contrastColor) {
+      res.eventContrastColor = ui.contrastColor
     }
 
     if (ui.classNames.length) {

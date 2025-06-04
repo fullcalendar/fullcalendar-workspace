@@ -13,7 +13,7 @@ import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import themePlugin from './theme.js'
 
 const enablePremium = false
-const enableDark = true
+const enableDark = false
 
 if (enableDark) {
   document.documentElement.classList.add('dark')
@@ -36,6 +36,9 @@ document.addEventListener('DOMContentLoaded', function() {
     calendar = new Calendar(calendarEl, {
       /* Tailwind implementations should not use this setting */
       // colorScheme: 'dark',
+
+      // eventColor: 'yellow',
+      // eventContrastColor: 'black',
 
       // height: 'auto',
       // eventMaxStack: 1,

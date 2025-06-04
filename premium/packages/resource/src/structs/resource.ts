@@ -22,10 +22,8 @@ const RESOURCE_REFINERS = {
   eventOverlap: Boolean, // can NOT be a func, different from OptionsInput
   eventAllow: identity as Identity<AllowFunc>,
   eventClassNames: parseClassNames,
-  eventBackgroundColor: String,
-  eventBorderColor: String,
-  eventTextColor: String,
   eventColor: String,
+  eventContrastColor: String,
 }
 
 type BuiltInResourceRefiners = typeof RESOURCE_REFINERS
@@ -68,10 +66,8 @@ export function parseResource(raw: ResourceInput, parentId: string = '', store: 
       overlap: refined.eventOverlap,
       allow: refined.eventAllow,
       classNames: refined.eventClassNames,
-      backgroundColor: refined.eventBackgroundColor,
-      borderColor: refined.eventBorderColor,
-      textColor: refined.eventTextColor,
       color: refined.eventColor,
+      contrastColor: refined.eventContrastColor,
     }, context),
     extendedProps: {
       ...extra,

@@ -18,9 +18,7 @@ export const EVENT_UI_REFINERS = {
   className: parseClassNames, // will both end up as array of strings
   classNames: parseClassNames, // "
   color: String,
-  backgroundColor: String,
-  borderColor: String,
-  textColor: String,
+  contrastColor: String,
 }
 
 const EMPTY_EVENT_UI: EventUi = {
@@ -30,9 +28,8 @@ const EMPTY_EVENT_UI: EventUi = {
   constraints: [],
   overlap: null,
   allows: [],
-  backgroundColor: '',
-  borderColor: '',
-  textColor: '',
+  color: '',
+  contrastColor: '',
   classNames: [],
 }
 
@@ -52,9 +49,8 @@ export interface EventUi {
   constraints: Constraint[]
   overlap: boolean | null
   allows: AllowFunc[] // crappy name to indicate plural
-  backgroundColor: string
-  borderColor: string
-  textColor: string,
+  color: string
+  contrastColor: string
   classNames: string[]
 }
 
@@ -70,9 +66,8 @@ export function createEventUi(refined: EventUiRefined, context: CalendarContext)
     constraints: constraint != null ? [constraint] : [],
     overlap: refined.overlap != null ? refined.overlap : null,
     allows: refined.allow != null ? [refined.allow] : [],
-    backgroundColor: refined.backgroundColor || refined.color || '',
-    borderColor: refined.borderColor || refined.color || '',
-    textColor: refined.textColor || '',
+    color: refined.color || '',
+    contrastColor: refined.contrastColor || '',
     classNames: (refined.className || []).concat(refined.classNames || []), // join singular and plural
   }
 }
@@ -90,9 +85,8 @@ function combineTwoEventUis(item0: EventUi, item1: EventUi): EventUi { // hash1 
     constraints: item0.constraints.concat(item1.constraints),
     overlap: typeof item1.overlap === 'boolean' ? item1.overlap : item0.overlap,
     allows: item0.allows.concat(item1.allows),
-    backgroundColor: item1.backgroundColor || item0.backgroundColor,
-    borderColor: item1.borderColor || item0.borderColor,
-    textColor: item1.textColor || item0.textColor,
+    color: item1.color || item0.color,
+    contrastColor: item1.color ? item1.contrastColor : item0.contrastColor,
     classNames: item0.classNames.concat(item1.classNames),
   }
 }

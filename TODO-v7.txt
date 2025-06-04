@@ -16,16 +16,6 @@ high-level todo:
     rethink singleMonthTitleClassNames/etc
     address bugs:
       bug: sticky header dates look terrible in timegrid/daygrid
-  resolve confusion over event-element "color"
-    will need to make separate `color` property in EventUi. other props set on `style`
-    note: remove concept for eventBorder/Background... theme decides what to do with color
-    consider contrasting text color!
-    tickets:
-      list-item unintuitive:
-        https://github.com/fullcalendar/fullcalendar/issues/6966
-        https://github.com/fullcalendar/fullcalendar/issues/7694
-      background events:
-        https://github.com/fullcalendar/fullcalendar/issues/5528
   backport tailwind classic theme -> normal classic theme
     address bugs:
       bug: eventColor not working in resource-timeline-row-grouping.html
@@ -151,6 +141,13 @@ changelog: list-event time "column" is hardcoded as 165px width
 note: for tailwind themes, don't use JS colorScheme setting, just use dark: classname prefixes
   and configure your darkmode manually: https://tailwindcss.com/docs/dark-mode#toggling-dark-mode-manually
 changelog: transforms on event bg(colors) via CSS filters
+changelog: Event::toPlainObject doesn't accept collapseColor anymore
+  now returns { color, contrastColor }
+changelog: +Event::color, +Event::contrastColor, -Event::backgroundColor, -Event::textColor, -Event::borderColor
+  (same for Resource)
+changelog: eventColor (different behavior), +eventContrastColor, -eventBackgroundColor, -eventBorderColor, -eventTextColor
+  gotcha: in order to use eventContrastColor, you MUST define eventColor. same for event object
+changelog: --fc-event-color, --fc-event-contrast-color, --fc-canvas-color
 
 Docs
 ----
@@ -251,6 +248,12 @@ automated-test: write tests with moment/luxon textParts
 Freshdesk/GH-issues
 -------------------
 
+confusion over event color and text-color:
+  list-item unintuitive (not really addressed):
+    https://github.com/fullcalendar/fullcalendar/issues/6966
+    https://github.com/fullcalendar/fullcalendar/issues/7694
+  background events (can add to theme bg events via text-(--fc-event-contrast-color)):
+    https://github.com/fullcalendar/fullcalendar/issues/5528
 Fixed this issue of mousedown taking long time to recalculate style?
   https://fullcalendar.freshdesk.com/a/tickets/9078
   Can see forced-reflow warning here too: bundle/examples-v7/issue-7677.html

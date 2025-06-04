@@ -81,9 +81,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       event: eventApi, // make stable. everything else atomic. FYI, eventRange unfortunately gets reconstructed a lot, but def/instance is stable
       view: context.viewApi,
       timeText: timeText,
-      textColor: eventUi.textColor,
-      backgroundColor: eventUi.backgroundColor,
-      borderColor: eventUi.borderColor,
+      color: eventUi.color,
+      contrastColor: eventUi.contrastColor,
       isDraggable,
       isStartResizable: !props.disableResizing && props.isStart && eventUi.durationEditable && options.eventResizableFromStart,
       isEndResizable: !props.disableResizing && props.isEnd && eventUi.durationEditable,
@@ -170,9 +169,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
         }}
         className={outerClassNames}
         style={{
-          '--fc-event-color': eventUi.backgroundColor, // TODO: move to just "color"
-          // borderColor: eventUi.borderColor, // ???
-          // backgroundColor: colorClassNames, // ???
+          '--fc-event-color': eventUi.color,
+          '--fc-event-contrast-color': eventUi.contrastColor,
         }}
         elRef={this.handleEl}
         renderProps={renderProps}
@@ -223,9 +221,6 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
             <InnerContent
               tag="div"
               className={innerClassNames}
-              style={{
-                color: renderProps.textColor,
-              }}
             />
             {/* "after" element (resizer or left-arrow) */}
             {afterClassNames && (

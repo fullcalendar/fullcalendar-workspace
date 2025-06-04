@@ -101,7 +101,9 @@ const dayGridWeekNumberOverrides: CalendarOptions = {
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
-    classNames: 'gap-5 [--fc-event-color:green]',
+    // important to define these as CSS vars because things other than events leverage them
+    classNames: 'gap-5 [--fc-event-color:green] [--fc-event-contrast-color:white]',
+
     toolbarClassNames: 'gap-3',
     toolbarSectionClassNames: 'gap-3',
     toolbarTitleClassNames: 'text-2xl font-bold whitespace-nowrap',
@@ -212,7 +214,7 @@ export default createPlugin({
         ? 'brightness-75'
         : 'group-focus:brightness-75',
     ],
-    blockEventInnerClassNames: 'relative z-10 text-white print:text-black flex gap-[3px]', // subclasses will decide flex-direction
+    blockEventInnerClassNames: 'relative z-10 text-(--fc-event-contrast-color) print:text-black flex gap-[3px]', // subclasses will decide flex-direction
     blockEventTimeClassNames: 'whitespace-nowrap overflow-hidden flex-shrink-0 max-w-full max-h-full',
     blockEventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink sticky top-0 start-0',
 

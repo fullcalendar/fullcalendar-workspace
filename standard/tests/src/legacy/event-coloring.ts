@@ -26,22 +26,21 @@ describe('event coloring', () => {
 
   function defineViewTests(eventHasTime) {
     describe('for foreground events', () => {
-      testTextColor(eventHasTime)
-      testBorderColor(eventHasTime)
-      testBackgroundColor(eventHasTime)
+      testColor(eventHasTime)
+      testContrastColor(eventHasTime)
     })
 
     describe('for background events', () => {
-      testBackgroundColor(eventHasTime, 'background')
+      testColor(eventHasTime, 'background')
     })
   }
 
-  function testTextColor(eventHasTime) {
+  function testContrastColor(eventHasTime) {
     let eventOptions = getEventOptions(eventHasTime)
 
-    it('should accept the global eventTextColor', () => {
+    it('should accept the global eventContrastColor', () => {
       initCalendar({
-        eventTextColor: 'red',
+        eventContrastColor: 'red',
         events: [getTestEvent(eventOptions)],
       })
       expect(getEventCss('color')).toMatch(RED_REGEX)
@@ -49,9 +48,9 @@ describe('event coloring', () => {
 
     it('should accept an event source\'s textColor', () => {
       initCalendar({
-        eventTextColor: 'blue', // even when there's a more general setting
+        eventContrastColor: 'blue', // even when there's a more general setting
         eventSources: [{
-          textColor: 'red',
+          contrastColor: 'red',
           events: [getTestEvent(eventOptions)],
         }],
       })
@@ -60,87 +59,17 @@ describe('event coloring', () => {
 
     it('should accept an event object\'s textColor', () => {
       let eventInput = getTestEvent(eventOptions, {
-        textColor: 'red',
+        contrastColor: 'red',
       })
       initCalendar({
-        eventTextColor: 'blue', // even when there's a more general setting
+        eventContrastColor: 'blue', // even when there's a more general setting
         events: [eventInput],
       })
       expect(getEventCss('color')).toMatch(RED_REGEX)
     })
   }
 
-  function testBorderColor(eventHasTime) {
-    let eventOptions = getEventOptions(eventHasTime)
-
-    it('should accept the global eventColor for border color', () => {
-      initCalendar({
-        eventColor: 'red',
-        events: [getTestEvent(eventOptions)],
-      })
-      expect(getEventCss('border-top-color')).toMatch(RED_REGEX)
-    })
-
-    it('should accept the global eventBorderColor', () => {
-      initCalendar({
-        eventColor: 'blue',
-        eventBorderColor: 'red',
-        events: [getTestEvent(eventOptions)],
-      })
-      expect(getEventCss('border-top-color')).toMatch(RED_REGEX)
-    })
-
-    it('should accept an event source\'s color for the border', () => {
-      initCalendar({
-        eventBorderColor: 'blue', // even when there's a more general setting
-        eventSources: [{
-          color: 'red',
-          events: [getTestEvent(eventOptions)],
-        }],
-      })
-      expect(getEventCss('border-top-color')).toMatch(RED_REGEX)
-    })
-
-    it('should accept an event source\'s borderColor', () => {
-      initCalendar({
-        eventBorderColor: 'blue', // even when there's a more general setting
-        eventSources: [{
-          color: 'blue',
-          borderColor: 'red',
-          events: [getTestEvent(eventOptions)],
-        }],
-      })
-      expect(getEventCss('border-top-color')).toMatch(RED_REGEX)
-    })
-
-    it('should accept an event object\'s color for the border', () => {
-      let eventInput = getTestEvent(eventOptions, {
-        color: 'red',
-      })
-      initCalendar({
-        eventSources: [{
-          borderColor: 'blue', // even when there's a more general setting
-          events: [eventInput],
-        }],
-      })
-      expect(getEventCss('border-top-color')).toMatch(RED_REGEX)
-    })
-
-    it('should accept an event object\'s borderColor', () => {
-      let eventInput = getTestEvent(eventOptions, {
-        color: 'blue', // even when there's a more general setting
-        borderColor: 'red',
-      })
-      initCalendar({
-        eventSources: [{
-          events: [eventInput],
-        }],
-      })
-      expect(getEventCss('border-top-color')).toMatch(RED_REGEX)
-    })
-  }
-
-  function testBackgroundColor(eventHasTime, display?) {
+  function testColor(eventHasTime, display?) {
     let eventOptions = getEventOptions(eventHasTime)
 
     if (typeof display !== 'undefined') {
@@ -155,18 +84,9 @@ describe('event coloring', () => {
       expect(getEventCss('background-color', display)).toMatch(RED_REGEX)
     })
 
-    it('should accept the global eventBackgroundColor', () => {
-      initCalendar({
-        eventColor: 'blue', // even when there's a more general setting
-        eventBackgroundColor: 'red',
-        events: [getTestEvent(eventOptions)],
-      })
-      expect(getEventCss('background-color', display)).toMatch(RED_REGEX)
-    })
-
     it('should accept an event source\'s color for the background', () => {
       initCalendar({
-        eventBackgroundColor: 'blue', // even when there's a more general setting
+        eventColor: 'blue', // even when there's a more general setting
         eventSources: [{
           color: 'red',
           events: [getTestEvent(eventOptions)],
@@ -178,8 +98,7 @@ describe('event coloring', () => {
     it('should accept an event source\'s backgroundColor', () => {
       initCalendar({
         eventSources: [{
-          color: 'blue', // even when there's a more general setting
-          backgroundColor: 'red',
+          color: 'red',
           events: [getTestEvent(eventOptions)],
         }],
       })
@@ -191,7 +110,7 @@ describe('event coloring', () => {
       eventInput.color = 'red'
       initCalendar({
         eventSources: [{
-          backgroundColor: 'blue', // even when there's a more general setting
+          color: 'blue', // even when there's a more general setting
           events: [eventInput],
         }],
       })

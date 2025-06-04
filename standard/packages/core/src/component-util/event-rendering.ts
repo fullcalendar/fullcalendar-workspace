@@ -216,9 +216,8 @@ export interface MinimalEventProps {
 export interface EventContentArg { // for *Content handlers
   event: EventImpl
   timeText: string
-  backgroundColor: string // TODO: add other EventUi props?
-  borderColor: string //
-  textColor: string //
+  color: string // TODO: add other EventUi props?
+  contrastColor: string //
   isDraggable: boolean
   isStartResizable: boolean
   isEndResizable: boolean

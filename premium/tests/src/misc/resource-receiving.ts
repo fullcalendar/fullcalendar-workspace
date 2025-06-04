@@ -157,16 +157,15 @@ describe('event resources', () => {
         title: 'room 1',
         eventClassNames: 'niceevents',
         eventColor: 'red',
-        eventTextColor: 'green',
+        eventContrastColor: 'green',
       }],
     })
 
     let resources = currentCalendar.getResources()
     expect(resources.length).toBe(1)
     expect(resources[0].eventClassNames).toEqual(['niceevents'])
-    expect(resources[0].eventBackgroundColor).toBe('red')
-    expect(resources[0].eventBorderColor).toBe('red')
-    expect(resources[0].eventTextColor).toBe('green')
+    expect(resources[0].eventColor).toBe('red')
+    expect(resources[0].eventContrastColor).toBe('green')
   })
 
   it('will put misc properties in extendedProps', () => {

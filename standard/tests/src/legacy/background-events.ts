@@ -729,39 +729,9 @@ describe('background events', () => {
       expect($(bgEl).css('background-color')).toMatch(RED_REGEX)
     })
 
-    it('can have custom Event Source backgroundColor', () => {
-      let calendar = initCalendar({
-        eventSources: [{
-          backgroundColor: 'red',
-          events: [{
-            start: '2014-11-04T01:00:00',
-            display: 'background',
-          }],
-        }],
-      })
-      let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-      let bgEl = timeGridWrapper.getBgEventEls()[0]
-      expect($(bgEl).css('background-color')).toMatch(RED_REGEX)
-    })
-
     it('is affected by global eventColor', () => {
       let calendar = initCalendar({
         eventColor: 'red',
-        eventSources: [{
-          events: [{
-            start: '2014-11-04T01:00:00',
-            display: 'background',
-          }],
-        }],
-      })
-      let timeGridWrapper = new TimeGridViewWrapper(calendar).timeGrid
-      let bgEl = timeGridWrapper.getBgEventEls()[0]
-      expect($(bgEl).css('background-color')).toMatch(RED_REGEX)
-    })
-
-    it('is affected by global eventBackgroundColor', () => {
-      let calendar = initCalendar({
-        eventBackgroundColor: 'red',
         eventSources: [{
           events: [{
             start: '2014-11-04T01:00:00',

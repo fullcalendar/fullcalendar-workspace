@@ -17,7 +17,7 @@ describe('event styling hooks', () => {
         title: 'Resource B',
         eventClassNames: ['re2', 're3'],
         eventColor: 'rgba(0,255,0,0.5)',
-        eventTextColor: 'rgba(0,0,255,0.5)',
+        eventContrastColor: 'rgba(0,0,255,0.5)',
       },
     ],
   })
