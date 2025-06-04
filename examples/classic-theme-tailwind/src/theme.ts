@@ -18,6 +18,7 @@ const borderColorClassNames = 'border-gray-300 dark:border-gray-800'
 const borderClassName = `border ${borderColorClassNames}`
 
 const neutralBgClassNames = 'bg-gray-500/10' // un-make this variable. always do shades of gray-500
+const todayBgClassNames = 'bg-yellow-400/15 dark:bg-yellow-200/10'
 
 // transparent resizer for mouse
 // must have 'group' on the event, for group-hover
@@ -282,7 +283,7 @@ export default createPlugin({
 
     dayRowClassNames: borderClassName,
     dayCellClassNames: (arg) => [
-      arg.isToday && 'bg-yellow-400/15',
+      arg.isToday && todayBgClassNames,
       borderClassName,
       arg.isDisabled && neutralBgClassNames,
     ],
@@ -329,7 +330,7 @@ export default createPlugin({
     dayLaneClassNames: (arg) => [
       borderClassName,
       arg.isDisabled && neutralBgClassNames,
-      arg.isToday && 'bg-yellow-400/15',
+      arg.isToday && todayBgClassNames,
     ],
     dayLaneInnerClassNames: (arg) => [
       arg.isSimple ? 'm-1' : 'ms-0.5 me-[2.5%]'

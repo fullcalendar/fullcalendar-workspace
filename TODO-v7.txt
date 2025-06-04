@@ -8,15 +8,12 @@ Publishing:
 ASAP
 ----
 
-dark-mode:
-  today color looks a little weird
-
 high-level todo:
   borderless system (see recent notes)
     check multimonth at end
     redo singleMonth* settings
     add tableClassNames/tableHeaderClassNames/tableBodyClassNames, remove viewHeaderClassNames/viewBodyClassNames
-    void-out the borders inbetween list-view items. simplifies tailwind code
+    rethink singleMonthTitleClassNames/etc
     address bugs:
       bug: sticky header dates look terrible in timegrid/daygrid
   resolve confusion over event-element "color"
