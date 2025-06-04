@@ -10,8 +10,6 @@ ASAP
 
 dark-mode:
   today color looks a little weird
-bug: double today-date (double-today.png)
-  should not happen on disabled cell
 
 high-level todo:
   borderless system (see recent notes)

@@ -20,13 +20,14 @@ export function getDateMeta(
   todayRange?: DateRange,
   nowDate?: DateMarker,
 ): DateMeta {
+  const isDisabled = Boolean(dateProfile && !rangeContainsMarker(dateProfile.activeRange, dateMarker))
   return {
     date: dateEnv.toDate(dateMarker),
     dow: dateMarker.getUTCDay(),
-    isDisabled: Boolean(dateProfile && !rangeContainsMarker(dateProfile.activeRange, dateMarker)),
-    isOther: Boolean(dateProfile && !rangeContainsMarker(dateProfile.currentRange, dateMarker)),
-    isToday: Boolean(todayRange && rangeContainsMarker(todayRange, dateMarker)),
-    isPast: Boolean(nowDate ? (dateMarker < nowDate) : todayRange ? (dateMarker < todayRange.start) : false),
-    isFuture: Boolean(nowDate ? (dateMarker > nowDate) : todayRange ? (dateMarker >= todayRange.end) : false),
+    isDisabled,
+    isOther: !isDisabled && Boolean(dateProfile && !rangeContainsMarker(dateProfile.currentRange, dateMarker)),
+    isToday: !isDisabled && Boolean(todayRange && rangeContainsMarker(todayRange, dateMarker)),
+    isPast: !isDisabled && Boolean(nowDate ? (dateMarker < nowDate) : todayRange ? (dateMarker < todayRange.start) : false),
+    isFuture: !isDisabled && Boolean(nowDate ? (dateMarker > nowDate) : todayRange ? (dateMarker >= todayRange.end) : false),
   }
 }
