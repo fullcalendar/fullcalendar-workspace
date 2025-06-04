@@ -41,11 +41,6 @@ low-level todo:
   add !important to all rules in util.css?... YES. Nothing is meant to be overridden
   [stickiness] theme should be responsible for moreLink stickiness (currently core does it)
     (because theme is already responsible for events stickiness)
-  move cell border to flex-end
-    better for infinite horiztonal scroll later
-    rows have it on bottom because better for print, breaking to second page
-  instead of position:relative/absolute an z-index:0,
-    use isolation:isolate (well supported)
   remove view-specific hacks in util.module.css
   style license warning better
   resource-timeline expander icons should align to baseline
@@ -398,10 +393,21 @@ punt(existing-quirk): when timegrid events are overlapping, and touch-dragging i
   (aka "selecting" it), when at mouseup rest, event can still be underneath other events
   solution: make sure above all other events if selected
 punt: daygrid cells' event h-positioning (uses percentage) conflicts with flexbox, doesn't quite match up
+punt: move cell border to flex-end
+  better for infinite horiztonal scroll later
+  rows have it on bottom because better for print, breaking to second page
+punt: instead of position:relative/absolute an z-index:0,
+  use isolation:isolate (well supported)
 
 Notes
 -----
 
+nice dark-view calendars:
+  https://demo.fulleventcalendar.com/
+  https://big-calendar.vercel.app/month-view
+  https://www.kibo-ui.com/components/calendar
+  https://gajjabko-calendar.pages.dev/
+  https://originui.com/event-calendar
 isMajor/isMinor API additions:
   isMajor
     + slotLane

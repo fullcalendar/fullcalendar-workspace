@@ -19,15 +19,6 @@ if (enableDark) {
   document.documentElement.classList.add('dark')
 }
 
-/*
-nice dark-view calendars:
-  https://demo.fulleventcalendar.com/
-  https://big-calendar.vercel.app/month-view
-  https://www.kibo-ui.com/components/calendar
-  https://gajjabko-calendar.pages.dev/
-  https://originui.com/event-calendar
-*/
-
 document.addEventListener('DOMContentLoaded', function() {
   const calendarEl = document.getElementById('calendar')!
   let calendar: Calendar
