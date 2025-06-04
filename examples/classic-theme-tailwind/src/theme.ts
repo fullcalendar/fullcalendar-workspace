@@ -57,6 +57,7 @@ const dayGridOverrides: CalendarOptions = {
 
   listItemEventClassNames: (arg) => [
     'mt-px me-0.5 p-px rounded-sm items-center',
+    (arg.isSelected && arg.isDragging) && 'shadow-sm',
     arg.isSelected
       ? 'bg-gray-500/40'
       : 'hover:bg-gray-500/20 focus:bg-gray-500/30',

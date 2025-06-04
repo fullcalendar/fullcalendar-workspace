@@ -13,11 +13,20 @@ import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import themePlugin from './theme.js'
 
 const enablePremium = false
-const enableDark = true
+const enableDark = false
 
 if (enableDark) {
   document.documentElement.classList.add('dark')
 }
+
+/*
+nice dark-view calendars:
+  https://demo.fulleventcalendar.com/
+  https://big-calendar.vercel.app/month-view
+  https://www.kibo-ui.com/components/calendar
+  https://gajjabko-calendar.pages.dev/
+  https://originui.com/event-calendar
+*/
 
 document.addEventListener('DOMContentLoaded', function() {
   const calendarEl = document.getElementById('calendar')!
@@ -57,9 +66,9 @@ document.addEventListener('DOMContentLoaded', function() {
       navLinks: true, // can click day/week names to navigate views
       editable: true,
       selectable: true,
-      selectMirror: true,
+      selectMirror: false,
       dayMaxEvents: true, // allow "more" link when too many events
-      // businessHours: true, // looks whack, covering lots of things
+      businessHours: true, // looks whack, covering lots of things
       // eventMaxStack: 1,
       events: [
         {

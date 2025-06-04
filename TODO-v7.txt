@@ -8,6 +8,11 @@ Publishing:
 ASAP
 ----
 
+dark-mode:
+  today color looks a little weird
+bug: double today-date (double-today.png)
+  should not happen on disabled cell
+
 high-level todo:
   borderless system (see recent notes)
     check multimonth at end
@@ -16,21 +21,16 @@ high-level todo:
     void-out the borders inbetween list-view items. simplifies tailwind code
     address bugs:
       bug: sticky header dates look terrible in timegrid/daygrid
-  z-index issues with highlight/bg-events over slats/days
-    question: how will daygrid z-index where daynumbers above bg-event work in react-native?
-    note: the event background "dimmer" goes over event time accidentally
-    note: in timegrid, touch-selected event doesn't go above other. supposed to?
-    note: TimeGrid cols should be below slats:
-      https://fullcalendar.freshdesk.com/a/tickets/9203
-      Same with DayGrid, putting background-events underneath lines?
-      we don't want to force people to do semi-transparent colors
-    bug: timegrid (especially in dark mode), when 2 days BG event
-      line-between looks better in all-day section, different & too light in timed section
-    related: correct fc-list-day-header sticky bg color transparency problem!
   resolve confusion over event-element "color"
     will need to make separate `color` property in EventUi. other props set on `style`
     note: remove concept for eventBorder/Background... theme decides what to do with color
     consider contrasting text color!
+    tickets:
+      list-item unintuitive:
+        https://github.com/fullcalendar/fullcalendar/issues/6966
+        https://github.com/fullcalendar/fullcalendar/issues/7694
+      background events:
+        https://github.com/fullcalendar/fullcalendar/issues/5528
   backport tailwind classic theme -> normal classic theme
     address bugs:
       bug: eventColor not working in resource-timeline-row-grouping.html
@@ -66,7 +66,6 @@ low-level todo:
   resource-timeline expander icons should align to baseline
 
 visual theme cleanup
-  bug: daygrid touch-selecting doesn't do drop-shadow anymore (only for list-item events)
   bug: multimonth: font sizes not small enough
   bug: license-warning in darkmode looks crap
   bug: make weeknumber valign with daycell number (on multimonth too)
@@ -85,6 +84,9 @@ project: shacdn
     Button-groups are hard to do anyway.
     Realistically, best way to do a button-group and customize buttons is to have developer,
     build custom toolbar from scratch (using our soon-to-be-improved datesSet callback)
+  JSON file
+    example: https://www.kibo-ui.com/components/calendar
+      npx shadcn@latest add https://www.kibo-ui.com/registry/calendar.json
 
 project: ResizeObserver problems (!!! should be fixed after ResizeObserver refactor !!!)
   ResourceTimeline height:auto
@@ -394,6 +396,10 @@ punt: test dark mode that turns into print
 punt: rename "mirror"?
 punt: sticky list-view header, scrolldown accumulates double border
 punt: way to put nonBusinessHours on Sun+Sat header (awkward to do with abs fill like dayLane)
+punt(existing-quirk): when timegrid events are overlapping, and touch-dragging initiated on one,
+  (aka "selecting" it), when at mouseup rest, event can still be underneath other events
+  solution: make sure above all other events if selected
+punt: daygrid cells' event h-positioning (uses percentage) conflicts with flexbox, doesn't quite match up
 
 Notes
 -----
@@ -482,3 +488,22 @@ How to do liquid-width/height, multiple technique
     LIQUID-AREAS: { flex-grow:1, min-height:0 }
     Good for layouts that are conditionally liquid-height
     Tho probably not as performant because need to compute the pre-squished AND post-squished layouts
+note: bg-fill / bg-event background event z-indexes
+  when border-color appears adjacent to bg-fill, looks muddy. either make slats semi-transparent,
+    or make bg-fills semi-transparent
+  we CAN'T make the border semi-transparent, because would appear darker at vertices where slats
+    and lanes overlap
+  we SHOULDN'T put resource-timeline bg-fills below the slats, because would require two canvas
+    during infinite scroll
+  SO, bg-fill must be ABOVE borders, below fg-events and day numbers
+  this is will be challenging for dayGrid in react-native,
+    since react-native is simplified rules for z-index -- only DOM siblings can be stacking siblings
+    the solution will be to have individual bg-fills per-cell, which we might sortof need to do
+    for a11y anyway (and we can just visually hide the bg-event title on subsequent days)
+  for timegrid, (and eventually daygrid if we move to above^^ technique),
+    we need the bg-fill to overlap the cell/lane's border
+    right now, in timegrid, we achieve this with negative margin
+    however in future we need better solution
+      CANNOT: make wrapper <div> and put cell + fills inside. because events live within the cell
+      and will run into react-native-esque problems again!
+      WE REALLY just need to do trial-and-error in react-native to see what's possible

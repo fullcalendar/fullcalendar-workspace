@@ -323,6 +323,13 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               style={{
                 top: segVertical.start,
                 height: segVertical.size,
+
+                // HACK to get bg fills to overlap cell-start border
+                // which matches how dayGrid looks,
+                // which is important because all-day background events, in TimeGrid,
+                // will render on both at the same time
+                marginLeft: context.isRtl ? undefined : -1,
+                marginRight: context.isRtl ? -1 : undefined,
               }}
             >
               {fillType === 'bg-event' ?
