@@ -442,7 +442,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     <div
                       className={joinArrayishClassNames(
                         options.fillerClassNames,
-                        options.fillerYClassNames,
+                        classNames.borderOnlyT,
                       )}
                       style={{ minHeight: spreadsheetBottomFiller }}
                     />
@@ -544,7 +544,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     <div
                       className={joinArrayishClassNames(
                         options.fillerClassNames,
-                        options.fillerXClassNames,
+                        classNames.borderOnlyS,
                       )}
                       style={{ minWidth: endScrollbarWidth }}
                     />
@@ -677,7 +677,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     <div
                       className={joinArrayishClassNames(
                         options.fillerClassNames,
-                        options.fillerYClassNames,
+                        classNames.borderOnlyT,
                       )}
                       style={{ minHeight: timelineBottomFiller }}
                     />

@@ -190,7 +190,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     <div
                       className={joinArrayishClassNames(
                         options.fillerClassNames,
-                        options.fillerXClassNames,
+                        classNames.borderOnlyS,
                       )}
                       style={{ minWidth: endScrollbarWidth }}
                     />

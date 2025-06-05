@@ -101,9 +101,7 @@ export default createPlugin({
       ...getDayClassNames(arg),
     ],
 
-    fillerClassNames: 'fc-filler',
-    fillerXClassNames: 'fc-filler-x',
-    fillerYClassNames: 'fc-filler-y',
+    fillerClassNames: 'fc-filler', // TODO: give all-sides border
 
     nonBusinessClassNames: 'fc-non-business',
     highlightClassNames: 'fc-highlight',

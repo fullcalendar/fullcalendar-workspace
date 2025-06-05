@@ -88,7 +88,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
                 <div
                   className={joinArrayishClassNames(
                     options.fillerClassNames,
-                    options.fillerXClassNames,
+                    classNames.borderOnlyS,
                   )}
                   style={{ minWidth: endScrollbarWidth }}
                 />

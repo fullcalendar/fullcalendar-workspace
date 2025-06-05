@@ -375,8 +375,6 @@ export const BASE_OPTION_REFINERS = {
   borderlessBottom: Boolean,
 
   fillerClassNames: identity as Identity<ClassNamesInput>,
-  fillerXClassNames: identity as Identity<ClassNamesInput>,
-  fillerYClassNames: identity as Identity<ClassNamesInput>,
 
   toolbarClassNames: identity as Identity<ClassNamesGenerator<ToolbarArg>>,
   toolbarSectionClassNames: identity as Identity<ClassNamesGenerator<ToolbarSectionArg>>,

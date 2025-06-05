@@ -250,7 +250,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   <div
                     className={joinArrayishClassNames(
                       options.fillerClassNames,
-                      options.fillerXClassNames,
+                      classNames.borderOnlyS,
                     )}
                     style={{ minWidth: endScrollbarWidth }}
                   />
@@ -327,7 +327,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     <div
                       className={joinArrayishClassNames(
                         options.fillerClassNames,
-                        options.fillerXClassNames,
+                        classNames.borderOnlyS,
                       )}
                       style={{ minWidth: endScrollbarWidth }}
                     />
@@ -411,7 +411,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       <div
                         class={joinArrayishClassNames(
                           options.fillerClassNames,
-                          options.fillerYClassNames,
+                          classNames.borderOnlyT,
                           rowsNotExpanding && classNames.liquid,
                         )}
                         style={{
@@ -514,7 +514,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         <div
                           class={joinArrayishClassNames(
                             options.fillerClassNames,
-                            options.fillerYClassNames,
+                            classNames.borderOnlyT,
                             classNames.liquid,
                           )}
                         />

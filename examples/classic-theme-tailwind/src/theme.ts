@@ -168,9 +168,7 @@ export default createPlugin({
 
     dayCompactWidth: 70,
 
-    fillerClassNames: `opacity-50 ${borderColorClassNames}`,
-    fillerXClassNames: 'border-s',
-    fillerYClassNames: 'border-t',
+    fillerClassNames: `opacity-50 ${borderClassName}`,
 
     nonBusinessClassNames: neutralBgClassNames,
     highlightClassNames: 'bg-cyan-100/30 dark:bg-blue-500/20',
