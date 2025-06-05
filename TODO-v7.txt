@@ -23,7 +23,6 @@ low-level todo:
     check all inline types defined in options.ts, give real names
   [rename] change all *ClassNames to singular *ClassName
   [rename] colCnt?
-  in toolbars, remove left/right keys. force start/end keys (then add to changelog)
   [stickiness] theme should be responsible for moreLink stickiness (currently core does it)
     (because theme is already responsible for events stickiness)
   remove view-specific hacks in util.module.css
@@ -33,11 +32,13 @@ low-level todo:
 visual theme cleanup
   bug: month-header cells too thick. other header cells too?
   bug: multimonth:
-    font sizes not small enough
     single-col month-title too thick
+    font sizes not small enough
+      rethinkg all font sized? don't have isCompact flags determine everything
   bug: license-warning in darkmode looks crap
   bug: make weeknumber valign with daycell number (on multimonth too)
     also background-event title
+  bug: daygrid list-item events have rounded start too close to cell edge
 
 BUGs later:
   bug: resource-timeline doing multiple group columns. positioning broken (bundle/a11y-ci/resource-timeline-col-grouping.html)
@@ -388,6 +389,7 @@ punt: move cell border to flex-end
   rows have it on bottom because better for print, breaking to second page
 punt: instead of position:relative/absolute an z-index:0,
   use isolation:isolate (well supported)
+punt: in toolbars, remove left/right keys. force start/end keys (then add to changelog)
 
 Notes
 -----
