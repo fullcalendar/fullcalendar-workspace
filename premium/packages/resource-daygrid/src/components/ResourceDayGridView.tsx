@@ -72,11 +72,11 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
     ))
     let joinedSlicedProps = this.joiner.joinProps(slicedProps, resourceDayTableModel)
 
-    let datesRepDistinctDays = resourceDayTableModel.dayTableModel.rowCnt === 1
+    let datesRepDistinctDays = resourceDayTableModel.dayTableModel.rowCount === 1
     let dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
       datesRepDistinctDays,
-      resourceDayTableModel.colCnt,
+      resourceDayTableModel.colCount,
     )
 
     return (
@@ -128,7 +128,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
   }
 
   isHitComboAllowed = (hit0: Hit, hit1: Hit) => {
-    let allowAcrossResources = this.resourceDayTableModel.dayTableModel.colCnt === 1
+    let allowAcrossResources = this.resourceDayTableModel.dayTableModel.colCount === 1
     return allowAcrossResources || hit0.dateSpan.resourceId === hit1.dateSpan.resourceId
   }
 }

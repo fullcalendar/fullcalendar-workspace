@@ -50,10 +50,10 @@ export function buildDayTableRenderRange(props: {
       dateEnv.startOfMonth(addDays(currentRange.end, -1)),
     )
 
-    let rowCnt = Math.ceil( // could be partial weeks due to hiddenDays
+    let rowCount = Math.ceil( // could be partial weeks due to hiddenDays
       diffWeeks(lastMonthRenderStart, end),
     )
-    end = addWeeks(end, 6 - rowCnt)
+    end = addWeeks(end, 6 - rowCount)
   }
 
   return { start, end }

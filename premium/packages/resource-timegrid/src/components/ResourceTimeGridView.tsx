@@ -130,31 +130,31 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
       resourceDayTableModel,
     )
 
-    let datesRepDistinctDays = resourceDayTableModel.dayTableModel.rowCnt === 1
+    let datesRepDistinctDays = resourceDayTableModel.dayTableModel.rowCount === 1
     let dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
       datesRepDistinctDays,
-      resourceDayTableModel.colCnt,
+      resourceDayTableModel.colCount,
     )
 
     return (
       <NowTimer unit={options.nowIndicator ? 'minute' : 'day' /* hacky */}>
         {(nowDate: DateMarker, todayRange: DateRange) => {
           // timed-only column splitting
-          let colCnt = resourceDayTableModel.colCnt
-          let fgEventSegsByCol = this.splitFgEventSegs(timedResourceJoinedProps.fgEventSegs, colCnt)
-          let bgEventSegsByCol = this.splitBgEventSegs(timedResourceJoinedProps.bgEventSegs, colCnt)
-          let businessHourSegsByCol = this.splitBusinessHourSegs(timedResourceJoinedProps.businessHourSegs, colCnt)
+          let colCount = resourceDayTableModel.colCount
+          let fgEventSegsByCol = this.splitFgEventSegs(timedResourceJoinedProps.fgEventSegs, colCount)
+          let bgEventSegsByCol = this.splitBgEventSegs(timedResourceJoinedProps.bgEventSegs, colCount)
+          let businessHourSegsByCol = this.splitBusinessHourSegs(timedResourceJoinedProps.businessHourSegs, colCount)
           let nowIndicatorSegsByCol = this.splitNowIndicatorSegs((() => {
             // was buildNowIndicatorSegs
             let nonResourceSegs = options.nowIndicator
               ? this.timedResourceSlicers[''].sliceNowDate(nowDate, this.props.dateProfile, this.context.options.nextDayThreshold, this.context, this.dayRanges)
               : [] // TODO: breaks memoization?
             return this.timedResourceJoiner.expandSegs(resourceDayTableModel, nonResourceSegs)
-          })(), colCnt)
-          let dateSelectionSegsByCol = this.splitDateSelectionSegs(timedResourceJoinedProps.dateSelectionSegs, colCnt)
-          let eventDragByCol = this.splitEventDrag(timedResourceJoinedProps.eventDrag, colCnt)
-          let eventResizeByCol = this.splitEventResize(timedResourceJoinedProps.eventResize, colCnt)
+          })(), colCount)
+          let dateSelectionSegsByCol = this.splitDateSelectionSegs(timedResourceJoinedProps.dateSelectionSegs, colCount)
+          let eventDragByCol = this.splitEventDrag(timedResourceJoinedProps.eventDrag, colCount)
+          let eventResizeByCol = this.splitEventResize(timedResourceJoinedProps.eventResize, colCount)
 
           const headerTiers = this.buildResourceRowConfigs(
             resources,

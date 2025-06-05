@@ -27,8 +27,8 @@ export interface DayTableCell {
 }
 
 export class DayTableModel {
-  rowCnt: number
-  colCnt: number
+  rowCount: number
+  colCount: number
   cellRows: DayTableCell[][]
   headerDates: DateMarker[]
 
@@ -43,7 +43,7 @@ export class DayTableModel {
     let { dates } = daySeries
     let daysPerRow: number
     let firstDay: number
-    let rowCnt: number
+    let rowCount: number
 
     if (breakOnWeeks) {
       // count columns until the day-of-week repeats
@@ -53,14 +53,14 @@ export class DayTableModel {
           break
         }
       }
-      rowCnt = Math.ceil(dates.length / daysPerRow)
+      rowCount = Math.ceil(dates.length / daysPerRow)
     } else {
-      rowCnt = 1
+      rowCount = 1
       daysPerRow = dates.length
     }
 
-    this.rowCnt = rowCnt
-    this.colCnt = daysPerRow
+    this.rowCount = rowCount
+    this.colCount = daysPerRow
     this.daySeries = daySeries
     this.cellRows = this.buildCells()
     this.headerDates = this.buildHeaderDates()
@@ -69,10 +69,10 @@ export class DayTableModel {
   public buildCells() {
     let rows = []
 
-    for (let row = 0; row < this.rowCnt; row += 1) {
+    for (let row = 0; row < this.rowCount; row += 1) {
       let cells = []
 
-      for (let col = 0; col < this.colCnt; col += 1) {
+      for (let col = 0; col < this.colCount; col += 1) {
         cells.push(
           this.buildCell(row, col),
         )
@@ -85,7 +85,7 @@ export class DayTableModel {
   }
 
   private buildCell(row, col): DayTableCell {
-    let date = this.daySeries.dates[row * this.colCnt + col]
+    let date = this.daySeries.dates[row * this.colCount + col]
 
     return {
       key: date.toISOString(),
@@ -101,7 +101,7 @@ export class DayTableModel {
   private buildHeaderDates() {
     let dates = []
 
-    for (let col = 0; col < this.colCnt; col += 1) {
+    for (let col = 0; col < this.colCount; col += 1) {
       dates.push(this.cellRows[0][col].date)
     }
 
@@ -109,7 +109,7 @@ export class DayTableModel {
   }
 
   sliceRange(range: DateRange): DayGridRange[] {
-    let { colCnt } = this
+    let { colCount } = this
     let seriesSeg = this.daySeries.sliceRange(range)
     let segs: DayGridRange[] = []
 
@@ -118,13 +118,13 @@ export class DayTableModel {
       let index = start
 
       while (index < end) {
-        let row = Math.floor(index / colCnt)
-        let nextIndex = Math.min((row + 1) * colCnt, end)
+        let row = Math.floor(index / colCount)
+        let nextIndex = Math.min((row + 1) * colCount, end)
 
         segs.push({
           row,
-          start: index % colCnt,
-          end: (nextIndex - 1) % colCnt + 1,
+          start: index % colCount,
+          end: (nextIndex - 1) % colCount + 1,
           isStart: seriesSeg.isStart && index === start,
           isEnd: seriesSeg.isEnd && nextIndex === end,
         })

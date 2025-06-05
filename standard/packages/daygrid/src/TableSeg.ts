@@ -25,10 +25,10 @@ export function getEventPartKey(seg: DayRowEventRangePart): string {
 // DayGridRange utils (TODO: move)
 // -------------------------------------------------------------------------------------------------
 
-export function splitSegsByRow<S extends DayGridRange>(segs: S[], rowCnt: number): S[][] {
+export function splitSegsByRow<S extends DayGridRange>(segs: S[], rowCount: number): S[][] {
   const byRow: S[][] = []
 
-  for (let row = 0; row < rowCnt; row++) {
+  for (let row = 0; row < rowCount; row++) {
     byRow[row] = []
   }
 
@@ -41,16 +41,16 @@ export function splitSegsByRow<S extends DayGridRange>(segs: S[], rowCnt: number
 
 export function splitInteractionByRow(
   ui: EventSegUiInteractionState<DayGridRange> | null,
-  rowCnt: number,
+  rowCount: number,
 ): EventSegUiInteractionState<DayGridRange>[] {
   const byRow: EventSegUiInteractionState<DayGridRange>[] = []
 
   if (!ui) {
-    for (let row = 0; row < rowCnt; row++) {
+    for (let row = 0; row < rowCount; row++) {
       byRow[row] = null
     }
   } else {
-    for (let row = 0; row < rowCnt; row++) {
+    for (let row = 0; row < rowCount; row++) {
       byRow[row] = {
         affectedInstances: ui.affectedInstances,
         isEvent: ui.isEvent,

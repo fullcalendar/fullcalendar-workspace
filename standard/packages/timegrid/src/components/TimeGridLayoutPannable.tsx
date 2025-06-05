@@ -138,9 +138,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     const absPrint = forPrint && !simplifiedTimeGridPrint
     const simplePrint = forPrint && simplifiedTimeGridPrint
 
-    const colCnt = props.cells.length
+    const colCount = props.cells.length
     // TODO: memo?
-    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, clientWidth)
+    const [canvasWidth, colWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)
 
     const slatCnt = props.slatMetas.length
     const [slatHeight, slatLiquid] = computeSlatHeight( // TODO: memo?
@@ -306,7 +306,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       forPrint={forPrint}
                       isHitComboAllowed={props.isHitComboAllowed}
                       className={classNames.borderNone}
-                      cellIsCompact={clientWidth / colCnt <= options.dayCompactWidth}
+                      cellIsCompact={clientWidth / colCount <= options.dayCompactWidth}
 
                       // content
                       fgEventSegs={props.fgEventSegs}

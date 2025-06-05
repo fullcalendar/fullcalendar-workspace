@@ -15,8 +15,8 @@ export abstract class ResourcefulDayTableModel extends AbstractResourceDayTableM
     super(
       dayTableModel,
       resources,
-      dayTableModel.rowCnt, // rowCnt
-      dayTableModel.colCnt * resources.length, // colCnt
+      dayTableModel.rowCount, // rowCount
+      dayTableModel.colCount * resources.length, // colCount
     )
   }
 
@@ -27,14 +27,14 @@ export abstract class ResourcefulDayTableModel extends AbstractResourceDayTableM
   abstract computeColRanges(dateStartI: number, dateEndI: number, resourceI: number): SlicedCoordRange[]
 
   buildCells(): DayTableCell[][] {
-    let { rowCnt, dayTableModel, resources } = this
+    let { rowCount, dayTableModel, resources } = this
     let rows: DayTableCell[][] = []
-    let hasMajor = resources.length > 1 && dayTableModel.colCnt > 1
+    let hasMajor = resources.length > 1 && dayTableModel.colCount > 1
 
-    for (let row = 0; row < rowCnt; row += 1) {
+    for (let row = 0; row < rowCount; row += 1) {
       let rowCells: DayTableCell[] = []
 
-      for (let dateCol = 0; dateCol < dayTableModel.colCnt; dateCol += 1) {
+      for (let dateCol = 0; dateCol < dayTableModel.colCount; dateCol += 1) {
         for (let resourceCol = 0; resourceCol < resources.length; resourceCol += 1) {
           let resource = resources[resourceCol]
           let date = dayTableModel.cellRows[row][dateCol].date

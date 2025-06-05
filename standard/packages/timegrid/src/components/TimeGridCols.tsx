@@ -115,8 +115,8 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
     const { dateEnv, options, isRtl } = this.context
     const { snapDuration, snapsPerSlot } = this.processSlotOptions(options.slotDuration, options.snapDuration)
 
-    const colCnt = cells.length
-    const { col, left, right } = computeColFromPosition(positionLeft, elWidth, colWidth, colCnt, isRtl)
+    const colCount = cells.length
+    const { col, left, right } = computeColFromPosition(positionLeft, elWidth, colWidth, colCount, isRtl)
     const cell = cells[col]
 
     const slatIndex = Math.floor(positionTop / slatHeight)

@@ -51,23 +51,23 @@ export class TimeGridView extends DateComponent<ViewProps> {
     const dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
       true, // datesRepDistinctDays
-      dayTableModel.colCnt,
+      dayTableModel.colCount,
     )
 
     return (
       <NowTimer unit={options.nowIndicator ? 'minute' : 'day' /* hacky */}>
         {(nowDate: DateMarker, todayRange: DateRange) => {
-          const colCnt = dayTableModel.cellRows[0].length
+          const colCount = dayTableModel.cellRows[0].length
           const nowIndicatorSeg = options.nowIndicator &&
             this.dayTimeColsSlicer.sliceNowDate(nowDate, dateProfile, options.nextDayThreshold, context, dayRanges)
 
-          const fgEventSegsByCol = this.splitFgEventSegs(timedProps.fgEventSegs, colCnt)
-          const bgEventSegsByCol = this.splitBgEventSegs(timedProps.bgEventSegs, colCnt)
-          const businessHourSegsByCol = this.splitBusinessHourSegs(timedProps.businessHourSegs, colCnt)
-          const nowIndicatorSegsByCol = this.splitNowIndicatorSegs(nowIndicatorSeg, colCnt)
-          const dateSelectionSegsByCol = this.splitDateSelectionSegs(timedProps.dateSelectionSegs, colCnt)
-          const eventDragByCol = this.splitEventDrag(timedProps.eventDrag, colCnt)
-          const eventResizeByCol = this.splitEventResize(timedProps.eventResize, colCnt)
+          const fgEventSegsByCol = this.splitFgEventSegs(timedProps.fgEventSegs, colCount)
+          const bgEventSegsByCol = this.splitBgEventSegs(timedProps.bgEventSegs, colCount)
+          const businessHourSegsByCol = this.splitBusinessHourSegs(timedProps.businessHourSegs, colCount)
+          const nowIndicatorSegsByCol = this.splitNowIndicatorSegs(nowIndicatorSeg, colCount)
+          const dateSelectionSegsByCol = this.splitDateSelectionSegs(timedProps.dateSelectionSegs, colCount)
+          const eventDragByCol = this.splitEventDrag(timedProps.eventDrag, colCount)
+          const eventResizeByCol = this.splitEventResize(timedProps.eventResize, colCount)
 
           const headerTiers = this.buildDateRowConfigs(
             dayTableModel.headerDates,

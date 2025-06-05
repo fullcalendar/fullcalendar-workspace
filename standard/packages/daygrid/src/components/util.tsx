@@ -19,7 +19,7 @@ export function buildDayTableModel(
   return new DayTableModel(daySeries, breakOnWeeks, dateEnv, majorUnit)
 }
 
-export function computeColWidth(colCnt: number, colMinWidth: number, viewportWidth: number | undefined): [
+export function computeColWidth(colCount: number, colMinWidth: number, viewportWidth: number | undefined): [
   canvasWidth: number | undefined, // does NOT include scrollbar gutter
   colWidth: number | undefined,
 ] {
@@ -27,10 +27,10 @@ export function computeColWidth(colCnt: number, colMinWidth: number, viewportWid
     return [undefined, undefined]
   }
 
-  const colTempWidth = viewportWidth / colCnt
+  const colTempWidth = viewportWidth / colCount
 
   if (colTempWidth < colMinWidth) {
-    return [colMinWidth * colCnt, colMinWidth]
+    return [colMinWidth * colCount, colMinWidth]
   }
 
   return [viewportWidth, undefined]
@@ -74,7 +74,7 @@ FYI, `width` is not dependable for aligning completely to farside
 export function computeHorizontalsFromSeg(
   seg: SlicedCoordRange,
   colWidth: number | undefined,
-  colCnt: number,
+  colCount: number,
   isRtl: boolean,
 ): {
   left: CssDimValue | undefined,
@@ -85,9 +85,9 @@ export function computeHorizontalsFromSeg(
 
   if (colWidth != null) {
     fromStart = seg.start * colWidth
-    fromEnd = (colCnt - seg.end) * colWidth
+    fromEnd = (colCount - seg.end) * colWidth
   } else {
-    const colWidthFrac = 1 / colCnt
+    const colWidthFrac = 1 / colCount
     fromStart = fracToCssDim(seg.start * colWidthFrac)
     fromEnd = fracToCssDim(1 - seg.end * colWidthFrac)
   }
@@ -103,16 +103,16 @@ export function computeColFromPosition(
   positionLeft: number,
   elWidth: number,
   colWidth: number | undefined,
-  colCnt: number,
+  colCount: number,
   isRtl: boolean,
 ): {
   col: number,
   left: number,
   right: number,
 } {
-  const realColWidth = colWidth != null ? colWidth : elWidth / colCnt
+  const realColWidth = colWidth != null ? colWidth : elWidth / colCount
   const colFromLeft = Math.floor(positionLeft / realColWidth)
-  const col = isRtl ? (colCnt - colFromLeft - 1) : colFromLeft
+  const col = isRtl ? (colCount - colFromLeft - 1) : colFromLeft
   const left = colFromLeft * realColWidth
   const right = left + realColWidth
 

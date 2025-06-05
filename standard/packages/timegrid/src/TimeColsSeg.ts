@@ -16,11 +16,11 @@ export type TimeGridCoordRange = TimeGridRange & CoordRange
 TODO: more DRY with daygrid?
 can be given null/undefined!
 */
-export function organizeSegsByCol<S extends TimeGridRange>(segs: S[] | null, colCnt: number) {
+export function organizeSegsByCol<S extends TimeGridRange>(segs: S[] | null, colCount: number) {
   let segsByCol: S[][] = []
   let i
 
-  for (i = 0; i < colCnt; i += 1) {
+  for (i = 0; i < colCount; i += 1) {
     segsByCol.push([])
   }
 
@@ -39,16 +39,16 @@ can be given null/undefined!
 */
 export function splitInteractionByCol(
   ui: EventSegUiInteractionState<TimeGridRange> | null,
-  colCnt: number,
+  colCount: number,
 ): EventSegUiInteractionState<TimeGridRange>[] {
   let byRow: EventSegUiInteractionState<TimeGridRange>[] = []
 
   if (!ui) {
-    for (let i = 0; i < colCnt; i += 1) {
+    for (let i = 0; i < colCount; i += 1) {
       byRow[i] = null
     }
   } else {
-    for (let i = 0; i < colCnt; i += 1) {
+    for (let i = 0; i < colCount; i += 1) {
       byRow[i] = {
         affectedInstances: ui.affectedInstances,
         isEvent: ui.isEvent,

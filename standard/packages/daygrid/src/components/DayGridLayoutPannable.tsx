@@ -82,8 +82,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     const stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
 
-    const colCnt = props.cellRows[0].length
-    const [canvasWidth, colWidth] = computeColWidth(colCnt, props.dayMinWidth, clientWidth)
+    const colCount = props.cellRows[0].length
+    const [canvasWidth, colWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)
 
     return (
       <Fragment>

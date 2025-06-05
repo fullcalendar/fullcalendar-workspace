@@ -12,8 +12,8 @@ export abstract class AbstractResourceDayTableModel {
   constructor(
     public dayTableModel: DayTableModel,
     public resources: Resource[],
-    public rowCnt: number,
-    public colCnt: number
+    public rowCount: number,
+    public colCount: number
   ) {
     this.resourceIndex = new ResourceIndex(resources)
     this.cells = this.buildCells()

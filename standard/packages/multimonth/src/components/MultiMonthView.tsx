@@ -124,7 +124,7 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                       titleFormat={monthTitleFormat}
                       dateProfile={monthDateProfile}
                       width={cssMonthWidth}
-                      colCnt={cols}
+                      colCount={cols}
                       // when single-col, kill X border on all items
                       borderlessX={cols === 1}
                       // when single-col, kill top border on all items

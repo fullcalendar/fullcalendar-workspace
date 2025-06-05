@@ -27,11 +27,11 @@ export class DayGridView extends BaseComponent<ViewProps> {
     const { dateProfile } = props
     const { options, dateEnv } = context
     const dayTableModel = this.buildDayTableModel(dateProfile, context.dateProfileGenerator, dateEnv)
-    const datesRepDistinctDays = dayTableModel.rowCnt === 1
+    const datesRepDistinctDays = dayTableModel.rowCount === 1
     const dayHeaderFormat = this.createDayHeaderFormatter(
       context.options.dayHeaderFormat,
       datesRepDistinctDays,
-      dayTableModel.colCnt,
+      dayTableModel.colCount,
     )
     const slicedProps = this.slicer.sliceProps(props, dateProfile, options.nextDayThreshold, context, dayTableModel)
 

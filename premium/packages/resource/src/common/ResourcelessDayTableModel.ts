@@ -9,8 +9,8 @@ export class ResourcelessDayTableModel extends AbstractResourceDayTableModel {
     super(
       dayTableModel,
       [], // resources
-      dayTableModel.rowCnt, // rowCnt
-      dayTableModel.colCnt, // colCnt
+      dayTableModel.rowCount, // rowCount
+      dayTableModel.colCount, // colCount
     )
   }
 

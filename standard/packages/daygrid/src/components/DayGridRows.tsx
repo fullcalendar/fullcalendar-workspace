@@ -74,22 +74,22 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   render() {
     let { props, context, rowHeightRefMap } = this
     let { options } = context
-    let rowCnt = props.cellRows.length
-    let colCnt = props.cellRows[0].length
+    let rowCount = props.cellRows.length
+    let colCount = props.cellRows[0].length
 
-    let fgEventSegsByRow = this.splitFgEventSegs(props.fgEventSegs, rowCnt)
-    let bgEventSegsByRow = this.splitBgEventSegs(props.bgEventSegs, rowCnt)
-    let businessHourSegsByRow = this.splitBusinessHourSegs(props.businessHourSegs, rowCnt)
-    let dateSelectionSegsByRow = this.splitDateSelectionSegs(props.dateSelectionSegs, rowCnt)
-    let eventDragByRow = this.splitEventDrag(props.eventDrag, rowCnt)
-    let eventResizeByRow = this.splitEventResize(props.eventResize, rowCnt)
+    let fgEventSegsByRow = this.splitFgEventSegs(props.fgEventSegs, rowCount)
+    let bgEventSegsByRow = this.splitBgEventSegs(props.bgEventSegs, rowCount)
+    let businessHourSegsByRow = this.splitBusinessHourSegs(props.businessHourSegs, rowCount)
+    let dateSelectionSegsByRow = this.splitDateSelectionSegs(props.dateSelectionSegs, rowCount)
+    let eventDragByRow = this.splitEventDrag(props.eventDrag, rowCount)
+    let eventResizeByRow = this.splitEventResize(props.eventResize, rowCount)
 
     let isHeightAuto = getIsHeightAuto(options)
     let rowHeightsRedistribute = !props.forPrint && !isHeightAuto
 
     let rowBasis = computeRowBasis(
       props.visibleWidth,
-      rowCnt,
+      rowCount,
       isHeightAuto,
       options,
     )
@@ -113,16 +113,16 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cells={cells}
-            cellIsCompact={props.visibleWidth / colCnt <= options.dayCompactWidth}
-            showDayNumbers={rowCnt > 1}
-            showWeekNumbers={rowCnt > 1 && options.weekNumbers}
+            cellIsCompact={props.visibleWidth / colCount <= options.dayCompactWidth}
+            showDayNumbers={rowCount > 1}
+            showWeekNumbers={rowCount > 1 && options.weekNumbers}
             forPrint={props.forPrint}
 
             // if not auto-height, distribute height of container somewhat evently to rows
             className={joinClassNames(
               rowHeightsRedistribute && classNames.grow,
-              rowCnt > 1 && classNames.breakInsideAvoid, // don't avoid breaks for single tall row
-              row < rowCnt - 1 ? classNames.borderOnlyB : classNames.borderNone,
+              rowCount > 1 && classNames.breakInsideAvoid, // don't avoid breaks for single tall row
+              row < rowCount - 1 ? classNames.borderOnlyB : classNames.borderNone,
             )}
 
             // content
@@ -167,12 +167,12 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   queryHit(positionLeft: number, positionTop: number, elWidth: number): Hit {
     const { props, context } = this
 
-    const colCnt = props.cellRows[0].length
+    const colCount = props.cellRows[0].length
     const { col, left, right } = computeColFromPosition(
       positionLeft,
       elWidth,
       props.colWidth,
-      colCnt,
+      colCount,
       context.isRtl
     )
     const { row, top, bottom } = computeRowFromPosition(
@@ -220,7 +220,7 @@ which yields value based on natural height of events
 */
 export function computeRowBasis(
   visibleWidth: number | undefined, // should INCLUDE any scrollbar width to avoid oscillation
-  rowCnt: number,
+  rowCount: number,
   isHeightAuto: boolean,
   options: ViewOptionsRefined,
 ): number {
@@ -231,7 +231,7 @@ export function computeRowBasis(
 
     // don't give minHeight when single-month non-auto-height
     // TODO: better way to detect this with DateProfile?
-    return (rowCnt > 6 || isHeightAuto) ? rowBasis : 0
+    return (rowCount > 6 || isHeightAuto) ? rowBasis : 0
   }
 
   return 0

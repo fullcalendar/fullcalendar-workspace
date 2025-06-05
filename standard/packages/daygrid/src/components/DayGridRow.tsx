@@ -262,7 +262,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const { isRtl } = context
     const { colWidth, eventSelection } = props
 
-    const colCnt = props.cells.length
+    const colCount = props.cells.length
     const defaultDisplayEventEnd = props.cells.length === 1
     const nodes: VNode[] = []
 
@@ -275,7 +275,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         continue
       }
 
-      const { left, right } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
+      const { left, right } = computeHorizontalsFromSeg(seg, colWidth, colCount, isRtl)
       const localTop = segTops.get(standinFor ? getEventPartKey(standinFor) : key) ?? (isMirror ? 0 : undefined)
       const top = headerHeight != null && localTop != null
         ? headerHeight + localTop
@@ -332,12 +332,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const { isRtl } = context
     const { todayRange, colWidth } = props
 
-    const colCnt = props.cells.length
+    const colCount = props.cells.length
     const nodes: VNode[] = []
 
     for (const seg of segs) {
       const key = buildEventRangeKey(seg.eventRange) // TODO: use different type of key than fg!?
-      const { left, right } = computeHorizontalsFromSeg(seg, colWidth, colCnt, isRtl)
+      const { left, right } = computeHorizontalsFromSeg(seg, colWidth, colCount, isRtl)
       const isVisible = !seg.standinFor
 
       nodes.push(

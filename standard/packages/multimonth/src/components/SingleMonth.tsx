@@ -10,7 +10,7 @@ export interface SingleMonthProps extends ViewProps {
   isoDateStr?: string
   titleFormat: DateFormatter
   width?: CssDimValue
-  colCnt?: number
+  colCount?: number
   borderlessBottom: boolean
 
   // for min-height and compactness
@@ -53,7 +53,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const dayHeaderFormat = this.createDayHeaderFormatter(
       options.dayHeaderFormat,
       false, // datesRepDistinctDays
-      dayTableModel.colCnt,
+      dayTableModel.colCount,
     )
     const rowConfig = this.buildDateRowConfig(
       dayTableModel.headerDates,
@@ -64,7 +64,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
       context,
     )
 
-    const isTitleAndHeaderSticky = !forPrint && props.colCnt === 1
+    const isTitleAndHeaderSticky = !forPrint && props.colCount === 1
     const isAspectRatio = !forPrint || props.hasLateralSiblings
     const invAspectRatio = 1 / options.aspectRatio
 
@@ -91,12 +91,12 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           data-date={props.isoDateStr}
           className={joinClassNames(
             generateClassName(options.singleMonthClassNames, {
-              colCnt: props.colCnt,
+              colCount: props.colCount,
             }),
             props.borderlessX && classNames.borderlessX,
             props.borderlessTop && classNames.borderlessTop,
             props.borderlessBottom && classNames.borderlessBottom,
-            props.colCnt === 1 && classNames.noMargin,
+            props.colCount === 1 && classNames.noMargin,
             classNames.flexCol,
             props.hasLateralSiblings && classNames.breakInsideAvoid,
           )}

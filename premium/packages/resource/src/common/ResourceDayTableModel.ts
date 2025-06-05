@@ -5,11 +5,11 @@ resources over dates
 */
 export class ResourceDayTableModel extends ResourcefulDayTableModel {
   computeCol(dateI: number, resourceI: number) {
-    return resourceI * this.dayTableModel.colCnt + dateI
+    return resourceI * this.dayTableModel.colCount + dateI
   }
 
   colIsMajor(col: number): boolean {
-    const dayCnt = this.dayTableModel.colCnt
+    const dayCnt = this.dayTableModel.colCount
     return dayCnt > 1 && !(col % dayCnt)
   }
 

@@ -306,7 +306,7 @@ export default createPlugin({
     Also leverages viewClassNames and viewHeaderClassNames
     */
     singleMonthClassNames: (arg) => [
-      (arg.colCnt || 0) > 1 && 'm-4 text-xs',
+      (arg.colCount || 0) > 1 && 'm-4 text-xs',
     ],
     singleMonthTitleClassNames: (arg) => [
       'text-center font-bold text-lg',
