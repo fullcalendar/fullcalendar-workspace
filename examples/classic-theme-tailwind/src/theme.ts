@@ -54,8 +54,6 @@ const axisInnerClassName = 'text-end min-h-[1.5em]' // align text right (aka end
 // -------------------------------------------------------------------------------------------------
 
 const dayGridOverrides: CalendarOptions = {
-  dayCellBottomClassNames: 'min-h-[1px]',
-
   listItemEventClassNames: (arg) => [
     'mt-px me-0.5 p-px rounded-sm items-center',
     (arg.isSelected && arg.isDragging) && 'shadow-sm',
@@ -69,8 +67,6 @@ const dayGridOverrides: CalendarOptions = {
   listItemEventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink p-px font-bold',
 
   rowEventClassNames: (arg) => [
-    'mt-px', // TODO: move towards making all event margins be on bottom
-      // the reason we do this is hack for spacing from dayCellTop
     arg.isStart && 'ms-0.5',
     arg.isEnd && 'me-0.5',
   ],
@@ -224,6 +220,7 @@ export default createPlugin({
     // Block Event > Row Event
     // ---------------------------------------------------------------------------------------------
 
+    rowEventClassNames: 'mb-px',
     rowEventBeforeClassNames: (arg) => arg.isStartResizable && [
       arg.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
       '-start-1',
@@ -294,6 +291,7 @@ export default createPlugin({
     ],
 
     dayCellTopClassNames: (arg) => [
+      'min-h-[2px]', // effectively 2px top padding
       'flex flex-row-reverse relative', // relative for z-index above bg events
       arg.isOther && 'opacity-30',
     ],
@@ -301,6 +299,8 @@ export default createPlugin({
       'p-1',
       arg.isMonthStart && 'text-base font-bold',
     ],
+    // effectively 2px bottom padding because events have 1px margin-bottom
+    dayCellBottomClassNames: 'min-h-[1px]',
 
     // MultiMonth
     // ---------------------------------------------------------------------------------------------
@@ -414,7 +414,7 @@ export default createPlugin({
       nowIndicatorLineClassNames: 'border-t border-red-500', // put color on master setting?
     },
     timeline: {
-      rowEventClassNames: 'mb-px me-px items-center', // for aligning continuation arrows
+      rowEventClassNames: 'me-px items-center', // for aligning continuation arrows
       rowEventBeforeClassNames: (arg) => !arg.isStartResizable && [
         // continuation arrow
         'relative z-10 mx-px border-y-[5px] border-y-transparent border-e-[5px] border-e-black opacity-50',

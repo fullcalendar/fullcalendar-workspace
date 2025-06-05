@@ -105,8 +105,8 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       isMajor: props.isMajor,
       isCompact: props.isCompact,
       dateMeta: dateMeta,
-      isMonthStart: isMonthStart || false,
-      showDayNumber: props.showDayNumber,
+      hasLabel: props.showDayNumber,
+      hasMonthLabel: isMonthStart,
       renderProps: props.renderProps,
       viewApi: context.viewApi,
       dateEnv: context.dateEnv,
@@ -159,12 +159,11 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       >
         {(InnerContent) => (
           <Fragment>
-            {props.showDayNumber && (
-              // TODO: add wrapper div around this for measurement
-              // because we should allow the top-div to have bottom margin
-              <div
-                className={generateClassName(options.dayCellTopClassNames, renderProps)}
-              >
+            <div
+              className={generateClassName(options.dayCellTopClassNames, renderProps)}
+              // TODO: prevent margins!? for measurements
+            >
+              {props.showDayNumber && (
                 <InnerContent // the dayCellTopContent
                   tag='div'
                   attrs={
@@ -174,8 +173,8 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                   }
                   className={generateClassName(options.dayCellTopInnerClassNames, renderProps)}
                 />
-              </div>
-            )}
+              )}
+            </div>
             <div
               className={joinClassNames(
                 classNames.dayGridDayBody,
@@ -186,7 +185,11 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               )}
               ref={this.handleBodyEl}
             >
-              <div style={{ height: props.fgHeight }}>
+              <div
+                className={generateClassName(options.dayCellInnerClassNames, renderProps)}
+                style={{ minHeight: props.fgHeight }}
+                // TODO: prevent margins/padding!?
+              >
                 {props.fg}
               </div>
               <DayGridMoreLink
@@ -280,15 +283,15 @@ interface DayCellRenderPropsInput {
   viewApi: ViewApi
   dayCellFormat: DateFormatter
   monthStartFormat: DateFormatter
-  isMonthStart: boolean // defaults to false
-  showDayNumber?: boolean // defaults to false
+  hasLabel: boolean
+  hasMonthLabel: boolean
   renderProps?: Dictionary // so can include a resource
 }
 
 function refineRenderProps(raw: DayCellRenderPropsInput): DayCellContentArg {
-  let { date, dateEnv, isMonthStart } = raw
-  let [text, textParts] = raw.showDayNumber
-    ? dateEnv.format(date, isMonthStart ? raw.monthStartFormat : raw.dayCellFormat)
+  let { date, dateEnv, hasLabel, hasMonthLabel } = raw
+  let [text, textParts] = hasLabel
+    ? dateEnv.format(date, hasMonthLabel ? raw.monthStartFormat : raw.dayCellFormat)
     : ['', []]
 
   return {
@@ -298,7 +301,8 @@ function refineRenderProps(raw: DayCellRenderPropsInput): DayCellContentArg {
     textParts,
     isMajor: raw.isMajor,
     isCompact: raw.isCompact,
-    isMonthStart,
+    hasLabel,
+    hasMonthLabel,
     view: raw.viewApi,
   }
 }

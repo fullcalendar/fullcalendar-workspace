@@ -15,6 +15,8 @@ export interface DayCellContentArg extends DateMeta {
   date: DateMarker // localized
   isMajor: boolean
   isCompact: boolean
+  hasLabel: boolean
+  hasMonthLabel: boolean
   view: ViewApi
   text: string
   textParts: Intl.DateTimeFormatPart[]
