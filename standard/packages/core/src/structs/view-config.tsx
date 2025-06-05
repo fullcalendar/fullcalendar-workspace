@@ -69,8 +69,7 @@ function createViewHookComponent(options: ViewOptions) {
           tag="div"
           className={
             generateClassName(options.viewClassNames, {
-              // HACK
-              view: { type: context.viewSpec.type } as ViewApi,
+              view: context.viewApi,
             })
           }
           renderProps={{

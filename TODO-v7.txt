@@ -24,9 +24,6 @@ low-level todo:
   [rename] colCnt?
   don't have separate directionClassNames / mediaTypeClassNames / colorSchemeClassNames?
     just have it be root className with flags
-  fix createViewHookComponent HACKS
-    we're giving crap values to ppl who rely on custom view rendering
-    viewApi is in context. use it!
   in toolbars, remove left/right keys. force start/end keys (then add to changelog)
   [stickiness] theme should be responsible for moreLink stickiness (currently core does it)
     (because theme is already responsible for events stickiness)
