@@ -83,12 +83,15 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       this.registerInteractiveComponent,
       this.unregisterInteractiveComponent,
     )
+    let borderlessX = options.borderlessX ?? options.borderless // TODO: DRY
+
     return (
       <ViewContextType.Provider value={viewContext}>
         {toolbarConfig.header && (
           <Toolbar
             name='header'
             model={toolbarConfig.header}
+            borderlessX={borderlessX}
             titleId={this.viewTitleId}
             {...toolbarProps}
           />
@@ -121,6 +124,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
           <Toolbar
             name='footer'
             model={toolbarConfig.footer}
+            borderlessX={borderlessX}
             {...toolbarProps}
           />
         )}
@@ -172,7 +176,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
   renderView(className: string, title: string) {
     let { props } = this
     let { pluginHooks, viewSpec, toolbarConfig, options } = props
-    let { outerBorder } = options
+    let { borderless } = options
 
     let viewProps: ViewProps = {
       className,
@@ -187,10 +191,9 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       forPrint: props.forPrint,
       labelId: toolbarConfig.header && toolbarConfig.header.hasTitle ? this.viewTitleId : undefined,
       labelStr: toolbarConfig.header && toolbarConfig.header.hasTitle ? undefined : title,
-
-      borderX: (options.outerBorderX ?? outerBorder),
-      borderTop: toolbarConfig.header ? true : (options.outerBorderTop ?? outerBorder),
-      borderBottom: toolbarConfig.footer ? true : (options.outerBorderBottom ?? outerBorder),
+      borderlessX: options.borderlessX ?? borderless,
+      borderlessTop: toolbarConfig.header ? false : (options.borderlessTop ?? borderless),
+      borderlessBottom: toolbarConfig.footer ? false :(options.borderlessBottom ?? borderless),
     }
 
     let transformers = this.buildViewPropTransformers(pluginHooks.viewPropsTransformers)

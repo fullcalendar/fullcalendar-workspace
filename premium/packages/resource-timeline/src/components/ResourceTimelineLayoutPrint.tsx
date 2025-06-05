@@ -73,9 +73,9 @@ export interface ResourceTimelineLayoutPrintProps {
   slotWidth: number | undefined
   indentWidth: number | undefined
 
-  borderX: boolean
-  borderTop: boolean
-  borderBottom: boolean
+  borderlessX: boolean
+  borderlessTop: boolean
+  borderlessBottom: boolean
 }
 
 const BG_HEIGHT = 100000
@@ -133,15 +133,15 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           props.className,
           classNames.printRoot,
         )}
-        borderX={props.borderX}
-        borderTop={props.borderTop}
-        borderBottom={props.borderBottom}
+        borderlessX={props.borderlessX}
+        borderlessTop={props.borderlessTop}
+        borderlessBottom={props.borderlessBottom}
       >
         <div className={joinClassNames(
           generateClassName(options.viewHeaderClassNames, {
-            borderX: props.borderX,
             isSticky: false,
           }),
+          props.borderlessX && classNames.borderlessX,
           classNames.printHeader,
         )}>
           <div className={classNames.flexRow}>
@@ -252,9 +252,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         <div
           role='rowgroup'
           className={joinClassNames(
-            generateClassName(options.viewBodyClassNames, {
-              borderX: props.borderX,
-            }),
+            generateClassName(options.viewBodyClassNames, {}),
+            props.borderlessX && classNames.borderlessX,
             classNames.rel,
             classNames.crop,
           )}

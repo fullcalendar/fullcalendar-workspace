@@ -133,18 +133,18 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 !props.forPrint && classNames.flexCol,
                 props.className,
               )}
-              borderX={props.borderX}
-              borderTop={props.borderTop}
-              borderBottom={props.borderBottom}
+              borderlessX={props.borderlessX}
+              borderlessTop={props.borderlessTop}
+              borderlessBottom={props.borderlessBottom}
             >
 
               {/* HEADER
               ---------------------------------------------------------------------------------- */}
               <div className={joinClassNames(
                 generateClassName(options.viewHeaderClassNames, {
-                  borderX: props.borderX,
                   isSticky: stickyHeaderDates,
                 }),
+                props.borderlessX && classNames.borderlessX,
                 stickyHeaderDates && classNames.tableHeaderSticky,
               )}>
                 <Scroller
@@ -211,9 +211,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   props.forPrint // prevents blank space in print-view on Safari
                 }
                 className={joinClassNames(
-                  generateClassName(options.viewBodyClassNames, {
-                    borderX: props.borderX,
-                  }),
+                  generateClassName(options.viewBodyClassNames, {}),
+                  props.borderlessX && classNames.borderlessX,
                   classNames.flexCol,
                   verticalScrolling && classNames.liquid,
                 )}

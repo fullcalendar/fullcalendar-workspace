@@ -44,9 +44,9 @@ export interface TimeGridLayoutProps {
   // universal content
   eventSelection: string
 
-  borderX: boolean
-  borderTop: boolean
-  borderBottom: boolean
+  borderlessX: boolean
+  borderlessTop: boolean
+  borderlessBottom: boolean
 }
 
 interface TimeScroll {
@@ -120,7 +120,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
       timeScrollState: this.scrollState,
       slatHeightRef: this.handleSlatHeight,
 
-      borderX: props.borderX,
+      borderlessX: props.borderlessX,
     }
 
     return (
@@ -142,9 +142,9 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
           !props.forPrint && classNames.flexCol,
         )}
         viewSpec={context.viewSpec}
-        borderX={props.borderX}
-        borderTop={props.borderTop}
-        borderBottom={props.borderBottom}
+        borderlessX={props.borderlessX}
+        borderlessTop={props.borderlessTop}
+        borderlessBottom={props.borderlessBottom}
       >
         {dayMinWidth ? (
           <TimeGridLayoutPannable

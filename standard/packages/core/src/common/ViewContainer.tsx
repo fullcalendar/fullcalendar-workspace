@@ -5,21 +5,20 @@ import { BaseComponent } from '../vdom-util.js'
 import { ViewApi } from '../api/ViewApi.js'
 import { ContentContainer } from '../content-inject/ContentContainer.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
+import { joinClassNames } from '../util/html.js'
+import classNames from '../internal-classnames.js'
 
 export interface ViewContainerProps extends Partial<ElProps> {
   viewSpec: ViewSpec
   attrs?: any // TODO
   children: ComponentChildren
-  borderX: boolean
-  borderTop: boolean
-  borderBottom: boolean
+  borderlessX: boolean
+  borderlessTop: boolean
+  borderlessBottom: boolean
 }
 
 export interface ViewContentArg {
   view: ViewApi
-  borderX: boolean
-  borderTop: boolean
-  borderBottom: boolean
 }
 
 export type ViewMountArg = MountArg<ViewContentArg>
@@ -34,12 +33,14 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
         {...props}
         tag={props.tag || 'div'}
         attrs={props.attrs}
-        className={props.className}
+        className={joinClassNames(
+          props.className,
+          props.borderlessX && classNames.borderlessX,
+          props.borderlessTop && classNames.borderlessTop,
+          props.borderlessBottom && classNames.borderlessBottom,
+        )}
         renderProps={{
           view: context.viewApi,
-          borderX: props.borderX,
-          borderTop: props.borderTop,
-          borderBottom: props.borderBottom,
         }}
         classNameGenerator={options.viewClassNames}
         generatorName={undefined}

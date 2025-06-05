@@ -69,9 +69,9 @@ export class DayGridView extends BaseComponent<ViewProps> {
               eventResize={slicedProps.eventResize}
               eventSelection={slicedProps.eventSelection}
 
-              borderX={props.borderX}
-              borderTop={props.borderTop}
-              borderBottom={props.borderBottom}
+              borderlessX={props.borderlessX}
+              borderlessTop={props.borderlessTop}
+              borderlessBottom={props.borderlessBottom}
             />
           )
         }}

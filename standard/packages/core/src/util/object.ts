@@ -76,9 +76,8 @@ export function buildHashFromArray<Item, ItemRes>(
 
 export function isMaybePropsEqualDepth1(props0: any, props1: any) {
   if (
-    typeof props0 === 'object' &&
-    typeof props1 === 'object' &&
-    props0 && props1 // both non-null objects
+    typeof props0 === 'object' && props0 && // non-null object
+    typeof props1 === 'object' && props1 // non-null object
   ) {
     return isPropsEqualWithFunc(props0, props1, isPropsEqualShallow)
   }
@@ -212,10 +211,18 @@ export function mergePropsWithFunc(
 
 // Could return something falsy
 export function mergeMaybePropsShallow(props0: any, props1: any) {
-  if (!props0) {
-    return props1
+  if (
+    typeof props0 === 'object' && props0 && // non-null object
+    typeof props1 === 'object' && props1
+  ) {
+    return mergePropsShallow(props0, props1)
   }
-  return mergePropsShallow(props0, props1)
+
+  if (props1 === undefined) {
+    return props0
+  }
+
+  return props1
 }
 
 export function mergePropsShallow(props0: any, props1: any) {

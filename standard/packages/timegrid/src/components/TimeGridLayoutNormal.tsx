@@ -53,7 +53,7 @@ export interface TimeGridLayoutNormalProps {
   timeScrollerRef?: Ref<ScrollerInterface>
   slatHeightRef?: Ref<number>
 
-  borderX: boolean
+  borderlessX: boolean
 }
 
 interface TimeGridLayoutState {
@@ -138,9 +138,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             role='rowgroup'
             className={joinClassNames(
               generateClassName(options.viewHeaderClassNames, {
-                borderX: props.borderX,
                 isSticky: stickyHeaderDates,
               }),
+              props.borderlessX && classNames.borderlessX,
               // see note in TimeGridLayout about why we don't do classNames.printHeader
               classNames.flexCol,
               stickyHeaderDates && classNames.tableHeaderSticky,
@@ -201,9 +201,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
         <div // the "body"
           role='rowgroup'
           className={joinClassNames(
-            generateClassName(options.viewBodyClassNames, {
-              borderX: props.borderX,
-            }),
+            generateClassName(options.viewBodyClassNames, {}),
+            props.borderlessX && classNames.borderlessX,
             classNames.flexCol,
             verticalScrolling && classNames.liquid,
           )}

@@ -9,13 +9,6 @@ ASAP
 ----
 
 high-level todo:
-  borderless system (see recent notes)
-    check multimonth at end
-    redo singleMonth* settings
-    add tableClassNames/tableHeaderClassNames/tableBodyClassNames, remove viewHeaderClassNames/viewBodyClassNames
-    rethink singleMonthTitleClassNames/etc
-    address bugs:
-      bug: sticky header dates look terrible in timegrid/daygrid
   backport tailwind classic theme -> normal classic theme
     address bugs:
       bug: eventColor not working in resource-timeline-row-grouping.html
@@ -31,6 +24,7 @@ low-level todo:
   [rename] use isSticky instead of just sticky
   [rename] remove the 'Content' in names like ListHeaderContentArg, so just have ListHeaderArg and ListHeaderMountArg
   [rename] change all *ClassNames to singular *ClassName
+  [rename] colCnt?
   kill fillerXClassNames/fillerYClassNames... only use fillerClassNames, with border-supression
   don't have separate directionClassNames / mediaTypeClassNames / colorSchemeClassNames?
     just have it be root className with flags
@@ -46,7 +40,10 @@ low-level todo:
   resource-timeline expander icons should align to baseline
 
 visual theme cleanup
-  bug: multimonth: font sizes not small enough
+  bug: month-header cells too thick. other header cells too?
+  bug: multimonth:
+    font sizes not small enough
+    single-col month-title too thick
   bug: license-warning in darkmode looks crap
   bug: make weeknumber valign with daycell number (on multimonth too)
     also background-event title
@@ -143,6 +140,7 @@ changelog: +Event::color, +Event::contrastColor, -Event::backgroundColor, -Event
 changelog: eventColor (different behavior), +eventContrastColor, -eventBackgroundColor, -eventBorderColor, -eventTextColor
   gotcha: in order to use eventContrastColor, you MUST define eventColor. same for event object
 changelog: --fc-event-color, --fc-event-contrast-color, --fc-canvas-color
+changelog: borderless(X) also indents toolbar
 
 Docs
 ----

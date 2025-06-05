@@ -57,7 +57,7 @@ export interface TimeGridLayoutPannableProps {
   // dimensions
   dayMinWidth: number
 
-  borderX: boolean
+  borderlessX: boolean
 }
 
 interface TimeGridLayoutPannableState {
@@ -167,9 +167,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
           <div
             className={joinClassNames(
               generateClassName(options.viewHeaderClassNames, {
-                borderX: props.borderX,
                 isSticky: stickyHeaderDates,
               }),
+              props.borderlessX && classNames.borderlessX,
               // see note in TimeGridLayout about why we don't do classNames.printHeader
               stickyHeaderDates && classNames.tableHeaderSticky,
             )}
@@ -263,9 +263,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
         <div // the "body"
           role='rowgroup'
           className={joinClassNames(
-            generateClassName(options.viewBodyClassNames, {
-              borderX: props.borderX,
-            }),
+            generateClassName(options.viewBodyClassNames, {}),
+            props.borderlessX && classNames.borderlessX,
             classNames.flexCol,
             verticalScrolling && classNames.liquid,
           )}

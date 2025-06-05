@@ -55,7 +55,7 @@ export interface DayGridLayoutPannableProps {
   scrollerRef?: Ref<ScrollerInterface>
   rowHeightRefMap?: RefMap<string, number>
 
-  borderX: boolean
+  borderlessX: boolean
 }
 
 interface DayGridViewState {
@@ -90,9 +90,9 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
         {options.dayHeaders && (
           <div className={joinClassNames(
             generateClassName(options.viewHeaderClassNames, {
-              borderX: props.borderX,
               isSticky: stickyHeaderDates,
             }),
+            props.borderlessX && classNames.borderlessX,
             classNames.printHeader,
             stickyHeaderDates && classNames.tableHeaderSticky,
           )}>
@@ -128,9 +128,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             props.forPrint // prevents blank space in print-view on Safari
           }
           className={joinClassNames(
-            generateClassName(options.viewBodyClassNames, {
-              borderX: props.borderX,
-            }),
+            generateClassName(options.viewBodyClassNames, {}),
+            props.borderlessX && classNames.borderlessX,
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345
             !props.forPrint && classNames.flexCol,

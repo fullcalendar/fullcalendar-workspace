@@ -110,9 +110,9 @@ interface ResourceTimelineLayoutNormalProps {
   initialScroll?: TimeScroll & EntityScroll
   scrollRef?: Ref<TimeScroll & EntityScroll> // NOTE: only an object allowed
 
-  borderX: boolean
-  borderTop: boolean
-  borderBottom: boolean
+  borderlessX: boolean
+  borderlessTop: boolean
+  borderlessBottom: boolean
 }
 
 export interface EntityScroll {
@@ -310,9 +310,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           props.className,
           classNames.flexCol,
         )}
-        borderX={props.borderX}
-        borderTop={props.borderTop}
-        borderBottom={props.borderBottom}
+        borderlessX={props.borderlessX}
+        borderlessTop={props.borderlessTop}
+        borderlessBottom={props.borderlessBottom}
       >
         <ResizableTwoCol
           initialStartWidth={props.initialSpreadsheetWidth}
@@ -332,9 +332,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 role='rowgroup'
                 className={joinClassNames(
                   generateClassName(options.viewHeaderClassNames, {
-                    borderX: props.borderX,
                     isSticky: stickyHeaderDates,
                   }),
+                  props.borderlessX && classNames.borderlessX,
                   classNames.flexCol,
                   stickyHeaderDates && classNames.tableHeaderSticky,
                 )}
@@ -404,9 +404,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 horizontal
                 hideScrollbars
                 className={joinClassNames(
-                  generateClassName(options.viewBodyClassNames, {
-                    borderX: props.borderX,
-                  }),
+                  generateClassName(options.viewBodyClassNames, {}),
+                  props.borderlessX && classNames.borderlessX,
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart
                   verticalScrolling && classNames.liquid,
@@ -477,9 +476,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               ---------------------------------------------------------------------------- */}
               <div className={joinClassNames(
                 generateClassName(options.viewHeaderClassNames, {
-                  borderX: props.borderX,
                   isSticky: stickyHeaderDates,
                 }),
+                props.borderlessX && classNames.borderlessX,
                 stickyHeaderDates && classNames.tableHeaderSticky,
               )}>
                 <Scroller

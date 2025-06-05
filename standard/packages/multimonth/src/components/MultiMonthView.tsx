@@ -96,9 +96,9 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
               !props.forPrint && classNames.flexCol,
               props.className,
             )}
-            borderX={props.borderX}
-            borderTop={props.borderTop}
-            borderBottom={props.borderBottom}
+            borderlessX={props.borderlessX}
+            borderlessTop={props.borderlessTop}
+            borderlessBottom={props.borderlessBottom}
           >
             <Scroller
               vertical={verticalScrolling}
@@ -125,8 +125,12 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                       dateProfile={monthDateProfile}
                       width={cssMonthWidth}
                       colCnt={cols}
-                      isFirst={!i}
-                      isLast={i === monthDateProfiles.length - 1}
+                      // when single-col, kill X border on all items
+                      borderlessX={cols === 1}
+                      // when single-col, kill top border on all items
+                      borderlessTop={cols === 1}
+                      // when single-col, kill bottom border on last item
+                      borderlessBottom={cols === 1 && i === monthDateProfiles.length - 1}
                       visibleWidth={computedMonthWidth}
                       hasLateralSiblings={hasLateralSiblings}
                     />

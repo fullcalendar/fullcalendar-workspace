@@ -28,9 +28,6 @@ export {
   SingleMonthContentArg,
   SingleMonthMountArg,
   SingleMonthTitleArg,
-  SingleMonthTableArg,
-  SingleMonthTableHeaderArg,
-  SingleMonthTableBodyArg,
 } from './structs.js'
 
 export { MultiMonthOptions } from './options.js'

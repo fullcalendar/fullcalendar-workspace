@@ -155,6 +155,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         )}
         style={{
           'flex-basis': props.basis,
+          zIndex: 0, // contain child z-indexes
         }}
         ref={this.handleRootEl}
       >

@@ -104,7 +104,10 @@ export default createPlugin({
     // important to define these as CSS vars because things other than events leverage them
     classNames: 'gap-5 [--fc-event-color:green] [--fc-event-contrast-color:white]',
 
-    toolbarClassNames: 'gap-3',
+    toolbarClassNames: (arg) => [
+      'gap-3',
+      arg.borderlessX && 'px-3',
+    ],
     toolbarSectionClassNames: 'gap-3',
     toolbarTitleClassNames: 'text-2xl font-bold whitespace-nowrap',
     viewClassNames: borderClassName,
@@ -301,25 +304,18 @@ export default createPlugin({
 
     // MultiMonth
     // ---------------------------------------------------------------------------------------------
-
+    /*
+    Also leverages viewClassNames and viewHeaderClassNames
+    */
     singleMonthClassNames: (arg) => [
-      (arg.colCnt || 0) > 1 && 'm-4',
+      (arg.colCnt || 0) > 1 && 'm-4 text-xs',
     ],
     singleMonthTitleClassNames: (arg) => [
       'text-center font-bold text-lg',
-      (arg.colCnt || 0) > 1
-        ? 'pb-4' // multicol
-        : 'py-2', // singlecol
-      arg.sticky && `border-b ${borderColorClassNames} bg-(--fc-canvas-color)`,
-    ],
-    singleMonthTableClassNames: (arg) => [
-      borderColorClassNames,
-      (arg.colCnt || 0) > 1 && 'border-x text-xs',
-      ((arg.colCnt || 0) > 1 || !arg.isLast) && 'border-b',
-      !arg.stickyTitle && 'border-t',
-    ],
-    singleMonthTableHeaderClassNames: (arg) => [
-      arg.sticky && 'bg-(--fc-canvas-color)',
+      arg.isSticky
+        ? 'py-2' // singlecol
+        : 'pb-4', // multicol
+      arg.isSticky && `border-b ${borderColorClassNames} bg-(--fc-canvas-color)`,
     ],
 
     // TimeGrid
@@ -385,6 +381,7 @@ export default createPlugin({
     listDayHeaderClassNames: (arg) => [
       `border-b ${borderColorClassNames} flex flex-row justify-between font-bold relative`,
       arg.sticky && 'bg-(--fc-canvas-color)',
+      // TODO: explain why
     ],
     listDayHeaderBeforeClassNames: `${neutralBgClassNames} absolute inset-0`,
     listDayHeaderInnerClassNames: `${listViewItemClassName} relative`,

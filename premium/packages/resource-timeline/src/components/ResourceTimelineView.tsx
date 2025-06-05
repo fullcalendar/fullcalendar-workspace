@@ -161,9 +161,9 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
               slotWidth,
               timeCanvasWidth,
               spreadsheetColWidths,
-              borderX: props.borderX,
-              borderTop: props.borderTop,
-              borderBottom: props.borderBottom,
+              borderlessX: props.borderlessX,
+              borderlessTop: props.borderlessTop,
+              borderlessBottom: props.borderlessBottom,
             }
 
             return props.forPrint ? (

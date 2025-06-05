@@ -25,6 +25,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (!enablePremium) {
     calendar = new Calendar(calendarEl, {
+      // borderlessX: true,
+      // borderlessTop: true,
+      // borderless: true,
+
       /* Tailwind implementations should not use this setting */
       // colorScheme: 'dark',
 

@@ -12,7 +12,8 @@ export interface ToolbarModel {
 
 export interface ToolbarArg {
   name: string
-  // TODO: sticky
+  borderlessX: boolean
+  // TODO: isSticky
 }
 
 export interface ToolbarSectionArg {

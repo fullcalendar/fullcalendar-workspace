@@ -11,8 +11,7 @@ export interface SingleMonthProps extends ViewProps {
   titleFormat: DateFormatter
   width?: CssDimValue
   colCnt?: number
-  isFirst: boolean
-  isLast: boolean
+  borderlessBottom: boolean
 
   // for min-height and compactness
   // should INLCUDE scrollbars to avoid oscillation
@@ -81,12 +80,6 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
       ? rowHeightGuess + state.tableHeaderHeight + 1
       : undefined
 
-    const renderProps = this.renderProps = {
-      colCnt: props.colCnt,
-      isFirst: props.isFirst,
-      isLast: props.isLast,
-    }
-
     return (
       <div
         role='listitem'
@@ -97,7 +90,13 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           aria-labelledby={this.titleId}
           data-date={props.isoDateStr}
           className={joinClassNames(
-            generateClassName(options.singleMonthClassNames, renderProps),
+            generateClassName(options.singleMonthClassNames, {
+              colCnt: props.colCnt,
+            }),
+            props.borderlessX && classNames.borderlessX,
+            props.borderlessTop && classNames.borderlessTop,
+            props.borderlessBottom && classNames.borderlessBottom,
+            props.colCnt === 1 && classNames.noMargin,
             classNames.flexCol,
             props.hasLateralSiblings && classNames.breakInsideAvoid,
           )}
@@ -107,8 +106,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             ref={this.titleElRef}
             className={joinClassNames(
               generateClassName(options.singleMonthTitleClassNames, {
-                sticky: isTitleAndHeaderSticky,
-                colCnt: props.colCnt,
+                isSticky: isTitleAndHeaderSticky,
               }),
               isTitleAndHeaderSticky && classNames.stickyT,
             )}
@@ -126,12 +124,14 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               props.titleFormat,
             )}
           </div>
-          <div
+          <div // the daygrid table
             className={joinClassNames(
-              generateClassName(options.singleMonthTableClassNames, {
-                ...renderProps,
-                stickyTitle: isTitleAndHeaderSticky,
+              generateClassName(options.viewClassNames, { // a bit crazy to use this hook!
+                view: context.viewApi,
               }),
+              props.borderlessX && classNames.borderlessX,
+              isTitleAndHeaderSticky && classNames.borderlessTop,
+              props.borderlessBottom && classNames.borderlessBottom,
               classNames.flexCol,
             )}
             style={{
@@ -141,10 +141,10 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             <div
               ref={this.tableHeaderElRef}
               className={joinClassNames(
-                generateClassName(options.singleMonthTableHeaderClassNames, {
-                  sticky: isTitleAndHeaderSticky,
-                  colCnt: props.colCnt,
+                generateClassName(options.viewHeaderClassNames, {
+                  isSticky: isTitleAndHeaderSticky,
                 }),
+                props.borderlessX && classNames.borderlessX,
                 isTitleAndHeaderSticky && classNames.stickyT,
               )}
               style={{
@@ -163,9 +163,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             <div
               className={joinClassNames(
                 isAspectRatio && classNames.rel,
-                generateClassName(options.singleMonthTableBodyClassNames, {
-                  colCnt: props.colCnt,
-                })
+                generateClassName(options.viewBodyClassNames, {}),
+                props.borderlessX && classNames.borderlessX,
               )}
               style={{
                 zIndex: isTitleAndHeaderSticky ? 1 : undefined, // TODO: className?

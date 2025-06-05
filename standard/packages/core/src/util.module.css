@@ -187,6 +187,19 @@
   border-right: 0 !important;
 }
 
+.borderlessX {
+  border-left: 0 !important;
+  border-right: 0 !important;
+}
+
+.borderlessTop {
+  border-top: 0 !important;
+}
+
+.borderlessBottom {
+  border-bottom: 0 !important;
+}
+
 /* for matching cell start-border, assumed to be 1px, which can't be guaranteed */
 .ltrRoot .fakeBorderS {
   border-left: 1px solid transparent;

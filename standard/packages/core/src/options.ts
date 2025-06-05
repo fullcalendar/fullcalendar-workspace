@@ -369,10 +369,10 @@ export const BASE_OPTION_REFINERS = {
   popoverBodyClassNames: identity as Identity<ClassNamesInput>,
   dayCompactWidth: Number,
 
-  outerBorder: Boolean,
-  outerBorderX: Boolean,
-  outerBorderTop: Boolean,
-  outerBorderBottom: Boolean,
+  borderless: Boolean,
+  borderlessX: Boolean,
+  borderlessTop: Boolean,
+  borderlessBottom: Boolean,
 
   fillerClassNames: identity as Identity<ClassNamesInput>,
   fillerXClassNames: identity as Identity<ClassNamesInput>,
