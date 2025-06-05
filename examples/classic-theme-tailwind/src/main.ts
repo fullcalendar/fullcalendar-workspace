@@ -10,6 +10,7 @@ import multiMonthPlugin from '@fullcalendar/multimonth'
 import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
+import timelinePlugin from '@fullcalendar/timeline'
 import themePlugin from './theme.js'
 
 const enablePremium = false
@@ -25,9 +26,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   if (!enablePremium) {
     calendar = new Calendar(calendarEl, {
+      // borderless: true,
       // borderlessX: true,
       // borderlessTop: true,
-      // borderless: true,
+      // borderlessBottom: true,
 
       /* Tailwind implementations should not use this setting */
       // colorScheme: 'dark',
@@ -128,8 +130,14 @@ document.addEventListener('DOMContentLoaded', function() {
     })
   } else {
     calendar = new Calendar(calendarEl, {
+      // borderless: true,
+      // borderlessX: true,
+      // borderlessTop: true,
+      // borderlessBottom: true,
+
       plugins: [
         adaptivePlugin,
+        timelinePlugin,
         resourceTimelinePlugin,
         interactionPlugin,
         themePlugin,
