@@ -18,7 +18,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
 
     let renderProps: ListDayHeaderArg = {
       ...dateMeta,
-      sticky: stickyHeaderDates,
+      isSticky: stickyHeaderDates,
       view: viewApi,
     }
     let beforeClassNames: string = generateClassName(

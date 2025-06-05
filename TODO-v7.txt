@@ -21,7 +21,6 @@ high-level todo:
   have all rowEventClassName do margin-bottom (dayGrid does top to space away from dayCellTop)
 
 low-level todo:
-  [rename] use isSticky instead of just sticky
   [rename] remove the 'Content' in names like ListHeaderContentArg, so just have ListHeaderArg and ListHeaderMountArg
   [rename] change all *ClassNames to singular *ClassName
   [rename] colCnt?

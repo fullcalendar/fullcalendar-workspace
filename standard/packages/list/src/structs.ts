@@ -6,7 +6,7 @@ export interface ListDayArg extends DateMeta {
 }
 
 export interface ListDayHeaderArg extends ListDayArg {
-  sticky: boolean
+  isSticky: boolean
 }
 export type ListDayHeaderMountArg = MountArg<ListDayHeaderArg>
 

@@ -380,7 +380,7 @@ export default createPlugin({
     listDayClassNames: `not-last:border-b ${borderColorClassNames}`,
     listDayHeaderClassNames: (arg) => [
       `border-b ${borderColorClassNames} flex flex-row justify-between font-bold relative`,
-      arg.sticky && 'bg-(--fc-canvas-color)',
+      arg.isSticky && 'bg-(--fc-canvas-color)',
       // TODO: explain why
     ],
     listDayHeaderBeforeClassNames: `${neutralBgClassNames} absolute inset-0`,
