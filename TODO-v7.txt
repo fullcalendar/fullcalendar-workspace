@@ -28,7 +28,6 @@ low-level todo:
     we're giving crap values to ppl who rely on custom view rendering
     viewApi is in context. use it!
   in toolbars, remove left/right keys. force start/end keys (then add to changelog)
-  add !important to all rules in util.css?... YES. Nothing is meant to be overridden
   [stickiness] theme should be responsible for moreLink stickiness (currently core does it)
     (because theme is already responsible for events stickiness)
   remove view-specific hacks in util.module.css

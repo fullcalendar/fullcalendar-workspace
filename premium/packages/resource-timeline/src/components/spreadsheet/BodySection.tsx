@@ -95,11 +95,11 @@ export class BodySection extends BaseComponent<BodySectionProps> {
 
         <div
           role='rowgroup'
-          className={joinClassNames(classNames.fill, classNames.rel)}
+          className={classNames.fillY}
           style={
             context.isRtl // TODO: util for this?
-              ? { right: resourceX }
-              : { left: resourceX }
+              ? { left: 0, right: resourceX }
+              : { left: resourceX, right: 0 }
           }
         >
           {/* group rows */}

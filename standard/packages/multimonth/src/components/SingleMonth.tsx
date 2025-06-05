@@ -145,11 +145,11 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                   isSticky: isTitleAndHeaderSticky,
                 }),
                 props.borderlessX && classNames.borderlessX,
-                isTitleAndHeaderSticky && classNames.stickyT,
+                isTitleAndHeaderSticky && classNames.sticky,
               )}
               style={{
                 zIndex: isTitleAndHeaderSticky ? 2 : undefined, // TODO: className?
-                top: isTitleAndHeaderSticky ? state.titleHeight : undefined,
+                top: isTitleAndHeaderSticky ? state.titleHeight : 0,
                 marginBottom: headerStickyBottom,
               }}
             >

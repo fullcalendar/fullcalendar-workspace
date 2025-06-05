@@ -265,7 +265,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           <div
             aria-hidden
             className={joinClassNames(
-              classNames.fill,
+              classNames.fillY,
               classNames.crop,
             )}
             style={{
@@ -274,8 +274,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               height: BG_HEIGHT,
 
               // TODO: nicer way of doing this
-              left: context.isRtl ? undefined : props.spreadsheetWidth,
-              right: context.isRtl ? props.spreadsheetWidth : undefined,
+              left: context.isRtl ? 0 : props.spreadsheetWidth,
+              right: context.isRtl ? props.spreadsheetWidth : 0,
               // TODO: add the divider width too!!!
             }}
           >

@@ -110,8 +110,14 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
             className={joinClassNames(
               generateClassName(options.slotLabelInnerClassNames, renderProps),
               classNames.rigid,
-              props.isSticky && classNames.stickyS,
+              props.isSticky && classNames.sticky,
             )}
+            style={{
+              // initial values
+              // see componentDidMount for dynamic hack
+              left: 0,
+              right: 0,
+            }}
             elRef={this.innerElRef}
           />
         )}
