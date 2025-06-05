@@ -355,11 +355,12 @@ export const BASE_OPTION_REFINERS = {
   customRenderingReplaces: Boolean,
 
   // new
-  classNames: identity as Identity<ClassNamesInput>,
-  directionClassNames: identity as Identity<ClassNamesGenerator<string>>,
-  mediaTypeClassNames: identity as Identity<ClassNamesGenerator<string>>,
   colorScheme: identity as Identity<'auto' | 'light' | 'dark'>,
-  colorSchemeClassNames: identity as Identity<ClassNamesGenerator<'light' | 'dark'>>,
+  classNames: identity as Identity<ClassNamesGenerator<{
+    direction: 'ltr' | 'rtl'
+    mediaType: 'screen' | 'print'
+    colorScheme: 'light' | 'dark'
+  }>>,
   dayPopoverClassNames: identity as Identity<ClassNamesGenerator<DayPopoverContentArg>>,
   popoverClassNames: identity as Identity<ClassNamesInput>,
   popoverHeaderClassNames: identity as Identity<ClassNamesInput>,

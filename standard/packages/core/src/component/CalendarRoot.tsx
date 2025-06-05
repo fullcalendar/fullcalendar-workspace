@@ -37,10 +37,11 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
     let isDark = isExplicitlyDark || (colorScheme === 'auto' && state.isDarkDetected)
 
     let className = joinArrayishClassNames(
-      options.classNames,
-      generateClassName(options.directionClassNames, options.direction),
-      generateClassName(options.mediaTypeClassNames, forPrint ? 'print' : 'screen'),
-      generateClassName(options.colorSchemeClassNames, isDark ? 'dark' : 'light'),
+      generateClassName(options.classNames, {
+        direction: options.direction,
+        mediaType: forPrint ? 'print' : 'screen',
+        colorScheme: isDark ? 'dark' : 'light',
+      }),
       isExplicitlyLight && classNames.colorSchemeLight,
       isExplicitlyDark && classNames.colorSchemeDark,
       classNames.borderBoxRoot,

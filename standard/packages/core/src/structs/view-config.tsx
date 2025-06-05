@@ -7,7 +7,6 @@ import { ViewOptions } from '../options.js'
 import { Duration } from '../datelib/duration.js'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
 import { BaseComponent } from '../vdom-util.js'
-import { ViewApi } from '../api/ViewApi.js'
 
 /*
 A view-config represents information for either:

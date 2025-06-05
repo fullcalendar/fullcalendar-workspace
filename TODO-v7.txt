@@ -20,10 +20,9 @@ high-level todo:
 
 low-level todo:
   [rename] remove the 'Content' in names like ListHeaderContentArg, so just have ListHeaderArg and ListHeaderMountArg
+    check all inline types defined in options.ts, give real names
   [rename] change all *ClassNames to singular *ClassName
   [rename] colCnt?
-  don't have separate directionClassNames / mediaTypeClassNames / colorSchemeClassNames?
-    just have it be root className with flags
   in toolbars, remove left/right keys. force start/end keys (then add to changelog)
   [stickiness] theme should be responsible for moreLink stickiness (currently core does it)
     (because theme is already responsible for events stickiness)
