@@ -23,7 +23,6 @@ low-level todo:
     check all inline types defined in options.ts, give real names
   [rename] change all *ClassNames to singular *ClassName
     think more about just "whateverClass"
-  resource-timeline expander icons should align to baseline
 
 visual theme cleanup
   bug: multimonth:

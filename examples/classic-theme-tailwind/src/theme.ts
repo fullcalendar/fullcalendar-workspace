@@ -351,7 +351,7 @@ export default createPlugin({
     resourceAreaDividerClassNames: `pl-0.5 ${neutralBgClassNames} border-x ${borderColorClassNames}`,
 
     resourceAreaRowClassNames: borderClassName,
-    resourceIndentClassNames: 'me-1',
+    resourceIndentClassNames: 'me-1 relative -top-px',
     resourceExpanderClassNames: 'opacity-65',
     resourceExpanderContent: (arg) => arg.isExpanded
       ? svgIcons.minusSquare('w-[1em] h-[1em]')
