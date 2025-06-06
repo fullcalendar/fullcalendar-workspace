@@ -6,6 +6,7 @@ import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProps> {
   isSticky?: boolean
+  cellIsCompact: boolean
   className?: string
   height?: number
   colWidth?: number
@@ -39,7 +40,9 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
           classNames.contentBox,
           props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
         )}
-        style={{ height: props.height }}
+        style={{
+          height: props.height,
+        }}
       >
         {props.dataConfigs.map((dataConfig, cellI) => (
           <DayGridHeaderCell
@@ -50,6 +53,7 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
             borderStart={Boolean(cellI)}
             colWidth={props.colWidth}
             innerHeightRef={this.innerHeightRefMap.createRef(dataConfig.key)}
+            cellIsCompact={props.cellIsCompact}
           />
         ))}
       </div>

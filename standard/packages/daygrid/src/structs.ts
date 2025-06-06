@@ -3,6 +3,7 @@ import { DateMarker, DateMeta, MountArg } from '@fullcalendar/core/internal'
 
 export interface DayHeaderContentArg extends DateMeta {
   date: Date
+  isCompact: boolean
   isMajor: boolean
   text: string
   textParts: Intl.DateTimeFormatPart[]

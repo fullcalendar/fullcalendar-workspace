@@ -97,7 +97,7 @@ export default createPlugin({
     navLinkClassNames: 'fc-navlink', // TODO: fc-nav-link ?
     moreLinkClassNames: 'fc-more-link',
 
-    dayCompactWidth: 70,
+    dayCompactWidth: 75,
     dayPopoverClassNames: (arg) => [
       'fc-more-popover',
       ...getDayClassNames(arg),

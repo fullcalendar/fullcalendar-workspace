@@ -9,6 +9,7 @@ export interface WeekNumberContentArg {
   text: string
   textParts: DateTimeFormatPartWithWeek[]
   date: Date
+  isCompact: boolean
 }
 
 export type WeekNumberMountArg = MountArg<WeekNumberContentArg>

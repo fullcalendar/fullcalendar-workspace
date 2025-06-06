@@ -69,6 +69,10 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     const verticalScrollbars = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
 
+    const colCount = props.cellRows[0].length
+    const cellIsCompact = clientWidth != null &&
+      clientWidth / colCount <= options.dayCompactWidth
+
     return (
       <Fragment>
         {options.dayHeaders && (
@@ -83,6 +87,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             <div className={classNames.flexRow}>
               <DayGridHeader
                 headerTiers={props.headerTiers}
+                cellIsCompact={cellIsCompact}
               />
               {Boolean(endScrollbarWidth) && (
                 <div
@@ -131,6 +136,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
 
             // dimensions
             visibleWidth={totalWidth}
+            cellIsCompact={cellIsCompact}
 
             // refs
             rowHeightRefMap={props.rowHeightRefMap}

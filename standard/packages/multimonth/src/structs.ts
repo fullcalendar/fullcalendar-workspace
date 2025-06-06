@@ -8,5 +8,6 @@ export type SingleMonthMountArg = MountArg<SingleMonthContentArg>
 
 export interface SingleMonthTitleArg {
   isSticky: boolean
+  isCompact: boolean
 }
 

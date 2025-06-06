@@ -18,6 +18,7 @@ export interface BgEventProps {
   isPast: boolean
   isFuture: boolean
   isToday: boolean
+  isCompact?: boolean
 }
 
 export class BgEvent extends BaseComponent<BgEventProps> {
@@ -38,7 +39,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
     const eventApi = this.buildPublicEvent(context, eventRange.def, eventRange.instance)
     const subcontentRenderProps = {
       event: eventApi,
-      isCompact: false,
+      isCompact: props.isCompact || false,
     }
     const renderProps: EventContentArg = {
       event: eventApi,
@@ -59,7 +60,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       isDragging: false,
       isResizing: false,
       level: 0,
-      isCompact: false,
+      isCompact: props.isCompact || false,
       isSpacious: false,
       timeClassName: '', // never display time
       titleClassName: joinClassNames(

@@ -63,7 +63,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
     const { innerWidth } = state
 
     let cols: number | undefined
-    let computedMonthWidth: number | undefined
     let cssMonthWidth: CssDimValue | undefined
     let hasLateralSiblings = false
 
@@ -80,7 +79,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
         cols = Math.min(cols, 2)
       }
 
-      computedMonthWidth = innerWidth / cols
       cssMonthWidth = fracToCssDim(1 / cols)
       hasLateralSiblings = cols > 1
     }
@@ -131,7 +129,6 @@ export class MultiMonthView extends DateComponent<ViewProps, MultiMonthViewState
                       borderlessTop={cols === 1}
                       // when single-col, kill bottom border on last item
                       borderlessBottom={cols === 1 && i === monthDateProfiles.length - 1}
-                      visibleWidth={computedMonthWidth}
                       hasLateralSiblings={hasLateralSiblings}
                     />
                   )

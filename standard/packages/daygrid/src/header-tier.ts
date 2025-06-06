@@ -153,6 +153,7 @@ export function buildDateDataConfigs(
           text,
           textParts,
           isMajor,
+          isCompact: false, // HACK. gets overridden
           view: viewApi,
         }
         const isNavLink = options.navLinks && !dateMeta.isDisabled &&
@@ -197,6 +198,7 @@ export function buildDateDataConfigs(
           ...dateMeta,
           date: dowDates[dow],
           isMajor,
+          isCompact: false, // HACK. gets overridden
           view: viewApi,
           text,
           textParts,

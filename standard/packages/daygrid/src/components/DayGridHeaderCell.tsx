@@ -10,6 +10,7 @@ export interface DayGridHeaderCellProps<RenderProps> {
   borderStart: boolean
   colWidth?: number
   innerHeightRef?: Ref<number>
+  cellIsCompact: boolean
 }
 
 export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderCellProps<RenderProps>> {
@@ -22,6 +23,10 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
 
     // HACK
     const isDisabled = dataConfig.renderProps.isDisabled
+    const finalRenderProps = {
+      ...dataConfig.renderProps,
+      isCompact: props.cellIsCompact,
+    }
 
     return (
       <ContentContainer
@@ -45,7 +50,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
             ? props.colWidth * (dataConfig.colSpan || 1)
             : undefined,
         }}
-        renderProps={dataConfig.renderProps}
+        renderProps={finalRenderProps}
         generatorName={renderConfig.generatorName}
         customGenerator={renderConfig.customGenerator}
         defaultGenerator={renderText}
@@ -62,7 +67,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
             tag='div'
             attrs={dataConfig.innerAttrs}
             className={joinClassNames(
-              generateClassName(renderConfig.innerClassNameGenerator, dataConfig.renderProps),
+              generateClassName(renderConfig.innerClassNameGenerator, finalRenderProps),
               classNames.rigid,
               classNames.flexCol,
               props.isSticky && classNames.stickyS,

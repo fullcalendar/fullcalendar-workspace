@@ -7,6 +7,7 @@ import classNames from '@fullcalendar/core/internal-classnames'
 export interface DayGridHeaderProps {
   headerTiers: RowConfig<{ text: string, isDisabled: boolean }>[]
   className?: string
+  cellIsCompact: boolean
 
   // dimensions
   width?: number
@@ -38,6 +39,7 @@ export class DayGridHeader extends BaseComponent<DayGridHeaderProps> {
             role='row'
             borderBottom={tierNum < props.headerTiers.length - 1}
             colWidth={props.colWidth}
+            cellIsCompact={props.cellIsCompact}
           />
         ))}
       </div>

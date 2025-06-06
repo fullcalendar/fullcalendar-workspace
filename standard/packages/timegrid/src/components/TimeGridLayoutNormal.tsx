@@ -129,6 +129,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     // so we need to set explicit height on flex-row and all parents
     const forcedBodyHeight = absPrint ? totalSlatHeight : undefined
 
+    const colCount = props.cells.length
+    const cellIsCompact = clientWidth != null &&
+      clientWidth / colCount <= options.dayCompactWidth
+
     return (
       <Fragment>
         {/* HEADER
@@ -183,6 +187,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   {...rowConfig}
                   className={classNames.liquid}
                   borderBottom={tierNum < props.headerTiers.length - 1}
+                  cellIsCompact={cellIsCompact}
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div
@@ -227,7 +232,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   forPrint={forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
                   className={joinClassNames(classNames.liquidX, classNames.borderNone)}
-                  cellIsCompact={clientWidth / props.cells.length <= options.dayCompactWidth}
+                  cellIsCompact={cellIsCompact}
                   // content
                   fgEventSegs={props.fgEventSegs}
                   bgEventSegs={props.bgEventSegs}

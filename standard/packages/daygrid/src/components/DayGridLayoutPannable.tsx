@@ -84,6 +84,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
 
     const colCount = props.cellRows[0].length
     const [canvasWidth, colWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)
+    const cellIsCompact = totalWidth != null &&
+      totalWidth / colCount <= options.dayCompactWidth
 
     return (
       <Fragment>
@@ -106,6 +108,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
                 headerTiers={props.headerTiers}
                 colWidth={colWidth}
                 width={canvasWidth}
+                cellIsCompact={cellIsCompact}
               />
               {Boolean(endScrollbarWidth) && (
                 <div
@@ -161,6 +164,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             colWidth={colWidth}
             width={canvasWidth}
             visibleWidth={totalWidth}
+            cellIsCompact={cellIsCompact}
 
             // refs
             rowHeightRefMap={props.rowHeightRefMap}

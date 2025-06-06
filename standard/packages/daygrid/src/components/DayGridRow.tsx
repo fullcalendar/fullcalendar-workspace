@@ -162,7 +162,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         {props.showWeekNumbers && (
           <ContentContainer<WeekNumberContentArg>
             tag='div'
-            renderProps={this.buildWeekNumberRenderProps(weekDateMarker, context)}
+            renderProps={this.buildWeekNumberRenderProps(weekDateMarker, context, props.cellIsCompact)}
             generatorName="weekNumberContent"
             customGenerator={options.weekNumberContent}
             defaultGenerator={renderText}
@@ -311,6 +311,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             isResizing={isResizing}
             isMirror={isMirror}
             isSelected={instanceId === eventSelection}
+            isCompact={props.cellIsCompact}
             defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
             defaultDisplayEventEnd={defaultDisplayEventEnd}
             disableResizing={isListItem}
@@ -354,6 +355,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               eventRange={seg.eventRange}
               isStart={seg.isStart}
               isEnd={seg.isEnd}
+              isCompact={props.cellIsCompact}
               {...getEventRangeMeta(seg.eventRange, todayRange)}
             /> : (
               renderFill(fillType, context.options)
@@ -456,7 +458,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 // Utils
 // -------------------------------------------------------------------------------------------------
 
-function buildWeekNumberRenderProps(weekDateMarker: DateMarker, context: ViewContext) {
+function buildWeekNumberRenderProps(weekDateMarker: DateMarker, context: ViewContext, isCompact: boolean) {
   const { dateEnv, options } = context
   const weekNum = dateEnv.computeWeekNumber(weekDateMarker)
   const [weekNumText, weekNumTextParts] = dateEnv.format(
@@ -469,5 +471,6 @@ function buildWeekNumberRenderProps(weekDateMarker: DateMarker, context: ViewCon
     text: weekNumText,
     textParts: weekNumTextParts,
     date: weekDateZoned,
+    isCompact,
   }
 }

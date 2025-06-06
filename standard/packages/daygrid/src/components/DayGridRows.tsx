@@ -45,6 +45,7 @@ export interface DayGridRowsProps {
   colWidth?: number
   width?: number | string // a CSS value
   visibleWidth?: number // for row min-height
+  cellIsCompact: boolean
 
   // refs
   rowHeightRefMap?: RefMap<string, number>
@@ -75,7 +76,6 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
     let { props, context, rowHeightRefMap } = this
     let { options } = context
     let rowCount = props.cellRows.length
-    let colCount = props.cellRows[0].length
 
     let fgEventSegsByRow = this.splitFgEventSegs(props.fgEventSegs, rowCount)
     let bgEventSegsByRow = this.splitBgEventSegs(props.bgEventSegs, rowCount)
@@ -113,7 +113,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             dateProfile={props.dateProfile}
             todayRange={props.todayRange}
             cells={cells}
-            cellIsCompact={props.visibleWidth / colCount <= options.dayCompactWidth}
+            cellIsCompact={props.cellIsCompact}
             showDayNumbers={rowCount > 1}
             showWeekNumbers={rowCount > 1 && options.weekNumbers}
             forPrint={props.forPrint}

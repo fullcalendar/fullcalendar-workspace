@@ -1,5 +1,5 @@
 import { CssDimValue } from '@fullcalendar/core'
-import { DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, joinClassNames, memoize, ViewProps, watchHeight } from '@fullcalendar/core/internal'
+import { DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, joinClassNames, memoize, ViewProps, watchHeight, watchWidth } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow } from '@fullcalendar/daygrid/internal'
@@ -10,17 +10,13 @@ export interface SingleMonthProps extends ViewProps {
   isoDateStr?: string
   titleFormat: DateFormatter
   width?: CssDimValue
-  colCount?: number
+  colCount?: number // # of MONTHS, not day columns
   borderlessBottom: boolean
-
-  // for min-height and compactness
-  // should INLCUDE scrollbars to avoid oscillation
-  visibleWidth: number | undefined
-
   hasLateralSiblings: boolean // TODO: use lower-level indicator instead of referencing siblings
 }
 
 interface SingleMonthState {
+  gridWidth?: number
   titleHeight?: number
   tableHeaderHeight?: number
 }
@@ -32,6 +28,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   private buildDateRowConfig = memoize(buildDateRowConfig)
 
   // ref
+  private gridElRef = createRef<HTMLDivElement>()
   private titleElRef = createRef<HTMLDivElement>()
   private tableHeaderElRef = createRef<HTMLDivElement>()
 
@@ -40,6 +37,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   private titleId = getUniqueDomId()
   private rootEl?: HTMLElement
   private renderProps?: SingleMonthContentArg
+  private disconnectGridWidth?: () => void
   private disconnectTitleHeight?: () => void
   private disconnectTableHeaderHeight?: () => void
 
@@ -68,8 +66,12 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const isAspectRatio = !forPrint || props.hasLateralSiblings
     const invAspectRatio = 1 / options.aspectRatio
 
-    const rowHeightGuess = props.visibleWidth != null
-      ? invAspectRatio * props.visibleWidth / 6
+    const cellColCnt = dayTableModel.cellRows[0].length
+    const cellIsCompact = state.gridWidth != null &&
+      (state.gridWidth / cellColCnt) <= options.dayCompactWidth
+
+    const rowHeightGuess = state.gridWidth != null
+      ? invAspectRatio * state.gridWidth / 6
       : undefined
 
     const headerStickyBottom = isTitleAndHeaderSticky
@@ -81,11 +83,12 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
       : undefined
 
     return (
-      <div
+      <div // TODO: move this to the parent component?
         role='listitem'
         style={{ width: props.width }}
       >
         <div
+          ref={this.gridElRef}
           role='grid'
           aria-labelledby={this.titleId}
           data-date={props.isoDateStr}
@@ -107,6 +110,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             className={joinClassNames(
               generateClassName(options.singleMonthTitleClassNames, {
                 isSticky: isTitleAndHeaderSticky,
+                isCompact: cellIsCompact,
               }),
               isTitleAndHeaderSticky && classNames.stickyT,
             )}
@@ -157,6 +161,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 {...rowConfig}
                 role='row'
                 borderBottom={false}
+                cellIsCompact={cellIsCompact}
               />
               <div className={joinArrayishClassNames(options.dayHeaderDividerClassNames)} />
             </div>
@@ -194,7 +199,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 eventSelection={slicedProps.eventSelection}
 
                 // dimensions
-                visibleWidth={props.visibleWidth}
+                visibleWidth={state.gridWidth}
+                cellIsCompact={cellIsCompact}
               />
             </div>
           </div>
@@ -217,10 +223,12 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   }
 
   componentDidMount(): void {
+    this.disconnectGridWidth = watchWidth(this.gridElRef.current, (width) => {
+      this.setState({ gridWidth: width })
+    })
     this.disconnectTitleHeight = watchHeight(this.titleElRef.current, (height) => {
       this.setState({ titleHeight: height })
     })
-
     this.disconnectTableHeaderHeight = watchHeight(this.tableHeaderElRef.current, (height) => {
       this.setState({ tableHeaderHeight: height })
     })
@@ -229,6 +237,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   componentWillUnmount(): void {
     const { options } = this.context
 
+    this.disconnectGridWidth()
     this.disconnectTitleHeight()
     this.disconnectTableHeaderHeight()
 

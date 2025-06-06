@@ -25,10 +25,6 @@ low-level todo:
     think more about just "whateverClass"
 
 visual theme cleanup
-  bug: multimonth:
-    single-col month-title too thick
-    font sizes not small enough
-      rethink all font sizes? don't have isCompact flags determine everything
   bug: make weeknumber valign with daycell number (on multimonth too)
     also background-event title
   bug: daygrid list-item events have rounded start too close to cell edge
@@ -386,6 +382,7 @@ punt: move cell border to flex-end
 punt: instead of position:relative/absolute an z-index:0,
   use isolation:isolate (well supported)
 punt: in toolbars, remove left/right keys. force start/end keys (then add to changelog)
+punt: rethink: isCompact vs isNarrow -- confusion for timegrid events
 
 Notes
 -----

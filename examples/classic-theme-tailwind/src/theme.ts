@@ -31,6 +31,8 @@ const blockTouchResizerClassName = `absolute z-20 h-2 w-2 rounded border border-
 const rowTouchResizerClassName = `${blockTouchResizerClassName} top-1/2 -mt-1`
 const columnTouchResizerClassName = `${blockTouchResizerClassName} left-1/2 -ml-1`
 
+const realSmallText = 'text-[0.85em]/[1.1]'
+
 function getSlotClassNames(arg: any) {
   return [
     borderClassName,
@@ -62,7 +64,10 @@ const dayGridOverrides: CalendarOptions = {
       : 'hover:bg-gray-500/20 focus:bg-gray-500/30',
   ],
   listItemEventColorClassNames: 'border-[4px] mx-1', // 8px diameter (border shows up in print)
-  listItemEventInnerClassNames: 'flex flex-row items-center text-xs',
+  listItemEventInnerClassNames: (arg) => [
+    'flex flex-row items-center',
+    arg.isCompact ? realSmallText : 'text-xs',
+  ],
   listItemEventTimeClassNames: 'whitespace-nowrap overflow-hidden flex-shrink-0 max-w-full p-px',
   listItemEventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink p-px font-bold',
 
@@ -76,18 +81,21 @@ const dayGridOverrides: CalendarOptions = {
   ],
 
   rowMoreLinkClassNames: (arg) => [
-    'mb-px text-xs p-0.5 rounded-sm mx-0.5',
+    'mb-px  p-0.5 rounded-sm mx-0.5',
     // TODO: this more-link manual positioning will go away with measurement refactor
     'relative max-w-full overflow-hidden whitespace-nowrap',
     'hover:bg-gray-500/20',
     arg.isCompact
-      ? 'border border-(--fc-event-color) p-px'
-      : 'self-start',
+      ? realSmallText + ' border border-(--fc-event-color) p-px'
+      : 'text-xs self-start',
   ],
 }
 
 const dayGridWeekNumberOverrides: CalendarOptions = {
-  weekNumberClassNames: `absolute z-20 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center ${neutralBgClassNames}`,
+  weekNumberClassNames: (arg) => [
+    arg.isCompact && realSmallText,
+    `absolute z-20 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center ${neutralBgClassNames}`
+  ],
   weekNumberInnerClassNames: 'opacity-60',
 }
 
@@ -166,7 +174,7 @@ export default createPlugin({
 
     navLinkClassNames: 'hover:underline',
 
-    dayCompactWidth: 70,
+    dayCompactWidth: 75,
 
     fillerClassNames: `opacity-50 ${borderClassName}`,
 
@@ -185,7 +193,10 @@ export default createPlugin({
     // ---------------------------------------------------------------------------------------------
 
     backgroundEventColorClassNames: 'bg-(--fc-event-color) brightness-150 opacity-15',
-    backgroundEventTitleClassNames: 'm-2 text-xs italic opacity-50',
+    backgroundEventTitleClassNames: (arg) => [
+      'm-2 italic opacity-50',
+      arg.isCompact ? realSmallText : 'text-xs',
+    ],
 
     // List-Item Event
     // ---------------------------------------------------------------------------------------------
@@ -234,7 +245,10 @@ export default createPlugin({
       !arg.isStart && 'print:border-s-0',
       !arg.isEnd && 'print:border-e-0',
     ],
-    rowEventInnerClassNames: 'flex-row items-center text-xs',
+    rowEventInnerClassNames: (arg) => [
+      'flex-row items-center',
+      arg.isCompact ? realSmallText : 'text-xs',
+    ],
     rowEventTimeClassNames: 'p-px font-bold',
     rowEventTitleClassNames: 'p-px',
 
@@ -261,9 +275,9 @@ export default createPlugin({
         ? 'flex-row gap-1 overflow-hidden' // one line
         : 'flex-col gap-px', // two lines
     ],
-    columnEventTimeClassNames: 'text-[0.9em]',
+    columnEventTimeClassNames: realSmallText,
     columnEventTitleClassNames: (arg) => [
-      arg.isCompact && 'text-[0.9em]',
+      arg.isCompact && realSmallText,
     ],
 
     // Day-Headers (DayGrid & MultiMonth & TimeGrid)
@@ -271,6 +285,7 @@ export default createPlugin({
 
     dayHeaderRowClassNames: borderClassName,
     dayHeaderClassNames: (arg) => [
+      arg.isCompact && realSmallText,
       borderClassName,
       arg.isDisabled && neutralBgClassNames,
     ],
@@ -278,7 +293,10 @@ export default createPlugin({
     dayHeaderDividerClassNames: ['border-t', borderColorClassNames],
 
     // for resource views only
-    resourceDayHeaderClassNames: borderClassName,
+    resourceDayHeaderClassNames: (arg) => [
+      arg.isCompact && realSmallText,
+      borderClassName,
+    ],
     resourceDayHeaderInnerClassNames: 'px-1 py-0.5', // TODO: make this a constant... standard inner padding!
 
     // Day-Cells (DayGrid & MultiMonth & TimeGrid "all-day" section)
@@ -292,6 +310,7 @@ export default createPlugin({
     ],
 
     dayCellTopClassNames: (arg) => [
+      arg.isCompact && realSmallText,
       'min-h-[2px]', // effectively 2px top padding
       'flex flex-row-reverse relative', // relative for z-index above bg events
       arg.isOther && 'opacity-30',
@@ -307,10 +326,11 @@ export default createPlugin({
     Also leverages viewClassNames and viewHeaderClassNames
     */
     singleMonthClassNames: (arg) => [
-      (arg.colCount || 0) > 1 && 'm-4 text-xs',
+      (arg.colCount || 0) > 1 && 'm-4', /* text-xs */
     ],
     singleMonthTitleClassNames: (arg) => [
-      'text-center font-bold text-lg',
+      'text-center font-bold',
+      arg.isCompact ? 'text-base' : 'text-lg',
       arg.isSticky
         ? 'py-2' // singlecol
         : 'pb-4', // multicol

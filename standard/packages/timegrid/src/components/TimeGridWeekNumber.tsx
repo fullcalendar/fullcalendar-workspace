@@ -60,6 +60,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
           text: weekText,
           textParts: weekTextParts,
           date: weekDateZoned,
+          isCompact: false,
         }}
         generatorName="weekNumberContent"
         customGenerator={options.weekNumberContent}

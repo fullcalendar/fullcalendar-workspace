@@ -7,5 +7,7 @@ export interface ResourceDayHeaderContentArg extends Partial<DateMeta> {
   resource: ResourceApi
   text: string
   view: ViewApi
+  isCompact: boolean
+  // TODO: what about isMajor?
 }
 export type ResourceDayHeaderMountArg = MountArg<ResourceDayHeaderContentArg>

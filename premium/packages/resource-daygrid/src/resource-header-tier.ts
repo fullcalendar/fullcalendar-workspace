@@ -163,6 +163,7 @@ function buildResourceDataConfigs(
         ...dateMeta,
         resource: resourceApi,
         isMajor: isMajorMod != null && !(i % isMajorMod),
+        isCompact: false, // HACK. gets overridden later
         text: resource.title || resourceApiId || '',
         view: context.viewApi,
       },
