@@ -1,14 +1,9 @@
 import {
-  BaseComponent, MoreLinkContainer,
-  DateProfile, DateRange, DateMarker, getEventRangeMeta,
-  EventRangeProps,
-  joinArrayishClassNames,
-  EventSegUiInteractionState,
+  BaseComponent, DateMarker, DateProfile, DateRange, EventRangeProps, EventSegUiInteractionState, getEventRangeMeta, MoreLinkContainer
 } from '@fullcalendar/core/internal'
-import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
-import { TimelineEvent } from './TimelineEvent.js'
 import { TimelineRange } from '../TimelineLaneSlicer.js'
+import { TimelineEvent } from './TimelineEvent.js'
 
 export interface TimelineLaneMoreLinkProps {
   dateProfile: DateProfile
@@ -27,12 +22,12 @@ export interface TimelineLaneMoreLinkProps {
 export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProps> {
   render() {
     let { props } = this
-    let { options } = this.context
     let { hiddenSegs, resourceId } = props
     let dateSpanProps = resourceId ? { resourceId } : {}
 
     return (
       <MoreLinkContainer
+        display='row'
         allDayDate={null}
         segs={hiddenSegs}
         hiddenSegs={hiddenSegs}
@@ -70,17 +65,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
             })}
           </Fragment>
         )}
-      >
-        {(InnerContent) => (
-          <InnerContent
-            tag='div'
-            className={joinArrayishClassNames(
-              options.moreLinkInnerClassNames,
-              classNames.stickyS,
-            )}
-          />
-        )}
-      </MoreLinkContainer>
+      />
     )
   }
 }

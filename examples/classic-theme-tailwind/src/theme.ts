@@ -55,7 +55,7 @@ const axisInnerClassName = 'text-end min-h-[1.5em]' // align text right (aka end
 
 const dayGridOverrides: CalendarOptions = {
   listItemEventClassNames: (arg) => [
-    'mt-px me-0.5 p-px rounded-sm items-center',
+    'mb-px me-0.5 p-px rounded-sm items-center',
     (arg.isSelected && arg.isDragging) && 'shadow-sm',
     arg.isSelected
       ? 'bg-gray-500/40'
@@ -75,8 +75,8 @@ const dayGridOverrides: CalendarOptions = {
     arg.isEnd && 'rounded-e-sm',
   ],
 
-  moreLinkClassNames: (arg) => [
-    'mt-px text-xs p-0.5 rounded-xs mx-0.5',
+  rowMoreLinkClassNames: (arg) => [
+    'mb-px text-xs p-0.5 rounded-sm mx-0.5',
     // TODO: this more-link manual positioning will go away with measurement refactor
     'relative max-w-full overflow-hidden whitespace-nowrap',
     'hover:bg-black/10',
@@ -403,8 +403,8 @@ export default createPlugin({
       allDayHeaderInnerClassNames: [axisInnerClassName, 'whitespace-pre px-1 py-0.5'],
       weekNumberClassNames: axisClassName,
       weekNumberInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
-      moreLinkClassNames: `mb-px rounded-xs text-xs outline outline-(--fc-canvas-color) bg-gray-300 dark:bg-gray-600`,
-      moreLinkInnerClassNames: 'px-0.5 py-1',
+      columnMoreLinkClassNames: `mb-px rounded-xs text-xs outline outline-(--fc-canvas-color) bg-gray-300 dark:bg-gray-600`,
+      columnMoreLinkInnerClassNames: 'px-0.5 py-1',
       slotLabelClassNames: [axisClassName, /* tick-marks = 'w-2 self-end' */],
       slotLabelInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
       slotLabelDividerClassNames: `border-l ${borderColorClassNames}`,
@@ -429,8 +429,8 @@ export default createPlugin({
         /* tick-marks = 'h-2 self-end justify-end', */
         'justify-center'
       ],
-      moreLinkClassNames: `flex flex-col items-start text-xs ${neutralBgClassNames} p-px me-px`,
-      moreLinkInnerClassNames: 'p-0.5',
+      rowMoreLinkClassNames: `flex flex-col items-start text-xs ${neutralBgClassNames} p-px me-px`,
+      rowMoreLinkInnerClassNames: 'p-0.5',
       slotLabelInnerClassNames: 'p-1',
       slotLabelDividerClassNames: `border-b ${borderColorClassNames}`,
       nowIndicatorLabelClassNames: 'top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-t-red-500',

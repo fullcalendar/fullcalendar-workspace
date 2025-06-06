@@ -12,7 +12,7 @@ import { ViewApi } from '../api/ViewApi.js'
 import { ViewContext, ViewContextType } from '../ViewContext.js'
 import { MorePopover } from './MorePopover.js'
 import { MountArg } from './render-hook.js'
-import { ContentContainer, InnerContainerFunc } from '../content-inject/ContentContainer.js'
+import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
 import { ElAttrsProps } from '../content-inject/ContentInjector.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
 import { EventRangeProps } from '../component-util/event-rendering.js'
@@ -30,9 +30,8 @@ export interface MoreLinkContainerProps extends Partial<ElAttrsProps> {
   alignParentTop?: string // for popover
   forceTimed?: boolean // for popover
   popoverContent: () => ComponentChild
-  defaultGenerator?: (renderProps: MoreLinkContentArg) => ComponentChild
   isCompact: boolean
-  children?: InnerContainerFunc<MoreLinkContentArg>
+  display: 'row' | 'column'
 }
 
 export interface MoreLinkContentArg {
@@ -93,7 +92,16 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   tag='div'
                   elRef={this.handleLinkEl}
                   className={joinClassNames(
+                    generateClassName( // will added to moreLinkClassNames
+                      props.display === 'row'
+                        ? options.rowMoreLinkClassNames // row
+                        : options.columnMoreLinkClassNames, // column
+                      renderProps
+                    ),
                     props.className,
+                    props.display === 'row'
+                      ? classNames.flexRow
+                      : classNames.flexCol,
                     classNames.internalMoreLink,
                     classNames.cursorPointer,
                   )}
@@ -110,11 +118,30 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   renderProps={renderProps}
                   generatorName="moreLinkContent"
                   customGenerator={options.moreLinkContent}
-                  defaultGenerator={props.defaultGenerator || renderMoreLinkInner}
+                  defaultGenerator={
+                    props.display === 'row'
+                      ? renderMoreLinkText // row
+                      : renderMoreLinkShortText // column
+                  }
                   classNameGenerator={options.moreLinkClassNames}
                   didMount={options.moreLinkDidMount}
                   willUnmount={options.moreLinkWillUnmount}
-                >{props.children}</ContentContainer>
+                >
+                  {(InnerContent) => (
+                    <InnerContent
+                      tag='div'
+                      className={joinClassNames(
+                        generateClassName(options.moreLinkInnerClassNames, renderProps),
+                        generateClassName(
+                          props.display === 'row'
+                            ? options.rowMoreLinkInnerClassNames // row
+                            : options.columnMoreLinkInnerClassNames, // column
+                          renderProps
+                        ),
+                      )}
+                    />
+                  )}
+                </ContentContainer>
               )}
               {state.isPopoverOpen && (
                 <MorePopover
@@ -211,8 +238,12 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
   }
 }
 
-function renderMoreLinkInner(props: MoreLinkContentArg) {
+function renderMoreLinkText(props: MoreLinkContentArg) {
   return props.text
+}
+
+function renderMoreLinkShortText(props: MoreLinkContentArg) {
+  return props.shortText
 }
 
 function computeRange(props: MoreLinkContainerProps): DateRange {

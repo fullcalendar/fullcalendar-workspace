@@ -1,9 +1,8 @@
-import { MoreLinkContentArg, CssDimValue } from '@fullcalendar/core'
+import { CssDimValue } from '@fullcalendar/core'
 import {
   MoreLinkContainer, BaseComponent,
   Dictionary, DateProfile, DateRange, DateMarker, EventSegUiInteractionState,
   EventRangeProps,
-  joinArrayishClassNames,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
@@ -26,10 +25,11 @@ export interface TimeGridMoreLinkProps {
 export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
   render() {
     let { props } = this
-    let { options, isRtl } = this.context
+    let { isRtl } = this.context
 
     return (
       <MoreLinkContainer
+        display='column'
         className={classNames.abs}
         style={{
           top: props.top,
@@ -49,24 +49,9 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
         popoverContent={() => renderPlainFgSegs(props.hiddenSegs, props, /* isMirror = */ false)}
-        defaultGenerator={renderMoreLinkInner}
         forceTimed={true}
         isCompact={false}
-      >
-        {(InnerContent) => (
-          <InnerContent
-            tag="div"
-            className={joinArrayishClassNames(
-              options.moreLinkInnerClassNames,
-              classNames.stickyT,
-            )}
-          />
-        )}
-      </MoreLinkContainer>
+      />
     )
   }
-}
-
-function renderMoreLinkInner(props: MoreLinkContentArg) {
-  return props.shortText
 }

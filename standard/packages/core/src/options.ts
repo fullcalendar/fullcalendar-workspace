@@ -337,11 +337,17 @@ export const BASE_OPTION_REFINERS = {
   headingLevel: Number,
 
   moreLinkClick: identity as Identity<MoreLinkAction>,
-  moreLinkClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
-  moreLinkInnerClassNames: identity as Identity<ClassNamesInput>, // TODO: accept arg
   moreLinkContent: identity as Identity<CustomContentGenerator<MoreLinkContentArg>>,
   moreLinkDidMount: identity as Identity<DidMountHandler<MoreLinkMountArg>>,
   moreLinkWillUnmount: identity as Identity<WillUnmountHandler<MoreLinkMountArg>>,
+  moreLinkClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
+  moreLinkInnerClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
+  //
+  rowMoreLinkClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
+  rowMoreLinkInnerClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
+  //
+  columnMoreLinkClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
+  columnMoreLinkInnerClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
 
   navLinkClassNames: identity as Identity<ClassNamesInput>,
 
