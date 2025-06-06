@@ -16,7 +16,6 @@ high-level todo:
     also: needs to use bootstrap-icons
       i think i implemented this, but uses old iconClassNames map
       use glyphicons still. easier instructions for importing font stylesheet as opposed to svgs
-  ResizeObserver refactor
 
 low-level todo:
   [rename] remove the 'Content' in names like ListHeaderContentArg, so just have ListHeaderArg and ListHeaderMountArg
@@ -25,8 +24,10 @@ low-level todo:
     think more about just "whateverClass"
 
 visual theme cleanup
+  bug: timegrid isCompact fully!
   bug: make weeknumber valign with daycell number (on multimonth too)
     also background-event title
+    same with background event title
   bug: daygrid list-item events have rounded start too close to cell edge
 
 project: shacdn
@@ -40,7 +41,7 @@ project: shacdn
     example: https://www.kibo-ui.com/components/calendar
       npx shadcn@latest add https://www.kibo-ui.com/registry/calendar.json
 
-project: ResizeObserver problems (!!! should be fixed after ResizeObserver refactor !!!)
+project: ResizeObserver refactor
   ResourceTimeline height:auto
     premium/bundle/a11y-ci/resource-timeline-flat-height-auto.html
     Not exactly sure why fixed-scrollbar would cause this
