@@ -1,5 +1,6 @@
-import { config, isValidDate, addDays, CalendarContext } from '@fullcalendar/core/internal'
-import { createElement, Fragment } from '@fullcalendar/core/preact'
+import { config, isValidDate, addDays, CalendarContext, joinArrayishClassNames } from '@fullcalendar/core/internal'
+import classNames from '@fullcalendar/core/internal-classnames'
+import { createElement } from '@fullcalendar/core/preact'
 
 const UPGRADE_WINDOW = 365 + 7 // days. 1 week leeway, for tz shift reasons too
 const INVALID_LICENSE_URL = 'https://fullcalendar.io/docs/schedulerLicenseKey#invalid'
@@ -8,41 +9,46 @@ const PRESET_LICENSE_KEYS = [
   'AGPL-My-Frontend-And-Backend-Are-Open-Source',
   'CC-Attribution-NonCommercial-NoDerivatives',
 ]
-const CSS = {
-  position: 'absolute',
-  zIndex: 99999,
-  bottom: '1px',
-  left: '1px',
-  background: '#eee',
-  borderColor: '#ddd',
-  borderStyle: 'solid',
-  borderWidth: '1px 1px 0 0',
-  padding: '2px 4px',
-  fontSize: '12px',
-  borderTopRightRadius: '3px',
-}
 
 export function buildLicenseWarning(context: CalendarContext) {
-  let key = context.options.schedulerLicenseKey
-  let currentUrl = typeof window !== 'undefined' ? window.location.href : ''
+  const { options, pluginHooks } = context
+  const key = options.schedulerLicenseKey
+  const currentUrl = typeof window !== 'undefined' ? window.location.href : ''
 
   if (!isImmuneUrl(currentUrl)) {
-    let status = processLicenseKey(key, context.pluginHooks.premiumReleaseDate!)
+    const status = processLicenseKey(key, pluginHooks.premiumReleaseDate!)
+    let statusText: string
+    let statusUrl: string
+
+    if (status === 'outdated') {
+      statusText = 'Your license key is too old to work with this version.'
+      statusUrl = OUTDATED_LICENSE_URL
+    } else {
+      statusText = 'Your license key is invalid.'
+      statusUrl = INVALID_LICENSE_URL
+    }
 
     if (status !== 'valid') {
       return (
-        <div style={CSS}>
-          {(status === 'outdated') ? (
-            <Fragment>
-              {'Your license key is too old to work with this version. '}
-              <a href={OUTDATED_LICENSE_URL}>More Info</a>
-            </Fragment>
-          ) : (
-            <Fragment>
-              {'Your license key is invalid. '}
-              <a href={INVALID_LICENSE_URL}>More Info</a>
-            </Fragment>
+        <div
+          className={joinArrayishClassNames(
+            options.popoverClassNames,
+            classNames.popoverZ,
+            classNames.abs,
+            classNames.warning,
           )}
+          style={{
+            bottom: 0,
+            left: 0,
+          }}
+        >
+          {statusText}{' '}
+          <a
+            href={statusUrl}
+            style={{
+              textDecoration: 'underline',
+            }}
+          >More Info</a>
         </div>
       )
     }

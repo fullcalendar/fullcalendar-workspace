@@ -23,7 +23,6 @@ low-level todo:
     check all inline types defined in options.ts, give real names
   [rename] change all *ClassNames to singular *ClassName
     think more about just "whateverClass"
-  style license warning better
   resource-timeline expander icons should align to baseline
 
 visual theme cleanup
@@ -130,6 +129,8 @@ changelog: eventColor (different behavior), +eventContrastColor, -eventBackgroun
 changelog: --fc-event-color, --fc-event-contrast-color, --fc-canvas-color
 changelog: borderless(X) also indents toolbar
 changelog: dayCellTop will be rendered even if no day-cell-text. check hasLabel/hasMonthLabel
+changelog: premium-warning styled in dark mode
+  https://github.com/fullcalendar/fullcalendar/issues/7904
 
 Docs
 ----
