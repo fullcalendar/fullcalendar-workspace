@@ -35,20 +35,30 @@ export function buildLicenseWarning(context: CalendarContext) {
             options.popoverClassNames,
             classNames.popoverZ,
             classNames.abs,
-            classNames.warning,
+            classNames.tight, // no margin/padding
           )}
           style={{
             bottom: 0,
-            left: 0,
+            left: 0, // TODO: use direction-aware start
           }}
         >
-          {statusText}{' '}
-          <a
-            href={statusUrl}
-            style={{
-              textDecoration: 'underline',
-            }}
-          >More Info</a>
+          <div className={joinArrayishClassNames(
+            options.popoverHeaderClassNames,
+            classNames.tight, // no margin/padding
+          )}>
+            <div style={{
+              padding: '2px 4px',
+              fontSize: '12px',
+            }}>
+              {statusText}{' '}
+              <a
+                href={statusUrl}
+                style={{
+                  textDecoration: 'underline',
+                }}
+              >More Info</a>
+            </div>
+          </div>
         </div>
       )
     }
