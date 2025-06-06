@@ -47,8 +47,9 @@ export function buildLicenseWarning(context: CalendarContext) {
             classNames.tight, // no margin/padding
           )}>
             <div style={{
-              padding: '2px 4px',
+              padding: '5px',
               fontSize: '12px',
+              lineHeight: '1em',
             }}>
               {statusText}{' '}
               <a
