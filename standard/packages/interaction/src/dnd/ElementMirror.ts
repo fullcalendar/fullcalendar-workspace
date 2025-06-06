@@ -41,7 +41,9 @@ export class ElementMirror {
     if (bool) {
       if (!this.isVisible) {
         if (this.mirrorEl) {
-          this.mirrorEl.style.display = ''
+          // important because competes with util.module.css classNames, which are all important
+          // TODO: attach a util className here instead?
+          this.mirrorEl.style.setProperty('display', '', 'important')
         }
 
         this.isVisible = bool // needs to happen before updateElPosition
@@ -49,7 +51,9 @@ export class ElementMirror {
       }
     } else if (this.isVisible) {
       if (this.mirrorEl) {
-        this.mirrorEl.style.display = 'none'
+        // important because competes with util.module.css classNames, which are all important
+        // TODO: attach a util className here instead?
+        this.mirrorEl.style.setProperty('display', 'none', 'important')
       }
 
       this.isVisible = bool

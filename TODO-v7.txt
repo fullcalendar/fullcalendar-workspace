@@ -8,8 +8,6 @@ Publishing:
 ASAP
 ----
 
-bug: weird dragging from all-day <-> timed
-
 high-level todo:
   backport tailwind classic theme -> normal classic theme
     address bugs:
