@@ -28,11 +28,10 @@ low-level todo:
   resource-timeline expander icons should align to baseline
 
 visual theme cleanup
-  bug: month-header cells too thick. other header cells too?
   bug: multimonth:
     single-col month-title too thick
     font sizes not small enough
-      rethinkg all font sized? don't have isCompact flags determine everything
+      rethink all font sizes? don't have isCompact flags determine everything
   bug: license-warning in darkmode looks crap
   bug: make weeknumber valign with daycell number (on multimonth too)
     also background-event title
