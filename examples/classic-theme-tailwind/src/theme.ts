@@ -79,7 +79,7 @@ const dayGridOverrides: CalendarOptions = {
     'mb-px text-xs p-0.5 rounded-sm mx-0.5',
     // TODO: this more-link manual positioning will go away with measurement refactor
     'relative max-w-full overflow-hidden whitespace-nowrap',
-    'hover:bg-black/10',
+    'hover:bg-gray-500/20',
     arg.isCompact
       ? 'border border-(--fc-event-color) p-px'
       : 'self-start',
@@ -214,6 +214,9 @@ export default createPlugin({
     blockEventInnerClassNames: 'relative z-10 text-(--fc-event-contrast-color) print:text-black flex gap-[3px]', // subclasses will decide flex-direction
     blockEventTimeClassNames: 'whitespace-nowrap overflow-hidden flex-shrink-0 max-w-full max-h-full',
     blockEventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink sticky top-0 start-0',
+
+    // TODO: best place?
+    moreLinkInnerClassNames: 'sticky top-0 start-0',
 
     // Block Event > Row Event
     // ---------------------------------------------------------------------------------------------
@@ -425,12 +428,12 @@ export default createPlugin({
         'px-px',
         arg.isSpacious ? 'py-1' : 'py-px',
       ],
+      rowMoreLinkClassNames: `flex flex-col items-start text-xs bg-gray-300 dark:bg-gray-600 p-px me-px`, // TODO: dry bg color?
+      rowMoreLinkInnerClassNames: 'p-0.5',
       slotLabelClassNames: [
         /* tick-marks = 'h-2 self-end justify-end', */
         'justify-center'
       ],
-      rowMoreLinkClassNames: `flex flex-col items-start text-xs ${neutralBgClassNames} p-px me-px`,
-      rowMoreLinkInnerClassNames: 'p-0.5',
       slotLabelInnerClassNames: 'p-1',
       slotLabelDividerClassNames: `border-b ${borderColorClassNames}`,
       nowIndicatorLabelClassNames: 'top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-t-red-500',

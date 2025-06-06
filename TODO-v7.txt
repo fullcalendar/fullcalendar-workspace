@@ -23,8 +23,6 @@ low-level todo:
     check all inline types defined in options.ts, give real names
   [rename] change all *ClassNames to singular *ClassName
     think more about just "whateverClass"
-  [stickiness] theme should be responsible for moreLink stickiness (currently core does it)
-    (because theme is already responsible for events stickiness)
   remove view-specific hacks in util.module.css
   style license warning better
   resource-timeline expander icons should align to baseline
@@ -178,6 +176,7 @@ adjust transpilation settings. es2016 okay now, with null coalescing operator?
 ensure all new settings are put on the Angular connector!
 test print-view extensively after theme refactor
 test all horizontally-scrolling views
+test z-index of events and more-link ABOVE background events in ALL VIEWs
 
 After Launch
 ------------
