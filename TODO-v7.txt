@@ -8,6 +8,8 @@ Publishing:
 ASAP
 ----
 
+bug: weird dragging from all-day <-> timed
+
 high-level todo:
   backport tailwind classic theme -> normal classic theme
     address bugs:
@@ -23,7 +25,6 @@ low-level todo:
     check all inline types defined in options.ts, give real names
   [rename] change all *ClassNames to singular *ClassName
     think more about just "whateverClass"
-  remove view-specific hacks in util.module.css
   style license warning better
   resource-timeline expander icons should align to baseline
 

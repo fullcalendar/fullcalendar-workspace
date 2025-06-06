@@ -300,8 +300,6 @@ export default createPlugin({
       'p-1',
       arg.isMonthStart && 'text-base font-bold',
     ],
-    // effectively 2px bottom padding because events have 1px margin-bottom
-    dayCellBottomClassNames: 'min-h-[1px]',
 
     // MultiMonth
     // ---------------------------------------------------------------------------------------------
@@ -391,17 +389,27 @@ export default createPlugin({
   // View-specific overrides for shared elements
   // ---------------------------------------------------------------------------------------------
 
+  /*
+  why does dragging from all-day to timed cause event artifact?
+  */
+
   views: {
     dayGrid: {
       ...dayGridOverrides,
+      // effectively 2px bottom padding because events have 1px margin-bottom
+      dayCellBottomClassNames: 'min-h-[1px]', // put elsewhere?
       ...dayGridWeekNumberOverrides,
     },
     multiMonth: {
       ...dayGridOverrides,
+      // effectively 2px bottom padding because events have 1px margin-bottom
+      dayCellBottomClassNames: 'min-h-[1px]', // put elsewhere?
       ...dayGridWeekNumberOverrides,
     },
     timeGrid: {
       ...dayGridOverrides,
+      dayRowClassNames: 'min-h-[3em]',
+      dayCellBottomClassNames: 'min-h-[1em]', // for all-day section
       allDayHeaderClassNames: [axisClassName, /* vertical-align = */ 'items-center'],
       allDayHeaderInnerClassNames: [axisInnerClassName, 'whitespace-pre px-1 py-0.5'],
       weekNumberClassNames: axisClassName,

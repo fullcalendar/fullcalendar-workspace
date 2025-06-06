@@ -226,7 +226,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   showDayNumbers={false}
                   forPrint={forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
-                  className={joinClassNames(classNames.liquid, classNames.borderNone)}
+                  className={joinClassNames(classNames.liquidX, classNames.borderNone)}
                   cellIsCompact={clientWidth / props.cells.length <= options.dayCompactWidth}
                   // content
                   fgEventSegs={props.fgEventSegs}

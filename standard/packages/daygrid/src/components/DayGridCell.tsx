@@ -44,7 +44,6 @@ export interface DayGridCellProps {
   date: DateMarker
   isMajor: boolean
   showDayNumber: boolean
-  isTall?: boolean // TODO: kill
   isCompact: boolean
   borderStart: boolean
 
@@ -177,10 +176,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
             </div>
             <div
               className={joinClassNames(
-                classNames.dayGridDayBody,
-                // TODO: use dayCellBottomClassName for this (for thick bottom padding)
-                // and introduce a new setting (allDaySlotMinHeight)
-                props.isTall && classNames.dayGridDayBodyTall,
+                classNames.flexCol,
                 props.fgLiquidHeight ? classNames.liquid : classNames.grow,
               )}
               ref={this.handleBodyEl}

@@ -50,7 +50,6 @@ export interface DayGridRowProps {
   showWeekNumbers?: boolean
   forPrint: boolean
   className?: string
-  isTall?: boolean
   role?: string
 
   // content
@@ -151,7 +150,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           props.className,
           classNames.flexRow,
           classNames.rel,
-          props.forPrint && classNames.dayGridRowPrint,
+          (props.forPrint && props.basis !== undefined) && // basis implies siblings (must share height)
+            classNames.printSiblingRow,
         )}
         style={{
           'flex-basis': props.basis,
@@ -207,7 +207,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               date={cell.date}
               isMajor={cell.isMajor}
               showDayNumber={props.showDayNumbers}
-              isTall={props.isTall}
               isCompact={props.cellIsCompact}
               borderStart={Boolean(col)}
 
