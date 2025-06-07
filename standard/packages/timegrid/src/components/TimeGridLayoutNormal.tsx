@@ -172,6 +172,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                       innerHeightRef={headerLabelInnerWidthRefMap.createRef(tierNum)}
                       width={axisWidth}
                       isLiquid={false}
+                      isCompact={cellIsCompact}
                     />
                   ) : (
                     <TimeGridAxisEmpty
@@ -220,6 +221,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 <TimeGridAllDayLabel
                   width={axisWidth}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
+                  isCompact={cellIsCompact}
                 />
                 <div
                   className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
@@ -357,6 +359,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                             innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                             innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                             borderTop={Boolean(slatI)}
+                            isCompact={cellIsCompact}
                           />
                         </div>
                         <div

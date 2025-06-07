@@ -24,7 +24,7 @@ low-level todo:
     think more about just "whateverClass"
 
 visual theme cleanup
-  bug: timegrid isCompact fully!
+  demo: show responsive toolbar in tailwind theme
   bug: make weeknumber valign with daycell number (on multimonth too)
     also background-event title
     same with background event title

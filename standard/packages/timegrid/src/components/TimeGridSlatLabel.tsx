@@ -34,6 +34,7 @@ const DEFAULT_SLAT_LABEL_FORMAT = createFormatter({
 export interface TimeGridSlatLabelProps extends TimeSlatMeta {
   // dimensions
   borderTop: boolean
+  isCompact: boolean
 
   // ref
   innerWidthRef?: Ref<number>
@@ -59,7 +60,14 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
         Array.isArray(options.slotLabelFormat) ? createFormatter(options.slotLabelFormat[0]) :
           createFormatter(options.slotLabelFormat)
 
-    let renderProps = this.createRenderProps(props.date, props.time, !props.isLabeled, labelFormat, context)
+    let renderProps = this.createRenderProps(
+      props.date,
+      props.time,
+      !props.isLabeled,
+      props.isCompact,
+      labelFormat,
+      context,
+    )
 
     let className = joinClassNames(
       classNames.flexRow,
@@ -137,6 +145,7 @@ function createRenderProps(
   date: DateMarker,
   time: Duration,
   isMinor: boolean,
+  isCompact: boolean,
   labelFormat: DateFormatter,
   context: ViewContext,
 ): SlotLabelContentArg {
@@ -149,6 +158,7 @@ function createRenderProps(
     time: time,
     isMajor: false,
     isMinor,
+    isCompact,
     view: context.viewApi,
   }
 }

@@ -62,6 +62,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
       level: props.rowLevel,
       isMajor: cell.isMajor,
       isMinor: false,
+      isCompact: false,
       text: cell.text,
       view: context.viewApi,
     }

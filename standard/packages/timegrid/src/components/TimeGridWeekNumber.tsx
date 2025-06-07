@@ -9,6 +9,7 @@ export interface TimeGridWeekNumberProps {
   // dimensions
   width: number | undefined
   isLiquid: boolean
+  isCompact: boolean
 
   // ref
   innerWidthRef?: Ref<number>
@@ -51,16 +52,19 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
           'aria-label': fullDateStr,
         }}
         className={joinClassNames(
+          classNames.flexRow,
           classNames.tight,
           props.isLiquid ? classNames.liquid : classNames.contentBox,
         )}
-        style={{ width: props.width }}
+        style={{
+          width: props.width,
+        }}
         renderProps={{
           num: weekNum,
           text: weekText,
           textParts: weekTextParts,
           date: weekDateZoned,
-          isCompact: false,
+          isCompact: props.isCompact,
         }}
         generatorName="weekNumberContent"
         customGenerator={options.weekNumberContent}

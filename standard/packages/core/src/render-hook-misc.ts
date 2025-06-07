@@ -14,11 +14,13 @@ export type SlotLaneMountArg = MountArg<SlotLaneContentArg>
 export interface SlotLabelContentArg extends SlotLaneContentArg {
   level: number
   text: string
+  isCompact: boolean
 }
 export type SlotLabelMountArg = MountArg<SlotLabelContentArg>
 
 export interface AllDayContentArg {
   text: string
   view: ViewApi
+  isCompact: boolean
 }
 export type AllDayMountArg = MountArg<AllDayContentArg>

@@ -430,13 +430,24 @@ export default createPlugin({
       ...dayGridOverrides,
       dayRowClassNames: 'min-h-[3em]',
       dayCellBottomClassNames: 'min-h-[1em]', // for all-day section
-      allDayHeaderClassNames: [axisClassName, /* vertical-align = */ 'items-center'],
+      allDayHeaderClassNames: (arg) => [
+        arg.isCompact && realSmallText,
+        axisClassName,
+        /* vertical-align = */ 'items-center',
+      ],
       allDayHeaderInnerClassNames: [axisInnerClassName, 'whitespace-pre px-1 py-0.5'],
-      weekNumberClassNames: axisClassName,
+      weekNumberClassNames: (arg) => [
+        arg.isCompact && realSmallText,
+        axisClassName,
+      ],
       weekNumberInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
       columnMoreLinkClassNames: `mb-px rounded-xs text-xs outline outline-(--fc-canvas-color) bg-gray-300 dark:bg-gray-600`,
       columnMoreLinkInnerClassNames: 'px-0.5 py-1',
-      slotLabelClassNames: [axisClassName, /* tick-marks = 'w-2 self-end' */],
+      slotLabelClassNames: (arg) => [
+        arg.isCompact && realSmallText,
+        axisClassName,
+        /* tick-marks = 'w-2 self-end' */
+      ],
       slotLabelInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
       slotLabelDividerClassNames: `border-l ${borderColorClassNames}`,
       nowIndicatorLabelClassNames: 'start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] border-s-red-500',

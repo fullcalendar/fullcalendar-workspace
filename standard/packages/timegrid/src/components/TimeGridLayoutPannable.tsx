@@ -207,6 +207,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                         innerHeightRef={headerLabelInnerHeightRefMap.createRef(tierNum)}
                         width={undefined}
                         isLiquid={true}
+                        isCompact={cellIsCompact}
                       />
                     ) : (
                       <TimeGridAxisEmpty
@@ -283,6 +284,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 <TimeGridAllDayLabel
                   width={axisWidth}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
+                  isCompact={cellIsCompact}
                 />
                 <div
                   className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
@@ -398,6 +400,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                             innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                             innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                             borderTop={Boolean(slatI)}
+                            isCompact={cellIsCompact}
                           />
                         </div>
                       ))}

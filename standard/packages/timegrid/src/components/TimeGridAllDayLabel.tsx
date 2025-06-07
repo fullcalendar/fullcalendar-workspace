@@ -6,6 +6,7 @@ import classNames from '@fullcalendar/core/internal-classnames'
 export interface TimeGridAllDayLabelProps {
   // dimension
   width: number | undefined
+  isCompact: boolean
 
   // refs
   innerWidthRef?: Ref<number>
@@ -24,6 +25,7 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
     let renderProps: AllDayContentArg = {
       text: options.allDayText,
       view: viewApi,
+      isCompact: props.isCompact,
     }
 
     return (
