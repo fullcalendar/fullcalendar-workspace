@@ -23,13 +23,6 @@ low-level todo:
   [rename] change all *ClassNames to singular *ClassName
     think more about just "whateverClass"
 
-visual theme cleanup
-  demo: show responsive toolbar in tailwind theme
-  bug: make weeknumber valign with daycell number (on multimonth too)
-    also background-event title
-    same with background event title
-  bug: daygrid list-item events have rounded start too close to cell edge
-
 project: shacdn
   instead of buttonElements hook, which would require users to inject correct aria-attributes,
     disabled-attribute, and click handler,
@@ -223,6 +216,7 @@ Tests for auto-scroll (not necessarily v7)
 automated-test: button click handler can cancel default
 automated-test: button hint arguments of all kinds
 automated-test: write tests with moment/luxon textParts
+cleanup responive.html demos since flex-wrap in toolbar became the default
 
 Freshdesk/GH-issues
 -------------------

@@ -222,6 +222,10 @@
   flex-direction: column !important;
 }
 
+.flexWrap {
+  flex-wrap: wrap;
+}
+
 .grow {
   flex-grow: 1 !important;
 }

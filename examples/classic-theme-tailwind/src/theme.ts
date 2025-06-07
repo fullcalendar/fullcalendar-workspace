@@ -57,7 +57,7 @@ const axisInnerClassName = 'text-end min-h-[1.5em]' // align text right (aka end
 
 const dayGridOverrides: CalendarOptions = {
   listItemEventClassNames: (arg) => [
-    'mb-px me-0.5 p-px rounded-sm items-center',
+    'mb-px mx-0.5 p-px rounded-sm items-center',
     (arg.isSelected && arg.isDragging) && 'shadow-sm',
     arg.isSelected
       ? 'bg-gray-500/40'
@@ -112,8 +112,12 @@ export default createPlugin({
       'gap-3',
       arg.borderlessX && 'px-3',
     ],
-    toolbarSectionClassNames: 'gap-3',
-    toolbarTitleClassNames: 'text-2xl font-bold whitespace-nowrap',
+    toolbarSectionClassNames: (arg) => [
+      'gap-3',
+      // slightly nicer wrapping behavior
+      arg.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto',
+    ],
+    toolbarTitleClassNames: 'text-xl md:text-2xl font-bold whitespace-nowrap',
     viewClassNames: borderClassName,
     viewHeaderClassNames: (arg) => [
       arg.isSticky && 'bg-(--fc-canvas-color)'

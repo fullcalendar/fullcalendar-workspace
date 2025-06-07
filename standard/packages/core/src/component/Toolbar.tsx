@@ -27,6 +27,7 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
             borderlessX: props.borderlessX,
           }),
           classNames.flexRow,
+          classNames.flexWrap,
           classNames.justifyBetween,
           classNames.alignCenter,
         )}
