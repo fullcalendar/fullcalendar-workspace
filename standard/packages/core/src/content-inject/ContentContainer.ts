@@ -1,5 +1,5 @@
 import { createElement, Component, FunctionalComponent, ComponentChildren, ComponentChild } from '../preact.js'
-import { ClassNamesGenerator } from '../common/render-hook.js'
+import { ClassNameGenerator } from '../common/render-hook.js'
 import {
   ContentInjector,
   ContentGeneratorProps,
@@ -19,7 +19,7 @@ export type ContentContainerProps<RenderProps> =
   ElAttrsProps &
   ContentGeneratorProps<RenderProps> & {
     tag?: string
-    classNameGenerator?: ClassNamesGenerator<RenderProps> | undefined
+    classNameGenerator?: ClassNameGenerator<RenderProps> | undefined
     didMount?: ((renderProps: RenderProps & { el: HTMLElement }) => void) | undefined
     willUnmount?: ((renderProps: RenderProps & { el: HTMLElement }) => void) | undefined
     children?: InnerContainerFunc<RenderProps>
@@ -116,7 +116,7 @@ function InnerContentInjector<RenderProps>(
 // Utils
 
 export function generateClassName<RenderProps>(
-  classNameGenerator: ClassNamesGenerator<RenderProps> | undefined,
+  classNameGenerator: ClassNameGenerator<RenderProps> | undefined,
   renderProps: RenderProps,
 ): string {
   const classNames = typeof classNameGenerator === 'function' ?

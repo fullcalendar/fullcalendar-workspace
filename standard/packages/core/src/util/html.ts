@@ -1,10 +1,10 @@
 import { Falsy } from './misc.js'
 
-export type ClassNameInput = string | number | Falsy
-export type ClassNamesInput = ClassNameInput[] | ClassNameInput // possibly an array
+export type SingleClassNameInput = string | number | Falsy
+export type ClassNameInput = SingleClassNameInput[] | SingleClassNameInput // possibly an array
 
-export function joinArrayishClassNames(...args: ClassNamesInput[]): string {
-  const simpleArgs: ClassNameInput[] = []
+export function joinArrayishClassNames(...args: ClassNameInput[]): string {
+  const simpleArgs: SingleClassNameInput[] = []
 
   for (const arg of args) {
     if (Array.isArray(arg)) {

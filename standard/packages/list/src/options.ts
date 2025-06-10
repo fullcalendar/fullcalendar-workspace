@@ -1,4 +1,4 @@
-import { ClassNamesGenerator, FormatterInput } from '@fullcalendar/core'
+import { ClassNameGenerator, FormatterInput } from '@fullcalendar/core'
 import {
   identity,
   Identity,
@@ -20,20 +20,20 @@ import {
 } from './public-types.js'
 
 export const OPTION_REFINERS = {
-  listDayClass: identity as Identity<ClassNamesGenerator<ListDayData>>,
+  listDayClass: identity as Identity<ClassNameGenerator<ListDayData>>,
 
   listDayFormat: createFalsableFormatter, // defaults specified in list plugins
   listDaySideFormat: createFalsableFormatter, // "
 
   listDayHeaderDidMount: identity as Identity<DidMountHandler<ListDayHeaderMountData>>,
   listDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ListDayHeaderMountData>>,
-  listDayHeaderClass: identity as Identity<ClassNamesGenerator<ListDayHeaderData>>,
-  listDayHeaderBeforeClass: identity as Identity<ClassNamesGenerator<ListDayHeaderData>>,
-  listDayHeaderInnerClass: identity as Identity<ClassNamesGenerator<ListDayHeaderInnerData>>,
+  listDayHeaderClass: identity as Identity<ClassNameGenerator<ListDayHeaderData>>,
+  listDayHeaderBeforeClass: identity as Identity<ClassNameGenerator<ListDayHeaderData>>,
+  listDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ListDayHeaderInnerData>>,
   listDayHeaderContent: identity as Identity<CustomContentGenerator<ListDayHeaderInnerData>>,
 
-  noEventsClass: identity as Identity<ClassNamesGenerator<NoEventsData>>,
-  noEventsInnerClass: identity as Identity<ClassNamesGenerator<NoEventsData>>,
+  noEventsClass: identity as Identity<ClassNameGenerator<NoEventsData>>,
+  noEventsInnerClass: identity as Identity<ClassNameGenerator<NoEventsData>>,
   noEventsContent: identity as Identity<CustomContentGenerator<NoEventsData>>,
   noEventsDidMount: identity as Identity<DidMountHandler<NoEventsMountData>>,
   noEventsWillUnmount: identity as Identity<WillUnmountHandler<NoEventsMountData>>,

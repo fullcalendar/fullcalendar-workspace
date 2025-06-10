@@ -1,4 +1,4 @@
-import { ClassNamesGenerator } from '@fullcalendar/core'
+import { ClassNameGenerator } from '@fullcalendar/core'
 import {
   Identity,
   identity,
@@ -14,8 +14,8 @@ import {
 } from './structs.js'
 
 export const OPTION_REFINERS = {
-  resourceDayHeaderClass: identity as Identity<ClassNamesGenerator<ResourceDayHeaderData>>,
-  resourceDayHeaderInnerClass: identity as Identity<ClassNamesGenerator<ResourceDayHeaderData>>,
+  resourceDayHeaderClass: identity as Identity<ClassNameGenerator<ResourceDayHeaderData>>,
+  resourceDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceDayHeaderData>>,
   resourceDayHeaderContent: identity as Identity<CustomContentGenerator<ResourceDayHeaderData>>,
   resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderMountData>>,
   resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderMountData>>,

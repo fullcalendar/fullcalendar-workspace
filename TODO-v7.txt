@@ -9,10 +9,6 @@ ASAP
 ----
 
 small todo:
-  do classname util renames:
-    ClassNames -> ClassName
-    ClassNamesGenerator -> ClassNameGenerator
-    ClassNamesInput ??
   accept objects for *Class inputs
   have resourceIndent/resourceExpander OUTSIDE of resourceGroupHeaderInner / resourceCellInner
   rename listDaySideFormat -> listDayAltFormat ?
@@ -30,12 +26,6 @@ high-level todo:
     also: needs to use bootstrap-icons
       i think i implemented this, but uses old iconClassNames map
       use glyphicons still. easier instructions for importing font stylesheet as opposed to svgs
-
-low-level todo:
-  [rename] remove the 'Content' in names like ListHeaderContentArg, so just have ListHeaderArg and ListHeaderMountArg
-    check all inline types defined in options.ts, give real names
-  [rename] change all *ClassNames to singular *ClassName
-    think more about just "whateverClass"
 
 project: shacdn
   instead of buttonElements hook, which would require users to inject correct aria-attributes,
@@ -164,8 +154,8 @@ changelog: instead of accepting classNames, these please accept both className/c
   Event input
   EventSource input
 changelog: querying className now returns a non-normalized ORIGINAL value:
-  Event::className (previously classNames)
-  Resource::eventClass (previously eventClassNames)
+  Event::className (previously classNames <-- KILLED)
+  Resource::eventClass (previously eventClassNames <-- KILLED)
 changelog: Event::toPlainObject/toJSON returns a 'className' string instead of 'classNames' array
 
 Docs

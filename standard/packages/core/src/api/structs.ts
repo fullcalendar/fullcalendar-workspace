@@ -13,7 +13,7 @@ export type { LocaleSingularArg, LocaleInput } from '../datelib/locale.js'
 export type { OverlapFunc, ConstraintInput, AllowFunc } from '../structs/constraint.js'
 export type { PluginDef, PluginDefInput } from '../plugin-system-struct.js'
 export type { ViewComponentType, SpecificViewData, SpecificViewMountData } from '../structs/view-config.js'
-export type { ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '../common/render-hook.js'
+export type { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '../common/render-hook.js'
 export type { NowIndicatorLabelData, NowIndicatorLabelMountData } from '../common/NowIndicatorLabelContainer.js'
 export type { NowIndicatorLineData, NowIndicatorLineMountData } from '../common/NowIndicatorLineContainer.js'
 export type { WeekNumberDisplayData, WeekNumberMountData, DateTimeFormatPartWithWeek } from '../common/WeekNumberContainer.js'
@@ -38,7 +38,7 @@ export type { EventAddData, EventChangeData, EventDropData, EventRemoveData } fr
 export type { CustomRenderingHandler, CustomRenderingStore } from '../content-inject/CustomRenderingStore.js'
 export type { DateSpanApi, DatePointApi } from '../structs/date-span.js'
 export type { DateSelectionApi } from '../calendar-utils.js'
-export type { ClassNamesInput } from '../util/html.js'
+export type { ClassNameInput } from '../util/html.js'
 
 // used by some args
 export type { Duration } from '../datelib/duration.js'

@@ -1,12 +1,12 @@
 import { createElement } from '../preact.js'
-import { ClassNamesGenerator, CustomContentGenerator } from '../common/render-hook.js'
+import { ClassNameGenerator, CustomContentGenerator } from '../common/render-hook.js'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
 import { ButtonIconData } from '../toolbar-struct.js'
 import { BaseComponent } from '../vdom-util.js'
 
 interface IconProps {
   contentGenerator?: CustomContentGenerator<ButtonIconData>
-  classNameGenerator?: ClassNamesGenerator<ButtonIconData>
+  classNameGenerator?: ClassNameGenerator<ButtonIconData>
 }
 
 export class ButtonIcon extends BaseComponent<IconProps> {

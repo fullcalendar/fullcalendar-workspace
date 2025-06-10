@@ -7,7 +7,7 @@ import {
   BusinessHoursInput,
   ButtonInput,
   CalendarDisplayData,
-  ClassNamesGenerator,
+  ClassNameGenerator,
   ConstraintInput,
   CssDimValue,
   CustomContentGenerator,
@@ -60,7 +60,7 @@ import {
 import { ViewBodyData, ViewHeaderData } from './common/ViewSubsections.js'
 import { createDuration, Duration } from './datelib/duration.js'
 import { createFormatter } from './datelib/formatting.js'
-import { ClassNamesInput } from './util/html.js'
+import { ClassNameInput } from './util/html.js'
 import { parseFieldSpecs } from './util/misc.js'
 import { isMaybePropsEqualShallow, isMaybePropsEqualDepth1 } from './util/object.js'
 import { isMaybeArraysEqual } from './util/array.js'
@@ -104,8 +104,8 @@ export const BASE_OPTION_REFINERS = {
   nextHint: identity as Identity<string | ((currentUnitText: string, currentUnit: string) => string)>,
 
   buttonDisplay: identity as Identity<ButtonDisplay>,
-  buttonGroupClass: identity as Identity<ClassNamesInput>,
-  buttonClass: identity as Identity<ClassNamesGenerator<ButtonData>>,
+  buttonGroupClass: identity as Identity<ClassNameInput>,
+  buttonClass: identity as Identity<ClassNameGenerator<ButtonData>>,
 
   defaultAllDayEventDuration: createDuration,
   defaultTimedEventDuration: createDuration,
@@ -124,8 +124,8 @@ export const BASE_OPTION_REFINERS = {
   forceEventDuration: Boolean,
 
   // TODO: move to timegrid
-  dayLaneClass: identity as Identity<ClassNamesGenerator<DayLaneData>>,
-  dayLaneInnerClass: identity as Identity<ClassNamesGenerator<DayLaneData>>,
+  dayLaneClass: identity as Identity<ClassNameGenerator<DayLaneData>>,
+  dayLaneInnerClass: identity as Identity<ClassNameGenerator<DayLaneData>>,
   dayLaneContent: identity as Identity<CustomContentGenerator<DayLaneData>>,
   dayLaneDidMount: identity as Identity<DidMountHandler<DayLaneMountData>>,
   dayLaneWillUnmount: identity as Identity<WillUnmountHandler<DayLaneMountData>>,
@@ -136,26 +136,26 @@ export const BASE_OPTION_REFINERS = {
 
   weekNumberCalculation: identity as Identity<WeekNumberCalculation>,
   weekNumbers: Boolean,
-  weekNumberClass: identity as Identity<ClassNamesGenerator<WeekNumberDisplayData>>,
-  weekNumberInnerClass: identity as Identity<ClassNamesInput>, // TODO: give the data?
+  weekNumberClass: identity as Identity<ClassNameGenerator<WeekNumberDisplayData>>,
+  weekNumberInnerClass: identity as Identity<ClassNameInput>, // TODO: give the data?
   weekNumberContent: identity as Identity<CustomContentGenerator<WeekNumberDisplayData>>,
   weekNumberDidMount: identity as Identity<DidMountHandler<WeekNumberMountData>>,
   weekNumberWillUnmount: identity as Identity<WillUnmountHandler<WeekNumberMountData>>,
 
   editable: Boolean,
 
-  viewClass: identity as Identity<ClassNamesGenerator<ViewData>>,
+  viewClass: identity as Identity<ClassNameGenerator<ViewData>>,
   viewDidMount: identity as Identity<DidMountHandler<ViewMountData>>,
   viewWillUnmount: identity as Identity<WillUnmountHandler<ViewMountData>>,
 
   nowIndicator: Boolean,
 
-  nowIndicatorLabelClass: identity as Identity<ClassNamesGenerator<NowIndicatorLabelData>>,
+  nowIndicatorLabelClass: identity as Identity<ClassNameGenerator<NowIndicatorLabelData>>,
   nowIndicatorLabelContent: identity as Identity<CustomContentGenerator<NowIndicatorLabelData>>,
   nowIndicatorLabelDidMount: identity as Identity<DidMountHandler<NowIndicatorLabelMountData>>,
   nowIndicatorLabelWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorLabelMountData>>,
 
-  nowIndicatorLineClass: identity as Identity<ClassNamesGenerator<NowIndicatorLineData>>,
+  nowIndicatorLineClass: identity as Identity<ClassNameGenerator<NowIndicatorLineData>>,
   nowIndicatorLineContent: identity as Identity<CustomContentGenerator<NowIndicatorLineData>>,
   nowIndicatorLineDidMount: identity as Identity<DidMountHandler<NowIndicatorLineMountData>>,
   nowIndicatorLineWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorLineMountData>>,
@@ -210,53 +210,53 @@ export const BASE_OPTION_REFINERS = {
   eventWillUnmount: identity as Identity<WillUnmountHandler<EventMountData>>,
   eventContent: identity as Identity<CustomContentGenerator<EventDisplayData>>,
 
-  eventClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  eventColorClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  eventInnerClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  eventTimeClass: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
-  eventTitleClass: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
-  eventBeforeClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  eventAfterClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
+  eventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  eventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  eventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  eventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  eventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  eventBeforeClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  eventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
-  listItemEventClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  listItemEventColorClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  listItemEventInnerClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  listItemEventTimeClass: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
-  listItemEventTitleClass: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
-  listItemEventBeforeClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  listItemEventAfterClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
+  listItemEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  listItemEventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  listItemEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  listItemEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  listItemEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  listItemEventBeforeClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  listItemEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
-  blockEventClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  blockEventColorClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  blockEventInnerClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  blockEventTimeClass: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
-  blockEventTitleClass: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
-  blockEventBeforeClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  blockEventAfterClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
+  blockEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  blockEventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  blockEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  blockEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  blockEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  blockEventBeforeClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  blockEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
-  rowEventClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  rowEventColorClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  rowEventInnerClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  rowEventTimeClass: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
-  rowEventTitleClass: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
-  rowEventBeforeClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  rowEventAfterClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
+  rowEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  rowEventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  rowEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  rowEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  rowEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  rowEventBeforeClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  rowEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
-  columnEventClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  columnEventColorClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  columnEventInnerClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  columnEventTimeClass: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
-  columnEventTitleClass: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
-  columnEventBeforeClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  columnEventAfterClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
+  columnEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  columnEventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  columnEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  columnEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  columnEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  columnEventBeforeClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  columnEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
-  backgroundEventClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  backgroundEventColorClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  backgroundEventInnerClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  backgroundEventTimeClass: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
-  backgroundEventTitleClass: identity as Identity<ClassNamesGenerator<{ event: EventApi, isCompact: boolean }>>,
-  backgroundEventBeforeClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
-  backgroundEventAfterClass: identity as Identity<ClassNamesGenerator<EventDisplayData>>,
+  backgroundEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  backgroundEventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  backgroundEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  backgroundEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  backgroundEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  backgroundEventBeforeClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  backgroundEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
 
   selectConstraint: identity as Identity<ConstraintInput>,
   selectOverlap: identity as Identity<boolean | OverlapFunc>,
@@ -267,20 +267,20 @@ export const BASE_OPTION_REFINERS = {
 
   slotLabelFormat: identity as Identity<FormatterInput | FormatterInput[]>,
 
-  slotLaneClass: identity as Identity<ClassNamesGenerator<SlotLaneData>>,
-  slotLaneInnerClass: identity as Identity<ClassNamesInput>, // no args!
+  slotLaneClass: identity as Identity<ClassNameGenerator<SlotLaneData>>,
+  slotLaneInnerClass: identity as Identity<ClassNameInput>, // no args!
   slotLaneContent: identity as Identity<CustomContentGenerator<SlotLaneData>>,
   slotLaneDidMount: identity as Identity<DidMountHandler<SlotLaneMountData>>,
   slotLaneWillUnmount: identity as Identity<WillUnmountHandler<SlotLaneMountData>>,
 
-  slotLabelClass: identity as Identity<ClassNamesGenerator<SlotLabelData>>,
-  slotLabelInnerClass: identity as Identity<ClassNamesGenerator<SlotLabelData>>,
+  slotLabelClass: identity as Identity<ClassNameGenerator<SlotLabelData>>,
+  slotLabelInnerClass: identity as Identity<ClassNameGenerator<SlotLabelData>>,
   slotLabelContent: identity as Identity<CustomContentGenerator<SlotLabelData>>,
   slotLabelDidMount: identity as Identity<DidMountHandler<SlotLabelMountData>>,
   slotLabelWillUnmount: identity as Identity<WillUnmountHandler<SlotLabelMountData>>,
 
-  slotLabelRowClass: identity as Identity<ClassNamesInput>,
-  slotLabelDividerClass: identity as Identity<ClassNamesInput>,
+  slotLabelRowClass: identity as Identity<ClassNameInput>,
+  slotLabelDividerClass: identity as Identity<ClassNameInput>,
 
   dayMaxEvents: identity as Identity<boolean | number>,
   dayMaxEventRows: identity as Identity<boolean | number>,
@@ -288,8 +288,8 @@ export const BASE_OPTION_REFINERS = {
   slotLabelInterval: createDuration,
 
   allDayText: String,
-  allDayHeaderClass: identity as Identity<ClassNamesGenerator<AllDayHeaderData>>,
-  allDayHeaderInnerClass: identity as Identity<ClassNamesGenerator<AllDayHeaderData>>,
+  allDayHeaderClass: identity as Identity<ClassNameGenerator<AllDayHeaderData>>,
+  allDayHeaderInnerClass: identity as Identity<ClassNameGenerator<AllDayHeaderData>>,
   allDayHeaderContent: identity as Identity<CustomContentGenerator<AllDayHeaderData>>,
   allDayHeaderDidMount: identity as Identity<DidMountHandler<AllDayHeaderMountData>>,
   allDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<AllDayHeaderMountData>>,
@@ -341,16 +341,16 @@ export const BASE_OPTION_REFINERS = {
   moreLinkContent: identity as Identity<CustomContentGenerator<MoreLinkData>>,
   moreLinkDidMount: identity as Identity<DidMountHandler<MoreLinkMountData>>,
   moreLinkWillUnmount: identity as Identity<WillUnmountHandler<MoreLinkMountData>>,
-  moreLinkClass: identity as Identity<ClassNamesGenerator<MoreLinkData>>,
-  moreLinkInnerClass: identity as Identity<ClassNamesGenerator<MoreLinkData>>,
+  moreLinkClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
+  moreLinkInnerClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
   //
-  rowMoreLinkClass: identity as Identity<ClassNamesGenerator<MoreLinkData>>,
-  rowMoreLinkInnerClass: identity as Identity<ClassNamesGenerator<MoreLinkData>>,
+  rowMoreLinkClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
+  rowMoreLinkInnerClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
   //
-  columnMoreLinkClass: identity as Identity<ClassNamesGenerator<MoreLinkData>>,
-  columnMoreLinkInnerClass: identity as Identity<ClassNamesGenerator<MoreLinkData>>,
+  columnMoreLinkClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
+  columnMoreLinkInnerClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
 
-  navLinkClass: identity as Identity<ClassNamesInput>,
+  navLinkClass: identity as Identity<ClassNameInput>,
 
   monthStartFormat: createFormatter,
   dayCellFormat: createFormatter,
@@ -363,15 +363,15 @@ export const BASE_OPTION_REFINERS = {
 
   // new
   colorScheme: identity as Identity<'auto' | 'light' | 'dark'>,
-  class: identity as Identity<ClassNamesGenerator<CalendarDisplayData>>,
-  className: identity as Identity<ClassNamesGenerator<CalendarDisplayData>>,
-  dayPopoverClass: identity as Identity<ClassNamesGenerator<DayPopoverData>>,
-  popoverClass: identity as Identity<ClassNamesInput>,
-  popoverHeaderClass: identity as Identity<ClassNamesInput>,
-  popoverTitleClass: identity as Identity<ClassNamesInput>,
-  popoverCloseClass: identity as Identity<ClassNamesInput>,
+  class: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
+  className: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
+  dayPopoverClass: identity as Identity<ClassNameGenerator<DayPopoverData>>,
+  popoverClass: identity as Identity<ClassNameInput>,
+  popoverHeaderClass: identity as Identity<ClassNameInput>,
+  popoverTitleClass: identity as Identity<ClassNameInput>,
+  popoverCloseClass: identity as Identity<ClassNameInput>,
   popoverCloseContent: identity as Identity<CustomContentGenerator<{}>>,
-  popoverBodyClass: identity as Identity<ClassNamesInput>,
+  popoverBodyClass: identity as Identity<ClassNameInput>,
   dayCompactWidth: Number,
 
   borderless: Boolean,
@@ -379,17 +379,17 @@ export const BASE_OPTION_REFINERS = {
   borderlessTop: Boolean,
   borderlessBottom: Boolean,
 
-  fillerClass: identity as Identity<ClassNamesInput>,
+  fillerClass: identity as Identity<ClassNameInput>,
 
-  toolbarClass: identity as Identity<ClassNamesGenerator<ToolbarData>>,
-  toolbarSectionClass: identity as Identity<ClassNamesGenerator<ToolbarSectionData>>,
-  toolbarTitleClass: identity as Identity<ClassNamesInput>,
+  toolbarClass: identity as Identity<ClassNameGenerator<ToolbarData>>,
+  toolbarSectionClass: identity as Identity<ClassNameGenerator<ToolbarSectionData>>,
+  toolbarTitleClass: identity as Identity<ClassNameInput>,
 
-  viewHeaderClass: identity as Identity<ClassNamesGenerator<ViewHeaderData>>,
-  viewBodyClass: identity as Identity<ClassNamesGenerator<ViewBodyData>>,
+  viewHeaderClass: identity as Identity<ClassNameGenerator<ViewHeaderData>>,
+  viewBodyClass: identity as Identity<ClassNameGenerator<ViewBodyData>>,
 
-  nonBusinessClass: identity as Identity<ClassNamesInput>,
-  highlightClass: identity as Identity<ClassNamesInput>,
+  nonBusinessClass: identity as Identity<ClassNameInput>,
+  highlightClass: identity as Identity<ClassNameInput>,
 }
 
 type BaseOptionRefiners = typeof BASE_OPTION_REFINERS
@@ -523,8 +523,8 @@ export const VIEW_ONLY_OPTION_REFINERS: {
   usesMinMaxTime: Boolean, // internal only
 
   // TODO: move over to view* prefix? will align with view* options like viewClass
-  class: identity as Identity<ClassNamesGenerator<SpecificViewData>>,
-  className: identity as Identity<ClassNamesGenerator<SpecificViewData>>,
+  class: identity as Identity<ClassNameGenerator<SpecificViewData>>,
+  className: identity as Identity<ClassNameGenerator<SpecificViewData>>,
   content: identity as Identity<CustomContentGenerator<SpecificViewData>>,
   didMount: identity as Identity<DidMountHandler<SpecificViewMountData>>,
   willUnmount: identity as Identity<WillUnmountHandler<SpecificViewMountData>>,

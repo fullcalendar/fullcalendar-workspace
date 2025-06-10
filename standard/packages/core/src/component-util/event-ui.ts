@@ -1,5 +1,5 @@
 import { Constraint, AllowFunc, normalizeConstraint } from '../structs/constraint.js'
-import { ClassNamesInput, joinArrayishClassNames } from '../util/html.js'
+import { ClassNameInput, joinArrayishClassNames } from '../util/html.js'
 import { CalendarContext } from '../CalendarContext.js'
 import { RawOptionsFromRefiners, RefinedOptionsFromRefiners, identity, Identity } from '../options.js'
 
@@ -15,8 +15,8 @@ export const EVENT_UI_REFINERS = {
   constraint: identity as Identity<any>, // Identity<ConstraintInput>, // circular reference. ts dies. event->constraint->event
   overlap: identity as Identity<boolean>,
   allow: identity as Identity<AllowFunc>,
-  class: identity as Identity<ClassNamesInput>,
-  className: identity as Identity<ClassNamesInput>,
+  class: identity as Identity<ClassNameInput>,
+  className: identity as Identity<ClassNameInput>,
   color: String,
   contrastColor: String,
 }
@@ -51,7 +51,7 @@ export interface EventUi {
   allows: AllowFunc[] // crappy name to indicate plural
   color: string
   contrastColor: string
-  className: ClassNamesInput
+  className: ClassNameInput
 }
 
 export type EventUiHash = { [defId: string]: EventUi }

@@ -1,9 +1,9 @@
-import { ClassNamesInput } from '@fullcalendar/core'
+import { ClassNameInput } from '@fullcalendar/core'
 import { Identity, identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core/internal'
 
 export const OPTION_REFINERS = {
-  timelineTopClass: identity as Identity<ClassNamesInput>,
-  timelineBottomClass: identity as Identity<ClassNamesInput>,
+  timelineTopClass: identity as Identity<ClassNameInput>,
+  timelineBottomClass: identity as Identity<ClassNameInput>,
 }
 
 type TimelineOptionRefiners = typeof OPTION_REFINERS

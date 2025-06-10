@@ -1,8 +1,8 @@
 import { CustomContentGenerator } from './internal.js'
-import { ClassNamesInput, joinArrayishClassNames } from './util/html.js'
+import { ClassNameInput, joinArrayishClassNames } from './util/html.js'
 import { getUnequalProps, mergeMaybePropsShallow, mergeMaybePropsDepth1 } from './util/object.js'
 
-type FuncishClassNames = ((data: any) => ClassNamesInput) | ClassNamesInput
+type FuncishClassNameInput = ((data: any) => ClassNameInput) | ClassNameInput
 
 const classNamesRe = /(^c|C)lassNames$/
 const contentRe = /Content$/
@@ -45,9 +45,9 @@ export function mergeRawOptions(optionSets): any {
 }
 
 export function joinFuncishClassNames(
-  input0: FuncishClassNames, // added to string first
-  input1: FuncishClassNames
-): FuncishClassNames {
+  input0: FuncishClassNameInput, // added to string first
+  input1: FuncishClassNameInput
+): FuncishClassNameInput {
   const isFunc0 = typeof input0 === 'function'
   const isFunc1 = typeof input1 === 'function'
 
@@ -60,7 +60,7 @@ export function joinFuncishClassNames(
     }
   }
 
-  return joinArrayishClassNames(input0 as ClassNamesInput, input1 as ClassNamesInput)
+  return joinArrayishClassNames(input0 as ClassNameInput, input1 as ClassNameInput)
 }
 
 export function mergeContentInjectors(

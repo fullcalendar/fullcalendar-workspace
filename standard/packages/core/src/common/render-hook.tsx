@@ -1,7 +1,7 @@
 /* eslint max-classes-per-file: off */
 
 import { ComponentChildren } from '../preact.js'
-import { ClassNamesInput } from '../util/html.js'
+import { ClassNameInput } from '../util/html.js'
 
 export type MountData<DisplayData> = DisplayData & { el: HTMLElement }
 export type DidMountHandler<TheMountData extends { el: HTMLElement }> = (mountData: TheMountData) => void
@@ -14,4 +14,4 @@ export interface ObjCustomContent {
 
 export type CustomContent = ComponentChildren | ObjCustomContent
 export type CustomContentGenerator<RenderProps> = CustomContent | ((renderProps: RenderProps, createElement: any) => (CustomContent | true))
-export type ClassNamesGenerator<RenderProps> = ClassNamesInput | ((renderProps: RenderProps) => ClassNamesInput)
+export type ClassNameGenerator<RenderProps> = ClassNameInput | ((renderProps: RenderProps) => ClassNameInput)
