@@ -22,7 +22,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
       view: viewApi,
     }
     let beforeClassNames: string = generateClassName(
-      options.listDayHeaderBeforeClassNames,
+      options.listDayHeaderBeforeClass,
       renderProps,
     )
 
@@ -36,7 +36,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
         }}
         renderProps={renderProps}
         generatorName={undefined}
-        classNameGenerator={options.listDayHeaderClassNames}
+        classNameGenerator={options.listDayHeaderClass}
         didMount={options.listDayHeaderDidMount}
         willUnmount={options.listDayHeaderWillUnmount}
       >

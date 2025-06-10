@@ -54,7 +54,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         generatorName="resourceAreaHeaderContent"
         customGenerator={colSpec.headerContent}
         defaultGenerator={colSpec.headerDefault}
-        classNameGenerator={colSpec.headerClassNames}
+        classNameGenerator={colSpec.headerClass}
         didMount={colSpec.headerDidMount}
         willUnmount={colSpec.headerWillUnmount}
       >
@@ -63,7 +63,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
             <div
               ref={this.innerElRef}
               className={joinArrayishClassNames(
-                generateClassName(colSpec.headerInnerClassNames, renderProps),
+                generateClassName(colSpec.headerInnerClass, renderProps),
                 classNames.rigid,
                 classNames.flexRow,
                 classNames.alignCenter,

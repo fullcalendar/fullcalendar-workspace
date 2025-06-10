@@ -95,7 +95,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
         generatorName="slotLabelContent"
         customGenerator={options.slotLabelContent}
         defaultGenerator={renderInnerContent}
-        classNameGenerator={options.slotLabelClassNames}
+        classNameGenerator={options.slotLabelClass}
         didMount={options.slotLabelDidMount}
         willUnmount={options.slotLabelWillUnmount}
       >
@@ -109,7 +109,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
                 : {} // don't bother with aria-hidden because parent already hidden
             }
             className={joinClassNames(
-              generateClassName(options.slotLabelInnerClassNames, renderProps),
+              generateClassName(options.slotLabelInnerClass, renderProps),
               classNames.rigid,
               props.isSticky && classNames.sticky,
             )}

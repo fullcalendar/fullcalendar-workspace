@@ -14,7 +14,7 @@ export class ResourceExpander extends BaseComponent<ResourceExpanderProps> {
   render() {
     const { props } = this
     const { options } = this.context
-    const classNameGenerator = options.resourceExpanderClassNames
+    const classNameGenerator = options.resourceExpanderClass
     const contentGenerator = options.resourceExpanderContent
 
     const renderProps: ResourceExpanderData = {

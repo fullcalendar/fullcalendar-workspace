@@ -50,7 +50,7 @@ interface MoreLinkContainerState {
 }
 
 /*
-IMPORTANT: caller is responsible for injecting moreLinkInnerClassNames,
+IMPORTANT: caller is responsible for injecting moreLinkInnerClass,
 either on root `classNames` or within inner element
 */
 export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, MoreLinkContainerState> {
@@ -92,10 +92,10 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   tag='div'
                   elRef={this.handleLinkEl}
                   className={joinClassNames(
-                    generateClassName( // will added to moreLinkClassNames
+                    generateClassName( // will added to moreLinkClass
                       props.display === 'row'
-                        ? options.rowMoreLinkClassNames // row
-                        : options.columnMoreLinkClassNames, // column
+                        ? options.rowMoreLinkClass // row
+                        : options.columnMoreLinkClass, // column
                       renderProps
                     ),
                     props.className,
@@ -123,7 +123,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                       ? renderMoreLinkText // row
                       : renderMoreLinkShortText // column
                   }
-                  classNameGenerator={options.moreLinkClassNames}
+                  classNameGenerator={options.moreLinkClass}
                   didMount={options.moreLinkDidMount}
                   willUnmount={options.moreLinkWillUnmount}
                 >
@@ -131,11 +131,11 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                     <InnerContent
                       tag='div'
                       className={joinClassNames(
-                        generateClassName(options.moreLinkInnerClassNames, renderProps),
+                        generateClassName(options.moreLinkInnerClass, renderProps),
                         generateClassName(
                           props.display === 'row'
-                            ? options.rowMoreLinkInnerClassNames // row
-                            : options.columnMoreLinkInnerClassNames, // column
+                            ? options.rowMoreLinkInnerClass // row
+                            : options.columnMoreLinkInnerClass, // column
                           renderProps
                         ),
                       )}

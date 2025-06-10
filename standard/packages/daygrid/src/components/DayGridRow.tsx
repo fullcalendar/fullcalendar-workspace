@@ -146,7 +146,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             : undefined // can't have label on non-role div
         }
         className={joinArrayishClassNames(
-          options.dayRowClassNames,
+          options.dayRowClass,
           props.className,
           classNames.flexRow,
           classNames.rel,
@@ -166,7 +166,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             generatorName="weekNumberContent"
             customGenerator={options.weekNumberContent}
             defaultGenerator={renderText}
-            classNameGenerator={options.weekNumberClassNames}
+            classNameGenerator={options.weekNumberClass}
             didMount={options.weekNumberDidMount}
             willUnmount={options.weekNumberWillUnmount}
           >
@@ -182,7 +182,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
                   'role': undefined, // HACK: a 'link' role can't be child of 'row' role
                   'aria-hidden': true, // HACK: never part of a11y tree because row already has label and role not allowed
                 }}
-                className={joinArrayishClassNames(options.weekNumberInnerClassNames)}
+                className={joinArrayishClassNames(options.weekNumberInnerClass)}
               />
             )}
           </ContentContainer>

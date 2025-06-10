@@ -3,7 +3,7 @@ import { Identity, identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners 
 
 export const OPTION_REFINERS = {
   allDaySlot: Boolean,
-  allDayDividerClassNames: identity as Identity<ClassNamesInput>,
+  allDayDividerClass: identity as Identity<ClassNamesInput>,
 }
 
 type TimeGridOptionRefiners = typeof OPTION_REFINERS

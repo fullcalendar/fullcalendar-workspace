@@ -65,7 +65,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         generatorName='resourceCellContent'
         customGenerator={colSpec.cellContent}
         defaultGenerator={renderResourceInner}
-        classNameGenerator={colSpec.cellClassNames}
+        classNameGenerator={colSpec.cellClass}
         didMount={colSpec.cellDidMount}
         willUnmount={colSpec.cellWillUnmount}
       >
@@ -73,7 +73,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
           <div
             ref={this.innerElRef}
             className={joinClassNames(
-              generateClassName(colSpec.cellInnerClassNames, renderProps),
+              generateClassName(colSpec.cellInnerClass, renderProps),
               classNames.rigid,
               classNames.flexRow,
               classNames.alignCenter,

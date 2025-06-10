@@ -46,7 +46,7 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
         renderProps={renderProps}
         generatorName="slotLaneContent"
         customGenerator={options.slotLaneContent}
-        classNameGenerator={options.slotLaneClassNames}
+        classNameGenerator={options.slotLaneClass}
         didMount={options.slotLaneDidMount}
         willUnmount={options.slotLaneWillUnmount}
       >
@@ -54,7 +54,7 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
           <InnerContent
             tag="div"
             className={joinArrayishClassNames(
-              options.slotLaneInnerClassNames,
+              options.slotLaneInnerClass,
               classNames.rigid,
             )}
             elRef={this.innerElRef}

@@ -30,7 +30,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
     return createElement(
       'div', {
         className: joinClassNames(
-          generateClassName(options.toolbarSectionClassNames, { name: props.name }),
+          generateClassName(options.toolbarSectionClass, { name: props.name }),
           classNames.flexRow,
           classNames.noShrink,
           classNames.alignCenter,
@@ -67,7 +67,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
             role='heading'
             aria-level={options.headingLevel}
             id={props.titleId}
-            className={joinArrayishClassNames(options.toolbarTitleClassNames)}
+            className={joinArrayishClassNames(options.toolbarTitleClass)}
           >{props.title}</div>,
         )
       } else if (customElement) {
@@ -89,7 +89,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
 
         let buttonDisplay = widget.buttonDisplay ?? options.buttonDisplay
         if (buttonDisplay === 'auto') {
-          buttonDisplay = (widget.buttonIconContent || widget.buttonIconClassNames)
+          buttonDisplay = (widget.buttonIconContent || widget.buttonIconClass)
             ? 'icon'
             : 'text'
         }
@@ -98,7 +98,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
         if (buttonDisplay !== 'text') {
           iconNode = (
             <ButtonIcon
-              classNameGenerator={widget.buttonIconClassNames}
+              classNameGenerator={widget.buttonIconClass}
               contentGenerator={widget.buttonIconContent}
             />
           )
@@ -129,12 +129,12 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
               onClick: widget.buttonClick,
             }}
             className={joinClassNames(
-              generateClassName(options.buttonClassNames, renderProps),
+              generateClassName(options.buttonClass, renderProps),
               !isDisabled && classNames.cursorPointer,
             )}
             renderProps={renderProps}
             generatorName={undefined}
-            classNameGenerator={widget.buttonClassNames}
+            classNameGenerator={widget.buttonClass}
             didMount={widget.buttonDidMount}
             willUnmount={widget.buttonWillUnmount}
           >{() => (
@@ -157,7 +157,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
         className: joinArrayishClassNames(
           classNames.flexRow,
           isOnlyButtons
-            ? options.buttonGroupClassNames
+            ? options.buttonGroupClass
             : classNames.alignCenter,
         ),
       }, ...children)

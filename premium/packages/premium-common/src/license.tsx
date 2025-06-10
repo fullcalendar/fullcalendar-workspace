@@ -32,7 +32,7 @@ export function buildLicenseWarning(context: CalendarContext) {
       return (
         <div
           className={joinArrayishClassNames(
-            options.popoverClassNames,
+            options.popoverClass,
             classNames.popoverZ,
             classNames.abs,
             classNames.tight, // no margin/padding
@@ -43,7 +43,7 @@ export function buildLicenseWarning(context: CalendarContext) {
           }}
         >
           <div className={joinArrayishClassNames(
-            options.popoverHeaderClassNames,
+            options.popoverHeaderClass,
             classNames.tight, // no margin/padding
           )}>
             <div style={{

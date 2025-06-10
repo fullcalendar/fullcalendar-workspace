@@ -54,8 +54,8 @@ export interface ResourceExpanderData {
 // -------------------------------------------------------------------------------------------------
 
 export interface ColHeaderRenderHooks {
-  headerClassNames?: ClassNamesGenerator<ResourceColumnHeaderData>
-  headerInnerClassNames?: ClassNamesGenerator<ResourceColumnHeaderData>
+  headerClass?: ClassNamesGenerator<ResourceColumnHeaderData>
+  headerInnerClass?: ClassNamesGenerator<ResourceColumnHeaderData>
   headerContent?: CustomContentGenerator<ResourceColumnHeaderData>
   headerDefault?: (renderProps: ResourceColumnHeaderData) => ComponentChild
   headerDidMount?: DidMountHandler<ResourceColumnHeaderMountData>
@@ -68,16 +68,16 @@ export interface ColSpec extends ColHeaderRenderHooks {
   width?: number | string // string for percentage like '50%'
   field?: string
 
-  cellClassNames?: ClassNamesGenerator<ResourceCellData>
-  cellInnerClassNames?: ClassNamesGenerator<ResourceCellData>
+  cellClass?: ClassNamesGenerator<ResourceCellData>
+  cellInnerClass?: ClassNamesGenerator<ResourceCellData>
   cellContent?: CustomContentGenerator<ResourceCellData>
   cellDidMount?: DidMountHandler<ResourceCellMountData>
   cellWillUnmount?: WillUnmountHandler<ResourceCellMountData>
 }
 
 export interface GroupLaneRenderHooks {
-  laneClassNames?: ClassNamesGenerator<ResourceCellData>
-  laneInnerClassNames?: ClassNamesGenerator<ResourceCellData>
+  laneClass?: ClassNamesGenerator<ResourceCellData>
+  laneInnerClass?: ClassNamesGenerator<ResourceCellData>
   laneContent?: CustomContentGenerator<ResourceCellData>
   laneDidMount?: DidMountHandler<ResourceCellMountData>
   laneWillUnmount?: WillUnmountHandler<ResourceCellMountData>
@@ -87,8 +87,8 @@ export interface GroupSpec extends GroupLaneRenderHooks { // best place for this
   field?: string
   order?: number
 
-  labelClassNames?: ClassNamesGenerator<ResourceCellData>
-  labelInnerClassNames?: ClassNamesGenerator<ResourceCellData>
+  labelClass?: ClassNamesGenerator<ResourceCellData>
+  labelInnerClass?: ClassNamesGenerator<ResourceCellData>
   labelContent?: CustomContentGenerator<ResourceCellData>
   labelDidMount?: DidMountHandler<ResourceCellMountData>
   labelWillUnmount?: WillUnmountHandler<ResourceCellMountData>

@@ -34,7 +34,7 @@ export const NowIndicatorLabelContainer = (props: NowIndicatorLabelContainerProp
           renderProps={renderProps}
           generatorName="nowIndicatorLabelContent"
           customGenerator={options.nowIndicatorLabelContent}
-          classNameGenerator={options.nowIndicatorLabelClassNames}
+          classNameGenerator={options.nowIndicatorLabelClass}
           didMount={options.nowIndicatorLabelDidMount}
           willUnmount={options.nowIndicatorLabelWillUnmount}
         />

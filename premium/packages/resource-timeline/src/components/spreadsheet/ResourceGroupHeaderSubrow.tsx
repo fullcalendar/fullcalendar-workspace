@@ -50,7 +50,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
         aria-level={props.level}
         aria-expanded={props.isExpanded}
         className={joinArrayishClassNames(
-          options.resourceAreaRowClassNames,
+          options.resourceAreaRowClass,
           props.className,
           props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
           classNames.flexRow,
@@ -76,7 +76,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
           generatorName="resourceGroupHeaderContent"
           customGenerator={spec.labelContent}
           defaultGenerator={renderCellInner}
-          classNameGenerator={spec.labelClassNames}
+          classNameGenerator={spec.labelClass}
           didMount={spec.labelDidMount}
           willUnmount={spec.labelWillUnmount}
         >
@@ -84,7 +84,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
             <div
               ref={this.innerElRef}
               className={joinClassNames(
-                generateClassName(spec.labelInnerClassNames, renderProps),
+                generateClassName(spec.labelInnerClass, renderProps),
                 classNames.rigid,
                 classNames.flexRow,
                 classNames.alignCenter,

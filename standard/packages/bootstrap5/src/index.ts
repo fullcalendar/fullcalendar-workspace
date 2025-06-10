@@ -4,28 +4,28 @@ import './index.css'
 // TODO: better solution for this
 // Also figure out resource-header-tier.ts
 const PLUGIN_SPECIFIC_SETTINGS: any = {
-  dayHeaderClassNames: (data) => getDayClassNames(data),
-  dayCellClassNames: (data) => getDayClassNames(data),
-  dayLaneClassNames: (data) => getDayClassNames(data),
+  dayHeaderClass: (data) => getDayClassNames(data),
+  dayCellClass: (data) => getDayClassNames(data),
+  dayLaneClass: (data) => getDayClassNames(data),
 }
 
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
     classNames: ['fc', 'fc-theme-bootstrap5'],
-    directionClassNames: (direction) => `fc-direction-${direction}`,
-    mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
-    viewClassNames: (data) => ['fc-view', `fc-${data.view.type}-view`, 'fc-view-bordered'],
-    popoverClassNames: ['fc-popover', 'popover'],
-    popoverHeaderClassNames: ['fc-popover-header', 'popover-header'],
-    popoverBodyClassNames: ['fc-popover-body', 'popover-body'],
-    buttonGroupClassNames: 'btn-group',
-    buttonClassNames: (data) => [
+    directionClass: (direction) => `fc-direction-${direction}`,
+    mediaTypeClass: (mediaType) => `fc-media-${mediaType}`,
+    viewClass: (data) => ['fc-view', `fc-${data.view.type}-view`, 'fc-view-bordered'],
+    popoverClass: ['fc-popover', 'popover'],
+    popoverHeaderClass: ['fc-popover-header', 'popover-header'],
+    popoverBodyClass: ['fc-popover-body', 'popover-body'],
+    buttonGroupClass: 'btn-group',
+    buttonClass: (data) => [
       'btn',
       'btn-primary',
       data.isSelected && 'active',
     ],
-    iconClassNames: 'bi',
+    iconClass: 'bi',
     icons: {
       close: { classNames: 'bi-x-lg' },
       prev: { classNames: (data) => `bi-chevron-${startSide(data.direction)}` },
@@ -34,7 +34,7 @@ export default createPlugin({
       nextYear: { classNames: (data) => `bi-chevron-double-${endSide(data.direction)}` },
     },
     dayCompactWidth: 75,
-    eventClassNames: (data) => [
+    eventClass: (data) => [
       data.event.display === 'background' && 'fc-bg-event',
       'fc-event',
       data.isMirror && 'fc-event-mirror',
@@ -49,65 +49,65 @@ export default createPlugin({
       data.isFuture && 'fc-event-future',
       data.isToday && 'fc-event-today',
     ],
-    eventInnerClassNames: 'fc-event-inner',
-    eventTimeClassNames: 'fc-event-time',
-    eventTitleClassNames: 'fc-event-title',
-    dayPopoverClassNames: (data) => getDayClassNames(data),
-    slotLabelClassNames: (data) => getSlotClassNames(data),
-    slotLaneClassNames: (data) => getSlotClassNames(data),
+    eventInnerClass: 'fc-event-inner',
+    eventTimeClass: 'fc-event-time',
+    eventTitleClass: 'fc-event-title',
+    dayPopoverClass: (data) => getDayClassNames(data),
+    slotLabelClass: (data) => getSlotClass(data),
+    slotLaneClass: (data) => getSlotClass(data),
     ...PLUGIN_SPECIFIC_SETTINGS,
   },
   views: {
     dayGrid: {
-      viewClassNames: 'fc-daygrid',
-      eventClassNames: getDayGridEventClassNames,
-      eventColorClassNames: getDayGridEventColorClassNames,
+      viewClass: 'fc-daygrid',
+      eventClass: getDayGridEventClass,
+      eventColorClass: getDayGridEventColorClass,
     },
     timeGrid: {
-      viewClassNames: 'fc-timegrid',
-      eventClassNames: (data) => (
-        data.event.allDay ? getDayGridEventClassNames(data) :
+      viewClass: 'fc-timegrid',
+      eventClass: (data) => (
+        data.event.allDay ? getDayGridEventClass(data) :
         data.event.display === 'background' ? '' :
         'fc-timegrid-event fc-v-event'
       ),
-      eventColorClassNames: (data) => (
-        data.event.allDay ? getDayGridEventColorClassNames(data) : ''
+      eventColorClass: (data) => (
+        data.event.allDay ? getDayGridEventColorClass(data) : ''
       ),
     },
     list: {
-      viewClassNames: 'fc-list',
-      eventClassNames: 'fc-list-event',
-      eventColorClassNames: 'fc-list-event-dot',
+      viewClass: 'fc-list',
+      eventClass: 'fc-list-event',
+      eventColorClass: 'fc-list-event-dot',
     },
     multiMonth: {
-      viewClassNames: 'fc-multimonth',
-      eventClassNames: getDayGridEventClassNames,
-      eventColorClassNames: getDayGridEventColorClassNames,
+      viewClass: 'fc-multimonth',
+      eventClass: getDayGridEventClass,
+      eventColorClass: getDayGridEventColorClass,
     },
     timeline: {
-      viewClassNames: 'fc-timeline',
-      eventClassNames: 'fc-timeline-event fc-h-event',
+      viewClass: 'fc-timeline',
+      eventClass: 'fc-timeline-event fc-h-event',
     },
     resourceDayGrid: {
-      viewClassNames: 'fc-resource-daygrid', // also inherits dayGrid
+      viewClass: 'fc-resource-daygrid', // also inherits dayGrid
     },
     resourceTimeGrid: {
-      viewClassNames: 'fc-resource-timegrid', // also inherits timeGrid
+      viewClass: 'fc-resource-timegrid', // also inherits timeGrid
     },
     resourceTimeline: {
-      viewClassNames: 'fc-resource-timeline', // also inherits timeline
+      viewClass: 'fc-resource-timeline', // also inherits timeline
     },
   },
 }) as PluginDef
 
-function getDayGridEventClassNames(data: EventDisplayData) {
+function getDayGridEventClass(data: EventDisplayData) {
   return ''
   // return data.event.display === 'background' ? '' :
   //   data.isListItem ? 'fc-daygrid-dot-event fc-daygrid-event' :
   //   'fc-daygrid-block-event fc-daygrid-event fc-h-event'
 }
 
-function getDayGridEventColorClassNames(data: EventDisplayData) {
+function getDayGridEventColorClass(data: EventDisplayData) {
   return ''
   // return data.isListItem && 'fc-daygrid-event-dot'
 }
@@ -130,7 +130,7 @@ function getDayClassNames(data: any) {
     ]
 }
 
-function getSlotClassNames(data: any) {
+function getSlotClass(data: any) {
   return data.isDisabled
     ? [
       'fc-slot',

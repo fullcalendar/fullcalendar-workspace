@@ -64,23 +64,23 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       isSpacious: false,
       timeClassName: '', // never display time
       titleClassName: joinClassNames(
-        generateClassName(options.eventTitleClassNames, subcontentRenderProps),
-        generateClassName(options.backgroundEventTitleClassNames, subcontentRenderProps),
+        generateClassName(options.eventTitleClass, subcontentRenderProps),
+        generateClassName(options.backgroundEventTitleClass, subcontentRenderProps),
       ),
     }
-    const outerClassNames = joinClassNames( // already includes eventClassNames below
-      generateClassName(options.backgroundEventClassNames, renderProps),
+    const outerClassName = joinClassNames( // already includes eventClass below
+      generateClassName(options.backgroundEventClass, renderProps),
       ...eventUi.classNames,
       classNames.fill,
       classNames.internalEvent,
       classNames.internalBgEvent,
     )
-    const colorClassNames = generateClassName(options.backgroundEventColorClassNames, renderProps)
+    const colorClassName = generateClassName(options.backgroundEventColorClass, renderProps)
 
     return (
       <ContentContainer
         tag='div'
-        className={outerClassNames}
+        className={outerClassName}
         style={{
           '--fc-event-color': eventUi.color,
           '--fc-event-contrast-color': eventUi.contrastColor,
@@ -90,14 +90,14 @@ export class BgEvent extends BaseComponent<BgEventProps> {
         renderProps={renderProps}
         generatorName="eventContent"
         customGenerator={options.eventContent}
-        classNameGenerator={options.eventClassNames}
+        classNameGenerator={options.eventClass}
         didMount={options.eventDidMount}
         willUnmount={options.eventWillUnmount}
       >
         {(InnerContent) => (
           <Fragment>
-            {colorClassNames && (
-              <div className={joinClassNames(colorClassNames, classNames.fill)} />
+            {colorClassName && (
+              <div className={joinClassNames(colorClassName, classNames.fill)} />
             )}
             <InnerContent tag='div' className={classNames.rel} />
           </Fragment>
@@ -135,8 +135,8 @@ function renderInnerContent(props: EventDisplayData) {
 export function renderFill(fillType: string, options: ViewOptionsRefined) {
   return (
     <div className={joinArrayishClassNames(
-      fillType === 'non-business' ? options.nonBusinessClassNames :
-        fillType === 'highlight' ? options.highlightClassNames : undefined,
+      fillType === 'non-business' ? options.nonBusinessClass :
+        fillType === 'highlight' ? options.highlightClass : undefined,
       classNames.fill,
     )} />
   )

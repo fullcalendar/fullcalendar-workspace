@@ -34,7 +34,7 @@ export class ListDayHeaderInner extends BaseComponent<ListDayHeaderInnerProps> {
         generatorName="listDayHeaderContent"
         customGenerator={options.listDayHeaderContent}
         defaultGenerator={renderText}
-        classNameGenerator={options.listDayHeaderInnerClassNames}
+        classNameGenerator={options.listDayHeaderInnerClass}
       />
     )
   }

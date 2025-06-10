@@ -53,7 +53,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
         aria-rowindex={props.rowIndex}
         aria-level={props.level}
         className={joinArrayishClassNames(
-          options.resourceAreaRowClassNames,
+          options.resourceAreaRowClass,
           props.className,
           classNames.flexRow,
           props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
@@ -81,7 +81,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
           generatorName="resourceGroupHeaderContent"
           customGenerator={colSpec.cellContent}
           defaultGenerator={renderGroupInner}
-          classNameGenerator={colSpec.cellClassNames}
+          classNameGenerator={colSpec.cellClass}
           didMount={colSpec.cellDidMount}
           willUnmount={colSpec.cellWillUnmount}
         >
@@ -89,7 +89,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
             <InnerContent
               tag="div"
               className={joinClassNames(
-                generateClassName(colSpec.cellInnerClassNames, renderProps),
+                generateClassName(colSpec.cellInnerClass, renderProps),
                 classNames.rigid,
                 classNames.stickyT,
               )}

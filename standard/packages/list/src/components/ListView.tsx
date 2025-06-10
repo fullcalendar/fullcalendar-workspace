@@ -106,14 +106,14 @@ export class ListView extends DateComponent<ViewProps> {
         generatorName="noEventsContent"
         customGenerator={options.noEventsContent}
         defaultGenerator={renderNoEventsInner}
-        classNameGenerator={options.noEventsClassNames}
+        classNameGenerator={options.noEventsClass}
         didMount={options.noEventsDidMount}
         willUnmount={options.noEventsWillUnmount}
       >
         {(InnerContent) => (
           <InnerContent
             tag="div"
-            className={generateClassName(options.noEventsInnerClassNames, renderProps)}
+            className={generateClassName(options.noEventsInnerClass, renderProps)}
           />
         )}
       </ContentContainer>

@@ -20,20 +20,20 @@ import {
 } from './public-types.js'
 
 export const OPTION_REFINERS = {
-  listDayClassNames: identity as Identity<ClassNamesGenerator<ListDayData>>,
+  listDayClass: identity as Identity<ClassNamesGenerator<ListDayData>>,
 
   listDayFormat: createFalsableFormatter, // defaults specified in list plugins
   listDaySideFormat: createFalsableFormatter, // "
 
   listDayHeaderDidMount: identity as Identity<DidMountHandler<ListDayHeaderMountData>>,
   listDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ListDayHeaderMountData>>,
-  listDayHeaderClassNames: identity as Identity<ClassNamesGenerator<ListDayHeaderData>>,
-  listDayHeaderBeforeClassNames: identity as Identity<ClassNamesGenerator<ListDayHeaderData>>,
-  listDayHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<ListDayHeaderInnerData>>,
+  listDayHeaderClass: identity as Identity<ClassNamesGenerator<ListDayHeaderData>>,
+  listDayHeaderBeforeClass: identity as Identity<ClassNamesGenerator<ListDayHeaderData>>,
+  listDayHeaderInnerClass: identity as Identity<ClassNamesGenerator<ListDayHeaderInnerData>>,
   listDayHeaderContent: identity as Identity<CustomContentGenerator<ListDayHeaderInnerData>>,
 
-  noEventsClassNames: identity as Identity<ClassNamesGenerator<NoEventsData>>,
-  noEventsInnerClassNames: identity as Identity<ClassNamesGenerator<NoEventsData>>,
+  noEventsClass: identity as Identity<ClassNamesGenerator<NoEventsData>>,
+  noEventsInnerClass: identity as Identity<ClassNamesGenerator<NoEventsData>>,
   noEventsContent: identity as Identity<CustomContentGenerator<NoEventsData>>,
   noEventsDidMount: identity as Identity<DidMountHandler<NoEventsMountData>>,
   noEventsWillUnmount: identity as Identity<WillUnmountHandler<NoEventsMountData>>,

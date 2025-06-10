@@ -15,8 +15,8 @@ export function processColOptions(options: ViewOptionsRefined) {
     })
   } else if (options.resourceAreaHeaderContent) { // weird way to determine if content
     superHeaderRendering = {
-      headerClassNames: options.resourceAreaHeaderClassNames,
-      headerInnerClassNames: options.resourceAreaHeaderInnerClassNames,
+      headerClass: options.resourceAreaHeaderClass,
+      headerInnerClass: options.resourceAreaHeaderInnerClass,
       headerContent: options.resourceAreaHeaderContent,
       headerDidMount: options.resourceAreaHeaderDidMount,
       headerWillUnmount: options.resourceAreaHeaderWillUnmount,
@@ -38,14 +38,14 @@ export function processColOptions(options: ViewOptionsRefined) {
           : false
       ),
 
-      headerClassNames: joinFuncishClassNames(options.resourceAreaHeaderClassNames, colSpec.headerClassNames),
-      headerInnerClassNames: joinFuncishClassNames(options.resourceAreaHeaderInnerClassNames, colSpec.headerInnerClassNames),
+      headerClass: joinFuncishClassNames(options.resourceAreaHeaderClass, colSpec.headerClass),
+      headerInnerClass: joinFuncishClassNames(options.resourceAreaHeaderInnerClass, colSpec.headerInnerClass),
       headerContent: mergeContentInjectors(options.resourceAreaHeaderContent, colSpec.headerContent),
       headerDidMount: mergeLifecycleCallbacks(options.resourceAreaHeaderDidMount, colSpec.headerDidMount),
       headerWillUnmount: mergeLifecycleCallbacks(options.resourceAreaHeaderWillUnmount, colSpec.headerWillUnmount),
 
-      cellClassNames: joinFuncishClassNames(options.resourceCellClassNames, colSpec.cellClassNames),
-      cellInnerClassNames: joinFuncishClassNames(options.resourceCellInnerClassNames, colSpec.cellInnerClassNames),
+      cellClass: joinFuncishClassNames(options.resourceCellClass, colSpec.cellClass),
+      cellInnerClass: joinFuncishClassNames(options.resourceCellInnerClass, colSpec.cellInnerClass),
       cellContent: mergeContentInjectors(options.resourceCellContent, colSpec.cellContent),
       cellDidMount: mergeLifecycleCallbacks(options.resourceCellDidMount, colSpec.cellDidMount),
       cellWillUnmount: mergeLifecycleCallbacks(options.resourceCellWillUnmount, colSpec.cellWillUnmount),
@@ -61,14 +61,14 @@ export function processColOptions(options: ViewOptionsRefined) {
       groupSpecs.push({
         field: hGroupField,
 
-        labelClassNames: options.resourceGroupHeaderClassNames,
-        labelInnerClassNames: options.resourceGroupHeaderInnerClassNames,
+        labelClass: options.resourceGroupHeaderClass,
+        labelInnerClass: options.resourceGroupHeaderInnerClass,
         labelContent: options.resourceGroupHeaderContent,
         labelDidMount: options.resourceGroupHeaderDidMount,
         labelWillUnmount: options.resourceGroupHeaderWillUnmount,
 
-        laneClassNames: options.resourceGroupLaneClassNames,
-        laneInnerClassNames: options.resourceGroupLaneInnerClassNames,
+        laneClass: options.resourceGroupLaneClass,
+        laneInnerClass: options.resourceGroupLaneInnerClass,
         laneContent: options.resourceGroupLaneContent,
         laneDidMount: options.resourceGroupLaneDidMount,
         laneWillUnmount: options.resourceGroupLaneWillUnmount,

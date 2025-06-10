@@ -9,8 +9,8 @@ export const OPTION_REFINERS = {
   singleMonthTitleFormat: createFormatter,
   singleMonthDidMount: identity as Identity<DidMountHandler<SingleMonthMountData>>,
   singleMonthWillUnmount: identity as Identity<WillUnmountHandler<SingleMonthMountData>>,
-  singleMonthClassNames: identity as Identity<ClassNamesGenerator<SingleMonthData>>,
-  singleMonthTitleClassNames: identity as Identity<ClassNamesGenerator<SingleMonthTitleData>>,
+  singleMonthClass: identity as Identity<ClassNamesGenerator<SingleMonthData>>,
+  singleMonthTitleClass: identity as Identity<ClassNamesGenerator<SingleMonthTitleData>>,
 }
 
 type MultiMonthOptionRefiners = typeof OPTION_REFINERS

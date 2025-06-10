@@ -155,7 +155,7 @@ describe('event resources', () => {
       resources: [{
         id: '1',
         title: 'room 1',
-        eventClassNames: 'niceevents',
+        eventClass: 'niceevents',
         eventColor: 'red',
         eventContrastColor: 'green',
       }],

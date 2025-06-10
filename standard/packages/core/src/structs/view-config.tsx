@@ -67,7 +67,7 @@ function createViewHookComponent(options: ViewOptions) {
         <ContentContainer
           tag="div"
           className={
-            generateClassName(options.viewClassNames, {
+            generateClassName(options.viewClass, {
               view: context.viewApi,
             })
           }

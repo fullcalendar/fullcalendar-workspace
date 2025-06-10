@@ -50,7 +50,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         attrs={{
           'data-date': formatDayString(startDate),
         }}
-        className={generateClassName(options.dayPopoverClassNames, dateMeta)}
+        className={generateClassName(options.dayPopoverClass, dateMeta)}
         parentEl={props.parentEl}
         alignEl={props.alignEl}
         alignParentTop={props.alignParentTop}

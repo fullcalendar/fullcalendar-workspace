@@ -22,7 +22,7 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
     return (
       <div
         className={joinArrayishClassNames(
-          generateClassName(options.toolbarClassNames, {
+          generateClassName(options.toolbarClass, {
             name: props.name,
             borderlessX: props.borderlessX,
           }),

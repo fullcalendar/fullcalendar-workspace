@@ -141,7 +141,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               {/* HEADER
               ---------------------------------------------------------------------------------- */}
               <div className={joinClassNames(
-                generateClassName(options.viewHeaderClassNames, {
+                generateClassName(options.viewHeaderClass, {
                   isSticky: stickyHeaderDates,
                 }),
                 props.borderlessX && classNames.borderlessX,
@@ -189,7 +189,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   {Boolean(endScrollbarWidth) && (
                     <div
                       className={joinArrayishClassNames(
-                        options.fillerClassNames,
+                        options.fillerClass,
                         classNames.borderOnlyS,
                       )}
                       style={{ minWidth: endScrollbarWidth }}
@@ -197,7 +197,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   )}
                 </Scroller>
                 <div
-                  className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+                  className={joinArrayishClassNames(options.slotLabelDividerClass)}
                 />
               </div>
 
@@ -211,7 +211,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   props.forPrint // prevents blank space in print-view on Safari
                 }
                 className={joinClassNames(
-                  generateClassName(options.viewBodyClassNames, {}),
+                  generateClassName(options.viewBodyClass, {}),
                   props.borderlessX && classNames.borderlessX,
                   classNames.flexCol,
                   verticalScrolling && classNames.liquid,
@@ -256,7 +256,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   />
                   <div
                     className={joinArrayishClassNames(
-                      options.timelineTopClassNames,
+                      options.timelineTopClass,
                     )}
                   />
                   <TimelineFg
@@ -276,7 +276,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   />
                   <div
                     className={joinArrayishClassNames(
-                      options.timelineBottomClassNames,
+                      options.timelineBottomClass,
                     )}
                   />
                   {enableNowIndicator && (

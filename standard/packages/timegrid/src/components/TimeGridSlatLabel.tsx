@@ -80,7 +80,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
       return (
         <div
           className={joinClassNames(
-            generateClassName(options.slotLabelClassNames, renderProps),
+            generateClassName(options.slotLabelClass, renderProps),
             className,
           )}
         />
@@ -98,7 +98,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
         generatorName="slotLabelContent"
         customGenerator={options.slotLabelContent}
         defaultGenerator={renderInnerContent}
-        classNameGenerator={options.slotLabelClassNames}
+        classNameGenerator={options.slotLabelClass}
         didMount={options.slotLabelDidMount}
         willUnmount={options.slotLabelWillUnmount}
       >
@@ -106,7 +106,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
           <InnerContent
             tag="div"
             className={joinClassNames(
-              generateClassName(options.slotLabelInnerClassNames, renderProps),
+              generateClassName(options.slotLabelInnerClass, renderProps),
               classNames.rigid,
             )}
             elRef={this.innerElRef}

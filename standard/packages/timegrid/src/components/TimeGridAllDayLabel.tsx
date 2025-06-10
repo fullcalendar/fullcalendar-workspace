@@ -46,7 +46,7 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
         generatorName="allDayHeaderContent"
         customGenerator={options.allDayHeaderContent}
         defaultGenerator={renderAllDayInner}
-        classNameGenerator={options.allDayHeaderClassNames}
+        classNameGenerator={options.allDayHeaderClass}
         didMount={options.allDayHeaderDidMount}
         willUnmount={options.allDayHeaderWillUnmount}
       >
@@ -54,7 +54,7 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
           <InnerContent
             tag='div'
             className={joinClassNames(
-              generateClassName(options.allDayHeaderInnerClassNames, renderProps),
+              generateClassName(options.allDayHeaderInnerClass, renderProps),
               classNames.rigid,
             )}
             elRef={this.innerElRef}

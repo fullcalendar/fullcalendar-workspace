@@ -167,7 +167,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
         {options.dayHeaders && (
           <div
             className={joinClassNames(
-              generateClassName(options.viewHeaderClassNames, {
+              generateClassName(options.viewHeaderClass, {
                 isSticky: stickyHeaderDates,
               }),
               props.borderlessX && classNames.borderlessX,
@@ -189,7 +189,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     role='row'
                     aria-rowindex={tierNum + 1}
                     className={joinArrayishClassNames(
-                      options.dayHeaderRowClassNames,
+                      options.dayHeaderRowClass,
                       classNames.flexRow,
                       classNames.contentBox,
                       tierNum < props.headerTiers.length - 1
@@ -219,7 +219,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 ))}
               </div>
               <div
-                className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+                className={joinArrayishClassNames(options.slotLabelDividerClass)}
               />
               {/* HEADER / main (horizontal scroller)
               -------------------------------------------------------------------------------------*/}
@@ -252,7 +252,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 {Boolean(endScrollbarWidth) && (
                   <div
                     className={joinArrayishClassNames(
-                      options.fillerClassNames,
+                      options.fillerClass,
                       classNames.borderOnlyS,
                     )}
                     style={{ minWidth: endScrollbarWidth }}
@@ -260,13 +260,13 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 )}
               </Scroller>
             </div>
-            <div className={joinArrayishClassNames(options.dayHeaderDividerClassNames)} />
+            <div className={joinArrayishClassNames(options.dayHeaderDividerClass)} />
           </div>
         )}
         <div // the "body"
           role='rowgroup'
           className={joinClassNames(
-            generateClassName(options.viewBodyClassNames, {}),
+            generateClassName(options.viewBodyClass, {}),
             props.borderlessX && classNames.borderlessX,
             classNames.flexCol,
             verticalScrolling && classNames.liquid,
@@ -287,7 +287,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   isCompact={cellIsCompact}
                 />
                 <div
-                  className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+                  className={joinArrayishClassNames(options.slotLabelDividerClass)}
                 />
                 {/* ALL-DAY / main (horizontal scroller)
                 -----------------------------------------------------------------------------------*/}
@@ -330,7 +330,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   {Boolean(endScrollbarWidth) && (
                     <div
                       className={joinArrayishClassNames(
-                        options.fillerClassNames,
+                        options.fillerClass,
                         classNames.borderOnlyS,
                       )}
                       style={{ minWidth: endScrollbarWidth }}
@@ -339,7 +339,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 </Scroller>
               </div>
               {/* TODO: don't show div if no classname */}
-              <div className={joinArrayishClassNames(options.allDayDividerClassNames)} />
+              <div className={joinArrayishClassNames(options.allDayDividerClass)} />
             </Fragment>
           )}
           <div
@@ -415,7 +415,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     {Boolean(rowsNotExpanding || bottomScrollbarWidth) && (
                       <div
                         class={joinArrayishClassNames(
-                          options.fillerClassNames,
+                          options.fillerClass,
                           classNames.borderOnlyT,
                           rowsNotExpanding && classNames.liquid,
                         )}
@@ -429,7 +429,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               )}
             </Scroller>
             <div
-              className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+              className={joinArrayishClassNames(options.slotLabelDividerClass)}
             />
             {/* SLATS / main (scroller)
             ---------------------------------------------------------------------------------------*/}
@@ -518,7 +518,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       {rowsNotExpanding && (
                         <div
                           class={joinArrayishClassNames(
-                            options.fillerClassNames,
+                            options.fillerClass,
                             classNames.borderOnlyT,
                             classNames.liquid,
                           )}

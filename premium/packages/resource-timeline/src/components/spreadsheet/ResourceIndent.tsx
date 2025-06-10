@@ -15,7 +15,7 @@ export class ResourceIndent extends BaseComponent<ResourceIndentProps> {
     return (
       <div
         className={joinArrayishClassNames(
-          context.options.resourceIndentClassNames,
+          context.options.resourceIndentClass,
           classNames.noShrink,
           classNames.flexRow,
           classNames.justifyEnd,

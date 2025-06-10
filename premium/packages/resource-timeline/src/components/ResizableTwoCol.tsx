@@ -57,7 +57,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
           {props.startContent}
         </div>
         <div
-          className={joinArrayishClassNames(options.resourceAreaDividerClassNames)}
+          className={joinArrayishClassNames(options.resourceAreaDividerClass)}
           // TODO: make a className somehow?...
           // TODO: what if not resizable?
           style={{ cursor: 'col-resize' }}

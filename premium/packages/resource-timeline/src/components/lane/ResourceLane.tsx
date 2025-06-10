@@ -96,7 +96,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         renderProps={renderProps}
         generatorName="resourceLaneContent"
         customGenerator={options.resourceLaneContent}
-        classNameGenerator={options.resourceLaneClassNames}
+        classNameGenerator={options.resourceLaneClass}
         didMount={options.resourceLaneDidMount}
         willUnmount={options.resourceLaneWillUnmount}
       >
@@ -129,7 +129,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
             />
             <div // TODO: track height
               className={joinArrayishClassNames(
-                options.resourceLaneTopClassNames,
+                options.resourceLaneTopClass,
               )}
             />
             <TimelineFg
@@ -153,7 +153,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
             />
             <div
               ref={this.handleFooterEl}
-              className={generateClassName(options.resourceLaneBottomClassNames, {
+              className={generateClassName(options.resourceLaneBottomClass, {
                 isCompact: !options.eventOverlap,
               })}
             />

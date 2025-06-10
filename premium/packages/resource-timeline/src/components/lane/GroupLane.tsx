@@ -65,7 +65,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
         renderProps={renderProps}
         generatorName="resourceGroupLaneContent"
         customGenerator={groupSpec.laneContent}
-        classNameGenerator={groupSpec.laneClassNames}
+        classNameGenerator={groupSpec.laneClass}
         didMount={groupSpec.laneDidMount}
         willUnmount={groupSpec.laneWillUnmount}
       >
@@ -76,7 +76,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
               role: 'gridcell',
             }}
             className={joinClassNames(
-              generateClassName(groupSpec.laneInnerClassNames, renderProps),
+              generateClassName(groupSpec.laneInnerClass, renderProps),
               classNames.flexCol,
               classNames.liquid,
             )}

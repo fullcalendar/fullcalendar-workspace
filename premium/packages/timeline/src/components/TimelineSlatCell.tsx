@@ -87,7 +87,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
         renderProps={renderProps}
         generatorName="slotLaneContent"
         customGenerator={options.slotLaneContent}
-        classNameGenerator={options.slotLaneClassNames}
+        classNameGenerator={options.slotLaneClass}
         didMount={options.slotLaneDidMount}
         willUnmount={options.slotLaneWillUnmount}
       >
@@ -95,7 +95,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           <InnerContent
             tag="div"
             className={joinArrayishClassNames(
-              options.slotLaneInnerClassNames,
+              options.slotLaneInnerClass,
               classNames.rigid,
             )}
             style={{

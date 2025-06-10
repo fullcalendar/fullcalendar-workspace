@@ -34,7 +34,7 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
         role={props.role as any /* !!! */}
         aria-rowindex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
         className={joinArrayishClassNames(
-          options.dayHeaderRowClassNames,
+          options.dayHeaderRowClass,
           props.className,
           classNames.flexRow,
           classNames.contentBox,

@@ -110,8 +110,8 @@ export function buildDateRenderConfig(context: ViewContext): CellRenderConfig<Da
   return {
     generatorName: 'dayHeaderContent',
     customGenerator: options.dayHeaderContent,
-    classNameGenerator: options.dayHeaderClassNames,
-    innerClassNameGenerator: options.dayHeaderInnerClassNames,
+    classNameGenerator: options.dayHeaderClass,
+    innerClassNameGenerator: options.dayHeaderInnerClass,
     didMount: options.dayHeaderDidMount,
     willUnmount: options.dayHeaderWillUnmount,
   }

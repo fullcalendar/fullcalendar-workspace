@@ -6,24 +6,24 @@ export const OPTION_REFINERS = {
   dayHeaders: Boolean,
   dayHeaderFormat: createFormatter,
 
-  dayHeaderClassNames: identity as Identity<ClassNamesGenerator<DayHeaderData>>,
-  dayHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<DayHeaderData>>,
+  dayHeaderClass: identity as Identity<ClassNamesGenerator<DayHeaderData>>,
+  dayHeaderInnerClass: identity as Identity<ClassNamesGenerator<DayHeaderData>>,
   dayHeaderContent: identity as Identity<CustomContentGenerator<DayHeaderData>>,
   dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderMountData>>,
   dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderMountData>>,
 
-  dayHeaderDividerClassNames: identity as Identity<ClassNamesInput>,
-  dayHeaderRowClassNames: identity as Identity<ClassNamesInput>,
-  dayRowClassNames: identity as Identity<ClassNamesInput>,
+  dayHeaderDividerClass: identity as Identity<ClassNamesInput>,
+  dayHeaderRowClass: identity as Identity<ClassNamesInput>,
+  dayRowClass: identity as Identity<ClassNamesInput>,
 
   dayCellDidMount: identity as Identity<DidMountHandler<DayCellMountData>>,
   dayCellWillUnmount: identity as Identity<WillUnmountHandler<DayCellMountData>>,
-  dayCellClassNames: identity as Identity<ClassNamesGenerator<DayCellData>>,
-  dayCellInnerClassNames: identity as Identity<ClassNamesGenerator<DayCellData>>,
+  dayCellClass: identity as Identity<ClassNamesGenerator<DayCellData>>,
+  dayCellInnerClass: identity as Identity<ClassNamesGenerator<DayCellData>>,
   dayCellTopContent: identity as Identity<CustomContentGenerator<DayCellData>>,
-  dayCellTopClassNames: identity as Identity<ClassNamesGenerator<DayCellData>>,
-  dayCellTopInnerClassNames: identity as Identity<ClassNamesGenerator<DayCellData>>,
-  dayCellBottomClassNames: identity as Identity<ClassNamesGenerator<DayCellData>>,
+  dayCellTopClass: identity as Identity<ClassNamesGenerator<DayCellData>>,
+  dayCellTopInnerClass: identity as Identity<ClassNamesGenerator<DayCellData>>,
+  dayCellBottomClass: identity as Identity<ClassNamesGenerator<DayCellData>>,
 }
 
 type DayGridOptionRefiners = typeof OPTION_REFINERS

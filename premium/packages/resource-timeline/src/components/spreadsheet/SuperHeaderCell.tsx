@@ -45,7 +45,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         generatorName="resourceAreaHeaderContent"
         customGenerator={renderHooks.headerContent}
         defaultGenerator={renderHooks.headerDefault}
-        classNameGenerator={renderHooks.headerClassNames}
+        classNameGenerator={renderHooks.headerClass}
         didMount={renderHooks.headerDidMount}
         willUnmount={renderHooks.headerWillUnmount}
       >
@@ -53,7 +53,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           <div
             ref={this.innerElRef}
             className={joinClassNames(
-              generateClassName(renderHooks.headerInnerClassNames, renderProps),
+              generateClassName(renderHooks.headerInnerClass, renderProps),
               classNames.rigid,
               classNames.flexRow,
               classNames.alignCenter,

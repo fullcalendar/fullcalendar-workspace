@@ -99,25 +99,25 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isSpacious: props.isSpacious || false,
       level: props.level || 0,
       timeClassName: joinClassNames(
-        generateClassName(options.eventTimeClassNames, subcontentRenderProps),
-        isBlock && generateClassName(options.blockEventTimeClassNames, subcontentRenderProps),
-        props.display === 'row' && generateClassName(options.rowEventTimeClassNames, subcontentRenderProps),
-        props.display === 'column' && generateClassName(options.columnEventTimeClassNames, subcontentRenderProps),
-        props.display === 'list-item' && generateClassName(options.listItemEventTimeClassNames, subcontentRenderProps),
+        generateClassName(options.eventTimeClass, subcontentRenderProps),
+        isBlock && generateClassName(options.blockEventTimeClass, subcontentRenderProps),
+        props.display === 'row' && generateClassName(options.rowEventTimeClass, subcontentRenderProps),
+        props.display === 'column' && generateClassName(options.columnEventTimeClass, subcontentRenderProps),
+        props.display === 'list-item' && generateClassName(options.listItemEventTimeClass, subcontentRenderProps),
       ),
       titleClassName: joinClassNames(
-        generateClassName(options.eventTitleClassNames, subcontentRenderProps),
-        isBlock && generateClassName(options.blockEventTitleClassNames, subcontentRenderProps),
-        props.display === 'row' && generateClassName(options.rowEventTitleClassNames, subcontentRenderProps),
-        props.display === 'column' && generateClassName(options.columnEventTitleClassNames, subcontentRenderProps),
-        props.display === 'list-item' && generateClassName(options.listItemEventTitleClassNames, subcontentRenderProps),
+        generateClassName(options.eventTitleClass, subcontentRenderProps),
+        isBlock && generateClassName(options.blockEventTitleClass, subcontentRenderProps),
+        props.display === 'row' && generateClassName(options.rowEventTitleClass, subcontentRenderProps),
+        props.display === 'column' && generateClassName(options.columnEventTitleClass, subcontentRenderProps),
+        props.display === 'list-item' && generateClassName(options.listItemEventTitleClass, subcontentRenderProps),
       ),
     }
-    const outerClassNames = joinClassNames( // already includes eventClassNames below
-      isBlock && generateClassName(options.blockEventClassNames, renderProps),
-      props.display === 'row' && generateClassName(options.rowEventClassNames, renderProps),
-      props.display === 'column' && generateClassName(options.columnEventClassNames, renderProps),
-      props.display === 'list-item' && generateClassName(options.listItemEventClassNames, renderProps),
+    const outerClassName = joinClassNames( // already includes eventClass below
+      isBlock && generateClassName(options.blockEventClass, renderProps),
+      props.display === 'row' && generateClassName(options.rowEventClass, renderProps),
+      props.display === 'column' && generateClassName(options.columnEventClass, renderProps),
+      props.display === 'list-item' && generateClassName(options.listItemEventClass, renderProps),
       ...eventUi.classNames,
       props.className,
       props.display === 'column'
@@ -130,33 +130,33 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       renderProps.isSelected && classNames.internalEventSelected,
       (renderProps.isStartResizable || renderProps.isEndResizable) && classNames.internalEventResizable,
     )
-    const beforeClassNames = joinClassNames(
-      generateClassName(options.eventBeforeClassNames, renderProps),
-      isBlock && generateClassName(options.blockEventBeforeClassNames, renderProps),
-      props.display === 'row' && generateClassName(options.rowEventBeforeClassNames, renderProps),
-      props.display === 'column' && generateClassName(options.columnEventBeforeClassNames, renderProps),
-      props.display === 'list-item' && generateClassName(options.listItemEventBeforeClassNames, renderProps),
+    const beforeClassName = joinClassNames(
+      generateClassName(options.eventBeforeClass, renderProps),
+      isBlock && generateClassName(options.blockEventBeforeClass, renderProps),
+      props.display === 'row' && generateClassName(options.rowEventBeforeClass, renderProps),
+      props.display === 'column' && generateClassName(options.columnEventBeforeClass, renderProps),
+      props.display === 'list-item' && generateClassName(options.listItemEventBeforeClass, renderProps),
     )
-    const afterClassNames = joinClassNames(
-      generateClassName(options.eventAfterClassNames, renderProps),
-      isBlock && generateClassName(options.blockEventAfterClassNames, renderProps),
-      props.display === 'row' && generateClassName(options.rowEventAfterClassNames, renderProps),
-      props.display === 'column' && generateClassName(options.columnEventAfterClassNames, renderProps),
-      props.display === 'list-item' && generateClassName(options.listItemEventAfterClassNames, renderProps),
+    const afterClassName = joinClassNames(
+      generateClassName(options.eventAfterClass, renderProps),
+      isBlock && generateClassName(options.blockEventAfterClass, renderProps),
+      props.display === 'row' && generateClassName(options.rowEventAfterClass, renderProps),
+      props.display === 'column' && generateClassName(options.columnEventAfterClass, renderProps),
+      props.display === 'list-item' && generateClassName(options.listItemEventAfterClass, renderProps),
     )
-    const colorClassNames = joinClassNames(
-      generateClassName(options.eventColorClassNames, renderProps),
-      isBlock && generateClassName(options.blockEventColorClassNames, renderProps),
-      props.display === 'row' && generateClassName(options.rowEventColorClassNames, renderProps),
-      props.display === 'column' && generateClassName(options.columnEventColorClassNames, renderProps),
-      props.display === 'list-item' && generateClassName(options.listItemEventColorClassNames, renderProps),
+    const colorClassName = joinClassNames(
+      generateClassName(options.eventColorClass, renderProps),
+      isBlock && generateClassName(options.blockEventColorClass, renderProps),
+      props.display === 'row' && generateClassName(options.rowEventColorClass, renderProps),
+      props.display === 'column' && generateClassName(options.columnEventColorClass, renderProps),
+      props.display === 'list-item' && generateClassName(options.listItemEventColorClass, renderProps),
     )
-    const innerClassNames = joinClassNames(
-      generateClassName(options.eventInnerClassNames, renderProps),
-      isBlock && generateClassName(options.blockEventInnerClassNames, renderProps),
-      props.display === 'row' && generateClassName(options.rowEventInnerClassNames, renderProps),
-      props.display === 'column' && generateClassName(options.columnEventInnerClassNames, renderProps),
-      props.display === 'list-item' && generateClassName(options.listItemEventInnerClassNames, renderProps),
+    const innerClassName = joinClassNames(
+      generateClassName(options.eventInnerClass, renderProps),
+      isBlock && generateClassName(options.blockEventInnerClass, renderProps),
+      props.display === 'row' && generateClassName(options.rowEventInnerClass, renderProps),
+      props.display === 'column' && generateClassName(options.columnEventInnerClass, renderProps),
+      props.display === 'list-item' && generateClassName(options.listItemEventInnerClass, renderProps),
       !props.disableLiquid && classNames.liquid, // timegrid hack
     )
 
@@ -167,7 +167,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
           ...props.attrs,
           ...attrs,
         }}
-        className={outerClassNames}
+        className={outerClassName}
         style={{
           '--fc-event-color': eventUi.color,
           '--fc-event-contrast-color': eventUi.contrastColor,
@@ -177,7 +177,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
         generatorName="eventContent"
         customGenerator={options.eventContent}
         defaultGenerator={renderInnerContent}
-        classNameGenerator={options.eventClassNames}
+        classNameGenerator={options.eventClass}
         didMount={options.eventDidMount}
         willUnmount={options.eventWillUnmount}
       >
@@ -194,10 +194,10 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
               />
             )}
             {/* "before" element (resizer or left-arrow) */}
-            {beforeClassNames && (
+            {beforeClassName && (
               <div
                 className={joinClassNames(
-                  beforeClassNames,
+                  beforeClassName,
                   renderProps.isStartResizable && joinClassNames(
                     props.display === 'column'
                       ? classNames.cursorResizeT
@@ -214,19 +214,19 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
               </div>
             )}
             {/* color element */}
-            {colorClassNames && (
-              <div className={colorClassNames} />
+            {colorClassName && (
+              <div className={colorClassName} />
             )}
             {/* inner element */}
             <InnerContent
               tag="div"
-              className={innerClassNames}
+              className={innerClassName}
             />
             {/* "after" element (resizer or left-arrow) */}
-            {afterClassNames && (
+            {afterClassName && (
               <div
                 className={joinClassNames(
-                  afterClassNames,
+                  afterClassName,
                   renderProps.isEndResizable && joinClassNames(
                     props.display === 'column'
                       ? classNames.cursorResizeB

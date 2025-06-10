@@ -112,7 +112,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
           role='gridcell'
           aria-disabled
           className={joinClassNames(
-            generateClassName(options.dayLaneClassNames, renderProps),
+            generateClassName(options.dayLaneClass, renderProps),
             baseClassName,
           )}
           style={baseStyle}
@@ -121,7 +121,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     }
 
     const innerClassName = joinClassNames(
-      generateClassName(options.dayLaneInnerClassNames, renderProps),
+      generateClassName(options.dayLaneInnerClass, renderProps),
       !isSimple && classNames.fill,
     )
 
@@ -141,7 +141,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         renderProps={renderProps}
         generatorName="dayLaneContent"
         customGenerator={options.dayLaneContent}
-        classNameGenerator={options.dayLaneClassNames}
+        classNameGenerator={options.dayLaneClass}
         didMount={options.dayLaneDidMount}
         willUnmount={options.dayLaneWillUnmount}
       >

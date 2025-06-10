@@ -53,7 +53,7 @@ export function buildNavLinkAttrs(
     'role': ('link' as any), // TODO
     'aria-label': formatWithOrdinals(options.navLinkHint, [dateStr, zonedDate], dateStr),
     'className': joinArrayishClassNames(
-      options.navLinkClassNames,
+      options.navLinkClass,
       classNames.cursorPointer,
       classNames.internalNavLink,
     ),

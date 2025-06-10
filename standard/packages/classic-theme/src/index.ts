@@ -10,14 +10,14 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/resource-daygrid'
 import {} from '@fullcalendar/resource-timeline'
 
-const dayGridBlockEventClassNames = 'fc-daygrid-block-event fc-daygrid-event fc-event-x'
-const dayGridListItemEventClassNames = 'fc-daygrid-dot-event fc-daygrid-event fc-event-x'
+const dayGridBlockEventClass = 'fc-daygrid-block-event fc-daygrid-event fc-event-x'
+const dayGridListItemEventClass = 'fc-daygrid-dot-event fc-daygrid-event fc-event-x'
 
 const dayGridCommon = {
-  rowEventClassNames: dayGridBlockEventClassNames,
-  listEventClassNames: dayGridListItemEventClassNames,
-  weekNumberClassNames: 'fc-daygrid-week-number',
-  moreLinkClassNames: 'fc-daygrid-more-link',
+  rowEventClass: dayGridBlockEventClass,
+  listEventClass: dayGridListItemEventClass,
+  weekNumberClass: 'fc-daygrid-week-number',
+  moreLinkClass: 'fc-daygrid-more-link',
 }
 
 export default createPlugin({
@@ -28,21 +28,21 @@ export default createPlugin({
       `fc-direction-${data.direction}`,
       `fc-media-${data.mediaType}`
     ],
-    toolbarClassNames: (data) => [
+    toolbarClass: (data) => [
       `fc-${data.name}-toolbar`,
       'fc-toolbar',
     ],
-    toolbarSectionClassNames: (data) => [
+    toolbarSectionClass: (data) => [
       'fc-toolbar-section',
       `fc-toolbar-${data.name}`, // TODO: do section- ?
     ],
-    toolbarTitleClassNames: 'fc-toolbar-title',
-    viewClassNames: (data) => [
+    toolbarTitleClass: 'fc-toolbar-title',
+    viewClass: (data) => [
       'fc-view',
       `fc-${data.view.type}-view`,
       'fc-view-bordered',
     ],
-    viewHeaderClassNames: (data) => [
+    viewHeaderClass: (data) => [
       data.isSticky && 'fc-view-header-sticky'
     ],
 
@@ -76,42 +76,42 @@ export default createPlugin({
       ? svgIcons.minusSquare
       : svgIcons.plusSquare,
 
-    buttonClassNames: (data) => [
+    buttonClass: (data) => [
       `fc-${data.name}-button`,
       'fc-button',
       'fc-button-primary',
       data.isSelected && 'fc-button-active',
     ],
-    buttonGroupClassNames: 'fc-button-group',
+    buttonGroupClass: 'fc-button-group',
 
-    popoverClassNames: 'fc-popover', // see also: dayPopoverClassNames
-    popoverHeaderClassNames: 'fc-popover-header',
-    popoverTitleClassNames: 'fc-popover-title',
-    popoverCloseClassNames: 'fc-popover-close',
-    popoverBodyClassNames: 'fc-popover-body',
+    popoverClass: 'fc-popover', // see also: dayPopoverClass
+    popoverHeaderClass: 'fc-popover-header',
+    popoverTitleClass: 'fc-popover-title',
+    popoverCloseClass: 'fc-popover-close',
+    popoverBodyClass: 'fc-popover-body',
 
     // Cross-view
     // ---------------------------------------------------------------------------------------------
 
-    weekNumberClassNames: 'fc-week-number',
-    navLinkClassNames: 'fc-navlink', // TODO: fc-nav-link ?
-    moreLinkClassNames: 'fc-more-link',
+    weekNumberClass: 'fc-week-number',
+    navLinkClass: 'fc-navlink', // TODO: fc-nav-link ?
+    moreLinkClass: 'fc-more-link',
 
     dayCompactWidth: 75,
-    dayPopoverClassNames: (data) => [
+    dayPopoverClass: (data) => [
       'fc-more-popover',
       ...getDayClassNames(data),
     ],
 
-    fillerClassNames: 'fc-filler', // TODO: give all-sides border
+    fillerClass: 'fc-filler', // TODO: give all-sides border
 
-    nonBusinessClassNames: 'fc-non-business',
-    highlightClassNames: 'fc-highlight',
+    nonBusinessClass: 'fc-non-business',
+    highlightClass: 'fc-highlight',
 
     // General Event
     // ---------------------------------------------------------------------------------------------
 
-    eventClassNames: (data) => [
+    eventClass: (data) => [
       data.event.display === 'background' && 'fc-bg-event',
       'fc-event',
       data.isMirror && 'fc-event-mirror',
@@ -126,46 +126,46 @@ export default createPlugin({
       data.isFuture && 'fc-event-future',
       data.isToday && 'fc-event-today',
     ],
-    eventInnerClassNames: 'fc-event-inner',
-    eventTimeClassNames: 'fc-event-time',
-    eventTitleClassNames: (data) => [
+    eventInnerClass: 'fc-event-inner',
+    eventTimeClass: 'fc-event-time',
+    eventTitleClass: (data) => [
       data.event.display === 'background' && 'fc-bg-event-title',
       'fc-event-title',
     ],
-    eventBeforeClassNames: (data) => [
+    eventBeforeClass: (data) => [
       data.isStartResizable && 'fc-event-resizer fc-event-resizer-start',
     ],
-    eventAfterClassNames: (data) => [
+    eventAfterClass: (data) => [
       data.isEndResizable && 'fc-event-resizer fc-event-resizer-end',
     ],
 
     // Day-Headers (DayGrid & MultiMonth & TimeGrid)
     // ---------------------------------------------------------------------------------------------
 
-    dayHeaderRowClassNames: 'fc-day-header-row',
-    dayHeaderClassNames: (data) => [
+    dayHeaderRowClass: 'fc-day-header-row',
+    dayHeaderClass: (data) => [
       'fc-day-header-cell',
       ...getDayClassNames(data)
     ],
-    dayHeaderInnerClassNames: 'fc-padding-sm',
-    dayHeaderDividerClassNames: 'fc-day-header-divider',
+    dayHeaderInnerClass: 'fc-padding-sm',
+    dayHeaderDividerClass: 'fc-day-header-divider',
 
     // for resource views only
-    resourceDayHeaderClassNames: 'fc-resource-day-header',
-    resourceDayHeaderInnerClassNames: 'fc-padding-sm',
+    resourceDayHeaderClass: 'fc-resource-day-header',
+    resourceDayHeaderInnerClass: 'fc-padding-sm',
 
     // Day-Cells (DayGrid & MultiMonth & TimeGrid "all-day" section)
     // ---------------------------------------------------------------------------------------------
 
-    dayRowClassNames: 'fc-day-row',
-    dayCellClassNames: (data) => [
+    dayRowClass: 'fc-day-row',
+    dayCellClass: (data) => [
       'fc-day-cell',
       ...getDayClassNames(data),
       data.isCompact ? 'fc-day-cell-compact' : 'fc-day-cell-not-compact',
     ],
 
-    dayCellTopClassNames: 'fc-day-cell-top',
-    dayCellTopInnerClassNames: (data) => [
+    dayCellTopClass: 'fc-day-cell-top',
+    dayCellTopInnerClass: (data) => [
       'fc-day-cell-top-inner',
       data.isMonthStart && 'fc-day-cell-top-inner-monthstart',
     ],
@@ -173,41 +173,41 @@ export default createPlugin({
     // MultiMonth
     // ---------------------------------------------------------------------------------------------
 
-    singleMonthClassNames: (data) => [
+    singleMonthClass: (data) => [
       'fc-single-month',
       data.colCount > 1 && 'fc-single-month-multicol',
     ],
-    // singleMonthTitleClassNames: (data) => [
+    // singleMonthTitleClass: (data) => [
     //   'fc-single-month-title',
     //   data.colCount > 1
     //     ? 'fc-single-month-title-multicol'
     //     : 'fc-single-month-title-singlecol',
     //   data.sticky && 'fc-single-month-title-sticky',
     // ],
-    // singleMonthTableClassNames: (data) => [
+    // singleMonthTableClass: (data) => [
     //   'fc-single-month-table',
     //   data.colCount > 1 && 'fc-single-month-table-borderx',
     //   (data.colCount > 1 || !data.isLast) && 'fc-single-month-table-borderbottom',
     //   !data.stickyTitle && 'fc-single-month-table-bordertop',
     // ],
-    // singleMonthTableHeaderClassNames: (data) => [
+    // singleMonthTableHeaderClass: (data) => [
     //   'fc-single-month-table-header',
     //   data.sticky && 'fc-single-month-table-header-sticky',
     // ],
-    // singleMonthTableBodyClassNames: 'fc-single-month-table-body',
+    // singleMonthTableBodyClass: 'fc-single-month-table-body',
 
     // TimeGrid
     // ---------------------------------------------------------------------------------------------
 
-    allDayHeaderClassNames: 'fc-all-day-header',
-    allDayHeaderInnerClassNames: 'fc-all-day-header-inner fc-padding-sm',
-    allDayDividerClassNames: 'fc-all-day-divider',
+    allDayHeaderClass: 'fc-all-day-header',
+    allDayHeaderInnerClass: 'fc-all-day-header-inner fc-padding-sm',
+    allDayDividerClass: 'fc-all-day-divider',
 
-    dayLaneClassNames: (data) => [
+    dayLaneClass: (data) => [
       'fc-day-lane',
       ...getDayClassNames(data),
     ],
-    dayLaneInnerClassNames: (data) => [
+    dayLaneInnerClass: (data) => [
       'fc-day-lane-inner',
       data.isSimple && 'fc-day-lane-inner-simple',
     ],
@@ -215,38 +215,38 @@ export default createPlugin({
     // Slots (TimeGrid & Timeline)
     // ---------------------------------------------------------------------------------------------
 
-    slotLabelClassNames: (data) => [
+    slotLabelClass: (data) => [
       'fc-slot-label',
-      ...getSlotClassNames(data),
+      ...getSlotClass(data),
     ],
-    slotLaneClassNames: (data) => [
+    slotLaneClass: (data) => [
       'fc-slot-lane',
-      ...getSlotClassNames(data),
+      ...getSlotClass(data),
     ],
 
     // only for (resource-)timeline
-    slotLabelRowClassNames: 'fc-slot-label-row',
+    slotLabelRowClass: 'fc-slot-label-row',
 
     // Resource Timeline
     // ---------------------------------------------------------------------------------------------
 
-    resourceAreaHeaderRowClassNames: 'fc-resource-area-header-row',
-    resourceAreaHeaderClassNames: 'fc-resource-area-header',
-    resourceAreaHeaderInnerClassNames: 'fc-padding-lg',
-    resourceAreaDividerClassNames: 'fc-resource-area-divider',
+    resourceAreaHeaderRowClass: 'fc-resource-area-header-row',
+    resourceAreaHeaderClass: 'fc-resource-area-header',
+    resourceAreaHeaderInnerClass: 'fc-padding-lg',
+    resourceAreaDividerClass: 'fc-resource-area-divider',
 
-    resourceAreaRowClassNames: 'fc-resource-area-row',
-    resourceIndentClassNames: 'fc-resource-indent',
-    resourceExpanderClassNames: 'fc-resource-expander',
+    resourceAreaRowClass: 'fc-resource-area-row',
+    resourceIndentClass: 'fc-resource-indent',
+    resourceExpanderClass: 'fc-resource-expander',
 
-    resourceGroupHeaderClassNames: 'fc-resource-group-header',
-    resourceGroupHeaderInnerClassNames: 'fc-padding-lg',
-    resourceGroupLaneClassNames: 'fc-resource-group-lane',
+    resourceGroupHeaderClass: 'fc-resource-group-header',
+    resourceGroupHeaderInnerClass: 'fc-padding-lg',
+    resourceGroupLaneClass: 'fc-resource-group-lane',
 
-    resourceCellClassNames: 'fc-resource-cell',
-    resourceCellInnerClassNames: 'fc-padding-lg',
-    resourceLaneClassNames: 'fc-resource-lane',
-    resourceLaneBottomClassNames: (data) => [
+    resourceCellClass: 'fc-resource-cell',
+    resourceCellInnerClass: 'fc-padding-lg',
+    resourceLaneClass: 'fc-resource-lane',
+    resourceLaneBottomClass: (data) => [
       'fc-resource-lane-bottom',
       data.isCompact && 'fc-resource-lane-bottom-compact',
     ],
@@ -254,74 +254,74 @@ export default createPlugin({
     // Timeline WITHOUT resources
     // ---------------------------------------------------------------------------------------------
 
-    timelineBottomClassNames: 'fc-timeline-bottom',
+    timelineBottomClass: 'fc-timeline-bottom',
 
     // List View
     // ---------------------------------------------------------------------------------------------
 
-    listDayClassNames: 'fc-list-day',
-    listDayHeaderClassNames: 'fc-list-day-header',
-    listDayHeaderInnerClassNames: 'fc-list-day-header-inner',
+    listDayClass: 'fc-list-day',
+    listDayHeaderClass: 'fc-list-day-header',
+    listDayHeaderInnerClass: 'fc-list-day-header-inner',
   },
   views: {
     dayGrid: {
-      viewClassNames: 'fc-daygrid',
+      viewClass: 'fc-daygrid',
       ...dayGridCommon,
     },
     multiMonth: {
-      viewClassNames: 'fc-multimonth',
+      viewClass: 'fc-multimonth',
       ...dayGridCommon,
     },
     timeGrid: {
-      viewClassNames: 'fc-timegrid',
-      eventClassNames: (data) => [
+      viewClass: 'fc-timegrid',
+      eventClass: (data) => [
         data.isCompact && 'fc-timegrid-event-compact',
         data.level && 'fc-timegrid-event-inset',
       ],
-      rowEventClassNames: dayGridBlockEventClassNames,
-      listItemEventClassNames: dayGridListItemEventClassNames,
-      listItemEventColorClassNames: 'fc-daygrid-event-dot',
-      columnEventClassNames: 'fc-timegrid-event fc-event-y',
-      allDayHeaderClassNames: 'fc-timegrid-axis',
-      allDayHeaderInnerClassNames: 'fc-timegrid-axis-inner',
-      weekNumberClassNames: 'fc-timegrid-axis',
-      weekNumberInnerClassNames: 'fc-timegrid-axis-inner fc-padding-sm',
-      moreLinkClassNames: 'fc-timegrid-more-link',
-      moreLinkInnerClassNames: 'fc-timegrid-more-link-inner',
-      slotLabelClassNames: 'fc-timegrid-axis',
-      slotLabelInnerClassNames: 'fc-timegrid-axis-inner fc-padding-sm',
-      slotLabelDividerClassNames: 'fc-timegrid-slot-label-divider',
-      nowIndicatorLabelClassNames: 'fc-timegrid-now-indicator-label',
-      nowIndicatorLineClassNames: 'fc-timegrid-now-indicator-line',
+      rowEventClass: dayGridBlockEventClass,
+      listItemEventClass: dayGridListItemEventClass,
+      listItemEventColorClass: 'fc-daygrid-event-dot',
+      columnEventClass: 'fc-timegrid-event fc-event-y',
+      allDayHeaderClass: 'fc-timegrid-axis',
+      allDayHeaderInnerClass: 'fc-timegrid-axis-inner',
+      weekNumberClass: 'fc-timegrid-axis',
+      weekNumberInnerClass: 'fc-timegrid-axis-inner fc-padding-sm',
+      moreLinkClass: 'fc-timegrid-more-link',
+      moreLinkInnerClass: 'fc-timegrid-more-link-inner',
+      slotLabelClass: 'fc-timegrid-axis',
+      slotLabelInnerClass: 'fc-timegrid-axis-inner fc-padding-sm',
+      slotLabelDividerClass: 'fc-timegrid-slot-label-divider',
+      nowIndicatorLabelClass: 'fc-timegrid-now-indicator-label',
+      nowIndicatorLineClass: 'fc-timegrid-now-indicator-line',
     },
     timeline: {
-      viewClassNames: 'fc-timeline',
-      eventClassNames: (data) => [
+      viewClass: 'fc-timeline',
+      eventClass: (data) => [
         'fc-timeline-event fc-event-x',
         data.isSpacious && 'fc-timeline-event-spacious',
       ],
-      moreLinkClassNames: 'fc-timeline-more-link',
-      moreLinkInnerClassNames: 'fc-timeline-more-link-inner',
-      slotLabelInnerClassNames: 'fc-padding-md',
-      slotLabelDividerClassNames: 'fc-timeline-slot-label-divider',
-      nowIndicatorLabelClassNames: 'fc-timeline-now-indicator-label',
-      nowIndicatorLineClassNames: 'fc-timeline-now-indicator-line',
+      moreLinkClass: 'fc-timeline-more-link',
+      moreLinkInnerClass: 'fc-timeline-more-link-inner',
+      slotLabelInnerClass: 'fc-padding-md',
+      slotLabelDividerClass: 'fc-timeline-slot-label-divider',
+      nowIndicatorLabelClass: 'fc-timeline-now-indicator-label',
+      nowIndicatorLineClass: 'fc-timeline-now-indicator-line',
     },
     list: {
-      viewClassNames: 'fc-list',
-      eventClassNames: 'fc-list-event',
-      eventColorClassNames: 'fc-list-event-dot',
-      noEventsClassNames: 'fc-list-empty',
-      noEventsInnerClassNames: 'fc-list-empty-inner',
+      viewClass: 'fc-list',
+      eventClass: 'fc-list-event',
+      eventColorClass: 'fc-list-event-dot',
+      noEventsClass: 'fc-list-empty',
+      noEventsInnerClass: 'fc-list-empty-inner',
     },
     resourceDayGrid: { // inherits dayGrid
-      viewClassNames: 'fc-resource-daygrid',
+      viewClass: 'fc-resource-daygrid',
     },
     resourceTimeGrid: { // inherits timeGrid
-      viewClassNames: 'fc-resource-timegrid',
+      viewClass: 'fc-resource-timegrid',
     },
     resourceTimeline: { // inherits timeline
-      viewClassNames: 'fc-resource-timeline',
+      viewClass: 'fc-resource-timeline',
     },
   },
 }) as PluginDef
@@ -347,7 +347,7 @@ function getDayClassNames(data: any) {
     ]
 }
 
-function getSlotClassNames(data: any) {
+function getSlotClass(data: any) {
   return data.isDisabled
     ? [
       'fc-slot',

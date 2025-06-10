@@ -331,7 +331,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               <div
                 role='rowgroup'
                 className={joinClassNames(
-                  generateClassName(options.viewHeaderClassNames, {
+                  generateClassName(options.viewHeaderClass, {
                     isSticky: stickyHeaderDates,
                   }),
                   props.borderlessX && classNames.borderlessX,
@@ -353,7 +353,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       role="row"
                       aria-rowindex={1}
                       className={joinArrayishClassNames(
-                        options.resourceAreaHeaderRowClassNames,
+                        options.resourceAreaHeaderRowClass,
                         classNames.flexRow,
                         classNames.grow,
                         classNames.borderOnlyB,
@@ -393,7 +393,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   </Scroller>
                 </div>
                 <div
-                  className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+                  className={joinArrayishClassNames(options.slotLabelDividerClass)}
                 />
               </div>
 
@@ -404,7 +404,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 horizontal
                 hideScrollbars
                 className={joinClassNames(
-                  generateClassName(options.viewBodyClassNames, {}),
+                  generateClassName(options.viewBodyClass, {}),
                   props.borderlessX && classNames.borderlessX,
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart
@@ -441,7 +441,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   {spreadsheetNeedsBottomFiller && (
                     <div
                       className={joinArrayishClassNames(
-                        options.fillerClassNames,
+                        options.fillerClass,
                         classNames.borderOnlyT,
                       )}
                       style={{ minHeight: spreadsheetBottomFiller }}
@@ -475,7 +475,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {/* time-area HEADER
               ---------------------------------------------------------------------------- */}
               <div className={joinClassNames(
-                generateClassName(options.viewHeaderClassNames, {
+                generateClassName(options.viewHeaderClass, {
                   isSticky: stickyHeaderDates,
                 }),
                 props.borderlessX && classNames.borderlessX,
@@ -543,7 +543,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   {Boolean(endScrollbarWidth) && (
                     <div
                       className={joinArrayishClassNames(
-                        options.fillerClassNames,
+                        options.fillerClass,
                         classNames.borderOnlyS,
                       )}
                       style={{ minWidth: endScrollbarWidth }}
@@ -551,7 +551,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   )}
                 </Scroller>
                 <div
-                  className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+                  className={joinArrayishClassNames(options.slotLabelDividerClass)}
                 />
               </div>
 
@@ -676,7 +676,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   {timelineNeedsBottomFiller && (
                     <div
                       className={joinArrayishClassNames(
-                        options.fillerClassNames,
+                        options.fillerClass,
                         classNames.borderOnlyT,
                       )}
                       style={{ minHeight: timelineBottomFiller }}

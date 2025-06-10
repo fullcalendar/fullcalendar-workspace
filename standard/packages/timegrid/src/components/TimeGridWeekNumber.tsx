@@ -69,7 +69,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
         generatorName="weekNumberContent"
         customGenerator={options.weekNumberContent}
         defaultGenerator={renderText}
-        classNameGenerator={options.weekNumberClassNames}
+        classNameGenerator={options.weekNumberClass}
         didMount={options.weekNumberDidMount}
         willUnmount={options.weekNumberWillUnmount}
       >
@@ -82,7 +82,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
                 : { 'aria-label': fullDateStr }
             }
             className={joinArrayishClassNames(
-              options.weekNumberInnerClassNames,
+              options.weekNumberInnerClass,
               classNames.rigid,
             )}
             elRef={this.innerElRef}

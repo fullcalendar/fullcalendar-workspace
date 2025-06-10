@@ -197,7 +197,7 @@ As mentioned above, `data-navlink` is no longer present in the markup. Adjust yo
 ```css
 .fc-resource-timeline-flat      ⛔  /* no equivalent */
 .fc-resource-timeline-divider   ➡️  .fc-resource-timeline .fc-celldivider
-.fc-datagrid-cell-super         ⚠️  /* user-defined with `resourceAreaHeaderClassNames` */
+.fc-datagrid-cell-super         ⚠️  /* user-defined with `resourceAreaHeaderClass` */
 .fc-datagrid-cell-resizer       ➡️  .fc-datagrid-col-resizer
 
 .fc-datagrid-cell-frame         ⛔  /* no equivalent. was inner-wrapper for cell */

@@ -46,7 +46,7 @@ export interface ButtonInput {
   hint?: string | ((viewOrCurrentUnitText: string, viewOrCurrentUnit: string) => string)
   classNames?: ClassNamesGenerator<ButtonData>
   display?: ButtonDisplay
-  iconClassNames?: ClassNamesGenerator<ButtonIconData>,
+  iconClass?: ClassNamesGenerator<ButtonIconData>,
   iconContent?: CustomContentGenerator<ButtonIconData>,
   text?: string
 }
@@ -59,10 +59,10 @@ export interface ToolbarWidget {
   buttonText?: string
   buttonHint?: string | ((currentUnit: string) => string)
   buttonDisplay?: ButtonDisplay
-  buttonIconClassNames?: ClassNamesGenerator<ButtonIconData>
+  buttonIconClass?: ClassNamesGenerator<ButtonIconData>
   buttonIconContent?: CustomContentGenerator<ButtonIconData>
   buttonClick?: (ev: MouseEvent) => void
-  buttonClassNames?: ClassNamesGenerator<ButtonData>
+  buttonClass?: ClassNamesGenerator<ButtonData>
   buttonDidMount?: DidMountHandler<ButtonMountData>
   buttonWillUnmount?: WillUnmountHandler<ButtonMountData>
 }

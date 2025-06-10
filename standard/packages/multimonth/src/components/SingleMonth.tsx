@@ -93,7 +93,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           aria-labelledby={this.titleId}
           data-date={props.isoDateStr}
           className={joinClassNames(
-            generateClassName(options.singleMonthClassNames, {
+            generateClassName(options.singleMonthClass, {
               colCount: props.colCount,
             }),
             props.borderlessX && classNames.borderlessX,
@@ -108,7 +108,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             id={this.titleId}
             ref={this.titleElRef}
             className={joinClassNames(
-              generateClassName(options.singleMonthTitleClassNames, {
+              generateClassName(options.singleMonthTitleClass, {
                 isSticky: isTitleAndHeaderSticky,
                 isCompact: cellIsCompact,
               }),
@@ -130,7 +130,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           </div>
           <div // the daygrid table
             className={joinClassNames(
-              generateClassName(options.viewClassNames, { // a bit crazy to use this hook!
+              generateClassName(options.viewClass, { // a bit crazy to use this hook!
                 view: context.viewApi,
               }),
               props.borderlessX && classNames.borderlessX,
@@ -145,7 +145,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             <div
               ref={this.tableHeaderElRef}
               className={joinClassNames(
-                generateClassName(options.viewHeaderClassNames, {
+                generateClassName(options.viewHeaderClass, {
                   isSticky: isTitleAndHeaderSticky,
                 }),
                 props.borderlessX && classNames.borderlessX,
@@ -163,12 +163,12 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 borderBottom={false}
                 cellIsCompact={cellIsCompact}
               />
-              <div className={joinArrayishClassNames(options.dayHeaderDividerClassNames)} />
+              <div className={joinArrayishClassNames(options.dayHeaderDividerClass)} />
             </div>
             <div
               className={joinClassNames(
                 isAspectRatio && classNames.rel,
-                generateClassName(options.viewBodyClassNames, {}),
+                generateClassName(options.viewBodyClass, {}),
                 props.borderlessX && classNames.borderlessX,
               )}
               style={{

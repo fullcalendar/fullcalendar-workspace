@@ -8,14 +8,14 @@ describe('event styling hooks', () => {
       {
         id: 'a',
         title: 'Resource A',
-        eventClassNames: 're1',
+        eventClass: 're1',
         eventColor: 'rgba(255,0,0,0.5)',
         eventBorderColor: 'rgba(0,0,255,0.5)',
       },
       {
         id: 'b',
         title: 'Resource B',
-        eventClassNames: ['re2', 're3'],
+        eventClass: ['re2', 're3'],
         eventColor: 'rgba(0,255,0,0.5)',
         eventContrastColor: 'rgba(0,0,255,0.5)',
       },

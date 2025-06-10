@@ -138,7 +138,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         borderlessBottom={props.borderlessBottom}
       >
         <div className={joinClassNames(
-          generateClassName(options.viewHeaderClassNames, {
+          generateClassName(options.viewHeaderClass, {
             isSticky: false,
           }),
           props.borderlessX && classNames.borderlessX,
@@ -156,7 +156,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 <div
                   role='row'
                   className={joinArrayishClassNames(
-                    options.resourceAreaHeaderRowClassNames,
+                    options.resourceAreaHeaderRowClass,
                     classNames.flexRow,
                     classNames.grow,
                     classNames.borderOnlyB,
@@ -194,7 +194,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
             </div>
 
             <div
-              className={joinArrayishClassNames(options.resourceAreaDividerClassNames)}
+              className={joinArrayishClassNames(options.resourceAreaDividerClass)}
             />
 
             {/* Timeline HEADER */}
@@ -244,7 +244,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
 
           </div>
           <div
-            className={joinArrayishClassNames(options.slotLabelDividerClassNames)}
+            className={joinArrayishClassNames(options.slotLabelDividerClass)}
           />
         </div>{/* Header END */}
         {/* Body START */}
@@ -252,7 +252,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         <div
           role='rowgroup'
           className={joinClassNames(
-            generateClassName(options.viewBodyClassNames, {}),
+            generateClassName(options.viewBodyClass, {}),
             props.borderlessX && classNames.borderlessX,
             classNames.rel,
             classNames.crop,
@@ -384,7 +384,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     </div>
                   </div>
                   <div
-                    className={joinArrayishClassNames(options.resourceAreaDividerClassNames)}
+                    className={joinArrayishClassNames(options.resourceAreaDividerClass)}
                   />
                   <div className={joinClassNames(
                     classNames.flexCol,
@@ -438,7 +438,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                     />
                   </div>
                   <div
-                    className={joinArrayishClassNames(options.resourceAreaDividerClassNames)}
+                    className={joinArrayishClassNames(options.resourceAreaDividerClass)}
                   />
                   <div className={joinClassNames(
                     classNames.crop,

@@ -24,7 +24,7 @@ describe('rerender performance for resource timeline', () => {
       slotLabelDidMount() {
         slotLabelMountCnt += 1
       },
-      // slotLabelClassNames() {
+      // slotLabelClass() {
       //   slotLabelClassNameCnt += 1
       //   return []
       // },

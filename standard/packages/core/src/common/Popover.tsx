@@ -43,7 +43,7 @@ export class Popover extends BaseComponent<PopoverProps> {
         role='dialog'
         aria-labelledby={this.titleId}
         className={joinArrayishClassNames(
-          options.popoverClassNames,
+          options.popoverClass,
           props.className,
           classNames.popoverZ,
           classNames.abs,
@@ -56,10 +56,10 @@ export class Popover extends BaseComponent<PopoverProps> {
           style={{ outline: 'none' }} // TODO: className?
           ref={this.focusStartRef}
         />
-        <div className={joinArrayishClassNames(options.popoverHeaderClassNames)}>
+        <div className={joinArrayishClassNames(options.popoverHeaderClass)}>
           <div
             id={this.titleId}
-            className={joinArrayishClassNames(options.popoverTitleClassNames)}
+            className={joinArrayishClassNames(options.popoverTitleClass)}
           >
             {props.title}
           </div>
@@ -71,7 +71,7 @@ export class Popover extends BaseComponent<PopoverProps> {
             }}
             elRef={this.closeRef}
             className={joinArrayishClassNames(
-              options.popoverCloseClassNames,
+              options.popoverCloseClass,
               classNames.cursorPointer,
             )}
             renderProps={{}}
@@ -79,7 +79,7 @@ export class Popover extends BaseComponent<PopoverProps> {
             generatorName='popoverCloseContent'
           />
         </div>
-        <div className={joinArrayishClassNames(options.popoverBodyClassNames)}>
+        <div className={joinArrayishClassNames(options.popoverBodyClass)}>
           {props.children}
         </div>
         <div

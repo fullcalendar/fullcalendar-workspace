@@ -119,7 +119,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
           role='gridcell'
           aria-disabled
           className={joinArrayishClassNames(
-            generateClassName(options.dayCellClassNames, renderProps),
+            generateClassName(options.dayCellClass, renderProps),
             props.className,
             baseClassName,
           )}
@@ -152,14 +152,14 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         generatorName="dayCellTopContent" // !!! for top
         customGenerator={options.dayCellTopContent /* !!! for top */}
         defaultGenerator={renderTopInner}
-        classNameGenerator={options.dayCellClassNames}
+        classNameGenerator={options.dayCellClass}
         didMount={options.dayCellDidMount}
         willUnmount={options.dayCellWillUnmount}
       >
         {(InnerContent) => (
           <Fragment>
             <div
-              className={generateClassName(options.dayCellTopClassNames, renderProps)}
+              className={generateClassName(options.dayCellTopClass, renderProps)}
               // TODO: prevent margins!? for measurements
             >
               {props.showDayNumber && (
@@ -170,7 +170,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                       ? buildNavLinkAttrs(context, props.date, undefined, fullDateStr)
                       : { 'aria-hidden': true } // label already on cell
                   }
-                  className={generateClassName(options.dayCellTopInnerClassNames, renderProps)}
+                  className={generateClassName(options.dayCellTopInnerClass, renderProps)}
                 />
               )}
             </div>
@@ -182,7 +182,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               ref={this.handleBodyEl}
             >
               <div
-                className={generateClassName(options.dayCellInnerClassNames, renderProps)}
+                className={generateClassName(options.dayCellInnerClass, renderProps)}
                 style={{ minHeight: props.fgHeight }}
                 // TODO: prevent margins/padding!?
               >
@@ -208,7 +208,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               />
             </div>
             <div
-              className={generateClassName(options.dayCellBottomClassNames, renderProps)}
+              className={generateClassName(options.dayCellBottomClass, renderProps)}
             />
           </Fragment>
         )}

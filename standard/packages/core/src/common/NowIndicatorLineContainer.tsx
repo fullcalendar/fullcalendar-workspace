@@ -34,7 +34,7 @@ export const NowIndicatorLineContainer = (props: NowIndicatorLineContainerProps)
           renderProps={renderProps}
           generatorName="nowIndicatorLineContent"
           customGenerator={options.nowIndicatorLineContent}
-          classNameGenerator={options.nowIndicatorLineClassNames}
+          classNameGenerator={options.nowIndicatorLineClass}
           didMount={options.nowIndicatorLineDidMount}
           willUnmount={options.nowIndicatorLineWillUnmount}
         />

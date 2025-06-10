@@ -60,7 +60,7 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
         role="row"
         aria-rowindex={props.rowIndex != null ? 1 + props.rowIndex : undefined}
         className={joinArrayishClassNames(
-          options.resourceAreaHeaderRowClassNames,
+          options.resourceAreaHeaderRowClass,
           classNames.flexRow,
           classNames.grow,
           classNames.borderNone,

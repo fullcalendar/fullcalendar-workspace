@@ -14,8 +14,8 @@ import {
 } from './structs.js'
 
 export const OPTION_REFINERS = {
-  resourceDayHeaderClassNames: identity as Identity<ClassNamesGenerator<ResourceDayHeaderData>>,
-  resourceDayHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<ResourceDayHeaderData>>,
+  resourceDayHeaderClass: identity as Identity<ClassNamesGenerator<ResourceDayHeaderData>>,
+  resourceDayHeaderInnerClass: identity as Identity<ClassNamesGenerator<ResourceDayHeaderData>>,
   resourceDayHeaderContent: identity as Identity<CustomContentGenerator<ResourceDayHeaderData>>,
   resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderMountData>>,
   resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderMountData>>,
