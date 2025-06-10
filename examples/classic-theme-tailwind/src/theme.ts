@@ -106,7 +106,7 @@ export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
     // important to define these as CSS vars because things other than events leverage them
-    classNames: 'gap-5 [--fc-event-color:green] [--fc-event-contrast-color:white]',
+    className: 'gap-5 [--fc-event-color:green] [--fc-event-contrast-color:white]',
 
     toolbarClass: (data) => [
       'gap-3',

@@ -1,5 +1,6 @@
 import { Dictionary } from '../options.js'
 import { EventSourceApi } from './EventSourceApi.js'
+import { ClassNamesInput } from '../util/html.js'
 import {
   DateInput,
   DurationInput,
@@ -25,7 +26,7 @@ export interface EventApi {
   allow: any // TODO: better
   color: string
   contrastColor: string
-  classNames: string[]
+  className: ClassNamesInput
   extendedProps: Dictionary
 
   setProp(name: string, val: any): void

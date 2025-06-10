@@ -120,8 +120,8 @@ describe('event object creation', () => {
       start: '2014-05-01',
       className: ['class1', 'class2'],
     })
-    expect($.isArray(event.classNames)).toEqual(true)
-    expect(event.classNames).toEqual(['class1', 'class2'])
+    expect($.isArray(event.className)).toEqual(true)
+    expect(event.className).toEqual(['class1', 'class2'])
   })
 
   it('accepts a string `className`', () => {
@@ -129,8 +129,8 @@ describe('event object creation', () => {
       start: '2014-05-01',
       className: 'class1 class2',
     })
-    expect($.isArray(event.classNames)).toEqual(true)
-    expect(event.classNames).toEqual(['class1', 'class2'])
+    expect(typeof event.className).toEqual('string')
+    expect(event.className).toEqual('class1 class2')
   })
 
   it('accepts extended properties', () => {

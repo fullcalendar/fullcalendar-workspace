@@ -1,5 +1,5 @@
 import { Constraint, AllowFunc, normalizeConstraint } from '../structs/constraint.js'
-import { parseClassNames } from '../util/html.js'
+import { ClassNamesInput, joinArrayishClassNames } from '../util/html.js'
 import { CalendarContext } from '../CalendarContext.js'
 import { RawOptionsFromRefiners, RefinedOptionsFromRefiners, identity, Identity } from '../options.js'
 
@@ -15,8 +15,7 @@ export const EVENT_UI_REFINERS = {
   constraint: identity as Identity<any>, // Identity<ConstraintInput>, // circular reference. ts dies. event->constraint->event
   overlap: identity as Identity<boolean>,
   allow: identity as Identity<AllowFunc>,
-  className: parseClassNames, // will both end up as array of strings
-  classNames: parseClassNames, // "
+  className: identity as Identity<ClassNamesInput>,
   color: String,
   contrastColor: String,
 }
@@ -30,7 +29,7 @@ const EMPTY_EVENT_UI: EventUi = {
   allows: [],
   color: '',
   contrastColor: '',
-  classNames: [],
+  className: '',
 }
 
 type BuiltInEventUiRefiners = typeof EVENT_UI_REFINERS
@@ -51,7 +50,7 @@ export interface EventUi {
   allows: AllowFunc[] // crappy name to indicate plural
   color: string
   contrastColor: string
-  classNames: string[]
+  className: ClassNamesInput
 }
 
 export type EventUiHash = { [defId: string]: EventUi }
@@ -68,7 +67,7 @@ export function createEventUi(refined: EventUiRefined, context: CalendarContext)
     allows: refined.allow != null ? [refined.allow] : [],
     color: refined.color || '',
     contrastColor: refined.contrastColor || '',
-    classNames: (refined.className || []).concat(refined.classNames || []), // join singular and plural
+    className: refined.className || '',
   }
 }
 
@@ -87,6 +86,6 @@ function combineTwoEventUis(item0: EventUi, item1: EventUi): EventUi { // hash1 
     allows: item0.allows.concat(item1.allows),
     color: item1.color || item0.color,
     contrastColor: item1.color ? item1.contrastColor : item0.contrastColor,
-    classNames: item0.classNames.concat(item1.classNames),
+    className: joinArrayishClassNames(item0.className, item1.className),
   }
 }

@@ -163,7 +163,7 @@ function parseSection(
           buttonIconClass: buttonInput.iconClass,
           buttonIconContent: buttonInput.iconContent,
           buttonClick,
-          buttonClass: buttonInput.classNames,
+          buttonClass: buttonInput.className,
           buttonDidMount: buttonInput.didMount,
           buttonWillUnmount: buttonInput.willUnmount,
         }

@@ -15,7 +15,6 @@ const customMergeFuncs = {
   headerToolbar: mergeMaybePropsShallow,
   footerToolbar: mergeMaybePropsShallow,
   buttons: mergeMaybePropsDepth1,
-  icons: mergeMaybePropsDepth1,
 }
 
 /*

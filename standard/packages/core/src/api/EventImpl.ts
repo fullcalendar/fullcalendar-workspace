@@ -229,7 +229,7 @@ export class EventImpl implements EventApi {
           allows: [],
           color: '',
           contrastColor: '',
-          classNames: [],
+          className: '',
         },
       } as EventUiHash
 
@@ -342,7 +342,7 @@ export class EventImpl implements EventApi {
   get contrastColor() { return this._def.ui.contrastColor }
 
   // NOTE: user can't modify these because Object.freeze was called in event-def parsing
-  get classNames() { return this._def.ui.classNames }
+  get className() { return this._def.ui.className }
   get extendedProps() { return this._def.extendedProps }
 
   toPlainObject(settings: { collapseExtendedProps?: boolean } = {}): Dictionary {
@@ -392,8 +392,8 @@ export class EventImpl implements EventApi {
       res.contrastColor = ui.contrastColor
     }
 
-    if (ui.classNames.length) {
-      res.classNames = ui.classNames
+    if (ui.className) {
+      res.className = ui.className
     }
 
     if (Object.keys(def.extendedProps).length) {

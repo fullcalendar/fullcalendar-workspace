@@ -163,7 +163,7 @@ describe('event resources', () => {
 
     let resources = currentCalendar.getResources()
     expect(resources.length).toBe(1)
-    expect(resources[0].eventClassNames).toEqual(['niceevents'])
+    expect(resources[0].eventClass).toEqual('niceevents')
     expect(resources[0].eventColor).toBe('red')
     expect(resources[0].eventContrastColor).toBe('green')
   })

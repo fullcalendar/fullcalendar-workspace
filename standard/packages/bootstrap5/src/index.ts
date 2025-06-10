@@ -12,7 +12,7 @@ const PLUGIN_SPECIFIC_SETTINGS: any = {
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
-    classNames: ['fc', 'fc-theme-bootstrap5'],
+    className: ['fc', 'fc-theme-bootstrap5'],
     directionClass: (direction) => `fc-direction-${direction}`,
     mediaTypeClass: (mediaType) => `fc-media-${mediaType}`,
     viewClass: (data) => ['fc-view', `fc-${data.view.type}-view`, 'fc-view-bordered'],
@@ -26,7 +26,7 @@ export default createPlugin({
       data.isSelected && 'active',
     ],
     iconClass: 'bi',
-    icons: {
+    icons: { // killed
       close: { classNames: 'bi-x-lg' },
       prev: { classNames: (data) => `bi-chevron-${startSide(data.direction)}` },
       next: { classNames: (data) => `bi-chevron-${endSide(data.direction)}` },

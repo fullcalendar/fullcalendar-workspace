@@ -156,7 +156,7 @@ export function parseEventDef(
   }
 
   // help out EventImpl from having user modify props
-  Object.freeze(def.ui.classNames)
+  Object.freeze(def.ui.className) // might be simple string, but freeze still works
   Object.freeze(def.extendedProps)
 
   return def

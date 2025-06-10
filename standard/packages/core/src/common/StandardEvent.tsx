@@ -10,7 +10,7 @@ import { EventDef } from '../structs/event-def.js'
 import { EventInstance } from '../structs/event-instance.js'
 import { EventImpl } from '../api/EventImpl.js'
 import { ViewContext } from '../ViewContext.js'
-import { joinClassNames } from '../util/html.js'
+import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
 import classNames from '../internal-classnames.js'
 
 export interface StandardEventProps {
@@ -113,12 +113,12 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
         props.display === 'list-item' && generateClassName(options.listItemEventTitleClass, subcontentRenderProps),
       ),
     }
-    const outerClassName = joinClassNames( // already includes eventClass below
+    const outerClassName = joinArrayishClassNames( // already includes eventClass below
       isBlock && generateClassName(options.blockEventClass, renderProps),
       props.display === 'row' && generateClassName(options.rowEventClass, renderProps),
       props.display === 'column' && generateClassName(options.columnEventClass, renderProps),
       props.display === 'list-item' && generateClassName(options.listItemEventClass, renderProps),
-      ...eventUi.classNames,
+      eventUi.className,
       props.className,
       props.display === 'column'
         ? classNames.flexCol

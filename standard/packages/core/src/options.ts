@@ -362,7 +362,7 @@ export const BASE_OPTION_REFINERS = {
 
   // new
   colorScheme: identity as Identity<'auto' | 'light' | 'dark'>,
-  classNames: identity as Identity<ClassNamesGenerator<{
+  className: identity as Identity<ClassNamesGenerator<{
     direction: 'ltr' | 'rtl'
     mediaType: 'screen' | 'print'
     colorScheme: 'light' | 'dark'
@@ -523,7 +523,7 @@ export const VIEW_ONLY_OPTION_REFINERS: {
   buttonTextKey: String, // internal only
   dateProfileGeneratorClass: identity as Identity<DateProfileGeneratorClass>,
   usesMinMaxTime: Boolean, // internal only
-  classNames: identity as Identity<ClassNamesGenerator<SpecificViewData>>,
+  className: identity as Identity<ClassNamesGenerator<SpecificViewData>>,
   content: identity as Identity<CustomContentGenerator<SpecificViewData>>,
   didMount: identity as Identity<DidMountHandler<SpecificViewMountData>>,
   willUnmount: identity as Identity<WillUnmountHandler<SpecificViewMountData>>,

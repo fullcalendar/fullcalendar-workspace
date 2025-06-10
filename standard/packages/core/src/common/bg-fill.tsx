@@ -68,9 +68,9 @@ export class BgEvent extends BaseComponent<BgEventProps> {
         generateClassName(options.backgroundEventTitleClass, subcontentRenderProps),
       ),
     }
-    const outerClassName = joinClassNames( // already includes eventClass below
+    const outerClassName = joinArrayishClassNames( // already includes eventClass below
       generateClassName(options.backgroundEventClass, renderProps),
-      ...eventUi.classNames,
+      eventUi.className,
       classNames.fill,
       classNames.internalEvent,
       classNames.internalBgEvent,

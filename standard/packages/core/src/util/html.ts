@@ -21,18 +21,6 @@ export function joinClassNames(...args: (string | number | Falsy)[]): string {
   return args.filter(Boolean).join(' ')
 }
 
-export function parseClassNames(raw: ClassNamesInput): string[] {
-  if (Array.isArray(raw)) {
-    return raw.filter(Boolean) as string[]
-  }
-
-  if (typeof raw === 'string') {
-    return raw.split(/\s+/).filter(Boolean)
-  }
-
-  return []
-}
-
 export function fracToCssDim(frac: number): string {
   return frac * 100 + '%'
 }

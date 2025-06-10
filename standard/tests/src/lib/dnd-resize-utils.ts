@@ -70,7 +70,7 @@ export function testEventDrag(options, dropDate, expectSuccess, callback, eventC
 
           if (!isDraggingExternal) { // if dragging an event within the calendar, check dates
             if (eventClassName) {
-              eventObj = calendar.getEvents().filter((o) => o.classNames.join(' ') === eventClassName)[0]
+              eventObj = calendar.getEvents().filter((o) => arrayifyClassName(o.className).includes(eventClassName))[0]
             } else {
               eventObj = calendar.getEvents()[0]
             }
@@ -156,7 +156,7 @@ export function testEventResize(options, resizeDate, expectSuccess, callback, ev
           let successfulDrop
 
           if (eventClassName) {
-            eventObj = calendar.getEvents().filter((o) => o.classNames.join(' ') === eventClassName)[0]
+            eventObj = calendar.getEvents().filter((o) => arrayifyClassName(o.className).includes(eventClassName))[0]
           } else {
             eventObj = calendar.getEvents()[0]
           }
@@ -172,6 +172,13 @@ export function testEventResize(options, resizeDate, expectSuccess, callback, ev
     }, 0)
   }
   initCalendar(options)
+}
+
+function arrayifyClassName(className: string | any | any[]): string[] {
+  if (Array.isArray(className)) {
+    return className.filter((s) => Boolean(s)) // excludes falsy
+  }
+  return className.split(' ')
 }
 
 export function testSelection(options, start, end, expectSuccess, callback) {

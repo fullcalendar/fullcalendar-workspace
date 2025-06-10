@@ -6,7 +6,7 @@ import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 describe('custom view class', () => { // TODO: rename file
   it('calls all standard methods with correct parameters', () => {
     const CustomViewConfig = {
-      classNames: 'awesome-view',
+      className: 'awesome-view',
       didMount() {},
       willUnmount() {},
 

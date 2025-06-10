@@ -2,9 +2,9 @@ import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
 describe('addEventSource', () => {
   let eventArray = [
-    { id: '0', title: 'event zero', start: '2014-06-24', classNames: 'event-zero' },
-    { id: '1', title: 'event one', start: '2014-06-24', classNames: 'event-non-zero event-one' },
-    { id: '2', title: 'event two', start: '2014-06-24', classNames: 'event-non-zero event-two' },
+    { id: '0', title: 'event zero', start: '2014-06-24', className: 'event-zero' },
+    { id: '1', title: 'event one', start: '2014-06-24', className: 'event-non-zero event-one' },
+    { id: '2', title: 'event two', start: '2014-06-24', className: 'event-non-zero event-two' },
   ]
 
   pushOptions({
@@ -38,7 +38,7 @@ describe('addEventSource', () => {
     go(
       () => {
         currentCalendar.addEventSource({
-          classNames: 'arraysource',
+          className: 'arraysource',
           events: eventArray,
         })
       },
@@ -53,7 +53,7 @@ describe('addEventSource', () => {
     go(
       () => {
         currentCalendar.addEventSource({
-          classNames: 'funcsource',
+          className: 'funcsource',
           events(arg, callback) {
             callback(eventArray)
           },

@@ -77,7 +77,7 @@ function createViewHookComponent(options: ViewOptions) {
           }}
           generatorName={undefined}
           customGenerator={options.content as any}
-          classNameGenerator={options.classNames as any}
+          classNameGenerator={options.className as any}
           didMount={options.didMount as any}
           willUnmount={options.willUnmount as any}
         />

@@ -51,7 +51,7 @@ describe('removeEvents', () => {
           eventGenerator(),
           () => {
             currentCalendar.getEvents().forEach((event) => {
-              if ($.inArray('event-one', event.classNames) !== -1) {
+              if ((event.className as string).indexOf('event-one') !== -1) {
                 event.remove()
               }
             })

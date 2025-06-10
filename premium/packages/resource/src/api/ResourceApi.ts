@@ -141,7 +141,7 @@ export class ResourceApi {
   get eventContrastColor(): string { return this._resource.ui.contrastColor }
 
   // NOTE: user can't modify these because Object.freeze was called in event-def parsing
-  get eventClassNames() { return this._resource.ui.classNames }
+  get eventClass() { return this._resource.ui.className }
   get extendedProps() { return this._resource.extendedProps }
 
   toPlainObject(settings: { collapseExtendedProps?: boolean } = {}) {
@@ -166,8 +166,8 @@ export class ResourceApi {
       res.eventContrastColor = ui.contrastColor
     }
 
-    if (ui.classNames.length) {
-      res.eventClassNames = ui.classNames
+    if (ui.className) {
+      res.eventClass = ui.className
     }
 
     if (Object.keys(internal.extendedProps).length) {

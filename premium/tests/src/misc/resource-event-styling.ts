@@ -52,7 +52,7 @@ describe('event styling hooks', () => {
         expect(els.eq(1).css('background-color')).toMatch(GREEN_RE)
       })
 
-      it('receives eventClassName from resourceId', () => {
+      it('receives eventClass from resourceId', () => {
         initCalendar({
           events: [
             { id: '1', title: 'event 1', className: 'event1', resourceId: 'a', start: '2016-02-14T01:00:00' },
@@ -65,7 +65,7 @@ describe('event styling hooks', () => {
         expect(el).not.toHaveClass('re3')
       })
 
-      it('receives eventClassName from resourceIds', () => {
+      it('receives eventClass from resourceIds', () => {
         initCalendar({
           events: [
             { id: '1', title: 'event 1', className: 'event1', resourceIds: ['a', 'b'], start: '2016-02-14T01:00:00' },
@@ -109,7 +109,7 @@ describe('event styling hooks', () => {
       expect(el.find('.' + CalendarWrapper.EVENT_TITLE_CLASSNAME).css('color')).toMatch(BLUE_RE) // text color
     })
 
-    it('receives eventClassName from resourceId', () => {
+    it('receives eventClass from resourceId', () => {
       initCalendar({
         events: [
           { id: '1', title: 'event 1', className: 'event1', resourceId: 'a', start: '2016-02-14T01:00:00' },
@@ -122,7 +122,7 @@ describe('event styling hooks', () => {
       expect(el).not.toHaveClass('re3')
     })
 
-    it('receives eventClassName from resourceIds', () => {
+    it('receives eventClass from resourceIds', () => {
       initCalendar({
         events: [
           { id: '1', title: 'event 1', className: 'event1', resourceIds: ['a', 'b'], start: '2016-02-14T01:00:00' },

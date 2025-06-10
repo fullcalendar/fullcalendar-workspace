@@ -1,7 +1,7 @@
-import { ConstraintInput, AllowFunc, BusinessHoursInput } from '@fullcalendar/core'
+import { ConstraintInput, AllowFunc, BusinessHoursInput, ClassNamesInput } from '@fullcalendar/core'
 import {
   EventStore, parseBusinessHours, CalendarContext, EventUi,
-  guid, identity, Identity, RawOptionsFromRefiners, parseClassNames, refineProps, createEventUi, Dictionary,
+  guid, identity, Identity, RawOptionsFromRefiners, refineProps, createEventUi, Dictionary,
 } from '@fullcalendar/core/internal'
 
 const PRIVATE_ID_PREFIX = '_fc:'
@@ -21,7 +21,7 @@ const RESOURCE_REFINERS = {
   eventConstraint: identity as Identity<ConstraintInput>,
   eventOverlap: Boolean, // can NOT be a func, different from OptionsInput
   eventAllow: identity as Identity<AllowFunc>,
-  eventClass: parseClassNames,
+  eventClass: identity as Identity<ClassNamesInput>,
   eventColor: String,
   eventContrastColor: String,
 }
@@ -65,7 +65,7 @@ export function parseResource(raw: ResourceInput, parentId: string = '', store: 
       constraint: refined.eventConstraint,
       overlap: refined.eventOverlap,
       allow: refined.eventAllow,
-      classNames: refined.eventClass,
+      className: refined.eventClass,
       color: refined.eventColor,
       contrastColor: refined.eventContrastColor,
     }, context),
@@ -76,7 +76,7 @@ export function parseResource(raw: ResourceInput, parentId: string = '', store: 
   }
 
   // help out ResourceApi from having user modify props
-  Object.freeze(resource.ui.classNames)
+  Object.freeze(resource.ui.className) // might be simple string, but freeze still works
   Object.freeze(resource.extendedProps)
 
   if (store[resource.id]) {

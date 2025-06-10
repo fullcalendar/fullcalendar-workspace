@@ -109,7 +109,7 @@ describe('events as a json feed', () => {
     initCalendar({
       eventSources: [{
         url: givenUrl,
-        classNames: 'customeventclass',
+        className: 'customeventclass',
       }],
       timeZone: 'America/Chicago',
       eventDidMount(data) {
