@@ -19,14 +19,14 @@ describe('more-link popover', () => {
     let activated = false
 
     let calendar = initCalendar({
-      eventDidMount(arg) {
+      eventDidMount(data) {
         if (activated) {
-          eventsRendered[arg.event.title] = true
+          eventsRendered[data.event.title] = true
           renderCount += 1
         }
       },
-      eventWillUnmount(arg) {
-        delete eventsRendered[arg.event.title]
+      eventWillUnmount(data) {
+        delete eventsRendered[data.event.title]
         renderCount -= 1
       },
     })
@@ -54,14 +54,14 @@ describe('more-link popover', () => {
     let activated = false
 
     let calendar = initCalendar({
-      eventDidMount(arg) {
+      eventDidMount(data) {
         if (activated) {
-          eventsRendered[arg.event.title] = true
+          eventsRendered[data.event.title] = true
           renderCount += 1
         }
       },
-      eventWillUnmount(arg) {
-        delete eventsRendered[arg.event.title]
+      eventWillUnmount(data) {
+        delete eventsRendered[data.event.title]
         renderCount -= 1
       },
     })

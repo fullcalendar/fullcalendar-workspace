@@ -24,8 +24,8 @@ export function drag(rect0, rect1, debug?, eventEl?) {
     debug,
   })
 
-  currentCalendar.on('eventDrop', (arg) => {
-    deferred.resolve(arg)
+  currentCalendar.on('eventDrop', (data) => {
+    deferred.resolve(data)
   })
 
   currentCalendar.on('_noEventDrop', () => {

@@ -141,12 +141,12 @@ describe('moreLinkClick', () => {
   it('works with custom function and all the arguments are correct', (done) => {
     let handled = false
     let calendar = initCalendar({
-      moreLinkClick(arg) {
-        expect(typeof arg).toBe('object')
-        expect(arg.date).toEqualDate('2014-07-29')
-        expect(arg.hiddenSegs.length).toBe(2)
-        expect(arg.allSegs.length).toBe(4)
-        expect(typeof arg.jsEvent).toBe('object')
+      moreLinkClick(data) {
+        expect(typeof data).toBe('object')
+        expect(data.date).toEqualDate('2014-07-29')
+        expect(data.hiddenSegs.length).toBe(2)
+        expect(data.allSegs.length).toBe(4)
+        expect(typeof data.jsEvent).toBe('object')
         handled = true
       },
     })
@@ -181,12 +181,12 @@ describe('moreLinkClick', () => {
       timeZone: 'Asia/Hong_Kong',
     })
 
-    it('gives date arg correct timezone', (done) => {
+    it('gives date data correct timezone', (done) => {
       let handled = false
       let calendar = initCalendar({
-        moreLinkClick(arg) {
-          expect(typeof arg).toBe('object')
-          expect(arg.date).toEqualDate('2014-07-28T16:00:00')
+        moreLinkClick(data) {
+          expect(typeof data).toBe('object')
+          expect(data.date).toEqualDate('2014-07-28T16:00:00')
           handled = true
         },
       })

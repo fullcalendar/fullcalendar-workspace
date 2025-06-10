@@ -31,8 +31,8 @@ export class UnselectAuto {
     this.documentPointer.destroy()
   }
 
-  onSelect = (selectInfo: DateSelectionApi) => {
-    if (selectInfo.jsEvent) {
+  onSelect = (selectData: DateSelectionApi) => {
+    if (selectData.jsEvent) {
       this.isRecentPointerDateSelect = true
     }
   }

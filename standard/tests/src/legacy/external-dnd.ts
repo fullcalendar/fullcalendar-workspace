@@ -57,9 +57,9 @@ describe('external drag and drop with jquery UI', () => {
         let callCnt = 0
         let dayGridWrapper
         let calendar = initCalendarInContainer({
-          drop(arg) {
+          drop(data) {
             if (callCnt === 0) {
-              expect(arg.date).toEqualDate('2014-08-06')
+              expect(data.date).toEqualDate('2014-08-06')
 
               calendar.next()
               calendar.prev()
@@ -71,7 +71,7 @@ describe('external drag and drop with jquery UI', () => {
                 })
               }, 0)
             } else if (callCnt === 1) {
-              expect(arg.date).toEqualDate('2014-08-06')
+              expect(data.date).toEqualDate('2014-08-06')
               setTimeout(done) // weird
             }
 
@@ -196,9 +196,9 @@ describe('external drag and drop with jquery UI', () => {
         let callCnt = 0
         let timeGridWrapper
         let calendar = initCalendarInContainer({
-          drop(arg) {
+          drop(data) {
             if (callCnt === 0) {
-              expect(arg.date).toEqualDate('2014-08-20T01:00:00Z')
+              expect(data.date).toEqualDate('2014-08-20T01:00:00Z')
 
               currentCalendar.next()
               currentCalendar.prev()
@@ -210,7 +210,7 @@ describe('external drag and drop with jquery UI', () => {
                 })
               }, 0)
             } else if (callCnt === 1) {
-              expect(arg.date).toEqualDate('2014-08-20T01:00:00Z')
+              expect(data.date).toEqualDate('2014-08-20T01:00:00Z')
               setTimeout(done) // weird
             }
 
@@ -230,8 +230,8 @@ describe('external drag and drop with jquery UI', () => {
       it('works with timezone as "local"', (done) => { // for issue 2225
         let calendar = initCalendarInContainer({
           timeZone: 'local',
-          drop(arg) {
-            expect(arg.date).toEqualLocalDate('2014-08-20T01:00:00')
+          drop(data) {
+            expect(data.date).toEqualLocalDate('2014-08-20T01:00:00')
             done()
           },
         })
@@ -248,8 +248,8 @@ describe('external drag and drop with jquery UI', () => {
       it('works with timezone as "UTC"', (done) => { // for issue 2225
         let calendar = initCalendarInContainer({
           timeZone: 'UTC',
-          drop(arg) {
-            expect(arg.date).toEqualDate('2014-08-20T01:00:00Z')
+          drop(data) {
+            expect(data.date).toEqualDate('2014-08-20T01:00:00Z')
             done()
           },
         })

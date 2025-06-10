@@ -9,7 +9,7 @@ export type { EventInput, EventInputTransformer } from '../structs/event-parse.j
 export type { FormatterInput } from '../datelib/formatting.js'
 export type { CssDimValue } from '../scrollgrid/util.js'
 export type { BusinessHoursInput } from '../structs/business-hours.js'
-export type { LocaleSingularData, LocaleInput } from '../datelib/locale.js'
+export type { LocaleSingularArg, LocaleInput } from '../datelib/locale.js'
 export type { OverlapFunc, ConstraintInput, AllowFunc } from '../structs/constraint.js'
 export type { PluginDef, PluginDefInput } from '../plugin-system-struct.js'
 export type { ViewComponentType, SpecificViewData, SpecificViewMountData } from '../structs/view-config.js'

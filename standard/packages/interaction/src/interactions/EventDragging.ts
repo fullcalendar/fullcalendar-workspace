@@ -277,7 +277,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
             eventStore: mutatedRelevantEvents,
           })
 
-          let eventChangeArg: EventChangeData = {
+          let eventChangeData: EventChangeData = {
             oldEvent: eventApi,
             event: updatedEventApi,
             relatedEvents: buildEventApis(mutatedRelevantEvents, initialContext, eventInstance),
@@ -295,7 +295,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
           }
 
           initialContext.emitter.trigger('eventDrop', {
-            ...eventChangeArg,
+            ...eventChangeData,
             ...transformed,
             el: ev.subjectEl as HTMLElement,
             delta: validMutation.datesDelta!,
@@ -303,11 +303,11 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
             view: initialView,
           })
 
-          initialContext.emitter.trigger('eventChange', eventChangeArg)
+          initialContext.emitter.trigger('eventChange', eventChangeData)
 
         // dropped in different calendar
         } else if (receivingContext) {
-          let eventRemoveArg: EventRemoveData = {
+          let eventRemoveData: EventRemoveData = {
             event: eventApi,
             relatedEvents: buildEventApis(relevantEvents, initialContext, eventInstance),
             revert() {
@@ -319,7 +319,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
           }
 
           initialContext.emitter.trigger('eventLeave', {
-            ...eventRemoveArg,
+            ...eventRemoveData,
             draggedEl: ev.subjectEl as HTMLElement,
             view: initialView,
           })
@@ -329,7 +329,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
             eventStore: relevantEvents,
           })
 
-          initialContext.emitter.trigger('eventRemove', eventRemoveArg)
+          initialContext.emitter.trigger('eventRemove', eventRemoveData)
 
           let addedEventDef = mutatedRelevantEvents.defs[eventDef.defId]
           let addedEventInstance = mutatedRelevantEvents.instances[eventInstance.instanceId]
@@ -340,7 +340,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
             eventStore: mutatedRelevantEvents,
           })
 
-          let eventAddArg: EventAddData = {
+          let eventAddData: EventAddData = {
             event: addedEventApi,
             relatedEvents: buildEventApis(mutatedRelevantEvents, receivingContext, addedEventInstance),
             revert() {
@@ -351,7 +351,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
             },
           }
 
-          receivingContext.emitter.trigger('eventAdd', eventAddArg)
+          receivingContext.emitter.trigger('eventAdd', eventAddData)
 
           if (ev.isTouch) {
             receivingContext.dispatch({
@@ -368,7 +368,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
           })
 
           receivingContext.emitter.trigger('eventReceive', {
-            ...eventAddArg,
+            ...eventAddData,
             draggedEl: ev.subjectEl as HTMLElement,
             view: finalHit.context.viewApi,
           })

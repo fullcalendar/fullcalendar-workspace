@@ -33,7 +33,7 @@ export function createVerboseFormattingArg(
 
 export type CmdFormatterFunc = (
   cmd: string,
-  arg: VerboseFormattingData,
+  data: VerboseFormattingData,
 ) => string | Intl.DateTimeFormatPart[]
 
 export interface DateFormattingContext {

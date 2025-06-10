@@ -11,12 +11,12 @@ describe('event mutations on non-instances', () => {
     it('doesn\'t do anything', () => {
       let renderCnt = 0
       let calendar = initCalendar({
-        eventContent(arg) {
+        eventContent(data) {
           renderCnt += 1
           if (renderCnt === 2) {
-            arg.event.setStart('2018-08-04')
-            arg.event.setEnd('2018-10-04')
-            arg.event.setDates('2018-08-04', '2018-10-04')
+            data.event.setStart('2018-08-04')
+            data.event.setEnd('2018-10-04')
+            data.event.setDates('2018-08-04', '2018-10-04')
           }
         },
       })

@@ -31,13 +31,13 @@ describe('timeline selection', () => {
             it('reports selection with no resource', (done) => {
               let selectCalled = false
               let calendar = initCalendar({
-                select(arg) {
+                select(data) {
                   selectCalled = true
-                  expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
-                  expect(arg.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
-                  expect(typeof arg.jsEvent).toBe('object')
-                  expect(typeof arg.view).toBe('object')
-                  expect(arg.resource).toBeFalsy()
+                  expect(data.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                  expect(data.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
+                  expect(typeof data.jsEvent).toBe('object')
+                  expect(typeof data.view).toBe('object')
+                  expect(data.resource).toBeFalsy()
                 },
               })
 
@@ -78,13 +78,13 @@ describe('timeline selection', () => {
             it('reports selection on a resource', (done) => {
               let selectCalled = false
               let calendar = initCalendar({
-                select(arg) {
+                select(data) {
                   selectCalled = true
-                  expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
-                  expect(arg.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
-                  expect(typeof arg.jsEvent).toBe('object')
-                  expect(typeof arg.view).toBe('object')
-                  expect(arg.resource.id).toBe('b')
+                  expect(data.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                  expect(data.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
+                  expect(typeof data.jsEvent).toBe('object')
+                  expect(typeof data.view).toBe('object')
+                  expect(data.resource.id).toBe('b')
                 },
               })
 
@@ -101,13 +101,13 @@ describe('timeline selection', () => {
             it('reports selection across resources', (done) => {
               let selectCalled = false
               let calendar = initCalendar({
-                select(arg) {
+                select(data) {
                   selectCalled = true
-                  expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
-                  expect(arg.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
-                  expect(typeof arg.jsEvent).toBe('object')
-                  expect(typeof arg.view).toBe('object')
-                  expect(arg.resource.id).toBe('b')
+                  expect(data.start).toEqualDate(tz.parseDate('2015-11-28T04:00:00'))
+                  expect(data.end).toEqualDate(tz.parseDate('2015-11-28T07:30:00'))
+                  expect(typeof data.jsEvent).toBe('object')
+                  expect(typeof data.view).toBe('object')
+                  expect(data.resource.id).toBe('b')
                 },
               })
 
@@ -132,13 +132,13 @@ describe('timeline selection', () => {
           it('reports a smaller granularity', (done) => {
             let selectCalled = false
             let calendar = initCalendar({
-              select(arg) {
+              select(data) {
                 selectCalled = true
-                expect(arg.start).toEqualDate(tz.parseDate('2015-11-28T04:15:00'))
-                expect(arg.end).toEqualDate(tz.parseDate('2015-11-28T07:45:00'))
-                expect(typeof arg.jsEvent).toBe('object')
-                expect(typeof arg.view).toBe('object')
-                expect(arg.resource.id).toBe('b')
+                expect(data.start).toEqualDate(tz.parseDate('2015-11-28T04:15:00'))
+                expect(data.end).toEqualDate(tz.parseDate('2015-11-28T07:45:00'))
+                expect(typeof data.jsEvent).toBe('object')
+                expect(typeof data.view).toBe('object')
+                expect(data.resource.id).toBe('b')
               },
             })
 
@@ -164,13 +164,13 @@ describe('timeline selection', () => {
       it('reports untimed dates', (done) => {
         let selectCalled = false
         let calendar = initCalendar({
-          select(arg) {
+          select(data) {
             selectCalled = true
-            expect(arg.start).toEqualDate('2015-11-03')
-            expect(arg.end).toEqualDate('2015-11-05')
-            expect(typeof arg.jsEvent).toBe('object')
-            expect(typeof arg.view).toBe('object')
-            expect(arg.resource.id).toBe('a')
+            expect(data.start).toEqualDate('2015-11-03')
+            expect(data.end).toEqualDate('2015-11-05')
+            expect(typeof data.jsEvent).toBe('object')
+            expect(typeof data.view).toBe('object')
+            expect(data.resource.id).toBe('a')
           },
         })
 
@@ -195,13 +195,13 @@ describe('timeline selection', () => {
       it('reports untimed dates', (done) => {
         let selectCalled = false
         let calendar = initCalendar({
-          select(arg) {
+          select(data) {
             selectCalled = true
-            expect(arg.start).toEqualDate('2015-01-18')
-            expect(arg.end).toEqualDate('2015-02-08')
-            expect(typeof arg.jsEvent).toBe('object')
-            expect(typeof arg.view).toBe('object')
-            expect(arg.resource.id).toBe('a')
+            expect(data.start).toEqualDate('2015-01-18')
+            expect(data.end).toEqualDate('2015-02-08')
+            expect(typeof data.jsEvent).toBe('object')
+            expect(typeof data.view).toBe('object')
+            expect(data.resource.id).toBe('a')
           },
         })
 
@@ -222,13 +222,13 @@ describe('timeline selection', () => {
     let calendar = initCalendar({
       longPressDelay: 100,
       initialView: 'resourceTimelineDay',
-      select(arg) {
+      select(data) {
         selectCalled = true
-        expect(arg.start).toEqualDate('2015-11-28T04:00:00Z')
-        expect(arg.end).toEqualDate('2015-11-28T07:30:00Z')
-        expect(typeof arg.jsEvent).toBe('object')
-        expect(typeof arg.view).toBe('object')
-        expect(arg.resource.id).toBe('b')
+        expect(data.start).toEqualDate('2015-11-28T04:00:00Z')
+        expect(data.end).toEqualDate('2015-11-28T07:30:00Z')
+        expect(typeof data.jsEvent).toBe('object')
+        expect(typeof data.view).toBe('object')
+        expect(data.resource.id).toBe('b')
       },
     })
 

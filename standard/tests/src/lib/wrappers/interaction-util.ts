@@ -4,8 +4,8 @@ export function waitEventDrag(calendar: Calendar, dragging: Promise<any>) {
   return new Promise<any>((resolve) => {
     let modifiedEvent: any = false
 
-    calendar.on('eventDrop', (arg) => {
-      modifiedEvent = arg.event
+    calendar.on('eventDrop', (data) => {
+      modifiedEvent = data.event
     })
 
     calendar.on('_noEventDrop', () => {
@@ -22,10 +22,10 @@ export function waitEventDrag(calendar: Calendar, dragging: Promise<any>) {
 
 export function waitEventDrag2(calendar: Calendar, dragging: Promise<any>) {
   return new Promise<any>((resolve) => {
-    let theArg: any = false
+    let theData: any = false
 
-    calendar.on('eventDrop', (arg) => {
-      theArg = arg
+    calendar.on('eventDrop', (data) => {
+      theData = data
     })
 
     calendar.on('_noEventDrop', () => {
@@ -34,7 +34,7 @@ export function waitEventDrag2(calendar: Calendar, dragging: Promise<any>) {
 
     dragging.then(() => {
       setTimeout(() => { // wait for eventDrop to fire
-        resolve(theArg)
+        resolve(theData)
       })
     })
   })
@@ -44,8 +44,8 @@ export function waitEventResize(calendar: Calendar, dragging: Promise<any>) {
   return new Promise<any>((resolve) => {
     let modifiedEvent: any = false
 
-    calendar.on('eventResize', (arg) => {
-      modifiedEvent = arg.event
+    calendar.on('eventResize', (data) => {
+      modifiedEvent = data.event
     })
 
     dragging.then(() => {
@@ -58,15 +58,15 @@ export function waitEventResize(calendar: Calendar, dragging: Promise<any>) {
 
 export function waitEventResize2(calendar: Calendar, dragging: Promise<any>) {
   return new Promise<any>((resolve) => {
-    let theArg: any = false
+    let theData: any = false
 
-    calendar.on('eventResize', (arg) => {
-      theArg = arg
+    calendar.on('eventResize', (data) => {
+      theData = data
     })
 
     dragging.then(() => {
       setTimeout(() => { // wait for eventResize to fire
-        resolve(theArg)
+        resolve(theData)
       })
     })
   })
@@ -76,8 +76,8 @@ export function waitDateSelect(calendar: Calendar, dragging: Promise<any>) {
   return new Promise<any>((resolve) => {
     let selectInfo = null
 
-    calendar.on('select', (arg) => {
-      selectInfo = arg
+    calendar.on('select', (data) => {
+      selectInfo = data
     })
 
     dragging.then(() => {

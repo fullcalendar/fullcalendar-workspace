@@ -4,8 +4,8 @@ import { ComponentChildren } from '../preact.js'
 import { ClassNamesInput } from '../util/html.js'
 
 export type MountData<DisplayData> = DisplayData & { el: HTMLElement }
-export type DidMountHandler<TheMountData extends { el: HTMLElement }> = (mountArg: TheMountData) => void
-export type WillUnmountHandler<TheMountData extends { el: HTMLElement }> = (mountArg: TheMountData) => void
+export type DidMountHandler<TheMountData extends { el: HTMLElement }> = (mountData: TheMountData) => void
+export type WillUnmountHandler<TheMountData extends { el: HTMLElement }> = (mountData: TheMountData) => void
 
 export interface ObjCustomContent {
   html: string

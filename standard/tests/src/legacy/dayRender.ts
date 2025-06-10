@@ -7,10 +7,10 @@ describe('dayCellDidMount', () => { // TODO: rename file
       initialView: 'dayGridMonth',
       fixedWeekCount: true,
       initialDate: '2014-05-01',
-      dayCellDidMount(arg) {
-        expect(arg.date instanceof Date).toEqual(true)
-        expect(formatIsoDay(arg.date)).toEqual(arg.el.getAttribute('data-date'))
-        expect(arg.el instanceof HTMLElement).toBe(true)
+      dayCellDidMount(data) {
+        expect(data.date instanceof Date).toEqual(true)
+        expect(formatIsoDay(data.date)).toEqual(data.el.getAttribute('data-date'))
+        expect(data.el instanceof HTMLElement).toBe(true)
       },
     }
 
@@ -23,7 +23,7 @@ describe('dayCellDidMount', () => { // TODO: rename file
     let options = {
       initialView: 'dayGridWeek',
       initialDate: '2014-05-01',
-      dayCellDidMount(arg) { },
+      dayCellDidMount(data) { },
     }
 
     spyOn(options, 'dayCellDidMount').and.callThrough()
@@ -37,7 +37,7 @@ describe('dayCellDidMount', () => { // TODO: rename file
     let options = {
       initialView: 'dayGridWeek',
       initialDate: '2014-05-01',
-      dayCellDidMount(arg) { },
+      dayCellDidMount(data) { },
     }
 
     spyOn(options, 'dayCellDidMount').and.callThrough()
@@ -52,9 +52,9 @@ describe('dayCellDidMount', () => { // TODO: rename file
       initialView: 'dayGridMonth',
       fixedWeekCount: true,
       initialDate: '2014-05-01',
-      dayCellDidMount(arg) {
-        if (formatIsoDay(arg.date) === '2014-05-01') {
-          arg.el.classList.add('mycustomclass')
+      dayCellDidMount(data) {
+        if (formatIsoDay(data.date) === '2014-05-01') {
+          data.el.classList.add('mycustomclass')
         }
       },
     }
@@ -71,10 +71,10 @@ describe('dayCellDidMount', () => { // TODO: rename file
       initialView: 'timeGridWeek',
       initialDate: '2014-05-01',
       allDaySlot: false, // turn off. fires its own dayCellDidMount
-      dayCellDidMount(arg) {
-        expect(arg.date instanceof Date).toBe(true)
-        expect(arg.el instanceof HTMLElement).toBe(true)
-        expect(typeof arg.view).toBe('object')
+      dayCellDidMount(data) {
+        expect(data.date instanceof Date).toBe(true)
+        expect(data.el instanceof HTMLElement).toBe(true)
+        expect(typeof data.view).toBe('object')
         callCnt += 1
       },
     }

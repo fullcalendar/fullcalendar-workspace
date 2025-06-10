@@ -36,8 +36,8 @@ describe('external event dragging', () => {
         initialDate: '2019-04-01',
         droppable: true,
         defaultAllDayEventDuration: { days: 2 },
-        eventReceive(arg) {
-          expect(arg.event.end).toEqualDate('2019-04-04')
+        eventReceive(data) {
+          expect(data.event.end).toEqualDate('2019-04-04')
           done()
         },
       })

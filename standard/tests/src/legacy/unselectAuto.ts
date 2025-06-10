@@ -25,11 +25,11 @@ describe('unselectAuto', () => {
         let isDone = false // hack against dragging continuing after destroy
         let dayGridWrapper
         let calendar = initCalendar({
-          unselect(arg) {
+          unselect(data) {
             if (!isDone) {
               expect(dayGridWrapper.getHighlightEls().length).toBe(0)
-              expect('currentTarget' in arg.jsEvent).toBe(true) // a JS event
-              expect(typeof arg.view).toBe('object')
+              expect('currentTarget' in data.jsEvent).toBe(true) // a JS event
+              expect(typeof data.view).toBe('object')
               isDone = true
               done()
             }
@@ -51,11 +51,11 @@ describe('unselectAuto', () => {
         let isDone = false // hack against dragging continuing after destroy
         let dayGridWrapper
         let calendar = initCalendar({
-          unselect(arg) {
+          unselect(data) {
             if (!isDone) {
               expect(dayGridWrapper.getHighlightEls().length).toBe(0)
-              expect('currentTarget' in arg.jsEvent).toBe(true) // a JS event
-              expect(typeof arg.view).toBe('object')
+              expect('currentTarget' in data.jsEvent).toBe(true) // a JS event
+              expect(typeof data.view).toBe('object')
               isDone = true
               done()
             }

@@ -30,12 +30,12 @@ describe('timeline dateClick', () => {
             it('reports date with no resource', (done) => {
               let dateClickCalled = false
               let calendar = initCalendar({
-                dateClick(arg) {
+                dateClick(data) {
                   dateClickCalled = true
-                  expect(arg.date).toEqualDate(tz.parseDate('2015-11-28T04:30:00'))
-                  expect(typeof arg.jsEvent).toBe('object')
-                  expect(typeof arg.view).toBe('object')
-                  expect(arg.resource).toBeFalsy()
+                  expect(data.date).toEqualDate(tz.parseDate('2015-11-28T04:30:00'))
+                  expect(typeof data.jsEvent).toBe('object')
+                  expect(typeof data.view).toBe('object')
+                  expect(data.resource).toBeFalsy()
                 },
               })
 
@@ -69,12 +69,12 @@ describe('timeline dateClick', () => {
             it('reports click on a resource', (done) => {
               let dateClickCalled = false
               let calendar = initCalendar({
-                dateClick(arg) {
+                dateClick(data) {
                   dateClickCalled = true
-                  expect(arg.date).toEqualDate(tz.parseDate('2015-11-28T04:30:00'))
-                  expect(typeof arg.jsEvent).toBe('object')
-                  expect(typeof arg.view).toBe('object')
-                  expect(arg.resource.id).toBe('b')
+                  expect(data.date).toEqualDate(tz.parseDate('2015-11-28T04:30:00'))
+                  expect(typeof data.jsEvent).toBe('object')
+                  expect(typeof data.view).toBe('object')
+                  expect(data.resource.id).toBe('b')
                 },
               })
 
@@ -96,12 +96,12 @@ describe('timeline dateClick', () => {
           it('reports a smaller granularity', (done) => {
             let dateClickCalled = false
             let calendar = initCalendar({
-              dateClick(arg) {
+              dateClick(data) {
                 dateClickCalled = true
-                expect(arg.date).toEqualDate(tz.parseDate('2015-11-28T04:15:00'))
-                expect(typeof arg.jsEvent).toBe('object')
-                expect(typeof arg.view).toBe('object')
-                expect(arg.resource.id).toBe('b')
+                expect(data.date).toEqualDate(tz.parseDate('2015-11-28T04:15:00'))
+                expect(typeof data.jsEvent).toBe('object')
+                expect(typeof data.view).toBe('object')
+                expect(data.resource.id).toBe('b')
               },
             })
 
@@ -124,12 +124,12 @@ describe('timeline dateClick', () => {
       it('reports untimed dates', (done) => {
         let dateClickCalled = false
         let calendar = initCalendar({
-          dateClick(arg) {
+          dateClick(data) {
             dateClickCalled = true
-            expect(arg.date).toEqualDate('2015-11-03')
-            expect(typeof arg.jsEvent).toBe('object')
-            expect(typeof arg.view).toBe('object')
-            expect(arg.resource.id).toBe('a')
+            expect(data.date).toEqualDate('2015-11-03')
+            expect(typeof data.jsEvent).toBe('object')
+            expect(typeof data.view).toBe('object')
+            expect(data.resource.id).toBe('a')
           },
         })
 
@@ -150,12 +150,12 @@ describe('timeline dateClick', () => {
       it('reports untimed dates', (done) => {
         let dateClickCalled = false
         let calendar = initCalendar({
-          dateClick(arg) {
+          dateClick(data) {
             dateClickCalled = true
-            expect(arg.date).toEqualDate('2015-01-18')
-            expect(typeof arg.jsEvent).toBe('object')
-            expect(typeof arg.view).toBe('object')
-            expect(arg.resource.id).toBe('a')
+            expect(data.date).toEqualDate('2015-01-18')
+            expect(typeof data.jsEvent).toBe('object')
+            expect(typeof data.view).toBe('object')
+            expect(data.resource.id).toBe('a')
           },
         })
 

@@ -25,11 +25,11 @@ describe('dayGrid-view event drag-n-drop', () => {
             { title: 'event0', className: 'event0', start: '2015-11-30T12:00:00', resourceId: 'b' },
           ],
           eventDrop:
-            (dropSpy = spyCall((arg) => {
-              expect(arg.event.start).toEqualDate(tz.parseDate('2015-12-01T12:00:00'))
-              expect(arg.event.end).toBe(null)
+            (dropSpy = spyCall((data) => {
+              expect(data.event.start).toEqualDate(tz.parseDate('2015-12-01T12:00:00'))
+              expect(data.event.end).toBe(null)
 
-              let resources = arg.event.getResources()
+              let resources = data.event.getResources()
               expect(resources.length).toBe(1)
               expect(resources[0].id).toBe('a')
             })),
@@ -58,8 +58,8 @@ describe('dayGrid-view event drag-n-drop', () => {
         { title: 'event0', start: '2015-11-10', resourceId: 'a' },
       ],
       eventDrop:
-        (dropSpy = spyCall((arg) => {
-          let { event } = arg
+        (dropSpy = spyCall((data) => {
+          let { event } = data
           let resources = event.getResources()
 
           expect(event.start).toEqualDate('2015-11-18')

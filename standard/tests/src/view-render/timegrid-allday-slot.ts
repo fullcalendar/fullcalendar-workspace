@@ -10,8 +10,8 @@ describe('timegrid all-day slot', () => {
   // https://github.com/fullcalendar/fullcalendar/issues/4616
   it('allows dragging after dynamic event adding', (done) => {
     let calendar = initCalendar({
-      eventDrop(arg) {
-        expect(arg.event.start).toEqualDate('2019-04-24')
+      eventDrop(data) {
+        expect(data.event.start).toEqualDate('2019-04-24')
         done()
       },
     })

@@ -97,11 +97,11 @@
           window.open(event.url);
         }
       },
-      eventMouseEnter: function(arg) {
-        console.log('eventMouseEnter', arg.event.title);
+      eventMouseEnter: function(data) {
+        console.log('eventMouseEnter', data.event.title);
       },
-      eventMouseLeave: function(arg) {
-        console.log('eventMouseLeave', arg.event.title);
+      eventMouseLeave: function(data) {
+        console.log('eventMouseLeave', data.event.title);
       }
     });
 

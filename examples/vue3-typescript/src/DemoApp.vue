@@ -49,9 +49,9 @@ export default defineComponent({
     handleWeekendsToggle() {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
-    handleDateSelect(selectInfo: DateSelectData) {
+    handleDateSelect(selectData: DateSelectData) {
       let title = prompt('Please enter a new title for your event')
-      let calendarApi = selectInfo.view.calendar
+      let calendarApi = selectData.view.calendar
 
       calendarApi.unselect() // clear date selection
 
@@ -59,15 +59,15 @@ export default defineComponent({
         calendarApi.addEvent({
           id: createEventId(),
           title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay
+          start: selectData.startStr,
+          end: selectData.endStr,
+          allDay: selectData.allDay
         })
       }
     },
-    handleEventClick(clickInfo: EventClickData) {
-      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-        clickInfo.event.remove()
+    handleEventClick(clickData: EventClickData) {
+      if (confirm(`Are you sure you want to delete the event '${clickData.event.title}'`)) {
+        clickData.event.remove()
       }
     },
     handleEvents(events: EventApi[]) {

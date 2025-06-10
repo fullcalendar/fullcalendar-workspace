@@ -10,10 +10,10 @@ describe('eventWillUnmount', () => { // TODO: rename file
 
     let calendar = initCalendar({
       events: [singleEventData],
-      eventWillUnmount(arg) {
+      eventWillUnmount(data) {
         callCnt += 1
         if (callCnt === 1) { // only care about the first call. gets called again when calendar is destroyed
-          expect(arg.event.id).toBe(singleEventData.id)
+          expect(data.event.id).toBe(singleEventData.id)
           done()
         }
       },

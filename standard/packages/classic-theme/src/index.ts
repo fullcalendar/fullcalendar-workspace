@@ -23,27 +23,27 @@ const dayGridCommon = {
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
-    classNames: (arg) => [
+    classNames: (data) => [
       'fc',
-      `fc-direction-${arg.direction}`,
-      `fc-media-${arg.mediaType}`
+      `fc-direction-${data.direction}`,
+      `fc-media-${data.mediaType}`
     ],
-    toolbarClassNames: (arg) => [
-      `fc-${arg.name}-toolbar`,
+    toolbarClassNames: (data) => [
+      `fc-${data.name}-toolbar`,
       'fc-toolbar',
     ],
-    toolbarSectionClassNames: (arg) => [
+    toolbarSectionClassNames: (data) => [
       'fc-toolbar-section',
-      `fc-toolbar-${arg.name}`, // TODO: do section- ?
+      `fc-toolbar-${data.name}`, // TODO: do section- ?
     ],
     toolbarTitleClassNames: 'fc-toolbar-title',
-    viewClassNames: (arg) => [
+    viewClassNames: (data) => [
       'fc-view',
-      `fc-${arg.view.type}-view`,
+      `fc-${data.view.type}-view`,
       'fc-view-bordered',
     ],
-    viewHeaderClassNames: (arg) => [
-      arg.isSticky && 'fc-view-header-sticky'
+    viewHeaderClassNames: (data) => [
+      data.isSticky && 'fc-view-header-sticky'
     ],
 
     // UI Fundamentals
@@ -51,36 +51,36 @@ export default createPlugin({
 
     buttons: {
       prev: {
-        iconContent: (arg) => arg.direction === 'ltr'
+        iconContent: (data) => data.direction === 'ltr'
           ? svgIcons.chevronLeft
           : svgIcons.chevronRight,
       },
       next: {
-        iconContent: (arg) => arg.direction === 'ltr'
+        iconContent: (data) => data.direction === 'ltr'
           ? svgIcons.chevronRight
           : svgIcons.chevronLeft,
       },
       prevYear: {
-        iconContent: (arg) => arg.direction === 'ltr'
+        iconContent: (data) => data.direction === 'ltr'
           ? svgIcons.chevronsLeft
           : svgIcons.chevronsRight,
       },
       nextYear: {
-        iconContent: (arg) => arg.direction === 'ltr'
+        iconContent: (data) => data.direction === 'ltr'
           ? svgIcons.chevronsRight
           : svgIcons.chevronsLeft,
       },
     },
     popoverCloseContent: () => svgIcons.x,
-    resourceExpanderContent: (arg) => arg.isExpanded
+    resourceExpanderContent: (data) => data.isExpanded
       ? svgIcons.minusSquare
       : svgIcons.plusSquare,
 
-    buttonClassNames: (arg) => [
-      `fc-${arg.name}-button`,
+    buttonClassNames: (data) => [
+      `fc-${data.name}-button`,
       'fc-button',
       'fc-button-primary',
-      arg.isSelected && 'fc-button-active',
+      data.isSelected && 'fc-button-active',
     ],
     buttonGroupClassNames: 'fc-button-group',
 
@@ -98,9 +98,9 @@ export default createPlugin({
     moreLinkClassNames: 'fc-more-link',
 
     dayCompactWidth: 75,
-    dayPopoverClassNames: (arg) => [
+    dayPopoverClassNames: (data) => [
       'fc-more-popover',
-      ...getDayClassNames(arg),
+      ...getDayClassNames(data),
     ],
 
     fillerClassNames: 'fc-filler', // TODO: give all-sides border
@@ -111,41 +111,41 @@ export default createPlugin({
     // General Event
     // ---------------------------------------------------------------------------------------------
 
-    eventClassNames: (arg) => [
-      arg.event.display === 'background' && 'fc-bg-event',
+    eventClassNames: (data) => [
+      data.event.display === 'background' && 'fc-bg-event',
       'fc-event',
-      arg.isMirror && 'fc-event-mirror',
-      arg.isDraggable && 'fc-event-draggable',
-      (arg.isStartResizable || arg.isEndResizable) && 'fc-event-resizable',
-      arg.isDragging && 'fc-event-dragging',
-      arg.isResizing && 'fc-event-resizing',
-      arg.isSelected && 'fc-event-selected',
-      arg.isStart && 'fc-event-start',
-      arg.isEnd && 'fc-event-end',
-      arg.isPast && 'fc-event-past',
-      arg.isFuture && 'fc-event-future',
-      arg.isToday && 'fc-event-today',
+      data.isMirror && 'fc-event-mirror',
+      data.isDraggable && 'fc-event-draggable',
+      (data.isStartResizable || data.isEndResizable) && 'fc-event-resizable',
+      data.isDragging && 'fc-event-dragging',
+      data.isResizing && 'fc-event-resizing',
+      data.isSelected && 'fc-event-selected',
+      data.isStart && 'fc-event-start',
+      data.isEnd && 'fc-event-end',
+      data.isPast && 'fc-event-past',
+      data.isFuture && 'fc-event-future',
+      data.isToday && 'fc-event-today',
     ],
     eventInnerClassNames: 'fc-event-inner',
     eventTimeClassNames: 'fc-event-time',
-    eventTitleClassNames: (arg) => [
-      arg.event.display === 'background' && 'fc-bg-event-title',
+    eventTitleClassNames: (data) => [
+      data.event.display === 'background' && 'fc-bg-event-title',
       'fc-event-title',
     ],
-    eventBeforeClassNames: (arg) => [
-      arg.isStartResizable && 'fc-event-resizer fc-event-resizer-start',
+    eventBeforeClassNames: (data) => [
+      data.isStartResizable && 'fc-event-resizer fc-event-resizer-start',
     ],
-    eventAfterClassNames: (arg) => [
-      arg.isEndResizable && 'fc-event-resizer fc-event-resizer-end',
+    eventAfterClassNames: (data) => [
+      data.isEndResizable && 'fc-event-resizer fc-event-resizer-end',
     ],
 
     // Day-Headers (DayGrid & MultiMonth & TimeGrid)
     // ---------------------------------------------------------------------------------------------
 
     dayHeaderRowClassNames: 'fc-day-header-row',
-    dayHeaderClassNames: (arg) => [
+    dayHeaderClassNames: (data) => [
       'fc-day-header-cell',
-      ...getDayClassNames(arg)
+      ...getDayClassNames(data)
     ],
     dayHeaderInnerClassNames: 'fc-padding-sm',
     dayHeaderDividerClassNames: 'fc-day-header-divider',
@@ -158,41 +158,41 @@ export default createPlugin({
     // ---------------------------------------------------------------------------------------------
 
     dayRowClassNames: 'fc-day-row',
-    dayCellClassNames: (arg) => [
+    dayCellClassNames: (data) => [
       'fc-day-cell',
-      ...getDayClassNames(arg),
-      arg.isCompact ? 'fc-day-cell-compact' : 'fc-day-cell-not-compact',
+      ...getDayClassNames(data),
+      data.isCompact ? 'fc-day-cell-compact' : 'fc-day-cell-not-compact',
     ],
 
     dayCellTopClassNames: 'fc-day-cell-top',
-    dayCellTopInnerClassNames: (arg) => [
+    dayCellTopInnerClassNames: (data) => [
       'fc-day-cell-top-inner',
-      arg.isMonthStart && 'fc-day-cell-top-inner-monthstart',
+      data.isMonthStart && 'fc-day-cell-top-inner-monthstart',
     ],
 
     // MultiMonth
     // ---------------------------------------------------------------------------------------------
 
-    singleMonthClassNames: (arg) => [
+    singleMonthClassNames: (data) => [
       'fc-single-month',
-      arg.colCount > 1 && 'fc-single-month-multicol',
+      data.colCount > 1 && 'fc-single-month-multicol',
     ],
-    // singleMonthTitleClassNames: (arg) => [
+    // singleMonthTitleClassNames: (data) => [
     //   'fc-single-month-title',
-    //   arg.colCount > 1
+    //   data.colCount > 1
     //     ? 'fc-single-month-title-multicol'
     //     : 'fc-single-month-title-singlecol',
-    //   arg.sticky && 'fc-single-month-title-sticky',
+    //   data.sticky && 'fc-single-month-title-sticky',
     // ],
-    // singleMonthTableClassNames: (arg) => [
+    // singleMonthTableClassNames: (data) => [
     //   'fc-single-month-table',
-    //   arg.colCount > 1 && 'fc-single-month-table-borderx',
-    //   (arg.colCount > 1 || !arg.isLast) && 'fc-single-month-table-borderbottom',
-    //   !arg.stickyTitle && 'fc-single-month-table-bordertop',
+    //   data.colCount > 1 && 'fc-single-month-table-borderx',
+    //   (data.colCount > 1 || !data.isLast) && 'fc-single-month-table-borderbottom',
+    //   !data.stickyTitle && 'fc-single-month-table-bordertop',
     // ],
-    // singleMonthTableHeaderClassNames: (arg) => [
+    // singleMonthTableHeaderClassNames: (data) => [
     //   'fc-single-month-table-header',
-    //   arg.sticky && 'fc-single-month-table-header-sticky',
+    //   data.sticky && 'fc-single-month-table-header-sticky',
     // ],
     // singleMonthTableBodyClassNames: 'fc-single-month-table-body',
 
@@ -203,25 +203,25 @@ export default createPlugin({
     allDayHeaderInnerClassNames: 'fc-all-day-header-inner fc-padding-sm',
     allDayDividerClassNames: 'fc-all-day-divider',
 
-    dayLaneClassNames: (arg) => [
+    dayLaneClassNames: (data) => [
       'fc-day-lane',
-      ...getDayClassNames(arg),
+      ...getDayClassNames(data),
     ],
-    dayLaneInnerClassNames: (arg) => [
+    dayLaneInnerClassNames: (data) => [
       'fc-day-lane-inner',
-      arg.isSimple && 'fc-day-lane-inner-simple',
+      data.isSimple && 'fc-day-lane-inner-simple',
     ],
 
     // Slots (TimeGrid & Timeline)
     // ---------------------------------------------------------------------------------------------
 
-    slotLabelClassNames: (arg) => [
+    slotLabelClassNames: (data) => [
       'fc-slot-label',
-      ...getSlotClassNames(arg),
+      ...getSlotClassNames(data),
     ],
-    slotLaneClassNames: (arg) => [
+    slotLaneClassNames: (data) => [
       'fc-slot-lane',
-      ...getSlotClassNames(arg),
+      ...getSlotClassNames(data),
     ],
 
     // only for (resource-)timeline
@@ -246,9 +246,9 @@ export default createPlugin({
     resourceCellClassNames: 'fc-resource-cell',
     resourceCellInnerClassNames: 'fc-padding-lg',
     resourceLaneClassNames: 'fc-resource-lane',
-    resourceLaneBottomClassNames: (arg) => [
+    resourceLaneBottomClassNames: (data) => [
       'fc-resource-lane-bottom',
-      arg.isCompact && 'fc-resource-lane-bottom-compact',
+      data.isCompact && 'fc-resource-lane-bottom-compact',
     ],
 
     // Timeline WITHOUT resources
@@ -274,9 +274,9 @@ export default createPlugin({
     },
     timeGrid: {
       viewClassNames: 'fc-timegrid',
-      eventClassNames: (arg) => [
-        arg.isCompact && 'fc-timegrid-event-compact',
-        arg.level && 'fc-timegrid-event-inset',
+      eventClassNames: (data) => [
+        data.isCompact && 'fc-timegrid-event-compact',
+        data.level && 'fc-timegrid-event-inset',
       ],
       rowEventClassNames: dayGridBlockEventClassNames,
       listItemEventClassNames: dayGridListItemEventClassNames,
@@ -296,9 +296,9 @@ export default createPlugin({
     },
     timeline: {
       viewClassNames: 'fc-timeline',
-      eventClassNames: (arg) => [
+      eventClassNames: (data) => [
         'fc-timeline-event fc-event-x',
-        arg.isSpacious && 'fc-timeline-event-spacious',
+        data.isSpacious && 'fc-timeline-event-spacious',
       ],
       moreLinkClassNames: 'fc-timeline-more-link',
       moreLinkInnerClassNames: 'fc-timeline-more-link-inner',
@@ -331,36 +331,36 @@ export default createPlugin({
 
 const DAY_IDS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
-function getDayClassNames(arg: any) {
-  return arg.isDisabled
+function getDayClassNames(data: any) {
+  return data.isDisabled
     ? [
       'fc-day',
       'fc-day-disabled',
     ]
     : [
       'fc-day',
-      `fc-day-${DAY_IDS[arg.dow]}`,
-      arg.isToday && 'fc-day-today',
-      arg.isPast && 'fc-day-past',
-      arg.isFuture && 'fc-day-future',
-      arg.isOther && 'fc-day-other',
+      `fc-day-${DAY_IDS[data.dow]}`,
+      data.isToday && 'fc-day-today',
+      data.isPast && 'fc-day-past',
+      data.isFuture && 'fc-day-future',
+      data.isOther && 'fc-day-other',
     ]
 }
 
-function getSlotClassNames(arg: any) {
-  return arg.isDisabled
+function getSlotClassNames(data: any) {
+  return data.isDisabled
     ? [
       'fc-slot',
       'fc-slot-disabled',
     ]
     : [
       'fc-slot',
-      arg.isMajor && 'fc-slot-major',
-      arg.isMinor && 'fc-slot-minor',
-      `fc-slot-${DAY_IDS[arg.dow]}`,
-      arg.isToday && 'fc-slot-today',
-      arg.isPast && 'fc-slot-past',
-      arg.isFuture && 'fc-slot-future',
-      arg.isOther && 'fc-slot-other',
+      data.isMajor && 'fc-slot-major',
+      data.isMinor && 'fc-slot-minor',
+      `fc-slot-${DAY_IDS[data.dow]}`,
+      data.isToday && 'fc-slot-today',
+      data.isPast && 'fc-slot-past',
+      data.isFuture && 'fc-slot-future',
+      data.isOther && 'fc-slot-other',
     ]
 }

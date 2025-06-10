@@ -112,8 +112,8 @@ describe('events as a json feed', () => {
         classNames: 'customeventclass',
       }],
       timeZone: 'America/Chicago',
-      eventDidMount(arg) {
-        expect(arg.el).toHaveClass('customeventclass')
+      eventDidMount(data) {
+        expect(data.el).toHaveClass('customeventclass')
         done()
       },
     })

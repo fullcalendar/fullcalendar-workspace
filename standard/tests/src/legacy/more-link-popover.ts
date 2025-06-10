@@ -393,9 +393,9 @@ describe('more-link popover', () => {
     describe('when dragging an all-day event to a different day', () => {
       it('should have the new day and remain all-day', (done) => {
         let calendar = initCalendar({
-          eventDrop(arg) {
-            expect(arg.event.start).toEqualDate('2014-07-28')
-            expect(arg.event.allDay).toBe(true)
+          eventDrop(data) {
+            expect(data.event.start).toEqualDate('2014-07-28')
+            expect(data.event.allDay).toBe(true)
             done()
           },
         })
@@ -420,9 +420,9 @@ describe('more-link popover', () => {
               className: 'event5',
             },
           ]),
-          eventDrop(arg) {
-            expect(arg.event.start).toEqualDate('2014-07-28T13:00:00Z')
-            expect(arg.event.allDay).toBe(false)
+          eventDrop(data) {
+            expect(data.event.start).toEqualDate('2014-07-28T13:00:00Z')
+            expect(data.event.allDay).toBe(false)
             done()
           },
         })
@@ -442,9 +442,9 @@ describe('more-link popover', () => {
         let calendar = initCalendar({
           initialView: 'timeGridWeek',
           scrollTime: '00:00:00',
-          eventDrop(arg) {
-            expect(arg.event.start).toEqualDate('2014-07-30T03:00:00Z')
-            expect(arg.event.allDay).toBe(false)
+          eventDrop(data) {
+            expect(data.event.start).toEqualDate('2014-07-30T03:00:00Z')
+            expect(data.event.allDay).toBe(false)
             done()
           },
         })

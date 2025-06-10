@@ -36,12 +36,12 @@
         }
       },
       resourceAreaHeaderContent: 'Rooms',
-      resourceCellContent: function(arg) {
-        return 'Auditorium ' + arg.resource.id.toUpperCase();
+      resourceCellContent: function(data) {
+        return 'Auditorium ' + data.resource.id.toUpperCase();
       },
-      resourceCellDidMount: function(arg) {
-        if (arg.resource.id == 'h') {
-          arg.el.style.backgroundColor = 'rgb(255, 243, 206)';
+      resourceCellDidMount: function(data) {
+        if (data.resource.id == 'h') {
+          data.el.style.backgroundColor = 'rgb(255, 243, 206)';
         }
       },
       resources: [

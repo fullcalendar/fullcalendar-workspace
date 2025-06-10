@@ -54,10 +54,10 @@ describe('timeline rendering', () => {
     initCalendar({
       initialView: 'timelineWeek',
       slotDuration: { days: 1 },
-      slotLabelDidMount(arg) {
-        expect(arg.date instanceof Date).toBe(true)
-        expect(arg.el instanceof HTMLElement).toBe(true)
-        expect(typeof arg.view).toBe('object')
+      slotLabelDidMount(data) {
+        expect(data.date instanceof Date).toBe(true)
+        expect(data.el instanceof HTMLElement).toBe(true)
+        expect(typeof data.view).toBe('object')
         callCnt += 1
       },
     })
@@ -71,8 +71,8 @@ describe('timeline rendering', () => {
     initCalendar({
       initialView: 'timelineDay',
       slotDuration: { hours: 1 },
-      slotLabelDidMount(arg) {
-        expect(startOfDay(arg.date)).toEqualDate('2017-10-27')
+      slotLabelDidMount(data) {
+        expect(startOfDay(data.date)).toEqualDate('2017-10-27')
         callCnt += 1
       },
     })

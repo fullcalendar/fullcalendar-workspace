@@ -18,7 +18,7 @@ export interface RequestFetcherRes {
 }
 
 export type ResourceFetcher<ResourceSourceMeta> = (
-  arg: {
+  data: {
     resourceSource: ResourceSource<ResourceSourceMeta>
     range: DateRange | null
     context: CalendarContext

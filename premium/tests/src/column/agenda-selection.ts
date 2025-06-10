@@ -48,13 +48,13 @@ describe('timeGrid-view selection', () => {
     it('allows a same-day resource selection', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
-        select(arg) {
+        select(data) {
           selectCalled = true
-          expect(arg.start).toEqualDate('2015-11-29T02:00:00Z')
-          expect(arg.end).toEqualDate('2015-11-29T04:30:00Z')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource.id).toBe('b')
+          expect(data.start).toEqualDate('2015-11-29T02:00:00Z')
+          expect(data.end).toEqualDate('2015-11-29T04:30:00Z')
+          expect(typeof data.jsEvent).toBe('object')
+          expect(typeof data.view).toBe('object')
+          expect(data.resource.id).toBe('b')
         },
       })
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
@@ -72,13 +72,13 @@ describe('timeGrid-view selection', () => {
     it('allows a different-day resource selection', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
-        select(arg) {
+        select(data) {
           selectCalled = true
-          expect(arg.start).toEqualDate('2015-11-29T02:00:00Z')
-          expect(arg.end).toEqualDate('2015-11-30T04:30:00Z')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource.id).toBe('b')
+          expect(data.start).toEqualDate('2015-11-29T02:00:00Z')
+          expect(data.end).toEqualDate('2015-11-30T04:30:00Z')
+          expect(typeof data.jsEvent).toBe('object')
+          expect(typeof data.view).toBe('object')
+          expect(data.resource.id).toBe('b')
         },
       })
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
@@ -122,13 +122,13 @@ describe('timeGrid-view selection', () => {
     it('allows a same-day resource selection', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
-        select(arg) {
+        select(data) {
           selectCalled = true
-          expect(arg.start).toEqualDate('2015-11-30T02:00:00Z')
-          expect(arg.end).toEqualDate('2015-11-30T04:30:00Z')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource.id).toBe('b')
+          expect(data.start).toEqualDate('2015-11-30T02:00:00Z')
+          expect(data.end).toEqualDate('2015-11-30T04:30:00Z')
+          expect(typeof data.jsEvent).toBe('object')
+          expect(typeof data.view).toBe('object')
+          expect(data.resource.id).toBe('b')
         },
       })
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
@@ -146,13 +146,13 @@ describe('timeGrid-view selection', () => {
     it('allows a multi-day resource selection', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
-        select(arg) {
+        select(data) {
           selectCalled = true
-          expect(arg.start).toEqualDate('2015-11-29T04:00:00Z')
-          expect(arg.end).toEqualDate('2015-11-30T02:30:00Z')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource.id).toBe('b')
+          expect(data.start).toEqualDate('2015-11-29T04:00:00Z')
+          expect(data.end).toEqualDate('2015-11-30T02:30:00Z')
+          expect(typeof data.jsEvent).toBe('object')
+          expect(typeof data.view).toBe('object')
+          expect(data.resource.id).toBe('b')
         },
       })
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
@@ -170,7 +170,7 @@ describe('timeGrid-view selection', () => {
     it('disallows a selection across resources', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
-        select(arg) {
+        select(data) {
           selectCalled = true
         },
       })

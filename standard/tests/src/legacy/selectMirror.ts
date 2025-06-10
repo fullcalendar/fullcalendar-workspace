@@ -10,8 +10,8 @@ describe('selectMirror', () => {
 
   it('goes through eventDidMount', () => {
     let options = {
-      eventDidMount(arg) {
-        expect(arg.isMirror).toBe(true)
+      eventDidMount(data) {
+        expect(data.isMirror).toBe(true)
       },
     }
 

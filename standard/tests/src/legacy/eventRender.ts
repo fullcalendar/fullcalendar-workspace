@@ -18,15 +18,15 @@ describe('eventDidMount+eventContent', () => { // TODO: rename file
     describe('with foreground event', () => {
       it('receives correct args AND can modify the element', () => {
         let options = {
-          eventContent(arg) {
-            expect(typeof arg.event).toBe('object')
-            expect(arg.event.display).toBe('auto')
-            expect(arg.event.start).toBeDefined()
-            expect(typeof arg.view).toBe('object')
-            expect(arg.isMirror).toBe(false)
+          eventContent(data) {
+            expect(typeof data.event).toBe('object')
+            expect(data.event.display).toBe('auto')
+            expect(data.event.start).toBeDefined()
+            expect(typeof data.view).toBe('object')
+            expect(data.isMirror).toBe(false)
           },
-          eventDidMount(arg) {
-            $(arg.el).css('font-size', '20px')
+          eventDidMount(data) {
+            $(data.el).css('font-size', '20px')
           },
         }
         spyOn(options, 'eventContent').and.callThrough()
@@ -82,14 +82,14 @@ describe('eventDidMount+eventContent', () => { // TODO: rename file
 
       it('receives correct args AND can modify the element', () => {
         let options = {
-          eventContent(arg) {
-            expect(typeof arg.event).toBe('object')
-            expect(arg.event.display).toBe('background')
-            expect(arg.event.start).toBeDefined()
-            expect(typeof arg.view).toBe('object')
+          eventContent(data) {
+            expect(typeof data.event).toBe('object')
+            expect(data.event.display).toBe('background')
+            expect(data.event.start).toBeDefined()
+            expect(typeof data.view).toBe('object')
           },
-          eventDidMount(arg) {
-            $(arg.el).css('font-size', '20px')
+          eventDidMount(data) {
+            $(data.el).css('font-size', '20px')
           },
         }
         spyOn(options, 'eventContent').and.callThrough()

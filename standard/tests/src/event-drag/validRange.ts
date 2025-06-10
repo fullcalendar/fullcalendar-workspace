@@ -17,8 +17,8 @@ describe('validRange event dragging', () => {
         let modifiedEvent: any = false
 
         let calendar = initCalendar({
-          eventDrop(arg) {
-            modifiedEvent = arg.event
+          eventDrop(data) {
+            modifiedEvent = data.event
           },
         })
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid
@@ -50,8 +50,8 @@ describe('validRange event dragging', () => {
         let modifiedEvent: any = false
 
         let calendar = initCalendar({
-          eventDrop(arg) {
-            modifiedEvent = arg.event
+          eventDrop(data) {
+            modifiedEvent = data.event
           },
         })
         let dayGridWrapper = new DayGridViewWrapper(calendar).dayGrid

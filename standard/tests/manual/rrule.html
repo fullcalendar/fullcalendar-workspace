@@ -31,9 +31,9 @@
           duration: '02:00'
         }
       ],
-      eventClick: function(arg) {
+      eventClick: function(data) {
         if (confirm('delete event?')) {
-          arg.event.remove()
+          data.event.remove()
         }
       }
     });

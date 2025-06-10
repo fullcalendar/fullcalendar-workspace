@@ -131,11 +131,11 @@ describe('dayGrid advanced event rendering', () => {
         { start: '2020-06-05', end: '2020-06-09', title: 'event b' },
         { start: '2020-06-08T12:00:00', title: 'event c' },
       ],
-      eventContent(arg) { // creates varying-height events, which revealed the bug
+      eventContent(data) { // creates varying-height events, which revealed the bug
         return {
           html: `
-            <b>${arg.timeText}</b>
-            <i>${arg.event.title}</i>
+            <b>${data.timeText}</b>
+            <i>${data.event.title}</i>
           `,
         }
       },
@@ -309,8 +309,8 @@ describe('dayGrid advanced event rendering', () => {
         { id: '2', start: '2020-05-03', end: '2020-05-08' },
         { id: '3', start: '2020-05-04' },
       ],
-      eventDidMount(arg) {
-        arg.el.setAttribute('data-event-id', arg.event.id) // TODO: more formal system for this
+      eventDidMount(data) {
+        data.el.setAttribute('data-event-id', data.event.id) // TODO: more formal system for this
       },
     })
 
@@ -337,8 +337,8 @@ describe('dayGrid advanced event rendering', () => {
       eventOrder: 'title',
       eventOrderStrict: true,
       dayMaxEventRows: 4,
-      eventDidMount(arg) {
-        arg.el.setAttribute('data-event-id', arg.event.id) // TODO: more formal system for this
+      eventDidMount(data) {
+        data.el.setAttribute('data-event-id', data.event.id) // TODO: more formal system for this
       },
       events: [
         {

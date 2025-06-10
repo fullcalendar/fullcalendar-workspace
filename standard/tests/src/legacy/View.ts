@@ -15,8 +15,8 @@ describe('View object', () => {
     })
 
     it('is available in the viewDidMount callback', () => {
-      let viewDidMountSpy = spyOnCalendarCallback('viewDidMount', (arg) => {
-        expect(arg.view.title).toBe('January 2015')
+      let viewDidMountSpy = spyOnCalendarCallback('viewDidMount', (data) => {
+        expect(data.view.title).toBe('January 2015')
       })
       initCalendar()
       expect(viewDidMountSpy).toHaveBeenCalled()

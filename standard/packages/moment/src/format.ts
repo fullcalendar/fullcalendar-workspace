@@ -3,36 +3,36 @@ import { convertToMoment } from './convert.js'
 
 export function formatWithCmdStr(
   cmdStr: string,
-  arg: VerboseFormattingData,
+  data: VerboseFormattingData,
 ): string | Intl.DateTimeFormatPart[] {
   let cmd = parseCmdStr(cmdStr)
 
-  if (arg.end) {
+  if (data.end) {
     let startMom = convertToMoment(
-      arg.start.array,
-      arg.timeZone,
-      arg.start.timeZoneOffset,
-      arg.localeCodes[0],
+      data.start.array,
+      data.timeZone,
+      data.start.timeZoneOffset,
+      data.localeCodes[0],
     )
     let endMom = convertToMoment(
-      arg.end.array,
-      arg.timeZone,
-      arg.end.timeZoneOffset,
-      arg.localeCodes[0],
+      data.end.array,
+      data.timeZone,
+      data.end.timeZoneOffset,
+      data.localeCodes[0],
     )
     return formatRange(
       cmd,
       createMomentFormatFunc(startMom),
       createMomentFormatFunc(endMom),
-      arg.defaultSeparator,
+      data.defaultSeparator,
     )
   }
 
   const mom = convertToMoment(
-    arg.date.array,
-    arg.timeZone,
-    arg.date.timeZoneOffset,
-    arg.localeCodes[0],
+    data.date.array,
+    data.timeZone,
+    data.date.timeZoneOffset,
+    data.localeCodes[0],
   )
   const singleCmdStr = cmd.whole
   const singleOutStr = mom.format(singleCmdStr)

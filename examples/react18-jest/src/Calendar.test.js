@@ -11,9 +11,9 @@ test.each([
   const { container } = render(
     <Calendar
       initialView={initialView}
-      eventContent={(arg) => {
+      eventContent={(data) => {
         eventContentCalls++
-        return arg.event.title + '!'
+        return data.event.title + '!'
       }}
     />
   )

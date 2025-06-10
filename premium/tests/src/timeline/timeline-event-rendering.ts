@@ -577,9 +577,9 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
         { id: '2', resourceId: 'b', start: '2020-05-12T08:00:00', end: '2020-05-12T22:00:00', title: 'event 2' },
         { id: '3', resourceId: 'b', start: '2020-05-12T09:00:00', end: '2020-05-12T22:00:00', title: 'event 3' },
       ],
-      eventContent(arg) {
-        let innerHTML = arg.event.title
-        if (arg.event.id === '2') {
+      eventContent(data) {
+        let innerHTML = data.event.title
+        if (data.event.id === '2') {
           innerHTML += '<br><br><br><br>'
         } else {
           innerHTML += '<br><br>'
@@ -675,8 +675,8 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
       resources: [
         { id: 'a', title: 'Auditorium A' },
       ],
-      eventContent: (arg) => ({
-        html: arg.event.title,
+      eventContent: (data) => ({
+        html: data.event.title,
       }),
       events: [
         {

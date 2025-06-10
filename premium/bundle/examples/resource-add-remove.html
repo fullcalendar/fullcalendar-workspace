@@ -47,10 +47,10 @@
         }
       },
       resourceAreaHeaderContent: 'Rooms',
-      resourceCellDidMount: function(arg) {
-        var resource = arg.resource;
+      resourceCellDidMount: function(data) {
+        var resource = data.resource;
 
-        arg.el.addEventListener('click', function() {
+        data.el.addEventListener('click', function() {
           if (confirm('Are you sure you want to delete ' + resource.title + '?')) {
             resource.remove();
           }

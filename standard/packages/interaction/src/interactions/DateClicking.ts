@@ -61,14 +61,14 @@ export class DateClicking extends Interaction {
 
       if (initialHit && finalHit && isHitsEqual(initialHit, finalHit)) {
         let { context } = component
-        let arg: DateClickData = {
+        let data: DateClickData = {
           ...buildDatePointApiWithContext(initialHit.dateSpan, context),
           dayEl: initialHit.getDayEl(),
           jsEvent: ev.origEvent as MouseEvent,
           view: context.viewApi || context.calendarApi.view,
         }
 
-        context.emitter.trigger('dateClick', arg)
+        context.emitter.trigger('dateClick', data)
       }
     }
   }

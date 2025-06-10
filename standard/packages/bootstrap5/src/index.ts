@@ -4,9 +4,9 @@ import './index.css'
 // TODO: better solution for this
 // Also figure out resource-header-tier.ts
 const PLUGIN_SPECIFIC_SETTINGS: any = {
-  dayHeaderClassNames: (arg) => getDayClassNames(arg),
-  dayCellClassNames: (arg) => getDayClassNames(arg),
-  dayLaneClassNames: (arg) => getDayClassNames(arg),
+  dayHeaderClassNames: (data) => getDayClassNames(data),
+  dayCellClassNames: (data) => getDayClassNames(data),
+  dayLaneClassNames: (data) => getDayClassNames(data),
 }
 
 export default createPlugin({
@@ -15,46 +15,46 @@ export default createPlugin({
     classNames: ['fc', 'fc-theme-bootstrap5'],
     directionClassNames: (direction) => `fc-direction-${direction}`,
     mediaTypeClassNames: (mediaType) => `fc-media-${mediaType}`,
-    viewClassNames: (arg) => ['fc-view', `fc-${arg.view.type}-view`, 'fc-view-bordered'],
+    viewClassNames: (data) => ['fc-view', `fc-${data.view.type}-view`, 'fc-view-bordered'],
     popoverClassNames: ['fc-popover', 'popover'],
     popoverHeaderClassNames: ['fc-popover-header', 'popover-header'],
     popoverBodyClassNames: ['fc-popover-body', 'popover-body'],
     buttonGroupClassNames: 'btn-group',
-    buttonClassNames: (arg) => [
+    buttonClassNames: (data) => [
       'btn',
       'btn-primary',
-      arg.isSelected && 'active',
+      data.isSelected && 'active',
     ],
     iconClassNames: 'bi',
     icons: {
       close: { classNames: 'bi-x-lg' },
-      prev: { classNames: (arg) => `bi-chevron-${startSide(arg.direction)}` },
-      next: { classNames: (arg) => `bi-chevron-${endSide(arg.direction)}` },
-      prevYear: { classNames: (arg) => `bi-chevron-double-${startSide(arg.direction)}` },
-      nextYear: { classNames: (arg) => `bi-chevron-double-${endSide(arg.direction)}` },
+      prev: { classNames: (data) => `bi-chevron-${startSide(data.direction)}` },
+      next: { classNames: (data) => `bi-chevron-${endSide(data.direction)}` },
+      prevYear: { classNames: (data) => `bi-chevron-double-${startSide(data.direction)}` },
+      nextYear: { classNames: (data) => `bi-chevron-double-${endSide(data.direction)}` },
     },
     dayCompactWidth: 75,
-    eventClassNames: (arg) => [
-      arg.event.display === 'background' && 'fc-bg-event',
+    eventClassNames: (data) => [
+      data.event.display === 'background' && 'fc-bg-event',
       'fc-event',
-      arg.isMirror && 'fc-event-mirror',
-      arg.isDraggable && 'fc-event-draggable',
-      (arg.isStartResizable || arg.isEndResizable) && 'fc-event-resizable',
-      arg.isDragging && 'fc-event-dragging',
-      arg.isResizing && 'fc-event-resizing',
-      arg.isSelected && 'fc-event-selected',
-      arg.isStart && 'fc-event-start',
-      arg.isEnd && 'fc-event-end',
-      arg.isPast && 'fc-event-past',
-      arg.isFuture && 'fc-event-future',
-      arg.isToday && 'fc-event-today',
+      data.isMirror && 'fc-event-mirror',
+      data.isDraggable && 'fc-event-draggable',
+      (data.isStartResizable || data.isEndResizable) && 'fc-event-resizable',
+      data.isDragging && 'fc-event-dragging',
+      data.isResizing && 'fc-event-resizing',
+      data.isSelected && 'fc-event-selected',
+      data.isStart && 'fc-event-start',
+      data.isEnd && 'fc-event-end',
+      data.isPast && 'fc-event-past',
+      data.isFuture && 'fc-event-future',
+      data.isToday && 'fc-event-today',
     ],
     eventInnerClassNames: 'fc-event-inner',
     eventTimeClassNames: 'fc-event-time',
     eventTitleClassNames: 'fc-event-title',
-    dayPopoverClassNames: (arg) => getDayClassNames(arg),
-    slotLabelClassNames: (arg) => getSlotClassNames(arg),
-    slotLaneClassNames: (arg) => getSlotClassNames(arg),
+    dayPopoverClassNames: (data) => getDayClassNames(data),
+    slotLabelClassNames: (data) => getSlotClassNames(data),
+    slotLaneClassNames: (data) => getSlotClassNames(data),
     ...PLUGIN_SPECIFIC_SETTINGS,
   },
   views: {
@@ -65,13 +65,13 @@ export default createPlugin({
     },
     timeGrid: {
       viewClassNames: 'fc-timegrid',
-      eventClassNames: (arg) => (
-        arg.event.allDay ? getDayGridEventClassNames(arg) :
-        arg.event.display === 'background' ? '' :
+      eventClassNames: (data) => (
+        data.event.allDay ? getDayGridEventClassNames(data) :
+        data.event.display === 'background' ? '' :
         'fc-timegrid-event fc-v-event'
       ),
-      eventColorClassNames: (arg) => (
-        arg.event.allDay ? getDayGridEventColorClassNames(arg) : ''
+      eventColorClassNames: (data) => (
+        data.event.allDay ? getDayGridEventColorClassNames(data) : ''
       ),
     },
     list: {
@@ -100,49 +100,49 @@ export default createPlugin({
   },
 }) as PluginDef
 
-function getDayGridEventClassNames(arg: EventDisplayData) {
+function getDayGridEventClassNames(data: EventDisplayData) {
   return ''
-  // return arg.event.display === 'background' ? '' :
-  //   arg.isListItem ? 'fc-daygrid-dot-event fc-daygrid-event' :
+  // return data.event.display === 'background' ? '' :
+  //   data.isListItem ? 'fc-daygrid-dot-event fc-daygrid-event' :
   //   'fc-daygrid-block-event fc-daygrid-event fc-h-event'
 }
 
-function getDayGridEventColorClassNames(arg: EventDisplayData) {
+function getDayGridEventColorClassNames(data: EventDisplayData) {
   return ''
-  // return arg.isListItem && 'fc-daygrid-event-dot'
+  // return data.isListItem && 'fc-daygrid-event-dot'
 }
 
 const DAY_IDS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
 
-function getDayClassNames(arg: any) {
-  return arg.isDisabled
+function getDayClassNames(data: any) {
+  return data.isDisabled
     ? [
       'fc-day',
       'fc-day-disabled',
     ]
     : [
       'fc-day',
-      `fc-day-${DAY_IDS[arg.dow]}`,
-      arg.isToday && 'fc-day-today',
-      arg.isPast && 'fc-day-past',
-      arg.isFuture && 'fc-day-future',
-      arg.isOther && 'fc-day-other',
+      `fc-day-${DAY_IDS[data.dow]}`,
+      data.isToday && 'fc-day-today',
+      data.isPast && 'fc-day-past',
+      data.isFuture && 'fc-day-future',
+      data.isOther && 'fc-day-other',
     ]
 }
 
-function getSlotClassNames(arg: any) {
-  return arg.isDisabled
+function getSlotClassNames(data: any) {
+  return data.isDisabled
     ? [
       'fc-slot',
       'fc-slot-disabled',
     ]
     : [
       'fc-slot',
-      `fc-slot-${DAY_IDS[arg.dow]}`,
-      arg.isToday && 'fc-slot-today',
-      arg.isPast && 'fc-slot-past',
-      arg.isFuture && 'fc-slot-future',
-      arg.isOther && 'fc-slot-other',
+      `fc-slot-${DAY_IDS[data.dow]}`,
+      data.isToday && 'fc-slot-today',
+      data.isPast && 'fc-slot-past',
+      data.isFuture && 'fc-slot-future',
+      data.isOther && 'fc-slot-other',
     ]
 }
 

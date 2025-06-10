@@ -15,8 +15,8 @@ describe('dayHeaderContent as text', () => { // TODO: rename file
 
     it('should contain custom HTML escaped text', () => {
       let calendar = initCalendar({
-        dayHeaderContent(arg) {
-          return '<div>Custom ' + currentCalendar.formatDate(arg.date, { weekday: 'long' }) + '</div>'
+        dayHeaderContent(data) {
+          return '<div>Custom ' + currentCalendar.formatDate(data.date, { weekday: 'long' }) + '</div>'
         },
       })
       let headerWrapper = new ViewWrapper(calendar).header
@@ -31,8 +31,8 @@ describe('dayHeaderContent as text', () => { // TODO: rename file
 
       initCalendar({
         initialView: 'timeGridDay',
-        dayHeaderContent(arg) {
-          dates.push(arg.date)
+        dayHeaderContent(data) {
+          dates.push(data.date)
         },
       })
 

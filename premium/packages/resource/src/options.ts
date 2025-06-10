@@ -26,9 +26,9 @@ export type ResourceOptionsRefined = RefinedOptionsFromRefiners<ResourceOptionRe
 
 export const LISTENER_REFINERS = {
   resourcesSet: identity as Identity<(resources: ResourceApi[]) => void>,
-  resourceAdd: identity as Identity<(arg: ResourceAddData) => void>,
-  resourceChange: identity as Identity<(arg: ResourceChangeData) => void>,
-  resourceRemove: identity as Identity<(arg: ResourceRemoveData) => void>,
+  resourceAdd: identity as Identity<(data: ResourceAddData) => void>,
+  resourceChange: identity as Identity<(data: ResourceChangeData) => void>,
+  resourceRemove: identity as Identity<(data: ResourceRemoveData) => void>,
 
   // internal
   _resourceScrollRequest: identity as Identity<(resourceId: string) => void>

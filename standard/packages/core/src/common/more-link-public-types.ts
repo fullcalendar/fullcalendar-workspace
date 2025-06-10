@@ -21,4 +21,4 @@ export interface MoreLinkData {
   view: ViewApi
 }
 
-export type MoreLinkHandler = (arg: MoreLinkData) => MoreLinkSimpleAction | void
+export type MoreLinkHandler = (data: MoreLinkData) => MoreLinkSimpleAction | void

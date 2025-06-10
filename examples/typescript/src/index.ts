@@ -33,8 +33,8 @@ document.addEventListener('DOMContentLoaded', function() {
     navLinks: true, // can click day/week names to navigate views
     editable: true,
     dayMaxEvents: true, // allow "more" link when too many events
-    dayHeaderContent(arg: DayHeaderData) {
-      return createElement(CustomDayHeader, { text: arg.text })
+    dayHeaderContent(data: DayHeaderData) {
+      return createElement(CustomDayHeader, { text: data.text })
     },
     events: [
       {

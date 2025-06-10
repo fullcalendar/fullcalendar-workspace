@@ -2,7 +2,7 @@ import { CustomContentGenerator } from './internal.js'
 import { ClassNamesInput, joinArrayishClassNames } from './util/html.js'
 import { getUnequalProps, mergeMaybePropsShallow, mergeMaybePropsDepth1 } from './util/object.js'
 
-type FuncishClassNames = ((arg: any) => ClassNamesInput) | ClassNamesInput
+type FuncishClassNames = ((data: any) => ClassNamesInput) | ClassNamesInput
 
 const classNamesRe = /(^c|C)lassNames$/
 const contentRe = /Content$/
@@ -53,10 +53,10 @@ export function joinFuncishClassNames(
   const isFunc1 = typeof input1 === 'function'
 
   if (isFunc0 || isFunc1) {
-    return (arg: any) => {
+    return (data: any) => {
       return joinArrayishClassNames(
-        isFunc0 ? input0(arg) : input0,
-        isFunc1 ? input1(arg) : input1
+        isFunc0 ? input0(data) : input0,
+        isFunc1 ? input1(data) : input1
       )
     }
   }

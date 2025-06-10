@@ -17,25 +17,25 @@ import { eventStoreContext } from "./event-store";
 export const DemoApp = observer(function DemoApp() {
   const eventStore = useContext(eventStoreContext);
 
-  function handleEventClick(clickInfo: EventClickData) {
+  function handleEventClick(clickData: EventClickData) {
     if (
       confirm(
-        `Are you sure you want to delete the event '${clickInfo.event.title}'`
+        `Are you sure you want to delete the event '${clickData.event.title}'`
       )
     ) {
-      eventStore.deleteEvent(clickInfo.event.id);
+      eventStore.deleteEvent(clickData.event.id);
     }
   }
 
-  function handleDateSelect(selectInfo: DateSelectData) {
+  function handleDateSelect(selectData: DateSelectData) {
     let title = prompt("Please enter a new title for your event");
-    const calendarApi = selectInfo.view.calendar;
+    const calendarApi = selectData.view.calendar;
     calendarApi.unselect(); // clear date selection
-    eventStore.addEvent(selectInfo, title);
+    eventStore.addEvent(selectData, title);
   }
 
-  function handleEventChange(changeInfo: EventChangeData) {
-    eventStore.changeEvent(changeInfo);
+  function handleEventChange(changeData: EventChangeData) {
+    eventStore.changeEvent(changeData);
   }
 
   return (
@@ -70,11 +70,11 @@ export const DemoApp = observer(function DemoApp() {
   );
 });
 
-function renderEventContent(eventContent: EventDisplayData) {
+function renderEventContent(data: EventDisplayData) {
   return (
     <>
-      <b>{eventContent.timeText}</b>
-      <i>{eventContent.event.title}</i>
+      <b>{data.timeText}</b>
+      <i>{data.event.title}</i>
     </>
   );
 }

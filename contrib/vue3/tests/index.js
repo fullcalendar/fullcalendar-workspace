@@ -601,8 +601,8 @@ const COMPONENT_WITH_SLOTS2 = {
       calendarOptions: {
         ...DEFAULT_OPTIONS,
         events: buildEvents(1),
-        eventContent: (eventArg) => {
-          return h('i', {}, eventArg.event.title)
+        eventContent: (data) => {
+          return h('i', {}, data.event.title)
         }
       }
     }
@@ -631,8 +631,8 @@ const COMPONENT_WITH_SLOTS3 = {
       calendarOptions: {
         ...DEFAULT_OPTIONS,
         events: buildEvents(1),
-        eventContent: (eventArg) => {
-          return { html: `<i>${eventArg.event.title}</i>` }
+        eventContent: (data) => {
+          return { html: `<i>${data.event.title}</i>` }
         }
       }
     }

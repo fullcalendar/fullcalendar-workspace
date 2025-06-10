@@ -569,8 +569,8 @@ describe('rrule plugin', () => {
           until: '2023-02-11', // only one instance
         },
       }],
-      eventContent(arg) {
-        timeTexts.push(arg.timeText)
+      eventContent(data) {
+        timeTexts.push(data.timeText)
         return true
       },
     })

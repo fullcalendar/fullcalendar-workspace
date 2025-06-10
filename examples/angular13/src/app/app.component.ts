@@ -57,9 +57,9 @@ export class AppComponent {
     calendarOptions.weekends = !calendarOptions.weekends;
   }
 
-  handleDateSelect(selectInfo: DateSelectData) {
+  handleDateSelect(selectData: DateSelectData) {
     const title = prompt('Please enter a new title for your event');
-    const calendarApi = selectInfo.view.calendar;
+    const calendarApi = selectData.view.calendar;
 
     calendarApi.unselect(); // clear date selection
 
@@ -67,16 +67,16 @@ export class AppComponent {
       calendarApi.addEvent({
         id: createEventId(),
         title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
+        start: selectData.startStr,
+        end: selectData.endStr,
+        allDay: selectData.allDay
       });
     }
   }
 
-  handleEventClick(clickInfo: EventClickData) {
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
+  handleEventClick(clickData: EventClickData) {
+    if (confirm(`Are you sure you want to delete the event '${clickData.event.title}'`)) {
+      clickData.event.remove();
     }
   }
 

@@ -33,13 +33,13 @@ describe('eventResize', () => {
           dayGridWrapper.getFirstEventEl(), '2014-06-11', '2014-06-16',
         )
 
-        waitEventResize2(calendar, resizing).then((arg) => {
-          expect(arg.endDelta).toEqual(createDuration({ day: 5 }))
+        waitEventResize2(calendar, resizing).then((data) => {
+          expect(data.endDelta).toEqual(createDuration({ day: 5 }))
 
-          expect(arg.event.start).toEqualDate('2014-06-11')
-          expect(arg.event.end).toEqualDate('2014-06-17')
+          expect(data.event.start).toEqualDate('2014-06-11')
+          expect(data.event.end).toEqualDate('2014-06-17')
 
-          arg.revert()
+          data.revert()
           let event = calendar.getEvents()[0]
 
           expect(event.start).toEqualDate('2014-06-11')
@@ -71,13 +71,13 @@ describe('eventResize', () => {
               dayGridWrapper.getFirstEventEl(), '2014-06-11', '2014-06-16',
             )
 
-            waitEventResize2(calendar, resizing).then((arg) => {
-              expect(arg.endDelta).toEqual(createDuration({ day: 5 }))
+            waitEventResize2(calendar, resizing).then((data) => {
+              expect(data.endDelta).toEqual(createDuration({ day: 5 }))
 
-              expect(arg.event.start).toEqualDate('2014-06-11')
-              expect(arg.event.end).toEqualDate('2014-06-17')
+              expect(data.event.start).toEqualDate('2014-06-11')
+              expect(data.event.end).toEqualDate('2014-06-17')
 
-              arg.revert()
+              data.revert()
               let event = calendar.getEvents()[0]
 
               expect(event.start).toEqualDate('2014-06-11')
@@ -126,13 +126,13 @@ describe('eventResize', () => {
           dayGridWrapper.getFirstEventEl(), '2014-06-11', '2014-06-13',
         )
 
-        waitEventResize2(calendar, resizing).then((arg) => {
-          expect(arg.endDelta).toEqual(createDuration({ day: 2 }))
+        waitEventResize2(calendar, resizing).then((data) => {
+          expect(data.endDelta).toEqual(createDuration({ day: 2 }))
 
-          expect(arg.event.start).toEqualDate('2014-06-11')
-          expect(arg.event.end).toEqualDate('2014-06-14')
+          expect(data.event.start).toEqualDate('2014-06-11')
+          expect(data.event.end).toEqualDate('2014-06-14')
 
-          arg.revert()
+          data.revert()
           let event = calendar.getEvents()[0]
 
           expect(event.start).toEqualDate('2014-06-11')
@@ -161,13 +161,13 @@ describe('eventResize', () => {
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00', '2014-06-11T09:30:00',
         )
 
-        waitEventResize2(calendar, resizing).then((arg) => {
-          expect(arg.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
+        waitEventResize2(calendar, resizing).then((data) => {
+          expect(data.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
 
-          expect(arg.event.start).toEqualDate('2014-06-11T05:00:00Z')
-          expect(arg.event.end).toEqualDate('2014-06-11T09:30:00Z')
+          expect(data.event.start).toEqualDate('2014-06-11T05:00:00Z')
+          expect(data.event.end).toEqualDate('2014-06-11T09:30:00Z')
 
-          arg.revert()
+          data.revert()
           let event = calendar.getEvents()[0]
 
           expect(event.start).toEqualDate('2014-06-11T05:00:00Z')
@@ -187,13 +187,13 @@ describe('eventResize', () => {
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00Z', '2014-06-11T09:30:00Z',
         )
 
-        waitEventResize2(calendar, resizing).then((arg) => {
-          expect(arg.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
+        waitEventResize2(calendar, resizing).then((data) => {
+          expect(data.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
 
-          expect(arg.event.start).toEqualDate('2014-06-11T05:00:00Z')
-          expect(arg.event.end).toEqualDate('2014-06-11T09:30:00Z')
+          expect(data.event.start).toEqualDate('2014-06-11T05:00:00Z')
+          expect(data.event.end).toEqualDate('2014-06-11T09:30:00Z')
 
-          arg.revert()
+          data.revert()
           let event = calendar.getEvents()[0]
 
           expect(event.start).toEqualDate('2014-06-11T05:00:00Z')
@@ -212,13 +212,13 @@ describe('eventResize', () => {
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00Z', '2014-06-12T09:30:00Z',
         )
 
-        waitEventResize2(calendar, resizing).then((arg) => {
-          expect(arg.endDelta).toEqual(createDuration({ day: 1, hour: 2, minute: 30 }))
+        waitEventResize2(calendar, resizing).then((data) => {
+          expect(data.endDelta).toEqual(createDuration({ day: 1, hour: 2, minute: 30 }))
 
-          expect(arg.event.start).toEqualDate('2014-06-11T05:00:00Z')
-          expect(arg.event.end).toEqualDate('2014-06-12T09:30:00Z')
+          expect(data.event.start).toEqualDate('2014-06-11T05:00:00Z')
+          expect(data.event.end).toEqualDate('2014-06-12T09:30:00Z')
 
-          arg.revert()
+          data.revert()
           let event = calendar.getEvents()[0]
 
           expect(event.start).toEqualDate('2014-06-11T05:00:00Z')
@@ -238,13 +238,13 @@ describe('eventResize', () => {
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00', '2014-06-11T09:30:00',
         )
 
-        waitEventResize2(calendar, resizing).then((arg) => {
-          expect(arg.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
+        waitEventResize2(calendar, resizing).then((data) => {
+          expect(data.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
 
-          expect(arg.event.start).toEqualLocalDate('2014-06-11T05:00:00')
-          expect(arg.event.end).toEqualLocalDate('2014-06-11T09:30:00')
+          expect(data.event.start).toEqualLocalDate('2014-06-11T05:00:00')
+          expect(data.event.end).toEqualLocalDate('2014-06-11T09:30:00')
 
-          arg.revert()
+          data.revert()
           let event = calendar.getEvents()[0]
 
           expect(event.start).toEqualLocalDate('2014-06-11T05:00:00')
@@ -264,13 +264,13 @@ describe('eventResize', () => {
           timeGridWrapper.getFirstEventEl(), '2014-06-11T07:00:00', '2014-06-11T09:30:00',
         )
 
-        waitEventResize2(calendar, resizing).then((arg) => {
-          expect(arg.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
+        waitEventResize2(calendar, resizing).then((data) => {
+          expect(data.endDelta).toEqual(createDuration({ hour: 2, minute: 30 }))
 
-          expect(arg.event.start).toEqualDate('2014-06-11T05:00:00+00:00')
-          expect(arg.event.end).toEqualDate('2014-06-11T09:30:00+00:00')
+          expect(data.event.start).toEqualDate('2014-06-11T05:00:00+00:00')
+          expect(data.event.end).toEqualDate('2014-06-11T09:30:00+00:00')
 
-          arg.revert()
+          data.revert()
           let event = calendar.getEvents()[0]
 
           expect(event.start).toEqualDate('2014-06-11T05:00:00')
@@ -303,8 +303,8 @@ describe('eventResize', () => {
 
       it('should run the temporarily rendered event through eventDidMount', (done) => {
         let calendar = initCalendar({
-          eventDidMount(arg) {
-            $(arg.el).addClass('eventDidRender')
+          eventDidMount(data) {
+            $(data.el).addClass('eventDidRender')
           },
         })
 
@@ -387,28 +387,28 @@ describe('eventResize', () => {
   })
 
   function checkCalendarTriggers(calendar) {
-    calendar.on('eventResizeStart', (arg) => {
-      expect(arg.el instanceof Element).toBe(true)
-      expect(typeof arg.event).toBe('object')
-      expect(typeof arg.jsEvent).toBe('object')
-      expect(typeof arg.view).toBe('object')
+    calendar.on('eventResizeStart', (data) => {
+      expect(data.el instanceof Element).toBe(true)
+      expect(typeof data.event).toBe('object')
+      expect(typeof data.jsEvent).toBe('object')
+      expect(typeof data.view).toBe('object')
     })
 
-    calendar.on('eventResizeStop', (arg) => {
-      expect(arg.el instanceof Element).toBe(true)
-      expect(typeof arg.event).toBe('object')
-      expect(typeof arg.jsEvent).toBe('object')
-      expect(typeof arg.view).toBe('object')
+    calendar.on('eventResizeStop', (data) => {
+      expect(data.el instanceof Element).toBe(true)
+      expect(typeof data.event).toBe('object')
+      expect(typeof data.jsEvent).toBe('object')
+      expect(typeof data.view).toBe('object')
     })
 
-    calendar.on('eventResize', (arg) => {
-      expect(arg.el instanceof Element).toBe(true)
-      expect(typeof arg.event).toBe('object')
-      expect(typeof arg.startDelta).toBe('object')
-      expect(typeof arg.endDelta).toBe('object')
-      expect(typeof arg.revert).toBe('function')
-      expect(typeof arg.jsEvent).toBe('object')
-      expect(typeof arg.view).toBe('object')
+    calendar.on('eventResize', (data) => {
+      expect(data.el instanceof Element).toBe(true)
+      expect(typeof data.event).toBe('object')
+      expect(typeof data.startDelta).toBe('object')
+      expect(typeof data.endDelta).toBe('object')
+      expect(typeof data.revert).toBe('function')
+      expect(typeof data.jsEvent).toBe('object')
+      expect(typeof data.view).toBe('object')
     })
   }
 })

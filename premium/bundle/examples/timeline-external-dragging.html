@@ -91,24 +91,24 @@
         { id: '4', resourceId: 'e', start: '2023-01-07T03:00:00', end: '2023-01-07T08:00:00', title: 'event 4' },
         { id: '5', resourceId: 'f', start: '2023-01-07T00:30:00', end: '2023-01-07T02:30:00', title: 'event 5' }
       ],
-      drop: function(arg) {
-        console.log('drop date: ' + arg.dateStr)
+      drop: function(data) {
+        console.log('drop date: ' + data.dateStr)
 
-        if (arg.resource) {
-          console.log('drop resource: ' + arg.resource.id)
+        if (data.resource) {
+          console.log('drop resource: ' + data.resource.id)
         }
 
         // is the "remove after drop" checkbox checked?
         if (document.getElementById('drop-remove').checked) {
           // if so, remove the element from the "Draggable Events" list
-          arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+          data.draggedEl.parentNode.removeChild(data.draggedEl);
         }
       },
-      eventReceive: function(arg) { // called when a proper external event is dropped
-        console.log('eventReceive', arg.event);
+      eventReceive: function(data) { // called when a proper external event is dropped
+        console.log('eventReceive', data.event);
       },
-      eventDrop: function(arg) { // called when an event (already on the calendar) is moved
-        console.log('eventDrop', arg.event);
+      eventDrop: function(data) { // called when an event (already on the calendar) is moved
+        console.log('eventDrop', data.event);
       }
     });
     calendar.render();

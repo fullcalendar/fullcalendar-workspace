@@ -17,12 +17,12 @@ describe('eventMouseEnter', () => {
             start: '2014-08-02T01:00:00',
             className: 'event',
           }],
-          eventMouseEnter(arg) {
-            expect(typeof arg.event).toBe('object')
-            expect(typeof arg.jsEvent).toBe('object')
-            arg.event.setProp('title', 'YO')
+          eventMouseEnter(data) {
+            expect(typeof data.event).toBe('object')
+            expect(typeof data.jsEvent).toBe('object')
+            data.event.setProp('title', 'YO')
           },
-          eventMouseLeave(arg) {},
+          eventMouseLeave(data) {},
         }
 
         spyOn(options, 'eventMouseEnter')
@@ -49,8 +49,8 @@ describe('eventMouseEnter', () => {
         display: 'background',
         className: 'event',
       }],
-      eventMouseEnter(arg) {
-        expect(arg.event.display).toBe('background')
+      eventMouseEnter(data) {
+        expect(data.event.display).toBe('background')
         mouseoverCalled = true
       },
       eventMouseLeave() {

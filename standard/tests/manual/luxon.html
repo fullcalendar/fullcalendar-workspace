@@ -33,12 +33,12 @@
       dayMaxEvents: true, // allow "more" link when too many events
       dayHeaderFormat: 'ccc d',
       dayCellFormat: 'LLLL d',
-      dayHeaderContent: (arg) => {
-        console.log('dayHeaderContent', arg)
+      dayHeaderContent: (data) => {
+        console.log('dayHeaderContent', data)
         return true
       },
-      dayCellTopContent: (arg) => {
-        console.log('dayCellTopContent', arg)
+      dayCellTopContent: (data) => {
+        console.log('dayCellTopContent', data)
         return true
       },
       events: [

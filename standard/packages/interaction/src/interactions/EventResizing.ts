@@ -203,7 +203,7 @@ export class EventResizing extends Interaction {
         eventStore: mutatedRelevantEvents,
       })
 
-      let eventChangeArg: EventChangeData = {
+      let eventChangeData: EventChangeData = {
         oldEvent: eventApi,
         event: updatedEventApi,
         relatedEvents: buildEventApis(mutatedRelevantEvents, context, eventInstance),
@@ -216,7 +216,7 @@ export class EventResizing extends Interaction {
       }
 
       context.emitter.trigger('eventResize', {
-        ...eventChangeArg,
+        ...eventChangeData,
         el: this.draggingSegEl,
         startDelta: this.validMutation.startDelta || createDuration(0),
         endDelta: this.validMutation.endDelta || createDuration(0),
@@ -224,7 +224,7 @@ export class EventResizing extends Interaction {
         view: context.viewApi,
       })
 
-      context.emitter.trigger('eventChange', eventChangeArg)
+      context.emitter.trigger('eventChange', eventChangeData)
     } else {
       context.emitter.trigger('_noEventResize')
     }

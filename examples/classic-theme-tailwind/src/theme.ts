@@ -33,10 +33,10 @@ const columnTouchResizerClassName = `${blockTouchResizerClassName} left-1/2 -ml-
 
 const realSmallText = 'text-[0.85em]/[1.1]'
 
-function getSlotClassNames(arg: any) {
+function getSlotClassNames(data: any) {
   return [
     borderClassName,
-    arg.isMinor && 'border-dotted',
+    data.isMinor && 'border-dotted',
   ]
 }
 
@@ -56,44 +56,44 @@ const axisInnerClassName = 'text-end min-h-[1.5em]' // align text right (aka end
 // -------------------------------------------------------------------------------------------------
 
 const dayGridOverrides: CalendarOptions = {
-  listItemEventClassNames: (arg) => [
+  listItemEventClassNames: (data) => [
     'mb-px mx-0.5 p-px rounded-sm items-center',
-    (arg.isSelected && arg.isDragging) && 'shadow-sm',
-    arg.isSelected
+    (data.isSelected && data.isDragging) && 'shadow-sm',
+    data.isSelected
       ? 'bg-gray-500/40'
       : 'hover:bg-gray-500/20 focus:bg-gray-500/30',
   ],
   listItemEventColorClassNames: 'border-[4px] mx-1', // 8px diameter (border shows up in print)
-  listItemEventInnerClassNames: (arg) => [
+  listItemEventInnerClassNames: (data) => [
     'flex flex-row items-center',
-    arg.isCompact ? realSmallText : 'text-xs',
+    data.isCompact ? realSmallText : 'text-xs',
   ],
   listItemEventTimeClassNames: 'whitespace-nowrap overflow-hidden flex-shrink-0 max-w-full p-px',
   listItemEventTitleClassNames: 'whitespace-nowrap overflow-hidden flex-shrink p-px font-bold',
 
-  rowEventClassNames: (arg) => [
-    arg.isStart && 'ms-0.5',
-    arg.isEnd && 'me-0.5',
+  rowEventClassNames: (data) => [
+    data.isStart && 'ms-0.5',
+    data.isEnd && 'me-0.5',
   ],
-  rowEventColorClassNames: (arg) => [
-    arg.isStart && 'rounded-s-sm',
-    arg.isEnd && 'rounded-e-sm',
+  rowEventColorClassNames: (data) => [
+    data.isStart && 'rounded-s-sm',
+    data.isEnd && 'rounded-e-sm',
   ],
 
-  rowMoreLinkClassNames: (arg) => [
+  rowMoreLinkClassNames: (data) => [
     'mb-px  p-0.5 rounded-sm mx-0.5',
     // TODO: this more-link manual positioning will go away with measurement refactor
     'relative max-w-full overflow-hidden whitespace-nowrap',
     'hover:bg-gray-500/20',
-    arg.isCompact
+    data.isCompact
       ? realSmallText + ' border border-(--fc-event-color) p-px'
       : 'text-xs self-start',
   ],
 }
 
 const dayGridWeekNumberOverrides: CalendarOptions = {
-  weekNumberClassNames: (arg) => [
-    arg.isCompact && realSmallText,
+  weekNumberClassNames: (data) => [
+    data.isCompact && realSmallText,
     `absolute z-20 top-0 rounded-ee-sm p-0.5 min-w-[1.5em] text-center ${neutralBgClassNames}`
   ],
   weekNumberInnerClassNames: 'opacity-60',
@@ -108,19 +108,19 @@ export default createPlugin({
     // important to define these as CSS vars because things other than events leverage them
     classNames: 'gap-5 [--fc-event-color:green] [--fc-event-contrast-color:white]',
 
-    toolbarClassNames: (arg) => [
+    toolbarClassNames: (data) => [
       'gap-3',
-      arg.borderlessX && 'px-3',
+      data.borderlessX && 'px-3',
     ],
-    toolbarSectionClassNames: (arg) => [
+    toolbarSectionClassNames: (data) => [
       'gap-3',
       // slightly nicer wrapping behavior
-      arg.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto',
+      data.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto',
     ],
     toolbarTitleClassNames: 'text-xl md:text-2xl font-bold whitespace-nowrap',
     viewClassNames: borderClassName,
-    viewHeaderClassNames: (arg) => [
-      arg.isSticky && 'bg-(--fc-canvas-color)'
+    viewHeaderClassNames: (data) => [
+      data.isSticky && 'bg-(--fc-canvas-color)'
     ],
 
     // UI Fundamentals
@@ -128,37 +128,37 @@ export default createPlugin({
 
     buttons: {
       prev: {
-        iconContent: (arg) => arg.direction === 'ltr'
+        iconContent: (data) => data.direction === 'ltr'
           ? svgIcons.chevronLeft(buttonIconClassName)
           : svgIcons.chevronRight(buttonIconClassName),
       },
       next: {
-        iconContent: (arg) => arg.direction === 'ltr'
+        iconContent: (data) => data.direction === 'ltr'
           ? svgIcons.chevronRight(buttonIconClassName)
           : svgIcons.chevronLeft(buttonIconClassName),
       },
       prevYear: {
-        iconContent: (arg) => arg.direction === 'ltr'
+        iconContent: (data) => data.direction === 'ltr'
           ? svgIcons.chevronsLeft(buttonIconClassName)
           : svgIcons.chevronsRight(buttonIconClassName),
       },
       nextYear: {
-        iconContent: (arg) => arg.direction === 'ltr'
+        iconContent: (data) => data.direction === 'ltr'
           ? svgIcons.chevronsRight(buttonIconClassName)
           : svgIcons.chevronsLeft(buttonIconClassName),
       },
     },
 
     buttonGroupClassNames: 'isolate',
-    buttonClassNames: (arg) => [
+    buttonClassNames: (data) => [
       'inline-flex items-center px-3 py-2 border-x text-sm text-white',
-      arg.inGroup
+      data.inGroup
         ? 'first:rounded-s-sm last:rounded-e-sm relative' // in button-group
         : 'rounded-sm', // alone
-      arg.isSelected
+      data.isSelected
         ? 'border-slate-900 bg-slate-800 z-10' // selected
         : 'border-transparent bg-slate-700', // not-selected
-      arg.isDisabled
+      data.isDisabled
         ? 'opacity-65 pointer-events-none' // disabled. TODO: why do we care about pointer-events?
         : '',
       'active:border-slate-900 active:bg-slate-800 active:z-20', // active (similar to selected)
@@ -188,18 +188,18 @@ export default createPlugin({
     // All Events
     // ---------------------------------------------------------------------------------------------
 
-    eventClassNames: (arg) => [
+    eventClassNames: (data) => [
       // a reset. put elsewhere?
-      arg.event.url && 'no-underline hover:no-underline',
+      data.event.url && 'no-underline hover:no-underline',
     ],
 
     // Background Event
     // ---------------------------------------------------------------------------------------------
 
     backgroundEventColorClassNames: 'bg-(--fc-event-color) brightness-150 opacity-15',
-    backgroundEventTitleClassNames: (arg) => [
+    backgroundEventTitleClassNames: (data) => [
       'm-2 italic opacity-50',
-      arg.isCompact ? realSmallText : 'text-xs',
+      data.isCompact ? realSmallText : 'text-xs',
     ],
 
     // List-Item Event
@@ -210,19 +210,19 @@ export default createPlugin({
     // Block Event
     // ---------------------------------------------------------------------------------------------
 
-    blockEventClassNames: (arg) => [
+    blockEventClassNames: (data) => [
       'relative', // for absolutes below
       'group', // for focus and hover below
       'p-px',
-      (arg.isDragging && !arg.isSelected) && 'opacity-75',
-      arg.isSelected
-        ? (arg.isDragging ? 'shadow-lg' : 'shadow-md')
+      (data.isDragging && !data.isSelected) && 'opacity-75',
+      data.isSelected
+        ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
         : 'focus:shadow-md',
     ],
-    blockEventColorClassNames: (arg) => [
+    blockEventColorClassNames: (data) => [
       'absolute z-0 inset-0 bg-(--fc-event-color)',
       'print:border print:border-(--fc-event-color) print:bg-white',
-      arg.isSelected
+      data.isSelected
         ? 'brightness-75'
         : 'group-focus:brightness-75',
     ],
@@ -237,21 +237,21 @@ export default createPlugin({
     // ---------------------------------------------------------------------------------------------
 
     rowEventClassNames: 'mb-px',
-    rowEventBeforeClassNames: (arg) => arg.isStartResizable && [
-      arg.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
+    rowEventBeforeClassNames: (data) => data.isStartResizable && [
+      data.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
       '-start-1',
     ],
-    rowEventAfterClassNames: (arg) => arg.isEndResizable && [
-      arg.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
+    rowEventAfterClassNames: (data) => data.isEndResizable && [
+      data.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
       '-end-1',
     ],
-    rowEventColorClassNames: (arg) => [
-      !arg.isStart && 'print:border-s-0',
-      !arg.isEnd && 'print:border-e-0',
+    rowEventColorClassNames: (data) => [
+      !data.isStart && 'print:border-s-0',
+      !data.isEnd && 'print:border-e-0',
     ],
-    rowEventInnerClassNames: (arg) => [
+    rowEventInnerClassNames: (data) => [
       'flex-row items-center',
-      arg.isCompact ? realSmallText : 'text-xs',
+      data.isCompact ? realSmallText : 'text-xs',
     ],
     rowEventTimeClassNames: 'p-px font-bold',
     rowEventTitleClassNames: 'p-px',
@@ -260,45 +260,45 @@ export default createPlugin({
     // ---------------------------------------------------------------------------------------------
 
     columnEventClassNames: 'mb-px',
-    columnEventBeforeClassNames: (arg) => arg.isStartResizable && [
-      arg.isSelected ? columnTouchResizerClassName : columnPointerResizerClassName,
+    columnEventBeforeClassNames: (data) => data.isStartResizable && [
+      data.isSelected ? columnTouchResizerClassName : columnPointerResizerClassName,
       '-top-1',
     ],
-    columnEventAfterClassNames: (arg) => arg.isEndResizable && [
-      arg.isSelected ? columnTouchResizerClassName : columnPointerResizerClassName,
+    columnEventAfterClassNames: (data) => data.isEndResizable && [
+      data.isSelected ? columnTouchResizerClassName : columnPointerResizerClassName,
       '-bottom-1',
     ],
-    columnEventColorClassNames: (arg) => [
-      arg.isStart && 'rounded-t-sm',
-      arg.isEnd && 'rounded-b-sm',
-      arg.level && 'outline outline-(--fc-canvas-color)',
+    columnEventColorClassNames: (data) => [
+      data.isStart && 'rounded-t-sm',
+      data.isEnd && 'rounded-b-sm',
+      data.level && 'outline outline-(--fc-canvas-color)',
     ],
-    columnEventInnerClassNames: (arg) => [
+    columnEventInnerClassNames: (data) => [
       'p-px text-xs',
-      arg.isCompact
+      data.isCompact
         ? 'flex-row gap-1 overflow-hidden' // one line
         : 'flex-col gap-px', // two lines
     ],
     columnEventTimeClassNames: realSmallText,
-    columnEventTitleClassNames: (arg) => [
-      arg.isCompact && realSmallText,
+    columnEventTitleClassNames: (data) => [
+      data.isCompact && realSmallText,
     ],
 
     // Day-Headers (DayGrid & MultiMonth & TimeGrid)
     // ---------------------------------------------------------------------------------------------
 
     dayHeaderRowClassNames: borderClassName,
-    dayHeaderClassNames: (arg) => [
-      arg.isCompact && realSmallText,
+    dayHeaderClassNames: (data) => [
+      data.isCompact && realSmallText,
       borderClassName,
-      arg.isDisabled && neutralBgClassNames,
+      data.isDisabled && neutralBgClassNames,
     ],
     dayHeaderInnerClassNames: 'px-1 py-0.5',
     dayHeaderDividerClassNames: ['border-t', borderColorClassNames],
 
     // for resource views only
-    resourceDayHeaderClassNames: (arg) => [
-      arg.isCompact && realSmallText,
+    resourceDayHeaderClassNames: (data) => [
+      data.isCompact && realSmallText,
       borderClassName,
     ],
     resourceDayHeaderInnerClassNames: 'px-1 py-0.5', // TODO: make this a constant... standard inner padding!
@@ -307,21 +307,21 @@ export default createPlugin({
     // ---------------------------------------------------------------------------------------------
 
     dayRowClassNames: borderClassName,
-    dayCellClassNames: (arg) => [
-      arg.isToday && todayBgClassNames,
+    dayCellClassNames: (data) => [
+      data.isToday && todayBgClassNames,
       borderClassName,
-      arg.isDisabled && neutralBgClassNames,
+      data.isDisabled && neutralBgClassNames,
     ],
 
-    dayCellTopClassNames: (arg) => [
-      arg.isCompact && realSmallText,
+    dayCellTopClassNames: (data) => [
+      data.isCompact && realSmallText,
       'min-h-[2px]', // effectively 2px top padding
       'flex flex-row-reverse relative', // relative for z-index above bg events
-      arg.isOther && 'opacity-30',
+      data.isOther && 'opacity-30',
     ],
-    dayCellTopInnerClassNames: (arg) => [
+    dayCellTopInnerClassNames: (data) => [
       'p-1',
-      arg.isMonthStart && 'text-base font-bold',
+      data.isMonthStart && 'text-base font-bold',
     ],
 
     // MultiMonth
@@ -329,16 +329,16 @@ export default createPlugin({
     /*
     Also leverages viewClassNames and viewHeaderClassNames
     */
-    singleMonthClassNames: (arg) => [
-      (arg.colCount || 0) > 1 && 'm-4', /* text-xs */
+    singleMonthClassNames: (data) => [
+      (data.colCount || 0) > 1 && 'm-4', /* text-xs */
     ],
-    singleMonthTitleClassNames: (arg) => [
+    singleMonthTitleClassNames: (data) => [
       'text-center font-bold',
-      arg.isCompact ? 'text-base' : 'text-lg',
-      arg.isSticky
+      data.isCompact ? 'text-base' : 'text-lg',
+      data.isSticky
         ? 'py-2' // singlecol
         : 'pb-4', // multicol
-      arg.isSticky && `border-b ${borderColorClassNames} bg-(--fc-canvas-color)`,
+      data.isSticky && `border-b ${borderColorClassNames} bg-(--fc-canvas-color)`,
     ],
 
     // TimeGrid
@@ -348,13 +348,13 @@ export default createPlugin({
     // padding creates inner-height
     allDayDividerClassNames: `${neutralBgClassNames} pb-0.5 border-t border-b ${borderColorClassNames}`,
 
-    dayLaneClassNames: (arg) => [
+    dayLaneClassNames: (data) => [
       borderClassName,
-      arg.isDisabled && neutralBgClassNames,
-      arg.isToday && todayBgClassNames,
+      data.isDisabled && neutralBgClassNames,
+      data.isToday && todayBgClassNames,
     ],
-    dayLaneInnerClassNames: (arg) => [
-      arg.isSimple ? 'm-1' : 'ms-0.5 me-[2.5%]'
+    dayLaneInnerClassNames: (data) => [
+      data.isSimple ? 'm-1' : 'ms-0.5 me-[2.5%]'
     ],
 
     // Slots (TimeGrid & Timeline)
@@ -377,7 +377,7 @@ export default createPlugin({
     resourceAreaRowClassNames: borderClassName,
     resourceIndentClassNames: 'me-1 relative -top-px',
     resourceExpanderClassNames: 'opacity-65',
-    resourceExpanderContent: (arg) => arg.isExpanded
+    resourceExpanderContent: (data) => data.isExpanded
       ? svgIcons.minusSquare('w-[1em] h-[1em]')
       : svgIcons.plusSquare('w-[1em] h-[1em]'),
 
@@ -388,8 +388,8 @@ export default createPlugin({
     resourceCellClassNames: borderClassName,
     resourceCellInnerClassNames: 'p-2',
     resourceLaneClassNames: borderClassName,
-    resourceLaneBottomClassNames: (arg) => [
-      !arg.isCompact && 'pb-3'
+    resourceLaneBottomClassNames: (data) => [
+      !data.isCompact && 'pb-3'
     ],
 
     // Timeline WITHOUT resources
@@ -401,9 +401,9 @@ export default createPlugin({
     // ---------------------------------------------------------------------------------------------
 
     listDayClassNames: `not-last:border-b ${borderColorClassNames}`,
-    listDayHeaderClassNames: (arg) => [
+    listDayHeaderClassNames: (data) => [
       `border-b ${borderColorClassNames} flex flex-row justify-between font-bold relative`,
-      arg.isSticky && 'bg-(--fc-canvas-color)',
+      data.isSticky && 'bg-(--fc-canvas-color)',
       // TODO: explain why
     ],
     listDayHeaderBeforeClassNames: `${neutralBgClassNames} absolute inset-0`,
@@ -434,21 +434,21 @@ export default createPlugin({
       ...dayGridOverrides,
       dayRowClassNames: 'min-h-[3em]',
       dayCellBottomClassNames: 'min-h-[1em]', // for all-day section
-      allDayHeaderClassNames: (arg) => [
-        arg.isCompact && realSmallText,
+      allDayHeaderClassNames: (data) => [
+        data.isCompact && realSmallText,
         axisClassName,
         /* vertical-align = */ 'items-center',
       ],
       allDayHeaderInnerClassNames: [axisInnerClassName, 'whitespace-pre px-1 py-0.5'],
-      weekNumberClassNames: (arg) => [
-        arg.isCompact && realSmallText,
+      weekNumberClassNames: (data) => [
+        data.isCompact && realSmallText,
         axisClassName,
       ],
       weekNumberInnerClassNames: [axisInnerClassName, 'px-1 py-0.5'],
       columnMoreLinkClassNames: `mb-px rounded-xs text-xs outline outline-(--fc-canvas-color) bg-gray-300 dark:bg-gray-600`,
       columnMoreLinkInnerClassNames: 'px-0.5 py-1',
-      slotLabelClassNames: (arg) => [
-        arg.isCompact && realSmallText,
+      slotLabelClassNames: (data) => [
+        data.isCompact && realSmallText,
         axisClassName,
         /* tick-marks = 'w-2 self-end' */
       ],
@@ -459,17 +459,17 @@ export default createPlugin({
     },
     timeline: {
       rowEventClassNames: 'me-px items-center', // for aligning continuation arrows
-      rowEventBeforeClassNames: (arg) => !arg.isStartResizable && [
+      rowEventBeforeClassNames: (data) => !data.isStartResizable && [
         // continuation arrow
         'relative z-10 mx-px border-y-[5px] border-y-transparent border-e-[5px] border-e-black opacity-50',
       ],
-      rowEventAfterClassNames: (arg) => !arg.isEndResizable && [
+      rowEventAfterClassNames: (data) => !data.isEndResizable && [
         // continuation arrow
         'relative z-10 mx-px border-y-[5px] border-y-transparent border-s-[5px] border-s-black opacity-50',
       ],
-      rowEventInnerClassNames: (arg) => [
+      rowEventInnerClassNames: (data) => [
         'px-px',
-        arg.isSpacious ? 'py-1' : 'py-px',
+        data.isSpacious ? 'py-1' : 'py-px',
       ],
       rowMoreLinkClassNames: `flex flex-col items-start text-xs bg-gray-300 dark:bg-gray-600 p-px me-px`, // TODO: dry bg color?
       rowMoreLinkInnerClassNames: 'p-0.5',
@@ -492,8 +492,8 @@ export default createPlugin({
       listItemEventColorClassNames: 'border-[5px]', // 5px radius = 10px width (border shows up in print!)
       listItemEventInnerClassNames: '[display:contents]',
       listItemEventTimeClassNames: 'order-[-1] w-[165px]',
-      listItemEventTitleClassNames: (arg) => [
-        arg.event.url && 'group-hover:underline',
+      listItemEventTitleClassNames: (data) => [
+        data.event.url && 'group-hover:underline',
       ],
       noEventsClassNames: `flex flex-grow justify-center items-center ${neutralBgClassNames} py-15`,
     },
@@ -506,22 +506,22 @@ Looks great in Firefox. Clip-path is fuzzy in Chrome. TODO: use SVG?
 Need to refactor inner-padding in event element, b/c the before/after need entire height
 
   rowEventClassNames: 'mb-px',
-  rowEventBeforeClassNames: (arg) => arg.isStartResizable ? [
-    arg.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
+  rowEventBeforeClassNames: (data) => data.isStartResizable ? [
+    data.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
     '-start-1',
   ] : [
     // continuation arrow
-    !arg.isStart && 'w-[6px] bg-(--fc-event-color) [clip-path:polygon(100%_0,0_50%,100%_100%)]',
+    !data.isStart && 'w-[6px] bg-(--fc-event-color) [clip-path:polygon(100%_0,0_50%,100%_100%)]',
   ],
-  rowEventAfterClassNames: (arg) => arg.isEndResizable ? [
-    arg.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
+  rowEventAfterClassNames: (data) => data.isEndResizable ? [
+    data.isSelected ? rowTouchResizerClassName : rowPointerResizerClassName,
     '-end-1',
   ] : [
     // continuation arrow
-    !arg.isEnd && 'w-[6px] bg-(--fc-event-color) [clip-path:polygon(0_0,100%_50%,0_100%)]',
+    !data.isEnd && 'w-[6px] bg-(--fc-event-color) [clip-path:polygon(0_0,100%_50%,0_100%)]',
   ],
-  rowEventColorClassNames: (arg) => [
-    !arg.isStart && 'ms-[6px]',
-    !arg.isEnd && 'me-[6px]',
+  rowEventColorClassNames: (data) => [
+    !data.isStart && 'ms-[6px]',
+    !data.isEnd && 'me-[6px]',
   ],
 */

@@ -42,16 +42,16 @@ export class AppComponent implements OnInit {
     };
   }
 
-  handleDateClick(arg: DateClickData) {
-    console.log(arg);
+  handleDateClick(data: DateClickData) {
+    console.log(data);
   }
 
-  handleEventClick(arg: EventClickData) {
-    console.log(arg);
+  handleEventClick(data: EventClickData) {
+    console.log(data);
   }
 
-  handleEventDragStop(arg: EventDragStopData) {
-    console.log(arg);
+  handleEventDragStop(data: EventDragStopData) {
+    console.log(data);
   }
 
   updateHeader() {

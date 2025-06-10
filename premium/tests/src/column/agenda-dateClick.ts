@@ -23,11 +23,11 @@ describe('timeGrid-view dateClick', () => {
     })
 
     it('allows non-resource clicks', (done) => {
-      let dateClickArg = null
+      let dateClickData = null
 
       let calendar = initCalendar({
-        dateClick(arg) {
-          dateClickArg = arg
+        dateClick(data) {
+          dateClickData = data
         }
       })
 
@@ -35,10 +35,10 @@ describe('timeGrid-view dateClick', () => {
 
       timeGridWrapper.clickDate('2015-11-23T09:00:00').then(() => {
         setTimeout(() => { // wait for dateClick to fire
-          expect(dateClickArg.date).toEqualDate('2015-11-23T09:00:00Z')
-          expect(typeof dateClickArg.jsEvent).toBe('object')
-          expect(typeof dateClickArg.view).toBe('object')
-          expect(dateClickArg.resource).toBeFalsy()
+          expect(dateClickData.date).toEqualDate('2015-11-23T09:00:00Z')
+          expect(typeof dateClickData.jsEvent).toBe('object')
+          expect(typeof dateClickData.view).toBe('object')
+          expect(dateClickData.resource).toBeFalsy()
           done()
         })
       })
@@ -53,12 +53,12 @@ describe('timeGrid-view dateClick', () => {
     it('allows a resource click', (done) => {
       let dateClickCalled = false
       let calendar = initCalendar({
-        dateClick(arg) {
+        dateClick(data) {
           dateClickCalled = true
-          expect(arg.date).toEqualDate('2015-11-29T09:00:00Z')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource.id).toBe('b')
+          expect(data.date).toEqualDate('2015-11-29T09:00:00Z')
+          expect(typeof data.jsEvent).toBe('object')
+          expect(typeof data.view).toBe('object')
+          expect(data.resource.id).toBe('b')
         },
       })
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid
@@ -82,12 +82,12 @@ describe('timeGrid-view dateClick', () => {
     it('allows a resource click', (done) => {
       let dateClickCalled = false
       let calendar = initCalendar({
-        dateClick(arg) {
+        dateClick(data) {
           dateClickCalled = true
-          expect(arg.date).toEqualDate('2015-11-30T09:30:00Z')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource.id).toBe('b')
+          expect(data.date).toEqualDate('2015-11-30T09:30:00Z')
+          expect(typeof data.jsEvent).toBe('object')
+          expect(typeof data.view).toBe('object')
+          expect(data.resource.id).toBe('b')
         },
       })
       let resourceTimeGridWrapper = new ResourceTimeGridViewWrapper(calendar).timeGrid

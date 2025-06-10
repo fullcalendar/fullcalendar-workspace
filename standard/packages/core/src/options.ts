@@ -30,7 +30,7 @@ import {
   EventSourceInput,
   FormatterInput,
   LocaleInput,
-  LocaleSingularData,
+  LocaleSingularArg,
   MoreLinkAction,
   MoreLinkData,
   MoreLinkMountData,
@@ -136,7 +136,7 @@ export const BASE_OPTION_REFINERS = {
   weekNumberCalculation: identity as Identity<WeekNumberCalculation>,
   weekNumbers: Boolean,
   weekNumberClassNames: identity as Identity<ClassNamesGenerator<WeekNumberDisplayData>>,
-  weekNumberInnerClassNames: identity as Identity<ClassNamesInput>, // TODO: give the arg?
+  weekNumberInnerClassNames: identity as Identity<ClassNamesInput>, // TODO: give the data?
   weekNumberContent: identity as Identity<CustomContentGenerator<WeekNumberDisplayData>>,
   weekNumberDidMount: identity as Identity<DidMountHandler<WeekNumberMountData>>,
   weekNumberWillUnmount: identity as Identity<WillUnmountHandler<WeekNumberMountData>>,
@@ -166,7 +166,7 @@ export const BASE_OPTION_REFINERS = {
   timeZoneParam: String,
   timeZone: String,
   locales: identity as Identity<LocaleInput[]>,
-  locale: identity as Identity<LocaleSingularData>,
+  locale: identity as Identity<LocaleSingularArg>,
   dragRevertDuration: Number,
   dragScroll: Boolean,
   allDayMaintainDuration: Boolean,
@@ -466,16 +466,16 @@ export const BASE_OPTION_DEFAULTS = {
 // ------------------
 
 export const CALENDAR_LISTENER_REFINERS = {
-  datesSet: identity as Identity<(arg: DatesSetData) => void>,
+  datesSet: identity as Identity<(data: DatesSetData) => void>,
   eventsSet: identity as Identity<(events: EventApi[]) => void>,
-  eventAdd: identity as Identity<(arg: EventAddData) => void>,
-  eventChange: identity as Identity<(arg: EventChangeData) => void>,
-  eventRemove: identity as Identity<(arg: EventRemoveData) => void>,
-  eventClick: identity as Identity<(arg: EventClickData) => void>, // TODO: resource for scheduler????
-  eventMouseEnter: identity as Identity<(arg: EventHoveringData) => void>,
-  eventMouseLeave: identity as Identity<(arg: EventHoveringData) => void>,
-  select: identity as Identity<(arg: DateSelectData) => void>, // resource for scheduler????
-  unselect: identity as Identity<(arg: DateUnselectData) => void>,
+  eventAdd: identity as Identity<(data: EventAddData) => void>,
+  eventChange: identity as Identity<(data: EventChangeData) => void>,
+  eventRemove: identity as Identity<(data: EventRemoveData) => void>,
+  eventClick: identity as Identity<(data: EventClickData) => void>, // TODO: resource for scheduler????
+  eventMouseEnter: identity as Identity<(data: EventHoveringData) => void>,
+  eventMouseLeave: identity as Identity<(data: EventHoveringData) => void>,
+  select: identity as Identity<(data: DateSelectData) => void>, // resource for scheduler????
+  unselect: identity as Identity<(data: DateUnselectData) => void>,
   loading: identity as Identity<(isLoading: boolean) => void>,
 
   // internal

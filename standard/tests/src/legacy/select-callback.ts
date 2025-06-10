@@ -25,16 +25,16 @@ describe('select callback', () => {
 
       it('gets fired correctly when the user selects cells', (done) => {
         let options = {
-          select(arg) {
-            expect(arg.start instanceof Date).toEqual(true)
-            expect(arg.end instanceof Date).toEqual(true)
-            expect(typeof arg.jsEvent).toEqual('object') // TODO: more discrimination
-            expect(typeof arg.view).toEqual('object') // "
-            expect(arg.allDay).toEqual(true)
-            expect(arg.start).toEqualDate('2014-04-28')
-            expect(arg.startStr).toEqual('2014-04-28')
-            expect(arg.end).toEqualDate('2014-05-07')
-            expect(arg.endStr).toEqual('2014-05-07')
+          select(data) {
+            expect(data.start instanceof Date).toEqual(true)
+            expect(data.end instanceof Date).toEqual(true)
+            expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
+            expect(typeof data.view).toEqual('object') // "
+            expect(data.allDay).toEqual(true)
+            expect(data.start).toEqualDate('2014-04-28')
+            expect(data.startStr).toEqual('2014-04-28')
+            expect(data.end).toEqualDate('2014-05-07')
+            expect(data.endStr).toEqual('2014-05-07')
           },
         }
         spyOn(options, 'select').and.callThrough()
@@ -50,16 +50,16 @@ describe('select callback', () => {
 
       it('gets fired correctly when the user selects cells via touch', (done) => {
         let options = {
-          select(arg) {
-            expect(arg.start instanceof Date).toEqual(true)
-            expect(arg.end instanceof Date).toEqual(true)
-            expect(typeof arg.jsEvent).toEqual('object') // TODO: more discrimination
-            expect(typeof arg.view).toEqual('object') // "
-            expect(arg.allDay).toEqual(true)
-            expect(arg.start).toEqualDate('2014-04-28')
-            expect(arg.startStr).toEqual('2014-04-28')
-            expect(arg.end).toEqualDate('2014-05-07')
-            expect(arg.endStr).toEqual('2014-05-07')
+          select(data) {
+            expect(data.start instanceof Date).toEqual(true)
+            expect(data.end instanceof Date).toEqual(true)
+            expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
+            expect(typeof data.view).toEqual('object') // "
+            expect(data.allDay).toEqual(true)
+            expect(data.start).toEqualDate('2014-04-28')
+            expect(data.startStr).toEqual('2014-04-28')
+            expect(data.end).toEqualDate('2014-05-07')
+            expect(data.endStr).toEqual('2014-05-07')
           },
         }
         spyOn(options, 'select').and.callThrough()
@@ -79,16 +79,16 @@ describe('select callback', () => {
 
       it('gets fired correctly when the user selects just one cell', (done) => {
         let options = {
-          select(arg) {
-            expect(arg.start instanceof Date).toEqual(true)
-            expect(arg.end instanceof Date).toEqual(true)
-            expect(typeof arg.jsEvent).toEqual('object') // TODO: more discrimination
-            expect(typeof arg.view).toEqual('object') // "
-            expect(arg.allDay).toEqual(true)
-            expect(arg.start).toEqualDate('2014-04-28')
-            expect(arg.startStr).toEqual('2014-04-28')
-            expect(arg.end).toEqualDate('2014-04-29')
-            expect(arg.endStr).toEqual('2014-04-29')
+          select(data) {
+            expect(data.start instanceof Date).toEqual(true)
+            expect(data.end instanceof Date).toEqual(true)
+            expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
+            expect(typeof data.view).toEqual('object') // "
+            expect(data.allDay).toEqual(true)
+            expect(data.start).toEqualDate('2014-04-28')
+            expect(data.startStr).toEqual('2014-04-28')
+            expect(data.end).toEqualDate('2014-04-29')
+            expect(data.endStr).toEqual('2014-04-29')
           },
         }
         spyOn(options, 'select').and.callThrough()
@@ -111,16 +111,16 @@ describe('select callback', () => {
       describe('when selecting all-day slots', () => {
         it('gets fired correctly when the user selects cells', (done) => {
           let options = {
-            select(arg) {
-              expect(arg.start instanceof Date).toEqual(true)
-              expect(arg.end instanceof Date).toEqual(true)
-              expect(typeof arg.jsEvent).toEqual('object') // TODO: more discrimination
-              expect(typeof arg.view).toEqual('object') // "
-              expect(arg.allDay).toEqual(true)
-              expect(arg.start).toEqualDate('2014-05-28')
-              expect(arg.startStr).toEqual('2014-05-28')
-              expect(arg.end).toEqualDate('2014-05-30')
-              expect(arg.endStr).toEqual('2014-05-30')
+            select(data) {
+              expect(data.start instanceof Date).toEqual(true)
+              expect(data.end instanceof Date).toEqual(true)
+              expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
+              expect(typeof data.view).toEqual('object') // "
+              expect(data.allDay).toEqual(true)
+              expect(data.start).toEqualDate('2014-05-28')
+              expect(data.startStr).toEqual('2014-05-28')
+              expect(data.end).toEqualDate('2014-05-30')
+              expect(data.endStr).toEqual('2014-05-30')
             },
           }
           spyOn(options, 'select').and.callThrough()
@@ -136,16 +136,16 @@ describe('select callback', () => {
 
         it('gets fired correctly when the user selects a single cell', (done) => {
           let options = {
-            select(arg) {
-              expect(arg.start instanceof Date).toEqual(true)
-              expect(arg.end instanceof Date).toEqual(true)
-              expect(typeof arg.jsEvent).toEqual('object') // TODO: more discrimination
-              expect(typeof arg.view).toEqual('object') // "
-              expect(arg.allDay).toEqual(true)
-              expect(arg.start).toEqualDate('2014-05-28')
-              expect(arg.startStr).toEqual('2014-05-28')
-              expect(arg.end).toEqualDate('2014-05-29')
-              expect(arg.endStr).toEqual('2014-05-29')
+            select(data) {
+              expect(data.start instanceof Date).toEqual(true)
+              expect(data.end instanceof Date).toEqual(true)
+              expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
+              expect(typeof data.view).toEqual('object') // "
+              expect(data.allDay).toEqual(true)
+              expect(data.start).toEqualDate('2014-05-28')
+              expect(data.startStr).toEqual('2014-05-28')
+              expect(data.end).toEqualDate('2014-05-29')
+              expect(data.endStr).toEqual('2014-05-29')
             },
           }
           spyOn(options, 'select').and.callThrough()
@@ -163,16 +163,16 @@ describe('select callback', () => {
       describe('when selecting timed slots', () => {
         it('gets fired correctly when the user selects slots', (done) => {
           let options = {
-            select(arg) {
-              expect(arg.start instanceof Date).toEqual(true)
-              expect(arg.end instanceof Date).toEqual(true)
-              expect(typeof arg.jsEvent).toEqual('object') // TODO: more discrimination
-              expect(typeof arg.view).toEqual('object') // "
-              expect(arg.allDay).toEqual(false)
-              expect(arg.start).toEqualDate('2014-05-28T09:00:00Z')
-              expect(arg.startStr).toEqual('2014-05-28T09:00:00Z')
-              expect(arg.end).toEqualDate('2014-05-28T10:30:00Z')
-              expect(arg.endStr).toEqual('2014-05-28T10:30:00Z')
+            select(data) {
+              expect(data.start instanceof Date).toEqual(true)
+              expect(data.end instanceof Date).toEqual(true)
+              expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
+              expect(typeof data.view).toEqual('object') // "
+              expect(data.allDay).toEqual(false)
+              expect(data.start).toEqualDate('2014-05-28T09:00:00Z')
+              expect(data.startStr).toEqual('2014-05-28T09:00:00Z')
+              expect(data.end).toEqualDate('2014-05-28T10:30:00Z')
+              expect(data.endStr).toEqual('2014-05-28T10:30:00Z')
             },
           }
           spyOn(options, 'select').and.callThrough()
@@ -190,9 +190,9 @@ describe('select callback', () => {
         it('gets fired correctly when the user selects slots NEAR THE END', (done) => {
           let options = {
             scrollTime: '24:00',
-            select(arg) {
-              expect(arg.start).toEqualDate('2014-05-28T16:00:00Z')
-              expect(arg.end).toEqualDate('2014-05-29T00:00:00Z')
+            select(data) {
+              expect(data.start).toEqualDate('2014-05-28T16:00:00Z')
+              expect(data.end).toEqualDate('2014-05-29T00:00:00Z')
             },
           }
           spyOn(options, 'select').and.callThrough()
@@ -208,16 +208,16 @@ describe('select callback', () => {
 
         it('gets fired correctly when the user selects slots via touch', (done) => {
           let options = {
-            select(arg) {
-              expect(arg.start instanceof Date).toEqual(true)
-              expect(arg.end instanceof Date).toEqual(true)
-              expect(typeof arg.jsEvent).toEqual('object') // TODO: more discrimination
-              expect(typeof arg.view).toEqual('object') // "
-              expect(arg.allDay).toEqual(false)
-              expect(arg.start).toEqualDate('2014-05-28T09:00:00Z')
-              expect(arg.startStr).toEqual('2014-05-28T09:00:00Z')
-              expect(arg.end).toEqualDate('2014-05-28T10:30:00Z')
-              expect(arg.endStr).toEqual('2014-05-28T10:30:00Z')
+            select(data) {
+              expect(data.start instanceof Date).toEqual(true)
+              expect(data.end instanceof Date).toEqual(true)
+              expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
+              expect(typeof data.view).toEqual('object') // "
+              expect(data.allDay).toEqual(false)
+              expect(data.start).toEqualDate('2014-05-28T09:00:00Z')
+              expect(data.startStr).toEqual('2014-05-28T09:00:00Z')
+              expect(data.end).toEqualDate('2014-05-28T10:30:00Z')
+              expect(data.endStr).toEqual('2014-05-28T10:30:00Z')
             },
           }
           spyOn(options, 'select').and.callThrough()
@@ -239,16 +239,16 @@ describe('select callback', () => {
 
         it('gets fired correctly when the user selects slots in a different day', (done) => {
           let options = {
-            select(arg) {
-              expect(arg.start instanceof Date).toEqual(true)
-              expect(arg.end instanceof Date).toEqual(true)
-              expect(typeof arg.jsEvent).toEqual('object') // TODO: more discrimination
-              expect(typeof arg.view).toEqual('object') // "
-              expect(arg.allDay).toEqual(false)
-              expect(arg.start).toEqualDate('2014-05-28T09:00:00Z')
-              expect(arg.startStr).toEqual('2014-05-28T09:00:00Z')
-              expect(arg.end).toEqualDate('2014-05-29T10:30:00Z')
-              expect(arg.endStr).toEqual('2014-05-29T10:30:00Z')
+            select(data) {
+              expect(data.start instanceof Date).toEqual(true)
+              expect(data.end instanceof Date).toEqual(true)
+              expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
+              expect(typeof data.view).toEqual('object') // "
+              expect(data.allDay).toEqual(false)
+              expect(data.start).toEqualDate('2014-05-28T09:00:00Z')
+              expect(data.startStr).toEqual('2014-05-28T09:00:00Z')
+              expect(data.end).toEqualDate('2014-05-29T10:30:00Z')
+              expect(data.endStr).toEqual('2014-05-29T10:30:00Z')
             },
           }
           spyOn(options, 'select').and.callThrough()
@@ -264,16 +264,16 @@ describe('select callback', () => {
 
         it('gets fired correctly when the user selects a single slot', (done) => {
           let options = {
-            select(arg) {
-              expect(arg.start instanceof Date).toEqual(true)
-              expect(arg.end instanceof Date).toEqual(true)
-              expect(typeof arg.jsEvent).toEqual('object') // TODO: more discrimination
-              expect(typeof arg.view).toEqual('object') // "
-              expect(arg.allDay).toEqual(false)
-              expect(arg.start).toEqualDate('2014-05-28T09:00:00Z')
-              expect(arg.startStr).toEqual('2014-05-28T09:00:00Z')
-              expect(arg.end).toEqualDate('2014-05-28T09:30:00Z')
-              expect(arg.endStr).toEqual('2014-05-28T09:30:00Z')
+            select(data) {
+              expect(data.start instanceof Date).toEqual(true)
+              expect(data.end instanceof Date).toEqual(true)
+              expect(typeof data.jsEvent).toEqual('object') // TODO: more discrimination
+              expect(typeof data.view).toEqual('object') // "
+              expect(data.allDay).toEqual(false)
+              expect(data.start).toEqualDate('2014-05-28T09:00:00Z')
+              expect(data.startStr).toEqual('2014-05-28T09:00:00Z')
+              expect(data.end).toEqualDate('2014-05-28T09:30:00Z')
+              expect(data.endStr).toEqual('2014-05-28T09:30:00Z')
             },
           }
           spyOn(options, 'select').and.callThrough()

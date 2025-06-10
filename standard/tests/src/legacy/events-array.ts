@@ -16,8 +16,8 @@ describe('events as an array', () => {
   it('accepts an event using dayGrid form', (done) => {
     initCalendar({
       events: getEventArray(),
-      eventDidMount(arg) {
-        expect(arg.event.title).toEqual('my event')
+      eventDidMount(data) {
+        expect(data.event.title).toEqual('my event')
         done()
       },
     })
@@ -31,9 +31,9 @@ describe('events as an array', () => {
           events: getEventArray(),
         },
       ],
-      eventDidMount(arg) {
-        expect(arg.event.title).toEqual('my event')
-        expect(arg.el).toHaveClass('customeventclass')
+      eventDidMount(data) {
+        expect(data.event.title).toEqual('my event')
+        expect(data.el).toHaveClass('customeventclass')
         done()
       },
     })

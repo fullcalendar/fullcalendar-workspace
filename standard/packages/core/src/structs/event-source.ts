@@ -37,7 +37,7 @@ export interface EventSourceFetcherRes {
 }
 
 export type EventSourceFetcher<Meta> = (
-  arg: {
+  data: {
     eventSource: EventSource<Meta>
     range: DateRange
     isRefetch: boolean

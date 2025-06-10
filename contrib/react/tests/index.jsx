@@ -219,8 +219,8 @@ it('slot rendering inherits parent context', () => {
         events={[
           { title: 'event 1', date: '2022-04-01' },
         ]}
-        eventContent={(arg) => (
-          <span style={{ color: themeColor }}>{arg.event.title}</span>
+        eventContent={(data) => (
+          <span style={{ color: themeColor }}>{data.event.title}</span>
         )}
       />
     )
@@ -256,8 +256,8 @@ it('does not produce overlapping multiday events with custom eventContent', (don
     { title: 'event 2', date: '2022-04-05', end: '2022-04-08' }
   ]
 
-  function renderEvent(eventArg) {
-    return <i>{eventArg.event.title}</i>
+  function renderEvent(data) {
+    return <i>{data.event.title}</i>
   }
 
   function TestApp() {
@@ -290,8 +290,8 @@ it('does not produce overlapping all-day & timed events with custom eventContent
     { title: 'event 2', date: '2022-04-05T12:00:00' }
   ]
 
-  function renderEvent(eventArg) {
-    return <i>{eventArg.event.title}</i>
+  function renderEvent(data) {
+    return <i>{data.event.title}</i>
   }
 
   function TestApp() {
@@ -330,11 +330,11 @@ it('does not produce overlapping all-day & timed events with custom eventContent
           initialEvents={[
             { title: 'event 1', start: '2022-04-01', display: eventDisplay },
           ]}
-          eventContent={(eventArg) => (
-            <i>{eventArg.event.title}</i>
+          eventContent={(data) => (
+            <i>{data.event.title}</i>
           )}
-          eventDidMount={(eventArg) => {
-            expect(eventArg.el).toBeTruthy()
+          eventDidMount={(data) => {
+            expect(data.el).toBeTruthy()
             eventDidMountCalled = true
           }}
         />
@@ -370,8 +370,8 @@ it('rerenders content-injection with latest render-func closure', (done) => {
         initialView='dayGridMonth'
         initialDate={DATE}
         initialEvents={EVENTS}
-        eventContent={(eventArg) => (
-          <i>{eventArg.event.title + ' - ' + counter}</i>
+        eventContent={(data) => (
+          <i>{data.event.title + ' - ' + counter}</i>
         )}
       />
     );
@@ -424,9 +424,9 @@ it('no unnecessary rerenders, using events, when parent rerenders', () => {
     )
   }
 
-  function renderEvent(eventArg) {
+  function renderEvent(data) {
     customRenderCnt++
-    return <i>{eventArg.event.title}</i>
+    return <i>{data.event.title}</i>
   }
 
   render(<TestApp />)
@@ -462,9 +462,9 @@ it('no unnecessary rerenders, using eventSources, when parent rerenders', () => 
     )
   }
 
-  function renderEvent(eventArg) {
+  function renderEvent(data) {
     customRenderCnt++
-    return <i>{eventArg.event.title}</i>
+    return <i>{data.event.title}</i>
   }
 
   render(<TestApp />)
@@ -547,7 +547,7 @@ it('does not infinite loop on certain eventContent', () => {
         initialView='dayGridMonth'
         dayMaxEvents={2}
         events={EVENTS}
-        eventContent={(eventArg) => <i>{eventArg.event.title}</i>}
+        eventContent={(data) => <i>{data.event.title}</i>}
       />
     );
   }
@@ -722,7 +722,7 @@ it('render custom event JSX during print-mode', (done) => {
           start: NOW_DATE,
         }
       ]}
-      eventContent={(eventArg) => <i>{eventArg.event.title}</i>}
+      eventContent={(data) => <i>{data.event.title}</i>}
     />
   )
 

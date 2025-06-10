@@ -26,13 +26,13 @@ describe('dayGrid-view selection', () => {
     it('allows non-resource selects', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
-        select(arg) {
+        select(data) {
           selectCalled = true
-          expect(arg.start).toEqualDate('2015-11-23')
-          expect(arg.end).toEqualDate('2015-11-25')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource).toBeFalsy()
+          expect(data.start).toEqualDate('2015-11-23')
+          expect(data.end).toEqualDate('2015-11-25')
+          expect(typeof data.jsEvent).toBe('object')
+          expect(typeof data.view).toBe('object')
+          expect(data.resource).toBeFalsy()
         },
       })
 
@@ -60,13 +60,13 @@ describe('dayGrid-view selection', () => {
     it('allows a resource selects', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
-        select(arg) {
+        select(data) {
           selectCalled = true
-          expect(arg.start).toEqualDate('2015-11-29')
-          expect(arg.end).toEqualDate('2015-12-01')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource.id).toBe('a')
+          expect(data.start).toEqualDate('2015-11-29')
+          expect(data.end).toEqualDate('2015-12-01')
+          expect(typeof data.jsEvent).toBe('object')
+          expect(typeof data.view).toBe('object')
+          expect(data.resource.id).toBe('a')
         },
       })
 
@@ -114,13 +114,13 @@ describe('dayGrid-view selection', () => {
     it('allows a resource selection', (done) => {
       let selectCalled = false
       let calendar = initCalendar({
-        select(arg) {
+        select(data) {
           selectCalled = true
-          expect(arg.start).toEqualDate('2015-11-28')
-          expect(arg.end).toEqualDate('2015-12-01')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource.id).toBe('b')
+          expect(data.start).toEqualDate('2015-11-28')
+          expect(data.end).toEqualDate('2015-12-01')
+          expect(typeof data.jsEvent).toBe('object')
+          expect(typeof data.view).toBe('object')
+          expect(data.resource.id).toBe('b')
         },
       })
 

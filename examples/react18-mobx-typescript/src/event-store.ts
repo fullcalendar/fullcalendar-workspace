@@ -33,13 +33,13 @@ export class EventStore {
   }
 
   @action
-  addEvent(selectInfo: DateSelectData, title: string | null) {
+  addEvent(selectData: DateSelectData, title: string | null) {
     this.events.push({
       id: this.createEventId(),
       title: title || "New Event",
-      start: selectInfo.start,
-      end: selectInfo.end,
-      allDay: selectInfo.allDay,
+      start: selectData.start,
+      end: selectData.end,
+      allDay: selectData.allDay,
     });
   }
 
@@ -52,9 +52,9 @@ export class EventStore {
   }
 
   @action
-  changeEvent(changeInfo: EventChangeData) {
-    const newEvent = changeInfo.event;
-    const storedEvent = this.events.find((e) => e.id == changeInfo.event.id);
+  changeEvent(changeData: EventChangeData) {
+    const newEvent = changeData.event;
+    const storedEvent = this.events.find((e) => e.id == changeData.event.id);
     if (storedEvent) {
       storedEvent.title = newEvent.title;
       storedEvent.allDay = newEvent.allDay;

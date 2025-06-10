@@ -13,11 +13,11 @@ export interface ResourceFuncData {
 
 export type ResourceFunc =
   ((
-    arg: ResourceFuncData,
+    data: ResourceFuncData,
     successCallback: (resourceInputs: ResourceInput[]) => void,
     failureCallback: (error: Error) => void,
   ) => void) |
-  ((arg: ResourceFuncData) => Promise<ResourceInput[]>)
+  ((data: ResourceFuncData) => Promise<ResourceInput[]>)
 
 registerResourceSourceDef<ResourceFunc>({
 
@@ -28,20 +28,20 @@ registerResourceSourceDef<ResourceFunc>({
     return null
   },
 
-  fetch(arg, successCallback, errorCallback) {
-    const dateEnv = arg.context.dateEnv
-    const func = arg.resourceSource.meta
+  fetch(data, successCallback, errorCallback) {
+    const dateEnv = data.context.dateEnv
+    const func = data.resourceSource.meta
 
-    const publicArg: ResourceFuncData = arg.range ? {
-      start: dateEnv.toDate(arg.range.start),
-      end: dateEnv.toDate(arg.range.end),
-      startStr: dateEnv.formatIso(arg.range.start),
-      endStr: dateEnv.formatIso(arg.range.end),
+    const publicData: ResourceFuncData = data.range ? {
+      start: dateEnv.toDate(data.range.start),
+      end: dateEnv.toDate(data.range.end),
+      startStr: dateEnv.formatIso(data.range.start),
+      endStr: dateEnv.formatIso(data.range.end),
       timeZone: dateEnv.timeZone,
     } : {}
 
     unpromisify(
-      func.bind(null, publicArg),
+      func.bind(null, publicData),
       (rawResources) => successCallback({ rawResources }),
       errorCallback,
     )

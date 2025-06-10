@@ -23,21 +23,21 @@
       navLinks: true, // can click day/week names to navigate views
       selectable: true,
       selectMirror: true,
-      select: function(arg) {
+      select: function(data) {
         var title = prompt('Event Title:');
         if (title) {
           calendar.addEvent({
             title: title,
-            start: arg.start,
-            end: arg.end,
-            allDay: arg.allDay
+            start: data.start,
+            end: data.end,
+            allDay: data.allDay
           })
         }
         calendar.unselect()
       },
-      eventClick: function(arg) {
+      eventClick: function(data) {
         if (confirm('Are you sure you want to delete this event?')) {
-          arg.event.remove()
+          data.event.remove()
         }
       },
       editable: true,

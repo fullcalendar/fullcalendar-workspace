@@ -538,8 +538,8 @@ class MonthComponent {
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin],
     initialView: 'dayGridMonth',
-    dayCellTopContent(arg) {
-      return { html: `<b>${arg.text}</b>` }
+    dayCellTopContent(data) {
+      return { html: `<b>${data.text}</b>` }
     },
   };
 }
@@ -589,8 +589,8 @@ describe('dayGridMonth view dot-event elements, custom content, and eventDidMoun
         { start: '2023-03-20T00:12:00', allDay: false }
       ],
       initialView: 'dayGridMonth',
-      eventDidMount(arg) {
-        dotEventEl = arg.el
+      eventDidMount(data) {
+        dotEventEl = data.el
         eventDidMountCnt!++
       },
     };

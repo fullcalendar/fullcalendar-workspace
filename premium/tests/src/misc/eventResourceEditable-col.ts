@@ -18,11 +18,11 @@ describe('eventResourceEditable in vertical resource view', () => {
       events: [
         { start: '2019-08-01T01:00:00', resourceId: 'a' },
       ],
-      eventDrop: (dropSpy = spyCall((arg) => {
-        expect(arg.event.start).toEqualDate(parseUtcDate('2019-08-01T01:00:00'))
-        expect(arg.event.end).toEqual(null)
+      eventDrop: (dropSpy = spyCall((data) => {
+        expect(data.event.start).toEqualDate(parseUtcDate('2019-08-01T01:00:00'))
+        expect(data.event.end).toEqual(null)
 
-        let resources = arg.event.getResources()
+        let resources = data.event.getResources()
         expect(resources.length).toBe(1)
         expect(resources[0].id).toBe('b')
       })),

@@ -11,12 +11,12 @@ describe('eventClick', () => {
       events: [
         { start: '2018-08-31' },
       ],
-      eventClick(arg) {
-        expect(arg.el instanceof HTMLElement).toBe(true)
-        expect(typeof arg.event).toBe('object')
-        expect(arg.event.start instanceof Date).toBe(true)
-        expect(arg.jsEvent instanceof UIEvent).toBe(true)
-        expect(typeof arg.view).toBe('object')
+      eventClick(data) {
+        expect(data.el instanceof HTMLElement).toBe(true)
+        expect(typeof data.event).toBe('object')
+        expect(data.event.start instanceof Date).toBe(true)
+        expect(data.jsEvent instanceof UIEvent).toBe(true)
+        expect(typeof data.view).toBe('object')
         done()
       },
     })
@@ -32,8 +32,8 @@ describe('eventClick', () => {
       events: [
         { start: '2018-08-31', display: 'background' },
       ],
-      eventClick(arg) {
-        expect(arg.event.display).toBe('background')
+      eventClick(data) {
+        expect(data.event.display).toBe('background')
         done()
       },
     })

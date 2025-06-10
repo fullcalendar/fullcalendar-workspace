@@ -3,33 +3,33 @@ import { arrayToLuxon } from './convert.js'
 
 export function formatWithCmdStr(
   cmdStr: string,
-  arg: VerboseFormattingData,
+  data: VerboseFormattingData,
 ): string | Intl.DateTimeFormatPart[] {
   let cmd = parseCmdStr(cmdStr)
 
-  if (arg.end) {
+  if (data.end) {
     let start = arrayToLuxon(
-      arg.start.array,
-      arg.timeZone,
-      arg.localeCodes[0],
+      data.start.array,
+      data.timeZone,
+      data.localeCodes[0],
     )
     let end = arrayToLuxon(
-      arg.end.array,
-      arg.timeZone,
-      arg.localeCodes[0],
+      data.end.array,
+      data.timeZone,
+      data.localeCodes[0],
     )
     return formatRange(
       cmd,
       start.toFormat.bind(start),
       end.toFormat.bind(end),
-      arg.defaultSeparator,
+      data.defaultSeparator,
     )
   }
 
   const lux = arrayToLuxon(
-    arg.date.array,
-    arg.timeZone,
-    arg.localeCodes[0],
+    data.date.array,
+    data.timeZone,
+    data.localeCodes[0],
   )
   const singleCmdStr = cmd.whole
   const singleOutStr = lux.toFormat(singleCmdStr)

@@ -25,12 +25,12 @@ describe('dayGrid-view dateClick', () => {
     it('allows non-resource clicks', (done) => {
       let dateClickCalled = false
       let calendar = initCalendar({
-        dateClick(arg) {
+        dateClick(data) {
           dateClickCalled = true
-          expect(arg.date).toEqualDate('2015-11-23')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource).toBeFalsy()
+          expect(data.date).toEqualDate('2015-11-23')
+          expect(typeof data.jsEvent).toBe('object')
+          expect(typeof data.view).toBe('object')
+          expect(data.resource).toBeFalsy()
         },
       })
 
@@ -55,12 +55,12 @@ describe('dayGrid-view dateClick', () => {
     it('allows a resource click', (done) => {
       let dateClickCalled = false
       let calendar = initCalendar({
-        dateClick(arg) {
+        dateClick(data) {
           dateClickCalled = true
-          expect(arg.date).toEqualDate('2015-11-29')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource.id).toBe('a')
+          expect(data.date).toEqualDate('2015-11-29')
+          expect(typeof data.jsEvent).toBe('object')
+          expect(typeof data.view).toBe('object')
+          expect(data.resource.id).toBe('a')
         },
       })
 
@@ -85,12 +85,12 @@ describe('dayGrid-view dateClick', () => {
     it('allows a resource click', (done) => {
       let dateClickCalled = false
       let calendar = initCalendar({
-        dateClick(arg) {
+        dateClick(data) {
           dateClickCalled = true
-          expect(arg.date).toEqualDate('2015-11-30')
-          expect(typeof arg.jsEvent).toBe('object')
-          expect(typeof arg.view).toBe('object')
-          expect(arg.resource.id).toBe('b')
+          expect(data.date).toEqualDate('2015-11-30')
+          expect(typeof data.jsEvent).toBe('object')
+          expect(typeof data.view).toBe('object')
+          expect(data.resource.id).toBe('b')
         },
       })
 

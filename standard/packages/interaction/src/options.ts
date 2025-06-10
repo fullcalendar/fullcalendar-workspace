@@ -16,16 +16,16 @@ export type InteractionOptions = RawOptionsFromRefiners<InteractionOptionRefiner
 export type InteractionOptionsRefined = RefinedOptionsFromRefiners<InteractionOptionRefiners>
 
 export const LISTENER_REFINERS = {
-  dateClick: identity as Identity<(arg: DateClickData) => void>,
-  eventDragStart: identity as Identity<(arg: EventDragStartData) => void>,
-  eventDragStop: identity as Identity<(arg: EventDragStopData) => void>,
-  eventDrop: identity as Identity<(arg: EventDropData) => void>,
-  eventResizeStart: identity as Identity<(arg: EventResizeStartData) => void>,
-  eventResizeStop: identity as Identity<(arg: EventResizeStopData) => void>,
-  eventResize: identity as Identity<(arg: EventResizeDoneData) => void>,
-  drop: identity as Identity<(arg: DropData) => void>,
-  eventReceive: identity as Identity<(arg: EventReceiveData) => void>,
-  eventLeave: identity as Identity<(arg: EventLeaveData) => void>,
+  dateClick: identity as Identity<(data: DateClickData) => void>,
+  eventDragStart: identity as Identity<(data: EventDragStartData) => void>,
+  eventDragStop: identity as Identity<(data: EventDragStopData) => void>,
+  eventDrop: identity as Identity<(data: EventDropData) => void>,
+  eventResizeStart: identity as Identity<(data: EventResizeStartData) => void>,
+  eventResizeStop: identity as Identity<(data: EventResizeStopData) => void>,
+  eventResize: identity as Identity<(data: EventResizeDoneData) => void>,
+  drop: identity as Identity<(data: DropData) => void>,
+  eventReceive: identity as Identity<(data: EventReceiveData) => void>,
+  eventLeave: identity as Identity<(data: EventLeaveData) => void>,
 }
 
 type InteractionListenerRefiners = typeof LISTENER_REFINERS

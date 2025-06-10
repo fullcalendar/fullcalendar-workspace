@@ -34,9 +34,9 @@ describe('column-view resourceCellDidMount trigger', () => { // TODO: rename the
         it('fires once per resources', () => {
           let callCnt = 0
           initCalendar({
-            resourceCellDidMount(arg) {
-              if (arg.resource.id === 'a') {
-                expect(arg.el).toContainText('Resource A')
+            resourceCellDidMount(data) {
+              if (data.resource.id === 'a') {
+                expect(data.el).toContainText('Resource A')
                 callCnt += 1
               }
             },
@@ -58,9 +58,9 @@ describe('column-view resourceCellDidMount trigger', () => { // TODO: rename the
         it('fires onces per day', () => {
           let callCnt = 0
           initCalendar({
-            resourceCellDidMount(arg) {
-              if (arg.resource.id === 'a') {
-                expect(arg.el).toContainText('Resource A')
+            resourceCellDidMount(data) {
+              if (data.resource.id === 'a') {
+                expect(data.el).toContainText('Resource A')
                 callCnt += 1
               }
             },
@@ -77,9 +77,9 @@ describe('column-view resourceCellDidMount trigger', () => { // TODO: rename the
         it('fires onces per day', () => {
           let callCnt = 0
           initCalendar({
-            resourceCellDidMount(arg) {
-              if (arg.resource.id === 'a') {
-                expect(arg.el).toContainText('Resource A')
+            resourceCellDidMount(data) {
+              if (data.resource.id === 'a') {
+                expect(data.el).toContainText('Resource A')
                 callCnt += 1
               }
             },
