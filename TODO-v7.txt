@@ -8,6 +8,20 @@ Publishing:
 ASAP
 ----
 
+small todo:
+  do classname util renames:
+    ClassNames -> ClassName
+    ClassNamesGenerator -> ClassNameGenerator
+    ClassNamesInput ??
+  accept objects for *Class inputs
+  have resourceIndent/resourceExpander OUTSIDE of resourceGroupHeaderInner / resourceCellInner
+  rename listDaySideFormat -> listDayAltFormat ?
+    (because theme might not decide to put it on the "side")
+    maybe not "alt" because ppl might think related to alt-text
+  ensure isMajor on resourceDayHeaders... this matters!
+    depends on resource-above-dates or opposites
+    HAVE THEMES leverage this. darker line
+
 high-level todo:
   backport tailwind classic theme -> normal classic theme
     address bugs:
@@ -57,6 +71,12 @@ BUGs later:
     will require refactor of how resource-timeline "entities" IDs are created: createEntityId / getEntityKey
     automated-test: two nested group, across different parents, with same group value
   bug: resource-timeline print-view with multiple columns; broken positioning
+
+after-beta todo:
+  ensure no-margin, no-padding on certain elements
+  update manual theme tests for `icons` removal
+    search for `icons: {`
+
 
 Changelog
 ---------
@@ -119,6 +139,34 @@ changelog: borderless(X) also indents toolbar
 changelog: dayCellTop will be rendered even if no day-cell-text. check hasLabel/hasMonthLabel
 changelog: premium-warning styled in dark mode
   https://github.com/fullcalendar/fullcalendar/issues/7904
+changelog: is root className/class a new feature!? i think so
+changelog: fieldValue. what was old API?
+changelog: resourceContent / ResourceContentArg removed? no global "resource" renderer anymore
+changelog: TYPE renames:
+  MountArg -> MountData
+  EventContentArg -> EventDisplayData
+  EventMountArg -> EventMountData
+  WeekNumberContentArg -> WeekNumberDisplayData
+  WeekNumberMountArg -> WeekNumberMountData
+  AllDayContentArg -> AllDayHeaderData
+  AllDayMountArg -> AllDayHeaderMountData
+  ButtonContentArg -> ButtonData
+  ButtonMountArg -> ButtonMountData
+  *ContentArg -> *Data
+  *MountArg -> *MountData
+  *Arg -> *Data (like EventClickArg -> EventClickData)
+  we DO NOT rename LocaleArg
+  (search only the old .d.ts files!)
+changelog: instead of accepting classNames, these please accept both className/class:
+  root calendar
+  view-specific options to define custom view
+  ButtonInput
+  Event input
+  EventSource input
+changelog: querying className now returns a non-normalized ORIGINAL value:
+  Event::className (previously classNames)
+  Resource::eventClass (previously eventClassNames)
+changelog: Event::toPlainObject/toJSON returns a 'className' string instead of 'classNames' array
 
 Docs
 ----
@@ -141,6 +189,19 @@ we will not be implementing "easier way to inject default eventContent"
 previous docs said button.click would receive second argument as HTMLElement, but doesn't seem so
 update examples in web-component README
 talk about updateSize doesn't needed because of ResizeObserver
+recommendation to CSS authors:
+  don't use nesting
+Rename all "arg"-like parameters in the docs:
+  Info:
+  Content:
+  arg:
+  Arg:
+  arg)
+  Arg)
+Getting VSCode TailwindCSS Intellisense working with FullCalendar's theming classNames:
+  "tailwindCSS.classAttributes": [
+    ".*Class"
+  ]
 
 Release Prep
 ------------
@@ -217,6 +278,7 @@ automated-test: button click handler can cancel default
 automated-test: button hint arguments of all kinds
 automated-test: write tests with moment/luxon textParts
 cleanup responive.html demos since flex-wrap in toolbar became the default
+automated-tests: ensure both className+class for "instead of accepting classNames" items above
 
 Freshdesk/GH-issues
 -------------------
