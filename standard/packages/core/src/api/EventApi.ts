@@ -26,6 +26,7 @@ export interface EventApi {
   allow: any // TODO: better
   color: string
   contrastColor: string
+  class: ClassNamesInput
   className: ClassNamesInput
   extendedProps: Dictionary
 

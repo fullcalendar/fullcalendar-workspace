@@ -6,6 +6,7 @@ import {
   AllowFunc,
   BusinessHoursInput,
   ButtonInput,
+  CalendarDisplayData,
   ClassNamesGenerator,
   ConstraintInput,
   CssDimValue,
@@ -362,11 +363,8 @@ export const BASE_OPTION_REFINERS = {
 
   // new
   colorScheme: identity as Identity<'auto' | 'light' | 'dark'>,
-  className: identity as Identity<ClassNamesGenerator<{
-    direction: 'ltr' | 'rtl'
-    mediaType: 'screen' | 'print'
-    colorScheme: 'light' | 'dark'
-  }>>,
+  class: identity as Identity<ClassNamesGenerator<CalendarDisplayData>>,
+  className: identity as Identity<ClassNamesGenerator<CalendarDisplayData>>,
   dayPopoverClass: identity as Identity<ClassNamesGenerator<DayPopoverData>>,
   popoverClass: identity as Identity<ClassNamesInput>,
   popoverHeaderClass: identity as Identity<ClassNamesInput>,
@@ -523,6 +521,9 @@ export const VIEW_ONLY_OPTION_REFINERS: {
   buttonTextKey: String, // internal only
   dateProfileGeneratorClass: identity as Identity<DateProfileGeneratorClass>,
   usesMinMaxTime: Boolean, // internal only
+
+  // TODO: move over to view* prefix? will align with view* options like viewClass
+  class: identity as Identity<ClassNamesGenerator<SpecificViewData>>,
   className: identity as Identity<ClassNamesGenerator<SpecificViewData>>,
   content: identity as Identity<CustomContentGenerator<SpecificViewData>>,
   didMount: identity as Identity<DidMountHandler<SpecificViewMountData>>,

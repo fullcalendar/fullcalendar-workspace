@@ -15,6 +15,7 @@ export const EVENT_UI_REFINERS = {
   constraint: identity as Identity<any>, // Identity<ConstraintInput>, // circular reference. ts dies. event->constraint->event
   overlap: identity as Identity<boolean>,
   allow: identity as Identity<AllowFunc>,
+  class: identity as Identity<ClassNamesInput>,
   className: identity as Identity<ClassNamesInput>,
   color: String,
   contrastColor: String,
@@ -67,7 +68,7 @@ export function createEventUi(refined: EventUiRefined, context: CalendarContext)
     allows: refined.allow != null ? [refined.allow] : [],
     color: refined.color || '',
     contrastColor: refined.contrastColor || '',
-    className: refined.className || '',
+    className: (refined.class ?? refined.className) || '',
   }
 }
 

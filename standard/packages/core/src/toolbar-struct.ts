@@ -44,6 +44,7 @@ export interface ButtonInput {
   willUnmount?: DidMountHandler<ButtonMountData>
   click?: (ev: MouseEvent) => void
   hint?: string | ((viewOrCurrentUnitText: string, viewOrCurrentUnit: string) => string)
+  class?: ClassNamesGenerator<ButtonData>
   className?: ClassNamesGenerator<ButtonData>
   display?: ButtonDisplay
   iconClass?: ClassNamesGenerator<ButtonIconData>,
