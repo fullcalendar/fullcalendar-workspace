@@ -1,6 +1,6 @@
 import { createElement, Fragment } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
-import { EventContentArg, EventRenderRange, setElEventRange } from '../component-util/event-rendering.js'
+import { EventDisplayData, EventRenderRange, setElEventRange } from '../component-util/event-rendering.js'
 import { memoize } from '../util/memoize.js'
 import { EventDef } from '../structs/event-def.js'
 import { EventInstance } from '../structs/event-instance.js'
@@ -41,7 +41,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       event: eventApi,
       isCompact: props.isCompact || false,
     }
-    const renderProps: EventContentArg = {
+    const renderProps: EventDisplayData = {
       event: eventApi,
       view: context.viewApi,
       timeText: '', // never display time
@@ -121,7 +121,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
   }
 }
 
-function renderInnerContent(props: EventContentArg) {
+function renderInnerContent(props: EventDisplayData) {
   let { title } = props.event
 
   return title && (

@@ -239,7 +239,7 @@ export { RefMap } from './util/RefMap.js'
 
 export { NowTimer } from './NowTimer.js'
 export type {
-  CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountArg,
+  CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountData,
 } from './common/render-hook.js'
 export { StandardEvent, StandardEventProps } from './common/StandardEvent.js'
 export { NowIndicatorLabelContainer } from './common/NowIndicatorLabelContainer.js'

@@ -16,13 +16,13 @@ export type { ViewComponentType, SpecificViewContentArg, SpecificViewMountArg } 
 export type { ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '../common/render-hook.js'
 export type { NowIndicatorLabelContentArg, NowIndicatorLabelMountArg } from '../common/NowIndicatorLabelContainer.js'
 export type { NowIndicatorLineContentArg, NowIndicatorLineMountArg } from '../common/NowIndicatorLineContainer.js'
-export type { WeekNumberContentArg, WeekNumberMountArg, DateTimeFormatPartWithWeek } from '../common/WeekNumberContainer.js'
+export type { WeekNumberDisplayData, WeekNumberMountData, DateTimeFormatPartWithWeek } from '../common/WeekNumberContainer.js'
 export type { MoreLinkContentArg, MoreLinkMountArg } from '../common/MoreLinkContainer.js'
 export * from '../common/more-link-public-types.js'
 export type {
   SlotLaneContentArg, SlotLaneMountArg,
   SlotLabelContentArg, SlotLabelMountArg,
-  AllDayContentArg, AllDayMountArg,
+  AllDayHeaderData, AllDayHeaderMountData,
 } from '../render-hook-misc.js'
 export type { DayLaneContentArg, DayLaneMountArg } from '../common/DayLaneContainer.js'
 export type { ViewContentArg, ViewMountArg } from '../common/ViewContainer.js'
@@ -30,8 +30,8 @@ export type { EventClickArg } from '../interactions/EventClicking.js'
 export type { EventHoveringArg } from '../interactions/EventHovering.js'
 export type { DateSelectArg, DateUnselectArg } from '../calendar-utils.js'
 export type { WeekNumberCalculation } from '../datelib/env.js'
-export type { ToolbarInput, ButtonInput, ButtonContentArg, ButtonMountArg, ButtonIconArg, ButtonDisplay, ToolbarElementInput, ToolbarSectionArg, ToolbarArg } from '../toolbar-struct.js'
-export type { EventContentArg, EventMountArg } from '../component-util/event-rendering.js'
+export type { ToolbarInput, ButtonInput, ButtonData, ButtonMountData, ButtonIconArg, ButtonDisplay, ToolbarElementInput, ToolbarSectionArg, ToolbarArg } from '../toolbar-struct.js'
+export type { EventDisplayData, EventMountData } from '../component-util/event-rendering.js'
 export type { DayPopoverContentArg } from '../common/MorePopover.js'
 export type { DatesSetArg } from '../dates-set.js'
 export type { EventAddArg, EventChangeArg, EventDropArg, EventRemoveArg } from '../event-crud.js'

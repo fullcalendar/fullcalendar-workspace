@@ -3,7 +3,7 @@ import {
   EventApi,
   DateSelectArg,
   EventClickArg,
-  EventContentArg,
+  EventDisplayData,
   formatDate,
 } from '@fullcalendar/core'
 import FullCalendar from '@fullcalendar/react'
@@ -126,7 +126,7 @@ export default class DemoApp extends React.Component<{}, DemoAppState> {
 
 }
 
-function renderEventContent(eventContent: EventContentArg) {
+function renderEventContent(eventContent: EventDisplayData) {
   return (
     <>
       <b>{eventContent.timeText}</b>

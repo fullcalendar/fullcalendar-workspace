@@ -1,10 +1,10 @@
-import { MountArg } from './render-hook.js'
+import { MountData } from './render-hook.js'
 
 export type DateTimeFormatPartWithWeek = Omit<Intl.DateTimeFormatPart, 'type'> & {
   type: Intl.DateTimeFormatPart['type'] | 'week'
 }
 
-export interface WeekNumberContentArg {
+export interface WeekNumberDisplayData {
   num: number
   text: string
   textParts: DateTimeFormatPartWithWeek[]
@@ -12,4 +12,4 @@ export interface WeekNumberContentArg {
   isCompact: boolean
 }
 
-export type WeekNumberMountArg = MountArg<WeekNumberContentArg>
+export type WeekNumberMountData = MountData<WeekNumberDisplayData>

@@ -1,6 +1,6 @@
 import { ComponentChild, createElement, Fragment, VNode } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
-import { ToolbarWidget, ButtonContentArg } from '../toolbar-struct.js'
+import { ToolbarWidget, ButtonData } from '../toolbar-struct.js'
 import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
 import { ButtonIcon } from './ButtonIcon.js'
@@ -104,7 +104,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
           )
         }
 
-        let renderProps: ButtonContentArg = {
+        let renderProps: ButtonData = {
           name,
           text: widget.buttonText,
           isSelected,
@@ -113,7 +113,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
         }
 
         children.push(
-          <ContentContainer<ButtonContentArg>
+          <ContentContainer<ButtonData>
             tag='button'
             attrs={{
               type: 'button',

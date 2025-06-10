@@ -1,4 +1,4 @@
-import { WeekNumberContentArg } from '@fullcalendar/core'
+import { WeekNumberDisplayData } from '@fullcalendar/core'
 import {
   EventSegUiInteractionState,
   BaseComponent,
@@ -160,7 +160,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         ref={this.handleRootEl}
       >
         {props.showWeekNumbers && (
-          <ContentContainer<WeekNumberContentArg>
+          <ContentContainer<WeekNumberDisplayData>
             tag='div'
             renderProps={this.buildWeekNumberRenderProps(weekDateMarker, context, props.cellIsCompact)}
             generatorName="weekNumberContent"

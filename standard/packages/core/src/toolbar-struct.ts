@@ -1,4 +1,4 @@
-import { ClassNamesGenerator, CustomContentGenerator, DidMountHandler, MountArg, WillUnmountHandler } from './common/render-hook.js'
+import { ClassNamesGenerator, CustomContentGenerator, DidMountHandler, MountData, WillUnmountHandler } from './common/render-hook.js'
 
 export interface ToolbarModel {
   sectionWidgets: {
@@ -23,7 +23,7 @@ export interface ToolbarSectionArg {
 // Button / Toolbar
 // -------------------------------------------------------------------------------------------------
 
-export interface ButtonContentArg {
+export interface ButtonData {
   name: string
   text: string
   isSelected: boolean
@@ -31,7 +31,7 @@ export interface ButtonContentArg {
   inGroup: boolean
 }
 
-export type ButtonMountArg = MountArg<ButtonContentArg>
+export type ButtonMountData = MountData<ButtonData>
 
 export type ButtonDisplay = 'auto' | 'icon' | 'text' | 'icon-text' | 'text-icon'
 
@@ -40,11 +40,11 @@ export interface ButtonIconArg {
 }
 
 export interface ButtonInput {
-  didMount?: DidMountHandler<ButtonMountArg>
-  willUnmount?: DidMountHandler<ButtonMountArg>
+  didMount?: DidMountHandler<ButtonMountData>
+  willUnmount?: DidMountHandler<ButtonMountData>
   click?: (ev: MouseEvent) => void
   hint?: string | ((viewOrCurrentUnitText: string, viewOrCurrentUnit: string) => string)
-  classNames?: ClassNamesGenerator<ButtonContentArg>
+  classNames?: ClassNamesGenerator<ButtonData>
   display?: ButtonDisplay
   iconClassNames?: ClassNamesGenerator<ButtonIconArg>,
   iconContent?: CustomContentGenerator<ButtonIconArg>,
@@ -62,9 +62,9 @@ export interface ToolbarWidget {
   buttonIconClassNames?: ClassNamesGenerator<ButtonIconArg>
   buttonIconContent?: CustomContentGenerator<ButtonIconArg>
   buttonClick?: (ev: MouseEvent) => void
-  buttonClassNames?: ClassNamesGenerator<ButtonContentArg>
-  buttonDidMount?: DidMountHandler<ButtonMountArg>
-  buttonWillUnmount?: WillUnmountHandler<ButtonMountArg>
+  buttonClassNames?: ClassNamesGenerator<ButtonData>
+  buttonDidMount?: DidMountHandler<ButtonMountData>
+  buttonWillUnmount?: WillUnmountHandler<ButtonMountData>
 }
 
 export interface ToolbarInput {

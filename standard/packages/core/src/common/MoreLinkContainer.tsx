@@ -11,7 +11,7 @@ import { BaseComponent, setRef } from '../vdom-util.js'
 import { ViewApi } from '../api/ViewApi.js'
 import { ViewContext, ViewContextType } from '../ViewContext.js'
 import { MorePopover } from './MorePopover.js'
-import { MountArg } from './render-hook.js'
+import { MountData } from './render-hook.js'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
 import { ElAttrsProps } from '../content-inject/ContentInjector.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
@@ -42,7 +42,7 @@ export interface MoreLinkContentArg {
   view: ViewApi
 }
 
-export type MoreLinkMountArg = MountArg<MoreLinkContentArg>
+export type MoreLinkMountArg = MountData<MoreLinkContentArg>
 
 interface MoreLinkContainerState {
   isPopoverOpen: boolean

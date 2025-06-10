@@ -1,4 +1,4 @@
-import { WeekNumberContentArg } from '@fullcalendar/core'
+import { WeekNumberDisplayData } from '@fullcalendar/core'
 import { BaseComponent, ContentContainer, DateProfile, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, joinArrayishClassNames, joinClassNames, renderText, setRef, watchSize } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
@@ -45,7 +45,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
     let weekDateZoned = dateEnv.toDate(weekDateMarker)
 
     return (
-      <ContentContainer<WeekNumberContentArg>
+      <ContentContainer<WeekNumberDisplayData>
         tag='div'
         attrs={{
           role: 'gridcell', // doesn't always describe other cells in row, so make generic

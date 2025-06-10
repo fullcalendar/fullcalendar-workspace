@@ -3,7 +3,7 @@ import { DateMeta } from '../component-util/date-rendering.js'
 import { hasCustomRenderingHandler } from '../content-inject/ContentInjector.js'
 import { DateMarker } from '../datelib/marker.js'
 import { ViewOptions } from '../options.js'
-import { MountArg } from './render-hook.js'
+import { MountData } from './render-hook.js'
 
 export interface DayLaneContentArg extends DateMeta {
   date: DateMarker // localized
@@ -13,7 +13,7 @@ export interface DayLaneContentArg extends DateMeta {
   [extraProp: string]: any // so can include a resource
 }
 
-export type DayLaneMountArg = MountArg<DayLaneContentArg>
+export type DayLaneMountArg = MountData<DayLaneContentArg>
 
 export function hasCustomDayLaneContent(options: ViewOptions): boolean {
   return Boolean(options.dayLaneContent || hasCustomRenderingHandler('dayLaneContent', options))

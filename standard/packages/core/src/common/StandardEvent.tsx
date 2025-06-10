@@ -1,6 +1,6 @@
 import { createElement, Fragment } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
-import { buildEventRangeTimeText, computeEventRangeDraggable, EventContentArg, EventRenderRange, getEventTagAndAttrs, setElEventRange } from '../component-util/event-rendering.js'
+import { buildEventRangeTimeText, computeEventRangeDraggable, EventDisplayData, EventRenderRange, getEventTagAndAttrs, setElEventRange } from '../component-util/event-rendering.js'
 import { DateFormatter } from '../datelib/DateFormatter.js'
 import { ContentContainer, generateClassName } from '../content-inject/ContentContainer.js'
 import { ElRef } from '../content-inject/ContentInjector.js'
@@ -77,7 +77,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       event: eventApi,
       isCompact: props.isCompact || false,
     }
-    const renderProps: EventContentArg = {
+    const renderProps: EventDisplayData = {
       event: eventApi, // make stable. everything else atomic. FYI, eventRange unfortunately gets reconstructed a lot, but def/instance is stable
       view: context.viewApi,
       timeText: timeText,
@@ -161,7 +161,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
     )
 
     return (
-      <ContentContainer<EventContentArg>
+      <ContentContainer<EventDisplayData>
         tag={tag}
         attrs={{
           ...props.attrs,
@@ -263,7 +263,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
   }
 }
 
-function renderInnerContent(innerProps: EventContentArg) {
+function renderInnerContent(innerProps: EventDisplayData) {
   return (
     <Fragment>
       {innerProps.timeText && (

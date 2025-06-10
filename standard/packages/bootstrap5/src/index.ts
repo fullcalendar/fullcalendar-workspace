@@ -1,4 +1,4 @@
-import { createPlugin, EventContentArg, PluginDef } from '@fullcalendar/core'
+import { createPlugin, EventDisplayData, PluginDef } from '@fullcalendar/core'
 import './index.css'
 
 // TODO: better solution for this
@@ -100,14 +100,14 @@ export default createPlugin({
   },
 }) as PluginDef
 
-function getDayGridEventClassNames(arg: EventContentArg) {
+function getDayGridEventClassNames(arg: EventDisplayData) {
   return ''
   // return arg.event.display === 'background' ? '' :
   //   arg.isListItem ? 'fc-daygrid-dot-event fc-daygrid-event' :
   //   'fc-daygrid-block-event fc-daygrid-event fc-h-event'
 }
 
-function getDayGridEventColorClassNames(arg: EventContentArg) {
+function getDayGridEventColorClassNames(arg: EventDisplayData) {
   return ''
   // return arg.isListItem && 'fc-daygrid-event-dot'
 }

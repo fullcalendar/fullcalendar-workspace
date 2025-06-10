@@ -1,7 +1,7 @@
 import { DateMeta } from './component-util/date-rendering.js'
 import { Duration } from './datelib/duration.js'
 import { ViewApi } from './api/ViewApi.js'
-import { MountArg } from './common/render-hook.js'
+import { MountData } from './common/render-hook.js'
 
 export interface SlotLaneContentArg extends DateMeta {
   time?: Duration
@@ -9,18 +9,18 @@ export interface SlotLaneContentArg extends DateMeta {
   isMinor: boolean
   view: ViewApi
 }
-export type SlotLaneMountArg = MountArg<SlotLaneContentArg>
+export type SlotLaneMountArg = MountData<SlotLaneContentArg>
 
 export interface SlotLabelContentArg extends SlotLaneContentArg {
   level: number
   text: string
   isCompact: boolean
 }
-export type SlotLabelMountArg = MountArg<SlotLabelContentArg>
+export type SlotLabelMountArg = MountData<SlotLabelContentArg>
 
-export interface AllDayContentArg {
+export interface AllDayHeaderData {
   text: string
   view: ViewApi
   isCompact: boolean
 }
-export type AllDayMountArg = MountArg<AllDayContentArg>
+export type AllDayHeaderMountData = MountData<AllDayHeaderData>

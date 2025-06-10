@@ -1,4 +1,4 @@
-import { MountArg } from './render-hook.js'
+import { MountData } from './render-hook.js'
 import { DateMarker } from '../datelib/marker.js'
 import { ViewContext, ViewContextType } from '../ViewContext.js'
 import { createElement } from '../preact.js'
@@ -16,7 +16,7 @@ export interface NowIndicatorLineContentArg {
   view: ViewApi
 }
 
-export type NowIndicatorLineMountArg = MountArg<NowIndicatorLineContentArg>
+export type NowIndicatorLineMountArg = MountData<NowIndicatorLineContentArg>
 
 export const NowIndicatorLineContainer = (props: NowIndicatorLineContainerProps) => (
   <ViewContextType.Consumer>

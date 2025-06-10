@@ -1,5 +1,5 @@
 import { ViewApi, ClassNamesGenerator } from '@fullcalendar/core'
-import { CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountArg, CalendarContext } from '@fullcalendar/core/internal'
+import { CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountData, CalendarContext } from '@fullcalendar/core/internal'
 import { ComponentChild } from '@fullcalendar/core/preact'
 import { ResourceApi } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
@@ -7,26 +7,26 @@ import { Resource } from '@fullcalendar/resource/internal'
 export interface ResourceColumnHeaderContentArg {
   view: ViewApi
 }
-export type ResourceColumnHeaderMountArg = MountArg<ResourceColumnHeaderContentArg>
+export type ResourceColumnHeaderMountArg = MountData<ResourceColumnHeaderContentArg>
 
 export interface ResourceCellContentArg {
   resource?: ResourceApi
   fieldValue: any
   view: ViewApi
 }
-export type ResourceCellMountArg = MountArg<ResourceCellContentArg>
+export type ResourceCellMountArg = MountData<ResourceCellContentArg>
 
 export interface ResourceGroupHeaderContentArg {
   fieldValue: any
   view: ViewApi
 }
-export type ResourceGroupHeaderMountArg = MountArg<ResourceGroupHeaderContentArg>
+export type ResourceGroupHeaderMountArg = MountData<ResourceGroupHeaderContentArg>
 
 export interface ResourceGroupLaneContentArg {
   fieldValue: any
   view: ViewApi
 }
-export type ResourceGroupLaneMountArg = MountArg<ResourceGroupLaneContentArg>
+export type ResourceGroupLaneMountArg = MountData<ResourceGroupLaneContentArg>
 
 export interface ResourceLaneContentArgInput {
   resource: Resource
@@ -37,7 +37,7 @@ export interface ResourceLaneContentArg {
   resource: ResourceApi
 }
 
-export type ResourceLaneMountArg = MountArg<ResourceLaneContentArg>
+export type ResourceLaneMountArg = MountData<ResourceLaneContentArg>
 
 export function refineRenderProps(input: ResourceLaneContentArgInput): ResourceLaneContentArg {
   return {

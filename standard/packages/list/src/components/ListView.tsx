@@ -15,7 +15,7 @@ import {
   intersectRanges,
   joinClassNames,
   memoize,
-  MountArg,
+  MountData,
   NowTimer,
   Scroller,
   sliceEventStore,
@@ -37,7 +37,7 @@ export interface NoEventsContentArg {
   view: ViewApi
 }
 
-export type NoEventsMountArg = MountArg<NoEventsContentArg>
+export type NoEventsMountArg = MountData<NoEventsContentArg>
 
 /*
 Responsible for the scroller, and forwarding event-related actions into the "grid".

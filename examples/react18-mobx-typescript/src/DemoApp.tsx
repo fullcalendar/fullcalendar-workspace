@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import {
-  EventContentArg,
+  EventDisplayData,
   EventClickArg,
   DateSelectArg,
   EventChangeArg,
@@ -70,7 +70,7 @@ export const DemoApp = observer(function DemoApp() {
   );
 });
 
-function renderEventContent(eventContent: EventContentArg) {
+function renderEventContent(eventContent: EventDisplayData) {
   return (
     <>
       <b>{eventContent.timeText}</b>

@@ -1,4 +1,4 @@
-import { AllDayContentArg } from '@fullcalendar/core'
+import { AllDayHeaderData } from '@fullcalendar/core'
 import { ComponentChild, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchWidth } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
@@ -22,7 +22,7 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
   render() {
     let { props } = this
     let { options, viewApi } = this.context
-    let renderProps: AllDayContentArg = {
+    let renderProps: AllDayHeaderData = {
       text: options.allDayText,
       view: viewApi,
       isCompact: props.isCompact,
@@ -80,6 +80,6 @@ export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps>
   }
 }
 
-function renderAllDayInner(renderProps: AllDayContentArg): ComponentChild {
+function renderAllDayInner(renderProps: AllDayHeaderData): ComponentChild {
   return renderProps.text
 }

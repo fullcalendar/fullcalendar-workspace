@@ -1,5 +1,5 @@
 import { ViewSpec } from '../structs/view-spec.js'
-import { MountArg } from './render-hook.js'
+import { MountData } from './render-hook.js'
 import { ComponentChildren, createElement } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
 import { ViewApi } from '../api/ViewApi.js'
@@ -21,7 +21,7 @@ export interface ViewContentArg {
   view: ViewApi
 }
 
-export type ViewMountArg = MountArg<ViewContentArg>
+export type ViewMountArg = MountData<ViewContentArg>
 
 export class ViewContainer extends BaseComponent<ViewContainerProps> {
   render() {

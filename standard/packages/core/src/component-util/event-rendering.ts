@@ -12,7 +12,7 @@ import { ViewContext } from '../ViewContext.js'
 import { DateFormatter } from '../datelib/DateFormatter.js'
 import { addMs, DateMarker, startOfDay } from '../datelib/marker.js'
 import { ViewApi } from '../api/ViewApi.js'
-import { MountArg } from '../common/render-hook.js'
+import { MountData } from '../common/render-hook.js'
 import { createAriaKeyboardAttrs } from '../util/dom-event.js'
 
 export interface EventRenderRange extends EventTuple {
@@ -213,7 +213,7 @@ export interface MinimalEventProps {
   isToday: boolean
 }
 
-export interface EventContentArg { // for *Content handlers
+export interface EventDisplayData { // for *Content handlers
   event: EventImpl
   timeText: string
   color: string // TODO: add other EventUi props?
@@ -239,7 +239,7 @@ export interface EventContentArg { // for *Content handlers
   titleClassName: string
 }
 
-export type EventMountArg = MountArg<EventContentArg>
+export type EventMountData = MountData<EventDisplayData>
 
 export function computeEventRangeDraggable(eventRange: EventRenderRange, context: ViewContext) {
   let { pluginHooks } = context

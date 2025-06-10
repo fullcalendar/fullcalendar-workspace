@@ -1,5 +1,5 @@
 import { ViewApi } from '@fullcalendar/core'
-import { MountArg, DateMeta } from '@fullcalendar/core/internal'
+import { MountData, DateMeta } from '@fullcalendar/core/internal'
 import { ResourceApi } from '@fullcalendar/resource'
 
 // uses Partial<DateMeta> because might not be date-specific
@@ -10,4 +10,4 @@ export interface ResourceDayHeaderContentArg extends Partial<DateMeta> {
   isCompact: boolean
   // TODO: what about isMajor?
 }
-export type ResourceDayHeaderMountArg = MountArg<ResourceDayHeaderContentArg>
+export type ResourceDayHeaderMountArg = MountData<ResourceDayHeaderContentArg>

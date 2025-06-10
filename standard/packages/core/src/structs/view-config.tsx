@@ -1,7 +1,7 @@
 import { ViewProps } from '../component-util/View.js'
 import { mapHash } from '../util/object.js'
 import { ComponentType, Component, createElement } from '../preact.js'
-import { MountArg } from '../common/render-hook.js'
+import { MountData } from '../common/render-hook.js'
 import { ViewContext, ViewContextType } from '../ViewContext.js'
 import { ViewOptions } from '../options.js'
 import { Duration } from '../datelib/duration.js'
@@ -58,7 +58,7 @@ export interface SpecificViewContentArg extends ViewProps {
   nextDayThreshold: Duration
 }
 
-export type SpecificViewMountArg = MountArg<SpecificViewContentArg>
+export type SpecificViewMountArg = MountData<SpecificViewContentArg>
 
 function createViewHookComponent(options: ViewOptions) {
   return (viewProps: ViewProps) => (
