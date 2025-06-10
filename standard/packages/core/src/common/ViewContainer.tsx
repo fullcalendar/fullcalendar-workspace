@@ -17,11 +17,11 @@ export interface ViewContainerProps extends Partial<ElProps> {
   borderlessBottom: boolean
 }
 
-export interface ViewContentArg {
+export interface ViewData {
   view: ViewApi
 }
 
-export type ViewMountArg = MountData<ViewContentArg>
+export type ViewMountData = MountData<ViewData>
 
 export class ViewContainer extends BaseComponent<ViewContainerProps> {
   render() {

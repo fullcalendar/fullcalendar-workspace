@@ -1,4 +1,4 @@
-import { SlotLabelContentArg } from '@fullcalendar/core'
+import { SlotLabelData } from '@fullcalendar/core'
 import {
   BaseComponent,
   buildNavLinkAttrs,
@@ -154,6 +154,6 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
 // Utils
 // -------------------------------------------------------------------------------------------------
 
-function renderInnerContent(renderProps: SlotLabelContentArg) {
+function renderInnerContent(renderProps: SlotLabelData) {
   return renderProps.text
 }

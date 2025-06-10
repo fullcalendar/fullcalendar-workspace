@@ -1,4 +1,4 @@
-import { SlotLaneContentArg } from '@fullcalendar/core'
+import { SlotLaneData } from '@fullcalendar/core'
 import { BaseComponent, ContentContainer, getDateMeta, joinArrayishClassNames, joinClassNames, memoize, setRef, watchHeight } from '@fullcalendar/core/internal'
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { TimeSlatMeta } from '../time-slat-meta.js'
@@ -22,7 +22,7 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
   render() {
     let { props, context } = this
     let { options } = context
-    let renderProps: SlotLaneContentArg = {
+    let renderProps: SlotLaneData = {
       // this is a time-specific slot. not day-specific, so don't do today/nowRange
       ...this.getDateMeta(props.date, context.dateEnv),
 

@@ -1,7 +1,7 @@
 import { createElement, createRef, Ref, Fragment } from '@fullcalendar/core/preact'
 import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNames, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { ColSpec, ResourceColumnHeaderContentArg } from '../../structs.js'
+import { ColSpec, ResourceColumnHeaderData } from '../../structs.js'
 import { ResourceIndent } from './ResourceIndent.js'
 
 export interface HeaderCellProps {
@@ -30,7 +30,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
   render() {
     let { props, context } = this
     let { colSpec } = props
-    let renderProps: ResourceColumnHeaderContentArg = { view: context.viewApi }
+    let renderProps: ResourceColumnHeaderData = { view: context.viewApi }
 
     // need empty inner div for abs positioning for resizer
     return (

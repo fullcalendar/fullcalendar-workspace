@@ -26,7 +26,7 @@ export interface MorePopoverProps {
   onClose?: () => void
 }
 
-export type DayPopoverContentArg = DateMeta // TODO: rename
+export type DayPopoverData = DateMeta // TODO: rename
 
 export class MorePopover extends DateComponent<MorePopoverProps> {
   // memo

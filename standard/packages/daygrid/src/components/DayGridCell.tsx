@@ -36,7 +36,7 @@ import {
 } from '@fullcalendar/core/preact'
 import { DayGridMoreLink } from './DayGridMoreLink.js'
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg.js'
-import { DayCellContentArg } from '../structs.js'
+import { DayCellData } from '../structs.js'
 
 export interface DayGridCellProps {
   dateProfile: DateProfile
@@ -248,7 +248,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
 // Utils
 // -------------------------------------------------------------------------------------------------
 
-function renderTopInner(props: DayCellContentArg): ComponentChild {
+function renderTopInner(props: DayCellData): ComponentChild {
   return props.text || <Fragment>&nbsp;</Fragment> // TODO: DRY?
 }
 
@@ -284,7 +284,7 @@ interface DayCellRenderPropsInput {
   renderProps?: Dictionary // so can include a resource
 }
 
-function refineRenderProps(raw: DayCellRenderPropsInput): DayCellContentArg {
+function refineRenderProps(raw: DayCellRenderPropsInput): DayCellData {
   let { date, dateEnv, hasLabel, hasMonthLabel } = raw
   let [text, textParts] = hasLabel
     ? dateEnv.format(date, hasMonthLabel ? raw.monthStartFormat : raw.dayCellFormat)

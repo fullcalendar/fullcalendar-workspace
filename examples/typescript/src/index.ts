@@ -1,4 +1,4 @@
-import { Calendar, DayHeaderContentArg } from '@fullcalendar/core';
+import { Calendar, DayHeaderData } from '@fullcalendar/core';
 import { Component, createElement } from '@fullcalendar/core/preact';
 import classicThemePlugin from '@fullcalendar/classic-theme';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     navLinks: true, // can click day/week names to navigate views
     editable: true,
     dayMaxEvents: true, // allow "more" link when too many events
-    dayHeaderContent(arg: DayHeaderContentArg) {
+    dayHeaderContent(arg: DayHeaderData) {
       return createElement(CustomDayHeader, { text: arg.text })
     },
     events: [

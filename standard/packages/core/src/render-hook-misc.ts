@@ -3,20 +3,20 @@ import { Duration } from './datelib/duration.js'
 import { ViewApi } from './api/ViewApi.js'
 import { MountData } from './common/render-hook.js'
 
-export interface SlotLaneContentArg extends DateMeta {
+export interface SlotLaneData extends DateMeta {
   time?: Duration
   isMajor: boolean
   isMinor: boolean
   view: ViewApi
 }
-export type SlotLaneMountArg = MountData<SlotLaneContentArg>
+export type SlotLaneMountData = MountData<SlotLaneData>
 
-export interface SlotLabelContentArg extends SlotLaneContentArg {
+export interface SlotLabelData extends SlotLaneData {
   level: number
   text: string
   isCompact: boolean
 }
-export type SlotLabelMountArg = MountData<SlotLabelContentArg>
+export type SlotLabelMountData = MountData<SlotLabelData>
 
 export interface AllDayHeaderData {
   text: string

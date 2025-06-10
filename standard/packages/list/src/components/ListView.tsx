@@ -32,12 +32,12 @@ import {
 } from '@fullcalendar/core/preact'
 import { ListDay, ListSeg } from './ListDay.js'
 
-export interface NoEventsContentArg {
+export interface NoEventsData {
   text: string
   view: ViewApi
 }
 
-export type NoEventsMountArg = MountData<NoEventsContentArg>
+export type NoEventsMountData = MountData<NoEventsData>
 
 /*
 Responsible for the scroller, and forwarding event-related actions into the "grid".
@@ -91,7 +91,7 @@ export class ListView extends DateComponent<ViewProps> {
 
   renderEmptyMessage() {
     let { options, viewApi } = this.context
-    let renderProps: NoEventsContentArg = {
+    let renderProps: NoEventsData = {
       text: options.noEventsText,
       view: viewApi,
     }
@@ -219,7 +219,7 @@ export class ListView extends DateComponent<ViewProps> {
   }
 }
 
-function renderNoEventsInner(renderProps: NoEventsContentArg): ComponentChild {
+function renderNoEventsInner(renderProps: NoEventsData): ComponentChild {
   return renderProps.text
 }
 

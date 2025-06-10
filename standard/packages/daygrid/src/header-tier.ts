@@ -1,6 +1,6 @@
 import { ClassNamesGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '@fullcalendar/core'
 import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, Dictionary, formatDayString, getDateMeta, isMajorUnit, ViewContext } from '@fullcalendar/core/internal'
-import { DayHeaderContentArg } from './structs.js'
+import { DayHeaderData } from './structs.js'
 
 export interface CellRenderConfig<RenderProps> {
   generatorName: string
@@ -45,7 +45,7 @@ export function buildDateRowConfigs(
   todayRange: DateRange,
   dayHeaderFormat: DateFormatter, // TODO: rename to dateHeaderFormat?
   context: ViewContext,
-): RowConfig<DayHeaderContentArg>[] {
+): RowConfig<DayHeaderData>[] {
   const rowConfig = buildDateRowConfig(
     dates,
     datesRepDistinctDays,
@@ -79,7 +79,7 @@ export function buildDateRowConfig(
   context: ViewContext,
   colSpan?: number,
   isMajorMod?: number,
-): RowConfig<DayHeaderContentArg> {
+): RowConfig<DayHeaderData> {
   return {
     isDateRow: true,
     renderConfig: buildDateRenderConfig(context),
@@ -104,7 +104,7 @@ export function buildDateRowConfig(
 For header cells: how to connect w/ custom rendering
 Applies to all cells in a row
 */
-export function buildDateRenderConfig(context: ViewContext): CellRenderConfig<DayHeaderContentArg> {
+export function buildDateRenderConfig(context: ViewContext): CellRenderConfig<DayHeaderData> {
   const { options } = context
 
   return {
@@ -139,7 +139,7 @@ export function buildDateDataConfigs(
   extraAttrs: Dictionary = {}, // TODO
   className = '',
   isMajorMod?: number,
-): CellDataConfig<DayHeaderContentArg>[] {
+): CellDataConfig<DayHeaderData>[] {
   const { dateEnv, viewApi, options } = context
 
   return datesRepDistinctDays
@@ -147,7 +147,7 @@ export function buildDateDataConfigs(
         const dateMeta = getDateMeta(dateMarker, dateEnv, dateProfile, todayRange)
         const isMajor = isMajorMod != null && !(i % isMajorMod)
         const [text, textParts] = dateEnv.format(dateMarker, dayHeaderFormat)
-        const renderProps: DayHeaderContentArg = {
+        const renderProps: DayHeaderData = {
           ...dateMeta,
           ...extraRenderProps,
           text,
@@ -194,7 +194,7 @@ export function buildDateDataConfigs(
         }
         const isMajor = isMajorMod != null && !(i % isMajorMod)
         const [text, textParts] = dateEnv.format(normDate, dayHeaderFormat)
-        const renderProps: DayHeaderContentArg = {
+        const renderProps: DayHeaderData = {
           ...dateMeta,
           date: dowDates[dow],
           isMajor,

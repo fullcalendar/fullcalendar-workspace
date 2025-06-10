@@ -8,7 +8,7 @@ export interface ListDayArg extends DateMeta {
 export interface ListDayHeaderArg extends ListDayArg {
   isSticky: boolean
 }
-export type ListDayHeaderMountArg = MountData<ListDayHeaderArg>
+export type ListDayHeaderMountData = MountData<ListDayHeaderArg>
 
 export interface ListDayHeaderInnerArg extends ListDayArg {
   text: string

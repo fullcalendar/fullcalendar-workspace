@@ -9,16 +9,16 @@ import {
   RefinedOptionsFromRefiners,
 } from '@fullcalendar/core/internal'
 import {
-  ResourceDayHeaderContentArg,
-  ResourceDayHeaderMountArg,
+  ResourceDayHeaderData,
+  ResourceDayHeaderMountData,
 } from './structs.js'
 
 export const OPTION_REFINERS = {
-  resourceDayHeaderClassNames: identity as Identity<ClassNamesGenerator<ResourceDayHeaderContentArg>>,
-  resourceDayHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<ResourceDayHeaderContentArg>>,
-  resourceDayHeaderContent: identity as Identity<CustomContentGenerator<ResourceDayHeaderContentArg>>,
-  resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderMountArg>>,
-  resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderMountArg>>,
+  resourceDayHeaderClassNames: identity as Identity<ClassNamesGenerator<ResourceDayHeaderData>>,
+  resourceDayHeaderInnerClassNames: identity as Identity<ClassNamesGenerator<ResourceDayHeaderData>>,
+  resourceDayHeaderContent: identity as Identity<CustomContentGenerator<ResourceDayHeaderData>>,
+  resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderMountData>>,
+  resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderMountData>>,
 }
 
 type ResourceDayGridOptionRefiners = typeof OPTION_REFINERS

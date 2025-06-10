@@ -1,10 +1,10 @@
 import { MountData } from "@fullcalendar/core/internal";
 
-export interface SingleMonthContentArg {
+export interface SingleMonthData {
   colCount: number | undefined // initially unknown
 }
 
-export type SingleMonthMountArg = MountData<SingleMonthContentArg>
+export type SingleMonthMountData = MountData<SingleMonthData>
 
 export interface SingleMonthTitleArg {
   isSticky: boolean

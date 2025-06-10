@@ -34,7 +34,7 @@ export interface MoreLinkContainerProps extends Partial<ElAttrsProps> {
   display: 'row' | 'column'
 }
 
-export interface MoreLinkContentArg {
+export interface MoreLinkData {
   num: number
   text: string
   shortText: string
@@ -42,7 +42,7 @@ export interface MoreLinkContentArg {
   view: ViewApi
 }
 
-export type MoreLinkMountArg = MountData<MoreLinkContentArg>
+export type MoreLinkMountData = MountData<MoreLinkData>
 
 interface MoreLinkContainerState {
   isPopoverOpen: boolean
@@ -77,7 +77,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
             : `+${moreCnt} ${moreLinkText}`
           let hint = formatWithOrdinals(options.moreLinkHint, [moreCnt], text)
 
-          let renderProps: MoreLinkContentArg = {
+          let renderProps: MoreLinkData = {
             num: moreCnt,
             shortText: `+${moreCnt}`, // TODO: offer hook or i18n?
             text,
@@ -238,11 +238,11 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
   }
 }
 
-function renderMoreLinkText(props: MoreLinkContentArg) {
+function renderMoreLinkText(props: MoreLinkData) {
   return props.text
 }
 
-function renderMoreLinkShortText(props: MoreLinkContentArg) {
+function renderMoreLinkShortText(props: MoreLinkData) {
   return props.shortText
 }
 

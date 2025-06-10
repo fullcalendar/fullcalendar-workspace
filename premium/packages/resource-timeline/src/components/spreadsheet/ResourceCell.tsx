@@ -14,7 +14,7 @@ import { ResourceApi } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
 import { ResourceIndent } from './ResourceIndent.js'
 import { ResourceExpander } from './ResourceExpander.js'
-import { ResourceCellContentArg, ColSpec } from '../../structs.js'
+import { ResourceCellData, ColSpec } from '../../structs.js'
 
 export interface ResourceCellProps {
   colSpec: ColSpec
@@ -120,7 +120,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
   }
 }
 
-function renderResourceInner(renderProps: ResourceCellContentArg): ComponentChild {
+function renderResourceInner(renderProps: ResourceCellData): ComponentChild {
   return renderProps.fieldValue || <Fragment>&nbsp;</Fragment>
 }
 
@@ -132,7 +132,7 @@ interface RenderPropsInput {
   context: ViewContext
 }
 
-function refineRenderProps(input: RenderPropsInput): ResourceCellContentArg {
+function refineRenderProps(input: RenderPropsInput): ResourceCellData {
   return {
     resource: new ResourceApi(input.context, input.resource),
     fieldValue: input.fieldValue,

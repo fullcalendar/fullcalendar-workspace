@@ -35,10 +35,10 @@ export default createPlugin({
 }) as PluginDef
 
 export {
-  DayHeaderContentArg,
-  DayHeaderMountArg,
-  DayCellContentArg,
-  DayCellMountArg,
+  DayHeaderData,
+  DayHeaderMountData,
+  DayCellData,
+  DayCellMountData,
 } from './structs.js'
 
 export { DayGridOptions } from './options.js'

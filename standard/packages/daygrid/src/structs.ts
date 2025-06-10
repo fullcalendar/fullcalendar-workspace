@@ -1,7 +1,7 @@
 import { ViewApi } from '@fullcalendar/core'
 import { DateMarker, DateMeta, MountData } from '@fullcalendar/core/internal'
 
-export interface DayHeaderContentArg extends DateMeta {
+export interface DayHeaderData extends DateMeta {
   date: Date
   isCompact: boolean
   isMajor: boolean
@@ -10,9 +10,9 @@ export interface DayHeaderContentArg extends DateMeta {
   view: ViewApi
   [otherProp: string]: any
 }
-export type DayHeaderMountArg = MountData<DayHeaderContentArg>
+export type DayHeaderMountData = MountData<DayHeaderData>
 
-export interface DayCellContentArg extends DateMeta {
+export interface DayCellData extends DateMeta {
   date: DateMarker // localized
   isMajor: boolean
   isCompact: boolean
@@ -24,4 +24,4 @@ export interface DayCellContentArg extends DateMeta {
   [extraProp: string]: any // so can include a resource
 }
 
-export type DayCellMountArg = MountData<DayCellContentArg>
+export type DayCellMountData = MountData<DayCellData>

@@ -2,11 +2,11 @@ import { DateFormatter, DateMarker, DateProfile, DateRange, formatDayString, get
 import { buildDateDataConfigs, buildDateRenderConfig, buildDateRowConfig, CellDataConfig, CellRenderConfig, RowConfig } from '@fullcalendar/daygrid/internal'
 import { ResourceApi } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
-import { ResourceDayHeaderContentArg } from './structs.js'
+import { ResourceDayHeaderData } from './structs.js'
 
 // TODO: figure out plugin-types
-// import { DayHeaderContentArg } from '../../../../standard/packages/daygrid/src/structs.js'
-type DayHeaderContentArg = any
+// import { DayHeaderData } from '../../../../standard/packages/daygrid/src/structs.js'
+type DayHeaderData = any
 
 export function buildResourceRowConfigs(
   resources: Resource[],
@@ -17,7 +17,7 @@ export function buildResourceRowConfigs(
   todayRange: DateRange,
   dayHeaderFormat: DateFormatter, // TODO: rename to dateHeaderFormat?
   context: ViewContext,
-): RowConfig<DayHeaderContentArg | ResourceDayHeaderContentArg>[] {
+): RowConfig<DayHeaderData | ResourceDayHeaderData>[] {
   if (!resources.length) {
     return [
       buildDateRowConfig(
@@ -118,7 +118,7 @@ function buildResourceRowConfig(
   context: ViewContext,
   colSpan?: number,
   isMajorMod?: number,
-): RowConfig<ResourceDayHeaderContentArg> {
+): RowConfig<ResourceDayHeaderData> {
   return {
     isDateRow: false,
     renderConfig: buildResourceRenderConfig(context),
@@ -126,7 +126,7 @@ function buildResourceRowConfig(
   }
 }
 
-function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<ResourceDayHeaderContentArg> {
+function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<ResourceDayHeaderData> {
   const { options } = context
 
   return {
@@ -147,7 +147,7 @@ function buildResourceDataConfigs(
   context: ViewContext,
   colSpan = 1,
   isMajorMod?: number,
-): CellDataConfig<ResourceDayHeaderContentArg>[] {
+): CellDataConfig<ResourceDayHeaderData>[] {
   const dateMeta = dateMarker
     ? getDateMeta(dateMarker, context.dateEnv, dateProfile, todayRange)
     : {}

@@ -1,7 +1,7 @@
 import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNames, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { ComponentChild, createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
-import { ColSpec, ResourceGroupHeaderContentArg } from '../../structs.js'
+import { ColSpec, ResourceGroupHeaderData } from '../../structs.js'
 
 export interface ResourceGroupSubrowProps {
   colSpec: ColSpec
@@ -40,7 +40,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
     let { props, context } = this
     let { options } = context
     let { colSpec } = props
-    let renderProps: ResourceGroupHeaderContentArg = {
+    let renderProps: ResourceGroupHeaderData = {
       fieldValue: props.fieldValue,
       view: context.viewApi,
     }
@@ -115,6 +115,6 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
   }
 }
 
-function renderGroupInner(renderProps: ResourceGroupHeaderContentArg): ComponentChild {
+function renderGroupInner(renderProps: ResourceGroupHeaderData): ComponentChild {
   return renderProps.fieldValue || <Fragment>&nbsp;</Fragment>
 }

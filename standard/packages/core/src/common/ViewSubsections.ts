@@ -1,9 +1,9 @@
 
-export type ViewHeaderContentArg = {
+export type ViewHeaderData = {
   // view: ViewApi -- TODO when easier
   isSticky: boolean
 }
 
-export type ViewBodyContentArg = {
+export type ViewBodyData = {
   // view: ViewApi -- TODO when easier
 }

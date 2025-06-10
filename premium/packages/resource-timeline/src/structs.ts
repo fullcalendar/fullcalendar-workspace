@@ -4,42 +4,42 @@ import { ComponentChild } from '@fullcalendar/core/preact'
 import { ResourceApi } from '@fullcalendar/resource'
 import { Resource } from '@fullcalendar/resource/internal'
 
-export interface ResourceColumnHeaderContentArg {
+export interface ResourceColumnHeaderData {
   view: ViewApi
 }
-export type ResourceColumnHeaderMountArg = MountData<ResourceColumnHeaderContentArg>
+export type ResourceColumnHeaderMountData = MountData<ResourceColumnHeaderData>
 
-export interface ResourceCellContentArg {
+export interface ResourceCellData {
   resource?: ResourceApi
   fieldValue: any
   view: ViewApi
 }
-export type ResourceCellMountArg = MountData<ResourceCellContentArg>
+export type ResourceCellMountData = MountData<ResourceCellData>
 
-export interface ResourceGroupHeaderContentArg {
+export interface ResourceGroupHeaderData {
   fieldValue: any
   view: ViewApi
 }
-export type ResourceGroupHeaderMountArg = MountData<ResourceGroupHeaderContentArg>
+export type ResourceGroupHeaderMountData = MountData<ResourceGroupHeaderData>
 
-export interface ResourceGroupLaneContentArg {
+export interface ResourceGroupLaneData {
   fieldValue: any
   view: ViewApi
 }
-export type ResourceGroupLaneMountArg = MountData<ResourceGroupLaneContentArg>
+export type ResourceGroupLaneMountData = MountData<ResourceGroupLaneData>
 
 export interface ResourceLaneContentArgInput {
   resource: Resource
   context: CalendarContext
 }
 
-export interface ResourceLaneContentArg {
+export interface ResourceLaneData {
   resource: ResourceApi
 }
 
-export type ResourceLaneMountArg = MountData<ResourceLaneContentArg>
+export type ResourceLaneMountData = MountData<ResourceLaneData>
 
-export function refineRenderProps(input: ResourceLaneContentArgInput): ResourceLaneContentArg {
+export function refineRenderProps(input: ResourceLaneContentArgInput): ResourceLaneData {
   return {
     resource: new ResourceApi(input.context, input.resource),
   }
@@ -54,12 +54,12 @@ export interface ResourceExpanderArg {
 // -------------------------------------------------------------------------------------------------
 
 export interface ColHeaderRenderHooks {
-  headerClassNames?: ClassNamesGenerator<ResourceColumnHeaderContentArg>
-  headerInnerClassNames?: ClassNamesGenerator<ResourceColumnHeaderContentArg>
-  headerContent?: CustomContentGenerator<ResourceColumnHeaderContentArg>
-  headerDefault?: (renderProps: ResourceColumnHeaderContentArg) => ComponentChild
-  headerDidMount?: DidMountHandler<ResourceColumnHeaderMountArg>
-  headerWillUnmount?: WillUnmountHandler<ResourceColumnHeaderMountArg>
+  headerClassNames?: ClassNamesGenerator<ResourceColumnHeaderData>
+  headerInnerClassNames?: ClassNamesGenerator<ResourceColumnHeaderData>
+  headerContent?: CustomContentGenerator<ResourceColumnHeaderData>
+  headerDefault?: (renderProps: ResourceColumnHeaderData) => ComponentChild
+  headerDidMount?: DidMountHandler<ResourceColumnHeaderMountData>
+  headerWillUnmount?: WillUnmountHandler<ResourceColumnHeaderMountData>
 }
 
 export interface ColSpec extends ColHeaderRenderHooks {
@@ -68,28 +68,28 @@ export interface ColSpec extends ColHeaderRenderHooks {
   width?: number | string // string for percentage like '50%'
   field?: string
 
-  cellClassNames?: ClassNamesGenerator<ResourceCellContentArg>
-  cellInnerClassNames?: ClassNamesGenerator<ResourceCellContentArg>
-  cellContent?: CustomContentGenerator<ResourceCellContentArg>
-  cellDidMount?: DidMountHandler<ResourceCellMountArg>
-  cellWillUnmount?: WillUnmountHandler<ResourceCellMountArg>
+  cellClassNames?: ClassNamesGenerator<ResourceCellData>
+  cellInnerClassNames?: ClassNamesGenerator<ResourceCellData>
+  cellContent?: CustomContentGenerator<ResourceCellData>
+  cellDidMount?: DidMountHandler<ResourceCellMountData>
+  cellWillUnmount?: WillUnmountHandler<ResourceCellMountData>
 }
 
 export interface GroupLaneRenderHooks {
-  laneClassNames?: ClassNamesGenerator<ResourceCellContentArg>
-  laneInnerClassNames?: ClassNamesGenerator<ResourceCellContentArg>
-  laneContent?: CustomContentGenerator<ResourceCellContentArg>
-  laneDidMount?: DidMountHandler<ResourceCellMountArg>
-  laneWillUnmount?: WillUnmountHandler<ResourceCellMountArg>
+  laneClassNames?: ClassNamesGenerator<ResourceCellData>
+  laneInnerClassNames?: ClassNamesGenerator<ResourceCellData>
+  laneContent?: CustomContentGenerator<ResourceCellData>
+  laneDidMount?: DidMountHandler<ResourceCellMountData>
+  laneWillUnmount?: WillUnmountHandler<ResourceCellMountData>
 }
 
 export interface GroupSpec extends GroupLaneRenderHooks { // best place for this?
   field?: string
   order?: number
 
-  labelClassNames?: ClassNamesGenerator<ResourceCellContentArg>
-  labelInnerClassNames?: ClassNamesGenerator<ResourceCellContentArg>
-  labelContent?: CustomContentGenerator<ResourceCellContentArg>
-  labelDidMount?: DidMountHandler<ResourceCellMountArg>
-  labelWillUnmount?: WillUnmountHandler<ResourceCellMountArg>
+  labelClassNames?: ClassNamesGenerator<ResourceCellData>
+  labelInnerClassNames?: ClassNamesGenerator<ResourceCellData>
+  labelContent?: CustomContentGenerator<ResourceCellData>
+  labelDidMount?: DidMountHandler<ResourceCellMountData>
+  labelWillUnmount?: WillUnmountHandler<ResourceCellMountData>
 }

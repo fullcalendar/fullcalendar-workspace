@@ -1,4 +1,4 @@
-import { DayLaneContentArg } from '@fullcalendar/core'
+import { DayLaneData } from '@fullcalendar/core'
 import {
   BaseComponent,
   BgEvent,
@@ -98,7 +98,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     }
 
     const isSimple = props.forPrint && simplifiedTimeGridPrint
-    const renderProps: DayLaneContentArg = {
+    const renderProps: DayLaneData = {
       ...dateMeta,
       ...props.renderProps,
       isSimple,

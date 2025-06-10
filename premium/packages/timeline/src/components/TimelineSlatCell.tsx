@@ -1,4 +1,4 @@
-import { SlotLaneContentArg } from '@fullcalendar/core'
+import { SlotLaneData } from '@fullcalendar/core'
 import {
   BaseComponent,
   ContentContainer,
@@ -57,7 +57,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
       ))
     )
 
-    let renderProps: SlotLaneContentArg = {
+    let renderProps: SlotLaneData = {
       ...dateMeta,
       isMajor,
       isMinor,

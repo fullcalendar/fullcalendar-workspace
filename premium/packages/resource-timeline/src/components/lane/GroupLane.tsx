@@ -2,7 +2,7 @@ import { BaseComponent, ContentContainer, generateClassName, joinClassNames, set
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { Group } from '@fullcalendar/resource/internal'
-import { GroupSpec, ResourceGroupLaneContentArg } from '../../structs.js'
+import { GroupSpec, ResourceGroupLaneData } from '../../structs.js'
 
 export interface GroupLaneProps {
   group: Group
@@ -35,7 +35,7 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
     let { props, context } = this
     let { group } = props
     let groupSpec = group.spec as GroupSpec // type HACK
-    let renderProps: ResourceGroupLaneContentArg = {
+    let renderProps: ResourceGroupLaneData = {
       fieldValue: group.value,
       view: context.viewApi,
     }

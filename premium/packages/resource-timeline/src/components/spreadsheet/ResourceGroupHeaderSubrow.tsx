@@ -4,7 +4,7 @@ import { createElement, Fragment, ComponentChild, Ref, createRef } from '@fullca
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'
 import { ResourceIndent } from './ResourceIndent.js'
 import { ResourceExpander } from './ResourceExpander.js'
-import { ResourceGroupHeaderContentArg, GroupSpec } from '../../structs.js'
+import { ResourceGroupHeaderData, GroupSpec } from '../../structs.js'
 
 export interface ResourceGroupHeaderSubrowProps {
   group: Group
@@ -37,7 +37,7 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
   render() {
     let { props, context } = this
     let { options } = context
-    let renderProps: ResourceGroupHeaderContentArg = {
+    let renderProps: ResourceGroupHeaderData = {
       fieldValue: props.group.value,
       view: context.viewApi,
     }
@@ -132,6 +132,6 @@ ResourceGroupHeaderSubrow.addPropsEquality({
   group: isGroupsEqual,
 })
 
-function renderCellInner(renderProps: ResourceGroupHeaderContentArg): ComponentChild {
+function renderCellInner(renderProps: ResourceGroupHeaderData): ComponentChild {
   return renderProps.fieldValue || <Fragment>&nbsp;</Fragment>
 }

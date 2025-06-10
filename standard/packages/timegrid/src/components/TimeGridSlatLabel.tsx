@@ -1,6 +1,6 @@
 import {
   Duration,
-  SlotLabelContentArg
+  SlotLabelData
 } from '@fullcalendar/core'
 import {
   BaseComponent,
@@ -148,7 +148,7 @@ function createRenderProps(
   isCompact: boolean,
   labelFormat: DateFormatter,
   context: ViewContext,
-): SlotLabelContentArg {
+): SlotLabelData {
   return {
     // this is a time-specific slot. not day-specific, so don't do today/nowRange
     ...getDateMeta(date, context.dateEnv),

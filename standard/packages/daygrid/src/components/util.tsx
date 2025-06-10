@@ -1,9 +1,9 @@
 import { CssDimValue } from '@fullcalendar/core'
 import { computeMajorUnit, createFormatter, DateEnv, DateFormatter, DateMarker, DateProfile, DateProfileGenerator, DaySeriesModel, DayTableCell, DayTableModel, fracToCssDim, SlicedCoordRange } from '@fullcalendar/core/internal'
 import { ComponentChild } from '@fullcalendar/core/preact'
-import { DayHeaderContentArg } from '../structs.js'
+import { DayHeaderData } from '../structs.js'
 
-export function renderInner(renderProps: DayHeaderContentArg): ComponentChild {
+export function renderInner(renderProps: DayHeaderData): ComponentChild {
   return renderProps.text
 }
 

@@ -3,7 +3,7 @@ import { DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassNam
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow } from '@fullcalendar/daygrid/internal'
-import { SingleMonthContentArg } from '../structs.js'
+import { SingleMonthData } from '../structs.js'
 
 export interface SingleMonthProps extends ViewProps {
   todayRange: DateRange
@@ -36,7 +36,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
   private slicer = new DayTableSlicer()
   private titleId = getUniqueDomId()
   private rootEl?: HTMLElement
-  private renderProps?: SingleMonthContentArg
+  private renderProps?: SingleMonthData
   private disconnectGridWidth?: () => void
   private disconnectTitleHeight?: () => void
   private disconnectTableHeaderHeight?: () => void

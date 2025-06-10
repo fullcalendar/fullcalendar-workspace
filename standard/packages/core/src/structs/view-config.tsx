@@ -54,11 +54,11 @@ function parseViewConfig(input: ViewConfigInput): ViewConfig {
   }
 }
 
-export interface SpecificViewContentArg extends ViewProps {
+export interface SpecificViewData extends ViewProps {
   nextDayThreshold: Duration
 }
 
-export type SpecificViewMountArg = MountData<SpecificViewContentArg>
+export type SpecificViewMountData = MountData<SpecificViewData>
 
 function createViewHookComponent(options: ViewOptions) {
   return (viewProps: ViewProps) => (

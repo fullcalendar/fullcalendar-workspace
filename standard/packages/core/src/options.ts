@@ -16,9 +16,9 @@ import {
   DateSelectArg,
   DatesSetArg,
   DateUnselectArg,
-  DayLaneContentArg,
-  DayLaneMountArg,
-  DayPopoverContentArg,
+  DayLaneData,
+  DayLaneMountData,
+  DayPopoverData,
   DidMountHandler,
   EventAddArg, EventChangeArg,
   EventClickArg,
@@ -32,21 +32,21 @@ import {
   LocaleInput,
   LocaleSingularArg,
   MoreLinkAction,
-  MoreLinkContentArg,
-  MoreLinkMountArg,
-  NowIndicatorLabelContentArg,
-  NowIndicatorLabelMountArg,
-  NowIndicatorLineContentArg,
-  NowIndicatorLineMountArg,
+  MoreLinkData,
+  MoreLinkMountData,
+  NowIndicatorLabelData,
+  NowIndicatorLabelMountData,
+  NowIndicatorLineData,
+  NowIndicatorLineMountData,
   OverlapFunc,
   PluginDef,
-  SlotLabelContentArg, SlotLabelMountArg,
-  SlotLaneContentArg, SlotLaneMountArg,
-  SpecificViewContentArg, SpecificViewMountArg,
+  SlotLabelData, SlotLabelMountData,
+  SlotLaneData, SlotLaneMountData,
+  SpecificViewData, SpecificViewMountData,
   ToolbarInput,
   ViewComponentType,
-  ViewContentArg,
-  ViewMountArg,
+  ViewData,
+  ViewMountData,
   WeekNumberCalculation,
   WeekNumberDisplayData, WeekNumberMountData,
   WillUnmountHandler,
@@ -56,7 +56,7 @@ import {
   ToolbarArg,
   ButtonDisplay,
 } from './api/structs.js'
-import { ViewBodyContentArg, ViewHeaderContentArg } from './common/ViewSubsections.js'
+import { ViewBodyData, ViewHeaderData } from './common/ViewSubsections.js'
 import { createDuration, Duration } from './datelib/duration.js'
 import { createFormatter } from './datelib/formatting.js'
 import { ClassNamesInput } from './util/html.js'
@@ -123,11 +123,11 @@ export const BASE_OPTION_REFINERS = {
   forceEventDuration: Boolean,
 
   // TODO: move to timegrid
-  dayLaneClassNames: identity as Identity<ClassNamesGenerator<DayLaneContentArg>>,
-  dayLaneInnerClassNames: identity as Identity<ClassNamesGenerator<DayLaneContentArg>>,
-  dayLaneContent: identity as Identity<CustomContentGenerator<DayLaneContentArg>>,
-  dayLaneDidMount: identity as Identity<DidMountHandler<DayLaneMountArg>>,
-  dayLaneWillUnmount: identity as Identity<WillUnmountHandler<DayLaneMountArg>>,
+  dayLaneClassNames: identity as Identity<ClassNamesGenerator<DayLaneData>>,
+  dayLaneInnerClassNames: identity as Identity<ClassNamesGenerator<DayLaneData>>,
+  dayLaneContent: identity as Identity<CustomContentGenerator<DayLaneData>>,
+  dayLaneDidMount: identity as Identity<DidMountHandler<DayLaneMountData>>,
+  dayLaneWillUnmount: identity as Identity<WillUnmountHandler<DayLaneMountData>>,
 
   initialView: String,
   aspectRatio: Number,
@@ -143,21 +143,21 @@ export const BASE_OPTION_REFINERS = {
 
   editable: Boolean,
 
-  viewClassNames: identity as Identity<ClassNamesGenerator<ViewContentArg>>,
-  viewDidMount: identity as Identity<DidMountHandler<ViewMountArg>>,
-  viewWillUnmount: identity as Identity<WillUnmountHandler<ViewMountArg>>,
+  viewClassNames: identity as Identity<ClassNamesGenerator<ViewData>>,
+  viewDidMount: identity as Identity<DidMountHandler<ViewMountData>>,
+  viewWillUnmount: identity as Identity<WillUnmountHandler<ViewMountData>>,
 
   nowIndicator: Boolean,
 
-  nowIndicatorLabelClassNames: identity as Identity<ClassNamesGenerator<NowIndicatorLabelContentArg>>,
-  nowIndicatorLabelContent: identity as Identity<CustomContentGenerator<NowIndicatorLabelContentArg>>,
-  nowIndicatorLabelDidMount: identity as Identity<DidMountHandler<NowIndicatorLabelMountArg>>,
-  nowIndicatorLabelWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorLabelMountArg>>,
+  nowIndicatorLabelClassNames: identity as Identity<ClassNamesGenerator<NowIndicatorLabelData>>,
+  nowIndicatorLabelContent: identity as Identity<CustomContentGenerator<NowIndicatorLabelData>>,
+  nowIndicatorLabelDidMount: identity as Identity<DidMountHandler<NowIndicatorLabelMountData>>,
+  nowIndicatorLabelWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorLabelMountData>>,
 
-  nowIndicatorLineClassNames: identity as Identity<ClassNamesGenerator<NowIndicatorLineContentArg>>,
-  nowIndicatorLineContent: identity as Identity<CustomContentGenerator<NowIndicatorLineContentArg>>,
-  nowIndicatorLineDidMount: identity as Identity<DidMountHandler<NowIndicatorLineMountArg>>,
-  nowIndicatorLineWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorLineMountArg>>,
+  nowIndicatorLineClassNames: identity as Identity<ClassNamesGenerator<NowIndicatorLineData>>,
+  nowIndicatorLineContent: identity as Identity<CustomContentGenerator<NowIndicatorLineData>>,
+  nowIndicatorLineDidMount: identity as Identity<DidMountHandler<NowIndicatorLineMountData>>,
+  nowIndicatorLineWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorLineMountData>>,
 
   showNonCurrentDates: Boolean,
   lazyFetching: Boolean,
@@ -266,17 +266,17 @@ export const BASE_OPTION_REFINERS = {
 
   slotLabelFormat: identity as Identity<FormatterInput | FormatterInput[]>,
 
-  slotLaneClassNames: identity as Identity<ClassNamesGenerator<SlotLaneContentArg>>,
+  slotLaneClassNames: identity as Identity<ClassNamesGenerator<SlotLaneData>>,
   slotLaneInnerClassNames: identity as Identity<ClassNamesInput>, // no args!
-  slotLaneContent: identity as Identity<CustomContentGenerator<SlotLaneContentArg>>,
-  slotLaneDidMount: identity as Identity<DidMountHandler<SlotLaneMountArg>>,
-  slotLaneWillUnmount: identity as Identity<WillUnmountHandler<SlotLaneMountArg>>,
+  slotLaneContent: identity as Identity<CustomContentGenerator<SlotLaneData>>,
+  slotLaneDidMount: identity as Identity<DidMountHandler<SlotLaneMountData>>,
+  slotLaneWillUnmount: identity as Identity<WillUnmountHandler<SlotLaneMountData>>,
 
-  slotLabelClassNames: identity as Identity<ClassNamesGenerator<SlotLabelContentArg>>,
-  slotLabelInnerClassNames: identity as Identity<ClassNamesGenerator<SlotLabelContentArg>>,
-  slotLabelContent: identity as Identity<CustomContentGenerator<SlotLabelContentArg>>,
-  slotLabelDidMount: identity as Identity<DidMountHandler<SlotLabelMountArg>>,
-  slotLabelWillUnmount: identity as Identity<WillUnmountHandler<SlotLabelMountArg>>,
+  slotLabelClassNames: identity as Identity<ClassNamesGenerator<SlotLabelData>>,
+  slotLabelInnerClassNames: identity as Identity<ClassNamesGenerator<SlotLabelData>>,
+  slotLabelContent: identity as Identity<CustomContentGenerator<SlotLabelData>>,
+  slotLabelDidMount: identity as Identity<DidMountHandler<SlotLabelMountData>>,
+  slotLabelWillUnmount: identity as Identity<WillUnmountHandler<SlotLabelMountData>>,
 
   slotLabelRowClassNames: identity as Identity<ClassNamesInput>,
   slotLabelDividerClassNames: identity as Identity<ClassNamesInput>,
@@ -337,17 +337,17 @@ export const BASE_OPTION_REFINERS = {
   headingLevel: Number,
 
   moreLinkClick: identity as Identity<MoreLinkAction>,
-  moreLinkContent: identity as Identity<CustomContentGenerator<MoreLinkContentArg>>,
-  moreLinkDidMount: identity as Identity<DidMountHandler<MoreLinkMountArg>>,
-  moreLinkWillUnmount: identity as Identity<WillUnmountHandler<MoreLinkMountArg>>,
-  moreLinkClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
-  moreLinkInnerClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
+  moreLinkContent: identity as Identity<CustomContentGenerator<MoreLinkData>>,
+  moreLinkDidMount: identity as Identity<DidMountHandler<MoreLinkMountData>>,
+  moreLinkWillUnmount: identity as Identity<WillUnmountHandler<MoreLinkMountData>>,
+  moreLinkClassNames: identity as Identity<ClassNamesGenerator<MoreLinkData>>,
+  moreLinkInnerClassNames: identity as Identity<ClassNamesGenerator<MoreLinkData>>,
   //
-  rowMoreLinkClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
-  rowMoreLinkInnerClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
+  rowMoreLinkClassNames: identity as Identity<ClassNamesGenerator<MoreLinkData>>,
+  rowMoreLinkInnerClassNames: identity as Identity<ClassNamesGenerator<MoreLinkData>>,
   //
-  columnMoreLinkClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
-  columnMoreLinkInnerClassNames: identity as Identity<ClassNamesGenerator<MoreLinkContentArg>>,
+  columnMoreLinkClassNames: identity as Identity<ClassNamesGenerator<MoreLinkData>>,
+  columnMoreLinkInnerClassNames: identity as Identity<ClassNamesGenerator<MoreLinkData>>,
 
   navLinkClassNames: identity as Identity<ClassNamesInput>,
 
@@ -367,7 +367,7 @@ export const BASE_OPTION_REFINERS = {
     mediaType: 'screen' | 'print'
     colorScheme: 'light' | 'dark'
   }>>,
-  dayPopoverClassNames: identity as Identity<ClassNamesGenerator<DayPopoverContentArg>>,
+  dayPopoverClassNames: identity as Identity<ClassNamesGenerator<DayPopoverData>>,
   popoverClassNames: identity as Identity<ClassNamesInput>,
   popoverHeaderClassNames: identity as Identity<ClassNamesInput>,
   popoverTitleClassNames: identity as Identity<ClassNamesInput>,
@@ -387,8 +387,8 @@ export const BASE_OPTION_REFINERS = {
   toolbarSectionClassNames: identity as Identity<ClassNamesGenerator<ToolbarSectionArg>>,
   toolbarTitleClassNames: identity as Identity<ClassNamesInput>,
 
-  viewHeaderClassNames: identity as Identity<ClassNamesGenerator<ViewHeaderContentArg>>,
-  viewBodyClassNames: identity as Identity<ClassNamesGenerator<ViewBodyContentArg>>,
+  viewHeaderClassNames: identity as Identity<ClassNamesGenerator<ViewHeaderData>>,
+  viewBodyClassNames: identity as Identity<ClassNamesGenerator<ViewBodyData>>,
 
   nonBusinessClassNames: identity as Identity<ClassNamesInput>,
   highlightClassNames: identity as Identity<ClassNamesInput>,
@@ -523,10 +523,10 @@ export const VIEW_ONLY_OPTION_REFINERS: {
   buttonTextKey: String, // internal only
   dateProfileGeneratorClass: identity as Identity<DateProfileGeneratorClass>,
   usesMinMaxTime: Boolean, // internal only
-  classNames: identity as Identity<ClassNamesGenerator<SpecificViewContentArg>>,
-  content: identity as Identity<CustomContentGenerator<SpecificViewContentArg>>,
-  didMount: identity as Identity<DidMountHandler<SpecificViewMountArg>>,
-  willUnmount: identity as Identity<WillUnmountHandler<SpecificViewMountArg>>,
+  classNames: identity as Identity<ClassNamesGenerator<SpecificViewData>>,
+  content: identity as Identity<CustomContentGenerator<SpecificViewData>>,
+  didMount: identity as Identity<DidMountHandler<SpecificViewMountData>>,
+  willUnmount: identity as Identity<WillUnmountHandler<SpecificViewMountData>>,
 }
 
 type ViewOnlyRefiners = typeof VIEW_ONLY_OPTION_REFINERS

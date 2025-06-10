@@ -5,7 +5,7 @@ import { DateMarker } from '../datelib/marker.js'
 import { ViewOptions } from '../options.js'
 import { MountData } from './render-hook.js'
 
-export interface DayLaneContentArg extends DateMeta {
+export interface DayLaneData extends DateMeta {
   date: DateMarker // localized
   isSimple: boolean
   isMajor: boolean
@@ -13,7 +13,7 @@ export interface DayLaneContentArg extends DateMeta {
   [extraProp: string]: any // so can include a resource
 }
 
-export type DayLaneMountArg = MountData<DayLaneContentArg>
+export type DayLaneMountData = MountData<DayLaneData>
 
 export function hasCustomDayLaneContent(options: ViewOptions): boolean {
   return Boolean(options.dayLaneContent || hasCustomRenderingHandler('dayLaneContent', options))
