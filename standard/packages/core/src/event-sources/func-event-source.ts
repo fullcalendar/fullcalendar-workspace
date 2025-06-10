@@ -4,7 +4,7 @@ import { createPlugin } from '../plugin-system.js'
 import { buildRangeApiWithTimeZone } from '../structs/date-span.js'
 import { unpromisify } from '../util/promise.js'
 
-export type EventSourceFuncArg = {
+export type EventSourceFuncData = {
   start: Date
   end: Date
   startStr: string
@@ -14,11 +14,11 @@ export type EventSourceFuncArg = {
 
 export type EventSourceFunc =
   ((
-    arg: EventSourceFuncArg,
+    arg: EventSourceFuncData,
     successCallback: (eventInputs: EventInput[]) => void,
     failureCallback: (error: Error) => void,
   ) => void) |
-  ((arg: EventSourceFuncArg) => Promise<EventInput[]>)
+  ((arg: EventSourceFuncData) => Promise<EventInput[]>)
 
 let eventSourceDef: EventSourceDef<EventSourceFunc> = {
 

@@ -1,4 +1,4 @@
-import { buildLocale, RawLocaleInfo, organizeRawLocales, LocaleSingularArg } from '../datelib/locale.js'
+import { buildLocale, RawLocaleInfo, organizeRawLocales, LocaleSingularData } from '../datelib/locale.js'
 import { memoize, memoizeObjArg } from '../util/memoize.js'
 import { Action } from './Action.js'
 import { buildBuildPluginHooks, extractPluginOptionsDefaults } from '../plugin-system.js'
@@ -599,7 +599,7 @@ export class CalendarDataManager {
 
 function buildDateEnv(
   timeZone: string,
-  explicitLocale: LocaleSingularArg,
+  explicitLocale: LocaleSingularData,
   weekNumberCalculation,
   firstDay: number | undefined,
   weekText,

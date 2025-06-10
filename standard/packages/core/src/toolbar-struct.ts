@@ -10,13 +10,13 @@ export interface ToolbarModel {
   hasTitle: boolean
 }
 
-export interface ToolbarArg {
+export interface ToolbarData {
   name: string
   borderlessX: boolean
   // TODO: isSticky
 }
 
-export interface ToolbarSectionArg {
+export interface ToolbarSectionData {
   name: string
 }
 
@@ -35,7 +35,7 @@ export type ButtonMountData = MountData<ButtonData>
 
 export type ButtonDisplay = 'auto' | 'icon' | 'text' | 'icon-text' | 'text-icon'
 
-export interface ButtonIconArg {
+export interface ButtonIconData {
   direction: 'ltr' | 'rtl' // TODO: DRY
 }
 
@@ -46,8 +46,8 @@ export interface ButtonInput {
   hint?: string | ((viewOrCurrentUnitText: string, viewOrCurrentUnit: string) => string)
   classNames?: ClassNamesGenerator<ButtonData>
   display?: ButtonDisplay
-  iconClassNames?: ClassNamesGenerator<ButtonIconArg>,
-  iconContent?: CustomContentGenerator<ButtonIconArg>,
+  iconClassNames?: ClassNamesGenerator<ButtonIconData>,
+  iconContent?: CustomContentGenerator<ButtonIconData>,
   text?: string
 }
 
@@ -59,8 +59,8 @@ export interface ToolbarWidget {
   buttonText?: string
   buttonHint?: string | ((currentUnit: string) => string)
   buttonDisplay?: ButtonDisplay
-  buttonIconClassNames?: ClassNamesGenerator<ButtonIconArg>
-  buttonIconContent?: CustomContentGenerator<ButtonIconArg>
+  buttonIconClassNames?: ClassNamesGenerator<ButtonIconData>
+  buttonIconContent?: CustomContentGenerator<ButtonIconData>
   buttonClick?: (ev: MouseEvent) => void
   buttonClassNames?: ClassNamesGenerator<ButtonData>
   buttonDidMount?: DidMountHandler<ButtonMountData>

@@ -1,6 +1,6 @@
 import { createContext } from "react";
 import { observable, action } from "mobx";
-import { EventInput, DateSelectArg, EventChangeArg } from "@fullcalendar/core";
+import { EventInput, DateSelectData, EventChangeData } from "@fullcalendar/core";
 
 export class EventStore {
   @observable
@@ -33,7 +33,7 @@ export class EventStore {
   }
 
   @action
-  addEvent(selectInfo: DateSelectArg, title: string | null) {
+  addEvent(selectInfo: DateSelectData, title: string | null) {
     this.events.push({
       id: this.createEventId(),
       title: title || "New Event",
@@ -52,7 +52,7 @@ export class EventStore {
   }
 
   @action
-  changeEvent(changeInfo: EventChangeArg) {
+  changeEvent(changeInfo: EventChangeData) {
     const newEvent = changeInfo.event;
     const storedEvent = this.events.find((e) => e.id == changeInfo.event.id);
     if (storedEvent) {

@@ -1,6 +1,6 @@
 import { BaseComponent, buildNavLinkAttrs, ContentContainer, DateFormatter, DateMarker, DateMeta, renderText } from "@fullcalendar/core/internal";
 import { createElement } from '@fullcalendar/core/preact'
-import { ListDayHeaderInnerArg } from '../structs.js'
+import { ListDayHeaderInnerData } from '../structs.js'
 
 export interface ListDayHeaderInnerProps {
   dayDate: DateMarker
@@ -15,7 +15,7 @@ export class ListDayHeaderInner extends BaseComponent<ListDayHeaderInnerProps> {
     const { options } = context
     const [text, textParts] = context.dateEnv.format(props.dayDate, props.dayFormat)
 
-    const renderProps: ListDayHeaderInnerArg = {
+    const renderProps: ListDayHeaderInnerData = {
       ...props.dateMeta,
       view: context.viewApi,
       text,

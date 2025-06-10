@@ -3,7 +3,7 @@ import { registerResourceSourceDef } from '../structs/resource-source-def.js'
 import { ResourceInput } from '../structs/resource.js'
 import { ResourceSourceRefined } from '../structs/resource-source-parse.js'
 
-export interface ResourceFuncArg {
+export interface ResourceFuncData {
   start?: Date
   end?: Date
   startStr?: string
@@ -13,11 +13,11 @@ export interface ResourceFuncArg {
 
 export type ResourceFunc =
   ((
-    arg: ResourceFuncArg,
+    arg: ResourceFuncData,
     successCallback: (resourceInputs: ResourceInput[]) => void,
     failureCallback: (error: Error) => void,
   ) => void) |
-  ((arg: ResourceFuncArg) => Promise<ResourceInput[]>)
+  ((arg: ResourceFuncData) => Promise<ResourceInput[]>)
 
 registerResourceSourceDef<ResourceFunc>({
 
@@ -32,7 +32,7 @@ registerResourceSourceDef<ResourceFunc>({
     const dateEnv = arg.context.dateEnv
     const func = arg.resourceSource.meta
 
-    const publicArg: ResourceFuncArg = arg.range ? {
+    const publicArg: ResourceFuncData = arg.range ? {
       start: dateEnv.toDate(arg.range.start),
       end: dateEnv.toDate(arg.range.end),
       startStr: dateEnv.formatIso(arg.range.start),

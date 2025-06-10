@@ -1,16 +1,16 @@
 import { ViewApi } from '@fullcalendar/core'
 import { DateMeta, MountData } from '@fullcalendar/core/internal'
 
-export interface ListDayArg extends DateMeta {
+export interface ListDayData extends DateMeta {
   view: ViewApi
 }
 
-export interface ListDayHeaderArg extends ListDayArg {
+export interface ListDayHeaderData extends ListDayData {
   isSticky: boolean
 }
-export type ListDayHeaderMountData = MountData<ListDayHeaderArg>
+export type ListDayHeaderMountData = MountData<ListDayHeaderData>
 
-export interface ListDayHeaderInnerArg extends ListDayArg {
+export interface ListDayHeaderInnerData extends ListDayData {
   text: string
   textParts: Intl.DateTimeFormatPart[]
 }

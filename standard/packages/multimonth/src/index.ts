@@ -27,7 +27,7 @@ export default createPlugin({
 export {
   SingleMonthData,
   SingleMonthMountData,
-  SingleMonthTitleArg,
+  SingleMonthTitleData,
 } from './structs.js'
 
 export { MultiMonthOptions } from './options.js'

@@ -13,24 +13,24 @@ import {
   CustomRenderingHandler,
   DateInput,
   DateRangeInput,
-  DateSelectArg,
-  DatesSetArg,
-  DateUnselectArg,
+  DateSelectData,
+  DatesSetData,
+  DateUnselectData,
   DayLaneData,
   DayLaneMountData,
   DayPopoverData,
   DidMountHandler,
-  EventAddArg, EventChangeArg,
-  EventClickArg,
+  EventAddData, EventChangeData,
+  EventClickData,
   EventDisplayData,
-  EventHoveringArg,
+  EventHoveringData,
   EventInput, EventInputTransformer,
   EventMountData,
-  EventRemoveArg,
+  EventRemoveData,
   EventSourceInput,
   FormatterInput,
   LocaleInput,
-  LocaleSingularArg,
+  LocaleSingularData,
   MoreLinkAction,
   MoreLinkData,
   MoreLinkMountData,
@@ -52,8 +52,8 @@ import {
   WillUnmountHandler,
   ButtonData,
   ToolbarElementInput,
-  ToolbarSectionArg,
-  ToolbarArg,
+  ToolbarSectionData,
+  ToolbarData,
   ButtonDisplay,
 } from './api/structs.js'
 import { ViewBodyData, ViewHeaderData } from './common/ViewSubsections.js'
@@ -166,7 +166,7 @@ export const BASE_OPTION_REFINERS = {
   timeZoneParam: String,
   timeZone: String,
   locales: identity as Identity<LocaleInput[]>,
-  locale: identity as Identity<LocaleSingularArg>,
+  locale: identity as Identity<LocaleSingularData>,
   dragRevertDuration: Number,
   dragScroll: Boolean,
   allDayMaintainDuration: Boolean,
@@ -383,8 +383,8 @@ export const BASE_OPTION_REFINERS = {
 
   fillerClassNames: identity as Identity<ClassNamesInput>,
 
-  toolbarClassNames: identity as Identity<ClassNamesGenerator<ToolbarArg>>,
-  toolbarSectionClassNames: identity as Identity<ClassNamesGenerator<ToolbarSectionArg>>,
+  toolbarClassNames: identity as Identity<ClassNamesGenerator<ToolbarData>>,
+  toolbarSectionClassNames: identity as Identity<ClassNamesGenerator<ToolbarSectionData>>,
   toolbarTitleClassNames: identity as Identity<ClassNamesInput>,
 
   viewHeaderClassNames: identity as Identity<ClassNamesGenerator<ViewHeaderData>>,
@@ -466,16 +466,16 @@ export const BASE_OPTION_DEFAULTS = {
 // ------------------
 
 export const CALENDAR_LISTENER_REFINERS = {
-  datesSet: identity as Identity<(arg: DatesSetArg) => void>,
+  datesSet: identity as Identity<(arg: DatesSetData) => void>,
   eventsSet: identity as Identity<(events: EventApi[]) => void>,
-  eventAdd: identity as Identity<(arg: EventAddArg) => void>,
-  eventChange: identity as Identity<(arg: EventChangeArg) => void>,
-  eventRemove: identity as Identity<(arg: EventRemoveArg) => void>,
-  eventClick: identity as Identity<(arg: EventClickArg) => void>, // TODO: resource for scheduler????
-  eventMouseEnter: identity as Identity<(arg: EventHoveringArg) => void>,
-  eventMouseLeave: identity as Identity<(arg: EventHoveringArg) => void>,
-  select: identity as Identity<(arg: DateSelectArg) => void>, // resource for scheduler????
-  unselect: identity as Identity<(arg: DateUnselectArg) => void>,
+  eventAdd: identity as Identity<(arg: EventAddData) => void>,
+  eventChange: identity as Identity<(arg: EventChangeData) => void>,
+  eventRemove: identity as Identity<(arg: EventRemoveData) => void>,
+  eventClick: identity as Identity<(arg: EventClickData) => void>, // TODO: resource for scheduler????
+  eventMouseEnter: identity as Identity<(arg: EventHoveringData) => void>,
+  eventMouseLeave: identity as Identity<(arg: EventHoveringData) => void>,
+  select: identity as Identity<(arg: DateSelectData) => void>, // resource for scheduler????
+  unselect: identity as Identity<(arg: DateUnselectData) => void>,
   loading: identity as Identity<(isLoading: boolean) => void>,
 
   // internal

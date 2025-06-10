@@ -1,6 +1,6 @@
 import { ClassNamesGenerator } from '@fullcalendar/core'
 import { createFormatter, DidMountHandler, Identity, identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners, WillUnmountHandler } from '@fullcalendar/core/internal'
-import { SingleMonthData, SingleMonthMountData, SingleMonthTitleArg } from './structs.js'
+import { SingleMonthData, SingleMonthMountData, SingleMonthTitleData } from './structs.js'
 
 export const OPTION_REFINERS = {
   multiMonthMaxColumns: Number,
@@ -10,7 +10,7 @@ export const OPTION_REFINERS = {
   singleMonthDidMount: identity as Identity<DidMountHandler<SingleMonthMountData>>,
   singleMonthWillUnmount: identity as Identity<WillUnmountHandler<SingleMonthMountData>>,
   singleMonthClassNames: identity as Identity<ClassNamesGenerator<SingleMonthData>>,
-  singleMonthTitleClassNames: identity as Identity<ClassNamesGenerator<SingleMonthTitleArg>>,
+  singleMonthTitleClassNames: identity as Identity<ClassNamesGenerator<SingleMonthTitleData>>,
 }
 
 type MultiMonthOptionRefiners = typeof OPTION_REFINERS

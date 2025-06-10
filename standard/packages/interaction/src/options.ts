@@ -1,10 +1,10 @@
-import { EventDropArg } from '@fullcalendar/core'
+import { EventDropData } from '@fullcalendar/core'
 import { identity, Identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core/internal'
 import {
-  DateClickArg,
-  EventDragStartArg, EventDragStopArg,
-  EventResizeStartArg, EventResizeStopArg, EventResizeDoneArg,
-  DropArg, EventReceiveArg, EventLeaveArg,
+  DateClickData,
+  EventDragStartData, EventDragStopData,
+  EventResizeStartData, EventResizeStopData, EventResizeDoneData,
+  DropData, EventReceiveData, EventLeaveData,
 } from './public-types.js'
 
 export const OPTION_REFINERS = {
@@ -16,16 +16,16 @@ export type InteractionOptions = RawOptionsFromRefiners<InteractionOptionRefiner
 export type InteractionOptionsRefined = RefinedOptionsFromRefiners<InteractionOptionRefiners>
 
 export const LISTENER_REFINERS = {
-  dateClick: identity as Identity<(arg: DateClickArg) => void>,
-  eventDragStart: identity as Identity<(arg: EventDragStartArg) => void>,
-  eventDragStop: identity as Identity<(arg: EventDragStopArg) => void>,
-  eventDrop: identity as Identity<(arg: EventDropArg) => void>,
-  eventResizeStart: identity as Identity<(arg: EventResizeStartArg) => void>,
-  eventResizeStop: identity as Identity<(arg: EventResizeStopArg) => void>,
-  eventResize: identity as Identity<(arg: EventResizeDoneArg) => void>,
-  drop: identity as Identity<(arg: DropArg) => void>,
-  eventReceive: identity as Identity<(arg: EventReceiveArg) => void>,
-  eventLeave: identity as Identity<(arg: EventLeaveArg) => void>,
+  dateClick: identity as Identity<(arg: DateClickData) => void>,
+  eventDragStart: identity as Identity<(arg: EventDragStartData) => void>,
+  eventDragStop: identity as Identity<(arg: EventDragStopData) => void>,
+  eventDrop: identity as Identity<(arg: EventDropData) => void>,
+  eventResizeStart: identity as Identity<(arg: EventResizeStartData) => void>,
+  eventResizeStop: identity as Identity<(arg: EventResizeStopData) => void>,
+  eventResize: identity as Identity<(arg: EventResizeDoneData) => void>,
+  drop: identity as Identity<(arg: DropData) => void>,
+  eventReceive: identity as Identity<(arg: EventReceiveData) => void>,
+  eventLeave: identity as Identity<(arg: EventLeaveData) => void>,
 }
 
 type InteractionListenerRefiners = typeof LISTENER_REFINERS

@@ -6,7 +6,7 @@ import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging.js'
 import { HitDragging, isHitsEqual } from './HitDragging.js'
 import { buildDatePointApiWithContext } from '../utils.js'
 
-export interface DateClickArg extends DatePointApi {
+export interface DateClickData extends DatePointApi {
   dayEl: HTMLElement
   jsEvent: MouseEvent
   view: ViewApi
@@ -61,7 +61,7 @@ export class DateClicking extends Interaction {
 
       if (initialHit && finalHit && isHitsEqual(initialHit, finalHit)) {
         let { context } = component
-        let arg: DateClickArg = {
+        let arg: DateClickData = {
           ...buildDatePointApiWithContext(initialHit.dateSpan, context),
           dayEl: initialHit.getDayEl(),
           jsEvent: ev.origEvent as MouseEvent,

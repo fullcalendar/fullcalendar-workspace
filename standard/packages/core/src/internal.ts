@@ -143,7 +143,7 @@ export {
 export { DateEnv } from './datelib/env.js'
 
 export { createFormatter } from './datelib/formatting.js'
-export type { DateFormatter, VerboseFormattingArg } from './datelib/DateFormatter.js'
+export type { DateFormatter, VerboseFormattingData } from './datelib/DateFormatter.js'
 export {
   formatIsoTimeString,
   formatDayString,

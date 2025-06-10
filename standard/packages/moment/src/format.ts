@@ -1,9 +1,9 @@
-import { VerboseFormattingArg } from '@fullcalendar/core/internal'
+import { VerboseFormattingData } from '@fullcalendar/core/internal'
 import { convertToMoment } from './convert.js'
 
 export function formatWithCmdStr(
   cmdStr: string,
-  arg: VerboseFormattingArg,
+  arg: VerboseFormattingData,
 ): string | Intl.DateTimeFormatPart[] {
   let cmd = parseCmdStr(cmdStr)
 

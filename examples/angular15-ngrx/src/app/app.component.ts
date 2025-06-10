@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventInput } from '@fullcalendar/core';
+import { CalendarOptions, DateSelectData, EventClickData, EventInput } from '@fullcalendar/core';
 import classicThemePlugin from '@fullcalendar/classic-theme';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -59,7 +59,7 @@ export class AppComponent {
     calendarOptions.weekends = !calendarOptions.weekends;
   }
 
-  handleDateSelect(selectInfo: DateSelectArg) {
+  handleDateSelect(selectInfo: DateSelectData) {
     const title = prompt('Please enter a new title for your event');
     const calendarApi = selectInfo.view.calendar;
 
@@ -77,7 +77,7 @@ export class AppComponent {
     }
   }
 
-  handleEventClick(clickInfo: EventClickArg) {
+  handleEventClick(clickInfo: EventClickData) {
     if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
       this.store.dispatch(CalendarActions.deleteEvent({ id: clickInfo.event.id }));
     }

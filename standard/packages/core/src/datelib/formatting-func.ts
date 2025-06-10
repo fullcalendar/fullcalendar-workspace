@@ -1,7 +1,7 @@
-import { DateFormatter, DateFormattingContext, createVerboseFormattingArg, VerboseFormattingArg } from './DateFormatter.js'
+import { DateFormatter, DateFormattingContext, createVerboseFormattingArg, VerboseFormattingData } from './DateFormatter.js'
 import { ZonedMarker } from './zoned-marker.js'
 
-export type FuncFormatterFunc = (arg: VerboseFormattingArg) => string
+export type FuncFormatterFunc = (arg: VerboseFormattingData) => string
 
 export class FuncFormatter implements DateFormatter {
   func: FuncFormatterFunc

@@ -1,7 +1,7 @@
 import {
   ViewApi,
   EventApi,
-  EventChangeArg,
+  EventChangeData,
   EventRenderRange,
   Duration,
 } from '@fullcalendar/core'
@@ -22,17 +22,17 @@ import classNames from '@fullcalendar/core/internal-classnames'
 import { HitDragging, isHitsEqual } from './HitDragging.js'
 import { FeaturefulElementDragging } from '../dnd/FeaturefulElementDragging.js'
 
-export type EventResizeStartArg = EventResizeStartStopArg
-export type EventResizeStopArg = EventResizeStartStopArg
+export type EventResizeStartData = EventResizeStartStopData
+export type EventResizeStopData = EventResizeStartStopData
 
-export interface EventResizeStartStopArg {
+export interface EventResizeStartStopData {
   el: HTMLElement
   event: EventApi
   jsEvent: MouseEvent
   view: ViewApi
 }
 
-export interface EventResizeDoneArg extends EventChangeArg {
+export interface EventResizeDoneData extends EventChangeData {
   el: HTMLElement
   startDelta: Duration
   endDelta: Duration
@@ -107,7 +107,7 @@ export class EventResizing extends Interaction {
       event: new EventImpl(context, eventRange.def, eventRange.instance),
       jsEvent: ev.origEvent as MouseEvent, // Is this always a mouse event? See #4655
       view: context.viewApi,
-    } as EventResizeStartArg)
+    } as EventResizeStartData)
   }
 
   handleHitUpdate = (hit: Hit | null, isFinal: boolean, ev: PointerDragEvent) => {
@@ -189,7 +189,7 @@ export class EventResizing extends Interaction {
       event: eventApi,
       jsEvent: ev.origEvent as MouseEvent, // Is this always a mouse event? See #4655
       view: context.viewApi,
-    } as EventResizeStopArg)
+    } as EventResizeStopData)
 
     if (this.validMutation) {
       let updatedEventApi = new EventImpl(
@@ -203,7 +203,7 @@ export class EventResizing extends Interaction {
         eventStore: mutatedRelevantEvents,
       })
 
-      let eventChangeArg: EventChangeArg = {
+      let eventChangeArg: EventChangeData = {
         oldEvent: eventApi,
         event: updatedEventApi,
         relatedEvents: buildEventApis(mutatedRelevantEvents, context, eventInstance),

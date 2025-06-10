@@ -4,20 +4,20 @@ import { EventImpl, buildEventApis } from './api/EventImpl.js'
 import { Duration } from './datelib/duration.js'
 import { ViewApi } from './index.js'
 
-export interface EventAddArg {
+export interface EventAddData {
   event: EventImpl
   relatedEvents: EventImpl[]
   revert: () => void
 }
 
-export interface EventChangeArg {
+export interface EventChangeData {
   oldEvent: EventImpl
   event: EventImpl
   relatedEvents: EventImpl[]
   revert: () => void
 }
 
-export interface EventDropArg extends EventChangeArg { // not best place. deals w/ UI
+export interface EventDropData extends EventChangeData { // not best place. deals w/ UI
   el: HTMLElement
   delta: Duration
   jsEvent: MouseEvent
@@ -25,7 +25,7 @@ export interface EventDropArg extends EventChangeArg { // not best place. deals 
   // and other "transformed" things
 }
 
-export interface EventRemoveArg {
+export interface EventRemoveData {
   event: EventImpl
   relatedEvents: EventImpl[]
   revert: () => void

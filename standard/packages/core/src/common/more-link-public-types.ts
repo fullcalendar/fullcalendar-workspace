@@ -12,7 +12,7 @@ export interface EventSegment {
 export type MoreLinkAction = MoreLinkSimpleAction | MoreLinkHandler
 export type MoreLinkSimpleAction = 'popover' | 'week' | 'day' | 'timeGridWeek' | 'timeGridDay' | string
 
-export interface MoreLinkArg {
+export interface MoreLinkData {
   date: Date
   allDay: boolean
   allSegs: EventSegment[]
@@ -21,4 +21,4 @@ export interface MoreLinkArg {
   view: ViewApi
 }
 
-export type MoreLinkHandler = (arg: MoreLinkArg) => MoreLinkSimpleAction | void
+export type MoreLinkHandler = (arg: MoreLinkData) => MoreLinkSimpleAction | void

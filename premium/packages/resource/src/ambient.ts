@@ -25,7 +25,7 @@ declare module '@fullcalendar/core' {
     resource?: ResourceApi
   }
 
-  interface EventDropArg {
+  interface EventDropData {
     oldResource?: ResourceApi
     newResource?: ResourceApi
   }

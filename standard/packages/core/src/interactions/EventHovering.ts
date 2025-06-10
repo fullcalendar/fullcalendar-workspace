@@ -5,7 +5,7 @@ import { Interaction, InteractionSettings } from './interaction.js'
 import { ViewApi } from '../api/ViewApi.js'
 import classNames from '../internal-classnames.js'
 
-export interface EventHoveringArg {
+export interface EventHoveringData {
   el: HTMLElement
   event: EventImpl
   jsEvent: MouseEvent
@@ -72,7 +72,7 @@ export class EventHovering extends Interaction {
         ),
         jsEvent: ev as MouseEvent, // Is this always a mouse event? See #4655
         view: context.viewApi,
-      } as EventHoveringArg)
+      } as EventHoveringData)
     }
   }
 }

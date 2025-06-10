@@ -1,15 +1,15 @@
 import { ViewApi, EventApi, DatePointApi } from '@fullcalendar/core'
 import { DateSpan, CalendarContext, DateEnv } from '@fullcalendar/core/internal'
 
-export interface DropArg extends DatePointApi {
+export interface DropData extends DatePointApi {
   draggedEl: HTMLElement
   jsEvent: MouseEvent
   view: ViewApi
 }
 
-export type EventReceiveArg = EventReceiveLeaveArg
-export type EventLeaveArg = EventReceiveLeaveArg
-export interface EventReceiveLeaveArg { // will this become public?
+export type EventReceiveData = EventReceiveLeaveData
+export type EventLeaveData = EventReceiveLeaveData
+export interface EventReceiveLeaveData { // will this become public?
   draggedEl: HTMLElement
   event: EventApi
   relatedEvents: EventApi[]

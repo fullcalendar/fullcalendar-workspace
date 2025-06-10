@@ -3,7 +3,7 @@ import { CalendarSystem } from './calendar-system.js'
 import { Locale } from './locale.js'
 import { ZonedMarker, ExpandedZonedMarker, expandZonedMarker } from './zoned-marker.js'
 
-export interface VerboseFormattingArg {
+export interface VerboseFormattingData {
   date: ExpandedZonedMarker
   start: ExpandedZonedMarker
   end?: ExpandedZonedMarker
@@ -17,7 +17,7 @@ export function createVerboseFormattingArg(
   end: ZonedMarker,
   context: DateFormattingContext,
   betterDefaultSeparator?: string,
-): VerboseFormattingArg {
+): VerboseFormattingData {
   let startInfo = expandZonedMarker(start, context.calendarSystem)
   let endInfo = end ? expandZonedMarker(end, context.calendarSystem) : null
 
@@ -33,7 +33,7 @@ export function createVerboseFormattingArg(
 
 export type CmdFormatterFunc = (
   cmd: string,
-  arg: VerboseFormattingArg,
+  arg: VerboseFormattingData,
 ) => string | Intl.DateTimeFormatPart[]
 
 export interface DateFormattingContext {

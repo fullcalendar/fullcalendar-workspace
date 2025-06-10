@@ -3,7 +3,7 @@
 import { ComponentChildren } from '../preact.js'
 import { ClassNamesInput } from '../util/html.js'
 
-export type MountData<ContentArg> = ContentArg & { el: HTMLElement }
+export type MountData<DisplayData> = DisplayData & { el: HTMLElement }
 export type DidMountHandler<TheMountData extends { el: HTMLElement }> = (mountArg: TheMountData) => void
 export type WillUnmountHandler<TheMountData extends { el: HTMLElement }> = (mountArg: TheMountData) => void
 

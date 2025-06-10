@@ -1,7 +1,7 @@
 import { BaseComponent, ContentContainer, generateClassName, joinClassNames } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Ref } from '@fullcalendar/core/preact'
-import { ResourceExpanderArg } from '../../structs.js'
+import { ResourceExpanderData } from '../../structs.js'
 
 export interface ResourceExpanderProps {
   isExpanded: boolean
@@ -17,7 +17,7 @@ export class ResourceExpander extends BaseComponent<ResourceExpanderProps> {
     const classNameGenerator = options.resourceExpanderClassNames
     const contentGenerator = options.resourceExpanderContent
 
-    const renderProps: ResourceExpanderArg = {
+    const renderProps: ResourceExpanderData = {
       isExpanded: props.isExpanded,
       direction: options.direction,
     }
@@ -34,7 +34,7 @@ export class ResourceExpander extends BaseComponent<ResourceExpanderProps> {
         ref={props.elRef}
       >
         {contentGenerator && (
-          <ContentContainer<ResourceExpanderArg>
+          <ContentContainer<ResourceExpanderData>
             tag='span'
             style={{ display: 'contents' }}
             attrs={{ 'aria-hidden': true }}

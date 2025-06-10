@@ -6,7 +6,7 @@ export interface SingleMonthData {
 
 export type SingleMonthMountData = MountData<SingleMonthData>
 
-export interface SingleMonthTitleArg {
+export interface SingleMonthTitleData {
   isSticky: boolean
   isCompact: boolean
 }

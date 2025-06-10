@@ -2,11 +2,11 @@ import { globalLocales } from '../global-locales.js'; // weird to be importing t
 import { CalendarOptions, CalendarOptionsRefined } from '../options.js'
 import { mergeRawOptions } from '../options-manip.js';
 
-export type LocaleCodeArg = string | string[]
-export type LocaleSingularArg = LocaleCodeArg | LocaleInput
+export type LocaleCodeData = string | string[]
+export type LocaleSingularData = LocaleCodeData | LocaleInput
 
 export interface Locale {
-  codeArg: LocaleCodeArg
+  codeArg: LocaleCodeData
   codes: string[]
   week: { dow: number, doy: number }
   simpleNumberFormat: Intl.NumberFormat
@@ -91,7 +91,7 @@ export function organizeRawLocales(explicitRawLocales: LocaleInput[]): RawLocale
   }
 }
 
-export function buildLocale(inputSingular: LocaleSingularArg, available: LocaleInputMap) {
+export function buildLocale(inputSingular: LocaleSingularData, available: LocaleInputMap) {
   if (typeof inputSingular === 'object' && !Array.isArray(inputSingular)) {
     return parseLocale(
       inputSingular.code,
@@ -102,7 +102,7 @@ export function buildLocale(inputSingular: LocaleSingularArg, available: LocaleI
   return queryLocale(inputSingular, available)
 }
 
-function queryLocale(codeArg: LocaleCodeArg, available: LocaleInputMap): Locale {
+function queryLocale(codeArg: LocaleCodeData, available: LocaleInputMap): Locale {
   let codes = [].concat(codeArg || []) // will convert to array
   let raw = queryRawLocale(codes, available) || RAW_EN_LOCALE
 
@@ -124,7 +124,7 @@ function queryRawLocale(codes: string[], available: LocaleInputMap): LocaleInput
   return null
 }
 
-function parseLocale(codeArg: LocaleCodeArg, codes: string[], raw: LocaleInput): Locale {
+function parseLocale(codeArg: LocaleCodeData, codes: string[], raw: LocaleInput): Locale {
   let merged = mergeRawOptions([MINIMAL_RAW_EN_LOCALE, raw])
 
   delete merged.code // don't want this part of the options

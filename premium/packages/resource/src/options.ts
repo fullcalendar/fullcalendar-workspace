@@ -2,7 +2,7 @@ import { Identity, identity, parseFieldSpecs, RawOptionsFromRefiners, RefinedOpt
 import {
   ResourceSourceInput,
   ResourceApi,
-  ResourceAddArg, ResourceChangeArg, ResourceRemoveArg,
+  ResourceAddData, ResourceChangeData, ResourceRemoveData,
 } from './public-types.js'
 
 export const OPTION_REFINERS = {
@@ -26,9 +26,9 @@ export type ResourceOptionsRefined = RefinedOptionsFromRefiners<ResourceOptionRe
 
 export const LISTENER_REFINERS = {
   resourcesSet: identity as Identity<(resources: ResourceApi[]) => void>,
-  resourceAdd: identity as Identity<(arg: ResourceAddArg) => void>,
-  resourceChange: identity as Identity<(arg: ResourceChangeArg) => void>,
-  resourceRemove: identity as Identity<(arg: ResourceRemoveArg) => void>,
+  resourceAdd: identity as Identity<(arg: ResourceAddData) => void>,
+  resourceChange: identity as Identity<(arg: ResourceChangeData) => void>,
+  resourceRemove: identity as Identity<(arg: ResourceRemoveData) => void>,
 
   // internal
   _resourceScrollRequest: identity as Identity<(resourceId: string) => void>

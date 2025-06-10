@@ -2,9 +2,9 @@ import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import {
   EventDisplayData,
-  EventClickArg,
-  DateSelectArg,
-  EventChangeArg,
+  EventClickData,
+  DateSelectData,
+  EventChangeData,
 } from "@fullcalendar/core";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -17,7 +17,7 @@ import { eventStoreContext } from "./event-store";
 export const DemoApp = observer(function DemoApp() {
   const eventStore = useContext(eventStoreContext);
 
-  function handleEventClick(clickInfo: EventClickArg) {
+  function handleEventClick(clickInfo: EventClickData) {
     if (
       confirm(
         `Are you sure you want to delete the event '${clickInfo.event.title}'`
@@ -27,14 +27,14 @@ export const DemoApp = observer(function DemoApp() {
     }
   }
 
-  function handleDateSelect(selectInfo: DateSelectArg) {
+  function handleDateSelect(selectInfo: DateSelectData) {
     let title = prompt("Please enter a new title for your event");
     const calendarApi = selectInfo.view.calendar;
     calendarApi.unselect(); // clear date selection
     eventStore.addEvent(selectInfo, title);
   }
 
-  function handleEventChange(changeInfo: EventChangeArg) {
+  function handleEventChange(changeInfo: EventChangeData) {
     eventStore.changeEvent(changeInfo);
   }
 
