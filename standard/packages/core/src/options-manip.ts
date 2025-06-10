@@ -4,7 +4,7 @@ import { getUnequalProps, mergeMaybePropsShallow, mergeMaybePropsDepth1 } from '
 
 type FuncishClassNameInput = ((data: any) => ClassNameInput) | ClassNameInput
 
-const classNamesRe = /(^c|C)lassNames$/
+const classNamesRe = /(^c|C)lass(Name)?$/
 const contentRe = /Content$/
 const lifecycleRe = /(DidMount|WillUnmount)$/
 const handlerRe = /^on[A-Z]/

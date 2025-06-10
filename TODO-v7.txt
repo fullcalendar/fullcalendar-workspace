@@ -8,16 +8,6 @@ Publishing:
 ASAP
 ----
 
-small todo:
-  accept objects for *Class inputs
-  have resourceIndent/resourceExpander OUTSIDE of resourceGroupHeaderInner / resourceCellInner
-  rename listDaySideFormat -> listDayAltFormat ?
-    (because theme might not decide to put it on the "side")
-    maybe not "alt" because ppl might think related to alt-text
-  ensure isMajor on resourceDayHeaders... this matters!
-    depends on resource-above-dates or opposites
-    HAVE THEMES leverage this. darker line
-
 high-level todo:
   backport tailwind classic theme -> normal classic theme
     address bugs:
@@ -63,6 +53,14 @@ BUGs later:
   bug: resource-timeline print-view with multiple columns; broken positioning
 
 after-beta todo:
+  accept objects for *Class inputs
+  have resourceIndent/resourceExpander OUTSIDE of resourceGroupHeaderInner / resourceCellInner
+  rename listDaySideFormat -> listDayAltFormat ?
+    (because theme might not decide to put it on the "side")
+    maybe not "alt" because ppl might think related to alt-text
+  ensure isMajor on resourceDayHeaders... this matters!
+    depends on resource-above-dates or opposites
+    HAVE THEMES leverage this. darker line
   ensure no-margin, no-padding on certain elements
   update manual theme tests for `icons` removal
     search for `icons: {`
