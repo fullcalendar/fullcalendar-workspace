@@ -16,7 +16,7 @@ import timelinePlugin from '@fullcalendar/timeline'
 import themePlugin from './theme.js'
 
 const enablePremium = false
-const enableDark = false
+const enableDark = true
 
 if (enableDark) {
   document.documentElement.classList.add('dark')

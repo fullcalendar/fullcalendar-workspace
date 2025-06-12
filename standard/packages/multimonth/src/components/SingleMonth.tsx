@@ -94,7 +94,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
           data-date={props.isoDateStr}
           className={joinClassNames(
             generateClassName(options.singleMonthClass, {
-              colCount: props.colCount,
+              colCount: props.colCount || 0,
             }),
             props.borderlessX && classNames.borderlessX,
             props.borderlessTop && classNames.borderlessTop,

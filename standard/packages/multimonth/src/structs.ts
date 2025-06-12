@@ -1,7 +1,7 @@
 import { MountData } from "@fullcalendar/core/internal";
 
 export interface SingleMonthData {
-  colCount: number | undefined // initially unknown
+  colCount: number // initially 0 (unknown)
 }
 
 export type SingleMonthMountData = MountData<SingleMonthData>

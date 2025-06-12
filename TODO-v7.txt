@@ -57,6 +57,7 @@ after-beta todo:
   bugs with isMajor special border on slots
     doesn't work on resourceTimelineThreeDays/Week/Month (am I not configuring correctly)
     darker border is incorrectly on some vresource header cells
+  classic-theme: buttons in dark-mode should have colors inverted: selected should be lighter than non-selected
   [rename] CustomContentGenerator -> ContentGenerator
   [rename?] is EventDisplayData the best name when there's interaction-like props like isSelected?
   accept objects for *Class inputs
