@@ -211,7 +211,10 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
               />
             </div>
             <div
-              className={generateClassName(options.dayCellBottomClass, renderProps)}
+              className={joinClassNames(
+                classNames.rel, // puts it above bg-fills
+                generateClassName(options.dayCellBottomClass, renderProps),
+              )}
             />
           </Fragment>
         )}

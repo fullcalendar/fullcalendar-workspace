@@ -269,7 +269,7 @@ export default createPlugin({
     columnEventColorClass: (data) => [
       data.isStart && 'rounded-t-sm',
       data.isEnd && 'rounded-b-sm',
-      data.level && 'outline outline-(--fc-canvas-color)',
+      (data.level || data.isDragging) && 'outline outline-(--fc-canvas-color)',
     ],
     columnEventInnerClass: (data) => [
       'p-px',
