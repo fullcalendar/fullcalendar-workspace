@@ -1,7 +1,6 @@
 import { guid } from './util/misc.js'
 import { PluginDefInput, PluginDef, PluginHooks } from './plugin-system-struct.js'
 import { isArraysEqual } from './util/array.js'
-import { CalendarOptions } from './options.js'
 import { mergeRawOptions } from './options-manip.js'
 import { ViewConfigInputHash } from './structs/view-config.js'
 
@@ -124,16 +123,6 @@ export function buildBuildPluginHooks() { // memoizes
     currentGlobalDefs = globalDefs
     return currentHooks
   }
-}
-
-export function extractPluginOptionsDefaults(pluginDefs: PluginDef[] = []): CalendarOptions[] {
-  const res: CalendarOptions[] = []
-
-  for (const pluginDef of pluginDefs) {
-    res.push(...pluginDef.optionDefaults)
-  }
-
-  return res
 }
 
 function combineHooks(hooks0: PluginHooks, hooks1: PluginHooks): PluginHooks {

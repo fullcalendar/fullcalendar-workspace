@@ -39,7 +39,6 @@ export interface CalendarOptionsData {
   availableRawLocales: any
   dateEnv: DateEnv
   pluginHooks: PluginHooks
-  pluginOptionDefaults: CalendarOptions[]
   viewSpecs: ViewSpecHash
 }
 
