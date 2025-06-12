@@ -53,7 +53,6 @@ BUGs later:
   bug: resource-timeline print-view with multiple columns; broken positioning
 
 after-beta todo:
-  confusion between isCompact and isSpacious. only have one
   bug: why when resourceGroupHeaderClass bg color removed, we don't see vertical column lines underneath?
   [rename] CustomContentGenerator -> ContentGenerator
   [rename?] is EventDisplayData the best name when there's interaction-like props like isSelected?
@@ -445,12 +444,6 @@ punt: rethink: isCompact vs isNarrow -- confusion for timegrid events
 Notes
 -----
 
-nice dark-view calendars:
-  https://demo.fulleventcalendar.com/
-  https://big-calendar.vercel.app/month-view
-  https://www.kibo-ui.com/components/calendar
-  https://gajjabko-calendar.pages.dev/
-  https://originui.com/event-calendar
 isMajor/isMinor API additions:
   isMajor
     + slotLane
