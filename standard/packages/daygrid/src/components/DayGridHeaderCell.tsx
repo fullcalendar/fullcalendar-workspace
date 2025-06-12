@@ -40,7 +40,6 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
           dataConfig.className,
           classNames.tight,
           classNames.flexCol,
-          classNames.alignCenter,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           !props.isSticky && classNames.crop,
           props.colWidth == null && classNames.liquid,

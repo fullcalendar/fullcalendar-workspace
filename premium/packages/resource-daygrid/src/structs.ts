@@ -7,6 +7,7 @@ export interface ResourceDayHeaderData extends Partial<DateMeta> {
   resource: ResourceApi
   text: string
   view: ViewApi
+  isDisabled: boolean
   isCompact: boolean
   // TODO: what about isMajor?
 }

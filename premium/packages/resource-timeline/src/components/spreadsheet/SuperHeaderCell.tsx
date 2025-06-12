@@ -56,7 +56,6 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
               generateClassName(renderHooks.headerInnerClass, renderProps),
               classNames.rigid,
               classNames.flexRow,
-              classNames.alignCenter,
             )}
           >
             {this.props.indent && (

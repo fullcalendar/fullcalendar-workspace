@@ -160,6 +160,7 @@ function buildResourceDataConfigs(
       key: (dateMarker ? dateMarker.toUTCString() + ':' : '') + resource.id,
       dateMarker,
       renderProps: {
+        isDisabled: false,
         ...dateMeta,
         resource: resourceApi,
         isMajor: isMajorMod != null && !(i % isMajorMod),

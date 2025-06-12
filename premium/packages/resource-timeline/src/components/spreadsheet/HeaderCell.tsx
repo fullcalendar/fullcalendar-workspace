@@ -66,7 +66,6 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
                 generateClassName(colSpec.headerInnerClass, renderProps),
                 classNames.rigid,
                 classNames.flexRow,
-                classNames.alignCenter,
               )}
             >
               {this.props.indent && (

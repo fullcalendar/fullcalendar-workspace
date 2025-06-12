@@ -76,7 +76,6 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
               generateClassName(colSpec.cellInnerClass, renderProps),
               classNames.rigid,
               classNames.flexRow,
-              classNames.alignCenter,
             )}
           >
             {colSpec.isMain && (

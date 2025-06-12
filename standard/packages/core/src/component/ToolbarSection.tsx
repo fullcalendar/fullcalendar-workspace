@@ -33,7 +33,6 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
           generateClassName(options.toolbarSectionClass, { name: props.name }),
           classNames.flexRow,
           classNames.noShrink,
-          classNames.alignCenter,
         ),
       },
       ...children, // spread, so no React key errors
@@ -156,9 +155,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
         'aria-label': (isOnlyButtons && isOnlyView) ? options.viewChangeHint : undefined,
         className: joinArrayishClassNames(
           classNames.flexRow,
-          isOnlyButtons
-            ? options.buttonGroupClass
-            : classNames.alignCenter,
+          isOnlyButtons && options.buttonGroupClass,
         ),
       }, ...children)
     }

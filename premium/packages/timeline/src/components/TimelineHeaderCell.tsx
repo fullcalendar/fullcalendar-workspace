@@ -76,6 +76,9 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
           classNames.tight,
           classNames.flexCol,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
+          // an align-items style value is needed to shrinkwrap the inner item's width, for measurement
+          // it's also useful for the core lib (not the theme) to own this alignment because we do
+          // special things for the sticky center-alignment (see below)
           props.isCentered ? classNames.alignCenter : classNames.alignStart,
           classNames.internalTimelineSlot,
         )}

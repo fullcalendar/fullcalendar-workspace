@@ -87,7 +87,6 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
                 generateClassName(spec.labelInnerClass, renderProps),
                 classNames.rigid,
                 classNames.flexRow,
-                classNames.alignCenter,
               )}
             >
               <ResourceIndent level={1} indentWidth={props.indentWidth}>

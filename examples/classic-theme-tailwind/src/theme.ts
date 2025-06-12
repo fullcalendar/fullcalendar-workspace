@@ -87,12 +87,21 @@ const floatingWeekNumberClasses: CalendarOptions = {
   ],
 }
 
-function getSlotClasses(data: { isMinor: boolean }) {
-  return [
-    borderClass,
-    data.isMinor && 'border-dotted',
-  ]
-}
+const getDayHeaderClasses = (data: { isDisabled: boolean }) => [
+  'items-center',
+  borderClass,
+  data.isDisabled && neutralBgClass,
+]
+
+const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
+  cellPaddingClass,
+  data.isCompact && xxsTextClass,
+]
+
+const getSlotClasses = (data: { isMinor: boolean }) => [
+  borderClass,
+  data.isMinor && 'border-dotted',
+]
 
 // Plugin
 // -------------------------------------------------------------------------------------------------
@@ -100,14 +109,17 @@ function getSlotClasses(data: { isMinor: boolean }) {
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
+    /*
+    rethink this. who uses this besides events?
+    */
     className: '[--fc-event-color:#3788d8] [--fc-event-contrast-color:#fff] gap-5',
 
     toolbarClass: (data) => [
-      'gap-3',
+      'items-center gap-3',
       data.borderlessX && 'px-3', // space from edge
     ],
     toolbarSectionClass: (data) => [
-      'gap-3',
+      'items-center gap-3',
       data.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto', // nicer wrapping
     ],
     toolbarTitleClass: 'text-xl md:text-2xl font-bold',
@@ -142,7 +154,7 @@ export default createPlugin({
       },
     },
 
-    buttonGroupClass: 'isolate',
+    buttonGroupClass: 'items-center isolate',
     buttonClass: (data) => [
       'inline-flex items-center px-3 py-2 border-x',
       'focus:outline-3 outline-slate-600/50',
@@ -287,22 +299,13 @@ export default createPlugin({
     // ---------------------------------------------------------------------------------------------
 
     dayHeaderRowClass: borderClass,
-    dayHeaderClass: (data) => [
-      borderClass,
-      data.isDisabled && neutralBgClass,
-    ],
-    dayHeaderInnerClass: (data) => [
-      cellPaddingClass,
-      data.isCompact && xxsTextClass,
-    ],
+    dayHeaderClass: getDayHeaderClasses,
+    dayHeaderInnerClass: getDayHeaderInnerClasses,
     dayHeaderDividerClass: ['border-t', borderColorClass],
 
     // for resource views only
-    resourceDayHeaderClass: borderClass,
-    resourceDayHeaderInnerClass: (data) => [
-      cellPaddingClass,
-      data.isCompact && xxsTextClass,
-    ],
+    resourceDayHeaderClass: getDayHeaderClasses,
+    resourceDayHeaderInnerClass: getDayHeaderInnerClasses,
 
     // Day-Cells (DayGrid & MultiMonth & TimeGrid "all-day" section)
     // ---------------------------------------------------------------------------------------------
@@ -376,7 +379,7 @@ export default createPlugin({
     resourceAreaDividerClass: `border-x ${borderColorClass} pl-0.5 ${neutralBgClass}`,
 
     resourceAreaRowClass: borderClass,
-    resourceIndentClass: 'me-1 relative -top-px', // HACK: relative 1px shift up
+    resourceIndentClass: 'self-center me-1 relative -top-px', // HACK: relative 1px shift up
     resourceExpanderClass: 'opacity-65',
     resourceExpanderContent: (data) => data.isExpanded
       ? svgIcons.minusSquare('w-[1em] h-[1em]')

@@ -29,7 +29,6 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
           classNames.flexRow,
           classNames.flexWrap,
           classNames.justifyBetween,
-          classNames.alignCenter,
         )}
       >
         {this.renderSection('start', sectionWidgets.start)}
