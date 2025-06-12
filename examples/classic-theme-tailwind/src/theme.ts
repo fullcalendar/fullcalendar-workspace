@@ -109,10 +109,12 @@ const getSlotClasses = (data: { isMinor: boolean }) => [
 export default createPlugin({
   name: '<%= pkgName %>',
   optionDefaults: {
-    /*
-    rethink this. who uses this besides events?
-    */
-    className: '[--fc-event-color:#3788d8] [--fc-event-contrast-color:#fff] gap-5',
+    className: 'gap-5',
+
+    // default event colors
+    eventColor: '#3788d8',
+    eventContrastColor: '#fff',
+    backgroundEventColor: '#2bae16',
 
     toolbarClass: (data) => [
       'items-center gap-3',

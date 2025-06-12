@@ -30,7 +30,7 @@ function buildResourceEventUis(resourceStore: ResourceHash) {
 
 function injectResourceEventUis(eventUiBases: EventUiHash, eventDefs: EventDefHash, resourceEventUis: EventUiHash) {
   return mapHash(eventUiBases, (eventUi, defId) => {
-    if (defId) { // not the '' key
+    if (defId && defId !== '__') { // not the '' or '__' keys
       return injectResourceEventUi(eventUi, eventDefs[defId], resourceEventUis)
     }
     return eventUi

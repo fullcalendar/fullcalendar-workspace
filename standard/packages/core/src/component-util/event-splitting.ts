@@ -111,7 +111,7 @@ export abstract class Splitter<PropsType extends SplittableProps = SplittablePro
     let splitHashes: { [key: string]: EventUiHash } = {}
 
     for (let defId in eventUiBases) {
-      if (defId) { // not the '' key
+      if (defId && defId !== '__') { // not the '' or '__' keys
         for (let key of defKeys[defId]) {
           if (!splitHashes[key]) {
             splitHashes[key] = {}

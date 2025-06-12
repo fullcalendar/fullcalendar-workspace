@@ -86,7 +86,7 @@ function combineTwoEventUis(item0: EventUi, item1: EventUi): EventUi { // hash1 
     overlap: typeof item1.overlap === 'boolean' ? item1.overlap : item0.overlap,
     allows: item0.allows.concat(item1.allows),
     color: item1.color || item0.color,
-    contrastColor: item1.color ? item1.contrastColor : item0.contrastColor,
+    contrastColor: item1.contrastColor || item0.contrastColor,
     className: joinArrayishClassNames(item0.className, item1.className),
   }
 }

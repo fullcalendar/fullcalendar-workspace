@@ -210,6 +210,8 @@ export const BASE_OPTION_REFINERS = {
   eventWillUnmount: identity as Identity<WillUnmountHandler<EventMountData>>,
   eventContent: identity as Identity<CustomContentGenerator<EventDisplayData>>,
 
+  backgroundEventColor: String,
+
   eventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   eventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   eventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,

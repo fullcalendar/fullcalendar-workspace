@@ -256,9 +256,9 @@ export class CalendarDataManager {
         (state.renderableEventStore || eventStore) : // try from previous state
         eventStore
 
-    let { eventUiSingleBase, selectionConfig } = this.buildViewUiProps(calendarContext) // will memoize obj
+    let { eventUiSingleBase, eventUiBackgroundBase, selectionConfig } = this.buildViewUiProps(calendarContext) // will memoize obj
     let eventUiBySource = this.buildEventUiBySource(eventSources)
-    let eventUiBases = this.buildEventUiBases(renderableEventStore.defs, eventUiSingleBase, eventUiBySource)
+    let eventUiBases = this.buildEventUiBases(renderableEventStore.defs, eventUiSingleBase, eventUiBackgroundBase, eventUiBySource)
 
     let newState: CalendarDataManagerState = {
       dynamicOptionOverrides,
@@ -638,8 +638,19 @@ function buildEventUiBySource(eventSources: EventSourceHash): EventUiHash {
   return mapHash(eventSources, (eventSource) => eventSource.ui)
 }
 
-function buildEventUiBases(eventDefs: EventDefHash, eventUiSingleBase: EventUi, eventUiBySource: EventUiHash) {
-  let eventUiBases: EventUiHash = { '': eventUiSingleBase }
+/*
+The result of this is processed by compileEventUi
+*/
+function buildEventUiBases(
+  eventDefs: EventDefHash,
+  eventUiSingleBase: EventUi,
+  eventUiBackgroundBase: EventUi,
+  eventUiBySource: EventUiHash,
+) {
+  let eventUiBases: EventUiHash = {
+    '': eventUiSingleBase,
+    '__': eventUiBackgroundBase, // HACK
+  }
 
   for (let defId in eventDefs) {
     let def = eventDefs[defId]
@@ -653,7 +664,7 @@ function buildEventUiBases(eventDefs: EventDefHash, eventUiSingleBase: EventUi, 
 }
 
 function buildViewUiProps(calendarContext: CalendarContext) {
-  let { options } = calendarContext
+  const { options } = calendarContext
 
   return {
     eventUiSingleBase: createEventUi(
@@ -668,6 +679,12 @@ function buildViewUiProps(calendarContext: CalendarContext) {
         color: options.eventColor,
         contrastColor: options.eventContrastColor,
         // className: options.eventClass // render hook will handle this
+      },
+      calendarContext,
+    ),
+    eventUiBackgroundBase: createEventUi(
+      {
+        color: options.backgroundEventColor,
       },
       calendarContext,
     ),

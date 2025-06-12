@@ -152,15 +152,35 @@ export function compileEventUis(eventDefs: EventDefHash, eventUiBases: EventUiHa
   return mapHash(eventDefs, (eventDef: EventDef) => compileEventUi(eventDef, eventUiBases))
 }
 
+/*
+I wish we didn't need to deal with inheritance of all properties all together
+I wish you could resolve just eventDisplay first, then the others
+*/
 export function compileEventUi(eventDef: EventDef, eventUiBases: EventUiHash) {
-  let uis = []
+  const uis: EventUi[] = []
+  const universalBase = eventUiBases['']
+  const defBase = eventUiBases[eventDef.defId]
 
-  if (eventUiBases['']) {
-    uis.push(eventUiBases[''])
+  if (universalBase) {
+    uis.push(universalBase)
   }
 
-  if (eventUiBases[eventDef.defId]) {
-    uis.push(eventUiBases[eventDef.defId])
+  // HACK for background-base
+  const universalDisplay = universalBase?.display
+  const defDisplay = defBase?.display
+  const specificDisplay = eventDef.ui.display
+  const eventDisplay =
+    universalDisplay && universalDisplay !== 'auto'
+      ? universalBase
+      : defDisplay && defDisplay !== 'auto'
+        ? defDisplay
+        : specificDisplay
+  if (eventDisplay === 'background' && eventUiBases['__']) {
+    uis.push(eventUiBases['__'])
+  }
+
+  if (defBase) {
+    uis.push(defBase)
   }
 
   uis.push(eventDef.ui)
