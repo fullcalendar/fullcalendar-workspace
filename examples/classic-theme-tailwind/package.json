@@ -18,6 +18,7 @@
     "@fullcalendar/resource": "workspace:*",
     "@fullcalendar/resource-daygrid": "workspace:*",
     "@fullcalendar/resource-timeline": "workspace:*",
+    "@fullcalendar/resource-timegrid": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
     "@fullcalendar/timegrid": "workspace:*",
     "@fullcalendar/timeline": "workspace:*",

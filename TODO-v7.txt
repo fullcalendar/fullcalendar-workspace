@@ -57,7 +57,6 @@ after-beta todo:
   [rename] CustomContentGenerator -> ContentGenerator
   [rename?] is EventDisplayData the best name when there's interaction-like props like isSelected?
   accept objects for *Class inputs
-  have resourceIndent/resourceExpander OUTSIDE of resourceGroupHeaderInner / resourceCellInner
   rename listDaySideFormat -> listDayAltFormat ?
     (because theme might not decide to put it on the "side")
     maybe not "alt" because ppl might think related to alt-text
@@ -547,3 +546,9 @@ note: bg-fill / bg-event background event z-indexes
       CANNOT: make wrapper <div> and put cell + fills inside. because events live within the cell
       and will run into react-native-esque problems again!
       WE REALLY just need to do trial-and-error in react-native to see what's possible
+have resourceIndent/resourceExpander OUTSIDE of resourceGroupHeaderInner / resourceCellInner
+  ACTUALLY NO,
+    it's nice to have the inner el be the true padding, padding that pushes the expander too
+    it's nice to have the inner be used for total height watching, including expander (might be really tall too)
+    it we put indent+inner as row-siblings, it's impossible to put className.rigid on inner to preserve
+      its natural height because rigidity only goes in flex direction
