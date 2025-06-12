@@ -374,10 +374,21 @@ which can't rely on dynamic height detection after print-flag activated.
   justify-content: flex-end !important;
 }
 
+/*
+Okay to use this toolbar flex-row vertical alignment
+Okay to use this for resource-row expander vertical alignment
+Though unfortunate, core also uses to horizontally align header cells it knows are days
+Avoid for all else
+Make part of theme?
+*/
 .alignCenter {
   align-items: center !important;
 }
 
+/*
+Though unfortunate, core uses to horizontally align header cells it knows are times
+Make part of theme?
+*/
 .alignStart {
   align-items: flex-start !important;
 }
