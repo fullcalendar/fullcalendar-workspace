@@ -158,25 +158,11 @@ I wish you could resolve just eventDisplay first, then the others
 */
 export function compileEventUi(eventDef: EventDef, eventUiBases: EventUiHash) {
   const uis: EventUi[] = []
-  const universalBase = eventUiBases['']
+  const fallbackBase = eventUiBases['']
   const defBase = eventUiBases[eventDef.defId]
 
-  if (universalBase) {
-    uis.push(universalBase)
-  }
-
-  // HACK for background-base
-  const universalDisplay = universalBase?.display
-  const defDisplay = defBase?.display
-  const specificDisplay = eventDef.ui.display
-  const eventDisplay =
-    universalDisplay && universalDisplay !== 'auto'
-      ? universalBase
-      : defDisplay && defDisplay !== 'auto'
-        ? defDisplay
-        : specificDisplay
-  if (eventDisplay === 'background' && eventUiBases['__']) {
-    uis.push(eventUiBases['__'])
+  if (fallbackBase) {
+    uis.push(fallbackBase)
   }
 
   if (defBase) {

@@ -256,9 +256,9 @@ export class CalendarDataManager {
         (state.renderableEventStore || eventStore) : // try from previous state
         eventStore
 
-    let { eventUiSingleBase, eventUiBackgroundBase, selectionConfig } = this.buildViewUiProps(calendarContext) // will memoize obj
+    let { eventUiSingleBase, selectionConfig } = this.buildViewUiProps(calendarContext) // will memoize obj
     let eventUiBySource = this.buildEventUiBySource(eventSources)
-    let eventUiBases = this.buildEventUiBases(renderableEventStore.defs, eventUiSingleBase, eventUiBackgroundBase, eventUiBySource)
+    let eventUiBases = this.buildEventUiBases(renderableEventStore.defs, eventUiSingleBase, eventUiBySource)
 
     let newState: CalendarDataManagerState = {
       dynamicOptionOverrides,
@@ -644,12 +644,10 @@ The result of this is processed by compileEventUi
 function buildEventUiBases(
   eventDefs: EventDefHash,
   eventUiSingleBase: EventUi,
-  eventUiBackgroundBase: EventUi,
   eventUiBySource: EventUiHash,
 ) {
   let eventUiBases: EventUiHash = {
-    '': eventUiSingleBase,
-    '__': eventUiBackgroundBase, // HACK
+    '': eventUiSingleBase, // fallback
   }
 
   for (let defId in eventDefs) {
@@ -676,15 +674,9 @@ function buildViewUiProps(calendarContext: CalendarContext) {
         constraint: options.eventConstraint,
         overlap: typeof options.eventOverlap === 'boolean' ? options.eventOverlap : undefined,
         allow: options.eventAllow,
-        color: options.eventColor,
-        contrastColor: options.eventContrastColor,
+        // color: options.eventColor, // StandardEvent/BgEvent will handle this
+        // contrastColor: options.eventContrastColor, // StandardEvent/BgEvent will handle this
         // className: options.eventClass // render hook will handle this
-      },
-      calendarContext,
-    ),
-    eventUiBackgroundBase: createEventUi(
-      {
-        color: options.backgroundEventColor,
       },
       calendarContext,
     ),
