@@ -18,6 +18,7 @@ const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
 const borderColorClass = 'border-gray-300 dark:border-gray-800'
 const borderClass = `border ${borderColorClass}` // all sides
+const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
 
 const cellPaddingClass = 'px-1 py-0.5'
 const listItemPaddingClass = 'px-3 py-2' // list-day-header and list-item-event
@@ -87,9 +88,9 @@ const floatingWeekNumberClasses: CalendarOptions = {
   ],
 }
 
-const getDayHeaderClasses = (data: { isDisabled: boolean }) => [
+const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean }) => [
   'items-center',
-  borderClass,
+  data.isMajor ? majorBorderClass : borderClass,
   data.isDisabled && neutralBgClass,
 ]
 
@@ -313,7 +314,7 @@ export default createPlugin({
 
     dayRowClass: borderClass,
     dayCellClass: (data) => [
-      borderClass,
+      data.isMajor ? majorBorderClass : borderClass,
       data.isToday && todayBgClass,
       data.isDisabled && neutralBgClass,
     ],
@@ -352,7 +353,7 @@ export default createPlugin({
     allDayDividerClass: `border-y ${borderColorClass} pb-0.5 ${neutralBgClass}`,
 
     dayLaneClass: (data) => [
-      borderClass,
+      data.isMajor ? majorBorderClass : borderClass,
       data.isToday && todayBgClass,
       data.isDisabled && neutralBgClass,
     ],
