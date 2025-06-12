@@ -111,10 +111,9 @@ export default createPlugin({
   optionDefaults: {
     className: 'gap-5',
 
-    // default event colors
-    eventColor: '#3788d8',
-    eventContrastColor: '#fff',
-    backgroundEventColor: '#2bae16',
+    eventColor: 'var(--color-blue-500)',
+    eventContrastColor: 'var(--color-white)',
+    backgroundEventColor: 'var(--color-green-500)',
 
     toolbarClass: (data) => [
       'items-center gap-3',
