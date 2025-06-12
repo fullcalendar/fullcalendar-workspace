@@ -54,6 +54,9 @@ BUGs later:
 
 after-beta todo:
   bug: why when resourceGroupHeaderClass bg color removed, we don't see vertical column lines underneath?
+  bugs with isMajor special border on slots
+    doesn't work on resourceTimelineThreeDays/Week/Month (am I not configuring correctly)
+    darker border is incorrectly on some vresource header cells
   [rename] CustomContentGenerator -> ContentGenerator
   [rename?] is EventDisplayData the best name when there's interaction-like props like isSelected?
   accept objects for *Class inputs
@@ -435,10 +438,14 @@ punt: daygrid cells' event h-positioning (uses percentage) conflicts with flexbo
 punt: move cell border to flex-end
   better for infinite horiztonal scroll later
   rows have it on bottom because better for print, breaking to second page
+  ACTUALLY NOOO... the isMajor darker border depends on border at flex-start
 punt: instead of position:relative/absolute an z-index:0,
   use isolation:isolate (well supported)
 punt: in toolbars, remove left/right keys. force start/end keys (then add to changelog)
 punt: rethink: isCompact vs isNarrow -- confusion for timegrid events
+punt: sticky header in vertical resource view, horizontal scrolling. new feature
+  do in CORE, not in theme. analagous to vertically-sticky resource cells
+  if it were the theme, we'd need to pass a renderProp, and hard to know what the name would be
 
 Notes
 -----

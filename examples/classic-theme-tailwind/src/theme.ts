@@ -16,9 +16,9 @@ const neutralBgClass = 'bg-gray-500/10'
 const todayBgClass = 'bg-yellow-400/15 dark:bg-yellow-200/10'
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
+const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
 const borderColorClass = 'border-gray-300 dark:border-gray-800'
 const borderClass = `border ${borderColorClass}` // all sides
-const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
 
 const cellPaddingClass = 'px-1 py-0.5'
 const listItemPaddingClass = 'px-3 py-2' // list-day-header and list-item-event
@@ -41,7 +41,7 @@ const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
 const continuationArrowClass = 'relative z-10 mx-px border-y-[5px] border-y-transparent opacity-50'
 
-// applies to multiple views: DayGrid, TimeGrid ALL-DAY, MultiMonth
+// applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
 const dayGridClasses: CalendarOptions = {
   listItemEventClass: [dayGridItemClass, 'p-px'],
   listItemEventColorClass: (data) => [
