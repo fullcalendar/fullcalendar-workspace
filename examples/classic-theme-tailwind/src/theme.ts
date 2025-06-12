@@ -9,7 +9,7 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/resource-daygrid'
 import {} from '@fullcalendar/resource-timeline'
 
-const xxsTextClass = 'text-[0.65rem]/[1.25]'
+const xxsTextClass = 'text-[0.7rem]/[1.25]'
 const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
 
 const neutralBgClass = 'bg-gray-500/10'
@@ -66,7 +66,7 @@ const dayGridClasses: CalendarOptions = {
   rowMoreLinkClass: (data) => [
     dayGridItemClass,
     data.isCompact
-      ? 'border border-(--fc-event-color)' // looks like bordered event
+      ? 'border border-blue-500' // looks like bordered event
       : 'self-start p-px',
     'hover:bg-gray-500/20', // matches list-item hover
   ],
