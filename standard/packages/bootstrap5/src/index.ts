@@ -33,7 +33,6 @@ export default createPlugin({
       prevYear: { classNames: (data) => `bi-chevron-double-${startSide(data.direction)}` },
       nextYear: { classNames: (data) => `bi-chevron-double-${endSide(data.direction)}` },
     },
-    dayCompactWidth: 75,
     eventClass: (data) => [
       data.event.display === 'background' && 'fc-bg-event',
       'fc-event',

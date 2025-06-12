@@ -1,5 +1,5 @@
 import { WeekNumberDisplayData } from '@fullcalendar/core'
-import { BaseComponent, ContentContainer, DateProfile, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, joinArrayishClassNames, joinClassNames, renderText, setRef, watchSize } from "@fullcalendar/core/internal"
+import { BaseComponent, ContentContainer, DateProfile, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, joinClassNames, renderText, setRef, watchSize, generateClassName } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 
@@ -44,6 +44,14 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
     )
     let weekDateZoned = dateEnv.toDate(weekDateMarker)
 
+    const weekNumberRenderProps = {
+      num: weekNum,
+      text: weekText,
+      textParts: weekTextParts,
+      date: weekDateZoned,
+      isCompact: props.isCompact,
+    }
+
     return (
       <ContentContainer<WeekNumberDisplayData>
         tag='div'
@@ -59,13 +67,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
         style={{
           width: props.width,
         }}
-        renderProps={{
-          num: weekNum,
-          text: weekText,
-          textParts: weekTextParts,
-          date: weekDateZoned,
-          isCompact: props.isCompact,
-        }}
+        renderProps={weekNumberRenderProps}
         generatorName="weekNumberContent"
         customGenerator={options.weekNumberContent}
         defaultGenerator={renderText}
@@ -81,8 +83,8 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
                 ? buildNavLinkAttrs(context, range.start, 'week', fullDateStr)
                 : { 'aria-label': fullDateStr }
             }
-            className={joinArrayishClassNames(
-              options.weekNumberInnerClass,
+            className={joinClassNames(
+              generateClassName(options.weekNumberInnerClass, weekNumberRenderProps),
               classNames.rigid,
             )}
             elRef={this.innerElRef}

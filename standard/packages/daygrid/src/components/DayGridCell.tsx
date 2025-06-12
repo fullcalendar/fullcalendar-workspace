@@ -159,7 +159,10 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
         {(InnerContent) => (
           <Fragment>
             <div
-              className={generateClassName(options.dayCellTopClass, renderProps)}
+              className={joinClassNames(
+                classNames.rel, // puts it above bg-fills
+                generateClassName(options.dayCellTopClass, renderProps),
+              )}
               // TODO: prevent margins!? for measurements
             >
               {props.showDayNumber && (

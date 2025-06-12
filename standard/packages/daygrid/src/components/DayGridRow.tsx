@@ -24,6 +24,7 @@ import {
   ContentContainer,
   StandardEvent,
   memoize,
+  generateClassName,
 } from '@fullcalendar/core/internal'
 import {
   VNode,
@@ -137,6 +138,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const isNavLink = options.navLinks
     const fullWeekStr = buildDateStr(context, weekDateMarker, 'week')
 
+    const weekNumberRenderProps = this.buildWeekNumberRenderProps(weekDateMarker, context, props.cellIsCompact)
+
     return (
       <div
         role={props.role as any /* !!! */}
@@ -162,7 +165,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         {props.showWeekNumbers && (
           <ContentContainer<WeekNumberDisplayData>
             tag='div'
-            renderProps={this.buildWeekNumberRenderProps(weekDateMarker, context, props.cellIsCompact)}
+            renderProps={weekNumberRenderProps}
             generatorName="weekNumberContent"
             customGenerator={options.weekNumberContent}
             defaultGenerator={renderText}
@@ -182,7 +185,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
                   'role': undefined, // HACK: a 'link' role can't be child of 'row' role
                   'aria-hidden': true, // HACK: never part of a11y tree because row already has label and role not allowed
                 }}
-                className={joinArrayishClassNames(options.weekNumberInnerClass)}
+                className={generateClassName(options.weekNumberInnerClass, weekNumberRenderProps)}
               />
             )}
           </ContentContainer>

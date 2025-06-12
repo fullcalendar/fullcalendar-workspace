@@ -53,6 +53,10 @@ document.addEventListener('DOMContentLoaded', function() {
         multiMonthPlugin,
         themePlugin,
       ],
+
+      // displayEventTime: true,
+      // eventDisplay: 'block',
+
       // dayMinWidth: 200,
       eventInteractive: true,
       initialDate: '2023-01-12',
@@ -134,6 +138,9 @@ document.addEventListener('DOMContentLoaded', function() {
       // borderlessX: true,
       // borderlessTop: true,
       // borderlessBottom: true,
+
+      // displayEventTime: true,
+      // eventOverlap: false,
 
       plugins: [
         adaptivePlugin,

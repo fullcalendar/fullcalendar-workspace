@@ -53,6 +53,11 @@ BUGs later:
   bug: resource-timeline print-view with multiple columns; broken positioning
 
 after-beta todo:
+  make default bg-event color different than block-event (currently both #3788d8)
+  confusion between isCompact and isSpacious. only have one
+  bug: why when resourceGroupHeaderClass bg color removed, we don't see vertical column lines underneath?
+  [rename] CustomContentGenerator -> ContentGenerator
+  [rename?] is EventDisplayData the best name when there's interaction-like props like isSelected?
   accept objects for *Class inputs
   have resourceIndent/resourceExpander OUTSIDE of resourceGroupHeaderInner / resourceCellInner
   rename listDaySideFormat -> listDayAltFormat ?
@@ -155,6 +160,10 @@ changelog: querying className now returns a non-normalized ORIGINAL value:
   Event::className (previously classNames <-- KILLED)
   Resource::eventClass (previously eventClassNames <-- KILLED)
 changelog: Event::toPlainObject/toJSON returns a 'className' string instead of 'classNames' array
+changelog: dayLaneInnerClass arg.isSimple means whether it's simple PRINT-view for firefox
+changelog: improved responsiveness when really narrow... font size adjusts
+changelog: big styling change... separate element for by event
+changelog: for porting custom themes, recomment ppl start with the "modern" theme
 
 Docs
 ----
@@ -267,6 +276,7 @@ automated-test: button hint arguments of all kinds
 automated-test: write tests with moment/luxon textParts
 cleanup responive.html demos since flex-wrap in toolbar became the default
 automated-tests: ensure both className+class for "instead of accepting classNames" items above
+in timeline, eventOverlap:true should cause chunkier events (in classic theme at least)
 
 Freshdesk/GH-issues
 -------------------

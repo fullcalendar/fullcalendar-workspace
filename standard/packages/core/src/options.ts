@@ -137,7 +137,7 @@ export const BASE_OPTION_REFINERS = {
   weekNumberCalculation: identity as Identity<WeekNumberCalculation>,
   weekNumbers: Boolean,
   weekNumberClass: identity as Identity<ClassNameGenerator<WeekNumberDisplayData>>,
-  weekNumberInnerClass: identity as Identity<ClassNameInput>, // TODO: give the data?
+  weekNumberInnerClass: identity as Identity<ClassNameGenerator<WeekNumberDisplayData>>,
   weekNumberContent: identity as Identity<CustomContentGenerator<WeekNumberDisplayData>>,
   weekNumberDidMount: identity as Identity<DidMountHandler<WeekNumberMountData>>,
   weekNumberWillUnmount: identity as Identity<WillUnmountHandler<WeekNumberMountData>>,
@@ -456,7 +456,7 @@ export const BASE_OPTION_DEFAULTS = {
   dayCellFormat: { day: 'numeric' },
   headingLevel: 2, // like H2
   outerBorder: true,
-  dayCompactWidth: 0,
+  dayCompactWidth: 75,
   eventOverlap: true,
 }
 
