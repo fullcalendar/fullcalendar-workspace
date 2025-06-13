@@ -34,7 +34,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ~13.3.10
-        version: 13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.97.0))(karma@6.3.20)(ng-packagr@13.3.1(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.8.1)(typescript@4.6.4))(typescript@4.6.4)
+        version: 13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.76.1))(karma@6.3.20)(ng-packagr@13.3.1(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.8.1)(typescript@4.6.4))(typescript@4.6.4)
       '@angular/animations':
         specifier: ~13.3.0
         version: 13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))
@@ -339,7 +339,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ~13.3.10
-        version: 13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.76.1))(karma@6.3.20)(ng-packagr@13.3.1(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.8.1)(typescript@4.6.4))(typescript@4.6.4)
+        version: 13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.97.0))(karma@6.3.20)(ng-packagr@13.3.1(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.8.1)(typescript@4.6.4))(typescript@4.6.4)
       '@angular/cli':
         specifier: ~13.3.10
         version: 13.3.11(chokidar@3.6.0)
@@ -1243,66 +1243,6 @@ importers:
       webpack-cli:
         specifier: ^4.1.0
         version: 4.10.0(webpack@5.97.0)
-
-  examples/classic-theme-tailwind:
-    dependencies:
-      '@fullcalendar/adaptive':
-        specifier: workspace:*
-        version: link:../../premium/packages/adaptive/dist
-      '@fullcalendar/core':
-        specifier: workspace:*
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:*
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:*
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:*
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/multimonth':
-        specifier: workspace:*
-        version: link:../../standard/packages/multimonth/dist
-      '@fullcalendar/resource':
-        specifier: workspace:*
-        version: link:../../premium/packages/resource/dist
-      '@fullcalendar/resource-daygrid':
-        specifier: workspace:*
-        version: link:../../premium/packages/resource-daygrid/dist
-      '@fullcalendar/resource-timegrid':
-        specifier: workspace:*
-        version: link:../../premium/packages/resource-timegrid/dist
-      '@fullcalendar/resource-timeline':
-        specifier: workspace:*
-        version: link:../../premium/packages/resource-timeline/dist
-      '@fullcalendar/scrollgrid':
-        specifier: workspace:*
-        version: link:../../premium/packages/scrollgrid/dist
-      '@fullcalendar/timegrid':
-        specifier: workspace:*
-        version: link:../../standard/packages/timegrid/dist
-      '@fullcalendar/timeline':
-        specifier: workspace:*
-        version: link:../../premium/packages/timeline/dist
-      '@tailwindcss/vite':
-        specifier: ^4.1.4
-        version: 4.1.4(vite@6.3.3(@types/node@22.10.1)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
-      postcss-reporter:
-        specifier: ^7.1.0
-        version: 7.1.0(postcss@8.5.3)
-      postcss-scss:
-        specifier: ^4.0.9
-        version: 4.0.9(postcss@8.5.3)
-      tailwindcss:
-        specifier: ^4.1.4
-        version: 4.1.4
-      typescript:
-        specifier: ~5.7.2
-        version: 5.7.3
-      vite:
-        specifier: ^6.3.1
-        version: 6.3.3(@types/node@22.10.1)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
   examples/locales:
     dependencies:
@@ -2673,6 +2613,126 @@ importers:
       typescript:
         specifier: ^5.0.2
         version: 5.6.3
+
+  examples/theme-classic-tailwind:
+    dependencies:
+      '@fullcalendar/adaptive':
+        specifier: workspace:*
+        version: link:../../premium/packages/adaptive/dist
+      '@fullcalendar/core':
+        specifier: workspace:*
+        version: link:../../standard/packages/core/dist
+      '@fullcalendar/daygrid':
+        specifier: workspace:*
+        version: link:../../standard/packages/daygrid/dist
+      '@fullcalendar/interaction':
+        specifier: workspace:*
+        version: link:../../standard/packages/interaction/dist
+      '@fullcalendar/list':
+        specifier: workspace:*
+        version: link:../../standard/packages/list/dist
+      '@fullcalendar/multimonth':
+        specifier: workspace:*
+        version: link:../../standard/packages/multimonth/dist
+      '@fullcalendar/resource':
+        specifier: workspace:*
+        version: link:../../premium/packages/resource/dist
+      '@fullcalendar/resource-daygrid':
+        specifier: workspace:*
+        version: link:../../premium/packages/resource-daygrid/dist
+      '@fullcalendar/resource-timegrid':
+        specifier: workspace:*
+        version: link:../../premium/packages/resource-timegrid/dist
+      '@fullcalendar/resource-timeline':
+        specifier: workspace:*
+        version: link:../../premium/packages/resource-timeline/dist
+      '@fullcalendar/scrollgrid':
+        specifier: workspace:*
+        version: link:../../premium/packages/scrollgrid/dist
+      '@fullcalendar/timegrid':
+        specifier: workspace:*
+        version: link:../../standard/packages/timegrid/dist
+      '@fullcalendar/timeline':
+        specifier: workspace:*
+        version: link:../../premium/packages/timeline/dist
+      '@tailwindcss/vite':
+        specifier: ^4.1.4
+        version: 4.1.4(vite@6.3.3(@types/node@22.10.1)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
+      postcss-reporter:
+        specifier: ^7.1.0
+        version: 7.1.0(postcss@8.5.3)
+      postcss-scss:
+        specifier: ^4.0.9
+        version: 4.0.9(postcss@8.5.3)
+      tailwindcss:
+        specifier: ^4.1.4
+        version: 4.1.4
+      typescript:
+        specifier: ~5.7.2
+        version: 5.7.3
+      vite:
+        specifier: ^6.3.1
+        version: 6.3.3(@types/node@22.10.1)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
+
+  examples/theme-power-tailwind:
+    dependencies:
+      '@fullcalendar/adaptive':
+        specifier: workspace:*
+        version: link:../../premium/packages/adaptive/dist
+      '@fullcalendar/core':
+        specifier: workspace:*
+        version: link:../../standard/packages/core/dist
+      '@fullcalendar/daygrid':
+        specifier: workspace:*
+        version: link:../../standard/packages/daygrid/dist
+      '@fullcalendar/interaction':
+        specifier: workspace:*
+        version: link:../../standard/packages/interaction/dist
+      '@fullcalendar/list':
+        specifier: workspace:*
+        version: link:../../standard/packages/list/dist
+      '@fullcalendar/multimonth':
+        specifier: workspace:*
+        version: link:../../standard/packages/multimonth/dist
+      '@fullcalendar/resource':
+        specifier: workspace:*
+        version: link:../../premium/packages/resource/dist
+      '@fullcalendar/resource-daygrid':
+        specifier: workspace:*
+        version: link:../../premium/packages/resource-daygrid/dist
+      '@fullcalendar/resource-timegrid':
+        specifier: workspace:*
+        version: link:../../premium/packages/resource-timegrid/dist
+      '@fullcalendar/resource-timeline':
+        specifier: workspace:*
+        version: link:../../premium/packages/resource-timeline/dist
+      '@fullcalendar/scrollgrid':
+        specifier: workspace:*
+        version: link:../../premium/packages/scrollgrid/dist
+      '@fullcalendar/timegrid':
+        specifier: workspace:*
+        version: link:../../standard/packages/timegrid/dist
+      '@fullcalendar/timeline':
+        specifier: workspace:*
+        version: link:../../premium/packages/timeline/dist
+      '@tailwindcss/vite':
+        specifier: ^4.1.4
+        version: 4.1.4(vite@6.3.3(@types/node@22.10.1)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
+      postcss-reporter:
+        specifier: ^7.1.0
+        version: 7.1.0(postcss@8.5.3)
+      postcss-scss:
+        specifier: ^4.0.9
+        version: 4.0.9(postcss@8.5.3)
+      tailwindcss:
+        specifier: ^4.1.4
+        version: 4.1.4
+      typescript:
+        specifier: ~5.7.2
+        version: 5.7.3
+      vite:
+        specifier: ^6.3.1
+        version: 6.3.3(@types/node@22.10.1)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
   examples/typescript:
     dependencies:
@@ -15990,22 +16050,10 @@ packages:
       webpack:
         optional: true
 
-  lightningcss-darwin-arm64@1.28.2:
-    resolution: {integrity: sha512-/8cPSqZiusHSS+WQz0W4NuaqFjquys1x+NsdN/XOHb+idGHJSoJ7SoQTVl3DZuAgtPZwFZgRfb/vd1oi8uX6+g==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [arm64]
-    os: [darwin]
-
   lightningcss-darwin-arm64@1.29.2:
     resolution: {integrity: sha512-cK/eMabSViKn/PG8U/a7aCorpeKLMlK0bQeNHmdb7qUnBkNPnL+oV5DjJUo0kqWsJUapZsM4jCfYItbqBDvlcA==}
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
-    os: [darwin]
-
-  lightningcss-darwin-x64@1.28.2:
-    resolution: {integrity: sha512-R7sFrXlgKjvoEG8umpVt/yutjxOL0z8KWf0bfPT3cYMOW4470xu5qSHpFdIOpRWwl3FKNMUdbKtMUjYt0h2j4g==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [x64]
     os: [darwin]
 
   lightningcss-darwin-x64@1.29.2:
@@ -16014,23 +16062,11 @@ packages:
     cpu: [x64]
     os: [darwin]
 
-  lightningcss-freebsd-x64@1.28.2:
-    resolution: {integrity: sha512-l2qrCT+x7crAY+lMIxtgvV10R8VurzHAoUZJaVFSlHrN8kRLTvEg9ObojIDIexqWJQvJcVVV3vfzsEynpiuvgA==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [x64]
-    os: [freebsd]
-
   lightningcss-freebsd-x64@1.29.2:
     resolution: {integrity: sha512-wDk7M2tM78Ii8ek9YjnY8MjV5f5JN2qNVO+/0BAGZRvXKtQrBC4/cn4ssQIpKIPP44YXw6gFdpUF+Ps+RGsCwg==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [freebsd]
-
-  lightningcss-linux-arm-gnueabihf@1.28.2:
-    resolution: {integrity: sha512-DKMzpICBEKnL53X14rF7hFDu8KKALUJtcKdFUCW5YOlGSiwRSgVoRjM97wUm/E0NMPkzrTi/rxfvt7ruNK8meg==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [arm]
-    os: [linux]
 
   lightningcss-linux-arm-gnueabihf@1.29.2:
     resolution: {integrity: sha512-IRUrOrAF2Z+KExdExe3Rz7NSTuuJ2HvCGlMKoquK5pjvo2JY4Rybr+NrKnq0U0hZnx5AnGsuFHjGnNT14w26sg==}
@@ -16038,20 +16074,8 @@ packages:
     cpu: [arm]
     os: [linux]
 
-  lightningcss-linux-arm64-gnu@1.28.2:
-    resolution: {integrity: sha512-nhfjYkfymWZSxdtTNMWyhFk2ImUm0X7NAgJWFwnsYPOfmtWQEapzG/DXZTfEfMjSzERNUNJoQjPAbdqgB+sjiw==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [arm64]
-    os: [linux]
-
   lightningcss-linux-arm64-gnu@1.29.2:
     resolution: {integrity: sha512-KKCpOlmhdjvUTX/mBuaKemp0oeDIBBLFiU5Fnqxh1/DZ4JPZi4evEH7TKoSBFOSOV3J7iEmmBaw/8dpiUvRKlQ==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [arm64]
-    os: [linux]
-
-  lightningcss-linux-arm64-musl@1.28.2:
-    resolution: {integrity: sha512-1SPG1ZTNnphWvAv8RVOymlZ8BDtAg69Hbo7n4QxARvkFVCJAt0cgjAw1Fox0WEhf4PwnyoOBaVH0Z5YNgzt4dA==}
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
     os: [linux]
@@ -16062,20 +16086,8 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  lightningcss-linux-x64-gnu@1.28.2:
-    resolution: {integrity: sha512-ZhQy0FcO//INWUdo/iEdbefntTdpPVQ0XJwwtdbBuMQe+uxqZoytm9M+iqR9O5noWFaxK+nbS2iR/I80Q2Ofpg==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [x64]
-    os: [linux]
-
   lightningcss-linux-x64-gnu@1.29.2:
     resolution: {integrity: sha512-0v6idDCPG6epLXtBH/RPkHvYx74CVziHo6TMYga8O2EiQApnUPZsbR9nFNrg2cgBzk1AYqEd95TlrsL7nYABQg==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [x64]
-    os: [linux]
-
-  lightningcss-linux-x64-musl@1.28.2:
-    resolution: {integrity: sha512-alb/j1NMrgQmSFyzTbN1/pvMPM+gdDw7YBuQ5VSgcFDypN3Ah0BzC2dTZbzwzaMdUVDszX6zH5MzjfVN1oGuww==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [linux]
@@ -16086,22 +16098,10 @@ packages:
     cpu: [x64]
     os: [linux]
 
-  lightningcss-win32-arm64-msvc@1.28.2:
-    resolution: {integrity: sha512-WnwcjcBeAt0jGdjlgbT9ANf30pF0C/QMb1XnLnH272DQU8QXh+kmpi24R55wmWBwaTtNAETZ+m35ohyeMiNt+g==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [arm64]
-    os: [win32]
-
   lightningcss-win32-arm64-msvc@1.29.2:
     resolution: {integrity: sha512-nL7zRW6evGQqYVu/bKGK+zShyz8OVzsCotFgc7judbt6wnB2KbiKKJwBE4SGoDBQ1O94RjW4asrCjQL4i8Fhbw==}
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
-    os: [win32]
-
-  lightningcss-win32-x64-msvc@1.28.2:
-    resolution: {integrity: sha512-3piBifyT3avz22o6mDKywQC/OisH2yDK+caHWkiMsF82i3m5wDBadyCjlCQ5VNgzYkxrWZgiaxHDdd5uxsi0/A==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [x64]
     os: [win32]
 
   lightningcss-win32-x64-msvc@1.29.2:
@@ -16109,10 +16109,6 @@ packages:
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [win32]
-
-  lightningcss@1.28.2:
-    resolution: {integrity: sha512-ePLRrbt3fgjXI5VFZOLbvkLD5ZRuxGKm+wJ3ujCqBtL3NanDHPo/5zicR5uEKAPiIjBYF99BM4K4okvMznjkVA==}
-    engines: {node: '>= 12.0.0'}
 
   lightningcss@1.29.2:
     resolution: {integrity: sha512-6b6gd/RUXKaw5keVdSEtqFVdzWnU5jMxTUjA2bVcMNPLwSQ08Sv/UodBVtETLCn7k4S1Ibxwh7k68IwLZPgKaA==}
@@ -22442,7 +22438,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1402.13(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5))
+      '@angular-devkit/build-webpack': 0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1)
       '@angular-devkit/core': 14.2.13(chokidar@3.6.0)
       '@angular/compiler-cli': 14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4)
       '@babel/core': 7.18.10
@@ -22455,15 +22451,15 @@ snapshots:
       '@babel/runtime': 7.18.9
       '@babel/template': 7.18.10
       '@discoveryjs/json-ext': 0.5.7
-      '@ngtools/webpack': 14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(typescript@4.7.4)(webpack@5.76.1(esbuild@0.15.5))
+      '@ngtools/webpack': 14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(typescript@4.7.4)(webpack@5.76.1)
       ansi-colors: 4.1.3
-      babel-loader: 8.2.5(@babel/core@7.18.10)(webpack@5.76.1(esbuild@0.15.5))
+      babel-loader: 8.2.5(@babel/core@7.18.10)(webpack@5.76.1)
       babel-plugin-istanbul: 6.1.1
       browserslist: 4.24.2
       cacache: 16.1.2
-      copy-webpack-plugin: 11.0.0(webpack@5.76.1(esbuild@0.15.5))
+      copy-webpack-plugin: 11.0.0(webpack@5.76.1)
       critters: 0.0.16
-      css-loader: 6.7.1(webpack@5.76.1(esbuild@0.15.5))
+      css-loader: 6.7.1(webpack@5.76.1)
       esbuild-wasm: 0.15.5
       glob: 8.0.3
       https-proxy-agent: 5.0.1
@@ -22471,10 +22467,10 @@ snapshots:
       jsonc-parser: 3.1.0
       karma-source-map-support: 1.4.0
       less: 4.1.3
-      less-loader: 11.0.0(less@4.1.3)(webpack@5.76.1(esbuild@0.15.5))
-      license-webpack-plugin: 4.0.2(webpack@5.76.1(esbuild@0.15.5))
+      less-loader: 11.0.0(less@4.1.3)(webpack@5.76.1)
+      license-webpack-plugin: 4.0.2(webpack@5.76.1)
       loader-utils: 3.2.1
-      mini-css-extract-plugin: 2.6.1(webpack@5.76.1(esbuild@0.15.5))
+      mini-css-extract-plugin: 2.6.1(webpack@5.76.1)
       minimatch: 5.1.0
       open: 8.4.0
       ora: 5.4.1
@@ -22482,18 +22478,18 @@ snapshots:
       piscina: 3.2.0
       postcss: 8.4.31
       postcss-import: 15.0.0(postcss@8.4.31)
-      postcss-loader: 7.0.1(postcss@8.4.31)(webpack@5.76.1(esbuild@0.15.5))
+      postcss-loader: 7.0.1(postcss@8.4.31)(webpack@5.76.1)
       postcss-preset-env: 7.8.0(postcss@8.4.31)
       regenerator-runtime: 0.13.9
       resolve-url-loader: 5.0.0
       rxjs: 6.6.7
       sass: 1.54.4
-      sass-loader: 13.0.2(sass@1.54.4)(webpack@5.76.1(esbuild@0.15.5))
+      sass-loader: 13.0.2(sass@1.54.4)(webpack@5.76.1)
       semver: 7.5.3
-      source-map-loader: 4.0.0(webpack@5.76.1(esbuild@0.15.5))
+      source-map-loader: 4.0.0(webpack@5.76.1)
       source-map-support: 0.5.21
       stylus: 0.59.0
-      stylus-loader: 7.0.0(stylus@0.59.0)(webpack@5.76.1(esbuild@0.15.5))
+      stylus-loader: 7.0.0(stylus@0.59.0)(webpack@5.76.1)
       terser: 5.14.2
       text-table: 0.2.0
       tree-kill: 1.2.2
@@ -22503,7 +22499,7 @@ snapshots:
       webpack-dev-middleware: 5.3.3(webpack@5.76.1)
       webpack-dev-server: 4.11.0(webpack@5.76.1)
       webpack-merge: 5.8.0
-      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5))
+      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1)
     optionalDependencies:
       esbuild: 0.15.5
       karma: 6.4.4
@@ -23125,7 +23121,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-webpack@0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5))':
+  '@angular-devkit/build-webpack@0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1)':
     dependencies:
       '@angular-devkit/architect': 0.1402.13(chokidar@3.6.0)
       rxjs: 6.6.7
@@ -31247,7 +31243,7 @@ snapshots:
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
 
-  '@ngtools/webpack@14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(typescript@4.7.4)(webpack@5.76.1(esbuild@0.15.5))':
+  '@ngtools/webpack@14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(typescript@4.7.4)(webpack@5.76.1)':
     dependencies:
       '@angular/compiler-cli': 14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4)
       typescript: 4.7.4
@@ -31650,7 +31646,7 @@ snapshots:
       globby: 14.0.2
       hash-sum: 2.0.0
       ignore: 6.0.2
-      jiti: 2.4.1
+      jiti: 2.4.2
       klona: 2.0.6
       knitwork: 1.1.0
       mlly: 1.7.3
@@ -31729,7 +31725,7 @@ snapshots:
       externality: 1.0.2
       get-port-please: 3.1.2
       h3: 1.13.0
-      jiti: 2.4.1
+      jiti: 2.4.2
       knitwork: 1.1.0
       magic-string: 0.30.14
       mlly: 1.7.3
@@ -31936,7 +31932,7 @@ snapshots:
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.13.2
       browserslist: 4.24.2
-      lightningcss: 1.28.2
+      lightningcss: 1.29.2
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
@@ -32011,7 +32007,7 @@ snapshots:
       '@parcel/plugin': 2.13.2(@parcel/core@2.13.2(@swc/helpers@0.5.15))
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.13.2
-      lightningcss: 1.28.2
+      lightningcss: 1.29.2
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
@@ -32165,7 +32161,7 @@ snapshots:
       '@parcel/source-map': 2.1.1
       '@parcel/utils': 2.13.2
       browserslist: 4.24.2
-      lightningcss: 1.28.2
+      lightningcss: 1.29.2
       nullthrows: 1.1.1
     transitivePeerDependencies:
       - '@parcel/core'
@@ -32782,7 +32778,7 @@ snapshots:
       '@rollup/pluginutils': 5.1.3(rollup@4.28.0)
       commondir: 1.0.1
       estree-walker: 2.0.2
-      fdir: 6.4.2(picomatch@4.0.2)
+      fdir: 6.4.4(picomatch@4.0.2)
       is-reference: 1.2.1
       magic-string: 0.30.14
       picomatch: 4.0.2
@@ -33511,7 +33507,7 @@ snapshots:
 
   '@types/acorn@4.0.6':
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
 
   '@types/archiver@5.3.4':
     dependencies:
@@ -33593,11 +33589,11 @@ snapshots:
 
   '@types/estree-jsx@0.0.1':
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
 
   '@types/estree-jsx@1.0.5':
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
 
   '@types/estree@0.0.39': {}
 
@@ -35337,7 +35333,7 @@ snapshots:
       schema-utils: 2.7.1
       webpack: 5.76.1(esbuild@0.14.22)
 
-  babel-loader@8.2.5(@babel/core@7.18.10)(webpack@5.76.1(esbuild@0.15.5)):
+  babel-loader@8.2.5(@babel/core@7.18.10)(webpack@5.76.1):
     dependencies:
       '@babel/core': 7.18.10
       find-cache-dir: 3.3.2
@@ -35809,7 +35805,7 @@ snapshots:
       defu: 6.1.4
       dotenv: 16.4.7
       giget: 1.2.3
-      jiti: 2.4.1
+      jiti: 2.4.2
       mlly: 1.7.3
       ohash: 1.1.4
       pathe: 1.1.2
@@ -36406,16 +36402,6 @@ snapshots:
       serialize-javascript: 6.0.2
       webpack: 5.76.1(esbuild@0.14.22)
 
-  copy-webpack-plugin@11.0.0(webpack@5.76.1(esbuild@0.15.5)):
-    dependencies:
-      fast-glob: 3.3.2
-      glob-parent: 6.0.2
-      globby: 13.2.2
-      normalize-path: 3.0.0
-      schema-utils: 4.2.0
-      serialize-javascript: 6.0.2
-      webpack: 5.76.1(esbuild@0.15.5)
-
   copy-webpack-plugin@11.0.0(webpack@5.76.1):
     dependencies:
       fast-glob: 3.3.2
@@ -36424,7 +36410,7 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.2.0
       serialize-javascript: 6.0.2
-      webpack: 5.76.1(esbuild@0.17.8)
+      webpack: 5.76.1(esbuild@0.15.5)
 
   copy-webpack-plugin@11.0.0(webpack@5.94.0(esbuild@0.18.17)):
     dependencies:
@@ -36735,7 +36721,7 @@ snapshots:
       semver: 7.6.3
       webpack: 5.76.1(esbuild@0.14.22)
 
-  css-loader@6.7.1(webpack@5.76.1(esbuild@0.15.5)):
+  css-loader@6.7.1(webpack@5.76.1):
     dependencies:
       icss-utils: 5.1.0(postcss@8.5.3)
       postcss: 8.5.3
@@ -38800,7 +38786,7 @@ snapshots:
 
   estree-util-attach-comments@2.1.1:
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
 
   estree-util-build-jsx@2.2.2:
     dependencies:
@@ -38981,7 +38967,7 @@ snapshots:
 
   externality@1.0.2:
     dependencies:
-      enhanced-resolve: 5.17.1
+      enhanced-resolve: 5.18.1
       mlly: 1.7.3
       pathe: 1.1.2
       ufo: 1.5.4
@@ -39689,7 +39675,7 @@ snapshots:
 
   hast-util-to-estree@2.3.3:
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       '@types/estree-jsx': 1.0.5
       '@types/hast': 2.3.10
       '@types/unist': 2.0.11
@@ -40524,7 +40510,7 @@ snapshots:
 
   is-reference@3.0.3:
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
 
   is-regex@1.2.0:
     dependencies:
@@ -41508,7 +41494,7 @@ snapshots:
       less: 4.1.2
       webpack: 5.76.1(esbuild@0.14.22)
 
-  less-loader@11.0.0(less@4.1.3)(webpack@5.76.1(esbuild@0.15.5)):
+  less-loader@11.0.0(less@4.1.3)(webpack@5.76.1):
     dependencies:
       klona: 2.0.6
       less: 4.1.3
@@ -41620,17 +41606,11 @@ snapshots:
     optionalDependencies:
       webpack: 5.76.1(esbuild@0.14.22)
 
-  license-webpack-plugin@4.0.2(webpack@5.76.1(esbuild@0.15.5)):
-    dependencies:
-      webpack-sources: 3.2.3
-    optionalDependencies:
-      webpack: 5.76.1(esbuild@0.15.5)
-
   license-webpack-plugin@4.0.2(webpack@5.76.1):
     dependencies:
       webpack-sources: 3.2.3
     optionalDependencies:
-      webpack: 5.76.1(esbuild@0.17.8)
+      webpack: 5.76.1(esbuild@0.15.5)
 
   license-webpack-plugin@4.0.2(webpack@5.94.0(esbuild@0.18.17)):
     dependencies:
@@ -41656,80 +41636,35 @@ snapshots:
     optionalDependencies:
       webpack: 5.96.1(esbuild@0.24.0)
 
-  lightningcss-darwin-arm64@1.28.2:
-    optional: true
-
   lightningcss-darwin-arm64@1.29.2:
-    optional: true
-
-  lightningcss-darwin-x64@1.28.2:
     optional: true
 
   lightningcss-darwin-x64@1.29.2:
     optional: true
 
-  lightningcss-freebsd-x64@1.28.2:
-    optional: true
-
   lightningcss-freebsd-x64@1.29.2:
-    optional: true
-
-  lightningcss-linux-arm-gnueabihf@1.28.2:
     optional: true
 
   lightningcss-linux-arm-gnueabihf@1.29.2:
     optional: true
 
-  lightningcss-linux-arm64-gnu@1.28.2:
-    optional: true
-
   lightningcss-linux-arm64-gnu@1.29.2:
-    optional: true
-
-  lightningcss-linux-arm64-musl@1.28.2:
     optional: true
 
   lightningcss-linux-arm64-musl@1.29.2:
     optional: true
 
-  lightningcss-linux-x64-gnu@1.28.2:
-    optional: true
-
   lightningcss-linux-x64-gnu@1.29.2:
-    optional: true
-
-  lightningcss-linux-x64-musl@1.28.2:
     optional: true
 
   lightningcss-linux-x64-musl@1.29.2:
     optional: true
 
-  lightningcss-win32-arm64-msvc@1.28.2:
-    optional: true
-
   lightningcss-win32-arm64-msvc@1.29.2:
-    optional: true
-
-  lightningcss-win32-x64-msvc@1.28.2:
     optional: true
 
   lightningcss-win32-x64-msvc@1.29.2:
     optional: true
-
-  lightningcss@1.28.2:
-    dependencies:
-      detect-libc: 1.0.3
-    optionalDependencies:
-      lightningcss-darwin-arm64: 1.28.2
-      lightningcss-darwin-x64: 1.28.2
-      lightningcss-freebsd-x64: 1.28.2
-      lightningcss-linux-arm-gnueabihf: 1.28.2
-      lightningcss-linux-arm64-gnu: 1.28.2
-      lightningcss-linux-arm64-musl: 1.28.2
-      lightningcss-linux-x64-gnu: 1.28.2
-      lightningcss-linux-x64-musl: 1.28.2
-      lightningcss-win32-arm64-msvc: 1.28.2
-      lightningcss-win32-x64-msvc: 1.28.2
 
   lightningcss@1.29.2:
     dependencies:
@@ -41764,7 +41699,7 @@ snapshots:
       get-port-please: 3.1.2
       h3: 1.13.0
       http-shutdown: 1.2.2
-      jiti: 2.4.1
+      jiti: 2.4.2
       mlly: 1.7.3
       node-forge: 1.3.1
       pathe: 1.1.2
@@ -42340,7 +42275,7 @@ snapshots:
 
   micromark-extension-mdx-expression@1.0.8:
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       micromark-factory-mdx-expression: 1.0.9
       micromark-factory-space: 1.1.0
       micromark-util-character: 1.2.0
@@ -42352,7 +42287,7 @@ snapshots:
   micromark-extension-mdx-jsx@1.0.5:
     dependencies:
       '@types/acorn': 4.0.6
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       estree-util-is-identifier-name: 2.1.0
       micromark-factory-mdx-expression: 1.0.9
       micromark-factory-space: 1.1.0
@@ -42368,7 +42303,7 @@ snapshots:
 
   micromark-extension-mdxjs-esm@1.0.5:
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       micromark-core-commonmark: 1.1.0
       micromark-util-character: 1.2.0
       micromark-util-events-to-acorn: 1.2.3
@@ -42404,7 +42339,7 @@ snapshots:
 
   micromark-factory-mdx-expression@1.0.9:
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       micromark-util-character: 1.2.0
       micromark-util-events-to-acorn: 1.2.3
       micromark-util-symbol: 1.1.0
@@ -42468,7 +42403,7 @@ snapshots:
   micromark-util-events-to-acorn@1.2.3:
     dependencies:
       '@types/acorn': 4.0.6
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       '@types/unist': 2.0.11
       estree-util-visit: 1.2.1
       micromark-util-symbol: 1.1.0
@@ -42585,7 +42520,7 @@ snapshots:
       schema-utils: 4.2.0
       webpack: 5.76.1(esbuild@0.14.22)
 
-  mini-css-extract-plugin@2.6.1(webpack@5.76.1(esbuild@0.15.5)):
+  mini-css-extract-plugin@2.6.1(webpack@5.76.1):
     dependencies:
       schema-utils: 4.2.0
       webpack: 5.76.1(esbuild@0.15.5)
@@ -43110,7 +43045,7 @@ snapshots:
       hookable: 5.5.3
       httpxy: 0.1.5
       ioredis: 5.4.1
-      jiti: 2.4.1
+      jiti: 2.4.2
       klona: 2.0.6
       knitwork: 1.1.0
       listhen: 1.9.0
@@ -44362,7 +44297,7 @@ snapshots:
 
   periscopic@3.1.0:
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       estree-walker: 3.0.3
       is-reference: 3.0.3
 
@@ -44876,7 +44811,7 @@ snapshots:
       semver: 7.6.3
       webpack: 5.76.1(esbuild@0.14.22)
 
-  postcss-loader@7.0.1(postcss@8.4.31)(webpack@5.76.1(esbuild@0.15.5)):
+  postcss-loader@7.0.1(postcss@8.4.31)(webpack@5.76.1):
     dependencies:
       cosmiconfig: 7.1.0
       klona: 2.0.6
@@ -46684,7 +46619,7 @@ snapshots:
     optionalDependencies:
       sass: 1.49.9
 
-  sass-loader@13.0.2(sass@1.54.4)(webpack@5.76.1(esbuild@0.15.5)):
+  sass-loader@13.0.2(sass@1.54.4)(webpack@5.76.1):
     dependencies:
       klona: 2.0.6
       neo-async: 2.6.2
@@ -47209,7 +47144,7 @@ snapshots:
       source-map-js: 1.2.1
       webpack: 5.76.1(esbuild@0.14.22)
 
-  source-map-loader@4.0.0(webpack@5.76.1(esbuild@0.15.5)):
+  source-map-loader@4.0.0(webpack@5.76.1):
     dependencies:
       abab: 2.0.6
       iconv-lite: 0.6.3
@@ -47607,7 +47542,7 @@ snapshots:
       stylus: 0.56.0
       webpack: 5.76.1(esbuild@0.14.22)
 
-  stylus-loader@7.0.0(stylus@0.59.0)(webpack@5.76.1(esbuild@0.15.5)):
+  stylus-loader@7.0.0(stylus@0.59.0)(webpack@5.76.1):
     dependencies:
       fast-glob: 3.3.2
       klona: 2.0.6
@@ -48489,7 +48424,7 @@ snapshots:
       '@babel/standalone': 7.26.3
       '@babel/types': 7.26.0
       defu: 6.1.4
-      jiti: 2.4.1
+      jiti: 2.4.2
       mri: 1.2.0
       scule: 1.3.0
     transitivePeerDependencies:
@@ -49432,17 +49367,10 @@ snapshots:
     optionalDependencies:
       html-webpack-plugin: 5.6.3(webpack@5.76.1)
 
-  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5)):
-    dependencies:
-      typed-assert: 1.0.9
-      webpack: 5.76.1(esbuild@0.15.5)
-    optionalDependencies:
-      html-webpack-plugin: 5.6.3(webpack@5.76.1)
-
   webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1):
     dependencies:
       typed-assert: 1.0.9
-      webpack: 5.76.1(esbuild@0.17.8)
+      webpack: 5.76.1(esbuild@0.15.5)
     optionalDependencies:
       html-webpack-plugin: 5.6.3(webpack@5.76.1)
 

@@ -1,0 +1,32 @@
+{
+  "name": "theme-power-tailwind",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fullcalendar/adaptive": "workspace:*",
+    "@fullcalendar/core": "workspace:*",
+    "@fullcalendar/daygrid": "workspace:*",
+    "@fullcalendar/interaction": "workspace:*",
+    "@fullcalendar/list": "workspace:*",
+    "@fullcalendar/multimonth": "workspace:*",
+    "@fullcalendar/resource": "workspace:*",
+    "@fullcalendar/resource-daygrid": "workspace:*",
+    "@fullcalendar/resource-timeline": "workspace:*",
+    "@fullcalendar/resource-timegrid": "workspace:*",
+    "@fullcalendar/scrollgrid": "workspace:*",
+    "@fullcalendar/timegrid": "workspace:*",
+    "@fullcalendar/timeline": "workspace:*",
+    "@tailwindcss/vite": "^4.1.4",
+    "postcss-reporter": "^7.1.0",
+    "postcss-scss": "^4.0.9",
+    "tailwindcss": "^4.1.4",
+    "typescript": "~5.7.2",
+    "vite": "^6.3.1"
+  }
+}
