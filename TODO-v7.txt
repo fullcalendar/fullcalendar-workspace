@@ -325,6 +325,9 @@ TimeGrid
       v5: https://codepen.io/arshaw/pen/YPKapao?editors=0010 (GOOD)
       v6: https://codepen.io/arshaw/pen/NPKYbYb?editors=0010 (GOOD)
       v7: https://codepen.io/arshaw/pen/wBwJmgg?editors=001 (BAD)
+responsive tickets (so ppl know we don't consider responsiveness "solved"):
+  tiled multimonth view, JUST have event dots, nothing else
+  timegrid week view, but with ONLY one day column. has multiple day headers for selecting other days tho
 
 Punt
 ----
