@@ -58,7 +58,7 @@ after-beta todo:
     doesn't work on resourceTimelineThreeDays/Week/Month (am I not configuring correctly)
     darker border is incorrectly on some vresource header cells
   classic-theme: buttons in dark-mode should have colors inverted: selected should be lighter than non-selected
-  [rename] CustomContentGenerator -> ContentGenerator
+  [rename] CustomContentGenerator -> ContentGenerator (and customGenerator)
   [rename?] is EventDisplayData the best name when there's interaction-like props like isSelected?
   accept objects for *Class inputs
   rename listDaySideFormat -> listDayAltFormat ?
@@ -166,6 +166,8 @@ changelog: improved responsiveness when really narrow... font size adjusts
 changelog: big styling change... separate element for by event
 changelog: for porting custom themes, recomment ppl start with the "modern" theme
 changelog: backgroundEventColor
+changelog: week/multi-day views in timegrid/daygrid will have "Sun 8" header by default,
+  instead of "Sun 8/5" header (no more month number. just day-of-month)
 
 Docs
 ----
