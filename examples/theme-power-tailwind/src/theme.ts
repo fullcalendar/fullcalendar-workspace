@@ -95,6 +95,7 @@ const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean }) =>
 ]
 
 const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
+  'flex flex-col',
   cellPaddingClass,
   data.isCompact && xxsTextClass,
 ]
