@@ -26,7 +26,7 @@ const dayGridItemClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-l
 
 // timegrid axis
 const axisClass = 'justify-end' // align axisInner right
-const axisInnerClass = `${cellPaddingClass} text-end min-h-[1.5em]` // align text right when multiline
+const axisInnerClass = `${cellPaddingClass} text-end` // align text right when multiline
 
 // transparent resizer for mouse
 // must have 'group' on the event, for group-hover
@@ -89,7 +89,7 @@ const floatingWeekNumberClasses: CalendarOptions = {
 }
 
 const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean }) => [
-  'items-center',
+  'items-center justify-center',
   data.isMajor ? majorBorderClass : borderClass,
   data.isDisabled && neutralBgClass,
 ]
@@ -386,7 +386,7 @@ export default createPlugin({
         data.isCompact && xxsTextClass,
       ],
 
-      weekNumberClass: axisClass,
+      weekNumberClass: `${axisClass} items-center`,
       weekNumberInnerClass: (data) => [
         axisInnerClass,
         data.isCompact && xxsTextClass,
@@ -398,6 +398,7 @@ export default createPlugin({
       slotLabelClass: axisClass,
       slotLabelInnerClass: (data) => [
         axisInnerClass,
+        'min-h-[1.5em]',
         data.isCompact && xxsTextClass,
       ],
 
