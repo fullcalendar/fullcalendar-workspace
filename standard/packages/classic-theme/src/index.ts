@@ -235,7 +235,6 @@ export default createPlugin({
     resourceAreaDividerClass: 'fc-resource-area-divider',
 
     resourceAreaRowClass: 'fc-resource-area-row',
-    resourceIndentClass: 'fc-resource-indent',
     resourceExpanderClass: 'fc-resource-expander',
 
     resourceGroupHeaderClass: 'fc-resource-group-header',

@@ -1,5 +1,5 @@
 import { createElement, createRef, Ref, Fragment } from '@fullcalendar/core/preact'
-import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNames, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { ColSpec, ResourceColumnHeaderData } from '../../structs.js'
 import { ResourceIndent } from './ResourceIndent.js'
@@ -41,9 +41,9 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         }}
         className={joinClassNames(
           classNames.tight,
-          classNames.flexCol,
-          classNames.rel, // for resizer abs positioning
+          classNames.flexRow,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
+          classNames.rel, // for resizer abs positioning
         )}
         style={{
           minWidth: 0,
@@ -60,21 +60,21 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
       >
         {(InnerContent) => (
           <Fragment>
-            <div
-              ref={this.innerElRef}
-              className={joinArrayishClassNames(
-                generateClassName(colSpec.headerInnerClass, renderProps),
-                classNames.rigid,
-                classNames.flexRow,
-              )}
-            >
-              {this.props.indent && (
-                <ResourceIndent
-                  level={1}
-                  indentWidth={props.indentWidth}
-                />
-              )}
-              <InnerContent tag="div" />
+            {this.props.indent && (
+              <ResourceIndent
+                level={1}
+                indentWidth={props.indentWidth}
+              />
+            )}
+            <div className={joinClassNames(classNames.liquid, classNames.flexCol)}>
+              <InnerContent
+                tag='div'
+                elRef={this.innerElRef}
+                className={joinClassNames(
+                  generateClassName(colSpec.headerInnerClass, renderProps),
+                  classNames.rigid,
+                )}
+              />
             </div>
             {props.resizer && (
               <div className={classNames.colResizer} ref={props.resizerElRef} />

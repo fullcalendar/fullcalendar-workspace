@@ -330,7 +330,7 @@ export default createPlugin({
     resourceDayHeaderInnerClass: getDayHeaderInnerClasses,
 
     resourceAreaHeaderRowClass: borderClass,
-    resourceAreaHeaderClass: `${borderClass} justify-center`, // valign
+    resourceAreaHeaderClass: `${borderClass} items-center`, // valign
     resourceAreaHeaderInnerClass: 'p-2',
 
     resourceAreaDividerClass: `border-x ${borderColorClass} pl-0.5 ${neutralBgClass}`,
@@ -345,8 +345,7 @@ export default createPlugin({
     resourceCellClass: borderClass,
     resourceCellInnerClass: 'p-2',
 
-    resourceIndentClass: 'self-center me-1 relative -top-px', // HACK: relative 1px shift up
-    resourceExpanderClass: 'opacity-65',
+    resourceExpanderClass: 'self-center relative -top-px start-1 opacity-65', // HACK: relative 1px shift up
     resourceExpanderContent: (data) => data.isExpanded
       ? svgIcons.minusSquare('w-[1em] h-[1em]')
       : svgIcons.plusSquare('w-[1em] h-[1em]'),

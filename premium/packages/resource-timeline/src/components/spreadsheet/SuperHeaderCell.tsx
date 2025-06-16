@@ -1,6 +1,6 @@
 import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
 import { ResourceColumnHeaderData, ColHeaderRenderHooks } from '../../structs.js'
 import { ResourceIndent } from './ResourceIndent.js'
 
@@ -36,10 +36,10 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           'aria-colspan': this.props.colSpan,
         }}
         className={joinClassNames(
-          classNames.tight,
-          classNames.borderNone,
-          classNames.flexCol,
           classNames.liquid,
+          classNames.tight,
+          classNames.flexRow,
+          classNames.borderNone,
         )}
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"
@@ -50,22 +50,25 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         willUnmount={renderHooks.headerWillUnmount}
       >
         {(InnerContent) => (
-          <div
-            ref={this.innerElRef}
-            className={joinClassNames(
-              generateClassName(renderHooks.headerInnerClass, renderProps),
-              classNames.rigid,
-              classNames.flexRow,
-            )}
-          >
+          <Fragment>
             {this.props.indent && (
               <ResourceIndent
                 level={1}
                 indentWidth={this.props.indentWidth}
               />
             )}
-            <InnerContent tag="div" />
-          </div>
+            <div className={joinClassNames(classNames.liquid, classNames.flexCol)}>
+              <InnerContent
+                tag='div'
+                elRef={this.innerElRef}
+                className={joinClassNames(
+                  generateClassName(renderHooks.headerInnerClass, renderProps),
+                  classNames.rigid,
+                  classNames.flexRow,
+                )}
+              />
+            </div>
+          </Fragment>
         )}
       </ContentContainer>
     )

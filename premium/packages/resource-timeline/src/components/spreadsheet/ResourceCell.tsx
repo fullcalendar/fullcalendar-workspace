@@ -54,6 +54,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         }}
         className={joinClassNames(
           classNames.tight,
+          classNames.flexRow,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
         )}
         style={{
@@ -70,16 +71,12 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <div
-            ref={this.innerElRef}
-            className={joinClassNames(
-              generateClassName(colSpec.cellInnerClass, renderProps),
-              classNames.rigid,
-              classNames.flexRow,
-            )}
-          >
+          <Fragment>
             {colSpec.isMain && (
-              <ResourceIndent level={props.indent} indentWidth={props.indentWidth}>
+              <ResourceIndent
+                level={props.indent}
+                indentWidth={props.indentWidth}
+              >
                 {props.hasChildren && (
                   <ResourceExpander
                     isExpanded={props.isExpanded}
@@ -88,8 +85,17 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
                 )}
               </ResourceIndent>
             )}
-            <InnerContent tag="div" />
-          </div>
+            <div className={joinClassNames(classNames.liquid, classNames.flexCol)}>
+              <InnerContent
+                tag='div'
+                elRef={this.innerElRef}
+                className={joinClassNames(
+                  generateClassName(colSpec.cellInnerClass, renderProps),
+                  classNames.rigid,
+                )}
+              />
+            </div>
+          </Fragment>
         )}
       </ContentContainer>
     )

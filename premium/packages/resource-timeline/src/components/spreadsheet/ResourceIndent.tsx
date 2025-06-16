@@ -10,12 +10,11 @@ export interface ResourceIndentProps {
 
 export class ResourceIndent extends BaseComponent<ResourceIndentProps> {
   render() {
-    const { props, context } = this
+    const { props } = this
 
     return (
       <div
         className={joinArrayishClassNames(
-          context.options.resourceIndentClass,
           classNames.noShrink,
           classNames.flexRow,
           classNames.justifyEnd,

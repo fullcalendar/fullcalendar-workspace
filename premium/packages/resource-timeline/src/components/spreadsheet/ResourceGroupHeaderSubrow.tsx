@@ -69,8 +69,9 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
             'aria-expanded': props.isExpanded,
           }}
           className={joinClassNames(
-            classNames.tight,
             classNames.liquid,
+            classNames.tight,
+            classNames.flexRow,
           )}
           renderProps={renderProps}
           generatorName="resourceGroupHeaderContent"
@@ -81,22 +82,28 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
           willUnmount={spec.labelWillUnmount}
         >
           {(InnerContent) => (
-            <div
-              ref={this.innerElRef}
-              className={joinClassNames(
-                generateClassName(spec.labelInnerClass, renderProps),
-                classNames.rigid,
-                classNames.flexRow,
-              )}
-            >
-              <ResourceIndent level={1} indentWidth={props.indentWidth}>
+            <Fragment>
+              <ResourceIndent
+                level={1}
+                indentWidth={props.indentWidth}
+              >
                 <ResourceExpander
                   isExpanded={props.isExpanded}
                   onExpanderClick={this.onExpanderClick}
                 />
               </ResourceIndent>
-              <InnerContent tag="div" />
-            </div>
+              <div className={joinClassNames(classNames.liquid, classNames.flexCol)}>
+                <InnerContent
+                  tag='div'
+                  elRef={this.innerElRef}
+                  className={joinClassNames(
+                    generateClassName(spec.labelInnerClass, renderProps),
+                    classNames.rigid,
+                    classNames.flexRow,
+                  )}
+                />
+              </div>
+            </Fragment>
           )}
         </ContentContainer>
       </div>
