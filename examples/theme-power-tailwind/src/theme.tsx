@@ -1,4 +1,5 @@
 import { CalendarOptions, createPlugin, PluginDef } from '@fullcalendar/core'
+import { createElement } from '@fullcalendar/core/preact'
 import * as svgIcons from './svgIcons.js'
 
 // Will import ambient types during dev but strip out for build
