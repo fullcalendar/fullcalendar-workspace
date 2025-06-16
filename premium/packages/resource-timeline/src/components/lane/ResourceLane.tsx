@@ -94,13 +94,12 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
           height: props.height,
         }}
         renderProps={renderProps}
-        generatorName="resourceLaneContent"
-        customGenerator={options.resourceLaneContent}
+        generatorName={undefined}
         classNameGenerator={options.resourceLaneClass}
         didMount={options.resourceLaneDidMount}
         willUnmount={options.resourceLaneWillUnmount}
       >
-        {(InnerContent) => (
+        {() => (
           <div
             role='gridcell'
             className={joinClassNames(
@@ -122,10 +121,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
 
               // dimensions
               slotWidth={props.slotWidth}
-            />
-            <InnerContent // TODO: make fully filled
-              tag="div"
-              className={joinClassNames(classNames.flexCol, classNames.fillTop)}
             />
             <div // TODO: track height
               className={joinArrayishClassNames(

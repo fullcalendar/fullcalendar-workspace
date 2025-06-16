@@ -32,14 +32,14 @@ describe('rerender performance for resource timeline', () => {
         slotLabelRenderCnt += 1
       },
 
-      slotLaneContent() {
+      slotLaneDidMount() {
         slotLaneRenderCnt += 1
       },
 
       resourceCellContent() {
         resourceLabelRenderCnt += 1
       },
-      resourceLaneContent() {
+      resourceLaneDidMount() {
         resourceLaneRenderCnt += 1
       },
       eventContent() {

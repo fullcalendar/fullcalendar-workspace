@@ -77,7 +77,6 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
             }}
             className={joinClassNames(
               generateClassName(groupSpec.laneInnerClass, renderProps),
-              classNames.flexCol,
               classNames.liquid,
             )}
             elRef={this.innerElRef}

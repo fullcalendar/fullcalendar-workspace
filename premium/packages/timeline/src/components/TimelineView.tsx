@@ -59,7 +59,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   private headerRowInnerWidthMap = new RefMap<number, number>(() => { // just for timeline-header
     afterSize(this.handleSlotInnerWidths)
   })
-  private bodySlotInnerWidth?: number
 
   // internal
   private syncedScroller: ScrollerSyncerInterface
@@ -234,9 +233,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     nowDate={nowDate}
                     todayRange={todayRange}
 
-                    // ref
-                    innerWidthRef={this.handleBodySlotInnerWidth}
-
                     // dimensions
                     slotWidth={slotWidth}
                   />
@@ -338,21 +334,11 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
   // Sizing
   // -----------------------------------------------------------------------------------------------
 
-  handleBodySlotInnerWidth = (innerWidth: number) => {
-    this.bodySlotInnerWidth = innerWidth
-    afterSize(this.handleSlotInnerWidths)
-  }
-
   handleSlotInnerWidths = () => {
     const headerSlotInnerWidth = this.headerRowInnerWidthMap.current.get(this.tDateProfile.cellRows.length - 1)
-    const { bodySlotInnerWidth } = this
 
-    if (headerSlotInnerWidth != null && bodySlotInnerWidth != null) {
-      const slotInnerWidth = Math.max(headerSlotInnerWidth, bodySlotInnerWidth)
-
-      if (slotInnerWidth !== this.state.slotInnerWidth) {
-        this.setState({ slotInnerWidth })
-      }
+    if (headerSlotInnerWidth != null && headerSlotInnerWidth !== this.state.slotInnerWidth) {
+      this.setState({ slotInnerWidth: headerSlotInnerWidth })
     }
   }
 

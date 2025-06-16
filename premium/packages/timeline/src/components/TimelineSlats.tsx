@@ -1,16 +1,12 @@
 import {
-  afterSize,
   BaseComponent, DateMarker,
   DateProfile,
-  DateRange,
-  RefMap,
-  setRef,
-  joinClassNames,
+  DateRange, joinClassNames
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, Ref } from '@fullcalendar/core/preact'
-import { TimelineSlatCell } from './TimelineSlatCell.js'
+import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
+import { TimelineSlatCell } from './TimelineSlatCell.js'
 
 export interface TimelineSlatsProps {
   dateProfile: DateProfile
@@ -21,18 +17,11 @@ export interface TimelineSlatsProps {
   // dimensions
   height?: number
   slotWidth: number | undefined
-
-  // ref
-  innerWidthRef?: Ref<number>
 }
 
 export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
-  private innerWidthRefMap = new RefMap<string, number>(() => { // keyed by isoStr
-    afterSize(this.handleInnerWidths)
-  })
-
   render() {
-    let { props, innerWidthRefMap } = this
+    let { props } = this
     let { tDateProfile, slotWidth } = props
     let { slotDates, slotDatesMajor } = tDateProfile
 
@@ -59,9 +48,6 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
               isMajor={slotDatesMajor[i]}
               borderStart={Boolean(i)}
 
-              // ref
-              innerWidthRef={innerWidthRefMap.createRef(key)}
-
               // dimensions
               width={slotWidth}
             />
@@ -69,17 +55,5 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
         })}
       </div>
     )
-  }
-
-  handleInnerWidths = () => {
-    const innerWidthMap = this.innerWidthRefMap.current
-    let max = 0
-
-    for (const innerWidth of innerWidthMap.values()) {
-      max = Math.max(max, innerWidth)
-    }
-
-    // TODO: check to see if changed before firing ref!? YES. do in other places too
-    setRef(this.props.innerWidthRef, max)
   }
 }

@@ -126,7 +126,6 @@ export const BASE_OPTION_REFINERS = {
   // TODO: move to timegrid
   dayLaneClass: identity as Identity<ClassNameGenerator<DayLaneData>>,
   dayLaneInnerClass: identity as Identity<ClassNameGenerator<DayLaneData>>,
-  dayLaneContent: identity as Identity<CustomContentGenerator<DayLaneData>>,
   dayLaneDidMount: identity as Identity<DidMountHandler<DayLaneMountData>>,
   dayLaneWillUnmount: identity as Identity<WillUnmountHandler<DayLaneMountData>>,
 
@@ -270,8 +269,6 @@ export const BASE_OPTION_REFINERS = {
   slotLabelFormat: identity as Identity<FormatterInput | FormatterInput[]>,
 
   slotLaneClass: identity as Identity<ClassNameGenerator<SlotLaneData>>,
-  slotLaneInnerClass: identity as Identity<ClassNameInput>, // no args!
-  slotLaneContent: identity as Identity<CustomContentGenerator<SlotLaneData>>,
   slotLaneDidMount: identity as Identity<DidMountHandler<SlotLaneMountData>>,
   slotLaneWillUnmount: identity as Identity<WillUnmountHandler<SlotLaneMountData>>,
 

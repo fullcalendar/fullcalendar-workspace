@@ -85,14 +85,11 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
   private slatLabelInnerHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
     afterSize(this.handleSlatInnerHeights)
   })
-  private slatInnerMainHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
-    afterSize(this.handleSlatInnerHeights)
-  })
   private slatHeight?: number
   private prevSlatHeight?: number
 
   render() {
-    const { props, state, context, slatLabelInnerWidthRefMap, slatLabelInnerHeightRefMap, slatInnerMainHeightRefMap, headerLabelInnerWidthRefMap } = this
+    const { props, state, context, slatLabelInnerWidthRefMap, slatLabelInnerHeightRefMap, headerLabelInnerWidthRefMap } = this
     const { nowDate, forPrint } = props
     const { axisWidth, clientWidth, totalWidth } = state
     const { options } = context
@@ -370,7 +367,6 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                         />
                         <TimeGridSlatLane
                           {...slatMeta /* FYI doesn't need isoTimeStr */}
-                          innerHeightRef={slatInnerMainHeightRefMap.createRef(slatMeta.key)}
                           borderTop={Boolean(slatI)}
                         />
                       </div>
@@ -467,15 +463,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
 
   private handleSlatInnerHeights = () => {
     const slatLabelInnerHeightMap = this.slatLabelInnerHeightRefMap.current
-    const slatMainInnerHeightMap = this.slatInnerMainHeightRefMap.current
     let max = 0
 
     for (const slatLabelInnerHeight of slatLabelInnerHeightMap.values()) {
       max = Math.max(max, slatLabelInnerHeight)
-    }
-
-    for (const slatInnerHeight of slatMainInnerHeightMap.values()) {
-      max = Math.max(max, slatInnerHeight)
     }
 
     if (this.state.slatInnerHeight !== max) {

@@ -20,7 +20,7 @@ it('timegrid view rerenders well', (done) => {
     slotLabelContent() {
       slotLabelRenderCnt += 1
     },
-    slotLaneContent() {
+    slotLaneDidMount() {
       slotLaneRenderCnt += 1
     },
     eventContent() {

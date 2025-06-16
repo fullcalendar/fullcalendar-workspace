@@ -56,7 +56,6 @@ export const OPTION_REFINERS = {
 
   // timeline, lane, for resource
   resourceLaneClass: identity as Identity<ClassNameGenerator<ResourceLaneData>>,
-  resourceLaneContent: identity as Identity<CustomContentGenerator<ResourceLaneData>>,
   resourceLaneDidMount: identity as Identity<DidMountHandler<ResourceLaneMountData>>,
   resourceLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceLaneMountData>>,
   resourceLaneTopClass: identity as Identity<ClassNameInput>,

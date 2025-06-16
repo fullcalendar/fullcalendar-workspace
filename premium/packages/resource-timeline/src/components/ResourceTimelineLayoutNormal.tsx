@@ -170,7 +170,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
   private bodyHeights?: Map<string, number> // keyed by createEntityId
 
   // internal
-  private bodySlotInnerWidth?: number
   private slotInnerWidth?: number
   private timeScroller: ScrollerSyncerInterface
   private bodyScroller: ScrollerSyncerInterface
@@ -587,9 +586,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       nowDate={props.nowDate}
                       todayRange={props.todayRange}
 
-                      // ref
-                      innerWidthRef={this.handleBodySlotInnerWidth}
-
                       // dimensions
                       slotWidth={slotWidth}
                     />
@@ -810,22 +806,12 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     })
   }
 
-  private handleBodySlotInnerWidth = (width: number) => {
-    this.bodySlotInnerWidth = width
-    afterSize(this.handleSlotInnerWidths)
-  }
-
   private handleSlotInnerWidths = () => {
     const headerSlotInnerWidth = this.headerRowInnerWidthMap.current.get(this.props.tDateProfile.cellRows.length - 1)
-    const { bodySlotInnerWidth } = this
 
-    if (headerSlotInnerWidth != null && bodySlotInnerWidth != null) {
-      const slotInnerWidth = Math.max(headerSlotInnerWidth, bodySlotInnerWidth)
-
-      if (slotInnerWidth !== this.slotInnerWidth) {
-        this.slotInnerWidth = slotInnerWidth
-        setRef(this.props.slotInnerWidthRef, slotInnerWidth)
-      }
+    if (headerSlotInnerWidth != null && headerSlotInnerWidth !== this.slotInnerWidth) {
+      this.slotInnerWidth = headerSlotInnerWidth
+      setRef(this.props.slotInnerWidthRef, headerSlotInnerWidth)
     }
   }
 

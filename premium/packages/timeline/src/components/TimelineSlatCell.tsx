@@ -5,15 +5,11 @@ import {
   DateMarker,
   DateProfile,
   DateRange, getDateMeta,
-  isInt,
-  joinArrayishClassNames,
-  joinClassNames,
-  memoize,
-  setRef,
-  watchWidth
+  isInt, joinClassNames,
+  memoize
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
+import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 
 export interface TimelineSlatCellProps {
@@ -27,20 +23,11 @@ export interface TimelineSlatCellProps {
 
   // dimensions
   width: number | undefined // always provided. if pending, use `undefined`
-
-  // ref
-  innerWidthRef?: Ref<number>
 }
 
 export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
   // memo
   private getDateMeta = memoize(getDateMeta)
-
-  // ref
-  private innerElRef = createRef<HTMLDivElement>()
-
-  // internal
-  private disconnectInnerWidth?: () => void
 
   render() {
     let { props, context } = this
@@ -85,41 +72,11 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           width: props.width,
         }}
         renderProps={renderProps}
-        generatorName="slotLaneContent"
-        customGenerator={options.slotLaneContent}
+        generatorName={undefined}
         classNameGenerator={options.slotLaneClass}
         didMount={options.slotLaneDidMount}
         willUnmount={options.slotLaneWillUnmount}
-      >
-        {(InnerContent) => (
-          <InnerContent
-            tag="div"
-            className={joinArrayishClassNames(
-              options.slotLaneInnerClass,
-              classNames.rigid,
-            )}
-            style={{
-              // HACK for Safari 16.4,
-              // which can't use ResizeObserver on elements with natural width 0
-              minWidth: 1,
-            }}
-            elRef={this.innerElRef}
-          />
-        )}
-      </ContentContainer>
+      />
     )
-  }
-
-  componentDidMount(): void {
-    const innerEl = this.innerElRef.current
-
-    this.disconnectInnerWidth = watchWidth(innerEl, (width) => {
-      setRef(this.props.innerWidthRef, width)
-    })
-  }
-
-  componentWillUnmount(): void {
-    this.disconnectInnerWidth()
-    setRef(this.props.innerWidthRef, null)
   }
 }

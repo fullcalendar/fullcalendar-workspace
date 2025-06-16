@@ -68,8 +68,11 @@ after-beta todo:
     depends on resource-above-dates or opposites
     HAVE THEMES leverage this. darker line
   ensure no-margin, no-padding on certain elements
+    ensure not used when not supposed to!
   update manual theme tests for `icons` removal
     search for `icons: {`
+  weird how expander is valigned differently than resource-area header/cell content
+  audit all justify/align in theme. ensure axis is intuitive
 
 
 Changelog
@@ -168,6 +171,12 @@ changelog: for porting custom themes, recomment ppl start with the "modern" them
 changelog: backgroundEventColor
 changelog: week/multi-day views in timegrid/daygrid will have "Sun 8" header by default,
   instead of "Sun 8/5" header (no more month number. just day-of-month)
+changelog:
+  custom-content hooks about lanes (not sure their previous name)
+    were REMOVED:
+      resourceLaneContent/InnerClass
+      slotLaneContent/InnerClass
+      dayLaneContent (dayLaneInnerClass is actually useful. something else)
 
 Docs
 ----

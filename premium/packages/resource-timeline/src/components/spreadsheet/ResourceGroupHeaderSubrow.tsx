@@ -99,7 +99,6 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
                   className={joinClassNames(
                     generateClassName(spec.labelInnerClass, renderProps),
                     classNames.rigid,
-                    classNames.flexRow,
                   )}
                 />
               </div>

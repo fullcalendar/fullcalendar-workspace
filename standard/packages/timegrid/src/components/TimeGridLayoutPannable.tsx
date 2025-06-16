@@ -96,9 +96,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
   private slatLabelInnerHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
     afterSize(this.handleSlatInnerHeights)
   })
-  private slatMainInnerHeightRefMap = new RefMap<string, number>(() => { // keyed by slatMeta.key
-    afterSize(this.handleSlatInnerHeights)
-  })
   private slatHeight?: number
   private prevSlatHeight?: number
   private headerScrollerRef = createRef<Scroller>()
@@ -121,7 +118,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
       headerMainInnerHeightRefMap,
       slatLabelInnerWidthRefMap,
       slatLabelInnerHeightRefMap,
-      slatMainInnerHeightRefMap,
     } = this
     const { nowDate, headerTiers, forPrint } = props
     const { axisWidth, totalWidth, clientWidth, clientHeight, bottomScrollbarWidth } = state
@@ -509,7 +505,6 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                           >
                             <TimeGridSlatLane
                               {...slatMeta /* FYI doesn't need isoTimeStr */}
-                              innerHeightRef={slatMainInnerHeightRefMap.createRef(slatMeta.key)}
                               borderTop={Boolean(slatI)}
                             />
                           </div>
@@ -606,15 +601,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
 
   private handleSlatInnerHeights = () => {
     const slatLabelInnerHeightMap = this.slatLabelInnerHeightRefMap.current
-    const slatMainInnerHeightMap = this.slatMainInnerHeightRefMap.current
     let max = 0
 
     for (const slatLabelInnerHeight of slatLabelInnerHeightMap.values()) {
       max = Math.max(max, slatLabelInnerHeight)
-    }
-
-    for (const slatMainInnerHeight of slatMainInnerHeightMap.values()) {
-      max = Math.max(max, slatMainInnerHeight)
     }
 
     if (this.state.slatInnerHeight !== max) {

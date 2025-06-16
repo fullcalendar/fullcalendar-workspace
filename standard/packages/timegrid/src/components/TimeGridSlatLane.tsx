@@ -1,23 +1,16 @@
 import { SlotLaneData } from '@fullcalendar/core'
-import { BaseComponent, ContentContainer, getDateMeta, joinArrayishClassNames, joinClassNames, memoize, setRef, watchHeight } from '@fullcalendar/core/internal'
-import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
-import { TimeSlatMeta } from '../time-slat-meta.js'
+import { BaseComponent, ContentContainer, getDateMeta, joinClassNames, memoize } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
+import { createElement } from '@fullcalendar/core/preact'
+import { TimeSlatMeta } from '../time-slat-meta.js'
 
 export interface TimeGridSlatLaneProps extends TimeSlatMeta {
-  innerHeightRef?: Ref<number>
   borderTop: boolean
 }
 
 export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
   // memo
   private getDateMeta = memoize(getDateMeta)
-
-  // ref
-  private innerElRef = createRef<HTMLDivElement>()
-
-  // internal
-  private disconnectInnerHeight?: () => void
 
   render() {
     let { props, context } = this
@@ -44,37 +37,11 @@ export class TimeGridSlatLane extends BaseComponent<TimeGridSlatLaneProps> {
           props.borderTop ? classNames.borderOnlyT : classNames.borderNone,
         )}
         renderProps={renderProps}
-        generatorName="slotLaneContent"
-        customGenerator={options.slotLaneContent}
+        generatorName={undefined}
         classNameGenerator={options.slotLaneClass}
         didMount={options.slotLaneDidMount}
         willUnmount={options.slotLaneWillUnmount}
-      >
-        {(InnerContent) => (
-          <InnerContent
-            tag="div"
-            className={joinArrayishClassNames(
-              options.slotLaneInnerClass,
-              classNames.rigid,
-            )}
-            elRef={this.innerElRef}
-          />
-        )}
-      </ContentContainer>
+      />
     )
-  }
-
-  componentDidMount(): void {
-    const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
-
-    // TODO: only attach this if refs props present
-    this.disconnectInnerHeight = watchHeight(innerEl, (height) => {
-      setRef(this.props.innerHeightRef, height)
-    })
-  }
-
-  componentWillUnmount(): void {
-    this.disconnectInnerHeight()
-    setRef(this.props.innerHeightRef, null)
   }
 }

@@ -15,7 +15,6 @@ import {
   generateClassName,
   getDateMeta,
   getEventRangeMeta,
-  hasCustomDayLaneContent,
   joinClassNames,
   memoize,
   renderFill,
@@ -139,23 +138,16 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
         className={baseClassName}
         style={baseStyle}
         renderProps={renderProps}
-        generatorName="dayLaneContent"
-        customGenerator={options.dayLaneContent}
+        generatorName={undefined}
         classNameGenerator={options.dayLaneClass}
         didMount={options.dayLaneDidMount}
         willUnmount={options.dayLaneWillUnmount}
       >
-        {(InnerContent) => (
+        {() => (
           <Fragment>
             {this.renderFillSegs(props.businessHourSegs, 'non-business')}
             {this.renderFillSegs(props.bgEventSegs, 'bg-event')}
             {this.renderFillSegs(props.dateSelectionSegs, 'highlight')}
-            {hasCustomDayLaneContent(options) && (
-              <InnerContent
-                tag="div"
-                className={classNames.fillTop}
-              />
-            )}
             <div
               className={innerClassName}
               style={{ zIndex: 1 }} // scope event z-indexes
