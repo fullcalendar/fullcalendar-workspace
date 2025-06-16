@@ -14,6 +14,7 @@ const EXTENDED_SETTINGS_AND_SEVERITIES = {
   omitZeroMinute: 0,
   meridiem: 0, // like am/pm
   omitCommas: 0,
+  forceWeekdayStart: 0,
 }
 
 const STANDARD_DATE_PROP_SEVERITIES = {
@@ -39,6 +40,7 @@ export interface NativeFormatterOptions extends Intl.DateTimeFormatOptions {
   omitZeroMinute?: boolean
   omitCommas?: boolean
   separator?: string
+  forceWeekdayStart?: boolean
 }
 
 export class NativeFormatter implements DateFormatter {
@@ -298,6 +300,15 @@ function postProcessParts(
     }
 
     parts.push({ type: 'timeZoneName', value: injectableTz })
+  }
+
+  if (
+    extendedSettings.forceWeekdayStart &&
+    parts.length === 3 &&
+    parts[1].value === ' ' &&
+    parts[2].type === 'weekday'
+  ) {
+    parts.reverse()
   }
 
   return parts.filter((part) => part.value) // filter empty parts

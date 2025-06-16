@@ -175,7 +175,12 @@ function computeFallbackHeaderFormat(datesRepDistinctDays: boolean, dayCnt: numb
   }
 
   if (dayCnt > 1) {
-    return createFormatter({ weekday: 'short', month: 'numeric', day: 'numeric', omitCommas: true }) // "Sat 11/12"
+    return createFormatter({ // "Sat 11"
+      weekday: 'short',
+      day: 'numeric',
+      omitCommas: true,
+      forceWeekdayStart: true,
+    })
   }
 
   return createFormatter({ weekday: 'long' }) // "Saturday"
