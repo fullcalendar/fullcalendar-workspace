@@ -451,6 +451,7 @@ export default createPlugin({
 /*
 Event continuation arrows experiment.
 Looks great in Firefox. Clip-path is fuzzy in Chrome. TODO: use SVG?
+INSTEAD: do clip-path on whole bg element or whole element... don't just add a separate arrow div
 Need to refactor inner-padding in event element, b/c the before/after need entire height
 
   rowEventClass: 'mb-px',

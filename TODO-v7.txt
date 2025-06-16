@@ -53,6 +53,7 @@ BUGs later:
   bug: resource-timeline print-view with multiple columns; broken positioning
 
 after-beta todo:
+  rethink isCompact/isSpacious. weird to have isSpacious:false on resourceLaneBottom... hard to reason
   bug: why when resourceGroupHeaderClass bg color removed, we don't see vertical column lines underneath?
   bugs with isMajor special border on slots
     doesn't work on resourceTimelineThreeDays/Week/Month (am I not configuring correctly)
