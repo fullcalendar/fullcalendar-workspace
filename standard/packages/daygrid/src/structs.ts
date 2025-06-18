@@ -7,6 +7,8 @@ export interface DayHeaderData extends DateMeta {
   isMajor: boolean
   text: string
   textParts: Intl.DateTimeFormatPart[]
+  weekdayText: string
+  dayNumberText: string
   view: ViewApi
   [otherProp: string]: any
 }

@@ -178,6 +178,7 @@ changelog:
       resourceLaneContent/InnerClass
       slotLaneContent/InnerClass
       dayLaneContent (dayLaneInnerClass is actually useful. something else)
+changelog: forceWeekdayStart
 
 Docs
 ----

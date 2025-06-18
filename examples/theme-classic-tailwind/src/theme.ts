@@ -293,7 +293,7 @@ export default createPlugin({
       data.isDisabled && neutralBgClass,
     ],
     dayCellTopClass: (data) => [
-      'flex flex-row-reverse',
+      'flex flex-row justify-end',
       'min-h-[2px]', // effectively 2px top padding when no day-number
       data.isOther && 'opacity-30',
     ],

@@ -1,5 +1,5 @@
-import { CalendarOptions, createPlugin, PluginDef } from '@fullcalendar/core'
-import { createElement } from '@fullcalendar/core/preact'
+import { CalendarOptions, createPlugin, PluginDef, ViewApi } from '@fullcalendar/core'
+import { createElement, Fragment } from '@fullcalendar/core/preact'
 import * as svgIcons from './svgIcons.js'
 
 // Will import ambient types during dev but strip out for build
@@ -14,7 +14,6 @@ const xxsTextClass = 'text-[0.7rem]/[1.25]'
 const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
 
 const neutralBgClass = 'bg-gray-500/10'
-const todayBgClass = 'bg-yellow-400/15 dark:bg-yellow-200/10'
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
 const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
@@ -89,15 +88,15 @@ const floatingWeekNumberClasses: CalendarOptions = {
   ],
 }
 
-const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean }) => [
-  'items-center justify-center',
-  data.isMajor ? majorBorderClass : borderClass,
+const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean, view: ViewApi }) => [
+  !data.view.type.startsWith('timeGrid') && ( // sort-of a hack
+    data.isMajor ? majorBorderClass : borderClass
+  ),
   data.isDisabled && neutralBgClass,
 ]
 
 const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
-  'flex flex-col',
-  cellPaddingClass,
+  'mt-1 flex flex-col items-center',
   data.isCompact && xxsTextClass,
 ]
 
@@ -285,30 +284,44 @@ export default createPlugin({
     dayHeaderRowClass: borderClass,
     dayHeaderClass: getDayHeaderClasses,
     dayHeaderInnerClass: getDayHeaderInnerClasses,
-    dayHeaderDividerClass: ['border-t', borderColorClass],
+    dayHeaderContent: (data) => (
+      <Fragment>
+        {data.weekdayText && (
+          <div className='uppercase text-xs'>{data.weekdayText}</div>
+        )}
+        {data.dayNumberText && (
+          /* TODO: kill navLink text decoration somehow */
+          <div
+            className={
+              'm-0.5 flex flex-row items-center justify-center text-base h-[2em]' +
+              (data.isToday ? ' w-[2em] rounded-full bg-blue-500 text-white decoration-red-100' : '')
+            }
+          >{data.dayNumberText}</div>
+        )}
+      </Fragment>
+    ),
 
     dayRowClass: borderClass,
     dayCellClass: (data) => [
       data.isMajor ? majorBorderClass : borderClass,
-      data.isToday && todayBgClass,
       data.isDisabled && neutralBgClass,
     ],
     dayCellTopClass: (data) => [
-      'flex flex-row-reverse',
+      'flex flex-row justify-center',
       'min-h-[2px]', // effectively 2px top padding when no day-number
       data.isOther && 'opacity-30',
     ],
     dayCellTopInnerClass: (data) => [
-      'p-1',
+      'm-1 flex flex-row items-center justify-center h-[1.8em]' +
+        (data.isToday ? ' w-[1.8em] rounded-full bg-blue-500 text-white decoration-red-100' : ''),
       data.hasMonthLabel && 'text-base font-bold',
       data.isCompact && xxsTextClass,
     ],
 
-    allDayDividerClass: `border-y ${borderColorClass} pb-0.5 ${neutralBgClass}`,
+    allDayDividerClass: `border-t ${borderColorClass}`,
 
     dayLaneClass: (data) => [
       data.isMajor ? majorBorderClass : borderClass,
-      data.isToday && todayBgClass,
       data.isDisabled && neutralBgClass,
     ],
     dayLaneInnerClass: (data) => data.isSimple
@@ -359,6 +372,9 @@ export default createPlugin({
     timelineBottomClass: 'pb-3',
   },
   views: {
+    day: { // why this not working??? needed for single-day events. better solution?
+      dayHeaderFormat: { day: 'numeric', weekday: 'long' },
+    },
     dayGrid: {
       ...dayGridClasses,
       ...floatingWeekNumberClasses,
@@ -374,6 +390,7 @@ export default createPlugin({
     timeGrid: {
       ...dayGridClasses,
 
+      dayHeaderDividerClass: 'border-b border-gray-200 dark:border-gray-900',
       dayRowClass: 'min-h-[3em]',
       dayCellBottomClass: 'min-h-[1em]', // for ALL-DAY
 

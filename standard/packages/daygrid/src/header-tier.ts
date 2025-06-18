@@ -152,6 +152,8 @@ export function buildDateDataConfigs(
           ...extraRenderProps,
           text,
           textParts,
+          get weekdayText() { return findWeekdayText(textParts) },
+          get dayNumberText() { return findDayNumberText(textParts) },
           isMajor,
           isCompact: false, // HACK. gets overridden
           view: viewApi,
@@ -202,6 +204,8 @@ export function buildDateDataConfigs(
           view: viewApi,
           text,
           textParts,
+          get weekdayText() { return findWeekdayText(textParts) },
+          get dayNumberText() { return findDayNumberText(textParts) },
           ...extraRenderProps,
         }
         const fullWeekDayStr = dateEnv.format(normDate, WEEKDAY_FORMAT)[0]
@@ -223,4 +227,22 @@ export function buildDateDataConfigs(
           className,
         }
       })
+}
+
+function findWeekdayText(parts: Intl.DateTimeFormatPart[]): string {
+  for (const part of parts) {
+    if (part.type === 'weekday') {
+      return part.value
+    }
+  }
+  return ''
+}
+
+function findDayNumberText(parts: Intl.DateTimeFormatPart[]): string {
+  for (const part of parts) {
+    if (part.type === 'day') {
+      return part.value
+    }
+  }
+  return ''
 }
