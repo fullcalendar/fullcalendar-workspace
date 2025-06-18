@@ -25,7 +25,7 @@ const listItemPaddingClass = 'px-3 py-2' // list-day-header and list-item-event
 const dayGridItemClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-link
 
 // timegrid axis
-const axisClass = 'justify-end' // align axisInner right
+const axisClass = 'justify-end' // align axisInner right --- kill this?
 const axisInnerClass = `${cellPaddingClass} text-end` // align text right when multiline
 
 // transparent resizer for mouse
@@ -413,9 +413,10 @@ export default createPlugin({
       columnMoreLinkClass: `mb-px rounded-xs outline outline-(--fc-canvas-color) ${moreLinkBgClass}`,
       columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
-      slotLabelClass: axisClass,
+      // slotMinTime: '-01:00', -- TODO
+      slotLabelClass: [axisClass, 'w-2 self-end'],
       slotLabelInnerClass: (data) => [
-        axisInnerClass,
+        'ps-2 pe-3 py-0.5 -mt-[1em] text-end', // was axisInnerClass -- best -mt- value???
         'min-h-[1.5em]',
         data.isCompact && xxsTextClass,
       ],
