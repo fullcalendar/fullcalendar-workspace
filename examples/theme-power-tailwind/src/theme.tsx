@@ -105,13 +105,16 @@ export default createPlugin({
     backgroundEventColor: 'var(--color-green-500)',
     // eventDisplay: 'block',
 
-    className: 'gap-5',
+    className: `${borderClass} gap-4`,
 
-    viewClass: borderClass,
+    // HACK
+    viewClass: (data) => (!data.view.type.startsWith('timeGrid') && !data.view.type.startsWith('multiMonth'))
+      && 'border-t border-gray-200 dark:border-gray-900', // TODO: DRY colors
+
     viewHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
 
     toolbarClass: (data) => [
-      'items-center gap-3',
+      'p-4 items-center gap-3',
       data.borderlessX && 'px-3', // space from edge
     ],
     toolbarSectionClass: (data) => [
@@ -400,7 +403,7 @@ export default createPlugin({
     timeGrid: {
       ...dayGridClasses,
 
-      dayHeaderDividerClass: 'border-b border-gray-200 dark:border-gray-900',
+      dayHeaderDividerClass: 'border-b border-gray-200 dark:border-gray-900', // TODO: DRY colors
       dayRowClass: 'min-h-[3em]',
       dayCellBottomClass: 'min-h-[1em]', // for ALL-DAY
 
