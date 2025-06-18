@@ -15,6 +15,7 @@ import { DEFAULT_TABLE_EVENT_TIME_FORMAT, hasListItemDisplay } from '../event-re
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg.js'
 
 export interface DayGridMoreLinkProps {
+  className?: string
   allDayDate: DateMarker
   segs: DayRowEventRangePart[]
   hiddenSegs: DayRowEventRange[]
@@ -36,6 +37,7 @@ export class DayGridMoreLink extends BaseComponent<DayGridMoreLinkProps> {
     return (
       <MoreLinkContainer
         display='row'
+        className={props.className}
         isCompact={props.isCompact}
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}

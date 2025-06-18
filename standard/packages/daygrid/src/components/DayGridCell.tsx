@@ -192,6 +192,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 {props.fg}
               </div>
               <DayGridMoreLink
+                className={classNames.rel} // puts it above bg-fills
                 allDayDate={props.date}
                 segs={props.segs}
                 hiddenSegs={props.hiddenSegs}
