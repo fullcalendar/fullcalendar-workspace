@@ -113,10 +113,7 @@ export default createPlugin({
 
     viewHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
 
-    toolbarClass: (data) => [
-      'p-4 items-center gap-3',
-      data.borderlessX && 'px-3', // space from edge
-    ],
+    toolbarClass: 'p-4 items-center gap-3',
     toolbarSectionClass: (data) => [
       'items-center gap-3',
       data.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto', // nicer wrapping
