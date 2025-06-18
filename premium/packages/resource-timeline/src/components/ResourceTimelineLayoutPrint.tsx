@@ -244,7 +244,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
 
           </div>
           <div
-            className={joinArrayishClassNames(options.slotLabelDividerClass)}
+            className={generateClassName(options.slotLabelDividerClass, { isHeader: true })}
           />
         </div>{/* Header END */}
         {/* Body START */}

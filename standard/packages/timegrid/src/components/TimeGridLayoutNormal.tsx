@@ -179,7 +179,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   )}
                 </div>
                 <div
-                  className={joinArrayishClassNames(options.slotLabelDividerClass)}
+                  className={generateClassName(options.slotLabelDividerClass, { isHeader: true })}
                 />
                 <DayGridHeaderRow
                   {...rowConfig}
@@ -190,7 +190,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 {Boolean(endScrollbarWidth) && (
                   <div
                     className={joinArrayishClassNames(
-                      options.fillerClass,
+                      generateClassName(options.fillerClass, { isHeader: true }),
                       classNames.borderOnlyS,
                     )}
                     style={{ minWidth: endScrollbarWidth }}
@@ -221,7 +221,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   isCompact={cellIsCompact}
                 />
                 <div
-                  className={joinArrayishClassNames(options.slotLabelDividerClass)}
+                  className={generateClassName(options.slotLabelDividerClass, { isHeader: false })}
                 />
                 <TimeGridAllDayLane
                   dateProfile={props.dateProfile}
@@ -246,7 +246,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 {Boolean(endScrollbarWidth) && (
                   <div
                     className={joinArrayishClassNames(
-                      options.fillerClass,
+                      generateClassName(options.fillerClass, { isHeader: false }),
                       classNames.borderOnlyS,
                     )}
                     style={{ minWidth: endScrollbarWidth }}
@@ -297,7 +297,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   style={{ width: axisWidth }}
                 />
                 <div
-                  className={joinArrayishClassNames(options.slotLabelDividerClass)}
+                  className={generateClassName(options.slotLabelDividerClass, { isHeader: false })}
                 />
                 <TimeGridCols
                   dateProfile={props.dateProfile}
@@ -360,7 +360,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                           />
                         </div>
                         <div
-                          className={joinArrayishClassNames(options.slotLabelDividerClass)}
+                          className={generateClassName(options.slotLabelDividerClass, { isHeader: false })}
                           style={{ visibility: 'hidden' }}
                           // ^TODO: className?
                           // invisible because dayLanes show the line
@@ -376,7 +376,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   {rowsNotExpanding && (
                     <div
                       class={joinArrayishClassNames(
-                        options.fillerClass,
+                        generateClassName(options.fillerClass, { isHeader: false }),
                         classNames.borderOnlyT,
                         classNames.liquid,
                       )}

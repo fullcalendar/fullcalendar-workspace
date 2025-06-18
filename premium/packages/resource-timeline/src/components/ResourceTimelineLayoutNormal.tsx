@@ -392,7 +392,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   </Scroller>
                 </div>
                 <div
-                  className={joinArrayishClassNames(options.slotLabelDividerClass)}
+                  className={generateClassName(options.slotLabelDividerClass, { isHeader: true })}
                 />
               </div>
 
@@ -440,7 +440,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   {spreadsheetNeedsBottomFiller && (
                     <div
                       className={joinArrayishClassNames(
-                        options.fillerClass,
+                        generateClassName(options.fillerClass, { isHeader: false }),
                         classNames.borderOnlyT,
                       )}
                       style={{ minHeight: spreadsheetBottomFiller }}
@@ -542,7 +542,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   {Boolean(endScrollbarWidth) && (
                     <div
                       className={joinArrayishClassNames(
-                        options.fillerClass,
+                        generateClassName(options.fillerClass, { isHeader: false }),
                         classNames.borderOnlyS,
                       )}
                       style={{ minWidth: endScrollbarWidth }}
@@ -550,7 +550,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   )}
                 </Scroller>
                 <div
-                  className={joinArrayishClassNames(options.slotLabelDividerClass)}
+                  className={generateClassName(options.slotLabelDividerClass, { isHeader: false })}
                 />
               </div>
 
@@ -672,7 +672,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   {timelineNeedsBottomFiller && (
                     <div
                       className={joinArrayishClassNames(
-                        options.fillerClass,
+                        generateClassName(options.fillerClass, { isHeader: false }),
                         classNames.borderOnlyT,
                       )}
                       style={{ minHeight: timelineBottomFiller }}

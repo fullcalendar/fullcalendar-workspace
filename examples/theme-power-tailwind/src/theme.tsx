@@ -173,7 +173,7 @@ export default createPlugin({
     columnMoreLinkInnerClass: 'top-0',
 
     // misc BG
-    fillerClass: `${borderClass} opacity-50`,
+    fillerClass: (data) => !data.isHeader && `${borderClass} opacity-50`,
     nonBusinessClass: neutralBgClass,
     highlightClass: 'bg-cyan-100/40 dark:bg-blue-500/20',
 
@@ -431,7 +431,7 @@ export default createPlugin({
         data.isCompact && xxsTextClass,
       ],
 
-      slotLabelDividerClass: `border-l ${borderColorClass}`,
+      slotLabelDividerClass: (data) => !data.isHeader && `border-l ${borderColorClass}`,
 
       nowIndicatorLabelClass: 'start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] border-s-red-500',
       nowIndicatorLineClass: 'border-t border-red-500',

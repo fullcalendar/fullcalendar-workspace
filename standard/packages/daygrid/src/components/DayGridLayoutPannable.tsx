@@ -113,7 +113,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
               {Boolean(endScrollbarWidth) && (
                 <div
                   className={joinArrayishClassNames(
-                    options.fillerClass,
+                    generateClassName(options.fillerClass, { isHeader: true }),
                     classNames.borderOnlyS,
                   )}
                   style={{ minWidth: endScrollbarWidth }}

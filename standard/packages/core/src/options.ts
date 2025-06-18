@@ -279,7 +279,7 @@ export const BASE_OPTION_REFINERS = {
   slotLabelWillUnmount: identity as Identity<WillUnmountHandler<SlotLabelMountData>>,
 
   slotLabelRowClass: identity as Identity<ClassNameInput>,
-  slotLabelDividerClass: identity as Identity<ClassNameInput>,
+  slotLabelDividerClass: identity as Identity<ClassNameGenerator<{ isHeader: boolean }>>,
 
   dayMaxEvents: identity as Identity<boolean | number>,
   dayMaxEventRows: identity as Identity<boolean | number>,
@@ -378,7 +378,7 @@ export const BASE_OPTION_REFINERS = {
   borderlessTop: Boolean,
   borderlessBottom: Boolean,
 
-  fillerClass: identity as Identity<ClassNameInput>,
+  fillerClass: identity as Identity<ClassNameGenerator<{ isHeader: boolean }>>,
 
   toolbarClass: identity as Identity<ClassNameGenerator<ToolbarData>>,
   toolbarSectionClass: identity as Identity<ClassNameGenerator<ToolbarSectionData>>,

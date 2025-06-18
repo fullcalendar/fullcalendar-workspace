@@ -188,7 +188,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   {Boolean(endScrollbarWidth) && (
                     <div
                       className={joinArrayishClassNames(
-                        options.fillerClass,
+                        generateClassName(options.fillerClass, { isHeader: true }),
                         classNames.borderOnlyS,
                       )}
                       style={{ minWidth: endScrollbarWidth }}
@@ -196,7 +196,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   )}
                 </Scroller>
                 <div
-                  className={joinArrayishClassNames(options.slotLabelDividerClass)}
+                  className={generateClassName(options.slotLabelDividerClass, { isHeader: true })}
                 />
               </div>
 
