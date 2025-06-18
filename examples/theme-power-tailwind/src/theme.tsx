@@ -13,7 +13,7 @@ import {} from '@fullcalendar/resource-timeline'
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
 
-const neutralBgClass = 'bg-gray-500/10'
+const neutralBgClass = 'bg-gray-500/7'
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
 const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
@@ -35,11 +35,10 @@ const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
 const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
 // circle resizer for touch
+// TODO: make circle bigger?
 const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) bg-(--fc-canvas-color)`
 const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
 const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
-
-const continuationArrowClass = 'relative z-10 mx-px border-y-[5px] border-y-transparent opacity-50'
 
 // applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
 const dayGridClasses: CalendarOptions = {
@@ -55,20 +54,13 @@ const dayGridClasses: CalendarOptions = {
   listItemEventTimeClass: 'p-px',
   listItemEventTitleClass: 'p-px font-bold',
 
-  rowEventClass: (data) => [
-    data.isStart && 'ms-0.5',
-    data.isEnd && 'me-0.5',
-  ],
-  rowEventColorClass: (data) => [
-    data.isStart && 'rounded-s-sm',
-    data.isEnd && 'rounded-e-sm',
-  ],
+  rowEventInnerClass: 'gap-px', // small gap, because usually only start-time
 
   rowMoreLinkClass: (data) => [
     dayGridItemClass,
     data.isCompact
       ? 'border border-blue-500' // looks like bordered event
-      : 'self-start p-px',
+      : 'p-px',
     'hover:bg-gray-500/20', // matches list-item hover
   ],
   rowMoreLinkInnerClass: (data) => [
@@ -111,6 +103,7 @@ export default createPlugin({
     eventColor: 'var(--color-blue-500)',
     eventContrastColor: 'var(--color-white)',
     backgroundEventColor: 'var(--color-green-500)',
+    // eventDisplay: 'block',
 
     className: 'gap-5',
 
@@ -208,23 +201,37 @@ export default createPlugin({
     blockEventClass: (data) => [
       'relative', // for absolute-positioned color
       'group', // for focus and hover
-      'p-px',
+      'bg-(--fc-canvas-color)',
+      'border-(--fc-event-color)', // subclasses define thickness
       (data.isDragging && !data.isSelected) && 'opacity-75',
       data.isSelected
         ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
         : 'focus:shadow-md',
     ],
     blockEventColorClass: (data) => [
-      'absolute z-0 inset-0 bg-(--fc-event-color)',
-      'print:border print:border-(--fc-event-color) print:bg-white',
+      'absolute z-0 inset-0',
+      'bg-(--fc-event-color) print:bg-white',
+      'not-print:opacity-30',
+      'print:border print:border-(--fc-event-color)',
       data.isSelected
         ? 'brightness-75'
         : 'group-focus:brightness-75',
     ],
-    blockEventInnerClass: 'relative z-10 text-(--fc-event-contrast-color) print:text-black flex',
-    blockEventTitleClass: 'sticky',
+    blockEventInnerClass: 'relative z-10 p-0.5 flex',
+    blockEventTimeClass: 'text-(--fc-event-color) brightness-40 dark:brightness-160',
+    blockEventTitleClass: 'sticky text-(--fc-event-color) brightness-40 dark:brightness-160',
 
-    rowEventClass: 'mb-px', // space between events
+    rowEventClass: (data) => [
+      'mb-px', // space between events
+      data.isStart ? 'ms-px rounded-s-sm border-s-4' : 'ps-2',
+      data.isEnd ? 'me-px rounded-e-sm' : 'pe-2',
+      (!data.isStart && !data.isEnd) // arrows on both sides
+        ? '[clip-path:polygon(0_50%,6px_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,6px_100%)]'
+        : !data.isStart // just start side
+          ? '[clip-path:polygon(0_50%,6px_0,100%_0,100%_100%,6px_100%)]'
+          : !data.isEnd // just end side
+            && '[clip-path:polygon(0_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,0_100%)]',
+    ],
     rowEventBeforeClass: (data) => data.isStartResizable && [
       data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
       '-start-1',
@@ -234,8 +241,7 @@ export default createPlugin({
       '-end-1',
     ],
     rowEventColorClass: (data) => [
-      !data.isStart && 'print:border-s-0',
-      !data.isEnd && 'print:border-e-0',
+      data.isEnd && 'rounded-e-sm', // match rounded rowEventClass (the bg)
     ],
     rowEventInnerClass: (data) => [
       'flex-row items-center',
@@ -244,7 +250,13 @@ export default createPlugin({
     rowEventTimeClass: 'p-px font-bold',
     rowEventTitleClass: 'p-px start-0', // `start` for stickiness
 
-    columnEventClass: 'mb-px', // space from slot line
+    columnEventClass: (data) => [
+      'mb-px', // space from slot line
+      'border-s-4', // always
+      data.isStart && 'rounded-t-sm',
+      data.isEnd && 'rounded-b-sm',
+      (data.level || data.isDragging) && 'outline outline-(--fc-canvas-color)',
+    ],
     columnEventBeforeClass: (data) => data.isStartResizable && [
       data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
       '-top-1',
@@ -254,12 +266,10 @@ export default createPlugin({
       '-bottom-1',
     ],
     columnEventColorClass: (data) => [
-      data.isStart && 'rounded-t-sm',
-      data.isEnd && 'rounded-b-sm',
-      (data.level || data.isDragging) && 'outline outline-(--fc-canvas-color)',
+      data.isStart && 'rounded-se-sm',
+      data.isEnd && 'rounded-ee-sm',
     ],
     columnEventInnerClass: (data) => [
-      'p-px',
       data.isCompact
         ? 'flex-row gap-1' // one line
         : 'flex-col gap-px', // two lines
@@ -429,19 +439,11 @@ export default createPlugin({
     timeline: {
       rowEventClass: [
         'me-px', // space from slot line
-        'items-center', // for aligning continuation arrows
       ],
-      rowEventBeforeClass: (data) => !data.isStartResizable && [
-        continuationArrowClass,
-        'border-e-[5px] border-e-black', // pointing to start
-      ],
-      rowEventAfterClass: (data) => !data.isEndResizable && [
-        continuationArrowClass,
-        'border-s-[5px] border-s-black', // pointing to end
-      ],
-      rowEventInnerClass: (data) => [
-        'px-px gap-1',
-        data.isSpacious ? 'py-1' : 'py-px',
+      rowEventInnerClass: () => [
+        'gap-1', // large gap, because usually time is *range*, and we have a lot of h space anyway
+        // TODO: find better way to do isSpacious
+        // data.isSpacious
       ],
 
       rowMoreLinkClass: `me-px p-px ${moreLinkBgClass}`,

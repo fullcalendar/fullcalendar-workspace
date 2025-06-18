@@ -421,7 +421,7 @@ export default createPlugin({
         'border-s-[5px] border-s-black', // pointing to end
       ],
       rowEventInnerClass: (data) => [
-        'px-px gap-1',
+        'px-px gap-1', // TODO: put the gap on the global rowEventInnerClass???
         data.isSpacious ? 'py-1' : 'py-px',
       ],
 
