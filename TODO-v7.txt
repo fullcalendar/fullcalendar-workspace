@@ -12,6 +12,9 @@ bug: for default titleFormat in week view
 Classic theme
   better contrast between week number gray and non-business hour gray
 Monarch theme
+  fix: timeGridDay needs day-number
+    doesn't have it bc dayNumberText can't be computed from dayHeaderFormat
+    do a fallback (or just have it always use this "fallback")
   more padding on edges of "all-day" text
   just dont have bg color for disabled days?
   don't do global navLink hover styles
@@ -27,9 +30,15 @@ Monarch theme
     slotDuration: '01:00',
     expandRows: true,
   weekNumber, in timegrid, style like Google Calendar, with gray pillbox
+  year view looks squished
+    compare to https://fullcalendar.io/docs/multimonth-grid-demo
+    ensure inline week numbers okay
+  force-off week numbers for extremely compact
 Zen theme
   fork from classic theme
 Technic theme
+  fork from classic theme
+  port old event styles from Monarch theme (but gut continuation cropping)
   make event selected state be solid color (like apple calendar)
 All themes
   xxSmall text too small (esp Year view)
