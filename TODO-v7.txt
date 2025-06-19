@@ -5,6 +5,55 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 
+bug: when displayEventTime:false,
+  list-item events with "All-day" remain (always like this?)
+bug: for default titleFormat in week view
+  why are we getting "Jan 2023 – Feb 2023"? Problem with our ponyfill?
+Classic theme
+  better contrast between week number gray and non-business hour gray
+Monarch theme
+  more padding on edges of "all-day" text
+  just dont have bg color for disabled days?
+  don't do global navLink hover styles
+    handle case-by-case in "Inner" hooks, and provide isNavLink render prop
+    do custom styling for day-headers with circle link
+    do custom styling for day-top with circle link
+  for list view, make sure we mark the current day with circle (like Google Calendar)
+  put x-padding on non-circled day numbers. tab-focusing looks bad right now
+  core: kill border-radius and drop-shadow on (Calendar|View) when borderless
+    OR, have root-div (and view-div? else?) explicitly handle this
+  how will vresource headers work?
+  bug: Causes scrollbars when there shouldn't be
+    slotDuration: '01:00',
+    expandRows: true,
+  weekNumber, in timegrid, style like Google Calendar, with gray pillbox
+Zen theme
+  fork from classic theme
+Technic theme
+  make event selected state be solid color (like apple calendar)
+All themes
+  xxSmall text too small (esp Year view)
+  implement nice now-indicator
+  floating week number, even if looks bad
+    implement WeekNumberDisplayData.isCell
+  do list-view
+  do resource-timeline
+Test stickyHeaderDates, apparently "makes this broken sometimes"
+When dayWidth VERY small, force our own 'S M T W T F' date format
+ClassName for license warning (benefits Monarch theme)
+rename ViewData -> ViewDisplayData
+Implement
+  blockEventContent
+  rowEventContent
+  columnEventContent
+  listItemEventContent
+Themes with -top slotLabelInners should start slots at 11pm night before
+  BUT, BUG: slotMinTime:'-01:00' gives weird results
+Put dayPopover as child of BODY! --- do whatever is necessary (still use position:fixed?)
+  because it's possible to have overflow:hidden on the calendar now (Monarch theme does it)
+Kill fixedMirrorParent --- always use BODY
+
+
 ASAP
 ----
 
@@ -179,6 +228,8 @@ changelog:
       slotLaneContent/InnerClass
       dayLaneContent (dayLaneInnerClass is actually useful. something else)
 changelog: forceWeekdayStart
+changelog: default computed titleFormat for week view (could span different months),
+  WHEN it actually does span different months, is like "Sep - Oct 2014"
 
 Docs
 ----
@@ -463,6 +514,10 @@ punt: rethink: isCompact vs isNarrow -- confusion for timegrid events
 punt: sticky header in vertical resource view, horizontal scrolling. new feature
   do in CORE, not in theme. analagous to vertically-sticky resource cells
   if it were the theme, we'd need to pass a renderProp, and hard to know what the name would be
+punt: slotMinHeight setting
+punt: when implementing weekNumberDisplay:'column',
+  will have WeekNumberDisplayData.isCell
+  and weekNumberHeaderClass/Content
 
 Notes
 -----
@@ -570,3 +625,9 @@ note: bg-fill / bg-event background event z-indexes
       CANNOT: make wrapper <div> and put cell + fills inside. because events live within the cell
       and will run into react-native-esque problems again!
       WE REALLY just need to do trial-and-error in react-native to see what's possible
+Other ways to rearrange list-item-event DOT
+  (Currently we're using display:contents with order:-1)
+  (FYI, react-native doesn't allow allow (flex)order to be set)
+  1. Simply override whole eventContent(), while incorporating timeClass/timeClass
+  2. Use flex-direction: inverse-row to reverse time/title,
+      and then absolutely position color dot with well-known left offset

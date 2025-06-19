@@ -62,8 +62,8 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       level: 0,
       isCompact: props.isCompact || false,
       isSpacious: false,
-      timeClassName: '', // never display time
-      titleClassName: joinClassNames(
+      timeClass: '', // never display time
+      titleClass: joinClassNames(
         generateClassName(options.eventTitleClass, subcontentRenderProps),
         generateClassName(options.backgroundEventTitleClass, subcontentRenderProps),
       ),
@@ -125,7 +125,7 @@ function renderInnerContent(props: EventDisplayData) {
   let { title } = props.event
 
   return title && (
-    <div className={props.titleClassName}>{props.event.title}</div>
+    <div className={props.titleClass}>{props.event.title}</div>
   )
 }
 

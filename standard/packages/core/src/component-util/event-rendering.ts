@@ -241,8 +241,8 @@ export interface EventDisplayData { // for *Content handlers
   isCompact: boolean
   isSpacious: boolean
   level: number
-  timeClassName: string
-  titleClassName: string
+  timeClass: string
+  titleClass: string
 }
 
 export type EventMountData = MountData<EventDisplayData>

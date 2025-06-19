@@ -23,7 +23,7 @@ export function buildTitle(
   return dateEnv.formatRange(
     range.start,
     range.end,
-    createFormatter(viewOptions.titleFormat || buildTitleFormat(dateProfile)),
+    createFormatter(viewOptions.titleFormat || buildTitleFormat(dateProfile, dateEnv)),
     {
       isEndExclusive: dateProfile.isRangeAllDay,
       defaultSeparator: viewOptions.titleRangeSeparator,
@@ -33,7 +33,10 @@ export function buildTitle(
 
 // Generates the format string that should be used to generate the title for the current date range.
 // Attempts to compute the most appropriate format if not explicitly specified with `titleFormat`.
-function buildTitleFormat(dateProfile: DateProfile): FormatterInput {
+function buildTitleFormat(
+  dateProfile: DateProfile,
+  dateEnv: DateEnv,
+): FormatterInput {
   let { currentRangeUnit } = dateProfile
 
   if (currentRangeUnit === 'year') {
@@ -50,8 +53,12 @@ function buildTitleFormat(dateProfile: DateProfile): FormatterInput {
   )
 
   if (days !== null && days > 1) {
-    // multi-day range. shorter, like "Sep 9 - 10 2014"
-    return { year: 'numeric', month: 'short', day: 'numeric' }
+    return {
+      year: 'numeric',
+      month: dateEnv.getMonth(dateProfile.activeRange.start) !== dateEnv.getMonth(dateProfile.activeRange.end)
+        ? 'short' // different months? do "Sep - Oct 2014"
+        : 'long', // same month? do "September 2014"
+    }
   }
 
   // one day. longer, like "September 9 2014"

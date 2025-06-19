@@ -38,13 +38,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // eventColor: 'yellow',
       // eventContrastColor: 'black',
+      // eventResizableFromStart: true,
 
       // height: 'auto',
       // eventMaxStack: 1,
       // direction: 'rtl',
-      eventResizableFromStart: true,
-      // stickyHeaderDates: true, -- makes things broken sometimes!
+
+      // dayHeaders: false,
+      // stickyHeaderDates: true,
+
       weekNumbers: true,
+
       plugins: [
         scrollGridPlugin, // even for standard
         adaptivePlugin, // even for standard
@@ -56,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
         themePlugin,
       ],
 
-      // displayEventTime: true,
+      // displayEventTime: false,
       // eventDisplay: 'block',
 
       // dayMinWidth: 200,
@@ -67,14 +71,14 @@ document.addEventListener('DOMContentLoaded', function() {
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek,multiMonthYear'
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek,multiMonthYear',
       },
       navLinks: true, // can click day/week names to navigate views
       editable: true,
       selectable: true,
       selectMirror: false,
       dayMaxEvents: true, // allow "more" link when too many events
-      businessHours: true, // looks whack, covering lots of things
+      // businessHours: true,
       // eventMaxStack: 1,
       events: [
         {
@@ -132,7 +136,12 @@ document.addEventListener('DOMContentLoaded', function() {
           url: 'http://google.com/',
           start: '2023-01-28'
         }
-      ]
+      ],
+      views: {
+        timeGrid: {
+          slotDuration: '01:00', // recommended setting for this theme demo
+        }
+      }
     })
   } else {
     calendar = new Calendar(calendarEl, {
@@ -142,6 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // borderlessBottom: true,
 
       // displayEventTime: true,
+      // displayEventEnd: false,
       // eventOverlap: false,
 
       plugins: [

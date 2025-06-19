@@ -2,6 +2,11 @@ import { CalendarOptions, createPlugin, PluginDef, ViewApi } from '@fullcalendar
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import * as svgIcons from './svgIcons.js'
 
+/*
+TODO: segmented buttons:
+https://m3.material.io/components/segmented-buttons/overview
+*/
+
 // Will import ambient types during dev but strip out for build
 import {} from '@fullcalendar/timegrid'
 import {} from '@fullcalendar/timeline'
@@ -81,14 +86,11 @@ const floatingWeekNumberClasses: CalendarOptions = {
 }
 
 const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean, view: ViewApi }) => [
-  !data.view.type.startsWith('timeGrid') && ( // sort-of a hack
-    data.isMajor ? majorBorderClass : borderClass
-  ),
   data.isDisabled && neutralBgClass,
 ]
 
 const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
-  'mt-1 flex flex-col items-center',
+  'mt-2 flex flex-col items-center',
   data.isCompact && xxsTextClass,
 ]
 
@@ -105,11 +107,7 @@ export default createPlugin({
     backgroundEventColor: 'var(--color-green-500)',
     // eventDisplay: 'block',
 
-    className: `${borderClass} gap-4`,
-
-    // HACK
-    viewClass: (data) => (!data.view.type.startsWith('timeGrid') && !data.view.type.startsWith('multiMonth'))
-      && 'border-t border-gray-200 dark:border-gray-900', // TODO: DRY colors
+    className: `${borderClass} rounded-xl overflow-hidden`,
 
     viewHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
 
@@ -145,14 +143,14 @@ export default createPlugin({
 
     buttonGroupClass: 'items-center isolate',
     buttonClass: (data) => [
-      'inline-flex items-center px-3 py-2 border-x',
+      'inline-flex items-center px-4 py-3 border-x',
       'focus:outline-3 outline-slate-600/50',
       'hover:border-slate-900 active:border-slate-900 print:border-slate-900',
       'hover:bg-slate-800 active:bg-slate-800 print:bg-white',
       'text-sm text-white print:text-black',
       data.inGroup
-        ? 'first:rounded-s-sm last:rounded-e-sm relative active:z-20 focus:z-20'
-        : 'rounded-sm',
+        ? 'first:rounded-s-lg last:rounded-e-lg relative active:z-20 focus:z-20'
+        : 'rounded-lg',
       data.isSelected // implies inGroup
         ? 'z-10 border-slate-900 bg-slate-800'
         : 'z-0 border-transparent bg-slate-700',
@@ -303,7 +301,7 @@ export default createPlugin({
           /* TODO: kill navLink text decoration somehow */
           <div
             className={
-              'm-0.5 flex flex-row items-center justify-center text-base h-[2em]' +
+              'm-0.5 flex flex-row items-center justify-center text-lg h-[2em]' +
               (data.isToday ? ' w-[2em] rounded-full bg-blue-500 text-white decoration-red-100' : '')
             }
           >{data.dayNumberText}</div>
@@ -314,7 +312,7 @@ export default createPlugin({
     dayRowClass: borderClass,
     dayCellClass: (data) => [
       data.isMajor ? majorBorderClass : borderClass,
-      data.isDisabled && neutralBgClass,
+      // data.isDisabled && neutralBgClass,
     ],
     dayCellTopClass: (data) => [
       'flex flex-row justify-center',
@@ -400,8 +398,7 @@ export default createPlugin({
     timeGrid: {
       ...dayGridClasses,
 
-      dayHeaderDividerClass: 'border-b border-gray-200 dark:border-gray-900', // TODO: DRY colors
-      dayRowClass: 'min-h-[3em]',
+      dayRowClass: 'min-h-[3em]', // looks good when matches slotLabelInnerClass
       dayCellBottomClass: 'min-h-[1em]', // for ALL-DAY
 
       allDayHeaderClass: [
@@ -423,11 +420,10 @@ export default createPlugin({
       columnMoreLinkClass: `mb-px rounded-xs outline outline-(--fc-canvas-color) ${moreLinkBgClass}`,
       columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
-      // slotMinTime: '-01:00', -- TODO
       slotLabelClass: [axisClass, 'w-2 self-end'],
       slotLabelInnerClass: (data) => [
         'ps-2 pe-3 py-0.5 -mt-[1em] text-end', // was axisInnerClass -- best -mt- value???
-        'min-h-[1.5em]',
+        'min-h-[3em]',
         data.isCompact && xxsTextClass,
       ],
 

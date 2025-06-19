@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
       selectable: true,
       selectMirror: false,
       dayMaxEvents: true, // allow "more" link when too many events
-      businessHours: true, // looks whack, covering lots of things
+      // businessHours: true, // looks whack, covering lots of things
       // eventMaxStack: 1,
       events: [
         {

@@ -98,14 +98,14 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isCompact: props.isCompact || false,
       isSpacious: props.isSpacious || false,
       level: props.level || 0,
-      timeClassName: joinClassNames(
+      timeClass: joinClassNames(
         generateClassName(options.eventTimeClass, subcontentRenderProps),
         isBlock && generateClassName(options.blockEventTimeClass, subcontentRenderProps),
         props.display === 'row' && generateClassName(options.rowEventTimeClass, subcontentRenderProps),
         props.display === 'column' && generateClassName(options.columnEventTimeClass, subcontentRenderProps),
         props.display === 'list-item' && generateClassName(options.listItemEventTimeClass, subcontentRenderProps),
       ),
-      titleClassName: joinClassNames(
+      titleClass: joinClassNames(
         generateClassName(options.eventTitleClass, subcontentRenderProps),
         isBlock && generateClassName(options.blockEventTitleClass, subcontentRenderProps),
         props.display === 'row' && generateClassName(options.rowEventTitleClass, subcontentRenderProps),
@@ -267,9 +267,9 @@ function renderInnerContent(innerProps: EventDisplayData) {
   return (
     <Fragment>
       {innerProps.timeText && (
-        <div className={innerProps.timeClassName}>{innerProps.timeText}</div>
+        <div className={innerProps.timeClass}>{innerProps.timeText}</div>
       )}
-      <div className={innerProps.titleClassName}>
+      <div className={innerProps.titleClass}>
         {innerProps.event.title || <Fragment>&nbsp;</Fragment>}
       </div>
     </Fragment>
