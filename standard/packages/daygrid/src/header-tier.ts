@@ -34,6 +34,10 @@ export interface RowConfig<RenderProps> {
 // Date Cells
 // -------------------------------------------------------------------------------------------------
 
+const DAY_NUMBER_ONLY_FORMAT = createFormatter({
+  day: 'numeric',
+})
+
 const WEEKDAY_FORMAT = createFormatter({ weekday: 'long' })
 const firstSunday = new Date(259200000)
 
@@ -152,7 +156,11 @@ export function buildDateDataConfigs(
           text,
           textParts,
           get weekdayText() { return findWeekdayText(textParts) },
-          get dayNumberText() { return findDayNumberText(textParts) },
+          get dayNumberText() {
+            return findDayNumberText(textParts) ||
+              // in case headerFormat doesn't have dayNumber on it
+              dateEnv.format(dateMarker, DAY_NUMBER_ONLY_FORMAT)[0]
+          },
           isMajor,
           isCompact: false, // HACK. gets overridden
           inPopover: false,
@@ -206,7 +214,9 @@ export function buildDateDataConfigs(
           text,
           textParts,
           get weekdayText() { return findWeekdayText(textParts) },
-          get dayNumberText() { return findDayNumberText(textParts) },
+          get dayNumberText() {
+            return findDayNumberText(textParts)
+          },
           ...extraRenderProps,
         }
         const fullWeekDayStr = dateEnv.format(normDate, WEEKDAY_FORMAT)[0]

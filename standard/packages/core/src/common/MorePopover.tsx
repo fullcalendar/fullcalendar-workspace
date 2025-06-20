@@ -12,6 +12,7 @@ import { memoize } from '../util/memoize.js'
 import { generateClassName } from '../content-inject/ContentContainer.js'
 import { ContentContainer } from '../content-inject/ContentContainer.js'
 import { DayHeaderData } from '../api/structs.js'
+import { createFormatter } from '../datelib/formatting.js'
 
 export interface MorePopoverProps {
   id: string
@@ -50,7 +51,11 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       inPopover: true,
       text,
       textParts,
-      get weekdayText() { return findWeekdayText(textParts) },
+      get weekdayText() {
+        return findWeekdayText(textParts) ||
+          // in case dayPopoverFormat doesn't have weekday
+          dateEnv.format(startDate, WEEKDAY_ONLY_FORMAT)[0]
+      },
       get dayNumberText() { return findDayNumberText(textParts) },
       view: viewApi,
       // TODO: should know about the resource!
@@ -130,6 +135,11 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     return null
   }
 }
+
+// TODO: DRY with WEEKDAY_FORMAT
+const WEEKDAY_ONLY_FORMAT = createFormatter({
+  weekday: 'long',
+})
 
 // TODO: DRY
 function findWeekdayText(parts: Intl.DateTimeFormatPart[]): string {
