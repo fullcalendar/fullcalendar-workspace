@@ -15,10 +15,10 @@ bug: why targeting single-day view doesnt work?
 Classic theme
   better contrast between week number gray and non-business hour gray
 Monarch theme
-  make the day-popover title a navlink
-  fix: left-align dayheader for day-only views after views.day options bug above is fixed
-  more padding on edges of "all-day" text
-  just dont have bg color for disabled days?
+  later: bug: make the day-popover title a navlink
+  later: bug: left-align dayheader for day-only views after views.day options bug above is fixed
+  later: fix Screenshots/multimonth-more-link-bug.png
+  nowIndicator
   don't do global navLink hover styles
     handle case-by-case in "Inner" hooks, and provide isNavLink render prop
     do custom styling for day-headers with circle link

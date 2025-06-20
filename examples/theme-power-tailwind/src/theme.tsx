@@ -383,7 +383,7 @@ export default createPlugin({
       ...dayGridClasses,
       ...dayGridWeekNumberClasses,
 
-      tableBodyClass: borderClass,
+      tableBodyClass: `${borderClass} rounded-sm`,
       dayHeaderInnerClass: 'mb-2',
       dayCellBottomClass: 'min-h-[1px]',
     },
