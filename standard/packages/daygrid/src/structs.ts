@@ -1,19 +1,6 @@
 import { ViewApi } from '@fullcalendar/core'
 import { DateMarker, DateMeta, MountData } from '@fullcalendar/core/internal'
 
-export interface DayHeaderData extends DateMeta {
-  date: Date
-  isCompact: boolean
-  isMajor: boolean
-  text: string
-  textParts: Intl.DateTimeFormatPart[]
-  weekdayText: string
-  dayNumberText: string
-  view: ViewApi
-  [otherProp: string]: any
-}
-export type DayHeaderMountData = MountData<DayHeaderData>
-
 export interface DayCellData extends DateMeta {
   date: DateMarker // localized
   isMajor: boolean

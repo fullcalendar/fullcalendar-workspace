@@ -89,8 +89,9 @@ const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean, view
   data.isDisabled && neutralBgClass,
 ]
 
-const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
-  'mt-2 flex flex-col items-center',
+const getDayHeaderInnerClasses = (data: { isCompact: boolean, inPopover: boolean }) => [
+  'flex flex-col items-center',
+  !data.inPopover && 'mt-2',
   data.isCompact && xxsTextClass,
 ]
 
@@ -158,11 +159,11 @@ export default createPlugin({
         && 'opacity-65 pointer-events-none', // bypass hover styles
     ],
 
-    popoverClass: `${borderClass} bg-(--fc-canvas-color) shadow-md`,
-    popoverHeaderClass: `flex flex-row justify-between items-center px-1 py-1 ${neutralBgClass}`,
-    popoverTitleClass: 'px-1',
+    popoverClass: `${borderClass} rounded-lg bg-(--fc-canvas-color) shadow-lg m-2`,
+    popoverHeaderClass: `flex flex-row justify-between items-center px-1 py-1`,
+    popoverCloseClass: 'rounded-full w-8 h-8 inline-flex flex-row justify-center items-center hover:bg-gray-200',
     popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
-    popoverBodyClass: 'p-2 min-w-[220px]',
+    popoverBodyClass: 'p-2 min-w-3xs',
 
     navLinkClass: 'hover:underline',
 

@@ -56,6 +56,8 @@ import {
   ToolbarSectionData,
   ToolbarData,
   ButtonDisplay,
+  DayHeaderData,
+  DayHeaderMountData,
 } from './api/structs.js'
 import { ViewBodyData, ViewHeaderData } from './common/ViewSubsections.js'
 import { createDuration, Duration } from './datelib/duration.js'
@@ -286,6 +288,12 @@ export const BASE_OPTION_REFINERS = {
   dayMinWidth: Number,
   slotLabelInterval: createDuration,
 
+  dayHeaderClass: identity as Identity<ClassNameGenerator<DayHeaderData>>,
+  dayHeaderInnerClass: identity as Identity<ClassNameGenerator<DayHeaderData>>,
+  dayHeaderContent: identity as Identity<CustomContentGenerator<DayHeaderData>>,
+  dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderMountData>>,
+  dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderMountData>>,
+
   allDayText: String,
   allDayHeaderClass: identity as Identity<ClassNameGenerator<AllDayHeaderData>>,
   allDayHeaderInnerClass: identity as Identity<ClassNameGenerator<AllDayHeaderData>>,
@@ -367,7 +375,7 @@ export const BASE_OPTION_REFINERS = {
   dayPopoverClass: identity as Identity<ClassNameGenerator<DayPopoverData>>,
   popoverClass: identity as Identity<ClassNameInput>,
   popoverHeaderClass: identity as Identity<ClassNameInput>,
-  popoverTitleClass: identity as Identity<ClassNameInput>,
+  popoverHeaderInnerClass: identity as Identity<ClassNameInput>,
   popoverCloseClass: identity as Identity<ClassNameInput>,
   popoverCloseContent: identity as Identity<CustomContentGenerator<{}>>,
   popoverBodyClass: identity as Identity<ClassNameInput>,

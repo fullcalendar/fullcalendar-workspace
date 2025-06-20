@@ -1,6 +1,5 @@
-import { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '@fullcalendar/core'
+import { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler, DayHeaderData } from '@fullcalendar/core'
 import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, Dictionary, formatDayString, getDateMeta, isMajorUnit, ViewContext } from '@fullcalendar/core/internal'
-import { DayHeaderData } from './structs.js'
 
 export interface CellRenderConfig<RenderProps> {
   generatorName: string
@@ -156,6 +155,7 @@ export function buildDateDataConfigs(
           get dayNumberText() { return findDayNumberText(textParts) },
           isMajor,
           isCompact: false, // HACK. gets overridden
+          inPopover: false,
           view: viewApi,
         }
         const isNavLink = options.navLinks && !dateMeta.isDisabled &&
@@ -201,6 +201,7 @@ export function buildDateDataConfigs(
           date: dowDates[dow],
           isMajor,
           isCompact: false, // HACK. gets overridden
+          inPopover: false,
           view: viewApi,
           text,
           textParts,

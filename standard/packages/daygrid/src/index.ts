@@ -35,8 +35,6 @@ export default createPlugin({
 }) as PluginDef
 
 export {
-  DayHeaderData,
-  DayHeaderMountData,
   DayCellData,
   DayCellMountData,
 } from './structs.js'

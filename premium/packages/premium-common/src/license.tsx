@@ -35,7 +35,7 @@ export function buildLicenseWarning(context: CalendarContext) {
             options.popoverClass,
             classNames.popoverZ,
             classNames.abs,
-            classNames.tight, // no margin/padding
+            classNames.noPadding,
           )}
           style={{
             bottom: 0,

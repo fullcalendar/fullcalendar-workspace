@@ -1,16 +1,10 @@
 import { ClassNameGenerator, ClassNameInput, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '@fullcalendar/core'
 import { createFormatter, Identity, identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core/internal'
-import { DayCellData, DayCellMountData, DayHeaderData, DayHeaderMountData } from './structs.js'
+import { DayCellData, DayCellMountData, } from './structs.js'
 
 export const OPTION_REFINERS = {
   dayHeaders: Boolean,
   dayHeaderFormat: createFormatter,
-
-  dayHeaderClass: identity as Identity<ClassNameGenerator<DayHeaderData>>,
-  dayHeaderInnerClass: identity as Identity<ClassNameGenerator<DayHeaderData>>,
-  dayHeaderContent: identity as Identity<CustomContentGenerator<DayHeaderData>>,
-  dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderMountData>>,
-  dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderMountData>>,
 
   dayHeaderDividerClass: identity as Identity<ClassNameInput>,
   dayHeaderRowClass: identity as Identity<ClassNameInput>,

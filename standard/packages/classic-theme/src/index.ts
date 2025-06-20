@@ -86,7 +86,7 @@ export default createPlugin({
 
     popoverClass: 'fc-popover', // see also: dayPopoverClass
     popoverHeaderClass: 'fc-popover-header',
-    popoverTitleClass: 'fc-popover-title',
+    popoverHeaderInnerClass: 'fc-popover-title',
     popoverCloseClass: 'fc-popover-close',
     popoverBodyClass: 'fc-popover-body',
 

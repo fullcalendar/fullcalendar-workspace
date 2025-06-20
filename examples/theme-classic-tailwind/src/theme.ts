@@ -169,7 +169,6 @@ export default createPlugin({
 
     popoverClass: `${borderClass} bg-(--fc-canvas-color) shadow-md`,
     popoverHeaderClass: `flex flex-row justify-between items-center px-1 py-1 ${neutralBgClass}`,
-    popoverTitleClass: 'px-1',
     popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
     popoverBodyClass: 'p-2 min-w-[220px]',
 

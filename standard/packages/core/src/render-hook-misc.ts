@@ -2,6 +2,7 @@ import { DateMeta } from './component-util/date-rendering.js'
 import { Duration } from './datelib/duration.js'
 import { ViewApi } from './api/ViewApi.js'
 import { MountData } from './common/render-hook.js'
+import { DateMarker } from './datelib/marker.js'
 
 export interface SlotLaneData extends DateMeta {
   time?: Duration
@@ -24,3 +25,31 @@ export interface AllDayHeaderData {
   isCompact: boolean
 }
 export type AllDayHeaderMountData = MountData<AllDayHeaderData>
+
+export interface DayHeaderData extends DateMeta {
+  date: Date
+  isCompact: boolean
+  isMajor: boolean
+  inPopover: boolean
+  text: string
+  textParts: Intl.DateTimeFormatPart[]
+  weekdayText: string
+  dayNumberText: string
+  view: ViewApi
+  [otherProp: string]: any
+}
+export type DayHeaderMountData = MountData<DayHeaderData>
+
+export interface DayCellData extends DateMeta {
+  date: DateMarker // localized
+  isMajor: boolean
+  isCompact: boolean
+  hasLabel: boolean
+  hasMonthLabel: boolean
+  view: ViewApi
+  text: string
+  textParts: Intl.DateTimeFormatPart[]
+  [extraProp: string]: any // so can include a resource
+}
+
+export type DayCellMountData = MountData<DayCellData>

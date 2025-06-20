@@ -11,13 +11,14 @@ import classNames from '../internal-classnames.js'
 export interface PopoverProps {
   elRef?: Ref<HTMLElement>
   id: string
-  title: string
   attrs?: Dictionary
   className?: string
   parentEl: HTMLElement
   alignEl: HTMLElement
   alignParentTop?: string // a CSS selector
-  children?: ComponentChildren
+  headerClass?: string
+  headerContent?: ComponentChildren
+  bodyContent?: ComponentChildren
   onClose?: () => void
 }
 
@@ -56,12 +57,15 @@ export class Popover extends BaseComponent<PopoverProps> {
           style={{ outline: 'none' }} // TODO: className?
           ref={this.focusStartRef}
         />
-        <div className={joinArrayishClassNames(options.popoverHeaderClass)}>
+        <div className={joinArrayishClassNames(
+          props.headerClass,
+          options.popoverHeaderClass,
+        )}>
           <div
             id={this.titleId}
-            className={joinArrayishClassNames(options.popoverTitleClass)}
+            className={joinArrayishClassNames(options.popoverHeaderInnerClass)}
           >
-            {props.title}
+            {props.headerContent}
           </div>
           <ContentContainer
             tag='button'
@@ -80,7 +84,7 @@ export class Popover extends BaseComponent<PopoverProps> {
           />
         </div>
         <div className={joinArrayishClassNames(options.popoverBodyClass)}>
-          {props.children}
+          {props.bodyContent}
         </div>
         <div
           tabIndex={0}

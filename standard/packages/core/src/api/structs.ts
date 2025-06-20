@@ -23,6 +23,10 @@ export type {
   SlotLaneData, SlotLaneMountData,
   SlotLabelData, SlotLabelMountData,
   AllDayHeaderData, AllDayHeaderMountData,
+  DayHeaderData,
+  DayHeaderMountData,
+  DayCellData,
+  DayCellMountData,
 } from '../render-hook-misc.js'
 export type { DayLaneData, DayLaneMountData } from '../common/DayLaneContainer.js'
 export type { ViewData, ViewMountData } from '../common/ViewContainer.js'

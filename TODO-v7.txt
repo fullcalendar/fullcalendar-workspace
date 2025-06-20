@@ -61,6 +61,7 @@ Themes with -top slotLabelInners should start slots at 11pm night before
 Put dayPopover as child of BODY! --- do whatever is necessary (still use position:fixed?)
   because it's possible to have overflow:hidden on the calendar now (Monarch theme does it)
 Kill fixedMirrorParent --- always use BODY
+Reana needs to design the schematics for Popover
 
 
 ASAP
@@ -132,6 +133,7 @@ after-beta todo:
     search for `icons: {`
   weird how expander is valigned differently than resource-area header/cell content
   audit all justify/align in theme. ensure axis is intuitive
+  DRY up function utils in MorePopover
 
 
 Changelog
@@ -239,6 +241,7 @@ changelog:
 changelog: forceWeekdayStart
 changelog: default computed titleFormat for week view (could span different months),
   WHEN it actually does span different months, is like "Sep - Oct 2014"
+changelog: dayHeaderClass/etc is used within popover (inPopover)
 
 Docs
 ----
@@ -401,6 +404,7 @@ TimeGrid
 responsive tickets (so ppl know we don't consider responsiveness "solved"):
   tiled multimonth view, JUST have event dots, nothing else
   timegrid week view, but with ONLY one day column. has multiple day headers for selecting other days tho
+Create GH ticket for reviving weekNumber column (weekNumberDisplay: 'column')
 
 Punt
 ----
