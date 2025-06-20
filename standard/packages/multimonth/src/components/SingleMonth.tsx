@@ -168,6 +168,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 isAspectRatio && classNames.rel,
                 options.tableBodyClass,
                 props.borderlessX && classNames.borderlessX,
+                isTitleAndHeaderSticky && classNames.borderlessTop,
               )}
               style={{
                 zIndex: isTitleAndHeaderSticky ? 1 : undefined, // TODO: className?

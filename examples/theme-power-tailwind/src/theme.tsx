@@ -75,7 +75,8 @@ const dayGridClasses: CalendarOptions = {
 const dayGridWeekNumberLabelClass = 'rounded-sm px-1 bg-gray-500/15'
 const dayGridWeekNumberClasses: CalendarOptions = {
   weekNumberClass: (data) => [
-    !data.isCell && 'absolute z-20 top-2 start-1',
+    !data.isCell && 'absolute z-20',
+    data.isCompact ? 'top-1 start-0.5' : 'top-2 start-1',
     dayGridWeekNumberLabelClass,
   ],
   weekNumberInnerClass: (data) => [
@@ -89,8 +90,7 @@ const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean, view
 ]
 
 const getDayHeaderInnerClasses = (data: { isCompact: boolean, inPopover?: boolean }) => [
-  'flex flex-col items-center',
-  !data.inPopover && 'mt-2',
+  'mt-2 flex flex-col items-center',
   data.isCompact && xxsTextClass,
 ]
 
@@ -109,7 +109,7 @@ export default createPlugin({
 
     className: `${borderClass} rounded-xl overflow-hidden`,
 
-    tableHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
+    tableHeaderClass: (data) => data.isSticky && `bg-(--fc-canvas-color) border-b ${borderColorClass}`,
 
     toolbarClass: 'p-4 items-center gap-3',
     toolbarSectionClass: (data) => [
@@ -306,12 +306,14 @@ export default createPlugin({
       data.isDisabled && neutralBgClass,
     ],
     dayCellTopClass: (data) => [
-      'flex flex-row justify-center',
+      'flex flex-row',
+      data.isCompact ? 'justify-end' : 'justify-center',
       'min-h-[2px]', // effectively 2px top padding when no day-number
       data.isOther && 'opacity-30',
     ],
     dayCellTopInnerClass: (data) => [
-      'm-1 flex flex-row items-center justify-center h-[1.8em]' +
+      data.isCompact ? (!data.isToday && 'mx-1') : 'm-1',
+      'flex flex-row items-center justify-center h-[1.8em]' +
         (data.isToday ? ' w-[1.8em] rounded-full bg-blue-500 text-white decoration-red-100' : ''),
       data.hasMonthLabel && 'text-base font-bold',
       data.isCompact && xxsTextClass,
@@ -382,6 +384,7 @@ export default createPlugin({
       ...dayGridWeekNumberClasses,
 
       tableBodyClass: borderClass,
+      dayHeaderInnerClass: 'mb-2',
       dayCellBottomClass: 'min-h-[1px]',
     },
     timeGrid: {
