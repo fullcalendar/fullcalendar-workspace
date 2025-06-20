@@ -1,4 +1,4 @@
-import { CalendarOptions, createPlugin, PluginDef, ViewApi } from '@fullcalendar/core'
+import { CalendarOptions, createPlugin, PluginDef, ViewApi, WeekNumberDisplayData } from '@fullcalendar/core'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import * as svgIcons from './svgIcons.js'
 
@@ -74,15 +74,17 @@ const dayGridClasses: CalendarOptions = {
   ],
 }
 
-const floatingWeekNumberClasses: CalendarOptions = {
-  weekNumberClass: [
-    'absolute z-20 top-0 start-0 rounded-ee-sm p-0.5 min-w-[1.5em]',
-    neutralBgClass,
+const dayGridWeekNumberLabelClass = 'rounded-sm px-1 bg-gray-500/15'
+const dayGridWeekNumberInnerClass = (data: WeekNumberDisplayData) => [
+  data.isCompact && xxsTextClass,
+  'opacity-60 text-center',
+]
+const dayGridWeekNumberClasses: CalendarOptions = {
+  weekNumberClass: (data) => [
+    !data.isCell && 'absolute z-20 top-2 start-1',
+    dayGridWeekNumberLabelClass,
   ],
-  weekNumberInnerClass: (data) => [
-    data.isCompact && xxsTextClass,
-    'opacity-60 text-center',
-  ],
+  weekNumberInnerClass: dayGridWeekNumberInnerClass,
 }
 
 const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean, view: ViewApi }) => [
@@ -296,7 +298,7 @@ export default createPlugin({
     dayHeaderContent: (data) => (
       <Fragment>
         {data.weekdayText && (
-          <div className='uppercase text-xs'>{data.weekdayText}</div>
+          <div className='uppercase text-xs opacity-60'>{data.weekdayText}</div>
         )}
         {data.dayNumberText && (
           /* TODO: kill navLink text decoration somehow */
@@ -383,13 +385,13 @@ export default createPlugin({
   views: {
     dayGrid: {
       ...dayGridClasses,
-      ...floatingWeekNumberClasses,
+      ...dayGridWeekNumberClasses,
 
       dayCellBottomClass: 'min-h-[1px]',
     },
     multiMonth: {
       ...dayGridClasses,
-      ...floatingWeekNumberClasses,
+      ...dayGridWeekNumberClasses,
 
       dayCellBottomClass: 'min-h-[1px]',
     },
@@ -411,8 +413,8 @@ export default createPlugin({
 
       weekNumberClass: `${axisClass} items-center`,
       weekNumberInnerClass: (data) => [
-        axisInnerClass,
-        data.isCompact && xxsTextClass,
+        dayGridWeekNumberLabelClass,
+        ...dayGridWeekNumberInnerClass(data),
       ],
 
       columnMoreLinkClass: `mb-px rounded-xs outline outline-(--fc-canvas-color) ${moreLinkBgClass}`,

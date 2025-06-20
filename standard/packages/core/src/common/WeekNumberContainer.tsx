@@ -10,6 +10,7 @@ export interface WeekNumberDisplayData {
   textParts: DateTimeFormatPartWithWeek[]
   date: Date
   isCompact: boolean
+  isCell: boolean
 }
 
 export type WeekNumberMountData = MountData<WeekNumberDisplayData>

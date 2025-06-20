@@ -50,6 +50,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
       textParts: weekTextParts,
       date: weekDateZoned,
       isCompact: props.isCompact,
+      isCell: true,
     }
 
     return (

@@ -475,5 +475,6 @@ function buildWeekNumberRenderProps(weekDateMarker: DateMarker, context: ViewCon
     textParts: weekNumTextParts,
     date: weekDateZoned,
     isCompact,
+    isCell: false,
   }
 }
