@@ -89,7 +89,7 @@ const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean, view
   data.isDisabled && neutralBgClass,
 ]
 
-const getDayHeaderInnerClasses = (data: { isCompact: boolean, inPopover: boolean }) => [
+const getDayHeaderInnerClasses = (data: { isCompact: boolean, inPopover?: boolean }) => [
   'flex flex-col items-center',
   !data.inPopover && 'mt-2',
   data.isCompact && xxsTextClass,
@@ -160,8 +160,8 @@ export default createPlugin({
     ],
 
     popoverClass: `${borderClass} rounded-lg bg-(--fc-canvas-color) shadow-lg m-2`,
-    popoverHeaderClass: `flex flex-row justify-between items-center px-1 py-1`,
-    popoverCloseClass: 'rounded-full w-8 h-8 inline-flex flex-row justify-center items-center hover:bg-gray-200',
+    popoverHeaderClass: `justify-between items-center px-1 py-1`,
+    popoverCloseClass: 'absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center hover:bg-gray-200',
     popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
     popoverBodyClass: 'p-2 min-w-3xs',
 
@@ -381,9 +381,6 @@ export default createPlugin({
     timelineBottomClass: 'pb-3',
   },
   views: {
-    day: { // why this not working??? needed for single-day events. better solution?
-      dayHeaderFormat: { day: 'numeric', weekday: 'long' },
-    },
     dayGrid: {
       ...dayGridClasses,
       ...floatingWeekNumberClasses,

@@ -9,9 +9,13 @@ bug: when displayEventTime:false,
   list-item events with "All-day" remain (always like this?)
 bug: for default titleFormat in week view
   why are we getting "Jan 2023 – Feb 2023"? Problem with our ponyfill?
+bug: why targeting single-day view doesnt work?
+  views: { day: { dayHeaderFormat: { day: 'numeric', weekday: 'long' } } }
+  ^^works but only for some settings
 Classic theme
   better contrast between week number gray and non-business hour gray
 Monarch theme
+  fix: left-align dayheader for day-only views after views.day options bug above is fixed
   fix: timeGridDay needs day-number
     doesn't have it bc dayNumberText can't be computed from dayHeaderFormat
     do a fallback (or just have it always use this "fallback")
