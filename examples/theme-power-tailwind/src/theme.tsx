@@ -1,4 +1,4 @@
-import { CalendarOptions, createPlugin, PluginDef, ViewApi, WeekNumberDisplayData } from '@fullcalendar/core'
+import { CalendarOptions, createPlugin, PluginDef, ViewApi } from '@fullcalendar/core'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import * as svgIcons from './svgIcons.js'
 
@@ -215,12 +215,11 @@ export default createPlugin({
         : 'group-focus:brightness-75',
     ],
     blockEventInnerClass: 'relative z-10 p-0.5 flex text-(--fc-event-contrast-color)',
-    blockEventTitleClass: 'sticky',
 
     rowEventClass: (data) => [
       'mb-px', // space between events
-      data.isStart ? 'ms-px rounded-s-sm' : 'ps-2',
-      data.isEnd ? 'me-px rounded-e-sm' : 'pe-2',
+      data.isStart ? 'ms-px' : 'ps-2',
+      data.isEnd ? 'me-px' : 'pe-2',
     ],
     rowEventBeforeClass: (data) => data.isStartResizable && [
       data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
@@ -231,8 +230,8 @@ export default createPlugin({
       '-end-1',
     ],
     rowEventColorClass: (data) => [
-      data.isStart && 'rounded-s-sm',
-      data.isEnd && 'rounded-e-sm',
+      data.isStart && 'rounded-s-md',
+      data.isEnd && 'rounded-e-md',
       (!data.isStart && !data.isEnd) // arrows on both sides
         ? '[clip-path:polygon(0_50%,6px_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,6px_100%)]'
         : !data.isStart // just start side
@@ -245,7 +244,7 @@ export default createPlugin({
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
     rowEventTimeClass: 'p-px font-bold',
-    rowEventTitleClass: 'p-px start-0', // `start` for stickiness
+    rowEventTitleClass: 'p-px start-0 sticky', // `start` for stickiness
 
     columnEventClass: 'mb-px', // space from slot line
     columnEventBeforeClass: (data) => data.isStartResizable && [
@@ -257,8 +256,8 @@ export default createPlugin({
       '-bottom-1',
     ],
     columnEventColorClass: (data) => [
-      data.isStart && 'rounded-t-sm',
-      data.isEnd && 'rounded-b-sm',
+      data.isStart && 'rounded-t-md',
+      data.isEnd && 'rounded-b-md',
       (data.level || data.isDragging) && 'outline outline-(--fc-canvas-color)',
     ],
     columnEventInnerClass: (data) => [
@@ -266,7 +265,7 @@ export default createPlugin({
         ? 'flex-row gap-1' // one line
         : 'flex-col gap-px', // two lines
     ],
-    columnEventTimeClass: xxsTextClass,
+    columnEventTimeClass: 'text-xs order-1', // TODO: order won't work in react native!
     columnEventTitleClass: (data) => [
       'top-0', // top for stickiness
       data.isCompact ? xxsTextClass : 'py-px text-xs',
