@@ -15,6 +15,7 @@ bug: why targeting single-day view doesnt work?
 Classic theme
   better contrast between week number gray and non-business hour gray
 Monarch theme
+  make the day-popover title a navlink
   fix: left-align dayheader for day-only views after views.day options bug above is fixed
   fix: timeGridDay needs day-number
     doesn't have it bc dayNumberText can't be computed from dayHeaderFormat

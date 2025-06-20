@@ -75,16 +75,15 @@ const dayGridClasses: CalendarOptions = {
 }
 
 const dayGridWeekNumberLabelClass = 'rounded-sm px-1 bg-gray-500/15'
-const dayGridWeekNumberInnerClass = (data: WeekNumberDisplayData) => [
-  data.isCompact && xxsTextClass,
-  'opacity-60 text-center',
-]
 const dayGridWeekNumberClasses: CalendarOptions = {
   weekNumberClass: (data) => [
     !data.isCell && 'absolute z-20 top-2 start-1',
     dayGridWeekNumberLabelClass,
   ],
-  weekNumberInnerClass: dayGridWeekNumberInnerClass,
+  weekNumberInnerClass: (data) => [
+    data.isCompact && xxsTextClass,
+    'opacity-60 text-center',
+  ],
 }
 
 const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean, view: ViewApi }) => [
@@ -202,8 +201,6 @@ export default createPlugin({
     blockEventClass: (data) => [
       'relative', // for absolute-positioned color
       'group', // for focus and hover
-      'bg-(--fc-canvas-color)',
-      'border-(--fc-event-color)', // subclasses define thickness
       (data.isDragging && !data.isSelected) && 'opacity-75',
       data.isSelected
         ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
@@ -212,26 +209,18 @@ export default createPlugin({
     blockEventColorClass: (data) => [
       'absolute z-0 inset-0',
       'bg-(--fc-event-color) print:bg-white',
-      'not-print:opacity-30',
       'print:border print:border-(--fc-event-color)',
       data.isSelected
         ? 'brightness-75'
         : 'group-focus:brightness-75',
     ],
-    blockEventInnerClass: 'relative z-10 p-0.5 flex',
-    blockEventTimeClass: 'text-(--fc-event-color) brightness-40 dark:brightness-160',
-    blockEventTitleClass: 'sticky text-(--fc-event-color) brightness-40 dark:brightness-160',
+    blockEventInnerClass: 'relative z-10 p-0.5 flex text-(--fc-event-contrast-color)',
+    blockEventTitleClass: 'sticky',
 
     rowEventClass: (data) => [
       'mb-px', // space between events
-      data.isStart ? 'ms-px rounded-s-sm border-s-4' : 'ps-2',
+      data.isStart ? 'ms-px rounded-s-sm' : 'ps-2',
       data.isEnd ? 'me-px rounded-e-sm' : 'pe-2',
-      (!data.isStart && !data.isEnd) // arrows on both sides
-        ? '[clip-path:polygon(0_50%,6px_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,6px_100%)]'
-        : !data.isStart // just start side
-          ? '[clip-path:polygon(0_50%,6px_0,100%_0,100%_100%,6px_100%)]'
-          : !data.isEnd // just end side
-            && '[clip-path:polygon(0_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,0_100%)]',
     ],
     rowEventBeforeClass: (data) => data.isStartResizable && [
       data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
@@ -242,7 +231,14 @@ export default createPlugin({
       '-end-1',
     ],
     rowEventColorClass: (data) => [
-      data.isEnd && 'rounded-e-sm', // match rounded rowEventClass (the bg)
+      data.isStart && 'rounded-s-sm',
+      data.isEnd && 'rounded-e-sm',
+      (!data.isStart && !data.isEnd) // arrows on both sides
+        ? '[clip-path:polygon(0_50%,6px_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,6px_100%)]'
+        : !data.isStart // just start side
+          ? '[clip-path:polygon(0_50%,6px_0,100%_0,100%_100%,6px_100%)]'
+          : !data.isEnd // just end side
+            && '[clip-path:polygon(0_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,0_100%)]',
     ],
     rowEventInnerClass: (data) => [
       'flex-row items-center',
@@ -251,13 +247,7 @@ export default createPlugin({
     rowEventTimeClass: 'p-px font-bold',
     rowEventTitleClass: 'p-px start-0', // `start` for stickiness
 
-    columnEventClass: (data) => [
-      'mb-px', // space from slot line
-      'border-s-4', // always
-      data.isStart && 'rounded-t-sm',
-      data.isEnd && 'rounded-b-sm',
-      (data.level || data.isDragging) && 'outline outline-(--fc-canvas-color)',
-    ],
+    columnEventClass: 'mb-px', // space from slot line
     columnEventBeforeClass: (data) => data.isStartResizable && [
       data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
       '-top-1',
@@ -267,8 +257,9 @@ export default createPlugin({
       '-bottom-1',
     ],
     columnEventColorClass: (data) => [
-      data.isStart && 'rounded-se-sm',
-      data.isEnd && 'rounded-ee-sm',
+      data.isStart && 'rounded-t-sm',
+      data.isEnd && 'rounded-b-sm',
+      (data.level || data.isDragging) && 'outline outline-(--fc-canvas-color)',
     ],
     columnEventInnerClass: (data) => [
       data.isCompact
@@ -413,8 +404,10 @@ export default createPlugin({
 
       weekNumberClass: `${axisClass} items-center`,
       weekNumberInnerClass: (data) => [
+        // BUG: no opacity here! (unlike daygrid) hard to do with wrappers and text
+        'text-center',
+        data.isCompact && xxsTextClass,
         dayGridWeekNumberLabelClass,
-        ...dayGridWeekNumberInnerClass(data),
       ],
 
       columnMoreLinkClass: `mb-px rounded-xs outline outline-(--fc-canvas-color) ${moreLinkBgClass}`,
