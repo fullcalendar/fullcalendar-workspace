@@ -54,10 +54,11 @@ export function buildLicenseWarning(context: CalendarContext) {
               {statusText}{' '}
               <a
                 href={statusUrl}
+                target='_blank'
                 style={{
                   textDecoration: 'underline',
                 }}
-              >More Info</a>
+              >More info</a>
             </div>
           </div>
         </div>
