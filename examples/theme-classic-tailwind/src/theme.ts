@@ -115,7 +115,7 @@ export default createPlugin({
     className: 'gap-5',
 
     viewClass: borderClass,
-    viewHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
+    tableHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
 
     toolbarClass: (data) => [
       'items-center gap-3',

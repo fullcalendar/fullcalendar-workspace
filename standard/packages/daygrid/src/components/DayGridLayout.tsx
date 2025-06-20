@@ -12,7 +12,7 @@ import {
   Scroller,
   ViewContainer,
   EventRangeProps,
-  joinClassNames
+  joinArrayishClassNames
 } from '@fullcalendar/core/internal'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridLayoutNormal } from './DayGridLayoutNormal.js'
@@ -79,7 +79,11 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
           'aria-labelledby': props.labelId,
           'aria-label': props.labelStr,
         }}
-        className={joinClassNames(props.className, classNames.printRoot)}
+        className={joinArrayishClassNames(
+          props.className,
+          classNames.printRoot,
+          options.tableClass,
+        )}
         borderlessX={props.borderlessX}
         borderlessTop={props.borderlessTop}
         borderlessBottom={props.borderlessBottom}

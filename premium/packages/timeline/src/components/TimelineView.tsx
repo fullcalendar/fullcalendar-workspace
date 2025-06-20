@@ -126,11 +126,12 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
           return (
             <ViewContainer
               viewSpec={context.viewSpec}
-              className={joinClassNames(
+              className={joinArrayishClassNames(
                 // HACK for Safari print-mode, where noScrollbars won't take effect for
                 // the below Scrollers if they have liquid flex height
                 !props.forPrint && classNames.flexCol,
                 props.className,
+                options.tableClass,
               )}
               borderlessX={props.borderlessX}
               borderlessTop={props.borderlessTop}
@@ -140,7 +141,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               {/* HEADER
               ---------------------------------------------------------------------------------- */}
               <div className={joinClassNames(
-                generateClassName(options.viewHeaderClass, {
+                generateClassName(options.tableHeaderClass, {
                   isSticky: stickyHeaderDates,
                 }),
                 props.borderlessX && classNames.borderlessX,
@@ -209,8 +210,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   stickyFooterScrollbar ||
                   props.forPrint // prevents blank space in print-view on Safari
                 }
-                className={joinClassNames(
-                  generateClassName(options.viewBodyClass, {}),
+                className={joinArrayishClassNames(
+                  options.tableBodyClass,
                   props.borderlessX && classNames.borderlessX,
                   classNames.flexCol,
                   verticalScrolling && classNames.liquid,

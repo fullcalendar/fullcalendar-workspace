@@ -91,7 +91,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
       <Fragment>
         {options.dayHeaders && (
           <div className={joinClassNames(
-            generateClassName(options.viewHeaderClass, {
+            generateClassName(options.tableHeaderClass, {
               isSticky: stickyHeaderDates,
             }),
             props.borderlessX && classNames.borderlessX,
@@ -130,8 +130,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             stickyFooterScrollbar ||
             props.forPrint // prevents blank space in print-view on Safari
           }
-          className={joinClassNames(
-            generateClassName(options.viewBodyClass, {}),
+          className={joinArrayishClassNames(
+            options.tableBodyClass,
             props.borderlessX && classNames.borderlessX,
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345

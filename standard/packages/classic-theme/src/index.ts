@@ -42,7 +42,7 @@ export default createPlugin({
       `fc-${data.view.type}-view`,
       'fc-view-bordered',
     ],
-    viewHeaderClass: (data) => [
+    tableHeaderClass: (data) => [
       data.isSticky && 'fc-view-header-sticky'
     ],
 

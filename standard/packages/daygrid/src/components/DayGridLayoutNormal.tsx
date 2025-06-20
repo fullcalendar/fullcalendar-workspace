@@ -77,7 +77,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
       <Fragment>
         {options.dayHeaders && (
           <div className={joinClassNames(
-            generateClassName(options.viewHeaderClass, {
+            generateClassName(options.tableHeaderClass, {
               isSticky: stickyHeaderDates,
             }),
             props.borderlessX && classNames.borderlessX,
@@ -104,8 +104,8 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
         )}
         <Scroller
           vertical={verticalScrollbars}
-          className={joinClassNames(
-            generateClassName(options.viewBodyClass, {}),
+          className={joinArrayishClassNames(
+            options.tableBodyClass,
             props.borderlessX && classNames.borderlessX,
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345

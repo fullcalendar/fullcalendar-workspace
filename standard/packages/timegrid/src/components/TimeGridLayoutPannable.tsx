@@ -163,7 +163,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
         {options.dayHeaders && (
           <div
             className={joinClassNames(
-              generateClassName(options.viewHeaderClass, {
+              generateClassName(options.tableHeaderClass, {
                 isSticky: stickyHeaderDates,
               }),
               props.borderlessX && classNames.borderlessX,
@@ -261,8 +261,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
         )}
         <div // the "body"
           role='rowgroup'
-          className={joinClassNames(
-            generateClassName(options.viewBodyClass, {}),
+          className={joinArrayishClassNames(
+            options.tableBodyClass,
             props.borderlessX && classNames.borderlessX,
             classNames.flexCol,
             verticalScrolling && classNames.liquid,

@@ -129,10 +129,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             )}
           </div>
           <div // the daygrid table
-            className={joinClassNames(
-              generateClassName(options.viewClass, { // a bit crazy to use this hook!
-                view: context.viewApi,
-              }),
+            className={joinArrayishClassNames(
+              options.tableClass,
               props.borderlessX && classNames.borderlessX,
               isTitleAndHeaderSticky && classNames.borderlessTop,
               props.borderlessBottom && classNames.borderlessBottom,
@@ -145,7 +143,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             <div
               ref={this.tableHeaderElRef}
               className={joinClassNames(
-                generateClassName(options.viewHeaderClass, {
+                generateClassName(options.tableHeaderClass, {
                   isSticky: isTitleAndHeaderSticky,
                 }),
                 props.borderlessX && classNames.borderlessX,
@@ -166,9 +164,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               <div className={joinArrayishClassNames(options.dayHeaderDividerClass)} />
             </div>
             <div
-              className={joinClassNames(
+              className={joinArrayishClassNames(
                 isAspectRatio && classNames.rel,
-                generateClassName(options.viewBodyClass, {}),
+                options.tableBodyClass,
                 props.borderlessX && classNames.borderlessX,
               )}
               style={{

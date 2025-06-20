@@ -25,13 +25,11 @@ const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
 const borderColorClass = 'border-gray-300 dark:border-gray-800'
 const borderClass = `border ${borderColorClass}` // all sides
 
-const cellPaddingClass = 'px-1 py-0.5'
 const listItemPaddingClass = 'px-3 py-2' // list-day-header and list-item-event
 const dayGridItemClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-link
 
 // timegrid axis
 const axisClass = 'justify-end' // align axisInner right --- kill this?
-const axisInnerClass = `${cellPaddingClass} text-end` // align text right when multiline
 
 // transparent resizer for mouse
 // must have 'group' on the event, for group-hover
@@ -111,7 +109,7 @@ export default createPlugin({
 
     className: `${borderClass} rounded-xl overflow-hidden`,
 
-    viewHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
+    tableHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
 
     toolbarClass: 'p-4 items-center gap-3',
     toolbarSectionClass: (data) => [
@@ -305,7 +303,7 @@ export default createPlugin({
     dayRowClass: borderClass,
     dayCellClass: (data) => [
       data.isMajor ? majorBorderClass : borderClass,
-      // data.isDisabled && neutralBgClass,
+      data.isDisabled && neutralBgClass,
     ],
     dayCellTopClass: (data) => [
       'flex flex-row justify-center',
@@ -383,6 +381,7 @@ export default createPlugin({
       ...dayGridClasses,
       ...dayGridWeekNumberClasses,
 
+      tableBodyClass: borderClass,
       dayCellBottomClass: 'min-h-[1px]',
     },
     timeGrid: {
@@ -396,7 +395,7 @@ export default createPlugin({
         'items-center', // valign
       ],
       allDayHeaderInnerClass: (data) => [
-        axisInnerClass,
+        'px-2 py-0.5 text-end', // align text right when multiline
         'whitespace-pre', // respects line-breaks in locale data
         data.isCompact && xxsTextClass,
       ],
@@ -414,7 +413,7 @@ export default createPlugin({
 
       slotLabelClass: [axisClass, 'w-2 self-end'],
       slotLabelInnerClass: (data) => [
-        'ps-2 pe-3 py-0.5 -mt-[1em] text-end', // was axisInnerClass -- best -mt- value???
+        'ps-2 pe-3 py-0.5 -mt-[1em] text-end', // best -mt- value???
         'min-h-[3em]',
         data.isCompact && xxsTextClass,
       ],

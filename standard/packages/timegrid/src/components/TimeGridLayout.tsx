@@ -1,5 +1,5 @@
 import { Duration, ViewOptions } from '@fullcalendar/core'
-import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, Scroller, SlicedCoordRange, ViewContainer, afterSize, joinClassNames, memoize } from "@fullcalendar/core/internal"
+import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, Scroller, SlicedCoordRange, ViewContainer, afterSize, memoize, joinArrayishClassNames } from "@fullcalendar/core/internal"
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { buildSlatMetas } from "../time-slat-meta.js"
@@ -131,8 +131,9 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
           'aria-labelledby': props.labelId,
           'aria-label': props.labelStr,
         }}
-        className={joinClassNames(
+        className={joinArrayishClassNames(
           props.className,
+          options.tableClass,
           // we don't do classNames.printRoot/classNames.printHeader here because works poorly with print:
           // - Firefox >85ish CAN have flexboxes within it, but those cannot do absolute positioning
           // - Chrome works okay, but abs-positioned events cover the repeated header

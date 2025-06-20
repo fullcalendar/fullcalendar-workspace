@@ -138,7 +138,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           <div
             role='rowgroup'
             className={joinClassNames(
-              generateClassName(options.viewHeaderClass, {
+              generateClassName(options.tableHeaderClass, {
                 isSticky: stickyHeaderDates,
               }),
               props.borderlessX && classNames.borderlessX,
@@ -203,8 +203,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
         )}
         <div // the "body"
           role='rowgroup'
-          className={joinClassNames(
-            generateClassName(options.viewBodyClass, {}),
+          className={joinArrayishClassNames(
+            options.tableBodyClass,
             props.borderlessX && classNames.borderlessX,
             classNames.flexCol,
             verticalScrolling && classNames.liquid,

@@ -305,8 +305,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           'aria-label': props.labelStr,
           'aria-labelledby': props.labelId,
         }}
-        className={joinClassNames(
+        className={joinArrayishClassNames(
           props.className,
+          options.tableClass,
           classNames.flexCol,
         )}
         borderlessX={props.borderlessX}
@@ -330,7 +331,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               <div
                 role='rowgroup'
                 className={joinClassNames(
-                  generateClassName(options.viewHeaderClass, {
+                  generateClassName(options.tableHeaderClass, {
                     isSticky: stickyHeaderDates,
                   }),
                   props.borderlessX && classNames.borderlessX,
@@ -402,8 +403,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 vertical={verticalScrolling}
                 horizontal
                 hideScrollbars
-                className={joinClassNames(
-                  generateClassName(options.viewBodyClass, {}),
+                className={joinArrayishClassNames(
+                  options.tableBodyClass,
                   props.borderlessX && classNames.borderlessX,
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart
@@ -474,7 +475,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               {/* time-area HEADER
               ---------------------------------------------------------------------------- */}
               <div className={joinClassNames(
-                generateClassName(options.viewHeaderClass, {
+                generateClassName(options.tableHeaderClass, {
                   isSticky: stickyHeaderDates,
                 }),
                 props.borderlessX && classNames.borderlessX,

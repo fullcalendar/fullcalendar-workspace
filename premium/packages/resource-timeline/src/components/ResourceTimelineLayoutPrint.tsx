@@ -129,8 +129,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           'aria-label': props.labelStr,
           'aria-labelledby': props.labelId,
         }}
-        className={joinClassNames(
+        className={joinArrayishClassNames(
           props.className,
+          options.tableClass,
           classNames.printRoot,
         )}
         borderlessX={props.borderlessX}
@@ -138,7 +139,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         borderlessBottom={props.borderlessBottom}
       >
         <div className={joinClassNames(
-          generateClassName(options.viewHeaderClass, {
+          generateClassName(options.tableHeaderClass, {
             isSticky: false,
           }),
           props.borderlessX && classNames.borderlessX,
@@ -251,8 +252,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         {/* Must crop the 200% vertical-line fill */}
         <div
           role='rowgroup'
-          className={joinClassNames(
-            generateClassName(options.viewBodyClass, {}),
+          className={joinArrayishClassNames(
+            options.tableBodyClass,
             props.borderlessX && classNames.borderlessX,
             classNames.rel,
             classNames.crop,

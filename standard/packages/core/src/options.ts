@@ -59,7 +59,7 @@ import {
   DayHeaderData,
   DayHeaderMountData,
 } from './api/structs.js'
-import { ViewBodyData, ViewHeaderData } from './common/ViewSubsections.js'
+import { TableHeaderData } from './common/TableAndSubsections.js'
 import { createDuration, Duration } from './datelib/duration.js'
 import { createFormatter } from './datelib/formatting.js'
 import { ClassNameInput } from './util/html.js'
@@ -392,8 +392,9 @@ export const BASE_OPTION_REFINERS = {
   toolbarSectionClass: identity as Identity<ClassNameGenerator<ToolbarSectionData>>,
   toolbarTitleClass: identity as Identity<ClassNameInput>,
 
-  viewHeaderClass: identity as Identity<ClassNameGenerator<ViewHeaderData>>,
-  viewBodyClass: identity as Identity<ClassNameGenerator<ViewBodyData>>,
+  tableClass: identity as Identity<ClassNameInput>,
+  tableHeaderClass: identity as Identity<ClassNameGenerator<TableHeaderData>>,
+  tableBodyClass: identity as Identity<ClassNameInput>,
 
   nonBusinessClass: identity as Identity<ClassNameInput>,
   highlightClass: identity as Identity<ClassNameInput>,
