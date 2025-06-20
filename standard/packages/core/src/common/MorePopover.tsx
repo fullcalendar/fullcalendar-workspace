@@ -13,6 +13,7 @@ import { generateClassName } from '../content-inject/ContentContainer.js'
 import { ContentContainer } from '../content-inject/ContentContainer.js'
 import { DayHeaderData } from '../api/structs.js'
 import { createFormatter } from '../datelib/formatting.js'
+import { buildNavLinkAttrs } from './nav-link.js'
 
 export interface MorePopoverProps {
   id: string
@@ -39,8 +40,8 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
   private rootEl: HTMLElement
 
   render() {
-    let { options, dateEnv, viewApi } = this.context
-    let { props } = this
+    let { props, context } = this
+    let { options, dateEnv, viewApi } = context
     let { startDate, todayRange, dateProfile } = props
     let dateMeta = this.getDateMeta(startDate, dateEnv, dateProfile, todayRange)
     let [text, textParts] = dateEnv.format(startDate, options.dayPopoverFormat)
@@ -61,12 +62,15 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       // TODO: should know about the resource!
     }
 
+    const isNavLink = options.navLinks
+    const fullDateStr = formatDayString(startDate)
+
     return (
       <Popover
         elRef={this.handleRootEl}
         id={props.id}
         attrs={{
-          'data-date': formatDayString(startDate),
+          'data-date': fullDateStr,
         }}
         className={generateClassName(options.dayPopoverClass, dateMeta)}
         parentEl={props.parentEl}
@@ -76,6 +80,11 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         headerContent={
           <ContentContainer
             tag='div'
+            attrs={
+              isNavLink
+                ? buildNavLinkAttrs(context, startDate, undefined, fullDateStr)
+                : undefined
+            }
             generatorName='dayHeaderContent'
             renderProps={dayHeaderRenderProps}
             customGenerator={options.dayHeaderContent}
