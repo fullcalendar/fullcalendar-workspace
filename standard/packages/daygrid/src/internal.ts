@@ -17,7 +17,7 @@ export {
   buildDateDataConfigs,
 } from './header-tier.js'
 
-export { createDayHeaderFormatter } from './components/util.js'
+export { createDayHeaderFormatter, narrowDayHeaderFormat, narrowDayHeaderWidth } from './components/util.js'
 
 export { DayGridLayout, DayGridLayoutProps } from './components/DayGridLayout.js'
 export { computeRowBasis } from './components/DayGridRows.js'

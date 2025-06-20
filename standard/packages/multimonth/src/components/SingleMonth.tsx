@@ -2,7 +2,7 @@ import { CssDimValue } from '@fullcalendar/core'
 import { DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, joinClassNames, memoize, ViewProps, watchHeight, watchWidth } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef } from '@fullcalendar/core/preact'
-import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow } from '@fullcalendar/daygrid/internal'
+import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow, narrowDayHeaderWidth } from '@fullcalendar/daygrid/internal'
 import { SingleMonthData } from '../structs.js'
 
 export interface SingleMonthProps extends ViewProps {
@@ -67,8 +67,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const invAspectRatio = 1 / options.aspectRatio
 
     const cellColCnt = dayTableModel.cellRows[0].length
-    const cellIsCompact = state.gridWidth != null &&
-      (state.gridWidth / cellColCnt) <= options.dayCompactWidth
+    const colWidth = state.gridWidth != null ? state.gridWidth / cellColCnt : undefined
+    const cellIsCompact = colWidth != null && colWidth <= options.dayCompactWidth
+    const cellIsNarrow = colWidth != null && colWidth <= narrowDayHeaderWidth
 
     const rowHeightGuess = state.gridWidth != null
       ? invAspectRatio * state.gridWidth / 6
@@ -160,6 +161,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 role='row'
                 borderBottom={false}
                 cellIsCompact={cellIsCompact}
+                cellIsNarrow={cellIsNarrow}
               />
               <div className={joinArrayishClassNames(options.dayHeaderDividerClass)} />
             </div>

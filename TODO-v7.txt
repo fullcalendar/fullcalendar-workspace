@@ -49,7 +49,6 @@ All themes
   do list-view
   do resource-timeline
 Test stickyHeaderDates, apparently "makes this broken sometimes"
-When dayWidth VERY small, force our own 'S M T W T F' date format
 ClassName for license warning (benefits Monarch theme)
 rename ViewData -> ViewDisplayData
 Implement

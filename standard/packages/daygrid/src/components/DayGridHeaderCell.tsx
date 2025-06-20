@@ -1,6 +1,7 @@
 import { ContentContainer, joinClassNames, watchHeight, setRef, renderText, BaseComponent, generateClassName } from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { CellDataConfig, CellRenderConfig } from '../header-tier.js'
+import { narrowDayHeaderFormat } from './util.js'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderCellProps<RenderProps> {
@@ -11,6 +12,7 @@ export interface DayGridHeaderCellProps<RenderProps> {
   colWidth?: number
   innerHeightRef?: Ref<number>
   cellIsCompact: boolean
+  cellIsNarrow: boolean // even smaller than "compact"
 }
 
 export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderCellProps<RenderProps>> {
@@ -18,7 +20,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
   private disconectInnerHeight?: () => void
 
   render() {
-    const { props } = this
+    const { props, context } = this
     const { renderConfig, dataConfig } = props
 
     // HACK
@@ -26,6 +28,11 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
     const finalRenderProps = {
       ...dataConfig.renderProps,
       isCompact: props.cellIsCompact,
+    }
+    if (props.cellIsNarrow) {
+      // TODO: only if not distinct dates
+      finalRenderProps.text = (finalRenderProps as any).weekdayText =
+        context.dateEnv.format(dataConfig.dateMarker, narrowDayHeaderFormat)[0]
     }
 
     return (

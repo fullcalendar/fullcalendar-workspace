@@ -23,6 +23,7 @@ import { DayGridRows } from './DayGridRows.js'
 import { DayGridHeader } from './DayGridHeader.js'
 import { RowConfig } from '../header-tier.js'
 import classNames from '@fullcalendar/core/internal-classnames'
+import { narrowDayHeaderWidth } from './util.js'
 
 export interface DayGridLayoutNormalProps {
   dateProfile: DateProfile
@@ -70,8 +71,9 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
 
     const colCount = props.cellRows[0].length
-    const cellIsCompact = clientWidth != null &&
-      clientWidth / colCount <= options.dayCompactWidth
+    const cellWidth = clientWidth != null  ? clientWidth / colCount : undefined
+    const cellIsCompact = cellWidth != null && cellWidth <= options.dayCompactWidth
+    const cellIsNarrow = cellWidth != null && cellWidth <= narrowDayHeaderWidth
 
     return (
       <Fragment>
@@ -88,6 +90,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
               <DayGridHeader
                 headerTiers={props.headerTiers}
                 cellIsCompact={cellIsCompact}
+                cellIsNarrow={cellIsNarrow}
               />
               {Boolean(endScrollbarWidth) && (
                 <div

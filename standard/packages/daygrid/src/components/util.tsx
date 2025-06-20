@@ -161,7 +161,17 @@ export function getCellEl(rowEl: HTMLElement, col: number): HTMLElement {
 // Header Formatting
 // -------------------------------------------------------------------------------------------------
 
-export function createDayHeaderFormatter(explicitFormat: DateFormatter, datesRepDistinctDays, dateCnt) {
+export const narrowDayHeaderWidth = 50
+
+export const narrowDayHeaderFormat = createFormatter({
+  weekday: 'narrow'
+})
+
+export function createDayHeaderFormatter(
+  explicitFormat: DateFormatter,
+  datesRepDistinctDays: boolean,
+  dateCnt: number,
+): DateFormatter {
   return explicitFormat || computeFallbackHeaderFormat(datesRepDistinctDays, dateCnt)
 }
 

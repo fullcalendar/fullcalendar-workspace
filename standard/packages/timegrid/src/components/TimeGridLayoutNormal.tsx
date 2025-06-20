@@ -1,7 +1,7 @@
 import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, generateClassName, getIsHeightAuto, getStickyHeaderDates, Hit, joinArrayishClassNames, joinClassNames, rangeContainsMarker, RefMap, Ruler, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { DayGridHeaderRow, RowConfig } from '@fullcalendar/daygrid/internal'
+import { DayGridHeaderRow, narrowDayHeaderWidth, RowConfig } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridRange } from "../TimeColsSeg.js"
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -127,8 +127,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     const forcedBodyHeight = absPrint ? totalSlatHeight : undefined
 
     const colCount = props.cells.length
-    const cellIsCompact = clientWidth != null &&
-      clientWidth / colCount <= options.dayCompactWidth
+    const colWidth = clientWidth != null ? clientWidth / colCount : undefined
+    const cellIsCompact = colWidth != null && colWidth <= options.dayCompactWidth
+    const cellIsNarrow = colWidth != null && colWidth <= narrowDayHeaderWidth
 
     return (
       <Fragment>
@@ -186,6 +187,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   className={classNames.liquid}
                   borderBottom={tierNum < props.headerTiers.length - 1}
                   cellIsCompact={cellIsCompact}
+                  cellIsNarrow={cellIsNarrow}
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div
