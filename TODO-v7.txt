@@ -17,10 +17,6 @@ Classic theme
 Monarch theme
   later: bug: left-align dayheader for day-only views after views.day options bug above is fixed
   later: fix Screenshots/multimonth-more-link-bug.png
-  don't do global navLink hover styles
-    handle case-by-case in "Inner" hooks, and provide isNavLink render prop
-    do custom styling for day-headers with circle link
-    do custom styling for day-top with circle link
   for list view, make sure we mark the current day with circle (like Google Calendar)
   put x-padding on non-circled day numbers. tab-focusing looks bad right now
   core: kill border-radius and drop-shadow on (Calendar|View) when borderless
@@ -33,6 +29,7 @@ Monarch theme
     compare to https://fullcalendar.io/docs/multimonth-grid-demo
     ensure inline week numbers okay
   force-off week numbers for extremely compact
+  list-view
 Zen theme
   fork from classic theme
 Technic theme
@@ -58,6 +55,7 @@ Themes with -top slotLabelInners should start slots at 11pm night before
   BUT, BUG: slotMinTime:'-01:00' gives weird results
 Put dayPopover as child of BODY! --- do whatever is necessary (still use position:fixed?)
   because it's possible to have overflow:hidden on the calendar now (Monarch theme does it)
+  for web components, attach to shadow-root
 Kill fixedMirrorParent --- always use BODY
 Reana needs to design the schematics for Popover
 manual-test: cropping within scrollers?
@@ -126,6 +124,7 @@ after-beta todo:
   rename listDaySideFormat -> listDayAltFormat ?
     (because theme might not decide to put it on the "side")
     maybe not "alt" because ppl might think related to alt-text
+    TODO: give isAlt/isSide as a prop to the classname-generator
   ensure isMajor on resourceDayHeaders... this matters!
     depends on resource-above-dates or opposites
     HAVE THEMES leverage this. darker line

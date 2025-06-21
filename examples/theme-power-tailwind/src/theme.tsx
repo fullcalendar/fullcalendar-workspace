@@ -72,12 +72,15 @@ const dayGridClasses: CalendarOptions = {
   ],
 }
 
-const dayGridWeekNumberLabelClass = 'rounded-sm px-1 bg-gray-500/15'
+const dayGridWeekNumberLabelClass = (data: { hasNavLink: boolean }) => [
+  'rounded-sm px-1 bg-gray-500/15',
+  data.hasNavLink && 'hover:underline',
+]
 const dayGridWeekNumberClasses: CalendarOptions = {
   weekNumberClass: (data) => [
     !data.isCell && 'absolute z-20',
     data.isCompact ? 'top-1 start-0.5' : 'top-2 start-1',
-    dayGridWeekNumberLabelClass,
+    ...dayGridWeekNumberLabelClass(data),
   ],
   weekNumberInnerClass: (data) => [
     data.isCompact && xxsTextClass,
@@ -90,7 +93,7 @@ const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean, view
 ]
 
 const getDayHeaderInnerClasses = (data: { isCompact: boolean, inPopover?: boolean }) => [
-  'mt-2 flex flex-col items-center',
+  'group mt-2 flex flex-col items-center',
   data.isCompact && xxsTextClass,
 ]
 
@@ -163,8 +166,6 @@ export default createPlugin({
     popoverCloseClass: 'absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center hover:bg-gray-200',
     popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
     popoverBodyClass: 'p-2 min-w-3xs',
-
-    navLinkClass: 'hover:underline',
 
     moreLinkInnerClass: 'sticky whitespace-nowrap overflow-hidden',
     rowMoreLinkInnerClass: 'start-0',
@@ -282,18 +283,25 @@ export default createPlugin({
 
     dayHeaderRowClass: borderClass,
     dayHeaderClass: getDayHeaderClasses,
-    dayHeaderInnerClass: getDayHeaderInnerClasses,
+    dayHeaderInnerClass: getDayHeaderInnerClasses, // has group for hovering
     dayHeaderContent: (data) => (
       <Fragment>
         {data.weekdayText && (
-          <div className='uppercase text-xs opacity-60'>{data.weekdayText}</div>
+          <div className={
+            'uppercase text-xs opacity-60' +
+              (data.hasNavLink ? ' group-hover:underline' : '')
+          }>{data.weekdayText}</div>
         )}
         {data.dayNumberText && (
           /* TODO: kill navLink text decoration somehow */
           <div
             className={
               'm-0.5 flex flex-row items-center justify-center text-lg h-[2em]' +
-              (data.isToday ? ' w-[2em] rounded-full bg-blue-500 text-white decoration-red-100' : '')
+              (data.isToday
+                ? ' w-[2em] rounded-full bg-blue-500 text-white'
+                : data.hasNavLink
+                  ? ' w-[2em] rounded-full group-hover:bg-gray-500/7'
+                  : '')
             }
           >{data.dayNumberText}</div>
         )}
@@ -317,6 +325,7 @@ export default createPlugin({
         (data.isToday ? ' w-[1.8em] rounded-full bg-blue-500 text-white decoration-red-100' : ''),
       data.hasMonthLabel && 'text-base font-bold',
       data.isCompact && xxsTextClass,
+      data.hasNavLink && 'hover:underline'
     ],
 
     allDayDividerClass: `border-t ${borderColorClass}`,
@@ -331,6 +340,7 @@ export default createPlugin({
 
     slotLabelRowClass: borderClass, // Timeline
     slotLabelClass: getSlotClasses,
+    slotLabelInnerClass: (data) => data.hasNavLink && 'hover:underline',
     slotLaneClass: getSlotClasses,
 
     listDayClass: `not-last:border-b ${borderColorClass}`,
@@ -340,7 +350,10 @@ export default createPlugin({
       data.isSticky && 'bg-(--fc-canvas-color)', // base color for overlaid "before" color
     ],
     listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgClass}`,
-    listDayHeaderInnerClass: `relative ${listItemPaddingClass}`, // above the "before" element
+    listDayHeaderInnerClass: (data) => [
+      `relative ${listItemPaddingClass}`, // above the "before" element
+      data.hasNavLink && 'hover:underline',
+    ],
 
     nowIndicatorLineClass: '-m-px border-1 border-red-600 dark:border-red-400',
     nowIndicatorDotClass: 'rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 border-red-600 dark:border-red-400', // TODO: cripser with bg instead of border?
@@ -411,7 +424,7 @@ export default createPlugin({
         // BUG: no opacity here! (unlike daygrid) hard to do with wrappers and text
         'text-center',
         data.isCompact && xxsTextClass,
-        dayGridWeekNumberLabelClass,
+        ...dayGridWeekNumberLabelClass(data),
       ],
 
       columnMoreLinkClass: `mb-px rounded-xs outline outline-(--fc-canvas-color) ${moreLinkBgClass}`,
