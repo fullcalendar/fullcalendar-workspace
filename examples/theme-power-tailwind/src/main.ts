@@ -80,6 +80,11 @@ document.addEventListener('DOMContentLoaded', function() {
       dayMaxEvents: true, // allow "more" link when too many events
       // businessHours: true,
       // eventMaxStack: 1,
+
+      // match Google Calendar formatting
+      listDayFormat: { day: 'numeric' },
+      listDaySideFormat: { month: 'short', weekday: 'short', forceCommas: true },
+
       events: [
         {
           title: 'All Day Event',

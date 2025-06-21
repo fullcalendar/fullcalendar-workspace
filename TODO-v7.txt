@@ -239,7 +239,7 @@ changelog:
       resourceLaneContent/InnerClass
       slotLaneContent/InnerClass
       dayLaneContent (dayLaneInnerClass is actually useful. something else)
-changelog: forceWeekdayStart
+changelog: weekdayJustify, forceCommas
 changelog: default computed titleFormat for week view (could span different months),
   WHEN it actually does span different months, is like "Sep - Oct 2014"
 changelog: dayHeaderClass/etc is used within popover (inPopover)

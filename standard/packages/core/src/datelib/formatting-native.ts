@@ -14,7 +14,8 @@ const EXTENDED_SETTINGS_AND_SEVERITIES = {
   omitZeroMinute: 0,
   meridiem: 0, // like am/pm
   omitCommas: 0,
-  forceWeekdayStart: 0,
+  forceCommas: 0,
+  weekdayJustify: 0,
 }
 
 const STANDARD_DATE_PROP_SEVERITIES = {
@@ -39,8 +40,9 @@ export interface NativeFormatterOptions extends Intl.DateTimeFormatOptions {
   meridiem?: 'lowercase' | 'short' | 'narrow' | boolean
   omitZeroMinute?: boolean
   omitCommas?: boolean
+  forceCommas?: boolean
   separator?: string
-  forceWeekdayStart?: boolean
+  weekdayJustify?: 'start' | 'end'
 }
 
 export class NativeFormatter implements DateFormatter {
@@ -303,12 +305,22 @@ function postProcessParts(
   }
 
   if (
-    extendedSettings.forceWeekdayStart &&
+    extendedSettings.weekdayJustify &&
     parts.length === 3 &&
-    parts[1].value === ' ' &&
-    parts[2].type === 'weekday'
+    parts[1].value === ' '
   ) {
-    parts.reverse()
+    if (parts[extendedSettings.weekdayJustify === 'start' ? 2 : 0].type === 'weekday') {
+      parts.reverse()
+    }
+  }
+
+  if (extendedSettings.forceCommas) {
+    parts = parts.map((part) => {
+      if (part.value === ' ') {
+        return { ...part, value: ', '}
+      }
+      return part
+    })
   }
 
   return parts.filter((part) => part.value) // filter empty parts

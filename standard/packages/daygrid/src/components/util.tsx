@@ -188,7 +188,7 @@ function computeFallbackHeaderFormat(datesRepDistinctDays: boolean, dayCnt: numb
       weekday: 'short',
       day: 'numeric',
       omitCommas: true,
-      forceWeekdayStart: true,
+      weekdayJustify: 'start',
     })
   }
 
