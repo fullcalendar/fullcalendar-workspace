@@ -51,6 +51,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
                 dayFormat={options.listDayFormat}
                 isTabbable
                 dateMeta={dateMeta}
+                level={0}
               />
             )}
             {Boolean(options.listDaySideFormat) && (
@@ -59,6 +60,7 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
                 dayFormat={options.listDaySideFormat}
                 isTabbable={false}
                 dateMeta={dateMeta}
+                level={1}
               />
             )}
           </Fragment>

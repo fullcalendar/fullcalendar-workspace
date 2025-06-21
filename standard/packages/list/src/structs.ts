@@ -14,4 +14,5 @@ export interface ListDayHeaderInnerData extends ListDayData {
   text: string
   textParts: Intl.DateTimeFormatPart[]
   hasNavLink: boolean
+  level: number // 0 for listDayFormat, 1 for listDaySideFormat
 }

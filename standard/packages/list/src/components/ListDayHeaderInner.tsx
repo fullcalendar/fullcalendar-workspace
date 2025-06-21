@@ -7,6 +7,7 @@ export interface ListDayHeaderInnerProps {
   dayFormat: DateFormatter
   isTabbable: boolean
   dateMeta: DateMeta
+  level: number
 }
 
 export class ListDayHeaderInner extends BaseComponent<ListDayHeaderInnerProps> {
@@ -22,6 +23,7 @@ export class ListDayHeaderInner extends BaseComponent<ListDayHeaderInnerProps> {
       text,
       textParts,
       hasNavLink,
+      level: props.level,
     }
 
     const navLinkAttrs = hasNavLink

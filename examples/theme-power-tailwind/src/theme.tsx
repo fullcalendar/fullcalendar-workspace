@@ -345,12 +345,13 @@ export default createPlugin({
 
     listDayClass: `not-last:border-b ${borderColorClass}`,
     listDayHeaderClass: (data) => [
-      `flex flex-row justify-between border-b ${borderColorClass} font-bold`,
+      `flex flex-row justify-between border-b ${borderColorClass}`,
       'relative', // for overlaid "before" color
       data.isSticky && 'bg-(--fc-canvas-color)', // base color for overlaid "before" color
     ],
     listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgClass}`,
     listDayHeaderInnerClass: (data) => [
+      !data.level && 'font-bold',
       `relative ${listItemPaddingClass}`, // above the "before" element
       data.hasNavLink && 'hover:underline',
     ],
