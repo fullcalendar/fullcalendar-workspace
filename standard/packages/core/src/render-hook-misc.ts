@@ -16,6 +16,7 @@ export interface SlotLabelData extends SlotLaneData {
   level: number
   text: string
   isCompact: boolean
+  hasNavLink: boolean
 }
 export type SlotLabelMountData = MountData<SlotLabelData>
 
@@ -31,6 +32,7 @@ export interface DayHeaderData extends DateMeta {
   isCompact: boolean
   isMajor: boolean
   inPopover: boolean
+  hasNavLink: boolean
   text: string
   textParts: Intl.DateTimeFormatPart[]
   weekdayText: string

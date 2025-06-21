@@ -99,6 +99,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       classNames.flexCol,
     )
 
+    const hasNavLink = options.navLinks
     const renderProps = this.refineRenderProps({
       date: props.date,
       isMajor: props.isMajor,
@@ -106,6 +107,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       dateMeta: dateMeta,
       hasLabel: props.showDayNumber,
       hasMonthLabel: isMonthStart,
+      hasNavLink,
       renderProps: props.renderProps,
       viewApi: context.viewApi,
       dateEnv: context.dateEnv,
@@ -130,7 +132,6 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       )
     }
 
-    const isNavLink = options.navLinks
     const fullDateStr = buildDateStr(context, props.date)
 
     return (
@@ -169,7 +170,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 <InnerContent // the dayCellTopContent
                   tag='div'
                   attrs={
-                    isNavLink
+                    hasNavLink
                       ? buildNavLinkAttrs(context, props.date, undefined, fullDateStr)
                       : { 'aria-hidden': true } // label already on cell
                   }
@@ -288,11 +289,12 @@ interface DayCellRenderPropsInput {
   monthStartFormat: DateFormatter
   hasLabel: boolean
   hasMonthLabel: boolean
+  hasNavLink: boolean
   renderProps?: Dictionary // so can include a resource
 }
 
 function refineRenderProps(raw: DayCellRenderPropsInput): DayCellData {
-  let { date, dateEnv, hasLabel, hasMonthLabel } = raw
+  let { date, dateEnv, hasLabel, hasMonthLabel, hasNavLink } = raw
   let [text, textParts] = hasLabel
     ? dateEnv.format(date, hasMonthLabel ? raw.monthStartFormat : raw.dayCellFormat)
     : ['', []]
@@ -306,6 +308,7 @@ function refineRenderProps(raw: DayCellRenderPropsInput): DayCellData {
     isCompact: raw.isCompact,
     hasLabel,
     hasMonthLabel,
+    hasNavLink,
     view: raw.viewApi,
   }
 }

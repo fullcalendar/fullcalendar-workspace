@@ -7,6 +7,7 @@ export interface DayCellData extends DateMeta {
   isCompact: boolean
   hasLabel: boolean
   hasMonthLabel: boolean
+  hasNavLink: boolean
   view: ViewApi
   text: string
   textParts: Intl.DateTimeFormatPart[]

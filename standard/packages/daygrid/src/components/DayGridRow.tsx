@@ -135,10 +135,15 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const highlightSegs = this.getHighlightSegs()
     const mirrorSegs = this.getMirrorSegs()
 
-    const isNavLink = options.navLinks
+    const hasNavLink = options.navLinks
     const fullWeekStr = buildDateStr(context, weekDateMarker, 'week')
 
-    const weekNumberRenderProps = this.buildWeekNumberRenderProps(weekDateMarker, context, props.cellIsCompact)
+    const weekNumberRenderProps = this.buildWeekNumberRenderProps(
+      weekDateMarker,
+      context,
+      props.cellIsCompact,
+      hasNavLink,
+    )
 
     return (
       <div
@@ -178,7 +183,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
                 tag='div'
                 attrs={{
                   ...(
-                    isNavLink
+                    hasNavLink
                       ? buildNavLinkAttrs(context, weekDateMarker, 'week', fullWeekStr, /* isTabbable = */ false)
                       : {}
                   ),
@@ -461,7 +466,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 // Utils
 // -------------------------------------------------------------------------------------------------
 
-function buildWeekNumberRenderProps(weekDateMarker: DateMarker, context: ViewContext, isCompact: boolean) {
+function buildWeekNumberRenderProps(
+  weekDateMarker: DateMarker,
+  context: ViewContext,
+  isCompact: boolean,
+  hasNavLink: boolean,
+): WeekNumberDisplayData {
   const { dateEnv, options } = context
   const weekNum = dateEnv.computeWeekNumber(weekDateMarker)
   const [weekNumText, weekNumTextParts] = dateEnv.format(
@@ -476,5 +486,6 @@ function buildWeekNumberRenderProps(weekDateMarker: DateMarker, context: ViewCon
     date: weekDateZoned,
     isCompact,
     isCell: false,
+    hasNavLink,
   }
 }

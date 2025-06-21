@@ -15,14 +15,16 @@ export class ListDayHeaderInner extends BaseComponent<ListDayHeaderInnerProps> {
     const { options } = context
     const [text, textParts] = context.dateEnv.format(props.dayDate, props.dayFormat)
 
+    const hasNavLink = options.navLinks
     const renderProps: ListDayHeaderInnerData = {
       ...props.dateMeta,
       view: context.viewApi,
       text,
       textParts,
+      hasNavLink,
     }
 
-    const navLinkAttrs = options.navLinks
+    const navLinkAttrs = hasNavLink
       ? buildNavLinkAttrs(this.context, props.dayDate, undefined, text, this.props.isTabbable)
       : {}
 

@@ -11,6 +11,7 @@ export interface WeekNumberDisplayData {
   date: Date
   isCompact: boolean
   isCell: boolean
+  hasNavLink: boolean
 }
 
 export type WeekNumberMountData = MountData<WeekNumberDisplayData>

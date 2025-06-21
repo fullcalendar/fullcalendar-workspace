@@ -159,6 +159,7 @@ function createRenderProps(
     isMajor: false,
     isMinor,
     isCompact,
+    hasNavLink: false,
     view: context.viewApi,
   }
 }

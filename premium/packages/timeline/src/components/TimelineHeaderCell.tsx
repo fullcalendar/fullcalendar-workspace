@@ -57,17 +57,17 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
     // workaround: to infer day, do NOT time
 
     let dateMeta = this.getDateMeta(cell.date, dateEnv, dateProfile, props.todayRange, props.nowDate)
+    let hasNavLink = !dateMeta.isDisabled && (cell.rowUnit && cell.rowUnit !== 'time')
     let renderProps = {
       ...dateMeta,
       level: props.rowLevel,
       isMajor: cell.isMajor,
       isMinor: false,
       isCompact: false,
+      hasNavLink,
       text: cell.text,
       view: context.viewApi,
     }
-
-    let isNavLink = !dateMeta.isDisabled && (cell.rowUnit && cell.rowUnit !== 'time')
 
     return (
       <ContentContainer
@@ -106,7 +106,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
           <InnerContent
             tag='div'
             attrs={
-              isNavLink
+              hasNavLink
                 // not tabbable because parent is aria-hidden
                 ? buildNavLinkAttrs(context, cell.date, cell.rowUnit, undefined, /* isTabbable = */ false)
                 : {} // don't bother with aria-hidden because parent already hidden

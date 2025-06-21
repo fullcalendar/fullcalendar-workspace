@@ -45,11 +45,13 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     let { startDate, todayRange, dateProfile } = props
     let dateMeta = this.getDateMeta(startDate, dateEnv, dateProfile, todayRange)
     let [text, textParts] = dateEnv.format(startDate, options.dayPopoverFormat)
+    const hasNavLink = options.navLinks
     let dayHeaderRenderProps: DayHeaderData = {
       ...dateMeta,
       isMajor: false,
       isCompact: false,
       inPopover: true,
+      hasNavLink,
       text,
       textParts,
       get weekdayText() {
@@ -62,7 +64,6 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       // TODO: should know about the resource!
     }
 
-    const isNavLink = options.navLinks
     const fullDateStr = formatDayString(startDate)
 
     return (
@@ -81,7 +82,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           <ContentContainer
             tag='div'
             attrs={
-              isNavLink
+              hasNavLink
                 ? buildNavLinkAttrs(context, startDate, undefined, fullDateStr)
                 : undefined
             }

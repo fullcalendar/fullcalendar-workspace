@@ -13,4 +13,5 @@ export type ListDayHeaderMountData = MountData<ListDayHeaderData>
 export interface ListDayHeaderInnerData extends ListDayData {
   text: string
   textParts: Intl.DateTimeFormatPart[]
+  hasNavLink: boolean
 }

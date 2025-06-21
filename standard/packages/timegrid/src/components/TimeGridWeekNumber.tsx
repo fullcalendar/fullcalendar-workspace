@@ -32,7 +32,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
     let dayCnt = diffDays(range.start, range.end)
 
     // HACK: only make week-number a nav-link when NOT in week-view
-    let isNavLink = dayCnt === 1 && options.navLinks
+    let hasNavLink = dayCnt === 1 && options.navLinks
 
     let weekDateMarker = range.start
     let fullDateStr = buildDateStr(context, weekDateMarker, 'week')
@@ -51,6 +51,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
       date: weekDateZoned,
       isCompact: props.isCompact,
       isCell: true,
+      hasNavLink,
     }
 
     return (
@@ -80,7 +81,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
           <InnerContent
             tag='div'
             attrs={
-              isNavLink
+              hasNavLink
                 ? buildNavLinkAttrs(context, range.start, 'week', fullDateStr)
                 : { 'aria-label': fullDateStr }
             }

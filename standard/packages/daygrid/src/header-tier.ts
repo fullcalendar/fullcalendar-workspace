@@ -18,7 +18,7 @@ export interface CellDataConfig<RenderProps> {
   attrs?: any // TODO
   innerAttrs?: any // TODO
   colSpan?: number // TODO: make required? easier for internal users
-  isNavLink?: boolean
+  hasNavLink?: boolean
 }
 
 export interface RowConfig<RenderProps> {
@@ -150,6 +150,8 @@ export function buildDateDataConfigs(
         const dateMeta = getDateMeta(dateMarker, dateEnv, dateProfile, todayRange)
         const isMajor = isMajorMod != null && !(i % isMajorMod)
         const [text, textParts] = dateEnv.format(dateMarker, dayHeaderFormat)
+        const hasNavLink = options.navLinks && !dateMeta.isDisabled &&
+          dateMarkers.length > 1 // don't show navlink to day if only one day
         const renderProps: DayHeaderData = {
           ...dateMeta,
           ...extraRenderProps,
@@ -164,10 +166,9 @@ export function buildDateDataConfigs(
           isMajor,
           isCompact: false, // HACK. gets overridden
           inPopover: false,
+          hasNavLink,
           view: viewApi,
         }
-        const isNavLink = options.navLinks && !dateMeta.isDisabled &&
-          dateMarkers.length > 1 // don't show navlink to day if only one day
         const fullDateStr = buildDateStr(context, dateMarker)
 
         // for DayGridHeaderCell
@@ -182,11 +183,11 @@ export function buildDateDataConfigs(
             ...extraAttrs,
           },
           // for navlink
-          innerAttrs: isNavLink
+          innerAttrs: hasNavLink
             ? buildNavLinkAttrs(context, dateMarker, undefined, fullDateStr)
             : { 'aria-hidden': true }, // label already on cell
           colSpan,
-          isNavLink,
+          hasNavLink,
           className,
         }
       })
@@ -210,6 +211,7 @@ export function buildDateDataConfigs(
           isMajor,
           isCompact: false, // HACK. gets overridden
           inPopover: false,
+          hasNavLink: false,
           view: viewApi,
           text,
           textParts,
