@@ -28,7 +28,11 @@ export function TimeGridNowIndicatorLine(props: TimeGridNowIndicatorLineProps) {
       }}
     >
       <NowIndicatorLineContainer
-        className={classNames.fillX}
+        className={joinClassNames(
+          classNames.fillX,
+          classNames.noMarginX,
+          classNames.borderlessX,
+        )}
         style={{ top }}
         date={props.nowDate}
       />

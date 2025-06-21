@@ -192,6 +192,11 @@
   border-right: 0 !important;
 }
 
+.borderlessY {
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+}
+
 .borderlessTop {
   border-top: 0 !important;
 }
@@ -271,6 +276,16 @@ TODO: use liquidX/Y elsewhere because frees up min other dimension; less collisi
   margin: 0 !important;
 }
 
+.noMarginY {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.noMarginX {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
 .rigid {
   flex-shrink: 0 !important;
   white-space: nowrap !important;
@@ -303,11 +318,11 @@ which can't rely on dynamic height detection after print-flag activated.
 }
 
 .ltrRoot .start0 {
-  left: 0;
+  left: 0 !important;
 }
 
 .rtlRoot .start0 {
-  right: 0;
+  right: 0 !important;
 }
 
 .fill {

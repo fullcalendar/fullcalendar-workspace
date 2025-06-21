@@ -342,6 +342,9 @@ export default createPlugin({
     listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgClass}`,
     listDayHeaderInnerClass: `relative ${listItemPaddingClass}`, // above the "before" element
 
+    nowIndicatorLineClass: '-m-px border-1 border-red-600 dark:border-red-400',
+    nowIndicatorDotClass: 'rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 border-red-600 dark:border-red-400', // TODO: cripser with bg instead of border?
+
     resourceDayHeaderClass: getDayHeaderClasses,
     resourceDayHeaderInnerClass: getDayHeaderInnerClasses,
 
@@ -422,12 +425,6 @@ export default createPlugin({
       ],
 
       slotLabelDividerClass: (data) => !data.isHeader && `border-l ${borderColorClass}`,
-
-      // TODO: apply to all views! we do border cancellation!
-      nowIndicatorLineClass: 'h-[2px] -my-px flex flex-row items-center bg-red-600 dark:bg-red-400',
-
-      // TODO: use border
-      nowIndicatorDotClass: 'w-3 h-3 -mx-1.5 -my-1.5 rounded-full bg-red-600 dark:bg-red-400',
     },
     timeline: {
       rowEventClass: [
@@ -446,12 +443,6 @@ export default createPlugin({
       slotLabelInnerClass: 'p-1',
 
       slotLabelDividerClass: `border-b ${borderColorClass}`,
-
-      // TODO: apply to all views! we do border cancellation!
-      nowIndicatorLineClass: 'w-[2px] -mx-px flex flex-row items-center bg-red-600 dark:bg-red-400',
-
-      // TODO: use border
-      nowIndicatorDotClass: 'w-3 h-3 -mx-1.5 -my-1.5 rounded-full bg-red-600 dark:bg-red-400',
     },
     list: {
       listItemEventClass: `group gap-3 not-last:border-b ${borderColorClass} ${listItemPaddingClass}`,

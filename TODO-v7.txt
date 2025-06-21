@@ -17,7 +17,6 @@ Classic theme
 Monarch theme
   later: bug: left-align dayheader for day-only views after views.day options bug above is fixed
   later: fix Screenshots/multimonth-more-link-bug.png
-  nowIndicator
   don't do global navLink hover styles
     handle case-by-case in "Inner" hooks, and provide isNavLink render prop
     do custom styling for day-headers with circle link

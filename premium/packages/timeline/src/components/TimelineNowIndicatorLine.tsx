@@ -32,7 +32,11 @@ export class TimelineNowIndicatorLine extends BaseComponent<TimelineNowIndicator
         }}
       >
         <NowIndicatorLineContainer
-          className={classNames.fillY}
+          className={joinClassNames(
+            classNames.fillY,
+            classNames.noMarginY,
+            classNames.borderlessY,
+          )}
           style={xStyle}
           date={props.nowDate}
         />
