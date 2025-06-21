@@ -61,6 +61,10 @@ Put dayPopover as child of BODY! --- do whatever is necessary (still use positio
   because it's possible to have overflow:hidden on the calendar now (Monarch theme does it)
 Kill fixedMirrorParent --- always use BODY
 Reana needs to design the schematics for Popover
+manual-test: cropping within scrollers?
+  stickiness within works?
+  now-indicators bleeding out in any scendario, expanding canvas?
+later: ensure nowIndicator doesn't appear in print view
 
 
 ASAP

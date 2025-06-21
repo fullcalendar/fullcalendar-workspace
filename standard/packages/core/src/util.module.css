@@ -302,6 +302,14 @@ which can't rely on dynamic height detection after print-flag activated.
   position: absolute !important;
 }
 
+.ltrRoot .start0 {
+  left: 0;
+}
+
+.rtlRoot .start0 {
+  right: 0;
+}
+
 .fill {
   position: absolute !important;
   top: 0 !important;

@@ -156,6 +156,8 @@ export const BASE_OPTION_REFINERS = {
   nowIndicatorLabelDidMount: identity as Identity<DidMountHandler<NowIndicatorLabelMountData>>,
   nowIndicatorLabelWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorLabelMountData>>,
 
+  nowIndicatorDotClass: identity as Identity<ClassNameInput>,
+
   nowIndicatorLineClass: identity as Identity<ClassNameGenerator<NowIndicatorLineData>>,
   nowIndicatorLineContent: identity as Identity<CustomContentGenerator<NowIndicatorLineData>>,
   nowIndicatorLineDidMount: identity as Identity<DidMountHandler<NowIndicatorLineMountData>>,

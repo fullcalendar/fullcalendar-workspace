@@ -244,6 +244,7 @@ export type {
 export { StandardEvent, StandardEventProps } from './common/StandardEvent.js'
 export { NowIndicatorLabelContainer } from './common/NowIndicatorLabelContainer.js'
 export { NowIndicatorLineContainer } from './common/NowIndicatorLineContainer.js'
+export { NowIndicatorDot } from './common/NowIndicatorDot.js'
 
 export { renderFill, BgEvent } from './common/bg-fill.js'
 export { MoreLinkContainer } from './common/MoreLinkContainer.js'

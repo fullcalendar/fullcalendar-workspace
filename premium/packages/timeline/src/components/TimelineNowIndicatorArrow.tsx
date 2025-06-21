@@ -19,6 +19,12 @@ TODO: DRY with other NowIndicator components
 export class TimelineNowIndicatorArrow extends BaseComponent<TimelineNowIndicatorArrowProps> {
   render() {
     const { props, context } = this
+    const xStyle = props.slotWidth != null
+      ? horizontalCoordToCss(
+          dateToCoord(props.nowDate, context.dateEnv, props.tDateProfile, props.slotWidth),
+          context.isRtl
+        )
+      : {}
 
     return (
       <div
@@ -32,14 +38,7 @@ export class TimelineNowIndicatorArrow extends BaseComponent<TimelineNowIndicato
       >
         <NowIndicatorLabelContainer
           className={classNames.abs}
-          style={
-            props.slotWidth != null
-              ? horizontalCoordToCss(
-                  dateToCoord(props.nowDate, context.dateEnv, props.tDateProfile, props.slotWidth),
-                  context.isRtl
-                )
-              : {}
-          }
+          style={xStyle}
           date={props.nowDate}
         />
       </div>

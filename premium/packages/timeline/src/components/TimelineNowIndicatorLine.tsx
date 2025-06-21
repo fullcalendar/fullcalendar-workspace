@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, joinClassNames, NowIndicatorLineContainer } from '@fullcalendar/core/internal'
+import { BaseComponent, DateMarker, joinClassNames, NowIndicatorDot, NowIndicatorLineContainer } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
@@ -13,18 +13,19 @@ export interface TimelineNowIndicatorLineProps {
   slotWidth: number | undefined
 }
 
-/*
-TODO: DRY with other NowIndicator components
-*/
 export class TimelineNowIndicatorLine extends BaseComponent<TimelineNowIndicatorLineProps> {
   render() {
     const { props, context } = this
+    const xStyle = props.slotWidth != null
+      ? horizontalCoordToCss(
+          dateToCoord(props.nowDate, context.dateEnv, props.tDateProfile, props.slotWidth),
+          context.isRtl
+        )
+      : {}
 
     return (
       <div
-        // crop any overflow that the arrow/line might cause
-        // TODO: just do this on the entire canvas within the scroller
-        className={joinClassNames(classNames.fill, classNames.crop)}
+        className={classNames.fill}
         style={{
           zIndex: 2, // inlined from $now-indicator-z
           pointerEvents: 'none', // TODO: className
@@ -32,16 +33,23 @@ export class TimelineNowIndicatorLine extends BaseComponent<TimelineNowIndicator
       >
         <NowIndicatorLineContainer
           className={classNames.fillY}
-          style={
-            props.slotWidth != null
-              ? horizontalCoordToCss(
-                  dateToCoord(props.nowDate, context.dateEnv, props.tDateProfile, props.slotWidth),
-                  context.isRtl
-                )
-              : {}
-          }
+          style={xStyle}
           date={props.nowDate}
         />
+        <div
+          className={joinClassNames(
+            classNames.flexCol, // better for negative margins
+            classNames.fillY,
+          )}
+          style={xStyle}
+        >
+          <div
+            // stickiness on NowIndicatorDot misbehaves b/c of negative marginss
+            className={classNames.stickyT}
+          >
+            <NowIndicatorDot />
+          </div>
+        </div>
       </div>
     )
   }

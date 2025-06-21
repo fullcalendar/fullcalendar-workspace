@@ -423,8 +423,11 @@ export default createPlugin({
 
       slotLabelDividerClass: (data) => !data.isHeader && `border-l ${borderColorClass}`,
 
-      nowIndicatorLabelClass: 'start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] border-s-red-500',
-      nowIndicatorLineClass: 'border-t border-red-500',
+      // TODO: apply to all views! we do border cancellation!
+      nowIndicatorLineClass: 'h-[2px] -my-px flex flex-row items-center bg-red-600 dark:bg-red-400',
+
+      // TODO: use border
+      nowIndicatorDotClass: 'w-3 h-3 -mx-1.5 -my-1.5 rounded-full bg-red-600 dark:bg-red-400',
     },
     timeline: {
       rowEventClass: [
@@ -444,8 +447,11 @@ export default createPlugin({
 
       slotLabelDividerClass: `border-b ${borderColorClass}`,
 
-      nowIndicatorLabelClass: 'top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-t-red-500',
-      nowIndicatorLineClass: 'border-l border-red-500',
+      // TODO: apply to all views! we do border cancellation!
+      nowIndicatorLineClass: 'w-[2px] -mx-px flex flex-row items-center bg-red-600 dark:bg-red-400',
+
+      // TODO: use border
+      nowIndicatorDotClass: 'w-3 h-3 -mx-1.5 -my-1.5 rounded-full bg-red-600 dark:bg-red-400',
     },
     list: {
       listItemEventClass: `group gap-3 not-last:border-b ${borderColorClass} ${listItemPaddingClass}`,
