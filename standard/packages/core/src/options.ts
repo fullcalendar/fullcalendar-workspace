@@ -377,7 +377,6 @@ export const BASE_OPTION_REFINERS = {
   dayPopoverClass: identity as Identity<ClassNameGenerator<DayPopoverData>>,
   popoverClass: identity as Identity<ClassNameInput>,
   popoverHeaderClass: identity as Identity<ClassNameInput>,
-  popoverHeaderInnerClass: identity as Identity<ClassNameInput>,
   popoverCloseClass: identity as Identity<ClassNameInput>,
   popoverCloseContent: identity as Identity<CustomContentGenerator<{}>>,
   popoverBodyClass: identity as Identity<ClassNameInput>,

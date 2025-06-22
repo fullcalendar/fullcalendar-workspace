@@ -61,10 +61,7 @@ export class Popover extends BaseComponent<PopoverProps> {
           props.headerClass,
           options.popoverHeaderClass,
         )}>
-          <div
-            id={this.titleId}
-            className={joinArrayishClassNames(options.popoverHeaderInnerClass)}
-          >
+          <div id={this.titleId}>
             {props.headerContent}
           </div>
           <ContentContainer
