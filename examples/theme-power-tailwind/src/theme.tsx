@@ -25,7 +25,6 @@ const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
 const borderColorClass = 'border-gray-300 dark:border-gray-800'
 const borderClass = `border ${borderColorClass}` // all sides
 
-const listItemPaddingClass = 'px-3 py-2' // list-day-header and list-item-event
 const dayGridItemClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-link
 
 // timegrid axis
@@ -343,18 +342,21 @@ export default createPlugin({
     slotLabelInnerClass: (data) => data.hasNavLink && 'hover:underline',
     slotLaneClass: getSlotClasses,
 
-    listDayClass: `not-last:border-b ${borderColorClass}`,
-    listDayHeaderClass: (data) => [
-      `flex flex-row justify-between border-b ${borderColorClass}`,
-      'relative', // for overlaid "before" color
-      data.isSticky && 'bg-(--fc-canvas-color)', // base color for overlaid "before" color
-    ],
-    listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgClass}`,
-    listDayHeaderInnerClass: (data) => [
-      !data.level && 'font-bold',
-      `relative ${listItemPaddingClass}`, // above the "before" element
-      data.hasNavLink && 'hover:underline',
-    ],
+    listDayClass: `flex flex-row items-start not-last:border-b ${borderColorClass}`,
+    listDayHeaderClass: 'flex flex-row items-center w-40',
+    listDayHeaderInnerClass: (data) =>
+      !data.level ? [ // TODO: loop through textParts!!!
+        'm-2 flex flex-row items-center justify-center text-lg w-[2em] h-[2em]',
+        (data.isToday
+          ? ' rounded-full bg-blue-500 text-white'
+          : data.hasNavLink
+            ? ' rounded-full hover:bg-gray-500/7'
+            : '')
+      ] : [
+        'uppercase text-xs hover:underline',
+      ],
+    listDayEventsClass: 'flex-grow flex flex-col py-2',
+    // events defined in views.list.listItemEvent* below...
 
     nowIndicatorLineClass: '-m-px border-1 border-red-600 dark:border-red-400',
     nowIndicatorDotClass: 'rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 border-red-600 dark:border-red-400', // TODO: cripser with bg instead of border?
@@ -459,13 +461,16 @@ export default createPlugin({
       slotLabelDividerClass: `border-b ${borderColorClass}`,
     },
     list: {
-      listItemEventClass: `group gap-3 not-last:border-b ${borderColorClass} ${listItemPaddingClass}`,
-      listItemEventColorClass: 'border-5', // 10px diameter circle
-      listItemEventInnerClass: '[display:contents]',
-      listItemEventTimeClass: 'order-[-1] w-[165px]', // send to start
-      listItemEventTitleClass: (data) => data.event.url && 'group-hover:underline',
+      listItemEventClass: 'group rounded-s-xl p-1',
+      listItemEventInnerClass: 'flex flex-row',
+      listItemEventColorClass: 'border-5 mx-2', // 10px diameter circle
+      listItemEventTimeClass: 'w-40 mx-2',
+      listItemEventTitleClass: (data) => [
+        'mx-2',
+        data.event.url && 'group-hover:underline',
+      ],
 
-      noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center ${neutralBgClass}`,
+      noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center`,
     },
   },
 }) as PluginDef

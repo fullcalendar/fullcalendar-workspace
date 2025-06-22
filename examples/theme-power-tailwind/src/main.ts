@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // dayHeaders: false,
       // stickyHeaderDates: true,
+      // contentHeight: 200,
 
       weekNumbers: true,
 

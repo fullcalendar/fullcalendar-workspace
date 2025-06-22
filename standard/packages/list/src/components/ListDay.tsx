@@ -52,6 +52,7 @@ export class ListDay extends BaseComponent<ListDayProps> {
         <div
           role='list'
           aria-label={options.eventsHint}
+          className={generateClassName(options.listDayEventsClass, dateMeta)}
         >
           {segs.map((seg) => {
             const key = getEventKey(seg)

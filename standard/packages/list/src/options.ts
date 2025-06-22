@@ -32,6 +32,8 @@ export const OPTION_REFINERS = {
   listDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ListDayHeaderInnerData>>,
   listDayHeaderContent: identity as Identity<CustomContentGenerator<ListDayHeaderInnerData>>,
 
+  listDayEventsClass: identity as Identity<ClassNameGenerator<ListDayData>>,
+
   noEventsClass: identity as Identity<ClassNameGenerator<NoEventsData>>,
   noEventsInnerClass: identity as Identity<ClassNameGenerator<NoEventsData>>,
   noEventsContent: identity as Identity<CustomContentGenerator<NoEventsData>>,

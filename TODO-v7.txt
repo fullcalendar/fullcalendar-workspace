@@ -15,9 +15,12 @@ bug: why targeting single-day view doesnt work?
 Classic theme
   better contrast between week number gray and non-business hour gray
 Monarch theme
+  list-view
+    single-events in a day should vertically align with number
+    (rethink how circle-number height is done)
+    loop through textParts
   later: bug: left-align dayheader for day-only views after views.day options bug above is fixed
   later: fix Screenshots/multimonth-more-link-bug.png
-  for list view, make sure we mark the current day with circle (like Google Calendar)
   put x-padding on non-circled day numbers. tab-focusing looks bad right now
   core: kill border-radius and drop-shadow on (Calendar|View) when borderless
     OR, have root-div (and view-div? else?) explicitly handle this
@@ -29,7 +32,6 @@ Monarch theme
     compare to https://fullcalendar.io/docs/multimonth-grid-demo
     ensure inline week numbers okay
   force-off week numbers for extremely compact
-  list-view
 Zen theme
   fork from classic theme
 Technic theme
