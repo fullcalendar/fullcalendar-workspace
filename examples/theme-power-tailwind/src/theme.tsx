@@ -92,7 +92,7 @@ const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean, view
 ]
 
 const getDayHeaderInnerClasses = (data: { isCompact: boolean, inPopover?: boolean }) => [
-  'group mt-2 flex flex-col items-center',
+  'group pt-2 flex flex-col items-center',
   data.isCompact && xxsTextClass,
 ]
 
@@ -171,7 +171,10 @@ export default createPlugin({
     columnMoreLinkInnerClass: 'top-0',
 
     // misc BG
-    fillerClass: (data) => !data.isHeader && `${borderClass} opacity-50`,
+    fillerClass: (data) => [
+      'opacity-50 border',
+      data.isHeader ? 'border-transparent' : borderColorClass,
+    ],
     nonBusinessClass: neutralBgClass,
     highlightClass: 'bg-cyan-100/40 dark:bg-blue-500/20',
 
@@ -373,8 +376,14 @@ export default createPlugin({
     nowIndicatorLineClass: '-m-px border-1 border-red-600 dark:border-red-400',
     nowIndicatorDotClass: 'rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 border-red-600 dark:border-red-400', // TODO: cripser with bg instead of border?
 
-    resourceDayHeaderClass: getDayHeaderClasses,
-    resourceDayHeaderInnerClass: getDayHeaderInnerClasses,
+    resourceDayHeaderClass: (data) => [
+      data.isMajor ? majorBorderClass : borderClass,
+      data.isDisabled && neutralBgClass,
+    ],
+    resourceDayHeaderInnerClass: (data) => [
+      'py-2 flex flex-col items-center',
+      data.isCompact && xxsTextClass,
+    ],
 
     resourceAreaHeaderRowClass: borderClass,
     resourceAreaHeaderClass: `${borderClass} items-center`, // valign
@@ -452,7 +461,10 @@ export default createPlugin({
         data.isCompact && xxsTextClass,
       ],
 
-      slotLabelDividerClass: (data) => !data.isHeader && `border-l ${borderColorClass}`,
+      slotLabelDividerClass: (data) => [
+        'border-l',
+        data.isHeader ? 'border-transparent' : borderColorClass,
+      ],
     },
     timeline: {
       rowEventClass: [

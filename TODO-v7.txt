@@ -4,8 +4,18 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+now:
+  for divider classnames, do border-overriding? will be more unified
+  i don't like how we need to do transparent border for non-divider when isHeader
+
 later:
+  bug: resourceTimelineDay totally misalligned (with 3 resources)
+  rename isHeader -> inHeader (or just do "is" for everything)
   make a "cn" public utility
+  dont allow margins on dayHeaderInnerClass or any class really!
+  should vresource headers be sticky! yes! not the case in resourceTimeGridWeek
+    for both cases of datesAboveHeaders
+
 bug: when displayEventTime:false,
   list-item events with "All-day" remain (always like this?)
 bug: for default titleFormat in week view
