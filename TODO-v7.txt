@@ -4,7 +4,8 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-
+later:
+  make a "cn" public utility
 bug: when displayEventTime:false,
   list-item events with "All-day" remain (always like this?)
 bug: for default titleFormat in week view
@@ -16,22 +17,19 @@ Classic theme
   better contrast between week number gray and non-business hour gray
 Monarch theme
   list-view
+    audit responsiveness
+    audit dark modes
     single-events in a day should vertically align with number
     (rethink how circle-number height is done)
-    loop through textParts
+  put x-padding on non-circled day numbers. tab-focusing looks bad right now
+  how will vresource headers work?
   later: bug: left-align dayheader for day-only views after views.day options bug above is fixed
   later: fix Screenshots/multimonth-more-link-bug.png
-  put x-padding on non-circled day numbers. tab-focusing looks bad right now
   core: kill border-radius and drop-shadow on (Calendar|View) when borderless
     OR, have root-div (and view-div? else?) explicitly handle this
-  how will vresource headers work?
   bug: Causes scrollbars when there shouldn't be
     slotDuration: '01:00',
     expandRows: true,
-  year view looks squished
-    compare to https://fullcalendar.io/docs/multimonth-grid-demo
-    ensure inline week numbers okay
-  force-off week numbers for extremely compact
 Zen theme
   fork from classic theme
 Technic theme

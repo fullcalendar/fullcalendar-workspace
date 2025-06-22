@@ -344,17 +344,29 @@ export default createPlugin({
 
     listDayClass: `flex flex-row items-start not-last:border-b ${borderColorClass}`,
     listDayHeaderClass: 'flex flex-row items-center w-40',
-    listDayHeaderInnerClass: (data) =>
-      !data.level ? [ // TODO: loop through textParts!!!
-        'm-2 flex flex-row items-center justify-center text-lg w-[2em] h-[2em]',
-        (data.isToday
-          ? ' rounded-full bg-blue-500 text-white'
-          : data.hasNavLink
-            ? ' rounded-full hover:bg-gray-500/7'
-            : '')
-      ] : [
-        'uppercase text-xs hover:underline',
-      ],
+    listDayHeaderInnerClass: (data) => !data.level
+      ? 'm-2 flex flex-row items-center text-lg group' // primary
+      : 'uppercase text-xs hover:underline', // secondary
+    listDayHeaderContent: (data) => !data.level ? (
+      <Fragment>
+        {data.textParts.map((textPart) => ( // primary
+          textPart.type === 'day' ? (
+            <div className={
+              'flex flex-row items-center justify-center w-[2em] h-[2em] rounded-full' +
+                (data.isToday
+                  ? ' bg-blue-500 text-white'
+                  : data.hasNavLink
+                    ? ' hover:bg-gray-500/7'
+                    : '')
+            }>{textPart.value}</div>
+          ) : (
+            <div className='whitespace-pre'>{textPart.value}</div>
+          )
+        ))}
+      </Fragment>
+    ) : (
+      data.text // secondary
+    ),
     listDayEventsClass: 'flex-grow flex flex-col py-2',
     // events defined in views.list.listItemEvent* below...
 
