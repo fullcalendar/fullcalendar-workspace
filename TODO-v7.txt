@@ -4,42 +4,16 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-now:
-  for divider classnames, do border-overriding? will be more unified
-  i don't like how we need to do transparent border for non-divider when isHeader
 
-later:
-  bug: resourceTimelineDay totally misalligned (with 3 resources)
-  rename isHeader -> inHeader (or just do "is" for everything)
-  make a "cn" public utility
-  dont allow margins on dayHeaderInnerClass or any class really!
-  should vresource headers be sticky! yes! not the case in resourceTimeGridWeek
-    for both cases of datesAboveHeaders
-
-bug: when displayEventTime:false,
-  list-item events with "All-day" remain (always like this?)
-bug: for default titleFormat in week view
-  why are we getting "Jan 2023 – Feb 2023"? Problem with our ponyfill?
-bug: why targeting single-day view doesnt work?
-  views: { day: { dayHeaderFormat: { day: 'numeric', weekday: 'long' } } }
-  ^^works but only for some settings
 Classic theme
   better contrast between week number gray and non-business hour gray
 Monarch theme
+  audit responsiveness
+  audit dark modes
   list-view
-    audit responsiveness
-    audit dark modes
     single-events in a day should vertically align with number
     (rethink how circle-number height is done)
   put x-padding on non-circled day numbers. tab-focusing looks bad right now
-  how will vresource headers work?
-  later: bug: left-align dayheader for day-only views after views.day options bug above is fixed
-  later: fix Screenshots/multimonth-more-link-bug.png
-  core: kill border-radius and drop-shadow on (Calendar|View) when borderless
-    OR, have root-div (and view-div? else?) explicitly handle this
-  bug: Causes scrollbars when there shouldn't be
-    slotDuration: '01:00',
-    expandRows: true,
 Zen theme
   fork from classic theme
 Technic theme
@@ -145,6 +119,32 @@ after-beta todo:
   weird how expander is valigned differently than resource-area header/cell content
   audit all justify/align in theme. ensure axis is intuitive
   DRY up function utils in MorePopover
+  rename isHeader -> inHeader (or just do "is" for everything)
+  make a "cn" public utility
+  dont allow margins on dayHeaderInnerClass or any class really!
+  should vresource headers be sticky! yes! not the case in resourceTimeGridWeek
+    for both cases of datesAboveHeaders
+    maybe even do centering trick we do for slot labels!?
+  nice way of doing shadow when scroll-down?
+  i don't like how we need to do transparent border for non-divider when isHeader
+    solution: put it IN the scroller (sibling of the canvas),
+    also, this way we can do a nowIndicator DOT above it within the scroller
+bug:
+  bug: resourceTimelineDay totally misalligned (with 3 resources)
+bug: when displayEventTime:false,
+  list-item events with "All-day" remain (always like this?)
+bug: for default titleFormat in week view
+  why are we getting "Jan 2023 – Feb 2023"? Problem with our ponyfill?
+bug: why targeting single-day view doesnt work?
+  views: { day: { dayHeaderFormat: { day: 'numeric', weekday: 'long' } } }
+  ^^works but only for some settings
+Monarch theme: bug: left-align dayheader for day-only views after views.day options bug above is fixed
+  later: fix Screenshots/multimonth-more-link-bug.png
+  core: kill border-radius and drop-shadow on (Calendar|View) when borderless
+    OR, have root-div (and view-div? else?) explicitly handle this
+  bug: Causes scrollbars when there shouldn't be
+    slotDuration: '01:00',
+    expandRows: true,
 
 
 Changelog

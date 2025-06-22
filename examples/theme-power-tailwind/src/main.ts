@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // eventDisplay: 'block',
 
       // dayMinWidth: 200,
+
       eventInteractive: true,
       initialDate: '2023-01-12',
       initialView: 'dayGridMonth',
@@ -172,6 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
       ],
       initialDate: '2023-01-07',
       initialView: 'resourceTimelineThreeDays',
+      // datesAboveResources: true,
       dayMinWidth: 200,
       editable: true,
       selectable: true,
