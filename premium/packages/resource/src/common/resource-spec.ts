@@ -32,6 +32,7 @@ export interface ColSpec extends ColHeaderRenderHooks {
   isMain?: boolean // whether its the first resource-specific unique cell for the row
   width?: number
   field?: string
+  pin?: 'left' | 'right' // pin column to left or right side
 
   cellClassNames?: ClassNamesGenerator<ColCellContentArg>
   cellContent?: CustomContentGenerator<ColCellContentArg>

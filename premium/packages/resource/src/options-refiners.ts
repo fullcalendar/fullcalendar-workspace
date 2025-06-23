@@ -24,17 +24,28 @@ export const OPTION_REFINERS = {
   filterResourcesWithEvents: Boolean,
   resourceGroupField: String,
   resourceAreaWidth: identity as Identity<CssDimValue>,
+  resourceAreaWidthLeft: identity as Identity<CssDimValue>,
+  resourceAreaWidthRight: identity as Identity<CssDimValue>,
   resourceAreaColumns: identity as Identity<ColSpec[]>,
-  actionAreaWidth: identity as Identity<CssDimValue>,
-  actionAreaColumns: identity as Identity<ColSpec[]>,
   resourcesInitiallyExpanded: Boolean,
   datesAboveResources: Boolean,
   needsResourceData: Boolean, // internal-only
 
   resourceAreaHeaderClassNames: identity as Identity<ClassNamesGenerator<ColHeaderContentArg>>,
+  resourceAreaHeaderClassNamesLeft: identity as Identity<ClassNamesGenerator<ColHeaderContentArg>>,
+  resourceAreaHeaderClassNamesRight: identity as Identity<ClassNamesGenerator<ColHeaderContentArg>>,
+  
   resourceAreaHeaderContent: identity as Identity<CustomContentGenerator<ColHeaderContentArg>>,
+  resourceAreaHeaderContentLeft: identity as Identity<CustomContentGenerator<ColHeaderContentArg>>,
+  resourceAreaHeaderContentRight: identity as Identity<CustomContentGenerator<ColHeaderContentArg>>,
+  
   resourceAreaHeaderDidMount: identity as Identity<DidMountHandler<ColHeaderMountArg>>,
+  resourceAreaHeaderDidMountLeft: identity as Identity<DidMountHandler<ColHeaderMountArg>>,
+  resourceAreaHeaderDidMountRight: identity as Identity<DidMountHandler<ColHeaderMountArg>>,
+  
   resourceAreaHeaderWillUnmount: identity as Identity<WillUnmountHandler<ColHeaderMountArg>>,
+  resourceAreaHeaderWillUnmountLeft: identity as Identity<WillUnmountHandler<ColHeaderMountArg>>,
+  resourceAreaHeaderWillUnmountRight: identity as Identity<WillUnmountHandler<ColHeaderMountArg>>,
 
   resourceGroupLabelClassNames: identity as Identity<ClassNamesGenerator<ColCellContentArg>>,
   resourceGroupLabelContent: identity as Identity<CustomContentGenerator<ColCellContentArg>>,

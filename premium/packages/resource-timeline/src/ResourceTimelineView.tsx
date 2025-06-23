@@ -23,9 +23,7 @@ import { ResourceTimelineViewLayout } from './ResourceTimelineViewLayout.js'
 
 interface ResourceTimelineViewState {
   resourceAreaWidth: CssDimValue
-  actionAreaWidth: CssDimValue
   spreadsheetColWidths: number[]
-  actionsColWidths: number[]
   slatCoords?: TimelineCoords
   slotCushionMaxWidth?: number
 }
@@ -56,16 +54,14 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
 
     this.state = {
       resourceAreaWidth: context.options.resourceAreaWidth,
-      actionAreaWidth: context.options.actionAreaWidth,
       spreadsheetColWidths: [],
-      actionsColWidths: [],
     }
   }
 
   render() {
     let { props, state, context } = this
     let { options, viewSpec } = context
-    let { superHeaderRendering, groupSpecs, orderSpecs, isVGrouping, colSpecs, actionColSpecs } = this.processColOptions(context.options)
+    let { superHeaderRenderingLeft, superHeaderRenderingRight, groupSpecs, orderSpecs, isVGrouping, colSpecs } = this.processColOptions(context.options)
 
     let tDateProfile = this.buildTimelineDateProfile(
       props.dateProfile,
@@ -86,25 +82,9 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
     let { slotMinWidth } = options
     let slatCols = buildSlatCols(tDateProfile, slotMinWidth || this.computeFallbackSlotMinWidth(tDateProfile))
 
-    let actions = undefined;
-    if (actionColSpecs.length > 0) {
-      actions = {
-        actionsCols:buildSpreadsheetCols(actionColSpecs, state.actionsColWidths, ''),
-        actionsHeaderRows: (contentArg: ChunkContentCallbackArgs) => (
-          <SpreadsheetHeader // TODO: rename to SpreadsheetHeaderRows
-            superHeaderRendering={superHeaderRendering}
-            colSpecs={actionColSpecs}
-            onColWidthChange={this.handleColWidthChange}
-            rowInnerHeights={contentArg.rowSyncHeights}
-          />
-        ),
-        actionsBodyRows: (contentArg: ChunkContentCallbackArgs) => (
-          <Fragment>
-            {this.renderSpreadsheetRows(rowNodes, actionColSpecs, contentArg.rowSyncHeights)}
-          </Fragment>
-        ),
-      };
-    }
+    // Separate columns by pin position
+    let leftColSpecs = colSpecs.filter(col => !col.pin || col.pin === 'left')
+    let rightColSpecs = colSpecs.filter(col => col.pin === 'right')
 
     return (
       <ViewContainer
@@ -122,23 +102,39 @@ export class ResourceTimelineView extends BaseComponent<ResourceViewProps, Resou
           ref={this.layoutRef}
           forPrint={props.forPrint}
           isHeightAuto={props.isHeightAuto}
+          resourceAreaWidth={options.resourceAreaWidth}
+          resourceAreaWidthLeft={options.resourceAreaWidthLeft}
+          resourceAreaWidthRight={options.resourceAreaWidthRight}
           spreadsheetCols={
-            buildSpreadsheetCols(colSpecs, state.spreadsheetColWidths, '')
+            buildSpreadsheetCols(leftColSpecs, state.spreadsheetColWidths, '')
           }
           spreadsheetHeaderRows={(contentArg: ChunkContentCallbackArgs) => (
             <SpreadsheetHeader // TODO: rename to SpreadsheetHeaderRows
-              superHeaderRendering={superHeaderRendering}
-              colSpecs={colSpecs}
+              superHeaderRendering={superHeaderRenderingLeft}
+              colSpecs={leftColSpecs}
               onColWidthChange={this.handleColWidthChange}
               rowInnerHeights={contentArg.rowSyncHeights}
             />
           )}
           spreadsheetBodyRows={(contentArg: ChunkContentCallbackArgs) => (
             <Fragment>
-              {this.renderSpreadsheetRows(rowNodes, colSpecs, contentArg.rowSyncHeights)}
+              {this.renderSpreadsheetRows(rowNodes, leftColSpecs, contentArg.rowSyncHeights)}
             </Fragment>
           )}
-          actions={actions}
+          rightCols={rightColSpecs.length > 0 ? buildSpreadsheetCols(rightColSpecs, state.spreadsheetColWidths, '') : undefined}
+          rightHeaderRows={rightColSpecs.length > 0 ? (contentArg: ChunkContentCallbackArgs) => (
+            <SpreadsheetHeader
+              superHeaderRendering={superHeaderRenderingRight}
+              colSpecs={rightColSpecs}
+              onColWidthChange={this.handleColWidthChange}
+              rowInnerHeights={contentArg.rowSyncHeights}
+            />
+          ) : undefined}
+          rightBodyRows={rightColSpecs.length > 0 ? (contentArg: ChunkContentCallbackArgs) => (
+            <Fragment>
+              {this.renderSpreadsheetRows(rowNodes, rightColSpecs, contentArg.rowSyncHeights)}
+            </Fragment>
+          ) : undefined}
           timeCols={slatCols}
           timeHeaderContent={(contentArg: ChunkContentCallbackArgs) => (
             <TimelineHeader
@@ -371,8 +367,9 @@ function hasNesting(nodes: (GroupNode | ResourceNode)[]) {
 
 function processColOptions(options: ViewOptionsRefined) {
   let allColSpecs: ColSpec[] = options.resourceAreaColumns || []
-  let allActionColSpecs: ColSpec[] = options.actionAreaColumns || []
   let superHeaderRendering = null
+  let superHeaderRenderingLeft = null
+  let superHeaderRenderingRight = null
 
   if (!allColSpecs.length) {
     allColSpecs.push({
@@ -388,6 +385,27 @@ function processColOptions(options: ViewOptionsRefined) {
       headerContent: options.resourceAreaHeaderContent,
       headerDidMount: options.resourceAreaHeaderDidMount,
       headerWillUnmount: options.resourceAreaHeaderWillUnmount,
+    }
+  }
+
+  // Check for left/right specific super headers
+  if (options.resourceAreaHeaderContentLeft || options.resourceAreaHeaderClassNamesLeft || 
+      options.resourceAreaHeaderDidMountLeft || options.resourceAreaHeaderWillUnmountLeft) {
+    superHeaderRenderingLeft = {
+      headerClassNames: options.resourceAreaHeaderClassNamesLeft || options.resourceAreaHeaderClassNames,
+      headerContent: options.resourceAreaHeaderContentLeft || options.resourceAreaHeaderContent,
+      headerDidMount: options.resourceAreaHeaderDidMountLeft || options.resourceAreaHeaderDidMount,
+      headerWillUnmount: options.resourceAreaHeaderWillUnmountLeft || options.resourceAreaHeaderWillUnmount,
+    }
+  }
+
+  if (options.resourceAreaHeaderContentRight || options.resourceAreaHeaderClassNamesRight || 
+      options.resourceAreaHeaderDidMountRight || options.resourceAreaHeaderWillUnmountRight) {
+    superHeaderRenderingRight = {
+      headerClassNames: options.resourceAreaHeaderClassNamesRight || options.resourceAreaHeaderClassNames,
+      headerContent: options.resourceAreaHeaderContentRight || options.resourceAreaHeaderContent,
+      headerDidMount: options.resourceAreaHeaderDidMountRight || options.resourceAreaHeaderDidMount,
+      headerWillUnmount: options.resourceAreaHeaderWillUnmountRight || options.resourceAreaHeaderWillUnmount,
     }
   }
 
@@ -459,10 +477,11 @@ function processColOptions(options: ViewOptionsRefined) {
 
   return {
     superHeaderRendering,
+    superHeaderRenderingLeft: superHeaderRenderingLeft || superHeaderRendering,
+    superHeaderRenderingRight: superHeaderRenderingRight || superHeaderRendering,
     isVGrouping,
     groupSpecs,
     colSpecs: groupColSpecs.concat(plainColSpecs),
     orderSpecs: plainOrderSpecs,
-    actionColSpecs: allActionColSpecs,
   }
 }
