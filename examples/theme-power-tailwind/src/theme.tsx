@@ -82,7 +82,7 @@ const dayGridWeekNumberClasses: CalendarOptions = {
     ...dayGridWeekNumberLabelClass(data),
   ],
   weekNumberInnerClass: (data) => [
-    data.isCompact && xxsTextClass,
+    data.isCompact ? xxsTextClass : 'text-sm',
     'opacity-60 text-center',
   ],
 }
@@ -145,7 +145,7 @@ export default createPlugin({
 
     buttonGroupClass: 'items-center isolate',
     buttonClass: (data) => [
-      'inline-flex items-center px-4 py-3 border-x',
+      'inline-flex items-center px-3 py-3 border-x',
       'focus:outline-3 outline-slate-600/50',
       'hover:border-slate-900 active:border-slate-900 print:border-slate-900',
       'hover:bg-slate-800 active:bg-slate-800 print:bg-white',
@@ -326,7 +326,7 @@ export default createPlugin({
       'flex flex-row items-center justify-center h-[1.8em]' +
         (data.isToday ? ' w-[1.8em] rounded-full bg-blue-500 text-white decoration-red-100' : ''),
       data.hasMonthLabel && 'text-base font-bold',
-      data.isCompact && xxsTextClass,
+      data.isCompact ? xxsTextClass : 'text-sm',
       data.hasNavLink && 'hover:underline'
     ],
 
@@ -382,7 +382,7 @@ export default createPlugin({
     ],
     resourceDayHeaderInnerClass: (data) => [
       'py-2 flex flex-col items-center',
-      data.isCompact && xxsTextClass,
+      data.isCompact ? xxsTextClass : 'text-sm',
     ],
 
     resourceAreaHeaderRowClass: borderClass,
@@ -430,8 +430,8 @@ export default createPlugin({
     timeGrid: {
       ...dayGridClasses,
 
-      dayRowClass: 'min-h-[3em]', // looks good when matches slotLabelInnerClass
-      dayCellBottomClass: 'min-h-[1em]', // for ALL-DAY
+      dayRowClass: 'min-h-12', // looks good when matches slotLabelInnerClass
+      dayCellBottomClass: 'min-h-4', // for ALL-DAY
 
       allDayHeaderClass: [
         axisClass,
@@ -440,14 +440,14 @@ export default createPlugin({
       allDayHeaderInnerClass: (data) => [
         'px-2 py-0.5 text-end', // align text right when multiline
         'whitespace-pre', // respects line-breaks in locale data
-        data.isCompact && xxsTextClass,
+        data.isCompact ? xxsTextClass : 'text-sm',
       ],
 
       weekNumberClass: `${axisClass} items-center`,
       weekNumberInnerClass: (data) => [
         // BUG: no opacity here! (unlike daygrid) hard to do with wrappers and text
         'text-center',
-        data.isCompact && xxsTextClass,
+        data.isCompact ? xxsTextClass : 'text-sm',
         ...dayGridWeekNumberLabelClass(data),
       ],
 
@@ -458,7 +458,7 @@ export default createPlugin({
       slotLabelInnerClass: (data) => [
         'ps-2 pe-3 py-0.5 -mt-[1em] text-end', // best -mt- value???
         'min-h-[3em]',
-        data.isCompact && xxsTextClass,
+        data.isCompact ? xxsTextClass : 'text-sm',
       ],
 
       slotLabelDividerClass: (data) => [
@@ -486,7 +486,7 @@ export default createPlugin({
     },
     list: {
       listItemEventClass: 'group rounded-s-xl p-1',
-      listItemEventInnerClass: 'flex flex-row',
+      listItemEventInnerClass: 'flex flex-row text-sm',
       listItemEventColorClass: 'border-5 mx-2', // 10px diameter circle
       listItemEventTimeClass: 'w-40 mx-2',
       listItemEventTitleClass: (data) => [

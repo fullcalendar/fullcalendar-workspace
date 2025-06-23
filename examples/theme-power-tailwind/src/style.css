@@ -4,18 +4,17 @@
 
 html {
   --fc-canvas-color: var(--color-white);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 html.dark {
-  @apply bg-gray-950 text-gray-200 scheme-dark;
+  @apply scheme-dark bg-gray-950 text-gray-200;
   --fc-canvas-color: var(--color-gray-950);
 }
 
 body {
   margin: 40px 10px;
   padding: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
 }
 
 #calendar {
