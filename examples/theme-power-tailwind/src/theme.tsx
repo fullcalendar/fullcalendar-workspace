@@ -15,20 +15,29 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/resource-daygrid'
 import {} from '@fullcalendar/resource-timeline'
 
-const xxsTextClass = 'text-[0.7rem]/[1.25]'
-const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
+/* TODO:
+make complex day-header navlink narrower (condense to middle)
+  for popover too. TODO: revive popoverHeaderInnerClass?
+day-circle hovers should always hover gray
+*/
+
+/*
+TODO: we are confused between text-sm and text-xs !!!
+text-sm = 14px (daycell day-numbers)
+text-xs = 12px (events)
+xxsTextClass ~= 11px (time? within events -- use sparingly)
+*/
+const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
+const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]'
 
 const neutralBgClass = 'bg-gray-500/7'
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
-const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
 const borderColorClass = 'border-gray-300 dark:border-gray-800'
 const borderClass = `border ${borderColorClass}` // all sides
+const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
 
 const dayGridItemClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-link
-
-// timegrid axis
-const axisClass = 'justify-end' // align axisInner right --- kill this?
 
 // transparent resizer for mouse
 // must have 'group' on the event, for group-hover
@@ -37,36 +46,29 @@ const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
 const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
 // circle resizer for touch
-// TODO: make circle bigger?
 const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) bg-(--fc-canvas-color)`
 const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
 const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
 // applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
 const dayGridClasses: CalendarOptions = {
-  listItemEventClass: [dayGridItemClass, 'p-px'],
+  listItemEventClass: dayGridItemClass,
   listItemEventColorClass: (data) => [
-    data.isCompact ? 'mx-px' : 'mx-1',
     'border-4', // 8px diameter circle
+    data.isCompact ? 'mx-px' : 'mx-1',
   ],
-  listItemEventInnerClass: (data) => [
-    'flex flex-row items-center', // as opposed to display:contents
-    data.isCompact ? xxsTextClass : 'text-xs',
-  ],
-  listItemEventTimeClass: 'p-px',
-  listItemEventTitleClass: 'p-px font-bold',
+  listItemEventInnerClass: (data) => data.isCompact ? xxsTextClass : 'text-xs',
+  listItemEventTimeClass: 'p-0.5',
+  listItemEventTitleClass: 'p-0.5 font-bold',
 
   rowEventInnerClass: 'gap-px', // small gap, because usually only start-time
 
   rowMoreLinkClass: (data) => [
     dayGridItemClass,
-    data.isCompact
-      ? 'border border-blue-500' // looks like bordered event
-      : 'p-px',
     'hover:bg-gray-500/20', // matches list-item hover
+    data.isCompact && 'border border-blue-500', // looks like bordered event
   ],
   rowMoreLinkInnerClass: (data) => [
-    'p-px',
     data.isCompact ? xxsTextClass : 'text-xs',
   ],
 }
@@ -92,7 +94,7 @@ const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean, view
 ]
 
 const getDayHeaderInnerClasses = (data: { isCompact: boolean, inPopover?: boolean }) => [
-  'group pt-2 flex flex-col items-center',
+  'self-center group pt-2 flex flex-col items-center',
   data.isCompact && xxsTextClass,
 ]
 
@@ -198,6 +200,7 @@ export default createPlugin({
     // Dot uses border instead of bg because it shows up in print
     // Views must decide circle radius via border thickness
     listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
+    listItemEventInnerClass: 'flex flex-row items-center',
 
     blockEventClass: (data) => [
       'relative', // for absolute-positioned color
@@ -215,7 +218,7 @@ export default createPlugin({
         ? 'brightness-75'
         : 'group-focus:brightness-75',
     ],
-    blockEventInnerClass: 'relative z-10 p-0.5 flex text-(--fc-event-contrast-color)',
+    blockEventInnerClass: 'relative z-10 flex text-(--fc-event-contrast-color)',
 
     rowEventClass: (data) => [
       'mb-px', // space between events
@@ -244,8 +247,8 @@ export default createPlugin({
       'flex-row items-center',
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
-    rowEventTimeClass: 'p-px font-bold',
-    rowEventTitleClass: 'p-px start-0 sticky', // `start` for stickiness
+    rowEventTimeClass: 'p-0.5 font-bold',
+    rowEventTitleClass: 'p-0.5 start-0 sticky', // `start` for stickiness
 
     columnEventClass: 'mb-px', // space from slot line
     columnEventBeforeClass: (data) => data.isStartResizable && [
@@ -291,7 +294,7 @@ export default createPlugin({
         {data.weekdayText && (
           <div className={
             'uppercase text-xs opacity-60' +
-              (data.hasNavLink ? ' group-hover:underline' : '')
+              (data.hasNavLink ? ' group-hover:opacity-90' : '')
           }>{data.weekdayText}</div>
         )}
         {data.dayNumberText && (
@@ -433,17 +436,14 @@ export default createPlugin({
       dayRowClass: 'min-h-12', // looks good when matches slotLabelInnerClass
       dayCellBottomClass: 'min-h-4', // for ALL-DAY
 
-      allDayHeaderClass: [
-        axisClass,
-        'items-center', // valign
-      ],
+      allDayHeaderClass: 'justify-end items-center', // items-center = valign
       allDayHeaderInnerClass: (data) => [
         'px-2 py-0.5 text-end', // align text right when multiline
         'whitespace-pre', // respects line-breaks in locale data
         data.isCompact ? xxsTextClass : 'text-sm',
       ],
 
-      weekNumberClass: `${axisClass} items-center`,
+      weekNumberClass: 'items-center justify-end',
       weekNumberInnerClass: (data) => [
         // BUG: no opacity here! (unlike daygrid) hard to do with wrappers and text
         'text-center',
@@ -454,7 +454,7 @@ export default createPlugin({
       columnMoreLinkClass: `mb-px rounded-xs outline outline-(--fc-canvas-color) ${moreLinkBgClass}`,
       columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
-      slotLabelClass: [axisClass, 'w-2 self-end'],
+      slotLabelClass: 'w-2 self-end justify-end',
       slotLabelInnerClass: (data) => [
         'ps-2 pe-3 py-0.5 -mt-[1em] text-end', // best -mt- value???
         'min-h-[3em]',
@@ -486,8 +486,8 @@ export default createPlugin({
     },
     list: {
       listItemEventClass: 'group rounded-s-xl p-1',
-      listItemEventInnerClass: 'flex flex-row text-sm',
       listItemEventColorClass: 'border-5 mx-2', // 10px diameter circle
+      listItemEventInnerClass: 'text-sm',
       listItemEventTimeClass: 'w-40 mx-2',
       listItemEventTitleClass: (data) => [
         'mx-2',

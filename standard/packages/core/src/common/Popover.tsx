@@ -16,7 +16,6 @@ export interface PopoverProps {
   parentEl: HTMLElement
   alignEl: HTMLElement
   alignParentTop?: string // a CSS selector
-  headerClass?: string
   headerContent?: ComponentChildren
   bodyContent?: ComponentChildren
   onClose?: () => void
@@ -57,10 +56,7 @@ export class Popover extends BaseComponent<PopoverProps> {
           style={{ outline: 'none' }} // TODO: className?
           ref={this.focusStartRef}
         />
-        <div className={joinArrayishClassNames(
-          props.headerClass,
-          options.popoverHeaderClass,
-        )}>
+        <div className={joinArrayishClassNames(options.popoverHeaderClass)}>
           <div id={this.titleId}>
             {props.headerContent}
           </div>

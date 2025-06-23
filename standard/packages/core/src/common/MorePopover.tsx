@@ -14,6 +14,7 @@ import { ContentContainer } from '../content-inject/ContentContainer.js'
 import { DayHeaderData } from '../api/structs.js'
 import { createFormatter } from '../datelib/formatting.js'
 import { buildNavLinkAttrs } from './nav-link.js'
+import classNames from '../internal-classnames.js'
 
 export interface MorePopoverProps {
   id: string
@@ -77,23 +78,30 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         parentEl={props.parentEl}
         alignEl={props.alignEl}
         alignParentTop={props.alignParentTop}
-        headerClass={generateClassName(options.dayHeaderClass, dayHeaderRenderProps)}
         headerContent={
           <ContentContainer
             tag='div'
-            attrs={
-              hasNavLink
-                ? buildNavLinkAttrs(context, startDate, undefined, fullDateStr)
-                : undefined
-            }
             generatorName='dayHeaderContent'
             renderProps={dayHeaderRenderProps}
             customGenerator={options.dayHeaderContent}
             defaultGenerator={renderText}
-            classNameGenerator={options.dayHeaderInnerClass}
+            classNameGenerator={options.dayHeaderClass}
+            className={classNames.flexCol}
             didMount={options.dayHeaderDidMount}
             willUnmount={options.dayHeaderWillUnmount}
-          />
+          >
+            {(InnerContent) => (
+              <InnerContent
+                tag='div'
+                className={generateClassName(options.dayHeaderInnerClass, dayHeaderRenderProps)}
+                attrs={
+                  hasNavLink
+                    ? buildNavLinkAttrs(context, startDate, undefined, fullDateStr)
+                    : undefined
+                }
+              />
+            )}
+          </ContentContainer>
         }
         bodyContent={props.children}
         onClose={props.onClose}
