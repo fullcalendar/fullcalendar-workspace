@@ -593,6 +593,32 @@ it('renders resourceAreaHeaderContent jsx', () => {
   expect(container.querySelectorAll('.test-col1').length).toBe(1)
 })
 
+it('renders actionAreaColumns jsx', () => {
+  const { container } = render(
+    <FullCalendar
+      plugins={[resourceTimelinePlugin]}
+      initialView="resourceTimelineDay"
+      resources={[
+        { num: '22', name: 'John' },
+        { num: '66', name: 'Glen' },
+      ]}
+      resourceAreaHeaderContent={<div className='test-header'>Resource Area Header</div>}
+      resourceAreaColumns={[
+        { field: 'num', headerContent: <div className='test-col0'>Num</div> },
+        { field: 'name', headerContent: <div className='test-col1'>Name</div> },
+      ]}
+      actionAreaColumns={[
+        { field: 'actions', headerContent: <div className='test-col2'>actions</div> },
+      ]}
+    />
+  )
+
+  expect(container.querySelectorAll('.test-header').length).toBe(1)
+  expect(container.querySelectorAll('.test-col0').length).toBe(1)
+  expect(container.querySelectorAll('.test-col1').length).toBe(1)
+  expect(container.querySelectorAll('.test-col2').length).toBe(1)
+})
+
 // https://github.com/fullcalendar/fullcalendar/issues/7203
 it('renders resourceGroupLaneContent function', () => {
   const { container } = render(

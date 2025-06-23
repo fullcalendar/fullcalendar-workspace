@@ -1,3 +1,4 @@
+import { CssDimValue } from '@fullcalendar/core'
 import {
   ElementDragging, PointerDragEvent, BaseComponent, ColProps,
   ChunkConfigRowContent, ChunkConfigContent, ScrollGridSectionConfig,
@@ -12,9 +13,15 @@ import { ScrollGrid } from '@fullcalendar/scrollgrid/internal'
 const MIN_RESOURCE_AREA_WIDTH = 30 // definitely bigger than scrollbars
 
 export interface ResourceTimelineViewLayoutProps {
+  resourceAreaWidth?: CssDimValue
+  resourceAreaWidthLeft?: CssDimValue
+  resourceAreaWidthRight?: CssDimValue
   spreadsheetCols: ColProps[]
   spreadsheetHeaderRows: ChunkConfigRowContent
   spreadsheetBodyRows: ChunkConfigRowContent
+  rightCols?: ColProps[]
+  rightHeaderRows?: ChunkConfigRowContent
+  rightBodyRows?: ChunkConfigRowContent
   timeCols: ColProps[]
   timeHeaderContent: ChunkConfigContent
   timeBodyContent: ChunkConfigContent
@@ -44,6 +51,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
     let { options } = context
     let stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)
     let stickyFooterScrollbar = !props.forPrint && getStickyFooterScrollbar(options)
+    let hasRightCols = props.rightCols && props.rightCols.length > 0
 
     let sections: ScrollGridSectionConfig[] = [
       {
@@ -126,6 +134,64 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
       ? state.resourceAreaWidthOverride
       : options.resourceAreaWidth
 
+    // Use specific left/right widths if provided, otherwise fall back to general resourceAreaWidth
+    let leftWidth = props.resourceAreaWidthLeft || props.resourceAreaWidth || resourceAreaWidth
+    let rightWidth = props.resourceAreaWidthRight || props.resourceAreaWidth || resourceAreaWidth
+
+    let colGroups = [
+      { cols: props.spreadsheetCols, width: leftWidth },
+      { cols: [] }, // for the divider
+      { cols: props.timeCols },
+    ]
+
+    if (hasRightCols) {
+      colGroups.push({ cols: [] }) // for the divider
+      colGroups.push({ cols: props.rightCols, width: rightWidth })
+      const headerIndex = sections.findIndex(section => section.key === 'header')
+      const bodyIndex = sections.findIndex(section => section.key === 'body')
+      const footerIndex = sections.findIndex(section => section.key === 'footer')
+
+      sections[headerIndex].chunks.push({
+        key: 'right-divider',
+        outerContent: (
+          <td role="presentation" className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
+        ),
+      })
+
+      sections[headerIndex].chunks.push({
+        key: 'right',
+        tableClassName: 'fc-datagrid-header',
+        rowContent: props.rightHeaderRows,
+      })
+
+      sections[bodyIndex].chunks.push({
+        key: 'right-divider',
+        outerContent: (
+          <td role="presentation" className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
+        ),
+      })
+
+      sections[bodyIndex].chunks.push({
+        key: 'right',
+        tableClassName: 'fc-datagrid-body',
+        rowContent: props.rightBodyRows,
+      })
+
+      if (stickyFooterScrollbar && footerIndex !== -1) {
+        sections[footerIndex].chunks.push({
+          key: 'right-divider',
+          outerContent: (
+            <td role="presentation" className={'fc-resource-timeline-divider ' + context.theme.getClass('tableCellShaded')} />
+          ),
+        })
+
+        sections[footerIndex].chunks.push({
+          key: 'right',
+          content: renderScrollShim,
+        })
+      }
+    }
+
     return (
       <ScrollGrid
         ref={this.scrollGridRef}
@@ -133,11 +199,7 @@ export class ResourceTimelineViewLayout extends BaseComponent<ResourceTimelineVi
         liquid={!props.isHeightAuto && !props.forPrint}
         forPrint={props.forPrint}
         collapsibleWidth={false}
-        colGroups={[
-          { cols: props.spreadsheetCols, width: resourceAreaWidth },
-          { cols: [] }, // for the divider
-          { cols: props.timeCols },
-        ]}
+        colGroups={colGroups}
         sections={sections}
       />
     )
