@@ -19,6 +19,9 @@ import {} from '@fullcalendar/resource-timeline'
 make complex day-header navlink narrower (condense to middle)
   for popover too. TODO: revive popoverHeaderInnerClass?
 day-circle hovers should always hover gray
+timeline fonts look weird
+
+TODO: somehow make all alignment done with flex-row!!!
 */
 
 /*
@@ -37,8 +40,6 @@ const borderColorClass = 'border-gray-300 dark:border-gray-800'
 const borderClass = `border ${borderColorClass}` // all sides
 const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
 
-const dayGridItemClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-link
-
 // transparent resizer for mouse
 // must have 'group' on the event, for group-hover
 const blockPointerResizerClass = `absolute z-20 hidden group-hover:block`
@@ -51,8 +52,9 @@ const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
 const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
 // applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
-const dayGridClasses: CalendarOptions = {
-  listItemEventClass: dayGridItemClass,
+const rowItemBaseClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-link
+const rowItemClasses: CalendarOptions = {
+  listItemEventClass: rowItemBaseClass,
   listItemEventColorClass: (data) => [
     'border-4', // 8px diameter circle
     data.isCompact ? 'mx-px' : 'mx-1',
@@ -61,31 +63,13 @@ const dayGridClasses: CalendarOptions = {
   listItemEventTimeClass: 'p-0.5',
   listItemEventTitleClass: 'p-0.5 font-bold',
 
-  rowEventInnerClass: 'gap-px', // small gap, because usually only start-time
-
   rowMoreLinkClass: (data) => [
-    dayGridItemClass,
-    'hover:bg-gray-500/20', // matches list-item hover
+    rowItemBaseClass,
+    'p-0.5 hover:bg-gray-500/20', // matches list-item hover
     data.isCompact && 'border border-blue-500', // looks like bordered event
   ],
   rowMoreLinkInnerClass: (data) => [
     data.isCompact ? xxsTextClass : 'text-xs',
-  ],
-}
-
-const dayGridWeekNumberLabelClass = (data: { hasNavLink: boolean }) => [
-  'rounded-sm px-1 bg-gray-500/15',
-  data.hasNavLink && 'hover:underline',
-]
-const dayGridWeekNumberClasses: CalendarOptions = {
-  weekNumberClass: (data) => [
-    !data.isCell && 'absolute z-20',
-    data.isCompact ? 'top-1 start-0.5' : 'top-2 start-1',
-    ...dayGridWeekNumberLabelClass(data),
-  ],
-  weekNumberInnerClass: (data) => [
-    data.isCompact ? xxsTextClass : 'text-sm',
-    'opacity-60 text-center',
   ],
 }
 
@@ -102,6 +86,33 @@ const getSlotClasses = (data: { isMinor: boolean }) => [
   borderClass,
   data.isMinor && 'border-dotted',
 ]
+
+const weekNumberColorClass = 'bg-gray-300 dark:bg-gray-700 opacity-60'
+const weekNumberPaddingClass = 'px-0.5'
+const getWeekNumberInnerClass = (data: { hasNavLink: boolean, isCompact: boolean }) => [
+  weekNumberPaddingClass,
+  data.hasNavLink && 'hover:underline',
+  data.isCompact ? xxsTextClass : 'text-sm',
+]
+const getWeekNumberLabelClass = (data: { hasNavLink: boolean, isCompact: boolean }) => [
+  'rounded-sm',
+  weekNumberColorClass,
+  ...getWeekNumberInnerClass(data),
+]
+const rowWeekNumberClasses: CalendarOptions = {
+  weekNumberClass: (data) => [
+    data.isCell
+      ? weekNumberColorClass
+      : 'absolute z-20 ' + (data.isCompact ? 'top-1 start-0.5' : 'top-2 start-1'),
+  ],
+  weekNumberInnerClass: (data) => data.isCell
+    ? getWeekNumberInnerClass(data)
+    : getWeekNumberLabelClass(data)
+}
+const axisWeekNumberClasses: CalendarOptions = {
+  weekNumberClass: 'items-center justify-end',
+  weekNumberInnerClass: getWeekNumberLabelClass,
+}
 
 export default createPlugin({
   name: '<%= pkgName %>', // TODO
@@ -298,7 +309,6 @@ export default createPlugin({
           }>{data.weekdayText}</div>
         )}
         {data.dayNumberText && (
-          /* TODO: kill navLink text decoration somehow */
           <div
             className={
               'm-0.5 flex flex-row items-center justify-center text-lg h-[2em]' +
@@ -417,21 +427,22 @@ export default createPlugin({
   },
   views: {
     dayGrid: {
-      ...dayGridClasses,
-      ...dayGridWeekNumberClasses,
+      ...rowItemClasses,
+      ...rowWeekNumberClasses,
 
       dayCellBottomClass: 'min-h-[1px]',
     },
     multiMonth: {
-      ...dayGridClasses,
-      ...dayGridWeekNumberClasses,
+      ...rowItemClasses,
+      ...rowWeekNumberClasses,
 
       tableBodyClass: `${borderClass} rounded-sm`,
       dayHeaderInnerClass: 'mb-2',
       dayCellBottomClass: 'min-h-[1px]',
     },
     timeGrid: {
-      ...dayGridClasses,
+      ...rowItemClasses,
+      ...axisWeekNumberClasses,
 
       dayRowClass: 'min-h-12', // looks good when matches slotLabelInnerClass
       dayCellBottomClass: 'min-h-4', // for ALL-DAY
@@ -441,14 +452,6 @@ export default createPlugin({
         'px-2 py-0.5 text-end', // align text right when multiline
         'whitespace-pre', // respects line-breaks in locale data
         data.isCompact ? xxsTextClass : 'text-sm',
-      ],
-
-      weekNumberClass: 'items-center justify-end',
-      weekNumberInnerClass: (data) => [
-        // BUG: no opacity here! (unlike daygrid) hard to do with wrappers and text
-        'text-center',
-        data.isCompact ? xxsTextClass : 'text-sm',
-        ...dayGridWeekNumberLabelClass(data),
       ],
 
       columnMoreLinkClass: `mb-px rounded-xs outline outline-(--fc-canvas-color) ${moreLinkBgClass}`,
