@@ -482,10 +482,17 @@ export default createPlugin({
       rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
       slotLabelClass: 'justify-center',
-      slotLabelInnerClass: (data) => [
-        'p-1',
-        // data.level && !data.isTime && 'm-3 bg-red-500',
-      ],
+      slotLabelInnerClass: (data) => (data.level && !data.isTime)
+        ? [
+          // TODO: converge with week-label styles
+          'rounded-sm',
+          'bg-gray-300 dark:bg-gray-700 opacity-60',
+          'px-2',
+          'py-1',
+          'ms-2',
+          data.hasNavLink && 'hover:underline',
+        ]
+        : 'p-1',
 
       slotLabelDividerClass: `border-b ${borderColorClass}`,
     },
