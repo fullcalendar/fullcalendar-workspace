@@ -216,8 +216,8 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                   right: context.isRtl ? -timeAreaOffset : undefined,
                 }}
               >
-                {cellRows.map((cells, rowLevel) => {
-                  const isLast = rowLevel === cellRows.length - 1
+                {cellRows.map((cells, rowIndex) => {
+                  const rowLevel = cellRows.length - rowIndex - 1
                   return (
                     <TimelineHeaderRow
                       key={rowLevel}
@@ -226,7 +226,6 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                       nowDate={nowDate}
                       todayRange={todayRange}
                       rowLevel={rowLevel}
-                      isLastRow={isLast}
                       cells={cells}
                       slotWidth={slotWidth}
                     />

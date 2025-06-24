@@ -102,7 +102,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     const stickyHeaderDates = !forPrint && getStickyHeaderDates(options)
 
     const slatCnt = props.slatMetas.length
-    const [slatHeight, slatLiquid] = computeSlatHeight(
+    const [slatHeight, slatLiquidHeight] = computeSlatHeight(
       verticalScrolling && options.expandRows,
       slatCnt,
       state.slatInnerHeight,
@@ -342,14 +342,16 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                       <div
                         key={slatMeta.key}
                         className={joinClassNames(
+                          slatLiquidHeight && classNames.liquid,
                           classNames.flexRow,
-                          slatLiquid && classNames.liquid,
                         )}
                         style={{
-                          height: slatLiquid ? '' : slatHeight
+                          height: slatLiquidHeight ? undefined : slatHeight
                         }}
                       >
                         <div
+                          // the pannable version of TimeGrid has axis labels all consecutive in one column
+                          // simulate this for the non-pannable version
                           className={classNames.flexCol}
                           style={{ width: axisWidth }}
                         >

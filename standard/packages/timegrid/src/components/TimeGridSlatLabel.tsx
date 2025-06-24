@@ -33,6 +33,8 @@ const DEFAULT_SLAT_LABEL_FORMAT = createFormatter({
 
 export interface TimeGridSlatLabelProps extends TimeSlatMeta {
   // dimensions
+  height?: number
+  liquidHeight?: boolean
   borderTop: boolean
   isCompact: boolean
 
@@ -41,6 +43,9 @@ export interface TimeGridSlatLabelProps extends TimeSlatMeta {
   innerHeightRef?: Ref<number>
 }
 
+/*
+Always oriented in a column
+*/
 export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
   // memo
   private createRenderProps = memoize(createRenderProps)
@@ -70,9 +75,10 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     )
 
     let className = joinClassNames(
+      props.liquidHeight && classNames.liquid,
       classNames.flexRow,
+      classNames.alignStart,
       classNames.tight,
-      classNames.contentBox,
       props.borderTop ? classNames.borderOnlyT : classNames.borderNone,
     )
 
@@ -83,6 +89,9 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
             generateClassName(options.slotLabelClass, renderProps),
             className,
           )}
+          style={{
+            height: props.height,
+          }}
         />
       )
     }
@@ -92,6 +101,9 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
         tag="div"
         attrs={{
           'data-time': props.isoTimeStr,
+        }}
+        style={{
+          height: props.height,
         }}
         className={className}
         renderProps={renderProps}
@@ -158,6 +170,7 @@ function createRenderProps(
     time: time,
     isMajor: false,
     isMinor,
+    isTime: true,
     isCompact,
     hasNavLink: false,
     view: context.viewApi,

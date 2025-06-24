@@ -161,8 +161,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     )}
                     style={{ width: canvasWidth }}
                   >
-                    {cellRows.map((cells, rowLevel) => {
-                      const isLast = rowLevel === cellRows.length - 1
+                    {cellRows.map((cells, rowIndex) => {
+                      const rowLevel = cellRows.length - rowIndex - 1
                       return (
                         <TimelineHeaderRow
                           key={rowLevel}
@@ -171,7 +171,6 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                           nowDate={nowDate}
                           todayRange={todayRange}
                           rowLevel={rowLevel}
-                          isLastRow={isLast}
                           cells={cells}
                           slotWidth={slotWidth}
                           innerWidthRef={this.headerRowInnerWidthMap.createRef(rowLevel)}

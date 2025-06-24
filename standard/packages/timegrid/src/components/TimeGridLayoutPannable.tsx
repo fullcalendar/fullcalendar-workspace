@@ -140,7 +140,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     const cellIsNarrow = colWidth != null && colWidth <= narrowDayHeaderWidth
 
     const slatCnt = props.slatMetas.length
-    const [slatHeight, slatLiquid] = computeSlatHeight( // TODO: memo?
+    const [slatHeight, slatLiquidHeight] = computeSlatHeight( // TODO: memo?
       verticalScrolling && options.expandRows,
       slatCnt,
       state.slatInnerHeight,
@@ -382,24 +382,16 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       )}
                     >
                       {props.slatMetas.map((slatMeta, slatI) => (
-                        <div
+                        <TimeGridSlatLabel
+                          {...slatMeta /* FYI doesn't need isoTimeStr */}
                           key={slatMeta.key}
-                          className={joinClassNames(
-                            slatLiquid && classNames.liquid,
-                            classNames.flexCol,
-                          )}
-                          style={{
-                            height: slatLiquid ? '' : slatHeight
-                          }}
-                        >
-                          <TimeGridSlatLabel
-                            {...slatMeta /* FYI doesn't need isoTimeStr */}
-                            innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
-                            innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
-                            borderTop={Boolean(slatI)}
-                            isCompact={cellIsCompact}
-                          />
-                        </div>
+                          innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
+                          innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
+                          borderTop={Boolean(slatI)}
+                          isCompact={cellIsCompact}
+                          height={slatLiquidHeight ? undefined : slatHeight}
+                          liquidHeight={slatLiquidHeight}
+                        />
                       ))}
                     </div>
                     {options.nowIndicator && rangeContainsMarker(props.dateProfile.currentRange, nowDate) && (
@@ -498,10 +490,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                             key={slatMeta.key}
                             className={joinClassNames(
                               classNames.flexRow,
-                              slatLiquid && classNames.liquid,
+                              slatLiquidHeight && classNames.liquid,
                             )}
                             style={{
-                              height: slatLiquid ? '' : slatHeight
+                              height: slatLiquidHeight ? '' : slatHeight
                             }}
                           >
                             <TimeGridSlatLane

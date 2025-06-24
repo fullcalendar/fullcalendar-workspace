@@ -14,6 +14,7 @@ export type SlotLaneMountData = MountData<SlotLaneData>
 
 export interface SlotLabelData extends SlotLaneData {
   level: number
+  isTime: boolean
   text: string
   isCompact: boolean
   hasNavLink: boolean

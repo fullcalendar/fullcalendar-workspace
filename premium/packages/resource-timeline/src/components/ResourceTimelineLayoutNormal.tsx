@@ -512,8 +512,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     )}
                     style={{ width: timeCanvasWidth }}
                   >
-                    {cellRows.map((cells, rowLevel) => {
-                      const isLast = rowLevel === cellRows.length - 1
+                    {cellRows.map((cells, rowIndex) => {
+                      const rowLevel = cellRows.length - rowIndex - 1
                       return (
                         <TimelineHeaderRow
                           key={rowLevel}
@@ -522,7 +522,6 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           nowDate={props.nowDate}
                           todayRange={props.todayRange}
                           rowLevel={rowLevel}
-                          isLastRow={isLast}
                           cells={cells}
                           slotWidth={slotWidth}
                           innerWidthRef={this.headerRowInnerWidthMap.createRef(rowLevel)}

@@ -111,6 +111,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
         props.display === 'row' && generateClassName(options.rowEventTitleClass, subcontentRenderProps),
         props.display === 'column' && generateClassName(options.columnEventTitleClass, subcontentRenderProps),
         props.display === 'list-item' && generateClassName(options.listItemEventTitleClass, subcontentRenderProps),
+        props.display === 'row' && options.rowEventTitleSticky && classNames.stickyS,
+        props.display === 'column' && options.columnEventTitleSticky && classNames.stickyT,
       ),
     }
     const outerClassName = joinArrayishClassNames( // already includes eventClass below

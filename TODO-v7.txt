@@ -5,6 +5,7 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 
+bug: in Chrome and Safari, scroll-syncing really getting out of alignment
 Classic theme
   better contrast between week number gray and non-business hour gray
 Monarch theme
@@ -46,6 +47,9 @@ manual-test: cropping within scrollers?
   stickiness within works?
   now-indicators bleeding out in any scendario, expanding canvas?
 later: ensure nowIndicator doesn't appear in print view
+test: since making timegrid slotlable css changes,
+  test horizontal scrolling
+  test growRows
 
 
 ASAP

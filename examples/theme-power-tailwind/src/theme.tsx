@@ -1,4 +1,4 @@
-import { CalendarOptions, createPlugin, PluginDef, ViewApi } from '@fullcalendar/core'
+import { CalendarOptions, createPlugin, PluginDef } from '@fullcalendar/core'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import * as svgIcons from './svgIcons.js'
 
@@ -21,7 +21,10 @@ make complex day-header navlink narrower (condense to middle)
 day-circle hovers should always hover gray
 timeline fonts look weird
 
-TODO: somehow make all alignment done with flex-row!!!
+NOTES:
+for alignment,
+  dayHeader and timeline-slotLabel are flex-col
+  timeGrid-slotLabel is flex-row
 */
 
 /*
@@ -72,15 +75,6 @@ const rowItemClasses: CalendarOptions = {
     data.isCompact ? xxsTextClass : 'text-xs',
   ],
 }
-
-const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean, view: ViewApi }) => [
-  data.isDisabled && neutralBgClass,
-]
-
-const getDayHeaderInnerClasses = (data: { isCompact: boolean, inPopover?: boolean }) => [
-  'self-center group pt-2 flex flex-col items-center',
-  data.isCompact && xxsTextClass,
-]
 
 const getSlotClasses = (data: { isMinor: boolean }) => [
   borderClass,
@@ -179,9 +173,7 @@ export default createPlugin({
     popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
     popoverBodyClass: 'p-2 min-w-3xs',
 
-    moreLinkInnerClass: 'sticky whitespace-nowrap overflow-hidden',
-    rowMoreLinkInnerClass: 'start-0',
-    columnMoreLinkInnerClass: 'top-0',
+    moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
     // misc BG
     fillerClass: (data) => [
@@ -259,7 +251,7 @@ export default createPlugin({
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
     rowEventTimeClass: 'p-0.5 font-bold',
-    rowEventTitleClass: 'p-0.5 start-0 sticky', // `start` for stickiness
+    rowEventTitleClass: 'p-0.5',
 
     columnEventClass: 'mb-px', // space from slot line
     columnEventBeforeClass: (data) => data.isStartResizable && [
@@ -282,9 +274,9 @@ export default createPlugin({
     ],
     columnEventTimeClass: 'text-xs order-1', // TODO: order won't work in react native!
     columnEventTitleClass: (data) => [
-      'top-0', // top for stickiness
       data.isCompact ? xxsTextClass : 'py-px text-xs',
     ],
+    columnEventTitleSticky: false, // because time below title, sticky looks bad
 
     // MultiMonth
     singleMonthClass: (data) => data.colCount > 1 && 'm-4',
@@ -298,8 +290,14 @@ export default createPlugin({
     ],
 
     dayHeaderRowClass: borderClass,
-    dayHeaderClass: getDayHeaderClasses,
-    dayHeaderInnerClass: getDayHeaderInnerClasses, // has group for hovering
+    dayHeaderClass: (data) => [
+      data.isDisabled && neutralBgClass,
+      'items-center',
+    ],
+    dayHeaderInnerClass: (data) => [
+      'group pt-2 flex flex-col items-center',
+      data.isCompact && xxsTextClass,
+    ],
     dayHeaderContent: (data) => (
       <Fragment>
         {data.weekdayText && (
@@ -392,9 +390,10 @@ export default createPlugin({
     resourceDayHeaderClass: (data) => [
       data.isMajor ? majorBorderClass : borderClass,
       data.isDisabled && neutralBgClass,
+      'items-center',
     ],
     resourceDayHeaderInnerClass: (data) => [
-      'py-2 flex flex-col items-center',
+      'py-2 flex flex-col',
       data.isCompact ? xxsTextClass : 'text-sm',
     ],
 
@@ -483,7 +482,10 @@ export default createPlugin({
       rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
       slotLabelClass: 'justify-center',
-      slotLabelInnerClass: 'p-1',
+      slotLabelInnerClass: (data) => [
+        'p-1',
+        // data.level && !data.isTime && 'm-3 bg-red-500',
+      ],
 
       slotLabelDividerClass: `border-b ${borderColorClass}`,
     },

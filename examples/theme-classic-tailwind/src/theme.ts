@@ -174,9 +174,7 @@ export default createPlugin({
 
     navLinkClass: 'hover:underline',
 
-    moreLinkInnerClass: 'sticky whitespace-nowrap overflow-hidden',
-    rowMoreLinkInnerClass: 'start-0',
-    columnMoreLinkInnerClass: 'top-0',
+    moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
     // misc BG
     fillerClass: `${borderClass} opacity-50`,
@@ -221,7 +219,6 @@ export default createPlugin({
         : 'group-focus:brightness-75',
     ],
     blockEventInnerClass: 'relative z-10 text-(--fc-event-contrast-color) print:text-black flex',
-    blockEventTitleClass: 'sticky',
 
     rowEventClass: 'mb-px', // space between events
     rowEventBeforeClass: (data) => data.isStartResizable && [
@@ -314,6 +311,7 @@ export default createPlugin({
       : 'ms-0.5 me-[2.5%]',
 
     slotLabelRowClass: borderClass, // Timeline
+    slotLabelAlign: 'center',
     slotLabelClass: getSlotClasses,
     slotLaneClass: getSlotClasses,
 

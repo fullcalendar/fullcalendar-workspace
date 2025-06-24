@@ -9,8 +9,7 @@ export interface TimelineHeaderRowProps {
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
   todayRange: DateRange
-  rowLevel: number
-  isLastRow: boolean
+  rowLevel: number // 0 is closest to divider (like "ground floor")
   cells: TimelineHeaderCellData[]
 
   // ref
@@ -33,8 +32,6 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
   render() {
     const { props, innerWidthRefMap, innerHeightRefMap, context } = this
     const { options } = context
-    const isCentered = !(props.tDateProfile.isTimeScale && props.isLastRow)
-    const isSticky = !props.isLastRow
 
     return (
       <div
@@ -42,7 +39,9 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
           options.slotLabelRowClass,
           classNames.flexRow,
           classNames.grow,
-          !props.isLastRow ? classNames.borderOnlyB : classNames.borderNone,
+          props.rowLevel // not the last row?
+            ? classNames.borderOnlyB
+            : classNames.borderNone,
         )}
       >
         {props.cells.map((cell, cellI) => {
@@ -61,8 +60,6 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
               tDateProfile={props.tDateProfile}
               todayRange={props.todayRange}
               nowDate={props.nowDate}
-              isCentered={isCentered}
-              isSticky={isSticky}
               borderStart={Boolean(cellI)}
 
               // refs

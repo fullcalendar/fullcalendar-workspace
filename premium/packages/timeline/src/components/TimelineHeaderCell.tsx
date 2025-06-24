@@ -21,12 +21,10 @@ import classNames from '@fullcalendar/core/internal-classnames'
 export interface TimelineHeaderCellProps {
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
-  rowLevel: number
+  rowLevel: number // 0 is closest to divider (like "ground floor")
   cell: TimelineHeaderCellData
   todayRange: DateRange
   nowDate: DateMarker
-  isCentered: boolean
-  isSticky: boolean
   borderStart: boolean
 
   // dimensions
@@ -42,10 +40,12 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
   private getDateMeta = memoize(getDateMeta)
 
   // ref
-  private innerElRef = createRef<HTMLDivElement>()
+  private innerWrapperElRef = createRef<HTMLDivElement>()
 
   // internal
   private detachSize?: () => void
+  private align?: 'start' | 'center' | 'end'
+  private isSticky?: boolean
 
   render() {
     let { props, context } = this
@@ -58,16 +58,21 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
 
     let dateMeta = this.getDateMeta(cell.date, dateEnv, dateProfile, props.todayRange, props.nowDate)
     let hasNavLink = !dateMeta.isDisabled && (cell.rowUnit && cell.rowUnit !== 'time')
+    let isTime = tDateProfile.isTimeScale && !props.rowLevel // HACK: faulty way of determining this
     let renderProps = {
       ...dateMeta,
       level: props.rowLevel,
       isMajor: cell.isMajor,
       isMinor: false,
       isCompact: false,
+      isTime,
       hasNavLink,
       text: cell.text,
       view: context.viewApi,
     }
+
+    let align = this.align = isTime ? 'start' : options.slotLabelAlign
+    let isSticky = this.isSticky = props.rowLevel && options.slotLabelSticky
 
     return (
       <ContentContainer
@@ -76,10 +81,9 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
           classNames.tight,
           classNames.flexCol,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
-          // an align-items style value is needed to shrinkwrap the inner item's width, for measurement
-          // it's also useful for the core lib (not the theme) to own this alignment because we do
-          // special things for the sticky center-alignment (see below)
-          props.isCentered ? classNames.alignCenter : classNames.alignStart,
+          align === 'center' ? classNames.alignCenter :
+            align === 'end' ? classNames.alignEnd :
+              classNames.alignStart,
           classNames.internalTimelineSlot,
         )}
         attrs={{
@@ -103,18 +107,11 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
         willUnmount={options.slotLabelWillUnmount}
       >
         {(InnerContent) => (
-          <InnerContent
-            tag='div'
-            attrs={
-              hasNavLink
-                // not tabbable because parent is aria-hidden
-                ? buildNavLinkAttrs(context, cell.date, cell.rowUnit, undefined, /* isTabbable = */ false)
-                : {} // don't bother with aria-hidden because parent already hidden
-            }
+          <div
+            ref={this.innerWrapperElRef}
             className={joinClassNames(
-              generateClassName(options.slotLabelInnerClass, renderProps),
-              classNames.rigid,
-              props.isSticky && classNames.sticky,
+              classNames.flexCol,
+              isSticky && classNames.sticky,
             )}
             style={{
               // initial values
@@ -122,8 +119,21 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
               left: 0,
               right: 0,
             }}
-            elRef={this.innerElRef}
-          />
+          >
+            <InnerContent
+              tag='div'
+              attrs={
+                hasNavLink
+                  // not tabbable because parent is aria-hidden
+                  ? buildNavLinkAttrs(context, cell.date, cell.rowUnit, undefined, /* isTabbable = */ false)
+                  : {} // don't bother with aria-hidden because parent already hidden
+              }
+              className={joinClassNames(
+                generateClassName(options.slotLabelInnerClass, renderProps),
+                classNames.rigid,
+              )}
+            />
+          </div>
         )}
       </ContentContainer>
     )
@@ -131,17 +141,17 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
 
   componentDidMount(): void {
     const { props } = this
-    const innerEl = this.innerElRef.current // TODO: make dynamic with useEffect
+    const innerWrapperEl = this.innerWrapperElRef.current // TODO: make dynamic with useEffect
 
-    this.detachSize = watchSize(innerEl, (width, height) => {
+    this.detachSize = watchSize(innerWrapperEl, (width, height) => {
       setRef(props.innerWidthRef, width)
       setRef(props.innerHeightRef, height)
 
       // HACK for sticky-centering
-      innerEl.style.left = innerEl.style.right =
-        (props.isCentered && props.isSticky)
+      innerWrapperEl.style.left = innerWrapperEl.style.right =
+        (this.align === 'center' && this.isSticky)
           ? `calc(50% - ${width / 2}px)`
-          : ''
+          : '0'
     })
   }
 

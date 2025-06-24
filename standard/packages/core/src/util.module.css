@@ -289,7 +289,6 @@ TODO: use liquidX/Y elsewhere because frees up min other dimension; less collisi
 .rigid {
   flex-shrink: 0 !important;
   white-space: nowrap !important;
-  overflow: hidden !important;
 }
 
 /* Misc Utils */
@@ -403,6 +402,10 @@ which can't rely on dynamic height detection after print-flag activated.
 
 .alignStart {
   align-items: flex-start !important;
+}
+
+.alignEnd {
+  align-items: flex-end !important;
 }
 
 /* Footer Scrollbar */

@@ -244,6 +244,7 @@ export const BASE_OPTION_REFINERS = {
   rowEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   rowEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
   rowEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  rowEventTitleSticky: Boolean,
   rowEventBeforeClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   rowEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
@@ -252,6 +253,7 @@ export const BASE_OPTION_REFINERS = {
   columnEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   columnEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
   columnEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
+  columnEventTitleSticky: Boolean,
   columnEventBeforeClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   columnEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
@@ -281,6 +283,9 @@ export const BASE_OPTION_REFINERS = {
   slotLabelContent: identity as Identity<CustomContentGenerator<SlotLabelData>>,
   slotLabelDidMount: identity as Identity<DidMountHandler<SlotLabelMountData>>,
   slotLabelWillUnmount: identity as Identity<WillUnmountHandler<SlotLabelMountData>>,
+
+  slotLabelAlign: identity as Identity<'start' | 'center' | 'end'>,
+  slotLabelSticky: Boolean,
 
   slotLabelRowClass: identity as Identity<ClassNameInput>,
   slotLabelDividerClass: identity as Identity<ClassNameGenerator<{ isHeader: boolean }>>,
@@ -467,6 +472,10 @@ export const BASE_OPTION_DEFAULTS = {
   outerBorder: true,
   dayCompactWidth: 75,
   eventOverlap: true,
+  slotLabelAlign: 'start',
+  slotLabelSticky: true,
+  rowEventTitleSticky: true,
+  columnEventTitleSticky: true,
 }
 
 // calendar listeners

@@ -138,6 +138,9 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                             : options.columnMoreLinkInnerClass, // column
                           renderProps
                         ),
+                        props.display === 'row'
+                          ? classNames.stickyS
+                          : classNames.stickyT,
                       )}
                     />
                   )}
