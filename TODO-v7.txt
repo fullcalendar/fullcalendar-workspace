@@ -5,6 +5,7 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 
+api: better way to ensure min slot width/height. right now we depend on theme!?
 bug: in Chrome and Safari, scroll-syncing really getting out of alignment
 Classic theme
   better contrast between week number gray and non-business hour gray

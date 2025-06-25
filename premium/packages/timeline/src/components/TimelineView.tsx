@@ -165,7 +165,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                       const rowLevel = cellRows.length - rowIndex - 1
                       return (
                         <TimelineHeaderRow
-                          key={rowLevel}
+                          key={rowIndex}
                           dateProfile={props.dateProfile}
                           tDateProfile={tDateProfile}
                           nowDate={nowDate}
@@ -173,7 +173,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                           rowLevel={rowLevel}
                           cells={cells}
                           slotWidth={slotWidth}
-                          innerWidthRef={this.headerRowInnerWidthMap.createRef(rowLevel)}
+                          innerWidthRef={this.headerRowInnerWidthMap.createRef(rowIndex)}
                         />
                       )
                     })}

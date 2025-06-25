@@ -176,7 +176,11 @@ document.addEventListener('DOMContentLoaded', function() {
         resourceTimelineThreeDays: {
           type: 'resourceTimeline',
           duration: { days: 3 },
-        }
+        },
+        resourceTimeline: {
+          slotDuration: '01:00', // recommended setting for this theme demo
+          snapDuration: '00:30',
+        },
       },
       resourceAreaHeaderContent: 'yooo',
       resourceAreaWidth: '40%',

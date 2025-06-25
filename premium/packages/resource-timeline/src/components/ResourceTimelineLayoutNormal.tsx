@@ -516,7 +516,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       const rowLevel = cellRows.length - rowIndex - 1
                       return (
                         <TimelineHeaderRow
-                          key={rowLevel}
+                          key={rowIndex}
                           dateProfile={props.dateProfile}
                           tDateProfile={tDateProfile}
                           nowDate={props.nowDate}
@@ -524,8 +524,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                           rowLevel={rowLevel}
                           cells={cells}
                           slotWidth={slotWidth}
-                          innerWidthRef={this.headerRowInnerWidthMap.createRef(rowLevel)}
-                          innerHeighRef={this.timelineHeaderRowInnerHeightMap.createRef(rowLevel)}
+                          innerWidthRef={this.headerRowInnerWidthMap.createRef(rowIndex)}
+                          innerHeighRef={this.timelineHeaderRowInnerHeightMap.createRef(rowIndex)}
                         />
                       )
                     })}

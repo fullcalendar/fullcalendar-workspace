@@ -21,6 +21,9 @@ day-circle hovers should always hover gray
 rethink classNames.rigid change
   overflow not working well on datagrid column resizing now
 QUESTION: why does datagrid cell have inner wrap?
+Use rotated icons to save space
+Theme buttons
+Do navlink underline hover sparingly. Prefer bg color change
 
 Google DESIGN:
   expander for resource groups, resource-nesting
@@ -415,10 +418,12 @@ export default createPlugin({
     resourceCellClass: borderClass,
     resourceCellInnerClass: 'p-2 text-sm',
 
-    resourceExpanderClass: 'self-center relative -top-px start-1 text-sm opacity-65', // HACK: relative 1px shift up
-    resourceExpanderContent: (data) => data.isExpanded
-      ? svgIcons.minusSquare('w-[1em] h-[1em]')
-      : svgIcons.plusSquare('w-[1em] h-[1em]'),
+    resourceExpanderClass: (data) => [
+      'self-center w-6 h-6 flex flex-row items-center justify-center rounded-full hover:bg-gray-500/20 text-sm opacity-65 relative start-2',
+      data.isExpanded ? 'rotate-90' :
+        data.direction === 'rtl' && 'rotate-180',
+    ],
+    resourceExpanderContent: () => svgIcons.chevronRight('w-[1.25em] h-[1.25em]'),
 
     resourceLaneClass: borderClass,
     resourceLaneBottomClass: (data) => !data.isCompact && 'pb-3',
@@ -504,7 +509,7 @@ export default createPlugin({
           'bg-gray-300 dark:bg-gray-700 opacity-60',
           data.hasNavLink && 'hover:underline',
         ]
-        : 'pb-3 -ms-1 text-sm',
+        : 'pb-3 -ms-1 text-sm min-w-14',
         // TODO: also test lowest-level days
 
       slotLabelDividerClass: `border-b ${borderColorClass}`,
