@@ -517,7 +517,7 @@ function buildCellRows(
 
   // specifically for navclicks
   let rowUnitsFromFormats = formats.map(
-    (format) => (format.getLargestUnit ? format.getLargestUnit() : null),
+    (format) => (format.getSmallestUnit ? format.getSmallestUnit() : null)
   )
 
   // builds cellRows and slotCells

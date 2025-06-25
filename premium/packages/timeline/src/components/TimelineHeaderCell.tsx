@@ -35,7 +35,11 @@ export interface TimelineHeaderCellProps {
   innerWidthRef?: Ref<number>
 }
 
-export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
+interface TimelineHeaderCellState {
+  innerWidth?: number
+}
+
+export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, TimelineHeaderCellState> {
   // memo
   private getDateMeta = memoize(getDateMeta)
 
@@ -48,7 +52,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
   private isSticky?: boolean
 
   render() {
-    let { props, context } = this
+    let { props, state, context } = this
     let { dateEnv, options } = context
     let { cell, dateProfile, tDateProfile } = props
 
@@ -72,7 +76,21 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
     }
 
     let align = this.align = isTime ? 'start' : options.slotLabelAlign
-    let isSticky = this.isSticky = props.rowLevel && options.slotLabelSticky
+    let isSticky = this.isSticky = props.rowLevel &&
+      (options.slotLabelSticky != null && options.slotLabelSticky !== false)
+
+    let edgeCoord: number | string = 0
+
+    if (align === 'center' && isSticky) {
+      if (state.innerWidth != null) {
+        edgeCoord = `calc(50% - ${state.innerWidth / 2}px)`
+      }
+    } else {
+      edgeCoord = (
+        typeof options.slotLabelSticky === 'number' ||
+        typeof options.slotLabelSticky === 'string'
+      ) ? options.slotLabelSticky : 0
+    }
 
     return (
       <ContentContainer
@@ -114,10 +132,8 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
               isSticky && classNames.sticky,
             )}
             style={{
-              // initial values
-              // see componentDidMount for dynamic hack
-              left: 0,
-              right: 0,
+              left: edgeCoord,
+              right: edgeCoord,
             }}
           >
             <InnerContent
@@ -147,11 +163,9 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps> {
       setRef(props.innerWidthRef, width)
       setRef(props.innerHeightRef, height)
 
-      // HACK for sticky-centering
-      innerWrapperEl.style.left = innerWrapperEl.style.right =
-        (this.align === 'center' && this.isSticky)
-          ? `calc(50% - ${width / 2}px)`
-          : '0'
+      if (this.align === 'center' && this.isSticky) {
+        this.setState({ innerWidth: width })
+      }
     })
   }
 

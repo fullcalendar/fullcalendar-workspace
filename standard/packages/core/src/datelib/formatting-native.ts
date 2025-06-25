@@ -48,30 +48,36 @@ export interface NativeFormatterOptions extends Intl.DateTimeFormatOptions {
 export class NativeFormatter implements DateFormatter {
   standardDateProps: any
   extendedSettings: any
-  severity: number
+  minSeverity: number
   private buildFormattingFunc: typeof buildFormattingFunc // caching for efficiency with same date env
 
   constructor(formatSettings: NativeFormatterOptions) {
     let standardDateProps: any = {}
     let extendedSettings: any = {}
-    let severity = 0
+    let minSeverity = 7
 
     for (let name in formatSettings) {
       if (name in EXTENDED_SETTINGS_AND_SEVERITIES) {
         extendedSettings[name] = formatSettings[name]
-        severity = Math.max(EXTENDED_SETTINGS_AND_SEVERITIES[name], severity)
+        const severity = EXTENDED_SETTINGS_AND_SEVERITIES[name]
+        if (severity) {
+          minSeverity = Math.min(severity, minSeverity)
+        }
       } else {
         standardDateProps[name] = formatSettings[name]
 
         if (name in STANDARD_DATE_PROP_SEVERITIES) { // TODO: what about hour12? no severity
-          severity = Math.max(STANDARD_DATE_PROP_SEVERITIES[name], severity)
+          const severity = STANDARD_DATE_PROP_SEVERITIES[name]
+          if (severity) {
+            minSeverity = Math.min(severity, minSeverity)
+          }
         }
       }
     }
 
     this.standardDateProps = standardDateProps
     this.extendedSettings = extendedSettings
-    this.severity = severity
+    this.minSeverity = minSeverity
 
     this.buildFormattingFunc = memoize(buildFormattingFunc)
   }
@@ -130,18 +136,17 @@ export class NativeFormatter implements DateFormatter {
     return full0 + separator + full1
   }
 
-  getLargestUnit() {
-    switch (this.severity) {
-      case 7:
-      case 6:
-      case 5:
-        return 'year'
-      case 4:
-        return 'month'
-      case 3:
-        return 'week'
+  getSmallestUnit() {
+    switch (this.minSeverity) {
       case 2:
         return 'day'
+      case 3:
+        return 'week'
+      case 4:
+        return 'month'
+      case 5:
+      case 6:
+        return 'year'
       default:
         return 'time' // really?
     }

@@ -20,7 +20,11 @@ export interface TimelineHeaderRowProps {
   slotWidth: number | undefined // TODO: rename to slatWidth
 }
 
-export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
+interface TimelineHeaderRowState {
+  innerHeight?: number
+}
+
+export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, TimelineHeaderRowState> {
   // refs
   private innerWidthRefMap = new RefMap<string, number>(() => {
     afterSize(this.handleInnerWidths)
@@ -30,7 +34,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
   })
 
   render() {
-    const { props, innerWidthRefMap, innerHeightRefMap, context } = this
+    const { props, innerWidthRefMap, innerHeightRefMap, state, context } = this
     const { options } = context
 
     return (
@@ -43,6 +47,11 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
             ? classNames.borderOnlyB
             : classNames.borderNone,
         )}
+        style={{
+          // we assign height because we allow cells to have distorted heights for visual effect
+          // but we still want to keep the overall extrenal mass
+          height: state.innerHeight,
+        }}
       >
         {props.cells.map((cell, cellI) => {
           // TODO: make this part of the cell obj?
@@ -97,6 +106,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps> {
 
     // TODO: ensure not equal?
     setRef(this.props.innerHeighRef, max)
+    this.setState({ innerHeight: max })
   }
 
   componentWillUnmount(): void {

@@ -143,6 +143,15 @@
   margin-bottom: -10px !important;
 }
 
+/* QUESTION: why not use -left -right instead of negative margins/padding for ALL? */
+.hitXSkinny {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -5px;
+  right: -5px;
+}
+
 /* Border Utils */
 /* ------------------------------------------------------------------------------------------------- */
 

@@ -15,24 +15,28 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/resource-daygrid'
 import {} from '@fullcalendar/resource-timeline'
 
-/* TODO:
-make complex day-header navlink narrower (condense to middle)
-  for popover too. TODO: revive popoverHeaderInnerClass?
+/*
+TODO:
 day-circle hovers should always hover gray
-timeline fonts look weird
+rethink classNames.rigid change
+  overflow not working well on datagrid column resizing now
+QUESTION: why does datagrid cell have inner wrap?
+
+Google DESIGN:
+  expander for resource groups, resource-nesting
+  uppercase text for time slotLabels?
+  (for demo only): change slotDuration and interval
 
 NOTES:
 for alignment,
   dayHeader and timeline-slotLabel are flex-col
   timeGrid-slotLabel is flex-row
+text size:
+  text-sm = 14px (day-numbers, slot-labels, datagrid cells)
+  text-xs = 12px (events)
+  xxsTextClass ~= 11px (time within events -- use sparingly)
 */
 
-/*
-TODO: we are confused between text-sm and text-xs !!!
-text-sm = 14px (daycell day-numbers)
-text-xs = 12px (events)
-xxsTextClass ~= 11px (time? within events -- use sparingly)
-*/
 const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
 const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]'
 
@@ -351,8 +355,6 @@ export default createPlugin({
       ? 'm-1' // simple print-view
       : 'ms-0.5 me-[2.5%]',
 
-    slotLabelRowClass: borderClass, // Timeline
-    slotLabelClass: getSlotClasses,
     slotLabelInnerClass: (data) => data.hasNavLink && 'hover:underline',
     slotLaneClass: getSlotClasses,
 
@@ -399,21 +401,21 @@ export default createPlugin({
 
     resourceAreaHeaderRowClass: borderClass,
     resourceAreaHeaderClass: `${borderClass} items-center`, // valign
-    resourceAreaHeaderInnerClass: 'p-2',
+    resourceAreaHeaderInnerClass: 'p-2 text-sm',
 
-    resourceAreaDividerClass: `border-x ${borderColorClass} pl-0.5 ${neutralBgClass}`,
+    resourceAreaDividerClass: `border-s ${borderColorClass}`, // TODO: put bigger hit area inside
 
     // For both resources & resource groups
     resourceAreaRowClass: borderClass,
 
     resourceGroupHeaderClass: neutralBgClass,
-    resourceGroupHeaderInnerClass: 'p-2',
+    resourceGroupHeaderInnerClass: 'p-2 text-sm',
     resourceGroupLaneClass: [borderClass, neutralBgClass],
 
     resourceCellClass: borderClass,
-    resourceCellInnerClass: 'p-2',
+    resourceCellInnerClass: 'p-2 text-sm',
 
-    resourceExpanderClass: 'self-center relative -top-px start-1 opacity-65', // HACK: relative 1px shift up
+    resourceExpanderClass: 'self-center relative -top-px start-1 text-sm opacity-65', // HACK: relative 1px shift up
     resourceExpanderContent: (data) => data.isExpanded
       ? svgIcons.minusSquare('w-[1em] h-[1em]')
       : svgIcons.plusSquare('w-[1em] h-[1em]'),
@@ -456,7 +458,11 @@ export default createPlugin({
       columnMoreLinkClass: `mb-px rounded-xs outline outline-(--fc-canvas-color) ${moreLinkBgClass}`,
       columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
-      slotLabelClass: 'w-2 self-end justify-end',
+      slotLabelClass: (data) => [
+        borderClass,
+         'w-2 self-end justify-end',
+        data.isMinor && 'border-dotted',
+      ],
       slotLabelInnerClass: (data) => [
         'ps-2 pe-3 py-0.5 -mt-[1em] text-end', // best -mt- value???
         'min-h-[3em]',
@@ -481,18 +487,25 @@ export default createPlugin({
       rowMoreLinkClass: `me-px p-px ${moreLinkBgClass}`,
       rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
-      slotLabelClass: 'justify-center',
+      slotLabelSticky: '0.5rem',
+      slotLabelClass: (data) => (data.level && !data.isTime)
+        ? [
+          'border border-transparent',
+          'justify-start',
+        ]
+        : [
+          borderClass,
+          'h-2 self-end justify-end',
+        ],
       slotLabelInnerClass: (data) => (data.level && !data.isTime)
         ? [
           // TODO: converge with week-label styles
-          'rounded-sm',
+          'px-2 py-1 rounded-full text-sm',
           'bg-gray-300 dark:bg-gray-700 opacity-60',
-          'px-2',
-          'py-1',
-          'ms-2',
           data.hasNavLink && 'hover:underline',
         ]
-        : 'p-1',
+        : 'pb-3 -ms-1 text-sm',
+        // TODO: also test lowest-level days
 
       slotLabelDividerClass: `border-b ${borderColorClass}`,
     },

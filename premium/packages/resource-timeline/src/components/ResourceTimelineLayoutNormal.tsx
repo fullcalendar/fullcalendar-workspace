@@ -542,7 +542,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   {Boolean(endScrollbarWidth) && (
                     <div
                       className={joinArrayishClassNames(
-                        generateClassName(options.fillerClass, { isHeader: false }),
+                        generateClassName(options.fillerClass, { isHeader: true }),
                         classNames.borderOnlyS,
                       )}
                       style={{ minWidth: endScrollbarWidth }}
