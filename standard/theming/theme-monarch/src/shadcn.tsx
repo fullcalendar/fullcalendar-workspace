@@ -3,11 +3,15 @@ import { createElement, Fragment } from '@fullcalendar/core/preact'
 import * as svgIcons from './svgIcons.js'
 
 /*
-TODO: segmented buttons:
-https://m3.material.io/components/segmented-buttons/overview
+MODs to this ShadCN theme:
+- removed border b/c shadcn sets globally
 
-What font is this?
-https://react-native-big-calendar.vercel.app/?path=/story/showcase-desktop--three-days-mode
+BUGS:
+- now that we don't use toolbar, navlinks to day view go to useless dayGridDay instead of timeGridWeek
+- non-business background color conflicts with the week number pills
+
+NOTES:
+- when color not needed, `borderClass` variable is dumb. can just use 'border'
 */
 
 // Will import ambient types during dev but strip out for build
@@ -19,21 +23,20 @@ import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
 // shadcn: don't forget ring ao
-const primarySurfaceClass = 'bg-[#675496] text-white' // shadcn "primary", "primary-foreground"
-const secondarySurfaceClass = 'bg-[#e2e0f9]' // shadcn "secondary", "secondary-foreground"
-const primaryPressableClass = `${primarySurfaceClass} hover:bg-[#7462a2] active:bg-[#544181]` // shadcn: same as above except with effects using color-mix
-const secondaryPressableClass = `${secondarySurfaceClass} hover:bg-[#d6d4f0] active:bg-[#c4c1e9]` // shadcn: same as above except with effects using color-mix
-const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20' // shadcn "accent", with effects using color-mix
-const transparentStrongBgClass = 'bg-gray-500/30' // the touch-SELECTED version of above. use color-mix to make bolder?
-const disabledTextColorClass = 'text-gray-500' // shadcn "muted-foreground"
+const primarySurfaceClass = 'bg-primary text-primary-foreground'
+const secondarySurfaceClass = 'bg-secondary text-secondary-foreground'
+const primaryPressableClass = `${primarySurfaceClass} hover:bg-primary/90 active:bg-primary/80`
+const secondaryPressableClass = `${secondarySurfaceClass} hover:bg-secondary/90 active:bg-secondary/80`
+const transparentPressableClass = 'hover:bg-accent hover:text-accent-foreground' // Shadcn doesn't do active? TODO: dark mode audit.
+const transparentStrongBgClass = 'bg-red-500' // the touch-SELECTED version of above. use color-mix to make bolder? TODO!!!
+const disabledTextColorClass = 'text-muted-foreground' // shadcn "muted-foreground"
 const disabledPressableClass = `${secondarySurfaceClass} ${disabledTextColorClass}`
 const neutralBgClass = 'bg-gray-500/7' // TODO: deal with this!!!... what is it used for ?
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // TODO: deal with this!!!... ugly dark grey... rethink
-const borderColorClass = 'border-[#dde3ea] dark:border-gray-800' // shadcn "border" TODO: for DARK
-const borderClass = `border ${borderColorClass}` // all sides
+const borderClass = `border` // all sides
 const majorBorderClass = 'border border-gray-400 dark:border-gray-700' // shadcn "ring"
-const alertBorderColorClass = 'border-red-600 dark:border-red-400' // shadcn "destructive"
-const highlightBgClass = 'bg-cyan-100/40 dark:bg-blue-500/20' // shadcn "chart-1", fallback to "accent"
+const alertBorderColorClass = 'border-destructive'
+const highlightBgClass = 'bg-cyan-100/40 dark:bg-blue-500/20' // shadcn "chart-1", fallback to "accent"... HOW!!?
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
 const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]'
@@ -108,7 +111,7 @@ export default createPlugin({
 
     className: `${borderClass} rounded-xl overflow-hidden`,
 
-    tableHeaderClass: (data) => data.isSticky && `bg-(--fc-canvas-color) border-b ${borderColorClass}`,
+    tableHeaderClass: (data) => data.isSticky && `bg-(--fc-canvas-color) border-b`,
 
     toolbarClass: 'p-4 items-center gap-3',
     toolbarSectionClass: (data) => [
@@ -168,7 +171,7 @@ export default createPlugin({
     // misc BG
     fillerClass: (data) => [
       'opacity-50 border',
-      data.isHeader ? 'border-transparent' : borderColorClass,
+      data.isHeader && 'border-transparent',
     ],
     nonBusinessClass: neutralBgClass,
     highlightClass: highlightBgClass,
@@ -270,7 +273,7 @@ export default createPlugin({
     // MultiMonth
     singleMonthClass: (data) => data.colCount > 1 && 'm-4',
     singleMonthTitleClass: (data) => [
-      data.isSticky && `border-b ${borderColorClass} bg-(--fc-canvas-color)`,
+      data.isSticky && `border-b bg-(--fc-canvas-color)`,
       data.isSticky
         ? 'py-2' // single column
         : 'pb-4', // multi-column
@@ -331,7 +334,7 @@ export default createPlugin({
       !data.isCompact && 'm-2',
     ],
 
-    allDayDividerClass: `border-t ${borderColorClass}`,
+    allDayDividerClass: `border-t`,
 
     dayLaneClass: (data) => [
       data.isMajor ? majorBorderClass : borderClass,
@@ -346,7 +349,7 @@ export default createPlugin({
       data.isMinor && 'border-dotted',
     ],
 
-    listDayClass: `flex flex-row items-start not-last:border-b ${borderColorClass}`,
+    listDayClass: `flex flex-row items-start not-last:border-b`,
     listDayHeaderClass: 'flex flex-row items-center w-40',
     listDayHeaderInnerClass: (data) => !data.level
       ? 'm-2 flex flex-row items-center text-lg group' // primary
@@ -389,7 +392,7 @@ export default createPlugin({
     resourceAreaHeaderClass: `${borderClass} items-center`, // valign
     resourceAreaHeaderInnerClass: 'p-2 text-sm',
 
-    resourceAreaDividerClass: `border-s ${borderColorClass}`, // TODO: put bigger hit area inside
+    resourceAreaDividerClass: `border-s`, // TODO: put bigger hit area inside
 
     // For both resources & resource groups
     resourceAreaRowClass: borderClass,
@@ -460,7 +463,7 @@ export default createPlugin({
 
       slotLabelDividerClass: (data) => [
         'border-l',
-        data.isHeader ? 'border-transparent' : borderColorClass,
+        data.isHeader && 'border-transparent',
       ],
     },
     timeline: {
@@ -495,7 +498,7 @@ export default createPlugin({
         : 'pb-3 -ms-1 text-sm min-w-14',
         // TODO: also test lowest-level days
 
-      slotLabelDividerClass: `border-b ${borderColorClass}`,
+      slotLabelDividerClass: `border-b`,
     },
     list: {
       listItemEventClass: 'group rounded-s-xl p-1',

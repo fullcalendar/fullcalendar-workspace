@@ -110,7 +110,7 @@ function App() {
           selectable={true}
           selectMirror={false}
           dayMaxEvents={true}
-          businessHours={true}
+          // businessHours={true} // -- TODO: background conflicts with the week number pills!!!
           eventMaxStack={1}
           listDayFormat={{ day: 'numeric' }}
           listDaySideFormat={{ month: 'short', weekday: 'short', forceCommas: true }}
