@@ -3,6 +3,7 @@ packages:
   - './standard/tests'
   - './standard/bundle'
   - './standard/packages/*'
+  - './standard/theming/*'
   - './premium/tests'
   - './premium/bundle'
   - './premium/packages/*'

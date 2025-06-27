@@ -11,12 +11,12 @@ https://react-native-big-calendar.vercel.app/?path=/story/showcase-desktop--thre
 */
 
 // Will import ambient types during dev but strip out for build
-import {} from '@fullcalendar/timegrid'
-import {} from '@fullcalendar/timeline'
-import {} from '@fullcalendar/list'
-import {} from '@fullcalendar/multimonth'
-import {} from '@fullcalendar/resource-daygrid'
-import {} from '@fullcalendar/resource-timeline'
+import type {} from '@fullcalendar/timegrid'
+import type {} from '@fullcalendar/timeline'
+import type {} from '@fullcalendar/list'
+import type {} from '@fullcalendar/multimonth'
+import type {} from '@fullcalendar/resource-daygrid'
+import type {} from '@fullcalendar/resource-timeline'
 
 /*
 TODO:

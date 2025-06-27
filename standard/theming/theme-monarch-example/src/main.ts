@@ -13,7 +13,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'
-import themePlugin from './theme.js'
+import themePlugin from '@fullcalendar/theme-monarch'
 
 const enablePremium = false
 const enableDark = false
@@ -38,13 +38,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
       // eventColor: 'yellow',
       // eventContrastColor: 'black',
+      // eventResizableFromStart: true,
 
       // height: 'auto',
       // eventMaxStack: 1,
       // direction: 'rtl',
-      eventResizableFromStart: true,
-      // stickyHeaderDates: true, -- makes things broken sometimes!
+
+      // dayHeaders: false,
+      // stickyHeaderDates: true,
+      // contentHeight: 200,
+
       weekNumbers: true,
+
       plugins: [
         scrollGridPlugin, // even for standard
         adaptivePlugin, // even for standard
@@ -56,26 +61,32 @@ document.addEventListener('DOMContentLoaded', function() {
         themePlugin,
       ],
 
-      // displayEventTime: true,
+      // displayEventTime: false,
       // eventDisplay: 'block',
 
       // dayMinWidth: 200,
+
       eventInteractive: true,
       initialDate: '2023-01-12',
       initialView: 'dayGridMonth',
       nowIndicator: true,
       headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek,multiMonthYear'
+        left: 'today prev,next title',
+        center: '',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek,multiMonthYear',
       },
       navLinks: true, // can click day/week names to navigate views
       editable: true,
       selectable: true,
       selectMirror: false,
       dayMaxEvents: true, // allow "more" link when too many events
-      // businessHours: true, // looks whack, covering lots of things
-      // eventMaxStack: 1,
+      businessHours: true,
+      eventMaxStack: 1,
+
+      // match Google Calendar formatting
+      listDayFormat: { day: 'numeric' },
+      listDaySideFormat: { month: 'short', weekday: 'short', forceCommas: true },
+
       events: [
         {
           title: 'All Day Event',
@@ -132,7 +143,12 @@ document.addEventListener('DOMContentLoaded', function() {
           url: 'http://google.com/',
           start: '2023-01-28'
         }
-      ]
+      ],
+      views: {
+        timeGrid: {
+          slotDuration: '01:00', // recommended setting for this theme demo
+        },
+      }
     })
   } else {
     calendar = new Calendar(calendarEl, {
@@ -142,6 +158,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // borderlessBottom: true,
 
       // displayEventTime: true,
+      // displayEventEnd: false,
       // eventOverlap: false,
 
       plugins: [
@@ -156,6 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
       ],
       initialDate: '2023-01-07',
       initialView: 'resourceTimelineThreeDays',
+      // datesAboveResources: true,
       dayMinWidth: 200,
       editable: true,
       selectable: true,

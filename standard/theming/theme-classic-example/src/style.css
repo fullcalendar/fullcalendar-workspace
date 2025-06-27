@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@source "../node_modules/@fullcalendar/theme-classic/src/index.ts";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 html {

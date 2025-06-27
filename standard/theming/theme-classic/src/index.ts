@@ -2,12 +2,12 @@ import { CalendarOptions, createPlugin, PluginDef } from '@fullcalendar/core'
 import * as svgIcons from './svgIcons.js'
 
 // Will import ambient types during dev but strip out for build
-import {} from '@fullcalendar/timegrid'
-import {} from '@fullcalendar/timeline'
-import {} from '@fullcalendar/list'
-import {} from '@fullcalendar/multimonth'
-import {} from '@fullcalendar/resource-daygrid'
-import {} from '@fullcalendar/resource-timeline'
+import type {} from '@fullcalendar/timegrid'
+import type {} from '@fullcalendar/timeline'
+import type {} from '@fullcalendar/list'
+import type {} from '@fullcalendar/multimonth'
+import type {} from '@fullcalendar/resource-daygrid'
+import type {} from '@fullcalendar/resource-timeline'
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
