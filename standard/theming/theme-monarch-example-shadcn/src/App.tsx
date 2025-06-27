@@ -20,6 +20,7 @@ import themePlugin from '@fullcalendar/theme-monarch'
 
 // TODO: kill reliance on --fc-canvas-color somehow
 // TODO: aria-labels not working, esp for "Today"
+// TODO: borderless must kill border-radius and drop-shadow!
 
 const enablePremium = false
 const enableDark = false
@@ -42,8 +43,8 @@ function App() {
   const buttons = controller.getButtonState()
 
   return (
-    <div className='max-w-[1100px] mx-auto'>
-      <div className='flex items-center mb-5 justify-between'>
+    <div className='max-w-[1100px] mx-auto gap-5 border rounded-xl'>
+      <div className='flex items-center p-3 justify-between'>
         <div className='flex items-center gap-2'>
           <Button
             onClick={() => controller.today()}
@@ -102,11 +103,8 @@ function App() {
           initialDate='2023-01-12'
           initialView='dayGridMonth'
           nowIndicator={true}
-          headerToolbar={{
-            left: 'today prev,next title',
-            center: '',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek,multiMonthYear',
-          }}
+          borderless={true}
+          headerToolbar={false}
           navLinks={true}
           editable={true}
           selectable={true}
