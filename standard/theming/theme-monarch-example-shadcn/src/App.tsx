@@ -1,5 +1,8 @@
+import { useState } from 'react'
 import './App.css'
 import { Button } from '@/components/ui/button.js'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs.js'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 import '@fullcalendar/core/global.css'
 import FullCalendar from '@fullcalendar/react'
@@ -25,11 +28,43 @@ if (enableDark) {
   document.documentElement.classList.add('dark')
 }
 
+const availableViews = [
+  'dayGridMonth',
+  'timeGridWeek',
+  'timeGridDay',
+  'listWeek',
+  'multiMonthYear',
+]
+
 function App() {
+  const [view, setView] = useState(availableViews[0])
+
   return (
     <div className='max-w-[1100px] mx-auto'>
-      <div>
-        <Button>Hello</Button>
+      <div className='flex items-center mb-5 justify-between'>
+        <div className='flex items-center gap-2'>
+          <Button variant='outline'>Today</Button>
+          <div className='flex items-center'>
+            <Button variant='ghost' size='icon'>
+              <ChevronLeftIcon />
+            </Button>
+            <Button variant='ghost' size='icon'>
+              <ChevronRightIcon />
+            </Button>
+          </div>
+          <div className='text-xl'>January 2023</div>
+        </div>
+        <Tabs value={view}>
+          <TabsList>
+            {availableViews.map((availableView) => (
+              <TabsTrigger
+                value={availableView}
+                onClick={() => setView(availableView)}
+                aria-label={'Use ' + availableView}
+              >{availableView}</TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
       </div>
       {!enablePremium ? (
         <FullCalendar
@@ -45,8 +80,8 @@ function App() {
             themePlugin,
           ]}
           eventInteractive={true}
-          initialDate="2023-01-12"
-          initialView="dayGridMonth"
+          initialDate='2023-01-12'
+          initialView='dayGridMonth'
           nowIndicator={true}
           headerToolbar={{
             left: 'today prev,next title',
@@ -94,14 +129,14 @@ function App() {
             interactionPlugin,
             themePlugin,
           ]}
-          initialDate="2023-01-07"
-          initialView="resourceTimelineThreeDays"
+          initialDate='2023-01-07'
+          initialView='resourceTimelineThreeDays'
           dayMinWidth={200}
           editable={true}
           selectable={true}
           nowIndicator={true}
           aspectRatio={1.8}
-          scrollTime="00:00"
+          scrollTime='00:00'
           headerToolbar={{
             left: 'today prev,next',
             center: 'title',
@@ -122,9 +157,9 @@ function App() {
               snapDuration: '00:30',
             },
           }}
-          resourceAreaHeaderContent="yooo"
-          resourceAreaWidth="40%"
-          resourceGroupField="building"
+          resourceAreaHeaderContent='yooo'
+          resourceAreaWidth='40%'
+          resourceGroupField='building'
           resourceAreaColumns={[
             { headerContent: 'Building', field: 'building' },
             { headerContent: 'Room', field: 'title' },
