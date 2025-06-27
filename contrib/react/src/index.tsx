@@ -153,11 +153,7 @@ export function useCalendarController(): CalendarController {
     controller: new CalendarController(handleDateChange)
   }))
 
-  useEffect(() => {
-    return () => { // cleanup
-      controllerWrap.controller._setApi(undefined)
-    }
-  }, [])
+  // TODO: destroy by ._setApi(undefined) ?
 
   return controllerWrap.controller
 }

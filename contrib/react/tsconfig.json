@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "jsx": "react",
-    "target": "es2015",
+    "target": "es2016",
     "module": "node16",
     "moduleResolution": "node16",
     "typeRoots": [],
     "lib": [
-      "dom",
-      "es2015"
+      "es2017",
+      "dom"
     ],
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,

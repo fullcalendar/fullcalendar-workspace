@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs.js'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 import '@fullcalendar/core/global.css'
-import FullCalendar from '@fullcalendar/react'
+import FullCalendar, { useCalendarController } from '@fullcalendar/react'
 import adaptivePlugin from '@fullcalendar/adaptive'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -20,6 +20,8 @@ import timelinePlugin from '@fullcalendar/timeline'
 import themePlugin from '@fullcalendar/theme-monarch'
 
 // TODO: kill reliance on --fc-canvas-color somehow
+// TODO: aria-labels not working, esp for "Today"
+// TODO: App CANNOT control current-view state because navlinks within calendar cn change it
 
 const enablePremium = false
 const enableDark = false
@@ -28,6 +30,7 @@ if (enableDark) {
   document.documentElement.classList.add('dark')
 }
 
+// TODO: make different for premium
 const availableViews = [
   'dayGridMonth',
   'timeGridWeek',
@@ -38,36 +41,55 @@ const availableViews = [
 
 function App() {
   const [view, setView] = useState(availableViews[0])
+  const controller = useCalendarController()
+  const buttons = controller.getButtonState()
 
   return (
     <div className='max-w-[1100px] mx-auto'>
       <div className='flex items-center mb-5 justify-between'>
         <div className='flex items-center gap-2'>
-          <Button variant='outline'>Today</Button>
+          <Button
+            onClick={() => controller.today()}
+            disabled={buttons.today.isDisabled}
+            aria-label={buttons.today.hint}
+            variant='outline'
+          >{buttons.today.text}</Button>
           <div className='flex items-center'>
-            <Button variant='ghost' size='icon'>
-              <ChevronLeftIcon />
-            </Button>
-            <Button variant='ghost' size='icon'>
+            <Button
+              onClick={() => controller.prev()}
+              disabled={buttons.prev.isDisabled}
+              aria-label={buttons.prev.hint}
+              variant='ghost'
+              size='icon'
+            ><ChevronLeftIcon /></Button>
+            <Button
+              onClick={() => controller.next()}
+              disabled={buttons.next.isDisabled}
+              aria-label={buttons.next.hint}
+              variant='ghost'
+              size='icon'
+            >
               <ChevronRightIcon />
             </Button>
           </div>
-          <div className='text-xl'>January 2023</div>
+          <div className='text-xl'>{controller.view?.title}</div>
         </div>
         <Tabs value={view}>
           <TabsList>
             {availableViews.map((availableView) => (
               <TabsTrigger
+                key={availableView}
                 value={availableView}
                 onClick={() => setView(availableView)}
-                aria-label={'Use ' + availableView}
-              >{availableView}</TabsTrigger>
+                aria-label={buttons[availableView]?.hint}
+              >{buttons[availableView]?.text}</TabsTrigger>
             ))}
           </TabsList>
         </Tabs>
       </div>
       {!enablePremium ? (
         <FullCalendar
+          controller={controller}
           weekNumbers={true}
           plugins={[
             scrollGridPlugin,
@@ -97,6 +119,7 @@ function App() {
           eventMaxStack={1}
           listDayFormat={{ day: 'numeric' }}
           listDaySideFormat={{ month: 'short', weekday: 'short', forceCommas: true }}
+          view={view}
           views={{
             timeGrid: {
               slotDuration: '01:00',

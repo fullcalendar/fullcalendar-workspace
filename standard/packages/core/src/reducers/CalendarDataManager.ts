@@ -121,6 +121,12 @@ export class CalendarDataManager {
     this.emitter.setThisContext(props.calendarApi)
     this.emitter.setOptions(currentViewData.options)
 
+    // NOTE: subsequent updates detected by options-change-handlers.ts
+    const controllerOption = optionsData.calendarOptions.controller
+    if (controllerOption) {
+      controllerOption._setApi(props.calendarApi)
+    }
+
     let currentDate = getInitialDate(optionsData.calendarOptions, optionsData.dateEnv)
     let dateProfile = currentViewData.dateProfileGenerator.build(currentDate)
 

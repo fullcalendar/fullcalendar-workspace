@@ -8,6 +8,7 @@ export const changeHandlerPlugin = createPlugin({
   name: 'change-handler',
   optionChangeHandlers: {
     controller(controller: CalendarController, context: CalendarContext) {
+      // TODO: the initial setting is in CalendarDataManager
       controller._setApi(context.calendarApi)
     },
     view(viewName: string, context: CalendarContext) {

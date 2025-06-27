@@ -57,17 +57,14 @@ export class CalendarController {
   }
 
   _setApi(calendarApi: CalendarApi | undefined): void {
-    if (calendarApi) {
-      if (this.calendarApi) {
-        throw new Error('A CalendarController can only be connected to one calendar')
-      } else {
-        this.calendarApi = calendarApi
-        calendarApi.on('datesSet', this.handleDateChange)
-      }
-    } else {
+    if (this.calendarApi !== calendarApi) {
       if (this.calendarApi) {
         this.calendarApi.off('datesSet', this.handleDateChange)
         this.calendarApi = undefined
+      }
+      if (calendarApi) {
+        this.calendarApi = calendarApi
+        calendarApi.on('datesSet', this.handleDateChange)
       }
     }
   }

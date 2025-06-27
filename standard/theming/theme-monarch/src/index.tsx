@@ -19,6 +19,8 @@ import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
 /*
+TODO: tricks to make current-view-tabs not so wide
+
 TODO:
 day-circle hovers should always hover gray
 rethink classNames.rigid change
