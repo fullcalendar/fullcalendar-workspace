@@ -12,6 +12,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
+    },
+    "./shadcn": {
+      "types": "./dist/shadcn.d.ts",
+      "default": "./dist/shadcn.js"
     }
   },
   "peerDependencies": {
