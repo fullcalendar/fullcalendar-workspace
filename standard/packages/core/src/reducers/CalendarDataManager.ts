@@ -103,7 +103,11 @@ export class CalendarDataManager {
       props.calendarApi,
     )
 
-    let currentViewType = optionsData.calendarOptions.initialView || optionsData.pluginHooks.initialView
+    let currentViewType =
+      optionsData.calendarOptions.initialView ||
+      optionsData.pluginHooks.initialView ||
+      optionsData.calendarOptions.view
+
     let currentViewData = this.computeCurrentViewData(
       currentViewType,
       optionsData,

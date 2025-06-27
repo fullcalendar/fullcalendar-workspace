@@ -2,7 +2,17 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@source "../node_modules/@fullcalendar/theme-monarch/src/index.tsx";
+
 @custom-variant dark (&:is(.dark *));
+
+/* TODO: kill this */
+html {
+  --fc-canvas-color: var(--color-white);
+}
+html.dark {
+  --fc-canvas-color: var(--color-gray-950);
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
