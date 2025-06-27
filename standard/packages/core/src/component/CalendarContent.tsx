@@ -1,40 +1,40 @@
-import { ViewContextType, buildViewContext } from '../ViewContext.js'
-import { ViewSpec } from '../structs/view-spec.js'
+import { CalendarInteraction } from '../calendar-utils.js'
 import { ViewProps } from '../component-util/View.js'
-import { Toolbar } from './Toolbar.js'
-import { DateProfileGenerator, DateProfile } from '../DateProfileGenerator.js'
-import { rangeContainsMarker } from '../datelib/date-range.js'
-import { memoize } from '../util/memoize.js'
-import { DateMarker } from '../datelib/marker.js'
-import { CalendarData } from '../reducers/data-types.js'
-import { ViewPropsTransformerClass } from '../plugin-system-struct.js'
-import { createElement, Fragment, VNode } from '../preact.js'
-import {
-  Interaction,
-  InteractionSettingsInput,
-  InteractionClass,
-  parseInteractionSettings,
-  interactionSettingsStore,
-} from '../interactions/interaction.js'
-import { DateComponent } from './DateComponent.js'
 import { EventClicking } from '../interactions/EventClicking.js'
 import { EventHovering } from '../interactions/EventHovering.js'
-import { getNow } from '../reducers/current-date.js'
-import { CalendarInteraction } from '../calendar-utils.js'
-import { PureComponent } from '../vdom-util.js'
-import { getUniqueDomId } from '../util/dom-manip.js'
-import { CssDimValue, getIsHeightAuto } from '../scrollgrid/util.js'
-import { joinClassNames } from '../util/html.js'
+import {
+  Interaction, InteractionClass, InteractionSettingsInput, interactionSettingsStore, parseInteractionSettings
+} from '../interactions/interaction.js'
 import classNames from '../internal-classnames.js'
+import { ViewPropsTransformerClass } from '../plugin-system-struct.js'
+import { createElement, Fragment, VNode } from '../preact.js'
+import { CalendarData } from '../reducers/data-types.js'
+import { CssDimValue, getIsHeightAuto } from '../scrollgrid/util.js'
+import { getUniqueDomId } from '../util/dom-manip.js'
+import { joinClassNames } from '../util/html.js'
+import { memoize } from '../util/memoize.js'
+import { PureComponent } from '../vdom-util.js'
+import { buildViewContext, ViewContextType } from '../ViewContext.js'
+import { DateComponent } from './DateComponent.js'
+import { Toolbar } from './Toolbar.js'
 
 export interface CalendarContentProps extends CalendarData {
+  toolbarProps: CalendarToolbarProps
   forPrint: boolean
+}
+
+export interface CalendarToolbarProps {
+  title: string
+  selectedButton: string
+  navUnit: string
+  isTodayEnabled: boolean
+  isPrevEnabled: boolean
+  isNextEnabled: boolean
 }
 
 export class CalendarContent extends PureComponent<CalendarContentProps> {
   private buildViewContext = memoize(buildViewContext)
   private buildViewPropTransformers = memoize(buildViewPropTransformers)
-  private buildToolbarProps = memoize(buildToolbarProps)
   private interactionsStore: { [componentUid: string]: Interaction[] } = {}
   private calendarInteractions: CalendarInteraction[]
   private viewTitleId = getUniqueDomId()
@@ -44,16 +44,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
   */
   render() {
     let { props } = this
-    let { toolbarConfig, options } = props
-
-    let toolbarProps = this.buildToolbarProps(
-      props.viewSpec,
-      props.dateProfile,
-      props.dateProfileGenerator,
-      props.currentDate,
-      getNow(props.options.now, props.dateEnv), // TODO: use NowTimer????
-      props.viewTitle,
-    )
+    let { toolbarProps, toolbarConfig, options } = props
 
     let viewHeight: CssDimValue | undefined
     let viewHeightLiquid = false
@@ -247,28 +238,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
   }
 }
 
-function buildToolbarProps(
-  viewSpec: ViewSpec,
-  dateProfile: DateProfile,
-  dateProfileGenerator: DateProfileGenerator,
-  currentDate: DateMarker,
-  now: DateMarker,
-  title: string,
-) {
-  // don't force any date-profiles to valid date profiles (the `false`) so that we can tell if it's invalid
-  let todayInfo = dateProfileGenerator.build(now, undefined, false) // TODO: need `undefined` or else INFINITE LOOP for some reason
-  let prevInfo = dateProfileGenerator.buildPrev(dateProfile, currentDate, false)
-  let nextInfo = dateProfileGenerator.buildNext(dateProfile, currentDate, false)
-
-  return {
-    title,
-    selectedButton: viewSpec.type,
-    navUnit: viewSpec.singleUnit,
-    isTodayEnabled: todayInfo.isValid && !rangeContainsMarker(dateProfile.currentRange, now),
-    isPrevEnabled: prevInfo.isValid,
-    isNextEnabled: nextInfo.isValid,
-  }
-}
 
 // Plugin
 // -----------------------------------------------------------------------------------------------------------------

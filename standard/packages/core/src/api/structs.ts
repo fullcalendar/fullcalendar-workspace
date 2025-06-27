@@ -34,7 +34,7 @@ export type { EventClickData } from '../interactions/EventClicking.js'
 export type { EventHoveringData } from '../interactions/EventHovering.js'
 export type { DateSelectData, DateUnselectData } from '../calendar-utils.js'
 export type { WeekNumberCalculation } from '../datelib/env.js'
-export type { ToolbarInput, ButtonInput, ButtonData, ButtonMountData, ButtonIconData, ButtonDisplay, ToolbarElementInput, ToolbarSectionData, ToolbarData } from '../toolbar-struct.js'
+export type { ToolbarInput, ButtonInput, ButtonGroupData, ButtonData, ButtonMountData, ButtonIconData, ButtonDisplay, ToolbarElementInput, ToolbarSectionData, ToolbarData } from '../toolbar-struct.js'
 export type { EventDisplayData, EventMountData } from '../component-util/event-rendering.js'
 export type { DayPopoverData } from '../common/MorePopover.js'
 export type { DatesSetData } from '../dates-set.js'
@@ -43,6 +43,7 @@ export type { CustomRenderingHandler, CustomRenderingStore } from '../content-in
 export type { DateSpanApi, DatePointApi } from '../structs/date-span.js'
 export type { DateSelectionApi } from '../calendar-utils.js'
 export type { ClassNameInput } from '../util/html.js'
+export type { ButtonState, NavButtonState, ButtonStateMap } from '../structs/button-state.js'
 
 // used by some args
 export type { Duration } from '../datelib/duration.js'

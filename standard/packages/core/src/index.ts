@@ -2,6 +2,7 @@
 export { Calendar } from './Calendar.js'
 
 export { CalendarApi } from './api/CalendarApi.js'
+export { CalendarController } from './CalendarController.js'
 export { ViewApi } from './api/ViewApi.js'
 export { EventSourceApi } from './api/EventSourceApi.js'
 export { EventApi } from './api/EventApi.js'

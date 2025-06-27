@@ -1,5 +1,6 @@
 import { DateProfileGeneratorClass } from './DateProfileGenerator.js'
 import { CalendarApi } from './api/CalendarApi.js'
+import { CalendarController } from './CalendarController.js'
 import { EventApi } from './api/EventApi.js'
 import {
   AllDayHeaderData, AllDayHeaderMountData,
@@ -52,6 +53,7 @@ import {
   WeekNumberDisplayData, WeekNumberMountData,
   WillUnmountHandler,
   ButtonData,
+  ButtonGroupData,
   ToolbarElementInput,
   ToolbarSectionData,
   ToolbarData,
@@ -106,7 +108,7 @@ export const BASE_OPTION_REFINERS = {
   nextHint: identity as Identity<string | ((currentUnitText: string, currentUnit: string) => string)>,
 
   buttonDisplay: identity as Identity<ButtonDisplay>,
-  buttonGroupClass: identity as Identity<ClassNameInput>,
+  buttonGroupClass: identity as Identity<ClassNameGenerator<ButtonGroupData>>,
   buttonClass: identity as Identity<ClassNameGenerator<ButtonData>>,
 
   defaultAllDayEventDuration: createDuration,
@@ -144,6 +146,9 @@ export const BASE_OPTION_REFINERS = {
   weekNumberWillUnmount: identity as Identity<WillUnmountHandler<WeekNumberMountData>>,
 
   editable: Boolean,
+
+  controller: identity as Identity<CalendarController>,
+  view: String,
 
   viewClass: identity as Identity<ClassNameGenerator<ViewData>>,
   viewDidMount: identity as Identity<DidMountHandler<ViewMountData>>,

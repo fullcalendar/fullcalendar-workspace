@@ -1,9 +1,10 @@
-import React, { Component, createRef, PureComponent } from 'react'
+import React, { Component, createRef, PureComponent, useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal, flushSync } from 'react-dom'
 import {
   CalendarOptions,
   CalendarApi,
   Calendar,
+  CalendarController,
 } from '@fullcalendar/core'
 import {
   CustomRendering,
@@ -136,4 +137,27 @@ class CustomRenderingComponent extends PureComponent<CustomRenderingComponentPro
 
 function runNow(f: () => void): void {
   f()
+}
+
+// Public Hooks
+// -------------------------------------------------------------------------------------------------
+
+export function useCalendarController(): CalendarController {
+  const handleDateChange = useCallback(() => {
+    // controllerWrap.controller will ALWAYS contain the first and only CalendarController
+    setControllerWrap({ controller: controllerWrap.controller })
+  }, [])
+
+  // wrap controller in unique object to ensure new references and rerender
+  const [controllerWrap, setControllerWrap] = useState(() => ({
+    controller: new CalendarController(handleDateChange)
+  }))
+
+  useEffect(() => {
+    return () => { // cleanup
+      controllerWrap.controller._setApi(undefined)
+    }
+  }, [])
+
+  return controllerWrap.controller
 }

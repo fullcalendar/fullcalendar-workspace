@@ -2,10 +2,17 @@ import { createPlugin } from './plugin-system.js'
 import { hashValuesToArray } from './util/object.js'
 import { EventSource } from './structs/event-source.js'
 import { CalendarContext } from './CalendarContext.js'
+import { CalendarController } from './index.js'
 
 export const changeHandlerPlugin = createPlugin({
   name: 'change-handler',
   optionChangeHandlers: {
+    controller(controller: CalendarController, context: CalendarContext) {
+      controller._setApi(context.calendarApi)
+    },
+    view(viewName: string, context: CalendarContext) {
+      context.calendarApi.changeView(viewName)
+    },
     events(events, context) {
       handleEventSources([events], context)
     },
