@@ -36,6 +36,10 @@ export class CalendarController {
     this.calendarApi?.incrementDate(duration)
   }
 
+  changeView(viewType: string): void {
+    this.calendarApi?.changeView(viewType)
+  }
+
   get view(): ViewApi | undefined {
     return this.calendarApi?.view
   }

@@ -148,7 +148,6 @@ export const BASE_OPTION_REFINERS = {
   editable: Boolean,
 
   controller: identity as Identity<CalendarController>,
-  view: String,
 
   viewClass: identity as Identity<ClassNameGenerator<ViewData>>,
   viewDidMount: identity as Identity<DidMountHandler<ViewMountData>>,

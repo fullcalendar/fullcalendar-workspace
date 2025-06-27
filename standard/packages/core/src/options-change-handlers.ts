@@ -11,9 +11,6 @@ export const changeHandlerPlugin = createPlugin({
       // TODO: the initial setting is in CalendarDataManager
       controller._setApi(context.calendarApi)
     },
-    view(viewName: string, context: CalendarContext) {
-      context.calendarApi.changeView(viewName)
-    },
     events(events, context) {
       handleEventSources([events], context)
     },

@@ -105,8 +105,7 @@ export class CalendarDataManager {
 
     let currentViewType =
       optionsData.calendarOptions.initialView ||
-      optionsData.pluginHooks.initialView ||
-      optionsData.calendarOptions.view
+      optionsData.pluginHooks.initialView
 
     let currentViewData = this.computeCurrentViewData(
       currentViewType,
