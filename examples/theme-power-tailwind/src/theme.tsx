@@ -5,6 +5,9 @@ import * as svgIcons from './svgIcons.js'
 /*
 TODO: segmented buttons:
 https://m3.material.io/components/segmented-buttons/overview
+
+What font is this?
+https://react-native-big-calendar.vercel.app/?path=/story/showcase-desktop--three-days-mode
 */
 
 // Will import ambient types during dev but strip out for build
@@ -29,6 +32,7 @@ Google DESIGN:
   expander for resource groups, resource-nesting
   uppercase text for time slotLabels?
   (for demo only): change slotDuration and interval
+  proper chevron!
 
 NOTES:
 for alignment,
@@ -38,17 +42,152 @@ text size:
   text-sm = 14px (day-numbers, slot-labels, datagrid cells)
   text-xs = 12px (events)
   xxsTextClass ~= 11px (time within events -- use sparingly)
+border-radius
+  don't need to parameterize. shadcn already customizes rounded-(lg|md|sm)
+
+opacity on disabled-text day-header-tops aren't very good
 */
+
+// TODO: compare these to shadcn variables
+// TODO: maybe undo EM sizing.. won't work with react native
+// TODO: ^^after, fix list-view sizing. will know units for circles better
+// TODO: refine roundedness of events, spacing within
+// TODO: hover effect on timegrid header is weird
+// TODO: more rounded more-links
+// TODO: more rounded mini-calendars
+// TODO: dark mode!
+// TODO: bigger circle on dayCellTop? won't match week number anymore?
+// TODO: rename transparent* to ghost*
+// TODO: rename disabled* to muted*
+
+/*
+
+(forget the toolbar!)
+
+add custom colors to our tailwind config:
+
+  src:
+    <div class='bg-fc-primary hover:bg-fc-secondary' />
+
+  default theme:
+    @theme {
+      --color-fc-primary: var(--color-red-100);
+      --color-fc-secondary: var(--color-green-100);
+    }
+    @layer theme {
+      .dark {
+        --color-fc-primary: var(--color-red-900);
+        --color-fc-secondary: var(--color-green-900);
+      }
+    }
+    output:
+      const primaryBgClass = 'bg-red-100 dark:bg-red-900'
+      const secondaryHoverBgClass = 'hover:bg-green-100 dark:hover:bg-green-900'
+      <div class={`${primaryBgClass} ${secondaryHoverBgClass}`} />
+
+  shadcn theme:
+    @theme {
+      --fc-color-primary: var(--primary);
+      --fc-color-secondary: var(--secondary);
+    }
+    output:
+      <div class='bg-primary hover:bg-secondary' />
+
+
+
+
+
+const surfaceBgColor = createVar()
+const surfaceFgColor = createVar()
+
+const primarySurface = createStyle({ // OR createInlineableStyle
+  [surfaceBgColor]: 'gray',
+  [surfaceFgColor]: 'black',
+  dark: {
+    [surfaceBgColor]: '#675496',
+    [surfaceFgColor]: 'white',
+  }
+})
+
+const dayCellToday = joinStyle(
+  primarySurface,
+  { // essentially createInlineableStyle
+    'border-radius': 'lg',
+  }
+)
+// ^^^
+//
+// tailwind:
+// bg-gray-500 text-black dark:bg-[#675496] dark:text-white
+//
+//
+// vanilla css:
+// "fc-day-cell-today"
+// :root {
+//   --fc-surface-bg-color: gray;
+//   --fc-surface-fc-color: black;
+// }
+// .fc-dark { ----!!!---- the copypastable plugin code should define this class for sure
+//   --fc-surface-bg-color: #675496;
+//   --fc-surface-fc-color: white;
+// }
+// .fc-day-cell-today {
+//   background: var(--fc-surface-bg-color);
+//   color: var(--fc-surface-fg-color);
+// }
+// .fc-day-cell-today {
+//   border-radius: 20p;
+// }
+//
+We must decide how joining works (https://vanilla-extract.style/documentation/style-composition/#style-composition)
+Whether space-delimeted classnames OR selector inheritance OR maybe even inlining!
+SOLUTION: when createStyles() result is merged with another, do what Vanilla Extract does (space-separate)
+otherwise, if {} is used, just inline it
+
+
+
+
+
+
+
+color vars:
+
+  primary
+  primary-hover
+    the today-date circle
+  secondary
+    the week-pill, timeline-navlink pills
+  ghost (only on hover)
+    shadcn: use "accent" (on hover)
+    the non-today-date circles
+    the icon-button backgrounds
+
+
+
+bg-primary
+bg-secondary -- bg-secondary/90
+
+*/
+
+// shadcn: don't forget ring ao
+const primarySurfaceClass = 'bg-[#675496] text-white' // shadcn "primary", "primary-foreground"
+const secondarySurfaceClass = 'bg-[#e2e0f9]' // shadcn "secondary", "secondary-foreground"
+const primaryPressableClass = `${primarySurfaceClass} hover:bg-[#7462a2] active:bg-[#544181]` // shadcn: same as above except with effects using color-mix
+const secondaryPressableClass = `${secondarySurfaceClass} hover:bg-[#d6d4f0] active:bg-[#c4c1e9]` // shadcn: same as above except with effects using color-mix
+const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20' // shadcn "accent", with effects using color-mix
+const transparentStrongBgClass = 'bg-gray-500/30' // the touch-SELECTED version of above. use color-mix to make bolder?
+const disabledTextColorClass = 'text-gray-500' // shadcn "muted-foreground"
+const disabledPressableClass = `${secondarySurfaceClass} ${disabledTextColorClass}`
+const neutralBgClass = 'bg-gray-500/7' // TODO: deal with this!!!... what is it used for ?
+const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // TODO: deal with this!!!... ugly dark grey... rethink
+const borderColorClass = 'border-[#dde3ea] dark:border-gray-800' // shadcn "border" TODO: for DARK
+const borderClass = `border ${borderColorClass}` // all sides
+const majorBorderClass = 'border border-gray-400 dark:border-gray-700' // shadcn "ring"
+const alertBorderColorClass = 'border-red-600 dark:border-red-400' // shadcn "destructive"
+const highlightBgClass = 'bg-cyan-100/40 dark:bg-blue-500/20' // shadcn "chart-1", fallback to "accent"
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
 const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]'
-
-const neutralBgClass = 'bg-gray-500/7'
-const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
-
-const borderColorClass = 'border-gray-300 dark:border-gray-800'
-const borderClass = `border ${borderColorClass}` // all sides
-const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
 
 // transparent resizer for mouse
 // must have 'group' on the event, for group-hover
@@ -75,7 +214,8 @@ const rowItemClasses: CalendarOptions = {
 
   rowMoreLinkClass: (data) => [
     rowItemBaseClass,
-    'p-0.5 hover:bg-gray-500/20', // matches list-item hover
+    transparentPressableClass,
+    'p-0.5',
     data.isCompact && 'border border-blue-500', // looks like bordered event
   ],
   rowMoreLinkInnerClass: (data) => [
@@ -83,44 +223,38 @@ const rowItemClasses: CalendarOptions = {
   ],
 }
 
-const getSlotClasses = (data: { isMinor: boolean }) => [
-  borderClass,
-  data.isMinor && 'border-dotted',
+const getWeekNumberBadgeClasses = (data: { hasNavLink: boolean, isCompact: boolean }) => [
+  'rounded-full h-[1.8em] flex flex-row items-center', // match height of daynumber
+  data.hasNavLink
+    ? secondaryPressableClass
+    : `${secondarySurfaceClass} ${disabledTextColorClass}`,
+  data.isCompact
+    ? `${xxsTextClass} px-1`
+    : 'text-sm px-2'
 ]
 
-const weekNumberColorClass = 'bg-gray-300 dark:bg-gray-700 opacity-60'
-const weekNumberPaddingClass = 'px-0.5'
-const getWeekNumberInnerClass = (data: { hasNavLink: boolean, isCompact: boolean }) => [
-  weekNumberPaddingClass,
-  data.hasNavLink && 'hover:underline',
-  data.isCompact ? xxsTextClass : 'text-sm',
-]
-const getWeekNumberLabelClass = (data: { hasNavLink: boolean, isCompact: boolean }) => [
-  'rounded-sm',
-  weekNumberColorClass,
-  ...getWeekNumberInnerClass(data),
-]
 const rowWeekNumberClasses: CalendarOptions = {
   weekNumberClass: (data) => [
     data.isCell
-      ? weekNumberColorClass
+      ? secondarySurfaceClass
       : 'absolute z-20 ' + (data.isCompact ? 'top-1 start-0.5' : 'top-2 start-1'),
   ],
   weekNumberInnerClass: (data) => data.isCell
-    ? getWeekNumberInnerClass(data)
-    : getWeekNumberLabelClass(data)
+    ? '' // TODO: cell styles
+    : getWeekNumberBadgeClasses(data)
 }
+
 const axisWeekNumberClasses: CalendarOptions = {
   weekNumberClass: 'items-center justify-end',
-  weekNumberInnerClass: getWeekNumberLabelClass,
+  weekNumberInnerClass: getWeekNumberBadgeClasses,
 }
 
 export default createPlugin({
   name: '<%= pkgName %>', // TODO
   optionDefaults: {
-    eventColor: 'var(--color-blue-500)',
+    eventColor: 'var(--color-blue-500)', // TODO: theme should customize these!!!
     eventContrastColor: 'var(--color-white)',
-    backgroundEventColor: 'var(--color-green-500)',
+    backgroundEventColor: 'var(--color-green-500)', // TODO: theme should customize these!!!
     // eventDisplay: 'block',
 
     className: `${borderClass} rounded-xl overflow-hidden`,
@@ -157,26 +291,26 @@ export default createPlugin({
       },
     },
 
-    buttonGroupClass: 'items-center isolate',
+    buttonGroupClass: (data) => [
+      'items-center isolate rounded-full',
+      data.isViewGroup && secondarySurfaceClass,
+    ],
     buttonClass: (data) => [
-      'inline-flex items-center px-3 py-3 border-x',
-      'focus:outline-3 outline-slate-600/50',
-      'hover:border-slate-900 active:border-slate-900 print:border-slate-900',
-      'hover:bg-slate-800 active:bg-slate-800 print:bg-white',
-      'text-sm text-white print:text-black',
-      data.inGroup
-        ? 'first:rounded-s-lg last:rounded-e-lg relative active:z-20 focus:z-20'
-        : 'rounded-lg',
-      data.isSelected // implies inGroup
-        ? 'z-10 border-slate-900 bg-slate-800'
-        : 'z-0 border-transparent bg-slate-700',
-      data.isDisabled
-        && 'opacity-65 pointer-events-none', // bypass hover styles
+      'inline-flex items-center justify-center py-3 text-sm rounded-full',
+      data.inGroup && 'relative active:z-20 focus:z-20',
+      data.isSelected ? 'z-10' : 'z-0',
+      data.isDisabled && `pointer-events-none`, // bypass hover styles
+      data.isIconOnly ? 'px-3' : 'px-5',
+      (data.isIconOnly || (data.inGroup && !data.isSelected))
+        ? transparentPressableClass
+        : data.isDisabled
+          ? disabledPressableClass
+          : primaryPressableClass,
     ],
 
     popoverClass: `${borderClass} rounded-lg bg-(--fc-canvas-color) shadow-lg m-2`,
     popoverHeaderClass: `justify-between items-center px-1 py-1`,
-    popoverCloseClass: 'absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center hover:bg-gray-200',
+    popoverCloseClass: `absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center ${transparentPressableClass}`,
     popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
     popoverBodyClass: 'p-2 min-w-3xs',
 
@@ -188,9 +322,8 @@ export default createPlugin({
       data.isHeader ? 'border-transparent' : borderColorClass,
     ],
     nonBusinessClass: neutralBgClass,
-    highlightClass: 'bg-cyan-100/40 dark:bg-blue-500/20',
+    highlightClass: highlightBgClass,
 
-    eventClass: (data) => data.event.url && 'hover:no-underline',
     eventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
     eventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
@@ -203,8 +336,8 @@ export default createPlugin({
     listItemEventClass: (data) => [
       'items-center',
       data.isSelected
-        ? 'bg-gray-500/40' // touch-selected
-        : 'hover:bg-gray-500/20 focus:bg-gray-500/30',
+        ? transparentStrongBgClass // touch-selected
+        : transparentPressableClass,
       (data.isSelected && data.isDragging) && 'shadow-sm', // touch-dragging
     ],
     // Dot uses border instead of bg because it shows up in print
@@ -318,9 +451,9 @@ export default createPlugin({
             className={
               'm-0.5 flex flex-row items-center justify-center text-lg h-[2em]' +
               (data.isToday
-                ? ' w-[2em] rounded-full bg-blue-500 text-white'
+                ? ` w-[2em] rounded-full ${data.hasNavLink ? primaryPressableClass : primarySurfaceClass}`
                 : data.hasNavLink
-                  ? ' w-[2em] rounded-full group-hover:bg-gray-500/7'
+                  ? ` w-[2em] rounded-full ${transparentPressableClass}`
                   : '')
             }
           >{data.dayNumberText}</div>
@@ -340,12 +473,13 @@ export default createPlugin({
       data.isOther && 'opacity-30',
     ],
     dayCellTopInnerClass: (data) => [
-      data.isCompact ? (!data.isToday && 'mx-1') : 'm-1',
-      'flex flex-row items-center justify-center h-[1.8em]' +
-        (data.isToday ? ' w-[1.8em] rounded-full bg-blue-500 text-white decoration-red-100' : ''),
+      'flex flex-row items-center justify-center w-[1.8em] h-[1.8em] rounded-full',
+      data.isToday
+        ? (data.hasNavLink ? primaryPressableClass : primarySurfaceClass)
+        : data.hasNavLink && transparentPressableClass,
       data.hasMonthLabel && 'text-base font-bold',
       data.isCompact ? xxsTextClass : 'text-sm',
-      data.hasNavLink && 'hover:underline'
+      !data.isCompact && 'm-2',
     ],
 
     allDayDividerClass: `border-t ${borderColorClass}`,
@@ -358,8 +492,10 @@ export default createPlugin({
       ? 'm-1' // simple print-view
       : 'ms-0.5 me-[2.5%]',
 
-    slotLabelInnerClass: (data) => data.hasNavLink && 'hover:underline',
-    slotLaneClass: getSlotClasses,
+    slotLaneClass: (data) => [
+      borderClass,
+      data.isMinor && 'border-dotted',
+    ],
 
     listDayClass: `flex flex-row items-start not-last:border-b ${borderColorClass}`,
     listDayHeaderClass: 'flex flex-row items-center w-40',
@@ -373,10 +509,8 @@ export default createPlugin({
             <div className={
               'flex flex-row items-center justify-center w-[2em] h-[2em] rounded-full' +
                 (data.isToday
-                  ? ' bg-blue-500 text-white'
-                  : data.hasNavLink
-                    ? ' hover:bg-gray-500/7'
-                    : '')
+                  ? (' ' + (data.hasNavLink ? primaryPressableClass : primarySurfaceClass))
+                  : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
             }>{textPart.value}</div>
           ) : (
             <div className='whitespace-pre'>{textPart.value}</div>
@@ -389,8 +523,8 @@ export default createPlugin({
     listDayEventsClass: 'flex-grow flex flex-col py-2',
     // events defined in views.list.listItemEvent* below...
 
-    nowIndicatorLineClass: '-m-px border-1 border-red-600 dark:border-red-400',
-    nowIndicatorDotClass: 'rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 border-red-600 dark:border-red-400', // TODO: cripser with bg instead of border?
+    nowIndicatorLineClass: `-m-px border-1 ${alertBorderColorClass}`,
+    nowIndicatorDotClass: `rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 ${alertBorderColorClass}`,
 
     resourceDayHeaderClass: (data) => [
       data.isMajor ? majorBorderClass : borderClass,
@@ -419,11 +553,12 @@ export default createPlugin({
     resourceCellInnerClass: 'p-2 text-sm',
 
     resourceExpanderClass: (data) => [
-      'self-center w-6 h-6 flex flex-row items-center justify-center rounded-full hover:bg-gray-500/20 text-sm opacity-65 relative start-2',
+      'self-center w-6 h-6 flex flex-row items-center justify-center rounded-full text-sm relative start-1',
+      transparentPressableClass,
       data.isExpanded ? 'rotate-90' :
         data.direction === 'rtl' && 'rotate-180',
     ],
-    resourceExpanderContent: () => svgIcons.chevronRight('w-[1.25em] h-[1.25em]'),
+    resourceExpanderContent: () => svgIcons.chevronRight('w-[1.25em] h-[1.25em] opacity-65'),
 
     resourceLaneClass: borderClass,
     resourceLaneBottomClass: (data) => !data.isCompact && 'pb-3',
@@ -506,8 +641,7 @@ export default createPlugin({
         ? [
           // TODO: converge with week-label styles
           'px-2 py-1 rounded-full text-sm',
-          'bg-gray-300 dark:bg-gray-700 opacity-60',
-          data.hasNavLink && 'hover:underline',
+          data.hasNavLink ? secondaryPressableClass : secondarySurfaceClass,
         ]
         : 'pb-3 -ms-1 text-sm min-w-14',
         // TODO: also test lowest-level days

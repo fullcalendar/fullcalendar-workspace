@@ -23,12 +23,18 @@ export interface ToolbarSectionData {
 // Button / Toolbar
 // -------------------------------------------------------------------------------------------------
 
+export interface ButtonGroupData {
+  isViewGroup: boolean
+}
+
 export interface ButtonData {
   name: string
   text: string
   isSelected: boolean
   isDisabled: boolean
+  isIconOnly: boolean
   inGroup: boolean
+  inViewGroup: boolean
 }
 
 export type ButtonMountData = MountData<ButtonData>

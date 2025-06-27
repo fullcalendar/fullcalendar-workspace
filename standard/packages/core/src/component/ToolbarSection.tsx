@@ -103,12 +103,16 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
           )
         }
 
+        let inGroup = widgetGroup.length > 1 && isOnlyButtons
+        let inViewGroup = inGroup && isOnlyView
         let renderProps: ButtonData = {
           name,
           text: widget.buttonText,
           isSelected,
           isDisabled,
-          inGroup: widgetGroup.length > 1 && isOnlyButtons,
+          isIconOnly: buttonDisplay === 'icon',
+          inGroup,
+          inViewGroup,
         }
 
         children.push(
@@ -155,7 +159,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
         'aria-label': (isOnlyButtons && isOnlyView) ? options.viewChangeHint : undefined,
         className: joinArrayishClassNames(
           classNames.flexRow,
-          isOnlyButtons && options.buttonGroupClass,
+          generateClassName(options.buttonGroupClass, { isViewGroup: isOnlyView })
         ),
       }, ...children)
     }

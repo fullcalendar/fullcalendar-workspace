@@ -51,6 +51,10 @@ later: ensure nowIndicator doesn't appear in print view
 test: since making timegrid slotlable css changes,
   test horizontal scrolling
   test growRows
+later: no more CJS
+later: instead of "in*" names which could be confused with "is*" names, do something like this:
+  insideViewGroup
+  insidePopover
 
 
 ASAP

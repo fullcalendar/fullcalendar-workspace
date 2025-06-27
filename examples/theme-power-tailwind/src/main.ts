@@ -71,8 +71,8 @@ document.addEventListener('DOMContentLoaded', function() {
       initialView: 'dayGridMonth',
       nowIndicator: true,
       headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
+        left: 'today prev,next title',
+        center: '',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek,multiMonthYear',
       },
       navLinks: true, // can click day/week names to navigate views
@@ -80,8 +80,8 @@ document.addEventListener('DOMContentLoaded', function() {
       selectable: true,
       selectMirror: false,
       dayMaxEvents: true, // allow "more" link when too many events
-      // businessHours: true,
-      // eventMaxStack: 1,
+      businessHours: true,
+      eventMaxStack: 1,
 
       // match Google Calendar formatting
       listDayFormat: { day: 'numeric' },
