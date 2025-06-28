@@ -1,5 +1,11 @@
 import './App.css'
 import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import Tabs from '@mui/material/Tabs'
+import Tab from '@mui/material/Tab'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import Typography from '@mui/material/Typography'
 
 import '@fullcalendar/core/global.css'
 import FullCalendar, { useCalendarController } from '@fullcalendar/react'
@@ -21,31 +27,60 @@ import themePlugin from '@fullcalendar/theme-monarch/mui'
 // TODO: borderless must kill border-radius and drop-shadow!
 
 const enablePremium = false
-const enableDark = false
+const enableDark = false // TODO: get working!
 
 if (enableDark) {
   document.documentElement.classList.add('dark')
 }
 
-// // TODO: make different for premium
-// const availableViews = [
-//   'dayGridMonth',
-//   'timeGridWeek',
-//   'timeGridDay',
-//   'listWeek',
-//   'multiMonthYear',
-// ]
+// TODO: make different for premium
+const availableViews = [
+  'dayGridMonth',
+  'timeGridWeek',
+  'timeGridDay',
+  'listWeek',
+  'multiMonthYear',
+]
 
 function App() {
   const controller = useCalendarController()
-  // const buttons = controller.getButtonState()
+  const buttons = controller.getButtonState()
 
   return (
     <div className='my-10 max-w-[1100px] mx-auto gap-5 border border-[#dde3ea] dark:border-gray-800 rounded-xl'>
       <div className='flex items-center p-3 justify-between'>
         <div className='flex items-center gap-2'>
-          <Button variant="contained">Hello World</Button>
+          <Button
+            onClick={() => controller.today()}
+            disabled={buttons.today.isDisabled}
+            aria-label={buttons.today.hint}
+            variant="contained"
+          >{buttons.today.text}</Button>
+          <div className='flex items-center'>
+            <IconButton
+              onClick={() => controller.prev()}
+              disabled={buttons.prev.isDisabled}
+              aria-label={buttons.prev.hint}
+            ><ChevronLeftIcon /></IconButton>
+            <IconButton
+              onClick={() => controller.next()}
+              disabled={buttons.next.isDisabled}
+              aria-label={buttons.next.hint}
+            ><ChevronRightIcon /></IconButton>
+          </div>
+          <Typography variant="h5">{controller.view?.title}</Typography>
         </div>
+        <Tabs value={controller.view?.type}>
+          {availableViews.map((availableView) => (
+            <Tab
+              key={availableView}
+              value={availableView}
+              onClick={() => controller.changeView(availableView)}
+              label={buttons[availableView]?.text}
+              aria-label={buttons[availableView]?.hint}
+            />
+          ))}
+        </Tabs>
       </div>
       {!enablePremium ? (
         <FullCalendar
@@ -63,7 +98,7 @@ function App() {
           ]}
           eventInteractive={true}
           initialDate='2023-01-12'
-          initialView='dayGridMonth'
+          initialView={availableViews[0]}
           nowIndicator={true}
           borderless={true}
           headerToolbar={false}

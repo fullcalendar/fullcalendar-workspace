@@ -101,7 +101,7 @@ function App() {
           ]}
           eventInteractive={true}
           initialDate='2023-01-12'
-          initialView='dayGridMonth'
+          initialView={availableViews[0]}
           nowIndicator={true}
           borderless={true}
           headerToolbar={false}
