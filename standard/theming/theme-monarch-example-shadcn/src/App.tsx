@@ -43,7 +43,7 @@ function App() {
   const buttons = controller.getButtonState()
 
   return (
-    <div className='max-w-[1100px] mx-auto gap-5 border rounded-xl'>
+    <div className='my-10 max-w-[1100px] mx-auto gap-5 border rounded-xl'>
       <div className='flex items-center p-3 justify-between'>
         <div className='flex items-center gap-2'>
           <Button
@@ -87,6 +87,8 @@ function App() {
       </div>
       {!enablePremium ? (
         <FullCalendar
+          navLinkDayClick='timeGridDay'
+          navLinkWeekClick='timeGridWeek'
           controller={controller}
           weekNumbers={true}
           plugins={[
@@ -136,6 +138,8 @@ function App() {
         />
       ) : (
         <FullCalendar
+          navLinkDayClick='timeGridDay'
+          navLinkWeekClick='timeGridWeek'
           plugins={[
             adaptivePlugin,
             timelinePlugin,

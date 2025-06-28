@@ -114,6 +114,8 @@ function App() {
         >
           {!enablePremium ? (
             <FullCalendar
+              navLinkDayClick='timeGridDay'
+              navLinkWeekClick='timeGridWeek'
               controller={controller}
               weekNumbers={true}
               plugins={[
@@ -163,6 +165,8 @@ function App() {
             />
           ) : (
             <FullCalendar
+              navLinkDayClick='timeGridDay'
+              navLinkWeekClick='timeGridWeek'
               plugins={[
                 adaptivePlugin,
                 timelinePlugin,
