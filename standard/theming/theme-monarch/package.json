@@ -16,6 +16,10 @@
     "./shadcn": {
       "types": "./dist/shadcn.d.ts",
       "default": "./dist/shadcn.js"
+    },
+    "./mui": {
+      "types": "./dist/mui.d.ts",
+      "default": "./dist/mui.js"
     }
   },
   "peerDependencies": {
