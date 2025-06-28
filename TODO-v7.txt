@@ -55,6 +55,8 @@ later: no more CJS
 later: instead of "in*" names which could be confused with "is*" names, do something like this:
   insideViewGroup
   insidePopover
+later: if third-party ui-libraries define their own tabs, ensure aria is correctly wired up somehow
+later: when no toolbar items defined, navlinks go to wrong day view
 
 
 ASAP

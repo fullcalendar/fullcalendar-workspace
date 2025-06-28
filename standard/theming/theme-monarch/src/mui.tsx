@@ -11,9 +11,9 @@ import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
 // shadcn: don't forget ring ao
-const primarySurfaceClass = 'bg-[#675496] text-white' // shadcn "primary", "primary-foreground"
-const secondarySurfaceClass = 'bg-[#e2e0f9]' // shadcn "secondary", "secondary-foreground"
-const primaryPressableClass = `${primarySurfaceClass} hover:bg-[#7462a2] active:bg-[#544181]` // shadcn: same as above except with effects using color-mix
+const primarySurfaceClass = 'bg-(--mui-palette-primary-main) text-(--mui-palette-primary-contrastText)'
+const secondarySurfaceClass = 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)'
+const primaryPressableClass = `${primarySurfaceClass} hover:bg-(--mui-palette-primary-dark) active:bg-(--mui-palette-primary-light)` // shadcn: same as above except with effects using color-mix
 const secondaryPressableClass = `${secondarySurfaceClass} hover:bg-[#d6d4f0] active:bg-[#c4c1e9]` // shadcn: same as above except with effects using color-mix
 const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20' // shadcn "accent", with effects using color-mix
 const transparentStrongBgClass = 'bg-gray-500/30' // the touch-SELECTED version of above. use color-mix to make bolder?
@@ -24,7 +24,7 @@ const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // TODO: deal with this!!
 const borderColorClass = 'border-[#dde3ea] dark:border-gray-800' // shadcn "border" TODO: for DARK
 const borderClass = `border ${borderColorClass}` // all sides
 const majorBorderClass = 'border border-gray-400 dark:border-gray-700' // shadcn "ring"
-const alertBorderColorClass = 'border-red-600 dark:border-red-400' // shadcn "destructive"
+const alertBorderColorClass = 'border-(--mui-palette-error-main)' // shadcn "destructive"
 const highlightBgClass = 'bg-cyan-100/40 dark:bg-blue-500/20' // shadcn "chart-1", fallback to "accent"
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
