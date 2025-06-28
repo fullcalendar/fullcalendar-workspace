@@ -41,7 +41,7 @@ function App() {
   // const buttons = controller.getButtonState()
 
   return (
-    <div className='my-10 max-w-[1100px] mx-auto gap-5 border rounded-xl'>
+    <div className='my-10 max-w-[1100px] mx-auto gap-5 border border-[#dde3ea] dark:border-gray-800 rounded-xl'>
       <div className='flex items-center p-3 justify-between'>
         <div className='flex items-center gap-2'>
           <Button variant="contained">Hello World</Button>
