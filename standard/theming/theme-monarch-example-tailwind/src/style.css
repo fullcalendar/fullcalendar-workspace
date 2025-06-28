@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@source "../node_modules/@fullcalendar/theme-monarch/src/index.tsx";
+@source "../node_modules/@fullcalendar/theme-monarch/src/tailwind.tsx";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

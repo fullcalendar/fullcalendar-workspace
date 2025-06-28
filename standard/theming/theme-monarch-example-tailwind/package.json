@@ -1,5 +1,5 @@
 {
-  "name": "@fullcalendar-examples/theme-monarch",
+  "name": "@fullcalendar-examples/theme-monarch-tailwind",
   "private": true,
   "version": "0.0.0",
   "type": "module",

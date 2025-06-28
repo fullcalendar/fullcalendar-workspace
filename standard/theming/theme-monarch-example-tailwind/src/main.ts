@@ -13,7 +13,7 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'
-import themePlugin from '@fullcalendar/theme-monarch'
+import themePlugin from '@fullcalendar/theme-monarch/tailwind'
 
 const enablePremium = false
 const enableDark = false
