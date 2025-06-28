@@ -6,12 +6,33 @@ import * as svgIcons from './svgIcons.js'
 MODs to this ShadCN theme:
 - removed border b/c shadcn sets globally
 
+TODO:
+- dark-mode audit
+
 BUGS:
 - now that we don't use toolbar, navlinks to day view go to useless dayGridDay instead of timeGridWeek
 - non-business background color conflicts with the week number pills
 
 NOTES:
 - when color not needed, `borderClass` variable is dumb. can just use 'border'
+
+CSS var usage:
+  when we need transparency:
+  - more-link hover
+  - daygrid-list-even hover + selection states
+  - week-number floating over cell
+  - day-number floating over cell
+  when solid allowed:
+  - business hours (because bg-events and selection put above)
+  SO...
+    use --accent for business hours (what shadcn datepicker does)
+    use --primary for selection (but with our opacity applied)
+    use --destructive for now-indicator
+    use --border for borders obviously
+    use --ring for emphasized isMajor borders
+    for X button in popover,
+      use --accent on hover (because shadcn ghost-style button uses it)
+    use custom grays for everything else
 */
 
 // Will import ambient types during dev but strip out for build
@@ -27,7 +48,7 @@ const primarySurfaceClass = 'bg-primary text-primary-foreground'
 const secondarySurfaceClass = 'bg-secondary text-secondary-foreground'
 const primaryPressableClass = `${primarySurfaceClass} hover:bg-primary/90 active:bg-primary/80`
 const secondaryPressableClass = `${secondarySurfaceClass} hover:bg-secondary/90 active:bg-secondary/80`
-const transparentPressableClass = 'hover:bg-accent hover:text-accent-foreground' // Shadcn doesn't do active? TODO: dark mode audit.
+const transparentPressableClass = 'hover:bg-accent hover:text-accent-foreground'
 const transparentStrongBgClass = 'bg-red-500' // the touch-SELECTED version of above. use color-mix to make bolder? TODO!!!
 const disabledTextColorClass = 'text-muted-foreground' // shadcn "muted-foreground"
 const disabledPressableClass = `${secondarySurfaceClass} ${disabledTextColorClass}`
@@ -36,7 +57,7 @@ const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // TODO: deal with this!!
 const borderClass = `border` // all sides
 const majorBorderClass = 'border border-gray-400 dark:border-gray-700' // shadcn "ring"
 const alertBorderColorClass = 'border-destructive'
-const highlightBgClass = 'bg-cyan-100/40 dark:bg-blue-500/20' // shadcn "chart-1", fallback to "accent"... HOW!!?
+const highlightBgClass = 'bg-accent' // shadcn "chart-1", fallback to "accent"... HOW!!?
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
 const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]'
