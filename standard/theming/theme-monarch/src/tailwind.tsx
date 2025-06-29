@@ -18,165 +18,18 @@ import type {} from '@fullcalendar/multimonth'
 import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
-/*
-TODO: tricks to make current-view-tabs not so wide
-
-TODO:
-day-circle hovers should always hover gray
-rethink classNames.rigid change
-  overflow not working well on datagrid column resizing now
-QUESTION: why does datagrid cell have inner wrap?
-Use rotated icons to save space
-Theme buttons
-Do navlink underline hover sparingly. Prefer bg color change
-
-Google DESIGN:
-  expander for resource groups, resource-nesting
-  uppercase text for time slotLabels?
-  (for demo only): change slotDuration and interval
-  proper chevron!
-
-NOTES:
-for alignment,
-  dayHeader and timeline-slotLabel are flex-col
-  timeGrid-slotLabel is flex-row
-text size:
-  text-sm = 14px (day-numbers, slot-labels, datagrid cells)
-  text-xs = 12px (events)
-  xxsTextClass ~= 11px (time within events -- use sparingly)
-border-radius
-  don't need to parameterize. shadcn already customizes rounded-(lg|md|sm)
-
-opacity on disabled-text day-header-tops aren't very good
-*/
-
-// TODO: compare these to shadcn variables
-// TODO: maybe undo EM sizing.. won't work with react native
-// TODO: ^^after, fix list-view sizing. will know units for circles better
 // TODO: refine roundedness of events, spacing within
 // TODO: hover effect on timegrid header is weird
 // TODO: more rounded more-links
 // TODO: more rounded mini-calendars
-// TODO: dark mode!
-// TODO: bigger circle on dayCellTop? won't match week number anymore?
 // TODO: rename transparent* to ghost*
 // TODO: rename disabled* to muted*
 
-/*
-
-(forget the toolbar!)
-
-add custom colors to our tailwind config:
-
-  src:
-    <div class='bg-fc-primary hover:bg-fc-secondary' />
-
-  default theme:
-    @theme {
-      --color-fc-primary: var(--color-red-100);
-      --color-fc-secondary: var(--color-green-100);
-    }
-    @layer theme {
-      .dark {
-        --color-fc-primary: var(--color-red-900);
-        --color-fc-secondary: var(--color-green-900);
-      }
-    }
-    output:
-      const primaryBgClass = 'bg-red-100 dark:bg-red-900'
-      const secondaryHoverBgClass = 'hover:bg-green-100 dark:hover:bg-green-900'
-      <div class={`${primaryBgClass} ${secondaryHoverBgClass}`} />
-
-  shadcn theme:
-    @theme {
-      --fc-color-primary: var(--primary);
-      --fc-color-secondary: var(--secondary);
-    }
-    output:
-      <div class='bg-primary hover:bg-secondary' />
-
-
-
-
-
-const surfaceBgColor = createVar()
-const surfaceFgColor = createVar()
-
-const primarySurface = createStyle({ // OR createInlineableStyle
-  [surfaceBgColor]: 'gray',
-  [surfaceFgColor]: 'black',
-  dark: {
-    [surfaceBgColor]: '#675496',
-    [surfaceFgColor]: 'white',
-  }
-})
-
-const dayCellToday = joinStyle(
-  primarySurface,
-  { // essentially createInlineableStyle
-    'border-radius': 'lg',
-  }
-)
-// ^^^
-//
-// tailwind:
-// bg-gray-500 text-black dark:bg-[#675496] dark:text-white
-//
-//
-// vanilla css:
-// "fc-day-cell-today"
-// :root {
-//   --fc-surface-bg-color: gray;
-//   --fc-surface-fc-color: black;
-// }
-// .fc-dark { ----!!!---- the copypastable plugin code should define this class for sure
-//   --fc-surface-bg-color: #675496;
-//   --fc-surface-fc-color: white;
-// }
-// .fc-day-cell-today {
-//   background: var(--fc-surface-bg-color);
-//   color: var(--fc-surface-fg-color);
-// }
-// .fc-day-cell-today {
-//   border-radius: 20p;
-// }
-//
-We must decide how joining works (https://vanilla-extract.style/documentation/style-composition/#style-composition)
-Whether space-delimeted classnames OR selector inheritance OR maybe even inlining!
-SOLUTION: when createStyles() result is merged with another, do what Vanilla Extract does (space-separate)
-otherwise, if {} is used, just inline it
-
-
-
-
-
-
-
-color vars:
-
-  primary
-  primary-hover
-    the today-date circle
-  secondary
-    the week-pill, timeline-navlink pills
-  ghost (only on hover)
-    shadcn: use "accent" (on hover)
-    the non-today-date circles
-    the icon-button backgrounds
-
-
-
-bg-primary
-bg-secondary -- bg-secondary/90
-
-*/
-
-// shadcn: don't forget ring ao
-const primarySurfaceClass = 'bg-[#675496] text-white' // shadcn "primary", "primary-foreground"
-const secondarySurfaceClass = 'bg-[#e2e0f9]' // shadcn "secondary", "secondary-foreground"
-const primaryPressableClass = `${primarySurfaceClass} hover:bg-[#7462a2] active:bg-[#544181]` // shadcn: same as above except with effects using color-mix
-const secondaryPressableClass = `${secondarySurfaceClass} hover:bg-[#d6d4f0] active:bg-[#c4c1e9]` // shadcn: same as above except with effects using color-mix
-const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20' // shadcn "accent", with effects using color-mix
+const primarySurfaceClass = 'bg-(--fc-theme-primary) text-(--fc-theme-primary-text)'
+const secondarySurfaceClass = 'bg-(--fc-theme-secondary) text-(--fc-theme-secondary-text)'
+const primaryPressableClass = `${primarySurfaceClass} hover:bg-(--fc-theme-primary-hover) active:bg-(--fc-theme-primary-pressed)`
+const secondaryPressableClass = `${secondarySurfaceClass} hover:bg-(--fc-theme-secondary-hover) active:bg-(--fc-theme-secondary-pressed)`
+const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20'
 const transparentStrongBgClass = 'bg-gray-500/30' // the touch-SELECTED version of above. use color-mix to make bolder?
 const disabledTextColorClass = 'text-gray-500' // shadcn "muted-foreground"
 const disabledPressableClass = `${secondarySurfaceClass} ${disabledTextColorClass}`

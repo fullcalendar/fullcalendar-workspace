@@ -1,14 +1,16 @@
 /*
 TODO:
-How to do different palettes for monarch theme?
-(common color interface for all themes?)
 Dark-mode for default component lib
 Hook up MUI border (for dark mode)
 How to do MUI *OUTER* border? not rely on Shadcn border
-Somehow do not put Shadcn reset (which does border) on whole document?
 Program nice default event color. Don't use custom colors. Don't use background events
-Radix warnings about controlled vs uncontrolled
 The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
+Make classic theme colors more accurate to original
+
+Later:
+(common color interface for all themes?)
+Somehow do not put Shadcn reset (which does border) on whole document?
+Radix warnings about controlled vs uncontrolled
 */
 
 import './App.css'
@@ -79,6 +81,10 @@ const componentLibOptions = [
   { value: 'shadcn', text: 'Shadcn' },
   { value: 'mui', text: 'MUI' },
 ]
+const fcPaletteOptions = [
+  { value: 'blue', text: 'Blue', colorClassName: 'bg-[rgb(25,118,210)] dark:bg-[rgb(144,202,249)]' },
+  { value: 'purple', text: 'Purple', colorClassName: 'bg-[#6200ea] dark:bg-[#bb86fc]' }
+]
 const shadcnPaletteOptions = [
   { value: 'default', text: 'Default', colorClassName: 'bg-black dark:bg-white' },
   { value: 'red', text: 'Red', colorClassName: 'bg-[oklch(0.577_0.245_27.325)] dark:bg-[oklch(0.637_0.237_25.331)]' },
@@ -100,6 +106,7 @@ const colorSchemeOptions = [
 
 const themeOptionValues = themeOptions.map((option) => option.value)
 const componentLibValues = componentLibOptions.map((option) => option.value)
+const fcPaletteValues = fcPaletteOptions.map((option) => option.value)
 const shadcnPaletteValues = shadcnPaletteOptions.map((option) => option.value)
 const muiPaletteValues = muiPaletteOptions.map((option) => option.value)
 const colorSchemeValues = colorSchemeOptions.map((option) => option.value) as ('light' | 'dark')[]
@@ -120,6 +127,7 @@ const themePluginMap = {
 export default function App() {
   const [theme, setTheme] = useLocalStorageState('theme', 'monarch', themeOptionValues)
   const [componentLib, setComponentLib] = useLocalStorageState('componentLib', 'default', componentLibValues)
+  const [fcPalette, setFcPalette] = useLocalStorageState('fcPalette', 'purple', fcPaletteValues)
   const [shadcnPalette, setShadcnPalette] = useLocalStorageState('shadcnPalette', 'default', shadcnPaletteValues)
   const [muiPalette, setMuiPalette] = useLocalStorageState('muiPalette', 'blue', muiPaletteValues)
   const [colorScheme, setColorScheme] = useLocalStorageState<'light' | 'dark'>('colorScheme', 'light', colorSchemeValues)
@@ -142,13 +150,15 @@ export default function App() {
   )
 
   useEffect(() => {
-    const ourShadcnPalette =
-      componentLib === 'shadcn'
-        ? shadcnPalette
-        : 'default' // just for toolbar
-    document.documentElement.className =
-      `${colorScheme} shadcn-${ourShadcnPalette} shadcn-${ourShadcnPalette}-${colorScheme}`
-  }, [componentLib, shadcnPalette, colorScheme])
+    const ourShadcnPalette = componentLib === 'shadcn' ? shadcnPalette : 'default' // default just for toolbar
+    const shadcnClassNames = `shadcn-${ourShadcnPalette} shadcn-${ourShadcnPalette}-${colorScheme}`
+    const fcClassNames =
+      componentLib === 'default'
+        ? `fc-theme-${fcPalette} fc-theme-${fcPalette}-${colorScheme}`
+        : ''
+
+    document.documentElement.className = `${colorScheme} ${shadcnClassNames} ${fcClassNames}`
+  }, [componentLib, fcPalette, shadcnPalette, colorScheme])
 
   return (
     <>
@@ -193,7 +203,7 @@ export default function App() {
                 </SelectContent>
               </Select>
             </div>
-          ) : (componentLib === 'mui') && (
+          ) : (componentLib === 'mui') ? (
             <div className='flex flex-row items-center gap-4'>
               <div className='text-sm text-muted-foreground'>Palette</div>
               <Select value={muiPalette} onValueChange={(v) => setMuiPalette(v)}>
@@ -202,6 +212,23 @@ export default function App() {
                 </SelectTrigger>
                 <SelectContent>
                   {muiPaletteOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value} className='flex flex-row'>
+                      <div className={`w-4 h-4 ${option.colorClassName}`} />
+                      {option.text}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          ) : (
+            <div className='flex flex-row items-center gap-4'>
+              <div className='text-sm text-muted-foreground'>Palette</div>
+              <Select value={fcPalette} onValueChange={(v) => setFcPalette(v)}>
+                <SelectTrigger className='w-50'>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {fcPaletteOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value} className='flex flex-row'>
                       <div className={`w-4 h-4 ${option.colorClassName}`} />
                       {option.text}

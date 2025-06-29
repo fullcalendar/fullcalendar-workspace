@@ -1,0 +1,12 @@
+
+.fc-theme-purple {
+  --fc-theme-primary: #675496;
+  --fc-theme-primary-hover: #7462a2;
+  --fc-theme-primary-pressed: #544181;
+  --fc-theme-primary-text: white;
+  --fc-theme-secondary: #e2e0f9;
+  --fc-theme-secondary-hover: #d6d4f0;
+  --fc-theme-secondary-pressed: #c4c1e9;
+}
+.fc-theme-purple-dark {
+}

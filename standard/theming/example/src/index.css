@@ -72,4 +72,5 @@ html.dark {
   }
 }
 
+@import './default-themes.css';
 @import './shadcn-themes.css';

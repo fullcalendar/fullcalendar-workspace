@@ -16,6 +16,11 @@ Monarch theme
     single-events in a day should vertically align with number
     (rethink how circle-number height is done)
   put x-padding on non-circled day numbers. tab-focusing looks bad right now
+  expander for resource groups, resource-nesting
+  uppercase text for time slotLabels?
+  (for demo only): change slotDuration and interval
+  proper chevron!
+  tricks to make current-view-tabs not so wide
 Zen theme
   fork from classic theme
 Technic theme
@@ -59,6 +64,23 @@ later: if third-party ui-libraries define their own tabs, ensure aria is correct
 bug: in demos, we needed to put z-index to contain the z-index below the demo-topbar!
 later: in demos, we need to set <FullCalendar>'s colorScheme explicitly to get dark-mode scrollbars working
   is there a way to get this working automatically for *shadcn*?
+rethink classNames.rigid change
+  overflow not working well on datagrid column resizing now
+QUESTION: why does datagrid cell have inner wrap?
+Use rotated icons to save space
+
+
+THEMING NOTES
+-------------
+for alignment,
+  dayHeader and timeline-slotLabel are flex-col
+  timeGrid-slotLabel is flex-row
+text size:
+  text-sm = 14px (day-numbers, slot-labels, datagrid cells)
+  text-xs = 12px (events)
+  xxsTextClass ~= 11px (time within events -- use sparingly)
+border-radius
+  don't need to parameterize. shadcn already customizes rounded-(lg|md|sm)
 
 
 ASAP
