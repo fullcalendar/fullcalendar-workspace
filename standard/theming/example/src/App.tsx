@@ -11,13 +11,50 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select.js'
-import { useState } from 'react'
+import { useLocalStorageState } from './lib/hooks.js'
 
-function App() {
-  const [theme, setTheme] = useState('monarch')
-  const [componentLib, setComponentLib] = useState('default')
-  const [shadcnPalette, setShadcnPalette] = useState('default')
-  const [muiPalette, setMuiPalette] = useState('blue')
+const themeOptions = [
+  { value: 'monarch', text: 'Monarch' },
+  { value: 'forma', text: 'Forma' },
+  { value: 'zen', text: 'Zen' },
+  { value: 'classic', text: 'Classic' },
+]
+const componentLibOptions = [
+  { value: 'default', text: 'Default' },
+  { value: 'shadcn', text: 'Shadcn' },
+  { value: 'mui', text: 'MUI' },
+]
+const shadcnPaletteOptions = [
+  { value: 'default', text: 'Default', colorClassName: 'bg-black dark:bg-white' },
+  { value: 'red', text: 'Red', colorClassName: 'bg-[oklch(0.577_0.245_27.325)] dark:bg-[oklch(0.637_0.237_25.331)]' },
+  { value: 'rose', text: 'Rose', colorClassName: 'bg-[oklch(0.586_0.253_17.585)] dark:bg-[oklch(0.645_0.246_16.439)]' },
+  { value: 'orange', text: 'Orange', colorClassName: 'bg-[oklch(0.646_0.222_41.116)] dark:bg-[oklch(0.705_0.213_47.604))]' },
+  { value: 'green', text: 'Green', colorClassName: 'bg-[oklch(0.648_0.2_131.684)] dark:bg-[oklch(0.648_0.2_131.684)]' },
+  { value: 'blue', text: 'Blue', colorClassName: 'bg-[oklch(0.546_0.245_262.881)] dark:bg-[oklch(0.623_0.214_259.815)]' },
+  { value: 'yellow', text: 'Yellow', colorClassName: 'bg-[oklch(0.852_0.199_91.936)] dark:bg-[oklch(0.795_0.184_86.047)]' },
+  { value: 'violet', text: 'Violet', colorClassName: 'bg-[oklch(0.541_0.281_293.009)] dark:bg-[oklch(0.606_0.25_292.717)]' },
+]
+const muiPaletteOptions = [
+  { value: 'blue', text: 'Blue', colorClassName: 'bg-[rgb(25,118,210)] dark:bg-[rgb(144,202,249)]' },
+  { value: 'purple', text: 'Purple', colorClassName: 'bg-[#6200ea] dark:bg-[#bb86fc]' }
+]
+const colorSchemeOptions = [
+  { value: 'light', text: 'Light' },
+  { value: 'dark', text: 'Dark' },
+]
+
+const themeOptionValues = themeOptions.map((option) => option.value)
+const componentLibValues = componentLibOptions.map((option) => option.value)
+const shadcnPaletteValues = shadcnPaletteOptions.map((option) => option.value)
+const muiPaletteValues = muiPaletteOptions.map((option) => option.value)
+const colorSchemeValues = colorSchemeOptions.map((option) => option.value)
+
+export default function App() {
+  const [theme, setTheme] = useLocalStorageState('theme', 'monarch', themeOptionValues)
+  const [componentLib, setComponentLib] = useLocalStorageState('componentLib', 'default', componentLibValues)
+  const [shadcnPalette, setShadcnPalette] = useLocalStorageState('shadcnPalette', 'default', shadcnPaletteValues)
+  const [muiPalette, setMuiPalette] = useLocalStorageState('muiPalette', 'blue', muiPaletteValues)
+  const [colorScheme, setColorScheme] = useLocalStorageState('colorScheme', 'light', colorSchemeValues)
 
   return (
     <div className='sticky top-0 p-4 border-b shadow-xs flex flex-row gap-8 justify-between'>
@@ -26,10 +63,9 @@ function App() {
           <div className='text-sm text-muted-foreground'>Theme</div>
           <Tabs value={theme} onValueChange={(v) => setTheme(v)}>
             <TabsList>
-              <TabsTrigger value='monarch'>Monarch</TabsTrigger>
-              <TabsTrigger value='forma'>Forma</TabsTrigger>
-              <TabsTrigger value='zen'>Zen</TabsTrigger>
-              <TabsTrigger value='classic'>Classic</TabsTrigger>
+              {themeOptions.map((option) => (
+                <TabsTrigger key={option.value} value={option.value}>{option.text}</TabsTrigger>
+              ))}
             </TabsList>
           </Tabs>
         </div>
@@ -37,9 +73,9 @@ function App() {
           <div className='text-sm text-muted-foreground'>Component Lib</div>
           <Tabs value={componentLib} onValueChange={(v) => setComponentLib(v)}>
             <TabsList>
-              <TabsTrigger value='default'>Default</TabsTrigger>
-              <TabsTrigger value='shadcn'>Shadcn</TabsTrigger>
-              <TabsTrigger value='mui'>MUI</TabsTrigger>
+              {componentLibOptions.map((option) => (
+                <TabsTrigger key={option.value} value={option.value}>{option.text}</TabsTrigger>
+              ))}
             </TabsList>
           </Tabs>
         </div>
@@ -53,38 +89,12 @@ function App() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='default' className='flex flex-row'>
-                  <div className='w-4 h-4 bg-black dark:bg-white' />
-                  Default
-                </SelectItem>
-                <SelectItem value='red' className='flex flex-row'>
-                  <div className='w-4 h-4 bg-[oklch(0.577_0.245_27.325)] dark:bg-[oklch(0.637_0.237_25.331)]' />
-                  Red
-                </SelectItem>
-                <SelectItem value='rose' className='flex flex-row'>
-                  <div className='w-4 h-4 bg-[oklch(0.586_0.253_17.585)] dark:bg-[oklch(0.645_0.246_16.439)]' />
-                  Rose
-                </SelectItem>
-                <SelectItem value='orange' className='flex flex-row'>
-                  <div className='w-4 h-4 bg-[oklch(0.646_0.222_41.116)] dark:bg-[oklch(0.705_0.213_47.604))]' />
-                  Orange
-                </SelectItem>
-                <SelectItem value='green' className='flex flex-row'>
-                  <div className='w-4 h-4 bg-[oklch(0.648_0.2_131.684)] dark:bg-[oklch(0.648_0.2_131.684)]' />
-                  Green
-                </SelectItem>
-                <SelectItem value='blue' className='flex flex-row'>
-                  <div className='w-4 h-4 bg-[oklch(0.546_0.245_262.881)] dark:bg-[oklch(0.623_0.214_259.815)]' />
-                  Blue
-                </SelectItem>
-                <SelectItem value='yellow' className='flex flex-row'>
-                  <div className='w-4 h-4 bg-[oklch(0.852_0.199_91.936)] dark:bg-[oklch(0.795_0.184_86.047)]' />
-                  Yellow
-                </SelectItem>
-                <SelectItem value='violet' className='flex flex-row'>
-                  <div className='w-4 h-4 bg-[oklch(0.541_0.281_293.009)] dark:bg-[oklch(0.606_0.25_292.717)]' />
-                  Violet
-                </SelectItem>
+                {shadcnPaletteOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value} className='flex flex-row'>
+                    <div key={option.value} className={`w-4 h-4 ${option.colorClassName}`} />
+                    {option.text}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -96,27 +106,24 @@ function App() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value='blue' className='flex flex-row'>
-                  <div className='w-4 h-4 bg-[rgb(25,118,210)] dark:bg-[rgb(144,202,249)]' />
-                  Blue
-                </SelectItem>
-                <SelectItem value='purple' className='flex flex-row'>
-                  <div className='w-4 h-4 bg-[#6200ea] dark:bg-[#bb86fc]' />
-                  Purple
-                </SelectItem>
+                {muiPaletteOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value} className='flex flex-row'>
+                    <div className={`w-4 h-4 ${option.colorClassName}`} />
+                    {option.text}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
         )}
-        <Tabs defaultValue='light'>
+        <Tabs value={colorScheme} onValueChange={(v) => setColorScheme(v)}>
           <TabsList>
-            <TabsTrigger value='light'>Light</TabsTrigger>
-            <TabsTrigger value='dark'>Dark</TabsTrigger>
+            {colorSchemeOptions.map((option) => (
+              <TabsTrigger key={option.value} value={option.value}>{option.text}</TabsTrigger>
+            ))}
           </TabsList>
         </Tabs>
       </div>
     </div>
   )
 }
-
-export default App
