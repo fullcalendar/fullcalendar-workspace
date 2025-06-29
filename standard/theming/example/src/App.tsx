@@ -247,7 +247,17 @@ export default function App() {
           </Tabs>
         </div>
       </div>
-      <div className='flex-grow relative z-0'>
+      <div
+        className='flex-grow relative z-0'
+        style={muiTheme.cssVariables ? {} : {
+          '--mui-palette-primary-main': muiTheme.palette.primary.main,
+          '--mui-palette-primary-dark': muiTheme.palette.primary.dark,
+          '--mui-palette-primary-light': muiTheme.palette.primary.light,
+          '--mui-palette-primary-contrastText': muiTheme.palette.primary.contrastText,
+          '--mui-palette-secondary-main': muiTheme.palette.secondary.main,
+          '--mui-palette-error-main': muiTheme.palette.error.main,
+        } as any}
+      >
         <MuiThemeProvider theme={muiTheme}>
           <div className='my-20 max-w-[1100px] mx-auto flex flex-col gap-20'>
             {(componentLib === 'mui') && (
