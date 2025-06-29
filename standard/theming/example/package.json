@@ -41,6 +41,7 @@
     "@fullcalendar/resource-timegrid": "workspace:*",
     "@fullcalendar/resource-timeline": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
+    "@fullcalendar/theme-classic": "workspace:*",
     "@fullcalendar/theme-monarch": "workspace:*",
     "@fullcalendar/timegrid": "workspace:*",
     "@fullcalendar/timeline": "workspace:*",

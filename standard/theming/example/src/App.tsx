@@ -1,6 +1,5 @@
 /*
 TODO:
-Classic theme up and running
 How to do different palettes for classic?
 (common color interface for all themes?)
 Dark-mode for default component lib
@@ -8,6 +7,8 @@ Hook up MUI border (for dark mode)
 How to do MUI *OUTER* border? not rely on Shadcn border
 Somehow do not put Shadcn reset (which does border) on whole document?
 Program nice default event color. Don't use custom colors. Don't use background events
+Radix warnings about controlled vs uncontrolled
+The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
 */
 
 import './App.css'
@@ -52,19 +53,26 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'
+import { ButtonStateMap, CalendarController, PluginDef } from '@fullcalendar/core'
+
+// FullCalendar themes
+// > Monarch
 import monarchTailwindTheme from '@fullcalendar/theme-monarch/tailwind'
 import monarchShadcnTheme from '@fullcalendar/theme-monarch/shadcn'
 import monarchMuiTheme from '@fullcalendar/theme-monarch/mui'
-import { ButtonStateMap, CalendarController, PluginDef } from '@fullcalendar/core'
+// > Classic
+import classicTailwindTheme from '@fullcalendar/theme-classic/tailwind'
+import classicShadcnTheme from '@fullcalendar/theme-classic/shadcn'
+import classicMuiTheme from '@fullcalendar/theme-classic/mui'
 
 // utils for our example
 import { getMuiTheme } from './mui-themes.js'
 
 const themeOptions = [
   { value: 'monarch', text: 'Monarch' },
+  { value: 'classic', text: 'Classic' },
   { value: 'forma', text: 'Forma' },
   { value: 'zen', text: 'Zen' },
-  { value: 'classic', text: 'Classic' },
 ]
 const componentLibOptions = [
   { value: 'default', text: 'Default' },
@@ -96,6 +104,19 @@ const shadcnPaletteValues = shadcnPaletteOptions.map((option) => option.value)
 const muiPaletteValues = muiPaletteOptions.map((option) => option.value)
 const colorSchemeValues = colorSchemeOptions.map((option) => option.value)
 
+const themePluginMap = {
+  monarch: {
+    default: monarchTailwindTheme,
+    shadcn: monarchShadcnTheme,
+    mui: monarchMuiTheme,
+  },
+  classic: {
+    default: classicTailwindTheme,
+    shadcn: classicShadcnTheme,
+    mui: classicMuiTheme,
+  }
+}
+
 export default function App() {
   const [theme, setTheme] = useLocalStorageState('theme', 'monarch', themeOptionValues)
   const [componentLib, setComponentLib] = useLocalStorageState('componentLib', 'default', componentLibValues)
@@ -113,10 +134,7 @@ export default function App() {
 
   const borderless = componentLib !== 'default'
 
-  const themePlugin =
-    componentLib === 'shadcn' ? monarchShadcnTheme :
-      componentLib === 'mui' ? monarchMuiTheme :
-        monarchTailwindTheme
+  const themePlugin = (themePluginMap as any)[theme]?.[componentLib] || monarchTailwindTheme
 
   const muiTheme = useMemo(
     () => getMuiTheme(muiPalette, colorScheme),

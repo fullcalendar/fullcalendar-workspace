@@ -9,9 +9,17 @@
     "clean": "rm -rf dist"
   },
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+    "./tailwind": {
+      "types": "./dist/tailwind.d.ts",
+      "default": "./dist/tailwind.js"
+    },
+    "./shadcn": {
+      "types": "./dist/shadcn.d.ts",
+      "default": "./dist/shadcn.js"
+    },
+    "./mui": {
+      "types": "./dist/mui.d.ts",
+      "default": "./dist/mui.js"
     }
   },
   "peerDependencies": {
