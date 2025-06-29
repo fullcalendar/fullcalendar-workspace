@@ -1,4 +1,17 @@
+/*
+TODO:
+Classic theme up and running
+How to do different palettes for classic?
+(common color interface for all themes?)
+Dark-mode for default component lib
+Hook up MUI border (for dark mode)
+How to do MUI *OUTER* border? not rely on Shadcn border
+Somehow do not put Shadcn reset (which does border) on whole document?
+Program nice default event color. Don't use custom colors. Don't use background events
+*/
+
 import './App.css'
+import { useEffect, useMemo } from 'react'
 import { cn } from './lib/utils.js'
 import { useLocalStorageState } from './lib/hooks.js'
 
@@ -45,7 +58,7 @@ import monarchMuiTheme from '@fullcalendar/theme-monarch/mui'
 import { ButtonStateMap, CalendarController, PluginDef } from '@fullcalendar/core'
 
 // utils for our example
-import { lightTheme as muiLightTheme, darkTheme as muiDarkTheme } from './mui-themes.js'
+import { getMuiTheme } from './mui-themes.js'
 
 const themeOptions = [
   { value: 'monarch', text: 'Monarch' },
@@ -105,7 +118,19 @@ export default function App() {
       componentLib === 'mui' ? monarchMuiTheme :
         monarchTailwindTheme
 
-  const muiTheme = colorScheme === 'light' ? muiLightTheme : muiDarkTheme
+  const muiTheme = useMemo(
+    () => getMuiTheme(muiPalette, colorScheme),
+    [muiPalette, colorScheme],
+  )
+
+  useEffect(() => {
+    const ourShadcnPalette =
+      componentLib === 'shadcn'
+        ? shadcnPalette
+        : 'default' // just for toolbar
+    document.documentElement.className =
+      `shadcn-${ourShadcnPalette} shadcn-${ourShadcnPalette}-${colorScheme}`
+  }, [componentLib, shadcnPalette, colorScheme])
 
   return (
     <>
