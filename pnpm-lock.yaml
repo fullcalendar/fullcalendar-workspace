@@ -3798,69 +3798,6 @@ importers:
         specifier: ~5.7.2
         version: 5.7.3
 
-  standard/theming/theme-classic-example:
-    dependencies:
-      '@fullcalendar/adaptive':
-        specifier: workspace:*
-        version: link:../../../premium/packages/adaptive/dist
-      '@fullcalendar/core':
-        specifier: workspace:*
-        version: link:../../packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:*
-        version: link:../../packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:*
-        version: link:../../packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:*
-        version: link:../../packages/list/dist
-      '@fullcalendar/multimonth':
-        specifier: workspace:*
-        version: link:../../packages/multimonth/dist
-      '@fullcalendar/resource':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource/dist
-      '@fullcalendar/resource-daygrid':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource-daygrid/dist
-      '@fullcalendar/resource-timegrid':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource-timegrid/dist
-      '@fullcalendar/resource-timeline':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource-timeline/dist
-      '@fullcalendar/scrollgrid':
-        specifier: workspace:*
-        version: link:../../../premium/packages/scrollgrid/dist
-      '@fullcalendar/theme-classic':
-        specifier: workspace:*
-        version: link:../theme-classic
-      '@fullcalendar/timegrid':
-        specifier: workspace:*
-        version: link:../../packages/timegrid/dist
-      '@fullcalendar/timeline':
-        specifier: workspace:*
-        version: link:../../../premium/packages/timeline/dist
-      '@tailwindcss/vite':
-        specifier: ^4.1.4
-        version: 4.1.4(vite@6.3.3(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
-      postcss-reporter:
-        specifier: ^7.1.0
-        version: 7.1.0(postcss@8.5.6)
-      postcss-scss:
-        specifier: ^4.0.9
-        version: 4.0.9(postcss@8.5.6)
-      tailwindcss:
-        specifier: ^4.1.4
-        version: 4.1.4
-      typescript:
-        specifier: ~5.7.2
-        version: 5.7.3
-      vite:
-        specifier: ^6.3.1
-        version: 6.3.3(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
-
   standard/theming/theme-monarch:
     dependencies:
       '@fullcalendar/core':
@@ -3906,293 +3843,6 @@ importers:
       typescript:
         specifier: ~5.7.2
         version: 5.7.3
-
-  standard/theming/theme-monarch-example-mui:
-    dependencies:
-      '@emotion/react':
-        specifier: ^11.14.0
-        version: 11.14.0(@types/react@19.1.8)(react@19.1.0)
-      '@emotion/styled':
-        specifier: ^11.14.1
-        version: 11.14.1(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react@19.1.0)
-      '@fontsource/roboto':
-        specifier: ^5.2.6
-        version: 5.2.6
-      '@mui/icons-material':
-        specifier: ^7.1.2
-        version: 7.1.2(@mui/material@7.1.2(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.8)(react@19.1.0)
-      '@mui/material':
-        specifier: ^7.1.2
-        version: 7.1.2(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tailwindcss/vite':
-        specifier: ^4.1.4
-        version: 4.1.4(vite@7.0.0(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
-      react:
-        specifier: ^19.1.0
-        version: 19.1.0
-      react-dom:
-        specifier: ^19.1.0
-        version: 19.1.0(react@19.1.0)
-      tailwindcss:
-        specifier: ^4.1.4
-        version: 4.1.4
-    devDependencies:
-      '@eslint/js':
-        specifier: ^9.29.0
-        version: 9.30.0
-      '@fullcalendar/adaptive':
-        specifier: workspace:*
-        version: link:../../../premium/packages/adaptive/dist
-      '@fullcalendar/core':
-        specifier: workspace:*
-        version: link:../../packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:*
-        version: link:../../packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:*
-        version: link:../../packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:*
-        version: link:../../packages/list/dist
-      '@fullcalendar/multimonth':
-        specifier: workspace:*
-        version: link:../../packages/multimonth/dist
-      '@fullcalendar/react':
-        specifier: workspace:*
-        version: link:../../../contrib/react
-      '@fullcalendar/resource':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource/dist
-      '@fullcalendar/resource-daygrid':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource-daygrid/dist
-      '@fullcalendar/resource-timegrid':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource-timegrid/dist
-      '@fullcalendar/resource-timeline':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource-timeline/dist
-      '@fullcalendar/scrollgrid':
-        specifier: workspace:*
-        version: link:../../../premium/packages/scrollgrid/dist
-      '@fullcalendar/theme-monarch':
-        specifier: workspace:*
-        version: link:../theme-monarch
-      '@fullcalendar/timegrid':
-        specifier: workspace:*
-        version: link:../../packages/timegrid/dist
-      '@fullcalendar/timeline':
-        specifier: workspace:*
-        version: link:../../../premium/packages/timeline/dist
-      '@types/react':
-        specifier: ^19.1.8
-        version: 19.1.8
-      '@types/react-dom':
-        specifier: ^19.1.6
-        version: 19.1.6(@types/react@19.1.8)
-      '@vitejs/plugin-react':
-        specifier: ^4.5.2
-        version: 4.6.0(vite@7.0.0(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
-      eslint:
-        specifier: ^9.29.0
-        version: 9.30.0(jiti@2.4.2)
-      eslint-plugin-react-hooks:
-        specifier: ^5.2.0
-        version: 5.2.0(eslint@9.30.0(jiti@2.4.2))
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.20
-        version: 0.4.20(eslint@9.30.0(jiti@2.4.2))
-      globals:
-        specifier: ^16.2.0
-        version: 16.2.0
-      typescript:
-        specifier: ~5.8.3
-        version: 5.8.3
-      typescript-eslint:
-        specifier: ^8.34.1
-        version: 8.35.0(eslint@9.30.0(jiti@2.4.2))(typescript@5.8.3)
-      vite:
-        specifier: ^7.0.0
-        version: 7.0.0(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
-
-  standard/theming/theme-monarch-example-shadcn:
-    dependencies:
-      '@radix-ui/react-slot':
-        specifier: ^1.2.3
-        version: 1.2.3(@types/react@19.1.8)(react@19.1.0)
-      '@radix-ui/react-tabs':
-        specifier: ^1.1.12
-        version: 1.1.12(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tailwindcss/vite':
-        specifier: ^4.1.4
-        version: 4.1.4(vite@7.0.0(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
-      class-variance-authority:
-        specifier: ^0.7.1
-        version: 0.7.1
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
-      lucide-react:
-        specifier: ^0.525.0
-        version: 0.525.0(react@19.1.0)
-      react:
-        specifier: ^19.1.0
-        version: 19.1.0
-      react-dom:
-        specifier: ^19.1.0
-        version: 19.1.0(react@19.1.0)
-      tailwind-merge:
-        specifier: ^3.3.1
-        version: 3.3.1
-      tailwindcss:
-        specifier: ^4.1.4
-        version: 4.1.4
-    devDependencies:
-      '@eslint/js':
-        specifier: ^9.29.0
-        version: 9.30.0
-      '@fullcalendar/adaptive':
-        specifier: workspace:*
-        version: link:../../../premium/packages/adaptive/dist
-      '@fullcalendar/core':
-        specifier: workspace:*
-        version: link:../../packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:*
-        version: link:../../packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:*
-        version: link:../../packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:*
-        version: link:../../packages/list/dist
-      '@fullcalendar/multimonth':
-        specifier: workspace:*
-        version: link:../../packages/multimonth/dist
-      '@fullcalendar/react':
-        specifier: workspace:*
-        version: link:../../../contrib/react
-      '@fullcalendar/resource':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource/dist
-      '@fullcalendar/resource-daygrid':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource-daygrid/dist
-      '@fullcalendar/resource-timegrid':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource-timegrid/dist
-      '@fullcalendar/resource-timeline':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource-timeline/dist
-      '@fullcalendar/scrollgrid':
-        specifier: workspace:*
-        version: link:../../../premium/packages/scrollgrid/dist
-      '@fullcalendar/theme-monarch':
-        specifier: workspace:*
-        version: link:../theme-monarch
-      '@fullcalendar/timegrid':
-        specifier: workspace:*
-        version: link:../../packages/timegrid/dist
-      '@fullcalendar/timeline':
-        specifier: workspace:*
-        version: link:../../../premium/packages/timeline/dist
-      '@types/react':
-        specifier: ^19.1.8
-        version: 19.1.8
-      '@types/react-dom':
-        specifier: ^19.1.6
-        version: 19.1.6(@types/react@19.1.8)
-      '@vitejs/plugin-react':
-        specifier: ^4.5.2
-        version: 4.6.0(vite@7.0.0(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
-      eslint:
-        specifier: ^9.29.0
-        version: 9.30.0(jiti@2.4.2)
-      eslint-plugin-react-hooks:
-        specifier: ^5.2.0
-        version: 5.2.0(eslint@9.30.0(jiti@2.4.2))
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.20
-        version: 0.4.20(eslint@9.30.0(jiti@2.4.2))
-      globals:
-        specifier: ^16.2.0
-        version: 16.2.0
-      tw-animate-css:
-        specifier: ^1.3.4
-        version: 1.3.4
-      typescript:
-        specifier: ~5.8.3
-        version: 5.8.3
-      typescript-eslint:
-        specifier: ^8.34.1
-        version: 8.35.0(eslint@9.30.0(jiti@2.4.2))(typescript@5.8.3)
-      vite:
-        specifier: ^7.0.0
-        version: 7.0.0(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
-
-  standard/theming/theme-monarch-example-tailwind:
-    dependencies:
-      '@fullcalendar/adaptive':
-        specifier: workspace:*
-        version: link:../../../premium/packages/adaptive/dist
-      '@fullcalendar/core':
-        specifier: workspace:*
-        version: link:../../packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:*
-        version: link:../../packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:*
-        version: link:../../packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:*
-        version: link:../../packages/list/dist
-      '@fullcalendar/multimonth':
-        specifier: workspace:*
-        version: link:../../packages/multimonth/dist
-      '@fullcalendar/resource':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource/dist
-      '@fullcalendar/resource-daygrid':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource-daygrid/dist
-      '@fullcalendar/resource-timegrid':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource-timegrid/dist
-      '@fullcalendar/resource-timeline':
-        specifier: workspace:*
-        version: link:../../../premium/packages/resource-timeline/dist
-      '@fullcalendar/scrollgrid':
-        specifier: workspace:*
-        version: link:../../../premium/packages/scrollgrid/dist
-      '@fullcalendar/theme-monarch':
-        specifier: workspace:*
-        version: link:../theme-monarch
-      '@fullcalendar/timegrid':
-        specifier: workspace:*
-        version: link:../../packages/timegrid/dist
-      '@fullcalendar/timeline':
-        specifier: workspace:*
-        version: link:../../../premium/packages/timeline/dist
-      '@tailwindcss/vite':
-        specifier: ^4.1.4
-        version: 4.1.4(vite@6.3.3(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
-      postcss-reporter:
-        specifier: ^7.1.0
-        version: 7.1.0(postcss@8.5.6)
-      postcss-scss:
-        specifier: ^4.0.9
-        version: 4.0.9(postcss@8.5.6)
-      tailwindcss:
-        specifier: ^4.1.4
-        version: 4.1.4
-      typescript:
-        specifier: ~5.7.2
-        version: 5.7.3
-      vite:
-        specifier: ^6.3.1
-        version: 6.3.3(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
 packages:
 
@@ -19904,18 +19554,6 @@ packages:
     peerDependencies:
       postcss: ^8.0.3
 
-  postcss-reporter@7.1.0:
-    resolution: {integrity: sha512-/eoEylGWyy6/DOiMP5lmFRdmDKThqgn7D6hP2dXKJI/0rJSO1ADFNngZfDzxL0YAxFvws+Rtpuji1YIHj4mySA==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      postcss: ^8.1.0
-
-  postcss-scss@4.0.9:
-    resolution: {integrity: sha512-AjKOeiwAitL/MXxQW2DliT28EKukvvbEWx3LBmJIRN8KfBGZbRTxNYW0kSqi1COiTZ57nZ9NW06S6ux//N1c9A==}
-    engines: {node: '>=12.0'}
-    peerDependencies:
-      postcss: ^8.4.29
-
   postcss-selector-not@5.0.0:
     resolution: {integrity: sha512-/2K3A4TCP9orP4TNS7u3tGdRFVKqz/E6pX3aGnriPG0jU78of8wsUcqE4QAhWEU0d+WnMSF93Ah3F//vUtK+iQ==}
     peerDependencies:
@@ -21881,9 +21519,6 @@ packages:
   text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
 
-  thenby@1.3.4:
-    resolution: {integrity: sha512-89Gi5raiWA3QZ4b2ePcEwswC3me9JIg+ToSgtE0JWeCynLnLxNr/f9G+xfo9K+Oj4AFdom8YNJjibIARTJmapQ==}
-
   thingies@1.21.0:
     resolution: {integrity: sha512-hsqsJsFMsV+aD4s3CWKk85ep/3I9XzYV/IXaSouJMYIoDlgyi11cBhsqYe9/geRfB0YIikBQg6raRaM+nIMP9g==}
     engines: {node: '>=10.18'}
@@ -22786,46 +22421,6 @@ packages:
       sugarss:
         optional: true
       terser:
-        optional: true
-
-  vite@6.3.3:
-    resolution: {integrity: sha512-5nXH+QsELbFKhsEfWLkHrvgRpTdGJzqOZ+utSdmPTvwHmvU6ITTm3xx+mRusihkcI8GeC7lCDyn3kDtiki9scw==}
-    engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || ^20.0.0 || >=22.0.0
-      jiti: '>=1.21.0'
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.16.0
-      tsx: ^4.8.1
-      yaml: ^2.4.2
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      jiti:
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      sass-embedded:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
-      tsx:
-        optional: true
-      yaml:
         optional: true
 
   vite@7.0.0:
@@ -23998,7 +23593,7 @@ snapshots:
       '@babel/runtime': 7.20.13
       '@babel/template': 7.20.7
       '@discoveryjs/json-ext': 0.5.7
-      '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1(esbuild@0.17.8))
+      '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1)
       ansi-colors: 4.1.3
       autoprefixer: 10.4.13(postcss@8.4.31)
       babel-loader: 9.1.2(@babel/core@7.20.12)(webpack@5.76.1)
@@ -24079,7 +23674,7 @@ snapshots:
       '@babel/runtime': 7.20.13
       '@babel/template': 7.20.7
       '@discoveryjs/json-ext': 0.5.7
-      '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1(esbuild@0.17.8))
+      '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1)
       ansi-colors: 4.1.3
       autoprefixer: 10.4.13(postcss@8.4.31)
       babel-loader: 9.1.2(@babel/core@7.20.12)(webpack@5.76.1)
@@ -33115,7 +32710,7 @@ snapshots:
       typescript: 4.8.4
       webpack: 5.76.1(esbuild@0.17.8)
 
-  '@ngtools/webpack@15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1(esbuild@0.17.8))':
+  '@ngtools/webpack@15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1)':
     dependencies:
       '@angular/compiler-cli': 15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4)
       typescript: 4.8.4
@@ -35544,13 +35139,6 @@ snapshots:
       '@tailwindcss/oxide-wasm32-wasi': 4.1.4
       '@tailwindcss/oxide-win32-arm64-msvc': 4.1.4
       '@tailwindcss/oxide-win32-x64-msvc': 4.1.4
-
-  '@tailwindcss/vite@4.1.4(vite@6.3.3(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))':
-    dependencies:
-      '@tailwindcss/node': 4.1.4
-      '@tailwindcss/oxide': 4.1.4
-      tailwindcss: 4.1.4
-      vite: 6.3.3(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
   '@tailwindcss/vite@4.1.4(vite@7.0.0(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))':
     dependencies:
@@ -38726,7 +38314,7 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.2.0
       serialize-javascript: 6.0.2
-      webpack: 5.76.1(esbuild@0.17.8)
+      webpack: 5.76.1(esbuild@0.15.5)
 
   copy-webpack-plugin@11.0.0(webpack@5.94.0(esbuild@0.18.17)):
     dependencies:
@@ -44069,7 +43657,7 @@ snapshots:
     dependencies:
       webpack-sources: 3.2.3
     optionalDependencies:
-      webpack: 5.76.1(esbuild@0.17.8)
+      webpack: 5.76.1(esbuild@0.15.5)
 
   license-webpack-plugin@4.0.2(webpack@5.94.0(esbuild@0.18.17)):
     dependencies:
@@ -48196,16 +47784,6 @@ snapshots:
     dependencies:
       postcss: 8.4.5
 
-  postcss-reporter@7.1.0(postcss@8.5.6):
-    dependencies:
-      picocolors: 1.1.1
-      postcss: 8.5.6
-      thenby: 1.3.4
-
-  postcss-scss@4.0.9(postcss@8.5.6):
-    dependencies:
-      postcss: 8.5.6
-
   postcss-selector-not@5.0.0(postcss@8.4.5):
     dependencies:
       balanced-match: 1.0.2
@@ -50571,8 +50149,6 @@ snapshots:
 
   text-table@0.2.0: {}
 
-  thenby@1.3.4: {}
-
   thingies@1.21.0(tslib@2.8.1):
     dependencies:
       tslib: 2.8.1
@@ -51496,25 +51072,6 @@ snapshots:
       stylus: 0.62.0
       terser: 5.31.6
 
-  vite@6.3.3(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1):
-    dependencies:
-      esbuild: 0.25.3
-      fdir: 6.4.6(picomatch@4.0.2)
-      picomatch: 4.0.2
-      postcss: 8.5.6
-      rollup: 4.40.1
-      tinyglobby: 0.2.14
-    optionalDependencies:
-      '@types/node': 24.0.7
-      fsevents: 2.3.3
-      jiti: 2.4.2
-      less: 4.2.1
-      lightningcss: 1.29.2
-      sass: 1.82.0
-      stylus: 0.62.0
-      terser: 5.39.0
-      yaml: 2.6.1
-
   vite@7.0.0(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1):
     dependencies:
       esbuild: 0.25.3
@@ -52131,7 +51688,7 @@ snapshots:
   webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1):
     dependencies:
       typed-assert: 1.0.9
-      webpack: 5.76.1(esbuild@0.17.8)
+      webpack: 5.76.1(esbuild@0.15.5)
     optionalDependencies:
       html-webpack-plugin: 5.6.3(webpack@5.76.1)
 
