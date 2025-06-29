@@ -2,7 +2,7 @@ import './App.css'
 import { cn } from './lib/utils.js'
 import { useLocalStorageState } from './lib/hooks.js'
 
-// ShadCN Components
+// ShadCN
 import { Button } from '@/components/ui/button.js'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs.js'
 import {
@@ -14,6 +14,18 @@ import {
 } from '@/components/ui/select.js'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
+// MUI
+import MuiButton from '@mui/material/Button'
+import MuiIconButton from '@mui/material/IconButton'
+import MuiTabs from '@mui/material/Tabs'
+import MuiTab from '@mui/material/Tab'
+import MuiChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import MuiChevronRightIcon from '@mui/icons-material/ChevronRight'
+import MuiTypography from '@mui/material/Typography'
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
+import MuiCssBaseline from '@mui/material/CssBaseline'
+
+// FullCalendar
 import '@fullcalendar/core/global.css'
 import FullCalendar, { useCalendarController } from '@fullcalendar/react'
 import adaptivePlugin from '@fullcalendar/adaptive'
@@ -29,7 +41,11 @@ import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'
 import monarchTailwindTheme from '@fullcalendar/theme-monarch/tailwind'
 import monarchShadcnTheme from '@fullcalendar/theme-monarch/shadcn'
+import monarchMuiTheme from '@fullcalendar/theme-monarch/mui'
 import { ButtonStateMap, CalendarController, PluginDef } from '@fullcalendar/core'
+
+// utils for our example
+import { lightTheme as muiLightTheme, darkTheme as muiDarkTheme } from './mui-themes.js'
 
 const themeOptions = [
   { value: 'monarch', text: 'Monarch' },
@@ -74,10 +90,22 @@ export default function App() {
   const [muiPalette, setMuiPalette] = useLocalStorageState('muiPalette', 'blue', muiPaletteValues)
   const [colorScheme, setColorScheme] = useLocalStorageState('colorScheme', 'light', colorSchemeValues)
 
-  const exampleClassName = componentLib === 'shadcn' ? 'border rounded-lg' : ''
-  const ToolbarComponent: any = componentLib === 'shadcn' ? ShadcnToolbar : undefined
+  const exampleClassName =
+    componentLib === 'shadcn' ? 'border rounded-xl' :
+      componentLib === 'mui' ? 'border rounded-lg' : ''
+
+  const ToolbarComponent =
+    componentLib === 'shadcn' ? ShadcnToolbar :
+      componentLib === 'mui' ? MuiToolbar : undefined
+
   const borderless = componentLib !== 'default'
-  const themePlugin = componentLib === 'shadcn' ? monarchShadcnTheme : monarchTailwindTheme
+
+  const themePlugin =
+    componentLib === 'shadcn' ? monarchShadcnTheme :
+      componentLib === 'mui' ? monarchMuiTheme :
+        monarchTailwindTheme
+
+  const muiTheme = colorScheme === 'light' ? muiLightTheme : muiDarkTheme
 
   return (
     <>
@@ -149,26 +177,33 @@ export default function App() {
           </Tabs>
         </div>
       </div>
-      <div className='relative z-0 my-20 max-w-[1100px] mx-auto flex flex-col gap-20'>
-        <StandardExample
-          className={exampleClassName}
-          borderless={borderless}
-          themePlugin={themePlugin}
-          ToolbarComponent={ToolbarComponent}
-        />
-        <StandardExample
-          className={exampleClassName}
-          borderless={borderless}
-          themePlugin={themePlugin}
-          ToolbarComponent={ToolbarComponent}
-          initialView='timeGridWeek'
-        />
-        <PremiumExample
-          className={exampleClassName}
-          borderless={borderless}
-          themePlugin={themePlugin}
-          ToolbarComponent={ToolbarComponent}
-        />
+      <div className='flex-grow relative z-0'>
+        <MuiThemeProvider theme={muiTheme}>
+          <div className='my-20 max-w-[1100px] mx-auto flex flex-col gap-20'>
+            {(componentLib === 'mui') && (
+              <MuiCssBaseline />
+            )}
+            <StandardExample
+              className={exampleClassName}
+              borderless={borderless}
+              themePlugin={themePlugin}
+              ToolbarComponent={ToolbarComponent}
+            />
+            <StandardExample
+              className={exampleClassName}
+              borderless={borderless}
+              themePlugin={themePlugin}
+              ToolbarComponent={ToolbarComponent}
+              initialView='timeGridWeek'
+            />
+            <PremiumExample
+              className={exampleClassName}
+              borderless={borderless}
+              themePlugin={themePlugin}
+              ToolbarComponent={ToolbarComponent}
+            />
+          </div>
+        </MuiThemeProvider>
       </div>
     </>
   )
@@ -222,6 +257,45 @@ function ShadcnToolbar({ controller, buttons, availableViews }: ToolbarProps) {
           ))}
         </TabsList>
       </Tabs>
+    </div>
+  )
+}
+
+function MuiToolbar({ controller, buttons, availableViews }: ToolbarProps) {
+  return (
+    <div className='flex items-center p-3 justify-between'>
+      <div className='flex items-center gap-2'>
+        <MuiButton
+          onClick={() => controller.today()}
+          disabled={buttons.today.isDisabled}
+          aria-label={buttons.today.hint}
+          variant="contained"
+        >{buttons.today.text}</MuiButton>
+        <div className='flex items-center'>
+          <MuiIconButton
+            onClick={() => controller.prev()}
+            disabled={buttons.prev.isDisabled}
+            aria-label={buttons.prev.hint}
+          ><MuiChevronLeftIcon /></MuiIconButton>
+          <MuiIconButton
+            onClick={() => controller.next()}
+            disabled={buttons.next.isDisabled}
+            aria-label={buttons.next.hint}
+          ><MuiChevronRightIcon /></MuiIconButton>
+        </div>
+        <MuiTypography variant="h5">{controller.view?.title}</MuiTypography>
+      </div>
+      <MuiTabs value={controller.view?.type}>
+        {availableViews.map((availableView) => (
+          <MuiTab
+            key={availableView}
+            value={availableView}
+            onClick={() => controller.changeView(availableView)}
+            label={buttons[availableView]?.text}
+            aria-label={buttons[availableView]?.hint}
+          />
+        ))}
+      </MuiTabs>
     </div>
   )
 }

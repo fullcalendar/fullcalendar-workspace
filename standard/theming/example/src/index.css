@@ -7,6 +7,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 /* TODO: kill this */
 html {
   --fc-canvas-color: var(--color-white);
