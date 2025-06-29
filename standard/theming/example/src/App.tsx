@@ -1,6 +1,6 @@
 /*
 TODO:
-How to do different palettes for classic?
+How to do different palettes for monarch theme?
 (common color interface for all themes?)
 Dark-mode for default component lib
 Hook up MUI border (for dark mode)
