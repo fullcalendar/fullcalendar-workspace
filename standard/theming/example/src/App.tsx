@@ -71,8 +71,8 @@ import { getMuiTheme } from './mui-themes.js'
 const themeOptions = [
   { value: 'monarch', text: 'Monarch' },
   { value: 'classic', text: 'Classic' },
-  { value: 'forma', text: 'Forma' },
-  { value: 'zen', text: 'Zen' },
+  // { value: 'forma', text: 'Forma' },
+  // { value: 'zen', text: 'Zen' },
 ]
 const componentLibOptions = [
   { value: 'default', text: 'Default' },
@@ -102,7 +102,7 @@ const themeOptionValues = themeOptions.map((option) => option.value)
 const componentLibValues = componentLibOptions.map((option) => option.value)
 const shadcnPaletteValues = shadcnPaletteOptions.map((option) => option.value)
 const muiPaletteValues = muiPaletteOptions.map((option) => option.value)
-const colorSchemeValues = colorSchemeOptions.map((option) => option.value)
+const colorSchemeValues = colorSchemeOptions.map((option) => option.value) as ('light' | 'dark')[]
 
 const themePluginMap = {
   monarch: {
@@ -122,7 +122,7 @@ export default function App() {
   const [componentLib, setComponentLib] = useLocalStorageState('componentLib', 'default', componentLibValues)
   const [shadcnPalette, setShadcnPalette] = useLocalStorageState('shadcnPalette', 'default', shadcnPaletteValues)
   const [muiPalette, setMuiPalette] = useLocalStorageState('muiPalette', 'blue', muiPaletteValues)
-  const [colorScheme, setColorScheme] = useLocalStorageState('colorScheme', 'light', colorSchemeValues)
+  const [colorScheme, setColorScheme] = useLocalStorageState<'light' | 'dark'>('colorScheme', 'light', colorSchemeValues)
 
   const exampleClassName =
     componentLib === 'shadcn' ? 'border rounded-xl' :
@@ -147,7 +147,7 @@ export default function App() {
         ? shadcnPalette
         : 'default' // just for toolbar
     document.documentElement.className =
-      `shadcn-${ourShadcnPalette} shadcn-${ourShadcnPalette}-${colorScheme}`
+      `${colorScheme} shadcn-${ourShadcnPalette} shadcn-${ourShadcnPalette}-${colorScheme}`
   }, [componentLib, shadcnPalette, colorScheme])
 
   return (
@@ -230,12 +230,14 @@ export default function App() {
               className={exampleClassName}
               borderless={borderless}
               themePlugin={themePlugin}
+              colorScheme={colorScheme}
               ToolbarComponent={ToolbarComponent}
             />
             <StandardExample
               className={exampleClassName}
               borderless={borderless}
               themePlugin={themePlugin}
+              colorScheme={colorScheme}
               ToolbarComponent={ToolbarComponent}
               initialView='timeGridWeek'
             />
@@ -243,6 +245,7 @@ export default function App() {
               className={exampleClassName}
               borderless={borderless}
               themePlugin={themePlugin}
+              colorScheme={colorScheme}
               ToolbarComponent={ToolbarComponent}
             />
           </div>
@@ -347,6 +350,7 @@ interface ExampleProps {
   className: string
   borderless: boolean
   themePlugin: PluginDef
+  colorScheme: 'light' | 'dark'
   ToolbarComponent?: React.ComponentType<ToolbarProps>
 }
 
@@ -376,6 +380,7 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
         navLinkDayClick='timeGridDay'
         navLinkWeekClick='timeGridWeek'
         schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
+        colorScheme={props.colorScheme}
         controller={controller}
         weekNumbers={true}
         plugins={[
@@ -456,6 +461,7 @@ function PremiumExample(props: ExampleProps) {
         navLinkDayClick='resourceTimelineDay'
         navLinkWeekClick='resourceTimelineWeek'
         schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
+        colorScheme={props.colorScheme}
         controller={controller}
         plugins={[
           adaptivePlugin,
