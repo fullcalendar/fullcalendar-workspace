@@ -56,6 +56,7 @@ later: instead of "in*" names which could be confused with "is*" names, do somet
   insideViewGroup
   insidePopover
 later: if third-party ui-libraries define their own tabs, ensure aria is correctly wired up somehow
+bug: in demos, we needed to put z-index to contain the z-index below the demo-topbar!
 
 
 ASAP
