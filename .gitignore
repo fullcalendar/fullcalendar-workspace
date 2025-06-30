@@ -5,6 +5,8 @@
 # Dynamically generated
 /tsconfig.json
 
+*.tsbuildinfo
+
 # Monorepo
 .turbo
 

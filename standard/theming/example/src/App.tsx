@@ -238,7 +238,7 @@ export default function App() {
               </Select>
             </div>
           )}
-          <Tabs value={colorScheme} onValueChange={(v) => setColorScheme(v)}>
+          <Tabs value={colorScheme} onValueChange={(v) => setColorScheme(v as ('light' | 'dark'))}>
             <TabsList>
               {colorSchemeOptions.map((option) => (
                 <TabsTrigger key={option.value} value={option.value}>{option.text}</TabsTrigger>
