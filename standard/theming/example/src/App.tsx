@@ -167,7 +167,7 @@ export default function App() {
 
   return (
     <>
-      <div className='sticky z-10 top-0 p-4 border-b bg-background shadow-xs flex flex-row gap-8 justify-between'>
+      <div className='topbar sticky z-10 top-0 p-4 border-b bg-background shadow-xs flex flex-row gap-8 justify-between'>
         <div className='flex flex-row gap-8'>
           <div className='flex flex-row items-center gap-4'>
             <div className='text-sm text-muted-foreground'>Theme</div>

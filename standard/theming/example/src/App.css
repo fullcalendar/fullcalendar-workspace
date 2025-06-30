@@ -1,2 +1,10 @@
 
-// empty
+.topbar {
+  /* prevent MUI from overriding Shadcn fonts */
+  font-family: var(--default-font-family, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji");
+  font-feature-settings: var(--default-font-feature-settings, normal);
+  font-variation-settings: var(--default-font-variation-settings, normal);
+  letter-spacing: 0;
+  color: var(--foreground);
+  -webkit-font-smoothing: auto;
+}
