@@ -46,12 +46,15 @@ export class ResourceLabelContainer extends BaseComponent<ResourceLabelContainer
 
           return (
             <ContentContainer
-              {...props}
+              elRef={props.elRef}
+              elTag={props.elTag}
               elAttrs={{
                 ...props.elAttrs,
                 'data-resource-id': props.resource.id, // TODO: only do public-facing one?
                 'data-date': props.date ? formatDayString(props.date) : undefined,
               }}
+              elClasses={props.elClasses}
+              elStyle={props.elStyle}
               renderProps={renderProps}
               generatorName="resourceLabelContent"
               customGenerator={options.resourceLabelContent}
@@ -59,7 +62,7 @@ export class ResourceLabelContainer extends BaseComponent<ResourceLabelContainer
               classNameGenerator={options.resourceLabelClassNames}
               didMount={options.resourceLabelDidMount}
               willUnmount={options.resourceLabelWillUnmount}
-            />
+            >{props.children}</ContentContainer>
           )
         }}
       </ViewContextType.Consumer>
