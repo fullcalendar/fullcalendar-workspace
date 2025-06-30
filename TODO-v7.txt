@@ -68,6 +68,9 @@ rethink classNames.rigid change
   overflow not working well on datagrid column resizing now
 QUESTION: why does datagrid cell have inner wrap?
 Use rotated icons to save space
+later: we made event rerender optimization in v6 where DnD of event results in only 1 eventContent call
+  v7 still does 2 (or more?)... understandable because needs to clone event for mirror DnD?
+^^^write tests even tho didn't write for v6
 
 
 THEMING NOTES
