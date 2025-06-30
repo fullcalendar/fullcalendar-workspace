@@ -28,6 +28,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select.js'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip.js"
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 // MUI
@@ -71,10 +76,10 @@ import classicMuiTheme from '@fullcalendar/theme-classic/mui'
 import { getMuiTheme } from './mui-themes.js'
 
 const themeOptions = [
-  { value: 'monarch', text: 'Monarch' },
   { value: 'classic', text: 'Classic' },
-  // { value: 'forma', text: 'Forma' },
-  // { value: 'zen', text: 'Zen' },
+  { value: 'monarch', text: 'Monarch', tooltip: 'A Google/Material-inspired theme' },
+  { value: 'forma', text: 'Forma', disabled: true, tooltip: 'An Outlook Calendar-inspired theme. Coming soon.' },
+  { value: 'zen', text: 'Zen', disabled: true, tooltip: 'A minimalist Apple-like theme. Coming soon.' },
 ]
 const componentLibOptions = [
   { value: 'default', text: 'Default' },
@@ -169,7 +174,18 @@ export default function App() {
             <Tabs value={theme} onValueChange={(v) => setTheme(v)}>
               <TabsList>
                 {themeOptions.map((option) => (
-                  <TabsTrigger key={option.value} value={option.value}>{option.text}</TabsTrigger>
+                  option.tooltip ? (
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <TabsTrigger key={option.value} value={option.value} disabled={option.disabled}>{option.text}</TabsTrigger>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{option.tooltip}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  ) : (
+                    <TabsTrigger key={option.value} value={option.value} disabled={option.disabled}>{option.text}</TabsTrigger>
+                  )
                 ))}
               </TabsList>
             </Tabs>
@@ -220,7 +236,7 @@ export default function App() {
                 </SelectContent>
               </Select>
             </div>
-          ) : (
+          ) : (theme !== 'classic') && (
             <div className='flex flex-row items-center gap-4'>
               <div className='text-sm text-muted-foreground'>Palette</div>
               <Select value={fcPalette} onValueChange={(v) => setFcPalette(v)}>
@@ -259,11 +275,12 @@ export default function App() {
         } as any}
       >
         <MuiThemeProvider theme={muiTheme}>
-          <div className='my-20 max-w-[1100px] mx-auto flex flex-col gap-20'>
+          <div className='my-30 max-w-[1100px] mx-auto flex flex-col gap-30'>
             {(componentLib === 'mui') && (
               <MuiCssBaseline />
             )}
             <StandardExample
+              initialView='timeGridWeek'
               className={exampleClassName}
               borderless={borderless}
               themePlugin={themePlugin}
@@ -276,7 +293,6 @@ export default function App() {
               themePlugin={themePlugin}
               colorScheme={colorScheme}
               ToolbarComponent={ToolbarComponent}
-              initialView='timeGridWeek'
             />
             <PremiumExample
               className={exampleClassName}
@@ -431,7 +447,6 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
           props.themePlugin,
         ]}
         eventInteractive={true}
-        initialDate='2023-01-12'
         initialView={props.initialView ?? standardAvailableViews[0]}
         nowIndicator={true}
         borderless={props.borderless}
@@ -448,7 +463,7 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
         selectMirror={false}
         dayMaxEvents={true}
         // businessHours={true} // -- TODO: background conflicts with the week number pills!!!
-        eventMaxStack={1}
+        // eventMaxStack={1}
         listDayFormat={{ day: 'numeric' }}
         listDaySideFormat={{ month: 'short', weekday: 'short', forceCommas: true }}
         views={{
@@ -456,28 +471,15 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
             slotDuration: '01:00',
           },
         }}
-        events={[
-          { title: 'All Day Event', start: '2023-01-01' },
-          { title: 'Long Event', start: '2023-01-07', end: '2023-01-10', color: 'red' },
-          { groupId: '999', title: 'Repeating Event', start: '2023-01-09T16:00:00' },
-          { groupId: '999', title: 'Repeating Event', start: '2023-01-16T16:00:00' },
-          { title: 'Conference', start: '2023-01-11', end: '2023-01-13', display: 'background' },
-          { title: 'Meeting', start: '2023-01-12T12:00:00' },
-          { title: 'Lunch', start: '2023-01-12T12:00:00' },
-          { title: 'Meeting', start: '2023-01-12T14:30:00' },
-          { title: 'Happy Hour', start: '2023-01-12T17:30:00' },
-          { title: 'Dinner', start: '2023-01-12T20:00:00' },
-          { title: 'Birthday Party', start: '2023-01-13T07:00:00' },
-          { title: 'Click for Google', url: 'http://google.com/', start: '2023-01-28' },
-        ]}
+        events='https://fullcalendar.io/api/demo-feeds/events.json?overload-day'
       />
     </div>
   )
 }
 
 const premiumAvailableViews = [
-  'resourceTimelineWeek',
   'resourceTimelineDay',
+  'resourceTimelineWeek',
 ]
 
 function PremiumExample(props: ExampleProps) {
@@ -510,14 +512,14 @@ function PremiumExample(props: ExampleProps) {
           interactionPlugin,
           props.themePlugin,
         ]}
-        initialDate='2023-01-07'
         initialView={premiumAvailableViews[0]}
+        timeZone='UTC'
         dayMinWidth={200}
         editable={true}
         selectable={true}
         nowIndicator={true}
         aspectRatio={1.6}
-        scrollTime='00:00'
+        scrollTime='07:00'
         borderless={props.borderless}
         headerToolbar={
           ToolbarComponent ? false : {
@@ -541,7 +543,7 @@ function PremiumExample(props: ExampleProps) {
             snapDuration: '00:30',
           },
         }}
-        resourceAreaHeaderContent='yooo'
+        resourceAreaHeaderContent='Rooms'
         resourceAreaWidth='40%'
         resourceGroupField='building'
         resourceAreaColumns={[
@@ -586,14 +588,7 @@ function PremiumExample(props: ExampleProps) {
           { id: 'y', building: '564 Pacific', title: 'Auditorium Y', occupancy: 40 },
           { id: 'z', building: '564 Pacific', title: 'Auditorium Z', occupancy: 40 },
         ]}
-        events={[
-          { id: '1', resourceId: 'b', start: '2023-01-07T02:00:00', end: '2023-01-07T07:00:00', title: 'event 1' },
-          { id: '2', resourceId: 'c', start: '2023-01-07T05:00:00', end: '2023-01-07T22:00:00', title: 'event 2' },
-          { id: '3', resourceId: 'd', start: '2023-01-06', end: '2023-01-08', title: 'event 3' },
-          { id: '4', resourceId: 'e', start: '2023-01-07T03:00:00', end: '2023-01-07T08:00:00', title: 'event 4' },
-          { id: '5', resourceId: 'f', start: '2023-01-07T00:30:00', end: '2023-01-07T02:30:00', title: 'event 5' },
-          { id: '5', resourceId: 'f', start: '2023-01-07T00:30:00', end: '2023-01-07T02:30:00', title: 'event 5' },
-        ]}
+        events='https://fullcalendar.io/api/demo-feeds/events.json?single-day&for-resource-timeline'
       />
     </div>
   )
