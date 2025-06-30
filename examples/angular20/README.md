@@ -1,4 +1,11 @@
 
+Current errors:
+
+```
+TypeError: def.resolveHostDirectives is not a function or its return value is not iterable
+NG0203: inject() must be called from an injection context
+```
+
 # FullCalendar Angular 20 Example Project
 
 This is a fully-buildable example project for FullCalendar and Angular. It was initially created with the `ng new` command of the [Angular CLI](https://angular.io/cli). For a complete walkthrough, read the [FullCalendar Angular Docs &raquo;](https://fullcalendar.io/docs/angular)
