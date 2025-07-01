@@ -26,20 +26,40 @@ import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
 export interface ThemePluginConfig {
-  primarySurfaceClass: string
-  secondarySurfaceClass: string
-  primaryPressableClass: string
-  secondaryPressableClass: string
-  disabledTextColorClass: string
+  primaryClass: string
+  primaryButtonClass: string
+  primaryContainerClass: string
+  primaryContainerButtonClass: string
+
+  secondaryClass: string
+  secondaryButtonClass: string
+  secondaryContainerClass: string
+  secondaryContainerButtonClass: string
+
+  tertiaryClass: string
+  tertiaryButtonClass: string
+  tertiaryContainerClass: string
+  tertiaryContainerButtonClass: string
+
+  disabledButtonClass: string
+  highlightClass: string
+  // TODO: business hours
+
   borderColorClass: string
   majorBorderColorClass: string
   alertBorderColorClass: string
+
   eventColor: string
   eventContrastColor: string
   backgroundEventColor: string
   backgroundEventContrastColor: string
-  // TODO: what about highlight color? business-hours color?
 }
+
+/*
+shadcn
+  muted - business hours?
+  accent - bg events?
+*/
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
 const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]'
@@ -83,28 +103,26 @@ const rowItemClasses: CalendarOptions = {
   ],
 }
 
+/*
+TODO: hook up highlightColor
+*/
 export function createThemePlugin({
-  primarySurfaceClass,
-  secondarySurfaceClass,
-  primaryPressableClass,
-  secondaryPressableClass,
-  disabledTextColorClass,
   borderColorClass,
   majorBorderColorClass,
   alertBorderColorClass,
   eventColor,
   eventContrastColor,
   backgroundEventColor,
+  ...props
 }: ThemePluginConfig): PluginDef {
   const borderClass = `border ${borderColorClass}` // all sides
   const majorBorderClass = `border ${majorBorderColorClass}`
-  const disabledPressableClass = `${secondarySurfaceClass} ${disabledTextColorClass}` // ?
 
   const getWeekNumberBadgeClasses = (data: { hasNavLink: boolean, isCompact: boolean }) => [
     'rounded-full h-[1.8em] flex flex-row items-center', // match height of daynumber
     data.hasNavLink
-      ? secondaryPressableClass
-      : `${secondarySurfaceClass} ${disabledTextColorClass}`,
+      ? props.secondaryButtonClass
+      : props.secondaryContainerClass,
     data.isCompact
       ? `${xxsTextClass} px-1`
       : 'text-sm px-2'
@@ -113,7 +131,7 @@ export function createThemePlugin({
   const rowWeekNumberClasses: CalendarOptions = {
     weekNumberClass: (data) => [
       data.isCell
-        ? secondarySurfaceClass
+        ? props.secondaryContainerClass
         : 'absolute z-20 ' + (data.isCompact ? 'top-1 start-0.5' : 'top-2 start-1'),
     ],
     weekNumberInnerClass: (data) => data.isCell
@@ -171,7 +189,7 @@ export function createThemePlugin({
 
       buttonGroupClass: (data) => [
         'items-center isolate rounded-full',
-        data.isViewGroup && secondarySurfaceClass,
+        data.isViewGroup && props.secondaryContainerClass,
       ],
       buttonClass: (data) => [
         'inline-flex items-center justify-center py-3 text-sm rounded-full',
@@ -182,8 +200,8 @@ export function createThemePlugin({
         (data.isIconOnly || (data.inGroup && !data.isSelected))
           ? transparentPressableClass
           : data.isDisabled
-            ? disabledPressableClass
-            : primaryPressableClass,
+            ? props.disabledButtonClass
+            : props.primaryButtonClass,
       ],
 
       popoverClass: `${borderClass} rounded-lg bg-(--fc-canvas-color) shadow-lg m-2`,
@@ -329,7 +347,7 @@ export function createThemePlugin({
               className={
                 'm-0.5 flex flex-row items-center justify-center text-lg h-[2em]' +
                 (data.isToday
-                  ? ` w-[2em] rounded-full ${data.hasNavLink ? primaryPressableClass : primarySurfaceClass}`
+                  ? ` w-[2em] rounded-full ${data.hasNavLink ? props.primaryButtonClass : props.primaryClass}`
                   : data.hasNavLink
                     ? ` w-[2em] rounded-full ${transparentPressableClass}`
                     : '')
@@ -353,7 +371,7 @@ export function createThemePlugin({
       dayCellTopInnerClass: (data) => [
         'flex flex-row items-center justify-center w-[1.8em] h-[1.8em] rounded-full',
         data.isToday
-          ? (data.hasNavLink ? primaryPressableClass : primarySurfaceClass)
+          ? (data.hasNavLink ? props.primaryButtonClass : props.primaryContainerClass)
           : data.hasNavLink && transparentPressableClass,
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
@@ -387,7 +405,7 @@ export function createThemePlugin({
               <div className={
                 'flex flex-row items-center justify-center w-[2em] h-[2em] rounded-full' +
                   (data.isToday
-                    ? (' ' + (data.hasNavLink ? primaryPressableClass : primarySurfaceClass))
+                    ? (' ' + (data.hasNavLink ? props.primaryButtonClass : props.primaryContainerClass))
                     : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
               }>{textPart.value}</div>
             ) : (
@@ -519,7 +537,7 @@ export function createThemePlugin({
           ? [
             // TODO: converge with week-label styles
             'px-2 py-1 rounded-full text-sm',
-            data.hasNavLink ? secondaryPressableClass : secondarySurfaceClass,
+            data.hasNavLink ? props.secondaryButtonClass : props.secondaryContainerClass,
           ]
           : 'pb-3 -ms-1 text-sm min-w-14',
           // TODO: also test lowest-level days

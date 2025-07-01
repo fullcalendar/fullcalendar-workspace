@@ -21,7 +21,9 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-tertiary-container: #FFD8E4;
   --fc-monarch-on-tertiary-container: #633B48;
   --fc-monarch-error: #B3261E;
-  --fc-monarch-on-surface: #1D1B20; /* (12% 38%) */
+  /* --fc-monarch-on-surface: #1D1B20; /* (12% 38%) */
+  --fc-monarch-disabled: rgba(29, 27, 32, .12);
+  --fc-monarch-on-disabled: rgba(29, 27, 32, .38);
   --fc-monarch-outline: #79747E;
   --fc-monarch-outline-variant: #CAC4D0;
 }
@@ -39,7 +41,9 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-tertiary-container: #633B48;
   --fc-monarch-on-tertiary-container: #FFD8E4;
   --fc-monarch-error: #F2B8B5;
-  --fc-monarch-on-surface: #E6E0E9 (12% 38%);
+  /* --fc-monarch-on-surface: #E6E0E9; /* (12% 38%) */
+  --fc-monarch-disabled: rgba(230, 224, 233, .12);
+  --fc-monarch-on-disabled: rgba(230, 224, 233, .38);
   --fc-monarch-outline: #938F99;
   --fc-monarch-outline-variant: #49454F;
 }
@@ -58,7 +62,9 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-tertiary-container: rgb(245 225 167);
   --fc-monarch-on-tertiary-container: rgb(83 70 25);
   --fc-monarch-error: rgb(186 26 26);
-  --fc-monarch-on-surface: rgb(35 25 23);
+  /* --fc-monarch-on-surface: rgb(35 25 23); */
+  --fc-monarch-disabled: rgba(35 25 23 .12);
+  --fc-monarch-on-disabled: rgba(35 25 23 .38);
   --fc-monarch-outline: rgb(133 115 110);
   --fc-monarch-outline-variant: rgb(216 194 188);
 }
@@ -76,7 +82,9 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-tertiary-container: rgb(83 70 25);
   --fc-monarch-on-tertiary-container: rgb(245 225 167);
   --fc-monarch-error: rgb(255 180 171);
-  --fc-monarch-on-surface: rgb(241 223 218);
+  /* --fc-monarch-on-surface: rgb(241 223 218); */
+  --fc-monarch-disabled: rgba(241 223 218, .12);
+  --fc-monarch-on-disabled: rgba(241 223 218, .38);
   --fc-monarch-outline: rgb(160 140 135);
   --fc-monarch-outline-variant: rgb(83 67 63);
 }
@@ -95,7 +103,9 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-tertiary-container: rgb(188 236 231);
   --fc-monarch-on-tertiary-container: rgb(31 78 75);
   --fc-monarch-error: rgb(186 26 26);
-  --fc-monarch-on-surface: rgb(26 28 22);
+  /* --fc-monarch-on-surface: rgb(26 28 22); */
+  --fc-monarch-disabled: rgba(26 28 22 .12);
+  --fc-monarch-on-disabled: rgba(26 28 22 .38);
   --fc-monarch-outline: rgb(117 121 108);
   --fc-monarch-outline-variant: rgb(197 200 186);
 }
@@ -113,7 +123,9 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-tertiary-container: rgb(31 78 75);
   --fc-monarch-on-tertiary-container: rgb(188 236 231);
   --fc-monarch-error: rgb(255 180 171);
-  --fc-monarch-on-surface: rgb(226 227 216);
+  /* --fc-monarch-on-surface: rgb(226 227 216); */
+  --fc-monarch-disabled: rgba(226 227 216 .12);
+  --fc-monarch-on-disabled: rgba(226 227 216 .38);
   --fc-monarch-outline: rgb(143 146 133);
   --fc-monarch-outline-variant: rgb(68 72 61);
 }
@@ -132,7 +144,9 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-tertiary-container: rgb(250 216 253);
   --fc-monarch-on-tertiary-container: rgb(87 62 92);
   --fc-monarch-error: rgb(186 26 26);
-  --fc-monarch-on-surface: rgb(25 28 32);
+  /* --fc-monarch-on-surface: rgb(25 28 32); */
+  --fc-monarch-disabled: rgba(25 28 32 .12);
+  --fc-monarch-on-disabled: rgba(25 28 32 .38);
   --fc-monarch-outline: rgb(116 119 127);
   --fc-monarch-outline-variant: rgb(196 198 208);
 }
@@ -150,7 +164,9 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-tertiary-container: rgb(87 62 92);
   --fc-monarch-on-tertiary-container: rgb(250 216 253);
   --fc-monarch-error: rgb(255 180 171);
-  --fc-monarch-on-surface: rgb(226 226 233);
+  /* --fc-monarch-on-surface: rgb(226 226 233); */
+  --fc-monarch-disabled: rgba(226 226 233 .12);
+  --fc-monarch-on-disabled: rgba(226 226 233 .38);
   --fc-monarch-outline: rgb(142 144 153);
   --fc-monarch-outline-variant: rgb(68 71 78);
 }
@@ -169,7 +185,9 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-tertiary-container: rgb(197 236 206);
   --fc-monarch-on-tertiary-container: rgb(44 78 56);
   --fc-monarch-error: rgb(186 26 26);
-  --fc-monarch-on-surface: rgb(30 27 19);
+  /* --fc-monarch-on-surface: rgb(30 27 19); */
+  --fc-monarch-disabled: rgba(30 27 19 .12);
+  --fc-monarch-on-disabled: rgba(30 27 19 .38);
   --fc-monarch-outline: rgb(124 119 103);
   --fc-monarch-outline-variant: rgb(205 198 180);
 }
@@ -187,7 +205,9 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-tertiary-container: rgb(44 78 56);
   --fc-monarch-on-tertiary-container: rgb(197 236 206);
   --fc-monarch-error: rgb(255 180 171);
-  --fc-monarch-on-surface: rgb(232 226 212);
+  /* --fc-monarch-on-surface: rgb(232 226 212); */
+  --fc-monarch-disabled: rgb(232 226 212 .12);
+  --fc-monarch-on-disabled: rgb(232 226 212 .38);
   --fc-monarch-outline: rgb(150 144 128);
   --fc-monarch-outline-variant: rgb(75 71 57);
 }

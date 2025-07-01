@@ -286,7 +286,14 @@ export default function App() {
           '--mui-palette-secondary-light': muiTheme.palette.secondary.light,
           '--mui-palette-secondary-dark': muiTheme.palette.secondary.dark,
           '--mui-palette-secondary-contrastText': muiTheme.palette.secondary.contrastText,
-          '--mui-palette-error-main': muiTheme.palette.error.main,
+          '--mui-palette-success-main': muiTheme.palette.success.main,
+          '--mui-palette-success-light': muiTheme.palette.success.light,
+          '--mui-palette-success-dark': muiTheme.palette.success.dark,
+          '--mui-palette-success-contrastText': muiTheme.palette.success.contrastText,
+          '--mui-palette-action-disabledBackground': muiTheme.palette.action.disabledBackground,
+          '--mui-palette-action-disabled': muiTheme.palette.action.disabled,
+          '--mui-palette-divider': muiTheme.palette.divider,
+          '--mui-palette-error-main': muiTheme.palette.error.main
         } as any}
       >
         <MuiThemeProvider theme={muiTheme}>

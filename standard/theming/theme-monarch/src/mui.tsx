@@ -1,21 +1,41 @@
 import { createThemePlugin } from './base.js'
 
-const primarySurfaceClass = 'bg-(--mui-palette-primary-main) text-(--mui-palette-primary-contrastText)'
-const secondarySurfaceClass = 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)'
+/*
+Ensure all these css variables are injected into DOM when cssVariables is false
+*/
+
+const primaryClass = 'bg-(--mui-palette-primary-main) text-(--mui-palette-primary-contrastText)'
+const primaryButtonClass = `${primaryClass} hover:bg-(--mui-palette-primary-dark) active:bg-(--mui-palette-primary-light)`
+
+const secondaryClass = 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)'
+const secondaryButtonClass = `${secondaryClass} hover:bg-(--mui-palette-secondary-dark) active:bg-(--mui-palette-secondary-light)`
+
+const tertiaryClass = 'bg-(--mui-palette-success-main) text-(--mui-palette-success-contrastText)'
+const tertiaryButtonClass = `${tertiaryClass} hover:bg-(--mui-palette-success-dark) active:bg-(--mui-palette-success-light)`
 
 const themePlugin = createThemePlugin({
-  primarySurfaceClass,
-  secondarySurfaceClass,
+  primaryClass,
+  primaryButtonClass,
+  primaryContainerClass: primaryClass,
+  primaryContainerButtonClass: primaryButtonClass,
 
-  primaryPressableClass: `${primarySurfaceClass} hover:bg-(--mui-palette-primary-dark) active:bg-(--mui-palette-primary-light)`,
-  secondaryPressableClass: `${secondarySurfaceClass} hover:bg-(--mui-palette-secondary-dark) active:bg-(--mui-palette-secondary-light)`,
+  secondaryClass,
+  secondaryButtonClass,
+  secondaryContainerClass: secondaryClass,
+  secondaryContainerButtonClass: secondaryButtonClass,
 
-  disabledTextColorClass: 'text-gray-500',
-  borderColorClass: 'border-[#dde3ea] dark:border-gray-800', // ???
-  majorBorderColorClass: 'border-gray-400 dark:border-gray-700',
+  tertiaryClass,
+  tertiaryButtonClass,
+  tertiaryContainerClass: tertiaryClass,
+  tertiaryContainerButtonClass: tertiaryButtonClass,
+
+  disabledButtonClass: 'bg-(--mui-palette-action-disabledBackground) text-(--mui-palette-action-disabled)',
+  highlightClass: 'bg-(--mui-palette-primary-main) opacity-50',
+
+  borderColorClass: 'border-(--mui-palette-divider)',
+  majorBorderColorClass: 'border-(--mui-palette-primary-main)', // will have color. might be cool
   alertBorderColorClass: 'border-(--mui-palette-error-main)',
 
-  // TODO
   eventColor: 'var(--mui-palette-primary-main)',
   eventContrastColor: 'var(--mui-palette-primary-contrastText)',
   backgroundEventColor: 'var(--mui-palette-secondary-main)',

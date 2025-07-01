@@ -1,54 +1,35 @@
 import { createThemePlugin } from './base.js'
 
-/*
-MODs to this ShadCN theme:
-- removed border b/c shadcn sets globally
+const primaryClass = 'bg-primary text-primary-foreground'
+const primaryButtonClass = `${primaryClass} hover:bg-primary/90 active:bg-primary/80`
 
-TODO:
-- dark-mode audit
+const secondaryClass = 'bg-secondary text-secondary-foreground'
+const secondaryButtonClass = `${secondaryClass} hover:bg-secondary/90 active:bg-secondary/80`
 
-BUGS:
-- now that we don't use toolbar, navlinks to day view go to useless dayGridDay instead of timeGridWeek
-- non-business background color conflicts with the week number pills
-
-NOTES:
-- when color not needed, `borderClass` variable is dumb. can just use 'border'
-
-CSS var usage:
-  when we need transparency:
-  - more-link hover
-  - daygrid-list-even hover + selection states
-  - week-number floating over cell
-  - day-number floating over cell
-  when solid allowed:
-  - business hours (because bg-events and selection put above)
-  SO...
-    use --accent for business hours (what shadcn datepicker does)
-    use --primary for selection (but with our opacity applied)
-    use --destructive for now-indicator
-    use --border for borders obviously
-    use --ring for emphasized isMajor borders
-    use --accent on hover for certain buttons (because shadcn ghost-style button uses it)
-      for X button in popover
-      for row-expander icon in resource-timeline
-      (basically anything buttonlike that does NOT need transaprent bg)
-    use custom grays for everything else
-    maybe use --muted for disable days (along with muted text)
-*/
-
-const primarySurfaceClass = 'bg-primary text-primary-foreground'
-const secondarySurfaceClass = 'bg-secondary text-secondary-foreground'
+const tertiaryClass = 'bg-accent bg-accent-foreground'
+const tertiaryButtonClass = `${tertiaryClass} hover:bg-accent/90 active:bg-accent/80`
 
 const themePlugin = createThemePlugin({
-  primarySurfaceClass,
-  secondarySurfaceClass,
+  primaryClass,
+  primaryButtonClass,
+  primaryContainerClass: primaryClass,
+  primaryContainerButtonClass: primaryButtonClass,
 
-  primaryPressableClass: `${primarySurfaceClass} hover:bg-primary/90 active:bg-primary/80`,
-  secondaryPressableClass: `${secondarySurfaceClass} hover:bg-secondary/90 active:bg-secondary/80`,
+  secondaryClass,
+  secondaryButtonClass,
+  secondaryContainerClass: secondaryClass,
+  secondaryContainerButtonClass: secondaryButtonClass,
 
-  disabledTextColorClass: 'text-muted-foreground',
+  tertiaryClass,
+  tertiaryButtonClass,
+  tertiaryContainerClass: tertiaryClass,
+  tertiaryContainerButtonClass: tertiaryButtonClass,
+
+  disabledButtonClass: 'bg-muted text-muted-foreground', // TODO: do 50% opacity?
+  highlightClass: 'bg-primary opacity-50',
+
   borderColorClass: '', // border-color is set globally
-  majorBorderColorClass: 'border-gray-400 dark:border-gray-700',
+  majorBorderColorClass: 'border-ring',
   alertBorderColorClass: 'border-destructive',
 
   eventColor: 'var(--primary)',

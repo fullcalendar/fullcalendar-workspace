@@ -1,16 +1,41 @@
 import { createThemePlugin } from './base.js'
 
-const primarySurfaceClass = 'bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary)'
-const secondarySurfaceClass = 'bg-(--fc-monarch-secondary) text-(--fc-monarch-on-secondary)'
+const buttonEffectClass = 'hover:brightness-80 active:brightness-120'
+
+const primaryClass = 'bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary)'
+const primaryButtonClass = `${primaryClass} ${buttonEffectClass}`
+const primaryContainerClass = 'bg-(--fc-monarch-primary-container) text-(--fc-monarch-on-primary-container)'
+const primaryContainerButtonClass = `${primaryContainerClass}`
+
+const secondaryClass = 'bg-(--fc-monarch-secondary) text-(--fc-monarch-on-secondary)'
+const secondaryButtonClass = `${secondaryClass} ${buttonEffectClass}`
+const secondaryContainerClass = 'bg-(--fc-monarch-secondary-container) text-(--fc-monarch-on-secondary-container)'
+const secondaryContainerButtonClass = `${secondaryContainerClass} ${buttonEffectClass}`
+
+const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-on-tertiary)'
+const tertiaryButtonClass = `${tertiaryClass} ${buttonEffectClass}`
+const tertiaryContainerClass = 'bg-(--fc-monarch-tertiary-container) text-(--fc-monarch-on-tertiary-container)'
+const tertiaryContainerButtonClass = `${tertiaryContainerClass} ${buttonEffectClass}`
 
 const themePlugin = createThemePlugin({
-  primarySurfaceClass,
-  secondarySurfaceClass,
+  primaryClass,
+  primaryButtonClass,
+  primaryContainerClass,
+  primaryContainerButtonClass,
 
-  primaryPressableClass: `${primarySurfaceClass}`, // TODO: active/hover
-  secondaryPressableClass: `${secondarySurfaceClass}`, // TODO: active/hover
+  secondaryClass,
+  secondaryButtonClass,
+  secondaryContainerClass,
+  secondaryContainerButtonClass,
 
-  disabledTextColorClass: 'text-gray-500',
+  tertiaryClass,
+  tertiaryButtonClass,
+  tertiaryContainerClass,
+  tertiaryContainerButtonClass,
+
+  disabledButtonClass: 'bg-(--fc-monarch-disabled) text-(--fc-monarch-on-disabled)',
+  highlightClass: 'bg-(--fc-monarch-primary) opacity-50',
+
   borderColorClass: 'border-(--fc-monarch-outline-variant)',
   majorBorderColorClass: 'border-(--fc-monarch-outline)',
   alertBorderColorClass: 'border-(--fc-monarch-error)',
