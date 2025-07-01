@@ -28,11 +28,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select.js'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip.js"
+// import {
+//   Tooltip,
+//   TooltipContent,
+//   TooltipTrigger,
+// } from "@/components/ui/tooltip.js"
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 // MUI
@@ -82,13 +82,16 @@ const themeOptions = [
   { value: 'zen', text: 'Zen', disabled: true, tooltip: 'A minimalist Apple-like theme. Coming soon.' },
 ]
 const componentLibOptions = [
-  { value: 'default', text: 'Default' },
+  { value: 'fc', text: 'Default' },
   { value: 'shadcn', text: 'Shadcn' },
   { value: 'mui', text: 'MUI' },
 ]
 const fcPaletteOptions = [
-  { value: 'blue', text: 'Blue', colorClassName: 'bg-[rgb(25,118,210)] dark:bg-[rgb(144,202,249)]' },
-  { value: 'purple', text: 'Purple', colorClassName: 'bg-[#6200ea] dark:bg-[#bb86fc]' }
+  { value: 'purple', text: 'Purple', colorClassName: 'bg-[#6750A4] dark:bg-[#D0BCFF]' },
+  { value: 'red', text: 'Red', colorClassName: 'bg-[rgb(143_76_56)] dark:bg-[rgb(255_181_160)]' },
+  { value: 'green', text: 'Green', colorClassName: 'bg-[rgb(76_102_43)] dark:bg-[rgb(177_209_138)]' },
+  { value: 'blue', text: 'Blue', colorClassName: 'bg-[rgb(65_95_145)] dark:bg-[rgb(170_199_255)]' },
+  { value: 'yellow', text: 'Yellow', colorClassName: 'bg-[rgb(109_94_15)] dark:bg-[rgb(219_198_110)]' },
 ]
 const shadcnPaletteOptions = [
   { value: 'default', text: 'Default', colorClassName: 'bg-black dark:bg-white' },
@@ -118,20 +121,28 @@ const colorSchemeValues = colorSchemeOptions.map((option) => option.value) as ('
 
 const themePluginMap = {
   monarch: {
-    default: monarchTailwindTheme,
+    fc: monarchTailwindTheme,
     shadcn: monarchShadcnTheme,
     mui: monarchMuiTheme,
   },
   classic: {
-    default: classicTailwindTheme,
+    fc: classicTailwindTheme,
     shadcn: classicShadcnTheme,
     mui: classicMuiTheme,
   }
 }
 
+function buildFcRootClassName(theme: string, palette: string, colorScheme: string): string {
+  return `fc-${theme} fc-${theme}-${palette} fc-${theme}-${palette}-${colorScheme}`
+}
+
+function buildShadcnRootClassName(palette: string, colorScheme: string): string {
+  return `shadcn shadcn-${palette} shadcn-${palette}-${colorScheme}`
+}
+
 export default function App() {
   const [theme, setTheme] = useLocalStorageState('theme', 'monarch', themeOptionValues)
-  const [componentLib, setComponentLib] = useLocalStorageState('componentLib', 'default', componentLibValues)
+  const [componentLib, setComponentLib] = useLocalStorageState('componentLib', 'fc', componentLibValues)
   const [fcPalette, setFcPalette] = useLocalStorageState('fcPalette', 'purple', fcPaletteValues)
   const [shadcnPalette, setShadcnPalette] = useLocalStorageState('shadcnPalette', 'default', shadcnPaletteValues)
   const [muiPalette, setMuiPalette] = useLocalStorageState('muiPalette', 'blue', muiPaletteValues)
@@ -145,7 +156,7 @@ export default function App() {
     componentLib === 'shadcn' ? ShadcnToolbar :
       componentLib === 'mui' ? MuiToolbar : undefined
 
-  const borderless = componentLib !== 'default'
+  const borderless = componentLib !== 'fc'
 
   const themePlugin = (themePluginMap as any)[theme]?.[componentLib] || monarchTailwindTheme
 
@@ -155,14 +166,15 @@ export default function App() {
   )
 
   useEffect(() => {
-    const ourShadcnPalette = componentLib === 'shadcn' ? shadcnPalette : 'default' // default just for toolbar
-    const shadcnClassNames = `shadcn-${ourShadcnPalette} shadcn-${ourShadcnPalette}-${colorScheme}`
-    const fcClassNames =
-      componentLib === 'default'
-        ? `fc-theme-${fcPalette} fc-theme-${fcPalette}-${colorScheme}`
-        : ''
-
-    document.documentElement.className = `${colorScheme} ${shadcnClassNames} ${fcClassNames}`
+    document.documentElement.className = cn(
+      colorScheme, // for tailwind dark:
+      componentLib === 'shadcn'
+        ? buildShadcnRootClassName(shadcnPalette, colorScheme)
+        : cn(
+          buildShadcnRootClassName('default', colorScheme), // for the topbar
+          buildFcRootClassName(theme, fcPalette, colorScheme)
+        )
+    )
   }, [componentLib, fcPalette, shadcnPalette, colorScheme])
 
   return (
@@ -174,18 +186,18 @@ export default function App() {
             <Tabs value={theme} onValueChange={(v) => setTheme(v)}>
               <TabsList>
                 {themeOptions.map((option) => (
-                  option.tooltip ? (
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <TabsTrigger key={option.value} value={option.value} disabled={option.disabled}>{option.text}</TabsTrigger>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{option.tooltip}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  ) : (
+                  // option.tooltip ? (
+                  //   <Tooltip>
+                  //     <TooltipTrigger>
+                  //       <TabsTrigger key={option.value} value={option.value} disabled={option.disabled}>{option.text}</TabsTrigger>
+                  //     </TooltipTrigger>
+                  //     <TooltipContent>
+                  //       <p>{option.tooltip}</p>
+                  //     </TooltipContent>
+                  //   </Tooltip>
+                  // ) : (
                     <TabsTrigger key={option.value} value={option.value} disabled={option.disabled}>{option.text}</TabsTrigger>
-                  )
+                  // )
                 ))}
               </TabsList>
             </Tabs>
@@ -267,10 +279,13 @@ export default function App() {
         className='flex-grow relative z-0'
         style={muiTheme.cssVariables ? {} : {
           '--mui-palette-primary-main': muiTheme.palette.primary.main,
-          '--mui-palette-primary-dark': muiTheme.palette.primary.dark,
           '--mui-palette-primary-light': muiTheme.palette.primary.light,
+          '--mui-palette-primary-dark': muiTheme.palette.primary.dark,
           '--mui-palette-primary-contrastText': muiTheme.palette.primary.contrastText,
           '--mui-palette-secondary-main': muiTheme.palette.secondary.main,
+          '--mui-palette-secondary-light': muiTheme.palette.secondary.light,
+          '--mui-palette-secondary-dark': muiTheme.palette.secondary.dark,
+          '--mui-palette-secondary-contrastText': muiTheme.palette.secondary.contrastText,
           '--mui-palette-error-main': muiTheme.palette.error.main,
         } as any}
       >

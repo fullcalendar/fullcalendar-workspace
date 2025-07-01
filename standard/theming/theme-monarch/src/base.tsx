@@ -34,6 +34,10 @@ export interface ThemePluginConfig {
   borderColorClass: string
   majorBorderColorClass: string
   alertBorderColorClass: string
+  eventColor: string
+  eventContrastColor: string
+  backgroundEventColor: string
+  backgroundEventContrastColor: string
   // TODO: what about highlight color? business-hours color?
 }
 
@@ -88,6 +92,9 @@ export function createThemePlugin({
   borderColorClass,
   majorBorderColorClass,
   alertBorderColorClass,
+  eventColor,
+  eventContrastColor,
+  backgroundEventColor,
 }: ThemePluginConfig): PluginDef {
   const borderClass = `border ${borderColorClass}` // all sides
   const majorBorderClass = `border ${majorBorderColorClass}`
@@ -122,9 +129,10 @@ export function createThemePlugin({
   return createPlugin({
     name: '<%= pkgName %>', // TODO
     optionDefaults: {
-      eventColor: 'var(--color-blue-500)', // TODO: theme should customize these!!!
-      eventContrastColor: 'var(--color-white)',
-      backgroundEventColor: 'var(--color-green-500)', // TODO: theme should customize these!!!
+      eventColor,
+      eventContrastColor,
+      backgroundEventColor,
+      //  backgroundEventContrastColor, --- TODO
       // eventDisplay: 'block',
 
       className: `${borderClass} rounded-xl overflow-hidden`,

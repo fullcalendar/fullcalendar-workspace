@@ -1,12 +1,193 @@
+/*
+baseline:
+https://m3.material.io/styles/color/static/baseline
 
-.fc-theme-purple {
-  --fc-theme-primary: #675496;
-  --fc-theme-primary-hover: #7462a2;
-  --fc-theme-primary-pressed: #544181;
-  --fc-theme-primary-text: white;
-  --fc-theme-secondary: #e2e0f9;
-  --fc-theme-secondary-hover: #d6d4f0;
-  --fc-theme-secondary-pressed: #c4c1e9;
+theme builder:
+https://anvil.works/docs/how-to/creating-material-3-colour-scheme
+https://material-foundation.github.io/material-theme-builder/
+*/
+
+.fc-monarch-purple {
+  --fc-monarch-primary: #6750A4;
+  --fc-monarch-on-primary: #FFFFFF;
+  --fc-monarch-primary-container: #EADDFF;
+  --fc-monarch-on-primary-container: #4F378B;
+  --fc-monarch-secondary: #625B71;
+  --fc-monarch-on-secondary: #FFFFFF;
+  --fc-monarch-secondary-container: #E8DEF8;
+  --fc-monarch-on-secondary-container: #4A4458;
+  --fc-monarch-tertiary: #7D5260;
+  --fc-monarch-on-tertiary: #FFFFFF;
+  --fc-monarch-tertiary-container: #FFD8E4;
+  --fc-monarch-on-tertiary-container: #633B48;
+  --fc-monarch-error: #B3261E;
+  --fc-monarch-on-surface: #1D1B20; /* (12% 38%) */
+  --fc-monarch-outline: #79747E;
+  --fc-monarch-outline-variant: #CAC4D0;
 }
-.fc-theme-purple-dark {
+.fc-monarch-purple-dark {
+  --fc-monarch-primary: #D0BCFF;
+  --fc-monarch-on-primary: #381E72;
+  --fc-monarch-primary-container: #4F378B;
+  --fc-monarch-on-primary-container: #EADDFF;
+  --fc-monarch-secondary: #CCC2DC;
+  --fc-monarch-on-secondary: #332D41;
+  --fc-monarch-secondary-container: #4A4458;
+  --fc-monarch-on-secondary-container: #E8DEF8;
+  --fc-monarch-tertiary: #EFB8C8;
+  --fc-monarch-on-tertiary: #492532;
+  --fc-monarch-tertiary-container: #633B48;
+  --fc-monarch-on-tertiary-container: #FFD8E4;
+  --fc-monarch-error: #F2B8B5;
+  --fc-monarch-on-surface: #E6E0E9 (12% 38%);
+  --fc-monarch-outline: #938F99;
+  --fc-monarch-outline-variant: #49454F;
+}
+
+.fc-monarch-red {
+  --fc-monarch-primary: rgb(143 76 56);
+  --fc-monarch-on-primary: rgb(255 255 255);
+  --fc-monarch-primary-container: rgb(255 219 209);
+  --fc-monarch-on-primary-container: rgb(114 53 35);
+  --fc-monarch-secondary: rgb(119 87 78);
+  --fc-monarch-on-secondary: rgb(255 255 255);
+  --fc-monarch-secondary-container: rgb(255 219 209);
+  --fc-monarch-on-secondary-container: rgb(93 64 55);
+  --fc-monarch-tertiary: rgb(108 93 47);
+  --fc-monarch-on-tertiary: rgb(255 255 255);
+  --fc-monarch-tertiary-container: rgb(245 225 167);
+  --fc-monarch-on-tertiary-container: rgb(83 70 25);
+  --fc-monarch-error: rgb(186 26 26);
+  --fc-monarch-on-surface: rgb(35 25 23);
+  --fc-monarch-outline: rgb(133 115 110);
+  --fc-monarch-outline-variant: rgb(216 194 188);
+}
+.fc-monarch-red-dark {
+  --fc-monarch-primary: rgb(255 181 160);
+  --fc-monarch-on-primary: rgb(86 31 15);
+  --fc-monarch-primary-container: rgb(114 53 35);
+  --fc-monarch-on-primary-container: rgb(255 219 209);
+  --fc-monarch-secondary: rgb(231 189 178);
+  --fc-monarch-on-secondary: rgb(68 42 34);
+  --fc-monarch-secondary-container: rgb(93 64 55);
+  --fc-monarch-on-secondary-container: rgb(255 219 209);
+  --fc-monarch-tertiary: rgb(216 197 141);
+  --fc-monarch-on-tertiary: rgb(59 47 5);
+  --fc-monarch-tertiary-container: rgb(83 70 25);
+  --fc-monarch-on-tertiary-container: rgb(245 225 167);
+  --fc-monarch-error: rgb(255 180 171);
+  --fc-monarch-on-surface: rgb(241 223 218);
+  --fc-monarch-outline: rgb(160 140 135);
+  --fc-monarch-outline-variant: rgb(83 67 63);
+}
+
+.fc-monarch-green {
+  --fc-monarch-primary: rgb(76 102 43);
+  --fc-monarch-on-primary: rgb(255 255 255);
+  --fc-monarch-primary-container: rgb(205 237 163);
+  --fc-monarch-on-primary-container: rgb(53 78 22);
+  --fc-monarch-secondary: rgb(88 98 73);
+  --fc-monarch-on-secondary: rgb(255 255 255);
+  --fc-monarch-secondary-container: rgb(220 231 200);
+  --fc-monarch-on-secondary-container: rgb(64 74 51);
+  --fc-monarch-tertiary: rgb(56 102 99);
+  --fc-monarch-on-tertiary: rgb(255 255 255);
+  --fc-monarch-tertiary-container: rgb(188 236 231);
+  --fc-monarch-on-tertiary-container: rgb(31 78 75);
+  --fc-monarch-error: rgb(186 26 26);
+  --fc-monarch-on-surface: rgb(26 28 22);
+  --fc-monarch-outline: rgb(117 121 108);
+  --fc-monarch-outline-variant: rgb(197 200 186);
+}
+.fc-monarch-green-dark {
+  --fc-monarch-primary: rgb(177 209 138);
+  --fc-monarch-on-primary: rgb(31 55 1);
+  --fc-monarch-primary-container: rgb(53 78 22);
+  --fc-monarch-on-primary-container: rgb(205 237 163);
+  --fc-monarch-secondary: rgb(191 203 173);
+  --fc-monarch-on-secondary: rgb(42 51 30);
+  --fc-monarch-secondary-container: rgb(64 74 51);
+  --fc-monarch-on-secondary-container: rgb(220 231 200);
+  --fc-monarch-tertiary: rgb(160 208 203);
+  --fc-monarch-on-tertiary: rgb(0 55 53);
+  --fc-monarch-tertiary-container: rgb(31 78 75);
+  --fc-monarch-on-tertiary-container: rgb(188 236 231);
+  --fc-monarch-error: rgb(255 180 171);
+  --fc-monarch-on-surface: rgb(226 227 216);
+  --fc-monarch-outline: rgb(143 146 133);
+  --fc-monarch-outline-variant: rgb(68 72 61);
+}
+
+.fc-monarch-blue {
+  --fc-monarch-primary: rgb(65 95 145);
+  --fc-monarch-on-primary: rgb(255 255 255);
+  --fc-monarch-primary-container: rgb(214 227 255);
+  --fc-monarch-on-primary-container: rgb(40 71 119);
+  --fc-monarch-secondary: rgb(86 95 113);
+  --fc-monarch-on-secondary: rgb(255 255 255);
+  --fc-monarch-secondary-container: rgb(218 226 249);
+  --fc-monarch-on-secondary-container: rgb(62 71 89);
+  --fc-monarch-tertiary: rgb(112 85 117);
+  --fc-monarch-on-tertiary: rgb(255 255 255);
+  --fc-monarch-tertiary-container: rgb(250 216 253);
+  --fc-monarch-on-tertiary-container: rgb(87 62 92);
+  --fc-monarch-error: rgb(186 26 26);
+  --fc-monarch-on-surface: rgb(25 28 32);
+  --fc-monarch-outline: rgb(116 119 127);
+  --fc-monarch-outline-variant: rgb(196 198 208);
+}
+.fc-monarch-blue-dark {
+  --fc-monarch-primary: rgb(170 199 255);
+  --fc-monarch-on-primary: rgb(10 48 95);
+  --fc-monarch-primary-container: rgb(40 71 119);
+  --fc-monarch-on-primary-container: rgb(214 227 255);
+  --fc-monarch-secondary: rgb(190 198 220);
+  --fc-monarch-on-secondary: rgb(40 49 65);
+  --fc-monarch-secondary-container: rgb(62 71 89);
+  --fc-monarch-on-secondary-container: rgb(218 226 249);
+  --fc-monarch-tertiary: rgb(221 188 224);
+  --fc-monarch-on-tertiary: rgb(63 40 68);
+  --fc-monarch-tertiary-container: rgb(87 62 92);
+  --fc-monarch-on-tertiary-container: rgb(250 216 253);
+  --fc-monarch-error: rgb(255 180 171);
+  --fc-monarch-on-surface: rgb(226 226 233);
+  --fc-monarch-outline: rgb(142 144 153);
+  --fc-monarch-outline-variant: rgb(68 71 78);
+}
+
+.fc-monarch-yellow {
+  --fc-monarch-primary: rgb(109 94 15);
+  --fc-monarch-on-primary: rgb(255 255 255);
+  --fc-monarch-primary-container: rgb(248 226 135);
+  --fc-monarch-on-primary-container: rgb(83 70 0);
+  --fc-monarch-secondary: rgb(102 94 64);
+  --fc-monarch-on-secondary: rgb(255 255 255);
+  --fc-monarch-secondary-container: rgb(238 226 188);
+  --fc-monarch-on-secondary-container: rgb(78 71 42);
+  --fc-monarch-tertiary: rgb(67 102 78);
+  --fc-monarch-on-tertiary: rgb(255 255 255);
+  --fc-monarch-tertiary-container: rgb(197 236 206);
+  --fc-monarch-on-tertiary-container: rgb(44 78 56);
+  --fc-monarch-error: rgb(186 26 26);
+  --fc-monarch-on-surface: rgb(30 27 19);
+  --fc-monarch-outline: rgb(124 119 103);
+  --fc-monarch-outline-variant: rgb(205 198 180);
+}
+.fc-monarch-yellow-dark {
+  --fc-monarch-primary: rgb(219 198 110);
+  --fc-monarch-on-primary: rgb(58 48 0);
+  --fc-monarch-primary-container: rgb(83 70 0);
+  --fc-monarch-on-primary-container: rgb(248 226 135);
+  --fc-monarch-secondary: rgb(209 198 161);
+  --fc-monarch-on-secondary: rgb(54 48 22);
+  --fc-monarch-secondary-container: rgb(78 71 42);
+  --fc-monarch-on-secondary-container: rgb(238 226 188);
+  --fc-monarch-tertiary: rgb(169 208 179);
+  --fc-monarch-on-tertiary: rgb(20 55 35);
+  --fc-monarch-tertiary-container: rgb(44 78 56);
+  --fc-monarch-on-tertiary-container: rgb(197 236 206);
+  --fc-monarch-error: rgb(255 180 171);
+  --fc-monarch-on-surface: rgb(232 226 212);
+  --fc-monarch-outline: rgb(150 144 128);
+  --fc-monarch-outline-variant: rgb(75 71 57);
 }

@@ -42,12 +42,19 @@ const secondarySurfaceClass = 'bg-secondary text-secondary-foreground'
 const themePlugin = createThemePlugin({
   primarySurfaceClass,
   secondarySurfaceClass,
+
   primaryPressableClass: `${primarySurfaceClass} hover:bg-primary/90 active:bg-primary/80`,
   secondaryPressableClass: `${secondarySurfaceClass} hover:bg-secondary/90 active:bg-secondary/80`,
+
   disabledTextColorClass: 'text-muted-foreground',
   borderColorClass: '', // border-color is set globally
   majorBorderColorClass: 'border-gray-400 dark:border-gray-700',
   alertBorderColorClass: 'border-destructive',
+
+  eventColor: 'var(--primary)',
+  eventContrastColor: 'var(--primary-foreground)',
+  backgroundEventColor: 'var(--secondary)',
+  backgroundEventContrastColor: 'var(--secondary-foreground)',
 })
 
 export { themePlugin as default }

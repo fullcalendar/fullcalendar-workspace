@@ -1,17 +1,24 @@
 import { createThemePlugin } from './base.js'
 
-const primarySurfaceClass = 'bg-(--fc-theme-primary) text-(--fc-theme-primary-text)'
-const secondarySurfaceClass = 'bg-(--fc-theme-secondary) text-(--fc-theme-secondary-text)'
+const primarySurfaceClass = 'bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary)'
+const secondarySurfaceClass = 'bg-(--fc-monarch-secondary) text-(--fc-monarch-on-secondary)'
 
 const themePlugin = createThemePlugin({
   primarySurfaceClass,
   secondarySurfaceClass,
-  primaryPressableClass: `${primarySurfaceClass} hover:bg-(--fc-theme-primary-hover) active:bg-(--fc-theme-primary-pressed)`,
-  secondaryPressableClass: `${secondarySurfaceClass} hover:bg-(--fc-theme-secondary-hover) active:bg-(--fc-theme-secondary-pressed)`,
+
+  primaryPressableClass: `${primarySurfaceClass}`, // TODO: active/hover
+  secondaryPressableClass: `${secondarySurfaceClass}`, // TODO: active/hover
+
   disabledTextColorClass: 'text-gray-500',
-  borderColorClass: 'border-[#dde3ea] dark:border-gray-800',
-  majorBorderColorClass: 'border-gray-400 dark:border-gray-700',
-  alertBorderColorClass: 'border-red-600 dark:border-red-400',
+  borderColorClass: 'border-(--fc-monarch-outline-variant)',
+  majorBorderColorClass: 'border-(--fc-monarch-outline)',
+  alertBorderColorClass: 'border-(--fc-monarch-error)',
+
+  eventColor: 'var(--fc-monarch-tertiary)',
+  eventContrastColor: 'var(--fc-monarch-on-tertiary)',
+  backgroundEventColor: 'var(--fc-monarch-tertiary-container)',
+  backgroundEventContrastColor: 'var(--fc-monarch-on-tertiary-container)',
 })
 
 export { themePlugin as default }
