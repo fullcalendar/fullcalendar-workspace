@@ -34,14 +34,14 @@ const themePlugin = createThemePlugin({
   tertiaryContainerButtonClass,
 
   disabledButtonClass: 'bg-(--fc-monarch-disabled) text-(--fc-monarch-on-disabled)',
-  highlightClass: 'bg-(--fc-monarch-primary) opacity-50',
+  highlightClass: 'bg-(--fc-monarch-primary-container) opacity-30',
 
   borderColorClass: 'border-(--fc-monarch-outline-variant)',
   majorBorderColorClass: 'border-(--fc-monarch-outline)',
   alertBorderColorClass: 'border-(--fc-monarch-error)',
 
-  eventColor: 'var(--fc-monarch-tertiary)',
-  eventContrastColor: 'var(--fc-monarch-on-tertiary)',
+  eventColor: 'var(--fc-monarch-secondary)',
+  eventContrastColor: 'var(--fc-monarch-on-secondary)',
   backgroundEventColor: 'var(--fc-monarch-tertiary-container)',
   backgroundEventContrastColor: 'var(--fc-monarch-on-tertiary-container)',
 })

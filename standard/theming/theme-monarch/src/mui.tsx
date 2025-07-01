@@ -16,8 +16,8 @@ const tertiaryButtonClass = `${tertiaryClass} hover:bg-(--mui-palette-success-da
 const themePlugin = createThemePlugin({
   primaryClass,
   primaryButtonClass,
-  primaryContainerClass: primaryClass,
-  primaryContainerButtonClass: primaryButtonClass,
+  primaryContainerClass: secondaryClass, // HACK
+  primaryContainerButtonClass: secondaryButtonClass, // HACK
 
   secondaryClass,
   secondaryButtonClass,
@@ -30,7 +30,7 @@ const themePlugin = createThemePlugin({
   tertiaryContainerButtonClass: tertiaryButtonClass,
 
   disabledButtonClass: 'bg-(--mui-palette-action-disabledBackground) text-(--mui-palette-action-disabled)',
-  highlightClass: 'bg-(--mui-palette-primary-main) opacity-50',
+  highlightClass: 'bg-(--mui-palette-secondary-main) opacity-10',
 
   borderColorClass: 'border-(--mui-palette-divider)',
   majorBorderColorClass: 'border-(--mui-palette-primary-main)', // will have color. might be cool

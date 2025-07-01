@@ -33,7 +33,7 @@ export interface ThemePluginConfig {
 
   secondaryClass: string
   secondaryButtonClass: string
-  secondaryContainerClass: string
+  secondaryContainerClass: string // almost exactly the same as primaryContainerClass... rename to just mutedClass?... get rid of this container business
   secondaryContainerButtonClass: string
 
   tertiaryClass: string
@@ -65,7 +65,6 @@ const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root
 const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]'
 const neutralBgClass = 'bg-gray-500/7' // TODO: deal with this!!!... what is it used for ?
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // TODO: deal with this!!!... ugly dark grey... rethink
-const highlightBgClass = 'bg-cyan-100/40 dark:bg-blue-500/20' // shadcn "chart-1", fallback to "accent"
 const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20'
 const transparentStrongBgClass = 'bg-gray-500/30' // the touch-SELECTED version of above. use color-mix to make bolder?
 
@@ -121,8 +120,8 @@ export function createThemePlugin({
   const getWeekNumberBadgeClasses = (data: { hasNavLink: boolean, isCompact: boolean }) => [
     'rounded-full h-[1.8em] flex flex-row items-center', // match height of daynumber
     data.hasNavLink
-      ? props.secondaryButtonClass
-      : props.secondaryContainerClass,
+      ? props.primaryContainerButtonClass
+      : props.primaryContainerClass,
     data.isCompact
       ? `${xxsTextClass} px-1`
       : 'text-sm px-2'
@@ -189,7 +188,7 @@ export function createThemePlugin({
 
       buttonGroupClass: (data) => [
         'items-center isolate rounded-full',
-        data.isViewGroup && props.secondaryContainerClass,
+        data.isViewGroup && props.primaryContainerClass,
       ],
       buttonClass: (data) => [
         'inline-flex items-center justify-center py-3 text-sm rounded-full',
@@ -200,7 +199,7 @@ export function createThemePlugin({
         (data.isIconOnly || (data.inGroup && !data.isSelected))
           ? transparentPressableClass
           : data.isDisabled
-            ? props.disabledButtonClass
+            ? props.primaryContainerClass
             : props.primaryButtonClass,
       ],
 
@@ -218,7 +217,7 @@ export function createThemePlugin({
         data.isHeader ? 'border-transparent' : borderColorClass,
       ],
       nonBusinessClass: neutralBgClass,
-      highlightClass: highlightBgClass,
+      highlightClass: props.highlightClass,
 
       eventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
       eventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
@@ -273,8 +272,8 @@ export function createThemePlugin({
         '-end-1',
       ],
       rowEventColorClass: (data) => [
-        data.isStart && 'rounded-s-md',
-        data.isEnd && 'rounded-e-md',
+        data.isStart && 'rounded-s-sm',
+        data.isEnd && 'rounded-e-sm',
         (!data.isStart && !data.isEnd) // arrows on both sides
           ? '[clip-path:polygon(0_50%,6px_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,6px_100%)]'
           : !data.isStart // just start side
@@ -286,8 +285,8 @@ export function createThemePlugin({
         'flex-row items-center',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
-      rowEventTimeClass: 'p-0.5 font-bold',
-      rowEventTitleClass: 'p-0.5',
+      rowEventTimeClass: 'p-1 font-bold',
+      rowEventTitleClass: 'p-1',
 
       columnEventClass: 'mb-px', // space from slot line
       columnEventBeforeClass: (data) => data.isStartResizable && [
@@ -299,8 +298,8 @@ export function createThemePlugin({
         '-bottom-1',
       ],
       columnEventColorClass: (data) => [
-        data.isStart && 'rounded-t-md',
-        data.isEnd && 'rounded-b-md',
+        data.isStart && 'rounded-t-sm',
+        data.isEnd && 'rounded-b-sm',
         (data.level || data.isDragging) && 'outline outline-(--fc-canvas-color)',
       ],
       columnEventInnerClass: (data) => [
@@ -308,9 +307,9 @@ export function createThemePlugin({
           ? 'flex-row gap-1' // one line
           : 'flex-col gap-px', // two lines
       ],
-      columnEventTimeClass: 'text-xs order-1', // TODO: order won't work in react native!
+      columnEventTimeClass: 'p-1 text-xs order-1', // TODO: order won't work in react native!
       columnEventTitleClass: (data) => [
-        data.isCompact ? xxsTextClass : 'py-px text-xs',
+        data.isCompact ? xxsTextClass : 'p-1 text-xs',
       ],
       columnEventTitleSticky: false, // because time below title, sticky looks bad
 

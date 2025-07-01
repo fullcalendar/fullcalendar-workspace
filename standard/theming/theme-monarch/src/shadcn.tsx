@@ -25,8 +25,8 @@ const themePlugin = createThemePlugin({
   tertiaryContainerClass: tertiaryClass,
   tertiaryContainerButtonClass: tertiaryButtonClass,
 
-  disabledButtonClass: 'bg-muted text-muted-foreground', // TODO: do 50% opacity?
-  highlightClass: 'bg-primary opacity-50',
+  disabledButtonClass: 'bg-muted text-muted-foreground',
+  highlightClass: 'bg-primary opacity-10',
 
   borderColorClass: '', // border-color is set globally
   majorBorderColorClass: 'border-ring',

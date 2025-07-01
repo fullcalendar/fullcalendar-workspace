@@ -17,7 +17,7 @@ const todayBgClass = 'bg-yellow-400/15 dark:bg-yellow-200/10'
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
 const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
-const borderColorClass = 'border-gray-300 dark:border-gray-800'
+const borderColorClass = 'border-[#ddd] dark:border-gray-800'
 const borderClass = `border ${borderColorClass}` // all sides
 
 const cellPaddingClass = 'px-1 py-0.5'
@@ -83,7 +83,7 @@ const floatingWeekNumberClasses: CalendarOptions = {
     neutralBgClass,
   ],
   weekNumberInnerClass: (data) => [
-    data.isCompact && xxsTextClass,
+    data.isCompact ? xxsTextClass : 'text-sm',
     'opacity-60 text-center',
   ],
 }
@@ -97,7 +97,7 @@ const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean }) =>
 const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
   'flex flex-col',
   cellPaddingClass,
-  data.isCompact && xxsTextClass,
+  data.isCompact ? xxsTextClass : 'text-sm',
 ]
 
 const getSlotClasses = (data: { isMinor: boolean }) => [
@@ -108,7 +108,7 @@ const getSlotClasses = (data: { isMinor: boolean }) => [
 export default createPlugin({
   name: '<%= pkgName %>', // TODO
   optionDefaults: {
-    eventColor: 'var(--color-blue-500)',
+    eventColor: '#3788d8',
     eventContrastColor: 'var(--color-white)',
     backgroundEventColor: 'var(--color-green-500)',
 
@@ -296,7 +296,7 @@ export default createPlugin({
     dayCellTopInnerClass: (data) => [
       'p-1',
       data.hasMonthLabel && 'text-base font-bold',
-      data.isCompact && xxsTextClass,
+      data.isCompact ? xxsTextClass : 'text-sm',
     ],
 
     allDayDividerClass: `border-y ${borderColorClass} pb-0.5 ${neutralBgClass}`,
@@ -322,14 +322,14 @@ export default createPlugin({
       data.isSticky && 'bg-(--fc-canvas-color)', // base color for overlaid "before" color
     ],
     listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgClass}`,
-    listDayHeaderInnerClass: `relative ${listItemPaddingClass}`, // above the "before" element
+    listDayHeaderInnerClass: `relative ${listItemPaddingClass} text-sm`, // above the "before" element
 
     resourceDayHeaderClass: getDayHeaderClasses,
     resourceDayHeaderInnerClass: getDayHeaderInnerClasses,
 
     resourceAreaHeaderRowClass: borderClass,
     resourceAreaHeaderClass: `${borderClass} items-center`, // valign
-    resourceAreaHeaderInnerClass: 'p-2',
+    resourceAreaHeaderInnerClass: 'p-2 text-sm',
 
     resourceAreaDividerClass: `border-x ${borderColorClass} pl-0.5 ${neutralBgClass}`,
 
@@ -337,11 +337,11 @@ export default createPlugin({
     resourceAreaRowClass: borderClass,
 
     resourceGroupHeaderClass: neutralBgClass,
-    resourceGroupHeaderInnerClass: 'p-2',
+    resourceGroupHeaderInnerClass: 'p-2 text-sm',
     resourceGroupLaneClass: [borderClass, neutralBgClass],
 
     resourceCellClass: borderClass,
-    resourceCellInnerClass: 'p-2',
+    resourceCellInnerClass: 'p-2 text-sm',
 
     resourceExpanderClass: 'self-center relative -top-px start-1 opacity-65', // HACK: relative 1px shift up
     resourceExpanderContent: (data) => data.isExpanded
@@ -380,13 +380,13 @@ export default createPlugin({
       allDayHeaderInnerClass: (data) => [
         axisInnerClass,
         'whitespace-pre', // respects line-breaks in locale data
-        data.isCompact && xxsTextClass,
+        data.isCompact ? xxsTextClass : 'text-sm',
       ],
 
       weekNumberClass: `${axisClass} items-center`,
       weekNumberInnerClass: (data) => [
         axisInnerClass,
-        data.isCompact && xxsTextClass,
+        data.isCompact ? xxsTextClass : 'text-sm',
       ],
 
       columnMoreLinkClass: `mb-px rounded-xs outline outline-(--fc-canvas-color) ${moreLinkBgClass}`,
@@ -396,7 +396,7 @@ export default createPlugin({
       slotLabelInnerClass: (data) => [
         axisInnerClass,
         'min-h-[1.5em]',
-        data.isCompact && xxsTextClass,
+        data.isCompact ? xxsTextClass : 'text-sm',
       ],
 
       slotLabelDividerClass: `border-l ${borderColorClass}`,
@@ -426,7 +426,7 @@ export default createPlugin({
       rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
       slotLabelClass: 'justify-center',
-      slotLabelInnerClass: 'p-1',
+      slotLabelInnerClass: 'p-1 text-sm',
 
       slotLabelDividerClass: `border-b ${borderColorClass}`,
 
@@ -437,8 +437,11 @@ export default createPlugin({
       listItemEventClass: `group gap-3 not-last:border-b ${borderColorClass} ${listItemPaddingClass}`,
       listItemEventColorClass: 'border-5', // 10px diameter circle
       listItemEventInnerClass: '[display:contents]',
-      listItemEventTimeClass: 'order-[-1] w-[165px]', // send to start
-      listItemEventTitleClass: (data) => data.event.url && 'group-hover:underline',
+      listItemEventTimeClass: 'order-[-1] w-[165px] text-sm', // send to start
+      listItemEventTitleClass: (data) => [
+        'text-sm',
+        data.event.url && 'group-hover:underline',
+      ],
 
       noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center ${neutralBgClass}`,
     },

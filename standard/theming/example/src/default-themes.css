@@ -25,7 +25,7 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-disabled: rgba(29, 27, 32, .12);
   --fc-monarch-on-disabled: rgba(29, 27, 32, .38);
   --fc-monarch-outline: #79747E;
-  --fc-monarch-outline-variant: #CAC4D0;
+  --fc-monarch-outline-variant: #dedce1; /* original too dark: #CAC4D0; */
 }
 .fc-monarch-purple-dark {
   --fc-monarch-primary: #D0BCFF;
@@ -45,7 +45,7 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-disabled: rgba(230, 224, 233, .12);
   --fc-monarch-on-disabled: rgba(230, 224, 233, .38);
   --fc-monarch-outline: #938F99;
-  --fc-monarch-outline-variant: #49454F;
+  --fc-monarch-outline-variant: #323036; /* original too light: #49454F; */
 }
 
 .fc-monarch-red {

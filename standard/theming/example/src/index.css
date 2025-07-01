@@ -3,8 +3,6 @@
 @import "tw-animate-css";
 
 @source "../node_modules/@fullcalendar/theme-classic/src/tailwind.ts";
-@source "../node_modules/@fullcalendar/theme-classic/src/shadcn.ts";
-@source "../node_modules/@fullcalendar/theme-classic/src/mui.ts";
 
 @source "../node_modules/@fullcalendar/theme-monarch/src/base.tsx";
 @source "../node_modules/@fullcalendar/theme-monarch/src/tailwind.tsx";

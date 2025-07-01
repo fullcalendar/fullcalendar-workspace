@@ -69,8 +69,6 @@ import monarchShadcnTheme from '@fullcalendar/theme-monarch/shadcn'
 import monarchMuiTheme from '@fullcalendar/theme-monarch/mui'
 // > Classic
 import classicTailwindTheme from '@fullcalendar/theme-classic/tailwind'
-import classicShadcnTheme from '@fullcalendar/theme-classic/shadcn'
-import classicMuiTheme from '@fullcalendar/theme-classic/mui'
 
 // utils for our example
 import { getMuiTheme } from './mui-themes.js'
@@ -127,8 +125,8 @@ const themePluginMap = {
   },
   classic: {
     fc: classicTailwindTheme,
-    shadcn: classicShadcnTheme,
-    mui: classicMuiTheme,
+    shadcn: classicTailwindTheme, // dup
+    mui: classicTailwindTheme, // dup
   }
 }
 
@@ -149,14 +147,16 @@ export default function App() {
   const [colorScheme, setColorScheme] = useLocalStorageState<'light' | 'dark'>('colorScheme', 'light', colorSchemeValues)
 
   const exampleClassName =
-    componentLib === 'shadcn' ? 'border rounded-xl' :
-      componentLib === 'mui' ? 'border rounded-lg' : ''
+    theme === 'monarch' ? (
+      componentLib === 'shadcn' ? 'border rounded-xl' :
+        componentLib === 'mui' ? 'border rounded-lg' : ''
+    ) : ''
 
   const ToolbarComponent =
     componentLib === 'shadcn' ? ShadcnToolbar :
       componentLib === 'mui' ? MuiToolbar : undefined
 
-  const borderless = componentLib !== 'fc'
+  const borderless = theme === 'monarch' && componentLib !== 'fc'
 
   const themePlugin = (themePluginMap as any)[theme]?.[componentLib] || monarchTailwindTheme
 
@@ -305,6 +305,7 @@ export default function App() {
               initialView='timeGridWeek'
               className={exampleClassName}
               borderless={borderless}
+              theme={theme}
               themePlugin={themePlugin}
               colorScheme={colorScheme}
               ToolbarComponent={ToolbarComponent}
@@ -312,6 +313,7 @@ export default function App() {
             <StandardExample
               className={exampleClassName}
               borderless={borderless}
+              theme={theme}
               themePlugin={themePlugin}
               colorScheme={colorScheme}
               ToolbarComponent={ToolbarComponent}
@@ -319,6 +321,7 @@ export default function App() {
             <PremiumExample
               className={exampleClassName}
               borderless={borderless}
+              theme={theme}
               themePlugin={themePlugin}
               colorScheme={colorScheme}
               ToolbarComponent={ToolbarComponent}
@@ -332,13 +335,17 @@ export default function App() {
 
 interface ToolbarProps {
   controller: CalendarController
+  borderless: boolean
   buttons: ButtonStateMap
   availableViews: string[]
 }
 
-function ShadcnToolbar({ controller, buttons, availableViews }: ToolbarProps) {
+function ShadcnToolbar({ controller, borderless, buttons, availableViews }: ToolbarProps) {
   return (
-    <div className='flex items-center p-3 justify-between'>
+    <div className={cn(
+      'flex items-center justify-between py-3',
+      borderless && 'px-3',
+    )}>
       <div className='flex items-center gap-2'>
         <Button
           onClick={() => controller.today()}
@@ -382,9 +389,12 @@ function ShadcnToolbar({ controller, buttons, availableViews }: ToolbarProps) {
   )
 }
 
-function MuiToolbar({ controller, buttons, availableViews }: ToolbarProps) {
+function MuiToolbar({ controller, borderless, buttons, availableViews }: ToolbarProps) {
   return (
-    <div className='flex items-center p-3 justify-between'>
+    <div className={cn(
+      'flex items-center justify-between py-3',
+      borderless && 'px-3',
+    )}>
       <div className='flex items-center gap-2'>
         <MuiButton
           onClick={() => controller.today()}
@@ -424,6 +434,7 @@ function MuiToolbar({ controller, buttons, availableViews }: ToolbarProps) {
 interface ExampleProps {
   className: string
   borderless: boolean
+  theme: string
   themePlugin: PluginDef
   colorScheme: 'light' | 'dark'
   ToolbarComponent?: React.ComponentType<ToolbarProps>
@@ -447,6 +458,7 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
       {ToolbarComponent && (
         <ToolbarComponent
           controller={controller}
+          borderless={props.borderless}
           buttons={buttons}
           availableViews={standardAvailableViews}
         />
@@ -486,12 +498,23 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
         dayMaxEvents={true}
         // businessHours={true} // -- TODO: background conflicts with the week number pills!!!
         // eventMaxStack={1}
-        listDayFormat={{ day: 'numeric' }}
-        listDaySideFormat={{ month: 'short', weekday: 'short', forceCommas: true }}
+        listDayFormat={
+          // messed up
+          props.theme === 'monarch'
+            ? { day: 'numeric' }
+            : {}
+        }
+        listDaySideFormat={
+          // messed up
+          props.theme === 'monarch'
+            ? { month: 'short', weekday: 'short', forceCommas: true }
+            : {}
+        }
         views={{
-          timeGrid: {
-            slotDuration: '01:00',
-          },
+          timeGrid:
+            props.theme === 'monarch'
+              ? { slotDuration: '01:00' }
+              : {}
         }}
         events='https://fullcalendar.io/api/demo-feeds/events.json?overload-day'
       />
@@ -514,6 +537,7 @@ function PremiumExample(props: ExampleProps) {
       {ToolbarComponent && (
         <ToolbarComponent
           controller={controller}
+          borderless={props.borderless}
           buttons={buttons}
           availableViews={premiumAvailableViews}
         />
