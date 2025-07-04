@@ -1,21 +1,6 @@
 import { CalendarOptions, createPlugin, PluginDef } from '@fullcalendar/core'
-import { createElement, Fragment } from '@fullcalendar/core/preact'
+// import { createElement, Fragment } from '@fullcalendar/core/preact'
 import * as svgIcons from './svgIcons.js'
-
-/*
-TODO: segmented buttons:
-https://m3.material.io/components/segmented-buttons/overview
-
-What font is this?
-https://react-native-big-calendar.vercel.app/?path=/story/showcase-desktop--three-days-mode
-
-TODO: refine roundedness of events, spacing within
-TODO: hover effect on timegrid header is weird
-TODO: more rounded more-links
-TODO: more rounded mini-calendars
-TODO: rename transparent* to ghost*
-TODO: rename disabled* to muted*
-*/
 
 // Will import ambient types during dev but strip out for build
 import type {} from '@fullcalendar/timegrid'
@@ -25,48 +10,24 @@ import type {} from '@fullcalendar/multimonth'
 import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
-export interface ThemePluginConfig {
-  primaryClass: string
-  primaryButtonClass: string
-  primaryContainerClass: string
-  primaryContainerButtonClass: string
+const xxsTextClass = 'text-[0.7rem]/[1.25]'
+const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
 
-  secondaryClass: string
-  secondaryButtonClass: string
-  secondaryContainerClass: string // almost exactly the same as primaryContainerClass... rename to just mutedClass?... get rid of this container business
-  secondaryContainerButtonClass: string
+const neutralBgClass = 'bg-gray-500/10'
+const todayBgClass = 'bg-yellow-400/15 dark:bg-yellow-200/10'
+const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
-  tertiaryClass: string
-  tertiaryButtonClass: string
-  tertiaryContainerClass: string
-  tertiaryContainerButtonClass: string
+const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
+const borderColorClass = 'border-[#ddd] dark:border-gray-800'
+const borderClass = `border ${borderColorClass}` // all sides
 
-  disabledButtonClass: string
-  highlightClass: string
-  // TODO: business hours
+const cellPaddingClass = 'px-1 py-0.5'
+const listItemPaddingClass = 'px-3 py-2' // list-day-header and list-item-event
+const dayGridItemClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-link
 
-  borderColorClass: string
-  majorBorderColorClass: string
-  alertBorderColorClass: string
-
-  eventColor: string
-  eventContrastColor: string
-  backgroundEventColor: string
-  backgroundEventContrastColor: string
-}
-
-/*
-shadcn
-  muted - business hours?
-  accent - bg events?
-*/
-
-const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
-const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]'
-const neutralBgClass = 'bg-gray-500/7' // TODO: deal with this!!!... what is it used for ?
-const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // TODO: deal with this!!!... ugly dark grey... rethink
-const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20'
-const transparentStrongBgClass = 'bg-gray-500/30' // the touch-SELECTED version of above. use color-mix to make bolder?
+// timegrid axis
+const axisClass = 'justify-end' // align axisInner right
+const axisInnerClass = `${cellPaddingClass} text-end` // align text right when multiline
 
 // transparent resizer for mouse
 // must have 'group' on the event, for group-hover
@@ -79,84 +40,92 @@ const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border
 const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
 const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
+const continuationArrowClass = 'relative z-10 mx-px border-y-[5px] border-y-transparent opacity-50'
+
 // applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
-const rowItemBaseClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-link
-const rowItemClasses: CalendarOptions = {
-  listItemEventClass: rowItemBaseClass,
+const dayGridClasses: CalendarOptions = {
+  listItemEventClass: [dayGridItemClass, 'p-px'],
   listItemEventColorClass: (data) => [
-    'border-4', // 8px diameter circle
     data.isCompact ? 'mx-px' : 'mx-1',
+    'border-4', // 8px diameter circle
   ],
-  listItemEventInnerClass: (data) => data.isCompact ? xxsTextClass : 'text-xs',
-  listItemEventTimeClass: 'p-0.5',
-  listItemEventTitleClass: 'p-0.5 font-bold',
+  listItemEventInnerClass: (data) => [
+    'flex flex-row items-center', // as opposed to display:contents
+    data.isCompact ? xxsTextClass : 'text-xs',
+  ],
+  listItemEventTimeClass: 'p-px',
+  listItemEventTitleClass: 'p-px font-bold',
+
+  rowEventClass: (data) => [
+    data.isStart && 'ms-0.5',
+    data.isEnd && 'me-0.5',
+  ],
+  rowEventColorClass: (data) => [
+    data.isStart && 'rounded-s-sm',
+    data.isEnd && 'rounded-e-sm',
+  ],
 
   rowMoreLinkClass: (data) => [
-    rowItemBaseClass,
-    transparentPressableClass,
-    'p-0.5',
-    data.isCompact && 'border border-blue-500', // looks like bordered event
+    dayGridItemClass,
+    data.isCompact
+      ? 'border border-blue-500' // looks like bordered event
+      : 'self-start p-px',
+    'hover:bg-gray-500/20', // matches list-item hover
   ],
   rowMoreLinkInnerClass: (data) => [
+    'p-px',
     data.isCompact ? xxsTextClass : 'text-xs',
   ],
 }
 
-/*
-TODO: hook up highlightColor
-*/
-export function createThemePlugin({
-  borderColorClass,
-  majorBorderColorClass,
-  alertBorderColorClass,
-  eventColor,
-  eventContrastColor,
-  backgroundEventColor,
-  ...props
-}: ThemePluginConfig): PluginDef {
-  const borderClass = `border ${borderColorClass}` // all sides
-  const majorBorderClass = `border ${majorBorderColorClass}`
+const floatingWeekNumberClasses: CalendarOptions = {
+  weekNumberClass: [
+    'absolute z-20 top-0 start-0 rounded-ee-sm p-0.5 min-w-[1.5em]',
+    neutralBgClass,
+  ],
+  weekNumberInnerClass: (data) => [
+    data.isCompact ? xxsTextClass : 'text-sm',
+    'opacity-60 text-center',
+  ],
+}
 
-  const getWeekNumberBadgeClasses = (data: { hasNavLink: boolean, isCompact: boolean }) => [
-    'rounded-full h-[1.8em] flex flex-row items-center', // match height of daynumber
-    data.hasNavLink
-      ? props.primaryContainerButtonClass
-      : props.primaryContainerClass,
-    data.isCompact
-      ? `${xxsTextClass} px-1`
-      : 'text-sm px-2'
-  ]
+const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean }) => [
+  'items-center justify-center',
+  data.isMajor ? majorBorderClass : borderClass,
+  data.isDisabled && neutralBgClass,
+]
 
-  const rowWeekNumberClasses: CalendarOptions = {
-    weekNumberClass: (data) => [
-      data.isCell
-        ? props.secondaryContainerClass
-        : 'absolute z-20 ' + (data.isCompact ? 'top-1 start-0.5' : 'top-2 start-1'),
-    ],
-    weekNumberInnerClass: (data) => data.isCell
-      ? '' // TODO: cell styles
-      : getWeekNumberBadgeClasses(data)
-  }
+const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
+  'flex flex-col',
+  cellPaddingClass,
+  data.isCompact ? xxsTextClass : 'text-sm',
+]
 
-  const axisWeekNumberClasses: CalendarOptions = {
-    weekNumberClass: 'items-center justify-end',
-    weekNumberInnerClass: getWeekNumberBadgeClasses,
-  }
+const getSlotClasses = (data: { isMinor: boolean }) => [
+  borderClass,
+  data.isMinor && 'border-dotted',
+]
 
+export interface ThemePluginConfig {
+}
+
+export function createThemePlugin({}: ThemePluginConfig): PluginDef {
   return createPlugin({
     name: '<%= pkgName %>', // TODO
     optionDefaults: {
-      eventColor,
-      eventContrastColor,
-      backgroundEventColor,
-      //  backgroundEventContrastColor, --- TODO
-      // eventDisplay: 'block',
+      eventColor: '#3788d8',
+      eventContrastColor: 'var(--color-white)',
+      backgroundEventColor: 'var(--color-green-500)',
 
-      className: `${borderClass} rounded-xl overflow-hidden`,
+      className: 'gap-5',
 
-      tableHeaderClass: (data) => data.isSticky && `bg-(--fc-canvas-color) border-b ${borderColorClass}`,
+      viewClass: borderClass,
+      tableHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
 
-      toolbarClass: 'p-4 items-center gap-3',
+      toolbarClass: (data) => [
+        'items-center gap-3',
+        data.borderlessX && 'px-3', // space from edge
+      ],
       toolbarSectionClass: (data) => [
         'items-center gap-3',
         data.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto', // nicer wrapping
@@ -186,39 +155,38 @@ export function createThemePlugin({
         },
       },
 
-      buttonGroupClass: (data) => [
-        'items-center isolate rounded-full',
-        data.isViewGroup && props.primaryContainerClass,
-      ],
+      buttonGroupClass: 'items-center isolate',
       buttonClass: (data) => [
-        'inline-flex items-center justify-center py-3 text-sm rounded-full',
-        data.inGroup && 'relative active:z-20 focus:z-20',
-        data.isSelected ? 'z-10' : 'z-0',
-        data.isDisabled && `pointer-events-none`, // bypass hover styles
-        data.isIconOnly ? 'px-3' : 'px-5',
-        (data.isIconOnly || (data.inGroup && !data.isSelected))
-          ? transparentPressableClass
-          : data.isDisabled
-            ? props.primaryContainerClass
-            : props.primaryButtonClass,
+        'inline-flex items-center px-3 py-2 border-x',
+        'focus:outline-3 outline-slate-600/50',
+        'hover:border-slate-900 active:border-slate-900 print:border-slate-900',
+        'hover:bg-slate-800 active:bg-slate-800 print:bg-white',
+        'text-sm text-white print:text-black',
+        data.inGroup
+          ? 'first:rounded-s-sm last:rounded-e-sm relative active:z-20 focus:z-20'
+          : 'rounded-sm',
+        data.isSelected // implies inGroup
+          ? 'z-10 border-slate-900 bg-slate-800'
+          : 'z-0 border-transparent bg-slate-700',
+        data.isDisabled
+          && 'opacity-65 pointer-events-none', // bypass hover styles
       ],
 
-      popoverClass: `${borderClass} rounded-lg bg-(--fc-canvas-color) shadow-lg m-2`,
-      popoverHeaderClass: `justify-between items-center px-1 py-1`,
-      popoverCloseClass: `absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center ${transparentPressableClass}`,
+      popoverClass: `${borderClass} bg-(--fc-canvas-color) shadow-md`,
+      popoverHeaderClass: `flex flex-row justify-between items-center px-1 py-1 ${neutralBgClass}`,
       popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
-      popoverBodyClass: 'p-2 min-w-3xs',
+      popoverBodyClass: 'p-2 min-w-[220px]',
+
+      navLinkClass: 'hover:underline',
 
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
       // misc BG
-      fillerClass: (data) => [
-        'opacity-50 border',
-        data.isHeader ? 'border-transparent' : borderColorClass,
-      ],
+      fillerClass: `${borderClass} opacity-50`,
       nonBusinessClass: neutralBgClass,
-      highlightClass: props.highlightClass,
+      highlightClass: 'bg-cyan-100/40 dark:bg-blue-500/20',
 
+      eventClass: (data) => data.event.url && 'hover:no-underline',
       eventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
       eventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
@@ -231,38 +199,33 @@ export function createThemePlugin({
       listItemEventClass: (data) => [
         'items-center',
         data.isSelected
-          ? transparentStrongBgClass // touch-selected
-          : transparentPressableClass,
+          ? 'bg-gray-500/40' // touch-selected
+          : 'hover:bg-gray-500/20 focus:bg-gray-500/30',
         (data.isSelected && data.isDragging) && 'shadow-sm', // touch-dragging
       ],
       // Dot uses border instead of bg because it shows up in print
       // Views must decide circle radius via border thickness
       listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
-      listItemEventInnerClass: 'flex flex-row items-center',
 
       blockEventClass: (data) => [
         'relative', // for absolute-positioned color
         'group', // for focus and hover
+        'p-px',
         (data.isDragging && !data.isSelected) && 'opacity-75',
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
           : 'focus:shadow-md',
       ],
       blockEventColorClass: (data) => [
-        'absolute z-0 inset-0',
-        'bg-(--fc-event-color) print:bg-white',
-        'print:border print:border-(--fc-event-color)',
+        'absolute z-0 inset-0 bg-(--fc-event-color)',
+        'print:border print:border-(--fc-event-color) print:bg-white',
         data.isSelected
           ? 'brightness-75'
           : 'group-focus:brightness-75',
       ],
-      blockEventInnerClass: 'relative z-10 flex text-(--fc-event-contrast-color)',
+      blockEventInnerClass: 'relative z-10 text-(--fc-event-contrast-color) print:text-black flex',
 
-      rowEventClass: (data) => [
-        'mb-px', // space between events
-        data.isStart ? 'ms-px' : 'ps-2',
-        data.isEnd ? 'me-px' : 'pe-2',
-      ],
+      rowEventClass: 'mb-px', // space between events
       rowEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-start-1',
@@ -272,21 +235,15 @@ export function createThemePlugin({
         '-end-1',
       ],
       rowEventColorClass: (data) => [
-        data.isStart && 'rounded-s-sm',
-        data.isEnd && 'rounded-e-sm',
-        (!data.isStart && !data.isEnd) // arrows on both sides
-          ? '[clip-path:polygon(0_50%,6px_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,6px_100%)]'
-          : !data.isStart // just start side
-            ? '[clip-path:polygon(0_50%,6px_0,100%_0,100%_100%,6px_100%)]'
-            : !data.isEnd // just end side
-              && '[clip-path:polygon(0_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,0_100%)]',
+        !data.isStart && 'print:border-s-0',
+        !data.isEnd && 'print:border-e-0',
       ],
       rowEventInnerClass: (data) => [
         'flex-row items-center',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
-      rowEventTimeClass: 'p-1 font-bold',
-      rowEventTitleClass: 'p-1',
+      rowEventTimeClass: 'p-px font-bold',
+      rowEventTitleClass: 'p-px start-0', // `start` for stickiness
 
       columnEventClass: 'mb-px', // space from slot line
       columnEventBeforeClass: (data) => data.isStartResizable && [
@@ -303,15 +260,16 @@ export function createThemePlugin({
         (data.level || data.isDragging) && 'outline outline-(--fc-canvas-color)',
       ],
       columnEventInnerClass: (data) => [
+        'p-px',
         data.isCompact
           ? 'flex-row gap-1' // one line
           : 'flex-col gap-px', // two lines
       ],
-      columnEventTimeClass: 'p-1 text-xs order-1', // TODO: order won't work in react native!
+      columnEventTimeClass: xxsTextClass,
       columnEventTitleClass: (data) => [
-        data.isCompact ? xxsTextClass : 'p-1 text-xs',
+        'top-0', // top for stickiness
+        data.isCompact ? xxsTextClass : 'py-px text-xs',
       ],
-      columnEventTitleSticky: false, // because time below title, sticky looks bad
 
       // MultiMonth
       singleMonthClass: (data) => data.colCount > 1 && 'm-4',
@@ -325,117 +283,60 @@ export function createThemePlugin({
       ],
 
       dayHeaderRowClass: borderClass,
-      dayHeaderClass: (data) => [
-        data.isDisabled && neutralBgClass,
-        'items-center',
-      ],
-      dayHeaderInnerClass: (data) => [
-        'group pt-2 flex flex-col items-center',
-        data.isCompact && xxsTextClass,
-      ],
-      dayHeaderContent: (data) => (
-        <Fragment>
-          {data.weekdayText && (
-            <div className={
-              'uppercase text-xs opacity-60' +
-                (data.hasNavLink ? ' group-hover:opacity-90' : '')
-            }>{data.weekdayText}</div>
-          )}
-          {data.dayNumberText && (
-            <div
-              className={
-                'm-0.5 flex flex-row items-center justify-center text-lg h-[2em]' +
-                (data.isToday
-                  ? ` w-[2em] rounded-full ${data.hasNavLink ? props.primaryButtonClass : props.primaryClass}`
-                  : data.hasNavLink
-                    ? ` w-[2em] rounded-full ${transparentPressableClass}`
-                    : '')
-              }
-            >{data.dayNumberText}</div>
-          )}
-        </Fragment>
-      ),
+      dayHeaderClass: getDayHeaderClasses,
+      dayHeaderInnerClass: getDayHeaderInnerClasses,
+      dayHeaderDividerClass: ['border-t', borderColorClass],
 
       dayRowClass: borderClass,
       dayCellClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
+        data.isToday && todayBgClass,
         data.isDisabled && neutralBgClass,
       ],
       dayCellTopClass: (data) => [
-        'flex flex-row',
-        data.isCompact ? 'justify-end' : 'justify-center',
+        'flex flex-row justify-end',
         'min-h-[2px]', // effectively 2px top padding when no day-number
         data.isOther && 'opacity-30',
       ],
       dayCellTopInnerClass: (data) => [
-        'flex flex-row items-center justify-center w-[1.8em] h-[1.8em] rounded-full',
-        data.isToday
-          ? (data.hasNavLink ? props.primaryButtonClass : props.primaryContainerClass)
-          : data.hasNavLink && transparentPressableClass,
+        'p-1',
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
-        !data.isCompact && 'm-2',
       ],
 
-      allDayDividerClass: `border-t ${borderColorClass}`,
+      allDayDividerClass: `border-y ${borderColorClass} pb-0.5 ${neutralBgClass}`,
 
       dayLaneClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
+        data.isToday && todayBgClass,
         data.isDisabled && neutralBgClass,
       ],
       dayLaneInnerClass: (data) => data.isSimple
         ? 'm-1' // simple print-view
         : 'ms-0.5 me-[2.5%]',
 
-      slotLaneClass: (data) => [
-        borderClass,
-        data.isMinor && 'border-dotted',
-      ],
+      slotLabelRowClass: borderClass, // Timeline
+      slotLabelAlign: 'center',
+      slotLabelClass: getSlotClasses,
+      slotLaneClass: getSlotClasses,
 
-      listDayClass: `flex flex-row items-start not-last:border-b ${borderColorClass}`,
-      listDayHeaderClass: 'flex flex-row items-center w-40',
-      listDayHeaderInnerClass: (data) => !data.level
-        ? 'm-2 flex flex-row items-center text-lg group' // primary
-        : 'uppercase text-xs hover:underline', // secondary
-      listDayHeaderContent: (data) => !data.level ? (
-        <Fragment>
-          {data.textParts.map((textPart) => ( // primary
-            textPart.type === 'day' ? (
-              <div className={
-                'flex flex-row items-center justify-center w-[2em] h-[2em] rounded-full' +
-                  (data.isToday
-                    ? (' ' + (data.hasNavLink ? props.primaryButtonClass : props.primaryContainerClass))
-                    : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
-              }>{textPart.value}</div>
-            ) : (
-              <div className='whitespace-pre'>{textPart.value}</div>
-            )
-          ))}
-        </Fragment>
-      ) : (
-        data.text // secondary
-      ),
-      listDayEventsClass: 'flex-grow flex flex-col py-2',
-      // events defined in views.list.listItemEvent* below...
-
-      nowIndicatorLineClass: `-m-px border-1 ${alertBorderColorClass}`,
-      nowIndicatorDotClass: `rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 ${alertBorderColorClass}`,
-
-      resourceDayHeaderClass: (data) => [
-        data.isMajor ? majorBorderClass : borderClass,
-        data.isDisabled && neutralBgClass,
-        'items-center',
+      listDayClass: `not-last:border-b ${borderColorClass}`,
+      listDayHeaderClass: (data) => [
+        `flex flex-row justify-between border-b ${borderColorClass} font-bold`,
+        'relative', // for overlaid "before" color
+        data.isSticky && 'bg-(--fc-canvas-color)', // base color for overlaid "before" color
       ],
-      resourceDayHeaderInnerClass: (data) => [
-        'py-2 flex flex-col',
-        data.isCompact ? xxsTextClass : 'text-sm',
-      ],
+      listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgClass}`,
+      listDayHeaderInnerClass: `relative ${listItemPaddingClass} text-sm`, // above the "before" element
+
+      resourceDayHeaderClass: getDayHeaderClasses,
+      resourceDayHeaderInnerClass: getDayHeaderInnerClasses,
 
       resourceAreaHeaderRowClass: borderClass,
       resourceAreaHeaderClass: `${borderClass} items-center`, // valign
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
 
-      resourceAreaDividerClass: `border-s ${borderColorClass}`, // TODO: put bigger hit area inside
+      resourceAreaDividerClass: `border-x ${borderColorClass} pl-0.5 ${neutralBgClass}`,
 
       // For both resources & resource groups
       resourceAreaRowClass: borderClass,
@@ -447,13 +348,10 @@ export function createThemePlugin({
       resourceCellClass: borderClass,
       resourceCellInnerClass: 'p-2 text-sm',
 
-      resourceExpanderClass: (data) => [
-        'self-center w-6 h-6 flex flex-row items-center justify-center rounded-full text-sm relative start-1',
-        transparentPressableClass,
-        data.isExpanded ? 'rotate-90' :
-          data.direction === 'rtl' && 'rotate-180',
-      ],
-      resourceExpanderContent: () => svgIcons.chevronRight('w-[1.25em] h-[1.25em] opacity-65'),
+      resourceExpanderClass: 'self-center relative -top-px start-1 opacity-65', // HACK: relative 1px shift up
+      resourceExpanderContent: (data) => data.isExpanded
+        ? svgIcons.minusSquare('w-[1em] h-[1em]')
+        : svgIcons.plusSquare('w-[1em] h-[1em]'),
 
       resourceLaneClass: borderClass,
       resourceLaneBottomClass: (data) => !data.isCompact && 'pb-3',
@@ -463,97 +361,94 @@ export function createThemePlugin({
     },
     views: {
       dayGrid: {
-        ...rowItemClasses,
-        ...rowWeekNumberClasses,
+        ...dayGridClasses,
+        ...floatingWeekNumberClasses,
 
         dayCellBottomClass: 'min-h-[1px]',
       },
       multiMonth: {
-        ...rowItemClasses,
-        ...rowWeekNumberClasses,
+        ...dayGridClasses,
+        ...floatingWeekNumberClasses,
 
-        tableBodyClass: `${borderClass} rounded-sm`,
-        dayHeaderInnerClass: 'mb-2',
         dayCellBottomClass: 'min-h-[1px]',
       },
       timeGrid: {
-        ...rowItemClasses,
-        ...axisWeekNumberClasses,
+        ...dayGridClasses,
 
-        dayRowClass: 'min-h-12', // looks good when matches slotLabelInnerClass
-        dayCellBottomClass: 'min-h-4', // for ALL-DAY
+        dayRowClass: 'min-h-[3em]',
+        dayCellBottomClass: 'min-h-[1em]', // for ALL-DAY
 
-        allDayHeaderClass: 'justify-end items-center', // items-center = valign
+        allDayHeaderClass: [
+          axisClass,
+          'items-center', // valign
+        ],
         allDayHeaderInnerClass: (data) => [
-          'px-2 py-0.5 text-end', // align text right when multiline
+          axisInnerClass,
           'whitespace-pre', // respects line-breaks in locale data
+          data.isCompact ? xxsTextClass : 'text-sm',
+        ],
+
+        weekNumberClass: `${axisClass} items-center`,
+        weekNumberInnerClass: (data) => [
+          axisInnerClass,
           data.isCompact ? xxsTextClass : 'text-sm',
         ],
 
         columnMoreLinkClass: `mb-px rounded-xs outline outline-(--fc-canvas-color) ${moreLinkBgClass}`,
         columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
-        slotLabelClass: (data) => [
-          borderClass,
-          'w-2 self-end justify-end',
-          data.isMinor && 'border-dotted',
-        ],
+        slotLabelClass: axisClass,
         slotLabelInnerClass: (data) => [
-          'ps-2 pe-3 py-0.5 -mt-[1em] text-end', // best -mt- value???
-          'min-h-[3em]',
+          axisInnerClass,
+          'min-h-[1.5em]',
           data.isCompact ? xxsTextClass : 'text-sm',
         ],
 
-        slotLabelDividerClass: (data) => [
-          'border-l',
-          data.isHeader ? 'border-transparent' : borderColorClass,
-        ],
+        slotLabelDividerClass: `border-l ${borderColorClass}`,
+
+        nowIndicatorLabelClass: 'start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] border-s-red-500',
+        nowIndicatorLineClass: 'border-t border-red-500',
       },
       timeline: {
         rowEventClass: [
           'me-px', // space from slot line
+          'items-center', // for aligning continuation arrows
         ],
-        rowEventInnerClass: () => [
-          'gap-1', // large gap, because usually time is *range*, and we have a lot of h space anyway
-          // TODO: find better way to do isSpacious
-          // data.isSpacious
+        rowEventBeforeClass: (data) => !data.isStartResizable && [
+          continuationArrowClass,
+          'border-e-[5px] border-e-black', // pointing to start
+        ],
+        rowEventAfterClass: (data) => !data.isEndResizable && [
+          continuationArrowClass,
+          'border-s-[5px] border-s-black', // pointing to end
+        ],
+        rowEventInnerClass: (data) => [
+          'px-px gap-1', // TODO: put the gap on the global rowEventInnerClass???
+          data.isSpacious ? 'py-1' : 'py-px',
         ],
 
         rowMoreLinkClass: `me-px p-px ${moreLinkBgClass}`,
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
-        slotLabelSticky: '0.5rem',
-        slotLabelClass: (data) => (data.level && !data.isTime)
-          ? [
-            'border border-transparent',
-            'justify-start',
-          ]
-          : [
-            borderClass,
-            'h-2 self-end justify-end',
-          ],
-        slotLabelInnerClass: (data) => (data.level && !data.isTime)
-          ? [
-            // TODO: converge with week-label styles
-            'px-2 py-1 rounded-full text-sm',
-            data.hasNavLink ? props.secondaryButtonClass : props.secondaryContainerClass,
-          ]
-          : 'pb-3 -ms-1 text-sm min-w-14',
-          // TODO: also test lowest-level days
+        slotLabelClass: 'justify-center',
+        slotLabelInnerClass: 'p-1 text-sm',
 
         slotLabelDividerClass: `border-b ${borderColorClass}`,
+
+        nowIndicatorLabelClass: 'top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-t-red-500',
+        nowIndicatorLineClass: 'border-l border-red-500',
       },
       list: {
-        listItemEventClass: 'group rounded-s-xl p-1',
-        listItemEventColorClass: 'border-5 mx-2', // 10px diameter circle
-        listItemEventInnerClass: 'text-sm',
-        listItemEventTimeClass: 'w-40 mx-2',
+        listItemEventClass: `group gap-3 not-last:border-b ${borderColorClass} ${listItemPaddingClass}`,
+        listItemEventColorClass: 'border-5', // 10px diameter circle
+        listItemEventInnerClass: '[display:contents]',
+        listItemEventTimeClass: 'order-[-1] w-[165px] text-sm', // send to start
         listItemEventTitleClass: (data) => [
-          'mx-2',
+          'text-sm',
           data.event.url && 'group-hover:underline',
         ],
 
-        noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center`,
+        noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center ${neutralBgClass}`,
       },
     },
   }) as PluginDef

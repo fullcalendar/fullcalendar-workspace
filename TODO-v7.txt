@@ -5,6 +5,23 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 Make our "classic" theme get border color from Shadcn/MUI?
+Make the "global.css.js" not really global... always install on-demand when needed
+
+Forma theme:
+  how to add top border to header cell. can we do it with impunity?
+
+
+how to use colors w/ monarch w/ global js:
+
+  <!-- styles -->
+  <script src='fullcalendar/core/global.css.js'>
+  <script src='fullcalendar/theme-monarch/global.css.js'>
+  <script src='fullcalendar/theme-monarch/global/palettes/red.css.js'>
+
+  <!-- js -->
+  <script src='fullcalendar/core/global.js'>
+  <script src='fullcalendar/theme-monarch/global.js'>
+
 
 api: better way to ensure min slot width/height. right now we depend on theme!?
 bug: in Chrome and Safari, scroll-syncing really getting out of alignment
