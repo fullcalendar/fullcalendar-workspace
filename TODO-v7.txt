@@ -10,6 +10,10 @@ Make the "global.css.js" not really global... always install on-demand when need
 Forma theme:
   how to add top border to header cell. can we do it with impunity?
 
+for buttons as part of the fc themes (monarch/forma/zen)
+  have two button styles? secondary (default) and primary?
+  specified via isPrimary boolean?
+  or use .variant instead? (not to be confused with .display)
 
 how to use colors w/ monarch w/ global js:
 

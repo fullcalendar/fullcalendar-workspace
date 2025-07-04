@@ -9,6 +9,16 @@
 @source "../node_modules/@fullcalendar/theme-monarch/src/shadcn.tsx";
 @source "../node_modules/@fullcalendar/theme-monarch/src/mui.tsx";
 
+@source "../node_modules/@fullcalendar/theme-forma/src/base.tsx";
+@source "../node_modules/@fullcalendar/theme-forma/src/tailwind.tsx";
+@source "../node_modules/@fullcalendar/theme-forma/src/shadcn.tsx";
+@source "../node_modules/@fullcalendar/theme-forma/src/mui.tsx";
+
+@source "../node_modules/@fullcalendar/theme-zen/src/base.tsx";
+@source "../node_modules/@fullcalendar/theme-zen/src/tailwind.tsx";
+@source "../node_modules/@fullcalendar/theme-zen/src/shadcn.tsx";
+@source "../node_modules/@fullcalendar/theme-zen/src/mui.tsx";
+
 @custom-variant dark (&:is(.dark *));
 
 body {

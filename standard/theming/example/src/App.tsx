@@ -28,11 +28,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select.js'
-// import {
-//   Tooltip,
-//   TooltipContent,
-//   TooltipTrigger,
-// } from "@/components/ui/tooltip.js"
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 // MUI
@@ -74,9 +69,9 @@ import formaTailwindTheme from '@fullcalendar/theme-forma/tailwind'
 import formaShadcnTheme from '@fullcalendar/theme-forma/shadcn'
 import formaMuiTheme from '@fullcalendar/theme-forma/mui'
 // > Zen
-import zenTailwindTheme from '@fullcalendar/theme-forma/tailwind'
-import zenShadcnTheme from '@fullcalendar/theme-forma/shadcn'
-import zenMuiTheme from '@fullcalendar/theme-forma/mui'
+import zenTailwindTheme from '@fullcalendar/theme-zen/tailwind'
+import zenShadcnTheme from '@fullcalendar/theme-zen/shadcn'
+import zenMuiTheme from '@fullcalendar/theme-zen/mui'
 
 // utils for our example
 import { getMuiTheme } from './mui-themes.js'
@@ -360,7 +355,7 @@ export default function App() {
             {(componentLib === 'mui') && (
               <MuiCssBaseline />
             )}
-            <StandardExample
+            {/* <StandardExample
               initialView='timeGridWeek'
               className={exampleClassName}
               borderless={borderless}
@@ -368,7 +363,7 @@ export default function App() {
               themePlugin={themePlugin}
               colorScheme={colorScheme}
               ToolbarComponent={ToolbarComponent}
-            />
+            /> */}
             <StandardExample
               className={exampleClassName}
               borderless={borderless}
@@ -570,6 +565,10 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
             : {}
         }
         views={{
+          dayGridMonth:
+            props.theme === 'forma'
+              ? { dayHeaderFormat: { weekday: 'long' } }
+              : {},
           timeGrid:
             props.theme === 'monarch'
               ? { slotDuration: '01:00' }

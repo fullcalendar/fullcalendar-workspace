@@ -368,6 +368,7 @@ export function createThemePlugin({
         data.isOther && 'opacity-30',
       ],
       dayCellTopInnerClass: (data) => [
+        // TODO: this won't work if hasMonthLabel "Jan 1"... circle will look weird
         'flex flex-row items-center justify-center w-[1.8em] h-[1.8em] rounded-full',
         data.isToday
           ? (data.hasNavLink ? props.primaryButtonClass : props.primaryContainerClass)

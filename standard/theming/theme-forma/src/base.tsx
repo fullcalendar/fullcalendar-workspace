@@ -2,6 +2,15 @@ import { CalendarOptions, createPlugin, PluginDef } from '@fullcalendar/core'
 // import { createElement, Fragment } from '@fullcalendar/core/preact'
 import * as svgIcons from './svgIcons.js'
 
+/*
+Colors:
+https://react.fluentui.dev/?path=/docs/theme-colors--docs
+For color variations, see different brand colors:
+https://fluent2.microsoft.design/color
+spacing and whatnot:
+https://react.fluentui.dev/?path=/docs/theme-spacing--docs
+*/
+
 // Will import ambient types during dev but strip out for build
 import type {} from '@fullcalendar/timegrid'
 import type {} from '@fullcalendar/timeline'
@@ -14,14 +23,13 @@ const xxsTextClass = 'text-[0.7rem]/[1.25]'
 const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
 
 const neutralBgClass = 'bg-gray-500/10'
-const todayBgClass = 'bg-yellow-400/15 dark:bg-yellow-200/10'
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
 const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
 const borderColorClass = 'border-[#ddd] dark:border-gray-800'
 const borderClass = `border ${borderColorClass}` // all sides
 
-const cellPaddingClass = 'px-1 py-0.5'
+const cellPaddingClass = 'p-2'
 const listItemPaddingClass = 'px-3 py-2' // list-day-header and list-item-event
 const dayGridItemClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-link
 
@@ -78,19 +86,20 @@ const dayGridClasses: CalendarOptions = {
   ],
 }
 
+// TODO: improve this
 const floatingWeekNumberClasses: CalendarOptions = {
   weekNumberClass: [
-    'absolute z-20 top-0 start-0 rounded-ee-sm p-0.5 min-w-[1.5em]',
+    'absolute z-20 top-1 end-0 rounded-s-full',
     neutralBgClass,
   ],
   weekNumberInnerClass: (data) => [
-    data.isCompact ? xxsTextClass : 'text-sm',
-    'opacity-60 text-center',
+    data.isCompact ? xxsTextClass : 'text-xs',
+    'py-1 pe-1 ps-2 opacity-60 text-center',
   ],
 }
 
 const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean }) => [
-  'items-center justify-center',
+  'items-start justify-center',
   data.isMajor ? majorBorderClass : borderClass,
   data.isDisabled && neutralBgClass,
 ]
@@ -98,7 +107,7 @@ const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean }) =>
 const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
   'flex flex-col',
   cellPaddingClass,
-  data.isCompact ? xxsTextClass : 'text-sm',
+  data.isCompact ? xxsTextClass : 'text-xs',
 ]
 
 const getSlotClasses = (data: { isMinor: boolean }) => [
@@ -117,15 +126,12 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
       eventContrastColor: 'var(--color-white)',
       backgroundEventColor: 'var(--color-green-500)',
 
-      className: 'gap-5',
+      className: `${borderClass} rounded-sm shadow-sm`,
+      viewClass: `border-t ${borderColorClass}`,
 
-      viewClass: borderClass,
       tableHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
 
-      toolbarClass: (data) => [
-        'items-center gap-3',
-        data.borderlessX && 'px-3', // space from edge
-      ],
+      toolbarClass: 'p-3 items-center gap-3',
       toolbarSectionClass: (data) => [
         'items-center gap-3',
         data.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto', // nicer wrapping
@@ -157,19 +163,17 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
 
       buttonGroupClass: 'items-center isolate',
       buttonClass: (data) => [
-        'inline-flex items-center px-3 py-2 border-x',
-        'focus:outline-3 outline-slate-600/50',
-        'hover:border-slate-900 active:border-slate-900 print:border-slate-900',
-        'hover:bg-slate-800 active:bg-slate-800 print:bg-white',
-        'text-sm text-white print:text-black',
-        data.inGroup
-          ? 'first:rounded-s-sm last:rounded-e-sm relative active:z-20 focus:z-20'
-          : 'rounded-sm',
-        data.isSelected // implies inGroup
-          ? 'z-10 border-slate-900 bg-slate-800'
-          : 'z-0 border-transparent bg-slate-700',
-        data.isDisabled
-          && 'opacity-65 pointer-events-none', // bypass hover styles
+        'border text-sm py-1.5 rounded-sm',
+        data.isIconOnly ? 'px-2' : 'px-3',
+        data.isIconOnly
+          ? 'border-transparent hover:border-gray-100 hover:bg-gray-100'
+          : data.inViewGroup
+            ? data.isSelected
+              ? 'border-gray-400 bg-gray-100'
+              : 'border-transparent hover:bg-gray-50 hover:border-gray-200'
+            : 'border-gray-300',
+            // TODO: disabled
+            // TODO: dark mode
       ],
 
       popoverClass: `${borderClass} bg-(--fc-canvas-color) shadow-md`,
@@ -290,25 +294,36 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
       dayRowClass: borderClass,
       dayCellClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
-        data.isToday && todayBgClass,
         data.isDisabled && neutralBgClass,
       ],
       dayCellTopClass: (data) => [
-        'flex flex-row justify-end',
+        'flex flex-row',
         'min-h-[2px]', // effectively 2px top padding when no day-number
         data.isOther && 'opacity-30',
       ],
       dayCellTopInnerClass: (data) => [
-        'p-1',
+        'px-2 py-1 flex flex-row',
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
       ],
+      // dayCellTopContent: (data) => (
+      //   !data.isToday
+      //     ? data.text
+      //     : (
+      //       <Fragment>
+      //         {data.textParts.map((textPart) => (
+      //           textPart.type === 'day'
+      //             ? <span className='w-[1.8em] h-[1.8em]'>{textPart.value}</span>
+      //             : <span className='h-[1.8em] whitespace-pre'>{textPart.value}</span>
+      //         ))}
+      //       </Fragment>
+      //     )
+      // ),
 
       allDayDividerClass: `border-y ${borderColorClass} pb-0.5 ${neutralBgClass}`,
 
       dayLaneClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
-        data.isToday && todayBgClass,
         data.isDisabled && neutralBgClass,
       ],
       dayLaneInnerClass: (data) => data.isSimple
