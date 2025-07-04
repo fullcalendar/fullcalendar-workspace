@@ -4,6 +4,7 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+Make our "classic" theme get border color from Shadcn/MUI?
 
 api: better way to ensure min slot width/height. right now we depend on theme!?
 bug: in Chrome and Safari, scroll-syncing really getting out of alignment
