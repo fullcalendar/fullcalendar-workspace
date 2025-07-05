@@ -355,15 +355,15 @@ export default function App() {
             {(componentLib === 'mui') && (
               <MuiCssBaseline />
             )}
-            {/* <StandardExample
-              initialView='timeGridWeek'
+            <StandardExample
+              // initialView='timeGridWeek'
               className={exampleClassName}
               borderless={borderless}
               theme={theme}
               themePlugin={themePlugin}
               colorScheme={colorScheme}
               ToolbarComponent={ToolbarComponent}
-            /> */}
+            />
             <StandardExample
               className={exampleClassName}
               borderless={borderless}
@@ -552,18 +552,14 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
         dayMaxEvents={true}
         // businessHours={true} // -- TODO: background conflicts with the week number pills!!!
         // eventMaxStack={1}
-        listDayFormat={
-          // messed up
+        {...( // NOTE: if we gave undefined for either of these settings, calendar render NO day header!
           props.theme === 'monarch'
-            ? { day: 'numeric' }
+            ? {
+              listDayFormat: { day: 'numeric' },
+              listDaySideFormat: { month: 'short', weekday: 'short', forceCommas: true },
+            }
             : {}
-        }
-        listDaySideFormat={
-          // messed up
-          props.theme === 'monarch'
-            ? { month: 'short', weekday: 'short', forceCommas: true }
-            : {}
-        }
+        )}
         views={{
           dayGridMonth:
             props.theme === 'forma'
@@ -574,7 +570,63 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
               ? { slotDuration: '01:00' }
               : {}
         }}
-        events='https://fullcalendar.io/api/demo-feeds/events.json?overload-day'
+        // events='https://fullcalendar.io/api/demo-feeds/events.json?overload-day'
+        events={[
+          {
+            "title": "All Day Event",
+            "start": "2025-07-01"
+          },
+          {
+            "title": "Long Event",
+            "start": "2025-07-07",
+            "end": "2025-07-17"
+          },
+          {
+            "groupId": "999",
+            "title": "Repeating Event",
+            "start": "2025-07-09T16:00:00+00:00"
+          },
+          {
+            "groupId": "999",
+            "title": "Repeating Event",
+            "start": "2025-07-16T16:00:00+00:00"
+          },
+          {
+            "title": "Conference",
+            "start": "2025-07-03",
+            "end": "2025-07-05"
+          },
+          {
+            "title": "Meeting",
+            "start": "2025-07-04T10:30:00+00:00",
+            "end": "2025-07-04T12:30:00+00:00"
+          },
+          {
+            "title": "Lunch",
+            "start": "2025-07-04T12:00:00+00:00"
+          },
+          {
+            "title": "Birthday Party",
+            "start": "2025-07-05T07:00:00+00:00"
+          },
+          {
+            "url": "http:\/\/google.com\/",
+            "title": "Click for Google",
+            "start": "2025-07-28"
+          },
+          {
+            "title": "Meeting",
+            "start": "2025-07-04T14:30:00+00:00"
+          },
+          {
+            "title": "Happy Hour",
+            "start": "2025-07-04T17:30:00+00:00"
+          },
+          {
+            "title": "Dinner",
+            "start": "2025-07-04T20:00:00+00:00"
+          }
+        ]}
       />
     </div>
   )

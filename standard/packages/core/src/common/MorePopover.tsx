@@ -15,6 +15,7 @@ import { DayHeaderData } from '../api/structs.js'
 import { createFormatter } from '../datelib/formatting.js'
 import { buildNavLinkAttrs } from './nav-link.js'
 import classNames from '../internal-classnames.js'
+import { joinClassNames } from '../util/html.js'
 
 export interface MorePopoverProps {
   id: string
@@ -86,7 +87,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             customGenerator={options.dayHeaderContent}
             defaultGenerator={renderText}
             classNameGenerator={options.dayHeaderClass}
-            className={classNames.flexCol}
+            className={joinClassNames(classNames.flexCol, classNames.borderNone)}
             didMount={options.dayHeaderDidMount}
             willUnmount={options.dayHeaderWillUnmount}
           >

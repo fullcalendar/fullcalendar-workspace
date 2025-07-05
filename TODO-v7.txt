@@ -7,6 +7,10 @@ Publishing:
 Make our "classic" theme get border color from Shadcn/MUI?
 Make the "global.css.js" not really global... always install on-demand when needed
 
+should we force bg color behind calendar ever?
+BAD: our non-shadcn themes are inherit shadcn variables for their tailwind
+if we have tailwind in our themes' JSX, that will be crazy to convert to vanilla CSS
+
 Forma theme:
   how to add top border to header cell. can we do it with impunity?
 

@@ -204,7 +204,7 @@ export function createThemePlugin({
       ],
 
       popoverClass: `${borderClass} rounded-lg bg-(--fc-canvas-color) shadow-lg m-2`,
-      popoverHeaderClass: `justify-between items-center px-1 py-1`,
+      popoverHeaderClass: `px-1 py-1`,
       popoverCloseClass: `absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center ${transparentPressableClass}`,
       popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
       popoverBodyClass: 'p-2 min-w-3xs',

@@ -1,5 +1,5 @@
 import { CalendarOptions, createPlugin, PluginDef } from '@fullcalendar/core'
-// import { createElement, Fragment } from '@fullcalendar/core/preact'
+import { createElement, Fragment } from '@fullcalendar/core/preact'
 import * as svgIcons from './svgIcons.js'
 
 /*
@@ -48,8 +48,6 @@ const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border
 const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
 const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
-const continuationArrowClass = 'relative z-10 mx-px border-y-[5px] border-y-transparent opacity-50'
-
 // applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
 const dayGridClasses: CalendarOptions = {
   listItemEventClass: [dayGridItemClass, 'p-px'],
@@ -65,12 +63,7 @@ const dayGridClasses: CalendarOptions = {
   listItemEventTitleClass: 'p-px font-bold',
 
   rowEventClass: (data) => [
-    data.isStart && 'ms-0.5',
     data.isEnd && 'me-0.5',
-  ],
-  rowEventColorClass: (data) => [
-    data.isStart && 'rounded-s-sm',
-    data.isEnd && 'rounded-e-sm',
   ],
 
   rowMoreLinkClass: (data) => [
@@ -98,15 +91,16 @@ const floatingWeekNumberClasses: CalendarOptions = {
   ],
 }
 
+// TODO: core should prevent a top border. does it?
 const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean }) => [
-  'items-start justify-center',
   data.isMajor ? majorBorderClass : borderClass,
   data.isDisabled && neutralBgClass,
 ]
 
-const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
+const getDayHeaderInnerClasses = (data: { isCompact: boolean, isToday?: boolean, inPopover?: boolean }) => [
   'flex flex-col',
-  cellPaddingClass,
+  'px-2 pt-1 pb-2 border-t-4',
+  (data.isToday && !data.inPopover) ? 'border-[#0F6CBD]' : 'border-transparent',
   data.isCompact ? xxsTextClass : 'text-xs',
 ]
 
@@ -114,6 +108,11 @@ const getSlotClasses = (data: { isMinor: boolean }) => [
   borderClass,
   data.isMinor && 'border-dotted',
 ]
+
+/*
+TODO: bottom border radius weird
+TODO: ensure button-group (non-view) looks okay. not hover-only
+*/
 
 export interface ThemePluginConfig {
 }
@@ -126,7 +125,7 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
       eventContrastColor: 'var(--color-white)',
       backgroundEventColor: 'var(--color-green-500)',
 
-      className: `${borderClass} rounded-sm shadow-sm`,
+      className: `${borderClass} rounded-sm shadow-xs`,
       viewClass: `border-t ${borderColorClass}`,
 
       tableHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
@@ -136,7 +135,7 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
         'items-center gap-3',
         data.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto', // nicer wrapping
       ],
-      toolbarTitleClass: 'text-xl md:text-2xl font-bold',
+      toolbarTitleClass: 'text-lg md:text-xl',
 
       buttons: {
         prev: {
@@ -176,8 +175,10 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
             // TODO: dark mode
       ],
 
+      // TODO: fix problem with huge hit area for title
       popoverClass: `${borderClass} bg-(--fc-canvas-color) shadow-md`,
-      popoverHeaderClass: `flex flex-row justify-between items-center px-1 py-1 ${neutralBgClass}`,
+      popoverHeaderClass: neutralBgClass,
+      popoverCloseClass: 'absolute top-2 end-2',
       popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
       popoverBodyClass: 'p-2 min-w-[220px]',
 
@@ -211,45 +212,58 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
       // Views must decide circle radius via border thickness
       listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
 
-      blockEventClass: (data) => [
+      blockEventClass: [
         'relative', // for absolute-positioned color
         'group', // for focus and hover
-        'p-px',
-        (data.isDragging && !data.isSelected) && 'opacity-75',
-        data.isSelected
-          ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
-          : 'focus:shadow-md',
+        'bg-white',
+        'border-(--fc-event-color)',
+        // TODO: isDragging, isSelected
       ],
-      blockEventColorClass: (data) => [
-        'absolute z-0 inset-0 bg-(--fc-event-color)',
-        'print:border print:border-(--fc-event-color) print:bg-white',
-        data.isSelected
-          ? 'brightness-75'
-          : 'group-focus:brightness-75',
+      blockEventColorClass: [
+        'absolute inset-0 bg-(--fc-event-color) opacity-40',
       ],
-      blockEventInnerClass: 'relative z-10 text-(--fc-event-contrast-color) print:text-black flex',
+      blockEventInnerClass: 'relative z-10 flex', // TODO
 
-      rowEventClass: 'mb-px', // space between events
-      rowEventBeforeClass: (data) => data.isStartResizable && [
+      rowEventClass: (data) => [
+        'mb-px', // space between events
+        'flex flex-row items-center', // for valigning title and <> arrows
+        data.isStart && 'border-s-6 rounded-s-sm',
+        data.isEnd && 'rounded-e-sm',
+      ],
+      rowEventBeforeClass: (data) => data.isStartResizable ? [
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-start-1',
+      ] : [
+        // the < continuation
+        !data.isStart && (
+          'relative z-10 w-[0.4em] h-[0.4em] border-t-1 border-s-1 border-gray-500 ms-1' +
+          ' -rotate-45' // TODO: make RTL-friendly
+        )
       ],
-      rowEventAfterClass: (data) => data.isEndResizable && [
+      rowEventAfterClass: (data) => data.isEndResizable ? [
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-end-1',
+      ] : [
+        // the > continuation
+        !data.isEnd && (
+          'relative z-10 w-[0.4em] h-[0.4em] border-t-1 border-e-1 border-gray-500 me-1' +
+          ' rotate-45' // TODO: make RTL-friendly
+        )
       ],
       rowEventColorClass: (data) => [
-        !data.isStart && 'print:border-s-0',
-        !data.isEnd && 'print:border-e-0',
+        data.isEnd && 'rounded-e-sm',
       ],
       rowEventInnerClass: (data) => [
         'flex-row items-center',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
-      rowEventTimeClass: 'p-px font-bold',
-      rowEventTitleClass: 'p-px start-0', // `start` for stickiness
+      rowEventTimeClass: 'p-1',
+      rowEventTitleClass: 'p-1',
 
-      columnEventClass: 'mb-px', // space from slot line
+      columnEventClass: (data) => [
+        'border-s-6 rounded-s-sm rounded-e-sm',
+        (data.level || data.isDragging) && 'outline outline-(--fc-canvas-color)'
+      ],
       columnEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-top-1',
@@ -258,21 +272,21 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-bottom-1',
       ],
-      columnEventColorClass: (data) => [
-        data.isStart && 'rounded-t-sm',
-        data.isEnd && 'rounded-b-sm',
-        (data.level || data.isDragging) && 'outline outline-(--fc-canvas-color)',
+      columnEventColorClass: [
+        'rounded-e-sm',
       ],
       columnEventInnerClass: (data) => [
-        'p-px',
         data.isCompact
           ? 'flex-row gap-1' // one line
           : 'flex-col gap-px', // two lines
       ],
-      columnEventTimeClass: xxsTextClass,
+      columnEventTimeClass: [
+        'p-0.5',
+        xxsTextClass,
+      ],
       columnEventTitleClass: (data) => [
-        'top-0', // top for stickiness
-        data.isCompact ? xxsTextClass : 'py-px text-xs',
+        'p-0.5',
+        data.isCompact ? xxsTextClass : 'text-xs',
       ],
 
       // MultiMonth
@@ -287,40 +301,56 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
       ],
 
       dayHeaderRowClass: borderClass,
+
       dayHeaderClass: getDayHeaderClasses,
       dayHeaderInnerClass: getDayHeaderInnerClasses,
+      dayHeaderContent: (data) => (
+        <Fragment>
+          {data.dayNumberText && (
+            <div className={
+              'text-lg' +
+              (data.isToday ? ' font-bold' : '')
+            }>{data.dayNumberText}</div>
+          )}
+          {data.weekdayText && (
+            <div className='text-xs'>{data.weekdayText}</div>
+          )}
+        </Fragment>
+      ),
+
       dayHeaderDividerClass: ['border-t', borderColorClass],
 
       dayRowClass: borderClass,
       dayCellClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
-        data.isDisabled && neutralBgClass,
+        data.isDisabled
+          ? 'bg-gray-100'
+          : data.isOther && 'bg-gray-50',
       ],
-      dayCellTopClass: (data) => [
+      dayCellTopClass: [
         'flex flex-row',
         'min-h-[2px]', // effectively 2px top padding when no day-number
-        data.isOther && 'opacity-30',
       ],
       dayCellTopInnerClass: (data) => [
-        'px-2 py-1 flex flex-row',
+        'px-1 py-1 flex flex-row',
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
       ],
-      // dayCellTopContent: (data) => (
-      //   !data.isToday
-      //     ? data.text
-      //     : (
-      //       <Fragment>
-      //         {data.textParts.map((textPart) => (
-      //           textPart.type === 'day'
-      //             ? <span className='w-[1.8em] h-[1.8em]'>{textPart.value}</span>
-      //             : <span className='h-[1.8em] whitespace-pre'>{textPart.value}</span>
-      //         ))}
-      //       </Fragment>
-      //     )
-      // ),
+      dayCellTopContent: (data) => (
+        !data.isToday
+          ? <span className='px-1 h-[1.8em] whitespace-pre flex flex-row items-center'>{data.text}</span>
+          : (
+            <Fragment>
+              {data.textParts.map((textPart) => (
+                textPart.type === 'day'
+                  ? <span className='w-[1.8em] h-[1.8em] whitespace-pre flex flex-row items-center justify-center rounded-full bg-[#0F6CBD] text-white'>{textPart.value}</span>
+                  : <span className='h-[1.8em] whitespace-pre flex flex-row items-center'>{textPart.value}</span>
+              ))}
+            </Fragment>
+          )
+      ),
 
-      allDayDividerClass: `border-y ${borderColorClass} pb-0.5 ${neutralBgClass}`,
+      allDayDividerClass: `border-t ${borderColorClass}`,
 
       dayLaneClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
@@ -334,6 +364,9 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
       slotLabelAlign: 'center',
       slotLabelClass: getSlotClasses,
       slotLaneClass: getSlotClasses,
+
+      nowIndicatorLineClass: `-m-px border-1 border-[#0F6CBD]`,
+      nowIndicatorDotClass: `rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 border-[#0F6CBD] outline-2 outline-(--fc-canvas-color)`,
 
       listDayClass: `not-last:border-b ${borderColorClass}`,
       listDayHeaderClass: (data) => [
@@ -400,13 +433,13 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
         allDayHeaderInnerClass: (data) => [
           axisInnerClass,
           'whitespace-pre', // respects line-breaks in locale data
-          data.isCompact ? xxsTextClass : 'text-sm',
+          data.isCompact ? xxsTextClass : 'text-xs',
         ],
 
-        weekNumberClass: `${axisClass} items-center`,
+        weekNumberClass: `${axisClass} items-end`,
         weekNumberInnerClass: (data) => [
           axisInnerClass,
-          data.isCompact ? xxsTextClass : 'text-sm',
+          data.isCompact ? xxsTextClass : 'text-xs',
         ],
 
         columnMoreLinkClass: `mb-px rounded-xs outline outline-(--fc-canvas-color) ${moreLinkBgClass}`,
@@ -416,32 +449,12 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
         slotLabelInnerClass: (data) => [
           axisInnerClass,
           'min-h-[1.5em]',
-          data.isCompact ? xxsTextClass : 'text-sm',
+          data.isCompact ? xxsTextClass : 'text-xs',
         ],
 
         slotLabelDividerClass: `border-l ${borderColorClass}`,
-
-        nowIndicatorLabelClass: 'start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] border-s-red-500',
-        nowIndicatorLineClass: 'border-t border-red-500',
       },
       timeline: {
-        rowEventClass: [
-          'me-px', // space from slot line
-          'items-center', // for aligning continuation arrows
-        ],
-        rowEventBeforeClass: (data) => !data.isStartResizable && [
-          continuationArrowClass,
-          'border-e-[5px] border-e-black', // pointing to start
-        ],
-        rowEventAfterClass: (data) => !data.isEndResizable && [
-          continuationArrowClass,
-          'border-s-[5px] border-s-black', // pointing to end
-        ],
-        rowEventInnerClass: (data) => [
-          'px-px gap-1', // TODO: put the gap on the global rowEventInnerClass???
-          data.isSpacious ? 'py-1' : 'py-px',
-        ],
-
         rowMoreLinkClass: `me-px p-px ${moreLinkBgClass}`,
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
@@ -449,9 +462,6 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
         slotLabelInnerClass: 'p-1 text-sm',
 
         slotLabelDividerClass: `border-b ${borderColorClass}`,
-
-        nowIndicatorLabelClass: 'top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-t-red-500',
-        nowIndicatorLineClass: 'border-l border-red-500',
       },
       list: {
         listItemEventClass: `group gap-3 not-last:border-b ${borderColorClass} ${listItemPaddingClass}`,

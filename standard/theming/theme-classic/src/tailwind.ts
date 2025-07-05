@@ -238,7 +238,7 @@ export default createPlugin({
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
     rowEventTimeClass: 'p-px font-bold',
-    rowEventTitleClass: 'p-px start-0', // `start` for stickiness
+    rowEventTitleClass: 'p-px start-0', // `start` for stickiness -- TODO: don't need anymore!!!
 
     columnEventClass: 'mb-px', // space from slot line
     columnEventBeforeClass: (data) => data.isStartResizable && [
@@ -262,7 +262,7 @@ export default createPlugin({
     ],
     columnEventTimeClass: xxsTextClass,
     columnEventTitleClass: (data) => [
-      'top-0', // top for stickiness
+      'top-0', // top for stickiness -- TODO: don't need anymore!!!
       data.isCompact ? xxsTextClass : 'py-px text-xs',
     ],
 
