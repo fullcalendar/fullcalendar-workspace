@@ -63,9 +63,14 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
 
     const { totalWidth, clientWidth } = state
 
-    const endScrollbarWidth = (totalWidth != null && clientWidth != null)
+    let endScrollbarWidth = (totalWidth != null && clientWidth != null)
       ? totalWidth - clientWidth
       : undefined
+
+    // HACK when clientWidth does NOT include body-border, compared to totalWidth
+    if (endScrollbarWidth < 3) {
+      endScrollbarWidth = 0
+    }
 
     const verticalScrollbars = !props.forPrint && !getIsHeightAuto(options)
     const stickyHeaderDates = !props.forPrint && getStickyHeaderDates(options)

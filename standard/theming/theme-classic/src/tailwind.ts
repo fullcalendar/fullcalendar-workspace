@@ -447,38 +447,3 @@ export default createPlugin({
     },
   },
 }) as PluginDef
-
-/*
-Event continuation arrows experiment.
-Looks great in Firefox. Clip-path is fuzzy in Chrome. TODO: use SVG?
-INSTEAD: do clip-path on whole bg element or whole element... don't just add a separate arrow div
-Need to refactor inner-padding in event element, b/c the before/after need entire height
-
-  rowEventClass: 'mb-px',
-  rowEventBeforeClass: (data) => data.isStartResizable ? [
-    data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
-    '-start-1',
-  ] : [
-    // continuation arrow
-    !data.isStart && 'w-[6px] bg-(--fc-event-color) [clip-path:polygon(100%_0,0_50%,100%_100%)]',
-  ],
-  rowEventAfterClass: (data) => data.isEndResizable ? [
-    data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
-    '-end-1',
-  ] : [
-    // continuation arrow
-    !data.isEnd && 'w-[6px] bg-(--fc-event-color) [clip-path:polygon(0_0,100%_50%,0_100%)]',
-  ],
-  rowEventColorClass: (data) => [
-    !data.isStart && 'ms-[6px]',
-    !data.isEnd && 'me-[6px]',
-  ],
-*/
-
-/*
-Tick Marks
-  for timegrid:
-    slotLabelClass: 'w-2 self-end',
-  for timeline:
-    slotLabelClass: 'h-2 self-end justify-end'
-*/
