@@ -12,8 +12,11 @@ import type {} from '@fullcalendar/resource-timeline'
 
 const buttonIconClass = 'size-5 text-gray-400' // best?
 
-// applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
-// TODO: rename to "dayRowContent" or something
+/*
+applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
+TODO: rename to "dayRowContent" or something
+TODO: audit all forced line-heights. not a fan
+*/
 const dayGridClasses: CalendarOptions = {
 
   /*
@@ -40,7 +43,7 @@ const dayGridClasses: CalendarOptions = {
   listItemEventClass: 'mx-1 mb-px hover:bg-gray-100 rounded-md',
   listItemEventInnerClass: 'p-1 flex flex-row text-xs/4',
   listItemEventTimeClass: 'order-1 text-gray-500',
-  listItemEventTitleClass: 'flex-grow',
+  listItemEventTitleClass: 'flex-grow font-medium',
 
   rowMoreLinkClass: 'flex flex-row mx-1',
 }
@@ -140,15 +143,9 @@ export default createPlugin({
 
     dayLaneClass: 'border border-gray-100',
 
-    slotLabelDividerClass: 'border-l border-gray-100',
-
     allDayHeaderInnerClass: 'text-xs/5 text-gray-400 p-3',
 
-    /*
-    Figure out how not having any border on slotLabel affects height-syncing
-    */
-    slotLabelClass: 'justify-end',
-    slotLabelInnerClass: 'text-xs/5 text-gray-400 uppercase min-h-[3em] px-3 relative -top-[0.8em]', // HACK
+    slotLabelInnerClass: 'text-xs/5 text-gray-400 uppercase',
 
     slotLaneClass: 'border border-gray-100',
 
@@ -194,6 +191,34 @@ export default createPlugin({
     fillerClass: 'border border-gray-100 bg-white',
 
     // TODO: event resizing
+
+    // Premium
+    // ---------------------------------------------------------------------------------------------
+
+    resourceAreaDividerClass: 'border-l border-gray-300',
+
+    resourceAreaHeaderRowClass: 'border border-gray-200',
+    resourceAreaHeaderClass: 'border border-gray-100',
+    resourceAreaHeaderInnerClass: 'p-2 text-sm',
+
+    resourceAreaRowClass: 'border border-gray-200',
+    resourceCellClass: 'border border-gray-100',
+    resourceCellInnerClass: 'p-2 text-sm',
+
+    resourceGroupHeaderClass: 'bg-gray-50',
+    resourceGroupHeaderInnerClass: 'p-2 text-sm',
+
+    resourceGroupLaneClass: 'border border-gray-200 bg-gray-50',
+    resourceLaneClass: 'border border-gray-200',
+    // resourceLaneTopClass: 'h-0.5',
+    // resourceLaneBottomClass: 'h-1', // fix BUG, why this need to be so thick?
+
+    resourceExpanderClass: 'self-center',
+    resourceExpanderContent: (data) => // TODO: support RTL
+      svgIcons.chevronRight(
+        'w-[1.2em] h-[1.2em] relative left-1' +
+        (data.isExpanded ? ' rotate-90' : '')
+      )
   },
   views: {
     dayGrid: {
@@ -212,6 +237,14 @@ export default createPlugin({
       weekNumberClass: 'justify-end items-center',
       weekNumberInnerClass: 'px-3 text-sm/6 text-gray-500',
 
+      /*
+      Figure out how not having any border on slotLabel affects height-syncing
+      */
+      slotLabelClass: 'justify-end',
+      slotLabelInnerClass: 'min-h-[3em] px-3 relative -top-[0.8em]', // HACK
+
+      slotLabelDividerClass: 'border-l border-gray-100',
+
       columnEventClass: (data) => [
         'mx-1',
         data.isStart && 'mt-1',
@@ -219,6 +252,13 @@ export default createPlugin({
       ],
     },
     timeline: {
+      slotLabelDividerClass: 'border-t border-gray-300',
+
+      slotLabelAlign: 'center',
+      slotLabelClass: 'justify-end',
+      slotLabelInnerClass: '-ms-1 pe-6 py-2',
+
+      rowEventClass: 'mb-px',
     },
     list: {
     },
