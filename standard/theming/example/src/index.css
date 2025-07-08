@@ -4,6 +4,8 @@
 
 @source "../node_modules/@fullcalendar/theme-classic/src/tailwind.ts";
 
+@source "../node_modules/@fullcalendar/theme-breezy/src/tailwind.ts";
+
 @source "../node_modules/@fullcalendar/theme-monarch/src/base.tsx";
 @source "../node_modules/@fullcalendar/theme-monarch/src/tailwind.tsx";
 @source "../node_modules/@fullcalendar/theme-monarch/src/shadcn.tsx";

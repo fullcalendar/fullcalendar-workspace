@@ -43,6 +43,7 @@
     "@fullcalendar/resource-timegrid": "workspace:*",
     "@fullcalendar/resource-timeline": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
+    "@fullcalendar/theme-breezy": "workspace:*",
     "@fullcalendar/theme-classic": "workspace:*",
     "@fullcalendar/theme-monarch": "workspace:*",
     "@fullcalendar/theme-forma": "workspace:*",

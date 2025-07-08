@@ -58,6 +58,8 @@ import timelinePlugin from '@fullcalendar/timeline'
 import { ButtonStateMap, CalendarController, PluginDef } from '@fullcalendar/core'
 
 // FullCalendar themes
+// > Breezy
+import breezyTailwindTheme from '@fullcalendar/theme-breezy/tailwind'
 // > Classic
 import classicTailwindTheme from '@fullcalendar/theme-classic/tailwind'
 // > Monarch
@@ -80,7 +82,8 @@ const themeOptions = [
   { value: 'classic', text: 'Classic' },
   { value: 'monarch', text: 'Monarch', tooltip: 'A Google/Material-inspired theme' },
   { value: 'forma', text: 'Forma', tooltip: 'An Outlook Calendar-inspired theme' },
-  { value: 'zen', text: 'Zen', tooltip: 'A minimalist Apple-like theme' },
+  { value: 'breezy', text: 'Breezy', tooltip: 'Windy theme' },
+  // { value: 'zen', text: 'Zen', tooltip: 'A minimalist Apple-like theme' },
 ]
 const componentLibOptions = [
   { value: 'fc', text: 'Default' },
@@ -135,6 +138,11 @@ const themePluginMap = {
     fc: classicTailwindTheme,
     shadcn: classicTailwindTheme, // dup
     mui: classicTailwindTheme, // dup
+  },
+  breezy: {
+    fc: breezyTailwindTheme,
+    shadcn: breezyTailwindTheme, // dup
+    mui: breezyTailwindTheme, // dup
   },
   monarch: {
     fc: monarchTailwindTheme,

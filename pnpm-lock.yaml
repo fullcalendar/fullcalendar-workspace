@@ -3706,6 +3706,9 @@ importers:
       '@fullcalendar/scrollgrid':
         specifier: workspace:*
         version: link:../../../premium/packages/scrollgrid/dist
+      '@fullcalendar/theme-breezy':
+        specifier: workspace:*
+        version: link:../theme-breezy
       '@fullcalendar/theme-classic':
         specifier: workspace:*
         version: link:../theme-classic
@@ -3760,6 +3763,52 @@ importers:
       vite:
         specifier: ^7.0.0
         version: 7.0.0(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.29.2)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
+
+  standard/theming/theme-breezy:
+    dependencies:
+      '@fullcalendar/core':
+        specifier: workspace:*
+        version: link:../../packages/core/dist
+    devDependencies:
+      '@fullcalendar/adaptive':
+        specifier: workspace:*
+        version: link:../../../premium/packages/adaptive/dist
+      '@fullcalendar/daygrid':
+        specifier: workspace:*
+        version: link:../../packages/daygrid/dist
+      '@fullcalendar/interaction':
+        specifier: workspace:*
+        version: link:../../packages/interaction/dist
+      '@fullcalendar/list':
+        specifier: workspace:*
+        version: link:../../packages/list/dist
+      '@fullcalendar/multimonth':
+        specifier: workspace:*
+        version: link:../../packages/multimonth/dist
+      '@fullcalendar/resource':
+        specifier: workspace:*
+        version: link:../../../premium/packages/resource/dist
+      '@fullcalendar/resource-daygrid':
+        specifier: workspace:*
+        version: link:../../../premium/packages/resource-daygrid/dist
+      '@fullcalendar/resource-timegrid':
+        specifier: workspace:*
+        version: link:../../../premium/packages/resource-timegrid/dist
+      '@fullcalendar/resource-timeline':
+        specifier: workspace:*
+        version: link:../../../premium/packages/resource-timeline/dist
+      '@fullcalendar/scrollgrid':
+        specifier: workspace:*
+        version: link:../../../premium/packages/scrollgrid/dist
+      '@fullcalendar/timegrid':
+        specifier: workspace:*
+        version: link:../../packages/timegrid/dist
+      '@fullcalendar/timeline':
+        specifier: workspace:*
+        version: link:../../../premium/packages/timeline/dist
+      typescript:
+        specifier: ~5.7.2
+        version: 5.7.3
 
   standard/theming/theme-classic:
     dependencies:
@@ -23354,7 +23403,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
+      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))
       '@angular-devkit/core': 13.3.11(chokidar@3.6.0)
       '@angular/compiler-cli': 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@babel/core': 7.16.12
@@ -23414,8 +23463,8 @@ snapshots:
       tslib: 2.3.1
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
       webpack-merge: 5.8.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
     optionalDependencies:
@@ -23441,7 +23490,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
+      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))
       '@angular-devkit/core': 13.3.11(chokidar@3.6.0)
       '@angular/compiler-cli': 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@babel/core': 7.16.12
@@ -23501,8 +23550,8 @@ snapshots:
       tslib: 2.3.1
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
       webpack-merge: 5.8.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.97.0))(webpack@5.76.1(esbuild@0.14.22))
     optionalDependencies:
@@ -24202,12 +24251,12 @@ snapshots:
       - vite
       - webpack-cli
 
-  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))':
+  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))':
     dependencies:
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
       rxjs: 6.6.7
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
     transitivePeerDependencies:
       - chokidar
 
@@ -51420,7 +51469,7 @@ snapshots:
       webpack: 5.97.0(webpack-cli@4.10.0)
       webpack-log: 2.0.0
 
-  webpack-dev-middleware@5.3.0(webpack@5.76.1):
+  webpack-dev-middleware@5.3.0(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       colorette: 2.0.20
       memfs: 3.5.3
@@ -51666,7 +51715,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1):
+  webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -51696,7 +51745,7 @@ snapshots:
       spdy: 4.0.2
       strip-ansi: 7.1.0
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
       ws: 8.17.1
     transitivePeerDependencies:
       - '@types/express'
