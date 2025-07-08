@@ -14,6 +14,7 @@ when no dayHeaderDividerClass, should not inject <div>
 "HACK when clientWidth does NOT include body-border, compared to totalWidth"
 ^^^more problems with this in TimeGrid, lines not aligning!
 Maybe border-radius should be a parameter to the theme
+important to test out: drop shadow from dayheader/axis onto scrollable area
 
 Forma theme:
   how to add top border to header cell. can we do it with impunity?

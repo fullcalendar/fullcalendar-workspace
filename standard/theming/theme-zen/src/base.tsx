@@ -23,11 +23,10 @@ const xxsTextClass = 'text-[0.7rem]/[1.25]'
 const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]' // yield buttons that are 1px taller than text buttons!!!
 
 const neutralBgClass = 'bg-gray-500/10'
-const todayBgClass = 'bg-yellow-400/15 dark:bg-yellow-200/10'
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
-const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
-const borderColorClass = 'border-[#ddd] dark:border-gray-800'
+const majorBorderClass = 'border border-gray-400 dark:border-gray-700' // TODO
+const borderColorClass = 'border-black/10 dark:border-white/10'
 const borderClass = `border ${borderColorClass}` // all sides
 
 const cellPaddingClass = 'px-1 py-0.5'
@@ -70,8 +69,12 @@ const dayGridClasses: CalendarOptions = {
     data.isEnd && 'me-0.5',
   ],
   rowEventColorClass: (data) => [
-    data.isStart && 'rounded-s-sm',
-    data.isEnd && 'rounded-e-sm',
+    data.isStart && 'rounded-s-full',
+    data.isEnd && 'rounded-e-full',
+  ],
+  rowEventInnerClass: (data) => [
+    data.isStart && 'ps-1',
+    data.isEnd && 'pe-1',
   ],
 
   rowMoreLinkClass: (data) => [
@@ -124,14 +127,21 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
   return createPlugin({
     name: '<%= pkgName %>', // TODO
     optionDefaults: {
-      eventColor: '#3788d8',
+      eventColor: '#0a78fa',
+      /*
+      io-light-primary: #0a78fa
+      light-blue: #37b3f7
+      red: #f0442e
+
+      */
+
       eventContrastColor: 'var(--color-white)',
       backgroundEventColor: 'var(--color-green-500)',
 
-      className: 'gap-7',
+      className: 'gap-5',
 
       tableHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
-      tableBodyClass: `${borderClass} rounded-md`,
+      tableBodyClass: `${borderClass} rounded-lg`,
 
       toolbarClass: (data) => [
         'items-center gap-4',
@@ -169,7 +179,9 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
       buttonGroupClass: (data) => [
         'items-center isolate',
         'p-[3px] rounded-full overflow-hidden',
-        'bg-gray-200',
+        data.isViewGroup
+          ? 'bg-black/10 dark:bg-white/10'
+          : 'bg-(--fc-canvas-color) border border-black/15 shadow-[0_1px_2px_rgba(0,0,0,0.10)]',
 
         // more glass-like
         // 'border border-gray-300',
@@ -178,10 +190,10 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
 
       buttonClass: (data) => [
         'text-sm rounded-full',
-        data.inGroup ? 'py-2' : 'py-[calc(var(--spacing)_*_2_+_3px)]',
-        data.isIconOnly ? 'px-2' : 'px-4',
-        data.isSelected ? 'bg-white shadow-[0_0_2px_rgba(0,0,0,0.10)]' : (
-          !data.inGroup && 'bg-gray-200'
+        data.inGroup ? 'py-[6px]' : 'py-[9px]',
+        data.isIconOnly ? 'px-[6px]' : 'px-[14px]',
+        data.isSelected ? 'bg-(--fc-canvas-color) shadow-[0_0_2px_rgba(0,0,0,0.10)]' : (
+          !data.inGroup && 'bg-(--fc-canvas-color) border border-black/15 shadow-[0_1px_2px_rgba(0,0,0,0.10)]'
         )
 
         // more glass-like
@@ -245,20 +257,20 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
       blockEventClass: (data) => [
         'relative', // for absolute-positioned color
         'group', // for focus and hover
-        'p-px',
         (data.isDragging && !data.isSelected) && 'opacity-75',
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
           : 'focus:shadow-md',
       ],
       blockEventColorClass: (data) => [
-        'absolute z-0 inset-0 bg-(--fc-event-color)',
+        'absolute z-0 inset-0 bg-(--fc-event-color) opacity-90',
         'print:border print:border-(--fc-event-color) print:bg-white',
         data.isSelected
           ? 'brightness-75'
           : 'group-focus:brightness-75',
       ],
-      blockEventInnerClass: 'relative z-10 text-(--fc-event-contrast-color) print:text-black flex',
+      blockEventInnerClass: 'relative z-10 print:text-black flex text-(--fc-event-contrast-color)',
+      // text-(--fc-event-contrast-color)
 
       rowEventClass: 'mb-px', // space between events
       rowEventBeforeClass: (data) => data.isStartResizable && [
@@ -277,8 +289,8 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
         'flex-row items-center',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
-      rowEventTimeClass: 'p-px font-bold',
-      rowEventTitleClass: 'p-px start-0', // `start` for stickiness -- TODO: don't need anymore!!!
+      rowEventTimeClass: 'p-[3px] font-bold',
+      rowEventTitleClass: 'p-[3px]',
 
       columnEventClass: 'mb-px', // space from slot line
       columnEventBeforeClass: (data) => data.isStartResizable && [
@@ -295,14 +307,12 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
         (data.level || data.isDragging) && 'outline outline-(--fc-canvas-color)',
       ],
       columnEventInnerClass: (data) => [
-        'p-px',
         data.isCompact
           ? 'flex-row gap-1' // one line
           : 'flex-col gap-px', // two lines
       ],
       columnEventTimeClass: xxsTextClass,
       columnEventTitleClass: (data) => [
-        'top-0', // top for stickiness -- TODO: don't need anymore!!!
         data.isCompact ? xxsTextClass : 'py-px text-xs',
       ],
 
@@ -325,7 +335,7 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
       dayRowClass: borderClass,
       dayCellClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
-        data.isToday && todayBgClass,
+        // data.isToday && todayBgClass,
         data.isDisabled && neutralBgClass,
       ],
       dayCellTopClass: (data) => [
@@ -339,11 +349,11 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
         data.isCompact ? xxsTextClass : 'text-sm',
       ],
 
-      allDayDividerClass: `border-y ${borderColorClass} pb-0.5 ${neutralBgClass}`,
+      allDayDividerClass: `border-t ${borderColorClass}`,
 
       dayLaneClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
-        data.isToday && todayBgClass,
+        // data.isToday && todayBgClass,
         data.isDisabled && neutralBgClass,
       ],
       dayLaneInnerClass: (data) => data.isSimple
