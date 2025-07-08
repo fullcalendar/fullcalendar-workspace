@@ -579,6 +579,7 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
               : {}
         }}
         // events='https://fullcalendar.io/api/demo-feeds/events.json?overload-day'
+        now='2025-07-04T12:00:00'
         events={[
           {
             "title": "All Day Event",
@@ -587,7 +588,8 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
           {
             "title": "Long Event",
             "start": "2025-07-07",
-            "end": "2025-07-17"
+            "end": "2025-07-17",
+            "color": "var(--color-pink-500)",
           },
           {
             "groupId": "999",
