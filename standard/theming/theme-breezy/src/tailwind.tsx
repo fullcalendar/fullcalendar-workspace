@@ -1,4 +1,5 @@
 import { CalendarOptions, createPlugin, PluginDef } from '@fullcalendar/core'
+import { createElement, Fragment } from '@fullcalendar/core/preact'
 import * as svgIcons from './svgIcons.js'
 
 // Will import ambient types during dev but strip out for build
@@ -12,6 +13,7 @@ import type {} from '@fullcalendar/resource-timeline'
 const buttonIconClass = 'size-5 text-gray-400' // best?
 
 // applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
+// TODO: rename to "dayRowContent" or something
 const dayGridClasses: CalendarOptions = {
 
   /*
@@ -85,7 +87,22 @@ export default createPlugin({
     viewClass: 'border-t border-gray-200', // TODO: make top/bottom border for toolbar???
 
     dayHeaderClass: 'border items-center',
-    dayHeaderInnerClass: 'p-2',
+    dayHeaderInnerClass: 'p-2 flex flex-row items-center',
+    dayHeaderContent: (data) => (
+      <Fragment>
+        {data.textParts.map((textPart) => (
+          textPart.type !== 'day' ? (
+            <span className='whitespace-pre'>{textPart.value}</span>
+          ) : (
+            data.isToday ? (
+              <span className='font-semibold w-8 h-8 whitespace-pre rounded-full bg-indigo-600 text-white flex flex-row items-center justify-center ms-1'>{textPart.value}</span>
+            ) : (
+              <span className='font-semibold h-8 whitespace-pre flex flex-row items-center'>{textPart.value}</span>
+            )
+          )
+        ))}
+      </Fragment>
+    ),
 
     dayHeaderDividerClass: 'border-b border-gray-300',
     allDayDividerClass: 'border-b border-gray-300',
@@ -98,9 +115,24 @@ export default createPlugin({
     ],
     dayCellTopClass: 'flex flex-row justify-start min-h-1',
     dayCellTopInnerClass: (data) => [
-      'px-2 py-1 text-xs/6',
+      'p-1 text-xs/6',
       data.isOther ? 'text-gray-400' : 'text-gray-700',
     ],
+    dayCellTopContent: (data) => (
+      <Fragment>
+        {data.textParts.map((textPart) => (
+          textPart.type !== 'day' ? (
+            <span className='whitespace-pre'>{textPart.value}</span>
+          ) : (
+            data.isToday ? (
+              <span className='w-6 h-6 flex flex-row items-center justify-center whitespace-pre rounded-full bg-indigo-600 text-white font-semibold'>{textPart.value}</span>
+            ) : (
+              <span className='w-6 h-6 flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
+            )
+          )
+        ))}
+      </Fragment>
+    ),
 
     dayLaneClass: 'border border-gray-100',
 
@@ -143,13 +175,15 @@ export default createPlugin({
       data.isEnd && 'rounded-b-lg',
     ],
     columnEventInnerClass: 'py-1',
+    // TODO: move the x-padding to the inner div? same concept with row-events
     columnEventTimeClass: 'px-2 pt-1',
     columnEventTitleClass: 'px-2 py-1 font-semibold',
 
     moreLinkInnerClass: 'text-xs/6',
 
+    fillerClass: 'border border-gray-100 bg-white',
+
     // TODO: event resizing
-    // TODO: filler
   },
   views: {
     dayGrid: {
