@@ -35,11 +35,14 @@ const dayGridClasses: CalendarOptions = {
 
   /*
   TODO: ensure ellipsis on overflowing title text
+  TODO: add-back space between time/title? (try ellipsis first)
   */
-  listItemEventClass: 'mb-px mx-1',
-  listItemEventInnerClass: 'flex flex-row text-xs/6',
-  listItemEventTimeClass: 'order-1 mx-0.5 text-gray-500',
-  listItemEventTitleClass: 'flex-grow mx-0.5',
+  listItemEventClass: 'mx-1 mb-px hover:bg-gray-100 rounded-md',
+  listItemEventInnerClass: 'p-1 flex flex-row text-xs/4',
+  listItemEventTimeClass: 'order-1 text-gray-500',
+  listItemEventTitleClass: 'flex-grow',
+
+  rowMoreLinkClass: 'flex flex-row mx-1',
 }
 
 /*
@@ -117,6 +120,7 @@ export default createPlugin({
     dayCellTopInnerClass: (data) => [
       'p-1 text-xs/6',
       data.isOther ? 'text-gray-400' : 'text-gray-700',
+      !data.isToday && 'mx-1',
     ],
     dayCellTopContent: (data) => (
       <Fragment>
@@ -127,7 +131,7 @@ export default createPlugin({
             data.isToday ? (
               <span className='w-6 h-6 flex flex-row items-center justify-center whitespace-pre rounded-full bg-indigo-600 text-white font-semibold'>{textPart.value}</span>
             ) : (
-              <span className='w-6 h-6 flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
+              <span className='h-6 flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
             )
           )
         ))}
@@ -150,7 +154,10 @@ export default createPlugin({
 
     blockEventClass: 'bg-(--fc-canvas-color) relative',
     blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) opacity-15',
-    blockEventInnerClass: 'relative z-20 text-xs/4',
+    blockEventInnerClass: 'relative z-20 text-xs/4 flex', // NOTE: subclass determines direction
+    /*
+    ^^^NOTE: should core determine flex-direction because core needs to do sticky anyway, right!?
+    */
     blockEventTimeClass: 'text-(--fc-event-color) contrast-150',
     blockEventTitleClass: 'text-(--fc-event-color) brightness-60',
 
@@ -162,6 +169,7 @@ export default createPlugin({
       data.isStart && 'rounded-s-md',
       data.isEnd && 'rounded-e-md',
     ],
+    rowEventInnerClass: 'flex-row',
     rowEventTimeClass: 'p-1',
     rowEventTitleClass: 'p-1',
 
@@ -174,12 +182,14 @@ export default createPlugin({
       data.isStart && 'rounded-t-lg',
       data.isEnd && 'rounded-b-lg',
     ],
-    columnEventInnerClass: 'py-1',
+    columnEventInnerClass: 'flex-col py-1',
     // TODO: move the x-padding to the inner div? same concept with row-events
     columnEventTimeClass: 'px-2 pt-1',
     columnEventTitleClass: 'px-2 py-1 font-semibold',
 
-    moreLinkInnerClass: 'text-xs/6',
+    moreLinkInnerClass: 'text-xs/4',
+
+    rowMoreLinkInnerClass: 'rounded-md p-1 hover:bg-gray-100',
 
     fillerClass: 'border border-gray-100 bg-white',
 
