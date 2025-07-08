@@ -103,7 +103,7 @@ export function isPropsEqualWithFunc(
 
   for (let key in props1) {
     if (hasOwnProperty.call(props1, key)) {
-      if (!valuesEqual(props0[key], props1[key], key)) {
+      if (!(key in props0) || !valuesEqual(props0[key], props1[key], key)) {
         return false
       }
     }
