@@ -126,11 +126,11 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
       backgroundEventColor: 'var(--color-green-500)',
 
       className: `${borderClass} rounded-sm shadow-xs`,
-      viewClass: `border-t ${borderColorClass}`,
+      viewClass: `border-t ${borderColorClass}`, // TODO: make this top/bottom border --- remember to test bottom toolbar too
 
       tableHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
 
-      toolbarClass: 'p-3 items-center gap-3',
+      toolbarClass: 'p-3 items-center gap-3', // TODO: document how we do NOT need to justify-between or flex-row
       toolbarSectionClass: (data) => [
         'items-center gap-3',
         data.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto', // nicer wrapping
