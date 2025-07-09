@@ -35,7 +35,7 @@ const dayGridClasses: CalendarOptions = {
   BUG: z-index is wrong, can't click week numbers
   */
   weekNumberClass: (data) => [
-    !data.isCell && 'absolute top-0 end-0 border-b border-b-gray-300 border-s border-s-gray-200 rounded-es-md bg-white',
+    !data.isCell && 'absolute z-10 top-0 end-0 border-b border-b-gray-300 border-s border-s-gray-200 rounded-es-md bg-white',
   ],
   weekNumberInnerClass: (data) => [
     !data.isCell && 'px-1 py-0.5 text-xs/6',
@@ -106,7 +106,7 @@ export default createPlugin({
 
     viewClass: 'border-t border-gray-200', // TODO: make top/bottom border for toolbar???
 
-    dayHeaderClass: 'border items-center',
+    dayHeaderClass: 'items-center',
     dayHeaderInnerClass: 'p-2 flex flex-row items-center',
     dayHeaderContent: (data) => (
       <Fragment>
@@ -124,7 +124,6 @@ export default createPlugin({
       </Fragment>
     ),
 
-    dayHeaderDividerClass: 'border-b border-gray-300',
     allDayDividerClass: 'border-b border-gray-300',
 
     dayRowClass: 'border border-gray-200',
@@ -210,6 +209,9 @@ export default createPlugin({
     listDayHeaderInnerClass: 'sticky top-0 py-4 text-sm text-gray-500',
     listDayEventsClass: 'flex-grow flex flex-col',
 
+    singleMonthClass: 'm-5',
+    singleMonthTitleClass: 'text-center text-sm font-semibold text-gray-900',
+
     // TODO: event resizing
     // TODO: do isMajor border as darker (and put into checklist)
 
@@ -244,16 +246,22 @@ export default createPlugin({
   views: {
     dayGrid: {
       ...dayGridClasses,
-      dayHeaderClass: 'border-gray-200 text-xs/6 font-semibold text-gray-700',
+      dayHeaderDividerClass: 'border-b border-gray-300',
+      dayHeaderClass: 'border border-gray-200 text-xs/6 font-semibold text-gray-700',
       dayCellClass: 'border-gray-200',
     },
     multiMonth: {
       ...dayGridClasses,
+      dayHeaderInnerClass: 'text-xs/6 text-gray-500',
+
+      tableBodyClass: 'ring-1 ring-gray-200 shadow-sm ring ring-gray-200 rounded-md overflow-hidden',
+
       // TODO: sync with dayGrid?
     },
     timeGrid: {
       ...dayGridClasses,
-      dayHeaderClass: 'border-gray-100 text-sm/6 text-gray-500',
+      dayHeaderDividerClass: 'border-b border-gray-300',
+      dayHeaderClass: 'border border-gray-100 text-sm/6 text-gray-500',
       dayCellClass: 'border-gray-100',
       weekNumberClass: 'justify-end items-center',
       weekNumberInnerClass: 'px-3 text-sm/6 text-gray-500',

@@ -364,7 +364,7 @@ export default function App() {
               <MuiCssBaseline />
             )}
             <StandardExample
-              initialView='listYear'
+              initialView='multiMonthYear'
               className={exampleClassName}
               borderless={borderless}
               theme={theme}
