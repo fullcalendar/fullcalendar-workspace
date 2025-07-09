@@ -10,6 +10,8 @@ import type {} from '@fullcalendar/multimonth'
 import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
+const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
+
 const buttonIconClass = 'size-5 text-gray-400' // best?
 
 /*
@@ -27,6 +29,13 @@ Flyout menus:
 https://tailwindcss.com/plus/ui-blocks/marketing/elements/flyout-menus#component-25601925ae83e51e1b31d3bd1c286515
 
 Themes should completely decide if list-view dayheaders are sticky (put in the changelog?)
+
+TODO: add all the whitespace-nowrap overflow-hidden to the text divs
+  add to checklist
+
+TODO: fix popover styling
+
+TODO: multi-month SINGLE-col sticky mess
 */
 const dayGridClasses: CalendarOptions = {
 
@@ -35,16 +44,23 @@ const dayGridClasses: CalendarOptions = {
   BUG: z-index is wrong, can't click week numbers
   */
   weekNumberClass: (data) => [
-    !data.isCell && 'absolute z-10 top-0 end-0 border-b border-b-gray-300 border-s border-s-gray-200 rounded-es-md bg-white',
+    !data.isCell && (
+      'absolute z-10 top-0 end-0 border-b border-b-gray-300 border-s border-s-gray-200 rounded-es-md bg-white'
+    ),
   ],
   weekNumberInnerClass: (data) => [
-    !data.isCell && 'px-1 py-0.5 text-xs/6',
+    !data.isCell && (
+      'py-0.5 ' +
+        (data.isCompact
+          ? xxsTextClass + ' px-0.5'
+          : 'text-xs/6 px-1')
+    ),
   ],
 
   rowEventClass: (data) => [
-    'mb-0.5',
-    data.isStart && 'ms-1',
-    data.isEnd && 'me-1',
+    data.isCompact ? 'mb-px' : 'mb-0.5',
+    data.isStart && (data.isCompact ? 'ms-px' : 'ms-1'),
+    data.isEnd && (data.isCompact ? 'me-px' : 'me-1'),
   ],
 
   /*
@@ -56,7 +72,15 @@ const dayGridClasses: CalendarOptions = {
   listItemEventTimeClass: 'order-1 text-gray-500',
   listItemEventTitleClass: 'flex-grow font-medium',
 
-  rowMoreLinkClass: 'flex flex-row mx-1',
+  rowMoreLinkClass: (data) => [
+    'flex flex-row',
+    data.isCompact ? 'mx-px' : 'mx-1',
+    data.isCompact && 'border rounded-sm border-indigo-600',
+  ],
+  rowMoreLinkInnerClass: (data) => [
+    !data.isCompact && 'p-1',
+    'whitespace-nowrap overflow-hidden',
+  ]
 }
 
 /*
@@ -134,7 +158,8 @@ export default createPlugin({
     ],
     dayCellTopClass: 'flex flex-row justify-start min-h-1',
     dayCellTopInnerClass: (data) => [
-      'p-1 text-xs/6',
+      data.isCompact ? xxsTextClass : 'text-xs/6',
+      !data.isCompact && 'p-1',
       data.isOther ? 'text-gray-400' : 'text-gray-700',
       !data.isToday && 'mx-1',
     ],
@@ -145,9 +170,9 @@ export default createPlugin({
             <span className='whitespace-pre'>{textPart.value}</span>
           ) : (
             data.isToday ? (
-              <span className='w-6 h-6 flex flex-row items-center justify-center whitespace-pre rounded-full bg-indigo-600 text-white font-semibold'>{textPart.value}</span>
+              <span className='w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full bg-indigo-600 text-white font-semibold'>{textPart.value}</span>
             ) : (
-              <span className='h-6 flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
+              <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
             )
           )
         ))}
@@ -199,7 +224,7 @@ export default createPlugin({
 
     moreLinkInnerClass: 'text-xs/4',
 
-    rowMoreLinkInnerClass: 'rounded-md p-1 hover:bg-gray-100',
+    rowMoreLinkInnerClass: 'rounded-md hover:bg-gray-100',
 
     fillerClass: 'border border-gray-100 bg-white',
 
@@ -210,7 +235,7 @@ export default createPlugin({
     listDayEventsClass: 'flex-grow flex flex-col',
 
     singleMonthClass: 'm-5',
-    singleMonthTitleClass: 'text-center text-sm font-semibold text-gray-900',
+    singleMonthTitleClass: 'text-center text-sm font-semibold text-gray-900 pb-2',
 
     // TODO: event resizing
     // TODO: do isMajor border as darker (and put into checklist)

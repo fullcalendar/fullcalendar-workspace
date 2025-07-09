@@ -31,8 +31,9 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
     }
     if (props.cellIsNarrow) {
       // TODO: only if not distinct dates
-      finalRenderProps.text = (finalRenderProps as any).weekdayText =
-        context.dateEnv.format(dataConfig.dateMarker, narrowDayHeaderFormat)[0]
+      const [narrowText, narrowTextParts] = context.dateEnv.format(dataConfig.dateMarker, narrowDayHeaderFormat)
+      finalRenderProps.text = (finalRenderProps as any).weekdayText = narrowText
+      ;(finalRenderProps as any).textParts = narrowTextParts
     }
 
     return (

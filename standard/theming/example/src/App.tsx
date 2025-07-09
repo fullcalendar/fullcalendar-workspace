@@ -364,7 +364,7 @@ export default function App() {
               <MuiCssBaseline />
             )}
             <StandardExample
-              initialView='multiMonthYear'
+              initialView='timeGridWeek'
               className={exampleClassName}
               borderless={borderless}
               theme={theme}
