@@ -200,7 +200,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 )}
               </div>
             ))}
-            <div className={joinArrayishClassNames(options.dayHeaderDividerClass)} />
+            <div className={generateClassName(options.dayHeaderDividerClass, { hasAllDaySlot: Boolean(options.allDaySlot) })} />
           </div>
         )}
         <div // the "body"

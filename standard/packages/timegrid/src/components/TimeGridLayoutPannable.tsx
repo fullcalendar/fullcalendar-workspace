@@ -257,7 +257,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 )}
               </Scroller>
             </div>
-            <div className={joinArrayishClassNames(options.dayHeaderDividerClass)} />
+            <div className={generateClassName(options.dayHeaderDividerClass, { hasAllDaySlot: Boolean(options.allDaySlot) })} />
           </div>
         )}
         <div // the "body"

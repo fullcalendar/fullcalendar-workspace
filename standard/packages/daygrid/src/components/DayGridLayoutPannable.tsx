@@ -121,7 +121,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
                 />
               )}
             </Scroller>
-            <div className={joinArrayishClassNames(options.dayHeaderDividerClass)} />
+            <div className={generateClassName(options.dayHeaderDividerClass, { hasAllDaySlot: false })} />
           </div>
         )}
         <Scroller

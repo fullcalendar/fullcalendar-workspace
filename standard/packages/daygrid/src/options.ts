@@ -6,7 +6,7 @@ export const OPTION_REFINERS = {
   dayHeaders: Boolean,
   dayHeaderFormat: createFormatter,
 
-  dayHeaderDividerClass: identity as Identity<ClassNameInput>,
+  dayHeaderDividerClass: identity as Identity<ClassNameGenerator<{ hasAllDaySlot: boolean }>>,
   dayHeaderRowClass: identity as Identity<ClassNameInput>,
   dayRowClass: identity as Identity<ClassNameInput>,
 

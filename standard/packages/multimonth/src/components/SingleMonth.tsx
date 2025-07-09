@@ -163,7 +163,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 cellIsCompact={cellIsCompact}
                 cellIsNarrow={cellIsNarrow}
               />
-              <div className={joinArrayishClassNames(options.dayHeaderDividerClass)} />
+              <div className={generateClassName(options.dayHeaderDividerClass, { hasAllDaySlot: false })} />
             </div>
             <div
               className={joinArrayishClassNames(

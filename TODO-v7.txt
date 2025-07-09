@@ -15,6 +15,7 @@ when no dayHeaderDividerClass, should not inject <div>
 ^^^more problems with this in TimeGrid, lines not aligning!
 Maybe border-radius should be a parameter to the theme
 important to test out: drop shadow from dayheader/axis onto scrollable area
+is "hasAllDaySlot" the correct naming? other "has"?
 
 Forma theme:
   how to add top border to header cell. can we do it with impunity?

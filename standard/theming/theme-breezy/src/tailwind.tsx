@@ -165,8 +165,6 @@ export default createPlugin({
       </Fragment>
     ),
 
-    allDayDividerClass: 'border-b border-gray-300',
-
     dayRowClass: 'border border-gray-200',
 
     dayCellClass: (data) => [
@@ -300,7 +298,13 @@ export default createPlugin({
     },
     timeGrid: {
       ...dayGridClasses,
-      dayHeaderDividerClass: 'border-b border-gray-300',
+
+      allDayDividerClass: 'border-b border-gray-300 shadow-sm',
+
+      dayHeaderDividerClass: (data) => [
+        'border-b',
+        data.hasAllDaySlot ? 'border-gray-200' : 'border-gray-300 shadow-sm',
+      ],
       dayHeaderClass: 'border border-gray-100 text-sm/6 text-gray-500',
       dayCellClass: 'border-gray-100',
       weekNumberClass: 'justify-end items-center',
