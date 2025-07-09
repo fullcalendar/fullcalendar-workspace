@@ -13,6 +13,7 @@ import {
   generateClassName,
   getIsHeightAuto,
   intersectRanges,
+  joinArrayishClassNames,
   joinClassNames,
   memoize,
   MountData,
@@ -121,6 +122,7 @@ export class ListView extends DateComponent<ViewProps> {
   }
 
   renderSegList(allSegs: (ListSeg & EventRangeProps)[], dayDates: DateMarker[]) {
+    let { options } = this.context
     let segsByDay = groupSegsByDay(allSegs) // sparse array
 
     return (
@@ -128,6 +130,10 @@ export class ListView extends DateComponent<ViewProps> {
         role='list'
         aria-labelledby={this.props.labelId}
         aria-label={this.props.labelStr}
+        className={joinClassNames(
+          classNames.flexCol,
+          joinArrayishClassNames(options.listDaysClass),
+        )}
       >
         <NowTimer unit="day">
           {(nowDate: DateMarker, todayRange: DateRange) => {

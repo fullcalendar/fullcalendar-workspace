@@ -16,6 +16,17 @@ const buttonIconClass = 'size-5 text-gray-400' // best?
 applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
 TODO: rename to "dayRowContent" or something
 TODO: audit all forced line-heights. not a fan
+
+Some dark mode:
+https://tailwindcss.com/plus/ui-blocks/application-ui/lists/tables
+
+User different navbar for view-selector:
+https://tailwindcss.com/plus/ui-blocks/application-ui/navigation/tabs#component-2a66fc822e8ad55f59321825e5af0980
+
+Flyout menus:
+https://tailwindcss.com/plus/ui-blocks/marketing/elements/flyout-menus#component-25601925ae83e51e1b31d3bd1c286515
+
+Themes should completely decide if list-view dayheaders are sticky (put in the changelog?)
 */
 const dayGridClasses: CalendarOptions = {
 
@@ -68,6 +79,9 @@ export default createPlugin({
     toolbarClass: 'px-4 py-4 items-center bg-gray-50 gap-4',
     toolbarSectionClass: 'items-center gap-4',
     toolbarTitleClass: 'text-base font-semibold text-gray-900',
+
+    popoverClass: 'border border-gray-300 shadow-md bg-white rounded-lg m-1',
+    popoverBodyClass: 'p-2 min-w-50',
 
     buttonGroupClass: 'rounded-md shadow-xs',
     buttonClass: (data) => [
@@ -190,7 +204,14 @@ export default createPlugin({
 
     fillerClass: 'border border-gray-100 bg-white',
 
+    listDaysClass: 'px-4 my-10 mx-auto w-full max-w-200',
+    listDayClass: 'flex flex-row not-last:border-b not-last:border-gray-200',
+    listDayHeaderClass: 'w-40',
+    listDayHeaderInnerClass: 'sticky top-0 py-4 text-sm text-gray-500',
+    listDayEventsClass: 'flex-grow flex flex-col',
+
     // TODO: event resizing
+    // TODO: do isMajor border as darker (and put into checklist)
 
     // Premium
     // ---------------------------------------------------------------------------------------------
@@ -257,10 +278,17 @@ export default createPlugin({
       slotLabelAlign: 'center',
       slotLabelClass: 'justify-end',
       slotLabelInnerClass: '-ms-1 pe-6 py-2',
+      //^^^wait, we don't want do this this for upper-level slot labels
 
       rowEventClass: 'mb-px',
     },
     list: {
+      listItemEventClass: 'not-last:border-b not-last:border-gray-200',
+      listItemEventInnerClass: 'py-4 flex flex-row text-sm',
+
+      // TODO: make this common?...
+      listItemEventTimeClass: 'order-1 text-gray-500',
+      listItemEventTitleClass: 'flex-grow font-semibold text-gray-900',
     },
   },
 }) as PluginDef

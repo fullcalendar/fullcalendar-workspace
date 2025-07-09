@@ -364,7 +364,7 @@ export default function App() {
               <MuiCssBaseline />
             )}
             <StandardExample
-              initialView='timeGridWeek'
+              initialView='listYear'
               className={exampleClassName}
               borderless={borderless}
               theme={theme}
@@ -550,7 +550,7 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
           ToolbarComponent ? false : {
             left: 'today prev,next title',
             center: '',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek,multiMonthYear',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay,listYear,multiMonthYear',
           }
         }
         navLinks={true}
@@ -566,7 +566,13 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
               listDayFormat: { day: 'numeric' },
               listDaySideFormat: { month: 'short', weekday: 'short', forceCommas: true },
             }
-            : {}
+            : props.theme === 'breezy'
+              ? {
+                listDayFormat: { month: 'short', weekday: 'short', day: 'numeric' },
+                listDaySideFormat: false,
+              }
+              : {} // default is for standard theme... which does side-format... kill this default
+                   // and have standard theme set it?
         )}
         views={{
           dayGridMonth:
