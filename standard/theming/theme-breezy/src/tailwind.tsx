@@ -36,6 +36,8 @@ TODO: add all the whitespace-nowrap overflow-hidden to the text divs
 TODO: fix popover styling
 
 TODO: multi-month SINGLE-col sticky mess
+
+TODO: audit other more-link styles (not just for daygrid)
 */
 const dayGridClasses: CalendarOptions = {
 
@@ -78,6 +80,7 @@ const dayGridClasses: CalendarOptions = {
     data.isCompact && 'border rounded-sm border-indigo-600',
   ],
   rowMoreLinkInnerClass: (data) => [
+    data.isCompact ? xxsTextClass : 'text-xs',
     !data.isCompact && 'p-1',
     'whitespace-nowrap overflow-hidden',
   ]
@@ -107,15 +110,29 @@ export default createPlugin({
     popoverClass: 'border border-gray-300 shadow-md bg-white rounded-lg m-1',
     popoverBodyClass: 'p-2 min-w-50',
 
-    buttonGroupClass: 'rounded-md shadow-xs',
+    buttonGroupClass: (data) => [
+      !data.isViewGroup && 'rounded-md shadow-xs border border-gray-300'
+    ],
     buttonClass: (data) => [
-      'px-3.5 py-2.5 text-sm font-semibold text-gray-900 focus:relative',
-      data.inGroup
-        ? 'first:rounded-s-md last:rounded-e-md not-last:-me-px'
-        : 'rounded-md shadow-xs',
-      data.isSelected
-        ? 'z-20 bg-indigo-600 text-white'
-        : 'z-10 bg-white hover:bg-gray-50 ring ring-inset ring-gray-300',
+      'py-2.5 text-sm focus:relative',
+      data.isIconOnly ? 'px-2.5' : 'px-3.5',
+      data.inViewGroup ? (
+        'rounded-md font-medium text-gray-600 hover:text-gray-800 ' +
+        (data.isSelected
+          ? 'bg-gray-200'
+          : '')
+        //
+        // Colored version:
+        // 'rounded-md font-medium hover:text-gray-800 ' +
+        // (data.isSelected
+        //   ? 'bg-indigo-100 text-indigo-700'
+        //   : 'text-gray-600')
+      ) : (
+        'bg-white hover:bg-gray-50 font-semibold text-gray-900 ' +
+        (data.inGroup
+          ? 'first:rounded-s-md last:rounded-e-md'
+          : 'rounded-md shadow-xs border border-gray-300')
+      ),
     ],
 
     buttons: {
@@ -221,8 +238,6 @@ export default createPlugin({
     // TODO: move the x-padding to the inner div? same concept with row-events
     columnEventTimeClass: 'px-2 pt-1',
     columnEventTitleClass: 'px-2 py-1 font-semibold',
-
-    moreLinkInnerClass: 'text-xs/4',
 
     rowMoreLinkInnerClass: 'rounded-md hover:bg-gray-100',
 
