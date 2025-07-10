@@ -16,6 +16,13 @@ when no dayHeaderDividerClass, should not inject <div>
 Maybe border-radius should be a parameter to the theme
 important to test out: drop shadow from dayheader/axis onto scrollable area
 is "hasAllDaySlot" the correct naming? other "has"?
+rename --fc-canvas-color... because in pulse theme, outer background could be gray,
+  but we still want popover bg to be white. call is just "bg" color?
+add the isPrimary button config.. ensure its designed in all themes
+best DX for distributing palette variations?
+big issue: root calendar (and root view) can have overflow-hidden,
+  how to do popovers?
+how will we do line-height reset in non-tailwind? (and have it work in tailwind too)
 
 Forma theme:
   how to add top border to header cell. can we do it with impunity?

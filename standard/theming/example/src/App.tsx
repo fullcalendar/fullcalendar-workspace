@@ -312,7 +312,10 @@ export default function App() {
         </div>
       </div>
       <div
-        className='flex-grow relative z-0'
+        className={
+          'flex-grow relative z-0 ' +
+          (theme === 'pulse' ? 'bg-[#F8FAFB]' : '')
+        }
         style={muiTheme.cssVariables ? {} : {
           '--mui-palette-primary-main': muiTheme.palette.primary.main,
           '--mui-palette-primary-light': muiTheme.palette.primary.light,
@@ -338,7 +341,6 @@ export default function App() {
               <MuiCssBaseline />
             )}
             <StandardExample
-              initialView='timeGridWeek'
               className={exampleClassName}
               borderless={borderless}
               theme={theme}
@@ -347,6 +349,7 @@ export default function App() {
               ToolbarComponent={ToolbarComponent}
             />
             <StandardExample
+              initialView='timeGridWeek'
               className={exampleClassName}
               borderless={borderless}
               theme={theme}
@@ -522,7 +525,7 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
         borderless={props.borderless}
         headerToolbar={
           ToolbarComponent ? false : {
-            left: 'today prev,next title',
+            left: 'prev,today,next title',
             center: '',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listYear,multiMonthYear',
           }

@@ -12,7 +12,7 @@ import type {} from '@fullcalendar/resource-timeline'
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
 
-const buttonIconClass = 'size-5 text-gray-400' // best?
+const buttonIconClass = 'size-5 text-gray-400' // best? to sync to line-height???
 
 /*
 applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
