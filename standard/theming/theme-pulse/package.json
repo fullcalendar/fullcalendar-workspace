@@ -1,5 +1,5 @@
 {
-  "name": "@fullcalendar/theme-zen",
+  "name": "@fullcalendar/theme-pulse",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,14 +12,6 @@
     "./tailwind": {
       "types": "./dist/tailwind.d.ts",
       "default": "./dist/tailwind.js"
-    },
-    "./shadcn": {
-      "types": "./dist/shadcn.d.ts",
-      "default": "./dist/shadcn.js"
-    },
-    "./mui": {
-      "types": "./dist/mui.d.ts",
-      "default": "./dist/mui.js"
     }
   },
   "peerDependencies": {
