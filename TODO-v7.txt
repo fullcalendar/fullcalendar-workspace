@@ -23,6 +23,8 @@ best DX for distributing palette variations?
 big issue: root calendar (and root view) can have overflow-hidden,
   how to do popovers?
 how will we do line-height reset in non-tailwind? (and have it work in tailwind too)
+pattern for "apiRef": https://docs.svar.dev/react/gantt/api/methods/detach
+does setting eventDisplay to "block" affect BACKGROUND events!??
 
 Forma theme:
   how to add top border to header cell. can we do it with impunity?

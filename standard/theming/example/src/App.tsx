@@ -341,6 +341,7 @@ export default function App() {
               <MuiCssBaseline />
             )}
             <StandardExample
+              initialView='timeGridWeek'
               className={exampleClassName}
               borderless={borderless}
               theme={theme}
@@ -349,7 +350,6 @@ export default function App() {
               ToolbarComponent={ToolbarComponent}
             />
             <StandardExample
-              initialView='timeGridWeek'
               className={exampleClassName}
               borderless={borderless}
               theme={theme}
@@ -508,7 +508,8 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
         schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
         colorScheme={props.colorScheme}
         controller={controller}
-        weekNumbers={true}
+        // weekNumbers={true}
+        // eventDisplay='block'
         plugins={[
           scrollGridPlugin,
           adaptivePlugin,

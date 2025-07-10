@@ -41,6 +41,9 @@ TODO: audit other more-link styles (not just for daygrid)
 
 TODO: now indicator
 TODO: shadow on resourceArea?
+
+TODO: in all-day area, when stacking events, allDayHeader not valigned
+  also, wrong cell-bottom padding
 */
 const dayGridClasses: CalendarOptions = {
 
@@ -322,7 +325,7 @@ export default createPlugin({
       slotLabelDividerClass: 'border-l border-gray-100',
 
       columnEventClass: (data) => [
-        'mx-1',
+        'mx-1', // TODO: move this to the columnInner thing? yes!!
         data.isStart && 'mt-1',
         data.isEnd && 'mb-1',
       ],
