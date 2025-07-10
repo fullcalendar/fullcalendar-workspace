@@ -58,6 +58,8 @@ import timelinePlugin from '@fullcalendar/timeline'
 import { ButtonStateMap, CalendarController, PluginDef } from '@fullcalendar/core'
 
 // FullCalendar themes
+// > Pulse
+import pulseTailwindTheme from '@fullcalendar/theme-pulse/tailwind'
 // > Breezy
 import breezyTailwindTheme from '@fullcalendar/theme-breezy/tailwind'
 // > Classic
@@ -70,10 +72,6 @@ import monarchMuiTheme from '@fullcalendar/theme-monarch/mui'
 import formaTailwindTheme from '@fullcalendar/theme-forma/tailwind'
 import formaShadcnTheme from '@fullcalendar/theme-forma/shadcn'
 import formaMuiTheme from '@fullcalendar/theme-forma/mui'
-// > Zen
-import zenTailwindTheme from '@fullcalendar/theme-zen/tailwind'
-import zenShadcnTheme from '@fullcalendar/theme-zen/shadcn'
-import zenMuiTheme from '@fullcalendar/theme-zen/mui'
 
 // utils for our example
 import { getMuiTheme } from './mui-themes.js'
@@ -83,7 +81,7 @@ const themeOptions = [
   { value: 'monarch', text: 'Monarch', tooltip: 'A Google/Material-inspired theme' },
   { value: 'forma', text: 'Forma', tooltip: 'An Outlook Calendar-inspired theme' },
   { value: 'breezy', text: 'Breezy', tooltip: 'Windy theme' },
-  // { value: 'zen', text: 'Zen', tooltip: 'A minimalist Apple-like theme' },
+  { value: 'pulse', text: 'Pulse', tooltip: 'Pulsy theme'  }
 ]
 const componentLibOptions = [
   { value: 'fc', text: 'Default' },
@@ -99,10 +97,6 @@ const fcMonarchPaletteOptions = [
 ]
 const fcFormaPaletteOptions = [
   { value: 'red', text: 'Red!', colorClassName: 'bg-red-500' },
-  { value: 'black', text: 'Black!', colorClassName: 'bg-black' },
-]
-const fcZenPaletteOptions = [
-  { value: 'green', text: 'Green!', colorClassName: 'bg-green-500' },
   { value: 'black', text: 'Black!', colorClassName: 'bg-black' },
 ]
 const shadcnPaletteOptions = [
@@ -128,7 +122,6 @@ const themeOptionValues = themeOptions.map((option) => option.value)
 const componentLibValues = componentLibOptions.map((option) => option.value)
 const fcMonarchPaletteValues = fcMonarchPaletteOptions.map((option) => option.value)
 const fcFormaPaletteValues = fcFormaPaletteOptions.map((option) => option.value)
-const fcZenPaletteValues = fcZenPaletteOptions.map((option) => option.value)
 const shadcnPaletteValues = shadcnPaletteOptions.map((option) => option.value)
 const muiPaletteValues = muiPaletteOptions.map((option) => option.value)
 const colorSchemeValues = colorSchemeOptions.map((option) => option.value) as ('light' | 'dark')[]
@@ -138,6 +131,11 @@ const themePluginMap = {
     fc: classicTailwindTheme,
     shadcn: classicTailwindTheme, // dup
     mui: classicTailwindTheme, // dup
+  },
+  pulse: {
+    fc: pulseTailwindTheme,
+    shadcn: pulseTailwindTheme, // dup
+    mui: pulseTailwindTheme, // dup
   },
   breezy: {
     fc: breezyTailwindTheme,
@@ -154,11 +152,6 @@ const themePluginMap = {
     shadcn: formaShadcnTheme,
     mui: formaMuiTheme,
   },
-  zen: {
-    fc: zenTailwindTheme,
-    shadcn: zenShadcnTheme,
-    mui: zenMuiTheme,
-  },
 }
 
 function buildFcRootClassName(theme: string, palette: string, colorScheme: string): string {
@@ -174,7 +167,6 @@ export default function App() {
   const [componentLib, setComponentLib] = useLocalStorageState('componentLib', 'fc', componentLibValues)
   const [fcMonarchPalette, setFcMonarchPalette] = useLocalStorageState('fcMonarchPalette', fcMonarchPaletteValues[0], fcMonarchPaletteValues)
   const [fcFormaPalette, setFcFormaPalette] = useLocalStorageState('fcFormaPalette', fcFormaPaletteValues[0], fcFormaPaletteValues)
-  const [fcZenPalette, setFcZenPalette] = useLocalStorageState('fcZenPalette', fcZenPaletteValues[0], fcZenPaletteValues)
   const [shadcnPalette, setShadcnPalette] = useLocalStorageState('shadcnPalette', 'default', shadcnPaletteValues)
   const [muiPalette, setMuiPalette] = useLocalStorageState('muiPalette', 'blue', muiPaletteValues)
   const [colorScheme, setColorScheme] = useLocalStorageState<'light' | 'dark'>('colorScheme', 'light', colorSchemeValues)
@@ -208,13 +200,12 @@ export default function App() {
           buildFcRootClassName(
             theme,
             theme === 'monarch' ? fcMonarchPalette :
-              theme === 'forma' ? fcFormaPalette :
-                theme === 'zen' ? fcZenPalette : '',
+              theme === 'forma' ? fcFormaPalette : '',
             colorScheme,
           )
         )
     )
-  }, [componentLib, theme, fcMonarchPalette, fcFormaPalette, fcZenPalette, shadcnPalette, colorScheme])
+  }, [componentLib, theme, fcMonarchPalette, fcFormaPalette, shadcnPalette, colorScheme])
 
   return (
     <>
@@ -293,7 +284,7 @@ export default function App() {
                 </SelectContent>
               </Select>
             </div>
-          ) : (theme === 'forma') ? (
+          ) : (theme === 'forma') && (
             <div className='flex flex-row items-center gap-4'>
               <div className='text-sm text-muted-foreground'>Palette</div>
               <Select value={fcFormaPalette} onValueChange={(v) => setFcFormaPalette(v)}>
@@ -302,23 +293,6 @@ export default function App() {
                 </SelectTrigger>
                 <SelectContent>
                   {fcFormaPaletteOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value} className='flex flex-row'>
-                      <div className={`w-4 h-4 ${option.colorClassName}`} />
-                      {option.text}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          ) : (theme === 'zen') && (
-            <div className='flex flex-row items-center gap-4'>
-              <div className='text-sm text-muted-foreground'>Palette</div>
-              <Select value={fcZenPalette} onValueChange={(v) => setFcZenPalette(v)}>
-                <SelectTrigger className='w-50'>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {fcZenPaletteOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value} className='flex flex-row'>
                       <div className={`w-4 h-4 ${option.colorClassName}`} />
                       {option.text}

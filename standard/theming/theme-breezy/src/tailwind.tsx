@@ -38,6 +38,9 @@ TODO: fix popover styling
 TODO: multi-month SINGLE-col sticky mess
 
 TODO: audit other more-link styles (not just for daygrid)
+
+TODO: now indicator
+TODO: shadow on resourceArea?
 */
 const dayGridClasses: CalendarOptions = {
 

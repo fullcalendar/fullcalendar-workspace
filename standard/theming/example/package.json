@@ -47,7 +47,7 @@
     "@fullcalendar/theme-classic": "workspace:*",
     "@fullcalendar/theme-monarch": "workspace:*",
     "@fullcalendar/theme-forma": "workspace:*",
-    "@fullcalendar/theme-zen": "workspace:*",
+    "@fullcalendar/theme-pulse": "workspace:*",
     "@fullcalendar/timegrid": "workspace:*",
     "@fullcalendar/timeline": "workspace:*",
     "@types/node": "^24.0.7",
