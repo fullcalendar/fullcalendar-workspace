@@ -28,7 +28,7 @@ const dayGridClasses: CalendarOptions = {
   rowEventTitleClass: 'flex-grow',
 
   moreLinkClass: 'mx-1 flex flex-row',
-  moreLinkInnerClass: `p-1 text-xs font-medium text-white rounded-sm bg-[#117aff]`,
+  moreLinkInnerClass: `p-1 text-xs font-medium rounded-sm bg-[#eeeeef]`,
   //^^^ setting that lets you do just "+3"
 }
 
@@ -54,8 +54,9 @@ export default createPlugin({
 
     toolbarClass: 'gap-5 items-center',
     toolbarSectionClass: 'gap-5 items-center',
-    toolbarTitleClass: 'text-xl font-bold text-gray-800',
-    // how to customize title??? with text parts???
+    toolbarTitleClass: 'text-2xl font-bold text-gray-800',
+    // how to customize title??? with text parts??? -- TODO: make ticket for toolbarTitleContent -- show Apple Calendar screenshot
+    // TODO: make ticket for buttons{}.beforeClass/afterClass, ButtonData.isFirst/isLast
 
     buttonGroupClass: (data) => [
       'items-center',
@@ -71,13 +72,10 @@ export default createPlugin({
       (!data.inGroup || data.inViewGroup) && 'rounded-sm', // standalone or in selector-group
       (data.inGroup && !data.inViewGroup) && 'bg-white first:rounded-s-[9px] last:rounded-e-[9px] not-first:border-s not-first:border-s-gray-200', // opposite of ^^^
       !data.inGroup && 'bg-white rounded-[9px] border border-[#d5d5d6] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]',
-      data.isIconOnly ? 'px-[12px]' : 'px-[16px]',
-      data.inViewGroup ? 'py-[9px]' : 'py-[10px]',
+      data.isIconOnly ? 'px-2.5' : 'px-4',
+      'py-2',
       data.isSelected && `bg-white [box-shadow:0_1px_3px_rgba(0,0,0,0.2)]`,
     ],
-    // buttonDividerClass: (data) => [
-    //   data.inViewGroup && 'border-l border-[#dcdcdc] h-5',
-    // ],
 
     buttons: {
       // TODO: RTL
@@ -89,11 +87,11 @@ export default createPlugin({
       },
     },
 
-    dayHeaderClass: 'items-center',
-    dayHeaderInnerClass: 'px-2 py-[6px]',
+    dayHeaderClass: 'items-end',
+    dayHeaderInnerClass: 'py-1',
     dayHeaderContent: (data) => (
       <div className={
-        'text-sm py-1 px-3 rounded-md ' +
+        'text-sm py-1 px-2 rounded-md ' +
         (data.isToday
         ? `text-white bg-[#fd453b]`
         : 'text-gray-500')
@@ -112,7 +110,8 @@ export default createPlugin({
     dayCellTopClass: 'flex flex-row justify-end min-h-1',
     dayCellTopInnerClass: (data) => [
       !data.isToday && 'mx-1',
-      'p-1 text-sm font-bold',
+      data.isOther ? 'text-gray-500' : 'font-semibold',
+      'p-1 text-sm',
     ],
     dayCellTopContent: (data) => (
       <Fragment>

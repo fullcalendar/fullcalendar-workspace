@@ -313,8 +313,8 @@ export default function App() {
       </div>
       <div
         className={
-          'flex-grow relative z-0 ' +
-          (theme === 'pulse' ? 'bg-[#F8FAFB]' : '')
+          'flex-grow relative z-0 ' // +
+          // (theme === 'pulse' ? 'bg-[#F8FAFB]' : '')
         }
         style={muiTheme.cssVariables ? {} : {
           '--mui-palette-primary-main': muiTheme.palette.primary.main,
