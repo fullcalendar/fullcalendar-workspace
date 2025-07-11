@@ -340,7 +340,7 @@ export default function App() {
             {(componentLib === 'mui') && (
               <MuiCssBaseline />
             )}
-            <StandardExample
+            {/* <StandardExample
               initialView='timeGridWeek'
               className={exampleClassName}
               borderless={borderless}
@@ -348,7 +348,7 @@ export default function App() {
               themePlugin={themePlugin}
               colorScheme={colorScheme}
               ToolbarComponent={ToolbarComponent}
-            />
+            /> */}
             <StandardExample
               className={exampleClassName}
               borderless={borderless}
@@ -573,7 +573,7 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
             "title": "Long Event",
             "start": "2025-07-07",
             "end": "2025-07-17",
-            "color": "var(--color-pink-500)",
+            // "color": "var(--color-pink-500)",
           },
           {
             "groupId": "999",

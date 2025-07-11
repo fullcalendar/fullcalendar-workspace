@@ -25,6 +25,8 @@ big issue: root calendar (and root view) can have overflow-hidden,
 how will we do line-height reset in non-tailwind? (and have it work in tailwind too)
 pattern for "apiRef": https://docs.svar.dev/react/gantt/api/methods/detach
 does setting eventDisplay to "block" affect BACKGROUND events!??
+remove passing in createElement to things like
+  `export type CustomContentGenerator<RenderProps> = CustomContent | ((renderProps: RenderProps, createElement: any) => (CustomContent | true))`
 
 Forma theme:
   how to add top border to header cell. can we do it with impunity?
