@@ -15,6 +15,13 @@ TODO: more rounded more-links
 TODO: more rounded mini-calendars
 TODO: rename transparent* to ghost*
 TODO: rename disabled* to muted*
+
+The +add button (aka isPrimary:true) should be the "tertiary" color
+  https://m3.material.io/styles/color/roles#f94f9708-5ec9-4526-968c-577e9ea78036
+  try "tertiary container" color first. if too light, try just "tertiary"
+Examples of tertiary color meaning "adding" things:
+  https://m3.material.io/components/all-buttons#a2942905-4661-4003-9efd-21bc680e10c0
+  https://m3.material.io/components/button-groups/overview
 */
 
 // Will import ambient types during dev but strip out for build
@@ -194,13 +201,14 @@ export function createThemePlugin({
         'inline-flex items-center justify-center py-3 text-sm rounded-full',
         data.inGroup && 'relative active:z-20 focus:z-20',
         data.isSelected ? 'z-10' : 'z-0',
-        data.isDisabled && `pointer-events-none`, // bypass hover styles
+        data.isDisabled && `pointer-events-none opacity-90`, // bypass hover styles
         data.isIconOnly ? 'px-3' : 'px-5',
         (data.isIconOnly || (data.inGroup && !data.isSelected))
           ? transparentPressableClass
-          : data.isDisabled
-            ? props.primaryContainerClass
-            : props.primaryButtonClass,
+          : props.primaryButtonClass
+          // : data.isDisabled
+          //   ? props.primaryContainerClass
+          //   : props.primaryButtonClass,
       ],
 
       popoverClass: `${borderClass} rounded-lg bg-(--fc-canvas-color) shadow-lg m-2`,
