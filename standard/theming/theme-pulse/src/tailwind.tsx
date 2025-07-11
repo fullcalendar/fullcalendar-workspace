@@ -12,6 +12,10 @@ import type {} from '@fullcalendar/resource-timeline'
 
 const buttonIconClass = 'size-5 text-gray-400' // best???
 
+const shadowClass = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1),0_3px_12px_rgba(0,0,0,0.1)]'
+const blueGlowClass = '[box-shadow:0_8px_16px_rgba(0,129,255,0.2)]'
+const blueGlowSmallClass = '[box-shadow:0_4px_8px_rgba(0,129,255,0.2)]'
+
 const dayGridClasses: CalendarOptions = {
   rowEventClass: (data) => [
     'mb-0.5',
@@ -28,7 +32,7 @@ const dayGridClasses: CalendarOptions = {
   rowEventTitleClass: 'flex-grow',
 
   moreLinkClass: 'mx-1 flex flex-row',
-  moreLinkInnerClass: 'p-1 text-xs font-medium text-white rounded-sm bg-blue-500',
+  moreLinkInnerClass: `p-1 text-xs font-medium text-white rounded-sm bg-blue-500 ${blueGlowSmallClass}`,
   //^^^ setting that lets you do just "+3"
 }
 
@@ -44,17 +48,18 @@ export default createPlugin({
     */
     eventContrastColor: 'var(--color-white)',
     backgroundEventColor: 'var(--color-green-500)',
+    eventDisplay: 'block',
 
     class: 'gap-6',
 
-    viewClass: 'bg-white rounded-lg shadow-lg overflow-hidden',
+    viewClass: `bg-white rounded-lg overflow-hidden ${shadowClass}`,
 
     toolbarClass: 'gap-5 items-center',
     toolbarSectionClass: 'gap-5 items-center',
     toolbarTitleClass: 'text-xl font-bold text-gray-800',
 
     buttonGroupClass: (data) => [
-      'bg-white rounded-sm shadow-md',
+      `bg-white rounded-sm ${shadowClass}`,
       data.isViewGroup && 'p-[3px]',
     ],
 
@@ -64,10 +69,10 @@ export default createPlugin({
       (!data.isSelected && !data.isDisabled) && 'hover:bg-gray-100',
       (!data.inGroup || data.inViewGroup) && 'rounded-sm', // standalone or in non-selector-group
       (data.inGroup && !data.inViewGroup) && 'first:rounded-s-sm last:rounded-e-sm not-first:border-s not-first:border-s-gray-200', // opposite of ^^^
-      !data.inGroup && 'bg-white shadow-md',
+      !data.inGroup && `bg-gradient-to-b from-white to-gray-50 ${shadowClass}`,
       data.isIconOnly ? 'px-[12px]' : 'px-[16px]',
       data.inViewGroup ? 'py-[7px]' : 'py-[10px]',
-      data.isSelected && 'bg-[#0081FF] text-white',
+      data.isSelected && `bg-[#0081FF] text-white ${blueGlowClass}`,
     ],
 
     buttons: {
@@ -86,7 +91,7 @@ export default createPlugin({
       <div className={
         'text-sm py-1 px-3 rounded-md ' +
         (data.isToday
-        ? 'text-white bg-[#0081FF]'
+        ? `text-white bg-[#0081FF] ${blueGlowClass}`
         : 'text-gray-500')
       }>
         {data.text}
@@ -112,7 +117,7 @@ export default createPlugin({
             <span className='whitespace-pre'>{textPart.value}</span>
           ) : (
             data.isToday ? (
-              <span className='w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full bg-[#0081FF] text-white font-semibold'>{textPart.value}</span>
+              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full bg-[#0081FF] ${blueGlowClass} text-white font-semibold`}>{textPart.value}</span>
             ) : (
               <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
             )
@@ -126,10 +131,14 @@ export default createPlugin({
       data.isToday && 'bg-[#0081FF]/5',
     ],
 
-    blockEventClass: 'relative',
-    blockEventColorClass: 'absolute z-10 inset-0 bg-(--fc-event-color)',
+    blockEventClass: 'relative bg-(--fc-event-color)',
+    blockEventColorClass: 'absolute z-10 inset-0 [box-shadow:0_4px_8px_var(--fc-event-color)] opacity-20',
     blockEventInnerClass: 'relative z-20 text-(--fc-event-contrast-color) text-xs',
 
+    rowEventClass: (data) => [
+      data.isStart && 'rounded-s-sm',
+      data.isEnd && 'rounded-e-sm',
+    ],
     rowEventColorClass: (data) => [
       data.isStart && 'rounded-s-sm',
       data.isEnd && 'rounded-e-sm',
@@ -139,6 +148,10 @@ export default createPlugin({
     rowEventTitleClass: 'p-1 font-medium',
     //^^^for row event, switch order of title/time?
 
+    columnEventClass: (data) => [
+      data.isStart && 'rounded-t-lg',
+      data.isEnd && 'rounded-b-lg',
+    ],
     columnEventColorClass: (data) => [
       data.isStart && 'rounded-t-lg',
       data.isEnd && 'rounded-b-lg',
