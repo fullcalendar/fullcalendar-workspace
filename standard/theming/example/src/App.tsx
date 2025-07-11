@@ -340,7 +340,7 @@ export default function App() {
             {(componentLib === 'mui') && (
               <MuiCssBaseline />
             )}
-            {/* <StandardExample
+            <StandardExample
               initialView='timeGridWeek'
               className={exampleClassName}
               borderless={borderless}
@@ -348,7 +348,7 @@ export default function App() {
               themePlugin={themePlugin}
               colorScheme={colorScheme}
               ToolbarComponent={ToolbarComponent}
-            /> */}
+            />
             <StandardExample
               className={exampleClassName}
               borderless={borderless}

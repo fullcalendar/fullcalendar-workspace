@@ -35,7 +35,7 @@ const dayGridClasses: CalendarOptions = {
 export default createPlugin({
   name: '<%= pkgName %>', // TODO
   optionDefaults: {
-    eventColor: '#117aff',
+    eventColor: '#631515',
     /*
     red: #FF3D57
     green: #09B66D
@@ -87,17 +87,27 @@ export default createPlugin({
       },
     },
 
-    dayHeaderClass: 'items-end',
-    dayHeaderInnerClass: 'py-1',
+    dayHeaderInnerClass: (data) => [
+      !data.isToday && 'mx-1',
+      'my-1',
+      'text-gray-500',
+      'p-1 text-sm',
+      'flex flex-row items-center',
+    ],
     dayHeaderContent: (data) => (
-      <div className={
-        'text-sm py-1 px-2 rounded-md ' +
-        (data.isToday
-        ? `text-white bg-[#fd453b]`
-        : 'text-gray-500')
-      }>
-        {data.text}
-      </div>
+      <Fragment>
+        {data.textParts.map((textPart) => (
+          textPart.type !== 'day' ? (
+            <span className='whitespace-pre text-gray-500'>{textPart.value}</span>
+          ) : (
+            data.isToday ? (
+              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full bg-[#fd453b] text-white font-semibold`}>{textPart.value}</span>
+            ) : (
+              <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre text-gray-500'>{textPart.value}</span>
+            )
+          )
+        ))}
+      </Fragment>
     ),
     dayHeaderDividerClass: 'border-b border-gray-200',
 
@@ -112,6 +122,7 @@ export default createPlugin({
       !data.isToday && 'mx-1',
       data.isOther ? 'text-gray-500' : 'font-semibold',
       'p-1 text-sm',
+      'flex flex-row',
     ],
     dayCellTopContent: (data) => (
       <Fragment>
@@ -175,12 +186,14 @@ export default createPlugin({
   views: {
     dayGrid: {
       ...dayGridClasses,
+      dayHeaderClass: 'items-end',
     },
     multiMonth: {
       ...dayGridClasses,
     },
     timeGrid: {
       ...dayGridClasses,
+      dayHeaderClass: 'items-center',
 
       columnEventClass: (data) => [
         'mx-0.5', // TODO: move this to the columnInner thing? yes!!
