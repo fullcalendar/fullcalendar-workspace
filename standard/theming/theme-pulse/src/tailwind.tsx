@@ -10,6 +10,19 @@ import type {} from '@fullcalendar/multimonth'
 import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
+const circleBgClass = 'bg-(--fc-pulse-active-color)'
+const defaultEventColor = 'var(--fc-pulse-event-color)'
+const defaultEventContrastColor = 'var(--color-white)'
+/*
+TODO: default-background-event and selection colors
+red: #FF3D57
+green: #09B66D
+primary-blue: #0081FF
+apple-primary-blue: #117aff
+apple-red: #fd453b (same for dark mode: #fd3b30)
+light-blue: #22CCE2
+*/
+
 const buttonIconClass = 'size-5 text-gray-400' // best???
 
 const dayGridClasses: CalendarOptions = {
@@ -35,16 +48,8 @@ const dayGridClasses: CalendarOptions = {
 export default createPlugin({
   name: '<%= pkgName %>', // TODO
   optionDefaults: {
-    eventColor: '#631515',
-    /*
-    red: #FF3D57
-    green: #09B66D
-    primary-blue: #0081FF
-    apple-primary-blue: #117aff
-    apple-red: #fd453b (same for dark mode: #fd3b30)
-    light-blue: #22CCE2
-    */
-    eventContrastColor: 'var(--color-white)',
+    eventColor: defaultEventColor,
+    eventContrastColor: defaultEventContrastColor,
     backgroundEventColor: 'var(--color-green-500)',
     // eventDisplay: 'block',
 
@@ -101,7 +106,7 @@ export default createPlugin({
             <span className='whitespace-pre text-gray-500'>{textPart.value}</span>
           ) : (
             data.isToday ? (
-              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full bg-[#fd453b] text-white font-semibold`}>{textPart.value}</span>
+              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${circleBgClass} text-white font-semibold`}>{textPart.value}</span>
             ) : (
               <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre text-gray-500'>{textPart.value}</span>
             )
@@ -131,7 +136,7 @@ export default createPlugin({
             <span className='whitespace-pre'>{textPart.value}</span>
           ) : (
             data.isToday ? (
-              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full bg-[#fd453b] text-white font-semibold`}>{textPart.value}</span>
+              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${circleBgClass} text-white font-semibold`}>{textPart.value}</span>
             ) : (
               <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
             )
@@ -145,6 +150,9 @@ export default createPlugin({
       // data.isToday && 'bg-[#117aff]/5',
     ],
 
+    /*
+    TODO: not necessary to have color-class do bg color! we're not doing any transforms
+    */
     blockEventClass: 'relative',
     blockEventColorClass: 'absolute z-10 inset-0 bg-(--fc-event-color)',
     blockEventInnerClass: 'relative z-20 text-(--fc-event-contrast-color) text-xs',

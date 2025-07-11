@@ -88,6 +88,7 @@ const componentLibOptions = [
   { value: 'shadcn', text: 'Shadcn' },
   { value: 'mui', text: 'MUI' },
 ]
+
 const fcMonarchPaletteOptions = [
   { value: 'purple', text: 'Purple', colorClassName: 'bg-[#6750A4] dark:bg-[#D0BCFF]' },
   { value: 'red', text: 'Red', colorClassName: 'bg-[rgb(143_76_56)] dark:bg-[rgb(255_181_160)]' },
@@ -95,10 +96,17 @@ const fcMonarchPaletteOptions = [
   { value: 'blue', text: 'Blue', colorClassName: 'bg-[rgb(65_95_145)] dark:bg-[rgb(170_199_255)]' },
   { value: 'yellow', text: 'Yellow', colorClassName: 'bg-[rgb(109_94_15)] dark:bg-[rgb(219_198_110)]' },
 ]
-const fcFormaPaletteOptions = [
+const fcFormaPaletteOptions = [ // TODO: dark colors
   { value: 'red', text: 'Red!', colorClassName: 'bg-red-500' },
   { value: 'black', text: 'Black!', colorClassName: 'bg-black' },
 ]
+const fcPulsePaletteOptions = [ // TODO: dark colors
+  { value: 'red', text: 'Red', colorClassName: 'bg-[#fd453b]' },
+  { value: 'blue', text: 'Blue', colorClassName: 'bg-[#117aff]' },
+  { value: 'purple', text: 'Purple', colorClassName: 'bg-[#ad46ff]' },
+  { value: 'green', text: 'Green', colorClassName: 'bg-[#34c759]' },
+]
+
 const shadcnPaletteOptions = [
   { value: 'default', text: 'Default', colorClassName: 'bg-black dark:bg-white' },
   { value: 'red', text: 'Red', colorClassName: 'bg-[oklch(0.577_0.245_27.325)] dark:bg-[oklch(0.637_0.237_25.331)]' },
@@ -120,8 +128,11 @@ const colorSchemeOptions = [
 
 const themeOptionValues = themeOptions.map((option) => option.value)
 const componentLibValues = componentLibOptions.map((option) => option.value)
+
 const fcMonarchPaletteValues = fcMonarchPaletteOptions.map((option) => option.value)
 const fcFormaPaletteValues = fcFormaPaletteOptions.map((option) => option.value)
+const fcPulsePaletteValues = fcPulsePaletteOptions.map((option) => option.value)
+
 const shadcnPaletteValues = shadcnPaletteOptions.map((option) => option.value)
 const muiPaletteValues = muiPaletteOptions.map((option) => option.value)
 const colorSchemeValues = colorSchemeOptions.map((option) => option.value) as ('light' | 'dark')[]
@@ -167,6 +178,7 @@ export default function App() {
   const [componentLib, setComponentLib] = useLocalStorageState('componentLib', 'fc', componentLibValues)
   const [fcMonarchPalette, setFcMonarchPalette] = useLocalStorageState('fcMonarchPalette', fcMonarchPaletteValues[0], fcMonarchPaletteValues)
   const [fcFormaPalette, setFcFormaPalette] = useLocalStorageState('fcFormaPalette', fcFormaPaletteValues[0], fcFormaPaletteValues)
+  const [fcPulsePalette, setFcPulsePalette] = useLocalStorageState('fcPulsePalette', fcPulsePaletteValues[0], fcPulsePaletteValues)
   const [shadcnPalette, setShadcnPalette] = useLocalStorageState('shadcnPalette', 'default', shadcnPaletteValues)
   const [muiPalette, setMuiPalette] = useLocalStorageState('muiPalette', 'blue', muiPaletteValues)
   const [colorScheme, setColorScheme] = useLocalStorageState<'light' | 'dark'>('colorScheme', 'light', colorSchemeValues)
@@ -200,12 +212,13 @@ export default function App() {
           buildFcRootClassName(
             theme,
             theme === 'monarch' ? fcMonarchPalette :
-              theme === 'forma' ? fcFormaPalette : '',
+              theme === 'forma' ? fcFormaPalette :
+                theme === 'pulse' ? fcPulsePalette : '',
             colorScheme,
           )
         )
     )
-  }, [componentLib, theme, fcMonarchPalette, fcFormaPalette, shadcnPalette, colorScheme])
+  }, [componentLib, theme, fcMonarchPalette, fcFormaPalette, fcPulsePalette, shadcnPalette, colorScheme])
 
   return (
     <>
@@ -284,7 +297,7 @@ export default function App() {
                 </SelectContent>
               </Select>
             </div>
-          ) : (theme === 'forma') && (
+          ) : (theme === 'forma') ? (
             <div className='flex flex-row items-center gap-4'>
               <div className='text-sm text-muted-foreground'>Palette</div>
               <Select value={fcFormaPalette} onValueChange={(v) => setFcFormaPalette(v)}>
@@ -293,6 +306,23 @@ export default function App() {
                 </SelectTrigger>
                 <SelectContent>
                   {fcFormaPaletteOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value} className='flex flex-row'>
+                      <div className={`w-4 h-4 ${option.colorClassName}`} />
+                      {option.text}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          ) : (theme === 'pulse') && (
+            <div className='flex flex-row items-center gap-4'>
+              <div className='text-sm text-muted-foreground'>Palette</div>
+              <Select value={fcPulsePalette} onValueChange={(v) => setFcPulsePalette(v)}>
+                <SelectTrigger className='w-50'>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {fcPulsePaletteOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value} className='flex flex-row'>
                       <div className={`w-4 h-4 ${option.colorClassName}`} />
                       {option.text}

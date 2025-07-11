@@ -1,0 +1,23 @@
+
+/*
+*/
+
+.fc-pulse-red {
+  --fc-pulse-active-color: #fd453b; /* dark = #fd4539 ... reget both from iOS */
+  --fc-pulse-event-color: #631515;
+}
+
+.fc-pulse-blue {
+  --fc-pulse-active-color: #117aff; /* dark = #1284ff  */
+  --fc-pulse-event-color: #012e66;
+}
+
+.fc-pulse-purple {
+  --fc-pulse-active-color: #ad46ff;
+  --fc-pulse-event-color: #430575;
+}
+
+.fc-pulse-green {
+  --fc-pulse-active-color: #34c759; /* dark = #30d157 */
+  --fc-pulse-event-color: #084b19;
+}

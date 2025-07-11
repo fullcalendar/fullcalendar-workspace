@@ -80,5 +80,6 @@ html.dark {
   }
 }
 
-@import './default-themes.css';
+@import './theme-monarch-palettes.css';
+@import './theme-pulse-palettes.css';
 @import './shadcn-themes.css';
