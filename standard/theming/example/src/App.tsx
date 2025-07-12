@@ -97,8 +97,10 @@ const fcMonarchPaletteOptions = [
   { value: 'yellow', text: 'Yellow', colorClassName: 'bg-[rgb(109_94_15)] dark:bg-[rgb(219_198_110)]' },
 ]
 const fcFormaPaletteOptions = [ // TODO: dark colors
-  { value: 'red', text: 'Red!', colorClassName: 'bg-red-500' },
-  { value: 'black', text: 'Black!', colorClassName: 'bg-black' },
+  { value: 'blue', text: 'Blue', colorClassName: 'bg-[#0F6CBD]' },
+  { value: 'red', text: 'Red', colorClassName: 'bg-[#d83b01]' },
+  { value: 'green', text: 'Green', colorClassName: 'bg-[#107c41]' },
+  { value: 'purple', text: 'Purple', colorClassName: 'bg-[#742774]' },
 ]
 const fcPulsePaletteOptions = [ // TODO: dark colors
   { value: 'red', text: 'Red', colorClassName: 'bg-[#fd453b]' },

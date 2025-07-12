@@ -19,6 +19,12 @@ import type {} from '@fullcalendar/multimonth'
 import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
+// css vars
+const defaultEventColor = 'var(--fc-forma-event-color)'
+const primaryBgColorClass = 'bg-(--fc-forma-primary-color)'
+const primaryBorderColorClass = 'border-(--fc-forma-primary-color)'
+// TODO: contrast color. highlight color, default background event color
+
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
 
@@ -100,7 +106,7 @@ const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean }) =>
 const getDayHeaderInnerClasses = (data: { isCompact: boolean, isToday?: boolean, inPopover?: boolean }) => [
   'flex flex-col',
   'px-2 pt-1 pb-2 border-t-4',
-  (data.isToday && !data.inPopover) ? 'border-[#0F6CBD]' : 'border-transparent',
+  (data.isToday && !data.inPopover) ? primaryBorderColorClass : 'border-transparent',
   data.isCompact ? xxsTextClass : 'text-xs',
 ]
 
@@ -121,7 +127,7 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
   return createPlugin({
     name: '<%= pkgName %>', // TODO
     optionDefaults: {
-      eventColor: '#3788d8',
+      eventColor: defaultEventColor,
       eventContrastColor: 'var(--color-white)',
       backgroundEventColor: 'var(--color-green-500)',
 
@@ -343,7 +349,7 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
             <Fragment>
               {data.textParts.map((textPart) => (
                 textPart.type === 'day'
-                  ? <span className='w-[1.8em] h-[1.8em] whitespace-pre flex flex-row items-center justify-center rounded-full bg-[#0F6CBD] text-white'>{textPart.value}</span>
+                  ? <span className={`w-[1.8em] h-[1.8em] whitespace-pre flex flex-row items-center justify-center rounded-full ${primaryBgColorClass} text-white`}>{textPart.value}</span>
                   : <span className='h-[1.8em] whitespace-pre flex flex-row items-center'>{textPart.value}</span>
               ))}
             </Fragment>
@@ -365,8 +371,8 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
       slotLabelClass: getSlotClasses,
       slotLaneClass: getSlotClasses,
 
-      nowIndicatorLineClass: `-m-px border-1 border-[#0F6CBD]`,
-      nowIndicatorDotClass: `rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 border-[#0F6CBD] outline-2 outline-(--fc-canvas-color)`,
+      nowIndicatorLineClass: `-m-px border-1 ${primaryBorderColorClass}`,
+      nowIndicatorDotClass: `rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 ${primaryBorderColorClass} outline-2 outline-(--fc-canvas-color)`,
 
       listDayClass: `not-last:border-b ${borderColorClass}`,
       listDayHeaderClass: (data) => [
