@@ -10,6 +10,13 @@ import type {} from '@fullcalendar/multimonth'
 import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
+// palette vars
+// TODO: default-bg-event-color and highlight color
+// button color reference: https://catalyst.tailwindui.com/docs/button
+const activeBgClass = 'bg-(--fc-breezy-active-color)'
+const defaultEventColor = 'var(--fc-breezy-event-color)'
+// active-color also used below for border...
+
 const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
 
 const buttonIconClass = 'size-5 text-gray-400' // best? to sync to line-height???
@@ -83,7 +90,7 @@ const dayGridClasses: CalendarOptions = {
   rowMoreLinkClass: (data) => [
     'flex flex-row',
     data.isCompact ? 'mx-px' : 'mx-1',
-    data.isCompact && 'border rounded-sm border-indigo-600',
+    data.isCompact && 'border rounded-sm border-(--fc-breezy-active-color)',
   ],
   rowMoreLinkInnerClass: (data) => [
     data.isCompact ? xxsTextClass : 'text-xs',
@@ -100,8 +107,8 @@ TODO: how to do inner drop shadow within scroll area?
 export default createPlugin({
   name: '<%= pkgName %>', // TODO
   optionDefaults: {
-    eventColor: 'var(--color-blue-500)',
-    eventContrastColor: 'var(--color-white)',
+    eventColor: defaultEventColor,
+    // eventContrastColor: defaultEventContrastColor, -- not needed in this theme!?
     backgroundEventColor: 'var(--color-green-500)',
 
     className: 'rounded-lg overflow-hidden border border-gray-950/10', // TODO: standardize color
@@ -162,7 +169,7 @@ export default createPlugin({
             <span className='whitespace-pre'>{textPart.value}</span>
           ) : (
             data.isToday ? (
-              <span className='font-semibold w-8 h-8 whitespace-pre rounded-full bg-indigo-600 text-white flex flex-row items-center justify-center ms-1'>{textPart.value}</span>
+              <span className={`font-semibold w-8 h-8 whitespace-pre rounded-full ${activeBgClass} text-white flex flex-row items-center justify-center ms-1`}>{textPart.value}</span>
             ) : (
               <span className='font-semibold h-8 whitespace-pre flex flex-row items-center'>{textPart.value}</span>
             )
@@ -191,7 +198,7 @@ export default createPlugin({
             <span className='whitespace-pre'>{textPart.value}</span>
           ) : (
             data.isToday ? (
-              <span className='w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full bg-indigo-600 text-white font-semibold'>{textPart.value}</span>
+              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${activeBgClass} text-white font-semibold`}>{textPart.value}</span>
             ) : (
               <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
             )

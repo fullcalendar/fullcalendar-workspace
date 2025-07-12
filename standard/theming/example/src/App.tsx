@@ -106,6 +106,12 @@ const fcPulsePaletteOptions = [ // TODO: dark colors
   { value: 'purple', text: 'Purple', colorClassName: 'bg-[#ad46ff]' },
   { value: 'green', text: 'Green', colorClassName: 'bg-[#34c759]' },
 ]
+const fcBreezyPaletteOptions = [ // TODO: dark colors
+  { value: 'indigo', text: 'Indigo', colorClassName: 'bg-indigo-600' },
+  { value: 'rose', text: 'Rose', colorClassName: 'bg-rose-600' },
+  { value: 'emerald', text: 'Emerald', colorClassName: 'bg-emerald-600' },
+  { value: 'honey', text: 'Honey', colorClassName: 'bg-yellow-500' },
+]
 
 const shadcnPaletteOptions = [
   { value: 'default', text: 'Default', colorClassName: 'bg-black dark:bg-white' },
@@ -131,6 +137,7 @@ const componentLibValues = componentLibOptions.map((option) => option.value)
 
 const fcMonarchPaletteValues = fcMonarchPaletteOptions.map((option) => option.value)
 const fcFormaPaletteValues = fcFormaPaletteOptions.map((option) => option.value)
+const fcBreezyPaletteValues = fcBreezyPaletteOptions.map((option) => option.value)
 const fcPulsePaletteValues = fcPulsePaletteOptions.map((option) => option.value)
 
 const shadcnPaletteValues = shadcnPaletteOptions.map((option) => option.value)
@@ -174,10 +181,12 @@ function buildShadcnRootClassName(palette: string, colorScheme: string): string 
 }
 
 export default function App() {
+  console.log({ fcBreezyPaletteValues })
   const [theme, setTheme] = useLocalStorageState('theme', 'monarch', themeOptionValues)
   const [componentLib, setComponentLib] = useLocalStorageState('componentLib', 'fc', componentLibValues)
   const [fcMonarchPalette, setFcMonarchPalette] = useLocalStorageState('fcMonarchPalette', fcMonarchPaletteValues[0], fcMonarchPaletteValues)
   const [fcFormaPalette, setFcFormaPalette] = useLocalStorageState('fcFormaPalette', fcFormaPaletteValues[0], fcFormaPaletteValues)
+  const [fcBreezyPalette, setFcBreezyPalette] = useLocalStorageState('fcBreezyPalette', fcBreezyPaletteValues[0], fcBreezyPaletteValues)
   const [fcPulsePalette, setFcPulsePalette] = useLocalStorageState('fcPulsePalette', fcPulsePaletteValues[0], fcPulsePaletteValues)
   const [shadcnPalette, setShadcnPalette] = useLocalStorageState('shadcnPalette', 'default', shadcnPaletteValues)
   const [muiPalette, setMuiPalette] = useLocalStorageState('muiPalette', 'blue', muiPaletteValues)
@@ -213,12 +222,13 @@ export default function App() {
             theme,
             theme === 'monarch' ? fcMonarchPalette :
               theme === 'forma' ? fcFormaPalette :
-                theme === 'pulse' ? fcPulsePalette : '',
+                theme === 'breezy' ? fcBreezyPalette :
+                  theme === 'pulse' ? fcPulsePalette : '',
             colorScheme,
           )
         )
     )
-  }, [componentLib, theme, fcMonarchPalette, fcFormaPalette, fcPulsePalette, shadcnPalette, colorScheme])
+  }, [componentLib, theme, fcMonarchPalette, fcFormaPalette, fcBreezyPalette, fcPulsePalette, shadcnPalette, colorScheme])
 
   return (
     <>
@@ -306,6 +316,23 @@ export default function App() {
                 </SelectTrigger>
                 <SelectContent>
                   {fcFormaPaletteOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value} className='flex flex-row'>
+                      <div className={`w-4 h-4 ${option.colorClassName}`} />
+                      {option.text}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          ) : (theme === 'breezy') ? (
+            <div className='flex flex-row items-center gap-4'>
+              <div className='text-sm text-muted-foreground'>Paletteeee</div>
+              <Select value={fcBreezyPalette} onValueChange={(v) => setFcBreezyPalette(v)}>
+                <SelectTrigger className='w-50'>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {fcBreezyPaletteOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value} className='flex flex-row'>
                       <div className={`w-4 h-4 ${option.colorClassName}`} />
                       {option.text}
