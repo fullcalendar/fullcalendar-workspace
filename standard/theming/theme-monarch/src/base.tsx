@@ -3,6 +3,10 @@ import { createElement, Fragment } from '@fullcalendar/core/preact'
 import * as svgIcons from './svgIcons.js'
 
 /*
+TODO: using primaryContainerClass for button-container BG is often TOO HOT
+(see non-default color palettes)
+we changed it to secondaryContainerClass. see note about secondaryContainerClass in TS interface below
+
 TODO: segmented buttons:
 https://m3.material.io/components/segmented-buttons/overview
 
@@ -195,7 +199,7 @@ export function createThemePlugin({
 
       buttonGroupClass: (data) => [
         'items-center isolate rounded-full',
-        data.isViewGroup && props.primaryContainerClass,
+        data.isViewGroup && props.secondaryContainerClass,
       ],
       buttonClass: (data) => [
         'inline-flex items-center justify-center py-3 text-sm rounded-full',
