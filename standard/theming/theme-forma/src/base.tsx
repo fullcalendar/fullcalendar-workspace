@@ -176,7 +176,10 @@ export function createThemePlugin({}: ThemePluginConfig): PluginDef {
             ? data.isSelected
               ? 'border-gray-400 bg-gray-100'
               : 'border-transparent hover:bg-gray-50 hover:border-gray-200'
-            : 'border-gray-300',
+            : data.isPrimary
+              ? `${primaryBgColorClass} ${primaryBorderColorClass} text-white` // weird border
+                // TODO: do hover effect. Fluent does inner dark shadow
+              : 'border-gray-300',
             // TODO: disabled
             // TODO: dark mode
       ],

@@ -13,7 +13,8 @@ import type {} from '@fullcalendar/resource-timeline'
 // palette vars
 // TODO: default-bg-event-color and highlight color
 // button color reference: https://catalyst.tailwindui.com/docs/button
-const activeBgClass = 'bg-(--fc-breezy-active-color)'
+const activeBgColorClass = 'bg-(--fc-breezy-active-color)'
+const activeBorderColorClass = 'border-(--fc-breezy-active-color)'
 const defaultEventColor = 'var(--fc-breezy-event-color)'
 // active-color also used below for border...
 
@@ -113,9 +114,6 @@ export default createPlugin({
 
     className: 'rounded-lg overflow-hidden border border-gray-950/10', // TODO: standardize color
 
-    /*
-    TODO: add isPrimary button
-    */
     toolbarClass: 'px-4 py-4 items-center bg-gray-50 gap-4',
     toolbarSectionClass: 'items-center gap-4',
     toolbarTitleClass: 'text-base font-semibold text-gray-900',
@@ -123,6 +121,9 @@ export default createPlugin({
     popoverClass: 'border border-gray-300 shadow-md bg-white rounded-lg m-1',
     popoverBodyClass: 'p-2 min-w-50',
 
+    /*
+    TODO: don't make buttons so fat
+    */
     buttonGroupClass: (data) => [
       !data.isViewGroup && 'rounded-md shadow-xs border border-gray-300'
     ],
@@ -141,10 +142,15 @@ export default createPlugin({
         //   ? 'bg-indigo-100 text-indigo-700'
         //   : 'text-gray-600')
       ) : (
-        'bg-white hover:bg-gray-50 font-semibold text-gray-900 ' +
+        'font-semibold ' +
+        (data.isPrimary
+          ? `${activeBgColorClass} text-white shadow-xs` // why shadow here?
+          : 'bg-white hover:bg-gray-50 text-gray-900'
+        ) + ' ' +
         (data.inGroup
           ? 'first:rounded-s-md last:rounded-e-md'
-          : 'rounded-md shadow-xs border border-gray-300')
+          : 'rounded-md shadow-xs border ' +
+            (data.isPrimary ? activeBorderColorClass : 'border-gray-300')) // weird border setup for primary
       ),
     ],
 
@@ -169,7 +175,7 @@ export default createPlugin({
             <span className='whitespace-pre'>{textPart.value}</span>
           ) : (
             data.isToday ? (
-              <span className={`font-semibold w-8 h-8 whitespace-pre rounded-full ${activeBgClass} text-white flex flex-row items-center justify-center ms-1`}>{textPart.value}</span>
+              <span className={`font-semibold w-8 h-8 whitespace-pre rounded-full ${activeBgColorClass} text-white flex flex-row items-center justify-center ms-1`}>{textPart.value}</span>
             ) : (
               <span className='font-semibold h-8 whitespace-pre flex flex-row items-center'>{textPart.value}</span>
             )
@@ -198,7 +204,7 @@ export default createPlugin({
             <span className='whitespace-pre'>{textPart.value}</span>
           ) : (
             data.isToday ? (
-              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${activeBgClass} text-white font-semibold`}>{textPart.value}</span>
+              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${activeBgColorClass} text-white font-semibold`}>{textPart.value}</span>
             ) : (
               <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
             )

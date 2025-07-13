@@ -183,7 +183,6 @@ function buildShadcnRootClassName(palette: string, colorScheme: string): string 
 }
 
 export default function App() {
-  console.log({ fcBreezyPaletteValues })
   const [theme, setTheme] = useLocalStorageState('theme', 'monarch', themeOptionValues)
   const [componentLib, setComponentLib] = useLocalStorageState('componentLib', 'fc', componentLibValues)
   const [fcMonarchPalette, setFcMonarchPalette] = useLocalStorageState('fcMonarchPalette', fcMonarchPaletteValues[0], fcMonarchPaletteValues)
@@ -328,7 +327,7 @@ export default function App() {
             </div>
           ) : (theme === 'breezy') ? (
             <div className='flex flex-row items-center gap-4'>
-              <div className='text-sm text-muted-foreground'>Paletteeee</div>
+              <div className='text-sm text-muted-foreground'>Palette</div>
               <Select value={fcBreezyPalette} onValueChange={(v) => setFcBreezyPalette(v)}>
                 <SelectTrigger className='w-50'>
                   <SelectValue />
@@ -585,11 +584,20 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
         borderless={props.borderless}
         headerToolbar={
           ToolbarComponent ? false : {
-            left: 'prev,next today title',
-            center: '',
+            left: 'addEvent prev,today,next',
+            center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listYear,multiMonthYear',
           }
         }
+        buttons={{
+          addEvent: {
+            text: 'Add event',
+            isPrimary: true,
+            click() {
+              alert('add event...')
+            }
+          }
+        }}
         navLinks={true}
         editable={true}
         selectable={true}

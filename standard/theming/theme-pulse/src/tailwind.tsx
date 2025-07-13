@@ -10,7 +10,9 @@ import type {} from '@fullcalendar/multimonth'
 import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
-const circleBgClass = 'bg-(--fc-pulse-active-color)'
+const activeBgColorClass = 'bg-(--fc-pulse-active-color)'
+const primaryButtonBgColorClass = 'bg-(--fc-pulse-primary-button-color)'
+const primaryButtonBorderColorClass = 'border-(--fc-pulse-primary-button-color)'
 const defaultEventColor = 'var(--fc-pulse-event-color)'
 const defaultEventContrastColor = 'var(--color-white)'
 /*
@@ -73,10 +75,15 @@ export default createPlugin({
     buttonClass: (data) => [
       'text-sm',
       data.isDisabled ? 'text-gray-400' : 'text-gray-800',
-      (!data.isSelected && !data.isDisabled) && 'hover:bg-gray-100',
+      (!data.isSelected && !data.isDisabled && !data.isPrimary) && 'hover:bg-gray-100', // weird isPrimary
       (!data.inGroup || data.inViewGroup) && 'rounded-sm', // standalone or in selector-group
       (data.inGroup && !data.inViewGroup) && 'bg-white first:rounded-s-[9px] last:rounded-e-[9px] not-first:border-s not-first:border-s-gray-200', // opposite of ^^^
-      !data.inGroup && 'bg-white rounded-[9px] border border-[#d5d5d6] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]',
+      !data.inGroup && (
+        'rounded-[9px] border ' +
+        (data.isPrimary
+          ? `${primaryButtonBorderColorClass} ${primaryButtonBgColorClass} text-white [box-shadow:0_1px_3px_rgba(0,0,0,0.15)]` // weird border; more intense drop shadow
+          : 'bg-white border-[#d5d5d6] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]')
+      ),
       data.isIconOnly ? 'px-2.5' : 'px-4',
       'py-2',
       data.isSelected && `bg-white [box-shadow:0_1px_3px_rgba(0,0,0,0.2)]`,
@@ -106,7 +113,7 @@ export default createPlugin({
             <span className='whitespace-pre text-gray-500'>{textPart.value}</span>
           ) : (
             data.isToday ? (
-              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${circleBgClass} text-white font-semibold`}>{textPart.value}</span>
+              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${activeBgColorClass} text-white font-semibold`}>{textPart.value}</span>
             ) : (
               <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre text-gray-500'>{textPart.value}</span>
             )
@@ -136,7 +143,7 @@ export default createPlugin({
             <span className='whitespace-pre'>{textPart.value}</span>
           ) : (
             data.isToday ? (
-              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${circleBgClass} text-white font-semibold`}>{textPart.value}</span>
+              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${activeBgColorClass} text-white font-semibold`}>{textPart.value}</span>
             ) : (
               <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
             )

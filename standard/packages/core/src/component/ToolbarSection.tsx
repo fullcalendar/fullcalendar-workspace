@@ -108,6 +108,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
         let renderProps: ButtonData = {
           name,
           text: widget.buttonText,
+          isPrimary: widget.buttonIsPrimary,
           isSelected,
           isDisabled,
           isIconOnly: buttonDisplay === 'icon',

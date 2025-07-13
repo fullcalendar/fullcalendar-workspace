@@ -27,6 +27,10 @@ pattern for "apiRef": https://docs.svar.dev/react/gantt/api/methods/detach
 does setting eventDisplay to "block" affect BACKGROUND events!??
 remove passing in createElement to things like
   `export type CustomContentGenerator<RenderProps> = CustomContent | ((renderProps: RenderProps, createElement: any) => (CustomContent | true))`
+instead of isIconOnly, do
+  accommodate icon+text, text+icon and have setting like hasStartIcon/hasEndIcon
+setting for omitting leading timegrid lableslot ... because of negative margin
+
 
 Forma theme:
   how to add top border to header cell. can we do it with impunity?

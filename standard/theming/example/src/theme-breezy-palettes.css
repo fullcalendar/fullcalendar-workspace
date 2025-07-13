@@ -1,6 +1,6 @@
 
 .fc-breezy-indigo {
-  --fc-breezy-active-color: var(--color-indigo-600);
+  --fc-breezy-active-color: var(--color-indigo-600); /* TODO: will need hover color too -500 --- also need text color */
   --fc-breezy-event-color: var(--color-blue-500);
 }
 

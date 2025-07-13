@@ -30,6 +30,7 @@ export interface ButtonGroupData {
 export interface ButtonData {
   name: string
   text: string
+  isPrimary: boolean
   isSelected: boolean
   isDisabled: boolean
   isIconOnly: boolean
@@ -56,6 +57,7 @@ export interface ButtonInput {
   iconClass?: ClassNameGenerator<ButtonIconData>,
   iconContent?: CustomContentGenerator<ButtonIconData>,
   text?: string
+  isPrimary?: boolean
 }
 
 // Info for internal rendering
@@ -69,6 +71,7 @@ export interface ToolbarWidget {
   buttonIconClass?: ClassNameGenerator<ButtonIconData>
   buttonIconContent?: CustomContentGenerator<ButtonIconData>
   buttonClick?: (ev: MouseEvent) => void
+  buttonIsPrimary?: boolean
   buttonClass?: ClassNameGenerator<ButtonData>
   buttonDidMount?: DidMountHandler<ButtonMountData>
   buttonWillUnmount?: WillUnmountHandler<ButtonMountData>
