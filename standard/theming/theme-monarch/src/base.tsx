@@ -70,6 +70,8 @@ export interface ThemePluginConfig {
 shadcn
   muted - business hours?
   accent - bg events?
+
+TODO: add week numbers, with same plub color as current-day circle?
 */
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
@@ -199,7 +201,7 @@ export function createThemePlugin({
 
       buttonGroupClass: (data) => [
         'items-center isolate rounded-full',
-        data.isViewGroup && 'bg-[#F7F2FA]', // TODO
+        data.isViewGroup && props.secondaryContainerClass,
       ],
       buttonClass: (data) => [
         'inline-flex items-center justify-center py-3 text-sm rounded-full',
@@ -216,7 +218,7 @@ export function createThemePlugin({
             bg-color-hover: --mio-theme-color-on-surface-2 (essentially just slightly darker)
             button-group-bg: --mio-theme-color-surface-1 (second-to-lowest-contrast one)
             */
-            ? props.secondaryContainerClass
+            ? props.primaryButtonClass
             : data.isPrimary
               ? props.primaryButtonClass
               : `border border-[#CAC4D0]` // TODO: don't hardcode border color
