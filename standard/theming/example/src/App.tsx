@@ -584,7 +584,7 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
         borderless={props.borderless}
         headerToolbar={
           ToolbarComponent ? false : {
-            left: 'addEvent prev,today,next',
+            left: 'addEvent today,prev,next',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listYear,multiMonthYear',
           }

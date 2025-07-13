@@ -21,7 +21,7 @@ TODO: rename transparent* to ghost*
 TODO: rename disabled* to muted*
 
 The +add button (aka isPrimary:true) should be the "tertiary" color
-  https://m3.material.io/styles/color/roles#f94f9708-5ec9-4526-968c-577e9ea78036
+  https://m3.material.io/styles/color/static/baseline
   try "tertiary container" color first. if too light, try just "tertiary"
 Examples of tertiary color meaning "adding" things:
   https://m3.material.io/components/all-buttons#a2942905-4661-4003-9efd-21bc680e10c0
@@ -207,9 +207,9 @@ export function createThemePlugin({
         data.isSelected ? 'z-10' : 'z-0',
         data.isDisabled && `pointer-events-none opacity-90`, // bypass hover styles
         data.isIconOnly ? 'px-3' : 'px-5',
-        (data.isIconOnly || (data.inGroup && !data.isSelected))
+        (data.isIconOnly || (data.inViewGroup && !data.isSelected))
           ? transparentPressableClass
-          : props.primaryButtonClass
+          : data.isPrimary ? props.tertiaryButtonClass : props.primaryButtonClass // counter-intuitive!!!
           // : data.isDisabled
           //   ? props.primaryContainerClass
           //   : props.primaryButtonClass,
