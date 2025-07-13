@@ -199,7 +199,7 @@ export function createThemePlugin({
 
       buttonGroupClass: (data) => [
         'items-center isolate rounded-full',
-        data.isViewGroup && props.secondaryContainerClass,
+        data.isViewGroup && 'bg-[#F7F2FA]', // TODO
       ],
       buttonClass: (data) => [
         'inline-flex items-center justify-center py-3 text-sm rounded-full',
@@ -209,10 +209,17 @@ export function createThemePlugin({
         data.isIconOnly ? 'px-3' : 'px-5',
         (data.isIconOnly || (data.inViewGroup && !data.isSelected))
           ? transparentPressableClass
-          : data.isPrimary ? props.tertiaryButtonClass : props.primaryButtonClass // counter-intuitive!!!
-          // : data.isDisabled
-          //   ? props.primaryContainerClass
-          //   : props.primaryButtonClass,
+          : data.isSelected
+            /* TODO
+            text-color: --mio-theme-color-on-surface-variant
+            bg-color: --mio-theme-color-secondary-container
+            bg-color-hover: --mio-theme-color-on-surface-2 (essentially just slightly darker)
+            button-group-bg: --mio-theme-color-surface-1 (second-to-lowest-contrast one)
+            */
+            ? props.secondaryContainerClass
+            : data.isPrimary
+              ? props.primaryButtonClass
+              : `border border-[#CAC4D0]` // TODO: don't hardcode border color
       ],
 
       popoverClass: `${borderClass} rounded-lg bg-(--fc-canvas-color) shadow-lg m-2`,
@@ -358,7 +365,7 @@ export function createThemePlugin({
               className={
                 'm-0.5 flex flex-row items-center justify-center text-lg h-[2em]' +
                 (data.isToday
-                  ? ` w-[2em] rounded-full ${data.hasNavLink ? props.primaryButtonClass : props.primaryClass}`
+                  ? ` w-[2em] rounded-full ${data.hasNavLink ? props.tertiaryButtonClass : props.tertiaryClass}`
                   : data.hasNavLink
                     ? ` w-[2em] rounded-full ${transparentPressableClass}`
                     : '')
@@ -383,7 +390,7 @@ export function createThemePlugin({
         // TODO: this won't work if hasMonthLabel "Jan 1"... circle will look weird
         'flex flex-row items-center justify-center w-[1.8em] h-[1.8em] rounded-full',
         data.isToday
-          ? (data.hasNavLink ? props.primaryButtonClass : props.primaryContainerClass)
+          ? (data.hasNavLink ? props.tertiaryButtonClass : props.tertiaryContainerClass)
           : data.hasNavLink && transparentPressableClass,
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
@@ -417,7 +424,7 @@ export function createThemePlugin({
               <div className={
                 'flex flex-row items-center justify-center w-[2em] h-[2em] rounded-full' +
                   (data.isToday
-                    ? (' ' + (data.hasNavLink ? props.primaryButtonClass : props.primaryContainerClass))
+                    ? (' ' + (data.hasNavLink ? props.tertiaryButtonClass : props.tertiaryContainerClass))
                     : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
               }>{textPart.value}</div>
             ) : (

@@ -25,7 +25,8 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-disabled: rgba(29, 27, 32, .12);
   --fc-monarch-on-disabled: rgba(29, 27, 32, .38);
   --fc-monarch-outline: #79747E;
-  --fc-monarch-outline-variant: #dedce1; /* original too dark: #CAC4D0; */
+  --fc-monarch-outline-variant: #dedce1;
+    /* original too dark: #CAC4D0; ^^^ but we're now using it for secondary button */
 }
 .fc-monarch-purple-dark {
   --fc-monarch-primary: #D0BCFF;

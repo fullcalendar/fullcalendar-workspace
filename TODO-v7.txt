@@ -30,6 +30,8 @@ remove passing in createElement to things like
 instead of isIconOnly, do
   accommodate icon+text, text+icon and have setting like hasStartIcon/hasEndIcon
 setting for omitting leading timegrid lableslot ... because of negative margin
+for new themes,
+  audit when today date is ALSO the "other" date in a month. still give opacity to whole dayCellTop?
 
 
 Forma theme:

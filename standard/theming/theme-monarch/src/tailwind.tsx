@@ -40,8 +40,8 @@ const themePlugin = createThemePlugin({
   majorBorderColorClass: 'border-(--fc-monarch-outline)',
   alertBorderColorClass: 'border-(--fc-monarch-error)',
 
-  eventColor: 'var(--fc-monarch-secondary)',
-  eventContrastColor: 'var(--fc-monarch-on-secondary)',
+  eventColor: 'var(--fc-monarch-primary)',
+  eventContrastColor: 'var(--fc-monarch-on-primary)',
   backgroundEventColor: 'var(--fc-monarch-tertiary-container)',
   backgroundEventContrastColor: 'var(--fc-monarch-on-tertiary-container)',
 })
