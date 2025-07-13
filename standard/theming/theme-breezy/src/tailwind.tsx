@@ -116,20 +116,21 @@ export default createPlugin({
 
     toolbarClass: 'px-4 py-4 items-center bg-gray-50 gap-4',
     toolbarSectionClass: 'items-center gap-4',
-    toolbarTitleClass: 'text-base font-semibold text-gray-900',
+    toolbarTitleClass: 'text-lg font-semibold text-gray-900',
 
     popoverClass: 'border border-gray-300 shadow-md bg-white rounded-lg m-1',
     popoverBodyClass: 'p-2 min-w-50',
 
     /*
     TODO: don't make buttons so fat
+    are buttons 1px taller than in Tailwind Plus because we're not using inset border?
     */
     buttonGroupClass: (data) => [
       !data.isViewGroup && 'rounded-md shadow-xs border border-gray-300'
     ],
     buttonClass: (data) => [
-      'py-2.5 text-sm focus:relative',
-      data.isIconOnly ? 'px-2.5' : 'px-3.5',
+      'py-2 text-sm focus:relative',
+      data.isIconOnly ? 'px-2' : 'px-3',
       data.inViewGroup ? (
         'rounded-md font-medium text-gray-600 hover:text-gray-800 ' +
         (data.isSelected
