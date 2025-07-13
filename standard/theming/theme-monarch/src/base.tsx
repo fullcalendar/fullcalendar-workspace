@@ -199,11 +199,17 @@ export function createThemePlugin({
         },
       },
 
+      /*
+      Button-groups emulate this:
+      https://m3.material.io/components/button-groups/specs#78fdb79c-6ccc-4a83-9084-5bbf5528f85b
+      (note the Selected state)
+      */
       buttonGroupClass: (data) => [
         'items-center isolate rounded-full',
-        data.isViewGroup && props.secondaryContainerClass,
+        data.isViewGroup && 'border border-[#dedce1]' // props.secondaryContainerClass,
       ],
       buttonClass: (data) => [
+        data.inViewGroup && '-m-px',
         'inline-flex items-center justify-center py-3 text-sm rounded-full',
         data.inGroup && 'relative active:z-20 focus:z-20',
         data.isSelected ? 'z-10' : 'z-0',
@@ -218,7 +224,7 @@ export function createThemePlugin({
             bg-color-hover: --mio-theme-color-on-surface-2 (essentially just slightly darker)
             button-group-bg: --mio-theme-color-surface-1 (second-to-lowest-contrast one)
             */
-            ? props.primaryButtonClass
+            ? props.secondaryButtonClass
             : data.isPrimary
               ? props.primaryButtonClass
               : `border border-[#CAC4D0]` // TODO: don't hardcode border color
