@@ -5,6 +5,8 @@ https://m3.material.io/styles/color/static/baseline
 theme builder:
 https://anvil.works/docs/how-to/creating-material-3-colour-scheme
 https://material-foundation.github.io/material-theme-builder/
+
+TODO: might need to make tertiary colors hotter (like red, like alert color)
 */
 
 .fc-monarch-purple {
@@ -25,8 +27,8 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-disabled: rgba(29, 27, 32, .12);
   --fc-monarch-on-disabled: rgba(29, 27, 32, .38);
   --fc-monarch-outline: #79747E;
-  --fc-monarch-outline-variant: #dedce1;
-    /* original too dark: #CAC4D0; ^^^ but we're now using it for secondary button */
+  --fc-monarch-outline-variant: #dedce1; /* lighter that original. TODO: rename */
+  --fc-monarch-outline-variant-original: #CAC4D0;
 }
 .fc-monarch-purple-dark {
   --fc-monarch-primary: #D0BCFF;
@@ -46,7 +48,8 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-disabled: rgba(230, 224, 233, .12);
   --fc-monarch-on-disabled: rgba(230, 224, 233, .38);
   --fc-monarch-outline: #938F99;
-  --fc-monarch-outline-variant: #323036; /* original too light: #49454F; */
+  --fc-monarch-outline-variant: #323036;  /* lighter that original. TODO: rename */
+  --fc-monarch-outline-variant-original: #49454F;
 }
 
 .fc-monarch-red {
@@ -68,6 +71,7 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-on-disabled: rgba(35 25 23 .38);
   --fc-monarch-outline: rgb(133 115 110);
   --fc-monarch-outline-variant: rgb(216 194 188);
+  --fc-monarch-outline-variant-original: rgb(216 194 188); /* ??? */
 }
 .fc-monarch-red-dark {
   --fc-monarch-primary: rgb(255 181 160);
@@ -88,6 +92,7 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-on-disabled: rgba(241 223 218, .38);
   --fc-monarch-outline: rgb(160 140 135);
   --fc-monarch-outline-variant: rgb(83 67 63);
+  --fc-monarch-outline-variant-original: rgb(83 67 63); /* ??? */
 }
 
 .fc-monarch-green {
@@ -109,6 +114,7 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-on-disabled: rgba(26 28 22 .38);
   --fc-monarch-outline: rgb(117 121 108);
   --fc-monarch-outline-variant: rgb(197 200 186);
+  --fc-monarch-outline-variant-original: rgb(197 200 186); /* ??? */
 }
 .fc-monarch-green-dark {
   --fc-monarch-primary: rgb(177 209 138);
@@ -129,6 +135,7 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-on-disabled: rgba(226 227 216 .38);
   --fc-monarch-outline: rgb(143 146 133);
   --fc-monarch-outline-variant: rgb(68 72 61);
+  --fc-monarch-outline-variant-original: rgb(68 72 61); /* ??? */
 }
 
 .fc-monarch-blue {
@@ -150,6 +157,7 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-on-disabled: rgba(25 28 32 .38);
   --fc-monarch-outline: rgb(116 119 127);
   --fc-monarch-outline-variant: rgb(196 198 208);
+  --fc-monarch-outline-variant-original: rgb(196 198 208); /* ??? */
 }
 .fc-monarch-blue-dark {
   --fc-monarch-primary: rgb(170 199 255);
@@ -170,6 +178,7 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-on-disabled: rgba(226 226 233 .38);
   --fc-monarch-outline: rgb(142 144 153);
   --fc-monarch-outline-variant: rgb(68 71 78);
+  --fc-monarch-outline-variant-original: rgb(68 71 78); /* ??? */
 }
 
 .fc-monarch-yellow {
@@ -191,6 +200,7 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-on-disabled: rgba(30 27 19 .38);
   --fc-monarch-outline: rgb(124 119 103);
   --fc-monarch-outline-variant: rgb(205 198 180);
+  --fc-monarch-outline-variant-original: rgb(205 198 180); /* ??? */
 }
 .fc-monarch-yellow-dark {
   --fc-monarch-primary: rgb(219 198 110);
@@ -211,4 +221,5 @@ https://material-foundation.github.io/material-theme-builder/
   --fc-monarch-on-disabled: rgb(232 226 212 .38);
   --fc-monarch-outline: rgb(150 144 128);
   --fc-monarch-outline-variant: rgb(75 71 57);
+  --fc-monarch-outline-variant-original: rgb(75 71 57); /* ??? */
 }

@@ -26,6 +26,9 @@ The +add button (aka isPrimary:true) should be the "tertiary" color
 Examples of tertiary color meaning "adding" things:
   https://m3.material.io/components/all-buttons#a2942905-4661-4003-9efd-21bc680e10c0
   https://m3.material.io/components/button-groups/overview
+
+HACK:
+  see use of --fc-monarch-outline-variant / --fc-monarch-outline-variant-original BELOW
 */
 
 // Will import ambient types during dev but strip out for build
@@ -199,17 +202,12 @@ export function createThemePlugin({
         },
       },
 
-      /*
-      Button-groups emulate this:
-      https://m3.material.io/components/button-groups/specs#78fdb79c-6ccc-4a83-9084-5bbf5528f85b
-      (note the Selected state)
-      */
       buttonGroupClass: (data) => [
         'items-center isolate rounded-full',
-        data.isViewGroup && 'border border-[#dedce1]' // props.secondaryContainerClass,
+        data.isViewGroup && 'border border-(--fc-monarch-outline-variant)'
       ],
       buttonClass: (data) => [
-        data.inViewGroup && '-m-px',
+        data.inViewGroup && '-m-px', // HACK
         'inline-flex items-center justify-center py-3 text-sm rounded-full',
         data.inGroup && 'relative active:z-20 focus:z-20',
         data.isSelected ? 'z-10' : 'z-0',
@@ -227,7 +225,7 @@ export function createThemePlugin({
             ? props.secondaryButtonClass
             : data.isPrimary
               ? props.primaryButtonClass
-              : `border border-[#CAC4D0]` // TODO: don't hardcode border color
+              : `border border-(--fc-monarch-outline-variant-original)`
       ],
 
       popoverClass: `${borderClass} rounded-lg bg-(--fc-canvas-color) shadow-lg m-2`,
