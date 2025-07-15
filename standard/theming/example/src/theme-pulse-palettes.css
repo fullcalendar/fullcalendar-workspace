@@ -4,7 +4,7 @@
 
 .fc-pulse-red {
   --fc-pulse-active-color: #fd453b; /* dark = #fd4539 ... reget both from iOS */
-  --fc-pulse-primary-button-color: #982436; /* custom */
+  --fc-pulse-primary-button-color: #d32d50; /* custom */
   --fc-pulse-event-color: #631515;
 }
 
