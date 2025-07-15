@@ -564,7 +564,6 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
         navLinkDayClick='timeGridDay'
         navLinkWeekClick='timeGridWeek'
         schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
-        colorScheme={props.colorScheme}
         controller={controller}
         // weekNumbers={true}
         // eventDisplay='block'
@@ -717,7 +716,6 @@ function PremiumExample(props: ExampleProps) {
         navLinkDayClick='resourceTimelineDay'
         navLinkWeekClick='resourceTimelineWeek'
         schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
-        colorScheme={props.colorScheme}
         controller={controller}
         plugins={[
           adaptivePlugin,

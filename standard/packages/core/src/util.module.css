@@ -4,14 +4,6 @@
   --fc-popover-z: 4;
 }
 
-.colorSchemeLight {
-  color-scheme: light !important;
-}
-
-.colorSchemeDark {
-  color-scheme: dark !important;
-}
-
 .popoverZ {
   z-index: var(--fc-popover-z) !important;
 }

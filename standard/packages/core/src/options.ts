@@ -380,7 +380,6 @@ export const BASE_OPTION_REFINERS = {
   customRenderingReplaces: Boolean,
 
   // new
-  colorScheme: identity as Identity<'auto' | 'light' | 'dark'>,
   class: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
   className: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
   dayPopoverClass: identity as Identity<ClassNameGenerator<DayPopoverData>>,

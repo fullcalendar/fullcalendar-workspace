@@ -33,6 +33,14 @@ html.dark {
   --fc-canvas-color: var(--color-gray-950);
 }
 
+/* for scrollbars and other native UI */
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

@@ -51,7 +51,6 @@ export type { Duration } from '../datelib/duration.js'
 export interface CalendarDisplayData {
   direction: 'ltr' | 'rtl'
   mediaType: 'screen' | 'print'
-  colorScheme: 'light' | 'dark'
 }
 
 // TODO: other new "public" exports that should be in an "/api/" file like this?

@@ -16,25 +16,17 @@ export interface CalendarRootProps {
 
 interface CalendarRootState {
   forPrint: boolean
-  isDarkDetected: boolean
 }
 
 export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootState> {
-  darkDetector = window.matchMedia('(prefers-color-scheme: dark)')
   state: CalendarRootState = {
     forPrint: false,
-    isDarkDetected: this.darkDetector.matches,
   }
 
   render() {
     let { props, state } = this
     let { options } = props
     let { forPrint } = state
-
-    let { colorScheme } = options
-    let isExplicitlyLight = colorScheme === 'light'
-    let isExplicitlyDark = colorScheme === 'dark'
-    let isDark = isExplicitlyDark || (colorScheme === 'auto' && state.isDarkDetected)
 
     // TODO: DRY
     let borderlessX = options.borderlessX ?? options.borderless
@@ -45,13 +37,10 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
       generateClassName(options.class ?? options.className, {
         direction: options.direction,
         mediaType: forPrint ? 'print' : 'screen',
-        colorScheme: isDark ? 'dark' : 'light',
       }),
       borderlessTop && classNames.borderlessTop,
       borderlessBottom && classNames.borderlessBottom,
       borderlessX && classNames.borderlessX,
-      isExplicitlyLight && classNames.colorSchemeLight,
-      isExplicitlyDark && classNames.colorSchemeDark,
       classNames.borderBoxRoot,
       classNames.flexCol,
       options.direction === 'ltr' ? classNames.ltrRoot : classNames.rtlRoot,
@@ -67,8 +56,6 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
 
     emitter.on('_beforeprint', this.handleBeforePrint)
     emitter.on('_afterprint', this.handleAfterPrint)
-
-    this.darkDetector.addEventListener('change', this.handleDarkChange)
   }
 
   componentWillUnmount() {
@@ -76,8 +63,6 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
 
     emitter.off('_beforeprint', this.handleBeforePrint)
     emitter.off('_afterprint', this.handleAfterPrint)
-
-    this.darkDetector.removeEventListener('change', this.handleDarkChange)
   }
 
   handleBeforePrint = () => {
@@ -90,9 +75,5 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
   handleAfterPrint = () => {
     this.setState({ forPrint: false })
     flushUpdates()
-  }
-
-  handleDarkChange = () => {
-    this.setState({ isDarkDetected: this.darkDetector.matches })
   }
 }

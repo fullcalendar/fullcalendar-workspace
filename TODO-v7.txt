@@ -4,10 +4,10 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+For first-slot label that's negative, accept new data-prop that's
 Make our "classic" theme get border color from Shadcn/MUI?
 Make the "global.css.js" not really global... always install on-demand when needed?
   NO because will cause layout reflow
-TODO: remove colorScheme settings, hook
 should we force bg color behind calendar ever?
 BAD: our non-shadcn themes are inherit shadcn variables for their tailwind
 if we have tailwind in our themes' JSX, that will be crazy to convert to vanilla CSS
