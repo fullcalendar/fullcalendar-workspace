@@ -10,26 +10,20 @@ const tertiaryClass = 'bg-accent bg-accent-foreground'
 const tertiaryButtonClass = `${tertiaryClass} hover:bg-accent/90 active:bg-accent/80`
 
 const themePlugin = createThemePlugin({
-  primaryClass,
   primaryButtonClass,
   primaryContainerClass: primaryClass,
   primaryContainerButtonClass: primaryButtonClass,
 
-  secondaryClass,
   secondaryButtonClass,
   secondaryContainerClass: secondaryClass,
-  secondaryContainerButtonClass: secondaryButtonClass,
 
   tertiaryClass,
   tertiaryButtonClass,
-  tertiaryContainerClass: tertiaryClass,
-  tertiaryContainerButtonClass: tertiaryButtonClass,
 
-  disabledButtonClass: 'bg-muted text-muted-foreground',
   highlightClass: 'bg-primary opacity-10',
 
   borderColorClass: '', // border-color is set globally
-  majorBorderColorClass: 'border-ring',
+  majorBorderColorClass: 'border-ring', // if atomic var ... majorBorderColor: 'var(--ring)'
   alertBorderColorClass: 'border-destructive',
 
   eventColor: 'var(--primary)',

@@ -40,22 +40,18 @@ import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
 export interface ThemePluginConfig {
-  primaryClass: string
-  primaryButtonClass: string
-  primaryContainerClass: string
-  primaryContainerButtonClass: string
+  primaryButtonClass: string // only for Toolbar button
+  primaryContainerClass: string // TODO: kill
+  primaryContainerButtonClass: string // TODO: kill
 
-  secondaryClass: string
-  secondaryButtonClass: string
+  secondaryButtonClass: string // for toolbar AND timeline higher-tier label
   secondaryContainerClass: string // almost exactly the same as primaryContainerClass... rename to just mutedClass?... get rid of this container business
-  secondaryContainerButtonClass: string
+    // ^^^TODO: kill
 
-  tertiaryClass: string
-  tertiaryButtonClass: string
-  tertiaryContainerClass: string
-  tertiaryContainerButtonClass: string
+  tertiaryClass: string // for day-circle
+  tertiaryButtonClass: string // for PRESSABLE day-circle
 
-  disabledButtonClass: string
+  // disabledButtonClass: string // TODO???
   highlightClass: string
   // TODO: business hours
 
@@ -396,7 +392,7 @@ export function createThemePlugin({
         // TODO: this won't work if hasMonthLabel "Jan 1"... circle will look weird
         'flex flex-row items-center justify-center w-[1.8em] h-[1.8em] rounded-full',
         data.isToday
-          ? (data.hasNavLink ? props.tertiaryButtonClass : props.tertiaryContainerClass)
+          ? (data.hasNavLink ? props.tertiaryButtonClass : props.tertiaryClass)
           : data.hasNavLink && transparentPressableClass,
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
@@ -430,7 +426,7 @@ export function createThemePlugin({
               <div className={
                 'flex flex-row items-center justify-center w-[2em] h-[2em] rounded-full' +
                   (data.isToday
-                    ? (' ' + (data.hasNavLink ? props.tertiaryButtonClass : props.tertiaryContainerClass))
+                    ? (' ' + (data.hasNavLink ? props.tertiaryButtonClass : props.tertiaryClass))
                     : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
               }>{textPart.value}</div>
             ) : (

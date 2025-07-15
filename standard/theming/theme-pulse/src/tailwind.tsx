@@ -10,7 +10,7 @@ import type {} from '@fullcalendar/multimonth'
 import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
-const activeBgColorClass = 'bg-(--fc-pulse-active-color)'
+const activeBgColorClass = 'bg-(--fc-pulse-active-color)' // for current-day circle
 const primaryButtonBgColorClass = 'bg-(--fc-pulse-primary-button-color)'
 const primaryButtonBorderColorClass = 'border-(--fc-pulse-primary-button-color)'
 const defaultEventColor = 'var(--fc-pulse-event-color)'

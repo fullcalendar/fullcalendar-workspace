@@ -14,22 +14,16 @@ const tertiaryClass = 'bg-(--mui-palette-success-main) text-(--mui-palette-succe
 const tertiaryButtonClass = `${tertiaryClass} hover:bg-(--mui-palette-success-dark) active:bg-(--mui-palette-success-light)`
 
 const themePlugin = createThemePlugin({
-  primaryClass,
   primaryButtonClass,
   primaryContainerClass: secondaryClass, // HACK
   primaryContainerButtonClass: secondaryButtonClass, // HACK
 
-  secondaryClass,
   secondaryButtonClass,
   secondaryContainerClass: secondaryClass,
-  secondaryContainerButtonClass: secondaryButtonClass,
 
   tertiaryClass,
   tertiaryButtonClass,
-  tertiaryContainerClass: tertiaryClass,
-  tertiaryContainerButtonClass: tertiaryButtonClass,
 
-  disabledButtonClass: 'bg-(--mui-palette-action-disabledBackground) text-(--mui-palette-action-disabled)',
   highlightClass: 'bg-(--mui-palette-secondary-main) opacity-10',
 
   borderColorClass: 'border-(--mui-palette-divider)',
