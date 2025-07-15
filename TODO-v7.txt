@@ -5,8 +5,9 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 Make our "classic" theme get border color from Shadcn/MUI?
-Make the "global.css.js" not really global... always install on-demand when needed
-
+Make the "global.css.js" not really global... always install on-demand when needed?
+  NO because will cause layout reflow
+TODO: remove colorScheme settings, hook
 should we force bg color behind calendar ever?
 BAD: our non-shadcn themes are inherit shadcn variables for their tailwind
 if we have tailwind in our themes' JSX, that will be crazy to convert to vanilla CSS
@@ -32,30 +33,18 @@ instead of isIconOnly, do
 setting for omitting leading timegrid lableslot ... because of negative margin
 for new themes,
   audit when today date is ALSO the "other" date in a month. still give opacity to whole dayCellTop?
-
-
-Forma theme:
-  how to add top border to header cell. can we do it with impunity?
-
+provide classname sentinel like "initial" to clear theme-provided classnames
+  https://tailwindcss.com/docs/theme#using-a-custom-theme
+add white glow to now indicator on all themes
+  See Screenshots/now-indicator-event-overlap.png
+  add to checklist
+obvious API win, unrelated to V7:
+  an events function should be able to return a non-promise,
+  aka an events array.
+for dark-mode, in UI design,
+  nice to have popover be different BG color
+  example: click branch selector: https://github.com/fullcalendar/fullcalendar-site-refactor
 Need a better CSS reset, similar to tailwind's for vanilla CSS
-
-for buttons as part of the fc themes (monarch/forma/zen)
-  have two button styles? secondary (default) and primary?
-  specified via isPrimary boolean?
-  or use .variant instead? (not to be confused with .display)
-
-how to use colors w/ monarch w/ global js:
-
-  <!-- styles -->
-  <script src='fullcalendar/core/global.css.js'>
-  <script src='fullcalendar/theme-monarch/global.css.js'>
-  <script src='fullcalendar/theme-monarch/global/palettes/red.css.js'>
-
-  <!-- js -->
-  <script src='fullcalendar/core/global.js'>
-  <script src='fullcalendar/theme-monarch/global.js'>
-
-
 api: better way to ensure min slot width/height. right now we depend on theme!?
 bug: in Chrome and Safari, scroll-syncing really getting out of alignment
 Classic theme
@@ -74,6 +63,8 @@ Monarch theme
   tricks to make current-view-tabs not so wide
 Zen theme
   fork from classic theme
+Forma theme:
+  how to add top border to header cell. can we do it with impunity?
 Technic theme
   fork from classic theme
   port old event styles from Monarch theme (but gut continuation cropping)
