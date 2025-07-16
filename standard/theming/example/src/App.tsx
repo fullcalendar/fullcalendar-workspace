@@ -33,13 +33,13 @@ import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 // MUI
 import MuiButton from '@mui/material/Button'
 import MuiIconButton from '@mui/material/IconButton'
-import MuiTabs from '@mui/material/Tabs'
-import MuiTab from '@mui/material/Tab'
 import MuiChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import MuiChevronRightIcon from '@mui/icons-material/ChevronRight'
 import MuiTypography from '@mui/material/Typography'
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
 import MuiCssBaseline from '@mui/material/CssBaseline'
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
+import ToggleButton from '@mui/material/ToggleButton'
 
 // FullCalendar
 import '@fullcalendar/core/global.css'
@@ -443,17 +443,17 @@ function ShadcnToolbar({ controller, borderless, buttons, availableViews }: Tool
       'flex items-center justify-between py-3',
       borderless && 'px-3',
     )}>
-      <div className='flex items-center gap-2'>
+      <div className='flex items-center gap-3'>
         <Button
           onClick={() => alert('Add event...')}
         >Add event</Button>
-        <Button
-          onClick={() => controller.today()}
-          // disabled={buttons.today.isDisabled} -- too harsh
-          aria-label={buttons.today.hint}
-          variant='outline'
-        >{buttons.today.text}</Button>
         <div className='flex items-center'>
+          <Button
+            onClick={() => controller.today()}
+            // disabled={buttons.today.isDisabled} -- too harsh
+            aria-label={buttons.today.hint}
+            variant='outline'
+          >{buttons.today.text}</Button>
           <Button
             onClick={() => controller.prev()}
             disabled={buttons.prev.isDisabled}
@@ -520,17 +520,28 @@ function MuiToolbar({ controller, borderless, buttons, availableViews }: Toolbar
         </div>
         <MuiTypography variant="h5">{controller.view?.title}</MuiTypography>
       </div>
-      <MuiTabs value={controller.view?.type}>
+      <ToggleButtonGroup
+        size="small"
+        exclusive
+        value={controller.view?.type}
+        onChange={(_ev, val) => {
+          controller.changeView(val)
+        }}
+      >
         {availableViews.map((availableView) => (
-          <MuiTab
+          <ToggleButton
             key={availableView}
             value={availableView}
-            onClick={() => controller.changeView(availableView)}
-            label={buttons[availableView]?.text}
             aria-label={buttons[availableView]?.hint}
-          />
+            color="primary"
+          >
+            {/* add extra spacing. better way to do this idiomatically in MUI */}
+            <span style={{ paddingLeft: 8, paddingRight: 8 }}>
+              {buttons[availableView]?.text}
+            </span>
+          </ToggleButton>
         ))}
-      </MuiTabs>
+      </ToggleButtonGroup>
     </div>
   )
 }

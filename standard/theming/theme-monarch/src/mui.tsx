@@ -10,6 +10,7 @@ TODO: use shadows and border-radius somehow!!! They're in the theme object
 
 const themePlugin = createThemePlugin({
   // TODO: better hasNavLink
+  // TODO: use --mui-palette-secondary-mainChannel to choose opacity
   todayPillClass: () => 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)',
   pillClass: () => 'bg-(--mui-palette-secondary-light) dark:bg-(--mui-palette-secondary-dark) text-(--mui-palette-secondary-contrastText)',
 

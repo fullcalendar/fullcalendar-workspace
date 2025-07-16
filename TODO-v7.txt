@@ -4,6 +4,7 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+TODO: disable other component libs for Classic theme? yes... borders don't match. not worth making portable
 kill the backgroundEventContrastColor setting? never used. contrast doesn't make sense
 in order to apply media-like classnames to non-root-calendar (like popover), restore:
   directionClass(dir)
