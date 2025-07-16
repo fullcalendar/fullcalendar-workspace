@@ -1,6 +1,8 @@
 import { createTheme } from '@mui/material'
 
-const defaultLightTheme = createTheme()
+const defaultLightTheme = createTheme({
+  cssVariables: true,
+})
 
 const defaultDarkTheme = createTheme({
   // cssVariables: true, // works either way

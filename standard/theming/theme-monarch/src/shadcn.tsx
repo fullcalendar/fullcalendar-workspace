@@ -1,26 +1,19 @@
 import { createThemePlugin } from './base.js'
 
-const primaryClass = 'bg-primary text-primary-foreground'
+// rename
+const primaryClass = 'bg-primary/20 dark:bg-primary/30' // doesn't need text contrast
 const primaryButtonClass = `${primaryClass} hover:bg-primary/90 active:bg-primary/80`
 
-const secondaryClass = 'bg-secondary text-secondary-foreground'
-const secondaryButtonClass = `${secondaryClass} hover:bg-secondary/90 active:bg-secondary/80`
-
-const tertiaryClass = 'bg-accent bg-accent-foreground'
-const tertiaryButtonClass = `${tertiaryClass} hover:bg-accent/90 active:bg-accent/80`
+// better than "accent" because sits well on top of nonBusinessHours gray
+const accentClass = 'bg-black/10 dark:bg-white/10 text-accent-foreground'
+const accentButtonClass = `${accentClass} hover:bg-gray-500/20 active:bg-gray-500/30` // TODO: better dary mode
 
 const themePlugin = createThemePlugin({
-  primaryButtonClass,
-  primaryContainerClass: primaryClass,
-  primaryContainerButtonClass: primaryButtonClass,
-
-  secondaryButtonClass,
-  secondaryContainerClass: secondaryClass,
-
-  tertiaryClass,
-  tertiaryButtonClass,
+  todayPillClass: (data) => data.hasNavLink ? primaryButtonClass : primaryClass,
+  pillClass: (data) => data.hasNavLink ? accentButtonClass : accentClass,
 
   highlightClass: 'bg-primary opacity-10',
+  disabledBgClass: 'bg-muted',
 
   borderColorClass: '', // border-color is set globally
   majorBorderColorClass: 'border-ring', // if atomic var ... majorBorderColor: 'var(--ring)'
@@ -28,8 +21,9 @@ const themePlugin = createThemePlugin({
 
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
-  backgroundEventColor: 'var(--secondary)',
-  backgroundEventContrastColor: 'var(--secondary-foreground)',
+  backgroundEventColor: 'var(--primary)',
+  backgroundEventColorClass: 'opacity-15',
+  backgroundEventContrastColor: '', // don't need contrast bc so opaque
 })
 
 export { themePlugin as default }

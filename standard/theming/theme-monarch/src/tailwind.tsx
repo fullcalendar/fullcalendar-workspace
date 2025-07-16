@@ -1,31 +1,20 @@
 import { createThemePlugin } from './base.js'
 
 const buttonEffectClass = 'hover:brightness-80 active:brightness-120'
-
-const primaryClass = 'bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary)'
-const primaryButtonClass = `${primaryClass} ${buttonEffectClass}`
-const primaryContainerClass = 'bg-(--fc-monarch-primary-container) text-(--fc-monarch-on-primary-container)'
-const primaryContainerButtonClass = `${primaryContainerClass}`
-
-const secondaryClass = 'bg-(--fc-monarch-secondary) text-(--fc-monarch-on-secondary)'
-const secondaryButtonClass = `${secondaryClass} ${buttonEffectClass}`
-const secondaryContainerClass = 'bg-(--fc-monarch-secondary-container) text-(--fc-monarch-on-secondary-container)'
-
-const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-on-tertiary)'
-const tertiaryButtonClass = `${tertiaryClass} ${buttonEffectClass}`
+const primaryButtonClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary) ${buttonEffectClass}`
+const secondaryButtonClass = `bg-(--fc-monarch-secondary) text-(--fc-monarch-on-secondary) ${buttonEffectClass}`
 
 const themePlugin = createThemePlugin({
-  primaryButtonClass,
-  primaryContainerClass,
-  primaryContainerButtonClass,
+  toolbar: {
+    primaryButtonClass: (data) => primaryButtonClass + (data.isDisabled ? ' opacity-90' : ''),
+    secondaryButtonClass: (data) => secondaryButtonClass + (data.isDisabled ? ' opacity-90' : ''),
+  },
 
-  secondaryButtonClass,
-  secondaryContainerClass,
-
-  tertiaryClass,
-  tertiaryButtonClass,
+  todayPillClass: (data) => 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-on-tertiary)' + (data.hasNavLink ? ' ' + buttonEffectClass : ''),
+  pillClass: (data) => 'bg-(--fc-monarch-primary-container) text-(--fc-monarch-on-primary-container)' + (data.hasNavLink ? ' ' + buttonEffectClass : ''),
 
   highlightClass: 'bg-(--fc-monarch-primary-container) opacity-30',
+  disabledBgClass: 'bg-gray-500/7', // TODO: better theme value
 
   borderColorClass: 'border-(--fc-monarch-outline-variant)',
   majorBorderColorClass: 'border-(--fc-monarch-outline)',
@@ -33,8 +22,9 @@ const themePlugin = createThemePlugin({
 
   eventColor: 'var(--fc-monarch-primary)',
   eventContrastColor: 'var(--fc-monarch-on-primary)',
-  backgroundEventColor: 'var(--fc-monarch-tertiary-container)',
-  backgroundEventContrastColor: 'var(--fc-monarch-on-tertiary-container)',
+  backgroundEventColor: 'var(--fc-monarch-tertiary)',
+  backgroundEventColorClass: 'brightness-115 opacity-15',
+  backgroundEventContrastColor: '', // don't need contrast bc so opaque
 })
 
 export { themePlugin as default }

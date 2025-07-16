@@ -4,6 +4,13 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+kill the backgroundEventContrastColor setting? never used. contrast doesn't make sense
+in order to apply media-like classnames to non-root-calendar (like popover), restore:
+  directionClass(dir)
+  mediaTypeClass(mediaType)
+  OR... have a new root aggregate option like rootClass? parentClass? envClass? contextClass?
+NOTE: another reason why good to have semitransparent bg events and business hours... they stack
+  on top of eachother well
 For first-slot label that's negative, accept new data-prop that's
 Make our "classic" theme get border color from Shadcn/MUI?
 Make the "global.css.js" not really global... always install on-demand when needed?

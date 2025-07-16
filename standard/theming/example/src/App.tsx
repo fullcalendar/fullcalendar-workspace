@@ -445,8 +445,11 @@ function ShadcnToolbar({ controller, borderless, buttons, availableViews }: Tool
     )}>
       <div className='flex items-center gap-2'>
         <Button
+          onClick={() => alert('Add event...')}
+        >Add event</Button>
+        <Button
           onClick={() => controller.today()}
-          disabled={buttons.today.isDisabled}
+          // disabled={buttons.today.isDisabled} -- too harsh
           aria-label={buttons.today.hint}
           variant='outline'
         >{buttons.today.text}</Button>
@@ -494,10 +497,14 @@ function MuiToolbar({ controller, borderless, buttons, availableViews }: Toolbar
     )}>
       <div className='flex items-center gap-2'>
         <MuiButton
-          onClick={() => controller.today()}
-          disabled={buttons.today.isDisabled}
-          aria-label={buttons.today.hint}
+          onClick={() => alert("Add event...")}
           variant="contained"
+        >Add event</MuiButton>
+        <MuiButton
+          onClick={() => controller.today()}
+          // disabled={buttons.today.isDisabled} -- too harsh
+          aria-label={buttons.today.hint}
+          variant="outlined"
         >{buttons.today.text}</MuiButton>
         <div className='flex items-center'>
           <MuiIconButton
@@ -565,7 +572,7 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
         navLinkWeekClick='timeGridWeek'
         schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
         controller={controller}
-        // weekNumbers={true}
+        weekNumbers={true}
         // eventDisplay='block'
         plugins={[
           scrollGridPlugin,
@@ -676,7 +683,10 @@ function StandardExample(props: ExampleProps & { initialView?: string }) {
           },
           {
             "title": "Meeting",
-            "start": "2025-07-04T14:30:00+00:00"
+            "start": "2025-07-04T08:30:00+00:00",
+            "end": "2025-07-04T16:30:00+00:00",
+            "display": "background",
+            // "color": "red",
           },
           {
             "title": "Happy Hour",

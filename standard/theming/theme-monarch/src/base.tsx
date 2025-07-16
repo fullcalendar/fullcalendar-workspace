@@ -39,21 +39,23 @@ import type {} from '@fullcalendar/multimonth'
 import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timeline'
 
+export interface ThemeToolbarConfig {
+  // TODO: move to ClassNameGenerator and have public util that rasterizes it?
+  primaryButtonClass: (data: { isDisabled: boolean }) => string
+  secondaryButtonClass: (data: { isDisabled: boolean }) => string
+}
+
 export interface ThemePluginConfig {
-  primaryButtonClass: string // only for Toolbar button
-  primaryContainerClass: string // TODO: kill
-  primaryContainerButtonClass: string // TODO: kill
+  toolbar?: ThemeToolbarConfig // supplied only for default component lib
 
-  secondaryButtonClass: string // for toolbar AND timeline higher-tier label
-  secondaryContainerClass: string // almost exactly the same as primaryContainerClass... rename to just mutedClass?... get rid of this container business
-    // ^^^TODO: kill
+  // already rounded
+  // TODO: move to ClassNameGenerator and have public util that rasterizes it?
+  // TODO: have different pill for weekNumber vs timeline slotLabel
+  todayPillClass: (data: { hasNavLink: boolean }) => string
+  pillClass: (data: { hasNavLink: boolean }) => string
 
-  tertiaryClass: string // for day-circle
-  tertiaryButtonClass: string // for PRESSABLE day-circle
-
-  // disabledButtonClass: string // TODO???
   highlightClass: string
-  // TODO: business hours
+  disabledBgClass: string
 
   borderColorClass: string
   majorBorderColorClass: string
@@ -62,21 +64,14 @@ export interface ThemePluginConfig {
   eventColor: string
   eventContrastColor: string
   backgroundEventColor: string
+  backgroundEventColorClass: string
   backgroundEventContrastColor: string
 }
 
-/*
-shadcn
-  muted - business hours?
-  accent - bg events?
-
-TODO: add week numbers, with same plub color as current-day circle?
-*/
-
 const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
 const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]'
-const neutralBgClass = 'bg-gray-500/7' // TODO: deal with this!!!... what is it used for ?
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // TODO: deal with this!!!... ugly dark grey... rethink
+const nonBusinessHoursClass = 'bg-gray-500/7' // must be semitransprent
 const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20'
 const transparentStrongBgClass = 'bg-gray-500/30' // the touch-SELECTED version of above. use color-mix to make bolder?
 
@@ -126,14 +121,13 @@ export function createThemePlugin({
   backgroundEventColor,
   ...props
 }: ThemePluginConfig): PluginDef {
+  const toolbarConfig: Partial<ThemeToolbarConfig> = props.toolbar || {}
   const borderClass = `border ${borderColorClass}` // all sides
   const majorBorderClass = `border ${majorBorderColorClass}`
 
   const getWeekNumberBadgeClasses = (data: { hasNavLink: boolean, isCompact: boolean }) => [
     'rounded-full h-[1.8em] flex flex-row items-center', // match height of daynumber
-    data.hasNavLink
-      ? props.primaryContainerButtonClass
-      : props.primaryContainerClass,
+    props.pillClass({ hasNavLink: data.hasNavLink }),
     data.isCompact
       ? `${xxsTextClass} px-1`
       : 'text-sm px-2'
@@ -142,7 +136,7 @@ export function createThemePlugin({
   const rowWeekNumberClasses: CalendarOptions = {
     weekNumberClass: (data) => [
       data.isCell
-        ? props.secondaryContainerClass
+        ? '' // TODO: some sort of shaded bg
         : 'absolute z-20 ' + (data.isCompact ? 'top-1 start-0.5' : 'top-2 start-1'),
     ],
     weekNumberInnerClass: (data) => data.isCell
@@ -207,7 +201,7 @@ export function createThemePlugin({
         'inline-flex items-center justify-center py-3 text-sm rounded-full',
         data.inGroup && 'relative active:z-20 focus:z-20',
         data.isSelected ? 'z-10' : 'z-0',
-        data.isDisabled && `pointer-events-none opacity-90`, // bypass hover styles
+        data.isDisabled && `pointer-events-none`, // bypass hover styles
         data.isIconOnly ? 'px-3' : 'px-5',
         (data.isIconOnly || (data.inViewGroup && !data.isSelected))
           ? transparentPressableClass
@@ -218,9 +212,9 @@ export function createThemePlugin({
             bg-color-hover: --mio-theme-color-on-surface-2 (essentially just slightly darker)
             button-group-bg: --mio-theme-color-surface-1 (second-to-lowest-contrast one)
             */
-            ? props.secondaryButtonClass
+            ? toolbarConfig.secondaryButtonClass!({ isDisabled: data.isDisabled })
             : data.isPrimary
-              ? props.primaryButtonClass
+              ? toolbarConfig.primaryButtonClass!({ isDisabled: data.isDisabled })
               : `border border-(--fc-monarch-outline-variant-original)`
       ],
 
@@ -237,13 +231,15 @@ export function createThemePlugin({
         'opacity-50 border',
         data.isHeader ? 'border-transparent' : borderColorClass,
       ],
-      nonBusinessClass: neutralBgClass,
+      nonBusinessClass: nonBusinessHoursClass,
       highlightClass: props.highlightClass,
 
       eventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
       eventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
-      backgroundEventColorClass: 'bg-(--fc-event-color) brightness-150 opacity-15',
+      backgroundEventColorClass:
+        'bg-(--fc-event-color) ' + props.backgroundEventColorClass,
+
       backgroundEventTitleClass: (data) => [
         'm-2 opacity-50 italic',
         data.isCompact ? xxsTextClass : 'text-xs',
@@ -347,7 +343,7 @@ export function createThemePlugin({
 
       dayHeaderRowClass: borderClass,
       dayHeaderClass: (data) => [
-        data.isDisabled && neutralBgClass,
+        data.isDisabled && props.disabledBgClass,
         'items-center',
       ],
       dayHeaderInnerClass: (data) => [
@@ -367,7 +363,7 @@ export function createThemePlugin({
               className={
                 'm-0.5 flex flex-row items-center justify-center text-lg h-[2em]' +
                 (data.isToday
-                  ? ` w-[2em] rounded-full ${data.hasNavLink ? props.tertiaryButtonClass : props.tertiaryClass}`
+                  ? ` w-[2em] rounded-full ${props.todayPillClass({ hasNavLink: data.hasNavLink })}`
                   : data.hasNavLink
                     ? ` w-[2em] rounded-full ${transparentPressableClass}`
                     : '')
@@ -380,7 +376,7 @@ export function createThemePlugin({
       dayRowClass: borderClass,
       dayCellClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
-        data.isDisabled && neutralBgClass,
+        data.isDisabled && props.disabledBgClass,
       ],
       dayCellTopClass: (data) => [
         'flex flex-row',
@@ -392,7 +388,7 @@ export function createThemePlugin({
         // TODO: this won't work if hasMonthLabel "Jan 1"... circle will look weird
         'flex flex-row items-center justify-center w-[1.8em] h-[1.8em] rounded-full',
         data.isToday
-          ? (data.hasNavLink ? props.tertiaryButtonClass : props.tertiaryClass)
+          ? props.todayPillClass({ hasNavLink: data.hasNavLink })
           : data.hasNavLink && transparentPressableClass,
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
@@ -403,7 +399,7 @@ export function createThemePlugin({
 
       dayLaneClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
-        data.isDisabled && neutralBgClass,
+        data.isDisabled && props.disabledBgClass,
       ],
       dayLaneInnerClass: (data) => data.isSimple
         ? 'm-1' // simple print-view
@@ -426,7 +422,7 @@ export function createThemePlugin({
               <div className={
                 'flex flex-row items-center justify-center w-[2em] h-[2em] rounded-full' +
                   (data.isToday
-                    ? (' ' + (data.hasNavLink ? props.tertiaryButtonClass : props.tertiaryClass))
+                    ? (' ' + props.todayPillClass({ hasNavLink: data.hasNavLink }))
                     : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
               }>{textPart.value}</div>
             ) : (
@@ -445,7 +441,7 @@ export function createThemePlugin({
 
       resourceDayHeaderClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
-        data.isDisabled && neutralBgClass,
+        data.isDisabled && props.disabledBgClass,
         'items-center',
       ],
       resourceDayHeaderInnerClass: (data) => [
@@ -462,9 +458,9 @@ export function createThemePlugin({
       // For both resources & resource groups
       resourceAreaRowClass: borderClass,
 
-      resourceGroupHeaderClass: neutralBgClass,
+      resourceGroupHeaderClass: props.disabledBgClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: [borderClass, neutralBgClass],
+      resourceGroupLaneClass: [borderClass, props.disabledBgClass],
 
       resourceCellClass: borderClass,
       resourceCellInnerClass: 'p-2 text-sm',
@@ -558,7 +554,7 @@ export function createThemePlugin({
           ? [
             // TODO: converge with week-label styles
             'px-2 py-1 rounded-full text-sm',
-            data.hasNavLink ? props.secondaryButtonClass : props.secondaryContainerClass,
+            props.pillClass({ hasNavLink: data.hasNavLink }),
           ]
           : 'pb-3 -ms-1 text-sm min-w-14',
           // TODO: also test lowest-level days
