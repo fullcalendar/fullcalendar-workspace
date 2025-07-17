@@ -20,11 +20,30 @@ const themePlugin = createThemePlugin({
   majorBorderColorClass: 'border-(--fc-monarch-outline)',
   alertBorderColorClass: 'border-(--fc-monarch-error)',
 
+  /*
+  canvasBgColorClass
+  canvasOutlineColorClass
+  ---
+  eventually just...
+  canvasBgColor
+  canvasOutlineColor
+  */
+
+  // give default icons
+
+  /*
+  resourceExpanderContent ... is a scoped slot, like dayHeaderContent!!!
+    Q: how will work with Vue frameworks?
+    A: we use a Vue-specific icon, and outputs as JSX. our React/Vue/Angular connectors can handle it now anyway
+  popoverCloseContent
+
+  popoverClass
+  */
+
   eventColor: 'var(--fc-monarch-primary)',
   eventContrastColor: 'var(--fc-monarch-on-primary)',
   backgroundEventColor: 'var(--fc-monarch-tertiary)',
   backgroundEventColorClass: 'brightness-115 opacity-15',
-  backgroundEventContrastColor: '', // don't need contrast bc so opaque
 })
 
 export { themePlugin as default }

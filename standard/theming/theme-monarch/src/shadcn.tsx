@@ -1,5 +1,9 @@
 import { createThemePlugin } from './base.js'
 
+/*
+Try making EVENTS semitransparent, and make today-circle opaque?
+*/
+
 // rename
 const primaryClass = 'bg-primary/20 dark:bg-primary/30' // doesn't need text contrast
 const primaryButtonClass = `${primaryClass} hover:bg-primary/90 active:bg-primary/80`
@@ -23,7 +27,6 @@ const themePlugin = createThemePlugin({
   eventContrastColor: 'var(--primary-foreground)',
   backgroundEventColor: 'var(--primary)',
   backgroundEventColorClass: 'opacity-15',
-  backgroundEventContrastColor: '', // don't need contrast bc so opaque
 })
 
 export { themePlugin as default }

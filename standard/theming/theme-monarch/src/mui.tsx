@@ -21,11 +21,15 @@ const themePlugin = createThemePlugin({
   majorBorderColorClass: 'border-(--mui-palette-primary-main)', // will have color. might be cool
   alertBorderColorClass: 'border-(--mui-palette-error-main)',
 
+  /*
+  canvasBgColorClass: '',
+  canvasOutlineColorClass: '',
+  */
+
   eventColor: 'var(--mui-palette-primary-main)',
   eventContrastColor: 'var(--mui-palette-primary-contrastText)',
   backgroundEventColor: 'var(--mui-palette-secondary-main)',
   backgroundEventColorClass: 'brightness-115 opacity-15',
-  backgroundEventContrastColor: '', // don't need contrast bc so opaque
 })
 
 export { themePlugin as default }

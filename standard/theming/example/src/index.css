@@ -20,25 +20,20 @@
 
 @custom-variant dark (&:is(.dark *));
 
-body {
-  display: flex;
-  flex-direction: column;
-}
-
-/* TODO: kill this */
 html {
   --fc-canvas-color: var(--color-white);
+  color-scheme: light;
+  /* ShadCN will set page bg color */
 }
 html.dark {
   --fc-canvas-color: var(--color-gray-950);
+  color-scheme: dark;
+  /* ShadCN will set page bg color */
 }
 
-/* for scrollbars and other native UI */
-html {
-  color-scheme: light;
-}
-html.dark {
-  color-scheme: dark;
+body {
+  display: flex;
+  flex-direction: column;
 }
 
 @theme inline {

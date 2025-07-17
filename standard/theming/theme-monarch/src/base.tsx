@@ -57,15 +57,23 @@ export interface ThemePluginConfig {
   highlightClass: string
   disabledBgClass: string
 
-  borderColorClass: string
-  majorBorderColorClass: string
-  alertBorderColorClass: string
+  borderColorClass: string // eventually just borderColor
+  majorBorderColorClass: string // eventually just majorBorderColor
+  alertBorderColorClass: string // eventually just alertBorderColor
+
+  canvasBgColor?: string // eventually just canvasColor
+  canvasOutlineColor?: string // eventually just canvasColor
+
+  // for icons
+  // oh wait... have React/Vue/Angular scoped-slots provide this!!!
+  // and other scoped slots too!!!
+  resourceExpanderContent?: CalendarOptions['resourceExpanderContent']
+  popoverCloseContent?: CalendarOptions['popoverCloseContent']
 
   eventColor: string
   eventContrastColor: string
   backgroundEventColor: string
   backgroundEventColorClass: string
-  backgroundEventContrastColor: string
 }
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
