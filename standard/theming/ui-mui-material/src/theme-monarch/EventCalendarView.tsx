@@ -2,9 +2,9 @@ import { CalendarOptions } from '@fullcalendar/core'
 import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-monarch/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-monarch/slots'
-import CloseIcon from '@mui/icons-material/Close'
 import { useTheme } from '@mui/material'
 import React from 'react'
+import { eventCalendarIconOptions } from '../event-calendar-icon-options.js'
 
 export const optionParams: EventCalendarOptionParams = {
   // TODO: better hasNavLink
@@ -42,8 +42,7 @@ export function EventCalendarView(options: CalendarOptions) {
   return (
     <FullCalendar
       {...baseEventCalendarOptions.optionDefaults}
-
-      popoverCloseContent={() => <CloseIcon />} // TODO: do custom size
+      {...eventCalendarIconOptions}
 
       {...createSlots({
         createElement: React.createElement as any, // HACK

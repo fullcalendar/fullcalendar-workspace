@@ -15,6 +15,12 @@
         "types": "./dist/theme-monarch/*.d.ts",
         "default": "./dist/theme-monarch/*.js"
       }
+    },
+    "./theme-forma/*": {
+      "import": {
+        "types": "./dist/theme-forma/*.d.ts",
+        "default": "./dist/theme-forma/*.js"
+      }
     }
   },
   "peerDependencies": {
@@ -26,7 +32,8 @@
     "react-dom": "^19.1.0"
   },
   "dependencies": {
-    "@fullcalendar/theme-monarch": "workspace:*"
+    "@fullcalendar/theme-monarch": "workspace:*",
+    "@fullcalendar/theme-forma": "workspace:*"
   },
   "devDependencies": {
     "@fullcalendar/core": "workspace:*",

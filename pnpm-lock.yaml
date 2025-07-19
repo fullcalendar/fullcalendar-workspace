@@ -3857,14 +3857,13 @@ importers:
         version: 5.7.3
 
   standard/theming/theme-forma:
-    dependencies:
-      '@fullcalendar/core':
-        specifier: workspace:*
-        version: link:../../packages/core/dist
     devDependencies:
       '@fullcalendar/adaptive':
         specifier: workspace:*
         version: link:../../../premium/packages/adaptive/dist
+      '@fullcalendar/core':
+        specifier: workspace:*
+        version: link:../../packages/core/dist
       '@fullcalendar/daygrid':
         specifier: workspace:*
         version: link:../../packages/daygrid/dist
@@ -3998,6 +3997,9 @@ importers:
       '@fullcalendar/react':
         specifier: workspace:*
         version: link:../../../contrib/react
+      '@fullcalendar/theme-forma':
+        specifier: workspace:*
+        version: link:../theme-forma
       '@fullcalendar/theme-monarch':
         specifier: workspace:*
         version: link:../theme-monarch

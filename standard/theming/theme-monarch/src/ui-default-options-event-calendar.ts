@@ -15,7 +15,7 @@ function getSecondaryButtonClass(isDisabled: boolean) {
   return secondaryButtonClass + (isDisabled ? ' opacity-90' : '')
 }
 
-export const optionParams: EventCalendarOptionParams = {
+export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
   todayPillClass: (data) => 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-on-tertiary)' + (data.hasNavLink ? ' ' + buttonEffectClass : ''),
   pillClass: (data) => 'bg-(--fc-monarch-primary-container) text-(--fc-monarch-on-primary-container)' + (data.hasNavLink ? ' ' + buttonEffectClass : ''),
 
