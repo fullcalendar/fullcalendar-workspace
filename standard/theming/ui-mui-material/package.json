@@ -1,0 +1,41 @@
+{
+  "name": "@fullcalendar/mui-material",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./theme-monarch/*": {
+      "import": {
+        "types": "./dist/theme-monarch/*.d.ts",
+        "default": "./dist/theme-monarch/*.js"
+      }
+    }
+  },
+  "peerDependencies": {
+    "@fullcalendar/core": "workspace:*",
+    "@fullcalendar/react": "workspace:*",
+    "@mui/icons-material": "^7.1.2",
+    "@mui/material": "^7.1.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "dependencies": {
+    "@fullcalendar/theme-monarch": "workspace:*"
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "workspace:*",
+    "@mui/icons-material": "^7.1.2",
+    "@mui/material": "^7.1.2",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "~5.7.2"
+  }
+}

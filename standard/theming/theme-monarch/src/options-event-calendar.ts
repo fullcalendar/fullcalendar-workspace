@@ -1,53 +1,14 @@
-import { CalendarOptions, createPlugin, PluginDef } from '@fullcalendar/core'
-import { createElement, Fragment } from '@fullcalendar/core/preact'
-import * as svgIcons from './svgIcons.js'
+import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 
-/*
-TODO: using primaryContainerClass for button-container BG is often TOO HOT
-(see non-default color palettes)
-we changed it to secondaryContainerClass. see note about secondaryContainerClass in TS interface below
+// ambient types
+// TODO: make these all peer deps? or wait, move options to just core
+import '@fullcalendar/daygrid'
+import '@fullcalendar/timegrid'
+import '@fullcalendar/list'
+import '@fullcalendar/multimonth'
+import '@fullcalendar/interaction'
 
-TODO: segmented buttons:
-https://m3.material.io/components/segmented-buttons/overview
-
-What font is this?
-https://react-native-big-calendar.vercel.app/?path=/story/showcase-desktop--three-days-mode
-
-TODO: refine roundedness of events, spacing within
-TODO: hover effect on timegrid header is weird
-TODO: more rounded more-links
-TODO: more rounded mini-calendars
-TODO: rename transparent* to ghost*
-TODO: rename disabled* to muted*
-
-The +add button (aka isPrimary:true) should be the "tertiary" color
-  https://m3.material.io/styles/color/static/baseline
-  try "tertiary container" color first. if too light, try just "tertiary"
-Examples of tertiary color meaning "adding" things:
-  https://m3.material.io/components/all-buttons#a2942905-4661-4003-9efd-21bc680e10c0
-  https://m3.material.io/components/button-groups/overview
-
-HACK:
-  see use of --fc-monarch-outline-variant / --fc-monarch-outline-variant-original BELOW
-*/
-
-// Will import ambient types during dev but strip out for build
-import type {} from '@fullcalendar/timegrid'
-import type {} from '@fullcalendar/timeline'
-import type {} from '@fullcalendar/list'
-import type {} from '@fullcalendar/multimonth'
-import type {} from '@fullcalendar/resource-daygrid'
-import type {} from '@fullcalendar/resource-timeline'
-
-export interface ThemeToolbarConfig {
-  // TODO: move to ClassNameGenerator and have public util that rasterizes it?
-  primaryButtonClass: (data: { isDisabled: boolean }) => string
-  secondaryButtonClass: (data: { isDisabled: boolean }) => string
-}
-
-export interface ThemePluginConfig {
-  toolbar?: ThemeToolbarConfig // supplied only for default component lib
-
+export interface EventCalendarOptionParams {
   // already rounded
   // TODO: move to ClassNameGenerator and have public util that rasterizes it?
   // TODO: have different pill for weekNumber vs timeline slotLabel
@@ -64,23 +25,16 @@ export interface ThemePluginConfig {
   canvasBgColor?: string // eventually just canvasColor
   canvasOutlineColor?: string // eventually just canvasColor
 
-  // for icons
-  // oh wait... have React/Vue/Angular scoped-slots provide this!!!
-  // and other scoped slots too!!!
-  resourceExpanderContent?: CalendarOptions['resourceExpanderContent']
-  popoverCloseContent?: CalendarOptions['popoverCloseContent']
-
   eventColor: string
   eventContrastColor: string
   backgroundEventColor: string
   backgroundEventColorClass: string
 }
 
-const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
-const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]'
-const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // TODO: deal with this!!!... ugly dark grey... rethink
+export const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
+export const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // TODO: deal with this!!!... ugly dark grey... rethink
 const nonBusinessHoursClass = 'bg-gray-500/7' // must be semitransprent
-const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20'
+export const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20'
 const transparentStrongBgClass = 'bg-gray-500/30' // the touch-SELECTED version of above. use color-mix to make bolder?
 
 // transparent resizer for mouse
@@ -117,10 +71,7 @@ const rowItemClasses: CalendarOptions = {
   ],
 }
 
-/*
-TODO: hook up highlightColor
-*/
-export function createThemePlugin({
+export function createEventCalendarOptions({
   borderColorClass,
   majorBorderColorClass,
   alertBorderColorClass,
@@ -128,8 +79,11 @@ export function createThemePlugin({
   eventContrastColor,
   backgroundEventColor,
   ...props
-}: ThemePluginConfig): PluginDef {
-  const toolbarConfig: Partial<ThemeToolbarConfig> = props.toolbar || {}
+}: EventCalendarOptionParams): {
+  optionDefaults: CalendarOptions
+  views?: { [viewName: string]: ViewOptions }
+} {
+  // TODO: DRY
   const borderClass = `border ${borderColorClass}` // all sides
   const majorBorderClass = `border ${majorBorderColorClass}`
 
@@ -157,8 +111,7 @@ export function createThemePlugin({
     weekNumberInnerClass: getWeekNumberBadgeClasses,
   }
 
-  return createPlugin({
-    name: '<%= pkgName %>', // TODO
+  return {
     optionDefaults: {
       eventColor,
       eventContrastColor,
@@ -170,66 +123,9 @@ export function createThemePlugin({
 
       tableHeaderClass: (data) => data.isSticky && `bg-(--fc-canvas-color) border-b ${borderColorClass}`,
 
-      toolbarClass: 'p-4 items-center gap-3',
-      toolbarSectionClass: (data) => [
-        'items-center gap-3',
-        data.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto', // nicer wrapping
-      ],
-      toolbarTitleClass: 'text-xl md:text-2xl font-bold',
-
-      buttons: {
-        prev: {
-          iconContent: (data) => data.direction === 'ltr'
-            ? svgIcons.chevronLeft(buttonIconClass)
-            : svgIcons.chevronRight(buttonIconClass),
-        },
-        next: {
-          iconContent: (data) => data.direction === 'ltr'
-            ? svgIcons.chevronRight(buttonIconClass)
-            : svgIcons.chevronLeft(buttonIconClass),
-        },
-        prevYear: {
-          iconContent: (data) => data.direction === 'ltr'
-            ? svgIcons.chevronsLeft(buttonIconClass)
-            : svgIcons.chevronsRight(buttonIconClass),
-        },
-        nextYear: {
-          iconContent: (data) => data.direction === 'ltr'
-            ? svgIcons.chevronsRight(buttonIconClass)
-            : svgIcons.chevronsLeft(buttonIconClass),
-        },
-      },
-
-      buttonGroupClass: (data) => [
-        'items-center isolate rounded-full',
-        data.isViewGroup && 'border border-(--fc-monarch-outline-variant)'
-      ],
-      buttonClass: (data) => [
-        data.inViewGroup && '-m-px', // HACK
-        'inline-flex items-center justify-center py-3 text-sm rounded-full',
-        data.inGroup && 'relative active:z-20 focus:z-20',
-        data.isSelected ? 'z-10' : 'z-0',
-        data.isDisabled && `pointer-events-none`, // bypass hover styles
-        data.isIconOnly ? 'px-3' : 'px-5',
-        (data.isIconOnly || (data.inViewGroup && !data.isSelected))
-          ? transparentPressableClass
-          : data.isSelected
-            /* TODO
-            text-color: --mio-theme-color-on-surface-variant
-            bg-color: --mio-theme-color-secondary-container
-            bg-color-hover: --mio-theme-color-on-surface-2 (essentially just slightly darker)
-            button-group-bg: --mio-theme-color-surface-1 (second-to-lowest-contrast one)
-            */
-            ? toolbarConfig.secondaryButtonClass!({ isDisabled: data.isDisabled })
-            : data.isPrimary
-              ? toolbarConfig.primaryButtonClass!({ isDisabled: data.isDisabled })
-              : `border border-(--fc-monarch-outline-variant-original)`
-      ],
-
       popoverClass: `${borderClass} rounded-lg bg-(--fc-canvas-color) shadow-lg m-2`,
       popoverHeaderClass: `px-1 py-1`,
       popoverCloseClass: `absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center ${transparentPressableClass}`,
-      popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
       popoverBodyClass: 'p-2 min-w-3xs',
 
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
@@ -358,28 +254,6 @@ export function createThemePlugin({
         'group pt-2 flex flex-col items-center',
         data.isCompact && xxsTextClass,
       ],
-      dayHeaderContent: (data) => (
-        <Fragment>
-          {data.weekdayText && (
-            <div className={
-              'uppercase text-xs opacity-60' +
-                (data.hasNavLink ? ' group-hover:opacity-90' : '')
-            }>{data.weekdayText}</div>
-          )}
-          {data.dayNumberText && (
-            <div
-              className={
-                'm-0.5 flex flex-row items-center justify-center text-lg h-[2em]' +
-                (data.isToday
-                  ? ` w-[2em] rounded-full ${props.todayPillClass({ hasNavLink: data.hasNavLink })}`
-                  : data.hasNavLink
-                    ? ` w-[2em] rounded-full ${transparentPressableClass}`
-                    : '')
-              }
-            >{data.dayNumberText}</div>
-          )}
-        </Fragment>
-      ),
 
       dayRowClass: borderClass,
       dayCellClass: (data) => [
@@ -423,24 +297,6 @@ export function createThemePlugin({
       listDayHeaderInnerClass: (data) => !data.level
         ? 'm-2 flex flex-row items-center text-lg group' // primary
         : 'uppercase text-xs hover:underline', // secondary
-      listDayHeaderContent: (data) => !data.level ? (
-        <Fragment>
-          {data.textParts.map((textPart) => ( // primary
-            textPart.type === 'day' ? (
-              <div className={
-                'flex flex-row items-center justify-center w-[2em] h-[2em] rounded-full' +
-                  (data.isToday
-                    ? (' ' + props.todayPillClass({ hasNavLink: data.hasNavLink }))
-                    : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
-              }>{textPart.value}</div>
-            ) : (
-              <div className='whitespace-pre'>{textPart.value}</div>
-            )
-          ))}
-        </Fragment>
-      ) : (
-        data.text // secondary
-      ),
       listDayEventsClass: 'flex-grow flex flex-col py-2',
       // events defined in views.list.listItemEvent* below...
 
@@ -479,7 +335,6 @@ export function createThemePlugin({
         data.isExpanded ? 'rotate-90' :
           data.direction === 'rtl' && 'rotate-180',
       ],
-      resourceExpanderContent: () => svgIcons.chevronRight('w-[1.25em] h-[1.25em] opacity-65'),
 
       resourceLaneClass: borderClass,
       resourceLaneBottomClass: (data) => !data.isCompact && 'pb-3',
@@ -582,5 +437,5 @@ export function createThemePlugin({
         noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center`,
       },
     },
-  }) as PluginDef
+  }
 }

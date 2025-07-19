@@ -278,7 +278,7 @@ importers:
         version: 3.5.13(typescript@4.8.4)
       vue-i18n:
         specifier: next
-        version: 12.0.0-alpha.2(vue@3.5.13(typescript@4.8.4))
+        version: 12.0.0-alpha.3(vue@3.5.13(typescript@4.8.4))
 
   examples/angular13:
     dependencies:
@@ -3903,14 +3903,13 @@ importers:
         version: 5.7.3
 
   standard/theming/theme-monarch:
-    dependencies:
-      '@fullcalendar/core':
-        specifier: workspace:*
-        version: link:../../packages/core/dist
     devDependencies:
       '@fullcalendar/adaptive':
         specifier: workspace:*
         version: link:../../../premium/packages/adaptive/dist
+      '@fullcalendar/core':
+        specifier: workspace:*
+        version: link:../../packages/core/dist
       '@fullcalendar/daygrid':
         specifier: workspace:*
         version: link:../../packages/daygrid/dist
@@ -3990,6 +3989,40 @@ importers:
       '@fullcalendar/timeline':
         specifier: workspace:*
         version: link:../../../premium/packages/timeline/dist
+      typescript:
+        specifier: ~5.7.2
+        version: 5.7.3
+
+  standard/theming/ui-mui-material:
+    dependencies:
+      '@fullcalendar/react':
+        specifier: workspace:*
+        version: link:../../../contrib/react
+      '@fullcalendar/theme-monarch':
+        specifier: workspace:*
+        version: link:../theme-monarch
+    devDependencies:
+      '@fullcalendar/core':
+        specifier: workspace:*
+        version: link:../../packages/core/dist
+      '@mui/icons-material':
+        specifier: ^7.1.2
+        version: 7.1.2(@mui/material@7.1.2(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@types/react@19.1.8)(react@19.1.0)
+      '@mui/material':
+        specifier: ^7.1.2
+        version: 7.1.2(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@types/react':
+        specifier: ^19.1.8
+        version: 19.1.8
+      '@types/react-dom':
+        specifier: ^19.1.6
+        version: 19.1.6(@types/react@19.1.8)
+      react:
+        specifier: ^19.1.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^19.1.0
+        version: 19.1.0(react@19.1.0)
       typescript:
         specifier: ~5.7.2
         version: 5.7.3
@@ -8230,20 +8263,20 @@ packages:
     peerDependencies:
       '@types/node': '>=18'
 
-  '@intlify/core-base@12.0.0-alpha.2':
-    resolution: {integrity: sha512-sPWvQ1Z4Wyw9Kp8xqjAk2sMOeZ4pO7p/NL3Eol8l9a7iPyMTuHyJ2DZVbOBG6zDnCupvLAqnRMAT1LAgvx0QRQ==}
+  '@intlify/core-base@12.0.0-alpha.3':
+    resolution: {integrity: sha512-LEvBHBUbiOOtIBkp4IIQENVC5Fg2YHsvdXN1+WRIxQ8hzHbHSBiqZ2l68B/yg8sE1a4S7dqhkaAedunShWPH+Q==}
     engines: {node: '>= 16'}
 
-  '@intlify/message-compiler@12.0.0-alpha.2':
-    resolution: {integrity: sha512-PD9C+oQbb7BF52hec0+vLnScaFkvnfX+R7zSbODYuRo/E2niAtGmHd0wPvEMsDhf9Z9b8f/qyDsVeZnD/ya9Ug==}
+  '@intlify/message-compiler@12.0.0-alpha.3':
+    resolution: {integrity: sha512-mDDTN3gfYOHhBnpnlby19UHyvMaOnzdlpsIrxUfs44R/vCATfn8pMOkE8PXD2t410xkocEj3FpDcC9XC/0v4Dg==}
     engines: {node: '>= 16'}
 
-  '@intlify/shared@12.0.0-alpha.2':
-    resolution: {integrity: sha512-P2DULVX9nz3y8zKNqLw9Es1aAgQ1JGC+kgpx5q7yLmrnAKkPR5MybQWoEhxanefNJgUY5ehsgo+GKif59SrncA==}
+  '@intlify/shared@12.0.0-alpha.3':
+    resolution: {integrity: sha512-ryaNYBvxQjyJUmVuBBg+HHUsmGnfxcEUPR0NCeG4/K9N2qtyFE35C80S15IN6iYFE2MGWLN7HfOSyg0MXZIc9w==}
     engines: {node: '>= 16'}
 
-  '@intlify/vue-i18n-core@12.0.0-alpha.2':
-    resolution: {integrity: sha512-y1NPEcPbD8xqWGiaEREkA9WxxWbxmd8IurN176w39MenZKEf5P20rYyk0w4r718+w/9jjm0m5zR1ed6uMaZT2Q==}
+  '@intlify/vue-i18n-core@12.0.0-alpha.3':
+    resolution: {integrity: sha512-YwAfTQILHN+VoK0P/Yv47GbKnEf1lhfbliyVyW3knAL1EmT8m0m3rwffXJnwyQhYw8Jpx85CpL49WkSgyi6d/g==}
     engines: {node: '>= 16'}
     peerDependencies:
       vue: ^3.0.0
@@ -22669,8 +22702,8 @@ packages:
   vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
 
-  vue-i18n@12.0.0-alpha.2:
-    resolution: {integrity: sha512-ZSaZrDV/PhD4hLVybo84bkaNRnkGDF7GpI0Fcmn9Yj+2Kq5C3nE7I5iRbo+DiHyRGrwZ/IV1VP3naFAhcNJGsg==}
+  vue-i18n@12.0.0-alpha.3:
+    resolution: {integrity: sha512-+KQgD9LJoHfGCdJh3gaLdVS/Sps1n860+6wsjyeNLWJeEofjdVH7KPjz4rAeBlTAUaIDlIjHoXQY0Lk+8B6S9w==}
     engines: {node: '>= 16'}
     peerDependencies:
       vue: ^3.0.0
@@ -23756,7 +23789,7 @@ snapshots:
       '@babel/runtime': 7.20.13
       '@babel/template': 7.20.7
       '@discoveryjs/json-ext': 0.5.7
-      '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1)
+      '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1(esbuild@0.17.8))
       ansi-colors: 4.1.3
       autoprefixer: 10.4.13(postcss@8.4.31)
       babel-loader: 9.1.2(@babel/core@7.20.12)(webpack@5.76.1)
@@ -23837,7 +23870,7 @@ snapshots:
       '@babel/runtime': 7.20.13
       '@babel/template': 7.20.7
       '@discoveryjs/json-ext': 0.5.7
-      '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1)
+      '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1(esbuild@0.17.8))
       ansi-colors: 4.1.3
       autoprefixer: 10.4.13(postcss@8.4.31)
       babel-loader: 9.1.2(@babel/core@7.20.12)(webpack@5.76.1)
@@ -32021,22 +32054,22 @@ snapshots:
     dependencies:
       '@types/node': 24.0.7
 
-  '@intlify/core-base@12.0.0-alpha.2':
+  '@intlify/core-base@12.0.0-alpha.3':
     dependencies:
-      '@intlify/message-compiler': 12.0.0-alpha.2
-      '@intlify/shared': 12.0.0-alpha.2
+      '@intlify/message-compiler': 12.0.0-alpha.3
+      '@intlify/shared': 12.0.0-alpha.3
 
-  '@intlify/message-compiler@12.0.0-alpha.2':
+  '@intlify/message-compiler@12.0.0-alpha.3':
     dependencies:
-      '@intlify/shared': 12.0.0-alpha.2
+      '@intlify/shared': 12.0.0-alpha.3
       source-map-js: 1.2.1
 
-  '@intlify/shared@12.0.0-alpha.2': {}
+  '@intlify/shared@12.0.0-alpha.3': {}
 
-  '@intlify/vue-i18n-core@12.0.0-alpha.2(vue@3.5.13(typescript@4.8.4))':
+  '@intlify/vue-i18n-core@12.0.0-alpha.3(vue@3.5.13(typescript@4.8.4))':
     dependencies:
-      '@intlify/core-base': 12.0.0-alpha.2
-      '@intlify/shared': 12.0.0-alpha.2
+      '@intlify/core-base': 12.0.0-alpha.3
+      '@intlify/shared': 12.0.0-alpha.3
       '@vue/devtools-api': 6.6.4
       vue: 3.5.13(typescript@4.8.4)
 
@@ -32487,7 +32520,7 @@ snapshots:
 
   '@manypkg/get-packages@1.1.3':
     dependencies:
-      '@babel/runtime': 7.26.0
+      '@babel/runtime': 7.27.6
       '@changesets/types': 4.1.0
       '@manypkg/find-root': 1.1.0
       fs-extra: 8.1.0
@@ -32873,7 +32906,7 @@ snapshots:
       typescript: 4.8.4
       webpack: 5.76.1(esbuild@0.17.8)
 
-  '@ngtools/webpack@15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1)':
+  '@ngtools/webpack@15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1(esbuild@0.17.8))':
     dependencies:
       '@angular/compiler-cli': 15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4)
       typescript: 4.8.4
@@ -51312,11 +51345,11 @@ snapshots:
 
   vue-devtools-stub@0.1.0: {}
 
-  vue-i18n@12.0.0-alpha.2(vue@3.5.13(typescript@4.8.4)):
+  vue-i18n@12.0.0-alpha.3(vue@3.5.13(typescript@4.8.4)):
     dependencies:
-      '@intlify/core-base': 12.0.0-alpha.2
-      '@intlify/shared': 12.0.0-alpha.2
-      '@intlify/vue-i18n-core': 12.0.0-alpha.2(vue@3.5.13(typescript@4.8.4))
+      '@intlify/core-base': 12.0.0-alpha.3
+      '@intlify/shared': 12.0.0-alpha.3
+      '@intlify/vue-i18n-core': 12.0.0-alpha.3(vue@3.5.13(typescript@4.8.4))
       '@vue/devtools-api': 6.6.4
       vue: 3.5.13(typescript@4.8.4)
 

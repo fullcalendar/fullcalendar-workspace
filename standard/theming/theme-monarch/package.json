@@ -8,24 +8,41 @@
     "dev": "tsc --watch",
     "clean": "rm -rf dist"
   },
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "exports": {
-    "./tailwind": {
-      "types": "./dist/tailwind.d.ts",
-      "default": "./dist/tailwind.js"
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
     },
-    "./shadcn": {
-      "types": "./dist/shadcn.d.ts",
-      "default": "./dist/shadcn.js"
+    "./options-event-calendar": {
+      "import": {
+        "types": "./dist/options-event-calendar.d.ts",
+        "default": "./dist/options-event-calendar.js"
+      }
     },
-    "./mui": {
-      "types": "./dist/mui.d.ts",
-      "default": "./dist/mui.js"
+    "./options-scheduler": {
+      "import": {
+        "types": "./dist/options-scheduler.d.ts",
+        "default": "./dist/options-scheduler.js"
+      }
+    },
+    "./slots": {
+      "import": {
+        "types": "./dist/slots.d.ts",
+        "default": "./dist/slots.js"
+      }
     }
   },
   "peerDependencies": {
     "@fullcalendar/core": "workspace:*"
   },
   "devDependencies": {
+    "@fullcalendar/core": "workspace:*",
     "@fullcalendar/adaptive": "workspace:*",
     "@fullcalendar/daygrid": "workspace:*",
     "@fullcalendar/interaction": "workspace:*",

@@ -4,6 +4,50 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
+for ShadCN themes,
+  dev will copy <FullCalendar /> with gazillion classnames AND the color variation too??
+  ... NO!!!! shadcn doesn't give color variations
+  tailwind-only
+
+how to distribute *MUI* themes?
+  tailwind:
+    import ExpandIcon from '@mui/icons-material/ExpandIcon'; // we should give instructions
+    import CloseIcon from '@mui/icons-material/CloseIcon';
+
+    <Box rounded={true}>
+      <CustomMuiToolbar />
+      <FullCalendar
+        borderless={true}
+        headerToolbar={false}
+        eventClass='outline-(--mui-palette-paper-main)'
+        resourceExpanderContent={() => <ExpandIcon size='sm' />}
+        popoverCloseContent={() => <CloseIcon size='sm' />}
+      />
+    </Box>
+
+  vanilla css:
+    .eventClass { outline-color: var(--mui-palette-paper-main) }
+  as plugin
+    [internally] .asdf { outline-color: var(--mui-palette-paper-main) }
+
+how to distribute Default-UI themes?
+  [always has color variation]
+    --fc-monarch-something: red;
+    --fc-monarch-canvas: white
+  tailwind:
+    outline-(--fc-monarch-canvas)
+  vanilla css:
+    .eventClass { outline-color: var(--fc-monarch-canvas) }
+  as plugin
+    [internally] .asdf { outline-color: var(--fc-monarch-canvas) }
+
+
+
+
+add canvas color from theme system
+is border color being transferred over corrrectly?
+
+default headerToolbar to false!!! yes... so that UI-frameworks don't need to turn it off
 TODO: disable other component libs for Classic theme? yes... borders don't match. not worth making portable
 kill the backgroundEventContrastColor setting? never used. contrast doesn't make sense
 in order to apply media-like classnames to non-root-calendar (like popover), restore:
