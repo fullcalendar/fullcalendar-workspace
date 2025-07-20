@@ -10,16 +10,28 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./theme-monarch/*": {
+    "./theme-monarch/EventCalendar": {
       "import": {
-        "types": "./dist/theme-monarch/*.d.ts",
-        "default": "./dist/theme-monarch/*.js"
+        "types": "./dist/theme-monarch/event-calendar.d.ts",
+        "default": "./dist/theme-monarch/event-calendar.js"
       }
     },
-    "./theme-forma/*": {
+    "./theme-monarch/Scheduler": {
       "import": {
-        "types": "./dist/theme-forma/*.d.ts",
-        "default": "./dist/theme-forma/*.js"
+        "types": "./dist/theme-monarch/scheduler.d.ts",
+        "default": "./dist/theme-monarch/scheduler.js"
+      }
+    },
+    "./theme-forma/EventCalendar": {
+      "import": {
+        "types": "./dist/theme-forma/event-calendar.d.ts",
+        "default": "./dist/theme-forma/event-calendar.js"
+      }
+    },
+    "./theme-forma/Scheduler": {
+      "import": {
+        "types": "./dist/theme-forma/scheduler.d.ts",
+        "default": "./dist/theme-forma/scheduler.js"
       }
     }
   },

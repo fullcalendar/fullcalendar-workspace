@@ -4,7 +4,7 @@ import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcale
 import { createSlots } from '@fullcalendar/theme-forma/slots'
 import { useTheme } from '@mui/material'
 import React from 'react'
-import { eventCalendarIconOptions } from '../event-calendar-icons.js'
+import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 
 export const optionParams: EventCalendarOptionParams = {
   // TODO

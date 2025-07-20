@@ -2,7 +2,7 @@ import React from 'react'
 import { CalendarOptions } from '@fullcalendar/core'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-monarch/options-scheduler'
 import { optionParams, EventCalendarView } from './event-calendar-view.js'
-import { schedulerOnlyIconOptions } from '../scheduler-icons.js'
+import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 
