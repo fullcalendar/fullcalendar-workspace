@@ -21,6 +21,18 @@
         "types": "./dist/theme-monarch/scheduler.d.ts",
         "default": "./dist/theme-monarch/scheduler.js"
       }
+    },
+    "./theme-forma/EventCalendar": {
+      "import": {
+        "types": "./dist/theme-forma/event-calendar.d.ts",
+        "default": "./dist/theme-forma/event-calendar.js"
+      }
+    },
+    "./theme-forma/Scheduler": {
+      "import": {
+        "types": "./dist/theme-forma/scheduler.d.ts",
+        "default": "./dist/theme-forma/scheduler.js"
+      }
     }
   },
   "peerDependencies": {
