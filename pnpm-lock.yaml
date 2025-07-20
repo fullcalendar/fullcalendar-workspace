@@ -3997,6 +3997,9 @@ importers:
       '@fullcalendar/react':
         specifier: workspace:*
         version: link:../../../contrib/react
+      '@fullcalendar/theme-breezy':
+        specifier: workspace:*
+        version: link:../theme-breezy
       '@fullcalendar/theme-classic':
         specifier: workspace:*
         version: link:../theme-classic

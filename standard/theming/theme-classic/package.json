@@ -8,6 +8,9 @@
     "dev": "tsc --watch",
     "clean": "rm -rf dist"
   },
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "exports": {
     "./package.json": "./package.json",
     ".": {
