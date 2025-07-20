@@ -45,6 +45,18 @@
         "types": "./dist/theme-classic/scheduler.d.ts",
         "default": "./dist/theme-classic/scheduler.js"
       }
+    },
+    "./theme-breezy/EventCalendar": {
+      "import": {
+        "types": "./dist/theme-breezy/event-calendar.d.ts",
+        "default": "./dist/theme-breezy/event-calendar.js"
+      }
+    },
+    "./theme-breezy/Scheduler": {
+      "import": {
+        "types": "./dist/theme-breezy/scheduler.d.ts",
+        "default": "./dist/theme-breezy/scheduler.js"
+      }
     }
   },
   "peerDependencies": {
