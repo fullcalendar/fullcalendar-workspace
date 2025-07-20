@@ -57,6 +57,18 @@
         "types": "./dist/theme-breezy/scheduler.d.ts",
         "default": "./dist/theme-breezy/scheduler.js"
       }
+    },
+    "./theme-pulse/EventCalendar": {
+      "import": {
+        "types": "./dist/theme-pulse/event-calendar.d.ts",
+        "default": "./dist/theme-pulse/event-calendar.js"
+      }
+    },
+    "./theme-pulse/Scheduler": {
+      "import": {
+        "types": "./dist/theme-pulse/scheduler.d.ts",
+        "default": "./dist/theme-pulse/scheduler.js"
+      }
     }
   },
   "peerDependencies": {
@@ -71,7 +83,8 @@
     "@fullcalendar/theme-monarch": "workspace:*",
     "@fullcalendar/theme-forma": "workspace:*",
     "@fullcalendar/theme-classic": "workspace:*",
-    "@fullcalendar/theme-breezy": "workspace:*"
+    "@fullcalendar/theme-breezy": "workspace:*",
+    "@fullcalendar/theme-pulse": "workspace:*"
   },
   "devDependencies": {
     "@fullcalendar/core": "workspace:*",
