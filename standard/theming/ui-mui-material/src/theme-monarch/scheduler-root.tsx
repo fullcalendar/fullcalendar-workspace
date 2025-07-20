@@ -2,8 +2,8 @@ import React from 'react'
 import { Box } from '@mui/material'
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
-import { EventCalendarToolbar } from '../EventCalendarToolbar.js'
-import { EventCalendarView } from './EventCalendarView.js'
+import { SchedulerToolbar } from '../scheduler-toolbar.js'
+import { SchedulerView } from './scheduler-view.js'
 
 export interface EventCalendarProps extends CalendarOptions {
   availableViews: string[]
@@ -20,11 +20,11 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
         borderRadius: 2,
       }}
     >
-      <EventCalendarToolbar
+      <SchedulerToolbar
         controller={controller}
         availableViews={availableViews}
       />
-      <EventCalendarView
+      <SchedulerView
         borderless
         controller={controller}
         {...options}

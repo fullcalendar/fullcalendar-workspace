@@ -4,7 +4,7 @@ import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcale
 import { createSlots } from '@fullcalendar/theme-monarch/slots'
 import { useTheme } from '@mui/material'
 import React from 'react'
-import { eventCalendarIconOptions } from '../event-calendar-icon-options.js'
+import { eventCalendarIconOptions } from '../event-calendar-icons.js'
 
 export const optionParams: EventCalendarOptionParams = {
   // TODO: better hasNavLink
