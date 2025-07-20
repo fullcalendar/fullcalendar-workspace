@@ -9,9 +9,24 @@
     "clean": "rm -rf dist"
   },
   "exports": {
-    "./tailwind": {
-      "types": "./dist/tailwind.d.ts",
-      "default": "./dist/tailwind.js"
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./options-event-calendar": {
+      "import": {
+        "types": "./dist/options-event-calendar.d.ts",
+        "default": "./dist/options-event-calendar.js"
+      }
+    },
+    "./options-scheduler": {
+      "import": {
+        "types": "./dist/options-scheduler.d.ts",
+        "default": "./dist/options-scheduler.js"
+      }
     }
   },
   "peerDependencies": {
