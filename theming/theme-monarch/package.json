@@ -1,5 +1,5 @@
 {
-  "name": "@fullcalendar/theme-classic",
+  "name": "@fullcalendar/theme-monarch",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -30,12 +30,47 @@
         "types": "./dist/options-scheduler.d.ts",
         "default": "./dist/options-scheduler.js"
       }
+    },
+    "./slots": {
+      "import": {
+        "types": "./dist/slots.d.ts",
+        "default": "./dist/slots.js"
+      }
     }
+  },
+  "tsConfig": {
+    "compilerOptions": {
+      "target": "ES2020",
+      "useDefineForClassFields": true,
+      "module": "node16",
+      "lib": ["ES2020", "DOM", "DOM.Iterable"],
+      "skipLibCheck": true,
+      "jsx": "react",
+      "jsxFactory": "createElement",
+
+      "moduleResolution": "node16",
+      "isolatedModules": true,
+      "moduleDetection": "force",
+
+      "strict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noFallthroughCasesInSwitch": true,
+
+      "composite": true,
+      "declaration": true,
+      "declarationMap": true,
+      "outDir": "dist",
+      "rootDir": "src"
+    },
+    "include": ["src"],
+    "exclude": ["src/old"]
   },
   "peerDependencies": {
     "@fullcalendar/core": "workspace:*"
   },
   "devDependencies": {
+    "@fullcalendar/core": "workspace:*",
     "@fullcalendar/adaptive": "workspace:*",
     "@fullcalendar/daygrid": "workspace:*",
     "@fullcalendar/interaction": "workspace:*",
