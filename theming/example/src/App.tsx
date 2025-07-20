@@ -74,7 +74,7 @@ import formaShadcnTheme from '@fullcalendar/theme-forma/shadcn'
 import formaMuiTheme from '@fullcalendar/theme-forma/mui'
 
 // utils for our example
-import { getMuiTheme } from './mui-themes.js'
+import { getMuiTheme } from './palettes-mui-material.js'
 
 const themeOptions = [
   { value: 'classic', text: 'Classic' },

@@ -2,21 +2,43 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@source "../node_modules/@fullcalendar/theme-classic/src/tailwind.ts";
+// classic
+@source "../node_modules/@fullcalendar/theme-classic/src/options-event-calendar.ts";
+@source "../node_modules/@fullcalendar/theme-classic/src/options-scheduler.ts";
+@source "../node_modules/@fullcalendar/theme-classic/src/ui-default-options-event-calendar.ts";
+@source "../node_modules/@fullcalendar/theme-classic/src/ui-default-options-scheduler.ts";
 
-@source "../node_modules/@fullcalendar/theme-breezy/src/tailwind.tsx";
+// breezy
+@source "../node_modules/@fullcalendar/theme-breezy/src/options-event-calendar.ts";
+@source "../node_modules/@fullcalendar/theme-breezy/src/options-scheduler.ts";
+@source "../node_modules/@fullcalendar/theme-breezy/src/slots.tsx";
+@source "../node_modules/@fullcalendar/theme-breezy/src/ui-default-options-event-calendar.ts";
+@source "../node_modules/@fullcalendar/theme-breezy/src/ui-default-options-scheduler.ts";
+@import "../node_modules/@fullcalendar/theme-breezy/src/ui-default-palettes.css";
 
-@source "../node_modules/@fullcalendar/theme-pulse/src/tailwind.tsx";
+// pulse
+@source "../node_modules/@fullcalendar/theme-pulse/src/options-event-calendar.ts";
+@source "../node_modules/@fullcalendar/theme-pulse/src/options-scheduler.ts";
+@source "../node_modules/@fullcalendar/theme-pulse/src/slots.tsx";
+@source "../node_modules/@fullcalendar/theme-pulse/src/ui-default-options-event-calendar.ts";
+@source "../node_modules/@fullcalendar/theme-pulse/src/ui-default-options-scheduler.ts";
+@import "../node_modules/@fullcalendar/theme-pulse/src/ui-default-palettes.css";
 
-@source "../node_modules/@fullcalendar/theme-monarch/src/base.tsx";
-@source "../node_modules/@fullcalendar/theme-monarch/src/tailwind.tsx";
-@source "../node_modules/@fullcalendar/theme-monarch/src/shadcn.tsx";
-@source "../node_modules/@fullcalendar/theme-monarch/src/mui.tsx";
+// monarch
+@source "../node_modules/@fullcalendar/theme-monarch/src/options-event-calendar.ts";
+@source "../node_modules/@fullcalendar/theme-monarch/src/options-scheduler.ts";
+@source "../node_modules/@fullcalendar/theme-monarch/src/slots.tsx";
+@source "../node_modules/@fullcalendar/theme-monarch/src/ui-default-options-event-calendar.ts";
+@source "../node_modules/@fullcalendar/theme-monarch/src/ui-default-options-scheduler.ts";
+@import "../node_modules/@fullcalendar/theme-monarch/src/ui-default-palettes.css";
 
-@source "../node_modules/@fullcalendar/theme-forma/src/base.tsx";
-@source "../node_modules/@fullcalendar/theme-forma/src/tailwind.tsx";
-@source "../node_modules/@fullcalendar/theme-forma/src/shadcn.tsx";
-@source "../node_modules/@fullcalendar/theme-forma/src/mui.tsx";
+// forma
+@source "../node_modules/@fullcalendar/theme-forma/src/options-event-calendar.ts";
+@source "../node_modules/@fullcalendar/theme-forma/src/options-scheduler.ts";
+@source "../node_modules/@fullcalendar/theme-forma/src/slots.tsx";
+@source "../node_modules/@fullcalendar/theme-forma/src/ui-default-options-event-calendar.ts";
+@source "../node_modules/@fullcalendar/theme-forma/src/ui-default-options-scheduler.ts";
+@import "../node_modules/@fullcalendar/theme-forma/src/ui-default-palettes.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -82,9 +104,3 @@ body {
     @apply bg-background text-foreground;
   }
 }
-
-@import './theme-monarch-palettes.css';
-@import './theme-breezy-palettes.css';
-@import './theme-pulse-palettes.css';
-@import './theme-forma-palettes.css';
-@import './shadcn-themes.css';
