@@ -33,6 +33,18 @@
         "types": "./dist/theme-forma/scheduler.d.ts",
         "default": "./dist/theme-forma/scheduler.js"
       }
+    },
+    "./theme-classic/EventCalendar": {
+      "import": {
+        "types": "./dist/theme-classic/event-calendar.d.ts",
+        "default": "./dist/theme-classic/event-calendar.js"
+      }
+    },
+    "./theme-classic/Scheduler": {
+      "import": {
+        "types": "./dist/theme-classic/scheduler.d.ts",
+        "default": "./dist/theme-classic/scheduler.js"
+      }
     }
   },
   "peerDependencies": {
