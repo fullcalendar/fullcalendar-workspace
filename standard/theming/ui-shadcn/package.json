@@ -1,0 +1,52 @@
+{
+  "name": "@fullcalendar/shadcn",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    "./theme-monarch/EventCalendar": {
+      "import": {
+        "types": "./dist/theme-monarch/event-calendar.d.ts",
+        "default": "./dist/theme-monarch/event-calendar.js"
+      }
+    },
+    "./theme-monarch/Scheduler": {
+      "import": {
+        "types": "./dist/theme-monarch/scheduler.d.ts",
+        "default": "./dist/theme-monarch/scheduler.js"
+      }
+    }
+  },
+  "peerDependencies": {
+    "@fullcalendar/core": "workspace:*",
+    "@fullcalendar/react": "workspace:*",
+    "lucide-react": "^0.525.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "workspace:*",
+    "@fullcalendar/theme-breezy": "workspace:*",
+    "@fullcalendar/theme-classic": "workspace:*",
+    "@fullcalendar/theme-forma": "workspace:*",
+    "@fullcalendar/theme-monarch": "workspace:*",
+    "@fullcalendar/theme-pulse": "workspace:*",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.12",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1",
+    "lucide-react": "^0.525.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "typescript": "~5.7.2"
+  }
+}

@@ -1,4 +1,9 @@
-import { createThemePlugin } from './base.js'
+import { CalendarOptions } from '@fullcalendar/core'
+import FullCalendar from '@fullcalendar/react'
+import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-monarch/options-event-calendar'
+import { createSlots } from '@fullcalendar/theme-monarch/slots'
+import React from 'react'
+// import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js' // TODO
 
 /*
 Try making EVENTS semitransparent, and make today-circle opaque?
@@ -12,7 +17,7 @@ const primaryButtonClass = `${primaryClass} hover:bg-primary/90 active:bg-primar
 const accentClass = 'bg-black/10 dark:bg-white/10 text-accent-foreground'
 const accentButtonClass = `${accentClass} hover:bg-gray-500/20 active:bg-gray-500/30` // TODO: better dary mode
 
-const themePlugin = createThemePlugin({
+export const optionParams: EventCalendarOptionParams = {
   todayPillClass: (data) => data.hasNavLink ? primaryButtonClass : primaryClass,
   pillClass: (data) => data.hasNavLink ? accentButtonClass : accentClass,
 
@@ -27,6 +32,27 @@ const themePlugin = createThemePlugin({
   eventContrastColor: 'var(--primary-foreground)',
   backgroundEventColor: 'var(--primary)',
   backgroundEventColorClass: 'opacity-15',
-})
+}
 
-export { themePlugin as default }
+const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
+
+export function EventCalendarView(options: CalendarOptions) {
+  return (
+    <FullCalendar
+      {...baseEventCalendarOptions.optionDefaults}
+      // {...eventCalendarIconOptions}
+
+      {...createSlots({
+        createElement: React.createElement as any, // HACK
+        Fragment: React.Fragment as any, // HACK
+      }, optionParams)}
+
+      {...options}
+
+      views={{
+        ...baseEventCalendarOptions.views,
+        ...options.views,
+      }}
+    />
+  )
+}
