@@ -36,6 +36,18 @@
         "types": "./dist/slots.d.ts",
         "default": "./dist/slots.js"
       }
+    },
+    "./ui-default/options-event-calendar": {
+      "import": {
+        "types": "./dist/ui-default-options-event-calendar.d.ts",
+        "default": "./dist/ui-default-options-event-calendar.js"
+      }
+    },
+    "./ui-default/options-scheduler": {
+      "import": {
+        "types": "./dist/ui-default-options-scheduler.d.ts",
+        "default": "./dist/ui-default-options-scheduler.js"
+      }
     }
   },
   "tsConfig": {
