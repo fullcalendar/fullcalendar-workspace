@@ -1,5 +1,5 @@
 
-.shadcn-default {
+[data-shadcn-palette=default] {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -33,7 +33,7 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 }
-.shadcn-default-dark {
+[data-shadcn-palette=default][data-color-scheme=dark] {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -67,7 +67,7 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-.shadcn-red {
+[data-shadcn-palette=red] {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -101,7 +101,7 @@
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.637 0.237 25.331);
 }
-.shadcn-red-dark {
+[data-shadcn-palette=red][data-color-scheme=dark] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -135,7 +135,7 @@
   --sidebar-ring: oklch(0.637 0.237 25.331);
 }
 
-.shadcn-rose {
+[data-shadcn-palette=rose] {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -169,7 +169,7 @@
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.637 0.237 25.331);
 }
-.shadcn-rose-dark {
+[data-shadcn-palette=rose][data-color-scheme=dark] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -203,7 +203,7 @@
   --sidebar-ring: oklch(0.637 0.237 25.331);
 }
 
-.shadcn-orange {
+[data-shadcn-palette=orange] {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -237,7 +237,7 @@
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.705 0.213 47.604);
 }
-.shadcn-orange-dark {
+[data-shadcn-palette=orange][data-color-scheme=dark] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -271,7 +271,7 @@
   --sidebar-ring: oklch(0.646 0.222 41.116);
 }
 
-.shadcn-green {
+[data-shadcn-palette=green] {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -305,7 +305,7 @@
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.723 0.219 149.579);
 }
-.shadcn-green-dark {
+[data-shadcn-palette=green][data-color-scheme=dark] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -339,7 +339,7 @@
   --sidebar-ring: oklch(0.527 0.154 150.069);
 }
 
-.shadcn-blue {
+[data-shadcn-palette=blue] {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -373,7 +373,7 @@
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.623 0.214 259.815);
 }
-.shadcn-blue-dark {
+[data-shadcn-palette=blue][data-color-scheme=dark] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -407,7 +407,7 @@
   --sidebar-ring: oklch(0.488 0.243 264.376);
 }
 
-.shadcn-yellow {
+[data-shadcn-palette=yellow] {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -441,7 +441,7 @@
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.795 0.184 86.047);
 }
-.shadcn-yellow-dark {
+[data-shadcn-palette=yellow][data-color-scheme=dark] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -475,7 +475,7 @@
   --sidebar-ring: oklch(0.554 0.135 66.442);
 }
 
-.shadcn-violet {
+[data-shadcn-palette=violet] {
   --radius: 0.65rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.141 0.005 285.823);
@@ -509,7 +509,7 @@
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.606 0.25 292.717);
 }
-.shadcn-violet-dark {
+[data-shadcn-palette=violet][data-color-scheme=dark] {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);

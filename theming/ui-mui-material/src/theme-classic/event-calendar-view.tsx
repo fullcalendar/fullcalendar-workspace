@@ -1,7 +1,6 @@
 import { CalendarOptions } from '@fullcalendar/core'
 import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-classic/options-event-calendar'
-import { useTheme } from '@mui/material'
 import React from 'react'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 
@@ -12,12 +11,6 @@ export const optionParams: EventCalendarOptionParams = {
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
 
 export function EventCalendarView(options: CalendarOptions) {
-  const theme = useTheme()
-
-  if (!theme.cssVariables) {
-    throw new Error('@mui/material-ui theme cssVariables must be enabled')
-  }
-
   return (
     <FullCalendar
       {...baseEventCalendarOptions.optionDefaults}

@@ -40,14 +40,14 @@
 @source "../node_modules/@fullcalendar/theme-forma/src/ui-default-options-scheduler.ts";
 @import "../node_modules/@fullcalendar/theme-forma/src/ui-default-palettes.css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:is([data-color-scheme=dark] *));
 
 html {
   --fc-canvas-color: var(--color-white);
   color-scheme: light;
   /* ShadCN will set page bg color */
 }
-html.dark {
+html[data-color-scheme=dark] {
   --fc-canvas-color: var(--color-gray-950);
   color-scheme: dark;
   /* ShadCN will set page bg color */
@@ -104,3 +104,5 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@import "./palettes-shadcn.css";

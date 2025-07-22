@@ -36,17 +36,17 @@ export const optionParams: EventCalendarOptionParams = {
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
 
+const slots = createSlots({
+  createElement: React.createElement as any, // HACK
+  Fragment: React.Fragment as any, // HACK
+}, optionParams)
+
 export function EventCalendarView(options: CalendarOptions) {
   return (
     <FullCalendar
       {...baseEventCalendarOptions.optionDefaults}
       // {...eventCalendarIconOptions}
-
-      {...createSlots({
-        createElement: React.createElement as any, // HACK
-        Fragment: React.Fragment as any, // HACK
-      }, optionParams)}
-
+      {...slots}
       {...options}
 
       views={{

@@ -133,17 +133,17 @@ const schedulerComponentMap: { [ui: string]: { [theme: string]: CalendarComponen
   },
 }
 
-const themeOptions = [
-  { value: 'classic', text: 'Classic' },
-  { value: 'monarch', text: 'Monarch', tooltip: 'A Google/Material-inspired theme' },
-  { value: 'forma', text: 'Forma', tooltip: 'An Outlook Calendar-inspired theme' },
-  { value: 'breezy', text: 'Breezy', tooltip: 'Windy theme' },
-  { value: 'pulse', text: 'Pulse', tooltip: 'Pulsy theme'  }
-]
 const uiOptions = [
   { value: 'fc', text: 'Default' },
   { value: 'shadcn', text: 'Shadcn' },
   { value: 'mui', text: 'MUI' },
+]
+const themeOptions = [
+  { value: 'classic', text: 'Classic' },
+  { value: 'monarch', text: 'Monarch' },
+  { value: 'forma', text: 'Forma' },
+  { value: 'breezy', text: 'Breezy' },
+  { value: 'pulse', text: 'Pulse' },
 ]
 
 const fcMonarchPaletteOptions = [
@@ -221,26 +221,16 @@ export default function App() {
 
   useEffect(() => {
     const rootEl = document.documentElement
+    const fcPalette =
+      theme === 'monarch' ? fcMonarchPalette :
+        theme === 'forma' ? fcFormaPalette :
+          theme === 'breezy' ? fcBreezyPalette :
+            theme === 'pulse' ? fcPulsePalette : ''
 
-    // Shadcn (even for topbar)
-    rootEl.className = colorScheme
-
-    // FullCalendar Default UI
-    if (ui === 'fc') {
-      const palette =
-        theme === 'monarch' ? fcMonarchPalette :
-          theme === 'forma' ? fcFormaPalette :
-            theme === 'breezy' ? fcBreezyPalette :
-              theme === 'pulse' ? fcPulsePalette : ''
-
-      rootEl.setAttribute('data-theme', theme)
-      rootEl.setAttribute('data-palette', palette)
-      rootEl.setAttribute('data-color-scheme', colorScheme)
-    } else {
-      rootEl.removeAttribute('data-theme')
-      rootEl.removeAttribute('data-palette')
-      rootEl.removeAttribute('data-color-scheme')
-    }
+    rootEl.setAttribute('data-theme', theme)
+    rootEl.setAttribute('data-palette', fcPalette)
+    rootEl.setAttribute('data-shadcn-palette', shadcnPalette)
+    rootEl.setAttribute('data-color-scheme', colorScheme)
   }, [ui, theme, fcMonarchPalette, fcFormaPalette, fcBreezyPalette, fcPulsePalette, shadcnPalette, colorScheme])
 
   return (
@@ -570,6 +560,8 @@ function SchedulerDemo(props: DemoProps) {
         resourceDayGridPlugin,
         scrollGridPlugin,
         interactionPlugin,
+        listPlugin, // needed for options!
+        multiMonthPlugin, // needed for options!
       ]}
       initialView={schedulerAvailableViews[0]}
       timeZone='UTC'
