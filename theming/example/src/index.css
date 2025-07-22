@@ -2,13 +2,13 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-// classic
+/* classic */
 @source "../node_modules/@fullcalendar/theme-classic/src/options-event-calendar.ts";
 @source "../node_modules/@fullcalendar/theme-classic/src/options-scheduler.ts";
 @source "../node_modules/@fullcalendar/theme-classic/src/ui-default-options-event-calendar.ts";
 @source "../node_modules/@fullcalendar/theme-classic/src/ui-default-options-scheduler.ts";
 
-// breezy
+/* breezy */
 @source "../node_modules/@fullcalendar/theme-breezy/src/options-event-calendar.ts";
 @source "../node_modules/@fullcalendar/theme-breezy/src/options-scheduler.ts";
 @source "../node_modules/@fullcalendar/theme-breezy/src/slots.tsx";
@@ -16,7 +16,7 @@
 @source "../node_modules/@fullcalendar/theme-breezy/src/ui-default-options-scheduler.ts";
 @import "../node_modules/@fullcalendar/theme-breezy/src/ui-default-palettes.css";
 
-// pulse
+/* pulse */
 @source "../node_modules/@fullcalendar/theme-pulse/src/options-event-calendar.ts";
 @source "../node_modules/@fullcalendar/theme-pulse/src/options-scheduler.ts";
 @source "../node_modules/@fullcalendar/theme-pulse/src/slots.tsx";
@@ -24,7 +24,7 @@
 @source "../node_modules/@fullcalendar/theme-pulse/src/ui-default-options-scheduler.ts";
 @import "../node_modules/@fullcalendar/theme-pulse/src/ui-default-palettes.css";
 
-// monarch
+/* monarch */
 @source "../node_modules/@fullcalendar/theme-monarch/src/options-event-calendar.ts";
 @source "../node_modules/@fullcalendar/theme-monarch/src/options-scheduler.ts";
 @source "../node_modules/@fullcalendar/theme-monarch/src/slots.tsx";
@@ -32,7 +32,7 @@
 @source "../node_modules/@fullcalendar/theme-monarch/src/ui-default-options-scheduler.ts";
 @import "../node_modules/@fullcalendar/theme-monarch/src/ui-default-palettes.css";
 
-// forma
+/* forma */
 @source "../node_modules/@fullcalendar/theme-forma/src/options-event-calendar.ts";
 @source "../node_modules/@fullcalendar/theme-forma/src/options-scheduler.ts";
 @source "../node_modules/@fullcalendar/theme-forma/src/slots.tsx";

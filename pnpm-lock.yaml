@@ -3633,15 +3633,9 @@ importers:
       '@radix-ui/react-select':
         specifier: ^2.2.5
         version: 2.2.5(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@radix-ui/react-slot':
-        specifier: ^1.2.3
-        version: 1.2.3(@types/react@19.1.8)(react@19.1.0)
       '@radix-ui/react-tabs':
         specifier: ^1.1.12
         version: 1.1.12(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@radix-ui/react-tooltip':
-        specifier: ^1.2.7
-        version: 1.2.7(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@tailwindcss/vite':
         specifier: ^4.1.4
         version: 4.1.11(vite@7.0.5(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
@@ -10179,19 +10173,6 @@ packages:
 
   '@radix-ui/react-tabs@1.1.12':
     resolution: {integrity: sha512-GTVAlRVrQrSw3cEARM0nAx73ixrWDPNZAruETn3oHCNP6SbZ/hNxdxp+u7VkIEv3/sFoLq1PfcHrl7Pnp0CDpw==}
-    peerDependencies:
-      '@types/react': '*'
-      '@types/react-dom': '*'
-      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
-    peerDependenciesMeta:
-      '@types/react':
-        optional: true
-      '@types/react-dom':
-        optional: true
-
-  '@radix-ui/react-tooltip@1.2.7':
-    resolution: {integrity: sha512-Ap+fNYwKTYJ9pzqW+Xe2HtMRbQ/EeWkj2qykZ6SuEV4iS/o1bZI5ssJbk4D2r8XuDuOBVz/tIx2JObtuqU+5Zw==}
     peerDependencies:
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -23839,7 +23820,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1402.13(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5))
+      '@angular-devkit/build-webpack': 0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1)
       '@angular-devkit/core': 14.2.13(chokidar@3.6.0)
       '@angular/compiler-cli': 14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4)
       '@babel/core': 7.18.10
@@ -23852,15 +23833,15 @@ snapshots:
       '@babel/runtime': 7.18.9
       '@babel/template': 7.18.10
       '@discoveryjs/json-ext': 0.5.7
-      '@ngtools/webpack': 14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(typescript@4.7.4)(webpack@5.76.1(esbuild@0.15.5))
+      '@ngtools/webpack': 14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(typescript@4.7.4)(webpack@5.76.1)
       ansi-colors: 4.1.3
-      babel-loader: 8.2.5(@babel/core@7.18.10)(webpack@5.76.1(esbuild@0.15.5))
+      babel-loader: 8.2.5(@babel/core@7.18.10)(webpack@5.76.1)
       babel-plugin-istanbul: 6.1.1
       browserslist: 4.24.2
       cacache: 16.1.2
-      copy-webpack-plugin: 11.0.0(webpack@5.76.1(esbuild@0.15.5))
+      copy-webpack-plugin: 11.0.0(webpack@5.76.1)
       critters: 0.0.16
-      css-loader: 6.7.1(webpack@5.76.1(esbuild@0.15.5))
+      css-loader: 6.7.1(webpack@5.76.1)
       esbuild-wasm: 0.15.5
       glob: 8.0.3
       https-proxy-agent: 5.0.1
@@ -23868,10 +23849,10 @@ snapshots:
       jsonc-parser: 3.1.0
       karma-source-map-support: 1.4.0
       less: 4.1.3
-      less-loader: 11.0.0(less@4.1.3)(webpack@5.76.1(esbuild@0.15.5))
-      license-webpack-plugin: 4.0.2(webpack@5.76.1(esbuild@0.15.5))
+      less-loader: 11.0.0(less@4.1.3)(webpack@5.76.1)
+      license-webpack-plugin: 4.0.2(webpack@5.76.1)
       loader-utils: 3.2.1
-      mini-css-extract-plugin: 2.6.1(webpack@5.76.1(esbuild@0.15.5))
+      mini-css-extract-plugin: 2.6.1(webpack@5.76.1)
       minimatch: 5.1.0
       open: 8.4.0
       ora: 5.4.1
@@ -23879,18 +23860,18 @@ snapshots:
       piscina: 3.2.0
       postcss: 8.4.31
       postcss-import: 15.0.0(postcss@8.4.31)
-      postcss-loader: 7.0.1(postcss@8.4.31)(webpack@5.76.1(esbuild@0.15.5))
+      postcss-loader: 7.0.1(postcss@8.4.31)(webpack@5.76.1)
       postcss-preset-env: 7.8.0(postcss@8.4.31)
       regenerator-runtime: 0.13.9
       resolve-url-loader: 5.0.0
       rxjs: 6.6.7
       sass: 1.54.4
-      sass-loader: 13.0.2(sass@1.54.4)(webpack@5.76.1(esbuild@0.15.5))
+      sass-loader: 13.0.2(sass@1.54.4)(webpack@5.76.1)
       semver: 7.5.3
-      source-map-loader: 4.0.0(webpack@5.76.1(esbuild@0.15.5))
+      source-map-loader: 4.0.0(webpack@5.76.1)
       source-map-support: 0.5.21
       stylus: 0.59.0
-      stylus-loader: 7.0.0(stylus@0.59.0)(webpack@5.76.1(esbuild@0.15.5))
+      stylus-loader: 7.0.0(stylus@0.59.0)(webpack@5.76.1)
       terser: 5.14.2
       text-table: 0.2.0
       tree-kill: 1.2.2
@@ -23900,7 +23881,7 @@ snapshots:
       webpack-dev-middleware: 5.3.3(webpack@5.76.1)
       webpack-dev-server: 4.11.0(webpack@5.76.1)
       webpack-merge: 5.8.0
-      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5))
+      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1)
     optionalDependencies:
       esbuild: 0.15.5
       karma: 6.4.4
@@ -24018,7 +23999,7 @@ snapshots:
       '@babel/runtime': 7.20.13
       '@babel/template': 7.20.7
       '@discoveryjs/json-ext': 0.5.7
-      '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1(esbuild@0.17.8))
+      '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1)
       ansi-colors: 4.1.3
       autoprefixer: 10.4.13(postcss@8.4.31)
       babel-loader: 9.1.2(@babel/core@7.20.12)(webpack@5.76.1)
@@ -24099,7 +24080,7 @@ snapshots:
       '@babel/runtime': 7.20.13
       '@babel/template': 7.20.7
       '@discoveryjs/json-ext': 0.5.7
-      '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1(esbuild@0.17.8))
+      '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1)
       ansi-colors: 4.1.3
       autoprefixer: 10.4.13(postcss@8.4.31)
       babel-loader: 9.1.2(@babel/core@7.20.12)(webpack@5.76.1)
@@ -24522,7 +24503,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-webpack@0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5))':
+  '@angular-devkit/build-webpack@0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1)':
     dependencies:
       '@angular-devkit/architect': 0.1402.13(chokidar@3.6.0)
       rxjs: 6.6.7
@@ -33196,7 +33177,7 @@ snapshots:
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
 
-  '@ngtools/webpack@14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(typescript@4.7.4)(webpack@5.76.1(esbuild@0.15.5))':
+  '@ngtools/webpack@14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(typescript@4.7.4)(webpack@5.76.1)':
     dependencies:
       '@angular/compiler-cli': 14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4)
       typescript: 4.7.4
@@ -33208,7 +33189,7 @@ snapshots:
       typescript: 4.8.4
       webpack: 5.76.1(esbuild@0.17.8)
 
-  '@ngtools/webpack@15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1(esbuild@0.17.8))':
+  '@ngtools/webpack@15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1)':
     dependencies:
       '@angular/compiler-cli': 15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4)
       typescript: 4.8.4
@@ -34689,26 +34670,6 @@ snapshots:
       '@radix-ui/react-primitive': 2.1.3(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@radix-ui/react-roving-focus': 1.1.10(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@radix-ui/react-use-controllable-state': 1.2.2(@types/react@19.1.8)(react@19.1.0)
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
-    optionalDependencies:
-      '@types/react': 19.1.8
-      '@types/react-dom': 19.1.6(@types/react@19.1.8)
-
-  '@radix-ui/react-tooltip@1.2.7(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
-    dependencies:
-      '@radix-ui/primitive': 1.1.2
-      '@radix-ui/react-compose-refs': 1.1.2(@types/react@19.1.8)(react@19.1.0)
-      '@radix-ui/react-context': 1.1.2(@types/react@19.1.8)(react@19.1.0)
-      '@radix-ui/react-dismissable-layer': 1.1.10(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@radix-ui/react-id': 1.1.1(@types/react@19.1.8)(react@19.1.0)
-      '@radix-ui/react-popper': 1.2.7(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@radix-ui/react-portal': 1.1.9(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@radix-ui/react-presence': 1.1.4(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@radix-ui/react-primitive': 2.1.3(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@radix-ui/react-slot': 1.2.3(@types/react@19.1.8)(react@19.1.0)
-      '@radix-ui/react-use-controllable-state': 1.2.2(@types/react@19.1.8)(react@19.1.0)
-      '@radix-ui/react-visually-hidden': 1.2.3(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
     optionalDependencies:
@@ -37727,7 +37688,7 @@ snapshots:
       schema-utils: 2.7.1
       webpack: 5.76.1(esbuild@0.14.22)
 
-  babel-loader@8.2.5(@babel/core@7.18.10)(webpack@5.76.1(esbuild@0.15.5)):
+  babel-loader@8.2.5(@babel/core@7.18.10)(webpack@5.76.1):
     dependencies:
       '@babel/core': 7.18.10
       find-cache-dir: 3.3.2
@@ -38833,16 +38794,6 @@ snapshots:
       serialize-javascript: 6.0.2
       webpack: 5.76.1(esbuild@0.14.22)
 
-  copy-webpack-plugin@11.0.0(webpack@5.76.1(esbuild@0.15.5)):
-    dependencies:
-      fast-glob: 3.3.2
-      glob-parent: 6.0.2
-      globby: 13.2.2
-      normalize-path: 3.0.0
-      schema-utils: 4.2.0
-      serialize-javascript: 6.0.2
-      webpack: 5.76.1(esbuild@0.15.5)
-
   copy-webpack-plugin@11.0.0(webpack@5.76.1):
     dependencies:
       fast-glob: 3.3.2
@@ -38851,7 +38802,7 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.2.0
       serialize-javascript: 6.0.2
-      webpack: 5.76.1(esbuild@0.17.8)
+      webpack: 5.76.1(esbuild@0.15.5)
 
   copy-webpack-plugin@11.0.0(webpack@5.94.0(esbuild@0.18.17)):
     dependencies:
@@ -39151,7 +39102,7 @@ snapshots:
       semver: 7.6.3
       webpack: 5.76.1(esbuild@0.14.22)
 
-  css-loader@6.7.1(webpack@5.76.1(esbuild@0.15.5)):
+  css-loader@6.7.1(webpack@5.76.1):
     dependencies:
       icss-utils: 5.1.0(postcss@8.5.3)
       postcss: 8.5.3
@@ -44001,7 +43952,7 @@ snapshots:
       less: 4.1.2
       webpack: 5.76.1(esbuild@0.14.22)
 
-  less-loader@11.0.0(less@4.1.3)(webpack@5.76.1(esbuild@0.15.5)):
+  less-loader@11.0.0(less@4.1.3)(webpack@5.76.1):
     dependencies:
       klona: 2.0.6
       less: 4.1.3
@@ -44113,17 +44064,11 @@ snapshots:
     optionalDependencies:
       webpack: 5.76.1(esbuild@0.14.22)
 
-  license-webpack-plugin@4.0.2(webpack@5.76.1(esbuild@0.15.5)):
-    dependencies:
-      webpack-sources: 3.2.3
-    optionalDependencies:
-      webpack: 5.76.1(esbuild@0.15.5)
-
   license-webpack-plugin@4.0.2(webpack@5.76.1):
     dependencies:
       webpack-sources: 3.2.3
     optionalDependencies:
-      webpack: 5.76.1(esbuild@0.17.8)
+      webpack: 5.76.1(esbuild@0.15.5)
 
   license-webpack-plugin@4.0.2(webpack@5.94.0(esbuild@0.18.17)):
     dependencies:
@@ -45086,7 +45031,7 @@ snapshots:
       schema-utils: 4.2.0
       webpack: 5.76.1(esbuild@0.14.22)
 
-  mini-css-extract-plugin@2.6.1(webpack@5.76.1(esbuild@0.15.5)):
+  mini-css-extract-plugin@2.6.1(webpack@5.76.1):
     dependencies:
       schema-utils: 4.2.0
       webpack: 5.76.1(esbuild@0.15.5)
@@ -47423,7 +47368,7 @@ snapshots:
       semver: 7.6.3
       webpack: 5.76.1(esbuild@0.14.22)
 
-  postcss-loader@7.0.1(postcss@8.4.31)(webpack@5.76.1(esbuild@0.15.5)):
+  postcss-loader@7.0.1(postcss@8.4.31)(webpack@5.76.1):
     dependencies:
       cosmiconfig: 7.1.0
       klona: 2.0.6
@@ -49406,7 +49351,7 @@ snapshots:
     optionalDependencies:
       sass: 1.49.9
 
-  sass-loader@13.0.2(sass@1.54.4)(webpack@5.76.1(esbuild@0.15.5)):
+  sass-loader@13.0.2(sass@1.54.4)(webpack@5.76.1):
     dependencies:
       klona: 2.0.6
       neo-async: 2.6.2
@@ -49933,7 +49878,7 @@ snapshots:
       source-map-js: 1.2.1
       webpack: 5.76.1(esbuild@0.14.22)
 
-  source-map-loader@4.0.0(webpack@5.76.1(esbuild@0.15.5)):
+  source-map-loader@4.0.0(webpack@5.76.1):
     dependencies:
       abab: 2.0.6
       iconv-lite: 0.6.3
@@ -50340,7 +50285,7 @@ snapshots:
       stylus: 0.56.0
       webpack: 5.76.1(esbuild@0.14.22)
 
-  stylus-loader@7.0.0(stylus@0.59.0)(webpack@5.76.1(esbuild@0.15.5)):
+  stylus-loader@7.0.0(stylus@0.59.0)(webpack@5.76.1):
     dependencies:
       fast-glob: 3.3.2
       klona: 2.0.6
@@ -52201,17 +52146,10 @@ snapshots:
     optionalDependencies:
       html-webpack-plugin: 5.6.3(webpack@5.76.1)
 
-  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5)):
-    dependencies:
-      typed-assert: 1.0.9
-      webpack: 5.76.1(esbuild@0.15.5)
-    optionalDependencies:
-      html-webpack-plugin: 5.6.3(webpack@5.76.1)
-
   webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1):
     dependencies:
       typed-assert: 1.0.9
-      webpack: 5.76.1(esbuild@0.17.8)
+      webpack: 5.76.1(esbuild@0.15.5)
     optionalDependencies:
       html-webpack-plugin: 5.6.3(webpack@5.76.1)
 

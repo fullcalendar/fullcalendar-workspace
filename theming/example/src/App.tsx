@@ -18,8 +18,7 @@ import { useEffect, useMemo } from 'react'
 import { cn } from './lib/utils.js'
 import { useLocalStorageState } from './lib/hooks.js'
 
-// ShadCN
-import { Button } from '@/components/ui/button.js'
+// Shadcn for this demo topbar
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs.js'
 import {
   Select,
@@ -28,22 +27,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select.js'
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
-
-// MUI
-import MuiButton from '@mui/material/Button'
-import MuiIconButton from '@mui/material/IconButton'
-import MuiChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import MuiChevronRightIcon from '@mui/icons-material/ChevronRight'
-import MuiTypography from '@mui/material/Typography'
-import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
-import MuiCssBaseline from '@mui/material/CssBaseline'
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-import ToggleButton from '@mui/material/ToggleButton'
 
 // FullCalendar
+import { CalendarOptions } from '@fullcalendar/core'
 import '@fullcalendar/core/global.css'
-import FullCalendar, { useCalendarController } from '@fullcalendar/react'
 import adaptivePlugin from '@fullcalendar/adaptive'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -55,26 +42,97 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'
-import { ButtonStateMap, CalendarController, PluginDef } from '@fullcalendar/core'
 
-// FullCalendar themes
-// > Pulse
-import pulseTailwindTheme from '@fullcalendar/theme-pulse/tailwind'
-// > Breezy
-import breezyTailwindTheme from '@fullcalendar/theme-breezy/tailwind'
-// > Classic
-import classicTailwindTheme from '@fullcalendar/theme-classic/tailwind'
-// > Monarch
-import monarchTailwindTheme from '@fullcalendar/theme-monarch/tailwind'
-import monarchShadcnTheme from '@fullcalendar/theme-monarch/shadcn'
-import monarchMuiTheme from '@fullcalendar/theme-monarch/mui'
-// > Forma
-import formaTailwindTheme from '@fullcalendar/theme-forma/tailwind'
-import formaShadcnTheme from '@fullcalendar/theme-forma/shadcn'
-import formaMuiTheme from '@fullcalendar/theme-forma/mui'
+// FullCalendar UI
+import { EventCalendar as FcMonarchEventCalendar } from '@fullcalendar/ui-default-react/theme-monarch/EventCalendar'
+import { Scheduler as FcMonarchScheduler } from '@fullcalendar/ui-default-react/theme-monarch/Scheduler'
+import { EventCalendar as FcPulseEventCalendar } from '@fullcalendar/ui-default-react/theme-pulse/EventCalendar'
+import { Scheduler as FcPulseScheduler } from '@fullcalendar/ui-default-react/theme-pulse/Scheduler'
+import { EventCalendar as FcFormaEventCalendar } from '@fullcalendar/ui-default-react/theme-forma/EventCalendar'
+import { Scheduler as FcFormaScheduler } from '@fullcalendar/ui-default-react/theme-forma/Scheduler'
+import { EventCalendar as FcClassicEventCalendar } from '@fullcalendar/ui-default-react/theme-classic/EventCalendar'
+import { Scheduler as FcClassicScheduler } from '@fullcalendar/ui-default-react/theme-classic/Scheduler'
+import { EventCalendar as FcBreezyEventCalendar } from '@fullcalendar/ui-default-react/theme-breezy/EventCalendar'
+import { Scheduler as FcBreezyScheduler } from '@fullcalendar/ui-default-react/theme-breezy/Scheduler'
 
-// utils for our example
+// Shadcn
+import { EventCalendar as ShadcnMonarchEventCalendar } from '@fullcalendar/shadcn/theme-monarch/EventCalendar'
+import { Scheduler as ShadcnMonarchScheduler } from '@fullcalendar/shadcn/theme-monarch/Scheduler'
+import { EventCalendar as ShadcnPulseEventCalendar } from '@fullcalendar/shadcn/theme-pulse/EventCalendar'
+import { Scheduler as ShadcnPulseScheduler } from '@fullcalendar/shadcn/theme-pulse/Scheduler'
+import { EventCalendar as ShadcnFormaEventCalendar } from '@fullcalendar/shadcn/theme-forma/EventCalendar'
+import { Scheduler as ShadcnFormaScheduler } from '@fullcalendar/shadcn/theme-forma/Scheduler'
+import { EventCalendar as ShadcnClassicEventCalendar } from '@fullcalendar/shadcn/theme-classic/EventCalendar'
+import { Scheduler as ShadcnClassicScheduler } from '@fullcalendar/shadcn/theme-classic/Scheduler'
+import { EventCalendar as ShadcnBreezyEventCalendar } from '@fullcalendar/shadcn/theme-breezy/EventCalendar'
+import { Scheduler as ShadcnBreezyScheduler } from '@fullcalendar/shadcn/theme-breezy/Scheduler'
+
+// MUI
+import { EventCalendar as MuiMonarchEventCalendar } from '@fullcalendar/mui-material/theme-monarch/EventCalendar'
+import { Scheduler as MuiMonarchScheduler } from '@fullcalendar/mui-material/theme-monarch/Scheduler'
+import { EventCalendar as MuiPulseEventCalendar } from '@fullcalendar/mui-material/theme-pulse/EventCalendar'
+import { Scheduler as MuiPulseScheduler } from '@fullcalendar/mui-material/theme-pulse/Scheduler'
+import { EventCalendar as MuiFormaEventCalendar } from '@fullcalendar/mui-material/theme-forma/EventCalendar'
+import { Scheduler as MuiFormaScheduler } from '@fullcalendar/mui-material/theme-forma/Scheduler'
+import { EventCalendar as MuiClassicEventCalendar } from '@fullcalendar/mui-material/theme-classic/EventCalendar'
+import { Scheduler as MuiClassicScheduler } from '@fullcalendar/mui-material/theme-classic/Scheduler'
+import { EventCalendar as MuiBreezyEventCalendar } from '@fullcalendar/mui-material/theme-breezy/EventCalendar'
+import { Scheduler as MuiBreezyScheduler } from '@fullcalendar/mui-material/theme-breezy/Scheduler'
+
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
+import MuiCssBaseline from '@mui/material/CssBaseline'
 import { getMuiTheme } from './palettes-mui-material.js'
+
+type CalendarComponentProps = CalendarOptions & { availableViews: string[] }
+type CalendarComponent = React.ComponentType<CalendarComponentProps>
+
+const eventCalendarComponentMap: { [ui: string]: { [theme: string]: CalendarComponent } } = {
+  fc: {
+    monarch: FcMonarchEventCalendar,
+    pulse: FcPulseEventCalendar,
+    forma: FcFormaEventCalendar,
+    classic: FcClassicEventCalendar,
+    breezy: FcBreezyEventCalendar,
+  },
+  shadcn: {
+    monarch: ShadcnMonarchEventCalendar,
+    pulse: ShadcnPulseEventCalendar,
+    forma: ShadcnFormaEventCalendar,
+    classic: ShadcnClassicEventCalendar,
+    breezy: ShadcnBreezyEventCalendar,
+  },
+  mui: {
+    monarch: MuiMonarchEventCalendar,
+    pulse: MuiPulseEventCalendar,
+    forma: MuiFormaEventCalendar,
+    classic: MuiClassicEventCalendar,
+    breezy: MuiBreezyEventCalendar,
+  },
+}
+
+const schedulerComponentMap: { [ui: string]: { [theme: string]: CalendarComponent } } = {
+  fc: {
+    monarch: FcMonarchScheduler,
+    pulse: FcPulseScheduler,
+    forma: FcFormaScheduler,
+    classic: FcClassicScheduler,
+    breezy: FcBreezyScheduler,
+  },
+  shadcn: {
+    monarch: ShadcnMonarchScheduler,
+    pulse: ShadcnPulseScheduler,
+    forma: ShadcnFormaScheduler,
+    classic: ShadcnClassicScheduler,
+    breezy: ShadcnBreezyScheduler,
+  },
+  mui: {
+    monarch: MuiMonarchScheduler,
+    pulse: MuiPulseScheduler,
+    forma: MuiFormaScheduler,
+    classic: MuiClassicScheduler,
+    breezy: MuiBreezyScheduler,
+  },
+}
 
 const themeOptions = [
   { value: 'classic', text: 'Classic' },
@@ -83,7 +141,7 @@ const themeOptions = [
   { value: 'breezy', text: 'Breezy', tooltip: 'Windy theme' },
   { value: 'pulse', text: 'Pulse', tooltip: 'Pulsy theme'  }
 ]
-const componentLibOptions = [
+const uiOptions = [
   { value: 'fc', text: 'Default' },
   { value: 'shadcn', text: 'Shadcn' },
   { value: 'mui', text: 'MUI' },
@@ -135,7 +193,7 @@ const colorSchemeOptions = [
 ]
 
 const themeOptionValues = themeOptions.map((option) => option.value)
-const componentLibValues = componentLibOptions.map((option) => option.value)
+const uiValues = uiOptions.map((option) => option.value)
 
 const fcMonarchPaletteValues = fcMonarchPaletteOptions.map((option) => option.value)
 const fcFormaPaletteValues = fcFormaPaletteOptions.map((option) => option.value)
@@ -145,34 +203,6 @@ const fcPulsePaletteValues = fcPulsePaletteOptions.map((option) => option.value)
 const shadcnPaletteValues = shadcnPaletteOptions.map((option) => option.value)
 const muiPaletteValues = muiPaletteOptions.map((option) => option.value)
 const colorSchemeValues = colorSchemeOptions.map((option) => option.value) as ('light' | 'dark')[]
-
-const themePluginMap = {
-  classic: {
-    fc: classicTailwindTheme,
-    shadcn: classicTailwindTheme, // dup
-    mui: classicTailwindTheme, // dup
-  },
-  pulse: {
-    fc: pulseTailwindTheme,
-    shadcn: pulseTailwindTheme, // dup
-    mui: pulseTailwindTheme, // dup
-  },
-  breezy: {
-    fc: breezyTailwindTheme,
-    shadcn: breezyTailwindTheme, // dup
-    mui: breezyTailwindTheme, // dup
-  },
-  monarch: {
-    fc: monarchTailwindTheme,
-    shadcn: monarchShadcnTheme,
-    mui: monarchMuiTheme,
-  },
-  forma: {
-    fc: formaTailwindTheme,
-    shadcn: formaShadcnTheme,
-    mui: formaMuiTheme,
-  },
-}
 
 function buildFcRootClassName(theme: string, palette: string, colorScheme: string): string {
   return `fc-${theme} fc-${theme}-${palette} fc-${theme}-${palette}-${colorScheme}`
@@ -184,7 +214,7 @@ function buildShadcnRootClassName(palette: string, colorScheme: string): string 
 
 export default function App() {
   const [theme, setTheme] = useLocalStorageState('theme', 'monarch', themeOptionValues)
-  const [componentLib, setComponentLib] = useLocalStorageState('componentLib', 'fc', componentLibValues)
+  const [ui, setUi] = useLocalStorageState('ui', 'fc', uiValues)
   const [fcMonarchPalette, setFcMonarchPalette] = useLocalStorageState('fcMonarchPalette', fcMonarchPaletteValues[0], fcMonarchPaletteValues)
   const [fcFormaPalette, setFcFormaPalette] = useLocalStorageState('fcFormaPalette', fcFormaPaletteValues[0], fcFormaPaletteValues)
   const [fcBreezyPalette, setFcBreezyPalette] = useLocalStorageState('fcBreezyPalette', fcBreezyPaletteValues[0], fcBreezyPaletteValues)
@@ -192,20 +222,6 @@ export default function App() {
   const [shadcnPalette, setShadcnPalette] = useLocalStorageState('shadcnPalette', 'default', shadcnPaletteValues)
   const [muiPalette, setMuiPalette] = useLocalStorageState('muiPalette', 'blue', muiPaletteValues)
   const [colorScheme, setColorScheme] = useLocalStorageState<'light' | 'dark'>('colorScheme', 'light', colorSchemeValues)
-
-  const exampleClassName =
-    theme === 'monarch' ? (
-      componentLib === 'shadcn' ? 'border rounded-xl' :
-        componentLib === 'mui' ? 'border rounded-lg' : ''
-    ) : ''
-
-  const ToolbarComponent =
-    componentLib === 'shadcn' ? ShadcnToolbar :
-      componentLib === 'mui' ? MuiToolbar : undefined
-
-  const borderless = theme === 'monarch' && componentLib !== 'fc'
-
-  const themePlugin = (themePluginMap as any)[theme]?.[componentLib] || monarchTailwindTheme
 
   const muiTheme = useMemo(
     () => getMuiTheme(muiPalette, colorScheme),
@@ -215,7 +231,7 @@ export default function App() {
   useEffect(() => {
     document.documentElement.className = cn(
       colorScheme, // for tailwind dark:
-      componentLib === 'shadcn'
+      ui === 'shadcn'
         ? buildShadcnRootClassName(shadcnPalette, colorScheme)
         : cn(
           buildShadcnRootClassName('default', colorScheme), // for the topbar
@@ -229,7 +245,7 @@ export default function App() {
           )
         )
     )
-  }, [componentLib, theme, fcMonarchPalette, fcFormaPalette, fcBreezyPalette, fcPulsePalette, shadcnPalette, colorScheme])
+  }, [ui, theme, fcMonarchPalette, fcFormaPalette, fcBreezyPalette, fcPulsePalette, shadcnPalette, colorScheme])
 
   return (
     <>
@@ -247,9 +263,9 @@ export default function App() {
           </div>
           <div className='flex flex-row items-center gap-4'>
             <div className='text-sm text-muted-foreground'>Component Lib</div>
-            <Tabs value={componentLib} onValueChange={(v) => setComponentLib(v)}>
+            <Tabs value={ui} onValueChange={(v) => setUi(v)}>
               <TabsList>
-                {componentLibOptions.map((option) => (
+                {uiOptions.map((option) => (
                   <TabsTrigger key={option.value} value={option.value}>{option.text}</TabsTrigger>
                 ))}
               </TabsList>
@@ -257,7 +273,7 @@ export default function App() {
           </div>
         </div>
         <div className='flex flex-row gap-8'>
-          {(componentLib === 'shadcn') ? (
+          {(ui === 'shadcn') ? (
             <div className='flex flex-row items-center gap-4'>
               <div className='text-sm text-muted-foreground'>Palette</div>
               <Select value={shadcnPalette} onValueChange={(v) => setShadcnPalette(v)}>
@@ -274,7 +290,7 @@ export default function App() {
                 </SelectContent>
               </Select>
             </div>
-          ) : (componentLib === 'mui') ? (
+          ) : (ui === 'mui') ? (
             <div className='flex flex-row items-center gap-4'>
               <div className='text-sm text-muted-foreground'>Palette</div>
               <Select value={muiPalette} onValueChange={(v) => setMuiPalette(v)}>
@@ -374,54 +390,26 @@ export default function App() {
           'flex-grow relative z-0 ' // +
           // (theme === 'pulse' ? 'bg-[#F8FAFB]' : '')
         }
-        style={muiTheme.cssVariables ? {} : {
-          '--mui-palette-primary-main': muiTheme.palette.primary.main,
-          '--mui-palette-primary-light': muiTheme.palette.primary.light,
-          '--mui-palette-primary-dark': muiTheme.palette.primary.dark,
-          '--mui-palette-primary-contrastText': muiTheme.palette.primary.contrastText,
-          '--mui-palette-secondary-main': muiTheme.palette.secondary.main,
-          '--mui-palette-secondary-light': muiTheme.palette.secondary.light,
-          '--mui-palette-secondary-dark': muiTheme.palette.secondary.dark,
-          '--mui-palette-secondary-contrastText': muiTheme.palette.secondary.contrastText,
-          '--mui-palette-success-main': muiTheme.palette.success.main,
-          '--mui-palette-success-light': muiTheme.palette.success.light,
-          '--mui-palette-success-dark': muiTheme.palette.success.dark,
-          '--mui-palette-success-contrastText': muiTheme.palette.success.contrastText,
-          '--mui-palette-action-disabledBackground': muiTheme.palette.action.disabledBackground,
-          '--mui-palette-action-disabled': muiTheme.palette.action.disabled,
-          '--mui-palette-divider': muiTheme.palette.divider,
-          '--mui-palette-error-main': muiTheme.palette.error.main
-        } as any}
       >
         <MuiThemeProvider theme={muiTheme}>
           <div className='my-30 max-w-[1100px] mx-auto flex flex-col gap-30'>
-            {(componentLib === 'mui') && (
+            {(ui === 'mui') && (
               <MuiCssBaseline />
             )}
-            <StandardExample
+            <EventCalendarDemo
               initialView='timeGridWeek'
-              className={exampleClassName}
-              borderless={borderless}
+              ui={ui}
               theme={theme}
-              themePlugin={themePlugin}
-              colorScheme={colorScheme}
-              ToolbarComponent={ToolbarComponent}
             />
-            <StandardExample
-              className={exampleClassName}
-              borderless={borderless}
+            <EventCalendarDemo
+              initialView='dayGridMonth'
+              ui={ui}
               theme={theme}
-              themePlugin={themePlugin}
-              colorScheme={colorScheme}
-              ToolbarComponent={ToolbarComponent}
             />
-            <PremiumExample
-              className={exampleClassName}
-              borderless={borderless}
+            <SchedulerDemo
+              initialView='resourceTimelineWeek'
+              ui={ui}
               theme={theme}
-              themePlugin={themePlugin}
-              colorScheme={colorScheme}
-              ToolbarComponent={ToolbarComponent}
             />
           </div>
         </MuiThemeProvider>
@@ -430,132 +418,13 @@ export default function App() {
   )
 }
 
-interface ToolbarProps {
-  controller: CalendarController
-  borderless: boolean
-  buttons: ButtonStateMap
-  availableViews: string[]
-}
-
-function ShadcnToolbar({ controller, borderless, buttons, availableViews }: ToolbarProps) {
-  return (
-    <div className={cn(
-      'flex items-center justify-between py-3',
-      borderless && 'px-3',
-    )}>
-      <div className='flex items-center gap-3'>
-        <Button
-          onClick={() => alert('Add event...')}
-        >Add event</Button>
-        <div className='flex items-center'>
-          <Button
-            onClick={() => controller.today()}
-            // disabled={buttons.today.isDisabled} -- too harsh
-            aria-label={buttons.today.hint}
-            variant='outline'
-          >{buttons.today.text}</Button>
-          <Button
-            onClick={() => controller.prev()}
-            disabled={buttons.prev.isDisabled}
-            aria-label={buttons.prev.hint}
-            variant='ghost'
-            size='icon'
-          ><ChevronLeftIcon /></Button>
-          <Button
-            onClick={() => controller.next()}
-            disabled={buttons.next.isDisabled}
-            aria-label={buttons.next.hint}
-            variant='ghost'
-            size='icon'
-          >
-            <ChevronRightIcon />
-          </Button>
-        </div>
-        <div className='text-xl'>{controller.view?.title}</div>
-      </div>
-      <Tabs value={controller.view?.type}>
-        <TabsList>
-          {availableViews.map((availableView) => (
-            <TabsTrigger
-              key={availableView}
-              value={availableView}
-              onClick={() => controller.changeView(availableView)}
-              aria-label={buttons[availableView]?.hint}
-            >{buttons[availableView]?.text}</TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
-    </div>
-  )
-}
-
-function MuiToolbar({ controller, borderless, buttons, availableViews }: ToolbarProps) {
-  return (
-    <div className={cn(
-      'flex items-center justify-between py-3',
-      borderless && 'px-3',
-    )}>
-      <div className='flex items-center gap-2'>
-        <MuiButton
-          onClick={() => alert("Add event...")}
-          variant="contained"
-        >Add event</MuiButton>
-        <MuiButton
-          onClick={() => controller.today()}
-          // disabled={buttons.today.isDisabled} -- too harsh
-          aria-label={buttons.today.hint}
-          variant="outlined"
-        >{buttons.today.text}</MuiButton>
-        <div className='flex items-center'>
-          <MuiIconButton
-            onClick={() => controller.prev()}
-            disabled={buttons.prev.isDisabled}
-            aria-label={buttons.prev.hint}
-          ><MuiChevronLeftIcon /></MuiIconButton>
-          <MuiIconButton
-            onClick={() => controller.next()}
-            disabled={buttons.next.isDisabled}
-            aria-label={buttons.next.hint}
-          ><MuiChevronRightIcon /></MuiIconButton>
-        </div>
-        <MuiTypography variant="h5">{controller.view?.title}</MuiTypography>
-      </div>
-      <ToggleButtonGroup
-        size="small"
-        exclusive
-        value={controller.view?.type}
-        onChange={(_ev, val) => {
-          controller.changeView(val)
-        }}
-      >
-        {availableViews.map((availableView) => (
-          <ToggleButton
-            key={availableView}
-            value={availableView}
-            aria-label={buttons[availableView]?.hint}
-            color="primary"
-          >
-            {/* add extra spacing. better way to do this idiomatically in MUI */}
-            <span style={{ paddingLeft: 8, paddingRight: 8 }}>
-              {buttons[availableView]?.text}
-            </span>
-          </ToggleButton>
-        ))}
-      </ToggleButtonGroup>
-    </div>
-  )
-}
-
-interface ExampleProps {
-  className: string
-  borderless: boolean
+interface EventCalendarDemoProps {
+  ui: string
   theme: string
-  themePlugin: PluginDef
-  colorScheme: 'light' | 'dark'
-  ToolbarComponent?: React.ComponentType<ToolbarProps>
+  initialView?: string
 }
 
-const standardAvailableViews = [
+const eventCalendarAvailableViews = [
   'dayGridMonth',
   'timeGridWeek',
   'timeGridDay',
@@ -563,269 +432,213 @@ const standardAvailableViews = [
   'multiMonthYear',
 ]
 
-function StandardExample(props: ExampleProps & { initialView?: string }) {
-  const { ToolbarComponent } = props
-  const controller = useCalendarController()
-  const buttons = controller.getButtonState()
+function EventCalendarDemo(props: EventCalendarDemoProps) {
+  const EventCalendarComponent = eventCalendarComponentMap[props.ui][props.theme]
 
   return (
-    <div className={cn('flex flex-col', props.className)}>
-      {ToolbarComponent && (
-        <ToolbarComponent
-          controller={controller}
-          borderless={props.borderless}
-          buttons={buttons}
-          availableViews={standardAvailableViews}
-        />
-      )}
-      <FullCalendar
-        navLinkDayClick='timeGridDay'
-        navLinkWeekClick='timeGridWeek'
-        schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
-        controller={controller}
-        weekNumbers={true}
-        // eventDisplay='block'
-        plugins={[
-          scrollGridPlugin,
-          adaptivePlugin,
-          dayGridPlugin,
-          timeGridPlugin,
-          listPlugin,
-          interactionPlugin,
-          multiMonthPlugin,
-          props.themePlugin,
-        ]}
-        eventInteractive={true}
-        initialView={props.initialView ?? standardAvailableViews[0]}
-        nowIndicator={true}
-        borderless={props.borderless}
-        headerToolbar={
-          ToolbarComponent ? false : {
-            left: 'addEvent today,prev,next',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listYear,multiMonthYear',
+    <EventCalendarComponent
+      availableViews={eventCalendarAvailableViews} // required! should be based on plugins!?
+      navLinkDayClick='timeGridDay'
+      navLinkWeekClick='timeGridWeek'
+      schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
+      weekNumbers={true}
+      // eventDisplay='block'
+      plugins={[
+        scrollGridPlugin,
+        adaptivePlugin,
+        dayGridPlugin,
+        timeGridPlugin,
+        listPlugin,
+        interactionPlugin,
+        multiMonthPlugin,
+      ]}
+      eventInteractive={true}
+      initialView={props.initialView ?? eventCalendarAvailableViews[0]}
+      nowIndicator={true}
+      navLinks={true}
+      editable={true}
+      selectable={true}
+      selectMirror={false}
+      dayMaxEvents={true}
+      // businessHours={true} // -- TODO: background conflicts with the week number pills!!!
+      // eventMaxStack={1}
+      {...( // NOTE: if we gave undefined for either of these settings, calendar render NO day header!
+        props.theme === 'monarch'
+          ? {
+            listDayFormat: { day: 'numeric' },
+            listDaySideFormat: { month: 'short', weekday: 'short', forceCommas: true },
           }
-        }
-        buttons={{
-          addEvent: {
-            text: 'Add event',
-            isPrimary: true,
-            click() {
-              alert('add event...')
-            }
-          }
-        }}
-        navLinks={true}
-        editable={true}
-        selectable={true}
-        selectMirror={false}
-        dayMaxEvents={true}
-        // businessHours={true} // -- TODO: background conflicts with the week number pills!!!
-        // eventMaxStack={1}
-        {...( // NOTE: if we gave undefined for either of these settings, calendar render NO day header!
-          props.theme === 'monarch'
+          : props.theme === 'breezy'
             ? {
-              listDayFormat: { day: 'numeric' },
-              listDaySideFormat: { month: 'short', weekday: 'short', forceCommas: true },
+              listDayFormat: { month: 'short', weekday: 'short', day: 'numeric' },
+              listDaySideFormat: false,
             }
-            : props.theme === 'breezy'
-              ? {
-                listDayFormat: { month: 'short', weekday: 'short', day: 'numeric' },
-                listDaySideFormat: false,
-              }
-              : {} // default is for standard theme... which does side-format... kill this default
-                   // and have standard theme set it?
-        )}
-        views={{
-          dayGridMonth:
-            props.theme === 'forma'
-              ? { dayHeaderFormat: { weekday: 'long' } }
-              : {},
-          timeGrid:
-            props.theme === 'monarch'
-              ? { slotDuration: '01:00' }
-              : {}
-        }}
-        // events='https://fullcalendar.io/api/demo-feeds/events.json?overload-day'
-        now='2025-07-04T12:00:00'
-        events={[
-          {
-            "title": "All Day Event",
-            "start": "2025-07-01"
-          },
-          {
-            "title": "Long Event",
-            "start": "2025-07-07",
-            "end": "2025-07-17",
-            // "color": "var(--color-pink-500)",
-          },
-          {
-            "groupId": "999",
-            "title": "Repeating Event",
-            "start": "2025-07-09T16:00:00+00:00"
-          },
-          {
-            "groupId": "999",
-            "title": "Repeating Event",
-            "start": "2025-07-16T16:00:00+00:00"
-          },
-          {
-            "title": "Conference",
-            "start": "2025-07-03",
-            "end": "2025-07-05"
-          },
-          {
-            "title": "Meeting",
-            "start": "2025-07-04T10:30:00+00:00",
-            "end": "2025-07-04T12:30:00+00:00"
-          },
-          {
-            "title": "Lunch",
-            "start": "2025-07-04T12:00:00+00:00"
-          },
-          {
-            "title": "Birthday Party",
-            "start": "2025-07-05T07:00:00+00:00"
-          },
-          {
-            "url": "http:\/\/google.com\/",
-            "title": "Click for Google",
-            "start": "2025-07-28"
-          },
-          {
-            "title": "Meeting",
-            "start": "2025-07-04T08:30:00+00:00",
-            "end": "2025-07-04T16:30:00+00:00",
-            "display": "background",
-            // "color": "red",
-          },
-          {
-            "title": "Happy Hour",
-            "start": "2025-07-04T17:30:00+00:00"
-          },
-          {
-            "title": "Dinner",
-            "start": "2025-07-04T20:00:00+00:00"
-          }
-        ]}
-      />
-    </div>
+            : {} // default is for standard theme... which does side-format... kill this default
+                  // and have standard theme set it?
+      )}
+      views={{
+        dayGridMonth:
+          props.theme === 'forma'
+            ? { dayHeaderFormat: { weekday: 'long' } }
+            : {},
+        timeGrid:
+          props.theme === 'monarch'
+            ? { slotDuration: '01:00' }
+            : {}
+      }}
+      // events='https://fullcalendar.io/api/demo-feeds/events.json?overload-day'
+      now='2025-07-04T12:00:00'
+      events={[
+        {
+          "title": "All Day Event",
+          "start": "2025-07-01"
+        },
+        {
+          "title": "Long Event",
+          "start": "2025-07-07",
+          "end": "2025-07-17",
+          // "color": "var(--color-pink-500)",
+        },
+        {
+          "groupId": "999",
+          "title": "Repeating Event",
+          "start": "2025-07-09T16:00:00+00:00"
+        },
+        {
+          "groupId": "999",
+          "title": "Repeating Event",
+          "start": "2025-07-16T16:00:00+00:00"
+        },
+        {
+          "title": "Conference",
+          "start": "2025-07-03",
+          "end": "2025-07-05"
+        },
+        {
+          "title": "Meeting",
+          "start": "2025-07-04T10:30:00+00:00",
+          "end": "2025-07-04T12:30:00+00:00"
+        },
+        {
+          "title": "Lunch",
+          "start": "2025-07-04T12:00:00+00:00"
+        },
+        {
+          "title": "Birthday Party",
+          "start": "2025-07-05T07:00:00+00:00"
+        },
+        {
+          "url": "http:\/\/google.com\/",
+          "title": "Click for Google",
+          "start": "2025-07-28"
+        },
+        {
+          "title": "Meeting",
+          "start": "2025-07-04T08:30:00+00:00",
+          "end": "2025-07-04T16:30:00+00:00",
+          "display": "background",
+          // "color": "red",
+        },
+        {
+          "title": "Happy Hour",
+          "start": "2025-07-04T17:30:00+00:00"
+        },
+        {
+          "title": "Dinner",
+          "start": "2025-07-04T20:00:00+00:00"
+        }
+      ]}
+    />
   )
 }
 
-const premiumAvailableViews = [
+const schedulerAvailableViews = [
   'resourceTimelineDay',
   'resourceTimelineWeek',
 ]
 
-function PremiumExample(props: ExampleProps) {
-  const { ToolbarComponent } = props
-  const controller = useCalendarController()
-  const buttons = controller.getButtonState()
+function SchedulerDemo(props: EventCalendarDemoProps) {
+  const SchedulerComponent = schedulerComponentMap[props.ui][props.theme]
 
   return (
-    <div className={cn('flex flex-col', props.className)}>
-      {ToolbarComponent && (
-        <ToolbarComponent
-          controller={controller}
-          borderless={props.borderless}
-          buttons={buttons}
-          availableViews={premiumAvailableViews}
-        />
-      )}
-      <FullCalendar
-        navLinkDayClick='resourceTimelineDay'
-        navLinkWeekClick='resourceTimelineWeek'
-        schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
-        controller={controller}
-        plugins={[
-          adaptivePlugin,
-          timelinePlugin,
-          resourceTimelinePlugin,
-          resourceTimeGridPlugin,
-          resourceDayGridPlugin,
-          scrollGridPlugin,
-          interactionPlugin,
-          props.themePlugin,
-        ]}
-        initialView={premiumAvailableViews[0]}
-        timeZone='UTC'
-        dayMinWidth={200}
-        editable={true}
-        selectable={true}
-        nowIndicator={true}
-        aspectRatio={1.6}
-        scrollTime='07:00'
-        borderless={props.borderless}
-        headerToolbar={
-          ToolbarComponent ? false : {
-            left: 'today prev,next',
-            center: 'title',
-            right: 'resourceTimelineWeek,resourceTimelineDay',
-          }
-        }
-        buttons={{
-          resourceTimelineThreeDays: {
-            text: '3 days',
-          }
-        }}
-        views={{
-          resourceTimelineThreeDays: {
-            type: 'resourceTimeline',
-            duration: { days: 3 },
-          },
-          resourceTimeline: {
-            slotDuration: '01:00',
-            snapDuration: '00:30',
-          },
-        }}
-        resourceAreaHeaderContent='Rooms'
-        resourceAreaWidth='40%'
-        resourceGroupField='building'
-        resourceAreaColumns={[
-          { headerContent: 'Building', field: 'building' },
-          { headerContent: 'Room', field: 'title' },
-          { headerContent: 'Occupancy', field: 'occupancy' },
-        ]}
-        resources={[
-          { id: 'a', building: '460 Bryant', title: 'Auditorium A', occupancy: 40 },
-          { id: 'b', building: '460 Bryant', title: 'Auditorium B', occupancy: 40, eventColor: 'green' },
-          { id: 'c', building: '460 Bryant', title: 'Auditorium C', occupancy: 40, eventColor: 'orange' },
-          {
-            id: 'd',
-            building: '460 Bryant',
-            title: 'Auditorium D',
-            occupancy: 40,
-            children: [
-              { id: 'd1', title: 'Room D1', occupancy: 10 },
-              { id: 'd2', title: 'Room D2', occupancy: 10 },
-            ],
-          },
-          { id: 'e', building: '460 Bryant', title: 'Auditorium E', occupancy: 40 },
-          { id: 'f', building: '460 Bryant', title: 'Auditorium F', occupancy: 40, eventColor: 'red' },
-          { id: 'g', building: '564 Pacific', title: 'Auditorium G', occupancy: 40 },
-          { id: 'h', building: '564 Pacific', title: 'Auditorium H', occupancy: 40 },
-          { id: 'i', building: '564 Pacific', title: 'Auditorium I', occupancy: 40 },
-          { id: 'j', building: '564 Pacific', title: 'Auditorium J', occupancy: 40 },
-          { id: 'k', building: '564 Pacific', title: 'Auditorium K', occupancy: 40 },
-          { id: 'l', building: '564 Pacific', title: 'Auditorium L', occupancy: 40 },
-          { id: 'm', building: '564 Pacific', title: 'Auditorium M', occupancy: 40 },
-          { id: 'n', building: '564 Pacific', title: 'Auditorium N', occupancy: 40 },
-          { id: 'o', building: '564 Pacific', title: 'Auditorium O', occupancy: 40 },
-          { id: 'p', building: '564 Pacific', title: 'Auditorium P', occupancy: 40 },
-          { id: 'q', building: '564 Pacific', title: 'Auditorium Q', occupancy: 40 },
-          { id: 'r', building: '564 Pacific', title: 'Auditorium R', occupancy: 40 },
-          { id: 's', building: '564 Pacific', title: 'Auditorium S', occupancy: 40 },
-          { id: 't', building: '564 Pacific', title: 'Auditorium T', occupancy: 40 },
-          { id: 'u', building: '564 Pacific', title: 'Auditorium U', occupancy: 40 },
-          { id: 'v', building: '564 Pacific', title: 'Auditorium V', occupancy: 40 },
-          { id: 'w', building: '564 Pacific', title: 'Auditorium W', occupancy: 40 },
-          { id: 'x', building: '564 Pacific', title: 'Auditorium X', occupancy: 40 },
-          { id: 'y', building: '564 Pacific', title: 'Auditorium Y', occupancy: 40 },
-          { id: 'z', building: '564 Pacific', title: 'Auditorium Z', occupancy: 40 },
-        ]}
-        events='https://fullcalendar.io/api/demo-feeds/events.json?single-day&for-resource-timeline'
-      />
-    </div>
+    <SchedulerComponent
+      availableViews={schedulerAvailableViews}
+      navLinkDayClick='resourceTimelineDay'
+      navLinkWeekClick='resourceTimelineWeek'
+      schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
+      plugins={[
+        adaptivePlugin,
+        timelinePlugin,
+        resourceTimelinePlugin,
+        resourceTimeGridPlugin,
+        resourceDayGridPlugin,
+        scrollGridPlugin,
+        interactionPlugin,
+      ]}
+      initialView={schedulerAvailableViews[0]}
+      timeZone='UTC'
+      dayMinWidth={200}
+      editable={true}
+      selectable={true}
+      nowIndicator={true}
+      aspectRatio={1.6}
+      scrollTime='07:00'
+      views={{
+        resourceTimelineThreeDays: {
+          type: 'resourceTimeline',
+          duration: { days: 3 },
+        },
+        resourceTimeline: {
+          slotDuration: '01:00',
+          snapDuration: '00:30',
+        },
+      }}
+      resourceAreaHeaderContent='Rooms'
+      resourceAreaWidth='40%'
+      resourceGroupField='building'
+      resourceAreaColumns={[
+        { headerContent: 'Building', field: 'building' },
+        { headerContent: 'Room', field: 'title' },
+        { headerContent: 'Occupancy', field: 'occupancy' },
+      ]}
+      resources={[
+        { id: 'a', building: '460 Bryant', title: 'Auditorium A', occupancy: 40 },
+        { id: 'b', building: '460 Bryant', title: 'Auditorium B', occupancy: 40, eventColor: 'green' },
+        { id: 'c', building: '460 Bryant', title: 'Auditorium C', occupancy: 40, eventColor: 'orange' },
+        {
+          id: 'd',
+          building: '460 Bryant',
+          title: 'Auditorium D',
+          occupancy: 40,
+          children: [
+            { id: 'd1', title: 'Room D1', occupancy: 10 },
+            { id: 'd2', title: 'Room D2', occupancy: 10 },
+          ],
+        },
+        { id: 'e', building: '460 Bryant', title: 'Auditorium E', occupancy: 40 },
+        { id: 'f', building: '460 Bryant', title: 'Auditorium F', occupancy: 40, eventColor: 'red' },
+        { id: 'g', building: '564 Pacific', title: 'Auditorium G', occupancy: 40 },
+        { id: 'h', building: '564 Pacific', title: 'Auditorium H', occupancy: 40 },
+        { id: 'i', building: '564 Pacific', title: 'Auditorium I', occupancy: 40 },
+        { id: 'j', building: '564 Pacific', title: 'Auditorium J', occupancy: 40 },
+        { id: 'k', building: '564 Pacific', title: 'Auditorium K', occupancy: 40 },
+        { id: 'l', building: '564 Pacific', title: 'Auditorium L', occupancy: 40 },
+        { id: 'm', building: '564 Pacific', title: 'Auditorium M', occupancy: 40 },
+        { id: 'n', building: '564 Pacific', title: 'Auditorium N', occupancy: 40 },
+        { id: 'o', building: '564 Pacific', title: 'Auditorium O', occupancy: 40 },
+        { id: 'p', building: '564 Pacific', title: 'Auditorium P', occupancy: 40 },
+        { id: 'q', building: '564 Pacific', title: 'Auditorium Q', occupancy: 40 },
+        { id: 'r', building: '564 Pacific', title: 'Auditorium R', occupancy: 40 },
+        { id: 's', building: '564 Pacific', title: 'Auditorium S', occupancy: 40 },
+        { id: 't', building: '564 Pacific', title: 'Auditorium T', occupancy: 40 },
+        { id: 'u', building: '564 Pacific', title: 'Auditorium U', occupancy: 40 },
+        { id: 'v', building: '564 Pacific', title: 'Auditorium V', occupancy: 40 },
+        { id: 'w', building: '564 Pacific', title: 'Auditorium W', occupancy: 40 },
+        { id: 'x', building: '564 Pacific', title: 'Auditorium X', occupancy: 40 },
+        { id: 'y', building: '564 Pacific', title: 'Auditorium Y', occupancy: 40 },
+        { id: 'z', building: '564 Pacific', title: 'Auditorium Z', occupancy: 40 },
+      ]}
+      events='https://fullcalendar.io/api/demo-feeds/events.json?single-day&for-resource-timeline'
+    />
   )
 }

@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material'
+import { Theme, createTheme } from '@mui/material/styles'
 
 const defaultLightTheme = createTheme({
   cssVariables: true,
@@ -112,7 +112,7 @@ const purpleDarkTheme = createTheme({
   },
 })
 
-export function getMuiTheme(palette: string, colorScheme: string) {
+export function getMuiTheme(palette: string, colorScheme: string): Theme {
   return palette === 'purple'
     ? (colorScheme === 'dark' ? purpleDarkTheme : purpleLightTheme)
     : (colorScheme === 'dark' ? defaultDarkTheme : defaultLightTheme)
