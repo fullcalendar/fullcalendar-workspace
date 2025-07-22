@@ -52,12 +52,14 @@ export function joinFuncishClassNames(
   const isFunc1 = typeof input1 === 'function'
 
   if (isFunc0 || isFunc1) {
-    return (data: any) => {
+    const combinedFunc = (data: any) => {
       return joinArrayishClassNames(
         isFunc0 ? input0(data) : input0,
         isFunc1 ? input1(data) : input1
       )
     }
+    (combinedFunc as any).parts = [input0, input1] // see CalendarDataManager::processRawCalendarOptions
+    return combinedFunc
   }
 
   return joinArrayishClassNames(input0 as ClassNameInput, input1 as ClassNameInput)
@@ -69,7 +71,7 @@ export function mergeContentInjectors(
 ): CustomContentGenerator<any> {
   if (typeof contentGenerator1 === 'function') {
     // fabricate new function
-    return (renderProps: any, createElement: any) => {
+    const combinedFunc = (renderProps: any, createElement: any) => {
       const res = contentGenerator1(renderProps, createElement)
       if (res === true) { // `true` indicates use-fallback
         if (typeof contentGenerator0 === 'function') {
@@ -79,6 +81,8 @@ export function mergeContentInjectors(
       }
       return res
     }
+    (combinedFunc as any).parts = [contentGenerator0, contentGenerator1] // see CalendarDataManager::processRawCalendarOptions
+    return combinedFunc
   }
 
   if (contentGenerator1 != null) {
@@ -94,10 +98,12 @@ export function mergeLifecycleCallbacks(
 ): (...args: any[]) => any {
   if (fn0 && fn1) {
     // fabricate new function
-    return (...args: any[]) => {
+    const combinedFunc = (...args: any[]) => {
       fn0(...args)
       fn1(...args)
     }
+    (combinedFunc as any).parts = [fn0, fn1] // see CalendarDataManager::processRawCalendarOptions
+    return combinedFunc
   }
   return fn0 || fn1
 }

@@ -41,6 +41,7 @@ import { CalendarContext } from '../CalendarContext.js'
 import { CalendarDataManagerState, CalendarOptionsData, CalendarCurrentViewData, CalendarData } from './data-types.js'
 import { TaskRunner } from '../util/TaskRunner.js'
 import { buildTitle } from './title-formatting.js'
+import { isArraysEqual } from '../util/array.js'
 
 export interface CalendarDataManagerProps {
   optionOverrides: CalendarOptions
@@ -455,6 +456,11 @@ export class CalendarDataManager {
             COMPLEX_OPTION_COMPARATORS[optionName] &&
             (optionName in currentRaw) &&
             COMPLEX_OPTION_COMPARATORS[optionName](currentRaw[optionName], raw[optionName])
+          ) || (
+            // see options-manip
+            currentRaw[optionName] && currentRaw[optionName].parts &&
+            raw[optionName] && raw[optionName].parts &&
+            isArraysEqual(currentRaw[optionName].parts, raw[optionName].parts)
           )
         )
       ) {
@@ -567,9 +573,15 @@ export class CalendarDataManager {
 
     for (let optionName in raw) {
       if (
-        raw[optionName] === currentRaw[optionName] ||
-        (COMPLEX_OPTION_COMPARATORS[optionName] &&
-          COMPLEX_OPTION_COMPARATORS[optionName](raw[optionName], currentRaw[optionName]))
+        raw[optionName] === currentRaw[optionName] || (
+          COMPLEX_OPTION_COMPARATORS[optionName] &&
+          COMPLEX_OPTION_COMPARATORS[optionName](raw[optionName], currentRaw[optionName])
+        ) || (
+          // see options-manip
+          currentRaw[optionName] && (currentRaw as any)[optionName].parts &&
+          raw[optionName] && raw[optionName].parts &&
+          isArraysEqual((currentRaw as any)[optionName].parts, raw[optionName].parts)
+        )
       ) {
         refined[optionName] = currentRefined[optionName]
       } else {

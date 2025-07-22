@@ -89,7 +89,9 @@ export default class FullCalendar extends Component<CalendarOptions, CalendarSta
         : flushSync // guaranteed sync rendering
 
       runFunc(() => {
-        this.setState({ customRenderingMap })
+        this.setState({ customRenderingMap }, () => {
+          lastRequestTimestamp = requestTimestamp
+        })
       })
     })
   }
