@@ -15,7 +15,6 @@ Radix warnings about controlled vs uncontrolled
 
 import './App.css'
 import { useEffect, useMemo } from 'react'
-import { cn } from './lib/utils.js'
 import { useLocalStorageState } from './lib/hooks.js'
 
 // Shadcn for this demo topbar
@@ -29,8 +28,8 @@ import {
 } from '@/components/ui/select.js'
 
 // FullCalendar
-import { CalendarOptions } from '@fullcalendar/core'
 import '@fullcalendar/core/global.css'
+import { CalendarOptions } from '@fullcalendar/core'
 import adaptivePlugin from '@fullcalendar/adaptive'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -43,7 +42,7 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'
 
-// FullCalendar UI
+// FullCalendar Default UI
 import { EventCalendar as FcMonarchEventCalendar } from '@fullcalendar/ui-default-react/theme-monarch/EventCalendar'
 import { Scheduler as FcMonarchScheduler } from '@fullcalendar/ui-default-react/theme-monarch/Scheduler'
 import { EventCalendar as FcPulseEventCalendar } from '@fullcalendar/ui-default-react/theme-pulse/EventCalendar'
@@ -192,8 +191,8 @@ const colorSchemeOptions = [
   { value: 'dark', text: 'Dark' },
 ]
 
-const themeOptionValues = themeOptions.map((option) => option.value)
 const uiValues = uiOptions.map((option) => option.value)
+const themeOptionValues = themeOptions.map((option) => option.value)
 
 const fcMonarchPaletteValues = fcMonarchPaletteOptions.map((option) => option.value)
 const fcFormaPaletteValues = fcFormaPaletteOptions.map((option) => option.value)
@@ -204,17 +203,9 @@ const shadcnPaletteValues = shadcnPaletteOptions.map((option) => option.value)
 const muiPaletteValues = muiPaletteOptions.map((option) => option.value)
 const colorSchemeValues = colorSchemeOptions.map((option) => option.value) as ('light' | 'dark')[]
 
-function buildFcRootClassName(theme: string, palette: string, colorScheme: string): string {
-  return `fc-${theme} fc-${theme}-${palette} fc-${theme}-${palette}-${colorScheme}`
-}
-
-function buildShadcnRootClassName(palette: string, colorScheme: string): string {
-  return `shadcn shadcn-${palette} shadcn-${palette}-${colorScheme}`
-}
-
 export default function App() {
-  const [theme, setTheme] = useLocalStorageState('theme', 'monarch', themeOptionValues)
   const [ui, setUi] = useLocalStorageState('ui', 'fc', uiValues)
+  const [theme, setTheme] = useLocalStorageState('theme', 'monarch', themeOptionValues)
   const [fcMonarchPalette, setFcMonarchPalette] = useLocalStorageState('fcMonarchPalette', fcMonarchPaletteValues[0], fcMonarchPaletteValues)
   const [fcFormaPalette, setFcFormaPalette] = useLocalStorageState('fcFormaPalette', fcFormaPaletteValues[0], fcFormaPaletteValues)
   const [fcBreezyPalette, setFcBreezyPalette] = useLocalStorageState('fcBreezyPalette', fcBreezyPaletteValues[0], fcBreezyPaletteValues)
@@ -229,22 +220,27 @@ export default function App() {
   )
 
   useEffect(() => {
-    document.documentElement.className = cn(
-      colorScheme, // for tailwind dark:
-      ui === 'shadcn'
-        ? buildShadcnRootClassName(shadcnPalette, colorScheme)
-        : cn(
-          buildShadcnRootClassName('default', colorScheme), // for the topbar
-          buildFcRootClassName(
-            theme,
-            theme === 'monarch' ? fcMonarchPalette :
-              theme === 'forma' ? fcFormaPalette :
-                theme === 'breezy' ? fcBreezyPalette :
-                  theme === 'pulse' ? fcPulsePalette : '',
-            colorScheme,
-          )
-        )
-    )
+    const rootEl = document.documentElement
+
+    // Shadcn (even for topbar)
+    rootEl.className = colorScheme
+
+    // FullCalendar Default UI
+    if (ui === 'fc') {
+      const palette =
+        theme === 'monarch' ? fcMonarchPalette :
+          theme === 'forma' ? fcFormaPalette :
+            theme === 'breezy' ? fcBreezyPalette :
+              theme === 'pulse' ? fcPulsePalette : ''
+
+      rootEl.setAttribute('data-theme', theme)
+      rootEl.setAttribute('data-palette', palette)
+      rootEl.setAttribute('data-color-scheme', colorScheme)
+    } else {
+      rootEl.removeAttribute('data-theme')
+      rootEl.removeAttribute('data-palette')
+      rootEl.removeAttribute('data-color-scheme')
+    }
   }, [ui, theme, fcMonarchPalette, fcFormaPalette, fcBreezyPalette, fcPulsePalette, shadcnPalette, colorScheme])
 
   return (
@@ -418,7 +414,7 @@ export default function App() {
   )
 }
 
-interface EventCalendarDemoProps {
+interface DemoProps {
   ui: string
   theme: string
   initialView?: string
@@ -432,7 +428,7 @@ const eventCalendarAvailableViews = [
   'multiMonthYear',
 ]
 
-function EventCalendarDemo(props: EventCalendarDemoProps) {
+function EventCalendarDemo(props: DemoProps) {
   const EventCalendarComponent = eventCalendarComponentMap[props.ui][props.theme]
 
   return (
@@ -557,7 +553,7 @@ const schedulerAvailableViews = [
   'resourceTimelineWeek',
 ]
 
-function SchedulerDemo(props: EventCalendarDemoProps) {
+function SchedulerDemo(props: DemoProps) {
   const SchedulerComponent = schedulerComponentMap[props.ui][props.theme]
 
   return (

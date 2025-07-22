@@ -1,20 +1,20 @@
 
-.fc-forma-blue {
+[data-theme=forma][data-palette=blue] {
   --fc-forma-primary-color: #0F6CBD;
   --fc-forma-event-color: #3788d8;
 }
 
-.fc-forma-red {
+[data-theme=forma][data-palette=red] {
   --fc-forma-primary-color: #d83b01;
   --fc-forma-event-color: #d83b01; /* adjust? */
 }
 
-.fc-forma-green {
+[data-theme=forma][data-palette=green] {
   --fc-forma-primary-color: #107c41;
   --fc-forma-event-color: #107c41; /* adjust? */
 }
 
-.fc-forma-purple { /* "power apps" */
+[data-theme=forma][data-palette=purple] { /* "power apps" */
   --fc-forma-primary-color: #742774;
   --fc-forma-event-color: #742774; /* adjust? */
 }

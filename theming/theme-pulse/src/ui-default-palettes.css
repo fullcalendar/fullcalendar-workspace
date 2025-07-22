@@ -1,26 +1,23 @@
 
-/*
-*/
-
-.fc-pulse-red {
+[data-theme=pulse][data-palette=red] {
   --fc-pulse-active-color: #fd453b; /* dark = #fd4539 ... reget both from iOS */
   --fc-pulse-primary-button-color: #d32d50; /* custom */
   --fc-pulse-event-color: #631515;
 }
 
-.fc-pulse-blue {
+[data-theme=pulse][data-palette=blue] {
   --fc-pulse-active-color: #117aff; /* dark = #1284ff  */
   --fc-pulse-primary-button-color: #117aff; /* same ^^^ */
   --fc-pulse-event-color: #012e66;
 }
 
-.fc-pulse-purple {
+[data-theme=pulse][data-palette=purple] {
   --fc-pulse-active-color: #ad46ff;
   --fc-pulse-primary-button-color: #ad46ff; /* same ^^^ */
   --fc-pulse-event-color: #430575;
 }
 
-.fc-pulse-green {
+[data-theme=pulse][data-palette=green] {
   --fc-pulse-active-color: #34c759; /* dark = #30d157 */
   --fc-pulse-primary-button-color: #26a546; /* a little darker */
   --fc-pulse-event-color: #084b19;
