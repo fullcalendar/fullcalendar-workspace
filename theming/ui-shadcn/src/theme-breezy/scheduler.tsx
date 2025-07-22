@@ -4,11 +4,11 @@ import { useCalendarController } from "@fullcalendar/react"
 import { SchedulerToolbar } from '../lib/scheduler-toolbar.js'
 import { SchedulerView } from './scheduler-view.js'
 
-export interface EventCalendarProps extends CalendarOptions {
+export interface SchedulerProps extends CalendarOptions {
   availableViews: string[]
 }
 
-export function EventCalendar({ availableViews, ...options }: EventCalendarProps) {
+export function Scheduler({ availableViews, ...options }: SchedulerProps) {
   const controller = useCalendarController()
 
   return (
