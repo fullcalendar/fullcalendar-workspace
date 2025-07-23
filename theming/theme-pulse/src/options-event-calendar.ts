@@ -21,6 +21,24 @@ light-blue: #22CCE2
 */
 
 const dayGridClasses: CalendarOptions = {
+  /*
+  TODO: make new inlineWeekNumberClass / cellWeekNumberClass
+  BUG: z-index is wrong, can't click week numbers
+  */
+  weekNumberClass: (data) => [
+    !data.isCell && (
+      'absolute z-10 top-0 start-0'
+    ),
+  ],
+  weekNumberInnerClass: (data) => [
+    !data.isCell && (
+      'py-2 text-xs text-gray-700 ' +
+        (data.isCompact
+          ? 'px-1'
+          : 'px-2')
+    ),
+  ],
+
   rowEventClass: (data) => [
     'mb-0.5',
     data.isStart && 'ms-1',
@@ -145,6 +163,8 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
       timeGrid: {
         ...dayGridClasses,
         dayHeaderClass: 'items-center',
+        weekNumberClass: 'justify-end items-center',
+        weekNumberInnerClass: 'px-2 text-sm text-gray-700',
 
         columnEventClass: (data) => [
           'mx-0.5', // TODO: move this to the columnInner thing? yes!!
