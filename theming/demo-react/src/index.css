@@ -2,42 +2,17 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* classic */
-@source "../node_modules/@fullcalendar/theme-classic/src/options-event-calendar.ts";
-@source "../node_modules/@fullcalendar/theme-classic/src/options-scheduler.ts";
-@source "../node_modules/@fullcalendar/theme-classic/src/ui-default-options-event-calendar.ts";
-@source "../node_modules/@fullcalendar/theme-classic/src/ui-default-options-scheduler.ts";
+@source "../node_modules/@fullcalendar/theme-classic/src";
+@source "../node_modules/@fullcalendar/theme-breezy/src";
+@source "../node_modules/@fullcalendar/theme-pulse/src";
+@source "../node_modules/@fullcalendar/theme-monarch/src";
+@source "../node_modules/@fullcalendar/theme-forma/src";
+@source "../node_modules/@fullcalendar/mui-material/src";
+@source "../node_modules/@fullcalendar/shadcn/src";
 
-/* breezy */
-@source "../node_modules/@fullcalendar/theme-breezy/src/options-event-calendar.ts";
-@source "../node_modules/@fullcalendar/theme-breezy/src/options-scheduler.ts";
-@source "../node_modules/@fullcalendar/theme-breezy/src/slots.tsx";
-@source "../node_modules/@fullcalendar/theme-breezy/src/ui-default-options-event-calendar.ts";
-@source "../node_modules/@fullcalendar/theme-breezy/src/ui-default-options-scheduler.ts";
 @import "../node_modules/@fullcalendar/theme-breezy/src/ui-default-palettes.css";
-
-/* pulse */
-@source "../node_modules/@fullcalendar/theme-pulse/src/options-event-calendar.ts";
-@source "../node_modules/@fullcalendar/theme-pulse/src/options-scheduler.ts";
-@source "../node_modules/@fullcalendar/theme-pulse/src/slots.tsx";
-@source "../node_modules/@fullcalendar/theme-pulse/src/ui-default-options-event-calendar.ts";
-@source "../node_modules/@fullcalendar/theme-pulse/src/ui-default-options-scheduler.ts";
 @import "../node_modules/@fullcalendar/theme-pulse/src/ui-default-palettes.css";
-
-/* monarch */
-@source "../node_modules/@fullcalendar/theme-monarch/src/options-event-calendar.ts";
-@source "../node_modules/@fullcalendar/theme-monarch/src/options-scheduler.ts";
-@source "../node_modules/@fullcalendar/theme-monarch/src/slots.tsx";
-@source "../node_modules/@fullcalendar/theme-monarch/src/ui-default-options-event-calendar.ts";
-@source "../node_modules/@fullcalendar/theme-monarch/src/ui-default-options-scheduler.ts";
 @import "../node_modules/@fullcalendar/theme-monarch/src/ui-default-palettes.css";
-
-/* forma */
-@source "../node_modules/@fullcalendar/theme-forma/src/options-event-calendar.ts";
-@source "../node_modules/@fullcalendar/theme-forma/src/options-scheduler.ts";
-@source "../node_modules/@fullcalendar/theme-forma/src/slots.tsx";
-@source "../node_modules/@fullcalendar/theme-forma/src/ui-default-options-event-calendar.ts";
-@source "../node_modules/@fullcalendar/theme-forma/src/ui-default-options-scheduler.ts";
 @import "../node_modules/@fullcalendar/theme-forma/src/ui-default-palettes.css";
 
 @custom-variant dark (&:is([data-color-scheme=dark] *));

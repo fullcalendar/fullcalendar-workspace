@@ -1,4 +1,5 @@
 import { CalendarOptions } from '@fullcalendar/core'
+import { mergeCalendarOptions, mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-monarch/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-monarch/slots'
@@ -44,15 +45,16 @@ const slots = createSlots({
 export function EventCalendarView(options: CalendarOptions) {
   return (
     <FullCalendar
-      {...baseEventCalendarOptions.optionDefaults}
-      // {...eventCalendarIconOptions}
-      {...slots}
-      {...options}
-
-      views={{
-        ...baseEventCalendarOptions.views,
-        ...options.views,
-      }}
+      {...mergeCalendarOptions(
+        baseEventCalendarOptions.optionDefaults,
+        // eventCalendarIconOptions,
+        slots,
+        options,
+      )}
+      views={mergeViewOptionsMap(
+        baseEventCalendarOptions.views || {},
+        options.views || {},
+      )}
     />
   )
 }
