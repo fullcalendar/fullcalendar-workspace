@@ -141,9 +141,7 @@ export function createEventCalendarOptions({
       eventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
       eventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
-      backgroundEventColorClass:
-        'bg-(--fc-event-color) ' + props.backgroundEventColorClass,
-
+      backgroundEventColorClass: 'bg-(--fc-event-color) ' + props.backgroundEventColorClass,
       backgroundEventTitleClass: (data) => [
         'm-2 opacity-50 italic',
         data.isCompact ? xxsTextClass : 'text-xs',

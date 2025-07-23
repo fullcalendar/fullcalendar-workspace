@@ -94,6 +94,12 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
       blockEventColorClass: 'absolute z-10 inset-0 bg-(--fc-event-color)',
       blockEventInnerClass: 'relative z-20 text-(--fc-event-contrast-color) text-xs',
 
+      backgroundEventColorClass: 'bg-(--fc-event-color) brightness-150 opacity-15', // TODO
+      backgroundEventTitleClass: [
+        'm-2 opacity-50 italic',
+        'text-xs', // data.isCompact ? xxsTextClass : 'text-xs', -- TODO
+      ],
+
       rowEventColorClass: (data) => [
         data.isStart && 'rounded-s-sm',
         data.isEnd && 'rounded-e-sm',

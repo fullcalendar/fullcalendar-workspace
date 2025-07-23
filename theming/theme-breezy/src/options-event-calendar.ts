@@ -148,6 +148,12 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
       blockEventTimeClass: 'text-(--fc-event-color) contrast-150',
       blockEventTitleClass: 'text-(--fc-event-color) brightness-60',
 
+      backgroundEventColorClass: 'bg-(--fc-event-color) brightness-150 opacity-15', // TODO
+      backgroundEventTitleClass: (data) => [
+        'm-2 opacity-50 italic',
+        data.isCompact ? xxsTextClass : 'text-xs',
+      ],
+
       rowEventClass: (data) => [
         data.isStart && 'rounded-s-md',
         data.isEnd && 'rounded-e-md',
