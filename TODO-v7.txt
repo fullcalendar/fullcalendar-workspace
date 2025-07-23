@@ -43,6 +43,7 @@ how to distribute Default-UI themes?
 
 
 
+we killed the default headerToolbar. bad idea?
 move { mergeCalendarOptions, mergeViewOptionsMap } to public entrypoint
 
 add canvas color from theme system

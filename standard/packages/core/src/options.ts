@@ -432,11 +432,6 @@ export const BASE_OPTION_DEFAULTS = {
   nextDayThreshold: '00:00:00',
   initialView: '',
   aspectRatio: 1.35,
-  headerToolbar: {
-    start: 'title',
-    center: '',
-    end: 'today prev,next',
-  },
   weekends: true,
   weekNumbers: false,
   weekNumberCalculation: 'local' as WeekNumberCalculation,
