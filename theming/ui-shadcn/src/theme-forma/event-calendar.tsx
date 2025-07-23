@@ -14,11 +14,13 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
   return (
     <div className='border rounded-xl'>
       <EventCalendarToolbar
+        className='p-3'
         controller={controller}
         availableViews={availableViews}
       />
       <EventCalendarView
-        borderless
+        borderlessX
+        borderlessBottom
         controller={controller}
         {...options}
       />

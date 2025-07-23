@@ -43,6 +43,14 @@ how to distribute Default-UI themes?
 
 
 
+ui-default-react might be dumb..
+  it should NOT define default-ui good-looking toolbar
+  we wouldn't want to redefine that for
+
+provide an addEvent-click for the component wrappers?
+
+bug: default-theme disabled-Today button is shorter by 1px
+
 we killed the default headerToolbar. bad idea?
 move { mergeCalendarOptions, mergeViewOptionsMap } to public entrypoint
 

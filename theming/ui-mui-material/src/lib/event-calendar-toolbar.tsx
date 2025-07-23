@@ -10,15 +10,17 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import ToggleButton from '@mui/material/ToggleButton'
 
 export interface EventCalendarToolbarProps {
+  className?: string
+  style?: any // TODO --- use a semantic prop instead
   controller: CalendarController
   availableViews: string[]
 }
 
-export function EventCalendarToolbar({ controller, availableViews }: EventCalendarToolbarProps) {
+export function EventCalendarToolbar({ className, style, controller, availableViews }: EventCalendarToolbarProps) {
   const buttons = controller.getButtonState()
 
   return (
-    <div className='flex items-center justify-between py-3 px-3'>
+    <div className={'flex items-center justify-between ' + (className || '')} style={style}>
       <div className='flex items-center gap-2'>
         <Button
           onClick={() => alert("Add event...")}

@@ -10,7 +10,7 @@ export function Scheduler({ availableViews, ...options }: SchedulerProps) {
   return (
     <SchedulerView
       headerToolbar={{
-        left: 'addEvent today,prev,next',
+        left: 'addEvent prev,today,next',
         center: 'title',
         right: availableViews.join(','),
       }}

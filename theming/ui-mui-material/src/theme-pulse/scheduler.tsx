@@ -13,22 +13,24 @@ export function Scheduler({ availableViews, ...options }: SchedulerProps) {
   const controller = useCalendarController()
 
   return (
-    <Box
-      sx={{
-        border: '1px solid',
-        borderColor: 'divider',
-        borderRadius: 2,
-      }}
-    >
+    <div className='flex flex-col gap-6'>
       <SchedulerToolbar
         controller={controller}
         availableViews={availableViews}
       />
-      <SchedulerView
-        borderless
-        controller={controller}
-        {...options}
-      />
-    </Box>
+      <Box
+        sx={{
+          border: '1px solid',
+          borderColor: 'divider',
+          borderRadius: 1,
+        }}
+      >
+        <SchedulerView
+          borderless
+          controller={controller}
+          {...options}
+        />
+      </Box>
+    </div>
   )
 }

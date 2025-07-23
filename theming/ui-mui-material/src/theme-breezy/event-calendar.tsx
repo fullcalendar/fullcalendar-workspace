@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box } from '@mui/material'
+import { Box, useTheme, alpha } from '@mui/material' // TODO: better import for Box? elsewhere too
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
@@ -11,6 +11,7 @@ export interface EventCalendarProps extends CalendarOptions {
 
 export function EventCalendar({ availableViews, ...options }: EventCalendarProps) {
   const controller = useCalendarController()
+  const theme = useTheme()
 
   return (
     <Box
@@ -18,14 +19,20 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
         border: '1px solid',
         borderColor: 'divider',
         borderRadius: 2,
+        overflow: 'hidden',
       }}
     >
       <EventCalendarToolbar
+        className='p-4'
+        style={{
+          backgroundColor: alpha(theme.palette.divider, 0.025),
+        }}
         controller={controller}
         availableViews={availableViews}
       />
       <EventCalendarView
-        borderless
+        borderlessX
+        borderlessBottom
         controller={controller}
         {...options}
       />

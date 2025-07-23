@@ -14,6 +14,7 @@ export function Scheduler({ availableViews, ...options }: SchedulerProps) {
   return (
     <div className='border rounded-xl'>
       <SchedulerToolbar
+        className='p-3'
         controller={controller}
         availableViews={availableViews}
       />

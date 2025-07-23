@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box } from '@mui/material'
+import { Box, useTheme, alpha } from '@mui/material' // TODO: better import for Box? elsewhere too
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
 import { SchedulerToolbar } from '../lib/scheduler-toolbar.js'
@@ -11,6 +11,7 @@ export interface SchedulerProps extends CalendarOptions {
 
 export function Scheduler({ availableViews, ...options }: SchedulerProps) {
   const controller = useCalendarController()
+  const theme = useTheme()
 
   return (
     <Box
@@ -21,11 +22,16 @@ export function Scheduler({ availableViews, ...options }: SchedulerProps) {
       }}
     >
       <SchedulerToolbar
+        className='p-4'
+        style={{
+          backgroundColor: alpha(theme.palette.divider, 0.025),
+        }}
         controller={controller}
         availableViews={availableViews}
       />
       <SchedulerView
-        borderless
+        borderlessX
+        borderlessBottom
         controller={controller}
         {...options}
       />

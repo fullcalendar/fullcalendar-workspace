@@ -12,13 +12,12 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
   const controller = useCalendarController()
 
   return (
-    <div className='border rounded-xl'>
+    <div className='flex flex-col gap-6'>
       <EventCalendarToolbar
         controller={controller}
         availableViews={availableViews}
       />
       <EventCalendarView
-        borderless
         controller={controller}
         {...options}
       />

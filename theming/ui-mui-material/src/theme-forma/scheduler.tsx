@@ -21,11 +21,13 @@ export function Scheduler({ availableViews, ...options }: SchedulerProps) {
       }}
     >
       <SchedulerToolbar
+        className='p-3'
         controller={controller}
         availableViews={availableViews}
       />
       <SchedulerView
-        borderless
+        borderlessX
+        borderlessBottom
         controller={controller}
         {...options}
       />

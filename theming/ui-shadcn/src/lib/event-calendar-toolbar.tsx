@@ -6,15 +6,16 @@ import { Tabs, TabsList, TabsTrigger } from '../ui/tabs.js'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 export interface EventCalendarToolbarProps {
+  className?: string
   controller: CalendarController
   availableViews: string[]
 }
 
-export function EventCalendarToolbar({ controller, availableViews }: EventCalendarToolbarProps) {
+export function EventCalendarToolbar({ className, controller, availableViews }: EventCalendarToolbarProps) {
   const buttons = controller.getButtonState()
 
   return (
-    <div className='flex items-center justify-between py-3 px-3'>
+    <div className={'flex items-center justify-between ' + (className || '')}>
       <div className='flex items-center gap-3'>
         <Button
           onClick={() => alert('Add event...')}

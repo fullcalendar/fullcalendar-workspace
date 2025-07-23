@@ -21,11 +21,13 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
       }}
     >
       <EventCalendarToolbar
+        className='p-3'
         controller={controller}
         availableViews={availableViews}
       />
       <EventCalendarView
-        borderless
+        borderlessX
+        borderlessBottom
         controller={controller}
         {...options}
       />

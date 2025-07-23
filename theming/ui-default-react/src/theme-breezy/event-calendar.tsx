@@ -11,7 +11,7 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
   return (
     <EventCalendarView
       headerToolbar={{
-        left: 'addEvent today,prev,next',
+        left: 'addEvent prev,today,next',
         center: 'title',
         right: availableViews.join(','),
       }}
