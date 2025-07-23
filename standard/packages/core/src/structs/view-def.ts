@@ -1,6 +1,6 @@
 import { ViewConfigHash, ViewComponentType } from './view-config.js'
 import { ViewOptions } from '../options.js'
-import { mergeRawOptions } from '../options-manip.js'
+import { mergeCalendarOptions } from '../options-manip.js'
 
 /*
 Represents information for an instantiatable View class along with settings
@@ -86,13 +86,13 @@ function buildViewDef(
   return {
     type: viewType,
     component: theComponent,
-    defaults: mergeRawOptions([
+    defaults: mergeCalendarOptions(
       superDef ? superDef.defaults : {},
       defaultConfig ? defaultConfig.rawOptions : {},
-    ]),
-    overrides: mergeRawOptions([
+    ),
+    overrides: mergeCalendarOptions(
       superDef ? superDef.overrides : {},
       overrideConfig ? overrideConfig.rawOptions : {},
-    ]),
+    ),
   }
 }

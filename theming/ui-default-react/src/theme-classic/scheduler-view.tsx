@@ -1,18 +1,20 @@
 import React from 'react'
 import { CalendarOptions } from '@fullcalendar/core'
+import { mergeCalendarOptions, mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { defaultUiSchedulerOnlyOptions } from '@fullcalendar/theme-classic/ui-default/options-scheduler'
 import { EventCalendarView } from './event-calendar-view.js'
 
 export function SchedulerView(options: CalendarOptions) {
   return (
     <EventCalendarView
-      {...defaultUiSchedulerOnlyOptions.optionDefaults}
-      {...options}
-
-      views={{
-        ...defaultUiSchedulerOnlyOptions.views,
-        ...options.views,
-      }}
+      {...mergeCalendarOptions(
+        defaultUiSchedulerOnlyOptions.optionDefaults,
+        options,
+      )}
+      views={mergeViewOptionsMap(
+        defaultUiSchedulerOnlyOptions.views || {},
+        options.views || {},
+      )}
     />
   )
 }

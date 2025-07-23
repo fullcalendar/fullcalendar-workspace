@@ -43,6 +43,7 @@ how to distribute Default-UI themes?
 
 
 
+move { mergeCalendarOptions, mergeViewOptionsMap } to public entrypoint
 
 add canvas color from theme system
 is border color being transferred over corrrectly?

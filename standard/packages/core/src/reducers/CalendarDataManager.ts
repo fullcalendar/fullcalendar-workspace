@@ -31,7 +31,7 @@ import {
   BASE_OPTION_REFINERS, VIEW_ONLY_OPTION_REFINERS,
   CalendarListeners, CALENDAR_LISTENER_REFINERS, Dictionary,
 } from '../options.js'
-import { mergeRawOptions } from '../options-manip.js'
+import { mergeCalendarOptions } from '../options-manip.js'
 import { rangeContainsMarker } from '../datelib/date-range.js'
 import { ViewImpl } from '../api/ViewImpl.js'
 import { parseBusinessHours } from '../structs/business-hours.js'
@@ -414,11 +414,11 @@ export class CalendarDataManager {
 
   // always called from behind a memoizer
   processRawCalendarOptions(optionOverrides: CalendarOptions, dynamicOptionOverrides: CalendarOptions) {
-    let { locales, locale } = mergeRawOptions([
-      BASE_OPTION_DEFAULTS,
+    let { locales, locale } = mergeCalendarOptions(
+      BASE_OPTION_DEFAULTS as any,
       optionOverrides,
       dynamicOptionOverrides,
-    ])
+    )
     let availableLocaleData = this.organizeRawLocales(locales)
     let availableRawLocales = availableLocaleData.map
     let localeDefaults = this.buildLocale(locale || availableLocaleData.defaultCode, availableRawLocales).options
@@ -431,18 +431,18 @@ export class CalendarDataManager {
       ...pluginHooks.listenerRefiners,
       ...pluginHooks.optionRefiners,
     }
-    let raw = mergeRawOptions([
-      BASE_OPTION_DEFAULTS,
+    let raw = mergeCalendarOptions(
+      BASE_OPTION_DEFAULTS as any,
       ...pluginHooks.optionDefaults,
       localeDefaults,
       filterKnownOptions(
-        mergeRawOptions([
+        mergeCalendarOptions(
           optionOverrides,
           dynamicOptionOverrides,
-        ]),
+        ),
         refiners,
       )
-    ])
+    )
 
     let refined: Partial<CalendarOptionsRefined> = {}
     let currentRaw = this.currentCalendarOptionsInput
@@ -552,20 +552,20 @@ export class CalendarDataManager {
       ...pluginHooks.listenerRefiners,
       ...pluginHooks.optionRefiners,
     }
-    let raw = mergeRawOptions([
-      BASE_OPTION_DEFAULTS,
+    let raw = mergeCalendarOptions(
+      BASE_OPTION_DEFAULTS as any,
       ...pluginHooks.optionDefaults,
       viewSpec.optionDefaults,
       localeDefaults,
       filterKnownOptions(
-        mergeRawOptions([
+        mergeCalendarOptions(
           optionOverrides,
           viewSpec.optionOverrides,
           dynamicOptionOverrides,
-        ]),
+        ),
         refiners,
       ),
-    ])
+    )
     let refined: Partial<ViewOptionsRefined> = {}
     let currentRaw = this.currentViewOptionsInput
     let currentRefined = this.currentViewOptionsRefined

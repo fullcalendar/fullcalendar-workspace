@@ -1,4 +1,5 @@
 import { CalendarOptions } from '@fullcalendar/core'
+import { mergeCalendarOptions, mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
 import { defaultUiEventCalendarOptions, optionParams } from '@fullcalendar/theme-forma/ui-default/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-forma/slots'
@@ -12,14 +13,15 @@ const slots = createSlots({
 export function EventCalendarView(options: CalendarOptions) {
   return (
     <FullCalendar
-      {...defaultUiEventCalendarOptions.optionDefaults}
-      {...slots}
-      {...options}
-
-      views={{
-        ...defaultUiEventCalendarOptions.views,
-        ...options.views,
-      }}
+      {...mergeCalendarOptions(
+        defaultUiEventCalendarOptions.optionDefaults,
+        slots,
+        options,
+      )}
+      views={mergeViewOptionsMap(
+        defaultUiEventCalendarOptions.views || {},
+        options.views || {},
+      )}
     />
   )
 }

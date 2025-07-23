@@ -63,6 +63,8 @@ export {
   joinFuncishClassNames,
   mergeContentInjectors,
   mergeLifecycleCallbacks,
+  mergeCalendarOptions,
+  mergeViewOptionsMap,
 } from './options-manip.js'
 
 export {

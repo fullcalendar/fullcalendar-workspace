@@ -1,6 +1,7 @@
-import { CustomContentGenerator } from './internal.js'
+import { CustomContentGenerator } from './common/render-hook.js'
 import { ClassNameInput, joinArrayishClassNames } from './util/html.js'
 import { getUnequalProps, mergeMaybePropsShallow, mergeMaybePropsDepth1 } from './util/object.js'
+import { CalendarOptions, ViewOptions } from './options.js'
 
 type FuncishClassNameInput = ((data: any) => ClassNameInput) | ClassNameInput
 
@@ -17,11 +18,31 @@ const customMergeFuncs = {
   buttons: mergeMaybePropsDepth1,
 }
 
+export function mergeViewOptionsMap(
+  ...hashes: { [view: string]: ViewOptions }[]
+): { [view: string]: ViewOptions } {
+  const merged: { [view: string]: ViewOptions } = {}
+
+  for (const hash of hashes) {
+    for (const viewName in hash) {
+      const viewOptions = hash[viewName]
+
+      if (!merged[viewName]) {
+        merged[viewName] = viewOptions
+      } else {
+        merged[viewName] = mergeCalendarOptions(merged[viewName], viewOptions)
+      }
+    }
+  }
+
+  return merged
+}
+
 /*
-Merges an array of objects into a single object.
+Merges an array of RAW options objects into a single object.
 The second argument allows for an array of property names who's object values will be merged together.
 */
-export function mergeRawOptions(optionSets): any {
+export function mergeCalendarOptions(...optionSets: CalendarOptions[]): any {
   let dest = {}
 
   for (const options of optionSets) {
