@@ -47,6 +47,7 @@ export interface DayGridLayoutProps {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
+  noEdgeEffects: boolean
 }
 
 export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
@@ -87,6 +88,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
         borderlessX={props.borderlessX}
         borderlessTop={props.borderlessTop}
         borderlessBottom={props.borderlessBottom}
+        noEdgeEffects={props.noEdgeEffects}
       >
         {options.dayMinWidth ? (
           <DayGridLayoutPannable {...commonLayoutProps} dayMinWidth={options.dayMinWidth} />

@@ -313,6 +313,11 @@ which can't rely on dynamic height detection after print-flag activated.
   overflow: hidden !important;
 }
 
+.noEdgeEffects {
+  box-shadow: none !important;
+  border-radius: 0 !important
+}
+
 .rel {
   position: relative !important;
 }

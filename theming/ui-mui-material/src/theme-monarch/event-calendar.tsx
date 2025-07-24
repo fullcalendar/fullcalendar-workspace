@@ -17,11 +17,12 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
       sx={{
         border: '1px solid',
         borderColor: 'divider',
-        borderRadius: 2,
+        borderRadius: 1,
+        overflow: 'hidden',
       }}
     >
       <EventCalendarToolbar
-        className='p-3'
+        className='p-4'
         controller={controller}
         availableViews={availableViews}
       />

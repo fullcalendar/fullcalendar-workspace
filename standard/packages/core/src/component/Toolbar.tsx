@@ -7,7 +7,7 @@ import { generateClassName } from '../content-inject/ContentContainer.js'
 import classNames from '../internal-classnames.js'
 
 export interface ToolbarProps extends ToolbarContent {
-  name: string
+  className?: string
   model: ToolbarModel
   borderlessX: boolean
   titleId?: string
@@ -22,8 +22,8 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
     return (
       <div
         className={joinArrayishClassNames(
+          props.className,
           generateClassName(options.toolbarClass, {
-            name: props.name,
             borderlessX: props.borderlessX,
           }),
           classNames.flexRow,

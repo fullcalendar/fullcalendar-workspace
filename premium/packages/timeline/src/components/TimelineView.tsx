@@ -136,6 +136,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
               borderlessX={props.borderlessX}
               borderlessTop={props.borderlessTop}
               borderlessBottom={props.borderlessBottom}
+              noEdgeEffects={props.noEdgeEffects}
             >
 
               {/* HEADER
@@ -212,6 +213,8 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 className={joinArrayishClassNames(
                   options.tableBodyClass,
                   props.borderlessX && classNames.borderlessX,
+                  stickyHeaderDates && classNames.borderlessTop,
+                  (stickyHeaderDates || props.noEdgeEffects) && classNames.noEdgeEffects,
                   classNames.flexCol,
                   verticalScrolling && classNames.liquid,
                 )}

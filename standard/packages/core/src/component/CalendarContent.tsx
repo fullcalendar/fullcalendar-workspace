@@ -6,6 +6,7 @@ import {
   Interaction, InteractionClass, InteractionSettingsInput, interactionSettingsStore, parseInteractionSettings
 } from '../interactions/interaction.js'
 import classNames from '../internal-classnames.js'
+import { generateClassName } from '../internal.js'
 import { ViewPropsTransformerClass } from '../plugin-system-struct.js'
 import { createElement, Fragment, VNode } from '../preact.js'
 import { CalendarData } from '../reducers/data-types.js'
@@ -80,7 +81,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       <ViewContextType.Provider value={viewContext}>
         {toolbarConfig.header && (
           <Toolbar
-            name='header'
+            className={generateClassName(options.headerToolbarClass, { borderlessX })}
             model={toolbarConfig.header}
             borderlessX={borderlessX}
             titleId={this.viewTitleId}
@@ -113,7 +114,7 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
         </div>
         {toolbarConfig.footer && (
           <Toolbar
-            name='footer'
+            className={generateClassName(options.footerToolbarClass, { borderlessX })}
             model={toolbarConfig.footer}
             borderlessX={borderlessX}
             {...toolbarProps}
@@ -167,7 +168,12 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
   renderView(className: string, title: string) {
     let { props } = this
     let { pluginHooks, viewSpec, toolbarConfig, options } = props
+
+    // TODO: DRY
     let { borderless } = options
+    let calendarBorderlessX = options.borderlessX ?? borderless
+    let calendarBorderlessTop = options.borderlessTop ?? borderless
+    let calendarBorderlessBottom = options.borderlessBottom ?? borderless
 
     let viewProps: ViewProps = {
       className,
@@ -182,9 +188,10 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
       forPrint: props.forPrint,
       labelId: toolbarConfig.header && toolbarConfig.header.hasTitle ? this.viewTitleId : undefined,
       labelStr: toolbarConfig.header && toolbarConfig.header.hasTitle ? undefined : title,
-      borderlessX: options.borderlessX ?? borderless,
-      borderlessTop: toolbarConfig.header ? false : (options.borderlessTop ?? borderless),
-      borderlessBottom: toolbarConfig.footer ? false :(options.borderlessBottom ?? borderless),
+      borderlessX: calendarBorderlessX,
+      borderlessTop: toolbarConfig.header ? false : calendarBorderlessTop,
+      borderlessBottom: toolbarConfig.footer ? false : calendarBorderlessBottom,
+      noEdgeEffects: calendarBorderlessX || calendarBorderlessTop || calendarBorderlessBottom,
     }
 
     let transformers = this.buildViewPropTransformers(pluginHooks.viewPropsTransformers)

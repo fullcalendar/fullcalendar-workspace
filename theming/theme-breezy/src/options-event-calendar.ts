@@ -110,9 +110,9 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
       // eventContrastColor: defaultEventContrastColor, -- not needed in this theme!?
       backgroundEventColor: 'var(--color-green-500)',
 
-      className: 'rounded-lg overflow-hidden border border-gray-950/10', // TODO: standardize color
-
-      viewClass: 'border-t border-gray-200', // TODO: make top/bottom border for toolbar???
+      className: 'border border-gray-950/10 rounded-lg overflow-hidden', // TODO: standardize color
+      headerToolbarClass: 'border-b border-gray-200',
+      footerToolbarClass: 'border-t border-gray-200',
 
       dayHeaderClass: 'items-center',
       dayHeaderInnerClass: 'p-2 flex flex-row items-center',

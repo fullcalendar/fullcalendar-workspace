@@ -23,6 +23,7 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
           border: '1px solid',
           borderColor: 'divider',
           borderRadius: 1,
+          overflow: 'hidden',
         }}
       >
         <EventCalendarView

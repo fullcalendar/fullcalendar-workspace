@@ -15,6 +15,7 @@ export interface ViewContainerProps extends Partial<ElProps> {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
+  noEdgeEffects: boolean
 }
 
 export interface ViewData {
@@ -38,6 +39,7 @@ export class ViewContainer extends BaseComponent<ViewContainerProps> {
           props.borderlessX && classNames.borderlessX,
           props.borderlessTop && classNames.borderlessTop,
           props.borderlessBottom && classNames.borderlessBottom,
+          props.noEdgeEffects && classNames.noEdgeEffects,
         )}
         renderProps={{
           view: context.viewApi,

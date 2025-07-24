@@ -12,9 +12,9 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
   const controller = useCalendarController()
 
   return (
-    <div className='border rounded-xl'>
+    <div className='border rounded-lg overflow-hidden'>
       <EventCalendarToolbar
-        className='p-3'
+        className='p-4'
         controller={controller}
         availableViews={availableViews}
       />

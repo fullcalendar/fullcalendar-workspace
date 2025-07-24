@@ -23,6 +23,7 @@ export function Scheduler({ availableViews, ...options }: SchedulerProps) {
           border: '1px solid',
           borderColor: 'divider',
           borderRadius: 1,
+          overflow: 'hidden',
         }}
       >
         <SchedulerView

@@ -17,7 +17,8 @@ export function Scheduler({ availableViews, ...options }: SchedulerProps) {
       sx={{
         border: '1px solid',
         borderColor: 'divider',
-        borderRadius: 2,
+        borderRadius: 1,
+        overflow: 'hidden',
       }}
     >
       <SchedulerToolbar

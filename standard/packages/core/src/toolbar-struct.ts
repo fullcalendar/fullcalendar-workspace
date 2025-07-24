@@ -11,7 +11,6 @@ export interface ToolbarModel {
 }
 
 export interface ToolbarData {
-  name: string
   borderlessX: boolean
   // TODO: isSticky
 }

@@ -397,6 +397,8 @@ export const BASE_OPTION_REFINERS = {
 
   fillerClass: identity as Identity<ClassNameGenerator<{ isHeader: boolean }>>,
 
+  headerToolbarClass: identity as Identity<ClassNameGenerator<ToolbarData>>,
+  footerToolbarClass: identity as Identity<ClassNameGenerator<ToolbarData>>,
   toolbarClass: identity as Identity<ClassNameGenerator<ToolbarData>>,
   toolbarSectionClass: identity as Identity<ClassNameGenerator<ToolbarSectionData>>,
   toolbarTitleClass: identity as Identity<ClassNameInput>,

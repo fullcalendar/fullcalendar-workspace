@@ -128,8 +128,9 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
       eventContrastColor: 'var(--color-white)',
       backgroundEventColor: 'var(--color-green-500)',
 
-      className: `${borderClass} rounded-sm shadow-xs`,
-      viewClass: `border-t ${borderColorClass}`, // TODO: make this top/bottom border --- remember to test bottom toolbar too
+      className: `${borderClass} rounded-sm shadow-xs overflow-hidden`,
+      headerToolbarClass: `border-b ${borderColorClass}`,
+      footerToolbarClass: `border-t ${borderColorClass}`,
 
       tableHeaderClass: (data) => data.isSticky && 'bg-(--fc-canvas-color)',
 

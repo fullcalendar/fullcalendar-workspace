@@ -113,6 +113,7 @@ interface ResourceTimelineLayoutNormalProps {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
+  noEdgeEffects: boolean
 }
 
 export interface EntityScroll {
@@ -313,6 +314,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
         borderlessX={props.borderlessX}
         borderlessTop={props.borderlessTop}
         borderlessBottom={props.borderlessBottom}
+        noEdgeEffects={props.noEdgeEffects}
       >
         <ResizableTwoCol
           initialStartWidth={props.initialSpreadsheetWidth}
@@ -406,6 +408,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 className={joinArrayishClassNames(
                   options.tableBodyClass,
                   props.borderlessX && classNames.borderlessX,
+                  stickyHeaderDates && classNames.borderlessTop,
+                  (stickyHeaderDates || props.noEdgeEffects) && classNames.noEdgeEffects,
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart
                   verticalScrolling && classNames.liquid,

@@ -47,6 +47,7 @@ export interface TimeGridLayoutProps {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
+  noEdgeEffects: boolean
 }
 
 interface TimeScroll {
@@ -121,6 +122,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
       slatHeightRef: this.handleSlatHeight,
 
       borderlessX: props.borderlessX,
+      noEdgeEffects: props.noEdgeEffects,
     }
 
     return (
@@ -146,6 +148,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
         borderlessX={props.borderlessX}
         borderlessTop={props.borderlessTop}
         borderlessBottom={props.borderlessBottom}
+        noEdgeEffects={props.noEdgeEffects}
       >
         {dayMinWidth ? (
           <TimeGridLayoutPannable

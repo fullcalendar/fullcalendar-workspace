@@ -46,6 +46,7 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
       options.direction === 'ltr' ? classNames.ltrRoot : classNames.rtlRoot,
       forPrint ? classNames.calendarPrintRoot : classNames.calendarScreenRoot,
       classNames.internalRoot,
+      (borderlessX || borderlessTop || borderlessBottom) && classNames.noEdgeEffects,
     )
 
     return props.children(className, options.height, forPrint)

@@ -76,6 +76,7 @@ export interface ResourceTimelineLayoutPrintProps {
   borderlessX: boolean
   borderlessTop: boolean
   borderlessBottom: boolean
+  noEdgeEffects: boolean
 }
 
 const BG_HEIGHT = 100000
@@ -137,6 +138,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
         borderlessX={props.borderlessX}
         borderlessTop={props.borderlessTop}
         borderlessBottom={props.borderlessBottom}
+        noEdgeEffects={props.noEdgeEffects}
       >
         <div className={joinClassNames(
           generateClassName(options.tableHeaderClass, {
@@ -254,6 +256,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
           className={joinArrayishClassNames(
             options.tableBodyClass,
             props.borderlessX && classNames.borderlessX,
+            props.noEdgeEffects && classNames.noEdgeEffects,
             classNames.rel,
             classNames.crop,
           )}

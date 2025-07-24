@@ -206,6 +206,7 @@ export class ResourceTimeGridView extends DateComponent<ResourceViewProps, Resou
               borderlessX={props.borderlessX}
               borderlessTop={props.borderlessTop}
               borderlessBottom={props.borderlessBottom}
+              noEdgeEffects={props.noEdgeEffects}
             />
           )
         }}

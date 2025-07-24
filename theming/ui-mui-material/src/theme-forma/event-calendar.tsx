@@ -17,7 +17,9 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
       sx={{
         border: '1px solid',
         borderColor: 'divider',
-        borderRadius: 2,
+        borderRadius: 1,
+        // boxShadow: 1, // too harsh -- not meant to have border too
+        overflow: 'hidden',
       }}
     >
       <EventCalendarToolbar

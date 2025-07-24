@@ -12,7 +12,7 @@ export function Scheduler({ availableViews, ...options }: SchedulerProps) {
   const controller = useCalendarController()
 
   return (
-    <div className='border rounded-xl'>
+    <div className='border rounded-sm shadow-xs overflow-hidden'>{/* TODO: keep in sync with default styles */}
       <SchedulerToolbar
         className='p-3'
         controller={controller}

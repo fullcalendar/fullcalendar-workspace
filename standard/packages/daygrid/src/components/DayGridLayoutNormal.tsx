@@ -49,6 +49,7 @@ export interface DayGridLayoutNormalProps {
   rowHeightRefMap?: RefMap<string, number>
 
   borderlessX: boolean
+  noEdgeEffects: boolean
 }
 
 interface DayGridViewState {
@@ -115,6 +116,8 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
           className={joinArrayishClassNames(
             options.tableBodyClass,
             props.borderlessX && classNames.borderlessX,
+            stickyHeaderDates && classNames.borderlessTop,
+            (stickyHeaderDates || props.noEdgeEffects) && classNames.noEdgeEffects,
             // HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
             // https://stackoverflow.com/a/60256345
             !props.forPrint && classNames.flexCol,

@@ -28,10 +28,9 @@ export default createPlugin({
       `fc-direction-${data.direction}`,
       `fc-media-${data.mediaType}`
     ],
-    toolbarClass: (data) => [
-      `fc-${data.name}-toolbar`,
-      'fc-toolbar',
-    ],
+    toolbarClass: 'fc-toolbar',
+    headerToolbarClass: 'fc-header-toolbar',
+    footerToolbarClass: 'fc-footer-toolbar',
     toolbarSectionClass: (data) => [
       'fc-toolbar-section',
       `fc-toolbar-${data.name}`, // TODO: do section- ?

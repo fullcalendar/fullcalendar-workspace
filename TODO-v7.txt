@@ -43,6 +43,14 @@ how to distribute Default-UI themes?
 
 
 
+fillerClass.inHeader -> withinHeader ?
+
+we should allow MUI to force headers to be uppercase
+our global.css.js technique allows multiple attachments to same parent!? bad
+  can we somehow lazily attach? or is that bad for performance...
+    maybe so, but mainly used for shadow-dom people. real-dom people CAN use it,
+    but should be encouraged to use global.css instead
+
 ui-default-react might be dumb..
   it should NOT define default-ui good-looking toolbar
   we wouldn't want to redefine that for

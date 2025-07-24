@@ -17,10 +17,13 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
         controller={controller}
         availableViews={availableViews}
       />
-      <EventCalendarView
-        controller={controller}
-        {...options}
-      />
+      <div className='border rounded-sm overflow-hidden'>
+        <EventCalendarView
+          borderless
+          controller={controller}
+          {...options}
+        />
+      </div>
     </div>
   )
 }

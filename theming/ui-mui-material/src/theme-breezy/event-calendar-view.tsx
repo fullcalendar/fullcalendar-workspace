@@ -8,6 +8,7 @@ import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 
 export const optionParams: EventCalendarOptionParams = {
   // TODO
+  // ENSURE the muted by colors are warm, like the toolbar bg color
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

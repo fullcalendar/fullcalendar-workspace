@@ -54,6 +54,7 @@ export interface TimeGridLayoutNormalProps {
   slatHeightRef?: Ref<number>
 
   borderlessX: boolean
+  noEdgeEffects: boolean
 }
 
 interface TimeGridLayoutState {
@@ -208,6 +209,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
           className={joinArrayishClassNames(
             options.tableBodyClass,
             props.borderlessX && classNames.borderlessX,
+            stickyHeaderDates && classNames.borderlessTop,
+            (stickyHeaderDates || props.noEdgeEffects) && classNames.noEdgeEffects,
             classNames.flexCol,
             verticalScrolling && classNames.liquid,
           )}

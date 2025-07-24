@@ -120,6 +120,7 @@ export class ResourceDayGridView extends DateComponent<ResourceViewProps> {
               borderlessX={props.borderlessX}
               borderlessTop={props.borderlessTop}
               borderlessBottom={props.borderlessBottom}
+              noEdgeEffects={props.noEdgeEffects}
             />
           )
         }}
