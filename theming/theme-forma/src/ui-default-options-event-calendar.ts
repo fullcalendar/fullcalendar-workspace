@@ -14,7 +14,14 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   primaryBgColorClass: 'bg-(--fc-forma-primary-color)',
   primaryTextColorClass: 'text-(--fc-forma-primary-text-color)',
   primaryBorderColorClass: 'border-(--fc-forma-primary-color)',
+
+  borderColorClass: 'border-[#ddd] dark:border-gray-800',
+  majorBorderColorClass: 'border-gray-400 dark:border-gray-700',
+  alertBorderColorClass: 'border-(--fc-forma-primary-color)', // same as primary
+
   eventColor: 'var(--fc-forma-event-color)',
+  backgroundEventColor: 'var(--color-green-500)',
+  backgroundEventColorClass: 'brightness-150 opacity-15',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

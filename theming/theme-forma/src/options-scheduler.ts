@@ -11,8 +11,6 @@ import '@fullcalendar/adaptive'
 import '@fullcalendar/scrollgrid'
 
 // TODO: make these dependent on EventCalendarOptionParams
-const borderColorClass = 'border-[#ddd] dark:border-gray-800'
-const borderClass = `border ${borderColorClass}` // all sides
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 const neutralBgClass = 'bg-gray-500/10'
 
@@ -20,16 +18,20 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
+  // TODO: DRY
+  const borderClass = `border ${params.borderColorClass}`
+  const majorBorderClass = `border ${params.majorBorderColorClass}`
+
   return {
     optionDefaults: {
-      resourceDayHeaderClass: getDayHeaderClasses,
+      resourceDayHeaderClass: (data) => getDayHeaderClasses(data, borderClass, majorBorderClass),
       resourceDayHeaderInnerClass: (data) => getDayHeaderInnerClasses(data, params.primaryBorderColorClass),
 
       resourceAreaHeaderRowClass: borderClass,
       resourceAreaHeaderClass: `${borderClass} items-center`, // valign
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
 
-      resourceAreaDividerClass: `border-x ${borderColorClass} pl-0.5 ${neutralBgClass}`,
+      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${neutralBgClass}`,
 
       // For both resources & resource groups
       resourceAreaRowClass: borderClass,
@@ -57,7 +59,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         slotLabelClass: 'justify-center',
         slotLabelInnerClass: 'p-1 text-sm',
 
-        slotLabelDividerClass: `border-b ${borderColorClass}`,
+        slotLabelDividerClass: `border-b ${params.borderColorClass}`,
       },
     }
   }

@@ -10,7 +10,14 @@ export const optionParams: EventCalendarOptionParams = {
   primaryBgColorClass: 'bg-primary',
   primaryTextColorClass: 'text-primary-foreground',
   primaryBorderColorClass: 'border-primary',
+
+  borderColorClass: '', // border-color is set globally
+  majorBorderColorClass: 'border-ring', // if atomic var ... majorBorderColor: 'var(--ring)'
+  alertBorderColorClass: 'border-destructive',
+
   eventColor: 'var(--primary)',
+  backgroundEventColor: 'var(--primary)',
+  backgroundEventColorClass: 'opacity-15',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

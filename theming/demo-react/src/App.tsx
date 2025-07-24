@@ -11,6 +11,8 @@ Later:
 (common color interface for all themes?)
 Somehow do not put Shadcn reset (which does border) on whole document?
 Radix warnings about controlled vs uncontrolled
+
+When Shadcn is not the selected component lib, change Shadcn palette (for topbar) to default
 */
 
 import './App.css'
