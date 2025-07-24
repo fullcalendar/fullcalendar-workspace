@@ -3,10 +3,21 @@ import { createEventCalendarOptions, EventCalendarOptionParams } from './options
 import * as svgIcons from './ui-default-svgs.js'
 
 const buttonIconClass = 'size-5 text-gray-400' // best???
-const primaryButtonBgColorClass = 'bg-(--fc-pulse-primary-button-color)'
-const primaryButtonBorderColorClass = 'border-(--fc-pulse-primary-button-color)'
+const primaryButtonBgColorClass = 'bg-(--fc-pulse-primary-color)'
+const primaryButtonBorderColorClass = 'border-(--fc-pulse-primary-color)'
+const primaryButtonTextColorClass = 'text-(--fc-pulse-primary-text-color)'
 
 export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
+  todayCircleBgColorClass: 'bg-(--fc-pulse-today-color)',
+  todayCircleTextColorClass: 'text-(--fc-pulse-today-text-color)',
+
+  borderColorClass: 'border-gray-200',
+  // majorBorderColorClass: '', // TODO
+
+  eventColor: 'var(--fc-pulse-event-color)',
+  eventContrastColor: 'var(--fc-pulse-event-contrast-color)',
+  backgroundEventColor: 'var(--color-green-500)',
+  backgroundEventColorClass: 'brightness-150 opacity-15',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
@@ -33,14 +44,14 @@ export const defaultUiEventCalendarOptions: {
 
     buttonClass: (data) => [
       'text-sm',
-      data.isDisabled ? 'text-gray-400' : 'text-gray-800',
+      data.isPrimary ? '' : data.isDisabled ? 'text-gray-400' : 'text-gray-800',
       (!data.isSelected && !data.isDisabled && !data.isPrimary) && 'hover:bg-gray-100', // weird isPrimary
       (!data.inGroup || data.inViewGroup) && 'rounded-sm', // standalone or in selector-group
       (data.inGroup && !data.inViewGroup) && 'bg-white first:rounded-s-[9px] last:rounded-e-[9px] not-first:border-s not-first:border-s-gray-200', // opposite of ^^^
       !data.inGroup && (
         'rounded-[9px] border ' +
         (data.isPrimary
-          ? `${primaryButtonBorderColorClass} ${primaryButtonBgColorClass} text-white [box-shadow:0_1px_3px_rgba(0,0,0,0.15)]` // weird border; more intense drop shadow
+          ? `${primaryButtonBorderColorClass} ${primaryButtonBgColorClass} ${primaryButtonTextColorClass} [box-shadow:0_1px_3px_rgba(0,0,0,0.15)]` // weird border; more intense drop shadow
           : 'bg-white border-[#d5d5d6] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]')
       ),
       data.isIconOnly ? 'px-2.5' : 'px-4',

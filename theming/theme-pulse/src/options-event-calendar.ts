@@ -8,8 +8,6 @@ import '@fullcalendar/list'
 import '@fullcalendar/multimonth'
 import '@fullcalendar/interaction'
 
-const defaultEventColor = 'var(--fc-pulse-event-color)'
-const defaultEventContrastColor = 'var(--color-white)'
 /*
 TODO: default-background-event and selection colors
 red: #FF3D57
@@ -18,6 +16,9 @@ primary-blue: #0081FF
 apple-primary-blue: #117aff
 apple-red: #fd453b (same for dark mode: #fd3b30)
 light-blue: #22CCE2
+
+TODO: implement now-indicator
+TODO: text-gray-500 is yucky for Shadcn
 */
 
 const dayGridClasses: CalendarOptions = {
@@ -59,22 +60,36 @@ const dayGridClasses: CalendarOptions = {
 }
 
 export interface EventCalendarOptionParams {
+  todayCircleBgColorClass: string
+  todayCircleTextColorClass: string
+
+  borderColorClass: string
+  // majorBorderColorClass: string // TODO
+
+  eventColor: string
+  eventContrastColor: string
+  backgroundEventColor: string
+  backgroundEventColorClass: string
 }
 
-export function createEventCalendarOptions({}: EventCalendarOptionParams): {
+export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
+  const borderClass = `border ${params.borderColorClass}`
+
   return {
     optionDefaults: {
-      eventColor: defaultEventColor,
-      eventContrastColor: defaultEventContrastColor,
-      backgroundEventColor: 'var(--color-green-500)',
+      eventColor: params.eventColor,
+      eventContrastColor: params.eventContrastColor,
+      backgroundEventColor: params.backgroundEventColor,
       // eventDisplay: 'block',
 
       class: 'gap-6',
 
-      viewClass: `bg-white rounded-lg overflow-hidden border border-[rgb(228_228_229)] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]`,
+      viewClass: 'bg-white rounded-lg overflow-hidden ' +
+        'border border-[rgb(228_228_229)] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]',
+        // ^^^ what is this border!?
 
       dayHeaderInnerClass: (data) => [
         !data.isToday && 'mx-1',
@@ -84,12 +99,12 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
         'flex flex-row items-center',
       ],
 
-      dayHeaderDividerClass: 'border-b border-gray-200',
+      dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
 
-      dayRowClass: 'border border-gray-200',
+      dayRowClass: borderClass,
 
       dayCellClass: [
-        'border border-gray-200',
+        borderClass,
         // data.isToday && 'bg-[#0081FF]/5',
       ],
       dayCellTopClass: 'flex flex-row justify-end min-h-1',
@@ -101,7 +116,7 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
       ],
 
       dayLaneClass: [
-        'border border-gray-200',
+        borderClass,
         // data.isToday && 'bg-[#117aff]/5',
       ],
 
@@ -112,7 +127,7 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
       blockEventColorClass: 'absolute z-10 inset-0 bg-(--fc-event-color)',
       blockEventInnerClass: 'relative z-20 text-(--fc-event-contrast-color) text-xs',
 
-      backgroundEventColorClass: 'bg-(--fc-event-color) brightness-150 opacity-15', // TODO
+      backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.backgroundEventColorClass,
       backgroundEventTitleClass: [
         'm-2 opacity-50 italic',
         'text-xs', // data.isCompact ? xxsTextClass : 'text-xs', -- TODO
@@ -139,17 +154,17 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
 
       allDayHeaderInnerClass: 'p-2 text-xs text-gray-700',
 
-      allDayDividerClass: 'border-b border-gray-200 shadow-sm',
+      allDayDividerClass: `border-b ${params.borderColorClass} shadow-sm`,
 
-      slotLabelDividerClass: 'border-s border-gray-200',
+      slotLabelDividerClass: `border-s ${params.borderColorClass}`,
 
       slotLabelClass: 'justify-end',
       slotLabelInnerClass: 'p-2 text-xs text-gray-700',
 
-      slotLaneClass: 'border border-gray-200',
+      slotLaneClass: borderClass,
 
       fillerClass: (data) => [
-        !data.isHeader && 'border border-gray-100',
+        !data.isHeader && `${borderClass} opacity-50`,
       ],
     },
     views: {

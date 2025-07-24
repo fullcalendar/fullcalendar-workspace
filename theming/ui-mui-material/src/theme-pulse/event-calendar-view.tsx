@@ -7,7 +7,15 @@ import React from 'react'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 
 export const optionParams: EventCalendarOptionParams = {
-  // TODO
+  todayCircleBgColorClass: 'bg-(--mui-palette-secondary-main)',
+  todayCircleTextColorClass: 'text-(--mui-palette-secondary-contrastText)',
+
+  borderColorClass: 'border-(--mui-palette-divider)',
+
+  eventColor: 'var(--mui-palette-primary-main)',
+  eventContrastColor: 'var(--mui-palette-primary-contrastText)',
+  backgroundEventColor: 'var(--mui-palette-secondary-main)',
+  backgroundEventColorClass: 'brightness-115 opacity-15',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
