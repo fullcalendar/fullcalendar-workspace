@@ -18,8 +18,6 @@ import '@fullcalendar/multimonth'
 import '@fullcalendar/interaction'
 
 // css vars
-const defaultEventColor = 'var(--fc-forma-event-color)'
-const primaryBorderColorClass = 'border-(--fc-forma-primary-color)'
 // TODO: contrast color. highlight color, default background event color
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
@@ -98,7 +96,10 @@ export const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolea
   data.isMajor ? majorBorderClass : borderClass,
   data.isDisabled && neutralBgClass,
 ]
-export const getDayHeaderInnerClasses = (data: { isCompact: boolean, isToday?: boolean, inPopover?: boolean }) => [
+export const getDayHeaderInnerClasses = (
+  data: { isCompact: boolean, isToday?: boolean, inPopover?: boolean },
+  primaryBorderColorClass: string
+) => [
   'flex flex-col',
   'px-2 pt-1 pb-2 border-t-4',
   (data.isToday && !data.inPopover) ? primaryBorderColorClass : 'border-transparent',
@@ -116,16 +117,21 @@ TODO: ensure button-group (non-view) looks okay. not hover-only
 */
 
 export interface EventCalendarOptionParams {
+  primaryBgColorClass: string // TODO: combine these two?
+  primaryTextColorClass: string // "
+  primaryBorderColorClass: string // for now-indicator AND line above dayHeader
+  eventColor: string
+  // NOTE: eventContrastColor not needed because eventColor always faded to bg color
+  // TODO: border color!!!
 }
 
-export function createEventCalendarOptions({}: EventCalendarOptionParams): {
+export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
   return {
     optionDefaults: {
-      eventColor: defaultEventColor,
-      eventContrastColor: 'var(--color-white)',
+      eventColor: params.eventColor,
       backgroundEventColor: 'var(--color-green-500)',
 
       className: `${borderClass} rounded-sm shadow-xs overflow-hidden`,
@@ -255,7 +261,7 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
       dayHeaderRowClass: borderClass,
 
       dayHeaderClass: getDayHeaderClasses,
-      dayHeaderInnerClass: getDayHeaderInnerClasses,
+      dayHeaderInnerClass: (data) => getDayHeaderInnerClasses(data, params.primaryBorderColorClass),
 
       dayHeaderDividerClass: ['border-t', borderColorClass],
 
@@ -291,8 +297,8 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
       slotLabelClass: getSlotClasses,
       slotLaneClass: getSlotClasses,
 
-      nowIndicatorLineClass: `-m-px border-1 ${primaryBorderColorClass}`,
-      nowIndicatorDotClass: `rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 ${primaryBorderColorClass} outline-2 outline-(--fc-canvas-color)`,
+      nowIndicatorLineClass: `-m-px border-1 ${params.primaryBorderColorClass}`,
+      nowIndicatorDotClass: `rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 ${params.primaryBorderColorClass} outline-2 outline-(--fc-canvas-color)`,
 
       listDayClass: `not-last:border-b ${borderColorClass}`,
       listDayHeaderClass: (data) => [

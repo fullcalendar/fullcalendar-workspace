@@ -6,9 +6,6 @@ import { EventCalendarOptionParams } from './options-event-calendar.js'
 // HACK
 ;(createElement || Fragment); // import intentionally unused
 
-// TODO: make these dependent on EventCalendarOptionParams
-const primaryBgColorClass = 'bg-(--fc-forma-primary-color)'
-
 export interface createSlotsVDom {
   createElement: typeof FullCalendarPreact.createElement
   Fragment: typeof FullCalendarPreact.Fragment
@@ -16,7 +13,7 @@ export interface createSlotsVDom {
 
 export function createSlots(
   { createElement, Fragment }: createSlotsVDom, // masks the module-wide imports
-  _params: EventCalendarOptionParams,
+  params: EventCalendarOptionParams,
 ): CalendarOptions {
   return {
     dayHeaderContent: (data) => (
@@ -40,7 +37,7 @@ export function createSlots(
           <Fragment>
             {data.textParts.map((textPart) => (
               textPart.type === 'day'
-                ? <span className={`w-[1.8em] h-[1.8em] whitespace-pre flex flex-row items-center justify-center rounded-full ${primaryBgColorClass} text-white`}>{textPart.value}</span>
+                ? <span className={`w-[1.8em] h-[1.8em] whitespace-pre flex flex-row items-center justify-center rounded-full ${params.primaryBgColorClass} ${params.primaryTextColorClass}`}>{textPart.value}</span>
                 : <span className='h-[1.8em] whitespace-pre flex flex-row items-center'>{textPart.value}</span>
             ))}
           </Fragment>

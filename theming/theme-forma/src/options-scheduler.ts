@@ -16,14 +16,14 @@ const borderClass = `border ${borderColorClass}` // all sides
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 const neutralBgClass = 'bg-gray-500/10'
 
-export function createSchedulerOnlyOptions({}: EventCalendarOptionParams): {
+export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
   return {
     optionDefaults: {
       resourceDayHeaderClass: getDayHeaderClasses,
-      resourceDayHeaderInnerClass: getDayHeaderInnerClasses,
+      resourceDayHeaderInnerClass: (data) => getDayHeaderInnerClasses(data, params.primaryBorderColorClass),
 
       resourceAreaHeaderRowClass: borderClass,
       resourceAreaHeaderClass: `${borderClass} items-center`, // valign

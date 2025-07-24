@@ -7,7 +7,10 @@ import React from 'react'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 
 export const optionParams: EventCalendarOptionParams = {
-  // TODO
+  primaryBgColorClass: 'bg-(--mui-palette-primary-main)',
+  primaryTextColorClass: 'text-(--mui-palette-primary-contrastText)',
+  primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
+  eventColor: 'var(--mui-palette-primary-main)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

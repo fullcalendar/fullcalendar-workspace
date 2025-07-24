@@ -11,6 +11,10 @@ const borderClass = `border ${borderColorClass}` // all sides
 const neutralBgClass = 'bg-gray-500/10'
 
 export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
+  primaryBgColorClass: 'bg-(--fc-forma-primary-color)',
+  primaryTextColorClass: 'text-(--fc-forma-primary-text-color)',
+  primaryBorderColorClass: 'border-(--fc-forma-primary-color)',
+  eventColor: 'var(--fc-forma-event-color)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
