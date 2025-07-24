@@ -1,11 +1,13 @@
 
 [data-theme=breezy][data-palette=indigo] {
-  --fc-breezy-active-color: var(--color-indigo-600); /* TODO: will need hover color too -500 --- also need text color */
+  --fc-breezy-primary-color: var(--color-indigo-600); /* TODO: will need hover color too -500 --- also need text color */
+  --fc-breezy-primary-text-color: #fff;
   --fc-breezy-event-color: var(--color-blue-500);
 }
 
 [data-theme=breezy][data-palette=rose] {
-  --fc-breezy-active-color: var(--color-rose-600);
+  --fc-breezy-primary-color: var(--color-rose-600);
+  --fc-breezy-primary-text-color: #fff;
   --fc-breezy-event-color: var(--color-pink-500);
 }
 
@@ -13,11 +15,13 @@
 TODO: time text looks weird?
 */
 [data-theme=breezy][data-palette=emerald] {
-  --fc-breezy-active-color: var(--color-emerald-600);
+  --fc-breezy-primary-color: var(--color-emerald-600);
+  --fc-breezy-primary-text-color: #fff;
   --fc-breezy-event-color: var(--color-green-500);
 }
 
 [data-theme=breezy][data-palette=honey] {
-  --fc-breezy-active-color: var(--color-yellow-500); /* 600 was too dark */
+  --fc-breezy-primary-color: var(--color-yellow-500); /* 600 was too dark */
+  --fc-breezy-primary-text-color: #fff;
   --fc-breezy-event-color: var(--color-amber-500);
 }

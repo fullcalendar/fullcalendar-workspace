@@ -7,8 +7,15 @@ import React from 'react'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 
 export const optionParams: EventCalendarOptionParams = {
-  // TODO
   // ENSURE the muted by colors are warm, like the toolbar bg color
+
+  primaryBgColorClass: 'bg-(--mui-palette-primary-main)',
+  primaryTextColorClass: 'text-(--mui-palette-primary-contrastText)',
+  primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
+
+  eventColor: 'var(--mui-palette-primary-main)',
+  backgroundEventColor: 'var(--mui-palette-secondary-main)',
+  backgroundEventColorClass: 'brightness-115 opacity-15',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

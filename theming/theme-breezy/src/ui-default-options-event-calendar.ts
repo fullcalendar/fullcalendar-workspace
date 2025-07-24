@@ -4,14 +4,16 @@ import * as svgIcons from './ui-default-svgs.js'
 
 const buttonIconClass = 'size-5 text-gray-400' // best? to sync to line-height???
 
-// TODO: DRY
-// palette vars
-// TODO: default-bg-event-color and highlight color
 // button color reference: https://catalyst.tailwindui.com/docs/button
-const activeBgColorClass = 'bg-(--fc-breezy-active-color)'
-const activeBorderColorClass = 'border-(--fc-breezy-active-color)'
 
 export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
+  primaryBgColorClass: 'bg-(--fc-breezy-primary-color)',
+  primaryTextColorClass: 'text-(--fc-breezy-primary-text-color)',
+  primaryBorderColorClass: 'border-(--fc-breezy-primary-color)',
+
+  eventColor: 'var(--fc-breezy-event-color)',
+  backgroundEventColor: 'var(--color-green-500)',
+  backgroundEventColorClass: 'brightness-150 opacity-15',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
@@ -54,13 +56,13 @@ export const defaultUiEventCalendarOptions: {
       ) : (
         'font-semibold ' +
         (data.isPrimary
-          ? `${activeBgColorClass} text-white shadow-xs` // why shadow here?
+          ? `${optionParams.primaryBgColorClass} ${optionParams.primaryTextColorClass} shadow-xs` // why shadow here?
           : 'bg-white hover:bg-gray-50 text-gray-900'
         ) + ' ' +
         (data.inGroup
           ? 'first:rounded-s-md last:rounded-e-md'
           : 'rounded-md shadow-xs border ' +
-            (data.isPrimary ? activeBorderColorClass : 'border-gray-300')) // weird border setup for primary
+            (data.isPrimary ? optionParams.primaryBorderColorClass : 'border-gray-300')) // weird border setup for primary
       ),
     ],
 
