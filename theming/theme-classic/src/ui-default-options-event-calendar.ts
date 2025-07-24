@@ -9,7 +9,20 @@ const borderColorClass = 'border-[#ddd] dark:border-gray-800'
 const borderClass = `border ${borderColorClass}` // all sides
 const neutralBgClass = 'bg-gray-500/10'
 
+/*
+We don't bother making --fc-classic-* variables for these values,
+because there aren't multiple color palettes, nor do we care about making re-coloring easy
+*/
 export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
+  borderColorClass: 'border-[#ddd] dark:border-gray-800',
+  majorBorderColorClass: 'border-gray-400 dark:border-gray-700',
+  alertBorderColorClass: 'border-red-500',
+  alertBorderStartColorClass: 'border-s-red-500',
+
+  eventColor: '#3788d8',
+  eventContrastColor: 'var(--color-white)',
+  backgroundEventColor: 'var(--color-green-500)',
+  backgroundEventColorClass: 'brightness-150 opacity-15',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

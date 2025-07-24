@@ -11,12 +11,8 @@ import '@fullcalendar/interaction'
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 
 const neutralBgClass = 'bg-gray-500/10'
-const todayBgClass = 'bg-yellow-400/15 dark:bg-yellow-200/10'
+const todayBgClass = 'bg-yellow-400/15 dark:bg-yellow-200/10' // TODO: make this a param!?
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
-
-const majorBorderClass = 'border border-gray-400 dark:border-gray-700'
-const borderColorClass = 'border-[#ddd] dark:border-gray-800'
-const borderClass = `border ${borderColorClass}` // all sides
 
 const cellPaddingClass = 'px-1 py-0.5'
 const listItemPaddingClass = 'px-3 py-2' // list-day-header and list-item-event
@@ -84,7 +80,11 @@ const floatingWeekNumberClasses: CalendarOptions = {
   ],
 }
 
-export const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean }) => [
+export const getDayHeaderClasses = (
+  data: { isDisabled: boolean, isMajor: boolean },
+  borderClass: string,
+  majorBorderClass: string,
+) => [
   'items-center justify-center',
   data.isMajor ? majorBorderClass : borderClass,
   data.isDisabled && neutralBgClass,
@@ -96,23 +96,38 @@ export const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
   data.isCompact ? xxsTextClass : 'text-sm',
 ]
 
-const getSlotClasses = (data: { isMinor: boolean }) => [
+const getSlotClasses = (
+  data: { isMinor: boolean },
+  borderClass: string,
+) => [
   borderClass,
   data.isMinor && 'border-dotted',
 ]
 
 export interface EventCalendarOptionParams {
+  borderColorClass: string
+  majorBorderColorClass: string
+  alertBorderColorClass: string
+  alertBorderStartColorClass: string // yuck, but needed for triangle
+
+  eventColor: string
+  eventContrastColor: string
+  backgroundEventColor: string
+  backgroundEventColorClass: string
 }
 
-export function createEventCalendarOptions({}: EventCalendarOptionParams): {
+export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
+  const borderClass = `border ${params.borderColorClass}`
+  const majorBorderClass = `border ${params.majorBorderColorClass}`
+
   return {
     optionDefaults: {
-      eventColor: '#3788d8',
-      eventContrastColor: 'var(--color-white)',
-      backgroundEventColor: 'var(--color-green-500)',
+      eventColor: params.eventColor,
+      eventContrastColor: params.eventContrastColor,
+      backgroundEventColor: params.backgroundEventColor,
 
       className: 'gap-5',
 
@@ -132,7 +147,7 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
       eventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
       eventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
-      backgroundEventColorClass: 'bg-(--fc-event-color) brightness-150 opacity-15',
+      backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.backgroundEventColorClass,
       backgroundEventTitleClass: (data) => [
         'm-2 opacity-50 italic',
         data.isCompact ? xxsTextClass : 'text-xs',
@@ -216,7 +231,7 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
       // MultiMonth
       singleMonthClass: (data) => data.colCount > 1 && 'm-4',
       singleMonthTitleClass: (data) => [
-        data.isSticky && `border-b ${borderColorClass} bg-(--fc-canvas-color)`,
+        data.isSticky && `border-b ${params.borderColorClass} bg-(--fc-canvas-color)`,
         data.isSticky
           ? 'py-2' // single column
           : 'pb-4', // multi-column
@@ -225,9 +240,9 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
       ],
 
       dayHeaderRowClass: borderClass,
-      dayHeaderClass: getDayHeaderClasses,
+      dayHeaderClass: (data) => getDayHeaderClasses(data, borderClass, majorBorderClass),
       dayHeaderInnerClass: getDayHeaderInnerClasses,
-      dayHeaderDividerClass: ['border-t', borderColorClass],
+      dayHeaderDividerClass: ['border-t', params.borderColorClass],
 
       dayRowClass: borderClass,
       dayCellClass: (data) => [
@@ -246,7 +261,7 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
         data.isCompact ? xxsTextClass : 'text-sm',
       ],
 
-      allDayDividerClass: `border-y ${borderColorClass} pb-0.5 ${neutralBgClass}`,
+      allDayDividerClass: `border-y ${params.borderColorClass} pb-0.5 ${neutralBgClass}`,
 
       dayLaneClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
@@ -259,12 +274,12 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
 
       slotLabelRowClass: borderClass, // Timeline
       slotLabelAlign: 'center',
-      slotLabelClass: getSlotClasses,
-      slotLaneClass: getSlotClasses,
+      slotLabelClass: (data) => getSlotClasses(data, borderClass),
+      slotLaneClass: (data) => getSlotClasses(data, borderClass),
 
-      listDayClass: `not-last:border-b ${borderColorClass}`,
+      listDayClass: `not-last:border-b ${params.borderColorClass}`,
       listDayHeaderClass: (data) => [
-        `flex flex-row justify-between border-b ${borderColorClass} font-bold`,
+        `flex flex-row justify-between border-b ${params.borderColorClass} font-bold`,
         'relative', // for overlaid "before" color
         data.isSticky && 'bg-(--fc-canvas-color)', // base color for overlaid "before" color
       ],
@@ -316,13 +331,13 @@ export function createEventCalendarOptions({}: EventCalendarOptionParams): {
           data.isCompact ? xxsTextClass : 'text-sm',
         ],
 
-        slotLabelDividerClass: `border-l ${borderColorClass}`,
+        slotLabelDividerClass: `border-l ${params.borderColorClass}`,
 
-        nowIndicatorLabelClass: 'start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] border-s-red-500',
-        nowIndicatorLineClass: 'border-t border-red-500',
+        nowIndicatorLabelClass: `start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] ${params.alertBorderStartColorClass}`,
+        nowIndicatorLineClass: `border-t ${params.alertBorderColorClass}`,
       },
       list: {
-        listItemEventClass: `group gap-3 not-last:border-b ${borderColorClass} ${listItemPaddingClass}`,
+        listItemEventClass: `group gap-3 not-last:border-b ${params.borderColorClass} ${listItemPaddingClass}`,
         listItemEventColorClass: 'border-5', // 10px diameter circle
         listItemEventInnerClass: '[display:contents]',
         listItemEventTimeClass: 'order-[-1] w-[165px] text-sm', // send to start

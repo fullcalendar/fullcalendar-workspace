@@ -12,25 +12,26 @@ import '@fullcalendar/scrollgrid'
 
 // TODO: DRY
 const neutralBgClass = 'bg-gray-500/10'
-const borderColorClass = 'border-[#ddd] dark:border-gray-800'
-const borderClass = `border ${borderColorClass}` // all sides
 const continuationArrowClass = 'relative z-10 mx-px border-y-[5px] border-y-transparent opacity-50'
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
-export function createSchedulerOnlyOptions({}: EventCalendarOptionParams): {
+export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
+  const borderClass = `border ${params.borderColorClass}`
+  const majorBorderClass = `border ${params.majorBorderColorClass}`
+
   return {
     optionDefaults: {
-      resourceDayHeaderClass: getDayHeaderClasses,
+      resourceDayHeaderClass: (data) => getDayHeaderClasses(data, borderClass, majorBorderClass),
       resourceDayHeaderInnerClass: getDayHeaderInnerClasses,
 
       resourceAreaHeaderRowClass: borderClass,
       resourceAreaHeaderClass: `${borderClass} items-center`, // valign
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
 
-      resourceAreaDividerClass: `border-x ${borderColorClass} pl-0.5 ${neutralBgClass}`,
+      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${neutralBgClass}`,
 
       // For both resources & resource groups
       resourceAreaRowClass: borderClass,
@@ -76,7 +77,7 @@ export function createSchedulerOnlyOptions({}: EventCalendarOptionParams): {
         slotLabelClass: 'justify-center',
         slotLabelInnerClass: 'p-1 text-sm',
 
-        slotLabelDividerClass: `border-b ${borderColorClass}`,
+        slotLabelDividerClass: `border-b ${params.borderColorClass}`,
 
         nowIndicatorLabelClass: 'top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-t-red-500',
         nowIndicatorLineClass: 'border-l border-red-500',
