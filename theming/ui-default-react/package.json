@@ -10,6 +10,18 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    "./gen/theme-monarch/EventCalendar.tsx": {
+      "import": {
+        "types": "./gen/theme-monarch/event-calendar.tsx",
+        "default": "./gen/theme-monarch/event-calendar.tsx"
+      }
+    },
+    "./gen/theme-monarch/Scheduler.tsx": {
+      "import": {
+        "types": "./gen/theme-monarch/scheduler.tsx",
+        "default": "./gen/theme-monarch/scheduler.tsx"
+      }
+    },
     "./theme-monarch/EventCalendar": {
       "import": {
         "types": "./dist/theme-monarch/event-calendar.d.ts",

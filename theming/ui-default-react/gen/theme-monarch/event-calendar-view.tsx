@@ -2,13 +2,12 @@
 import React from 'react';
 import { CalendarOptions } from '@fullcalendar/core';
 import FullCalendar from '@fullcalendar/react';
-import * as svgIcons from '../svgs';
-
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import multiMonthPlugin from '@fullcalendar/multimonth'
 import interactionPlugin from '@fullcalendar/interaction'
+import * as svgIcons from './svgs.js';
 
 const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]';
 const buttonEffectClass = 'hover:brightness-80 active:brightness-120';
@@ -22,8 +21,8 @@ const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`;
 const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) bg-(--fc-canvas-color)`;
 const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`;
 const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`;
-const todayPillClass = (data) => 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-on-tertiary)' + (data.hasNavLink ? ' ' + buttonEffectClass : '');
-const pillClass = (data) => 'bg-(--fc-monarch-primary-container) text-(--fc-monarch-on-primary-container)' + (data.hasNavLink ? ' ' + buttonEffectClass : '');
+const todayPillClass = (data: { hasNavLink: boolean }) => 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-on-tertiary)' + (data.hasNavLink ? ' ' + buttonEffectClass : '');
+const pillClass = (data: { hasNavLink: boolean }) => 'bg-(--fc-monarch-primary-container) text-(--fc-monarch-on-primary-container)' + (data.hasNavLink ? ' ' + buttonEffectClass : '');
 const highlightClass = 'bg-(--fc-monarch-primary-container) opacity-30';
 const disabledBgClass = 'bg-gray-500/7';
 const borderColorClass = 'border-(--fc-monarch-outline-variant)';
@@ -34,7 +33,7 @@ const eventContrastColor = 'var(--fc-monarch-on-primary)';
 const backgroundEventColor = 'var(--fc-monarch-tertiary)';
 const backgroundEventColorClass = 'brightness-115 opacity-15';
 const rowItemBaseClass = 'mx-0.5 mb-px rounded-sm';
-const rowItemClasses = {
+const rowItemClasses: CalendarOptions = {
   listItemEventClass: rowItemBaseClass,
   listItemEventColorClass: (data) => [
     'border-4',
@@ -53,12 +52,12 @@ const rowItemClasses = {
     data.isCompact ? xxsTextClass : 'text-xs',
   ],
 };
-const getWeekNumberBadgeClasses = (data) => [
+const getWeekNumberBadgeClasses = (data: { hasNavLink: boolean, isCompact: boolean }) => [
   'rounded-full h-[1.8em] flex flex-row items-center',
   pillClass({ hasNavLink: data.hasNavLink }),
   data.isCompact ? `${xxsTextClass} px-1` : 'text-sm px-2',
 ];
-const rowWeekNumberClasses = {
+const rowWeekNumberClasses: CalendarOptions = {
   weekNumberClass: (data) => [
     data.isCell
       ? ''
@@ -181,6 +180,28 @@ export function EventCalendarView(options: CalendarOptions) {
         'group pt-2 flex flex-col items-center',
         data.isCompact && xxsTextClass,
       ]}
+      dayHeaderContent={data => (
+        <>
+          {data.weekdayText && (
+            <div className={
+              'uppercase text-xs opacity-60' +
+              (data.hasNavLink ? ' group-hover:opacity-90' : '')
+            }>{data.weekdayText}</div>
+          )}
+          {data.dayNumberText && (
+            <div
+              className={
+                'm-0.5 flex flex-row items-center justify-center text-lg h-[2em]' +
+                (data.isToday
+                  ? ` w-[2em] rounded-full ${todayPillClass({ hasNavLink: data.hasNavLink })}`
+                  : data.hasNavLink
+                    ? ` w-[2em] rounded-full ${transparentPressableClass}`
+                    : '')
+              }
+            >{data.dayNumberText}</div>
+          )}
+        </>
+      )}
       dayRowClass={`border ${borderColorClass}`}
       dayCellClass={(data) => [
         data.isMajor ? `border ${majorBorderColorClass}` : `border ${borderColorClass}`,
@@ -209,9 +230,27 @@ export function EventCalendarView(options: CalendarOptions) {
         `border ${borderColorClass}`,
         data.isMinor && 'border-dotted',
       ]}
-      listDayClass={`flex flex-row items-start not-last:border-b ${borderColorClass}`}
       listDayHeaderClass="flex flex-row items-center w-40"
       listDayHeaderInnerClass={data => !data.level ? 'm-2 flex flex-row items-center text-lg group' : 'uppercase text-xs hover:underline'}
+      listDayHeaderContent={data => !data.level ? (
+        <>
+          {data.textParts.map((textPart) => (
+            textPart.type === 'day' ? (
+              <div className={
+                'flex flex-row items-center justify-center w-[2em] h-[2em] rounded-full' +
+                (data.isToday
+                  ? (' ' + pillClass({ hasNavLink: data.hasNavLink }))
+                  : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
+              }>{textPart.value}</div>
+            ) : (
+              <div className='whitespace-pre'>{textPart.value}</div>
+            )
+          ))}
+        </>
+      ) : (
+        data.text
+      )}
+      listDayClass={`flex flex-row items-start not-last:border-b ${borderColorClass}`}
       listDayEventsClass="flex-grow flex flex-col py-2"
       nowIndicatorLineClass={`-m-px border-1 ${alertBorderColorClass}`}
       nowIndicatorDotClass={`rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 ${alertBorderColorClass}`}
@@ -221,28 +260,6 @@ export function EventCalendarView(options: CalendarOptions) {
         data.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto',
       ]}
       toolbarTitleClass="text-xl md:text-2xl font-bold"
-      buttons={{
-        prev: {
-          iconContent: (data) => data.direction === 'ltr'
-            ? svgIcons.chevronLeft(buttonIconClass)
-            : svgIcons.chevronRight(buttonIconClass),
-        },
-        next: {
-          iconContent: (data) => data.direction === 'ltr'
-            ? svgIcons.chevronRight(buttonIconClass)
-            : svgIcons.chevronLeft(buttonIconClass),
-        },
-        prevYear: {
-          iconContent: (data) => data.direction === 'ltr'
-            ? svgIcons.chevronsLeft(buttonIconClass)
-            : svgIcons.chevronsRight(buttonIconClass),
-        },
-        nextYear: {
-          iconContent: (data) => data.direction === 'ltr'
-            ? svgIcons.chevronsRight(buttonIconClass)
-            : svgIcons.chevronsLeft(buttonIconClass),
-        },
-      }}
       buttonGroupClass={(data) => [
         'items-center isolate rounded-full',
         data.isViewGroup && 'border border-(--fc-monarch-outline-variant)'
@@ -263,49 +280,36 @@ export function EventCalendarView(options: CalendarOptions) {
               : `border border-(--fc-monarch-outline-variant-original)`
       ]}
       popoverCloseContent={() => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65')}
-      dayHeaderContent={data => (
-        <>
-          {data.weekdayText && (
-            <div className={
-              'uppercase text-xs opacity-60' +
-              (data.hasNavLink ? ' group-hover:opacity-90' : '')
-            }>{data.weekdayText}</div>
-          )}
-          {data.dayNumberText && (
-            <div
-              className={
-                'm-0.5 flex flex-row items-center justify-center text-lg h-[2em]' +
-                (data.isToday
-                  ? ` w-[2em] rounded-full ${todayPillClass({ hasNavLink: data.hasNavLink })}`
-                  : data.hasNavLink
-                    ? ` w-[2em] rounded-full ${transparentPressableClass}`
-                    : '')
-              }
-            >{data.dayNumberText}</div>
-          )}
-        </>
-      )}
-      listDayHeaderContent={data => !data.level ? (
-        <>
-          {data.textParts.map((textPart) => (
-            textPart.type === 'day' ? (
-              <div className={
-                'flex flex-row items-center justify-center w-[2em] h-[2em] rounded-full' +
-                (data.isToday
-                  ? (' ' + pillClass({ hasNavLink: data.hasNavLink }))
-                  : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
-              }>{textPart.value}</div>
-            ) : (
-              <div className='whitespace-pre'>{textPart.value}</div>
-            )
-          ))}
-        </>
-      ) : (
-        data.text
-      )}
       {...options}
+      buttons={{
+        ...options.buttons,
+        prev: {
+          iconContent: (data) => data.direction === 'ltr'
+            ? svgIcons.chevronLeft(buttonIconClass)
+            : svgIcons.chevronRight(buttonIconClass),
+          ...options.buttons?.prev,
+        },
+        next: {
+          iconContent: (data) => data.direction === 'ltr'
+            ? svgIcons.chevronRight(buttonIconClass)
+            : svgIcons.chevronLeft(buttonIconClass),
+          ...options.buttons?.next,
+        },
+        prevYear: {
+          iconContent: (data) => data.direction === 'ltr'
+            ? svgIcons.chevronsLeft(buttonIconClass)
+            : svgIcons.chevronsRight(buttonIconClass),
+          ...options.buttons?.prevYear,
+        },
+        nextYear: {
+          iconContent: (data) => data.direction === 'ltr'
+            ? svgIcons.chevronsRight(buttonIconClass)
+            : svgIcons.chevronsLeft(buttonIconClass),
+          ...options.buttons?.nextYear,
+        },
+      }}
       views={{
-        ...(options.views || {}),
+        ...options.views,
         dayGrid: {
           ...rowItemClasses,
           ...rowWeekNumberClasses,
@@ -348,7 +352,7 @@ export function EventCalendarView(options: CalendarOptions) {
           ],
           slotLabelDividerClass: (data) => [
             'border-l',
-            data.isHeader ? 'border-transparent' : `border ${borderColorClass}`,
+            data.isHeader ? 'border-transparent' : borderColorClass,
           ],
           ...options.views?.timeGrid
         },

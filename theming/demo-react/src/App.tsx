@@ -45,8 +45,8 @@ import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'
 
 // FullCalendar Default UI
-import { EventCalendar as FcMonarchEventCalendar } from '@fullcalendar/ui-default-react/theme-monarch/EventCalendar'
-import { Scheduler as FcMonarchScheduler } from '@fullcalendar/ui-default-react/theme-monarch/Scheduler'
+import { EventCalendar as FcMonarchEventCalendar } from '@fullcalendar/ui-default-react/gen/theme-monarch/EventCalendar.tsx' // gen!
+import { Scheduler as FcMonarchScheduler } from '@fullcalendar/ui-default-react/gen/theme-monarch/Scheduler.tsx' // gen!
 import { EventCalendar as FcPulseEventCalendar } from '@fullcalendar/ui-default-react/theme-pulse/EventCalendar'
 import { Scheduler as FcPulseScheduler } from '@fullcalendar/ui-default-react/theme-pulse/Scheduler'
 import { EventCalendar as FcFormaEventCalendar } from '@fullcalendar/ui-default-react/theme-forma/EventCalendar'
@@ -432,6 +432,7 @@ function EventCalendarDemo(props: DemoProps) {
       weekNumbers={true}
       // eventDisplay='block'
       plugins={[
+        // won't need to supply these with the gen!
         scrollGridPlugin,
         adaptivePlugin,
         dayGridPlugin,
@@ -555,6 +556,7 @@ function SchedulerDemo(props: DemoProps) {
       navLinkWeekClick='resourceTimelineWeek'
       schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
       plugins={[
+        // won't need to supply these with the gen!
         adaptivePlugin,
         timelinePlugin,
         resourceTimelinePlugin,

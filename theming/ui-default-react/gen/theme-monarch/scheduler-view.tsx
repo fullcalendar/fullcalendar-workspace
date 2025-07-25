@@ -2,7 +2,7 @@
 import React from 'react';
 import { CalendarOptions } from '@fullcalendar/core';
 import { EventCalendarView } from './event-calendar-view';
-import * as svgIcons from '../svgs';
+import * as svgIcons from './svgs.js';
 
 import timelinePlugin from '@fullcalendar/timeline'
 import resourceDaygridPlugin from '@fullcalendar/resource-daygrid'
@@ -62,7 +62,7 @@ export function SchedulerView(options: CalendarOptions) {
       resourceExpanderContent={() => svgIcons.chevronRight('w-[1.25em] h-[1.25em] opacity-65')}
       {...options}
       views={{
-        ...(options.views || {}),
+        ...options.views,
         timeline: {
           rowEventClass: [
             'me-px',
