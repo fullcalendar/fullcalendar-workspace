@@ -78,6 +78,7 @@ export function EventCalendarView(options: CalendarOptions) {
       popoverClass={`border ${borderColorClass} rounded-lg bg-(--fc-canvas-color) shadow-lg m-2`}
       popoverHeaderClass="px-1 py-1"
       popoverCloseClass={`absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center ${transparentPressableClass}`}
+      popoverCloseContent={() => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65')}
       popoverBodyClass="p-2 min-w-3xs"
       moreLinkInnerClass="whitespace-nowrap overflow-hidden"
       fillerClass={(data) => [
@@ -279,7 +280,6 @@ export function EventCalendarView(options: CalendarOptions) {
               ? (`bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary) ${buttonEffectClass}` + (data.isDisabled ? ' opacity-90' : ''))
               : `border border-(--fc-monarch-outline-variant-original)`
       ]}
-      popoverCloseContent={() => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65')}
       {...options}
       buttons={{
         ...options.buttons,
