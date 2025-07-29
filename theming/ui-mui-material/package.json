@@ -60,14 +60,14 @@
     },
     "./theme-pulse/EventCalendar": {
       "import": {
-        "types": "./dist/theme-pulse/event-calendar.d.ts",
-        "default": "./dist/theme-pulse/event-calendar.js"
+        "types": "./dist/theme-pulse/EventCalendar.d.ts",
+        "default": "./dist/theme-pulse/EventCalendar.js"
       }
     },
     "./theme-pulse/Scheduler": {
       "import": {
-        "types": "./dist/theme-pulse/scheduler.d.ts",
-        "default": "./dist/theme-pulse/scheduler.js"
+        "types": "./dist/theme-pulse/Scheduler.d.ts",
+        "default": "./dist/theme-pulse/Scheduler.js"
       }
     }
   },

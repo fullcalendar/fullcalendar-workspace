@@ -2,14 +2,19 @@ import React from 'react'
 import { Box } from '@mui/material'
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
+import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
+import { createSchedulerOnlyOptions } from '@fullcalendar/theme-pulse/options-scheduler'
 import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
-import { SchedulerView } from './scheduler-view.js'
+import { optionParams, EventCalendarView } from './EventCalendar.js'
+import { schedulerOnlyIconOptions } from '../lib/icons-scheduler.js'
+
+const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 
 export interface SchedulerProps extends CalendarOptions {
   availableViews: string[]
 }
 
-export function Scheduler({ availableViews, ...options }: SchedulerProps) {
+export default function Scheduler({ availableViews, ...options }: SchedulerProps) {
   const controller = useCalendarController()
 
   return (
@@ -33,5 +38,19 @@ export function Scheduler({ availableViews, ...options }: SchedulerProps) {
         />
       </Box>
     </div>
+  )
+}
+
+export function SchedulerView(options: any) {
+  return (
+    <EventCalendarView
+      {...baseSchedulerOnlyOptions.optionDefaults}
+      {...schedulerOnlyIconOptions}
+      {...options}
+      views={mergeViewOptionsMap(
+        baseSchedulerOnlyOptions.views || {},
+        options.views || {},
+      )}
+    />
   )
 }
