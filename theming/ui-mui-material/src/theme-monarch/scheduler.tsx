@@ -1,15 +1,18 @@
 import React from 'react'
 import { Box } from '@mui/material'
 import { CalendarOptions } from "@fullcalendar/core"
+import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { useCalendarController } from "@fullcalendar/react"
-import { SchedulerToolbar } from '../lib/scheduler-toolbar.js'
-import { SchedulerView } from './scheduler-view.js'
+import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
+import { EventCalendarView, optionParams } from './EventCalendar.js'
+import { schedulerOnlyIconOptions } from '../lib/icons-scheduler.js'
+import { createSchedulerOnlyOptions } from '@fullcalendar/theme-monarch/options-scheduler'
 
 export interface SchedulerProps extends CalendarOptions {
   availableViews: string[]
 }
 
-export function Scheduler({ availableViews, ...options }: SchedulerProps) {
+export default function Scheduler({ availableViews, ...options }: SchedulerProps) {
   const controller = useCalendarController()
 
   return (
@@ -21,7 +24,7 @@ export function Scheduler({ availableViews, ...options }: SchedulerProps) {
         overflow: 'hidden',
       }}
     >
-      <SchedulerToolbar
+      <EventCalendarToolbar
         className='p-4'
         controller={controller}
         availableViews={availableViews}
@@ -32,5 +35,21 @@ export function Scheduler({ availableViews, ...options }: SchedulerProps) {
         {...options}
       />
     </Box>
+  )
+}
+
+const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
+
+export function SchedulerView(options: CalendarOptions) {
+  return (
+    <EventCalendarView
+      {...baseSchedulerOnlyOptions.optionDefaults}
+      {...schedulerOnlyIconOptions}
+      {...options}
+      views={mergeViewOptionsMap(
+        baseSchedulerOnlyOptions.views || {},
+        options.views || {},
+      )}
+    />
   )
 }

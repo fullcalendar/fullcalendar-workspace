@@ -3,7 +3,7 @@ import { mergeCalendarOptions, mergeViewOptionsMap } from '@fullcalendar/core/in
 import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-classic/options-event-calendar'
 import React from 'react'
-import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
+import { eventCalendarIconOptions } from '../lib/icons-event-calendar.js'
 
 export const optionParams: EventCalendarOptionParams = {
   borderColorClass: 'border-(--mui-palette-divider)',

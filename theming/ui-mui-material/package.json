@@ -12,14 +12,14 @@
     "./package.json": "./package.json",
     "./theme-monarch/EventCalendar": {
       "import": {
-        "types": "./dist/theme-monarch/event-calendar.d.ts",
-        "default": "./dist/theme-monarch/event-calendar.js"
+        "types": "./dist/theme-monarch/EventCalendar.d.ts",
+        "default": "./dist/theme-monarch/EventCalendar.js"
       }
     },
     "./theme-monarch/Scheduler": {
       "import": {
-        "types": "./dist/theme-monarch/scheduler.d.ts",
-        "default": "./dist/theme-monarch/scheduler.js"
+        "types": "./dist/theme-monarch/Scheduler.d.ts",
+        "default": "./dist/theme-monarch/Scheduler.js"
       }
     },
     "./theme-forma/EventCalendar": {

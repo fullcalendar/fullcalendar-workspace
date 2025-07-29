@@ -4,7 +4,7 @@ import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-forma/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-forma/slots'
 import React from 'react'
-import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
+import { eventCalendarIconOptions } from '../lib/icons-event-calendar.js'
 
 export const optionParams: EventCalendarOptionParams = {
   primaryBgColorClass: 'bg-(--mui-palette-primary-main)',

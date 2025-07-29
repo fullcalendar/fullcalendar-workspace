@@ -69,8 +69,8 @@ import { EventCalendar as ShadcnBreezyEventCalendar } from '@fullcalendar/shadcn
 import { Scheduler as ShadcnBreezyScheduler } from '@fullcalendar/shadcn/theme-breezy/Scheduler'
 
 // MUI
-import { EventCalendar as MuiMonarchEventCalendar } from '@fullcalendar/mui-material/theme-monarch/EventCalendar'
-import { Scheduler as MuiMonarchScheduler } from '@fullcalendar/mui-material/theme-monarch/Scheduler'
+import MuiMonarchEventCalendar from '@fullcalendar/mui-material/theme-monarch/EventCalendar'
+import MuiMonarchScheduler from '@fullcalendar/mui-material/theme-monarch/Scheduler'
 import { EventCalendar as MuiPulseEventCalendar } from '@fullcalendar/mui-material/theme-pulse/EventCalendar'
 import { Scheduler as MuiPulseScheduler } from '@fullcalendar/mui-material/theme-pulse/Scheduler'
 import { EventCalendar as MuiFormaEventCalendar } from '@fullcalendar/mui-material/theme-forma/EventCalendar'

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { Box, useTheme, alpha } from '@mui/material' // TODO: better import for Box? elsewhere too
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
-import { SchedulerToolbar } from '../lib/scheduler-toolbar.js'
+import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
 import { SchedulerView } from './scheduler-view.js'
 
 export interface SchedulerProps extends CalendarOptions {
@@ -26,7 +26,7 @@ export function Scheduler({ availableViews, ...options }: SchedulerProps) {
         overflow: 'hidden',
       }}
     >
-      <SchedulerToolbar
+      <EventCalendarToolbar
         className='p-4'
         style={{ backgroundColor: mutedBackgroundColor }}
         controller={controller}

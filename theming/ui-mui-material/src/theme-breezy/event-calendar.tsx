@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { Box, useTheme, alpha } from '@mui/material' // TODO: better import for Box? elsewhere too
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
-import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
+import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
 import { EventCalendarView } from './event-calendar-view.js'
 
 export interface EventCalendarProps extends CalendarOptions {

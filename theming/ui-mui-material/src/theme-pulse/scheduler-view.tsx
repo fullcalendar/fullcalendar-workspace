@@ -3,7 +3,7 @@ import { CalendarOptions } from '@fullcalendar/core'
 import { mergeCalendarOptions, mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-pulse/options-scheduler'
 import { optionParams, EventCalendarView } from './event-calendar-view.js'
-import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
+import { schedulerOnlyIconOptions } from '../lib/icons-scheduler.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 

@@ -4,7 +4,7 @@ import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-breezy/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-breezy/slots'
 import React from 'react'
-import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
+import { eventCalendarIconOptions } from '../lib/icons-event-calendar.js'
 
 export const optionParams: EventCalendarOptionParams = {
   // ENSURE the muted by colors are warm, like the toolbar bg color
