@@ -2,14 +2,19 @@ import React, { useMemo } from 'react'
 import { Box, useTheme, alpha } from '@mui/material' // TODO: better import for Box? elsewhere too
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
+import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
+import { createSchedulerOnlyOptions } from '@fullcalendar/theme-breezy/options-scheduler'
 import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
-import { EventCalendarView } from './event-calendar-view.js'
+import { optionParams, EventCalendarView } from './EventCalendar.js'
+import { schedulerOnlyIconOptions } from '../lib/icons-scheduler.js'
 
-export interface EventCalendarProps extends CalendarOptions {
+const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
+
+export interface SchedulerProps extends CalendarOptions {
   availableViews: string[]
 }
 
-export function EventCalendar({ availableViews, ...options }: EventCalendarProps) {
+export default function Scheduler({ availableViews, ...options }: SchedulerProps) {
   const controller = useCalendarController()
   const theme = useTheme()
   const mutedBackgroundColor = useMemo(
@@ -32,12 +37,26 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
         controller={controller}
         availableViews={availableViews}
       />
-      <EventCalendarView
+      <SchedulerView
         borderlessX
         borderlessBottom
         controller={controller}
         {...options}
       />
     </Box>
+  )
+}
+
+export function SchedulerView(options: any) {
+  return (
+    <EventCalendarView
+      {...baseSchedulerOnlyOptions.optionDefaults}
+      {...schedulerOnlyIconOptions}
+      {...options}
+      views={mergeViewOptionsMap(
+        baseSchedulerOnlyOptions.views || {},
+        options.views || {},
+      )}
+    />
   )
 }

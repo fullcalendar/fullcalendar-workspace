@@ -1,0 +1,81 @@
+import React, { useMemo } from 'react'
+import { Box, useTheme, alpha } from '@mui/material' // TODO: better import for Box? elsewhere too
+import { CalendarOptions } from "@fullcalendar/core"
+import { useCalendarController } from "@fullcalendar/react"
+import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
+import FullCalendar from '@fullcalendar/react'
+import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-breezy/options-event-calendar'
+import { createSlots } from '@fullcalendar/theme-breezy/slots'
+import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
+import { eventCalendarIconOptions } from '../lib/icons-event-calendar.js'
+
+export interface EventCalendarProps extends CalendarOptions {
+  availableViews: string[]
+}
+
+export default function EventCalendar({ availableViews, ...options }: EventCalendarProps) {
+  const controller = useCalendarController()
+  const theme = useTheme()
+  const mutedBackgroundColor = useMemo(
+    () => alpha(theme.palette.divider, 0.025),
+    [theme.palette.divider],
+  )
+
+  return (
+    <Box
+      sx={{
+        border: '1px solid',
+        borderColor: 'divider',
+        borderRadius: 1,
+        overflow: 'hidden',
+      }}
+    >
+      <EventCalendarToolbar
+        className='p-4'
+        style={{ backgroundColor: mutedBackgroundColor }}
+        controller={controller}
+        availableViews={availableViews}
+      />
+      <EventCalendarView
+        borderlessX
+        borderlessBottom
+        controller={controller}
+        {...options}
+      />
+    </Box>
+  )
+}
+
+export const optionParams: EventCalendarOptionParams = {
+  // ENSURE the muted by colors are warm, like the toolbar bg color
+
+  primaryBgColorClass: 'bg-(--mui-palette-primary-main)',
+  primaryTextColorClass: 'text-(--mui-palette-primary-contrastText)',
+  primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
+
+  eventColor: 'var(--mui-palette-primary-main)',
+  backgroundEventColor: 'var(--mui-palette-secondary-main)',
+  backgroundEventColorClass: 'brightness-115 opacity-15',
+}
+
+const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
+
+const slots = createSlots({
+  createElement: React.createElement as any, // HACK
+  Fragment: React.Fragment as any, // HACK
+}, optionParams)
+
+export function EventCalendarView(options: any) {
+  return (
+    <FullCalendar
+      {...baseEventCalendarOptions.optionDefaults}
+      {...eventCalendarIconOptions}
+      {...slots}
+      {...options}
+      views={mergeViewOptionsMap(
+        baseEventCalendarOptions.views || {},
+        options.views || {},
+      )}
+    />
+  )
+}
