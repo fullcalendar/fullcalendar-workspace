@@ -1,8 +1,12 @@
 import React from 'react'
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
+import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
+import FullCalendar from '@fullcalendar/react'
+import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-breezy/options-event-calendar'
+import { createSlots } from '@fullcalendar/theme-breezy/slots'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
-import { EventCalendarView } from './event-calendar-view.js'
+// import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js' // TODO
 
 export interface EventCalendarProps extends CalendarOptions {
   availableViews: string[]
@@ -25,5 +29,37 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
         {...options}
       />
     </div>
+  )
+}
+
+export const optionParams: EventCalendarOptionParams = {
+  primaryBgColorClass: 'bg-(--primary)',
+  primaryTextColorClass: 'text-(--primary-foreground)',
+  primaryBorderColorClass: 'border-(--primary)',
+
+  eventColor: 'var(--primary)',
+  backgroundEventColor: 'var(--primary)',
+  backgroundEventColorClass: 'opacity-15',
+}
+
+const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
+
+const slots = createSlots({
+  createElement: React.createElement as any, // HACK
+  Fragment: React.Fragment as any, // HACK
+}, optionParams)
+
+export function EventCalendarView(options: any) {
+  return (
+    <FullCalendar
+      {...baseEventCalendarOptions.optionDefaults}
+      // {...eventCalendarIconOptions}
+      {...slots}
+      {...options}
+      views={mergeViewOptionsMap(
+        baseEventCalendarOptions.views || {},
+        options.views || {},
+      )}
+    />
   )
 }
