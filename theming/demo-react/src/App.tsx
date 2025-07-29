@@ -75,8 +75,8 @@ import MuiPulseEventCalendar from '@fullcalendar/mui-material/theme-pulse/EventC
 import MuiPulseScheduler from '@fullcalendar/mui-material/theme-pulse/Scheduler'
 import MuiFormaEventCalendar from '@fullcalendar/mui-material/theme-forma/EventCalendar'
 import MuiFormaScheduler from '@fullcalendar/mui-material/theme-forma/Scheduler'
-import { EventCalendar as MuiClassicEventCalendar } from '@fullcalendar/mui-material/theme-classic/EventCalendar'
-import { Scheduler as MuiClassicScheduler } from '@fullcalendar/mui-material/theme-classic/Scheduler'
+import MuiClassicEventCalendar from '@fullcalendar/mui-material/theme-classic/EventCalendar'
+import MuiClassicScheduler from '@fullcalendar/mui-material/theme-classic/Scheduler'
 import MuiBreezyEventCalendar from '@fullcalendar/mui-material/theme-breezy/EventCalendar'
 import MuiBreezyScheduler from '@fullcalendar/mui-material/theme-breezy/Scheduler'
 

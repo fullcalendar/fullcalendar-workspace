@@ -36,14 +36,14 @@
     },
     "./theme-classic/EventCalendar": {
       "import": {
-        "types": "./dist/theme-classic/event-calendar.d.ts",
-        "default": "./dist/theme-classic/event-calendar.js"
+        "types": "./dist/theme-classic/EventCalendar.d.ts",
+        "default": "./dist/theme-classic/EventCalendar.js"
       }
     },
     "./theme-classic/Scheduler": {
       "import": {
-        "types": "./dist/theme-classic/scheduler.d.ts",
-        "default": "./dist/theme-classic/scheduler.js"
+        "types": "./dist/theme-classic/Scheduler.d.ts",
+        "default": "./dist/theme-classic/Scheduler.js"
       }
     },
     "./theme-breezy/EventCalendar": {
