@@ -24,14 +24,14 @@
     },
     "./theme-forma/EventCalendar": {
       "import": {
-        "types": "./dist/theme-forma/event-calendar.d.ts",
-        "default": "./dist/theme-forma/event-calendar.js"
+        "types": "./dist/theme-forma/EventCalendar.d.ts",
+        "default": "./dist/theme-forma/EventCalendar.js"
       }
     },
     "./theme-forma/Scheduler": {
       "import": {
-        "types": "./dist/theme-forma/scheduler.d.ts",
-        "default": "./dist/theme-forma/scheduler.js"
+        "types": "./dist/theme-forma/Scheduler.d.ts",
+        "default": "./dist/theme-forma/Scheduler.js"
       }
     },
     "./theme-classic/EventCalendar": {

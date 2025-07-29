@@ -1,10 +1,45 @@
-import { CalendarOptions } from '@fullcalendar/core'
-import { mergeCalendarOptions, mergeViewOptionsMap } from '@fullcalendar/core/internal'
+import React from 'react'
+import { Box } from '@mui/material'
+import { CalendarOptions } from "@fullcalendar/core"
+import { useCalendarController } from "@fullcalendar/react"
+import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-forma/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-forma/slots'
-import React from 'react'
+import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
 import { eventCalendarIconOptions } from '../lib/icons-event-calendar.js'
+
+export interface EventCalendarProps extends CalendarOptions {
+  availableViews: string[]
+}
+
+export default function EventCalendar({ availableViews, ...options }: EventCalendarProps) {
+  const controller = useCalendarController()
+
+  return (
+    <Box
+      sx={{
+        border: '1px solid',
+        borderColor: 'divider',
+        borderRadius: 1,
+        // boxShadow: 1, // too harsh -- not meant to have border too
+        overflow: 'hidden',
+      }}
+    >
+      <EventCalendarToolbar
+        className='p-3'
+        controller={controller}
+        availableViews={availableViews}
+      />
+      <EventCalendarView
+        borderlessX
+        borderlessBottom
+        controller={controller}
+        {...options}
+      />
+    </Box>
+  )
+}
 
 export const optionParams: EventCalendarOptionParams = {
   primaryBgColorClass: 'bg-(--mui-palette-primary-main)',
@@ -27,15 +62,13 @@ const slots = createSlots({
   Fragment: React.Fragment as any, // HACK
 }, optionParams)
 
-export function EventCalendarView(options: CalendarOptions) {
+export function EventCalendarView(options: any) {
   return (
     <FullCalendar
-      {...mergeCalendarOptions(
-        baseEventCalendarOptions.optionDefaults,
-        eventCalendarIconOptions,
-        slots,
-        options,
-      )}
+      {...baseEventCalendarOptions.optionDefaults}
+      {...eventCalendarIconOptions}
+      {...slots}
+      {...options}
       views={mergeViewOptionsMap(
         baseEventCalendarOptions.views || {},
         options.views || {},
