@@ -173,6 +173,7 @@ proper classname-joining util like for this:
   but for shadcn, we should probably use cn()
 --fc-canvas-color
   shouldn't this be part of theme!?
+  use each theme's setting for this, like shadcn has --background i think
 should headerToolbar be baked into themed FullCalendar?
   or part of caller?
   DECISION: make it part of themed FullCalendar, with OPTIONAL availableViews

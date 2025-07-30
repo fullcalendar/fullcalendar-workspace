@@ -10,7 +10,7 @@ import '@fullcalendar/interaction'
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 
-const neutralBgClass = 'bg-gray-500/10'
+export const neutralBgClass = 'bg-gray-500/10'
 const todayBgClass = 'bg-yellow-400/15 dark:bg-yellow-200/10' // TODO: make this a param!?
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 

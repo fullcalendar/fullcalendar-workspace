@@ -385,12 +385,12 @@ export default function App() {
               <MuiCssBaseline />
             )}
             <EventCalendarDemo
-              initialView='timeGridWeek'
+              initialView='dayGridMonth'
               ui={ui}
               theme={theme}
             />
             <EventCalendarDemo
-              initialView='dayGridMonth'
+              initialView='timeGridWeek'
               ui={ui}
               theme={theme}
             />

@@ -1,14 +1,8 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
-import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
+import { createEventCalendarOptions, EventCalendarOptionParams, neutralBgClass } from './options-event-calendar.js'
 import * as svgIcons from './ui-default-svgs.js'
 
-// TODO: make these dependent on EventCalendarOptionParams
 const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
-const primaryBgColorClass = 'bg-(--fc-forma-primary-color)'
-const primaryBorderColorClass = 'border-(--fc-forma-primary-color)'
-const borderColorClass = 'border-[#ddd] dark:border-gray-800'
-const borderClass = `border ${borderColorClass}` // all sides
-const neutralBgClass = 'bg-gray-500/10'
 
 export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
   primaryBgColorClass: 'bg-(--fc-forma-primary-color)',
@@ -74,7 +68,7 @@ export const defaultUiEventCalendarOptions: {
             ? 'border-gray-400 bg-gray-100'
             : 'border-transparent hover:bg-gray-50 hover:border-gray-200'
           : data.isPrimary
-            ? `${primaryBgColorClass} ${primaryBorderColorClass} text-white` // weird border
+            ? `${optionParams.primaryBgColorClass} ${optionParams.primaryBorderColorClass} text-white` // weird border
               // TODO: do hover effect. Fluent does inner dark shadow
             : 'border-gray-300',
           // TODO: disabled
@@ -82,7 +76,7 @@ export const defaultUiEventCalendarOptions: {
     ],
 
     // TODO: fix problem with huge hit area for title
-    popoverClass: `${borderClass} bg-(--fc-canvas-color) shadow-md`,
+    popoverClass: `border ${optionParams.borderColorClass} bg-(--fc-canvas-color) shadow-md`,
     popoverHeaderClass: neutralBgClass,
     popoverCloseClass: 'absolute top-2 end-2',
     popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
