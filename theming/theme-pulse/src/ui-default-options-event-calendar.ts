@@ -18,6 +18,11 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   eventContrastColor: 'var(--fc-pulse-event-contrast-color)',
   backgroundEventColor: 'var(--color-green-500)',
   backgroundEventColorClass: 'brightness-150 opacity-15',
+
+  // TODO: popoverClass
+
+  canvasBgColorClass: 'bg-(--fc-pulse-canvas-color)',
+  canvasOutlineColorClass: 'outline-(--fc-pulse-canvas-color)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

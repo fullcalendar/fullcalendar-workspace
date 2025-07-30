@@ -8,6 +8,8 @@ const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
 We don't bother making --fc-classic-* variables for these values,
 because there aren't multiple color palettes, nor do we care about making re-coloring easy
 */
+const canvasBgColorClass = 'bg-white dark:bg-gray-950'
+const canvasOutlineColorClass = 'outline-white dark:outline-gray-950'
 export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
   borderColorClass: 'border-[#ddd] dark:border-gray-800',
   majorBorderColorClass: 'border-gray-400 dark:border-gray-700',
@@ -18,6 +20,11 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   eventContrastColor: 'var(--color-white)',
   backgroundEventColor: 'var(--color-green-500)',
   backgroundEventColorClass: 'brightness-150 opacity-15',
+
+  popoverClass: `border border-[#ddd] dark:border-gray-800 ${canvasBgColorClass} shadow-md`,
+
+  canvasBgColorClass,
+  canvasOutlineColorClass,
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

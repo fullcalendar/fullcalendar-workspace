@@ -16,6 +16,11 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   eventColor: 'var(--fc-forma-event-color)',
   backgroundEventColor: 'var(--color-green-500)',
   backgroundEventColorClass: 'brightness-150 opacity-15',
+
+  popoverClass: 'border border-[#ddd] dark:border-gray-800 bg-(--fc-forma-canvas-color) shadow-md',
+
+  canvasBgColorClass: 'bg-(--fc-forma-canvas-color)',
+  canvasOutlineColorClass: 'outline-(--fc-forma-canvas-color)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

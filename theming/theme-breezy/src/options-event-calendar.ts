@@ -115,6 +115,11 @@ export interface EventCalendarOptionParams {
   // NOTE: eventContrastColor not needed because eventColor always faded to bg color
   backgroundEventColor: string
   backgroundEventColorClass: string
+
+  popoverClass: string
+
+  canvasBgColorClass: string
+  canvasOutlineColorClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -133,7 +138,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       headerToolbarClass: 'border-b border-gray-200',
       footerToolbarClass: 'border-t border-gray-200',
 
-      popoverClass: 'border border-gray-300 shadow-md bg-white rounded-lg m-1',
+      popoverClass: 'm-1 ' + params.popoverClass,
       popoverBodyClass: 'p-2 min-w-50',
 
       dayHeaderClass: 'items-center',
@@ -161,7 +166,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       slotLaneClass: 'border border-gray-100',
 
-      blockEventClass: 'bg-(--fc-canvas-color) relative',
+      blockEventClass: `${params.canvasBgColorClass} relative`,
       blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) opacity-15',
       blockEventInnerClass: 'relative z-20 text-xs/4 flex', // NOTE: subclass determines direction
       /*
@@ -191,7 +196,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventClass: (data) => [
         data.isStart && 'rounded-t-lg',
         data.isEnd && 'rounded-b-lg',
-        (data.level || data.isDragging) && 'outline outline-(--fc-canvas-color)',
+        (data.level || data.isDragging) && `outline ${params.canvasOutlineColorClass}`,
       ],
       columnEventColorClass: (data) => [
         data.isStart && 'rounded-t-lg',

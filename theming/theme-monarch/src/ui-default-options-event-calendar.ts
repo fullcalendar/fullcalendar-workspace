@@ -33,6 +33,11 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   eventContrastColor: 'var(--fc-monarch-on-primary)',
   backgroundEventColor: 'var(--fc-monarch-tertiary)',
   backgroundEventColorClass: 'brightness-115 opacity-15',
+
+  popoverClass: 'border border-(--fc-monarch-outline-variant) rounded-lg bg-(--fc-monarch-canvas-color) shadow-lg',
+
+  canvasBgColorClass: 'bg-(--fc-monarch-canvas-color)',
+  canvasOutlineColorClass: 'outline-(--fc-monarch-canvas-color)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

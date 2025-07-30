@@ -49,6 +49,11 @@ export const optionParams: EventCalendarOptionParams = {
   eventContrastColor: 'var(--mui-palette-primary-contrastText)',
   backgroundEventColor: 'var(--mui-palette-secondary-main)',
   backgroundEventColorClass: 'brightness-115 opacity-15',
+
+  popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8) m-2',
+
+  canvasBgColorClass: 'bg-(--mui-palette-background-paper)',
+  canvasOutlineColorClass: 'outline-(--mui-palette-background-paper)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

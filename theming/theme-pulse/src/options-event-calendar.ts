@@ -70,6 +70,9 @@ export interface EventCalendarOptionParams {
   eventContrastColor: string
   backgroundEventColor: string
   backgroundEventColorClass: string
+
+  canvasBgColorClass: string
+  canvasOutlineColorClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -145,7 +148,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventColorClass: (data) => [
         data.isStart && 'rounded-t-lg',
         data.isEnd && 'rounded-b-lg',
-        (data.level || data.isDragging) && 'outline outline-(--fc-canvas-color)',
+        (data.level || data.isDragging) && `outline ${params.canvasOutlineColorClass}`,
       ],
       columnEventInnerClass: 'flex-col py-1',
       // TODO: move the x-padding to the inner div? same concept with row-events

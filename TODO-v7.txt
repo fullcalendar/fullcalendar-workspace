@@ -44,6 +44,12 @@ how to distribute Default-UI themes?
 
 don't export mergeCalendarOptions, special behavior not needed in theme adapters
 
+maybe rename "canvas" color to "background" color?
+
+give classic theme css variables for color
+  we realized we needed this for the canvas color
+  better to have API be consistent with other themes (ex: palette-chooser on website)
+
 
 eventually have MUI themes output styles using sx={} prop, like:
   https://chatgpt.com/share/688a7d49-4314-800f-b1c5-9253733352be
@@ -171,9 +177,6 @@ proper classname-joining util like for this:
     : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
   especially useful for custom jsx with className= in it
   but for shadcn, we should probably use cn()
---fc-canvas-color
-  shouldn't this be part of theme!?
-  use each theme's setting for this, like shadcn has --background i think
 should headerToolbar be baked into themed FullCalendar?
   or part of caller?
   DECISION: make it part of themed FullCalendar, with OPTIONAL availableViews
@@ -226,7 +229,7 @@ when no dayHeaderDividerClass, should not inject <div>
 Maybe border-radius should be a parameter to the theme
 important to test out: drop shadow from dayheader/axis onto scrollable area
 is "hasAllDaySlot" the correct naming? other "has"?
-rename --fc-canvas-color... because in pulse theme, outer background could be gray,
+rename --fc-*-canvas-color... because in pulse theme, outer background could be gray,
   but we still want popover bg to be white. call is just "bg" color?
 add the isPrimary button config.. ensure its designed in all themes
 best DX for distributing palette variations?
@@ -493,7 +496,7 @@ changelog: +Event::color, +Event::contrastColor, -Event::backgroundColor, -Event
   (same for Resource)
 changelog: eventColor (different behavior), +eventContrastColor, -eventBackgroundColor, -eventBorderColor, -eventTextColor
   gotcha: in order to use eventContrastColor, you MUST define eventColor. same for event object
-changelog: --fc-event-color, --fc-event-contrast-color, --fc-canvas-color
+changelog: --fc-event-color, --fc-event-contrast-color
 changelog: borderless(X) also indents toolbar
 changelog: dayCellTop will be rendered even if no day-cell-text. check hasLabel/hasMonthLabel
 changelog: premium-warning styled in dark mode

@@ -21,12 +21,10 @@
 @custom-variant dark (&:is([data-color-scheme=dark] *));
 
 html {
-  --fc-canvas-color: var(--color-white);
   color-scheme: light;
   /* ShadCN will set page bg color */
 }
 html[data-color-scheme=dark] {
-  --fc-canvas-color: var(--color-gray-950);
   color-scheme: dark;
   /* ShadCN will set page bg color */
 }

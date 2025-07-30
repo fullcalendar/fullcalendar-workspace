@@ -1,23 +1,30 @@
 
-[data-theme=forma][data-palette=blue] {
+:root {
+  --fc-forma-canvas-color: #fff;
+}
+[data-color-scheme=dark] {
+  --fc-forma-canvas-color: oklch(0.13 0.028 261.692);
+}
+
+[data-palette=blue] {
   --fc-forma-primary-color: #0F6CBD;
   --fc-forma-primary-text-color: #fff;
   --fc-forma-event-color: #3788d8;
 }
 
-[data-theme=forma][data-palette=red] {
+[data-palette=red] {
   --fc-forma-primary-color: #d83b01;
   --fc-forma-primary-text-color: #fff;
   --fc-forma-event-color: #d83b01; /* adjust? */
 }
 
-[data-theme=forma][data-palette=green] {
+[data-palette=green] {
   --fc-forma-primary-color: #107c41;
   --fc-forma-primary-text-color: #fff;
   --fc-forma-event-color: #107c41; /* adjust? */
 }
 
-[data-theme=forma][data-palette=purple] { /* "power apps" */
+[data-palette=purple] { /* "power apps" */
   --fc-forma-primary-color: #742774;
   --fc-forma-primary-text-color: #fff;
   --fc-forma-event-color: #742774; /* adjust? */

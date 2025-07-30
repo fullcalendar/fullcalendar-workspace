@@ -44,6 +44,12 @@ export const optionParams: EventCalendarOptionParams = {
   eventColor: 'var(--primary)',
   backgroundEventColor: 'var(--primary)',
   backgroundEventColorClass: 'opacity-15',
+
+  // TODO: better integration with actual Shadcn Popover component
+  popoverClass: 'border bg-background text-foreground shadow-md',
+
+  canvasBgColorClass: 'bg-background',
+  canvasOutlineColorClass: 'outline-background',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

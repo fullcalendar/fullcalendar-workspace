@@ -1,11 +1,18 @@
 
-[data-theme=breezy][data-palette=indigo] {
+:root {
+  --fc-breezy-canvas-color: #fff;
+}
+[data-color-scheme=dark] {
+  --fc-breezy-canvas-color: oklch(0.13 0.028 261.692);
+}
+
+[data-palette=indigo] {
   --fc-breezy-primary-color: var(--color-indigo-600); /* TODO: will need hover color too -500 --- also need text color */
   --fc-breezy-primary-text-color: #fff;
   --fc-breezy-event-color: var(--color-blue-500);
 }
 
-[data-theme=breezy][data-palette=rose] {
+[data-palette=rose] {
   --fc-breezy-primary-color: var(--color-rose-600);
   --fc-breezy-primary-text-color: #fff;
   --fc-breezy-event-color: var(--color-pink-500);
@@ -14,13 +21,13 @@
 /*
 TODO: time text looks weird?
 */
-[data-theme=breezy][data-palette=emerald] {
+[data-palette=emerald] {
   --fc-breezy-primary-color: var(--color-emerald-600);
   --fc-breezy-primary-text-color: #fff;
   --fc-breezy-event-color: var(--color-green-500);
 }
 
-[data-theme=breezy][data-palette=honey] {
+[data-palette=honey] {
   --fc-breezy-primary-color: var(--color-yellow-500); /* 600 was too dark */
   --fc-breezy-primary-text-color: #fff;
   --fc-breezy-event-color: var(--color-amber-500);
