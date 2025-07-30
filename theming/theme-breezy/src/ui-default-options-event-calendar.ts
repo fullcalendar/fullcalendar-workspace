@@ -29,9 +29,6 @@ export const defaultUiEventCalendarOptions: {
     toolbarSectionClass: 'items-center gap-4',
     toolbarTitleClass: 'text-lg font-semibold text-gray-900',
 
-    popoverClass: 'border border-gray-300 shadow-md bg-white rounded-lg m-1',
-    popoverBodyClass: 'p-2 min-w-50',
-
     /*
     TODO: don't make buttons so fat
     are buttons 1px taller than in Tailwind Plus because we're not using inset border?

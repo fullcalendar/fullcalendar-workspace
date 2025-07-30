@@ -133,6 +133,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       headerToolbarClass: 'border-b border-gray-200',
       footerToolbarClass: 'border-t border-gray-200',
 
+      popoverClass: 'border border-gray-300 shadow-md bg-white rounded-lg m-1',
+      popoverBodyClass: 'p-2 min-w-50',
+
       dayHeaderClass: 'items-center',
       dayHeaderInnerClass: 'p-2 flex flex-row items-center',
 

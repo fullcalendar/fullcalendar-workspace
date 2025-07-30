@@ -138,6 +138,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
+      popoverClass: `border ${params.borderColorClass} bg-(--fc-canvas-color) shadow-md`,
+      popoverHeaderClass: `flex flex-row justify-between items-center px-1 py-1 ${neutralBgClass}`,
+      popoverBodyClass: 'p-2 min-w-[220px]',
+
       // misc BG
       fillerClass: `${borderClass} opacity-50`,
       nonBusinessClass: neutralBgClass,

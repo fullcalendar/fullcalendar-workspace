@@ -1,5 +1,5 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
-import { createEventCalendarOptions, EventCalendarOptionParams, neutralBgClass } from './options-event-calendar.js'
+import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgIcons from './ui-default-svgs.js'
 
 const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
@@ -79,10 +79,7 @@ export const defaultUiEventCalendarOptions: {
         && 'opacity-65 pointer-events-none', // bypass hover styles
     ],
 
-    popoverClass: `border ${optionParams.borderColorClass} bg-(--fc-canvas-color) shadow-md`,
-    popoverHeaderClass: `flex flex-row justify-between items-center px-1 py-1 ${neutralBgClass}`,
     popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
-    popoverBodyClass: 'p-2 min-w-[220px]',
   },
   views: baseEventCalendarOptions.views,
 }

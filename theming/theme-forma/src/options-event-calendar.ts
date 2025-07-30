@@ -153,6 +153,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
+      // TODO: fix problem with huge hit area for title
+      popoverClass: `border ${params.borderColorClass} bg-(--fc-canvas-color) shadow-md`,
+      popoverHeaderClass: neutralBgClass,
+      popoverCloseClass: 'absolute top-2 end-2',
+      popoverBodyClass: 'p-2 min-w-[220px]',
+
       // misc BG
       fillerClass: `${borderClass} opacity-50`,
       nonBusinessClass: neutralBgClass,

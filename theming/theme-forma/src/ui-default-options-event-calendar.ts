@@ -1,5 +1,5 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
-import { createEventCalendarOptions, EventCalendarOptionParams, neutralBgClass } from './options-event-calendar.js'
+import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgIcons from './ui-default-svgs.js'
 
 const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
@@ -75,12 +75,7 @@ export const defaultUiEventCalendarOptions: {
           // TODO: dark mode
     ],
 
-    // TODO: fix problem with huge hit area for title
-    popoverClass: `border ${optionParams.borderColorClass} bg-(--fc-canvas-color) shadow-md`,
-    popoverHeaderClass: neutralBgClass,
-    popoverCloseClass: 'absolute top-2 end-2',
     popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
-    popoverBodyClass: 'p-2 min-w-[220px]',
   },
   views: baseEventCalendarOptions.views,
 }
