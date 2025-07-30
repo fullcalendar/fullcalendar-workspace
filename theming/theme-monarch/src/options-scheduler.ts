@@ -54,11 +54,9 @@ export function createSchedulerOnlyOptions({
       resourceCellClass: borderClass,
       resourceCellInnerClass: 'p-2 text-sm',
 
-      resourceExpanderClass: (data) => [
+      resourceExpanderClass: [
         'self-center w-6 h-6 flex flex-row items-center justify-center rounded-full text-sm relative start-1',
         transparentPressableClass,
-        data.isExpanded ? 'rotate-90' :
-          data.direction === 'rtl' && 'rotate-180',
       ],
 
       resourceLaneClass: borderClass,

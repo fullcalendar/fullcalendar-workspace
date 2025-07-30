@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
-import { Box, useTheme, alpha } from '@mui/material' // TODO: better import for Box? elsewhere too
+import Box from '@mui/material/Box'
+import { useTheme, alpha } from '@mui/material/styles'
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'

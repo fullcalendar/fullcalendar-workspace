@@ -6,7 +6,7 @@ import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-pulse/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-pulse/slots'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
-// import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js' // TODO
+import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 
 export interface EventCalendarProps extends CalendarOptions {
   availableViews: string[]
@@ -54,7 +54,7 @@ export function EventCalendarView(options: any) {
   return (
     <FullCalendar
       {...baseEventCalendarOptions.optionDefaults}
-      // {...eventCalendarIconOptions}
+      {...eventCalendarIconOptions}
       {...slots}
       {...options}
       views={mergeViewOptionsMap(

@@ -5,7 +5,7 @@ import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-monarch/options-scheduler'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { optionParams, EventCalendarView } from './event-calendar.js'
-// import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js' // TODO
+import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 
@@ -36,7 +36,7 @@ export function SchedulerView(options: any) {
   return (
     <EventCalendarView
       {...baseSchedulerOnlyOptions.optionDefaults}
-      // {...schedulerOnlyIconOptions}
+      {...schedulerOnlyIconOptions}
       {...options}
       views={mergeViewOptionsMap(
         baseSchedulerOnlyOptions.views || {},
