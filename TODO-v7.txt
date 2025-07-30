@@ -45,6 +45,34 @@ how to distribute Default-UI themes?
 don't export mergeCalendarOptions, special behavior not needed in theme adapters
 
 
+eventually have MUI themes output styles using sx={} prop, like:
+  https://chatgpt.com/share/688a7d49-4314-800f-b1c5-9253733352be
+  we can eventually do optionParams like that too:
+    const theme = useTheme()
+    sx={{
+      borderInlineStart: '1px solid',
+      borderColor: theme.palette.error.main,
+    }}
+  can actually use design tokens directly as string;
+    sx={{ color: 'text.secondary' }} // assumed to be palette i think
+  dynamic value pitfall
+    https://mui.com/system/getting-started/the-sx-prop/#dynamic-values
+  or use "callback values" to get the theme:
+    https://mui.com/system/getting-started/the-sx-prop/#callback-values
+  on a div:
+    unstable_styleFunctionSx somehow
+    https://mui.com/system/getting-started/custom-components/#using-sx-with-custom-components
+  what Chakra does:
+    <Button
+      borderStart="2px solid"
+      borderColor={{ base: 'red.500', _dark: 'red.300' }}
+    >
+      Click Me
+    </Button>
+  how would this work??? (MUI or Chakra)
+    would need to a markup-output target, like react-native
+
+
 ---REFACTOR---
 TO REMIND:
   interface CalendarDisplayData {
