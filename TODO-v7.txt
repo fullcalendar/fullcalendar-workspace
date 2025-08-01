@@ -9,6 +9,13 @@ for ShadCN themes,
   ... NO!!!! shadcn doesn't give color variations
   tailwind-only
 
+Make ticket:
+  multiple levels of dayheaders (not related to resources)
+  https://fullcalendar.freshdesk.com/a/tickets/11101
+
+Currently, in v6, the headerToolbar left/center/right properties MERGE,
+  which is a bit crazy. Overhaul the default setting
+
 how to distribute *MUI* themes?
   tailwind:
     import ExpandIcon from '@mui/icons-material/ExpandIcon'; // we should give instructions

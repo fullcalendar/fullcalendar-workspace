@@ -47,10 +47,22 @@ const getColumnTouchResizerClass = (canvasBgColorClass: string) => `${getBlockTo
 
 // applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
 const dayGridClasses: CalendarOptions = {
-  listItemEventClass: [dayGridItemClass, 'p-px'],
+  listItemEventClass: (data) => [
+    dayGridItemClass, 'p-px',
+
+    'items-center',
+    data.isSelected
+      ? 'bg-gray-500/40' // touch-selected
+      : 'hover:bg-gray-500/20 focus:bg-gray-500/30',
+    (data.isSelected && data.isDragging) && 'shadow-sm', // touch-dragging
+  ],
   listItemEventColorClass: (data) => [
     data.isCompact ? 'mx-px' : 'mx-1',
     'border-4', // 8px diameter circle
+
+    // Dot uses border instead of bg because it shows up in print
+    // Views must decide circle radius via border thickness
+    'rounded-full border-(--fc-event-color)',
   ],
   listItemEventInnerClass: (data) => [
     'flex flex-row items-center', // as opposed to display:contents
@@ -179,17 +191,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'm-2 opacity-50 italic',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
-
-      listItemEventClass: (data) => [
-        'items-center',
-        data.isSelected
-          ? 'bg-gray-500/40' // touch-selected
-          : 'hover:bg-gray-500/20 focus:bg-gray-500/30',
-        (data.isSelected && data.isDragging) && 'shadow-sm', // touch-dragging
-      ],
-      // Dot uses border instead of bg because it shows up in print
-      // Views must decide circle radius via border thickness
-      listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
 
       blockEventClass: [
         'relative', // for absolute-positioned color
@@ -376,10 +377,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelDividerClass: `border-l ${params.borderColorClass}`,
       },
       list: {
-        viewClass: 'bg-gray-50',
+        listItemEventClass: 'bg-white p-3 flex flex-row rounded-sm border-s-6 border-(--fc-event-color) relative', // why the hover color!?
+        listItemEventColorClass: 'absolute inset-0 bg-(--fc-event-color) opacity-20 rounded-e-sm',
 
-        listItemEventClass: 'bg-white shadow-sm p-3 flex flex-row rounded-xs border-s-4 border-(--fc-event-color)', // why the hover color!?
-        listItemEventInnerClass: 'flex flex-row text-sm', // TODO: ensure gap
+        listItemEventInnerClass: 'relative flex flex-row text-sm', // TODO: ensure gap
         listItemEventTimeClass: 'w-40',
         listItemEventTitleClass: 'flex-grow font-semibold',
 
