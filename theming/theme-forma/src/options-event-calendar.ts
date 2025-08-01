@@ -8,7 +8,9 @@ https://fluent2.microsoft.design/color
 spacing and whatnot:
 https://react.fluentui.dev/?path=/docs/theme-spacing--docs
 
-TODO: put blue line at top of popover when isToday
+TODO: put blue line at top of popover when isToday?
+
+TODO: week numbers in small singleMonths look bad
 */
 
 // ambient types
@@ -100,24 +102,7 @@ const floatingWeekNumberClasses: CalendarOptions = {
   ],
 }
 
-// TODO: core should prevent a top border. does it?
-export const getDayHeaderClasses = (
-  data: { isDisabled: boolean, isMajor: boolean },
-  borderClass: string,
-  majorBorderClass: string,
-) => [
-  data.isMajor ? majorBorderClass : borderClass,
-  data.isDisabled && neutralBgClass,
-]
-export const getDayHeaderInnerClasses = (
-  data: { isCompact: boolean, isToday?: boolean, inPopover?: boolean },
-  primaryBorderColorClass: string
-) => [
-  'flex flex-col',
-  'px-2 pt-1 pb-2 border-t-4',
-  (data.isToday && !data.inPopover) ? primaryBorderColorClass : 'border-transparent',
-  data.isCompact ? xxsTextClass : 'text-xs',
-]
+
 
 const getSlotClasses = (data: { isMinor: boolean }, borderClass: string) => [
   borderClass,
@@ -282,9 +267,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderRowClass: borderClass,
 
-      dayHeaderClass: (data) => getDayHeaderClasses(data, borderClass, majorBorderClass),
-      dayHeaderInnerClass: (data) => getDayHeaderInnerClasses(data, params.primaryBorderColorClass),
-
       dayHeaderDividerClass: ['border-t', params.borderColorClass],
 
       dayRowClass: borderClass,
@@ -332,18 +314,43 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     views: {
       dayGrid: {
         ...dayGridClasses,
+        // TODO: DRY
+        dayHeaderClass: (data) => [
+          data.isMajor ? majorBorderClass : borderClass,
+          data.isDisabled && neutralBgClass,
+        ],
+        dayHeaderInnerClass: (data) => [
+          'flex flex-col',
+          'px-2 pt-1 pb-2 border-t-4', // TODO: adjust padding when isCompact?
+          (data.isToday && !data.inPopover) ? params.primaryBorderColorClass : 'border-transparent',
+          data.isCompact ? xxsTextClass : 'text-xs',
+        ],
+
         ...floatingWeekNumberClasses,
 
         dayCellBottomClass: 'min-h-[1px]',
       },
       multiMonth: {
         ...dayGridClasses,
+        dayHeaderClass: 'items-center',
+
         ...floatingWeekNumberClasses,
 
         dayCellBottomClass: 'min-h-[1px]',
       },
       timeGrid: {
         ...dayGridClasses,
+        // TODO: DRY
+        dayHeaderClass: (data) => [
+          data.isMajor ? majorBorderClass : borderClass,
+          data.isDisabled && neutralBgClass,
+        ],
+        dayHeaderInnerClass: (data) => [
+          'flex flex-col',
+          'px-2 pt-1 pb-2 border-t-4', // TODO: adjust padding when isCompact?
+          (data.isToday && !data.inPopover) ? params.primaryBorderColorClass : 'border-transparent',
+          data.isCompact ? xxsTextClass : 'text-xs',
+        ],
 
         dayRowClass: 'min-h-[3em]',
         dayCellBottomClass: 'min-h-[1em]', // for ALL-DAY

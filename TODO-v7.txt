@@ -52,8 +52,11 @@ how to distribute Default-UI themes?
     [internally] .asdf { outline-color: var(--fc-monarch-canvas) }
 
 
+types: why is dayHeaderClass in defined in core but dayHeaderRowClass defined in dayGrid???
+
 listDayHeaderClass always gets flex-row from core
   remove from themes if they define flex-row
+  FYI, there's an isSticky prop on the data
 
 don't export mergeCalendarOptions, special behavior not needed in theme adapters
 
@@ -263,7 +266,6 @@ when no dayHeaderDividerClass, should not inject <div>
 ^^^more problems with this in TimeGrid, lines not aligning!
 Maybe border-radius should be a parameter to the theme
 important to test out: drop shadow from dayheader/axis onto scrollable area
-is "hasAllDaySlot" the correct naming? other "has"?
 rename --fc-*-canvas-color... because in pulse theme, outer background could be gray,
   but we still want popover bg to be white. call is just "bg" color?
 add the isPrimary button config.. ensure its designed in all themes

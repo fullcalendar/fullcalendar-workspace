@@ -144,7 +144,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverBodyClass: 'p-2 min-w-50',
 
       dayHeaderClass: 'items-center',
-      dayHeaderInnerClass: 'p-2 flex flex-row items-center',
+      dayHeaderInnerClass: (data) => [
+        data.isCompact ? 'p-1' : 'p-2',
+        'flex flex-row items-center',
+      ],
 
       dayRowClass: 'border border-gray-200',
 
@@ -220,7 +223,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       listDayEventsClass: 'flex-grow flex flex-col',
 
       singleMonthClass: 'm-5',
-      singleMonthTitleClass: 'text-center text-sm font-semibold text-gray-900 pb-2',
+      singleMonthTitleClass: (data) => [
+        'text-center text-sm font-semibold text-gray-900',
+        data.isSticky
+          ? 'py-2 bg-white border-b border-gray-200'
+          : 'pb-2',
+      ],
 
       // TODO: event resizing
       // TODO: do isMajor border as darker (and put into checklist)
@@ -234,9 +242,18 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       multiMonth: {
         ...dayGridClasses,
-        dayHeaderInnerClass: 'text-xs/6 text-gray-500',
+        dayHeaderDividerClass: (data) => [
+          data.isSticky && 'border-b border-gray-300 shadow-sm',
+        ],
+        dayHeaderClass: (data) => [
+          data.isSticky && 'border border-gray-200 text-xs/6 font-semibold text-gray-700', // single-col
+        ],
+        dayHeaderInnerClass: [
+          'text-xs/6 text-gray-500',
+        ],
 
-        tableBodyClass: 'ring-1 ring-gray-200 shadow-sm ring ring-gray-200 rounded-md overflow-hidden',
+        tableHeaderClass: (data) => data.isSticky && 'bg-white',
+        tableBodyClass: 'border border-gray-200 shadow-sm rounded-md overflow-hidden',
 
         // TODO: sync with dayGrid?
       },
@@ -247,7 +264,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         dayHeaderDividerClass: (data) => [
           'border-b',
-          data.hasAllDaySlot ? 'border-gray-200' : 'border-gray-300 shadow-sm',
+          data.isSticky ? 'border-gray-200' : 'border-gray-300 shadow-sm',
         ],
         dayHeaderClass: 'border border-gray-100 text-sm/6 text-gray-500',
         dayCellClass: 'border-gray-100',

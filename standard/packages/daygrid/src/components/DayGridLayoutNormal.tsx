@@ -97,6 +97,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
                 headerTiers={props.headerTiers}
                 cellIsCompact={cellIsCompact}
                 cellIsNarrow={cellIsNarrow}
+                cellIsSticky={false}
               />
               {Boolean(endScrollbarWidth) && (
                 <div
@@ -108,7 +109,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
                 />
               )}
             </div>
-            <div className={generateClassName(options.dayHeaderDividerClass, { hasAllDaySlot: false })} />
+            <div className={generateClassName(options.dayHeaderDividerClass, { isSticky: false })} />
           </div>
         )}
         <Scroller

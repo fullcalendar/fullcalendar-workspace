@@ -385,9 +385,7 @@ export default function App() {
               <MuiCssBaseline />
             )}
             <EventCalendarDemo
-              initialView='listYear'
-              availableViews={['listYear', 'listMonth', 'listWeek']}
-              betterListButtons
+              initialView='multiMonthYear'
               ui={ui}
               theme={theme}
             />
@@ -398,6 +396,13 @@ export default function App() {
             />
             <EventCalendarDemo
               initialView='timeGridWeek'
+              ui={ui}
+              theme={theme}
+            />
+            <EventCalendarDemo
+              initialView='listYear'
+              availableViews={['listYear', 'listMonth', 'listWeek']}
+              betterListButtons
               ui={ui}
               theme={theme}
             />

@@ -165,6 +165,7 @@ export function buildDateDataConfigs(
           },
           isMajor,
           isCompact: false, // HACK. gets overridden
+          isSticky: false, // HACK. gets overridden
           inPopover: false,
           hasNavLink,
           view: viewApi,
@@ -210,6 +211,7 @@ export function buildDateDataConfigs(
           date: dowDates[dow],
           isMajor,
           isCompact: false, // HACK. gets overridden
+          isSticky: false, // HACK. gets overridden
           inPopover: false,
           hasNavLink: false,
           view: viewApi,

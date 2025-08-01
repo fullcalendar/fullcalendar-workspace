@@ -9,6 +9,7 @@ export interface DayGridHeaderProps {
   className?: string
   cellIsCompact: boolean
   cellIsNarrow: boolean
+  cellIsSticky: boolean
 
   // dimensions
   width?: number
@@ -42,6 +43,7 @@ export class DayGridHeader extends BaseComponent<DayGridHeaderProps> {
             colWidth={props.colWidth}
             cellIsCompact={props.cellIsCompact}
             cellIsNarrow={props.cellIsNarrow}
+            cellIsSticky={props.cellIsSticky}
           />
         ))}
       </div>

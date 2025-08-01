@@ -111,6 +111,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
                 width={canvasWidth}
                 cellIsCompact={cellIsCompact}
                 cellIsNarrow={cellIsNarrow}
+                cellIsSticky={false}
               />
               {Boolean(endScrollbarWidth) && (
                 <div
@@ -122,7 +123,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
                 />
               )}
             </Scroller>
-            <div className={generateClassName(options.dayHeaderDividerClass, { hasAllDaySlot: false })} />
+            <div className={generateClassName(options.dayHeaderDividerClass, { isSticky: false })} />
           </div>
         )}
         <Scroller

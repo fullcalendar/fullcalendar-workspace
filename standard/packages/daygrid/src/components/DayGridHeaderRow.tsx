@@ -5,9 +5,9 @@ import { DayGridHeaderCell } from './DayGridHeaderCell.js'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProps> {
-  isSticky?: boolean
   cellIsCompact: boolean
   cellIsNarrow: boolean
+  cellIsSticky: boolean
   className?: string
   height?: number
   colWidth?: number
@@ -50,12 +50,12 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
             key={dataConfig.key}
             renderConfig={props.renderConfig}
             dataConfig={dataConfig}
-            isSticky={props.isSticky}
             borderStart={Boolean(cellI)}
             colWidth={props.colWidth}
             innerHeightRef={this.innerHeightRefMap.createRef(dataConfig.key)}
             cellIsCompact={props.cellIsCompact}
             cellIsNarrow={props.cellIsNarrow}
+            cellIsSticky={props.cellIsSticky}
           />
         ))}
       </div>

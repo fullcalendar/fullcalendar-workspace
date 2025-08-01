@@ -189,6 +189,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   borderBottom={tierNum < props.headerTiers.length - 1}
                   cellIsCompact={cellIsCompact}
                   cellIsNarrow={cellIsNarrow}
+                  cellIsSticky={false}
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div
@@ -201,7 +202,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 )}
               </div>
             ))}
-            <div className={generateClassName(options.dayHeaderDividerClass, { hasAllDaySlot: Boolean(options.allDaySlot) })} />
+            <div className={generateClassName(options.dayHeaderDividerClass, { isSticky: Boolean(options.allDaySlot) })} />
           </div>
         )}
         <div // the "body"

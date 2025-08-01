@@ -307,6 +307,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...floatingWeekNumberClasses,
 
         dayCellBottomClass: 'min-h-[1px]',
+
+        tableClass: borderClass,
       },
       timeGrid: {
         ...dayGridClasses,

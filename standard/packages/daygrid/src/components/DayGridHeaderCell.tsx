@@ -7,12 +7,12 @@ import classNames from '@fullcalendar/core/internal-classnames'
 export interface DayGridHeaderCellProps<RenderProps> {
   renderConfig: CellRenderConfig<RenderProps>
   dataConfig: CellDataConfig<RenderProps>
-  isSticky?: boolean
   borderStart: boolean
   colWidth?: number
   innerHeightRef?: Ref<number>
   cellIsCompact: boolean
   cellIsNarrow: boolean // even smaller than "compact"
+  cellIsSticky: boolean
 }
 
 export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: boolean }> extends BaseComponent<DayGridHeaderCellProps<RenderProps>> {
@@ -28,6 +28,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
     const finalRenderProps = {
       ...dataConfig.renderProps,
       isCompact: props.cellIsCompact,
+      isSticky: props.cellIsSticky,
     }
     if (props.cellIsNarrow) {
       // TODO: only if not distinct dates
@@ -49,7 +50,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
           classNames.tight,
           classNames.flexCol,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
-          !props.isSticky && classNames.crop,
+          !props.cellIsSticky && classNames.crop,
           props.colWidth == null && classNames.liquid,
         )}
         style={{
@@ -76,7 +77,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
             className={joinClassNames(
               generateClassName(renderConfig.innerClassNameGenerator, finalRenderProps),
               classNames.rigid,
-              props.isSticky && classNames.stickyS,
+              props.cellIsSticky && classNames.stickyS,
             )}
             elRef={this.handleInnerEl}
           />

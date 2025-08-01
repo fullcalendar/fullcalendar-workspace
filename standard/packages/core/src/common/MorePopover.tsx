@@ -52,6 +52,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       ...dateMeta,
       isMajor: false,
       isCompact: false,
+      isSticky: false,
       inPopover: true,
       hasNavLink,
       text,
@@ -81,8 +82,8 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         alignParentTop={props.alignParentTop}
         headerContent={
           <ContentContainer
-            tag='div'
-            generatorName='dayHeaderContent'
+            tag="div"
+            generatorName="dayHeaderContent"
             renderProps={dayHeaderRenderProps}
             customGenerator={options.dayHeaderContent}
             defaultGenerator={renderText}
@@ -93,7 +94,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           >
             {(InnerContent) => (
               <InnerContent
-                tag='div'
+                tag="div"
                 className={generateClassName(options.dayHeaderInnerClass, dayHeaderRenderProps)}
                 attrs={
                   hasNavLink

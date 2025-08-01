@@ -244,6 +244,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}
                       cellIsCompact={cellIsCompact}
                       cellIsNarrow={cellIsNarrow}
+                      cellIsSticky={false}
                     />
                   ))}
                 </div>
@@ -258,7 +259,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 )}
               </Scroller>
             </div>
-            <div className={generateClassName(options.dayHeaderDividerClass, { hasAllDaySlot: Boolean(options.allDaySlot) })} />
+            <div className={generateClassName(options.dayHeaderDividerClass, { isSticky: Boolean(options.allDaySlot) })} />
           </div>
         )}
         <div // the "body"

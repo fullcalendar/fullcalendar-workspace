@@ -1,5 +1,5 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
-import { EventCalendarOptionParams, getDayHeaderClasses, getDayHeaderInnerClasses } from './options-event-calendar.js'
+import { EventCalendarOptionParams } from './options-event-calendar.js'
 
 // ambient types
 // TODO: make these all peer deps? or wait, move options to just core
@@ -13,6 +13,7 @@ import '@fullcalendar/scrollgrid'
 // TODO: make these dependent on EventCalendarOptionParams
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 const neutralBgClass = 'bg-gray-500/10'
+const xxsTextClass = 'text-[0.7rem]/[1.25]'
 
 export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
@@ -24,8 +25,18 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
   return {
     optionDefaults: {
-      resourceDayHeaderClass: (data) => getDayHeaderClasses(data, borderClass, majorBorderClass),
-      resourceDayHeaderInnerClass: (data) => getDayHeaderInnerClasses(data, params.primaryBorderColorClass),
+
+      // TODO: more DRY with dayHeader* ?
+      resourceDayHeaderClass: (data) => [
+        data.isMajor ? majorBorderClass : borderClass,
+        data.isDisabled && neutralBgClass,
+      ],
+      resourceDayHeaderInnerClass: (data) => [
+        'flex flex-col',
+        'px-2 pt-1 pb-2 border-t-4', // TODO: adjust padding when isCompact?
+        data.isToday ? params.primaryBorderColorClass : 'border-transparent',
+        data.isCompact ? xxsTextClass : 'text-xs',
+      ],
 
       resourceAreaHeaderRowClass: borderClass,
       resourceAreaHeaderClass: `${borderClass} items-center`, // valign
