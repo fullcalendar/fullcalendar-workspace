@@ -28,7 +28,6 @@ export const neutralBgClass = 'bg-gray-500/10'
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
 const cellPaddingClass = 'p-2'
-const listItemPaddingClass = 'px-3 py-2' // list-day-header and list-item-event
 const dayGridItemClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-link
 
 // timegrid axis
@@ -322,14 +321,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       nowIndicatorLineClass: `-m-px border-1 ${params.alertBorderColorClass}`,
       nowIndicatorDotClass: `rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 ${params.alertBorderColorClass} outline-2 ${params.canvasOutlineColorClass}`,
 
-      listDayClass: `not-last:border-b ${params.borderColorClass}`,
-      listDayHeaderClass: (data) => [
-        `flex flex-row justify-between border-b ${params.borderColorClass} font-bold`,
-        'relative', // for overlaid "before" color
-        data.isSticky && params.canvasBgColorClass, // base color for overlaid "before" color
+      listDayClass: `not-last:border-b ${params.borderColorClass} flex flex-row items-start`,
+      listDayHeaderClass: 'top-0 sticky w-1/4 max-w-40 p-3 flex flex-col',
+      listDayHeaderInnerClass: (data) => [
+        data.level ? 'text-xs' : ('text-lg' + (data.isToday ? ' font-bold' : '')),
       ],
-      listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgClass}`,
-      listDayHeaderInnerClass: `relative ${listItemPaddingClass} text-sm`, // above the "before" element
+      listDayEventsClass: 'flex-grow flex flex-col items-stretch gap-4 p-4',
     },
     views: {
       dayGrid: {
@@ -379,16 +376,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelDividerClass: `border-l ${params.borderColorClass}`,
       },
       list: {
-        listItemEventClass: `group gap-3 not-last:border-b ${params.borderColorClass} ${listItemPaddingClass}`,
-        listItemEventColorClass: 'border-5', // 10px diameter circle
-        listItemEventInnerClass: '[display:contents]',
-        listItemEventTimeClass: 'order-[-1] w-[165px] text-sm', // send to start
-        listItemEventTitleClass: (data) => [
-          'text-sm',
-          data.event.url && 'group-hover:underline',
-        ],
+        viewClass: neutralBgClass,
 
-        noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center ${neutralBgClass}`,
+        listItemEventClass: 'bg-white shadow-sm p-3 flex flex-row rounded-xs border-s-4 border-(--fc-event-color)', // why the hover color!?
+        listItemEventInnerClass: 'flex flex-row text-sm',
+        listItemEventTimeClass: 'w-40',
+        listItemEventTitleClass: 'flex-grow font-semibold',
+
+        noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center`,
       },
     },
   }

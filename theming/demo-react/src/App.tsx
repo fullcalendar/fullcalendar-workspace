@@ -385,6 +385,11 @@ export default function App() {
               <MuiCssBaseline />
             )}
             <EventCalendarDemo
+              initialView='listYear'
+              ui={ui}
+              theme={theme}
+            />
+            <EventCalendarDemo
               initialView='dayGridMonth'
               ui={ui}
               theme={theme}
@@ -480,7 +485,8 @@ function EventCalendarDemo(props: DemoProps) {
       events={[
         {
           "title": "All Day Event",
-          "start": "2025-07-01"
+          "start": "2025-07-01",
+          color: 'red',
         },
         {
           "title": "Long Event",

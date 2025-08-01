@@ -44,6 +44,8 @@ TODO: in all-day area, when stacking events, allDayHeader not valigned
   also, wrong cell-bottom padding
 
 PROBLEM: event color too dim to pop above background-event color
+
+TODO: are multiple listDayFormats looking good?
 */
 function createDayGridClasses(primaryBorderColorClass: string): CalendarOptions {
   return {
