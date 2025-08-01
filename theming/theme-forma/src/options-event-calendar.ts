@@ -11,6 +11,10 @@ https://react.fluentui.dev/?path=/docs/theme-spacing--docs
 TODO: put blue line at top of popover when isToday?
 
 TODO: week numbers in small singleMonths look bad
+
+BUG: +more-popover in multimonth has popover-header content centered
+
+TODO: ensure +more link has same height as normal event, even in condensed multimonth
 */
 
 // ambient types
@@ -267,8 +271,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderRowClass: borderClass,
 
-      dayHeaderDividerClass: ['border-t', params.borderColorClass],
-
       dayRowClass: borderClass,
       dayCellClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
@@ -315,6 +317,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayGrid: {
         ...dayGridClasses,
         // TODO: DRY
+        dayHeaderDividerClass: ['border-t', params.borderColorClass],
         dayHeaderClass: (data) => [
           data.isMajor ? majorBorderClass : borderClass,
           data.isDisabled && neutralBgClass,
@@ -332,7 +335,18 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       multiMonth: {
         ...dayGridClasses,
+        dayHeaderDividerClass: (data) => data.isSticky && ['border-t', params.borderColorClass],
         dayHeaderClass: 'items-center',
+        dayHeaderInnerClass: (data) => [
+          'flex flex-col',
+          data.isCompact ? 'p-1' : 'p-2',
+          data.isCompact ? xxsTextClass : 'text-xs',
+        ],
+
+        tableBodyClass: [
+          'border', params.borderColorClass,
+          'rounded-sm overflow-hidden',
+        ],
 
         ...floatingWeekNumberClasses,
 
@@ -341,6 +355,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       timeGrid: {
         ...dayGridClasses,
         // TODO: DRY
+        dayHeaderDividerClass: ['border-t', params.borderColorClass],
         dayHeaderClass: (data) => [
           data.isMajor ? majorBorderClass : borderClass,
           data.isDisabled && neutralBgClass,
