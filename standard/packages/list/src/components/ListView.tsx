@@ -22,7 +22,7 @@ import {
   sliceEventStore,
   startOfDay,
   ViewContainer,
-  ViewProps
+  ViewProps,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import {
@@ -70,11 +70,14 @@ export class ListView extends DateComponent<ViewProps> {
           vertical={verticalScrolling}
           className={joinClassNames(
             classNames.flexCol,
-            verticalScrolling ? classNames.liquid : ''
+            verticalScrolling ? classNames.liquid : '',
           )}
         >
-          {this.renderSegList(eventSegs, dayDates)}
-          {!eventSegs.length && this.renderEmptyMessage()}
+          {!eventSegs.length ? (
+            this.renderEmptyMessage()
+          ) : (
+            this.renderSegList(eventSegs, dayDates)
+          )}
         </Scroller>
       </ViewContainer>
     )
@@ -128,7 +131,7 @@ export class ListView extends DateComponent<ViewProps> {
 
     return (
       <div
-        role='list'
+        role="list"
         aria-labelledby={this.props.labelId}
         aria-label={this.props.labelStr}
         className={joinClassNames(
@@ -155,7 +158,7 @@ export class ListView extends DateComponent<ViewProps> {
                     todayRange={todayRange}
                     segs={daySegs}
                     forPrint={this.props.forPrint}
-                  />
+                  />,
                 )
               }
             }
@@ -252,7 +255,7 @@ function computeDateVars(dateProfile: DateProfile) {
 
 // Returns a sparse array of arrays, segs grouped by their dayIndex
 function groupSegsByDay(
-  segs: (ListSeg & EventRangeProps)[]
+  segs: (ListSeg & EventRangeProps)[],
 ): (ListSeg & EventRangeProps)[][] {
   let segsByDay: (ListSeg & EventRangeProps)[][] = [] // sparse array
   let i: number

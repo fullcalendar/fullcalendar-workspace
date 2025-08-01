@@ -37,6 +37,9 @@ how to distribute *MUI* themes?
   as plugin
     [internally] .asdf { outline-color: var(--mui-palette-paper-main) }
 
+In theme demo App.tsx,
+  have font-families change based on Component Lib
+
 how to distribute Default-UI themes?
   [always has color variation]
     --fc-monarch-something: red;

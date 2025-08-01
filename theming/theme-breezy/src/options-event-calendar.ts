@@ -45,7 +45,7 @@ TODO: in all-day area, when stacking events, allDayHeader not valigned
 
 PROBLEM: event color too dim to pop above background-event color
 
-TODO: are multiple listDayFormats looking good?
+TODO: fix multiple listDayFormats
 */
 function createDayGridClasses(primaryBorderColorClass: string): CalendarOptions {
   return {
@@ -278,6 +278,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           'flex-grow font-semibold',
           'text-(--fc-event-color) brightness-60',
         ],
+
+        noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center`,
       },
     },
   }
