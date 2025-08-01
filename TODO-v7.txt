@@ -46,10 +46,31 @@ don't export mergeCalendarOptions, special behavior not needed in theme adapters
 
 maybe rename "canvas" color to "background" color?
 
+always make listDayHeaderInner sticky-top!
+  well, maybe not because there are multiple listDayHeaderInner that could stack
+  maybe on listDayHeaderClass?
+
 give classic theme css variables for color
   we realized we needed this for the canvas color
   better to have API be consistent with other themes (ex: palette-chooser on website)
 
+Type and plugin issues
+  Don't bake-in plugins to EventCalendar or Scheduler
+  Have them specified by plugins=
+    <EventCalendar
+      availableViews={['dayGridMonth', 'timeGridWeek']} // <-- TODO: supply a default
+      plugins={[dayGridPlugin, timeGridPlugin]} // <-- but then callers must import @fullcalendar/daygrid
+    />
+  NEVERMIND: dont want callers to worry about supplying plugins
+    Also, there's magic in having component with no props *just work*
+    <EventCalendar /> or <Scheduler />
+    availableViews should have a default value, which shall be different for either EventCalendar/Scheduler
+
+For demo/App.tsx, try to move all theme-specific settings into theme DEFAULT!
+  if can't work, make separate system for theme-recommended options that get inlined into the build html
+
+future-ticket: make monthgrid suck less
+future-ticket: revive weeknumber column-mode
 
 eventually have MUI themes output styles using sx={} prop, like:
   https://chatgpt.com/share/688a7d49-4314-800f-b1c5-9253733352be

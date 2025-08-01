@@ -7,6 +7,8 @@ For color variations, see different brand colors:
 https://fluent2.microsoft.design/color
 spacing and whatnot:
 https://react.fluentui.dev/?path=/docs/theme-spacing--docs
+
+TODO: put blue line at top of popover when isToday
 */
 
 // ambient types

@@ -33,6 +33,10 @@ export interface EventCalendarOptionParams {
   canvasOutlineColorClass: string
 }
 
+/*
+TODO: resource-view expander doesn't expand. use chevron-down and do rotations
+*/
+
 export const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
 export const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // TODO: deal with this!!!... ugly dark grey... rethink
 const nonBusinessHoursClass = 'bg-gray-500/7' // must be semitransprent
