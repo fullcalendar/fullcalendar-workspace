@@ -386,6 +386,8 @@ export default function App() {
             )}
             <EventCalendarDemo
               initialView='listYear'
+              availableViews={['listYear', 'listMonth', 'listWeek']}
+              betterListButtons
               ui={ui}
               theme={theme}
             />
@@ -415,6 +417,8 @@ interface DemoProps {
   ui: string
   theme: string
   initialView?: string
+  availableViews?: string[]
+  betterListButtons?: boolean
 }
 
 const eventCalendarAvailableViews = [
@@ -430,7 +434,8 @@ function EventCalendarDemo(props: DemoProps) {
 
   return (
     <EventCalendarComponent
-      availableViews={eventCalendarAvailableViews} // required! should be based on plugins!?
+      availableViews={props.availableViews || eventCalendarAvailableViews} // required! should be based on plugins!?
+      {...(props.betterListButtons ? { listText: '' } : {})}
       navLinkDayClick='timeGridDay'
       navLinkWeekClick='timeGridWeek'
       schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
@@ -557,7 +562,7 @@ function SchedulerDemo(props: DemoProps) {
 
   return (
     <SchedulerComponent
-      availableViews={schedulerAvailableViews}
+      availableViews={props.availableViews || schedulerAvailableViews}
       navLinkDayClick='resourceTimelineDay'
       navLinkWeekClick='resourceTimelineWeek'
       schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'

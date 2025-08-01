@@ -42,6 +42,9 @@ how to distribute Default-UI themes?
     [internally] .asdf { outline-color: var(--fc-monarch-canvas) }
 
 
+listDayHeaderClass always gets flex-row from core
+  remove from themes if they define flex-row
+
 don't export mergeCalendarOptions, special behavior not needed in theme adapters
 
 maybe rename "canvas" color to "background" color?

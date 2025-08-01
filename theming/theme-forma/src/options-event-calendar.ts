@@ -376,10 +376,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelDividerClass: `border-l ${params.borderColorClass}`,
       },
       list: {
-        viewClass: neutralBgClass,
+        viewClass: 'bg-gray-50',
 
         listItemEventClass: 'bg-white shadow-sm p-3 flex flex-row rounded-xs border-s-4 border-(--fc-event-color)', // why the hover color!?
-        listItemEventInnerClass: 'flex flex-row text-sm',
+        listItemEventInnerClass: 'flex flex-row text-sm', // TODO: ensure gap
         listItemEventTimeClass: 'w-40',
         listItemEventTitleClass: 'flex-grow font-semibold',
 

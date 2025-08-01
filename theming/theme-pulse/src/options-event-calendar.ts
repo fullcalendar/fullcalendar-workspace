@@ -19,6 +19,8 @@ light-blue: #22CCE2
 
 TODO: implement now-indicator
 TODO: text-gray-500 is yucky for Shadcn
+
+TODO: give day-number-circle to list-view day-headers
 */
 
 const dayGridClasses: CalendarOptions = {
@@ -90,7 +92,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       class: 'gap-6',
 
-      viewClass: 'bg-white rounded-lg overflow-hidden ' +
+      viewClass: 'rounded-lg overflow-hidden ' +
         'border border-[rgb(228_228_229)] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]',
         // ^^^ what is this border!?
 
@@ -169,6 +171,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       fillerClass: (data) => [
         !data.isHeader && `${borderClass} opacity-50`,
       ],
+
+      listDayClass: `flex flex-col not-first:border-t ${params.borderColorClass}`,
+      listDayHeaderClass: `flex flex-row justify-between bg-white border-b ${params.borderColorClass} top-0 sticky`,
+      listDayHeaderInnerClass: (data) => [
+        'px-3 py-3 text-sm',
+        !data.level && 'font-semibold',
+      ],
     },
     views: {
       dayGrid: {
@@ -191,6 +200,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
       },
       list: {
+        viewClass: 'bg-[#f6f6f6]',
+
+        listDayEventsClass: 'flex flex-col py-4 gap-4',
+        listItemEventInnerClass: '[display:contents]',
+        listItemEventTimeClass: 'ps-6 pe-4 py-2 order-[-1] w-60 text-sm',
+        listItemEventTitleClass: 'px-4 py-2 text-sm',
+        listItemEventColorClass: 'bg-(--fc-event-color) w-1.5 rounded-full',
       },
     },
   }
