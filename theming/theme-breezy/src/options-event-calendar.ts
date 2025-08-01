@@ -274,7 +274,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         // TODO: make this common?...
         listItemEventTimeClass: 'order-1 text-gray-500',
-        listItemEventTitleClass: 'flex-grow font-semibold text-gray-900',
+        listItemEventTitleClass: [
+          'flex-grow font-semibold',
+          'text-(--fc-event-color) brightness-60',
+        ],
       },
     },
   }
