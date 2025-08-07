@@ -10,4 +10,3 @@ packages:
   - './contrib/*'
   - './examples/*'
   - '!./examples/angular18'
-  - '!./examples/angular20'
