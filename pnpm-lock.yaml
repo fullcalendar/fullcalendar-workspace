@@ -34,7 +34,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ~13.3.10
-        version: 13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.76.1))(karma@6.3.20)(ng-packagr@13.3.1(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.8.1)(typescript@4.6.4))(typescript@4.6.4)
+        version: 13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.97.0))(karma@6.3.20)(ng-packagr@13.3.1(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.8.1)(typescript@4.6.4))(typescript@4.6.4)
       '@angular/animations':
         specifier: ~13.3.0
         version: 13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))
@@ -66,25 +66,25 @@ importers:
         specifier: ~13.3.0
         version: 13.3.12(@angular/common@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(@angular/platform-browser@13.3.12(@angular/animations@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8)))(@angular/common@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8)))(rxjs@7.5.7)
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/list/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timegrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../premium/packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../premium/packages/resource-timeline/dist
       '@types/jasmine':
         specifier: ~3.10.0
@@ -136,25 +136,25 @@ importers:
         specifier: ^7.9.4
         version: 7.25.9(@babel/core@7.26.0)
       '@fullcalendar/adaptive':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../premium/packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/list':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/list/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/timegrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/timegrid/dist
       '@rollup/plugin-babel':
         specifier: ^5.0.0
@@ -232,19 +232,19 @@ importers:
         specifier: ^7.12.1
         version: 7.26.0
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../premium/packages/resource-timeline/dist
       '@vue/test-utils':
         specifier: ^1.0.3
@@ -307,10 +307,10 @@ importers:
   contrib/vue3:
     devDependencies:
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/daygrid/dist
       '@vitejs/plugin-vue':
         specifier: ^3.2.0
@@ -508,7 +508,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ~13.3.10
-        version: 13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.97.0))(karma@6.3.20)(ng-packagr@13.3.1(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.8.1)(typescript@4.6.4))(typescript@4.6.4)
+        version: 13.3.11(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/express@4.17.21)(chokidar@3.6.0)(html-webpack-plugin@5.6.3(webpack@5.76.1))(karma@6.3.20)(ng-packagr@13.3.1(@angular/compiler-cli@13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4))(@types/node@12.20.55)(tslib@2.8.1)(typescript@4.6.4))(typescript@4.6.4)
       '@angular/cli':
         specifier: ~13.3.10
         version: 13.3.11(chokidar@3.6.0)
@@ -693,10 +693,10 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^15.0.0
-        version: 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(html-webpack-plugin@5.6.3(webpack@5.76.1))(karma@6.4.4)(typescript@4.8.4)
+        version: 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(html-webpack-plugin@5.6.3(webpack@5.97.0))(karma@6.4.4)(typescript@4.8.4)
       '@angular/cli':
         specifier: ~15.0.0
-        version: 15.0.5(chokidar@3.5.3)
+        version: 15.0.5(chokidar@3.6.0)
       '@angular/compiler-cli':
         specifier: ^15.0.0
         version: 15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4)
@@ -793,7 +793,7 @@ importers:
     devDependencies:
       '@angular-devkit/build-angular':
         specifier: ^15.0.0
-        version: 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.8.4))(html-webpack-plugin@5.6.3(webpack@5.97.0))(karma@6.4.4)(typescript@4.8.4)
+        version: 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.8.4))(html-webpack-plugin@5.6.3(webpack@5.76.1))(karma@6.4.4)(typescript@4.8.4)
       '@angular-eslint/builder':
         specifier: ^15.0.0
         version: 15.2.1(eslint@7.32.0)(typescript@4.8.4)
@@ -805,13 +805,13 @@ importers:
         version: 15.2.1(eslint@7.32.0)(typescript@4.8.4)
       '@angular-eslint/schematics':
         specifier: ^15.0.0
-        version: 15.2.1(@angular/cli@15.0.5(chokidar@3.6.0))(eslint@7.32.0)(typescript@4.8.4)
+        version: 15.2.1(@angular/cli@15.0.5(chokidar@3.5.3))(eslint@7.32.0)(typescript@4.8.4)
       '@angular-eslint/template-parser':
         specifier: ^15.0.0
         version: 15.2.1(eslint@7.32.0)(typescript@4.8.4)
       '@angular/cli':
         specifier: ^15.0.0
-        version: 15.0.5(chokidar@3.6.0)
+        version: 15.0.5(chokidar@3.5.3)
       '@angular/compiler':
         specifier: ^15.0.0
         version: 15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8))
@@ -826,7 +826,7 @@ importers:
         version: 4.7.1
       '@ionic/angular-toolkit':
         specifier: ^8.0.0
-        version: 8.1.0(chokidar@3.6.0)
+        version: 8.1.0(chokidar@3.5.3)
       '@types/jasmine':
         specifier: ~4.0.0
         version: 4.0.3
@@ -1185,22 +1185,22 @@ importers:
         specifier: ^19.0.0
         version: 19.0.1(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.1(@angular/animations@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
       '@fullcalendar/angular':
-        specifier: ^6.1.18
+        specifier: ^6.1.19
         version: file:contrib/angular/dist/lib(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: ^6.1.18
+        specifier: ^6.1.19
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ^6.1.18
+        specifier: ^6.1.19
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ^6.1.18
+        specifier: ^6.1.19
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ^6.1.18
+        specifier: ^6.1.19
         version: link:../../standard/packages/list/dist
       '@fullcalendar/timegrid':
-        specifier: ^6.1.18
+        specifier: ^6.1.19
         version: link:../../standard/packages/timegrid/dist
       rxjs:
         specifier: ~7.8.0
@@ -1270,22 +1270,22 @@ importers:
         specifier: ^20.0.0
         version: 20.1.6(@angular/common@20.1.6(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@20.1.6(@angular/common@20.1.6(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
       '@fullcalendar/angular':
-        specifier: ^6.1.18
+        specifier: ^6.1.19
         version: file:contrib/angular/dist/lib(@angular/common@20.1.6(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@20.1.6(@angular/compiler@20.1.6)(rxjs@7.8.1)(zone.js@0.15.0))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: ^6.1.18
+        specifier: ^6.1.19
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ^6.1.18
+        specifier: ^6.1.19
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ^6.1.18
+        specifier: ^6.1.19
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ^6.1.18
+        specifier: ^6.1.19
         version: link:../../standard/packages/list/dist
       '@fullcalendar/timegrid':
-        specifier: ^6.1.18
+        specifier: ^6.1.19
         version: link:../../standard/packages/timegrid/dist
       rxjs:
         specifier: ~7.8.0
@@ -3196,43 +3196,43 @@ importers:
   premium/bundle:
     dependencies:
       '@fullcalendar/adaptive':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/list/dist
       '@fullcalendar/multimonth':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/multimonth/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../packages/resource/dist
       '@fullcalendar/resource-daygrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../packages/resource-daygrid/dist
       '@fullcalendar/resource-timegrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../packages/resource-timeline/dist
       '@fullcalendar/scrollgrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../packages/scrollgrid/dist
       '@fullcalendar/timegrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../standard/packages/timegrid/dist
       '@fullcalendar/timeline':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../packages/timeline/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
@@ -3243,14 +3243,14 @@ importers:
   premium/packages/adaptive:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
@@ -3275,118 +3275,118 @@ importers:
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
   premium/packages/resource:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
   premium/packages/resource-daygrid:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../../standard/packages/daygrid/dist
       '@fullcalendar/premium-common':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../../standard/packages/core/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../resource/dist
     publishDirectory: ./dist
 
   premium/packages/resource-timegrid:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../premium-common/dist
       '@fullcalendar/resource-daygrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../resource-daygrid/dist
       '@fullcalendar/timegrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../../standard/packages/timegrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../../standard/packages/core/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../resource/dist
     publishDirectory: ./dist
 
   premium/packages/resource-timeline:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../premium-common/dist
       '@fullcalendar/scrollgrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../scrollgrid/dist
       '@fullcalendar/timeline':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../timeline/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../../standard/packages/core/dist
       '@fullcalendar/resource':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../resource/dist
     publishDirectory: ./dist
 
   premium/packages/scrollgrid:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
   premium/packages/timeline:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../premium-common/dist
       '@fullcalendar/scrollgrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../scrollgrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
@@ -3475,22 +3475,22 @@ importers:
   standard/bundle:
     dependencies:
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../packages/interaction/dist
       '@fullcalendar/list':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../packages/list/dist
       '@fullcalendar/multimonth':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../packages/multimonth/dist
       '@fullcalendar/timegrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../packages/timegrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
@@ -3504,7 +3504,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3514,7 +3514,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3541,7 +3541,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3551,7 +3551,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3561,7 +3561,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
       ical.js:
         specifier: ^1.4.0
@@ -3574,7 +3574,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3584,7 +3584,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3594,7 +3594,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
       luxon:
         specifier: ^1.12.1
@@ -3607,7 +3607,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
       '@types/luxon':
         specifier: ^2.0.9
@@ -3623,7 +3623,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
       '@types/luxon':
         specifier: ^3.3.0
@@ -3639,7 +3639,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
       moment:
         specifier: ^2.29.1
@@ -3652,7 +3652,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
       moment-timezone:
         specifier: ^0.5.40
@@ -3662,14 +3662,14 @@ importers:
   standard/packages/multimonth:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../daygrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3679,7 +3679,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
       rrule:
         specifier: ^2.6.0
@@ -3689,14 +3689,14 @@ importers:
   standard/packages/timegrid:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../daygrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3706,7 +3706,7 @@ importers:
         specifier: '*'
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: ~6.1.18
+        specifier: ~6.1.19
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -7877,12 +7877,12 @@ packages:
     peerDependencies:
       '@angular/common': 12 - 20
       '@angular/core': 12 - 20
-      '@fullcalendar/core': ~6.1.18
+      '@fullcalendar/core': ~6.1.19
 
   '@fullcalendar/react@file:contrib/react':
     resolution: {directory: contrib/react, type: directory}
     peerDependencies:
-      '@fullcalendar/core': ~6.1.18
+      '@fullcalendar/core': ~6.1.19
       react: ^16.7.0 || ^17 || ^18 || ^19
       react-dom: ^16.7.0 || ^17 || ^18 || ^19
 
@@ -23541,7 +23541,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))
+      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
       '@angular-devkit/core': 13.3.11(chokidar@3.6.0)
       '@angular/compiler-cli': 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@babel/core': 7.16.12
@@ -23601,8 +23601,8 @@ snapshots:
       tslib: 2.3.1
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
       webpack-merge: 5.8.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
     optionalDependencies:
@@ -23628,7 +23628,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))
+      '@angular-devkit/build-webpack': 0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))
       '@angular-devkit/core': 13.3.11(chokidar@3.6.0)
       '@angular/compiler-cli': 13.3.12(@angular/compiler@13.3.12)(typescript@4.6.4)
       '@babel/core': 7.16.12
@@ -23688,8 +23688,8 @@ snapshots:
       tslib: 2.3.1
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
       webpack-merge: 5.8.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.97.0))(webpack@5.76.1(esbuild@0.14.22))
     optionalDependencies:
@@ -23715,7 +23715,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1402.13(chokidar@3.6.0)
-      '@angular-devkit/build-webpack': 0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1)
+      '@angular-devkit/build-webpack': 0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5))
       '@angular-devkit/core': 14.2.13(chokidar@3.6.0)
       '@angular/compiler-cli': 14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4)
       '@babel/core': 7.18.10
@@ -23728,15 +23728,15 @@ snapshots:
       '@babel/runtime': 7.18.9
       '@babel/template': 7.18.10
       '@discoveryjs/json-ext': 0.5.7
-      '@ngtools/webpack': 14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(typescript@4.7.4)(webpack@5.76.1)
+      '@ngtools/webpack': 14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(typescript@4.7.4)(webpack@5.76.1(esbuild@0.15.5))
       ansi-colors: 4.1.3
-      babel-loader: 8.2.5(@babel/core@7.18.10)(webpack@5.76.1)
+      babel-loader: 8.2.5(@babel/core@7.18.10)(webpack@5.76.1(esbuild@0.15.5))
       babel-plugin-istanbul: 6.1.1
       browserslist: 4.24.2
       cacache: 16.1.2
-      copy-webpack-plugin: 11.0.0(webpack@5.76.1)
+      copy-webpack-plugin: 11.0.0(webpack@5.76.1(esbuild@0.15.5))
       critters: 0.0.16
-      css-loader: 6.7.1(webpack@5.76.1)
+      css-loader: 6.7.1(webpack@5.76.1(esbuild@0.15.5))
       esbuild-wasm: 0.15.5
       glob: 8.0.3
       https-proxy-agent: 5.0.1
@@ -23744,10 +23744,10 @@ snapshots:
       jsonc-parser: 3.1.0
       karma-source-map-support: 1.4.0
       less: 4.1.3
-      less-loader: 11.0.0(less@4.1.3)(webpack@5.76.1)
-      license-webpack-plugin: 4.0.2(webpack@5.76.1)
+      less-loader: 11.0.0(less@4.1.3)(webpack@5.76.1(esbuild@0.15.5))
+      license-webpack-plugin: 4.0.2(webpack@5.76.1(esbuild@0.15.5))
       loader-utils: 3.2.1
-      mini-css-extract-plugin: 2.6.1(webpack@5.76.1)
+      mini-css-extract-plugin: 2.6.1(webpack@5.76.1(esbuild@0.15.5))
       minimatch: 5.1.0
       open: 8.4.0
       ora: 5.4.1
@@ -23755,18 +23755,18 @@ snapshots:
       piscina: 3.2.0
       postcss: 8.4.31
       postcss-import: 15.0.0(postcss@8.4.31)
-      postcss-loader: 7.0.1(postcss@8.4.31)(webpack@5.76.1)
+      postcss-loader: 7.0.1(postcss@8.4.31)(webpack@5.76.1(esbuild@0.15.5))
       postcss-preset-env: 7.8.0(postcss@8.4.31)
       regenerator-runtime: 0.13.9
       resolve-url-loader: 5.0.0
       rxjs: 6.6.7
       sass: 1.54.4
-      sass-loader: 13.0.2(sass@1.54.4)(webpack@5.76.1)
+      sass-loader: 13.0.2(sass@1.54.4)(webpack@5.76.1(esbuild@0.15.5))
       semver: 7.5.3
-      source-map-loader: 4.0.0(webpack@5.76.1)
+      source-map-loader: 4.0.0(webpack@5.76.1(esbuild@0.15.5))
       source-map-support: 0.5.21
       stylus: 0.59.0
-      stylus-loader: 7.0.0(stylus@0.59.0)(webpack@5.76.1)
+      stylus-loader: 7.0.0(stylus@0.59.0)(webpack@5.76.1(esbuild@0.15.5))
       terser: 5.14.2
       text-table: 0.2.0
       tree-kill: 1.2.2
@@ -23776,7 +23776,7 @@ snapshots:
       webpack-dev-middleware: 5.3.3(webpack@5.76.1)
       webpack-dev-server: 4.11.0(webpack@5.76.1)
       webpack-merge: 5.8.0
-      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1)
+      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5))
     optionalDependencies:
       esbuild: 0.15.5
       karma: 6.4.4
@@ -23795,11 +23795,11 @@ snapshots:
       - utf-8-validate
       - webpack-cli
 
-  '@angular-devkit/build-angular@15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.8.4))(html-webpack-plugin@5.6.3(webpack@5.97.0))(karma@6.4.4)(typescript@4.8.4)':
+  '@angular-devkit/build-angular@15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.8.4))(html-webpack-plugin@5.6.3(webpack@5.76.1))(karma@6.4.4)(typescript@4.8.4)':
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1502.11(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1502.11(chokidar@3.5.3)(webpack-dev-server@4.11.1(webpack@5.76.1))(webpack@5.76.1)
+      '@angular-devkit/build-webpack': 0.1502.11(chokidar@3.5.3)(webpack-dev-server@4.11.1(webpack@5.76.1))(webpack@5.76.1(esbuild@0.17.8))
       '@angular-devkit/core': 15.2.11(chokidar@3.5.3)
       '@angular/compiler-cli': 15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.8.4)
       '@babel/core': 7.20.12
@@ -23816,14 +23816,14 @@ snapshots:
       '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1(esbuild@0.17.8))
       ansi-colors: 4.1.3
       autoprefixer: 10.4.13(postcss@8.4.31)
-      babel-loader: 9.1.2(@babel/core@7.20.12)(webpack@5.76.1)
+      babel-loader: 9.1.2(@babel/core@7.20.12)(webpack@5.76.1(esbuild@0.17.8))
       babel-plugin-istanbul: 6.1.1
       browserslist: 4.21.5
       cacache: 17.0.4
       chokidar: 3.5.3
-      copy-webpack-plugin: 11.0.0(webpack@5.76.1)
+      copy-webpack-plugin: 11.0.0(webpack@5.76.1(esbuild@0.17.8))
       critters: 0.0.16
-      css-loader: 6.7.3(webpack@5.76.1)
+      css-loader: 6.7.3(webpack@5.76.1(esbuild@0.17.8))
       esbuild-wasm: 0.17.8
       glob: 8.1.0
       https-proxy-agent: 5.0.1
@@ -23831,23 +23831,23 @@ snapshots:
       jsonc-parser: 3.2.0
       karma-source-map-support: 1.4.0
       less: 4.1.3
-      less-loader: 11.1.0(less@4.1.3)(webpack@5.76.1)
-      license-webpack-plugin: 4.0.2(webpack@5.76.1)
+      less-loader: 11.1.0(less@4.1.3)(webpack@5.76.1(esbuild@0.17.8))
+      license-webpack-plugin: 4.0.2(webpack@5.76.1(esbuild@0.17.8))
       loader-utils: 3.2.1
       magic-string: 0.29.0
-      mini-css-extract-plugin: 2.7.2(webpack@5.76.1)
+      mini-css-extract-plugin: 2.7.2(webpack@5.76.1(esbuild@0.17.8))
       open: 8.4.1
       ora: 5.4.1
       parse5-html-rewriting-stream: 7.0.0
       piscina: 3.2.0
       postcss: 8.4.31
-      postcss-loader: 7.0.2(postcss@8.4.31)(webpack@5.76.1)
+      postcss-loader: 7.0.2(postcss@8.4.31)(webpack@5.76.1(esbuild@0.17.8))
       resolve-url-loader: 5.0.0
       rxjs: 6.6.7
       sass: 1.58.1
-      sass-loader: 13.2.0(sass@1.58.1)(webpack@5.76.1)
+      sass-loader: 13.2.0(sass@1.58.1)(webpack@5.76.1(esbuild@0.17.8))
       semver: 7.5.3
-      source-map-loader: 4.0.1(webpack@5.76.1)
+      source-map-loader: 4.0.1(webpack@5.76.1(esbuild@0.17.8))
       source-map-support: 0.5.21
       terser: 5.16.3
       text-table: 0.2.0
@@ -23855,91 +23855,10 @@ snapshots:
       tslib: 2.5.0
       typescript: 4.8.4
       webpack: 5.76.1(esbuild@0.17.8)
-      webpack-dev-middleware: 6.1.2(webpack@5.76.1)
+      webpack-dev-middleware: 6.1.2(webpack@5.76.1(esbuild@0.17.8))
       webpack-dev-server: 4.11.1(webpack@5.76.1)
       webpack-merge: 5.8.0
-      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.97.0))(webpack@5.76.1(esbuild@0.17.8))
-    optionalDependencies:
-      esbuild: 0.17.8
-      karma: 6.4.4
-    transitivePeerDependencies:
-      - '@swc/core'
-      - bluebird
-      - bufferutil
-      - debug
-      - fibers
-      - html-webpack-plugin
-      - node-sass
-      - sass-embedded
-      - supports-color
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
-
-  '@angular-devkit/build-angular@15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(html-webpack-plugin@5.6.3(webpack@5.76.1))(karma@6.4.4)(typescript@4.8.4)':
-    dependencies:
-      '@ampproject/remapping': 2.2.0
-      '@angular-devkit/architect': 0.1502.11(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1502.11(chokidar@3.5.3)(webpack-dev-server@4.11.1(webpack@5.76.1))(webpack@5.76.1)
-      '@angular-devkit/core': 15.2.11(chokidar@3.5.3)
-      '@angular/compiler-cli': 15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4)
-      '@babel/core': 7.20.12
-      '@babel/generator': 7.20.14
-      '@babel/helper-annotate-as-pure': 7.18.6
-      '@babel/helper-split-export-declaration': 7.18.6
-      '@babel/plugin-proposal-async-generator-functions': 7.20.7(@babel/core@7.20.12)
-      '@babel/plugin-transform-async-to-generator': 7.20.7(@babel/core@7.20.12)
-      '@babel/plugin-transform-runtime': 7.19.6(@babel/core@7.20.12)
-      '@babel/preset-env': 7.20.2(@babel/core@7.20.12)
-      '@babel/runtime': 7.20.13
-      '@babel/template': 7.20.7
-      '@discoveryjs/json-ext': 0.5.7
-      '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1(esbuild@0.17.8))
-      ansi-colors: 4.1.3
-      autoprefixer: 10.4.13(postcss@8.4.31)
-      babel-loader: 9.1.2(@babel/core@7.20.12)(webpack@5.76.1)
-      babel-plugin-istanbul: 6.1.1
-      browserslist: 4.21.5
-      cacache: 17.0.4
-      chokidar: 3.5.3
-      copy-webpack-plugin: 11.0.0(webpack@5.76.1)
-      critters: 0.0.16
-      css-loader: 6.7.3(webpack@5.76.1)
-      esbuild-wasm: 0.17.8
-      glob: 8.1.0
-      https-proxy-agent: 5.0.1
-      inquirer: 8.2.4
-      jsonc-parser: 3.2.0
-      karma-source-map-support: 1.4.0
-      less: 4.1.3
-      less-loader: 11.1.0(less@4.1.3)(webpack@5.76.1)
-      license-webpack-plugin: 4.0.2(webpack@5.76.1)
-      loader-utils: 3.2.1
-      magic-string: 0.29.0
-      mini-css-extract-plugin: 2.7.2(webpack@5.76.1)
-      open: 8.4.1
-      ora: 5.4.1
-      parse5-html-rewriting-stream: 7.0.0
-      piscina: 3.2.0
-      postcss: 8.4.31
-      postcss-loader: 7.0.2(postcss@8.4.31)(webpack@5.76.1)
-      resolve-url-loader: 5.0.0
-      rxjs: 6.6.7
-      sass: 1.58.1
-      sass-loader: 13.2.0(sass@1.58.1)(webpack@5.76.1)
-      semver: 7.5.3
-      source-map-loader: 4.0.1(webpack@5.76.1)
-      source-map-support: 0.5.21
-      terser: 5.16.3
-      text-table: 0.2.0
-      tree-kill: 1.2.2
-      tslib: 2.5.0
-      typescript: 4.8.4
-      webpack: 5.76.1(esbuild@0.17.8)
-      webpack-dev-middleware: 6.1.2(webpack@5.76.1)
-      webpack-dev-server: 4.11.1(webpack@5.76.1)
-      webpack-merge: 5.8.0
-      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1)
+      webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.17.8))
     optionalDependencies:
       esbuild: 0.17.8
       karma: 6.4.4
@@ -23961,7 +23880,7 @@ snapshots:
     dependencies:
       '@ampproject/remapping': 2.2.0
       '@angular-devkit/architect': 0.1502.11(chokidar@3.5.3)
-      '@angular-devkit/build-webpack': 0.1502.11(chokidar@3.5.3)(webpack-dev-server@4.11.1(webpack@5.76.1))(webpack@5.76.1)
+      '@angular-devkit/build-webpack': 0.1502.11(chokidar@3.5.3)(webpack-dev-server@4.11.1(webpack@5.76.1))(webpack@5.76.1(esbuild@0.17.8))
       '@angular-devkit/core': 15.2.11(chokidar@3.5.3)
       '@angular/compiler-cli': 15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4)
       '@babel/core': 7.20.12
@@ -23978,14 +23897,14 @@ snapshots:
       '@ngtools/webpack': 15.2.11(@angular/compiler-cli@15.2.10(@angular/compiler@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(typescript@4.8.4))(typescript@4.8.4)(webpack@5.76.1(esbuild@0.17.8))
       ansi-colors: 4.1.3
       autoprefixer: 10.4.13(postcss@8.4.31)
-      babel-loader: 9.1.2(@babel/core@7.20.12)(webpack@5.76.1)
+      babel-loader: 9.1.2(@babel/core@7.20.12)(webpack@5.76.1(esbuild@0.17.8))
       babel-plugin-istanbul: 6.1.1
       browserslist: 4.21.5
       cacache: 17.0.4
       chokidar: 3.5.3
-      copy-webpack-plugin: 11.0.0(webpack@5.76.1)
+      copy-webpack-plugin: 11.0.0(webpack@5.76.1(esbuild@0.17.8))
       critters: 0.0.16
-      css-loader: 6.7.3(webpack@5.76.1)
+      css-loader: 6.7.3(webpack@5.76.1(esbuild@0.17.8))
       esbuild-wasm: 0.17.8
       glob: 8.1.0
       https-proxy-agent: 5.0.1
@@ -23993,23 +23912,23 @@ snapshots:
       jsonc-parser: 3.2.0
       karma-source-map-support: 1.4.0
       less: 4.1.3
-      less-loader: 11.1.0(less@4.1.3)(webpack@5.76.1)
-      license-webpack-plugin: 4.0.2(webpack@5.76.1)
+      less-loader: 11.1.0(less@4.1.3)(webpack@5.76.1(esbuild@0.17.8))
+      license-webpack-plugin: 4.0.2(webpack@5.76.1(esbuild@0.17.8))
       loader-utils: 3.2.1
       magic-string: 0.29.0
-      mini-css-extract-plugin: 2.7.2(webpack@5.76.1)
+      mini-css-extract-plugin: 2.7.2(webpack@5.76.1(esbuild@0.17.8))
       open: 8.4.1
       ora: 5.4.1
       parse5-html-rewriting-stream: 7.0.0
       piscina: 3.2.0
       postcss: 8.4.31
-      postcss-loader: 7.0.2(postcss@8.4.31)(webpack@5.76.1)
+      postcss-loader: 7.0.2(postcss@8.4.31)(webpack@5.76.1(esbuild@0.17.8))
       resolve-url-loader: 5.0.0
       rxjs: 6.6.7
       sass: 1.58.1
-      sass-loader: 13.2.0(sass@1.58.1)(webpack@5.76.1)
+      sass-loader: 13.2.0(sass@1.58.1)(webpack@5.76.1(esbuild@0.17.8))
       semver: 7.5.3
-      source-map-loader: 4.0.1(webpack@5.76.1)
+      source-map-loader: 4.0.1(webpack@5.76.1(esbuild@0.17.8))
       source-map-support: 0.5.21
       terser: 5.16.3
       text-table: 0.2.0
@@ -24017,7 +23936,7 @@ snapshots:
       tslib: 2.5.0
       typescript: 4.8.4
       webpack: 5.76.1(esbuild@0.17.8)
-      webpack-dev-middleware: 6.1.2(webpack@5.76.1)
+      webpack-dev-middleware: 6.1.2(webpack@5.76.1(esbuild@0.17.8))
       webpack-dev-server: 4.11.1(webpack@5.76.1)
       webpack-merge: 5.8.0
       webpack-subresource-integrity: 5.1.0(html-webpack-plugin@5.6.3(webpack@5.97.0))(webpack@5.76.1(esbuild@0.17.8))
@@ -24316,16 +24235,16 @@ snapshots:
       webpack: 5.50.0
       webpack-dev-server: 3.11.3(webpack@5.50.0)
 
-  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)))(webpack@5.76.1(esbuild@0.14.22))':
+  '@angular-devkit/build-webpack@0.1303.11(chokidar@3.6.0)(webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1))(webpack@5.76.1(esbuild@0.14.22))':
     dependencies:
       '@angular-devkit/architect': 0.1303.11(chokidar@3.6.0)
       rxjs: 6.6.7
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-server: 4.7.3(@types/express@4.17.21)(webpack@5.76.1)
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-webpack@0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1)':
+  '@angular-devkit/build-webpack@0.1402.13(chokidar@3.6.0)(webpack-dev-server@4.11.0(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5))':
     dependencies:
       '@angular-devkit/architect': 0.1402.13(chokidar@3.6.0)
       rxjs: 6.6.7
@@ -24334,7 +24253,7 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/build-webpack@0.1502.11(chokidar@3.5.3)(webpack-dev-server@4.11.1(webpack@5.76.1))(webpack@5.76.1)':
+  '@angular-devkit/build-webpack@0.1502.11(chokidar@3.5.3)(webpack-dev-server@4.11.1(webpack@5.76.1))(webpack@5.76.1(esbuild@0.17.8))':
     dependencies:
       '@angular-devkit/architect': 0.1502.11(chokidar@3.5.3)
       rxjs: 6.6.7
@@ -24440,16 +24359,6 @@ snapshots:
     optionalDependencies:
       chokidar: 3.5.3
 
-  '@angular-devkit/core@15.2.11(chokidar@3.6.0)':
-    dependencies:
-      ajv: 8.12.0
-      ajv-formats: 2.1.1(ajv@8.12.0)
-      jsonc-parser: 3.2.0
-      rxjs: 6.6.7
-      source-map: 0.7.4
-    optionalDependencies:
-      chokidar: 3.6.0
-
   '@angular-devkit/core@16.0.6(chokidar@3.5.3)':
     dependencies:
       ajv: 8.12.0
@@ -24550,9 +24459,9 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@angular-devkit/schematics@15.2.11(chokidar@3.6.0)':
+  '@angular-devkit/schematics@15.2.11(chokidar@3.5.3)':
     dependencies:
-      '@angular-devkit/core': 15.2.11(chokidar@3.6.0)
+      '@angular-devkit/core': 15.2.11(chokidar@3.5.3)
       jsonc-parser: 3.2.0
       magic-string: 0.29.0
       ora: 5.4.1
@@ -24629,11 +24538,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@angular-eslint/schematics@15.2.1(@angular/cli@15.0.5(chokidar@3.6.0))(eslint@7.32.0)(typescript@4.8.4)':
+  '@angular-eslint/schematics@15.2.1(@angular/cli@15.0.5(chokidar@3.5.3))(eslint@7.32.0)(typescript@4.8.4)':
     dependencies:
       '@angular-eslint/eslint-plugin': 15.2.1(eslint@7.32.0)(typescript@4.8.4)
       '@angular-eslint/eslint-plugin-template': 15.2.1(eslint@7.32.0)(typescript@4.8.4)
-      '@angular/cli': 15.0.5(chokidar@3.6.0)
+      '@angular/cli': 15.0.5(chokidar@3.5.3)
       ignore: 5.2.4
       strip-json-comments: 3.1.1
       tmp: 0.2.1
@@ -32519,11 +32428,11 @@ snapshots:
       '@vue/devtools-api': 6.6.4
       vue: 3.5.13(typescript@4.8.4)
 
-  '@ionic/angular-toolkit@8.1.0(chokidar@3.6.0)':
+  '@ionic/angular-toolkit@8.1.0(chokidar@3.5.3)':
     dependencies:
-      '@angular-devkit/core': 15.2.11(chokidar@3.6.0)
-      '@angular-devkit/schematics': 15.2.11(chokidar@3.6.0)
-      '@schematics/angular': 15.2.11(chokidar@3.6.0)
+      '@angular-devkit/core': 15.2.11(chokidar@3.5.3)
+      '@angular-devkit/schematics': 15.2.11(chokidar@3.5.3)
+      '@schematics/angular': 15.2.11(chokidar@3.5.3)
     transitivePeerDependencies:
       - chokidar
 
@@ -33274,7 +33183,7 @@ snapshots:
       typescript: 4.6.4
       webpack: 5.76.1(esbuild@0.14.22)
 
-  '@ngtools/webpack@14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(typescript@4.7.4)(webpack@5.76.1)':
+  '@ngtools/webpack@14.2.13(@angular/compiler-cli@14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4))(typescript@4.7.4)(webpack@5.76.1(esbuild@0.15.5))':
     dependencies:
       '@angular/compiler-cli': 14.3.0(@angular/compiler@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(typescript@4.7.4)
       typescript: 4.7.4
@@ -35107,10 +35016,10 @@ snapshots:
     transitivePeerDependencies:
       - chokidar
 
-  '@schematics/angular@15.2.11(chokidar@3.6.0)':
+  '@schematics/angular@15.2.11(chokidar@3.5.3)':
     dependencies:
-      '@angular-devkit/core': 15.2.11(chokidar@3.6.0)
-      '@angular-devkit/schematics': 15.2.11(chokidar@3.6.0)
+      '@angular-devkit/core': 15.2.11(chokidar@3.5.3)
+      '@angular-devkit/schematics': 15.2.11(chokidar@3.5.3)
       jsonc-parser: 3.2.0
     transitivePeerDependencies:
       - chokidar
@@ -37354,7 +37263,7 @@ snapshots:
       schema-utils: 2.7.1
       webpack: 5.76.1(esbuild@0.14.22)
 
-  babel-loader@8.2.5(@babel/core@7.18.10)(webpack@5.76.1):
+  babel-loader@8.2.5(@babel/core@7.18.10)(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       '@babel/core': 7.18.10
       find-cache-dir: 3.3.2
@@ -37381,7 +37290,7 @@ snapshots:
       schema-utils: 2.7.1
       webpack: 5.97.0(webpack-cli@4.10.0)
 
-  babel-loader@9.1.2(@babel/core@7.20.12)(webpack@5.76.1):
+  babel-loader@9.1.2(@babel/core@7.20.12)(webpack@5.76.1(esbuild@0.17.8)):
     dependencies:
       '@babel/core': 7.20.12
       find-cache-dir: 3.3.2
@@ -38571,7 +38480,7 @@ snapshots:
       serialize-javascript: 6.0.2
       webpack: 5.76.1(esbuild@0.14.22)
 
-  copy-webpack-plugin@11.0.0(webpack@5.76.1):
+  copy-webpack-plugin@11.0.0(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       fast-glob: 3.3.2
       glob-parent: 6.0.2
@@ -38580,6 +38489,16 @@ snapshots:
       schema-utils: 4.2.0
       serialize-javascript: 6.0.2
       webpack: 5.76.1(esbuild@0.15.5)
+
+  copy-webpack-plugin@11.0.0(webpack@5.76.1(esbuild@0.17.8)):
+    dependencies:
+      fast-glob: 3.3.2
+      glob-parent: 6.0.2
+      globby: 13.2.2
+      normalize-path: 3.0.0
+      schema-utils: 4.2.0
+      serialize-javascript: 6.0.2
+      webpack: 5.76.1(esbuild@0.17.8)
 
   copy-webpack-plugin@11.0.0(webpack@5.94.0(esbuild@0.18.17)):
     dependencies:
@@ -38909,7 +38828,7 @@ snapshots:
       semver: 7.6.3
       webpack: 5.76.1(esbuild@0.14.22)
 
-  css-loader@6.7.1(webpack@5.76.1):
+  css-loader@6.7.1(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       icss-utils: 5.1.0(postcss@8.4.49)
       postcss: 8.4.49
@@ -38921,7 +38840,7 @@ snapshots:
       semver: 7.6.3
       webpack: 5.76.1(esbuild@0.15.5)
 
-  css-loader@6.7.3(webpack@5.76.1):
+  css-loader@6.7.3(webpack@5.76.1(esbuild@0.17.8)):
     dependencies:
       icss-utils: 5.1.0(postcss@8.4.49)
       postcss: 8.4.49
@@ -44004,13 +43923,13 @@ snapshots:
       less: 4.1.2
       webpack: 5.76.1(esbuild@0.14.22)
 
-  less-loader@11.0.0(less@4.1.3)(webpack@5.76.1):
+  less-loader@11.0.0(less@4.1.3)(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       klona: 2.0.6
       less: 4.1.3
       webpack: 5.76.1(esbuild@0.15.5)
 
-  less-loader@11.1.0(less@4.1.3)(webpack@5.76.1):
+  less-loader@11.1.0(less@4.1.3)(webpack@5.76.1(esbuild@0.17.8)):
     dependencies:
       klona: 2.0.6
       less: 4.1.3
@@ -44133,11 +44052,17 @@ snapshots:
     optionalDependencies:
       webpack: 5.76.1(esbuild@0.14.22)
 
-  license-webpack-plugin@4.0.2(webpack@5.76.1):
+  license-webpack-plugin@4.0.2(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       webpack-sources: 3.2.3
     optionalDependencies:
       webpack: 5.76.1(esbuild@0.15.5)
+
+  license-webpack-plugin@4.0.2(webpack@5.76.1(esbuild@0.17.8)):
+    dependencies:
+      webpack-sources: 3.2.3
+    optionalDependencies:
+      webpack: 5.76.1(esbuild@0.17.8)
 
   license-webpack-plugin@4.0.2(webpack@5.94.0(esbuild@0.18.17)):
     dependencies:
@@ -45086,12 +45011,12 @@ snapshots:
       schema-utils: 4.2.0
       webpack: 5.76.1(esbuild@0.14.22)
 
-  mini-css-extract-plugin@2.6.1(webpack@5.76.1):
+  mini-css-extract-plugin@2.6.1(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       schema-utils: 4.2.0
       webpack: 5.76.1(esbuild@0.15.5)
 
-  mini-css-extract-plugin@2.7.2(webpack@5.76.1):
+  mini-css-extract-plugin@2.7.2(webpack@5.76.1(esbuild@0.17.8)):
     dependencies:
       schema-utils: 4.2.0
       webpack: 5.76.1(esbuild@0.17.8)
@@ -47583,7 +47508,7 @@ snapshots:
       semver: 7.6.3
       webpack: 5.76.1(esbuild@0.14.22)
 
-  postcss-loader@7.0.1(postcss@8.4.31)(webpack@5.76.1):
+  postcss-loader@7.0.1(postcss@8.4.31)(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       cosmiconfig: 7.1.0
       klona: 2.0.6
@@ -47591,7 +47516,7 @@ snapshots:
       semver: 7.6.3
       webpack: 5.76.1(esbuild@0.15.5)
 
-  postcss-loader@7.0.2(postcss@8.4.31)(webpack@5.76.1):
+  postcss-loader@7.0.2(postcss@8.4.31)(webpack@5.76.1(esbuild@0.17.8)):
     dependencies:
       cosmiconfig: 7.1.0
       klona: 2.0.6
@@ -49615,7 +49540,7 @@ snapshots:
     optionalDependencies:
       sass: 1.49.9
 
-  sass-loader@13.0.2(sass@1.54.4)(webpack@5.76.1):
+  sass-loader@13.0.2(sass@1.54.4)(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       klona: 2.0.6
       neo-async: 2.6.2
@@ -49623,7 +49548,7 @@ snapshots:
     optionalDependencies:
       sass: 1.54.4
 
-  sass-loader@13.2.0(sass@1.58.1)(webpack@5.76.1):
+  sass-loader@13.2.0(sass@1.58.1)(webpack@5.76.1(esbuild@0.17.8)):
     dependencies:
       klona: 2.0.6
       neo-async: 2.6.2
@@ -50213,14 +50138,14 @@ snapshots:
       source-map-js: 1.2.1
       webpack: 5.76.1(esbuild@0.14.22)
 
-  source-map-loader@4.0.0(webpack@5.76.1):
+  source-map-loader@4.0.0(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       abab: 2.0.6
       iconv-lite: 0.6.3
       source-map-js: 1.2.1
       webpack: 5.76.1(esbuild@0.15.5)
 
-  source-map-loader@4.0.1(webpack@5.76.1):
+  source-map-loader@4.0.1(webpack@5.76.1(esbuild@0.17.8)):
     dependencies:
       abab: 2.0.6
       iconv-lite: 0.6.3
@@ -50631,7 +50556,7 @@ snapshots:
       stylus: 0.56.0
       webpack: 5.76.1(esbuild@0.14.22)
 
-  stylus-loader@7.0.0(stylus@0.59.0)(webpack@5.76.1):
+  stylus-loader@7.0.0(stylus@0.59.0)(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       fast-glob: 3.3.2
       klona: 2.0.6
@@ -52134,7 +52059,7 @@ snapshots:
       schema-utils: 3.3.0
       webpack: 5.50.0
 
-  webpack-dev-middleware@5.3.0(webpack@5.76.1(esbuild@0.14.22)):
+  webpack-dev-middleware@5.3.0(webpack@5.76.1):
     dependencies:
       colorette: 2.0.20
       memfs: 3.5.3
@@ -52170,7 +52095,7 @@ snapshots:
       schema-utils: 4.2.0
       webpack: 5.94.0(esbuild@0.18.17)
 
-  webpack-dev-middleware@6.1.2(webpack@5.76.1):
+  webpack-dev-middleware@6.1.2(webpack@5.76.1(esbuild@0.17.8)):
     dependencies:
       colorette: 2.0.20
       memfs: 3.5.3
@@ -52409,7 +52334,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1(esbuild@0.14.22)):
+  webpack-dev-server@4.7.3(@types/express@4.17.21)(webpack@5.76.1):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -52439,7 +52364,7 @@ snapshots:
       spdy: 4.0.2
       strip-ansi: 7.1.0
       webpack: 5.76.1(esbuild@0.14.22)
-      webpack-dev-middleware: 5.3.0(webpack@5.76.1(esbuild@0.14.22))
+      webpack-dev-middleware: 5.3.0(webpack@5.76.1)
       ws: 8.17.1
     transitivePeerDependencies:
       - '@types/express'
@@ -52534,10 +52459,17 @@ snapshots:
     optionalDependencies:
       html-webpack-plugin: 5.6.3(webpack@5.76.1)
 
-  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1):
+  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.15.5)):
     dependencies:
       typed-assert: 1.0.9
       webpack: 5.76.1(esbuild@0.15.5)
+    optionalDependencies:
+      html-webpack-plugin: 5.6.3(webpack@5.76.1)
+
+  webpack-subresource-integrity@5.1.0(html-webpack-plugin@5.6.3(webpack@5.76.1))(webpack@5.76.1(esbuild@0.17.8)):
+    dependencies:
+      typed-assert: 1.0.9
+      webpack: 5.76.1(esbuild@0.17.8)
     optionalDependencies:
       html-webpack-plugin: 5.6.3(webpack@5.76.1)
 
