@@ -213,6 +213,21 @@ describe('timeline businessHours', () => {
     })
   })
 
+  // https://github.com/fullcalendar/fullcalendar/issues/7934
+  it('displays business hours >24hrs in short window of time', () => {
+    const startTime = '26:00'
+    const endTime = '28:00'
+    const calendar = initCalendar({
+      timeZone: 'UTC',
+      initialView: 'resourceTimelineDay',
+      slotMinTime: startTime,
+      slotMaxTime: endTime,
+      businessHours: { startTime, endTime },
+    })
+    const viewWrapper = new ResourceTimelineViewWrapper(calendar)
+    expect(viewWrapper.timelineGrid.getNonBusinessDayEls().length).toBe(0)
+  })
+
   function expect9to5(viewWrapper) {
     expect(isTimelineNonBusinessSegsRendered(viewWrapper, [
       { start: '2016-02-15T00:00', end: '2016-02-15T09:00' },
