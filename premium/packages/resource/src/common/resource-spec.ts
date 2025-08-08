@@ -48,7 +48,7 @@ export interface GroupLaneRenderHooks {
 
 export interface GroupSpec extends GroupLaneRenderHooks { // best place for this?
   field?: string
-  order?: number
+  order?: number // -1 or 1 for descending and ascending
 
   labelClassNames?: ClassNamesGenerator<ColCellContentArg>
   labelContent?: CustomContentGenerator<ColCellContentArg>
