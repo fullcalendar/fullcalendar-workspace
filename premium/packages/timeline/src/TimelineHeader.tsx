@@ -29,13 +29,13 @@ export class TimelineHeader extends BaseComponent<TimelineHeaderProps> {
 
     // TODO: very repetitive
     // TODO: make part of tDateProfile?
-    let timerUnit = greatestDurationDenominator(props.tDateProfile.slotDuration).unit
+    let { unit: timerUnit, value: timerUnitValue } = greatestDurationDenominator(props.tDateProfile.slotDuration)
 
     // WORKAROUND: make ignore slatCoords when out of sync with dateProfile
     let slatCoords = props.slatCoords && props.slatCoords.dateProfile === props.dateProfile ? props.slatCoords : null
 
     return (
-      <NowTimer unit={timerUnit}>
+      <NowTimer unit={timerUnit} unitValue={timerUnitValue}>
         {(nowDate: DateMarker, todayRange: DateRange) => (
           <div className="fc-timeline-header" ref={this.rootElRef}>
             <table
