@@ -114,6 +114,7 @@ export type { DateSpan } from './structs/date-span.js'
 export { isDateSpansEqual } from './structs/date-span.js'
 
 export type { DateMarker } from './datelib/marker.js'
+export type { MaybeZonedMarker } from './datelib/zoned-marker.js'
 export {
   addDays,
   startOfDay,

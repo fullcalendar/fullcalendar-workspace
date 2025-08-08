@@ -31,10 +31,10 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
     // giving 'month' for a 3-day view
     // workaround: to infer day, do NOT time
 
-    let dateMeta = getDateMeta(cell.date, props.todayRange, props.nowDate, dateProfile)
+    let dateMeta = getDateMeta(cell.dateMarker, props.todayRange, props.nowDate, dateProfile)
     let renderProps = this.refineRenderProps({
       level: props.rowLevel,
-      dateMarker: cell.date,
+      dateMarker: cell.dateMarker,
       text: cell.text,
       dateEnv: context.dateEnv,
       viewApi: context.viewApi,
@@ -55,7 +55,8 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
         ]}
         elAttrs={{
           colSpan: cell.colspan,
-          'data-date': dateEnv.formatIso(cell.date, {
+          // TODO: format ISO for zoned too!!!
+          'data-date': dateEnv.formatIso(cell.dateMarker, {
             omitTime: !tDateProfile.isTimeScale,
             omitTimeZoneOffset: true,
           }),
@@ -77,7 +78,7 @@ export class TimelineHeaderTh extends BaseComponent<TimelineHeaderThProps> {
                 'fc-scrollgrid-sync-inner',
                 props.isSticky && 'fc-sticky',
               ]}
-              elAttrs={this.buildCellNavLinkAttrs(context, cell.date, cell.rowUnit)}
+              elAttrs={this.buildCellNavLinkAttrs(context, cell.dateMarker, cell.rowUnit)}
             />
           </div>
         )}

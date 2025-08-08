@@ -25,13 +25,15 @@ export class TimelineSlatsBody extends BaseComponent<TimelineSlatsBodyProps> {
       <tbody>
         <tr>
           {slotDates.map((slotDate, i) => {
-            let key = slotDate.toISOString()
+            const { marker, timeZoneOffset } = slotDate
+            const key = marker.toISOString() + (timeZoneOffset || '')
 
             return (
               <TimelineSlatCell
                 key={key}
                 elRef={cellElRefs.createRef(key)}
-                date={slotDate}
+                dateMarker={marker}
+                timeZoneOffset={timeZoneOffset}
                 dateProfile={props.dateProfile}
                 tDateProfile={tDateProfile}
                 nowDate={props.nowDate}

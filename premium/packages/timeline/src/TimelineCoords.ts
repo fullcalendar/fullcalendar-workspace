@@ -69,6 +69,9 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
     }
   }
 
+  /*
+  used by scroll request
+  */
   durationToCoord(duration: Duration): number {
     let { dateProfile, tDateProfile, dateEnv, isRtl } = this
     let coord = 0
@@ -104,6 +107,8 @@ export class TimelineCoords { // TODO: rename to "slat" coords?
   }
 }
 
+// !!!- must RECEIVE tzo-aware date
+// !!!- must RETURN tzo-aware coordinate
 // returned value is between 0 and the number of snaps
 export function computeDateSnapCoverage(date: DateMarker, tDateProfile: TimelineDateProfile, dateEnv: DateEnv): number {
   let snapDiff = dateEnv.countDurationsBetween(

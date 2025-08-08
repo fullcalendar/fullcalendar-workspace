@@ -1,7 +1,8 @@
 import { CssDimValue } from '@fullcalendar/core'
 import {
   BaseComponent, multiplyDuration, RefMap,
-  ScrollResponder, ScrollRequest, DateMarker,
+  ScrollResponder, ScrollRequest,
+  MaybeZonedMarker,
 } from '@fullcalendar/core/internal'
 import { createElement, createRef, VNode } from '@fullcalendar/core/preact'
 import { TimelineCoords } from './TimelineCoords.js'
@@ -110,7 +111,7 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
     return null // best?
   }
 
-  positionToHit(leftPosition) { // TODO: kill somehow
+  positionToHit(leftPosition) {
     let { outerCoordCache } = this.coords
     let { dateEnv, isRtl } = this.context
     let { tDateProfile } = this.props
@@ -124,14 +125,16 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
         (leftPosition - outerCoordCache.lefts[slatIndex]) / slatWidth
       let localSnapIndex = Math.floor(partial * tDateProfile.snapsPerSlot)
       let start = dateEnv.add(
-        tDateProfile.slotDates[slatIndex],
+        tDateProfile.slotDates[slatIndex].marker, // TODO: use the timeZoneOffset somehow!!!
         multiplyDuration(tDateProfile.snapDuration, localSnapIndex),
       )
       let end = dateEnv.add(start, tDateProfile.snapDuration)
 
       return {
         dateSpan: {
-          range: { start, end },
+          // TODO: send the offset somehow!!!
+          start: { marker: start },
+          end: { marker: end },
           allDay: !this.props.tDateProfile.isTimeScale,
         },
         dayEl: this.cellElRefs.currentMap[slatIndex],
@@ -144,9 +147,13 @@ export class TimelineSlats extends BaseComponent<TimelineSlatsProps> {
   }
 }
 
-function collectCellEls(elMap: { [key: string]: HTMLElement }, slotDates: DateMarker[]) {
+/*
+TODO: DRY with TimelineSlatsBody key-generation
+*/
+function collectCellEls(elMap: { [key: string]: HTMLElement }, slotDates: MaybeZonedMarker[]) {
   return slotDates.map((slotDate) => {
-    let key = slotDate.toISOString()
+    const { marker, timeZoneOffset } = slotDate
+    const key = marker.toISOString() + (timeZoneOffset || '')
     return elMap[key]
   })
 }

@@ -12,6 +12,7 @@ import { DateFormatter, CmdFormatterFunc } from './DateFormatter.js'
 import { buildIsoString } from './formatting-utils.js'
 import { parse } from './parsing.js'
 import { isInt } from '../util/misc.js'
+import { MaybeZonedMarker, ZonedMarker } from './zoned-marker.js'
 
 export type WeekNumberCalculation = 'local' | 'ISO' | ((m: Date) => number)
 
@@ -370,6 +371,13 @@ export class DateEnv {
       },
       this,
     )
+  }
+
+  formatMaybeZoned(maybeZoned: MaybeZonedMarker, formatter: DateFormatter): string {
+    if (typeof maybeZoned.timeZoneOffset === 'number') {
+      return formatter.format(maybeZoned as ZonedMarker, this)
+    }
+    return this.format(maybeZoned.marker, formatter)
   }
 
   formatRange(

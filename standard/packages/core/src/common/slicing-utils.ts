@@ -71,7 +71,12 @@ export abstract class Slicer<SegType extends Seg, ExtraArgs extends any[] = []> 
     ...extraArgs: ExtraArgs
   ): SegType[] {
     return this._sliceDateSpan(
-      { range: { start: date, end: addMs(date, 1) }, allDay: false }, // add 1 ms, protect against null range
+      {
+        start: { marker: date },
+        end: { marker: addMs(date, 1) }, // add 1 ms, protect against null range
+        range: { start: date, end: addMs(date, 1) },
+        allDay: false
+      },
       dateProfile,
       nextDayThreshold,
       {},

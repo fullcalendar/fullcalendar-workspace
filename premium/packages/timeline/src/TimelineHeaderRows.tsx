@@ -28,19 +28,23 @@ export class TimelineHeaderRows extends BaseComponent<TimelineHeaderRowsProps> {
 
           return ( // eslint-disable-next-line react/no-array-index-key
             <tr key={rowLevel} className={classNames.join(' ')}>
-              {rowCells.map((cell) => (
-                <TimelineHeaderTh
-                  key={cell.date.toISOString()}
-                  cell={cell}
-                  rowLevel={rowLevel}
-                  dateProfile={dateProfile}
-                  tDateProfile={tDateProfile}
-                  todayRange={todayRange}
-                  nowDate={nowDate}
-                  rowInnerHeight={rowInnerHeights && rowInnerHeights[rowLevel]}
-                  isSticky={!isLast}
-                />
-              ))}
+              {rowCells.map((cell) => {
+                // TODO: DRY with TimelineSlatsBody key-generation
+                const key = cell.dateMarker.toISOString() + (cell.timeZoneOffset || '')
+                return (
+                  <TimelineHeaderTh
+                    key={key}
+                    cell={cell}
+                    rowLevel={rowLevel}
+                    dateProfile={dateProfile}
+                    tDateProfile={tDateProfile}
+                    todayRange={todayRange}
+                    nowDate={nowDate}
+                    rowInnerHeight={rowInnerHeights && rowInnerHeights[rowLevel]}
+                    isSticky={!isLast}
+                  />
+                )
+              })}
             </tr>
           )
         })}

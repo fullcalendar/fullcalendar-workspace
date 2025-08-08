@@ -7,6 +7,7 @@ import { EventRenderRange, compileEventUi } from '../component/event-rendering.j
 import { EventUiHash } from '../component/event-ui.js'
 import { CalendarContext } from '../CalendarContext.js'
 import { refineProps, identity, Identity } from '../options.js'
+import { MaybeZonedMarker } from '../datelib/zoned-marker.js'
 
 /*
 A data-structure for a date-range that will be visually displayed.
@@ -33,8 +34,11 @@ export interface OpenDateSpan {
   [otherProp: string]: any
 }
 
-export interface DateSpan extends OpenDateSpan {
-  range: DateRange
+export interface DateSpan {
+  start: MaybeZonedMarker
+  end: MaybeZonedMarker
+  allDay: boolean
+  [otherProp: string]: any
 }
 
 export interface RangeApi {
@@ -66,17 +70,16 @@ const STANDARD_PROPS = {
 
 export function parseDateSpan(raw: DateSpanInput, dateEnv: DateEnv, defaultDuration?: Duration): DateSpan | null {
   let span = parseOpenDateSpan(raw, dateEnv)
-  let { range } = span
 
-  if (!range.start) {
+  if (!span.start) {
     return null
   }
 
-  if (!range.end) {
+  if (!span.end) {
     if (defaultDuration == null) {
       return null
     }
-    range.end = dateEnv.add(range.start, defaultDuration)
+    span.end = { marker: dateEnv.add(span.start.marker, defaultDuration) }
   }
 
   return span as DateSpan
@@ -86,7 +89,12 @@ export function parseDateSpan(raw: DateSpanInput, dateEnv: DateEnv, defaultDurat
 TODO: somehow combine with parseRange?
 Will return null if the start/end props were present but parsed invalidly.
 */
-export function parseOpenDateSpan(raw: OpenDateSpanInput, dateEnv: DateEnv): OpenDateSpan | null {
+function parseOpenDateSpan(raw: OpenDateSpanInput, dateEnv: DateEnv): {
+  start: MaybeZonedMarker | null,
+  end: MaybeZonedMarker | null,
+  allDay: boolean,
+  [otherProp: string]: any
+} | null {
   let { refined: standardProps, extra } = refineProps(raw, STANDARD_PROPS)
   let startMeta = standardProps.start ? dateEnv.createMarkerMeta(standardProps.start) : null
   let endMeta = standardProps.end ? dateEnv.createMarkerMeta(standardProps.end) : null
@@ -98,10 +106,8 @@ export function parseOpenDateSpan(raw: OpenDateSpanInput, dateEnv: DateEnv): Ope
   }
 
   return {
-    range: {
-      start: startMeta ? startMeta.marker : null,
-      end: endMeta ? endMeta.marker : null,
-    },
+    start: startMeta ? { marker: startMeta.marker, timeZoneOffset: startMeta.forcedTzo } : null,
+    end: endMeta ? { marker: endMeta.marker, timeZoneOffset: endMeta.forcedTzo } : null,
     allDay,
     ...extra,
   }

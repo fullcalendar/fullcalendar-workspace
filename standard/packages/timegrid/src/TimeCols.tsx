@@ -203,7 +203,8 @@ export class TimeCols extends DateComponent<TimeColsProps, TimeColsState> {
       return {
         dateProfile,
         dateSpan: {
-          range: { start, end },
+          start: { marker: start },
+          end: { marker: end },
           allDay: false,
           ...cell.extraDateSpan,
         },

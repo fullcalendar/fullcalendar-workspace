@@ -8,7 +8,8 @@ import { TimelineDateProfile } from './timeline-date-profile.js'
 
 export interface TimelineSlatCellProps {
   elRef?: Ref<HTMLTableCellElement>
-  date: DateMarker
+  dateMarker: DateMarker
+  timeZoneOffset: number | undefined // TODO: use this!
   dateProfile: DateProfile
   tDateProfile: TimelineDateProfile
   nowDate: DateMarker
@@ -21,10 +22,10 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
   render() {
     let { props, context } = this
     let { dateEnv, options, theme } = context
-    let { date, tDateProfile, isEm } = props
-    let dateMeta = getDateMeta(props.date, props.todayRange, props.nowDate, props.dateProfile)
+    let { dateMarker, tDateProfile, isEm } = props
+    let dateMeta = getDateMeta(props.dateMarker, props.todayRange, props.nowDate, props.dateProfile)
     let renderProps: SlotLaneContentArg = {
-      date: dateEnv.toDate(props.date),
+      date: dateEnv.toDate(props.dateMarker),
       ...dateMeta,
       view: context.viewApi,
     }
@@ -40,7 +41,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           tDateProfile.isTimeScale ? (
             isInt(dateEnv.countDurationsBetween(
               tDateProfile.normalizedRange.start,
-              props.date,
+              dateMarker,
               tDateProfile.labelInterval,
             )) ?
               'fc-timeline-slot-major' :
@@ -53,7 +54,7 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
           ),
         ]}
         elAttrs={{
-          'data-date': dateEnv.formatIso(date, {
+          'data-date': dateEnv.formatIso(dateMarker, {
             omitTimeZoneOffset: true,
             omitTime: !tDateProfile.isTimeScale,
           }),

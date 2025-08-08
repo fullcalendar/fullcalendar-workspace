@@ -118,6 +118,7 @@ function getComponentTouchDelay(component: DateComponent<any>): number {
   return delay
 }
 
+// !!!
 function joinHitsIntoSelection(hit0: Hit, hit1: Hit, dateSelectionTransformers: dateSelectionJoinTransformer[]): DateSpan {
   let dateSpan0 = hit0.dateSpan
   let dateSpan1 = hit1.dateSpan

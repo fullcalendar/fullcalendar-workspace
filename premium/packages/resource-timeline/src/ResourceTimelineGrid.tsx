@@ -183,7 +183,8 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
           return {
             dateProfile: this.props.dateProfile,
             dateSpan: {
-              range: slatHit.dateSpan.range,
+              start: slatHit.dateSpan.start,
+              end: slatHit.dateSpan.end,
               allDay: slatHit.dateSpan.allDay,
               resourceId: resource.id,
             },

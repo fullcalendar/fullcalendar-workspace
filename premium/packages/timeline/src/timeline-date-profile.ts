@@ -3,13 +3,15 @@ import {
   config, computeVisibleDayRange, DateProfile, asCleanDays, addDays, wholeDivideDurations, DateMarker,
   startOfDay, createDuration, DateEnv, diffWholeDays, asRoughMs, createFormatter, greatestDurationDenominator,
   asRoughMinutes, padStart, asRoughSeconds, DateRange, isInt, DateProfileGenerator, BaseOptionsRefined,
+  MaybeZonedMarker,
+  DateFormatter,
 } from '@fullcalendar/core/internal'
 
 export interface TimelineDateProfile {
   labelInterval: Duration
   slotDuration: Duration
   slotsPerLabel: number
-  headerFormats: any
+  headerFormats: DateFormatter[]
   isTimeScale: boolean
   largeUnit: string
   emphasizeWeeks: boolean
@@ -17,7 +19,7 @@ export interface TimelineDateProfile {
   snapsPerSlot: number
   normalizedRange: DateRange // snaps to unit. adds in slotMinTime/slotMaxTime
   timeWindowMs: number
-  slotDates: DateMarker[]
+  slotDates: MaybeZonedMarker[]
   isWeekStarts: boolean[]
   snapDiffToIndex: number[]
   snapIndexToDiff: number[]
@@ -27,7 +29,8 @@ export interface TimelineDateProfile {
 }
 
 export interface TimelineHeaderCell {
-  date: DateMarker
+  dateMarker: DateMarker
+  timeZoneOffset: number | undefined
   text: string
   rowUnit: string
   colspan: number
@@ -148,11 +151,15 @@ export function buildTimelineDateProfile(
   tDateProfile.timeWindowMs = timeWindowMs
   tDateProfile.normalizedRange = { start: normalizedStart, end: normalizedEnd }
 
-  let slotDates = []
+  /*
+  This is probably where we need to convert to timezone and back
+  */
+
+  let slotDates: MaybeZonedMarker[] = []
   let date = normalizedStart
   while (date < normalizedEnd) {
     if (isValidDate(date, tDateProfile, dateProfile, dateProfileGenerator)) {
-      slotDates.push(date)
+      slotDates.push({ marker: date }) // TODO: give zoned!!!
     }
     date = dateEnv.add(date, tDateProfile.slotDuration)
   }
@@ -526,7 +533,7 @@ function buildIsWeekStarts(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) 
   let isWeekStarts: boolean[] = []
 
   for (let slotDate of slotDates) {
-    let weekNumber = dateEnv.computeWeekNumber(slotDate)
+    let weekNumber = dateEnv.computeWeekNumber(slotDate.marker)
     let isWeekStart = emphasizeWeeks && (prevWeekNumber !== null) && (prevWeekNumber !== weekNumber)
     prevWeekNumber = weekNumber
 
@@ -548,12 +555,13 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
 
   // specifically for navclicks
   let rowUnitsFromFormats = formats.map(
-    (format) => (format.getSmallestUnit ? format.getSmallestUnit() : null),
+    (format) => ((format as any).getSmallestUnit ? (format as any).getSmallestUnit() : null),
   )
 
   // builds cellRows and slotCells
   for (let i = 0; i < slotDates.length; i += 1) {
-    let date = slotDates[i]
+    let slotDate = slotDates[i]
+    let { marker, timeZoneOffset } = slotDate
     let isWeekStart = tDateProfile.isWeekStarts[i]
 
     for (let row = 0; row < formats.length; row += 1) {
@@ -566,9 +574,9 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
       let rowUnit = rowUnitsFromFormats[row] || (isLastRow ? guessedSlotUnit : null)
 
       if (isSuperRow) {
-        let text = dateEnv.format(date, format)
+        let text = dateEnv.formatMaybeZoned(slotDate, format)
         if (!leadingCell || (leadingCell.text !== text)) {
-          newCell = buildCellObject(date, text, rowUnit)
+          newCell = buildCellObject(marker, timeZoneOffset, text, rowUnit)
         } else {
           leadingCell.colspan += 1
         }
@@ -576,12 +584,12 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
         !leadingCell ||
         isInt(dateEnv.countDurationsBetween(
           tDateProfile.normalizedRange.start,
-          date,
+          marker, // TODO: audit lack of timeZoneOffset here
           tDateProfile.labelInterval,
         ))
       ) {
-        let text = dateEnv.format(date, format)
-        newCell = buildCellObject(date, text, rowUnit)
+        let text = dateEnv.formatMaybeZoned(slotDate, format)
+        newCell = buildCellObject(marker, timeZoneOffset, text, rowUnit)
       } else {
         leadingCell.colspan += 1
       }
@@ -596,6 +604,11 @@ function buildCellRows(tDateProfile: TimelineDateProfile, dateEnv: DateEnv) {
   return cellRows
 }
 
-function buildCellObject(date: DateMarker, text, rowUnit): TimelineHeaderCell {
-  return { date, text, rowUnit, colspan: 1, isWeekStart: false }
+function buildCellObject(
+  dateMarker: DateMarker,
+  timeZoneOffset: number | undefined,
+  text: string,
+  rowUnit: string,
+): TimelineHeaderCell {
+  return { dateMarker, timeZoneOffset, text, rowUnit, colspan: 1, isWeekStart: false }
 }

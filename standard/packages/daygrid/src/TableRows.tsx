@@ -162,11 +162,13 @@ export class TableRows extends DateComponent<TableRowsProps> {
 
     if (row != null && col != null) {
       let cell = this.props.cells[row][col]
+      let cellRange = this.getCellRange(row, col)
 
       return {
         dateProfile: this.props.dateProfile,
         dateSpan: {
-          range: this.getCellRange(row, col),
+          start: { marker: cellRange.start },
+          end: { marker: cellRange.end },
           allDay: true,
           ...cell.extraDateSpan,
         },

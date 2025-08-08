@@ -6,6 +6,11 @@ export interface ZonedMarker {
   timeZoneOffset: number
 }
 
+export interface MaybeZonedMarker {
+  marker: DateMarker,
+  timeZoneOffset?: number
+}
+
 export interface ExpandedZonedMarker extends ZonedMarker {
   array: number[],
   year: number,

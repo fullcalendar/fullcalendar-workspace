@@ -91,11 +91,9 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       return {
         dateProfile: props.dateProfile,
         dateSpan: {
+          start: { marker: props.startDate },
+          end: { marker: props.endDate },
           allDay: !props.forceTimed,
-          range: {
-            start: props.startDate,
-            end: props.endDate,
-          },
           ...props.extraDateSpan,
         },
         dayEl: rootEl,

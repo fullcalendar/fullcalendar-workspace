@@ -31,7 +31,7 @@ export function buildDatePointApiWithContext(dateSpan: DateSpan, context: Calend
 
 export function buildDatePointApi(span: DateSpan, dateEnv: DateEnv): DatePointApi {
   return {
-    date: dateEnv.toDate(span.range.start),
+    date: dateEnv.toDate(span.range.start), // !!!
     dateStr: dateEnv.formatIso(span.range.start, { omitTime: span.allDay }),
     allDay: span.allDay,
   }
