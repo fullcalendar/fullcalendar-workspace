@@ -56,7 +56,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
   render() {
     let { props, state, context } = this
     let { dateProfile, tDateProfile } = props
-    let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
+    let { unit: timerUnit, value: timeUnitValue } = greatestDurationDenominator(tDateProfile.slotDuration)
     let hasResourceBusinessHours = this.computeHasResourceBusinessHours(props.rowNodes)
 
     let splitProps = this.resourceSplitter.splitProps(props)
@@ -84,7 +84,7 @@ export class ResourceTimelineGrid extends DateComponent<ResourceTimelineGridProp
         ].join(' ')}
         style={{ minWidth: props.tableMinWidth }}
       >
-        <NowTimer unit={timerUnit}>
+        <NowTimer unit={timerUnit} unitValue={timeUnitValue}>
           {(nowDate: DateMarker, todayRange: DateRange) => (
             <Fragment>
               <TimelineSlats

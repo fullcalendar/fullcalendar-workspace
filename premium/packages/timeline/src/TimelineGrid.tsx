@@ -34,7 +34,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
     let { props, state, context } = this
     let { options } = context
     let { dateProfile, tDateProfile } = props
-    let timerUnit = greatestDurationDenominator(tDateProfile.slotDuration).unit
+    let { unit: timerUnit, value: timerUnitValue } = greatestDurationDenominator(tDateProfile.slotDuration)
 
     return (
       <div
@@ -46,7 +46,7 @@ export class TimelineGrid extends DateComponent<TimelinGridProps, TimelineGridSt
           width: props.clientWidth,
         }}
       >
-        <NowTimer unit={timerUnit}>
+        <NowTimer unit={timerUnit} unitValue={timerUnitValue}>
           {(nowDate: DateMarker, todayRange: DateRange) => (
             <Fragment>
               <TimelineSlats
