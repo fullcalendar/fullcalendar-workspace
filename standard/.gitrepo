@@ -6,7 +6,7 @@
 [subrepo]
 	remote = https://github.com/fullcalendar/fullcalendar.git
 	branch = main
-	commit = 788ae1c9d3dfd137aa073c0c28f814839e021b67
-	parent = 60e1b65f989e44e5ae49800371812c0a5296096c
+	commit = ca76fbf6c3e27f8e5671432dbbadec19ce768d3f
+	parent = 01ed84fc483d3ad6d146e2099c78adcd6929902a
 	method = merge
 	cmdver = 0.4.6
