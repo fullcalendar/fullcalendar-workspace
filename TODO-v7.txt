@@ -28,10 +28,12 @@ Before doing AI, clean ./ui-default-react/gen/(README.txt)+*** --- or do this no
 Make all the /dev/ paths
 --
 How to make gen/src structure?
-  theme-breezy/src/
-    plugin.ts
-    *.ts (tailwind src)
-    _gen-plugin/ (tailwind converted to vanilla css)
+  theme-breezy/
+    src/
+      plugin.ts
+      *.ts (tailwind src)
+      _gen-plugin/ (tailwind converted to ts/vanilla-css)
+    _gen-plugin-dist -> symlink (use a tsconfig.gen-plugin.json that extends tsconfig.json)
   ui-default-REACT/
     src/theme-breezy/
     src/_gen-tailwind/theme-breezy/ (tailwind compiled)
@@ -40,7 +42,7 @@ How to make gen/src structure?
     src/_gen-tailwind/theme-breezy/ (tailwind compiled)
   ui-mui-material/
     src/theme-breezy/
-    src/_gen-components/theme-breezy/ (tailwind converted to vanilla css)
+    src/_gen-components/theme-breezy/ (tailwind converted to ts/vanilla-css)
 --
 How to do "tailwind converted to vanilla css" ?
   ask plugin.ts to inline into _gen-plugin/index.ts (keeping tailwind)
@@ -417,6 +419,8 @@ more granular sticky settings?
 next theme platforms to implement:
   Vuetify
   Angular Material
+Move away from Node16 module-importing with ".js"
+
 
 Changelog
 ---------
