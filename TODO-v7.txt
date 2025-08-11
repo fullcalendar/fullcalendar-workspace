@@ -4,76 +4,32 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-for ShadCN themes,
-  dev will copy <FullCalendar /> with gazillion classnames AND the color variation too??
-  ... NO!!!! shadcn doesn't give color variations
-  tailwind-only
 
-Make ticket:
-  multiple levels of dayheaders (not related to resources)
-  https://fullcalendar.freshdesk.com/a/tickets/11101
+does setting eventDisplay to "block" affect BACKGROUND events!??
+Reana needs to design the schematics for Popover
 
-Currently, in v6, the headerToolbar left/center/right properties MERGE,
-  which is a bit crazy. Overhaul the default setting
 
+theme SYSTEM
+------------
 how to distribute *MUI* themes?
-  tailwind:
-    import ExpandIcon from '@mui/icons-material/ExpandIcon'; // we should give instructions
-    import CloseIcon from '@mui/icons-material/CloseIcon';
-
-    <Box rounded={true}>
-      <CustomMuiToolbar />
-      <FullCalendar
-        borderless={true}
-        headerToolbar={false}
-        eventClass='outline-(--mui-palette-paper-main)'
-        resourceExpanderContent={() => <ExpandIcon size='sm' />}
-        popoverCloseContent={() => <CloseIcon size='sm' />}
-      />
-    </Box>
-
-  vanilla css:
-    .eventClass { outline-color: var(--mui-palette-paper-main) }
-  as plugin
-    [internally] .asdf { outline-color: var(--mui-palette-paper-main) }
-
+  !!! - find paper i wrote
+  !!! - same issue for removing tailwind from each theme's default UI for JS plugin
+  !!! - ^^^where to DRY-up headerToolbar={} setting for default UI (used by vanilla, react, VUE, etc)
+  !!! - triage - don't have plugins baked into themed React component. just import packages for types
+???- provide an onAddEvent handler to themes somehow for when primary button clicked!?
 In theme demo App.tsx,
   have font-families change based on Component Lib
-
-how to distribute Default-UI themes?
-  [always has color variation]
-    --fc-monarch-something: red;
-    --fc-monarch-canvas: white
-  tailwind:
-    outline-(--fc-monarch-canvas)
-  vanilla css:
-    .eventClass { outline-color: var(--fc-monarch-canvas) }
-  as plugin
-    [internally] .asdf { outline-color: var(--fc-monarch-canvas) }
-
-
-for beta: new Angular version
-  https://github.com/fullcalendar/fullcalendar/issues/7946#issuecomment-3019245564
-
-
 types: why is dayHeaderClass in defined in core but dayHeaderRowClass defined in dayGrid???
-
 listDayHeaderClass always gets flex-row from core
   remove from themes if they define flex-row
   FYI, there's an isSticky prop on the data
-
-don't export mergeCalendarOptions, special behavior not needed in theme adapters
-
-maybe rename "canvas" color to "background" color?
-
+  TODO: KILL because theme might have opinions about responsive collapsing
 always make listDayHeaderInner sticky-top!
   well, maybe not because there are multiple listDayHeaderInner that could stack
   maybe on listDayHeaderClass?
-
 give classic theme css variables for color
   we realized we needed this for the canvas color
   better to have API be consistent with other themes (ex: palette-chooser on website)
-
 Type and plugin issues
   Don't bake-in plugins to EventCalendar or Scheduler
   Have them specified by plugins=
@@ -85,42 +41,80 @@ Type and plugin issues
     Also, there's magic in having component with no props *just work*
     <EventCalendar /> or <Scheduler />
     availableViews should have a default value, which shall be different for either EventCalendar/Scheduler
+find icon set that I can use for default-theme copy&paste (i tell people to install it first)
+  NAAHH... just inline the icons into src?... yes they are small xml
+think about how classname overriding should work
+  in new gen FullCalendar react component, when specified in option, overrides what <FullCalendar> wants
+    a feature not a bug
+  should we emulate this in JS api too?
+    only have classname merging happen between calendar+viewoptions?
+  NOTE: provide classname sentinel like "initial" to clear theme-provided classnames
+    https://tailwindcss.com/docs/theme#using-a-custom-theme
+proper classname-joining util like for this:
+  (data.isToday
+    ? (' ' + pillClass({ hasNavLink: data.hasNavLink }))
+    : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
+  especially useful for custom jsx with className= in it
+  but for shadcn, we should probably use cn()
+theme-system: MUI
+  we should allow MUI to force headers to be uppercase
+theme: CLASSIC
+  bug: default-theme disabled-Today button is shorter by 1px
+  allow other theme systems to change border color
+Classic theme
+  better contrast between week number gray and non-business hour gray
+Monarch theme
+  audit responsiveness
+  audit dark modes
+  list-view
+    single-events in a day should vertically align with number
+    (rethink how circle-number height is done)
+  put x-padding on non-circled day numbers. tab-focusing looks bad right now
+  expander for resource groups, resource-nesting
+  uppercase text for time slotLabels?
+  (for demo only): change slotDuration and interval
+  proper chevron!
+  tricks to make current-view-tabs not so wide
+Zen theme
+  fork from classic theme
+Forma theme:
+  how to add top border to header cell. can we do it with impunity?
+Technic theme
+  fork from classic theme
+  port old event styles from Monarch theme (but gut continuation cropping)
+  make event selected state be solid color (like apple calendar)
+All themes
+  xxSmall text too small (esp Year view)
+  implement nice now-indicator
+  floating week number, even if looks bad
+    implement WeekNumberDisplayData.isCell
+  do list-view
+  do resource-timeline
+we killed the default headerToolbar. bad idea?
+move { mergeCalendarOptions, mergeViewOptionsMap } to public entrypoint?
+should headerToolbar be baked into themed FullCalendar?
+  or part of caller?
+  DECISION: make it part of themed FullCalendar, with OPTIONAL availableViews
+    because the theme often is very opinionated about a nice-looking toolbar
+    and there's not much wasted space w/ supplying unused headerToolbar={} attribute
+    have availableViews fallback to changing layout of toolbar
+Demo Rig
+  BAD: our non-shadcn themes are inherit shadcn variables for their tailwind
+  BUG?: z-index of subcomponents go above the topbar?
+css reset for non-tailwind
+  how will we do line-height reset in non-tailwind? (and have it work in tailwind too)
+instead of isIconOnly, do
+  accommodate icon+text, text+icon and have setting like hasStartIcon/hasEndIcon
+rename ViewData -> ViewDisplayData
+Implement
+  blockEventContent
+  rowEventContent
+  columnEventContent
+  listItemEventContent
 
-For demo/App.tsx, try to move all theme-specific settings into theme DEFAULT!
-  if can't work, make separate system for theme-recommended options that get inlined into the build html
 
-future-ticket: make monthgrid suck less
-future-ticket: revive weeknumber column-mode
-
-eventually have MUI themes output styles using sx={} prop, like:
-  https://chatgpt.com/share/688a7d49-4314-800f-b1c5-9253733352be
-  we can eventually do optionParams like that too:
-    const theme = useTheme()
-    sx={{
-      borderInlineStart: '1px solid',
-      borderColor: theme.palette.error.main,
-    }}
-  can actually use design tokens directly as string;
-    sx={{ color: 'text.secondary' }} // assumed to be palette i think
-  dynamic value pitfall
-    https://mui.com/system/getting-started/the-sx-prop/#dynamic-values
-  or use "callback values" to get the theme:
-    https://mui.com/system/getting-started/the-sx-prop/#callback-values
-  on a div:
-    unstable_styleFunctionSx somehow
-    https://mui.com/system/getting-started/custom-components/#using-sx-with-custom-components
-  what Chakra does:
-    <Button
-      borderStart="2px solid"
-      borderColor={{ base: 'red.500', _dark: 'red.300' }}
-    >
-      Click Me
-    </Button>
-  how would this work??? (MUI or Chakra)
-    would need to a markup-output target, like react-native
-
-
----REFACTOR---
+rtl/left-right-coord REFACTOR
+-----------------------------
 TO REMIND:
   interface CalendarDisplayData {
     direction: 'ltr' | 'rtl'
@@ -192,196 +186,41 @@ RETURNING TO POPOVER and Portal question
     (hard because it renders directly into a parent)
     just render a stub element after the parent on initialization. don't forget to clean up
     won't screw up vdom because, if using vanilla, there is no vdom!
+    THINK ABOUT web-component. should be fine
+border-radius
+  mostly the ui-systems decides how popover does it, and outer calendar does it,
+  HOWEVER, there's border-radius on event elements and more link. who decides that?
+  For copy&paste systems (Shadcn), tailwind->tailwind w/ tailwind config deciding radius,
+  but for non-copy&paste (MUI), make customizable? Nah, just hardcode pixel values
 
 
-
-RESEARCH on Angular slots
-  https://chatgpt.com/share/6886ea31-81d8-800f-9abe-ac81e014c200
-  There are two techniques for scoped slots.
-  See "Can They Be Used Together?"... YES (what we're sortof doing already i think)
-
-
-
-theme checklist: popover background colors pops in dark mode
-maybe just don't even use borderClass majorBorderClass because we do a lot of different types of border widths
-reformat how files are borken down
-  default-ui doesnt need view/toolbar split because no toolbar component!
-find icon set that I can use for default-theme copy&paste (i tell people to install it first)
-think about how classname overriding should work
-  in new gen FullCalendar react component, when specified in option, overrides what <FullCalendar> wants
-    a feature not a bug
-  should we emulate this in JS api too?
-    only have classname merging happen between calendar+viewoptions?
-don't have plugins baked into themed React component. just import packages for types
-proper classname-joining util like for this:
-  (data.isToday
-    ? (' ' + pillClass({ hasNavLink: data.hasNavLink }))
-    : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
-  especially useful for custom jsx with className= in it
-  but for shadcn, we should probably use cn()
-should headerToolbar be baked into themed FullCalendar?
-  or part of caller?
-  DECISION: make it part of themed FullCalendar, with OPTIONAL availableViews
-    because the theme often is very opinionated about a nice-looking toolbar
-    and there's not much wasted space w/ supplying unused headerToolbar={} attribute
-    have availableViews fallback to changing layout of toolbar
-changelog: removed css variables like --fc-page-bg-color
-
-fillerClass.inHeader -> withinHeader ?
-
-we should allow MUI to force headers to be uppercase
-our global.css.js technique allows multiple attachments to same parent!? bad
-  can we somehow lazily attach? or is that bad for performance...
-    maybe so, but mainly used for shadow-dom people. real-dom people CAN use it,
-    but should be encouraged to use global.css instead
-
-ensure toolbar options don't get merged with default
-
-ui-default-react might be dumb..
-  it should NOT define default-ui good-looking toolbar
-  we wouldn't want to redefine that for Vue
-
-provide an addEvent-click for the component wrappers?
-
-bug: default-theme disabled-Today button is shorter by 1px
-
-we killed the default headerToolbar. bad idea?
-move { mergeCalendarOptions, mergeViewOptionsMap } to public entrypoint
-
-add canvas color from theme system
-is border color being transferred over corrrectly?
-
-default headerToolbar to false!!! yes... so that UI-frameworks don't need to turn it off
-TODO: disable other component libs for Classic theme? yes... borders don't match. not worth making portable
-kill the backgroundEventContrastColor setting? never used. contrast doesn't make sense
-in order to apply media-like classnames to non-root-calendar (like popover), restore:
-  directionClass(dir)
-  mediaTypeClass(mediaType)
-  OR... have a new root aggregate option like rootClass? parentClass? envClass? contextClass?
-NOTE: another reason why good to have semitransparent bg events and business hours... they stack
-  on top of eachother well
-For first-slot label that's negative, accept new data-prop that's
-Make our "classic" theme get border color from Shadcn/MUI?
-Make the "global.css.js" not really global... always install on-demand when needed?
-  NO because will cause layout reflow
-should we force bg color behind calendar ever?
-BAD: our non-shadcn themes are inherit shadcn variables for their tailwind
-if we have tailwind in our themes' JSX, that will be crazy to convert to vanilla CSS
-when no dayHeaderDividerClass, should not inject <div>
-"HACK when clientWidth does NOT include body-border, compared to totalWidth"
-^^^more problems with this in TimeGrid, lines not aligning!
-Maybe border-radius should be a parameter to the theme
-important to test out: drop shadow from dayheader/axis onto scrollable area
-rename --fc-*-canvas-color... because in pulse theme, outer background could be gray,
-  but we still want popover bg to be white. call is just "bg" color?
-add the isPrimary button config.. ensure its designed in all themes
-best DX for distributing palette variations?
-big issue: root calendar (and root view) can have overflow-hidden,
-  how to do popovers?
-how will we do line-height reset in non-tailwind? (and have it work in tailwind too)
-pattern for "apiRef": https://docs.svar.dev/react/gantt/api/methods/detach
-does setting eventDisplay to "block" affect BACKGROUND events!??
-remove passing in createElement to things like
-  `export type CustomContentGenerator<RenderProps> = CustomContent | ((renderProps: RenderProps, createElement: any) => (CustomContent | true))`
-instead of isIconOnly, do
-  accommodate icon+text, text+icon and have setting like hasStartIcon/hasEndIcon
-setting for omitting leading timegrid lableslot ... because of negative margin
-for new themes,
+theme checklist
+---------------
+UI
+  popover background colors POP in dark mode
+  timegrid: drop shadow from dayheader/axis onto scrollable area
+  isPrimary button config
   audit when today date is ALSO the "other" date in a month. still give opacity to whole dayCellTop?
-provide classname sentinel like "initial" to clear theme-provided classnames
-  https://tailwindcss.com/docs/theme#using-a-custom-theme
-add white glow to now indicator on all themes
-  See Screenshots/now-indicator-event-overlap.png
-  add to checklist
-obvious API win, unrelated to V7:
-  an events function should be able to return a non-promise,
-  aka an events array.
-for dark-mode, in UI design,
-  nice to have popover be different BG color
-  example: click branch selector: https://github.com/fullcalendar/fullcalendar-site-refactor
-Need a better CSS reset, similar to tailwind's for vanilla CSS
-api: better way to ensure min slot width/height. right now we depend on theme!?
-bug: in Chrome and Safari, scroll-syncing really getting out of alignment
-Classic theme
-  better contrast between week number gray and non-business hour gray
-Monarch theme
-  audit responsiveness
-  audit dark modes
-  list-view
-    single-events in a day should vertically align with number
-    (rethink how circle-number height is done)
-  put x-padding on non-circled day numbers. tab-focusing looks bad right now
-  expander for resource groups, resource-nesting
-  uppercase text for time slotLabels?
-  (for demo only): change slotDuration and interval
-  proper chevron!
-  tricks to make current-view-tabs not so wide
-Zen theme
-  fork from classic theme
-Forma theme:
-  how to add top border to header cell. can we do it with impunity?
-Technic theme
-  fork from classic theme
-  port old event styles from Monarch theme (but gut continuation cropping)
-  make event selected state be solid color (like apple calendar)
-All themes
-  xxSmall text too small (esp Year view)
-  implement nice now-indicator
-  floating week number, even if looks bad
-    implement WeekNumberDisplayData.isCell
-  do list-view
-  do resource-timeline
-Test stickyHeaderDates, apparently "makes this broken sometimes"
-ClassName for license warning (benefits Monarch theme)
-rename ViewData -> ViewDisplayData
-Implement
-  blockEventContent
-  rowEventContent
-  columnEventContent
-  listItemEventContent
-Themes with -top slotLabelInners should start slots at 11pm night before
-  BUT, BUG: slotMinTime:'-01:00' gives weird results
-Put dayPopover as child of BODY! --- do whatever is necessary (still use position:fixed?)
-  because it's possible to have overflow:hidden on the calendar now (Monarch theme does it)
-  for web components, attach to shadow-root
-Kill fixedMirrorParent --- always use BODY
-  Okay now because all our classnames are atomic
-Reana needs to design the schematics for Popover
-manual-test: cropping within scrollers?
-  stickiness within works?
-  now-indicators bleeding out in any scendario, expanding canvas?
-later: ensure nowIndicator doesn't appear in print view
-test: since making timegrid slotlable css changes,
+  add white glow to now indicator on all themes
+    See Screenshots/now-indicator-event-overlap.png
+  for dark-mode, in UI design,
+    nice to have popover be different BG color
+    example: click branch selector: https://github.com/fullcalendar/fullcalendar-site-refactor
+CODE
+  remove borderClass/majorBorderClass ... use borderColorClass each time
+  Use rotated icons to save space
+TEST
+  ALL stickiness, esp when calendar root is overflow:hidden
   test horizontal scrolling
   test growRows
-later: no more CJS
-later: instead of "in*" names which could be confused with "is*" names, do something like this:
-  insideViewGroup
-  insidePopover
-later: if third-party ui-libraries define their own tabs, ensure aria is correctly wired up somehow
-bug: in demos, we needed to put z-index to contain the z-index below the demo-topbar!
-later: in demos, we need to set <FullCalendar>'s colorScheme explicitly to get dark-mode scrollbars working
-  is there a way to get this working automatically for *shadcn*?
-rethink classNames.rigid change
-  overflow not working well on datagrid column resizing now
-QUESTION: why does datagrid cell have inner wrap?
-Use rotated icons to save space
-later: we made event rerender optimization in v6 where DnD of event results in only 1 eventContent call
-  v7 still does 2 (or more?)... understandable because needs to clone event for mirror DnD?
-^^^write tests even tho didn't write for v6
-
-
-THEMING NOTES
--------------
-for alignment,
-  dayHeader and timeline-slotLabel are flex-col
-  timeGrid-slotLabel is flex-row
-text size:
-  text-sm = 14px (day-numbers, slot-labels, datagrid cells)
-  text-xs = 12px (events)
-  xxsTextClass ~= 11px (time within events -- use sparingly)
-border-radius
-  don't need to parameterize. shadcn already customizes rounded-(lg|md|sm)
+NOTES
+  for alignment,
+    dayHeader and timeline-slotLabel are flex-col
+    timeGrid-slotLabel is flex-row
+  text size:
+    text-sm = 14px (day-numbers, slot-labels, datagrid cells)
+    text-xs = 12px (events)
+    xxsTextClass ~= 11px (time within events -- use sparingly)
 
 
 ASAP
@@ -474,6 +313,8 @@ bug: for default titleFormat in week view
 bug: why targeting single-day view doesnt work?
   views: { day: { dayHeaderFormat: { day: 'numeric', weekday: 'long' } } }
   ^^works but only for some settings
+bug: in Chrome and Safari, scroll-syncing really getting out of alignment
+  stickyHeaderDates might cause it. test it a lot
 Monarch theme: bug: left-align dayheader for day-only views after views.day options bug above is fixed
   later: fix Screenshots/multimonth-more-link-bug.png
   core: kill border-radius and drop-shadow on (Calendar|View) when borderless
@@ -481,6 +322,40 @@ Monarch theme: bug: left-align dayheader for day-only views after views.day opti
   bug: Causes scrollbars when there shouldn't be
     slotDuration: '01:00',
     expandRows: true,
+Currently, in v6, the headerToolbar left/center/right properties MERGE, which is a bit crazy
+  Overhaul the default setting
+  Add to changelog
+new Angular version
+  https://github.com/fullcalendar/fullcalendar/issues/7946#issuecomment-3019245564
+[rename] maybe rename "canvas" color to "background" color?
+  NOTES: rename --fc-*-canvas-color... because in pulse theme, outer background could be gray,
+    but we still want popover bg to be white. call is just "bg" color?
+[rename] fillerClass.inHeader -> withinHeader ?
+our global.css.js technique allows multiple attachments to same parent!? bad
+  can we somehow lazily attach? or is that bad for performance...
+    maybe so, but mainly used for shadow-dom people. real-dom people CAN use it,
+    but should be encouraged to use global.css instead
+For first-slot label that's negative, accept new data-prop that signls no rendering label
+  For themes with this, have them default the first-slot to 11pm the night before?
+when no dayHeaderDividerClass, should not inject <div>
+Address HACK in code, search: "HACK when clientWidth does NOT include body-border, compared to totalWidth"
+  ^^^more problems with this in TimeGrid, lines not aligning!
+obvious API win, unrelated to V7:
+  an events function should be able to return a non-promise,
+  aka an events array.
+api: better way to ensure min slot width/height. right now we depend on theme!?
+Kill fixedMirrorParent --- always use BODY
+  Okay now because all our classnames are atomic
+ensure nowIndicator doesn't appear in print view
+[dist] No more CJS!
+[dist] Support module-sync in package.json
+[rename] instead of "in*" names which could be confused with "is*" names, do something like this:
+  insideViewGroup
+  insidePopover
+[a11y] if third-party ui-libraries define their own tabs, ensure aria is correctly wired up somehow
+[forward-port] we made event rerender optimization in v6 where DnD of event results in only 1 eventContent call
+  v7 still does 2 (or more?)... understandable because needs to clone event for mirror DnD?
+  write tests even tho didn't write for v6
 
 
 Changelog
@@ -589,6 +464,8 @@ changelog: weekdayJustify, forceCommas
 changelog: default computed titleFormat for week view (could span different months),
   WHEN it actually does span different months, is like "Sep - Oct 2014"
 changelog: dayHeaderClass/etc is used within popover (inPopover)
+changelog: removed css variables like --fc-page-bg-color
+
 
 Docs
 ----
@@ -628,6 +505,7 @@ Background events don't respect contrast color
   because the color is made transparent, it's essentially considered the canvas color
   but themes can override by forcing text-color for backgroundEventTitleClass
 
+
 Release Prep
 ------------
 
@@ -651,10 +529,12 @@ test print-view extensively after theme refactor
 test all horizontally-scrolling views
 test z-index of events and more-link ABOVE background events in ALL VIEWs
 
+
 After Launch
 ------------
 
 importmap.public.html needs to be updated. accesses published files
+
 
 Automated Test TODO
 -------------------
@@ -706,6 +586,7 @@ cleanup responive.html demos since flex-wrap in toolbar became the default
 automated-tests: ensure both className+class for "instead of accepting classNames" items above
 in timeline, eventOverlap:true should cause chunkier events (in classic theme at least)
 
+
 Freshdesk/GH-issues
 -------------------
 
@@ -752,6 +633,11 @@ responsive tickets (so ppl know we don't consider responsiveness "solved"):
   tiled multimonth view, JUST have event dots, nothing else
   timegrid week view, but with ONLY one day column. has multiple day headers for selecting other days tho
 Create GH ticket for reviving weekNumber column (weekNumberDisplay: 'column')
+Make ticket: multiple levels of dayheaders (not related to resources)
+  https://fullcalendar.freshdesk.com/a/tickets/11101
+future-ticket: make monthgrid suck less
+future-ticket: revive weeknumber column-mode
+
 
 Punt
 ----
@@ -878,6 +764,34 @@ punt: slotMinHeight setting
 punt: when implementing weekNumberDisplay:'column',
   will have WeekNumberDisplayData.isCell
   and weekNumberHeaderClass/Content
+eventually have MUI themes output styles using sx={} prop, like:
+  https://chatgpt.com/share/688a7d49-4314-800f-b1c5-9253733352be
+  we can eventually do optionParams like that too:
+    const theme = useTheme()
+    sx={{
+      borderInlineStart: '1px solid',
+      borderColor: theme.palette.error.main,
+    }}
+  can actually use design tokens directly as string;
+    sx={{ color: 'text.secondary' }} // assumed to be palette i think
+  dynamic value pitfall
+    https://mui.com/system/getting-started/the-sx-prop/#dynamic-values
+  or use "callback values" to get the theme:
+    https://mui.com/system/getting-started/the-sx-prop/#callback-values
+  on a div:
+    unstable_styleFunctionSx somehow
+    https://mui.com/system/getting-started/custom-components/#using-sx-with-custom-components
+  what Chakra does:
+    <Button
+      borderStart="2px solid"
+      borderColor={{ base: 'red.500', _dark: 'red.300' }}
+    >
+      Click Me
+    </Button>
+  how would this work??? (MUI or Chakra)
+    would need to a markup-output target, like react-native
+punt: API change: stop passing-in createElement to render funcs:
+  typedef: `export type CustomContentGenerator<RenderProps> = CustomContent | ((renderProps: RenderProps, createElement: any) => (CustomContent | true))`
 
 Notes
 -----
@@ -991,3 +905,10 @@ Other ways to rearrange list-item-event DOT
   1. Simply override whole eventContent(), while incorporating timeClass/timeClass
   2. Use flex-direction: inverse-row to reverse time/title,
       and then absolutely position color dot with well-known left offset
+RESEARCH on Angular slots
+  https://chatgpt.com/share/6886ea31-81d8-800f-9abe-ac81e014c200
+  There are two techniques for scoped slots.
+  See "Can They Be Used Together?"... YES (what we're sortof doing already i think)
+NOTE: another reason why good to have semitransparent bg events and business hours... they stack
+  on top of eachother well
+pattern for "apiRef": https://docs.svar.dev/react/gantt/api/methods/detach
