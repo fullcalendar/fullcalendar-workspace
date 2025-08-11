@@ -5,18 +5,65 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 
-does setting eventDisplay to "block" affect BACKGROUND events!??
-Reana needs to design the schematics for Popover
+theme system DISTRIBUTION
+-------------------------
+default UI (VANILLA)
+  plugin - YES - empty toolbar by default
+  tailwind copypasta - NO - how would subclassing `new Calendar` work anyway!?
+REACT default UI
+  plugin - NO - ppl should just use default UI plugin
+  tailwind copypasta - YES - w/ opinionated toolbar that can be adjusted
+SHADCN
+  plugin - NO - against philosophy
+  tailwind copypasta - YES - w/ opinionated toolbar that can be adjusted
+MUI
+  plugin - NO - not possible to define outer-box that matches with theme
+  tailwind copypasta - NO - not idiomatic MUI, maybe later
+  DO: provide components
+    EventCalendar/Scheduler (has addButton props)
+    EventCalendarView/SchedulerView (dev must make wrapping box and toolbars)
+--
+See GEN-README.md, eventually remove
+Before doing AI, clean ./ui-default-react/gen/(README.txt)+*** --- or do this now... move to Scratch
+Make all the /dev/ paths
+--
+How to make gen/src structure?
+  theme-breezy/src/
+    plugin.ts
+    *.ts (tailwind src)
+    _gen-plugin/ (tailwind converted to vanilla css)
+  ui-default-REACT/
+    src/theme-breezy/
+    src/_gen-tailwind/theme-breezy/ (tailwind compiled)
+  ui-shadcn/
+    src/theme-breezy/
+    src/_gen-tailwind/theme-breezy/ (tailwind compiled)
+  ui-mui-material/
+    src/theme-breezy/
+    src/_gen-components/theme-breezy/ (tailwind converted to vanilla css)
+--
+How to do "tailwind converted to vanilla css" ?
+  ask plugin.ts to inline into _gen-plugin/index.ts (keeping tailwind)
+  [OR] ask src/theme-breezy/* components to inline into src/_gen-components/theme-breezy/* (keeping tailwind)
+  create empty css file (global.css)
+  use AI to simultaneously fctw- prefix and externalize to global.css
+  write script to obfuscate all fctw- classnames (both in js and global.css)
+  convert rem -> em, add our resets
+--
+How to have standard repo use themes from outer workspace?
+  things that use classic-theme in standard subrepo:
+    automated tests
+    bundle/examples/
+    ^^^built bundle from that stuff
 
 
 theme SYSTEM
 ------------
-how to distribute *MUI* themes?
-  !!! - find paper i wrote
-  !!! - same issue for removing tailwind from each theme's default UI for JS plugin
-  !!! - ^^^where to DRY-up headerToolbar={} setting for default UI (used by vanilla, react, VUE, etc)
-  !!! - triage - don't have plugins baked into themed React component. just import packages for types
-???- provide an onAddEvent handler to themes somehow for when primary button clicked!?
+Make settings for all theme systems:
+  addButton: boolean
+  addButtonText: string
+  addButtonHint: string
+  addButtonClick: (ev) => void
 In theme demo App.tsx,
   have font-families change based on Component Lib
 types: why is dayHeaderClass in defined in core but dayHeaderRowClass defined in dayGrid???
@@ -111,6 +158,8 @@ Implement
   rowEventContent
   columnEventContent
   listItemEventContent
+Better button render-props:
+  isViewGroup -> isSelectGroup (b/c isSelected is other prop name)
 
 
 rtl/left-right-coord REFACTOR
@@ -206,6 +255,7 @@ UI
   for dark-mode, in UI design,
     nice to have popover be different BG color
     example: click branch selector: https://github.com/fullcalendar/fullcalendar-site-refactor
+  vresource view
 CODE
   remove borderClass/majorBorderClass ... use borderColorClass each time
   Use rotated icons to save space
@@ -356,7 +406,17 @@ ensure nowIndicator doesn't appear in print view
 [forward-port] we made event rerender optimization in v6 where DnD of event results in only 1 eventContent call
   v7 still does 2 (or more?)... understandable because needs to clone event for mirror DnD?
   write tests even tho didn't write for v6
-
+does Safari seem really slow?
+easy performance win for multi-month? css reflows?
+[rename] all sticky settings to *Sticky
+more granular sticky settings?
+  tableHeaderSticky
+  rowEventTitleSticky
+  colEventTitleSticky
+  slotLabelInnerSticky
+next theme platforms to implement:
+  Vuetify
+  Angular Material
 
 Changelog
 ---------
@@ -528,6 +588,10 @@ ensure all new settings are put on the Angular connector!
 test print-view extensively after theme refactor
 test all horizontally-scrolling views
 test z-index of events and more-link ABOVE background events in ALL VIEWs
+temp files to eventually kill:
+  TODO-v7.txt
+  standard/CHANGELOG-v7.txt
+  standard/MIGRATION-CUSTOM-CSS.md
 
 
 After Launch

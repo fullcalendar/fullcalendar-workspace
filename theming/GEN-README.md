@@ -1,8 +1,4 @@
 
-TODO: implement dist/.tsc and do generated package.json
-TODO: clean ./ui-default-react/gen/(README.txt)+***
-
-
 UI-DEFAULT(VANILLA-JS)
 /theming/theme-*/src/index.ts --- plugin
 /theming/theme-*/src/_gen/css-tailwind/index.ts --- compiled. unused interum
