@@ -46,6 +46,9 @@ TODO: in all-day area, when stacking events, allDayHeader not valigned
 PROBLEM: event color too dim to pop above background-event color
 
 TODO: fix multiple listDayFormats
+
+TODO: new dark-mode!
+  https://tailwindcss.com/plus/changelog#2025-08-11
 */
 function createDayGridClasses(primaryBorderColorClass: string): CalendarOptions {
   return {

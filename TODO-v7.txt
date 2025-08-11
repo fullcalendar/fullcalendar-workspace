@@ -52,6 +52,10 @@ how to distribute Default-UI themes?
     [internally] .asdf { outline-color: var(--fc-monarch-canvas) }
 
 
+for beta: new Angular version
+  https://github.com/fullcalendar/fullcalendar/issues/7946#issuecomment-3019245564
+
+
 types: why is dayHeaderClass in defined in core but dayHeaderRowClass defined in dayGrid???
 
 listDayHeaderClass always gets flex-row from core
@@ -231,9 +235,11 @@ our global.css.js technique allows multiple attachments to same parent!? bad
     maybe so, but mainly used for shadow-dom people. real-dom people CAN use it,
     but should be encouraged to use global.css instead
 
+ensure toolbar options don't get merged with default
+
 ui-default-react might be dumb..
   it should NOT define default-ui good-looking toolbar
-  we wouldn't want to redefine that for
+  we wouldn't want to redefine that for Vue
 
 provide an addEvent-click for the component wrappers?
 

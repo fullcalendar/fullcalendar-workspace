@@ -21,6 +21,8 @@ TODO: implement now-indicator
 TODO: text-gray-500 is yucky for Shadcn
 
 TODO: give day-number-circle to list-view day-headers
+
+TODO: multimonth very poorly condensed with events
 */
 
 const dayGridClasses: CalendarOptions = {
@@ -95,14 +97,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       viewClass: 'rounded-lg overflow-hidden ' +
         'border border-[rgb(228_228_229)] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]',
         // ^^^ what is this border!?
-
-      dayHeaderInnerClass: (data) => [
-        !data.isToday && 'mx-1',
-        'my-1',
-        'text-gray-500',
-        'p-1 text-sm',
-        'flex flex-row items-center',
-      ],
 
       dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
 
@@ -183,13 +177,42 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayGrid: {
         ...dayGridClasses,
         dayHeaderClass: 'items-end',
+        dayHeaderInnerClass: (data) => [
+          !data.isToday && 'mx-1',
+          'my-1',
+          'text-gray-500',
+          'p-1 text-sm',
+          'flex flex-row items-center',
+        ],
       },
       multiMonth: {
         ...dayGridClasses,
+        dayHeaderClass: 'items-start', // unnecessary
+        dayHeaderInnerClass: (data) => [
+          !data.isToday && 'mx-1',
+          'my-1',
+          'text-gray-500',
+          'p-1 text-sm',
+          'flex flex-row items-center',
+        ],
+
+        singleMonthClass: (data) => [
+          (data.colCount > 1) && 'm-4',
+        ],
+        singleMonthTitleClass: 'font-semibold',
+
       },
       timeGrid: {
         ...dayGridClasses,
         dayHeaderClass: 'items-center',
+        dayHeaderInnerClass: (data) => [
+          !data.isToday && 'mx-1',
+          'my-1',
+          'text-gray-500',
+          'p-1 text-sm',
+          'flex flex-row items-center',
+        ],
+
         weekNumberClass: 'justify-end items-center',
         weekNumberInnerClass: 'px-2 text-sm text-gray-700',
 
