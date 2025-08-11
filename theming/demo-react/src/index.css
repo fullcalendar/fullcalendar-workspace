@@ -2,21 +2,21 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@source "../node_modules/@fullcalendar/theme-classic/src";
-@source "../node_modules/@fullcalendar/theme-breezy/src";
-@source "../node_modules/@fullcalendar/theme-pulse/src";
-@source "../node_modules/@fullcalendar/theme-monarch/src";
-@source "../node_modules/@fullcalendar/theme-forma/src";
+@source "../node_modules/@fullcalendar/theme-classic-dev/src";
+@source "../node_modules/@fullcalendar/theme-breezy-dev/src";
+@source "../node_modules/@fullcalendar/theme-pulse-dev/src";
+@source "../node_modules/@fullcalendar/theme-monarch-dev/src";
+@source "../node_modules/@fullcalendar/theme-forma-dev/src";
 @source "../node_modules/@fullcalendar/mui-material/src";
 @source "../node_modules/@fullcalendar/shadcn/src";
 
 /* !!! */
 @source "../node_modules/@fullcalendar/ui-default-react/gen";
 
-@import "../node_modules/@fullcalendar/theme-breezy/src/ui-default-palettes.css";
-@import "../node_modules/@fullcalendar/theme-pulse/src/ui-default-palettes.css";
-@import "../node_modules/@fullcalendar/theme-monarch/src/ui-default-palettes.css";
-@import "../node_modules/@fullcalendar/theme-forma/src/ui-default-palettes.css";
+@import "../node_modules/@fullcalendar/theme-breezy-dev/src/ui-default-palettes.css";
+@import "../node_modules/@fullcalendar/theme-pulse-dev/src/ui-default-palettes.css";
+@import "../node_modules/@fullcalendar/theme-monarch-dev/src/ui-default-palettes.css";
+@import "../node_modules/@fullcalendar/theme-forma-dev/src/ui-default-palettes.css";
 
 @custom-variant dark (&:is([data-color-scheme=dark] *));
 

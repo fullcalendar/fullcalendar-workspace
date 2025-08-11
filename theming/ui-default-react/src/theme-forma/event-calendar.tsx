@@ -2,8 +2,8 @@ import React from 'react'
 import { CalendarOptions } from "@fullcalendar/core"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
-import { defaultUiEventCalendarOptions, optionParams } from '@fullcalendar/theme-forma/ui-default/options-event-calendar'
-import { createSlots } from '@fullcalendar/theme-forma/slots'
+import { defaultUiEventCalendarOptions, optionParams } from '@fullcalendar/theme-forma-dev/ui-default/options-event-calendar'
+import { createSlots } from '@fullcalendar/theme-forma-dev/slots'
 
 const slots = createSlots({
   createElement: React.createElement as any, // HACK

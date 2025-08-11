@@ -3,8 +3,8 @@ import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
-import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-breezy/options-event-calendar'
-import { createSlots } from '@fullcalendar/theme-breezy/slots'
+import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-breezy-dev/options-event-calendar'
+import { createSlots } from '@fullcalendar/theme-breezy-dev/slots'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 

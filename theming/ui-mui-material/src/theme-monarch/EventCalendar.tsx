@@ -5,8 +5,8 @@ import { useCalendarController } from "@fullcalendar/react"
 import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
-import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-monarch/options-event-calendar'
-import { createSlots } from '@fullcalendar/theme-monarch/slots'
+import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-monarch-dev/options-event-calendar'
+import { createSlots } from '@fullcalendar/theme-monarch-dev/slots'
 import { eventCalendarIconOptions } from '../lib/icons-event-calendar.js'
 
 export interface EventCalendarProps extends CalendarOptions {

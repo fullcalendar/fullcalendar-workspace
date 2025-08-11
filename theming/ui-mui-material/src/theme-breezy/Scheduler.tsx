@@ -4,7 +4,7 @@ import { useTheme, alpha } from '@mui/material/styles'
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
-import { createSchedulerOnlyOptions } from '@fullcalendar/theme-breezy/options-scheduler'
+import { createSchedulerOnlyOptions } from '@fullcalendar/theme-breezy-dev/options-scheduler'
 import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
 import { optionParams, EventCalendarView } from './EventCalendar.js'
 import { schedulerOnlyIconOptions } from '../lib/icons-scheduler.js'

@@ -2,7 +2,7 @@ import React from 'react'
 import { CalendarOptions } from "@fullcalendar/core"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
-import { defaultUiEventCalendarOptions } from '@fullcalendar/theme-classic/ui-default/options-event-calendar'
+import { defaultUiEventCalendarOptions } from '@fullcalendar/theme-classic-dev/ui-default/options-event-calendar'
 
 export interface EventCalendarProps extends CalendarOptions {
   availableViews?: string[]

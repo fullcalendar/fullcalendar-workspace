@@ -106,11 +106,11 @@
     "react-dom": "^19.1.0"
   },
   "dependencies": {
-    "@fullcalendar/theme-monarch": "workspace:*",
-    "@fullcalendar/theme-forma": "workspace:*",
-    "@fullcalendar/theme-classic": "workspace:*",
-    "@fullcalendar/theme-breezy": "workspace:*",
-    "@fullcalendar/theme-pulse": "workspace:*"
+    "@fullcalendar/theme-monarch-dev": "workspace:*",
+    "@fullcalendar/theme-forma-dev": "workspace:*",
+    "@fullcalendar/theme-classic-dev": "workspace:*",
+    "@fullcalendar/theme-breezy-dev": "workspace:*",
+    "@fullcalendar/theme-pulse-dev": "workspace:*"
   },
   "devDependencies": {
     "@fullcalendar/core": "workspace:*",

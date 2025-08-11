@@ -4,8 +4,8 @@ import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
-import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-forma/options-event-calendar'
-import { createSlots } from '@fullcalendar/theme-forma/slots'
+import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-forma-dev/options-event-calendar'
+import { createSlots } from '@fullcalendar/theme-forma-dev/slots'
 import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
 import { eventCalendarIconOptions } from '../lib/icons-event-calendar.js'
 

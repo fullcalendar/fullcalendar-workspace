@@ -6,7 +6,7 @@ import { useCalendarController } from "@fullcalendar/react"
 import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
 import { EventCalendarView, optionParams } from './EventCalendar.js'
 import { schedulerOnlyIconOptions } from '../lib/icons-scheduler.js'
-import { createSchedulerOnlyOptions } from '@fullcalendar/theme-monarch/options-scheduler'
+import { createSchedulerOnlyOptions } from '@fullcalendar/theme-monarch-dev/options-scheduler'
 
 export interface SchedulerProps extends CalendarOptions {
   availableViews: string[]
