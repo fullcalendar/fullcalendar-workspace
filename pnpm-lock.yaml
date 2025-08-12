@@ -3613,6 +3613,16 @@ importers:
         specifier: ^4.7.7
         version: 4.7.8
 
+  standard/theming/theme-breezy: {}
+
+  standard/theming/theme-classic: {}
+
+  standard/theming/theme-forma: {}
+
+  standard/theming/theme-monarch: {}
+
+  standard/theming/theme-pulse: {}
+
   theming/demo-react:
     dependencies:
       '@emotion/react':
