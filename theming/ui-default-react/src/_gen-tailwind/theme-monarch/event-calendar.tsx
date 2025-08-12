@@ -3,28 +3,38 @@ import { CalendarOptions } from "@fullcalendar/core"
 import { EventCalendarView } from './event-calendar-view.js'
 
 export interface EventCalendarProps extends CalendarOptions {
+  addButton?: boolean
+  addButtonText?: string
+  addButtonHint?: string
+  addButtonClick?: (ev: MouseEvent) => void
   availableViews: string[]
 }
 
 // TODO: combine with EventCalendarView
-export function EventCalendar({ availableViews, ...options }: EventCalendarProps) {
+export function EventCalendar({
+  addButton,
+  addButtonText,
+  addButtonHint,
+  addButtonClick,
+  availableViews,
+  ...calendarOptions
+}: EventCalendarProps) {
   return (
     <EventCalendarView
       headerToolbar={{
-        left: 'addEvent today,prev,next',
+        start: (addButton ? 'add ' : '') + 'today,prev,next',
         center: 'title',
-        right: availableViews.join(','),
+        end: availableViews.join(','),
       }}
       buttons={{
-        addEvent: {
-          text: 'Add event',
+        add: {
           isPrimary: true,
-          click() {
-            alert('add event...')
-          }
+          text: addButtonText,
+          hint: addButtonHint,
+          click: addButtonClick,
         }
       }}
-      {...options}
+      {...calendarOptions}
     />
   )
 }

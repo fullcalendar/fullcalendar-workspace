@@ -5,33 +5,43 @@ import FullCalendar from '@fullcalendar/react'
 import { defaultUiEventCalendarOptions } from '@fullcalendar/theme-classic-dev/ui-default/options-event-calendar'
 
 export interface EventCalendarProps extends CalendarOptions {
+  addButton?: boolean
+  addButtonText?: string
+  addButtonHint?: string
+  addButtonClick?: (ev: MouseEvent) => void
   availableViews?: string[]
 }
 
-export function EventCalendar({ availableViews, ...options }: EventCalendarProps) {
+export function EventCalendar({
+  addButton,
+  addButtonText,
+  addButtonHint,
+  addButtonClick,
+  availableViews,
+  ...calendarOptions
+}: EventCalendarProps) {
   return (
     <FullCalendar
       headerToolbar={{
-        left: 'addEvent today prev,next',
+        start: (addButton ? 'add ' : '') + 'today,prev,next',
         center: 'title',
-        right: availableViews?.join(','),
+        end: availableViews?.join(','),
       }}
       {...defaultUiEventCalendarOptions.optionDefaults}
-      {...options}
+      {...calendarOptions}
       buttons={{
-        addEvent: {
-          text: 'Add event',
+        add: {
           isPrimary: true,
-          click() {
-            alert('add event...')
-          }
+          text: addButtonText,
+          hint: addButtonHint,
+          click: addButtonClick,
         },
         ...defaultUiEventCalendarOptions.optionDefaults.buttons,
-        ...options.buttons,
+        ...calendarOptions.buttons,
       }}
       views={mergeViewOptionsMap(
         defaultUiEventCalendarOptions.views || {},
-        options.views || {},
+        calendarOptions.views || {},
       )}
     />
   )

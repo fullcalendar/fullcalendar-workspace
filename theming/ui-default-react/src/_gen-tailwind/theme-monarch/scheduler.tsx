@@ -3,27 +3,37 @@ import { CalendarOptions } from "@fullcalendar/core"
 import { SchedulerView } from './scheduler-view.js'
 
 export interface SchedulerProps extends CalendarOptions {
+  addButton?: boolean
+  addButtonText?: string
+  addButtonHint?: string
+  addButtonClick?: (ev: MouseEvent) => void
   availableViews: string[]
 }
 
-export function Scheduler({ availableViews, ...options }: SchedulerProps) {
+export function Scheduler({
+  addButton,
+  addButtonText,
+  addButtonHint,
+  addButtonClick,
+  availableViews,
+  ...calendarOptions
+}: SchedulerProps) {
   return (
     <SchedulerView
       headerToolbar={{
-        left: 'addEvent today,prev,next',
+        start: (addButton ? 'add ' : '') + 'today,prev,next',
         center: 'title',
-        right: availableViews.join(','),
+        end: availableViews.join(','),
       }}
       buttons={{
-        addEvent: {
-          text: 'Add event',
+        add: {
           isPrimary: true,
-          click() {
-            alert('add event...')
-          }
+          text: addButtonText,
+          hint: addButtonHint,
+          click: addButtonClick,
         }
       }}
-      {...options}
+      {...calendarOptions}
     />
   )
 }
