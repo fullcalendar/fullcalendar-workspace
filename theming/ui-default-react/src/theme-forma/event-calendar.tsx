@@ -4,6 +4,7 @@ import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
 import { defaultUiEventCalendarOptions, optionParams } from '@fullcalendar/theme-forma-dev/ui-default/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-forma-dev/slots'
+import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar.js'
 
 const slots = createSlots({
   createElement: React.createElement as any, // HACK
@@ -11,19 +12,19 @@ const slots = createSlots({
 }, optionParams)
 
 export interface EventCalendarProps extends CalendarOptions {
+  availableViews?: string[]
   addButton?: boolean
   addButtonText?: string
   addButtonHint?: string
   addButtonClick?: (ev: MouseEvent) => void
-  availableViews?: string[]
 }
 
 export function EventCalendar({
+  availableViews = eventCalendarAvailableViews,
   addButton,
   addButtonText,
   addButtonHint,
   addButtonClick,
-  availableViews,
   ...calendarOptions
 }: EventCalendarProps) {
   return (
@@ -31,11 +32,15 @@ export function EventCalendar({
       headerToolbar={{
         start: (addButton ? 'add ' : '') + 'today,prev,next',
         center: 'title',
-        end: availableViews?.join(','),
+        end: availableViews.join(','),
       }}
       {...defaultUiEventCalendarOptions.optionDefaults}
       {...slots}
       {...calendarOptions}
+      plugins={[
+        ...eventCalendarPlugins,
+        ...(calendarOptions.plugins || []),
+      ]}
       buttons={{
         add: {
           isPrimary: true,

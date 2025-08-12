@@ -3,21 +3,22 @@ import { CalendarOptions } from "@fullcalendar/core"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
 import { defaultUiEventCalendarOptions } from '@fullcalendar/theme-classic-dev/ui-default/options-event-calendar'
+import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar.js'
 
 export interface EventCalendarProps extends CalendarOptions {
+  availableViews?: string[]
   addButton?: boolean
   addButtonText?: string
   addButtonHint?: string
   addButtonClick?: (ev: MouseEvent) => void
-  availableViews?: string[]
 }
 
 export function EventCalendar({
+  availableViews = eventCalendarAvailableViews,
   addButton,
   addButtonText,
   addButtonHint,
   addButtonClick,
-  availableViews,
   ...calendarOptions
 }: EventCalendarProps) {
   return (
@@ -25,10 +26,14 @@ export function EventCalendar({
       headerToolbar={{
         start: (addButton ? 'add ' : '') + 'today,prev,next',
         center: 'title',
-        end: availableViews?.join(','),
+        end: availableViews.join(','),
       }}
       {...defaultUiEventCalendarOptions.optionDefaults}
       {...calendarOptions}
+      plugins={[
+        ...eventCalendarPlugins,
+        ...(calendarOptions.plugins || []),
+      ]}
       buttons={{
         add: {
           isPrimary: true,
