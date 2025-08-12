@@ -113,7 +113,7 @@ function parseSection(
               calendarApi.changeView(name)
             }
           }
-        } else if (calendarApi[name]) {
+        } else {
           buttonText = buttonInput.text ||
             calendarOptions[name + 'Text'] ||
             name
@@ -149,7 +149,7 @@ function parseSection(
           buttonClick = (ev: MouseEvent) => {
             buttonInput?.click?.(ev)
             if (!ev.defaultPrevented) {
-              calendarApi[name]()
+              calendarApi[name]?.()
             }
           }
         }

@@ -37,6 +37,7 @@ export default function EventCalendarToolbar({
           <Button
             onClick={addButton.click as any}
             aria-label={addButton.hint}
+            variant={addButton.isPrimary === false ? 'outlined' : 'contained'}
           >{addButton.text}</Button>
         )}
         <Button

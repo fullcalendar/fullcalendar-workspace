@@ -470,6 +470,7 @@ changelog: default computed titleFormat for week view (could span different mont
   WHEN it actually does span different months, is like "Sep - Oct 2014"
 changelog: dayHeaderClass/etc is used within popover (inPopover)
 changelog: removed css variables like --fc-page-bg-color
+changelog: different rendering behavior around not-defined buttons?
 
 
 Docs
