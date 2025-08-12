@@ -10,76 +10,10 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./theme-monarch/EventCalendar": {
+    "./*": {
       "import": {
-        "types": "./dist/theme-monarch/EventCalendar.d.ts",
-        "default": "./dist/theme-monarch/EventCalendar.js"
-      }
-    },
-    "./theme-monarch/Scheduler": {
-      "import": {
-        "types": "./dist/theme-monarch/Scheduler.d.ts",
-        "default": "./dist/theme-monarch/Scheduler.js"
-      }
-    },
-    "./theme-forma/EventCalendar": {
-      "import": {
-        "types": "./dist/theme-forma/EventCalendar.d.ts",
-        "default": "./dist/theme-forma/EventCalendar.js"
-      }
-    },
-    "./theme-forma/Scheduler": {
-      "import": {
-        "types": "./dist/theme-forma/Scheduler.d.ts",
-        "default": "./dist/theme-forma/Scheduler.js"
-      }
-    },
-    "./theme-classic/EventCalendar": {
-      "import": {
-        "types": "./dist/theme-classic/EventCalendar.d.ts",
-        "default": "./dist/theme-classic/EventCalendar.js"
-      }
-    },
-    "./theme-classic/Scheduler": {
-      "import": {
-        "types": "./dist/theme-classic/Scheduler.d.ts",
-        "default": "./dist/theme-classic/Scheduler.js"
-      }
-    },
-    "./theme-breezy/EventCalendar": {
-      "import": {
-        "types": "./dist/theme-breezy/EventCalendar.d.ts",
-        "default": "./dist/theme-breezy/EventCalendar.js"
-      }
-    },
-    "./theme-breezy/EventCalendarView": {
-      "import": {
-        "types": "./dist/theme-breezy/EventCalendarView.d.ts",
-        "default": "./dist/theme-breezy/EventCalendarView.js"
-      }
-    },
-    "./theme-breezy/Scheduler": {
-      "import": {
-        "types": "./dist/theme-breezy/Scheduler.d.ts",
-        "default": "./dist/theme-breezy/Scheduler.js"
-      }
-    },
-    "./theme-breezy/SchedulerView": {
-      "import": {
-        "types": "./dist/theme-breezy/SchedulerView.d.ts",
-        "default": "./dist/theme-breezy/SchedulerView.js"
-      }
-    },
-    "./theme-pulse/EventCalendar": {
-      "import": {
-        "types": "./dist/theme-pulse/EventCalendar.d.ts",
-        "default": "./dist/theme-pulse/EventCalendar.js"
-      }
-    },
-    "./theme-pulse/Scheduler": {
-      "import": {
-        "types": "./dist/theme-pulse/Scheduler.d.ts",
-        "default": "./dist/theme-pulse/Scheduler.js"
+        "types": "./dist/*.d.ts",
+        "default": "./dist/*.js"
       }
     }
   },

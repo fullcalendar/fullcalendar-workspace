@@ -5,64 +5,10 @@
   "type": "module",
   "exports": {
     "./package.json": "./package.json",
-    "./theme-monarch/EventCalendar": {
+    "./*": {
       "import": {
-        "types": "./theme-monarch/EventCalendar.d.ts",
-        "default": "./theme-monarch/EventCalendar.js"
-      }
-    },
-    "./theme-monarch/Scheduler": {
-      "import": {
-        "types": "./theme-monarch/Scheduler.d.ts",
-        "default": "./theme-monarch/Scheduler.js"
-      }
-    },
-    "./theme-forma/EventCalendar": {
-      "import": {
-        "types": "./theme-forma/EventCalendar.d.ts",
-        "default": "./theme-forma/EventCalendar.js"
-      }
-    },
-    "./theme-forma/Scheduler": {
-      "import": {
-        "types": "./theme-forma/Scheduler.d.ts",
-        "default": "./theme-forma/Scheduler.js"
-      }
-    },
-    "./theme-classic/EventCalendar": {
-      "import": {
-        "types": "./theme-classic/EventCalendar.d.ts",
-        "default": "./theme-classic/EventCalendar.js"
-      }
-    },
-    "./theme-classic/Scheduler": {
-      "import": {
-        "types": "./theme-classic/Scheduler.d.ts",
-        "default": "./theme-classic/Scheduler.js"
-      }
-    },
-    "./theme-breezy/EventCalendar": {
-      "import": {
-        "types": "./theme-breezy/EventCalendar.d.ts",
-        "default": "./theme-breezy/EventCalendar.js"
-      }
-    },
-    "./theme-breezy/Scheduler": {
-      "import": {
-        "types": "./theme-breezy/Scheduler.d.ts",
-        "default": "./theme-breezy/Scheduler.js"
-      }
-    },
-    "./theme-pulse/EventCalendar": {
-      "import": {
-        "types": "./theme-pulse/EventCalendar.d.ts",
-        "default": "./theme-pulse/EventCalendar.js"
-      }
-    },
-    "./theme-pulse/Scheduler": {
-      "import": {
-        "types": "./theme-pulse/Scheduler.d.ts",
-        "default": "./theme-pulse/Scheduler.js"
+        "types": "./*.d.ts",
+        "default": "./*.js"
       }
     }
   },
