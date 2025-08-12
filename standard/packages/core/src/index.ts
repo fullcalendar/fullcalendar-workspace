@@ -14,6 +14,7 @@ export { createPlugin } from './plugin-system.js'
 export { sliceEvents } from './component-util/View.js'
 export { EventRenderRange } from './component-util/event-rendering.js' // for sliceEvents
 export { JsonRequestError } from './util/requestJson.js'
+export { joinClassNames } from './util/html.js' // also exported via internals. use one?
 
 export { globalLocales } from './global-locales.js'
 export { globalPlugins } from './global-plugins.js'

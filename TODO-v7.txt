@@ -21,12 +21,6 @@ listDayHeaderClass always gets flex-row from core
 always make listDayHeaderInner sticky-top!
   well, maybe not because there are multiple listDayHeaderInner that could stack
   maybe on listDayHeaderClass?
-proper classname-joining util like for this:
-  (data.isToday
-    ? (' ' + pillClass({ hasNavLink: data.hasNavLink }))
-    : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
-  especially useful for custom jsx with className= in it
-  but for shadcn, we should probably use cn()
 Implement
   blockEventContent
   rowEventContent
@@ -166,6 +160,8 @@ All themes
 CODE
   remove borderClass/majorBorderClass ... use borderColorClass each time
   Use rotated icons to save space
+  use joinClassNames
+    especially useful for custom jsx with className= in it
 TEST
   ALL stickiness, esp when calendar root is overflow:hidden
   test horizontal scrolling
