@@ -13,11 +13,6 @@ clean+build all:
 
 theme SYSTEM
 ------------
-App.tsx:
-  write js-only App demo (with js plugins)
-  maybe write mui-only App demo
-  triage comments in App.tsx
-  have font-families change based on Component Lib
 types: why is dayHeaderClass in defined in core but dayHeaderRowClass defined in dayGrid???
 listDayHeaderClass always gets flex-row from core
   remove from themes if they define flex-row
@@ -26,81 +21,48 @@ listDayHeaderClass always gets flex-row from core
 always make listDayHeaderInner sticky-top!
   well, maybe not because there are multiple listDayHeaderInner that could stack
   maybe on listDayHeaderClass?
-give classic theme css variables for color
-  we realized we needed this for the canvas color
-  better to have API be consistent with other themes (ex: palette-chooser on website)
-find icon set that I can use for default-theme copy&paste (i tell people to install it first)
-  NAAHH... just inline the icons into src?... yes they are small xml
-think about how classname overriding should work
-  in new gen FullCalendar react component, when specified in option, overrides what <FullCalendar> wants
-    a feature not a bug
-  should we emulate this in JS api too?
-    only have classname merging happen between calendar+viewoptions?
-  NOTE: provide classname sentinel like "initial" to clear theme-provided classnames
-    https://tailwindcss.com/docs/theme#using-a-custom-theme
 proper classname-joining util like for this:
   (data.isToday
     ? (' ' + pillClass({ hasNavLink: data.hasNavLink }))
     : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
   especially useful for custom jsx with className= in it
   but for shadcn, we should probably use cn()
-theme-system: MUI
-  we should allow MUI to force headers to be uppercase
-theme: CLASSIC
-  bug: default-theme disabled-Today button is shorter by 1px
-  allow other theme systems to change border color
-Classic theme
-  better contrast between week number gray and non-business hour gray
-Monarch theme
-  audit responsiveness
-  audit dark modes
-  list-view
-    single-events in a day should vertically align with number
-    (rethink how circle-number height is done)
-  put x-padding on non-circled day numbers. tab-focusing looks bad right now
-  expander for resource groups, resource-nesting
-  uppercase text for time slotLabels?
-  (for demo only): change slotDuration and interval
-  proper chevron!
-  tricks to make current-view-tabs not so wide
-Zen theme
-  fork from classic theme
-Forma theme:
-  how to add top border to header cell. can we do it with impunity?
-Technic theme
-  fork from classic theme
-  port old event styles from Monarch theme (but gut continuation cropping)
-  make event selected state be solid color (like apple calendar)
-All themes
-  xxSmall text too small (esp Year view)
-  implement nice now-indicator
-  floating week number, even if looks bad
-    implement WeekNumberDisplayData.isCell
-  do list-view
-  do resource-timeline
-we killed the default headerToolbar. bad idea?
-move { mergeCalendarOptions, mergeViewOptionsMap } to public entrypoint?
-should headerToolbar be baked into themed FullCalendar?
-  or part of caller?
-  DECISION: make it part of themed FullCalendar, with OPTIONAL availableViews
-    because the theme often is very opinionated about a nice-looking toolbar
-    and there's not much wasted space w/ supplying unused headerToolbar={} attribute
-    have availableViews fallback to changing layout of toolbar
-Demo Rig
-  BAD: our non-shadcn themes are inherit shadcn variables for their tailwind
-  BUG?: z-index of subcomponents go above the topbar?
-css reset for non-tailwind
-  how will we do line-height reset in non-tailwind? (and have it work in tailwind too)
-instead of isIconOnly, do
-  accommodate icon+text, text+icon and have setting like hasStartIcon/hasEndIcon
 rename ViewData -> ViewDisplayData
 Implement
   blockEventContent
   rowEventContent
   columnEventContent
   listItemEventContent
+Implement
+  columnWeekNumberContent/DidMount/etc
+  inlineWeekNumberContent/DidMount/etc
+  (ticket for weekNumberDisplay:'inline'|'column')
 Better button render-props:
   isViewGroup -> isSelectGroup (b/c isSelected is other prop name)
+
+
+just before beta (after theme gen)
+----------------
+App.tsx:
+  write js-only App demo (with js plugins)
+  write mui-only App demo
+  have font-families change based on Component Lib
+  BAD: our non-shadcn themes are inherit shadcn variables for their tailwind
+   SOLUTION?: write tailwind-only App demo?
+  BUG?: z-index of subcomponents go above the topbar?
+
+
+after beta
+----------
+instead of isIconOnly, do
+  accommodate icon+text, text+icon and have setting like hasStartIcon/hasEndIcon
+think about how classname overriding should work
+  in new gen FullCalendar react component, when specified in option, overrides what <FullCalendar> wants
+    a feature not a bug
+  should we emulate this in JS api too?
+    only have classname merging happen between calendar+viewoptions?
+we killed the default headerToolbar. bad idea?
+  was ever merged recursively? if so, dont do that
 
 
 rtl/left-right-coord REFACTOR
@@ -187,6 +149,7 @@ border-radius
 theme checklist
 ---------------
 UI
+  now-indicator
   popover background colors POP in dark mode
   timegrid: drop shadow from dayheader/axis onto scrollable area
   isPrimary button config
@@ -197,6 +160,12 @@ UI
     nice to have popover be different BG color
     example: click branch selector: https://github.com/fullcalendar/fullcalendar-site-refactor
   vresource view
+theme-system: MUI
+  we should allow MUI to force headers to be uppercase
+  The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
+All themes
+  prefer view-specific options over top-level
+  xxSmall text too small (esp Year view)
 CODE
   remove borderClass/majorBorderClass ... use borderColorClass each time
   Use rotated icons to save space

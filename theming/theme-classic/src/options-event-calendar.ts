@@ -1,5 +1,16 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 
+/*
+TODO:
+  bug: default-theme disabled-Today button is shorter by 1px
+  allow other theme systems to change border color
+  better contrast between week number gray and non-business hour gray
+  give classic theme css variables for color
+    we realized we needed this for the canvas color
+    better to have API be consistent with other themes (ex: palette-chooser on website)
+  Make classic theme colors more accurate to original
+*/
+
 // ambient types
 // TODO: make these all peer deps? or wait, move options to just core
 import '@fullcalendar/daygrid'

@@ -1,6 +1,10 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 
 /*
+TODO:
+  how to add top border to header cell. can we do it with impunity?
+  make event selected state be solid color (like apple calendar)
+
 Colors:
 https://react.fluentui.dev/?path=/docs/theme-colors--docs
 For color variations, see different brand colors:

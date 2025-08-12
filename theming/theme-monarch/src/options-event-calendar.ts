@@ -1,5 +1,20 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 
+/*
+TODO:
+  audit responsiveness
+  audit dark modes
+  list-view
+    single-events in a day should vertically align with number
+    (rethink how circle-number height is done)
+  put x-padding on non-circled day numbers. tab-focusing looks bad right now
+  expander for resource groups, resource-nesting
+  uppercase text for time slotLabels?
+  (for demo only): change slotDuration and interval
+  proper chevron!
+  tricks to make current-view-tabs not so wide
+*/
+
 // ambient types
 // TODO: make these all peer deps? or wait, move options to just core
 import '@fullcalendar/daygrid'

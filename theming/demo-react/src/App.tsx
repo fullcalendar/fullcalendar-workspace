@@ -1,17 +1,6 @@
 /*
 TODO:
-Dark-mode for default component lib
-Hook up MUI border (for dark mode)
-How to do MUI *OUTER* border? not rely on Shadcn border
-Program nice default event color. Don't use custom colors. Don't use background events
-The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
-Make classic theme colors more accurate to original
-
-Later:
-(common color interface for all themes?)
-Somehow do not put Shadcn reset (which does border) on whole document?
 Radix warnings about controlled vs uncontrolled
-
 When Shadcn is not the selected component lib, change Shadcn palette (for topbar) to default
 */
 

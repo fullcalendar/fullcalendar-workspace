@@ -1,4 +1,7 @@
 
+css reset for non-tailwind
+  how will we do line-height reset in non-tailwind? (and have it work in tailwind too)
+
 default UI (VANILLA)
   plugin - YES - empty toolbar by default
   tailwind copypasta - NO - how would subclassing `new Calendar` work anyway!?
