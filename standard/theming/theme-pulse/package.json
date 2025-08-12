@@ -14,8 +14,5 @@
         "default": "./index.js"
       }
     }
-  },
-  "scripts": {
-    "clean": "rm index.*"
   }
 }
