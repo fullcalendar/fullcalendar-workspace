@@ -1,7 +1,7 @@
 // See LLM generation strategy in ../README.txt
 import React from 'react';
 import { CalendarOptions } from '@fullcalendar/core';
-import { EventCalendarView } from './event-calendar-view';
+import { EventCalendarView } from './event-calendar-view.js';
 import * as svgIcons from './svgs.js';
 
 import timelinePlugin from '@fullcalendar/timeline'
@@ -18,7 +18,7 @@ const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600';
 const borderColorClass = 'border-(--fc-monarch-outline-variant)';
 const majorBorderColorClass = 'border-(--fc-monarch-outline)';
 const disabledBgClass = 'bg-gray-500/7';
-const pillClass = (data) => 'bg-(--fc-monarch-primary-container) text-(--fc-monarch-on-primary-container)' + (data.hasNavLink ? ' ' + buttonEffectClass : '');
+const pillClass = (data: any) => 'bg-(--fc-monarch-primary-container) text-(--fc-monarch-on-primary-container)' + (data.hasNavLink ? ' ' + buttonEffectClass : '');
 
 export function SchedulerView(options: CalendarOptions) {
   return (

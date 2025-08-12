@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./tsconfig.gen-components.tsbuildinfo",
+    "outDir": "_gen-components-dist",
+    "rootDir": "src/_gen-components"
+  },
+  "include": [
+    "src/_gen-components"
+  ]
+}

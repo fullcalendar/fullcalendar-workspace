@@ -4,59 +4,11 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-
-theme system DISTRIBUTION
--------------------------
-default UI (VANILLA)
-  plugin - YES - empty toolbar by default
-  tailwind copypasta - NO - how would subclassing `new Calendar` work anyway!?
-REACT default UI
-  plugin - NO - ppl should just use default UI plugin
-  tailwind copypasta - YES - w/ opinionated toolbar that can be adjusted
-SHADCN
-  plugin - NO - against philosophy
-  tailwind copypasta - YES - w/ opinionated toolbar that can be adjusted
-MUI
-  plugin - NO - not possible to define outer-box that matches with theme
-  tailwind copypasta - NO - not idiomatic MUI, maybe later
-  DO: provide components
-    EventCalendar/Scheduler (has addButton props)
-    EventCalendarView/SchedulerView (dev must make wrapping box and toolbars)
---
-See GEN-README.md, eventually remove
-Before doing AI, clean ./ui-default-react/gen/(README.txt)+*** --- or do this now... move to Scratch
-Make all the /dev/ paths
---
-How to make gen/src structure?
-  theme-breezy/
-    src/
-      plugin.ts
-      *.ts (tailwind src)
-      _gen-plugin/ (tailwind converted to ts/vanilla-css)
-    _gen-plugin-dist -> symlink (use a tsconfig.gen-plugin.json that extends tsconfig.json)
-  ui-default-REACT/
-    src/theme-breezy/
-    src/_gen-tailwind/theme-breezy/ (tailwind compiled)
-  ui-shadcn/
-    src/theme-breezy/
-    src/_gen-tailwind/theme-breezy/ (tailwind compiled)
-  ui-mui-material/
-    src/theme-breezy/
-    src/_gen-components/theme-breezy/ (tailwind converted to ts/vanilla-css)
---
-How to do "tailwind converted to vanilla css" ?
-  ask plugin.ts to inline into _gen-plugin/index.ts (keeping tailwind)
-  [OR] ask src/theme-breezy/* components to inline into src/_gen-components/theme-breezy/* (keeping tailwind)
-  create empty css file (global.css)
-  use AI to simultaneously fctw- prefix and externalize to global.css
-  write script to obfuscate all fctw- classnames (both in js and global.css)
-  convert rem -> em, add our resets
---
-How to have standard repo use themes from outer workspace?
-  things that use classic-theme in standard subrepo:
-    automated tests
-    bundle/examples/
-    ^^^built bundle from that stuff
+clean+install all:
+  pn clean
+  pnpm --filter "./theming/**" run clean
+  pn install # important because writes tsconfigs
+  pn build
 
 
 theme SYSTEM

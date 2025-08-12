@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc -b tsconfig.gen-components.json && cp -f package.gen-components.json _gen-components-dist/package.json",
     "dev": "tsc --watch",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist _gen-components-dist tsconfig.tsbuildinfo tsconfig.gen-components.tsbuildinfo"
   },
   "exports": {
     "./package.json": "./package.json",

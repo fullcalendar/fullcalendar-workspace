@@ -37,6 +37,7 @@
     "filterSubtrees": [
       "./standard",
       "./premium",
+      "./theming",
       "./scripts"
     ]
   },

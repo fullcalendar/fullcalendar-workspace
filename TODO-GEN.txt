@@ -1,0 +1,112 @@
+
+default UI (VANILLA)
+  plugin - YES - empty toolbar by default
+  tailwind copypasta - NO - how would subclassing `new Calendar` work anyway!?
+REACT default UI
+  plugin - NO - ppl should just use default UI plugin
+  tailwind copypasta - YES - w/ opinionated toolbar that can be adjusted
+SHADCN
+  plugin - NO - against philosophy
+  tailwind copypasta - YES - w/ opinionated toolbar that can be adjusted
+MUI
+  plugin - NO - not possible to define outer-box that matches with theme
+  tailwind copypasta - NO - not idiomatic MUI, maybe later
+  DO: provide components
+    EventCalendar/Scheduler (has addButton props)
+    EventCalendarView/SchedulerView (dev must make wrapping box and toolbars)
+
+How to make gen/src structure?
+  theme-breezy/
+    src/
+      plugin.ts
+      *.ts (tailwind src)
+      _gen-plugin/ (tailwind converted to ts/vanilla-css)
+    _gen-plugin-dist -> symlink (use a tsconfig.gen-plugin.json that extends tsconfig.json)
+  ui-default-REACT/
+    src/theme-breezy/
+    src/_gen-tailwind/theme-breezy/ (tailwind compiled)
+  ui-shadcn/
+    src/theme-breezy/
+    src/_gen-tailwind/theme-breezy/ (tailwind compiled)
+  ui-mui-material/
+    src/theme-breezy/
+    src/_gen-components/theme-breezy/ (tailwind converted to ts/vanilla-css)
+
+How to do "tailwind converted to vanilla css" ?
+  ask plugin.ts to inline into _gen-plugin/index.ts (keeping tailwind)
+  [OR] ask src/theme-breezy/* components to inline into src/_gen-components/theme-breezy/* (keeping tailwind)
+  create empty css file (global.css)
+  use AI to simultaneously fctw- prefix and externalize to global.css
+  write script to obfuscate all fctw- classnames (both in js and global.css)
+  convert rem -> em, add our resets
+
+How to have standard repo use themes from outer workspace?
+  things that use classic-theme in standard subrepo:
+    automated tests
+    bundle/examples/
+    ^^^built bundle from that stuff
+
+
+
+
+
+UI-DEFAULT(VANILLA-JS)
+/theming/theme-*/src/index.ts --- plugin
+/theming/theme-*/src/_gen/css-tailwind/index.ts --- compiled. unused interum
+(use AI to simultaneously fctw- prefix and externalize)
+(write script to obfuscate all fctw- classnames)
+(convert rem -> em, add our reset)
+/theming/theme-*/src/_gen/css-vanilla/index.ts --- plugin. does NOT import .css file
+/theming/theme-*/src/_gen/css-vanilla/global.css --- where above fctw- stuff dumped css
+/theming/theme-*/src/_gen/css-vanilla/global.ts --- copied and pasted, just globally installs plugin
+/theming/theme-*/dist/index.(js|d.ts) and global.(js|d.ts|css)
+
+UI-DEFAULT(REACT) --- private package
+/theming/ui-default-react/src/theme-*/(event-calendar|scheduler).tsx
+/theming/ui-default-react/src/_gen/theme-*/css-tailwind/(event-calendar|scheduler).tsx --- compiled
+--- no "dist" because React users can just use vanilla-js plugin
+
+MUI-MATERIAL
+/theming/ui-mui-material/src/theme-*/(EventCalendar|Scheduler).tsx
+/theming/ui-mui-material/src/_gen/theme-*/css-tailwind/(EventCalendar|Scheduler).tsx --- compiled
+(use AI to simultaneously fctw- prefix and externalize)
+(write script to obfuscate all fctw- classnames)
+(convert rem -> em, add our reset)
+/theming/ui-mui-material/src/_gen/theme-*/css-vanilla/(EventCalendar|Scheduler).tsx
+/theming/ui-mui-material/src/_gen/theme-*/css-vanilla/global.css --- where above fctw- stuff dumped css
+/theming/ui-mui-material/dist/(EventCalendar|Scheduler).(js|d.ts) and global.css
+
+SHADCN --- private package
+/theming/ui-shadcn/src/theme-*/(event-calendar|scheduler).tsx
+/theming/ui-shadcn/src/_gen/theme-*/(event-calendar|scheduler).tsx --- assumed tailwind. compiled
+--- no "dist" because Shadcn is ALWAYS copy and paste
+
+
+create demo-vanilla-js, pull from plugins
+have demo-react pull from css-vanilla AND *compiled* css-tailwind
+have both demos test RTL with toggle
+
+
+
+
+
+
+STRATEGY FOR COMPILING THEME SOURCE CODE TO A SINGLE INLINED REACT COMPONENT
+
+- Inline all theming and slot logic from theme packages, but do NOT inline core or connector packages (e.g., @fullcalendar/core, @fullcalendar/react).
+- Inline all option objects (e.g., baseEventCalendarOptions, defaultUiEventCalendarOptions) as explicit JSX props on the main component, not as object spreads.
+- Merge user options shallowly: spread user props (e.g., {...options}) before custom props to avoid overwriting custom logic.
+- For the 'views' and 'buttons' props, merge user and theme options per-key: spread user options first, then override/add theme defaults for each sub-object (e.g., dayGrid, prev, next, etc.), so user options take precedence. Use the same shallow merging strategy for each sub-object.
+- When spreading user options for nested objects (like views, buttons, or any similar prop), you can use ...options.views (etc.) or ...options.views?.dayGrid without a fallback, as the spread operator handles undefined/null gracefully. This is preferred over ...((options.views && options.views.dayGrid) || {}).
+- Use top-level constants for all constant values (e.g., colors, class names, static option values).
+- DRY: Use variables for repeated logic/functions (e.g., rowItemClasses, getWeekNumberBadgeClasses), do not inline the same logic in multiple places.
+- Inline JSX-generating functions (e.g., dayHeaderContent) directly as JSX props, not as separate variables, and intermix them with related className/structure props in the component declaration (not grouped at the end). Order them for best readability and logical grouping.
+- Remove all unused variables and code after inlining or refactoring.
+- Use concise JSX for string literals (e.g., className="foo" not className={"foo"}).
+- Do NOT leave any intermediate, inlining, or strategy comments in the code body—keep the output clean and production-ready.
+- Keep the output idiomatic for React and easy to maintain.
+- Always clean up after inlining or refactoring, ensuring no dead code remains.
+- Prefer explicitness and maintainability over cleverness or terseness.
+- When using FullCalendar plugins (such as timeline, resource, adaptive, etc.), you must explicitly import them and include them in the plugins={[]} prop of the generated component. This is required for correct operation and is not handled automatically by FullCalendar.
+
+This strategy ensures the resulting file is a single, self-contained, idiomatic React component that is easy to read, maintain, and override.

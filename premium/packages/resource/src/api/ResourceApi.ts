@@ -1,4 +1,4 @@
-import { EventApi } from '@fullcalendar/core'
+import { ClassNameInput, EventApi } from '@fullcalendar/core'
 import { EventImpl, CalendarContext, Dictionary } from '@fullcalendar/core/internal'
 import { Resource, getPublicId, ResourceHash } from '../structs/resource.js'
 
@@ -141,7 +141,7 @@ export class ResourceApi {
   get eventContrastColor(): string { return this._resource.ui.contrastColor }
 
   // NOTE: user can't modify these because Object.freeze was called in event-def parsing
-  get eventClass() { return this._resource.ui.className }
+  get eventClass(): ClassNameInput { return this._resource.ui.className }
   get extendedProps() { return this._resource.extendedProps }
 
   toPlainObject(settings: { collapseExtendedProps?: boolean } = {}) {

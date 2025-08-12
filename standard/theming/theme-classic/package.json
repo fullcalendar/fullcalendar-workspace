@@ -14,5 +14,11 @@
         "default": "./index.js"
       }
     }
+  },
+  "peerDependencies": {
+    "@fullcalendar/core": "workspace:7.0.0-rc.0"
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "workspace:7.0.0-rc.0"
   }
 }
