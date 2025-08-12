@@ -4,9 +4,9 @@ Publishing:
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
-clean+install all:
+clean+build all:
   pn clean
-  pnpm --filter "./theming/**" run clean
+  pn --filter "./theming/**" run clean
   pn install # important because writes tsconfigs
   pn build
 

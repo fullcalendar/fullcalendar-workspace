@@ -121,5 +121,8 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "typescript": "~5.7.2"
+  },
+  "publishConfig": {
+    "directory": "./_gen-components-dist"
   }
 }
