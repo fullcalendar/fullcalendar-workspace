@@ -10,64 +10,10 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./theme-monarch/EventCalendar": {
+    "./*": {
       "import": {
-        "types": "./dist/theme-monarch/event-calendar.d.ts",
-        "default": "./dist/theme-monarch/event-calendar.js"
-      }
-    },
-    "./theme-monarch/Scheduler": {
-      "import": {
-        "types": "./dist/theme-monarch/scheduler.d.ts",
-        "default": "./dist/theme-monarch/scheduler.js"
-      }
-    },
-    "./theme-forma/EventCalendar": {
-      "import": {
-        "types": "./dist/theme-forma/event-calendar.d.ts",
-        "default": "./dist/theme-forma/event-calendar.js"
-      }
-    },
-    "./theme-forma/Scheduler": {
-      "import": {
-        "types": "./dist/theme-forma/scheduler.d.ts",
-        "default": "./dist/theme-forma/scheduler.js"
-      }
-    },
-    "./theme-classic/EventCalendar": {
-      "import": {
-        "types": "./dist/theme-classic/event-calendar.d.ts",
-        "default": "./dist/theme-classic/event-calendar.js"
-      }
-    },
-    "./theme-classic/Scheduler": {
-      "import": {
-        "types": "./dist/theme-classic/scheduler.d.ts",
-        "default": "./dist/theme-classic/scheduler.js"
-      }
-    },
-    "./theme-breezy/EventCalendar": {
-      "import": {
-        "types": "./dist/theme-breezy/event-calendar.d.ts",
-        "default": "./dist/theme-breezy/event-calendar.js"
-      }
-    },
-    "./theme-breezy/Scheduler": {
-      "import": {
-        "types": "./dist/theme-breezy/scheduler.d.ts",
-        "default": "./dist/theme-breezy/scheduler.js"
-      }
-    },
-    "./theme-pulse/EventCalendar": {
-      "import": {
-        "types": "./dist/theme-pulse/event-calendar.d.ts",
-        "default": "./dist/theme-pulse/event-calendar.js"
-      }
-    },
-    "./theme-pulse/Scheduler": {
-      "import": {
-        "types": "./dist/theme-pulse/scheduler.d.ts",
-        "default": "./dist/theme-pulse/scheduler.js"
+        "types": "./dist/*.d.ts",
+        "default": "./dist/*.js"
       }
     }
   },
