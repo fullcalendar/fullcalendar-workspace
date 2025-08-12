@@ -3,14 +3,9 @@ import Box from '@mui/material/Box'
 import { useTheme, alpha } from '@mui/material/styles'
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
-import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
-import { createSchedulerOnlyOptions } from '@fullcalendar/theme-breezy-dev/options-scheduler'
 import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
-import { optionParams, EventCalendarView } from './EventCalendar.js'
-import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
-
-const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
+import SchedulerView from './SchedulerView.js'
 
 export interface SchedulerProps extends CalendarOptions {
   availableViews?: string[]
@@ -62,19 +57,5 @@ export default function Scheduler({
         ]}
       />
     </Box>
-  )
-}
-
-export function SchedulerView(calendarOptions: CalendarOptions) {
-  return (
-    <EventCalendarView
-      {...baseSchedulerOnlyOptions.optionDefaults}
-      {...schedulerOnlyIconOptions}
-      {...calendarOptions}
-      views={mergeViewOptionsMap(
-        baseSchedulerOnlyOptions.views || {},
-        calendarOptions.views || {},
-      )}
-    />
   )
 }

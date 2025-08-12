@@ -52,10 +52,22 @@
         "default": "./dist/theme-breezy/EventCalendar.js"
       }
     },
+    "./theme-breezy/EventCalendarView": {
+      "import": {
+        "types": "./dist/theme-breezy/EventCalendarView.d.ts",
+        "default": "./dist/theme-breezy/EventCalendarView.js"
+      }
+    },
     "./theme-breezy/Scheduler": {
       "import": {
         "types": "./dist/theme-breezy/Scheduler.d.ts",
         "default": "./dist/theme-breezy/Scheduler.js"
+      }
+    },
+    "./theme-breezy/SchedulerView": {
+      "import": {
+        "types": "./dist/theme-breezy/SchedulerView.d.ts",
+        "default": "./dist/theme-breezy/SchedulerView.js"
       }
     },
     "./theme-pulse/EventCalendar": {
