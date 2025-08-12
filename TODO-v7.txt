@@ -44,10 +44,6 @@ How to make gen/src structure?
     src/theme-breezy/
     src/_gen-components/theme-breezy/ (tailwind converted to ts/vanilla-css)
 --
-Simplify default-ui theme dist?
-  for dev repos, access src directly?
-  for built repos, use tsconfig.json to build entirely
---
 How to do "tailwind converted to vanilla css" ?
   ask plugin.ts to inline into _gen-plugin/index.ts (keeping tailwind)
   [OR] ask src/theme-breezy/* components to inline into src/_gen-components/theme-breezy/* (keeping tailwind)
