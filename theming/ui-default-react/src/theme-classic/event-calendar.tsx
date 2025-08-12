@@ -27,6 +27,7 @@ export function EventCalendar({
         center: 'title',
         end: availableViews.join(','),
       }}
+      initialView={availableViews[0]}
       {...defaultUiEventCalendarOptions.optionDefaults}
       {...calendarOptions}
       plugins={[

@@ -44,6 +44,7 @@ export default function Scheduler({
         }}
       >
         <SchedulerView
+          initialView={availableViews[0]}
           borderless
           controller={controller}
           {...calendarOptions}

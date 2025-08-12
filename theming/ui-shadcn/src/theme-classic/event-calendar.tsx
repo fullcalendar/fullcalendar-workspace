@@ -34,6 +34,7 @@ export function EventCalendar({
       />
       <div className='border rounded-sm overflow-hidden'>
         <EventCalendarView
+          initialView={availableViews[0]}
           borderless
           controller={controller}
           {...calendarOptions}

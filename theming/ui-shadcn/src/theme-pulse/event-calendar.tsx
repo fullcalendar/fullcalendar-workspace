@@ -34,6 +34,7 @@ export function EventCalendar({
         addButton={addButton}
       />
       <EventCalendarView
+        initialView={availableViews[0]}
         controller={controller}
         {...calendarOptions}
         plugins={[

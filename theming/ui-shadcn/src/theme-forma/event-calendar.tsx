@@ -35,6 +35,7 @@ export function EventCalendar({
         addButton={addButton}
       />
       <EventCalendarView
+        initialView={availableViews[0]}
         borderlessX
         borderlessBottom
         controller={controller}

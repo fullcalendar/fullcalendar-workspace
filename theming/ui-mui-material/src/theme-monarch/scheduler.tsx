@@ -42,6 +42,7 @@ export default function Scheduler({
         addButton={addButton}
       />
       <SchedulerView
+        initialView={availableViews[0]}
         borderless
         controller={controller}
         {...calendarOptions}

@@ -36,6 +36,7 @@ export function Scheduler({
         addButton={addButton}
       />
       <SchedulerView
+        initialView={availableViews[0]}
         borderlessX
         borderlessBottom
         controller={controller}

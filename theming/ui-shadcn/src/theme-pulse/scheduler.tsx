@@ -35,6 +35,7 @@ export function Scheduler({
         addButton={addButton}
       />
       <SchedulerView
+        initialView={availableViews[0]}
         controller={controller}
         {...calendarOptions}
         plugins={[

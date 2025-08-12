@@ -42,6 +42,7 @@ export default function EventCalendar({
         }}
       >
         <EventCalendarView
+          initialView={availableViews[0]}
           borderless
           controller={controller}
           {...calendarOptions}
