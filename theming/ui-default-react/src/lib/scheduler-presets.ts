@@ -5,6 +5,8 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
 
+// TODO: DRY with other UI systems
+
 export const schedulerOnlyPlugins = [
   adaptivePlugin,
   scrollGridPlugin,

@@ -4,7 +4,7 @@ import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
 import { defaultUiEventCalendarOptions, optionParams } from '@fullcalendar/theme-pulse-dev/ui-default/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-pulse-dev/slots'
-import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar.js'
+import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 
 const slots = createSlots({
   createElement: React.createElement as any, // HACK
