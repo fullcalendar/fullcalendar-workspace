@@ -7,12 +7,24 @@ import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
 import { EventCalendarView, optionParams } from './EventCalendar.js'
 import { schedulerOnlyIconOptions } from '../lib/icons-scheduler.js'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-monarch-dev/options-scheduler'
+import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
 
 export interface SchedulerProps extends CalendarOptions {
-  availableViews: string[]
+  availableViews?: string[]
+  addButton?: boolean
+  addButtonText?: string
+  addButtonHint?: string
+  addButtonClick?: (ev: MouseEvent) => void
 }
 
-export default function Scheduler({ availableViews, ...options }: SchedulerProps) {
+export default function Scheduler({
+  availableViews = schedulerAvailableViews,
+  addButton,
+  addButtonText,
+  addButtonHint,
+  addButtonClick,
+  ...calendarOptions
+}: SchedulerProps) {
   const controller = useCalendarController()
 
   return (
@@ -28,11 +40,19 @@ export default function Scheduler({ availableViews, ...options }: SchedulerProps
         className='p-4'
         controller={controller}
         availableViews={availableViews}
+        addButton={addButton}
+        addButtonText={addButtonText}
+        addButtonHint={addButtonHint}
+        addButtonClick={addButtonClick}
       />
       <SchedulerView
         borderless
         controller={controller}
-        {...options}
+        {...calendarOptions}
+        plugins={[
+          ...schedulerOnlyPlugins,
+          ...(calendarOptions.plugins || []),
+        ]}
       />
     </Box>
   )
@@ -40,15 +60,15 @@ export default function Scheduler({ availableViews, ...options }: SchedulerProps
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 
-export function SchedulerView(options: CalendarOptions) {
+export function SchedulerView(calendarOptions: CalendarOptions) {
   return (
     <EventCalendarView
       {...baseSchedulerOnlyOptions.optionDefaults}
       {...schedulerOnlyIconOptions}
-      {...options}
+      {...calendarOptions}
       views={mergeViewOptionsMap(
         baseSchedulerOnlyOptions.views || {},
-        options.views || {},
+        calendarOptions.views || {},
       )}
     />
   )
