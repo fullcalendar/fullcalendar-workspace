@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "tsBuildInfoFile": "./tsconfig.gen-plugin.tsbuildinfo",
     "outDir": "_gen-plugin-dist",
     "rootDir": "src/_gen-plugin"
   },
