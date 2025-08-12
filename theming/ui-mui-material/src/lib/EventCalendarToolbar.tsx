@@ -1,6 +1,5 @@
 import React from 'react'
 import { CalendarController } from '@fullcalendar/core'
-
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -14,10 +13,12 @@ export interface EventCalendarToolbarProps {
   style?: any // TODO --- use a semantic prop instead
   controller: CalendarController
   availableViews: string[]
-  addButton?: boolean
-  addButtonText?: string
-  addButtonHint?: string
-  addButtonClick?: (ev: MouseEvent) => void
+  addButton?: {
+    isPrimary?: boolean
+    text?: string
+    hint?: string
+    click?: (ev: MouseEvent) => void
+  }
 }
 
 export default function EventCalendarToolbar({
@@ -26,20 +27,17 @@ export default function EventCalendarToolbar({
   controller,
   availableViews,
   addButton,
-  addButtonText,
-  addButtonHint,
-  addButtonClick,
 }: EventCalendarToolbarProps) {
   const buttons = controller.getButtonState()
 
   return (
     <div className={'flex items-center justify-between ' + (className || '')} style={style}>
       <div className='flex items-center gap-2'>
-        {Boolean(addButton) && (
+        {addButton && (
           <Button
-            onClick={addButtonClick as any}
-            aria-label={addButtonHint}
-          >{addButtonText}</Button>
+            onClick={addButton.click as any}
+            aria-label={addButton.hint}
+          >{addButton.text}</Button>
         )}
         <Button
           onClick={() => controller.today()}

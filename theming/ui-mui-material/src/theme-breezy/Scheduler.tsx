@@ -14,18 +14,17 @@ const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 
 export interface SchedulerProps extends CalendarOptions {
   availableViews?: string[]
-  addButton?: boolean
-  addButtonText?: string
-  addButtonHint?: string
-  addButtonClick?: (ev: MouseEvent) => void
+  addButton?: {
+    isPrimary?: boolean
+    text?: string
+    hint?: string
+    click?: (ev: MouseEvent) => void
+  }
 }
 
 export default function Scheduler({
   availableViews = schedulerAvailableViews,
   addButton,
-  addButtonText,
-  addButtonHint,
-  addButtonClick,
   ...calendarOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
@@ -50,9 +49,6 @@ export default function Scheduler({
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
-        addButtonText={addButtonText}
-        addButtonHint={addButtonHint}
-        addButtonClick={addButtonClick}
       />
       <SchedulerView
         borderlessX

@@ -1,18 +1,19 @@
 import React from 'react'
 import { CalendarController } from '@fullcalendar/core'
-
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { Button } from '../ui/button.js'
 import { Tabs, TabsList, TabsTrigger } from '../ui/tabs.js'
-import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 export interface EventCalendarToolbarProps {
   className?: string
   controller: CalendarController
   availableViews: string[]
-  addButton?: boolean
-  addButtonText?: string
-  addButtonHint?: string
-  addButtonClick?: (ev: MouseEvent) => void
+  addButton?: {
+    isPrimary?: boolean
+    text?: string
+    hint?: string
+    click?: (ev: MouseEvent) => void
+  }
 }
 
 export function EventCalendarToolbar({
@@ -20,20 +21,17 @@ export function EventCalendarToolbar({
   controller,
   availableViews,
   addButton,
-  addButtonText,
-  addButtonHint,
-  addButtonClick,
 }: EventCalendarToolbarProps) {
   const buttons = controller.getButtonState()
 
   return (
     <div className={'flex items-center justify-between ' + (className || '')}>
       <div className='flex items-center gap-3'>
-        {Boolean(addButton) && (
+        {addButton && (
           <Button
-            onClick={addButtonClick as any}
-            aria-label={addButtonHint}
-          >{addButtonText}</Button>
+            onClick={addButton.click as any}
+            aria-label={addButton.hint}
+          >{addButton.text}</Button>
         )}
         <div className='flex items-center'>
           <Button

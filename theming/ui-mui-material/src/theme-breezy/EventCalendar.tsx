@@ -13,18 +13,17 @@ import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-
 
 export interface EventCalendarProps extends CalendarOptions {
   availableViews?: string[]
-  addButton?: boolean
-  addButtonText?: string
-  addButtonHint?: string
-  addButtonClick?: (ev: MouseEvent) => void
+  addButton?: {
+    isPrimary?: boolean
+    text?: string
+    hint?: string
+    click?: (ev: MouseEvent) => void
+  }
 }
 
 export default function EventCalendar({
   availableViews = eventCalendarAvailableViews,
   addButton,
-  addButtonText,
-  addButtonHint,
-  addButtonClick,
   ...calendarOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
@@ -49,9 +48,6 @@ export default function EventCalendar({
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
-        addButtonText={addButtonText}
-        addButtonHint={addButtonHint}
-        addButtonClick={addButtonClick}
       />
       <EventCalendarView
         borderlessX
