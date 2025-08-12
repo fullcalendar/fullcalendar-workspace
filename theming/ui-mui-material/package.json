@@ -105,15 +105,24 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
-  "dependencies": {
+  "devDependencies": {
+    "@fullcalendar/core": "workspace:*",
+    "@fullcalendar/daygrid": "workspace:*",
+    "@fullcalendar/timegrid": "workspace:*",
+    "@fullcalendar/list": "workspace:*",
+    "@fullcalendar/multimonth": "workspace:*",
+    "@fullcalendar/interaction": "workspace:*",
+    "@fullcalendar/timeline": "workspace:*",
+    "@fullcalendar/resource-daygrid": "workspace:*",
+    "@fullcalendar/resource-timegrid": "workspace:*",
+    "@fullcalendar/resource-timeline": "workspace:*",
+    "@fullcalendar/adaptive": "workspace:*",
+    "@fullcalendar/scrollgrid": "workspace:*",
     "@fullcalendar/theme-monarch-dev": "workspace:*",
     "@fullcalendar/theme-forma-dev": "workspace:*",
     "@fullcalendar/theme-classic-dev": "workspace:*",
     "@fullcalendar/theme-breezy-dev": "workspace:*",
-    "@fullcalendar/theme-pulse-dev": "workspace:*"
-  },
-  "devDependencies": {
-    "@fullcalendar/core": "workspace:*",
+    "@fullcalendar/theme-pulse-dev": "workspace:*",
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",
     "@types/react": "^19.1.8",

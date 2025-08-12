@@ -45,8 +45,8 @@ import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'
 
 // FullCalendar Default UI
-import { EventCalendar as FcMonarchEventCalendar } from '@fullcalendar/ui-default-react/theme-monarch/EventCalendar' // gen!
-import { Scheduler as FcMonarchScheduler } from '@fullcalendar/ui-default-react/theme-monarch/Scheduler' // gen!
+import { EventCalendar as FcMonarchEventCalendar } from '@fullcalendar/ui-default-react/theme-monarch/EventCalendar'
+import { Scheduler as FcMonarchScheduler } from '@fullcalendar/ui-default-react/theme-monarch/Scheduler'
 import { EventCalendar as FcPulseEventCalendar } from '@fullcalendar/ui-default-react/theme-pulse/EventCalendar'
 import { Scheduler as FcPulseScheduler } from '@fullcalendar/ui-default-react/theme-pulse/Scheduler'
 import { EventCalendar as FcFormaEventCalendar } from '@fullcalendar/ui-default-react/theme-forma/EventCalendar'
