@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && tsc -b tsconfig.gen-plugin.json",
     "dev": "tsc --watch",
-    "clean": "rm -rf dist _gen-plugin-dist/index.*"
+    "clean": "rm -rf dist _gen-plugin-dist/index.* tsconfig.tsbuildinfo tsconfig.gen-plugin.tsbuildinfo"
   },
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
