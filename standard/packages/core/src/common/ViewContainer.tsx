@@ -18,11 +18,11 @@ export interface ViewContainerProps extends Partial<ElProps> {
   noEdgeEffects: boolean
 }
 
-export interface ViewData {
+export interface ViewDisplayData {
   view: ViewApi
 }
 
-export type ViewMountData = MountData<ViewData>
+export type ViewMountData = MountData<ViewDisplayData>
 
 export class ViewContainer extends BaseComponent<ViewContainerProps> {
   render() {

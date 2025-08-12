@@ -29,7 +29,7 @@ export type {
   DayCellMountData,
 } from '../render-hook-misc.js'
 export type { DayLaneData, DayLaneMountData } from '../common/DayLaneContainer.js'
-export type { ViewData, ViewMountData } from '../common/ViewContainer.js'
+export type { ViewDisplayData, ViewMountData } from '../common/ViewContainer.js'
 export type { EventClickData } from '../interactions/EventClicking.js'
 export type { EventHoveringData } from '../interactions/EventHovering.js'
 export type { DateSelectData, DateUnselectData } from '../calendar-utils.js'

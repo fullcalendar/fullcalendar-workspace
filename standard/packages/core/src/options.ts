@@ -47,7 +47,7 @@ import {
   SpecificViewData, SpecificViewMountData,
   ToolbarInput,
   ViewComponentType,
-  ViewData,
+  ViewDisplayData,
   ViewMountData,
   WeekNumberCalculation,
   WeekNumberDisplayData, WeekNumberMountData,
@@ -149,7 +149,7 @@ export const BASE_OPTION_REFINERS = {
 
   controller: identity as Identity<CalendarController>,
 
-  viewClass: identity as Identity<ClassNameGenerator<ViewData>>,
+  viewClass: identity as Identity<ClassNameGenerator<ViewDisplayData>>,
   viewDidMount: identity as Identity<DidMountHandler<ViewMountData>>,
   viewWillUnmount: identity as Identity<WillUnmountHandler<ViewMountData>>,
 

@@ -27,7 +27,6 @@ proper classname-joining util like for this:
     : (' ' + (data.hasNavLink ? transparentPressableClass : '')))
   especially useful for custom jsx with className= in it
   but for shadcn, we should probably use cn()
-rename ViewData -> ViewDisplayData
 Implement
   blockEventContent
   rowEventContent
