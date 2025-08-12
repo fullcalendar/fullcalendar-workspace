@@ -9,17 +9,32 @@ export interface EventCalendarToolbarProps {
   className?: string
   controller: CalendarController
   availableViews: string[]
+  addButton?: boolean
+  addButtonText?: string
+  addButtonHint?: string
+  addButtonClick?: (ev: MouseEvent) => void
 }
 
-export function EventCalendarToolbar({ className, controller, availableViews }: EventCalendarToolbarProps) {
+export function EventCalendarToolbar({
+  className,
+  controller,
+  availableViews,
+  addButton,
+  addButtonText,
+  addButtonHint,
+  addButtonClick,
+}: EventCalendarToolbarProps) {
   const buttons = controller.getButtonState()
 
   return (
     <div className={'flex items-center justify-between ' + (className || '')}>
       <div className='flex items-center gap-3'>
-        <Button
-          onClick={() => alert('Add event...')}
-        >Add event</Button>
+        {Boolean(addButton) && (
+          <Button
+            onClick={addButtonClick as any}
+            aria-label={addButtonHint}
+          >{addButtonText}</Button>
+        )}
         <div className='flex items-center'>
           <Button
             onClick={() => controller.today()}
