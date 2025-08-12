@@ -10,10 +10,16 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./*": {
+    "./dev/*": {
       "import": {
         "types": "./dist/*.d.ts",
         "default": "./dist/*.js"
+      }
+    },
+    "./*": {
+      "import": {
+        "types": "./src/_gen-components-dist/*.d.ts",
+        "default": "./src/_gen-components-dist/*.js"
       }
     }
   },

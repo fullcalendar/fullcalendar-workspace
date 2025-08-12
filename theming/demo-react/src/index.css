@@ -2,17 +2,32 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* FullCalendar Default UI */
+/* dev: */
 @source "../node_modules/@fullcalendar/theme-classic-dev/src";
 @source "../node_modules/@fullcalendar/theme-breezy-dev/src";
 @source "../node_modules/@fullcalendar/theme-pulse-dev/src";
 @source "../node_modules/@fullcalendar/theme-monarch-dev/src";
 @source "../node_modules/@fullcalendar/theme-forma-dev/src";
-@source "../node_modules/@fullcalendar/mui-material/src";
+/* prod:
+(must use tailwind too, so keep above. test vanilla-JS plugins separately)
+*/
+
+/* Shadcn */
+/* dev: */
 @source "../node_modules/@fullcalendar/shadcn/src";
+/* prod:
+@source "../node_modules/@fullcalendar/shadcn/src/_gen-tailwind";
+*/
 
-/* !!! */
-@source "../node_modules/@fullcalendar/ui-default-react/gen";
+/* MUI */
+/* dev: */
+@source "../node_modules/@fullcalendar/mui-material/src";
+/* prod:
+(no tailwind. prod uses vanilla css imports)
+*/
 
+/* color palettes (used by dev and prod) */
 @import "../node_modules/@fullcalendar/theme-breezy-dev/src/ui-default-palettes.css";
 @import "../node_modules/@fullcalendar/theme-pulse-dev/src/ui-default-palettes.css";
 @import "../node_modules/@fullcalendar/theme-monarch-dev/src/ui-default-palettes.css";

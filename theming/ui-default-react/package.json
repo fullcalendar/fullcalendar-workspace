@@ -10,10 +10,16 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./*": {
+    "./dev/*": {
       "import": {
         "types": "./dist/*.d.ts",
         "default": "./dist/*.js"
+      }
+    },
+    "./gen/*": {
+      "import": {
+        "types": "./src/_gen-tailwind/*.ts",
+        "default": "./src/_gen-tailwind/*.ts"
       }
     }
   },

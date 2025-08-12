@@ -13,12 +13,10 @@ clean+build all:
 
 theme SYSTEM
 ------------
-Make settings for all theme systems:
-  addButton: boolean
-  addButtonText: string
-  addButtonHint: string
-  addButtonClick: (ev) => void
-In theme demo App.tsx,
+App.tsx:
+  write js-only App demo (with js plugins)
+  maybe write mui-only App demo
+  triage comments in App.tsx
   have font-families change based on Component Lib
 types: why is dayHeaderClass in defined in core but dayHeaderRowClass defined in dayGrid???
 listDayHeaderClass always gets flex-row from core
