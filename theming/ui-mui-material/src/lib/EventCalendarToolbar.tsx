@@ -14,18 +14,33 @@ export interface EventCalendarToolbarProps {
   style?: any // TODO --- use a semantic prop instead
   controller: CalendarController
   availableViews: string[]
+  addButton?: boolean
+  addButtonText?: string
+  addButtonHint?: string
+  addButtonClick?: (ev: MouseEvent) => void
 }
 
-export default function EventCalendarToolbar({ className, style, controller, availableViews }: EventCalendarToolbarProps) {
+export default function EventCalendarToolbar({
+  className,
+  style,
+  controller,
+  availableViews,
+  addButton,
+  addButtonText,
+  addButtonHint,
+  addButtonClick,
+}: EventCalendarToolbarProps) {
   const buttons = controller.getButtonState()
 
   return (
     <div className={'flex items-center justify-between ' + (className || '')} style={style}>
       <div className='flex items-center gap-2'>
-        <Button
-          onClick={() => alert("Add event...")}
-          variant="contained"
-        >Add event</Button>
+        {Boolean(addButton) && (
+          <Button
+            onClick={addButtonClick as any}
+            aria-label={addButtonHint}
+          >{addButtonText}</Button>
+        )}
         <Button
           onClick={() => controller.today()}
           // disabled={buttons.today.isDisabled} -- too harsh
