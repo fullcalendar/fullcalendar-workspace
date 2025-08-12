@@ -1,0 +1,21 @@
+{
+  "name": "@fullcalendar/theme-monarch",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "types": "./index.d.ts",
+  "main": "./index.js",
+  "module": "./index.js",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "import": {
+        "types": "./index.d.ts",
+        "default": "./index.js"
+      }
+    }
+  },
+  "scripts": {
+    "clean": "rm index.*"
+  }
+}
