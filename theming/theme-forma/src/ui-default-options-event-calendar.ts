@@ -68,7 +68,7 @@ export const defaultUiEventCalendarOptions: {
       data.isIconOnly ? 'px-2' : 'px-3',
       data.isIconOnly
         ? 'border-transparent hover:border-gray-100 hover:bg-gray-100'
-        : data.inViewGroup
+        : data.inSelectGroup
           ? data.isSelected
             ? 'border-gray-400 bg-gray-100'
             : 'border-transparent hover:bg-gray-50 hover:border-gray-200'

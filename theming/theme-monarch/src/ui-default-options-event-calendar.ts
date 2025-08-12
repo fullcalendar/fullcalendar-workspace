@@ -81,16 +81,16 @@ export const defaultUiEventCalendarOptions: {
 
     buttonGroupClass: (data) => [
       'items-center isolate rounded-full',
-      data.isViewGroup && 'border border-(--fc-monarch-outline-variant)'
+      data.isSelectGroup && 'border border-(--fc-monarch-outline-variant)'
     ],
     buttonClass: (data) => [
-      data.inViewGroup && '-m-px', // HACK
+      data.inSelectGroup && '-m-px', // HACK
       'inline-flex items-center justify-center py-3 text-sm rounded-full',
       data.inGroup && 'relative active:z-20 focus:z-20',
       data.isSelected ? 'z-10' : 'z-0',
       data.isDisabled && `pointer-events-none`, // bypass hover styles
       data.isIconOnly ? 'px-3' : 'px-5',
-      (data.isIconOnly || (data.inViewGroup && !data.isSelected))
+      (data.isIconOnly || (data.inSelectGroup && !data.isSelected))
         ? transparentPressableClass
         : data.isSelected
           /* TODO

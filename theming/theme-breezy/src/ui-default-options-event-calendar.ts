@@ -39,12 +39,12 @@ export const defaultUiEventCalendarOptions: {
     are buttons 1px taller than in Tailwind Plus because we're not using inset border?
     */
     buttonGroupClass: (data) => [
-      !data.isViewGroup && 'rounded-md shadow-xs border border-gray-300'
+      !data.isSelectGroup && 'rounded-md shadow-xs border border-gray-300'
     ],
     buttonClass: (data) => [
       'py-2 text-sm focus:relative',
       data.isIconOnly ? 'px-2' : 'px-3',
-      data.inViewGroup ? (
+      data.inSelectGroup ? (
         'rounded-md font-medium text-gray-600 hover:text-gray-800 ' +
         (data.isSelected
           ? 'bg-gray-200'

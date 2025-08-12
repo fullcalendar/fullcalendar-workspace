@@ -37,8 +37,6 @@ Implement
   columnWeekNumberContent/DidMount/etc
   inlineWeekNumberContent/DidMount/etc
   (ticket for weekNumberDisplay:'inline'|'column')
-Better button render-props:
-  isViewGroup -> isSelectGroup (b/c isSelected is other prop name)
 
 
 just before beta (after theme gen)
@@ -312,6 +310,7 @@ ensure nowIndicator doesn't appear in print view
 [rename] instead of "in*" names which could be confused with "is*" names, do something like this:
   insideViewGroup
   insidePopover
+  within?
 [a11y] if third-party ui-libraries define their own tabs, ensure aria is correctly wired up somehow
 [forward-port] we made event rerender optimization in v6 where DnD of event results in only 1 eventContent call
   v7 still does 2 (or more?)... understandable because needs to clone event for mirror DnD?
