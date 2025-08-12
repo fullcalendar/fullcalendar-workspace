@@ -6,12 +6,24 @@ import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-classic-dev/options-event-calendar'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
+import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 
 export interface EventCalendarProps extends CalendarOptions {
-  availableViews: string[]
+  availableViews?: string[]
+  addButton?: boolean
+  addButtonText?: string
+  addButtonHint?: string
+  addButtonClick?: (ev: MouseEvent) => void
 }
 
-export function EventCalendar({ availableViews, ...options }: EventCalendarProps) {
+export function EventCalendar({
+  availableViews = eventCalendarAvailableViews,
+  addButton,
+  addButtonText,
+  addButtonHint,
+  addButtonClick,
+  ...calendarOptions
+}: EventCalendarProps) {
   const controller = useCalendarController()
 
   return (
@@ -19,12 +31,20 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
       <EventCalendarToolbar
         controller={controller}
         availableViews={availableViews}
+        addButton={addButton}
+        addButtonText={addButtonText}
+        addButtonHint={addButtonHint}
+        addButtonClick={addButtonClick}
       />
       <div className='border rounded-sm overflow-hidden'>
         <EventCalendarView
           borderless
           controller={controller}
-          {...options}
+          {...calendarOptions}
+          plugins={[
+            ...eventCalendarPlugins,
+            ...(calendarOptions.plugins || []),
+          ]}
         />
       </div>
     </div>
@@ -51,15 +71,15 @@ export const optionParams: EventCalendarOptionParams = {
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
 
-export function EventCalendarView(options: any) {
+export function EventCalendarView(calendarOptions: CalendarOptions) {
   return (
     <FullCalendar
       {...baseEventCalendarOptions.optionDefaults}
       {...eventCalendarIconOptions}
-      {...options}
+      {...calendarOptions}
       views={mergeViewOptionsMap(
         baseEventCalendarOptions.views || {},
-        options.views || {},
+        calendarOptions.views || {},
       )}
     />
   )

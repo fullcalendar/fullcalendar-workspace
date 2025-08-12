@@ -7,12 +7,24 @@ import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcale
 import { createSlots } from '@fullcalendar/theme-forma-dev/slots'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
+import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 
 export interface EventCalendarProps extends CalendarOptions {
-  availableViews: string[]
+  availableViews?: string[]
+  addButton?: boolean
+  addButtonText?: string
+  addButtonHint?: string
+  addButtonClick?: (ev: MouseEvent) => void
 }
 
-export function EventCalendar({ availableViews, ...options }: EventCalendarProps) {
+export function EventCalendar({
+  availableViews = eventCalendarAvailableViews,
+  addButton,
+  addButtonText,
+  addButtonHint,
+  addButtonClick,
+  ...calendarOptions
+}: EventCalendarProps) {
   const controller = useCalendarController()
 
   return (
@@ -21,12 +33,20 @@ export function EventCalendar({ availableViews, ...options }: EventCalendarProps
         className='p-3'
         controller={controller}
         availableViews={availableViews}
+        addButton={addButton}
+        addButtonText={addButtonText}
+        addButtonHint={addButtonHint}
+        addButtonClick={addButtonClick}
       />
       <EventCalendarView
         borderlessX
         borderlessBottom
         controller={controller}
-        {...options}
+        {...calendarOptions}
+        plugins={[
+          ...eventCalendarPlugins,
+          ...(calendarOptions.plugins || []),
+        ]}
       />
     </div>
   )
@@ -59,16 +79,16 @@ const slots = createSlots({
   Fragment: React.Fragment as any, // HACK
 }, optionParams)
 
-export function EventCalendarView(options: any) {
+export function EventCalendarView(calendarOptions: CalendarOptions) {
   return (
     <FullCalendar
       {...baseEventCalendarOptions.optionDefaults}
       {...eventCalendarIconOptions}
       {...slots}
-      {...options}
+      {...calendarOptions}
       views={mergeViewOptionsMap(
         baseEventCalendarOptions.views || {},
-        options.views || {},
+        calendarOptions.views || {},
       )}
     />
   )
