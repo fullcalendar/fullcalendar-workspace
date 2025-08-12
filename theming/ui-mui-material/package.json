@@ -132,6 +132,7 @@
     "typescript": "~5.7.2"
   },
   "publishConfig": {
-    "directory": "./_gen-components-dist"
+    "directory": "./_gen-components-dist",
+    "linkDirectory": false
   }
 }

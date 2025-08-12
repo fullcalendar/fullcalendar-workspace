@@ -3711,7 +3711,7 @@ importers:
         version: link:../../standard/packages/list/dist
       '@fullcalendar/mui-material':
         specifier: workspace:*
-        version: link:../ui-mui-material/_gen-components-dist
+        version: link:../ui-mui-material
       '@fullcalendar/multimonth':
         specifier: workspace:*
         version: link:../../standard/packages/multimonth/dist
