@@ -32,17 +32,18 @@ import {
 // FullCalendar
 import '@fullcalendar/core/global.css'
 import { CalendarOptions } from '@fullcalendar/core'
+// just for types...
 import adaptivePlugin from '@fullcalendar/adaptive'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import listPlugin from '@fullcalendar/list'
-import multiMonthPlugin from '@fullcalendar/multimonth'
-import interactionPlugin from '@fullcalendar/interaction'
-import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
+import {} from '@fullcalendar/daygrid'
+import {} from '@fullcalendar/timegrid'
+import {} from '@fullcalendar/list'
+import {} from '@fullcalendar/multimonth'
+import {} from '@fullcalendar/interaction'
+import {} from '@fullcalendar/resource-daygrid'
+import {} from '@fullcalendar/resource-timeline'
+import {} from '@fullcalendar/resource-timegrid'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
-import timelinePlugin from '@fullcalendar/timeline'
+import {} from '@fullcalendar/timeline'
 
 // FullCalendar Default UI
 import { EventCalendar as FcMonarchEventCalendar } from '@fullcalendar/ui-default-react/theme-monarch/EventCalendar'
@@ -84,7 +85,15 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
 import MuiCssBaseline from '@mui/material/CssBaseline'
 import { getMuiTheme } from './palettes-mui-material.js'
 
-type CalendarComponentProps = CalendarOptions & { availableViews: string[] }
+type CalendarComponentProps = CalendarOptions & {
+  availableViews?: string[]
+  addButton?: {
+    isPrimary?: boolean
+    text?: string
+    hint?: string
+    click?: (ev: MouseEvent) => void
+  }
+}
 type CalendarComponent = React.ComponentType<CalendarComponentProps>
 
 const eventCalendarComponentMap: { [ui: string]: { [theme: string]: CalendarComponent } } = {
@@ -426,38 +435,31 @@ interface DemoProps {
   betterListButtons?: boolean
 }
 
-const eventCalendarAvailableViews = [
-  'dayGridMonth',
-  'timeGridWeek',
-  'timeGridDay',
-  'listWeek',
-  'multiMonthYear',
-]
-
 function EventCalendarDemo(props: DemoProps) {
   const EventCalendarComponent = eventCalendarComponentMap[props.ui][props.theme]
 
   return (
     <EventCalendarComponent
-      availableViews={props.availableViews || eventCalendarAvailableViews} // required! should be based on plugins!?
+      availableViews={props.availableViews}
+      addButton={{
+        text: 'Add Event',
+        click: () => [
+          alert('add event...')
+        ]
+      }}
       {...(props.betterListButtons ? { listText: '' } : {})}
       navLinkDayClick='timeGridDay'
       navLinkWeekClick='timeGridWeek'
-      schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
+      schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives' // for extra plugins
       weekNumbers={true}
       // eventDisplay='block'
       plugins={[
-        // won't need to supply these with the gen!
+        // extra plugins...
         scrollGridPlugin,
         adaptivePlugin,
-        dayGridPlugin,
-        timeGridPlugin,
-        listPlugin,
-        interactionPlugin,
-        multiMonthPlugin,
       ]}
       eventInteractive={true}
-      initialView={props.initialView ?? eventCalendarAvailableViews[0]}
+      initialView={props.initialView}
       nowIndicator={true}
       navLinks={true}
       editable={true}
@@ -557,33 +559,21 @@ function EventCalendarDemo(props: DemoProps) {
   )
 }
 
-const schedulerAvailableViews = [
-  'resourceTimelineDay',
-  'resourceTimelineWeek',
-]
-
 function SchedulerDemo(props: DemoProps) {
   const SchedulerComponent = schedulerComponentMap[props.ui][props.theme]
 
   return (
     <SchedulerComponent
-      availableViews={props.availableViews || schedulerAvailableViews}
+      availableViews={props.availableViews}
+      addButton={{
+        text: 'Add Event',
+        click: () => [
+          alert('add event...')
+        ]
+      }}
       navLinkDayClick='resourceTimelineDay'
       navLinkWeekClick='resourceTimelineWeek'
       schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
-      plugins={[
-        // won't need to supply these with the gen!
-        adaptivePlugin,
-        timelinePlugin,
-        resourceTimelinePlugin,
-        resourceTimeGridPlugin,
-        resourceDayGridPlugin,
-        scrollGridPlugin,
-        interactionPlugin,
-        listPlugin, // needed for options!
-        multiMonthPlugin, // needed for options!
-      ]}
-      initialView={schedulerAvailableViews[0]}
       timeZone='UTC'
       dayMinWidth={200}
       editable={true}

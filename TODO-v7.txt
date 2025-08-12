@@ -31,17 +31,6 @@ always make listDayHeaderInner sticky-top!
 give classic theme css variables for color
   we realized we needed this for the canvas color
   better to have API be consistent with other themes (ex: palette-chooser on website)
-Type and plugin issues
-  Don't bake-in plugins to EventCalendar or Scheduler
-  Have them specified by plugins=
-    <EventCalendar
-      availableViews={['dayGridMonth', 'timeGridWeek']} // <-- TODO: supply a default
-      plugins={[dayGridPlugin, timeGridPlugin]} // <-- but then callers must import @fullcalendar/daygrid
-    />
-  NEVERMIND: dont want callers to worry about supplying plugins
-    Also, there's magic in having component with no props *just work*
-    <EventCalendar /> or <Scheduler />
-    availableViews should have a default value, which shall be different for either EventCalendar/Scheduler
 find icon set that I can use for default-theme copy&paste (i tell people to install it first)
   NAAHH... just inline the icons into src?... yes they are small xml
 think about how classname overriding should work
