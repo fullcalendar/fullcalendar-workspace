@@ -5,7 +5,7 @@ import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { useCalendarController } from "@fullcalendar/react"
 import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
 import { EventCalendarView, optionParams } from './EventCalendar.js'
-import { schedulerOnlyIconOptions } from '../lib/icons-scheduler.js'
+import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-monarch-dev/options-scheduler'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
 

@@ -6,7 +6,7 @@ import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-forma-dev/options-scheduler'
 import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
 import { optionParams, EventCalendarView } from './EventCalendar.js'
-import { schedulerOnlyIconOptions } from '../lib/icons-scheduler.js'
+import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)

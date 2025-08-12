@@ -7,7 +7,7 @@ import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-monarch-dev/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-monarch-dev/slots'
-import { eventCalendarIconOptions } from '../lib/icons-event-calendar.js'
+import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 
 export interface EventCalendarProps extends CalendarOptions {
