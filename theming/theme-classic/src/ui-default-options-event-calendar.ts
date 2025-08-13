@@ -5,24 +5,27 @@ import * as svgIcons from './ui-default-svgs.js'
 const buttonFontClass = 'text-sm'
 const buttonIconClass = 'size-[calc(var(--text-sm--line-height)_*_1em)]'
 
-const canvasBgColorClass = 'bg-white dark:bg-gray-950'
-const canvasOutlineColorClass = 'outline-white dark:outline-gray-950'
+const canvasBgColorClass = 'bg-(--fc-classic-canvas-color)'
+const canvasOutlineColorClass = 'outline-(--fc-classic-canvas-color)'
 
 /*
 TODO: color variables
 */
 export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
-  borderColorClass: 'border-[#ddd] dark:border-gray-800',
-  majorBorderColorClass: 'border-gray-400 dark:border-gray-700',
-  alertBorderColorClass: 'border-red-500',
-  alertBorderStartColorClass: 'border-s-red-500',
+  borderColorClass: 'border-(--fc-classic-border-color)',
+  majorBorderColorClass: 'border-(--fc-classic-major-border-color)',
+  alertBorderColorClass: 'border-(--fc-classic-alert-color)',
+  alertBorderStartColorClass: 'border-s-(--fc-classic-alert-color)',
+
+  todayBgColorClass: 'bg-(--fc-classic-today-color)',
+  highlightBgColorClass: 'bg-(--fc-classic-highlight-color)',
 
   eventColor: '#3788d8',
   eventContrastColor: 'var(--color-white)',
   backgroundEventColor: 'var(--color-green-500)',
   backgroundEventColorClass: 'brightness-150 opacity-15',
 
-  popoverClass: `border border-[#ddd] dark:border-gray-800 ${canvasBgColorClass} shadow-md`,
+  popoverClass: `border border-(--fc-classic-border-color) ${canvasBgColorClass} shadow-md`,
 
   canvasBgColorClass,
   canvasOutlineColorClass,

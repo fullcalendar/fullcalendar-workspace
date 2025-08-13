@@ -29,6 +29,8 @@ UI
   multi-month stack looks good
   multi-month day with 1-event should show event, not +1more link
   in daygrid, ensure block-event, list-item-event, and more-link all have 1px bottom margin AND same height
+  the disabled today button has *some* type of dimming on the text
+  check that popover X isn't too big
 theme-system: MUI
   we should allow MUI to force headers to be uppercase
   The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
@@ -44,6 +46,8 @@ CODE
   list-header does its own sticky-top
     bottom-border doesnt stack weird
   button-icon heights should be relative to line-height somehow, not fixed at particular size
+  for width/height/margin/padding units, dont use em units
+    use standard tailwind units, which will depend on the component's root font size
 TEST
   ALL stickiness, esp when calendar root is overflow:hidden
   test horizontal scrolling

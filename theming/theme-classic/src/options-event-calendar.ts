@@ -24,7 +24,6 @@ import {} from '@fullcalendar/interaction'
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 
 export const neutralBgClass = 'bg-gray-500/10'
-const todayBgClass = 'bg-yellow-400/15 dark:bg-yellow-200/10' // TODO: make this a param!?
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
 const cellPaddingClass = 'px-1 py-0.5'
@@ -84,7 +83,7 @@ const dayGridClasses: CalendarOptions = {
 
 const floatingWeekNumberClasses: CalendarOptions = {
   inlineWeekNumberClass: [
-    'absolute z-20 top-0 start-0 rounded-ee-sm p-0.5 min-w-[1.5em]',
+    'absolute z-20 top-0 start-0 rounded-ee-sm p-0.5',
     neutralBgClass,
   ],
   inlineWeekNumberInnerClass: (data) => [
@@ -122,6 +121,9 @@ export interface EventCalendarOptionParams {
   majorBorderColorClass: string
   alertBorderColorClass: string
   alertBorderStartColorClass: string // yuck, but needed for triangle
+
+  todayBgColorClass: string
+  highlightBgColorClass: string
 
   eventColor: string
   eventContrastColor: string
@@ -163,7 +165,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // misc BG
       fillerClass: `${borderClass} opacity-50`,
       nonBusinessClass: neutralBgClass,
-      highlightClass: 'bg-cyan-100/40 dark:bg-blue-500/20',
+      highlightClass: params.highlightBgColorClass,
 
       eventClass: (data) => data.event.url && 'hover:no-underline',
       eventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
@@ -269,7 +271,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayRowClass: borderClass,
       dayCellClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
-        data.isToday && todayBgClass,
+        data.isToday && params.todayBgColorClass,
         data.isDisabled && neutralBgClass,
       ],
       dayCellTopClass: (data) => [
@@ -288,7 +290,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayLaneClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
-        data.isToday && todayBgClass,
+        data.isToday && params.todayBgColorClass,
         data.isDisabled && neutralBgClass,
       ],
       dayLaneInnerClass: (data) => data.isSimple
@@ -328,8 +330,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       timeGrid: {
         ...dayGridClasses,
 
-        dayRowClass: 'min-h-[3em]',
-        dayCellBottomClass: 'min-h-[1em]', // for ALL-DAY
+        dayRowClass: 'min-h-10',
+        dayCellBottomClass: 'min-h-3', // for ALL-DAY
 
         allDayHeaderClass: [
           axisClass,
@@ -353,7 +355,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelClass: axisClass,
         slotLabelInnerClass: (data) => [
           axisInnerClass,
-          'min-h-[1.5em]',
+          'min-h-[1.5em]', // add some vertical-align-center for this? make standard unit!!??
           data.isCompact ? xxsTextClass : 'text-sm',
         ],
 

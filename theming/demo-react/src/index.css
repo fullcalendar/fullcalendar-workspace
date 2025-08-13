@@ -28,6 +28,7 @@
 */
 
 /* color palettes (used by dev and prod) */
+@import "../node_modules/@fullcalendar/theme-classic-dev/src/ui-default-palettes.css";
 @import "../node_modules/@fullcalendar/theme-breezy-dev/src/ui-default-palettes.css";
 @import "../node_modules/@fullcalendar/theme-pulse-dev/src/ui-default-palettes.css";
 @import "../node_modules/@fullcalendar/theme-monarch-dev/src/ui-default-palettes.css";
