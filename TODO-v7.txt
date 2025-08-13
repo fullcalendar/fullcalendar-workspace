@@ -13,14 +13,7 @@ clean+build all:
 
 theme SYSTEM
 ------------
-types: why is dayHeaderClass in defined in core but dayHeaderRowClass defined in dayGrid???
-listDayHeaderClass always gets flex-row from core
-  remove from themes if they define flex-row
-  FYI, there's an isSticky prop on the data
-  TODO: KILL because theme might have opinions about responsive collapsing
-always make listDayHeaderInner sticky-top!
-  well, maybe not because there are multiple listDayHeaderInner that could stack
-  maybe on listDayHeaderClass?
+rethink how more-popover uses dayHeaderClass
 Implement
   blockEventContent
   rowEventContent
@@ -55,6 +48,12 @@ think about how classname overriding should work
     only have classname merging happen between calendar+viewoptions?
 we killed the default headerToolbar. bad idea?
   was ever merged recursively? if so, dont do that
+[rename] stickyHeaderDates -> tableHeaderSticky
+  (write in changelog that doesn't apply to list-view day-headers anymore)
+[rename] stickyFooterScrollbar -> footerScrollbarSticky
+[eventually]
+  headerToolbarSticky
+  footerScrollbarSticky
 
 
 rtl/left-right-coord REFACTOR
@@ -164,6 +163,8 @@ CODE
   Use rotated icons to save space
   use joinClassNames
     especially useful for custom jsx with className= in it
+  list-header does its own sticky-top
+    bottom-border doesnt stack weird
 TEST
   ALL stickiness, esp when calendar root is overflow:hidden
   test horizontal scrolling

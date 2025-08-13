@@ -298,10 +298,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       slotLaneClass: (data) => getSlotClasses(data, borderClass),
 
       listDayClass: `not-last:border-b ${params.borderColorClass}`,
-      listDayHeaderClass: (data) => [
+      listDayHeaderClass: [
         `flex flex-row justify-between border-b ${params.borderColorClass} font-bold`,
         'relative', // for overlaid "before" color
-        data.isSticky && params.canvasBgColorClass, // base color for overlaid "before" color
+        'sticky top-0',
+        params.canvasBgColorClass, // base color for overlaid "before" color
       ],
       listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgClass}`,
       listDayHeaderInnerClass: `relative ${listItemPaddingClass} text-sm`, // above the "before" element

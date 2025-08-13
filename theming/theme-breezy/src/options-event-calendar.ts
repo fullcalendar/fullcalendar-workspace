@@ -49,6 +49,8 @@ TODO: fix multiple listDayFormats
 
 TODO: new dark-mode!
   https://tailwindcss.com/plus/changelog#2025-08-11
+
+TODO: move list-header sticky from listDayHeaderInnerClass -> listDayHeaderClass (like Forma)
 */
 function createDayGridClasses(primaryBorderColorClass: string): CalendarOptions {
   return {

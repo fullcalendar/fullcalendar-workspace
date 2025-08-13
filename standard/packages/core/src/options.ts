@@ -299,6 +299,7 @@ export const BASE_OPTION_REFINERS = {
   dayMinWidth: Number,
   slotLabelInterval: createDuration,
 
+  // in core because more-popover needs it
   dayHeaderClass: identity as Identity<ClassNameGenerator<DayHeaderData>>,
   dayHeaderInnerClass: identity as Identity<ClassNameGenerator<DayHeaderData>>,
   dayHeaderContent: identity as Identity<CustomContentGenerator<DayHeaderData>>,

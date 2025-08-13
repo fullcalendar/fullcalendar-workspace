@@ -6,7 +6,6 @@ export interface ListDayData extends DateMeta {
 }
 
 export interface ListDayHeaderData extends ListDayData {
-  isSticky: boolean
 }
 export type ListDayHeaderMountData = MountData<ListDayHeaderData>
 
