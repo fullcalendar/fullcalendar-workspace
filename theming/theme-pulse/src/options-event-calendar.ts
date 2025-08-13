@@ -27,21 +27,14 @@ TODO: multimonth very poorly condensed with events
 
 const dayGridClasses: CalendarOptions = {
   /*
-  TODO: make new inlineWeekNumberClass / cellWeekNumberClass
   BUG: z-index is wrong, can't click week numbers
   */
-  weekNumberClass: (data) => [
-    !data.isCell && (
-      'absolute z-10 top-0 start-0'
-    ),
-  ],
-  weekNumberInnerClass: (data) => [
-    !data.isCell && (
-      'py-2 text-xs text-gray-700 ' +
-        (data.isCompact
-          ? 'px-1'
-          : 'px-2')
-    ),
+  inlineWeekNumberClass: 'absolute z-10 top-0 start-0',
+  inlineWeekNumberInnerClass: (data) => [
+    'py-2 text-xs text-gray-700 ' +
+      (data.isCompact
+        ? 'px-1'
+        : 'px-2')
   ],
 
   rowEventClass: (data) => [

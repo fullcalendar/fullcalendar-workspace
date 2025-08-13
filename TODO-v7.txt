@@ -14,20 +14,11 @@ clean+build all:
 theme SYSTEM
 ------------
 rethink how more-popover uses dayHeaderClass
-Implement
-  blockEventContent
-  rowEventContent
-  columnEventContent
-  listItemEventContent
-Implement
-  columnWeekNumberContent/DidMount/etc
-  inlineWeekNumberContent/DidMount/etc
-  (instead of .isCell or .isCol/Column)
-  (ticket for weekNumberDisplay:'inline'|'column')
 
 
 just before beta (after theme gen)
 ----------------
+Updating ANGULAR will take a long time
 App.tsx:
   write js-only App demo (with js plugins)
   write mui-only App demo
@@ -51,9 +42,21 @@ we killed the default headerToolbar. bad idea?
 [rename] stickyHeaderDates -> tableHeaderSticky
   (write in changelog that doesn't apply to list-view day-headers anymore)
 [rename] stickyFooterScrollbar -> footerScrollbarSticky
-[eventually]
+[eventually, when we need the feature]
   headerToolbarSticky
   footerScrollbarSticky
+[eventually]
+  weekNumberDisplay: 'inline' | 'column'
+  weekNumberHeaderClass: ({ hasNavLink, date? }) --- inherits from weekNumberClass --- similar to dayHeaderClass which has a fake date
+  weekNumberCellClass: ({ hasNavLink, date }) --- inherits from weekNumberInnerClass
+  (even tho dissonant with inlineWeekNumberClass)
+Is inlineWeekNumberInnerClass really necessary?
+Implement (Content/DidMount/WillUnmount on all)
+  (hard because generatorName="" requires a string)
+  blockEventContent
+  rowEventContent
+  columnEventContent
+  listItemEventContent
 
 
 rtl/left-right-coord REFACTOR
@@ -735,9 +738,6 @@ punt: sticky header in vertical resource view, horizontal scrolling. new feature
   do in CORE, not in theme. analagous to vertically-sticky resource cells
   if it were the theme, we'd need to pass a renderProp, and hard to know what the name would be
 punt: slotMinHeight setting
-punt: when implementing weekNumberDisplay:'column',
-  will have WeekNumberDisplayData.isCell
-  and weekNumberHeaderClass/Content
 eventually have MUI themes output styles using sx={} prop, like:
   https://chatgpt.com/share/688a7d49-4314-800f-b1c5-9253733352be
   we can eventually do optionParams like that too:

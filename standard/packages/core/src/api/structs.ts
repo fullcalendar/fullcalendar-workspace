@@ -16,7 +16,13 @@ export type { ViewComponentType, SpecificViewData, SpecificViewMountData } from 
 export type { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '../common/render-hook.js'
 export type { NowIndicatorLabelData, NowIndicatorLabelMountData } from '../common/NowIndicatorLabelContainer.js'
 export type { NowIndicatorLineData, NowIndicatorLineMountData } from '../common/NowIndicatorLineContainer.js'
-export type { WeekNumberDisplayData, WeekNumberMountData, DateTimeFormatPartWithWeek } from '../common/WeekNumberContainer.js'
+export type {
+  InlineWeekNumberData,
+  InlineWeekNumberMountData,
+  WeekNumberHeaderData,
+  WeekNumberHeaderMountData,
+  DateTimeFormatPartWithWeek,
+} from '../common/WeekNumberContainer.js'
 export type { MoreLinkData, MoreLinkMountData } from '../common/MoreLinkContainer.js'
 export * from '../common/more-link-public-types.js'
 export type {

@@ -58,18 +58,12 @@ function createDayGridClasses(primaryBorderColorClass: string): CalendarOptions 
     TODO: make new inlineWeekNumberClass / cellWeekNumberClass
     BUG: z-index is wrong, can't click week numbers
     */
-    weekNumberClass: (data) => [
-      !data.isCell && (
-        'absolute z-10 top-0 end-0 border-b border-b-gray-300 border-s border-s-gray-200 rounded-es-md bg-white'
-      ),
-    ],
+    inlineWeekNumberClass: 'absolute z-10 top-0 end-0 border-b border-b-gray-300 border-s border-s-gray-200 rounded-es-md bg-white',
     weekNumberInnerClass: (data) => [
-      !data.isCell && (
-        'py-0.5 ' +
-          (data.isCompact
-            ? xxsTextClass + ' px-0.5'
-            : 'text-xs/6 px-1')
-      ),
+      'py-0.5 ' +
+        (data.isCompact
+          ? xxsTextClass + ' px-0.5'
+          : 'text-xs/6 px-1')
     ],
 
     rowEventClass: (data) => [

@@ -1,4 +1,4 @@
-import { WeekNumberDisplayData } from '@fullcalendar/core'
+import { InlineWeekNumberData } from '@fullcalendar/core'
 import {
   EventSegUiInteractionState,
   BaseComponent,
@@ -168,15 +168,15 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         ref={this.handleRootEl}
       >
         {props.showWeekNumbers && (
-          <ContentContainer<WeekNumberDisplayData>
+          <ContentContainer<InlineWeekNumberData>
             tag='div'
             renderProps={weekNumberRenderProps}
-            generatorName="weekNumberContent"
-            customGenerator={options.weekNumberContent}
+            generatorName="inlineWeekNumberContent"
+            customGenerator={options.inlineWeekNumberContent}
             defaultGenerator={renderText}
-            classNameGenerator={options.weekNumberClass}
-            didMount={options.weekNumberDidMount}
-            willUnmount={options.weekNumberWillUnmount}
+            classNameGenerator={options.inlineWeekNumberClass}
+            didMount={options.inlineWeekNumberDidMount}
+            willUnmount={options.inlineWeekNumberWillUnmount}
           >
             {(InnerContent) => (
               <InnerContent
@@ -190,7 +190,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
                   'role': undefined, // HACK: a 'link' role can't be child of 'row' role
                   'aria-hidden': true, // HACK: never part of a11y tree because row already has label and role not allowed
                 }}
-                className={generateClassName(options.weekNumberInnerClass, weekNumberRenderProps)}
+                className={generateClassName(options.inlineWeekNumberInnerClass, weekNumberRenderProps)}
               />
             )}
           </ContentContainer>
@@ -471,7 +471,7 @@ function buildWeekNumberRenderProps(
   context: ViewContext,
   isCompact: boolean,
   hasNavLink: boolean,
-): WeekNumberDisplayData {
+): InlineWeekNumberData {
   const { dateEnv, options } = context
   const weekNum = dateEnv.computeWeekNumber(weekDateMarker)
   const [weekNumText, weekNumTextParts] = dateEnv.format(
@@ -485,7 +485,6 @@ function buildWeekNumberRenderProps(
     textParts: weekNumTextParts,
     date: weekDateZoned,
     isCompact,
-    isCell: false,
     hasNavLink,
   }
 }

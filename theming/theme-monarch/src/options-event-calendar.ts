@@ -117,19 +117,15 @@ export function createEventCalendarOptions({
   ]
 
   const rowWeekNumberClasses: CalendarOptions = {
-    weekNumberClass: (data) => [
-      data.isCell
-        ? '' // TODO: some sort of shaded bg
-        : 'absolute z-20 ' + (data.isCompact ? 'top-1 start-0.5' : 'top-2 start-1'),
+    inlineWeekNumberClass: (data) => [
+      'absolute z-20 ' + (data.isCompact ? 'top-1 start-0.5' : 'top-2 start-1')
     ],
-    weekNumberInnerClass: (data) => data.isCell
-      ? '' // TODO: cell styles
-      : getWeekNumberBadgeClasses(data)
+    inlineWeekNumberInnerClass: (data) => getWeekNumberBadgeClasses(data)
   }
 
   const axisWeekNumberClasses: CalendarOptions = {
-    weekNumberClass: 'items-center justify-end',
-    weekNumberInnerClass: getWeekNumberBadgeClasses,
+    weekNumberHeaderClass: 'items-center justify-end',
+    weekNumberHeaderInnerClass: getWeekNumberBadgeClasses,
   }
 
   return {

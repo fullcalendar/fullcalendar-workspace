@@ -4,14 +4,41 @@ export type DateTimeFormatPartWithWeek = Omit<Intl.DateTimeFormatPart, 'type'> &
   type: Intl.DateTimeFormatPart['type'] | 'week'
 }
 
-export interface WeekNumberDisplayData {
-  num: number
+// week number HEADER
+
+export interface WeekNumberHeaderData {
+  num?: number // undefined if not for specific date
+  date?: Date // undefined if not for specific date
   text: string
   textParts: DateTimeFormatPartWithWeek[]
-  date: Date
   isCompact: boolean
-  isCell: boolean
   hasNavLink: boolean
 }
 
-export type WeekNumberMountData = MountData<WeekNumberDisplayData>
+export type WeekNumberHeaderMountData = MountData<WeekNumberHeaderData>
+
+// week number CELL (eventually)
+
+export interface WeekNumberCellData { // TODO: DRY with inline?
+  num: number
+  date: Date
+  text: string
+  textParts: DateTimeFormatPartWithWeek[]
+  isCompact: boolean
+  hasNavLink: boolean
+}
+
+export type WeekNumberCellMountData = MountData<WeekNumberCellData>
+
+// INLINE week number
+
+export interface InlineWeekNumberData {
+  num: number
+  date: Date
+  text: string
+  textParts: DateTimeFormatPartWithWeek[]
+  isCompact: boolean
+  hasNavLink: boolean
+}
+
+export type InlineWeekNumberMountData = MountData<InlineWeekNumberData>

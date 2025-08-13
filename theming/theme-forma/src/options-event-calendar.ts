@@ -100,11 +100,11 @@ const dayGridClasses: CalendarOptions = {
 
 // TODO: improve this
 const floatingWeekNumberClasses: CalendarOptions = {
-  weekNumberClass: [
+  inlineWeekNumberClass: [
     'absolute z-20 top-1 end-0 rounded-s-full',
     neutralBgClass,
   ],
-  weekNumberInnerClass: (data) => [
+  inlineWeekNumberInnerClass: (data) => [
     data.isCompact ? xxsTextClass : 'text-xs',
     'py-1 pe-1 ps-2 opacity-60 text-center',
   ],
@@ -384,8 +384,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isCompact ? xxsTextClass : 'text-xs',
         ],
 
-        weekNumberClass: `${axisClass} items-end`,
-        weekNumberInnerClass: (data) => [
+        weekNumberHeaderClass: `${axisClass} items-end`,
+        weekNumberHeaderInnerClass: (data) => [
           axisInnerClass,
           data.isCompact ? xxsTextClass : 'text-xs',
         ],

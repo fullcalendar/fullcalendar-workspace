@@ -92,7 +92,8 @@ export default createPlugin({
     // Cross-view
     // ---------------------------------------------------------------------------------------------
 
-    weekNumberClass: 'fc-week-number',
+    weekNumberHeaderClass: 'fc-week-number',
+    inlineWeekNumberClass: 'fc-week-number', // same
     navLinkClass: 'fc-navlink', // TODO: fc-nav-link ?
     moreLinkClass: 'fc-more-link',
 

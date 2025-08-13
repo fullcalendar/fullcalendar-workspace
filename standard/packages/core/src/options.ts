@@ -50,7 +50,8 @@ import {
   ViewDisplayData,
   ViewMountData,
   WeekNumberCalculation,
-  WeekNumberDisplayData, WeekNumberMountData,
+  InlineWeekNumberData, InlineWeekNumberMountData,
+  WeekNumberHeaderData, WeekNumberHeaderMountData,
   WillUnmountHandler,
   ButtonData,
   ButtonGroupData,
@@ -139,11 +140,18 @@ export const BASE_OPTION_REFINERS = {
 
   weekNumberCalculation: identity as Identity<WeekNumberCalculation>,
   weekNumbers: Boolean,
-  weekNumberClass: identity as Identity<ClassNameGenerator<WeekNumberDisplayData>>,
-  weekNumberInnerClass: identity as Identity<ClassNameGenerator<WeekNumberDisplayData>>,
-  weekNumberContent: identity as Identity<CustomContentGenerator<WeekNumberDisplayData>>,
-  weekNumberDidMount: identity as Identity<DidMountHandler<WeekNumberMountData>>,
-  weekNumberWillUnmount: identity as Identity<WillUnmountHandler<WeekNumberMountData>>,
+
+  weekNumberHeaderClass: identity as Identity<ClassNameGenerator<WeekNumberHeaderData>>,
+  weekNumberHeaderInnerClass: identity as Identity<ClassNameGenerator<WeekNumberHeaderData>>,
+  weekNumberHeaderContent: identity as Identity<CustomContentGenerator<WeekNumberHeaderData>>,
+  weekNumberHeaderDidMount: identity as Identity<DidMountHandler<WeekNumberHeaderMountData>>,
+  weekNumberHeaderWillUnmount: identity as Identity<WillUnmountHandler<WeekNumberHeaderMountData>>,
+
+  inlineWeekNumberClass: identity as Identity<ClassNameGenerator<InlineWeekNumberData>>,
+  inlineWeekNumberInnerClass: identity as Identity<ClassNameGenerator<InlineWeekNumberData>>,
+  inlineWeekNumberContent: identity as Identity<CustomContentGenerator<InlineWeekNumberData>>,
+  inlineWeekNumberDidMount: identity as Identity<DidMountHandler<InlineWeekNumberMountData>>,
+  inlineWeekNumberWillUnmount: identity as Identity<WillUnmountHandler<InlineWeekNumberMountData>>,
 
   editable: Boolean,
 
