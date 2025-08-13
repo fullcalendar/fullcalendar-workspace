@@ -16,7 +16,7 @@ const dayGridListItemEventClass = 'fc-daygrid-dot-event fc-daygrid-event fc-even
 const dayGridCommon = {
   rowEventClass: dayGridBlockEventClass,
   listEventClass: dayGridListItemEventClass,
-  weekNumberClass: 'fc-daygrid-week-number',
+  inlineWeekNumberClass: 'fc-daygrid-week-number',
   moreLinkClass: 'fc-daygrid-more-link',
 }
 
@@ -282,8 +282,8 @@ export default createPlugin({
       columnEventClass: 'fc-timegrid-event fc-event-y',
       allDayHeaderClass: 'fc-timegrid-axis',
       allDayHeaderInnerClass: 'fc-timegrid-axis-inner',
-      weekNumberClass: 'fc-timegrid-axis',
-      weekNumberInnerClass: 'fc-timegrid-axis-inner fc-padding-sm',
+      weekNumberHeaderClass: 'fc-timegrid-axis',
+      weekNumberHeaderInnerClass: 'fc-timegrid-axis-inner fc-padding-sm',
       moreLinkClass: 'fc-timegrid-more-link',
       moreLinkInnerClass: 'fc-timegrid-more-link-inner',
       slotLabelClass: 'fc-timegrid-axis',

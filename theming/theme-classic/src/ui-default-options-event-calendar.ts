@@ -2,14 +2,15 @@ import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgIcons from './ui-default-svgs.js'
 
-const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
+const buttonFontClass = 'text-sm'
+const buttonIconClass = 'size-[calc(var(--text-sm--line-height)_*_1em)]'
 
-/*
-We don't bother making --fc-classic-* variables for these values,
-because there aren't multiple color palettes, nor do we care about making re-coloring easy
-*/
 const canvasBgColorClass = 'bg-white dark:bg-gray-950'
 const canvasOutlineColorClass = 'outline-white dark:outline-gray-950'
+
+/*
+TODO: color variables
+*/
 export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
   borderColorClass: 'border-[#ddd] dark:border-gray-800',
   majorBorderColorClass: 'border-gray-400 dark:border-gray-700',
@@ -71,14 +72,16 @@ export const defaultUiEventCalendarOptions: {
 
     buttonGroupClass: 'items-center isolate',
     buttonClass: (data) => [
-      'inline-flex items-center px-3 py-2 border-x',
+      'inline-flex items-center py-2 border-x',
       'focus:outline-3 outline-slate-600/50',
       'hover:border-slate-900 active:border-slate-900 print:border-slate-900',
       'hover:bg-slate-800 active:bg-slate-800 print:bg-white',
-      'text-sm text-white print:text-black',
+      'text-white print:text-black',
+      buttonFontClass,
+      data.isIconOnly ? 'px-2.5' : 'px-3',
       data.inGroup
-        ? 'first:rounded-s-sm last:rounded-e-sm relative active:z-20 focus:z-20'
-        : 'rounded-sm',
+        ? 'first:rounded-s-[4px] last:rounded-e-[4px] relative active:z-20 focus:z-20'
+        : 'rounded-[4px]',
       data.isSelected // implies inGroup
         ? 'z-10 border-slate-900 bg-slate-800'
         : 'z-0 border-transparent bg-slate-700',

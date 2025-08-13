@@ -266,6 +266,7 @@ export default function App() {
           theme === 'breezy' ? fcBreezyPalette :
             theme === 'pulse' ? fcPulsePalette : ''
 
+    rootEl.setAttribute('data-ui', ui)
     rootEl.setAttribute('data-theme', theme)
     rootEl.setAttribute('data-palette', fcPalette)
     rootEl.setAttribute('data-shadcn-palette', shadcnPalette)
@@ -422,24 +423,24 @@ export default function App() {
               <MuiCssBaseline />
             )}
             <EventCalendarDemo
-              initialView='listYear'
-              availableViews={['listYear', 'listMonth', 'listWeek']}
-              betterListButtons
-              ui={ui}
-              theme={theme}
-            />
-            <EventCalendarDemo
-              initialView='multiMonthYear'
-              ui={ui}
-              theme={theme}
-            />
-            <EventCalendarDemo
               initialView='dayGridMonth'
               ui={ui}
               theme={theme}
             />
+            {/* <EventCalendarDemo
+              initialView='multiMonthYear'
+              ui={ui}
+              theme={theme}
+            /> */}
             <EventCalendarDemo
               initialView='timeGridWeek'
+              ui={ui}
+              theme={theme}
+            />
+            <EventCalendarDemo
+              initialView='listYear'
+              availableViews={['listYear', 'listMonth', 'listWeek']}
+              betterListButtons
               ui={ui}
               theme={theme}
             />

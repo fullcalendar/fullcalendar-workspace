@@ -59,7 +59,7 @@ function createDayGridClasses(primaryBorderColorClass: string): CalendarOptions 
     BUG: z-index is wrong, can't click week numbers
     */
     inlineWeekNumberClass: 'absolute z-10 top-0 end-0 border-b border-b-gray-300 border-s border-s-gray-200 rounded-es-md bg-white',
-    weekNumberInnerClass: (data) => [
+    inlineWeekNumberInnerClass: (data) => [
       'py-0.5 ' +
         (data.isCompact
           ? xxsTextClass + ' px-0.5'
@@ -267,8 +267,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
         dayHeaderClass: 'border border-gray-100 text-sm/6 text-gray-500',
         dayCellClass: 'border-gray-100',
-        weekNumberClass: 'justify-end items-center',
-        weekNumberInnerClass: 'px-3 text-sm/6 text-gray-500',
+        weekNumberHeaderClass: 'justify-end items-center',
+        weekNumberHeaderInnerClass: 'px-3 text-sm/6 text-gray-500',
 
         /*
         Figure out how not having any border on slotLabel affects height-syncing

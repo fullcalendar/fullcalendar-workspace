@@ -9,15 +9,17 @@ TODO:
     we realized we needed this for the canvas color
     better to have API be consistent with other themes (ex: palette-chooser on website)
   Make classic theme colors more accurate to original
+
+Match border-radius of old theme for EVENTS
+Is it necessary to use the separate-color-div technique here?
 */
 
 // ambient types
-// TODO: make these all peer deps? or wait, move options to just core
-import '@fullcalendar/daygrid'
-import '@fullcalendar/timegrid'
-import '@fullcalendar/list'
-import '@fullcalendar/multimonth'
-import '@fullcalendar/interaction'
+import {} from '@fullcalendar/daygrid'
+import {} from '@fullcalendar/timegrid'
+import {} from '@fullcalendar/list'
+import {} from '@fullcalendar/multimonth'
+import {} from '@fullcalendar/interaction'
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 
@@ -31,7 +33,7 @@ const dayGridItemClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-l
 
 // timegrid axis
 const axisClass = 'justify-end' // align axisInner right
-const axisInnerClass = `${cellPaddingClass} text-end` // align text right when multiline
+const axisInnerClass = `${cellPaddingClass} text-end` // align text right when multiline --- used by body cells too???
 
 // transparent resizer for mouse
 // must have 'group' on the event, for group-hover
@@ -81,11 +83,11 @@ const dayGridClasses: CalendarOptions = {
 }
 
 const floatingWeekNumberClasses: CalendarOptions = {
-  weekNumberClass: [
+  inlineWeekNumberClass: [
     'absolute z-20 top-0 start-0 rounded-ee-sm p-0.5 min-w-[1.5em]',
     neutralBgClass,
   ],
-  weekNumberInnerClass: (data) => [
+  inlineWeekNumberInnerClass: (data) => [
     data.isCompact ? xxsTextClass : 'text-sm',
     'opacity-60 text-center',
   ],
@@ -276,7 +278,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isOther && 'opacity-30',
       ],
       dayCellTopInnerClass: (data) => [
-        'p-1',
+        'px-1',
+        data.isCompact ? 'py-0.5' : 'py-1',
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
       ],
@@ -312,13 +315,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayGridClasses,
         ...floatingWeekNumberClasses,
 
-        dayCellBottomClass: 'min-h-[1px]',
+        dayCellBottomClass: 'min-h-[1px]', // along with 1px margin-bottom on events, gives 2px effective
       },
       multiMonth: {
         ...dayGridClasses,
         ...floatingWeekNumberClasses,
 
-        dayCellBottomClass: 'min-h-[1px]',
+        dayCellBottomClass: 'min-h-[1px]', // along with 1px margin-bottom on events, gives 2px effective
 
         tableClass: borderClass,
       },
@@ -338,13 +341,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isCompact ? xxsTextClass : 'text-sm',
         ],
 
-        weekNumberClass: `${axisClass} items-center`,
-        weekNumberInnerClass: (data) => [
+        weekNumberHeaderClass: `${axisClass} items-center`,
+        weekNumberHeaderInnerClass: (data) => [
           axisInnerClass,
           data.isCompact ? xxsTextClass : 'text-sm',
         ],
 
-        columnMoreLinkClass: `mb-px rounded-xs outline ${params.canvasOutlineColorClass} ${moreLinkBgClass}`,
+        columnMoreLinkClass: `mb-px rounded-sm outline ${params.canvasOutlineColorClass} ${moreLinkBgClass}`,
         columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
         slotLabelClass: axisClass,

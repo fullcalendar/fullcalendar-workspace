@@ -206,8 +206,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           'flex flex-row items-center',
         ],
 
-        weekNumberClass: 'justify-end items-center',
-        weekNumberInnerClass: 'px-2 text-sm text-gray-700',
+        weekNumberHeaderClass: 'justify-end items-center',
+        weekNumberHeaderInnerClass: 'px-2 text-sm text-gray-700',
 
         columnEventClass: (data) => [
           'mx-0.5', // TODO: move this to the columnInner thing? yes!!
