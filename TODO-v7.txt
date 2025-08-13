@@ -29,6 +29,7 @@ Implement
 Implement
   columnWeekNumberContent/DidMount/etc
   inlineWeekNumberContent/DidMount/etc
+  (instead of .isCell or .isCol/Column)
   (ticket for weekNumberDisplay:'inline'|'column')
 
 
@@ -140,6 +141,7 @@ border-radius
 theme checklist
 ---------------
 UI
+  use own icon sets
   now-indicator
   popover background colors POP in dark mode
   timegrid: drop shadow from dayheader/axis onto scrollable area
