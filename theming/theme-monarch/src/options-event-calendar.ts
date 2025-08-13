@@ -13,6 +13,14 @@ TODO:
   (for demo only): change slotDuration and interval
   proper chevron!
   tricks to make current-view-tabs not so wide
+
+bug: left-align dayheader for day-only views after views.day options bug above is fixed
+  later: fix Screenshots/multimonth-more-link-bug.png
+  core: kill border-radius and drop-shadow on (Calendar|View) when borderless
+    OR, have root-div (and view-div? else?) explicitly handle this
+  bug: Causes scrollbars when there shouldn't be
+    slotDuration: '01:00',
+    expandRows: true,
 */
 
 // ambient types

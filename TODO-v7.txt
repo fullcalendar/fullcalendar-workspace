@@ -11,9 +11,46 @@ clean+build all:
   pn build
 
 
-theme SYSTEM
-------------
-rethink how more-popover uses dayHeaderClass
+theme checklist
+---------------
+UI
+  use own icon sets
+  now-indicator
+  popover background colors POP in dark mode
+  timegrid: drop shadow from dayheader/axis onto scrollable area
+  isPrimary button config
+  audit when today date is ALSO the "other" date in a month. still give opacity to whole dayCellTop?
+  add white glow to now indicator on all themes
+    See Screenshots/now-indicator-event-overlap.png
+  for dark-mode, in UI design,
+    nice to have popover be different BG color
+    example: click branch selector: https://github.com/fullcalendar/fullcalendar-site-refactor
+  vresource view
+theme-system: MUI
+  we should allow MUI to force headers to be uppercase
+  The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
+All themes
+  prefer view-specific options over top-level
+  xxSmall text too small (esp Year view)
+CODE
+  remove borderClass/majorBorderClass ... use borderColorClass each time
+  Use rotated icons to save space
+  use joinClassNames
+    especially useful for custom jsx with className= in it
+  list-header does its own sticky-top
+    bottom-border doesnt stack weird
+TEST
+  ALL stickiness, esp when calendar root is overflow:hidden
+  test horizontal scrolling
+  test growRows
+NOTES
+  for alignment,
+    dayHeader and timeline-slotLabel are flex-col
+    timeGrid-slotLabel is flex-row
+  text size:
+    text-sm = 14px (day-numbers, slot-labels, datagrid cells)
+    text-xs = 12px (events)
+    xxsTextClass ~= 11px (time within events -- use sparingly)
 
 
 just before beta (after theme gen)
@@ -28,35 +65,165 @@ App.tsx:
   BUG?: z-index of subcomponents go above the topbar?
 
 
-after beta
-----------
-instead of isIconOnly, do
-  accommodate icon+text, text+icon and have setting like hasStartIcon/hasEndIcon
-think about how classname overriding should work
-  in new gen FullCalendar react component, when specified in option, overrides what <FullCalendar> wants
-    a feature not a bug
-  should we emulate this in JS api too?
-    only have classname merging happen between calendar+viewoptions?
-we killed the default headerToolbar. bad idea?
-  was ever merged recursively? if so, dont do that
-[rename] stickyHeaderDates -> tableHeaderSticky
-  (write in changelog that doesn't apply to list-view day-headers anymore)
-[rename] stickyFooterScrollbar -> footerScrollbarSticky
-[eventually, when we need the feature]
-  headerToolbarSticky
-  footerScrollbarSticky
-[eventually]
-  weekNumberDisplay: 'inline' | 'column'
-  weekNumberHeaderClass: ({ hasNavLink, date? }) --- inherits from weekNumberClass --- similar to dayHeaderClass which has a fake date
-  weekNumberCellClass: ({ hasNavLink, date }) --- inherits from weekNumberInnerClass
-  (even tho dissonant with inlineWeekNumberClass)
-Is inlineWeekNumberInnerClass really necessary?
-Implement (Content/DidMount/WillUnmount on all)
-  (hard because generatorName="" requires a string)
-  blockEventContent
-  rowEventContent
-  columnEventContent
-  listItemEventContent
+ASAP
+----
+
+project: shadcn JSON file
+  example: https://www.kibo-ui.com/components/calendar
+    npx shadcn@latest add https://www.kibo-ui.com/registry/calendar.json
+
+project: RTL refactor
+  (see below)
+
+project: ResizeObserver refactor
+  ResourceTimeline height:auto
+    premium/bundle/a11y-ci/resource-timeline-flat-height-auto.html
+    Not exactly sure why fixed-scrollbar would cause this
+    Comment-out all Scroller vertical watching,
+      then toggle time-area footer fixed-scrollbar. toggles problem
+  ResourceTimeline switching resourceTimelineDay -> resourceTimelineThreeDays
+    premium/bundle/a11y-ci/resource-timeline-flat-height.html
+    Happening when timeline-header height increases,
+      needs to change height of data-grid header, thus data-grid body
+  AFTER:
+    HACK in tests with Calendar::updateSize calls in callback, ULTIMATELY UNDO THOSE
+    Check https://codesandbox.io/p/sandbox/3vxvhg?file=%2Fsrc%2FApp.js
+  AFTER check bugs:
+    bug: scroll to bottom of resource-timegrid-hscroll.html, scrollers out of sync
+    bug: a11y-ci/resource-timegrid-hscroll.html, filler on top header, when scrolled all the way right. is waaay too big
+    bug: bottom filler isn't working in a11y-ci/resource-timeline-row-grouping.html
+
+BUGs later:
+
+
+after-beta todo:
+  rethink isCompact/isSpacious. weird to have isSpacious:false on resourceLaneBottom... hard to reason
+  bug: why when resourceGroupHeaderClass bg color removed, we don't see vertical column lines underneath?
+  bugs with isMajor special border on slots
+    doesn't work on resourceTimelineThreeDays/Week/Month (am I not configuring correctly)
+    darker border is incorrectly on some vresource header cells
+  classic-theme: buttons in dark-mode should have colors inverted: selected should be lighter than non-selected
+  [rename] CustomContentGenerator -> ContentGenerator (and customGenerator)
+  [rename?] is EventDisplayData the best name when there's interaction-like props like isSelected?
+  accept objects for *Class inputs
+  rename listDaySideFormat -> listDayAltFormat ?
+    (because theme might not decide to put it on the "side")
+    maybe not "alt" because ppl might think related to alt-text
+    TODO: give isAlt/isSide as a prop to the classname-generator
+  ensure isMajor on resourceDayHeaders... this matters!
+    depends on resource-above-dates or opposites
+    HAVE THEMES leverage this. darker line
+  ensure no-margin, no-padding on certain elements
+    ensure not used when not supposed to!
+  update manual theme tests for `icons` removal
+    search for `icons: {`
+  weird how expander is valigned differently than resource-area header/cell content
+  audit all justify/align in theme. ensure axis is intuitive
+  DRY up function utils in MorePopover
+  rename isHeader -> inHeader (or just do "is" for everything)
+  make a "cn" public utility
+  dont allow margins on dayHeaderInnerClass or any class really!
+  should vresource headers be sticky! yes! not the case in resourceTimeGridWeek
+    for both cases of datesAboveHeaders
+    maybe even do centering trick we do for slot labels!?
+  nice way of doing shadow when scroll-down?
+  i don't like how we need to do transparent border for non-divider when isHeader
+    solution: put it IN the scroller (sibling of the canvas),
+    also, this way we can do a nowIndicator DOT above it within the scroller
+bug:
+  bug: resourceTimelineDay totally misalligned (with 3 resources)
+bug: when displayEventTime:false,
+  list-item events with "All-day" remain (always like this?)
+bug: for default titleFormat in week view
+  why are we getting "Jan 2023 – Feb 2023"? Problem with our ponyfill?
+bug: why targeting single-day view doesnt work?
+  views: { day: { dayHeaderFormat: { day: 'numeric', weekday: 'long' } } }
+  ^^works but only for some settings
+bug: in Chrome and Safari, scroll-syncing really getting out of alignment
+  stickyHeaderDates might cause it. test it a lot
+bug: resource-timeline doing multiple group columns. positioning broken (bundle/a11y-ci/resource-timeline-col-grouping.html)
+  will require refactor of how resource-timeline "entities" IDs are created: createEntityId / getEntityKey
+  automated-test: two nested group, across different parents, with same group value
+bug: resource-timeline print-view with multiple columns; broken positioning
+bug: eventColor not working in resource-timeline-row-grouping.html
+Currently, in v6, the headerToolbar left/center/right properties MERGE, which is a bit crazy
+  Overhaul the default setting
+  Add to changelog
+new Angular version
+  https://github.com/fullcalendar/fullcalendar/issues/7946#issuecomment-3019245564
+[rename] maybe rename "canvas" color to "background" color?
+  NOTES: rename --fc-*-canvas-color... because in pulse theme, outer background could be gray,
+    but we still want popover bg to be white. call is just "bg" color?
+[rename] fillerClass.inHeader -> withinHeader ?
+our global.css.js technique allows multiple attachments to same parent!? bad
+  can we somehow lazily attach? or is that bad for performance...
+    maybe so, but mainly used for shadow-dom people. real-dom people CAN use it,
+    but should be encouraged to use global.css instead
+For first-slot label that's negative, accept new data-prop that signls no rendering label
+  For themes with this, have them default the first-slot to 11pm the night before?
+when no dayHeaderDividerClass, should not inject <div>
+Address HACK in code, search: "HACK when clientWidth does NOT include body-border, compared to totalWidth"
+  ^^^more problems with this in TimeGrid, lines not aligning!
+obvious API win, unrelated to V7:
+  an events function should be able to return a non-promise,
+  aka an events array.
+api: better way to ensure min slot width/height. right now we depend on theme!?
+Kill fixedMirrorParent --- always use BODY
+  Okay now because all our classnames are atomic
+ensure nowIndicator doesn't appear in print view
+[dist] No more CJS!
+[dist] Support module-sync in package.json
+[rename] instead of "in*" names which could be confused with "is*" names, do something like this:
+  insideViewGroup
+  insidePopover
+  within?
+[a11y] if third-party ui-libraries define their own tabs, ensure aria is correctly wired up somehow
+[forward-port] we made event rerender optimization in v6 where DnD of event results in only 1 eventContent call
+  v7 still does 2 (or more?)... understandable because needs to clone event for mirror DnD?
+  write tests even tho didn't write for v6
+does Safari seem really slow?
+easy performance win for multi-month? css reflows?
+[rename] all sticky settings to *Sticky
+more granular sticky settings?
+  tableHeaderSticky
+  rowEventTitleSticky
+  colEventTitleSticky
+  slotLabelInnerSticky
+next theme platforms to implement:
+  Vuetify
+  Angular Material
+Move away from Node16 module-importing with ".js"
+THEME SYSTEM
+  instead of isIconOnly, do
+    accommodate icon+text, text+icon and have setting like hasStartIcon/hasEndIcon
+  think about how classname overriding should work
+    in new gen FullCalendar react component, when specified in option, overrides what <FullCalendar> wants
+      a feature not a bug
+    should we emulate this in JS api too?
+      only have classname merging happen between calendar+viewoptions?
+  we killed the default headerToolbar. bad idea?
+    was ever merged recursively? if so, dont do that
+  [rename] stickyHeaderDates -> tableHeaderSticky
+    (write in changelog that doesn't apply to list-view day-headers anymore)
+  [rename] stickyFooterScrollbar -> footerScrollbarSticky
+  [eventually, when we need the feature]
+    headerToolbarSticky
+    footerScrollbarSticky
+  [eventually]
+    weekNumberDisplay: 'inline' | 'column'
+    weekNumberHeaderClass: ({ hasNavLink, date? }) --- inherits from weekNumberClass --- similar to dayHeaderClass which has a fake date
+    weekNumberCellClass: ({ hasNavLink, date }) --- inherits from weekNumberInnerClass
+    (even tho dissonant with inlineWeekNumberClass)
+  Is inlineWeekNumberInnerClass really necessary?
+  Implement (Content/DidMount/WillUnmount on all)
+    (hard because generatorName="" requires a string)
+    blockEventContent
+    rowEventContent
+    columnEventContent
+    listItemEventContent
+Probably kill Bootstrap support, or add it back in after v7 release
+  Should be a UI system just like Shadcn or MUI
+  Keep using glyphicons? Probably yes, because SVG icons not distributed as JSX (like Lucide or MUI icons)
 
 
 rtl/left-right-coord REFACTOR
@@ -138,196 +305,6 @@ border-radius
   HOWEVER, there's border-radius on event elements and more link. who decides that?
   For copy&paste systems (Shadcn), tailwind->tailwind w/ tailwind config deciding radius,
   but for non-copy&paste (MUI), make customizable? Nah, just hardcode pixel values
-
-
-theme checklist
----------------
-UI
-  use own icon sets
-  now-indicator
-  popover background colors POP in dark mode
-  timegrid: drop shadow from dayheader/axis onto scrollable area
-  isPrimary button config
-  audit when today date is ALSO the "other" date in a month. still give opacity to whole dayCellTop?
-  add white glow to now indicator on all themes
-    See Screenshots/now-indicator-event-overlap.png
-  for dark-mode, in UI design,
-    nice to have popover be different BG color
-    example: click branch selector: https://github.com/fullcalendar/fullcalendar-site-refactor
-  vresource view
-theme-system: MUI
-  we should allow MUI to force headers to be uppercase
-  The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
-All themes
-  prefer view-specific options over top-level
-  xxSmall text too small (esp Year view)
-CODE
-  remove borderClass/majorBorderClass ... use borderColorClass each time
-  Use rotated icons to save space
-  use joinClassNames
-    especially useful for custom jsx with className= in it
-  list-header does its own sticky-top
-    bottom-border doesnt stack weird
-TEST
-  ALL stickiness, esp when calendar root is overflow:hidden
-  test horizontal scrolling
-  test growRows
-NOTES
-  for alignment,
-    dayHeader and timeline-slotLabel are flex-col
-    timeGrid-slotLabel is flex-row
-  text size:
-    text-sm = 14px (day-numbers, slot-labels, datagrid cells)
-    text-xs = 12px (events)
-    xxsTextClass ~= 11px (time within events -- use sparingly)
-
-
-ASAP
-----
-
-high-level todo:
-  backport tailwind classic theme -> normal classic theme
-    address bugs:
-      bug: eventColor not working in resource-timeline-row-grouping.html
-  backport to bootstrap5 theme
-    also: needs to use bootstrap-icons
-      i think i implemented this, but uses old iconClassNames map
-      use glyphicons still. easier instructions for importing font stylesheet as opposed to svgs
-
-project: shacdn
-  instead of buttonElements hook, which would require users to inject correct aria-attributes,
-    disabled-attribute, and click handler,
-    Have Shadcn inject only classNames via `buttonVariants` (https://ui.shadcn.com/docs/components/button#primary)
-    Button-groups are hard to do anyway.
-    Realistically, best way to do a button-group and customize buttons is to have developer,
-    build custom toolbar from scratch (using our soon-to-be-improved datesSet callback)
-  JSON file
-    example: https://www.kibo-ui.com/components/calendar
-      npx shadcn@latest add https://www.kibo-ui.com/registry/calendar.json
-
-project: ResizeObserver refactor
-  ResourceTimeline height:auto
-    premium/bundle/a11y-ci/resource-timeline-flat-height-auto.html
-    Not exactly sure why fixed-scrollbar would cause this
-    Comment-out all Scroller vertical watching,
-      then toggle time-area footer fixed-scrollbar. toggles problem
-  ResourceTimeline switching resourceTimelineDay -> resourceTimelineThreeDays
-    premium/bundle/a11y-ci/resource-timeline-flat-height.html
-    Happening when timeline-header height increases,
-      needs to change height of data-grid header, thus data-grid body
-  AFTER:
-    HACK in tests with Calendar::updateSize calls in callback, ULTIMATELY UNDO THOSE
-    Check https://codesandbox.io/p/sandbox/3vxvhg?file=%2Fsrc%2FApp.js
-  AFTER check bugs:
-    bug: scroll to bottom of resource-timegrid-hscroll.html, scrollers out of sync
-    bug: a11y-ci/resource-timegrid-hscroll.html, filler on top header, when scrolled all the way right. is waaay too big
-    bug: bottom filler isn't working in a11y-ci/resource-timeline-row-grouping.html
-
-BUGs later:
-  bug: resource-timeline doing multiple group columns. positioning broken (bundle/a11y-ci/resource-timeline-col-grouping.html)
-    will require refactor of how resource-timeline "entities" IDs are created: createEntityId / getEntityKey
-    automated-test: two nested group, across different parents, with same group value
-  bug: resource-timeline print-view with multiple columns; broken positioning
-
-after-beta todo:
-  rethink isCompact/isSpacious. weird to have isSpacious:false on resourceLaneBottom... hard to reason
-  bug: why when resourceGroupHeaderClass bg color removed, we don't see vertical column lines underneath?
-  bugs with isMajor special border on slots
-    doesn't work on resourceTimelineThreeDays/Week/Month (am I not configuring correctly)
-    darker border is incorrectly on some vresource header cells
-  classic-theme: buttons in dark-mode should have colors inverted: selected should be lighter than non-selected
-  [rename] CustomContentGenerator -> ContentGenerator (and customGenerator)
-  [rename?] is EventDisplayData the best name when there's interaction-like props like isSelected?
-  accept objects for *Class inputs
-  rename listDaySideFormat -> listDayAltFormat ?
-    (because theme might not decide to put it on the "side")
-    maybe not "alt" because ppl might think related to alt-text
-    TODO: give isAlt/isSide as a prop to the classname-generator
-  ensure isMajor on resourceDayHeaders... this matters!
-    depends on resource-above-dates or opposites
-    HAVE THEMES leverage this. darker line
-  ensure no-margin, no-padding on certain elements
-    ensure not used when not supposed to!
-  update manual theme tests for `icons` removal
-    search for `icons: {`
-  weird how expander is valigned differently than resource-area header/cell content
-  audit all justify/align in theme. ensure axis is intuitive
-  DRY up function utils in MorePopover
-  rename isHeader -> inHeader (or just do "is" for everything)
-  make a "cn" public utility
-  dont allow margins on dayHeaderInnerClass or any class really!
-  should vresource headers be sticky! yes! not the case in resourceTimeGridWeek
-    for both cases of datesAboveHeaders
-    maybe even do centering trick we do for slot labels!?
-  nice way of doing shadow when scroll-down?
-  i don't like how we need to do transparent border for non-divider when isHeader
-    solution: put it IN the scroller (sibling of the canvas),
-    also, this way we can do a nowIndicator DOT above it within the scroller
-bug:
-  bug: resourceTimelineDay totally misalligned (with 3 resources)
-bug: when displayEventTime:false,
-  list-item events with "All-day" remain (always like this?)
-bug: for default titleFormat in week view
-  why are we getting "Jan 2023 – Feb 2023"? Problem with our ponyfill?
-bug: why targeting single-day view doesnt work?
-  views: { day: { dayHeaderFormat: { day: 'numeric', weekday: 'long' } } }
-  ^^works but only for some settings
-bug: in Chrome and Safari, scroll-syncing really getting out of alignment
-  stickyHeaderDates might cause it. test it a lot
-Monarch theme: bug: left-align dayheader for day-only views after views.day options bug above is fixed
-  later: fix Screenshots/multimonth-more-link-bug.png
-  core: kill border-radius and drop-shadow on (Calendar|View) when borderless
-    OR, have root-div (and view-div? else?) explicitly handle this
-  bug: Causes scrollbars when there shouldn't be
-    slotDuration: '01:00',
-    expandRows: true,
-Currently, in v6, the headerToolbar left/center/right properties MERGE, which is a bit crazy
-  Overhaul the default setting
-  Add to changelog
-new Angular version
-  https://github.com/fullcalendar/fullcalendar/issues/7946#issuecomment-3019245564
-[rename] maybe rename "canvas" color to "background" color?
-  NOTES: rename --fc-*-canvas-color... because in pulse theme, outer background could be gray,
-    but we still want popover bg to be white. call is just "bg" color?
-[rename] fillerClass.inHeader -> withinHeader ?
-our global.css.js technique allows multiple attachments to same parent!? bad
-  can we somehow lazily attach? or is that bad for performance...
-    maybe so, but mainly used for shadow-dom people. real-dom people CAN use it,
-    but should be encouraged to use global.css instead
-For first-slot label that's negative, accept new data-prop that signls no rendering label
-  For themes with this, have them default the first-slot to 11pm the night before?
-when no dayHeaderDividerClass, should not inject <div>
-Address HACK in code, search: "HACK when clientWidth does NOT include body-border, compared to totalWidth"
-  ^^^more problems with this in TimeGrid, lines not aligning!
-obvious API win, unrelated to V7:
-  an events function should be able to return a non-promise,
-  aka an events array.
-api: better way to ensure min slot width/height. right now we depend on theme!?
-Kill fixedMirrorParent --- always use BODY
-  Okay now because all our classnames are atomic
-ensure nowIndicator doesn't appear in print view
-[dist] No more CJS!
-[dist] Support module-sync in package.json
-[rename] instead of "in*" names which could be confused with "is*" names, do something like this:
-  insideViewGroup
-  insidePopover
-  within?
-[a11y] if third-party ui-libraries define their own tabs, ensure aria is correctly wired up somehow
-[forward-port] we made event rerender optimization in v6 where DnD of event results in only 1 eventContent call
-  v7 still does 2 (or more?)... understandable because needs to clone event for mirror DnD?
-  write tests even tho didn't write for v6
-does Safari seem really slow?
-easy performance win for multi-month? css reflows?
-[rename] all sticky settings to *Sticky
-more granular sticky settings?
-  tableHeaderSticky
-  rowEventTitleSticky
-  colEventTitleSticky
-  slotLabelInnerSticky
-next theme platforms to implement:
-  Vuetify
-  Angular Material
-Move away from Node16 module-importing with ".js"
 
 
 Changelog
@@ -438,6 +415,24 @@ changelog: default computed titleFormat for week view (could span different mont
 changelog: dayHeaderClass/etc is used within popover (inPopover)
 changelog: removed css variables like --fc-page-bg-color
 changelog: different rendering behavior around not-defined buttons?
+changelog: weekNumber classnames/hooks
+  x weekNumberClass
+  x weekNumberInnerClass
+  x weekNumberContent
+  x weekNumberDidMount
+  x weekNumberWillUnmount
+  if daygrid week numbers (always inline), use:
+    inlineWeekNumberClass
+    inlineWeekNumberInnerClass
+    inlineWeekNumberContent
+    inlineWeekNumberDidMount
+    inlineWeekNumberWillUnmount
+  if timegrid corner-cell in header, use
+    weekNumberHeaderClass
+    weekNumberHeaderInnerClass
+    weekNumberHeaderContent
+    weekNumberHeaderDidMount
+    weekNumberHeaderWillUnmount
 
 
 Docs
