@@ -11,6 +11,13 @@ clean+build all:
   pn build
 
 
+BUGS:
+- bad column alignment of resourceTimeGridDay
+- bad scroll-down-all-the-way in resourceTimeGridDay, scroll unsyncs
+- wrong isMajor borders for resourceTimeGridWeek
+- vresource 2nd-tier header needs h-sticky
+
+
 theme checklist
 ---------------
 UI
