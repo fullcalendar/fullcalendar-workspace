@@ -148,12 +148,8 @@ export function createEventCalendarOptions({
 
       tableHeaderClass: (data) => data.isSticky && `${props.canvasBgColorClass} border-b ${borderColorClass}`,
 
-      popoverClass: 'm-2 ' + props.popoverClass,
+      popoverClass: 'm-2 min-w-3xs ' + props.popoverClass,
       popoverCloseClass: `absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center ${transparentPressableClass}`,
-
-      // TODO: revive?
-      // popoverHeaderClass: `px-1 py-1`,
-      // popoverBodyClass: 'p-2 min-w-3xs',
 
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
@@ -300,6 +296,9 @@ export function createEventCalendarOptions({
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
         !data.isCompact && 'm-2',
+      ],
+      dayCellInnerClass: (data) => [
+        data.inPopover && 'p-2',
       ],
 
       allDayDividerClass: `border-t ${borderColorClass}`,

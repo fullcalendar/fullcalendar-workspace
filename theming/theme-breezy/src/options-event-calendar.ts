@@ -139,8 +139,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       headerToolbarClass: 'border-b border-gray-200',
       footerToolbarClass: 'border-t border-gray-200',
 
-      popoverClass: 'm-1 ' + params.popoverClass,
-      popoverBodyClass: 'p-2 min-w-50',
+      popoverClass: 'min-w-50 m-1 ' + params.popoverClass,
 
       dayHeaderClass: 'items-center',
       dayHeaderInnerClass: (data) => [
@@ -160,6 +159,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         !data.isCompact && 'p-1',
         data.isOther ? 'text-gray-400' : 'text-gray-700',
         !data.isToday && 'mx-1',
+      ],
+      dayCellInnerClass: (data) => [
+        data.inPopover && 'p-2',
       ],
 
       dayLaneClass: 'border border-gray-100',

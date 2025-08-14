@@ -32,6 +32,7 @@ UI
   the disabled today button has *some* type of dimming on the text
   check that popover X isn't too big
   continuation arrows on start/end of events
+  should be at least 4 rows of event-like-content in each daycell
 theme-system: MUI
   we should allow MUI to force headers to be uppercase
   The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey

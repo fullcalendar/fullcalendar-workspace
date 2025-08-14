@@ -165,12 +165,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
       // TODO: fix problem with huge hit area for title
-      popoverClass: params.popoverClass,
+      popoverClass: 'min-w-[220px] ' + params.popoverClass,
       popoverCloseClass: 'absolute top-2 end-2',
-
-      // TODO: revive?
-      // popoverHeaderClass: neutralBgClass,
-      // popoverBodyClass: 'p-2 min-w-[220px]',
 
       // misc BG
       fillerClass: `${borderClass} opacity-50`,
@@ -277,6 +273,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderRowClass: borderClass,
 
+      dayHeaderClass: (data) => [
+        data.inPopover && neutralBgClass,
+      ],
+
       dayRowClass: borderClass,
       dayCellClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
@@ -292,6 +292,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'px-1 py-1 flex flex-row',
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
+      ],
+      dayCellInnerClass: (data) => [
+        data.inPopover && 'p-2',
       ],
 
       allDayDividerClass: `border-t ${params.borderColorClass}`,

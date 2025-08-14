@@ -54,12 +54,16 @@ const floatingWeekNumberClasses: CalendarOptions = {
   ],
 }
 
-export const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean }, params: EventCalendarOptionParams) => [
-  'items-center justify-center',
+// necessary abstraction?
+export const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean, inPopover?: boolean }, params: EventCalendarOptionParams) => [
+  data.inPopover ? 'items-start' : 'items-center', // halign
+  'justify-center', // valign
+  data.inPopover && neutralBgClass,
   data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
   data.isDisabled && neutralBgClass,
 ]
 
+// necessary abstraction?
 export const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
   'flex flex-col',
   cellPaddingClass,
@@ -141,8 +145,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         params.popoverClass,
         'min-w-[220px]',
       ],
-      // popoverHeaderClass: `flex flex-row justify-between items-center px-1 py-1 ${neutralBgClass}`,
-      // popoverBodyClass: 'p-2',
+      popoverCloseClass: 'absolute top-0.5 end-0.5',
 
       // misc BG
       fillerClass: `border ${params.borderColorClass} opacity-50`,

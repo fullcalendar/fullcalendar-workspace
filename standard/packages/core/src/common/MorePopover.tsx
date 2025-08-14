@@ -112,6 +112,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         <div
           className={joinClassNames(
             generateClassName(options.dayHeaderClass, dayHeaderRenderProps),
+            classNames.flexCol,
             classNames.borderOnlyB,
           )}
         >
@@ -130,7 +131,6 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             customGenerator={options.dayHeaderContent}
             defaultGenerator={renderText}
             classNameGenerator={options.dayHeaderInnerClass}
-            className={classNames.flexCol}
             didMount={options.dayHeaderDidMount}
             willUnmount={options.dayHeaderWillUnmount}
           />

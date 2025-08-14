@@ -93,7 +93,7 @@ export const defaultUiEventCalendarOptions: {
         && 'opacity-65 pointer-events-none', // bypass hover styles
     ],
 
-    popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'), // TODO: fix sizing
+    popoverCloseContent: () => svgIcons.x(`text-sm ${buttonIconClass} opacity-65`),
   },
   views: baseEventCalendarOptions.views,
 }

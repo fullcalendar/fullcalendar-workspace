@@ -18,7 +18,7 @@ export default createPlugin({
     viewClass: (data) => ['fc-view', `fc-${data.view.type}-view`, 'fc-view-bordered'],
     popoverClass: ['fc-popover', 'popover'],
     popoverHeaderClass: ['fc-popover-header', 'popover-header'],
-    popoverBodyClass: ['fc-popover-body', 'popover-body'],
+    // popoverBodyClass: ['fc-popover-body', 'popover-body'],
     buttonGroupClass: 'btn-group',
     buttonClass: (data) => [
       'btn',
