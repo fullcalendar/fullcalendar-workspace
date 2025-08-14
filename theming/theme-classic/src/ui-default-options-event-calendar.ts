@@ -19,6 +19,7 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
 
   todayBgColorClass: 'bg-(--fc-classic-today-color)',
   highlightBgColorClass: 'bg-(--fc-classic-highlight-color)',
+  primaryBorderColorClass: 'border-[#3788d8]',
 
   eventColor: '#3788d8',
   eventContrastColor: 'var(--color-white)',
@@ -92,7 +93,7 @@ export const defaultUiEventCalendarOptions: {
         && 'opacity-65 pointer-events-none', // bypass hover styles
     ],
 
-    popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
+    popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'), // TODO: fix sizing
   },
   views: baseEventCalendarOptions.views,
 }

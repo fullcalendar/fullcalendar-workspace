@@ -14,7 +14,7 @@ export const defaultUiSchedulerOnlyOptions: {
 
     resourceExpanderContent: (data) => data.isExpanded
       ? svgIcons.minusSquare('w-[1em] h-[1em]')
-      : svgIcons.plusSquare('w-[1em] h-[1em]'),
+      : svgIcons.plusSquare('w-[1em] h-[1em]'), // TODO: fix sizing!
   },
   views: baseSchedulerOnlyOptions.views,
 }

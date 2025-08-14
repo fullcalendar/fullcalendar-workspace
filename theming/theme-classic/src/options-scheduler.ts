@@ -1,52 +1,45 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
-import { EventCalendarOptionParams, getDayHeaderClasses, getDayHeaderInnerClasses } from './options-event-calendar.js'
+import { EventCalendarOptionParams, getDayHeaderClasses, getDayHeaderInnerClasses, moreLinkBgClass, neutralBgClass } from './options-event-calendar.js'
 
 // ambient types
-// TODO: make these all peer deps? or wait, move options to just core
-import '@fullcalendar/timeline'
-import '@fullcalendar/resource-daygrid'
-import '@fullcalendar/resource-timegrid'
-import '@fullcalendar/resource-timeline'
-import '@fullcalendar/adaptive'
-import '@fullcalendar/scrollgrid'
+import {} from '@fullcalendar/timeline'
+import {} from '@fullcalendar/resource-daygrid'
+import {} from '@fullcalendar/resource-timegrid'
+import {} from '@fullcalendar/resource-timeline'
+import {} from '@fullcalendar/adaptive'
+import {} from '@fullcalendar/scrollgrid'
 
-// TODO: DRY
-const neutralBgClass = 'bg-gray-500/10'
 const continuationArrowClass = 'relative z-10 mx-px border-y-[5px] border-y-transparent opacity-50'
-const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
 export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
-  const borderClass = `border ${params.borderColorClass}`
-  const majorBorderClass = `border ${params.majorBorderColorClass}`
-
   return {
     optionDefaults: {
-      resourceDayHeaderClass: (data) => getDayHeaderClasses(data, borderClass, majorBorderClass),
+      resourceDayHeaderClass: (data) => getDayHeaderClasses(data, params),
       resourceDayHeaderInnerClass: getDayHeaderInnerClasses,
 
-      resourceAreaHeaderRowClass: borderClass,
-      resourceAreaHeaderClass: `${borderClass} items-center`, // valign
+      resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
+      resourceAreaHeaderClass: `border ${params.borderColorClass} items-center`, // valign
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
 
       resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${neutralBgClass}`,
 
       // For both resources & resource groups
-      resourceAreaRowClass: borderClass,
+      resourceAreaRowClass: `border ${params.borderColorClass}`,
 
       resourceGroupHeaderClass: neutralBgClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: [borderClass, neutralBgClass],
+      resourceGroupLaneClass: [`border ${params.borderColorClass}`, neutralBgClass],
 
-      resourceCellClass: borderClass,
+      resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
 
       // TODO: move this to ui-default. same with other themes
       resourceExpanderClass: 'self-center relative -top-px start-1 opacity-65', // HACK: relative 1px shift up
 
-      resourceLaneClass: borderClass,
+      resourceLaneClass: `border ${params.borderColorClass}`,
       resourceLaneBottomClass: (data) => !data.isCompact && 'pb-3',
 
       // Non-resource Timeline
