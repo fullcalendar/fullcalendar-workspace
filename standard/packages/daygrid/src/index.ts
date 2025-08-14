@@ -34,9 +34,4 @@ export default createPlugin({
   },
 }) as PluginDef
 
-export {
-  DayCellData,
-  DayCellMountData,
-} from './structs.js'
-
 export { DayGridOptions } from './options.js'

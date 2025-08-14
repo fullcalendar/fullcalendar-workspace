@@ -1,4 +1,4 @@
-import { ViewApi } from '@fullcalendar/core'
+import { ViewApi, DayCellData } from '@fullcalendar/core'
 import {
   DateMarker,
   DateComponent,
@@ -36,7 +36,6 @@ import {
 } from '@fullcalendar/core/preact'
 import { DayGridMoreLink } from './DayGridMoreLink.js'
 import { DayRowEventRange, DayRowEventRangePart } from '../TableSeg.js'
-import { DayCellData } from '../structs.js'
 
 export interface DayGridCellProps {
   dateProfile: DateProfile

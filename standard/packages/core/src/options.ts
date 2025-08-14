@@ -61,6 +61,8 @@ import {
   ButtonDisplay,
   DayHeaderData,
   DayHeaderMountData,
+  DayCellMountData,
+  DayCellData,
 } from './api/structs.js'
 import { TableHeaderData } from './common/TableAndSubsections.js'
 import { createDuration, Duration } from './datelib/duration.js'
@@ -314,6 +316,22 @@ export const BASE_OPTION_REFINERS = {
   dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderMountData>>,
   dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderMountData>>,
 
+  dayHeaderRowClass: identity as Identity<ClassNameInput>,
+
+  dayHeaderDividerClass: identity as Identity<ClassNameGenerator<{ isSticky: boolean }>>,
+
+  dayRowClass: identity as Identity<ClassNameInput>,
+
+  dayCellDidMount: identity as Identity<DidMountHandler<DayCellMountData>>,
+  dayCellWillUnmount: identity as Identity<WillUnmountHandler<DayCellMountData>>,
+  dayCellClass: identity as Identity<ClassNameGenerator<DayCellData>>,
+  dayCellInnerClass: identity as Identity<ClassNameGenerator<DayCellData>>,
+
+  dayCellTopContent: identity as Identity<CustomContentGenerator<DayCellData>>,
+  dayCellTopClass: identity as Identity<ClassNameGenerator<DayCellData>>,
+  dayCellTopInnerClass: identity as Identity<ClassNameGenerator<DayCellData>>,
+  dayCellBottomClass: identity as Identity<ClassNameGenerator<DayCellData>>,
+
   allDayText: String,
   allDayHeaderClass: identity as Identity<ClassNameGenerator<AllDayHeaderData>>,
   allDayHeaderInnerClass: identity as Identity<ClassNameGenerator<AllDayHeaderData>>,
@@ -391,6 +409,7 @@ export const BASE_OPTION_REFINERS = {
   // new
   class: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
   className: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
+
   dayPopoverClass: identity as Identity<ClassNameGenerator<DayPopoverData>>,
   popoverClass: identity as Identity<ClassNameInput>,
   popoverHeaderClass: identity as Identity<ClassNameInput>,
