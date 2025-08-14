@@ -5,12 +5,12 @@ import { DateProfile } from '../DateProfileGenerator.js'
 import { Hit } from '../interactions/hit.js'
 import { Dictionary } from '../options.js'
 import { createElement, ComponentChildren, ComponentChild, createPortal, createRef } from '../preact.js'
-import { DateMeta, getDateMeta } from '../component-util/date-rendering.js'
+import { getDateMeta } from '../component-util/date-rendering.js'
 import { formatDayString } from '../datelib/formatting-utils.js'
 import { memoize } from '../util/memoize.js'
 import { generateClassName } from '../content-inject/ContentContainer.js'
 import { ContentContainer } from '../content-inject/ContentContainer.js'
-import { DayHeaderData } from '../api/structs.js'
+import { DayCellData, DayHeaderData } from '../api/structs.js'
 import { createFormatter } from '../datelib/formatting.js'
 import { buildNavLinkAttrs } from './nav-link.js'
 import classNames from '../internal-classnames.js'
@@ -34,8 +34,6 @@ export interface MorePopoverProps {
   onClose?: () => void
 }
 
-export type DayPopoverData = DateMeta // TODO: rename
-
 const PADDING_FROM_VIEWPORT = 10
 const ROW_BORDER_WIDTH = 1
 
@@ -58,8 +56,9 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     let { startDate, todayRange, dateProfile } = props
     let dateMeta = this.getDateMeta(startDate, dateEnv, dateProfile, todayRange)
     let [text, textParts] = dateEnv.format(startDate, options.dayPopoverFormat)
+
     const hasNavLink = options.navLinks
-    let dayHeaderRenderProps: DayHeaderData = {
+    const dayHeaderRenderProps: DayHeaderData = {
       ...dateMeta,
       isMajor: false,
       isCompact: false,
@@ -77,6 +76,17 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       view: viewApi,
       // TODO: should know about the resource!
     }
+    const dayCellRenderProps: DayCellData = {
+      ...dateMeta,
+      isMajor: false,
+      isCompact: false,
+      inPopover: true,
+      hasLabel: false,
+      hasMonthLabel: false,
+      view: viewApi,
+      text: '',
+      textParts: [],
+    }
 
     const fullDateStr = formatDayString(startDate)
 
@@ -88,7 +98,6 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         aria-labelledby={this.titleId}
         className={joinArrayishClassNames(
           options.popoverClass,
-          generateClassName(options.dayPopoverClass, dateMeta),
           classNames.popoverZ,
           classNames.abs,
           classNames.internalPopover,
@@ -100,31 +109,31 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           style={{ outline: 'none' }} // TODO: className?
           ref={this.focusStartRef}
         />
-        <div className={joinArrayishClassNames(options.popoverHeaderClass)}>
+        <div
+          className={joinClassNames(
+            generateClassName(options.dayHeaderClass, dayHeaderRenderProps),
+            classNames.borderOnlyB,
+          )}
+        >
           <ContentContainer
             tag="div"
-            attrs={{ id: this.titleId }}
+            attrs={{
+              id: this.titleId,
+              ...(
+                hasNavLink
+                  ? buildNavLinkAttrs(context, startDate, undefined, fullDateStr)
+                  : {}
+              ),
+            }}
             generatorName="dayHeaderContent"
             renderProps={dayHeaderRenderProps}
             customGenerator={options.dayHeaderContent}
             defaultGenerator={renderText}
-            classNameGenerator={options.dayHeaderClass}
-            className={joinClassNames(classNames.flexCol, classNames.borderNone)} /* rethink this!!! */
+            classNameGenerator={options.dayHeaderInnerClass}
+            className={classNames.flexCol}
             didMount={options.dayHeaderDidMount}
             willUnmount={options.dayHeaderWillUnmount}
-          >
-            {(InnerContent) => (
-              <InnerContent
-                tag="div"
-                className={generateClassName(options.dayHeaderInnerClass, dayHeaderRenderProps)}
-                attrs={
-                  hasNavLink
-                    ? buildNavLinkAttrs(context, startDate, undefined, fullDateStr)
-                    : undefined
-                }
-              />
-            )}
-          </ContentContainer>
+          />
           <ContentContainer
             tag='button'
             attrs={{
@@ -141,8 +150,15 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             generatorName='popoverCloseContent'
           />
         </div>
-        <div className={joinArrayishClassNames(options.popoverBodyClass)}>
-          {props.children}
+        <div
+          className={joinClassNames(
+            generateClassName(options.dayCellClass, dayCellRenderProps),
+            classNames.borderNone,
+          )}
+        >
+          <div className={generateClassName(options.dayCellInnerClass, dayCellRenderProps)}>
+            {props.children}
+          </div>
         </div>
         <div
           tabIndex={0}

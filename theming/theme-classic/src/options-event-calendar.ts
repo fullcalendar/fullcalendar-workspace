@@ -137,9 +137,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
-      popoverClass: params.popoverClass,
-      popoverHeaderClass: `flex flex-row justify-between items-center px-1 py-1 ${neutralBgClass}`,
-      popoverBodyClass: 'p-2 min-w-[220px]',
+      popoverClass: [
+        params.popoverClass,
+        'min-w-[220px]',
+      ],
+      // popoverHeaderClass: `flex flex-row justify-between items-center px-1 py-1 ${neutralBgClass}`,
+      // popoverBodyClass: 'p-2',
 
       // misc BG
       fillerClass: `border ${params.borderColorClass} opacity-50`,
@@ -263,6 +266,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isCompact ? 'py-0.5' : 'py-1',
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
+      ],
+      dayCellInnerClass: (data) => [
+        data.inPopover && 'p-2',
       ],
 
       allDayDividerClass: `border-y ${params.borderColorClass} pb-0.5 ${neutralBgClass}`,

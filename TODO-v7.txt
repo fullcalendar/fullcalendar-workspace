@@ -40,6 +40,7 @@ All themes
   xxSmall text too small (esp Year view)
   core: datagrid narrow columns overflow
   rething sized of dots
+  audit license warning for all themes, not that we change inherited classname
 CODE
   move font-size/line-height AWAY from eventInner... move to eventTime/Title
   remove borderClass/majorBorderClass ... use borderColorClass each time
@@ -234,6 +235,8 @@ THEME SYSTEM
 Probably kill Bootstrap support, or add it back in after v7 release
   Should be a UI system just like Shadcn or MUI
   Keep using glyphicons? Probably yes, because SVG icons not distributed as JSX (like Lucide or MUI icons)
+[rename] dayPopoverFormat -> popoverFormat?
+  because popoverFormat+popoverClass AND dayHeaderFormat+dayHeaderClass AND dayCellFormat+dayCellClass
 
 
 rtl/left-right-coord REFACTOR
@@ -445,6 +448,8 @@ changelog: weekNumber classnames/hooks
     weekNumberHeaderWillUnmount
 more-popover headers are navlinks now
 in multi-month (when very narrow months), day-of-week abbreviation is "S|M|T|..."
+in standard theme,
+  no longer have day classnames on popover
 
 
 Docs

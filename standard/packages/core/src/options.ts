@@ -20,7 +20,6 @@ import {
   DateUnselectData,
   DayLaneData,
   DayLaneMountData,
-  DayPopoverData,
   DidMountHandler,
   EventAddData, EventChangeData,
   EventClickData,
@@ -410,12 +409,10 @@ export const BASE_OPTION_REFINERS = {
   class: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
   className: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
 
-  dayPopoverClass: identity as Identity<ClassNameGenerator<DayPopoverData>>,
   popoverClass: identity as Identity<ClassNameInput>,
-  popoverHeaderClass: identity as Identity<ClassNameInput>,
   popoverCloseClass: identity as Identity<ClassNameInput>,
   popoverCloseContent: identity as Identity<CustomContentGenerator<{}>>,
-  popoverBodyClass: identity as Identity<ClassNameInput>,
+
   dayCompactWidth: Number,
 
   borderless: Boolean,

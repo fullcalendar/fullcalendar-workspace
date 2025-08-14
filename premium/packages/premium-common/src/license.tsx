@@ -43,7 +43,7 @@ export function buildLicenseWarning(context: CalendarContext) {
           }}
         >
           <div className={joinArrayishClassNames(
-            options.popoverHeaderClass,
+            options.popoverClass,
             classNames.tight, // no margin/padding
           )}>
             <div style={{

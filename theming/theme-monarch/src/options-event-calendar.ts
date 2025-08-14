@@ -149,9 +149,11 @@ export function createEventCalendarOptions({
       tableHeaderClass: (data) => data.isSticky && `${props.canvasBgColorClass} border-b ${borderColorClass}`,
 
       popoverClass: 'm-2 ' + props.popoverClass,
-      popoverHeaderClass: `px-1 py-1`,
       popoverCloseClass: `absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center ${transparentPressableClass}`,
-      popoverBodyClass: 'p-2 min-w-3xs',
+
+      // TODO: revive?
+      // popoverHeaderClass: `px-1 py-1`,
+      // popoverBodyClass: 'p-2 min-w-3xs',
 
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 

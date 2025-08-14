@@ -84,10 +84,16 @@ export default createPlugin({
     buttonGroupClass: 'fc-button-group',
 
     popoverClass: 'fc-popover', // see also: dayPopoverClass
-    popoverHeaderClass: 'fc-popover-header',
     // popoverHeaderInnerClass: 'fc-popover-title', -- TODO: use dayHeaderClass w/ inPopover
     popoverCloseClass: 'fc-popover-close',
-    popoverBodyClass: 'fc-popover-body',
+
+    // TODO: revive?
+    // popoverHeaderClass: 'fc-popover-header',
+    // popoverBodyClass: 'fc-popover-body',
+    // dayPopoverClass: (data) => [
+    //   'fc-more-popover',
+    //   ...getDayClassNames(data),
+    // ],
 
     // Cross-view
     // ---------------------------------------------------------------------------------------------
@@ -97,10 +103,7 @@ export default createPlugin({
     navLinkClass: 'fc-navlink', // TODO: fc-nav-link ?
     moreLinkClass: 'fc-more-link',
 
-    dayPopoverClass: (data) => [
-      'fc-more-popover',
-      ...getDayClassNames(data),
-    ],
+
 
     fillerClass: 'fc-filler', // TODO: give all-sides border
 
