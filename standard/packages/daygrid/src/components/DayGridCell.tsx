@@ -305,6 +305,7 @@ function refineRenderProps(raw: DayCellRenderPropsInput): DayCellData {
     textParts,
     isMajor: raw.isMajor,
     isCompact: raw.isCompact,
+    inPopover: false,
     hasLabel,
     hasMonthLabel,
     hasNavLink,

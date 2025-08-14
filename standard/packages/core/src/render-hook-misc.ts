@@ -48,6 +48,7 @@ export interface DayCellData extends DateMeta {
   date: DateMarker // localized
   isMajor: boolean
   isCompact: boolean
+  inPopover: boolean
   hasLabel: boolean
   hasMonthLabel: boolean
   view: ViewApi

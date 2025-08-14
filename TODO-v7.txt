@@ -38,6 +38,8 @@ theme-system: MUI
 All themes
   prefer view-specific options over top-level
   xxSmall text too small (esp Year view)
+  core: datagrid narrow columns overflow
+  rething sized of dots
 CODE
   move font-size/line-height AWAY from eventInner... move to eventTime/Title
   remove borderClass/majorBorderClass ... use borderColorClass each time
