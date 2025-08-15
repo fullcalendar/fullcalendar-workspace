@@ -12,7 +12,7 @@ clean+build all:
 
 
 print-view is messed up
-put nav-links on single-month titles
+move away from font-size on event inner area
 standard theme:
   test other ui systems
   icon sizes
@@ -476,6 +476,7 @@ in multi-month (when very narrow months), day-of-week abbreviation is "S|M|T|...
 in standard theme,
   no longer have day classnames on popover
 changelog: +slotLabelAlign (only about highest level)
+changelog: navlinks on single-month title!
 
 
 Docs

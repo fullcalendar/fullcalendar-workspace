@@ -179,7 +179,7 @@ export default createPlugin({
       'fc-single-month',
       data.colCount > 1 && 'fc-single-month-multicol',
     ],
-    // singleMonthTitleClass: (data) => [
+    // singleMonthHeaderClass: (data) => [
     //   'fc-single-month-title',
     //   data.colCount > 1
     //     ? 'fc-single-month-title-multicol'

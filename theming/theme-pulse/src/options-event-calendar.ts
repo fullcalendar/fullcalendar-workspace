@@ -192,7 +192,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         singleMonthClass: (data) => [
           (data.colCount > 1) && 'm-4',
         ],
-        singleMonthTitleClass: 'font-semibold',
+        singleMonthHeaderClass: 'font-semibold',
 
       },
       timeGrid: {

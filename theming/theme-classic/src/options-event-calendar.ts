@@ -125,13 +125,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       tableHeaderClass: (data) => data.isSticky && params.pageBgColorClass,
 
       singleMonthClass: (data) => data.colCount > 1 && 'm-4',
-      singleMonthTitleClass: (data) => [
+      singleMonthHeaderClass: (data) => [
         data.isSticky
           ? `py-2 border-b ${params.borderColorClass} ${params.pageBgColorClass}` // single col
           : 'pb-4', // multi col
-        data.isCompact ? 'text-base' : 'text-lg',
-        'text-center font-bold',
+        'justify-center',
       ],
+      singleMonthHeaderInnerClass: 'font-bold',
 
       popoverClass: `${params.popoverClass} min-w-[220px]`,
       popoverCloseClass: 'absolute top-0.5 end-0.5',

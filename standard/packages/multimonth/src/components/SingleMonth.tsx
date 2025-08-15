@@ -1,9 +1,9 @@
 import { CssDimValue } from '@fullcalendar/core'
-import { DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, joinClassNames, memoize, ViewProps, watchHeight, watchWidth } from '@fullcalendar/core/internal'
+import { buildNavLinkAttrs, DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, joinClassNames, memoize, ViewProps, watchHeight, watchWidth } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow, narrowDayHeaderWidth } from '@fullcalendar/daygrid/internal'
-import { SingleMonthData } from '../structs.js'
+import { SingleMonthData, SingleMonthHeaderData } from '../structs.js'
 
 export interface SingleMonthProps extends ViewProps {
   todayRange: DateRange
@@ -83,6 +83,17 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
       ? rowHeightGuess + state.tableHeaderHeight + 1
       : undefined
 
+    const hasNavLink = options.navLinks
+    const headerRenderProps: SingleMonthHeaderData = {
+      isSticky: isTitleAndHeaderSticky,
+      isCompact: cellIsCompact,
+      hasNavLink,
+    }
+    const monthStartDate = props.dateProfile.currentRange.start
+    const navLinkAttrs: any = hasNavLink
+      ? buildNavLinkAttrs(context, monthStartDate, 'month', props.isoDateStr)
+      : {}
+
     return (
       <div // TODO: move this to the parent component?
         role='listitem'
@@ -109,11 +120,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             id={this.titleId}
             ref={this.titleElRef}
             className={joinClassNames(
-              generateClassName(options.singleMonthTitleClass, {
-                isSticky: isTitleAndHeaderSticky,
-                isCompact: cellIsCompact,
-              }),
+              generateClassName(options.singleMonthHeaderClass, headerRenderProps),
               isTitleAndHeaderSticky && classNames.stickyT,
+              classNames.flexRow,
             )}
             style={{
               // HACK to keep zIndex above table-header,
@@ -124,10 +133,15 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               marginBottom: titleStickyBottom,
             }}
           >
-            {dateEnv.format(
-              props.dateProfile.currentRange.start,
-              props.titleFormat,
-            )}
+            <div
+              {...navLinkAttrs}
+              className={joinClassNames(
+                generateClassName(options.singleMonthHeaderInnerClass, headerRenderProps),
+                navLinkAttrs.className,
+              )}
+            >
+              {dateEnv.format(monthStartDate, props.titleFormat)}
+            </div>
           </div>
           <div // the daygrid table
             className={joinArrayishClassNames(
@@ -138,7 +152,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
               classNames.flexCol,
             )}
             style={{
-              marginTop: titleStickyBottom != null ? -titleStickyBottom : undefined
+              marginTop: titleStickyBottom != null ? -titleStickyBottom : undefined,
             }}
           >
             <div

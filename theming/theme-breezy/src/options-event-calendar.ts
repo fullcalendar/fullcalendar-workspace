@@ -224,7 +224,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       listDayEventsClass: 'flex-grow flex flex-col',
 
       singleMonthClass: 'm-5',
-      singleMonthTitleClass: (data) => [
+      singleMonthHeaderClass: (data) => [
         'text-center text-sm font-semibold text-gray-900',
         data.isSticky
           ? 'py-2 bg-white border-b border-gray-200'

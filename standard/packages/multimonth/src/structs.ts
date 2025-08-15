@@ -6,8 +6,9 @@ export interface SingleMonthData {
 
 export type SingleMonthMountData = MountData<SingleMonthData>
 
-export interface SingleMonthTitleData {
+export interface SingleMonthHeaderData {
   isSticky: boolean
   isCompact: boolean
+  hasNavLink: boolean
 }
 
