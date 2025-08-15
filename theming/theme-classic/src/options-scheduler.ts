@@ -58,7 +58,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
         rowEventInnerClass: (data) => [
           'px-px gap-1', // more h-space than daygrid
-          data.isCompact ? 'py-px' : 'py-1',
+          data.isSpacious ? 'py-1' : 'py-px',
         ],
 
         rowMoreLinkClass: `me-px p-px ${solidMoreLinkBgClass}`,

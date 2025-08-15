@@ -816,6 +816,10 @@ punt: API change: stop passing-in createElement to render funcs:
 Notes
 -----
 
+isSpacious - for timeline eventOverlap=false
+  tried to converge this with isCompact,
+  but yields small event *general* rowEventInner, making text smalle
+  keep this a separate setting because we might remove it in future anyway
 isMajor/isMinor API additions:
   isMajor
     + slotLane
