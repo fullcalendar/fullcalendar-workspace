@@ -110,6 +110,9 @@ project: ResizeObserver refactor
     bug: bottom filler isn't working in a11y-ci/resource-timeline-row-grouping.html
 
 after-beta todo:
+  think about reviving compact timegrid print view, or at least providing a setting
+    https://fullcalendar.freshdesk.com/a/tickets/11181
+    We already keep this code for buggy firefox
   vresource 2nd tier header should be center-sticky...
     must introduce new setting like slotLabelAlign... dayHeaderAlign/resourceDayHeaderAlign?
     unlike temporary slotLabelAlign... can't just apply it to top-tier (and avoid applying to time slots, which are hardcoded left-aligned)
@@ -644,6 +647,8 @@ Since we now have static CSS file,
   https://developer.salesforce.com/docs/platform/lightning-components-security/guide/locker-intro.html
   https://fullcalendar.freshdesk.com/a/tickets/11164
   https://github.com/fullcalendar/fullcalendar/issues/6175#issuecomment-3172970799
+Notify when virtualization complete:
+  https://fullcalendar.freshdesk.com/a/tickets/11172
 
 
 Punt
