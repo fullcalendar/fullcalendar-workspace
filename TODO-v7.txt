@@ -11,10 +11,6 @@ clean+build all:
   pn build
 
 
-BUGS:
-- vresource 2nd-tier header needs h-sticky
-
-
 theme checklist
 ---------------
 UI
@@ -114,6 +110,11 @@ project: ResizeObserver refactor
     bug: bottom filler isn't working in a11y-ci/resource-timeline-row-grouping.html
 
 after-beta todo:
+  vresource 2nd tier header should be center-sticky...
+    must introduce new setting like slotLabelAlign... dayHeaderAlign/resourceDayHeaderAlign?
+    unlike temporary slotLabelAlign... can't just apply it to top-tier (and avoid applying to time slots, which are hardcoded left-aligned)
+    FYI, slotLabelAlign ONLY applies to timeline, not timegrid
+    sounds like we're due for a settings refactor
   delete classic-theme and bootstrap5 packages
   rethink isCompact/isSpacious. weird to have isSpacious:false on resourceLaneBottom... hard to reason
   bug: why when resourceGroupHeaderClass bg color removed, we don't see vertical column lines underneath?
@@ -461,6 +462,7 @@ more-popover headers are navlinks now
 in multi-month (when very narrow months), day-of-week abbreviation is "S|M|T|..."
 in standard theme,
   no longer have day classnames on popover
+changelog: +slotLabelAlign (only about highest level)
 
 
 Docs
