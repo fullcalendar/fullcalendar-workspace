@@ -12,8 +12,6 @@ clean+build all:
 
 
 BUGS:
-- bad column alignment of resourceTimeGridDay
-- bad scroll-down-all-the-way in resourceTimeGridDay, scroll unsyncs
 - wrong isMajor borders for resourceTimeGridWeek
 - vresource 2nd-tier header needs h-sticky
 
@@ -49,6 +47,7 @@ All themes
   core: datagrid narrow columns overflow
   rething sized of dots
   audit license warning for all themes, not that we change inherited classname
+  core: test sticky footer scrollbar on timegrid-pannable/normal, daygrid-pannable/normal
 CODE
   move font-size/line-height AWAY from eventInner... move to eventTime/Title
   remove borderClass/majorBorderClass ... use borderColorClass each time
@@ -165,6 +164,8 @@ bug: resource-timeline doing multiple group columns. positioning broken (bundle/
   automated-test: two nested group, across different parents, with same group value
 bug: resource-timeline print-view with multiple columns; broken positioning
 bug: eventColor not working in resource-timeline-row-grouping.html
+bug: we are incorrectly allowing stickyFooterScrollbar when height is not auto,
+  which results in no visible vertical scrollbars (at least in resourceTimeGridWeek)
 Currently, in v6, the headerToolbar left/center/right properties MERGE, which is a bit crazy
   Overhaul the default setting
   Add to changelog

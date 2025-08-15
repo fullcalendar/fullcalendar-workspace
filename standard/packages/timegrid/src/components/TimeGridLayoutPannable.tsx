@@ -63,9 +63,10 @@ export interface TimeGridLayoutPannableProps {
 
 interface TimeGridLayoutPannableState {
   totalWidth?: number
+  bodyHeight?: number
   clientWidth?: number
   clientHeight?: number
-  bottomScrollbarWidth?: number
+  sticykBottomScrollbarWidth?: number
   axisWidth?: number
   headerTierHeights: number[]
   slatInnerHeight?: number
@@ -121,11 +122,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
       slatLabelInnerHeightRefMap,
     } = this
     const { nowDate, headerTiers, forPrint } = props
-    const { axisWidth, totalWidth, clientWidth, clientHeight, bottomScrollbarWidth } = state
+    const { axisWidth, totalWidth, clientWidth, clientHeight, bodyHeight, sticykBottomScrollbarWidth } = state
     const { options } = context
 
-    const endScrollbarWidth = (totalWidth != null && clientWidth != null)
-      ? totalWidth - clientWidth
+    const endScrollbarWidth = (totalWidth != null && clientWidth != null && axisWidth != null)
+      ? totalWidth - clientWidth - (axisWidth + 1) // +1 for hardcoded divider!
       : undefined
 
     const verticalScrolling = !forPrint && !getIsHeightAuto(options)
@@ -158,6 +159,13 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
       clientHeight != null && clientHeight > totalSlatHeight
 
     const firstBodyRowIndex = options.dayHeaders ? headerTiers.length + 1 : 1
+
+    const bottomScrollbarWidth =
+      stickyFooterScrollbar
+        ? sticykBottomScrollbarWidth
+        : (bodyHeight != null && clientHeight != null)
+          ? (bodyHeight - clientHeight)
+          : undefined
 
     return (
       <Fragment>
@@ -362,6 +370,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 width: axisWidth,
               }}
               ref={this.axisScrollerRef}
+              clientHeightRef={this.handleBodyHeight}
             >
               {!simplePrint && (
                 <Fragment>
@@ -525,7 +534,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   isSticky
                   canvasWidth={canvasWidth}
                   scrollerRef={this.footScrollerRef}
-                  scrollbarWidthRef={this.handleBottomScrollbarWidth}
+                  scrollbarWidthRef={this.handleStickyBottomScrollbarWidth}
                 />
               )}
             </div>
@@ -568,6 +577,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     this.setState({ totalWidth })
   }
 
+  private handleBodyHeight = (bodyHeight: number) => {
+    this.setState({ bodyHeight })
+  }
+
   private handleClientWidth = (clientWidth: number) => {
     this.setState({ clientWidth })
   }
@@ -576,8 +589,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     this.setState({ clientHeight })
   }
 
-  private handleBottomScrollbarWidth = (bottomScrollbarWidth: number) => {
-    this.setState({ bottomScrollbarWidth })
+  private handleStickyBottomScrollbarWidth = (sticykBottomScrollbarWidth: number) => {
+    this.setState({ sticykBottomScrollbarWidth })
   }
 
   private handleHeaderHeights = () => {
