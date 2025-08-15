@@ -422,23 +422,17 @@ export default function App() {
             {(ui === 'mui') && (
               <MuiCssBaseline />
             )}
-            <SchedulerDemo
-              initialView='resourceTimeGridWeek'
-              availableViews={['resourceTimeGridDay', 'resourceTimeGridWeek']}
-              ui={ui}
-              theme={theme}
-            />
-            {/* <EventCalendarDemo
+            <EventCalendarDemo
               initialView='dayGridMonth'
               ui={ui}
               theme={theme}
-            /> */}
+            />
             {/* <EventCalendarDemo
               initialView='multiMonthYear'
               ui={ui}
               theme={theme}
             /> */}
-            {/* <EventCalendarDemo
+            <EventCalendarDemo
               initialView='timeGridWeek'
               ui={ui}
               theme={theme}
@@ -454,7 +448,13 @@ export default function App() {
               initialView='resourceTimelineWeek'
               ui={ui}
               theme={theme}
-            /> */}
+            />
+            <SchedulerDemo
+              initialView='resourceTimeGridWeek'
+              availableViews={['resourceTimeGridDay', 'resourceTimeGridWeek']}
+              ui={ui}
+              theme={theme}
+            />
           </div>
         </MuiThemeProvider>
       </div>
