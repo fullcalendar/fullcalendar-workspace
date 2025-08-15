@@ -12,6 +12,7 @@ export interface EventCalendarOptionParams {
   majorBorderColorClass: string
   nowIndicatorBorderColorClass: string
   nowIndicatorBorderStartColorClass: string
+  nowIndicatorBorderTopColorClass: string
   compactMoreLinkBorderColorClass: string
   todayBgColorClass: string
   highlightBgColorClass: string
@@ -291,12 +292,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         weekNumberHeaderClass: `${axisClass} items-center`, // v-align
         weekNumberHeaderInnerClass: getAxisInnerClasses,
 
-        slotLabelDividerClass: `border-l ${params.borderColorClass}`,
         slotLabelClass: axisClass,
-        slotLabelInnerClass: (data) => [
-          ...getAxisInnerClasses(data),
-          'min-h-5',
-        ],
+        slotLabelInnerClass: (data) => [...getAxisInnerClasses(data), 'min-h-5'],
+        slotLabelDividerClass: `border-l ${params.borderColorClass}`,
 
         nowIndicatorLabelClass: `start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] ${params.nowIndicatorBorderStartColorClass}`,
         nowIndicatorLineClass: `border-t ${params.nowIndicatorBorderColorClass}`,

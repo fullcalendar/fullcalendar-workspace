@@ -10,6 +10,7 @@ export const optionParams: EventCalendarOptionParams = {
   majorBorderColorClass: 'border-(--mui-palette-primary-main)', // will have color. might be cool
   nowIndicatorBorderColorClass: 'border-(--mui-palette-error-main)',
   nowIndicatorBorderStartColorClass: 'border-s-(--mui-palette-error-main)',
+  nowIndicatorBorderTopColorClass: 'border-t-(--mui-palette-error-main)',
 
   todayBgColorClass: 'bg-yellow-400/15 dark:bg-yellow-200/10', // keep hardcoded?
   highlightBgColorClass: 'bg-cyan-100/40 bg-blue-500/20', // TODO: move to primary-color + opacity

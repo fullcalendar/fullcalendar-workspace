@@ -31,7 +31,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceGroupHeaderClass: neutralBgColorClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: [`border ${params.borderColorClass}`, neutralBgColorClass],
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${neutralBgColorClass}`,
 
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
@@ -47,33 +47,29 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
     },
     views: {
       timeline: {
-        rowEventClass: [
-          'me-px', // space from slot line
-          'items-center', // for aligning continuation arrows
-        ],
+        rowEventClass: 'me-px items-center', // v-align
         rowEventBeforeClass: (data) => !data.isStartResizable && [
           continuationArrowClass,
-          'border-e-[5px] border-e-black', // pointing to start
+          'border-e-[5px] border-e-black',
         ],
         rowEventAfterClass: (data) => !data.isEndResizable && [
           continuationArrowClass,
-          'border-s-[5px] border-s-black', // pointing to end
+          'border-s-[5px] border-s-black',
         ],
         rowEventInnerClass: (data) => [
-          'px-px gap-1', // TODO: put the gap on the global rowEventInnerClass???
-          data.isSpacious ? 'py-1' : 'py-px',
+          'px-px gap-1', // more h-space than daygrid
+          data.isCompact ? 'py-px' : 'py-1',
         ],
 
         rowMoreLinkClass: `me-px p-px ${solidMoreLinkBgClass}`,
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
-        slotLabelClass: 'justify-center',
+        slotLabelClass: 'justify-center', // v-align
         slotLabelInnerClass: 'p-1 text-sm',
-
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
 
-        nowIndicatorLabelClass: 'top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-t-red-500',
-        nowIndicatorLineClass: 'border-l border-red-500',
+        nowIndicatorLabelClass: `top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] ${params.nowIndicatorBorderColorClass}`,
+        nowIndicatorLineClass: `border-l ${params.nowIndicatorBorderColorClass}`,
       },
     },
   }

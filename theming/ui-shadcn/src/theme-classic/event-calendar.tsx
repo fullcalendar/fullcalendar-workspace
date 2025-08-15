@@ -53,6 +53,7 @@ export const optionParams: EventCalendarOptionParams = {
   majorBorderColorClass: 'border-ring', // if atomic var ... majorBorderColor: 'var(--ring)'
   nowIndicatorBorderColorClass: 'border-destructive',
   nowIndicatorBorderStartColorClass: 'border-s-destructive',
+  nowIndicatorBorderTopColorClass: 'border-t-destructive',
 
   todayBgColorClass: 'bg-yellow-400/15 dark:bg-yellow-200/10', // keep hardcoded?
   highlightBgColorClass: 'bg-cyan-100/40 bg-blue-500/20', // TODO: move to primary-color + opacity

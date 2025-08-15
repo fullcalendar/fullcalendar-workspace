@@ -16,6 +16,7 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   majorBorderColorClass: 'border-(--fc-classic-major-border-color)',
   nowIndicatorBorderColorClass: 'border-(--fc-classic-alert-color)',
   nowIndicatorBorderStartColorClass: 'border-s-(--fc-classic-alert-color)',
+  nowIndicatorBorderTopColorClass: 'border-t-(--fc-classic-alert-color)',
 
   todayBgColorClass: 'bg-(--fc-classic-today-color)',
   highlightBgColorClass: 'bg-(--fc-classic-highlight-color)',
