@@ -11,11 +11,10 @@ clean+build all:
   pn build
 
 
-print-view is messed up
-move away from font-size on event inner area
-standard theme:
-  test other ui systems
-  icon sizes
+MUI
+  for all EventCalendar/EventCalendarToolbar/Scheduler,
+    use sx={} instead of tailwind. will be copy-and-pasted
+  fix EventCalendarToolbar className prop
 
 
 theme checklist
@@ -53,6 +52,9 @@ All themes
   rething sized of dots
   audit license warning for all themes, not that we change inherited classname
   core: test sticky footer scrollbar on timegrid-pannable/normal, daygrid-pannable/normal
+  leave toolbar responsiveness in themes unopinionated for now
+    later have toolbar adjust... dynamic size? how would work with different months having different
+    widths... minTitleWidth setting?
 CODE
   move font-size/line-height AWAY from eventInner... move to eventTime/Title
   remove borderClass/majorBorderClass ... use borderColorClass each time
@@ -86,8 +88,6 @@ App.tsx:
   write js-only App demo (with js plugins)
   write mui-only App demo
   have font-families change based on Component Lib
-  BAD: our non-shadcn themes are inherit shadcn variables for their tailwind
-   SOLUTION?: write tailwind-only App demo?
   BUG?: z-index of subcomponents go above the topbar?
 
 
@@ -120,6 +120,7 @@ project: ResizeObserver refactor
     bug: bottom filler isn't working in a11y-ci/resource-timeline-row-grouping.html
 
 after-beta todo:
+  print-view is messed up
   think about reviving compact timegrid print view, or at least providing a setting
     https://fullcalendar.freshdesk.com/a/tickets/11181
     We already keep this code for buggy firefox

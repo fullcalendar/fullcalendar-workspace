@@ -3,5 +3,10 @@ import { CalendarOptions } from "@fullcalendar/core"
 import CloseIcon from '@mui/icons-material/Close'
 
 export const eventCalendarIconOptions: CalendarOptions = {
-  popoverCloseContent: () => <CloseIcon /> // TODO: do custom size
+  popoverCloseContent: () => (
+    <CloseIcon
+      // the "small" fontSize rasterizes the SVG strangely, so workaround
+      sx={{ fontSize: 18, margin: '1px' }}
+    />
+  )
 }

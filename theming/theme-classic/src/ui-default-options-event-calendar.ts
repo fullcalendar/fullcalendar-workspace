@@ -1,34 +1,31 @@
-import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgIcons from './ui-default-svgs.js'
-
-const buttonFontClass = 'text-sm'
-const buttonIconClass = 'size-[calc(var(--text-sm--line-height)_*_1em)]'
 
 const pageBgColorClass = 'bg-(--fc-classic-canvas-color)'
 const pageBgColorOutlineClass = 'outline-(--fc-classic-canvas-color)'
 
-/*
-TODO: color variables
-*/
-export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
+const buttonFontClass = 'text-sm'
+const smIconSizeClass = 'size-[calc(var(--text-sm--line-height)_*_1em)]'
+const getButtonIconClass = (flip?: boolean) => joinClassNames(
+  smIconSizeClass,
+  flip && 'rotate-180',
+)
+
+export const optionParams: EventCalendarOptionParams = {
   borderColorClass: 'border-(--fc-classic-border-color)',
   majorBorderColorClass: 'border-(--fc-classic-major-border-color)',
   nowIndicatorBorderColorClass: 'border-(--fc-classic-alert-color)',
   nowIndicatorBorderStartColorClass: 'border-s-(--fc-classic-alert-color)',
   nowIndicatorBorderTopColorClass: 'border-t-(--fc-classic-alert-color)',
-
+  compactMoreLinkBorderColorClass: 'border-[#3788d8]',
   todayBgColorClass: 'bg-(--fc-classic-today-color)',
   highlightBgColorClass: 'bg-(--fc-classic-highlight-color)',
-  compactMoreLinkBorderColorClass: 'border-[#3788d8]',
-
   eventColor: '#3788d8',
   eventContrastColor: 'var(--color-white)',
   backgroundEventColor: 'var(--color-green-500)',
   backgroundEventColorClass: 'brightness-150 opacity-15',
-
   popoverClass: `border border-(--fc-classic-border-color) ${pageBgColorClass} shadow-md`,
-
   pageBgColorClass,
   pageBgColorOutlineClass,
 }
@@ -44,34 +41,23 @@ export const defaultUiEventCalendarOptions: {
 
     toolbarClass: (data) => [
       'items-center gap-3',
-      data.borderlessX && 'px-3', // space from edge
+      data.borderlessX && 'px-3',
     ],
-    toolbarSectionClass: (data) => [
-      'items-center gap-3',
-      data.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto', // nicer wrapping
-    ],
+    toolbarSectionClass: 'items-center gap-3',
     toolbarTitleClass: 'text-xl md:text-2xl font-bold',
 
     buttons: {
       prev: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronLeft(buttonIconClass)
-          : svgIcons.chevronRight(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronLeft(getButtonIconClass(data.direction === 'rtl')),
       },
       next: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronRight(buttonIconClass)
-          : svgIcons.chevronLeft(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronLeft(getButtonIconClass(data.direction !== 'rtl')),
       },
       prevYear: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronsLeft(buttonIconClass)
-          : svgIcons.chevronsRight(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronsLeft(getButtonIconClass(data.direction === 'rtl')),
       },
       nextYear: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronsRight(buttonIconClass)
-          : svgIcons.chevronsLeft(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronsLeft(getButtonIconClass(data.direction !== 'rtl')),
       },
     },
 
@@ -94,7 +80,7 @@ export const defaultUiEventCalendarOptions: {
         && 'opacity-65 pointer-events-none', // bypass hover styles
     ],
 
-    popoverCloseContent: () => svgIcons.x(`text-sm ${buttonIconClass} opacity-65`),
+    popoverCloseContent: () => svgIcons.x(`text-sm ${smIconSizeClass}`),
   },
   views: baseEventCalendarOptions.views,
 }

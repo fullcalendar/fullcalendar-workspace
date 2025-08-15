@@ -5,6 +5,8 @@ import { createSchedulerOnlyOptions } from './options-scheduler.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 
+const expanderIconClass = 'size-[1em] opacity-65'
+
 export const defaultUiSchedulerOnlyOptions: {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
@@ -13,8 +15,8 @@ export const defaultUiSchedulerOnlyOptions: {
     ...baseSchedulerOnlyOptions.optionDefaults,
 
     resourceExpanderContent: (data) => data.isExpanded
-      ? svgIcons.minusSquare('w-[1em] h-[1em]')
-      : svgIcons.plusSquare('w-[1em] h-[1em]'), // TODO: fix sizing!
+      ? svgIcons.minusSquare(expanderIconClass)
+      : svgIcons.plusSquare(expanderIconClass),
   },
   views: baseSchedulerOnlyOptions.views,
 }

@@ -50,23 +50,18 @@ export function EventCalendar({
 
 export const optionParams: EventCalendarOptionParams = {
   borderColorClass: '', // border-color is set globally
-  majorBorderColorClass: 'border-ring', // if atomic var ... majorBorderColor: 'var(--ring)'
+  majorBorderColorClass: 'border-ring',
   nowIndicatorBorderColorClass: 'border-destructive',
   nowIndicatorBorderStartColorClass: 'border-s-destructive',
   nowIndicatorBorderTopColorClass: 'border-t-destructive',
-
+  compactMoreLinkBorderColorClass: 'border-primary',
   todayBgColorClass: 'bg-yellow-400/15 dark:bg-yellow-200/10', // keep hardcoded?
   highlightBgColorClass: 'bg-cyan-100/40 bg-blue-500/20', // TODO: move to primary-color + opacity
-  compactMoreLinkBorderColorClass: 'border-primary',
-
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
   backgroundEventColor: 'var(--primary)',
   backgroundEventColorClass: 'opacity-15',
-
-  // TODO: better integration with actual Shadcn Popover component
   popoverClass: 'border bg-background text-foreground shadow-lg',
-
   pageBgColorClass: 'bg-background',
   pageBgColorOutlineClass: 'outline-background',
 }

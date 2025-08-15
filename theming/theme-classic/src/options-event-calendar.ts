@@ -138,7 +138,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderInnerClass: 'font-bold',
 
       popoverClass: `${params.popoverClass} min-w-[220px]`,
-      popoverCloseClass: 'absolute top-0.5 end-0.5',
+      popoverCloseClass: 'absolute top-0.5 end-0.5 opacity-65',
 
       fillerClass: `border ${params.borderColorClass} opacity-50`,
       nonBusinessClass: neutralBgColorClass,
@@ -267,8 +267,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       listDayClass: `not-last:border-b ${params.borderColorClass}`,
       listDayHeaderClass: [
-        `flex flex-row justify-between border-b ${params.borderColorClass} font-bold`,
-        'sticky top-0',
+        `sticky top-0 flex flex-row justify-between border-b ${params.borderColorClass} font-bold`,
         params.pageBgColorClass, // base color for overlaid "before" color
       ],
       listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgColorClass}`,
