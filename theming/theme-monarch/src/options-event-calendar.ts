@@ -43,7 +43,7 @@ export interface EventCalendarOptionParams {
 
   borderColorClass: string // eventually just borderColor
   majorBorderColorClass: string // eventually just majorBorderColor
-  alertBorderColorClass: string // eventually just alertBorderColor
+  nowIndicatorBorderColorClass: string // eventually just alertBorderColor
 
   eventColor: string
   eventContrastColor: string
@@ -52,8 +52,8 @@ export interface EventCalendarOptionParams {
 
   popoverClass: string
 
-  canvasBgColorClass: string
-  canvasOutlineColorClass: string
+  pageBgColorClass: string
+  pageBgColorOutlineClass: string
 }
 
 /*
@@ -73,9 +73,9 @@ const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
 const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
 // circle resizer for touch
-const getBlockTouchResizerClass = (canvasBgColorClass: string) => `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${canvasBgColorClass}`
-const getRowTouchResizerClass = (canvasBgColorClass: string) => `${getBlockTouchResizerClass(canvasBgColorClass)} top-1/2 -mt-1`
-const getColumnTouchResizerClass = (canvasBgColorClass: string) => `${getBlockTouchResizerClass(canvasBgColorClass)} left-1/2 -ml-1`
+const getBlockTouchResizerClass = (pageBgColorClass: string) => `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${pageBgColorClass}`
+const getRowTouchResizerClass = (pageBgColorClass: string) => `${getBlockTouchResizerClass(pageBgColorClass)} top-1/2 -mt-1`
+const getColumnTouchResizerClass = (pageBgColorClass: string) => `${getBlockTouchResizerClass(pageBgColorClass)} left-1/2 -ml-1`
 
 // applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
 const rowItemBaseClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-link
@@ -103,7 +103,7 @@ const rowItemClasses: CalendarOptions = {
 export function createEventCalendarOptions({
   borderColorClass,
   majorBorderColorClass,
-  alertBorderColorClass,
+  nowIndicatorBorderColorClass,
   eventColor,
   eventContrastColor,
   backgroundEventColor,
@@ -146,7 +146,7 @@ export function createEventCalendarOptions({
 
       className: `${borderClass} rounded-xl overflow-hidden`,
 
-      tableHeaderClass: (data) => data.isSticky && `${props.canvasBgColorClass} border-b ${borderColorClass}`,
+      tableHeaderClass: (data) => data.isSticky && `${props.pageBgColorClass} border-b ${borderColorClass}`,
 
       popoverClass: 'm-2 min-w-3xs ' + props.popoverClass,
       popoverCloseClass: `absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center ${transparentPressableClass}`,
@@ -206,11 +206,11 @@ export function createEventCalendarOptions({
         data.isEnd ? 'me-px' : 'pe-2',
       ],
       rowEventBeforeClass: (data) => data.isStartResizable && [
-        data.isSelected ? getRowTouchResizerClass(props.canvasBgColorClass) : rowPointerResizerClass,
+        data.isSelected ? getRowTouchResizerClass(props.pageBgColorClass) : rowPointerResizerClass,
         '-start-1',
       ],
       rowEventAfterClass: (data) => data.isEndResizable && [
-        data.isSelected ? getRowTouchResizerClass(props.canvasBgColorClass) : rowPointerResizerClass,
+        data.isSelected ? getRowTouchResizerClass(props.pageBgColorClass) : rowPointerResizerClass,
         '-end-1',
       ],
       rowEventColorClass: (data) => [
@@ -232,17 +232,17 @@ export function createEventCalendarOptions({
 
       columnEventClass: 'mb-px', // space from slot line
       columnEventBeforeClass: (data) => data.isStartResizable && [
-        data.isSelected ? getColumnTouchResizerClass(props.canvasBgColorClass) : columnPointerResizerClass,
+        data.isSelected ? getColumnTouchResizerClass(props.pageBgColorClass) : columnPointerResizerClass,
         '-top-1',
       ],
       columnEventAfterClass: (data) => data.isEndResizable && [
-        data.isSelected ? getColumnTouchResizerClass(props.canvasBgColorClass) : columnPointerResizerClass,
+        data.isSelected ? getColumnTouchResizerClass(props.pageBgColorClass) : columnPointerResizerClass,
         '-bottom-1',
       ],
       columnEventColorClass: (data) => [
         data.isStart && 'rounded-t-sm',
         data.isEnd && 'rounded-b-sm',
-        (data.level || data.isDragging) && `outline ${props.canvasOutlineColorClass}`,
+        (data.level || data.isDragging) && `outline ${props.pageBgColorOutlineClass}`,
       ],
       columnEventInnerClass: (data) => [
         data.isCompact
@@ -258,7 +258,7 @@ export function createEventCalendarOptions({
       // MultiMonth
       singleMonthClass: (data) => data.colCount > 1 && 'm-4',
       singleMonthTitleClass: (data) => [
-        data.isSticky && `border-b ${borderColorClass} ${props.canvasBgColorClass}`,
+        data.isSticky && `border-b ${borderColorClass} ${props.pageBgColorClass}`,
         data.isSticky
           ? 'py-2' // single column
           : 'pb-4', // multi-column
@@ -324,8 +324,8 @@ export function createEventCalendarOptions({
       listDayEventsClass: 'flex-grow flex flex-col py-2',
       // events defined in views.list.listItemEvent* below...
 
-      nowIndicatorLineClass: `-m-px border-1 ${alertBorderColorClass}`,
-      nowIndicatorDotClass: `rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 ${alertBorderColorClass}`,
+      nowIndicatorLineClass: `-m-px border-1 ${nowIndicatorBorderColorClass}`,
+      nowIndicatorDotClass: `rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 ${nowIndicatorBorderColorClass}`,
     },
     views: {
       dayGrid: {
@@ -356,7 +356,7 @@ export function createEventCalendarOptions({
           data.isCompact ? xxsTextClass : 'text-sm',
         ],
 
-        columnMoreLinkClass: `mb-px rounded-xs outline ${props.canvasOutlineColorClass} ${moreLinkBgClass}`,
+        columnMoreLinkClass: `mb-px rounded-xs outline ${props.pageBgColorOutlineClass} ${moreLinkBgClass}`,
         columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
         slotLabelClass: (data) => [

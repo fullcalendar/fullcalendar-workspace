@@ -11,6 +11,13 @@ clean+build all:
   pn build
 
 
+print-view is messed up
+put nav-links on single-month titles
+standard theme:
+  test other ui systems
+  icon sizes
+
+
 theme checklist
 ---------------
 UI
@@ -33,6 +40,8 @@ UI
   check that popover X isn't too big
   continuation arrows on start/end of events
   should be at least 4 rows of event-like-content in each daycell
+  check touch-selecting and dragging/resizing effects
+  check print-view
 theme-system: MUI
   we should allow MUI to force headers to be uppercase
   The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
@@ -117,6 +126,7 @@ after-beta todo:
     must introduce new setting like slotLabelAlign... dayHeaderAlign/resourceDayHeaderAlign?
     unlike temporary slotLabelAlign... can't just apply it to top-tier (and avoid applying to time slots, which are hardcoded left-aligned)
     FYI, slotLabelAlign ONLY applies to timeline, not timegrid
+    how should it apply to timegrid? do horizontal or vertical?
     sounds like we're due for a settings refactor
   delete classic-theme and bootstrap5 packages
   rethink isCompact/isSpacious. weird to have isSpacious:false on resourceLaneBottom... hard to reason

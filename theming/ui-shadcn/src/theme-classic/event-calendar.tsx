@@ -51,12 +51,12 @@ export function EventCalendar({
 export const optionParams: EventCalendarOptionParams = {
   borderColorClass: '', // border-color is set globally
   majorBorderColorClass: 'border-ring', // if atomic var ... majorBorderColor: 'var(--ring)'
-  alertBorderColorClass: 'border-destructive',
-  alertBorderStartColorClass: 'border-s-destructive',
+  nowIndicatorBorderColorClass: 'border-destructive',
+  nowIndicatorBorderStartColorClass: 'border-s-destructive',
 
   todayBgColorClass: 'bg-yellow-400/15 dark:bg-yellow-200/10', // keep hardcoded?
   highlightBgColorClass: 'bg-cyan-100/40 bg-blue-500/20', // TODO: move to primary-color + opacity
-  primaryBorderColorClass: 'border-primary',
+  compactMoreLinkBorderColorClass: 'border-primary',
 
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
@@ -66,8 +66,8 @@ export const optionParams: EventCalendarOptionParams = {
   // TODO: better integration with actual Shadcn Popover component
   popoverClass: 'border bg-background text-foreground shadow-lg',
 
-  canvasBgColorClass: 'bg-background',
-  canvasOutlineColorClass: 'outline-background',
+  pageBgColorClass: 'bg-background',
+  pageBgColorOutlineClass: 'outline-background',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

@@ -56,7 +56,7 @@ export const optionParams: EventCalendarOptionParams = {
 
   borderColorClass: '', // border-color is set globally
   majorBorderColorClass: 'border-ring', // if atomic var ... majorBorderColor: 'var(--ring)'
-  alertBorderColorClass: 'border-destructive',
+  nowIndicatorBorderColorClass: 'border-destructive',
 
   eventColor: 'var(--primary)',
   backgroundEventColor: 'var(--primary)',
@@ -65,8 +65,8 @@ export const optionParams: EventCalendarOptionParams = {
   // TODO: better integration with actual Shadcn Popover component
   popoverClass: 'border bg-background text-foreground shadow-md',
 
-  canvasBgColorClass: 'bg-background',
-  canvasOutlineColorClass: 'outline-background',
+  pageBgColorClass: 'bg-background',
+  pageBgColorOutlineClass: 'outline-background',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

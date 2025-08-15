@@ -52,15 +52,15 @@ export const optionParams: EventCalendarOptionParams = {
 
   borderColorClass: '', // border-color is set globally
   // majorBorderColorClass: 'border-ring', // if atomic var ... majorBorderColor: 'var(--ring)'
-  // alertBorderColorClass: 'border-destructive',
+  // nowIndicatorBorderColorClass: 'border-destructive',
 
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
   backgroundEventColor: 'var(--primary)',
   backgroundEventColorClass: 'opacity-15',
 
-  canvasBgColorClass: 'bg-background',
-  canvasOutlineColorClass: 'outline-background',
+  pageBgColorClass: 'bg-background',
+  pageBgColorOutlineClass: 'outline-background',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

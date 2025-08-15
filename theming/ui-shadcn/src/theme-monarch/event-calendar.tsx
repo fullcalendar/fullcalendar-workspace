@@ -69,7 +69,7 @@ export const optionParams: EventCalendarOptionParams = {
 
   borderColorClass: '', // border-color is set globally
   majorBorderColorClass: 'border-ring', // if atomic var ... majorBorderColor: 'var(--ring)'
-  alertBorderColorClass: 'border-destructive',
+  nowIndicatorBorderColorClass: 'border-destructive',
 
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
@@ -78,8 +78,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
 
-  canvasBgColorClass: 'bg-background',
-  canvasOutlineColorClass: 'outline-background',
+  pageBgColorClass: 'bg-background',
+  pageBgColorOutlineClass: 'outline-background',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

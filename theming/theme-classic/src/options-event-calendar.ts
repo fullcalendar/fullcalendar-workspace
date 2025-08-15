@@ -1,6 +1,6 @@
-import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 
-// ambient types
+// ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/daygrid'
 import {} from '@fullcalendar/timegrid'
 import {} from '@fullcalendar/list'
@@ -10,63 +10,47 @@ import {} from '@fullcalendar/interaction'
 export interface EventCalendarOptionParams {
   borderColorClass: string
   majorBorderColorClass: string
-  alertBorderColorClass: string
-  alertBorderStartColorClass: string // yuck, but needed for triangle
-
+  nowIndicatorBorderColorClass: string
+  nowIndicatorBorderStartColorClass: string
+  compactMoreLinkBorderColorClass: string
   todayBgColorClass: string
   highlightBgColorClass: string
-  primaryBorderColorClass: string // same color as eventColor!
-
   eventColor: string
   eventContrastColor: string
   backgroundEventColor: string
   backgroundEventColorClass: string
-
   popoverClass: string
-
-  canvasBgColorClass: string
-  canvasOutlineColorClass: string
+  pageBgColorClass: string
+  pageBgColorOutlineClass: string
 }
+
+export const neutralBgColorClass = 'bg-gray-500/10 dark:bg-gray-500/15'
+export const neutralTextColorClass = 'text-gray-500 dark:text-gray-300'
+export const solidMoreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
-
-export const neutralBgClass = 'bg-gray-500/10 dark:bg-gray-500/15'
-export const neutralTextColorClass = 'text-gray-500 dark:text-gray-300'
-export const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // the solid-bg version (timegrid+timeline)
-
 const cellPaddingClass = 'px-1 py-0.5'
-const listItemPaddingClass = 'px-3 py-2' // list-day-header and list-item-event
-const dayGridItemClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-link
+const listItemPaddingClass = 'px-3 py-2'
+const dayCellItemClass = 'mx-0.5 mb-px rounded-sm'
+const axisClass = 'justify-end' // h-align
 
-// timegrid axis
-const axisClass = 'justify-end' // align axisInner right
-const axisInnerClass = `${cellPaddingClass} text-end` // align text right when multiline --- used by body cells too???
-
-const floatingWeekNumberClasses: CalendarOptions = {
-  inlineWeekNumberClass: [
-    'absolute z-20 top-0 start-0 rounded-ee-sm p-0.5',
-    neutralBgClass,
-  ],
-  inlineWeekNumberInnerClass: (data) => [
-    data.isCompact ? xxsTextClass : 'text-sm',
-    neutralTextColorClass,
-    'text-center',
-  ],
-}
-
-// necessary abstraction?
-export const getDayHeaderClasses = (data: { isDisabled: boolean, isMajor: boolean, inPopover?: boolean }, params: EventCalendarOptionParams) => [
-  data.inPopover ? 'items-start' : 'items-center', // halign
-  'justify-center', // valign
-  data.inPopover && neutralBgClass,
-  data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
-  data.isDisabled && neutralBgClass,
+const getAxisInnerClasses = (data: { isCompact: boolean }) => [
+  `${cellPaddingClass} text-end`,
+  data.isCompact ? xxsTextClass : 'text-sm',
 ]
 
-// necessary abstraction?
+export const getDayHeaderClasses = (
+  data: { isDisabled: boolean, isMajor: boolean, inPopover?: boolean },
+  params: EventCalendarOptionParams
+) => [
+  'border justify-center', // v-align
+  data.inPopover ? 'items-start' : 'items-center', // h-align
+  data.isMajor ? params.majorBorderColorClass : params.borderColorClass,
+  (data.inPopover || data.isDisabled) && neutralBgColorClass,
+]
+
 export const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
-  'flex flex-col',
-  cellPaddingClass,
+  `flex flex-col ${cellPaddingClass}`,
   data.isCompact ? xxsTextClass : 'text-sm',
 ]
 
@@ -75,30 +59,35 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   views?: { [viewName: string]: ViewOptions }
 } {
   // transparent resizer for mouse
-  // must have 'group' on the event, for group-hover
   const blockPointerResizerClass = `absolute z-20 hidden group-hover:block`
   const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.canvasBgColorClass}`
+  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.pageBgColorClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
+
+  const getDayClasses = (data: { isMajor: boolean, isToday: boolean, isDisabled: boolean}) => [
+    'border',
+    data.isMajor ? params.majorBorderColorClass : params.borderColorClass,
+    data.isToday && params.todayBgColorClass,
+    data.isDisabled && neutralBgColorClass,
+  ]
 
   const getSlotClasses = (data: { isMinor: boolean }) => [
     `border ${params.borderColorClass}`,
     data.isMinor && 'border-dotted',
   ]
 
-  // applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
-  const rowContentClasses: CalendarOptions = {
-    listItemEventClass: [dayGridItemClass, 'p-px'],
+  const dayRowContentClasses: CalendarOptions = {
+    listItemEventClass: `${dayCellItemClass} p-px`,
     listItemEventColorClass: (data) => [
+      'border-4', // 8px diameter
       data.isCompact ? 'mx-px' : 'mx-1',
-      'border-4', // 8px diameter circle
     ],
     listItemEventInnerClass: (data) => [
-      'flex flex-row items-center', // as opposed to display:contents
+      'flex flex-row items-center',
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
     listItemEventTimeClass: 'p-px',
@@ -114,11 +103,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
 
     rowMoreLinkClass: (data) => [
-      dayGridItemClass,
+      `${dayCellItemClass} hover:bg-gray-500/20`,
       data.isCompact
-        ? `border ${params.primaryBorderColorClass}`
+        ? `border ${params.compactMoreLinkBorderColorClass}`
         : 'self-start p-px',
-      'hover:bg-gray-500/20', // matches list-item hover
     ],
     rowMoreLinkInnerClass: (data) => [
       'p-px',
@@ -133,30 +121,38 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventColor: params.backgroundEventColor,
 
       className: 'gap-5',
-
       viewClass: `border ${params.borderColorClass}`,
-      tableHeaderClass: (data) => data.isSticky && params.canvasBgColorClass,
+      tableHeaderClass: (data) => data.isSticky && params.pageBgColorClass,
 
-      navLinkClass: 'hover:underline',
-
-      moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
-
-      popoverClass: [
-        params.popoverClass,
-        'min-w-[220px]',
+      singleMonthClass: (data) => data.colCount > 1 && 'm-4',
+      singleMonthTitleClass: (data) => [
+        data.isSticky
+          ? `py-2 border-b ${params.borderColorClass} ${params.pageBgColorClass}` // single col
+          : 'pb-4', // multi col
+        data.isCompact ? 'text-base' : 'text-lg',
+        'text-center font-bold',
       ],
+
+      popoverClass: `${params.popoverClass} min-w-[220px]`,
       popoverCloseClass: 'absolute top-0.5 end-0.5',
 
-      // misc BG
       fillerClass: `border ${params.borderColorClass} opacity-50`,
-      nonBusinessClass: neutralBgClass,
+      nonBusinessClass: neutralBgColorClass,
       highlightClass: params.highlightBgColorClass,
+
+      navLinkClass: 'hover:underline',
+      moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
+      inlineWeekNumberClass: `absolute z-20 top-0 start-0 rounded-ee-sm p-0.5 ${neutralBgColorClass}`,
+      inlineWeekNumberInnerClass: (data) => [
+        `text-center ${neutralTextColorClass}`,
+        data.isCompact ? xxsTextClass : 'text-sm',
+      ],
 
       eventClass: (data) => data.event.url && 'hover:no-underline',
       eventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
       eventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
-      backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.backgroundEventColorClass,
+      backgroundEventColorClass: `bg-(--fc-event-color) ${params.backgroundEventColorClass}`,
       backgroundEventTitleClass: (data) => [
         'm-2 opacity-50 italic',
         data.isCompact ? xxsTextClass : 'text-xs',
@@ -165,22 +161,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       listItemEventClass: (data) => [
         'items-center',
         data.isSelected
-          ? 'bg-gray-500/40' // touch-selected
+          ? joinClassNames('bg-gray-500/40', data.isDragging && 'shadow-sm')
           : 'hover:bg-gray-500/20 focus:bg-gray-500/30',
-        (data.isSelected && data.isDragging) && 'shadow-sm', // touch-dragging
       ],
-      // Dot uses border instead of bg because it shows up in print
-      // Views must decide circle radius via border thickness
       listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
 
       blockEventClass: (data) => [
-        'relative', // for absolute-positioned color
-        'group', // for focus and hover
-        'p-px',
-        (data.isDragging && !data.isSelected) && 'opacity-75',
+        'relative group p-px',
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
-          : 'focus:shadow-md',
+          : joinClassNames('focus:shadow-md', data.isDragging && 'opacity-75')
       ],
       blockEventColorClass: (data) => [
         'absolute z-0 inset-0 bg-(--fc-event-color)',
@@ -209,9 +199,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
       rowEventTimeClass: 'p-px font-bold',
-      rowEventTitleClass: 'p-px start-0', // `start` for stickiness -- TODO: don't need anymore!!!
+      rowEventTitleClass: 'p-px',
 
-      columnEventClass: 'mb-px', // space from slot line
+      columnEventClass: 'mb-px',
       columnEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-top-1',
@@ -223,7 +213,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventColorClass: (data) => [
         data.isStart && 'rounded-t-sm',
         data.isEnd && 'rounded-b-sm',
-        (data.level || data.isDragging) && `outline ${params.canvasOutlineColorClass}`,
+        (data.level || data.isDragging) && `outline ${params.pageBgColorOutlineClass}`,
       ],
       columnEventInnerClass: (data) => [
         'p-px',
@@ -232,36 +222,20 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : 'flex-col gap-px', // two lines
       ],
       columnEventTimeClass: xxsTextClass,
-      columnEventTitleClass: (data) => [
-        'top-0', // top for stickiness -- TODO: don't need anymore!!!
-        data.isCompact ? xxsTextClass : 'py-px text-xs',
-      ],
+      columnEventTitleClass: (data) => data.isCompact ? xxsTextClass : 'py-px text-xs',
 
-      // MultiMonth
-      singleMonthClass: (data) => data.colCount > 1 && 'm-4',
-      singleMonthTitleClass: (data) => [
-        data.isSticky && `border-b ${params.borderColorClass} ${params.canvasBgColorClass}`,
-        data.isSticky
-          ? 'py-2' // single column
-          : 'pb-4', // multi-column
-        data.isCompact ? 'text-base' : 'text-lg',
-        'text-center font-bold',
-      ],
+      columnMoreLinkClass: `mb-px rounded-sm outline ${params.pageBgColorOutlineClass} ${solidMoreLinkBgClass}`,
+      columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
+      dayHeaderDividerClass: `border-t ${params.borderColorClass}`,
       dayHeaderClass: (data) => getDayHeaderClasses(data, params),
       dayHeaderInnerClass: getDayHeaderInnerClasses,
-      dayHeaderDividerClass: ['border-t', params.borderColorClass],
 
       dayRowClass: `border ${params.borderColorClass}`,
-      dayCellClass: (data) => [
-        data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
-        data.isToday && params.todayBgColorClass,
-        data.isDisabled && neutralBgClass,
-      ],
+      dayCellClass: getDayClasses,
       dayCellTopClass: (data) => [
-        'flex flex-row justify-end',
-        'min-h-[2px]', // effectively 2px top padding when no day-number
+        'flex flex-row justify-end min-h-[2px]',
         data.isOther && 'opacity-30',
       ],
       dayCellTopInnerClass: (data) => [
@@ -270,91 +244,66 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
       ],
-      dayCellInnerClass: (data) => [
-        data.inPopover && 'p-2',
-      ],
+      dayCellInnerClass: (data) => data.inPopover && 'p-2',
 
-      allDayDividerClass: `border-y ${params.borderColorClass} pb-0.5 ${neutralBgClass}`,
+      allDayDividerClass: `border-y ${params.borderColorClass} pb-0.5 ${neutralBgColorClass}`,
 
-      dayLaneClass: (data) => [
-        data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
-        data.isToday && params.todayBgColorClass,
-        data.isDisabled && neutralBgClass,
-      ],
+      dayLaneClass: getDayClasses,
       dayLaneInnerClass: (data) => data.isSimple
         ? 'm-1' // simple print-view
         : 'ms-0.5 me-[2.5%]',
 
-      slotLabelRowClass: `border ${params.borderColorClass}`, // Timeline
+      slotLabelRowClass: `border ${params.borderColorClass}`, // timeline only
       slotLabelAlign: 'center',
-      slotLabelClass: (data) => getSlotClasses(data),
-      slotLaneClass: (data) => getSlotClasses(data),
+      slotLabelClass: getSlotClasses,
+      slotLaneClass: getSlotClasses,
 
       listDayClass: `not-last:border-b ${params.borderColorClass}`,
       listDayHeaderClass: [
         `flex flex-row justify-between border-b ${params.borderColorClass} font-bold`,
-        'relative', // for overlaid "before" color
         'sticky top-0',
-        params.canvasBgColorClass, // base color for overlaid "before" color
+        params.pageBgColorClass, // base color for overlaid "before" color
       ],
-      listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgClass}`,
+      listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgColorClass}`,
       listDayHeaderInnerClass: `relative ${listItemPaddingClass} text-sm`, // above the "before" element
     },
     views: {
       dayGrid: {
-        ...rowContentClasses,
-        ...floatingWeekNumberClasses,
-
-        dayCellBottomClass: 'min-h-[1px]', // along with 1px margin-bottom on events, gives 2px effective
+        ...dayRowContentClasses,
+        dayCellBottomClass: 'min-h-[1px]',
       },
       multiMonth: {
-        ...rowContentClasses,
-        ...floatingWeekNumberClasses,
-
-        dayCellBottomClass: 'min-h-[1px]', // along with 1px margin-bottom on events, gives 2px effective
-
         tableClass: `border ${params.borderColorClass}`,
+        ...dayRowContentClasses,
+        dayCellBottomClass: 'min-h-[1px]',
       },
       timeGrid: {
-        ...rowContentClasses,
-
+        ...dayRowContentClasses,
         dayRowClass: 'min-h-10',
-        dayCellBottomClass: 'min-h-3', // for ALL-DAY
+        dayCellBottomClass: 'min-h-3',
 
-        allDayHeaderClass: [
-          axisClass,
-          'items-center', // valign
-        ],
+        allDayHeaderClass: `${axisClass} items-center`, // v-align
         allDayHeaderInnerClass: (data) => [
-          axisInnerClass,
+          ...getAxisInnerClasses(data),
           'whitespace-pre', // respects line-breaks in locale data
-          data.isCompact ? xxsTextClass : 'text-sm',
         ],
 
-        weekNumberHeaderClass: `${axisClass} items-center`,
-        weekNumberHeaderInnerClass: (data) => [
-          axisInnerClass,
-          data.isCompact ? xxsTextClass : 'text-sm',
-        ],
-
-        columnMoreLinkClass: `mb-px rounded-sm outline ${params.canvasOutlineColorClass} ${moreLinkBgClass}`,
-        columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
-
-        slotLabelClass: axisClass,
-        slotLabelInnerClass: (data) => [
-          axisInnerClass,
-          'min-h-[1.5em]', // add some vertical-align-center for this? make standard unit!!??
-          data.isCompact ? xxsTextClass : 'text-sm',
-        ],
+        weekNumberHeaderClass: `${axisClass} items-center`, // v-align
+        weekNumberHeaderInnerClass: getAxisInnerClasses,
 
         slotLabelDividerClass: `border-l ${params.borderColorClass}`,
+        slotLabelClass: axisClass,
+        slotLabelInnerClass: (data) => [
+          ...getAxisInnerClasses(data),
+          'min-h-5',
+        ],
 
-        nowIndicatorLabelClass: `start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] ${params.alertBorderStartColorClass}`,
-        nowIndicatorLineClass: `border-t ${params.alertBorderColorClass}`,
+        nowIndicatorLabelClass: `start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] ${params.nowIndicatorBorderStartColorClass}`,
+        nowIndicatorLineClass: `border-t ${params.nowIndicatorBorderColorClass}`,
       },
       list: {
         listItemEventClass: `group gap-3 not-last:border-b ${params.borderColorClass} ${listItemPaddingClass}`,
-        listItemEventColorClass: 'border-5', // 10px diameter circle
+        listItemEventColorClass: 'border-5', // 10px diameter
         listItemEventInnerClass: '[display:contents]',
         listItemEventTimeClass: 'order-[-1] w-[165px] text-sm', // send to start
         listItemEventTitleClass: (data) => [
@@ -362,7 +311,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.event.url && 'group-hover:underline',
         ],
 
-        noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center ${neutralBgClass}`,
+        noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center ${neutralBgColorClass}`,
       },
     },
   }

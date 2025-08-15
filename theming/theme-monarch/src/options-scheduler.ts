@@ -13,7 +13,7 @@ import '@fullcalendar/scrollgrid'
 export function createSchedulerOnlyOptions({
   borderColorClass,
   majorBorderColorClass,
-  alertBorderColorClass,
+  nowIndicatorBorderColorClass,
   eventColor,
   eventContrastColor,
   backgroundEventColor,

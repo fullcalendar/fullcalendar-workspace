@@ -8,12 +8,12 @@ import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 export const optionParams: EventCalendarOptionParams = {
   borderColorClass: 'border-(--mui-palette-divider)',
   majorBorderColorClass: 'border-(--mui-palette-primary-main)', // will have color. might be cool
-  alertBorderColorClass: 'border-(--mui-palette-error-main)',
-  alertBorderStartColorClass: 'border-s-(--mui-palette-error-main)',
+  nowIndicatorBorderColorClass: 'border-(--mui-palette-error-main)',
+  nowIndicatorBorderStartColorClass: 'border-s-(--mui-palette-error-main)',
 
   todayBgColorClass: 'bg-yellow-400/15 dark:bg-yellow-200/10', // keep hardcoded?
   highlightBgColorClass: 'bg-cyan-100/40 bg-blue-500/20', // TODO: move to primary-color + opacity
-  primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
+  compactMoreLinkBorderColorClass: 'border-(--mui-palette-primary-main)',
 
   eventColor: 'var(--mui-palette-primary-main)',
   eventContrastColor: 'var(--mui-palette-primary-contrastText)',
@@ -22,8 +22,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8) m-2',
 
-  canvasBgColorClass: 'bg-(--mui-palette-background-paper)',
-  canvasOutlineColorClass: 'outline-(--mui-palette-background-paper)',
+  pageBgColorClass: 'bg-(--mui-palette-background-paper)',
+  pageBgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

@@ -24,7 +24,7 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
 
   borderColorClass: 'border-(--fc-monarch-outline-variant)',
   majorBorderColorClass: 'border-(--fc-monarch-outline)',
-  alertBorderColorClass: 'border-(--fc-monarch-error)',
+  nowIndicatorBorderColorClass: 'border-(--fc-monarch-error)',
 
   // canvasBgColor?: string // eventually just canvasColor
   // canvasOutlineColor?: string // eventually just canvasColor
@@ -36,8 +36,8 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
 
   popoverClass: 'border border-(--fc-monarch-outline-variant) rounded-lg bg-(--fc-monarch-canvas-color) dark:bg-(--fc-monarch-surface) dark:text-(--fc-monarch-on-surface) shadow-lg',
 
-  canvasBgColorClass: 'bg-(--fc-monarch-canvas-color)',
-  canvasOutlineColorClass: 'outline-(--fc-monarch-canvas-color)',
+  pageBgColorClass: 'bg-(--fc-monarch-canvas-color)',
+  pageBgColorOutlineClass: 'outline-(--fc-monarch-canvas-color)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

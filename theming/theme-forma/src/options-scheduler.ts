@@ -12,7 +12,7 @@ import '@fullcalendar/scrollgrid'
 
 // TODO: make these dependent on EventCalendarOptionParams
 const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
-const neutralBgClass = 'bg-gray-500/10'
+const neutralBgColorClass = 'bg-gray-500/10'
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 
 export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
@@ -29,7 +29,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       // TODO: more DRY with dayHeader* ?
       resourceDayHeaderClass: (data) => [
         data.isMajor ? majorBorderClass : borderClass,
-        data.isDisabled && neutralBgClass,
+        data.isDisabled && neutralBgColorClass,
       ],
       resourceDayHeaderInnerClass: (data) => [
         'flex flex-col',
@@ -42,14 +42,14 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceAreaHeaderClass: `${borderClass} items-center`, // valign
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
 
-      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${neutralBgClass}`,
+      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${neutralBgColorClass}`,
 
       // For both resources & resource groups
       resourceAreaRowClass: borderClass,
 
-      resourceGroupHeaderClass: neutralBgClass,
+      resourceGroupHeaderClass: neutralBgColorClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: [borderClass, neutralBgClass],
+      resourceGroupLaneClass: [borderClass, neutralBgColorClass],
 
       resourceCellClass: borderClass,
       resourceCellInnerClass: 'p-2 text-sm',

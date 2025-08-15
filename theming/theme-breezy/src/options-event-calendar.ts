@@ -106,7 +106,7 @@ export interface EventCalendarOptionParams {
   // majorBorderColorClass: string // eventually just majorBorderColor
 
   // !!! now-indicator not-yet-implemented!
-  // alertBorderColorClass: string // eventually just alertBorderColor
+  // nowIndicatorBorderColorClass: string // eventually just alertBorderColor
 
   primaryBgColorClass: string
   primaryTextColorClass: string
@@ -119,8 +119,8 @@ export interface EventCalendarOptionParams {
 
   popoverClass: string
 
-  canvasBgColorClass: string
-  canvasOutlineColorClass: string
+  pageBgColorClass: string
+  pageBgColorOutlineClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -172,7 +172,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       slotLaneClass: 'border border-gray-100',
 
-      blockEventClass: `${params.canvasBgColorClass} relative`,
+      blockEventClass: `${params.pageBgColorClass} relative`,
       blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) opacity-15',
       blockEventInnerClass: 'relative z-20 text-xs/4 flex', // NOTE: subclass determines direction
       /*
@@ -202,7 +202,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventClass: (data) => [
         data.isStart && 'rounded-t-lg',
         data.isEnd && 'rounded-b-lg',
-        (data.level || data.isDragging) && `outline ${params.canvasOutlineColorClass}`,
+        (data.level || data.isDragging) && `outline ${params.pageBgColorOutlineClass}`,
       ],
       columnEventColorClass: (data) => [
         data.isStart && 'rounded-t-lg',
