@@ -42,6 +42,7 @@ UI
   should be at least 4 rows of event-like-content in each daycell
   check touch-selecting and dragging/resizing effects
   check print-view
+  test prevYear/nextYear icons in all theme systems
 theme-system: MUI
   we should allow MUI to force headers to be uppercase
   The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
@@ -129,7 +130,6 @@ after-beta todo:
     how should it apply to timegrid? do horizontal or vertical?
     sounds like we're due for a settings refactor
   delete classic-theme and bootstrap5 packages
-  rethink isCompact/isSpacious. weird to have isSpacious:false on resourceLaneBottom... hard to reason
   bug: why when resourceGroupHeaderClass bg color removed, we don't see vertical column lines underneath?
   bugs with isMajor special border on slots
     doesn't work on resourceTimelineThreeDays/Week/Month (am I not configuring correctly)

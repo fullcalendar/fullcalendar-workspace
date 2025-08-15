@@ -1,4 +1,4 @@
-import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinArrayishClassNames, generateClassName } from '@fullcalendar/core/internal'
+import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, generateClassName } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { Resource } from '@fullcalendar/resource/internal'
@@ -55,7 +55,11 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
     let { props, context } = this
     let { resource } = props
     let { options } = context
-    let renderProps = this.refineRenderProps({ resource, context })
+    let renderProps = this.refineRenderProps({
+      resource,
+      context,
+      isCompact: !options.eventOverlap
+    })
 
     /* sliced */
 
@@ -123,9 +127,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               slotWidth={props.slotWidth}
             />
             <div // TODO: track height
-              className={joinArrayishClassNames(
-                options.resourceLaneTopClass,
-              )}
+              className={generateClassName(options.resourceLaneTopClass, renderProps)}
             />
             <TimelineFg
               dateProfile={props.dateProfile}
@@ -148,9 +150,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
             />
             <div
               ref={this.handleFooterEl}
-              className={generateClassName(options.resourceLaneBottomClass, {
-                isCompact: !options.eventOverlap,
-              })}
+              className={generateClassName(options.resourceLaneBottomClass, renderProps)}
             />
           </div>
         )}

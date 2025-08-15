@@ -24,13 +24,17 @@ export const OPTION_REFINERS = {
   resourceAreaWidth: identity as Identity<CssDimValue>,
   resourceAreaColumns: identity as Identity<ColSpec[]>,
 
+  resourceAreaDividerClass: identity as Identity<ClassNameInput>,
+
   // datagrid super-header & normal column headers
   resourceAreaHeaderClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
   resourceAreaHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
   resourceAreaHeaderContent: identity as Identity<CustomContentGenerator<ResourceColumnHeaderData>>,
   resourceAreaHeaderDidMount: identity as Identity<DidMountHandler<ResourceColumnHeaderMountData>>,
   resourceAreaHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceColumnHeaderMountData>>,
-  resourceAreaHeaderRowClass: identity as Identity<ClassNameInput>, // between super-header and normal headers
+  resourceAreaHeaderRowClass: identity as Identity<ClassNameInput>,
+
+  // For both resources & resource groups
   resourceAreaRowClass: identity as Identity<ClassNameInput>,
 
   // datagrid cells, for both resources & resource-GROUP
@@ -58,9 +62,8 @@ export const OPTION_REFINERS = {
   resourceLaneClass: identity as Identity<ClassNameGenerator<ResourceLaneData>>,
   resourceLaneDidMount: identity as Identity<DidMountHandler<ResourceLaneMountData>>,
   resourceLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceLaneMountData>>,
-  resourceLaneTopClass: identity as Identity<ClassNameInput>,
-  resourceLaneBottomClass: identity as Identity<ClassNameGenerator<{ isCompact: boolean }>>,
-  resourceAreaDividerClass: identity as Identity<ClassNameInput>,
+  resourceLaneTopClass: identity as Identity<ClassNameGenerator<ResourceLaneData>>,
+  resourceLaneBottomClass: identity as Identity<ClassNameGenerator<ResourceLaneData>>,
 
   resourceExpanderClass: identity as Identity<ClassNameGenerator<ResourceExpanderData>>,
   resourceExpanderContent: identity as Identity<CustomContentGenerator<ResourceExpanderData>>,
