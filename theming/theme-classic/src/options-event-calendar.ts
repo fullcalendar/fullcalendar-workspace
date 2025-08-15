@@ -87,12 +87,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'border-4', // 8px diameter
       data.isCompact ? 'mx-px' : 'mx-1',
     ],
-    listItemEventInnerClass: (data) => [
-      'flex flex-row items-center',
+    listItemEventInnerClass: 'flex flex-row items-center',
+    listItemEventTimeClass: (data) => [
+      'p-px',
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
-    listItemEventTimeClass: 'p-px',
-    listItemEventTitleClass: 'p-px font-bold',
+    listItemEventTitleClass: (data) => [
+      'p-px font-bold',
+      data.isCompact ? xxsTextClass : 'text-xs',
+    ],
 
     rowEventClass: (data) => [
       data.isStart && 'ms-0.5',
@@ -195,12 +198,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         !data.isStart && 'print:border-s-0',
         !data.isEnd && 'print:border-e-0',
       ],
-      rowEventInnerClass: (data) => [
-        'flex-row items-center',
+      rowEventInnerClass: 'flex-row items-center',
+      rowEventTimeClass: (data) => [
+        'p-px font-bold',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
-      rowEventTimeClass: 'p-px font-bold',
-      rowEventTitleClass: 'p-px',
+      rowEventTitleClass: (data) => [
+        'p-px',
+        data.isCompact ? xxsTextClass : 'text-xs',
+      ],
 
       columnEventClass: 'mb-px',
       columnEventBeforeClass: (data) => data.isStartResizable && [
