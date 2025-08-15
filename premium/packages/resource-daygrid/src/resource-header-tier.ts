@@ -39,7 +39,15 @@ export function buildResourceRowConfigs(
 
   if (datesAboveResources) {
     const resourceDataConfigsPerDate = dates.map((date) => {
-      return buildResourceDataConfigs(resources, date, dateProfile, todayRange, context, 1, resources.length)
+      return buildResourceDataConfigs(
+        resources,
+        date,
+        dateProfile,
+        todayRange,
+        context,
+        /* colSpan = */ 1,
+        /* isMajorMod = */ resources.length
+      )
     })
 
     return [
@@ -52,7 +60,7 @@ export function buildResourceRowConfigs(
         dayHeaderFormat,
         context,
         /* colSpan = */ resources.length,
-        1, // each cell is major, mod%1 always yields 0 (yes)
+        /* isMajorMod = */ 1, // each cell is major, mod%1 always yields 0 (yes)
       ),
       // resource row
       {
@@ -81,8 +89,8 @@ export function buildResourceRowConfigs(
         { // extraAttrs
           'data-resource-id': resourceApiId,
         },
-        undefined, // className. TODO: remove
-        resources.length,
+        /* className = */ undefined, // TODO: remove
+        /* isMajorMod = */ dates.length,
       )
     })
 
@@ -95,7 +103,7 @@ export function buildResourceRowConfigs(
         undefined,
         context,
         /* colSpan = */ dates.length,
-        1, // each cell is major, mod%1 always yields 0 (yes)
+        /* isMajorMod = */ 1, // each cell is major, mod%1 always yields 0 (yes)
       ),
       // date row
       {
@@ -122,7 +130,15 @@ function buildResourceRowConfig(
   return {
     isDateRow: false,
     renderConfig: buildResourceRenderConfig(context),
-    dataConfigs: buildResourceDataConfigs(resources, dateMarker, dateProfile, todayRange, context, colSpan, isMajorMod),
+    dataConfigs: buildResourceDataConfigs(
+      resources,
+      dateMarker,
+      dateProfile,
+      todayRange,
+      context,
+      colSpan,
+      isMajorMod
+    ),
   }
 }
 

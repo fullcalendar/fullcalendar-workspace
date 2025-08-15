@@ -423,22 +423,22 @@ export default function App() {
               <MuiCssBaseline />
             )}
             <SchedulerDemo
-              initialView='resourceTimeGridDay'
+              initialView='resourceTimeGridWeek'
               availableViews={['resourceTimeGridDay', 'resourceTimeGridWeek']}
               ui={ui}
               theme={theme}
             />
-            <EventCalendarDemo
+            {/* <EventCalendarDemo
               initialView='dayGridMonth'
               ui={ui}
               theme={theme}
-            />
+            /> */}
             {/* <EventCalendarDemo
               initialView='multiMonthYear'
               ui={ui}
               theme={theme}
             /> */}
-            <EventCalendarDemo
+            {/* <EventCalendarDemo
               initialView='timeGridWeek'
               ui={ui}
               theme={theme}
@@ -454,7 +454,7 @@ export default function App() {
               initialView='resourceTimelineWeek'
               ui={ui}
               theme={theme}
-            />
+            /> */}
           </div>
         </MuiThemeProvider>
       </div>
@@ -607,6 +607,7 @@ function SchedulerDemo(props: DemoProps) {
           alert('add event...')
         ]
       }}
+      initialView={props.initialView}
       navLinkDayClick='resourceTimelineDay'
       navLinkWeekClick='resourceTimelineWeek'
       schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'

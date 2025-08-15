@@ -12,7 +12,6 @@ clean+build all:
 
 
 BUGS:
-- wrong isMajor borders for resourceTimeGridWeek
 - vresource 2nd-tier header needs h-sticky
 
 
@@ -115,6 +114,7 @@ project: ResizeObserver refactor
     bug: bottom filler isn't working in a11y-ci/resource-timeline-row-grouping.html
 
 after-beta todo:
+  delete classic-theme and bootstrap5 packages
   rethink isCompact/isSpacious. weird to have isSpacious:false on resourceLaneBottom... hard to reason
   bug: why when resourceGroupHeaderClass bg color removed, we don't see vertical column lines underneath?
   bugs with isMajor special border on slots
@@ -148,6 +148,8 @@ after-beta todo:
   i don't like how we need to do transparent border for non-divider when isHeader
     solution: put it IN the scroller (sibling of the canvas),
     also, this way we can do a nowIndicator DOT above it within the scroller
+bug: when datesAboveResources, and multiple resources per-day,
+  the day text is overabbreviates as "Thu" when it still has a lot of room
 bug:
   bug: resourceTimelineDay totally misalligned (with 3 resources)
 bug: when displayEventTime:false,
