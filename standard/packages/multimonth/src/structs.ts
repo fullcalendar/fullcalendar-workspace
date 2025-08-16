@@ -7,8 +7,8 @@ export interface SingleMonthData {
 export type SingleMonthMountData = MountData<SingleMonthData>
 
 export interface SingleMonthHeaderData {
+  colCount: number // initially 0 (unknown)
   isSticky: boolean
   isCompact: boolean
   hasNavLink: boolean
 }
-

@@ -495,6 +495,7 @@ function EventCalendarDemo(props: DemoProps) {
       ]}
       eventInteractive={true}
       initialView={props.initialView}
+      // multiMonthMaxColumns={1}
       nowIndicator={true}
       navLinks={true}
       editable={true}

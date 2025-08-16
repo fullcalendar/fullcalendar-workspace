@@ -13,7 +13,6 @@ clean+build all:
 
 JS warnings about unknown settings when Shadcn + MUI loaded
 JS warnings about Tab control when Shadcn loaded
-isSticky should not be abused for colCnt===1
 
 
 theme checklist
@@ -67,6 +66,7 @@ CODE
   for width/height/margin/padding units, dont use em units
     use standard tailwind units, which will depend on the component's root font size
   use focus-visible: instead of focus:
+  isSticky should not be abused for colCnt===1
 TEST
   ALL stickiness, esp when calendar root is overflow:hidden
   test horizontal scrolling
