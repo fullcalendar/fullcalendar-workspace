@@ -579,12 +579,14 @@ function EventCalendarDemo(props: DemoProps) {
           "start": "2025-07-01T08:30:00+00:00",
           "end": "2025-07-01T16:30:00+00:00",
           "display": "background",
+          // "color": "red",
         },
         {
           "title": "Meeting",
           "start": "2025-07-04T08:30:00+00:00",
           "end": "2025-07-04T16:30:00+00:00",
           "display": "background",
+          // "color": "red",
         },
         {
           "title": "Happy Hour",

@@ -23,7 +23,7 @@ export const optionParams: EventCalendarOptionParams = {
   eventColor: '#3788d8',
   eventContrastColor: 'var(--color-white)',
   backgroundEventColor: 'var(--color-green-500)',
-  backgroundEventColorClass: 'brightness-150 opacity-15',
+  backgroundEventColorClass: 'opacity-15',
   popoverClass: `border border-(--fc-classic-border-color) ${pageBgColorClass} shadow-md`,
   pageBgColorClass,
   pageBgColorOutlineClass,
