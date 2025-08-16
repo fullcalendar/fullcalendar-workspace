@@ -82,7 +82,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   ]
 
   const dayRowContentClasses: CalendarOptions = {
-    listItemEventClass: `${dayCellItemClass} p-px`,
+    listItemEventClass: (data) => [
+      `${dayCellItemClass} p-px`,
+      data.isSelected
+        ? joinClassNames('bg-gray-500/40', data.isDragging && 'shadow-sm')
+        : 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
+    ],
     listItemEventColorClass: (data) => [
       'border-4', // 8px diameter
       data.isCompact ? 'mx-px' : 'mx-1',
@@ -162,26 +167,21 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
 
-      listItemEventClass: (data) => [
-        'items-center',
-        data.isSelected
-          ? joinClassNames('bg-gray-500/40', data.isDragging && 'shadow-sm')
-          : 'hover:bg-gray-500/20 focus:bg-gray-500/30',
-      ],
+      listItemEventClass: 'items-center',
       listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
 
       blockEventClass: (data) => [
         'relative group p-px',
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
-          : joinClassNames('focus:shadow-md', data.isDragging && 'opacity-75')
+          : joinClassNames('focus-visible:shadow-md', data.isDragging && 'opacity-75')
       ],
       blockEventColorClass: (data) => [
         'absolute z-0 inset-0 bg-(--fc-event-color)',
         'print:border print:border-(--fc-event-color) print:bg-white',
         data.isSelected
           ? 'brightness-75'
-          : 'group-focus:brightness-75',
+          : 'group-focus-visible:brightness-75',
       ],
       blockEventInnerClass: 'relative z-10 text-(--fc-event-contrast-color) print:text-black flex',
 
@@ -264,14 +264,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       slotLabelAlign: 'center',
       slotLabelClass: getSlotClasses,
       slotLaneClass: getSlotClasses,
-
-      listDayClass: `not-last:border-b ${params.borderColorClass}`,
-      listDayHeaderClass: [
-        `sticky top-0 flex flex-row justify-between border-b ${params.borderColorClass} font-bold`,
-        params.pageBgColorClass, // base color for overlaid "before" color
-      ],
-      listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgColorClass}`,
-      listDayHeaderInnerClass: `relative ${listItemPaddingClass} text-sm`, // above the "before" element
     },
     views: {
       dayGrid: {
@@ -305,7 +297,19 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         nowIndicatorLineClass: `border-t ${params.nowIndicatorBorderColorClass}`,
       },
       list: {
-        listItemEventClass: `group gap-3 not-last:border-b ${params.borderColorClass} ${listItemPaddingClass}`,
+        listDayClass: `not-last:border-b ${params.borderColorClass}`,
+        listDayHeaderClass: [
+          `sticky top-0 flex flex-row justify-between border-b ${params.borderColorClass} font-bold`,
+          params.pageBgColorClass, // base color for overlaid "before" color
+        ],
+        listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgColorClass}`,
+        listDayHeaderInnerClass: `relative ${listItemPaddingClass} text-sm`, // above the "before" element
+
+        listItemEventClass: [
+          'hover:bg-gray-500/7 focus-visible:bg-gray-500/30 group gap-3 not-last:border-b',
+          params.borderColorClass,
+          listItemPaddingClass
+        ],
         listItemEventColorClass: 'border-5', // 10px diameter
         listItemEventInnerClass: '[display:contents]',
         listItemEventTimeClass: 'order-[-1] w-[165px] text-sm', // send to start

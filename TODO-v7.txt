@@ -13,8 +13,6 @@ clean+build all:
 
 JS warnings about unknown settings when Shadcn + MUI loaded
 JS warnings about Tab control when Shadcn loaded
-Standard theme
-  list-view events are clickable+focusable and have weird bg color
 
 
 theme checklist
@@ -66,6 +64,7 @@ CODE
   button-icon heights should be relative to line-height somehow, not fixed at particular size
   for width/height/margin/padding units, dont use em units
     use standard tailwind units, which will depend on the component's root font size
+  use focus-visible: instead of focus:
 TEST
   ALL stickiness, esp when calendar root is overflow:hidden
   test horizontal scrolling
