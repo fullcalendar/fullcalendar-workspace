@@ -3,6 +3,7 @@ import { CalendarController } from '@fullcalendar/core'
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { Button } from '../ui/button.js'
 import { Tabs, TabsList, TabsTrigger } from '../ui/tabs.js'
+import { cn } from '../lib/utils.js'
 
 export interface EventCalendarToolbarProps {
   className?: string
@@ -25,7 +26,7 @@ export function EventCalendarToolbar({
   const buttons = controller.getButtonState()
 
   return (
-    <div className={'flex items-center justify-between ' + (className || '')}>
+    <div className={cn('flex items-center justify-between', className)}>
       <div className='flex items-center gap-3'>
         {addButton && (
           <Button
@@ -59,7 +60,7 @@ export function EventCalendarToolbar({
         </div>
         <div className='text-xl'>{controller.view?.title}</div>
       </div>
-      <Tabs value={controller.view?.type}>
+      <Tabs value={controller.view?.type ?? availableViews[0]}>
         <TabsList>
           {availableViews.map((availableView) => (
             <TabsTrigger

@@ -11,7 +11,6 @@ clean+build all:
   pn build
 
 
-JS warnings about Tab control when Shadcn loaded
 JS warning about unique React key
 
 
