@@ -83,7 +83,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
       ? rowHeightGuess + state.tableHeaderHeight + 1
       : undefined
 
-    const hasNavLink = options.navLinks
+    const hasNavLink = options.navLinks && props.colCount > 1
     const headerRenderProps: SingleMonthHeaderData = {
       isSticky: isTitleAndHeaderSticky,
       isCompact: cellIsCompact,
