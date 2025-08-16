@@ -5,8 +5,9 @@ import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-breezy-dev/options-scheduler'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { optionParams, EventCalendarView } from './event-calendar.js'
-import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
+import { eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
+import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 
@@ -42,6 +43,7 @@ export function Scheduler({
         controller={controller}
         {...calendarOptions}
         plugins={[
+          ...eventCalendarPlugins,
           ...schedulerOnlyPlugins,
           ...(calendarOptions.plugins || []),
         ]}

@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
 import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
+import { eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
 import SchedulerView from './SchedulerView.js'
 
@@ -45,6 +46,7 @@ export default function Scheduler({
         controller={controller}
         {...calendarOptions}
         plugins={[
+          ...eventCalendarPlugins,
           ...schedulerOnlyPlugins,
           ...(calendarOptions.plugins || []),
         ]}

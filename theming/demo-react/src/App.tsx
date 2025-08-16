@@ -582,13 +582,13 @@ function EventCalendarDemo(props: DemoProps) {
           "display": "background",
           // "color": "red",
         },
-        {
-          "title": "Meeting",
-          "start": "2025-07-04T08:30:00+00:00",
-          "end": "2025-07-04T16:30:00+00:00",
-          "display": "background",
-          // "color": "red",
-        },
+        // {
+        //   "title": "Meeting",
+        //   "start": "2025-07-04T08:30:00+00:00",
+        //   "end": "2025-07-04T16:30:00+00:00",
+        //   "display": "background",
+        //   // "color": "red",
+        // },
         {
           "title": "Happy Hour",
           "start": "2025-07-04T17:30:00+00:00"

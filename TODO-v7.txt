@@ -11,8 +11,8 @@ clean+build all:
   pn build
 
 
-JS warnings about unknown settings when Shadcn + MUI loaded
 JS warnings about Tab control when Shadcn loaded
+JS warning about unique React key
 
 
 theme checklist
