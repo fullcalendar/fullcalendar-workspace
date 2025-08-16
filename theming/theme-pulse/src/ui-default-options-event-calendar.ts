@@ -12,7 +12,6 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   todayCircleTextColorClass: 'text-(--fc-pulse-today-text-color)',
 
   borderColorClass: 'border-gray-200',
-  // majorBorderColorClass: '', // TODO
 
   eventColor: 'var(--fc-pulse-event-color)',
   eventContrastColor: 'var(--fc-pulse-event-contrast-color)',

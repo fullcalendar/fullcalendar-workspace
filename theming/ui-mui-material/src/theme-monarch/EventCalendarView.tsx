@@ -16,7 +16,6 @@ export const optionParams: EventCalendarOptionParams = {
   disabledBgClass: 'bg-(--mui-palette-action-disabledBackground)',
 
   borderColorClass: 'border-(--mui-palette-divider)',
-  majorBorderColorClass: 'border-(--mui-palette-primary-main)', // will have color. might be cool
   nowIndicatorBorderColorClass: 'border-(--mui-palette-error-main)',
 
   /*

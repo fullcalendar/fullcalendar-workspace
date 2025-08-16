@@ -51,7 +51,6 @@ export const optionParams: EventCalendarOptionParams = {
   todayCircleTextColorClass: '', // default inherited text
 
   borderColorClass: '', // border-color is set globally
-  // majorBorderColorClass: 'border-ring', // if atomic var ... majorBorderColor: 'var(--ring)'
   // nowIndicatorBorderColorClass: 'border-destructive',
 
   eventColor: 'var(--primary)',

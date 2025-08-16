@@ -42,7 +42,6 @@ export interface EventCalendarOptionParams {
   disabledBgClass: string
 
   borderColorClass: string // eventually just borderColor
-  majorBorderColorClass: string // eventually just majorBorderColor
   nowIndicatorBorderColorClass: string // eventually just alertBorderColor
 
   eventColor: string
@@ -100,9 +99,10 @@ const rowItemClasses: CalendarOptions = {
   ],
 }
 
+export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700'
+
 export function createEventCalendarOptions({
   borderColorClass,
-  majorBorderColorClass,
   nowIndicatorBorderColorClass,
   eventColor,
   eventContrastColor,

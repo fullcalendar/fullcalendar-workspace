@@ -61,7 +61,6 @@ export interface EventCalendarOptionParams {
   todayCircleTextColorClass: string
 
   borderColorClass: string
-  // majorBorderColorClass: string // TODO
 
   eventColor: string
   eventContrastColor: string

@@ -23,7 +23,6 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   disabledBgClass: 'bg-gray-500/7', // TODO: better theme value
 
   borderColorClass: 'border-(--fc-monarch-outline-variant)',
-  majorBorderColorClass: 'border-(--fc-monarch-outline)',
   nowIndicatorBorderColorClass: 'border-(--fc-monarch-error)',
 
   // canvasBgColor?: string // eventually just canvasColor

@@ -55,7 +55,6 @@ export const optionParams: EventCalendarOptionParams = {
   primaryBorderColorClass: 'border-primary',
 
   borderColorClass: '', // border-color is set globally
-  majorBorderColorClass: 'border-ring', // if atomic var ... majorBorderColor: 'var(--ring)'
   nowIndicatorBorderColorClass: 'border-destructive',
 
   eventColor: 'var(--primary)',

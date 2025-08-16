@@ -32,6 +32,8 @@ import '@fullcalendar/interaction'
 // css vars
 // TODO: contrast color. highlight color, default background event color
 
+export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700'
+
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 
 export const neutralBgColorClass = 'bg-gray-500/10'
@@ -128,7 +130,6 @@ export interface EventCalendarOptionParams {
   primaryBorderColorClass: string // for now-indicator AND line above dayHeader
 
   borderColorClass: string // eventually just borderColor
-  majorBorderColorClass: string // eventually just majorBorderColor
   nowIndicatorBorderColorClass: string // eventually just alertBorderColor
 
   eventColor: string
@@ -147,7 +148,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   views?: { [viewName: string]: ViewOptions }
 } {
   const borderClass = `border ${params.borderColorClass}`
-  const majorBorderClass = `border ${params.majorBorderColorClass}`
+  const majorBorderClass = `border ${majorBorderColorClass}`
 
   return {
     optionDefaults: {

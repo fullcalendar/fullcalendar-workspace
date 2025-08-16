@@ -10,9 +10,10 @@ import '@fullcalendar/resource-timeline'
 import '@fullcalendar/adaptive'
 import '@fullcalendar/scrollgrid'
 
+export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700'
+
 export function createSchedulerOnlyOptions({
   borderColorClass,
-  majorBorderColorClass,
   nowIndicatorBorderColorClass,
   eventColor,
   eventContrastColor,

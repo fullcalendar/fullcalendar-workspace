@@ -50,13 +50,12 @@ export function EventCalendar({
 
 export const optionParams: EventCalendarOptionParams = {
   borderColorClass: '', // border-color is set globally
-  majorBorderColorClass: 'border-ring',
   nowIndicatorBorderColorClass: 'border-destructive',
   nowIndicatorBorderStartColorClass: 'border-s-destructive',
   nowIndicatorBorderTopColorClass: 'border-t-destructive',
   compactMoreLinkBorderColorClass: 'border-primary',
-  todayBgColorClass: 'bg-yellow-400/15 dark:bg-yellow-200/10', // keep hardcoded?
-  highlightBgColorClass: 'bg-cyan-100/40 bg-blue-500/20', // TODO: move to primary-color + opacity
+  todayBgColorClass: 'bg-yellow-400/15 dark:bg-yellow-200/10',
+  highlightClass: 'bg-sky-500/10',
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
   backgroundEventColor: 'var(--primary)',

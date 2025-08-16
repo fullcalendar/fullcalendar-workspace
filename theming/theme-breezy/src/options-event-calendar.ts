@@ -103,7 +103,6 @@ TODO: how to do inner drop shadow within scroll area?
 export interface EventCalendarOptionParams {
   // !!! Having trouble b/c some many different shades
   // borderColorClass: string // eventually just borderColor
-  // majorBorderColorClass: string // eventually just majorBorderColor
 
   // !!! now-indicator not-yet-implemented!
   // nowIndicatorBorderColorClass: string // eventually just alertBorderColor

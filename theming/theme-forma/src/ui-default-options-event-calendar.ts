@@ -10,7 +10,6 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   primaryBorderColorClass: 'border-(--fc-forma-primary-color)',
 
   borderColorClass: 'border-[#ddd] dark:border-gray-800',
-  majorBorderColorClass: 'border-gray-400 dark:border-gray-700',
   nowIndicatorBorderColorClass: 'border-(--fc-forma-primary-color)', // same as primary
 
   eventColor: 'var(--fc-forma-event-color)',

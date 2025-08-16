@@ -14,13 +14,12 @@ const getButtonIconClass = (flip?: boolean) => joinClassNames(
 
 export const optionParams: EventCalendarOptionParams = {
   borderColorClass: 'border-(--fc-classic-border-color)',
-  majorBorderColorClass: 'border-(--fc-classic-major-border-color)',
-  nowIndicatorBorderColorClass: 'border-(--fc-classic-alert-color)',
-  nowIndicatorBorderStartColorClass: 'border-s-(--fc-classic-alert-color)',
-  nowIndicatorBorderTopColorClass: 'border-t-(--fc-classic-alert-color)',
+  nowIndicatorBorderColorClass: 'border-(--fc-classic-now-indicator-color)',
+  nowIndicatorBorderStartColorClass: 'border-s-(--fc-classic-now-indicator-color)',
+  nowIndicatorBorderTopColorClass: 'border-t-(--fc-classic-now-indicator-color)',
   compactMoreLinkBorderColorClass: 'border-[#3788d8]',
   todayBgColorClass: 'bg-(--fc-classic-today-color)',
-  highlightBgColorClass: 'bg-(--fc-classic-highlight-color)',
+  highlightClass: 'bg-(--fc-classic-highlight-color)',
   eventColor: '#3788d8',
   eventContrastColor: 'var(--color-white)',
   backgroundEventColor: 'var(--color-green-500)',

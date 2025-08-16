@@ -9,13 +9,12 @@ import {} from '@fullcalendar/interaction'
 
 export interface EventCalendarOptionParams {
   borderColorClass: string
-  majorBorderColorClass: string
   nowIndicatorBorderColorClass: string
   nowIndicatorBorderStartColorClass: string
   nowIndicatorBorderTopColorClass: string
   compactMoreLinkBorderColorClass: string
   todayBgColorClass: string
-  highlightBgColorClass: string
+  highlightClass: string
   eventColor: string
   eventContrastColor: string
   backgroundEventColor: string
@@ -28,6 +27,7 @@ export interface EventCalendarOptionParams {
 export const neutralBgColorClass = 'bg-gray-500/10 dark:bg-gray-500/15'
 export const neutralTextColorClass = 'text-gray-500 dark:text-gray-300'
 export const solidMoreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
+export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700'
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 const cellPaddingClass = 'px-1 py-0.5'
@@ -46,7 +46,7 @@ export const getDayHeaderClasses = (
 ) => [
   'border justify-center', // v-align
   data.inPopover ? 'items-start' : 'items-center', // h-align
-  data.isMajor ? params.majorBorderColorClass : params.borderColorClass,
+  data.isMajor ? majorBorderColorClass : params.borderColorClass,
   (data.inPopover || data.isDisabled) && neutralBgColorClass,
 ]
 
@@ -71,7 +71,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
   const getDayClasses = (data: { isMajor: boolean, isToday: boolean, isDisabled: boolean}) => [
     'border',
-    data.isMajor ? params.majorBorderColorClass : params.borderColorClass,
+    data.isMajor ? majorBorderColorClass : params.borderColorClass,
     data.isToday && params.todayBgColorClass,
     data.isDisabled && neutralBgColorClass,
   ]
@@ -142,7 +142,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       fillerClass: `border ${params.borderColorClass} opacity-50`,
       nonBusinessClass: neutralBgColorClass,
-      highlightClass: params.highlightBgColorClass,
+      highlightClass: params.highlightClass,
 
       navLinkClass: 'hover:underline',
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',

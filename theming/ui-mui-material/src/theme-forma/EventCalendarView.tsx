@@ -12,7 +12,6 @@ export const optionParams: EventCalendarOptionParams = {
   primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
 
   borderColorClass: 'border-(--mui-palette-divider)',
-  majorBorderColorClass: 'border-(--mui-palette-primary-main)', // will have color. might be cool
   nowIndicatorBorderColorClass: 'border-(--mui-palette-error-main)',
 
   eventColor: 'var(--mui-palette-primary-main)',

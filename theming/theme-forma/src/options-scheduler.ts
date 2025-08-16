@@ -15,13 +15,15 @@ const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 const neutralBgColorClass = 'bg-gray-500/10'
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 
+export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700'
+
 export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
   // TODO: DRY
   const borderClass = `border ${params.borderColorClass}`
-  const majorBorderClass = `border ${params.majorBorderColorClass}`
+  const majorBorderClass = `border ${majorBorderColorClass}`
 
   return {
     optionDefaults: {
