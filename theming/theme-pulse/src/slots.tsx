@@ -18,31 +18,35 @@ export function createSlots(
   return {
     dayHeaderContent: (data) => (
       <Fragment>
-        {data.textParts.map((textPart) => (
-          textPart.type !== 'day' ? (
-            <span className='whitespace-pre text-gray-500'>{textPart.value}</span>
-          ) : (
-            data.isToday ? (
-              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold`}>{textPart.value}</span>
+        {data.textParts.map((textPart, i) => (
+          <Fragment key={i}>
+            {textPart.type !== 'day' ? (
+              <span className='whitespace-pre text-gray-500'>{textPart.value}</span>
             ) : (
-              <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre text-gray-500'>{textPart.value}</span>
-            )
-          )
+              data.isToday ? (
+                <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold`}>{textPart.value}</span>
+              ) : (
+                <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre text-gray-500'>{textPart.value}</span>
+              )
+            )}
+          </Fragment>
         ))}
       </Fragment>
     ),
     dayCellTopContent: (data) => (
       <Fragment>
-        {data.textParts.map((textPart) => (
-          textPart.type !== 'day' ? (
-            <span className='whitespace-pre'>{textPart.value}</span>
-          ) : (
-            data.isToday ? (
-              <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold`}>{textPart.value}</span>
+        {data.textParts.map((textPart, i) => (
+          <Fragment key={i}>
+            {textPart.type !== 'day' ? (
+              <span className='whitespace-pre'>{textPart.value}</span>
             ) : (
-              <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
-            )
-          )
+              data.isToday ? (
+                <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold`}>{textPart.value}</span>
+              ) : (
+                <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
+              )
+            )}
+          </Fragment>
         ))}
       </Fragment>
     ),

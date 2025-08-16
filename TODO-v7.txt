@@ -11,7 +11,8 @@ clean+build all:
   pn build
 
 
-JS warning about unique React key
+Default fonts for each theme system
+Default icons for each theme
 
 
 theme checklist

@@ -1,4 +1,4 @@
-import { CalendarOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
 import type * as FullCalendarPreact from '@fullcalendar/core/preact'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { EventCalendarOptionParams } from './options-event-calendar.js'
@@ -35,10 +35,15 @@ export function createSlots(
         ? <span className='px-1 h-[1.8em] whitespace-pre flex flex-row items-center'>{data.text}</span>
         : (
           <Fragment>
-            {data.textParts.map((textPart) => (
-              textPart.type === 'day'
-                ? <span className={`w-[1.8em] h-[1.8em] whitespace-pre flex flex-row items-center justify-center rounded-full ${params.primaryBgColorClass} ${params.primaryTextColorClass}`}>{textPart.value}</span>
-                : <span className='h-[1.8em] whitespace-pre flex flex-row items-center'>{textPart.value}</span>
+            {data.textParts.map((textPart, i) => (
+              <span
+                key={i}
+                className={joinClassNames(
+                  'h-[1.8em] whitespace-pre flex flex-row items-center',
+                  textPart.type === 'day' &&
+                    `w-[1.8em] justify-center rounded-full ${params.primaryBgColorClass} ${params.primaryTextColorClass}`
+                )}
+              >{textPart.value}</span>
             ))}
           </Fragment>
         )

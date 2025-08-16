@@ -40,21 +40,22 @@ export function createSlots(
     ),
 
     listDayHeaderContent:
-      (data) => !data.level ? (
+      (data) => !data.level ? ( // primary
         <Fragment>
-          {data.textParts.map((textPart) => ( // primary
-            textPart.type === 'day' ? (
-              <div
-                className={joinClassNames(
-                  'flex flex-row items-center justify-center w-[2em] h-[2em] rounded-full',
-                  data.isToday
-                    ? params.todayPillClass({ hasNavLink: data.hasNavLink })
-                    : data.hasNavLink && transparentPressableClass
-                )}
-              >{textPart.value}</div>
-            ) : (
-              <div className='whitespace-pre'>{textPart.value}</div>
-            )
+          {data.textParts.map((textPart, i) => (
+            <div
+              key={i}
+              className={
+                textPart.type !== 'day'
+                  ? 'whitespace-pre'
+                  : joinClassNames(
+                      'flex flex-row items-center justify-center w-[2em] h-[2em] rounded-full',
+                      data.isToday
+                        ? params.todayPillClass({ hasNavLink: data.hasNavLink })
+                        : data.hasNavLink && transparentPressableClass
+                    )
+              }
+            >{textPart.value}</div>
           ))}
         </Fragment>
       ) : (
