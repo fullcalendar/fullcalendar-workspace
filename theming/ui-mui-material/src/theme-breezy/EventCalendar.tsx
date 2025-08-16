@@ -39,8 +39,10 @@ export default function EventCalendar({
       }}
     >
       <EventCalendarToolbar
-        className='p-4'
-        style={{ backgroundColor: mutedBackgroundColor }}
+        sx={{
+          padding: 2,
+          backgroundColor: mutedBackgroundColor,
+        }}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}

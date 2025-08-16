@@ -1,5 +1,6 @@
 import React from 'react'
 import { CalendarController } from '@fullcalendar/core'
+import Box, { BoxProps } from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -8,9 +9,7 @@ import Typography from '@mui/material/Typography'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import ToggleButton from '@mui/material/ToggleButton'
 
-export interface EventCalendarToolbarProps {
-  className?: string
-  style?: any // TODO --- use a semantic prop instead
+export interface EventCalendarToolbarProps extends BoxProps {
   controller: CalendarController
   availableViews: string[]
   addButton?: {
@@ -22,17 +21,30 @@ export interface EventCalendarToolbarProps {
 }
 
 export default function EventCalendarToolbar({
-  className,
-  style,
   controller,
   availableViews,
   addButton,
+  ...boxProps
 }: EventCalendarToolbarProps) {
   const buttons = controller.getButtonState()
 
   return (
-    <div className={'flex items-center justify-between ' + (className || '')} style={style}>
-      <div className='flex items-center gap-2'>
+    <Box
+      {...boxProps}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        ...boxProps.sx,
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1,
+        }}
+      >
         {addButton && (
           <Button
             onClick={addButton.click as any}
@@ -46,7 +58,12 @@ export default function EventCalendarToolbar({
           aria-label={buttons.today.hint}
           variant="outlined"
         >{buttons.today.text}</Button>
-        <div className='flex items-center'>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <IconButton
             onClick={() => controller.prev()}
             disabled={buttons.prev.isDisabled}
@@ -57,9 +74,9 @@ export default function EventCalendarToolbar({
             disabled={buttons.next.isDisabled}
             aria-label={buttons.next.hint}
           ><ChevronRightIcon /></IconButton>
-        </div>
+        </Box>
         <Typography variant="h5">{controller.view?.title}</Typography>
-      </div>
+      </Box>
       <ToggleButtonGroup
         size="small"
         exclusive
@@ -82,6 +99,6 @@ export default function EventCalendarToolbar({
           </ToggleButton>
         ))}
       </ToggleButtonGroup>
-    </div>
+    </Box>
   )
 }

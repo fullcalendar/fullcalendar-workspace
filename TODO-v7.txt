@@ -12,9 +12,11 @@ clean+build all:
 
 
 MUI
-  for all EventCalendar/EventCalendarToolbar/Scheduler,
-    use sx={} instead of tailwind. will be copy-and-pasted
-  fix EventCalendarToolbar className prop
+  audit highlight/bgevent colors, esp in dark mode
+Shadcn
+  audit highlight/bgevent colors, esp in dark mode
+Standard theme
+  list-view events are clickable+focusable and have weird bg color
 
 
 theme checklist

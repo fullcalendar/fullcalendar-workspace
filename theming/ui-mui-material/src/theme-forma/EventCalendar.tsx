@@ -34,7 +34,7 @@ export default function EventCalendar({
       }}
     >
       <EventCalendarToolbar
-        className='p-3'
+        sx={{ padding: 1.5 }}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}

@@ -24,7 +24,13 @@ export default function Scheduler({
   const controller = useCalendarController()
 
   return (
-    <div className='flex flex-col gap-5'>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2.5,
+      }}
+    >
       <EventCalendarToolbar
         controller={controller}
         availableViews={availableViews}
@@ -49,6 +55,6 @@ export default function Scheduler({
           ]}
         />
       </Box>
-    </div>
+    </Box>
   )
 }
