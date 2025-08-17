@@ -67,6 +67,7 @@ CODE
     use standard tailwind units, which will depend on the component's root font size
   use focus-visible: instead of focus:
   isSticky should not be abused for colCnt===1
+  when putting outline on columnEvent, use isMirror instead of isDragging
 TEST
   ALL stickiness, esp when calendar root is overflow:hidden
   test horizontal scrolling

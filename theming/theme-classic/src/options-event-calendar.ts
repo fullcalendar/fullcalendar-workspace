@@ -219,7 +219,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventColorClass: (data) => [
         data.isStart && 'rounded-t-sm',
         data.isEnd && 'rounded-b-sm',
-        (data.level || data.isDragging) && `outline ${params.pageBgColorOutlineClass}`,
+        (data.level || data.isMirror) && `outline ${params.pageBgColorOutlineClass}`,
       ],
       columnEventInnerClass: (data) => [
         'p-px',
