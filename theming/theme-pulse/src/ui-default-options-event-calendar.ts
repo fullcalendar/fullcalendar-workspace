@@ -1,4 +1,4 @@
-import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgIcons from './ui-default-svgs.js'
 
@@ -64,12 +64,37 @@ export const defaultUiEventCalendarOptions: {
     ],
 
     buttons: {
-      // TODO: RTL
       prev: {
-        iconContent: () => svgIcons.chevronLeft(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronDown(
+          joinClassNames(
+            buttonIconClass,
+            data.direction === 'rtl' ? '-rotate-90' : 'rotate-90',
+          )
+        )
       },
       next: {
-        iconContent: () => svgIcons.chevronRight(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronDown(
+          joinClassNames(
+            buttonIconClass,
+            data.direction === 'rtl' ? 'rotate-90' : '-rotate-90',
+          )
+        )
+      },
+      prevYear: {
+        iconContent: (data) => svgIcons.chevronsLeft(
+          joinClassNames(
+            buttonIconClass,
+            data.direction === 'rtl' && 'rotate-180',
+          )
+        )
+      },
+      nextYear: {
+        iconContent: (data) => svgIcons.chevronsLeft(
+          joinClassNames(
+            buttonIconClass,
+            data.direction !== 'rtl' && 'rotate-180',
+          )
+        )
       },
     },
   },

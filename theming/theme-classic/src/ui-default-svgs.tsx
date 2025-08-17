@@ -2,7 +2,6 @@ import { createElement, Fragment, ComponentChild } from '@fullcalendar/core/prea
 
 /*
 From https://feathericons.com/
-TODO: move to using 24px size somehow?
 */
 
 export function chevronLeft(className?: string): ComponentChild {
@@ -27,6 +26,6 @@ export function minusSquare(className?: string): ComponentChild {
 
 function createSvg(className: string | undefined, inner: ComponentChild): ComponentChild {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" className={className} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{inner}</svg>
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{inner}</svg>
   )
 }

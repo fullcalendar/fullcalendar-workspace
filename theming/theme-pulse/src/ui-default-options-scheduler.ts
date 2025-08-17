@@ -1,5 +1,5 @@
-import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
-// import * as svgIcons from './ui-default-svgs.js'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
+import * as svgIcons from './ui-default-svgs.js'
 import { optionParams } from './ui-default-options-event-calendar.js'
 import { createSchedulerOnlyOptions } from './options-scheduler.js'
 
@@ -12,7 +12,12 @@ export const defaultUiSchedulerOnlyOptions: {
   optionDefaults: {
     ...baseSchedulerOnlyOptions.optionDefaults,
 
-    // TODO: resourceExpanderContent
+    resourceExpanderContent: (data) => svgIcons.chevronDown(
+      joinClassNames(
+        'w-[1em] h-[1em]',
+        !data.isExpanded && (data.direction === 'rtl' ? 'rotate-90' : '-rotate-90'),
+      )
+    )
   },
   views: baseSchedulerOnlyOptions.views,
 }
