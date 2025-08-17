@@ -2,6 +2,7 @@ import { createElement, ComponentChild } from '@fullcalendar/core/preact'
 
 /*
 From https://fonts.google.com/icons
+TODO: move to using 24px size somehow?
 */
 
 export function chevronDown(className?: string): ComponentChild {

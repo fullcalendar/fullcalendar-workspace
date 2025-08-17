@@ -2,6 +2,7 @@ import { createElement, Fragment, ComponentChild } from '@fullcalendar/core/prea
 
 /*
 From https://feathericons.com/
+TODO: move to using 24px size somehow?
 */
 
 export function chevronLeft(className?: string): ComponentChild {

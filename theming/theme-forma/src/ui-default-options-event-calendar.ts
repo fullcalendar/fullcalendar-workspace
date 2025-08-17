@@ -1,4 +1,4 @@
-import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgIcons from './ui-default-svgs.js'
 
@@ -40,24 +40,36 @@ export const defaultUiEventCalendarOptions: {
 
     buttons: {
       prev: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronLeft(buttonIconClass)
-          : svgIcons.chevronRight(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronDown(
+          joinClassNames(
+            buttonIconClass,
+            data.direction === 'rtl' ? '-rotate-90' : 'rotate-90',
+          )
+        )
       },
       next: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronRight(buttonIconClass)
-          : svgIcons.chevronLeft(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronDown(
+          joinClassNames(
+            buttonIconClass,
+            data.direction === 'rtl' ? 'rotate-90' : '-rotate-90',
+          )
+        )
       },
       prevYear: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronsLeft(buttonIconClass)
-          : svgIcons.chevronsRight(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronDoubleLeft(
+          joinClassNames(
+            buttonIconClass,
+            data.direction === 'rtl' && 'rotate-180',
+          )
+        )
       },
       nextYear: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronsRight(buttonIconClass)
-          : svgIcons.chevronsLeft(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronDoubleLeft(
+          joinClassNames(
+            buttonIconClass,
+            data.direction !== 'rtl' && 'rotate-180',
+          )
+        )
       },
     },
 
@@ -79,7 +91,7 @@ export const defaultUiEventCalendarOptions: {
           // TODO: dark mode
     ],
 
-    popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
+    popoverCloseContent: () => svgIcons.dismiss('w-[1.357em] h-[1.357em] opacity-65'),
   },
   views: baseEventCalendarOptions.views,
 }
