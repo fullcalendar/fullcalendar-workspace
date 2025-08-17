@@ -51,6 +51,9 @@ TODO: new dark-mode!
   https://tailwindcss.com/plus/changelog#2025-08-11
 
 TODO: move list-header sticky from listDayHeaderInnerClass -> listDayHeaderClass (like Forma)
+
+TODO: timegrid resizing broken
+TODO: timegrid events have unnecessasry extra 1px bottom margin
 */
 function createDayGridClasses(primaryBorderColorClass: string): CalendarOptions {
   return {

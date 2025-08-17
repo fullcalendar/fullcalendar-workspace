@@ -20,6 +20,8 @@ Better theme demo w/ view-specific subdemos
 theme checklist
 ---------------
 UI
+  in list-view, fix last-line stacking
+    have bottom-border on event-list, not overall container
   use own icon sets
   now-indicator
   popover background colors POP in dark mode
@@ -56,6 +58,7 @@ All themes
   leave toolbar responsiveness in themes unopinionated for now
     later have toolbar adjust... dynamic size? how would work with different months having different
     widths... minTitleWidth setting?
+  grey-out the "Today" for default-ui. mui/shadcn look bad so forget them.
 CODE
   move font-size/line-height AWAY from eventInner... move to eventTime/Title
   remove borderClass/majorBorderClass ... use borderColorClass each time
