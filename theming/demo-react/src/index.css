@@ -34,6 +34,13 @@
 @import "../node_modules/@fullcalendar/theme-monarch-dev/src/ui-default-palettes.css";
 @import "../node_modules/@fullcalendar/theme-forma-dev/src/ui-default-palettes.css";
 
+/* demo fonts */
+@import "@fontsource/roboto/300.css";
+@import "@fontsource/roboto/400.css";
+@import "@fontsource/roboto/500.css";
+@import "@fontsource/roboto/600.css";
+@import "@fontsource/roboto/700.css";
+
 @custom-variant dark (&:is([data-color-scheme=dark] *));
 
 html {
