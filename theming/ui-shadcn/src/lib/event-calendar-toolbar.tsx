@@ -37,7 +37,6 @@ export function EventCalendarToolbar({
         <div className='flex items-center'>
           <Button
             onClick={() => controller.today()}
-            // disabled={buttons.today.isDisabled} -- too harsh
             aria-label={buttons.today.hint}
             variant='outline'
           >{buttons.today.text}</Button>

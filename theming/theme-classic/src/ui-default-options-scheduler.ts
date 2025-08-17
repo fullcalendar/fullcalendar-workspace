@@ -5,7 +5,7 @@ import { createSchedulerOnlyOptions } from './options-scheduler.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 
-const expanderIconClass = 'size-[1em] opacity-65'
+const expanderIconClass = 'size-[1em]'
 
 export const defaultUiSchedulerOnlyOptions: {
   optionDefaults: CalendarOptions

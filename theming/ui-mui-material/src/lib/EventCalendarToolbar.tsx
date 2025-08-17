@@ -54,7 +54,6 @@ export default function EventCalendarToolbar({
         )}
         <Button
           onClick={() => controller.today()}
-          // disabled={buttons.today.isDisabled} -- too harsh
           aria-label={buttons.today.hint}
           variant="outlined"
         >{buttons.today.text}</Button>
