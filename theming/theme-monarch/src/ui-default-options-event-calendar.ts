@@ -1,4 +1,4 @@
-import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams, transparentPressableClass } from './options-event-calendar.js'
 import * as svgIcons from './ui-default-svgs.js'
 
@@ -24,9 +24,6 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
 
   borderColorClass: 'border-(--fc-monarch-outline-variant)',
   nowIndicatorBorderColorClass: 'border-(--fc-monarch-error)',
-
-  // canvasBgColor?: string // eventually just canvasColor
-  // canvasOutlineColor?: string // eventually just canvasColor
 
   eventColor: 'var(--fc-monarch-primary)',
   eventContrastColor: 'var(--fc-monarch-on-primary)',
@@ -57,24 +54,36 @@ export const defaultUiEventCalendarOptions: {
 
     buttons: {
       prev: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronLeft(buttonIconClass)
-          : svgIcons.chevronRight(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronDown(
+          joinClassNames(
+            buttonIconClass,
+            data.direction === 'rtl' ? '-rotate-90' : 'rotate-90',
+          )
+        )
       },
       next: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronRight(buttonIconClass)
-          : svgIcons.chevronLeft(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronDown(
+          joinClassNames(
+            buttonIconClass,
+            data.direction === 'rtl' ? 'rotate-90' : '-rotate-90',
+          )
+        )
       },
       prevYear: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronsLeft(buttonIconClass)
-          : svgIcons.chevronsRight(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronDoubleLeft(
+          joinClassNames(
+            buttonIconClass,
+            data.direction === 'rtl' && 'rotate-180',
+          )
+        )
       },
       nextYear: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronsRight(buttonIconClass)
-          : svgIcons.chevronsLeft(buttonIconClass),
+        iconContent: (data) => svgIcons.chevronDoubleLeft(
+          joinClassNames(
+            buttonIconClass,
+            data.direction !== 'rtl' && 'rotate-180',
+          )
+        )
       },
     },
 

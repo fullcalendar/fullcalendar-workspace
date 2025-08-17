@@ -13,6 +13,7 @@ clean+build all:
 
 Default fonts for each theme system
 Default icons for each theme
+Better theme demo w/ view-specific subdemos
 
 
 theme checklist
