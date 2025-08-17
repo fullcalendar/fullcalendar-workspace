@@ -1,6 +1,6 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
-import * as svgIcons from './ui-default-svgs.js'
+import * as svgs from './ui-default-svgs.js'
 
 const buttonIconClass = 'size-5 text-gray-400' // best? to sync to line-height???
 
@@ -70,7 +70,7 @@ export const defaultUiEventCalendarOptions: {
 
     buttons: {
       prev: {
-        iconContent: (data) => svgIcons.chevronDown(
+        iconContent: (data) => svgs.chevronDown(
           joinClassNames(
             buttonIconClass,
             data.direction === 'rtl' ? '-rotate-90' : 'rotate-90',
@@ -78,7 +78,7 @@ export const defaultUiEventCalendarOptions: {
         ),
       },
       next: {
-        iconContent: (data) => svgIcons.chevronDown(
+        iconContent: (data) => svgs.chevronDown(
           joinClassNames(
             buttonIconClass,
             data.direction === 'rtl' ? 'rotate-90' : '-rotate-90',
@@ -86,7 +86,7 @@ export const defaultUiEventCalendarOptions: {
         ),
       },
       prevYear: {
-        iconContent: (data) => svgIcons.chevronDoubleLeft(
+        iconContent: (data) => svgs.chevronDoubleLeft(
           joinClassNames(
             buttonIconClass,
             data.direction === 'rtl' && 'rotate-180',
@@ -94,7 +94,7 @@ export const defaultUiEventCalendarOptions: {
         )
       },
       nextYear: {
-        iconContent: (data) => svgIcons.chevronDoubleLeft(
+        iconContent: (data) => svgs.chevronDoubleLeft(
           joinClassNames(
             buttonIconClass,
             data.direction !== 'rtl' && 'rotate-180',
@@ -103,7 +103,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgIcons.x('size-5'),
+    popoverCloseContent: () => svgs.x('size-5'),
   },
   views: baseEventCalendarOptions.views,
 }

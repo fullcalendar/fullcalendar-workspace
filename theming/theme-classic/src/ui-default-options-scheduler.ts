@@ -1,5 +1,5 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
-import * as svgIcons from './ui-default-svgs.js'
+import * as svgs from './ui-default-svgs.js'
 import { optionParams } from './ui-default-options-event-calendar.js'
 import { createSchedulerOnlyOptions } from './options-scheduler.js'
 
@@ -15,8 +15,8 @@ export const defaultUiSchedulerOnlyOptions: {
     ...baseSchedulerOnlyOptions.optionDefaults,
 
     resourceExpanderContent: (data) => data.isExpanded
-      ? svgIcons.minusSquare(expanderIconClass)
-      : svgIcons.plusSquare(expanderIconClass),
+      ? svgs.minusSquare(expanderIconClass)
+      : svgs.plusSquare(expanderIconClass),
   },
   views: baseSchedulerOnlyOptions.views,
 }

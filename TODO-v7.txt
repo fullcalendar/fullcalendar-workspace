@@ -12,7 +12,6 @@ clean+build all:
 
 
 Default fonts for each theme system
-Rename `svgIcons` to `svgs`
 Better theme demo w/ view-specific subdemos
 
 

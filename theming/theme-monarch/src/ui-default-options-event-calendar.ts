@@ -1,6 +1,6 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams, transparentPressableClass } from './options-event-calendar.js'
-import * as svgIcons from './ui-default-svgs.js'
+import * as svgs from './ui-default-svgs.js'
 
 const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]'
 const buttonEffectClass = 'hover:brightness-80 active:brightness-120'
@@ -54,7 +54,7 @@ export const defaultUiEventCalendarOptions: {
 
     buttons: {
       prev: {
-        iconContent: (data) => svgIcons.chevronDown(
+        iconContent: (data) => svgs.chevronDown(
           joinClassNames(
             buttonIconClass,
             data.direction === 'rtl' ? '-rotate-90' : 'rotate-90',
@@ -62,7 +62,7 @@ export const defaultUiEventCalendarOptions: {
         )
       },
       next: {
-        iconContent: (data) => svgIcons.chevronDown(
+        iconContent: (data) => svgs.chevronDown(
           joinClassNames(
             buttonIconClass,
             data.direction === 'rtl' ? 'rotate-90' : '-rotate-90',
@@ -70,7 +70,7 @@ export const defaultUiEventCalendarOptions: {
         )
       },
       prevYear: {
-        iconContent: (data) => svgIcons.chevronDoubleLeft(
+        iconContent: (data) => svgs.chevronDoubleLeft(
           joinClassNames(
             buttonIconClass,
             data.direction === 'rtl' && 'rotate-180',
@@ -78,7 +78,7 @@ export const defaultUiEventCalendarOptions: {
         )
       },
       nextYear: {
-        iconContent: (data) => svgIcons.chevronDoubleLeft(
+        iconContent: (data) => svgs.chevronDoubleLeft(
           joinClassNames(
             buttonIconClass,
             data.direction !== 'rtl' && 'rotate-180',
@@ -113,7 +113,7 @@ export const defaultUiEventCalendarOptions: {
             : `border border-(--fc-monarch-outline-variant-original)`
     ],
 
-    popoverCloseContent: () => svgIcons.x('w-[1.357em] h-[1.357em] opacity-65'),
+    popoverCloseContent: () => svgs.x('w-[1.357em] h-[1.357em] opacity-65'),
   },
   views: baseEventCalendarOptions.views,
 }

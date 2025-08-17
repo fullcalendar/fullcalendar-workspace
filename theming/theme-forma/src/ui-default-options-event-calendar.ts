@@ -1,6 +1,6 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
-import * as svgIcons from './ui-default-svgs.js'
+import * as svgs from './ui-default-svgs.js'
 
 const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
 
@@ -40,7 +40,7 @@ export const defaultUiEventCalendarOptions: {
 
     buttons: {
       prev: {
-        iconContent: (data) => svgIcons.chevronDown(
+        iconContent: (data) => svgs.chevronDown(
           joinClassNames(
             buttonIconClass,
             data.direction === 'rtl' ? '-rotate-90' : 'rotate-90',
@@ -48,7 +48,7 @@ export const defaultUiEventCalendarOptions: {
         )
       },
       next: {
-        iconContent: (data) => svgIcons.chevronDown(
+        iconContent: (data) => svgs.chevronDown(
           joinClassNames(
             buttonIconClass,
             data.direction === 'rtl' ? 'rotate-90' : '-rotate-90',
@@ -56,7 +56,7 @@ export const defaultUiEventCalendarOptions: {
         )
       },
       prevYear: {
-        iconContent: (data) => svgIcons.chevronDoubleLeft(
+        iconContent: (data) => svgs.chevronDoubleLeft(
           joinClassNames(
             buttonIconClass,
             data.direction === 'rtl' && 'rotate-180',
@@ -64,7 +64,7 @@ export const defaultUiEventCalendarOptions: {
         )
       },
       nextYear: {
-        iconContent: (data) => svgIcons.chevronDoubleLeft(
+        iconContent: (data) => svgs.chevronDoubleLeft(
           joinClassNames(
             buttonIconClass,
             data.direction !== 'rtl' && 'rotate-180',
@@ -91,7 +91,7 @@ export const defaultUiEventCalendarOptions: {
           // TODO: dark mode
     ],
 
-    popoverCloseContent: () => svgIcons.dismiss('w-[1.357em] h-[1.357em] opacity-65'),
+    popoverCloseContent: () => svgs.dismiss('w-[1.357em] h-[1.357em] opacity-65'),
   },
   views: baseEventCalendarOptions.views,
 }

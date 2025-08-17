@@ -1,6 +1,6 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
-import * as svgIcons from './ui-default-svgs.js'
+import * as svgs from './ui-default-svgs.js'
 
 const pageBgColorClass = 'bg-(--fc-classic-canvas-color)'
 const pageBgColorOutlineClass = 'outline-(--fc-classic-canvas-color)'
@@ -47,16 +47,16 @@ export const defaultUiEventCalendarOptions: {
 
     buttons: {
       prev: {
-        iconContent: (data) => svgIcons.chevronLeft(getButtonIconClass(data.direction === 'rtl')),
+        iconContent: (data) => svgs.chevronLeft(getButtonIconClass(data.direction === 'rtl')),
       },
       next: {
-        iconContent: (data) => svgIcons.chevronLeft(getButtonIconClass(data.direction !== 'rtl')),
+        iconContent: (data) => svgs.chevronLeft(getButtonIconClass(data.direction !== 'rtl')),
       },
       prevYear: {
-        iconContent: (data) => svgIcons.chevronsLeft(getButtonIconClass(data.direction === 'rtl')),
+        iconContent: (data) => svgs.chevronsLeft(getButtonIconClass(data.direction === 'rtl')),
       },
       nextYear: {
-        iconContent: (data) => svgIcons.chevronsLeft(getButtonIconClass(data.direction !== 'rtl')),
+        iconContent: (data) => svgs.chevronsLeft(getButtonIconClass(data.direction !== 'rtl')),
       },
     },
 
@@ -79,7 +79,7 @@ export const defaultUiEventCalendarOptions: {
         && 'opacity-65 pointer-events-none', // bypass hover styles
     ],
 
-    popoverCloseContent: () => svgIcons.x(`text-sm ${smIconSizeClass}`),
+    popoverCloseContent: () => svgs.x(`text-sm ${smIconSizeClass}`),
   },
   views: baseEventCalendarOptions.views,
 }
