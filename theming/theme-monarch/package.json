@@ -48,7 +48,8 @@
         "types": "./dist/ui-default-options-scheduler.d.ts",
         "default": "./dist/ui-default-options-scheduler.js"
       }
-    }
+    },
+    "./ui-default/palettes.css": "./src/ui-default-palettes.css"
   },
   "tsConfig": {
     "compilerOptions": {
