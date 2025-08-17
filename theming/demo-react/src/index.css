@@ -1,7 +1,4 @@
 
-@import "tailwindcss";
-@import "tw-animate-css";
-
 /* FullCalendar Default UI */
 /* dev: */
 @source "../node_modules/@fullcalendar/theme-classic-dev/src";
@@ -27,6 +24,11 @@
 (no tailwind. prod uses vanilla css imports)
 */
 
+@custom-variant dark (&:is([data-color-scheme=dark] *));
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
 /* color palettes (used by dev and prod) */
 @import "@fullcalendar/theme-classic-dev/ui-default/palettes.css";
 @import "@fullcalendar/theme-breezy-dev/ui-default/palettes.css";
@@ -35,13 +37,40 @@
 @import "@fullcalendar/theme-forma-dev/ui-default/palettes.css";
 
 /* demo fonts */
+/* for Monarch */
 @import "@fontsource/roboto/300.css";
 @import "@fontsource/roboto/400.css";
 @import "@fontsource/roboto/500.css";
 @import "@fontsource/roboto/600.css";
 @import "@fontsource/roboto/700.css";
+/* for Forma */
+@import "@fontsource/noto-sans/300.css";
+@import "@fontsource/noto-sans/400.css";
+@import "@fontsource/noto-sans/500.css";
+@import "@fontsource/noto-sans/600.css";
+@import "@fontsource/noto-sans/700.css";
+/* for Breezy */
+/* See main.tsx ... use this technique for all fonts? */
+/* for Shadcn */
+@import "@fontsource/geist/300.css";
+@import "@fontsource/geist/400.css";
+@import "@fontsource/geist/500.css";
+@import "@fontsource/geist/600.css";
+@import "@fontsource/geist/700.css";
 
-@custom-variant dark (&:is([data-color-scheme=dark] *));
+
+html[data-ui=fc][data-theme=monarch] {
+  font-family: 'Roboto', sans-serif;
+}
+html[data-ui=fc][data-theme=forma] {
+  font-family: 'Noto Sans', 'Segoe UI', sans-serif;
+}
+html[data-ui=fc][data-theme=breezy] {
+  font-family: 'Inter Variable', sans-serif;
+}
+html[data-ui=shadcn] {
+  font-family: Geist, 'Geist Fallback';
+}
 
 html {
   color-scheme: light;
