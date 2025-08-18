@@ -101,9 +101,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'p-0.5',
       data.isCompact && 'border border-blue-500', // looks like bordered event
     ],
-    rowMoreLinkInnerClass: (data) => [
-      data.isCompact ? xxsTextClass : 'text-xs',
-    ],
+    rowMoreLinkInnerClass: (data) => data.isCompact ? xxsTextClass : 'text-xs',
   }
 
   return {
@@ -320,7 +318,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           'min-h-[3em]',
           data.isCompact ? xxsTextClass : 'text-sm',
         ],
-
         slotLabelDividerClass: (data) => [
           'border-l',
           data.isHeader ? 'border-transparent' : params.borderColorClass,

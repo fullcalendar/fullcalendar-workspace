@@ -147,10 +147,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       allDayDividerClass: `border-b ${params.borderColorClass} shadow-sm`,
 
-      slotLabelDividerClass: `border-s ${params.borderColorClass}`,
-
       slotLabelClass: 'justify-end',
       slotLabelInnerClass: 'p-2 text-xs text-gray-700',
+      slotLabelDividerClass: `border-s ${params.borderColorClass}`,
 
       slotLaneClass: borderClass,
 

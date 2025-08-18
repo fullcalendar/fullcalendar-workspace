@@ -78,7 +78,6 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           ]
           : 'pb-3 -ms-1 text-sm min-w-14',
           // TODO: also test lowest-level days
-
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
       },
     },

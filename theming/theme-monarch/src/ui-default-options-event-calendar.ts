@@ -25,7 +25,7 @@ export const optionParams: EventCalendarOptionParams = {
     data.hasNavLink && buttonEffectClass,
   ),
   highlightClass: 'bg-(--fc-monarch-primary-container) opacity-30',
-  disabledBgClass: 'bg-gray-500/7', // TODO: better theme value
+  disabledBgClass: 'bg-gray-500/7',
   borderColorClass: 'border-(--fc-monarch-outline-variant)',
   nowIndicatorBorderColorClass: 'border-(--fc-monarch-error)',
   eventColor: 'var(--fc-monarch-primary)',
