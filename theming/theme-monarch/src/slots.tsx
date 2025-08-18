@@ -49,7 +49,7 @@ export function createSlots(
                 textPart.type !== 'day'
                   ? 'whitespace-pre'
                   : joinClassNames(
-                      'flex flex-row items-center justify-center w-[2em] h-[2em] rounded-full',
+                      'flex flex-row items-center justify-center size-9 rounded-full',
                       data.isToday
                         ? params.todayPillClass({ hasNavLink: data.hasNavLink })
                         : data.hasNavLink && transparentPressableClass

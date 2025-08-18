@@ -345,7 +345,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : 'uppercase text-xs hover:underline', // secondary
         listDayEventsClass: 'flex-grow flex flex-col py-2',
 
-        listItemEventClass: 'group rounded-s-xl p-1',
+        listItemEventClass: 'group rounded-s-xl p-2',
         listItemEventColorClass: 'border-5 mx-2', // 10px diameter
         listItemEventInnerClass: 'text-sm',
         listItemEventTimeClass: 'w-40 mx-2',
