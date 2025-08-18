@@ -15,23 +15,24 @@ function getSecondaryButtonClass(isDisabled: boolean) {
   return secondaryButtonClass + (isDisabled ? ' opacity-90' : '')
 }
 
-export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
-  todayPillClass: (data) => 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-on-tertiary)' + (data.hasNavLink ? ' ' + buttonEffectClass : ''),
-  pillClass: (data) => 'bg-(--fc-monarch-primary-container) text-(--fc-monarch-on-primary-container)' + (data.hasNavLink ? ' ' + buttonEffectClass : ''),
-
+export const optionParams: EventCalendarOptionParams = {
+  todayPillClass: (data) => joinClassNames(
+    'bg-(--fc-monarch-tertiary) text-(--fc-monarch-on-tertiary)',
+    data.hasNavLink && buttonEffectClass,
+  ),
+  pillClass: (data) => joinClassNames(
+    'bg-(--fc-monarch-primary-container) text-(--fc-monarch-on-primary-container)',
+    data.hasNavLink && buttonEffectClass,
+  ),
   highlightClass: 'bg-(--fc-monarch-primary-container) opacity-30',
   disabledBgClass: 'bg-gray-500/7', // TODO: better theme value
-
   borderColorClass: 'border-(--fc-monarch-outline-variant)',
   nowIndicatorBorderColorClass: 'border-(--fc-monarch-error)',
-
   eventColor: 'var(--fc-monarch-primary)',
   eventContrastColor: 'var(--fc-monarch-on-primary)',
   backgroundEventColor: 'var(--fc-monarch-tertiary)',
   backgroundEventColorClass: 'brightness-115 opacity-15',
-
   popoverClass: 'border border-(--fc-monarch-outline-variant) rounded-lg bg-(--fc-monarch-canvas-color) dark:bg-(--fc-monarch-surface) dark:text-(--fc-monarch-on-surface) shadow-lg',
-
   pageBgColorClass: 'bg-(--fc-monarch-canvas-color)',
   pageBgColorOutlineClass: 'outline-(--fc-monarch-canvas-color)',
 }
@@ -46,10 +47,7 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     toolbarClass: 'p-4 items-center gap-3',
-    toolbarSectionClass: (data) => [
-      'items-center gap-3',
-      data.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto', // nicer wrapping
-    ],
+    toolbarSectionClass: 'items-center gap-3',
     toolbarTitleClass: 'text-xl md:text-2xl font-bold',
 
     buttons: {
@@ -93,20 +91,14 @@ export const defaultUiEventCalendarOptions: {
     ],
     buttonClass: (data) => [
       data.inSelectGroup && '-m-px', // HACK
-      'inline-flex items-center justify-center py-3 text-sm rounded-full',
+      'inline-flex items-center justify-center py-2.5 text-sm rounded-full',
       data.inGroup && 'relative active:z-20 focus:z-20',
       data.isSelected ? 'z-10' : 'z-0',
       data.isDisabled && `pointer-events-none`, // bypass hover styles
-      data.isIconOnly ? 'px-3' : 'px-5',
+      data.isIconOnly ? 'px-2.5' : 'px-5',
       (data.isIconOnly || (data.inSelectGroup && !data.isSelected))
         ? transparentPressableClass
         : data.isSelected
-          /* TODO
-          text-color: --mio-theme-color-on-surface-variant
-          bg-color: --mio-theme-color-secondary-container
-          bg-color-hover: --mio-theme-color-on-surface-2 (essentially just slightly darker)
-          button-group-bg: --mio-theme-color-surface-1 (second-to-lowest-contrast one)
-          */
           ? getSecondaryButtonClass(data.isDisabled)
           : data.isPrimary
             ? getPrimaryButtonClass(data.isDisabled)

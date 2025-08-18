@@ -46,7 +46,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
     },
     views: {
       timeline: {
-        rowEventClass: 'me-px items-center', // v-align
+        rowEventClass: 'me-px items-center', // v-align with continuation arrows
         rowEventBeforeClass: (data) => !data.isStartResizable && [
           continuationArrowClass,
           'border-e-[5px] border-e-black',

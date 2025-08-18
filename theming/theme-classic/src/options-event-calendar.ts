@@ -81,7 +81,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     data.isMinor && 'border-dotted',
   ]
 
-  const dayRowContentClasses: CalendarOptions = {
+  const dayRowItemClasses: CalendarOptions = {
     listItemEventClass: (data) => [
       `${dayCellItemClass} p-px`,
       data.isSelected
@@ -156,7 +156,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isCompact ? xxsTextClass : 'text-sm',
       ],
 
-      eventClass: (data) => data.event.url && 'hover:no-underline',
+      eventClass: 'hover:no-underline',
       eventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
       eventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
@@ -234,9 +234,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
-      dayHeaderDividerClass: `border-t ${params.borderColorClass}`,
       dayHeaderClass: (data) => getDayHeaderClasses(data, params),
       dayHeaderInnerClass: getDayHeaderInnerClasses,
+      dayHeaderDividerClass: `border-t ${params.borderColorClass}`,
 
       dayRowClass: `border ${params.borderColorClass}`,
       dayCellClass: getDayClasses,
@@ -252,8 +252,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       dayCellInnerClass: (data) => data.inPopover && 'p-2',
 
-      allDayDividerClass: `border-y ${params.borderColorClass} pb-0.5 ${neutralBgColorClass}`,
-
       dayLaneClass: getDayClasses,
       dayLaneInnerClass: (data) => data.isSimple
         ? 'm-1' // simple print-view
@@ -266,27 +264,28 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     },
     views: {
       dayGrid: {
-        ...dayRowContentClasses,
+        ...dayRowItemClasses,
         dayCellBottomClass: 'min-h-[1px]',
       },
       multiMonth: {
         tableClass: `border ${params.borderColorClass}`,
-        ...dayRowContentClasses,
+        ...dayRowItemClasses,
         dayCellBottomClass: 'min-h-[1px]',
       },
       timeGrid: {
-        ...dayRowContentClasses,
+        ...dayRowItemClasses,
         dayRowClass: 'min-h-10',
         dayCellBottomClass: 'min-h-3',
+
+        weekNumberHeaderClass: `${axisClass} items-center`, // v-align
+        weekNumberHeaderInnerClass: getAxisInnerClasses,
 
         allDayHeaderClass: `${axisClass} items-center`, // v-align
         allDayHeaderInnerClass: (data) => [
           ...getAxisInnerClasses(data),
           'whitespace-pre', // respects line-breaks in locale data
         ],
-
-        weekNumberHeaderClass: `${axisClass} items-center`, // v-align
-        weekNumberHeaderInnerClass: getAxisInnerClasses,
+        allDayDividerClass: `border-y ${params.borderColorClass} pb-0.5 ${neutralBgColorClass}`,
 
         slotLabelClass: axisClass,
         slotLabelInnerClass: (data) => [...getAxisInnerClasses(data), 'min-h-5'],

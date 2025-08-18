@@ -485,6 +485,9 @@ in standard theme,
   no longer have day classnames on popover
 changelog: +slotLabelAlign (only about highest level)
 changelog: navlinks on single-month title!
+changelog: we have these! contradicts other TODOs
+  rowEventTitleSticky: true,
+  columnEventTitleSticky: true,
 
 
 Docs
