@@ -13,6 +13,10 @@ clean+build all:
 
 Better theme demo w/ view-specific subdemos
 is moreLinkerInnerClass (and variants) needed?
+monarch no sticky col events!? disabled, in js setting, but should that js setting exist? part of theme?
+monarch col event, when really squatty, compresses divs weird
+add 2px h padding on daygrid-event time ? probably. morelink should match.
+monarch: test "today" when semi-transparent is-other
 
 
 theme checklist

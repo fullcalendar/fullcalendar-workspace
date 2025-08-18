@@ -31,7 +31,7 @@ export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700'
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 const cellPaddingClass = 'px-1 py-0.5'
-const listItemPaddingClass = 'px-3 py-2'
+const listViewItemPaddingClass = 'px-3 py-2'
 const axisClass = 'justify-end' // h-align
 
 const getAxisInnerClasses = (data: { isCompact: boolean }) => [
@@ -297,18 +297,18 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         nowIndicatorLineClass: `border-t ${params.nowIndicatorBorderColorClass}`,
       },
       list: {
-        listDayClass: `not-last:border-b ${params.borderColorClass}`,
+        listDayClass: `not-first:border-t ${params.borderColorClass}`,
         listDayHeaderClass: [
-          `sticky top-0 flex flex-row justify-between border-b ${params.borderColorClass} font-bold`,
+          `sticky z-10 top-0 flex flex-row justify-between border-b ${params.borderColorClass} -mb-px font-bold`,
           params.pageBgColorClass, // base color for overlaid "before" color
         ],
         listDayHeaderBeforeClass: `absolute inset-0 ${subtleBgColorClass}`,
-        listDayHeaderInnerClass: `relative ${listItemPaddingClass} text-sm`, // above the "before" element
+        listDayHeaderInnerClass: `relative ${listViewItemPaddingClass} text-sm`, // above the "before" element
 
         listItemEventClass: [
-          'hover:bg-gray-500/7 focus-visible:bg-gray-500/30 group gap-3 not-last:border-b',
+          'hover:bg-gray-500/7 focus-visible:bg-gray-500/30 group gap-3 border-t',
           params.borderColorClass,
-          listItemPaddingClass
+          listViewItemPaddingClass
         ],
         listItemEventColorClass: 'border-5', // 10px diameter
         listItemEventInnerClass: '[display:contents]',
