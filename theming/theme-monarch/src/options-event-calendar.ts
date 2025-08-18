@@ -93,8 +93,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     listItemEventClass: (data) => [
       `${dayRowItemBaseClass} p-px`,
       data.isSelected
-      ? joinClassNames(transparentStrongBgClass, data.isDragging && 'shadow-sm')
-      : transparentPressableClass,
+        ? joinClassNames(transparentStrongBgClass, data.isDragging && 'shadow-sm')
+        : transparentPressableClass,
     ],
     listItemEventColorClass: (data) => [
       'border-4', // 8px diameter
@@ -345,7 +345,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : 'uppercase text-xs hover:underline', // secondary
         listDayEventsClass: 'flex-grow flex flex-col py-2',
 
-        listItemEventClass: 'group rounded-s-xl p-2',
+        listItemEventClass: `group rounded-s-full p-2 ${transparentPressableClass}`,
         listItemEventColorClass: 'border-5 mx-2', // 10px diameter
         listItemEventInnerClass: 'text-sm',
         listItemEventTimeClass: 'w-40 mx-2',
