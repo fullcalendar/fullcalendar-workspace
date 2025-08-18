@@ -46,6 +46,8 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
+    className: `border ${optionParams.borderColorClass} rounded-xl overflow-hidden`,
+
     toolbarClass: 'p-4 items-center gap-3',
     toolbarSectionClass: 'items-center gap-3',
     toolbarTitleClass: 'text-xl md:text-2xl font-bold',

@@ -13,7 +13,8 @@ export interface EventCalendarOptionParams {
   nowIndicatorBorderStartColorClass: string
   nowIndicatorBorderTopColorClass: string
   compactMoreLinkBorderColorClass: string
-  todayBgColorClass: string
+  todayBgColorClass: string // opaque
+  disabledBgClass: string // opaque, so can't be used for non-business
   highlightClass: string
   eventColor: string
   eventContrastColor: string
@@ -24,8 +25,7 @@ export interface EventCalendarOptionParams {
   pageBgColorOutlineClass: string
 }
 
-export const neutralBgColorClass = 'bg-gray-500/10 dark:bg-gray-500/15'
-export const neutralTextColorClass = 'text-gray-500 dark:text-gray-300'
+export const subtleBgColorClass = 'bg-gray-500/10 dark:bg-gray-500/15'
 export const solidMoreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
 export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700'
 
@@ -47,7 +47,8 @@ export const getDayHeaderClasses = (
   'border justify-center', // v-align
   data.inPopover ? 'items-start' : 'items-center', // h-align
   data.isMajor ? majorBorderColorClass : params.borderColorClass,
-  (data.inPopover || data.isDisabled) && neutralBgColorClass,
+  data.inPopover ? subtleBgColorClass :
+    (data.isDisabled && params.disabledBgClass)
 ]
 
 export const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
@@ -73,7 +74,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     'border',
     data.isMajor ? majorBorderColorClass : params.borderColorClass,
     data.isToday && params.todayBgColorClass,
-    data.isDisabled && neutralBgColorClass,
+    data.isDisabled && params.disabledBgClass,
   ]
 
   const getSlotClasses = (data: { isMinor: boolean }) => [
@@ -129,7 +130,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventContrastColor: params.eventContrastColor,
       backgroundEventColor: params.backgroundEventColor,
 
-      className: 'gap-5',
       viewClass: `border ${params.borderColorClass}`,
       tableHeaderClass: (data) => data.isSticky && params.pageBgColorClass,
 
@@ -145,14 +145,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverCloseClass: 'absolute top-0.5 end-0.5 not-hover:opacity-65',
 
       fillerClass: `border ${params.borderColorClass} opacity-50`,
-      nonBusinessClass: neutralBgColorClass,
+      nonBusinessClass: subtleBgColorClass,
       highlightClass: params.highlightClass,
 
       navLinkClass: 'hover:underline',
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
-      inlineWeekNumberClass: `absolute z-20 top-0 start-0 rounded-ee-sm p-0.5 ${neutralBgColorClass}`,
+      inlineWeekNumberClass: `absolute z-20 top-0 start-0 rounded-ee-sm p-0.5 ${subtleBgColorClass}`,
       inlineWeekNumberInnerClass: (data) => [
-        `text-center ${neutralTextColorClass}`,
+        `text-center text-gray-500 dark:text-gray-300`,
         data.isCompact ? xxsTextClass : 'text-sm',
       ],
 
@@ -285,7 +285,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           ...getAxisInnerClasses(data),
           'whitespace-pre', // respects line-breaks in locale data
         ],
-        allDayDividerClass: `border-y ${params.borderColorClass} pb-0.5 ${neutralBgColorClass}`,
+        allDayDividerClass: `border-y ${params.borderColorClass} pb-0.5 ${subtleBgColorClass}`,
 
         slotLabelClass: axisClass,
         slotLabelInnerClass: (data) => [...getAxisInnerClasses(data), 'min-h-5'],
@@ -300,7 +300,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           `sticky top-0 flex flex-row justify-between border-b ${params.borderColorClass} font-bold`,
           params.pageBgColorClass, // base color for overlaid "before" color
         ],
-        listDayHeaderBeforeClass: `absolute inset-0 ${neutralBgColorClass}`,
+        listDayHeaderBeforeClass: `absolute inset-0 ${subtleBgColorClass}`,
         listDayHeaderInnerClass: `relative ${listItemPaddingClass} text-sm`, // above the "before" element
 
         listItemEventClass: [
@@ -316,7 +316,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.event.url && 'group-hover:underline',
         ],
 
-        noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center ${neutralBgColorClass}`,
+        noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center ${subtleBgColorClass}`,
       },
     },
   }

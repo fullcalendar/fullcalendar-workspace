@@ -1,5 +1,5 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
-import { EventCalendarOptionParams, getDayHeaderClasses, getDayHeaderInnerClasses, solidMoreLinkBgClass, neutralBgColorClass } from './options-event-calendar.js'
+import { EventCalendarOptionParams, getDayHeaderClasses, getDayHeaderInnerClasses, solidMoreLinkBgClass, subtleBgColorClass } from './options-event-calendar.js'
 
 // ambient types
 import {} from '@fullcalendar/timeline'
@@ -24,14 +24,14 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceAreaHeaderClass: `border ${params.borderColorClass} items-center`, // valign
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
 
-      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${neutralBgColorClass}`,
+      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${subtleBgColorClass}`,
 
       // For both resources & resource groups
       resourceAreaRowClass: `border ${params.borderColorClass}`,
 
-      resourceGroupHeaderClass: neutralBgColorClass,
+      resourceGroupHeaderClass: subtleBgColorClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: `border ${params.borderColorClass} ${neutralBgColorClass}`,
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${subtleBgColorClass}`,
 
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',

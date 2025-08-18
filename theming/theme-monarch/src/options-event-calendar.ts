@@ -28,6 +28,7 @@ TODO: resource-view expander doesn't expand. use chevron-down and do rotations
 TODO: put bigger hit area inside resource-area-divider-RESIZER
 TODO: timeline event spaciousness
 TODO: better icon sizes
+TODO: MUI multimonth, stacked rows of disabled days don't work
 */
 
 // ambient types (tsc strips during build because of {})
@@ -110,17 +111,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventContrastColor: params.eventContrastColor,
       backgroundEventColor: params.backgroundEventColor,
 
-      className: `border ${params.borderColorClass} rounded-xl overflow-hidden`,
       tableHeaderClass: (data) => data.isSticky && `${params.pageBgColorClass} border-b ${params.borderColorClass}`,
 
       singleMonthClass: (data) => data.colCount > 1 && 'm-4',
       singleMonthHeaderClass: (data) => [
+        data.colCount > 1 ? 'pb-4' : 'py-2',
         data.isSticky && `border-b ${params.borderColorClass} ${params.pageBgColorClass}`,
-        data.isSticky
-          ? 'py-2' // single column
-          : 'pb-4', // multi-column
-        data.isCompact ? 'text-base' : 'text-lg',
-        'text-center font-bold',
+        'justify-center',
+      ],
+      singleMonthHeaderInnerClass: (data) => [
+        'font-bold',
+        !data.isCompact && 'text-lg',
       ],
 
       popoverClass: 'm-2 min-w-3xs ' + params.popoverClass,

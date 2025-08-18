@@ -70,6 +70,8 @@ CODE
   use focus-visible: instead of focus:
   isSticky should not be abused for colCnt===1
   when putting outline on columnEvent, use isMirror instead of isDragging
+  outer border effects should be in ui-default code
+    also view-border... nah because code to put border around singleMonth nice to have in same place
 TEST
   ALL stickiness, esp when calendar root is overflow:hidden
   test horizontal scrolling

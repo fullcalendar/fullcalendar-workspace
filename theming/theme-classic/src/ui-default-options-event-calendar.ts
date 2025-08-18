@@ -19,6 +19,7 @@ export const optionParams: EventCalendarOptionParams = {
   nowIndicatorBorderTopColorClass: 'border-t-(--fc-classic-now-indicator-color)',
   compactMoreLinkBorderColorClass: 'border-[#3788d8]',
   todayBgColorClass: 'bg-(--fc-classic-today-color)',
+  disabledBgClass: 'bg-gray-500/10 dark:bg-gray-500/15', // same as subtleBgColorClass
   highlightClass: 'bg-(--fc-classic-highlight-color)',
   eventColor: '#3788d8',
   eventContrastColor: 'var(--color-white)',
@@ -37,6 +38,8 @@ export const defaultUiEventCalendarOptions: {
 } = {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
+
+    className: 'gap-5',
 
     toolbarClass: (data) => [
       'items-center gap-3',
