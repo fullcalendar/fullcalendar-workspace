@@ -11,7 +11,7 @@ export const optionParams: EventCalendarOptionParams = {
   nowIndicatorBorderStartColorClass: 'border-s-(--mui-palette-error-main)',
   nowIndicatorBorderTopColorClass: 'border-t-(--mui-palette-error-main)',
   compactMoreLinkBorderColorClass: 'border-(--mui-palette-primary-main)',
-  todayBgColorClass: 'bg-[rgba(var(--mui-palette-warning-mainChannel)_/_0.1)]',
+  todayBgClass: 'bg-[rgba(var(--mui-palette-warning-mainChannel)_/_0.1)]',
   disabledBgClass: 'bg-(--mui-palette-action-disabledBackground)',
   highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
   eventColor: 'var(--mui-palette-primary-main)',

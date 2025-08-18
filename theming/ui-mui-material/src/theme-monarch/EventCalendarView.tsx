@@ -18,6 +18,8 @@ export const optionParams: EventCalendarOptionParams = {
   borderColorClass: 'border-(--mui-palette-divider)',
   nowIndicatorBorderColorClass: 'border-(--mui-palette-error-main)',
 
+  compactMoreLinkBorderColorClass: 'border-(--mui-palette-primary-main)',
+
   /*
   pageBgColorClass: '',
   pageBgColorOutlineClass: '',

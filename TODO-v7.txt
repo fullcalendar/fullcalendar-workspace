@@ -12,6 +12,7 @@ clean+build all:
 
 
 Better theme demo w/ view-specific subdemos
+is moreLinkerInnerClass (and variants) needed?
 
 
 theme checklist
@@ -57,6 +58,7 @@ All themes
     widths... minTitleWidth setting?
   grey-out the "Today" for default-ui. mui/shadcn look bad so forget them.
 CODE
+  dont have general options define rowEvent/colEvent outer margin
   move font-size/line-height AWAY from eventInner... move to eventTime/Title
   remove borderClass/majorBorderClass ... use borderColorClass each time
   Use rotated icons to save space
@@ -72,6 +74,7 @@ CODE
   when putting outline on columnEvent, use isMirror instead of isDragging
   outer border effects should be in ui-default code
     also view-border... nah because code to put border around singleMonth nice to have in same place
+  audit all block-event isStart/isEnd effects, especially on color div
 TEST
   ALL stickiness, esp when calendar root is overflow:hidden
   test horizontal scrolling

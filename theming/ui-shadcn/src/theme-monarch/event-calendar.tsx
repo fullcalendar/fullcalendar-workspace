@@ -69,6 +69,7 @@ export const optionParams: EventCalendarOptionParams = {
 
   borderColorClass: '', // border-color is set globally
   nowIndicatorBorderColorClass: 'border-destructive',
+  compactMoreLinkBorderColorClass: 'border-primary',
 
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',

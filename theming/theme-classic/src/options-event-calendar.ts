@@ -13,7 +13,7 @@ export interface EventCalendarOptionParams {
   nowIndicatorBorderStartColorClass: string
   nowIndicatorBorderTopColorClass: string
   compactMoreLinkBorderColorClass: string
-  todayBgColorClass: string // opaque
+  todayBgClass: string
   disabledBgClass: string // opaque, so can't be used for non-business
   highlightClass: string
   eventColor: string
@@ -32,7 +32,6 @@ export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700'
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 const cellPaddingClass = 'px-1 py-0.5'
 const listItemPaddingClass = 'px-3 py-2'
-const dayCellItemClass = 'mx-0.5 mb-px rounded-sm'
 const axisClass = 'justify-end' // h-align
 
 const getAxisInnerClasses = (data: { isCompact: boolean }) => [
@@ -73,7 +72,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const getDayClasses = (data: { isMajor: boolean, isToday: boolean, isDisabled: boolean}) => [
     'border',
     data.isMajor ? majorBorderColorClass : params.borderColorClass,
-    data.isToday && params.todayBgColorClass,
+    data.isToday && params.todayBgClass,
     data.isDisabled && params.disabledBgClass,
   ]
 
@@ -82,9 +81,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     data.isMinor && 'border-dotted',
   ]
 
+  const dayRowItemBaseClass = 'mx-0.5 mb-px rounded-sm'
   const dayRowItemClasses: CalendarOptions = {
     listItemEventClass: (data) => [
-      `${dayCellItemClass} p-px`,
+      `${dayRowItemBaseClass} p-px`,
       data.isSelected
         ? joinClassNames('bg-gray-500/40', data.isDragging && 'shadow-sm')
         : 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
@@ -113,7 +113,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
 
     rowMoreLinkClass: (data) => [
-      `${dayCellItemClass} hover:bg-gray-500/20`,
+      `${dayRowItemBaseClass} hover:bg-gray-500/20`,
       data.isCompact
         ? `border ${params.compactMoreLinkBorderColorClass}`
         : 'self-start p-px',
@@ -170,21 +170,21 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
 
       blockEventClass: (data) => [
-        'relative group p-px',
+        'relative group p-px', // 1px matches print-border
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
-          : joinClassNames('focus-visible:shadow-md', data.isDragging && 'opacity-75')
+          : joinClassNames('focus-visible:shadow-md', data.isDragging && 'opacity-75'),
       ],
       blockEventColorClass: (data) => [
         'absolute z-0 inset-0 bg-(--fc-event-color)',
-        'print:border print:border-(--fc-event-color) print:bg-white',
+        'print:bg-white print:border-(--fc-event-color)', // subclasses do print-border-width
         data.isSelected
           ? 'brightness-75'
           : 'group-focus-visible:brightness-75',
       ],
-      blockEventInnerClass: 'relative z-10 text-(--fc-event-contrast-color) print:text-black flex',
+      blockEventInnerClass: 'relative z-10 flex text-(--fc-event-contrast-color) print:text-black',
 
-      rowEventClass: 'mb-px', // space between events
+      rowEventClass: 'mb-px',
       rowEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-start-1',
@@ -194,8 +194,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-end-1',
       ],
       rowEventColorClass: (data) => [
-        !data.isStart && 'print:border-s-0',
-        !data.isEnd && 'print:border-e-0',
+        'print:border-y',
+        data.isStart && 'print:border-s',
+        data.isEnd && 'print:border-e',
       ],
       rowEventInnerClass: 'flex-row items-center',
       rowEventTimeClass: (data) => [
@@ -217,8 +218,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-bottom-1',
       ],
       columnEventColorClass: (data) => [
-        data.isStart && 'rounded-t-sm',
-        data.isEnd && 'rounded-b-sm',
+        'print:border-x',
+        data.isStart && 'print:border-t rounded-t-sm',
+        data.isEnd && 'print:border-b rounded-b-sm',
         (data.level || data.isMirror) && `outline ${params.pageBgColorOutlineClass}`,
       ],
       columnEventInnerClass: (data) => [

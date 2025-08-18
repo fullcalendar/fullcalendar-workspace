@@ -54,7 +54,7 @@ export const optionParams: EventCalendarOptionParams = {
   nowIndicatorBorderStartColorClass: 'border-s-destructive',
   nowIndicatorBorderTopColorClass: 'border-t-destructive',
   compactMoreLinkBorderColorClass: 'border-primary',
-  todayBgColorClass: 'bg-yellow-400/15 dark:bg-yellow-200/10',
+  todayBgClass: 'bg-yellow-400/15 dark:bg-yellow-200/10',
   disabledBgClass: 'bg-muted',
   highlightClass: 'bg-sky-500/10',
   eventColor: 'var(--primary)',

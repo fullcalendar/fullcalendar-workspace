@@ -1,4 +1,4 @@
-import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 
 /*
 TODO:
@@ -29,6 +29,8 @@ TODO: put bigger hit area inside resource-area-divider-RESIZER
 TODO: timeline event spaciousness
 TODO: better icon sizes
 TODO: MUI multimonth, stacked rows of disabled days don't work
+TODO: MUI week-number pill is weirdly dim
+TODO: MUI week-number pill should be more DIFFERENT color than today circle
 */
 
 // ambient types (tsc strips during build because of {})
@@ -43,10 +45,11 @@ export interface EventCalendarOptionParams {
   todayPillClass: (data: { hasNavLink: boolean }) => string
   // same. for week number and timeline axis labels
   pillClass: (data: { hasNavLink: boolean }) => string
-  highlightClass: string
-  disabledBgClass: string
   borderColorClass: string
   nowIndicatorBorderColorClass: string
+  compactMoreLinkBorderColorClass: string
+  highlightClass: string
+  disabledBgClass: string
   eventColor: string
   eventContrastColor: string
   backgroundEventColor: string
@@ -56,7 +59,7 @@ export interface EventCalendarOptionParams {
   pageBgColorOutlineClass: string
 }
 
-export const xxsTextClass = 'text-[0.7rem]/[1.25]'
+export const xxsTextClass = 'text-[0.65rem]/[1.25]'
 export const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // TODO: ugly dark grey?
 export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700'
 export const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20'
@@ -87,22 +90,36 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
   const dayRowItemBaseClass = 'mx-0.5 mb-px rounded-sm'
   const dayRowItemClasses: CalendarOptions = {
-    listItemEventClass: dayRowItemBaseClass,
+    listItemEventClass: (data) => [
+      `${dayRowItemBaseClass} p-px`,
+      data.isSelected
+      ? joinClassNames(transparentStrongBgClass, data.isDragging && 'shadow-sm')
+      : transparentPressableClass,
+    ],
     listItemEventColorClass: (data) => [
       'border-4', // 8px diameter
       data.isCompact ? 'mx-px' : 'mx-1',
     ],
-    listItemEventInnerClass: (data) => data.isCompact ? xxsTextClass : 'text-xs',
-    listItemEventTimeClass: 'p-0.5',
-    listItemEventTitleClass: 'p-0.5 font-bold',
+    listItemEventTimeClass: (data) => [
+      'p-px',
+      data.isCompact ? xxsTextClass : 'text-xs',
+    ],
+    listItemEventTitleClass: (data) => [
+      'p-px font-bold',
+      data.isCompact ? xxsTextClass : 'text-xs',
+    ],
 
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
       transparentPressableClass,
-      'p-0.5',
-      data.isCompact && 'border border-blue-500', // looks like bordered event
+      data.isCompact
+        ? `border ${params.compactMoreLinkBorderColorClass}`
+        : 'p-px'
     ],
-    rowMoreLinkInnerClass: (data) => data.isCompact ? xxsTextClass : 'text-xs',
+    rowMoreLinkInnerClass: (data) => [
+      'p-px',
+      data.isCompact ? xxsTextClass : 'text-xs',
+    ],
   }
 
   return {
@@ -151,36 +168,27 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
 
-      listItemEventClass: (data) => [
-        'items-center',
-        data.isSelected
-          ? transparentStrongBgClass // touch-selected
-          : transparentPressableClass,
-        (data.isSelected && data.isDragging) && 'shadow-sm', // touch-dragging
-      ],
+      listItemEventClass: 'items-center',
       listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
       listItemEventInnerClass: 'flex flex-row items-center',
 
       blockEventClass: (data) => [
-        'relative', // for absolute-positioned color
-        'group', // for focus and hover
-        (data.isDragging && !data.isSelected) && 'opacity-75',
+        'relative group p-px', // 1px matches print-border
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
-          : 'focus:shadow-md',
+          : joinClassNames('focus:shadow-md', data.isDragging && 'opacity-75'),
       ],
       blockEventColorClass: (data) => [
-        'absolute z-0 inset-0',
-        'bg-(--fc-event-color) print:bg-white',
-        'print:border print:border-(--fc-event-color)',
+        'absolute z-0 inset-0 bg-(--fc-event-color)',
+        'print:bg-white print:border-(--fc-event-color)', // subclasses do print-border-width
         data.isSelected
           ? 'brightness-75'
           : 'group-focus:brightness-75',
       ],
-      blockEventInnerClass: 'relative z-10 flex text-(--fc-event-contrast-color)',
+      blockEventInnerClass: 'relative z-10 flex text-(--fc-event-contrast-color) print:text-black',
 
       rowEventClass: (data) => [
-        'mb-px', // space between events
+        'mb-px',
         data.isStart ? 'ms-px' : 'ps-2',
         data.isEnd ? 'me-px' : 'pe-2',
       ],
@@ -193,8 +201,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-end-1',
       ],
       rowEventColorClass: (data) => [
-        data.isStart && 'rounded-s-sm',
-        data.isEnd && 'rounded-e-sm',
+        'print:border-y',
+        data.isStart && 'print:border-s rounded-s-sm',
+        data.isEnd && 'print:border-e rounded-e-sm',
         (!data.isStart && !data.isEnd) // arrows on both sides
           ? '[clip-path:polygon(0_50%,6px_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,6px_100%)]'
           : !data.isStart // just start side
@@ -202,14 +211,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             : !data.isEnd // just end side
               && '[clip-path:polygon(0_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,0_100%)]',
       ],
-      rowEventInnerClass: (data) => [
-        'flex-row items-center',
+      rowEventInnerClass: 'flex-row items-center',
+      rowEventTimeClass: (data) => [
+        'p-px font-bold',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
-      rowEventTimeClass: 'p-1 font-bold',
-      rowEventTitleClass: 'p-1',
+      rowEventTitleClass: (data) => [
+        'p-px',
+        data.isCompact ? xxsTextClass : 'text-xs',
+      ],
 
-      columnEventClass: 'mb-px', // space from slot line
+      columnEventClass: 'mb-px',
       columnEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-top-1',
@@ -219,8 +231,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-bottom-1',
       ],
       columnEventColorClass: (data) => [
-        data.isStart && 'rounded-t-sm',
-        data.isEnd && 'rounded-b-sm',
+        'print:border-x',
+        data.isStart && 'print:border-t rounded-t-sm',
+        data.isEnd && 'print:border-b rounded-b-sm',
         (data.level || data.isDragging) && `outline ${params.pageBgColorOutlineClass}`,
       ],
       columnEventInnerClass: (data) => data.isCompact
