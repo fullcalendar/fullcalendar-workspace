@@ -74,7 +74,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           ? [
             // TODO: converge with week-label styles
             'px-2 py-1 rounded-full text-sm',
-            params.pillClass({ hasNavLink: data.hasNavLink }),
+            params.miscPillClass({ hasNavLink: data.hasNavLink }),
           ]
           : 'pb-3 -ms-1 text-sm min-w-14',
           // TODO: also test lowest-level days

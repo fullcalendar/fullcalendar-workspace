@@ -62,7 +62,7 @@ const accentButtonClass = `${accentClass} hover:bg-gray-500/20 active:bg-gray-50
 
 export const optionParams: EventCalendarOptionParams = {
   todayPillClass: (data) => data.hasNavLink ? primaryButtonClass : primaryClass,
-  pillClass: (data) => data.hasNavLink ? accentButtonClass : accentClass,
+  miscPillClass: (data) => data.hasNavLink ? accentButtonClass : accentClass,
 
   highlightClass: 'bg-primary opacity-10',
   disabledBgClass: 'bg-muted',

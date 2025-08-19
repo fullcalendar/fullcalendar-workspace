@@ -18,16 +18,6 @@ monarch col event, when really squatty, compresses divs weird
 add 2px h padding on daygrid-event time ? probably. morelink should match.
 monarch: test "today" when semi-transparent is-other
 
-move away from okhlc colors... bad browser support
-
-dark: should not be allowed in theme default-ui!!!
-  no way of detecting dark on its own
-
-theme systems DO offer semitransparent muted color
-  shadcn: bg-accent/50 (whereas bg-muted is opaque)
-  mui: palette.action.hover/disabledBackground (and others... almost all colors are semitransparent)
-    "Think of them as neutral greys applied on top of surfaces when something is happening, typically by overlay or opacity — rather than fixed colors like primary/secondary."
-
 
 theme checklist
 ---------------
@@ -74,6 +64,7 @@ All themes
     widths... minTitleWidth setting?
   grey-out the "Today" for default-ui. mui/shadcn look bad so forget them.
 CODE
+  dark: not allowed in theme core! no way to detect without relying on third-party UI lib
   dont have general options define rowEvent/colEvent outer margin
   move font-size/line-height AWAY from eventInner... move to eventTime/Title
   remove borderClass/majorBorderClass ... use borderColorClass each time
@@ -105,6 +96,10 @@ NOTES
     text-sm = 14px (day-numbers, slot-labels, datagrid cells)
     text-xs = 12px (events)
     xxsTextClass ~= 11px (time within events -- use sparingly)
+  rowMoreLinkInner class is necessary for stickiness in timeline
+  we have CORE handle as much stickiness as possible because
+    REACT-NATIVE (when we eventually target it) cannot do stickiness,
+    we need a higher-level JSX util of sorts
 
 
 just before beta (after theme gen)
@@ -146,6 +141,7 @@ project: ResizeObserver refactor
     bug: bottom filler isn't working in a11y-ci/resource-timeline-row-grouping.html
 
 after-beta todo:
+  move away from okhlc colors... bad browser support
   print-view is messed up
   think about reviving compact timegrid print view, or at least providing a setting
     https://fullcalendar.freshdesk.com/a/tickets/11181
@@ -267,7 +263,9 @@ THEME SYSTEM
   we killed the default headerToolbar. bad idea?
     was ever merged recursively? if so, dont do that
   [rename] stickyHeaderDates -> tableHeaderSticky
+    we already have tableHeaderSticky in the codebase, but its a CLASSNAME, not a flag
     (write in changelog that doesn't apply to list-view day-headers anymore)
+  [new-setting] slotLabelInnerSticky (boolean)
   [rename] stickyFooterScrollbar -> footerScrollbarSticky
   [eventually, when we need the feature]
     headerToolbarSticky
@@ -506,9 +504,8 @@ in standard theme,
   no longer have day classnames on popover
 changelog: +slotLabelAlign (only about highest level)
 changelog: navlinks on single-month title!
-changelog: we have these! contradicts other TODOs
-  rowEventTitleSticky: true,
-  columnEventTitleSticky: true,
+changelog: sticky-bottom for no-events message
+changelog: classic theme has slightly more spacious look
 
 
 Docs

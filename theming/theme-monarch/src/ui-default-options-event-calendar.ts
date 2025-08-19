@@ -3,7 +3,7 @@ import { createEventCalendarOptions, EventCalendarOptionParams, transparentPress
 import * as svgs from './ui-default-svgs.js'
 
 const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]'
-const buttonEffectClass = 'hover:brightness-80 active:brightness-120'
+const buttonEffectClass = 'hover:brightness-80 active:brightness-120' // why not same as transparentPressableClass?
 const primaryButtonClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary) ${buttonEffectClass}`
 const secondaryButtonClass = `bg-(--fc-monarch-secondary) text-(--fc-monarch-on-secondary) ${buttonEffectClass}`
 
@@ -20,7 +20,7 @@ export const optionParams: EventCalendarOptionParams = {
     'bg-(--fc-monarch-tertiary) text-(--fc-monarch-on-tertiary)',
     data.hasNavLink && buttonEffectClass,
   ),
-  pillClass: (data) => joinClassNames(
+  miscPillClass: (data) => joinClassNames(
     'bg-(--fc-monarch-primary-container) text-(--fc-monarch-on-primary-container)',
     data.hasNavLink && buttonEffectClass,
   ),

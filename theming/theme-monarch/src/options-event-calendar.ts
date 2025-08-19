@@ -44,7 +44,7 @@ export interface EventCalendarOptionParams {
   // should just provide colors and hover effects
   todayPillClass: (data: { hasNavLink: boolean }) => string
   // same. for week number and timeline axis labels
-  pillClass: (data: { hasNavLink: boolean }) => string
+  miscPillClass: (data: { hasNavLink: boolean }) => string
   borderColorClass: string
   nowIndicatorBorderColorClass: string
   compactMoreLinkBorderColorClass: string
@@ -82,7 +82,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
   const getWeekNumberPillClasses = (data: { hasNavLink: boolean, isCompact: boolean }) => [
     'rounded-full h-[1.8em] flex flex-row items-center', // match height of daynumber
-    params.pillClass({ hasNavLink: data.hasNavLink }),
+    params.miscPillClass({ hasNavLink: data.hasNavLink }),
     data.isCompact
       ? `${xxsTextClass} px-1`
       : 'text-sm px-2'
