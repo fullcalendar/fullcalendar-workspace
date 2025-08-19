@@ -34,12 +34,12 @@ export function EventCalendarToolbar({
             aria-label={addButton.hint}
           >{addButton.text}</Button>
         )}
+        <Button
+          onClick={() => controller.today()}
+          aria-label={buttons.today.hint}
+          variant='outline'
+        >{buttons.today.text}</Button>
         <div className='flex items-center'>
-          <Button
-            onClick={() => controller.today()}
-            aria-label={buttons.today.hint}
-            variant='outline'
-          >{buttons.today.text}</Button>
           <Button
             onClick={() => controller.prev()}
             disabled={buttons.prev.isDisabled}

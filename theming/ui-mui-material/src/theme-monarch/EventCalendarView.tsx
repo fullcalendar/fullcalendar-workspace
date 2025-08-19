@@ -10,7 +10,7 @@ export const optionParams: EventCalendarOptionParams = {
   // TODO: better hasNavLink
   // TODO: use --mui-palette-secondary-mainChannel to choose opacity
   todayPillClass: () => 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)',
-  miscPillClass: () => 'brightness-115 bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.15)]',
+  miscPillClass: () => 'brightness-115 bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.15)]',
 
   highlightClass: 'bg-(--mui-palette-secondary-main) opacity-10',
   disabledBgClass: 'bg-(--mui-palette-action-disabledBackground)',
