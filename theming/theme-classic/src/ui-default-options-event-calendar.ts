@@ -19,8 +19,10 @@ export const optionParams: EventCalendarOptionParams = {
   nowIndicatorBorderTopColorClass: 'border-t-(--fc-classic-now-indicator-color)',
   compactMoreLinkBorderColorClass: 'border-[#3788d8]',
   todayBgClass: 'bg-(--fc-classic-today-color)',
-  disabledBgClass: 'bg-gray-500/10 dark:bg-gray-500/15', // same as subtleBgColorClass
   highlightClass: 'bg-(--fc-classic-highlight-color)',
+  transparentMutedBgClass: 'bg-(--fc-classic-muted-transparent-color)',
+  opaqueMutedBgClass: 'bg-(--fc-classic-muted-opaque-color)',
+  mutedBgClass: 'bg-(--fc-classic-muted-transparent-color)',
   eventColor: '#3788d8',
   eventContrastColor: 'var(--color-white)',
   backgroundEventColor: 'var(--color-green-500)',

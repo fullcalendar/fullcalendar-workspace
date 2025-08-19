@@ -18,6 +18,13 @@ monarch col event, when really squatty, compresses divs weird
 add 2px h padding on daygrid-event time ? probably. morelink should match.
 monarch: test "today" when semi-transparent is-other
 
+move away from okhlc colors... bad browser support
+
+theme systems DO offer semitransparent muted color
+  shadcn: bg-accent/50 (whereas bg-muted is opaque)
+  mui: palette.action.hover/disabledBackground (and others... almost all colors are semitransparent)
+    "Think of them as neutral greys applied on top of surfaces when something is happening, typically by overlay or opacity — rather than fixed colors like primary/secondary."
+
 
 theme checklist
 ---------------

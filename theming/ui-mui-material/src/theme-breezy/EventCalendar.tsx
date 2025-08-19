@@ -1,6 +1,5 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import Box from '@mui/material/Box'
-import { useTheme, alpha } from '@mui/material/styles'
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
 import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
@@ -23,11 +22,6 @@ export default function EventCalendar({
   ...calendarOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
-  const theme = useTheme()
-  const mutedBackgroundColor = useMemo(
-    () => alpha(theme.palette.divider, 0.025),
-    [theme.palette.divider],
-  )
 
   return (
     <Box
@@ -41,7 +35,7 @@ export default function EventCalendar({
       <EventCalendarToolbar
         sx={{
           padding: 2,
-          backgroundColor: mutedBackgroundColor,
+          bgcolor: 'action.hover', // low-contrast grey
         }}
         controller={controller}
         availableViews={availableViews}

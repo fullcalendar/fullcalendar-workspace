@@ -1,5 +1,5 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
-import { EventCalendarOptionParams, getDayHeaderClasses, getDayHeaderInnerClasses, solidMoreLinkBgClass, subtleBgColorClass } from './options-event-calendar.js'
+import { EventCalendarOptionParams, getDayHeaderClasses, getDayHeaderInnerClasses } from './options-event-calendar.js'
 
 // ambient types
 import {} from '@fullcalendar/timeline'
@@ -24,14 +24,14 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceAreaHeaderClass: `border ${params.borderColorClass} items-center`, // valign
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
 
-      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${subtleBgColorClass}`,
+      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${params.mutedBgClass}`,
 
       // For both resources & resource groups
       resourceAreaRowClass: `border ${params.borderColorClass}`,
 
-      resourceGroupHeaderClass: subtleBgColorClass,
+      resourceGroupHeaderClass: params.transparentMutedBgClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: `border ${params.borderColorClass} ${subtleBgColorClass}`,
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.transparentMutedBgClass}`,
 
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
@@ -60,7 +60,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           data.isSpacious ? 'py-1' : 'py-px',
         ],
 
-        rowMoreLinkClass: `me-px p-px ${solidMoreLinkBgClass}`,
+        rowMoreLinkClass: `me-px p-px ${params.opaqueMutedBgClass}`,
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
         slotLabelClass: 'justify-center', // v-align

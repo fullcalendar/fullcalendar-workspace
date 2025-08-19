@@ -4,6 +4,8 @@
   --fc-classic-border-color: #ddd;
   --fc-classic-today-color: rgba(253, 199, 0, 0.15); /* yellow-400/15 */
   --fc-classic-highlight-color: rgba(206, 250, 254, .4); /* cyan-100/40 */
+  --fc-classic-muted-transparent-color: rgba(105, 114, 130, .1); /* gray-500/10 */
+  --fc-classic-muted-opaque-color: oklch(96.7% 0.003 264.542); /* gray-100 */
   --fc-classic-now-indicator-color: oklch(63.7% 0.237 25.331); /* red-500 */
 }
 
@@ -12,4 +14,6 @@
   --fc-classic-border-color: oklch(27.8% 0.033 256.848); /* gray-800 */
   --fc-classic-today-color: rgba(255, 240, 133, 0.1); /* yellow-200/10 */
   --fc-classic-highlight-color: rgba(43, 127, 255, .2); /* blue-500/20 */
+  --fc-classic-muted-transparent-color: rgba(105, 114, 130, .15); /* gray-500/15 */
+  --fc-classic-muted-opaque-color: oklch(21% 0.034 264.665); /* gray-900 */
 }
