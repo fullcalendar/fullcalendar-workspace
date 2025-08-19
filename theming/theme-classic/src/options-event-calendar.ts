@@ -32,7 +32,7 @@ export interface EventCalendarOptionParams {
   bgColorOutlineClass: string
 }
 
-const xxsTextClass = 'text-[0.7rem]/[1.25]'
+const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
 const cellPaddingClass = 'px-1 py-0.5'
 const listViewItemPaddingClass = 'px-3 py-2'
 const axisClass = 'justify-end' // h-align

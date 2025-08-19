@@ -1,15 +1,23 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 
 /*
-TODO: for outline button, use inset so doesn't affect dimensions
-TODO: MUI multimonth, stacked rows of disabled days don't work
-TODO: MUI week-number pill is weirdly dim
-TODO: MUI week-number pill should be more DIFFERENT color than today circle
-TODO: don't use opacity so much... use muted text color
-TODO: double-check units for
-  TODO: setting for FIRST slot, for hiding label
+TODO: double-check units for ticks
 TODO: day-headers in timeline have different border color that body slats
 TODO: button hover-effect for not-today?
+TODO: MUI week-number pill is weirdly dim
+TODO: MUI week-number pill should be more DIFFERENT color than today circle
+TODO: X is too big
+
+color refactor:
+  TODO: MUI multimonth, stacked rows of disabled days don't work
+  TODO: don't use opacity so much... use muted text color
+
+core:
+  TODO: setting for FIRST slot, for hiding label
+
+later:
+  simplify rowEventColorClass arrows
+  use SVGs
 */
 
 // ambient types (tsc strips during build because of {})
@@ -38,7 +46,7 @@ export interface EventCalendarOptionParams {
   bgColorOutlineClass: string
 }
 
-export const xxsTextClass = 'text-[0.65rem]/[1.25]'
+export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
 export const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // TODO: ugly dark grey?
 export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700'
 export const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20'
@@ -308,9 +316,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isMinor && 'border-dotted',
         ],
         slotLabelInnerClass: (data) => [
-          'ps-2 pe-3 py-0.5 -mt-[1em] text-end', // best -mt- value???
+          `ps-2 pe-3 text-end`,
           'min-h-[3em]',
-          data.isCompact ? xxsTextClass : 'text-sm',
+          xxsTextClass,
+          data.isCompact
+            ? `${xxsTextClass} -mt-1.5` // 1.5 tw-units is half xxs's line-height
+            : 'text-sm -mt-2.5', // 2.5 tw-units is half text-sm's line-height
         ],
         slotLabelDividerClass: (data) => [
           'border-l',

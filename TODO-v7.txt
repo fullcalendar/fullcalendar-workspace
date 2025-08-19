@@ -20,6 +20,10 @@ monarch: test "today" when semi-transparent is-other
 
 
 ensure event outer spacing in view-specific options
+avoid em units in themes (like 3em) at all costs... okay for 1em icons but that's it
+simplify how icon-size and line-height works
+rething 1px-paddings
+  p-px -> p-[0.0625rem] ?
 
 
 theme checklist

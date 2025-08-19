@@ -3,9 +3,9 @@ import * as svgs from './ui-default-svgs.js'
 import { optionParams } from './ui-default-options-event-calendar.js'
 import { createSchedulerOnlyOptions } from './options-scheduler.js'
 
-const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
-
 const expanderIconClass = 'size-[1em]'
+
+const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 
 export const defaultUiSchedulerOnlyOptions: {
   optionDefaults: CalendarOptions

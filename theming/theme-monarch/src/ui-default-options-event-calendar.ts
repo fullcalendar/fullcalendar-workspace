@@ -2,7 +2,9 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams, transparentPressableClass } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const smIconSizeClass = 'size-[calc(var(--text-sm--line-height)_*_1em)]'
+const buttonTextClass = 'text-sm'
+const iconSizeClass = 'size-5' // matches text-sm line-height
+
 const buttonEffectClass = 'hover:brightness-80 active:brightness-120' // why not same as transparentPressableClass?
 const primaryButtonClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary) ${buttonEffectClass}`
 const secondaryButtonClass = `bg-(--fc-monarch-secondary) text-(--fc-monarch-on-secondary) ${buttonEffectClass}`
@@ -57,7 +59,7 @@ export const defaultUiEventCalendarOptions: {
       prev: {
         iconContent: (data) => svgs.chevronDown(
           joinClassNames(
-            smIconSizeClass,
+            iconSizeClass,
             data.direction === 'rtl' ? '-rotate-90' : 'rotate-90',
           )
         )
@@ -65,7 +67,7 @@ export const defaultUiEventCalendarOptions: {
       next: {
         iconContent: (data) => svgs.chevronDown(
           joinClassNames(
-            smIconSizeClass,
+            iconSizeClass,
             data.direction === 'rtl' ? 'rotate-90' : '-rotate-90',
           )
         )
@@ -73,7 +75,7 @@ export const defaultUiEventCalendarOptions: {
       prevYear: {
         iconContent: (data) => svgs.chevronDoubleLeft(
           joinClassNames(
-            smIconSizeClass,
+            iconSizeClass,
             data.direction === 'rtl' && 'rotate-180',
           )
         )
@@ -81,7 +83,7 @@ export const defaultUiEventCalendarOptions: {
       nextYear: {
         iconContent: (data) => svgs.chevronDoubleLeft(
           joinClassNames(
-            smIconSizeClass,
+            iconSizeClass,
             data.direction !== 'rtl' && 'rotate-180',
           )
         )
@@ -90,11 +92,10 @@ export const defaultUiEventCalendarOptions: {
 
     buttonGroupClass: (data) => [
       'items-center isolate rounded-full',
-      data.isSelectGroup && 'border border-(--fc-monarch-outline-variant)'
+      data.isSelectGroup && 'inset-ring inset-ring-(--fc-monarch-outline-variant)'
     ],
     buttonClass: (data) => [
-      data.inSelectGroup && '-m-px', // HACK
-      'inline-flex items-center justify-center py-2.5 text-sm rounded-full',
+      `inline-flex items-center justify-center py-2.5 ${buttonTextClass} rounded-full`,
       data.inGroup && 'relative active:z-20 focus:z-20',
       data.isSelected ? 'z-10' : 'z-0',
       data.isDisabled && `pointer-events-none`, // bypass hover styles
@@ -105,10 +106,10 @@ export const defaultUiEventCalendarOptions: {
           ? getSecondaryButtonClass(data.isDisabled)
           : data.isPrimary
             ? getPrimaryButtonClass(data.isDisabled)
-            : `border border-(--fc-monarch-outline-variant-original)`
+            : `inset-ring inset-ring-(--fc-monarch-outline-variant-original)`
     ],
 
-    popoverCloseContent: () => svgs.x(`text-sm ${smIconSizeClass} opacity-65`),
+    popoverCloseContent: () => svgs.x(`${buttonTextClass} ${iconSizeClass} opacity-65`),
   },
   views: baseEventCalendarOptions.views,
 }
