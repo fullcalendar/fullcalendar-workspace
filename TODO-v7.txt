@@ -973,3 +973,9 @@ RESEARCH on Angular slots
 NOTE: another reason why good to have semitransparent bg events and business hours... they stack
   on top of eachother well
 pattern for "apiRef": https://docs.svar.dev/react/gantt/api/methods/detach
+How to manipulate MUI colors when there's no cssVariables enabled
+  if matches var(--mui-*main)
+    (theme) => `rgba(var(--mui-*mainChannel) / 0.1)`
+  otherwise
+    (theme) => alpha(muiTheme.palette.warning.main, 0.1)
+    // or maybe just parse the color values like rgab(r, g, b, a) and change the a

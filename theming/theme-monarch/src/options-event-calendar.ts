@@ -4,9 +4,9 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 TODO: double-check units for ticks
 TODO: day-headers in timeline have different border color that body slats
 TODO: button hover-effect for not-today?
-TODO: MUI week-number pill is weirdly dim
-TODO: MUI week-number pill should be more DIFFERENT color than today circle
 TODO: X is too big
+TODO: MUI figure out select colors vs bg-event color. currently inverse of classic-theme
+TODO: MUI resource group oddly dark gray
 
 color refactor:
   TODO: MUI multimonth, stacked rows of disabled days don't work
