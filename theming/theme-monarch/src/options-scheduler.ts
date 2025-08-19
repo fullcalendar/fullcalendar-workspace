@@ -1,5 +1,9 @@
-import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import { xxsTextClass, moreLinkBgClass, transparentPressableClass, EventCalendarOptionParams, majorBorderColorClass } from './options-event-calendar.js'
+
+/*
+TODO: day-headers in timeline have different border color that body slats
+*/
 
 // ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/timeline'
@@ -60,24 +64,38 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         rowMoreLinkClass: `me-px p-px ${moreLinkBgClass}`,
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
-        slotLabelSticky: '0.5rem',
-        slotLabelClass: (data) => (data.level && !data.isTime)
-          ? [
-            'border border-transparent',
-            'justify-start',
-          ]
-          : [
-            `border ${params.borderColorClass}`,
-            'h-2 self-end justify-end',
-          ],
-        slotLabelInnerClass: (data) => (data.level && !data.isTime)
-          ? [
-            // TODO: converge with week-label styles
+        slotLabelAlign: 'center', // HACK
+        slotLabelSticky: '0.5rem', // getting applies to lowest level... AAAHHH
+
+        slotLabelClass: (data) => [
+          'border',
+          data.level
+            // housing for pill
+            ? 'border-transparent justify-start' // v-align-content
+            : joinClassNames(
+                params.borderColorClass,
+                data.isTime
+                  // time-tick
+                  ? 'h-2 self-end justify-end' // v-align-self, v-align-content
+                  // day-header
+                  : 'justify-center', // v-align-content
+              )
+        ],
+
+        slotLabelInnerClass: (data) => data.level
+          ? [ // pill
             'px-2 py-1 rounded-full text-sm',
             params.miscPillClass({ hasNavLink: data.hasNavLink }),
           ]
-          : 'pb-3 -ms-1 text-sm min-w-14',
-          // TODO: also test lowest-level days
+          : [
+            'min-w-14 text-sm',
+            data.isTime
+              // time-tick inner
+              ? 'pb-3 -ms-1'
+              // day-header
+              : 'flex flex-row justify-center' // h-align-text
+          ],
+
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
       },
     },
