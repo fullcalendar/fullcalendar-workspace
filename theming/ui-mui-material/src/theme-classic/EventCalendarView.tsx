@@ -7,6 +7,7 @@ import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 
 export const optionParams: EventCalendarOptionParams = {
   borderColorClass: 'border-(--mui-palette-divider)',
+  majorBorderColorClass: 'border-(--mui-palette-action-active)',
   nowIndicatorBorderColorClass: 'border-(--mui-palette-error-main)',
   nowIndicatorBorderStartColorClass: 'border-s-(--mui-palette-error-main)',
   nowIndicatorBorderTopColorClass: 'border-t-(--mui-palette-error-main)',
@@ -17,6 +18,7 @@ export const optionParams: EventCalendarOptionParams = {
   // HACK to remove transparency from muted color
   opaqueMutedBgClass: 'bg-(--mui-palette-background-paper) relative before:absolute before:inset-0 before:bg-(--mui-palette-action-hover) before:pointer-events-none',
   mutedBgClass: 'bg-(--mui-palette-action-hover)',
+  mutedTextColorClass: 'text-(--mui-palette-text-secondary)',
   eventColor: 'var(--mui-palette-primary-main)',
   eventContrastColor: 'var(--mui-palette-primary-contrastText)',
   backgroundEventColor: 'var(--mui-palette-secondary-main)',

@@ -50,15 +50,17 @@ export function EventCalendar({
 
 export const optionParams: EventCalendarOptionParams = {
   borderColorClass: '', // border-color is set globally
+  majorBorderColorClass: 'border-muted-foreground/60',
   nowIndicatorBorderColorClass: 'border-destructive',
   nowIndicatorBorderStartColorClass: 'border-s-destructive',
   nowIndicatorBorderTopColorClass: 'border-t-destructive',
   compactMoreLinkBorderColorClass: 'border-primary',
   todayBgClass: 'bg-yellow-400/15 dark:bg-yellow-200/10',
   highlightClass: 'bg-sky-500/10',
-  transparentMutedBgClass: 'bg-accent/50',
+  transparentMutedBgClass: 'bg-muted-foreground/10',
   opaqueMutedBgClass: 'bg-muted',
   mutedBgClass: 'bg-muted',
+  mutedTextColorClass: 'text-muted-foreground',
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
   backgroundEventColor: 'var(--primary)',

@@ -9,6 +9,7 @@ import {} from '@fullcalendar/interaction'
 
 export interface EventCalendarOptionParams {
   borderColorClass: string
+  majorBorderColorClass: string
   nowIndicatorBorderColorClass: string
   nowIndicatorBorderStartColorClass: string
   nowIndicatorBorderTopColorClass: string
@@ -17,6 +18,7 @@ export interface EventCalendarOptionParams {
   transparentMutedBgClass: string // guaranteed semi-transparent
   opaqueMutedBgClass: string // guaranteed opaque
   mutedBgClass: string // theme preference
+  mutedTextColorClass: string
   highlightClass: string
   eventColor: string
   eventContrastColor: string
@@ -26,8 +28,6 @@ export interface EventCalendarOptionParams {
   bgColorClass: string
   bgColorOutlineClass: string
 }
-
-export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700' // somehow parameterize!?
 
 const xxsTextClass = 'text-[0.7rem]/[1.25]'
 const cellPaddingClass = 'px-1 py-0.5'
@@ -45,7 +45,7 @@ export const getDayHeaderClasses = (
 ) => [
   'border justify-center', // v-align
   data.inPopover ? 'items-start' : 'items-center', // h-align
-  data.isMajor ? majorBorderColorClass : params.borderColorClass,
+  data.isMajor ? params.majorBorderColorClass : params.borderColorClass,
   (data.inPopover || data.isDisabled) && params.mutedBgClass,
 ]
 
@@ -70,7 +70,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
   const getDayClasses = (data: { isMajor: boolean, isToday: boolean, isDisabled: boolean}) => [
     'border',
-    data.isMajor ? majorBorderColorClass : params.borderColorClass,
+    data.isMajor ? params.majorBorderColorClass : params.borderColorClass,
     data.isToday && params.todayBgClass,
     data.isDisabled && params.mutedBgClass,
   ]
@@ -151,7 +151,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
       inlineWeekNumberClass: `absolute z-20 top-0 start-0 rounded-ee-sm p-0.5 ${params.transparentMutedBgClass}`,
       inlineWeekNumberInnerClass: (data) => [
-        `text-center text-gray-500 dark:text-gray-300`,
+        'text-center',
+        params.mutedTextColorClass,
         data.isCompact ? xxsTextClass : 'text-sm',
       ],
 
@@ -297,10 +298,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       list: {
         listDayHeaderClass: [
-          `sticky z-10 top-0 flex flex-row justify-between border-b ${params.borderColorClass} font-bold`,
+          `sticky z-10 top-0 flex flex-row justify-between border-b ${params.borderColorClass}`,
           params.opaqueMutedBgClass,
         ],
-        listDayHeaderInnerClass: `${listViewItemPaddingClass} text-sm`,
+        listDayHeaderInnerClass: `${listViewItemPaddingClass} text-sm font-bold`,
 
         listItemEventClass: [
           'hover:bg-gray-500/7 focus-visible:bg-gray-500/30 group gap-3 border-b',

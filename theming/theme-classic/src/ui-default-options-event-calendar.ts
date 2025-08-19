@@ -2,8 +2,8 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const bgColorClass = 'bg-(--fc-classic-canvas-color)'
-const bgColorOutlineClass = 'outline-(--fc-classic-canvas-color)'
+const bgColorClass = 'bg-(--fc-classic-background-color)'
+const bgColorOutlineClass = 'outline-(--fc-classic-background-color)'
 
 const buttonFontClass = 'text-sm'
 const smIconSizeClass = 'size-[calc(var(--text-sm--line-height)_*_1em)]'
@@ -14,6 +14,7 @@ const getButtonIconClass = (flip?: boolean) => joinClassNames(
 
 export const optionParams: EventCalendarOptionParams = {
   borderColorClass: 'border-(--fc-classic-border-color)',
+  majorBorderColorClass: 'border-(--fc-classic-major-border-color)',
   nowIndicatorBorderColorClass: 'border-(--fc-classic-now-indicator-color)',
   nowIndicatorBorderStartColorClass: 'border-s-(--fc-classic-now-indicator-color)',
   nowIndicatorBorderTopColorClass: 'border-t-(--fc-classic-now-indicator-color)',
@@ -23,6 +24,7 @@ export const optionParams: EventCalendarOptionParams = {
   transparentMutedBgClass: 'bg-(--fc-classic-muted-transparent-color)',
   opaqueMutedBgClass: 'bg-(--fc-classic-muted-opaque-color)',
   mutedBgClass: 'bg-(--fc-classic-muted-transparent-color)',
+  mutedTextColorClass: 'text-(--fc-classic-muted-text-color)',
   eventColor: '#3788d8',
   eventContrastColor: 'var(--color-white)',
   backgroundEventColor: 'var(--color-green-500)',

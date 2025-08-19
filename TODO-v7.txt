@@ -22,6 +22,9 @@ move away from okhlc colors... bad browser support
 
 sure bgColorClass applied to view-div
 
+dark: should not be allowed in theme default-ui!!!
+  no way of detecting dark on its own
+
 theme systems DO offer semitransparent muted color
   shadcn: bg-accent/50 (whereas bg-muted is opaque)
   mui: palette.action.hover/disabledBackground (and others... almost all colors are semitransparent)
