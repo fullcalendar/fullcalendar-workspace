@@ -21,8 +21,8 @@ export const optionParams: EventCalendarOptionParams = {
   compactMoreLinkBorderColorClass: 'border-(--mui-palette-primary-main)',
 
   /*
-  pageBgColorClass: '',
-  pageBgColorOutlineClass: '',
+  bgColorClass: '',
+  bgColorOutlineClass: '',
   */
 
   eventColor: 'var(--mui-palette-primary-main)',
@@ -32,8 +32,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8)',
 
-  pageBgColorClass: 'bg-(--mui-palette-background-paper)',
-  pageBgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
+  bgColorClass: 'bg-(--mui-palette-background-paper)',
+  bgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

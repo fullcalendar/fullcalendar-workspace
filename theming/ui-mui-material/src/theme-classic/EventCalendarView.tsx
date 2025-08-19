@@ -22,8 +22,8 @@ export const optionParams: EventCalendarOptionParams = {
   backgroundEventColor: 'var(--mui-palette-secondary-main)',
   backgroundEventColorClass: 'brightness-115 opacity-10',
   popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2',
-  pageBgColorClass: 'bg-(--mui-palette-background-paper)',
-  pageBgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
+  bgColorClass: 'bg-(--mui-palette-background-paper)',
+  bgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

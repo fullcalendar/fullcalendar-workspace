@@ -20,8 +20,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8) m-1',
 
-  pageBgColorClass: 'bg-(--mui-palette-background-paper)',
-  pageBgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
+  bgColorClass: 'bg-(--mui-palette-background-paper)',
+  bgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

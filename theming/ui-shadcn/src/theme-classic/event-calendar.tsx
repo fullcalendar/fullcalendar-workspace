@@ -64,8 +64,8 @@ export const optionParams: EventCalendarOptionParams = {
   backgroundEventColor: 'var(--primary)',
   backgroundEventColorClass: 'opacity-15',
   popoverClass: 'border bg-background text-foreground shadow-lg',
-  pageBgColorClass: 'bg-background',
-  pageBgColorOutlineClass: 'outline-background',
+  bgColorClass: 'bg-background',
+  bgColorOutlineClass: 'outline-background',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

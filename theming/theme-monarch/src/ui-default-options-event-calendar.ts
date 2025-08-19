@@ -34,8 +34,8 @@ export const optionParams: EventCalendarOptionParams = {
   backgroundEventColor: 'var(--fc-monarch-tertiary)',
   backgroundEventColorClass: 'brightness-115 opacity-15',
   popoverClass: 'border border-(--fc-monarch-outline-variant) rounded-lg bg-(--fc-monarch-canvas-color) dark:bg-(--fc-monarch-surface) dark:text-(--fc-monarch-on-surface) shadow-lg',
-  pageBgColorClass: 'bg-(--fc-monarch-canvas-color)',
-  pageBgColorOutlineClass: 'outline-(--fc-monarch-canvas-color)',
+  bgColorClass: 'bg-(--fc-monarch-canvas-color)',
+  bgColorOutlineClass: 'outline-(--fc-monarch-canvas-color)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

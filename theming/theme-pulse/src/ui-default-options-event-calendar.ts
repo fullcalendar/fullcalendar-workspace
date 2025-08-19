@@ -20,8 +20,8 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
 
   // TODO: popoverClass
 
-  pageBgColorClass: 'bg-(--fc-pulse-canvas-color)',
-  pageBgColorOutlineClass: 'outline-(--fc-pulse-canvas-color)',
+  bgColorClass: 'bg-(--fc-pulse-canvas-color)',
+  bgColorOutlineClass: 'outline-(--fc-pulse-canvas-color)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

@@ -78,8 +78,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
 
-  pageBgColorClass: 'bg-background',
-  pageBgColorOutlineClass: 'outline-background',
+  bgColorClass: 'bg-background',
+  bgColorOutlineClass: 'outline-background',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

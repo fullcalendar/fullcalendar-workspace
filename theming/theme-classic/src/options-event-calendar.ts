@@ -23,8 +23,8 @@ export interface EventCalendarOptionParams {
   backgroundEventColor: string
   backgroundEventColorClass: string
   popoverClass: string
-  pageBgColorClass: string // TODO: call "view" background??? --- what if multimonth wants darker?
-  pageBgColorOutlineClass: string
+  bgColorClass: string
+  bgColorOutlineClass: string
 }
 
 export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700' // somehow parameterize!?
@@ -64,7 +64,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.pageBgColorClass}`
+  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgColorClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
@@ -129,13 +129,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventContrastColor: params.eventContrastColor,
       backgroundEventColor: params.backgroundEventColor,
 
-      viewClass: `border ${params.borderColorClass} ${params.pageBgColorClass}`,
-      tableHeaderClass: (data) => data.isSticky && params.pageBgColorClass,
+      viewClass: `border ${params.borderColorClass} ${params.bgColorClass}`,
+      tableHeaderClass: (data) => data.isSticky && params.bgColorClass,
 
       singleMonthClass: (data) => data.colCount > 1 && 'm-4',
       singleMonthHeaderClass: (data) => [
         data.colCount > 1 ? 'pb-4' : 'py-2',
-        data.isSticky && `border-b ${params.borderColorClass} ${params.pageBgColorClass}`,
+        data.isSticky && `border-b ${params.borderColorClass} ${params.bgColorClass}`,
         'justify-center',
       ],
       singleMonthHeaderInnerClass: 'font-bold',
@@ -220,7 +220,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'print:border-x',
         data.isStart && 'print:border-t rounded-t-sm',
         data.isEnd && 'print:border-b rounded-b-sm',
-        (data.level || data.isMirror) && `outline ${params.pageBgColorOutlineClass}`,
+        (data.level || data.isMirror) && `outline ${params.bgColorOutlineClass}`,
       ],
       columnEventInnerClass: (data) => [
         'p-px',
@@ -231,7 +231,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTimeClass: xxsTextClass,
       columnEventTitleClass: (data) => data.isCompact ? xxsTextClass : 'py-px text-xs',
 
-      columnMoreLinkClass: `mb-px rounded-sm outline ${params.pageBgColorOutlineClass} ${params.opaqueMutedBgClass}`,
+      columnMoreLinkClass: `mb-px rounded-sm outline ${params.bgColorOutlineClass} ${params.opaqueMutedBgClass}`,
       columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,

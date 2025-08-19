@@ -55,8 +55,8 @@ export interface EventCalendarOptionParams {
   backgroundEventColor: string
   backgroundEventColorClass: string
   popoverClass: string
-  pageBgColorClass: string
-  pageBgColorOutlineClass: string
+  bgColorClass: string
+  bgColorOutlineClass: string
 }
 
 export const xxsTextClass = 'text-[0.65rem]/[1.25]'
@@ -76,7 +76,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.pageBgColorClass}`
+  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgColorClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
@@ -128,12 +128,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventContrastColor: params.eventContrastColor,
       backgroundEventColor: params.backgroundEventColor,
 
-      tableHeaderClass: (data) => data.isSticky && `${params.pageBgColorClass} border-b ${params.borderColorClass}`,
+      tableHeaderClass: (data) => data.isSticky && `${params.bgColorClass} border-b ${params.borderColorClass}`,
 
       singleMonthClass: (data) => data.colCount > 1 && 'm-4',
       singleMonthHeaderClass: (data) => [
         data.colCount > 1 ? 'pb-4' : 'py-2',
-        data.isSticky && `border-b ${params.borderColorClass} ${params.pageBgColorClass}`,
+        data.isSticky && `border-b ${params.borderColorClass} ${params.bgColorClass}`,
         'justify-center',
       ],
       singleMonthHeaderInnerClass: (data) => [
@@ -234,7 +234,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'print:border-x',
         data.isStart && 'print:border-t rounded-t-sm',
         data.isEnd && 'print:border-b rounded-b-sm',
-        (data.level || data.isDragging) && `outline ${params.pageBgColorOutlineClass}`,
+        (data.level || data.isDragging) && `outline ${params.bgColorOutlineClass}`,
       ],
       columnEventInnerClass: (data) => data.isCompact
         ? 'flex-row gap-1' // one line
@@ -243,7 +243,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: (data) => data.isCompact ? xxsTextClass : 'p-1 text-xs',
       columnEventTitleSticky: false, // because time below title, sticky looks bad
 
-      columnMoreLinkClass: `mb-px rounded-xs outline ${params.pageBgColorOutlineClass} ${moreLinkBgClass}`,
+      columnMoreLinkClass: `mb-px rounded-xs outline ${params.bgColorOutlineClass} ${moreLinkBgClass}`,
       columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,

@@ -2,8 +2,8 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const pageBgColorClass = 'bg-(--fc-classic-canvas-color)'
-const pageBgColorOutlineClass = 'outline-(--fc-classic-canvas-color)'
+const bgColorClass = 'bg-(--fc-classic-canvas-color)'
+const bgColorOutlineClass = 'outline-(--fc-classic-canvas-color)'
 
 const buttonFontClass = 'text-sm'
 const smIconSizeClass = 'size-[calc(var(--text-sm--line-height)_*_1em)]'
@@ -27,9 +27,9 @@ export const optionParams: EventCalendarOptionParams = {
   eventContrastColor: 'var(--color-white)',
   backgroundEventColor: 'var(--color-green-500)',
   backgroundEventColorClass: 'opacity-15',
-  popoverClass: `border border-(--fc-classic-border-color) ${pageBgColorClass} shadow-md`,
-  pageBgColorClass,
-  pageBgColorOutlineClass,
+  popoverClass: `border border-(--fc-classic-border-color) ${bgColorClass} shadow-md`,
+  bgColorClass,
+  bgColorOutlineClass,
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
