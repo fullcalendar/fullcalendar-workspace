@@ -20,8 +20,6 @@ monarch: test "today" when semi-transparent is-other
 
 move away from okhlc colors... bad browser support
 
-sure bgColorClass applied to view-div
-
 dark: should not be allowed in theme default-ui!!!
   no way of detecting dark on its own
 
@@ -59,6 +57,8 @@ UI
   check print-view
   test prevYear/nextYear icons in all theme systems
   style nav-link for single-month in multi-month-view
+  ensure bgColorClass applied to view-div (test w/ MUI "purple")
+  ensure noEvents message is sticky
 theme-system: MUI
   we should allow MUI to force headers to be uppercase
   The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
@@ -790,7 +790,6 @@ punt: timegrid all-day background events are displayed in both all-day and timed
 punt: create singleMonthTitleContent and give textParts to it?
 punt: rename text->dateText and textParts->dateParts?
 punt: workaround "dual-package hazard"? see the recommendation in temporal polyfill repo
-punt: try to kill noEventsInnerClassNames in future. for vertically-centering "no events" text
 punt: Should we still have data-date attributes on elements?
 punt: don't use <Scroller> when not necessary
   ListView

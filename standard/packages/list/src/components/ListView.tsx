@@ -66,19 +66,18 @@ export class ListView extends DateComponent<ViewProps> {
         borderlessBottom={props.borderlessBottom}
         noEdgeEffects={props.noEdgeEffects}
       >
-        <Scroller // TODO: don't need heavyweight component
-          vertical={verticalScrolling}
-          className={joinClassNames(
-            classNames.flexCol,
-            verticalScrolling ? classNames.liquid : '',
-          )}
-        >
-          {!eventSegs.length ? (
-            this.renderEmptyMessage()
-          ) : (
-            this.renderSegList(eventSegs, dayDates)
-          )}
-        </Scroller>
+        {eventSegs.length ? (
+          <Scroller // TODO: don't need heavyweight component
+            vertical={verticalScrolling}
+            className={joinClassNames(
+              classNames.flexCol,
+              verticalScrolling ? classNames.liquid : '',
+            )}
+          >
+            {this.renderSegList(eventSegs, dayDates)}
+          </Scroller>
+        ) : this.renderEmptyMessage()}
+
       </ViewContainer>
     )
   }
@@ -112,6 +111,7 @@ export class ListView extends DateComponent<ViewProps> {
         customGenerator={options.noEventsContent}
         defaultGenerator={renderNoEventsInner}
         classNameGenerator={options.noEventsClass}
+        className={classNames.grow}
         didMount={options.noEventsDidMount}
         willUnmount={options.noEventsWillUnmount}
       >
