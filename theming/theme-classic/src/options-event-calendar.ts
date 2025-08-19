@@ -42,7 +42,6 @@ export const getDayHeaderClasses = (
   params: EventCalendarOptionParams
 ) => [
   'border justify-center', // v-align
-  data.inPopover ? 'items-start' : 'items-center', // h-align
   data.isMajor ? params.majorBorderColorClass : params.borderColorClass,
   (data.inPopover || data.isDisabled) && params.mutedBgClass,
 ]
@@ -240,6 +239,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
+      dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
       dayHeaderClass: (data) => getDayHeaderClasses(data, params),
       dayHeaderInnerClass: getDayHeaderInnerClasses,
       dayHeaderDividerClass: `border-t ${params.borderColorClass}`,
@@ -264,7 +264,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         : 'ms-0.5 me-[2.5%]',
 
       slotLabelRowClass: `border ${params.borderColorClass}`, // timeline only
-      slotLabelAlign: 'center',
       slotLabelClass: getSlotClasses,
       slotLaneClass: getSlotClasses,
     },

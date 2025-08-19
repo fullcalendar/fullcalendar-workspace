@@ -296,7 +296,6 @@ export const BASE_OPTION_REFINERS = {
   slotLabelContent: identity as Identity<CustomContentGenerator<SlotLabelData>>,
   slotLabelDidMount: identity as Identity<DidMountHandler<SlotLabelMountData>>,
   slotLabelWillUnmount: identity as Identity<WillUnmountHandler<SlotLabelMountData>>,
-
   slotLabelAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number, isTime: boolean }) => 'start' | 'center' | 'end')>,
   slotLabelSticky: identity as Identity<boolean | number | string>,
 
@@ -314,6 +313,8 @@ export const BASE_OPTION_REFINERS = {
   dayHeaderContent: identity as Identity<CustomContentGenerator<DayHeaderData>>,
   dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderMountData>>,
   dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderMountData>>,
+  dayHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number, inPopover: boolean }) => 'start' | 'center' | 'end')>,
+  dayHeaderSticky: identity as Identity<boolean | number | string>,
 
   dayHeaderRowClass: identity as Identity<ClassNameInput>,
 
@@ -499,6 +500,8 @@ export const BASE_OPTION_DEFAULTS = {
   eventOverlap: true,
   slotLabelAlign: 'start',
   slotLabelSticky: true,
+  dayHeaderAlign: 'start',
+  dayHeaderSticky: true,
   rowEventTitleSticky: true,
   columnEventTitleSticky: true,
 }

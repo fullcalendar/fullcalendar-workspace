@@ -189,7 +189,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   borderBottom={tierNum < props.headerTiers.length - 1}
                   cellIsCompact={cellIsCompact}
                   cellIsNarrow={cellIsNarrow}
-                  cellIsSticky={false}
+                  rowLevel={0}
                 />
                 {Boolean(endScrollbarWidth) && (
                   <div

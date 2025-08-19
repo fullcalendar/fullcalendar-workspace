@@ -152,6 +152,8 @@ function buildResourceRenderConfig(context: ViewContext): CellRenderConfig<Resou
     classNameGenerator: options.resourceDayHeaderClass,
     didMount: options.resourceDayHeaderDidMount,
     willUnmount: options.resourceDayHeaderWillUnmount,
+    align: options.resourceDayHeaderAlign,
+    sticky: options.resourceDayHeaderSticky,
   }
 }
 

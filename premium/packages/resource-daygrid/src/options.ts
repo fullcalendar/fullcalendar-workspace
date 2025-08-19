@@ -19,6 +19,13 @@ export const OPTION_REFINERS = {
   resourceDayHeaderContent: identity as Identity<CustomContentGenerator<ResourceDayHeaderData>>,
   resourceDayHeaderDidMount: identity as Identity<DidMountHandler<ResourceDayHeaderMountData>>,
   resourceDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceDayHeaderMountData>>,
+  resourceDayHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number }) => 'start' | 'center' | 'end')>,
+  resourceDayHeaderSticky: identity as Identity<boolean | number | string>,
+}
+
+export const OPTION_DEFAULTS = {
+  resourceDayHeaderAlign: 'start' as const,
+  resourceDayHeaderSticky: true,
 }
 
 type ResourceDayGridOptionRefiners = typeof OPTION_REFINERS

@@ -90,6 +90,15 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
 
     const fullDateStr = formatDayString(startDate)
 
+    /*
+    TODO: DRY with TimelineHeaderCell
+    */
+    const { dayHeaderAlign } = options
+    const align =
+      typeof dayHeaderAlign === 'function'
+        ? dayHeaderAlign({ level: 0, inPopover: true })
+        : dayHeaderAlign
+
     return createPortal(
       <div
         data-date={fullDateStr}
@@ -114,6 +123,9 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             generateClassName(options.dayHeaderClass, dayHeaderRenderProps),
             classNames.flexCol,
             classNames.borderOnlyB,
+            align === 'center' ? classNames.alignCenter :
+              align === 'end' ? classNames.alignEnd :
+                classNames.alignStart,
           )}
         >
           <ContentContainer

@@ -635,6 +635,9 @@ function SchedulerDemo(props: DemoProps) {
           slotDuration: '01:00',
           snapDuration: '00:30',
         },
+        // resourceTimelineWeek: {
+        //   slotDuration: { days: 1 },
+        // }
       }}
       resourceAreaHeaderContent='Rooms'
       resourceAreaWidth='40%'

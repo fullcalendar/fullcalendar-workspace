@@ -177,7 +177,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 borderBottom={false}
                 cellIsCompact={cellIsCompact}
                 cellIsNarrow={cellIsNarrow}
-                cellIsSticky={isTitleAndHeaderSticky}
+                rowLevel={0}
               />
               <div className={generateClassName(options.dayHeaderDividerClass, { isSticky: isTitleAndHeaderSticky })} />
             </div>

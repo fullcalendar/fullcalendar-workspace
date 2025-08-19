@@ -7,13 +7,13 @@ import classNames from '@fullcalendar/core/internal-classnames'
 export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProps> {
   cellIsCompact: boolean
   cellIsNarrow: boolean
-  cellIsSticky: boolean
   className?: string
   height?: number
   colWidth?: number
   innerHeightRef?: Ref<number>
   role?: string
-  rowIndex?: number // 0-based
+  rowIndex?: number // 0-based ... optional?... for aria only?
+  rowLevel: number // 0 is closest to body, higher-up is ++
   borderBottom?: boolean
 }
 
@@ -55,7 +55,7 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
             innerHeightRef={this.innerHeightRefMap.createRef(dataConfig.key)}
             cellIsCompact={props.cellIsCompact}
             cellIsNarrow={props.cellIsNarrow}
-            cellIsSticky={props.cellIsSticky}
+            rowLevel={props.rowLevel}
           />
         ))}
       </div>

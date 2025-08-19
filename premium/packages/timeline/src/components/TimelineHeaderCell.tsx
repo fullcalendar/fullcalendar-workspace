@@ -47,7 +47,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
   private innerWrapperElRef = createRef<HTMLDivElement>()
 
   // internal
-  private detachSize?: () => void
+  private disconnectSize?: () => void
   private align?: 'start' | 'center' | 'end'
   private isSticky?: boolean
 
@@ -166,7 +166,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
     const { props } = this
     const innerWrapperEl = this.innerWrapperElRef.current // TODO: make dynamic with useEffect
 
-    this.detachSize = watchSize(innerWrapperEl, (width, height) => {
+    this.disconnectSize = watchSize(innerWrapperEl, (width, height) => {
       setRef(props.innerWidthRef, width)
       setRef(props.innerHeightRef, height)
 
@@ -179,7 +179,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
   componentWillUnmount(): void {
     const { props } = this
 
-    this.detachSize()
+    this.disconnectSize()
     setRef(props.innerWidthRef, null)
     setRef(props.innerHeightRef, null)
   }

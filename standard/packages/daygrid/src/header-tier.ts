@@ -1,6 +1,9 @@
 import { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler, DayHeaderData } from '@fullcalendar/core'
 import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, Dictionary, formatDayString, getDateMeta, isMajorUnit, ViewContext } from '@fullcalendar/core/internal'
 
+/*
+Just for the HEADER
+*/
 export interface CellRenderConfig<RenderProps> {
   generatorName: string
   customGenerator: CustomContentGenerator<RenderProps>
@@ -8,6 +11,8 @@ export interface CellRenderConfig<RenderProps> {
   classNameGenerator: ClassNameGenerator<RenderProps>
   didMount: DidMountHandler<RenderProps & { el: HTMLElement }>
   willUnmount: WillUnmountHandler<RenderProps & { el: HTMLElement }>
+  align: 'start' | 'center' | 'end' | ((data: { level: number, inPopover: boolean }) => 'start' | 'center' | 'end'),
+  sticky: boolean | number | string,
 }
 
 export interface CellDataConfig<RenderProps> {
@@ -117,6 +122,8 @@ export function buildDateRenderConfig(context: ViewContext): CellRenderConfig<Da
     innerClassNameGenerator: options.dayHeaderInnerClass,
     didMount: options.dayHeaderDidMount,
     willUnmount: options.dayHeaderWillUnmount,
+    align: options.dayHeaderAlign,
+    sticky: options.dayHeaderSticky,
   }
 }
 

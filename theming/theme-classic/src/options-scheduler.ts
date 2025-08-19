@@ -17,6 +17,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 } {
   return {
     optionDefaults: {
+      resourceDayHeaderAlign: 'center',
       resourceDayHeaderClass: (data) => getDayHeaderClasses(data, params),
       resourceDayHeaderInnerClass: getDayHeaderInnerClasses,
 
@@ -63,6 +64,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         rowMoreLinkClass: `me-px p-px ${params.opaqueMutedBgClass}`,
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
+        slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
         slotLabelClass: 'justify-center', // v-align
         slotLabelInnerClass: 'p-1 text-sm',
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,

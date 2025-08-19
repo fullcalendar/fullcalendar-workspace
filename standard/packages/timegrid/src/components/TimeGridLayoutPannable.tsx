@@ -252,7 +252,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}
                       cellIsCompact={cellIsCompact}
                       cellIsNarrow={cellIsNarrow}
-                      cellIsSticky={false}
+                      rowLevel={props.headerTiers.length - tierNum - 1}
                     />
                   ))}
                 </div>

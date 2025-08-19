@@ -32,7 +32,6 @@ export interface DayHeaderData extends DateMeta {
   date: Date
   isCompact: boolean
   isMajor: boolean
-  isSticky: boolean
   inPopover: boolean
   hasNavLink: boolean
   text: string

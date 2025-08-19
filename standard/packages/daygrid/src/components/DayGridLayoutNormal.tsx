@@ -97,7 +97,6 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
                 headerTiers={props.headerTiers}
                 cellIsCompact={cellIsCompact}
                 cellIsNarrow={cellIsNarrow}
-                cellIsSticky={false}
               />
               {Boolean(endScrollbarWidth) && (
                 <div

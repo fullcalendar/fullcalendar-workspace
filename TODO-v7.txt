@@ -82,6 +82,7 @@ CODE
   outer border effects should be in ui-default code
     also view-border... nah because code to put border around singleMonth nice to have in same place
   audit all block-event isStart/isEnd effects, especially on color div
+  ensure slotLabel/dayHeader/resourceDayHeader ALIGN is done via setting, not theme flexbox css
 TEST
   ALL stickiness, esp when calendar root is overflow:hidden
   test horizontal scrolling
@@ -100,6 +101,8 @@ NOTES
   we have CORE handle as much stickiness as possible because
     REACT-NATIVE (when we eventually target it) cannot do stickiness,
     we need a higher-level JSX util of sorts
+  slotLabelAlign/slotLabelSticky not supported in timegrid,
+    so only put settings in timeline
 
 
 just before beta (after theme gen)
@@ -146,12 +149,6 @@ after-beta todo:
   think about reviving compact timegrid print view, or at least providing a setting
     https://fullcalendar.freshdesk.com/a/tickets/11181
     We already keep this code for buggy firefox
-  vresource 2nd tier header should be center-sticky...
-    must introduce new setting like slotLabelAlign... dayHeaderAlign/resourceDayHeaderAlign?
-    unlike temporary slotLabelAlign... can't just apply it to top-tier (and avoid applying to time slots, which are hardcoded left-aligned)
-    FYI, slotLabelAlign ONLY applies to timeline, not timegrid
-    how should it apply to timegrid? do horizontal or vertical?
-    sounds like we're due for a settings refactor
   delete classic-theme and bootstrap5 packages
   bug: why when resourceGroupHeaderClass bg color removed, we don't see vertical column lines underneath?
   bugs with isMajor special border on slots

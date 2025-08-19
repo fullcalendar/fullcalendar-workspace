@@ -9,7 +9,6 @@ export interface DayGridHeaderProps {
   className?: string
   cellIsCompact: boolean
   cellIsNarrow: boolean
-  cellIsSticky: boolean
 
   // dimensions
   width?: number
@@ -22,6 +21,8 @@ TODO: kill this class in favor of DayGridHeaderRows?
 export class DayGridHeader extends BaseComponent<DayGridHeaderProps> {
   render() {
     const { props } = this
+    const { headerTiers } = props
+
     return (
       <div
         role='rowgroup'
@@ -34,16 +35,16 @@ export class DayGridHeader extends BaseComponent<DayGridHeaderProps> {
           width: props.width,
         }}
       >
-        {props.headerTiers.map((rowConfig, tierNum) => (
+        {headerTiers.map((rowConfig, i) => (
           <DayGridHeaderRow
             {...rowConfig}
-            key={tierNum}
+            key={i}
             role='row'
-            borderBottom={tierNum < props.headerTiers.length - 1}
+            borderBottom={i < headerTiers.length - 1}
             colWidth={props.colWidth}
             cellIsCompact={props.cellIsCompact}
             cellIsNarrow={props.cellIsNarrow}
-            cellIsSticky={props.cellIsSticky}
+            rowLevel={headerTiers.length - i - 1}
           />
         ))}
       </div>
