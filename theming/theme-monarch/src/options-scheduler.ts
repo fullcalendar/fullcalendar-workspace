@@ -64,9 +64,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         rowMoreLinkClass: `me-px p-px ${moreLinkBgClass}`,
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
-        slotLabelAlign: 'center', // HACK
-        slotLabelSticky: '0.5rem', // getting applies to lowest level... AAAHHH
-
+        slotLabelAlign: (data) => (data.level || data.isTime) ? 'start' : 'center',
+        slotLabelSticky: '0.5rem', // for pill
         slotLabelClass: (data) => [
           'border',
           data.level
@@ -81,7 +80,6 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
                   : 'justify-center', // v-align-content
               )
         ],
-
         slotLabelInnerClass: (data) => data.level
           ? [ // pill
             'px-2 py-1 rounded-full text-sm',

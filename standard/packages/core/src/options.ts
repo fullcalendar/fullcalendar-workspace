@@ -297,7 +297,7 @@ export const BASE_OPTION_REFINERS = {
   slotLabelDidMount: identity as Identity<DidMountHandler<SlotLabelMountData>>,
   slotLabelWillUnmount: identity as Identity<WillUnmountHandler<SlotLabelMountData>>,
 
-  slotLabelAlign: identity as Identity<'start' | 'center' | 'end'>,
+  slotLabelAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number, isTime: boolean }) => 'start' | 'center' | 'end')>,
   slotLabelSticky: identity as Identity<boolean | number | string>,
 
   slotLabelRowClass: identity as Identity<ClassNameInput>,

@@ -75,21 +75,28 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
       view: context.viewApi,
     }
 
-    let align = this.align = isTime ? 'start' : options.slotLabelAlign
-    let isSticky = this.isSticky = props.rowLevel &&
-      (options.slotLabelSticky != null && options.slotLabelSticky !== false)
+    const { slotLabelAlign } = options
+    const align = this.align =
+      typeof slotLabelAlign === 'function'
+        ? slotLabelAlign({ level: props.rowLevel, isTime })
+        : slotLabelAlign
 
-    let edgeCoord: number | string = 0
+    const isSticky = this.isSticky =
+      props.rowLevel && options.slotLabelSticky !== false
 
-    if (align === 'center' && isSticky) {
-      if (state.innerWidth != null) {
-        edgeCoord = `calc(50% - ${state.innerWidth / 2}px)`
+    let edgeCoord: number | string | undefined
+
+    if (isSticky) {
+      if (align === 'center') {
+        if (state.innerWidth != null) {
+          edgeCoord = `calc(50% - ${state.innerWidth / 2}px)`
+        }
+      } else {
+        edgeCoord = (
+          typeof options.slotLabelSticky === 'number' ||
+          typeof options.slotLabelSticky === 'string'
+        ) ? options.slotLabelSticky : 0
       }
-    } else {
-      edgeCoord = (
-        typeof options.slotLabelSticky === 'number' ||
-        typeof options.slotLabelSticky === 'string'
-      ) ? options.slotLabelSticky : 0
     }
 
     return (
