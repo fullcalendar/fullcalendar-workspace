@@ -24,6 +24,9 @@ export interface EventCalendarOptionParams {
   eventContrastColor: string
   backgroundEventColor: string
   backgroundEventColorClass: string
+  hoverRowClass: string
+  hoverButtonClass: string
+  selectedButtonClass: string
   popoverClass: string
   bgColorClass: string
   bgColorOutlineClass: string
@@ -33,11 +36,6 @@ const xxsTextClass = 'text-[0.7rem]/[1.25]'
 const cellPaddingClass = 'px-1 py-0.5'
 const listViewItemPaddingClass = 'px-3 py-2'
 const axisClass = 'justify-end' // h-align
-
-const getAxisInnerClasses = (data: { isCompact: boolean }) => [
-  `${cellPaddingClass} text-end`,
-  data.isCompact ? xxsTextClass : 'text-sm',
-]
 
 export const getDayHeaderClasses = (
   data: { isDisabled: boolean, isMajor: boolean, inPopover?: boolean },
@@ -51,6 +49,11 @@ export const getDayHeaderClasses = (
 
 export const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
   `flex flex-col ${cellPaddingClass}`,
+  data.isCompact ? xxsTextClass : 'text-sm',
+]
+
+const getAxisInnerClasses = (data: { isCompact: boolean }) => [
+  `${cellPaddingClass} text-end`,
   data.isCompact ? xxsTextClass : 'text-sm',
 ]
 
@@ -85,8 +88,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     listItemEventClass: (data) => [
       `${dayRowItemBaseClass} p-px`,
       data.isSelected
-        ? joinClassNames('bg-gray-500/40', data.isDragging && 'shadow-sm')
-        : 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
+        ? joinClassNames(params.selectedButtonClass, data.isDragging && 'shadow-sm')
+        : params.hoverButtonClass,
     ],
     listItemEventColorClass: (data) => [
       'border-4', // 8px diameter
@@ -112,7 +115,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
 
     rowMoreLinkClass: (data) => [
-      `${dayRowItemBaseClass} hover:bg-gray-500/20`,
+      dayRowItemBaseClass,
+      params.hoverButtonClass,
       data.isCompact
         ? `border ${params.compactMoreLinkBorderColorClass}`
         : 'self-start p-px',
@@ -304,9 +308,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listDayHeaderInnerClass: `${listViewItemPaddingClass} text-sm font-bold`,
 
         listItemEventClass: [
-          'hover:bg-gray-500/7 focus-visible:bg-gray-500/30 group gap-3 border-b',
+          'group gap-3 border-b',
           params.borderColorClass,
-          listViewItemPaddingClass
+          params.hoverRowClass,
+          listViewItemPaddingClass,
         ],
         listItemEventColorClass: 'border-5', // 10px diameter
         listItemEventInnerClass: '[display:contents]',

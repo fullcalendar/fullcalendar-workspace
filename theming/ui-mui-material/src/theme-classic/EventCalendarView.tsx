@@ -5,6 +5,9 @@ import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-classic-dev/options-event-calendar'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 
+const hoverButtonClass = 'hover:bg-(--mui-palette-action-hover) focus-visible:bg-(--mui-palette-action-focus)'
+const selectedButtonClass = 'bg-(--mui-palette-action-selected)'
+
 export const optionParams: EventCalendarOptionParams = {
   borderColorClass: 'border-(--mui-palette-divider)',
   majorBorderColorClass: 'border-(--mui-palette-action-active)',
@@ -23,6 +26,9 @@ export const optionParams: EventCalendarOptionParams = {
   eventContrastColor: 'var(--mui-palette-primary-contrastText)',
   backgroundEventColor: 'var(--mui-palette-secondary-main)',
   backgroundEventColorClass: 'brightness-115 opacity-10',
+  hoverRowClass: hoverButtonClass, // same
+  hoverButtonClass,
+  selectedButtonClass: selectedButtonClass,
   popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2',
   bgColorClass: 'bg-(--mui-palette-background-paper)',
   bgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
