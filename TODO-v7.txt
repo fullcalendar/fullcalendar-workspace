@@ -19,6 +19,9 @@ add 2px h padding on daygrid-event time ? probably. morelink should match.
 monarch: test "today" when semi-transparent is-other
 
 
+ensure event outer spacing in view-specific options
+
+
 theme checklist
 ---------------
 UI
@@ -202,6 +205,9 @@ bug: resource-timeline print-view with multiple columns; broken positioning
 bug: eventColor not working in resource-timeline-row-grouping.html
 bug: we are incorrectly allowing stickyFooterScrollbar when height is not auto,
   which results in no visible vertical scrollbars (at least in resourceTimeGridWeek)
+bug: Causes scrollbars when there shouldn't be
+  slotDuration: '01:00',
+  expandRows: true,
 Currently, in v6, the headerToolbar left/center/right properties MERGE, which is a bit crazy
   Overhaul the default setting
   Add to changelog

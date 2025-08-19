@@ -475,6 +475,8 @@ function EventCalendarDemo(props: DemoProps) {
 
   return (
     <EventCalendarComponent
+      // displayEventTime={true}
+      // eventDisplay='block'
       availableViews={props.availableViews}
       addButton={{
         text: 'Add Event',
@@ -615,6 +617,7 @@ function SchedulerDemo(props: DemoProps) {
           alert('add event...')
         ]
       }}
+      // displayEventTime={true}
       initialView={props.initialView}
       navLinkDayClick='resourceTimelineDay'
       navLinkWeekClick='resourceTimelineWeek'

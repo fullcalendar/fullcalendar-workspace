@@ -1,36 +1,15 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 
 /*
-TODO:
-  audit responsiveness
-  audit dark modes
-  list-view
-    single-events in a day should vertically align with number
-    (rethink how circle-number height is done)
-  put x-padding on non-circled day numbers. tab-focusing looks bad right now
-  expander for resource groups, resource-nesting
-  uppercase text for time slotLabels?
-  (for demo only): change slotDuration and interval
-  proper chevron!
-  tricks to make current-view-tabs not so wide
-
-bug: left-align dayheader for day-only views after views.day options bug above is fixed
-  later: fix Screenshots/multimonth-more-link-bug.png
-  core: kill border-radius and drop-shadow on (Calendar|View) when borderless
-    OR, have root-div (and view-div? else?) explicitly handle this
-  bug: Causes scrollbars when there shouldn't be
-    slotDuration: '01:00',
-    expandRows: true,
-
-same height for all daygrid event-like elements
-
-TODO: resource-view expander doesn't expand. use chevron-down and do rotations
-TODO: put bigger hit area inside resource-area-divider-RESIZER
-TODO: timeline event spaciousness
-TODO: better icon sizes
+TODO: for outline button, use inset so doesn't affect dimensions
 TODO: MUI multimonth, stacked rows of disabled days don't work
 TODO: MUI week-number pill is weirdly dim
 TODO: MUI week-number pill should be more DIFFERENT color than today circle
+TODO: don't use opacity so much... use muted text color
+TODO: double-check units for
+  TODO: setting for FIRST slot, for hiding label
+TODO: day-headers in timeline have different border color that body slats
+TODO: button hover-effect for not-today?
 */
 
 // ambient types (tsc strips during build because of {})
@@ -213,11 +192,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       rowEventInnerClass: 'flex-row items-center',
       rowEventTimeClass: (data) => [
-        'p-px font-bold',
+        'px-0.5 py-px font-bold',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
       rowEventTitleClass: (data) => [
-        'p-px',
+        'px-0.5 py-px',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
 
@@ -247,6 +226,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
+      dayHeaderAlign: 'center',
       dayHeaderClass: (data) => [
         data.isDisabled && params.disabledBgClass,
         'items-center',

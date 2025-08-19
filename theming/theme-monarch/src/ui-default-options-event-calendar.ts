@@ -2,7 +2,7 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams, transparentPressableClass } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const buttonIconClass = 'w-[1em] h-[1em] text-[1.5em]'
+const smIconSizeClass = 'size-[calc(var(--text-sm--line-height)_*_1em)]'
 const buttonEffectClass = 'hover:brightness-80 active:brightness-120' // why not same as transparentPressableClass?
 const primaryButtonClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary) ${buttonEffectClass}`
 const secondaryButtonClass = `bg-(--fc-monarch-secondary) text-(--fc-monarch-on-secondary) ${buttonEffectClass}`
@@ -57,7 +57,7 @@ export const defaultUiEventCalendarOptions: {
       prev: {
         iconContent: (data) => svgs.chevronDown(
           joinClassNames(
-            buttonIconClass,
+            smIconSizeClass,
             data.direction === 'rtl' ? '-rotate-90' : 'rotate-90',
           )
         )
@@ -65,7 +65,7 @@ export const defaultUiEventCalendarOptions: {
       next: {
         iconContent: (data) => svgs.chevronDown(
           joinClassNames(
-            buttonIconClass,
+            smIconSizeClass,
             data.direction === 'rtl' ? 'rotate-90' : '-rotate-90',
           )
         )
@@ -73,7 +73,7 @@ export const defaultUiEventCalendarOptions: {
       prevYear: {
         iconContent: (data) => svgs.chevronDoubleLeft(
           joinClassNames(
-            buttonIconClass,
+            smIconSizeClass,
             data.direction === 'rtl' && 'rotate-180',
           )
         )
@@ -81,7 +81,7 @@ export const defaultUiEventCalendarOptions: {
       nextYear: {
         iconContent: (data) => svgs.chevronDoubleLeft(
           joinClassNames(
-            buttonIconClass,
+            smIconSizeClass,
             data.direction !== 'rtl' && 'rotate-180',
           )
         )
@@ -108,7 +108,7 @@ export const defaultUiEventCalendarOptions: {
             : `border border-(--fc-monarch-outline-variant-original)`
     ],
 
-    popoverCloseContent: () => svgs.x('w-[1.357em] h-[1.357em] opacity-65'),
+    popoverCloseContent: () => svgs.x(`text-sm ${smIconSizeClass} opacity-65`),
   },
   views: baseEventCalendarOptions.views,
 }

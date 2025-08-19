@@ -1,7 +1,7 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 import { EventCalendarOptionParams, getDayHeaderClasses, getDayHeaderInnerClasses } from './options-event-calendar.js'
 
-// ambient types
+// ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/timeline'
 import {} from '@fullcalendar/resource-daygrid'
 import {} from '@fullcalendar/resource-timegrid'

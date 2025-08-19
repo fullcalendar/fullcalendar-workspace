@@ -5,7 +5,6 @@ import * as svgs from './ui-default-svgs.js'
 const bgColorClass = 'bg-(--fc-classic-background-color)'
 const bgColorOutlineClass = 'outline-(--fc-classic-background-color)'
 
-const buttonFontClass = 'text-sm'
 const smIconSizeClass = 'size-[calc(var(--text-sm--line-height)_*_1em)]'
 const getButtonIconClass = (flip?: boolean) => joinClassNames(
   smIconSizeClass,
@@ -76,8 +75,7 @@ export const defaultUiEventCalendarOptions: {
       'focus:outline-3 outline-slate-600/50',
       'hover:border-slate-900 active:border-slate-900 print:border-slate-900',
       'hover:bg-slate-800 active:bg-slate-800 print:bg-white',
-      'text-white print:text-black',
-      buttonFontClass,
+      'text-sm text-white print:text-black',
       data.isIconOnly ? 'px-2.5' : 'px-3',
       data.inGroup
         ? 'first:rounded-s-[4px] last:rounded-e-[4px] relative active:z-20 focus:z-20'

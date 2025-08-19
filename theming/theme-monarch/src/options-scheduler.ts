@@ -1,10 +1,6 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import { xxsTextClass, moreLinkBgClass, transparentPressableClass, EventCalendarOptionParams, majorBorderColorClass } from './options-event-calendar.js'
 
-/*
-TODO: day-headers in timeline have different border color that body slats
-*/
-
 // ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/timeline'
 import {} from '@fullcalendar/resource-daygrid'
@@ -59,7 +55,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
     views: {
       timeline: {
         rowEventClass: 'me-px',
-        rowEventInnerClass: 'gap-1',
+        rowEventInnerClass: (data) => [
+          'gap-0.5',
+          data.isSpacious ? 'py-1' : 'py-px',
+        ],
 
         rowMoreLinkClass: `me-px p-px ${moreLinkBgClass}`,
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
