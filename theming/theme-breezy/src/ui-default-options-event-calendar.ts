@@ -18,8 +18,7 @@ export const optionParams: EventCalendarOptionParams = {
   backgroundEventColor: 'var(--color-green-500)',
   backgroundEventColorClass: 'brightness-150 opacity-15',
 
-  popoverClass: 'border border-(--fc-breezy-border-high-color) shadow-md bg-white rounded-lg',
-  // ^^^ popover in dark mode needs better bg
+  popoverClass: 'bg-(--fc-breezy-popover-color) border border-(--fc-breezy-popover-border-color) rounded-lg shadow-lg',
 
   bgColorClass: 'bg-(--fc-breezy-canvas-color)',
   bgColorOutlineClass: 'outline-(--fc-breezy-canvas-color)',

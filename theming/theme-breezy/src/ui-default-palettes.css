@@ -4,13 +4,6 @@ For color reference, see: https://catalyst.tailwindui.com/docs/button
 
 https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
 
-light
-  muted bg (both topbar and cells): bg-gray-200
-  real bg (like timegrid axis): bg-white
-dark
-  muted bg: bg-gray-800/50
-  real bg: bg-gray-900
-
 TODO: add default-ui-only variables to:
   [data-ui=fc] { whatever }
 */
@@ -34,6 +27,8 @@ TODO: add default-ui-only variables to:
   --fc-breezy-secondary-icon-color: var(--color-gray-400);
   --fc-breezy-secondary-icon-hover-color: var(--color-gray-500);
   --fc-breezy-secondary-text-color: var(--color-gray-900);
+  --fc-breezy-popover-color: var(--color-white);
+  --fc-breezy-popover-border-color: var(--color-gray-300);
 }
 [data-color-scheme=dark] {
   --fc-breezy-canvas-color: var(--color-gray-900);
@@ -54,6 +49,8 @@ TODO: add default-ui-only variables to:
   --fc-breezy-secondary-icon-color: var(--color-gray-400);
   --fc-breezy-secondary-icon-hover-color: var(--color-white);
   --fc-breezy-secondary-text-color: var(--color-white);
+  --fc-breezy-popover-color: var(--color-gray-800);
+  --fc-breezy-popover-border-color: color-mix(in oklab, var(--color-white) 10%, transparent);
 }
 
 [data-palette=indigo] {
