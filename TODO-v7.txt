@@ -17,6 +17,11 @@ monarch no sticky col events!? disabled, in js setting, but should that js setti
 monarch col event, when really squatty, compresses divs weird
 add 2px h padding on daygrid-event time ? probably. morelink should match.
 monarch: test "today" when semi-transparent is-other
+replace all "canvas" css vars with just "bg"
+naming confusion between "med" and "mid"
+
+for shadcn,
+  use "secondary" color for week-number pills
 
 
 ensure event outer spacing in view-specific options

@@ -2,9 +2,12 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const buttonIconClass = 'size-5 text-gray-400' // best? to sync to line-height???
+const selectBgClass = 'bg-(--fc-breezy-select-bg)'
+const selectTextClass = 'text-(--fc-breezy-select-text)'
+const nonSelectTextClass = 'text-(--fc-breezy-non-select-text)'
+const hoverSelectTextClass = 'hover:text-(--fc-breezy-select-text)' // best name?
 
-export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
+export const optionParams: EventCalendarOptionParams = {
   primaryBgColorClass: 'bg-(--fc-breezy-primary-color)',
   primaryTextColorClass: 'text-(--fc-breezy-primary-text-color)',
   primaryBorderColorClass: 'border-(--fc-breezy-primary-color)',
@@ -13,24 +16,28 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   backgroundEventColor: 'var(--color-green-500)',
   backgroundEventColorClass: 'brightness-150 opacity-15',
 
-  popoverClass: 'border border-gray-300 shadow-md bg-white rounded-lg',
+  popoverClass: 'border border-(--fc-breezy-border-high-color) shadow-md bg-white rounded-lg',
+  // ^^^ popover in dark mode needs better bg
 
   bgColorClass: 'bg-(--fc-breezy-canvas-color)',
   bgColorOutlineClass: 'outline-(--fc-breezy-canvas-color)',
 
-  borderLowColorClass: 'border-gray-100',
-  borderMidColorClass: 'border-gray-200',
-  borderStartMedColorClass: 'border-s-gray-200',
-  borderHighColorClass: 'border-gray-300',
-  borderBottomHighColorClass: 'border-b-gray-300',
+  borderLowColorClass: 'border-(--fc-breezy-border-low-color)',
+  borderMidColorClass: 'border-(--fc-breezy-border-mid-color)',
+  borderStartMedColorClass: 'border-s-(--fc-breezy-border-mid-color)',
+  borderHighColorClass: 'border-(--fc-breezy-border-high-color)',
+  borderBottomHighColorClass: 'border-b-(--fc-breezy-border-high-color)',
 
-  mutedBgClass: 'bg-gray-50',
+  mutedBgClass: 'bg-(--fc-breezy-muted-color)',
 
-  textLowColorClass: 'text-gray-400',
-  textMidColorClass: 'text-gray-500',
-  textHighColorClass: 'text-gray-700',
-  textHeaderColorClass: 'text-gray-900',
+  textLowColorClass: 'text-(--fc-breezy-text-low-color)',
+  textMidColorClass: 'text-(--fc-breezy-text-mid-color)',
+  textHighColorClass: 'text-(--fc-breezy-text-high-color)',
+  textHeaderColorClass: 'text-(--fc-breezy-text-header-color)',
 }
+
+const buttonWithIconClass = 'text-(--fc-breezy-text-low-color) hover:text-(--fc-breezy-text-mid-color)'
+const buttonIconClass = 'size-5' // best? to sync to line-height???
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
 
@@ -41,34 +48,38 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    toolbarClass: 'px-4 py-4 items-center bg-gray-50 gap-4',
+    toolbarClass: `px-4 py-4 items-center ${optionParams.mutedBgClass} gap-4`,
     toolbarSectionClass: 'items-center gap-4',
-    toolbarTitleClass: 'text-lg font-semibold text-gray-900',
+    toolbarTitleClass: `text-lg font-semibold ${optionParams.textHeaderColorClass}`,
 
     /*
     TODO: don't make buttons so fat
     are buttons 1px taller than in Tailwind Plus because we're not using inset border?
     */
     buttonGroupClass: (data) => [
-      !data.isSelectGroup && 'rounded-md shadow-xs border border-gray-300'
+      !data.isSelectGroup && `rounded-md shadow-xs`
     ],
     buttonClass: (data) => [
       'py-2 text-sm focus:relative',
-      data.isIconOnly ? 'px-2' : 'px-3',
+      data.isIconOnly ? `px-2 ${buttonWithIconClass}` : 'px-3',
       data.inSelectGroup ? joinClassNames(
-        'rounded-md font-medium text-gray-600 hover:text-gray-800',
-        data.isSelected && 'bg-gray-200',
+        // START view-switching bar item
+        'rounded-md font-medium',
+        data.isSelected
+          ? `${selectBgClass} ${selectTextClass}`
+          : `${nonSelectTextClass} ${hoverSelectTextClass}`,
+        // END
       ) : joinClassNames(
         'font-semibold',
         data.isPrimary
-          ? `${optionParams.primaryBgColorClass} ${optionParams.primaryTextColorClass} shadow-xs` // why shadow here?
-          : 'bg-white hover:bg-gray-50 text-gray-900',
+          // primary
+          ? `${optionParams.primaryBgColorClass} ${optionParams.primaryTextColorClass} ${optionParams.primaryBorderColorClass}`
+          // secondary
+          : `${optionParams.textHeaderColorClass} ${optionParams.bgColorClass} hover:bg-gray-50 ${optionParams.borderHighColorClass}`,
         data.inGroup
-          ? 'first:rounded-s-md last:rounded-e-md'
-          : joinClassNames(
-              'rounded-md shadow-xs border',
-              (data.isPrimary ? optionParams.primaryBorderColorClass : 'border-gray-300'), // weird border setup for primary
-            )
+          ? 'first:rounded-s-md first:border-s last:rounded-e-md last:border-e border-y'
+          // standalone button (responsible for own border and shadow)
+          : 'rounded-md shadow-xs border',
       ),
     ],
 

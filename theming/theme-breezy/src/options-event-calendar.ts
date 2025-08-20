@@ -130,6 +130,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventColor: params.backgroundEventColor,
 
       className: `border ${params.borderMidColorClass} rounded-lg overflow-hidden`,
+
+      viewClass: params.bgColorClass,
+
       headerToolbarClass: `border-b ${params.borderMidColorClass}`,
       footerToolbarClass: `border-t ${params.borderMidColorClass}`,
 

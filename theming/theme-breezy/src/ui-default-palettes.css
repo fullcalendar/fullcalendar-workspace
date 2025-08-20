@@ -1,24 +1,44 @@
 
 /*
 For color reference, see: https://catalyst.tailwindui.com/docs/button
+
+https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
+
+light
+  muted bg (both topbar and cells): bg-gray-200
+  real bg (like timegrid axis): bg-white
+dark
+  muted bg: bg-gray-800/50
+  real bg: bg-gray-900
 */
 
 :root {
-  --fc-breezy-canvas-color: #fff;
+  --fc-breezy-canvas-color: var(--color-white);
+  --fc-breezy-border-low-color: var(--color-gray-100);
+  --fc-breezy-border-mid-color: var(--color-gray-200);
+  --fc-breezy-border-high-color: var(--color-gray-300);
+  --fc-breezy-muted-color: var(--color-gray-50);
+  --fc-breezy-text-low-color: var(--color-gray-400);
+  --fc-breezy-text-mid-color: var(--color-gray-500);
+  --fc-breezy-text-high-color: var(--color-gray-700);
+  --fc-breezy-text-header-color: var(--color-gray-900); /* and for secondary buttons too -- rename to "bold" */
+  --fc-breezy-select-bg: var(--color-gray-200);
+  --fc-breezy-select-text: var(--color-gray-800);
+  --fc-breezy-non-select-text: var(--color-gray-600);
 }
 [data-color-scheme=dark] {
-  --fc-breezy-canvas-color: oklch(0.13 0.028 261.692);
+  --fc-breezy-canvas-color: var(--color-gray-900);
 }
 
 [data-palette=indigo] {
-  --fc-breezy-primary-color: var(--color-indigo-600); /* TODO: will need hover color too -500 --- also need text color */
-  --fc-breezy-primary-text-color: #fff;
+  --fc-breezy-primary-color: var(--color-indigo-600);
+  --fc-breezy-primary-text-color: var(--color-white);
   --fc-breezy-event-color: var(--color-blue-500);
 }
 
 [data-palette=rose] {
   --fc-breezy-primary-color: var(--color-rose-600);
-  --fc-breezy-primary-text-color: #fff;
+  --fc-breezy-primary-text-color: var(--color-white);
   --fc-breezy-event-color: var(--color-pink-500);
 }
 
@@ -27,12 +47,12 @@ TODO: time text looks weird?
 */
 [data-palette=emerald] {
   --fc-breezy-primary-color: var(--color-emerald-600);
-  --fc-breezy-primary-text-color: #fff;
+  --fc-breezy-primary-text-color: var(--color-white);
   --fc-breezy-event-color: var(--color-green-500);
 }
 
 [data-palette=honey] {
   --fc-breezy-primary-color: var(--color-yellow-500); /* 600 was too dark */
-  --fc-breezy-primary-text-color: #fff;
+  --fc-breezy-primary-text-color: var(--color-white);
   --fc-breezy-event-color: var(--color-amber-500);
 }
