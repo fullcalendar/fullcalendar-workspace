@@ -55,9 +55,13 @@ TODO: put header drop-shadow on resource-timeline header
 TODO: implement nowIndicator
 
 TODO: hover effect on multi-month month navlinks
+
+TODO: use muted color in more places than just dayCell
 */
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
+
+// TODO: bg-white
 
 export interface EventCalendarOptionParams {
   primaryBgColorClass: string
@@ -70,10 +74,15 @@ export interface EventCalendarOptionParams {
   bgColorClass: string
   bgColorOutlineClass: string
   borderLowColorClass: string
-  borderMedColorClass: string
+  borderMidColorClass: string
   borderStartMedColorClass: string
   borderHighColorClass: string
   borderBottomHighColorClass: string
+  mutedBgClass: string
+  textLowColorClass: string
+  textMidColorClass: string
+  textHighColorClass: string
+  textHeaderColorClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -100,7 +109,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
     listItemEventClass: 'mx-1 mb-px hover:bg-gray-100 rounded-md',
     listItemEventInnerClass: 'p-1 flex flex-row text-xs/4',
-    listItemEventTimeClass: 'order-1 text-gray-500',
+    listItemEventTimeClass: `order-1 ${params.textMidColorClass}`,
     listItemEventTitleClass: 'flex-grow font-medium',
 
     rowMoreLinkClass: (data) => [
@@ -120,9 +129,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventColor: params.eventColor,
       backgroundEventColor: params.backgroundEventColor,
 
-      className: 'border border-gray-950/10 rounded-lg overflow-hidden', // TODO: standardize color
-      headerToolbarClass: `border-b ${params.borderMedColorClass}`,
-      footerToolbarClass: `border-t ${params.borderMedColorClass}`,
+      className: `border ${params.borderMidColorClass} rounded-lg overflow-hidden`,
+      headerToolbarClass: `border-b ${params.borderMidColorClass}`,
+      footerToolbarClass: `border-t ${params.borderMidColorClass}`,
 
       popoverClass: `min-w-50 m-1 ${params.popoverClass}`,
 
@@ -132,17 +141,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'flex flex-row items-center',
       ],
 
-      dayRowClass: `border ${params.borderMedColorClass}`,
+      dayRowClass: `border ${params.borderMidColorClass}`,
 
       dayCellClass: (data) => [
         'border',
-        (data.isOther || data.isDisabled) && 'bg-gray-50',
+        (data.isOther || data.isDisabled) && params.mutedBgClass,
       ],
       dayCellTopClass: 'flex flex-row justify-start min-h-1',
       dayCellTopInnerClass: (data) => [
         data.isCompact ? xxsTextClass : 'text-xs/6',
         !data.isCompact && 'p-1',
-        data.isOther ? 'text-gray-400' : 'text-gray-700',
+        data.isOther ? params.textLowColorClass : params.textHighColorClass,
         !data.isToday && 'mx-1',
       ],
       dayCellInnerClass: (data) => [
@@ -151,9 +160,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayLaneClass: `border ${params.borderLowColorClass}`,
 
-      allDayHeaderInnerClass: 'text-xs/5 text-gray-400 p-3',
+      allDayHeaderInnerClass: `text-xs/5 ${params.textLowColorClass} p-3`,
 
-      slotLabelInnerClass: 'text-xs/5 text-gray-400 uppercase',
+      slotLabelInnerClass: `text-xs/5 ${params.textLowColorClass} uppercase`,
 
       slotLaneClass: `border ${params.borderLowColorClass}`,
 
@@ -203,16 +212,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       fillerClass: `border ${params.borderLowColorClass} bg-white`,
 
       listDaysClass: 'px-4 my-10 mx-auto w-full max-w-200',
-      listDayClass: `flex flex-row not-last:border-b not-last:${params.borderMedColorClass}`,
+      listDayClass: `flex flex-row not-last:border-b not-last:${params.borderMidColorClass}`,
       listDayHeaderClass: 'w-40',
-      listDayHeaderInnerClass: 'sticky top-0 py-4 text-sm text-gray-500',
+      listDayHeaderInnerClass: `sticky top-0 py-4 text-sm ${params.textMidColorClass}`,
       listDayEventsClass: 'flex-grow flex flex-col',
 
       singleMonthClass: 'm-5',
       singleMonthHeaderClass: (data) => [
-        'text-center text-sm font-semibold text-gray-900',
+        `text-center text-sm font-semibold ${params.textHeaderColorClass}`,
         data.isSticky
-          ? `py-2 bg-white border-b ${params.borderMedColorClass}`
+          ? `py-2 bg-white border-b ${params.borderMidColorClass}`
           : 'pb-2',
       ],
 
@@ -223,8 +232,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayGrid: {
         ...dayGridClasses,
         dayHeaderDividerClass: `border-b ${params.borderHighColorClass}`,
-        dayHeaderClass: `border ${params.borderMedColorClass} text-xs/6 font-semibold text-gray-700`,
-        dayCellClass: params.borderMedColorClass,
+        dayHeaderClass: `border ${params.borderMidColorClass} text-xs/6 font-semibold ${params.textHighColorClass}`,
+        dayCellClass: params.borderMidColorClass,
       },
       multiMonth: {
         ...dayGridClasses,
@@ -232,14 +241,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isSticky && `border-b ${params.borderHighColorClass} shadow-sm`,
         ],
         dayHeaderClass: (data) => [
-          data.isSticky && `border ${params.borderMedColorClass} text-xs/6 font-semibold text-gray-700`, // single-col
+          data.isSticky && `border ${params.borderMidColorClass} text-xs/6 font-semibold ${params.textHighColorClass}`, // single-col
         ],
         dayHeaderInnerClass: [
-          'text-xs/6 text-gray-500',
+          `text-xs/6 ${params.textMidColorClass}`,
         ],
 
         tableHeaderClass: (data) => data.isSticky && 'bg-white',
-        tableBodyClass: `border ${params.borderMedColorClass} shadow-sm rounded-md overflow-hidden`,
+        tableBodyClass: `border ${params.borderMidColorClass} shadow-sm rounded-md overflow-hidden`,
 
         // TODO: sync with dayGrid?
       },
@@ -250,12 +259,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         dayHeaderDividerClass: (data) => [
           'border-b',
-          data.isSticky ? params.borderMedColorClass : `${params.borderHighColorClass} shadow-sm`,
+          data.isSticky ? params.borderMidColorClass : `${params.borderHighColorClass} shadow-sm`,
         ],
-        dayHeaderClass: `border ${params.borderLowColorClass} text-sm/6 text-gray-500`,
+        dayHeaderClass: `border ${params.borderLowColorClass} text-sm/6 ${params.textMidColorClass}`,
         dayCellClass: params.borderLowColorClass,
         weekNumberHeaderClass: 'justify-end items-center',
-        weekNumberHeaderInnerClass: 'px-3 text-sm/6 text-gray-500',
+        weekNumberHeaderInnerClass: `px-3 text-sm/6 ${params.textMidColorClass}`,
 
         /*
         Figure out how not having any border on slotLabel affects height-syncing
@@ -272,11 +281,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
       },
       list: {
-        listItemEventClass: `not-last:border-b ${params.borderMedColorClass}`,
+        listItemEventClass: `not-last:border-b ${params.borderMidColorClass}`,
         listItemEventInnerClass: 'py-4 flex flex-row text-sm',
 
         // TODO: make this common?...
-        listItemEventTimeClass: 'order-1 text-gray-500',
+        listItemEventTimeClass: `order-1 ${params.textMidColorClass}`,
         listItemEventTitleClass: [
           'flex-grow font-semibold',
           'text-(--fc-event-color) brightness-60',

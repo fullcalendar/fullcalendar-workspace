@@ -31,7 +31,7 @@ export function Scheduler({
   return (
     <div className='border rounded-lg overflow-hidden'>
       <EventCalendarToolbar
-        className='p-4 bg-sidebar text-sidebar-foreground'
+        className='p-4 bg-muted/50 text-sidebar-foreground'
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}

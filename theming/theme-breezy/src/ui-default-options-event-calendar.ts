@@ -19,10 +19,17 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   bgColorOutlineClass: 'outline-(--fc-breezy-canvas-color)',
 
   borderLowColorClass: 'border-gray-100',
-  borderMedColorClass: 'border-gray-200',
+  borderMidColorClass: 'border-gray-200',
   borderStartMedColorClass: 'border-s-gray-200',
   borderHighColorClass: 'border-gray-300',
   borderBottomHighColorClass: 'border-b-gray-300',
+
+  mutedBgClass: 'bg-gray-50',
+
+  textLowColorClass: 'text-gray-400',
+  textMidColorClass: 'text-gray-500',
+  textHighColorClass: 'text-gray-700',
+  textHeaderColorClass: 'text-gray-900',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

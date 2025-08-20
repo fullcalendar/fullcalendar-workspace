@@ -26,10 +26,17 @@ export const optionParams: EventCalendarOptionParams = {
   bgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
 
   borderLowColorClass: borderColorClass,
-  borderMedColorClass: borderColorClass,
+  borderMidColorClass: borderColorClass,
   borderStartMedColorClass: borderStartColorClass,
   borderHighColorClass: borderColorClass,
   borderBottomHighColorClass: borderBottomColorClass,
+
+  mutedBgClass: 'bg-(--mui-palette-action-hover)',
+
+  textLowColorClass: 'text-(--mui-palette-text-secondary)',
+  textMidColorClass: 'text-(--mui-palette-text-secondary)',
+  textHighColorClass: '',
+  textHeaderColorClass: '',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

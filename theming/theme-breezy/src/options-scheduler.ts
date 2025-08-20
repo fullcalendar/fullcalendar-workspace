@@ -17,19 +17,19 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
     optionDefaults: {
       resourceAreaDividerClass: `border-l ${params.borderHighColorClass}`,
 
-      resourceAreaHeaderRowClass: `border ${params.borderMedColorClass}`,
+      resourceAreaHeaderRowClass: `border ${params.borderMidColorClass}`,
       resourceAreaHeaderClass: `border ${params.borderLowColorClass}`,
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
 
-      resourceAreaRowClass: `border ${params.borderMedColorClass}`,
+      resourceAreaRowClass: `border ${params.borderMidColorClass}`,
       resourceCellClass: `border ${params.borderLowColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
 
-      resourceGroupHeaderClass: 'bg-gray-50',
+      resourceGroupHeaderClass: params.mutedBgClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
 
-      resourceGroupLaneClass: `border ${params.borderMedColorClass} bg-gray-50`,
-      resourceLaneClass: `border ${params.borderMedColorClass}`,
+      resourceGroupLaneClass: `border ${params.borderMidColorClass} ${params.mutedBgClass}`,
+      resourceLaneClass: `border ${params.borderMidColorClass}`,
       // resourceLaneTopClass: 'h-0.5',
       // resourceLaneBottomClass: 'h-1', // fix BUG, why this need to be so thick?
 
