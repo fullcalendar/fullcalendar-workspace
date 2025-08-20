@@ -27,6 +27,8 @@ rething 1px-paddings
 put ellipsis on overflow event-title text? in any themes?
 In ui-default-options-event-calendar files,
   put buttons{} map after buttonClass. looks nice
+because dayHeaders and slotLabels have non-undefined h-alignment now (thanks to dayHeaderAlign/slotLabelAlign)
+  can we simplify the flexbox-based DOM?
 
 
 theme checklist

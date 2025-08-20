@@ -53,6 +53,8 @@ TODO: timegrid events have unnecessasry extra 1px bottom margin
 TODO: put header drop-shadow on resource-timeline header
 
 TODO: implement nowIndicator
+
+TODO: hover effect on multi-month month navlinks
 */
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -67,6 +69,11 @@ export interface EventCalendarOptionParams {
   popoverClass: string
   bgColorClass: string
   bgColorOutlineClass: string
+  borderLowColorClass: string
+  borderMedColorClass: string
+  borderStartMedColorClass: string
+  borderHighColorClass: string
+  borderBottomHighColorClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -77,7 +84,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     /*
     BUG: z-index is wrong, can't click week numbers
     */
-    inlineWeekNumberClass: 'absolute z-10 top-0 end-0 border-b border-b-gray-300 border-s border-s-gray-200 rounded-es-md bg-white',
+    inlineWeekNumberClass: `absolute z-10 top-0 end-0 border-b ${params.borderBottomHighColorClass} border-s ${params.borderStartMedColorClass} rounded-es-md bg-white`,
     inlineWeekNumberInnerClass: (data) => [
       'py-0.5',
       data.isCompact
@@ -114,10 +121,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventColor: params.backgroundEventColor,
 
       className: 'border border-gray-950/10 rounded-lg overflow-hidden', // TODO: standardize color
-      headerToolbarClass: 'border-b border-gray-200',
-      footerToolbarClass: 'border-t border-gray-200',
+      headerToolbarClass: `border-b ${params.borderMedColorClass}`,
+      footerToolbarClass: `border-t ${params.borderMedColorClass}`,
 
-      popoverClass: `min-w-50 m-1 ${params.popoverClass}`
+      popoverClass: `min-w-50 m-1 ${params.popoverClass}`,
 
       dayHeaderAlign: 'center', // h-align. TODO: what about v-align?
       dayHeaderInnerClass: (data) => [
@@ -125,7 +132,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'flex flex-row items-center',
       ],
 
-      dayRowClass: 'border border-gray-200',
+      dayRowClass: `border ${params.borderMedColorClass}`,
 
       dayCellClass: (data) => [
         'border',
@@ -142,13 +149,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.inPopover && 'p-2',
       ],
 
-      dayLaneClass: 'border border-gray-100',
+      dayLaneClass: `border ${params.borderLowColorClass}`,
 
       allDayHeaderInnerClass: 'text-xs/5 text-gray-400 p-3',
 
       slotLabelInnerClass: 'text-xs/5 text-gray-400 uppercase',
 
-      slotLaneClass: 'border border-gray-100',
+      slotLaneClass: `border ${params.borderLowColorClass}`,
 
       blockEventClass: `${params.bgColorClass} relative`,
       blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) opacity-15',
@@ -193,10 +200,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       rowMoreLinkInnerClass: 'rounded-md hover:bg-gray-100',
 
-      fillerClass: 'border border-gray-100 bg-white',
+      fillerClass: `border ${params.borderLowColorClass} bg-white`,
 
       listDaysClass: 'px-4 my-10 mx-auto w-full max-w-200',
-      listDayClass: 'flex flex-row not-last:border-b not-last:border-gray-200',
+      listDayClass: `flex flex-row not-last:border-b not-last:${params.borderMedColorClass}`,
       listDayHeaderClass: 'w-40',
       listDayHeaderInnerClass: 'sticky top-0 py-4 text-sm text-gray-500',
       listDayEventsClass: 'flex-grow flex flex-col',
@@ -205,7 +212,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderClass: (data) => [
         'text-center text-sm font-semibold text-gray-900',
         data.isSticky
-          ? 'py-2 bg-white border-b border-gray-200'
+          ? `py-2 bg-white border-b ${params.borderMedColorClass}`
           : 'pb-2',
       ],
 
@@ -215,38 +222,38 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     views: {
       dayGrid: {
         ...dayGridClasses,
-        dayHeaderDividerClass: 'border-b border-gray-300',
-        dayHeaderClass: 'border border-gray-200 text-xs/6 font-semibold text-gray-700',
-        dayCellClass: 'border-gray-200',
+        dayHeaderDividerClass: `border-b ${params.borderHighColorClass}`,
+        dayHeaderClass: `border ${params.borderMedColorClass} text-xs/6 font-semibold text-gray-700`,
+        dayCellClass: params.borderMedColorClass,
       },
       multiMonth: {
         ...dayGridClasses,
         dayHeaderDividerClass: (data) => [
-          data.isSticky && 'border-b border-gray-300 shadow-sm',
+          data.isSticky && `border-b ${params.borderHighColorClass} shadow-sm`,
         ],
         dayHeaderClass: (data) => [
-          data.isSticky && 'border border-gray-200 text-xs/6 font-semibold text-gray-700', // single-col
+          data.isSticky && `border ${params.borderMedColorClass} text-xs/6 font-semibold text-gray-700`, // single-col
         ],
         dayHeaderInnerClass: [
           'text-xs/6 text-gray-500',
         ],
 
         tableHeaderClass: (data) => data.isSticky && 'bg-white',
-        tableBodyClass: 'border border-gray-200 shadow-sm rounded-md overflow-hidden',
+        tableBodyClass: `border ${params.borderMedColorClass} shadow-sm rounded-md overflow-hidden`,
 
         // TODO: sync with dayGrid?
       },
       timeGrid: {
         ...dayGridClasses,
 
-        allDayDividerClass: 'border-b border-gray-300 shadow-sm',
+        allDayDividerClass: `border-b ${params.borderHighColorClass} shadow-sm`,
 
         dayHeaderDividerClass: (data) => [
           'border-b',
-          data.isSticky ? 'border-gray-200' : 'border-gray-300 shadow-sm',
+          data.isSticky ? params.borderMedColorClass : `${params.borderHighColorClass} shadow-sm`,
         ],
-        dayHeaderClass: 'border border-gray-100 text-sm/6 text-gray-500',
-        dayCellClass: 'border-gray-100',
+        dayHeaderClass: `border ${params.borderLowColorClass} text-sm/6 text-gray-500`,
+        dayCellClass: params.borderLowColorClass,
         weekNumberHeaderClass: 'justify-end items-center',
         weekNumberHeaderInnerClass: 'px-3 text-sm/6 text-gray-500',
 
@@ -256,7 +263,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelClass: 'justify-end',
         slotLabelInnerClass: 'min-h-[3em] px-3 relative -top-[0.8em]', // HACK
 
-        slotLabelDividerClass: 'border-l border-gray-100',
+        slotLabelDividerClass: `border-l ${params.borderLowColorClass}`,
 
         columnEventClass: (data) => [
           'mx-1', // TODO: move this to the columnInner thing? yes!!
@@ -265,7 +272,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
       },
       list: {
-        listItemEventClass: 'not-last:border-b not-last:border-gray-200',
+        listItemEventClass: `not-last:border-b ${params.borderMedColorClass}`,
         listItemEventInnerClass: 'py-4 flex flex-row text-sm',
 
         // TODO: make this common?...

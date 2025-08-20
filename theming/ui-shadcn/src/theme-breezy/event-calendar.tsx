@@ -62,6 +62,13 @@ export const optionParams: EventCalendarOptionParams = {
 
   bgColorClass: 'bg-background',
   bgColorOutlineClass: 'outline-background',
+
+  // all get shadcn inherited border
+  borderLowColorClass: '',
+  borderMedColorClass: '',
+  borderStartMedColorClass: '',
+  borderHighColorClass: '',
+  borderBottomHighColorClass: '',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

@@ -9,27 +9,27 @@ import {} from '@fullcalendar/resource-timeline'
 import {} from '@fullcalendar/adaptive'
 import {} from '@fullcalendar/scrollgrid'
 
-export function createSchedulerOnlyOptions({}: EventCalendarOptionParams): {
+export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
   return {
     optionDefaults: {
-      resourceAreaDividerClass: 'border-l border-gray-300',
+      resourceAreaDividerClass: `border-l ${params.borderHighColorClass}`,
 
-      resourceAreaHeaderRowClass: 'border border-gray-200',
-      resourceAreaHeaderClass: 'border border-gray-100',
+      resourceAreaHeaderRowClass: `border ${params.borderMedColorClass}`,
+      resourceAreaHeaderClass: `border ${params.borderLowColorClass}`,
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
 
-      resourceAreaRowClass: 'border border-gray-200',
-      resourceCellClass: 'border border-gray-100',
+      resourceAreaRowClass: `border ${params.borderMedColorClass}`,
+      resourceCellClass: `border ${params.borderLowColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
 
       resourceGroupHeaderClass: 'bg-gray-50',
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
 
-      resourceGroupLaneClass: 'border border-gray-200 bg-gray-50',
-      resourceLaneClass: 'border border-gray-200',
+      resourceGroupLaneClass: `border ${params.borderMedColorClass} bg-gray-50`,
+      resourceLaneClass: `border ${params.borderMedColorClass}`,
       // resourceLaneTopClass: 'h-0.5',
       // resourceLaneBottomClass: 'h-1', // fix BUG, why this need to be so thick?
 
@@ -39,7 +39,7 @@ export function createSchedulerOnlyOptions({}: EventCalendarOptionParams): {
     },
     views: {
       timeline: {
-        slotLabelDividerClass: 'border-t border-gray-300',
+        slotLabelDividerClass: `border-t ${params.borderHighColorClass}`,
 
         slotLabelAlign: 'center',
         slotLabelClass: 'justify-end',

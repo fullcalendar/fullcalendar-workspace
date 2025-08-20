@@ -6,6 +6,10 @@ import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcale
 import { createSlots } from '@fullcalendar/theme-breezy-dev/slots'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 
+const borderColorClass = 'border-(--mui-palette-divider)'
+const borderStartColorClass = 'border-s-(--mui-palette-divider)'
+const borderBottomColorClass = 'border-b-(--mui-palette-divider)'
+
 export const optionParams: EventCalendarOptionParams = {
   // ENSURE the muted by colors are warm, like the toolbar bg color
   primaryBgColorClass: 'bg-(--mui-palette-primary-main)',
@@ -20,6 +24,12 @@ export const optionParams: EventCalendarOptionParams = {
 
   bgColorClass: 'bg-(--mui-palette-background-paper)',
   bgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
+
+  borderLowColorClass: borderColorClass,
+  borderMedColorClass: borderColorClass,
+  borderStartMedColorClass: borderStartColorClass,
+  borderHighColorClass: borderColorClass,
+  borderBottomHighColorClass: borderBottomColorClass,
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
