@@ -19,14 +19,15 @@ export function createSlots(
     dayHeaderContent: (data) => (
       <Fragment>
         {data.textParts.map((textPart, i) => (
+          // TODO: single-part headers (like daygrid) should have params.textHighColorClass !!!
           <Fragment key={i}>
             {textPart.type !== 'day' ? (
-              <span className='whitespace-pre'>{textPart.value}</span>
+              <span className={`text-sm/6 whitespace-pre ${params.textMidColorClass}`}>{textPart.value}</span>
             ) : (
               data.isToday ? (
-                <span className={`font-semibold w-8 h-8 whitespace-pre rounded-full ${params.primaryBgColorClass} text-white flex flex-row items-center justify-center ms-1`}>{textPart.value}</span>
+                <span className={`font-semibold text-sm/6 w-8 h-8 whitespace-pre rounded-full ${params.primaryBgColorClass} text-white flex flex-row items-center justify-center ms-1`}>{textPart.value}</span>
               ) : (
-                <span className='font-semibold h-8 whitespace-pre flex flex-row items-center'>{textPart.value}</span>
+                <span className={`font-semibold text-sm/6 h-8 whitespace-pre flex flex-row items-center ${params.textHeaderColorClass}`}>{textPart.value}</span>
               )
             )}
           </Fragment>
@@ -43,7 +44,8 @@ export function createSlots(
               data.isToday ? (
                 <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${params.primaryBgColorClass} ${params.primaryTextColorClass} font-semibold`}>{textPart.value}</span>
               ) : (
-                <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
+                // should use semibold?
+                <span className={`h-[2em] flex flex-row items-center justify-center whitespace-pre`}>{textPart.value}</span>
               )
             )}
           </Fragment>

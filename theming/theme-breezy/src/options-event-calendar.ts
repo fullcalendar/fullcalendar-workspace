@@ -61,6 +61,8 @@ TODO: use muted color in more places than just dayCell
 TODO: hover:bg-gray-100 -> hover-button system
 
 kill all text-xs/6 ??? is just "text-xs" used?
+
+TODO: default-ui, for daygrid view, should have smaller dayHeader font size
 */
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -150,11 +152,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'border',
         (data.isOther || data.isDisabled) && params.mutedBgClass,
       ],
-      dayCellTopClass: 'flex flex-row justify-start min-h-1',
+      dayCellTopClass: (data) => [
+        data.isOther && 'opacity-75',
+        'flex flex-row justify-start min-h-1',
+      ],
       dayCellTopInnerClass: (data) => [
+        params.textMidColorClass,
         data.isCompact ? xxsTextClass : 'text-xs/6',
         !data.isCompact && 'p-1',
-        data.isOther ? params.textLowColorClass : params.textHighColorClass,
         !data.isToday && 'mx-1',
       ],
       dayCellInnerClass: (data) => [
@@ -235,7 +240,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayGrid: {
         ...dayGridClasses,
         dayHeaderDividerClass: `border-b ${params.borderHighColorClass}`,
-        dayHeaderClass: `border ${params.borderMidColorClass} text-xs/6 font-semibold ${params.textHighColorClass}`,
+        dayHeaderClass: `border ${params.borderMidColorClass}`,
         dayCellClass: params.borderMidColorClass,
       },
       multiMonth: {
@@ -244,10 +249,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isSticky && `border-b ${params.borderHighColorClass} shadow-sm`,
         ],
         dayHeaderClass: (data) => [
-          data.isSticky && `border ${params.borderMidColorClass} text-xs/6 font-semibold ${params.textHighColorClass}`, // single-col
-        ],
-        dayHeaderInnerClass: [
-          `text-xs/6 ${params.textMidColorClass}`,
+          data.isSticky && `border ${params.borderMidColorClass}`, // single-col
         ],
 
         tableHeaderClass: (data) => data.isSticky && params.bgColorClass,
@@ -264,7 +266,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           'border-b',
           data.isSticky ? params.borderMidColorClass : `${params.borderHighColorClass} shadow-sm`,
         ],
-        dayHeaderClass: `border ${params.borderLowColorClass} text-sm/6 ${params.textMidColorClass}`,
+        dayHeaderClass: `border ${params.borderLowColorClass}`,
         dayCellClass: params.borderLowColorClass,
         weekNumberHeaderClass: 'justify-end items-center',
         weekNumberHeaderInnerClass: `px-3 text-sm/6 ${params.textMidColorClass}`,

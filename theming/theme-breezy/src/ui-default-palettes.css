@@ -41,6 +41,13 @@ TODO: add default-ui-only variables to:
   --fc-breezy-border-mid-color: color-mix(in oklab, var(--color-white) 10%, transparent);
   --fc-breezy-border-high-color: color-mix(in oklab, var(--color-white) 15%, transparent);
   --fc-breezy-muted-color: color-mix(in oklab, var(--color-gray-800) 50%, transparent);
+  --fc-breezy-text-low-color: var(--color-gray-500);
+  --fc-breezy-text-mid-color: var(--color-gray-400);
+  --fc-breezy-text-high-color: var(--color-gray-300);
+  --fc-breezy-text-header-color: var(--color-white);
+  --fc-breezy-select-bg: color-mix(in oklab, var(--color-white) 10%, transparent);
+  --fc-breezy-select-text: var(--color-white);
+  --fc-breezy-non-select-text: var(--color-gray-400);
   --fc-breezy-secondary-color: color-mix(in oklab, var(--color-white) 10%, transparent);
   --fc-breezy-secondary-hover-color: color-mix(in oklab, var(--color-white) 20%, transparent);
   --fc-breezy-secondary-border-color: color-mix(in oklab, var(--color-white) 5%, transparent);
@@ -58,25 +65,26 @@ TODO: add default-ui-only variables to:
 [data-palette=indigo][data-color-scheme=dark] {
   --fc-breezy-primary-color: var(--color-indigo-500);
   --fc-breezy-primary-hover-color: var(--color-indigo-400);
+  --fc-breezy-event-color: var(--color-blue-300);
 }
 
 [data-palette=rose] {
   --fc-breezy-primary-color: var(--color-rose-600);
+  --fc-breezy-primary-hover-color: var(--color-rose-500);
   --fc-breezy-primary-text-color: var(--color-white);
   --fc-breezy-event-color: var(--color-pink-500);
 }
 
-/*
-TODO: time text looks weird?
-*/
 [data-palette=emerald] {
   --fc-breezy-primary-color: var(--color-emerald-600);
+  --fc-breezy-primary-hover-color: var(--color-emerald-500);
   --fc-breezy-primary-text-color: var(--color-white);
   --fc-breezy-event-color: var(--color-green-500);
 }
 
 [data-palette=honey] {
-  --fc-breezy-primary-color: var(--color-yellow-500); /* 600 was too dark */
+  --fc-breezy-primary-color: var(--color-yellow-500);
+  --fc-breezy-primary-hover-color: var(--color-yellow-400);
   --fc-breezy-primary-text-color: var(--color-white);
   --fc-breezy-event-color: var(--color-amber-500);
 }
