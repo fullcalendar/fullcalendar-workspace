@@ -20,7 +20,7 @@ export const optionParams: EventCalendarOptionParams = {
   backgroundEventColor: 'var(--mui-palette-secondary-main)',
   backgroundEventColorClass: 'brightness-115 opacity-15',
 
-  popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8)',
+  popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8)',
 
   bgColorClass: 'bg-(--mui-palette-background-paper)',
   bgColorOutlineClass: 'outline-(--mui-palette-background-paper)',

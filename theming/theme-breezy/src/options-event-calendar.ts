@@ -65,6 +65,8 @@ kill all text-xs/6 ??? is just "text-xs" used?
 TODO: default-ui, for daygrid view, should have smaller dayHeader font size
 
 TODO: no hover-effect on today button when isDisabled
+
+TODO: MUI purple theme gives overly-dark toolbar bg
 */
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
