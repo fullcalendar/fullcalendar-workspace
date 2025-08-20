@@ -5,6 +5,7 @@ TODO: double-check units for ticks
 TODO: day-headers in timeline have different border color that body slats
 TODO: button hover-effect for not-today?
 TODO: X is too big
+TODO: week-number hover gets really dim. weird mousedown effect
 TODO: MUI figure out select colors vs bg-event color. currently inverse of classic-theme
 TODO: MUI resource group oddly dark gray
 

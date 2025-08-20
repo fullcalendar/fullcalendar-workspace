@@ -1,14 +1,13 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 import { EventCalendarOptionParams } from './options-event-calendar.js'
 
-// ambient types
-// TODO: make these all peer deps? or wait, move options to just core
-import '@fullcalendar/timeline'
-import '@fullcalendar/resource-daygrid'
-import '@fullcalendar/resource-timegrid'
-import '@fullcalendar/resource-timeline'
-import '@fullcalendar/adaptive'
-import '@fullcalendar/scrollgrid'
+// ambient types (tsc strips during build because of {})
+import {} from '@fullcalendar/timeline'
+import {} from '@fullcalendar/resource-daygrid'
+import {} from '@fullcalendar/resource-timegrid'
+import {} from '@fullcalendar/resource-timeline'
+import {} from '@fullcalendar/adaptive'
+import {} from '@fullcalendar/scrollgrid'
 
 export function createSchedulerOnlyOptions({}: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
@@ -35,6 +34,8 @@ export function createSchedulerOnlyOptions({}: EventCalendarOptionParams): {
       // resourceLaneBottomClass: 'h-1', // fix BUG, why this need to be so thick?
 
       resourceExpanderClass: 'self-center',
+
+      resourceDayHeaderAlign: 'center', // best place?
     },
     views: {
       timeline: {

@@ -1,16 +1,11 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 
-// ambient types
-// TODO: make these all peer deps? or wait, move options to just core
-import '@fullcalendar/daygrid'
-import '@fullcalendar/timegrid'
-import '@fullcalendar/list'
-import '@fullcalendar/multimonth'
-import '@fullcalendar/interaction'
-
-// active-color also used below for border...
-
-const xxsTextClass = 'text-[0.7rem]/[1.25]' // about 11px when default 16px root font size
+// ambient types (tsc strips during build because of {})
+import {} from '@fullcalendar/daygrid'
+import {} from '@fullcalendar/timegrid'
+import {} from '@fullcalendar/list'
+import {} from '@fullcalendar/multimonth'
+import {} from '@fullcalendar/interaction'
 
 /*
 applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
@@ -54,73 +49,22 @@ TODO: move list-header sticky from listDayHeaderInnerClass -> listDayHeaderClass
 
 TODO: timegrid resizing broken
 TODO: timegrid events have unnecessasry extra 1px bottom margin
+
+TODO: put header drop-shadow on resource-timeline header
+
+TODO: implement nowIndicator
 */
-function createDayGridClasses(primaryBorderColorClass: string): CalendarOptions {
-  return {
-    /*
-    TODO: make new inlineWeekNumberClass / cellWeekNumberClass
-    BUG: z-index is wrong, can't click week numbers
-    */
-    inlineWeekNumberClass: 'absolute z-10 top-0 end-0 border-b border-b-gray-300 border-s border-s-gray-200 rounded-es-md bg-white',
-    inlineWeekNumberInnerClass: (data) => [
-      'py-0.5 ' +
-        (data.isCompact
-          ? xxsTextClass + ' px-0.5'
-          : 'text-xs/6 px-1')
-    ],
 
-    rowEventClass: (data) => [
-      data.isCompact ? 'mb-px' : 'mb-0.5',
-      data.isStart && (data.isCompact ? 'ms-px' : 'ms-1'),
-      data.isEnd && (data.isCompact ? 'me-px' : 'me-1'),
-    ],
-
-    /*
-    TODO: ensure ellipsis on overflowing title text
-    TODO: add-back space between time/title? (try ellipsis first)
-    */
-    listItemEventClass: 'mx-1 mb-px hover:bg-gray-100 rounded-md',
-    listItemEventInnerClass: 'p-1 flex flex-row text-xs/4',
-    listItemEventTimeClass: 'order-1 text-gray-500',
-    listItemEventTitleClass: 'flex-grow font-medium',
-
-    rowMoreLinkClass: (data) => [
-      'flex flex-row',
-      data.isCompact ? 'mx-px' : 'mx-1',
-      data.isCompact && `border ${primaryBorderColorClass} rounded-sm`,
-    ],
-    rowMoreLinkInnerClass: (data) => [
-      data.isCompact ? xxsTextClass : 'text-xs',
-      !data.isCompact && 'p-1',
-      'whitespace-nowrap overflow-hidden',
-    ]
-  }
-}
-
-/*
-NOTE: instead of w-* h-*, just use size-* !!!
-
-TODO: how to do inner drop shadow within scroll area?
-*/
+const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
 
 export interface EventCalendarOptionParams {
-  // !!! Having trouble b/c some many different shades
-  // borderColorClass: string // eventually just borderColor
-
-  // !!! now-indicator not-yet-implemented!
-  // nowIndicatorBorderColorClass: string // eventually just alertBorderColor
-
   primaryBgColorClass: string
   primaryTextColorClass: string
   primaryBorderColorClass: string
-
   eventColor: string
-  // NOTE: eventContrastColor not needed because eventColor always faded to bg color
   backgroundEventColor: string
   backgroundEventColorClass: string
-
   popoverClass: string
-
   bgColorClass: string
   bgColorOutlineClass: string
 }
@@ -129,21 +73,53 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
-  const dayGridClasses = createDayGridClasses(params.primaryBorderColorClass)
+  const dayGridClasses: CalendarOptions = {
+    /*
+    BUG: z-index is wrong, can't click week numbers
+    */
+    inlineWeekNumberClass: 'absolute z-10 top-0 end-0 border-b border-b-gray-300 border-s border-s-gray-200 rounded-es-md bg-white',
+    inlineWeekNumberInnerClass: (data) => [
+      'py-0.5',
+      data.isCompact
+        ? `${xxsTextClass} px-0.5`
+        : 'text-xs/6 px-1'
+    ],
+
+    rowEventClass: (data) => [
+      data.isCompact ? 'mb-px' : 'mb-0.5',
+      data.isStart && (data.isCompact ? 'ms-px' : 'ms-1'),
+      data.isEnd && (data.isCompact ? 'me-px' : 'me-1'),
+    ],
+
+    listItemEventClass: 'mx-1 mb-px hover:bg-gray-100 rounded-md',
+    listItemEventInnerClass: 'p-1 flex flex-row text-xs/4',
+    listItemEventTimeClass: 'order-1 text-gray-500',
+    listItemEventTitleClass: 'flex-grow font-medium',
+
+    rowMoreLinkClass: (data) => [
+      'flex flex-row',
+      data.isCompact ? 'mx-px' : 'mx-1',
+      data.isCompact && `border ${params.primaryBorderColorClass} rounded-sm`,
+    ],
+    rowMoreLinkInnerClass: (data) => [
+      data.isCompact ? xxsTextClass : 'text-xs',
+      !data.isCompact && 'p-1',
+      'whitespace-nowrap overflow-hidden',
+    ]
+  }
 
   return {
     optionDefaults: {
       eventColor: params.eventColor,
-      // eventContrastColor: defaultEventContrastColor, -- not needed in this theme!?
       backgroundEventColor: params.backgroundEventColor,
 
       className: 'border border-gray-950/10 rounded-lg overflow-hidden', // TODO: standardize color
       headerToolbarClass: 'border-b border-gray-200',
       footerToolbarClass: 'border-t border-gray-200',
 
-      popoverClass: 'min-w-50 m-1 ' + params.popoverClass,
+      popoverClass: `min-w-50 m-1 ${params.popoverClass}`
 
-      dayHeaderClass: 'items-center',
+      dayHeaderAlign: 'center', // h-align. TODO: what about v-align?
       dayHeaderInnerClass: (data) => [
         data.isCompact ? 'p-1' : 'p-2',
         'flex flex-row items-center',
@@ -183,7 +159,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       blockEventTimeClass: 'text-(--fc-event-color) contrast-150',
       blockEventTitleClass: 'text-(--fc-event-color) brightness-60',
 
-      backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.backgroundEventColorClass,
+      backgroundEventColorClass: `bg-(--fc-event-color) ${params.backgroundEventColorClass}`,
       backgroundEventTitleClass: (data) => [
         'm-2 opacity-50 italic',
         data.isCompact ? xxsTextClass : 'text-xs',

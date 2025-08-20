@@ -24,6 +24,9 @@ avoid em units in themes (like 3em) at all costs... okay for 1em icons but that'
 simplify how icon-size and line-height works
 rething 1px-paddings
   p-px -> p-[0.0625rem] ?
+put ellipsis on overflow event-title text? in any themes?
+In ui-default-options-event-calendar files,
+  put buttons{} map after buttonClass. looks nice
 
 
 theme checklist
