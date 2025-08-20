@@ -38,8 +38,11 @@ export const optionParams: EventCalendarOptionParams = {
   textHeaderColorClass: 'text-(--fc-breezy-text-header-color)',
 }
 
-const buttonWithIconClass = 'text-(--fc-breezy-text-low-color) hover:text-(--fc-breezy-text-mid-color)'
-const buttonIconClass = 'size-5' // best? to sync to line-height???
+const secondaryButtonClass = 'group text-(--fc-breezy-secondary-text-color) bg-(--fc-breezy-secondary-color) hover:bg-(--fc-breezy-secondary-hover-color) border-(--fc-breezy-secondary-border-color)'
+
+// NOTE: only works within secondary button
+// best? to sync to line-height???
+const buttonIconClass = 'size-5 text-(--fc-breezy-secondary-icon-color) group-hover:text-(--fc-breezy-secondary-icon-hover-color)'
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
 
@@ -63,7 +66,7 @@ export const defaultUiEventCalendarOptions: {
     ],
     buttonClass: (data) => [
       'py-2 text-sm focus:relative',
-      data.isIconOnly ? `px-2 ${buttonWithIconClass}` : 'px-3',
+      data.isIconOnly ? 'px-2' : 'px-3',
       data.inSelectGroup ? joinClassNames(
         // START view-switching bar item
         'rounded-md font-medium',
@@ -77,7 +80,7 @@ export const defaultUiEventCalendarOptions: {
           // primary
           ? `${optionParams.primaryBgColorClass} ${optionParams.primaryTextColorClass} ${optionParams.primaryBorderColorClass}`
           // secondary
-          : `${optionParams.textHeaderColorClass} ${optionParams.bgColorClass} hover:bg-gray-50 ${optionParams.borderHighColorClass}`,
+          : secondaryButtonClass,
         data.inGroup
           ? 'first:rounded-s-md first:border-s last:rounded-e-md last:border-e border-y'
           // standalone button (responsible for own border and shadow)
