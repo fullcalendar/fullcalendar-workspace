@@ -57,11 +57,11 @@ TODO: implement nowIndicator
 TODO: hover effect on multi-month month navlinks
 
 TODO: use muted color in more places than just dayCell
+
+TODO: hover:bg-gray-100 -> hover-button system
 */
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
-
-// TODO: bg-white
 
 export interface EventCalendarOptionParams {
   primaryBgColorClass: string
@@ -93,7 +93,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     /*
     BUG: z-index is wrong, can't click week numbers
     */
-    inlineWeekNumberClass: `absolute z-10 top-0 end-0 border-b ${params.borderBottomHighColorClass} border-s ${params.borderStartMedColorClass} rounded-es-md bg-white`,
+    inlineWeekNumberClass: `absolute z-10 top-0 end-0 border-b ${params.borderBottomHighColorClass} border-s ${params.borderStartMedColorClass} rounded-es-md ${params.bgColorClass}`,
     inlineWeekNumberInnerClass: (data) => [
       'py-0.5',
       data.isCompact
@@ -209,7 +209,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       rowMoreLinkInnerClass: 'rounded-md hover:bg-gray-100',
 
-      fillerClass: `border ${params.borderLowColorClass} bg-white`,
+      fillerClass: `border ${params.borderLowColorClass} ${params.bgColorClass}`,
 
       listDaysClass: 'px-4 my-10 mx-auto w-full max-w-200',
       listDayClass: `flex flex-row not-last:border-b not-last:${params.borderMidColorClass}`,
@@ -221,7 +221,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderClass: (data) => [
         `text-center text-sm font-semibold ${params.textHeaderColorClass}`,
         data.isSticky
-          ? `py-2 bg-white border-b ${params.borderMidColorClass}`
+          ? `py-2 ${params.bgColorClass} border-b ${params.borderMidColorClass}`
           : 'pb-2',
       ],
 
@@ -247,7 +247,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           `text-xs/6 ${params.textMidColorClass}`,
         ],
 
-        tableHeaderClass: (data) => data.isSticky && 'bg-white',
+        tableHeaderClass: (data) => data.isSticky && params.bgColorClass,
         tableBodyClass: `border ${params.borderMidColorClass} shadow-sm rounded-md overflow-hidden`,
 
         // TODO: sync with dayGrid?
