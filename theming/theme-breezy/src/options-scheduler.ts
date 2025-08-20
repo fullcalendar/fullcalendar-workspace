@@ -13,19 +13,22 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
+  // TODO: fix color for expander icon
+  // TODO: should all datagrid text color be high?
+
   return {
     optionDefaults: {
       resourceAreaDividerClass: `border-l ${params.borderHighColorClass}`,
 
       resourceAreaHeaderRowClass: `border ${params.borderMidColorClass}`,
       resourceAreaHeaderClass: `border ${params.borderLowColorClass}`,
-      resourceAreaHeaderInnerClass: 'p-2 text-sm',
+      resourceAreaHeaderInnerClass: `p-2 text-sm ${params.textHighColorClass}`,
 
       resourceAreaRowClass: `border ${params.borderMidColorClass}`,
       resourceCellClass: `border ${params.borderLowColorClass}`,
-      resourceCellInnerClass: 'p-2 text-sm',
+      resourceCellInnerClass: `p-2 text-sm ${params.textHighColorClass}`,
 
-      resourceGroupHeaderClass: params.mutedBgClass,
+      resourceGroupHeaderClass: `${params.mutedBgClass} ${params.textHighColorClass}`,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
 
       resourceGroupLaneClass: `border ${params.borderMidColorClass} ${params.mutedBgClass}`,
@@ -34,6 +37,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       // resourceLaneBottomClass: 'h-1', // fix BUG, why this need to be so thick?
 
       resourceExpanderClass: 'self-center',
+
+      // TODO: weird
+      resourceDayHeaderClass: `border ${params.borderMidColorClass} text-xs/6 font-semibold ${params.textHighColorClass}`,
 
       resourceDayHeaderAlign: 'center', // best place?
     },

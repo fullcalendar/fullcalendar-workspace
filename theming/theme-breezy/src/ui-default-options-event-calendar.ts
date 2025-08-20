@@ -8,9 +8,11 @@ const nonSelectTextClass = 'text-(--fc-breezy-non-select-text)'
 const hoverSelectTextClass = 'hover:text-(--fc-breezy-select-text)' // best name?
 
 export const optionParams: EventCalendarOptionParams = {
-  primaryBgColorClass: 'bg-(--fc-breezy-primary-color)',
+  // always considered a button, and has hover effect. okay?
+  primaryBgColorClass: 'bg-(--fc-breezy-primary-color) hover:bg-(--fc-breezy-primary-hover-color)',
   primaryTextColorClass: 'text-(--fc-breezy-primary-text-color)',
-  primaryBorderColorClass: 'border-(--fc-breezy-primary-color)',
+  primaryBorderColorClass: 'border-(--fc-breezy-primary-color) hover:border-(--fc-breezy-primary-hover-color)',
+  // weird we need to do this border stuff too!!!
 
   eventColor: 'var(--fc-breezy-event-color)',
   backgroundEventColor: 'var(--color-green-500)',

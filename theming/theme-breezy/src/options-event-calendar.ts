@@ -59,6 +59,8 @@ TODO: hover effect on multi-month month navlinks
 TODO: use muted color in more places than just dayCell
 
 TODO: hover:bg-gray-100 -> hover-button system
+
+kill all text-xs/6 ??? is just "text-xs" used?
 */
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -82,7 +84,7 @@ export interface EventCalendarOptionParams {
   textLowColorClass: string
   textMidColorClass: string
   textHighColorClass: string
-  textHeaderColorClass: string
+  textHeaderColorClass: string // bad name
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -95,7 +97,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     */
     inlineWeekNumberClass: `absolute z-10 top-0 end-0 border-b ${params.borderBottomHighColorClass} border-s ${params.borderStartMedColorClass} rounded-es-md ${params.bgColorClass}`,
     inlineWeekNumberInnerClass: (data) => [
-      'py-0.5',
+      `py-0.5 ${params.textMidColorClass}`,
       data.isCompact
         ? `${xxsTextClass} px-0.5`
         : 'text-xs/6 px-1'
@@ -110,7 +112,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     listItemEventClass: 'mx-1 mb-px hover:bg-gray-100 rounded-md',
     listItemEventInnerClass: 'p-1 flex flex-row text-xs/4',
     listItemEventTimeClass: `order-1 ${params.textMidColorClass}`,
-    listItemEventTitleClass: 'flex-grow font-medium',
+    listItemEventTitleClass: `flex-grow font-medium ${params.textHeaderColorClass}`,
 
     rowMoreLinkClass: (data) => [
       'flex flex-row',
@@ -120,7 +122,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     rowMoreLinkInnerClass: (data) => [
       data.isCompact ? xxsTextClass : 'text-xs',
       !data.isCompact && 'p-1',
-      'whitespace-nowrap overflow-hidden',
+      `whitespace-nowrap overflow-hidden ${params.textHeaderColorClass}`,
     ]
   }
 
@@ -129,9 +131,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventColor: params.eventColor,
       backgroundEventColor: params.backgroundEventColor,
 
-      className: `border ${params.borderMidColorClass} rounded-lg overflow-hidden`,
-
-      viewClass: params.bgColorClass,
+      className: `border ${params.bgColorClass} ${params.borderMidColorClass} rounded-lg overflow-hidden`,
 
       headerToolbarClass: `border-b ${params.borderMidColorClass}`,
       footerToolbarClass: `border-t ${params.borderMidColorClass}`,
