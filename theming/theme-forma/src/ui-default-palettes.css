@@ -1,9 +1,35 @@
 
 :root {
   --fc-forma-canvas-color: #fff;
+  --fc-forma-border0: #E5E5E5;
+  --fc-forma-border1: #E0E0E0;
+  --fc-forma-border2: #D1D1D1;
+  --fc-forma-border3: #A6A6A6;
+  --fc-forma-bg0: #FAFAFA;
+  --fc-forma-bg1: #F5F5F5;
+  --fc-forma-bg2: #F0F0F0;
+  --fc-forma-bg3: #EBEBEB;
+  --fc-forma-bg4: #E5E5E5;
+  --fc-forma-bg5: #E0E0E0;
+  --fc-forma-bg6: #D6D6D6;
+  --fc-forma-icon-color: #424242;
+  --fc-forma-muted-text-color: #242424;
 }
 [data-color-scheme=dark] {
   --fc-forma-canvas-color: oklch(0.13 0.028 261.692);
+  --fc-forma-border0: #3A3A3A;
+  --fc-forma-border1: #404040;
+  --fc-forma-border2: #4A4A4A;
+  --fc-forma-border3: #707070;
+  --fc-forma-bg0: #1A1A1A;
+  --fc-forma-bg1: #202020;
+  --fc-forma-bg2: #262626;
+  --fc-forma-bg3: #2C2C2C;
+  --fc-forma-bg4: #323232;
+  --fc-forma-bg5: #383838;
+  --fc-forma-bg6: #404040;
+  --fc-forma-icon-color: #BDBDBD;
+  --fc-forma-muted-text-color: #DBDBDB;
 }
 
 [data-palette=blue] {
