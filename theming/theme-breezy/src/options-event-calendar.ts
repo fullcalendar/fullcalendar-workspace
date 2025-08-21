@@ -70,7 +70,9 @@ TODO: MUI purple theme gives overly-dark toolbar bg
 
 TODO: hover effect for navlinks
 
-TODO: fix popover X valignment
+TODO: fix popover X valignment... easier API?
+
+TODO: mutlimonth title needs to be center-aligned
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -256,7 +258,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isSticky && `border-b ${params.borderHighColorClass} shadow-sm`,
         ],
         dayHeaderClass: (data) => [
-          data.isSticky && `border ${params.borderMidColorClass}`, // single-col
+          // isCompact is a HACK to detect multi-month multi-col
+          !data.isCompact && `border ${params.borderMidColorClass}`,
         ],
 
         tableHeaderClass: (data) => data.isSticky && params.bgColorClass,
