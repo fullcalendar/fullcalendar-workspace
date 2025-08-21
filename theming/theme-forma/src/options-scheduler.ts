@@ -35,8 +35,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       ],
       resourceDayHeaderInnerClass: (data) => [
         'flex flex-col',
-        'px-2 pt-1 pb-2 border-t-4', // TODO: adjust padding when isCompact?
-        data.isToday ? params.primaryBorderColorClass : 'border-transparent',
+        'p-2', // TODO: adjust padding when isCompact?
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
 

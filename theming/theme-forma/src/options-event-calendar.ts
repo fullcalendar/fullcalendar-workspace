@@ -369,12 +369,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         dayHeaderClass: (data) => [
           data.isMajor ? majorBorderClass : borderClass,
           data.isDisabled && neutralBgColorClass,
+          !data.level && 'relative', // contain wide top-border
         ],
         dayHeaderInnerClass: (data) => [
-          'flex flex-col',
-          'px-2 pt-1 pb-2 border-t-4', // TODO: adjust padding when isCompact?
-          (data.isToday && !data.inPopover) ? params.primaryBorderColorClass : 'border-transparent',
+          'p-2 flex flex-col', // TODO: adjust padding when isCompact?
           data.isCompact ? xxsTextClass : 'text-xs',
+          data.level && 'relative', // contain narrow top-border
         ],
 
         dayRowClass: 'min-h-[3em]',

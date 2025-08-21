@@ -75,6 +75,8 @@ TODO: fix popover X valignment... easier API?
 TODO: multimonth title needs to be center-aligned
 
 TODO: v-resource headers different border color than days
+
+TODO: Auditorium stickness doesn't stick to right-side
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height

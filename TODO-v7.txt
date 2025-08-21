@@ -26,6 +26,7 @@ for shadcn,
 for all icons, use negative margins,
   kill isIconOnly!
 
+for resourceTimeGridDay... have week number in left axis?
 
 ensure event outer spacing in view-specific options
 avoid em units in themes (like 3em) at all costs... okay for 1em icons but that's it

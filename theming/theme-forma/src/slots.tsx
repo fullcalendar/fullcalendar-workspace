@@ -18,11 +18,17 @@ export function createSlots(
   return {
     dayHeaderContent: (data) => (
       <Fragment>
+        {data.isToday && (
+          // contained by either dayHeaderClass or dayHeaderInnerClass
+          <div className={`absolute top-0 left-0 right-0 border-t-4 ${params.primaryBorderColorClass} pointer-events-none`} />
+        )}
         {data.dayNumberText && (
-          <div className={
-            'text-lg' +
-            (data.isToday ? ' font-bold' : '')
-          }>{data.dayNumberText}</div>
+          <div
+            className={joinClassNames(
+              'text-lg',
+              data.isToday && 'font-bold',
+            )}
+          >{data.dayNumberText}</div>
         )}
         {data.weekdayText && (
           <div className='text-xs'>{data.weekdayText}</div>

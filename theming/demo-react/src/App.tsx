@@ -610,6 +610,7 @@ function SchedulerDemo(props: DemoProps) {
 
   return (
     <SchedulerComponent
+      weekNumbers
       availableViews={props.availableViews}
       addButton={{
         text: 'Add Event',
