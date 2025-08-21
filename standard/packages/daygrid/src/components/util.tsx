@@ -179,7 +179,7 @@ export function createDayHeaderFormatter(
 function computeFallbackHeaderFormat(datesRepDistinctDays: boolean, dayCnt: number): DateFormatter {
   // if more than one week row, or if there are a lot of columns with not much space,
   // put just the day numbers will be in each cell
-  if (!datesRepDistinctDays || dayCnt > 10) {
+  if (!datesRepDistinctDays) {
     return createFormatter({ weekday: 'short' }) // "Sat"
   }
 

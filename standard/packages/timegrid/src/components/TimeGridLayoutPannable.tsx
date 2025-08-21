@@ -304,11 +304,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   horizontal
                   hideScrollbars
                   // fill remaining width
-                  className={joinClassNames(classNames.flexRow, classNames.liquid)}
+                  className={joinClassNames(classNames.flexRow, classNames.liquidX)}
                   ref={this.allDayScrollerRef}
                 >
                   <div
-                    className={classNames.flexCol}
+                    className={classNames.flexRow}
                     style={{ width: canvasWidth }}
                   >
                     <TimeGridAllDayLane
@@ -318,7 +318,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       showDayNumbers={false}
                       forPrint={forPrint}
                       isHitComboAllowed={props.isHitComboAllowed}
-                      className={classNames.borderNone}
+                      className={joinClassNames(classNames.borderNone, classNames.liquidX)}
                       cellIsCompact={cellIsCompact}
 
                       // content

@@ -31,7 +31,7 @@ export function createSlots(
                   ? joinClassNames(
                       'h-8 font-semibold flex flex-row items-center', // v-align-text
                       data.isToday && !data.inPopover
-                        ? `w-8 rounded-full justify-center mx-1 ${params.primaryBgColorClass} ${params.primaryTextColorClass}`
+                        ? `w-8 rounded-full justify-center mx-0.5 ${params.primaryBgColorClass} ${params.primaryTextColorClass}`
                         : params.textHeaderColorClass
                     )
                   : params.textMidColorClass,

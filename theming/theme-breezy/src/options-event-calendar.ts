@@ -150,6 +150,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverCloseClass: 'absolute top-1 end-1',
 
       dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center', // h-align
+      dayHeaderRowClass: `border ${params.borderLowColorClass}`,
       dayHeaderInnerClass: (data) => [
         data.inPopover ? 'px-3' : 'px-2',
         data.isCompact || data.inPopover ? 'py-1' : 'py-2',
