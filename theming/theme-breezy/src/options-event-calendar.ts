@@ -67,9 +67,13 @@ TODO: default-ui, for daygrid view, should have smaller dayHeader font size
 TODO: no hover-effect on today button when isDisabled
 
 TODO: MUI purple theme gives overly-dark toolbar bg
+
+TODO: hover effect for navlinks
+
+TODO: fix popover X valignment
 */
 
-const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
+export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
 
 export interface EventCalendarOptionParams {
   primaryBgColorClass: string
@@ -143,11 +147,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       footerToolbarClass: `border-t ${params.borderMidColorClass}`,
 
       popoverClass: `min-w-50 m-1 ${params.popoverClass}`,
+      popoverCloseClass: 'absolute top-1 end-1',
 
-      dayHeaderAlign: 'center', // h-align. TODO: what about v-align?
+      dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center', // h-align
       dayHeaderInnerClass: (data) => [
-        data.isCompact ? 'p-1' : 'p-2',
-        'flex flex-row items-center',
+        data.inPopover ? 'px-3' : 'px-2',
+        data.isCompact || data.inPopover ? 'py-1' : 'py-2',
+        'flex flex-row items-center', // v-align
       ],
 
       dayRowClass: `border ${params.borderMidColorClass}`,
@@ -161,14 +167,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'flex flex-row justify-start min-h-1',
       ],
       dayCellTopInnerClass: (data) => [
-        params.textMidColorClass,
-        data.isCompact ? xxsTextClass : 'text-xs/6',
         !data.isCompact && 'p-1',
         !data.isToday && 'mx-1',
       ],
-      dayCellInnerClass: (data) => [
-        data.inPopover && 'p-2',
-      ],
+      dayCellInnerClass: (data) => data.inPopover && 'p-2',
 
       dayLaneClass: `border ${params.borderLowColorClass}`,
 

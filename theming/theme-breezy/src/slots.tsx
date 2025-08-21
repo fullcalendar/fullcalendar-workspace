@@ -1,7 +1,7 @@
-import { CalendarOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
 import type * as FullCalendarPreact from '@fullcalendar/core/preact'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
-import { EventCalendarOptionParams } from './options-event-calendar.js'
+import { EventCalendarOptionParams, xxsTextClass } from './options-event-calendar.js'
 
 // HACK
 ;(createElement || Fragment); // import intentionally unused
@@ -17,38 +17,48 @@ export function createSlots(
 ): CalendarOptions {
   return {
     dayHeaderContent: (data) => (
-      <Fragment>
-        {data.textParts.map((textPart, i) => (
-          // TODO: single-part headers (like daygrid) should have params.textHighColorClass !!!
-          <Fragment key={i}>
-            {textPart.type !== 'day' ? (
-              <span className={`text-sm/6 whitespace-pre ${params.textMidColorClass}`}>{textPart.value}</span>
-            ) : (
-              data.isToday ? (
-                <span className={`font-semibold text-sm/6 w-8 h-8 whitespace-pre rounded-full ${params.primaryBgColorClass} text-white flex flex-row items-center justify-center ms-1`}>{textPart.value}</span>
-              ) : (
-                <span className={`font-semibold text-sm/6 h-8 whitespace-pre flex flex-row items-center ${params.textHeaderColorClass}`}>{textPart.value}</span>
-              )
-            )}
-          </Fragment>
-        ))}
-      </Fragment>
+      !data.dayNumberText ? (
+        <span className={`text-xs/6 font-semibold ${params.textHighColorClass}`}>{data.text}</span>
+      ) : (
+        <Fragment>
+          {data.textParts.map((textPart, i) => (
+            <span
+              key={i}
+              className={joinClassNames(
+                'whitespace-pre',
+                data.isCompact ? 'text-xs' : 'text-sm/6',
+                textPart.type === 'day'
+                  ? joinClassNames(
+                      'h-8 font-semibold flex flex-row items-center', // v-align-text
+                      data.isToday && !data.inPopover
+                        ? `w-8 rounded-full justify-center mx-1 ${params.primaryBgColorClass} ${params.primaryTextColorClass}`
+                        : params.textHeaderColorClass
+                    )
+                  : params.textMidColorClass,
+              )}
+            >{textPart.value}</span>
+          ))}
+        </Fragment>
+      )
     ),
     dayCellTopContent: (data) => (
       <Fragment>
         {data.textParts.map((textPart, i) => (
-          <Fragment key={i}>
-            {textPart.type !== 'day' ? (
-              <span className='whitespace-pre'>{textPart.value}</span>
-            ) : (
-              data.isToday ? (
-                <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${params.primaryBgColorClass} ${params.primaryTextColorClass} font-semibold`}>{textPart.value}</span>
-              ) : (
-                // should use semibold?
-                <span className={`h-[2em] flex flex-row items-center justify-center whitespace-pre`}>{textPart.value}</span>
-              )
+          <span
+            key={i}
+            className={joinClassNames(
+              'whitespace-pre',
+              data.isCompact ? xxsTextClass : 'text-xs/6',
+              textPart.type === 'day'
+                ? joinClassNames(
+                    'h-6 flex flex-row items-center', // v-align-text
+                    data.isToday
+                      ? `w-6 rounded-full justify-center font-semibold ${params.primaryBgColorClass} ${params.primaryTextColorClass}`
+                      : params.textMidColorClass
+                  )
+                : params.textMidColorClass
             )}
-          </Fragment>
+          >{textPart.value}</span>
         ))}
       </Fragment>
     ),

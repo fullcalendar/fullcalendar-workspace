@@ -167,7 +167,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     views: {
       dayGrid: {
         ...dayGridClasses,
-        dayHeaderClass: 'items-end',
+        dayHeaderAlign: 'end',
         dayHeaderInnerClass: (data) => [
           !data.isToday && 'mx-1',
           'my-1',
@@ -178,7 +178,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       multiMonth: {
         ...dayGridClasses,
-        dayHeaderClass: 'items-start', // unnecessary
         dayHeaderInnerClass: (data) => [
           !data.isToday && 'mx-1',
           'my-1',
@@ -195,7 +194,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       timeGrid: {
         ...dayGridClasses,
-        dayHeaderClass: 'items-center',
+        dayHeaderAlign: 'center',
         dayHeaderInnerClass: (data) => [
           !data.isToday && 'mx-1',
           'my-1',
