@@ -1,37 +1,25 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
-import { EventCalendarOptionParams } from './options-event-calendar.js'
+import { EventCalendarOptionParams, xxsTextClass } from './options-event-calendar.js'
 
-// ambient types
-// TODO: make these all peer deps? or wait, move options to just core
-import '@fullcalendar/timeline'
-import '@fullcalendar/resource-daygrid'
-import '@fullcalendar/resource-timegrid'
-import '@fullcalendar/resource-timeline'
-import '@fullcalendar/adaptive'
-import '@fullcalendar/scrollgrid'
-
-// TODO: make these dependent on EventCalendarOptionParams
-const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600'
-const neutralBgColorClass = 'bg-gray-500/10'
-const xxsTextClass = 'text-[0.7rem]/[1.25]'
-
-export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700'
+// ambient types (tsc strips during build because of {})
+import {} from '@fullcalendar/timeline'
+import {} from '@fullcalendar/resource-daygrid'
+import {} from '@fullcalendar/resource-timegrid'
+import {} from '@fullcalendar/resource-timeline'
+import {} from '@fullcalendar/adaptive'
+import {} from '@fullcalendar/scrollgrid'
 
 export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
-  // TODO: DRY
-  const borderClass = `border ${params.borderColorClass}`
-  const majorBorderClass = `border ${majorBorderColorClass}`
-
   return {
     optionDefaults: {
 
       // TODO: more DRY with dayHeader* ?
       resourceDayHeaderClass: (data) => [
-        data.isMajor ? majorBorderClass : borderClass,
-        data.isDisabled && neutralBgColorClass,
+        data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
+        data.isDisabled && params.mutedBgClass,
       ],
       resourceDayHeaderInnerClass: (data) => [
         'flex flex-col',
@@ -39,25 +27,25 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
 
-      resourceAreaHeaderRowClass: borderClass,
-      resourceAreaHeaderClass: `${borderClass} items-center`, // valign
+      resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
+      resourceAreaHeaderClass: `border ${params.borderColorClass} items-center`, // valign
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
 
-      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${neutralBgColorClass}`,
+      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${params.mutedBgClass}`,
 
       // For both resources & resource groups
-      resourceAreaRowClass: borderClass,
+      resourceAreaRowClass: `border ${params.borderColorClass}`,
 
-      resourceGroupHeaderClass: neutralBgColorClass,
+      resourceGroupHeaderClass: params.mutedBgClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: [borderClass, neutralBgColorClass],
+      resourceGroupLaneClass: [`border ${params.borderColorClass}`, params.mutedBgClass],
 
-      resourceCellClass: borderClass,
+      resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
 
       resourceExpanderClass: 'self-center relative -top-px start-1 opacity-65', // HACK: relative 1px shift up
 
-      resourceLaneClass: borderClass,
+      resourceLaneClass: `border ${params.borderColorClass}`,
       resourceLaneBottomClass: (data) => !data.isCompact && 'pb-3',
 
       // Non-resource Timeline
@@ -65,7 +53,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
     },
     views: {
       timeline: {
-        rowMoreLinkClass: `me-px p-px ${moreLinkBgClass}`,
+        rowMoreLinkClass: `me-px p-px ${params.solidMoreLinkBgClass}`,
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
         slotLabelClass: 'justify-center',

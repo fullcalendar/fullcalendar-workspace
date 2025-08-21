@@ -11,8 +11,17 @@ export const optionParams: EventCalendarOptionParams = {
   primaryTextColorClass: 'text-(--mui-palette-primary-contrastText)',
   primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
 
+  solidMoreLinkBgClass: 'bg-(--mui-palette-action-selected)', // if too dark, use "-hover"
+  ghostButtonClass: 'hover:bg-(--mui-palette-action-hover) focus-visible:bg-(--mui-palette-action-focus)',
+  selectedBgClass: 'bg-(--mui-palette-action-selected)', // if too dark, use "-hover"
+
+  majorBorderColorClass: 'border-(--mui-palette-action-active)',
+
   borderColorClass: 'border-(--mui-palette-divider)',
   nowIndicatorBorderColorClass: 'border-(--mui-palette-error-main)',
+
+  transparentMutedBgClass: 'bg-(--mui-palette-action-hover)',
+  mutedBgClass: 'bg-(--mui-palette-action-hover)',
 
   eventColor: 'var(--mui-palette-primary-main)',
   backgroundEventColor: 'var(--mui-palette-secondary-main)',

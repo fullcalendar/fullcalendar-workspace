@@ -54,8 +54,17 @@ export const optionParams: EventCalendarOptionParams = {
   primaryTextColorClass: 'text-primary-foreground',
   primaryBorderColorClass: 'border-primary',
 
+  solidMoreLinkBgClass: 'bg-muted',
+  ghostButtonClass: 'hover:bg-muted focus-visible:bg-muted',
+  selectedBgClass: 'bg-muted',
+
+  majorBorderColorClass: 'border-muted-foreground/60',
+
   borderColorClass: '', // border-color is set globally
   nowIndicatorBorderColorClass: 'border-destructive',
+
+  transparentMutedBgClass: 'bg-muted/50', // TODO: use foreground like other theme?
+  mutedBgClass: 'bg-muted/50',
 
   eventColor: 'var(--primary)',
   backgroundEventColor: 'var(--primary)',

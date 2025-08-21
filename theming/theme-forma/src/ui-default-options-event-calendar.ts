@@ -7,7 +7,16 @@ const buttonIconClass = 'text-[1.5em] w-[1em] h-[1em]'
 export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
   primaryBgColorClass: 'bg-(--fc-forma-primary-color)',
   primaryTextColorClass: 'text-(--fc-forma-primary-text-color)',
-  primaryBorderColorClass: 'border-(--fc-forma-primary-color)',
+  primaryBorderColorClass: 'border-(--fc-forma-primary-color)', // TODO: rename to compactMoreLinkBorderColorClass?
+
+  majorBorderColorClass: 'border-gray-400 dark:border-gray-700', // TODO: turn into variables!
+
+  solidMoreLinkBgClass: 'bg-gray-300 dark:bg-gray-600', // TODO: pressability!
+  ghostButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
+  selectedBgClass: 'bg-gray-500/40',
+
+  transparentMutedBgClass: 'bg-gray-500/10',
+  mutedBgClass: 'bg-gray-50',
 
   borderColorClass: 'border-[#ddd] dark:border-gray-800',
   nowIndicatorBorderColorClass: 'border-(--fc-forma-primary-color)', // same as primary
