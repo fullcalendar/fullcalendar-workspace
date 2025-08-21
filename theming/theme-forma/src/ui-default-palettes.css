@@ -33,25 +33,53 @@
 }
 
 [data-palette=blue] {
-  --fc-forma-primary-color: #0F6CBD;
+  --fc-forma-primary-color0: #0F6CBD;
+  --fc-forma-primary-color1: #0A5AA3;
+  --fc-forma-primary-color2: #064889;
   --fc-forma-primary-text-color: #fff;
   --fc-forma-event-color: #3788d8;
 }
+[data-palette=blue][data-color-scheme=dark] {
+  --fc-forma-primary-color0: #3788d8;
+  --fc-forma-primary-color1: #4A9BE8;
+  --fc-forma-primary-color2: #5DAEF8;
+}
 
 [data-palette=red] {
-  --fc-forma-primary-color: #d83b01;
+  --fc-forma-primary-color0: #d83b01;
+  --fc-forma-primary-color1: #B03001;
+  --fc-forma-primary-color2: #8A2601;
   --fc-forma-primary-text-color: #fff;
-  --fc-forma-event-color: #d83b01; /* adjust? */
+  --fc-forma-event-color: #d83b01;
+}
+[data-palette=red][data-color-scheme=dark] {
+  --fc-forma-primary-color0: #E84A11;
+  --fc-forma-primary-color1: #F15D21;
+  --fc-forma-primary-color2: #FA7031;
 }
 
 [data-palette=green] {
-  --fc-forma-primary-color: #107c41;
+  --fc-forma-primary-color0: #107c41;
+  --fc-forma-primary-color1: #0D6334;
+  --fc-forma-primary-color2: #0A4A27;
   --fc-forma-primary-text-color: #fff;
-  --fc-forma-event-color: #107c41; /* adjust? */
+  --fc-forma-event-color: #107c41;
+}
+[data-palette=green][data-color-scheme=dark] {
+  --fc-forma-primary-color0: #218D52;
+  --fc-forma-primary-color1: #329E63;
+  --fc-forma-primary-color2: #43AF74;
 }
 
 [data-palette=purple] { /* "power apps" */
-  --fc-forma-primary-color: #742774;
+  --fc-forma-primary-color0: #742774;
+  --fc-forma-primary-color1: #5D1F5D;
+  --fc-forma-primary-color2: #461746;
   --fc-forma-primary-text-color: #fff;
-  --fc-forma-event-color: #742774; /* adjust? */
+  --fc-forma-event-color: #742774;
+}
+[data-palette=purple][data-color-scheme=dark] {
+  --fc-forma-primary-color0: #853885;
+  --fc-forma-primary-color1: #964996;
+  --fc-forma-primary-color2: #A75AA7;
 }

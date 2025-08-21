@@ -7,12 +7,14 @@ TODO: focus state!?
 TODO: focus-outline should be black on everything
 TODO: muted text? is #424242 in Outlook
 TODO: kill gray-500's
+TODO: do primary-button hover effect on today-cirle too
 */
 
 export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
-  primaryBgColorClass: 'bg-(--fc-forma-primary-color)',
+  // needed for today-circle and today-line and now-line
+  primaryBgColorClass: 'bg-(--fc-forma-primary-color0)',
   primaryTextColorClass: 'text-(--fc-forma-primary-text-color)',
-  primaryBorderColorClass: 'border-(--fc-forma-primary-color)', // TODO: rename to compactMoreLinkBorderColorClass?
+  primaryBorderColorClass: 'border-(--fc-forma-primary-color0)', // TODO: rename to compactMoreLinkBorderColorClass?
 
   majorBorderColorClass: 'border-(--fc-forma-border3)', // TODO: turn into variables!
 
@@ -24,7 +26,7 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   mutedBgClass: 'bg-(--fc-forma-bg0)',
 
   borderColorClass: 'border-(--fc-forma-border1)',
-  nowIndicatorBorderColorClass: 'border-(--fc-forma-primary-color)', // same as primary
+  nowIndicatorBorderColorClass: 'border-(--fc-forma-primary-color0)', // same as primary
 
   eventColor: 'var(--fc-forma-event-color)',
   backgroundEventColor: 'var(--color-green-500)',
@@ -35,6 +37,8 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   bgColorClass: 'bg-(--fc-forma-canvas-color)',
   bgColorOutlineClass: 'outline-(--fc-forma-canvas-color)',
 }
+
+const primaryOtherBgColorClass = 'hover:bg-(--fc-forma-primary-color1) active:bg-(--fc-forma-primary-color2) focus-visible:bg-(--fc-forma-primary-color2)'
 
 const unselectedButtonTextColorClass = 'text-(--fc-forma-muted-text-color)'
 const unselectedButtonHoverBorderColorClass = 'hover:border-(--fc-forma-border0)'
@@ -122,7 +126,7 @@ export const defaultUiEventCalendarOptions: {
             : unselectedButtonClass
           : data.isPrimary
             // primary button
-            ? `${optionParams.primaryBgColorClass} ${optionParams.primaryBorderColorClass} ${optionParams.primaryTextColorClass}` // TODO: hover effect!!!
+            ? `${optionParams.primaryBgColorClass} border-transparent ${optionParams.primaryTextColorClass} ${primaryOtherBgColorClass}`
             // secondary button
             : `${buttonBorderColorClass} ${buttonHoverBgColorClass}`,
     ],
