@@ -261,7 +261,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
       dayHeaderClass: (data) => [
-        data.inPopover && params.mutedBgClass,
+        `border ${params.borderColorClass}`,
+        (data.isDisabled || data.inPopover) && params.mutedBgClass,
+        data.isToday && !data.level && 'relative', // contain wide top-border
+      ],
+      dayHeaderInnerClass: (data) => [
+        'p-2 flex flex-col', // TODO: adjust padding when isCompact?
+        data.isCompact ? xxsTextClass : 'text-xs',
+        data.isToday && data.level && 'relative', // contain narrow top-border
       ],
 
       dayRowClass: `border ${params.borderColorClass}`,
@@ -312,16 +319,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayRowItemClasses,
 
         dayHeaderDividerClass: ['border-t', params.borderColorClass],
-        dayHeaderClass: (data) => [
-          data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
-          data.isDisabled && params.mutedBgClass,
-        ],
-        dayHeaderInnerClass: (data) => [
-          'flex flex-col',
-          'px-2 pt-1 pb-2 border-t-4', // TODO: adjust padding when isCompact?
-          (data.isToday && !data.inPopover) ? params.primaryBorderColorClass : 'border-transparent',
-          data.isCompact ? xxsTextClass : 'text-xs',
-        ],
 
         dayCellBottomClass: 'min-h-[1px]',
       },
@@ -329,12 +326,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayRowItemClasses,
 
         dayHeaderDividerClass: (data) => data.isSticky && ['border-t', params.borderColorClass],
-        dayHeaderClass: 'items-center',
-        dayHeaderInnerClass: (data) => [
-          'flex flex-col',
-          data.isCompact ? 'p-1' : 'p-2',
-          data.isCompact ? xxsTextClass : 'text-xs',
-        ],
 
         tableBodyClass: [
           'border', params.borderColorClass,
@@ -347,16 +338,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayRowItemClasses,
         // TODO: DRY
         dayHeaderDividerClass: ['border-t', params.borderColorClass],
-        dayHeaderClass: (data) => [
-          data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
-          data.isDisabled && params.mutedBgClass,
-          data.isToday && !data.level && 'relative', // contain wide top-border
-        ],
-        dayHeaderInnerClass: (data) => [
-          'p-2 flex flex-col', // TODO: adjust padding when isCompact?
-          data.isCompact ? xxsTextClass : 'text-xs',
-          data.isToday && data.level && 'relative', // contain narrow top-border
-        ],
 
         dayRowClass: 'min-h-[3em]',
         dayCellBottomClass: 'min-h-[1em]', // for ALL-DAY

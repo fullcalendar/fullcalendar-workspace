@@ -20,6 +20,8 @@ monarch: test "today" when semi-transparent is-other
 replace all "canvas" css vars with just "bg"
 naming confusion between "med" and "mid"
 
+major-border not working on Breezy theme
+
 for shadcn,
   use "secondary" color for week-number pills
 
@@ -27,6 +29,17 @@ for all icons, use negative margins,
   kill isIconOnly!
 
 for resourceTimeGridDay... have week number in left axis?
+
+pick on strategy about outline border
+  either use inset-border (some distortion)
+  or use transparent border on non-outline button
+  or use real-color border on non-outline, but need to remember to change it on hover
+
+isIconOnly -- stop using it for changing padding
+  but KEEP it for when we want to do an intentional ghost-button (aka "icon button" in MUI speak)
+
+give the iconContent an isPrimary param
+  in case user overrides prev/next buttons to isPrimary:true
 
 ensure event outer spacing in view-specific options
 avoid em units in themes (like 3em) at all costs... okay for 1em icons but that's it
