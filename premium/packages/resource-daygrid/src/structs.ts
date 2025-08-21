@@ -6,6 +6,7 @@ import { ResourceApi } from '@fullcalendar/resource'
 export interface ResourceDayHeaderData extends Partial<DateMeta> {
   resource: ResourceApi
   text: string
+  level: number
   view: ViewApi
   isDisabled: boolean
   isCompact: boolean

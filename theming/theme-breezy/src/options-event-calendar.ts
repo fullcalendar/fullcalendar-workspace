@@ -72,7 +72,9 @@ TODO: hover effect for navlinks
 
 TODO: fix popover X valignment... easier API?
 
-TODO: mutlimonth title needs to be center-aligned
+TODO: multimonth title needs to be center-aligned
+
+TODO: v-resource headers different border color than days
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height

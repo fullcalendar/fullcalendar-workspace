@@ -174,6 +174,7 @@ export function buildDateDataConfigs(
           isCompact: false, // HACK. gets overridden
           isSticky: false, // HACK. gets overridden
           inPopover: false,
+          level: 0, // HACK. gets overridden
           hasNavLink,
           view: viewApi,
         }
@@ -221,6 +222,7 @@ export function buildDateDataConfigs(
           isSticky: false, // HACK. gets overridden
           inPopover: false,
           hasNavLink: false,
+          level: 0, // HACK. gets overridden
           view: viewApi,
           text,
           textParts,

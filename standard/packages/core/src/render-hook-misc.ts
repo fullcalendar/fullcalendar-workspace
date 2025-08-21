@@ -34,6 +34,7 @@ export interface DayHeaderData extends DateMeta {
   isMajor: boolean
   inPopover: boolean
   hasNavLink: boolean
+  level: number
   text: string
   textParts: Intl.DateTimeFormatPart[]
   weekdayText: string

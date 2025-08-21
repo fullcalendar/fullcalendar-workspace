@@ -39,7 +39,12 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceExpanderClass: 'self-center',
 
       // TODO: weird
-      resourceDayHeaderClass: `border ${params.borderMidColorClass} text-sm/6 font-semibold ${params.textHighColorClass}`,
+      resourceDayHeaderClass: (data) => [
+        `border ${params.borderMidColorClass} text-sm/6`,
+        data.level
+          ? `font-semibold ${params.textHighColorClass}` // resource-above-dates
+          : params.textMidColorClass,
+      ],
       resourceDayHeaderInnerClass: 'p-2',
 
       resourceDayHeaderAlign: 'center', // best place?

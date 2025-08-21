@@ -34,6 +34,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
     const finalRenderProps = {
       ...dataConfig.renderProps,
       isCompact: props.cellIsCompact,
+      level: props.rowLevel,
     }
     if (props.cellIsNarrow) {
       // TODO: only if not distinct dates

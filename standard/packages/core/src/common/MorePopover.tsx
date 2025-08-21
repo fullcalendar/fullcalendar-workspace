@@ -64,6 +64,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       isCompact: false,
       isSticky: false,
       inPopover: true,
+      level: 0,
       hasNavLink,
       text,
       textParts,
