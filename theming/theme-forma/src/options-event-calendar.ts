@@ -22,6 +22,8 @@ TODO: ensure +more link has same height as normal event, even in condensed multi
 
 TODO: bottom border radius weird
 TODO: ensure button-group (non-view) looks okay. not hover-only
+
+TODO: pressdown color on Today button looks mushy
 */
 
 // ambient types (tsc strips during build because of {})

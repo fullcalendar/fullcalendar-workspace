@@ -24,15 +24,13 @@ TODO: give day-number-circle to list-view day-headers
 TODO: multimonth very poorly condensed with events
 
 TODO: test standlone secondary button. correct borders and shadow?
+
+TODO: pressdown colors on buttons
 */
 
 export interface EventCalendarOptionParams {
   todayCircleBgColorClass: string
   todayCircleTextColorClass: string
-
-  mutedBgClass: string
-  mutedTextClass: string
-  mutedExtraTextClass: string
 
   borderColorClass: string
 
@@ -41,8 +39,15 @@ export interface EventCalendarOptionParams {
   backgroundEventColor: string
   backgroundEventColorClass: string
 
-  bgColorClass: string
   bgColorOutlineClass: string
+  bgColorClass: string
+  headerBgClass: string
+  wellBgClass: string
+  controlBgClass: string
+  mutedTransparentBgClass: string
+
+  mutedTextClass: string
+  mutedExtraTextClass: string
 }
 
 export const getDayHeaderInnerClasses = (data: { isToday?: boolean }) => [
@@ -80,6 +85,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventContrastColor: params.eventContrastColor,
       backgroundEventColor: params.backgroundEventColor,
       // eventDisplay: 'block',
+
+      // best place? be consistent with otherthemes
+      viewClass: `border ${params.borderColorClass} ${params.bgColorClass}`,
+
+      tableHeaderClass: params.headerBgClass,
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
@@ -163,7 +173,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       listDayClass: `flex flex-col not-first:border-t ${params.borderColorClass}`,
-      listDayHeaderClass: `flex flex-row justify-between ${params.bgColorClass} border-b ${params.borderColorClass} top-0 sticky`,
+      listDayHeaderClass: `flex flex-row justify-between ${params.headerBgClass} border-b ${params.borderColorClass} top-0 sticky`,
       listDayHeaderInnerClass: (data) => [
         'px-3 py-3 text-sm',
         !data.level && 'font-semibold',
@@ -196,9 +206,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
       },
       list: {
-        viewClass: params.mutedBgClass,
+        listDayEventsClass: `flex flex-col py-4 gap-4 ${params.wellBgClass}`,
 
-        listDayEventsClass: 'flex flex-col py-4 gap-4',
         listItemEventInnerClass: '[display:contents]',
         listItemEventTimeClass: 'ps-6 pe-4 py-2 order-[-1] w-60 text-sm',
         listItemEventTitleClass: 'px-4 py-2 text-sm',

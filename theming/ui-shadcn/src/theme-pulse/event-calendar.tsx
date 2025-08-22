@@ -55,17 +55,20 @@ export const optionParams: EventCalendarOptionParams = {
   borderColorClass: '', // border-color is set globally
   // nowIndicatorBorderColorClass: 'border-destructive',
 
-  mutedBgClass: 'bg-muted',
-  mutedTextClass: 'text-muted-foreground',
-  mutedExtraTextClass: 'text-muted-foreground',
-
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
   backgroundEventColor: 'var(--primary)',
   backgroundEventColorClass: 'opacity-15',
 
-  bgColorClass: 'bg-background',
   bgColorOutlineClass: 'outline-background',
+  bgColorClass: 'bg-background',
+  headerBgClass: 'bg-card',
+  wellBgClass: 'not-dark:bg-muted',
+  controlBgClass: 'bg-muted',
+  mutedTransparentBgClass: 'bg-muted-foreground/10',
+
+  mutedTextClass: 'text-muted-foreground',
+  mutedExtraTextClass: 'text-muted-foreground',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
