@@ -44,9 +44,7 @@ export const optionParams: EventCalendarOptionParams = {
 
   bgColorOutlineClass: 'outline-(--fc-pulse-canvas-color)',
   bgColorClass: 'bg-(--fc-pulse-canvas-color)',
-  headerBgClass: 'bg-(--fc-pulse-header-color)',
-  wellBgClass: 'bg-(--fc-pulse-well-color)',
-  controlBgClass: 'bg-(--fc-pulse-control-color)',
+
   mutedTransparentBgClass: 'bg-(--fc-pulse-muted-transparent)',
 
   mutedTextClass: textColorClass2,
@@ -54,6 +52,8 @@ export const optionParams: EventCalendarOptionParams = {
 }
 
 const mutedTransparentHoverBgClass = 'hover:bg-(--fc-pulse-muted-transparent)'
+
+const controlBgClass = 'bg-(--fc-pulse-control-color)'
 const controlCurrentColorClass = 'bg-(--fc-pulse-control-current-color)'
 const controlHoverColorClass = 'hover:bg-(--fc-pulse-control-hover-color)'
 
@@ -83,7 +83,7 @@ export const defaultUiEventCalendarOptions: {
     buttonGroupClass: (data) => [
       'items-center rounded-sm',
       data.isSelectGroup
-        ? `p-px ${optionParams.controlBgClass}`
+        ? `p-px ${controlBgClass}`
         : `border ${borderColorClass2} ${boxShadowClass0} overflow-hidden`
     ],
 
@@ -111,7 +111,7 @@ export const defaultUiEventCalendarOptions: {
                 )
               // secondary
               : joinClassNames(
-                  `${controlCurrentColorClass} ${controlHoverColorClass}`,
+                  `${optionParams.bgColorClass} ${textColorClass3} ${controlHoverColorClass}`,
                   data.inGroup
                     ? `not-first:border-s ${borderColorClass0}` // within group
                     : `border ${borderColorClass2} ${boxShadowClass0}`, // standalone

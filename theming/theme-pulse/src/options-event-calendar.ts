@@ -41,9 +41,7 @@ export interface EventCalendarOptionParams {
 
   bgColorOutlineClass: string
   bgColorClass: string
-  headerBgClass: string
-  wellBgClass: string
-  controlBgClass: string
+
   mutedTransparentBgClass: string
 
   mutedTextClass: string
@@ -88,8 +86,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       // best place? be consistent with otherthemes
       viewClass: `border ${params.borderColorClass} ${params.bgColorClass}`,
-
-      tableHeaderClass: params.headerBgClass,
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
@@ -173,7 +169,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       listDayClass: `flex flex-col not-first:border-t ${params.borderColorClass}`,
-      listDayHeaderClass: `flex flex-row justify-between ${params.headerBgClass} border-b ${params.borderColorClass} top-0 sticky`,
+      listDayHeaderClass: `flex flex-row justify-between ${params.mutedTransparentBgClass} border-b ${params.borderColorClass} top-0 sticky`,
       listDayHeaderInnerClass: (data) => [
         'px-3 py-3 text-sm',
         !data.level && 'font-semibold',
@@ -206,7 +202,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
       },
       list: {
-        listDayEventsClass: `flex flex-col py-4 gap-4 ${params.wellBgClass}`,
+        listDayHeaderClass: params.mutedTransparentBgClass,
+        listDayEventsClass: 'flex flex-col py-4 gap-4',
 
         listItemEventInnerClass: '[display:contents]',
         listItemEventTimeClass: 'ps-6 pe-4 py-2 order-[-1] w-60 text-sm',

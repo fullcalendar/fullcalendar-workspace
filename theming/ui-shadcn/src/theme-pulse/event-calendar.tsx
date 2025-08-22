@@ -62,9 +62,7 @@ export const optionParams: EventCalendarOptionParams = {
 
   bgColorOutlineClass: 'outline-background',
   bgColorClass: 'bg-background',
-  headerBgClass: 'bg-card',
-  wellBgClass: 'not-dark:bg-muted',
-  controlBgClass: 'bg-muted',
+
   mutedTransparentBgClass: 'bg-muted-foreground/10',
 
   mutedTextClass: 'text-muted-foreground',
@@ -85,6 +83,7 @@ export function EventCalendarView(calendarOptions: CalendarOptions) {
       {...eventCalendarIconOptions}
       {...slots}
       {...calendarOptions}
+      borderless
       views={mergeViewOptionsMap(
         baseEventCalendarOptions.views || {},
         calendarOptions.views || {},

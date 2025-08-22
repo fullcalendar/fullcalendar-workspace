@@ -20,6 +20,9 @@ monarch: test "today" when semi-transparent is-other
 replace all "canvas" css vars with just "bg"
 naming confusion between "med" and "mid"
 
+should mui/shadn force the FullCalendar element to borderless,
+  or should the default-ui of each theme define its border?
+
 major-border not working on Breezy theme
 
 if a theme bothers to have different shades of muted text,

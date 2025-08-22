@@ -19,10 +19,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   bgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
   bgColorClass: 'bg-(--mui-palette-background-paper)',
-  headerBgClass: 'bg-(--mui-palette-action-hover)', // TODO
-  wellBgClass: 'bg-(--mui-palette-action-hover)', // TODO
-  controlBgClass: 'bg-(--mui-palette-action-hover)', // TODO
-  mutedTransparentBgClass: 'bg-(--mui-palette-action-hover)', // TODO
+
+  mutedTransparentBgClass: 'bg-(--mui-palette-action-hover)',
 
   mutedTextClass: 'text-(--mui-palette-text-secondary)',
   mutedExtraTextClass: 'text-(--mui-palette-text-secondary)',
