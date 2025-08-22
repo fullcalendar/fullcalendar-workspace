@@ -2,20 +2,36 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const buttonIconClass = 'size-5 text-gray-400' // best???
+const buttonIconClass = 'size-5 text-gray-400' // best???. TODO: add hover-color
 const primaryButtonBgColorClass = 'bg-(--fc-pulse-primary-color)'
 const primaryButtonBorderColorClass = 'border-(--fc-pulse-primary-color)'
 const primaryButtonTextColorClass = 'text-(--fc-pulse-primary-text-color)'
 
-export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
+const borderColorClass0 = 'border-gray-200'
+const borderColorClass1 = 'border-[rgb(228_228_229)]'
+const borderColorClass2 = 'border-[#d5d5d6]'
+
+const boxShadowClass0 = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
+const boxShadowClass1 = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
+
+const mutedBgClass0 = 'bg-[#f6f6f6]'
+const mutedBgClass1 = 'bg-[#eeeeef]'
+
+const textColorClass0 = 'text-gray-400'
+const textColorClass1 = 'text-gray-500'
+const textColorClass2 = 'text-gray-700'
+const textColorClass3 = 'text-gray-800'
+
+export const optionParams: EventCalendarOptionParams = {
   todayCircleBgColorClass: 'bg-(--fc-pulse-today-color)',
   todayCircleTextColorClass: 'text-(--fc-pulse-today-text-color)',
 
-  mutedBgClass: 'bg-[#f6f6f6]',
-  mutedTextClass: 'text-gray-700',
-  mutedExtraTextClass: 'text-gray-500',
+  mutedBgClass: mutedBgClass0,
 
-  borderColorClass: 'border-gray-200',
+  mutedTextClass: textColorClass2,
+  mutedExtraTextClass: textColorClass1,
+
+  borderColorClass: borderColorClass0,
 
   eventColor: 'var(--fc-pulse-event-color)',
   eventContrastColor: 'var(--fc-pulse-event-contrast-color)',
@@ -37,34 +53,58 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
+    className: 'gap-6',
+
+    viewClass: [
+      'rounded-sm overflow-hidden',
+      `border ${borderColorClass1} ${boxShadowClass0}`,
+      // ^^^ border needs more contrast bc of drop shadow, and to match controls
+    ],
+
     toolbarClass: 'gap-5 items-center',
     toolbarSectionClass: 'gap-5 items-center',
-    toolbarTitleClass: 'text-2xl font-bold text-gray-800',
+    toolbarTitleClass: `text-2xl font-bold ${textColorClass3}`,
     // how to customize title??? with text parts??? -- TODO: make ticket for toolbarTitleContent -- show Apple Calendar screenshot
     // TODO: make ticket for buttons{}.beforeClass/afterClass, ButtonData.isFirst/isLast
 
     buttonGroupClass: (data) => [
-      'items-center',
+      'items-center rounded-sm',
       data.isSelectGroup
-        ? 'p-px bg-[#eeeeef] rounded-sm'
-        : `rounded-sm border border-[#d5d5d6] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]`
+        ? `p-px ${mutedBgClass1}`
+        : `border ${borderColorClass2} ${boxShadowClass0} overflow-hidden`
     ],
 
     buttonClass: (data) => [
-      'text-sm',
-      data.isPrimary ? '' : data.isDisabled ? 'text-gray-400' : 'text-gray-800',
-      (!data.isSelected && !data.isDisabled && !data.isPrimary) && 'hover:bg-gray-100', // weird isPrimary
-      (!data.inGroup || data.inSelectGroup) && 'rounded-sm', // standalone or in selector-group
-      (data.inGroup && !data.inSelectGroup) && 'bg-white first:rounded-s-sm last:rounded-e-sm not-first:border-s not-first:border-s-gray-200', // opposite of ^^^
-      !data.inGroup && (
-        'rounded-sm border ' +
-        (data.isPrimary
-          ? `${primaryButtonBorderColorClass} ${primaryButtonBgColorClass} ${primaryButtonTextColorClass} [box-shadow:0_1px_3px_rgba(0,0,0,0.15)]` // weird border; more intense drop shadow
-          : 'bg-white border-[#d5d5d6] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]')
-      ),
+      'text-sm py-2',
       data.isIconOnly ? 'px-2.5' : 'px-4',
-      'py-2',
-      data.isSelected && `bg-white [box-shadow:0_1px_3px_rgba(0,0,0,0.2)]`,
+      data.inSelectGroup
+        // all select-group buttons
+        ? joinClassNames(
+            'rounded-sm',
+            data.isSelected
+              // SELECTED select-group button
+              ? `bg-white ${boxShadowClass1}`
+              // UN-selected select-group button
+              : '' // TODO: add hover effect
+          )
+        // primary/secondary buttons
+        : joinClassNames(
+            !data.inGroup && 'rounded-sm',
+            data.isPrimary
+              // primary
+              ? joinClassNames(
+                  `${primaryButtonBorderColorClass} ${primaryButtonBgColorClass} ${primaryButtonTextColorClass}`,
+                  !data.inGroup && boxShadowClass1, // standalone
+                )
+              // secondary
+              : joinClassNames(
+                  `bg-white hover:bg-gray-100 ${borderColorClass2}`,
+                  data.inGroup
+                    ? `not-first:border-s ${borderColorClass0}` // within group
+                    : `border ${borderColorClass2} ${boxShadowClass0}`, // standalone
+                  data.isDisabled ? textColorClass0 : textColorClass3,
+                )
+          ),
     ],
 
     buttons: {

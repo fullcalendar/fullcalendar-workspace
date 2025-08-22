@@ -22,6 +22,8 @@ TODO: text-gray-500 is yucky for Shadcn
 TODO: give day-number-circle to list-view day-headers
 
 TODO: multimonth very poorly condensed with events
+
+TODO: test standlone secondary button. correct borders and shadow?
 */
 
 export interface EventCalendarOptionParams {
@@ -79,12 +81,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventColor: params.backgroundEventColor,
       // eventDisplay: 'block',
 
-      class: 'gap-6',
-
-      viewClass: 'rounded-sm overflow-hidden ' +
-        'border border-[rgb(228_228_229)] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]',
-        // ^^^ what is this border!?
-
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
       dayHeaderInnerClass: getDayHeaderInnerClasses,
@@ -101,15 +97,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayCellTopClass: 'flex flex-row justify-end min-h-1',
       dayCellTopInnerClass: (data) => [
         !data.isToday && 'mx-1',
-        data.isOther ? 'text-gray-500' : 'font-semibold',
+        data.isOther ? params.mutedExtraTextClass : 'font-semibold',
         'p-1',
         'flex flex-row',
       ],
 
-      dayLaneClass: [
-        `border ${params.borderColorClass}`,
-        // data.isToday && 'bg-[#117aff]/5',
-      ],
+      dayLaneClass: `border ${params.borderColorClass}`,
 
       /*
       BUG: z-index is wrong, can't click week numbers
