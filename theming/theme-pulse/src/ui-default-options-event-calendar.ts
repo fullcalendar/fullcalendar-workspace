@@ -70,7 +70,7 @@ export const defaultUiEventCalendarOptions: {
 
     viewClass: [
       'rounded-sm overflow-hidden',
-      `border ${borderColorClass1} ${boxShadowClass0}`,
+      `${optionParams.bgColorClass} border ${borderColorClass1} ${boxShadowClass0}`,
       // ^^^ border needs more contrast bc of drop shadow, and to match controls
     ],
 

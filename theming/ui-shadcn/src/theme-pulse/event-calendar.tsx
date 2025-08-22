@@ -83,7 +83,6 @@ export function EventCalendarView(calendarOptions: CalendarOptions) {
       {...eventCalendarIconOptions}
       {...slots}
       {...calendarOptions}
-      borderless
       views={mergeViewOptionsMap(
         baseEventCalendarOptions.views || {},
         calendarOptions.views || {},

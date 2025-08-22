@@ -35,16 +35,18 @@ export function Scheduler({
         availableViews={availableViews}
         addButton={addButton}
       />
-      <SchedulerView
-        initialView={availableViews[0]}
-        controller={controller}
-        {...calendarOptions}
-        plugins={[
-          ...eventCalendarPlugins,
-          ...schedulerOnlyPlugins,
-          ...(calendarOptions.plugins || []),
-        ]}
-      />
+      <div className='border rounded-sm overflow-hidden'>
+        <SchedulerView
+          initialView={availableViews[0]}
+          controller={controller}
+          {...calendarOptions}
+          plugins={[
+            ...eventCalendarPlugins,
+            ...schedulerOnlyPlugins,
+            ...(calendarOptions.plugins || []),
+          ]}
+        />
+      </div>
     </div>
   )
 }

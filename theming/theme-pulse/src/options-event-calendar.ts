@@ -85,7 +85,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // eventDisplay: 'block',
 
       // best place? be consistent with otherthemes
-      viewClass: `border ${params.borderColorClass} ${params.bgColorClass}`,
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 

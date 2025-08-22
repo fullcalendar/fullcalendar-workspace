@@ -59,6 +59,9 @@ In ui-default-options-event-calendar files,
 because dayHeaders and slotLabels have non-undefined h-alignment now (thanks to dayHeaderAlign/slotLabelAlign)
   can we simplify the flexbox-based DOM?
 
+mui/shadcn, in timelineview with multiple timeline headers,
+  2 rows don't sync with two datagrid header rows
+
 
 theme checklist
 ---------------
