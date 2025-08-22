@@ -5,9 +5,11 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 
 clean+build all:
-  pn clean
+  pn clean --all
   pn --filter "./theming/**" run clean
+  mkdir -p contrib/angular/dist/lib
   pn install # important because writes tsconfigs
+  pn run postinstall # in case install didn't write tsconfigs
   pn build
 
 

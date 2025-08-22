@@ -63,6 +63,7 @@
     "@fullcalendar/multimonth": "workspace:*",
     "@fullcalendar/interaction": "workspace:*",
     "@fullcalendar/timeline": "workspace:*",
+    "@fullcalendar/react": "workspace:*",
     "@fullcalendar/resource-daygrid": "workspace:*",
     "@fullcalendar/resource-timegrid": "workspace:*",
     "@fullcalendar/resource-timeline": "workspace:*",
