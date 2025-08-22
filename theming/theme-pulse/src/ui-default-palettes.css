@@ -1,22 +1,35 @@
 
 :root {
   --fc-pulse-canvas-color: #fff;
-  --fc-pulse-border0: var(--color-gray-200);
-  --fc-pulse-border1: rgb(228, 228, 229);
+  --fc-pulse-border0: #e5e7eb;
+  --fc-pulse-border1: #e4e4e5;
   --fc-pulse-border2: #d5d5d6;
   --fc-pulse-muted-bg0: #f6f6f6;
   --fc-pulse-muted-bg1: #eeeeef;
   --fc-pulse-muted-bg2: #e5e5e6;
-  --fc-pulse-text-color0: var(--color-gray-400);
-  --fc-pulse-text-color1: var(--color-gray-500);
-  --fc-pulse-text-color2: var(--color-gray-700);
-  --fc-pulse-text-color3: var(--color-gray-800);
-  --fc-pulse-control-color: var(--color-white);
-  --fc-pulse-control-hover-color: var(--color-gray-100);
-  --fc-pulse-icon-color: var(--color-gray-400);
+  --fc-pulse-text-color0: #9ca3af;
+  --fc-pulse-text-color1: #6b7280;
+  --fc-pulse-text-color2: #374151;
+  --fc-pulse-text-color3: #1f2937;
+  --fc-pulse-control-color: #ffffff;
+  --fc-pulse-control-hover-color: #f3f4f6;
+  --fc-pulse-icon-color: #9ca3af;
 }
 [data-color-scheme=dark] {
   --fc-pulse-canvas-color: oklch(0.13 0.028 261.692);
+  --fc-pulse-border0: #1a202c;
+  --fc-pulse-border1: #2d3748;
+  --fc-pulse-border2: #4a5568;
+  --fc-pulse-muted-bg0: #0f1419;
+  --fc-pulse-muted-bg1: #1a202c;
+  --fc-pulse-muted-bg2: #2d3748;
+  --fc-pulse-text-color0: #4a5568;
+  --fc-pulse-text-color1: #718096;
+  --fc-pulse-text-color2: #a0aec0;
+  --fc-pulse-text-color3: #cbd5e0;
+  --fc-pulse-control-color: #1a202c;
+  --fc-pulse-control-hover-color: #2d3748;
+  --fc-pulse-icon-color: #4a5568;
 }
 
 [data-palette=red] {
