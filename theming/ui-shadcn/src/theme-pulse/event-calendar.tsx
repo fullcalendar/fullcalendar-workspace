@@ -63,6 +63,12 @@ export const optionParams: EventCalendarOptionParams = {
   bgColorOutlineClass: 'outline-background',
   bgColorClass: 'bg-background',
 
+  highlightClass: 'bg-sky-500/10',
+  ghostButtonClass: 'hover:bg-muted focus-visible:bg-muted',
+
+  popoverClass: 'border bg-background text-foreground shadow-lg rounded-md shadow-md m-1',
+
+  mutedOpaqueBgClass: 'bg-muted',
   mutedTransparentBgClass: 'bg-muted-foreground/10',
 
   mutedTextClass: 'text-muted-foreground',

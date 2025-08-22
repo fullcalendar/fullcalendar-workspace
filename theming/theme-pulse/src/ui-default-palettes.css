@@ -6,6 +6,7 @@
   --fc-pulse-border2: #d5d5d6;
 
   --fc-pulse-muted-transparent: #7d7d7d17; /* rgba */
+  --fc-pulse-muted-opaque: oklch(96.7% 0.003 264.542); /* gray-100 */
   --fc-pulse-header-color: var(--fc-pulse-canvas-color);
   --fc-pulse-well-color: #f5f5f5;
   --fc-pulse-control-color: #eeeeef;
@@ -17,6 +18,7 @@
   --fc-pulse-text-color2: #374151;
   --fc-pulse-text-color3: #1f2937;
 
+  --fc-pulse-highlight-color: rgba(206, 250, 254, .4); /* cyan-100/40 */
 
   /*
   TODO figure out how to do button group
@@ -51,6 +53,7 @@
   --fc-pulse-border2: #4a5568;
 
   --fc-pulse-muted-transparent: #ffffff17; /* rgba */
+  --fc-pulse-muted-opaque: oklch(21% 0.034 264.665); /* gray-900 */
   --fc-pulse-header-color: #ffffff08; /* rgba --- doesn't work with semi-transparent!!! */
   --fc-pulse-well-color: transparent;
   --fc-pulse-control-color: #ffffff17; /* rgba */
@@ -62,6 +65,8 @@
   --fc-pulse-text-color2: #a0aec0;
   --fc-pulse-text-color3: #cbd5e0;
   --fc-pulse-icon-color: #4a5568;
+
+  --fc-pulse-highlight-color: rgba(43, 127, 255, .2); /* blue-500/20 */
 }
 
 [data-palette=red] {

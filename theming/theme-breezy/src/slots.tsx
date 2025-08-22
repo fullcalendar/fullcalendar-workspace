@@ -18,7 +18,12 @@ export function createSlots(
   return {
     dayHeaderContent: (data) => (
       !data.dayNumberText ? (
-        <span className={`text-xs/6 font-semibold ${params.textHighColorClass}`}>{data.text}</span>
+        <span
+          className={joinClassNames(
+            `text-xs/6 ${params.textHighColorClass}`,
+            !data.isCompact && 'font-semibold',
+          )}
+        >{data.text}</span>
       ) : (
         <Fragment>
           {data.textParts.map((textPart, i) => (
@@ -29,7 +34,8 @@ export function createSlots(
                 data.isCompact ? 'text-xs' : 'text-sm/6',
                 textPart.type === 'day'
                   ? joinClassNames(
-                      'h-8 font-semibold flex flex-row items-center', // v-align-text
+                      'h-8 flex flex-row items-center', // v-align-text
+                      !data.isCompact && 'font-semibold',
                       data.isToday && !data.inPopover
                         ? `w-8 rounded-full justify-center mx-0.5 ${params.primaryBgColorClass} ${params.primaryTextColorClass}`
                         : params.textHeaderColorClass

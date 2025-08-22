@@ -26,6 +26,10 @@ TODO: multimonth very poorly condensed with events
 TODO: test standlone secondary button. correct borders and shadow?
 
 TODO: pressdown colors on buttons
+
+TODO: in default-ui, make secondary button have bg-filled-muted, not lines
+
+TODO: shift timegrid slot labels over to start-of line
 */
 
 export interface EventCalendarOptionParams {
@@ -39,24 +43,42 @@ export interface EventCalendarOptionParams {
   backgroundEventColor: string
   backgroundEventColorClass: string
 
+  highlightClass: string
+  ghostButtonClass: string
+
+  popoverClass: string
+
   bgColorOutlineClass: string
   bgColorClass: string
 
   mutedTransparentBgClass: string
+  mutedOpaqueBgClass: string
 
   mutedTextClass: string
   mutedExtraTextClass: string
 }
 
-export const getDayHeaderInnerClasses = (data: { isToday?: boolean }) => [
-  !data.isToday && 'mx-1',
+export const getDayHeaderInnerClasses = (data: { isToday?: boolean, inPopover?: boolean }) => [
   'my-1 p-1 flex flex-row items-center',
+  data.inPopover
+    ? 'mx-2'
+    : !data.isToday && 'mx-1',
 ]
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
+  // transparent resizer for mouse
+  const blockPointerResizerClass = `absolute z-20 hidden group-hover:block`
+  const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
+  const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
+
+  // circle resizer for touch
+  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgColorClass}`
+  const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
+  const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
+
   const dayRowItemClasses: CalendarOptions = {
     rowEventClass: (data) => [
       'mb-0.5',
@@ -64,7 +86,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isEnd && 'me-1',
     ],
 
-    listItemEventClass: 'mx-1 p-1 mb-0.5 hover:bg-gray-100 rounded-sm', // TODO: fix hover class... use controlHoverColorClass somehow?
+    listItemEventClass: `mx-1 p-1 mb-0.5 ${params.ghostButtonClass} rounded-sm`,
     listItemEventInnerClass: 'flex flex-row text-xs',
     listItemEventTimeClass: 'order-1',
     listItemEventTitleClass: 'font-medium flex-grow',
@@ -73,7 +95,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     rowEventTitleClass: 'flex-grow',
 
     moreLinkClass: 'mx-1 flex flex-row',
-    moreLinkInnerClass: `p-1 text-xs font-medium rounded-sm bg-[#eeeeef]`,
+    moreLinkInnerClass: `p-1 text-xs font-medium rounded-sm ${params.mutedTransparentBgClass}`,
     //^^^ setting that lets you do just "+3"
   }
 
@@ -85,6 +107,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // eventDisplay: 'block',
 
       // best place? be consistent with otherthemes
+
+      highlightClass: params.highlightClass,
+
+      popoverClass: 'min-w-[220px] ' + params.popoverClass,
+      popoverCloseClass: 'absolute top-2 end-2',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
@@ -107,6 +134,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'flex flex-row',
       ],
 
+      dayCellInnerClass: (data) => [
+        data.inPopover && 'p-2',
+      ],
+
       dayLaneClass: `border ${params.borderColorClass}`,
 
       /*
@@ -121,7 +152,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /*
       TODO: not necessary to have color-class do bg color! we're not doing any transforms
       */
-      blockEventClass: 'relative',
+      blockEventClass: 'relative group',
       blockEventColorClass: 'absolute z-10 inset-0 bg-(--fc-event-color)',
       blockEventInnerClass: 'relative z-20 text-(--fc-event-contrast-color) text-xs',
 
@@ -131,6 +162,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'text-xs', // data.isCompact ? xxsTextClass : 'text-xs', -- TODO
       ],
 
+      rowEventBeforeClass: (data) => data.isStartResizable && [
+        data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
+        '-start-1',
+      ],
+      rowEventAfterClass: (data) => data.isEndResizable && [
+        data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
+        '-end-1',
+      ],
       rowEventColorClass: (data) => [
         data.isStart && 'rounded-s-sm',
         data.isEnd && 'rounded-e-sm',
@@ -140,6 +179,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       rowEventTitleClass: 'p-1 font-medium',
       //^^^for row event, switch order of title/time?
 
+      columnEventBeforeClass: (data) => data.isStartResizable && [
+        data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
+        '-top-1',
+      ],
+      columnEventAfterClass: (data) => data.isEndResizable && [
+        data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
+        '-bottom-1',
+      ],
       columnEventColorClass: (data) => [
         data.isStart && 'rounded-t-lg',
         data.isEnd && 'rounded-b-lg',
@@ -167,8 +214,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         !data.isHeader && `border ${params.borderColorClass} opacity-50`,
       ],
 
+      // TODO: move this to view config
       listDayClass: `flex flex-col not-first:border-t ${params.borderColorClass}`,
-      listDayHeaderClass: `flex flex-row justify-between ${params.mutedTransparentBgClass} border-b ${params.borderColorClass} top-0 sticky`,
+      listDayHeaderClass: `flex flex-row justify-between ${params.mutedOpaqueBgClass} border-b ${params.borderColorClass} top-0 sticky`,
+      // TODO^^ since the color is present before hover, hover should have an effect too. same challenge with dark-mode secondary button for this theme
       listDayHeaderInnerClass: (data) => [
         'px-3 py-3 text-sm',
         !data.level && 'font-semibold',
@@ -177,7 +226,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     views: {
       dayGrid: {
         ...dayRowItemClasses,
-        dayHeaderAlign: 'end',
+        dayHeaderAlign: (data) => data.inPopover ? 'start' : 'end',
       },
       multiMonth: {
         ...dayRowItemClasses,
@@ -189,10 +238,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       timeGrid: {
         ...dayRowItemClasses,
-        dayHeaderAlign: 'center',
+        dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
 
         weekNumberHeaderClass: 'justify-end items-center',
         weekNumberHeaderInnerClass: `px-2 text-sm ${params.mutedTextClass}`,
+
+        slotLabelInnerClass: '-mt-4',
 
         columnEventClass: (data) => [
           'mx-0.5', // TODO: move this to the columnInner thing? yes!!
@@ -201,7 +252,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
       },
       list: {
-        listDayHeaderClass: params.mutedTransparentBgClass,
         listDayEventsClass: 'flex flex-col py-4 gap-4',
 
         listItemEventInnerClass: '[display:contents]',

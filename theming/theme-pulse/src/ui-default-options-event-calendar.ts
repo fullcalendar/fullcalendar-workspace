@@ -40,18 +40,23 @@ export const optionParams: EventCalendarOptionParams = {
   backgroundEventColor: 'var(--color-green-500)',
   backgroundEventColorClass: 'brightness-150 opacity-15',
 
+  highlightClass: 'bg-(--fc-pulse-highlight-color)',
+
+  popoverClass: `bg-(--fc-pulse-canvas-color) border ${borderColorClass2} rounded-md shadow-md m-1`,
+
   // TODO: popoverClass
 
   bgColorOutlineClass: 'outline-(--fc-pulse-canvas-color)',
   bgColorClass: 'bg-(--fc-pulse-canvas-color)',
 
+  mutedOpaqueBgClass: 'bg-(--fc-pulse-muted-opaque)',
   mutedTransparentBgClass: 'bg-(--fc-pulse-muted-transparent)',
+
+  ghostButtonClass: 'hover:bg-(--fc-pulse-muted-transparent) focus-visible:bg-(--fc-pulse-muted-transparent)',
 
   mutedTextClass: textColorClass2,
   mutedExtraTextClass: textColorClass1,
 }
-
-const mutedTransparentHoverBgClass = 'hover:bg-(--fc-pulse-muted-transparent)'
 
 const controlBgClass = 'bg-(--fc-pulse-control-color)'
 const controlCurrentColorClass = 'bg-(--fc-pulse-control-current-color)'
@@ -98,7 +103,7 @@ export const defaultUiEventCalendarOptions: {
               // SELECTED select-group button
               ? `${controlCurrentColorClass} ${boxShadowClass1}`
               // UN-selected select-group button
-              : mutedTransparentHoverBgClass // TODO: a little bit fuzzy
+              : optionParams.ghostButtonClass // TODO: a little bit fuzzy
           )
         // primary/secondary buttons
         : joinClassNames(
@@ -154,6 +159,8 @@ export const defaultUiEventCalendarOptions: {
         )
       },
     },
+
+    popoverCloseContent: () => svgs.x('size-[1em]'),
   },
   views: baseEventCalendarOptions.views,
 }

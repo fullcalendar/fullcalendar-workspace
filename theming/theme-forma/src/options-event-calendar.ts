@@ -24,6 +24,8 @@ TODO: bottom border radius weird
 TODO: ensure button-group (non-view) looks okay. not hover-only
 
 TODO: pressdown color on Today button looks mushy
+
+TODO: make Today button border darker
 */
 
 // ambient types (tsc strips during build because of {})
@@ -175,7 +177,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       blockEventClass: [
         'relative', // for absolute-positioned color
         'group', // for focus and hover
-        'bg-white',
+        params.bgColorClass,
         'border-(--fc-event-color)',
         // TODO: isDragging, isSelected
       ],
@@ -253,17 +255,18 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthClass: (data) => data.colCount > 1 && 'm-4',
       singleMonthHeaderClass: (data) => [
         data.isSticky && `border-b ${params.borderColorClass} ${params.bgColorClass}`,
-        data.isSticky
-          ? 'py-2' // single column
-          : 'pb-4', // multi-column
-        data.isCompact ? 'text-base' : 'text-lg',
+        data.colCount > 1 ? 'pb-4' : 'py-2',
+        'justify-center',
+      ],
+      singleMonthHeaderInnerClass: (data) => [
+        data.isCompact ? 'text-base' : 'text-lg', // need to specify "base". no
         'text-center font-bold',
       ],
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
       dayHeaderClass: (data) => [
-        `border ${params.borderColorClass}`,
+        !data.isCompact && `border ${params.borderColorClass}`, // HACK for no-show-border in multimonth
         (data.isDisabled || data.inPopover) && params.mutedBgClass,
         data.isToday && !data.level && 'relative', // contain wide top-border
       ],
@@ -329,6 +332,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         dayHeaderDividerClass: (data) => data.isSticky && ['border-t', params.borderColorClass],
 
+        dayHeaderAlign: 'center', // TODO: give start-aligned when !data.isCompact -- but prop doesnt exist!
+
         tableBodyClass: [
           'border', params.borderColorClass,
           'rounded-sm overflow-hidden',
@@ -373,7 +378,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelDividerClass: `border-l ${params.borderColorClass}`,
       },
       list: {
-        listItemEventClass: 'bg-white p-3 flex flex-row rounded-sm border-s-6 border-(--fc-event-color) relative', // why the hover color!?
+        listItemEventClass: `${params.bgColorClass} p-3 flex flex-row rounded-sm border-s-6 border-(--fc-event-color) relative`, // why the hover color!?
         listItemEventColorClass: 'absolute inset-0 bg-(--fc-event-color) opacity-20 rounded-e-sm',
 
         listItemEventInnerClass: 'relative flex flex-row text-sm', // TODO: ensure gap

@@ -71,6 +71,8 @@ export const optionParams: EventCalendarOptionParams = {
   borderBottomHighColorClass: '',
 
   mutedBgClass: 'bg-muted/50',
+  highlightClass: 'bg-sky-500/10',
+  ghostButtonClass: 'hover:bg-muted focus-visible:bg-muted',
 
   textLowColorClass: 'text-muted-foreground',
   textMidColorClass: 'text-muted-foreground',

@@ -32,6 +32,8 @@ export const optionParams: EventCalendarOptionParams = {
   borderBottomHighColorClass: borderBottomColorClass,
 
   mutedBgClass: 'bg-(--mui-palette-action-hover)',
+  highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
+  ghostButtonClass: 'hover:bg-(--mui-palette-action-hover) focus-visible:bg-(--mui-palette-action-focus)',
 
   textLowColorClass: 'text-(--mui-palette-text-secondary)',
   textMidColorClass: 'text-(--mui-palette-text-secondary)',

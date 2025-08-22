@@ -15,13 +15,14 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 } {
   return {
     optionDefaults: {
+      resourceDayHeaderAlign: 'center',
       resourceDayHeaderClass: (data) => [
         'items-center border',
         data.isMajor ? majorBorderColorClass : params.borderColorClass,
         data.isDisabled && params.disabledBgClass,
       ],
       resourceDayHeaderInnerClass: (data) => [
-        'py-2 flex flex-col',
+        'p-2 flex flex-col',
         data.isCompact ? xxsTextClass : 'text-sm',
       ],
 

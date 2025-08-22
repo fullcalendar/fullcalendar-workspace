@@ -424,6 +424,11 @@ export default function App() {
             )}
             <EventCalendarDemo
               initialView='dayGridMonth'
+              availableViews={
+                theme === 'pulse'
+                  ? ['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek']
+                  : ['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek', 'multiMonthYear']
+              }
               ui={ui}
               theme={theme}
             />
@@ -445,13 +450,14 @@ export default function App() {
               theme={theme}
             />
             <SchedulerDemo
-              initialView='resourceTimelineWeek'
+              initialView='resourceTimelineThreeDay'
+              availableViews={['resourceTimelineDay', 'resourceTimelineThreeDay', 'resourceTimelineWeek']}
               ui={ui}
               theme={theme}
             />
             <SchedulerDemo
-              initialView='resourceTimeGridWeek'
-              availableViews={['resourceTimeGridDay', 'resourceTimeGridWeek']}
+              initialView='resourceTimeGridFiveDay'
+              availableViews={['resourceTimeGridDay', 'resourceTimeGridFiveDay', 'resourceTimeGridWeek']}
               ui={ui}
               theme={theme}
             />
@@ -532,11 +538,13 @@ function EventCalendarDemo(props: DemoProps) {
       }}
       // events='https://fullcalendar.io/api/demo-feeds/events.json?overload-day'
       now='2025-07-04T12:00:00'
+      timeZone='UTC'
       events={[
         {
           "title": "All Day Event",
           "start": "2025-07-01",
-          color: 'red',
+          color: 'pink',
+          contrastColor: '#000',
         },
         {
           "title": "Long Event",
@@ -632,7 +640,7 @@ function SchedulerDemo(props: DemoProps) {
       aspectRatio={1.6}
       scrollTime='07:00'
       views={{
-        resourceTimelineThreeDays: {
+        resourceTimelineThreeDay: {
           type: 'resourceTimeline',
           duration: { days: 3 },
         },
@@ -643,6 +651,18 @@ function SchedulerDemo(props: DemoProps) {
         // resourceTimelineWeek: {
         //   slotDuration: { days: 1 },
         // }
+        resourceTimeGridFiveDay: {
+          type: 'resourceTimeGrid',
+          duration: { days: 5 },
+        }
+      }}
+      buttons={{
+        resourceTimelineThreeDay: {
+          text: '3-Day',
+        },
+        resourceTimeGridFiveDay: {
+          text: '5-Day',
+        }
       }}
       resourceAreaHeaderContent='Rooms'
       resourceAreaWidth='40%'
@@ -694,9 +714,21 @@ function SchedulerDemo(props: DemoProps) {
         )
       ]}
       events={
-        vResourceView ? [] :
-          'https://fullcalendar.io/api/demo-feeds/events.json?single-day&for-resource-timeline'
+        vResourceView ? [
+          {
+            "title": "Meeting",
+            "start": "2025-07-04T10:30:00+00:00",
+            "end": "2025-07-04T12:30:00+00:00",
+            "resourceId": "a",
+          },
+          {
+            "title": "Lunch",
+            "start": "2025-07-04T12:00:00+00:00",
+            "resourceId": "a",
+          },
+        ] : 'https://fullcalendar.io/api/demo-feeds/events.json?single-day&for-resource-timeline'
       }
+      now={vResourceView ? '2025-07-04T12:00:00' : undefined}
     />
   )
 }

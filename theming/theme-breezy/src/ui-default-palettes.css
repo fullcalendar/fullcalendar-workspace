@@ -29,6 +29,7 @@ TODO: add default-ui-only variables to:
   --fc-breezy-secondary-text-color: var(--color-gray-900);
   --fc-breezy-popover-color: var(--color-white);
   --fc-breezy-popover-border-color: var(--color-gray-300);
+  --fc-breezy-highlight-color: rgba(206, 250, 254, .4); /* cyan-100/40 */
 }
 [data-color-scheme=dark] {
   --fc-breezy-canvas-color: var(--color-gray-900);
@@ -51,6 +52,7 @@ TODO: add default-ui-only variables to:
   --fc-breezy-secondary-text-color: var(--color-white);
   --fc-breezy-popover-color: var(--color-gray-800);
   --fc-breezy-popover-border-color: color-mix(in oklab, var(--color-white) 10%, transparent);
+  --fc-breezy-highlight-color: rgba(43, 127, 255, .2); /* blue-500/20 */
 }
 
 [data-palette=indigo] {

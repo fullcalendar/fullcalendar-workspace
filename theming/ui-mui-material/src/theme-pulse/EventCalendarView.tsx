@@ -20,7 +20,13 @@ export const optionParams: EventCalendarOptionParams = {
   bgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
   bgColorClass: 'bg-(--mui-palette-background-paper)',
 
+  highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
+  ghostButtonClass: 'hover:bg-(--mui-palette-action-hover) focus-visible:bg-(--mui-palette-action-focus)',
+
+  popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2',
+
   mutedTransparentBgClass: 'bg-(--mui-palette-action-hover)',
+  mutedOpaqueBgClass: 'bg-(--mui-palette-background-paper) relative before:absolute before:inset-0 before:bg-(--mui-palette-action-hover) before:pointer-events-none',
 
   mutedTextClass: 'text-(--mui-palette-text-secondary)',
   mutedExtraTextClass: 'text-(--mui-palette-text-secondary)',

@@ -48,6 +48,23 @@ isIconOnly -- stop using it for changing padding
 give the iconContent an isPrimary param
   in case user overrides prev/next buttons to isPrimary:true
 
+this is failure
+  dayHeaderAlign: (data) => data.inPopover ? 'start' : 'end',
+  ***move away from having dayHeaderAlign control popover
+
+simplify slotLabel/dayHeader markup to NOT have inner wrapp (f-flexCol)
+  (now that we explicitly choose alignment)
+  because slotLabelInner can't do negative margin anymore because affects dimensions of said wrapper
+
+fix Breezy dark-mode event coloring
+  hacks with dark:
+  should be just use color-mix with fallbacks???
+
+Breezy theme
+  multi-month dayheader text should be dimmer, but hard to do with slots.ts
+
+Undo hiding of Year-view for Pulse theme
+
 ensure event outer spacing in view-specific options
 avoid em units in themes (like 3em) at all costs... okay for 1em icons but that's it
 simplify how icon-size and line-height works
