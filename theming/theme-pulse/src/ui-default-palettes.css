@@ -1,6 +1,19 @@
 
 :root {
   --fc-pulse-canvas-color: #fff;
+  --fc-pulse-border0: var(--color-gray-200);
+  --fc-pulse-border1: rgb(228, 228, 229);
+  --fc-pulse-border2: #d5d5d6;
+  --fc-pulse-muted-bg0: #f6f6f6;
+  --fc-pulse-muted-bg1: #eeeeef;
+  --fc-pulse-muted-bg2: #e5e5e6;
+  --fc-pulse-text-color0: var(--color-gray-400);
+  --fc-pulse-text-color1: var(--color-gray-500);
+  --fc-pulse-text-color2: var(--color-gray-700);
+  --fc-pulse-text-color3: var(--color-gray-800);
+  --fc-pulse-control-color: var(--color-white);
+  --fc-pulse-control-hover-color: var(--color-gray-100);
+  --fc-pulse-icon-color: var(--color-gray-400);
 }
 [data-color-scheme=dark] {
   --fc-pulse-canvas-color: oklch(0.13 0.028 261.692);
@@ -9,19 +22,25 @@
 [data-palette=red] {
   --fc-pulse-primary-color: #d32d50; /* custom */
   --fc-pulse-primary-text-color: #fff;
-  --fc-pulse-today-color: #fd453b; /* dark = #fd4539 ... reget both from iOS */
+  --fc-pulse-today-color: #fd453b;
   --fc-pulse-today-text-color: #fff;
   --fc-pulse-event-color: #631515;
   --fc-pulse-event-contrast-color: #fff;
+}
+[data-palette=red][data-color-scheme=dark] {
+  --fc-pulse-today-color: #fd4539;
 }
 
 [data-palette=blue] {
   --fc-pulse-primary-color: #117aff;
   --fc-pulse-primary-text-color: #fff;
-  --fc-pulse-today-color: #117aff; /* dark = #1284ff  */
+  --fc-pulse-today-color: #117aff;
   --fc-pulse-today-text-color: #fff;
   --fc-pulse-event-color: #012e66;
   --fc-pulse-event-contrast-color: #fff;
+}
+[data-palette=blue][data-color-scheme=dark] {
+  --fc-pulse-today-color: #1284ff
 }
 
 [data-palette=purple] {
@@ -32,12 +51,17 @@
   --fc-pulse-event-color: #430575;
   --fc-pulse-event-contrast-color: #fff;
 }
+[data-palette=purple][data-color-scheme=dark] {
+}
 
 [data-palette=green] {
   --fc-pulse-primary-color: #26a546;
   --fc-pulse-primary-text-color: #fff;
-  --fc-pulse-today-color: #34c759; /* dark = #30d157 */
+  --fc-pulse-today-color: #34c759;
   --fc-pulse-today-text-color: #fff;
   --fc-pulse-event-color: #084b19;
   --fc-pulse-event-contrast-color: #fff;
+}
+[data-palette=green][data-color-scheme=dark] {
+  --fc-pulse-today-color: #30d157;
 }

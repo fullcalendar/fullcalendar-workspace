@@ -61,7 +61,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isEnd && 'me-1',
     ],
 
-    listItemEventClass: 'mx-1 p-1 mb-0.5 hover:bg-gray-100 rounded-sm',
+    listItemEventClass: 'mx-1 p-1 mb-0.5 hover:bg-gray-100 rounded-sm', // TODO: fix hover class... use controlHoverColorClass somehow?
     listItemEventInnerClass: 'flex flex-row text-xs',
     listItemEventTimeClass: 'order-1',
     listItemEventTitleClass: 'font-medium flex-grow',
@@ -163,7 +163,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       listDayClass: `flex flex-col not-first:border-t ${params.borderColorClass}`,
-      listDayHeaderClass: `flex flex-row justify-between bg-white border-b ${params.borderColorClass} top-0 sticky`,
+      listDayHeaderClass: `flex flex-row justify-between ${params.bgColorClass} border-b ${params.borderColorClass} top-0 sticky`,
       listDayHeaderInnerClass: (data) => [
         'px-3 py-3 text-sm',
         !data.level && 'font-semibold',

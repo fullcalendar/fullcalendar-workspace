@@ -2,26 +2,31 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const buttonIconClass = 'size-5 text-gray-400' // best???. TODO: add hover-color
+const buttonIconClass = 'size-5 text-(--fc-pulse-icon-color)' // TODO: add hover-color
+
+// TODO: hover color
 const primaryButtonBgColorClass = 'bg-(--fc-pulse-primary-color)'
 const primaryButtonBorderColorClass = 'border-(--fc-pulse-primary-color)'
 const primaryButtonTextColorClass = 'text-(--fc-pulse-primary-text-color)'
 
-const borderColorClass0 = 'border-gray-200'
-const borderColorClass1 = 'border-[rgb(228_228_229)]'
-const borderColorClass2 = 'border-[#d5d5d6]'
+const borderColorClass0 = 'border-(--fc-pulse-border0)'
+const borderColorClass1 = 'border-(--fc-pulse-border1)'
+const borderColorClass2 = 'border-(--fc-pulse-border2)'
 
 const boxShadowClass0 = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
 const boxShadowClass1 = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 
-const mutedBgClass0 = 'bg-[#f6f6f6]'
-const mutedBgClass1 = 'bg-[#eeeeef]'
-const mutedBgClass2Hover = 'hover:bg-[#e5e5e6]'
+const mutedBgClass0 = 'bg-(--fc-pulse-muted-bg0)'
+const mutedBgClass1 = 'bg-(--fc-pulse-muted-bg1)'
+const mutedBgClass2Hover = 'hover:bg-(--fc-pulse-muted-bg2)'
 
-const textColorClass0 = 'text-gray-400'
-const textColorClass1 = 'text-gray-500'
-const textColorClass2 = 'text-gray-700'
-const textColorClass3 = 'text-gray-800'
+const textColorClass0 = 'text-(--fc-pulse-text-color0)'
+const textColorClass1 = 'text-(--fc-pulse-text-color1)'
+const textColorClass2 = 'text-(--fc-pulse-text-color2)'
+const textColorClass3 = 'text-(--fc-pulse-text-color3)'
+
+const controlColorClass = 'bg-(--fc-pulse-control-color)'
+const controlHoverColorClass = 'hover:bg-(--fc-pulse-control-hover-color)'
 
 export const optionParams: EventCalendarOptionParams = {
   todayCircleBgColorClass: 'bg-(--fc-pulse-today-color)',
@@ -84,7 +89,7 @@ export const defaultUiEventCalendarOptions: {
             'rounded-sm',
             data.isSelected
               // SELECTED select-group button
-              ? `bg-white ${boxShadowClass1}`
+              ? `${controlColorClass} ${boxShadowClass1}`
               // UN-selected select-group button
               : mutedBgClass2Hover // TODO: a little bit fuzzy
           )
@@ -99,7 +104,7 @@ export const defaultUiEventCalendarOptions: {
                 )
               // secondary
               : joinClassNames(
-                  `bg-white hover:bg-gray-100 ${borderColorClass2}`,
+                  `${controlColorClass} ${controlHoverColorClass} ${borderColorClass2}`,
                   data.inGroup
                     ? `not-first:border-s ${borderColorClass0}` // within group
                     : `border ${borderColorClass2} ${boxShadowClass0}`, // standalone
