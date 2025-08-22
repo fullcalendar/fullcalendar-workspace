@@ -16,6 +16,7 @@ const boxShadowClass1 = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 
 const mutedBgClass0 = 'bg-[#f6f6f6]'
 const mutedBgClass1 = 'bg-[#eeeeef]'
+const mutedBgClass2Hover = 'hover:bg-[#e5e5e6]'
 
 const textColorClass0 = 'text-gray-400'
 const textColorClass1 = 'text-gray-500'
@@ -85,7 +86,7 @@ export const defaultUiEventCalendarOptions: {
               // SELECTED select-group button
               ? `bg-white ${boxShadowClass1}`
               // UN-selected select-group button
-              : '' // TODO: add hover effect
+              : mutedBgClass2Hover // TODO: a little bit fuzzy
           )
         // primary/secondary buttons
         : joinClassNames(

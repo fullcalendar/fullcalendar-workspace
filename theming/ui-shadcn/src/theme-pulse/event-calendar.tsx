@@ -33,15 +33,17 @@ export function EventCalendar({
         availableViews={availableViews}
         addButton={addButton}
       />
-      <EventCalendarView
-        initialView={availableViews[0]}
-        controller={controller}
-        {...calendarOptions}
-        plugins={[
-          ...eventCalendarPlugins,
-          ...(calendarOptions.plugins || []),
-        ]}
-      />
+      <div className='border rounded-sm overflow-hidden'>
+        <EventCalendarView
+          initialView={availableViews[0]}
+          controller={controller}
+          {...calendarOptions}
+          plugins={[
+            ...eventCalendarPlugins,
+            ...(calendarOptions.plugins || []),
+          ]}
+        />
+      </div>
     </div>
   )
 }
