@@ -12,6 +12,10 @@ export const optionParams: EventCalendarOptionParams = {
 
   borderColorClass: 'border-(--mui-palette-divider)',
 
+  mutedBgClass: 'bg-(--mui-palette-action-hover)',
+  mutedTextClass: 'text-(--mui-palette-text-secondary)',
+  mutedExtraTextClass: 'text-(--mui-palette-text-secondary)',
+
   eventColor: 'var(--mui-palette-primary-main)',
   eventContrastColor: 'var(--mui-palette-primary-contrastText)',
   backgroundEventColor: 'var(--mui-palette-secondary-main)',

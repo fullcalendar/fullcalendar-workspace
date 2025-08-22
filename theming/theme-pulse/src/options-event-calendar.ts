@@ -1,12 +1,11 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 
-// ambient types
-// TODO: make these all peer deps? or wait, move options to just core
-import '@fullcalendar/daygrid'
-import '@fullcalendar/timegrid'
-import '@fullcalendar/list'
-import '@fullcalendar/multimonth'
-import '@fullcalendar/interaction'
+// ambient types (tsc strips during build because of {})
+import {} from '@fullcalendar/daygrid'
+import {} from '@fullcalendar/timegrid'
+import {} from '@fullcalendar/list'
+import {} from '@fullcalendar/multimonth'
+import {} from '@fullcalendar/interaction'
 
 /*
 TODO: default-background-event and selection colors
@@ -25,40 +24,13 @@ TODO: give day-number-circle to list-view day-headers
 TODO: multimonth very poorly condensed with events
 */
 
-const dayGridClasses: CalendarOptions = {
-  /*
-  BUG: z-index is wrong, can't click week numbers
-  */
-  inlineWeekNumberClass: 'absolute z-10 top-0 start-0',
-  inlineWeekNumberInnerClass: (data) => [
-    'py-2 text-xs text-gray-700 ' +
-      (data.isCompact
-        ? 'px-1'
-        : 'px-2')
-  ],
-
-  rowEventClass: (data) => [
-    'mb-0.5',
-    data.isStart && 'ms-1',
-    data.isEnd && 'me-1',
-  ],
-
-  listItemEventClass: 'mx-1 p-1 mb-0.5 hover:bg-gray-100 rounded-sm',
-  listItemEventInnerClass: 'flex flex-row text-xs',
-  listItemEventTimeClass: 'order-1',
-  listItemEventTitleClass: 'font-medium flex-grow',
-
-  rowEventTimeClass: 'order-1',
-  rowEventTitleClass: 'flex-grow',
-
-  moreLinkClass: 'mx-1 flex flex-row',
-  moreLinkInnerClass: `p-1 text-xs font-medium rounded-sm bg-[#eeeeef]`,
-  //^^^ setting that lets you do just "+3"
-}
-
 export interface EventCalendarOptionParams {
   todayCircleBgColorClass: string
   todayCircleTextColorClass: string
+
+  mutedBgClass: string
+  mutedTextClass: string
+  mutedExtraTextClass: string
 
   borderColorClass: string
 
@@ -71,11 +43,34 @@ export interface EventCalendarOptionParams {
   bgColorOutlineClass: string
 }
 
+export const getDayHeaderInnerClasses = (data: { isToday?: boolean }) => [
+  !data.isToday && 'mx-1',
+  'my-1 p-1 flex flex-row items-center',
+]
+
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
-  const borderClass = `border ${params.borderColorClass}`
+  const dayRowItemClasses: CalendarOptions = {
+    rowEventClass: (data) => [
+      'mb-0.5',
+      data.isStart && 'ms-1',
+      data.isEnd && 'me-1',
+    ],
+
+    listItemEventClass: 'mx-1 p-1 mb-0.5 hover:bg-gray-100 rounded-sm',
+    listItemEventInnerClass: 'flex flex-row text-xs',
+    listItemEventTimeClass: 'order-1',
+    listItemEventTitleClass: 'font-medium flex-grow',
+
+    rowEventTimeClass: 'order-1',
+    rowEventTitleClass: 'flex-grow',
+
+    moreLinkClass: 'mx-1 flex flex-row',
+    moreLinkInnerClass: `p-1 text-xs font-medium rounded-sm bg-[#eeeeef]`,
+    //^^^ setting that lets you do just "+3"
+  }
 
   return {
     optionDefaults: {
@@ -86,29 +81,43 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       class: 'gap-6',
 
-      viewClass: 'rounded-lg overflow-hidden ' +
+      viewClass: 'rounded-sm overflow-hidden ' +
         'border border-[rgb(228_228_229)] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]',
         // ^^^ what is this border!?
 
+      dayHeaderRowClass: `border ${params.borderColorClass}`,
+
+      dayHeaderInnerClass: getDayHeaderInnerClasses,
+      // TODO: add dayheader borders ONLY when isMajor
+
       dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
 
-      dayRowClass: borderClass,
+      dayRowClass: `border ${params.borderColorClass}`,
 
       dayCellClass: [
-        borderClass,
+        `border ${params.borderColorClass}`,
         // data.isToday && 'bg-[#0081FF]/5',
       ],
       dayCellTopClass: 'flex flex-row justify-end min-h-1',
       dayCellTopInnerClass: (data) => [
         !data.isToday && 'mx-1',
         data.isOther ? 'text-gray-500' : 'font-semibold',
-        'p-1 text-sm',
+        'p-1',
         'flex flex-row',
       ],
 
       dayLaneClass: [
-        borderClass,
+        `border ${params.borderColorClass}`,
         // data.isToday && 'bg-[#117aff]/5',
+      ],
+
+      /*
+      BUG: z-index is wrong, can't click week numbers
+      */
+      inlineWeekNumberClass: 'absolute z-10 top-0 start-0',
+      inlineWeekNumberInnerClass: (data) => [
+        `py-2 text-xs ${params.mutedTextClass}`,
+        data.isCompact ? 'px-1' : 'px-2',
       ],
 
       /*
@@ -118,7 +127,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       blockEventColorClass: 'absolute z-10 inset-0 bg-(--fc-event-color)',
       blockEventInnerClass: 'relative z-20 text-(--fc-event-contrast-color) text-xs',
 
-      backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.backgroundEventColorClass,
+      backgroundEventColorClass: `bg-(--fc-event-color) ${params.backgroundEventColorClass}`,
       backgroundEventTitleClass: [
         'm-2 opacity-50 italic',
         'text-xs', // data.isCompact ? xxsTextClass : 'text-xs', -- TODO
@@ -143,18 +152,21 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTimeClass: 'px-2 pt-1',
       columnEventTitleClass: 'px-2 py-1 font-medium',
 
-      allDayHeaderInnerClass: 'p-2 text-xs text-gray-700',
+      allDayHeaderInnerClass: `p-2 text-xs ${params.mutedTextClass}`,
 
       allDayDividerClass: `border-b ${params.borderColorClass} shadow-sm`,
 
-      slotLabelClass: 'justify-end',
-      slotLabelInnerClass: 'p-2 text-xs text-gray-700',
+      slotLabelClass: 'justify-end', // v-align
+      slotLabelInnerClass: `p-2 text-xs ${params.mutedTextClass}`,
       slotLabelDividerClass: `border-s ${params.borderColorClass}`,
+      // TODO: higher levels should have h-borders
 
-      slotLaneClass: borderClass,
+      slotLabelRowClass: `border ${params.borderColorClass}`, // timeline only
+
+      slotLaneClass: `border ${params.borderColorClass}`,
 
       fillerClass: (data) => [
-        !data.isHeader && `${borderClass} opacity-50`,
+        !data.isHeader && `border ${params.borderColorClass} opacity-50`,
       ],
 
       listDayClass: `flex flex-col not-first:border-t ${params.borderColorClass}`,
@@ -166,45 +178,23 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     },
     views: {
       dayGrid: {
-        ...dayGridClasses,
+        ...dayRowItemClasses,
         dayHeaderAlign: 'end',
-        dayHeaderInnerClass: (data) => [
-          !data.isToday && 'mx-1',
-          'my-1',
-          'text-gray-500',
-          'p-1 text-sm',
-          'flex flex-row items-center',
-        ],
       },
       multiMonth: {
-        ...dayGridClasses,
-        dayHeaderInnerClass: (data) => [
-          !data.isToday && 'mx-1',
-          'my-1',
-          'text-gray-500',
-          'p-1 text-sm',
-          'flex flex-row items-center',
-        ],
+        ...dayRowItemClasses,
 
         singleMonthClass: (data) => [
           (data.colCount > 1) && 'm-4',
         ],
         singleMonthHeaderClass: 'font-semibold',
-
       },
       timeGrid: {
-        ...dayGridClasses,
+        ...dayRowItemClasses,
         dayHeaderAlign: 'center',
-        dayHeaderInnerClass: (data) => [
-          !data.isToday && 'mx-1',
-          'my-1',
-          'text-gray-500',
-          'p-1 text-sm',
-          'flex flex-row items-center',
-        ],
 
         weekNumberHeaderClass: 'justify-end items-center',
-        weekNumberHeaderInnerClass: 'px-2 text-sm text-gray-700',
+        weekNumberHeaderInnerClass: `px-2 text-sm ${params.mutedTextClass}`,
 
         columnEventClass: (data) => [
           'mx-0.5', // TODO: move this to the columnInner thing? yes!!
@@ -213,7 +203,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
       },
       list: {
-        viewClass: 'bg-[#f6f6f6]',
+        viewClass: params.mutedBgClass,
 
         listDayEventsClass: 'flex flex-col py-4 gap-4',
         listItemEventInnerClass: '[display:contents]',

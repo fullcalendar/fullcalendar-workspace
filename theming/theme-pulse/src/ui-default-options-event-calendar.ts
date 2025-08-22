@@ -11,6 +11,10 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   todayCircleBgColorClass: 'bg-(--fc-pulse-today-color)',
   todayCircleTextColorClass: 'text-(--fc-pulse-today-text-color)',
 
+  mutedBgClass: 'bg-[#f6f6f6]',
+  mutedTextClass: 'text-gray-700',
+  mutedExtraTextClass: 'text-gray-500',
+
   borderColorClass: 'border-gray-200',
 
   eventColor: 'var(--fc-pulse-event-color)',
@@ -42,8 +46,8 @@ export const defaultUiEventCalendarOptions: {
     buttonGroupClass: (data) => [
       'items-center',
       data.isSelectGroup
-        ? 'p-[1px] bg-[#eeeeef] rounded-[8px]'
-        : `rounded-[9px] border border-[#d5d5d6] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]`
+        ? 'p-px bg-[#eeeeef] rounded-sm'
+        : `rounded-sm border border-[#d5d5d6] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]`
     ],
 
     buttonClass: (data) => [
@@ -51,9 +55,9 @@ export const defaultUiEventCalendarOptions: {
       data.isPrimary ? '' : data.isDisabled ? 'text-gray-400' : 'text-gray-800',
       (!data.isSelected && !data.isDisabled && !data.isPrimary) && 'hover:bg-gray-100', // weird isPrimary
       (!data.inGroup || data.inSelectGroup) && 'rounded-sm', // standalone or in selector-group
-      (data.inGroup && !data.inSelectGroup) && 'bg-white first:rounded-s-[9px] last:rounded-e-[9px] not-first:border-s not-first:border-s-gray-200', // opposite of ^^^
+      (data.inGroup && !data.inSelectGroup) && 'bg-white first:rounded-s-sm last:rounded-e-sm not-first:border-s not-first:border-s-gray-200', // opposite of ^^^
       !data.inGroup && (
-        'rounded-[9px] border ' +
+        'rounded-sm border ' +
         (data.isPrimary
           ? `${primaryButtonBorderColorClass} ${primaryButtonBgColorClass} ${primaryButtonTextColorClass} [box-shadow:0_1px_3px_rgba(0,0,0,0.15)]` // weird border; more intense drop shadow
           : 'bg-white border-[#d5d5d6] [box-shadow:0_1px_2px_rgba(0,0,0,0.1)]')

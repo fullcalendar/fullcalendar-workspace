@@ -53,6 +53,10 @@ export const optionParams: EventCalendarOptionParams = {
   borderColorClass: '', // border-color is set globally
   // nowIndicatorBorderColorClass: 'border-destructive',
 
+  mutedBgClass: 'bg-muted',
+  mutedTextClass: 'text-muted-foreground',
+  mutedExtraTextClass: 'text-muted-foreground',
+
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
   backgroundEventColor: 'var(--primary)',

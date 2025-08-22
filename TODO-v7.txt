@@ -22,6 +22,10 @@ naming confusion between "med" and "mid"
 
 major-border not working on Breezy theme
 
+if a theme bothers to have different shades of muted text,
+  then it shouldn't inherit some of the text-color from the outer document
+  ALL text we define should have a color
+
 for shadcn,
   use "secondary" color for week-number pills
 

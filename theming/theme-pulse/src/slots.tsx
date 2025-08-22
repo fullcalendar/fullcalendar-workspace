@@ -1,4 +1,4 @@
-import { CalendarOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
 import type * as FullCalendarPreact from '@fullcalendar/core/preact'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { EventCalendarOptionParams } from './options-event-calendar.js'
@@ -19,34 +19,40 @@ export function createSlots(
     dayHeaderContent: (data) => (
       <Fragment>
         {data.textParts.map((textPart, i) => (
-          <Fragment key={i}>
-            {textPart.type !== 'day' ? (
-              <span className='whitespace-pre text-gray-500'>{textPart.value}</span>
-            ) : (
-              data.isToday ? (
-                <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold`}>{textPart.value}</span>
-              ) : (
-                <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre text-gray-500'>{textPart.value}</span>
-              )
+          <span
+            key={i}
+            className={joinClassNames(
+              'whitespace-pre text-sm',
+              textPart.type === 'day'
+                ? joinClassNames(
+                    'h-[2em] flex flex-row items-center', // v-align-text
+                    data.isToday
+                      ? `w-[2em] mx-0.5 rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold justify-center` // h-align-text
+                      : params.mutedExtraTextClass,
+                  )
+                : params.mutedExtraTextClass,
             )}
-          </Fragment>
+          >{textPart.value}</span>
         ))}
       </Fragment>
     ),
-    dayCellTopContent: (data) => (
+    dayCellTopContent: (data) => ( // TODO: DRY with dayHeaderContent?
       <Fragment>
         {data.textParts.map((textPart, i) => (
-          <Fragment key={i}>
-            {textPart.type !== 'day' ? (
-              <span className='whitespace-pre'>{textPart.value}</span>
-            ) : (
-              data.isToday ? (
-                <span className={`w-[2em] h-[2em] flex flex-row items-center justify-center whitespace-pre rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold`}>{textPart.value}</span>
-              ) : (
-                <span className='h-[2em] flex flex-row items-center justify-center whitespace-pre'>{textPart.value}</span>
-              )
+          <span
+            key={i}
+            className={joinClassNames(
+              'whitespace-pre text-sm',
+              textPart.type === 'day'
+                ? joinClassNames(
+                    'h-[2em] flex flex-row items-center', // v-align-text
+                    data.isToday
+                      ? `w-[2em] rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold justify-center` // h-align-text
+                      : params.mutedExtraTextClass,
+                  )
+                : params.mutedExtraTextClass,
             )}
-          </Fragment>
+          >{textPart.value}</span>
         ))}
       </Fragment>
     ),
