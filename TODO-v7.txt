@@ -13,145 +13,97 @@ clean+build all:
   pn build
 
 
-Better theme demo w/ view-specific subdemos
-is moreLinkerInnerClass (and variants) needed?
-monarch no sticky col events!? disabled, in js setting, but should that js setting exist? part of theme?
-monarch col event, when really squatty, compresses divs weird
-add 2px h padding on daygrid-event time ? probably. morelink should match.
-monarch: test "today" when semi-transparent is-other
-replace all "canvas" css vars with just "bg"
-naming confusion between "med" and "mid"
-
-should mui/shadn force the FullCalendar element to borderless,
-  or should the default-ui of each theme define its border?
-
-major-border not working on Breezy theme
-
-if a theme bothers to have different shades of muted text,
-  then it shouldn't inherit some of the text-color from the outer document
-  ALL text we define should have a color
-
-for shadcn,
-  use "secondary" color for week-number pills
-
-for all icons, use negative margins,
-  kill isIconOnly!
-
-for resourceTimeGridDay... have week number in left axis?
-
-pick on strategy about outline border
-  either use inset-border (some distortion)
-  or use transparent border on non-outline button
-  or use real-color border on non-outline, but need to remember to change it on hover
-
-isIconOnly -- stop using it for changing padding
-  but KEEP it for when we want to do an intentional ghost-button (aka "icon button" in MUI speak)
-
-give the iconContent an isPrimary param
-  in case user overrides prev/next buttons to isPrimary:true
-
-this is failure
-  dayHeaderAlign: (data) => data.inPopover ? 'start' : 'end',
-  ***move away from having dayHeaderAlign control popover
-
-simplify slotLabel/dayHeader markup to NOT have inner wrapp (f-flexCol)
-  (now that we explicitly choose alignment)
-  because slotLabelInner can't do negative margin anymore because affects dimensions of said wrapper
-
-fix Breezy dark-mode event coloring
-  hacks with dark:
-  should be just use color-mix with fallbacks???
-
-Breezy theme
-  multi-month dayheader text should be dimmer, but hard to do with slots.ts
-
-Undo hiding of Year-view for Pulse theme
-
-ensure event outer spacing in view-specific options
-avoid em units in themes (like 3em) at all costs... okay for 1em icons but that's it
-simplify how icon-size and line-height works
-rething 1px-paddings
-  p-px -> p-[0.0625rem] ?
-put ellipsis on overflow event-title text? in any themes?
-In ui-default-options-event-calendar files,
-  put buttons{} map after buttonClass. looks nice
-because dayHeaders and slotLabels have non-undefined h-alignment now (thanks to dayHeaderAlign/slotLabelAlign)
-  can we simplify the flexbox-based DOM?
-
-mui/shadcn, in timelineview with multiple timeline headers,
-  2 rows don't sync with two datagrid header rows
-
-
-theme checklist
----------------
-UI
-  in list-view, fix last-line stacking
-    have bottom-border on event-list, not overall container
-  use own icon sets
-  now-indicator
-  popover background colors POP in dark mode
-  timegrid: drop shadow from dayheader/axis onto scrollable area
-  isPrimary button config
-  audit when today date is ALSO the "other" date in a month. still give opacity to whole dayCellTop?
-  add white glow to now indicator on all themes
-    See Screenshots/now-indicator-event-overlap.png
-  for dark-mode, in UI design,
-    nice to have popover be different BG color
-    example: click branch selector: https://github.com/fullcalendar/fullcalendar-site-refactor
-  vresource view
-  multi-month stack looks good
-  multi-month day with 1-event should show event, not +1more link
-  in daygrid, ensure block-event, list-item-event, and more-link all have 1px bottom margin AND same height
-  the disabled today button has *some* type of dimming on the text
-  check that popover X isn't too big
-  continuation arrows on start/end of events
-  should be at least 4 rows of event-like-content in each daycell
-  check touch-selecting and dragging/resizing effects
-  check print-view
-  test prevYear/nextYear icons in all theme systems
-  style nav-link for single-month in multi-month-view
-  ensure bgColorClass applied to view-div (test w/ MUI "purple")
-  ensure noEvents message is sticky
-theme-system: MUI
-  we should allow MUI to force headers to be uppercase
-  The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
+theme TODO
+----------
 All themes
-  prefer view-specific options over top-level
-  xxSmall text too small (esp Year view)
+  redesign day-header in popover
+    dayHeaderAlign: (data) => data.inPopover ? 'start' : 'end',
+    ***move away from having dayHeaderAlign control popover
+
+  simplify slotLabel/dayHeader markup to NOT have inner wrapp (f-flexCol)
+    (now that we explicitly choose alignment)
+    because slotLabelInner can't do negative margin anymore because affects dimensions of said wrapper
+    CONT'd: because dayHeaders and slotLabels have non-undefined h-alignment now (thanks to dayHeaderAlign/slotLabelAlign)
+      can we simplify the flexbox-based DOM?
+    CONT'd: ensure slotLabel/dayHeader/resourceDayHeader ALIGN is done via setting, not theme flexbox css
+
+  ensure bgColorClass applied to view-div (test w/ MUI "purple")
+  put calendar/view BORDER css in options-event-calendar.ts (theme's universal code)
+    because multi-month will want borders around each month, and will be in similar place in code
+
+  pick on strategy about outline border for buttons
+    either use inset-border (some distortion)
+    or use transparent border on non-outline button
+    or use real-color border on non-outline, but need to remember to change it on hover
+
+  ensure noEvents message is sticky
+
+  style nav-link for single-month-title in multi-month-view
+  the disabled today button has *some* type of dimming on the text
+
+  should be at least 4 rows of event-like-content in each daycell
+  in daygrid, ensure block-event, list-item-event, and more-link all have 1px bottom margin AND same height
+
+  audit when today date is ALSO the "other" date in a month. still give opacity to whole dayCellTop?
+  replace all "canvas" css vars with just "bg"
+  naming confusion between "med" and "mid"
+  ensure: simplify how icon-size and line-height works (already did this in one theme?)
+  avoid em units in themes (like 3em) at all costs... okay for 1em icons but that's it
+    CONT'd: for width/height/margin/padding units, dont use em units
+      use standard tailwind units, which will depend on the component's root font size
+  for all icons, use negative margins
+
+  if a theme bothers to have different shades of muted text,
+    then it shouldn't inherit some of the text-color from the outer document
+    ALL text we define should have a color
+
+  fix the list-view responsive problem i have in my screenshots
   core: datagrid narrow columns overflow
-  rething sized of dots
-  audit license warning for all themes, not that we change inherited classname
-  core: test sticky footer scrollbar on timegrid-pannable/normal, daygrid-pannable/normal
+
+  use same xxSmall text in all views
+  rethink sizes of dots. too homogenous
+  audit license warning for all themes, we changed inherited classname
+
   leave toolbar responsiveness in themes unopinionated for now
     later have toolbar adjust... dynamic size? how would work with different months having different
+    add to docs
     widths... minTitleWidth setting?
   grey-out the "Today" for default-ui. mui/shadcn look bad so forget them.
-CODE
-  dark: not allowed in theme core! no way to detect without relying on third-party UI lib
+  timegrid: drop shadow from dayheader/axis onto scrollable area
+  add white glow to now indicator on all themes
+    See Screenshots/now-indicator-event-overlap.png
   dont have general options define rowEvent/colEvent outer margin
   move font-size/line-height AWAY from eventInner... move to eventTime/Title
-  remove borderClass/majorBorderClass ... use borderColorClass each time
-  Use rotated icons to save space
-  use joinClassNames
-    especially useful for custom jsx with className= in it
-  list-header does its own sticky-top
-    bottom-border doesnt stack weird
-  button-icon heights should be relative to line-height somehow, not fixed at particular size
-  for width/height/margin/padding units, dont use em units
-    use standard tailwind units, which will depend on the component's root font size
   use focus-visible: instead of focus:
   isSticky should not be abused for colCnt===1
   when putting outline on columnEvent, use isMirror instead of isDragging
-  outer border effects should be in ui-default code
-    also view-border... nah because code to put border around singleMonth nice to have in same place
-  audit all block-event isStart/isEnd effects, especially on color div
-  ensure slotLabel/dayHeader/resourceDayHeader ALIGN is done via setting, not theme flexbox css
-TEST
+  In ui-default-options-event-calendar files,
+    put buttons{} map after buttonClass. looks nice
+MUI
+  we should allow MUI to force headers to be uppercase
+  The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
+Shadcn
+  use "secondary" color for week-number pills
+MUI/Shadcn,
+  in timelineview with multiple timeline headers,
+    2 rows don't sync with two datagrid header rows
+MANUAL TEST
+  now-indicator
   ALL stickiness, esp when calendar root is overflow:hidden
   test horizontal scrolling
   test growRows
   more-link in timegrid and timeline
   when continuous months, that start-of-month works (hasMonthLabel?)
+  vresource view
+  multi-month stack looks good
+  multi-month day with 1-event should show event, not +1more link
+  check touch-selecting and dragging/resizing effects
+  check print-view
+  test prevYear/nextYear icons in all theme systems
+  core: test sticky footer scrollbar on timegrid-pannable/normal, daygrid-pannable/normal
+Demo
+  Undo hiding of Year-view for Pulse theme
+  Refactor demo code to have view-specific demo subcomponents
 NOTES
   for alignment,
     dayHeader and timeline-slotLabel are flex-col
@@ -166,6 +118,9 @@ NOTES
     we need a higher-level JSX util of sorts
   slotLabelAlign/slotLabelSticky not supported in timegrid,
     so only put settings in timeline
+  "dark:" not allowed in theme core! no way to detect without relying on third-party UI lib
+  we actually like moreLinkerInnerClass, because the "inner" is for stickiness
+    and the outer is for background color. just like stickiness in datagrid
 
 
 just before beta (after theme gen)
@@ -176,6 +131,7 @@ App.tsx:
   write mui-only App demo
   have font-families change based on Component Lib
   BUG?: z-index of subcomponents go above the topbar?
+Ensure .gitignore for theme packages is correct
 
 
 ASAP
@@ -316,8 +272,6 @@ next theme platforms to implement:
   Angular Material
 Move away from Node16 module-importing with ".js"
 THEME SYSTEM
-  instead of isIconOnly, do
-    accommodate icon+text, text+icon and have setting like hasStartIcon/hasEndIcon
   think about how classname overriding should work
     in new gen FullCalendar react component, when specified in option, overrides what <FullCalendar> wants
       a feature not a bug
@@ -569,6 +523,7 @@ changelog: +slotLabelAlign (only about highest level)
 changelog: navlinks on single-month title!
 changelog: sticky-bottom for no-events message
 changelog: classic theme has slightly more spacious look
+changelog: eventSlicing is new
 
 
 Docs
@@ -905,6 +860,9 @@ eventually have MUI themes output styles using sx={} prop, like:
     would need to a markup-output target, like react-native
 punt: API change: stop passing-in createElement to render funcs:
   typedef: `export type CustomContentGenerator<RenderProps> = CustomContent | ((renderProps: RenderProps, createElement: any) => (CustomContent | true))`
+give the iconContent an isPrimary param
+  in case user overrides prev/next buttons to isPrimary:true
+
 
 Notes
 -----

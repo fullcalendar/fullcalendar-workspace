@@ -23,6 +23,12 @@ https://tailwindcss.com/plus/ui-blocks/marketing/elements/flyout-menus#component
 
 Themes should completely decide if list-view dayheaders are sticky (put in the changelog?)
 
+major-border not working
+
+fix Breezy dark-mode event coloring
+  hacks with dark:
+  should be just use color-mix with fallbacks???
+
 TODO: add all the whitespace-nowrap overflow-hidden to the text divs
   add to checklist
 
@@ -41,6 +47,8 @@ TODO: in all-day area, when stacking events, allDayHeader not valigned
 PROBLEM: event color too dim to pop above background-event color
 
 TODO: fix multiple listDayFormats
+
+TODO: multi-month dayheader text should be dimmer, but hard to do with slots.ts
 
 TODO: new dark-mode!
   https://tailwindcss.com/plus/changelog#2025-08-11

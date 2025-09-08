@@ -8,6 +8,12 @@ import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 const hoverButtonClass = 'hover:bg-(--mui-palette-action-hover) focus-visible:bg-(--mui-palette-action-focus)'
 const selectedButtonClass = 'bg-(--mui-palette-action-selected)'
 
+/*
+these classnames will need to be converted to static css file...
+  either find a way to gneerate this css using style-whatever lib under the hood that MUI uses
+  [or] somehow use sx={} with variables
+  [or] include the static .css file and pray webpack/vite are okay with that
+*/
 export const optionParams: EventCalendarOptionParams = {
   borderColorClass: 'border-(--mui-palette-divider)',
   majorBorderColorClass: 'border-(--mui-palette-action-active)',

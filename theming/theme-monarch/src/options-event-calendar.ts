@@ -9,6 +9,11 @@ TODO: week-number hover gets really dim. weird mousedown effect
 TODO: MUI figure out select colors vs bg-event color. currently inverse of classic-theme
 TODO: MUI resource group oddly dark gray
 
+monarch no sticky col events!? disabled, in js setting, but should that js setting exist? part of theme?
+monarch col event, when really squatty, compresses divs weird
+add 2px h padding on daygrid-event time ? probably. morelink should match.
+monarch: test "today" when semi-transparent is-other
+
 color refactor:
   TODO: MUI multimonth, stacked rows of disabled days don't work
   TODO: don't use opacity so much... use muted text color
