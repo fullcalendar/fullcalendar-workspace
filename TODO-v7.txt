@@ -15,17 +15,13 @@ clean+build all:
 
 theme TODO
 ----------
+Core
+  In resourceTimeGridDay, when today, in modern themes,
+    Multiple dots are displayed (see screenshot)
 All themes
   redesign day-header in popover
     dayHeaderAlign: (data) => data.inPopover ? 'start' : 'end',
     ***move away from having dayHeaderAlign control popover
-
-  simplify slotLabel/dayHeader markup to NOT have inner wrapp (f-flexCol)
-    (now that we explicitly choose alignment)
-    because slotLabelInner can't do negative margin anymore because affects dimensions of said wrapper
-    CONT'd: because dayHeaders and slotLabels have non-undefined h-alignment now (thanks to dayHeaderAlign/slotLabelAlign)
-      can we simplify the flexbox-based DOM?
-    CONT'd: ensure slotLabel/dayHeader/resourceDayHeader ALIGN is done via setting, not theme flexbox css
 
   ensure bgColorClass applied to view-div (test w/ MUI "purple")
   put calendar/view BORDER css in options-event-calendar.ts (theme's universal code)

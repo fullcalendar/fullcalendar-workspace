@@ -104,26 +104,20 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
         willUnmount={renderConfig.willUnmount}
       >
         {(InnerContainer) => (
-          <div
-            ref={this.handleInnerEl}
+          <InnerContainer
+            tag='div'
+            elRef={this.handleInnerEl}
+            attrs={dataConfig.innerAttrs}
             className={joinClassNames(
-              classNames.flexCol,
+              generateClassName(renderConfig.innerClassNameGenerator, finalRenderProps),
+              classNames.rigid,
               isSticky && classNames.sticky,
             )}
             style={{
               left: edgeCoord,
               right: edgeCoord,
             }}
-          >
-            <InnerContainer
-              tag='div'
-              attrs={dataConfig.innerAttrs}
-              className={joinClassNames(
-                generateClassName(renderConfig.innerClassNameGenerator, finalRenderProps),
-                classNames.rigid,
-              )}
-            />
-          </div>
+          />
         )}
       </ContentContainer>
     )
