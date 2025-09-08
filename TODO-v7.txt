@@ -19,10 +19,6 @@ Core
   In resourceTimeGridDay, when today, in modern themes,
     Multiple dots are displayed (see screenshot)
 All themes
-  redesign day-header in popover
-    dayHeaderAlign: (data) => data.inPopover ? 'start' : 'end',
-    ***move away from having dayHeaderAlign control popover
-
   ensure bgColorClass applied to view-div (test w/ MUI "purple")
   put calendar/view BORDER css in options-event-calendar.ts (theme's universal code)
     because multi-month will want borders around each month, and will be in similar place in code
@@ -302,6 +298,8 @@ Probably kill Bootstrap support, or add it back in after v7 release
   because popoverFormat+popoverClass AND dayHeaderFormat+dayHeaderClass AND dayCellFormat+dayCellClass
 clean package.jsons
   ensure license specified in all
+more popoverClose to direct sibling of popover
+  will allow DayHeader to be own component in future
 
 
 rtl/left-right-coord REFACTOR
