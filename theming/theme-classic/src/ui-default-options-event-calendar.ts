@@ -46,6 +46,7 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     className: 'gap-5',
+    viewClass: `border ${optionParams.borderColorClass} ${optionParams.bgColorClass}`,
 
     toolbarClass: (data) => [
       'items-center gap-3',

@@ -19,10 +19,6 @@ Core
   In resourceTimeGridDay, when today, in modern themes,
     Multiple dots are displayed (see screenshot)
 All themes
-  ensure bgColorClass applied to view-div (test w/ MUI "purple")
-  put calendar/view BORDER css in options-event-calendar.ts (theme's universal code)
-    because multi-month will want borders around each month, and will be in similar place in code
-
   pick on strategy about outline border for buttons
     either use inset-border (some distortion)
     or use transparent border on non-outline button
@@ -79,6 +75,7 @@ Shadcn
 MUI/Shadcn,
   in timelineview with multiple timeline headers,
     2 rows don't sync with two datagrid header rows
+  in Demo, why does buttons show as "resourceTimeGridFiveDay"
 MANUAL TEST
   now-indicator
   ALL stickiness, esp when calendar root is overflow:hidden
@@ -96,6 +93,7 @@ MANUAL TEST
 Demo
   Undo hiding of Year-view for Pulse theme
   Refactor demo code to have view-specific demo subcomponents
+  Add checkbox to add "container" background color, test for light/dark
 NOTES
   for alignment,
     dayHeader and timeline-slotLabel are flex-col
@@ -113,6 +111,7 @@ NOTES
   "dark:" not allowed in theme core! no way to detect without relying on third-party UI lib
   we actually like moreLinkerInnerClass, because the "inner" is for stickiness
     and the outer is for background color. just like stickiness in datagrid
+    however, for 'gap-*', but in ui-system-specific files (because not used in most UI-specific)
 
 
 just before beta (after theme gen)

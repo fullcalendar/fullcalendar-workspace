@@ -7,7 +7,6 @@ import {
   AllowFunc,
   BusinessHoursInput,
   ButtonInput,
-  CalendarDisplayData,
   ClassNameGenerator,
   ConstraintInput,
   CssDimValue,
@@ -407,8 +406,8 @@ export const BASE_OPTION_REFINERS = {
   customRenderingReplaces: Boolean,
 
   // new
-  class: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
-  className: identity as Identity<ClassNameGenerator<CalendarDisplayData>>,
+  class: identity as Identity<ClassNameInput>,
+  className: identity as Identity<ClassNameInput>,
 
   popoverClass: identity as Identity<ClassNameInput>,
   popoverCloseClass: identity as Identity<ClassNameInput>,

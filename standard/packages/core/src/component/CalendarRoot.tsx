@@ -35,8 +35,8 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
 
     let className = joinArrayishClassNames(
       generateClassName(options.class ?? options.className, {
-        direction: options.direction,
-        mediaType: forPrint ? 'print' : 'screen',
+        // direction: options.direction,
+        // mediaType: forPrint ? 'print' : 'screen',
       }),
       borderlessTop && classNames.borderlessTop,
       borderlessBottom && classNames.borderlessBottom,

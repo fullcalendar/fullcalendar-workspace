@@ -4,14 +4,16 @@ import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-pulse-dev/options-scheduler'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
-import { optionParams, EventCalendarView } from './event-calendar.js'
+import { cn } from '../lib/utils.js'
 import { eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
 import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
+import { optionParams, EventCalendarView } from './event-calendar.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 
-export interface SchedulerProps extends CalendarOptions {
+export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean
@@ -24,29 +26,32 @@ export interface SchedulerProps extends CalendarOptions {
 export function Scheduler({
   availableViews = schedulerAvailableViews,
   addButton,
+  className,
   ...calendarOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
+  const borderlessX = calendarOptions.borderlessX ?? calendarOptions.borderless
 
   return (
-    <div className='flex flex-col gap-6'>
+    <div className={cn(className, 'flex flex-col gap-6')}>
       <EventCalendarToolbar
+        className={borderlessX ? 'px-3' : ''}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
       />
-      <div className='border rounded-sm overflow-hidden'>
-        <SchedulerView
-          initialView={availableViews[0]}
-          controller={controller}
-          {...calendarOptions}
-          plugins={[
-            ...eventCalendarPlugins,
-            ...schedulerOnlyPlugins,
-            ...(calendarOptions.plugins || []),
-          ]}
-        />
-      </div>
+      <SchedulerView
+        className='border rounded-sm overflow-hidden bg-background'
+        initialView={availableViews[0]}
+        controller={controller}
+        {...calendarOptions}
+        borderlessTop={false}
+        plugins={[
+          ...eventCalendarPlugins,
+          ...schedulerOnlyPlugins,
+          ...(calendarOptions.plugins || []),
+        ]}
+      />
     </div>
   )
 }

@@ -132,7 +132,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventContrastColor: params.eventContrastColor,
       backgroundEventColor: params.backgroundEventColor,
 
-      viewClass: `border ${params.borderColorClass} ${params.bgColorClass}`,
       tableHeaderClass: (data) => data.isSticky && params.bgColorClass,
 
       singleMonthClass: (data) => data.colCount > 1 && 'm-4',

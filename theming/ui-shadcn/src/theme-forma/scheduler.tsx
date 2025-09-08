@@ -3,6 +3,7 @@ import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-forma-dev/options-scheduler'
+import { cn } from '../lib/utils.js'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { optionParams, EventCalendarView } from './event-calendar.js'
 import { eventCalendarPlugins } from '../lib/event-calendar-presets.js'
@@ -11,7 +12,8 @@ import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 
-export interface SchedulerProps extends CalendarOptions {
+export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean
@@ -24,22 +26,31 @@ export interface SchedulerProps extends CalendarOptions {
 export function Scheduler({
   availableViews = schedulerAvailableViews,
   addButton,
+  className,
   ...calendarOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
+  const borderlessX = calendarOptions.borderlessX ?? calendarOptions.borderless
+  const borderlessTop = calendarOptions.borderlessTop ?? calendarOptions.borderless
+  const borderlessBottom = calendarOptions.borderlessBottom ?? calendarOptions.borderless
 
   return (
-    <div className='border rounded-sm shadow-xs overflow-hidden'>{/* TODO: keep in sync with default styles */}
+    <div className={cn(
+      className,
+      'bg-background',
+      !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-sm overflow-hidden shadow-xs',
+      !borderlessX && 'border-x',
+      !borderlessTop && 'border-t',
+      !borderlessBottom && 'border-b',
+    )}>
       <EventCalendarToolbar
-        className='p-3'
+        className='border-b p-3'
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
       />
       <SchedulerView
         initialView={availableViews[0]}
-        borderlessX
-        borderlessBottom
         controller={controller}
         {...calendarOptions}
         plugins={[

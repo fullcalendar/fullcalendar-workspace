@@ -6,7 +6,8 @@ import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 import EventCalendarView from './EventCalendarView.js'
 
-export interface EventCalendarProps extends CalendarOptions {
+export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean
@@ -19,12 +20,17 @@ export interface EventCalendarProps extends CalendarOptions {
 export default function EventCalendar({
   availableViews = eventCalendarAvailableViews,
   addButton,
+  className,
   ...calendarOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
+  const borderlessX = calendarOptions.borderlessX ?? calendarOptions.borderless
+  const borderlessTop = calendarOptions.borderlessTop ?? calendarOptions.borderless
+  const borderlessBottom = calendarOptions.borderlessBottom ?? calendarOptions.borderless
 
   return (
     <Box
+      className={className}
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -32,16 +38,24 @@ export default function EventCalendar({
       }}
     >
       <EventCalendarToolbar
+        className={borderlessX ? 'px-3' : ''}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
       />
       <Box
         sx={{
-          border: '1px solid',
+          bgcolor: 'background.paper',
+          borderStyle: 'solid',
           borderColor: 'divider',
-          borderRadius: 1,
-          overflow: 'hidden',
+          borderLeftWidth: borderlessX ? 0 : 1,
+          borderRightWidth: borderlessX ? 0 : 1,
+          borderTopWidth: 1,
+          borderBottomWidth: borderlessBottom ? 0 : 1,
+          ...(borderlessX || borderlessTop || borderlessBottom ? {} : {
+            borderRadius: 1,
+            overflow: 'hidden',
+          })
         }}
       >
         <EventCalendarView

@@ -54,6 +54,10 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
+    className: `${optionParams.bgColorClass} border ${optionParams.borderMidColorClass} rounded-lg overflow-hidden`,
+    headerToolbarClass: `border-b ${optionParams.borderMidColorClass}`,
+    footerToolbarClass: `border-t ${optionParams.borderMidColorClass}`,
+
     toolbarClass: `px-4 py-4 items-center ${optionParams.mutedBgClass} gap-4`,
     toolbarSectionClass: 'items-center gap-4',
     toolbarTitleClass: `text-lg font-semibold ${optionParams.textHeaderColorClass}`,

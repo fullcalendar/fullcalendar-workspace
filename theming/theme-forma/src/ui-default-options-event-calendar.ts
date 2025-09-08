@@ -69,6 +69,10 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
+    className: `${optionParams.bgColorClass} border ${optionParams.borderColorClass} rounded-sm shadow-xs overflow-hidden`,
+    headerToolbarClass: `border-b ${optionParams.borderColorClass}`,
+    footerToolbarClass: `border-t ${optionParams.borderColorClass}`,
+
     toolbarClass: 'p-3 items-center gap-3', // TODO: document how we do NOT need to justify-between or flex-row
     toolbarSectionClass: (data) => [
       'items-center gap-3',

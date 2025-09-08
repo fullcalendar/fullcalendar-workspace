@@ -5,11 +5,13 @@ import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-monarch-dev/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-monarch-dev/slots'
+import { cn } from '../lib/utils.js'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 
-export interface EventCalendarProps extends CalendarOptions {
+export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean
@@ -22,12 +24,23 @@ export interface EventCalendarProps extends CalendarOptions {
 export function EventCalendar({
   availableViews = eventCalendarAvailableViews,
   addButton,
+  className,
   ...calendarOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
+  const borderlessX = calendarOptions.borderlessX ?? calendarOptions.borderless
+  const borderlessTop = calendarOptions.borderlessTop ?? calendarOptions.borderless
+  const borderlessBottom = calendarOptions.borderlessBottom ?? calendarOptions.borderless
 
   return (
-    <div className='border rounded-lg overflow-hidden'>
+    <div className={cn(
+      className,
+      'bg-background',
+      !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-lg overflow-hidden',
+      !borderlessX && 'border-x',
+      !borderlessTop && 'border-t',
+      !borderlessBottom && 'border-b',
+    )}>
       <EventCalendarToolbar
         className='p-4'
         controller={controller}
@@ -36,7 +49,6 @@ export function EventCalendar({
       />
       <EventCalendarView
         initialView={availableViews[0]}
-        borderless
         controller={controller}
         {...calendarOptions}
         plugins={[

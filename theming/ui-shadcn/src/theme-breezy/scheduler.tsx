@@ -3,15 +3,17 @@ import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-breezy-dev/options-scheduler'
+import { cn } from '../lib/utils.js'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
-import { optionParams, EventCalendarView } from './event-calendar.js'
 import { eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
 import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
+import { optionParams, EventCalendarView } from './event-calendar.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 
-export interface SchedulerProps extends CalendarOptions {
+export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean
@@ -24,14 +26,25 @@ export interface SchedulerProps extends CalendarOptions {
 export function Scheduler({
   availableViews = schedulerAvailableViews,
   addButton,
+  className,
   ...calendarOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
+  const borderlessX = calendarOptions.borderlessX ?? calendarOptions.borderless
+  const borderlessTop = calendarOptions.borderlessTop ?? calendarOptions.borderless
+  const borderlessBottom = calendarOptions.borderlessBottom ?? calendarOptions.borderless
 
   return (
-    <div className='border rounded-lg overflow-hidden'>
+    <div className={cn(
+      className,
+      'bg-background',
+      !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-lg overflow-hidden',
+      !borderlessX && 'border-x',
+      !borderlessTop && 'border-t',
+      !borderlessBottom && 'border-b',
+    )}>
       <EventCalendarToolbar
-        className='p-4 bg-muted/50 text-sidebar-foreground'
+        className='border-b p-4 bg-muted/50 text-sidebar-foreground'
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}

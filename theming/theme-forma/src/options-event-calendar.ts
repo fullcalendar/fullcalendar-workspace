@@ -136,10 +136,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventColor: params.eventColor,
       backgroundEventColor: params.backgroundEventColor,
 
-      className: `border ${params.borderColorClass} rounded-sm shadow-xs overflow-hidden`,
-      headerToolbarClass: `border-b ${params.borderColorClass}`,
-      footerToolbarClass: `border-t ${params.borderColorClass}`,
-
       tableHeaderClass: (data) => data.isSticky && params.bgColorClass,
 
       navLinkClass: 'hover:underline',

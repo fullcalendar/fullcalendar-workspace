@@ -4,11 +4,13 @@ import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-classic-dev/options-event-calendar'
+import { cn } from '../lib/utils.js'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 
-export interface EventCalendarProps extends CalendarOptions {
+export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean
@@ -21,29 +23,31 @@ export interface EventCalendarProps extends CalendarOptions {
 export function EventCalendar({
   availableViews = eventCalendarAvailableViews,
   addButton,
+  className,
   ...calendarOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
+  const borderlessX = calendarOptions.borderlessX ?? calendarOptions.borderless
 
   return (
-    <div className='flex flex-col gap-5'>
+    <div className={cn(className, 'flex flex-col gap-5')}>
       <EventCalendarToolbar
+        className={borderlessX ? 'px-3' : ''}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
       />
-      <div className='border rounded-sm overflow-hidden'>
-        <EventCalendarView
-          initialView={availableViews[0]}
-          borderless
-          controller={controller}
-          {...calendarOptions}
-          plugins={[
-            ...eventCalendarPlugins,
-            ...(calendarOptions.plugins || []),
-          ]}
-        />
-      </div>
+      <EventCalendarView
+        className='border rounded-sm overflow-hidden bg-background'
+        initialView={availableViews[0]}
+        controller={controller}
+        {...calendarOptions}
+        borderlessTop={false}
+        plugins={[
+          ...eventCalendarPlugins,
+          ...(calendarOptions.plugins || []),
+        ]}
+      />
     </div>
   )
 }

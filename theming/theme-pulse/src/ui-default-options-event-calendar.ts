@@ -79,7 +79,10 @@ export const defaultUiEventCalendarOptions: {
       // ^^^ border needs more contrast bc of drop shadow, and to match controls
     ],
 
-    toolbarClass: 'gap-5 items-center',
+    toolbarClass: (data) => [
+      'gap-5 items-center',
+      data.borderlessX && 'px-3',
+    ],
     toolbarSectionClass: 'gap-5 items-center',
     toolbarTitleClass: `text-2xl font-bold ${textColorClass3}`,
     // how to customize title??? with text parts??? -- TODO: make ticket for toolbarTitleContent -- show Apple Calendar screenshot
