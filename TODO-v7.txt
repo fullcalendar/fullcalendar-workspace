@@ -19,11 +19,6 @@ Core
   In resourceTimeGridDay, when today, in modern themes,
     Multiple dots are displayed (see screenshot)
 All themes
-  pick on strategy about outline border for buttons
-    either use inset-border (some distortion)
-    or use transparent border on non-outline button
-    or use real-color border on non-outline, but need to remember to change it on hover
-
   ensure noEvents message is sticky
 
   style nav-link for single-month-title in multi-month-view

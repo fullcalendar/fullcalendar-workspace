@@ -4,18 +4,7 @@ import * as svgs from './ui-default-svgs.js'
 
 const buttonTextClass = 'text-sm'
 const iconSizeClass = 'size-5' // matches text-sm line-height
-
 const buttonEffectClass = 'hover:brightness-80 active:brightness-120' // why not same as transparentPressableClass?
-const primaryButtonClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary) ${buttonEffectClass}`
-const secondaryButtonClass = `bg-(--fc-monarch-secondary) text-(--fc-monarch-on-secondary) ${buttonEffectClass}`
-
-function getPrimaryButtonClass(isDisabled: boolean) {
-  return primaryButtonClass + (isDisabled ? ' opacity-90' : '')
-}
-
-function getSecondaryButtonClass(isDisabled: boolean) {
-  return secondaryButtonClass + (isDisabled ? ' opacity-90' : '')
-}
 
 export const optionParams: EventCalendarOptionParams = {
   todayPillClass: (data) => joinClassNames(
@@ -92,21 +81,23 @@ export const defaultUiEventCalendarOptions: {
 
     buttonGroupClass: (data) => [
       'items-center isolate rounded-full',
-      data.isSelectGroup && 'inset-ring inset-ring-(--fc-monarch-outline-variant)'
+      data.isSelectGroup && 'border border-(--fc-monarch-outline-variant)'
     ],
     buttonClass: (data) => [
-      `inline-flex items-center justify-center py-2.5 ${buttonTextClass} rounded-full`,
+      `inline-flex items-center justify-center py-2.5 ${buttonTextClass} rounded-full border`,
       data.inGroup && 'relative active:z-20 focus:z-20',
       data.isSelected ? 'z-10' : 'z-0',
-      data.isDisabled && `pointer-events-none`, // bypass hover styles
+      data.isDisabled && 'opacity-80 pointer-events-none', // bypass hover styles
       data.isIconOnly ? 'px-2.5' : 'px-5',
+      data.inSelectGroup && '-m-px',
+      // TODO: better structure
       (data.isIconOnly || (data.inSelectGroup && !data.isSelected))
-        ? transparentPressableClass
+        ? `${transparentPressableClass} border-transparent`
         : data.isSelected
-          ? getSecondaryButtonClass(data.isDisabled)
+          ? `bg-(--fc-monarch-secondary) text-(--fc-monarch-on-secondary) border-transparent ${buttonEffectClass}` // solid gray
           : data.isPrimary
-            ? getPrimaryButtonClass(data.isDisabled)
-            : `inset-ring inset-ring-(--fc-monarch-outline-variant-original)`
+            ? `bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary) border-transparent ${buttonEffectClass}` // primary color
+            : `${!data.isDisabled && transparentPressableClass} border-(--fc-monarch-outline-variant-original)` // bordered gray
     ],
 
     popoverCloseContent: () => svgs.x(`${buttonTextClass} ${iconSizeClass} opacity-65`),
