@@ -259,7 +259,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listItemEventTitleClass: 'px-4 py-2 text-sm',
         listItemEventColorClass: 'bg-(--fc-event-color) w-1.5 rounded-full',
 
-        noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center`,
+        noEventsClass: 'flex flex-col flex-grow items-center justify-center',
+        noEventsInnerClass: 'py-15',
       },
     },
   }

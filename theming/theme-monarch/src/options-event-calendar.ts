@@ -351,7 +351,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.event.url && 'group-hover:underline',
         ],
 
-        noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center`,
+        noEventsClass: 'flex flex-col flex-grow items-center justify-center',
+        noEventsInnerClass: 'py-15',
       },
     },
   }

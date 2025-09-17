@@ -19,8 +19,6 @@ Core
   In resourceTimeGridDay, when today, in modern themes,
     Multiple dots are displayed (see screenshot)
 All themes
-  ensure noEvents message is sticky
-
   style nav-link for single-month-title in multi-month-view
   the disabled today button has *some* type of dimming on the text
 
@@ -850,6 +848,11 @@ punt: API change: stop passing-in createElement to render funcs:
   typedef: `export type CustomContentGenerator<RenderProps> = CustomContent | ((renderProps: RenderProps, createElement: any) => (CustomContent | true))`
 give the iconContent an isPrimary param
   in case user overrides prev/next buttons to isPrimary:true
+make noEventsInnerClass sticky in all themes (not just classic)
+  but its hard because there's rounded-corner containers with overflow:hidden
+  solution is hard, which is make the rounded corners (and borders) part of the scroller
+  hard for themes to control
+  even harder when you consider MUI/Shadcn do the outer border with a separate div sometimes
 
 
 Notes

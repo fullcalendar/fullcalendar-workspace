@@ -345,7 +345,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           'text-(--fc-event-color) brightness-60',
         ],
 
-        noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center`,
+        noEventsClass: 'py-15 flex flex-col flex-grow items-center justify-center',
+        noEventsInnerClass: 'py-15',
       },
     },
   }

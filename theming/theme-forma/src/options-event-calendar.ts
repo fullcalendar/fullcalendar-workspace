@@ -381,7 +381,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listItemEventTimeClass: 'w-40',
         listItemEventTitleClass: 'flex-grow font-semibold',
 
-        noEventsClass: `py-15 flex flex-col flex-grow items-center justify-center`,
+        noEventsClass: 'flex flex-col flex-grow items-center justify-center',
+        noEventsInnerClass: 'py-15',
       },
     },
   }
