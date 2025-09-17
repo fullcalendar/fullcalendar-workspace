@@ -30,6 +30,9 @@ TODO: pressdown colors on buttons
 TODO: in default-ui, make secondary button have bg-filled-muted, not lines
 
 TODO: shift timegrid slot labels over to start-of line
+
+TODO: give nav-link hover effect to everything!
+TODO: give hover effect to singleMonthHeaderInnerClass
 */
 
 export interface EventCalendarOptionParams {

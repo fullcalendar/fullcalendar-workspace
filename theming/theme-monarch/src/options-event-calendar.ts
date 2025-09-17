@@ -8,6 +8,8 @@ TODO: X is too big
 TODO: week-number hover gets really dim. weird mousedown effect
 TODO: MUI figure out select colors vs bg-event color. currently inverse of classic-theme
 TODO: MUI resource group oddly dark gray
+TODO: transparentPressableClass hover effect is unnoticable in dark mode
+TODO: remove dark: !!!
 
 monarch no sticky col events!? disabled, in js setting, but should that js setting exist? part of theme?
 monarch col event, when really squatty, compresses divs weird
@@ -53,9 +55,8 @@ export interface EventCalendarOptionParams {
 }
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
-export const moreLinkBgClass = 'bg-gray-300 dark:bg-gray-600' // TODO: ugly dark grey?
-export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700'
-export const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20'
+export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700' // TODO: remove dark: !!!
+export const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20' // TODO --- make part of theme!?
 const transparentStrongBgClass = 'bg-gray-500/30'
 const nonBusinessHoursClass = 'bg-gray-500/7' // must be semitransprent
 
@@ -125,13 +126,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       singleMonthClass: (data) => data.colCount > 1 && 'm-4',
       singleMonthHeaderClass: (data) => [
-        data.colCount > 1 ? 'pb-4' : 'py-2',
+        data.colCount > 1 ? 'pb-2' : 'py-1',
         data.isSticky && `border-b ${params.borderColorClass} ${params.bgColorClass}`,
         'justify-center',
       ],
       singleMonthHeaderInnerClass: (data) => [
-        'font-bold',
-        !data.isCompact && 'text-lg',
+        'font-bold rounded-full px-2 py-1',
+        data.hasNavLink && transparentPressableClass,
       ],
 
       popoverClass: 'm-2 min-w-3xs ' + params.popoverClass,
@@ -236,7 +237,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: (data) => data.isCompact ? xxsTextClass : 'p-1 text-xs',
       columnEventTitleSticky: false, // because time below title, sticky looks bad
 
-      columnMoreLinkClass: `mb-px rounded-xs outline ${params.bgColorOutlineClass} ${moreLinkBgClass}`,
+      columnMoreLinkClass: `mb-px rounded-xs outline ${params.bgColorOutlineClass} ${transparentPressableClass}`,
       columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,

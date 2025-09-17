@@ -19,8 +19,9 @@ Core
   In resourceTimeGridDay, when today, in modern themes,
     Multiple dots are displayed (see screenshot)
 All themes
-  style nav-link for single-month-title in multi-month-view
   the disabled today button has *some* type of dimming on the text
+
+  search for dark: in themes. can't have
 
   should be at least 4 rows of event-like-content in each daycell
   in daygrid, ensure block-event, list-item-event, and more-link all have 1px bottom margin AND same height

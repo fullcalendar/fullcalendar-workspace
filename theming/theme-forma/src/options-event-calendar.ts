@@ -26,6 +26,8 @@ TODO: ensure button-group (non-view) looks okay. not hover-only
 TODO: pressdown color on Today button looks mushy
 
 TODO: make Today button border darker
+
+TODO: remove navlink underline effect. outlook doesn't use underlines at all
 */
 
 // ambient types (tsc strips during build because of {})
@@ -138,7 +140,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       tableHeaderClass: (data) => data.isSticky && params.bgColorClass,
 
-      navLinkClass: 'hover:underline',
+      navLinkClass: 'hover:underline', // TODO: kill
 
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
@@ -255,8 +257,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'justify-center',
       ],
       singleMonthHeaderInnerClass: (data) => [
+        'text-center font-bold rounded-sm px-1',
+        data.hasNavLink && params.ghostButtonClass,
         data.isCompact ? 'text-base' : 'text-lg', // need to specify "base". no
-        'text-center font-bold',
       ],
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,

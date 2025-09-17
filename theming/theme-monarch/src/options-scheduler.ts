@@ -1,5 +1,5 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
-import { xxsTextClass, moreLinkBgClass, transparentPressableClass, EventCalendarOptionParams, majorBorderColorClass } from './options-event-calendar.js'
+import { xxsTextClass, transparentPressableClass, EventCalendarOptionParams, majorBorderColorClass } from './options-event-calendar.js'
 
 // ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/timeline'
@@ -61,7 +61,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           data.isSpacious ? 'py-1' : 'py-px',
         ],
 
-        rowMoreLinkClass: `me-px p-px ${moreLinkBgClass}`,
+        rowMoreLinkClass: `me-px p-px ${transparentPressableClass}`,
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
         slotLabelAlign: (data) => (data.level || data.isTime) ? 'start' : 'center',

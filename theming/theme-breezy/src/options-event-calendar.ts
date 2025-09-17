@@ -85,6 +85,8 @@ TODO: multimonth title needs to be center-aligned
 TODO: v-resource headers different border color than days
 
 TODO: Auditorium stickness doesn't stick to right-side
+
+TODO: give navlink hover-effect to everything
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -275,10 +277,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderClass: (data) => [
         'justify-center', // h-align
         data.isSticky && `${params.bgColorClass} border-b ${params.borderMidColorClass}`,
+        data.isSticky ? 'py-1' : 'pb-1',
       ],
       singleMonthHeaderInnerClass: (data) => [
-        `text-sm font-semibold ${params.textHeaderColorClass}`,
-        data.isSticky ? `py-2` : 'pb-2',
+        `text-sm font-semibold rounded-sm py-1 px-2 ${params.textHeaderColorClass}`,
+        data.hasNavLink && params.ghostButtonClass,
       ],
 
       // TODO: event resizing
