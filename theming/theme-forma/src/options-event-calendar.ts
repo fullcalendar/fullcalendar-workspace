@@ -28,6 +28,8 @@ TODO: pressdown color on Today button looks mushy
 TODO: make Today button border darker
 
 TODO: remove navlink underline effect. outlook doesn't use underlines at all
+
+TODO: timeGrid short-event doesn't put title+time on same line
 */
 
 // ambient types (tsc strips during build because of {})
@@ -113,8 +115,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'flex flex-row items-center', // as opposed to display:contents
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
-    listItemEventTimeClass: 'p-px',
-    listItemEventTitleClass: 'p-px font-bold',
+    listItemEventTimeClass: 'p-0.5',
+    listItemEventTitleClass: 'p-0.5 font-bold',
 
     rowEventClass: (data) => [
       data.isEnd && 'me-0.5',
@@ -180,9 +182,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         // TODO: isDragging, isSelected
       ],
       blockEventColorClass: [
-        'absolute inset-0 bg-(--fc-event-color) opacity-40',
+        'absolute inset-0 bg-(--fc-event-color) print:bg-white not-print:opacity-40',
+        'border-(--fc-event-color)',
       ],
-      blockEventInnerClass: 'relative z-10 flex', // TODO
+      blockEventInnerClass: [
+        'relative z-10 flex', // TODO
+        'p-px', // matches print-only border
+      ],
 
       rowEventClass: (data) => [
         'mb-px', // space between events
@@ -211,14 +217,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         )
       ],
       rowEventColorClass: (data) => [
-        data.isEnd && 'rounded-e-sm',
+        'print:border-y',
+        data.isEnd && 'rounded-e-sm print:border-e',
       ],
       rowEventInnerClass: (data) => [
         'flex-row items-center',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
-      rowEventTimeClass: 'p-1',
-      rowEventTitleClass: 'p-1',
+      rowEventTimeClass: 'p-0.5',
+      rowEventTitleClass: 'p-0.5',
 
       columnEventClass: (data) => [
         'border-s-6 rounded-s-sm rounded-e-sm',
@@ -232,8 +239,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-bottom-1',
       ],
-      columnEventColorClass: [
-        'rounded-e-sm',
+      columnEventColorClass: (data) => [
+        'print:border-e',
+        data.isStart && 'print:border-t',
+        data.isEnd && 'print:border-b rounded-e-sm',
       ],
       columnEventInnerClass: (data) => [
         data.isCompact
@@ -241,11 +250,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : 'flex-col gap-px', // two lines
       ],
       columnEventTimeClass: [
-        'p-0.5',
+        'p-0.5', // TODO: DRY with rowEvent?
         xxsTextClass,
       ],
       columnEventTitleClass: (data) => [
-        'p-0.5',
+        'p-0.5', // TODO: DRY with rowEvent?
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
 

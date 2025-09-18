@@ -21,8 +21,6 @@ Core
 All themes
   the disabled today button has *some* type of dimming on the text
 
-  search for dark: in themes. can't have
-
   should be at least 4 rows of event-like-content in each daycell
   in daygrid, ensure block-event, list-item-event, and more-link all have 1px bottom margin AND same height
 
@@ -61,6 +59,12 @@ All themes
   when putting outline on columnEvent, use isMirror instead of isDragging
   In ui-default-options-event-calendar files,
     put buttons{} map after buttonClass. looks nice
+
+  search for dark: in themes. can't have
+
+  in Forma (and maybe others)
+    print-view timegrid events have very string event-title sticking
+
 MUI
   we should allow MUI to force headers to be uppercase
   The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
@@ -106,6 +110,9 @@ NOTES
   we actually like moreLinkerInnerClass, because the "inner" is for stickiness
     and the outer is for background color. just like stickiness in datagrid
     however, for 'gap-*', but in ui-system-specific files (because not used in most UI-specific)
+  for event-like element inner-padding,
+    it's tempting to put all padding on title/time, but the wrapper elements needs 1px
+    because for print-view, it uses transparent border
 
 
 just before beta (after theme gen)
