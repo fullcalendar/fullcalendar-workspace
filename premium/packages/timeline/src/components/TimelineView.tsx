@@ -132,6 +132,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 !props.forPrint && classNames.flexCol,
                 props.className,
                 options.tableClass,
+                classNames.isolate,
               )}
               borderlessX={props.borderlessX}
               borderlessTop={props.borderlessTop}
@@ -141,13 +142,18 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
 
               {/* HEADER
               ---------------------------------------------------------------------------------- */}
-              <div className={joinClassNames(
-                generateClassName(options.tableHeaderClass, {
-                  isSticky: stickyHeaderDates,
-                }),
-                props.borderlessX && classNames.borderlessX,
-                stickyHeaderDates && classNames.tableHeaderSticky,
-              )}>
+              <div
+                className={joinClassNames(
+                  generateClassName(options.tableHeaderClass, {
+                    isSticky: stickyHeaderDates,
+                  }),
+                  props.borderlessX && classNames.borderlessX,
+                  stickyHeaderDates && classNames.tableHeaderSticky,
+                )}
+                style={{
+                  zIndex: 1,
+                }}
+              >
                 <Scroller
                   horizontal
                   hideScrollbars
@@ -218,6 +224,9 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   classNames.flexCol,
                   verticalScrolling && classNames.liquid,
                 )}
+                style={{
+                  zIndex: 0,
+                }}
                 ref={this.bodyScrollerRef}
                 clientWidthRef={this.handleClientWidth}
               >

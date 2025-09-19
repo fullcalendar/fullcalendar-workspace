@@ -148,6 +148,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               classNames.flexCol,
               stickyHeaderDates && classNames.tableHeaderSticky,
             )}
+            style={{
+              zIndex: 1,
+            }}
           >
             {props.headerTiers.map((rowConfig, tierNum) => (
               <div
@@ -202,7 +205,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 )}
               </div>
             ))}
-            <div className={generateClassName(options.dayHeaderDividerClass, { isSticky: Boolean(options.allDaySlot) })} />
+            <div className={generateClassName(options.dayHeaderDividerClass, { isSticky: !options.allDaySlot })} />
           </div>
         )}
         <div // the "body"
@@ -214,13 +217,21 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
             (stickyHeaderDates || props.noEdgeEffects) && classNames.noEdgeEffects,
             classNames.flexCol,
             verticalScrolling && classNames.liquid,
+            classNames.isolate,
           )}
+          style={{
+            zIndex: 0,
+          }}
         >
           {/* ALL-DAY
           ---------------------------------------------------------------------------------------*/}
           {options.allDaySlot && (
             <Fragment>
-              <div role='row' className={classNames.flexRow}>
+              <div
+                role='row'
+                className={classNames.flexRow}
+                style={{ zIndex: 1 }}
+              >
                 <TimeGridAllDayLabel
                   width={axisWidth}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
@@ -260,7 +271,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 )}
               </div>
               {/* TODO: don't show div if no classname */}
-              <div className={joinArrayishClassNames(options.allDayDividerClass)} />
+              <div
+                className={joinArrayishClassNames(options.allDayDividerClass)}
+                style={{ zIndex: 2 }}
+              />
             </Fragment>
           )}
           {/* SLATS
@@ -272,6 +286,9 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
               classNames.rel, // for Ruler.fillStart
               verticalScrolling && classNames.liquid,
             )}
+            style={{
+              zIndex: 0,
+            }}
             ref={props.timeScrollerRef}
             clientWidthRef={this.handleClientWidth}
             clientHeightRef={this.handleClientHeight}

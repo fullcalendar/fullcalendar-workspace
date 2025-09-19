@@ -324,7 +324,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           /* spreadsheet
           --------------------------------------------------------------------------------- */
 
-          startClassName={classNames.flexCol}
+          startClassName={joinClassNames(classNames.flexCol, classNames.isolate)}
           startContent={
             <Fragment>
 
@@ -340,6 +340,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   classNames.flexCol,
                   stickyHeaderDates && classNames.tableHeaderSticky,
                 )}
+                style={{
+                  zIndex: 1,
+                }}
               >
                 <div
                   className={joinClassNames(
@@ -414,6 +417,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   classNames.rel, // for Ruler.fillStart
                   verticalScrolling && classNames.liquid,
                 )}
+                style={{
+                  zIndex: 0,
+                }}
                 ref={this.spreadsheetBodyScrollerRef}
                 clientWidthRef={this.handleSpreadsheetClientWidth}
                 bottomScrollbarWidthRef={this.handleSpreadsheetBottomScrollbarWidth}
@@ -472,19 +478,24 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
           /* time-area (TODO: try to make this DRY-er with TimelineView???)
           --------------------------------------------------------------------------------- */
 
-          endClassName={classNames.flexCol}
+          endClassName={joinClassNames(classNames.flexCol, classNames.isolate)}
           endContent={
             <Fragment>
 
               {/* time-area HEADER
               ---------------------------------------------------------------------------- */}
-              <div className={joinClassNames(
-                generateClassName(options.tableHeaderClass, {
-                  isSticky: stickyHeaderDates,
-                }),
-                props.borderlessX && classNames.borderlessX,
-                stickyHeaderDates && classNames.tableHeaderSticky,
-              )}>
+              <div
+                className={joinClassNames(
+                  generateClassName(options.tableHeaderClass, {
+                    isSticky: stickyHeaderDates,
+                  }),
+                  props.borderlessX && classNames.borderlessX,
+                  stickyHeaderDates && classNames.tableHeaderSticky,
+                )}
+                style={{
+                  zIndex: 1,
+                }}
+              >
                 <Scroller
                   ref={this.timeHeaderScrollerRef}
                   horizontal
@@ -569,6 +580,9 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   classNames.rel, // for Ruler.fillStart
                   verticalScrolling && classNames.liquid,
                 )}
+                style={{
+                  zIndex: 0,
+                }}
                 ref={this.timeBodyScrollerRef}
                 clientWidthRef={this.handleTimeClientWidth}
                 clientHeightRef={this.handleTimeClientHeight}

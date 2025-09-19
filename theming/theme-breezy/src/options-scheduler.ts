@@ -51,7 +51,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
     },
     views: {
       timeline: {
-        slotLabelDividerClass: `border-t ${params.borderHighColorClass}`,
+        slotLabelDividerClass: `border-t ${params.borderHighColorClass} shadow-sm`,
 
         slotLabelAlign: 'center',
         slotLabelClass: 'justify-end',

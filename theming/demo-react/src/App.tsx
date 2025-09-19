@@ -423,6 +423,11 @@ export default function App() {
               <MuiCssBaseline />
             )}
             <EventCalendarDemo
+              initialView='timeGridWeek'
+              ui={ui}
+              theme={theme}
+            />
+            <EventCalendarDemo
               initialView='dayGridMonth'
               availableViews={
                 theme === 'pulse'
@@ -437,11 +442,6 @@ export default function App() {
               ui={ui}
               theme={theme}
             /> */}
-            <EventCalendarDemo
-              initialView='timeGridWeek'
-              ui={ui}
-              theme={theme}
-            />
             <EventCalendarDemo
               initialView='listYear'
               availableViews={['listYear', 'listMonth', 'listWeek']}
@@ -483,6 +483,7 @@ function EventCalendarDemo(props: DemoProps) {
     <EventCalendarComponent
       // displayEventTime={true}
       // eventDisplay='block'
+      // allDaySlot={false}
       availableViews={props.availableViews}
       addButton={{
         text: 'Add Event',

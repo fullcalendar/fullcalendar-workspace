@@ -209,11 +209,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       allDayDividerClass: `border-b ${params.borderColorClass} shadow-sm`,
 
-      slotLabelClass: 'justify-end', // v-align
-      slotLabelInnerClass: `p-2 text-xs ${params.mutedTextClass}`,
-      slotLabelDividerClass: `border-s ${params.borderColorClass}`,
-      // TODO: higher levels should have h-borders
-
       slotLabelRowClass: `border ${params.borderColorClass}`, // timeline only
 
       slotLaneClass: `border ${params.borderColorClass}`,
@@ -249,16 +244,21 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayRowItemClasses,
         dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
 
+        dayHeaderDividerClass: (data) => data.isSticky && 'shadow-sm',
+
         weekNumberHeaderClass: 'justify-end items-center',
         weekNumberHeaderInnerClass: `px-2 text-sm ${params.mutedTextClass}`,
-
-        slotLabelInnerClass: '-mt-4',
 
         columnEventClass: (data) => [
           'mx-0.5', // TODO: move this to the columnInner thing? yes!!
           data.isStart && 'mt-0.5',
           data.isEnd && 'mb-0.5',
         ],
+
+        slotLabelClass: 'justify-end', // v-align
+        slotLabelInnerClass: `-mt-4 p-2 text-xs ${params.mutedTextClass}`,
+        slotLabelDividerClass: `border-s ${params.borderColorClass}`,
+        // TODO: higher levels should have h-borders
       },
       list: {
         listDayEventsClass: 'flex flex-col py-4 gap-4',

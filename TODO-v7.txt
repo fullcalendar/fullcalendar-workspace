@@ -23,7 +23,6 @@ All themes
   core: datagrid narrow columns overflow
   rethink sizes of dots. too homogenous
 
-  timegrid: drop shadow from dayheader/axis onto scrollable area
   add white glow to now indicator on all themes
     See Screenshots/now-indicator-event-overlap.png
   dont have general options define rowEvent/colEvent outer margin
@@ -60,12 +59,18 @@ All themes
     allDayHeaderClass
     weekNumberHeaderClass
     (essentially anything with an "inner" inside)
+  slotLabel(Inner)Class and slotLabelDividerClass
+    should almost always be in the timegrid/timeline sections of the theme
+  for moving slotlabels, always use negative left/right instead of negative margin
+    (better for preserving height for whole slot)
 
   ensure text-color only over on "inner" elements!
 
   how to do responsive toolbars?
     mui? shadn?
     just mention in docs?
+
+  audit whether z-0 or z-10 is being used instead of isolation:isolate
 
 MUI
   we should allow MUI to force headers to be uppercase

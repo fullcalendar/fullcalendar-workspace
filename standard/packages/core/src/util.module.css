@@ -8,6 +8,10 @@
   z-index: var(--fc-popover-z) !important;
 }
 
+.isolate {
+  isolation: isolate;
+}
+
 .borderBoxRoot,
 .borderBoxRoot *,
 .borderBoxRoot *:before,

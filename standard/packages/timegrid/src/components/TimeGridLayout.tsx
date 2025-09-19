@@ -143,6 +143,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
           //   the height of the repeated header
           // - Safari was never able to do repeated headers in the first place
           !props.forPrint && classNames.flexCol,
+          classNames.isolate, // for inner z-index of layout. somehow move to layouts?
         )}
         viewSpec={context.viewSpec}
         borderlessX={props.borderlessX}

@@ -16,7 +16,7 @@ const borderColorClass2 = 'border-(--fc-pulse-border2)'
 const boxShadowClass0 = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
 const boxShadowClass1 = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 
-const textColorClass0 = 'text-(--fc-pulse-text-color0)'
+// const textColorClass0 = 'text-(--fc-pulse-text-color0)' // kill?
 const textColorClass1 = 'text-(--fc-pulse-text-color1)'
 const textColorClass2 = 'text-(--fc-pulse-text-color2)'
 const textColorClass3 = 'text-(--fc-pulse-text-color3)'

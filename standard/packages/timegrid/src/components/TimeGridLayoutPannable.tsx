@@ -179,6 +179,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               // see note in TimeGridLayout about why we don't do classNames.printHeader
               stickyHeaderDates && classNames.tableHeaderSticky,
             )}
+            style={{
+              zIndex: 1,
+            }}
           >
             <div className={classNames.flexRow}>
               {/* HEADER / labels
@@ -267,7 +270,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 )}
               </Scroller>
             </div>
-            <div className={generateClassName(options.dayHeaderDividerClass, { isSticky: Boolean(options.allDaySlot) })} />
+            <div className={generateClassName(options.dayHeaderDividerClass, { isSticky: !options.allDaySlot })} />
           </div>
         )}
         <div // the "body"
@@ -279,7 +282,11 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
             (stickyHeaderDates || props.noEdgeEffects) && classNames.noEdgeEffects,
             classNames.flexCol,
             verticalScrolling && classNames.liquid,
+            classNames.isolate,
           )}
+          style={{
+            zIndex: 0,
+          }}
         >
           {options.allDaySlot && (
             <Fragment>
@@ -287,6 +294,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 role='row'
                 aria-rowindex={firstBodyRowIndex}
                 className={classNames.flexRow}
+                style={{ zIndex: 1 }}
               >
                 {/* ALL-DAY / label
                 -----------------------------------------------------------------------------------*/}
@@ -348,7 +356,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 </Scroller>
               </div>
               {/* TODO: don't show div if no classname */}
-              <div className={joinArrayishClassNames(options.allDayDividerClass)} />
+              <div
+                className={joinArrayishClassNames(options.allDayDividerClass)}
+                style={{ zIndex: 2 }}
+              />
             </Fragment>
           )}
           <div
@@ -359,6 +370,9 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               classNames.rel, // for Ruler.fillStart
               verticalScrolling && classNames.liquid,
             )}
+            style={{
+              zIndex: 0,
+            }}
           >
             {/* SLATS / labels (vertical scroller)
             ---------------------------------------------------------------------------------------*/}
