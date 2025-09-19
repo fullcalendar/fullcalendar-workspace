@@ -21,12 +21,6 @@ Core
 All themes
   the disabled today button has *some* type of dimming on the text
 
-  for all icons, use negative margins
-
-  if a theme bothers to have different shades of muted text,
-    then it shouldn't inherit some of the text-color from the outer document
-    ALL text we define should have a color
-
   fix the list-view responsive problem i have in my screenshots
   core: datagrid narrow columns overflow
 
@@ -55,7 +49,12 @@ All themes
   in Forma (and maybe others)
     print-view timegrid events have very string event-title sticking
 
-  for MUI/Shadn wrapper, is the height/contentHeight setting still relevant?
+  for MUI/Shadcn wrapper, is the height/contentHeight setting still relevant?
+
+  setting height:'auto', but MUI/Shadcn sometimes have overflow:hidden,
+    so can't have sticky stuff in it!?
+
+  should we NOT put font-size and font-color on *EventInnerClas classes?
 
   code cleanliness
     replace all "canvas" css vars with just "bg"
@@ -71,6 +70,8 @@ All themes
     allDayHeaderClass
     weekNumberHeaderClass
     (essentially anything with an "inner" inside)
+
+  ensure text-color only over on "inner" elements!
 
 MUI
   we should allow MUI to force headers to be uppercase
@@ -120,6 +121,10 @@ NOTES
   for event-like element inner-padding,
     it's tempting to put all padding on title/time, but the wrapper elements needs 1px
     because for print-view, it uses transparent border
+  for icons within buttons,
+    we wanted to put negative margin on the icon and keep the button padding constant regardless
+    of whether only-icon or not (in hopes that icon+text would work) but turns out negative margins
+    on icon causes icon to overlap text within same button. Best just to continue using isIconOnly
 
 
 just before beta (after theme gen)

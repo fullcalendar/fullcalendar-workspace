@@ -54,6 +54,7 @@ export const optionParams: EventCalendarOptionParams = {
 
   ghostButtonClass: 'hover:bg-(--fc-pulse-muted-transparent) focus-visible:bg-(--fc-pulse-muted-transparent)',
 
+  nonMutedTextClass: textColorClass3,
   mutedTextClass: textColorClass2,
   mutedExtraTextClass: textColorClass1,
 }
@@ -102,6 +103,7 @@ export const defaultUiEventCalendarOptions: {
         // all select-group buttons
         ? joinClassNames(
             'rounded-sm',
+            textColorClass3,
             data.isSelected
               // SELECTED select-group button
               ? `${controlCurrentColorClass} ${boxShadowClass1}`

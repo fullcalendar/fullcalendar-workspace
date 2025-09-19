@@ -37,8 +37,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   textLowColorClass: 'text-(--mui-palette-text-secondary)',
   textMidColorClass: 'text-(--mui-palette-text-secondary)',
-  textHighColorClass: '',
-  textHeaderColorClass: '',
+  textHighColorClass: 'text-(--mui-palette-text-primary)',
+  textHeaderColorClass: 'text-(--mui-palette-text-primary)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

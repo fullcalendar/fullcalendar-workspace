@@ -28,6 +28,7 @@ export const optionParams: EventCalendarOptionParams = {
   mutedTransparentBgClass: 'bg-(--mui-palette-action-hover)',
   mutedOpaqueBgClass: 'bg-(--mui-palette-background-paper) relative before:absolute before:inset-0 before:bg-(--mui-palette-action-hover) before:pointer-events-none',
 
+  nonMutedTextClass: 'text-(--mui-palette-text-primary)',
   mutedTextClass: 'text-(--mui-palette-text-secondary)',
   mutedExtraTextClass: 'text-(--mui-palette-text-secondary)',
 }

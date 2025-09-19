@@ -28,15 +28,15 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceCellClass: `border ${params.borderLowColorClass}`,
       resourceCellInnerClass: `p-2 text-sm ${params.textHighColorClass}`,
 
-      resourceGroupHeaderClass: `${params.mutedBgClass} ${params.textHighColorClass}`,
-      resourceGroupHeaderInnerClass: 'p-2 text-sm',
+      resourceGroupHeaderClass: params.mutedBgClass,
+      resourceGroupHeaderInnerClass: `p-2 text-sm ${params.textHighColorClass}`,
 
       resourceGroupLaneClass: `border ${params.borderMidColorClass} ${params.mutedBgClass}`,
       resourceLaneClass: `border ${params.borderMidColorClass}`,
       // resourceLaneTopClass: 'h-0.5',
       // resourceLaneBottomClass: 'h-1', // fix BUG, why this need to be so thick?
 
-      resourceExpanderClass: 'self-center',
+      resourceExpanderClass: `self-center ${params.textHighColorClass}`,
 
       // TODO: weird
       resourceDayHeaderClass: (data) => [

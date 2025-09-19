@@ -76,6 +76,7 @@ export const optionParams: EventCalendarOptionParams = {
   mutedOpaqueBgClass: 'bg-muted',
   mutedTransparentBgClass: 'bg-muted-foreground/10',
 
+  nonMutedTextClass: 'text-foreground',
   mutedTextClass: 'text-muted-foreground',
   mutedExtraTextClass: 'text-muted-foreground',
 }

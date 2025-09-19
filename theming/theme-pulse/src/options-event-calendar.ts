@@ -57,6 +57,7 @@ export interface EventCalendarOptionParams {
   mutedTransparentBgClass: string
   mutedOpaqueBgClass: string
 
+  nonMutedTextClass: string // TODO: rename
   mutedTextClass: string
   mutedExtraTextClass: string
 }
@@ -98,7 +99,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     rowEventTitleClass: 'flex-grow',
 
     moreLinkClass: 'mx-1 flex flex-row',
-    moreLinkInnerClass: `p-0.5 text-xs font-medium rounded-sm ${params.mutedTransparentBgClass}`,
+    moreLinkInnerClass: `p-0.5 text-xs font-medium rounded-sm ${params.mutedTransparentBgClass} ${params.nonMutedTextClass}`,
     //^^^ setting that lets you do just "+3"
   }
 
@@ -152,6 +153,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isCompact ? 'px-1' : 'px-2',
       ],
 
+      listItemEventInnerClass: params.nonMutedTextClass,
+
       /*
       TODO: not necessary to have color-class do bg color! we're not doing any transforms
       */
@@ -163,6 +166,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventTitleClass: [
         'm-2 opacity-50 italic',
         'text-xs', // data.isCompact ? xxsTextClass : 'text-xs', -- TODO
+        params.nonMutedTextClass,
       ],
 
       rowEventBeforeClass: (data) => data.isStartResizable && [
@@ -225,6 +229,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       listDayHeaderInnerClass: (data) => [
         'px-3 py-3 text-sm',
         !data.level && 'font-semibold',
+        params.nonMutedTextClass,
       ],
     },
     views: {

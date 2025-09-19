@@ -24,7 +24,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
       resourceAreaHeaderClass: `border ${params.borderColorClass} items-center`, // valign
-      resourceAreaHeaderInnerClass: 'p-2 text-sm',
+      resourceAreaHeaderInnerClass: `p-2 text-sm ${params.nonMutedTextClass}`,
 
       resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${params.mutedTransparentBgClass}`,
 
@@ -32,13 +32,13 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceAreaRowClass: `border ${params.borderColorClass}`,
 
       resourceGroupHeaderClass: params.mutedTransparentBgClass,
-      resourceGroupHeaderInnerClass: 'p-2 text-sm',
+      resourceGroupHeaderInnerClass: `p-2 text-sm ${params.nonMutedTextClass}`,
       resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedTransparentBgClass}`,
 
       resourceCellClass: `border ${params.borderColorClass}`,
-      resourceCellInnerClass: 'p-2 text-sm',
+      resourceCellInnerClass: `p-2 text-sm ${params.nonMutedTextClass}`,
 
-      resourceExpanderClass: 'self-center relative start-1 not-hover:opacity-65',
+      resourceExpanderClass: `self-center relative start-1 not-hover:opacity-65 ${params.nonMutedTextClass}`,
 
       resourceLaneClass: `border ${params.borderColorClass}`,
       resourceLaneBottomClass: (data) => !data.isCompact && 'pb-3',

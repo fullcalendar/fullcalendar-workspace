@@ -218,6 +218,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventColorClass: `bg-(--fc-event-color) ${params.backgroundEventColorClass}`,
       backgroundEventTitleClass: (data) => [
         'm-2 opacity-50 italic',
+        params.textHighColorClass,
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
 
