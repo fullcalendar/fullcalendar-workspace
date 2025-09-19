@@ -125,7 +125,6 @@ export const defaultUiEventCalendarOptions: {
                   data.inGroup
                     ? `not-first:border-s ${borderColorClass0}` // within group
                     : `border ${borderColorClass2} ${boxShadowClass0}`, // standalone
-                  data.isDisabled ? textColorClass0 : textColorClass3,
                 )
           ),
     ],

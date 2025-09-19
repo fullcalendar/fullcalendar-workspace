@@ -19,8 +19,6 @@ Core
   In resourceTimeGridDay, when today, in modern themes,
     Multiple dots are displayed (see screenshot)
 All themes
-  the disabled today button has *some* type of dimming on the text
-
   fix the list-view responsive problem i have in my screenshots
   core: datagrid narrow columns overflow
 
