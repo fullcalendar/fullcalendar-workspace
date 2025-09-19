@@ -303,7 +303,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       timeGrid: {
         ...dayRowItemClasses,
-        dayRowClass: 'min-h-12', // looks good when matches slotLabelInnerClass
         dayCellBottomClass: 'min-h-4', // for ALL-DAY
 
         weekNumberHeaderClass: 'items-center justify-end',
@@ -311,7 +310,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         allDayHeaderClass: 'justify-end items-center', // items-center = valign
         allDayHeaderInnerClass: (data) => [
-          'px-2 py-0.5 text-end', // align text right when multiline
+          'p-2 text-end', // align text right when multiline
           'whitespace-pre', // respects line-breaks in locale data
           data.isCompact ? xxsTextClass : 'text-sm',
         ],
@@ -323,12 +322,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isMinor && 'border-dotted',
         ],
         slotLabelInnerClass: (data) => [
-          `ps-2 pe-3 text-end`,
-          'min-h-[3em]',
+          `relative ps-2 pe-3 pb-5 text-end`,
           xxsTextClass,
           data.isCompact
-            ? `${xxsTextClass} -mt-1.5` // 1.5 tw-units is half xxs's line-height
-            : 'text-sm -mt-2.5', // 2.5 tw-units is half text-sm's line-height
+            ? `${xxsTextClass} -top-1.5` // 1.5 tw-units is half xxs's line-height
+            : 'text-sm -top-2.5', // 2.5 tw-units is half text-sm's line-height
         ],
         slotLabelDividerClass: (data) => [
           'border-l',

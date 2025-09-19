@@ -21,13 +21,6 @@ Core
 All themes
   the disabled today button has *some* type of dimming on the text
 
-  audit when today date is ALSO the "other" date in a month. still give opacity to whole dayCellTop?
-  replace all "canvas" css vars with just "bg"
-  naming confusion between "med" and "mid"
-  ensure: simplify how icon-size and line-height works (already did this in one theme?)
-  avoid em units in themes (like 3em) at all costs... okay for 1em icons but that's it
-    CONT'd: for width/height/margin/padding units, dont use em units
-      use standard tailwind units, which will depend on the component's root font size
   for all icons, use negative margins
 
   if a theme bothers to have different shades of muted text,
@@ -63,6 +56,21 @@ All themes
     print-view timegrid events have very string event-title sticking
 
   for MUI/Shadn wrapper, is the height/contentHeight setting still relevant?
+
+  code cleanliness
+    replace all "canvas" css vars with just "bg"
+    naming confusion between "med" and "mid"
+    make all theme util functions that emit classnames return STRING (and thus call joinClassNames)?
+  Disallow explicit widths/heights on certain elements (bad for positioning)
+    dayHeaderRowClass
+    dayHeaderClass
+    dayRowClass
+    dayCellClass
+    slotLabel
+    slotLane
+    allDayHeaderClass
+    weekNumberHeaderClass
+    (essentially anything with an "inner" inside)
 
 MUI
   we should allow MUI to force headers to be uppercase

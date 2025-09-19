@@ -278,21 +278,21 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       timeGrid: {
         ...dayRowItemClasses,
-        dayRowClass: 'min-h-10',
         dayCellBottomClass: 'min-h-3',
 
         weekNumberHeaderClass: `${axisClass} items-center`, // v-align
         weekNumberHeaderInnerClass: getAxisInnerClasses,
 
         allDayHeaderClass: `${axisClass} items-center`, // v-align
-        allDayHeaderInnerClass: (data) => [
-          ...getAxisInnerClasses(data),
+        allDayHeaderInnerClass: (data) => [ // sort of like getAxisInnerClasses, but with different padding
+          `px-1 py-2 text-end`,
+          data.isCompact ? xxsTextClass : 'text-sm',
           'whitespace-pre', // respects line-breaks in locale data
         ],
         allDayDividerClass: `border-y ${params.borderColorClass} pb-0.5 ${params.mutedBgClass}`,
 
         slotLabelClass: axisClass,
-        slotLabelInnerClass: (data) => [...getAxisInnerClasses(data), 'min-h-5'],
+        slotLabelInnerClass: getAxisInnerClasses,
         slotLabelDividerClass: `border-l ${params.borderColorClass}`,
 
         nowIndicatorLabelClass: `start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] ${params.nowIndicatorBorderStartColorClass}`,

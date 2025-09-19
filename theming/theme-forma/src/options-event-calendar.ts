@@ -202,7 +202,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ] : [
         // the < continuation
         !data.isStart && (
-          'relative z-10 w-[0.4em] h-[0.4em] border-t-1 border-s-1 border-gray-500 ms-1' +
+          'relative z-10 size-2 border-t-1 border-s-1 border-gray-500 ms-1' +
           ' -rotate-45' // TODO: make RTL-friendly
         )
       ],
@@ -212,7 +212,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ] : [
         // the > continuation
         !data.isEnd && (
-          'relative z-10 w-[0.4em] h-[0.4em] border-t-1 border-e-1 border-gray-500 me-1' +
+          'relative z-10 size-2 border-t-1 border-e-1 border-gray-500 me-1' +
           ' rotate-45' // TODO: make RTL-friendly
         )
       ],
@@ -354,8 +354,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         // TODO: DRY
         dayHeaderDividerClass: ['border-t', params.borderColorClass],
 
-        dayRowClass: 'min-h-[3em]',
-        dayCellBottomClass: 'min-h-[1em]', // for ALL-DAY
+        dayCellBottomClass: 'min-h-4', // for ALL-DAY
 
         allDayHeaderClass: [
           axisClass,
@@ -379,7 +378,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelClass: axisClass,
         slotLabelInnerClass: (data) => [
           axisInnerClass,
-          'min-h-[1.5em]',
           data.isCompact ? xxsTextClass : 'text-xs',
         ],
 

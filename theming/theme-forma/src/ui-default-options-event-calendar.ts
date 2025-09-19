@@ -8,6 +8,7 @@ TODO: focus-outline should be black on everything
 TODO: muted text? is #424242 in Outlook
 TODO: kill gray-500's
 TODO: do primary-button hover effect on today-cirle too
+TODO: prev/next icons look a little too faint
 */
 
 export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
@@ -58,7 +59,7 @@ const buttonHoverBgColorClass = 'hover:bg-(--fc-forma-bg3) active:bg-(--fc-forma
 const buttonBorderColorClass = 'border-(--fc-forma-bg5) hover:border-(--fc-forma-border1) active:border-(--fc-forma-border1) focus-visible:border-(--fc-forma-border1)'
 const buttonIconColorClass = 'text-(--fc-forma-icon-color)'
 
-const buttonIconClass = `text-[1.5em] w-[1em] h-[1em] ${buttonIconColorClass}`
+const buttonIconClass = `size-5 ${buttonIconColorClass}`
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
 
@@ -135,7 +136,7 @@ export const defaultUiEventCalendarOptions: {
             : `${buttonBorderColorClass} ${buttonHoverBgColorClass}`,
     ],
 
-    popoverCloseContent: () => svgs.dismiss('w-[1.357em] h-[1.357em] opacity-65'),
+    popoverCloseContent: () => svgs.dismiss('size-5 opacity-65'),
   },
   views: baseEventCalendarOptions.views,
 }

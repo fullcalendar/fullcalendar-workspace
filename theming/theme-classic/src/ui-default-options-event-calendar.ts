@@ -5,9 +5,8 @@ import * as svgs from './ui-default-svgs.js'
 const bgColorClass = 'bg-(--fc-classic-background-color)'
 const bgColorOutlineClass = 'outline-(--fc-classic-background-color)'
 
-const smIconSizeClass = 'size-[calc(var(--text-sm--line-height)_*_1em)]'
 const getButtonIconClass = (flip?: boolean) => joinClassNames(
-  smIconSizeClass,
+  'size-5',
   flip && 'rotate-180',
 )
 
@@ -88,7 +87,7 @@ export const defaultUiEventCalendarOptions: {
         && 'opacity-65 pointer-events-none', // bypass hover styles
     ],
 
-    popoverCloseContent: () => svgs.x(`text-sm ${smIconSizeClass}`),
+    popoverCloseContent: () => svgs.x(`size-4 text-sm`),
   },
   views: baseEventCalendarOptions.views,
 }

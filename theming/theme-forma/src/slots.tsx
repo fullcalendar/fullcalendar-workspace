@@ -40,16 +40,16 @@ export function createSlots(
 
     dayCellTopContent: (data) => (
       !data.isToday
-        ? <span className='px-1 h-[1.8em] whitespace-pre flex flex-row items-center'>{data.text}</span>
+        ? <span className='px-1 h-6 whitespace-pre flex flex-row items-center'>{data.text}</span>
         : (
           <Fragment>
             {data.textParts.map((textPart, i) => (
               <span
                 key={i}
                 className={joinClassNames(
-                  'h-[1.8em] whitespace-pre flex flex-row items-center',
+                  'h-6 whitespace-pre flex flex-row items-center',
                   textPart.type === 'day' &&
-                    `w-[1.8em] justify-center rounded-full ${params.primaryBgColorClass} ${params.primaryTextColorClass}`
+                    `w-6 justify-center rounded-full ${params.primaryBgColorClass} ${params.primaryTextColorClass}`
                 )}
               >{textPart.value}</span>
             ))}

@@ -14,7 +14,7 @@ export const defaultUiSchedulerOnlyOptions: {
 
     resourceExpanderContent: (data) => svgs.chevronDown(
       joinClassNames(
-        'w-[1em] h-[1em]',
+        'size-4',
         !data.isExpanded && (data.direction === 'rtl' ? 'rotate-90' : '-rotate-90'),
       )
     )
