@@ -75,11 +75,8 @@ export const defaultUiEventCalendarOptions: {
     footerToolbarClass: `border-t ${optionParams.borderColorClass}`,
 
     toolbarClass: 'p-3 items-center gap-3', // TODO: document how we do NOT need to justify-between or flex-row
-    toolbarSectionClass: (data) => [
-      'items-center gap-3',
-      data.name === 'center' && '-order-1 sm:order-0 w-full sm:w-auto', // nicer wrapping
-    ],
-    toolbarTitleClass: 'text-lg md:text-xl',
+    toolbarSectionClass: 'items-center gap-3',
+    toolbarTitleClass: 'text-xl',
 
     buttons: {
       prev: {

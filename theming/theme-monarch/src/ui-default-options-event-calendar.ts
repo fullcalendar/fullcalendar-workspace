@@ -42,7 +42,7 @@ export const defaultUiEventCalendarOptions: {
 
     toolbarClass: 'p-4 items-center gap-3',
     toolbarSectionClass: 'items-center gap-3',
-    toolbarTitleClass: 'text-xl md:text-2xl font-bold',
+    toolbarTitleClass: 'text-2xl font-bold',
 
     buttons: {
       prev: {
