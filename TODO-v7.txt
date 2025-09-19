@@ -21,9 +21,6 @@ Core
 All themes
   the disabled today button has *some* type of dimming on the text
 
-  should be at least 4 rows of event-like-content in each daycell
-  in daygrid, ensure block-event, list-item-event, and more-link all have 1px bottom margin AND same height
-
   audit when today date is ALSO the "other" date in a month. still give opacity to whole dayCellTop?
   replace all "canvas" css vars with just "bg"
   naming confusion between "med" and "mid"
@@ -64,6 +61,8 @@ All themes
 
   in Forma (and maybe others)
     print-view timegrid events have very string event-title sticking
+
+  for MUI/Shadn wrapper, is the height/contentHeight setting still relevant?
 
 MUI
   we should allow MUI to force headers to be uppercase

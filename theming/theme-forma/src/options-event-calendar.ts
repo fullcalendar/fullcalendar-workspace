@@ -180,6 +180,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         params.bgColorClass,
         'border-(--fc-event-color)',
         // TODO: isDragging, isSelected
+        'p-px',
       ],
       blockEventColorClass: [
         'absolute inset-0 bg-(--fc-event-color) print:bg-white not-print:opacity-40',
@@ -187,7 +188,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       blockEventInnerClass: [
         'relative z-10 flex', // TODO
-        'p-px', // matches print-only border
       ],
 
       rowEventClass: (data) => [

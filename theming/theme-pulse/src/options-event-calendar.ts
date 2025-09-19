@@ -89,16 +89,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isEnd && 'me-1',
     ],
 
-    listItemEventClass: `mx-1 p-1 mb-0.5 ${params.ghostButtonClass} rounded-sm`,
+    listItemEventClass: `p-px mx-1 mb-px ${params.ghostButtonClass} rounded-sm`,
     listItemEventInnerClass: 'flex flex-row text-xs',
-    listItemEventTimeClass: 'order-1',
-    listItemEventTitleClass: 'font-medium flex-grow',
+    listItemEventTimeClass: 'p-0.5 order-1',
+    listItemEventTitleClass: 'p-0.5 font-medium flex-grow',
 
     rowEventTimeClass: 'order-1',
     rowEventTitleClass: 'flex-grow',
 
     moreLinkClass: 'mx-1 flex flex-row',
-    moreLinkInnerClass: `p-1 text-xs font-medium rounded-sm ${params.mutedTransparentBgClass}`,
+    moreLinkInnerClass: `p-0.5 text-xs font-medium rounded-sm ${params.mutedTransparentBgClass}`,
     //^^^ setting that lets you do just "+3"
   }
 
@@ -155,9 +155,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /*
       TODO: not necessary to have color-class do bg color! we're not doing any transforms
       */
-      blockEventClass: 'relative group',
-      blockEventColorClass: 'absolute z-10 inset-0 bg-(--fc-event-color)',
-      blockEventInnerClass: 'relative z-20 text-(--fc-event-contrast-color) text-xs',
+      blockEventClass: 'relative group p-px',
+      blockEventColorClass: 'absolute z-10 inset-0 bg-(--fc-event-color) print:bg-white border-(--fc-event-color)',
+      blockEventInnerClass: 'relative z-20 text-(--fc-event-contrast-color) print:text-black text-xs',
 
       backgroundEventColorClass: `bg-(--fc-event-color) ${params.backgroundEventColorClass}`,
       backgroundEventTitleClass: [
@@ -174,12 +174,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-end-1',
       ],
       rowEventColorClass: (data) => [
-        data.isStart && 'rounded-s-sm',
-        data.isEnd && 'rounded-e-sm',
+        'print:border-y',
+        data.isStart && 'rounded-s-sm print:border-s',
+        data.isEnd && 'rounded-e-sm print:border-e',
       ],
       rowEventInnerClass: 'flex flex-row',
-      rowEventTimeClass: 'p-1',
-      rowEventTitleClass: 'p-1 font-medium',
+      rowEventTimeClass: 'p-0.5',
+      rowEventTitleClass: 'p-0.5 font-medium',
       //^^^for row event, switch order of title/time?
 
       columnEventBeforeClass: (data) => data.isStartResizable && [

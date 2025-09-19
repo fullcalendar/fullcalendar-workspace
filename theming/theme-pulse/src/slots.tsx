@@ -25,9 +25,9 @@ export function createSlots(
               'whitespace-pre text-sm',
               textPart.type === 'day'
                 ? joinClassNames(
-                    'h-[2em] flex flex-row items-center', // v-align-text
+                    'h-7 flex flex-row items-center', // v-align-text
                     data.isToday
-                      ? `w-[2em] mx-0.5 rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold justify-center` // h-align-text
+                      ? `w-7 mx-0.5 rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold justify-center` // h-align-text
                       : params.mutedExtraTextClass,
                   )
                 : params.mutedExtraTextClass,
@@ -45,9 +45,9 @@ export function createSlots(
               'whitespace-pre text-sm',
               textPart.type === 'day'
                 ? joinClassNames(
-                    'h-[2em] flex flex-row items-center', // v-align-text
+                    'h-6 flex flex-row items-center', // v-align-text
                     data.isToday
-                      ? `w-[2em] rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold justify-center` // h-align-text
+                      ? `w-6 rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold justify-center` // h-align-text
                       : params.mutedExtraTextClass,
                   )
                 : params.mutedExtraTextClass,

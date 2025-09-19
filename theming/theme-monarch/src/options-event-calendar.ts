@@ -75,7 +75,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
   const getWeekNumberPillClasses = (data: { hasNavLink: boolean, isCompact: boolean }) => [
-    'rounded-full h-[1.8em] flex flex-row items-center', // match height of daynumber
+    'rounded-full h-6 flex flex-row items-center', // match height of daynumber
     params.miscPillClass({ hasNavLink: data.hasNavLink }),
     data.isCompact
       ? `${xxsTextClass} px-1`
@@ -95,11 +95,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isCompact ? 'mx-px' : 'mx-1',
     ],
     listItemEventTimeClass: (data) => [
-      'p-px',
+      'p-0.5',
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
     listItemEventTitleClass: (data) => [
-      'p-px font-bold',
+      'p-0.5 font-bold',
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
 
@@ -148,7 +148,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
       inlineWeekNumberClass: (data) => [
         'absolute z-20',
-        data.isCompact ? 'top-1 start-0.5' : 'top-2 start-1',
+        data.isCompact ? 'top-1 start-0.5' : 'top-1.5 start-1',
       ],
       inlineWeekNumberInnerClass: getWeekNumberPillClasses,
 
@@ -207,11 +207,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       rowEventInnerClass: 'flex-row items-center',
       rowEventTimeClass: (data) => [
-        'px-0.5 py-px font-bold',
+        'p-0.5 font-bold',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
       rowEventTitleClass: (data) => [
-        'px-0.5 py-px',
+        'p-0.5',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
 
@@ -238,7 +238,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleSticky: false, // because time below title, sticky looks bad
 
       columnMoreLinkClass: `mb-px rounded-xs outline ${params.bgColorOutlineClass} ${transparentPressableClass}`,
-      columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
+      columnMoreLinkInnerClass: 'p-0.5 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
       dayHeaderAlign: 'center',
@@ -264,13 +264,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       dayCellTopInnerClass: (data) => [
         // TODO: this won't work if hasMonthLabel "Jan 1"... circle will look weird
-        'flex flex-row items-center justify-center w-[1.8em] h-[1.8em] rounded-full',
+        'flex flex-row items-center justify-center w-6 h-6 rounded-full',
         data.isToday
           ? params.todayPillClass({ hasNavLink: data.hasNavLink })
           : data.hasNavLink && transparentPressableClass,
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
-        !data.isCompact && 'm-2',
+        !data.isCompact && 'm-1.5',
       ],
       dayCellInnerClass: (data) => data.inPopover && 'p-2',
 

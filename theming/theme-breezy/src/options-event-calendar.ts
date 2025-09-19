@@ -147,10 +147,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isEnd && (data.isCompact ? 'me-px' : 'me-1'),
     ],
 
-    listItemEventClass: `mx-1 mb-px rounded-md ${params.ghostButtonClass}`,
-    listItemEventInnerClass: 'p-1 flex flex-row text-xs/4',
-    listItemEventTimeClass: `order-1 ${params.textMidColorClass}`,
-    listItemEventTitleClass: `flex-grow font-medium ${params.textHeaderColorClass}`,
+    listItemEventClass: `mx-1 mb-px rounded-md ${params.ghostButtonClass} p-px`,
+    listItemEventInnerClass: 'flex flex-row text-xs/4',
+    listItemEventTimeClass: `order-1 ${params.textMidColorClass} p-0.5`,
+    listItemEventTitleClass: `flex-grow font-medium ${params.textHeaderColorClass} p-0.5`,
 
     rowMoreLinkClass: (data) => [
       'flex flex-row',
@@ -159,7 +159,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
     rowMoreLinkInnerClass: (data) => [
       data.isCompact ? xxsTextClass : 'text-xs',
-      !data.isCompact && 'p-1',
+      !data.isCompact && 'p-0.5',
       `whitespace-nowrap overflow-hidden ${params.textHeaderColorClass}`,
     ]
   }
@@ -206,8 +206,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       slotLaneClass: `border ${params.borderLowColorClass}`,
 
-      blockEventClass: `${params.bgColorClass} relative group`,
-      blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) opacity-20 dark:brightness-120',
+      blockEventClass: `${params.bgColorClass} relative group p-px`,
+      blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) border-(--fc-event-color) not-print:opacity-20 dark:brightness-120',
       blockEventInnerClass: 'relative z-20 text-xs/4 flex', // NOTE: subclass determines direction
       /*
       ^^^NOTE: should core determine flex-direction because core needs to do sticky anyway, right!?
@@ -234,12 +234,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-end-1',
       ],
       rowEventColorClass: (data) => [
-        data.isStart && 'rounded-s-md',
-        data.isEnd && 'rounded-e-md',
+        'print:border-y',
+        data.isStart && 'rounded-s-md print:border-s',
+        data.isEnd && 'rounded-e-md print:border-e',
       ],
       rowEventInnerClass: 'flex-row',
-      rowEventTimeClass: 'p-1',
-      rowEventTitleClass: 'p-1',
+      rowEventTimeClass: 'p-0.5',
+      rowEventTitleClass: 'p-0.5',
 
       columnEventClass: (data) => [
         data.isStart && 'rounded-t-lg',

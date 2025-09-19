@@ -29,10 +29,10 @@ export function createSlots(
         {data.dayNumberText && (
           <div
             className={joinClassNames(
-              'm-0.5 flex flex-row items-center justify-center text-lg h-[2em]',
+              'm-0.5 flex flex-row items-center justify-center text-lg h-9',
               data.isToday
-                ? `w-[2em] rounded-full ${params.todayPillClass({ hasNavLink: data.hasNavLink })}`
-                : data.hasNavLink && `w-[2em] rounded-full ${transparentPressableClass}`
+                ? `w-9 rounded-full ${params.todayPillClass({ hasNavLink: data.hasNavLink })}`
+                : data.hasNavLink && `w-9 rounded-full ${transparentPressableClass}`
             )}
           >{data.dayNumberText}</div>
         )}
