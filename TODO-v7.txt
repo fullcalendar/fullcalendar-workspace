@@ -21,16 +21,12 @@ Core
 All themes
   fix the list-view responsive problem i have in my screenshots
   core: datagrid narrow columns overflow
-
-  use same xxSmall text in all views
   rethink sizes of dots. too homogenous
-  audit license warning for all themes, we changed inherited classname
 
   leave toolbar responsiveness in themes unopinionated for now
     later have toolbar adjust... dynamic size? how would work with different months having different
     add to docs
     widths... minTitleWidth setting?
-  grey-out the "Today" for default-ui. mui/shadcn look bad so forget them.
   timegrid: drop shadow from dayheader/axis onto scrollable area
   add white glow to now indicator on all themes
     See Screenshots/now-indicator-event-overlap.png
