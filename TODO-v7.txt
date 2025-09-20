@@ -23,7 +23,6 @@ All themes
   core: datagrid narrow columns overflow
   rethink sizes of dots. too homogenous
 
-  dont have general options define rowEvent/colEvent outer margin
   move font-size/line-height AWAY from eventInner... move to eventTime/Title
   use focus-visible: instead of focus:
   isSticky should not be abused for colCnt===1
@@ -73,6 +72,9 @@ All themes
   refactor all theme CSS varialbes, especially Monarch
 
   ensure major-border in all themes
+
+  ensure daygrid morelink has bottom margin too
+    important for all-day when button up against bottom?
 
 MUI
   we should allow MUI to force headers to be uppercase

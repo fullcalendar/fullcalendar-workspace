@@ -231,7 +231,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       rowEventTitleClass: 'p-0.5',
 
       columnEventClass: (data) => [
-        'border-s-6 rounded-s-sm rounded-e-sm',
+        'border-s-6 rounded-s-sm rounded-e-sm mb-px',
         (data.level || data.isDragging) && `outline ${params.bgColorOutlineClass}`
       ],
       columnEventBeforeClass: (data) => data.isStartResizable && [

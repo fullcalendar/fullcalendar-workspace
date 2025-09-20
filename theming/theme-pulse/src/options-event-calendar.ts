@@ -212,6 +212,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTimeClass: 'px-2 pt-1',
       columnEventTitleClass: 'px-2 py-1 font-medium',
 
+      allDayHeaderClass: 'items-center', // v-align
       allDayHeaderInnerClass: `p-2 text-xs ${params.mutedTextClass}`,
 
       allDayDividerClass: `border-b ${params.borderColorClass} shadow-sm`,
@@ -240,10 +241,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     views: {
       dayGrid: {
         ...dayRowItemClasses,
+        dayCellBottomClass: 'min-h-0.5',
         dayHeaderAlign: (data) => data.inPopover ? 'start' : 'end',
       },
       multiMonth: {
         ...dayRowItemClasses,
+        dayCellBottomClass: 'min-h-0.5',
 
         singleMonthClass: (data) => [
           (data.colCount > 1) && 'm-4',
@@ -252,6 +255,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       timeGrid: {
         ...dayRowItemClasses,
+        dayCellBottomClass: 'min-h-3',
         dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
 
         dayHeaderDividerClass: (data) => data.isSticky && 'shadow-sm',

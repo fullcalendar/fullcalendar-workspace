@@ -139,7 +139,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
 
     rowEventClass: (data) => [
-      data.isCompact ? 'mb-px' : 'mb-0.5',
+      'mb-px',
       data.isStart && (data.isCompact ? 'ms-px' : 'ms-1'),
       data.isEnd && (data.isCompact ? 'me-px' : 'me-1'),
     ],
@@ -197,6 +197,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayLaneClass: `border ${params.borderLowColorClass}`,
 
+      allDayHeaderClass: 'items-center', // v-align
       allDayHeaderInnerClass: `text-xs/5 ${params.textLowColorClass} p-3`,
 
       slotLabelInnerClass: `text-xs/5 ${params.textLowColorClass} uppercase`,
@@ -293,12 +294,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     views: {
       dayGrid: {
         ...dayGridClasses,
+        dayCellBottomClass: 'min-h-0.5',
         dayHeaderDividerClass: `border-b ${params.borderHighColorClass}`,
         dayHeaderClass: `border ${params.borderMidColorClass}`,
         dayCellClass: params.borderMidColorClass,
       },
       multiMonth: {
         ...dayGridClasses,
+        dayCellBottomClass: 'min-h-0.5',
         dayHeaderDividerClass: (data) => [
           data.isSticky && `border-b ${params.borderHighColorClass} shadow-sm`,
         ],
@@ -314,6 +317,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       timeGrid: {
         ...dayGridClasses,
+        dayCellBottomClass: 'min-h-3',
 
         allDayDividerClass: `border-b ${params.borderHighColorClass} shadow-sm`,
 
