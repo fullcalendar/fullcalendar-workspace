@@ -85,6 +85,8 @@ TODO: Auditorium stickness doesn't stick to right-side
 TODO: give navlink hover-effect to everything
 
 TODO: condense timegrid event doesn't work
+
+TODO: dark mode, list-view, event text colors too dark (because brightness-60 isn't adaptive!)
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -140,16 +142,20 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         : 'text-xs/6 px-1'
     ],
 
+    eventInnerClass: 'justify-between',
+    eventTimeClass: 'order-1',
+    eventTitleClass: 'text-ellipsis',
+
+    listItemEventClass: `mx-1 mb-px rounded-md ${params.ghostButtonClass} p-px`,
+    listItemEventInnerClass: 'flex flex-row text-xs/4',
+    listItemEventTimeClass: `p-0.5 ${params.textMidColorClass} whitespace-nowrap overflow-hidden flex-shrink-1`, // shrinks second
+    listItemEventTitleClass: `p-0.5 font-medium ${params.textHeaderColorClass} whitespace-nowrap overflow-hidden flex-shrink-100`, // shrinks first
+
     rowEventClass: (data) => [
       'mb-px',
       data.isStart && (data.isCompact ? 'ms-px' : 'ms-1'),
       data.isEnd && (data.isCompact ? 'me-px' : 'me-1'),
     ],
-
-    listItemEventClass: `mx-1 mb-px rounded-md ${params.ghostButtonClass} p-px`,
-    listItemEventInnerClass: 'flex flex-row text-xs/4',
-    listItemEventTimeClass: `order-1 ${params.textMidColorClass} p-0.5`,
-    listItemEventTitleClass: `flex-grow font-medium ${params.textHeaderColorClass} p-0.5`,
 
     rowMoreLinkClass: (data) => [
       'flex flex-row',
@@ -159,7 +165,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     rowMoreLinkInnerClass: (data) => [
       data.isCompact ? xxsTextClass : 'text-xs',
       !data.isCompact && 'p-0.5',
-      `whitespace-nowrap overflow-hidden ${params.textHeaderColorClass}`,
+      params.textHeaderColorClass,
     ]
   }
 
@@ -206,14 +212,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       slotLaneClass: `border ${params.borderLowColorClass}`,
 
+      moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
+
       blockEventClass: `${params.bgColorClass} relative group p-px`,
       blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) print:bg-white border-(--fc-event-color) not-print:opacity-20',
       blockEventInnerClass: 'relative z-20 text-xs/4 flex', // NOTE: subclass determines direction
       /*
       ^^^NOTE: should core determine flex-direction because core needs to do sticky anyway, right!?
       */
-      blockEventTimeClass: 'text-(--fc-event-color) contrast-150',
-      blockEventTitleClass: 'opacity-80',
+      blockEventTimeClass: 'text-(--fc-event-color) contrast-150 whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
+      blockEventTitleClass: 'opacity-80 whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
       backgroundEventColorClass: `bg-(--fc-event-color) ${params.backgroundEventColorClass}`,
       backgroundEventTitleClass: (data) => [
@@ -269,12 +277,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       rowMoreLinkInnerClass: `rounded-md ${params.ghostButtonClass}`,
 
       fillerClass: `border ${params.borderLowColorClass} ${params.bgColorClass}`,
-
-      listDaysClass: 'px-4 my-10 mx-auto w-full max-w-200',
-      listDayClass: `flex flex-row not-last:border-b not-last:${params.borderMidColorClass}`,
-      listDayHeaderClass: 'w-40',
-      listDayHeaderInnerClass: `sticky top-0 py-4 text-sm ${params.textMidColorClass}`,
-      listDayEventsClass: 'flex-grow flex flex-col',
 
       singleMonthClass: 'm-5',
       singleMonthHeaderClass: (data) => [
@@ -347,17 +349,23 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
       },
       list: {
+        listDaysClass: 'px-4 my-10 mx-auto w-full max-w-200',
+        listDayClass: `flex flex-row gap-2 not-last:border-b not-last:${params.borderMidColorClass}`,
+        listDayHeaderClass: 'shrink-0 w-1/4 max-w-40',
+        listDayHeaderInnerClass: `sticky top-0 py-4 text-sm ${params.textMidColorClass}`,
+        listDayEventsClass: 'grow min-w-0 flex flex-col',
+
         listItemEventClass: `not-last:border-b ${params.borderMidColorClass}`,
-        listItemEventInnerClass: 'py-4 flex flex-row text-sm',
+        listItemEventInnerClass: 'py-4 flex flex-row justify-between gap-2 text-sm',
 
         // TODO: make this common?...
-        listItemEventTimeClass: `order-1 ${params.textMidColorClass}`,
+        listItemEventTimeClass: `order-1 ${params.textMidColorClass} text-end`,
         listItemEventTitleClass: [
-          'flex-grow font-semibold',
+          'font-semibold',
           'text-(--fc-event-color) brightness-60',
         ],
 
-        noEventsClass: 'py-15 flex flex-col flex-grow items-center justify-center',
+        noEventsClass: 'grow py-15 flex flex-col items-center justify-center',
         noEventsInnerClass: 'py-15',
       },
     },

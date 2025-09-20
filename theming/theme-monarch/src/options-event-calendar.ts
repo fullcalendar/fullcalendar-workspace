@@ -94,14 +94,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'border-4', // 8px diameter
       data.isCompact ? 'mx-px' : 'mx-1',
     ],
-    listItemEventTimeClass: (data) => [
-      'p-0.5',
-      data.isCompact ? xxsTextClass : 'text-xs',
-    ],
-    listItemEventTitleClass: (data) => [
-      'p-0.5 font-bold',
-      data.isCompact ? xxsTextClass : 'text-xs',
-    ],
+    listItemEventInnerClass: (data) => data.isCompact ? xxsTextClass : 'text-xs',
+    listItemEventTimeClass: 'p-0.5 whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
+    listItemEventTitleClass: 'p-0.5 font-bold whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
@@ -111,7 +106,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         : 'p-px'
     ],
     rowMoreLinkInnerClass: (data) => [
-      'p-px',
+      'p-0.5',
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
   }
@@ -153,8 +148,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       inlineWeekNumberInnerClass: getWeekNumberPillClasses,
 
       eventClass: 'hover:no-underline',
-      eventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
-      eventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
       backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.backgroundEventColorClass,
       backgroundEventTitleClass: (data) => [
@@ -180,6 +173,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : 'group-focus-visible:brightness-75',
       ],
       blockEventInnerClass: 'relative z-10 flex text-(--fc-event-contrast-color) print:text-black',
+      blockEventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
+      blockEventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
       rowEventClass: (data) => [
         'mb-px',
@@ -335,22 +330,22 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       list: {
         listDayClass: `flex flex-row items-start not-last:border-b ${params.borderColorClass}`,
-        listDayHeaderClass: 'flex flex-row items-center w-40',
+        listDayHeaderClass: 'shrink-0 w-1/3 max-w-40 flex flex-row items-center',
         listDayHeaderInnerClass: (data) => !data.level
           ? 'm-2 flex flex-row items-center text-lg group' // primary
           : 'uppercase text-xs hover:underline', // secondary
-        listDayEventsClass: 'flex-grow flex flex-col py-2',
+        listDayEventsClass: 'grow min-w-0 flex flex-col py-2',
 
-        listItemEventClass: `group rounded-s-full p-2 ${transparentPressableClass}`,
+        listItemEventClass: `group rounded-s-full p-2 ${transparentPressableClass} gap-2`,
         listItemEventColorClass: 'border-5 mx-2', // 10px diameter
-        listItemEventInnerClass: 'text-sm',
-        listItemEventTimeClass: 'w-40 mx-2',
+        listItemEventInnerClass: 'text-sm gap-2',
+        listItemEventTimeClass: 'shrink-0 w-1/2 max-w-40 whitespace-nowrap overflow-hidden text-ellipsis',
         listItemEventTitleClass: (data) => [
-          'mx-2',
+          'grow min-w-0 whitespace-nowrap overflow-hidden',
           data.event.url && 'group-hover:underline',
         ],
 
-        noEventsClass: 'flex flex-col flex-grow items-center justify-center',
+        noEventsClass: 'grow flex flex-col items-center justify-center',
         noEventsInnerClass: 'py-15',
       },
     },

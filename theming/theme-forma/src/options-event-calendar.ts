@@ -118,8 +118,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'flex flex-row items-center', // as opposed to display:contents
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
-    listItemEventTimeClass: 'p-0.5',
-    listItemEventTitleClass: 'p-0.5 font-bold',
+    listItemEventTimeClass: 'p-0.5 whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
+    listItemEventTitleClass: 'p-0.5 font-bold whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
     rowEventClass: (data) => [
       data.isEnd && 'me-0.5',
@@ -133,7 +133,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       params.ghostButtonClass,
     ],
     rowMoreLinkInnerClass: (data) => [
-      'p-px',
+      'p-0.5',
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
   }
@@ -168,8 +168,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       highlightClass: params.highlightClass,
 
       eventClass: (data) => data.event.url && 'hover:no-underline',
-      eventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
-      eventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
       backgroundEventColorClass: 'bg-(--fc-event-color) brightness-150 opacity-15',
       backgroundEventTitleClass: (data) => [
@@ -192,6 +190,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       blockEventInnerClass: [
         'relative z-10 flex', // TODO
       ],
+      blockEventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
+      blockEventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
       rowEventClass: (data) => [
         'mb-px', // space between events
@@ -322,13 +322,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       nowIndicatorLineClass: `-m-px border-1 ${params.nowIndicatorBorderColorClass}`,
       nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowIndicatorBorderColorClass} outline-2 ${params.bgColorOutlineClass}`,
-
-      listDayClass: `not-last:border-b ${params.borderColorClass} flex flex-row items-start`,
-      listDayHeaderClass: 'top-0 sticky w-1/4 max-w-40 p-3 flex flex-col',
-      listDayHeaderInnerClass: (data) => [
-        data.level ? 'text-xs' : ('text-lg' + (data.isToday ? ' font-bold' : '')),
-      ],
-      listDayEventsClass: 'flex-grow flex flex-col items-stretch gap-4 p-4',
     },
     views: {
       dayGrid: {
@@ -387,14 +380,21 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelDividerClass: `border-l ${params.borderColorClass}`,
       },
       list: {
+        listDayClass: `not-last:border-b ${params.borderColorClass} flex flex-row items-start`,
+        listDayHeaderClass: 'top-0 sticky shrink-0 w-1/4 max-w-40 p-3 flex flex-col',
+        listDayHeaderInnerClass: (data) => [
+          data.level ? 'text-xs' : ('text-lg' + (data.isToday ? ' font-bold' : '')),
+        ],
+        listDayEventsClass: 'grow min-w-0 flex flex-col items-stretch gap-4 p-4',
+
         listItemEventClass: `${params.bgColorClass} p-3 flex flex-row rounded-sm border-s-6 border-(--fc-event-color) relative`, // why the hover color!?
         listItemEventColorClass: 'absolute inset-0 bg-(--fc-event-color) opacity-20 rounded-e-sm',
 
-        listItemEventInnerClass: 'relative flex flex-row text-sm', // TODO: ensure gap
-        listItemEventTimeClass: 'w-40',
-        listItemEventTitleClass: 'flex-grow font-semibold',
+        listItemEventInnerClass: 'relative flex flex-row gap-2 text-sm',
+        listItemEventTimeClass: 'shrink-0 w-1/2 max-w-40 whitespace-nowrap overflow-hidden text-ellipsis',
+        listItemEventTitleClass: 'grow min-w-0 font-semibold whitespace-nowrap overflow-hidden text-ellipsis',
 
-        noEventsClass: 'flex flex-col flex-grow items-center justify-center',
+        noEventsClass: 'grow flex flex-col items-center justify-center',
         noEventsInnerClass: 'py-15',
       },
     },

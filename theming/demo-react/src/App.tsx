@@ -275,8 +275,8 @@ export default function App() {
 
   return (
     <>
-      <div className='topbar sticky z-10 top-0 p-4 border-b bg-background shadow-xs flex flex-row gap-8 justify-between'>
-        <div className='flex flex-row gap-8'>
+      <div className='topbar sticky z-10 top-0 p-4 border-b bg-background shadow-xs flex flex-row flex-wrap gap-8 justify-between'>
+        <div className='flex flex-row flex-wrap gap-8'>
           <div className='flex flex-row items-center gap-4'>
             <div className='text-sm text-muted-foreground'>Theme</div>
             <Tabs value={theme} onValueChange={(v) => setTheme(v)}>
@@ -423,17 +423,17 @@ export default function App() {
               <MuiCssBaseline />
             )}
             <EventCalendarDemo
-              initialView='timeGridWeek'
-              ui={ui}
-              theme={theme}
-            />
-            <EventCalendarDemo
               initialView='dayGridMonth'
               availableViews={
                 theme === 'pulse'
                   ? ['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek']
                   : ['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek', 'multiMonthYear']
               }
+              ui={ui}
+              theme={theme}
+            />
+            <EventCalendarDemo
+              initialView='timeGridWeek'
               ui={ui}
               theme={theme}
             />

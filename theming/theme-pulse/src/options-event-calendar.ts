@@ -97,13 +97,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isEnd && 'me-1',
     ],
 
+    eventInnerClass: 'justify-between',
+    eventTimeClass: 'order-1',
+    eventTitleClass: 'text-ellipsis',
+
     listItemEventClass: `p-px mx-1 mb-px ${params.ghostButtonClass} rounded-sm`,
     listItemEventInnerClass: 'flex flex-row text-xs',
-    listItemEventTimeClass: 'p-0.5 order-1',
-    listItemEventTitleClass: 'p-0.5 font-medium flex-grow',
-
-    rowEventTimeClass: 'order-1',
-    rowEventTitleClass: 'flex-grow',
+    listItemEventTimeClass: 'p-0.5 whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
+    listItemEventTitleClass: 'p-0.5 font-medium whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
     moreLinkClass: 'mx-1 flex flex-row',
     moreLinkInnerClass: `p-0.5 text-xs font-medium rounded-sm ${params.mutedTransparentBgClass} ${params.nonMutedTextClass}`,
@@ -162,12 +163,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       listItemEventInnerClass: params.nonMutedTextClass,
 
+      moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
+
       /*
       TODO: not necessary to have color-class do bg color! we're not doing any transforms
       */
       blockEventClass: 'relative group p-px',
       blockEventColorClass: 'absolute z-10 inset-0 bg-(--fc-event-color) print:bg-white border-(--fc-event-color)',
       blockEventInnerClass: 'relative z-20 text-(--fc-event-contrast-color) print:text-black text-xs',
+      blockEventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
+      blockEventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
       backgroundEventColorClass: `bg-(--fc-event-color) ${params.backgroundEventColorClass}`,
       backgroundEventTitleClass: [
@@ -225,16 +230,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         !data.isHeader && `border ${params.borderColorClass} opacity-50`,
       ],
 
-      // TODO: move this to view config
-      listDayClass: `flex flex-col not-first:border-t ${params.borderColorClass}`,
-      listDayHeaderClass: `flex flex-row justify-between ${params.mutedOpaqueBgClass} border-b ${params.borderColorClass} top-0 sticky`,
-      // TODO^^ since the color is present before hover, hover should have an effect too. same challenge with dark-mode secondary button for this theme
-      listDayHeaderInnerClass: (data) => [
-        'px-3 py-3 text-sm',
-        !data.level && 'font-semibold',
-        params.nonMutedTextClass,
-      ],
-
       nowIndicatorLineClass: `-m-px border-1 ${params.nowIndicatorBorderColorClass}`,
       nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowIndicatorBorderColorClass} outline-2 ${params.bgColorOutlineClass}`,
     },
@@ -275,14 +270,23 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         // TODO: higher levels should have h-borders
       },
       list: {
+
+        listDayClass: `flex flex-col not-first:border-t ${params.borderColorClass}`,
+        listDayHeaderClass: `flex flex-row justify-between ${params.mutedOpaqueBgClass} border-b ${params.borderColorClass} top-0 sticky`,
+        // TODO^^ since the color is present before hover, hover should have an effect too. same challenge with dark-mode secondary button for this theme
+        listDayHeaderInnerClass: (data) => [
+          'px-3 py-3 text-sm',
+          !data.level && 'font-semibold',
+          params.nonMutedTextClass,
+        ],
         listDayEventsClass: 'flex flex-col py-4 gap-4',
 
         listItemEventInnerClass: '[display:contents]',
-        listItemEventTimeClass: 'ps-6 pe-4 py-2 order-[-1] w-60 text-sm',
-        listItemEventTitleClass: 'px-4 py-2 text-sm',
+        listItemEventTimeClass: 'shrink-0 w-1/2 max-w-60 ps-6 pe-4 py-2 order-[-1] text-sm whitespace-nowrap overflow-hidden text-ellipsis',
+        listItemEventTitleClass: 'grow min-w-0 px-4 py-2 text-sm whitespace-nowrap overflow-hidden',
         listItemEventColorClass: 'bg-(--fc-event-color) w-1.5 rounded-full',
 
-        noEventsClass: 'flex flex-col flex-grow items-center justify-center',
+        noEventsClass: 'grow flex flex-col items-center justify-center',
         noEventsInnerClass: 'py-15',
       },
     },

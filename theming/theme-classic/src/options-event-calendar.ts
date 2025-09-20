@@ -94,15 +94,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'border-4', // 8px diameter
       data.isCompact ? 'mx-px' : 'mx-1',
     ],
-    listItemEventInnerClass: 'flex flex-row items-center',
-    listItemEventTimeClass: (data) => [
-      'p-px',
+    listItemEventInnerClass: (data) => [
+      'flex flex-row items-center',
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
-    listItemEventTitleClass: (data) => [
-      'p-px font-bold',
-      data.isCompact ? xxsTextClass : 'text-xs',
-    ],
+    listItemEventTimeClass: 'p-px whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
+    listItemEventTitleClass: 'p-px font-bold whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
     rowEventClass: (data) => [
       data.isStart && 'ms-0.5',
@@ -159,8 +156,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       eventClass: 'hover:no-underline',
-      eventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
-      eventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
       backgroundEventColorClass: `bg-(--fc-event-color) ${params.backgroundEventColorClass}`,
       backgroundEventTitleClass: (data) => [
@@ -185,6 +180,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : 'group-focus-visible:brightness-75',
       ],
       blockEventInnerClass: 'relative z-10 flex text-(--fc-event-contrast-color) print:text-black',
+      blockEventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
+      blockEventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
 
       rowEventClass: 'mb-px',
       rowEventBeforeClass: (data) => data.isStartResizable && [
@@ -313,9 +310,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
         listItemEventColorClass: 'border-5', // 10px diameter
         listItemEventInnerClass: '[display:contents]',
-        listItemEventTimeClass: 'order-[-1] w-[165px] text-sm', // send to start
+        listItemEventTimeClass: 'order-[-1] shrink-0 w-1/2 max-w-50 whitespace-nowrap overflow-hidden text-ellipsis text-sm', // send to start
         listItemEventTitleClass: (data) => [
-          'text-sm',
+          'grow min-w-0 whitespace-nowrap overflow-hidden text-sm',
           data.event.url && 'group-hover:underline',
         ],
 

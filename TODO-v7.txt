@@ -19,7 +19,6 @@ Core
   In resourceTimeGridDay, when today, in modern themes,
     Multiple dots are displayed (see screenshot)
 All themes
-  fix the list-view responsive problem i have in my screenshots
   core: datagrid narrow columns overflow
   rethink sizes of dots. too homogenous
 
@@ -32,6 +31,10 @@ All themes
     so can't have sticky stuff in it!?
 
   should we NOT put font-size and font-color on *EventInnerClas classes?
+
+  search themes, replace
+    flex-grow -> grow
+    flex-shrink -> shrink
 
   code cleanliness
     replace all "canvas" css vars with just "bg"
@@ -120,6 +123,9 @@ NOTES
     we wanted to put negative margin on the icon and keep the button padding constant regardless
     of whether only-icon or not (in hopes that icon+text would work) but turns out negative margins
     on icon causes icon to overlap text within same button. Best just to continue using isIconOnly
+  to do a two-col with first-col min-width percentage, up to a pixel max width, and second column liquid, do:
+    1st col - shrink-0 w-1/4 max-w-40
+    2nd col - grow max-w-0
 
 
 just before beta (after theme gen)
