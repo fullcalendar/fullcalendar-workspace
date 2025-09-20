@@ -37,6 +37,8 @@ export const optionParams: EventCalendarOptionParams = {
   textMidColorClass: 'text-(--fc-breezy-text-mid-color)',
   textHighColorClass: 'text-(--fc-breezy-text-high-color)',
   textHeaderColorClass: 'text-(--fc-breezy-text-header-color)',
+
+  nowIndicatorBorderColorClass: 'border-(--fc-breezy-destructive-color)',
 }
 
 const secondaryButtonClass = 'group text-(--fc-breezy-secondary-text-color) bg-(--fc-breezy-secondary-color) hover:bg-(--fc-breezy-secondary-hover-color) border-(--fc-breezy-secondary-border-color)'

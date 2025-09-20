@@ -23,8 +23,6 @@ All themes
   core: datagrid narrow columns overflow
   rethink sizes of dots. too homogenous
 
-  add white glow to now indicator on all themes
-    See Screenshots/now-indicator-event-overlap.png
   dont have general options define rowEvent/colEvent outer margin
   move font-size/line-height AWAY from eventInner... move to eventTime/Title
   use focus-visible: instead of focus:

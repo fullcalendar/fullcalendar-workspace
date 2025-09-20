@@ -35,6 +35,9 @@ TODO: give nav-link hover effect to everything!
 TODO: give hover effect to singleMonthHeaderInnerClass
 
 TODO: major-border
+
+TODO: in all-day section when many events are stacked,
+  not enough bottom padding to daycell
 */
 
 export interface EventCalendarOptionParams {
@@ -62,6 +65,8 @@ export interface EventCalendarOptionParams {
   nonMutedTextClass: string // TODO: rename
   mutedTextClass: string
   mutedExtraTextClass: string
+
+  nowIndicatorBorderColorClass: string
 }
 
 export const getDayHeaderInnerClasses = (data: { isToday?: boolean, inPopover?: boolean }) => [
@@ -228,6 +233,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         !data.level && 'font-semibold',
         params.nonMutedTextClass,
       ],
+
+      nowIndicatorLineClass: `-m-px border-1 ${params.nowIndicatorBorderColorClass}`,
+      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowIndicatorBorderColorClass} outline-2 ${params.bgColorOutlineClass}`,
     },
     views: {
       dayGrid: {

@@ -34,6 +34,8 @@
   --fc-pulse-button-bg-hover-color: ;
   */
   --fc-pulse-icon-color: #9ca3af;
+
+  --fc-pulse-destructive-color: red; /* TODO: better */
 }
 [data-color-scheme=dark] {
   /*
@@ -67,6 +69,8 @@
   --fc-pulse-icon-color: #4a5568;
 
   --fc-pulse-highlight-color: rgba(43, 127, 255, .2); /* blue-500/20 */
+
+  --fc-pulse-destructive-color: red; /* TODO: better */
 }
 
 [data-palette=red] {

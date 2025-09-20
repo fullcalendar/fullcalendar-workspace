@@ -91,6 +91,8 @@ export const optionParams: EventCalendarOptionParams = {
   textMidColorClass: 'text-muted-foreground',
   textHighColorClass: '',
   textHeaderColorClass: '',
+
+  nowIndicatorBorderColorClass: 'border-destructive',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

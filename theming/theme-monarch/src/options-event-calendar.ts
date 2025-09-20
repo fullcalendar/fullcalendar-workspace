@@ -9,6 +9,7 @@ TODO: week-number hover gets really dim. weird mousedown effect
 TODO: MUI figure out select colors vs bg-event color. currently inverse of classic-theme
 TODO: MUI resource group oddly dark gray
 TODO: transparentPressableClass hover effect is unnoticable in dark mode
+TODO: dark-mode now-indicator color is ugly pink
 
 monarch no sticky col events!? disabled, in js setting, but should that js setting exist? part of theme?
 monarch col event, when really squatty, compresses divs weird
@@ -287,7 +288,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       nowIndicatorLineClass: `-m-px border-1 ${params.nowIndicatorBorderColorClass}`,
-      nowIndicatorDotClass: `rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 ${params.nowIndicatorBorderColorClass}`,
+      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowIndicatorBorderColorClass} outline-2 ${params.bgColorOutlineClass}`,
     },
     views: {
       dayGrid: {

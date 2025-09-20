@@ -102,6 +102,7 @@ export interface EventCalendarOptionParams {
   borderStartMedColorClass: string
   borderHighColorClass: string
   borderBottomHighColorClass: string
+  nowIndicatorBorderColorClass: string
   mutedBgClass: string
   highlightClass: string
   ghostButtonClass: string
@@ -282,6 +283,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         `text-sm font-semibold rounded-sm py-1 px-2 ${params.textHeaderColorClass}`,
         data.hasNavLink && params.ghostButtonClass,
       ],
+
+      nowIndicatorLineClass: `-m-px border-1 ${params.nowIndicatorBorderColorClass}`,
+      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowIndicatorBorderColorClass} outline-2 ${params.bgColorOutlineClass}`,
 
       // TODO: event resizing
       // TODO: do isMajor border as darker (and put into checklist)

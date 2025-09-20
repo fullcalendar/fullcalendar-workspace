@@ -321,7 +321,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       slotLaneClass: (data) => getSlotClasses(data, `border ${params.borderColorClass}`),
 
       nowIndicatorLineClass: `-m-px border-1 ${params.nowIndicatorBorderColorClass}`,
-      nowIndicatorDotClass: `rounded-full w-0 h-0 -mx-[6px] -my-[6px] border-6 ${params.nowIndicatorBorderColorClass} outline-2 ${params.bgColorOutlineClass}`,
+      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowIndicatorBorderColorClass} outline-2 ${params.bgColorOutlineClass}`,
 
       listDayClass: `not-last:border-b ${params.borderColorClass} flex flex-row items-start`,
       listDayHeaderClass: 'top-0 sticky w-1/4 max-w-40 p-3 flex flex-col',

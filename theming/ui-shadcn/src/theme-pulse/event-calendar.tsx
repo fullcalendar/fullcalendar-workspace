@@ -79,6 +79,8 @@ export const optionParams: EventCalendarOptionParams = {
   nonMutedTextClass: 'text-foreground',
   mutedTextClass: 'text-muted-foreground',
   mutedExtraTextClass: 'text-muted-foreground',
+
+  nowIndicatorBorderColorClass: 'border-destructive',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
