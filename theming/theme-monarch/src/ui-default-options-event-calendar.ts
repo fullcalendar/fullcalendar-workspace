@@ -45,6 +45,29 @@ export const defaultUiEventCalendarOptions: {
     toolbarSectionClass: 'items-center gap-3',
     toolbarTitleClass: 'text-2xl font-bold',
 
+    buttonGroupClass: (data) => [
+      'items-center isolate rounded-full',
+      data.isSelectGroup && 'border border-(--fc-monarch-outline-variant)'
+    ],
+    buttonClass: (data) => [
+      `inline-flex items-center justify-center py-2.5 ${buttonTextClass} rounded-full border`,
+      data.inGroup && 'relative active:z-20 focus-visible:z-20',
+      data.isSelected ? 'z-10' : 'z-0',
+      data.isIconOnly ? 'px-2.5' : 'px-5',
+      data.inSelectGroup && '-m-px',
+      // TODO: better structure
+      (data.isIconOnly || (data.inSelectGroup && !data.isSelected))
+        ? `${transparentPressableClass} border-transparent`
+        : data.isSelected
+          ? `bg-(--fc-monarch-secondary) text-(--fc-monarch-on-secondary) border-transparent ${buttonEffectClass}` // solid gray
+          : data.isPrimary
+            ? `bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary) border-transparent ${buttonEffectClass}` // primary color
+            : joinClassNames(
+                transparentPressableClass,
+                'border-(--fc-monarch-outline-variant-original)' // bordered gray
+              )
+    ],
+
     buttons: {
       prev: {
         iconContent: (data) => svgs.chevronDown(
@@ -79,29 +102,6 @@ export const defaultUiEventCalendarOptions: {
         )
       },
     },
-
-    buttonGroupClass: (data) => [
-      'items-center isolate rounded-full',
-      data.isSelectGroup && 'border border-(--fc-monarch-outline-variant)'
-    ],
-    buttonClass: (data) => [
-      `inline-flex items-center justify-center py-2.5 ${buttonTextClass} rounded-full border`,
-      data.inGroup && 'relative active:z-20 focus-visible:z-20',
-      data.isSelected ? 'z-10' : 'z-0',
-      data.isIconOnly ? 'px-2.5' : 'px-5',
-      data.inSelectGroup && '-m-px',
-      // TODO: better structure
-      (data.isIconOnly || (data.inSelectGroup && !data.isSelected))
-        ? `${transparentPressableClass} border-transparent`
-        : data.isSelected
-          ? `bg-(--fc-monarch-secondary) text-(--fc-monarch-on-secondary) border-transparent ${buttonEffectClass}` // solid gray
-          : data.isPrimary
-            ? `bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary) border-transparent ${buttonEffectClass}` // primary color
-            : joinClassNames(
-                transparentPressableClass,
-                'border-(--fc-monarch-outline-variant-original)' // bordered gray
-              )
-    ],
 
     popoverCloseContent: () => svgs.x(`${buttonTextClass} ${iconSizeClass} opacity-65`),
   },

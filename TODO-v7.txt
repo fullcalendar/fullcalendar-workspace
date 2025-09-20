@@ -23,9 +23,6 @@ All themes
   core: datagrid narrow columns overflow
   rethink sizes of dots. too homogenous
 
-  In ui-default-options-event-calendar files,
-    put buttons{} map after buttonClass. looks nice
-
   in Forma (and maybe others)
     print-view timegrid events have very string event-title sticking
 

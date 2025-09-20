@@ -54,21 +54,6 @@ export const defaultUiEventCalendarOptions: {
     toolbarSectionClass: 'items-center gap-3',
     toolbarTitleClass: 'text-2xl font-bold',
 
-    buttons: {
-      prev: {
-        iconContent: (data) => svgs.chevronLeft(getButtonIconClass(data.direction === 'rtl')),
-      },
-      next: {
-        iconContent: (data) => svgs.chevronLeft(getButtonIconClass(data.direction !== 'rtl')),
-      },
-      prevYear: {
-        iconContent: (data) => svgs.chevronsLeft(getButtonIconClass(data.direction === 'rtl')),
-      },
-      nextYear: {
-        iconContent: (data) => svgs.chevronsLeft(getButtonIconClass(data.direction !== 'rtl')),
-      },
-    },
-
     buttonGroupClass: 'items-center isolate',
     buttonClass: (data) => [
       'inline-flex items-center py-2 border-x',
@@ -86,6 +71,21 @@ export const defaultUiEventCalendarOptions: {
       data.isDisabled
         && 'opacity-65 pointer-events-none', // bypass hover styles
     ],
+
+    buttons: {
+      prev: {
+        iconContent: (data) => svgs.chevronLeft(getButtonIconClass(data.direction === 'rtl')),
+      },
+      next: {
+        iconContent: (data) => svgs.chevronLeft(getButtonIconClass(data.direction !== 'rtl')),
+      },
+      prevYear: {
+        iconContent: (data) => svgs.chevronsLeft(getButtonIconClass(data.direction === 'rtl')),
+      },
+      nextYear: {
+        iconContent: (data) => svgs.chevronsLeft(getButtonIconClass(data.direction !== 'rtl')),
+      },
+    },
 
     popoverCloseContent: () => svgs.x(`size-4 text-sm`),
   },

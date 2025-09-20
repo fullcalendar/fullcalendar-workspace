@@ -79,6 +79,26 @@ export const defaultUiEventCalendarOptions: {
     toolbarSectionClass: 'items-center gap-3',
     toolbarTitleClass: 'text-xl',
 
+    buttonGroupClass: 'items-center isolate',
+    buttonClass: (data) => [
+      'border text-sm py-1.5 rounded-sm',
+      data.isIconOnly ? 'px-2' : 'px-3',
+      data.isIconOnly
+        // ghost-button
+        ? `border-transparent ${buttonHoverBgColorClass}`
+        : data.inSelectGroup
+          ? data.isSelected
+            // select-group SELECTED
+            ? selectedButtonClass
+            // select-group NOT-selected
+            : unselectedButtonClass
+          : data.isPrimary
+            // primary button
+            ? `${optionParams.primaryBgColorClass} border-transparent ${optionParams.primaryTextColorClass} ${primaryOtherBgColorClass}`
+            // secondary button
+            : `${buttonBorderColorClass} ${buttonHoverBgColorClass}`,
+    ],
+
     buttons: {
       prev: {
         iconContent: (data) => svgs.chevronDown(
@@ -113,26 +133,6 @@ export const defaultUiEventCalendarOptions: {
         )
       },
     },
-
-    buttonGroupClass: 'items-center isolate',
-    buttonClass: (data) => [
-      'border text-sm py-1.5 rounded-sm',
-      data.isIconOnly ? 'px-2' : 'px-3',
-      data.isIconOnly
-        // ghost-button
-        ? `border-transparent ${buttonHoverBgColorClass}`
-        : data.inSelectGroup
-          ? data.isSelected
-            // select-group SELECTED
-            ? selectedButtonClass
-            // select-group NOT-selected
-            : unselectedButtonClass
-          : data.isPrimary
-            // primary button
-            ? `${optionParams.primaryBgColorClass} border-transparent ${optionParams.primaryTextColorClass} ${primaryOtherBgColorClass}`
-            // secondary button
-            : `${buttonBorderColorClass} ${buttonHoverBgColorClass}`,
-    ],
 
     popoverCloseContent: () => svgs.dismiss('size-5 opacity-65'),
   },
