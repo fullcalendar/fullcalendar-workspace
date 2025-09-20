@@ -228,7 +228,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'print:border-x',
         data.isStart && 'print:border-t rounded-t-sm',
         data.isEnd && 'print:border-b rounded-b-sm',
-        (data.level || data.isDragging) && `outline ${params.bgColorOutlineClass}`,
+        (data.level || data.isMirror) && `outline ${params.bgColorOutlineClass}`,
       ],
       columnEventInnerClass: (data) => data.isCompact
         ? 'flex-row gap-1' // one line

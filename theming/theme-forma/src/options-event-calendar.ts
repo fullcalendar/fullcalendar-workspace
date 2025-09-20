@@ -232,7 +232,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       columnEventClass: (data) => [
         'border-s-6 rounded-s-sm rounded-e-sm mb-px',
-        (data.level || data.isDragging) && `outline ${params.bgColorOutlineClass}`
+        (data.level || data.isMirror) && `outline ${params.bgColorOutlineClass}`
       ],
       columnEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,

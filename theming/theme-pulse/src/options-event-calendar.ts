@@ -205,7 +205,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventColorClass: (data) => [
         data.isStart && 'rounded-t-lg',
         data.isEnd && 'rounded-b-lg',
-        (data.level || data.isDragging) && `outline ${params.bgColorOutlineClass}`,
+        (data.level || data.isMirror) && `outline ${params.bgColorOutlineClass}`,
       ],
       columnEventInnerClass: 'flex-col py-1',
       // TODO: move the x-padding to the inner div? same concept with row-events
