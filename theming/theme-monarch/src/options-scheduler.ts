@@ -1,5 +1,5 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
-import { xxsTextClass, transparentPressableClass, EventCalendarOptionParams, majorBorderColorClass } from './options-event-calendar.js'
+import { xxsTextClass, transparentPressableClass, EventCalendarOptionParams } from './options-event-calendar.js'
 
 // ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/timeline'
@@ -18,7 +18,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceDayHeaderAlign: 'center',
       resourceDayHeaderClass: (data) => [
         'items-center border',
-        data.isMajor ? majorBorderColorClass : params.borderColorClass,
+        data.isMajor ? params.majorBorderColorClass : params.borderColorClass,
         data.isDisabled && params.disabledBgClass,
       ],
       resourceDayHeaderInnerClass: (data) => [

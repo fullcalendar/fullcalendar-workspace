@@ -22,6 +22,7 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   solidMoreLinkBgClass: 'bg-(--fc-forma-bg6)', // TODO: pressability!
   ghostButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
   selectedBgClass: 'bg-gray-500/40', // selected "event"
+  highlightClass: 'bg-(--fc-forma-highlight-color)',
 
   transparentMutedBgClass: 'bg-gray-500/10',
   mutedBgClass: 'bg-(--fc-forma-bg0)',

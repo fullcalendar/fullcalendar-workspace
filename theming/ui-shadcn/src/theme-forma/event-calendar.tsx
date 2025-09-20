@@ -69,6 +69,8 @@ export const optionParams: EventCalendarOptionParams = {
   ghostButtonClass: 'hover:bg-muted focus-visible:bg-muted',
   selectedBgClass: 'bg-muted',
 
+  highlightClass: 'bg-sky-500/10',
+
   majorBorderColorClass: 'border-muted-foreground/60',
 
   borderColorClass: '', // border-color is set globally

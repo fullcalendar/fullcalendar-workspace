@@ -15,6 +15,8 @@ export const optionParams: EventCalendarOptionParams = {
   ghostButtonClass: 'hover:bg-(--mui-palette-action-hover) focus-visible:bg-(--mui-palette-action-focus)',
   selectedBgClass: 'bg-(--mui-palette-action-selected)', // if too dark, use "-hover"
 
+  highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
+
   majorBorderColorClass: 'border-(--mui-palette-action-active)',
 
   borderColorClass: 'border-(--mui-palette-divider)',

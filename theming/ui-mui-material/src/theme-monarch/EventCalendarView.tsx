@@ -12,14 +12,14 @@ export const optionParams: EventCalendarOptionParams = {
   todayPillClass: () => 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)',
   miscPillClass: () => 'brightness-115 bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.15)]',
 
-  highlightClass: 'bg-(--mui-palette-secondary-main) opacity-10',
+  highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
   disabledBgClass: 'bg-(--mui-palette-action-disabledBackground)',
 
   borderColorClass: 'border-(--mui-palette-divider)',
+  majorBorderColorClass: 'border-(--mui-palette-action-active)',
   nowIndicatorBorderColorClass: 'border-(--mui-palette-error-main)',
 
   compactMoreLinkBorderColorClass: 'border-(--mui-palette-primary-main)',
-
 
   eventColor: 'var(--mui-palette-primary-main)',
   eventContrastColor: 'var(--mui-palette-primary-contrastText)',

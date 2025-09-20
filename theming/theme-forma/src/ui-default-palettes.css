@@ -14,6 +14,7 @@
   --fc-forma-bg6: #D6D6D6;
   --fc-forma-icon-color: #424242;
   --fc-forma-muted-text-color: #242424;
+  --fc-forma-highlight-color: rgba(206, 250, 254, .4); /* cyan-100/40 */
 }
 [data-color-scheme=dark] {
   --fc-forma-canvas-color: oklch(0.13 0.028 261.692);
@@ -30,6 +31,7 @@
   --fc-forma-bg6: #404040;
   --fc-forma-icon-color: #BDBDBD;
   --fc-forma-muted-text-color: #DBDBDB;
+  --fc-forma-highlight-color: rgba(43, 127, 255, .2); /* blue-500/20 */
 }
 
 [data-palette=blue] {

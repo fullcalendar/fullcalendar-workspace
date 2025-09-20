@@ -30,6 +30,8 @@ TODO: make Today button border darker
 TODO: remove navlink underline effect. outlook doesn't use underlines at all
 
 TODO: timeGrid short-event doesn't put title+time on same line
+
+TODO: negative margins on timegrid slot labels not working anymore
 */
 
 // ambient types (tsc strips during build because of {})
@@ -63,6 +65,7 @@ export interface EventCalendarOptionParams {
 
   transparentMutedBgClass: string
   mutedBgClass: string
+  highlightClass: string
 
   borderColorClass: string // eventually just borderColor
   nowIndicatorBorderColorClass: string // eventually just alertBorderColor
@@ -162,7 +165,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // misc BG
       fillerClass: `border ${params.borderColorClass} opacity-50`,
       nonBusinessClass: params.transparentMutedBgClass,
-      highlightClass: 'bg-cyan-100/40 dark:bg-blue-500/20',
+      highlightClass: params.highlightClass,
 
       eventClass: (data) => data.event.url && 'hover:no-underline',
       eventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
@@ -183,7 +186,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'p-px',
       ],
       blockEventColorClass: [
-        'absolute inset-0 bg-(--fc-event-color) print:bg-white not-print:opacity-40',
+        'absolute inset-0 bg-(--fc-event-color) print:bg-white not-print:opacity-30',
         'border-(--fc-event-color)',
       ],
       blockEventInnerClass: [

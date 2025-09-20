@@ -33,6 +33,8 @@ TODO: shift timegrid slot labels over to start-of line
 
 TODO: give nav-link hover effect to everything!
 TODO: give hover effect to singleMonthHeaderInnerClass
+
+TODO: major-border
 */
 
 export interface EventCalendarOptionParams {

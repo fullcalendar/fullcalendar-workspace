@@ -9,7 +9,6 @@ TODO: week-number hover gets really dim. weird mousedown effect
 TODO: MUI figure out select colors vs bg-event color. currently inverse of classic-theme
 TODO: MUI resource group oddly dark gray
 TODO: transparentPressableClass hover effect is unnoticable in dark mode
-TODO: remove dark: !!!
 
 monarch no sticky col events!? disabled, in js setting, but should that js setting exist? part of theme?
 monarch col event, when really squatty, compresses divs weird
@@ -41,6 +40,7 @@ export interface EventCalendarOptionParams {
   // same. for week number and timeline axis labels
   miscPillClass: (data: { hasNavLink: boolean }) => string
   borderColorClass: string
+  majorBorderColorClass: string
   nowIndicatorBorderColorClass: string
   compactMoreLinkBorderColorClass: string
   highlightClass: string
@@ -55,7 +55,6 @@ export interface EventCalendarOptionParams {
 }
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
-export const majorBorderColorClass = 'border-gray-400 dark:border-gray-700' // TODO: remove dark: !!!
 export const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20' // TODO --- make part of theme!?
 const transparentStrongBgClass = 'bg-gray-500/30'
 const nonBusinessHoursClass = 'bg-gray-500/7' // must be semitransprent
@@ -253,7 +252,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayRowClass: `border ${params.borderColorClass}`,
       dayCellClass: (data) => [
-        data.isMajor ? `border ${majorBorderColorClass}` : `border ${params.borderColorClass}`,
+        data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
         data.isDisabled && params.disabledBgClass,
       ],
       dayCellTopClass: (data) => [
@@ -275,7 +274,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayCellInnerClass: (data) => data.inPopover && 'p-2',
 
       dayLaneClass: (data) => [
-        data.isMajor ? `border ${majorBorderColorClass}` : `border ${params.borderColorClass}`,
+        data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
         data.isDisabled && params.disabledBgClass,
       ],
       dayLaneInnerClass: (data) => data.isSimple

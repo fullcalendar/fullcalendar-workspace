@@ -16,6 +16,7 @@ export const optionParams: EventCalendarOptionParams = {
     data.hasNavLink && buttonEffectClass,
   ),
   borderColorClass: 'border-(--fc-monarch-outline-variant)',
+  majorBorderColorClass: 'border-(--fc-monarch-major-border-color)',
   nowIndicatorBorderColorClass: 'border-(--fc-monarch-error)',
   compactMoreLinkBorderColorClass: 'border-(--fc-monarch-primary)',
   highlightClass: 'bg-(--fc-monarch-primary-container) opacity-30',
@@ -24,7 +25,7 @@ export const optionParams: EventCalendarOptionParams = {
   eventContrastColor: 'var(--fc-monarch-on-primary)',
   backgroundEventColor: 'var(--fc-monarch-tertiary)',
   backgroundEventColorClass: 'brightness-115 opacity-15',
-  popoverClass: 'border border-(--fc-monarch-outline-variant) rounded-lg bg-(--fc-monarch-canvas-color) dark:bg-(--fc-monarch-surface) dark:text-(--fc-monarch-on-surface) shadow-lg',
+  popoverClass: 'border border-(--fc-monarch-outline-variant) rounded-lg bg-(--fc-monarch-popover-color) text-(--fc-monarch-popover-text-color) shadow-lg',
   bgColorClass: 'bg-(--fc-monarch-canvas-color)',
   bgColorOutlineClass: 'outline-(--fc-monarch-canvas-color)',
 }

@@ -80,6 +80,7 @@ export const optionParams: EventCalendarOptionParams = {
   disabledBgClass: 'bg-muted',
 
   borderColorClass: '', // border-color is set globally
+  majorBorderColorClass: 'border-muted-foreground/60',
   nowIndicatorBorderColorClass: 'border-destructive',
   compactMoreLinkBorderColorClass: 'border-primary',
 

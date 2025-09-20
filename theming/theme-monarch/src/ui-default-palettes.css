@@ -32,6 +32,10 @@ TODO: might need to make tertiary colors hotter (like red, like alert color)
   --fc-monarch-outline: #79747E;
   --fc-monarch-outline-variant: #dedce1; /* lighter that original. TODO: rename */
   --fc-monarch-outline-variant-original: #CAC4D0;
+
+  --fc-monarch-popover-color: #fff; /* TODO: DRY with --fc-monarch-canvas-color */
+  /* --fc-monarch-popover-text-color: NONE; */
+  --fc-monarch-major-border-color: oklch(70.7% 0.022 261.325); /* gray-400 */
 }
 [data-palette=purple][data-color-scheme=dark] {
   --fc-monarch-canvas-color: oklch(0.13 0.028 261.692);
@@ -56,6 +60,10 @@ TODO: might need to make tertiary colors hotter (like red, like alert color)
   --fc-monarch-outline: #938F99;
   --fc-monarch-outline-variant: #323036;  /* lighter that original. TODO: rename */
   --fc-monarch-outline-variant-original: #49454F;
+
+  --fc-monarch-popover-color: rgb(26 17 15); /* TODO: DRY with --fc-monarch-surface */
+  --fc-monarch-popover-text-color: rgb(241 223 218); /* TODO: DRY with --fc-monarch-on-surface */
+  --fc-monarch-major-border-color: oklch(37.3% 0.034 259.733); /* gray-700 */
 }
 
 [data-palette=red] {

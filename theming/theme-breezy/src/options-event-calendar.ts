@@ -25,10 +25,6 @@ Themes should completely decide if list-view dayheaders are sticky (put in the c
 
 major-border not working
 
-fix Breezy dark-mode event coloring
-  hacks with dark:
-  should be just use color-mix with fallbacks???
-
 TODO: add all the whitespace-nowrap overflow-hidden to the text divs
   add to checklist
 
@@ -207,13 +203,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       slotLaneClass: `border ${params.borderLowColorClass}`,
 
       blockEventClass: `${params.bgColorClass} relative group p-px`,
-      blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) border-(--fc-event-color) not-print:opacity-20 dark:brightness-120',
+      blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) print:bg-white border-(--fc-event-color) not-print:opacity-20',
       blockEventInnerClass: 'relative z-20 text-xs/4 flex', // NOTE: subclass determines direction
       /*
       ^^^NOTE: should core determine flex-direction because core needs to do sticky anyway, right!?
       */
       blockEventTimeClass: 'text-(--fc-event-color) contrast-150',
-      blockEventTitleClass: 'text-(--fc-event-color) brightness-60 dark:brightness-120',
+      blockEventTitleClass: 'opacity-80',
 
       backgroundEventColorClass: `bg-(--fc-event-color) ${params.backgroundEventColorClass}`,
       backgroundEventTitleClass: (data) => [
@@ -257,8 +253,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-bottom-1',
       ],
       columnEventColorClass: (data) => [
-        data.isStart && 'rounded-t-lg',
-        data.isEnd && 'rounded-b-lg',
+        'print:border-x',
+        data.isStart && 'rounded-t-lg print:border-t',
+        data.isEnd && 'rounded-b-lg print:border-b',
       ],
       columnEventInnerClass: 'flex-col py-1',
       // TODO: move the x-padding to the inner div? same concept with row-events

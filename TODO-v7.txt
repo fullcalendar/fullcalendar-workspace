@@ -33,8 +33,6 @@ All themes
   In ui-default-options-event-calendar files,
     put buttons{} map after buttonClass. looks nice
 
-  search for dark: in themes. can't have
-
   in Forma (and maybe others)
     print-view timegrid events have very string event-title sticking
 
@@ -72,6 +70,12 @@ All themes
 
   audit whether z-0 or z-10 is being used instead of isolation:isolate
 
+  test all timegrid-events print-view
+
+  refactor all theme CSS varialbes, especially Monarch
+
+  ensure major-border in all themes
+
 MUI
   we should allow MUI to force headers to be uppercase
   The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
@@ -99,6 +103,7 @@ Demo
   Undo hiding of Year-view for Pulse theme
   Refactor demo code to have view-specific demo subcomponents
   Add checkbox to add "container" background color, test for light/dark
+  When switching from light to dark, why does calendar state clear?
 NOTES
   for alignment,
     dayHeader and timeline-slotLabel are flex-col
