@@ -86,7 +86,7 @@ export const defaultUiEventCalendarOptions: {
     ],
     buttonClass: (data) => [
       `inline-flex items-center justify-center py-2.5 ${buttonTextClass} rounded-full border`,
-      data.inGroup && 'relative active:z-20 focus:z-20',
+      data.inGroup && 'relative active:z-20 focus-visible:z-20',
       data.isSelected ? 'z-10' : 'z-0',
       data.isIconOnly ? 'px-2.5' : 'px-5',
       data.inSelectGroup && '-m-px',

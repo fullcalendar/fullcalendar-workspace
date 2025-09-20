@@ -69,10 +69,11 @@ export const defaultUiEventCalendarOptions: {
     are buttons 1px taller than in Tailwind Plus because we're not using inset border?
     */
     buttonGroupClass: (data) => [
+      'isolate',
       !data.isSelectGroup && `rounded-md shadow-xs`
     ],
     buttonClass: (data) => [
-      'py-2 text-sm focus:relative',
+      'py-2 text-sm',
       data.isIconOnly ? 'px-2' : 'px-3',
       data.inSelectGroup ? joinClassNames(
         // START view-switching bar item
@@ -89,7 +90,7 @@ export const defaultUiEventCalendarOptions: {
           // secondary
           : secondaryButtonClass,
         data.inGroup
-          ? 'first:rounded-s-md first:border-s last:rounded-e-md last:border-e border-y'
+          ? 'first:rounded-s-md first:border-s last:rounded-e-md last:border-e border-y focus-visible:z-10'
           // standalone button (responsible for own border and shadow)
           : 'rounded-md shadow-xs border',
       ),

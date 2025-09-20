@@ -56,7 +56,7 @@ export interface EventCalendarOptionParams {
 }
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
-export const transparentPressableClass = 'hover:bg-gray-500/10 focus:bg-gray-500/10 active:bg-gray-500/20' // TODO --- make part of theme!?
+export const transparentPressableClass = 'hover:bg-gray-500/10 focus-visible:bg-gray-500/10 active:bg-gray-500/20' // TODO --- make part of theme!?
 const transparentStrongBgClass = 'bg-gray-500/30'
 const nonBusinessHoursClass = 'bg-gray-500/7' // must be semitransprent
 
@@ -170,14 +170,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'relative group p-px', // 1px matches print-border
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
-          : joinClassNames('focus:shadow-md', data.isDragging && 'opacity-75'),
+          : joinClassNames('focus-visible:shadow-md', data.isDragging && 'opacity-75'),
       ],
       blockEventColorClass: (data) => [
         'absolute z-0 inset-0 bg-(--fc-event-color)',
         'print:bg-white print:border-(--fc-event-color)', // subclasses do print-border-width
         data.isSelected
           ? 'brightness-75'
-          : 'group-focus:brightness-75',
+          : 'group-focus-visible:brightness-75',
       ],
       blockEventInnerClass: 'relative z-10 flex text-(--fc-event-contrast-color) print:text-black',
 

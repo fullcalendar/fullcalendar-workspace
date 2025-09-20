@@ -23,7 +23,6 @@ All themes
   core: datagrid narrow columns overflow
   rethink sizes of dots. too homogenous
 
-  use focus-visible: instead of focus:
   isSticky should not be abused for colCnt===1
   when putting outline on columnEvent, use isMirror instead of isDragging
   In ui-default-options-event-calendar files,

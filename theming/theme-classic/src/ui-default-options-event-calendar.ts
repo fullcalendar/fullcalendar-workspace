@@ -72,13 +72,13 @@ export const defaultUiEventCalendarOptions: {
     buttonGroupClass: 'items-center isolate',
     buttonClass: (data) => [
       'inline-flex items-center py-2 border-x',
-      'focus:outline-3 outline-slate-600/50',
+      'focus-visible:outline-3 outline-slate-600/50',
       'hover:border-slate-900 active:border-slate-900 print:border-slate-900',
       'hover:bg-slate-800 active:bg-slate-800 print:bg-white',
       'text-sm text-white print:text-black',
       data.isIconOnly ? 'px-2.5' : 'px-3',
       data.inGroup
-        ? 'first:rounded-s-[4px] last:rounded-e-[4px] relative active:z-20 focus:z-20'
+        ? 'first:rounded-s-[4px] last:rounded-e-[4px] relative active:z-20 focus-visible:z-20'
         : 'rounded-[4px]',
       data.isSelected // implies inGroup
         ? 'z-10 border-slate-900 bg-slate-800'
