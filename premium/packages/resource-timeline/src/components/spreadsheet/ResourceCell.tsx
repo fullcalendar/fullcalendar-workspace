@@ -85,7 +85,7 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
                 )}
               </ResourceIndent>
             )}
-            <div className={joinClassNames(classNames.liquid, classNames.flexCol)}>
+            <div className={joinClassNames(classNames.liquid, classNames.flexCol, classNames.alignStart, classNames.crop)}>
               <InnerContent
                 tag='div'
                 elRef={this.innerElRef}

@@ -19,7 +19,6 @@ Core
   In resourceTimeGridDay, when today, in modern themes,
     Multiple dots are displayed (see screenshot)
 All themes
-  core: datagrid narrow columns overflow
   rethink sizes of dots. too homogenous
 
   in Forma (and maybe others)

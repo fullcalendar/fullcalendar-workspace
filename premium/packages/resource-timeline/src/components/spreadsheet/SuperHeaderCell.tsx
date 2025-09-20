@@ -57,7 +57,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
                 indentWidth={this.props.indentWidth}
               />
             )}
-            <div className={joinClassNames(classNames.liquid, classNames.flexCol)}>
+            <div className={joinClassNames(classNames.liquid, classNames.flexCol, classNames.alignStart, classNames.crop)}>
               <InnerContent
                 tag='div'
                 elRef={this.innerElRef}
