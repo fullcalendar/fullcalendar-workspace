@@ -280,7 +280,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderClass: (data) => [
         'justify-center', // h-align
         data.isSticky && `${params.bgColorClass} border-b ${params.borderMidColorClass}`,
-        data.isSticky ? 'py-1' : 'pb-1',
+        data.colCount > 1 ? 'pb-1' : 'py-1',
       ],
       singleMonthHeaderInnerClass: (data) => [
         `text-sm font-semibold rounded-sm py-1 px-2 ${params.textHeaderColorClass}`,
