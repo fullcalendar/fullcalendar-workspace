@@ -83,6 +83,8 @@ TODO: v-resource headers different border color than days
 TODO: Auditorium stickness doesn't stick to right-side
 
 TODO: give navlink hover-effect to everything
+
+TODO: condense timegrid event doesn't work
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height

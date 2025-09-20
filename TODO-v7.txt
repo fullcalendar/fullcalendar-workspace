@@ -23,7 +23,6 @@ All themes
   core: datagrid narrow columns overflow
   rethink sizes of dots. too homogenous
 
-  move font-size/line-height AWAY from eventInner... move to eventTime/Title
   use focus-visible: instead of focus:
   isSticky should not be abused for colCnt===1
   when putting outline on columnEvent, use isMirror instead of isDragging
@@ -58,8 +57,6 @@ All themes
     should almost always be in the timegrid/timeline sections of the theme
   for moving slotlabels, always use negative left/right instead of negative margin
     (better for preserving height for whole slot)
-
-  ensure text-color only over on "inner" elements!
 
   how to do responsive toolbars?
     mui? shadn?
