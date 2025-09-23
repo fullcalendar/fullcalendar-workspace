@@ -95,8 +95,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isCompact ? 'mx-px' : 'mx-1',
     ],
     listItemEventInnerClass: (data) => data.isCompact ? xxsTextClass : 'text-xs',
-    listItemEventTimeClass: 'p-0.5 whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
-    listItemEventTitleClass: 'p-0.5 font-bold whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
+    listItemEventTimeClass: 'p-0.5 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
+    listItemEventTitleClass: 'p-0.5 font-bold whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
@@ -160,7 +160,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       listItemEventInnerClass: 'flex flex-row items-center',
 
       blockEventClass: (data) => [
-        'relative group p-px', // 1px matches print-border
+        'relative isolate group p-px', // 1px matches print-border
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
           : joinClassNames('focus-visible:shadow-md', data.isDragging && 'opacity-75'),
@@ -172,9 +172,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           ? 'brightness-75'
           : 'group-focus-visible:brightness-75',
       ],
-      blockEventInnerClass: 'relative z-10 flex text-(--fc-event-contrast-color) print:text-black',
-      blockEventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
-      blockEventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
+      blockEventInnerClass: 'z-10 flex text-(--fc-event-contrast-color) print:text-black',
+      blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
+      blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
       rowEventClass: (data) => [
         'mb-px',

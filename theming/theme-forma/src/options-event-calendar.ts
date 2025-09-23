@@ -118,8 +118,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'flex flex-row items-center', // as opposed to display:contents
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
-    listItemEventTimeClass: 'p-0.5 whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
-    listItemEventTitleClass: 'p-0.5 font-bold whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
+    listItemEventTimeClass: 'p-0.5 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
+    listItemEventTitleClass: 'p-0.5 font-bold whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
     rowEventClass: (data) => [
       data.isEnd && 'me-0.5',
@@ -190,8 +190,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       blockEventInnerClass: [
         'relative z-10 flex', // TODO
       ],
-      blockEventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
-      blockEventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
+      blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
+      blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
       rowEventClass: (data) => [
         'mb-px', // space between events

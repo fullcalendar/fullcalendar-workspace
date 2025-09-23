@@ -1,4 +1,4 @@
-import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 
 // ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/daygrid'
@@ -87,6 +87,8 @@ TODO: give navlink hover-effect to everything
 TODO: condense timegrid event doesn't work
 
 TODO: dark mode, list-view, event text colors too dark (because brightness-60 isn't adaptive!)
+
+TODO: audit rowMoreLink effects
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -130,6 +132,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
+  const getDayGridItemClass = (data: { isCompact: boolean }) => joinClassNames(
+    'mx-1 mb-px',
+    data.isCompact ? 'rounded-sm' : 'rounded-md',
+  )
   const dayGridClasses: CalendarOptions = {
     /*
     BUG: z-index is wrong, can't click week numbers
@@ -146,21 +152,28 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     eventTimeClass: 'order-1',
     eventTitleClass: 'text-ellipsis',
 
-    listItemEventClass: `mx-1 mb-px rounded-md ${params.ghostButtonClass} p-px`,
-    listItemEventInnerClass: 'flex flex-row text-xs/4',
-    listItemEventTimeClass: `p-0.5 ${params.textMidColorClass} whitespace-nowrap overflow-hidden flex-shrink-1`, // shrinks second
-    listItemEventTitleClass: `p-0.5 font-medium ${params.textHeaderColorClass} whitespace-nowrap overflow-hidden flex-shrink-100`, // shrinks first
-
     rowEventClass: (data) => [
       'mb-px',
-      data.isStart && (data.isCompact ? 'ms-px' : 'ms-1'),
-      data.isEnd && (data.isCompact ? 'me-px' : 'me-1'),
+      data.isStart && 'ms-1',
+      data.isEnd && 'me-1',
     ],
 
+    listItemEventClass: (data) => [
+      `${params.ghostButtonClass} p-px`,
+      getDayGridItemClass(data),
+    ],
+    listItemEventInnerClass: 'flex flex-row text-xs/4',
+    listItemEventTimeClass: `p-0.5 ${params.textMidColorClass} whitespace-nowrap overflow-hidden shrink-1`, // shrinks second
+    listItemEventTitleClass: `p-0.5 font-medium ${params.textHeaderColorClass} whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
+
     rowMoreLinkClass: (data) => [
+      'self-start',
+      params.ghostButtonClass,
+      data.isCompact
+        ? `border ${params.primaryBorderColorClass}`
+        : 'p-px',
       'flex flex-row',
-      data.isCompact ? 'mx-px' : 'mx-1',
-      data.isCompact && `border ${params.primaryBorderColorClass} rounded-sm`,
+      getDayGridItemClass(data),
     ],
     rowMoreLinkInnerClass: (data) => [
       data.isCompact ? xxsTextClass : 'text-xs',
@@ -220,8 +233,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /*
       ^^^NOTE: should core determine flex-direction because core needs to do sticky anyway, right!?
       */
-      blockEventTimeClass: 'text-(--fc-event-color) contrast-150 whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
-      blockEventTitleClass: 'opacity-80 whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
+      blockEventTimeClass: 'text-(--fc-event-color) contrast-150 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
+      blockEventTitleClass: 'opacity-80 whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
       backgroundEventColorClass: `bg-(--fc-event-color) ${params.backgroundEventColorClass}`,
       backgroundEventTitleClass: (data) => [
@@ -231,8 +244,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       rowEventClass: (data) => [
-        data.isStart && 'rounded-s-md',
-        data.isEnd && 'rounded-e-md',
+        data.isStart && (data.isCompact ? 'rounded-s-sm' : 'rounded-s-md'),
+        data.isEnd && (data.isCompact ? 'rounded-e-sm' : 'rounded-e-md'),
       ],
       rowEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
@@ -274,8 +287,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTimeClass: 'px-2 pt-1',
       columnEventTitleClass: 'px-2 py-1 font-semibold',
 
-      rowMoreLinkInnerClass: `rounded-md ${params.ghostButtonClass}`,
-
       fillerClass: `border ${params.borderLowColorClass} ${params.bgColorClass}`,
 
       singleMonthClass: 'm-5',
@@ -298,14 +309,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     views: {
       dayGrid: {
         ...dayGridClasses,
-        dayCellBottomClass: 'min-h-0.5',
+        dayCellBottomClass: 'min-h-[1px]',
         dayHeaderDividerClass: `border-b ${params.borderHighColorClass}`,
         dayHeaderClass: `border ${params.borderMidColorClass}`,
         dayCellClass: params.borderMidColorClass,
       },
       multiMonth: {
         ...dayGridClasses,
-        dayCellBottomClass: 'min-h-0.5',
+        dayCellBottomClass: 'min-h-[1px]',
         dayHeaderDividerClass: (data) => [
           data.isSticky && `border-b ${params.borderHighColorClass} shadow-sm`,
         ],

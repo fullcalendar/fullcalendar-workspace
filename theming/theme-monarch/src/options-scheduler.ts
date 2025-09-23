@@ -42,8 +42,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
 
+      resourceIndentClass: 'ms-1 -me-1 items-center',
       resourceExpanderClass: [
-        'self-center w-6 h-6 flex flex-row items-center justify-center rounded-full text-sm relative start-1',
+        'w-6 h-6 flex flex-row items-center justify-center rounded-full text-sm',
         transparentPressableClass,
       ],
 

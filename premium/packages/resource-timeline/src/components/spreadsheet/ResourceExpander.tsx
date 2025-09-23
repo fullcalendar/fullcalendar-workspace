@@ -29,6 +29,7 @@ export class ResourceExpander extends BaseComponent<ResourceExpanderProps> {
           generateClassName(classNameGenerator, renderProps),
           classNames.cursorPointer,
           classNames.selectNone, // prevent text-selecting cell underneath
+          classNames.noMargin,
           props.className,
         )}
         onClick={props.onExpanderClick}

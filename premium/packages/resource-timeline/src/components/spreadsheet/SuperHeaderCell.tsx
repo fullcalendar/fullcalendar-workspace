@@ -1,6 +1,6 @@
 import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, createRef, Fragment, Ref } from '@fullcalendar/core/preact'
+import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { ResourceColumnHeaderData, ColHeaderRenderHooks } from '../../structs.js'
 import { ResourceIndent } from './ResourceIndent.js'
 
@@ -38,8 +38,10 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         className={joinClassNames(
           classNames.liquid,
           classNames.tight,
-          classNames.flexRow,
+          classNames.flexCol,
+          classNames.alignStart,
           classNames.borderNone,
+          classNames.crop,
         )}
         renderProps={renderProps}
         generatorName="resourceAreaHeaderContent"
@@ -50,25 +52,24 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
         willUnmount={renderHooks.headerWillUnmount}
       >
         {(InnerContent) => (
-          <Fragment>
+          <div
+            ref={this.innerElRef}
+            className={joinClassNames(
+              classNames.rigid,
+              classNames.flexRow,
+            )}
+          >
             {this.props.indent && (
               <ResourceIndent
                 level={1}
                 indentWidth={this.props.indentWidth}
               />
             )}
-            <div className={joinClassNames(classNames.liquid, classNames.flexCol, classNames.alignStart, classNames.crop)}>
-              <InnerContent
-                tag='div'
-                elRef={this.innerElRef}
-                className={joinClassNames(
-                  generateClassName(renderHooks.headerInnerClass, renderProps),
-                  classNames.rigid,
-                  classNames.flexRow,
-                )}
-              />
-            </div>
-          </Fragment>
+            <InnerContent
+              tag='div'
+              className={generateClassName(renderHooks.headerInnerClass, renderProps)}
+            />
+          </div>
         )}
       </ContentContainer>
     )

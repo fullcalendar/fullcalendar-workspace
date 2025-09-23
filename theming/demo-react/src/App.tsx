@@ -413,7 +413,7 @@ export default function App() {
       </div>
       <div
         className={
-          'flex-grow relative z-0 ' // +
+          'grow relative z-0 ' // +
           // (theme === 'pulse' ? 'bg-[#F8FAFB]' : '')
         }
       >

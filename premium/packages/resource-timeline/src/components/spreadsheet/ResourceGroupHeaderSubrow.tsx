@@ -71,7 +71,10 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
           className={joinClassNames(
             classNames.liquid,
             classNames.tight,
-            classNames.flexRow,
+            classNames.flexCol,
+            classNames.alignStart,
+            classNames.crop,
+            // need borderNone???
           )}
           renderProps={renderProps}
           generatorName="resourceGroupHeaderContent"
@@ -82,27 +85,32 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
           willUnmount={spec.labelWillUnmount}
         >
           {(InnerContent) => (
-            <Fragment>
+            <div
+              ref={this.innerElRef}
+              className={joinClassNames(
+                classNames.rigid,
+                classNames.flexRow,
+              )}
+              style={{
+                isolation: 'isolate', // TODO: className
+              }}
+            >
               <ResourceIndent
                 level={1}
                 indentWidth={props.indentWidth}
+                style={{ zIndex: 2 }}
               >
                 <ResourceExpander
                   isExpanded={props.isExpanded}
                   onExpanderClick={this.onExpanderClick}
                 />
               </ResourceIndent>
-              <div className={joinClassNames(classNames.liquid, classNames.flexCol, classNames.alignStart, classNames.crop)}>
-                <InnerContent
-                  tag='div'
-                  elRef={this.innerElRef}
-                  className={joinClassNames(
-                    generateClassName(spec.labelInnerClass, renderProps),
-                    classNames.rigid,
-                  )}
-                />
-              </div>
-            </Fragment>
+              <InnerContent
+                tag='div'
+                className={generateClassName(spec.labelInnerClass, renderProps)}
+                style={{ zIndex: 1 }}
+              />
+            </div>
           )}
         </ContentContainer>
       </div>

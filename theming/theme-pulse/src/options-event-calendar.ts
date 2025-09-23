@@ -90,25 +90,25 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
+  const dayRowItemClass = 'mx-1 mb-px rounded-sm'
   const dayRowItemClasses: CalendarOptions = {
-    rowEventClass: (data) => [
-      'mb-0.5',
-      data.isStart && 'ms-1',
-      data.isEnd && 'me-1',
-    ],
-
     eventInnerClass: 'justify-between',
     eventTimeClass: 'order-1',
     eventTitleClass: 'text-ellipsis',
 
-    listItemEventClass: `p-px mx-1 mb-px ${params.ghostButtonClass} rounded-sm`,
-    listItemEventInnerClass: 'flex flex-row text-xs',
-    listItemEventTimeClass: 'p-0.5 whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
-    listItemEventTitleClass: 'p-0.5 font-medium whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
+    rowEventClass: (data) => [
+      'mb-px',
+      data.isStart && 'ms-1',
+      data.isEnd && 'me-1',
+    ],
 
-    moreLinkClass: 'mx-1 flex flex-row',
-    moreLinkInnerClass: `p-0.5 text-xs font-medium rounded-sm ${params.mutedTransparentBgClass} ${params.nonMutedTextClass}`,
-    //^^^ setting that lets you do just "+3"
+    listItemEventClass: `p-px ${params.ghostButtonClass} ${dayRowItemClass}`,
+    listItemEventInnerClass: 'flex flex-row text-xs',
+    listItemEventTimeClass: 'p-0.5 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
+    listItemEventTitleClass: 'p-0.5 font-medium whitespace-nowrap overflow-hidden shrink-100', // shrinks first
+
+    moreLinkClass: `self-start flex flex-row ${params.mutedTransparentBgClass} ${dayRowItemClass}`,
+    moreLinkInnerClass: `p-0.5 text-xs font-medium ${params.nonMutedTextClass}`,
   }
 
   return {
@@ -171,8 +171,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       blockEventClass: 'relative group p-px',
       blockEventColorClass: 'absolute z-10 inset-0 bg-(--fc-event-color) print:bg-white border-(--fc-event-color)',
       blockEventInnerClass: 'relative z-20 text-(--fc-event-contrast-color) print:text-black text-xs',
-      blockEventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
-      blockEventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
+      blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
+      blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
       backgroundEventColorClass: `bg-(--fc-event-color) ${params.backgroundEventColorClass}`,
       backgroundEventTitleClass: [

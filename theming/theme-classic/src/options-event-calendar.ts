@@ -82,7 +82,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     data.isMinor && 'border-dotted',
   ]
 
-  const dayRowItemBaseClass = 'mx-0.5 mb-px rounded-sm'
+  const dayRowItemBaseClass = 'mx-0.5 mb-px rounded-sm' // TODO: make x a px val?
   const dayRowItemClasses: CalendarOptions = {
     listItemEventClass: (data) => [
       `${dayRowItemBaseClass} p-px`,
@@ -98,8 +98,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'flex flex-row items-center',
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
-    listItemEventTimeClass: 'p-px whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
-    listItemEventTitleClass: 'p-px font-bold whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
+    listItemEventTimeClass: 'p-px whitespace-nowrap overflow-hidden shrink-1', // shrinks second
+    listItemEventTitleClass: 'p-px font-bold whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
     rowEventClass: (data) => [
       data.isStart && 'ms-0.5',
@@ -167,7 +167,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
 
       blockEventClass: (data) => [
-        'relative group p-px', // 1px matches print-border
+        'relative isolate group p-px', // 1px matches print-border
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
           : joinClassNames('focus-visible:shadow-md', data.isDragging && 'opacity-75'),
@@ -180,8 +180,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : 'group-focus-visible:brightness-75',
       ],
       blockEventInnerClass: 'relative z-10 flex text-(--fc-event-contrast-color) print:text-black',
-      blockEventTimeClass: 'whitespace-nowrap overflow-hidden flex-shrink-1', // shrinks second
-      blockEventTitleClass: 'whitespace-nowrap overflow-hidden flex-shrink-100', // shrinks first
+      blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
+      blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
       rowEventClass: 'mb-px',
       rowEventBeforeClass: (data) => data.isStartResizable && [

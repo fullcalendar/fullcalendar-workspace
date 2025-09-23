@@ -24,16 +24,14 @@ All themes
   in Forma (and maybe others)
     print-view timegrid events have very string event-title sticking
 
+  Move popoverClose as absolutely positioned ABOVE dayHeader
+
   for MUI/Shadcn wrapper, is the height/contentHeight setting still relevant?
 
   setting height:'auto', but MUI/Shadcn sometimes have overflow:hidden,
     so can't have sticky stuff in it!?
 
-  should we NOT put font-size and font-color on *EventInnerClas classes?
-
-  search themes, replace
-    flex-grow -> grow
-    flex-shrink -> shrink
+  should we NOT put font-size and font-color on *EventInnerClass classes?
 
   code cleanliness
     replace all "canvas" css vars with just "bg"
@@ -53,16 +51,15 @@ All themes
     should almost always be in the timegrid/timeline sections of the theme
   for moving slotlabels, always use negative left/right instead of negative margin
     (better for preserving height for whole slot)
+  audit more-link in timegrid + timeline for each theme
 
   how to do responsive toolbars?
     mui? shadn?
     just mention in docs?
 
-  audit whether z-0 or z-10 is being used instead of isolation:isolate
-
   test all timegrid-events print-view
 
-  refactor all theme CSS varialbes, especially Monarch
+  refactor all theme CSS variables, especially Monarch
 
   ensure major-border in all themes
 
@@ -125,6 +122,12 @@ NOTES
   to do a two-col with first-col min-width percentage, up to a pixel max width, and second column liquid, do:
     1st col - shrink-0 w-1/4 max-w-40
     2nd col - grow max-w-0
+  for popover dayHeader,
+    we decided NOT to bake popoverClose into the dayHeader because
+    1. having the popoverClose as a child of a flex-row (which is different than how dayHeader normally
+       does) causes the way you do vertical alignment to change depending on context (items-center VS justify-center)
+    2. easier to have dayHeader as its own isolated component
+    CONCLUSION: make the X absolutely positioned over it
 
 
 just before beta (after theme gen)

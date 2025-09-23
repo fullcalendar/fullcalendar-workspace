@@ -36,7 +36,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       // resourceLaneTopClass: 'h-0.5',
       // resourceLaneBottomClass: 'h-1', // fix BUG, why this need to be so thick?
 
-      resourceExpanderClass: `self-center ${params.textHighColorClass}`,
+      resourceIndentClass: 'items-center ms-1 -me-1',
+      resourceExpanderClass: params.textHighColorClass,
 
       // TODO: weird
       resourceDayHeaderClass: (data) => [

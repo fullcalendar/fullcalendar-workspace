@@ -54,8 +54,10 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         }}
         className={joinClassNames(
           classNames.tight,
-          classNames.flexRow,
+          classNames.flexCol,
+          classNames.alignStart,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
+          classNames.crop,
         )}
         style={{
           minWidth: 0,
@@ -71,11 +73,21 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
         willUnmount={colSpec.cellWillUnmount}
       >
         {(InnerContent) => (
-          <Fragment>
-            {colSpec.isMain && (
+          <div
+            ref={this.innerElRef}
+            className={joinClassNames(
+              classNames.rigid,
+              classNames.flexRow,
+            )}
+            style={{
+              isolation: 'isolate', // TODO: className
+            }}
+          >
+            {colSpec.isMain && Boolean(props.indent) && (
               <ResourceIndent
                 level={props.indent}
                 indentWidth={props.indentWidth}
+                style={{ zIndex: 2 }}
               >
                 {props.hasChildren && (
                   <ResourceExpander
@@ -85,17 +97,12 @@ export class ResourceCell extends BaseComponent<ResourceCellProps> {
                 )}
               </ResourceIndent>
             )}
-            <div className={joinClassNames(classNames.liquid, classNames.flexCol, classNames.alignStart, classNames.crop)}>
-              <InnerContent
-                tag='div'
-                elRef={this.innerElRef}
-                className={joinClassNames(
-                  generateClassName(colSpec.cellInnerClass, renderProps),
-                  classNames.rigid,
-                )}
-              />
-            </div>
-          </Fragment>
+            <InnerContent
+              tag='div'
+              className={generateClassName(colSpec.cellInnerClass, renderProps)}
+              style={{ zIndex: 1 }}
+            />
+          </div>
         )}
       </ContentContainer>
     )
