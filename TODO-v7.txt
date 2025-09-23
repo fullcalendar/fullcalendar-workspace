@@ -19,52 +19,27 @@ Core
   In resourceTimeGridDay, when today, in modern themes,
     Multiple dots are displayed (see screenshot)
 All themes
-  rethink sizes of dots. too homogenous
+  test for each theme
+    ensure major-border in all themes
+    print-view (esp timegrid)
+    more-link in timegrid + timeline
 
-  in Forma (and maybe others)
-    print-view timegrid events have very string event-title sticking
-
-  Move popoverClose as absolutely positioned ABOVE dayHeader
-
-  for MUI/Shadcn wrapper, is the height/contentHeight setting still relevant?
-
-  setting height:'auto', but MUI/Shadcn sometimes have overflow:hidden,
-    so can't have sticky stuff in it!?
-
-  should we NOT put font-size and font-color on *EventInnerClass classes?
-
+  refactor all theme CSS variables, especially Monarch
   code cleanliness
     replace all "canvas" css vars with just "bg"
     naming confusion between "med" and "mid"
     make all theme util functions that emit classnames return STRING (and thus call joinClassNames)?
-  Disallow explicit widths/heights on certain elements (bad for positioning)
-    dayHeaderRowClass
-    dayHeaderClass
-    dayRowClass
-    dayCellClass
-    slotLabel
-    slotLane
-    allDayHeaderClass
-    weekNumberHeaderClass
-    (essentially anything with an "inner" inside)
-  slotLabel(Inner)Class and slotLabelDividerClass
-    should almost always be in the timegrid/timeline sections of the theme
-  for moving slotlabels, always use negative left/right instead of negative margin
-    (better for preserving height for whole slot)
-  audit more-link in timegrid + timeline for each theme
+    slotLabel(Inner)Class and slotLabelDividerClass
+      should almost always be in the timegrid/timeline sections of the theme
+    for moving slotlabels, always use negative left/right instead of negative margin
+      (better for preserving height for whole slot)
 
+  for MUI/Shadcn wrapper, is the height/contentHeight setting still relevant?
+  setting height:'auto', but MUI/Shadcn sometimes have overflow:hidden,
+    so can't have sticky stuff in it!?
   how to do responsive toolbars?
     mui? shadn?
     just mention in docs?
-
-  test all timegrid-events print-view
-
-  refactor all theme CSS variables, especially Monarch
-
-  ensure major-border in all themes
-
-  ensure daygrid morelink has bottom margin too
-    important for all-day when button up against bottom?
 
 MUI
   we should allow MUI to force headers to be uppercase
@@ -876,6 +851,16 @@ make noEventsInnerClass sticky in all themes (not just classic)
   solution is hard, which is make the rounded corners (and borders) part of the scroller
   hard for themes to control
   even harder when you consider MUI/Shadcn do the outer border with a separate div sometimes
+Disallow explicit widths/heights on certain elements (bad for positioning)
+  dayHeaderRowClass
+  dayHeaderClass
+  dayRowClass
+  dayCellClass
+  slotLabel
+  slotLane
+  allDayHeaderClass
+  weekNumberHeaderClass
+  (essentially anything with an "inner" inside)
 
 
 Notes
