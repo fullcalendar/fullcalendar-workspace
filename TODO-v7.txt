@@ -20,7 +20,6 @@ Core
     Multiple dots are displayed (see screenshot)
 All themes
   test for each theme
-    print-view (esp timegrid)
     more-link in timegrid + timeline
 
   refactor all theme CSS variables, especially Monarch
@@ -289,6 +288,13 @@ clean package.jsons
   ensure license specified in all
 more popoverClose to direct sibling of popover
   will allow DayHeader to be own component in future
+print:
+  better background-events in print-view. add border?
+  print problems with App.tsx (look at timeline)
+  text print-mode when originating from dark-mode
+  look out for "sticky" tailwind classes in themes. causing problems for print?
+  how to handle print-view for our default-ui UI controls?
+    example: pulse buttons have weird background
 
 
 rtl/left-right-coord REFACTOR

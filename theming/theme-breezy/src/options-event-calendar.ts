@@ -148,10 +148,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         : 'text-xs/6 px-1'
     ],
 
-    eventInnerClass: 'justify-between',
-    eventTimeClass: 'order-1',
-    eventTitleClass: 'text-ellipsis',
-
     rowEventClass: (data) => [
       'mb-px',
       data.isStart && 'ms-1',
@@ -162,9 +158,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       `${params.ghostButtonClass} p-px`,
       getDayGridItemClass(data),
     ],
-    listItemEventInnerClass: 'flex flex-row text-xs/4',
-    listItemEventTimeClass: `p-0.5 ${params.textMidColorClass} whitespace-nowrap overflow-hidden shrink-1`, // shrinks second
-    listItemEventTitleClass: `p-0.5 font-medium ${params.textHeaderColorClass} whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
+    listItemEventInnerClass: 'justify-between flex flex-row text-xs/4',
+    listItemEventTimeClass: `order-1 p-0.5 ${params.textMidColorClass} whitespace-nowrap overflow-hidden shrink-1`, // shrinks second
+    listItemEventTitleClass: `text-ellipsis p-0.5 font-medium ${params.textHeaderColorClass} whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
 
     rowMoreLinkClass: (data) => [
       'self-start',

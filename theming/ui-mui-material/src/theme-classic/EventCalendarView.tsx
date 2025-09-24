@@ -21,7 +21,7 @@ export const optionParams: EventCalendarOptionParams = {
   nowIndicatorBorderStartColorClass: 'border-s-(--mui-palette-error-main)',
   nowIndicatorBorderTopColorClass: 'border-t-(--mui-palette-error-main)',
   compactMoreLinkBorderColorClass: 'border-(--mui-palette-primary-main)',
-  todayBgClass: 'bg-[rgba(var(--mui-palette-warning-mainChannel)_/_0.1)]',
+  todayBgClass: 'not-print:bg-[rgba(var(--mui-palette-warning-mainChannel)_/_0.1)]',
   highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
   transparentMutedBgClass: 'bg-(--mui-palette-action-hover)',
   // HACK to remove transparency from muted color

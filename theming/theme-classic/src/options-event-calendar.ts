@@ -14,7 +14,7 @@ export interface EventCalendarOptionParams {
   nowIndicatorBorderStartColorClass: string
   nowIndicatorBorderTopColorClass: string
   compactMoreLinkBorderColorClass: string
-  todayBgClass: string
+  todayBgClass: string // should be given as NOT-print!!!
   transparentMutedBgClass: string // guaranteed semi-transparent
   opaqueMutedBgClass: string // guaranteed opaque
   mutedBgClass: string // theme preference

@@ -370,26 +370,28 @@ which can't rely on dynamic height detection after print-flag activated.
   width: 0 !important;
 }
 
-.sticky {
-  position: sticky !important;
-}
+@media not print {
+  .sticky {
+    position: sticky !important;
+  }
 
-.stickyT {
-  position: sticky !important;
-  top: 0 !important;
-}
+  .stickyT {
+    position: sticky !important;
+    top: 0 !important;
+  }
 
-/* Sticks to either left or right (the flex "start") depending on ltr/rtl */
-.stickyS {
-  position: sticky !important;
-  left: 0 !important;
-  right: 0 !important;
-}
+  /* Sticks to either left or right (the flex "start") depending on ltr/rtl */
+  .stickyS {
+    position: sticky !important;
+    left: 0 !important;
+    right: 0 !important;
+  }
 
-.tableHeaderSticky {
-  position: sticky !important;
-  top: 0 !important;
-  z-index: var(--fc-sticky-header-footer-z) !important;
+  .tableHeaderSticky {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: var(--fc-sticky-header-footer-z) !important;
+  }
 }
 
 /* Only needed when padding/border must be separate from width/height */

@@ -36,6 +36,8 @@ TODO: give hover effect to singleMonthHeaderInnerClass
 
 TODO: in all-day section when many events are stacked,
   not enough bottom padding to daycell
+
+TODO: in daygrid, day-header text doesn't align nicely with day-cell day-number-text
 */
 
 export interface EventCalendarOptionParams {
@@ -92,10 +94,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
   const dayRowItemClass = 'mx-1 mb-px rounded-sm'
   const dayRowItemClasses: CalendarOptions = {
-    eventInnerClass: 'justify-between',
-    eventTimeClass: 'order-1',
-    eventTitleClass: 'text-ellipsis',
-
     rowEventClass: (data) => [
       'mb-px',
       data.isStart && 'ms-1',
@@ -103,9 +101,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
 
     listItemEventClass: `p-px ${params.ghostButtonClass} ${dayRowItemClass}`,
-    listItemEventInnerClass: 'flex flex-row text-xs',
-    listItemEventTimeClass: 'p-0.5 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
-    listItemEventTitleClass: 'p-0.5 font-medium whitespace-nowrap overflow-hidden shrink-100', // shrinks first
+    listItemEventInnerClass: 'justify-between flex flex-row text-xs',
+    listItemEventTimeClass: 'order-1 p-0.5 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
+    listItemEventTitleClass: 'text-ellipsis p-0.5 font-medium whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
     moreLinkClass: `self-start flex flex-row ${params.mutedTransparentBgClass} ${dayRowItemClass}`,
     moreLinkInnerClass: `p-0.5 text-xs font-medium ${params.nonMutedTextClass}`,
@@ -216,11 +214,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-bottom-1',
       ],
       columnEventColorClass: (data) => [
-        data.isStart && 'rounded-t-lg',
-        data.isEnd && 'rounded-b-lg',
+        'print:border-x',
+        data.isStart && 'rounded-t-lg print:border-t',
+        data.isEnd && 'rounded-b-lg print:border-b',
         (data.level || data.isMirror) && `outline ${params.bgColorOutlineClass}`,
       ],
-      columnEventInnerClass: 'flex-col py-1',
+      columnEventInnerClass: 'flex flex-col py-1',
       // TODO: move the x-padding to the inner div? same concept with row-events
       columnEventTimeClass: 'px-2 pt-1',
       columnEventTitleClass: 'px-2 py-1 font-medium',
