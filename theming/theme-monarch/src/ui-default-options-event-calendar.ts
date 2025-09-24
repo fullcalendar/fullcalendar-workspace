@@ -20,7 +20,8 @@ export const optionParams: EventCalendarOptionParams = {
   nowIndicatorBorderColorClass: 'border-(--fc-monarch-error)',
   compactMoreLinkBorderColorClass: 'border-(--fc-monarch-primary)',
   highlightClass: 'bg-(--fc-monarch-primary-container) opacity-30',
-  disabledBgClass: 'bg-gray-500/7',
+  mutedBgClass: 'bg-gray-500/7', // TODO: make this a css variable!
+  neutralBgClass: 'bg-gray-500/20', // TODO: make this a css variable!
   eventColor: 'var(--fc-monarch-primary)',
   eventContrastColor: 'var(--fc-monarch-on-primary)',
   backgroundEventColor: 'var(--fc-monarch-tertiary)',

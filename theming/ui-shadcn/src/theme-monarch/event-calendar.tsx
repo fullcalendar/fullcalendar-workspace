@@ -77,7 +77,8 @@ export const optionParams: EventCalendarOptionParams = {
   miscPillClass: (data) => data.hasNavLink ? accentButtonClass : accentClass,
 
   highlightClass: 'bg-primary opacity-10',
-  disabledBgClass: 'bg-muted',
+  mutedBgClass: 'bg-muted',
+  neutralBgClass: 'bg-muted-foreground/20',
 
   borderColorClass: '', // border-color is set globally
   majorBorderColorClass: 'border-muted-foreground/60',

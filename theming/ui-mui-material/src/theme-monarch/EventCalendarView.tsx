@@ -13,7 +13,8 @@ export const optionParams: EventCalendarOptionParams = {
   miscPillClass: () => 'brightness-115 bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.15)]',
 
   highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
-  disabledBgClass: 'bg-(--mui-palette-action-disabledBackground)',
+  mutedBgClass: 'bg-(--mui-palette-action-hover)',
+  neutralBgClass: 'bg-(--mui-palette-divider)',
 
   borderColorClass: 'border-(--mui-palette-divider)',
   majorBorderColorClass: 'border-(--mui-palette-action-active)',

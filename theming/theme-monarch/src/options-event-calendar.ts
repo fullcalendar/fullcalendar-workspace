@@ -45,7 +45,8 @@ export interface EventCalendarOptionParams {
   nowIndicatorBorderColorClass: string
   compactMoreLinkBorderColorClass: string
   highlightClass: string
-  disabledBgClass: string
+  mutedBgClass: string
+  neutralBgClass: string
   eventColor: string
   eventContrastColor: string
   backgroundEventColor: string
@@ -56,6 +57,11 @@ export interface EventCalendarOptionParams {
 }
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
+
+/*
+TODO: move this to a "ghostButton" system and transparentMutedBgClass
+(and use the transparentMutedBgClass in more places, like resourceGroupHeaderClass)
+*/
 export const transparentPressableClass = 'hover:bg-gray-500/10 focus-visible:bg-gray-500/10 active:bg-gray-500/20' // TODO --- make part of theme!?
 const transparentStrongBgClass = 'bg-gray-500/30'
 const nonBusinessHoursClass = 'bg-gray-500/7' // must be semitransprent
@@ -232,13 +238,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: (data) => data.isCompact ? xxsTextClass : 'p-1 text-xs',
       columnEventTitleSticky: false, // because time below title, sticky looks bad
 
-      columnMoreLinkClass: `mb-px rounded-xs outline ${params.bgColorOutlineClass} ${transparentPressableClass}`,
-      columnMoreLinkInnerClass: 'p-0.5 text-xs',
+      // TODO: keep DRY with timeline rowMoreLink
+      columnMoreLinkClass: `isolate mb-px p-px rounded-xs ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
+      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-xs ${params.neutralBgClass}`,
+      columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
       dayHeaderAlign: 'center',
       dayHeaderClass: (data) => [
-        data.isDisabled && params.disabledBgClass,
+        data.isDisabled && params.mutedBgClass,
         'items-center',
       ],
       dayHeaderInnerClass: (data) => [
@@ -249,7 +257,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayRowClass: `border ${params.borderColorClass}`,
       dayCellClass: (data) => [
         data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
-        data.isDisabled && params.disabledBgClass,
+        data.isDisabled && params.mutedBgClass,
       ],
       dayCellTopClass: (data) => [
         'flex flex-row',
@@ -271,7 +279,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayLaneClass: (data) => [
         data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
-        data.isDisabled && params.disabledBgClass,
+        data.isDisabled && params.mutedBgClass,
       ],
       dayLaneInnerClass: (data) => data.isSimple
         ? 'm-1' // simple print-view

@@ -19,7 +19,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceDayHeaderClass: (data) => [
         'items-center border',
         data.isMajor ? params.majorBorderColorClass : params.borderColorClass,
-        data.isDisabled && params.disabledBgClass,
+        data.isDisabled && params.mutedBgClass,
       ],
       resourceDayHeaderInnerClass: (data) => [
         'p-2 flex flex-col',
@@ -35,9 +35,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       // For both resources & resource groups
       resourceAreaRowClass: `border ${params.borderColorClass}`,
 
-      resourceGroupHeaderClass: params.disabledBgClass,
+      resourceGroupHeaderClass: params.mutedBgClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.disabledBgClass}`,
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
 
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
@@ -59,11 +59,13 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         rowEventClass: 'me-px',
         rowEventInnerClass: (data) => [
           'gap-0.5',
-          data.isSpacious ? 'py-1' : 'py-px',
+          data.isSpacious ? 'py-1' : 'py-px', // extra v space
         ],
 
-        rowMoreLinkClass: `me-px p-px ${transparentPressableClass}`,
-        rowMoreLinkInnerClass: 'p-0.5 text-xs',
+        // TODO: keep DRY with columnMoreLink
+        rowMoreLinkClass: `isolate me-px p-px rounded-sm ${params.bgColorClass}`,
+        rowMoreLinkColorClass: `absolute z-0 inset-0 rounded-sm ${params.neutralBgClass}`,
+        rowMoreLinkInnerClass: 'z-10 p-0.5 text-xs', // TODO: somehow add that "extra v space" ?
 
         slotLabelAlign: (data) => (data.level || data.isTime) ? 'start' : 'center',
         slotLabelSticky: '0.5rem', // for pill

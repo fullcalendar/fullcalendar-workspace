@@ -40,6 +40,9 @@ All themes
     mui? shadn?
     just mention in docs?
 
+  bug: in a week view, open a more-popover, click dayheader to follow the navlink,
+    the view changes but the popover stays!
+
 MUI
   we should allow MUI to force headers to be uppercase
   The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
