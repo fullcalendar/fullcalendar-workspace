@@ -34,8 +34,6 @@ TODO: shift timegrid slot labels over to start-of line
 TODO: give nav-link hover effect to everything!
 TODO: give hover effect to singleMonthHeaderInnerClass
 
-TODO: major-border
-
 TODO: in all-day section when many events are stacked,
   not enough bottom padding to daycell
 */
@@ -67,13 +65,15 @@ export interface EventCalendarOptionParams {
   mutedExtraTextClass: string
 
   nowIndicatorBorderColorClass: string
+  majorBorderColorClass: string
 }
 
 export const getDayHeaderInnerClasses = (data: { isToday?: boolean, inPopover?: boolean }) => [
-  'my-1 p-1 flex flex-row items-center',
+  // are all these paddings okay?
+  'py-2 flex flex-row items-center',
   data.inPopover
-    ? 'mx-2'
-    : !data.isToday && 'mx-1',
+    ? 'px-2'
+    : !data.isToday && 'px-1',
 ]
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -127,6 +127,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
+      dayHeaderClass: (data) => data.isMajor && `border ${params.majorBorderColorClass}`,
       dayHeaderInnerClass: getDayHeaderInnerClasses,
       // TODO: add dayheader borders ONLY when isMajor
 
@@ -134,9 +135,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayRowClass: `border ${params.borderColorClass}`,
 
-      dayCellClass: [
-        `border ${params.borderColorClass}`,
-        // data.isToday && 'bg-[#0081FF]/5',
+      dayCellClass: (data) => [
+        'border',
+        data.isMajor
+          ? params.majorBorderColorClass
+          : params.borderColorClass,
       ],
       dayCellTopClass: 'flex flex-row justify-end min-h-1',
       dayCellTopInnerClass: (data) => [
@@ -150,7 +153,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.inPopover && 'p-2',
       ],
 
-      dayLaneClass: `border ${params.borderColorClass}`,
+      dayLaneClass: (data) => [
+        'border',
+        data.isMajor
+          ? params.majorBorderColorClass
+          : params.borderColorClass,
+      ],
 
       /*
       BUG: z-index is wrong, can't click week numbers

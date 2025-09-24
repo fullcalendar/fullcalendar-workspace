@@ -16,6 +16,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   return {
     optionDefaults: {
       resourceDayHeaderAlign: 'center',
+      resourceDayHeaderClass: (data) => data.isMajor && `border ${params.majorBorderColorClass}`,
       resourceDayHeaderInnerClass: (data) => [
         ...getDayHeaderInnerClasses(data),
         'text-sm',

@@ -33,6 +33,7 @@ export const optionParams: EventCalendarOptionParams = {
   mutedExtraTextClass: 'text-(--mui-palette-text-secondary)',
 
   nowIndicatorBorderColorClass: 'border-(--mui-palette-error-main)',
+  majorBorderColorClass: 'border-(--mui-palette-action-active)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

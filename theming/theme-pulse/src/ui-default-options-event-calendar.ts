@@ -59,6 +59,7 @@ export const optionParams: EventCalendarOptionParams = {
   mutedExtraTextClass: textColorClass1,
 
   nowIndicatorBorderColorClass: 'border-(--fc-pulse-destructive-color)',
+  majorBorderColorClass: borderColorClass2,
 }
 
 const controlBgClass = 'bg-(--fc-pulse-control-color)'

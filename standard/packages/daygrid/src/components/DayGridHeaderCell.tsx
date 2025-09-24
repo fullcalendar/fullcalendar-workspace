@@ -110,6 +110,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
             attrs={dataConfig.innerAttrs}
             className={joinClassNames(
               generateClassName(renderConfig.innerClassNameGenerator, finalRenderProps),
+              classNames.noMargin,
               classNames.rigid,
               isSticky && classNames.sticky,
             )}

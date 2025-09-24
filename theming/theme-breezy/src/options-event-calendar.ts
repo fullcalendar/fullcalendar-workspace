@@ -216,7 +216,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       dayCellInnerClass: (data) => data.inPopover && 'p-2',
 
-      dayLaneClass: `border ${params.borderLowColorClass}`,
+      dayLaneClass: (data) => [
+        'border',
+        data.isMajor
+          ? params.borderHighColorClass
+          : params.borderLowColorClass,
+      ],
 
       allDayHeaderClass: 'items-center', // v-align
       allDayHeaderInnerClass: `text-xs/5 ${params.textLowColorClass} p-3`,
@@ -311,8 +316,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayGridClasses,
         dayCellBottomClass: 'min-h-[1px]',
         dayHeaderDividerClass: `border-b ${params.borderHighColorClass}`,
-        dayHeaderClass: `border ${params.borderMidColorClass}`,
-        dayCellClass: params.borderMidColorClass,
+        dayHeaderClass: (data) => [
+          'border',
+          data.isMajor
+            ? params.borderHighColorClass
+            : params.borderMidColorClass,
+        ],
+        dayCellClass: (data) => data.isMajor
+          ? params.borderHighColorClass
+          : params.borderMidColorClass,
       },
       multiMonth: {
         ...dayGridClasses,
@@ -322,7 +334,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
         dayHeaderClass: (data) => [
           // isCompact is a HACK to detect multi-month multi-col
-          !data.isCompact && `border ${params.borderMidColorClass}`,
+          !data.isCompact && joinClassNames(
+            'border',
+            data.isMajor
+              ? params.borderHighColorClass
+              : params.borderMidColorClass,
+          ),
         ],
 
         tableHeaderClass: (data) => data.isSticky && params.bgColorClass,
@@ -340,8 +357,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           'border-b',
           data.isSticky ? `${params.borderHighColorClass} shadow-sm` : params.borderMidColorClass,
         ],
-        dayHeaderClass: `border ${params.borderLowColorClass}`,
-        dayCellClass: params.borderLowColorClass,
+        dayHeaderClass: (data) => [
+          'border',
+          data.isMajor
+            ? params.borderHighColorClass
+            : params.borderMidColorClass,
+        ],
+        dayCellClass: (data) => data.isMajor
+          ? params.borderHighColorClass
+          : params.borderLowColorClass,
         weekNumberHeaderClass: 'justify-end items-center',
         weekNumberHeaderInnerClass: `px-3 text-sm/6 ${params.textMidColorClass}`,
 

@@ -20,7 +20,6 @@ Core
     Multiple dots are displayed (see screenshot)
 All themes
   test for each theme
-    ensure major-border in all themes
     print-view (esp timegrid)
     more-link in timegrid + timeline
 
