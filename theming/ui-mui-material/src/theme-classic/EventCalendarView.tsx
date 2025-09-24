@@ -24,9 +24,8 @@ export const optionParams: EventCalendarOptionParams = {
   todayBgClass: 'not-print:bg-[rgba(var(--mui-palette-warning-mainChannel)_/_0.1)]',
   highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
   transparentMutedBgClass: 'bg-(--mui-palette-action-hover)',
-  // HACK to remove transparency from muted color
-  opaqueMutedBgClass: 'bg-(--mui-palette-background-paper) relative before:absolute before:inset-0 before:bg-(--mui-palette-action-hover) before:pointer-events-none',
   mutedBgClass: 'bg-(--mui-palette-action-hover)',
+  neutralBgClass: 'bg-(--mui-palette-divider)',
   mutedTextColorClass: 'text-(--mui-palette-text-secondary)',
   eventColor: 'var(--mui-palette-primary-main)',
   eventContrastColor: 'var(--mui-palette-primary-contrastText)',

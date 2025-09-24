@@ -15,9 +15,9 @@ export interface EventCalendarOptionParams {
   nowIndicatorBorderTopColorClass: string
   compactMoreLinkBorderColorClass: string
   todayBgClass: string // should be given as NOT-print!!!
-  transparentMutedBgClass: string // guaranteed semi-transparent
-  opaqueMutedBgClass: string // guaranteed opaque
-  mutedBgClass: string // theme preference
+  transparentMutedBgClass: string // GUARANTEED transparent --- should be given as NOT-print???
+  mutedBgClass: string // could possibly be transparent
+  neutralBgClass: string // more contrast than muted (better name?)
   mutedTextColorClass: string
   highlightClass: string
   eventColor: string
@@ -231,8 +231,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTimeClass: xxsTextClass,
       columnEventTitleClass: (data) => data.isCompact ? xxsTextClass : 'py-px text-xs',
 
-      columnMoreLinkClass: `mb-px rounded-sm outline ${params.bgColorOutlineClass} ${params.opaqueMutedBgClass}`,
-      columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
+      // TODO: keep DRY with timeline rowMoreLink
+      columnMoreLinkClass: `isolate mb-px p-px rounded-sm ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
+      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-sm ${params.neutralBgClass}`,
+      columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
       dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
@@ -296,11 +298,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         nowIndicatorLineClass: `border-t ${params.nowIndicatorBorderColorClass}`,
       },
       list: {
-        listDayHeaderClass: [
-          `sticky z-10 top-0 flex flex-row justify-between border-b ${params.borderColorClass}`,
-          params.opaqueMutedBgClass,
-        ],
-        listDayHeaderInnerClass: `${listViewItemPaddingClass} text-sm font-bold`,
+        listDayHeaderClass: `sticky z-10 top-0 flex flex-row justify-between border-b ${params.borderColorClass} ${params.bgColorClass}`,
+        listDayHeaderColorClass: `absolute z-0 inset-0 ${params.mutedBgClass}`,
+        listDayHeaderInnerClass: `z-10 ${listViewItemPaddingClass} text-sm font-bold`, // TODO: z-10
 
         listItemEventClass: [
           'group gap-3 border-b',

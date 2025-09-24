@@ -62,8 +62,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           data.isSpacious ? 'py-1' : 'py-px',
         ],
 
-        rowMoreLinkClass: `me-px p-px ${params.opaqueMutedBgClass}`,
-        rowMoreLinkInnerClass: 'p-0.5 text-xs',
+        // TODO: keep DRY with columnMoreLink
+        rowMoreLinkClass: `isolate me-px p-px ${params.bgColorClass}`,
+        rowMoreLinkColorClass: `absolute z-0 inset-0 ${params.neutralBgClass}`,
+        rowMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
         slotLabelClass: 'justify-center', // v-align

@@ -389,9 +389,11 @@ export const BASE_OPTION_REFINERS = {
   moreLinkInnerClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
   //
   rowMoreLinkClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
+  rowMoreLinkColorClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
   rowMoreLinkInnerClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
   //
   columnMoreLinkClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
+  columnMoreLinkColorClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
   columnMoreLinkInnerClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
 
   navLinkClass: identity as Identity<ClassNameInput>,

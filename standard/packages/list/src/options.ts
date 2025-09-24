@@ -30,6 +30,7 @@ export const OPTION_REFINERS = {
   listDayHeaderDidMount: identity as Identity<DidMountHandler<ListDayHeaderMountData>>,
   listDayHeaderWillUnmount: identity as Identity<WillUnmountHandler<ListDayHeaderMountData>>,
   listDayHeaderClass: identity as Identity<ClassNameGenerator<ListDayHeaderData>>,
+  listDayHeaderColorClass: identity as Identity<ClassNameGenerator<ListDayHeaderInnerData>>,
   listDayHeaderInnerClass: identity as Identity<ClassNameGenerator<ListDayHeaderInnerData>>,
   listDayHeaderContent: identity as Identity<CustomContentGenerator<ListDayHeaderInnerData>>,
 

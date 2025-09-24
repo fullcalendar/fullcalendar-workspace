@@ -21,6 +21,7 @@ Core
 All themes
   test for each theme
     more-link in timegrid + timeline
+    (for print-view too)... add a border
 
   refactor all theme CSS variables, especially Monarch
   code cleanliness
@@ -295,6 +296,8 @@ print:
   look out for "sticky" tailwind classes in themes. causing problems for print?
   how to handle print-view for our default-ui UI controls?
     example: pulse buttons have weird background
+put div wrapper around columnMoreLink, just like abs events (TimeGrid)
+  we don't like how it already has position:absolute, which could be confusing for theme authors
 
 
 rtl/left-right-coord REFACTOR

@@ -1,4 +1,4 @@
-import { BaseComponent, ContentContainer, DateMarker, DateMeta, formatDayString, getStickyHeaderDates } from "@fullcalendar/core/internal";
+import { BaseComponent, ContentContainer, DateMarker, DateMeta, formatDayString, generateClassName, getStickyHeaderDates } from "@fullcalendar/core/internal";
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { ListDayHeaderData } from '../structs.js'
@@ -37,6 +37,9 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
       >
         {() => (
           <Fragment>
+            {Boolean(options.listDayHeaderColorClass) && (
+              <div className={generateClassName(options.listDayHeaderColorClass, renderProps)} />
+            )}
             {Boolean(options.listDayFormat) && (
               <ListDayHeaderInner
                 dayDate={dayDate}
