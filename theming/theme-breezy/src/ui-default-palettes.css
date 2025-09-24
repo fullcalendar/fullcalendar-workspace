@@ -14,6 +14,7 @@ TODO: add default-ui-only variables to:
   --fc-breezy-border-mid-color: var(--color-gray-200);
   --fc-breezy-border-high-color: var(--color-gray-300);
   --fc-breezy-muted-color: var(--color-gray-50);
+  --fc-breezy-neutral-color: var(--color-gray-200);
   --fc-breezy-text-low-color: var(--color-gray-400);
   --fc-breezy-text-mid-color: var(--color-gray-500);
   --fc-breezy-text-high-color: var(--color-gray-700);

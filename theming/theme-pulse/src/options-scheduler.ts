@@ -54,6 +54,11 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         slotLabelClass: 'justify-center', // v-align
         slotLabelInnerClass: 'p-1 text-sm',
         slotLabelDividerClass: `border-b ${params.borderColorClass} shadow-sm`,
+
+        // TODO: keep DRY with columnMoreLink
+        rowMoreLinkClass: `isolate p-px rounded-sm ${params.bgColorClass}`,
+        rowMoreLinkColorClass: `absolute z-0 inset-0 rounded-sm ${params.neutralBgClass}`,
+        rowMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
       },
     },
   }

@@ -54,8 +54,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
     },
     views: {
       timeline: {
-        rowMoreLinkClass: `me-px p-px ${params.solidMoreLinkBgClass}`,
-        rowMoreLinkInnerClass: 'p-0.5 text-xs',
+        // TODO: keep DRY with columnMoreLink
+        rowMoreLinkClass: `isolate me-px p-px ${params.bgColorClass}`,
+        rowMoreLinkColorClass: `z-0 absolute inset-0 ${params.neutralBgClass}`,
+        rowMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
         slotLabelClass: 'justify-center',
         slotLabelInnerClass: 'p-1 text-sm',

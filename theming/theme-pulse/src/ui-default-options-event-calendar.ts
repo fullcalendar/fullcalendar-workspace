@@ -49,10 +49,11 @@ export const optionParams: EventCalendarOptionParams = {
   bgColorOutlineClass: 'outline-(--fc-pulse-canvas-color)',
   bgColorClass: 'bg-(--fc-pulse-canvas-color)',
 
-  mutedOpaqueBgClass: 'bg-(--fc-pulse-muted-opaque)',
-  mutedTransparentBgClass: 'bg-(--fc-pulse-muted-transparent)',
+  mutedTransparentBgClass: 'bg-(--fc-pulse-muted-transparent-color)',
+  mutedBgClass: 'bg-(--fc-pulse-muted-color)',
+  neutralBgClass: 'bg-(--fc-pulse-neutral-color)',
 
-  ghostButtonClass: 'hover:bg-(--fc-pulse-muted-transparent) focus-visible:bg-(--fc-pulse-muted-transparent)',
+  ghostButtonClass: 'hover:bg-(--fc-pulse-muted-transparent-color) focus-visible:bg-(--fc-pulse-muted-transparent-color)',
 
   nonMutedTextClass: textColorClass3,
   mutedTextClass: textColorClass2,

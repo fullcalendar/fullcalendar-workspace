@@ -19,9 +19,12 @@ Core
   In resourceTimeGridDay, when today, in modern themes,
     Multiple dots are displayed (see screenshot)
 All themes
-  test for each theme
-    more-link in timegrid + timeline
-    (for print-view too)... add a border
+  more-link
+    for print-view... add a border
+    ensure all more-links in timeline/timegrid have bottom margin
+    AFTER wrapping col more-link
+      check Breezy and other themes that have more-link outer margin
+    explicit more-link text-color for color-opinionated themes?
 
   refactor all theme CSS variables, especially Monarch
   code cleanliness

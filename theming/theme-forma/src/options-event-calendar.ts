@@ -32,6 +32,8 @@ TODO: remove navlink underline effect. outlook doesn't use underlines at all
 TODO: timeGrid short-event doesn't put title+time on same line
 
 TODO: negative margins on timegrid slot labels not working anymore
+
+TODO: nicer rounded styling for more-link in timegrid/timeline
 */
 
 // ambient types (tsc strips during build because of {})
@@ -60,11 +62,11 @@ export interface EventCalendarOptionParams {
   majorBorderColorClass: string
 
   ghostButtonClass: string // TODO: less semantic!
-  solidMoreLinkBgClass: string
   selectedBgClass: string // selected EVENT
 
   transparentMutedBgClass: string
   mutedBgClass: string
+  neutralBgClass: string
   highlightClass: string
 
   borderColorClass: string // eventually just borderColor
@@ -368,8 +370,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isCompact ? xxsTextClass : 'text-xs',
         ],
 
-        columnMoreLinkClass: `mb-px rounded-xs outline ${params.bgColorOutlineClass} ${params.solidMoreLinkBgClass}`,
-        columnMoreLinkInnerClass: 'px-0.5 py-1 text-xs',
+        // TODO: move to general settings? or always have this type of thing in timeGrid?
+        // TODO: keep DRY with timeline rowMoreLink
+        columnMoreLinkClass: `isolate mb-px p-px rounded-xs ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
+        columnMoreLinkColorClass: `z-0 absolute inset-0 ${params.neutralBgClass}`,
+        columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
         slotLabelClass: axisClass,
         slotLabelInnerClass: (data) => [

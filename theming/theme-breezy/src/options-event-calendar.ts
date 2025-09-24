@@ -89,6 +89,10 @@ TODO: condense timegrid event doesn't work
 TODO: dark mode, list-view, event text colors too dark (because brightness-60 isn't adaptive!)
 
 TODO: audit rowMoreLink effects
+
+TODO: where there's rounded-lg, ensure it goes smaller when isCompact
+
+TODO: ensure resourc-timeline-lanes have bottom empty space
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -110,6 +114,7 @@ export interface EventCalendarOptionParams {
   borderBottomHighColorClass: string
   nowIndicatorBorderColorClass: string
   mutedBgClass: string
+  neutralBgClass: string
   highlightClass: string
   ghostButtonClass: string
   textLowColorClass: string
@@ -288,6 +293,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTimeClass: 'px-2 pt-1',
       columnEventTitleClass: 'px-2 py-1 font-semibold',
 
+      // TODO: keep DRY with timeline rowMoreLink
+      columnMoreLinkClass: `isolate p-px rounded-md ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
+      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.neutralBgClass}`,
+      columnMoreLinkInnerClass: 'z-1 p-0.5 text-xs/4',
+      // TODO: see columnMoreLinkClass in timeGrid below...
+
       fillerClass: `border ${params.borderLowColorClass} ${params.bgColorClass}`,
 
       singleMonthClass: 'm-5',
@@ -378,6 +389,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isStart && 'mt-1',
           data.isEnd && 'mb-1',
         ],
+        columnMoreLinkClass: 'm-1',
       },
       list: {
         listDaysClass: 'px-4 my-10 mx-auto w-full max-w-200',

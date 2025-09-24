@@ -19,13 +19,13 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
 
   majorBorderColorClass: 'border-(--fc-forma-border3)', // TODO: turn into variables!
 
-  solidMoreLinkBgClass: 'bg-(--fc-forma-bg6)', // TODO: pressability!
   ghostButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
   selectedBgClass: 'bg-gray-500/40', // selected "event"
   highlightClass: 'bg-(--fc-forma-highlight-color)',
 
   transparentMutedBgClass: 'bg-gray-500/10',
   mutedBgClass: 'bg-(--fc-forma-bg0)',
+  neutralBgClass: 'bg-(--fc-forma-bg6)',
 
   borderColorClass: 'border-(--fc-forma-border1)',
   nowIndicatorBorderColorClass: 'border-(--fc-forma-primary-color0)', // same as primary

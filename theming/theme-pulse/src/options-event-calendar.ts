@@ -38,6 +38,12 @@ TODO: in all-day section when many events are stacked,
   not enough bottom padding to daycell
 
 TODO: in daygrid, day-header text doesn't align nicely with day-cell day-number-text
+
+TODO: space in-between timeline events (left-to-right space aka "me-px")
+TODO: ^^^same with vertical space
+TODO: ^^^same with more-link
+
+TODO: list-view day-headers when they stack, border is doubled-up
 */
 
 export interface EventCalendarOptionParams {
@@ -60,7 +66,8 @@ export interface EventCalendarOptionParams {
   bgColorClass: string
 
   mutedTransparentBgClass: string
-  mutedOpaqueBgClass: string
+  mutedBgClass: string
+  neutralBgClass: string
 
   nonMutedTextClass: string // TODO: rename
   mutedTextClass: string
@@ -105,8 +112,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     listItemEventTimeClass: 'order-1 p-0.5 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
     listItemEventTitleClass: 'text-ellipsis p-0.5 font-medium whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
-    moreLinkClass: `self-start flex flex-row ${params.mutedTransparentBgClass} ${dayRowItemClass}`,
-    moreLinkInnerClass: `p-0.5 text-xs font-medium ${params.nonMutedTextClass}`,
+    rowMoreLinkClass: `self-start flex flex-row ${params.mutedTransparentBgClass} ${dayRowItemClass}`,
+    rowMoreLinkInnerClass: `p-0.5 text-xs font-medium ${params.nonMutedTextClass}`,
   }
 
   return {
@@ -224,6 +231,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTimeClass: 'px-2 pt-1',
       columnEventTitleClass: 'px-2 py-1 font-medium',
 
+      // TODO: keep DRY with timeline rowMoreLink
+      columnMoreLinkClass: `isolate p-px rounded-lg ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
+      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.neutralBgClass}`,
+      columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
+
       allDayHeaderClass: 'items-center', // v-align
       allDayHeaderInnerClass: `p-2 text-xs ${params.mutedTextClass}`,
 
@@ -278,14 +290,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       list: {
 
+
         listDayClass: `flex flex-col not-first:border-t ${params.borderColorClass}`,
-        listDayHeaderClass: `flex flex-row justify-between ${params.mutedOpaqueBgClass} border-b ${params.borderColorClass} top-0 sticky`,
-        // TODO^^ since the color is present before hover, hover should have an effect too. same challenge with dark-mode secondary button for this theme
+
+        listDayHeaderClass: `relative flex flex-row justify-between ${params.bgColorClass} border-b ${params.borderColorClass} top-0 sticky`,
+        listDayHeaderColorClass: `absolute z-0 inset-0 ${params.mutedBgClass}`,
         listDayHeaderInnerClass: (data) => [
-          'px-3 py-3 text-sm',
+          'z-10 px-3 py-3 text-sm',
           !data.level && 'font-semibold',
           params.nonMutedTextClass,
         ],
+
         listDayEventsClass: 'flex flex-col py-4 gap-4',
 
         listItemEventInnerClass: '[display:contents]',

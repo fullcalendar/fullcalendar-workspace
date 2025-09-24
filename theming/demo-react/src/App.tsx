@@ -629,6 +629,7 @@ function SchedulerDemo(props: DemoProps) {
       }}
       // datesAboveResources
       // displayEventTime={true}
+      // eventMaxStack={1}
       initialView={props.initialView}
       navLinkDayClick='resourceTimelineDay'
       navLinkWeekClick='resourceTimelineWeek'

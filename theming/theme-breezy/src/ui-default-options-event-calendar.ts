@@ -30,6 +30,7 @@ export const optionParams: EventCalendarOptionParams = {
   borderBottomHighColorClass: 'border-b-(--fc-breezy-border-high-color)',
 
   mutedBgClass: 'bg-(--fc-breezy-muted-color)',
+  neutralBgClass: 'bg-(--fc-breezy-neutral-color)',
   highlightClass: 'bg-(--fc-breezy-highlight-color)',
   ghostButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30', // TODO: kill gray-500
 

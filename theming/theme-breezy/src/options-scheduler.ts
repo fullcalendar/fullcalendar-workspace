@@ -63,6 +63,17 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         //^^^wait, we don't want do this this for upper-level slot labels
 
         rowEventClass: 'mb-px',
+
+        // TODO: keep DRY with columnMoreLink
+        rowMoreLinkClass: (data) => [
+          `isolate p-px ${params.bgColorClass}`,
+          data.isCompact ? 'rounded-sm' : 'rounded-md', // needed? isn't isCompact always false in timeline?
+        ],
+        rowMoreLinkColorClass: (data) => [
+          `absolute z-0 inset-0 ${params.neutralBgClass}`,
+          data.isCompact ? 'rounded-sm' : 'rounded-md', // needed? isn't isCompact always false in timeline?
+        ],
+        rowMoreLinkInnerClass: 'z-1 p-0.5 text-xs/4',
       },
     },
   }

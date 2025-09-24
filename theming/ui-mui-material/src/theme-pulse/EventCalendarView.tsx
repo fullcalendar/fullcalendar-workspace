@@ -26,7 +26,8 @@ export const optionParams: EventCalendarOptionParams = {
   popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2',
 
   mutedTransparentBgClass: 'bg-(--mui-palette-action-hover)',
-  mutedOpaqueBgClass: 'bg-(--mui-palette-background-paper) relative before:absolute before:inset-0 before:bg-(--mui-palette-action-hover) before:pointer-events-none',
+  mutedBgClass: 'bg-(--mui-palette-action-hover)',
+  neutralBgClass: 'bg-(--mui-palette-divider)',
 
   nonMutedTextClass: 'text-(--mui-palette-text-primary)',
   mutedTextClass: 'text-(--mui-palette-text-secondary)',
