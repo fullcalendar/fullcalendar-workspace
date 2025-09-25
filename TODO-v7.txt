@@ -15,28 +15,12 @@ clean+build all:
 
 theme TODO
 ----------
-Core
-  In resourceTimeGridDay, when today, in modern themes,
-    Multiple dots are displayed (see screenshot)
 All themes
+  change parent for mirror-events and popovers
   refactor all theme CSS variables, especially Monarch
   code cleanliness
     replace all "canvas" css vars with just "bg"
     naming confusion between "med" and "mid"
-    make all theme util functions that emit classnames return STRING (and thus call joinClassNames)?
-    slotLabel(Inner)Class and slotLabelDividerClass
-      should almost always be in the timegrid/timeline sections of the theme
-    for moving slotlabels, always use negative left/right instead of negative margin
-      (better for preserving height for whole slot)
-
-  change parent for mirror-events and popovers
-  how to do responsive toolbars?
-    mui? shadn?
-    just mention in docs?
-
-MUI
-  we should allow MUI to force headers to be uppercase
-  The purple MUI theme should be give "paper" bg color on the calendars because body bg is grey
 Shadcn
   use "secondary" color for week-number pills
 MUI/Shadcn,
@@ -57,6 +41,12 @@ MANUAL TEST
   check print-view
   test prevYear/nextYear icons in all theme systems
   core: test sticky footer scrollbar on timegrid-pannable/normal, daygrid-pannable/normal
+CODE-QUALITY (while going through each theme)
+  make all theme util functions that emit classnames return STRING (and thus call joinClassNames)?
+  slotLabel(Inner)Class and slotLabelDividerClass
+    should almost always be in the timegrid/timeline sections of the theme
+  for moving slotlabels, always use negative left/right instead of negative margin
+    (better for preserving height for whole slot)
 Demo
   Undo hiding of Year-view for Pulse theme
   Refactor demo code to have view-specific demo subcomponents
@@ -294,6 +284,10 @@ put div wrapper around columnMoreLink, just like abs events (TimeGrid)
   we don't like how it already has position:absolute, which could be confusing for theme authors
 bug: in a week view, open a more-popover, click dayheader to follow the navlink,
   the view changes but the popover stays!
+docs: your own responsive behavior for toolbars
+  we can't make one-size fits all, because start/center/right configured by dev
+bug: now-indicator, in resourceTimeGridDay, when today, in modern themes,
+  Multiple dots are displayed (see screenshot)
 
 
 rtl/left-right-coord REFACTOR
