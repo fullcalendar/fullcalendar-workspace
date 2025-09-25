@@ -19,9 +19,6 @@ Core
   In resourceTimeGridDay, when today, in modern themes,
     Multiple dots are displayed (see screenshot)
 All themes
-  more-link
-    for print-view... add a border
-
   refactor all theme CSS variables, especially Monarch
   code cleanliness
     replace all "canvas" css vars with just "bg"
@@ -38,9 +35,6 @@ All themes
   how to do responsive toolbars?
     mui? shadn?
     just mention in docs?
-
-  bug: in a week view, open a more-popover, click dayheader to follow the navlink,
-    the view changes but the popover stays!
 
 MUI
   we should allow MUI to force headers to be uppercase
@@ -300,6 +294,8 @@ print:
     example: pulse buttons have weird background
 put div wrapper around columnMoreLink, just like abs events (TimeGrid)
   we don't like how it already has position:absolute, which could be confusing for theme authors
+bug: in a week view, open a more-popover, click dayheader to follow the navlink,
+  the view changes but the popover stays!
 
 
 rtl/left-right-coord REFACTOR

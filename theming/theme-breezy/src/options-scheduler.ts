@@ -69,7 +69,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           data.isCompact ? 'rounded-sm' : 'rounded-md', // needed? isn't isCompact always false in timeline?
         ],
         rowMoreLinkColorClass: (data) => [
-          `absolute z-0 inset-0 ${params.neutralBgClass}`,
+          `absolute z-0 inset-0 ${params.neutralBgClass} print:bg-white print:border print:border-black`,
           data.isCompact ? 'rounded-sm' : 'rounded-md', // needed? isn't isCompact always false in timeline?
         ],
         rowMoreLinkInnerClass: `z-1 p-0.5 text-xs/4 ${params.textHighColorClass}`,
