@@ -21,8 +21,6 @@ All themes
   code cleanliness
     replace all "canvas" css vars with just "bg"
     naming confusion between "med" and "mid"
-MUI/Shadcn,
-  in Demo, why does buttons show as "resourceTimeGridFiveDay"
 MANUAL TEST
   now-indicator
   ALL stickiness, esp when calendar root is overflow:hidden

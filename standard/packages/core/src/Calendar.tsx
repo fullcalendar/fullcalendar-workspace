@@ -153,6 +153,7 @@ export class Calendar extends CalendarImpl {
   getButtonState(): ButtonStateMap {
     const { currentData, toolbarProps } = this
     const options = currentData.calendarOptions
+    const buttonConfigs = options.buttons || {}
     const viewSpecs = currentData.viewSpecs
 
     const buttonState: ButtonStateMap = {
@@ -192,6 +193,7 @@ export class Calendar extends CalendarImpl {
       const buttonTextKey = viewSpec.optionDefaults.buttonTextKey as string
 
       const buttonText =
+        buttonConfigs[viewSpecName]?.text ||
         (buttonTextKey ? options[buttonTextKey] : '') ||
         (viewSpec.singleUnit ? options[viewSpec.singleUnit + 'Text'] : '') ||
         viewSpecName
