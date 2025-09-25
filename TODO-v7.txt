@@ -16,9 +16,8 @@ clean+build all:
 theme TODO
 ----------
 All themes
-  attach dir=rtl to calendar root and portal roots
-    put it on the shadcn/mui roots too?
-    kill all direction: props!!!
+  stop relying on .isRtl!!!
+    after, test all themes, all ui-systems, for icons especially
   refactor all theme CSS variables, especially Monarch
   code cleanliness
     replace all "canvas" css vars with just "bg"

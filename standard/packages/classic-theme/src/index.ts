@@ -46,24 +46,16 @@ export default createPlugin({
 
     buttons: {
       prev: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronLeft
-          : svgIcons.chevronRight,
+        iconContent: () => svgIcons.chevronLeft,
       },
       next: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronRight
-          : svgIcons.chevronLeft,
+        iconContent: () => svgIcons.chevronRight,
       },
       prevYear: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronsLeft
-          : svgIcons.chevronsRight,
+        iconContent: () => svgIcons.chevronsLeft,
       },
       nextYear: {
-        iconContent: (data) => data.direction === 'ltr'
-          ? svgIcons.chevronsRight
-          : svgIcons.chevronsLeft,
+        iconContent: () => svgIcons.chevronsRight,
       },
     },
     popoverCloseContent: () => svgIcons.x,

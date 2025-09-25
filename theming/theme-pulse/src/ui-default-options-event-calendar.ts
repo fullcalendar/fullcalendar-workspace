@@ -135,35 +135,23 @@ export const defaultUiEventCalendarOptions: {
 
     buttons: {
       prev: {
-        iconContent: (data) => svgs.chevronDown(
-          joinClassNames(
-            buttonIconClass,
-            data.direction === 'rtl' ? '-rotate-90' : 'rotate-90',
-          )
+        iconContent: () => svgs.chevronDown(
+          joinClassNames(buttonIconClass, 'rotate-90 [[dir=rtl]_&]:-rotate-90'),
         )
       },
       next: {
-        iconContent: (data) => svgs.chevronDown(
-          joinClassNames(
-            buttonIconClass,
-            data.direction === 'rtl' ? 'rotate-90' : '-rotate-90',
-          )
+        iconContent: () => svgs.chevronDown(
+          joinClassNames(buttonIconClass, '-rotate-90 [[dir=rtl]_&]:rotate-90'),
         )
       },
       prevYear: {
-        iconContent: (data) => svgs.chevronsLeft(
-          joinClassNames(
-            buttonIconClass,
-            data.direction === 'rtl' && 'rotate-180',
-          )
+        iconContent: () => svgs.chevronsLeft(
+          joinClassNames(buttonIconClass, '[[dir=rtl]_&]:rotate-180'),
         )
       },
       nextYear: {
-        iconContent: (data) => svgs.chevronsLeft(
-          joinClassNames(
-            buttonIconClass,
-            data.direction !== 'rtl' && 'rotate-180',
-          )
+        iconContent: () => svgs.chevronsLeft(
+          joinClassNames(buttonIconClass, 'rotate-180 [[dir=rtl]_&]:rotate-0'),
         )
       },
     },

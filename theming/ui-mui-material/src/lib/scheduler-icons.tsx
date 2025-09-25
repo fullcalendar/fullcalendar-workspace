@@ -6,8 +6,7 @@ export const schedulerOnlyIconOptions: CalendarOptions = {
   resourceExpanderContent: (data) => (
     <ExpandMoreIcon
       className={joinClassNames(
-        data.isExpanded &&
-          (data.direction === 'rtl' ? 'rotate-90' : '-rotate-90')
+        !data.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90'
       )}
     />
   )
