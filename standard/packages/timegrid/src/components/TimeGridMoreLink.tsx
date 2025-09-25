@@ -1,4 +1,4 @@
-import { CssDimValue } from '@fullcalendar/core'
+import { CssDimValue, joinClassNames } from '@fullcalendar/core'
 import {
   MoreLinkContainer, BaseComponent,
   Dictionary, DateProfile, DateRange, DateMarker, EventSegUiInteractionState,
@@ -28,9 +28,11 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
     let { isRtl } = this.context
 
     return (
-      <MoreLinkContainer
-        display='column'
-        className={classNames.abs}
+      <div // the "harness"
+        className={joinClassNames(
+          classNames.abs,
+          classNames.flexCol,
+        )}
         style={{
           top: props.top,
           height: props.height,
@@ -42,16 +44,21 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
             : { right: 0 }
           )
         }}
-        allDayDate={null}
-        segs={props.hiddenSegs}
-        hiddenSegs={props.hiddenSegs}
-        dateSpanProps={props.dateSpanProps}
-        dateProfile={props.dateProfile}
-        todayRange={props.todayRange}
-        popoverContent={() => renderPlainFgSegs(props.hiddenSegs, props, /* isMirror = */ false)}
-        forceTimed={true}
-        isCompact={false}
-      />
+      >
+        <MoreLinkContainer
+          className={classNames.liquid}
+          display='column'
+          allDayDate={null}
+          segs={props.hiddenSegs}
+          hiddenSegs={props.hiddenSegs}
+          dateSpanProps={props.dateSpanProps}
+          dateProfile={props.dateProfile}
+          todayRange={props.todayRange}
+          popoverContent={() => renderPlainFgSegs(props.hiddenSegs, props, /* isMirror = */ false)}
+          forceTimed={true}
+          isCompact={false}
+        />
+      </div>
     )
   }
 }

@@ -55,8 +55,11 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         slotLabelInnerClass: 'p-1 text-sm',
         slotLabelDividerClass: `border-b ${params.borderColorClass} shadow-sm`,
 
+        // best place for this?
+        rowEventClass: 'me-px mb-px',
+
         // TODO: keep DRY with columnMoreLink
-        rowMoreLinkClass: `isolate p-px rounded-sm ${params.bgColorClass}`,
+        rowMoreLinkClass: `relative me-px mb-px p-px rounded-sm ${params.bgColorClass}`,
         rowMoreLinkColorClass: `absolute z-0 inset-0 rounded-sm ${params.neutralBgClass}`,
         rowMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
       },

@@ -294,7 +294,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: 'px-2 py-1 font-semibold',
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `isolate p-px rounded-md ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
+      columnMoreLinkClass: `relative p-px rounded-md ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
       columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.neutralBgClass}`,
       columnMoreLinkInnerClass: 'z-1 p-0.5 text-xs/4',
       // TODO: see columnMoreLinkClass in timeGrid below...

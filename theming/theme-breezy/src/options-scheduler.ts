@@ -33,8 +33,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceGroupLaneClass: `border ${params.borderMidColorClass} ${params.mutedBgClass}`,
       resourceLaneClass: `border ${params.borderMidColorClass}`,
-      // resourceLaneTopClass: 'h-0.5',
-      // resourceLaneBottomClass: 'h-1', // fix BUG, why this need to be so thick?
+      resourceLaneBottomClass: 'h-3',
 
       resourceIndentClass: 'items-center ms-1 -me-1',
       resourceExpanderClass: params.textHighColorClass,
@@ -62,11 +61,11 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         slotLabelInnerClass: '-ms-1 pe-6 py-2',
         //^^^wait, we don't want do this this for upper-level slot labels
 
-        rowEventClass: 'mb-px',
+        rowEventClass: 'me-px mb-px',
 
         // TODO: keep DRY with columnMoreLink
         rowMoreLinkClass: (data) => [
-          `isolate p-px ${params.bgColorClass}`,
+          `relative me-px mb-px p-px ${params.bgColorClass}`,
           data.isCompact ? 'rounded-sm' : 'rounded-md', // needed? isn't isCompact always false in timeline?
         ],
         rowMoreLinkColorClass: (data) => [

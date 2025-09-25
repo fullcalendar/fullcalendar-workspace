@@ -63,7 +63,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
 
         // TODO: keep DRY with columnMoreLink
-        rowMoreLinkClass: `isolate me-px p-px ${params.bgColorClass}`,
+        rowMoreLinkClass: `relative me-px mb-px p-px ${params.bgColorClass}`,
         rowMoreLinkColorClass: `absolute z-0 inset-0 ${params.neutralBgClass}`,
         rowMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 

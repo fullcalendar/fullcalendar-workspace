@@ -19,6 +19,9 @@ import { EventRangeProps } from '../component-util/event-rendering.js'
 import { computeEarliestStart, computeLatestEnd, SlicedCoordRange } from '../coord-range.js'
 import classNames from '../internal-classnames.js'
 
+/*
+TODO: simplify this interface. don't need all el attrs
+*/
 export interface MoreLinkContainerProps extends Partial<ElAttrsProps> {
   dateProfile: DateProfile
   todayRange: DateRange

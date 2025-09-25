@@ -46,9 +46,11 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
   private refineRenderProps = memoizeObjArg(refineRenderProps)
 
   // internal
-  private disconnectFooterHeight?: () => void
+  private disconnectTopHeight?: () => void
+  private disconnectBottomHeight?: () => void
+  private topHeight?: number
+  private bottomHeight?: number
   private eventsHeight?: number
-  private footerHeight?: number
   private slicer = new TimelineLaneSlicer()
 
   render() {
@@ -126,7 +128,8 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               // dimensions
               slotWidth={props.slotWidth}
             />
-            <div // TODO: track height
+            <div
+              ref={this.handleTopEl}
               className={generateClassName(options.resourceLaneTopClass, renderProps)}
             />
             <TimelineFg
@@ -149,7 +152,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
               heightRef={this.handleEventsHeight}
             />
             <div
-              ref={this.handleFooterEl}
+              ref={this.handleBottomEl}
               className={generateClassName(options.resourceLaneBottomClass, renderProps)}
             />
           </div>
@@ -163,24 +166,37 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
     afterSize(this.handleHeight)
   }
 
-  handleFooterEl = (footerEl: HTMLElement) => {
-    if (this.disconnectFooterHeight) {
-      this.disconnectFooterHeight()
-      this.disconnectFooterHeight = undefined
+  handleTopEl = (topEl: HTMLElement) => {
+    if (this.disconnectTopHeight) {
+      this.disconnectTopHeight()
+      this.disconnectTopHeight = undefined
+    }
+    if (topEl) {
+      this.disconnectTopHeight = watchHeight(topEl, (topHeight) => {
+        this.topHeight = topHeight
+        afterSize(this.handleHeight)
+      })
+    }
+  }
+
+  handleBottomEl = (footerEl: HTMLElement) => {
+    if (this.disconnectBottomHeight) {
+      this.disconnectBottomHeight()
+      this.disconnectBottomHeight = undefined
     }
     if (footerEl) {
-      this.disconnectFooterHeight = watchHeight(footerEl, (footerHeight) => {
-        this.footerHeight = footerHeight
+      this.disconnectBottomHeight = watchHeight(footerEl, (bottomHeight) => {
+        this.bottomHeight = bottomHeight
         afterSize(this.handleHeight)
       })
     }
   }
 
   handleHeight = () => {
-    const { eventsHeight, footerHeight } = this
+    const { topHeight, bottomHeight, eventsHeight } = this
 
-    if (eventsHeight != null && footerHeight != null) {
-      setRef(this.props.heightRef, eventsHeight + footerHeight)
+    if (topHeight != null && bottomHeight != null && eventsHeight != null) {
+      setRef(this.props.heightRef, topHeight + bottomHeight + eventsHeight)
     }
   }
 }

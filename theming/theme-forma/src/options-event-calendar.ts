@@ -372,7 +372,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         // TODO: move to general settings? or always have this type of thing in timeGrid?
         // TODO: keep DRY with timeline rowMoreLink
-        columnMoreLinkClass: `isolate mb-px p-px rounded-xs ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
+        columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
         columnMoreLinkColorClass: `z-0 absolute inset-0 ${params.neutralBgClass}`,
         columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 

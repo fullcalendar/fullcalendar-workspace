@@ -232,7 +232,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: 'px-2 py-1 font-medium',
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `isolate p-px rounded-lg ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
+      columnMoreLinkClass: `relative p-px rounded-lg ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
       columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.neutralBgClass}`,
       columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
