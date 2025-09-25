@@ -22,6 +22,8 @@ export default function Scheduler({
   availableViews = schedulerAvailableViews,
   addButton,
   className,
+  height,
+  contentHeight,
   ...calendarOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
@@ -36,6 +38,7 @@ export default function Scheduler({
         display: 'flex',
         flexDirection: 'column',
         gap: 2.5,
+        height,
       }}
     >
       <EventCalendarToolbar
@@ -46,6 +49,8 @@ export default function Scheduler({
       />
       <Box
         sx={{
+          flexGrow: 1,
+          minHeight: 0,
           bgcolor: 'background.paper',
           borderStyle: 'solid',
           borderColor: 'divider',
@@ -60,10 +65,11 @@ export default function Scheduler({
         }}
       >
         <SchedulerView
+          height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
-          borderless
           controller={controller}
           {...calendarOptions}
+          borderless
           plugins={[
             ...eventCalendarPlugins,
             ...schedulerOnlyPlugins,

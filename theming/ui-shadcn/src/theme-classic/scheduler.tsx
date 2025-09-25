@@ -27,31 +27,39 @@ export function Scheduler({
   availableViews = schedulerAvailableViews,
   addButton,
   className,
+  height,
+  contentHeight,
   ...calendarOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
   const borderlessX = calendarOptions.borderlessX ?? calendarOptions.borderless
 
   return (
-    <div className={cn(className, 'flex flex-col gap-5')}>
+    <div
+      className={cn(className, 'flex flex-col gap-5')}
+      style={{ height }}
+    >
       <EventCalendarToolbar
         className={borderlessX ? 'px-3' : ''}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
       />
-      <SchedulerView
-        className='border rounded-sm overflow-hidden bg-background'
-        initialView={availableViews[0]}
-        controller={controller}
-        {...calendarOptions}
-        borderlessTop={false}
-        plugins={[
-          ...eventCalendarPlugins,
-          ...schedulerOnlyPlugins,
-          ...(calendarOptions.plugins || []),
-        ]}
-      />
+      <div className='grow min-h-0'>
+        <SchedulerView
+          className='border rounded-sm overflow-hidden bg-background'
+          height={height !== undefined ? '100%' : contentHeight}
+          initialView={availableViews[0]}
+          controller={controller}
+          {...calendarOptions}
+          borderlessTop={false}
+          plugins={[
+            ...eventCalendarPlugins,
+            ...schedulerOnlyPlugins,
+            ...(calendarOptions.plugins || []),
+          ]}
+        />
+      </div>
     </div>
   )
 }
