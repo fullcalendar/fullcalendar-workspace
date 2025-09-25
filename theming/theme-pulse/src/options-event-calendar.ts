@@ -234,7 +234,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // TODO: keep DRY with timeline rowMoreLink
       columnMoreLinkClass: `relative m-0.5 p-px rounded-lg ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
       columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.neutralBgClass}`,
-      columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
+      columnMoreLinkInnerClass: `z-10 p-0.5 text-xs ${params.nonMutedTextClass}`,
 
       allDayHeaderClass: 'items-center', // v-align
       allDayHeaderInnerClass: `p-2 text-xs ${params.mutedTextClass}`,

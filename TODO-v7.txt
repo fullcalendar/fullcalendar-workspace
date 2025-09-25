@@ -21,7 +21,6 @@ Core
 All themes
   more-link
     for print-view... add a border
-    explicit more-link text-color for color-opinionated themes?
 
   refactor all theme CSS variables, especially Monarch
   code cleanliness

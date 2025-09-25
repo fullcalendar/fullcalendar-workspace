@@ -132,7 +132,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x('size-5'),
+    popoverCloseContent: () => svgs.x(`size-5 ${optionParams.textHighColorClass}`),
   },
 
   views: baseEventCalendarOptions.views,

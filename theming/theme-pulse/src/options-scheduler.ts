@@ -52,7 +52,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       timeline: {
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
         slotLabelClass: 'justify-center', // v-align
-        slotLabelInnerClass: 'p-1 text-sm',
+        slotLabelInnerClass: `p-1 text-sm ${params.nonMutedTextClass}`,
         slotLabelDividerClass: `border-b ${params.borderColorClass} shadow-sm`,
 
         // best place for this?
@@ -61,7 +61,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         // TODO: keep DRY with columnMoreLink
         rowMoreLinkClass: `relative me-px mb-px p-px rounded-sm ${params.bgColorClass}`,
         rowMoreLinkColorClass: `absolute z-0 inset-0 rounded-sm ${params.neutralBgClass}`,
-        rowMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
+        rowMoreLinkInnerClass: `z-10 p-0.5 text-xs ${params.nonMutedTextClass}`,
       },
     },
   }

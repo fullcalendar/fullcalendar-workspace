@@ -158,6 +158,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isStart && 'ms-1',
       data.isEnd && 'me-1',
     ],
+    rowEventInnerClass: params.textHighColorClass,
 
     listItemEventClass: (data) => [
       `${params.ghostButtonClass} p-px`,
@@ -240,7 +241,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ^^^NOTE: should core determine flex-direction because core needs to do sticky anyway, right!?
       */
       blockEventTimeClass: 'text-(--fc-event-color) contrast-150 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
-      blockEventTitleClass: 'opacity-80 whitespace-nowrap overflow-hidden shrink-100', // shrinks first
+      blockEventTitleClass: `${params.textHighColorClass} opacity-80 whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
 
       backgroundEventColorClass: `bg-(--fc-event-color) ${params.backgroundEventColorClass}`,
       backgroundEventTitleClass: (data) => [
@@ -296,7 +297,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // TODO: keep DRY with timeline rowMoreLink
       columnMoreLinkClass: `relative p-px rounded-md ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
       columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.neutralBgClass}`,
-      columnMoreLinkInnerClass: 'z-1 p-0.5 text-xs/4',
+      columnMoreLinkInnerClass: `z-1 p-0.5 text-xs/4 ${params.textHighColorClass}`,
       // TODO: see columnMoreLinkClass in timeGrid below...
 
       fillerClass: `border ${params.borderLowColorClass} ${params.bgColorClass}`,
