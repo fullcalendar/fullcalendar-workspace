@@ -21,11 +21,7 @@ All themes
   code cleanliness
     replace all "canvas" css vars with just "bg"
     naming confusion between "med" and "mid"
-Shadcn
-  use "secondary" color for week-number pills
 MUI/Shadcn,
-  in timelineview with multiple timeline headers,
-    2 rows don't sync with two datagrid header rows
   in Demo, why does buttons show as "resourceTimeGridFiveDay"
 MANUAL TEST
   now-indicator
@@ -127,45 +123,48 @@ project: ResizeObserver refactor
     bug: a11y-ci/resource-timegrid-hscroll.html, filler on top header, when scrolled all the way right. is waaay too big
     bug: bottom filler isn't working in a11y-ci/resource-timeline-row-grouping.html
 
-after-beta todo:
-  move away from okhlc colors... bad browser support
-  print-view is messed up
-  think about reviving compact timegrid print view, or at least providing a setting
-    https://fullcalendar.freshdesk.com/a/tickets/11181
-    We already keep this code for buggy firefox
-  delete classic-theme and bootstrap5 packages
-  bug: why when resourceGroupHeaderClass bg color removed, we don't see vertical column lines underneath?
-  bugs with isMajor special border on slots
-    doesn't work on resourceTimelineThreeDays/Week/Month (am I not configuring correctly)
-    darker border is incorrectly on some vresource header cells
-  classic-theme: buttons in dark-mode should have colors inverted: selected should be lighter than non-selected
-  [rename] CustomContentGenerator -> ContentGenerator (and customGenerator)
-  [rename?] is EventDisplayData the best name when there's interaction-like props like isSelected?
-  accept objects for *Class inputs
-  rename listDaySideFormat -> listDayAltFormat ?
-    (because theme might not decide to put it on the "side")
-    maybe not "alt" because ppl might think related to alt-text
-    TODO: give isAlt/isSide as a prop to the classname-generator
-  ensure isMajor on resourceDayHeaders... this matters!
-    depends on resource-above-dates or opposites
-    HAVE THEMES leverage this. darker line
-  ensure no-margin, no-padding on certain elements
-    ensure not used when not supposed to!
-  update manual theme tests for `icons` removal
-    search for `icons: {`
-  weird how expander is valigned differently than resource-area header/cell content
-  audit all justify/align in theme. ensure axis is intuitive
-  DRY up function utils in MorePopover
-  rename isHeader -> inHeader (or just do "is" for everything)
-  make a "cn" public utility
-  dont allow margins on dayHeaderInnerClass or any class really!
-  should vresource headers be sticky! yes! not the case in resourceTimeGridWeek
-    for both cases of datesAboveHeaders
-    maybe even do centering trick we do for slot labels!?
-  nice way of doing shadow when scroll-down?
-  i don't like how we need to do transparent border for non-divider when isHeader
-    solution: put it IN the scroller (sibling of the canvas),
-    also, this way we can do a nowIndicator DOT above it within the scroller
+
+AFTER BETA
+----------
+
+move away from okhlc colors... bad browser support
+print-view is messed up
+think about reviving compact timegrid print view, or at least providing a setting
+  https://fullcalendar.freshdesk.com/a/tickets/11181
+  We already keep this code for buggy firefox
+delete classic-theme and bootstrap5 packages
+bug: why when resourceGroupHeaderClass bg color removed, we don't see vertical column lines underneath?
+bugs with isMajor special border on slots
+  doesn't work on resourceTimelineThreeDays/Week/Month (am I not configuring correctly)
+  darker border is incorrectly on some vresource header cells
+classic-theme: buttons in dark-mode should have colors inverted: selected should be lighter than non-selected
+[rename] CustomContentGenerator -> ContentGenerator (and customGenerator)
+[rename?] is EventDisplayData the best name when there's interaction-like props like isSelected?
+accept objects for *Class inputs
+rename listDaySideFormat -> listDayAltFormat ?
+  (because theme might not decide to put it on the "side")
+  maybe not "alt" because ppl might think related to alt-text
+  TODO: give isAlt/isSide as a prop to the classname-generator
+ensure isMajor on resourceDayHeaders... this matters!
+  depends on resource-above-dates or opposites
+  HAVE THEMES leverage this. darker line
+ensure no-margin, no-padding on certain elements
+  ensure not used when not supposed to!
+update manual theme tests for `icons` removal
+  search for `icons: {`
+weird how expander is valigned differently than resource-area header/cell content
+audit all justify/align in theme. ensure axis is intuitive
+DRY up function utils in MorePopover
+rename isHeader -> inHeader (or just do "is" for everything)
+make a "cn" public utility
+dont allow margins on dayHeaderInnerClass or any class really!
+should vresource headers be sticky! yes! not the case in resourceTimeGridWeek
+  for both cases of datesAboveHeaders
+  maybe even do centering trick we do for slot labels!?
+nice way of doing shadow when scroll-down?
+i don't like how we need to do transparent border for non-divider when isHeader
+  solution: put it IN the scroller (sibling of the canvas),
+  also, this way we can do a nowIndicator DOT above it within the scroller
 bug: when datesAboveResources, and multiple resources per-day,
   the day text is overabbreviates as "Thu" when it still has a lot of room
 bug:
@@ -288,6 +287,10 @@ docs: your own responsive behavior for toolbars
   we can't make one-size fits all, because start/center/right configured by dev
 bug: now-indicator, in resourceTimeGridDay, when today, in modern themes,
   Multiple dots are displayed (see screenshot)
+bug: in resource-timeline, when 2 rows of datagrid headers & 2 rows of slotLabels,
+  the header-rows heights' should sync with eachother
+  but I believe I ripped this out and let flexbox-growing take-over
+  TODO: restore header-row height syncing across panes
 
 
 rtl/left-right-coord REFACTOR
