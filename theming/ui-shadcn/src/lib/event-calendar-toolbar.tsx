@@ -46,7 +46,9 @@ export function EventCalendarToolbar({
             aria-label={buttons.prev.hint}
             variant='ghost'
             size='icon'
-          ><ChevronLeftIcon /></Button>
+          >
+            <ChevronLeftIcon className='[[dir=rtl]_&]:rotate-180' />
+          </Button>
           <Button
             onClick={() => controller.next()}
             disabled={buttons.next.isDisabled}
@@ -54,7 +56,7 @@ export function EventCalendarToolbar({
             variant='ghost'
             size='icon'
           >
-            <ChevronRightIcon />
+            <ChevronRightIcon className='[[dir=rtl]_&]:rotate-180' />
           </Button>
         </div>
         <div className='text-xl'>{controller.view?.title}</div>

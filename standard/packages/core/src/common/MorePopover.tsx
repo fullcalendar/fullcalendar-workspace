@@ -111,6 +111,8 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           classNames.abs,
           classNames.internalPopover,
         )}
+        // HACK because of portal
+        dir={context.isRtl ? 'rtl' : undefined}
         ref={this.handleRootEl}
       >
         <div

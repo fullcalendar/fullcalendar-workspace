@@ -27,6 +27,7 @@ export function EventCalendar({
   className,
   height,
   contentHeight,
+  direction,
   ...calendarOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
@@ -37,6 +38,7 @@ export function EventCalendar({
     <div
       className={cn(className, 'flex flex-col gap-6')}
       style={{ height }}
+      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         className={borderlessX ? 'px-3' : ''}

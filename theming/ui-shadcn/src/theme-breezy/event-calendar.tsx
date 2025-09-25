@@ -27,6 +27,7 @@ export function EventCalendar({
   className,
   height,
   contentHeight,
+  direction,
   ...calendarOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
@@ -45,6 +46,7 @@ export function EventCalendar({
         !borderlessBottom && 'border-b',
       )}
       style={{ height }}
+      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         className='border-b p-4 bg-sidebar text-sidebar-foreground'

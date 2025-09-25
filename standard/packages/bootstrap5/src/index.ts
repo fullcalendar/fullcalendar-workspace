@@ -28,10 +28,10 @@ export default createPlugin({
     iconClass: 'bi',
     icons: { // killed
       close: { classNames: 'bi-x-lg' },
-      prev: { classNames: (data) => `bi-chevron-${startSide(data.direction)}` },
-      next: { classNames: (data) => `bi-chevron-${endSide(data.direction)}` },
-      prevYear: { classNames: (data) => `bi-chevron-double-${startSide(data.direction)}` },
-      nextYear: { classNames: (data) => `bi-chevron-double-${endSide(data.direction)}` },
+      prev: { classNames: 'bi-chevron-left' },
+      next: { classNames: 'bi-chevron-right}' },
+      prevYear: { classNames: 'bi-chevron-double-left' },
+      nextYear: { classNames: 'bi-chevron-double-right}' },
     },
     eventClass: (data) => [
       data.event.display === 'background' && 'fc-bg-event',
@@ -143,12 +143,4 @@ function getSlotClass(data: any) {
       data.isFuture && 'fc-slot-future',
       data.isOther && 'fc-slot-other',
     ]
-}
-
-function startSide(direction: 'ltr' | 'rtl'): string {
-  return direction === 'ltr' ? 'left' : 'right'
-}
-
-function endSide(direction: 'ltr' | 'rtl'): string {
-  return direction === 'ltr' ? 'right' : 'left'
 }

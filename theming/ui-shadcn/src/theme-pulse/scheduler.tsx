@@ -29,6 +29,7 @@ export function Scheduler({
   className,
   height,
   contentHeight,
+  direction,
   ...calendarOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
@@ -39,6 +40,7 @@ export function Scheduler({
     <div
       className={cn(className, 'flex flex-col gap-6')}
       style={{ height }}
+      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         className={borderlessX ? 'px-3' : ''}

@@ -24,6 +24,7 @@ export default function Scheduler({
   className,
   height,
   contentHeight,
+  direction,
   ...calendarOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
@@ -39,6 +40,7 @@ export default function Scheduler({
         gap: 2.5,
         height,
       }}
+      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         className={borderlessX ? 'px-3' : ''}

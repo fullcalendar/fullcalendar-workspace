@@ -29,6 +29,7 @@ export function Scheduler({
   className,
   height,
   contentHeight,
+  direction,
   ...calendarOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
@@ -48,6 +49,7 @@ export function Scheduler({
         !borderlessBottom && 'border-b',
       )}
       style={{ height }}
+      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         className='p-4'

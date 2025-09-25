@@ -67,12 +67,16 @@ export default function EventCalendarToolbar({
             onClick={() => controller.prev()}
             disabled={buttons.prev.isDisabled}
             aria-label={buttons.prev.hint}
-          ><ChevronLeftIcon /></IconButton>
+          >
+            <ChevronLeftIcon className='[[dir=rtl]_&]:rotate-180' />
+          </IconButton>
           <IconButton
             onClick={() => controller.next()}
             disabled={buttons.next.isDisabled}
             aria-label={buttons.next.hint}
-          ><ChevronRightIcon /></IconButton>
+          >
+            <ChevronRightIcon className='[[dir=rtl]_&]:rotate-180' />
+          </IconButton>
         </Box>
         <Typography variant="h5">{controller.view?.title}</Typography>
       </Box>

@@ -19,7 +19,6 @@ export class ResourceExpander extends BaseComponent<ResourceExpanderProps> {
 
     const renderProps: ResourceExpanderData = {
       isExpanded: props.isExpanded,
-      direction: options.direction,
     }
 
     return (

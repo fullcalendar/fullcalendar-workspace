@@ -24,6 +24,7 @@ export default function Scheduler({
   className,
   height,
   contentHeight,
+  direction,
   ...calendarOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
@@ -50,6 +51,7 @@ export default function Scheduler({
           overflow: 'hidden',
         })
       }}
+      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         sx={{

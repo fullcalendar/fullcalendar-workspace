@@ -5,13 +5,12 @@ import { Emitter } from '../common/Emitter.js'
 import { CssDimValue } from '../scrollgrid/util.js'
 import { updateSizeSync } from '../component-util/resize-observer.js'
 import { joinArrayishClassNames } from '../util/html.js'
-import { generateClassName } from '../content-inject/ContentContainer.js'
 import classNames from '../internal-classnames.js'
 
 export interface CalendarRootProps {
   options: CalendarOptions
   emitter: Emitter<CalendarListeners>
-  children: (className: string, height: CssDimValue | undefined, forPrint: boolean) => ComponentChildren
+  children: (isRtl: boolean, className: string, height: CssDimValue | undefined, forPrint: boolean) => ComponentChildren
 }
 
 interface CalendarRootState {
@@ -34,21 +33,18 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
     let borderlessBottom = options.borderlessBottom ?? options.borderless
 
     let className = joinArrayishClassNames(
-      generateClassName(options.class ?? options.className, {
-        // direction: options.direction,
-        // mediaType: forPrint ? 'print' : 'screen',
-      }),
+      options.class,
+      options.className,
       borderlessTop && classNames.borderlessTop,
       borderlessBottom && classNames.borderlessBottom,
       borderlessX && classNames.borderlessX,
       classNames.borderBoxRoot,
       classNames.flexCol,
-      options.direction === 'ltr' ? classNames.ltrRoot : classNames.rtlRoot,
       forPrint ? classNames.calendarPrintRoot : classNames.calendarScreenRoot,
       (borderlessX || borderlessTop || borderlessBottom) && classNames.noEdgeEffects,
     )
 
-    return props.children(className, options.height, forPrint)
+    return props.children(options.direction === 'rtl', className, options.height, forPrint)
   }
 
   componentDidMount() {

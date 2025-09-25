@@ -23,6 +23,7 @@ export default function EventCalendar({
   className,
   height,
   contentHeight,
+  direction,
   ...calendarOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
@@ -38,6 +39,7 @@ export default function EventCalendar({
         gap: 3,
         height,
       }}
+      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         className={borderlessX ? 'px-3' : ''}

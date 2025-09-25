@@ -70,7 +70,8 @@ export class Calendar extends CalendarImpl {
       flushSync(() => {
         render(
           <CalendarRoot options={currentData.calendarOptions} emitter={currentData.emitter}>
-            {(className: string, height: number, forPrint: boolean) => {
+            {(isRtl: boolean, className: string, height: number, forPrint: boolean) => {
+              this.setIsRtl(isRtl)
               this.setClassName(className)
               this.setHeight(height)
 
@@ -101,6 +102,7 @@ export class Calendar extends CalendarImpl {
       this.isRendered = false
       render(null, this.el)
 
+      this.setIsRtl(false)
       this.setClassName('')
       this.setHeight('')
     }
@@ -235,6 +237,14 @@ export class Calendar extends CalendarImpl {
 
   private setHeight(height: CssDimValue) {
     applyStyleProp(this.el, 'height', height)
+  }
+
+  private setIsRtl(isRtl: boolean) {
+    if (isRtl) {
+      this.el.dir = 'rtl'
+    } else {
+      this.el.removeAttribute('dir')
+    }
   }
 }
 

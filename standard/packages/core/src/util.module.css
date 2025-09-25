@@ -19,16 +19,6 @@
   box-sizing: border-box !important;
 }
 
-.ltrRoot {
-  direction: ltr !important;
-  text-align: left !important;
-}
-
-.rtlRoot {
-  direction: rtl !important;
-  text-align: right !important;
-}
-
 /* classes attached to <body> */
 .notAllowed,
 .notAllowed * {
@@ -57,11 +47,12 @@
 
 /* HACK for Safari. Can't do break-inside:avoid with flexbox items, likely b/c it's not standard:
    https://stackoverflow.com/a/60256345 */
-.calendarPrintRoot.ltrRoot .safeTiles > * {
+.calendarPrintRoot .safeTiles > * {
   float: left !important;
 }
 
-.calendarPrintRoot.rtlRoot .safeTiles > * {
+[dir=rtl] .calendarPrintRoot .safeTiles > *,
+.calendarPrintRoot[dir=rtl] .safeTiles > * {
   float: right !important;
 }
 
@@ -81,12 +72,8 @@
   cursor: col-resize !important;
 }
 
-.ltrRoot .colResizer {
-  right: -3px !important;
-}
-
-.rtlRoot .colResizer {
-  left: -3px !important;
+.colResizer {
+  inset-inline-end: -3px !important;
 }
 
 .cursorPointer {
@@ -101,14 +88,20 @@
   cursor: s-resize !important;
 }
 
-.ltrRoot .cursorResizeS,
-.rtlRoot .cursorResizeE {
+.cursorResizeS {
   cursor: w-resize !important;
 }
 
-.ltrRoot .cursorResizeE,
-.rtlRoot .cursorResizeS {
+[dir=rtl] .cursorResizeS {
   cursor: e-resize !important;
+}
+
+.cursorResizeE {
+  cursor: e-resize !important;
+}
+
+[dir=rtl] .cursorResizeE {
+  cursor: w-resize !important;
 }
 
 .hit,
@@ -180,20 +173,12 @@
   border-bottom: 0 !important;
 }
 
-.ltrRoot .borderOnlyS {
-  border-right: 0 !important;
+.borderOnlyS {
+  border-inline-end: 0 !important;
 }
 
-.rtlRoot .borderOnlyS {
-  border-left: 0 !important;
-}
-
-.ltrRoot .borderOnlyE {
-  border-left: 0 !important;
-}
-
-.rtlRoot .borderOnlyE {
-  border-right: 0 !important;
+.borderOnlyE {
+  border-inline-start: 0 !important;
 }
 
 .borderlessX {
@@ -215,12 +200,8 @@
 }
 
 /* for matching cell start-border, assumed to be 1px, which can't be guaranteed */
-.ltrRoot .fakeBorderS {
-  border-left: 1px solid transparent !important;
-}
-
-.rtlRoot .fakeBorderS {
-  border-right: 1px solid transparent !important;
+.fakeBorderS {
+  border-inline-start: 1px solid transparent !important;
 }
 
 /* Flexbox Utils */
@@ -330,12 +311,8 @@ which can't rely on dynamic height detection after print-flag activated.
   position: absolute !important;
 }
 
-.ltrRoot .start0 {
-  left: 0 !important;
-}
-
-.rtlRoot .start0 {
-  right: 0 !important;
+.start0 {
+  inset-inline-start: 0 !important;
 }
 
 .fill {

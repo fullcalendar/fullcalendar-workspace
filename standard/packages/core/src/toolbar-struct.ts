@@ -41,9 +41,7 @@ export type ButtonMountData = MountData<ButtonData>
 
 export type ButtonDisplay = 'auto' | 'icon' | 'text' | 'icon-text' | 'text-icon'
 
-export interface ButtonIconData {
-  direction: 'ltr' | 'rtl' // TODO: DRY
-}
+export interface ButtonIconData {}
 
 export interface ButtonInput {
   didMount?: DidMountHandler<ButtonMountData>

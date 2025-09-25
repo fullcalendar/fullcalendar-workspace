@@ -23,6 +23,7 @@ export default function EventCalendar({
   className,
   height,
   contentHeight,
+  direction,
   ...calendarOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
@@ -49,6 +50,7 @@ export default function EventCalendar({
           overflow: 'hidden',
         })
       }}
+      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         sx={{ padding: 2 }}
