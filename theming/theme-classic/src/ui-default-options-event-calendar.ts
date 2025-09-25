@@ -1,14 +1,11 @@
-import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
 const bgColorClass = 'bg-(--fc-classic-background-color)'
 const bgColorOutlineClass = 'outline-(--fc-classic-background-color)'
 
-const getButtonIconClass = (flip?: boolean) => joinClassNames(
-  'size-5',
-  flip && 'rotate-180',
-)
+const buttonIconClass = 'size-5'
 
 export const optionParams: EventCalendarOptionParams = {
   borderColorClass: 'border-(--fc-classic-border-color)',
@@ -74,16 +71,16 @@ export const defaultUiEventCalendarOptions: {
 
     buttons: {
       prev: {
-        iconContent: (data) => svgs.chevronLeft(getButtonIconClass(data.direction === 'rtl')),
+        iconContent: () => svgs.chevronLeft(`${buttonIconClass} [[dir=rtl]_&]:rotate-180`),
       },
       next: {
-        iconContent: (data) => svgs.chevronLeft(getButtonIconClass(data.direction !== 'rtl')),
+        iconContent: () => svgs.chevronLeft(`${buttonIconClass} rotate-180 [[dir=rtl]_&]:rotate-0`),
       },
       prevYear: {
-        iconContent: (data) => svgs.chevronsLeft(getButtonIconClass(data.direction === 'rtl')),
+        iconContent: () => svgs.chevronsLeft(`${buttonIconClass} [[dir=rtl]_&]:rotate-180`),
       },
       nextYear: {
-        iconContent: (data) => svgs.chevronsLeft(getButtonIconClass(data.direction !== 'rtl')),
+        iconContent: () => svgs.chevronsLeft(`${buttonIconClass} rotate-180 [[dir=rtl]_&]:rotate-0`),
       },
     },
 
