@@ -7,9 +7,7 @@ import {
   DropData, EventReceiveData, EventLeaveData,
 } from './public-types.js'
 
-export const OPTION_REFINERS = {
-  fixedMirrorParent: identity as Identity<HTMLElement>,
-}
+export const OPTION_REFINERS = {}
 
 type InteractionOptionRefiners = typeof OPTION_REFINERS
 export type InteractionOptions = RawOptionsFromRefiners<InteractionOptionRefiners>

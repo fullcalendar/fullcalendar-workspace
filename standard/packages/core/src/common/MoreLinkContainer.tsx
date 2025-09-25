@@ -58,7 +58,6 @@ either on root `classNames` or within inner element
 */
 export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, MoreLinkContainerState> {
   private linkEl: HTMLElement
-  private parentEl: HTMLElement
 
   state = {
     isPopoverOpen: false,
@@ -168,7 +167,6 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   dateProfile={props.dateProfile}
                   todayRange={props.todayRange}
                   dateSpanProps={props.dateSpanProps}
-                  parentEl={this.parentEl}
                   alignEl={
                     props.alignElRef ?
                       props.alignElRef.current :
@@ -188,27 +186,11 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
     )
   }
 
-  componentDidMount() {
-    this.updateParentEl()
-  }
-
-  componentDidUpdate() {
-    this.updateParentEl()
-  }
-
   handleLinkEl = (linkEl: HTMLElement | null) => {
     this.linkEl = linkEl
 
     if (this.props.elRef) {
       setRef(this.props.elRef, linkEl)
-    }
-  }
-
-  updateParentEl() {
-    if (this.linkEl) {
-      this.parentEl = this.linkEl.closest(
-        `.${classNames.internalViewOuter}`, // HACK. reconsider
-      )
     }
   }
 

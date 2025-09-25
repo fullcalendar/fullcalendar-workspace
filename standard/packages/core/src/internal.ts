@@ -68,6 +68,7 @@ export {
 } from './options-manip.js'
 
 export {
+  getAppendableRoot,
   applyStyle,
   getEventTargetViaRoot,
   getUniqueDomId,

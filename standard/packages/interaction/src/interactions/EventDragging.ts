@@ -22,6 +22,7 @@ import {
   buildEventApis,
   isInteractionValid,
   EventImpl,
+  getAppendableRoot,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { HitDragging, isHitsEqual } from './HitDragging.js'
@@ -100,12 +101,7 @@ export class EventDragging extends Interaction { // TODO: rename to EventSelecti
         getComponentTouchDelay(component) :
         null
 
-    if (options.fixedMirrorParent) {
-      mirror.parentNode = options.fixedMirrorParent
-    } else {
-      mirror.parentNode = origTarget.closest(`.${classNames.internalRoot}`)
-    }
-
+    mirror.parentNode = getAppendableRoot(origTarget) as HTMLElement
     mirror.revertDuration = options.dragRevertDuration
 
     let isValid =

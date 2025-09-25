@@ -16,7 +16,7 @@ clean+build all:
 theme TODO
 ----------
 All themes
-  change parent for mirror-events and popovers
+  attache dir=rtl to calendar root and portal roots
   refactor all theme CSS variables, especially Monarch
   code cleanliness
     replace all "canvas" css vars with just "bg"
@@ -208,8 +208,6 @@ obvious API win, unrelated to V7:
   an events function should be able to return a non-promise,
   aka an events array.
 api: better way to ensure min slot width/height. right now we depend on theme!?
-Kill fixedMirrorParent --- always use BODY
-  Okay now because all our classnames are atomic
 ensure nowIndicator doesn't appear in print view
 [dist] No more CJS!
 [dist] Support module-sync in package.json
@@ -507,6 +505,7 @@ changelog: navlinks on single-month title!
 changelog: sticky-bottom for no-events message
 changelog: classic theme has slightly more spacious look
 changelog: eventSlicing is new
+changelog: removed fixedMirrorParent (always body or shadow-root)
 
 
 Docs

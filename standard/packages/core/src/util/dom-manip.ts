@@ -1,5 +1,13 @@
 import { Dictionary } from '../options.js'
 
+export function getAppendableRoot(el: HTMLElement): Node {
+  const root = el.getRootNode()
+  if (root instanceof Document) {
+    return root.body || root.documentElement // pick body if available
+  }
+  return root
+}
+
 // Style
 // ----------------------------------------------------------------------------------------------------------------
 

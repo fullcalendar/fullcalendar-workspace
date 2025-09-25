@@ -45,7 +45,6 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
       classNames.flexCol,
       options.direction === 'ltr' ? classNames.ltrRoot : classNames.rtlRoot,
       forPrint ? classNames.calendarPrintRoot : classNames.calendarScreenRoot,
-      classNames.internalRoot,
       (borderlessX || borderlessTop || borderlessBottom) && classNames.noEdgeEffects,
     )
 

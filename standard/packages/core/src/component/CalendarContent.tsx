@@ -93,7 +93,6 @@ export class CalendarContent extends PureComponent<CalendarContentProps> {
             classNames.flexCol,
             classNames.rel,
             viewHeightLiquid && classNames.liquid,
-            classNames.internalViewOuter,
           )}
           style={{
             height: viewHeight,

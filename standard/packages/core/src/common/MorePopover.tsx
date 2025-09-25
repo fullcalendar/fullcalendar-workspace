@@ -15,7 +15,7 @@ import { createFormatter } from '../datelib/formatting.js'
 import { buildNavLinkAttrs } from './nav-link.js'
 import classNames from '../internal-classnames.js'
 import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
-import { applyStyle, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-manip.js'
+import { applyStyle, getAppendableRoot, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-manip.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
 import { computeClippedClientRect } from '../util/dom-geom.js'
 
@@ -24,7 +24,6 @@ export interface MorePopoverProps {
   startDate: DateMarker
   endDate: DateMarker
   dateProfile: DateProfile
-  parentEl: HTMLElement
   alignEl: HTMLElement
   alignParentTop?: string
   forceTimed?: boolean
@@ -181,7 +180,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           ref={this.focusEndRef}
         />
       </div>,
-      props.parentEl,
+      getAppendableRoot(props.alignEl),
     )
   }
 
@@ -294,9 +293,10 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       popoverLeft = Math.min(popoverLeft, document.documentElement.clientWidth - PADDING_FROM_VIEWPORT - popoverDims.width)
       popoverLeft = Math.max(popoverLeft, PADDING_FROM_VIEWPORT)
 
-      // HACK
-      // could use .offsetParent, however, the bounding rect includes border, so off-by-one
-      let origin = alignEl.closest(`.${classNames.internalView}`).getBoundingClientRect()
+      let rootNode = getAppendableRoot(alignEl)
+      let origin = (rootNode as HTMLElement).getBoundingClientRect
+        ? (rootNode as HTMLElement).getBoundingClientRect()
+        : (rootNode as ShadowRoot).firstElementChild.getBoundingClientRect() // yuck
 
       applyStyle(rootEl, {
         top: popoverTop - origin.top,
