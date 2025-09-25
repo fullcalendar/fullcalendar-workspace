@@ -47,10 +47,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceExpanderClass: 'opacity-65',
 
       resourceLaneClass: `border ${params.borderColorClass}`,
-      resourceLaneBottomClass: (data) => !data.isCompact && 'pb-3',
+      resourceLaneBottomClass: (data) => !data.isCompact && 'h-3',
 
       // Non-resource Timeline
-      timelineBottomClass: 'pb-3',
+      timelineBottomClass: 'h-3',
     },
     views: {
       timeline: {

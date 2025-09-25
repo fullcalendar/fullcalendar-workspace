@@ -22,8 +22,6 @@ All themes
   more-link
     for print-view... add a border
     explicit more-link text-color for color-opinionated themes?
-    resourceLaneBottomClass should always be specified has height!
-      (same w/ dayCellTopClass/dayCellBottomClass/timelineBottomClass)
 
   refactor all theme CSS variables, especially Monarch
   code cleanliness
