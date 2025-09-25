@@ -21,11 +21,12 @@ export default function EventCalendar({
   availableViews = eventCalendarAvailableViews,
   addButton,
   className,
+  height,
+  contentHeight,
   ...calendarOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
   const borderlessX = calendarOptions.borderlessX ?? calendarOptions.borderless
-  const borderlessTop = calendarOptions.borderlessTop ?? calendarOptions.borderless
   const borderlessBottom = calendarOptions.borderlessBottom ?? calendarOptions.borderless
 
   return (
@@ -35,6 +36,7 @@ export default function EventCalendar({
         display: 'flex',
         flexDirection: 'column',
         gap: 3,
+        height,
       }}
     >
       <EventCalendarToolbar
@@ -45,6 +47,8 @@ export default function EventCalendar({
       />
       <Box
         sx={{
+          flexGrow: 1,
+          minHeight: 0,
           bgcolor: 'background.paper',
           borderStyle: 'solid',
           borderColor: 'divider',
@@ -52,15 +56,15 @@ export default function EventCalendar({
           borderRightWidth: borderlessX ? 0 : 1,
           borderTopWidth: 1,
           borderBottomWidth: borderlessBottom ? 0 : 1,
-          ...(borderlessX || borderlessTop || borderlessBottom ? {} : {
+          ...((borderlessX || borderlessBottom) ? {} : {
             borderRadius: 1,
             overflow: 'hidden',
           })
         }}
       >
         <EventCalendarView
+          height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
-          borderless
           controller={controller}
           {...calendarOptions}
           plugins={[

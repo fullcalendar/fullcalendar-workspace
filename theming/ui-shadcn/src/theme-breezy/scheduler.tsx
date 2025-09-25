@@ -27,6 +27,8 @@ export function Scheduler({
   availableViews = schedulerAvailableViews,
   addButton,
   className,
+  height,
+  contentHeight,
   ...calendarOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
@@ -35,32 +37,36 @@ export function Scheduler({
   const borderlessBottom = calendarOptions.borderlessBottom ?? calendarOptions.borderless
 
   return (
-    <div className={cn(
-      className,
-      'bg-background',
-      !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-lg overflow-hidden',
-      !borderlessX && 'border-x',
-      !borderlessTop && 'border-t',
-      !borderlessBottom && 'border-b',
-    )}>
+    <div
+      className={cn(
+        className,
+        'flex flex-col bg-background',
+        !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-lg overflow-hidden',
+        !borderlessX && 'border-x',
+        !borderlessTop && 'border-t',
+        !borderlessBottom && 'border-b',
+      )}
+      style={{ height }}
+    >
       <EventCalendarToolbar
         className='border-b p-4 bg-muted/50 text-sidebar-foreground'
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
       />
-      <SchedulerView
-        initialView={availableViews[0]}
-        borderlessX
-        borderlessBottom
-        controller={controller}
-        {...calendarOptions}
-        plugins={[
-          ...eventCalendarPlugins,
-          ...schedulerOnlyPlugins,
-          ...(calendarOptions.plugins || []),
-        ]}
-      />
+      <div className='grow min-h-0'>
+        <SchedulerView
+          height={height !== undefined ? '100%' : contentHeight}
+          initialView={availableViews[0]}
+          controller={controller}
+          {...calendarOptions}
+          plugins={[
+            ...eventCalendarPlugins,
+            ...schedulerOnlyPlugins,
+            ...(calendarOptions.plugins || []),
+          ]}
+        />
+      </div>
     </div>
   )
 }

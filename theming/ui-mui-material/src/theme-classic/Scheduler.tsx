@@ -28,7 +28,6 @@ export default function Scheduler({
 }: SchedulerProps) {
   const controller = useCalendarController()
   const borderlessX = calendarOptions.borderlessX ?? calendarOptions.borderless
-  const borderlessTop = calendarOptions.borderlessTop ?? calendarOptions.borderless
   const borderlessBottom = calendarOptions.borderlessBottom ?? calendarOptions.borderless
 
   return (
@@ -58,7 +57,7 @@ export default function Scheduler({
           borderRightWidth: borderlessX ? 0 : 1,
           borderTopWidth: 1,
           borderBottomWidth: borderlessBottom ? 0 : 1,
-          ...(borderlessX || borderlessTop || borderlessBottom ? {} : {
+          ...((borderlessX || borderlessBottom) ? {} : {
             borderRadius: 1,
             overflow: 'hidden',
           })
@@ -69,7 +68,6 @@ export default function Scheduler({
           initialView={availableViews[0]}
           controller={controller}
           {...calendarOptions}
-          borderless
           plugins={[
             ...eventCalendarPlugins,
             ...schedulerOnlyPlugins,

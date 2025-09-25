@@ -7,7 +7,8 @@ import { eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
 import SchedulerView from './SchedulerView.js'
 
-export interface SchedulerProps extends CalendarOptions {
+export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean
@@ -20,6 +21,9 @@ export interface SchedulerProps extends CalendarOptions {
 export default function Scheduler({
   availableViews = schedulerAvailableViews,
   addButton,
+  className,
+  height,
+  contentHeight,
   ...calendarOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
@@ -29,7 +33,11 @@ export default function Scheduler({
 
   return (
     <Box
+      className={className}
       sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height,
         bgcolor: 'background.paper',
         borderStyle: 'solid',
         borderColor: 'divider',
@@ -53,18 +61,24 @@ export default function Scheduler({
         availableViews={availableViews}
         addButton={addButton}
       />
-      <SchedulerView
-        initialView={availableViews[0]}
-        borderlessX
-        borderlessBottom
-        controller={controller}
-        {...calendarOptions}
-        plugins={[
-          ...eventCalendarPlugins,
-          ...schedulerOnlyPlugins,
-          ...(calendarOptions.plugins || []),
-        ]}
-      />
+      <Box
+        sx={{
+          flexGrow: 1,
+          minHeight: 0,
+        }}
+      >
+        <SchedulerView
+          height={height !== undefined ? '100%' : contentHeight}
+          initialView={availableViews[0]}
+          controller={controller}
+          {...calendarOptions}
+          plugins={[
+            ...eventCalendarPlugins,
+            ...schedulerOnlyPlugins,
+            ...(calendarOptions.plugins || []),
+          ]}
+        />
+      </Box>
     </Box>
   )
 }

@@ -30,6 +30,7 @@ export function EventCalendar({
 }: EventCalendarProps) {
   const controller = useCalendarController()
   const borderlessX = calendarOptions.borderlessX ?? calendarOptions.borderless
+  const borderlessBottom = calendarOptions.borderlessBottom ?? calendarOptions.borderless
 
   return (
     <div
@@ -44,12 +45,16 @@ export function EventCalendar({
       />
       <div className='grow min-h-0'>
         <EventCalendarView
-          className='border rounded-sm overflow-hidden bg-background'
+          className={cn(
+            'bg-background border-t',
+            !borderlessX && !borderlessBottom && 'rounded-sm overflow-hidden',
+            !borderlessX && 'border-x',
+            !borderlessBottom && 'border-b',
+          )}
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}
           {...calendarOptions}
-          borderlessTop={false}
           plugins={[
             ...eventCalendarPlugins,
             ...(calendarOptions.plugins || []),

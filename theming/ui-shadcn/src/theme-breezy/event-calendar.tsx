@@ -25,6 +25,8 @@ export function EventCalendar({
   availableViews = eventCalendarAvailableViews,
   addButton,
   className,
+  height,
+  contentHeight,
   ...calendarOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
@@ -33,31 +35,35 @@ export function EventCalendar({
   const borderlessBottom = calendarOptions.borderlessBottom ?? calendarOptions.borderless
 
   return (
-    <div className={cn(
-      className,
-      'bg-background',
-      !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-lg overflow-hidden',
-      !borderlessX && 'border-x',
-      !borderlessTop && 'border-t',
-      !borderlessBottom && 'border-b',
-    )}>
+    <div
+      className={cn(
+        className,
+        'flex flex-col bg-background',
+        !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-lg overflow-hidden',
+        !borderlessX && 'border-x',
+        !borderlessTop && 'border-t',
+        !borderlessBottom && 'border-b',
+      )}
+      style={{ height }}
+    >
       <EventCalendarToolbar
         className='border-b p-4 bg-sidebar text-sidebar-foreground'
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
       />
-      <EventCalendarView
-        initialView={availableViews[0]}
-        borderlessX
-        borderlessBottom
-        controller={controller}
-        {...calendarOptions}
-        plugins={[
-          ...eventCalendarPlugins,
-          ...(calendarOptions.plugins || []),
-        ]}
-      />
+      <div className='grow min-h-0'>
+        <EventCalendarView
+          height={height !== undefined ? '100%' : contentHeight}
+          initialView={availableViews[0]}
+          controller={controller}
+          {...calendarOptions}
+          plugins={[
+            ...eventCalendarPlugins,
+            ...(calendarOptions.plugins || []),
+          ]}
+        />
+      </div>
     </div>
   )
 }

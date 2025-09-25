@@ -29,9 +29,7 @@ All themes
     for moving slotlabels, always use negative left/right instead of negative margin
       (better for preserving height for whole slot)
 
-  for MUI/Shadcn wrapper, is the height/contentHeight setting still relevant?
-  setting height:'auto', but MUI/Shadcn sometimes have overflow:hidden,
-    so can't have sticky stuff in it!?
+  change parent for mirror-events and popovers
   how to do responsive toolbars?
     mui? shadn?
     just mention in docs?
