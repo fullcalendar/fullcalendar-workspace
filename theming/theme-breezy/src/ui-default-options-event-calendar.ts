@@ -2,6 +2,7 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
+// TODO: rename to tab stuff
 const selectBgClass = 'bg-(--fc-breezy-tab-selected)'
 const selectTextClass = 'text-(--fc-breezy-tab-selected-foreground)'
 const nonSelectTextClass = 'text-(--fc-breezy-tab-foreground)'
@@ -15,7 +16,7 @@ export const optionParams: EventCalendarOptionParams = {
   // weird we need to do this border stuff too!!!
 
   eventColor: 'var(--fc-breezy-event)',
-  backgroundEventColor: 'var(--color-green-500)',
+  backgroundEventColor: 'var(--fc-breezy-background-event)',
   backgroundEventColorClass: 'brightness-150 opacity-15',
 
   popoverClass: 'bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg shadow-lg',
@@ -32,7 +33,9 @@ export const optionParams: EventCalendarOptionParams = {
   mutedBgClass: 'bg-(--fc-breezy-muted)',
   neutralBgClass: 'bg-(--fc-breezy-neutral)',
   highlightClass: 'bg-(--fc-breezy-highlight)',
-  ghostButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30', // TODO: kill gray-500
+
+  // TODO: use glassy + cloudy
+  ghostButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
 
   textLowColorClass: 'text-(--fc-breezy-neutral-foreground)',
   textMidColorClass: 'text-(--fc-breezy-muted-foreground)',

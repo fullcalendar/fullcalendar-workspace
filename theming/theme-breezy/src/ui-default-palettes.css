@@ -4,6 +4,8 @@
   --fc-breezy-background: var(--color-white);
   --fc-breezy-muted: var(--color-gray-50);
   --fc-breezy-neutral: var(--color-gray-200);
+  --fc-breezy-glassy: color-mix(in oklab, var(--color-gray-500) 20%, transparent); /* TODO */
+  --fc-breezy-cloudy: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
   --fc-breezy-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
   --fc-breezy-now: red; /* TODO: better */
 
@@ -41,6 +43,8 @@
   --fc-breezy-background: var(--color-gray-900);
   --fc-breezy-muted: color-mix(in oklab, var(--color-gray-800) 50%, transparent);
   --fc-breezy-neutral: var(--color-gray-800);
+  --fc-breezy-glassy: color-mix(in oklab, var(--color-white) 10%, transparent);
+  --fc-breezy-cloudy: color-mix(in oklab, var(--color-white) 20%, transparent);
   --fc-breezy-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
   --fc-breezy-now: red; /* TODO: better */
 
@@ -62,11 +66,11 @@
   /* tabs */
   --fc-breezy-tab-foreground: var(--fc-breezy-muted-foreground);
   --fc-breezy-tab-selected-foreground: var(--fc-breezy-strong-foreground);
-  --fc-breezy-tab-selected: color-mix(in oklab, var(--color-white) 10%, transparent);
+  --fc-breezy-tab-selected: var(--fc-breezy-glassy);
 
   /* secondary buttons */
-  --fc-breezy-secondary: color-mix(in oklab, var(--color-white) 10%, transparent);
-  --fc-breezy-secondary-hover: color-mix(in oklab, var(--color-white) 20%, transparent);
+  --fc-breezy-secondary: var(--fc-breezy-glassy);
+  --fc-breezy-secondary-hover: var(--fc-breezy-cloudy);
   --fc-breezy-secondary-border: var(--fc-breezy-muted-border);
   --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
   --fc-breezy-secondary-icon: var(--fc-breezy-muted-foreground);
@@ -83,6 +87,7 @@ For colors beyond indigo, see: https://catalyst.tailwindui.com/docs/button
   --fc-breezy-primary-hover: var(--color-indigo-500);
   --fc-breezy-primary-foreground: var(--color-white);
   --fc-breezy-event: var(--color-blue-500);
+  --fc-breezy-background-event: var(--color-green-500); /* TODO */
 }
 [data-palette=indigo][data-color-scheme=dark] { /* shift lighter */
   --fc-breezy-primary: var(--color-indigo-500);
@@ -95,6 +100,7 @@ For colors beyond indigo, see: https://catalyst.tailwindui.com/docs/button
   --fc-breezy-primary-hover: var(--color-rose-500);
   --fc-breezy-primary-foreground: var(--color-white);
   --fc-breezy-event: var(--color-pink-500);
+  --fc-breezy-background-event: var(--color-green-500); /* TODO */
 }
 
 [data-palette=emerald] {
@@ -102,6 +108,7 @@ For colors beyond indigo, see: https://catalyst.tailwindui.com/docs/button
   --fc-breezy-primary-hover: var(--color-emerald-500);
   --fc-breezy-primary-foreground: var(--color-white);
   --fc-breezy-event: var(--color-green-500);
+  --fc-breezy-background-event: var(--color-green-500); /* TODO */
 }
 
 [data-palette=honey] {
@@ -109,4 +116,5 @@ For colors beyond indigo, see: https://catalyst.tailwindui.com/docs/button
   --fc-breezy-primary-hover: var(--color-yellow-400);
   --fc-breezy-primary-foreground: var(--color-white);
   --fc-breezy-event: var(--color-amber-500);
+  --fc-breezy-background-event: var(--color-green-500); /* TODO */
 }
