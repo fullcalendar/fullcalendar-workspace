@@ -69,6 +69,7 @@ export {
 
 export {
   getAppendableRoot,
+  computeElIsRtl,
   applyStyle,
   getEventTargetViaRoot,
   getUniqueDomId,

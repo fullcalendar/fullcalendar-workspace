@@ -169,7 +169,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
           ...props.attrs,
           ...attrs,
           // HACK because this event-element gets attached to root during some dragging
-          dir: (props.isDragging && context.isRtl) ? 'rtl' : undefined,
+          dir: (props.isDragging && options.direction === 'rtl') ? 'rtl' : undefined,
         }}
         className={outerClassName}
         style={{

@@ -1,5 +1,5 @@
 import { DateComponent } from '../component/DateComponent.js'
-import { setRef, watchHeight, watchWidth } from '../internal.js'
+import { computeElIsRtl, setRef, watchHeight, watchWidth } from '../internal.js'
 import { Dictionary } from '../options.js'
 import { ComponentChildren, createElement, Ref } from '../preact.js'
 import { joinClassNames } from '../util/html.js'
@@ -149,9 +149,8 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   // -----------------------------------------------------------------------------------------------
 
   get x(): number {
-    const { isRtl } = this.context
     const { el } = this
-    return el ? getNormalizedScrollX(el, isRtl) : 0
+    return el ? getNormalizedScrollX(el) : 0
   }
 
   get y(): number {
@@ -160,7 +159,6 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
   }
 
   scrollTo({ x, y }: { x?: number, y?: number }): void {
-    const { isRtl } = this.context
     const { el } = this
 
     if (el) {
@@ -169,7 +167,7 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
       }
 
       if (x != null) {
-        setNormalizedScrollX(el, isRtl, x)
+        setNormalizedScrollX(el, x)
       }
     }
   }
@@ -187,12 +185,14 @@ export class Scroller extends DateComponent<ScrollerProps> implements ScrollerIn
 // -------------------------------------------------------------------------------------------------
 // We can drop normalization when support for Chromium-based <86 is dropped (see Notion)
 
-export function getNormalizedScrollX(el: HTMLElement, isRtl: boolean): number {
+export function getNormalizedScrollX(el: HTMLElement): number {
   const { scrollLeft } = el
+  const isRtl = computeElIsRtl(el)
   return isRtl ? getNormalizedRtlScrollX(scrollLeft, el) : scrollLeft
 }
 
-export function setNormalizedScrollX(el: HTMLElement, isRtl: boolean, x: number): void {
+export function setNormalizedScrollX(el: HTMLElement, x: number): void {
+  const isRtl = computeElIsRtl(el)
   el.scrollLeft = isRtl ? getNormalizedRtlScrollLeft(x, el) : x
 }
 

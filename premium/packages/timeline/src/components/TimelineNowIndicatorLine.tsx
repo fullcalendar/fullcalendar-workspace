@@ -2,7 +2,6 @@ import { BaseComponent, DateMarker, joinClassNames, NowIndicatorDot, NowIndicato
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
-import { horizontalCoordToCss } from '../TimelineCoords.js'
 import { dateToCoord } from '../timeline-positioning.js'
 
 export interface TimelineNowIndicatorLineProps {
@@ -16,12 +15,13 @@ export interface TimelineNowIndicatorLineProps {
 export class TimelineNowIndicatorLine extends BaseComponent<TimelineNowIndicatorLineProps> {
   render() {
     const { props, context } = this
-    const xStyle = props.slotWidth != null
-      ? horizontalCoordToCss(
-          dateToCoord(props.nowDate, context.dateEnv, props.tDateProfile, props.slotWidth),
-          context.isRtl
-        )
-      : {}
+
+    const xStyle: { insetInlineStart?: number } =
+      props.slotWidth == null
+        ? {}
+        : {
+            insetInlineStart: dateToCoord(props.nowDate, context.dateEnv, props.tDateProfile, props.slotWidth)
+          }
 
     return (
       <div

@@ -25,7 +25,6 @@ export interface TimeGridMoreLinkProps {
 export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
   render() {
     let { props } = this
-    let { isRtl } = this.context
 
     return (
       <div // the "harness"
@@ -36,13 +35,8 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
         style={{
           top: props.top,
           height: props.height,
-
-          // HACKS. move to className?
-          zIndex: 9999,
-          ...(isRtl
-            ? { left: 0 }
-            : { right: 0 }
-          )
+          insetInlineEnd: 0,
+          zIndex: 9999, // HACK. move to className?
         }}
       >
         <MoreLinkContainer

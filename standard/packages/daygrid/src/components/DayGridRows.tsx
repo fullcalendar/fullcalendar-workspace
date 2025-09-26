@@ -164,8 +164,8 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
   // Hit System
   // -----------------------------------------------------------------------------------------------
 
-  queryHit(positionLeft: number, positionTop: number, elWidth: number): Hit {
-    const { props, context } = this
+  queryHit(isRtl: boolean, positionLeft: number, positionTop: number, elWidth: number): Hit {
+    const { props } = this
 
     const colCount = props.cellRows[0].length
     const { col, left, right } = computeColFromPosition(
@@ -173,7 +173,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
       elWidth,
       props.colWidth,
       colCount,
-      context.isRtl
+      isRtl
     )
     const { row, top, bottom } = computeRowFromPosition(
       positionTop,

@@ -22,7 +22,6 @@ can pass in their ViewContext to util functions that accept CalendarContext.
 */
 export interface ViewContext extends CalendarContext {
   options: ViewOptionsRefined // more specific than BaseOptionsRefined
-  isRtl: boolean
   dateProfileGenerator: DateProfileGenerator
   viewSpec: ViewSpec
   viewApi: ViewImpl
@@ -55,7 +54,6 @@ export function buildViewContext(
     viewSpec,
     viewApi,
     dateProfileGenerator,
-    isRtl: viewOptions.direction === 'rtl',
     registerInteractiveComponent,
     unregisterInteractiveComponent,
   }

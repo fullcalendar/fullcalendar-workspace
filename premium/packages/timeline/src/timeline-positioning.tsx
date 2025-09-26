@@ -1,29 +1,6 @@
-import { CoordSpan, DateEnv, DateMarker, DateProfile, isInt, startOfDay } from '@fullcalendar/core/internal';
+import { DateEnv, DateMarker, DateProfile, isInt, startOfDay } from '@fullcalendar/core/internal';
 import { TimelineDateProfile } from './timeline-date-profile.js'
 import { Duration } from '@fullcalendar/core'
-
-export function createVerticalStyle(
-  props: CoordSpan | undefined,
-): { top: number, height: number } | undefined {
-  if (props) {
-    return {
-      top: props.start,
-      height: props.size,
-    };
-  }
-}
-
-export function createHorizontalStyle( // TODO: DRY up?
-  props: CoordSpan | undefined,
-  isRtl: boolean
-): { left: number, width: number } | { right: number, width: number } | undefined {
-  if (props) {
-    return {
-      [isRtl ? 'right' : 'left']: props.start,
-      width: props.size,
-    } as any
-  }
-}
 
 // Timeline-specific
 // -------------------------------------------------------------------------------------------------

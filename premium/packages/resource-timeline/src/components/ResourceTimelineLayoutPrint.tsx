@@ -213,9 +213,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                 )}
                 style={{
                   width: timeCanvasWidth,
-                  // TODO: nicer way of doing this
-                  left: context.isRtl ? undefined : -timeAreaOffset,
-                  right: context.isRtl ? -timeAreaOffset : undefined,
+                  insetInlineStart: -timeAreaOffset,
                 }}
               >
                 {cellRows.map((cells, rowIndex) => {
@@ -276,10 +274,9 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               // from falling short in height for subsequent pages
               height: BG_HEIGHT,
 
-              // TODO: nicer way of doing this
-              left: context.isRtl ? 0 : props.spreadsheetWidth,
-              right: context.isRtl ? props.spreadsheetWidth : 0,
               // TODO: add the divider width too!!!
+              insetInlineStart: props.spreadsheetWidth,
+              insetInlineEnd: 0,
             }}
           >
             <div
@@ -287,10 +284,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
               style={{
                 width: timeCanvasWidth,
                 height: BG_HEIGHT, // HACK
-
-                // TODO: nicer way of doing this
-                left: context.isRtl ? undefined : -timeAreaOffset,
-                right: context.isRtl ? -timeAreaOffset : undefined,
+                insetInlineStart:  -timeAreaOffset,
               }}
             >
               <TimelineSlats
@@ -405,8 +399,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
                       businessHours={resource.businessHours || fallbackBusinessHours}
                       width={timeCanvasWidth}
                       slotWidth={slotWidth}
-                      left={context.isRtl ? undefined : -timeAreaOffset}
-                      right={context.isRtl ? -timeAreaOffset : undefined}
+                      insetInlineStart={-timeAreaOffset}
                       borderBottom={isNotLast}
                     />
                   </div>

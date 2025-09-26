@@ -977,10 +977,10 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
     this.scroll.fromBottom = undefined
   }
 
-  queryHit(positionLeft: number, positionTop: number): Hit {
+  queryHit(isRtl: boolean, positionLeft: number, positionTop: number): Hit {
     let { props, context, bodyLayouts, bodyTops, bodyHeights } = this
     const { dateProfile, tDateProfile, timeCanvasWidth, slotWidth } = props
-    const { dateEnv, isRtl } = context
+    const { dateEnv } = context
 
     let coordRes = findEntityByCoord(
       bodyLayouts,

@@ -34,8 +34,7 @@ export interface ResourceLaneProps {
   // position
   top?: number
   height?: number
-  left?: number
-  right?: number
+  insetInlineStart?: number
 
   // refs
   heightRef?: Ref<number>
@@ -94,10 +93,9 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         )}
         style={{
           top: props.top,
-          left: props.left,
-          right: props.right,
           width: props.width,
           height: props.height,
+          insetInlineStart: props.insetInlineStart,
         }}
         renderProps={renderProps}
         generatorName={undefined}

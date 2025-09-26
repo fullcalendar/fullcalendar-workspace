@@ -179,7 +179,7 @@ export class HitDragging {
           positionLeft >= 0 && positionLeft < width &&
           positionTop >= 0 && positionTop < height
         ) {
-          let hit = component.queryHit(positionLeft, positionTop, width, height)
+          let hit = component.queryHit(offsetTracker.isRtl, positionLeft, positionTop, width, height)
           if (
             hit && (
               // make sure the hit is within activeRange, meaning it's not a dead cell

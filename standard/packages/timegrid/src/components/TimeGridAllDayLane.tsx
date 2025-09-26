@@ -33,8 +33,8 @@ export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps> {
     }
   }
 
-  queryHit(positionLeft: number, positionTop: number, elWidth: number): Hit {
-    const { props, context, heightRef } = this
+  queryHit(isRtl: boolean, positionLeft: number, positionTop: number, elWidth: number): Hit {
+    const { props, heightRef } = this
 
     const colCount = props.cells.length
     const { col, left, right } = computeColFromPosition(
@@ -42,7 +42,7 @@ export class TimeGridAllDayLane extends DateComponent<TimeGridAllDayLaneProps> {
       elWidth,
       props.colWidth,
       colCount,
-      context.isRtl
+      isRtl
     )
     const cell = props.cells[col]
     const cellStartDate = cell.date

@@ -16,8 +16,6 @@ clean+build all:
 theme TODO
 ----------
 All themes
-  stop relying on .isRtl!!!
-    after, test all themes, all ui-systems, for icons especially
   refactor all theme CSS variables, especially Monarch
   code cleanliness
     replace all "canvas" css vars with just "bg"
@@ -100,9 +98,6 @@ ASAP
 project: shadcn JSON file
   example: https://www.kibo-ui.com/components/calendar
     npx shadcn@latest add https://www.kibo-ui.com/registry/calendar.json
-
-project: RTL refactor
-  (see below)
 
 project: ResizeObserver refactor
   ResourceTimeline height:auto
@@ -290,87 +285,7 @@ bug: in resource-timeline, when 2 rows of datagrid headers & 2 rows of slotLabel
   TODO: restore header-row height syncing across panes
 think about browser support. just require logical properties? (2021)
   https://caniuse.com/css-logical-props
-
-
-rtl/left-right-coord REFACTOR
------------------------------
-TO REMIND:
-  interface CalendarDisplayData {
-    direction: 'ltr' | 'rtl'
-    mediaType: 'screen' | 'print'
-  }
-The "mediaType" refactor
-  We detect in core via onbeforeprint/afterprint
-  We must do this in JS because we do adaptive rendering
-  We do NOT want to expose mediaType as a top-level <FullCalendar/> prop because it's only available
-    in premium. Maybe we can provide a premium setting that forces it for development mode?
-    actually probably not because it relies on screen dimensions before transitioning to print
-  No SSR concerns
-  KILL CalendarDisplayData.mediaType because any CSS, theme or develop-written,
-    can just use media queries or tailwind "print:" prefix
-The "colorScheme" refactor
-  Never a setting in CalendarDisplayData. Never used by core.
-  Always used by themes to set css custom vars
-  Awkwardness in our low-code usecase of using PLUGIN for theme (React/Vue/Angular too):
-    you need to include your own color variable declarations
-    because we won't know your dark-mode conditional in advance
-    (whether by media query or `.dark`)
-The "direction" refactor
-  Our current codebase is BAD, because options.direction is probably undefined
-    but we keep treating it like it's populated
-  Goal: treat this more like a media-query conditional rather than a setting
-  Kill options.direction and context.isRtl
-  Easy to write direction-aware CSS (via logical properties)
-    browser support for logical properties (year for last browser):
-      inset - 2021 - BAD
-      inset-inline-start/end - WORSE
-      margin-inline-start/end - 2019 - good (use instead of inset when possible!)
-      padding-inline-start/end - 2019 - good
-      margin-inline (shorthand) - 2021 - BAD
-      padding-inline (shorthand) - 2021 - BAD
-      (what tailwind classes do these resolve to?)
-      (in general, we should support 5 years back)
-    How to to inset from RIGHT side!!??
-      .end { right: 0 }
-      [dir=rtl] .end { right: auto; left: 0 }
-      (can make a convenient util className for this)
-    We must to a polyfill transform in css for:
-      - inset // just set left/right/top/bottom
-      - inset-inline // just set left/right
-      - inset-inline-start/end // use right:auto trick above
-      - margin-inline // just set margin-left/right
-      - padding-inline // just set padding-left/right
-    Maybe just do that in AI^^^
-  Harder to read direction-aware coordinates, but just need to know the computed CSS direction
-    of just the current element. always done during a user-interaction like click
-  We must keep the direction prop on <FullCalendar> because locales depend on it
-  Just set <div dir=ltr> and will have treatment as if <HTML> did dir=rtl
-  PROBLEM with places in JS where we need RTL: button icons & ResourceExpander icon:
-    They depend on rotating 180 degress when RTL
-    Use this HACK:
-      tailwind: [dir=rtl]:rotate-180
-      vanilla css: [dir=rtl] { transform: /* */ }
-  React-native (think of it like a media query):
-    import { I18nManager } from 'react-native';
-    const isRTL = I18nManager.isRTL // does not change for duration of app runtime
-RETURNING TO POPOVER and Portal question
-  The popover only need to worry about attaching dir=rtl to itself if
-    the <FullCalendar> option::direction explicitly set to dir=rtl
-  FYI for future: React-native-portal allows sending portal content to a <Host>
-  For React/Angular/Vue
-    render a second element after main calendar and get the ref... will be the portal host
-      make it position: absolute so doesn't conflict with flow?
-      store the ref in the context
-  For Vanilla JS
-    (hard because it renders directly into a parent)
-    just render a stub element after the parent on initialization. don't forget to clean up
-    won't screw up vdom because, if using vanilla, there is no vdom!
-    THINK ABOUT web-component. should be fine
-border-radius
-  mostly the ui-systems decides how popover does it, and outer calendar does it,
-  HOWEVER, there's border-radius on event elements and more link. who decides that?
-  For copy&paste systems (Shadcn), tailwind->tailwind w/ tailwind config deciding radius,
-  but for non-copy&paste (MUI), make customizable? Nah, just hardcode pixel values
+  resizeobserver could be fully relied on!
 
 
 Changelog

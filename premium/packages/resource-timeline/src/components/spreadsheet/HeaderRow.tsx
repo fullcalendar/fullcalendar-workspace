@@ -1,4 +1,4 @@
-import { afterSize, BaseComponent, ElementDragging, joinArrayishClassNames, PointerDragEvent, RefMap, setRef } from "@fullcalendar/core/internal"
+import { afterSize, BaseComponent, computeElIsRtl, ElementDragging, joinArrayishClassNames, PointerDragEvent, RefMap, setRef } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { ColSpec } from '../../structs.js'
@@ -115,13 +115,14 @@ export class HeaderRow extends BaseComponent<HeaderRowProps> {
       let dragging = new ElementDraggingImpl(resizerEl)
 
       dragging.emitter.on('dragstart', () => {
+        const isRtl = computeElIsRtl(resizerEl)
         const startWidth = this.props.colWidths[colIndex]
 
         dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
           if (this.props.onColResize) {
             this.props.onColResize(
               colIndex,
-              startWidth + pev.deltaX * (this.context.isRtl ? -1 : 1)
+              startWidth + pev.deltaX * (isRtl ? -1 : 1)
             )
           }
         })

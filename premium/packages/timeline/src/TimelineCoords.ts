@@ -1,6 +1,4 @@
-import { CssDimValue } from '@fullcalendar/core'
 import {
-  CoordSpan,
   DateEnv,
   DateMarker,
   isInt
@@ -39,32 +37,4 @@ export function computeDateSnapCoverage(date: DateMarker, tDateProfile: Timeline
   }
 
   return snapCoverage
-}
-
-/*
-TODO: DRY up with elsewhere?
-*/
-export function horizontalsToCss(
-  hcoord: CoordSpan | null,
-  isRtl: boolean,
-): { left?: CssDimValue, right?: CssDimValue, width?: CssDimValue } {
-  if (!hcoord) {
-    return {}
-  }
-  if (isRtl) {
-    return { right: hcoord.start, width: hcoord.size }
-  } else {
-    return { left: hcoord.start, width: hcoord.size }
-  }
-}
-
-export function horizontalCoordToCss(
-  start: number,
-  isRtl: boolean,
-): { left?: CssDimValue, right?: CssDimValue } {
-  if (isRtl) {
-    return { right: start }
-  } else {
-    return { left: start }
-  }
 }

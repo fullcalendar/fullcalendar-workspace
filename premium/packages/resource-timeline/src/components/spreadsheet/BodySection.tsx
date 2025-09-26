@@ -29,7 +29,7 @@ Caller is responsible for this.
 */
 export class BodySection extends BaseComponent<BodySectionProps> {
   render() {
-    const { props, context } = this
+    const { props } = this
     const { rowInnerHeightRefMap, rowTops, rowHeights, headerRowSpan, hasNesting } = props
 
     // TODO: less-weird way to get this! more DRY with ResourceTimelineLayoutNormal
@@ -96,11 +96,10 @@ export class BodySection extends BaseComponent<BodySectionProps> {
         <div
           role='rowgroup'
           className={classNames.fillY}
-          style={
-            context.isRtl // TODO: util for this?
-              ? { left: 0, right: resourceX }
-              : { left: resourceX, right: 0 }
-          }
+          style={{
+            insetInlineStart: resourceX,
+            insetInlineEnd: 0,
+          }}
         >
           {/* group rows */}
           {props.flatGroupRowLayouts.map((groupRowLayout) => {

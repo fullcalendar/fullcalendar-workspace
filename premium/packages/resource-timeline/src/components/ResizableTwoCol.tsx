@@ -1,5 +1,5 @@
 import { CssDimValue } from '@fullcalendar/core'
-import { BaseComponent, ElementDragging, PointerDragEvent, setRef, joinClassNames, memoize, joinArrayishClassNames } from '@fullcalendar/core/internal'
+import { BaseComponent, ElementDragging, PointerDragEvent, setRef, joinClassNames, memoize, joinArrayishClassNames, computeElIsRtl } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { ComponentChildren, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DimConfig, parseDimConfig, resizeDimConfig, serializeDimConfig } from '../col-positioning.js'
@@ -90,17 +90,19 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
     const ElementDraggingImpl = this.context.pluginHooks.elementDraggingImpl
 
     if (ElementDraggingImpl) {
-      let dragging = this.resizerDragging = new ElementDraggingImpl(this.resizerElRef.current)
+      const resizerEl = this.resizerElRef.current
+      const dragging = this.resizerDragging = new ElementDraggingImpl(resizerEl)
 
       dragging.emitter.on('dragstart', () => {
+        const isRtl = computeElIsRtl(resizerEl)
         const viewWidth = this.rootEl.getBoundingClientRect().width
         const origWidth = this.startElRef.current.getBoundingClientRect().width
         const origWidthConfig = this.widthConfig
         let newWidthConfig: DimConfig | undefined
 
         dragging.emitter.on('dragmove', (pev: PointerDragEvent) => {
-          let newWidth = Math.min(
-            origWidth + pev.deltaX * (this.context.isRtl ? -1 : 1),
+          const newWidth = Math.min(
+            origWidth + pev.deltaX * (isRtl ? -1 : 1),
             viewWidth,
           )
           newWidthConfig = resizeDimConfig(origWidthConfig, newWidth, viewWidth)

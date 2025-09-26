@@ -419,12 +419,12 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
     }
   }
 
-  queryHit(positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit {
+  queryHit(isRtl: boolean, positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit {
     const { props, context, tDateProfile, slotWidth } = this
     const { dateEnv } = context
 
     if (slotWidth) {
-      const x = context.isRtl ? elWidth - positionLeft : positionLeft
+      const x = isRtl ? elWidth - positionLeft : positionLeft
       const slatIndex = Math.floor(x / slotWidth)
       const slatX = slatIndex * slotWidth
       const partial = (x - slatX) / slotWidth // floating point number between 0 and 1
@@ -443,7 +443,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
       let endCoord = startCoord + snapWidth
       let left: number, right: number
 
-      if (context.isRtl) {
+      if (isRtl) {
         left = elWidth - endCoord
         right = elWidth - startCoord
       } else {

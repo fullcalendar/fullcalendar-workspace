@@ -15,7 +15,7 @@ import { createFormatter } from '../datelib/formatting.js'
 import { buildNavLinkAttrs } from './nav-link.js'
 import classNames from '../internal-classnames.js'
 import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
-import { applyStyle, getAppendableRoot, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-manip.js'
+import { applyStyle, computeElIsRtl, getAppendableRoot, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-manip.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
 import { computeClippedClientRect } from '../util/dom-geom.js'
 
@@ -99,6 +99,8 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         ? dayHeaderAlign({ level: 0, inPopover: true })
         : dayHeaderAlign
 
+    const isRtl = computeElIsRtl(props.alignEl)
+
     return createPortal(
       <div
         data-date={fullDateStr}
@@ -112,7 +114,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
           classNames.internalPopover,
         )}
         // HACK because of portal
-        dir={context.isRtl ? 'rtl' : undefined}
+        dir={isRtl ? 'rtl' : undefined}
         ref={this.handleRootEl}
       >
         <div
@@ -199,7 +201,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     }
   }
 
-  queryHit(positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit {
+  queryHit(isRtl: boolean, positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit {
     let { rootEl, props } = this
 
     if (
@@ -274,11 +276,12 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
   }
 
   private updateSize() {
-    let { isRtl } = this.context
     let { alignEl, alignParentTop } = this.props
     let { rootEl } = this
 
-    let alignmentRect = computeClippedClientRect(alignEl)
+    const isRtl = computeElIsRtl(alignEl)
+    const alignmentRect = computeClippedClientRect(alignEl)
+
     if (alignmentRect) {
       let popoverDims = rootEl.getBoundingClientRect()
 

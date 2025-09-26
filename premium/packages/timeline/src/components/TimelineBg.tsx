@@ -6,7 +6,6 @@ import {
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { computeSegHorizontals } from '../event-placement.js'
-import { horizontalsToCss } from '../TimelineCoords.js'
 import { TimelineRange } from '../TimelineLaneSlicer.js'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
 
@@ -41,16 +40,16 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
 
   renderSegs(segs: (TimelineRange & EventRangeProps)[], fillType: string) {
     let { tDateProfile, todayRange, nowDate, slotWidth } = this.props
-    let { dateEnv, isRtl, options } = this.context
+    let { dateEnv, options } = this.context
 
     return (
       <Fragment>
         {segs.map((seg) => {
-          let hStyle: ReturnType<typeof horizontalsToCss> // TODO
+          let hStyle: { insetInlineStart?: number, width?: number } = {}
 
           if (slotWidth != null) {
             let segHorizontal = computeSegHorizontals(seg, undefined, dateEnv, tDateProfile, slotWidth)
-            hStyle = horizontalsToCss(segHorizontal, isRtl)
+            hStyle = { insetInlineStart: segHorizontal.start, width: segHorizontal.size }
           }
 
           return (

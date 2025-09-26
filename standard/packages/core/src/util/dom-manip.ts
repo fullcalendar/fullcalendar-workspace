@@ -8,6 +8,10 @@ export function getAppendableRoot(el: HTMLElement): Node {
   return root
 }
 
+export function computeElIsRtl(el: HTMLElement): boolean {
+  return getComputedStyle(el).direction === 'rtl'
+}
+
 // Style
 // ----------------------------------------------------------------------------------------------------------------
 

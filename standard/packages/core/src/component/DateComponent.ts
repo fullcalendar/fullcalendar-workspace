@@ -30,7 +30,7 @@ export abstract class DateComponent<Props=Dictionary, State=Dictionary> extends 
   prepareHits() {
   }
 
-  queryHit(positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit | null {
+  queryHit(isRtl: boolean, positionLeft: number, positionTop: number, elWidth: number, elHeight: number): Hit | null {
     return null // this should be abstract
   }
 

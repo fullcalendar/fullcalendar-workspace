@@ -320,8 +320,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 // which matches how dayGrid looks,
                 // which is important because all-day background events, in TimeGrid,
                 // will render on both at the same time
-                marginLeft: context.isRtl ? undefined : -1,
-                marginRight: context.isRtl ? -1 : undefined,
+                marginInlineStart: -1,
               }}
             >
               {fillType === 'bg-event' ?
@@ -361,35 +360,26 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   TODO: eventually move to width, not left+right
   */
   computeSegHStyle(segRect: SegWebRect) {
-    let { isRtl, options } = this.context
+    let { options } = this.context
     let shouldOverlap = options.slotEventOverlap
     let nearCoord = segRect.levelCoord // the left side if LTR. the right side if RTL. floating-point
     let farCoord = segRect.levelCoord + segRect.thickness // the right side if LTR. the left side if RTL. floating-point
-    let left // amount of space from left edge, a fraction of the total width
-    let right // amount of space from right edge, a fraction of the total width
 
     if (shouldOverlap) {
       // double the width, but don't go beyond the maximum forward coordinate (1.0)
       farCoord = Math.min(1, nearCoord + (farCoord - nearCoord) * 2)
     }
 
-    if (isRtl) {
-      left = 1 - farCoord
-      right = nearCoord
-    } else {
-      left = nearCoord
-      right = 1 - farCoord
-    }
-
     let props = {
       zIndex: segRect.stackDepth + 1, // convert from 0-base to 1-based
-      left: fracToCssDim(left),
-      right: fracToCssDim(right),
+      insetInlineStart: fracToCssDim(nearCoord),
+      insetInlineEnd: fracToCssDim(1 - farCoord),
+      marginInlineEnd: undefined,
     }
 
     if (shouldOverlap && segRect.stackForward) {
       // add padding to the edge so that forward stacked events don't cover the resizer's icon
-      props[isRtl ? 'marginLeft' : 'marginRight'] = 10 * 2 // 10 is a guesstimate of the icon's width
+      props.marginInlineEnd = 10 * 2 // 10 is a guesstimate of the icon's width
     }
 
     return props

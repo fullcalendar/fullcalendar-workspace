@@ -481,6 +481,7 @@ function EventCalendarDemo(props: DemoProps) {
 
   return (
     <EventCalendarComponent
+      // direction='rtl'
       // displayEventTime={true}
       // eventDisplay='block'
       // allDaySlot={false}
@@ -619,6 +620,7 @@ function SchedulerDemo(props: DemoProps) {
 
   return (
     <SchedulerComponent
+      // direction='rtl'
       // weekNumbers
       availableViews={props.availableViews}
       addButton={{

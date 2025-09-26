@@ -74,10 +74,9 @@ export function computeHorizontalsFromSeg(
   seg: SlicedCoordRange,
   colWidth: number | undefined,
   colCount: number,
-  isRtl: boolean,
 ): {
-  left: CssDimValue | undefined,
-  right: CssDimValue | undefined,
+  insetInlineStart: CssDimValue | undefined,
+  insetInlineEnd: CssDimValue | undefined,
 } {
   let fromStart: CssDimValue
   let fromEnd: CssDimValue
@@ -91,11 +90,7 @@ export function computeHorizontalsFromSeg(
     fromEnd = fracToCssDim(1 - seg.end * colWidthFrac)
   }
 
-  if (isRtl) {
-    return { right: fromStart, left: fromEnd }
-  } else {
-    return { left: fromStart, right: fromEnd }
-  }
+  return { insetInlineStart: fromStart, insetInlineEnd: fromEnd }
 }
 
 export function computeColFromPosition(

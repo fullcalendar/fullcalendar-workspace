@@ -12,7 +12,6 @@ import {
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
-import { horizontalsToCss } from '../TimelineCoords.js'
 import { TimelineCoordRange, TimelineRange } from '../TimelineLaneSlicer.js'
 import { TimelineEvent } from './TimelineEvent.js'
 import { TimelineLaneMoreLink } from './TimelineLaneMoreLink.js'
@@ -124,7 +123,7 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
     hiddenGroupTops: Map<string, number>,
     isMirror: boolean,
   ) {
-    let { props, context, segHeightRefMap, moreLinkHeightRefMap } = this
+    let { props, segHeightRefMap, moreLinkHeightRefMap } = this
 
     return (
       <Fragment>
@@ -145,7 +144,8 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
                 visibility: isInvisible ? 'hidden' : undefined,
                 zIndex: 1, // scope z-indexes within
                 top: segTop || 0,
-                ...horizontalsToCss(segHorizontal, context.isRtl),
+                insetInlineStart: segHorizontal.start,
+                width: segHorizontal.size,
               }}
               heightRef={isMirror ? undefined : segHeightRefMap.createRef(instanceId)}
             >
@@ -169,10 +169,8 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
             key={hiddenGroup.key}
             style={{
               top: hiddenGroupTops.get(hiddenGroup.key) || 0,
-              ...horizontalsToCss({ // TODO: better way to do this?
-                start: hiddenGroup.start,
-                size: hiddenGroup.end - hiddenGroup.start
-              }, context.isRtl),
+              insetInlineStart: hiddenGroup.start,
+              width: hiddenGroup.end - hiddenGroup.start,
             }}
             heightRef={moreLinkHeightRefMap.createRef(hiddenGroup.key)}
           >

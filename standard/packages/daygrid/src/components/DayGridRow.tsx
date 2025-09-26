@@ -265,8 +265,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     todayRange: DateRange,
     isMirror: boolean,
   ): VNode[] {
-    const { props, context, segHeightRefMap } = this
-    const { isRtl } = context
+    const { props, segHeightRefMap } = this
     const { colWidth, eventSelection } = props
 
     const colCount = props.cells.length
@@ -282,7 +281,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         continue
       }
 
-      const { left, right } = computeHorizontalsFromSeg(seg, colWidth, colCount, isRtl)
+      const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(seg, colWidth, colCount)
       const localTop = segTops.get(standinFor ? getEventPartKey(standinFor) : key) ?? (isMirror ? 0 : undefined)
       const top = headerHeight != null && localTop != null
         ? headerHeight + localTop
@@ -300,8 +299,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           style={{
             visibility: isInvisible ? 'hidden' : undefined,
             top,
-            left,
-            right,
+            insetInlineStart,
+            insetInlineEnd,
             zIndex: 0, // container inner z-indexes
           }}
           heightRef={
@@ -337,7 +336,6 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     fillType: string,
   ): VNode {
     const { props, context } = this
-    const { isRtl } = context
     const { todayRange, colWidth } = props
 
     const colCount = props.cells.length
@@ -345,7 +343,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 
     for (const seg of segs) {
       const key = buildEventRangeKey(seg.eventRange) // TODO: use different type of key than fg!?
-      const { left, right } = computeHorizontalsFromSeg(seg, colWidth, colCount, isRtl)
+      const { insetInlineStart, insetInlineEnd } = computeHorizontalsFromSeg(seg, colWidth, colCount)
       const isVisible = !seg.standinFor
 
       nodes.push(
@@ -354,8 +352,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           className={classNames.fillY}
           style={{
             visibility: isVisible ? '' : 'hidden',
-            left,
-            right,
+            insetInlineStart,
+            insetInlineEnd,
           }}
         >
           {fillType === 'bg-event' ?

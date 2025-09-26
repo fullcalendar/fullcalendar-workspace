@@ -1,6 +1,6 @@
 import {
   getClippingParents, computeRect,
-  pointInsideRect, Rect,
+  pointInsideRect, Rect, computeElIsRtl,
 } from '@fullcalendar/core/internal'
 import { ElementScrollGeomCache } from './ElementScrollGeomCache.js'
 
@@ -15,9 +15,11 @@ and an determine if a given point is inside the combined clipping rectangle.
 export class OffsetTracker { // ElementOffsetTracker
   scrollCaches: ElementScrollGeomCache[]
   origRect: Rect
+  isRtl: boolean
 
   constructor(public el: HTMLElement) {
     this.origRect = computeRect(el)
+    this.isRtl = computeElIsRtl(el)
 
     // will work fine for divs that have overflow:hidden
     this.scrollCaches = getClippingParents(el).map(
