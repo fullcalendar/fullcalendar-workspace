@@ -2,51 +2,51 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const selectBgClass = 'bg-(--fc-breezy-select-bg)'
-const selectTextClass = 'text-(--fc-breezy-select-text)'
-const nonSelectTextClass = 'text-(--fc-breezy-non-select-text)'
-const hoverSelectTextClass = 'hover:text-(--fc-breezy-select-text)' // best name?
+const selectBgClass = 'bg-(--fc-breezy-tab-selected)'
+const selectTextClass = 'text-(--fc-breezy-tab-selected-foreground)'
+const nonSelectTextClass = 'text-(--fc-breezy-tab-foreground)'
+const hoverSelectTextClass = 'hover:text-(--fc-breezy-tab-selected-foreground)' // best name?
 
 export const optionParams: EventCalendarOptionParams = {
   // always considered a button, and has hover effect. okay?
-  primaryBgColorClass: 'bg-(--fc-breezy-primary-color) hover:bg-(--fc-breezy-primary-hover-color)',
-  primaryTextColorClass: 'text-(--fc-breezy-primary-text-color)',
-  primaryBorderColorClass: 'border-(--fc-breezy-primary-color) hover:border-(--fc-breezy-primary-hover-color)',
+  primaryBgColorClass: 'bg-(--fc-breezy-primary) hover:bg-(--fc-breezy-primary-hover)',
+  primaryTextColorClass: 'text-(--fc-breezy-primary-foreground)',
+  primaryBorderColorClass: 'border-(--fc-breezy-primary) hover:border-(--fc-breezy-primary-hover)',
   // weird we need to do this border stuff too!!!
 
-  eventColor: 'var(--fc-breezy-event-color)',
+  eventColor: 'var(--fc-breezy-event)',
   backgroundEventColor: 'var(--color-green-500)',
   backgroundEventColorClass: 'brightness-150 opacity-15',
 
-  popoverClass: 'bg-(--fc-breezy-popover-color) border border-(--fc-breezy-popover-border-color) rounded-lg shadow-lg',
+  popoverClass: 'bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg shadow-lg',
 
-  bgColorClass: 'bg-(--fc-breezy-canvas-color)',
-  bgColorOutlineClass: 'outline-(--fc-breezy-canvas-color)',
+  bgColorClass: 'bg-(--fc-breezy-background)',
+  bgColorOutlineClass: 'outline-(--fc-breezy-background)',
 
-  borderLowColorClass: 'border-(--fc-breezy-border-low-color)',
-  borderMidColorClass: 'border-(--fc-breezy-border-mid-color)',
-  borderStartMedColorClass: 'border-s-(--fc-breezy-border-mid-color)',
-  borderHighColorClass: 'border-(--fc-breezy-border-high-color)',
-  borderBottomHighColorClass: 'border-b-(--fc-breezy-border-high-color)',
+  borderLowColorClass: 'border-(--fc-breezy-muted-border)',
+  borderMidColorClass: 'border-(--fc-breezy-border)',
+  borderStartMedColorClass: 'border-s-(--fc-breezy-border)',
+  borderHighColorClass: 'border-(--fc-breezy-strong-border)',
+  borderBottomHighColorClass: 'border-b-(--fc-breezy-strong-border)',
 
-  mutedBgClass: 'bg-(--fc-breezy-muted-color)',
-  neutralBgClass: 'bg-(--fc-breezy-neutral-color)',
-  highlightClass: 'bg-(--fc-breezy-highlight-color)',
+  mutedBgClass: 'bg-(--fc-breezy-muted)',
+  neutralBgClass: 'bg-(--fc-breezy-neutral)',
+  highlightClass: 'bg-(--fc-breezy-highlight)',
   ghostButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30', // TODO: kill gray-500
 
-  textLowColorClass: 'text-(--fc-breezy-text-low-color)',
-  textMidColorClass: 'text-(--fc-breezy-text-mid-color)',
-  textHighColorClass: 'text-(--fc-breezy-text-high-color)',
-  textHeaderColorClass: 'text-(--fc-breezy-text-header-color)',
+  textLowColorClass: 'text-(--fc-breezy-neutral-foreground)',
+  textMidColorClass: 'text-(--fc-breezy-muted-foreground)',
+  textHighColorClass: 'text-(--fc-breezy-foreground)',
+  textHeaderColorClass: 'text-(--fc-breezy-strong-foreground)',
 
-  nowIndicatorBorderColorClass: 'border-(--fc-breezy-destructive-color)',
+  nowIndicatorBorderColorClass: 'border-(--fc-breezy-now)',
 }
 
-const secondaryButtonClass = 'group text-(--fc-breezy-secondary-text-color) bg-(--fc-breezy-secondary-color) hover:bg-(--fc-breezy-secondary-hover-color) border-(--fc-breezy-secondary-border-color)'
+const secondaryButtonClass = 'group text-(--fc-breezy-secondary-foreground) bg-(--fc-breezy-secondary) hover:bg-(--fc-breezy-secondary-hover) border-(--fc-breezy-secondary-border)'
 
 // NOTE: only works within secondary button
 // best? to sync to line-height???
-const buttonIconClass = 'size-5 text-(--fc-breezy-secondary-icon-color) group-hover:text-(--fc-breezy-secondary-icon-hover-color)'
+const buttonIconClass = 'size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-hover)'
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
 

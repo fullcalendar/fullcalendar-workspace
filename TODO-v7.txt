@@ -16,6 +16,7 @@ clean+build all:
 theme TODO
 ----------
 All themes
+  test timeline/timegrid more-link in DARK mode
   refactor all theme CSS variables, especially Monarch
   code cleanliness
     replace all "canvas" css vars with just "bg"

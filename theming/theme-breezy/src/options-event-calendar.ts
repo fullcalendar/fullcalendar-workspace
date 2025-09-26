@@ -21,6 +21,8 @@ https://tailwindcss.com/plus/ui-blocks/application-ui/navigation/tabs#component-
 Flyout menus:
 https://tailwindcss.com/plus/ui-blocks/marketing/elements/flyout-menus#component-25601925ae83e51e1b31d3bd1c286515
 
+https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
+
 Themes should completely decide if list-view dayheaders are sticky (put in the changelog?)
 
 major-border not working
