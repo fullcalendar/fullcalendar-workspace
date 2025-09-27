@@ -50,7 +50,7 @@
     https://themeforest.net/item/arion-admin-dashboard-ui-kit-sketch-template/23432569
     (whereas light mode is always white)
   */
-  --fc-pulse-canvas-color: oklch(0.13 0.028 261.692);
+  --fc-pulse-canvas-color: var(--color-gray-950);
   --fc-pulse-border0: #1a202c;
   --fc-pulse-border1: #2d3748;
   --fc-pulse-border2: #4a5568;
