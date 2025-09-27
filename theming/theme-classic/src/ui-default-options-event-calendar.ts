@@ -2,24 +2,24 @@ import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const bgColorClass = 'bg-(--fc-classic-background-color)'
-const bgColorOutlineClass = 'outline-(--fc-classic-background-color)'
+const bgColorClass = 'bg-(--fc-classic-background)'
+const bgColorOutlineClass = 'outline-(--fc-classic-background)'
 
 const buttonIconClass = 'size-5'
 
 export const optionParams: EventCalendarOptionParams = {
-  borderColorClass: 'border-(--fc-classic-border-color)',
-  majorBorderColorClass: 'border-(--fc-classic-major-border-color)',
-  nowIndicatorBorderColorClass: 'border-(--fc-classic-now-indicator-color)',
-  nowIndicatorBorderStartColorClass: 'border-s-(--fc-classic-now-indicator-color)',
-  nowIndicatorBorderTopColorClass: 'border-t-(--fc-classic-now-indicator-color)',
+  borderColorClass: 'border-(--fc-classic-border)',
+  majorBorderColorClass: 'border-(--fc-classic-strong-border)',
+  nowIndicatorBorderColorClass: 'border-(--fc-classic-now)',
+  nowIndicatorBorderStartColorClass: 'border-s-(--fc-classic-now)',
+  nowIndicatorBorderTopColorClass: 'border-t-(--fc-classic-now)',
   compactMoreLinkBorderColorClass: 'border-[#3788d8]',
-  todayBgClass: 'not-print:bg-(--fc-classic-today-color)',
-  highlightClass: 'bg-(--fc-classic-highlight-color)',
-  transparentMutedBgClass: 'bg-(--fc-classic-muted-transparent-color)',
-  mutedBgClass: 'bg-(--fc-classic-muted-color)',
-  neutralBgClass: 'bg-(--fc-classic-neutral-color)',
-  mutedTextColorClass: 'text-(--fc-classic-muted-text-color)',
+  todayBgClass: 'not-print:bg-(--fc-classic-today)',
+  highlightClass: 'bg-(--fc-classic-highlight)',
+  transparentMutedBgClass: 'bg-(--fc-classic-glassy)',
+  mutedBgClass: 'bg-(--fc-classic-muted)',
+  neutralBgClass: 'bg-(--fc-classic-strong)',
+  mutedTextColorClass: 'text-(--fc-classic-muted-foreground)',
   eventColor: '#3788d8',
   eventContrastColor: 'var(--color-white)',
   backgroundEventColor: 'var(--color-green-500)',
@@ -27,7 +27,7 @@ export const optionParams: EventCalendarOptionParams = {
   hoverRowClass: 'hover:bg-gray-500/5 focus-visible:bg-gray-500/20',
   hoverButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
   selectedButtonClass: 'bg-gray-500/40',
-  popoverClass: `border border-(--fc-classic-border-color) ${bgColorClass} shadow-md`,
+  popoverClass: `border border-(--fc-classic-border) ${bgColorClass} shadow-md`,
   bgColorClass,
   bgColorOutlineClass,
 }
