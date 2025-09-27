@@ -7,7 +7,7 @@
   --fc-breezy-glassy: color-mix(in oklab, var(--color-gray-500) 20%, transparent); /* TODO */
   --fc-breezy-cloudy: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
   --fc-breezy-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
-  --fc-breezy-now: red; /* TODO: better */
+  --fc-breezy-now: red; /* TODO */
 
   /* standard foregrounds */
   --fc-breezy-foreground: var(--color-gray-700);
@@ -46,7 +46,7 @@
   --fc-breezy-glassy: color-mix(in oklab, var(--color-white) 10%, transparent);
   --fc-breezy-cloudy: color-mix(in oklab, var(--color-white) 20%, transparent);
   --fc-breezy-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
-  --fc-breezy-now: red; /* TODO: better */
+  --fc-breezy-now: red; /* TODO */
 
   /* standard foregrounds */
   --fc-breezy-foreground: var(--color-gray-300);
@@ -78,43 +78,66 @@
 }
 
 /* Colors
-----------------------------------------------------------------------------------------------------
-For colors beyond indigo, see: https://catalyst.tailwindui.com/docs/button
+------------------------------------------------------------------------------------------------- */
+
+/*
+Tailwind Plus colors:
+https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
 */
 
 [data-palette=indigo] {
+  /* primary buttons */
   --fc-breezy-primary: var(--color-indigo-600);
   --fc-breezy-primary-hover: var(--color-indigo-500);
   --fc-breezy-primary-foreground: var(--color-white);
+
+  /* events */
   --fc-breezy-event: var(--color-blue-500);
   --fc-breezy-background-event: var(--color-green-500); /* TODO */
 }
 [data-palette=indigo][data-color-scheme=dark] { /* shift lighter */
+  /* primary buttons */
   --fc-breezy-primary: var(--color-indigo-500);
   --fc-breezy-primary-hover: var(--color-indigo-400);
+
+  /* events */
   --fc-breezy-event: var(--color-blue-300);
 }
 
+/*
+Inspired by Catalyst colors:
+https://catalyst.tailwindui.com/docs/button
+*/
+
 [data-palette=rose] {
+  /* primary buttons */
   --fc-breezy-primary: var(--color-rose-600);
   --fc-breezy-primary-hover: var(--color-rose-500);
   --fc-breezy-primary-foreground: var(--color-white);
+
+  /* events */
   --fc-breezy-event: var(--color-pink-500);
   --fc-breezy-background-event: var(--color-green-500); /* TODO */
 }
 
 [data-palette=emerald] {
+  /* primary buttons */
   --fc-breezy-primary: var(--color-emerald-600);
   --fc-breezy-primary-hover: var(--color-emerald-500);
   --fc-breezy-primary-foreground: var(--color-white);
+
+  /* events */
   --fc-breezy-event: var(--color-green-500);
   --fc-breezy-background-event: var(--color-green-500); /* TODO */
 }
 
 [data-palette=honey] {
+  /* primary buttons */
   --fc-breezy-primary: var(--color-yellow-500);
   --fc-breezy-primary-hover: var(--color-yellow-400);
   --fc-breezy-primary-foreground: var(--color-white);
+
+  /* events */
   --fc-breezy-event: var(--color-amber-500);
   --fc-breezy-background-event: var(--color-green-500); /* TODO */
 }
