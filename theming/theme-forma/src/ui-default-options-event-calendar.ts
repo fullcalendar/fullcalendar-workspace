@@ -14,54 +14,54 @@ TODO: focus color on secondary button
 
 export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
   // needed for today-circle and today-line and now-line
-  primaryBgColorClass: 'bg-(--fc-forma-primary-color0)',
-  primaryTextColorClass: 'text-(--fc-forma-primary-text-color)',
-  primaryBorderColorClass: 'border-(--fc-forma-primary-color0)', // TODO: rename to compactMoreLinkBorderColorClass?
+  primaryBgColorClass: 'bg-(--fc-forma-primary)',
+  primaryTextColorClass: 'text-(--fc-forma-primary-foreground)',
+  primaryBorderColorClass: 'border-(--fc-forma-primary)', // TODO: rename to compactMoreLinkBorderColorClass?
 
   majorBorderColorClass: 'border-(--fc-forma-strong-border)', // TODO: turn into variables!
 
   ghostButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
   selectedBgClass: 'bg-gray-500/40', // selected "event"
-  highlightClass: 'bg-(--fc-forma-highlight-color)',
+  highlightClass: 'bg-(--fc-forma-highlight)',
 
   transparentMutedBgClass: 'bg-gray-500/10',
   mutedBgClass: 'bg-(--fc-forma-muted)',
   neutralBgClass: 'bg-(--fc-forma-strong)', // TODO: rename prop
 
   borderColorClass: 'border-(--fc-forma-border)',
-  nowIndicatorBorderColorClass: 'border-(--fc-forma-primary-color0)', // same as primary
+  nowIndicatorBorderColorClass: 'border-(--fc-forma-primary)', // same as primary
 
-  eventColor: 'var(--fc-forma-event-color)',
+  eventColor: 'var(--fc-forma-event)',
   backgroundEventColor: 'var(--color-green-500)',
   backgroundEventColorClass: 'brightness-150 opacity-15',
 
-  popoverClass: 'border border-(--fc-forma-border) bg-(--fc-forma-canvas-color) shadow-md',
+  popoverClass: 'border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md',
 
-  bgColorClass: 'bg-(--fc-forma-canvas-color)',
-  bgColorOutlineClass: 'outline-(--fc-forma-canvas-color)',
+  bgColorClass: 'bg-(--fc-forma-background)',
+  bgColorOutlineClass: 'outline-(--fc-forma-background)',
 }
 
-const primaryOtherBgColorClass = 'hover:bg-(--fc-forma-primary-color1) active:bg-(--fc-forma-primary-color2) focus-visible:bg-(--fc-forma-primary-color2)'
+const primaryOtherBgColorClass = 'hover:bg-(--fc-forma-primary-over) focus-visible:bg-(--fc-forma-primary-over) active:bg-(--fc-forma-primary-down)'
 
-const unselectedButtonTextColorClass = 'text-(--fc-forma-muted-text-color)'
-const unselectedButtonHoverBorderColorClass = 'hover:border-(--fc-forma-tab-hover-border)'
-const unselectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-tab-hover)'
-const unselectedButtonActiveBorderColorClass = 'active:border-(--fc-forma-tab-active-border)'
-const unselectedButtonActiveBgColorClass = 'focus-visible:bg-(--fc-forma-tab-hover) active:bg-(--fc-forma-tab-down)'
+const unselectedButtonTextColorClass = 'text-(--fc-forma-tab-foreground)'
+const unselectedButtonHoverBorderColorClass = 'hover:border-(--fc-forma-tab-over-border)'
+const unselectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-tab-over)'
+const unselectedButtonActiveBorderColorClass = 'active:border-(--fc-forma-tab-down-border)'
+const unselectedButtonActiveBgColorClass = 'focus-visible:bg-(--fc-forma-tab-over) active:bg-(--fc-forma-tab-down)'
 const unselectedButtonClass = `border-transparent ${unselectedButtonTextColorClass} ${unselectedButtonHoverBorderColorClass} ${unselectedButtonHoverBgColorClass} ${unselectedButtonActiveBorderColorClass} ${unselectedButtonActiveBgColorClass}`
 
 const selectedButtonBorderColorClass = 'border-(--fc-forma-tab-selected-border)'
 const selectedButtonBgColorClass = 'bg-(--fc-forma-tab-selected)'
-const selectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-tab-selected-hover) focus-visible:bg-(--fc-forma-tab-selected-hover)'
+const selectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-tab-selected-over) focus-visible:bg-(--fc-forma-tab-selected-over)'
 const selectedButtonActiveBgColorClass = 'active:bg-(--fc-forma-tab-selected-down)'
 const selectedButtonClass = `${selectedButtonBorderColorClass} ${selectedButtonBgColorClass} ${selectedButtonHoverBgColorClass} ${selectedButtonActiveBgColorClass}`
 
 // can be added a-la-carte to other buttons
 const buttonHoverBgColorClass = 'hover:bg-(--fc-forma-glassy) active:bg-(--fc-forma-cloudy)'
-const buttonBorderColorClass = 'border-(--fc-forma-secondary-border) hover:border-(--fc-forma-secondary-border) active:border-(--fc-forma-secondary-border) focus-visible:border-(--fc-forma-secondary-border)'
-const buttonIconColorClass = 'text-(--fc-forma-icon-color)'
+const buttonBorderColorClass = 'border-(--fc-forma-border)'
+const buttonIconColorClass = 'text-(--fc-forma-secondary-icon)' // will only work for secondary!
 
-const buttonIconClass = `size-5 ${buttonIconColorClass}`
+const buttonIconClass = `size-5 ${buttonIconColorClass}` // will only work for secondary!
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
 
