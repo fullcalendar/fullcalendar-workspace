@@ -2,24 +2,23 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const buttonIconClass = 'size-5 text-(--fc-pulse-icon-color)' // TODO: add hover-color
+const buttonIconClass = 'size-5 text-(--fc-pulse-secondary-icon)' // TODO: add hover-color
 
 // TODO: hover color
-const primaryButtonBgColorClass = 'bg-(--fc-pulse-primary-color)'
-const primaryButtonBorderColorClass = 'border-(--fc-pulse-primary-color)'
-const primaryButtonTextColorClass = 'text-(--fc-pulse-primary-text-color)'
+const primaryButtonBgColorClass = 'bg-(--fc-pulse-primary)'
+const primaryButtonBorderColorClass = 'border-(--fc-pulse-primary)'
+const primaryButtonTextColorClass = 'text-(--fc-pulse-primary-foreground)'
 
-const borderColorClass0 = 'border-(--fc-pulse-border0)'
-const borderColorClass1 = 'border-(--fc-pulse-border1)'
-const borderColorClass2 = 'border-(--fc-pulse-border2)'
+const borderColorClass0 = 'border-(--fc-pulse-border)'
+const borderColorClass1 = 'border-(--fc-pulse-view-border)'
+const borderColorClass2 = 'border-(--fc-pulse-strong-border)'
 
 const boxShadowClass0 = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
 const boxShadowClass1 = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 
-// const textColorClass0 = 'text-(--fc-pulse-text-color0)' // kill?
-const textColorClass1 = 'text-(--fc-pulse-text-color1)'
-const textColorClass2 = 'text-(--fc-pulse-text-color2)'
-const textColorClass3 = 'text-(--fc-pulse-text-color3)'
+const textColorClass1 = 'text-(--fc-pulse-muted-foreground)'
+const textColorClass2 = 'text-(--fc-pulse-foreground)'
+const textColorClass3 = 'text-(--fc-pulse-strong-foreground)'
 
 /*
 TODO: use these colors!!!
@@ -30,42 +29,42 @@ TODO: use these colors!!!
 */
 
 export const optionParams: EventCalendarOptionParams = {
-  todayCircleBgColorClass: 'bg-(--fc-pulse-today-color)',
-  todayCircleTextColorClass: 'text-(--fc-pulse-today-text-color)',
+  todayCircleBgColorClass: 'bg-(--fc-pulse-today)',
+  todayCircleTextColorClass: 'text-(--fc-pulse-today-foreground)',
 
   borderColorClass: borderColorClass0,
 
-  eventColor: 'var(--fc-pulse-event-color)',
-  eventContrastColor: 'var(--fc-pulse-event-contrast-color)',
+  eventColor: 'var(--fc-pulse-event)',
+  eventContrastColor: 'var(--fc-pulse-event-contrast)',
   backgroundEventColor: 'var(--color-green-500)',
   backgroundEventColorClass: 'brightness-150 opacity-15',
 
-  highlightClass: 'bg-(--fc-pulse-highlight-color)',
+  highlightClass: 'bg-(--fc-pulse-highlight)',
 
-  popoverClass: `bg-(--fc-pulse-canvas-color) border ${borderColorClass2} rounded-md shadow-md m-1`,
+  popoverClass: `bg-(--fc-pulse-background) border ${borderColorClass2} rounded-md shadow-md m-1`,
 
   // TODO: popoverClass
 
-  bgColorOutlineClass: 'outline-(--fc-pulse-canvas-color)',
-  bgColorClass: 'bg-(--fc-pulse-canvas-color)',
+  bgColorOutlineClass: 'outline-(--fc-pulse-background)',
+  bgColorClass: 'bg-(--fc-pulse-background)',
 
-  mutedTransparentBgClass: 'bg-(--fc-pulse-muted-transparent-color)',
-  mutedBgClass: 'bg-(--fc-pulse-muted-color)',
-  neutralBgClass: 'bg-(--fc-pulse-neutral-color)',
+  mutedTransparentBgClass: 'bg-(--fc-pulse-glassy)',
+  mutedBgClass: 'bg-(--fc-pulse-muted)',
+  neutralBgClass: 'bg-(--fc-pulse-strong)',
 
-  ghostButtonClass: 'hover:bg-(--fc-pulse-muted-transparent-color) focus-visible:bg-(--fc-pulse-muted-transparent-color)',
+  ghostButtonClass: 'hover:bg-(--fc-pulse-glassy) focus-visible:bg-(--fc-pulse-glassy)',
 
   nonMutedTextClass: textColorClass3,
-  mutedTextClass: textColorClass2,
+  mutedTextClass: textColorClass2, // bad name now!
   mutedExtraTextClass: textColorClass1,
 
-  nowIndicatorBorderColorClass: 'border-(--fc-pulse-destructive-color)',
+  nowIndicatorBorderColorClass: 'border-(--fc-pulse-now)',
   majorBorderColorClass: borderColorClass2,
 }
 
-const controlBgClass = 'bg-(--fc-pulse-control-color)'
-const controlCurrentColorClass = 'bg-(--fc-pulse-control-current-color)'
-const controlHoverColorClass = 'hover:bg-(--fc-pulse-control-hover-color)'
+const controlBgClass = 'bg-(--fc-pulse-tab)'
+const controlCurrentColorClass = 'bg-(--fc-pulse-tab-selected)'
+const controlHoverColorClass = 'hover:bg-(--fc-pulse-tab-hover)'
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
 

@@ -1,45 +1,15 @@
 
-:root {
-  --fc-pulse-canvas-color: #fff;
-  --fc-pulse-border0: #e5e7eb;
-  --fc-pulse-border1: #e4e4e5;
-  --fc-pulse-border2: #d5d5d6;
+/*
+TODO figure out how to do button group
+  make bg slightly muted
+  don't have any borders between buttons (make transparent)
+  hover color will look weird unless buttons go to edges of group container
+    so, revive having buttons own their own borders
 
-  --fc-pulse-muted-transparent-color: #7d7d7d17; /* rgba */
-  --fc-pulse-muted-color: oklch(96.7% 0.003 264.542); /* gray-100 */
-  --fc-pulse-neutral-color: oklch(87.2% 0.01 258.338); /* gray-300 */
-  --fc-pulse-header-color: var(--fc-pulse-canvas-color);
-  --fc-pulse-well-color: #f5f5f5;
-  --fc-pulse-control-color: #eeeeef;
-  --fc-pulse-control-current-color: #fff;
-  --fc-pulse-control-hover-color: #f3f4f6;
+after doing all this,
+  does it look good to have same dimness on header (and timegrid axis)?
 
-  --fc-pulse-text-color0: #9ca3af;
-  --fc-pulse-text-color1: #6b7280;
-  --fc-pulse-text-color2: #374151;
-  --fc-pulse-text-color3: #1f2937;
-
-  --fc-pulse-highlight-color: rgba(206, 250, 254, .4); /* cyan-100/40 */
-
-  /*
-  TODO figure out how to do button group
-    make bg slightly muted
-    don't have any borders between buttons (make transparent)
-    hover color will look weird unless buttons go to edges of group container
-      so, revive having buttons own their own borders
-
-  after doing all this,
-    does it look good to have same dimness on header (and timegrid axis)?
-
-  --fc-pulse-button-bg-color: ;
-  --fc-pulse-button-bg-hover-color: ;
-  */
-  --fc-pulse-icon-color: #9ca3af;
-
-  --fc-pulse-destructive-color: red; /* TODO: better */
-}
-[data-color-scheme=dark] {
-  /*
+DARK-MODE:
   Why does dark mode have blue tint?
   TODO: look at why Classic theme in dark mode seems really blue too
 
@@ -49,75 +19,104 @@
   should all calendar in dark mode have raised gray bg?
     https://themeforest.net/item/arion-admin-dashboard-ui-kit-sketch-template/23432569
     (whereas light mode is always white)
-  */
-  --fc-pulse-canvas-color: var(--color-gray-950);
-  --fc-pulse-border0: #1a202c;
-  --fc-pulse-border1: #2d3748;
-  --fc-pulse-border2: #4a5568;
 
-  --fc-pulse-muted-transparent-color: #ffffff17; /* rgba */
-  --fc-pulse-muted-color: oklch(21% 0.034 264.665); /* gray-900 */
-  --fc-pulse-neutral-color: oklch(37.3% 0.034 259.733); /* gray-700 */
-  --fc-pulse-header-color: #ffffff08; /* rgba --- doesn't work with semi-transparent!!! */
-  --fc-pulse-well-color: transparent;
-  --fc-pulse-control-color: #ffffff17; /* rgba */
-  --fc-pulse-control-current-color: #505b70;
-  --fc-pulse-control-hover-color: #7e8aa0;
+NOTICE: many of these colors are rgbA
+*/
 
-  --fc-pulse-text-color0: #4a5568;
-  --fc-pulse-text-color1: #718096;
-  --fc-pulse-text-color2: #a0aec0;
-  --fc-pulse-text-color3: #cbd5e0;
-  --fc-pulse-icon-color: #4a5568;
+:root {
+  --fc-pulse-background: #fff;
+  --fc-pulse-muted: var(--color-gray-100); /* TODO: do warmer tone like other colors */
+  --fc-pulse-glassy: #7d7d7d17;
+  --fc-pulse-strong: var(--color-gray-300);
+  --fc-pulse-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
+  --fc-pulse-now: red; /* TODO: better */
 
-  --fc-pulse-highlight-color: rgba(43, 127, 255, .2); /* blue-500/20 */
+  --fc-pulse-foreground: #374151;
+  --fc-pulse-muted-foreground: #6b7280;
+  --fc-pulse-strong-foreground: #1f2937;
 
-  --fc-pulse-destructive-color: red; /* TODO: better */
+  --fc-pulse-border: #e5e7eb;
+  --fc-pulse-strong-border: #d5d5d6;
+  --fc-pulse-view-border: #e4e4e5;
+
+  --fc-pulse-tab: #eeeeef;
+  --fc-pulse-tab-hover: #f3f4f6;
+  --fc-pulse-tab-selected: #fff;
+
+  --fc-pulse-secondary-icon: #9ca3af;
+}
+[data-color-scheme=dark] {
+  --fc-pulse-background: var(--color-gray-950);
+  --fc-pulse-muted: var(--color-gray-900);
+  --fc-pulse-glassy: #ffffff17;
+  --fc-pulse-strong: var(--color-gray-700);
+  --fc-pulse-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
+  --fc-pulse-now: red; /* TODO: better */
+
+  --fc-pulse-foreground: #a0aec0;
+  --fc-pulse-muted-foreground: #718096;
+  --fc-pulse-strong-foreground: #cbd5e0;
+
+  --fc-pulse-border: #1a202c;
+  --fc-pulse-strong-border: #4a5568;
+  --fc-pulse-view-border: #2d3748;
+
+  --fc-pulse-tab: var(--fc-pulse-glassy);
+  --fc-pulse-tab-hover: #7e8aa0;
+  --fc-pulse-tab-selected: #505b70;
+
+  --fc-pulse-secondary-icon: #4a5568;
 }
 
 [data-palette=red] {
-  --fc-pulse-primary-color: #d32d50; /* custom */
-  --fc-pulse-primary-text-color: #fff;
-  --fc-pulse-today-color: #fd453b;
-  --fc-pulse-today-text-color: #fff;
-  --fc-pulse-event-color: #631515;
-  --fc-pulse-event-contrast-color: #fff;
+  --fc-pulse-primary: #d32d50; /* slightly darker than "today" color */
+  --fc-pulse-primary-foreground: #fff;
+
+  --fc-pulse-today: #fd453b;
+  --fc-pulse-today-foreground: #fff;
+
+  --fc-pulse-event: #631515;
+  --fc-pulse-event-contrast: #fff;
 }
 [data-palette=red][data-color-scheme=dark] {
-  --fc-pulse-today-color: #fd4539;
+  --fc-pulse-today: #fd4539;
 }
 
 [data-palette=blue] {
-  --fc-pulse-primary-color: #117aff;
-  --fc-pulse-primary-text-color: #fff;
-  --fc-pulse-today-color: #117aff;
-  --fc-pulse-today-text-color: #fff;
-  --fc-pulse-event-color: #012e66;
-  --fc-pulse-event-contrast-color: #fff;
+  --fc-pulse-primary: #117aff;
+  --fc-pulse-primary-foreground: #fff;
+
+  --fc-pulse-today: var(--fc-pulse-primary);
+  --fc-pulse-today-foreground: var(--fc-pulse-primary-foreground);
+
+  --fc-pulse-event: #012e66;
+  --fc-pulse-event-contrast: #fff;
 }
 [data-palette=blue][data-color-scheme=dark] {
-  --fc-pulse-today-color: #1284ff
+  --fc-pulse-today: #1284ff;
 }
 
 [data-palette=purple] {
-  --fc-pulse-primary-color: #ad46ff;
-  --fc-pulse-primary-text-color: #fff;
-  --fc-pulse-today-color: #ad46ff;
-  --fc-pulse-today-text-color: #fff;
-  --fc-pulse-event-color: #430575;
-  --fc-pulse-event-contrast-color: #fff;
-}
-[data-palette=purple][data-color-scheme=dark] {
+  --fc-pulse-primary: #ad46ff;
+  --fc-pulse-primary-foreground: #fff;
+
+  --fc-pulse-today: var(--fc-pulse-primary);
+  --fc-pulse-today-foreground: var(--fc-pulse-primary-foreground);
+
+  --fc-pulse-event: #430575;
+  --fc-pulse-event-contrast: #fff;
 }
 
 [data-palette=green] {
-  --fc-pulse-primary-color: #26a546;
-  --fc-pulse-primary-text-color: #fff;
-  --fc-pulse-today-color: #34c759;
-  --fc-pulse-today-text-color: #fff;
-  --fc-pulse-event-color: #084b19;
-  --fc-pulse-event-contrast-color: #fff;
+  --fc-pulse-primary: #26a546; /* slightly darker than "today" color */
+  --fc-pulse-primary-foreground: #fff;
+
+  --fc-pulse-today: #34c759;
+  --fc-pulse-today-foreground: #fff;
+
+  --fc-pulse-event: #084b19;
+  --fc-pulse-event-contrast: #fff;
 }
 [data-palette=green][data-color-scheme=dark] {
-  --fc-pulse-today-color: #30d157;
+  --fc-pulse-today: #30d157;
 }
