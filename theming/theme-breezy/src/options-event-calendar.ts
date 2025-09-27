@@ -95,6 +95,8 @@ TODO: audit rowMoreLink effects
 TODO: where there's rounded-lg, ensure it goes smaller when isCompact
 
 TODO: ensure resourc-timeline-lanes have bottom empty space
+
+TODO: non-business-hours
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height

@@ -3,7 +3,7 @@
   /* standard fills */
   --fc-breezy-background: var(--color-white);
   --fc-breezy-muted: var(--color-gray-50);
-  --fc-breezy-neutral: var(--color-gray-200);
+  --fc-breezy-strong: var(--color-gray-200);
   --fc-breezy-glassy: color-mix(in oklab, var(--color-gray-500) 20%, transparent); /* TODO */
   --fc-breezy-cloudy: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
   --fc-breezy-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
@@ -12,7 +12,7 @@
   /* standard foregrounds */
   --fc-breezy-foreground: var(--color-gray-700);
   --fc-breezy-muted-foreground: var(--color-gray-500);
-  --fc-breezy-neutral-foreground: var(--color-gray-400);
+  --fc-breezy-faint-foreground: var(--color-gray-400);
   --fc-breezy-strong-foreground: var(--color-gray-900);
 
   /* standard borders */
@@ -27,13 +27,13 @@
   /* tabs */
   --fc-breezy-tab-foreground: var(--color-gray-600);
   --fc-breezy-tab-selected-foreground: var(--color-gray-800);
-  --fc-breezy-tab-selected: var(--fc-breezy-neutral);
+  --fc-breezy-tab-selected: var(--fc-breezy-strong);
 
   /* secondary buttons */
   --fc-breezy-secondary: var(--fc-breezy-background);
   --fc-breezy-secondary-hover: var(--fc-breezy-muted);
   --fc-breezy-secondary-border: var(--fc-breezy-strong-border);
-  --fc-breezy-secondary-icon: var(--fc-breezy-neutral-foreground);
+  --fc-breezy-secondary-icon: var(--fc-breezy-faint-foreground);
   --fc-breezy-secondary-icon-hover: var(--fc-breezy-muted-foreground);
   --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
 }
@@ -42,7 +42,7 @@
   /* standard fills */
   --fc-breezy-background: var(--color-gray-900);
   --fc-breezy-muted: color-mix(in oklab, var(--color-gray-800) 50%, transparent);
-  --fc-breezy-neutral: var(--color-gray-800);
+  --fc-breezy-strong: var(--color-gray-800);
   --fc-breezy-glassy: color-mix(in oklab, var(--color-white) 10%, transparent);
   --fc-breezy-cloudy: color-mix(in oklab, var(--color-white) 20%, transparent);
   --fc-breezy-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
@@ -51,7 +51,7 @@
   /* standard foregrounds */
   --fc-breezy-foreground: var(--color-gray-300);
   --fc-breezy-muted-foreground: var(--color-gray-400);
-  --fc-breezy-neutral-foreground: var(--color-gray-500);
+  --fc-breezy-faint-foreground: var(--color-gray-500);
   --fc-breezy-strong-foreground: var(--color-white);
 
   /* standard borders */
@@ -60,7 +60,7 @@
   --fc-breezy-strong-border: color-mix(in oklab, var(--color-white) 15%, transparent);
 
   /* popovers */
-  --fc-breezy-popover: var(--fc-breezy-neutral);
+  --fc-breezy-popover: var(--fc-breezy-strong);
   --fc-breezy-popover-border: var(--fc-breezy-border);
 
   /* tabs */

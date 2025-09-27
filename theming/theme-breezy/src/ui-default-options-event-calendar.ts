@@ -31,13 +31,13 @@ export const optionParams: EventCalendarOptionParams = {
   borderBottomHighColorClass: 'border-b-(--fc-breezy-strong-border)',
 
   mutedBgClass: 'bg-(--fc-breezy-muted)',
-  neutralBgClass: 'bg-(--fc-breezy-neutral)',
+  neutralBgClass: 'bg-(--fc-breezy-strong)',
   highlightClass: 'bg-(--fc-breezy-highlight)',
 
   // TODO: use glassy + cloudy
   ghostButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
 
-  textLowColorClass: 'text-(--fc-breezy-neutral-foreground)',
+  textLowColorClass: 'text-(--fc-breezy-faint-foreground)',
   textMidColorClass: 'text-(--fc-breezy-muted-foreground)',
   textHighColorClass: 'text-(--fc-breezy-foreground)',
   textHeaderColorClass: 'text-(--fc-breezy-strong-foreground)',

@@ -8,27 +8,27 @@ const buttonEffectClass = 'hover:brightness-80 active:brightness-120' // why not
 
 export const optionParams: EventCalendarOptionParams = {
   todayPillClass: (data) => joinClassNames(
-    'bg-(--fc-monarch-tertiary) text-(--fc-monarch-on-tertiary)',
+    'bg-(--fc-monarch-accent) text-(--fc-monarch-accent-foreground)',
     data.hasNavLink && buttonEffectClass,
   ),
   miscPillClass: (data) => joinClassNames(
-    'bg-(--fc-monarch-primary-container) text-(--fc-monarch-on-primary-container)',
+    'bg-(--fc-monarch-tint) text-(--fc-monarch-tint-foreground)',
     data.hasNavLink && buttonEffectClass,
   ),
-  borderColorClass: 'border-(--fc-monarch-outline-variant)',
-  majorBorderColorClass: 'border-(--fc-monarch-major-border-color)',
-  nowIndicatorBorderColorClass: 'border-(--fc-monarch-error)',
+  borderColorClass: 'border-(--fc-monarch-border)',
+  majorBorderColorClass: 'border-(--fc-monarch-strong-border)',
+  nowIndicatorBorderColorClass: 'border-(--fc-monarch-now)',
   compactMoreLinkBorderColorClass: 'border-(--fc-monarch-primary)',
-  highlightClass: 'bg-(--fc-monarch-primary-container) opacity-30',
+  highlightClass: 'bg-(--fc-monarch-tint) opacity-30',
   mutedBgClass: 'bg-gray-500/7', // TODO: make this a css variable!
   neutralBgClass: 'bg-gray-500/20', // TODO: make this a css variable!
   eventColor: 'var(--fc-monarch-primary)',
-  eventContrastColor: 'var(--fc-monarch-on-primary)',
-  backgroundEventColor: 'var(--fc-monarch-tertiary)',
+  eventContrastColor: 'var(--fc-monarch-primary-foreground)',
+  backgroundEventColor: 'var(--fc-monarch-accent)',
   backgroundEventColorClass: 'brightness-115 opacity-15',
-  popoverClass: 'border border-(--fc-monarch-outline-variant) rounded-lg bg-(--fc-monarch-popover-color) text-(--fc-monarch-popover-text-color) shadow-lg',
-  bgColorClass: 'bg-(--fc-monarch-canvas-color)',
-  bgColorOutlineClass: 'outline-(--fc-monarch-canvas-color)',
+  popoverClass: 'border border-(--fc-monarch-border) rounded-lg bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg',
+  bgColorClass: 'bg-(--fc-monarch-background)',
+  bgColorOutlineClass: 'outline-(--fc-monarch-background)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
@@ -48,7 +48,7 @@ export const defaultUiEventCalendarOptions: {
 
     buttonGroupClass: (data) => [
       'items-center isolate rounded-full',
-      data.isSelectGroup && 'border border-(--fc-monarch-outline-variant)'
+      data.isSelectGroup && 'border border-(--fc-monarch-border)'
     ],
     buttonClass: (data) => [
       `inline-flex items-center justify-center py-2.5 ${buttonTextClass} rounded-full border`,
@@ -60,12 +60,12 @@ export const defaultUiEventCalendarOptions: {
       (data.isIconOnly || (data.inSelectGroup && !data.isSelected))
         ? `${transparentPressableClass} border-transparent`
         : data.isSelected
-          ? `bg-(--fc-monarch-secondary) text-(--fc-monarch-on-secondary) border-transparent ${buttonEffectClass}` // solid gray
+          ? `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground) border-transparent ${buttonEffectClass}` // solid gray
           : data.isPrimary
-            ? `bg-(--fc-monarch-primary) text-(--fc-monarch-on-primary) border-transparent ${buttonEffectClass}` // primary color
+            ? `bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreground) border-transparent ${buttonEffectClass}` // primary color
             : joinClassNames(
                 transparentPressableClass,
-                'border-(--fc-monarch-outline-variant-original)' // bordered gray
+                'border-(--fc-monarch-secondary-border)' // bordered gray
               )
     ],
 
