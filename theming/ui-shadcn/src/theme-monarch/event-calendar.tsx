@@ -90,11 +90,11 @@ export const optionParams: EventCalendarOptionParams = {
 
   highlightClass: 'bg-primary opacity-10',
   mutedBgClass: 'bg-muted',
-  neutralBgClass: 'bg-muted-foreground/20',
+  strongBgClass: 'bg-muted-foreground/20',
 
   borderColorClass: '', // border-color is set globally
-  majorBorderColorClass: 'border-muted-foreground/60',
-  nowIndicatorBorderColorClass: 'border-destructive',
+  strongBorderColorClass: 'border-muted-foreground/60',
+  nowBorderColorClass: 'border-destructive',
   compactMoreLinkBorderColorClass: 'border-primary',
 
   eventColor: 'var(--primary)',
@@ -104,8 +104,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
 
-  bgColorClass: 'bg-background',
-  bgColorOutlineClass: 'outline-background',
+  bgClass: 'bg-background',
+  bgOutlineClass: 'outline-background',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

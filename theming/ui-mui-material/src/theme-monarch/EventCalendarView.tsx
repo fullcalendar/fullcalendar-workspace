@@ -14,11 +14,11 @@ export const optionParams: EventCalendarOptionParams = {
 
   highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
   mutedBgClass: 'bg-(--mui-palette-action-hover)',
-  neutralBgClass: 'bg-(--mui-palette-divider)',
+  strongBgClass: 'bg-(--mui-palette-divider)',
 
   borderColorClass: 'border-(--mui-palette-divider)',
-  majorBorderColorClass: 'border-(--mui-palette-action-active)',
-  nowIndicatorBorderColorClass: 'border-(--mui-palette-error-main)',
+  strongBorderColorClass: 'border-(--mui-palette-action-active)',
+  nowBorderColorClass: 'border-(--mui-palette-error-main)',
 
   compactMoreLinkBorderColorClass: 'border-(--mui-palette-primary-main)',
 
@@ -29,8 +29,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8)',
 
-  bgColorClass: 'bg-(--mui-palette-background-paper)',
-  bgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
+  bgClass: 'bg-(--mui-palette-background-paper)',
+  bgOutlineClass: 'outline-(--mui-palette-background-paper)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

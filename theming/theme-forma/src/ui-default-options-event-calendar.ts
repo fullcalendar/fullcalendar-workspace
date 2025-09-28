@@ -16,7 +16,7 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   // needed for today-circle and today-line and now-line
   primaryBgColorClass: 'bg-(--fc-forma-primary)',
   primaryTextColorClass: 'text-(--fc-forma-primary-foreground)',
-  primaryBorderColorClass: 'border-(--fc-forma-primary)', // TODO: rename to compactMoreLinkBorderColorClass?
+  primaryBorderColorClass: 'border-(--fc-forma-primary)',
 
   mutedBgClass: 'bg-(--fc-forma-muted)',
   strongBgClass: 'bg-(--fc-forma-strong)', // TODO: rename prop

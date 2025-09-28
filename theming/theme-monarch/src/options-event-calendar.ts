@@ -41,20 +41,26 @@ export interface EventCalendarOptionParams {
   todayPillClass: (data: { hasNavLink: boolean }) => string
   // same. for week number and timeline axis labels
   miscPillClass: (data: { hasNavLink: boolean }) => string
+
   borderColorClass: string
-  majorBorderColorClass: string
-  nowIndicatorBorderColorClass: string
-  compactMoreLinkBorderColorClass: string
+  strongBorderColorClass: string
+  nowBorderColorClass: string
+
+  compactMoreLinkBorderColorClass: string // TODO: just call it a primary border instead
+
   highlightClass: string
   mutedBgClass: string
-  neutralBgClass: string
+  strongBgClass: string
+
   eventColor: string
   eventContrastColor: string
   backgroundEventColor: string
   backgroundEventColorClass: string
+
   popoverClass: string
-  bgColorClass: string
-  bgColorOutlineClass: string
+
+  bgClass: string
+  bgOutlineClass: string
 }
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -77,7 +83,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgColorClass}`
+  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
@@ -124,12 +130,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventContrastColor: params.eventContrastColor,
       backgroundEventColor: params.backgroundEventColor,
 
-      tableHeaderClass: (data) => data.isSticky && `${params.bgColorClass} border-b ${params.borderColorClass}`,
+      tableHeaderClass: (data) => data.isSticky && `${params.bgClass} border-b ${params.borderColorClass}`,
 
       singleMonthClass: (data) => data.colCount > 1 && 'm-4',
       singleMonthHeaderClass: (data) => [
         data.colCount > 1 ? 'pb-2' : 'py-1',
-        data.isSticky && `border-b ${params.borderColorClass} ${params.bgColorClass}`,
+        data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,
         'justify-center',
       ],
       singleMonthHeaderInnerClass: (data) => [
@@ -230,7 +236,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'print:border-x',
         data.isStart && 'print:border-t rounded-t-sm',
         data.isEnd && 'print:border-b rounded-b-sm',
-        (data.level || data.isMirror) && `outline ${params.bgColorOutlineClass}`,
+        (data.level || data.isMirror) && `outline ${params.bgOutlineClass}`,
       ],
       columnEventInnerClass: (data) => data.isCompact
         ? 'flex-row gap-1' // one line
@@ -240,8 +246,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleSticky: false, // because time below title, sticky looks bad
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
-      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-xs ${params.neutralBgClass} print:bg-white print:border print:border-black`,
+      columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.bgClass} outline ${params.bgOutlineClass}`,
+      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-xs ${params.strongBgClass} print:bg-white print:border print:border-black`,
       columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
@@ -257,7 +263,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayRowClass: `border ${params.borderColorClass}`,
       dayCellClass: (data) => [
-        data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
+        data.isMajor ? `border ${params.strongBorderColorClass}` : `border ${params.borderColorClass}`,
         data.isDisabled && params.mutedBgClass,
       ],
       dayCellTopClass: (data) => [
@@ -279,7 +285,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayCellInnerClass: (data) => data.inPopover && 'p-2',
 
       dayLaneClass: (data) => [
-        data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
+        data.isMajor ? `border ${params.strongBorderColorClass}` : `border ${params.borderColorClass}`,
         data.isDisabled && params.mutedBgClass,
       ],
       dayLaneInnerClass: (data) => data.isSimple
@@ -291,8 +297,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isMinor && 'border-dotted',
       ],
 
-      nowIndicatorLineClass: `-m-px border-1 ${params.nowIndicatorBorderColorClass}`,
-      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowIndicatorBorderColorClass} outline-2 ${params.bgColorOutlineClass}`,
+      nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,
+      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} outline-2 ${params.bgOutlineClass}`,
     },
     views: {
       dayGrid: {

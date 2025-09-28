@@ -15,20 +15,26 @@ export const optionParams: EventCalendarOptionParams = {
     'bg-(--fc-monarch-tint) text-(--fc-monarch-tint-foreground)',
     data.hasNavLink && buttonEffectClass,
   ),
+
   borderColorClass: 'border-(--fc-monarch-border)',
-  majorBorderColorClass: 'border-(--fc-monarch-strong-border)',
-  nowIndicatorBorderColorClass: 'border-(--fc-monarch-now)',
+  strongBorderColorClass: 'border-(--fc-monarch-strong-border)',
+  nowBorderColorClass: 'border-(--fc-monarch-now)',
+
   compactMoreLinkBorderColorClass: 'border-(--fc-monarch-primary)',
+
   highlightClass: 'bg-(--fc-monarch-tint) opacity-30',
   mutedBgClass: 'bg-gray-500/7', // TODO: make this a css variable!
-  neutralBgClass: 'bg-gray-500/20', // TODO: make this a css variable!
+  strongBgClass: 'bg-gray-500/20', // TODO: make this a css variable!
+
   eventColor: 'var(--fc-monarch-primary)',
   eventContrastColor: 'var(--fc-monarch-primary-foreground)',
   backgroundEventColor: 'var(--fc-monarch-accent)',
   backgroundEventColorClass: 'brightness-115 opacity-15',
+
   popoverClass: 'border border-(--fc-monarch-border) rounded-lg bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg',
-  bgColorClass: 'bg-(--fc-monarch-background)',
-  bgColorOutlineClass: 'outline-(--fc-monarch-background)',
+
+  bgClass: 'bg-(--fc-monarch-background)',
+  bgOutlineClass: 'outline-(--fc-monarch-background)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
@@ -40,7 +46,7 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: `${optionParams.bgColorClass} border ${optionParams.borderColorClass} rounded-xl overflow-hidden`,
+    className: `${optionParams.bgClass} border ${optionParams.borderColorClass} rounded-xl overflow-hidden`,
 
     toolbarClass: 'p-4 items-center gap-3',
     toolbarSectionClass: 'items-center gap-3',
