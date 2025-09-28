@@ -30,9 +30,9 @@ export interface EventCalendarOptionParams {
   bgEventColorClass: string
 
   // ???
-  hoverRowClass: string
-  hoverButtonClass: string
-  selectedButtonClass: string
+  hoverButtonClass: string // exactly like ghostButtonClass
+  hoverRowClass: string // like ghostButtonClass, but fainter because can't compete with list-view gray day headers
+  selectedButtonClass: string // the touch-selected state of ghostButtonClass for list-items (in daygrid)
 
   popoverClass: string
 

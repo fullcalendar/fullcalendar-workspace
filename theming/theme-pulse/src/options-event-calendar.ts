@@ -46,6 +46,8 @@ TODO: ^^^same with more-link
 TODO: list-view day-headers when they stack, border is doubled-up
 
 TODO: have press-effect on ui buttons. and ALL buttons
+
+TODO: hover color on list-view events
 */
 
 export interface EventCalendarOptionParams {

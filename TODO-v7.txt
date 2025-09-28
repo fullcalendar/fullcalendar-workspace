@@ -18,7 +18,10 @@ theme TODO
 All themes
   challenges
     multiple gradations for glassy/cloudy/etc
-    todayPillClass/miscPillClass
+      esp imporant for list-view-item hovers that are LIGHTER than the list-day-headers
+      also for daygrid list-item "selected" state (called selectedButtonClass in Standard and cloudyBgClass in others)
+    todayPillClass/miscPillClass (Monarch)
+    todayCircle(Bg|Fg)Class (Pulse)
   instead of "strong" bg, use "cloudy" instead?
   what about other ui-systems that need to provide default event "contrast" color?
   test timeline/timegrid more-link in DARK mode
