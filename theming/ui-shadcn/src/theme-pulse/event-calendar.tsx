@@ -69,32 +69,32 @@ export function EventCalendar({
 }
 
 export const optionParams: EventCalendarOptionParams = {
-  todayCircleBgColorClass: 'bg-primary/20 dark:bg-primary/30',
-  todayCircleTextColorClass: '', // default inherited text
+  todayCircleBgClass: 'bg-primary/20 dark:bg-primary/30',
+  todayCircleFgClass: '', // default inherited text
 
   borderColorClass: '', // border-color is set globally
   // nowIndicatorBorderColorClass: 'border-destructive',
 
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
-  backgroundEventColor: 'var(--primary)',
-  backgroundEventColorClass: 'opacity-15',
+  bgEventColor: 'var(--primary)',
+  bgEventColorClass: 'opacity-15',
 
-  bgColorOutlineClass: 'outline-background',
-  bgColorClass: 'bg-background',
+  bgOutlineClass: 'outline-background',
+  bgClass: 'bg-background',
 
   highlightClass: 'bg-sky-500/10',
   ghostButtonClass: 'hover:bg-muted focus-visible:bg-muted',
 
   popoverClass: 'border bg-background text-foreground shadow-lg rounded-md shadow-md m-1',
 
-  mutedTransparentBgClass: 'bg-muted-foreground/10',
+  glassyBgClass: 'bg-muted-foreground/10',
   mutedBgClass: 'bg-muted',
-  neutralBgClass: 'bg-muted-foreground/20',
+  strongBgClass: 'bg-muted-foreground/20',
 
-  strongTextColorClass: 'text-foreground',
-  textColorClass: 'text-muted-foreground',
-  mutedTextColorClass: 'text-muted-foreground',
+  strongFgClass: 'text-foreground',
+  fgClass: 'text-muted-foreground',
+  mutedFgClass: 'text-muted-foreground',
 
   nowBorderColorClass: 'border-destructive',
   strongBorderColorClass: 'border-muted-foreground/60',

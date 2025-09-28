@@ -27,10 +27,10 @@ export function createSlots(
                 ? joinClassNames(
                     'h-7 flex flex-row items-center', // v-align-text
                     data.isToday
-                      ? `w-7 mx-0.5 rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold justify-center` // h-align-text
-                      : params.mutedTextColorClass,
+                      ? `w-7 mx-0.5 rounded-full ${params.todayCircleBgClass} ${params.todayCircleFgClass} font-semibold justify-center` // h-align-text
+                      : params.mutedFgClass,
                   )
-                : params.mutedTextColorClass,
+                : params.mutedFgClass,
             )}
           >{textPart.value}</span>
         ))}
@@ -47,10 +47,10 @@ export function createSlots(
                 ? joinClassNames(
                     'h-6 flex flex-row items-center', // v-align-text
                     data.isToday
-                      ? `w-6 rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold justify-center` // h-align-text
-                      : params.mutedTextColorClass,
+                      ? `w-6 rounded-full ${params.todayCircleBgClass} ${params.todayCircleFgClass} font-semibold justify-center` // h-align-text
+                      : params.mutedFgClass,
                   )
-                : params.mutedTextColorClass,
+                : params.mutedFgClass,
             )}
           >{textPart.value}</span>
         ))}

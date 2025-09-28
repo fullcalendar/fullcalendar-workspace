@@ -20,27 +20,27 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceDayHeaderInnerClass: (data) => [
         ...getDayHeaderInnerClasses(data),
         'text-sm',
-        params.mutedTextColorClass,
+        params.mutedFgClass,
       ],
 
       resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
       resourceAreaHeaderClass: `border ${params.borderColorClass} items-center`, // valign
-      resourceAreaHeaderInnerClass: `p-2 text-sm ${params.strongTextColorClass}`,
+      resourceAreaHeaderInnerClass: `p-2 text-sm ${params.strongFgClass}`,
 
-      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${params.mutedTransparentBgClass}`,
+      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${params.glassyBgClass}`,
 
       // For both resources & resource groups
       resourceAreaRowClass: `border ${params.borderColorClass}`,
 
-      resourceGroupHeaderClass: params.mutedTransparentBgClass,
-      resourceGroupHeaderInnerClass: `p-2 text-sm ${params.strongTextColorClass}`,
-      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedTransparentBgClass}`,
+      resourceGroupHeaderClass: params.glassyBgClass,
+      resourceGroupHeaderInnerClass: `p-2 text-sm ${params.strongFgClass}`,
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.glassyBgClass}`,
 
       resourceCellClass: `border ${params.borderColorClass}`,
-      resourceCellInnerClass: `p-2 text-sm ${params.strongTextColorClass}`,
+      resourceCellInnerClass: `p-2 text-sm ${params.strongFgClass}`,
 
       resourceIndentClass: 'items-center ms-1 -me-1',
-      resourceExpanderClass: `not-hover:opacity-65 ${params.strongTextColorClass}`,
+      resourceExpanderClass: `not-hover:opacity-65 ${params.strongFgClass}`,
 
       resourceLaneClass: `border ${params.borderColorClass}`,
       resourceLaneBottomClass: (data) => !data.isCompact && 'h-3',
@@ -52,16 +52,16 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       timeline: {
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
         slotLabelClass: 'justify-center', // v-align
-        slotLabelInnerClass: `p-1 text-sm ${params.strongTextColorClass}`,
+        slotLabelInnerClass: `p-1 text-sm ${params.strongFgClass}`,
         slotLabelDividerClass: `border-b ${params.borderColorClass} shadow-sm`,
 
         // best place for this?
         rowEventClass: 'me-px mb-px',
 
         // TODO: keep DRY with columnMoreLink
-        rowMoreLinkClass: `relative me-px mb-px p-px rounded-sm ${params.bgColorClass}`,
-        rowMoreLinkColorClass: `absolute z-0 inset-0 rounded-sm ${params.neutralBgClass} print:bg-white print:border print:border-black`,
-        rowMoreLinkInnerClass: `z-10 p-0.5 text-xs ${params.strongTextColorClass}`,
+        rowMoreLinkClass: `relative me-px mb-px p-px rounded-sm ${params.bgClass}`,
+        rowMoreLinkColorClass: `absolute z-0 inset-0 rounded-sm ${params.strongBgClass} print:bg-white print:border print:border-black`,
+        rowMoreLinkInnerClass: `z-10 p-0.5 text-xs ${params.strongFgClass}`,
       },
     },
   }

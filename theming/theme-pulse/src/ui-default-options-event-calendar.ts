@@ -16,9 +16,9 @@ const strongBorderColorClass = 'border-(--fc-pulse-strong-border)'
 const smallBoxShadowClass = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
 const largeBoxShadowClass = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 
-const mutedTextColorClass = 'text-(--fc-pulse-muted-foreground)'
-const textColorClass = 'text-(--fc-pulse-foreground)'
-const strongTextColorClass = 'text-(--fc-pulse-strong-foreground)'
+const mutedFgClass = 'text-(--fc-pulse-muted-foreground)'
+const fgClass = 'text-(--fc-pulse-foreground)'
+const strongFgClass = 'text-(--fc-pulse-strong-foreground)'
 
 /*
 TODO: use these colors!!!
@@ -29,32 +29,32 @@ TODO: use these colors!!!
 */
 
 export const optionParams: EventCalendarOptionParams = {
-  todayCircleBgColorClass: 'bg-(--fc-pulse-today)',
-  todayCircleTextColorClass: 'text-(--fc-pulse-today-foreground)',
+  todayCircleBgClass: 'bg-(--fc-pulse-today)',
+  todayCircleFgClass: 'text-(--fc-pulse-today-foreground)',
 
   borderColorClass,
 
   eventColor: 'var(--fc-pulse-event)',
   eventContrastColor: 'var(--fc-pulse-event-contrast)',
-  backgroundEventColor: 'var(--color-green-500)',
-  backgroundEventColorClass: 'brightness-150 opacity-15',
+  bgEventColor: 'var(--color-green-500)', // yuck!!!
+  bgEventColorClass: 'brightness-150 opacity-15',
 
   highlightClass: 'bg-(--fc-pulse-highlight)',
 
   popoverClass: `bg-(--fc-pulse-background) border ${strongBorderColorClass} rounded-md shadow-md m-1`,
 
-  bgColorOutlineClass: 'outline-(--fc-pulse-background)',
-  bgColorClass: 'bg-(--fc-pulse-background)',
+  bgOutlineClass: 'outline-(--fc-pulse-background)',
+  bgClass: 'bg-(--fc-pulse-background)',
 
-  mutedTransparentBgClass: 'bg-(--fc-pulse-glassy)',
+  glassyBgClass: 'bg-(--fc-pulse-glassy)',
   mutedBgClass: 'bg-(--fc-pulse-muted)',
-  neutralBgClass: 'bg-(--fc-pulse-strong)',
+  strongBgClass: 'bg-(--fc-pulse-strong)',
 
   ghostButtonClass: 'hover:bg-(--fc-pulse-glassy) focus-visible:bg-(--fc-pulse-glassy)',
 
-  strongTextColorClass,
-  textColorClass,
-  mutedTextColorClass,
+  strongFgClass,
+  fgClass,
+  mutedFgClass,
 
   nowBorderColorClass: 'border-(--fc-pulse-now)',
   strongBorderColorClass,
@@ -77,7 +77,7 @@ export const defaultUiEventCalendarOptions: {
 
     viewClass: [
       'rounded-sm overflow-hidden',
-      `${optionParams.bgColorClass} border ${viewBorderColorClass} ${smallBoxShadowClass}`,
+      `${optionParams.bgClass} border ${viewBorderColorClass} ${smallBoxShadowClass}`,
       // ^^^ border needs more contrast bc of drop shadow, and to match controls
     ],
 
@@ -86,7 +86,7 @@ export const defaultUiEventCalendarOptions: {
       data.borderlessX && 'px-3',
     ],
     toolbarSectionClass: 'gap-5 items-center',
-    toolbarTitleClass: `text-2xl font-bold ${strongTextColorClass}`,
+    toolbarTitleClass: `text-2xl font-bold ${strongFgClass}`,
     // how to customize title??? with text parts??? -- TODO: make ticket for toolbarTitleContent -- show Apple Calendar screenshot
     // TODO: make ticket for buttons{}.beforeClass/afterClass, ButtonData.isFirst/isLast
 
@@ -104,7 +104,7 @@ export const defaultUiEventCalendarOptions: {
         // all select-group buttons
         ? joinClassNames(
             'rounded-sm',
-            strongTextColorClass,
+            strongFgClass,
             data.isSelected
               // SELECTED select-group button
               ? `${controlCurrentColorClass} ${largeBoxShadowClass}`
@@ -122,7 +122,7 @@ export const defaultUiEventCalendarOptions: {
                 )
               // secondary
               : joinClassNames(
-                  `${optionParams.bgColorClass} ${strongTextColorClass} ${controlHoverColorClass}`,
+                  `${optionParams.bgClass} ${strongFgClass} ${controlHoverColorClass}`,
                   data.inGroup
                     ? `not-first:border-s ${borderColorClass}` // within group
                     : `border ${strongBorderColorClass} ${smallBoxShadowClass}`, // standalone
@@ -153,7 +153,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-4 ${strongTextColorClass}`),
+    popoverCloseContent: () => svgs.x(`size-4 ${strongFgClass}`),
   },
   views: baseEventCalendarOptions.views,
 }
