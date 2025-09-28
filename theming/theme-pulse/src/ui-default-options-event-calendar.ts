@@ -9,16 +9,16 @@ const primaryButtonBgColorClass = 'bg-(--fc-pulse-primary)'
 const primaryButtonBorderColorClass = 'border-(--fc-pulse-primary)'
 const primaryButtonTextColorClass = 'text-(--fc-pulse-primary-foreground)'
 
-const borderColorClass0 = 'border-(--fc-pulse-border)'
-const borderColorClass1 = 'border-(--fc-pulse-view-border)'
-const borderColorClass2 = 'border-(--fc-pulse-strong-border)'
+const borderColorClass = 'border-(--fc-pulse-border)'
+const viewBorderColorClass = 'border-(--fc-pulse-view-border)'
+const strongBorderColorClass = 'border-(--fc-pulse-strong-border)'
 
-const boxShadowClass0 = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
-const boxShadowClass1 = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
+const smallBoxShadowClass = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
+const largeBoxShadowClass = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 
-const textColorClass1 = 'text-(--fc-pulse-muted-foreground)'
-const textColorClass2 = 'text-(--fc-pulse-foreground)'
-const textColorClass3 = 'text-(--fc-pulse-strong-foreground)'
+const mutedTextColorClass = 'text-(--fc-pulse-muted-foreground)'
+const textColorClass = 'text-(--fc-pulse-foreground)'
+const strongTextColorClass = 'text-(--fc-pulse-strong-foreground)'
 
 /*
 TODO: use these colors!!!
@@ -32,7 +32,7 @@ export const optionParams: EventCalendarOptionParams = {
   todayCircleBgColorClass: 'bg-(--fc-pulse-today)',
   todayCircleTextColorClass: 'text-(--fc-pulse-today-foreground)',
 
-  borderColorClass: borderColorClass0,
+  borderColorClass,
 
   eventColor: 'var(--fc-pulse-event)',
   eventContrastColor: 'var(--fc-pulse-event-contrast)',
@@ -41,9 +41,7 @@ export const optionParams: EventCalendarOptionParams = {
 
   highlightClass: 'bg-(--fc-pulse-highlight)',
 
-  popoverClass: `bg-(--fc-pulse-background) border ${borderColorClass2} rounded-md shadow-md m-1`,
-
-  // TODO: popoverClass
+  popoverClass: `bg-(--fc-pulse-background) border ${strongBorderColorClass} rounded-md shadow-md m-1`,
 
   bgColorOutlineClass: 'outline-(--fc-pulse-background)',
   bgColorClass: 'bg-(--fc-pulse-background)',
@@ -54,12 +52,12 @@ export const optionParams: EventCalendarOptionParams = {
 
   ghostButtonClass: 'hover:bg-(--fc-pulse-glassy) focus-visible:bg-(--fc-pulse-glassy)',
 
-  nonMutedTextClass: textColorClass3,
-  mutedTextClass: textColorClass2, // bad name now!
-  mutedExtraTextClass: textColorClass1,
+  strongTextColorClass,
+  textColorClass,
+  mutedTextColorClass,
 
-  nowIndicatorBorderColorClass: 'border-(--fc-pulse-now)',
-  majorBorderColorClass: borderColorClass2,
+  nowBorderColorClass: 'border-(--fc-pulse-now)',
+  strongBorderColorClass,
 }
 
 const controlBgClass = 'bg-(--fc-pulse-tab)'
@@ -79,7 +77,7 @@ export const defaultUiEventCalendarOptions: {
 
     viewClass: [
       'rounded-sm overflow-hidden',
-      `${optionParams.bgColorClass} border ${borderColorClass1} ${boxShadowClass0}`,
+      `${optionParams.bgColorClass} border ${viewBorderColorClass} ${smallBoxShadowClass}`,
       // ^^^ border needs more contrast bc of drop shadow, and to match controls
     ],
 
@@ -88,7 +86,7 @@ export const defaultUiEventCalendarOptions: {
       data.borderlessX && 'px-3',
     ],
     toolbarSectionClass: 'gap-5 items-center',
-    toolbarTitleClass: `text-2xl font-bold ${textColorClass3}`,
+    toolbarTitleClass: `text-2xl font-bold ${strongTextColorClass}`,
     // how to customize title??? with text parts??? -- TODO: make ticket for toolbarTitleContent -- show Apple Calendar screenshot
     // TODO: make ticket for buttons{}.beforeClass/afterClass, ButtonData.isFirst/isLast
 
@@ -96,7 +94,7 @@ export const defaultUiEventCalendarOptions: {
       'items-center rounded-sm',
       data.isSelectGroup
         ? `p-px ${controlBgClass}`
-        : `border ${borderColorClass2} ${boxShadowClass0} overflow-hidden`
+        : `border ${strongBorderColorClass} ${smallBoxShadowClass} overflow-hidden`
     ],
 
     buttonClass: (data) => [
@@ -106,10 +104,10 @@ export const defaultUiEventCalendarOptions: {
         // all select-group buttons
         ? joinClassNames(
             'rounded-sm',
-            textColorClass3,
+            strongTextColorClass,
             data.isSelected
               // SELECTED select-group button
-              ? `${controlCurrentColorClass} ${boxShadowClass1}`
+              ? `${controlCurrentColorClass} ${largeBoxShadowClass}`
               // UN-selected select-group button
               : optionParams.ghostButtonClass // TODO: a little bit fuzzy
           )
@@ -120,14 +118,14 @@ export const defaultUiEventCalendarOptions: {
               // primary
               ? joinClassNames(
                   `${primaryButtonBorderColorClass} ${primaryButtonBgColorClass} ${primaryButtonTextColorClass}`,
-                  !data.inGroup && boxShadowClass1, // standalone
+                  !data.inGroup && largeBoxShadowClass, // standalone
                 )
               // secondary
               : joinClassNames(
-                  `${optionParams.bgColorClass} ${textColorClass3} ${controlHoverColorClass}`,
+                  `${optionParams.bgColorClass} ${strongTextColorClass} ${controlHoverColorClass}`,
                   data.inGroup
-                    ? `not-first:border-s ${borderColorClass0}` // within group
-                    : `border ${borderColorClass2} ${boxShadowClass0}`, // standalone
+                    ? `not-first:border-s ${borderColorClass}` // within group
+                    : `border ${strongBorderColorClass} ${smallBoxShadowClass}`, // standalone
                 )
           ),
     ],
@@ -155,7 +153,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-4 ${textColorClass3}`),
+    popoverCloseContent: () => svgs.x(`size-4 ${strongTextColorClass}`),
   },
   views: baseEventCalendarOptions.views,
 }

@@ -71,12 +71,12 @@ export interface EventCalendarOptionParams {
   mutedBgClass: string
   neutralBgClass: string
 
-  nonMutedTextClass: string // TODO: rename
-  mutedTextClass: string
-  mutedExtraTextClass: string
+  strongTextColorClass: string
+  textColorClass: string
+  mutedTextColorClass: string
 
-  nowIndicatorBorderColorClass: string
-  majorBorderColorClass: string
+  nowBorderColorClass: string
+  strongBorderColorClass: string
 }
 
 export const getDayHeaderInnerClasses = (data: { isToday?: boolean, inPopover?: boolean }) => [
@@ -115,7 +115,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     listItemEventTitleClass: 'text-ellipsis p-0.5 font-medium whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
     rowMoreLinkClass: `self-start flex flex-row ${params.mutedTransparentBgClass} ${dayRowItemClass}`,
-    rowMoreLinkInnerClass: `p-0.5 text-xs font-medium ${params.nonMutedTextClass}`,
+    rowMoreLinkInnerClass: `p-0.5 text-xs font-medium ${params.strongTextColorClass}`,
   }
 
   return {
@@ -134,7 +134,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
-      dayHeaderClass: (data) => data.isMajor && `border ${params.majorBorderColorClass}`,
+      dayHeaderClass: (data) => data.isMajor && `border ${params.strongBorderColorClass}`,
       dayHeaderInnerClass: getDayHeaderInnerClasses,
       // TODO: add dayheader borders ONLY when isMajor
 
@@ -145,13 +145,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayCellClass: (data) => [
         'border',
         data.isMajor
-          ? params.majorBorderColorClass
+          ? params.strongBorderColorClass
           : params.borderColorClass,
       ],
       dayCellTopClass: 'flex flex-row justify-end min-h-1',
       dayCellTopInnerClass: (data) => [
         !data.isToday && 'mx-1',
-        data.isOther ? params.mutedExtraTextClass : 'font-semibold',
+        data.isOther ? params.mutedTextColorClass : 'font-semibold',
         'p-1',
         'flex flex-row',
       ],
@@ -163,7 +163,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayLaneClass: (data) => [
         'border',
         data.isMajor
-          ? params.majorBorderColorClass
+          ? params.strongBorderColorClass
           : params.borderColorClass,
       ],
 
@@ -172,11 +172,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       */
       inlineWeekNumberClass: 'absolute z-10 top-0 start-0',
       inlineWeekNumberInnerClass: (data) => [
-        `py-2 text-xs ${params.mutedTextClass}`,
+        `py-2 text-xs ${params.textColorClass}`,
         data.isCompact ? 'px-1' : 'px-2',
       ],
 
-      listItemEventInnerClass: params.nonMutedTextClass,
+      listItemEventInnerClass: params.strongTextColorClass,
 
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
@@ -193,7 +193,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventTitleClass: [
         'm-2 opacity-50 italic',
         'text-xs', // data.isCompact ? xxsTextClass : 'text-xs', -- TODO
-        params.nonMutedTextClass,
+        params.strongTextColorClass,
       ],
 
       rowEventBeforeClass: (data) => data.isStartResizable && [
@@ -236,10 +236,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // TODO: keep DRY with timeline rowMoreLink
       columnMoreLinkClass: `relative m-0.5 p-px rounded-lg ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
       columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.neutralBgClass} print:bg-white print:border print:border-black`,
-      columnMoreLinkInnerClass: `z-10 p-0.5 text-xs ${params.nonMutedTextClass}`,
+      columnMoreLinkInnerClass: `z-10 p-0.5 text-xs ${params.strongTextColorClass}`,
 
       allDayHeaderClass: 'items-center', // v-align
-      allDayHeaderInnerClass: `p-2 text-xs ${params.mutedTextClass}`,
+      allDayHeaderInnerClass: `p-2 text-xs ${params.textColorClass}`,
 
       allDayDividerClass: `border-b ${params.borderColorClass} shadow-sm`,
 
@@ -251,8 +251,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         !data.isHeader && `border ${params.borderColorClass} opacity-50`,
       ],
 
-      nowIndicatorLineClass: `-m-px border-1 ${params.nowIndicatorBorderColorClass}`,
-      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowIndicatorBorderColorClass} outline-2 ${params.bgColorOutlineClass}`,
+      nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,
+      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} outline-2 ${params.bgColorOutlineClass}`,
     },
     views: {
       dayGrid: {
@@ -277,7 +277,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         dayHeaderDividerClass: (data) => data.isSticky && 'shadow-sm',
 
         weekNumberHeaderClass: 'justify-end items-center',
-        weekNumberHeaderInnerClass: `px-2 text-sm ${params.mutedTextClass}`,
+        weekNumberHeaderInnerClass: `px-2 text-sm ${params.textColorClass}`,
 
         columnEventClass: (data) => [
           'mx-0.5', // TODO: move this to the columnInner thing? yes!!
@@ -286,7 +286,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
 
         slotLabelClass: 'justify-end', // v-align
-        slotLabelInnerClass: `-mt-4 p-2 text-xs ${params.mutedTextClass}`,
+        slotLabelInnerClass: `-mt-4 p-2 text-xs ${params.textColorClass}`,
         slotLabelDividerClass: `border-s ${params.borderColorClass}`,
         // TODO: higher levels should have h-borders
       },
@@ -300,7 +300,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listDayHeaderInnerClass: (data) => [
           'z-10 px-3 py-3 text-sm',
           !data.level && 'font-semibold',
-          params.nonMutedTextClass,
+          params.strongTextColorClass,
         ],
 
         listDayEventsClass: 'flex flex-col py-4 gap-4',

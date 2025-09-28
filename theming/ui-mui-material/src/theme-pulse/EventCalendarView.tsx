@@ -29,12 +29,12 @@ export const optionParams: EventCalendarOptionParams = {
   mutedBgClass: 'bg-(--mui-palette-action-hover)',
   neutralBgClass: 'bg-(--mui-palette-divider)',
 
-  nonMutedTextClass: 'text-(--mui-palette-text-primary)',
-  mutedTextClass: 'text-(--mui-palette-text-secondary)',
-  mutedExtraTextClass: 'text-(--mui-palette-text-secondary)',
+  strongTextColorClass: 'text-(--mui-palette-text-primary)',
+  textColorClass: 'text-(--mui-palette-text-secondary)',
+  mutedTextColorClass: 'text-(--mui-palette-text-secondary)',
 
-  nowIndicatorBorderColorClass: 'border-(--mui-palette-error-main)',
-  majorBorderColorClass: 'border-(--mui-palette-action-active)',
+  nowBorderColorClass: 'border-(--mui-palette-error-main)',
+  strongBorderColorClass: 'border-(--mui-palette-action-active)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

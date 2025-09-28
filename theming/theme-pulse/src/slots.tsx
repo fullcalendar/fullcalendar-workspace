@@ -28,9 +28,9 @@ export function createSlots(
                     'h-7 flex flex-row items-center', // v-align-text
                     data.isToday
                       ? `w-7 mx-0.5 rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold justify-center` // h-align-text
-                      : params.mutedExtraTextClass,
+                      : params.mutedTextColorClass,
                   )
-                : params.mutedExtraTextClass,
+                : params.mutedTextColorClass,
             )}
           >{textPart.value}</span>
         ))}
@@ -48,9 +48,9 @@ export function createSlots(
                     'h-6 flex flex-row items-center', // v-align-text
                     data.isToday
                       ? `w-6 rounded-full ${params.todayCircleBgColorClass} ${params.todayCircleTextColorClass} font-semibold justify-center` // h-align-text
-                      : params.mutedExtraTextClass,
+                      : params.mutedTextColorClass,
                   )
-                : params.mutedExtraTextClass,
+                : params.mutedTextColorClass,
             )}
           >{textPart.value}</span>
         ))}

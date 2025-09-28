@@ -92,12 +92,12 @@ export const optionParams: EventCalendarOptionParams = {
   mutedBgClass: 'bg-muted',
   neutralBgClass: 'bg-muted-foreground/20',
 
-  nonMutedTextClass: 'text-foreground',
-  mutedTextClass: 'text-muted-foreground',
-  mutedExtraTextClass: 'text-muted-foreground',
+  strongTextColorClass: 'text-foreground',
+  textColorClass: 'text-muted-foreground',
+  mutedTextColorClass: 'text-muted-foreground',
 
-  nowIndicatorBorderColorClass: 'border-destructive',
-  majorBorderColorClass: 'border-muted-foreground/60',
+  nowBorderColorClass: 'border-destructive',
+  strongBorderColorClass: 'border-muted-foreground/60',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
