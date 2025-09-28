@@ -59,23 +59,21 @@ export interface EventCalendarOptionParams {
   primaryBorderColorClass: string // for now-indicator AND line above dayHeader
   // TODO: ^^^compactMoreLinkBorderColorClass?
 
-  majorBorderColorClass: string
-
-  ghostButtonClass: string // TODO: less semantic!
-  selectedBgClass: string // selected EVENT
-
-  transparentMutedBgClass: string
   mutedBgClass: string
-  neutralBgClass: string
+  strongBgClass: string
   highlightClass: string
+  glassyBgClass: string
+  cloudyBgClass: string // selected EVENT
+  ghostButtonClass: string // TODO: less semantic!
 
   borderColorClass: string // eventually just borderColor
-  nowIndicatorBorderColorClass: string // eventually just alertBorderColor
+  nowBorderColorClass: string // eventually just alertBorderColor
+  strongBorderColorClass: string
 
   eventColor: string
   // NOTE: eventContrastColor not needed because eventColor always faded to bg color
-  backgroundEventColor: string
-  backgroundEventColorClass: string
+  bgEventColor: string
+  bgEventColorClass: string
 
   popoverClass: string
 
@@ -104,7 +102,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'p-px',
       'items-center',
       data.isSelected
-        ? params.selectedBgClass // touch-selected
+        ? params.cloudyBgClass // touch-selected
         : params.ghostButtonClass,
       (data.isSelected && data.isDragging) && 'shadow-sm', // touch-dragging
     ],
@@ -143,7 +141,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   return {
     optionDefaults: {
       eventColor: params.eventColor,
-      backgroundEventColor: params.backgroundEventColor,
+      backgroundEventColor: params.bgEventColor,
 
       tableHeaderClass: (data) => data.isSticky && params.bgColorClass,
 
@@ -157,7 +155,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       inlineWeekNumberClass: [
         'absolute z-20 top-1 end-0 rounded-s-full',
-        params.transparentMutedBgClass,
+        params.glassyBgClass,
       ],
       inlineWeekNumberInnerClass: (data) => [
         data.isCompact ? xxsTextClass : 'text-xs',
@@ -166,7 +164,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       // misc BG
       fillerClass: `border ${params.borderColorClass} opacity-50`,
-      nonBusinessClass: params.transparentMutedBgClass,
+      nonBusinessClass: params.glassyBgClass,
       highlightClass: params.highlightClass,
 
       eventClass: (data) => data.event.url && 'hover:no-underline',
@@ -291,7 +289,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayRowClass: `border ${params.borderColorClass}`,
       dayCellClass: (data) => [
-        data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
+        data.isMajor ? `border ${params.strongBorderColorClass}` : `border ${params.borderColorClass}`,
         (data.isDisabled || data.isOther) && params.mutedBgClass,
       ],
       dayCellTopClass: [
@@ -310,7 +308,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       allDayDividerClass: `border-t ${params.borderColorClass}`,
 
       dayLaneClass: (data) => [
-        data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
+        data.isMajor ? `border ${params.strongBorderColorClass}` : `border ${params.borderColorClass}`,
         data.isDisabled && params.mutedBgClass,
       ],
       dayLaneInnerClass: (data) => data.isSimple
@@ -322,8 +320,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       slotLabelClass: (data) => getSlotClasses(data, `border ${params.borderColorClass}`),
       slotLaneClass: (data) => getSlotClasses(data, `border ${params.borderColorClass}`),
 
-      nowIndicatorLineClass: `-m-px border-1 ${params.nowIndicatorBorderColorClass}`,
-      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowIndicatorBorderColorClass} outline-2 ${params.bgColorOutlineClass}`,
+      nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,
+      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} outline-2 ${params.bgColorOutlineClass}`,
     },
     views: {
       dayGrid: {
@@ -373,7 +371,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         // TODO: move to general settings? or always have this type of thing in timeGrid?
         // TODO: keep DRY with timeline rowMoreLink
         columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
-        columnMoreLinkColorClass: `z-0 absolute inset-0 ${params.neutralBgClass} print:bg-white print:border print:border-black`,
+        columnMoreLinkColorClass: `z-0 absolute inset-0 ${params.strongBgClass} print:bg-white print:border print:border-black`,
         columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
         slotLabelClass: axisClass,

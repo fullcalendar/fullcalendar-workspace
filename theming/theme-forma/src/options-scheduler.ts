@@ -18,7 +18,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       // TODO: more DRY with dayHeader* ?
       resourceDayHeaderClass: (data) => [
-        data.isMajor ? `border ${params.majorBorderColorClass}` : `border ${params.borderColorClass}`,
+        data.isMajor ? `border ${params.strongBorderColorClass}` : `border ${params.borderColorClass}`,
         data.isDisabled && params.mutedBgClass,
       ],
       resourceDayHeaderInnerClass: (data) => [
@@ -56,7 +56,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       timeline: {
         // TODO: keep DRY with columnMoreLink
         rowMoreLinkClass: `relative me-px mb-px p-px ${params.bgColorClass}`,
-        rowMoreLinkColorClass: `z-0 absolute inset-0 ${params.neutralBgClass} print:bg-white print:border print:border-black`,
+        rowMoreLinkColorClass: `z-0 absolute inset-0 ${params.strongBgClass} print:bg-white print:border print:border-black`,
         rowMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
         slotLabelClass: 'justify-center',

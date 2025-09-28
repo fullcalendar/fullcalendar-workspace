@@ -76,22 +76,22 @@ export const optionParams: EventCalendarOptionParams = {
   primaryBorderColorClass: 'border-primary',
 
   ghostButtonClass: 'hover:bg-muted focus-visible:bg-muted',
-  selectedBgClass: 'bg-muted',
+  cloudyBgClass: 'bg-muted',
 
   highlightClass: 'bg-sky-500/10',
 
-  majorBorderColorClass: 'border-muted-foreground/60',
+  strongBorderColorClass: 'border-muted-foreground/60',
 
   borderColorClass: '', // border-color is set globally
-  nowIndicatorBorderColorClass: 'border-destructive',
+  nowBorderColorClass: 'border-destructive',
 
-  transparentMutedBgClass: 'bg-muted/50', // TODO: use foreground like other theme?
+  glassyBgClass: 'bg-muted/50', // TODO: use foreground like other theme?
   mutedBgClass: 'bg-muted/50',
-  neutralBgClass: 'bg-muted-foreground/20',
+  strongBgClass: 'bg-muted-foreground/20',
 
   eventColor: 'var(--primary)',
-  backgroundEventColor: 'var(--primary)',
-  backgroundEventColorClass: 'opacity-15',
+  bgEventColor: 'var(--primary)',
+  bgEventColorClass: 'opacity-15',
 
   // TODO: better integration with actual Shadcn Popover component
   popoverClass: 'border bg-background text-foreground shadow-md',

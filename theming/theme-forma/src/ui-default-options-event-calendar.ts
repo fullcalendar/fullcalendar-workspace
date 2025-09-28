@@ -18,22 +18,20 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   primaryTextColorClass: 'text-(--fc-forma-primary-foreground)',
   primaryBorderColorClass: 'border-(--fc-forma-primary)', // TODO: rename to compactMoreLinkBorderColorClass?
 
-  majorBorderColorClass: 'border-(--fc-forma-strong-border)', // TODO: turn into variables!
-
-  ghostButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
-  selectedBgClass: 'bg-gray-500/40', // selected "event"
-  highlightClass: 'bg-(--fc-forma-highlight)',
-
-  transparentMutedBgClass: 'bg-gray-500/10',
   mutedBgClass: 'bg-(--fc-forma-muted)',
-  neutralBgClass: 'bg-(--fc-forma-strong)', // TODO: rename prop
+  strongBgClass: 'bg-(--fc-forma-strong)', // TODO: rename prop
+  highlightClass: 'bg-(--fc-forma-highlight)',
+  glassyBgClass: 'bg-(--fc-forma-glassy)', // 'bg-gray-500/10',
+  cloudyBgClass: 'bg-(--fc-forma-cloudy)', // 'bg-gray-500/40',
+  ghostButtonClass: 'hover:bg-(--fc-forma-glassy) focus-visible:bg-(--fc-forma-cloudy)',
 
   borderColorClass: 'border-(--fc-forma-border)',
-  nowIndicatorBorderColorClass: 'border-(--fc-forma-primary)', // same as primary
+  strongBorderColorClass: 'border-(--fc-forma-strong-border)',
+  nowBorderColorClass: 'border-(--fc-forma-primary)', // same as primary
 
   eventColor: 'var(--fc-forma-event)',
-  backgroundEventColor: 'var(--color-green-500)',
-  backgroundEventColorClass: 'brightness-150 opacity-15',
+  bgEventColor: 'var(--color-green-500)', // TODO: var!
+  bgEventColorClass: 'brightness-150 opacity-15',
 
   popoverClass: 'border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md',
 

@@ -12,22 +12,22 @@ export const optionParams: EventCalendarOptionParams = {
   primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
 
   ghostButtonClass: 'hover:bg-(--mui-palette-action-hover) focus-visible:bg-(--mui-palette-action-focus)',
-  selectedBgClass: 'bg-(--mui-palette-action-selected)',
+  cloudyBgClass: 'bg-(--mui-palette-action-selected)',
 
   highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
 
-  majorBorderColorClass: 'border-(--mui-palette-action-active)',
+  strongBorderColorClass: 'border-(--mui-palette-action-active)',
 
   borderColorClass: 'border-(--mui-palette-divider)',
-  nowIndicatorBorderColorClass: 'border-(--mui-palette-error-main)',
+  nowBorderColorClass: 'border-(--mui-palette-error-main)',
 
-  transparentMutedBgClass: 'bg-(--mui-palette-action-hover)',
+  glassyBgClass: 'bg-(--mui-palette-action-hover)',
   mutedBgClass: 'bg-(--mui-palette-action-hover)',
-  neutralBgClass: 'bg-(--mui-palette-action-selected)',
+  strongBgClass: 'bg-(--mui-palette-action-selected)',
 
   eventColor: 'var(--mui-palette-primary-main)',
-  backgroundEventColor: 'var(--mui-palette-secondary-main)',
-  backgroundEventColorClass: 'brightness-115 opacity-15',
+  bgEventColor: 'var(--mui-palette-secondary-main)',
+  bgEventColorClass: 'brightness-115 opacity-15',
 
   popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8) m-1',
 
