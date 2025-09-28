@@ -18,21 +18,21 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
   return {
     optionDefaults: {
-      resourceAreaDividerClass: `border-l ${params.borderHighColorClass}`,
+      resourceAreaDividerClass: `border-l ${params.strongBorderColorClass}`,
 
-      resourceAreaHeaderRowClass: `border ${params.borderMidColorClass}`,
-      resourceAreaHeaderClass: `border ${params.borderLowColorClass}`,
+      resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
+      resourceAreaHeaderClass: `border ${params.mutedBorderColorClass}`,
       resourceAreaHeaderInnerClass: `p-2 text-sm ${params.textHighColorClass}`,
 
-      resourceAreaRowClass: `border ${params.borderMidColorClass}`,
-      resourceCellClass: `border ${params.borderLowColorClass}`,
+      resourceAreaRowClass: `border ${params.borderColorClass}`,
+      resourceCellClass: `border ${params.mutedBorderColorClass}`,
       resourceCellInnerClass: `p-2 text-sm ${params.textHighColorClass}`,
 
       resourceGroupHeaderClass: params.mutedBgClass,
       resourceGroupHeaderInnerClass: `p-2 text-sm ${params.textHighColorClass}`,
 
-      resourceGroupLaneClass: `border ${params.borderMidColorClass} ${params.mutedBgClass}`,
-      resourceLaneClass: `border ${params.borderMidColorClass}`,
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
+      resourceLaneClass: `border ${params.borderColorClass}`,
       resourceLaneBottomClass: 'h-3',
 
       resourceIndentClass: 'items-center ms-1 -me-1',
@@ -42,8 +42,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceDayHeaderClass: (data) => [
         `border text-sm/6`,
         data.isMajor
-          ? params.borderHighColorClass
-          : params.borderMidColorClass,
+          ? params.strongBorderColorClass
+          : params.borderColorClass,
         data.level
           ? `font-semibold ${params.textHighColorClass}` // resource-above-dates
           : params.textMidColorClass,
@@ -54,7 +54,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
     },
     views: {
       timeline: {
-        slotLabelDividerClass: `border-t ${params.borderHighColorClass} shadow-sm`,
+        slotLabelDividerClass: `border-t ${params.strongBorderColorClass} shadow-sm`,
 
         slotLabelAlign: 'center',
         slotLabelClass: 'justify-end',
@@ -65,11 +65,11 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
         // TODO: keep DRY with columnMoreLink
         rowMoreLinkClass: (data) => [
-          `relative me-px mb-px p-px ${params.bgColorClass}`,
+          `relative me-px mb-px p-px ${params.bgClass}`,
           data.isCompact ? 'rounded-sm' : 'rounded-md', // needed? isn't isCompact always false in timeline?
         ],
         rowMoreLinkColorClass: (data) => [
-          `absolute z-0 inset-0 ${params.neutralBgClass} print:bg-white print:border print:border-black`,
+          `absolute z-0 inset-0 ${params.strongBgClass} print:bg-white print:border print:border-black`,
           data.isCompact ? 'rounded-sm' : 'rounded-md', // needed? isn't isCompact always false in timeline?
         ],
         rowMoreLinkInnerClass: `z-1 p-0.5 text-xs/4 ${params.textHighColorClass}`,

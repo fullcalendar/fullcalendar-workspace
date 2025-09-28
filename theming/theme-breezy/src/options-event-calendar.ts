@@ -106,21 +106,22 @@ export interface EventCalendarOptionParams {
   primaryTextColorClass: string
   primaryBorderColorClass: string
   eventColor: string
-  backgroundEventColor: string
-  backgroundEventColorClass: string
+  bgEventColor: string
+  bgEventColorClass: string
   popoverClass: string
-  bgColorClass: string
-  bgColorOutlineClass: string
-  borderLowColorClass: string
-  borderMidColorClass: string
-  borderStartMedColorClass: string
-  borderHighColorClass: string
-  borderBottomHighColorClass: string
-  nowIndicatorBorderColorClass: string
+  bgClass: string
+  bgOutlineClass: string
+  mutedBorderColorClass: string
+  borderColorClass: string
+  borderStartColorClass: string
+  strongBorderColorClass: string
+  strongBorderBottomColorClass: string
+  nowBorderColorClass: string
   mutedBgClass: string
-  neutralBgClass: string
+  strongBgClass: string
   highlightClass: string
   ghostButtonClass: string
+  glassyBgClass: string
   textLowColorClass: string
   textMidColorClass: string
   textHighColorClass: string
@@ -137,7 +138,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgColorClass}`
+  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
@@ -149,7 +150,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     /*
     BUG: z-index is wrong, can't click week numbers
     */
-    inlineWeekNumberClass: `absolute z-10 top-0 end-0 border-b ${params.borderBottomHighColorClass} border-s ${params.borderStartMedColorClass} rounded-es-md ${params.bgColorClass}`,
+    inlineWeekNumberClass: `absolute z-10 top-0 end-0 border-b ${params.strongBorderBottomColorClass} border-s ${params.borderStartColorClass} rounded-es-md ${params.bgClass}`,
     inlineWeekNumberInnerClass: (data) => [
       `py-0.5 ${params.textMidColorClass}`,
       data.isCompact
@@ -191,22 +192,23 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   return {
     optionDefaults: {
       eventColor: params.eventColor,
-      backgroundEventColor: params.backgroundEventColor,
+      backgroundEventColor: params.bgEventColor,
 
       popoverClass: `min-w-50 m-1 ${params.popoverClass}`,
       popoverCloseClass: 'absolute top-1 end-1',
 
       highlightClass: params.highlightClass,
+      nonBusinessClass: params.glassyBgClass,
 
       dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center', // h-align
-      dayHeaderRowClass: `border ${params.borderLowColorClass}`,
+      dayHeaderRowClass: `border ${params.mutedBorderColorClass}`,
       dayHeaderInnerClass: (data) => [
         data.inPopover ? 'px-3' : 'px-2',
         data.isCompact || data.inPopover ? 'py-1' : 'py-2',
         'flex flex-row items-center', // v-align
       ],
 
-      dayRowClass: `border ${params.borderMidColorClass}`,
+      dayRowClass: `border ${params.borderColorClass}`,
 
       dayCellClass: (data) => [
         'border',
@@ -225,8 +227,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayLaneClass: (data) => [
         'border',
         data.isMajor
-          ? params.borderHighColorClass
-          : params.borderLowColorClass,
+          ? params.strongBorderColorClass
+          : params.mutedBorderColorClass,
       ],
 
       allDayHeaderClass: 'items-center', // v-align
@@ -234,11 +236,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       slotLabelInnerClass: `text-xs/5 ${params.textLowColorClass} uppercase`,
 
-      slotLaneClass: `border ${params.borderLowColorClass}`,
+      slotLaneClass: `border ${params.mutedBorderColorClass}`,
 
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
-      blockEventClass: `${params.bgColorClass} relative group p-px`,
+      blockEventClass: `${params.bgClass} relative group p-px`,
       blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) print:bg-white border-(--fc-event-color) not-print:opacity-20',
       blockEventInnerClass: 'relative z-20 text-xs/4 flex', // NOTE: subclass determines direction
       /*
@@ -247,7 +249,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       blockEventTimeClass: 'text-(--fc-event-color) contrast-150 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
       blockEventTitleClass: `${params.textHighColorClass} opacity-80 whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
 
-      backgroundEventColorClass: `bg-(--fc-event-color) ${params.backgroundEventColorClass}`,
+      backgroundEventColorClass: `bg-(--fc-event-color) ${params.bgEventColorClass}`,
       backgroundEventTitleClass: (data) => [
         'm-2 opacity-50 italic',
         params.textHighColorClass,
@@ -278,7 +280,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventClass: (data) => [
         data.isStart && 'rounded-t-lg',
         data.isEnd && 'rounded-b-lg',
-        (data.level || data.isMirror) && `outline ${params.bgColorOutlineClass}`,
+        (data.level || data.isMirror) && `outline ${params.bgOutlineClass}`,
       ],
       columnEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
@@ -299,17 +301,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: 'px-2 py-1 font-semibold',
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative p-px rounded-md ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
-      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.neutralBgClass} print:bg-white print:border print:border-black`,
+      columnMoreLinkClass: `relative p-px rounded-md ${params.bgClass} outline ${params.bgOutlineClass}`,
+      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.strongBgClass} print:bg-white print:border print:border-black`,
       columnMoreLinkInnerClass: `z-1 p-0.5 text-xs/4 ${params.textHighColorClass}`,
       // TODO: see columnMoreLinkClass in timeGrid below...
 
-      fillerClass: `border ${params.borderLowColorClass} ${params.bgColorClass}`,
+      fillerClass: `border ${params.mutedBorderColorClass} ${params.bgClass}`,
 
       singleMonthClass: 'm-5',
       singleMonthHeaderClass: (data) => [
         'justify-center', // h-align
-        data.isSticky && `${params.bgColorClass} border-b ${params.borderMidColorClass}`,
+        data.isSticky && `${params.bgClass} border-b ${params.borderColorClass}`,
         data.colCount > 1 ? 'pb-1' : 'py-1',
       ],
       singleMonthHeaderInnerClass: (data) => [
@@ -317,8 +319,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.hasNavLink && params.ghostButtonClass,
       ],
 
-      nowIndicatorLineClass: `-m-px border-1 ${params.nowIndicatorBorderColorClass}`,
-      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowIndicatorBorderColorClass} outline-2 ${params.bgColorOutlineClass}`,
+      nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,
+      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} outline-2 ${params.bgOutlineClass}`,
 
       // TODO: event resizing
       // TODO: do isMajor border as darker (and put into checklist)
@@ -327,35 +329,35 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayGrid: {
         ...dayGridClasses,
         dayCellBottomClass: 'min-h-[1px]',
-        dayHeaderDividerClass: `border-b ${params.borderHighColorClass}`,
+        dayHeaderDividerClass: `border-b ${params.strongBorderColorClass}`,
         dayHeaderClass: (data) => [
           'border',
           data.isMajor
-            ? params.borderHighColorClass
-            : params.borderMidColorClass,
+            ? params.strongBorderColorClass
+            : params.borderColorClass,
         ],
         dayCellClass: (data) => data.isMajor
-          ? params.borderHighColorClass
-          : params.borderMidColorClass,
+          ? params.strongBorderColorClass
+          : params.borderColorClass,
       },
       multiMonth: {
         ...dayGridClasses,
         dayCellBottomClass: 'min-h-[1px]',
         dayHeaderDividerClass: (data) => [
-          data.isSticky && `border-b ${params.borderHighColorClass} shadow-sm`,
+          data.isSticky && `border-b ${params.strongBorderColorClass} shadow-sm`,
         ],
         dayHeaderClass: (data) => [
           // isCompact is a HACK to detect multi-month multi-col
           !data.isCompact && joinClassNames(
             'border',
             data.isMajor
-              ? params.borderHighColorClass
-              : params.borderMidColorClass,
+              ? params.strongBorderColorClass
+              : params.borderColorClass,
           ),
         ],
 
-        tableHeaderClass: (data) => data.isSticky && params.bgColorClass,
-        tableBodyClass: `border ${params.borderMidColorClass} shadow-sm rounded-md overflow-hidden`,
+        tableHeaderClass: (data) => data.isSticky && params.bgClass,
+        tableBodyClass: `border ${params.borderColorClass} shadow-sm rounded-md overflow-hidden`,
 
         // TODO: sync with dayGrid?
       },
@@ -363,21 +365,21 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayGridClasses,
         dayCellBottomClass: 'min-h-3',
 
-        allDayDividerClass: `border-b ${params.borderHighColorClass} shadow-sm`,
+        allDayDividerClass: `border-b ${params.strongBorderColorClass} shadow-sm`,
 
         dayHeaderDividerClass: (data) => [
           'border-b',
-          data.isSticky ? `${params.borderHighColorClass} shadow-sm` : params.borderMidColorClass,
+          data.isSticky ? `${params.strongBorderColorClass} shadow-sm` : params.borderColorClass,
         ],
         dayHeaderClass: (data) => [
           'border',
           data.isMajor
-            ? params.borderHighColorClass
-            : params.borderMidColorClass,
+            ? params.strongBorderColorClass
+            : params.borderColorClass,
         ],
         dayCellClass: (data) => data.isMajor
-          ? params.borderHighColorClass
-          : params.borderLowColorClass,
+          ? params.strongBorderColorClass
+          : params.mutedBorderColorClass,
         weekNumberHeaderClass: 'justify-end items-center',
         weekNumberHeaderInnerClass: `px-3 text-sm/6 ${params.textMidColorClass}`,
 
@@ -387,7 +389,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelClass: 'justify-end',
         slotLabelInnerClass: 'relative -top-2.5 px-3 py-2',
 
-        slotLabelDividerClass: `border-l ${params.borderLowColorClass}`,
+        slotLabelDividerClass: `border-l ${params.mutedBorderColorClass}`,
 
         columnEventClass: (data) => [
           'mx-1', // TODO: move this to the columnInner thing? yes!!
@@ -398,12 +400,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       list: {
         listDaysClass: 'px-4 my-10 mx-auto w-full max-w-200',
-        listDayClass: `flex flex-row gap-2 not-last:border-b not-last:${params.borderMidColorClass}`,
+        listDayClass: `flex flex-row gap-2 not-last:border-b not-last:${params.borderColorClass}`,
         listDayHeaderClass: 'shrink-0 w-1/4 max-w-40',
         listDayHeaderInnerClass: `sticky top-0 py-4 text-sm ${params.textMidColorClass}`,
         listDayEventsClass: 'grow min-w-0 flex flex-col',
 
-        listItemEventClass: `not-last:border-b ${params.borderMidColorClass}`,
+        listItemEventClass: `not-last:border-b ${params.borderColorClass}`,
         listItemEventInnerClass: 'py-4 flex flex-row justify-between gap-2 text-sm',
 
         // TODO: make this common?...

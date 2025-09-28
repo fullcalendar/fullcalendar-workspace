@@ -16,33 +16,33 @@ export const optionParams: EventCalendarOptionParams = {
   // weird we need to do this border stuff too!!!
 
   eventColor: 'var(--fc-breezy-event)',
-  backgroundEventColor: 'var(--fc-breezy-background-event)',
-  backgroundEventColorClass: 'brightness-150 opacity-15',
+  bgEventColor: 'var(--fc-breezy-background-event)',
+  bgEventColorClass: 'brightness-150 opacity-15',
 
   popoverClass: 'bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg shadow-lg',
 
-  bgColorClass: 'bg-(--fc-breezy-background)',
-  bgColorOutlineClass: 'outline-(--fc-breezy-background)',
+  bgClass: 'bg-(--fc-breezy-background)',
+  bgOutlineClass: 'outline-(--fc-breezy-background)',
 
-  borderLowColorClass: 'border-(--fc-breezy-muted-border)',
-  borderMidColorClass: 'border-(--fc-breezy-border)',
-  borderStartMedColorClass: 'border-s-(--fc-breezy-border)',
-  borderHighColorClass: 'border-(--fc-breezy-strong-border)',
-  borderBottomHighColorClass: 'border-b-(--fc-breezy-strong-border)',
+  mutedBorderColorClass: 'border-(--fc-breezy-muted-border)',
+  borderColorClass: 'border-(--fc-breezy-border)',
+  borderStartColorClass: 'border-s-(--fc-breezy-border)',
+  strongBorderColorClass: 'border-(--fc-breezy-strong-border)',
+  strongBorderBottomColorClass: 'border-b-(--fc-breezy-strong-border)',
 
   mutedBgClass: 'bg-(--fc-breezy-muted)',
-  neutralBgClass: 'bg-(--fc-breezy-strong)',
+  strongBgClass: 'bg-(--fc-breezy-strong)',
   highlightClass: 'bg-(--fc-breezy-highlight)',
 
-  // TODO: use glassy + cloudy
-  ghostButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
+  ghostButtonClass: 'hover:bg-(--fc-breezy-glassy) focus-visible:bg-(--fc-breezy-cloudy)',
+  glassyBgClass: 'bg-(--fc-breezy-glassy)',
 
   textLowColorClass: 'text-(--fc-breezy-faint-foreground)',
   textMidColorClass: 'text-(--fc-breezy-muted-foreground)',
   textHighColorClass: 'text-(--fc-breezy-foreground)',
   textHeaderColorClass: 'text-(--fc-breezy-strong-foreground)',
 
-  nowIndicatorBorderColorClass: 'border-(--fc-breezy-now)',
+  nowBorderColorClass: 'border-(--fc-breezy-now)',
 }
 
 const secondaryButtonClass = 'group text-(--fc-breezy-secondary-foreground) bg-(--fc-breezy-secondary) hover:bg-(--fc-breezy-secondary-hover) border-(--fc-breezy-secondary-border)'
@@ -60,9 +60,9 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: `${optionParams.bgColorClass} border ${optionParams.borderMidColorClass} rounded-lg overflow-hidden`,
-    headerToolbarClass: `border-b ${optionParams.borderMidColorClass}`,
-    footerToolbarClass: `border-t ${optionParams.borderMidColorClass}`,
+    className: `${optionParams.bgClass} border ${optionParams.borderColorClass} rounded-lg overflow-hidden`,
+    headerToolbarClass: `border-b ${optionParams.borderColorClass}`,
+    footerToolbarClass: `border-t ${optionParams.borderColorClass}`,
 
     toolbarClass: `px-4 py-4 items-center ${optionParams.mutedBgClass} gap-4`,
     toolbarSectionClass: 'items-center gap-4',

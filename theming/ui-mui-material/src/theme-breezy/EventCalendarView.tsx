@@ -17,31 +17,32 @@ export const optionParams: EventCalendarOptionParams = {
   primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
 
   eventColor: 'var(--mui-palette-primary-main)',
-  backgroundEventColor: 'var(--mui-palette-secondary-main)',
-  backgroundEventColorClass: 'brightness-115 opacity-15',
+  bgEventColor: 'var(--mui-palette-secondary-main)',
+  bgEventColorClass: 'brightness-115 opacity-15',
 
   popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8)',
 
-  bgColorClass: 'bg-(--mui-palette-background-paper)',
-  bgColorOutlineClass: 'outline-(--mui-palette-background-paper)',
+  bgClass: 'bg-(--mui-palette-background-paper)',
+  bgOutlineClass: 'outline-(--mui-palette-background-paper)',
 
-  borderLowColorClass: borderColorClass,
-  borderMidColorClass: borderColorClass,
-  borderStartMedColorClass: borderStartColorClass,
-  borderHighColorClass: borderColorClass,
-  borderBottomHighColorClass: borderBottomColorClass,
+  mutedBorderColorClass: borderColorClass,
+  borderColorClass: borderColorClass,
+  borderStartColorClass: borderStartColorClass,
+  strongBorderColorClass: borderColorClass,
+  strongBorderBottomColorClass: borderBottomColorClass,
 
   mutedBgClass: 'bg-(--mui-palette-action-hover)',
-  neutralBgClass: 'bg-(--mui-palette-divider)',
+  strongBgClass: 'bg-(--mui-palette-divider)',
   highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
   ghostButtonClass: 'hover:bg-(--mui-palette-action-hover) focus-visible:bg-(--mui-palette-action-focus)',
+  glassyBgClass: 'bg-(--mui-palette-action-hover)',
 
   textLowColorClass: 'text-(--mui-palette-text-secondary)',
   textMidColorClass: 'text-(--mui-palette-text-secondary)',
   textHighColorClass: 'text-(--mui-palette-text-primary)',
   textHeaderColorClass: 'text-(--mui-palette-text-primary)',
 
-  nowIndicatorBorderColorClass: 'border-(--mui-palette-error-main)',
+  nowBorderColorClass: 'border-(--mui-palette-error-main)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

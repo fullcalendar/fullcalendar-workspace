@@ -76,32 +76,33 @@ export const optionParams: EventCalendarOptionParams = {
   primaryBorderColorClass: 'border-(--primary)',
 
   eventColor: 'var(--primary)',
-  backgroundEventColor: 'var(--primary)',
-  backgroundEventColorClass: 'opacity-15',
+  bgEventColor: 'var(--primary)',
+  bgEventColorClass: 'opacity-15',
 
   popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
 
-  bgColorClass: 'bg-background',
-  bgColorOutlineClass: 'outline-background',
+  bgClass: 'bg-background',
+  bgOutlineClass: 'outline-background',
 
   // all get shadcn inherited border
-  borderLowColorClass: '',
-  borderMidColorClass: '',
-  borderStartMedColorClass: '',
-  borderHighColorClass: '',
-  borderBottomHighColorClass: '',
+  mutedBorderColorClass: '',
+  borderColorClass: '',
+  borderStartColorClass: '',
+  strongBorderColorClass: '',
+  strongBorderBottomColorClass: '',
 
   mutedBgClass: 'bg-muted/50',
-  neutralBgClass: 'bg-muted-foreground/20',
+  strongBgClass: 'bg-muted-foreground/20',
   highlightClass: 'bg-sky-500/10',
   ghostButtonClass: 'hover:bg-muted focus-visible:bg-muted',
+  glassyBgClass: 'bg-muted/50',
 
   textLowColorClass: 'text-muted-foreground',
   textMidColorClass: 'text-muted-foreground',
   textHighColorClass: '',
   textHeaderColorClass: '',
 
-  nowIndicatorBorderColorClass: 'border-destructive',
+  nowBorderColorClass: 'border-destructive',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
