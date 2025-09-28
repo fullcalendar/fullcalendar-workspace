@@ -9,25 +9,32 @@ const buttonIconClass = 'size-5'
 
 export const optionParams: EventCalendarOptionParams = {
   borderColorClass: 'border-(--fc-classic-border)',
-  majorBorderColorClass: 'border-(--fc-classic-strong-border)',
-  nowIndicatorBorderColorClass: 'border-(--fc-classic-now)',
-  nowIndicatorBorderStartColorClass: 'border-s-(--fc-classic-now)',
-  nowIndicatorBorderTopColorClass: 'border-t-(--fc-classic-now)',
+  strongBorderColorClass: 'border-(--fc-classic-strong-border)',
+  nowBorderColorClass: 'border-(--fc-classic-now)',
+  nowBorderStartColorClass: 'border-s-(--fc-classic-now)',
+  nowBorderTopColorClass: 'border-t-(--fc-classic-now)',
+
   compactMoreLinkBorderColorClass: 'border-[#3788d8]',
+
   todayBgClass: 'not-print:bg-(--fc-classic-today)',
-  highlightClass: 'bg-(--fc-classic-highlight)',
-  transparentMutedBgClass: 'bg-(--fc-classic-glassy)',
+  glassyBgClass: 'bg-(--fc-classic-glassy)',
   mutedBgClass: 'bg-(--fc-classic-muted)',
-  neutralBgClass: 'bg-(--fc-classic-strong)',
-  mutedTextColorClass: 'text-(--fc-classic-muted-foreground)',
-  eventColor: '#3788d8',
-  eventContrastColor: 'var(--color-white)',
-  backgroundEventColor: 'var(--color-green-500)',
-  backgroundEventColorClass: 'opacity-15',
+  strongBgClass: 'bg-(--fc-classic-strong)',
+  highlightClass: 'bg-(--fc-classic-highlight)',
+
+  mutedFgClass: 'text-(--fc-classic-muted-foreground)',
+
+  eventColor: '#3788d8', // TODO: put as css var
+  eventContrastColor: 'var(--color-white)', // TODO: put as css var
+  bgEventColor: 'var(--color-green-500)', // TODO: put as css var
+  bgEventColorClass: 'opacity-15',
+
   hoverRowClass: 'hover:bg-gray-500/5 focus-visible:bg-gray-500/20',
   hoverButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
   selectedButtonClass: 'bg-gray-500/40',
+
   popoverClass: `border border-(--fc-classic-border) ${bgColorClass} shadow-md`,
+
   bgColorClass,
   bgColorOutlineClass,
 }

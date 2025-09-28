@@ -99,8 +99,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
-  backgroundEventColor: 'var(--primary)',
-  backgroundEventColorClass: 'opacity-15',
+  bgEventColor: 'var(--primary)',
+  bgEventColorClass: 'opacity-15',
 
   popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
 

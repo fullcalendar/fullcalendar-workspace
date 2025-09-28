@@ -30,9 +30,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       // For both resources & resource groups
       resourceAreaRowClass: `border ${params.borderColorClass}`,
 
-      resourceGroupHeaderClass: params.transparentMutedBgClass,
+      resourceGroupHeaderClass: params.glassyBgClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.transparentMutedBgClass}`,
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.glassyBgClass}`,
 
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
@@ -64,7 +64,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
         // TODO: keep DRY with columnMoreLink
         rowMoreLinkClass: `relative me-px mb-px p-px ${params.bgColorClass}`,
-        rowMoreLinkColorClass: `absolute z-0 inset-0 ${params.neutralBgClass} print:bg-white print:border print:border-black`,
+        rowMoreLinkColorClass: `absolute z-0 inset-0 ${params.strongBgClass} print:bg-white print:border print:border-black`,
         rowMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
@@ -72,8 +72,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         slotLabelInnerClass: 'p-1 text-sm',
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
 
-        nowIndicatorLabelClass: `top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] ${params.nowIndicatorBorderColorClass}`,
-        nowIndicatorLineClass: `border-l ${params.nowIndicatorBorderColorClass}`,
+        nowIndicatorLabelClass: `top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] ${params.nowBorderColorClass}`,
+        nowIndicatorLineClass: `border-l ${params.nowBorderColorClass}`,
       },
     },
   }

@@ -28,8 +28,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   eventColor: 'var(--fc-monarch-primary)',
   eventContrastColor: 'var(--fc-monarch-primary-foreground)',
-  backgroundEventColor: 'var(--fc-monarch-accent)',
-  backgroundEventColorClass: 'brightness-115 opacity-15',
+  bgEventColor: 'var(--fc-monarch-accent)',
+  bgEventColorClass: 'brightness-115 opacity-15',
 
   popoverClass: 'border border-(--fc-monarch-border) rounded-lg bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg',
 

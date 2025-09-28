@@ -54,8 +54,8 @@ export interface EventCalendarOptionParams {
 
   eventColor: string
   eventContrastColor: string
-  backgroundEventColor: string
-  backgroundEventColorClass: string
+  bgEventColor: string
+  bgEventColorClass: string
 
   popoverClass: string
 
@@ -128,7 +128,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     optionDefaults: {
       eventColor: params.eventColor,
       eventContrastColor: params.eventContrastColor,
-      backgroundEventColor: params.backgroundEventColor,
+      backgroundEventColor: params.bgEventColor,
 
       tableHeaderClass: (data) => data.isSticky && `${params.bgClass} border-b ${params.borderColorClass}`,
 
@@ -162,7 +162,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       eventClass: 'hover:no-underline',
 
-      backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.backgroundEventColorClass,
+      backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.bgEventColorClass,
       backgroundEventTitleClass: (data) => [
         'm-2 opacity-50 italic',
         data.isCompact ? xxsTextClass : 'text-xs',

@@ -24,8 +24,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   eventColor: 'var(--mui-palette-primary-main)',
   eventContrastColor: 'var(--mui-palette-primary-contrastText)',
-  backgroundEventColor: 'var(--mui-palette-secondary-main)',
-  backgroundEventColorClass: 'brightness-115 opacity-15',
+  bgEventColor: 'var(--mui-palette-secondary-main)',
+  bgEventColorClass: 'brightness-115 opacity-15',
 
   popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8)',
 
