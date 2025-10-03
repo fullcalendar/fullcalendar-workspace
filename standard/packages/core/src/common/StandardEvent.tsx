@@ -68,7 +68,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       props.defaultDisplayEventTime,
       props.defaultDisplayEventEnd,
     )
-    const [tag, attrs] = getEventTagAndAttrs(eventRange, context)
+    const [tag, attrs, isInteractive] = getEventTagAndAttrs(eventRange, context)
 
     const eventApi = this.buildPublicEvent(context, eventRange.def, eventRange.instance)
     const isDraggable = !props.disableDragging && computeEventRangeDraggable(eventRange, context)
@@ -95,6 +95,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isSelected: Boolean(props.isSelected),
       isDragging: Boolean(props.isDragging),
       isResizing: Boolean(props.isResizing),
+      isInteractive,
       isCompact: props.isCompact || false,
       isSpacious: props.isSpacious || false,
       level: props.level || 0,

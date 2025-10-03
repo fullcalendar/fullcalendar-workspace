@@ -236,6 +236,7 @@ export interface EventDisplayData { // for *Content handlers
   isSelected: boolean
   isDragging: boolean
   isResizing: boolean
+  isInteractive: boolean
   view: ViewApi // specifically for the API
 
   isCompact: boolean
@@ -344,12 +345,13 @@ export function buildEventRangeKey(eventRange: EventRenderRange) {
 export function getEventTagAndAttrs(eventRange: EventRenderRange, context: ViewContext): [
   tag: string,
   attrs: any, // TODO
+  isInteractive: boolean,
 ] {
   let { def, instance } = eventRange
   let { url } = def
 
   if (url) {
-    return ['a', { href: url }]
+    return ['a', { href: url }, true]
   }
 
   let { emitter, options } = context
@@ -378,5 +380,5 @@ export function getEventTagAndAttrs(eventRange: EventRenderRange, context: ViewC
     attrs = { role: 'button', ...attrs }
   }
 
-  return ['div', attrs]
+  return ['div', attrs, eventInteractive]
 }

@@ -59,6 +59,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       isSelected: false,
       isDragging: false,
       isResizing: false,
+      isInteractive: false,
       level: 0,
       isCompact: props.isCompact || false,
       isSpacious: false,
