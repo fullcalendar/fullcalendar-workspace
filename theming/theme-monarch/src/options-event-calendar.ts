@@ -37,20 +37,27 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/interaction'
 
 export interface EventCalendarOptionParams {
-  // should just provide colors and hover effects
-  todayPillClass: (data: { hasNavLink: boolean }) => string
-  // same. for week number and timeline axis labels
-  miscPillClass: (data: { hasNavLink: boolean }) => string
+  secondaryClass: string // bg & fg
+  secondaryPressableClass: string
+  tertiaryClass: string // bg & fg
+  tertiaryPressableClass: string
+
+  ghostHoverClass: string
+  ghostPressableClass: string
+  ghostSelectedClass: string
+
+  mutedBgClass: string // used by disabled cells
+  mutedWashClass: string // used by non-business-hours (guaranteed semitransparent)
+  strongBgClass: string // used by more-link
+  highlightClass: string
+
+  blockFocusableClass: string
+  blockSelectedClass: string
 
   borderColorClass: string
+  primaryBorderColorClass: string
   strongBorderColorClass: string
   nowBorderColorClass: string
-
-  compactMoreLinkBorderColorClass: string // TODO: just call it a primary border instead
-
-  highlightClass: string
-  mutedBgClass: string
-  strongBgClass: string
 
   eventColor: string
   eventContrastColor: string
@@ -64,14 +71,6 @@ export interface EventCalendarOptionParams {
 }
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
-
-/*
-TODO: move this to a "ghostButton" system and transparentMutedBgClass
-(and use the transparentMutedBgClass in more places, like resourceGroupHeaderClass)
-*/
-export const transparentPressableClass = 'hover:bg-gray-500/10 focus-visible:bg-gray-500/10 active:bg-gray-500/20' // TODO --- make part of theme!?
-const transparentStrongBgClass = 'bg-gray-500/30'
-const nonBusinessHoursClass = 'bg-gray-500/7' // must be semitransprent
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
@@ -89,19 +88,21 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
   const getWeekNumberPillClasses = (data: { hasNavLink: boolean, isCompact: boolean }) => [
     'rounded-full h-6 flex flex-row items-center', // match height of daynumber
-    params.miscPillClass({ hasNavLink: data.hasNavLink }),
+    data.hasNavLink
+      ? params.secondaryPressableClass
+      : params.secondaryClass,
     data.isCompact
       ? `${xxsTextClass} px-1`
       : 'text-sm px-2'
   ]
 
-  const dayRowItemBaseClass = 'mx-0.5 mb-px rounded-sm'
+  const dayRowItemBaseClass = 'mx-0.5 mb-px rounded-sm' // TODO: add ghostPressableClass?
   const dayRowItemClasses: CalendarOptions = {
     listItemEventClass: (data) => [
       `${dayRowItemBaseClass} p-px`,
       data.isSelected
-        ? joinClassNames(transparentStrongBgClass, data.isDragging && 'shadow-sm')
-        : transparentPressableClass,
+        ? joinClassNames(params.strongBgClass, data.isDragging && 'shadow-sm')
+        : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
     ],
     listItemEventColorClass: (data) => [
       'border-4', // 8px diameter
@@ -113,9 +114,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
-      transparentPressableClass,
+      params.ghostPressableClass,
       data.isCompact
-        ? `border ${params.compactMoreLinkBorderColorClass}`
+        ? `border ${params.primaryBorderColorClass}`
         : 'p-px'
     ],
     rowMoreLinkInnerClass: (data) => [
@@ -140,17 +141,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       singleMonthHeaderInnerClass: (data) => [
         'font-bold rounded-full px-2 py-1',
-        data.hasNavLink && transparentPressableClass,
+        data.hasNavLink && params.ghostPressableClass,
       ],
 
       popoverClass: 'm-2 min-w-3xs ' + params.popoverClass,
-      popoverCloseClass: `absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center ${transparentPressableClass}`,
+      popoverCloseClass: `absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center ${params.ghostPressableClass}`,
 
       fillerClass: (data) => [
         'opacity-50 border',
         data.isHeader ? 'border-transparent' : params.borderColorClass,
       ],
-      nonBusinessClass: nonBusinessHoursClass,
+      nonBusinessClass: params.mutedWashClass,
       highlightClass: params.highlightClass,
 
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
@@ -181,9 +182,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       blockEventColorClass: (data) => [
         'absolute z-0 inset-0 bg-(--fc-event-color)',
         'print:bg-white print:border-(--fc-event-color)', // subclasses do print-border-width
+        // TODO: move this to root element!
         data.isSelected
-          ? 'brightness-75'
-          : 'group-focus-visible:brightness-75',
+          ? params.blockSelectedClass
+          : params.blockFocusableClass
       ],
       blockEventInnerClass: 'z-10 flex text-(--fc-event-contrast-color) print:text-black',
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
@@ -236,7 +238,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'print:border-x',
         data.isStart && 'print:border-t rounded-t-sm',
         data.isEnd && 'print:border-b rounded-b-sm',
-        (data.level || data.isMirror) && `outline ${params.bgOutlineClass}`,
+        (data.level || data.isMirror) && !data.isSelected && `outline ${params.bgOutlineClass}`,
       ],
       columnEventInnerClass: (data) => data.isCompact
         ? 'flex-row gap-1' // one line
@@ -276,8 +278,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         // TODO: this won't work if hasMonthLabel "Jan 1"... circle will look weird
         'flex flex-row items-center justify-center w-6 h-6 rounded-full',
         data.isToday
-          ? params.todayPillClass({ hasNavLink: data.hasNavLink })
-          : data.hasNavLink && transparentPressableClass,
+          ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
+          : data.hasNavLink && params.ghostPressableClass,
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
         !data.isCompact && 'm-1.5',
@@ -351,7 +353,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : 'uppercase text-xs hover:underline', // secondary
         listDayEventsClass: 'grow min-w-0 flex flex-col py-2',
 
-        listItemEventClass: `group rounded-s-full p-2 ${transparentPressableClass} gap-2`,
+        listItemEventClass: (data) => [
+          'group rounded-s-full p-2 gap-2',
+          data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass,
+        ],
         listItemEventColorClass: 'border-5 mx-2', // 10px diameter
         listItemEventInnerClass: 'text-sm gap-2',
         listItemEventTimeClass: 'shrink-0 w-1/2 max-w-40 whitespace-nowrap overflow-hidden text-ellipsis',

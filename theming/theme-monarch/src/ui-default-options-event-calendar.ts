@@ -1,34 +1,40 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
-import { createEventCalendarOptions, EventCalendarOptionParams, transparentPressableClass } from './options-event-calendar.js'
+import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
 const buttonTextClass = 'text-sm'
 const iconSizeClass = 'size-5' // matches text-sm line-height
-const buttonEffectClass = 'hover:brightness-80 active:brightness-120' // why not same as transparentPressableClass?
+
+const secondaryClass = 'bg-(--fc-monarch-secondary) text-(--fc-monarch-secondary-foreground)'
+const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-tertiary-foreground)'
+const buttonEffectClass = 'hover:brightness-80 active:brightness-120'
 
 export const optionParams: EventCalendarOptionParams = {
-  todayPillClass: (data) => joinClassNames(
-    'bg-(--fc-monarch-accent) text-(--fc-monarch-accent-foreground)',
-    data.hasNavLink && buttonEffectClass,
-  ),
-  miscPillClass: (data) => joinClassNames(
-    'bg-(--fc-monarch-tint) text-(--fc-monarch-tint-foreground)',
-    data.hasNavLink && buttonEffectClass,
-  ),
+  secondaryClass,
+  secondaryPressableClass: `${secondaryClass} ${buttonEffectClass}`,
+  tertiaryClass,
+  tertiaryPressableClass: `${tertiaryClass} ${buttonEffectClass}`,
+
+  ghostHoverClass: 'hover:bg-(--fc-monarch-muted-wash)',
+  ghostPressableClass: 'hover:bg-(--fc-monarch-muted-wash) active:bg-(--fc-monarch-strong-wash) focus-visible:bg-(--fc-monarch-strong-wash)',
+  ghostSelectedClass: 'bg-(--fc-monarch-strong-wash)',
+
+  blockFocusableClass: 'focus-visible:outline-[3px] focus-visible:outline-(--fc-monarch-strong-wash)',
+  blockSelectedClass: 'outline-[3px] outline-(--fc-monarch-strong-wash)',
+
+  mutedBgClass: 'bg-(--fc-monarch-muted)',
+  mutedWashClass: 'bg-(--fc-monarch-muted-wash)',
+  strongBgClass: 'bg-(--fc-monarch-strong)',
+  highlightClass: 'bg-(--fc-monarch-secondary) opacity-30',
 
   borderColorClass: 'border-(--fc-monarch-border)',
+  primaryBorderColorClass: 'border-(--fc-monarch-primary)',
   strongBorderColorClass: 'border-(--fc-monarch-strong-border)',
   nowBorderColorClass: 'border-(--fc-monarch-now)',
 
-  compactMoreLinkBorderColorClass: 'border-(--fc-monarch-primary)',
-
-  highlightClass: 'bg-(--fc-monarch-tint) opacity-30',
-  mutedBgClass: 'bg-gray-500/7', // TODO: make this a css variable!
-  strongBgClass: 'bg-gray-500/20', // TODO: make this a css variable!
-
   eventColor: 'var(--fc-monarch-primary)',
   eventContrastColor: 'var(--fc-monarch-primary-foreground)',
-  bgEventColor: 'var(--fc-monarch-accent)',
+  bgEventColor: 'var(--fc-monarch-tertiary)',
   bgEventColorClass: 'brightness-115 opacity-15',
 
   popoverClass: 'border border-(--fc-monarch-border) rounded-lg bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg',
@@ -64,13 +70,13 @@ export const defaultUiEventCalendarOptions: {
       data.inSelectGroup && '-m-px',
       // TODO: better structure
       (data.isIconOnly || (data.inSelectGroup && !data.isSelected))
-        ? `${transparentPressableClass} border-transparent`
+        ? `${optionParams.ghostPressableClass} border-transparent`
         : data.isSelected
           ? `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground) border-transparent ${buttonEffectClass}` // solid gray
           : data.isPrimary
             ? `bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreground) border-transparent ${buttonEffectClass}` // primary color
             : joinClassNames(
-                transparentPressableClass,
+                optionParams.ghostPressableClass,
                 'border-(--fc-monarch-secondary-border)' // bordered gray
               )
     ],

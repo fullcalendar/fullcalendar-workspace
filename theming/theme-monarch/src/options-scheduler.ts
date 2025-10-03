@@ -1,5 +1,5 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
-import { xxsTextClass, transparentPressableClass, EventCalendarOptionParams } from './options-event-calendar.js'
+import { xxsTextClass, EventCalendarOptionParams } from './options-event-calendar.js'
 
 // ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/timeline'
@@ -45,7 +45,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceIndentClass: 'ms-1 -me-1 items-center',
       resourceExpanderClass: [
         'w-6 h-6 flex flex-row items-center justify-center rounded-full text-sm',
-        transparentPressableClass,
+        params.ghostPressableClass,
       ],
 
       resourceLaneClass: `border ${params.borderColorClass}`,
@@ -86,7 +86,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         slotLabelInnerClass: (data) => data.level
           ? [ // pill
             'px-2 py-1 rounded-full text-sm',
-            params.miscPillClass({ hasNavLink: data.hasNavLink }),
+            data.hasNavLink
+              ? params.secondaryPressableClass
+              : params.secondaryClass,
           ]
           : [
             'min-w-14 text-sm',

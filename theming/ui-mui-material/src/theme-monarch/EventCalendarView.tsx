@@ -6,21 +6,36 @@ import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcale
 import { createSlots } from '@fullcalendar/theme-monarch-dev/slots'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 
-export const optionParams: EventCalendarOptionParams = {
-  // TODO: better hasNavLink
-  // TODO: use --mui-palette-secondary-mainChannel to choose opacity
-  todayPillClass: () => 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)',
-  miscPillClass: () => 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.15)] brightness-115',
+// less-contrasty version of primary (like the selected tab)
+const secondaryClass = 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.15)] brightness-110'
+const secondaryPressableClass = `${secondaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)] focus-visible:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)]`
 
-  highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
+// tertiary is actually the secondary (like an accent color)
+const tertiaryClass = 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)'
+const tertiaryPressableClass = `${tertiaryClass} hover:brightness-110`
+
+export const optionParams: EventCalendarOptionParams = {
+  secondaryClass,
+  secondaryPressableClass,
+  tertiaryClass,
+  tertiaryPressableClass,
+
+  ghostHoverClass: 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]',
+  ghostPressableClass: 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)] active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+  ghostSelectedClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+
+  blockFocusableClass: 'focus-visible:outline-[3px] focus-visible:outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+  blockSelectedClass: 'outline-[3px] outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+
   mutedBgClass: 'bg-(--mui-palette-action-hover)',
-  strongBgClass: 'bg-(--mui-palette-divider)',
+  mutedWashClass: 'bg-(--mui-palette-action-hover)',
+  strongBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+  highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
 
   borderColorClass: 'border-(--mui-palette-divider)',
+  primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
   strongBorderColorClass: 'border-(--mui-palette-action-active)',
   nowBorderColorClass: 'border-(--mui-palette-error-main)',
-
-  compactMoreLinkBorderColorClass: 'border-(--mui-palette-primary-main)',
 
   eventColor: 'var(--mui-palette-primary-main)',
   eventContrastColor: 'var(--mui-palette-primary-contrastText)',

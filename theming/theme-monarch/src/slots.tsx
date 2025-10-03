@@ -1,7 +1,7 @@
 import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
 import type * as FullCalendarPreact from '@fullcalendar/core/preact'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
-import { EventCalendarOptionParams, transparentPressableClass } from './options-event-calendar.js'
+import { EventCalendarOptionParams } from './options-event-calendar.js'
 
 // HACK
 ;(createElement || Fragment); // import intentionally unused
@@ -31,8 +31,8 @@ export function createSlots(
             className={joinClassNames(
               'm-0.5 flex flex-row items-center justify-center text-lg h-9',
               data.isToday
-                ? `w-9 rounded-full ${params.todayPillClass({ hasNavLink: data.hasNavLink })}`
-                : data.hasNavLink && `w-9 rounded-full ${transparentPressableClass}`
+                ? joinClassNames('w-9 rounded-full', data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
+                : data.hasNavLink && `w-9 rounded-full ${params.ghostPressableClass}`
             )}
           >{data.dayNumberText}</div>
         )}
@@ -51,8 +51,8 @@ export function createSlots(
                   : joinClassNames(
                       'flex flex-row items-center justify-center size-9 rounded-full',
                       data.isToday
-                        ? params.todayPillClass({ hasNavLink: data.hasNavLink })
-                        : data.hasNavLink && transparentPressableClass
+                        ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
+                        : (data.hasNavLink && params.ghostPressableClass)
                     )
               }
             >{textPart.value}</div>

@@ -71,31 +71,36 @@ export function EventCalendar({
   )
 }
 
-/*
-Try making EVENTS semitransparent, and make today-circle opaque?
-*/
+// secondary
+const secondaryClass = 'bg-foreground/10'
+const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 active:bg-foreground/30 focus-visible:bg-foreground/30`
 
-// TODO: rename
-const primaryClass = 'bg-primary/20 dark:bg-primary/30' // doesn't need text contrast
-const primaryButtonClass = `${primaryClass} hover:bg-primary/90 active:bg-primary/80`
-
-// better than "accent" or "secondary" because sits well on top of nonBusinessHours gray
-// TODO: rename?
-const accentClass = 'bg-black/10 dark:bg-white/10 text-accent-foreground'
-const accentButtonClass = `${accentClass} hover:bg-gray-500/20 active:bg-gray-500/30` // TODO: better dary mode
+// tertiary (based on primary, but with low contrast)
+const tertiaryClass = 'bg-primary/20 dark:bg-primary/30'
+const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 active:bg-primary/50 focus-visible:bg-primary/50`
 
 export const optionParams: EventCalendarOptionParams = {
-  todayPillClass: (data) => data.hasNavLink ? primaryButtonClass : primaryClass,
-  miscPillClass: (data) => data.hasNavLink ? accentButtonClass : accentClass,
+  secondaryClass,
+  secondaryPressableClass,
+  tertiaryClass,
+  tertiaryPressableClass,
 
-  highlightClass: 'bg-primary opacity-10',
+  ghostHoverClass: 'hover:bg-foreground/10',
+  ghostPressableClass: 'hover:bg-foreground/10 active:bg-foreground/20 focus-visible:bg-foreground/20',
+  ghostSelectedClass: 'bg-foreground/20',
+
+  blockFocusableClass: 'focus-visible:outline-[3px] focus-visible:outline-foreground/20',
+  blockSelectedClass: 'outline-[3px] outline-foreground/20',
+
   mutedBgClass: 'bg-muted',
-  strongBgClass: 'bg-muted-foreground/20',
+  mutedWashClass: 'bg-foreground/5',
+  strongBgClass: 'bg-foreground/20',
+  highlightClass: 'bg-primary opacity-10',
 
   borderColorClass: '', // border-color is set globally
-  strongBorderColorClass: 'border-muted-foreground/60',
+  primaryBorderColorClass: 'border-primary',
+  strongBorderColorClass: 'border-foreground/60',
   nowBorderColorClass: 'border-destructive',
-  compactMoreLinkBorderColorClass: 'border-primary',
 
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
