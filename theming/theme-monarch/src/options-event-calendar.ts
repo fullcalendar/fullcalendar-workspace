@@ -174,18 +174,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       listItemEventInnerClass: 'flex flex-row items-center',
 
       blockEventClass: (data) => [
-        'relative isolate group p-px', // 1px matches print-border
+        'relative isolate group',
+        'border-transparent bg-(--fc-event-color)',
+        'print:border-(--fc-event-color) print:bg-white',
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
           : joinClassNames('focus-visible:shadow-md', data.isDragging && 'opacity-75'),
-      ],
-      blockEventColorClass: (data) => [
-        'absolute z-0 inset-0 bg-(--fc-event-color)',
-        'print:bg-white print:border-(--fc-event-color)', // subclasses do print-border-width
-        // TODO: move this to root element!
         data.isSelected
           ? params.blockSelectedClass
-          : params.blockFocusableClass
+          : params.blockFocusableClass,
       ],
       blockEventInnerClass: 'z-10 flex text-(--fc-event-contrast-color) print:text-black',
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
@@ -193,8 +190,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       rowEventClass: (data) => [
         'mb-px',
-        data.isStart ? 'ms-px' : 'ps-2',
-        data.isEnd ? 'me-px' : 'pe-2',
+        'border-y',
+        data.isStart && 'ms-px border-s rounded-s-sm',
+        data.isEnd && 'me-px border-e rounded-e-sm',
       ],
       rowEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
@@ -203,17 +201,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       rowEventAfterClass: (data) => data.isEndResizable && [
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-end-1',
-      ],
-      rowEventColorClass: (data) => [
-        'print:border-y',
-        data.isStart && 'print:border-s rounded-s-sm',
-        data.isEnd && 'print:border-e rounded-e-sm',
-        (!data.isStart && !data.isEnd) // arrows on both sides
-          ? '[clip-path:polygon(0_50%,6px_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,6px_100%)]'
-          : !data.isStart // just start side
-            ? '[clip-path:polygon(0_50%,6px_0,100%_0,100%_100%,6px_100%)]'
-            : !data.isEnd // just end side
-              && '[clip-path:polygon(0_0,calc(100%_-_6px)_0,100%_50%,calc(100%_-_6px)_100%,0_100%)]',
       ],
       rowEventInnerClass: 'flex-row items-center',
       rowEventTimeClass: (data) => [
@@ -225,7 +212,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
 
-      columnEventClass: 'mb-px',
+      columnEventClass: (data) => [
+        'mb-px',
+        'border-x',
+        data.isStart && 'border-t rounded-t-sm',
+        data.isEnd && 'border-b rounded-b-sm',
+        (data.level || data.isMirror) && !data.isSelected && `outline ${params.bgOutlineClass}`,
+      ],
       columnEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-top-1',
@@ -233,12 +226,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventAfterClass: (data) => data.isEndResizable && [
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-bottom-1',
-      ],
-      columnEventColorClass: (data) => [
-        'print:border-x',
-        data.isStart && 'print:border-t rounded-t-sm',
-        data.isEnd && 'print:border-b rounded-b-sm',
-        (data.level || data.isMirror) && !data.isSelected && `outline ${params.bgOutlineClass}`,
       ],
       columnEventInnerClass: (data) => data.isCompact
         ? 'flex-row gap-1' // one line
