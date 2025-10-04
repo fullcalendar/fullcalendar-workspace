@@ -14,6 +14,7 @@ clean+build all:
 
 
 NOW
+  no more opacity-50 or whatever in dayCellTop... just change text color
   bad ouline hover-effect Monarch list-view DAY-HEADER, because link is nested strangely
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)
   list-view hovering in Classic and Pulse
@@ -26,6 +27,7 @@ NOW
       Is opacity the correct thing to be setting?
         Actually, i think we should always set text color, so that the isToday circle is accurate color
         Good to use a real mutedTextColor so that it matches with other parts of the UI
+  apply abstract-interface refactor to other themes
   demo App not working in Safari?
   why doesn't eventStartEditable seem to work?
 MANUAL TEST
@@ -297,8 +299,6 @@ think about browser support. just require logical properties? (2021)
   resizeobserver could be fully relied on!
   can use aspectRatio too!!!???
   https://caniuse.com/mdn-css_properties_aspect-ratio
-TODO use Shadcn new button group
-  https://ui.shadcn.com/docs/components/button-group
 ensure selected event as hight z-index than others
   important when selected event as outline that should go over others
 rename?: the "before" and "after" content to start/end?
