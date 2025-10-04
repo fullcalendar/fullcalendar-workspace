@@ -71,17 +71,23 @@ export function EventCalendar({
   )
 }
 
+// TODO: use transition, like Shadn
+// However, when we do transition-all like the buttons have,
+// drag & drop gets really distorted. How to blacklist position? Or whitelist what we want?
+const focusOutlineClass = 'outline-none focus-visible:ring-3 ring-ring/50'
+const selectedOutlineClass = 'ring-3 ring-ring/50'
+
 // secondary
 const secondaryClass = 'bg-foreground/10'
-const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 focus-visible:bg-foreground/30`
+const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 ${focusOutlineClass}`
 
 // tertiary (based on primary, but with low contrast)
 const tertiaryClass = 'bg-primary/20 dark:bg-primary/30'
-const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 focus-visible:bg-primary/50`
+const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 ${focusOutlineClass}`
 
-// TODO: Shadcn provides a default outline-color for all items ("ring") when not specified. USE IT!?
-const focusOutlineClass = 'focus-visible:outline-3 outline-foreground/20'
-const selectedOutlineClass = 'outline-3 outline-foreground/20'
+// ghost
+const ghostHoverClass = 'hover:bg-foreground/10'
+const ghostPressableClass = `${ghostHoverClass} ${focusOutlineClass}`
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
@@ -90,8 +96,8 @@ export const optionParams: EventCalendarOptionParams = {
   tertiaryClass,
   tertiaryPressableClass,
 
-  ghostHoverClass: 'hover:bg-foreground/10',
-  ghostPressableClass: 'hover:bg-foreground/10 active:bg-foreground/20 focus-visible:bg-foreground/20',
+  ghostHoverClass,
+  ghostPressableClass,
 
   focusOutlineClass,
   selectedOutlineClass,
