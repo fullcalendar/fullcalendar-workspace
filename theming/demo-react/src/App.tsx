@@ -481,6 +481,7 @@ function EventCalendarDemo(props: DemoProps) {
 
   return (
     <EventCalendarComponent
+      // eventStartEditable={true}
       // direction='rtl'
       // displayEventTime={true}
       // eventDisplay='block'
@@ -513,7 +514,7 @@ function EventCalendarDemo(props: DemoProps) {
       selectMirror={false}
       dayMaxEvents={true}
       // businessHours={true} // -- TODO: background conflicts with the week number pills!!!
-      // eventMaxStack={1}
+      eventMaxStack={1}
       {...( // NOTE: if we gave undefined for either of these settings, calendar render NO day header!
         props.theme === 'monarch'
           ? {
@@ -631,7 +632,7 @@ function SchedulerDemo(props: DemoProps) {
       }}
       // datesAboveResources
       // displayEventTime={true}
-      // eventMaxStack={1}
+      eventMaxStack={1}
       initialView={props.initialView}
       navLinkDayClick='resourceTimelineDay'
       navLinkWeekClick='resourceTimelineWeek'

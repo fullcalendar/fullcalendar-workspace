@@ -13,23 +13,23 @@ clean+build all:
   pn build
 
 
-theme TODO
-----------
-All themes
-  challenges
-    multiple gradations for glassy/cloudy/etc
-      esp imporant for list-view-item hovers that are LIGHTER than the list-day-headers
-      also for daygrid list-item "selected" state (called selectedButtonClass in Standard and cloudyBgClass in others)
-    todayPillClass/miscPillClass (Monarch)
-    todayCircle(Bg|Fg)Class (Pulse)
-  instead of "strong" bg, use "cloudy" instead?
-  what about other ui-systems that need to provide default event "contrast" color?
-  test timeline/timegrid more-link in DARK mode
-  refactor all theme CSS variables, especially Monarch
-  code cleanliness
-    replace all "canvas" css vars with just "bg"
-    naming confusion between "med" and "mid"
+NOW
+  bad ouline hover-effect Monarch list-view DAY-HEADER, because link is nested strangely
+  refactor how other themes' event color manipulation works (no more eventColorClass/etc)
+  list-view hovering in Classic and Pulse
+    will need muted-half-wash or something
+  layering disabled + business-hours looks bad
+    RELEVANT to Forma and Breezy
+    TODO: if ANY business-hours specified, disabled days should do dimmed-daynumber instead of bg color
+      dayCell: ((data.isOther || data.isDisabled) && !data.options.businessHours) && 'bg-gray'
+      dayCellTop: !((data.isOther || data.isDisabled) && !data.options.businessHours) && 'opacity-50' // only relevant to Forma
+      Is opacity the correct thing to be setting?
+        Actually, i think we should always set text color, so that the isToday circle is accurate color
+        Good to use a real mutedTextColor so that it matches with other parts of the UI
+  demo App not working in Safari?
+  why doesn't eventStartEditable seem to work?
 MANUAL TEST
+  test timeline/timegrid more-link in DARK mode
   now-indicator
   ALL stickiness, esp when calendar root is overflow:hidden
   test horizontal scrolling
@@ -295,6 +295,17 @@ bug: in resource-timeline, when 2 rows of datagrid headers & 2 rows of slotLabel
 think about browser support. just require logical properties? (2021)
   https://caniuse.com/css-logical-props
   resizeobserver could be fully relied on!
+  can use aspectRatio too!!!???
+  https://caniuse.com/mdn-css_properties_aspect-ratio
+TODO use Shadcn new button group
+  https://ui.shadcn.com/docs/components/button-group
+ensure selected event as hight z-index than others
+  important when selected event as outline that should go over others
+rename?: the "before" and "after" content to start/end?
+  rowEventStartContent
+  rowEventEndContent
+  works with isEndResizable
+hide now-indicator when in print
 
 
 Changelog
@@ -433,6 +444,9 @@ changelog: sticky-bottom for no-events message
 changelog: classic theme has slightly more spacious look
 changelog: eventSlicing is new
 changelog: removed fixedMirrorParent (always body or shadow-root)
+rowEventBeforeContent
+rowEventAfterContent
+EventDisplayData.isInteractive
 
 
 Docs
