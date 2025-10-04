@@ -14,6 +14,9 @@ const secondaryPressableClass = `${secondaryClass} hover:bg-[rgba(var(--mui-pale
 const tertiaryClass = 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)'
 const tertiaryPressableClass = `${tertiaryClass} hover:brightness-110 focus-visible:outline-3 outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]`
 
+const focusOutlineClass = 'focus-visible:outline-3 outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]focus-visible:outline-3 outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
+const selectedOutlineClass = 'outline-3 outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
+
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
   secondaryPressableClass,
@@ -22,10 +25,9 @@ export const optionParams: EventCalendarOptionParams = {
 
   ghostHoverClass: 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]',
   ghostPressableClass: 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] outline-(--mui-palette-primary-main)',
-  ghostSelectedClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
 
-  eventPressableClass: 'focus-visible:outline-3 outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
-  eventSelectedClass: 'outline-3 outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+  focusOutlineClass,
+  selectedOutlineClass,
 
   mutedBgClass: 'bg-(--mui-palette-action-hover)',
   mutedWashClass: 'bg-(--mui-palette-action-hover)',

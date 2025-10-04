@@ -5,22 +5,35 @@ import * as svgs from './ui-default-svgs.js'
 const buttonTextClass = 'text-sm'
 const iconSizeClass = 'size-5' // matches text-sm line-height
 
+const focusOutlineClass = 'focus-visible:outline-3 outline-(--fc-monarch-highlight) outline-offset-1'
+const selectedOutlineClass = 'outline-3 outline-(--fc-monarch-highlight) outline-offset-1'
+
+const primaryClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreground)`
+const primaryPressableClass = `${primaryClass} hover:brightness-120 ${focusOutlineClass}`
+
 const secondaryClass = 'bg-(--fc-monarch-secondary) text-(--fc-monarch-secondary-foreground)'
+const secondaryPressableClass = `${secondaryClass} hover:brightness-120 ${focusOutlineClass}` // TODO: use separate color for hover!
+
 const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-tertiary-foreground)'
-const buttonEffectClass = 'hover:brightness-120 focus-visible:outline-3 outline-(--fc-monarch-strong-wash) outline-offset-1' // brightness BAD for light/dark!!!
+const tertiaryPressableClass = `${tertiaryClass} hover:brightness-120 ${focusOutlineClass}`
+
+const tabSelectedClass = `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground) hover:brightness-120 ${focusOutlineClass}`
+
+const ghostHoverClass = 'hover:bg-(--fc-monarch-muted-wash)'
+const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-monarch-muted-wash) active:bg-(--fc-monarch-strong-wash) ${focusOutlineClass}`
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
-  secondaryPressableClass: `${secondaryClass} ${buttonEffectClass}`,
+  secondaryPressableClass,
+
   tertiaryClass,
-  tertiaryPressableClass: `${tertiaryClass} ${buttonEffectClass}`,
+  tertiaryPressableClass,
 
-  ghostHoverClass: 'hover:bg-(--fc-monarch-muted-wash)',
-  ghostPressableClass: 'hover:bg-(--fc-monarch-muted-wash) active:bg-(--fc-monarch-strong-wash) focus-visible:bg-(--fc-monarch-strong-wash) outline-(--fc-monarch-primary)',
-  ghostSelectedClass: 'bg-(--fc-monarch-strong-wash)',
+  ghostHoverClass,
+  ghostPressableClass,
 
-  eventPressableClass: 'focus-visible:outline-3 outline-(--fc-monarch-strong-wash) outline-offset-1',
-  eventSelectedClass: 'outline-3 outline-(--fc-monarch-strong-wash)',
+  focusOutlineClass,
+  selectedOutlineClass,
 
   mutedBgClass: 'bg-(--fc-monarch-muted)',
   mutedWashClass: 'bg-(--fc-monarch-muted-wash)',
@@ -72,9 +85,9 @@ export const defaultUiEventCalendarOptions: {
       (data.isIconOnly || (data.inSelectGroup && !data.isSelected))
         ? `${optionParams.ghostPressableClass} border-transparent`
         : data.isSelected
-          ? `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground) border-transparent ${buttonEffectClass}` // solid gray
+          ? `${tabSelectedClass} border-transparent` // solid gray
           : data.isPrimary
-            ? `bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreground) border-transparent ${buttonEffectClass}` // primary color
+            ? `${primaryPressableClass} border-transparent` // primary color
             : joinClassNames(
                 optionParams.ghostPressableClass,
                 'border-(--fc-monarch-secondary-border)' // bordered gray

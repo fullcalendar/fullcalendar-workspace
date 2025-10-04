@@ -79,20 +79,22 @@ const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 focus-
 const tertiaryClass = 'bg-primary/20 dark:bg-primary/30'
 const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 focus-visible:bg-primary/50`
 
-// NOTE: Shadcn provides a default outline-color for all items ("ring") when not specified
+// TODO: Shadcn provides a default outline-color for all items ("ring") when not specified. USE IT!?
+const focusOutlineClass = 'focus-visible:outline-3 outline-foreground/20'
+const selectedOutlineClass = 'outline-3 outline-foreground/20'
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
   secondaryPressableClass,
+
   tertiaryClass,
   tertiaryPressableClass,
 
   ghostHoverClass: 'hover:bg-foreground/10',
   ghostPressableClass: 'hover:bg-foreground/10 active:bg-foreground/20 focus-visible:bg-foreground/20',
-  ghostSelectedClass: 'bg-foreground/20',
 
-  eventPressableClass: 'focus-visible:outline-3 outline-foreground/20',
-  eventSelectedClass: 'outline-3 outline-foreground/20',
+  focusOutlineClass,
+  selectedOutlineClass,
 
   mutedBgClass: 'bg-muted',
   mutedWashClass: 'bg-foreground/5',

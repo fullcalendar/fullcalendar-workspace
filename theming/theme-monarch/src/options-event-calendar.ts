@@ -48,10 +48,10 @@ export interface EventCalendarOptionParams {
 
   ghostHoverClass: string
   ghostPressableClass: string
-  ghostSelectedClass: string
 
-  eventPressableClass: string
-  eventSelectedClass: string
+  // outline utilities. not already used in (secondary/tertiary/ghost)Pressable
+  focusOutlineClass: string
+  selectedOutlineClass: string
 
   strongBgClass: string // used by more-link
   mutedBgClass: string // used by disabled cells
@@ -105,7 +105,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     listItemEventClass: (data) => [
       `${dayRowItemBaseClass} p-px`,
       data.isSelected
-        ? joinClassNames(params.strongBgClass, data.isDragging && 'shadow-sm')
+        ? joinClassNames(params.mutedBgClass, data.isDragging && 'shadow-sm')
         : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
     ],
     listItemEventColorClass: (data) => [
@@ -167,8 +167,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       eventClass: (data) => [
         'hover:no-underline',
-        data.isSelected ? params.eventSelectedClass :
-          data.isInteractive && params.eventPressableClass,
+        data.isSelected && params.selectedOutlineClass,
       ],
 
       backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.bgEventColorClass,
@@ -185,6 +184,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'relative isolate group',
         'border-transparent bg-(--fc-event-color)',
         'print:border-(--fc-event-color) print:bg-white',
+        params.focusOutlineClass,
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
           : joinClassNames('focus-visible:shadow-md', data.isDragging && 'opacity-75'),
