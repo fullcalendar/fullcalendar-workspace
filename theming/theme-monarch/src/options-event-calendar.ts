@@ -42,19 +42,21 @@ import {} from '@fullcalendar/interaction'
 export interface EventCalendarOptionParams {
   secondaryClass: string // bg & fg
   secondaryPressableClass: string
+
   tertiaryClass: string // bg & fg
   tertiaryPressableClass: string
 
+  ghostHoverClass: string
   ghostPressableClass: string
   ghostSelectedClass: string
 
+  eventPressableClass: string
+  eventSelectedClass: string
+
+  strongBgClass: string // used by more-link
   mutedBgClass: string // used by disabled cells
   mutedWashClass: string // used by non-business-hours (guaranteed semitransparent)
-  strongBgClass: string // used by more-link
   highlightClass: string
-
-  blockFocusableClass: string
-  blockSelectedClass: string
 
   borderColorClass: string
   primaryBorderColorClass: string
@@ -98,13 +100,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       : 'text-sm px-2'
   ]
 
-  const dayRowItemBaseClass = 'mx-0.5 mb-px rounded-sm' // TODO: add ghostPressableClass?
+  const dayRowItemBaseClass = 'mx-0.5 mb-px rounded-sm'
   const dayRowItemClasses: CalendarOptions = {
     listItemEventClass: (data) => [
       `${dayRowItemBaseClass} p-px`,
       data.isSelected
         ? joinClassNames(params.strongBgClass, data.isDragging && 'shadow-sm')
-        : params.ghostPressableClass,
+        : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
     ],
     listItemEventColorClass: (data) => [
       'border-4', // 8px diameter
@@ -163,7 +165,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       inlineWeekNumberInnerClass: getWeekNumberPillClasses,
 
-      eventClass: 'hover:no-underline',
+      eventClass: (data) => [
+        'hover:no-underline',
+        data.isSelected ? params.eventSelectedClass :
+          data.isInteractive && params.eventPressableClass,
+      ],
 
       backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.bgEventColorClass,
       backgroundEventTitleClass: (data) => [
@@ -182,9 +188,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
           : joinClassNames('focus-visible:shadow-md', data.isDragging && 'opacity-75'),
-        data.isSelected
-          ? params.blockSelectedClass
-          : params.blockFocusableClass,
       ],
       blockEventInnerClass: 'z-10 flex text-(--fc-event-contrast-color) print:text-black',
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
@@ -352,9 +355,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : 'uppercase text-xs hover:underline', // secondary
         listDayEventsClass: 'grow min-w-0 flex flex-col py-2',
 
-        listItemEventClass: [
+        listItemEventClass: (data) => [
           'group rounded-s-full p-2 gap-2',
-          params.ghostPressableClass,
+          data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass,
         ],
         listItemEventColorClass: 'border-5 mx-2', // 10px diameter
         listItemEventInnerClass: 'text-sm gap-2',

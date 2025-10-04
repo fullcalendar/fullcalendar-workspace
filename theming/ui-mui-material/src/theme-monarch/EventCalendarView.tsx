@@ -20,11 +20,12 @@ export const optionParams: EventCalendarOptionParams = {
   tertiaryClass,
   tertiaryPressableClass,
 
+  ghostHoverClass: 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]',
   ghostPressableClass: 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] outline-(--mui-palette-primary-main)',
   ghostSelectedClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
 
-  blockFocusableClass: 'focus-visible:outline-3 outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
-  blockSelectedClass: 'outline-3 outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+  eventPressableClass: 'focus-visible:outline-3 outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+  eventSelectedClass: 'outline-3 outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
 
   mutedBgClass: 'bg-(--mui-palette-action-hover)',
   mutedWashClass: 'bg-(--mui-palette-action-hover)',

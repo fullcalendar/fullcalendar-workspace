@@ -7,7 +7,7 @@ const iconSizeClass = 'size-5' // matches text-sm line-height
 
 const secondaryClass = 'bg-(--fc-monarch-secondary) text-(--fc-monarch-secondary-foreground)'
 const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-tertiary-foreground)'
-const buttonEffectClass = 'hover:brightness-120 focus-visible:outline-3 outline-(--fc-monarch-strong-wash)' // brightness BAD for light/dark!!!
+const buttonEffectClass = 'hover:brightness-120 focus-visible:outline-3 outline-(--fc-monarch-strong-wash) outline-offset-1' // brightness BAD for light/dark!!!
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
@@ -15,11 +15,12 @@ export const optionParams: EventCalendarOptionParams = {
   tertiaryClass,
   tertiaryPressableClass: `${tertiaryClass} ${buttonEffectClass}`,
 
-  ghostPressableClass: 'hover:bg-(--fc-monarch-muted-wash) focus-visible:bg-(--fc-monarch-strong-wash) outline-(--fc-monarch-primary)',
+  ghostHoverClass: 'hover:bg-(--fc-monarch-muted-wash)',
+  ghostPressableClass: 'hover:bg-(--fc-monarch-muted-wash) active:bg-(--fc-monarch-strong-wash) focus-visible:bg-(--fc-monarch-strong-wash) outline-(--fc-monarch-primary)',
   ghostSelectedClass: 'bg-(--fc-monarch-strong-wash)',
 
-  blockFocusableClass: 'focus-visible:outline-3 outline-(--fc-monarch-strong-wash)',
-  blockSelectedClass: 'outline-3 outline-(--fc-monarch-strong-wash)',
+  eventPressableClass: 'focus-visible:outline-3 outline-(--fc-monarch-strong-wash) outline-offset-1',
+  eventSelectedClass: 'outline-3 outline-(--fc-monarch-strong-wash)',
 
   mutedBgClass: 'bg-(--fc-monarch-muted)',
   mutedWashClass: 'bg-(--fc-monarch-muted-wash)',
