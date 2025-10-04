@@ -258,7 +258,9 @@ export const BASE_OPTION_REFINERS = {
   rowEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
   rowEventTitleSticky: Boolean,
   rowEventBeforeClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  rowEventBeforeContent: identity as Identity<CustomContentGenerator<EventDisplayData>>,
   rowEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  rowEventAfterContent: identity as Identity<CustomContentGenerator<EventDisplayData>>,
   //
   columnEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   columnEventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,

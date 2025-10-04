@@ -1,4 +1,5 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
+import { filledRightTriangle } from './svgs.js'
 
 /*
 TODO: double-check units for ticks
@@ -27,6 +28,8 @@ core:
 later:
   simplify rowEventColorClass arrows
   use SVGs
+
+audit use of "group" classnames
 */
 
 // ambient types (tsc strips during build because of {})
@@ -42,7 +45,6 @@ export interface EventCalendarOptionParams {
   tertiaryClass: string // bg & fg
   tertiaryPressableClass: string
 
-  ghostHoverClass: string
   ghostPressableClass: string
   ghostSelectedClass: string
 
@@ -102,7 +104,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       `${dayRowItemBaseClass} p-px`,
       data.isSelected
         ? joinClassNames(params.strongBgClass, data.isDragging && 'shadow-sm')
-        : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
+        : params.ghostPressableClass,
     ],
     listItemEventColorClass: (data) => [
       'border-4', // 8px diameter
@@ -191,18 +193,28 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       rowEventClass: (data) => [
         'mb-px',
         'border-y',
-        data.isStart && 'ms-px border-s rounded-s-sm',
-        data.isEnd && 'me-px border-e rounded-e-sm',
+        data.isStart ? 'ms-px border-s rounded-s-sm' : 'ms-2',
+        data.isEnd ? 'me-px border-e rounded-e-sm' : 'me-2',
       ],
-      rowEventBeforeClass: (data) => data.isStartResizable && [
-        data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
-        '-start-1',
-      ],
-      rowEventAfterClass: (data) => data.isEndResizable && [
-        data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
-        '-end-1',
-      ],
+      rowEventBeforeClass: (data) =>
+        data.isStartResizable ? [
+          data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
+          '-start-1', // because both ^scenarious have width-2
+        ] : !data.isStart && [
+          'absolute -start-2 w-2 -top-px -bottom-px'
+        ],
+      rowEventBeforeContent: (data) => !data.isStart && filledRightTriangle('size-full text-(--fc-event-color) rotate-180 [[dir=rtl]_&]:rotate-0'),
+      rowEventAfterClass: (data) =>
+        data.isEndResizable ? [
+          data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
+          '-end-1', // because both ^scenarious have width-2
+        ] : !data.isEnd && [
+          'absolute -end-2 w-2 -top-px -bottom-px',
+        ],
+      rowEventAfterContent: (data) => !data.isEnd && filledRightTriangle('size-full text-(--fc-event-color) [[dir=rtl]_&]:rotate-180'),
+
       rowEventInnerClass: 'flex-row items-center',
+
       rowEventTimeClass: (data) => [
         'p-0.5 font-bold',
         data.isCompact ? xxsTextClass : 'text-xs',
@@ -340,9 +352,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : 'uppercase text-xs hover:underline', // secondary
         listDayEventsClass: 'grow min-w-0 flex flex-col py-2',
 
-        listItemEventClass: (data) => [
+        listItemEventClass: [
           'group rounded-s-full p-2 gap-2',
-          data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass,
+          params.ghostPressableClass,
         ],
         listItemEventColorClass: 'border-5 mx-2', // 10px diameter
         listItemEventInnerClass: 'text-sm gap-2',

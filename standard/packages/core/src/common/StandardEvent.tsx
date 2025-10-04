@@ -163,6 +163,9 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       !props.disableLiquid && classNames.liquid, // timegrid hack
     )
 
+    const beforeContent = props.display === 'row' && options.rowEventBeforeContent
+    const afterContent = props.display === 'row' && options.rowEventAfterContent
+
     return (
       <ContentContainer<EventDisplayData>
         tag={tag}
@@ -199,7 +202,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
               />
             )}
             {/* "before" element (resizer or left-arrow) */}
-            {beforeClassName && (
+            {(beforeClassName || beforeContent) && (
               <div
                 className={joinClassNames(
                   beforeClassName,
@@ -213,6 +216,16 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                   )
                 )}
               >
+                {beforeContent && (
+                  <ContentContainer<EventDisplayData>
+                    tag='div'
+                    style={{ display: 'contents' }}
+                    attrs={{ 'aria-hidden': true }}
+                    renderProps={renderProps}
+                    generatorName={undefined}
+                    customGenerator={beforeContent}
+                  />
+                )}
                 {Boolean(renderProps.isStartResizable && renderProps.isSelected) && (
                   <div className={classNames.hit} />
                 )}
@@ -228,7 +241,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
               className={innerClassName}
             />
             {/* "after" element (resizer or left-arrow) */}
-            {afterClassName && (
+            {(afterClassName || afterContent) && (
               <div
                 className={joinClassNames(
                   afterClassName,
@@ -242,6 +255,16 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                   )
                 )}
               >
+                {afterContent && (
+                  <ContentContainer<EventDisplayData>
+                    tag='div'
+                    style={{ display: 'contents' }}
+                    attrs={{ 'aria-hidden': true }}
+                    renderProps={renderProps}
+                    generatorName={undefined}
+                    customGenerator={afterContent}
+                  />
+                )}
                 {Boolean(renderProps.isEndResizable && renderProps.isSelected) && (
                   <div className={classNames.hit} />
                 )}

@@ -73,11 +73,11 @@ export function EventCalendar({
 
 // secondary
 const secondaryClass = 'bg-foreground/10'
-const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 active:bg-foreground/30 focus-visible:bg-foreground/30`
+const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 focus-visible:bg-foreground/30`
 
 // tertiary (based on primary, but with low contrast)
 const tertiaryClass = 'bg-primary/20 dark:bg-primary/30'
-const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 active:bg-primary/50 focus-visible:bg-primary/50`
+const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 focus-visible:bg-primary/50`
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
@@ -85,12 +85,11 @@ export const optionParams: EventCalendarOptionParams = {
   tertiaryClass,
   tertiaryPressableClass,
 
-  ghostHoverClass: 'hover:bg-foreground/10',
   ghostPressableClass: 'hover:bg-foreground/10 active:bg-foreground/20 focus-visible:bg-foreground/20',
   ghostSelectedClass: 'bg-foreground/20',
 
-  blockFocusableClass: 'focus-visible:outline-[3px] focus-visible:outline-foreground/20',
-  blockSelectedClass: 'outline-[3px] outline-foreground/20',
+  blockFocusableClass: 'focus-visible:outline-3 outline-foreground/20',
+  blockSelectedClass: 'outline-3 outline-foreground/20',
 
   mutedBgClass: 'bg-muted',
   mutedWashClass: 'bg-foreground/5',

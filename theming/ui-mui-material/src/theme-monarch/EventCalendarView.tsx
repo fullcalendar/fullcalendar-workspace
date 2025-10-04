@@ -8,11 +8,11 @@ import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 
 // less-contrasty version of primary (like the selected tab)
 const secondaryClass = 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.15)] brightness-110'
-const secondaryPressableClass = `${secondaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)] focus-visible:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)]`
+const secondaryPressableClass = `${secondaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] focus-visible:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)]`
 
 // tertiary is actually the secondary (like an accent color)
 const tertiaryClass = 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)'
-const tertiaryPressableClass = `${tertiaryClass} hover:brightness-110`
+const tertiaryPressableClass = `${tertiaryClass} hover:brightness-110 focus-visible:outline-3 outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]`
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
@@ -20,12 +20,11 @@ export const optionParams: EventCalendarOptionParams = {
   tertiaryClass,
   tertiaryPressableClass,
 
-  ghostHoverClass: 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]',
-  ghostPressableClass: 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)] active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+  ghostPressableClass: 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] outline-(--mui-palette-primary-main)',
   ghostSelectedClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
 
-  blockFocusableClass: 'focus-visible:outline-[3px] focus-visible:outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
-  blockSelectedClass: 'outline-[3px] outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+  blockFocusableClass: 'focus-visible:outline-3 outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+  blockSelectedClass: 'outline-3 outline-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
 
   mutedBgClass: 'bg-(--mui-palette-action-hover)',
   mutedWashClass: 'bg-(--mui-palette-action-hover)',
