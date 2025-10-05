@@ -11,7 +11,7 @@ const focusOutlineGroupClass = `group-focus-visible:outline-3 ${outlineConfigCla
 const selectedOutlineClass = `outline-3 ${outlineConfigClass}`
 
 const pressableConfigClass = 'hover:brightness-(--fc-monarch-hover-brightness) active:brightness-(--fc-monarch-active-brightness)'
-const pressableConfigGroupClass = 'hover:brightness-(--fc-monarch-hover-brightness) active:brightness-(--fc-monarch-active-brightness)'
+const pressableConfigGroupClass = 'group-hover:brightness-(--fc-monarch-hover-brightness) group-active:brightness-(--fc-monarch-active-brightness)'
 const secondaryPressableConfigClass = 'hover:brightness-(--fc-monarch-secondary-hover-brightness) active:brightness-(--fc-monarch-secondary-active-brightness)'
 
 const primaryClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreground)`
