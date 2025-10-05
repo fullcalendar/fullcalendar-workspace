@@ -26,6 +26,10 @@ error -> now
   --fc-monarch-strong: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
   --fc-monarch-strong-wash: color-mix(in oklab, var(--color-black) 20%, transparent); /* TODO */
   --fc-monarch-strong-border: var(--color-gray-400); /* TODO */
+  --fc-monarch-hover-brightness: 1.15;
+  --fc-monarch-active-brightness: 1.25;
+  --fc-monarch-secondary-hover-brightness: 0.95;
+  --fc-monarch-secondary-active-brightness: 0.9;
 }
 [data-color-scheme=dark] {
   --fc-monarch-muted: color-mix(in oklab, var(--color-gray-500) 15%, transparent); /* TODO, make opaque */
@@ -35,6 +39,9 @@ error -> now
   --fc-monarch-strong: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
   --fc-monarch-strong-wash: color-mix(in oklab, var(--color-white) 30%, transparent); /* TODO */
   --fc-monarch-strong-border: var(--color-gray-700); /* TODO */
+  /* default brightness unchanged */
+  --fc-monarch-secondary-hover-brightness: var(--fc-monarch-hover-brightness); /* use ligher */
+  --fc-monarch-secondary-active-brightness: var(--fc-monarch-secondary-active-brightness); /* use ligher */
 }
 
 [data-palette=purple] {

@@ -14,8 +14,8 @@ clean+build all:
 
 
 NOW
-  bad ouline hover-effect Monarch list-view DAY-HEADER, because link is nested strangely
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)
+    remove *ColorClass props?
   list-view hovering in Classic and Pulse
     will need muted-half-wash or something
   layering disabled + business-hours looks bad
@@ -29,6 +29,7 @@ NOW
   apply abstract-interface refactor to other themes
   demo App not working in Safari?
   why doesn't eventStartEditable seem to work?
+  why does dragging Monarch events give outline?
 MANUAL TEST
   no more opacity-50 or whatever in dayCellTop... just change text color
   test timeline/timegrid more-link in DARK mode

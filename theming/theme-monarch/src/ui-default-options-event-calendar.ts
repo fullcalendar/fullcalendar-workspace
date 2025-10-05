@@ -10,17 +10,21 @@ const focusOutlineClass = `focus-visible:outline-3 ${outlineConfigClass}`
 const focusOutlineGroupClass = `group-focus-visible:outline-3 ${outlineConfigClass}`
 const selectedOutlineClass = `outline-3 ${outlineConfigClass}`
 
+const pressableConfigClass = 'hover:brightness-(--fc-monarch-hover-brightness) active:brightness-(--fc-monarch-active-brightness)'
+const pressableConfigGroupClass = 'hover:brightness-(--fc-monarch-hover-brightness) active:brightness-(--fc-monarch-active-brightness)'
+const secondaryPressableConfigClass = 'hover:brightness-(--fc-monarch-secondary-hover-brightness) active:brightness-(--fc-monarch-secondary-active-brightness)'
+
 const primaryClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreground)`
-const primaryPressableClass = `${primaryClass} hover:brightness-120 ${focusOutlineClass}`
+const primaryPressableClass = `${primaryClass} ${pressableConfigClass} ${focusOutlineClass}`
 
 const secondaryClass = 'bg-(--fc-monarch-secondary) text-(--fc-monarch-secondary-foreground)'
-const secondaryPressableClass = `${secondaryClass} hover:brightness-120 ${focusOutlineClass}` // TODO: use separate color for hover!
+const secondaryPressableClass = `${secondaryClass} ${secondaryPressableConfigClass} ${focusOutlineClass}`
 
 const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-tertiary-foreground)'
-const tertiaryPressableClass = `${tertiaryClass} hover:brightness-120 ${focusOutlineClass}`
-const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:brightness-120 ${focusOutlineGroupClass}`
+const tertiaryPressableClass = `${tertiaryClass} ${pressableConfigClass} ${focusOutlineClass}`
+const tertiaryPressableGroupClass = `${tertiaryClass} ${pressableConfigGroupClass} ${focusOutlineGroupClass}`
 
-const tabSelectedClass = `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground) hover:brightness-120 ${focusOutlineClass}`
+const tabSelectedClass = `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground) ${pressableConfigClass} ${focusOutlineClass}`
 
 const ghostHoverClass = 'hover:bg-(--fc-monarch-muted-wash)'
 const ghostHoverGroupClass = 'group-hover:bg-(--fc-monarch-muted-wash)'
