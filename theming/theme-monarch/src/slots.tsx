@@ -21,8 +21,8 @@ export function createSlots(
         {data.weekdayText && (
           <div
             className={joinClassNames(
-              'uppercase text-xs opacity-60',
-              data.hasNavLink && 'group-hover:opacity-90',
+              'uppercase text-xs',
+              params.mutedFgClass,
             )}
           >{data.weekdayText}</div>
         )}
@@ -31,8 +31,8 @@ export function createSlots(
             className={joinClassNames(
               'm-0.5 flex flex-row items-center justify-center text-lg h-9',
               data.isToday
-                ? joinClassNames('w-9 rounded-full', data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
-                : data.hasNavLink && `w-9 rounded-full ${params.ghostPressableClass}`
+                ? joinClassNames('w-9 rounded-full', data.hasNavLink ? params.tertiaryPressableGroupClass : params.tertiaryClass)
+                : data.hasNavLink && `w-9 rounded-full ${params.ghostPressableGroupClass}`
             )}
           >{data.dayNumberText}</div>
         )}
@@ -47,19 +47,22 @@ export function createSlots(
               key={i}
               className={
                 textPart.type !== 'day'
-                  ? 'whitespace-pre'
+                  ? joinClassNames(
+                      'whitespace-pre',
+                      params.focusOutlineGroupClass,
+                    )
                   : joinClassNames(
                       'flex flex-row items-center justify-center size-9 rounded-full',
                       data.isToday
-                        ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
-                        : (data.hasNavLink && params.ghostPressableClass)
+                        ? (data.hasNavLink ? params.tertiaryPressableGroupClass : params.tertiaryClass)
+                        : (data.hasNavLink && params.ghostPressableGroupClass)
                     )
               }
             >{textPart.value}</div>
           ))}
         </Fragment>
-      ) : (
-        data.text // secondary
+      ) : ( // secondary
+        <div className={params.focusOutlineGroupClass}>{data.text}</div>
       )
   }
 }

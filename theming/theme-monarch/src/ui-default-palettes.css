@@ -21,7 +21,8 @@ error -> now
 :root {
   --fc-monarch-muted: color-mix(in oklab, var(--color-gray-500) 15%, transparent); /* TODO, make opaque */
   --fc-monarch-muted-wash: color-mix(in oklab, var(--color-gray-500) 15%, transparent); /* TODO */
-  --fc-monarch-disabled-foreground: #bebebe;
+  --fc-monarch-muted-foreground: #8d8d8d; /* TODO */
+  --fc-monarch-disabled-foreground: #bebebe; /* TODO */
   --fc-monarch-strong: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
   --fc-monarch-strong-wash: color-mix(in oklab, var(--color-black) 20%, transparent); /* TODO */
   --fc-monarch-strong-border: var(--color-gray-400); /* TODO */
@@ -29,7 +30,8 @@ error -> now
 [data-color-scheme=dark] {
   --fc-monarch-muted: color-mix(in oklab, var(--color-gray-500) 15%, transparent); /* TODO, make opaque */
   --fc-monarch-muted-wash: color-mix(in oklab, var(--color-gray-500) 15%, transparent); /* TODO */
-  --fc-monarch-disabled-foreground: #898989;
+  --fc-monarch-muted-foreground: #b0b0b0; /* TODO */
+  --fc-monarch-disabled-foreground: #898989; /* TODO */
   --fc-monarch-strong: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
   --fc-monarch-strong-wash: color-mix(in oklab, var(--color-white) 30%, transparent); /* TODO */
   --fc-monarch-strong-border: var(--color-gray-700); /* TODO */

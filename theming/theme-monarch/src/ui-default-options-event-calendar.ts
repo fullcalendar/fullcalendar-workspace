@@ -5,8 +5,10 @@ import * as svgs from './ui-default-svgs.js'
 const buttonTextClass = 'text-sm'
 const iconSizeClass = 'size-5' // matches text-sm line-height
 
-const focusOutlineClass = 'focus-visible:outline-3 outline-(--fc-monarch-highlight) outline-offset-1'
-const selectedOutlineClass = 'outline-3 outline-(--fc-monarch-highlight) outline-offset-1'
+const outlineConfigClass = 'outline-(--fc-monarch-highlight) outline-offset-1'
+const focusOutlineClass = `focus-visible:outline-3 ${outlineConfigClass}`
+const focusOutlineGroupClass = `group-focus-visible:outline-3 ${outlineConfigClass}`
+const selectedOutlineClass = `outline-3 ${outlineConfigClass}`
 
 const primaryClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreground)`
 const primaryPressableClass = `${primaryClass} hover:brightness-120 ${focusOutlineClass}`
@@ -16,11 +18,14 @@ const secondaryPressableClass = `${secondaryClass} hover:brightness-120 ${focusO
 
 const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-tertiary-foreground)'
 const tertiaryPressableClass = `${tertiaryClass} hover:brightness-120 ${focusOutlineClass}`
+const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:brightness-120 ${focusOutlineGroupClass}`
 
 const tabSelectedClass = `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground) hover:brightness-120 ${focusOutlineClass}`
 
 const ghostHoverClass = 'hover:bg-(--fc-monarch-muted-wash)'
+const ghostHoverGroupClass = 'group-hover:bg-(--fc-monarch-muted-wash)'
 const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-monarch-muted-wash) active:bg-(--fc-monarch-strong-wash) ${focusOutlineClass}`
+const ghostPressableGroupClass = `${ghostHoverGroupClass} group-focus-visible:bg-(--fc-monarch-muted-wash) group-active:bg-(--fc-monarch-strong-wash) ${focusOutlineGroupClass}`
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
@@ -28,11 +33,14 @@ export const optionParams: EventCalendarOptionParams = {
 
   tertiaryClass,
   tertiaryPressableClass,
+  tertiaryPressableGroupClass,
 
   ghostHoverClass,
   ghostPressableClass,
+  ghostPressableGroupClass,
 
   focusOutlineClass,
+  focusOutlineGroupClass,
   selectedOutlineClass,
 
   mutedBgClass: 'bg-(--fc-monarch-muted)',
@@ -55,6 +63,7 @@ export const optionParams: EventCalendarOptionParams = {
   bgClass: 'bg-(--fc-monarch-background)',
   bgOutlineClass: 'outline-(--fc-monarch-background)',
 
+  mutedFgClass: 'text-(--fc-monarch-muted-foreground)',
   disabledFgClass: 'text-(--fc-monarch-disabled-foreground)',
 }
 

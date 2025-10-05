@@ -74,7 +74,9 @@ export function EventCalendar({
 // TODO: use transition, like Shadn
 // However, when we do transition-all like the buttons have,
 // drag & drop gets really distorted. How to blacklist position? Or whitelist what we want?
-const focusOutlineClass = 'outline-none focus-visible:ring-3 ring-ring/50'
+const focusConfigClass = 'ring-ring/50 outline-none'
+const focusOutlineClass = `focus-visible:ring-3 ${focusConfigClass}`
+const focusOutlineGroupClass = `group-focus-visible:ring-3 ${focusConfigClass}`
 const selectedOutlineClass = 'ring-3 ring-ring/50'
 
 // secondary
@@ -84,10 +86,13 @@ const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 ${focu
 // tertiary (based on primary, but with low contrast)
 const tertiaryClass = 'bg-primary/20 dark:bg-primary/30'
 const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 ${focusOutlineClass}`
+const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-primary/40 ${focusOutlineGroupClass}`
 
 // ghost
 const ghostHoverClass = 'hover:bg-foreground/10'
+const ghostHoverGroupClass = 'group-hover:bg-foreground/10'
 const ghostPressableClass = `${ghostHoverClass} ${focusOutlineClass}`
+const ghostPressableGroupClass = `${ghostHoverGroupClass} ${focusOutlineGroupClass}`
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
@@ -95,11 +100,14 @@ export const optionParams: EventCalendarOptionParams = {
 
   tertiaryClass,
   tertiaryPressableClass,
+  tertiaryPressableGroupClass,
 
   ghostHoverClass,
   ghostPressableClass,
+  ghostPressableGroupClass,
 
   focusOutlineClass,
+  focusOutlineGroupClass,
   selectedOutlineClass,
 
   mutedBgClass: 'bg-muted',
@@ -122,6 +130,7 @@ export const optionParams: EventCalendarOptionParams = {
   bgClass: 'bg-background',
   bgOutlineClass: 'outline-background',
 
+  mutedFgClass: 'text-muted-foreground',
   disabledFgClass: 'text-foreground/40',
 }
 

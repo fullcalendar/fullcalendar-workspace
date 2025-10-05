@@ -45,12 +45,15 @@ export interface EventCalendarOptionParams {
 
   tertiaryClass: string // bg & fg
   tertiaryPressableClass: string
+  tertiaryPressableGroupClass: string
 
   ghostHoverClass: string
   ghostPressableClass: string
+  ghostPressableGroupClass: string
 
   // outline utilities. not already used in (secondary/tertiary/ghost)Pressable
   focusOutlineClass: string
+  focusOutlineGroupClass: string
   selectedOutlineClass: string
 
   strongBgClass: string // used by more-link
@@ -73,6 +76,7 @@ export interface EventCalendarOptionParams {
   bgClass: string
   bgOutlineClass: string
 
+  mutedFgClass: string
   disabledFgClass: string
 }
 
@@ -263,7 +267,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'items-center',
       ],
       dayHeaderInnerClass: (data) => [
-        'group pt-2 flex flex-col items-center',
+        'pt-2 flex flex-col items-center group outline-none',
         data.isCompact && xxsTextClass,
       ],
 
@@ -352,9 +356,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       list: {
         listDayClass: `flex flex-row items-start not-last:border-b ${params.borderColorClass}`,
         listDayHeaderClass: 'shrink-0 w-1/3 max-w-40 flex flex-row items-center',
-        listDayHeaderInnerClass: (data) => !data.level
-          ? 'm-2 flex flex-row items-center text-lg group' // primary
-          : 'uppercase text-xs hover:underline', // secondary
+        listDayHeaderInnerClass: (data) => [
+          'group outline-none',
+          !data.level
+            ? 'm-2 flex flex-row items-center text-lg' // primary
+            : 'uppercase text-xs hover:underline', // secondary
+        ],
         listDayEventsClass: 'grow min-w-0 flex flex-col py-2',
 
         listItemEventClass: (data) => [
