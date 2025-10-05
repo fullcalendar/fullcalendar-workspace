@@ -6,7 +6,7 @@ import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcale
 import { createSlots } from '@fullcalendar/theme-monarch-dev/slots'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 
-const outlineConfigClass = 'outline-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.5)] outline-offset-1'
+const outlineConfigClass = 'outline-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.5)]'
 const focusOutlineClass = `focus-visible:outline-3 ${outlineConfigClass}`
 const focusOutlineGroupClass = `group-focus-visible:outline-3 ${outlineConfigClass}`
 const selectedOutlineClass = `outline-3 ${outlineConfigClass}`

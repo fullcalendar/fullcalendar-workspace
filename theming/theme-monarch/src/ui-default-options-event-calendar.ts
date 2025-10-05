@@ -5,7 +5,7 @@ import * as svgs from './ui-default-svgs.js'
 const buttonTextClass = 'text-sm'
 const iconSizeClass = 'size-5' // matches text-sm line-height
 
-const outlineConfigClass = 'outline-(--fc-monarch-highlight) outline-offset-1'
+const outlineConfigClass = 'outline-(--fc-monarch-highlight)'
 const focusOutlineClass = `focus-visible:outline-3 ${outlineConfigClass}`
 const focusOutlineGroupClass = `group-focus-visible:outline-3 ${outlineConfigClass}`
 const selectedOutlineClass = `outline-3 ${outlineConfigClass}`
