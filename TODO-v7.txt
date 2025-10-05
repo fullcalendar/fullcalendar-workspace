@@ -101,6 +101,8 @@ App.tsx:
   have font-families change based on Component Lib
   BUG?: z-index of subcomponents go above the topbar?
 Ensure .gitignore for theme packages is correct
+when themes have a strong default preference, encode it into the theme!
+  (like for Monarch, listDayFormat: { day: 'numeric' })
 
 
 ASAP

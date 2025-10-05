@@ -49,7 +49,7 @@ export function createSlots(
                 textPart.type !== 'day'
                   ? joinClassNames(
                       'whitespace-pre',
-                      params.focusOutlineGroupClass,
+                      textPart.value.trim() && params.focusOutlineGroupClass,
                     )
                   : joinClassNames(
                       'flex flex-row items-center justify-center size-9 rounded-full',

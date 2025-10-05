@@ -355,11 +355,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       list: {
         listDayClass: `flex flex-row items-start not-last:border-b ${params.borderColorClass}`,
-        listDayHeaderClass: 'shrink-0 w-1/3 max-w-40 flex flex-row items-center',
+        listDayHeaderClass: 'shrink-0 w-1/3 max-w-44 min-h-9 flex flex-row items-center gap-2 m-2 sticky top-0',
         listDayHeaderInnerClass: (data) => [
           'group outline-none',
           !data.level
-            ? 'm-2 flex flex-row items-center text-lg' // primary
+            ? 'flex flex-row items-center text-lg' // primary
             : 'uppercase text-xs hover:underline', // secondary
         ],
         listDayEventsClass: 'grow min-w-0 flex flex-col py-2',
