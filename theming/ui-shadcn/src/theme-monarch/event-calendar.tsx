@@ -121,6 +121,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   bgClass: 'bg-background',
   bgOutlineClass: 'outline-background',
+
+  disabledFgClass: 'text-foreground/40',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

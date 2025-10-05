@@ -53,6 +53,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   bgClass: 'bg-(--mui-palette-background-paper)',
   bgOutlineClass: 'outline-(--mui-palette-background-paper)',
+
+  disabledFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.4)]',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

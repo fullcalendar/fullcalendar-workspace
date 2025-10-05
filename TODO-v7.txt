@@ -14,7 +14,6 @@ clean+build all:
 
 
 NOW
-  no more opacity-50 or whatever in dayCellTop... just change text color
   bad ouline hover-effect Monarch list-view DAY-HEADER, because link is nested strangely
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)
   list-view hovering in Classic and Pulse
@@ -31,6 +30,7 @@ NOW
   demo App not working in Safari?
   why doesn't eventStartEditable seem to work?
 MANUAL TEST
+  no more opacity-50 or whatever in dayCellTop... just change text color
   test timeline/timegrid more-link in DARK mode
   now-indicator
   ALL stickiness, esp when calendar root is overflow:hidden

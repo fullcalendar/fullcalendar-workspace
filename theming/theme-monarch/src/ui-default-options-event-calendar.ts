@@ -54,6 +54,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   bgClass: 'bg-(--fc-monarch-background)',
   bgOutlineClass: 'outline-(--fc-monarch-background)',
+
+  disabledFgClass: 'text-(--fc-monarch-disabled-foreground)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

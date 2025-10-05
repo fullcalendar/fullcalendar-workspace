@@ -72,6 +72,8 @@ export interface EventCalendarOptionParams {
 
   bgClass: string
   bgOutlineClass: string
+
+  disabledFgClass: string
 }
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -274,7 +276,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'flex flex-row',
         data.isCompact ? 'justify-end' : 'justify-center',
         'min-h-[2px]', // effectively 2px top padding when no day-number
-        data.isOther && 'opacity-30',
       ],
       dayCellTopInnerClass: (data) => [
         // TODO: this won't work if hasMonthLabel "Jan 1"... circle will look weird
@@ -285,6 +286,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
         !data.isCompact && 'm-1.5',
+        data.isOther && params.disabledFgClass,
       ],
       dayCellInnerClass: (data) => data.inPopover && 'p-2',
 
