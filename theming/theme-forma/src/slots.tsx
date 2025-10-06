@@ -48,8 +48,10 @@ export function createSlots(
                 key={i}
                 className={joinClassNames(
                   'h-6 whitespace-pre flex flex-row items-center',
-                  textPart.type === 'day' &&
-                    `w-6 justify-center rounded-full ${params.primaryBgColorClass} ${params.primaryTextColorClass}`
+                  textPart.type === 'day' && joinClassNames(
+                    'w-6 justify-center rounded-full',
+                    data.hasNavLink ? params.primaryClass : params.primaryPressableClass,
+                  )
                 )}
               >{textPart.value}</span>
             ))}

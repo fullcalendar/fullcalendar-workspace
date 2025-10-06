@@ -128,7 +128,7 @@ export const optionParams: EventCalendarOptionParams = {
   popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
 
   bgClass: 'bg-background',
-  bgOutlineClass: 'outline-background',
+  bgOutlineColorClass: 'outline-background',
 
   mutedFgClass: 'text-muted-foreground',
   disabledFgClass: 'text-foreground/40',

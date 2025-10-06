@@ -65,7 +65,7 @@ export const optionParams: EventCalendarOptionParams = {
   popoverClass: 'border border-(--fc-monarch-border) rounded-lg bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg',
 
   bgClass: 'bg-(--fc-monarch-background)',
-  bgOutlineClass: 'outline-(--fc-monarch-background)',
+  bgOutlineColorClass: 'outline-(--fc-monarch-background)',
 
   mutedFgClass: 'text-(--fc-monarch-muted-foreground)',
   disabledFgClass: 'text-(--fc-monarch-disabled-foreground)',

@@ -10,36 +10,49 @@ TODO: kill gray-500's
 TODO: do primary-button hover effect on today-cirle too
 TODO: prev/next icons look a little too faint
 TODO: focus color on secondary button
+
+TODO: rename glassy/cloudy css variables
 */
 
-export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
-  // needed for today-circle and today-line and now-line
-  primaryBgColorClass: 'bg-(--fc-forma-primary)',
-  primaryTextColorClass: 'text-(--fc-forma-primary-foreground)',
-  primaryBorderColorClass: 'border-(--fc-forma-primary)',
+const primaryClass = 'bg-(--fc-forma-primary) text-(--fc-forma-primary-foreground)'
+const primaryPressableClass = primaryClass // TODO: add --fc-forma-primary-over effects!!!
 
+const secondaryClass = 'bg-(--fc-forma-glassy)'
+const secondaryPressableClass = secondaryClass // TODO: add effects!!!
+
+const ghostHoverClass = 'hover:bg-(--fc-forma-glassy)'
+const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-forma-cloudy)`
+
+export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
+  primaryClass,
+  primaryPressableClass,
+
+  secondaryClass,
+  secondaryPressableClass,
+
+  ghostHoverClass,
+  ghostPressableClass,
+
+  strongBgClass: 'bg-(--fc-forma-strong)',
   mutedBgClass: 'bg-(--fc-forma-muted)',
-  strongBgClass: 'bg-(--fc-forma-strong)', // TODO: rename prop
+  mutedWashClass: 'bg-(--fc-forma-muted)', // TODO: use new variable!!!
   highlightClass: 'bg-(--fc-forma-highlight)',
-  glassyBgClass: 'bg-(--fc-forma-glassy)', // 'bg-gray-500/10',
-  cloudyBgClass: 'bg-(--fc-forma-cloudy)', // 'bg-gray-500/40',
-  ghostButtonClass: 'hover:bg-(--fc-forma-glassy) focus-visible:bg-(--fc-forma-cloudy)',
 
   borderColorClass: 'border-(--fc-forma-border)',
+  primaryBorderColorClass: 'border-(--fc-forma-primary)',
   strongBorderColorClass: 'border-(--fc-forma-strong-border)',
   nowBorderColorClass: 'border-(--fc-forma-primary)', // same as primary
 
   eventColor: 'var(--fc-forma-event)',
+  eventContrastColor: '#fff', // TODO: var!
   bgEventColor: 'var(--color-green-500)', // TODO: var!
   bgEventColorClass: 'brightness-150 opacity-15',
 
   popoverClass: 'border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md',
 
-  bgColorClass: 'bg-(--fc-forma-background)',
-  bgColorOutlineClass: 'outline-(--fc-forma-background)',
+  bgClass: 'bg-(--fc-forma-background)',
+  bgOutlineColorClass: 'outline-(--fc-forma-background)',
 }
-
-const primaryOtherBgColorClass = 'hover:bg-(--fc-forma-primary-over) focus-visible:bg-(--fc-forma-primary-over) active:bg-(--fc-forma-primary-down)'
 
 const unselectedButtonTextColorClass = 'text-(--fc-forma-tab-foreground)'
 const unselectedButtonHoverBorderColorClass = 'hover:border-(--fc-forma-tab-over-border)'
@@ -70,7 +83,7 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: `${optionParams.bgColorClass} border ${optionParams.borderColorClass} rounded-sm shadow-xs overflow-hidden`,
+    className: `${optionParams.bgClass} border ${optionParams.borderColorClass} rounded-sm shadow-xs overflow-hidden`,
     headerToolbarClass: `border-b ${optionParams.borderColorClass}`,
     footerToolbarClass: `border-t ${optionParams.borderColorClass}`,
 
@@ -93,7 +106,7 @@ export const defaultUiEventCalendarOptions: {
             : unselectedButtonClass
           : data.isPrimary
             // primary button
-            ? `${optionParams.primaryBgColorClass} border-transparent ${optionParams.primaryTextColorClass} ${primaryOtherBgColorClass}`
+            ? `${optionParams.primaryPressableClass} border-transparent`
             // secondary button
             : `${buttonBorderColorClass} ${buttonHoverBgColorClass}`,
     ],

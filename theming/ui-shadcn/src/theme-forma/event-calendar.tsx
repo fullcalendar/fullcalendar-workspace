@@ -70,34 +70,54 @@ export function EventCalendar({
   )
 }
 
+// TODO: use transition, like Shadn
+// However, when we do transition-all like the buttons have,
+// drag & drop gets really distorted. How to blacklist position? Or whitelist what we want?
+const focusConfigClass = 'ring-ring/50 outline-none'
+const focusOutlineClass = `focus-visible:ring-3 ${focusConfigClass}`
+
+// primary
+const primaryClass = 'bg-primary text-primary-foreground'
+const primaryPressableClass = primaryClass
+
+// secondary
+const secondaryClass = 'bg-foreground/10'
+const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 ${focusOutlineClass}`
+
+// ghost
+const ghostHoverClass = 'hover:bg-foreground/10'
+const ghostPressableClass = `${ghostHoverClass} ${focusOutlineClass}`
+
 export const optionParams: EventCalendarOptionParams = {
-  primaryBgColorClass: 'bg-primary',
-  primaryTextColorClass: 'text-primary-foreground',
-  primaryBorderColorClass: 'border-primary',
+  primaryClass,
+  primaryPressableClass,
 
-  ghostButtonClass: 'hover:bg-muted focus-visible:bg-muted',
-  cloudyBgClass: 'bg-muted',
+  secondaryClass,
+  secondaryPressableClass,
 
-  highlightClass: 'bg-sky-500/10',
+  ghostHoverClass,
+  ghostPressableClass,
 
-  strongBorderColorClass: 'border-muted-foreground/60',
+  strongBgClass: 'bg-foreground/20',
+  mutedBgClass: 'bg-muted',
+  mutedWashClass: 'bg-foreground/5',
+  highlightClass: 'bg-primary opacity-10',
 
   borderColorClass: '', // border-color is set globally
+  primaryBorderColorClass: 'border-primary',
+  strongBorderColorClass: 'border-muted-foreground/60',
   nowBorderColorClass: 'border-destructive',
 
-  glassyBgClass: 'bg-muted/50', // TODO: use foreground like other theme?
-  mutedBgClass: 'bg-muted/50',
-  strongBgClass: 'bg-muted-foreground/20',
-
   eventColor: 'var(--primary)',
+  eventContrastColor: 'var(--primary-foreground)',
   bgEventColor: 'var(--primary)',
   bgEventColorClass: 'opacity-15',
 
   // TODO: better integration with actual Shadcn Popover component
   popoverClass: 'border bg-background text-foreground shadow-md',
 
-  bgColorClass: 'bg-background',
-  bgColorOutlineClass: 'outline-background',
+  bgClass: 'bg-background',
+  bgOutlineColorClass: 'outline-background',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

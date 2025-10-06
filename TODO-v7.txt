@@ -301,7 +301,9 @@ think about browser support. just require logical properties? (2021)
   https://caniuse.com/css-logical-props
   resizeobserver could be fully relied on!
   can use aspectRatio too!!!???
-  https://caniuse.com/mdn-css_properties_aspect-ratio
+    https://caniuse.com/mdn-css_properties_aspect-ratio
+  color mix:
+    https://caniuse.com/mdn-css_types_color_color-mix
 ensure selected event as hight z-index than others
   important when selected event as outline that should go over others
 rename?: the "before" and "after" content to start/end?

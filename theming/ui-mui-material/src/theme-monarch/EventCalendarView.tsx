@@ -60,7 +60,7 @@ export const optionParams: EventCalendarOptionParams = {
   popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8)',
 
   bgClass: 'bg-(--mui-palette-background-paper)',
-  bgOutlineClass: 'outline-(--mui-palette-background-paper)',
+  bgOutlineColorClass: 'outline-(--mui-palette-background-paper)',
 
   mutedFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]',
   disabledFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.4)]',
