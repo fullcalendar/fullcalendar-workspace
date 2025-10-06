@@ -99,6 +99,8 @@ TODO: ensure resourc-timeline-lanes have bottom empty space
 TODO: non-business-hours
 
 For list-view, when <a href> (like "Click for Google"), should hover-underline
+
+TODO: give week-numbers an ghost-pressable-effect!
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height

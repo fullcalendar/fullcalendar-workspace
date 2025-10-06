@@ -8,36 +8,39 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/interaction'
 
 export interface EventCalendarOptionParams {
+  secondaryClass: string
+  secondaryPressableClass: string
+
+  ghostHoverClass: string
+  ghostPressableClass: string
+
+  faintHoverClass: string
+  faintPressableClass: string
+
+  strongBgClass: string
+  mutedBgClass: string
+  mutedWashClass: string
+  highlightClass: string
+  todayBgNotPrintClass: string
+
   borderColorClass: string
+  primaryBorderColorClass: string
   strongBorderColorClass: string
   nowBorderColorClass: string
   nowBorderStartColorClass: string
   nowBorderTopColorClass: string
-
-  compactMoreLinkBorderColorClass: string // TODO: rename to primary instead!
-
-  todayBgClass: string // should be given as NOT-print!!!
-  glassyBgClass: string // GUARANTEED transparent --- should be given as NOT-print???
-  mutedBgClass: string // could possibly be transparent
-  strongBgClass: string // more contrast than muted (better name?)
-  highlightClass: string
-
-  mutedFgClass: string
 
   eventColor: string
   eventContrastColor: string
   bgEventColor: string
   bgEventColorClass: string
 
-  // ???
-  hoverButtonClass: string // exactly like ghostButtonClass
-  hoverRowClass: string // like ghostButtonClass, but fainter because can't compete with list-view gray day headers
-  selectedButtonClass: string // the touch-selected state of ghostButtonClass for list-items (in daygrid)
-
   popoverClass: string
 
-  bgColorClass: string
-  bgColorOutlineClass: string
+  bgClass: string
+  bgOutlineColorClass: string
+
+  mutedFgClass: string
 }
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -74,14 +77,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgColorClass}`
+  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
   const getDayClasses = (data: { isMajor: boolean, isToday: boolean, isDisabled: boolean}) => [
     'border',
     data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
-    data.isToday && params.todayBgClass,
+    data.isToday && params.todayBgNotPrintClass,
     data.isDisabled && params.mutedBgClass,
   ]
 
@@ -95,8 +98,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     listItemEventClass: (data) => [
       `${dayRowItemBaseClass} p-px`,
       data.isSelected
-        ? joinClassNames(params.selectedButtonClass, data.isDragging && 'shadow-sm')
-        : params.hoverButtonClass,
+        ? joinClassNames(params.mutedBgClass, data.isDragging && 'shadow-sm')
+        : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
     ],
     listItemEventColorClass: (data) => [
       'border-4', // 8px diameter
@@ -120,9 +123,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
-      params.hoverButtonClass,
+      params.ghostPressableClass,
       data.isCompact
-        ? `border ${params.compactMoreLinkBorderColorClass}`
+        ? `border ${params.primaryBorderColorClass}`
         : 'self-start p-px',
     ],
     rowMoreLinkInnerClass: (data) => [
@@ -137,12 +140,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventContrastColor: params.eventContrastColor,
       backgroundEventColor: params.bgEventColor,
 
-      tableHeaderClass: (data) => data.isSticky && params.bgColorClass,
+      tableHeaderClass: (data) => data.isSticky && params.bgClass,
 
       singleMonthClass: (data) => data.colCount > 1 && 'm-4',
       singleMonthHeaderClass: (data) => [
         data.colCount > 1 ? 'pb-4' : 'py-2',
-        data.isSticky && `border-b ${params.borderColorClass} ${params.bgColorClass}`,
+        data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,
         'justify-center',
       ],
       singleMonthHeaderInnerClass: 'font-bold',
@@ -151,12 +154,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverCloseClass: 'absolute top-0.5 end-0.5 not-hover:opacity-65',
 
       fillerClass: `border ${params.borderColorClass} opacity-50`,
-      nonBusinessClass: params.glassyBgClass,
+      nonBusinessClass: params.mutedWashClass,
       highlightClass: params.highlightClass,
 
       navLinkClass: 'hover:underline',
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
-      inlineWeekNumberClass: `absolute z-20 top-0 start-0 rounded-ee-sm p-0.5 ${params.glassyBgClass}`,
+      inlineWeekNumberClass: (data) => [
+        `absolute z-20 top-0 start-0 rounded-ee-sm p-0.5`,
+        data.hasNavLink
+          ? params.secondaryPressableClass
+          : params.secondaryClass,
+      ],
       inlineWeekNumberInnerClass: (data) => [
         'text-center',
         params.mutedFgClass,
@@ -228,7 +236,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'print:border-x',
         data.isStart && 'print:border-t rounded-t-sm',
         data.isEnd && 'print:border-b rounded-b-sm',
-        (data.level || data.isMirror) && `outline ${params.bgColorOutlineClass}`,
+        (data.level || data.isMirror) && `outline ${params.bgOutlineColorClass}`,
       ],
       columnEventInnerClass: (data) => [
         'p-px',
@@ -240,7 +248,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: (data) => data.isCompact ? xxsTextClass : 'py-px text-xs',
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative mb-px p-px rounded-sm ${params.bgColorClass} outline ${params.bgColorOutlineClass}`,
+      columnMoreLinkClass: `relative mb-px p-px rounded-sm ${params.bgClass} outline ${params.bgOutlineColorClass}`,
       columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-sm ${params.strongBgClass} print:bg-white print:border print:border-black`,
       columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
@@ -306,14 +314,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         nowIndicatorLineClass: `border-t ${params.nowBorderColorClass}`,
       },
       list: {
-        listDayHeaderClass: `sticky z-10 top-0 flex flex-row justify-between border-b ${params.borderColorClass} ${params.bgColorClass}`,
+        listDayHeaderClass: `sticky z-10 top-0 flex flex-row justify-between border-b ${params.borderColorClass} ${params.bgClass}`,
         listDayHeaderColorClass: `absolute z-0 inset-0 ${params.mutedBgClass}`,
         listDayHeaderInnerClass: `z-10 ${listViewItemPaddingClass} text-sm font-bold`, // TODO: z-10
 
-        listItemEventClass: [
+        listItemEventClass: (data) => [
           'group gap-3 border-b',
           params.borderColorClass,
-          params.hoverRowClass,
+          data.isInteractive ? params.faintPressableClass : params.faintHoverClass,
           listViewItemPaddingClass,
         ],
         listItemEventColorClass: 'border-5', // 10px diameter

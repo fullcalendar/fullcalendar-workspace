@@ -30,9 +30,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       // For both resources & resource groups
       resourceAreaRowClass: `border ${params.borderColorClass}`,
 
-      resourceGroupHeaderClass: params.glassyBgClass,
+      resourceGroupHeaderClass: params.mutedWashClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.glassyBgClass}`,
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedWashClass}`,
 
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
@@ -63,7 +63,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
 
         // TODO: keep DRY with columnMoreLink
-        rowMoreLinkClass: `relative me-px mb-px p-px ${params.bgColorClass}`,
+        rowMoreLinkClass: `relative me-px mb-px p-px ${params.bgClass}`,
         rowMoreLinkColorClass: `absolute z-0 inset-0 ${params.strongBgClass} print:bg-white print:border print:border-black`,
         rowMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 

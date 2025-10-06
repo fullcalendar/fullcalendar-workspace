@@ -2,41 +2,54 @@ import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const bgColorClass = 'bg-(--fc-classic-background)'
-const bgColorOutlineClass = 'outline-(--fc-classic-background)'
+const bgClass = 'bg-(--fc-classic-background)' // TODO: make this a variable for all themes?
+const bgOutlineColorClass = 'outline-(--fc-classic-background)'
 
 const buttonIconClass = 'size-5'
 
+const secondaryClass = 'bg-(--fc-classic-muted) text-(--fc-classic-muted-foreground)' // TODO: use transparent instead!
+const secondaryPressableClass = secondaryClass // TODO: effect
+
+const ghostHoverClass = 'hover:bg-(--fc-classic-glassy)'
+const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-gray-500/30` // TODO: use css variable!
+
+const faintHoverClass = 'hover:bg-gray-500/5'
+const faintPressableClass = `${faintHoverClass} focus-visible:bg-gray-500/20` // TODO: active class
+
 export const optionParams: EventCalendarOptionParams = {
+  secondaryClass,
+  secondaryPressableClass,
+
+  ghostHoverClass,
+  ghostPressableClass,
+
+  faintHoverClass,
+  faintPressableClass,
+
+  strongBgClass: 'bg-(--fc-classic-strong)',
+  mutedBgClass: 'bg-(--fc-classic-muted)',
+  mutedWashClass: 'bg-(--fc-classic-glassy)',
+  highlightClass: 'bg-(--fc-classic-highlight)',
+  todayBgNotPrintClass: 'not-print:bg-(--fc-classic-today)',
+
   borderColorClass: 'border-(--fc-classic-border)',
+  primaryBorderColorClass: 'border-[#3788d8]',
   strongBorderColorClass: 'border-(--fc-classic-strong-border)',
   nowBorderColorClass: 'border-(--fc-classic-now)',
   nowBorderStartColorClass: 'border-s-(--fc-classic-now)',
   nowBorderTopColorClass: 'border-t-(--fc-classic-now)',
-
-  compactMoreLinkBorderColorClass: 'border-[#3788d8]',
-
-  todayBgClass: 'not-print:bg-(--fc-classic-today)',
-  glassyBgClass: 'bg-(--fc-classic-glassy)',
-  mutedBgClass: 'bg-(--fc-classic-muted)',
-  strongBgClass: 'bg-(--fc-classic-strong)',
-  highlightClass: 'bg-(--fc-classic-highlight)',
-
-  mutedFgClass: 'text-(--fc-classic-muted-foreground)',
 
   eventColor: '#3788d8', // TODO: put as css var
   eventContrastColor: 'var(--color-white)', // TODO: put as css var
   bgEventColor: 'var(--color-green-500)', // TODO: put as css var
   bgEventColorClass: 'opacity-15',
 
-  hoverRowClass: 'hover:bg-gray-500/5 focus-visible:bg-gray-500/20',
-  hoverButtonClass: 'hover:bg-gray-500/20 focus-visible:bg-gray-500/30',
-  selectedButtonClass: 'bg-gray-500/40',
+  popoverClass: `border border-(--fc-classic-border) ${bgClass} shadow-md`,
 
-  popoverClass: `border border-(--fc-classic-border) ${bgColorClass} shadow-md`,
+  bgClass,
+  bgOutlineColorClass,
 
-  bgColorClass,
-  bgColorOutlineClass,
+  mutedFgClass: 'text-(--fc-classic-muted-foreground)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
@@ -49,7 +62,7 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     className: 'gap-5',
-    viewClass: `border ${optionParams.borderColorClass} ${optionParams.bgColorClass}`,
+    viewClass: `border ${optionParams.borderColorClass} ${optionParams.bgClass}`,
 
     toolbarClass: (data) => [
       'items-center gap-3',

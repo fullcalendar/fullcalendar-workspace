@@ -67,29 +67,54 @@ export function EventCalendar({
   )
 }
 
+const focusConfigClass = 'ring-ring/50 outline-none'
+const focusOutlineClass = `focus-visible:ring-3 ${focusConfigClass}`
+
+// secondary
+const secondaryClass = 'bg-foreground/10'
+const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 ${focusOutlineClass}`
+
+// ghost
+const ghostHoverClass = 'hover:bg-foreground/10'
+const ghostPressableClass = `${ghostHoverClass} ${focusOutlineClass}`
+
+const faintHoverClass = 'hover:bg-muted/50'
+const faintPressableClass = `${faintHoverClass} focus-visible:bg-muted` // weird effect?
+
 export const optionParams: EventCalendarOptionParams = {
+  secondaryClass,
+  secondaryPressableClass,
+
+  ghostHoverClass,
+  ghostPressableClass,
+
+  faintHoverClass,
+  faintPressableClass,
+
+  strongBgClass: 'bg-muted-foreground/20',
+  mutedBgClass: 'bg-muted',
+  mutedWashClass: 'bg-muted-foreground/10',
+  highlightClass: 'bg-sky-500/10',
+  todayBgNotPrintClass: 'not-print:bg-yellow-400/15 dark:bg-yellow-200/10',
+
   borderColorClass: '', // border-color is set globally
-  strongBorderColorClass: 'border-muted-foreground/60',
+  primaryBorderColorClass: 'border-primary',
+  strongBorderColorClass: 'border-muted-foreground/45',
   nowBorderColorClass: 'border-destructive',
   nowBorderStartColorClass: 'border-s-destructive',
   nowBorderTopColorClass: 'border-t-destructive',
-  compactMoreLinkBorderColorClass: 'border-primary',
-  todayBgClass: 'not-print:bg-yellow-400/15 dark:bg-yellow-200/10',
-  highlightClass: 'bg-sky-500/10',
-  glassyBgClass: 'bg-muted-foreground/10',
-  mutedBgClass: 'bg-muted',
-  strongBgClass: 'bg-muted-foreground/20',
-  mutedFgClass: 'text-muted-foreground',
+
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
   bgEventColor: 'var(--primary)',
   bgEventColorClass: 'opacity-15',
-  hoverRowClass: 'hover:bg-muted/50 focus-visible:bg-muted',
-  hoverButtonClass: 'hover:bg-muted-foreground/15 focus-visible:bg-muted-foreground/30',
-  selectedButtonClass: 'bg-muted-foreground/45',
+
   popoverClass: 'border bg-background text-foreground shadow-lg',
-  bgColorClass: 'bg-background',
-  bgColorOutlineClass: 'outline-background',
+
+  bgClass: 'bg-background',
+  bgOutlineColorClass: 'outline-background',
+
+  mutedFgClass: 'text-muted-foreground',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
