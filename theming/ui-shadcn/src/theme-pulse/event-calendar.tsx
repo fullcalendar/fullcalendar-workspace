@@ -68,36 +68,41 @@ export function EventCalendar({
   )
 }
 
+const tertiaryClass = 'bg-primary/20 dark:bg-primary/30'
+const tertiaryPressableClass = tertiaryClass // TODO: effect!
+
+const ghostHoverClass = 'hover:bg-muted-foreground/10'
+const ghostPressableClass = `${ghostHoverClass} active:bg-muted-foreground/20 focus-visible:bg-muted-foreground/10`
+
 export const optionParams: EventCalendarOptionParams = {
-  todayCircleBgClass: 'bg-primary/20 dark:bg-primary/30',
-  todayCircleFgClass: '', // default inherited text
+  tertiaryClass,
+  tertiaryPressableClass,
+
+  ghostHoverClass,
+  ghostPressableClass,
+
+  mutedBgClass: 'bg-muted',
+  mutedWashClass: 'bg-muted-foreground/10',
+  strongBgClass: 'bg-muted-foreground/20',
+  highlightClass: 'bg-sky-500/10',
 
   borderColorClass: '', // border-color is set globally
-  // nowIndicatorBorderColorClass: 'border-destructive',
+  strongBorderColorClass: 'border-muted-foreground/60', // do we really want a different color?
+  nowBorderColorClass: 'border-destructive',
 
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
   bgEventColor: 'var(--primary)',
   bgEventColorClass: 'opacity-15',
 
-  bgOutlineClass: 'outline-background',
-  bgClass: 'bg-background',
-
-  highlightClass: 'bg-sky-500/10',
-  ghostButtonClass: 'hover:bg-muted focus-visible:bg-muted',
-
   popoverClass: 'border bg-background text-foreground shadow-lg rounded-md shadow-md m-1',
 
-  glassyBgClass: 'bg-muted-foreground/10',
-  mutedBgClass: 'bg-muted',
-  strongBgClass: 'bg-muted-foreground/20',
+  bgOutlineColorClass: 'outline-background',
+  bgClass: 'bg-background',
 
-  strongFgClass: 'text-foreground',
   fgClass: 'text-muted-foreground',
+  strongFgClass: 'text-foreground',
   mutedFgClass: 'text-muted-foreground',
-
-  nowBorderColorClass: 'border-destructive',
-  strongBorderColorClass: 'border-muted-foreground/60',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

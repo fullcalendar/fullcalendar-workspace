@@ -27,7 +27,10 @@ export function createSlots(
                 ? joinClassNames(
                     'h-7 flex flex-row items-center', // v-align-text
                     data.isToday
-                      ? `w-7 mx-0.5 rounded-full ${params.todayCircleBgClass} ${params.todayCircleFgClass} font-semibold justify-center` // h-align-text
+                      ? joinClassNames(
+                          'w-7 mx-0.5 rounded-full font-semibold justify-center', // h-align-text
+                          data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass,
+                        )
                       : params.mutedFgClass,
                   )
                 : params.mutedFgClass,
@@ -47,7 +50,10 @@ export function createSlots(
                 ? joinClassNames(
                     'h-6 flex flex-row items-center', // v-align-text
                     data.isToday
-                      ? `w-6 rounded-full ${params.todayCircleBgClass} ${params.todayCircleFgClass} font-semibold justify-center` // h-align-text
+                      ? joinClassNames(
+                          'w-6 rounded-full font-semibold justify-center', // h-align-text
+                          data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass,
+                        )
                       : params.mutedFgClass,
                   )
                 : params.mutedFgClass,

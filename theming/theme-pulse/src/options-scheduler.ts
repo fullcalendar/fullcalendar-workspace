@@ -27,14 +27,14 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceAreaHeaderClass: `border ${params.borderColorClass} items-center`, // valign
       resourceAreaHeaderInnerClass: `p-2 text-sm ${params.strongFgClass}`,
 
-      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${params.glassyBgClass}`,
+      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${params.mutedWashClass}`,
 
       // For both resources & resource groups
       resourceAreaRowClass: `border ${params.borderColorClass}`,
 
-      resourceGroupHeaderClass: params.glassyBgClass,
+      resourceGroupHeaderClass: params.mutedWashClass,
       resourceGroupHeaderInnerClass: `p-2 text-sm ${params.strongFgClass}`,
-      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.glassyBgClass}`,
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedWashClass}`,
 
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: `p-2 text-sm ${params.strongFgClass}`,

@@ -51,34 +51,34 @@ TODO: hover color on list-view events
 */
 
 export interface EventCalendarOptionParams {
-  todayCircleBgClass: string
-  todayCircleFgClass: string
+  tertiaryClass: string
+  tertiaryPressableClass: string
+
+  ghostHoverClass: string
+  ghostPressableClass: string
+
+  strongBgClass: string
+  mutedBgClass: string
+  mutedWashClass: string
+  highlightClass: string
 
   borderColorClass: string
+  strongBorderColorClass: string
+  nowBorderColorClass: string
 
   eventColor: string
   eventContrastColor: string
   bgEventColor: string
   bgEventColorClass: string
 
-  highlightClass: string
-  ghostButtonClass: string
-
   popoverClass: string
 
-  bgOutlineClass: string
   bgClass: string
+  bgOutlineColorClass: string
 
-  glassyBgClass: string
-  mutedBgClass: string
-  strongBgClass: string
-
-  strongFgClass: string
   fgClass: string
+  strongFgClass: string
   mutedFgClass: string
-
-  nowBorderColorClass: string
-  strongBorderColorClass: string
 }
 
 export const getDayHeaderInnerClasses = (data: { isToday?: boolean, inPopover?: boolean }) => [
@@ -111,12 +111,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isEnd && 'me-1',
     ],
 
-    listItemEventClass: `p-px ${params.ghostButtonClass} ${dayRowItemClass}`,
+    listItemEventClass: (data) => [
+      `p-px ${dayRowItemClass}`,
+      data.isInteractive ? params.ghostHoverClass : params.ghostPressableClass,
+    ],
     listItemEventInnerClass: 'justify-between flex flex-row text-xs',
     listItemEventTimeClass: 'order-1 p-0.5 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
     listItemEventTitleClass: 'text-ellipsis p-0.5 font-medium whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
-    rowMoreLinkClass: `self-start flex flex-row ${params.glassyBgClass} ${dayRowItemClass}`,
+    rowMoreLinkClass: `self-start flex flex-row ${params.ghostPressableClass} ${dayRowItemClass}`,
     rowMoreLinkInnerClass: `p-0.5 text-xs font-medium ${params.strongFgClass}`,
   }
 
@@ -130,7 +133,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // best place? be consistent with otherthemes
 
       highlightClass: params.highlightClass,
-      nonBusinessClass: params.glassyBgClass,
+      nonBusinessClass: params.mutedWashClass,
 
       popoverClass: 'min-w-[220px] ' + params.popoverClass,
       popoverCloseClass: 'absolute top-2 end-2',
@@ -229,7 +232,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'print:border-x',
         data.isStart && 'rounded-t-lg print:border-t',
         data.isEnd && 'rounded-b-lg print:border-b',
-        (data.level || data.isMirror) && `outline ${params.bgOutlineClass}`,
+        (data.level || data.isMirror) && `outline ${params.bgOutlineColorClass}`,
       ],
       columnEventInnerClass: 'flex flex-col py-1',
       // TODO: move the x-padding to the inner div? same concept with row-events
@@ -237,7 +240,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: 'px-2 py-1 font-medium',
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative m-0.5 p-px rounded-lg ${params.bgClass} outline ${params.bgOutlineClass}`,
+      columnMoreLinkClass: `relative m-0.5 p-px rounded-lg ${params.bgClass} outline ${params.bgOutlineColorClass}`,
       columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.strongBgClass} print:bg-white print:border print:border-black`,
       columnMoreLinkInnerClass: `z-10 p-0.5 text-xs ${params.strongFgClass}`,
 
@@ -255,7 +258,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,
-      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} outline-2 ${params.bgOutlineClass}`,
+      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} outline-2 ${params.bgOutlineColorClass}`,
     },
     views: {
       dayGrid: {

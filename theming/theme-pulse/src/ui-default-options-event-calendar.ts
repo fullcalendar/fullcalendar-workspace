@@ -28,36 +28,42 @@ TODO: use these colors!!!
    --popover-foreground: oklch(0.145 0 0);
 */
 
+// TODO: rethink CSS variable names!
+const tertiaryClass = 'bg-(--fc-pulse-today) text-(--fc-pulse-today-foreground)'
+const tertiaryPressableClass = tertiaryClass // TODO: effect!
+
+const ghostHoverClass = 'hover:bg-(--fc-pulse-glassy)'
+const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-pulse-strong) focus-visible:bg-(--fc-pulse-glassy)`
+
 export const optionParams: EventCalendarOptionParams = {
-  todayCircleBgClass: 'bg-(--fc-pulse-today)',
-  todayCircleFgClass: 'text-(--fc-pulse-today-foreground)',
+  tertiaryClass,
+  tertiaryPressableClass,
+
+  ghostHoverClass,
+  ghostPressableClass,
+
+  strongBgClass: 'bg-(--fc-pulse-strong)',
+  mutedBgClass: 'bg-(--fc-pulse-muted)',
+  mutedWashClass: 'bg-(--fc-pulse-muted)', // does this CSS var have transparency?
+  highlightClass: 'bg-(--fc-pulse-highlight)',
 
   borderColorClass,
+  strongBorderColorClass,
+  nowBorderColorClass: 'border-(--fc-pulse-now)',
 
   eventColor: 'var(--fc-pulse-event)',
   eventContrastColor: 'var(--fc-pulse-event-contrast)',
   bgEventColor: 'var(--color-green-500)', // yuck!!!
   bgEventColorClass: 'brightness-150 opacity-15',
 
-  highlightClass: 'bg-(--fc-pulse-highlight)',
-
   popoverClass: `bg-(--fc-pulse-background) border ${strongBorderColorClass} rounded-md shadow-md m-1`,
 
-  bgOutlineClass: 'outline-(--fc-pulse-background)',
   bgClass: 'bg-(--fc-pulse-background)',
+  bgOutlineColorClass: 'outline-(--fc-pulse-background)',
 
-  glassyBgClass: 'bg-(--fc-pulse-glassy)',
-  mutedBgClass: 'bg-(--fc-pulse-muted)',
-  strongBgClass: 'bg-(--fc-pulse-strong)',
-
-  ghostButtonClass: 'hover:bg-(--fc-pulse-glassy) focus-visible:bg-(--fc-pulse-glassy)',
-
-  strongFgClass,
   fgClass,
+  strongFgClass,
   mutedFgClass,
-
-  nowBorderColorClass: 'border-(--fc-pulse-now)',
-  strongBorderColorClass,
 }
 
 const controlBgClass = 'bg-(--fc-pulse-tab)'
@@ -109,7 +115,7 @@ export const defaultUiEventCalendarOptions: {
               // SELECTED select-group button
               ? `${controlCurrentColorClass} ${largeBoxShadowClass}`
               // UN-selected select-group button
-              : optionParams.ghostButtonClass // TODO: a little bit fuzzy
+              : optionParams.ghostPressableClass
           )
         // primary/secondary buttons
         : joinClassNames(
