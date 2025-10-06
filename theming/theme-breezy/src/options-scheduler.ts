@@ -22,21 +22,21 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
       resourceAreaHeaderClass: `border ${params.mutedBorderColorClass}`,
-      resourceAreaHeaderInnerClass: `p-2 text-sm ${params.textHighColorClass}`,
+      resourceAreaHeaderInnerClass: `p-2 text-sm ${params.fgClass}`,
 
       resourceAreaRowClass: `border ${params.borderColorClass}`,
       resourceCellClass: `border ${params.mutedBorderColorClass}`,
-      resourceCellInnerClass: `p-2 text-sm ${params.textHighColorClass}`,
+      resourceCellInnerClass: `p-2 text-sm ${params.fgClass}`,
 
       resourceGroupHeaderClass: params.mutedBgClass,
-      resourceGroupHeaderInnerClass: `p-2 text-sm ${params.textHighColorClass}`,
+      resourceGroupHeaderInnerClass: `p-2 text-sm ${params.fgClass}`,
 
       resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
       resourceLaneClass: `border ${params.borderColorClass}`,
       resourceLaneBottomClass: 'h-3',
 
       resourceIndentClass: 'items-center ms-1 -me-1',
-      resourceExpanderClass: params.textHighColorClass,
+      resourceExpanderClass: params.fgClass,
 
       // TODO: weird
       resourceDayHeaderClass: (data) => [
@@ -45,8 +45,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           ? params.strongBorderColorClass
           : params.borderColorClass,
         data.level
-          ? `font-semibold ${params.textHighColorClass}` // resource-above-dates
-          : params.textMidColorClass,
+          ? `font-semibold ${params.fgClass}` // resource-above-dates
+          : params.mutedFgClass,
       ],
       resourceDayHeaderInnerClass: 'p-2',
 
@@ -72,7 +72,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           `absolute z-0 inset-0 ${params.strongBgClass} print:bg-white print:border print:border-black`,
           data.isCompact ? 'rounded-sm' : 'rounded-md', // needed? isn't isCompact always false in timeline?
         ],
-        rowMoreLinkInnerClass: `z-1 p-0.5 text-xs/4 ${params.textHighColorClass}`,
+        rowMoreLinkInnerClass: `z-1 p-0.5 text-xs/4 ${params.fgClass}`,
       },
     },
   }

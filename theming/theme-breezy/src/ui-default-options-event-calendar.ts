@@ -43,10 +43,10 @@ export const optionParams: EventCalendarOptionParams = {
   bgClass: 'bg-(--fc-breezy-background)',
   bgOutlineColorClass: 'outline-(--fc-breezy-background)',
 
-  textLowColorClass: 'text-(--fc-breezy-faint-foreground)',
-  textMidColorClass: 'text-(--fc-breezy-muted-foreground)',
-  textHighColorClass: 'text-(--fc-breezy-foreground)',
-  textHeaderColorClass: 'text-(--fc-breezy-strong-foreground)',
+  faintFgClass: 'text-(--fc-breezy-faint-foreground)',
+  mutedFgClass: 'text-(--fc-breezy-muted-foreground)',
+  fgClass: 'text-(--fc-breezy-foreground)',
+  strongFgClass: 'text-(--fc-breezy-strong-foreground)',
 }
 
 const secondaryButtonClass = 'group text-(--fc-breezy-secondary-foreground) bg-(--fc-breezy-secondary) hover:bg-(--fc-breezy-secondary-hover) border-(--fc-breezy-secondary-border)'
@@ -70,7 +70,7 @@ export const defaultUiEventCalendarOptions: {
 
     toolbarClass: `px-4 py-4 items-center ${optionParams.mutedBgClass} gap-4`,
     toolbarSectionClass: 'items-center gap-4',
-    toolbarTitleClass: `text-lg font-semibold ${optionParams.textHeaderColorClass}`,
+    toolbarTitleClass: `text-lg font-semibold ${optionParams.strongFgClass}`,
 
     /*
     TODO: don't make buttons so fat
@@ -127,7 +127,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 ${optionParams.textHighColorClass}`),
+    popoverCloseContent: () => svgs.x(`size-5 ${optionParams.fgClass}`),
   },
 
   views: baseEventCalendarOptions.views,

@@ -132,11 +132,10 @@ export interface EventCalendarOptionParams {
   bgClass: string
   bgOutlineColorClass: string
 
-  // TODO: how to name these!?
-  textLowColorClass: string
-  textMidColorClass: string
-  textHighColorClass: string
-  textHeaderColorClass: string // bad name
+  fgClass: string
+  strongFgClass: string
+  mutedFgClass: string
+  faintFgClass: string // TODO: converge with disabledFgClass? YES
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -163,7 +162,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     */
     inlineWeekNumberClass: `absolute z-10 top-0 end-0 border-b ${params.strongBorderBottomColorClass} border-s ${params.borderStartColorClass} rounded-es-md ${params.bgClass}`,
     inlineWeekNumberInnerClass: (data) => [
-      `py-0.5 ${params.textMidColorClass}`,
+      `py-0.5 ${params.mutedFgClass}`,
       data.isCompact
         ? `${xxsTextClass} px-0.5`
         : 'text-xs/6 px-1'
@@ -174,7 +173,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isStart && 'ms-1',
       data.isEnd && 'me-1',
     ],
-    rowEventInnerClass: params.textHighColorClass,
+    rowEventInnerClass: params.fgClass,
 
     listItemEventClass: (data) => [
       'p-px',
@@ -182,8 +181,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass,
     ],
     listItemEventInnerClass: 'justify-between flex flex-row text-xs/4',
-    listItemEventTimeClass: `order-1 p-0.5 ${params.textMidColorClass} whitespace-nowrap overflow-hidden shrink-1`, // shrinks second
-    listItemEventTitleClass: `text-ellipsis p-0.5 font-medium ${params.textHeaderColorClass} whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
+    listItemEventTimeClass: `order-1 p-0.5 ${params.mutedFgClass} whitespace-nowrap overflow-hidden shrink-1`, // shrinks second
+    listItemEventTitleClass: `text-ellipsis p-0.5 font-medium ${params.strongFgClass} whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
 
     rowMoreLinkClass: (data) => [
       'self-start',
@@ -197,7 +196,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     rowMoreLinkInnerClass: (data) => [
       data.isCompact ? xxsTextClass : 'text-xs',
       !data.isCompact && 'p-0.5',
-      params.textHeaderColorClass,
+      params.strongFgClass,
     ]
   }
 
@@ -244,9 +243,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       allDayHeaderClass: 'items-center', // v-align
-      allDayHeaderInnerClass: `text-xs/5 ${params.textLowColorClass} p-3`,
+      allDayHeaderInnerClass: `text-xs/5 ${params.faintFgClass} p-3`,
 
-      slotLabelInnerClass: `text-xs/5 ${params.textLowColorClass} uppercase`,
+      slotLabelInnerClass: `text-xs/5 ${params.faintFgClass} uppercase`,
 
       slotLaneClass: `border ${params.mutedBorderColorClass}`,
 
@@ -259,12 +258,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ^^^NOTE: should core determine flex-direction because core needs to do sticky anyway, right!?
       */
       blockEventTimeClass: 'text-(--fc-event-color) contrast-150 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
-      blockEventTitleClass: `${params.textHighColorClass} opacity-80 whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
+      blockEventTitleClass: `${params.fgClass} opacity-80 whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
 
       backgroundEventColorClass: `bg-(--fc-event-color) ${params.bgEventColorClass}`,
       backgroundEventTitleClass: (data) => [
         'm-2 opacity-50 italic',
-        params.textHighColorClass,
+        params.fgClass,
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
 
@@ -315,7 +314,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // TODO: keep DRY with timeline rowMoreLink
       columnMoreLinkClass: `relative p-px rounded-md ${params.bgClass} outline ${params.bgOutlineColorClass}`,
       columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.strongBgClass} print:bg-white print:border print:border-black`,
-      columnMoreLinkInnerClass: `z-1 p-0.5 text-xs/4 ${params.textHighColorClass}`,
+      columnMoreLinkInnerClass: `z-1 p-0.5 text-xs/4 ${params.fgClass}`,
       // TODO: see columnMoreLinkClass in timeGrid below...
 
       fillerClass: `border ${params.mutedBorderColorClass} ${params.bgClass}`,
@@ -327,7 +326,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.colCount > 1 ? 'pb-1' : 'py-1',
       ],
       singleMonthHeaderInnerClass: (data) => [
-        `text-sm font-semibold rounded-sm py-1 px-2 ${params.textHeaderColorClass}`,
+        `text-sm font-semibold rounded-sm py-1 px-2 ${params.strongFgClass}`,
         data.hasNavLink && params.ghostPressableClass,
       ],
 
@@ -393,7 +392,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           ? params.strongBorderColorClass
           : params.mutedBorderColorClass,
         weekNumberHeaderClass: 'justify-end items-center',
-        weekNumberHeaderInnerClass: `px-3 text-sm/6 ${params.textMidColorClass}`,
+        weekNumberHeaderInnerClass: `px-3 text-sm/6 ${params.mutedFgClass}`,
 
         /*
         Figure out how not having any border on slotLabel affects height-syncing
@@ -414,14 +413,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listDaysClass: 'px-4 my-10 mx-auto w-full max-w-200',
         listDayClass: `flex flex-row gap-2 not-last:border-b not-last:${params.borderColorClass}`,
         listDayHeaderClass: 'shrink-0 w-1/4 max-w-40',
-        listDayHeaderInnerClass: `sticky top-0 py-4 text-sm ${params.textMidColorClass}`,
+        listDayHeaderInnerClass: `sticky top-0 py-4 text-sm ${params.mutedFgClass}`,
         listDayEventsClass: 'grow min-w-0 flex flex-col',
 
         listItemEventClass: `not-last:border-b ${params.borderColorClass}`,
         listItemEventInnerClass: 'py-4 flex flex-row justify-between gap-2 text-sm',
 
         // TODO: make this common?...
-        listItemEventTimeClass: `order-1 ${params.textMidColorClass} text-end`,
+        listItemEventTimeClass: `order-1 ${params.mutedFgClass} text-end`,
         listItemEventTitleClass: [
           'font-semibold',
           'text-(--fc-event-color) brightness-60',

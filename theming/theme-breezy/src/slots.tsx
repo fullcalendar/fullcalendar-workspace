@@ -20,7 +20,7 @@ export function createSlots(
       !data.dayNumberText ? (
         <span
           className={joinClassNames(
-            `text-xs/6 ${params.textHighColorClass}`,
+            `text-xs/6 ${params.fgClass}`,
             !data.isCompact && 'font-semibold',
           )}
         >{data.text}</span>
@@ -43,9 +43,9 @@ export function createSlots(
                               ? params.primaryPressableClass
                               : params.primaryClass,
                           )
-                        : params.textHeaderColorClass
+                        : params.strongFgClass
                     )
-                  : params.textMidColorClass,
+                  : params.mutedFgClass,
               )}
             >{textPart.value}</span>
           ))}
@@ -70,9 +70,9 @@ export function createSlots(
                             ? params.primaryPressableClass
                             : params.primaryClass,
                         )
-                      : params.textMidColorClass
+                      : params.mutedFgClass
                   )
-                : params.textMidColorClass
+                : params.mutedFgClass
             )}
           >{textPart.value}</span>
         ))}

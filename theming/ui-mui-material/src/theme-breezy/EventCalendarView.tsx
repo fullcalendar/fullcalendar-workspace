@@ -49,10 +49,10 @@ export const optionParams: EventCalendarOptionParams = {
   bgClass: 'bg-(--mui-palette-background-paper)',
   bgOutlineColorClass: 'outline-(--mui-palette-background-paper)',
 
-  textLowColorClass: 'text-(--mui-palette-text-secondary)',
-  textMidColorClass: 'text-(--mui-palette-text-secondary)',
-  textHighColorClass: 'text-(--mui-palette-text-primary)',
-  textHeaderColorClass: 'text-(--mui-palette-text-primary)',
+  faintFgClass: 'text-(--mui-palette-text-secondary)',
+  mutedFgClass: 'text-(--mui-palette-text-secondary)',
+  fgClass: 'text-(--mui-palette-text-primary)',
+  strongFgClass: 'text-(--mui-palette-text-primary)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
