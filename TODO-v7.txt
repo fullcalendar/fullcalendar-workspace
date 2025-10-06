@@ -15,7 +15,15 @@ clean+build all:
 
 NOW
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)
-    remove *ColorClass props?
+    remove *ColorClass props? YES
+    use color-mix for moving closer to foreground/background
+      use reasonable fallback when unsupported
+    use linear-gradient for alpha-compositing (for sticky listDayHeader)
+      .my-box {
+        background:
+          linear-gradient(var(--fc-monarch-muted), var(--fc-monarch-muted)), /* overlay */
+          var(--fc-monarch-background); /* base */
+      }
   list-view hovering in Classic and Pulse
     will need muted-half-wash or something
   layering disabled + business-hours looks bad
@@ -453,6 +461,7 @@ changelog: removed fixedMirrorParent (always body or shadow-root)
 rowEventBeforeContent
 rowEventAfterContent
 EventDisplayData.isInteractive
+changelog: nice tab-focus effects on everything
 
 
 Docs
