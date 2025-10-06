@@ -81,6 +81,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       isMajor: false,
       isCompact: false,
       inPopover: true,
+      hasNavLink,
       hasLabel: false,
       hasMonthLabel: false,
       view: viewApi,

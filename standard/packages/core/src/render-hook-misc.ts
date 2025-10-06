@@ -49,6 +49,7 @@ export interface DayCellData extends DateMeta {
   isMajor: boolean
   isCompact: boolean
   inPopover: boolean
+  hasNavLink: boolean
   hasLabel: boolean
   hasMonthLabel: boolean
   view: ViewApi
