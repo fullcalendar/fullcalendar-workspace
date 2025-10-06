@@ -10,11 +10,35 @@ const borderColorClass = 'border-(--mui-palette-divider)'
 const borderStartColorClass = 'border-s-(--mui-palette-divider)'
 const borderBottomColorClass = 'border-b-(--mui-palette-divider)'
 
+const outlineConfigClass = 'outline-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.5)]'
+const focusOutlineClass = `focus-visible:outline-3 ${outlineConfigClass}`
+
+const primaryClass = 'bg-(--mui-palette-primary-main) text-(--mui-palette-primary-contrastText)'
+const primaryPressableClass = primaryClass // TODO: hover effect!
+
+// ghost
+const ghostHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
+const ghostPressableClass = `${ghostHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] ${focusOutlineClass}`
+
 export const optionParams: EventCalendarOptionParams = {
-  // ENSURE the muted by colors are warm, like the toolbar bg color
-  primaryBgColorClass: 'bg-(--mui-palette-primary-main)',
-  primaryTextColorClass: 'text-(--mui-palette-primary-contrastText)',
+  primaryClass,
+  primaryPressableClass,
+
+  ghostHoverClass,
+  ghostPressableClass,
+
+  strongBgClass: 'bg-(--mui-palette-divider)',
+  mutedBgClass: 'bg-(--mui-palette-action-hover)',
+  mutedWashClass: 'bg-(--mui-palette-action-hover)',
+  highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
+
+  borderColorClass,
+  borderStartColorClass,
   primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
+  strongBorderColorClass: borderColorClass,
+  strongBorderBottomColorClass: borderBottomColorClass,
+  mutedBorderColorClass: borderColorClass,
+  nowBorderColorClass: 'border-(--mui-palette-error-main)',
 
   eventColor: 'var(--mui-palette-primary-main)',
   bgEventColor: 'var(--mui-palette-secondary-main)',
@@ -23,26 +47,12 @@ export const optionParams: EventCalendarOptionParams = {
   popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8)',
 
   bgClass: 'bg-(--mui-palette-background-paper)',
-  bgOutlineClass: 'outline-(--mui-palette-background-paper)',
-
-  mutedBorderColorClass: borderColorClass,
-  borderColorClass: borderColorClass,
-  borderStartColorClass: borderStartColorClass,
-  strongBorderColorClass: borderColorClass,
-  strongBorderBottomColorClass: borderBottomColorClass,
-
-  mutedBgClass: 'bg-(--mui-palette-action-hover)',
-  strongBgClass: 'bg-(--mui-palette-divider)',
-  highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
-  ghostButtonClass: 'hover:bg-(--mui-palette-action-hover) focus-visible:bg-(--mui-palette-action-focus)',
-  glassyBgClass: 'bg-(--mui-palette-action-hover)',
+  bgOutlineColorClass: 'outline-(--mui-palette-background-paper)',
 
   textLowColorClass: 'text-(--mui-palette-text-secondary)',
   textMidColorClass: 'text-(--mui-palette-text-secondary)',
   textHighColorClass: 'text-(--mui-palette-text-primary)',
   textHeaderColorClass: 'text-(--mui-palette-text-primary)',
-
-  nowBorderColorClass: 'border-(--mui-palette-error-main)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

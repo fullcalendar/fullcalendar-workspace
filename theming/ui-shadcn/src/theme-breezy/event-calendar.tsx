@@ -70,10 +70,32 @@ export function EventCalendar({
   )
 }
 
+const primaryClass = 'bg-(--primary) text-(--primary-foreground)'
+const primaryPressableClass = primaryClass // TODO: effect!
+
+const ghostHoverClass = 'hover:bg-muted' // shouldn't it be semitransparent!?
+const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-muted` // useless!?
+
 export const optionParams: EventCalendarOptionParams = {
-  primaryBgColorClass: 'bg-(--primary)',
-  primaryTextColorClass: 'text-(--primary-foreground)',
+  primaryClass,
+  primaryPressableClass,
+
+  ghostHoverClass,
+  ghostPressableClass,
+
+  strongBgClass: 'bg-muted-foreground/20',
+  mutedBgClass: 'bg-muted/50',
+  mutedWashClass: 'bg-muted/50',
+  highlightClass: 'bg-sky-500/10',
+
+  // most borders are inherited
+  borderColorClass: '',
+  borderStartColorClass: '',
   primaryBorderColorClass: 'border-(--primary)',
+  strongBorderColorClass: '',
+  strongBorderBottomColorClass: '',
+  mutedBorderColorClass: '',
+  nowBorderColorClass: 'border-destructive',
 
   eventColor: 'var(--primary)',
   bgEventColor: 'var(--primary)',
@@ -82,27 +104,12 @@ export const optionParams: EventCalendarOptionParams = {
   popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
 
   bgClass: 'bg-background',
-  bgOutlineClass: 'outline-background',
-
-  // all get shadcn inherited border
-  mutedBorderColorClass: '',
-  borderColorClass: '',
-  borderStartColorClass: '',
-  strongBorderColorClass: '',
-  strongBorderBottomColorClass: '',
-
-  mutedBgClass: 'bg-muted/50',
-  strongBgClass: 'bg-muted-foreground/20',
-  highlightClass: 'bg-sky-500/10',
-  ghostButtonClass: 'hover:bg-muted focus-visible:bg-muted',
-  glassyBgClass: 'bg-muted/50',
+  bgOutlineColorClass: 'outline-background',
 
   textLowColorClass: 'text-muted-foreground',
   textMidColorClass: 'text-muted-foreground',
   textHighColorClass: '',
   textHeaderColorClass: '',
-
-  nowBorderColorClass: 'border-destructive',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

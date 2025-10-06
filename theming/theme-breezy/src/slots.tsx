@@ -37,7 +37,12 @@ export function createSlots(
                       'h-8 flex flex-row items-center', // v-align-text
                       !data.isCompact && 'font-semibold',
                       data.isToday && !data.inPopover
-                        ? `w-8 rounded-full justify-center mx-0.5 ${params.primaryBgColorClass} ${params.primaryTextColorClass}`
+                        ? joinClassNames(
+                            'w-8 rounded-full justify-center mx-0.5',
+                            data.hasNavLink
+                              ? params.primaryPressableClass
+                              : params.primaryClass,
+                          )
                         : params.textHeaderColorClass
                     )
                   : params.textMidColorClass,
@@ -59,7 +64,12 @@ export function createSlots(
                 ? joinClassNames(
                     'h-6 flex flex-row items-center', // v-align-text
                     data.isToday
-                      ? `w-6 rounded-full justify-center font-semibold ${params.primaryBgColorClass} ${params.primaryTextColorClass}`
+                      ? joinClassNames(
+                          `w-6 rounded-full justify-center font-semibold`,
+                          data.hasNavLink
+                            ? params.primaryPressableClass
+                            : params.primaryClass,
+                        )
                       : params.textMidColorClass
                   )
                 : params.textMidColorClass

@@ -8,41 +8,45 @@ const selectTextClass = 'text-(--fc-breezy-tab-selected-foreground)'
 const nonSelectTextClass = 'text-(--fc-breezy-tab-foreground)'
 const hoverSelectTextClass = 'hover:text-(--fc-breezy-tab-selected-foreground)' // best name?
 
+const primaryClass = 'bg-(--fc-breezy-primary) text-(--fc-breezy-primary-foreground)'
+const primaryPressableClass = `${primaryClass} hover:bg-(--fc-breezy-primary-hover)`
+
+const ghostHoverClass = 'hover:bg-(--fc-breezy-glassy)'
+const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-breezy-cloudy)`
+
 export const optionParams: EventCalendarOptionParams = {
-  // always considered a button, and has hover effect. okay?
-  primaryBgColorClass: 'bg-(--fc-breezy-primary) hover:bg-(--fc-breezy-primary-hover)',
-  primaryTextColorClass: 'text-(--fc-breezy-primary-foreground)',
-  primaryBorderColorClass: 'border-(--fc-breezy-primary) hover:border-(--fc-breezy-primary-hover)',
-  // weird we need to do this border stuff too!!!
+  primaryClass,
+  primaryPressableClass,
+
+  ghostHoverClass,
+  ghostPressableClass,
+
+  strongBgClass: 'bg-(--fc-breezy-strong)',
+  mutedBgClass: 'bg-(--fc-breezy-muted)',
+  mutedWashClass: 'bg-(--fc-breezy-glassy)', // TODO: rename CSS var!!!
+  highlightClass: 'bg-(--fc-breezy-highlight)',
 
   eventColor: 'var(--fc-breezy-event)',
   bgEventColor: 'var(--fc-breezy-background-event)',
   bgEventColorClass: 'brightness-150 opacity-15',
 
+  borderColorClass: 'border-(--fc-breezy-border)',
+  borderStartColorClass: 'border-s-(--fc-breezy-border)',
+  primaryBorderColorClass: 'border-(--fc-breezy-primary)',
+  strongBorderColorClass: 'border-(--fc-breezy-strong-border)',
+  strongBorderBottomColorClass: 'border-b-(--fc-breezy-strong-border)',
+  mutedBorderColorClass: 'border-(--fc-breezy-muted-border)',
+  nowBorderColorClass: 'border-(--fc-breezy-now)',
+
   popoverClass: 'bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg shadow-lg',
 
   bgClass: 'bg-(--fc-breezy-background)',
-  bgOutlineClass: 'outline-(--fc-breezy-background)',
-
-  mutedBorderColorClass: 'border-(--fc-breezy-muted-border)',
-  borderColorClass: 'border-(--fc-breezy-border)',
-  borderStartColorClass: 'border-s-(--fc-breezy-border)',
-  strongBorderColorClass: 'border-(--fc-breezy-strong-border)',
-  strongBorderBottomColorClass: 'border-b-(--fc-breezy-strong-border)',
-
-  mutedBgClass: 'bg-(--fc-breezy-muted)',
-  strongBgClass: 'bg-(--fc-breezy-strong)',
-  highlightClass: 'bg-(--fc-breezy-highlight)',
-
-  ghostButtonClass: 'hover:bg-(--fc-breezy-glassy) focus-visible:bg-(--fc-breezy-cloudy)',
-  glassyBgClass: 'bg-(--fc-breezy-glassy)',
+  bgOutlineColorClass: 'outline-(--fc-breezy-background)',
 
   textLowColorClass: 'text-(--fc-breezy-faint-foreground)',
   textMidColorClass: 'text-(--fc-breezy-muted-foreground)',
   textHighColorClass: 'text-(--fc-breezy-foreground)',
   textHeaderColorClass: 'text-(--fc-breezy-strong-foreground)',
-
-  nowBorderColorClass: 'border-(--fc-breezy-now)',
 }
 
 const secondaryButtonClass = 'group text-(--fc-breezy-secondary-foreground) bg-(--fc-breezy-secondary) hover:bg-(--fc-breezy-secondary-hover) border-(--fc-breezy-secondary-border)'
@@ -89,8 +93,8 @@ export const defaultUiEventCalendarOptions: {
       ) : joinClassNames(
         'font-semibold',
         data.isPrimary
-          // primary
-          ? `${optionParams.primaryBgColorClass} ${optionParams.primaryTextColorClass} ${optionParams.primaryBorderColorClass}`
+          // primary -- TODO: see if border problem
+          ? optionParams.primaryPressableClass
           // secondary
           : secondaryButtonClass,
         data.inGroup

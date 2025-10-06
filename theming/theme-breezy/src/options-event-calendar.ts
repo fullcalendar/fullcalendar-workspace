@@ -104,26 +104,35 @@ For list-view, when <a href> (like "Click for Google"), should hover-underline
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
 
 export interface EventCalendarOptionParams {
-  primaryBgColorClass: string
-  primaryTextColorClass: string
+  primaryClass: string
+  primaryPressableClass: string
+
+  ghostHoverClass: string
+  ghostPressableClass: string
+
+  strongBgClass: string
+  mutedBgClass: string
+  mutedWashClass: string
+  highlightClass: string
+
+  borderColorClass: string
+  borderStartColorClass: string
   primaryBorderColorClass: string
+  strongBorderColorClass: string
+  strongBorderBottomColorClass: string
+  mutedBorderColorClass: string
+  nowBorderColorClass: string
+
   eventColor: string
   bgEventColor: string
   bgEventColorClass: string
+
   popoverClass: string
+
   bgClass: string
-  bgOutlineClass: string
-  mutedBorderColorClass: string
-  borderColorClass: string
-  borderStartColorClass: string
-  strongBorderColorClass: string
-  strongBorderBottomColorClass: string
-  nowBorderColorClass: string
-  mutedBgClass: string
-  strongBgClass: string
-  highlightClass: string
-  ghostButtonClass: string
-  glassyBgClass: string
+  bgOutlineColorClass: string
+
+  // TODO: how to name these!?
   textLowColorClass: string
   textMidColorClass: string
   textHighColorClass: string
@@ -168,8 +177,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     rowEventInnerClass: params.textHighColorClass,
 
     listItemEventClass: (data) => [
-      `${params.ghostButtonClass} p-px`,
+      'p-px',
       getDayGridItemClass(data),
+      data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass,
     ],
     listItemEventInnerClass: 'justify-between flex flex-row text-xs/4',
     listItemEventTimeClass: `order-1 p-0.5 ${params.textMidColorClass} whitespace-nowrap overflow-hidden shrink-1`, // shrinks second
@@ -177,7 +187,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
     rowMoreLinkClass: (data) => [
       'self-start',
-      params.ghostButtonClass,
+      params.ghostPressableClass,
       data.isCompact
         ? `border ${params.primaryBorderColorClass}`
         : 'p-px',
@@ -200,7 +210,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverCloseClass: 'absolute top-1 end-1',
 
       highlightClass: params.highlightClass,
-      nonBusinessClass: params.glassyBgClass,
+      nonBusinessClass: params.mutedWashClass,
 
       dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center', // h-align
       dayHeaderRowClass: `border ${params.mutedBorderColorClass}`,
@@ -282,7 +292,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventClass: (data) => [
         data.isStart && 'rounded-t-lg',
         data.isEnd && 'rounded-b-lg',
-        (data.level || data.isMirror) && `outline ${params.bgOutlineClass}`,
+        (data.level || data.isMirror) && `outline ${params.bgOutlineColorClass}`,
       ],
       columnEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
@@ -303,7 +313,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: 'px-2 py-1 font-semibold',
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative p-px rounded-md ${params.bgClass} outline ${params.bgOutlineClass}`,
+      columnMoreLinkClass: `relative p-px rounded-md ${params.bgClass} outline ${params.bgOutlineColorClass}`,
       columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.strongBgClass} print:bg-white print:border print:border-black`,
       columnMoreLinkInnerClass: `z-1 p-0.5 text-xs/4 ${params.textHighColorClass}`,
       // TODO: see columnMoreLinkClass in timeGrid below...
@@ -318,11 +328,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       singleMonthHeaderInnerClass: (data) => [
         `text-sm font-semibold rounded-sm py-1 px-2 ${params.textHeaderColorClass}`,
-        data.hasNavLink && params.ghostButtonClass,
+        data.hasNavLink && params.ghostPressableClass,
       ],
 
       nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,
-      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} outline-2 ${params.bgOutlineClass}`,
+      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} outline-2 ${params.bgOutlineColorClass}`,
 
       // TODO: event resizing
       // TODO: do isMajor border as darker (and put into checklist)
