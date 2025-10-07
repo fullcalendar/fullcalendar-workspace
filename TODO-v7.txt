@@ -14,6 +14,13 @@ clean+build all:
 
 
 NOW
+  better building-process for theme-common?
+    AFTER: theme-common not needed by individual theme packages?
+  merge inlineWeekNumberClass + inlineWeekNumberInnerClass
+    (so it's just one link w/ potentially rounded-corners, so focus-ring works correctly)
+  cleanup ALL button-like
+    ensure all have hover and active effects
+    cleanup code in all default-ui themes and mui/shadcn
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)
     remove *ColorClass props? YES
     use color-mix for moving closer to foreground/background
@@ -26,8 +33,6 @@ NOW
       }
       If we want to do shorthand w/ single color stop
         https://caniuse.com/mdn-css_types_gradient_linear-gradient_single_color_stop
-  list-view hovering in Classic and Pulse
-    will need muted-half-wash or something
   layering disabled + business-hours looks bad
     RELEVANT to Forma and Breezy
     TODO: if ANY business-hours specified, disabled days should do dimmed-daynumber instead of bg color
@@ -36,8 +41,14 @@ NOW
       Is opacity the correct thing to be setting?
         Actually, i think we should always set text color, so that the isToday circle is accurate color
         Good to use a real mutedTextColor so that it matches with other parts of the UI
-  give tab-focus effect to all mui/shadcn themes
-  weird colors for inlineWeekNumbers: mui>Forma, mui>Classic
+  tab-focus
+    should always give hover effect (currently missing on default-ui Monarch today-circle)
+    give tab-focus effect to all mui/shadcn themes
+  hover effects for all event-link content
+    implement strongPressableClass for more-links
+    give all block-events a hover effect
+  Shadcn background-events
+    use equiv of muted-bg for backgroundevent color (will be darker than non-business-hours, yay!)
   demo App not working in Safari?
   why doesn't eventStartEditable seem to work?
   why does dragging Monarch events give outline?
@@ -58,6 +69,9 @@ MANUAL TEST
   test prevYear/nextYear icons in all theme systems
   core: test sticky footer scrollbar on timegrid-pannable/normal, daygrid-pannable/normal
 CODE-QUALITY (while going through each theme)
+  stop concatenating with param classnames. sometimes they're blank
+    like `border ${params.borderColorClass}`. many others too
+    have AI correct it
   make all theme util functions that emit classnames return STRING (and thus call joinClassNames)?
   slotLabel(Inner)Class and slotLabelDividerClass
     should almost always be in the timegrid/timeline sections of the theme
@@ -270,10 +284,9 @@ THEME SYSTEM
     footerScrollbarSticky
   [eventually]
     weekNumberDisplay: 'inline' | 'column'
-    weekNumberHeaderClass: ({ hasNavLink, date? }) --- inherits from weekNumberClass --- similar to dayHeaderClass which has a fake date
-    weekNumberCellClass: ({ hasNavLink, date }) --- inherits from weekNumberInnerClass
+    weekNumberHeaderClass: ({ hasNavLink, date? }) --- similar to dayHeaderClass which has a fake date
+    weekNumberCellClass: ({ hasNavLink, date })
     (even tho dissonant with inlineWeekNumberClass)
-  Is inlineWeekNumberInnerClass really necessary?
   Implement (Content/DidMount/WillUnmount on all)
     (hard because generatorName="" requires a string)
     blockEventContent
@@ -435,13 +448,11 @@ changelog: removed css variables like --fc-page-bg-color
 changelog: different rendering behavior around not-defined buttons?
 changelog: weekNumber classnames/hooks
   x weekNumberClass
-  x weekNumberInnerClass
   x weekNumberContent
   x weekNumberDidMount
   x weekNumberWillUnmount
   if daygrid week numbers (always inline), use:
     inlineWeekNumberClass
-    inlineWeekNumberInnerClass
     inlineWeekNumberContent
     inlineWeekNumberDidMount
     inlineWeekNumberWillUnmount
