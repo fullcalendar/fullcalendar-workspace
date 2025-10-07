@@ -23,7 +23,7 @@ export const optionParams: EventCalendarOptionParams = {
 
   strongBgClass: 'bg-(--fc-breezy-strong)',
   mutedBgClass: 'bg-(--fc-breezy-muted)',
-  mutedWashClass: 'bg-(--fc-breezy-glassy)', // TODO: rename CSS var!!!
+  faintBgClass: 'bg-(--fc-breezy-glassy)', // TODO: update this CSS var!!!
   highlightClass: 'bg-(--fc-breezy-highlight)',
 
   eventColor: 'var(--fc-breezy-event)',

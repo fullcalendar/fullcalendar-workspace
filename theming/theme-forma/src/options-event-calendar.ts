@@ -63,9 +63,12 @@ export interface EventCalendarOptionParams {
   ghostHoverClass: string
   ghostPressableClass: string
 
+  mutedClass: string
+  mutedPressableClass: string
+
   strongBgClass: string
   mutedBgClass: string
-  mutedWashClass: string
+  faintBgClass: string
   highlightClass: string
 
   borderColorClass: string
@@ -82,6 +85,8 @@ export interface EventCalendarOptionParams {
 
   bgClass: string
   bgOutlineColorClass: string
+
+  mutedFgClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -158,17 +163,18 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       inlineWeekNumberClass: (data) => [
         'absolute z-20 top-1 end-0 rounded-s-full',
         data.hasNavLink
-          ? params.secondaryPressableClass
-          : params.secondaryClass,
+          ? params.mutedPressableClass
+          : params.mutedClass,
       ],
       inlineWeekNumberInnerClass: (data) => [
         data.isCompact ? xxsTextClass : 'text-xs',
-        'py-1 pe-1 ps-2 opacity-60 text-center',
+        'py-1 pe-1 ps-2 text-center',
+        params.mutedFgClass,
       ],
 
       // misc BG
       fillerClass: `border ${params.borderColorClass} opacity-50`,
-      nonBusinessClass: params.mutedWashClass,
+      nonBusinessClass: params.faintBgClass,
       highlightClass: params.highlightClass,
 
       eventClass: (data) => data.event.url && 'hover:no-underline',
@@ -282,7 +288,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderClass: (data) => [
         !data.isCompact && `border ${params.borderColorClass}`, // HACK for no-show-border in multimonth
-        (data.isDisabled || data.inPopover) && params.mutedBgClass,
+        (data.isDisabled || data.inPopover) && params.faintBgClass,
         data.isToday && !data.level && 'relative', // contain wide top-border
       ],
       dayHeaderInnerClass: (data) => [
@@ -294,7 +300,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayRowClass: `border ${params.borderColorClass}`,
       dayCellClass: (data) => [
         data.isMajor ? `border ${params.strongBorderColorClass}` : `border ${params.borderColorClass}`,
-        (data.isDisabled || data.isOther) && params.mutedBgClass,
+        (data.isDisabled || data.isOther) && params.faintBgClass,
       ],
       dayCellTopClass: [
         'flex flex-row',
@@ -313,7 +319,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayLaneClass: (data) => [
         data.isMajor ? `border ${params.strongBorderColorClass}` : `border ${params.borderColorClass}`,
-        data.isDisabled && params.mutedBgClass,
+        data.isDisabled && params.faintBgClass,
       ],
       dayLaneInnerClass: (data) => data.isSimple
         ? 'm-1' // simple print-view

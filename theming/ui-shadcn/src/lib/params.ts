@@ -15,17 +15,17 @@ const secondaryClass = 'bg-foreground/10'
 const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 ${focusOutlineClass}`
 
 // tertiary (based on primary, but with low contrast)
-const tertiaryClass = 'bg-primary/20 dark:bg-primary/30'
+const tertiaryClass = 'bg-primary/20 dark:bg-primary/30' // ALSO SORTA LIKE neutralClass
 const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 ${focusOutlineClass}`
 const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-primary/40 ${focusOutlineGroupClass}`
 
-const ghostHoverClass = 'hover:bg-foreground/10'
-const ghostHoverGroupClass = 'group-hover:bg-foreground/10'
+const ghostHoverClass = 'hover:bg-foreground/5'
+const ghostHoverGroupClass = 'group-hover:bg-foreground/5'
 const ghostPressableClass = `${ghostHoverClass} ${focusOutlineClass}`
 const ghostPressableGroupClass = `${ghostHoverGroupClass} ${focusOutlineGroupClass}`
 
 const faintHoverClass = 'hover:bg-muted/50'
-const faintPressableClass = `${faintHoverClass} focus-visible:bg-muted` // weird effect?
+const faintPressableClass = `${faintHoverClass} focus-visible:bg-muted/50`
 
 export const optionParams: ThemeOptionParams = {
   primaryClass,
@@ -42,16 +42,24 @@ export const optionParams: ThemeOptionParams = {
   ghostPressableClass,
   ghostPressableGroupClass,
 
-  focusOutlineClass,
-  focusOutlineGroupClass,
-  selectedOutlineClass,
+  // TODO
+  strongClass: 'bg-foreground/15',
+  strongPressableClass: 'bg-foreground/15',
+
+  // TODO
+  mutedClass: 'bg-foreground/5',
+  mutedPressableClass: 'bg-foreground/5',
 
   faintHoverClass,
   faintPressableClass,
 
-  strongBgClass: 'bg-foreground/20',
-  mutedBgClass: 'bg-muted',
-  mutedWashClass: 'bg-foreground/5', // TODO: tweak to match bg-muted!
+  focusOutlineClass,
+  focusOutlineGroupClass,
+  selectedOutlineClass,
+
+  strongBgClass: 'bg-foreground/15',
+  mutedBgClass: 'bg-foreground/5', // semi-transparent version of bg-muted
+  faintBgClass: 'bg-foreground/3', // semi-transparent version of bg-sidebar
   highlightClass: 'bg-primary opacity-10', // TODO: use /10 instead of opacity on element?
   todayBgNotPrintClass: 'not-print:bg-yellow-400/15 dark:bg-yellow-200/10',
 

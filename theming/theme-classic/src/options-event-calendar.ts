@@ -14,12 +14,15 @@ export interface EventCalendarOptionParams {
   ghostHoverClass: string
   ghostPressableClass: string
 
+  mutedClass: string
+  mutedPressableClass: string
+
   faintHoverClass: string
   faintPressableClass: string
 
   strongBgClass: string
   mutedBgClass: string
-  mutedWashClass: string
+  faintBgClass: string
   highlightClass: string
   todayBgNotPrintClass: string
 
@@ -54,7 +57,7 @@ export const getDayHeaderClasses = (
 ) => [
   'border justify-center', // v-align
   data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
-  (data.inPopover || data.isDisabled) && params.mutedBgClass,
+  (data.inPopover || data.isDisabled) && params.faintBgClass,
 ]
 
 export const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
@@ -85,7 +88,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     'border',
     data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
     data.isToday && params.todayBgNotPrintClass,
-    data.isDisabled && params.mutedBgClass,
+    data.isDisabled && params.faintBgClass,
   ]
 
   const getSlotClasses = (data: { isMinor: boolean }) => [
@@ -154,14 +157,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverCloseClass: 'absolute top-0.5 end-0.5 not-hover:opacity-65',
 
       fillerClass: `border ${params.borderColorClass} opacity-50`,
-      nonBusinessClass: params.mutedWashClass,
+      nonBusinessClass: params.faintBgClass,
       highlightClass: params.highlightClass,
 
       navLinkClass: 'hover:underline',
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
-      inlineWeekNumberClass: [
+      inlineWeekNumberClass: (data) => [
         `absolute z-20 top-0 start-0 rounded-ee-sm p-0.5`,
-        params.mutedWashClass,
+        data.hasNavLink
+          ? params.mutedPressableClass
+          : params.mutedClass
       ],
       inlineWeekNumberInnerClass: (data) => [
         'text-center',
@@ -330,7 +335,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.event.url && 'group-hover:underline',
         ],
 
-        noEventsClass: `flex flex-col items-center justify-center ${params.mutedBgClass}`,
+        noEventsClass: `flex flex-col items-center justify-center ${params.mutedBgClass}`, // TODO: use faintBgClass here?
         noEventsInnerClass: 'sticky bottom-0 py-15',
       },
     },

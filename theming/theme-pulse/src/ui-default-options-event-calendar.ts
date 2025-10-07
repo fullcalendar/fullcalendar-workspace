@@ -43,8 +43,8 @@ export const optionParams: EventCalendarOptionParams = {
   ghostPressableClass,
 
   strongBgClass: 'bg-(--fc-pulse-strong)',
-  mutedBgClass: 'bg-(--fc-pulse-muted)',
-  mutedWashClass: 'bg-(--fc-pulse-muted)', // does this CSS var have transparency?
+  mutedBgClass: 'bg-(--fc-pulse-muted)', // TODO
+  faintBgClass: 'bg-(--fc-pulse-muted)', // TODO
   highlightClass: 'bg-(--fc-pulse-highlight)',
 
   borderColorClass,

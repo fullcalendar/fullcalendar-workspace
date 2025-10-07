@@ -30,8 +30,6 @@ const ghostHoverGroupClass = 'group-hover:bg-[rgba(var(--mui-palette-text-primar
 const ghostPressableClass = `${ghostHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] ${focusOutlineClass}`
 const ghostPressableGroupClass = `${ghostHoverGroupClass} group-active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] group-focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] ${focusOutlineGroupClass}`
 
-const mutedBgClass = 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]'
-
 const faintHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]'
 const faintPressableClass = `${faintHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]`
 
@@ -50,6 +48,14 @@ export const optionParams: ThemeOptionParams = {
   ghostPressableClass,
   ghostPressableGroupClass,
 
+  // TODO
+  strongClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+  strongPressableClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+
+  // TODO
+  mutedClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]',
+  mutedPressableClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]',
+
   faintHoverClass,
   faintPressableClass,
 
@@ -58,8 +64,8 @@ export const optionParams: ThemeOptionParams = {
   selectedOutlineClass,
 
   strongBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
-  mutedBgClass,
-  mutedWashClass: mutedBgClass,
+  mutedBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]',
+  faintBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]',
   highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
   todayBgNotPrintClass: 'not-print:bg-[rgba(var(--mui-palette-warning-mainChannel)_/_0.1)]',
 

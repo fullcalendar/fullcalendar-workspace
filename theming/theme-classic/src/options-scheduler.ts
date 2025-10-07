@@ -30,9 +30,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       // For both resources & resource groups
       resourceAreaRowClass: `border ${params.borderColorClass}`,
 
-      resourceGroupHeaderClass: params.mutedWashClass,
+      resourceGroupHeaderClass: params.mutedBgClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedWashClass}`,
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
 
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',

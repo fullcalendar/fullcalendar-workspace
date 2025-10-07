@@ -1,3 +1,4 @@
+
 export interface ThemeOptionParams {
   primaryClass: string // bg & fg
   primaryPressableClass: string
@@ -13,6 +14,15 @@ export interface ThemeOptionParams {
   ghostPressableClass: string
   ghostPressableGroupClass: string
 
+  // strong button-like
+  strongClass: string
+  strongPressableClass: string
+
+  // muted button-like
+  mutedClass: string
+  mutedPressableClass: string
+
+  // faint ghost-button-like
   faintHoverClass: string
   faintPressableClass: string
 
@@ -22,8 +32,8 @@ export interface ThemeOptionParams {
   selectedOutlineClass: string
 
   strongBgClass: string
-  mutedBgClass: string
-  mutedWashClass: string
+  mutedBgClass: string // required to be FULLY-transparent!?... best for Shadcn?
+  faintBgClass: string // required to be semitransparent
   highlightClass: string
   todayBgNotPrintClass: string
 

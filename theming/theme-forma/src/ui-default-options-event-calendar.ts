@@ -33,9 +33,13 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   ghostHoverClass,
   ghostPressableClass,
 
+  // TODO
+  mutedClass: 'bg-(--fc-forma-muted)',
+  mutedPressableClass: 'bg-(--fc-forma-muted)',
+
   strongBgClass: 'bg-(--fc-forma-strong)',
   mutedBgClass: 'bg-(--fc-forma-muted)',
-  mutedWashClass: 'bg-(--fc-forma-muted)', // TODO: use new variable!!!
+  faintBgClass: 'bg-(--fc-forma-muted)', // TODO: adjust this value!
   highlightClass: 'bg-(--fc-forma-highlight)',
 
   borderColorClass: 'border-(--fc-forma-border)',
@@ -52,6 +56,8 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
 
   bgClass: 'bg-(--fc-forma-background)',
   bgOutlineColorClass: 'outline-(--fc-forma-background)',
+
+  mutedFgClass: 'text-gray-700', // TODO
 }
 
 const unselectedButtonTextColorClass = 'text-(--fc-forma-tab-foreground)'

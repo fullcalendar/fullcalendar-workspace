@@ -56,9 +56,9 @@ export interface EventCalendarOptionParams {
   focusOutlineGroupClass: string
   selectedOutlineClass: string
 
-  strongBgClass: string // used by more-link
-  mutedBgClass: string // used by disabled cells
-  mutedWashClass: string // used by non-business-hours (guaranteed semitransparent)
+  strongBgClass: string
+  mutedBgClass: string
+  faintBgClass: string
   highlightClass: string
 
   borderColorClass: string
@@ -161,7 +161,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'opacity-50 border',
         data.isHeader ? 'border-transparent' : params.borderColorClass,
       ],
-      nonBusinessClass: params.mutedWashClass,
+      nonBusinessClass: params.faintBgClass,
       highlightClass: params.highlightClass,
 
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
@@ -263,7 +263,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderRowClass: `border ${params.borderColorClass}`,
       dayHeaderAlign: 'center',
       dayHeaderClass: (data) => [
-        data.isDisabled && params.mutedBgClass,
+        data.isDisabled && params.faintBgClass,
         'items-center',
       ],
       dayHeaderInnerClass: (data) => [
@@ -274,7 +274,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayRowClass: `border ${params.borderColorClass}`,
       dayCellClass: (data) => [
         data.isMajor ? `border ${params.strongBorderColorClass}` : `border ${params.borderColorClass}`,
-        data.isDisabled && params.mutedBgClass,
+        data.isDisabled && params.faintBgClass,
       ],
       dayCellTopClass: (data) => [
         'flex flex-row',
@@ -296,7 +296,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayLaneClass: (data) => [
         data.isMajor ? `border ${params.strongBorderColorClass}` : `border ${params.borderColorClass}`,
-        data.isDisabled && params.mutedBgClass,
+        data.isDisabled && params.faintBgClass,
       ],
       dayLaneInnerClass: (data) => data.isSimple
         ? 'm-1' // simple print-view

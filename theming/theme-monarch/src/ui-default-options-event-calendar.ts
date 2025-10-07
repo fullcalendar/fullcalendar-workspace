@@ -48,7 +48,7 @@ export const optionParams: EventCalendarOptionParams = {
   selectedOutlineClass,
 
   mutedBgClass: 'bg-(--fc-monarch-muted)',
-  mutedWashClass: 'bg-(--fc-monarch-muted-wash)',
+  faintBgClass: 'bg-(--fc-monarch-muted-wash)', // TODO: change this CSS value!!!
   strongBgClass: 'bg-(--fc-monarch-strong)',
   highlightClass: 'bg-(--fc-monarch-secondary) opacity-30',
 

@@ -23,12 +23,16 @@ export const optionParams: EventCalendarOptionParams = {
   ghostHoverClass,
   ghostPressableClass,
 
+  // TODO
+  mutedClass: 'bg-(--fc-classic-muted)',
+  mutedPressableClass: 'bg-(--fc-classic-muted)',
+
   faintHoverClass,
   faintPressableClass,
 
   strongBgClass: 'bg-(--fc-classic-strong)',
-  mutedBgClass: 'bg-(--fc-classic-muted)',
-  mutedWashClass: 'bg-(--fc-classic-glassy)',
+  mutedBgClass: 'bg-(--fc-classic-muted)', // TODO: ensure this is semitransparent!!!
+  faintBgClass: 'bg-(--fc-classic-glassy)', // TODO: update this CSS variable!
   highlightClass: 'bg-(--fc-classic-highlight)',
   todayBgNotPrintClass: 'not-print:bg-(--fc-classic-today)',
 

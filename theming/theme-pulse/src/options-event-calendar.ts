@@ -61,7 +61,7 @@ export interface EventCalendarOptionParams {
 
   strongBgClass: string
   mutedBgClass: string
-  mutedWashClass: string
+  faintBgClass: string
   highlightClass: string
 
   borderColorClass: string
@@ -135,7 +135,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // best place? be consistent with otherthemes
 
       highlightClass: params.highlightClass,
-      nonBusinessClass: params.mutedWashClass,
+      nonBusinessClass: params.faintBgClass,
 
       popoverClass: 'min-w-[220px] ' + params.popoverClass,
       popoverCloseClass: 'absolute top-2 end-2',
