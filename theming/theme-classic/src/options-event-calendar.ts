@@ -159,11 +159,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       navLinkClass: 'hover:underline',
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
-      inlineWeekNumberClass: (data) => [
+      inlineWeekNumberClass: [
         `absolute z-20 top-0 start-0 rounded-ee-sm p-0.5`,
-        data.hasNavLink
-          ? params.secondaryPressableClass
-          : params.secondaryClass,
+        params.mutedWashClass,
       ],
       inlineWeekNumberInnerClass: (data) => [
         'text-center',
