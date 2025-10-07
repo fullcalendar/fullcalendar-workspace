@@ -131,7 +131,7 @@ export const optionParams: EventCalendarOptionParams = {
   bgOutlineColorClass: 'outline-background',
 
   mutedFgClass: 'text-muted-foreground',
-  disabledFgClass: 'text-foreground/40',
+  faintFgClass: 'text-foreground/40',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

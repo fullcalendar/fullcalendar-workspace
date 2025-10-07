@@ -137,7 +137,7 @@ export interface EventCalendarOptionParams {
   fgClass: string
   strongFgClass: string
   mutedFgClass: string
-  faintFgClass: string // TODO: converge with disabledFgClass? YES
+  faintFgClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
