@@ -30,7 +30,8 @@ export const optionParams: EventCalendarOptionParams = {
   faintHoverClass,
   faintPressableClass,
 
-  strongBgClass: 'bg-(--fc-classic-strong)',
+  strongPressableClass: 'bg-(--fc-classic-strong)',
+
   mutedBgClass: 'bg-(--fc-classic-muted)', // TODO: ensure this is semitransparent!!!
   faintBgClass: 'bg-(--fc-classic-glassy)', // TODO: update this CSS variable!
   highlightClass: 'bg-(--fc-classic-highlight)',

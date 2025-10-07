@@ -112,7 +112,8 @@ export interface EventCalendarOptionParams {
   ghostHoverClass: string
   ghostPressableClass: string
 
-  strongBgClass: string
+  strongPressableClass: string
+
   mutedBgClass: string
   faintBgClass: string
   highlightClass: string
@@ -323,7 +324,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       // TODO: keep DRY with timeline rowMoreLink
       columnMoreLinkClass: `relative p-px rounded-md ${params.bgClass} outline ${params.bgOutlineColorClass}`,
-      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.strongBgClass} print:bg-white print:border print:border-black`,
+      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.strongPressableClass} print:bg-white print:border print:border-black`,
       columnMoreLinkInnerClass: `z-1 p-0.5 text-xs/4 ${params.fgClass}`,
       // TODO: see columnMoreLinkClass in timeGrid below...
 

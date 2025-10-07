@@ -21,7 +21,8 @@ export const optionParams: EventCalendarOptionParams = {
   ghostHoverClass,
   ghostPressableClass,
 
-  strongBgClass: 'bg-(--fc-breezy-strong)',
+  strongPressableClass: 'bg-(--fc-breezy-strong)',
+
   mutedBgClass: 'bg-(--fc-breezy-muted)',
   faintBgClass: 'bg-(--fc-breezy-glassy)', // TODO: update this CSS var!!!
   highlightClass: 'bg-(--fc-breezy-highlight)',

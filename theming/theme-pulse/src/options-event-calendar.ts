@@ -59,7 +59,8 @@ export interface EventCalendarOptionParams {
   ghostHoverClass: string
   ghostPressableClass: string
 
-  strongBgClass: string
+  strongPressableClass: string
+
   mutedBgClass: string
   faintBgClass: string
   highlightClass: string
@@ -244,7 +245,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       // TODO: keep DRY with timeline rowMoreLink
       columnMoreLinkClass: `relative m-0.5 p-px rounded-lg ${params.bgClass} outline ${params.bgOutlineColorClass}`,
-      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.strongBgClass} print:bg-white print:border print:border-black`,
+      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.strongPressableClass} print:bg-white print:border print:border-black`,
       columnMoreLinkInnerClass: `z-10 p-0.5 text-xs ${params.strongFgClass}`,
 
       allDayHeaderClass: 'items-center', // v-align

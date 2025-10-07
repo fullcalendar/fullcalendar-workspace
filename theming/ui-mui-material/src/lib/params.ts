@@ -49,7 +49,6 @@ export const optionParams: ThemeOptionParams = {
   ghostPressableGroupClass,
 
   // TODO
-  strongClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
   strongPressableClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
 
   // TODO
@@ -63,7 +62,6 @@ export const optionParams: ThemeOptionParams = {
   focusOutlineGroupClass,
   selectedOutlineClass,
 
-  strongBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
   mutedBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]',
   faintBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]',
   highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',

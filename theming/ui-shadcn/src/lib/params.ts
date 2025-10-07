@@ -43,7 +43,6 @@ export const optionParams: ThemeOptionParams = {
   ghostPressableGroupClass,
 
   // TODO
-  strongClass: 'bg-foreground/15',
   strongPressableClass: 'bg-foreground/15',
 
   // TODO
@@ -57,7 +56,6 @@ export const optionParams: ThemeOptionParams = {
   focusOutlineGroupClass,
   selectedOutlineClass,
 
-  strongBgClass: 'bg-foreground/15',
   mutedBgClass: 'bg-foreground/5', // semi-transparent version of bg-muted
   faintBgClass: 'bg-foreground/3', // semi-transparent version of bg-sidebar
   highlightClass: 'bg-primary opacity-10', // TODO: use /10 instead of opacity on element?

@@ -43,13 +43,14 @@ export const optionParams: EventCalendarOptionParams = {
   ghostPressableClass,
   ghostPressableGroupClass,
 
+  strongPressableClass: 'bg-(--fc-monarch-strong)',
+
   focusOutlineClass,
   focusOutlineGroupClass,
   selectedOutlineClass,
 
   mutedBgClass: 'bg-(--fc-monarch-muted)',
   faintBgClass: 'bg-(--fc-monarch-muted-wash)', // TODO: change this CSS value!!!
-  strongBgClass: 'bg-(--fc-monarch-strong)',
   highlightClass: 'bg-(--fc-monarch-secondary) opacity-30',
 
   borderColorClass: 'border-(--fc-monarch-border)',

@@ -42,7 +42,8 @@ export const optionParams: EventCalendarOptionParams = {
   ghostHoverClass,
   ghostPressableClass,
 
-  strongBgClass: 'bg-(--fc-pulse-strong)',
+  strongPressableClass: 'bg-(--fc-pulse-strong)',
+
   mutedBgClass: 'bg-(--fc-pulse-muted)', // TODO
   faintBgClass: 'bg-(--fc-pulse-muted)', // TODO
   highlightClass: 'bg-(--fc-pulse-highlight)',

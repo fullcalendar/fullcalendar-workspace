@@ -37,7 +37,7 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   mutedClass: 'bg-(--fc-forma-muted)',
   mutedPressableClass: 'bg-(--fc-forma-muted)',
 
-  strongBgClass: 'bg-(--fc-forma-strong)',
+  strongPressableClass: 'bg-(--fc-forma-strong)',
   mutedBgClass: 'bg-(--fc-forma-muted)',
   faintBgClass: 'bg-(--fc-forma-faint)',
   highlightClass: 'bg-(--fc-forma-highlight)',
