@@ -24,6 +24,8 @@ NOW
           linear-gradient(var(--fc-monarch-muted), var(--fc-monarch-muted)), /* overlay */
           var(--fc-monarch-background); /* base */
       }
+      If we want to do shorthand w/ single color stop
+        https://caniuse.com/mdn-css_types_gradient_linear-gradient_single_color_stop
   list-view hovering in Classic and Pulse
     will need muted-half-wash or something
   layering disabled + business-hours looks bad
