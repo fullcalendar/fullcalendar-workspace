@@ -1,5 +1,11 @@
 import { ThemeOptionParams } from '@fullcalendar/theme-common'
 
+/*
+Don't use preconfigured state-specific CSS variables like --mui-palette-action-hover
+They often don't look good. And if we use them for semantic purpose other than what they're made for,
+(like abusing "hover" for something else) they may look bad when the MUI theme is customized.
+*/
+
 const outlineConfigClass = 'outline-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.5)]'
 const focusOutlineClass = `focus-visible:outline-3 ${outlineConfigClass}`
 const focusOutlineGroupClass = `group-focus-visible:outline-3 ${outlineConfigClass}`
@@ -11,7 +17,7 @@ const primaryPressableClass = primaryClass // TODO: hover effect!
 // less-contrasty version of primary (like the selected tab)
 // TODO: if it looks bad in Classic, make a new mutedPressableClass!
 const secondaryClass = 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.15)] brightness-110'
-const secondaryPressableClass = `${secondaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)] focus-visible:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)] ${focusOutlineClass}`
+const secondaryPressableClass = `${secondaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)] focus-visible:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] ${focusOutlineClass}`
 
 // tertiary is actually the secondary (like an accent color)
 const tertiaryClass = 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)'
@@ -24,8 +30,10 @@ const ghostHoverGroupClass = 'group-hover:bg-[rgba(var(--mui-palette-text-primar
 const ghostPressableClass = `${ghostHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] ${focusOutlineClass}`
 const ghostPressableGroupClass = `${ghostHoverGroupClass} group-active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] group-focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] ${focusOutlineGroupClass}`
 
-const faintHoverClass = 'hover:bg-(--mui-palette-action-hover)'
-const faintPressableClass = `${faintHoverClass} focus-visible:bg-(--mui-palette-action-focus)`
+const mutedBgClass = 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]'
+
+const faintHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]'
+const faintPressableClass = `${faintHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]`
 
 export const optionParams: ThemeOptionParams = {
   primaryClass,
@@ -50,8 +58,8 @@ export const optionParams: ThemeOptionParams = {
   selectedOutlineClass,
 
   strongBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
-  mutedBgClass: 'bg-(--mui-palette-action-hover)',
-  mutedWashClass: 'bg-(--mui-palette-action-hover)',
+  mutedBgClass,
+  mutedWashClass: mutedBgClass,
   highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
   todayBgNotPrintClass: 'not-print:bg-[rgba(var(--mui-palette-warning-mainChannel)_/_0.1)]',
 
