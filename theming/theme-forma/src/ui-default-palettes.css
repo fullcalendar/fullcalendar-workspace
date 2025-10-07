@@ -8,12 +8,15 @@ down = mousedown (active)
 :root {
   --fc-forma-background: #fff;
 
-  --fc-forma-muted: #FAFAFA;
-  /* --fc-forma-glassy: #EBEBEB; /* yuck. not glassy */
-  /* --fc-forma-cloudy: #E0E0E0; /* yuck. not cloudy. where used directly? */
-  --fc-forma-glassy: color-mix(in oklab, var(--color-gray-500) 20%, transparent); /* TODO */
-  --fc-forma-cloudy: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
+  /*
+  OLD values:
   --fc-forma-strong: #D6D6D6;
+  --fc-forma-muted: #FAFAFA;
+  TODO: ensure below values have same hue!
+  */
+  --fc-forma-strong: color-mix(in oklab, var(--color-black) 12%, transparent); /* TODO */
+  --fc-forma-muted: color-mix(in oklab, var(--color-black) 7%, transparent); /* TODO */
+  --fc-forma-faint: color-mix(in oklab, var(--color-black) 3%, transparent); /* TODO */
   --fc-forma-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
 
   --fc-forma-border: #E0E0E0;
@@ -35,12 +38,15 @@ down = mousedown (active)
 [data-color-scheme=dark] {
   --fc-forma-background: var(--color-gray-950);
 
-  --fc-forma-muted: #1A1A1A;
-  /* --fc-forma-glassy: #2C2C2C; /* yuck. not glassy */
-  /* --fc-forma-cloudy: #383838; /* yuck. not cloudy. where used directly? */
-  --fc-forma-glassy: color-mix(in oklab, var(--color-gray-500) 20%, transparent); /* TODO */
-  --fc-forma-cloudy: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
+  /*
+  OLD values:
   --fc-forma-strong: #404040;
+  --fc-forma-muted: #1A1A1A;
+  TODO: ensure below values have same hue!
+  */
+  --fc-forma-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
+  --fc-forma-muted: color-mix(in oklab, var(--color-white) 7%, transparent); /* TODO */
+  --fc-forma-faint: color-mix(in oklab, var(--color-white) 3%, transparent); /* TODO */
   --fc-forma-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
 
   --fc-forma-border: #404040;

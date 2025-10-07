@@ -17,11 +17,11 @@ TODO: rename glassy/cloudy css variables
 const primaryClass = 'bg-(--fc-forma-primary) text-(--fc-forma-primary-foreground)'
 const primaryPressableClass = primaryClass // TODO: add --fc-forma-primary-over effects!!!
 
-const secondaryClass = 'bg-(--fc-forma-glassy)'
+const secondaryClass = 'bg-(--fc-forma-muted)'
 const secondaryPressableClass = secondaryClass // TODO: add effects!!!
 
-const ghostHoverClass = 'hover:bg-(--fc-forma-glassy)'
-const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-forma-cloudy)`
+const ghostHoverClass = 'hover:bg-(--fc-forma-muted)'
+const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-forma-strong)`
 
 export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
   primaryClass,
@@ -39,7 +39,7 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
 
   strongBgClass: 'bg-(--fc-forma-strong)',
   mutedBgClass: 'bg-(--fc-forma-muted)',
-  faintBgClass: 'bg-(--fc-forma-muted)', // TODO: adjust this value!
+  faintBgClass: 'bg-(--fc-forma-faint)',
   highlightClass: 'bg-(--fc-forma-highlight)',
 
   borderColorClass: 'border-(--fc-forma-border)',
@@ -74,7 +74,8 @@ const selectedButtonActiveBgColorClass = 'active:bg-(--fc-forma-tab-selected-dow
 const selectedButtonClass = `${selectedButtonBorderColorClass} ${selectedButtonBgColorClass} ${selectedButtonHoverBgColorClass} ${selectedButtonActiveBgColorClass}`
 
 // can be added a-la-carte to other buttons
-const buttonHoverBgColorClass = 'hover:bg-(--fc-forma-glassy) active:bg-(--fc-forma-cloudy)'
+// TODO: refactor this into ghost-button somehow
+const buttonHoverBgColorClass = 'hover:bg-(--fc-forma-muted) active:bg-(--fc-forma-strong)'
 const buttonBorderColorClass = 'border-(--fc-forma-border)'
 const buttonIconColorClass = 'text-(--fc-forma-secondary-icon)' // will only work for secondary!
 
