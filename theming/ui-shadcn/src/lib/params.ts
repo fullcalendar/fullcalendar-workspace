@@ -59,8 +59,8 @@ export const optionParams: ThemeOptionParams = {
   borderColorClass: '',
   borderStartColorClass: '',
   primaryBorderColorClass: 'border-primary',
-  strongBorderColorClass: 'border-foreground/50', // TODO: check this
-  strongBorderBottomColorClass: 'border-b-foreground/50', // TODO: check this
+  strongBorderColorClass: 'border-foreground/20',
+  strongBorderBottomColorClass: 'border-b-foreground/20',
   mutedBorderColorClass: '', // same as normal
   nowBorderColorClass: 'border-destructive',
   nowBorderStartColorClass: 'border-s-destructive',

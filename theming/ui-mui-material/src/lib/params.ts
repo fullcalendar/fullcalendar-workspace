@@ -58,8 +58,8 @@ export const optionParams: ThemeOptionParams = {
   borderColorClass: 'border-(--mui-palette-divider)',
   borderStartColorClass: 'border-s-(--mui-palette-divider)',
   primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
-  strongBorderColorClass: 'border-(--mui-palette-action-active)',
-  strongBorderBottomColorClass: 'border-b-(--mui-palette-action-active)',
+  strongBorderColorClass: 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]',
+  strongBorderBottomColorClass: 'border-b-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]',
   mutedBorderColorClass: 'border-(--mui-palette-divider)', // same as standard
   nowBorderColorClass: 'border-(--mui-palette-error-main)',
   nowBorderStartColorClass: 'border-s-(--mui-palette-error-main)',

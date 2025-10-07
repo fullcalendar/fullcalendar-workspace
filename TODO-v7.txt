@@ -36,7 +36,8 @@ NOW
       Is opacity the correct thing to be setting?
         Actually, i think we should always set text color, so that the isToday circle is accurate color
         Good to use a real mutedTextColor so that it matches with other parts of the UI
-  apply abstract-interface refactor to other themes
+  give tab-focus effect to all mui/shadcn themes
+  weird colors for inlineWeekNumbers: mui>Forma, mui>Classic
   demo App not working in Safari?
   why doesn't eventStartEditable seem to work?
   why does dragging Monarch events give outline?
