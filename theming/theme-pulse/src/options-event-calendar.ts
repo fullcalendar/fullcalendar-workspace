@@ -173,6 +173,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isMajor
           ? params.strongBorderColorClass
           : params.borderColorClass,
+        data.isDisabled && params.faintBgClass,
       ],
 
       /*

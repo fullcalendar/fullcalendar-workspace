@@ -249,6 +249,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isMajor
           ? params.strongBorderColorClass
           : params.mutedBorderColorClass,
+        data.isDisabled && params.faintBgClass,
       ],
 
       allDayHeaderClass: 'items-center', // v-align
