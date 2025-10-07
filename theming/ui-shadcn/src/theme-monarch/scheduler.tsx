@@ -4,11 +4,12 @@ import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-monarch-dev/options-scheduler'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
-import { optionParams, EventCalendarView } from './event-calendar.js'
+import { EventCalendarView } from './event-calendar.js'
 import { cn } from '../lib/utils.js'
 import { eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
 import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
+import { optionParams } from '../lib/params.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 

@@ -3,12 +3,13 @@ import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
-import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-monarch-dev/options-event-calendar'
+import { createEventCalendarOptions } from '@fullcalendar/theme-monarch-dev/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-monarch-dev/slots'
 import { cn } from '../lib/utils.js'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
+import { optionParams } from '../lib/params.js'
 
 export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
   className?: string
@@ -69,69 +70,6 @@ export function EventCalendar({
       </div>
     </div>
   )
-}
-
-// TODO: use transition, like Shadn
-// However, when we do transition-all like the buttons have,
-// drag & drop gets really distorted. How to blacklist position? Or whitelist what we want?
-const focusConfigClass = 'ring-ring/50 outline-none'
-const focusOutlineClass = `focus-visible:ring-3 ${focusConfigClass}`
-const focusOutlineGroupClass = `group-focus-visible:ring-3 ${focusConfigClass}`
-const selectedOutlineClass = 'ring-3 ring-ring/50'
-
-// secondary
-const secondaryClass = 'bg-foreground/10'
-const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 ${focusOutlineClass}`
-
-// tertiary (based on primary, but with low contrast)
-const tertiaryClass = 'bg-primary/20 dark:bg-primary/30'
-const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 ${focusOutlineClass}`
-const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-primary/40 ${focusOutlineGroupClass}`
-
-// ghost
-const ghostHoverClass = 'hover:bg-foreground/10'
-const ghostHoverGroupClass = 'group-hover:bg-foreground/10'
-const ghostPressableClass = `${ghostHoverClass} ${focusOutlineClass}`
-const ghostPressableGroupClass = `${ghostHoverGroupClass} ${focusOutlineGroupClass}`
-
-export const optionParams: EventCalendarOptionParams = {
-  secondaryClass,
-  secondaryPressableClass,
-
-  tertiaryClass,
-  tertiaryPressableClass,
-  tertiaryPressableGroupClass,
-
-  ghostHoverClass,
-  ghostPressableClass,
-  ghostPressableGroupClass,
-
-  focusOutlineClass,
-  focusOutlineGroupClass,
-  selectedOutlineClass,
-
-  mutedBgClass: 'bg-muted',
-  mutedWashClass: 'bg-foreground/5',
-  strongBgClass: 'bg-foreground/20',
-  highlightClass: 'bg-primary opacity-10',
-
-  borderColorClass: '', // border-color is set globally
-  primaryBorderColorClass: 'border-primary',
-  strongBorderColorClass: 'border-foreground/60',
-  nowBorderColorClass: 'border-destructive',
-
-  eventColor: 'var(--primary)',
-  eventContrastColor: 'var(--primary-foreground)',
-  bgEventColor: 'var(--primary)',
-  bgEventColorClass: 'opacity-15',
-
-  popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
-
-  bgClass: 'bg-background',
-  bgOutlineColorClass: 'outline-background',
-
-  mutedFgClass: 'text-muted-foreground',
-  faintFgClass: 'text-foreground/40',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
