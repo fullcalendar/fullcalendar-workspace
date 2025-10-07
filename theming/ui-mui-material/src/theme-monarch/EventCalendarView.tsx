@@ -2,69 +2,10 @@ import React from 'react'
 import { CalendarOptions } from "@fullcalendar/core"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
-import { createEventCalendarOptions, EventCalendarOptionParams } from '@fullcalendar/theme-monarch-dev/options-event-calendar'
+import { createEventCalendarOptions } from '@fullcalendar/theme-monarch-dev/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-monarch-dev/slots'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
-
-const outlineConfigClass = 'outline-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.5)]'
-const focusOutlineClass = `focus-visible:outline-3 ${outlineConfigClass}`
-const focusOutlineGroupClass = `group-focus-visible:outline-3 ${outlineConfigClass}`
-const selectedOutlineClass = `outline-3 ${outlineConfigClass}`
-
-// less-contrasty version of primary (like the selected tab)
-const secondaryClass = 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.15)] brightness-110'
-const secondaryPressableClass = `${secondaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)] focus-visible:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)] ${focusOutlineClass}`
-
-// tertiary is actually the secondary (like an accent color)
-const tertiaryClass = 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)'
-const tertiaryPressableClass = `${tertiaryClass} hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)] focus-visible:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)] ${focusOutlineClass}`
-const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] group-active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)] group-focus-visible:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)] ${focusOutlineGroupClass}`
-
-// ghost
-const ghostHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
-const ghostHoverGroupClass = 'group-hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
-const ghostPressableClass = `${ghostHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] ${focusOutlineClass}`
-const ghostPressableGroupClass = `${ghostHoverGroupClass} group-active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] group-focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] ${focusOutlineGroupClass}`
-
-export const optionParams: EventCalendarOptionParams = {
-  secondaryClass,
-  secondaryPressableClass,
-
-  tertiaryClass,
-  tertiaryPressableClass,
-  tertiaryPressableGroupClass,
-
-  ghostHoverClass,
-  ghostPressableClass,
-  ghostPressableGroupClass,
-
-  focusOutlineClass,
-  focusOutlineGroupClass,
-  selectedOutlineClass,
-
-  mutedBgClass: 'bg-(--mui-palette-action-hover)',
-  mutedWashClass: 'bg-(--mui-palette-action-hover)',
-  strongBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
-  highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
-
-  borderColorClass: 'border-(--mui-palette-divider)',
-  primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
-  strongBorderColorClass: 'border-(--mui-palette-action-active)',
-  nowBorderColorClass: 'border-(--mui-palette-error-main)',
-
-  eventColor: 'var(--mui-palette-primary-main)',
-  eventContrastColor: 'var(--mui-palette-primary-contrastText)',
-  bgEventColor: 'var(--mui-palette-secondary-main)',
-  bgEventColorClass: 'brightness-115 opacity-15',
-
-  popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8)',
-
-  bgClass: 'bg-(--mui-palette-background-paper)',
-  bgOutlineColorClass: 'outline-(--mui-palette-background-paper)',
-
-  mutedFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]',
-  faintFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.4)]',
-}
+import { optionParams } from '../lib/params.js'
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
 
