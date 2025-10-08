@@ -169,8 +169,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       inlineWeekNumberClass: (data) => [
         'absolute z-20',
         data.isCompact ? 'top-1 start-0.5' : 'top-1.5 start-1',
+        ...getWeekNumberPillClasses(data),
       ],
-      inlineWeekNumberInnerClass: getWeekNumberPillClasses,
 
       eventClass: (data) => [
         'hover:no-underline',

@@ -162,15 +162,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverCloseClass: 'absolute top-2 end-2',
 
       inlineWeekNumberClass: (data) => [
-        'absolute z-20 top-1 end-0 rounded-s-full',
+        'absolute z-20 top-1 end-0 rounded-s-full py-1 pe-1 ps-2 text-center',
         data.hasNavLink
           ? params.mutedPressableClass
           : params.mutedClass,
-      ],
-      inlineWeekNumberInnerClass: (data) => [
         data.isCompact ? xxsTextClass : 'text-xs',
-        'py-1 pe-1 ps-2 text-center',
-        params.mutedFgClass,
       ],
 
       // misc BG

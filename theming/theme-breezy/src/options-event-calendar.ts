@@ -164,16 +164,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     BUG: z-index is wrong, can't click week numbers
     */
     inlineWeekNumberClass: (data) => [
-      `absolute z-10 top-0 end-0 border-b ${params.strongBorderBottomColorClass} border-s ${params.borderStartColorClass} rounded-es-md ${params.bgClass}`,
+      `absolute z-10 top-0 end-0 border-b ${params.strongBorderBottomColorClass} border-s ${params.borderStartColorClass} rounded-es-md ${params.bgClass} py-0.5 ${params.mutedFgClass}`,
       data.hasNavLink
         ? params.ghostPressableClass
         : params.ghostHoverClass,
-    ],
-    inlineWeekNumberInnerClass: (data) => [
-      `py-0.5 ${params.mutedFgClass}`,
       data.isCompact
         ? `${xxsTextClass} px-0.5`
-        : 'text-xs/6 px-1'
+        : 'text-xs/6 px-1',
     ],
 
     rowEventClass: (data) => [

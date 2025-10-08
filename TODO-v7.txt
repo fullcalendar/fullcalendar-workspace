@@ -14,8 +14,6 @@ clean+build all:
 
 
 NOW
-  merge inlineWeekNumberClass + inlineWeekNumberInnerClass
-    (so it's just one link w/ potentially rounded-corners, so focus-ring works correctly)
   cleanup ALL button-like
     ensure all have hover and active effects
     cleanup code in all default-ui themes and mui/shadcn

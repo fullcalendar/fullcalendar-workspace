@@ -148,7 +148,6 @@ export const BASE_OPTION_REFINERS = {
   weekNumberHeaderWillUnmount: identity as Identity<WillUnmountHandler<WeekNumberHeaderMountData>>,
 
   inlineWeekNumberClass: identity as Identity<ClassNameGenerator<InlineWeekNumberData>>,
-  inlineWeekNumberInnerClass: identity as Identity<ClassNameGenerator<InlineWeekNumberData>>,
   inlineWeekNumberContent: identity as Identity<CustomContentGenerator<InlineWeekNumberData>>,
   inlineWeekNumberDidMount: identity as Identity<DidMountHandler<InlineWeekNumberMountData>>,
   inlineWeekNumberWillUnmount: identity as Identity<WillUnmountHandler<InlineWeekNumberMountData>>,

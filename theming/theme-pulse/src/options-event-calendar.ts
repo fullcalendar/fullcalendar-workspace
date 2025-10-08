@@ -180,9 +180,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /*
       BUG: z-index is wrong, can't click week numbers
       */
-      inlineWeekNumberClass: 'absolute z-10 top-0 start-0',
-      inlineWeekNumberInnerClass: (data) => [
-        `py-2 text-xs ${params.fgClass}`,
+      inlineWeekNumberClass: (data) => [
+        `absolute z-10 top-0 start-0 py-2 text-xs ${params.fgClass}`,
         data.isCompact ? 'px-1' : 'px-2',
       ],
 
