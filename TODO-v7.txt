@@ -332,6 +332,9 @@ rename?: the "before" and "after" content to start/end?
   works with isEndResizable
 hide now-indicator when in print
 print-view, hide buttons, or at least make sure they don't look terrible?
+just like we allowed margin on dayHeaderInner (which is a navlink),
+  allow margin on slotLabelInner
+  subsequently, audit align-self everywhere? because wrappers changed
 
 
 Changelog

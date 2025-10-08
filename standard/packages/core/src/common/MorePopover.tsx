@@ -133,25 +133,27 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
                 classNames.alignStart,
           )}
         >
-          <ContentContainer
-            tag="div"
-            attrs={{
-              id: this.titleId,
-              ...(
-                hasNavLink
-                  ? buildNavLinkAttrs(context, startDate, undefined, fullDateStr)
-                  : {}
-              ),
-            }}
-            className={classNames.noMargin}
-            generatorName="dayHeaderContent"
-            renderProps={dayHeaderRenderProps}
-            customGenerator={options.dayHeaderContent}
-            defaultGenerator={renderText}
-            classNameGenerator={options.dayHeaderInnerClass}
-            didMount={options.dayHeaderDidMount}
-            willUnmount={options.dayHeaderWillUnmount}
-          />
+          <div>{/* be similar to DayGridHeaderCell */}
+            <ContentContainer
+              tag="div"
+              attrs={{
+                id: this.titleId,
+                ...(
+                  hasNavLink
+                    ? buildNavLinkAttrs(context, startDate, undefined, fullDateStr)
+                    : {}
+                ),
+              }}
+              className={classNames.noMargin}
+              generatorName="dayHeaderContent"
+              renderProps={dayHeaderRenderProps}
+              customGenerator={options.dayHeaderContent}
+              defaultGenerator={renderText}
+              classNameGenerator={options.dayHeaderInnerClass}
+              didMount={options.dayHeaderDidMount}
+              willUnmount={options.dayHeaderWillUnmount}
+            />
+          </div>
           <ContentContainer
             tag='button'
             attrs={{
