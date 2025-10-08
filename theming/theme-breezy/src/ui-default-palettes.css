@@ -2,10 +2,10 @@
 :root {
   /* standard fills */
   --fc-breezy-background: var(--color-white);
-  --fc-breezy-muted: var(--color-gray-50);
-  --fc-breezy-strong: var(--color-gray-200);
-  --fc-breezy-glassy: color-mix(in oklab, var(--color-gray-500) 10%, transparent); /* TODO */
-  --fc-breezy-cloudy: color-mix(in oklab, var(--color-gray-500) 20%, transparent); /* TODO */
+  /* TODO: re-match these colors to tailwindplus -- ensure toolbar button ghost-hovering too */
+  --fc-breezy-strong: color-mix(in oklab, var(--color-black) 10%, transparent); /* TODO */
+  --fc-breezy-muted: color-mix(in oklab, var(--color-black) 5%, transparent); /* TODO */
+  --fc-breezy-faint: color-mix(in oklab, var(--color-black) 2%, transparent); /* TODO */
   --fc-breezy-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
   --fc-breezy-now: red; /* TODO */
 
@@ -31,7 +31,7 @@
 
   /* secondary buttons */
   --fc-breezy-secondary: var(--fc-breezy-background);
-  --fc-breezy-secondary-hover: var(--fc-breezy-muted);
+  --fc-breezy-secondary-hover: var(--fc-breezy-faint);
   --fc-breezy-secondary-border: var(--fc-breezy-strong-border);
   --fc-breezy-secondary-icon: var(--fc-breezy-faint-foreground);
   --fc-breezy-secondary-icon-hover: var(--fc-breezy-muted-foreground);
@@ -41,10 +41,10 @@
 [data-color-scheme=dark] {
   /* standard fills */
   --fc-breezy-background: var(--color-gray-900);
-  --fc-breezy-muted: color-mix(in oklab, var(--color-gray-800) 50%, transparent);
-  --fc-breezy-strong: var(--color-gray-800);
-  --fc-breezy-glassy: color-mix(in oklab, var(--color-white) 10%, transparent);
-  --fc-breezy-cloudy: color-mix(in oklab, var(--color-white) 20%, transparent);
+  /* TODO: re-match these colors to tailwindplus */
+  --fc-breezy-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
+  --fc-breezy-muted: color-mix(in oklab, var(--color-white) 7%, transparent); /* TODO */
+  --fc-breezy-faint: color-mix(in oklab, var(--color-white) 3%, transparent); /* TODO */
   --fc-breezy-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
   --fc-breezy-now: red; /* TODO */
 
@@ -66,11 +66,11 @@
   /* tabs */
   --fc-breezy-tab-foreground: var(--fc-breezy-muted-foreground);
   --fc-breezy-tab-selected-foreground: var(--fc-breezy-strong-foreground);
-  --fc-breezy-tab-selected: var(--fc-breezy-glassy);
+  --fc-breezy-tab-selected: var(--fc-breezy-muted);
 
   /* secondary buttons */
-  --fc-breezy-secondary: var(--fc-breezy-glassy);
-  --fc-breezy-secondary-hover: var(--fc-breezy-cloudy);
+  --fc-breezy-secondary: var(--fc-breezy-muted);
+  --fc-breezy-secondary-hover: var(--fc-breezy-strong);
   --fc-breezy-secondary-border: var(--fc-breezy-muted-border);
   --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
   --fc-breezy-secondary-icon: var(--fc-breezy-muted-foreground);

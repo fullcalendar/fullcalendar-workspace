@@ -2,29 +2,59 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
+/*
+We don't do active: states, because tailwindplus does not do this!
+*/
+
+const focusConfigClass = 'outline-(--fc-breezy-primary)'
+const focusOutlineClass = `focus-visible:outline-2 ${focusConfigClass}`
+const focusOutlineGroupClass = `group-focus-visible:outline-2 ${focusConfigClass}`
+const selectedOutlineClass = `outline-2 ${focusConfigClass}`
+
+// no simulated hover-effect when focus-visible,
+// because focus-border looks like when same primary color because its spaced away
+const primaryClass = 'bg-(--fc-breezy-primary) text-(--fc-breezy-primary-foreground)'
+const primaryPressableClass = `${primaryClass} hover:bg-(--fc-breezy-primary-hover) ${focusOutlineClass} outline-offset-2`
+const primaryPressableGroupClass = `${primaryClass} group-hover:bg-(--fc-breezy-primary-hover) ${focusOutlineGroupClass} outline-offset-2`
+const primaryButtonClass = `${primaryPressableClass} border-transparent`
+
+const secondaryClass = 'text-(--fc-breezy-secondary-foreground) bg-(--fc-breezy-secondary)'
+const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-secondary-hover) ${focusOutlineClass} -outline-offset-1`
+const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-secondary-border)`
+
+const ghostHoverClass = 'hover:bg-(--fc-breezy-muted)'
+const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-breezy-muted) ${focusOutlineClass}`
+
+// NOTE: only works within secondary button
+// best? to sync to line-height???
+const buttonIconClass = 'size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-hover)'
+
 // TODO: rename to tab stuff
 const selectBgClass = 'bg-(--fc-breezy-tab-selected)'
 const selectTextClass = 'text-(--fc-breezy-tab-selected-foreground)'
+const selectClass = `${selectBgClass} ${selectTextClass} ${focusOutlineClass}`
+
 const nonSelectTextClass = 'text-(--fc-breezy-tab-foreground)'
 const hoverSelectTextClass = 'hover:text-(--fc-breezy-tab-selected-foreground)' // best name?
-
-const primaryClass = 'bg-(--fc-breezy-primary) text-(--fc-breezy-primary-foreground)'
-const primaryPressableClass = `${primaryClass} hover:bg-(--fc-breezy-primary-hover)`
-
-const ghostHoverClass = 'hover:bg-(--fc-breezy-glassy)'
-const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-breezy-cloudy)`
+const nonSelectClass = `${nonSelectTextClass} ${hoverSelectTextClass} ${focusOutlineClass}`
 
 export const optionParams: EventCalendarOptionParams = {
   primaryClass,
   primaryPressableClass,
+  primaryPressableGroupClass,
 
   ghostHoverClass,
   ghostPressableClass,
 
+  // TODO: use these!
+  focusOutlineClass,
+  focusOutlineGroupClass,
+  selectedOutlineClass,
+
   strongPressableClass: 'bg-(--fc-breezy-strong)',
 
   mutedBgClass: 'bg-(--fc-breezy-muted)',
-  faintBgClass: 'bg-(--fc-breezy-glassy)', // TODO: update this CSS var!!!
+  faintBgClass: 'bg-(--fc-breezy-faint)',
   highlightClass: 'bg-(--fc-breezy-highlight)',
 
   eventColor: 'var(--fc-breezy-event)',
@@ -48,13 +78,8 @@ export const optionParams: EventCalendarOptionParams = {
   mutedFgClass: 'text-(--fc-breezy-muted-foreground)',
   fgClass: 'text-(--fc-breezy-foreground)',
   strongFgClass: 'text-(--fc-breezy-strong-foreground)',
+  strongFgGroupHoverClass: 'group-hover:text-(--fc-breezy-strong-foreground)',
 }
-
-const secondaryButtonClass = 'group text-(--fc-breezy-secondary-foreground) bg-(--fc-breezy-secondary) hover:bg-(--fc-breezy-secondary-hover) border-(--fc-breezy-secondary-border)'
-
-// NOTE: only works within secondary button
-// best? to sync to line-height???
-const buttonIconClass = 'size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-hover)'
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
 
@@ -69,7 +94,7 @@ export const defaultUiEventCalendarOptions: {
     headerToolbarClass: `border-b ${optionParams.borderColorClass}`,
     footerToolbarClass: `border-t ${optionParams.borderColorClass}`,
 
-    toolbarClass: `px-4 py-4 items-center ${optionParams.mutedBgClass} gap-4`,
+    toolbarClass: `px-4 py-4 items-center ${optionParams.faintBgClass} gap-4`,
     toolbarSectionClass: 'items-center gap-4',
     toolbarTitleClass: `text-lg font-semibold ${optionParams.strongFgClass}`,
 
@@ -82,21 +107,19 @@ export const defaultUiEventCalendarOptions: {
       !data.isSelectGroup && `rounded-md shadow-xs`
     ],
     buttonClass: (data) => [
-      'py-2 text-sm',
+      'py-2 text-sm group', // group for icon group-focus
       data.isIconOnly ? 'px-2' : 'px-3',
       data.inSelectGroup ? joinClassNames(
         // START view-switching bar item
         'rounded-md font-medium',
         data.isSelected
-          ? `${selectBgClass} ${selectTextClass}`
-          : `${nonSelectTextClass} ${hoverSelectTextClass}`,
+          ? selectClass
+          : nonSelectClass,
         // END
       ) : joinClassNames(
         'font-semibold',
         data.isPrimary
-          // primary -- TODO: see if border problem
-          ? optionParams.primaryPressableClass
-          // secondary
+          ? primaryButtonClass
           : secondaryButtonClass,
         data.inGroup
           ? 'first:rounded-s-md first:border-s last:rounded-e-md last:border-e border-y focus-visible:z-10'

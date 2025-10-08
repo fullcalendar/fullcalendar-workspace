@@ -13,6 +13,7 @@ const selectedOutlineClass = `outline-3 ${outlineConfigClass}`
 
 const primaryClass = 'bg-(--mui-palette-primary-main) text-(--mui-palette-primary-contrastText)'
 const primaryPressableClass = primaryClass // TODO: hover effect!
+const primaryPressableGroupClass = primaryClass // TODO: hover effect!
 
 // less-contrasty version of primary (like the selected tab)
 // TODO: if it looks bad in Classic, make a new mutedPressableClass!
@@ -36,6 +37,7 @@ const faintPressableClass = `${faintHoverClass} active:bg-[rgba(var(--mui-palett
 export const optionParams: ThemeOptionParams = {
   primaryClass,
   primaryPressableClass,
+  primaryPressableGroupClass,
 
   secondaryClass,
   secondaryPressableClass,
@@ -93,6 +95,7 @@ export const optionParams: ThemeOptionParams = {
 
   fgClass: 'text-(--mui-palette-text-primary)',
   strongFgClass: 'text-(--mui-palette-text-primary)',
+  strongFgGroupHoverClass: 'group-hover:text-(--mui-palette-text-primary)',
   mutedFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]',
   faintFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.4)]',
   // probably use text-(--mui-palette-text-secondary) instead??? is that for buttons or normal text!?

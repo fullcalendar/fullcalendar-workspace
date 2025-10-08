@@ -108,9 +108,14 @@ export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font /
 export interface EventCalendarOptionParams {
   primaryClass: string
   primaryPressableClass: string
+  primaryPressableGroupClass: string
 
   ghostHoverClass: string
   ghostPressableClass: string
+
+  focusOutlineClass: string
+  focusOutlineGroupClass: string
+  selectedOutlineClass: string
 
   strongPressableClass: string
 
@@ -137,6 +142,7 @@ export interface EventCalendarOptionParams {
 
   fgClass: string
   strongFgClass: string
+  strongFgGroupHoverClass: string
   mutedFgClass: string
   faintFgClass: string
 }
@@ -224,6 +230,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.inPopover ? 'px-3' : 'px-2',
         data.isCompact || data.inPopover ? 'py-1' : 'py-2',
         'flex flex-row items-center', // v-align
+        'group outline-none',
       ],
 
       dayRowClass: `border ${params.borderColorClass}`,
@@ -239,6 +246,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayCellTopInnerClass: (data) => [
         !data.isCompact && 'p-1',
         !data.isToday && 'mx-1',
+        'group outline-none',
       ],
       dayCellInnerClass: (data) => data.inPopover && 'p-2',
 
@@ -259,7 +267,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
-      blockEventClass: `${params.bgClass} relative group p-px`,
+      eventClass: (data) => [
+        data.isSelected && params.selectedOutlineClass, // will apply to list-item and block events
+      ],
+
+      blockEventClass: [
+        `${params.bgClass} relative group p-px`,
+        params.focusOutlineClass, // will apply ONLY to block events, because list-item events already have ghostPressable
+      ],
       blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) print:bg-white border-(--fc-event-color) not-print:opacity-20',
       blockEventInnerClass: 'relative z-20 text-xs/4 flex', // NOTE: subclass determines direction
       /*

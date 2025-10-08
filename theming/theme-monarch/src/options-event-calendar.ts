@@ -174,7 +174,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       eventClass: (data) => [
         'hover:no-underline',
-        data.isSelected && params.selectedOutlineClass,
+        data.isSelected && params.selectedOutlineClass, // will apply to list-item and block events
       ],
 
       backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.bgEventColorClass,
@@ -191,7 +191,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'relative isolate group',
         'border-transparent bg-(--fc-event-color)',
         'print:border-(--fc-event-color) print:bg-white',
-        params.focusOutlineClass,
+        params.focusOutlineClass, // will apply ONLY to block events, because list-item events already have ghostPressable
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
           : joinClassNames('focus-visible:shadow-md', data.isDragging && 'opacity-75'),

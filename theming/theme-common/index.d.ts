@@ -7,6 +7,7 @@ because depending packages do not label this as a depended-upon TS workspace
 export interface ThemeOptionParams {
   primaryClass: string // bg & fg
   primaryPressableClass: string
+  primaryPressableGroupClass: string
 
   secondaryClass: string // bg & fg
   secondaryPressableClass: string
@@ -62,6 +63,7 @@ export interface ThemeOptionParams {
 
   fgClass: string
   strongFgClass: string
+  strongFgGroupHoverClass: string
   mutedFgClass: string
   faintFgClass: string
 }

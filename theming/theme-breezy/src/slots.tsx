@@ -16,7 +16,7 @@ export function createSlots(
   params: EventCalendarOptionParams,
 ): CalendarOptions {
   return {
-    dayHeaderContent: (data) => (
+    dayHeaderContent: (data) => ( // dayHeaderInnerClass needs 'group'
       !data.dayNumberText ? (
         <span
           className={joinClassNames(
@@ -36,23 +36,26 @@ export function createSlots(
                   ? joinClassNames(
                       'h-8 flex flex-row items-center', // v-align-text
                       !data.isCompact && 'font-semibold',
-                      data.isToday && !data.inPopover
+                      (data.isToday && !data.inPopover)
                         ? joinClassNames(
                             'w-8 rounded-full justify-center mx-0.5',
                             data.hasNavLink
-                              ? params.primaryPressableClass
+                              ? params.primaryPressableGroupClass
                               : params.primaryClass,
                           )
                         : params.strongFgClass
                     )
-                  : params.mutedFgClass,
+                  : joinClassNames(
+                      params.mutedFgClass,
+                      data.hasNavLink && params.strongFgGroupHoverClass,
+                    )
               )}
             >{textPart.value}</span>
           ))}
         </Fragment>
       )
     ),
-    dayCellTopContent: (data) => (
+    dayCellTopContent: (data) => ( // dayCellTopInnerClass needs 'group'
       <Fragment>
         {data.textParts.map((textPart, i) => (
           <span
@@ -67,12 +70,18 @@ export function createSlots(
                       ? joinClassNames(
                           `w-6 rounded-full justify-center font-semibold`,
                           data.hasNavLink
-                            ? params.primaryPressableClass
+                            ? params.primaryPressableGroupClass
                             : params.primaryClass,
                         )
-                      : params.mutedFgClass
+                      : joinClassNames(
+                          params.mutedFgClass,
+                          data.hasNavLink && params.strongFgGroupHoverClass,
+                        )
                   )
-                : params.mutedFgClass
+                : joinClassNames(
+                    params.mutedFgClass,
+                    data.hasNavLink && params.strongFgGroupHoverClass,
+                  )
             )}
           >{textPart.value}</span>
         ))}

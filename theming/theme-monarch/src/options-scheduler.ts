@@ -19,7 +19,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceDayHeaderClass: (data) => [
         'items-center border',
         data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
-        data.isDisabled && params.mutedBgClass,
+        data.isDisabled && params.faintBgClass,
       ],
       resourceDayHeaderInnerClass: (data) => [
         'p-2 flex flex-col',
@@ -35,9 +35,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       // For both resources & resource groups
       resourceAreaRowClass: `border ${params.borderColorClass}`,
 
-      resourceGroupHeaderClass: params.mutedBgClass,
+      resourceGroupHeaderClass: params.faintBgClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.faintBgClass}`,
 
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',

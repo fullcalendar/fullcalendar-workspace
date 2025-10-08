@@ -10,6 +10,7 @@ const selectedOutlineClass = 'ring-3 ring-ring/50'
 
 const primaryClass = 'bg-(--primary) text-(--primary-foreground)'
 const primaryPressableClass = primaryClass // TODO: effect!
+const primaryPressableGroupClass = primaryClass // TODO: effect!
 
 const secondaryClass = 'bg-foreground/10'
 const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 ${focusOutlineClass}`
@@ -30,6 +31,7 @@ const faintPressableClass = `${faintHoverClass} focus-visible:bg-muted/50`
 export const optionParams: ThemeOptionParams = {
   primaryClass,
   primaryPressableClass,
+  primaryPressableGroupClass,
 
   secondaryClass,
   secondaryPressableClass,
@@ -89,6 +91,7 @@ export const optionParams: ThemeOptionParams = {
 
   fgClass: '',
   strongFgClass: '',
+  strongFgGroupHoverClass: 'group-hover:text-foreground',
   mutedFgClass: 'text-muted-foreground',
   faintFgClass: 'text-muted-foreground',
 }
