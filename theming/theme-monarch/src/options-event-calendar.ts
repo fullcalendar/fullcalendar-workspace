@@ -289,8 +289,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'min-h-[2px]', // effectively 2px top padding when no day-number
       ],
       dayCellTopInnerClass: (data) => [
-        // TODO: this won't work if hasMonthLabel "Jan 1"... circle will look weird
-        'flex flex-row items-center justify-center w-6 h-6 rounded-full',
+        'flex flex-row items-center justify-center h-6 rounded-full',
+        data.text === data.dayNumberText
+          ? 'w-6' // circle
+          : 'px-2', // pill
         data.isToday
           ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
           : data.hasNavLink && params.ghostPressableClass,
