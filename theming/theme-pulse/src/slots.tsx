@@ -46,15 +46,10 @@ export function createSlots(
             key={i}
             className={joinClassNames(
               'whitespace-pre text-sm',
-              textPart.type === 'day'
+              textPart.type === 'day' && data.isToday
                 ? joinClassNames(
-                    'h-6 flex flex-row items-center', // v-align-text
-                    data.isToday
-                      ? joinClassNames(
-                          'w-6 rounded-full font-semibold justify-center', // h-align-text
-                          data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass,
-                        )
-                      : params.mutedFgClass,
+                    'w-6 h-6 flex flex-row items-center rounded-full font-semibold justify-center', // h-align-text
+                    data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass,
                   )
                 : params.mutedFgClass,
             )}

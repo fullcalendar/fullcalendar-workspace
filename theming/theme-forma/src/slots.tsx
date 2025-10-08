@@ -37,26 +37,5 @@ export function createSlots(
         )}
       </Fragment>
     ),
-
-    dayCellTopContent: (data) => (
-      !data.isToday
-        ? <span className='px-1 h-6 whitespace-pre flex flex-row items-center'>{data.text}</span>
-        : (
-          <Fragment>
-            {data.textParts.map((textPart, i) => (
-              <span
-                key={i}
-                className={joinClassNames(
-                  'h-6 whitespace-pre flex flex-row items-center',
-                  textPart.type === 'day' && joinClassNames(
-                    'w-6 justify-center rounded-full',
-                    data.hasNavLink ? params.primaryClass : params.primaryPressableClass,
-                  )
-                )}
-              >{textPart.value}</span>
-            ))}
-          </Fragment>
-        )
-    ),
   }
 }

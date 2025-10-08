@@ -1,4 +1,4 @@
-import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 
 // ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/daygrid'
@@ -158,11 +158,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : params.borderColorClass,
       ],
       dayCellTopClass: 'flex flex-row justify-end min-h-1',
+
       dayCellTopInnerClass: (data) => [
-        !data.isToday && 'mx-1',
         data.isOther ? params.mutedFgClass : 'font-semibold',
-        'p-1',
-        'flex flex-row',
+        'my-1 h-6 flex flex-row items-center', // v-align
+        data.isToday && data.text === data.dayNumberText
+          ? 'mx-1 rounded-full' // just a today-circle
+          : joinClassNames( // half-pill for everything else (might contain a today circle)
+              data.hasNavLink && params.ghostPressableClass,
+              'px-2 rounded-s-full'
+            ),
       ],
 
       dayCellInnerClass: (data) => [
@@ -300,8 +305,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         // TODO: higher levels should have h-borders
       },
       list: {
-
-
         listDayClass: `flex flex-col not-first:border-t ${params.borderColorClass}`,
 
         listDayHeaderClass: `relative flex flex-row justify-between ${params.bgClass} border-b ${params.borderColorClass} top-0 sticky`,

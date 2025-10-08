@@ -245,9 +245,21 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'flex flex-row justify-start min-h-1',
       ],
       dayCellTopInnerClass: (data) => [
-        !data.isCompact && 'p-1',
-        !data.isToday && 'mx-1',
-        'group outline-none',
+        'my-1 h-6 flex flex-row items-center',
+        data.isCompact ? xxsTextClass : 'text-xs/6',
+        data.isToday
+          ? joinClassNames(
+              'ms-1 rounded-full font-semibold',
+              data.hasNavLink ? params.primaryPressableClass : params.primaryClass,
+              data.text === data.dayNumberText
+                ? 'w-6 justify-center' // number only. circle
+                : 'px-2' // pill
+            )
+          : joinClassNames( // half-pill
+              data.hasNavLink && params.ghostPressableClass,
+              params.mutedFgClass,
+              'ps-2 pe-3 rounded-e-full',
+            ),
       ],
       dayCellInnerClass: (data) => data.inPopover && 'p-2',
 

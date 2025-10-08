@@ -1,7 +1,7 @@
 import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
 import type * as FullCalendarPreact from '@fullcalendar/core/preact'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
-import { EventCalendarOptionParams, xxsTextClass } from './options-event-calendar.js'
+import { EventCalendarOptionParams } from './options-event-calendar.js'
 
 // HACK
 ;(createElement || Fragment); // import intentionally unused
@@ -54,38 +54,6 @@ export function createSlots(
           ))}
         </Fragment>
       )
-    ),
-    dayCellTopContent: (data) => ( // dayCellTopInnerClass needs 'group'
-      <Fragment>
-        {data.textParts.map((textPart, i) => (
-          <span
-            key={i}
-            className={joinClassNames(
-              'whitespace-pre',
-              data.isCompact ? xxsTextClass : 'text-xs/6',
-              textPart.type === 'day'
-                ? joinClassNames(
-                    'h-6 flex flex-row items-center', // v-align-text
-                    data.isToday
-                      ? joinClassNames(
-                          `w-6 rounded-full justify-center font-semibold`,
-                          data.hasNavLink
-                            ? params.primaryPressableGroupClass
-                            : params.primaryClass,
-                        )
-                      : joinClassNames(
-                          params.mutedFgClass,
-                          data.hasNavLink && params.strongFgGroupHoverClass,
-                        )
-                  )
-                : joinClassNames(
-                    params.mutedFgClass,
-                    data.hasNavLink && params.strongFgGroupHoverClass,
-                  )
-            )}
-          >{textPart.value}</span>
-        ))}
-      </Fragment>
     ),
   }
 }
