@@ -95,7 +95,6 @@
     "@fullcalendar/scrollgrid": "workspace:*",
     "@fullcalendar/timegrid": "workspace:*",
     "@fullcalendar/timeline": "workspace:*",
-    "@fullcalendar/theme-common": "workspace:*",
     "typescript": "~5.7.2"
   }
 }

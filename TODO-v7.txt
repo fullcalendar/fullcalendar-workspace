@@ -14,8 +14,6 @@ clean+build all:
 
 
 NOW
-  better building-process for theme-common?
-    AFTER: theme-common not needed by individual theme packages?
   merge inlineWeekNumberClass + inlineWeekNumberInnerClass
     (so it's just one link w/ potentially rounded-corners, so focus-ring works correctly)
   cleanup ALL button-like

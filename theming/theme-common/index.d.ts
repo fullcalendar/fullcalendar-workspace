@@ -1,4 +1,9 @@
 
+/*
+NOTE: when you EDIT this file,
+you need to stop and restart the watcher,
+because depending packages do not label this as a depended-upon TS workspace
+*/
 export interface ThemeOptionParams {
   primaryClass: string // bg & fg
   primaryPressableClass: string
