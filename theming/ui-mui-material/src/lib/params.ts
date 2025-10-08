@@ -6,10 +6,14 @@ They often don't look good. And if we use them for semantic purpose other than w
 (like abusing "hover" for something else) they may look bad when the MUI theme is customized.
 */
 
-const outlineConfigClass = 'outline-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.5)]'
-const focusOutlineClass = `focus-visible:outline-3 ${outlineConfigClass}`
-const focusOutlineGroupClass = `group-focus-visible:outline-3 ${outlineConfigClass}`
-const selectedOutlineClass = `outline-3 ${outlineConfigClass}`
+const outlineWidthClass = 'outline-3'
+const outlineWidthFocusClass = 'focus-visible:outline-3'
+const outlineOffsetClass = 'outline-offset-1'
+
+const primaryOutlineColorClass = 'outline-(--mui-palette-primary-main)'
+
+const tertiaryOutlineColorClass = 'outline-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.5)]'
+const tertiaryOutlineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFocusClass}`
 
 const primaryClass = 'bg-(--mui-palette-primary-main) text-(--mui-palette-primary-contrastText)'
 const primaryPressableClass = primaryClass // TODO: hover effect!
@@ -18,18 +22,18 @@ const primaryPressableGroupClass = primaryClass // TODO: hover effect!
 // less-contrasty version of primary (like the selected tab)
 // TODO: if it looks bad in Classic, make a new mutedPressableClass!
 const secondaryClass = 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.15)] brightness-110'
-const secondaryPressableClass = `${secondaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)] focus-visible:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] ${focusOutlineClass}`
+const secondaryPressableClass = `${secondaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)] focus-visible:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] ${tertiaryOutlineFocusClass}`
 
 // tertiary is actually the secondary (like an accent color)
 const tertiaryClass = 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)'
-const tertiaryPressableClass = `${tertiaryClass} hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)] focus-visible:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)] ${focusOutlineClass}`
-const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] group-active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)] group-focus-visible:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)] ${focusOutlineGroupClass}`
+const tertiaryPressableClass = `${tertiaryClass} hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)] focus-visible:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)] ${tertiaryOutlineFocusClass}`
+const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] group-active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)] group-focus-visible:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)]`
 
 // ghost
 const ghostHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
 const ghostHoverGroupClass = 'group-hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
-const ghostPressableClass = `${ghostHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] ${focusOutlineClass}`
-const ghostPressableGroupClass = `${ghostHoverGroupClass} group-active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] group-focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] ${focusOutlineGroupClass}`
+const ghostPressableClass = `${ghostHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] ${tertiaryOutlineFocusClass}`
+const ghostPressableGroupClass = `${ghostHoverGroupClass} group-active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] group-focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]`
 
 const faintHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]'
 const faintPressableClass = `${faintHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]`
@@ -60,9 +64,11 @@ export const optionParams: ThemeOptionParams = {
   faintHoverClass,
   faintPressableClass,
 
-  focusOutlineClass,
-  focusOutlineGroupClass,
-  selectedOutlineClass,
+  primaryOutlineColorClass,
+  tertiaryOutlineColorClass,
+  outlineWidthClass,
+  outlineWidthFocusClass,
+  outlineOffsetClass,
 
   mutedBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]',
   faintBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]',

@@ -113,9 +113,10 @@ export interface EventCalendarOptionParams {
   ghostHoverClass: string
   ghostPressableClass: string
 
-  focusOutlineClass: string
-  focusOutlineGroupClass: string
-  selectedOutlineClass: string
+  primaryOutlineColorClass: string
+  outlineWidthClass: string
+  outlineWidthFocusClass: string
+  outlineOffsetClass: string // TODO: use this on primary-today-circle
 
   strongPressableClass: string
 
@@ -172,7 +173,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     inlineWeekNumberClass: (data) => [
       `absolute z-10 top-0 end-0 border-b ${params.strongBorderBottomColorClass} border-s ${params.borderStartColorClass} rounded-es-md ${params.bgClass} py-0.5 ${params.mutedFgClass}`,
       data.hasNavLink
-        ? params.ghostPressableClass
+        ? `${params.ghostPressableClass} -outline-offset-1` // because border
         : params.ghostHoverClass,
       data.isCompact
         ? `${xxsTextClass} px-0.5`
@@ -268,12 +269,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
       eventClass: (data) => [
-        data.isSelected && params.selectedOutlineClass, // will apply to list-item and block events
+        data.isSelected && joinClassNames( // will apply to list-item and block events
+          params.outlineWidthClass, // always shows
+          params.primaryOutlineColorClass,
+        )
       ],
 
       blockEventClass: [
         `${params.bgClass} relative group p-px`,
-        params.focusOutlineClass, // will apply ONLY to block events, because list-item events already have ghostPressable
+        params.outlineWidthFocusClass, // only shows on focus
+        params.primaryOutlineColorClass,
       ],
       blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) print:bg-white border-(--fc-event-color) not-print:opacity-20',
       blockEventInnerClass: 'relative z-20 text-xs/4 flex', // NOTE: subclass determines direction

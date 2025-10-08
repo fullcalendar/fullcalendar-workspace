@@ -5,31 +5,32 @@ import * as svgs from './ui-default-svgs.js'
 const buttonTextClass = 'text-sm'
 const iconSizeClass = 'size-5' // matches text-sm line-height
 
-const outlineConfigClass = 'outline-(--fc-monarch-highlight)'
-const focusOutlineClass = `focus-visible:outline-3 ${outlineConfigClass}`
-const focusOutlineGroupClass = `group-focus-visible:outline-3 ${outlineConfigClass}`
-const selectedOutlineClass = `outline-3 ${outlineConfigClass}`
+const outlineWidthClass = 'outline-3'
+const outlineWidthFocusClass = 'focus-visible:outline-3'
+
+const tertiaryOutlineColorClass = 'outline-(--fc-monarch-highlight)' // different that exact tertiary, but same shade
+const tertiaryOutlineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFocusClass}`
 
 const pressableConfigClass = 'hover:brightness-(--fc-monarch-hover-brightness) active:brightness-(--fc-monarch-active-brightness)'
 const pressableConfigGroupClass = 'group-hover:brightness-(--fc-monarch-hover-brightness) group-active:brightness-(--fc-monarch-active-brightness)'
 const secondaryPressableConfigClass = 'hover:brightness-(--fc-monarch-secondary-hover-brightness) active:brightness-(--fc-monarch-secondary-active-brightness)'
 
 const primaryClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreground)`
-const primaryPressableClass = `${primaryClass} ${pressableConfigClass} ${focusOutlineClass}`
+const primaryPressableClass = `${primaryClass} ${pressableConfigClass} ${tertiaryOutlineFocusClass}`
 
 const secondaryClass = 'bg-(--fc-monarch-secondary) text-(--fc-monarch-secondary-foreground)'
-const secondaryPressableClass = `${secondaryClass} ${secondaryPressableConfigClass} ${focusOutlineClass}`
+const secondaryPressableClass = `${secondaryClass} ${secondaryPressableConfigClass} ${tertiaryOutlineFocusClass}`
 
 const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-tertiary-foreground)'
-const tertiaryPressableClass = `${tertiaryClass} ${pressableConfigClass} ${focusOutlineClass}`
-const tertiaryPressableGroupClass = `${tertiaryClass} ${pressableConfigGroupClass} ${focusOutlineGroupClass}`
+const tertiaryPressableClass = `${tertiaryClass} ${pressableConfigClass} ${tertiaryOutlineFocusClass}`
+const tertiaryPressableGroupClass = `${tertiaryClass} ${pressableConfigGroupClass}`
 
-const tabSelectedClass = `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground) ${pressableConfigClass} ${focusOutlineClass}`
+const tabSelectedClass = `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground) ${pressableConfigClass} ${tertiaryOutlineFocusClass}`
 
 const ghostHoverClass = 'hover:bg-(--fc-monarch-muted-wash)'
 const ghostHoverGroupClass = 'group-hover:bg-(--fc-monarch-muted-wash)'
-const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-monarch-muted-wash) active:bg-(--fc-monarch-strong-wash) ${focusOutlineClass}`
-const ghostPressableGroupClass = `${ghostHoverGroupClass} group-focus-visible:bg-(--fc-monarch-muted-wash) group-active:bg-(--fc-monarch-strong-wash) ${focusOutlineGroupClass}`
+const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-monarch-muted-wash) active:bg-(--fc-monarch-strong-wash) ${tertiaryOutlineFocusClass}`
+const ghostPressableGroupClass = `${ghostHoverGroupClass} group-focus-visible:bg-(--fc-monarch-muted-wash) group-active:bg-(--fc-monarch-strong-wash)`
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
@@ -45,9 +46,9 @@ export const optionParams: EventCalendarOptionParams = {
 
   strongPressableClass: 'bg-(--fc-monarch-strong)',
 
-  focusOutlineClass,
-  focusOutlineGroupClass,
-  selectedOutlineClass,
+  tertiaryOutlineColorClass,
+  outlineWidthClass,
+  outlineWidthFocusClass,
 
   mutedBgClass: 'bg-(--fc-monarch-muted)',
   faintBgClass: 'bg-(--fc-monarch-muted-wash)', // TODO: change this CSS value!!!

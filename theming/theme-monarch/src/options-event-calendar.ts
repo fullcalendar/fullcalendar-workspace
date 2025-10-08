@@ -53,10 +53,9 @@ export interface EventCalendarOptionParams {
 
   strongPressableClass: string
 
-  // outline utilities. not already used in (secondary/tertiary/ghost)Pressable
-  focusOutlineClass: string
-  focusOutlineGroupClass: string
-  selectedOutlineClass: string
+  tertiaryOutlineColorClass: string
+  outlineWidthClass: string
+  outlineWidthFocusClass: string
 
   mutedBgClass: string
   faintBgClass: string
@@ -174,7 +173,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       eventClass: (data) => [
         'hover:no-underline',
-        data.isSelected && params.selectedOutlineClass, // will apply to list-item and block events
+        data.isSelected && joinClassNames( // will apply to list-item and block events
+          params.outlineWidthClass, // will unconditionally show
+          params.tertiaryOutlineColorClass,
+        ),
       ],
 
       backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.bgEventColorClass,
@@ -191,7 +193,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'relative isolate group',
         'border-transparent bg-(--fc-event-color)',
         'print:border-(--fc-event-color) print:bg-white',
-        params.focusOutlineClass, // will apply ONLY to block events, because list-item events already have ghostPressable
+
+        // will apply ONLY to block events, because list-item events already have ghostPressable
+        params.outlineWidthFocusClass, // only shows on focus
+        params.tertiaryOutlineColorClass,
+
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
           : joinClassNames('focus-visible:shadow-md', data.isDragging && 'opacity-75'),

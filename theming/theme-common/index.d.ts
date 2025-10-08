@@ -31,10 +31,11 @@ export interface ThemeOptionParams {
   faintHoverClass: string
   faintPressableClass: string
 
-  // outline utilities. not already used in (secondary/tertiary/ghost)Pressable
-  focusOutlineClass: string
-  focusOutlineGroupClass: string
-  selectedOutlineClass: string
+  primaryOutlineColorClass: string
+  tertiaryOutlineColorClass: string
+  outlineWidthClass: string
+  outlineWidthFocusClass: string
+  outlineOffsetClass: string
 
   mutedBgClass: string // required to be FULLY-transparent!?... best for Shadcn?
   faintBgClass: string // required to be semitransparent

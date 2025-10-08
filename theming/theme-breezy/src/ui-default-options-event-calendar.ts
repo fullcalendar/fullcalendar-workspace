@@ -6,24 +6,26 @@ import * as svgs from './ui-default-svgs.js'
 We don't do active: states, because tailwindplus does not do this!
 */
 
-const focusConfigClass = 'outline-(--fc-breezy-primary)'
-const focusOutlineClass = `focus-visible:outline-2 ${focusConfigClass}`
-const focusOutlineGroupClass = `group-focus-visible:outline-2 ${focusConfigClass}`
-const selectedOutlineClass = `outline-2 ${focusConfigClass}`
+const outlineWidthClass = 'outline-2'
+const outlineWidthFocusClass = 'focus-visible:outline-2'
+const outlineOffsetClass = 'outline-offset-2'
+
+const primaryOutlineColorClass = `outline-(--fc-breezy-primary)`
+const primaryOutlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}`
 
 // no simulated hover-effect when focus-visible,
 // because focus-border looks like when same primary color because its spaced away
 const primaryClass = 'bg-(--fc-breezy-primary) text-(--fc-breezy-primary-foreground)'
-const primaryPressableClass = `${primaryClass} hover:bg-(--fc-breezy-primary-hover) ${focusOutlineClass} outline-offset-2`
-const primaryPressableGroupClass = `${primaryClass} group-hover:bg-(--fc-breezy-primary-hover) ${focusOutlineGroupClass} outline-offset-2`
+const primaryPressableClass = `${primaryClass} hover:bg-(--fc-breezy-primary-hover) ${primaryOutlineFocusClass} ${outlineOffsetClass}`
+const primaryPressableGroupClass = `${primaryClass} group-hover:bg-(--fc-breezy-primary-hover)`
 const primaryButtonClass = `${primaryPressableClass} border-transparent`
 
 const secondaryClass = 'text-(--fc-breezy-secondary-foreground) bg-(--fc-breezy-secondary)'
-const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-secondary-hover) ${focusOutlineClass} -outline-offset-1`
+const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-secondary-hover) ${primaryOutlineFocusClass} -outline-offset-1`
 const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-secondary-border)`
 
 const ghostHoverClass = 'hover:bg-(--fc-breezy-muted)'
-const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-breezy-muted) ${focusOutlineClass}`
+const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-breezy-muted) ${primaryOutlineFocusClass}`
 
 // NOTE: only works within secondary button
 // best? to sync to line-height???
@@ -32,11 +34,11 @@ const buttonIconClass = 'size-5 text-(--fc-breezy-secondary-icon) group-hover:te
 // TODO: rename to tab stuff
 const selectBgClass = 'bg-(--fc-breezy-tab-selected)'
 const selectTextClass = 'text-(--fc-breezy-tab-selected-foreground)'
-const selectClass = `${selectBgClass} ${selectTextClass} ${focusOutlineClass}`
+const selectClass = `${selectBgClass} ${selectTextClass} ${primaryOutlineFocusClass}`
 
 const nonSelectTextClass = 'text-(--fc-breezy-tab-foreground)'
 const hoverSelectTextClass = 'hover:text-(--fc-breezy-tab-selected-foreground)' // best name?
-const nonSelectClass = `${nonSelectTextClass} ${hoverSelectTextClass} ${focusOutlineClass}`
+const nonSelectClass = `${nonSelectTextClass} ${hoverSelectTextClass} ${primaryOutlineFocusClass}`
 
 export const optionParams: EventCalendarOptionParams = {
   primaryClass,
@@ -46,10 +48,10 @@ export const optionParams: EventCalendarOptionParams = {
   ghostHoverClass,
   ghostPressableClass,
 
-  // TODO: use these!
-  focusOutlineClass,
-  focusOutlineGroupClass,
-  selectedOutlineClass,
+  primaryOutlineColorClass,
+  outlineWidthClass,
+  outlineWidthFocusClass,
+  outlineOffsetClass,
 
   strongPressableClass: 'bg-(--fc-breezy-strong)',
 

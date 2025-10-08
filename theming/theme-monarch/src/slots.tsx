@@ -47,10 +47,7 @@ export function createSlots(
               key={i}
               className={
                 textPart.type !== 'day'
-                  ? joinClassNames(
-                      'whitespace-pre',
-                      textPart.value.trim() && params.focusOutlineGroupClass,
-                    )
+                  ? 'whitespace-pre'
                   : joinClassNames(
                       'flex flex-row items-center justify-center size-9 rounded-full',
                       data.isToday
@@ -62,7 +59,7 @@ export function createSlots(
           ))}
         </Fragment>
       ) : ( // secondary
-        <div className={params.focusOutlineGroupClass}>{data.text}</div>
+        data.text
       )
   }
 }

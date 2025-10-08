@@ -1,29 +1,28 @@
 import { ThemeOptionParams } from '@fullcalendar/theme-common'
 
-// TODO: use transition, like Shadn
-// However, when we do transition-all like the buttons have,
-// drag & drop gets really distorted. How to blacklist position? Or whitelist what we want?
-const focusConfigClass = 'ring-ring/50 outline-none'
-const focusOutlineClass = `focus-visible:ring-3 ${focusConfigClass}`
-const focusOutlineGroupClass = `group-focus-visible:ring-3 ${focusConfigClass}`
-const selectedOutlineClass = 'ring-3 ring-ring/50'
+const outlineWidthClass = 'ring-3'
+const outlineWidthFocusClass = 'focus-visible:ring-3'
+
+// single outline style
+const outlineColorClass = 'ring-ring/50 outline-none'
+const outlineFocusClass = `${outlineColorClass} ${outlineWidthFocusClass}`
 
 const primaryClass = 'bg-(--primary) text-(--primary-foreground)'
 const primaryPressableClass = primaryClass // TODO: effect!
 const primaryPressableGroupClass = primaryClass // TODO: effect!
 
 const secondaryClass = 'bg-foreground/10'
-const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 ${focusOutlineClass}`
+const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 ${outlineFocusClass}`
 
 // tertiary (based on primary, but with low contrast)
 const tertiaryClass = 'bg-primary/20 dark:bg-primary/30' // ALSO SORTA LIKE neutralClass
-const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 ${focusOutlineClass}`
-const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-primary/40 ${focusOutlineGroupClass}`
+const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 ${outlineFocusClass}`
+const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-primary/40`
 
 const ghostHoverClass = 'hover:bg-foreground/5'
 const ghostHoverGroupClass = 'group-hover:bg-foreground/5'
-const ghostPressableClass = `${ghostHoverClass} ${focusOutlineClass}`
-const ghostPressableGroupClass = `${ghostHoverGroupClass} ${focusOutlineGroupClass}`
+const ghostPressableClass = `${ghostHoverClass} ${outlineFocusClass}`
+const ghostPressableGroupClass = `${ghostHoverGroupClass}`
 
 const faintHoverClass = 'hover:bg-muted/50'
 const faintPressableClass = `${faintHoverClass} focus-visible:bg-muted/50`
@@ -54,9 +53,11 @@ export const optionParams: ThemeOptionParams = {
   faintHoverClass,
   faintPressableClass,
 
-  focusOutlineClass,
-  focusOutlineGroupClass,
-  selectedOutlineClass,
+  primaryOutlineColorClass: outlineColorClass,
+  tertiaryOutlineColorClass: outlineColorClass,
+  outlineWidthClass,
+  outlineWidthFocusClass,
+  outlineOffsetClass: '',
 
   mutedBgClass: 'bg-foreground/5', // semi-transparent version of bg-muted
   faintBgClass: 'bg-foreground/3', // semi-transparent version of bg-sidebar
