@@ -24,6 +24,8 @@ import {
   formatDayString,
   generateClassName,
   joinArrayishClassNames,
+  findDayNumberText,
+  DAY_NUMBER_ONLY_FORMAT,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import {
@@ -309,6 +311,10 @@ function refineRenderProps(raw: DayCellRenderPropsInput): DayCellData {
     hasLabel,
     hasMonthLabel,
     hasNavLink,
+    get dayNumberText() {
+      return findDayNumberText(textParts) ||
+        dateEnv.format(date, DAY_NUMBER_ONLY_FORMAT)[0]
+    },
     view: raw.viewApi,
   }
 }

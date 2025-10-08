@@ -1,5 +1,5 @@
 import { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler, DayHeaderData } from '@fullcalendar/core'
-import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, createFormatter, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, Dictionary, formatDayString, getDateMeta, isMajorUnit, ViewContext } from '@fullcalendar/core/internal'
+import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, DAY_NUMBER_ONLY_FORMAT, Dictionary, findDayNumberText, findWeekdayText, formatDayString, getDateMeta, isMajorUnit, ViewContext, WEEKDAY_ONLY_FORMAT } from '@fullcalendar/core/internal'
 
 /*
 Just for the HEADER
@@ -39,11 +39,6 @@ export interface RowConfig<RenderProps> {
 // Date Cells
 // -------------------------------------------------------------------------------------------------
 
-const DAY_NUMBER_ONLY_FORMAT = createFormatter({
-  day: 'numeric',
-})
-
-const WEEKDAY_FORMAT = createFormatter({ weekday: 'long' })
 const firstSunday = new Date(259200000)
 
 export function buildDateRowConfigs(
@@ -164,10 +159,12 @@ export function buildDateDataConfigs(
           ...extraRenderProps,
           text,
           textParts,
-          get weekdayText() { return findWeekdayText(textParts) },
+          get weekdayText() {
+            return findWeekdayText(textParts) ||
+              dateEnv.format(dateMarker, WEEKDAY_ONLY_FORMAT)[0]
+          },
           get dayNumberText() {
             return findDayNumberText(textParts) ||
-              // in case headerFormat doesn't have dayNumber on it
               dateEnv.format(dateMarker, DAY_NUMBER_ONLY_FORMAT)[0]
           },
           isMajor,
@@ -226,13 +223,15 @@ export function buildDateDataConfigs(
           view: viewApi,
           text,
           textParts,
-          get weekdayText() { return findWeekdayText(textParts) },
+          get weekdayText() {
+            return findWeekdayText(textParts)
+          },
           get dayNumberText() {
             return findDayNumberText(textParts)
           },
           ...extraRenderProps,
         }
-        const fullWeekDayStr = dateEnv.format(normDate, WEEKDAY_FORMAT)[0]
+        const fullWeekDayStr = dateEnv.format(normDate, WEEKDAY_ONLY_FORMAT)[0]
 
         // for DayGridHeaderCell
         return {
@@ -251,22 +250,4 @@ export function buildDateDataConfigs(
           className,
         }
       })
-}
-
-function findWeekdayText(parts: Intl.DateTimeFormatPart[]): string {
-  for (const part of parts) {
-    if (part.type === 'weekday') {
-      return part.value
-    }
-  }
-  return ''
-}
-
-function findDayNumberText(parts: Intl.DateTimeFormatPart[]): string {
-  for (const part of parts) {
-    if (part.type === 'day') {
-      return part.value
-    }
-  }
-  return ''
 }

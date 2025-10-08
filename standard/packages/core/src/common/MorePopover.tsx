@@ -11,13 +11,13 @@ import { memoize } from '../util/memoize.js'
 import { generateClassName } from '../content-inject/ContentContainer.js'
 import { ContentContainer } from '../content-inject/ContentContainer.js'
 import { DayCellData, DayHeaderData } from '../api/structs.js'
-import { createFormatter } from '../datelib/formatting.js'
 import { buildNavLinkAttrs } from './nav-link.js'
 import classNames from '../internal-classnames.js'
 import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
 import { applyStyle, computeElIsRtl, getAppendableRoot, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-manip.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
 import { computeClippedClientRect } from '../util/dom-geom.js'
+import { findDayNumberText, findWeekdayText, WEEKDAY_ONLY_FORMAT, DAY_NUMBER_ONLY_FORMAT } from '../util/date-format.js'
 
 export interface MorePopoverProps {
   id: string
@@ -56,6 +56,16 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     let dateMeta = this.getDateMeta(startDate, dateEnv, dateProfile, todayRange)
     let [text, textParts] = dateEnv.format(startDate, options.dayPopoverFormat)
 
+    function getWeekdayText() {
+      return findWeekdayText(textParts) ||
+        dateEnv.format(startDate, WEEKDAY_ONLY_FORMAT)[0]
+    }
+
+    function getDayNumberText() {
+      return findDayNumberText(textParts) ||
+        dateEnv.format(startDate, DAY_NUMBER_ONLY_FORMAT)[0]
+    }
+
     const hasNavLink = options.navLinks
     const dayHeaderRenderProps: DayHeaderData = {
       ...dateMeta,
@@ -67,12 +77,8 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       hasNavLink,
       text,
       textParts,
-      get weekdayText() {
-        return findWeekdayText(textParts) ||
-          // in case dayPopoverFormat doesn't have weekday
-          dateEnv.format(startDate, WEEKDAY_ONLY_FORMAT)[0]
-      },
-      get dayNumberText() { return findDayNumberText(textParts) },
+      get weekdayText() { return getWeekdayText() },
+      get dayNumberText() { return getDayNumberText() },
       view: viewApi,
       // TODO: should know about the resource!
     }
@@ -84,6 +90,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       hasNavLink,
       hasLabel: false,
       hasMonthLabel: false,
+      get dayNumberText() { return getDayNumberText() },
       view: viewApi,
       text: '',
       textParts: [],
@@ -312,31 +319,6 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       })
     }
   }
-}
-
-// TODO: DRY with WEEKDAY_FORMAT
-const WEEKDAY_ONLY_FORMAT = createFormatter({
-  weekday: 'long',
-})
-
-// TODO: DRY
-function findWeekdayText(parts: Intl.DateTimeFormatPart[]): string {
-  for (const part of parts) {
-    if (part.type === 'weekday') {
-      return part.value
-    }
-  }
-  return ''
-}
-
-// TODO: DRY
-function findDayNumberText(parts: Intl.DateTimeFormatPart[]): string {
-  for (const part of parts) {
-    if (part.type === 'day') {
-      return part.value
-    }
-  }
-  return ''
 }
 
 // TODO: DRY

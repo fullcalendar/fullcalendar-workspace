@@ -40,6 +40,13 @@ export {
 } from './util/date.js'
 
 export {
+  DAY_NUMBER_ONLY_FORMAT,
+  WEEKDAY_ONLY_FORMAT,
+  findWeekdayText,
+  findDayNumberText,
+} from './util/date-format.js'
+
+export {
   removeExact,
   isArraysEqual,
 } from './util/array.js'
