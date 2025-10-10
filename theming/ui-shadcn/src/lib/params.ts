@@ -92,7 +92,6 @@ export const optionParams: ThemeOptionParams = {
 
   fgClass: '',
   strongFgClass: '',
-  strongFgGroupHoverClass: 'group-hover:text-foreground',
   mutedFgClass: 'text-muted-foreground',
   faintFgClass: 'text-muted-foreground',
 }

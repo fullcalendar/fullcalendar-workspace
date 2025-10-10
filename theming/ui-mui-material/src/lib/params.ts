@@ -101,7 +101,6 @@ export const optionParams: ThemeOptionParams = {
 
   fgClass: 'text-(--mui-palette-text-primary)',
   strongFgClass: 'text-(--mui-palette-text-primary)',
-  strongFgGroupHoverClass: 'group-hover:text-(--mui-palette-text-primary)',
   mutedFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]',
   faintFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.4)]',
   // probably use text-(--mui-palette-text-secondary) instead??? is that for buttons or normal text!?

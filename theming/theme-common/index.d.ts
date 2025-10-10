@@ -64,7 +64,6 @@ export interface ThemeOptionParams {
 
   fgClass: string
   strongFgClass: string
-  strongFgGroupHoverClass: string
   mutedFgClass: string
   faintFgClass: string
 }

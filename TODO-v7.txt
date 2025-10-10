@@ -14,7 +14,6 @@ clean+build all:
 
 
 NOW
-  Remove strongFgGroupHoverClass?
   cleanup ALL button-like
     ensure all have hover and active effects
     cleanup code in all default-ui themes and mui/shadcn

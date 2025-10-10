@@ -145,7 +145,6 @@ export interface EventCalendarOptionParams {
 
   fgClass: string
   strongFgClass: string
-  strongFgGroupHoverClass: string
   mutedFgClass: string
   faintFgClass: string
 }

@@ -80,7 +80,6 @@ export const optionParams: EventCalendarOptionParams = {
   mutedFgClass: 'text-(--fc-breezy-muted-foreground)',
   fgClass: 'text-(--fc-breezy-foreground)',
   strongFgClass: 'text-(--fc-breezy-strong-foreground)',
-  strongFgGroupHoverClass: 'group-hover:text-(--fc-breezy-strong-foreground)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
