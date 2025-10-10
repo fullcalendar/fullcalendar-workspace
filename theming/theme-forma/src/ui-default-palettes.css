@@ -34,6 +34,8 @@ down = mousedown (active)
   --fc-forma-tab-selected-down: #EBEBEB; /* maybe glassy */
 
   --fc-forma-secondary-icon: #424242;
+
+  --fc-forma-muted-foreground: var(--color-gray-500);
 }
 [data-color-scheme=dark] {
   --fc-forma-background: var(--color-gray-950);
@@ -64,6 +66,8 @@ down = mousedown (active)
   --fc-forma-tab-selected-down: #2C2C2C; /* maybe glassy */
 
   --fc-forma-secondary-icon: #BDBDBD;
+
+  --fc-forma-muted-foreground: var(--color-gray-500);
 }
 
 [data-palette=blue] {

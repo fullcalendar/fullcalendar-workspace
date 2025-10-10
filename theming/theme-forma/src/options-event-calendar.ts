@@ -57,9 +57,6 @@ export interface EventCalendarOptionParams {
   primaryClass: string // bg & fg
   primaryPressableClass: string
 
-  secondaryClass: string // bg & fg
-  secondaryPressableClass: string
-
   ghostHoverClass: string
   ghostPressableClass: string
 

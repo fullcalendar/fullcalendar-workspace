@@ -9,40 +9,47 @@ TODO: muted text? is #424242 in Outlook
 TODO: kill gray-500's
 TODO: do primary-button hover effect on today-cirle too
 TODO: prev/next icons look a little too faint
-TODO: focus color on secondary button
-
-TODO: rename glassy/cloudy css variables
 */
 
-const primaryClass = 'bg-(--fc-forma-primary) text-(--fc-forma-primary-foreground)'
-const primaryPressableClass = primaryClass // TODO: add --fc-forma-primary-over effects!!!
+const primaryOutlineColorClass = 'outline-(--fc-forma-primary)'
+// const outlineWidthClass = 'outline-2'
+const outlineWidthFocusClass = 'focus-visible:outline-2'
+const outlineOffsetClass = 'outline-offset-1'
 
-const secondaryClass = 'bg-(--fc-forma-muted)'
-const secondaryPressableClass = secondaryClass // TODO: add effects!!!
+const outlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}` // does NOT include offset
+
+const primaryClass = 'bg-(--fc-forma-primary) text-(--fc-forma-primary-foreground)'
+const primaryPressableClass = `${primaryClass} hover:bg-(--fc-forma-primary-over) focus-visible:bg-(--fc-forma-primary-over) active:bg-(--fc-forma-primary-down) ${outlineFocusClass} ${outlineOffsetClass}`
 
 const ghostHoverClass = 'hover:bg-(--fc-forma-muted)'
-const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-forma-strong)`
+const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-forma-strong) focus-visible:bg-(--fc-forma-strong) ${outlineFocusClass}`
 
-export const optionParams: EventCalendarOptionParams = { // TODO: rename to defaultUiParams?
+const mutedBgClass = 'bg-(--fc-forma-muted)'
+const mutedFgClass = 'text-(--fc-forma-muted-foreground)'
+
+const mutedClass = mutedBgClass // only uses bg
+const mutedPressableClass = `${mutedClass} hover:bg-(--fc-forma-strong) ${outlineFocusClass}`
+
+const strongPressableClass = 'bg-(--fc-forma-strong)'
+const borderColorClass = 'border-(--fc-forma-border)'
+
+export const optionParams: EventCalendarOptionParams = {
   primaryClass,
   primaryPressableClass,
-
-  secondaryClass,
-  secondaryPressableClass,
 
   ghostHoverClass,
   ghostPressableClass,
 
-  // TODO
-  mutedClass: 'bg-(--fc-forma-muted)',
-  mutedPressableClass: 'bg-(--fc-forma-muted)',
+  mutedBgClass,
 
-  strongPressableClass: 'bg-(--fc-forma-strong)',
-  mutedBgClass: 'bg-(--fc-forma-muted)',
+  mutedClass,
+  mutedPressableClass,
+  strongPressableClass,
+
   faintBgClass: 'bg-(--fc-forma-faint)',
   highlightClass: 'bg-(--fc-forma-highlight)',
 
-  borderColorClass: 'border-(--fc-forma-border)',
+  borderColorClass,
   primaryBorderColorClass: 'border-(--fc-forma-primary)',
   strongBorderColorClass: 'border-(--fc-forma-strong-border)',
   nowBorderColorClass: 'border-(--fc-forma-primary)', // same as primary
@@ -57,7 +64,7 @@ export const optionParams: EventCalendarOptionParams = { // TODO: rename to defa
   bgClass: 'bg-(--fc-forma-background)',
   bgOutlineColorClass: 'outline-(--fc-forma-background)',
 
-  mutedFgClass: 'text-gray-700', // TODO
+  mutedFgClass,
 }
 
 const unselectedButtonTextColorClass = 'text-(--fc-forma-tab-foreground)'
@@ -73,12 +80,7 @@ const selectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-tab-selected-over)
 const selectedButtonActiveBgColorClass = 'active:bg-(--fc-forma-tab-selected-down)'
 const selectedButtonClass = `${selectedButtonBorderColorClass} ${selectedButtonBgColorClass} ${selectedButtonHoverBgColorClass} ${selectedButtonActiveBgColorClass}`
 
-// can be added a-la-carte to other buttons
-// TODO: refactor this into ghost-button somehow
-const buttonHoverBgColorClass = 'hover:bg-(--fc-forma-muted) active:bg-(--fc-forma-strong)'
-const buttonBorderColorClass = 'border-(--fc-forma-border)'
 const buttonIconColorClass = 'text-(--fc-forma-secondary-icon)' // will only work for secondary!
-
 const buttonIconClass = `size-5 ${buttonIconColorClass}` // will only work for secondary!
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
@@ -104,7 +106,7 @@ export const defaultUiEventCalendarOptions: {
       data.isIconOnly ? 'px-2' : 'px-3',
       data.isIconOnly
         // ghost-button
-        ? `border-transparent ${buttonHoverBgColorClass}`
+        ? `${ghostPressableClass} border-transparent`
         : data.inSelectGroup
           ? data.isSelected
             // select-group SELECTED
@@ -113,9 +115,9 @@ export const defaultUiEventCalendarOptions: {
             : unselectedButtonClass
           : data.isPrimary
             // primary button
-            ? `${optionParams.primaryPressableClass} border-transparent`
+            ? `${primaryPressableClass} border-transparent`
             // secondary button
-            : `${buttonBorderColorClass} ${buttonHoverBgColorClass}`,
+            : `${ghostPressableClass} ${borderColorClass}`,
     ],
 
     buttons: {

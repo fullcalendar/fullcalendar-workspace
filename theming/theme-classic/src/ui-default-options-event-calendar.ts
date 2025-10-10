@@ -10,13 +10,15 @@ const outlineWidthClass = 'outline-2'
 const outlineWidthFocusClass = 'focus-visible:outline-2'
 const outlineOffsetClass = 'outline-offset-2'
 
+const outlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}`
+
 const buttonIconClass = 'size-5'
 
 const ghostHoverClass = 'hover:bg-(--fc-classic-muted)'
-const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-classic-strong) focus-visible:bg-(--fc-classic-muted) ${primaryOutlineColorClass} ${outlineWidthFocusClass}`
+const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-classic-strong) focus-visible:bg-(--fc-classic-muted) ${outlineFocusClass}`
 
 const faintHoverClass = 'hover:bg-(--fc-classic-faint)'
-const faintPressableClass = `${faintHoverClass} active:bg-(--fc-classic-muted) focus-visible:bg-(--fc-classic-faint) ${primaryOutlineColorClass} ${outlineWidthFocusClass}`
+const faintPressableClass = `${faintHoverClass} active:bg-(--fc-classic-muted) focus-visible:bg-(--fc-classic-faint) ${outlineFocusClass}`
 
 export const optionParams: EventCalendarOptionParams = {
   ghostHoverClass,
