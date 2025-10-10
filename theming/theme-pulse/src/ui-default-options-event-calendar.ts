@@ -31,6 +31,7 @@ TODO: use these colors!!!
 // TODO: rethink CSS variable names!
 const tertiaryClass = 'bg-(--fc-pulse-today) text-(--fc-pulse-today-foreground)'
 const tertiaryPressableClass = tertiaryClass // TODO: effect!
+const tertiaryPressableGroupClass = tertiaryClass // TODO: effect! AND group-focus!!!
 
 const ghostHoverClass = 'hover:bg-(--fc-pulse-glassy)'
 const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-pulse-strong) focus-visible:bg-(--fc-pulse-glassy)`
@@ -38,6 +39,7 @@ const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-pulse-strong) fo
 export const optionParams: EventCalendarOptionParams = {
   tertiaryClass,
   tertiaryPressableClass,
+  tertiaryPressableGroupClass,
 
   ghostHoverClass,
   ghostPressableClass,

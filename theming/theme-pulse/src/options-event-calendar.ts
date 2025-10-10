@@ -50,6 +50,8 @@ TODO: have press-effect on ui buttons. and ALL buttons
 TODO: hover color on list-view events
 
 TODO: give week-numbers an ghost-pressable-effect!
+
+TODO: fix popover header text styling
 */
 
 export interface EventCalendarOptionParams {
@@ -57,7 +59,8 @@ export interface EventCalendarOptionParams {
   tertiaryPressableClass: string
 
   ghostHoverClass: string
-  ghostPressableClass: string
+  ghostPressableClass: string // needed anymore?
+  tertiaryPressableGroupClass: string
 
   strongPressableClass: string
 
@@ -83,14 +86,6 @@ export interface EventCalendarOptionParams {
   strongFgClass: string
   mutedFgClass: string
 }
-
-export const getDayHeaderInnerClasses = (data: { isToday?: boolean, inPopover?: boolean }) => [
-  // are all these paddings okay?
-  'py-2 flex flex-row items-center',
-  data.inPopover
-    ? 'px-2'
-    : !data.isToday && 'px-1',
-]
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
@@ -144,8 +139,22 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
       dayHeaderClass: (data) => data.isMajor && `border ${params.strongBorderColorClass}`,
-      dayHeaderInnerClass: getDayHeaderInnerClasses,
-      // TODO: add dayheader borders ONLY when isMajor
+      dayHeaderInnerClass: (data) => [
+        'flex flex-row items-center text-sm', // v-align
+        !data.dayNumberText ? joinClassNames(
+          // not date-specific
+          'm-2',
+          params.mutedFgClass,
+        ) : (!data.isToday || data.inPopover) ? joinClassNames(
+          // ghost-button-like
+          'my-2.5 h-6 px-1 rounded-sm',
+          data.hasNavLink && params.ghostPressableClass,
+          params.mutedFgClass,
+        ) : (
+          // circle within (see slots.tsx)
+          'my-2 h-7 group outline-none'
+        )
+      ],
 
       dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
 
@@ -160,14 +169,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayCellTopClass: 'flex flex-row justify-end min-h-1',
 
       dayCellTopInnerClass: (data) => [
-        data.isOther ? params.mutedFgClass : 'font-semibold',
-        'my-1 h-6 flex flex-row items-center', // v-align
-        data.isToday && data.text === data.dayNumberText
-          ? 'mx-1 rounded-full' // just a today-circle
-          : joinClassNames( // half-pill for everything else (might contain a today circle)
-              data.hasNavLink && params.ghostPressableClass,
-              'px-2 rounded-s-full'
-            ),
+        'my-1 h-6 text-sm flex flex-row items-center', // v-align
+        !data.isOther && 'font-semibold', // TODO: move to slots.tsx?
+        !data.isToday
+          // ghost-button-like
+          ? joinClassNames(
+            'px-2 rounded-s-sm',
+            params.mutedFgClass,
+            data.hasNavLink && params.ghostPressableClass,
+          )
+          // circle inside (see slots.tsx)
+          : 'mx-2 group outline-none'
       ],
 
       dayCellInnerClass: (data) => [

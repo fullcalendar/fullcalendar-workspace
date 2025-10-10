@@ -16,7 +16,7 @@ export function createSlots(
   params: EventCalendarOptionParams,
 ): CalendarOptions {
   return {
-    dayHeaderContent: (data) => ( // dayHeaderInnerClass needs 'group'
+    dayHeaderContent: (data) => (
       !data.dayNumberText ? (
         <span
           className={joinClassNames(
@@ -25,6 +25,7 @@ export function createSlots(
           )}
         >{data.text}</span>
       ) : (
+        // for this scenario, dayHeaderInnerClass needs 'group'
         <Fragment>
           {data.textParts.map((textPart, i) => (
             <span
@@ -45,10 +46,7 @@ export function createSlots(
                           )
                         : params.strongFgClass
                     )
-                  : joinClassNames(
-                      params.mutedFgClass,
-                      data.hasNavLink && params.strongFgGroupHoverClass,
-                    )
+                  : params.mutedFgClass,
               )}
             >{textPart.value}</span>
           ))}

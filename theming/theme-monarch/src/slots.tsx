@@ -38,28 +38,5 @@ export function createSlots(
         )}
       </Fragment>
     ),
-
-    listDayHeaderContent:
-      (data) => !data.level ? ( // primary
-        <Fragment>
-          {data.textParts.map((textPart, i) => (
-            <div
-              key={i}
-              className={
-                textPart.type !== 'day'
-                  ? 'whitespace-pre'
-                  : joinClassNames(
-                      'flex flex-row items-center justify-center size-9 rounded-full',
-                      data.isToday
-                        ? (data.hasNavLink ? params.tertiaryPressableGroupClass : params.tertiaryClass)
-                        : (data.hasNavLink && params.ghostPressableGroupClass)
-                    )
-              }
-            >{textPart.value}</div>
-          ))}
-        </Fragment>
-      ) : ( // secondary
-        data.text
-      )
   }
 }

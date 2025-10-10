@@ -515,15 +515,18 @@ function EventCalendarDemo(props: DemoProps) {
       dayMaxEvents={true}
       // businessHours={true} // -- TODO: background conflicts with the week number pills!!!
       eventMaxStack={1}
-      // for testing pill-like day-numbers
+      // // for testing pill-like day-numbers
       // dayCellFormat={{
       //   month: "short", // gives Jan, Feb, Mar, ...
       //   day: "numeric"  // gives 1, 2, 3, ...
       // }}
+      // dayHeaderFormat={{
+      //   weekday: 'short',
+      // }}
       {...( // NOTE: if we gave undefined for either of these settings, calendar render NO day header!
         props.theme === 'monarch'
           ? {
-            listDayFormat: { day: 'numeric' },
+            listDayFormat: { day: 'numeric' /*, weekday: 'short' */ },
             listDaySideFormat: { month: 'short', weekday: 'short', forceCommas: true },
           }
           : props.theme === 'breezy'

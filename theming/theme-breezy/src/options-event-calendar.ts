@@ -101,6 +101,8 @@ TODO: non-business-hours
 For list-view, when <a href> (like "Click for Google"), should hover-underline
 
 TODO: give week-numbers an ghost-pressable-effect!
+
+TODO day-popover header looks bad with margin/padding!
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -227,11 +229,21 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center', // h-align
       dayHeaderRowClass: `border ${params.mutedBorderColorClass}`,
+
+      // ensure v-align center for dayHeaderClass?
+
       dayHeaderInnerClass: (data) => [
-        data.inPopover ? 'px-3' : 'px-2',
-        data.isCompact || data.inPopover ? 'py-1' : 'py-2',
-        'flex flex-row items-center', // v-align
-        'group outline-none',
+        'mx-2 flex flex-row items-center', // v-align
+        (data.isToday && !data.inPopover)
+          // circle inside (see slots.tsx)
+          ? 'my-2 h-8 group outline-none'
+          // ghost-button-like
+          : joinClassNames(
+              'h-6 px-1 rounded-sm',
+              data.dayNumberText ? 'my-3' : 'my-2',
+              data.hasNavLink && params.ghostPressableClass,
+            ),
+        // TODO: consider isCompact for above scenarios
       ],
 
       dayRowClass: `border ${params.borderColorClass}`,
@@ -250,15 +262,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isToday
           ? joinClassNames(
               'ms-1 rounded-full font-semibold',
-              data.hasNavLink ? params.primaryPressableClass : params.primaryClass,
               data.text === data.dayNumberText
-                ? 'w-6 justify-center' // number only. circle
-                : 'px-2' // pill
+                ? 'w-6 justify-center' // circle
+                : 'px-2', // pill
+              data.hasNavLink ? params.primaryPressableClass : params.primaryClass,
             )
           : joinClassNames( // half-pill
-              data.hasNavLink && params.ghostPressableClass,
+              'px-2 rounded-e-sm',
               params.mutedFgClass,
-              'ps-2 pe-3 rounded-e-full',
+              data.hasNavLink && params.ghostPressableClass,
             ),
       ],
       dayCellInnerClass: (data) => data.inPopover && 'p-2',

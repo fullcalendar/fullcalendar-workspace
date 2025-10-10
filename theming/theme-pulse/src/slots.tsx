@@ -17,45 +17,54 @@ export function createSlots(
 ): CalendarOptions {
   return {
     dayHeaderContent: (data) => (
-      <Fragment>
-        {data.textParts.map((textPart, i) => (
-          <span
-            key={i}
-            className={joinClassNames(
-              'whitespace-pre text-sm',
-              textPart.type === 'day'
-                ? joinClassNames(
-                    'h-7 flex flex-row items-center', // v-align-text
-                    data.isToday
-                      ? joinClassNames(
-                          'w-7 mx-0.5 rounded-full font-semibold justify-center', // h-align-text
-                          data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass,
-                        )
-                      : params.mutedFgClass,
+      (!data.dayNumberText || !data.isToday || data.inPopover) ? (
+        // simple
+        data.text
+      ) : (
+        // circle inside
+        <Fragment>
+          {data.textParts.map((textPart, i) => (
+            <span
+              key={i}
+              className={joinClassNames(
+                'whitespace-pre first:-ms-1 last:-me-1',
+                (textPart.type === 'day' && data.isToday)
+                  ? joinClassNames(
+                    'size-7 flex flex-row items-center justify-center', // h-align-text
+                    'rounded-full font-semibold',
+                    data.hasNavLink ? params.tertiaryPressableGroupClass : params.tertiaryClass,
                   )
-                : params.mutedFgClass,
-            )}
-          >{textPart.value}</span>
-        ))}
-      </Fragment>
+                  : params.mutedFgClass,
+              )}
+            >{textPart.value}</span>
+          ))}
+        </Fragment>
+      )
     ),
-    dayCellTopContent: (data) => ( // TODO: DRY with dayHeaderContent?
-      <Fragment>
-        {data.textParts.map((textPart, i) => (
-          <span
-            key={i}
-            className={joinClassNames(
-              'whitespace-pre text-sm',
-              textPart.type === 'day' && data.isToday
-                ? joinClassNames(
-                    'w-6 h-6 flex flex-row items-center rounded-full font-semibold justify-center', // h-align-text
-                    data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass,
+    dayCellTopContent: (data) => (
+      !data.isToday ? (
+        // simple
+        data.text
+      ) : (
+        // circle inside
+        <Fragment>
+          {data.textParts.map((textPart, i) => (
+            <span
+              key={i}
+              className={joinClassNames(
+                'whitespace-pre first:-ms-1 last:-me-1',
+                (textPart.type === 'day' && data.isToday)
+                  ? joinClassNames(
+                    'size-6 flex flex-row items-center justify-center', // h-align-text
+                    'rounded-full font-semibold',
+                    data.hasNavLink ? params.tertiaryPressableGroupClass : params.tertiaryClass,
                   )
-                : params.mutedFgClass,
-            )}
-          >{textPart.value}</span>
-        ))}
-      </Fragment>
+                  : params.mutedFgClass,
+              )}
+            >{textPart.value}</span>
+          ))}
+        </Fragment>
+      )
     ),
   }
 }

@@ -14,6 +14,7 @@ clean+build all:
 
 
 NOW
+  Remove strongFgGroupHoverClass?
   cleanup ALL button-like
     ensure all have hover and active effects
     cleanup code in all default-ui themes and mui/shadcn
@@ -45,6 +46,9 @@ NOW
     give all block-events a hover effect
   Shadcn background-events
     use equiv of muted-bg for backgroundevent color (will be darker than non-business-hours, yay!)
+  redesign list-views for [Breezy] and [Pulse]
+    Breezy doesn't really support listDayAltFormat
+    ensure listDayHeaderInner button-like & isToday
   demo App not working in Safari?
   why doesn't eventStartEditable seem to work?
   why does dragging Monarch events give outline?
@@ -64,6 +68,7 @@ MANUAL TEST
   check print-view
   test prevYear/nextYear icons in all theme systems
   core: test sticky footer scrollbar on timegrid-pannable/normal, daygrid-pannable/normal
+  ensure larger dayCellFormat formats work w/ dayCellInner circles
 CODE-QUALITY (while going through each theme)
   stop concatenating with param classnames. sometimes they're blank
     like `border ${params.borderColorClass}`. many others too
@@ -335,6 +340,7 @@ print-view, hide buttons, or at least make sure they don't look terrible?
 just like we allowed margin on dayHeaderInner (which is a navlink),
   allow margin on slotLabelInner
   subsequently, audit align-self everywhere? because wrappers changed
+add weekdayText wherever we add dayNumberText
 
 
 Changelog

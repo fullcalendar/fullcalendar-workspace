@@ -162,7 +162,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverCloseClass: 'absolute top-2 end-2',
 
       inlineWeekNumberClass: (data) => [
-        'absolute z-20 top-1 end-0 rounded-s-full py-1 pe-1 ps-2 text-center',
+        'absolute z-20 top-1 end-0 rounded-s-sm p-1',
         data.hasNavLink
           ? params.mutedPressableClass
           : params.mutedClass,
@@ -315,9 +315,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
                 ? 'w-6 justify-center' // number only. circle
                 : 'px-2' // pill
             )
-          : joinClassNames( // half-pill
+          : joinClassNames( // ghost-button-like
+              'px-2 rounded-e-sm',
               data.hasNavLink && params.ghostPressableClass,
-              'ps-2 pe-3 rounded-e-full',
             ),
       ],
       dayCellInnerClass: (data) => [

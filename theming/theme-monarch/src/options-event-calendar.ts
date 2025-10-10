@@ -368,8 +368,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listDayHeaderInnerClass: (data) => [
           'group outline-none',
           !data.level
-            ? 'flex flex-row items-center text-lg' // primary
-            : 'uppercase text-xs hover:underline', // secondary
+            ? joinClassNames( // primary (multiple span children)
+                'text-lg flex flex-row items-center items-center rounded-full h-9',
+                data.text === data.dayNumberText
+                  ? 'w-9 justify-center' // circle
+                  : 'px-3', // pill
+                data.isToday
+                  ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
+                  : (data.hasNavLink && params.ghostPressableClass)
+              )
+            : 'text-xs uppercase hover:underline', // secondary (only one text child)
         ],
         listDayEventsClass: 'grow min-w-0 flex flex-col py-2',
 
