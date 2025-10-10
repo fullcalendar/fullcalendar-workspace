@@ -8,19 +8,18 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/interaction'
 
 export interface EventCalendarOptionParams {
-  secondaryClass: string
-  secondaryPressableClass: string
-
   ghostHoverClass: string
   ghostPressableClass: string
 
   strongPressableClass: string
 
-  mutedClass: string
-  mutedPressableClass: string
-
   faintHoverClass: string
   faintPressableClass: string
+
+  primaryOutlineColorClass: string
+  outlineWidthClass: string
+  outlineWidthFocusClass: string
+  outlineOffsetClass: string
 
   mutedBgClass: string
   faintBgClass: string
@@ -45,6 +44,7 @@ export interface EventCalendarOptionParams {
   bgOutlineColorClass: string
 
   mutedFgClass: string
+  faintFgClass: string
 }
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -155,23 +155,31 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderInnerClass: 'font-bold',
 
       popoverClass: `${params.popoverClass} min-w-[220px]`,
-      popoverCloseClass: 'absolute top-0.5 end-0.5 not-hover:opacity-65',
+      popoverCloseClass: `absolute top-0.5 end-0.5 group ${params.outlineWidthFocusClass} ${params.primaryOutlineColorClass}`,
 
       fillerClass: `border ${params.borderColorClass} opacity-50`,
       nonBusinessClass: params.faintBgClass,
       highlightClass: params.highlightClass,
 
-      navLinkClass: 'hover:underline',
-      moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
+      navLinkClass: joinClassNames(
+        'hover:underline',
+        params.primaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ),
+
+      moreLinkInnerClass: `whitespace-nowrap overflow-hidden`,
+
       inlineWeekNumberClass: (data) => [
         `absolute z-20 top-0 start-0 rounded-ee-sm p-0.5 text-center`,
-        data.hasNavLink
-          ? params.mutedPressableClass
-          : params.mutedClass,
+        params.mutedFgClass,
+        params.mutedBgClass,
         data.isCompact ? xxsTextClass : 'text-sm',
       ],
 
-      eventClass: 'hover:no-underline',
+      eventClass: joinClassNames(
+        'hover:no-underline',
+        params.primaryOutlineColorClass,
+      ),
 
       backgroundEventColorClass: `bg-(--fc-event-color) ${params.bgEventColorClass}`,
       backgroundEventTitleClass: (data) => [
@@ -184,9 +192,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       blockEventClass: (data) => [
         'relative isolate group p-px', // 1px matches print-border
+        params.outlineOffsetClass,
         data.isSelected
-          ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
-          : joinClassNames('focus-visible:shadow-md', data.isDragging && 'opacity-75'),
+          ? joinClassNames(
+              params.outlineWidthClass,
+              data.isDragging ? 'shadow-lg' : 'shadow-md',
+            )
+          : joinClassNames(
+              params.outlineWidthFocusClass,
+              'focus-visible:shadow-md',
+              data.isDragging && 'opacity-75',
+            ),
       ],
       blockEventColorClass: (data) => [
         'absolute z-0 inset-0 bg-(--fc-event-color)',
@@ -260,15 +276,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayRowClass: `border ${params.borderColorClass}`,
       dayCellClass: getDayClasses,
-      dayCellTopClass: (data) => [
+      dayCellTopClass: [
         'flex flex-row justify-end min-h-[2px]',
-        data.isOther && 'opacity-30',
       ],
       dayCellTopInnerClass: (data) => [
         'px-1',
         data.isCompact ? 'py-0.5' : 'py-1',
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
+        data.isOther && params.faintFgClass,
       ],
       dayCellInnerClass: (data) => data.inPopover && 'p-2',
 
@@ -323,6 +339,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           params.borderColorClass,
           data.isInteractive ? params.faintPressableClass : params.faintHoverClass,
           listViewItemPaddingClass,
+          params.outlineWidthFocusClass,
         ],
         listItemEventColorClass: 'border-5', // 10px diameter
         listItemEventInnerClass: '[display:contents]',

@@ -108,12 +108,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
   const dayRowItemBaseClass = 'mx-0.5 mb-px rounded-sm'
   const dayRowItemClasses: CalendarOptions = {
-    listItemEventClass: (data) => [
-      `${dayRowItemBaseClass} p-px`,
-      data.isSelected
-        ? joinClassNames(params.mutedBgClass, data.isDragging && 'shadow-sm')
-        : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
-    ],
+    listItemEventClass: `${dayRowItemBaseClass} p-px`,
     listItemEventColorClass: (data) => [
       'border-4', // 8px diameter
       data.isCompact ? 'mx-px' : 'mx-1',
@@ -171,12 +166,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...getWeekNumberPillClasses(data),
       ],
 
-      eventClass: (data) => [
-        'hover:no-underline',
-        data.isSelected && joinClassNames( // will apply to list-item and block events
-          params.outlineWidthClass, // will unconditionally show
-          params.tertiaryOutlineColorClass,
-        ),
+      eventClass: [
+        'hover:no-underline', // really needed?
+        params.tertiaryOutlineColorClass,
       ],
 
       backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.bgEventColorClass,
@@ -185,7 +177,19 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
 
-      listItemEventClass: 'items-center',
+      listItemEventClass: (data) => [
+        'items-center',
+        data.isSelected
+          ? joinClassNames(
+              params.outlineWidthClass,
+              params.mutedBgClass,
+              data.isDragging && 'shadow-sm',
+            )
+          : joinClassNames(
+              params.outlineWidthFocusClass,
+              data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass
+            ),
+      ],
       listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
       listItemEventInnerClass: 'flex flex-row items-center',
 
@@ -193,14 +197,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'relative isolate group',
         'border-transparent bg-(--fc-event-color)',
         'print:border-(--fc-event-color) print:bg-white',
-
-        // will apply ONLY to block events, because list-item events already have ghostPressable
-        params.outlineWidthFocusClass, // only shows on focus
-        params.tertiaryOutlineColorClass,
-
         data.isSelected
-          ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
-          : joinClassNames('focus-visible:shadow-md', data.isDragging && 'opacity-75'),
+          ? joinClassNames(
+              params.outlineWidthClass,
+              data.isDragging ? 'shadow-lg' : 'shadow-md'
+            )
+          : joinClassNames(
+              params.outlineWidthFocusClass,
+              'focus-visible:shadow-md',
+              data.isDragging && 'opacity-75'
+            ),
       ],
       blockEventInnerClass: 'z-10 flex text-(--fc-event-contrast-color) print:text-black',
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
@@ -381,10 +387,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
         listDayEventsClass: 'grow min-w-0 flex flex-col py-2',
 
-        listItemEventClass: (data) => [
-          'group rounded-s-full p-2 gap-2',
-          data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass,
-        ],
+        listItemEventClass: 'group rounded-s-full p-2 gap-2',
         listItemEventColorClass: 'border-5 mx-2', // 10px diameter
         listItemEventInnerClass: 'text-sm gap-2',
         listItemEventTimeClass: 'shrink-0 w-1/2 max-w-40 whitespace-nowrap overflow-hidden text-ellipsis',

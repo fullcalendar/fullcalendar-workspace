@@ -5,47 +5,47 @@ import * as svgs from './ui-default-svgs.js'
 const bgClass = 'bg-(--fc-classic-background)' // TODO: make this a variable for all themes?
 const bgOutlineColorClass = 'outline-(--fc-classic-background)'
 
+const primaryOutlineColorClass = 'outline-(--fc-classic-primary)'
+const outlineWidthClass = 'outline-2'
+const outlineWidthFocusClass = 'focus-visible:outline-2'
+const outlineOffsetClass = 'outline-offset-2'
+
 const buttonIconClass = 'size-5'
 
-const secondaryClass = 'bg-(--fc-classic-muted) text-(--fc-classic-muted-foreground)' // TODO: use transparent instead!
-const secondaryPressableClass = secondaryClass // TODO: effect
+const ghostHoverClass = 'hover:bg-(--fc-classic-muted)'
+const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-classic-strong) focus-visible:bg-(--fc-classic-muted) ${primaryOutlineColorClass} ${outlineWidthFocusClass}`
 
-const ghostHoverClass = 'hover:bg-(--fc-classic-glassy)'
-const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-gray-500/30` // TODO: use css variable!
-
-const faintHoverClass = 'hover:bg-gray-500/5'
-const faintPressableClass = `${faintHoverClass} focus-visible:bg-gray-500/20` // TODO: active class
+const faintHoverClass = 'hover:bg-(--fc-classic-faint)'
+const faintPressableClass = `${faintHoverClass} active:bg-(--fc-classic-muted) focus-visible:bg-(--fc-classic-faint) ${primaryOutlineColorClass} ${outlineWidthFocusClass}`
 
 export const optionParams: EventCalendarOptionParams = {
-  secondaryClass,
-  secondaryPressableClass,
-
   ghostHoverClass,
   ghostPressableClass,
-
-  // TODO
-  mutedClass: 'bg-(--fc-classic-muted)',
-  mutedPressableClass: 'bg-(--fc-classic-muted)',
 
   faintHoverClass,
   faintPressableClass,
 
   strongPressableClass: 'bg-(--fc-classic-strong)',
 
-  mutedBgClass: 'bg-(--fc-classic-muted)', // TODO: ensure this is semitransparent!!!
-  faintBgClass: 'bg-(--fc-classic-glassy)', // TODO: update this CSS variable!
+  primaryOutlineColorClass,
+  outlineWidthClass,
+  outlineWidthFocusClass,
+  outlineOffsetClass,
+
+  mutedBgClass: 'bg-(--fc-classic-muted)',
+  faintBgClass: 'bg-(--fc-classic-faint)',
   highlightClass: 'bg-(--fc-classic-highlight)',
   todayBgNotPrintClass: 'not-print:bg-(--fc-classic-today)',
 
   borderColorClass: 'border-(--fc-classic-border)',
-  primaryBorderColorClass: 'border-[#3788d8]',
+  primaryBorderColorClass: 'border-(--fc-classic-primary)',
   strongBorderColorClass: 'border-(--fc-classic-strong-border)',
   nowBorderColorClass: 'border-(--fc-classic-now)',
   nowBorderStartColorClass: 'border-s-(--fc-classic-now)',
   nowBorderTopColorClass: 'border-t-(--fc-classic-now)',
 
-  eventColor: '#3788d8', // TODO: put as css var
-  eventContrastColor: 'var(--color-white)', // TODO: put as css var
+  eventColor: 'var(--fc-classic-primary)',
+  eventContrastColor: 'var(--fc-classic-primary-foreground)',
   bgEventColor: 'var(--color-green-500)', // TODO: put as css var
   bgEventColorClass: 'opacity-15',
 
@@ -55,6 +55,7 @@ export const optionParams: EventCalendarOptionParams = {
   bgOutlineColorClass,
 
   mutedFgClass: 'text-(--fc-classic-muted-foreground)',
+  faintFgClass: 'text-(--fc-classic-faint-foreground)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
@@ -109,7 +110,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-4 text-sm`),
+    popoverCloseContent: () => svgs.x(`size-4 text-sm not-group-hover:opacity-65`),
   },
   views: baseEventCalendarOptions.views,
 }
