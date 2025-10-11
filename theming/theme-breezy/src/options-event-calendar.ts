@@ -119,6 +119,7 @@ export interface EventCalendarOptionParams {
   outlineWidthClass: string
   outlineWidthFocusClass: string
   outlineOffsetClass: string // TODO: use this on primary-today-circle
+  outlineInsetClass: string
 
   strongPressableClass: string
 

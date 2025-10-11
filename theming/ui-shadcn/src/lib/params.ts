@@ -1,11 +1,12 @@
 import { ThemeOptionParams } from '@fullcalendar/theme-common'
 
-const outlineWidthClass = 'ring-3'
-const outlineWidthFocusClass = 'focus-visible:ring-3'
-const outlineWidthGroupFocusClass = 'group-focus-visible:ring-3'
+const outlineWidthClass = 'outline-3'
+const outlineWidthFocusClass = 'focus-visible:outline-3'
+const outlineWidthGroupFocusClass = 'group-focus-visible:outline-3'
+const outlineInsetClass = '-outline-offset-3'
 
 // single outline style
-const outlineColorClass = 'ring-ring/50 outline-none'
+const outlineColorClass = 'outline-ring/50'
 const outlineFocusClass = `${outlineColorClass} ${outlineWidthFocusClass}`
 
 const primaryClass = 'bg-(--primary) text-(--primary-foreground)'
@@ -60,6 +61,7 @@ export const optionParams: ThemeOptionParams = {
   outlineWidthFocusClass,
   outlineWidthGroupFocusClass,
   outlineOffsetClass: '',
+  outlineInsetClass,
 
   mutedBgClass: 'bg-foreground/5', // semi-transparent version of bg-muted
   faintBgClass: 'bg-foreground/3', // semi-transparent version of bg-sidebar

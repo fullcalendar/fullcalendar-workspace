@@ -10,6 +10,7 @@ const outlineWidthClass = 'outline-3'
 const outlineWidthFocusClass = 'focus-visible:outline-3'
 const outlineWidthGroupFocusClass = 'focus-visible:outline-3'
 const outlineOffsetClass = 'outline-offset-1'
+const outlineInsetClass = '-outline-offset-1'
 
 const primaryOutlineColorClass = 'outline-(--mui-palette-primary-main)'
 
@@ -71,6 +72,7 @@ export const optionParams: ThemeOptionParams = {
   outlineWidthFocusClass,
   outlineWidthGroupFocusClass,
   outlineOffsetClass,
+  outlineInsetClass,
 
   mutedBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]',
   faintBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]',

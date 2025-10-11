@@ -9,6 +9,7 @@ We don't do active: states, because tailwindplus does not do this!
 const outlineWidthClass = 'outline-2'
 const outlineWidthFocusClass = 'focus-visible:outline-2'
 const outlineOffsetClass = 'outline-offset-2'
+const outlineInsetClass = '-outline-offset-2'
 
 const primaryOutlineColorClass = `outline-(--fc-breezy-primary)`
 const primaryOutlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}`
@@ -52,6 +53,7 @@ export const optionParams: EventCalendarOptionParams = {
   outlineWidthClass,
   outlineWidthFocusClass,
   outlineOffsetClass,
+  outlineInsetClass,
 
   strongPressableClass: 'bg-(--fc-breezy-strong)',
 

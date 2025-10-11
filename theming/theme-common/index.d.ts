@@ -37,6 +37,7 @@ export interface ThemeOptionParams {
   outlineWidthFocusClass: string
   outlineWidthGroupFocusClass: string
   outlineOffsetClass: string
+  outlineInsetClass: string
 
   mutedBgClass: string // required to be FULLY-transparent!?... best for Shadcn?
   faintBgClass: string // required to be semitransparent

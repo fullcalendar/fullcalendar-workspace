@@ -20,6 +20,7 @@ export interface EventCalendarOptionParams {
   outlineWidthClass: string
   outlineWidthFocusClass: string
   outlineOffsetClass: string
+  outlineInsetClass: string
 
   mutedBgClass: string
   faintBgClass: string
@@ -165,8 +166,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'hover:underline',
         params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
+        params.outlineInsetClass, // move inside
       ),
 
+      moreLinkClass: joinClassNames(
+        params.primaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+        params.outlineOffsetClass, // just like block events
+      ),
       moreLinkInnerClass: `whitespace-nowrap overflow-hidden`,
 
       inlineWeekNumberClass: (data) => [
@@ -338,6 +345,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           params.borderColorClass,
           data.isInteractive ? params.faintPressableClass : params.faintHoverClass,
           listViewItemPaddingClass,
+          params.outlineInsetClass, // move inside
         ],
         listItemEventColorClass: 'border-5', // 10px diameter
         listItemEventInnerClass: '[display:contents]',
