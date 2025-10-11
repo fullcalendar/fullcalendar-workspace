@@ -17,6 +17,9 @@ NOW
   cleanup ALL button-like
     ensure all have hover and active effects
     cleanup code in all default-ui themes and mui/shadcn
+  tab-focus
+    should always give hover effect (currently missing on default-ui Monarch today-circle)
+    give tab-focus effect to all mui/shadcn themes
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)
     remove *ColorClass props? YES
     use color-mix for moving closer to foreground/background
@@ -37,9 +40,6 @@ NOW
       Is opacity the correct thing to be setting?
         Actually, i think we should always set text color, so that the isToday circle is accurate color
         Good to use a real mutedTextColor so that it matches with other parts of the UI
-  tab-focus
-    should always give hover effect (currently missing on default-ui Monarch today-circle)
-    give tab-focus effect to all mui/shadcn themes
   hover effects for all event-link content
     implement strongPressableClass for more-links
     give all block-events a hover effect
@@ -349,6 +349,9 @@ just like we allowed margin on dayHeaderInner (which is a navlink),
   allow margin on slotLabelInner
   subsequently, audit align-self everywhere? because wrappers changed
 add weekdayText wherever we add dayNumberText
+core?: when timegrid overlapping events, focused event should be top z-index
+core?: control z-index of selected button in button group. always want above others
+timegrid more-link is in strange DOM order, leading to bad tab-index
 
 
 Changelog
