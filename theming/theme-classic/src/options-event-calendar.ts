@@ -155,7 +155,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderInnerClass: 'font-bold',
 
       popoverClass: `${params.popoverClass} min-w-[220px]`,
-      popoverCloseClass: `absolute top-0.5 end-0.5 group ${params.outlineWidthFocusClass} ${params.primaryOutlineColorClass}`,
+      popoverCloseClass: `absolute top-0.5 end-0.5 group ${params.primaryOutlineColorClass} ${params.outlineWidthFocusClass}`,
 
       fillerClass: `border ${params.borderColorClass} opacity-50`,
       nonBusinessClass: params.faintBgClass,
@@ -176,10 +176,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isCompact ? xxsTextClass : 'text-sm',
       ],
 
-      eventClass: joinClassNames(
+      eventClass: (data) => [
         'hover:no-underline',
         params.primaryOutlineColorClass,
-      ),
+        data.isSelected
+          ? params.outlineWidthClass
+          : params.outlineWidthFocusClass,
+      ],
 
       backgroundEventColorClass: `bg-(--fc-event-color) ${params.bgEventColorClass}`,
       backgroundEventTitleClass: (data) => [
@@ -194,12 +197,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'relative isolate group p-px', // 1px matches print-border
         params.outlineOffsetClass,
         data.isSelected
-          ? joinClassNames(
-              params.outlineWidthClass,
-              data.isDragging ? 'shadow-lg' : 'shadow-md',
-            )
+          ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
           : joinClassNames(
-              params.outlineWidthFocusClass,
               'focus-visible:shadow-md',
               data.isDragging && 'opacity-75',
             ),
@@ -339,7 +338,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           params.borderColorClass,
           data.isInteractive ? params.faintPressableClass : params.faintHoverClass,
           listViewItemPaddingClass,
-          params.outlineWidthFocusClass,
         ],
         listItemEventColorClass: 'border-5', // 10px diameter
         listItemEventInnerClass: '[display:contents]',
