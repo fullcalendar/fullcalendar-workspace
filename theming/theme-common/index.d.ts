@@ -35,6 +35,7 @@ export interface ThemeOptionParams {
   tertiaryOutlineColorClass: string
   outlineWidthClass: string
   outlineWidthFocusClass: string
+  outlineWidthGroupFocusClass: string
   outlineOffsetClass: string
 
   mutedBgClass: string // required to be FULLY-transparent!?... best for Shadcn?

@@ -56,6 +56,7 @@ export interface EventCalendarOptionParams {
   tertiaryOutlineColorClass: string
   outlineWidthClass: string
   outlineWidthFocusClass: string
+  outlineWidthGroupFocusClass: string
 
   mutedBgClass: string
   faintBgClass: string
@@ -96,10 +97,28 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
+  // surface -> "button" by adding focus-ring
+  const secondaryButtonClass = joinClassNames(
+    params.secondaryPressableClass,
+    params.tertiaryOutlineColorClass,
+    params.outlineWidthFocusClass,
+  )
+  const tertiaryButtonClass = joinClassNames(
+    params.tertiaryPressableClass,
+    params.tertiaryOutlineColorClass,
+    params.outlineWidthFocusClass,
+    // NOTE: does NOT need offset because tertiary OUTLINE color is typically different than tertiary FILL color
+  )
+  const ghostButtonClass = joinClassNames(
+    params.ghostPressableClass,
+    params.tertiaryOutlineColorClass,
+    params.outlineWidthFocusClass,
+  )
+
   const getWeekNumberPillClasses = (data: { hasNavLink: boolean, isCompact: boolean }) => [
     'rounded-full h-6 flex flex-row items-center', // match height of daynumber
     data.hasNavLink
-      ? params.secondaryPressableClass
+      ? secondaryButtonClass
       : params.secondaryClass,
     data.isCompact
       ? `${xxsTextClass} px-1`
@@ -119,7 +138,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
-      params.ghostPressableClass,
+      ghostButtonClass,
       data.isCompact
         ? `border ${params.primaryBorderColorClass}`
         : 'p-px'
@@ -146,11 +165,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       singleMonthHeaderInnerClass: (data) => [
         'font-bold rounded-full px-2 py-1',
-        data.hasNavLink && params.ghostPressableClass,
+        data.hasNavLink && ghostButtonClass,
       ],
 
       popoverClass: 'm-2 min-w-3xs ' + params.popoverClass,
-      popoverCloseClass: `absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center ${params.ghostPressableClass}`,
+      popoverCloseClass: `absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center ${ghostButtonClass}`,
 
       fillerClass: (data) => [
         'opacity-50 border',
@@ -187,7 +206,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             )
           : joinClassNames(
               params.outlineWidthFocusClass,
-              data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass
+              data.isInteractive ? ghostButtonClass : params.ghostHoverClass
             ),
       ],
       listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
@@ -300,8 +319,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           ? 'w-6' // circle
           : 'px-2', // pill
         data.isToday
-          ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
-          : data.hasNavLink && params.ghostPressableClass,
+          ? (data.hasNavLink ? tertiaryButtonClass : params.tertiaryClass)
+          : data.hasNavLink && ghostButtonClass,
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
         !data.isCompact && 'm-1.5',
@@ -380,8 +399,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
                   ? 'w-9 justify-center' // circle
                   : 'px-3', // pill
                 data.isToday
-                  ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
-                  : (data.hasNavLink && params.ghostPressableClass)
+                  ? (data.hasNavLink ? tertiaryButtonClass : params.tertiaryClass)
+                  : (data.hasNavLink && ghostButtonClass)
               )
             : 'text-xs uppercase hover:underline', // secondary (only one text child)
         ],

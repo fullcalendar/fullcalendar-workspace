@@ -7,6 +7,7 @@ const iconSizeClass = 'size-5' // matches text-sm line-height
 
 const outlineWidthClass = 'outline-3'
 const outlineWidthFocusClass = 'focus-visible:outline-3'
+const outlineWidthGroupFocusClass = 'group-focus-visible:outline-3'
 
 const tertiaryOutlineColorClass = 'outline-(--fc-monarch-highlight)' // different that exact tertiary, but same shade
 const tertiaryOutlineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFocusClass}`
@@ -16,21 +17,32 @@ const pressableConfigGroupClass = 'group-hover:brightness-(--fc-monarch-hover-br
 const secondaryPressableConfigClass = 'hover:brightness-(--fc-monarch-secondary-hover-brightness) active:brightness-(--fc-monarch-secondary-active-brightness)'
 
 const primaryClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreground)`
-const primaryPressableClass = `${primaryClass} ${pressableConfigClass} ${tertiaryOutlineFocusClass}`
+const primaryPressableClass = `${primaryClass} ${pressableConfigClass}`
+const primaryButtonClass = `${primaryPressableClass} border border-transparent ${tertiaryOutlineFocusClass}`
 
+// TODO: rename? authors of CSS variables might get this confused w/ toolbar styles
 const secondaryClass = 'bg-(--fc-monarch-secondary) text-(--fc-monarch-secondary-foreground)'
 const secondaryPressableClass = `${secondaryClass} ${secondaryPressableConfigClass} ${tertiaryOutlineFocusClass}`
 
 const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-tertiary-foreground)'
-const tertiaryPressableClass = `${tertiaryClass} ${pressableConfigClass} ${tertiaryOutlineFocusClass}`
-const tertiaryPressableGroupClass = `${tertiaryClass} ${pressableConfigGroupClass}`
-
-const tabSelectedClass = `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground) ${pressableConfigClass} ${tertiaryOutlineFocusClass}`
+const tertiaryPressableClass = `${tertiaryClass} ${pressableConfigClass}`
+const tertiaryPressableGroupClass = `${tertiaryClass} ${pressableConfigGroupClass} ${tertiaryOutlineFocusClass}`
 
 const ghostHoverClass = 'hover:bg-(--fc-monarch-muted-wash)'
 const ghostHoverGroupClass = 'group-hover:bg-(--fc-monarch-muted-wash)'
-const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-monarch-muted-wash) active:bg-(--fc-monarch-strong-wash) ${tertiaryOutlineFocusClass}`
+const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-monarch-muted-wash) active:bg-(--fc-monarch-strong-wash)`
 const ghostPressableGroupClass = `${ghostHoverGroupClass} group-focus-visible:bg-(--fc-monarch-muted-wash) group-active:bg-(--fc-monarch-strong-wash)`
+
+// TODO: darker border on focus!!!
+// NOTE: different than the "secondary" surface styles given to calendar
+const toolbarSecondaryButtonClass = `${ghostPressableClass} border border-(--fc-monarch-secondary-border) ${tertiaryOutlineFocusClass} -outline-offset-1`
+
+// dark grey button
+const tabSelectedClass = `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground) ${pressableConfigClass}`
+const tabSelectedButtonClass = `${tabSelectedClass} border border-transparent ${tertiaryOutlineFocusClass} -outline-offset-1`
+
+const tabUnselectedButtonClass = `${ghostPressableClass} border border-transparent ${tertiaryOutlineFocusClass} -outline-offset-1`
+
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
@@ -49,6 +61,7 @@ export const optionParams: EventCalendarOptionParams = {
   tertiaryOutlineColorClass,
   outlineWidthClass,
   outlineWidthFocusClass,
+  outlineWidthGroupFocusClass,
 
   mutedBgClass: 'bg-(--fc-monarch-muted)',
   faintBgClass: 'bg-(--fc-monarch-muted-wash)', // TODO: change this CSS value!!!
@@ -93,22 +106,18 @@ export const defaultUiEventCalendarOptions: {
       data.isSelectGroup && 'border border-(--fc-monarch-border)'
     ],
     buttonClass: (data) => [
-      `inline-flex items-center justify-center py-2.5 ${buttonTextClass} rounded-full border`,
+      `inline-flex items-center justify-center py-2.5 ${buttonTextClass} rounded-full`,
       data.inGroup && 'relative active:z-20 focus-visible:z-20',
       data.isSelected ? 'z-10' : 'z-0',
       data.isIconOnly ? 'px-2.5' : 'px-5',
-      data.inSelectGroup && '-m-px',
-      // TODO: better structure
+      data.inSelectGroup && '-m-px', // overcome select-group border
       (data.isIconOnly || (data.inSelectGroup && !data.isSelected))
-        ? `${optionParams.ghostPressableClass} border-transparent`
+        ? tabUnselectedButtonClass
         : data.isSelected
-          ? `${tabSelectedClass} border-transparent` // solid gray
+          ? tabSelectedButtonClass
           : data.isPrimary
-            ? `${primaryPressableClass} border-transparent` // primary color
-            : joinClassNames(
-                optionParams.ghostPressableClass,
-                'border-(--fc-monarch-secondary-border)' // bordered gray
-              )
+            ? primaryButtonClass
+            : toolbarSecondaryButtonClass
     ],
 
     buttons: {

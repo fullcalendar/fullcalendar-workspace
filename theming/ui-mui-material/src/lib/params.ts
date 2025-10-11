@@ -8,6 +8,7 @@ They often don't look good. And if we use them for semantic purpose other than w
 
 const outlineWidthClass = 'outline-3'
 const outlineWidthFocusClass = 'focus-visible:outline-3'
+const outlineWidthGroupFocusClass = 'focus-visible:outline-3'
 const outlineOffsetClass = 'outline-offset-1'
 
 const primaryOutlineColorClass = 'outline-(--mui-palette-primary-main)'
@@ -68,6 +69,7 @@ export const optionParams: ThemeOptionParams = {
   tertiaryOutlineColorClass,
   outlineWidthClass,
   outlineWidthFocusClass,
+  outlineWidthGroupFocusClass,
   outlineOffsetClass,
 
   mutedBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]',

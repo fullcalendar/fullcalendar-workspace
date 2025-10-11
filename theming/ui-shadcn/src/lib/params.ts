@@ -2,6 +2,7 @@ import { ThemeOptionParams } from '@fullcalendar/theme-common'
 
 const outlineWidthClass = 'ring-3'
 const outlineWidthFocusClass = 'focus-visible:ring-3'
+const outlineWidthGroupFocusClass = 'group-focus-visible:ring-3'
 
 // single outline style
 const outlineColorClass = 'ring-ring/50 outline-none'
@@ -57,6 +58,7 @@ export const optionParams: ThemeOptionParams = {
   tertiaryOutlineColorClass: outlineColorClass,
   outlineWidthClass,
   outlineWidthFocusClass,
+  outlineWidthGroupFocusClass,
   outlineOffsetClass: '',
 
   mutedBgClass: 'bg-foreground/5', // semi-transparent version of bg-muted
