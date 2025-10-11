@@ -156,7 +156,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderInnerClass: 'font-bold',
 
       popoverClass: `${params.popoverClass} min-w-[220px]`,
-      popoverCloseClass: `absolute top-0.5 end-0.5 group ${params.primaryOutlineColorClass} ${params.outlineWidthFocusClass}`,
+      popoverCloseClass: joinClassNames(
+        'absolute top-0.5 end-0.5 group',
+        params.primaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ),
 
       fillerClass: `border ${params.borderColorClass} opacity-50`,
       nonBusinessClass: params.faintBgClass,

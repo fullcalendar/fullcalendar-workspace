@@ -38,7 +38,12 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceCellInnerClass: 'p-2 text-sm',
 
       resourceIndentClass: 'ms-2 -me-1 items-center',
-      resourceExpanderClass: 'not-hover:opacity-65',
+      resourceExpanderClass: [
+        'not-hover:opacity-65',
+        params.ghostPressableClass,
+        params.primaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ],
 
       resourceLaneClass: `border ${params.borderColorClass}`,
       resourceLaneBottomClass: (data) => !data.isCompact && 'h-3',

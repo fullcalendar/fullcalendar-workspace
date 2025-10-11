@@ -15,17 +15,6 @@ export function createSlots(
   { createElement, Fragment }: createSlotsVDom, // masks the module-wide imports
   params: EventCalendarOptionParams,
 ): CalendarOptions {
-  const tertiaryButtonGroupClass = joinClassNames(
-    params.tertiaryPressableGroupClass,
-    params.tertiaryOutlineColorClass,
-    params.outlineWidthGroupFocusClass,
-  )
-  const ghostButtonGroupClass = joinClassNames(
-    params.ghostPressableGroupClass,
-    params.tertiaryOutlineColorClass,
-    params.outlineWidthGroupFocusClass,
-  )
-
   return {
     dayHeaderContent: (data) => (
       <Fragment>
@@ -42,8 +31,12 @@ export function createSlots(
             className={joinClassNames(
               'm-0.5 flex flex-row items-center justify-center text-lg size-9 rounded-full',
               data.isToday
-                ? (data.hasNavLink ? tertiaryButtonGroupClass : params.tertiaryClass)
-                : (data.hasNavLink && ghostButtonGroupClass)
+                ? (data.hasNavLink ? params.tertiaryPressableGroupClass : params.tertiaryClass)
+                : (data.hasNavLink && params.ghostPressableGroupClass),
+              data.hasNavLink && joinClassNames(
+                params.tertiaryOutlineColorClass,
+                params.outlineWidthGroupFocusClass,
+              ),
             )}
           >{data.dayNumberText}</div>
         )}

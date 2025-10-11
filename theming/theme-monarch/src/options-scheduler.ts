@@ -13,22 +13,6 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
-  const secondaryButtonClass = joinClassNames(
-    params.secondaryPressableClass,
-    params.tertiaryOutlineColorClass,
-    params.outlineWidthFocusClass,
-  )
-  const ghostButtonClass = joinClassNames(
-    params.ghostPressableClass,
-    params.tertiaryOutlineColorClass,
-    params.outlineWidthFocusClass,
-  )
-  const strongButtonClass = joinClassNames(
-    params.strongPressableClass,
-    params.tertiaryOutlineColorClass,
-    params.outlineWidthFocusClass,
-  )
-
   return {
     optionDefaults: {
       resourceDayHeaderAlign: 'center',
@@ -61,7 +45,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceIndentClass: 'ms-1 -me-1 items-center',
       resourceExpanderClass: [
         'w-6 h-6 flex flex-row items-center justify-center rounded-full text-sm',
-        ghostButtonClass,
+        params.ghostPressableClass,
+        params.tertiaryOutlineColorClass,
+        params.outlineWidthFocusClass,
       ],
 
       resourceLaneClass: `border ${params.borderColorClass}`,
@@ -80,7 +66,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
         // TODO: keep DRY with columnMoreLink
         rowMoreLinkClass: `relative me-px mb-px p-px rounded-sm ${params.bgClass}`,
-        rowMoreLinkColorClass: `absolute z-0 inset-0 rounded-sm ${strongButtonClass} print:bg-white print:border print:border-black`,
+        rowMoreLinkColorClass: `absolute z-0 inset-0 rounded-sm ${params.strongPressableClass} print:bg-white print:border print:border-black`,
         rowMoreLinkInnerClass: 'z-10 p-0.5 text-xs', // TODO: somehow add that "extra v space" ?
 
         slotLabelAlign: (data) => (data.level || data.isTime) ? 'start' : 'center',
@@ -103,7 +89,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           ? [ // pill
             'px-2 py-1 rounded-full text-sm',
             data.hasNavLink
-              ? secondaryButtonClass
+              ? params.secondaryPressableClass
               : params.secondaryClass,
           ]
           : [

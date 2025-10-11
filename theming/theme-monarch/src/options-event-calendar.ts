@@ -97,28 +97,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
-  // surface -> "button" by adding focus-ring
-  const secondaryButtonClass = joinClassNames(
-    params.secondaryPressableClass,
-    params.tertiaryOutlineColorClass,
-    params.outlineWidthFocusClass,
-  )
-  const tertiaryButtonClass = joinClassNames(
-    params.tertiaryPressableClass,
-    params.tertiaryOutlineColorClass,
-    params.outlineWidthFocusClass,
-    // NOTE: does NOT need offset because tertiary OUTLINE color is typically different than tertiary FILL color
-  )
-  const ghostButtonClass = joinClassNames(
-    params.ghostPressableClass,
-    params.tertiaryOutlineColorClass,
-    params.outlineWidthFocusClass,
-  )
-
   const getWeekNumberPillClasses = (data: { hasNavLink: boolean, isCompact: boolean }) => [
     'rounded-full h-6 flex flex-row items-center', // match height of daynumber
     data.hasNavLink
-      ? secondaryButtonClass
+      ? params.secondaryPressableClass
       : params.secondaryClass,
     data.isCompact
       ? `${xxsTextClass} px-1`
@@ -138,7 +120,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
-      ghostButtonClass,
+      params.ghostPressableClass,
       data.isCompact
         ? `border ${params.primaryBorderColorClass}`
         : 'p-px'
@@ -165,11 +147,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       singleMonthHeaderInnerClass: (data) => [
         'font-bold rounded-full px-2 py-1',
-        data.hasNavLink && ghostButtonClass,
+        data.hasNavLink && params.ghostPressableClass,
       ],
 
       popoverClass: 'm-2 min-w-3xs ' + params.popoverClass,
-      popoverCloseClass: `absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center ${ghostButtonClass}`,
+      popoverCloseClass: [
+        'absolute top-2 end-2 rounded-full w-8 h-8 inline-flex flex-row justify-center items-center',
+        params.ghostPressableClass,
+        params.tertiaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ],
 
       fillerClass: (data) => [
         'opacity-50 border',
@@ -178,16 +165,29 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       nonBusinessClass: params.faintBgClass,
       highlightClass: params.highlightClass,
 
+      moreLinkClass: joinClassNames(
+        params.tertiaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ),
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
+
+      navLinkClass: joinClassNames(
+        params.tertiaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ),
+
       inlineWeekNumberClass: (data) => [
         'absolute z-20',
         data.isCompact ? 'top-1 start-0.5' : 'top-1.5 start-1',
         ...getWeekNumberPillClasses(data),
       ],
 
-      eventClass: [
+      eventClass: (data) => [
         'hover:no-underline', // really needed?
         params.tertiaryOutlineColorClass,
+        data.isSelected
+          ? params.outlineWidthClass
+          : params.outlineWidthFocusClass,
       ],
 
       backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.bgEventColorClass,
@@ -200,14 +200,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'items-center',
         data.isSelected
           ? joinClassNames(
-              params.outlineWidthClass,
               params.mutedBgClass,
               data.isDragging && 'shadow-sm',
             )
-          : joinClassNames(
-              params.outlineWidthFocusClass,
-              data.isInteractive ? ghostButtonClass : params.ghostHoverClass
-            ),
+          : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
       ],
       listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
       listItemEventInnerClass: 'flex flex-row items-center',
@@ -217,12 +213,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'border-transparent bg-(--fc-event-color)',
         'print:border-(--fc-event-color) print:bg-white',
         data.isSelected
-          ? joinClassNames(
-              params.outlineWidthClass,
-              data.isDragging ? 'shadow-lg' : 'shadow-md'
-            )
+          ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
           : joinClassNames(
-              params.outlineWidthFocusClass,
               'focus-visible:shadow-md',
               data.isDragging && 'opacity-75'
             ),
@@ -299,7 +291,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'items-center',
       ],
       dayHeaderInnerClass: (data) => [
-        'pt-2 flex flex-col items-center group outline-none',
+        'pt-2 flex flex-col items-center group outline-none', // kill outline because sub-elements do it
         data.isCompact && xxsTextClass,
       ],
 
@@ -319,8 +311,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           ? 'w-6' // circle
           : 'px-2', // pill
         data.isToday
-          ? (data.hasNavLink ? tertiaryButtonClass : params.tertiaryClass)
-          : data.hasNavLink && ghostButtonClass,
+          ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
+          : data.hasNavLink && params.ghostPressableClass,
         data.hasMonthLabel && 'text-base font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
         !data.isCompact && 'm-1.5',
@@ -391,7 +383,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listDayClass: `flex flex-row items-start not-last:border-b ${params.borderColorClass}`,
         listDayHeaderClass: 'shrink-0 w-1/3 max-w-44 min-h-9 flex flex-row items-center gap-2 m-2 sticky top-0',
         listDayHeaderInnerClass: (data) => [
-          'group outline-none',
           !data.level
             ? joinClassNames( // primary (multiple span children)
                 'text-lg flex flex-row items-center items-center rounded-full h-9',
@@ -399,8 +390,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
                   ? 'w-9 justify-center' // circle
                   : 'px-3', // pill
                 data.isToday
-                  ? (data.hasNavLink ? tertiaryButtonClass : params.tertiaryClass)
-                  : (data.hasNavLink && ghostButtonClass)
+                  ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
+                  : (data.hasNavLink && params.ghostPressableClass)
               )
             : 'text-xs uppercase hover:underline', // secondary (only one text child)
         ],
