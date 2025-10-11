@@ -74,7 +74,7 @@ export const optionParams: EventCalendarOptionParams = {
   popoverClass: 'bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg shadow-lg',
 
   bgClass: 'bg-(--fc-breezy-background)',
-  bgOutlineColorClass: 'outline-(--fc-breezy-background)',
+  bgRingColorClass: 'ring-(--fc-breezy-background)',
 
   faintFgClass: 'text-(--fc-breezy-faint-foreground)',
   mutedFgClass: 'text-(--fc-breezy-muted-foreground)',

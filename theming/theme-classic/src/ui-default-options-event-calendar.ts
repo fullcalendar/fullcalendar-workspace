@@ -3,7 +3,7 @@ import { createEventCalendarOptions, EventCalendarOptionParams } from './options
 import * as svgs from './ui-default-svgs.js'
 
 const bgClass = 'bg-(--fc-classic-background)' // TODO: make this a variable for all themes?
-const bgOutlineColorClass = 'outline-(--fc-classic-background)'
+const bgRingColorClass = 'ring-(--fc-classic-background)'
 
 const primaryOutlineColorClass = 'outline-(--fc-classic-primary)'
 const outlineWidthClass = 'outline-2'
@@ -52,7 +52,7 @@ export const optionParams: EventCalendarOptionParams = {
   popoverClass: `border border-(--fc-classic-border) ${bgClass} shadow-md`,
 
   bgClass,
-  bgOutlineColorClass,
+  bgRingColorClass,
 
   mutedFgClass: 'text-(--fc-classic-muted-foreground)',
   faintFgClass: 'text-(--fc-classic-faint-foreground)',

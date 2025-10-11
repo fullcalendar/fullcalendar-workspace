@@ -62,7 +62,7 @@ export const optionParams: EventCalendarOptionParams = {
   popoverClass: 'border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md',
 
   bgClass: 'bg-(--fc-forma-background)',
-  bgOutlineColorClass: 'outline-(--fc-forma-background)',
+  bgRingColorClass: 'ring-(--fc-forma-background)',
 
   mutedFgClass,
 }

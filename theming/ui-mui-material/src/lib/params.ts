@@ -99,7 +99,7 @@ export const optionParams: ThemeOptionParams = {
   // (pulse) popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2',
 
   bgClass: 'bg-(--mui-palette-background-paper)',
-  bgOutlineColorClass: 'outline-(--mui-palette-background-paper)',
+  bgRingColorClass: 'ring-(--mui-palette-background-paper)',
 
   fgClass: 'text-(--mui-palette-text-primary)',
   strongFgClass: 'text-(--mui-palette-text-primary)',

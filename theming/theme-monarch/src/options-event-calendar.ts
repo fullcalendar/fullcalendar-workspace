@@ -75,7 +75,7 @@ export interface EventCalendarOptionParams {
   popoverClass: string
 
   bgClass: string
-  bgOutlineColorClass: string
+  bgRingColorClass: string
 
   mutedFgClass: string
   faintFgClass: string
@@ -270,7 +270,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'border-x',
         data.isStart && 'border-t rounded-t-sm',
         data.isEnd && 'border-b rounded-b-sm',
-        (data.level || data.isMirror) && !data.isSelected && `outline ${params.bgOutlineColorClass}`,
+        (data.level || data.isMirror) && !data.isSelected && `ring ${params.bgRingColorClass}`,
       ],
       columnEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
@@ -288,7 +288,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleSticky: false, // because time below title, sticky looks bad
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.bgClass} outline ${params.bgOutlineColorClass}`,
+      columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.bgClass} ring ${params.bgRingColorClass}`,
       columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-xs ${params.strongPressableClass} print:bg-white print:border print:border-black`,
       columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
@@ -342,7 +342,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,
-      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} outline-2 ${params.bgOutlineColorClass}`,
+      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} ring-2 ${params.bgRingColorClass}`,
     },
     views: {
       dayGrid: {

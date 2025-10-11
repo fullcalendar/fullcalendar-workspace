@@ -90,7 +90,7 @@ export const optionParams: ThemeOptionParams = {
   // (pulse) popoverClass: 'border bg-background text-foreground shadow-lg rounded-md shadow-md m-1',
 
   bgClass: 'bg-background',
-  bgOutlineColorClass: 'outline-background',
+  bgRingColorClass: 'ring-background',
 
   fgClass: '',
   strongFgClass: '',

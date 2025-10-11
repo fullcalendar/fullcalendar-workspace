@@ -61,7 +61,7 @@ export interface ThemeOptionParams {
   popoverClass: string
 
   bgClass: string
-  bgOutlineColorClass: string
+  bgRingColorClass: string
 
   fgClass: string
   strongFgClass: string

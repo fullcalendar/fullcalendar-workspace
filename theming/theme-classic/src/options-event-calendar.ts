@@ -41,7 +41,7 @@ export interface EventCalendarOptionParams {
   popoverClass: string
 
   bgClass: string
-  bgOutlineColorClass: string
+  bgRingColorClass: string
 
   mutedFgClass: string
   faintFgClass: string
@@ -251,7 +251,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'print:border-x',
         data.isStart && 'print:border-t rounded-t-sm',
         data.isEnd && 'print:border-b rounded-b-sm',
-        (data.level || data.isMirror) && `outline ${params.bgOutlineColorClass}`,
+        (data.level || data.isMirror) && `ring ${params.bgRingColorClass}`,
       ],
       columnEventInnerClass: (data) => [
         'p-px',
@@ -263,7 +263,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: (data) => data.isCompact ? xxsTextClass : 'py-px text-xs',
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative mb-px p-px rounded-sm ${params.bgClass} outline ${params.bgOutlineColorClass}`,
+      columnMoreLinkClass: `relative mb-px p-px rounded-sm ${params.bgClass} ring ${params.bgRingColorClass}`,
       columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-sm ${params.strongPressableClass} print:bg-white print:border print:border-black`,
       columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 

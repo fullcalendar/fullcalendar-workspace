@@ -82,7 +82,7 @@ export interface EventCalendarOptionParams {
   popoverClass: string
 
   bgClass: string
-  bgOutlineColorClass: string
+  bgRingColorClass: string
 
   mutedFgClass: string
 }
@@ -236,7 +236,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       columnEventClass: (data) => [
         'border-s-6 rounded-s-sm rounded-e-sm mb-px',
-        (data.level || data.isMirror) && `outline ${params.bgOutlineColorClass}`
+        (data.level || data.isMirror) && `ring ${params.bgRingColorClass}`
       ],
       columnEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
@@ -337,7 +337,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       slotLaneClass: (data) => getSlotClasses(data, `border ${params.borderColorClass}`),
 
       nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,
-      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} outline-2 ${params.bgOutlineColorClass}`,
+      nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} ring-2 ${params.bgRingColorClass}`,
     },
     views: {
       dayGrid: {
@@ -386,7 +386,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         // TODO: move to general settings? or always have this type of thing in timeGrid?
         // TODO: keep DRY with timeline rowMoreLink
-        columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.bgClass} outline ${params.bgOutlineColorClass}`,
+        columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.bgClass} ring ${params.bgRingColorClass}`,
         columnMoreLinkColorClass: `z-0 absolute inset-0 ${params.strongPressableClass} print:bg-white print:border print:border-black`,
         columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
