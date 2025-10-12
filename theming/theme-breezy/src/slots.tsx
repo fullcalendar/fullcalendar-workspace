@@ -41,7 +41,12 @@ export function createSlots(
                         ? joinClassNames(
                             'w-8 rounded-full justify-center mx-0.5',
                             data.hasNavLink
-                              ? params.primaryPressableGroupClass
+                              ? joinClassNames(
+                                  params.primaryPressableGroupClass,
+                                  params.primaryOutlineColorClass,
+                                  params.outlineWidthGroupFocusClass,
+                                  params.outlineOffsetClass,
+                                )
                               : params.primaryClass,
                           )
                         : params.strongFgClass

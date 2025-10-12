@@ -36,7 +36,12 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceLaneBottomClass: 'h-3',
 
       resourceIndentClass: 'items-center ms-1 -me-1',
-      resourceExpanderClass: params.fgClass,
+      resourceExpanderClass: [
+        // TODO: ghost hover effect
+        params.fgClass,
+        params.primaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ],
 
       // TODO: weird
       resourceDayHeaderClass: (data) => [

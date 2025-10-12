@@ -8,22 +8,27 @@ We don't do active: states, because tailwindplus does not do this!
 
 const outlineWidthClass = 'outline-2'
 const outlineWidthFocusClass = 'focus-visible:outline-2'
+const outlineWidthGroupFocusClass = 'group-focus-visible:outline-2'
 const outlineOffsetClass = 'outline-offset-2'
-const outlineInsetClass = '-outline-offset-2'
 
 const primaryOutlineColorClass = `outline-(--fc-breezy-primary)`
 const primaryOutlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}`
 
+/*
+NOTE: buttons are responsible for border-color, but NOT border-width!
+because button groups have strong opinions about adjacent borders and rounded-sides
+*/
+
 // no simulated hover-effect when focus-visible,
 // because focus-border looks like when same primary color because its spaced away
 const primaryClass = 'bg-(--fc-breezy-primary) text-(--fc-breezy-primary-foreground)'
-const primaryPressableClass = `${primaryClass} hover:bg-(--fc-breezy-primary-hover) ${primaryOutlineFocusClass} ${outlineOffsetClass}`
+const primaryPressableClass = `${primaryClass} hover:bg-(--fc-breezy-primary-hover)`
 const primaryPressableGroupClass = `${primaryClass} group-hover:bg-(--fc-breezy-primary-hover)`
-const primaryButtonClass = `${primaryPressableClass} border-transparent`
+const primaryButtonClass = `${primaryPressableClass} border-transparent ${primaryOutlineFocusClass} ${outlineOffsetClass}`
 
 const secondaryClass = 'text-(--fc-breezy-secondary-foreground) bg-(--fc-breezy-secondary)'
-const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-secondary-hover) ${primaryOutlineFocusClass} -outline-offset-1`
-const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-secondary-border)`
+const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-secondary-hover)`
+const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-secondary-border) ${primaryOutlineFocusClass} -outline-offset-1`
 
 const ghostHoverClass = 'hover:bg-(--fc-breezy-muted)'
 const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-breezy-muted) ${primaryOutlineFocusClass}`
@@ -52,8 +57,8 @@ export const optionParams: EventCalendarOptionParams = {
   primaryOutlineColorClass,
   outlineWidthClass,
   outlineWidthFocusClass,
+  outlineWidthGroupFocusClass,
   outlineOffsetClass,
-  outlineInsetClass,
 
   strongPressableClass: 'bg-(--fc-breezy-strong)',
 

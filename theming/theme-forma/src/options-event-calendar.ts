@@ -315,8 +315,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isToday && data.level && 'relative', // contain narrow top-border
         data.hasNavLink && joinClassNames(
           params.ghostPressableClass,
-          params.primaryOutlineColorClass,
-          params.outlineWidthFocusClass,
           params.outlineInsetClass, // move inside
         )
       ],

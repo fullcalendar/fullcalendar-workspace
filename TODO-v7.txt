@@ -80,13 +80,14 @@ CODE-QUALITY (while going through each theme)
     (better for preserving height for whole slot)
   OUTLINE: props that should be given .(primary|tertiary)OutlineColorClass / .outlineWidthFocusClass:
     eventClass (include outlineWidthClass instead if .isSelected)
+    blockEventClass (if you're using primaryOutlineColorClass, apply .outlineOffsetWidth)
     moreLinkClass
     navLinkClass
     popoverCloseClass
     resourceExpanderClass
-    blockEventClass (if you're using primaryOutlineColorClass, apply .outlineOffsetWidth)
     if using slots.tsx,
       apply .outlineWidthGroupFocusClass to sub-elements
+    dayHeaderInnerClass does NOT need it! already has nav-link. but might need "offset" class
 Demo
   Undo hiding of Year-view for Pulse theme
   Refactor demo code to have view-specific demo subcomponents

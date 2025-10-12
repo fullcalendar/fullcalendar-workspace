@@ -118,8 +118,8 @@ export interface EventCalendarOptionParams {
   primaryOutlineColorClass: string
   outlineWidthClass: string
   outlineWidthFocusClass: string
+  outlineWidthGroupFocusClass: string
   outlineOffsetClass: string // TODO: use this on primary-today-circle
-  outlineInsetClass: string
 
   strongPressableClass: string
 
@@ -222,7 +222,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventColor: params.bgEventColor,
 
       popoverClass: `min-w-50 m-1 ${params.popoverClass}`,
-      popoverCloseClass: 'absolute top-1 end-1',
+      popoverCloseClass: [
+        'absolute top-1 end-1',
+        params.primaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ],
 
       highlightClass: params.highlightClass,
       nonBusinessClass: params.faintBgClass,
@@ -241,7 +245,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : joinClassNames(
               'h-6 px-1 rounded-sm',
               data.dayNumberText ? 'my-3' : 'my-2',
-              data.hasNavLink && params.ghostPressableClass,
+              data.hasNavLink && joinClassNames(
+                params.ghostPressableClass,
+                params.primaryOutlineColorClass,
+                params.outlineWidthFocusClass,
+              ),
             ),
         // TODO: consider isCompact for above scenarios
       ],
@@ -265,7 +273,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
               data.text === data.dayNumberText
                 ? 'w-6 justify-center' // circle
                 : 'px-2', // pill
-              data.hasNavLink ? params.primaryPressableClass : params.primaryClass,
+              data.hasNavLink
+                ? joinClassNames(
+                    params.primaryPressableClass,
+                    params.outlineOffsetClass,
+                  )
+                : params.primaryClass,
             )
           : joinClassNames( // half-pill
               'px-2 rounded-e-sm',
@@ -290,20 +303,25 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       slotLaneClass: `border ${params.mutedBorderColorClass}`,
 
+      moreLinkClass: [
+        params.primaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ],
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
-      eventClass: (data) => [
-        data.isSelected && joinClassNames( // will apply to list-item and block events
-          params.outlineWidthClass, // always shows
-          params.primaryOutlineColorClass,
-        )
+      navLinkClass: [
+        params.primaryOutlineColorClass,
+        params.outlineWidthFocusClass,
       ],
 
-      blockEventClass: [
-        `${params.bgClass} relative group p-px`,
-        params.outlineWidthFocusClass, // only shows on focus
+      eventClass: (data) => [
         params.primaryOutlineColorClass,
+        data.isSelected
+          ? params.outlineWidthClass
+          : params.outlineWidthFocusClass,
       ],
+
+      blockEventClass: `${params.bgClass} relative group p-px`,
       blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) print:bg-white border-(--fc-event-color) not-print:opacity-20',
       blockEventInnerClass: 'relative z-20 text-xs/4 flex', // NOTE: subclass determines direction
       /*
