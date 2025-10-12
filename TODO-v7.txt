@@ -69,6 +69,7 @@ MANUAL TEST
   core: test sticky footer scrollbar on timegrid-pannable/normal, daygrid-pannable/normal
   ensure larger dayCellFormat formats work w/ dayCellInner circles
 CODE-QUALITY (while going through each theme)
+  ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)
   stop concatenating with param classnames. sometimes they're blank
     like `border ${params.borderColorClass}`. many others too
     have AI correct it
@@ -352,6 +353,10 @@ add weekdayText wherever we add dayNumberText
 core?: when timegrid overlapping events, focused event should be top z-index
 core?: control z-index of selected button in button group. always want above others
 timegrid more-link is in strange DOM order, leading to bad tab-index
+kill all hover:no-underline in themes?
+  the developer's responsiblity to prevent overly opinionated inheritance
+  (add to docs?)
+  FYI, they might be adding underline to a[href] or just all `a`
 
 
 Changelog

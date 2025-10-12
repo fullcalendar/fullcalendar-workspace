@@ -74,6 +74,12 @@ export interface EventCalendarOptionParams {
   strongBorderColorClass: string
   nowBorderColorClass: string
 
+  primaryOutlineColorClass: string
+  outlineWidthClass: string
+  outlineWidthFocusClass: string
+  outlineOffsetClass: string
+  outlineInsetClass: string
+
   eventColor: string
   eventContrastColor: string
   bgEventColor: string
@@ -150,13 +156,24 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       tableHeaderClass: (data) => data.isSticky && params.bgClass,
 
-      navLinkClass: 'hover:underline', // TODO: kill
+      navLinkClass: [
+        params.primaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ],
 
+      moreLinkClass: [
+        params.primaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ],
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
       // TODO: fix problem with huge hit area for title
       popoverClass: 'min-w-[220px] ' + params.popoverClass,
-      popoverCloseClass: 'absolute top-2 end-2',
+      popoverCloseClass: [
+        'absolute top-2 end-2',
+        params.primaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ],
 
       inlineWeekNumberClass: (data) => [
         'absolute z-20 top-1 end-0 rounded-s-sm p-1',
@@ -171,7 +188,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       nonBusinessClass: params.faintBgClass,
       highlightClass: params.highlightClass,
 
-      eventClass: (data) => data.event.url && 'hover:no-underline',
+      eventClass: (data) => [
+        'hover:no-underline',
+        params.primaryOutlineColorClass,
+        data.isSelected
+          ? params.outlineWidthClass
+          : params.outlineWidthFocusClass,
+      ],
 
       backgroundEventColorClass: 'bg-(--fc-event-color) brightness-150 opacity-15',
       backgroundEventTitleClass: (data) => [
@@ -186,6 +209,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'border-(--fc-event-color)',
         // TODO: isDragging, isSelected
         'p-px',
+        params.outlineOffsetClass,
       ],
       blockEventColorClass: [
         'absolute inset-0 bg-(--fc-event-color) print:bg-white not-print:opacity-30',
@@ -289,6 +313,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'p-2 flex flex-col', // TODO: adjust padding when isCompact?
         data.isCompact ? xxsTextClass : 'text-xs',
         data.isToday && data.level && 'relative', // contain narrow top-border
+        data.hasNavLink && joinClassNames(
+          params.ghostPressableClass,
+          params.primaryOutlineColorClass,
+          params.outlineWidthFocusClass,
+          params.outlineInsetClass, // move inside
+        )
       ],
 
       dayRowClass: `border ${params.borderColorClass}`,
@@ -386,7 +416,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         // TODO: move to general settings? or always have this type of thing in timeGrid?
         // TODO: keep DRY with timeline rowMoreLink
-        columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.bgClass} ring ${params.bgRingColorClass}`,
+        columnMoreLinkClass: [
+          `relative mb-px p-px rounded-xs ${params.bgClass} ring ${params.bgRingColorClass}`,
+          params.outlineOffsetClass, // just like block events
+        ],
         columnMoreLinkColorClass: `z-0 absolute inset-0 ${params.strongPressableClass} print:bg-white print:border print:border-black`,
         columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
@@ -403,6 +436,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listDayHeaderClass: 'top-0 sticky shrink-0 w-1/4 max-w-40 p-3 flex flex-col',
         listDayHeaderInnerClass: (data) => [
           data.level ? 'text-xs' : ('text-lg' + (data.isToday ? ' font-bold' : '')),
+          data.hasNavLink && 'hover:underline',
         ],
         listDayEventsClass: 'grow min-w-0 flex flex-col items-stretch gap-4 p-4',
 

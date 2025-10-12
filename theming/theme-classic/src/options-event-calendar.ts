@@ -176,7 +176,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       moreLinkClass: joinClassNames(
         params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
-        params.outlineOffsetClass, // just like block events
       ),
       moreLinkInnerClass: `whitespace-nowrap overflow-hidden`,
 
@@ -274,7 +273,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: (data) => data.isCompact ? xxsTextClass : 'py-px text-xs',
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative mb-px p-px rounded-sm ${params.bgClass} ring ${params.bgRingColorClass}`,
+      columnMoreLinkClass: [
+        `relative mb-px p-px rounded-sm ${params.bgClass} ring ${params.bgRingColorClass}`,
+        params.outlineOffsetClass, // just like block events
+      ],
       columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-sm ${params.strongPressableClass} print:bg-white print:border print:border-black`,
       columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
