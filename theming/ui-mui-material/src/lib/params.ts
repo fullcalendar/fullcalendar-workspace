@@ -8,7 +8,7 @@ They often don't look good. And if we use them for semantic purpose other than w
 
 const outlineWidthClass = 'outline-3'
 const outlineWidthFocusClass = 'focus-visible:outline-3'
-const outlineWidthGroupFocusClass = 'focus-visible:outline-3'
+const outlineWidthGroupFocusClass = 'group-focus-visible:outline-3'
 const outlineOffsetClass = 'outline-offset-1'
 const outlineInsetClass = '-outline-offset-1'
 

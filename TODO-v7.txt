@@ -12,6 +12,9 @@ clean+build all:
   pn run postinstall # in case install didn't write tsconfigs
   pn build
 
+BUG: breezy theme uses primary AND tertiary focus-ouline
+BUG: MUI button effects
+BUG: Shadcn button effects
 
 NOW
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)
