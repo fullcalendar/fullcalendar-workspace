@@ -14,12 +14,6 @@ clean+build all:
 
 
 NOW
-  cleanup ALL button-like
-    ensure all have hover and active effects
-    cleanup code in all default-ui themes and mui/shadcn
-  tab-focus
-    should always give hover effect (currently missing on default-ui Monarch today-circle)
-    give tab-focus effect to all mui/shadcn themes
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)
     remove *ColorClass props? YES
     use color-mix for moving closer to foreground/background

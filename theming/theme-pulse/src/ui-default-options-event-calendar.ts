@@ -7,10 +7,18 @@ const bgRingColorClass = 'ring-(--fc-pulse-background)'
 
 const buttonIconClass = 'size-5 text-(--fc-pulse-secondary-icon)' // TODO: add hover-color
 
+const tertiaryOutlineColorClass = 'outline-(--fc-pulse-today)'
+const outlineWidthClass = 'outline-2'
+const outlineWidthFocusClass = 'focus-visible:outline-2'
+const outlineWidthGroupFocusClass = 'group-focus-visible:outline-2'
+const outlineOffsetClass = 'outline-offset-2'
+const outlineInsetClass = '-outline-offset-2'
+const oulineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFocusClass}`
+
 // just for toolbar
 const primaryClass = 'bg-(--fc-pulse-primary) text-(--fc-pulse-primary-foreground)'
 const primaryPressableClass = `${primaryClass} hover:bg-(--fc-pulse-primary-hover) active:bg-(--fc-pulse-primary-active) focus-visible:bg-(--fc-pulse-primary-hover)`
-const primaryButtonClass = `${primaryPressableClass} border-transparent`
+const primaryButtonClass = `${primaryPressableClass} border-transparent ${oulineFocusClass} ${outlineOffsetClass}`
 
 const borderColorClass = 'border-(--fc-pulse-border)'
 const viewBorderColorClass = 'border-(--fc-pulse-view-border)'
@@ -55,9 +63,16 @@ export const optionParams: EventCalendarOptionParams = {
   strongBorderColorClass,
   nowBorderColorClass: 'border-(--fc-pulse-now)',
 
+  tertiaryOutlineColorClass,
+  outlineWidthClass,
+  outlineWidthFocusClass,
+  outlineWidthGroupFocusClass,
+  outlineOffsetClass,
+  outlineInsetClass,
+
   eventColor: 'var(--fc-pulse-event)',
   eventContrastColor: 'var(--fc-pulse-event-contrast)',
-  bgEventColor: 'var(--color-green-500)', // yuck!!!
+  bgEventColor: 'var(--color-green-500)', // TODO: make this a theme variable
   bgEventColorClass: 'brightness-150 opacity-15',
 
   popoverClass: `${bgClass} border ${strongBorderColorClass} rounded-md shadow-md m-1`,
@@ -97,10 +112,10 @@ export const defaultUiEventCalendarOptions: {
     // TODO: make ticket for buttons{}.beforeClass/afterClass, ButtonData.isFirst/isLast
 
     buttonGroupClass: (data) => [
-      'items-center rounded-sm',
+      'isolate items-center rounded-sm',
       data.isSelectGroup
         ? `p-px ${controlBgClass}`
-        : `border ${strongBorderColorClass} ${smallBoxShadowClass} overflow-hidden`
+        : `border ${strongBorderColorClass} ${smallBoxShadowClass}`
     ],
 
     buttonClass: (data) => [
@@ -111,15 +126,18 @@ export const defaultUiEventCalendarOptions: {
         ? joinClassNames(
             'rounded-sm',
             strongFgClass,
+            oulineFocusClass,
             data.isSelected
               // SELECTED select-group button
-              ? `${controlCurrentColorClass} ${largeBoxShadowClass}`
+              ? `${controlCurrentColorClass} ${largeBoxShadowClass} z-10`
               // UN-selected select-group button
-              : ghostPressableClass
+              : `${ghostPressableClass} z-0 focus-visible:z-20`
           )
         // primary/secondary buttons
         : joinClassNames(
-            !data.inGroup && 'rounded-sm',
+            data.inGroup
+              ? 'focus-visible:z-10'
+              : 'rounded-sm',
             data.isPrimary
               // primary
               ? joinClassNames(
@@ -129,9 +147,9 @@ export const defaultUiEventCalendarOptions: {
                 )
               // secondary
               : joinClassNames(
-                  secondaryPressableClass, // no border color...
+                  `${secondaryPressableClass} ${oulineFocusClass}`, // no border color...
                   data.inGroup // border color is conditional...
-                    ? `not-first:border-s ${borderColorClass}` // within group
+                    ? `first:rounded-s-sm last:rounded-e-sm not-first:border-s ${borderColorClass}` // within group
                     : `border ${strongBorderColorClass} ${smallBoxShadowClass}`, // standalone
                 )
           ),

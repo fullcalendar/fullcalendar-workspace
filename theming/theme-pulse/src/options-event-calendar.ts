@@ -52,6 +52,8 @@ TODO: hover color on list-view events
 TODO: give week-numbers an ghost-pressable-effect!
 
 TODO: fix popover header text styling
+
+TODO: improve resourceExpander hover and tab effect
 */
 
 export interface EventCalendarOptionParams {
@@ -71,6 +73,13 @@ export interface EventCalendarOptionParams {
   borderColorClass: string
   strongBorderColorClass: string
   nowBorderColorClass: string
+
+  tertiaryOutlineColorClass: string
+  outlineWidthClass: string
+  outlineWidthFocusClass: string
+  outlineWidthGroupFocusClass: string
+  outlineOffsetClass: string
+  outlineInsetClass: string
 
   eventColor: string
   eventContrastColor: string
@@ -134,7 +143,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       nonBusinessClass: params.faintBgClass,
 
       popoverClass: 'min-w-[220px] ' + params.popoverClass,
-      popoverCloseClass: 'absolute top-2 end-2',
+      popoverCloseClass: [
+        'absolute top-2 end-2',
+        params.tertiaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ],
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
@@ -204,7 +217,23 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       listItemEventInnerClass: params.strongFgClass,
 
+      navLinkClass: [
+        params.tertiaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ],
+
+      moreLinkClass: [
+        params.tertiaryOutlineColorClass,
+        params.outlineWidthFocusClass,
+      ],
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
+
+      eventClass: (data) => [
+        params.tertiaryOutlineColorClass,
+        data.isSelected
+          ? params.outlineWidthClass
+          : params.outlineWidthFocusClass,
+      ],
 
       /*
       TODO: not necessary to have color-class do bg color! we're not doing any transforms
@@ -329,6 +358,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         listDayEventsClass: 'flex flex-col py-4 gap-4',
 
+        listItemEventClass: (data) => [
+          data.isInteractive && params.outlineInsetClass, // move inside,
+          // TODO: faintPressableClass / faintHoverClass
+        ],
         listItemEventInnerClass: '[display:contents]',
         listItemEventTimeClass: 'shrink-0 w-1/2 max-w-60 ps-6 pe-4 py-2 order-[-1] text-sm whitespace-nowrap overflow-hidden text-ellipsis',
         listItemEventTitleClass: 'grow min-w-0 px-4 py-2 text-sm whitespace-nowrap overflow-hidden',

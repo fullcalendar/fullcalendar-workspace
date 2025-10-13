@@ -27,12 +27,19 @@ export function createSlots(
             <span
               key={i}
               className={joinClassNames(
-                'whitespace-pre first:-ms-1 last:-me-1',
+                'whitespace-pre',
                 (textPart.type === 'day' && data.isToday)
                   ? joinClassNames(
-                    'size-7 flex flex-row items-center justify-center', // h-align-text
+                    'size-7 first:-ms-1 last:-me-1 flex flex-row items-center justify-center', // h-align-text
                     'rounded-full font-semibold',
-                    data.hasNavLink ? params.tertiaryPressableGroupClass : params.tertiaryClass,
+                    data.hasNavLink
+                      ? joinClassNames(
+                          params.tertiaryPressableGroupClass,
+                          params.tertiaryOutlineColorClass,
+                          params.outlineWidthGroupFocusClass,
+                          params.outlineOffsetClass,
+                        )
+                      : params.tertiaryClass,
                   )
                   : params.mutedFgClass,
               )}
@@ -52,12 +59,19 @@ export function createSlots(
             <span
               key={i}
               className={joinClassNames(
-                'whitespace-pre first:-ms-1 last:-me-1',
+                'whitespace-pre',
                 (textPart.type === 'day' && data.isToday)
                   ? joinClassNames(
-                    'size-6 flex flex-row items-center justify-center', // h-align-text
+                    'size-6 first:-ms-1 last:-me-1 flex flex-row items-center justify-center', // h-align-text
                     'rounded-full font-semibold',
-                    data.hasNavLink ? params.tertiaryPressableGroupClass : params.tertiaryClass,
+                    data.hasNavLink
+                      ? joinClassNames(
+                          params.tertiaryPressableGroupClass,
+                          params.tertiaryOutlineColorClass,
+                          params.outlineWidthGroupFocusClass,
+                          params.outlineOffsetClass,
+                        )
+                      : params.tertiaryClass,
                   )
                   : params.mutedFgClass,
               )}

@@ -349,9 +349,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listItemEventClass: (data) => [
           'group gap-3 border-b',
           params.borderColorClass,
-          data.isInteractive ? params.faintPressableClass : params.faintHoverClass,
           listViewItemPaddingClass,
-          params.outlineInsetClass, // move inside
+          data.isInteractive
+            ? joinClassNames(
+                params.faintPressableClass,
+                params.outlineInsetClass, // move inside
+              )
+            : params.faintHoverClass,
         ],
         listItemEventColorClass: 'border-5', // 10px diameter
         listItemEventInnerClass: '[display:contents]',
