@@ -57,7 +57,7 @@ export const optionParams: ThemeOptionParams = {
   ghostPressableGroupClass,
 
   // TODO
-  strongPressableClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+  strongSolidPressableClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
 
   // TODO
   mutedClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]',

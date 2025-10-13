@@ -35,6 +35,8 @@ can maybe remove some dark-mode colors. repeat of what's in light mode
   --fc-pulse-background: #fff;
 
   --fc-pulse-strong: color-mix(in oklab, var(--color-black) 12%, transparent); /* TODO */
+  --fc-pulse-strong-hover: color-mix(in oklab, var(--color-black) 16%, transparent); /* TODO */
+  --fc-pulse-strong-active: color-mix(in oklab, var(--color-black) 20%, transparent); /* TODO */
   --fc-pulse-muted: color-mix(in oklab, var(--color-black) 7%, transparent); /* TODO */
   --fc-pulse-faint: color-mix(in oklab, var(--color-black) 3%, transparent); /* TODO */
   --fc-pulse-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
@@ -58,6 +60,8 @@ can maybe remove some dark-mode colors. repeat of what's in light mode
   --fc-pulse-background: var(--color-gray-950);
 
   --fc-pulse-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
+  --fc-pulse-strong-hover: color-mix(in oklab, var(--color-white) 16%, transparent); /* TODO */
+  --fc-pulse-strong-active: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
   --fc-pulse-muted: color-mix(in oklab, var(--color-white) 7%, transparent); /* TODO */
   --fc-pulse-faint: color-mix(in oklab, var(--color-white) 3%, transparent); /* TODO */
   --fc-pulse-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);

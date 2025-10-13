@@ -11,7 +11,6 @@ TODO: do primary-button hover effect on today-cirle too
 TODO: prev/next icons look a little too faint
 */
 
-const strongPressableClass = 'bg-(--fc-forma-strong)'
 const borderColorClass = 'border-(--fc-forma-border)'
 
 const primaryOutlineColorClass = 'outline-(--fc-forma-primary)'
@@ -64,7 +63,11 @@ export const optionParams: EventCalendarOptionParams = {
 
   mutedClass,
   mutedPressableClass,
-  strongPressableClass,
+  strongSolidPressableClass: joinClassNames(
+    '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]',
+    'hover:[background:linear-gradient(var(--fc-forma-strong-hover),var(--fc-forma-strong-hover))_var(--fc-monarch-background)]',
+    'active:[background:linear-gradient(var(--fc-forma-strong-active),var(--fc-forma-strong-active))_var(--fc-monarch-background)]',
+  ),
 
   faintBgClass: 'bg-(--fc-forma-faint)',
   highlightClass: 'bg-(--fc-forma-highlight)',

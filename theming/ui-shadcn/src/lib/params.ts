@@ -46,7 +46,7 @@ export const optionParams: ThemeOptionParams = {
   ghostPressableGroupClass,
 
   // TODO
-  strongPressableClass: 'bg-foreground/15',
+  strongSolidPressableClass: 'bg-foreground/15',
 
   // TODO
   mutedClass: 'bg-foreground/5',

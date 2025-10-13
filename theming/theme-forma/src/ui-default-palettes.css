@@ -15,6 +15,8 @@ down = mousedown (active)
   TODO: ensure below values have same hue!
   */
   --fc-forma-strong: color-mix(in oklab, var(--color-black) 12%, transparent); /* TODO */
+  --fc-forma-strong-hover: color-mix(in oklab, var(--color-black) 16%, transparent); /* TODO */
+  --fc-forma-strong-active: color-mix(in oklab, var(--color-black) 20%, transparent); /* TODO */
   --fc-forma-muted: color-mix(in oklab, var(--color-black) 7%, transparent); /* TODO */
   --fc-forma-faint: color-mix(in oklab, var(--color-black) 3%, transparent); /* TODO */
   --fc-forma-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
@@ -48,6 +50,8 @@ down = mousedown (active)
   TODO: ensure below values have same hue!
   */
   --fc-forma-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
+  --fc-forma-strong-hover: color-mix(in oklab, var(--color-white) 16%, transparent); /* TODO */
+  --fc-forma-strong-active: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
   --fc-forma-muted: color-mix(in oklab, var(--color-white) 7%, transparent); /* TODO */
   --fc-forma-faint: color-mix(in oklab, var(--color-white) 3%, transparent); /* TODO */
   --fc-forma-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);

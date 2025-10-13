@@ -60,7 +60,7 @@ export interface EventCalendarOptionParams {
   ghostHoverClass: string
   ghostPressableClass: string
 
-  strongPressableClass: string
+  strongSolidPressableClass: string
 
   mutedClass: string
   mutedPressableClass: string
@@ -419,10 +419,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         // TODO: move to general settings? or always have this type of thing in timeGrid?
         // TODO: keep DRY with timeline rowMoreLink
         columnMoreLinkClass: [
-          `relative mb-px p-px rounded-xs ${params.bgClass} ring ${params.bgRingColorClass}`,
+          `relative mb-px p-px rounded-xs ${params.strongSolidPressableClass} print:bg-white print:border print:border-black ring ${params.bgRingColorClass}`,
           params.outlineOffsetClass, // just like block events
         ],
-        columnMoreLinkColorClass: `z-0 absolute inset-0 ${params.strongPressableClass} print:bg-white print:border print:border-black`,
         columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
 
         slotLabelClass: axisClass,

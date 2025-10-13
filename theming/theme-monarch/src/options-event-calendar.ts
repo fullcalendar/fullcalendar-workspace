@@ -51,7 +51,7 @@ export interface EventCalendarOptionParams {
   ghostPressableClass: string
   ghostPressableGroupClass: string
 
-  strongPressableClass: string
+  strongSolidPressableClass: string
 
   tertiaryOutlineColorClass: string
   outlineWidthClass: string
@@ -284,7 +284,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleSticky: false, // because time below title, sticky looks bad
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.strongPressableClass} print:bg-white print:border print:border-black ring ${params.bgRingColorClass}`,
+      columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.strongSolidPressableClass} print:bg-white print:border print:border-black ring ${params.bgRingColorClass}`,
       columnMoreLinkInnerClass: 'p-0.5 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,

@@ -64,7 +64,7 @@ export interface EventCalendarOptionParams {
   ghostHoverClass: string
   ghostPressableClass: string // needed anymore?
 
-  strongPressableClass: string
+  strongSolidPressableClass: string
 
   mutedBgClass: string
   faintBgClass: string
@@ -289,8 +289,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: 'px-2 py-1 font-medium',
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative m-0.5 p-px rounded-lg ${params.bgClass} ring ${params.bgRingColorClass}`,
-      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.strongPressableClass} print:bg-white print:border print:border-black`,
+      columnMoreLinkClass: `relative m-0.5 p-px rounded-lg ${params.strongSolidPressableClass} print:bg-white print:border print:border-black ring ${params.bgRingColorClass}`,
       columnMoreLinkInnerClass: `z-10 p-0.5 text-xs ${params.strongFgClass}`,
 
       allDayHeaderClass: 'items-center', // v-align

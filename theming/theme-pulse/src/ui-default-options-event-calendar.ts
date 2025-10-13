@@ -53,7 +53,11 @@ export const optionParams: EventCalendarOptionParams = {
   ghostHoverClass,
   ghostPressableClass,
 
-  strongPressableClass: 'bg-(--fc-pulse-strong)',
+  strongSolidPressableClass: joinClassNames(
+    '[background:linear-gradient(var(--fc-pulse-strong),var(--fc-pulse-strong))_var(--fc-pulse-background)]',
+    'hover:[background:linear-gradient(var(--fc-pulse-strong-hover),var(--fc-pulse-strong-hover))_var(--fc-pulse-background)]',
+    'active:[background:linear-gradient(var(--fc-pulse-strong-active),var(--fc-pulse-strong-active))_var(--fc-pulse-background)]',
+  ),
 
   mutedBgClass: 'bg-(--fc-pulse-muted)',
   faintBgClass: 'bg-(--fc-pulse-faint)',

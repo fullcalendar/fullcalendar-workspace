@@ -56,7 +56,7 @@ export const optionParams: EventCalendarOptionParams = {
   ghostPressableClass,
   ghostPressableGroupClass,
 
-  strongPressableClass: joinClassNames(
+  strongSolidPressableClass: joinClassNames(
     '[background:linear-gradient(var(--fc-monarch-strong),var(--fc-monarch-strong))_var(--fc-monarch-background)]',
     'hover:[background:linear-gradient(var(--fc-monarch-strong-hover),var(--fc-monarch-strong-hover))_var(--fc-monarch-background)]',
     'active:[background:linear-gradient(var(--fc-monarch-strong-active),var(--fc-monarch-strong-active))_var(--fc-monarch-background)]',

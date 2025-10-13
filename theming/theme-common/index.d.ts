@@ -22,7 +22,7 @@ export interface ThemeOptionParams {
 
   // strong button-like
   // NOTE: assumed "solid". rename?
-  strongPressableClass: string
+  strongSolidPressableClass: string
 
   // muted button-like
   mutedClass: string

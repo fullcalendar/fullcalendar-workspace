@@ -4,6 +4,8 @@
   --fc-breezy-background: var(--color-white);
   /* TODO: re-match these colors to tailwindplus -- ensure toolbar button ghost-hovering too */
   --fc-breezy-strong: color-mix(in oklab, var(--color-black) 10%, transparent); /* TODO */
+  --fc-breezy-strong-hover: color-mix(in oklab, var(--color-black) 14%, transparent); /* TODO */
+  --fc-breezy-strong-active: color-mix(in oklab, var(--color-black) 18%, transparent); /* TODO */
   --fc-breezy-muted: color-mix(in oklab, var(--color-black) 5%, transparent); /* TODO */
   --fc-breezy-faint: color-mix(in oklab, var(--color-black) 2%, transparent); /* TODO */
   --fc-breezy-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
@@ -43,6 +45,8 @@
   --fc-breezy-background: var(--color-gray-900);
   /* TODO: re-match these colors to tailwindplus */
   --fc-breezy-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
+  --fc-breezy-strong-hover: color-mix(in oklab, var(--color-white) 16%, transparent); /* TODO */
+  --fc-breezy-strong-active: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
   --fc-breezy-muted: color-mix(in oklab, var(--color-white) 7%, transparent); /* TODO */
   --fc-breezy-faint: color-mix(in oklab, var(--color-white) 3%, transparent); /* TODO */
   --fc-breezy-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);

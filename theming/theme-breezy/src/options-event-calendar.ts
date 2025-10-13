@@ -121,7 +121,7 @@ export interface EventCalendarOptionParams {
   outlineWidthGroupFocusClass: string
   outlineOffsetClass: string // TODO: use this on primary-today-circle
 
-  strongPressableClass: string
+  strongSolidPressableClass: string
 
   mutedBgClass: string
   faintBgClass: string
@@ -383,8 +383,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: 'px-2 py-1 font-semibold',
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative p-px rounded-md ${params.bgClass} ring ${params.bgRingColorClass}`,
-      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-lg ${params.strongPressableClass} print:bg-white print:border print:border-black`,
+      columnMoreLinkClass: `relative p-px rounded-md ${params.strongSolidPressableClass} print:bg-white print:border print:border-black ring ${params.bgRingColorClass}`,
       columnMoreLinkInnerClass: `z-1 p-0.5 text-xs/4 ${params.fgClass}`,
       // TODO: see columnMoreLinkClass in timeGrid below...
 

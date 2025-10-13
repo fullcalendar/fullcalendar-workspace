@@ -26,7 +26,7 @@ export const optionParams: EventCalendarOptionParams = {
   faintHoverClass,
   faintPressableClass,
 
-  strongPressableClass: 'bg-(--fc-classic-strong)',
+  strongSolidPressableClass: '[background:linear-gradient(var(--fc-classic-strong),var(--fc-classic-strong))_var(--fc-classic-background)]',
 
   primaryOutlineColorClass,
   outlineWidthClass,
