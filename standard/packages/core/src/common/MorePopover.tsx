@@ -94,6 +94,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       view: viewApi,
       text: '',
       textParts: [],
+      options: { businessHours: Boolean(options.businessHours) },
     }
 
     const fullDateStr = formatDayString(startDate)

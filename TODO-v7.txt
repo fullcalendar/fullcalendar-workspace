@@ -26,14 +26,6 @@ NOW
       }
       If we want to do shorthand w/ single color stop
         https://caniuse.com/mdn-css_types_gradient_linear-gradient_single_color_stop
-  layering disabled + business-hours looks bad
-    RELEVANT to Forma and Breezy
-    TODO: if ANY business-hours specified, disabled days should do dimmed-daynumber instead of bg color
-      dayCell: ((data.isOther || data.isDisabled) && !data.options.businessHours) && 'bg-gray'
-      dayCellTop: !((data.isOther || data.isDisabled) && !data.options.businessHours) && 'opacity-50' // only relevant to Forma
-      Is opacity the correct thing to be setting?
-        Actually, i think we should always set text color, so that the isToday circle is accurate color
-        Good to use a real mutedTextColor so that it matches with other parts of the UI
   hover effects for all event-link content
     implement strongPressableClass for more-links
     give all block-events a hover effect

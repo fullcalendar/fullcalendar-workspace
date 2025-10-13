@@ -258,7 +258,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayCellClass: (data) => [
         'border',
-        (data.isOther || data.isDisabled) && params.faintBgClass,
+        // don't display bg-color for other-month/disabled cells when businessHours is doing the same
+        ((data.isOther || data.isDisabled) && !data.options.businessHours) && params.faintBgClass,
       ],
       dayCellTopClass: (data) => [
         data.isOther && 'opacity-75',

@@ -91,6 +91,7 @@ export const optionParams: EventCalendarOptionParams = {
   bgRingColorClass: 'ring-(--fc-forma-background)',
 
   mutedFgClass,
+  faintFgClass: 'text-(--fc-forma-faint-foreground)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

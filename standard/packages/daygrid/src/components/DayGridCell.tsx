@@ -114,6 +114,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
       dateEnv: context.dateEnv,
       monthStartFormat: options.monthStartFormat,
       dayCellFormat: options.dayCellFormat,
+      businessHours: Boolean(options.businessHours),
     })
 
     if (dateMeta.isDisabled) {
@@ -291,11 +292,12 @@ interface DayCellRenderPropsInput {
   hasLabel: boolean
   hasMonthLabel: boolean
   hasNavLink: boolean
+  businessHours: boolean
   renderProps?: Dictionary // so can include a resource
 }
 
 function refineRenderProps(raw: DayCellRenderPropsInput): DayCellData {
-  let { date, dateEnv, hasLabel, hasMonthLabel, hasNavLink } = raw
+  let { date, dateEnv, hasLabel, hasMonthLabel, hasNavLink, businessHours } = raw
   let [text, textParts] = hasLabel
     ? dateEnv.format(date, hasMonthLabel ? raw.monthStartFormat : raw.dayCellFormat)
     : ['', []]
@@ -315,6 +317,7 @@ function refineRenderProps(raw: DayCellRenderPropsInput): DayCellData {
       return findDayNumberText(textParts) ||
         dateEnv.format(date, DAY_NUMBER_ONLY_FORMAT)[0]
     },
+    options: { businessHours },
     view: raw.viewApi,
   }
 }

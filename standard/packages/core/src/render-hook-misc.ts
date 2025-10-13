@@ -57,6 +57,7 @@ export interface DayCellData extends DateMeta {
   textParts: Intl.DateTimeFormatPart[]
   // weekdayText: string // TODO?
   dayNumberText: string
+  options: { businessHours: boolean }
   [extraProp: string]: any // so can include a resource
 }
 

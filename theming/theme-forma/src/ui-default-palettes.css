@@ -36,6 +36,7 @@ down = mousedown (active)
   --fc-forma-secondary-icon: #424242;
 
   --fc-forma-muted-foreground: var(--color-gray-500);
+  --fc-forma-faint-foreground: var(--color-gray-400);
 }
 [data-color-scheme=dark] {
   --fc-forma-background: var(--color-gray-950);
@@ -68,6 +69,7 @@ down = mousedown (active)
   --fc-forma-secondary-icon: #BDBDBD;
 
   --fc-forma-muted-foreground: var(--color-gray-500);
+  --fc-forma-faint-foreground: var(--color-gray-600);
 }
 
 [data-palette=blue] {

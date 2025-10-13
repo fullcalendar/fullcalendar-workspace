@@ -91,6 +91,7 @@ export interface EventCalendarOptionParams {
   bgRingColorClass: string
 
   mutedFgClass: string
+  faintFgClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -322,11 +323,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayRowClass: `border ${params.borderColorClass}`,
       dayCellClass: (data) => [
         data.isMajor ? `border ${params.strongBorderColorClass}` : `border ${params.borderColorClass}`,
-        (data.isDisabled || data.isOther) && params.faintBgClass,
+        // don't display bg-color for other-month/disabled cells when businessHours is doing the same
+        ((data.isOther || data.isDisabled) && !data.options.businessHours) && params.faintBgClass,
       ],
-      dayCellTopClass: [
+      dayCellTopClass: (data) => [
         'flex flex-row',
         'min-h-[2px]', // effectively 2px top padding when no day-number
+        // then businessHours owns the cell bg-color, use faint-text to denote other-month/disabled
+        ((data.isOther || data.isDisabled) && data.options.businessHours) && params.faintFgClass,
       ],
       dayCellTopInnerClass: (data) => [
         'my-1 h-6 flex flex-row items-center',
