@@ -28,17 +28,8 @@ BUG: check dark-mode popovers don't have *transparent* background
 NOW
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)
     remove *ColorClass props? YES
-      if so, can remove some *Inner classes like columnMoreLinkInnerClass?
     use color-mix for moving closer to foreground/background
       use reasonable fallback when unsupported
-    use linear-gradient for alpha-compositing (for sticky listDayHeader)
-      .my-box {
-        background:
-          linear-gradient(var(--fc-monarch-muted), var(--fc-monarch-muted)), /* overlay */
-          var(--fc-monarch-background); /* base */
-      }
-      If we want to do shorthand w/ single color stop
-        https://caniuse.com/mdn-css_types_gradient_linear-gradient_single_color_stop
   give all block-events a hover effect
   Shadcn background-events
     use equiv of muted-bg for backgroundevent color (will be darker than non-business-hours, yay!)
@@ -979,3 +970,7 @@ How to manipulate MUI colors when there's no cssVariables enabled
   otherwise
     (theme) => alpha(muiTheme.palette.warning.main, 0.1)
     // or maybe just parse the color values like rgab(r, g, b, a) and change the a
+We use linear-gradient trick to do alpha-compositing,
+  and we need to specify BOTH args in linear-gradient.
+  eventually we can save space and just pass one when browser suppor it:
+  https://caniuse.com/mdn-css_types_gradient_linear-gradient_single_color_stop

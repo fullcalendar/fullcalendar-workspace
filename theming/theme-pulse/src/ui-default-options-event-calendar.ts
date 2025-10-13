@@ -60,6 +60,7 @@ export const optionParams: EventCalendarOptionParams = {
   ),
 
   mutedBgClass: 'bg-(--fc-pulse-muted)',
+  mutedSolidBgClass: '[background:linear-gradient(var(--fc-pulse-muted),var(--fc-pulse-muted))_var(--fc-pulse-background)]',
   faintBgClass: 'bg-(--fc-pulse-faint)',
   highlightClass: 'bg-(--fc-pulse-highlight)',
 
