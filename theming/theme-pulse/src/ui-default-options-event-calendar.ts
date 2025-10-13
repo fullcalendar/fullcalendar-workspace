@@ -2,39 +2,40 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
+const bgClass = 'bg-(--fc-pulse-background)'
+const bgRingColorClass = 'ring-(--fc-pulse-background)'
+
 const buttonIconClass = 'size-5 text-(--fc-pulse-secondary-icon)' // TODO: add hover-color
 
-// TODO: hover color
-const primaryButtonBgColorClass = 'bg-(--fc-pulse-primary)'
-const primaryButtonBorderColorClass = 'border-(--fc-pulse-primary)'
-const primaryButtonTextColorClass = 'text-(--fc-pulse-primary-foreground)'
+// just for toolbar
+const primaryClass = 'bg-(--fc-pulse-primary) text-(--fc-pulse-primary-foreground)'
+const primaryPressableClass = `${primaryClass} hover:bg-(--fc-pulse-primary-hover) active:bg-(--fc-pulse-primary-active) focus-visible:bg-(--fc-pulse-primary-hover)`
+const primaryButtonClass = `${primaryPressableClass} border-transparent`
 
 const borderColorClass = 'border-(--fc-pulse-border)'
 const viewBorderColorClass = 'border-(--fc-pulse-view-border)'
 const strongBorderColorClass = 'border-(--fc-pulse-strong-border)'
 
-const smallBoxShadowClass = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
-const largeBoxShadowClass = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
-
-const mutedFgClass = 'text-(--fc-pulse-muted-foreground)'
 const fgClass = 'text-(--fc-pulse-foreground)'
+const mutedFgClass = 'text-(--fc-pulse-muted-foreground)'
 const strongFgClass = 'text-(--fc-pulse-strong-foreground)'
 
-/*
-TODO: use these colors!!!
-   --card: oklch(1 0 0);
-   --card-foreground: oklch(0.145 0 0);
-   --popover: oklch(1 0 0);
-   --popover-foreground: oklch(0.145 0 0);
-*/
-
-// TODO: rethink CSS variable names!
 const tertiaryClass = 'bg-(--fc-pulse-today) text-(--fc-pulse-today-foreground)'
-const tertiaryPressableClass = tertiaryClass // TODO: effect!
-const tertiaryPressableGroupClass = tertiaryClass // TODO: effect! AND group-focus!!!
+const tertiaryPressableClass = `${tertiaryClass} hover:bg-(--fc-pulse-today-hover) active:bg-(--fc-pulse-today-active) focus-visible:bg-(--fc-pulse-today-hover)`
+const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-(--fc-pulse-today-hover) group-active:bg-(--fc-pulse-today-active) group-focus-visible:bg-(--fc-pulse-today-hover)`
 
-const ghostHoverClass = 'hover:bg-(--fc-pulse-glassy)'
-const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-pulse-strong) focus-visible:bg-(--fc-pulse-glassy)`
+const ghostHoverClass = 'hover:bg-(--fc-pulse-muted)'
+const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-pulse-strong) focus-visible:bg-(--fc-pulse-muted)`
+
+const controlBgClass = 'bg-(--fc-pulse-tab)'
+const controlCurrentColorClass = 'bg-(--fc-pulse-tab-selected)'
+const controlHoverColorClass = 'hover:bg-(--fc-pulse-tab-hover)'
+
+// just for toolbar
+const secondaryPressableClass = `${bgClass} ${strongFgClass} ${controlHoverColorClass}`
+
+const smallBoxShadowClass = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
+const largeBoxShadowClass = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 
 export const optionParams: EventCalendarOptionParams = {
   tertiaryClass,
@@ -46,8 +47,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   strongPressableClass: 'bg-(--fc-pulse-strong)',
 
-  mutedBgClass: 'bg-(--fc-pulse-muted)', // TODO
-  faintBgClass: 'bg-(--fc-pulse-muted)', // TODO
+  mutedBgClass: 'bg-(--fc-pulse-muted)',
+  faintBgClass: 'bg-(--fc-pulse-faint)',
   highlightClass: 'bg-(--fc-pulse-highlight)',
 
   borderColorClass,
@@ -59,19 +60,15 @@ export const optionParams: EventCalendarOptionParams = {
   bgEventColor: 'var(--color-green-500)', // yuck!!!
   bgEventColorClass: 'brightness-150 opacity-15',
 
-  popoverClass: `bg-(--fc-pulse-background) border ${strongBorderColorClass} rounded-md shadow-md m-1`,
+  popoverClass: `${bgClass} border ${strongBorderColorClass} rounded-md shadow-md m-1`,
 
-  bgClass: 'bg-(--fc-pulse-background)',
-  bgRingColorClass: 'ring-(--fc-pulse-background)',
+  bgClass,
+  bgRingColorClass,
 
   fgClass,
   strongFgClass,
   mutedFgClass,
 }
-
-const controlBgClass = 'bg-(--fc-pulse-tab)'
-const controlCurrentColorClass = 'bg-(--fc-pulse-tab-selected)'
-const controlHoverColorClass = 'hover:bg-(--fc-pulse-tab-hover)'
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
 
@@ -86,7 +83,7 @@ export const defaultUiEventCalendarOptions: {
 
     viewClass: [
       'rounded-sm overflow-hidden',
-      `${optionParams.bgClass} border ${viewBorderColorClass} ${smallBoxShadowClass}`,
+      `${bgClass} border ${viewBorderColorClass} ${smallBoxShadowClass}`,
       // ^^^ border needs more contrast bc of drop shadow, and to match controls
     ],
 
@@ -118,7 +115,7 @@ export const defaultUiEventCalendarOptions: {
               // SELECTED select-group button
               ? `${controlCurrentColorClass} ${largeBoxShadowClass}`
               // UN-selected select-group button
-              : optionParams.ghostPressableClass
+              : ghostPressableClass
           )
         // primary/secondary buttons
         : joinClassNames(
@@ -126,13 +123,14 @@ export const defaultUiEventCalendarOptions: {
             data.isPrimary
               // primary
               ? joinClassNames(
-                  `${primaryButtonBorderColorClass} ${primaryButtonBgColorClass} ${primaryButtonTextColorClass}`,
+                  primaryButtonClass,
+                  'border',
                   !data.inGroup && largeBoxShadowClass, // standalone
                 )
               // secondary
               : joinClassNames(
-                  `${optionParams.bgClass} ${strongFgClass} ${controlHoverColorClass}`,
-                  data.inGroup
+                  secondaryPressableClass, // no border color...
+                  data.inGroup // border color is conditional...
                     ? `not-first:border-s ${borderColorClass}` // within group
                     : `border ${strongBorderColorClass} ${smallBoxShadowClass}`, // standalone
                 )

@@ -21,13 +21,22 @@ DARK-MODE:
     (whereas light mode is always white)
 
 NOTICE: many of these colors are rgbA
+
+TODO: use these colors!!!
+   --card: oklch(1 0 0);
+   --card-foreground: oklch(0.145 0 0);
+   --popover: oklch(1 0 0);
+   --popover-foreground: oklch(0.145 0 0);
+
+can maybe remove some dark-mode colors. repeat of what's in light mode
 */
 
 :root {
   --fc-pulse-background: #fff;
-  --fc-pulse-muted: var(--color-gray-100); /* TODO: do warmer tone like other colors */
-  --fc-pulse-glassy: #7d7d7d17;
-  --fc-pulse-strong: var(--color-gray-300);
+
+  --fc-pulse-strong: color-mix(in oklab, var(--color-black) 12%, transparent); /* TODO */
+  --fc-pulse-muted: color-mix(in oklab, var(--color-black) 7%, transparent); /* TODO */
+  --fc-pulse-faint: color-mix(in oklab, var(--color-black) 3%, transparent); /* TODO */
   --fc-pulse-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
   --fc-pulse-now: red; /* TODO: better */
 
@@ -47,9 +56,10 @@ NOTICE: many of these colors are rgbA
 }
 [data-color-scheme=dark] {
   --fc-pulse-background: var(--color-gray-950);
-  --fc-pulse-muted: var(--color-gray-900);
-  --fc-pulse-glassy: #ffffff17;
-  --fc-pulse-strong: var(--color-gray-700);
+
+  --fc-pulse-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
+  --fc-pulse-muted: color-mix(in oklab, var(--color-white) 7%, transparent); /* TODO */
+  --fc-pulse-faint: color-mix(in oklab, var(--color-white) 3%, transparent); /* TODO */
   --fc-pulse-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
   --fc-pulse-now: red; /* TODO: better */
 
@@ -61,7 +71,7 @@ NOTICE: many of these colors are rgbA
   --fc-pulse-strong-border: #4a5568;
   --fc-pulse-view-border: #2d3748;
 
-  --fc-pulse-tab: var(--fc-pulse-glassy);
+  --fc-pulse-tab: var(--fc-pulse-strong);
   --fc-pulse-tab-hover: #7e8aa0;
   --fc-pulse-tab-selected: #505b70;
 
@@ -71,8 +81,12 @@ NOTICE: many of these colors are rgbA
 [data-palette=red] {
   --fc-pulse-primary: #d32d50; /* slightly darker than "today" color */
   --fc-pulse-primary-foreground: #fff;
+  --fc-pulse-primary-hover: color-mix(in oklab, var(--fc-pulse-primary) 90%, white);
+  --fc-pulse-primary-active: color-mix(in oklab, var(--fc-pulse-primary) 80%, white);
 
   --fc-pulse-today: #fd453b;
+  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, black);
+  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, black);
   --fc-pulse-today-foreground: #fff;
 
   --fc-pulse-event: #631515;
@@ -80,13 +94,19 @@ NOTICE: many of these colors are rgbA
 }
 [data-palette=red][data-color-scheme=dark] {
   --fc-pulse-today: #fd4539;
+  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, black);
+  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, black);
 }
 
 [data-palette=blue] {
   --fc-pulse-primary: #117aff;
   --fc-pulse-primary-foreground: #fff;
+  --fc-pulse-primary-hover: color-mix(in oklab, var(--fc-pulse-primary) 90%, white);
+  --fc-pulse-primary-active: color-mix(in oklab, var(--fc-pulse-primary) 80%, white);
 
   --fc-pulse-today: var(--fc-pulse-primary);
+  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, white);
+  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, white);
   --fc-pulse-today-foreground: var(--fc-pulse-primary-foreground);
 
   --fc-pulse-event: #012e66;
@@ -94,13 +114,19 @@ NOTICE: many of these colors are rgbA
 }
 [data-palette=blue][data-color-scheme=dark] {
   --fc-pulse-today: #1284ff;
+  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, white);
+  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, white);
 }
 
 [data-palette=purple] {
   --fc-pulse-primary: #ad46ff;
   --fc-pulse-primary-foreground: #fff;
+  --fc-pulse-primary-hover: color-mix(in oklab, var(--fc-pulse-primary) 90%, white);
+  --fc-pulse-primary-active: color-mix(in oklab, var(--fc-pulse-primary) 80%, white);
 
   --fc-pulse-today: var(--fc-pulse-primary);
+  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, white);
+  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, white);
   --fc-pulse-today-foreground: var(--fc-pulse-primary-foreground);
 
   --fc-pulse-event: #430575;
@@ -110,8 +136,12 @@ NOTICE: many of these colors are rgbA
 [data-palette=green] {
   --fc-pulse-primary: #26a546; /* slightly darker than "today" color */
   --fc-pulse-primary-foreground: #fff;
+  --fc-pulse-primary-hover: color-mix(in oklab, var(--fc-pulse-primary) 90%, white);
+  --fc-pulse-primary-active: color-mix(in oklab, var(--fc-pulse-primary) 80%, white);
 
   --fc-pulse-today: #34c759;
+  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, white);
+  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, white);
   --fc-pulse-today-foreground: #fff;
 
   --fc-pulse-event: #084b19;
@@ -119,4 +149,6 @@ NOTICE: many of these colors are rgbA
 }
 [data-palette=green][data-color-scheme=dark] {
   --fc-pulse-today: #30d157;
+  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, white);
+  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, white);
 }

@@ -57,10 +57,10 @@ TODO: fix popover header text styling
 export interface EventCalendarOptionParams {
   tertiaryClass: string
   tertiaryPressableClass: string
+  tertiaryPressableGroupClass: string
 
   ghostHoverClass: string
   ghostPressableClass: string // needed anymore?
-  tertiaryPressableGroupClass: string
 
   strongPressableClass: string
 
