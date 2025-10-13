@@ -64,6 +64,7 @@ export const optionParams: ThemeOptionParams = {
   outlineInsetClass,
 
   mutedBgClass: 'bg-foreground/5', // semi-transparent version of bg-muted
+  mutedSolidBgClass: 'bg-muted',
   faintBgClass: 'bg-foreground/3', // semi-transparent version of bg-sidebar
   highlightClass: 'bg-primary opacity-10', // TODO: use /10 instead of opacity on element?
   todayBgNotPrintClass: 'not-print:bg-yellow-400/15 dark:bg-yellow-200/10',

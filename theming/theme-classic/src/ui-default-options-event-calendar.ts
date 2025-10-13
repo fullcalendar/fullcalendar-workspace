@@ -35,6 +35,7 @@ export const optionParams: EventCalendarOptionParams = {
   outlineInsetClass,
 
   mutedBgClass: 'bg-(--fc-classic-muted)',
+  mutedSolidBgClass: '[background:linear-gradient(var(--fc-classic-muted),var(--fc-classic-muted))_var(--fc-classic-background)]',
   faintBgClass: 'bg-(--fc-classic-faint)',
   highlightClass: 'bg-(--fc-classic-highlight)',
   todayBgNotPrintClass: 'not-print:bg-(--fc-classic-today)',

@@ -23,6 +23,7 @@ export interface EventCalendarOptionParams {
   outlineInsetClass: string
 
   mutedBgClass: string
+  mutedSolidBgClass: string
   faintBgClass: string
   highlightClass: string
   todayBgNotPrintClass: string
@@ -342,8 +343,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         nowIndicatorLineClass: `border-t ${params.nowBorderColorClass}`,
       },
       list: {
-        listDayHeaderClass: `sticky z-10 top-0 flex flex-row justify-between border-b ${params.borderColorClass} ${params.bgClass}`,
-        listDayHeaderColorClass: `absolute z-0 inset-0 ${params.mutedBgClass}`,
+        listDayHeaderClass: `sticky z-10 top-0 flex flex-row justify-between border-b ${params.borderColorClass} ${params.mutedSolidBgClass}`,
         listDayHeaderInnerClass: `z-10 ${listViewItemPaddingClass} text-sm font-bold`, // TODO: z-10
 
         listItemEventClass: (data) => [

@@ -28,10 +28,10 @@ const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-tertiary-fo
 const tertiaryPressableClass = `${tertiaryClass} ${pressableConfigClass}`
 const tertiaryPressableGroupClass = `${tertiaryClass} ${pressableConfigGroupClass} ${tertiaryOutlineFocusClass}`
 
-const ghostHoverClass = 'hover:bg-(--fc-monarch-muted-wash)'
-const ghostHoverGroupClass = 'group-hover:bg-(--fc-monarch-muted-wash)'
-const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-monarch-muted-wash) active:bg-(--fc-monarch-strong-wash)`
-const ghostPressableGroupClass = `${ghostHoverGroupClass} group-focus-visible:bg-(--fc-monarch-muted-wash) group-active:bg-(--fc-monarch-strong-wash)`
+const ghostHoverClass = 'hover:bg-(--fc-monarch-muted)'
+const ghostHoverGroupClass = 'group-hover:bg-(--fc-monarch-muted)'
+const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-monarch-muted) active:bg-(--fc-monarch-strong)`
+const ghostPressableGroupClass = `${ghostHoverGroupClass} group-focus-visible:bg-(--fc-monarch-muted) group-active:bg-(--fc-monarch-strong)`
 
 // TODO: darker border on focus!!!
 // NOTE: different than the "secondary" surface styles given to calendar
@@ -56,7 +56,11 @@ export const optionParams: EventCalendarOptionParams = {
   ghostPressableClass,
   ghostPressableGroupClass,
 
-  strongPressableClass: 'bg-(--fc-monarch-strong)',
+  strongPressableClass: joinClassNames(
+    '[background:linear-gradient(var(--fc-monarch-strong),var(--fc-monarch-strong))_var(--fc-monarch-background)]',
+    'hover:[background:linear-gradient(var(--fc-monarch-strong-hover),var(--fc-monarch-strong-hover))_var(--fc-monarch-background)]',
+    'active:[background:linear-gradient(var(--fc-monarch-strong-active),var(--fc-monarch-strong-active))_var(--fc-monarch-background)]',
+  ),
 
   tertiaryOutlineColorClass,
   outlineWidthClass,
@@ -64,7 +68,7 @@ export const optionParams: EventCalendarOptionParams = {
   outlineWidthGroupFocusClass,
 
   mutedBgClass: 'bg-(--fc-monarch-muted)',
-  faintBgClass: 'bg-(--fc-monarch-muted-wash)', // TODO: change this CSS value!!!
+  faintBgClass: 'bg-(--fc-monarch-faint)',
   highlightClass: 'bg-(--fc-monarch-secondary) opacity-30',
 
   borderColorClass: 'border-(--fc-monarch-border)',
@@ -83,7 +87,7 @@ export const optionParams: EventCalendarOptionParams = {
   bgRingColorClass: 'ring-(--fc-monarch-background)',
 
   mutedFgClass: 'text-(--fc-monarch-muted-foreground)',
-  faintFgClass: 'text-(--fc-monarch-disabled-foreground)',
+  faintFgClass: 'text-(--fc-monarch-faint-foreground)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

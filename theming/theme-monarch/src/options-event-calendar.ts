@@ -210,7 +210,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       blockEventClass: (data) => [
         'relative isolate group',
-        'border-transparent bg-(--fc-event-color)',
+        'border-transparent',
+        'bg-(--fc-event-color)',
+        'hover:bg-[color-mix(in_srgb,var(--fc-event-color)_92%,var(--fc-event-contrast-color))]',
+        data.isInteractive && 'active:bg-[color-mix(in_srgb,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
+        // FYI, the contrast-color effect looks good for mouse hover, but NOT focus-visible with the outline ring
         'print:border-(--fc-event-color) print:bg-white',
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
@@ -280,9 +284,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleSticky: false, // because time below title, sticky looks bad
 
       // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.bgClass} ring ${params.bgRingColorClass}`,
-      columnMoreLinkColorClass: `absolute z-0 inset-0 rounded-xs ${params.strongPressableClass} print:bg-white print:border print:border-black`,
-      columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
+      columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.strongPressableClass} print:bg-white print:border print:border-black ring ${params.bgRingColorClass}`,
+      columnMoreLinkInnerClass: 'p-0.5 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
       dayHeaderAlign: 'center',

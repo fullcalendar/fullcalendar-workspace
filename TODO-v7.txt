@@ -15,6 +15,11 @@ clean+build all:
 BUG: breezy theme uses primary AND tertiary focus-ouline
 BUG: MUI button effects
 BUG: Shadcn button effects
+TODO: don't ever do brightness manip for hover effect in themes. always color-mix
+in_srgb -> something else?
+actually use --fc-monarch-foreground in other places? same situation for other themes?
+Only ever do bg-color-change on tab-focus for ghost buttons (or "faint" ghost buttons)
+Rename strongPressableClass -> strongSolidPressableClass
 
 NOW
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)

@@ -21,6 +21,7 @@ export interface ThemeOptionParams {
   ghostPressableGroupClass: string
 
   // strong button-like
+  // NOTE: assumed "solid". rename?
   strongPressableClass: string
 
   // muted button-like
@@ -40,6 +41,7 @@ export interface ThemeOptionParams {
   outlineInsetClass: string
 
   mutedBgClass: string // required to be FULLY-transparent!?... best for Shadcn?
+  mutedSolidBgClass: string
   faintBgClass: string // required to be semitransparent
   highlightClass: string
   todayBgNotPrintClass: string
