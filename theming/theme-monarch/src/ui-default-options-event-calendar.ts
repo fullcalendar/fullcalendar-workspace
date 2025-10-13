@@ -12,21 +12,17 @@ const outlineWidthGroupFocusClass = 'group-focus-visible:outline-3'
 const tertiaryOutlineColorClass = 'outline-(--fc-monarch-highlight)' // different that exact tertiary, but same shade
 const tertiaryOutlineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFocusClass}`
 
-const pressableConfigClass = 'hover:brightness-(--fc-monarch-hover-brightness) active:brightness-(--fc-monarch-active-brightness)'
-const pressableConfigGroupClass = 'group-hover:brightness-(--fc-monarch-hover-brightness) group-active:brightness-(--fc-monarch-active-brightness)'
-const secondaryPressableConfigClass = 'hover:brightness-(--fc-monarch-secondary-hover-brightness) active:brightness-(--fc-monarch-secondary-active-brightness)'
-
 const primaryClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreground)`
-const primaryPressableClass = `${primaryClass} ${pressableConfigClass}`
+const primaryPressableClass = `${primaryClass} hover:bg-(--fc-monarch-primary-hover) active:bg-(--fc-monarch-primary-active)`
 const primaryButtonClass = `${primaryPressableClass} border border-transparent ${tertiaryOutlineFocusClass}`
 
 // TODO: rename? authors of CSS variables might get this confused w/ toolbar styles
 const secondaryClass = 'bg-(--fc-monarch-secondary) text-(--fc-monarch-secondary-foreground)'
-const secondaryPressableClass = `${secondaryClass} ${secondaryPressableConfigClass} ${tertiaryOutlineFocusClass}`
+const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-monarch-secondary-hover) active:bg-(--fc-monarch-secondary-active) ${tertiaryOutlineFocusClass}`
 
 const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-tertiary-foreground)'
-const tertiaryPressableClass = `${tertiaryClass} ${pressableConfigClass}`
-const tertiaryPressableGroupClass = `${tertiaryClass} ${pressableConfigGroupClass} ${tertiaryOutlineFocusClass}`
+const tertiaryPressableClass = `${tertiaryClass} hover:bg-(--fc-monarch-tertiary-hover) active:bg-(--fc-monarch-tertiary-active)`
+const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-(--fc-monarch-tertiary-hover) group-active:bg-(--fc-monarch-tertiary-active) ${tertiaryOutlineFocusClass}`
 
 const ghostHoverClass = 'hover:bg-(--fc-monarch-muted)'
 const ghostHoverGroupClass = 'group-hover:bg-(--fc-monarch-muted)'
@@ -38,11 +34,11 @@ const ghostPressableGroupClass = `${ghostHoverGroupClass} group-focus-visible:bg
 const toolbarSecondaryButtonClass = `${ghostPressableClass} border border-(--fc-monarch-secondary-border) ${tertiaryOutlineFocusClass} -outline-offset-1`
 
 // dark grey button
-const tabSelectedClass = `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground) ${pressableConfigClass}`
-const tabSelectedButtonClass = `${tabSelectedClass} border border-transparent ${tertiaryOutlineFocusClass} -outline-offset-1`
+const tabSelectedClass = `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground)`
+const tabSelectedPressableClasss = `${tabSelectedClass} hover:bg-(--fc-monarch-tab-selected-hover) active:bg-(--fc-monarch-tab-selected-active)`
+const tabSelectedButtonClass = `${tabSelectedPressableClasss} border border-transparent ${tertiaryOutlineFocusClass} -outline-offset-1`
 
 const tabUnselectedButtonClass = `${ghostPressableClass} border border-transparent ${tertiaryOutlineFocusClass} -outline-offset-1`
-
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,

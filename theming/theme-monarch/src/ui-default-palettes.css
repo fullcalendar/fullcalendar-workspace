@@ -29,10 +29,14 @@ error -> now
   --fc-monarch-strong-border: var(--color-gray-400); /* TODO */
   --fc-monarch-faint: color-mix(in oklab, var(--color-gray-500) 10%, transparent); /* TODO */
   --fc-monarch-faint-foreground: #bebebe; /* TODO */
-  --fc-monarch-hover-brightness: 1.15;
-  --fc-monarch-active-brightness: 1.25;
-  --fc-monarch-secondary-hover-brightness: 0.95;
-  --fc-monarch-secondary-active-brightness: 0.9;
+  --fc-monarch-primary-hover: color-mix(in oklab, var(--fc-monarch-primary) 90%, white);
+  --fc-monarch-primary-active: color-mix(in oklab, var(--fc-monarch-primary) 80%, white);
+  --fc-monarch-secondary-hover: color-mix(in oklab, var(--fc-monarch-secondary) 90%, var(--fc-monarch-foreground));
+  --fc-monarch-secondary-active: color-mix(in oklab, var(--fc-monarch-secondary) 80%, var(--fc-monarch-foreground));
+  --fc-monarch-tertiary-hover: color-mix(in oklab, var(--fc-monarch-tertiary) 90%, white);
+  --fc-monarch-tertiary-active: color-mix(in oklab, var(--fc-monarch-tertiary) 80%, white);
+  --fc-monarch-tab-selected-hover: color-mix(in oklab, var(--fc-monarch-tab-selected) 90%, white);
+  --fc-monarch-tab-selected-active: color-mix(in oklab, var(--fc-monarch-tab-selected) 80%, white);
 }
 [data-color-scheme=dark] {
   --fc-monarch-background: var(--color-gray-950);
@@ -45,9 +49,6 @@ error -> now
   --fc-monarch-strong-border: var(--color-gray-700); /* TODO */
   --fc-monarch-faint: color-mix(in oklab, var(--color-gray-500) 10%, transparent); /* TODO */
   --fc-monarch-faint-foreground: #898989; /* TODO */
-  /* default brightness unchanged */
-  --fc-monarch-secondary-hover-brightness: var(--fc-monarch-hover-brightness); /* use ligher */
-  --fc-monarch-secondary-active-brightness: var(--fc-monarch-secondary-active-brightness); /* use ligher */
 }
 
 [data-palette=purple] {
