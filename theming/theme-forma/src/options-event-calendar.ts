@@ -180,7 +180,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       inlineWeekNumberClass: (data) => [
-        'absolute top-1 end-0 rounded-s-sm p-1',
+        'absolute z-10 top-1 end-0 rounded-s-sm p-1',
         data.hasNavLink
           ? params.mutedPressableClass
           : params.mutedClass,

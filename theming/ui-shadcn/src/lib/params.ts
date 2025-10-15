@@ -30,6 +30,12 @@ const ghostPressableGroupClass = `${ghostHoverGroupClass}`
 const faintHoverClass = 'hover:bg-muted/50'
 const faintPressableClass = `${faintHoverClass} focus-visible:bg-muted/50`
 
+const mutedClass = 'bg-foreground/5'
+const mutedPressableClass = `${mutedClass} hover:bg-foreground/10`
+
+const strongSolidClass = 'bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))]'
+const strongSolidPressableClass = `${strongSolidClass} hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))]`
+
 const faintEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]'
 const faintEventPressableClass = joinClassNames(
   faintEventBgClass,
@@ -62,12 +68,10 @@ export const optionParams: ThemeOptionParams = {
   ghostPressableClass,
   ghostPressableGroupClass,
 
-  // TODO
-  strongSolidPressableClass: 'bg-foreground/15',
+  strongSolidPressableClass,
 
-  // TODO
-  mutedClass: 'bg-foreground/5',
-  mutedPressableClass: 'bg-foreground/5',
+  mutedClass,
+  mutedPressableClass,
 
   faintHoverClass,
   faintPressableClass,

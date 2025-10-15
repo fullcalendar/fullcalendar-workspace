@@ -31,8 +31,9 @@ Now that we're not doing bg-color and inner overlaying, we can remove z-index ha
 Monitor all opacity-* classNames. bad if on text. for bg, use color-mix instead.
 For block-events that display, there should be a visual distinctions between time/title text
   test with eventDisplay='block'
-BUG: more-links are clearish in shadcn and mui
 TODO: print-mode for color-computed event bg themes
+TODO: do alpha compositing for strongSolidPressableClass instead of just color-mix?
+TODO: today-circle hover effect not implemented for Shadcn/MUI (in Breezy at least)
 
 
 NOW

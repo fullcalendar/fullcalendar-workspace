@@ -41,6 +41,20 @@ const ghostPressableGroupClass = `${ghostHoverGroupClass} group-active:bg-[rgba(
 const faintHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]'
 const faintPressableClass = `${faintHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]`
 
+const mutedClass = 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]'
+const mutedPressableClass = joinClassNames(
+  mutedClass,
+  'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.12)]',
+  'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]',
+)
+
+const strongSolidClass = 'bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_15%,var(--mui-palette-background-paper))]'
+const strongSolidPressableClass = joinClassNames(
+  strongSolidClass,
+  'hover:bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_20%,var(--mui-palette-background-paper))]',
+  'active:bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_25%,var(--mui-palette-background-paper))]',
+)
+
 const faintEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--mui-palette-background-paper))]'
 const faintEventPressableClass = joinClassNames(
   faintEventBgClass,
@@ -73,12 +87,10 @@ export const optionParams: ThemeOptionParams = {
   ghostPressableClass,
   ghostPressableGroupClass,
 
-  // TODO
-  strongSolidPressableClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]',
+  strongSolidPressableClass,
 
-  // TODO
-  mutedClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]',
-  mutedPressableClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]',
+  mutedClass,
+  mutedPressableClass,
 
   faintHoverClass,
   faintPressableClass,
