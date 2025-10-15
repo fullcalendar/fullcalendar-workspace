@@ -52,6 +52,20 @@ const selectedButtonClass = `border ${selectedButtonBorderColorClass} ${selected
 const buttonIconColorClass = 'text-(--fc-forma-secondary-icon)' // will only work for secondary!
 const buttonIconClass = `size-5 ${buttonIconColorClass}` // will only work for secondary!
 
+const strongSolidBgClass = '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]'
+const strongSolidPressableClass = joinClassNames(
+  strongSolidBgClass,
+  'hover:[background:linear-gradient(var(--fc-forma-strong-hover),var(--fc-forma-strong-hover))_var(--fc-monarch-background)]',
+  'active:[background:linear-gradient(var(--fc-forma-strong-active),var(--fc-forma-strong-active))_var(--fc-monarch-background)]',
+)
+
+const mutedEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-forma-background))]'
+const mutedEventPressableClass = joinClassNames(
+  mutedEventBgClass,
+  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--fc-forma-background))]',
+  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_40%,var(--fc-forma-background))]',
+)
+
 export const optionParams: EventCalendarOptionParams = {
   primaryClass,
   primaryPressableClass,
@@ -63,11 +77,7 @@ export const optionParams: EventCalendarOptionParams = {
 
   mutedClass,
   mutedPressableClass,
-  strongSolidPressableClass: joinClassNames(
-    '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]',
-    'hover:[background:linear-gradient(var(--fc-forma-strong-hover),var(--fc-forma-strong-hover))_var(--fc-monarch-background)]',
-    'active:[background:linear-gradient(var(--fc-forma-strong-active),var(--fc-forma-strong-active))_var(--fc-monarch-background)]',
-  ),
+  strongSolidPressableClass,
 
   faintBgClass: 'bg-(--fc-forma-faint)',
   highlightClass: 'bg-(--fc-forma-highlight)',
@@ -95,6 +105,9 @@ export const optionParams: EventCalendarOptionParams = {
 
   mutedFgClass,
   faintFgClass: 'text-(--fc-forma-faint-foreground)',
+
+  mutedEventBgClass,
+  mutedEventPressableClass,
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

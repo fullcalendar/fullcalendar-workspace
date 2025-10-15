@@ -12,10 +12,10 @@ clean+build all:
   pn run postinstall # in case install didn't write tsconfigs
   pn build
 
+
 BUG: breezy theme uses primary AND tertiary focus-ouline
 BUG: MUI button effects
 BUG: Shadcn button effects
-in_srgb -> something else?
 actually use --fc-monarch-foreground in other places? same situation for other themes?
 Only ever do bg-color-change on tab-focus for ghost buttons (or "faint" ghost buttons)
 Forma, put negative outline-offset for selected item in toolbar b/c of border
@@ -23,10 +23,22 @@ Remove p-px from all columnMoreLinkClass/(timeline)rowMoreLinkClass
   will need to have a border for print!
 BUG: check dark-mode popovers don't have *transparent* background
   Breezy bad
+Maybe don't do fallback for dayNumberText or weekdayText...
+  if it's not present, then that means the *format didn't want to display it?
+  if so, we can do !data.dayNumberText to pre-detect that current-day won't display circle
+For portal roots, give border-box and other resets?
+Now that we're not doing bg-color and inner overlaying, we can remove z-index hacks like z-10/20/30
+Monitor all opacity-* classNames. bad if on text. for bg, use color-mix instead.
+For block-events that display, there should be a visual distinctions between time/title text
+  test with eventDisplay='block'
+BUG: more-links are clearish in shadcn and mui
+TODO: print-mode for color-computed event bg themes
+
 
 NOW
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)
     remove *ColorClass props? YES
+      backgroundEventColorClass/row/column
     use color-mix for moving closer to foreground/background
       use reasonable fallback when unsupported
   give all block-events a hover effect

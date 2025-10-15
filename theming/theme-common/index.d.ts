@@ -70,4 +70,10 @@ export interface ThemeOptionParams {
   strongFgClass: string
   mutedFgClass: string
   faintFgClass: string
+
+  faintEventBgClass: string
+  faintEventPressableClass: string
+  mutedEventBgClass: string
+  mutedEventPressableClass: string
+  mutedEventFgClass,
 }

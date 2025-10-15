@@ -148,6 +148,11 @@ export interface EventCalendarOptionParams {
   strongFgClass: string
   mutedFgClass: string
   faintFgClass: string
+
+  faintEventBgClass: string
+  faintEventPressableClass: string
+
+  mutedEventFgClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -187,7 +192,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isStart && 'ms-1',
       data.isEnd && 'me-1',
     ],
-    rowEventInnerClass: params.fgClass,
 
     listItemEventClass: (data) => [
       'p-px',
@@ -322,14 +326,21 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : params.outlineWidthFocusClass,
       ],
 
-      blockEventClass: `${params.bgClass} relative group p-px`,
-      blockEventColorClass: 'absolute inset-0 bg-(--fc-event-color) print:bg-white border-(--fc-event-color) not-print:opacity-20',
+      blockEventClass: (data) => [
+        'relative',
+        'group',
+        'p-px',
+        data.isInteractive
+          ? params.faintEventPressableClass
+          : params.faintEventBgClass,
+        // TODO: print-mode
+      ],
       blockEventInnerClass: 'relative z-20 text-xs/4 flex', // NOTE: subclass determines direction
       /*
       ^^^NOTE: should core determine flex-direction because core needs to do sticky anyway, right!?
       */
-      blockEventTimeClass: 'text-(--fc-event-color) contrast-150 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
-      blockEventTitleClass: `${params.fgClass} opacity-80 whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
+      blockEventTimeClass: `${params.mutedEventFgClass} whitespace-nowrap overflow-hidden shrink-1`, // shrinks second
+      blockEventTitleClass: `${params.mutedEventFgClass} whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
 
       backgroundEventColorClass: `bg-(--fc-event-color) ${params.bgEventColorClass}`,
       backgroundEventTitleClass: (data) => [

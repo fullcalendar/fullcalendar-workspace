@@ -212,8 +212,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'relative isolate group',
         'border-transparent',
         'bg-(--fc-event-color)',
-        'hover:bg-[color-mix(in_srgb,var(--fc-event-color)_92%,var(--fc-event-contrast-color))]',
-        data.isInteractive && 'active:bg-[color-mix(in_srgb,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
+        'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))]',
+        data.isInteractive && 'active:bg-[color-mix(in_oklab,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
         // FYI, the contrast-color effect looks good for mouse hover, but NOT focus-visible with the outline ring
         'print:border-(--fc-event-color) print:bg-white',
         data.isSelected

@@ -1,3 +1,4 @@
+import { joinClassNames } from '@fullcalendar/core'
 import { ThemeOptionParams } from '@fullcalendar/theme-common'
 
 const outlineWidthClass = 'outline-3'
@@ -28,6 +29,22 @@ const ghostPressableGroupClass = `${ghostHoverGroupClass}`
 
 const faintHoverClass = 'hover:bg-muted/50'
 const faintPressableClass = `${faintHoverClass} focus-visible:bg-muted/50`
+
+const faintEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]'
+const faintEventPressableClass = joinClassNames(
+  faintEventBgClass,
+  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))]',
+  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]',
+)
+
+const mutedEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]'
+const mutedEventPressableClass = joinClassNames(
+  mutedEventBgClass,
+  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--background))]',
+  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_40%,var(--background))]',
+)
+
+const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
 
 export const optionParams: ThemeOptionParams = {
   primaryClass,
@@ -99,4 +116,10 @@ export const optionParams: ThemeOptionParams = {
   strongFgClass: '',
   mutedFgClass: 'text-muted-foreground',
   faintFgClass: 'text-muted-foreground',
+
+  faintEventBgClass,
+  faintEventPressableClass,
+  mutedEventBgClass,
+  mutedEventPressableClass,
+  mutedEventFgClass,
 }

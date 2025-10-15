@@ -1,3 +1,4 @@
+import { joinClassNames } from '@fullcalendar/core'
 import { ThemeOptionParams } from '@fullcalendar/theme-common'
 
 /*
@@ -39,6 +40,22 @@ const ghostPressableGroupClass = `${ghostHoverGroupClass} group-active:bg-[rgba(
 
 const faintHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]'
 const faintPressableClass = `${faintHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]`
+
+const faintEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--mui-palette-background-paper))]'
+const faintEventPressableClass = joinClassNames(
+  faintEventBgClass,
+  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--mui-palette-background-paper))]',
+  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--mui-palette-background-paper))]',
+)
+
+const mutedEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--mui-palette-background-paper))]'
+const mutedEventPressableClass = joinClassNames(
+  mutedEventBgClass,
+  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--mui-palette-background-paper))]',
+  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_40%,var(--mui-palette-background-paper))]',
+)
+
+const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--mui-palette-text-primary))]'
 
 export const optionParams: ThemeOptionParams = {
   primaryClass,
@@ -109,4 +126,10 @@ export const optionParams: ThemeOptionParams = {
   mutedFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]',
   faintFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.4)]',
   // probably use text-(--mui-palette-text-secondary) instead??? is that for buttons or normal text!?
+
+  faintEventBgClass,
+  faintEventPressableClass,
+  mutedEventBgClass,
+  mutedEventPressableClass,
+  mutedEventFgClass,
 }

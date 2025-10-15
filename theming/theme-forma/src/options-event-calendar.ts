@@ -92,6 +92,9 @@ export interface EventCalendarOptionParams {
 
   mutedFgClass: string
   faintFgClass: string
+
+  mutedEventBgClass: string
+  mutedEventPressableClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -99,12 +102,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   views?: { [viewName: string]: ViewOptions }
 } {
   // transparent resizer for mouse
-  const blockPointerResizerClass = `absolute z-20 hidden group-hover:block`
+  const blockPointerResizerClass = `absolute hidden group-hover:block`
   const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
+  const blockTouchResizerClass = `absolute h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
@@ -177,7 +180,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       inlineWeekNumberClass: (data) => [
-        'absolute z-20 top-1 end-0 rounded-s-sm p-1',
+        'absolute top-1 end-0 rounded-s-sm p-1',
         data.hasNavLink
           ? params.mutedPressableClass
           : params.mutedClass,
@@ -203,21 +206,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
 
-      blockEventClass: [
-        'relative', // for absolute-positioned color
+      blockEventClass: (data) => [
+        'relative', // for absolute-positioned resizers
         'group', // for focus and hover
-        params.bgClass,
         'border-(--fc-event-color)',
-        // TODO: isDragging, isSelected
         'p-px',
+        data.isInteractive
+          ? params.mutedEventPressableClass
+          : params.mutedEventBgClass,
+        // TODO: print and border!!!
         params.outlineOffsetClass,
-      ],
-      blockEventColorClass: [
-        'absolute inset-0 bg-(--fc-event-color) print:bg-white not-print:opacity-30',
-        'border-(--fc-event-color)',
-      ],
-      blockEventInnerClass: [
-        'relative z-10 flex', // TODO
       ],
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
       blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
@@ -234,7 +232,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ] : [
         // the < continuation
         !data.isStart && (
-          'relative z-10 size-2 border-t-1 border-s-1 border-gray-500 ms-1' +
+          'size-2 border-t-1 border-s-1 border-gray-500 ms-1' +
           ' -rotate-45' // TODO: make RTL-friendly
         )
       ],
@@ -244,7 +242,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ] : [
         // the > continuation
         !data.isEnd && (
-          'relative z-10 size-2 border-t-1 border-e-1 border-gray-500 me-1' +
+          'size-2 border-t-1 border-e-1 border-gray-500 me-1' +
           ' rotate-45' // TODO: make RTL-friendly
         )
       ],
@@ -253,7 +251,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isEnd && 'rounded-e-sm print:border-e',
       ],
       rowEventInnerClass: (data) => [
-        'flex-row items-center',
+        'flex flex-row items-center',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
       rowEventTimeClass: 'p-0.5',
@@ -277,6 +275,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isEnd && 'print:border-b rounded-e-sm',
       ],
       columnEventInnerClass: (data) => [
+        'flex',
         data.isCompact
           ? 'flex-row gap-1' // one line
           : 'flex-col gap-px', // two lines
@@ -419,10 +418,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         // TODO: move to general settings? or always have this type of thing in timeGrid?
         // TODO: keep DRY with timeline rowMoreLink
         columnMoreLinkClass: [
-          `relative mb-px p-px rounded-xs ${params.strongSolidPressableClass} print:bg-white print:border print:border-black ring ${params.bgRingColorClass}`,
+          `mb-px p-px rounded-xs ${params.strongSolidPressableClass} print:bg-white print:border print:border-black ring ${params.bgRingColorClass}`,
           params.outlineOffsetClass, // just like block events
         ],
-        columnMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
+        columnMoreLinkInnerClass: 'p-0.5 text-xs',
 
         slotLabelClass: axisClass,
         slotLabelInnerClass: (data) => [

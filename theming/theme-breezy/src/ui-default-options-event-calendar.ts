@@ -46,6 +46,15 @@ const nonSelectTextClass = 'text-(--fc-breezy-tab-foreground)'
 const hoverSelectTextClass = 'hover:text-(--fc-breezy-tab-selected-foreground)' // best name?
 const nonSelectClass = `${nonSelectTextClass} ${hoverSelectTextClass} ${primaryOutlineFocusClass}`
 
+const faintEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-breezy-background))]'
+const faintEventPressableClass = joinClassNames(
+  faintEventBgClass,
+  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--fc-breezy-background))]',
+  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-breezy-background))]',
+)
+
+const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--fc-breezy-foreground))]'
+
 export const optionParams: EventCalendarOptionParams = {
   primaryClass,
   primaryPressableClass,
@@ -91,6 +100,10 @@ export const optionParams: EventCalendarOptionParams = {
   mutedFgClass: 'text-(--fc-breezy-muted-foreground)',
   fgClass: 'text-(--fc-breezy-foreground)',
   strongFgClass: 'text-(--fc-breezy-strong-foreground)',
+
+  faintEventBgClass,
+  faintEventPressableClass,
+  mutedEventFgClass,
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
