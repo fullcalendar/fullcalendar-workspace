@@ -10,9 +10,9 @@ const outlineInsetClass = '-outline-offset-3'
 const outlineColorClass = 'outline-ring/50'
 const outlineFocusClass = `${outlineColorClass} ${outlineWidthFocusClass}`
 
-const primaryClass = 'bg-(--primary) text-(--primary-foreground)'
-const primaryPressableClass = primaryClass // TODO: effect!
-const primaryPressableGroupClass = primaryClass // TODO: effect!
+const primaryClass = 'bg-primary text-(--primary-foreground)'
+const primaryPressableClass = `${primaryClass} hover:bg-primary/90`
+const primaryPressableGroupClass = `${primaryClass} group-hover:bg-primary/90`
 
 const secondaryClass = 'bg-foreground/10'
 const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 ${outlineFocusClass}`
@@ -33,6 +33,9 @@ const faintPressableClass = `${faintHoverClass} focus-visible:bg-muted/50`
 const mutedClass = 'bg-foreground/5'
 const mutedPressableClass = `${mutedClass} hover:bg-foreground/10`
 
+// very probable, tho not guaranteed, this will be solid
+// however, --foreground and --background almost always solid
+// for a bulletproof technique, use the linear-gradient technique, but extremely verbose with nested expressions
 const strongSolidClass = 'bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))]'
 const strongSolidPressableClass = `${strongSolidClass} hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))]`
 
@@ -40,17 +43,19 @@ const faintEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(
 const faintEventPressableClass = joinClassNames(
   faintEventBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))]',
-  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]',
+  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]', // shadcn needs this?
 )
 
 const mutedEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]'
 const mutedEventPressableClass = joinClassNames(
   mutedEventBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--background))]',
-  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_40%,var(--background))]',
+  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_40%,var(--background))]', // shadcn needs this?
 )
 
 const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
+
+const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
 export const optionParams: ThemeOptionParams = {
   primaryClass,
@@ -87,7 +92,7 @@ export const optionParams: ThemeOptionParams = {
   mutedBgClass: 'bg-foreground/5', // semi-transparent version of bg-muted
   mutedSolidBgClass: 'bg-muted',
   faintBgClass: 'bg-foreground/3', // semi-transparent version of bg-sidebar
-  highlightClass: 'bg-primary opacity-10', // TODO: use /10 instead of opacity on element?
+  highlightClass: 'bg-primary/10',
   todayBgNotPrintClass: 'not-print:bg-yellow-400/15 dark:bg-yellow-200/10',
 
   // most borders are inherited
@@ -104,7 +109,7 @@ export const optionParams: ThemeOptionParams = {
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
   bgEventColor: 'var(--primary)',
-  bgEventColorClass: 'opacity-15',
+  bgEventBgClass,
 
   popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
   // (breezy) popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',

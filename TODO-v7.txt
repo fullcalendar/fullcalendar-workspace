@@ -13,35 +13,25 @@ clean+build all:
   pn build
 
 
-BUG: breezy theme uses primary AND tertiary focus-ouline
-BUG: MUI button effects
-BUG: Shadcn button effects
-actually use --fc-monarch-foreground in other places? same situation for other themes?
-Only ever do bg-color-change on tab-focus for ghost buttons (or "faint" ghost buttons)
-Forma, put negative outline-offset for selected item in toolbar b/c of border
-Remove p-px from all columnMoreLinkClass/(timeline)rowMoreLinkClass
-  will need to have a border for print!
-BUG: check dark-mode popovers don't have *transparent* background
-  Breezy bad
-Maybe don't do fallback for dayNumberText or weekdayText...
-  if it's not present, then that means the *format didn't want to display it?
-  if so, we can do !data.dayNumberText to pre-detect that current-day won't display circle
-For portal roots, give border-box and other resets?
-Now that we're not doing bg-color and inner overlaying, we can remove z-index hacks like z-10/20/30
-Monitor all opacity-* classNames. bad if on text. for bg, use color-mix instead.
-For block-events that display, there should be a visual distinctions between time/title text
-  test with eventDisplay='block'
-TODO: print-mode for color-computed event bg themes
-TODO: do alpha compositing for strongSolidPressableClass instead of just color-mix?
-TODO: today-circle hover effect not implemented for Shadcn/MUI (in Breezy at least)
-
-
 NOW
+  Pulse button effects
+    block events (and focus ring)
+    ghost pressables
+  Forma block-event print border not working
+  Forma, make columnMoreLink/rowMoreLink match radius of events
+  Breezy block-event print border not working
+  Breezy (default UI) ghost button doesn't have hover/down effects
+  Shadcn doesn't need DOWN effect for faintEventPressableClass/mutedEventPressableClass
+  TODO: For Shadcn, bg-event color can't be so similar to fg-events (Forma & Breezy)
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)
     remove *ColorClass props? YES
       backgroundEventColorClass/row/column
     use color-mix for moving closer to foreground/background
       use reasonable fallback when unsupported
+    delete blockEventColorClass
+    delete rowEventColorClass
+    delete columnEventColorClass
+    delete backgroundEventColorClass
   give all block-events a hover effect
   Shadcn background-events
     use equiv of muted-bg for backgroundevent color (will be darker than non-business-hours, yay!)
@@ -52,7 +42,6 @@ NOW
   why doesn't eventStartEditable seem to work?
   why does dragging Monarch events give outline?
 MANUAL TEST
-  no more opacity-50 or whatever in dayCellTop... just change text color
   test timeline/timegrid more-link in DARK mode
   now-indicator
   ALL stickiness, esp when calendar root is overflow:hidden
@@ -68,6 +57,8 @@ MANUAL TEST
   test prevYear/nextYear icons in all theme systems
   core: test sticky footer scrollbar on timegrid-pannable/normal, daygrid-pannable/normal
   ensure larger dayCellFormat formats work w/ dayCellInner circles
+  For block-events that display, there should be a visual distinctions between time/title text
+    test with eventDisplay='block'
 CODE-QUALITY (while going through each theme)
   ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)
   stop concatenating with param classnames. sometimes they're blank
@@ -358,6 +349,16 @@ kill all hover:no-underline in themes?
   the developer's responsiblity to prevent overly opinionated inheritance
   (add to docs?)
   FYI, they might be adding underline to a[href] or just all `a`
+Never have themes define z-index
+  example: for event-before/after, ensure z-1
+For portal roots, give border-box and other resets?... IMPORTANT!
+--fc-monarch-foreground is used for color mixing, but use it for text color too?
+Maybe don't do fallback for dayNumberText or weekdayText...
+  if it's not present, then that means the *format* didn't want to display it?
+  if so, we can do !data.dayNumberText to pre-detect that current-day won't display circle
+When color-mix used, ensure fallback for older browsers
+Instead of opacity to control icon colors, use muted/disabledFgColorClass?
+Instead of opacity for backgroundEventTitleClass, muted/disabledFgColorClass?
 
 
 Changelog
@@ -986,3 +987,6 @@ We use linear-gradient trick to do alpha-compositing,
   and we need to specify BOTH args in linear-gradient.
   eventually we can save space and just pass one when browser suppor it:
   https://caniuse.com/mdn-css_types_gradient_linear-gradient_single_color_stop
+For tab-focus effect,
+  DO do background-color change on ghost buttons
+  do NOT do background-color change (of any sort) on block-events (usually reduces contrast, looks bad)

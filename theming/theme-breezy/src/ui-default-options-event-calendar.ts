@@ -55,6 +55,8 @@ const faintEventPressableClass = joinClassNames(
 
 const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--fc-breezy-foreground))]'
 
+const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
+
 export const optionParams: EventCalendarOptionParams = {
   primaryClass,
   primaryPressableClass,
@@ -81,7 +83,7 @@ export const optionParams: EventCalendarOptionParams = {
 
   eventColor: 'var(--fc-breezy-event)',
   bgEventColor: 'var(--fc-breezy-background-event)',
-  bgEventColorClass: 'brightness-150 opacity-15',
+  bgEventBgClass,
 
   borderColorClass: 'border-(--fc-breezy-border)',
   borderStartColorClass: 'border-s-(--fc-breezy-border)',

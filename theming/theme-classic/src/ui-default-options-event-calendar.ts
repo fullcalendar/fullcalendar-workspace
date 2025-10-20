@@ -19,6 +19,8 @@ const faintPressableClass = `${faintHoverClass} active:bg-(--fc-classic-muted) f
 
 const buttonIconClass = 'size-5'
 
+const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
+
 export const optionParams: EventCalendarOptionParams = {
   ghostHoverClass,
   ghostPressableClass,
@@ -49,8 +51,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   eventColor: 'var(--fc-classic-primary)',
   eventContrastColor: 'var(--fc-classic-primary-foreground)',
-  bgEventColor: 'var(--color-green-500)', // TODO: put as css var
-  bgEventColorClass: 'opacity-15',
+  bgEventColor: 'var(--fc-classic-background-event)',
+  bgEventBgClass,
 
   popoverClass: `border border-(--fc-classic-border) ${bgClass} shadow-md`,
 

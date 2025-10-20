@@ -83,7 +83,7 @@ export interface EventCalendarOptionParams {
   eventColor: string
   eventContrastColor: string
   bgEventColor: string
-  bgEventColorClass: string
+  bgEventBgClass: string
 
   popoverClass: string
 
@@ -95,6 +95,8 @@ export interface EventCalendarOptionParams {
 
   mutedEventBgClass: string
   mutedEventPressableClass: string
+  faintEventBgClass: string
+  faintEventPressableClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -200,22 +202,20 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : params.outlineWidthFocusClass,
       ],
 
-      backgroundEventColorClass: 'bg-(--fc-event-color) brightness-150 opacity-15',
+      backgroundEventClass: params.bgEventBgClass,
       backgroundEventTitleClass: (data) => [
         'm-2 opacity-50 italic',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
 
       blockEventClass: (data) => [
-        'relative', // for absolute-positioned resizers
-        'group', // for focus and hover
-        'border-(--fc-event-color)',
-        'p-px',
+        'group relative', // for resizers
+        params.outlineOffsetClass,
         data.isInteractive
           ? params.mutedEventPressableClass
           : params.mutedEventBgClass,
-        // TODO: print and border!!!
-        params.outlineOffsetClass,
+        'border-(--fc-event-color)',
+        'print:bg-white',
       ],
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
       blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
@@ -223,8 +223,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       rowEventClass: (data) => [
         'mb-px', // space between events
         'flex flex-row items-center', // for valigning title and <> arrows
-        data.isStart && 'border-s-6 rounded-s-sm',
-        data.isEnd && 'rounded-e-sm',
+        'not-print:py-px print:border-y',
+        data.isStart && 'rounded-s-sm border-s-6',
+        data.isEnd && 'rounded-e-sm not-print:pe-px print:border-e',
       ],
       rowEventBeforeClass: (data) => data.isStartResizable ? [
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
@@ -246,10 +247,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           ' rotate-45' // TODO: make RTL-friendly
         )
       ],
-      rowEventColorClass: (data) => [
-        'print:border-y',
-        data.isEnd && 'rounded-e-sm print:border-e',
-      ],
       rowEventInnerClass: (data) => [
         'flex flex-row items-center',
         data.isCompact ? xxsTextClass : 'text-xs',
@@ -258,7 +255,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       rowEventTitleClass: 'p-0.5',
 
       columnEventClass: (data) => [
-        'border-s-6 rounded-s-sm rounded-e-sm mb-px',
+        'mb-px',
+        'border-s-6', // start edge
+        'not-print:pe-px print:border-e', // end edge
+        data.isStart && 'rounded-t-sm not-print:pt-px print:border-t', // top edge
+        data.isEnd && 'rounded-b-sm not-print:pb-px print:border-b', // bottom edge
         (data.level || data.isMirror) && `ring ${params.bgRingColorClass}`
       ],
       columnEventBeforeClass: (data) => data.isStartResizable && [
@@ -268,11 +269,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventAfterClass: (data) => data.isEndResizable && [
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-bottom-1',
-      ],
-      columnEventColorClass: (data) => [
-        'print:border-e',
-        data.isStart && 'print:border-t',
-        data.isEnd && 'print:border-b rounded-e-sm',
       ],
       columnEventInnerClass: (data) => [
         'flex',
@@ -415,10 +411,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isCompact ? xxsTextClass : 'text-xs',
         ],
 
-        // TODO: move to general settings? or always have this type of thing in timeGrid?
-        // TODO: keep DRY with timeline rowMoreLink
         columnMoreLinkClass: [
-          `mb-px p-px rounded-xs ${params.strongSolidPressableClass} print:bg-white print:border print:border-black ring ${params.bgRingColorClass}`,
+          `mb-px rounded-xs ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
           params.outlineOffsetClass, // just like block events
         ],
         columnMoreLinkInnerClass: 'p-0.5 text-xs',
@@ -440,8 +434,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
         listDayEventsClass: 'grow min-w-0 flex flex-col items-stretch gap-4 p-4',
 
-        listItemEventClass: `${params.bgClass} p-3 flex flex-row rounded-sm border-s-6 border-(--fc-event-color) relative`, // why the hover color!?
-        listItemEventColorClass: 'absolute inset-0 bg-(--fc-event-color) opacity-20 rounded-e-sm',
+        listItemEventClass: (data) => [
+          data.isInteractive
+            ? params.faintEventPressableClass
+            : params.faintEventBgClass,
+          'p-3 flex flex-row rounded-sm border-s-6 border-(--fc-event-color)',
+        ],
 
         listItemEventInnerClass: 'relative flex flex-row gap-2 text-sm',
         listItemEventTimeClass: 'shrink-0 w-1/2 max-w-40 whitespace-nowrap overflow-hidden text-ellipsis',

@@ -25,10 +25,6 @@ color refactor:
 core:
   TODO: setting for FIRST slot, for hiding label
 
-later:
-  simplify rowEventColorClass arrows
-  use SVGs
-
 audit use of "group" classnames
 */
 
@@ -70,7 +66,7 @@ export interface EventCalendarOptionParams {
   eventColor: string
   eventContrastColor: string
   bgEventColor: string
-  bgEventColorClass: string
+  bgEventBgClass: string
 
   popoverClass: string
 
@@ -88,12 +84,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   views?: { [viewName: string]: ViewOptions }
 } {
   // transparent resizer for mouse
-  const blockPointerResizerClass = `absolute z-20 hidden group-hover:block`
+  const blockPointerResizerClass = `absolute z-10 hidden group-hover:block`
   const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
+  const blockTouchResizerClass = `absolute z-10 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
@@ -177,7 +173,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ),
 
       inlineWeekNumberClass: (data) => [
-        'absolute z-20',
+        'absolute z-10',
         data.isCompact ? 'top-1 start-0.5' : 'top-1.5 start-1',
         ...getWeekNumberPillClasses(data),
       ],
@@ -190,7 +186,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : params.outlineWidthFocusClass,
       ],
 
-      backgroundEventColorClass: 'bg-(--fc-event-color) ' + params.bgEventColorClass,
+      backgroundEventClass: params.bgEventBgClass,
       backgroundEventTitleClass: (data) => [
         'm-2 opacity-50 italic',
         data.isCompact ? xxsTextClass : 'text-xs',
@@ -209,13 +205,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       listItemEventInnerClass: 'flex flex-row items-center',
 
       blockEventClass: (data) => [
-        'relative isolate group',
-        'border-transparent',
-        'bg-(--fc-event-color)',
+        'relative group',
+        'bg-(--fc-event-color) print:bg-white',
+        'border-transparent print:border-(--fc-event-color)',
         'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))]',
         data.isInteractive && 'active:bg-[color-mix(in_oklab,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
-        // FYI, the contrast-color effect looks good for mouse hover, but NOT focus-visible with the outline ring
-        'print:border-(--fc-event-color) print:bg-white',
         data.isSelected
           ? (data.isDragging ? 'shadow-lg' : 'shadow-md')
           : joinClassNames(
@@ -223,7 +217,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
               data.isDragging && 'opacity-75'
             ),
       ],
-      blockEventInnerClass: 'z-10 flex text-(--fc-event-contrast-color) print:text-black',
+      blockEventInnerClass: 'flex text-(--fc-event-contrast-color) print:text-black',
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
       blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
@@ -283,8 +277,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleClass: (data) => data.isCompact ? xxsTextClass : 'p-1 text-xs',
       columnEventTitleSticky: false, // because time below title, sticky looks bad
 
-      // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative mb-px p-px rounded-xs ${params.strongSolidPressableClass} print:bg-white print:border print:border-black ring ${params.bgRingColorClass}`,
+      columnMoreLinkClass: `relative mb-px rounded-xs ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
       columnMoreLinkInnerClass: 'p-0.5 text-xs',
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,

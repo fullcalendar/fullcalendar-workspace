@@ -59,7 +59,7 @@ export interface ThemeOptionParams {
   eventColor: string
   eventContrastColor: string
   bgEventColor: string
-  bgEventColorClass: string
+  bgEventBgClass: string
 
   popoverClass: string
 

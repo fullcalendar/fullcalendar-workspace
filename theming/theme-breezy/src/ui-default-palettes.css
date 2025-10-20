@@ -64,7 +64,7 @@
   --fc-breezy-strong-border: color-mix(in oklab, var(--color-white) 15%, transparent);
 
   /* popovers */
-  --fc-breezy-popover: var(--fc-breezy-strong);
+  --fc-breezy-popover: var(--color-gray-800); /* must be fully opaque */
   --fc-breezy-popover-border: var(--fc-breezy-border);
 
   /* tabs */

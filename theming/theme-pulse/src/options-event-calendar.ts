@@ -85,7 +85,7 @@ export interface EventCalendarOptionParams {
   eventColor: string
   eventContrastColor: string
   bgEventColor: string
-  bgEventColorClass: string
+  bgEventBgClass: string
 
   popoverClass: string
 
@@ -102,12 +102,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   views?: { [viewName: string]: ViewOptions }
 } {
   // transparent resizer for mouse
-  const blockPointerResizerClass = `absolute z-20 hidden group-hover:block`
+  const blockPointerResizerClass = `absolute z-10 hidden group-hover:block`
   const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute z-20 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
+  const blockTouchResizerClass = `absolute z-10 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
@@ -236,22 +236,23 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : params.outlineWidthFocusClass,
       ],
 
-      /*
-      TODO: not necessary to have color-class do bg color! we're not doing any transforms
-      */
-      blockEventClass: 'relative group p-px',
-      blockEventColorClass: 'absolute z-10 inset-0 bg-(--fc-event-color) print:bg-white border-(--fc-event-color)',
-      blockEventInnerClass: 'relative z-20 text-(--fc-event-contrast-color) print:text-black text-xs',
+      blockEventClass: 'relative group bg-(--fc-event-color) print:bg-white border-(--fc-event-color)',
+      blockEventInnerClass: 'text-(--fc-event-contrast-color) print:text-black text-xs',
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
       blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
-      backgroundEventColorClass: `bg-(--fc-event-color) ${params.bgEventColorClass}`,
+      backgroundEventClass: params.bgEventBgClass,
       backgroundEventTitleClass: [
         'm-2 opacity-50 italic',
         'text-xs', // data.isCompact ? xxsTextClass : 'text-xs', -- TODO
         params.strongFgClass,
       ],
 
+      rowEventClass: (data) => [
+        'border-y',
+        data.isStart && 'rounded-s-sm border-s',
+        data.isEnd && 'rounded-e-sm border-e',
+      ],
       rowEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-start-1',
@@ -260,16 +261,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-end-1',
       ],
-      rowEventColorClass: (data) => [
-        'print:border-y',
-        data.isStart && 'rounded-s-sm print:border-s',
-        data.isEnd && 'rounded-e-sm print:border-e',
-      ],
       rowEventInnerClass: 'flex flex-row',
       rowEventTimeClass: 'p-0.5',
       rowEventTitleClass: 'p-0.5 font-medium',
       //^^^for row event, switch order of title/time?
 
+      columnEventClass: (data) => [
+        'border-x',
+        data.isStart && 'rounded-t-lg border-t',
+        data.isEnd && 'rounded-b-lg border-b',
+        (data.level || data.isMirror) && `ring ${params.bgRingColorClass}`,
+      ],
       columnEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-top-1',
@@ -278,20 +280,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-bottom-1',
       ],
-      columnEventColorClass: (data) => [
-        'print:border-x',
-        data.isStart && 'rounded-t-lg print:border-t',
-        data.isEnd && 'rounded-b-lg print:border-b',
-        (data.level || data.isMirror) && `ring ${params.bgRingColorClass}`,
-      ],
       columnEventInnerClass: 'flex flex-col py-1',
       // TODO: move the x-padding to the inner div? same concept with row-events
       columnEventTimeClass: 'px-2 pt-1',
       columnEventTitleClass: 'px-2 py-1 font-medium',
 
-      // TODO: keep DRY with timeline rowMoreLink
-      columnMoreLinkClass: `relative m-0.5 p-px rounded-lg ${params.strongSolidPressableClass} print:bg-white print:border print:border-black ring ${params.bgRingColorClass}`,
-      columnMoreLinkInnerClass: `z-10 p-0.5 text-xs ${params.strongFgClass}`,
+      columnMoreLinkClass: `m-0.5 rounded-lg ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
+      columnMoreLinkInnerClass: `p-0.5 text-xs ${params.strongFgClass}`,
 
       allDayHeaderClass: 'items-center', // v-align
       allDayHeaderInnerClass: `p-2 text-xs ${params.fgClass}`,
@@ -348,9 +343,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       list: {
         listDayClass: `flex flex-col not-first:border-t ${params.borderColorClass}`,
 
-        listDayHeaderClass: `relative flex flex-row justify-between ${params.mutedSolidBgClass} border-b ${params.borderColorClass} top-0 sticky`,
+        listDayHeaderClass: `flex flex-row justify-between ${params.mutedSolidBgClass} border-b ${params.borderColorClass} top-0 sticky`,
         listDayHeaderInnerClass: (data) => [
-          'z-10 px-3 py-3 text-sm',
+          'px-3 py-3 text-sm',
           !data.level && 'font-semibold',
           params.strongFgClass,
         ],

@@ -45,6 +45,8 @@ const secondaryPressableClass = `${bgClass} ${strongFgClass} ${controlHoverColor
 const smallBoxShadowClass = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
 const largeBoxShadowClass = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 
+const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
+
 export const optionParams: EventCalendarOptionParams = {
   tertiaryClass,
   tertiaryPressableClass,
@@ -77,8 +79,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   eventColor: 'var(--fc-pulse-event)',
   eventContrastColor: 'var(--fc-pulse-event-contrast)',
-  bgEventColor: 'var(--color-green-500)', // TODO: make this a theme variable
-  bgEventColorClass: 'brightness-150 opacity-15',
+  bgEventColor: 'var(--fc-pulse-background-event)',
+  bgEventBgClass,
 
   popoverClass: `${bgClass} border ${strongBorderColorClass} rounded-md shadow-md m-1`,
 

@@ -64,10 +64,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           data.isSpacious ? 'py-1' : 'py-px', // extra v space
         ],
 
-        // TODO: keep DRY with columnMoreLink
-        rowMoreLinkClass: `relative me-px mb-px p-px rounded-sm ${params.bgClass}`,
-        rowMoreLinkColorClass: `absolute z-0 inset-0 rounded-sm ${params.strongSolidPressableClass} print:bg-white print:border print:border-black`,
-        rowMoreLinkInnerClass: 'z-10 p-0.5 text-xs', // TODO: somehow add that "extra v space" ?
+        rowMoreLinkClass: `me-px mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
+        rowMoreLinkInnerClass: 'p-0.5 text-xs', // TODO: somehow add that "extra v space" ?
 
         slotLabelAlign: (data) => (data.level || data.isTime) ? 'start' : 'center',
         slotLabelSticky: '0.5rem', // for pill

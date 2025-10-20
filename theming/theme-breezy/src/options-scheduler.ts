@@ -70,11 +70,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
         // TODO: keep DRY with columnMoreLink
         rowMoreLinkClass: (data) => [
-          `relative me-px mb-px p-px ${params.bgClass}`,
-          data.isCompact ? 'rounded-sm' : 'rounded-md', // needed? isn't isCompact always false in timeline?
-        ],
-        rowMoreLinkColorClass: (data) => [
-          `absolute z-0 inset-0 ${params.strongSolidPressableClass} print:bg-white print:border print:border-black`,
+          `me-px mb-px ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
           data.isCompact ? 'rounded-sm' : 'rounded-md', // needed? isn't isCompact always false in timeline?
         ],
         rowMoreLinkInnerClass: `z-1 p-0.5 text-xs/4 ${params.fgClass}`,

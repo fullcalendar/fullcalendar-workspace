@@ -39,8 +39,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceIndentClass: 'ms-2 -me-1 items-center',
       resourceExpanderClass: [
-        'not-hover:opacity-65',
-        params.ghostPressableClass,
+        'group', // for icon effects
         params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
       ],
@@ -67,10 +66,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           data.isSpacious ? 'py-1' : 'py-px',
         ],
 
-        // TODO: keep DRY with columnMoreLink
-        rowMoreLinkClass: `relative me-px mb-px p-px ${params.bgClass}`,
-        rowMoreLinkColorClass: `absolute z-0 inset-0 ${params.strongSolidPressableClass} print:bg-white print:border print:border-black`,
-        rowMoreLinkInnerClass: 'z-10 p-0.5 text-xs',
+        rowMoreLinkClass: `me-px mb-px ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
+        rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
         slotLabelClass: 'justify-center', // v-align

@@ -9,7 +9,7 @@ const outlineWidthClass = 'outline-3'
 const outlineWidthFocusClass = 'focus-visible:outline-3'
 const outlineWidthGroupFocusClass = 'group-focus-visible:outline-3'
 
-const tertiaryOutlineColorClass = 'outline-(--fc-monarch-highlight)' // different that exact tertiary, but same shade
+const tertiaryOutlineColorClass = 'outline-(--fc-monarch-outline)' // different that exact tertiary, but same shade
 const tertiaryOutlineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFocusClass}`
 
 const primaryClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreground)`
@@ -40,6 +40,8 @@ const tabSelectedButtonClass = `${tabSelectedPressableClasss} border border-tran
 
 const tabUnselectedButtonClass = `${ghostPressableClass} border border-transparent ${tertiaryOutlineFocusClass} -outline-offset-1`
 
+const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
+
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
   secondaryPressableClass,
@@ -65,7 +67,7 @@ export const optionParams: EventCalendarOptionParams = {
 
   mutedBgClass: 'bg-(--fc-monarch-muted)',
   faintBgClass: 'bg-(--fc-monarch-faint)',
-  highlightClass: 'bg-(--fc-monarch-secondary) opacity-30',
+  highlightClass: 'bg-(--fc-monarch-highlight)',
 
   borderColorClass: 'border-(--fc-monarch-border)',
   primaryBorderColorClass: 'border-(--fc-monarch-primary)',
@@ -75,7 +77,7 @@ export const optionParams: EventCalendarOptionParams = {
   eventColor: 'var(--fc-monarch-primary)',
   eventContrastColor: 'var(--fc-monarch-primary-foreground)',
   bgEventColor: 'var(--fc-monarch-tertiary)',
-  bgEventColorClass: 'brightness-115 opacity-15',
+  bgEventBgClass,
 
   popoverClass: 'border border-(--fc-monarch-border) rounded-lg bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg',
 

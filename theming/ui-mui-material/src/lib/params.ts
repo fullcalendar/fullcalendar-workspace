@@ -19,8 +19,8 @@ const tertiaryOutlineColorClass = 'outline-[rgba(var(--mui-palette-secondary-mai
 const tertiaryOutlineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFocusClass}`
 
 const primaryClass = 'bg-(--mui-palette-primary-main) text-(--mui-palette-primary-contrastText)'
-const primaryPressableClass = primaryClass // TODO: hover effect!
-const primaryPressableGroupClass = primaryClass // TODO: hover effect!
+const primaryPressableClass = `${primaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.9)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.8)]`
+const primaryPressableGroupClass = `${primaryClass} group-hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.9)] group-active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.8)]`
 
 // less-contrasty version of primary (like the selected tab)
 // TODO: if it looks bad in Classic, make a new mutedPressableClass!
@@ -33,6 +33,7 @@ const tertiaryPressableClass = `${tertiaryClass} hover:bg-[rgba(var(--mui-palett
 const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] group-active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)] group-focus-visible:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)]`
 
 // ghost
+// FYI, uses the tertiary outline ring, which may clash with themes that prefer the primary outline ring
 const ghostHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
 const ghostHoverGroupClass = 'group-hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
 const ghostPressableClass = `${ghostHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] ${tertiaryOutlineFocusClass}`
@@ -48,6 +49,9 @@ const mutedPressableClass = joinClassNames(
   'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]',
 )
 
+// very probable, tho not guaranteed, this will be solid
+// however, --mui-palette-text-primary and --mui-palette-background-paper almost always solid
+// for a bulletproof technique, use the linear-gradient technique, but extremely verbose with nested expressions
 const strongSolidClass = 'bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_15%,var(--mui-palette-background-paper))]'
 const strongSolidPressableClass = joinClassNames(
   strongSolidClass,
@@ -70,6 +74,8 @@ const mutedEventPressableClass = joinClassNames(
 )
 
 const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--mui-palette-text-primary))]'
+
+const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
 export const optionParams: ThemeOptionParams = {
   primaryClass,
@@ -106,7 +112,7 @@ export const optionParams: ThemeOptionParams = {
   mutedBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]',
   mutedSolidBgClass: '[background:linear-gradient(rgba(var(--mui-palette-text-primaryChannel)_/_0.08),rgba(var(--mui-palette-text-primaryChannel)_/_0.08))_var(--mui-palette-background-paper)]',
   faintBgClass: 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]',
-  highlightClass: 'bg-(--mui-palette-primary-main) opacity-10',
+  highlightClass: 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.1)]',
   todayBgNotPrintClass: 'not-print:bg-[rgba(var(--mui-palette-warning-mainChannel)_/_0.1)]',
 
   borderColorClass: 'border-(--mui-palette-divider)',
@@ -122,7 +128,7 @@ export const optionParams: ThemeOptionParams = {
   eventColor: 'var(--mui-palette-primary-main)',
   eventContrastColor: 'var(--mui-palette-primary-contrastText)',
   bgEventColor: 'var(--mui-palette-secondary-main)',
-  bgEventColorClass: 'brightness-115 opacity-15',
+  bgEventBgClass,
 
   popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8)',
   // (breezy) ^^^

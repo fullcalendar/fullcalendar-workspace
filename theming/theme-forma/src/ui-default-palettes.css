@@ -39,6 +39,9 @@ down = mousedown (active)
 
   --fc-forma-muted-foreground: var(--color-gray-500);
   --fc-forma-faint-foreground: var(--color-gray-400);
+
+  --fc-forma-event-contrast: #fff;
+  --fc-forma-background-event: var(--color-green-500);
 }
 [data-color-scheme=dark] {
   --fc-forma-background: var(--color-gray-950);

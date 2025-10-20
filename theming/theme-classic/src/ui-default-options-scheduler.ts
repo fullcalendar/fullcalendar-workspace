@@ -3,7 +3,7 @@ import * as svgs from './ui-default-svgs.js'
 import { optionParams } from './ui-default-options-event-calendar.js'
 import { createSchedulerOnlyOptions } from './options-scheduler.js'
 
-const expanderIconClass = 'size-4'
+const expanderIconClass = 'size-4 not-group-hover:opacity-65'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
 

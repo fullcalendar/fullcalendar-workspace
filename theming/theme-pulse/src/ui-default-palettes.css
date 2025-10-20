@@ -55,6 +55,8 @@ can maybe remove some dark-mode colors. repeat of what's in light mode
   --fc-pulse-tab-selected: #fff;
 
   --fc-pulse-secondary-icon: #9ca3af;
+
+  --fc-pulse-background-event: var(--color-green-500);
 }
 [data-color-scheme=dark] {
   --fc-pulse-background: var(--color-gray-950);

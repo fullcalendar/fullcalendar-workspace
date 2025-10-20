@@ -40,14 +40,13 @@ const unselectedButtonTextColorClass = 'text-(--fc-forma-tab-foreground)'
 const unselectedButtonHoverBorderColorClass = 'hover:border-(--fc-forma-tab-over-border)'
 const unselectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-tab-over)'
 const unselectedButtonActiveBorderColorClass = 'active:border-(--fc-forma-tab-down-border)'
-const unselectedButtonActiveBgColorClass = 'focus-visible:bg-(--fc-forma-tab-over) active:bg-(--fc-forma-tab-down)'
-const unselectedButtonClass = `${unselectedButtonTextColorClass} border border-transparent ${unselectedButtonHoverBorderColorClass} ${unselectedButtonHoverBgColorClass} ${unselectedButtonActiveBorderColorClass} ${unselectedButtonActiveBgColorClass} ${outlineFocusClass}`
+const unselectedButtonClass = `${unselectedButtonTextColorClass} border border-transparent ${unselectedButtonHoverBorderColorClass} ${unselectedButtonHoverBgColorClass} ${unselectedButtonActiveBorderColorClass} ${outlineFocusClass}`
 
 const selectedButtonBorderColorClass = 'border-(--fc-forma-tab-selected-border)'
 const selectedButtonBgColorClass = 'bg-(--fc-forma-tab-selected)'
 const selectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-tab-selected-over) focus-visible:bg-(--fc-forma-tab-selected-over)'
 const selectedButtonActiveBgColorClass = 'active:bg-(--fc-forma-tab-selected-down)'
-const selectedButtonClass = `border ${selectedButtonBorderColorClass} ${selectedButtonBgColorClass} ${selectedButtonHoverBgColorClass} ${selectedButtonActiveBgColorClass} ${outlineFocusClass}`
+const selectedButtonClass = `border ${selectedButtonBorderColorClass} ${selectedButtonBgColorClass} ${selectedButtonHoverBgColorClass} ${selectedButtonActiveBgColorClass} ${outlineFocusClass} -outline-offset-1`
 
 const buttonIconColorClass = 'text-(--fc-forma-secondary-icon)' // will only work for secondary!
 const buttonIconClass = `size-5 ${buttonIconColorClass}` // will only work for secondary!
@@ -59,12 +58,21 @@ const strongSolidPressableClass = joinClassNames(
   'active:[background:linear-gradient(var(--fc-forma-strong-active),var(--fc-forma-strong-active))_var(--fc-monarch-background)]',
 )
 
+const faintEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-forma-background))]'
+const faintEventPressableClass = joinClassNames(
+  faintEventBgClass,
+  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--fc-forma-background))]',
+  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-forma-background))]',
+)
+
 const mutedEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-forma-background))]'
 const mutedEventPressableClass = joinClassNames(
   mutedEventBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--fc-forma-background))]',
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_40%,var(--fc-forma-background))]',
 )
+
+const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
 export const optionParams: EventCalendarOptionParams = {
   primaryClass,
@@ -94,9 +102,9 @@ export const optionParams: EventCalendarOptionParams = {
   outlineInsetClass,
 
   eventColor: 'var(--fc-forma-event)',
-  eventContrastColor: '#fff', // TODO: var!
-  bgEventColor: 'var(--color-green-500)', // TODO: var!
-  bgEventColorClass: 'brightness-150 opacity-15',
+  eventContrastColor: 'var(--fc-forma-event-contrast)',
+  bgEventColor: 'var(--fc-forma-background-event)',
+  bgEventBgClass,
 
   popoverClass: 'border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md',
 
@@ -108,6 +116,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   mutedEventBgClass,
   mutedEventPressableClass,
+  faintEventBgClass,
+  faintEventPressableClass,
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
