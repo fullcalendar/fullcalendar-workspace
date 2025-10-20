@@ -14,14 +14,6 @@ clean+build all:
 
 
 NOW
-  Pulse button effects
-    block events (and focus ring)
-    ghost pressables
-  Forma block-event print border not working
-  Forma, make columnMoreLink/rowMoreLink match radius of events
-  Breezy block-event print border not working
-  Breezy (default UI) ghost button doesn't have hover/down effects
-  Shadcn doesn't need DOWN effect for faintEventPressableClass/mutedEventPressableClass
   TODO: For Shadcn, bg-event color can't be so similar to fg-events (Forma & Breezy)
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)
     remove *ColorClass props? YES
@@ -32,9 +24,6 @@ NOW
     delete rowEventColorClass
     delete columnEventColorClass
     delete backgroundEventColorClass
-  give all block-events a hover effect
-  Shadcn background-events
-    use equiv of muted-bg for backgroundevent color (will be darker than non-business-hours, yay!)
   redesign list-views for [Breezy] and [Pulse]
     Breezy doesn't really support listDayAltFormat
     ensure listDayHeaderInner button-like & isToday

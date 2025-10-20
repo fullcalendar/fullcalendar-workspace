@@ -652,6 +652,7 @@ function SchedulerDemo(props: DemoProps) {
       nowIndicator={true}
       aspectRatio={1.6}
       scrollTime='07:00'
+      eventInteractive={true}
       views={{
         resourceTimelineThreeDay: {
           type: 'resourceTimeline',

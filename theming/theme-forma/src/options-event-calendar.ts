@@ -412,7 +412,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
 
         columnMoreLinkClass: [
-          `mb-px rounded-xs ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
+          `mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
           params.outlineOffsetClass, // just like block events
         ],
         columnMoreLinkInnerClass: 'p-0.5 text-xs',

@@ -121,7 +121,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
     listItemEventClass: (data) => [
       `p-px ${dayRowItemClass}`,
-      data.isInteractive ? params.ghostHoverClass : params.ghostPressableClass,
+      data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass,
     ],
     listItemEventInnerClass: 'justify-between flex flex-row text-xs',
     listItemEventTimeClass: 'order-1 p-0.5 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
@@ -236,7 +236,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : params.outlineWidthFocusClass,
       ],
 
-      blockEventClass: 'relative group bg-(--fc-event-color) print:bg-white border-(--fc-event-color)',
+      blockEventClass: (data) => [
+        'relative group',
+        'bg-(--fc-event-color) print:bg-white',
+        'border-transparent print:border-(--fc-event-color)',
+        'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))]',
+        data.isInteractive && 'active:bg-[color-mix(in_oklab,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
+      ],
       blockEventInnerClass: 'text-(--fc-event-contrast-color) print:text-black text-xs',
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
       blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first

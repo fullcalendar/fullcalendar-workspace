@@ -43,14 +43,12 @@ const faintEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(
 const faintEventPressableClass = joinClassNames(
   faintEventBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))]',
-  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]', // shadcn needs this?
 )
 
 const mutedEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]'
 const mutedEventPressableClass = joinClassNames(
   mutedEventBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--background))]',
-  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_40%,var(--background))]', // shadcn needs this?
 )
 
 const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
