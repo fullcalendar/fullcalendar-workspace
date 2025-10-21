@@ -95,6 +95,9 @@ export interface EventCalendarOptionParams {
   fgClass: string
   strongFgClass: string
   mutedFgClass: string
+
+  faintHoverClass: string
+  faintPressableClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -351,16 +354,20 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         listDayHeaderClass: `flex flex-row justify-between ${params.mutedSolidBgClass} border-b ${params.borderColorClass} top-0 sticky`,
         listDayHeaderInnerClass: (data) => [
-          'px-3 py-3 text-sm',
+          'm-2 px-2 py-1 rounded-sm text-sm',
           !data.level && 'font-semibold',
-          params.strongFgClass,
+          data.hasNavLink && params.outlineInsetClass,
+          (data.isToday && !data.level)
+            ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
+            : (data.hasNavLink && params.ghostPressableClass),
         ],
 
-        listDayEventsClass: 'flex flex-col py-4 gap-4',
+        listDayEventsClass: 'flex flex-col py-2 gap-2',
 
         listItemEventClass: (data) => [
-          data.isInteractive && params.outlineInsetClass, // move inside,
-          // TODO: faintPressableClass / faintHoverClass
+          'py-1',
+          data.isInteractive ? params.faintPressableClass : params.faintHoverClass,
+          data.isInteractive && params.outlineInsetClass, // move inside
         ],
         listItemEventBeforeClass: 'bg-(--fc-event-color) w-1.5 rounded-full',
         listItemEventInnerClass: '[display:contents]',

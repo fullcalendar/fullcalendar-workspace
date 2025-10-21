@@ -14,9 +14,11 @@ clean+build all:
 
 
 NOW
-  redesign list-views for [Breezy] and [Pulse]
+  redesign list-views for Breezy
     Breezy doesn't really support listDayAltFormat
     ensure listDayHeaderInner button-like & isToday
+  Fixup slot inner-link margin/padding
+  Fixup confused button focus-ring color for tertiary
   demo App not working in Safari?
   why doesn't eventStartEditable seem to work?
   why does dragging Monarch events give outline?

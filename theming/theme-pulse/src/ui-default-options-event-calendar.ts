@@ -47,6 +47,9 @@ const largeBoxShadowClass = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
+const faintHoverClass = 'hover:bg-(--fc-pulse-faint)'
+const faintPressableClass = `${faintHoverClass} active:bg-(--fc-pulse-muted) focus-visible:bg-(--fc-pulse-faint)`
+
 export const optionParams: EventCalendarOptionParams = {
   tertiaryClass,
   tertiaryPressableClass,
@@ -54,6 +57,9 @@ export const optionParams: EventCalendarOptionParams = {
 
   ghostHoverClass,
   ghostPressableClass,
+
+  faintHoverClass,
+  faintPressableClass,
 
   strongSolidPressableClass: joinClassNames(
     '[background:linear-gradient(var(--fc-pulse-strong),var(--fc-pulse-strong))_var(--fc-pulse-background)]',
