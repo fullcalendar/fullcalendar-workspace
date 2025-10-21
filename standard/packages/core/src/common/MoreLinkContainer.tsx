@@ -86,12 +86,6 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
             isCompact: props.isCompact,
             view: viewApi,
           }
-          let colorClass =
-            props.display === 'row'
-              ? options.rowMoreLinkColorClass
-              : props.display === 'column'
-                ? options.columnMoreLinkColorClass
-                : ''
 
           return (
             <Fragment>
@@ -136,26 +130,21 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   willUnmount={options.moreLinkWillUnmount}
                 >
                   {(InnerContent) => (
-                    <Fragment>
-                      {Boolean(colorClass) && (
-                        <div className={generateClassName(colorClass, renderProps)} />
-                      )}
-                      <InnerContent
-                        tag='div'
-                        className={joinClassNames(
-                          generateClassName(options.moreLinkInnerClass, renderProps),
-                          generateClassName(
-                            props.display === 'row'
-                              ? options.rowMoreLinkInnerClass // row
-                              : options.columnMoreLinkInnerClass, // column
-                            renderProps
-                          ),
+                    <InnerContent
+                      tag='div'
+                      className={joinClassNames(
+                        generateClassName(options.moreLinkInnerClass, renderProps),
+                        generateClassName(
                           props.display === 'row'
-                            ? classNames.stickyS
-                            : classNames.stickyT,
-                        )}
-                      />
-                    </Fragment>
+                            ? options.rowMoreLinkInnerClass // row
+                            : options.columnMoreLinkInnerClass, // column
+                          renderProps
+                        ),
+                        props.display === 'row'
+                          ? classNames.stickyS
+                          : classNames.stickyT,
+                      )}
+                    />
                   )}
                 </ContentContainer>
               )}

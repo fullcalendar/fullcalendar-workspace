@@ -123,7 +123,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ? joinClassNames(params.mutedBgClass, data.isDragging && 'shadow-sm')
         : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
     ],
-    listItemEventColorClass: (data) => [
+    listItemEventBeforeClass: (data) => [
       data.isCompact ? 'mx-px' : 'mx-1',
       'border-4', // 8px diameter circle
 

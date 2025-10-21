@@ -362,10 +362,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isInteractive && params.outlineInsetClass, // move inside,
           // TODO: faintPressableClass / faintHoverClass
         ],
+        listItemEventBeforeClass: 'bg-(--fc-event-color) w-1.5 rounded-full',
         listItemEventInnerClass: '[display:contents]',
         listItemEventTimeClass: 'shrink-0 w-1/2 max-w-60 ps-6 pe-4 py-2 order-[-1] text-sm whitespace-nowrap overflow-hidden text-ellipsis',
         listItemEventTitleClass: 'grow min-w-0 px-4 py-2 text-sm whitespace-nowrap overflow-hidden',
-        listItemEventColorClass: 'bg-(--fc-event-color) w-1.5 rounded-full',
 
         noEventsClass: 'grow flex flex-col items-center justify-center',
         noEventsInnerClass: 'py-15',

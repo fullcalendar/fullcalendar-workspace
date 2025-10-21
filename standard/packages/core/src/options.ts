@@ -227,7 +227,6 @@ export const BASE_OPTION_REFINERS = {
   backgroundEventColor: String,
 
   eventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
-  eventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   eventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   eventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
   eventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
@@ -235,7 +234,6 @@ export const BASE_OPTION_REFINERS = {
   eventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
   listItemEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
-  listItemEventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   listItemEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   listItemEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
   listItemEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
@@ -243,7 +241,6 @@ export const BASE_OPTION_REFINERS = {
   listItemEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
   blockEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
-  blockEventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   blockEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   blockEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
   blockEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
@@ -251,7 +248,6 @@ export const BASE_OPTION_REFINERS = {
   blockEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
   rowEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
-  rowEventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   rowEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   rowEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
   rowEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
@@ -262,7 +258,6 @@ export const BASE_OPTION_REFINERS = {
   rowEventAfterContent: identity as Identity<CustomContentGenerator<EventDisplayData>>,
   //
   columnEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
-  columnEventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   columnEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   columnEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
   columnEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
@@ -271,7 +266,6 @@ export const BASE_OPTION_REFINERS = {
   columnEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
   backgroundEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
-  backgroundEventColorClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   backgroundEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   backgroundEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
   backgroundEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isCompact: boolean }>>,
@@ -390,11 +384,9 @@ export const BASE_OPTION_REFINERS = {
   moreLinkInnerClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
   //
   rowMoreLinkClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
-  rowMoreLinkColorClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
   rowMoreLinkInnerClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
   //
   columnMoreLinkClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
-  columnMoreLinkColorClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
   columnMoreLinkInnerClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
 
   navLinkClass: identity as Identity<ClassNameInput>,

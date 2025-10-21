@@ -269,7 +269,7 @@ export default createPlugin({
       ],
       rowEventClass: dayGridBlockEventClass,
       listItemEventClass: dayGridListItemEventClass,
-      listItemEventColorClass: 'fc-daygrid-event-dot',
+      // listItemEventColorClass: 'fc-daygrid-event-dot',
       columnEventClass: 'fc-timegrid-event fc-event-y',
       allDayHeaderClass: 'fc-timegrid-axis',
       allDayHeaderInnerClass: 'fc-timegrid-axis-inner',
@@ -299,7 +299,7 @@ export default createPlugin({
     list: {
       viewClass: 'fc-list',
       eventClass: 'fc-list-event',
-      eventColorClass: 'fc-list-event-dot',
+      // eventColorClass: 'fc-list-event-dot',
       noEventsClass: 'fc-list-empty',
       noEventsInnerClass: 'fc-list-empty-inner',
     },

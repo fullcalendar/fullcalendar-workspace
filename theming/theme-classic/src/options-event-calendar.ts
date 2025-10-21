@@ -107,7 +107,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ? joinClassNames(params.mutedBgClass, data.isDragging && 'shadow-sm')
         : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
     ],
-    listItemEventColorClass: (data) => [
+    listItemEventBeforeClass: (data) => [
       'border-4', // 8px diameter
       data.isCompact ? 'mx-px' : 'mx-1',
     ],
@@ -198,7 +198,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       listItemEventClass: 'items-center',
-      listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
+      listItemEventBeforeClass: 'rounded-full border-(--fc-event-color)',
 
       blockEventClass: (data) => [
         'bg-(--fc-event-color) border-transparent', // subclasses do print-border-width
@@ -347,7 +347,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
               )
             : params.faintHoverClass,
         ],
-        listItemEventColorClass: 'border-5', // 10px diameter
+        listItemEventBeforeClass: 'border-5', // 10px diameter
         listItemEventInnerClass: '[display:contents]',
         listItemEventTimeClass: 'order-[-1] shrink-0 w-1/2 max-w-50 whitespace-nowrap overflow-hidden text-ellipsis text-sm', // send to start
         listItemEventTitleClass: (data) => [

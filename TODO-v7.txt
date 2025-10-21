@@ -14,15 +14,6 @@ clean+build all:
 
 
 NOW
-  refactor how other themes' event color manipulation works (no more eventColorClass/etc)
-    remove *ColorClass props? YES
-      backgroundEventColorClass/row/column
-    use color-mix for moving closer to foreground/background
-      use reasonable fallback when unsupported
-    delete blockEventColorClass
-    delete rowEventColorClass
-    delete columnEventColorClass
-    delete backgroundEventColorClass
   redesign list-views for [Breezy] and [Pulse]
     Breezy doesn't really support listDayAltFormat
     ensure listDayHeaderInner button-like & isToday

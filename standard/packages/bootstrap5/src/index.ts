@@ -60,7 +60,7 @@ export default createPlugin({
     dayGrid: {
       viewClass: 'fc-daygrid',
       eventClass: getDayGridEventClass,
-      eventColorClass: getDayGridEventColorClass,
+      // eventColorClass: getDayGridEventColorClass,
     },
     timeGrid: {
       viewClass: 'fc-timegrid',
@@ -69,19 +69,19 @@ export default createPlugin({
         data.event.display === 'background' ? '' :
         'fc-timegrid-event fc-v-event'
       ),
-      eventColorClass: (data) => (
-        data.event.allDay ? getDayGridEventColorClass(data) : ''
-      ),
+      // eventColorClass: (data) => (
+      //   data.event.allDay ? getDayGridEventColorClass(data) : ''
+      // ),
     },
     list: {
       viewClass: 'fc-list',
       eventClass: 'fc-list-event',
-      eventColorClass: 'fc-list-event-dot',
+      // eventColorClass: 'fc-list-event-dot',
     },
     multiMonth: {
       viewClass: 'fc-multimonth',
       eventClass: getDayGridEventClass,
-      eventColorClass: getDayGridEventColorClass,
+      // eventColorClass: getDayGridEventColorClass,
     },
     timeline: {
       viewClass: 'fc-timeline',
@@ -104,11 +104,6 @@ function getDayGridEventClass(data: EventDisplayData) {
   // return data.event.display === 'background' ? '' :
   //   data.isListItem ? 'fc-daygrid-dot-event fc-daygrid-event' :
   //   'fc-daygrid-block-event fc-daygrid-event fc-h-event'
-}
-
-function getDayGridEventColorClass(data: EventDisplayData) {
-  return ''
-  // return data.isListItem && 'fc-daygrid-event-dot'
 }
 
 const DAY_IDS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']

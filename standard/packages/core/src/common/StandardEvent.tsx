@@ -147,13 +147,6 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       props.display === 'column' && generateClassName(options.columnEventAfterClass, renderProps),
       props.display === 'list-item' && generateClassName(options.listItemEventAfterClass, renderProps),
     )
-    const colorClassName = joinClassNames(
-      generateClassName(options.eventColorClass, renderProps),
-      isBlock && generateClassName(options.blockEventColorClass, renderProps),
-      props.display === 'row' && generateClassName(options.rowEventColorClass, renderProps),
-      props.display === 'column' && generateClassName(options.columnEventColorClass, renderProps),
-      props.display === 'list-item' && generateClassName(options.listItemEventColorClass, renderProps),
-    )
     const innerClassName = joinClassNames(
       generateClassName(options.eventInnerClass, renderProps),
       isBlock && generateClassName(options.blockEventInnerClass, renderProps),
@@ -230,10 +223,6 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
                   <div className={classNames.hit} />
                 )}
               </div>
-            )}
-            {/* color element */}
-            {colorClassName && (
-              <div className={colorClassName} />
             )}
             {/* inner element */}
             <InnerContent

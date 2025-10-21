@@ -1,4 +1,4 @@
-import { createElement, Fragment } from '../preact.js'
+import { createElement } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
 import { EventDisplayData, EventRenderRange, setElEventRange } from '../component-util/event-rendering.js'
 import { memoize } from '../util/memoize.js'
@@ -76,7 +76,6 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       classNames.internalEvent,
       classNames.internalBgEvent,
     )
-    const colorClassName = generateClassName(options.backgroundEventColorClass, renderProps)
 
     return (
       <ContentContainer
@@ -96,12 +95,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
         willUnmount={options.eventWillUnmount}
       >
         {(InnerContent) => (
-          <Fragment>
-            {colorClassName && (
-              <div className={joinClassNames(colorClassName, classNames.fill)} />
-            )}
-            <InnerContent tag='div' className={classNames.rel} />
-          </Fragment>
+          <InnerContent tag='div' className={classNames.rel} />
         )}
       </ContentContainer>
     )

@@ -106,7 +106,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const dayRowItemBaseClass = 'mx-0.5 mb-px rounded-sm'
   const dayRowItemClasses: CalendarOptions = {
     listItemEventClass: `${dayRowItemBaseClass} p-px`,
-    listItemEventColorClass: (data) => [
+    listItemEventBeforeClass: (data) => [
       'border-4', // 8px diameter
       data.isCompact ? 'mx-px' : 'mx-1',
     ],
@@ -201,7 +201,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             )
           : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
       ],
-      listItemEventColorClass: 'rounded-full border-(--fc-event-color)',
+      listItemEventBeforeClass: 'rounded-full border-(--fc-event-color)',
       listItemEventInnerClass: 'flex flex-row items-center',
 
       blockEventClass: (data) => [
@@ -394,7 +394,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listDayEventsClass: 'grow min-w-0 flex flex-col py-2',
 
         listItemEventClass: 'group rounded-s-full p-2 gap-2',
-        listItemEventColorClass: 'border-5 mx-2', // 10px diameter
+        listItemEventBeforeClass: 'border-5 mx-2', // 10px diameter
         listItemEventInnerClass: 'text-sm gap-2',
         listItemEventTimeClass: 'shrink-0 w-1/2 max-w-40 whitespace-nowrap overflow-hidden text-ellipsis',
         listItemEventTitleClass: (data) => [
