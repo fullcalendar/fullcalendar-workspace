@@ -276,7 +276,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'border-x',
         data.isStart && 'rounded-t-lg border-t',
         data.isEnd && 'rounded-b-lg border-b',
-        (data.level || data.isMirror) && `ring ${params.bgRingColorClass}`,
+        `ring ${params.bgRingColorClass}`,
       ],
       columnEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,

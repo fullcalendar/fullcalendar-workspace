@@ -14,7 +14,6 @@ clean+build all:
 
 
 NOW
-  TODO: For Shadcn, bg-event color can't be so similar to fg-events (Forma & Breezy)
   refactor how other themes' event color manipulation works (no more eventColorClass/etc)
     remove *ColorClass props? YES
       backgroundEventColorClass/row/column

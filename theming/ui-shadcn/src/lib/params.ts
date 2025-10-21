@@ -53,7 +53,7 @@ const mutedEventPressableClass = joinClassNames(
 
 const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
 
-const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
+const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
 
 export const optionParams: ThemeOptionParams = {
   primaryClass,
@@ -106,7 +106,7 @@ export const optionParams: ThemeOptionParams = {
 
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
-  bgEventColor: 'var(--primary)',
+  bgEventColor: 'var(--foreground)',
   bgEventBgClass,
 
   popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
