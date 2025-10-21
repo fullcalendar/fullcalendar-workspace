@@ -431,10 +431,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listDayHeaderClass: 'sticky top-0 shrink-0 w-1/4 max-w-40 p-3 flex flex-col items-start',
         listDayHeaderInnerClass: (data) => [
           'my-0.5',
-          data.level
-            ? 'text-xs'
-            : joinClassNames('text-lg', data.isToday && 'font-bold'),
           data.hasNavLink && 'hover:underline',
+          !data.level
+            ? joinClassNames('text-lg', data.isToday && 'font-bold')
+            : 'text-xs',
         ],
         listDayEventsClass: 'grow min-w-0 flex flex-col items-stretch gap-4 p-4',
 
