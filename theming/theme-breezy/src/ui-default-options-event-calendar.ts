@@ -33,6 +33,10 @@ const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-sec
 const ghostHoverClass = 'hover:bg-(--fc-breezy-muted)'
 const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-breezy-muted) ${primaryOutlineFocusClass}`
 
+const faintHoverClass = 'hover:bg-(--fc-breezy-faint)'
+const faintPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)`
+
+
 // NOTE: only works within secondary button
 // best? to sync to line-height???
 const buttonIconClass = 'size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-hover)'
@@ -64,6 +68,9 @@ export const optionParams: EventCalendarOptionParams = {
 
   ghostHoverClass,
   ghostPressableClass,
+
+  faintHoverClass,
+  faintPressableClass,
 
   primaryOutlineColorClass,
   outlineWidthClass,

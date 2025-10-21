@@ -115,6 +115,9 @@ export interface EventCalendarOptionParams {
   ghostHoverClass: string
   ghostPressableClass: string
 
+  faintHoverClass: string,
+  faintPressableClass: string,
+
   primaryOutlineColorClass: string
   outlineWidthClass: string
   outlineWidthFocusClass: string
@@ -481,20 +484,31 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       list: {
         listDaysClass: 'px-4 my-10 mx-auto w-full max-w-200',
-        listDayClass: `flex flex-row gap-2 not-last:border-b not-last:${params.borderColorClass}`,
-        listDayHeaderClass: 'shrink-0 w-1/4 max-w-40',
-        listDayHeaderInnerClass: `sticky top-0 py-4 text-sm ${params.mutedFgClass}`,
-        listDayEventsClass: 'grow min-w-0 flex flex-col',
+        listDayClass: `flex flex-row items-start gap-2 not-last:border-b ${params.mutedBorderColorClass}`,
 
-        listItemEventClass: `not-last:border-b ${params.borderColorClass}`,
-        listItemEventInnerClass: 'py-4 flex flex-row justify-between gap-2 text-sm',
-
-        // TODO: make this common?...
-        listItemEventTimeClass: `order-1 ${params.mutedFgClass} text-end`,
-        listItemEventTitleClass: [
-          'font-semibold',
-          'text-(--fc-event-color) brightness-60',
+        listDayHeaderClass: 'sticky top-0 shrink-0 w-1/4 max-w-50 my-px py-3.5 flex flex-col items-start',
+        listDayHeaderInnerClass: (data) => [
+          'py-1 text-sm',
+          data.hasNavLink && 'hover:underline',
+          !data.level
+            ? joinClassNames(params.strongFgClass, data.isToday ? 'font-bold' : 'font-medium')
+            : params.faintFgClass,
         ],
+
+        listDayEventsClass: `grow min-w-0 my-4 flex flex-col border ${params.borderColorClass} rounded-md`,
+
+        listItemEventClass: (data) => [
+          `p-4 items-center gap-3 not-last:border-b`,
+          params.mutedBorderColorClass,
+          data.isInteractive
+            ? params.faintPressableClass
+            : params.faintHoverClass,
+        ],
+        listItemEventBeforeClass: 'rounded-full border-(--fc-event-color) border-4',
+        listItemEventInnerClass: 'flex flex-row gap-3 text-sm',
+
+        listItemEventTimeClass: `shrink-0 w-1/2 max-w-50 whitespace-nowrap overflow-hidden text-ellipsis ${params.mutedFgClass}`,
+        listItemEventTitleClass: `grow min-w-0 font-medium whitespace-nowrap overflow-hidden ${params.fgClass}`,
 
         noEventsClass: 'grow py-15 flex flex-col items-center justify-center',
         noEventsInnerClass: 'py-15',

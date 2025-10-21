@@ -529,13 +529,8 @@ function EventCalendarDemo(props: DemoProps) {
             listDayFormat: { day: 'numeric' /*, weekday: 'short' */ },
             listDaySideFormat: { month: 'short', weekday: 'short', forceCommas: true },
           }
-          : props.theme === 'breezy'
-            ? {
-              listDayFormat: { month: 'short', weekday: 'short', day: 'numeric' },
-              listDaySideFormat: false,
-            }
-            : {} // default is for standard theme... which does side-format... kill this default
-                  // and have standard theme set it?
+          : {} // default is for standard theme... which does side-format... kill this default
+               // and have standard theme set it?
       )}
       views={{
         dayGridMonth:

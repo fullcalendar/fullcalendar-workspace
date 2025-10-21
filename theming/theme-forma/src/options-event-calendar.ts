@@ -427,9 +427,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       list: {
         listDayClass: `not-last:border-b ${params.borderColorClass} flex flex-row items-start`,
-        listDayHeaderClass: 'top-0 sticky shrink-0 w-1/4 max-w-40 p-3 flex flex-col',
+
+        listDayHeaderClass: 'sticky top-0 shrink-0 w-1/4 max-w-40 p-3 flex flex-col items-start',
         listDayHeaderInnerClass: (data) => [
-          data.level ? 'text-xs' : ('text-lg' + (data.isToday ? ' font-bold' : '')),
+          'my-0.5',
+          data.level
+            ? 'text-xs'
+            : joinClassNames('text-lg', data.isToday && 'font-bold'),
           data.hasNavLink && 'hover:underline',
         ],
         listDayEventsClass: 'grow min-w-0 flex flex-col items-stretch gap-4 p-4',
@@ -441,9 +445,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           'p-3 flex flex-row rounded-sm border-s-6 border-(--fc-event-color)',
         ],
 
-        listItemEventInnerClass: 'relative flex flex-row gap-2 text-sm',
+        listItemEventInnerClass: 'flex flex-row gap-2 text-sm',
         listItemEventTimeClass: 'shrink-0 w-1/2 max-w-40 whitespace-nowrap overflow-hidden text-ellipsis',
-        listItemEventTitleClass: 'grow min-w-0 font-semibold whitespace-nowrap overflow-hidden text-ellipsis',
+        listItemEventTitleClass: 'grow min-w-0 font-semibold whitespace-nowrap overflow-hidden',
 
         noEventsClass: 'grow flex flex-col items-center justify-center',
         noEventsInnerClass: 'py-15',
