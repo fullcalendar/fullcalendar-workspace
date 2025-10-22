@@ -15,7 +15,6 @@ clean+build all:
 
 NOW
   Fixup confused button focus-ring color for tertiary?... probably not worth the increased code complexity
-  demo App not working in Safari?
 MANUAL TEST
   test timeline/timegrid more-link in DARK mode
   now-indicator
@@ -52,11 +51,6 @@ CODE-QUALITY (while going through each theme)
     if using slots.tsx,
       apply .outlineWidthGroupFocusClass to sub-elements
     dayHeaderInnerClass does NOT need it! already has nav-link. but might need "offset" class
-Demo
-  Undo hiding of Year-view for Pulse theme
-  Refactor demo code to have view-specific demo subcomponents
-  Add checkbox to add "container" background color, test for light/dark
-  When switching from light to dark, why does calendar state clear?
 NOTES
   for alignment,
     dayHeader and timeline-slotLabel are flex-col
@@ -333,6 +327,8 @@ When color-mix used, ensure fallback for older browsers
 Instead of opacity to control icon colors, use muted/disabledFgColorClass?
 Instead of opacity for backgroundEventTitleClass, muted/disabledFgColorClass?
 More prominent Breezy list-view today-marker. Forma too?
+What controls slot min-width in timeline when slotLabelInterval is large? seems to be 30px
+  (see resourceTimelineWeek in App)
 
 
 Changelog

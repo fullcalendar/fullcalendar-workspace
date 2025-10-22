@@ -424,11 +424,7 @@ export default function App() {
             )}
             <EventCalendarDemo
               initialView='dayGridMonth'
-              availableViews={
-                theme === 'pulse'
-                  ? ['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek']
-                  : ['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek', 'multiMonthYear']
-              }
+              availableViews={['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek', 'multiMonthYear']}
               ui={ui}
               theme={theme}
             />
