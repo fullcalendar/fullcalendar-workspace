@@ -15,8 +15,6 @@ clean+build all:
 
 NOW
   demo App not working in Safari?
-  why doesn't eventStartEditable seem to work?
-  why does dragging Monarch events give outline?
 MANUAL TEST
   test timeline/timegrid more-link in DARK mode
   now-indicator

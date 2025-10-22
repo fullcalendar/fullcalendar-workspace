@@ -481,7 +481,8 @@ function EventCalendarDemo(props: DemoProps) {
 
   return (
     <EventCalendarComponent
-      // eventStartEditable={true}
+      eventStartEditable={true}
+      eventResizableFromStart={true}
       // direction='rtl'
       // displayEventTime={true}
       // eventDisplay='block'
@@ -624,6 +625,8 @@ function SchedulerDemo(props: DemoProps) {
 
   return (
     <SchedulerComponent
+      eventStartEditable={true}
+      eventResizableFromStart={true}
       // direction='rtl'
       // weekNumbers
       availableViews={props.availableViews}
