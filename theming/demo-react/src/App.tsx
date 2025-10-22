@@ -524,25 +524,6 @@ function EventCalendarDemo(props: DemoProps) {
       // dayHeaderFormat={{
       //   weekday: 'short',
       // }}
-      {...( // NOTE: if we gave undefined for either of these settings, calendar render NO day header!
-        props.theme === 'monarch'
-          ? {
-            listDayFormat: { day: 'numeric' /*, weekday: 'short' */ },
-            listDaySideFormat: { month: 'short', weekday: 'short', forceCommas: true },
-          }
-          : {} // default is for standard theme... which does side-format... kill this default
-               // and have standard theme set it?
-      )}
-      views={{
-        dayGridMonth:
-          props.theme === 'forma'
-            ? { dayHeaderFormat: { weekday: 'long' } }
-            : {},
-        timeGrid:
-          props.theme === 'monarch'
-            ? { slotDuration: '01:00' }
-            : {}
-      }}
       // events='https://fullcalendar.io/api/demo-feeds/events.json?overload-day'
       now='2025-07-04T12:00:00'
       timeZone='UTC'

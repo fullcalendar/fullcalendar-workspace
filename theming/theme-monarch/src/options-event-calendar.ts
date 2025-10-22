@@ -204,6 +204,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       listItemEventBeforeClass: 'rounded-full border-(--fc-event-color)',
       listItemEventInnerClass: 'flex flex-row items-center',
 
+      // best look like Google Calendar
+      listDayFormat: { day: 'numeric' },
+      listDaySideFormat: { month: 'short', weekday: 'short', forceCommas: true },
+
       blockEventClass: (data) => [
         'relative group',
         'bg-(--fc-event-color) print:bg-white',
@@ -364,7 +368,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isMinor && 'border-dotted',
         ],
         slotLabelInnerClass: (data) => [
-          `ps-2 pe-3 py-2.5 relative`,
+          `ps-2 pe-3 py-2 relative`,
           data.isCompact
             ? `${xxsTextClass} -top-4.5`
             : 'text-sm -top-5',

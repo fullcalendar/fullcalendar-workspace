@@ -14,6 +14,7 @@ clean+build all:
 
 
 NOW
+  Fixup confused button focus-ring color for tertiary?... probably not worth the increased code complexity
   demo App not working in Safari?
 MANUAL TEST
   test timeline/timegrid more-link in DARK mode
@@ -332,7 +333,6 @@ When color-mix used, ensure fallback for older browsers
 Instead of opacity to control icon colors, use muted/disabledFgColorClass?
 Instead of opacity for backgroundEventTitleClass, muted/disabledFgColorClass?
 More prominent Breezy list-view today-marker. Forma too?
-Fixup confused button focus-ring color for tertiary?... probably not worth the increased code complexity
 
 
 Changelog

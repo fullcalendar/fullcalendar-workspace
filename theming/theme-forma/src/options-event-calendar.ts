@@ -373,6 +373,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         dayCellBottomClass: 'min-h-[1px]',
       },
+      dayGridMonth: {
+        // core normally display short for month (like "Mon") but long (like "Monday") looks good in Forma
+        dayHeaderFormat: { weekday: 'long' },
+      },
       multiMonth: {
         ...dayRowItemClasses,
 
