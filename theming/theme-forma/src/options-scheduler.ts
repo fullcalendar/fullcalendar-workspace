@@ -62,7 +62,11 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
         slotLabelClass: 'justify-center',
-        slotLabelInnerClass: 'p-1 text-sm',
+        slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
+        slotLabelInnerClass: (data) => [
+          'p-2 text-sm',
+          data.hasNavLink && 'hover:underline',
+        ],
 
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
       },

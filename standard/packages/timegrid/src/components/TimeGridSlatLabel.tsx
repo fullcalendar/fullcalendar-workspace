@@ -115,14 +115,18 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
         willUnmount={options.slotLabelWillUnmount}
       >
         {(InnerContent) => (
-          <InnerContent
-            tag="div"
+          <div
+            ref={this.innerElRef}
             className={joinClassNames(
-              generateClassName(options.slotLabelInnerClass, renderProps),
               classNames.rigid,
+              classNames.flexRow,
             )}
-            elRef={this.innerElRef}
-          />
+          >
+            <InnerContent
+              tag="div"
+              className={generateClassName(options.slotLabelInnerClass, renderProps)}
+            />
+          </div>
         )}
       </ContentContainer>
     )

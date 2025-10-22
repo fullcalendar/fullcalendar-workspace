@@ -132,17 +132,9 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
         willUnmount={options.slotLabelWillUnmount}
       >
         {(InnerContent) => (
-          <InnerContent
-            tag='div'
-            elRef={this.innerWrapperElRef}
-            attrs={
-              hasNavLink
-                // not tabbable because parent is aria-hidden
-                ? buildNavLinkAttrs(context, cell.date, cell.rowUnit, undefined, /* isTabbable = */ false)
-                : {} // don't bother with aria-hidden because parent already hidden
-            }
+          <div
+            ref={this.innerWrapperElRef}
             className={joinClassNames(
-              generateClassName(options.slotLabelInnerClass, renderProps),
               classNames.rigid,
               isSticky && classNames.sticky,
             )}
@@ -150,7 +142,18 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
               left: edgeCoord,
               right: edgeCoord,
             }}
-          />
+          >
+            <InnerContent
+              tag='div'
+              attrs={
+                hasNavLink
+                  // not tabbable because parent is aria-hidden
+                  ? buildNavLinkAttrs(context, cell.date, cell.rowUnit, undefined, /* isTabbable = */ false)
+                  : {} // don't bother with aria-hidden because parent already hidden
+              }
+              className={generateClassName(options.slotLabelInnerClass, renderProps)}
+            />
+          </div>
         )}
       </ContentContainer>
     )

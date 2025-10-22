@@ -360,15 +360,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         slotLabelClass: (data) => [
           `border ${params.borderColorClass}`,
-          'w-2 self-end justify-end',
+          'w-2 self-end justify-end', // (self-h-align, contents-h-align)
           data.isMinor && 'border-dotted',
         ],
         slotLabelInnerClass: (data) => [
-          `relative ps-2 pe-3 pb-5 text-end`,
-          xxsTextClass,
+          `ps-2 pe-3 py-2.5 relative`,
           data.isCompact
-            ? `${xxsTextClass} -top-1.5` // 1.5 tw-units is half xxs's line-height
-            : 'text-sm -top-2.5', // 2.5 tw-units is half text-sm's line-height
+            ? `${xxsTextClass} -top-4.5`
+            : 'text-sm -top-5',
         ],
         slotLabelDividerClass: (data) => [
           'border-l',

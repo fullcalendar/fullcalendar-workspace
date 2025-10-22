@@ -657,9 +657,10 @@ function SchedulerDemo(props: DemoProps) {
           slotDuration: '01:00',
           snapDuration: '00:30',
         },
-        // resourceTimelineWeek: {
-        //   slotDuration: { days: 1 },
-        // }
+        resourceTimelineWeek: {
+          // slotDuration: { days: 1 },
+          slotLabelInterval: { hours: 3 },
+        },
         resourceTimeGridFiveDay: {
           type: 'resourceTimeGrid',
           duration: { days: 5 },

@@ -83,21 +83,23 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
                   : 'justify-center', // v-align-content
               )
         ],
-        slotLabelInnerClass: (data) => data.level
-          ? [ // pill
-            'px-2 py-1 rounded-full text-sm',
-            data.hasNavLink
-              ? params.secondaryPressableClass
-              : params.secondaryClass,
-          ]
-          : [
-            'min-w-14 text-sm',
-            data.isTime
-              // time-tick inner
-              ? 'pb-3 -ms-1'
-              // day-header
-              : 'flex flex-row justify-center' // h-align-text
-          ],
+        slotLabelInnerClass: (data) => [
+          'text-sm',
+          data.level
+            ? joinClassNames( // pill
+                'px-2 py-1 rounded-full',
+                data.hasNavLink
+                  ? params.secondaryPressableClass
+                  : params.secondaryClass,
+              )
+            : joinClassNames( // just text
+                'px-2',
+                data.isTime
+                  ? 'pb-3 relative -start-3'
+                  : 'py-2',
+                data.hasNavLink && 'hover:underline',
+              )
+        ],
 
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
       },

@@ -61,10 +61,13 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       timeline: {
         slotLabelDividerClass: `border-t ${params.strongBorderColorClass} shadow-sm`,
 
-        slotLabelAlign: 'center',
-        slotLabelClass: 'justify-end',
-        slotLabelInnerClass: '-ms-1 pe-6 py-2',
-        //^^^wait, we don't want do this this for upper-level slot labels
+        slotLabelClass: 'justify-end', // v-align-content (best for one-line with too much v space)
+        slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align-content
+        slotLabelInnerClass: (data) => [
+          'px-3 py-2',
+          data.isTime && 'relative -start-4',
+          data.hasNavLink && 'hover:underline'
+        ],
 
         rowEventClass: 'me-px mb-px',
 

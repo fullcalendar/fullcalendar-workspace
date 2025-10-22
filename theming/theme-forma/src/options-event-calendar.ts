@@ -359,7 +359,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         : 'ms-0.5 me-[2.5%]',
 
       slotLabelRowClass: `border ${params.borderColorClass}`, // Timeline
-      slotLabelAlign: 'center',
       slotLabelClass: (data) => getSlotClasses(data, `border ${params.borderColorClass}`),
       slotLaneClass: (data) => getSlotClasses(data, `border ${params.borderColorClass}`),
 

@@ -58,7 +58,11 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       timeline: {
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
         slotLabelClass: 'justify-center', // v-align
-        slotLabelInnerClass: `p-1 text-sm ${params.strongFgClass}`,
+        slotLabelInnerClass: (data) => [
+          `p-2 text-sm ${params.strongFgClass}`,
+          data.isTime && 'relative -start-3',
+          data.hasNavLink && 'hover:underline',
+        ],
         slotLabelDividerClass: `border-b ${params.borderColorClass} shadow-sm`,
 
         // best place for this?

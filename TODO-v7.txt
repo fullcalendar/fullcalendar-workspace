@@ -14,7 +14,6 @@ clean+build all:
 
 
 NOW
-  Fixup slot inner-link margin/padding
   demo App not working in Safari?
   why doesn't eventStartEditable seem to work?
   why does dragging Monarch events give outline?
@@ -44,8 +43,6 @@ CODE-QUALITY (while going through each theme)
   make all theme util functions that emit classnames return STRING (and thus call joinClassNames)?
   slotLabel(Inner)Class and slotLabelDividerClass
     should almost always be in the timegrid/timeline sections of the theme
-  for moving slotlabels, always use negative left/right instead of negative margin
-    (better for preserving height for whole slot)
   OUTLINE: props that should be given .(primary|tertiary)OutlineColorClass / .outlineWidthFocusClass:
     eventClass (include outlineWidthClass instead if .isSelected)
     blockEventClass (if you're using primaryOutlineColorClass, apply .outlineOffsetWidth)

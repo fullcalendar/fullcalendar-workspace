@@ -345,7 +345,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
 
         slotLabelClass: 'justify-end', // v-align
-        slotLabelInnerClass: `-mt-4 p-2 text-xs ${params.fgClass}`,
+        slotLabelInnerClass: `relative -top-4 p-2 text-xs ${params.fgClass}`,
         slotLabelDividerClass: `border-s ${params.borderColorClass}`,
         // TODO: higher levels should have h-borders
       },

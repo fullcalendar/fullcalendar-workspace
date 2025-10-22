@@ -69,9 +69,12 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         rowMoreLinkClass: `me-px mb-px ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
-        slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
         slotLabelClass: 'justify-center', // v-align
-        slotLabelInnerClass: 'p-1 text-sm',
+        slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
+        slotLabelInnerClass: (data) => [
+          'p-2 text-sm',
+          data.hasNavLink && 'hover:underline',
+        ],
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
 
         nowIndicatorLabelClass: `top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] ${params.nowBorderColorClass}`,
