@@ -15,9 +15,6 @@ clean+build all:
 
 put text color on every text node? no inheritance?
 test hasMonthLabel... continuous months?
-Forma
-  day-popover in multimonth looks bad
-  other themes?
 clean up css variables
 fix day-popover headers in all themes
 More prominent Breezy list-view today-marker. Forma too?
@@ -25,6 +22,15 @@ for Forma, put toolbar title left-aligned
 Do we need?
   singleMonthClass: (data) => data.colCount > 1 && 'm-4',
   margin gets fored off by core anyway
+Dark-mode Pulse buttons look bad
+tableHeaderClass rethink
+  singleMonthHeaderClass too
+  introduce tableHeaderDividerClass instead?
+  easier than doing dayHeaderDividerClass / allDayDividerClass ?
+  we hackily add the "isSticky" param for either?
+rename colCount -> monthColCount (otherwise might think days)
+test background event title size
+unrelated feature: in multimonth, even when current year, "today" button should scroll to today
 
 
 MANUAL TEST

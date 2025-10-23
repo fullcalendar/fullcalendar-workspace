@@ -307,7 +307,7 @@ export const BASE_OPTION_REFINERS = {
   dayHeaderContent: identity as Identity<CustomContentGenerator<DayHeaderData>>,
   dayHeaderDidMount: identity as Identity<DidMountHandler<DayHeaderMountData>>,
   dayHeaderWillUnmount: identity as Identity<WillUnmountHandler<DayHeaderMountData>>,
-  dayHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number, inPopover: boolean }) => 'start' | 'center' | 'end')>,
+  dayHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number, inPopover: boolean, isCompact: boolean }) => 'start' | 'center' | 'end')>,
   dayHeaderSticky: identity as Identity<boolean | number | string>,
 
   dayHeaderRowClass: identity as Identity<ClassNameInput>,

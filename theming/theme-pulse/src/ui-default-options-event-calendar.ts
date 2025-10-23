@@ -75,6 +75,7 @@ export const optionParams: EventCalendarOptionParams = {
   borderColorClass,
   strongBorderColorClass,
   nowBorderColorClass: 'border-(--fc-pulse-now)',
+  primaryBorderColorClass: 'border-(--fc-pulse-primary)',
 
   tertiaryOutlineColorClass,
   outlineWidthClass,

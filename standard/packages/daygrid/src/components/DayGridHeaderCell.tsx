@@ -49,7 +49,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
     const alignInput = renderConfig.align
     const align = this.align =
       typeof alignInput === 'function'
-        ? alignInput({ level: props.rowLevel, inPopover: (dataConfig.renderProps as any).inPopover })
+        ? alignInput({ level: props.rowLevel, inPopover: (dataConfig.renderProps as any).inPopover, isCompact: props.cellIsCompact })
         : alignInput
     const stickyInput = renderConfig.sticky
     const isSticky = this.isSticky =

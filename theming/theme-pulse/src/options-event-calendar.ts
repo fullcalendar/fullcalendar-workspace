@@ -74,6 +74,7 @@ export interface EventCalendarOptionParams {
   borderColorClass: string
   strongBorderColorClass: string
   nowBorderColorClass: string
+  primaryBorderColorClass: string
 
   tertiaryOutlineColorClass: string
   outlineWidthClass: string
@@ -100,6 +101,8 @@ export interface EventCalendarOptionParams {
   faintPressableClass: string
 }
 
+export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
+
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
@@ -114,24 +117,50 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
-  const dayRowItemClass = 'mx-1 mb-px rounded-sm'
+  const getDayGridItemClass = (data: { isCompact: boolean }) => joinClassNames(
+    'mb-px rounded-sm',
+    data.isCompact
+      ? 'mx-0.5'
+      : 'mx-1',
+  )
+
   const dayRowItemClasses: CalendarOptions = {
     rowEventClass: (data) => [
       'mb-px',
-      data.isStart && 'ms-1',
-      data.isEnd && 'me-1',
+      data.isStart && (data.isCompact ? 'ms-0.5' : 'ms-1'),
+      data.isEnd && (data.isCompact ? 'me-0.5' : 'me-1'),
     ],
 
     listItemEventClass: (data) => [
-      `p-px ${dayRowItemClass}`,
+      'p-px',
+      getDayGridItemClass(data),
       data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass,
     ],
-    listItemEventInnerClass: 'justify-between flex flex-row text-xs',
-    listItemEventTimeClass: 'order-1 p-0.5 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
-    listItemEventTitleClass: 'text-ellipsis p-0.5 font-medium whitespace-nowrap overflow-hidden shrink-100', // shrinks first
+    listItemEventInnerClass: (data) => [
+      'justify-between flex flex-row',
+      data.isCompact ? xxsTextClass : 'text-xs',
+    ],
+    listItemEventTimeClass: (data) => [
+      data.isCompact ? 'p-px' : 'p-0.5',
+      'order-1 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
+    ],
+    listItemEventTitleClass: (data) => [
+      data.isCompact ? 'p-px' : 'p-0.5',
+      'text-ellipsis font-medium whitespace-nowrap overflow-hidden shrink-100', // shrinks first
+    ],
 
-    rowMoreLinkClass: `self-start flex flex-row ${params.ghostPressableClass} ${dayRowItemClass}`,
-    rowMoreLinkInnerClass: `p-0.5 text-xs font-medium ${params.strongFgClass}`,
+    rowMoreLinkClass: (data) => [
+      getDayGridItemClass(data),
+      data.isCompact
+        ? `border ${params.primaryBorderColorClass}`
+        : 'self-start p-px',
+      params.ghostPressableClass,
+    ],
+    rowMoreLinkInnerClass: (data) => [
+      data.isCompact ? 'p-px' : 'p-0.5',
+      data.isCompact ? xxsTextClass : 'text-xs',
+      params.strongFgClass,
+    ],
   }
 
   return {
@@ -142,6 +171,19 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // eventDisplay: 'block',
 
       // best place? be consistent with otherthemes
+
+      tableHeaderClass: (data) => data.isSticky && params.bgClass,
+
+      singleMonthClass: (data) => data.colCount > 1 && 'm-4',
+      singleMonthHeaderClass: (data) => [
+        data.colCount > 1 ? 'pb-2' : 'py-1',
+        data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,
+        'justify-center', // h-align
+      ],
+      singleMonthHeaderInnerClass: (data) => [
+        'text-base font-semibold',
+        data.hasNavLink && params.ghostPressableClass,
+      ],
 
       highlightClass: params.highlightClass,
       nonBusinessClass: params.faintBgClass,
@@ -157,7 +199,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderClass: (data) => data.isMajor && `border ${params.strongBorderColorClass}`,
       dayHeaderInnerClass: (data) => [
-        'flex flex-row items-center text-sm', // v-align
+        'flex flex-row items-center', // v-align
+        data.isCompact ? 'text-xs' : 'text-sm',
         !data.dayNumberText ? joinClassNames(
           // not date-specific
           'm-2',
@@ -173,8 +216,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         )
       ],
 
-      dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
-
       dayRowClass: `border ${params.borderColorClass}`,
 
       dayCellClass: (data) => [
@@ -186,17 +227,26 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayCellTopClass: 'flex flex-row justify-end min-h-1',
 
       dayCellTopInnerClass: (data) => [
-        'my-1 h-6 text-sm flex flex-row items-center', // v-align
+        'flex flex-row items-center', // v-align
         !data.isOther && 'font-semibold', // TODO: move to slots.tsx?
+        data.isCompact
+          ? `my-px h-5 ${xxsTextClass}`
+          : 'my-1 h-6 text-sm',
         !data.isToday
           // ghost-button-like
           ? joinClassNames(
-            'px-2 rounded-s-sm',
-            params.mutedFgClass,
-            data.hasNavLink && params.ghostPressableClass,
-          )
+              'rounded-s-sm',
+              data.isCompact ? 'px-1' : 'px-2',
+              params.mutedFgClass,
+              data.hasNavLink && params.ghostPressableClass,
+            )
           // circle inside (see slots.tsx)
-          : 'mx-2 group outline-none'
+          : joinClassNames(
+              data.isCompact
+                ? 'mx-px'
+                : 'mx-2', // today-circle will overcome by 1
+              'group outline-none',
+            )
       ],
 
       dayCellInnerClass: (data) => [
@@ -215,8 +265,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       BUG: z-index is wrong, can't click week numbers
       */
       inlineWeekNumberClass: (data) => [
-        `absolute z-10 top-0 start-0 py-2 text-xs ${params.fgClass}`,
-        data.isCompact ? 'px-1' : 'px-2',
+        `absolute z-10 start-0 rounded-e-sm ${params.fgClass}`,
+        data.isCompact
+          ? `top-0.5 my-px p-0.5 ${xxsTextClass}`
+          : 'top-1 p-1 text-xs',
+        data.hasNavLink && params.ghostPressableClass,
       ],
 
       listItemEventInnerClass: params.strongFgClass,
@@ -246,7 +299,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))]',
         data.isInteractive && 'active:bg-[color-mix(in_oklab,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
       ],
-      blockEventInnerClass: 'text-(--fc-event-contrast-color) print:text-black text-xs',
+      blockEventInnerClass: 'text-(--fc-event-contrast-color) print:text-black',
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
       blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
@@ -270,9 +323,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-end-1',
       ],
-      rowEventInnerClass: 'flex flex-row',
-      rowEventTimeClass: 'p-0.5',
-      rowEventTitleClass: 'p-0.5 font-medium',
+      rowEventInnerClass: (data) => [
+        'flex flex-row',
+        data.isCompact ? xxsTextClass : 'text-xs',
+      ],
+      rowEventTimeClass: (data) => data.isCompact ? 'p-px' : 'p-0.5',
+      rowEventTitleClass: (data) => [
+        data.isCompact ? 'p-px' : 'p-0.5',
+        'font-medium',
+      ],
       //^^^for row event, switch order of title/time?
 
       columnEventClass: (data) => [
@@ -289,7 +348,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-bottom-1',
       ],
-      columnEventInnerClass: 'flex flex-col py-1',
+      columnEventInnerClass: 'flex flex-col py-1 text-xs',
       // TODO: move the x-padding to the inner div? same concept with row-events
       columnEventTimeClass: 'px-2 pt-1',
       columnEventTitleClass: 'px-2 py-1 font-medium',
@@ -316,22 +375,38 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     views: {
       dayGrid: {
         ...dayRowItemClasses,
-        dayCellBottomClass: 'min-h-0.5',
-        dayHeaderAlign: (data) => data.inPopover ? 'start' : 'end',
+        dayCellBottomClass: (data) => !data.isCompact && 'min-h-0.5', // TODO: DRY
+        dayHeaderAlign: (data) => (
+          data.inPopover ? 'start' :
+            data.isCompact ? 'center' : 'end'
+        ),
+
+        dayHeaderDividerClass: ['border-t', params.borderColorClass],
       },
       multiMonth: {
         ...dayRowItemClasses,
-        dayCellBottomClass: 'min-h-0.5',
+        dayCellBottomClass: (data) => !data.isCompact && 'min-h-0.5', // TODO: DRY
+        dayHeaderAlign: (data) => (
+          data.inPopover ? 'start' :
+            data.isCompact ? 'center' : 'end'
+        ),
 
-        singleMonthClass: (data) => data.colCount > 1 && 'm-4',
-        singleMonthHeaderClass: 'font-semibold',
+        dayHeaderDividerClass: (data) => data.isSticky && ['border-t', params.borderColorClass],
+
+        tableBodyClass: [
+          'border', params.borderColorClass,
+          'rounded-sm overflow-hidden',
+        ],
       },
       timeGrid: {
         ...dayRowItemClasses,
         dayCellBottomClass: 'min-h-3',
-        dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
+        dayHeaderAlign: 'center',
 
-        dayHeaderDividerClass: (data) => data.isSticky && 'shadow-sm',
+        dayHeaderDividerClass: (data) => [
+          'border-t', params.borderColorClass,
+          data.isSticky && 'shadow-sm',
+        ],
 
         weekNumberHeaderClass: 'justify-end items-center',
         weekNumberHeaderInnerClass: `px-2 text-sm ${params.fgClass}`,

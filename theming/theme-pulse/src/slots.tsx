@@ -29,18 +29,21 @@ export function createSlots(
               className={joinClassNames(
                 'whitespace-pre',
                 (textPart.type === 'day' && data.isToday)
+                  // today-circle
                   ? joinClassNames(
-                    'size-7 first:-ms-1 last:-me-1 flex flex-row items-center justify-center', // h-align-text
-                    'rounded-full font-semibold',
-                    data.hasNavLink
-                      ? joinClassNames(
-                          params.tertiaryPressableGroupClass,
-                          params.tertiaryOutlineColorClass,
-                          params.outlineWidthGroupFocusClass,
-                          params.outlineOffsetClass,
-                        )
-                      : params.tertiaryClass,
-                  )
+                      'size-7 first:-ms-1 last:-me-1',
+                      'flex flex-row items-center justify-center', // h-align-text
+                      'rounded-full font-semibold',
+                      data.hasNavLink
+                        ? joinClassNames(
+                            params.tertiaryPressableGroupClass,
+                            params.tertiaryOutlineColorClass,
+                            params.outlineWidthGroupFocusClass,
+                            params.outlineOffsetClass,
+                          )
+                        : params.tertiaryClass,
+                    )
+                  // normal text
                   : params.mutedFgClass,
               )}
             >{textPart.value}</span>
@@ -61,18 +64,23 @@ export function createSlots(
               className={joinClassNames(
                 'whitespace-pre',
                 (textPart.type === 'day' && data.isToday)
+                  // today-circle
                   ? joinClassNames(
-                    'size-6 first:-ms-1 last:-me-1 flex flex-row items-center justify-center', // h-align-text
-                    'rounded-full font-semibold',
-                    data.hasNavLink
-                      ? joinClassNames(
-                          params.tertiaryPressableGroupClass,
-                          params.tertiaryOutlineColorClass,
-                          params.outlineWidthGroupFocusClass,
-                          params.outlineOffsetClass,
-                        )
-                      : params.tertiaryClass,
-                  )
+                      data.isCompact
+                        ? 'size-5'
+                        : 'size-6 first:-ms-1 last:-me-1',
+                      'flex flex-row items-center justify-center', // h-align-text
+                      'rounded-full font-semibold',
+                      data.hasNavLink
+                        ? joinClassNames(
+                            params.tertiaryPressableGroupClass,
+                            params.tertiaryOutlineColorClass,
+                            params.outlineWidthGroupFocusClass,
+                            params.outlineOffsetClass,
+                          )
+                        : params.tertiaryClass,
+                    )
+                  // normal text
                   : params.mutedFgClass,
               )}
             >{textPart.value}</span>

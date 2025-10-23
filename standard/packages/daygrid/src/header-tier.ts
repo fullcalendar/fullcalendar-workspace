@@ -11,7 +11,7 @@ export interface CellRenderConfig<RenderProps> {
   classNameGenerator: ClassNameGenerator<RenderProps>
   didMount: DidMountHandler<RenderProps & { el: HTMLElement }>
   willUnmount: WillUnmountHandler<RenderProps & { el: HTMLElement }>
-  align: 'start' | 'center' | 'end' | ((data: { level: number, inPopover: boolean }) => 'start' | 'center' | 'end'),
+  align: 'start' | 'center' | 'end' | ((data: { level: number, inPopover: boolean, isCompact: boolean }) => 'start' | 'center' | 'end'),
   sticky: boolean | number | string,
 }
 

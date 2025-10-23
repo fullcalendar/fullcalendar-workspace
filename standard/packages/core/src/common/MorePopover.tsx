@@ -105,7 +105,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     const { dayHeaderAlign } = options
     const align =
       typeof dayHeaderAlign === 'function'
-        ? dayHeaderAlign({ level: 0, inPopover: true })
+        ? dayHeaderAlign({ level: 0, inPopover: true, isCompact: false })
         : dayHeaderAlign
 
     const isRtl = computeElIsRtl(props.alignEl)

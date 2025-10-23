@@ -147,7 +147,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
 
     rowEventClass: (data) => [
-      data.isEnd && 'me-0.5',
+      data.isEnd && (data.isCompact ? 'me-px' : 'me-0.5'),
     ],
 
     rowMoreLinkClass: (data) => [
@@ -310,6 +310,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
+      dayHeaderAlign: (data) => data.isCompact ? 'center' : 'start',
+
       dayHeaderClass: (data) => [
         !data.isCompact && `border ${params.borderColorClass}`, // HACK for no-show-border in multimonth
         (data.isDisabled || data.inPopover) && params.faintBgClass,
@@ -339,7 +341,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       dayCellTopInnerClass: (data) => [
         'flex flex-row items-center',
-        data.hasMonthLabel && 'text-base font-bold',
+        data.hasMonthLabel && 'font-bold',
         data.isCompact
           ? `my-px h-5 ${xxsTextClass}`
           : 'my-1 h-6 text-sm',
@@ -399,8 +401,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayRowItemClasses,
 
         dayHeaderDividerClass: (data) => data.isSticky && ['border-t', params.borderColorClass],
-
-        dayHeaderAlign: 'center', // TODO: give start-aligned when !data.isCompact -- but prop doesnt exist!
 
         tableBodyClass: [
           'border', params.borderColorClass,

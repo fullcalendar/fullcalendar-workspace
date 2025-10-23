@@ -144,7 +144,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderClass: (data) => [
         data.colCount > 1 ? 'pb-2' : 'py-1',
         data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,
-        'justify-center',
+        'justify-center', // h-align
       ],
       singleMonthHeaderInnerClass: (data) => [
         'font-bold rounded-full px-2 py-1',
