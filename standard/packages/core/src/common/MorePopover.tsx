@@ -152,7 +152,6 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
                     : {}
                 ),
               }}
-              className={classNames.noMargin}
               generatorName="dayHeaderContent"
               renderProps={dayHeaderRenderProps}
               customGenerator={options.dayHeaderContent}

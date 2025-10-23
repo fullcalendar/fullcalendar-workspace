@@ -54,6 +54,10 @@ TODO: give week-numbers an ghost-pressable-effect!
 TODO: fix popover header text styling
 
 TODO: improve resourceExpander hover and tab effect
+
+Dark-mode Pulse buttons look bad
+
+popover-close needs hover color or bg-change
 */
 
 export interface EventCalendarOptionParams {
@@ -190,14 +194,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       popoverClass: 'min-w-[220px] ' + params.popoverClass,
       popoverCloseClass: [
-        'absolute top-2 end-2',
+        'absolute top-3.5 end-2.5',
         params.tertiaryOutlineColorClass,
         params.outlineWidthFocusClass,
       ],
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
-      dayHeaderClass: (data) => data.isMajor && `border ${params.strongBorderColorClass}`,
+      dayHeaderClass: (data) => [
+        data.inPopover ? `border ${params.borderColorClass}` :
+          data.isMajor && `border ${params.strongBorderColorClass}`
+      ],
       dayHeaderInnerClass: (data) => [
         'flex flex-row items-center', // v-align
         data.isCompact ? 'text-xs' : 'text-sm',
@@ -208,11 +215,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ) : (!data.isToday || data.inPopover) ? joinClassNames(
           // ghost-button-like
           'my-2.5 h-6 px-1 rounded-sm',
+          data.inPopover && 'mx-2.5 font-semibold',
           data.hasNavLink && params.ghostPressableClass,
           params.mutedFgClass,
         ) : (
           // circle within (see slots.tsx)
-          'my-2 h-7 group outline-none'
+          'mx-2 my-2 h-7 group outline-none'
         )
       ],
 

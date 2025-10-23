@@ -14,9 +14,6 @@ clean+build all:
 
 
 clean up css variables
-fix day-popover headers
-  Breezy
-  Pulse
 More prominent Breezy list-view today-marker. Forma too?
 Do we need?
   singleMonthClass: (data) => data.colCount > 1 && 'm-4',

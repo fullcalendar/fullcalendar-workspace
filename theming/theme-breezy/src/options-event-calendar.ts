@@ -103,6 +103,8 @@ TODO: give week-numbers an ghost-pressable-effect!
 TODO day-popover header looks bad with margin/padding!
 
 Multi-month month shadows too intense
+
+popover-close needs hover color or bg-change
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -240,7 +242,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       popoverClass: `min-w-50 m-1 ${params.popoverClass}`,
       popoverCloseClass: [
-        'absolute top-1 end-1',
+        'absolute top-2.5 end-2',
         params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
       ],
@@ -254,14 +256,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // ensure v-align center for dayHeaderClass?
 
       dayHeaderInnerClass: (data) => [
-        'mx-2 flex flex-row items-center', // v-align
+        'flex flex-row items-center', // v-align
         (data.isToday && !data.inPopover)
           // circle inside (see slots.tsx)
-          ? 'my-2 h-8 group outline-none'
+          ? 'mx-2 my-2 h-8 group outline-none'
           // ghost-button-like
           : joinClassNames(
               'h-6 px-1 rounded-sm',
-              data.dayNumberText ? 'my-3' : 'my-2',
+              (data.dayNumberText && !data.inPopover)
+                ? 'mx-2 my-3' // timegrid-view
+                : 'mx-2.5 my-2', // popover or month-view
               data.hasNavLink && joinClassNames(
                 params.ghostPressableClass,
                 params.primaryOutlineColorClass,
@@ -432,9 +436,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         dayHeaderDividerClass: `border-b ${params.strongBorderColorClass}`,
         dayHeaderClass: (data) => [
           'border',
-          data.isMajor
-            ? params.strongBorderColorClass
-            : params.borderColorClass,
+          data.inPopover ? params.mutedBorderColorClass :
+            data.isMajor ? params.strongBorderColorClass :
+              params.borderColorClass,
         ],
         dayCellClass: (data) => data.isMajor
           ? params.strongBorderColorClass
