@@ -18,7 +18,6 @@ fix day-popover headers
   Breezy
   Pulse
 More prominent Breezy list-view today-marker. Forma too?
-for Forma, put toolbar title left-aligned
 Do we need?
   singleMonthClass: (data) => data.colCount > 1 && 'm-4',
   margin gets fored off by core anyway
