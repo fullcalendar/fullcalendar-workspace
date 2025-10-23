@@ -304,9 +304,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
       backgroundEventClass: params.bgEventBgClass,
-      backgroundEventTitleClass: [
+      backgroundEventTitleClass: (data) => [
         'm-2 opacity-50 italic',
-        'text-xs', // data.isCompact ? xxsTextClass : 'text-xs', -- TODO
+        data.isCompact ? xxsTextClass : 'text-xs',
         params.strongFgClass,
       ],
 
