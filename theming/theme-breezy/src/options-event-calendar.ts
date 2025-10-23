@@ -279,10 +279,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
                 ? 'w-6 justify-center' // circle
                 : 'px-2', // pill
               data.hasNavLink
-                ? joinClassNames(
-                    params.primaryPressableClass,
-                    params.outlineOffsetClass,
-                  )
+                ? joinClassNames(params.primaryPressableClass, params.outlineOffsetClass)
                 : params.primaryClass,
             )
           : joinClassNames( // half-pill

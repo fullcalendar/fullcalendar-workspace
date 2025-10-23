@@ -18,35 +18,35 @@ const outlineWidthClass = 'outline-2'
 const outlineWidthFocusClass = 'focus-visible:outline-2'
 const outlineOffsetClass = 'outline-offset-2'
 const outlineInsetClass = '-outline-offset-2'
-const outlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}` // does NOT include offset
+const primaryOutlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}` // does NOT include offset
 
 const primaryClass = 'bg-(--fc-forma-primary) text-(--fc-forma-primary-foreground)'
-const primaryPressableClass = `${primaryClass} hover:bg-(--fc-forma-primary-over) focus-visible:bg-(--fc-forma-primary-over) active:bg-(--fc-forma-primary-down) ${outlineFocusClass} ${outlineOffsetClass}`
-const primaryButtonClass = `${primaryPressableClass} border border-transparent ${outlineFocusClass}`
+const primaryPressableClass = `${primaryClass} hover:bg-(--fc-forma-primary-over) focus-visible:bg-(--fc-forma-primary-over) active:bg-(--fc-forma-primary-down)`
+const primaryButtonClass = `${primaryPressableClass} border border-transparent ${primaryOutlineFocusClass} ${outlineOffsetClass}`
 
 const ghostHoverClass = 'hover:bg-(--fc-forma-muted)'
-const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-forma-strong) focus-visible:bg-(--fc-forma-strong) ${outlineFocusClass}`
-const ghostButtonClass = `${ghostPressableClass} border border-transparent ${outlineFocusClass}`
+const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-forma-strong) focus-visible:bg-(--fc-forma-strong)`
+const ghostButtonClass = `${ghostPressableClass} border border-transparent ${primaryOutlineFocusClass}`
 
-const secondaryButtonClass = `${ghostPressableClass} border ${borderColorClass} ${outlineFocusClass}`
+const secondaryButtonClass = `${ghostPressableClass} border ${borderColorClass} ${primaryOutlineFocusClass}`
 
 const mutedBgClass = 'bg-(--fc-forma-muted)'
 const mutedFgClass = 'text-(--fc-forma-muted-foreground)'
 
 const mutedClass = mutedBgClass // only uses bg
-const mutedPressableClass = `${mutedClass} hover:bg-(--fc-forma-strong) ${outlineFocusClass}`
+const mutedPressableClass = `${mutedClass} hover:bg-(--fc-forma-strong) ${primaryOutlineFocusClass}`
 
 const unselectedButtonTextColorClass = 'text-(--fc-forma-tab-foreground)'
 const unselectedButtonHoverBorderColorClass = 'hover:border-(--fc-forma-tab-over-border)'
 const unselectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-tab-over)'
 const unselectedButtonActiveBorderColorClass = 'active:border-(--fc-forma-tab-down-border)'
-const unselectedButtonClass = `${unselectedButtonTextColorClass} border border-transparent ${unselectedButtonHoverBorderColorClass} ${unselectedButtonHoverBgColorClass} ${unselectedButtonActiveBorderColorClass} ${outlineFocusClass}`
+const unselectedButtonClass = `${unselectedButtonTextColorClass} border border-transparent ${unselectedButtonHoverBorderColorClass} ${unselectedButtonHoverBgColorClass} ${unselectedButtonActiveBorderColorClass} ${primaryOutlineFocusClass}`
 
 const selectedButtonBorderColorClass = 'border-(--fc-forma-tab-selected-border)'
 const selectedButtonBgColorClass = 'bg-(--fc-forma-tab-selected)'
 const selectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-tab-selected-over) focus-visible:bg-(--fc-forma-tab-selected-over)'
 const selectedButtonActiveBgColorClass = 'active:bg-(--fc-forma-tab-selected-down)'
-const selectedButtonClass = `border ${selectedButtonBorderColorClass} ${selectedButtonBgColorClass} ${selectedButtonHoverBgColorClass} ${selectedButtonActiveBgColorClass} ${outlineFocusClass} -outline-offset-1`
+const selectedButtonClass = `border ${selectedButtonBorderColorClass} ${selectedButtonBgColorClass} ${selectedButtonHoverBgColorClass} ${selectedButtonActiveBgColorClass} ${primaryOutlineFocusClass} -outline-offset-1`
 
 const buttonIconColorClass = 'text-(--fc-forma-secondary-icon)' // will only work for secondary!
 const buttonIconClass = `size-5 ${buttonIconColorClass}` // will only work for secondary!

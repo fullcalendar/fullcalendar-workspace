@@ -24,8 +24,8 @@ const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-primary/40`
 
 const ghostHoverClass = 'hover:bg-foreground/5'
 const ghostHoverGroupClass = 'group-hover:bg-foreground/5'
-const ghostPressableClass = `${ghostHoverClass} ${outlineFocusClass}`
-const ghostPressableGroupClass = `${ghostHoverGroupClass}`
+const ghostPressableClass = ghostHoverClass // shadcn doesn't do down-effect
+const ghostPressableGroupClass = ghostHoverGroupClass // shadcn doesn't do down-effect
 
 const faintHoverClass = 'hover:bg-muted/50'
 const faintPressableClass = `${faintHoverClass} focus-visible:bg-muted/50`

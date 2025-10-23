@@ -334,7 +334,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isToday
           ? joinClassNames(
               'ms-1 rounded-full',
-              data.hasNavLink ? params.primaryPressableClass : params.primaryClass,
+              data.hasNavLink
+                ? joinClassNames(params.primaryPressableClass, params.outlineOffsetClass)
+                : params.primaryClass,
               data.text === data.dayNumberText
                 ? 'w-6 justify-center' // number only. circle
                 : 'px-2' // pill

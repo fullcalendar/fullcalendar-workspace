@@ -11,7 +11,7 @@ const outlineWidthClass = 'outline-3'
 const outlineWidthFocusClass = 'focus-visible:outline-3'
 const outlineWidthGroupFocusClass = 'group-focus-visible:outline-3'
 const outlineOffsetClass = 'outline-offset-1'
-const outlineInsetClass = '-outline-offset-1'
+const outlineInsetClass = '-outline-offset-3'
 
 const primaryOutlineColorClass = 'outline-(--mui-palette-primary-main)'
 
@@ -36,7 +36,7 @@ const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-[rgba(var(-
 // FYI, uses the tertiary outline ring, which may clash with themes that prefer the primary outline ring
 const ghostHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
 const ghostHoverGroupClass = 'group-hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
-const ghostPressableClass = `${ghostHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] ${tertiaryOutlineFocusClass}`
+const ghostPressableClass = `${ghostHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]`
 const ghostPressableGroupClass = `${ghostHoverGroupClass} group-active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] group-focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]`
 
 const faintHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]'

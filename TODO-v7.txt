@@ -13,8 +13,6 @@ clean+build all:
   pn build
 
 
-NOW
-  Fixup confused button focus-ring color for tertiary?... probably not worth the increased code complexity
 MANUAL TEST
   test timeline/timegrid more-link in DARK mode
   now-indicator

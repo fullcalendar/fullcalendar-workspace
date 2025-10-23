@@ -17,7 +17,7 @@ const oulineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFocusClass}
 
 // just for toolbar
 const primaryClass = 'bg-(--fc-pulse-primary) text-(--fc-pulse-primary-foreground)'
-const primaryPressableClass = `${primaryClass} hover:bg-(--fc-pulse-primary-hover) active:bg-(--fc-pulse-primary-active) focus-visible:bg-(--fc-pulse-primary-hover)`
+const primaryPressableClass = `${primaryClass} hover:bg-(--fc-pulse-primary-hover) active:bg-(--fc-pulse-primary-active)`
 const primaryButtonClass = `${primaryPressableClass} border-transparent ${oulineFocusClass} ${outlineOffsetClass}`
 
 const borderColorClass = 'border-(--fc-pulse-border)'

@@ -31,7 +31,7 @@ const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-seconda
 const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-secondary-border) ${primaryOutlineFocusClass} -outline-offset-1`
 
 const ghostHoverClass = 'hover:bg-(--fc-breezy-muted)'
-const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-breezy-muted) ${primaryOutlineFocusClass}`
+const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-breezy-muted)`
 
 const faintHoverClass = 'hover:bg-(--fc-breezy-faint)'
 const faintPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)`
