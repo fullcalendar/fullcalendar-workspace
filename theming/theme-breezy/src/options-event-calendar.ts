@@ -66,8 +66,6 @@ TODO: use muted color in more places than just dayCell
 
 TODO: hover:bg-gray-100 -> hover-button system
 
-kill all text-xs/6 ??? is just "text-xs" used?
-
 TODO: default-ui, for daygrid view, should have smaller dayHeader font size
 
 TODO: no hover-effect on today button when isDisabled
@@ -103,6 +101,8 @@ For list-view, when <a href> (like "Click for Google"), should hover-underline
 TODO: give week-numbers an ghost-pressable-effect!
 
 TODO day-popover header looks bad with margin/padding!
+
+Multi-month month shadows too intense
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -173,27 +173,30 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
   const getDayGridItemClass = (data: { isCompact: boolean }) => joinClassNames(
-    'mx-1 mb-px',
-    data.isCompact ? 'rounded-sm' : 'rounded-md',
+    'mb-px',
+    data.isCompact
+      ? 'mx-px rounded-sm'
+      : 'mx-1 rounded-md',
   )
   const dayGridClasses: CalendarOptions = {
     /*
     BUG: z-index is wrong, can't click week numbers
     */
     inlineWeekNumberClass: (data) => [
-      `absolute z-10 top-0 end-0 border-b ${params.strongBorderBottomColorClass} border-s ${params.borderStartColorClass} rounded-es-md ${params.bgClass} py-0.5 ${params.mutedFgClass}`,
+      'absolute z-10 top-0 end-0',
+      `border-b ${params.strongBorderBottomColorClass} border-s ${params.borderStartColorClass} rounded-es-md ${params.bgClass} ${params.mutedFgClass}`,
       data.hasNavLink
         ? `${params.ghostPressableClass} -outline-offset-1` // because border
         : params.ghostHoverClass,
       data.isCompact
-        ? `${xxsTextClass} px-0.5`
-        : 'text-xs/6 px-1',
+        ? `p-0.5 ${xxsTextClass}`
+        : 'p-1.5 text-xs',
     ],
 
     rowEventClass: (data) => [
       'mb-px',
-      data.isStart && 'ms-1',
-      data.isEnd && 'me-1',
+      data.isStart && (data.isCompact ? 'ms-px' : 'ms-1'),
+      data.isEnd && (data.isCompact ? 'me-px' : 'me-1'),
     ],
 
     listItemEventClass: (data) => [
@@ -203,22 +206,29 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ? joinClassNames(params.mutedBgClass, data.isDragging && 'shadow-sm')
         : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
     ],
-    listItemEventInnerClass: 'justify-between flex flex-row text-xs/4',
-    listItemEventTimeClass: `order-1 p-0.5 ${params.mutedFgClass} whitespace-nowrap overflow-hidden shrink-1`, // shrinks second
-    listItemEventTitleClass: `text-ellipsis p-0.5 font-medium ${params.strongFgClass} whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
+    listItemEventInnerClass: (data) => [
+      'justify-between flex flex-row',
+      data.isCompact ? xxsTextClass : 'text-xs',
+    ],
+    listItemEventTimeClass: (data) => [
+      data.isCompact ? 'p-px' : 'p-0.5',
+      `order-1 ${params.mutedFgClass} whitespace-nowrap overflow-hidden shrink-1`, // shrinks second
+    ],
+    listItemEventTitleClass: (data) => [
+      data.isCompact ? 'p-px' : 'p-0.5',
+      `text-ellipsis font-medium ${params.strongFgClass} whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
+    ],
 
     rowMoreLinkClass: (data) => [
-      'self-start',
-      params.ghostPressableClass,
+      getDayGridItemClass(data),
       data.isCompact
         ? `border ${params.primaryBorderColorClass}`
-        : 'p-px',
-      'flex flex-row',
-      getDayGridItemClass(data),
+        : 'self-start p-px',
+      params.ghostPressableClass,
     ],
     rowMoreLinkInnerClass: (data) => [
       data.isCompact ? xxsTextClass : 'text-xs',
-      !data.isCompact && 'p-0.5',
+      data.isCompact ? 'p-px' : 'p-0.5',
       params.strongFgClass,
     ]
   }
@@ -270,20 +280,26 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       dayCellTopClass: 'flex flex-row justify-start min-h-1',
       dayCellTopInnerClass: (data) => [
-        'my-1 h-6 flex flex-row items-center',
-        data.isCompact ? xxsTextClass : 'text-xs/6',
+        'flex flex-row items-center',
+        data.isCompact
+          ? `my-px h-5 ${xxsTextClass}`
+          : 'my-1 h-6 text-xs',
         data.isToday
           ? joinClassNames(
-              'ms-1 rounded-full font-semibold',
+              'rounded-full font-semibold',
+              data.isCompact
+                ? 'ms-px'
+                : 'ms-1',
               data.text === data.dayNumberText
-                ? 'w-6 justify-center' // circle
-                : 'px-2', // pill
+                ? (data.isCompact ? 'w-5' : 'w-6') + ' justify-center' // circle
+                : (data.isCompact ? 'px-1' : 'px-2'), // pill
               data.hasNavLink
                 ? joinClassNames(params.primaryPressableClass, params.outlineOffsetClass)
                 : params.primaryClass,
             )
           : joinClassNames( // half-pill
-              'px-2 rounded-e-sm',
+              'rounded-e-sm',
+              data.isCompact ? 'px-1' : 'px-2',
               data.isOther ? params.faintFgClass : params.mutedFgClass,
               data.hasNavLink && params.ghostPressableClass,
             ),
@@ -299,9 +315,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       allDayHeaderClass: 'items-center', // v-align
-      allDayHeaderInnerClass: `text-xs/5 ${params.faintFgClass} p-3`,
+      allDayHeaderInnerClass: `text-xs ${params.faintFgClass} p-3`,
 
-      slotLabelInnerClass: `text-xs/5 ${params.faintFgClass} uppercase`,
+      slotLabelInnerClass: `text-xs ${params.faintFgClass} uppercase`,
 
       slotLaneClass: `border ${params.mutedBorderColorClass}`,
 
@@ -331,7 +347,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'print:bg-white',
         'border-transparent print:border-(--fc-event-color)',
       ],
-      blockEventInnerClass: 'text-xs/4 flex', // NOTE: subclass determines direction
+      blockEventInnerClass: 'flex', // NOTE: subclass determines direction
       /*
       ^^^NOTE: should core determine flex-direction because core needs to do sticky anyway, right!?
       */
@@ -360,9 +376,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-end-1',
       ],
-      rowEventInnerClass: 'flex-row',
-      rowEventTimeClass: 'p-0.5',
-      rowEventTitleClass: 'p-0.5',
+      rowEventInnerClass: (data) => [
+        'flex flex-row',
+        data.isCompact ? xxsTextClass : 'text-xs',
+      ],
+      rowEventTimeClass: (data) => data.isCompact ? 'p-px' : 'p-0.5',
+      rowEventTitleClass: (data) => data.isCompact ? 'p-px' : 'p-0.5',
 
       columnEventClass: (data) => [
         'border-x',
@@ -378,18 +397,18 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-bottom-1',
       ],
-      columnEventInnerClass: 'flex-col py-1',
+      columnEventInnerClass: 'flex-col py-1 text-xs',
       // TODO: move the x-padding to the inner div? same concept with row-events
       columnEventTimeClass: 'px-2 pt-1',
       columnEventTitleClass: 'px-2 py-1 font-semibold',
 
       columnMoreLinkClass: `rounded-md ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
-      columnMoreLinkInnerClass: `p-0.5 text-xs/4 ${params.fgClass}`,
+      columnMoreLinkInnerClass: `p-0.5 text-xs ${params.fgClass}`,
       // TODO: see columnMoreLinkClass in timeGrid below...
 
       fillerClass: `border ${params.mutedBorderColorClass} ${params.bgClass}`,
 
-      singleMonthClass: 'm-5',
+      singleMonthClass: (data) => data.colCount > 1 && 'm-4',
       singleMonthHeaderClass: (data) => [
         'justify-center', // h-align
         data.isSticky && `${params.bgClass} border-b ${params.borderColorClass}`,
@@ -409,7 +428,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     views: {
       dayGrid: {
         ...dayGridClasses,
-        dayCellBottomClass: 'min-h-[1px]',
+        dayCellBottomClass: (data) => !data.isCompact && 'min-h-[1px]', // TODO: DRY
         dayHeaderDividerClass: `border-b ${params.strongBorderColorClass}`,
         dayHeaderClass: (data) => [
           'border',
@@ -423,7 +442,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       multiMonth: {
         ...dayGridClasses,
-        dayCellBottomClass: 'min-h-[1px]',
+        dayCellBottomClass: (data) => !data.isCompact && 'min-h-[1px]', // TODO: DRY
         dayHeaderDividerClass: (data) => [
           data.isSticky && `border-b ${params.strongBorderColorClass} shadow-sm`,
         ],
@@ -462,7 +481,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           ? params.strongBorderColorClass
           : params.mutedBorderColorClass,
         weekNumberHeaderClass: 'justify-end items-center',
-        weekNumberHeaderInnerClass: `px-3 text-sm/6 ${params.mutedFgClass}`,
+        weekNumberHeaderInnerClass: `px-3 text-sm ${params.mutedFgClass}`,
 
         /*
         Figure out how not having any border on slotLabel affects height-syncing

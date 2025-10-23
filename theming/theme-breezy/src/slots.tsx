@@ -20,7 +20,7 @@ export function createSlots(
       !data.dayNumberText ? (
         <span
           className={joinClassNames(
-            `text-xs/6 ${params.fgClass}`,
+            `text-xs ${params.fgClass}`,
             !data.isCompact && 'font-semibold',
           )}
         >{data.text}</span>
@@ -32,7 +32,7 @@ export function createSlots(
               key={i}
               className={joinClassNames(
                 'whitespace-pre',
-                data.isCompact ? 'text-xs' : 'text-sm/6',
+                data.isCompact ? 'text-xs' : 'text-sm',
                 textPart.type === 'day'
                   ? joinClassNames(
                       'h-8 flex flex-row items-center', // v-align-text

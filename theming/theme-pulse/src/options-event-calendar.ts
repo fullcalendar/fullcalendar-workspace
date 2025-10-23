@@ -323,9 +323,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayRowItemClasses,
         dayCellBottomClass: 'min-h-0.5',
 
-        singleMonthClass: (data) => [
-          (data.colCount > 1) && 'm-4',
-        ],
+        singleMonthClass: (data) => data.colCount > 1 && 'm-4',
         singleMonthHeaderClass: 'font-semibold',
       },
       timeGrid: {

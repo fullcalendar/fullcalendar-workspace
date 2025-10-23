@@ -34,6 +34,8 @@ TODO: timeGrid short-event doesn't put title+time on same line
 TODO: negative margins on timegrid slot labels not working anymore
 
 TODO: nicer rounded styling for more-link in timegrid/timeline
+
+The > continuation arrow looks bad when isCompact
 */
 
 // ambient types (tsc strips during build because of {})
@@ -135,8 +137,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'flex flex-row items-center', // as opposed to display:contents
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
-    listItemEventTimeClass: 'p-0.5 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
-    listItemEventTitleClass: 'p-0.5 font-bold whitespace-nowrap overflow-hidden shrink-100', // shrinks first
+    listItemEventTimeClass: (data) => [
+      data.isCompact ? 'p-px' : 'p-0.5',
+      'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
+    ],
+    listItemEventTitleClass: (data) => [
+      data.isCompact ? 'p-px' : 'p-0.5',
+      'font-bold whitespace-nowrap overflow-hidden shrink-100', // shrinks first
+    ],
 
     rowEventClass: (data) => [
       data.isEnd && 'me-0.5',
@@ -150,7 +158,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       params.ghostPressableClass,
     ],
     rowMoreLinkInnerClass: (data) => [
-      'p-0.5',
+      data.isCompact ? 'p-px' : 'p-0.5',
       data.isCompact ? xxsTextClass : 'text-xs',
     ],
   }
@@ -182,11 +190,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       inlineWeekNumberClass: (data) => [
-        'absolute z-10 top-1 end-0 rounded-s-sm p-1',
+        'absolute z-10 rounded-s-sm end-0',
+        data.isCompact
+          ? `top-0.5 my-px p-0.5 ${xxsTextClass}`
+          : 'top-1 p-1 text-xs',
         data.hasNavLink
           ? params.mutedPressableClass
           : params.mutedClass,
-        data.isCompact ? xxsTextClass : 'text-xs',
       ],
 
       // misc BG
@@ -251,8 +261,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'flex flex-row items-center',
         data.isCompact ? xxsTextClass : 'text-xs',
       ],
-      rowEventTimeClass: 'p-0.5',
-      rowEventTitleClass: 'p-0.5',
+      rowEventTimeClass: (data) => data.isCompact ? 'p-px' : 'p-0.5',
+      rowEventTitleClass: (data) => data.isCompact ? 'p-px' : 'p-0.5',
 
       columnEventClass: (data) => [
         'mb-px',
@@ -328,21 +338,27 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ((data.isOther || data.isDisabled) && data.options.businessHours) && params.faintFgClass,
       ],
       dayCellTopInnerClass: (data) => [
-        'my-1 h-6 flex flex-row items-center',
+        'flex flex-row items-center',
         data.hasMonthLabel && 'text-base font-bold',
-        data.isCompact ? xxsTextClass : 'text-sm',
+        data.isCompact
+          ? `my-px h-5 ${xxsTextClass}`
+          : 'my-1 h-6 text-sm',
         data.isToday
           ? joinClassNames(
-              'ms-1 rounded-full',
+              'rounded-full',
+              data.isCompact
+                ? 'ms-px'
+                : 'ms-1',
+              data.text === data.dayNumberText
+                ? (data.isCompact ? 'w-5' : 'w-6') + ' justify-center' // number only. circle
+                : (data.isCompact ? 'px-1' : 'px-2'), // pill
               data.hasNavLink
                 ? joinClassNames(params.primaryPressableClass, params.outlineOffsetClass)
                 : params.primaryClass,
-              data.text === data.dayNumberText
-                ? 'w-6 justify-center' // number only. circle
-                : 'px-2' // pill
             )
           : joinClassNames( // ghost-button-like
-              'px-2 rounded-e-sm',
+              'rounded-e-sm',
+              data.isCompact ? 'px-1' : 'px-2',
               data.hasNavLink && params.ghostPressableClass,
             ),
       ],
@@ -373,7 +389,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         dayHeaderDividerClass: ['border-t', params.borderColorClass],
 
-        dayCellBottomClass: 'min-h-[1px]',
+        dayCellBottomClass: (data) => !data.isCompact && 'min-h-[1px]', // TODO: DRY
       },
       dayGridMonth: {
         // core normally display short for month (like "Mon") but long (like "Monday") looks good in Forma
@@ -391,7 +407,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           'rounded-sm overflow-hidden',
         ],
 
-        dayCellBottomClass: 'min-h-[1px]',
+        dayCellBottomClass: (data) => !data.isCompact && 'min-h-[1px]', // TODO: DRY
       },
       timeGrid: {
         ...dayRowItemClasses,

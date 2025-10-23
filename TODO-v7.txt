@@ -13,6 +13,20 @@ clean+build all:
   pn build
 
 
+put text color on every text node? no inheritance?
+test hasMonthLabel... continuous months?
+Forma
+  day-popover in multimonth looks bad
+  other themes?
+clean up css variables
+fix day-popover headers in all themes
+More prominent Breezy list-view today-marker. Forma too?
+for Forma, put toolbar title left-aligned
+Do we need?
+  singleMonthClass: (data) => data.colCount > 1 && 'm-4',
+  margin gets fored off by core anyway
+
+
 MANUAL TEST
   test timeline/timegrid more-link in DARK mode
   now-indicator
@@ -324,7 +338,6 @@ Maybe don't do fallback for dayNumberText or weekdayText...
 When color-mix used, ensure fallback for older browsers
 Instead of opacity to control icon colors, use muted/disabledFgColorClass?
 Instead of opacity for backgroundEventTitleClass, muted/disabledFgColorClass?
-More prominent Breezy list-view today-marker. Forma too?
 What controls slot min-width in timeline when slotLabelInterval is large? seems to be 30px
   (see resourceTimelineWeek in App)
 
