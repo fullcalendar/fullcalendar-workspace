@@ -413,7 +413,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         dayHeaderDividerClass: (data) => [
           'border-t', params.borderColorClass,
-          data.isSticky && 'shadow-sm',
+          !data.options.allDaySlot && 'shadow-sm',
         ],
 
         weekNumberHeaderClass: 'justify-end items-center',

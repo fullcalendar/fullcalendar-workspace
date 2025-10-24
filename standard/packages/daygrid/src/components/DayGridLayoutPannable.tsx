@@ -122,7 +122,12 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
                 />
               )}
             </Scroller>
-            <div className={generateClassName(options.dayHeaderDividerClass, { isSticky: false })} />
+            <div
+              className={generateClassName(options.dayHeaderDividerClass, {
+                isSticky: stickyHeaderDates,
+                options: { allDaySlot: Boolean(options.allDaySlot) },
+              })}
+            />
           </div>
         )}
         <Scroller

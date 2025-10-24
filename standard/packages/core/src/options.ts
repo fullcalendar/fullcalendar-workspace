@@ -312,7 +312,7 @@ export const BASE_OPTION_REFINERS = {
 
   dayHeaderRowClass: identity as Identity<ClassNameInput>,
 
-  dayHeaderDividerClass: identity as Identity<ClassNameGenerator<{ isSticky: boolean }>>,
+  dayHeaderDividerClass: identity as Identity<ClassNameGenerator<{ isSticky: boolean, options: { allDaySlot: boolean } }>>,
 
   dayRowClass: identity as Identity<ClassNameInput>,
 
@@ -326,6 +326,7 @@ export const BASE_OPTION_REFINERS = {
   dayCellTopInnerClass: identity as Identity<ClassNameGenerator<DayCellData>>,
   dayCellBottomClass: identity as Identity<ClassNameGenerator<DayCellData>>,
 
+  allDaySlot: Boolean,
   allDayText: String,
   allDayHeaderClass: identity as Identity<ClassNameGenerator<AllDayHeaderData>>,
   allDayHeaderInnerClass: identity as Identity<ClassNameGenerator<AllDayHeaderData>>,

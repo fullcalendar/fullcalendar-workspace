@@ -16,14 +16,10 @@ clean+build all:
 For Breezy/Pulse popover headers, try muted BG
 Audit z-indexes in themes. try to move to core
 clean up css variables
-tableHeaderClass rethink
-  singleMonthHeaderClass too
-  introduce tableHeaderDividerClass instead?
-  easier than doing dayHeaderDividerClass / allDayDividerClass ?
-  we hackily add the "isSticky" param for either?
 
 
 MANUAL TEST
+  test isCondensed in timegrid/timeline
   test hasMonthLabel... continuous months?
   test background event title size, in daygrid too (monitor isCompact)
   test timeline/timegrid more-link in DARK mode
@@ -983,3 +979,30 @@ why is core so opinionated about borders around singleMonthClass?
   Answer: space-between the months would look BAD when there needs to be sticky month headers
   So, we don't want to allow it. Once we make this decision, we can help the user out about
   borders and killing borders strategically to prevent double-borders
+weird API decision explained
+  meant for shadows:
+    dayHeaderDividerClass.isSticky
+      true if right above timegrid scrolling OR if tableHeader is sticky
+  where else is "isSticky" used?
+    tableHeaderClass.isSticky -- could literally be sticky
+    singleMonthHeaderClass.isSticky -- could literally be sticky
+  what contains what divider?
+    dayHeaderDivider is last-child of tableHeader
+    allDayDivider is middle-child of tableBody
+  what we really want
+    allDayDivider will ALWAYS have a shadow
+    dayHeaderDividerClass will KILL its shadow if there's an all-day slot
+    We might need data.* props that reference more global scope
+      allDaySlotPresent?    viewAllDaySlot
+      businessHoursPresent? viewBusinessHours
+  to make matters more complicated
+    isSticky often controls whether bottom-border present or not
+    for dayHeaderDividerClass, in Forma and Pulse themes
+  solution:
+    dayHeaderDividerClass.isSticky should always refer to whether the tableHeader is sticky!
+    dayHeaderDividerClass.options.allDaySlot
+      (will only ever be used on timeGrid settings)
+    what about whant height:auto and BOTH table-header AND all-day slot are sticky?
+      the "solution" works
+      the prior solution of abusing isSticky would NOT work in this situation
+        because the dayHeaderDividerClass would literally be sticky, but we don't want shadow

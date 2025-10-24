@@ -473,7 +473,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         dayHeaderDividerClass: (data) => [
           'border-b',
-          data.isSticky ? `${params.strongBorderColorClass} shadow-sm` : params.borderColorClass,
+          data.options.allDaySlot
+            ? params.borderColorClass
+            : `${params.strongBorderColorClass} shadow-sm`,
         ],
         dayHeaderClass: (data) => [
           'border',

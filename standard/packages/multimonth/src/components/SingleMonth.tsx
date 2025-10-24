@@ -179,7 +179,12 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 cellIsNarrow={cellIsNarrow}
                 rowLevel={0}
               />
-              <div className={generateClassName(options.dayHeaderDividerClass, { isSticky: isTitleAndHeaderSticky })} />
+              <div
+                className={generateClassName(options.dayHeaderDividerClass, {
+                  isSticky: isTitleAndHeaderSticky,
+                  options: { allDaySlot: Boolean(options.allDaySlot) },
+                })}
+              />
             </div>
             <div
               className={joinArrayishClassNames(

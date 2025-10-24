@@ -108,7 +108,12 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
                 />
               )}
             </div>
-            <div className={generateClassName(options.dayHeaderDividerClass, { isSticky: false })} />
+            <div
+              className={generateClassName(options.dayHeaderDividerClass, {
+                isSticky: stickyHeaderDates,
+                options: { allDaySlot: Boolean(options.allDaySlot) },
+              })}
+            />
           </div>
         )}
         <Scroller

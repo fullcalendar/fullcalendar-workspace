@@ -2,7 +2,6 @@ import { ClassNameInput } from '@fullcalendar/core'
 import { Identity, identity, RawOptionsFromRefiners, RefinedOptionsFromRefiners } from '@fullcalendar/core/internal'
 
 export const OPTION_REFINERS = {
-  allDaySlot: Boolean,
   allDayDividerClass: identity as Identity<ClassNameInput>,
 }
 

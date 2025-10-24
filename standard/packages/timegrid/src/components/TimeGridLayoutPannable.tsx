@@ -270,7 +270,12 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 )}
               </Scroller>
             </div>
-            <div className={generateClassName(options.dayHeaderDividerClass, { isSticky: !options.allDaySlot })} />
+            <div
+              className={generateClassName(options.dayHeaderDividerClass, {
+                isSticky: stickyHeaderDates,
+                options: { allDaySlot: Boolean(options.allDaySlot) },
+              })}
+            />
           </div>
         )}
         <div // the "body"
