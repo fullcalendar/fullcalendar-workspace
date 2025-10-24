@@ -2,7 +2,6 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const buttonTextClass = 'text-sm'
 const buttonIconClass = 'size-5' // matches text-sm line-height
 
 const outlineWidthClass = 'outline-3'
@@ -41,6 +40,9 @@ const tabSelectedButtonClass = `${tabSelectedPressableClasss} border border-tran
 const tabUnselectedButtonClass = `${ghostPressableClass} border border-transparent ${tertiaryOutlineFocusClass} -outline-offset-1`
 
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
+
+const mutedFgClass = 'text-(--fc-monarch-muted-foreground)'
+const faintFgClass = 'text-(--fc-monarch-faint-foreground)'
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
@@ -84,8 +86,8 @@ export const optionParams: EventCalendarOptionParams = {
   bgClass: 'bg-(--fc-monarch-background)',
   bgRingColorClass: 'ring-(--fc-monarch-background)',
 
-  mutedFgClass: 'text-(--fc-monarch-muted-foreground)',
-  faintFgClass: 'text-(--fc-monarch-faint-foreground)',
+  mutedFgClass,
+  faintFgClass,
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
@@ -108,7 +110,7 @@ export const defaultUiEventCalendarOptions: {
       data.isSelectGroup && 'border border-(--fc-monarch-border)'
     ],
     buttonClass: (data) => [
-      `inline-flex items-center justify-center py-2.5 ${buttonTextClass} rounded-full`,
+      `inline-flex items-center justify-center py-2.5 text-sm rounded-full`,
       data.inGroup && 'relative active:z-20 focus-visible:z-20',
       data.isSelected ? 'z-10' : 'z-0',
       data.isIconOnly ? 'px-2.5' : 'px-5',
@@ -157,7 +159,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 ${buttonTextClass} opacity-65`),
+    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgClass} group-hover:text-(--fc-monarch-foreground) group-focus-visible:text-(--fc-monarch-foreground)`),
   },
   views: baseEventCalendarOptions.views,
 }

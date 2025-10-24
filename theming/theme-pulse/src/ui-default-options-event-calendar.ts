@@ -25,6 +25,8 @@ const viewBorderColorClass = 'border-(--fc-pulse-view-border)'
 const strongBorderColorClass = 'border-(--fc-pulse-strong-border)'
 
 const fgClass = 'text-(--fc-pulse-foreground)'
+const fgGroupHoverClass = 'group-hover:text-(--fc-pulse-foreground)'
+const fgGroupFocusClass = 'group-focus-visible:text-(--fc-pulse-foreground)'
 const mutedFgClass = 'text-(--fc-pulse-muted-foreground)'
 const strongFgClass = 'text-(--fc-pulse-strong-foreground)'
 
@@ -192,7 +194,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 ${strongFgClass}`),
+    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgClass} ${fgGroupHoverClass} ${fgGroupFocusClass}`),
   },
   views: baseEventCalendarOptions.views,
 }

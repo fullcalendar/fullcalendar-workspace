@@ -180,7 +180,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.dismiss('size-5'),
+    popoverCloseContent: () => svgs.dismiss(`size-5 ${mutedFgClass} group-hover:text-(--fc-forma-primary) group-focus-visible:text-(--fc-forma-primary)`),
   },
   views: baseEventCalendarOptions.views,
 }

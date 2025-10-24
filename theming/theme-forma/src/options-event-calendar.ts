@@ -188,7 +188,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // TODO: fix problem with huge hit area for title
       popoverClass: 'min-w-[220px] ' + params.popoverClass,
       popoverCloseClass: [
-        'absolute top-1 end-1 p-1 rounded-sm',
+        'absolute top-1 end-1 p-1 rounded-sm group',
         params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
         params.ghostPressableClass,

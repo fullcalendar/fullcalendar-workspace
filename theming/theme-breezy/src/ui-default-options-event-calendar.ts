@@ -61,6 +61,11 @@ const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,va
 
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
+const mutedFgClass = 'text-(--fc-breezy-muted-foreground)'
+const fgClass = 'text-(--fc-breezy-foreground)'
+const fgGroupHoverClass = 'group-hover:text-(--fc-breezy-foreground)'
+const fgGroupFocusClass = 'group-focus-visible:text-(--fc-breezy-foreground)'
+
 export const optionParams: EventCalendarOptionParams = {
   primaryClass,
   primaryPressableClass,
@@ -106,8 +111,8 @@ export const optionParams: EventCalendarOptionParams = {
   bgRingColorClass: 'ring-(--fc-breezy-background)',
 
   faintFgClass: 'text-(--fc-breezy-faint-foreground)',
-  mutedFgClass: 'text-(--fc-breezy-muted-foreground)',
-  fgClass: 'text-(--fc-breezy-foreground)',
+  mutedFgClass,
+  fgClass,
   strongFgClass: 'text-(--fc-breezy-strong-foreground)',
 
   faintEventBgClass,
@@ -185,7 +190,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 ${optionParams.fgClass}`),
+    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgClass} ${fgGroupHoverClass} ${fgGroupFocusClass}`),
   },
 
   views: baseEventCalendarOptions.views,

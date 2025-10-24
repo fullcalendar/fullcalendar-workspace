@@ -16,13 +16,11 @@ clean+build all:
 popoverClose
   popover offset (when large rounded corners) is all over the place
     when rounded, should be offset by a bit
-  MUI popover for Pulse looks smudgy because of gray... just do a line (like https://mui.com/material-ui/react-drawer/)
-  NOTE
-    Seems like theme-* in charge of position popoverClose
-    But ui-* in charge of supplying icon (and choosing it size)
-    If that's the case, how do all icons seem vertically centered?
-  NOTE
-    closeicon always 20x20
+  MUI popover for Pulse looks smudgy because of gray...
+    just do a line (like https://mui.com/material-ui/react-drawer/)
+    have theme control popover-header somehow
+resourceExpanderClass
+  ensure looks good for each theme (including hover/tab)
 Audit z-indexes in themes. try to move to core
 clean up css variables
 
@@ -1015,3 +1013,16 @@ weird API decision explained
       the "solution" works
       the prior solution of abusing isSticky would NOT work in this situation
         because the dayHeaderDividerClass would literally be sticky, but we don't want shadow
+Who controls a popoverClose's styling?
+  Ideally each theme-* would control the dimensions,
+    because they it could more intelligently control its abs position
+  However, MUI (and maybe future UI systems) have a preference for icon size
+    because rasterization sometimes looks weird at certain sizes (grep "CloseIcon")
+  So, let each ui-* system control it,
+    BUT STIPULATE THAT IT MUST end up at 20px x 20px (size-5)
+  If we're having ui-* system control size,
+    might as well let it control color/hover-color too
+    (since the icon's line thickness might dictate what color is good)
+  ALWAYS HAVE popoverCloseClass have 'group' className,
+    so icon's group-hover can be defined
+  MAYBE in the future we'll come up with a callback system to allow theme-* to define icon's styling better
