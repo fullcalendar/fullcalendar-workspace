@@ -13,10 +13,9 @@ clean+build all:
   pn build
 
 
+For Breezy/Pulse popover headers, try muted BG
+Audit z-indexes in themes. try to move to core
 clean up css variables
-Do we need?
-  singleMonthClass: (data) => data.colCount > 1 && 'm-4',
-  margin gets fored off by core anyway
 tableHeaderClass rethink
   singleMonthHeaderClass too
   introduce tableHeaderDividerClass instead?
@@ -977,3 +976,10 @@ We use linear-gradient trick to do alpha-compositing,
 For tab-focus effect,
   DO do background-color change on ghost buttons
   do NOT do background-color change (of any sort) on block-events (usually reduces contrast, looks bad)
+why is core so opinionated about borders around singleMonthClass?
+  (it will be very proactive about removing borders...
+  ...make sense if you want all months to stack flush when single column,
+  but what if you want space between months?)
+  Answer: space-between the months would look BAD when there needs to be sticky month headers
+  So, we don't want to allow it. Once we make this decision, we can help the user out about
+  borders and killing borders strategically to prevent double-borders

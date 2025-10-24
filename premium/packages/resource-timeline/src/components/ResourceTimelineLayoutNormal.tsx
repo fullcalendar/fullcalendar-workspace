@@ -575,7 +575,8 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                 vertical={verticalScrolling}
                 horizontal
                 hideScrollbars={stickyFooterScrollbar /* FYI, this view is never print */}
-                className={joinClassNames(
+                className={joinArrayishClassNames(
+                  options.tableBodyClass,
                   classNames.flexCol,
                   classNames.rel, // for Ruler.fillStart
                   verticalScrolling && classNames.liquid,

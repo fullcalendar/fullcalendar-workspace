@@ -296,7 +296,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       // MultiMonth
-      singleMonthClass: (data) => data.colCount > 1 && 'm-4',
+      singleMonthClass: 'm-4',
       singleMonthHeaderClass: (data) => [
         data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,
         data.colCount > 1 ? 'pb-4' : 'py-2',

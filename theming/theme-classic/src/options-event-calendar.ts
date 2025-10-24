@@ -144,7 +144,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       tableHeaderClass: (data) => data.isSticky && params.bgClass,
 
-      singleMonthClass: (data) => data.colCount > 1 && 'm-4',
+      singleMonthClass: 'm-4',
       singleMonthHeaderClass: (data) => [
         data.colCount > 1 ? 'pb-4' : 'py-2',
         data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,

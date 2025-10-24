@@ -412,7 +412,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       fillerClass: `border ${params.mutedBorderColorClass} ${params.bgClass}`,
 
-      singleMonthClass: (data) => data.colCount > 1 && 'm-4',
+      singleMonthClass: 'm-4',
       singleMonthHeaderClass: (data) => [
         'justify-center', // h-align
         data.isSticky && `${params.bgClass} border-b ${params.borderColorClass}`,
