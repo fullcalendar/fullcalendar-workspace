@@ -14,7 +14,6 @@ clean+build all:
 
 
 clean up css variables
-More prominent Breezy list-view today-marker. Forma too?
 Do we need?
   singleMonthClass: (data) => data.colCount > 1 && 'm-4',
   margin gets fored off by core anyway
@@ -342,6 +341,10 @@ Instead of opacity for backgroundEventTitleClass, muted/disabledFgColorClass?
 What controls slot min-width in timeline when slotLabelInterval is large? seems to be 30px
   (see resourceTimelineWeek in App)
 [rename] colCount -> monthColCount (otherwise might think days)
+rethink listDayFormat/listDaySideFormat
+  they get flipped for listDay <> listWeek
+  one part should probably be day-of-week
+  other part should probably be fuller date decided by view duration
 
 
 Changelog

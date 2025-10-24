@@ -508,11 +508,24 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         listDayHeaderClass: 'sticky top-0 shrink-0 w-1/4 max-w-50 my-px py-3.5 flex flex-col items-start',
         listDayHeaderInnerClass: (data) => [
-          'py-1 text-sm',
-          data.hasNavLink && 'hover:underline',
+          'my-0.5 py-0.5 text-sm',
+          'px-2 -mx-2 rounded-full',
           !data.level
-            ? joinClassNames(params.strongFgClass, data.isToday ? 'font-bold' : 'font-medium')
-            : params.faintFgClass,
+            ? joinClassNames(
+                data.isToday
+                  ? joinClassNames(
+                      `font-semibold`,
+                      data.hasNavLink ? params.primaryPressableClass : params.primaryClass,
+                    )
+                  : joinClassNames(
+                      `font-medium ${params.strongFgClass}`,
+                      data.hasNavLink && params.ghostPressableClass,
+                    )
+              )
+            : joinClassNames(
+                params.faintFgClass,
+                data.hasNavLink && params.ghostPressableClass,
+              )
         ],
 
         listDayEventsClass: `grow min-w-0 my-4 flex flex-col border ${params.borderColorClass} rounded-md`,
