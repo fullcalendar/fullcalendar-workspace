@@ -235,6 +235,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ]
   }
 
+  const getDayHeaderClass = (
+    defaultBorderColorClass: string,
+    data: { isCompact: boolean, inPopover: boolean, isMajor: boolean }
+  ) => (
+    data.inPopover ? `border ${params.borderColorClass} ${params.faintBgClass}` :
+      data.isCompact ? '' : // isCompact is a HACK to detect multi-month multi-col
+        data.isMajor ? `border ${params.strongBorderColorClass}` :
+          `border ${defaultBorderColorClass}`
+  )
+
   return {
     optionDefaults: {
       eventColor: params.eventColor,
@@ -434,12 +444,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayGridClasses,
         dayCellBottomClass: (data) => !data.isCompact && 'min-h-[1px]', // TODO: DRY
         dayHeaderDividerClass: `border-b ${params.strongBorderColorClass}`,
-        dayHeaderClass: (data) => [
-          'border',
-          data.inPopover ? params.mutedBorderColorClass :
-            data.isMajor ? params.strongBorderColorClass :
-              params.borderColorClass,
-        ],
+        dayHeaderClass: (data) => getDayHeaderClass(params.borderColorClass, data),
         dayCellClass: (data) => data.isMajor
           ? params.strongBorderColorClass
           : params.borderColorClass,
@@ -450,15 +455,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         dayHeaderDividerClass: (data) => [
           data.isSticky && `border-b ${params.strongBorderColorClass} shadow-sm`,
         ],
-        dayHeaderClass: (data) => [
-          // isCompact is a HACK to detect multi-month multi-col
-          !data.isCompact && joinClassNames(
-            'border',
-            data.isMajor
-              ? params.strongBorderColorClass
-              : params.borderColorClass,
-          ),
-        ],
+        dayHeaderClass: (data) => getDayHeaderClass(params.borderColorClass, data),
 
         tableHeaderClass: (data) => data.isSticky && params.bgClass,
         tableBodyClass: `border ${params.borderColorClass} shadow-sm rounded-md overflow-hidden`,
@@ -477,12 +474,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             ? params.borderColorClass
             : `${params.strongBorderColorClass} shadow-sm`,
         ],
-        dayHeaderClass: (data) => [
-          'border',
-          data.isMajor
-            ? params.strongBorderColorClass
-            : params.borderColorClass,
-        ],
+        dayHeaderClass: (data) => getDayHeaderClass(params.mutedBorderColorClass, data),
         dayCellClass: (data) => data.isMajor
           ? params.strongBorderColorClass
           : params.mutedBorderColorClass,

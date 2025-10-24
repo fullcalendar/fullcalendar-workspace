@@ -13,7 +13,10 @@ clean+build all:
   pn build
 
 
-For Breezy/Pulse popover headers, try muted BG
+popoverClose
+  need hover effects
+  check tab-focus too
+  Classic X misaligned
 Audit z-indexes in themes. try to move to core
 clean up css variables
 

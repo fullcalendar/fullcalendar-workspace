@@ -89,7 +89,7 @@ export const optionParams: EventCalendarOptionParams = {
   bgEventColor: 'var(--fc-pulse-background-event)',
   bgEventBgClass,
 
-  popoverClass: `${bgClass} border ${strongBorderColorClass} rounded-md shadow-md m-1`,
+  popoverClass: `${bgClass} border ${strongBorderColorClass} rounded-sm overflow-hidden shadow-md m-1`,
 
   bgClass,
   bgRingColorClass,

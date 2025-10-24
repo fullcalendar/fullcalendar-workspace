@@ -100,7 +100,7 @@ export const optionParams: EventCalendarOptionParams = {
   mutedBorderColorClass: 'border-(--fc-breezy-muted-border)',
   nowBorderColorClass: 'border-(--fc-breezy-now)',
 
-  popoverClass: 'bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg shadow-lg',
+  popoverClass: 'bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg overflow-hidden shadow-lg',
 
   bgClass: 'bg-(--fc-breezy-background)',
   bgRingColorClass: 'ring-(--fc-breezy-background)',

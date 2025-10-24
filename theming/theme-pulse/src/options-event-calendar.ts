@@ -194,7 +194,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       popoverClass: 'min-w-[220px] ' + params.popoverClass,
       popoverCloseClass: [
-        'absolute top-3.5 end-2.5',
+        'absolute top-3 end-3',
         params.tertiaryOutlineColorClass,
         params.outlineWidthFocusClass,
       ],
@@ -202,7 +202,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
       dayHeaderClass: (data) => [
-        data.inPopover ? `border ${params.borderColorClass}` :
+        data.inPopover ? `border ${params.strongBorderColorClass} ${params.mutedBgClass}` :
           data.isMajor && `border ${params.strongBorderColorClass}`
       ],
       dayHeaderInnerClass: (data) => [
@@ -212,12 +212,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           // not date-specific
           'm-2',
           params.mutedFgClass,
-        ) : (!data.isToday || data.inPopover) ? joinClassNames(
-          // ghost-button-like
-          'my-2.5 h-6 px-1 rounded-sm',
-          data.inPopover && 'mx-2.5 font-semibold',
+        ) : data.inPopover ? joinClassNames(
+          // ghost-button-like IN POPOVER
+          'm-2 h-6 px-1 rounded-sm font-semibold',
           data.hasNavLink && params.ghostPressableClass,
+        ) : !data.isToday ? joinClassNames(
+          // ghost-button-like IN VIEW HEADER
+          'my-2.5 h-6 px-1 rounded-sm',
           params.mutedFgClass,
+          data.hasNavLink && params.ghostPressableClass,
         ) : (
           // circle within (see slots.tsx)
           'mx-2 my-2 h-7 group outline-none'
