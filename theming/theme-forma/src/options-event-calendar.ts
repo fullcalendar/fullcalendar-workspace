@@ -36,6 +36,10 @@ TODO: negative margins on timegrid slot labels not working anymore
 TODO: nicer rounded styling for more-link in timegrid/timeline
 
 The > continuation arrow looks bad when isCompact
+
+Make it more like live.outlook.com
+  Have some text be muted
+  Week-view business hours, add dark line at top bottom (see real outlook site)
 */
 
 // ambient types (tsc strips during build because of {})
@@ -184,9 +188,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // TODO: fix problem with huge hit area for title
       popoverClass: 'min-w-[220px] ' + params.popoverClass,
       popoverCloseClass: [
-        'absolute top-2 end-2',
+        'absolute top-1 end-1 p-1 rounded-sm',
         params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
+        params.ghostPressableClass,
+        params.mutedFgClass,
       ],
 
       inlineWeekNumberClass: (data) => [

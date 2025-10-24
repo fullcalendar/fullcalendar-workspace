@@ -194,9 +194,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       popoverClass: 'min-w-[220px] ' + params.popoverClass,
       popoverCloseClass: [
-        'absolute top-3 end-3',
+        'absolute top-2 end-2 p-1 rounded-sm',
         params.tertiaryOutlineColorClass,
         params.outlineWidthFocusClass,
+        params.ghostPressableClass,
       ],
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
