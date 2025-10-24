@@ -3,7 +3,7 @@ import { createEventCalendarOptions, EventCalendarOptionParams } from './options
 import * as svgs from './ui-default-svgs.js'
 
 const buttonTextClass = 'text-sm'
-const iconSizeClass = 'size-5' // matches text-sm line-height
+const buttonIconClass = 'size-5' // matches text-sm line-height
 
 const outlineWidthClass = 'outline-3'
 const outlineWidthFocusClass = 'focus-visible:outline-3'
@@ -126,7 +126,7 @@ export const defaultUiEventCalendarOptions: {
       prev: {
         iconContent: () => svgs.chevronDown(
           joinClassNames(
-            iconSizeClass,
+            buttonIconClass,
             'rotate-90 [[dir=rtl]_&]:-rotate-90',
           )
         )
@@ -134,7 +134,7 @@ export const defaultUiEventCalendarOptions: {
       next: {
         iconContent: () => svgs.chevronDown(
           joinClassNames(
-            iconSizeClass,
+            buttonIconClass,
             '-rotate-90 [[dir=rtl]_&]:rotate-90',
           )
         )
@@ -142,7 +142,7 @@ export const defaultUiEventCalendarOptions: {
       prevYear: {
         iconContent: () => svgs.chevronDoubleLeft(
           joinClassNames(
-            iconSizeClass,
+            buttonIconClass,
             '[[dir=rtl]_&]:rotate-180'
           )
         )
@@ -150,14 +150,14 @@ export const defaultUiEventCalendarOptions: {
       nextYear: {
         iconContent: () => svgs.chevronDoubleLeft(
           joinClassNames(
-            iconSizeClass,
+            buttonIconClass,
             'rotate-180 [[dir=rtl]_&]:rotate-0',
           )
         )
       },
     },
 
-    popoverCloseContent: () => svgs.x(`${buttonTextClass} ${iconSizeClass} opacity-65`),
+    popoverCloseContent: () => svgs.x(`size-5 ${buttonTextClass} opacity-65`),
   },
   views: baseEventCalendarOptions.views,
 }

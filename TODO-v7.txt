@@ -14,8 +14,6 @@ clean+build all:
 
 
 popoverClose
-  Classic X misaligned
-  test all in Shadcn/MUI... icons are different sizes no?
   popover offset (when large rounded corners) is all over the place
     when rounded, should be offset by a bit
   MUI popover for Pulse looks smudgy because of gray... just do a line (like https://mui.com/material-ui/react-drawer/)
@@ -23,6 +21,8 @@ popoverClose
     Seems like theme-* in charge of position popoverClose
     But ui-* in charge of supplying icon (and choosing it size)
     If that's the case, how do all icons seem vertically centered?
+  NOTE
+    closeicon always 20x20
 Audit z-indexes in themes. try to move to core
 clean up css variables
 

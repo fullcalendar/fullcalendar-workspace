@@ -115,7 +115,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-4 text-sm not-group-hover:opacity-65`),
+    popoverCloseContent: () => svgs.x(`size-5 text-sm not-group-hover:opacity-65`),
   },
   views: baseEventCalendarOptions.views,
 }
