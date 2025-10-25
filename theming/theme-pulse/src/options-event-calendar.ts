@@ -93,6 +93,7 @@ export interface EventCalendarOptionParams {
   bgEventBgClass: string
 
   popoverClass: string
+  popoverHeaderClass: string
 
   bgClass: string
   bgRingColorClass: string
@@ -203,7 +204,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
       dayHeaderClass: (data) => [
-        data.inPopover ? `border ${params.strongBorderColorClass} ${params.mutedBgClass}` :
+        data.inPopover ? params.popoverHeaderClass :
           data.isMajor && `border ${params.strongBorderColorClass}`
       ],
       dayHeaderInnerClass: (data) => [

@@ -111,12 +111,14 @@ export const optionParams: ThemeOptionParams = {
   bgEventColor: 'var(--foreground)',
   bgEventBgClass,
 
-  popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
+  popoverClass: 'border rounded-lg overflow-hidden bg-popover text-popover-foreground shadow-lg',
   // (breezy) popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
   // (classic) popoverClass: 'border bg-background text-foreground shadow-lg',
   // (forma) popoverClass: 'border bg-background text-foreground shadow-md',
   // (monarch) popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
   // (pulse) popoverClass: 'border bg-background text-foreground shadow-lg rounded-md shadow-md m-1',
+
+  popoverHeaderClass: 'border-b bg-foreground/5',
 
   bgClass: 'bg-background',
   bgRingColorClass: 'ring-background',

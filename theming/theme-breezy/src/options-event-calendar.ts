@@ -145,6 +145,7 @@ export interface EventCalendarOptionParams {
   bgEventBgClass: string
 
   popoverClass: string
+  popoverHeaderClass: string
 
   bgClass: string
   bgRingColorClass: string
@@ -239,7 +240,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     defaultBorderColorClass: string,
     data: { isCompact: boolean, inPopover: boolean, isMajor: boolean }
   ) => (
-    data.inPopover ? `border ${params.borderColorClass} ${params.faintBgClass}` :
+    data.inPopover ? params.popoverHeaderClass :
       data.isCompact ? '' : // isCompact is a HACK to detect multi-month multi-col
         data.isMajor ? `border ${params.strongBorderColorClass}` :
           `border ${defaultBorderColorClass}`

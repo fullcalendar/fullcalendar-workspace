@@ -16,9 +16,6 @@ clean+build all:
 popover
   popover offset (when large rounded corners) is all over the place
     when rounded, should be offset by a bit
-  MUI popover for Pulse looks smudgy because of gray...
-    just do a line (like https://mui.com/material-ui/react-drawer/)
-    have theme control popover-header somehow
 Allow margin on timegrid week-number nav-link
 Audit z-indexes in themes. try to move to core
 clean up css variables

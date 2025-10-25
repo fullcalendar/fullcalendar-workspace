@@ -293,7 +293,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderRowClass: `border ${params.borderColorClass}`,
       dayHeaderAlign: 'center',
       dayHeaderClass: (data) => [
-        data.isDisabled && params.faintBgClass,
+        (data.isDisabled && !data.inPopover) && params.faintBgClass,
         'items-center',
       ],
       dayHeaderInnerClass: (data) => [

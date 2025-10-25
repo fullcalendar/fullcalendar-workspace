@@ -108,6 +108,7 @@ export const optionParams: EventCalendarOptionParams = {
   nowBorderColorClass: 'border-(--fc-breezy-now)',
 
   popoverClass: 'bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg overflow-hidden shadow-lg',
+  popoverHeaderClass: 'border-b border-(--fc-breezy-border) bg-(--fc-breezy-faint) ',
 
   bgClass: 'bg-(--fc-breezy-background)',
   bgRingColorClass: 'ring-(--fc-breezy-background)',

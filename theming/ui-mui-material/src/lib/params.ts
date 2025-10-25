@@ -138,6 +138,8 @@ export const optionParams: ThemeOptionParams = {
   // (monarch) popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8)',
   // (pulse) popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2',
 
+  popoverHeaderClass: 'border-b border-(--mui-palette-divider)', // no bg color. looks bad with card shadow
+
   bgClass: 'bg-(--mui-palette-background-paper)',
   bgRingColorClass: 'ring-(--mui-palette-background-paper)',
 

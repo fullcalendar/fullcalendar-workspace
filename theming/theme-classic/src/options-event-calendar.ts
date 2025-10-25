@@ -41,6 +41,7 @@ export interface EventCalendarOptionParams {
   bgEventBgClass: string
 
   popoverClass: string
+  popoverHeaderClass: string
 
   bgClass: string
   bgRingColorClass: string
@@ -54,15 +55,7 @@ const cellPaddingClass = 'px-1 py-0.5'
 const listViewItemPaddingClass = 'px-3 py-2'
 const axisClass = 'justify-end' // h-align
 
-export const getDayHeaderClasses = (
-  data: { isDisabled: boolean, isMajor: boolean, inPopover?: boolean },
-  params: EventCalendarOptionParams
-) => [
-  'border justify-center', // v-align
-  data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
-  (data.inPopover || data.isDisabled) && params.faintBgClass,
-]
-
+// TODO: kill?
 export const getDayHeaderInnerClasses = (data: { isCompact: boolean }) => [
   `flex flex-col ${cellPaddingClass}`,
   data.isCompact ? xxsTextClass : 'text-sm',
@@ -273,7 +266,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
       dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
-      dayHeaderClass: (data) => getDayHeaderClasses(data, params),
+      dayHeaderClass: (data) => [
+        data.inPopover ? params.popoverHeaderClass : joinClassNames(
+          // TODO: make DRY with what's in options-scheduler.ts ?
+          'border',
+          data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
+          data.isDisabled && params.faintBgClass,
+        )
+      ],
       dayHeaderInnerClass: getDayHeaderInnerClasses,
       dayHeaderDividerClass: `border-t ${params.borderColorClass}`,
 

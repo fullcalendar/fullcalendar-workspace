@@ -1,5 +1,5 @@
 import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
-import { EventCalendarOptionParams, getDayHeaderClasses, getDayHeaderInnerClasses } from './options-event-calendar.js'
+import { EventCalendarOptionParams, getDayHeaderInnerClasses } from './options-event-calendar.js'
 
 // ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/timeline'
@@ -18,7 +18,11 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   return {
     optionDefaults: {
       resourceDayHeaderAlign: 'center',
-      resourceDayHeaderClass: (data) => getDayHeaderClasses(data, params),
+      resourceDayHeaderClass: (data) => [
+        'border',
+        data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
+        data.isDisabled && params.faintBgClass,
+      ],
       resourceDayHeaderInnerClass: getDayHeaderInnerClasses,
 
       resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,

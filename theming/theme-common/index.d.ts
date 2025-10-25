@@ -62,6 +62,7 @@ export interface ThemeOptionParams {
   bgEventBgClass: string
 
   popoverClass: string
+  popoverHeaderClass: string
 
   bgClass: string
   bgRingColorClass: string

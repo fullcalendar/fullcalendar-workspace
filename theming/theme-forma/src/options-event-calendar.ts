@@ -92,6 +92,7 @@ export interface EventCalendarOptionParams {
   bgEventBgClass: string
 
   popoverClass: string
+  popoverHeaderClass: string
 
   bgClass: string
   bgRingColorClass: string
@@ -319,8 +320,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderAlign: (data) => data.isCompact ? 'center' : 'start',
 
       dayHeaderClass: (data) => [
-        !data.isCompact && `border ${params.borderColorClass}`, // HACK for no-show-border in multimonth
-        (data.isDisabled || data.inPopover) && params.faintBgClass,
+        data.inPopover ? params.popoverHeaderClass : joinClassNames(
+          !data.isCompact && `border ${params.borderColorClass}`, // HACK for no-show-border in multimonth
+          data.isDisabled && params.faintBgClass,
+        ),
         data.isToday && !data.level && 'relative', // contain wide top-border
       ],
       dayHeaderInnerClass: (data) => [
