@@ -84,7 +84,7 @@ export const defaultUiEventCalendarOptions: {
 
     buttonGroupClass: 'items-center isolate',
     buttonClass: (data) => [
-      'inline-flex items-center py-2 border-x',
+      'inline-flex flex-row items-center py-2 border-x',
       'focus-visible:outline-3 outline-slate-600/50',
       'hover:border-slate-900 active:border-slate-900 print:border-slate-900',
       'hover:bg-slate-800 active:bg-slate-800 print:bg-white',

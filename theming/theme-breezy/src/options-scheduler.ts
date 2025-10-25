@@ -35,10 +35,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceLaneClass: `border ${params.borderColorClass}`,
       resourceLaneBottomClass: 'h-3',
 
-      resourceIndentClass: 'items-center ms-1 -me-1',
+      resourceIndentClass: 'items-center ms-1 -me-1.5',
       resourceExpanderClass: [
-        // TODO: ghost hover effect
-        params.fgClass,
+        'inline-flex flex-row p-0.5 rounded-full group',
+        params.ghostPressableClass,
         params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
       ],

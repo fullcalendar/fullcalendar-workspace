@@ -52,6 +52,8 @@ const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transpa
 const faintHoverClass = 'hover:bg-(--fc-pulse-faint)'
 const faintPressableClass = `${faintHoverClass} active:bg-(--fc-pulse-muted) focus-visible:bg-(--fc-pulse-faint)`
 
+export const pressableIconClass = `${mutedFgClass} ${fgGroupHoverClass} ${fgGroupFocusClass}`
+
 export const optionParams: EventCalendarOptionParams = {
   tertiaryClass,
   tertiaryPressableClass,
@@ -135,7 +137,7 @@ export const defaultUiEventCalendarOptions: {
     ],
 
     buttonClass: (data) => [
-      'text-sm py-2',
+      'inline-flex flex-row text-sm py-2',
       data.isIconOnly ? 'px-2.5' : 'px-4',
       data.inSelectGroup
         // all select-group buttons
@@ -194,7 +196,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgClass} ${fgGroupHoverClass} ${fgGroupFocusClass}`),
+    popoverCloseContent: () => svgs.x(`size-5 ${pressableIconClass}`),
   },
   views: baseEventCalendarOptions.views,
 }

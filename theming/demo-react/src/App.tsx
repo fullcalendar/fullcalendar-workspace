@@ -309,7 +309,7 @@ export default function App() {
                 <SelectContent>
                   {shadcnPaletteOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value} className='flex flex-row'>
-                      <div key={option.value} className={`w-4 h-4 ${option.colorClassName}`} />
+                      <div key={option.value} className={`size-4 ${option.colorClassName}`} />
                       {option.text}
                     </SelectItem>
                   ))}
@@ -326,7 +326,7 @@ export default function App() {
                 <SelectContent>
                   {muiPaletteOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value} className='flex flex-row'>
-                      <div className={`w-4 h-4 ${option.colorClassName}`} />
+                      <div className={`size-4 ${option.colorClassName}`} />
                       {option.text}
                     </SelectItem>
                   ))}
@@ -343,7 +343,7 @@ export default function App() {
                 <SelectContent>
                   {fcMonarchPaletteOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value} className='flex flex-row'>
-                      <div className={`w-4 h-4 ${option.colorClassName}`} />
+                      <div className={`size-4 ${option.colorClassName}`} />
                       {option.text}
                     </SelectItem>
                   ))}
@@ -360,7 +360,7 @@ export default function App() {
                 <SelectContent>
                   {fcFormaPaletteOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value} className='flex flex-row'>
-                      <div className={`w-4 h-4 ${option.colorClassName}`} />
+                      <div className={`size-4 ${option.colorClassName}`} />
                       {option.text}
                     </SelectItem>
                   ))}
@@ -377,7 +377,7 @@ export default function App() {
                 <SelectContent>
                   {fcBreezyPaletteOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value} className='flex flex-row'>
-                      <div className={`w-4 h-4 ${option.colorClassName}`} />
+                      <div className={`size-4 ${option.colorClassName}`} />
                       {option.text}
                     </SelectItem>
                   ))}
@@ -394,7 +394,7 @@ export default function App() {
                 <SelectContent>
                   {fcPulsePaletteOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value} className='flex flex-row'>
-                      <div className={`w-4 h-4 ${option.colorClassName}`} />
+                      <div className={`size-4 ${option.colorClassName}`} />
                       {option.text}
                     </SelectItem>
                   ))}

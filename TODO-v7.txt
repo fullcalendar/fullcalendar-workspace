@@ -13,16 +13,17 @@ clean+build all:
   pn build
 
 
-popoverClose
+popover
   popover offset (when large rounded corners) is all over the place
     when rounded, should be offset by a bit
   MUI popover for Pulse looks smudgy because of gray...
     just do a line (like https://mui.com/material-ui/react-drawer/)
     have theme control popover-header somehow
-resourceExpanderClass
-  ensure looks good for each theme (including hover/tab)
+Allow margin on timegrid week-number nav-link
 Audit z-indexes in themes. try to move to core
 clean up css variables
+how to control col-resizer for datagrid?
+  https://mui.com/x/react-data-grid/#premium-version
 
 
 MANUAL TEST
@@ -1026,3 +1027,9 @@ Who controls a popoverClose's styling?
   ALWAYS HAVE popoverCloseClass have 'group' className,
     so icon's group-hover can be defined
   MAYBE in the future we'll come up with a callback system to allow theme-* to define icon's styling better
+IMPORTANT: all icon containers (buttonClass/popoverCloseClass/resourceExpanderClass)
+  should have `inline-flex flex-row` to tamp-out line-height causing too tall
+  always put `group` so can style icon based on group-hover group-focus-visible
+resourceExpanderClass
+  theme can choose size. usually size-4 or size-5
+  always put `group` so can style icon based on group-hover group-focus-visible

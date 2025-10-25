@@ -44,6 +44,8 @@ const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transpa
 const mutedFgClass = 'text-(--fc-monarch-muted-foreground)'
 const faintFgClass = 'text-(--fc-monarch-faint-foreground)'
 
+export const pressableIconClass = `${mutedFgClass} group-hover:text-(--fc-monarch-foreground) group-focus-visible:text-(--fc-monarch-foreground)`
+
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
   secondaryPressableClass,
@@ -159,7 +161,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgClass} group-hover:text-(--fc-monarch-foreground) group-focus-visible:text-(--fc-monarch-foreground)`),
+    popoverCloseContent: () => svgs.x(`size-5 ${pressableIconClass}`),
   },
   views: baseEventCalendarOptions.views,
 }

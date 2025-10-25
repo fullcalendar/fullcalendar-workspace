@@ -74,6 +74,8 @@ const mutedEventPressableClass = joinClassNames(
 
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
+export const pressableIconClass = `${mutedFgClass} group-hover:text-(--fc-forma-primary) group-focus-visible:text-(--fc-forma-primary)`
+
 export const optionParams: EventCalendarOptionParams = {
   primaryClass,
   primaryPressableClass,
@@ -139,7 +141,7 @@ export const defaultUiEventCalendarOptions: {
 
     buttonGroupClass: 'items-center isolate',
     buttonClass: (data) => [
-      'text-sm py-1.5 rounded-sm',
+      'inline-flex flex-row text-sm py-1.5 rounded-sm',
       data.isIconOnly ? 'px-2' : 'px-3',
       data.isIconOnly
         // ghost-button
@@ -180,7 +182,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.dismiss(`size-5 ${mutedFgClass} group-hover:text-(--fc-forma-primary) group-focus-visible:text-(--fc-forma-primary)`),
+    popoverCloseContent: () => svgs.dismiss(`size-5 ${pressableIconClass}`),
   },
   views: baseEventCalendarOptions.views,
 }

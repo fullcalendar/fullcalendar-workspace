@@ -66,6 +66,8 @@ const fgClass = 'text-(--fc-breezy-foreground)'
 const fgGroupHoverClass = 'group-hover:text-(--fc-breezy-foreground)'
 const fgGroupFocusClass = 'group-focus-visible:text-(--fc-breezy-foreground)'
 
+export const pressableIconClass = `${mutedFgClass} ${fgGroupHoverClass} ${fgGroupFocusClass}`
+
 export const optionParams: EventCalendarOptionParams = {
   primaryClass,
   primaryPressableClass,
@@ -146,7 +148,7 @@ export const defaultUiEventCalendarOptions: {
       !data.isSelectGroup && `rounded-md shadow-xs`
     ],
     buttonClass: (data) => [
-      'py-2 text-sm group', // group for icon group-focus
+      'inline-flex flex-row py-2 text-sm group', // group for icon group-focus
       data.isIconOnly ? 'px-2' : 'px-3',
       data.inSelectGroup ? joinClassNames(
         // START view-switching bar item
@@ -190,7 +192,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgClass} ${fgGroupHoverClass} ${fgGroupFocusClass}`),
+    popoverCloseContent: () => svgs.x(`size-5 ${pressableIconClass}`),
   },
 
   views: baseEventCalendarOptions.views,

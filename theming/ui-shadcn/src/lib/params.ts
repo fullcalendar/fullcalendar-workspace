@@ -55,6 +55,8 @@ const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,va
 
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
 
+export const pressableIconClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'
+
 export const optionParams: ThemeOptionParams = {
   primaryClass,
   primaryPressableClass,

@@ -39,7 +39,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceIndentClass: 'ms-2 -me-1 items-center',
       resourceExpanderClass: [
-        'group', // for icon effects
+        'inline-flex flex-row group',
         params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
       ],

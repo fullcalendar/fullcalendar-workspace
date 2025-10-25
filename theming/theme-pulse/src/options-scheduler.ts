@@ -40,10 +40,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: `p-2 text-sm ${params.strongFgClass}`,
 
-      resourceIndentClass: 'items-center ms-1 -me-1',
+      resourceIndentClass: 'items-center ms-1 -me-1.5',
       resourceExpanderClass: [
-        'group', // for icon hover
-        params.strongFgClass,
+        'inline-flex flex-row p-0.5 rounded-sm group',
+        params.ghostPressableClass,
         params.tertiaryOutlineColorClass,
         params.outlineWidthFocusClass,
       ],
