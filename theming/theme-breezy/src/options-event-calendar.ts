@@ -251,7 +251,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventColor: params.eventColor,
       backgroundEventColor: params.bgEventColor,
 
-      popoverClass: `min-w-50 m-1 ${params.popoverClass}`,
+      popoverClass: `min-w-50 ${params.popoverClass}`,
       popoverCloseClass: [
         'absolute inline-flex flex-row top-2 end-2 p-0.5 rounded-sm group',
         params.primaryOutlineColorClass,

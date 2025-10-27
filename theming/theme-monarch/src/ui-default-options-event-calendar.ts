@@ -83,7 +83,7 @@ export const optionParams: EventCalendarOptionParams = {
   bgEventColor: 'var(--fc-monarch-tertiary)',
   bgEventBgClass,
 
-  popoverClass: 'border border-(--fc-monarch-border) rounded-lg overflow-hidden bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg',
+  popoverClass: 'border border-(--fc-monarch-border) rounded-lg overflow-hidden m-2 bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg',
 
   bgClass: 'bg-(--fc-monarch-background)',
   bgRingColorClass: 'ring-(--fc-monarch-background)',

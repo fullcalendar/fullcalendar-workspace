@@ -111,7 +111,7 @@ export const optionParams: ThemeOptionParams = {
   bgEventColor: 'var(--foreground)',
   bgEventBgClass,
 
-  popoverClass: 'border rounded-lg overflow-hidden bg-popover text-popover-foreground shadow-lg',
+  popoverClass: 'border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground',
   // (breezy) popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
   // (classic) popoverClass: 'border bg-background text-foreground shadow-lg',
   // (forma) popoverClass: 'border bg-background text-foreground shadow-md',

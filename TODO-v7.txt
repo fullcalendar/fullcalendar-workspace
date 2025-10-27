@@ -13,9 +13,6 @@ clean+build all:
   pn build
 
 
-popover
-  popover offset (when large rounded corners) is all over the place
-    when rounded, should be offset by a bit
 Allow margin on timegrid week-number nav-link
 Audit z-indexes in themes. try to move to core
 clean up css variables

@@ -151,7 +151,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.hasNavLink && params.ghostPressableClass,
       ],
 
-      popoverClass: 'm-2 min-w-3xs ' + params.popoverClass,
+      popoverClass: 'min-w-3xs ' + params.popoverClass,
       popoverCloseClass: [
         'absolute top-2 end-2 rounded-full size-8 inline-flex flex-row justify-center items-center group',
         params.ghostPressableClass,
