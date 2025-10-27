@@ -21,8 +21,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceAreaDividerClass: `border-l ${params.strongBorderColorClass}`,
 
       resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
-      resourceAreaHeaderClass: `border ${params.mutedBorderColorClass}`,
+      resourceAreaHeaderClass: `border ${params.mutedBorderColorClass} justify-center`, // v-align
       resourceAreaHeaderInnerClass: `p-2 text-sm ${params.fgClass}`,
+      resourceAreaHeaderResizerClass: 'absolute top-0 bottom-0 w-[5px] end-[-3px]',
 
       resourceAreaRowClass: `border ${params.borderColorClass}`,
       resourceCellClass: `border ${params.mutedBorderColorClass}`,

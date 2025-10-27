@@ -40,6 +40,7 @@ export function processColOptions(options: ViewOptionsRefined) {
 
       headerClass: joinFuncishClassNames(options.resourceAreaHeaderClass, colSpec.headerClass),
       headerInnerClass: joinFuncishClassNames(options.resourceAreaHeaderInnerClass, colSpec.headerInnerClass),
+      headerResizerClass: joinFuncishClassNames(options.resourceAreaHeaderResizerClass, colSpec.headerResizerClass),
       headerContent: mergeContentInjectors(options.resourceAreaHeaderContent, colSpec.headerContent),
       headerDidMount: mergeLifecycleCallbacks(options.resourceAreaHeaderDidMount, colSpec.headerDidMount),
       headerWillUnmount: mergeLifecycleCallbacks(options.resourceAreaHeaderWillUnmount, colSpec.headerWillUnmount),

@@ -14,8 +14,6 @@ clean+build all:
 
 
 clean up css variables
-how to control col-resizer for datagrid?
-  https://mui.com/x/react-data-grid/#premium-version
 
 
 MANUAL TEST
@@ -60,7 +58,7 @@ CODE-QUALITY (while going through each theme)
     dayHeaderInnerClass does NOT need it! already has nav-link. but might need "offset" class
 NOTES
   for alignment,
-    dayHeader and timeline-slotLabel are flex-col
+    dayHeader, resourceAreaHeader, and timeline-slotLabel are flex-col
     timeGrid-slotLabel is flex-row
   text size:
     text-sm = 14px (day-numbers, slot-labels, datagrid cells)
@@ -1025,3 +1023,5 @@ IMPORTANT: all icon containers (buttonClass/popoverCloseClass/resourceExpanderCl
 resourceExpanderClass
   theme can choose size. usually size-4 or size-5
   always put `group` so can style icon based on group-hover group-focus-visible
+MUI datagrid column resizing is nice:
+  https://mui.com/x/react-data-grid/#premium-version

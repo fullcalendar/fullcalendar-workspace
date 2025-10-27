@@ -62,20 +62,6 @@
   clear: both !important;
 }
 
-/* TODO: maybe have theme define this. might want grippy texture or hover effect */
-.colResizer {
-  position: absolute !important;
-  z-index: 1 !important;
-  top: 0 !important;
-  bottom: 0 !important;
-  width: 5px !important;
-  cursor: col-resize !important;
-}
-
-.colResizer {
-  inset-inline-end: -3px !important;
-}
-
 .cursorPointer {
   cursor: pointer !important;
 }
@@ -102,6 +88,10 @@
 
 [dir=rtl] .cursorResizeE {
   cursor: w-resize !important;
+}
+
+.cursorColResizer {
+  cursor: col-resize !important;
 }
 
 .hit,

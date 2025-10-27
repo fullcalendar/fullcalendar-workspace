@@ -29,6 +29,7 @@ export const OPTION_REFINERS = {
   // datagrid super-header & normal column headers
   resourceAreaHeaderClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
   resourceAreaHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
+  resourceAreaHeaderResizerClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
   resourceAreaHeaderContent: identity as Identity<CustomContentGenerator<ResourceColumnHeaderData>>,
   resourceAreaHeaderDidMount: identity as Identity<DidMountHandler<ResourceColumnHeaderMountData>>,
   resourceAreaHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceColumnHeaderMountData>>,

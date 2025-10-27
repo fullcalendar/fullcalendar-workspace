@@ -42,10 +42,9 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         className={joinClassNames(
           classNames.tight,
           classNames.flexCol,
-          classNames.alignStart,
           props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           classNames.rel, // for resizer abs positioning
-          classNames.crop,
+          // cannot crop because resizer is allowed to bleed out
         )}
         style={{
           minWidth: 0,
@@ -63,25 +62,40 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
         {(InnerContent) => (
           <Fragment>
             <div
-              ref={this.innerElRef}
               className={joinClassNames(
-                classNames.rigid,
-                classNames.flexRow,
+                classNames.crop, // must crop instead of outer
+                classNames.flexCol,
+                classNames.alignStart,
               )}
             >
-              {this.props.indent && (
-                <ResourceIndent
-                  level={1}
-                  indentWidth={props.indentWidth}
+              <div
+                ref={this.innerElRef}
+                className={joinClassNames(
+                  classNames.rigid,
+                  classNames.flexRow,
+                )}
+              >
+                {this.props.indent && (
+                  <ResourceIndent
+                    level={1}
+                    indentWidth={props.indentWidth}
+                  />
+                )}
+                <InnerContent
+                  tag='div'
+                  className={generateClassName(colSpec.headerInnerClass, renderProps)}
                 />
-              )}
-              <InnerContent
-                tag='div'
-                className={generateClassName(colSpec.headerInnerClass, renderProps)}
-              />
+              </div>
             </div>
             {props.resizer && (
-              <div className={classNames.colResizer} ref={props.resizerElRef} />
+              <div
+                ref={props.resizerElRef}
+                className={joinClassNames(
+                  generateClassName(colSpec.headerResizerClass, renderProps),
+                  classNames.z1,
+                  classNames.cursorColResizer,
+                )}
+              />
             )}
           </Fragment>
         )}

@@ -58,6 +58,7 @@ export interface ResourceExpanderData {
 export interface ColHeaderRenderHooks {
   headerClass?: ClassNameGenerator<ResourceColumnHeaderData>
   headerInnerClass?: ClassNameGenerator<ResourceColumnHeaderData>
+  headerResizerClass?: ClassNameGenerator<ResourceColumnHeaderData>
   headerContent?: CustomContentGenerator<ResourceColumnHeaderData>
   headerDefault?: (renderProps: ResourceColumnHeaderData) => ComponentChild
   headerDidMount?: DidMountHandler<ResourceColumnHeaderMountData>
