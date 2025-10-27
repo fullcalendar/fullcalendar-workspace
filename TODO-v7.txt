@@ -13,7 +13,6 @@ clean+build all:
   pn build
 
 
-Allow margin on timegrid week-number nav-link
 Audit z-indexes in themes. try to move to core
 clean up css variables
 how to control col-resizer for datagrid?

@@ -107,6 +107,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
           <div
             ref={this.handleInnerEl}
             className={joinClassNames(
+              classNames.flexCol,
               classNames.rigid,
               isSticky && classNames.sticky,
             )}

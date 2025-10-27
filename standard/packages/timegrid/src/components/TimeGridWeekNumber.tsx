@@ -77,19 +77,23 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
         willUnmount={options.weekNumberHeaderWillUnmount}
       >
         {(InnerContent) => (
-          <InnerContent
-            tag='div'
-            attrs={
-              hasNavLink
-                ? buildNavLinkAttrs(context, range.start, 'week', fullDateStr)
-                : { 'aria-label': fullDateStr }
-            }
+          <div
+            ref={this.innerElRef}
             className={joinClassNames(
-              generateClassName(options.weekNumberHeaderInnerClass, weekNumberRenderProps),
+              classNames.flexRow,
               classNames.rigid,
             )}
-            elRef={this.innerElRef}
-          />
+          >
+            <InnerContent
+              tag='div'
+              attrs={
+                hasNavLink
+                  ? buildNavLinkAttrs(context, range.start, 'week', fullDateStr)
+                  : { 'aria-label': fullDateStr }
+              }
+              className={generateClassName(options.weekNumberHeaderInnerClass, weekNumberRenderProps)}
+            />
+          </div>
         )}
       </ContentContainer>
     )

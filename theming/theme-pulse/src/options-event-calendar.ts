@@ -58,6 +58,10 @@ TODO: improve resourceExpander hover and tab effect
 Dark-mode Pulse buttons look bad
 
 popover-close needs hover color or bg-change
+
+scroll-filler doesn't appear on resource-timegrid, header area, when scrolled all the way right
+
+for resource-timeline area divider, use strong border instead of thick gray thing?
 */
 
 export interface EventCalendarOptionParams {
