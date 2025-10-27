@@ -40,6 +40,9 @@ The > continuation arrow looks bad when isCompact
 Make it more like live.outlook.com
   Have some text be muted
   Week-view business hours, add dark line at top bottom (see real outlook site)
+
+start-date resizing in daygrid,
+  resizer has wrong negative-start to overcome the isStart-border
 */
 
 // ambient types (tsc strips during build because of {})
@@ -197,7 +200,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       inlineWeekNumberClass: (data) => [
-        'absolute z-10 rounded-s-sm end-0',
+        'absolute rounded-s-sm end-0',
         data.isCompact
           ? `top-0.5 my-px p-0.5 ${xxsTextClass}`
           : 'top-1 p-1 text-xs',

@@ -13,7 +13,6 @@ clean+build all:
   pn build
 
 
-Audit z-indexes in themes. try to move to core
 clean up css variables
 how to control col-resizer for datagrid?
   https://mui.com/x/react-data-grid/#premium-version

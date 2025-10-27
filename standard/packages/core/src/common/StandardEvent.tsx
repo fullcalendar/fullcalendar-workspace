@@ -199,6 +199,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
               <div
                 className={joinClassNames(
                   beforeClassName,
+                  classNames.z1,
                   renderProps.isStartResizable && joinClassNames(
                     props.display === 'column'
                       ? classNames.cursorResizeT
@@ -227,13 +228,17 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
             {/* inner element */}
             <InnerContent
               tag="div"
-              className={innerClassName}
+              className={joinClassNames(
+                innerClassName,
+                classNames.z0,
+              )}
             />
             {/* "after" element (resizer or left-arrow) */}
             {(afterClassName || afterContent) && (
               <div
                 className={joinClassNames(
                   afterClassName,
+                  classNames.z1,
                   renderProps.isEndResizable && joinClassNames(
                     props.display === 'column'
                       ? classNames.cursorResizeB

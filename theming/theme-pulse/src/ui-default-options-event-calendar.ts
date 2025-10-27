@@ -148,15 +148,13 @@ export const defaultUiEventCalendarOptions: {
             oulineFocusClass,
             data.isSelected
               // SELECTED select-group button
-              ? `${controlCurrentColorClass} ${largeBoxShadowClass} z-10`
+              ? `${controlCurrentColorClass} ${largeBoxShadowClass}`
               // UN-selected select-group button
-              : `${ghostPressableClass} z-0 focus-visible:z-20`
+              : ghostPressableClass
           )
         // primary/secondary buttons
         : joinClassNames(
-            data.inGroup
-              ? 'focus-visible:z-10'
-              : 'rounded-sm',
+            !data.inGroup && 'rounded-sm',
             data.isPrimary
               // primary
               ? joinClassNames(

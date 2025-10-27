@@ -9,7 +9,7 @@ import {} from '@fullcalendar/resource-timeline'
 import {} from '@fullcalendar/adaptive'
 import {} from '@fullcalendar/scrollgrid'
 
-const continuationArrowClass = 'relative z-10 mx-px border-y-[5px] border-y-transparent opacity-50'
+const continuationArrowClass = 'mx-px border-y-[5px] border-y-transparent opacity-50'
 
 export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions

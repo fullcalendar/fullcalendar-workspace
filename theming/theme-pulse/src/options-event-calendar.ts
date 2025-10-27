@@ -62,6 +62,8 @@ popover-close needs hover color or bg-change
 scroll-filler doesn't appear on resource-timegrid, header area, when scrolled all the way right
 
 for resource-timeline area divider, use strong border instead of thick gray thing?
+
+BUG: timegrid more-popover has header text centered
 */
 
 export interface EventCalendarOptionParams {
@@ -117,12 +119,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   views?: { [viewName: string]: ViewOptions }
 } {
   // transparent resizer for mouse
-  const blockPointerResizerClass = `absolute z-10 hidden group-hover:block`
+  const blockPointerResizerClass = `absolute hidden group-hover:block`
   const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute z-10 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
+  const blockTouchResizerClass = `absolute h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
@@ -282,7 +284,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       BUG: z-index is wrong, can't click week numbers
       */
       inlineWeekNumberClass: (data) => [
-        `absolute z-10 start-0 rounded-e-sm ${params.fgClass}`,
+        `absolute start-0 rounded-e-sm ${params.fgClass}`,
         data.isCompact
           ? `top-0.5 my-px p-0.5 ${xxsTextClass}`
           : 'top-1 p-1 text-xs',

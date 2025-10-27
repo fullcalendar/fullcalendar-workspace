@@ -166,12 +166,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   views?: { [viewName: string]: ViewOptions }
 } {
   // transparent resizer for mouse
-  const blockPointerResizerClass = `absolute z-10 hidden group-hover:block`
+  const blockPointerResizerClass = `absolute hidden group-hover:block`
   const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute z-10 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
+  const blockTouchResizerClass = `absolute h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
@@ -186,7 +186,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     BUG: z-index is wrong, can't click week numbers
     */
     inlineWeekNumberClass: (data) => [
-      'absolute z-10 top-0 end-0',
+      'absolute top-0 end-0',
       `border-b ${params.strongBorderBottomColorClass} border-s ${params.borderStartColorClass} rounded-es-md ${params.bgClass} ${params.mutedFgClass}`,
       data.hasNavLink
         ? `${params.ghostPressableClass} -outline-offset-1` // because border

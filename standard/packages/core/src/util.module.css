@@ -446,6 +446,21 @@ which can't rely on dynamic height detection after print-flag activated.
   min-height: 6em !important;
 }
 
+/* Z-index */
+/* ------------------------------------------------------------------------------------------------- */
+
+.z0 {
+  z-index: 0;
+}
+
+.z1 {
+  z-index: 1;
+}
+
+.focusZ2:focus-visible {
+  z-index: 2;
+}
+
 /* INTERNAL MARKER -- used to mark an element for internal significance */
 /* ------------------------------------------------------------------------------------------------- */
 

@@ -135,6 +135,10 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
             className={joinClassNames(
               generateClassName(options.buttonClass, renderProps),
               !isDisabled && classNames.cursorPointer,
+              inGroup && joinClassNames(
+                isSelected ? classNames.z1 : classNames.z0,
+                classNames.focusZ2, // to ensure focus-ring is raised
+              ),
             )}
             renderProps={renderProps}
             generatorName={undefined}

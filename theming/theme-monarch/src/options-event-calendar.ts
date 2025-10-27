@@ -84,12 +84,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   views?: { [viewName: string]: ViewOptions }
 } {
   // transparent resizer for mouse
-  const blockPointerResizerClass = `absolute z-10 hidden group-hover:block`
+  const blockPointerResizerClass = `absolute hidden group-hover:block`
   const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute z-10 h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
+  const blockTouchResizerClass = `absolute h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
@@ -178,7 +178,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ),
 
       inlineWeekNumberClass: (data) => [
-        'absolute z-10',
+        'absolute',
         data.isCompact
           ? 'top-0.5 start-0 my-px'
           : 'top-1.5 start-1',

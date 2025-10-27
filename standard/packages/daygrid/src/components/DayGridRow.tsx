@@ -157,12 +157,12 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           props.className,
           classNames.flexRow,
           classNames.rel,
+          classNames.isolate,
           (props.forPrint && props.basis !== undefined) && // basis implies siblings (must share height)
             classNames.printSiblingRow,
         )}
         style={{
           'flex-basis': props.basis,
-          zIndex: 0, // contain child z-indexes
         }}
         ref={this.handleRootEl}
       >
@@ -178,6 +178,8 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               'role': undefined, // HACK: a 'link' role can't be child of 'row' role
               'aria-hidden': true, // HACK: never part of a11y tree because row already has label and role not allowed
             }}
+            // put above all cells (TODO: put explicit z0 on each cell?)
+            className={classNames.z1}
             renderProps={weekNumberRenderProps}
             generatorName="inlineWeekNumberContent"
             customGenerator={options.inlineWeekNumberContent}

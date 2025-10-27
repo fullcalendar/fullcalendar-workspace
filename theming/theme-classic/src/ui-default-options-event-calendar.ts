@@ -92,11 +92,11 @@ export const defaultUiEventCalendarOptions: {
       'text-sm text-white print:text-black',
       data.isIconOnly ? 'px-2.5' : 'px-3',
       data.inGroup
-        ? 'first:rounded-s-[4px] last:rounded-e-[4px] relative active:z-20 focus-visible:z-20'
+        ? 'first:rounded-s-[4px] last:rounded-e-[4px]'
         : 'rounded-[4px]',
       data.isSelected // implies inGroup
-        ? 'z-10 border-slate-900 bg-slate-800'
-        : 'z-0 border-transparent bg-slate-700',
+        ? 'border-slate-900 bg-slate-800'
+        : 'border-transparent bg-slate-700',
       data.isDisabled
         && 'opacity-65 pointer-events-none', // bypass hover styles
     ],

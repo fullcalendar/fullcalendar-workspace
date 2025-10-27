@@ -164,7 +164,7 @@ export const defaultUiEventCalendarOptions: {
           ? primaryButtonClass
           : secondaryButtonClass,
         data.inGroup
-          ? 'first:rounded-s-md first:border-s last:rounded-e-md last:border-e border-y focus-visible:z-10'
+          ? 'first:rounded-s-md first:border-s last:rounded-e-md last:border-e border-y'
           // standalone button (responsible for own border and shadow)
           : 'rounded-md shadow-xs border',
       ),
