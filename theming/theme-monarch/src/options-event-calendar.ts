@@ -45,7 +45,7 @@ export interface EventCalendarOptionParams {
 
   mutedHoverClass: string
   mutedHoverPressableClass: string
-  ghostPressableGroupClass: string
+  mutedHoverPressableGroupClass: string
 
   strongSolidPressableClass: string
 

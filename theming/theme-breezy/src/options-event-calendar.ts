@@ -155,8 +155,8 @@ export interface EventCalendarOptionParams {
   mutedFgClass: string
   faintFgClass: string
 
-  faintEventBgClass: string
-  faintEventPressableClass: string
+  eventFaintBgClass: string
+  eventFaintPressableClass: string
 
   mutedEventFgClass: string
 }
@@ -358,8 +358,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       blockEventClass: (data) => [
         'relative group',
         data.isInteractive
-          ? params.faintEventPressableClass
-          : params.faintEventBgClass,
+          ? params.eventFaintPressableClass
+          : params.eventFaintBgClass,
         'print:bg-white',
         'border-transparent print:border-(--fc-event-color)',
       ],

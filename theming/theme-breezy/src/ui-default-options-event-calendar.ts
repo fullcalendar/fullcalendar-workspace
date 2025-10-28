@@ -45,9 +45,9 @@ const selectClass = `bg-(--fc-breezy-selected) text-(--fc-breezy-strong-foregrou
 
 const nonSelectClass = `text-(--fc-breezy-muted-foreground) hover:text-(--fc-breezy-strong-foreground) ${primaryOutlineFocusClass}`
 
-const faintEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-breezy-background))]'
-const faintEventPressableClass = joinClassNames(
-  faintEventBgClass,
+const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-breezy-background))]'
+const eventFaintPressableClass = joinClassNames(
+  eventFaintBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--fc-breezy-background))]',
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-breezy-background))]',
 )
@@ -108,8 +108,8 @@ export const optionParams: EventCalendarOptionParams = {
   fgClass,
   strongFgClass: 'text-(--fc-breezy-strong-foreground)',
 
-  faintEventBgClass,
-  faintEventPressableClass,
+  eventFaintBgClass,
+  eventFaintPressableClass,
   mutedEventFgClass,
 }
 

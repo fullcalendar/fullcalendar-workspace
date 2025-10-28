@@ -16,6 +16,8 @@ clean+build all:
 clean up css variables
   rearrange ThemeOptionParams props
   replace all #fff/#ffffff/white with var(--color-white)? same with black?
+NOTES
+  mutedPressableClass/faintPressableClass do NOT change foreground color!
 
 
 MANUAL TEST
@@ -42,6 +44,7 @@ MANUAL TEST
 CODE-QUALITY (while going through each theme)
   put text color on every text node? no inheritance?
   ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)
+  ensure no unnecessary `` instead ''
   stop concatenating with param classnames. sometimes they're blank
     like `border ${params.borderColorClass}`. many others too
     have AI correct it

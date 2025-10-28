@@ -32,7 +32,7 @@ export function createSlots(
               'm-0.5 flex flex-row items-center justify-center text-lg size-9 rounded-full',
               data.isToday
                 ? (data.hasNavLink ? params.tertiaryPressableGroupClass : params.tertiaryClass)
-                : (data.hasNavLink && params.ghostPressableGroupClass),
+                : (data.hasNavLink && params.mutedHoverPressableGroupClass),
               data.hasNavLink && joinClassNames(
                 params.tertiaryOutlineColorClass,
                 params.outlineWidthGroupFocusClass,

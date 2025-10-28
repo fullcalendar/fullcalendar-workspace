@@ -25,7 +25,7 @@ const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-primary/40`
 const mutedHoverClass = 'hover:bg-foreground/5'
 const ghostHoverGroupClass = 'group-hover:bg-foreground/5'
 const mutedHoverPressableClass = mutedHoverClass // shadcn doesn't do down-effect
-const ghostPressableGroupClass = ghostHoverGroupClass // shadcn doesn't do down-effect
+const mutedHoverPressableGroupClass = ghostHoverGroupClass // shadcn doesn't do down-effect
 
 const faintHoverClass = 'hover:bg-muted/50'
 const faintHoverPressableClass = `${faintHoverClass} focus-visible:bg-muted/50`
@@ -39,15 +39,15 @@ const mutedPressableClass = `${mutedClass} hover:bg-foreground/10`
 const strongSolidClass = 'bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))]'
 const strongSolidPressableClass = `${strongSolidClass} hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))]`
 
-const faintEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]'
-const faintEventPressableClass = joinClassNames(
-  faintEventBgClass,
+const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]'
+const eventFaintPressableClass = joinClassNames(
+  eventFaintBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))]',
 )
 
-const mutedEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]'
-const mutedEventPressableClass = joinClassNames(
-  mutedEventBgClass,
+const eventMutedBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]'
+const eventMutedPressableClass = joinClassNames(
+  eventMutedBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--background))]',
 )
 
@@ -71,7 +71,7 @@ export const optionParams: ThemeOptionParams = {
 
   mutedHoverClass,
   mutedHoverPressableClass,
-  ghostPressableGroupClass,
+  mutedHoverPressableGroupClass,
 
   strongSolidPressableClass,
 
@@ -128,9 +128,9 @@ export const optionParams: ThemeOptionParams = {
   mutedFgClass: 'text-muted-foreground',
   faintFgClass: 'text-muted-foreground',
 
-  faintEventBgClass,
-  faintEventPressableClass,
-  mutedEventBgClass,
-  mutedEventPressableClass,
+  eventFaintBgClass,
+  eventFaintPressableClass,
+  eventMutedBgClass,
+  eventMutedPressableClass,
   mutedEventFgClass,
 }

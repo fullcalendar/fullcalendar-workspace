@@ -73,7 +73,7 @@ export interface EventCalendarOptionParams {
 
   strongSolidPressableClass: string
 
-  mutedClass: string
+  mutedClass: string // can contain foreground
   mutedPressableClass: string
 
   mutedBgClass: string
@@ -105,10 +105,10 @@ export interface EventCalendarOptionParams {
   mutedFgClass: string
   faintFgClass: string
 
-  mutedEventBgClass: string
-  mutedEventPressableClass: string
-  faintEventBgClass: string
-  faintEventPressableClass: string
+  eventMutedBgClass: string
+  eventMutedPressableClass: string
+  eventFaintBgClass: string
+  eventFaintPressableClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -235,8 +235,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'group relative', // for resizers
         params.outlineOffsetClass,
         data.isInteractive
-          ? params.mutedEventPressableClass
-          : params.mutedEventBgClass,
+          ? params.eventMutedPressableClass
+          : params.eventMutedBgClass,
         'border-(--fc-event-color)',
         'print:bg-white',
       ],
@@ -479,8 +479,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         listItemEventClass: (data) => [
           data.isInteractive
-            ? params.faintEventPressableClass
-            : params.faintEventBgClass,
+            ? params.eventFaintPressableClass
+            : params.eventFaintBgClass,
           'p-3 flex flex-row rounded-sm border-s-6 border-(--fc-event-color)',
         ],
 

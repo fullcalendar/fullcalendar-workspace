@@ -18,7 +18,7 @@ export interface ThemeOptionParams {
 
   mutedHoverClass: string
   mutedHoverPressableClass: string
-  ghostPressableGroupClass: string
+  mutedHoverPressableGroupClass: string
 
   // strong button-like
   // NOTE: assumed "solid". rename?
@@ -72,9 +72,9 @@ export interface ThemeOptionParams {
   mutedFgClass: string
   faintFgClass: string
 
-  faintEventBgClass: string
-  faintEventPressableClass: string
-  mutedEventBgClass: string
-  mutedEventPressableClass: string
+  eventFaintBgClass: string
+  eventFaintPressableClass: string
+  eventMutedBgClass: string
+  eventMutedPressableClass: string
   mutedEventFgClass,
 }
