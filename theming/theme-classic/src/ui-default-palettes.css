@@ -11,6 +11,8 @@ TODO: make --fc-classic-foreground ?
   --fc-classic-primary-foreground: #fff;
 
   /* calendar content */
+  --fc-classic-event: var(--fc-classic-primary);
+  --fc-classic-event-contrast: var(--fc-classic-primary-foreground);
   --fc-classic-background-event: var(--color-green-500);
   --fc-classic-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
   --fc-classic-today: color-mix(in oklab, var(--color-yellow-400) 15%, transparent);

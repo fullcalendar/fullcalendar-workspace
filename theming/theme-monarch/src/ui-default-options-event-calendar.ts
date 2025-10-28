@@ -80,8 +80,8 @@ export const optionParams: EventCalendarOptionParams = {
   strongBorderColorClass: 'border-(--fc-monarch-strong-border)',
   nowBorderColorClass: 'border-(--fc-monarch-now)',
 
-  eventColor: 'var(--fc-monarch-primary)',
-  eventContrastColor: 'var(--fc-monarch-primary-foreground)',
+  eventColor: 'var(--fc-monarch-event)',
+  eventContrastColor: 'var(--fc-monarch-event-contrast)',
   bgEventColor: 'var(--fc-monarch-tertiary)',
   bgEventBgClass,
 

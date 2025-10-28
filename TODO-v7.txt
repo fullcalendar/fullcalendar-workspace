@@ -20,10 +20,6 @@ clean up css variables
                         -> faintHoverClass
     faintPressableClass -> faintHoverPressableClass
   replace all #fff/#ffffff/white with var(--color-white)? same with black?
-  have separate --fc-*-event variable?
-    matches what  --fc-*-background-event does
-    breezy actually has different from primary
-    in most cases, just forward primary
 
 
 MANUAL TEST

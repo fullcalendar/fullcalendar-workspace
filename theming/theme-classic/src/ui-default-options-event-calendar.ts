@@ -49,8 +49,8 @@ export const optionParams: EventCalendarOptionParams = {
   nowBorderStartColorClass: 'border-s-(--fc-classic-now)',
   nowBorderTopColorClass: 'border-t-(--fc-classic-now)',
 
-  eventColor: 'var(--fc-classic-primary)',
-  eventContrastColor: 'var(--fc-classic-primary-foreground)',
+  eventColor: 'var(--fc-classic-event)',
+  eventContrastColor: 'var(--fc-classic-event-contrast)',
   bgEventColor: 'var(--fc-classic-background-event)',
   bgEventBgClass,
 

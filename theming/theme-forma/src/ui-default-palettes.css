@@ -17,8 +17,8 @@ define --fc-forma-strong-foreground? as just black/white?!!!
   /* primary */
 
   /* calendar content */
-  --fc-forma-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
   --fc-forma-background-event: var(--color-green-500); /* TODO */
+  --fc-forma-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
 
   /* controls */
   --fc-forma-selected: #F5F5F5;
@@ -77,7 +77,7 @@ define --fc-forma-strong-foreground? as just black/white?!!!
   --fc-forma-primary-foreground: #fff;
 
   /* calendar content */
-  --fc-forma-event: #3788d8;
+  --fc-forma-event: #3788d8; /* a bit lighter than primary */
   --fc-forma-event-contrast: #fff;
 }
 [data-palette=blue][data-color-scheme=dark] {
@@ -95,8 +95,8 @@ define --fc-forma-strong-foreground? as just black/white?!!!
   --fc-forma-primary-foreground: #fff;
 
   /* calendar content */
-  --fc-forma-event: #d83b01;
-  --fc-forma-event-contrast: #fff;
+  --fc-forma-event: var(--fc-forma-primary);
+  --fc-forma-event-contrast: var(--fc-forma-primary-foreground);
 }
 [data-palette=red][data-color-scheme=dark] {
   /* primary */
@@ -113,8 +113,8 @@ define --fc-forma-strong-foreground? as just black/white?!!!
   --fc-forma-primary-foreground: #fff;
 
   /* calendar content */
-  --fc-forma-event: #107c41;
-  --fc-forma-event-contrast: #fff;
+  --fc-forma-event: var(--fc-forma-primary);
+  --fc-forma-event-contrast: var(--fc-forma-primary-foreground);
 }
 [data-palette=green][data-color-scheme=dark] {
   /* primary */
@@ -131,8 +131,8 @@ define --fc-forma-strong-foreground? as just black/white?!!!
   --fc-forma-primary-foreground: #fff;
 
   /* calendar content */
-  --fc-forma-event: #742774;
-  --fc-forma-event-contrast: #fff;
+  --fc-forma-event: var(--fc-forma-primary);
+  --fc-forma-event-contrast: var(--fc-forma-primary-foreground);
 }
 [data-palette=purple][data-color-scheme=dark] {
   /* primary */
