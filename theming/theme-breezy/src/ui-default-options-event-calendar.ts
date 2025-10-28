@@ -4,59 +4,57 @@ import * as svgs from './ui-default-svgs.js'
 
 /*
 We don't do active: states, because tailwindplus does not do this!
-*/
 
-const outlineWidthClass = 'outline-2'
-const outlineWidthFocusClass = 'focus-visible:outline-2'
-const outlineWidthGroupFocusClass = 'group-focus-visible:outline-2'
-const outlineOffsetClass = 'outline-offset-2'
-
-const primaryOutlineColorClass = `outline-(--fc-breezy-primary)`
-const primaryOutlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}`
-
-/*
 NOTE: buttons are responsible for border-color, but NOT border-width!
 because button groups have strong opinions about adjacent borders and rounded-sides
 */
 
-// no simulated hover-effect when focus-visible,
-// because focus-border looks like when same primary color because its spaced away
+// outline
+const outlineWidthClass = 'outline-2'
+const outlineWidthFocusClass = 'focus-visible:outline-2'
+const outlineWidthGroupFocusClass = 'group-focus-visible:outline-2'
+const outlineOffsetClass = 'outline-offset-2'
+const primaryOutlineColorClass = `outline-(--fc-breezy-primary)`
+const primaryOutlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}`
+
+// primary
 const primaryClass = 'bg-(--fc-breezy-primary) text-(--fc-breezy-primary-foreground)'
 const primaryPressableClass = `${primaryClass} hover:bg-(--fc-breezy-primary-over)`
 const primaryPressableGroupClass = `${primaryClass} group-hover:bg-(--fc-breezy-primary-over)`
 const primaryButtonClass = `${primaryPressableClass} border-transparent ${primaryOutlineFocusClass} ${outlineOffsetClass}`
 
+// secondary
 const secondaryClass = 'text-(--fc-breezy-secondary-foreground) bg-(--fc-breezy-secondary)'
 const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-secondary-over)`
 const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-secondary-border) ${primaryOutlineFocusClass} -outline-offset-1`
+const secondaryButtonIconClass = `size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-over) group-focus-visible:text-(--fc-breezy-secondary-icon-over)`
 
+// faint-on-hover
+const faintHoverClass = 'hover:bg-(--fc-breezy-faint)'
+const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)`
+
+// muted-on-hover
 const mutedHoverClass = 'hover:bg-(--fc-breezy-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-breezy-muted)`
 
-const mutedFgClass = 'text-(--fc-breezy-muted-foreground)'
-export const mutedFgPressableGroupClass = `${mutedFgClass} group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)`
+// interactive neutral foregrounds
+const mutedFgPressableGroupClass = `text-(--fc-breezy-muted-foreground) group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)`
 
-const faintHoverClass = 'hover:bg-(--fc-breezy-faint)' // only bg by choice
-const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)` // only bg by choice
+// controls
+const selectedClass = `bg-(--fc-breezy-selected) text-(--fc-breezy-strong-foreground) ${primaryOutlineFocusClass}`
+const unselectedClass = `text-(--fc-breezy-muted-foreground) hover:text-(--fc-breezy-strong-foreground) ${primaryOutlineFocusClass}`
 
-const buttonIconClass = `size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-over) group-focus-visible:text-(--fc-breezy-secondary-icon-over)`
-
-const selectClass = `bg-(--fc-breezy-selected) text-(--fc-breezy-strong-foreground) ${primaryOutlineFocusClass}`
-
-const nonSelectClass = `text-(--fc-breezy-muted-foreground) hover:text-(--fc-breezy-strong-foreground) ${primaryOutlineFocusClass}`
-
+// event computed colors
 const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-breezy-background))]'
 const eventFaintPressableClass = joinClassNames(
   eventFaintBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--fc-breezy-background))]',
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-breezy-background))]',
 )
-
-const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--fc-breezy-foreground))]'
-
+const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--fc-breezy-foreground))]'
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
-const fgClass = 'text-(--fc-breezy-foreground)'
+export { mutedFgPressableGroupClass }
 
 export const optionParams: EventCalendarOptionParams = {
   primaryClass,
@@ -104,13 +102,13 @@ export const optionParams: EventCalendarOptionParams = {
   bgRingColorClass: 'ring-(--fc-breezy-background)',
 
   faintFgClass: 'text-(--fc-breezy-faint-foreground)',
-  mutedFgClass,
-  fgClass,
+  mutedFgClass: 'text-(--fc-breezy-muted-foreground)',
+  fgClass: 'text-(--fc-breezy-foreground)',
   strongFgClass: 'text-(--fc-breezy-strong-foreground)',
 
   eventFaintBgClass,
   eventFaintPressableClass,
-  mutedEventFgClass,
+  eventMutedFgClass,
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
@@ -145,8 +143,8 @@ export const defaultUiEventCalendarOptions: {
         // START view-switching bar item
         'rounded-md font-medium',
         data.isSelected
-          ? selectClass
-          : nonSelectClass,
+          ? selectedClass
+          : unselectedClass,
         // END
       ) : joinClassNames(
         'font-semibold',
@@ -163,22 +161,22 @@ export const defaultUiEventCalendarOptions: {
     buttons: {
       prev: {
         iconContent: () => svgs.chevronDown(
-          joinClassNames(buttonIconClass, 'rotate-90 [[dir=rtl]_&]:-rotate-90'),
+          joinClassNames(secondaryButtonIconClass, 'rotate-90 [[dir=rtl]_&]:-rotate-90'),
         ),
       },
       next: {
         iconContent: () => svgs.chevronDown(
-          joinClassNames(buttonIconClass, '-rotate-90 [[dir=rtl]_&]:rotate-90'),
+          joinClassNames(secondaryButtonIconClass, '-rotate-90 [[dir=rtl]_&]:rotate-90'),
         ),
       },
       prevYear: {
         iconContent: () => svgs.chevronDoubleLeft(
-          joinClassNames(buttonIconClass, '[[dir=rtl]_&]:rotate-180'),
+          joinClassNames(secondaryButtonIconClass, '[[dir=rtl]_&]:rotate-180'),
         )
       },
       nextYear: {
         iconContent: () => svgs.chevronDoubleLeft(
-          joinClassNames(buttonIconClass, 'rotate-180 [[dir=rtl]_&]:rotate-0'),
+          joinClassNames(secondaryButtonIconClass, 'rotate-180 [[dir=rtl]_&]:rotate-0'),
         )
       },
     },

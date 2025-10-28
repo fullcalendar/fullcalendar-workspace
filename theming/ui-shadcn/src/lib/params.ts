@@ -51,7 +51,7 @@ const eventMutedPressableClass = joinClassNames(
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--background))]',
 )
 
-const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
+const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
 
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
 
@@ -132,5 +132,5 @@ export const optionParams: ThemeOptionParams = {
   eventFaintPressableClass,
   eventMutedBgClass,
   eventMutedPressableClass,
-  mutedEventFgClass,
+  eventMutedFgClass,
 }

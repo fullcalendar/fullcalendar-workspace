@@ -158,7 +158,7 @@ export interface EventCalendarOptionParams {
   eventFaintBgClass: string
   eventFaintPressableClass: string
 
-  mutedEventFgClass: string
+  eventMutedFgClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -367,8 +367,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /*
       ^^^NOTE: should core determine flex-direction because core needs to do sticky anyway, right!?
       */
-      blockEventTimeClass: `${params.mutedEventFgClass} whitespace-nowrap overflow-hidden shrink-1`, // shrinks second
-      blockEventTitleClass: `${params.mutedEventFgClass} whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
+      blockEventTimeClass: `${params.eventMutedFgClass} whitespace-nowrap overflow-hidden shrink-1`, // shrinks second
+      blockEventTitleClass: `${params.eventMutedFgClass} whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
 
       backgroundEventClass: params.bgEventBgClass,
       backgroundEventTitleClass: (data) => [

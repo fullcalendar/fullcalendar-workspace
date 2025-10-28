@@ -42,6 +42,7 @@ MANUAL TEST
   For block-events that display, there should be a visual distinctions between time/title text
     test with eventDisplay='block'
 CODE-QUALITY (while going through each theme)
+  all hover-pressables have focus-visible:
   put text color on every text node? no inheritance?
   ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)
   ensure no unnecessary `` instead ''

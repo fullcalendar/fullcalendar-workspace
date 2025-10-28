@@ -19,12 +19,16 @@ const outlineInsetClass = '-outline-offset-2'
 const primaryOutlineColorClass = 'outline-(--fc-forma-primary)'
 const primaryOutlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}`
 
-// interactive neutral backgrounds
+// muted surface
+const mutedClass = 'bg-(--fc-forma-muted)'
+const mutedPressableClass = `${mutedClass} hover:bg-(--fc-forma-strong) active:bg-(--fc-forma-stronger) ${primaryOutlineFocusClass}`
+
+// muted-on-hover
 const mutedHoverClass = 'hover:bg-(--fc-forma-muted)'
-const mutedHoverPressableClass = `${mutedHoverClass} active:bg-(--fc-forma-strong) focus-visible:bg-(--fc-forma-strong)`
+const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-forma-muted) active:bg-(--fc-forma-strong)`
 const mutedHoverButtonClass = `${mutedHoverPressableClass} border border-transparent ${primaryOutlineFocusClass}`
 
-// guaranteed-solid neutral backgrounds
+// guaranteed-solid strong
 const strongSolidBgClass = '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]'
 const strongSolidPressableClass = joinClassNames(
   strongSolidBgClass,
@@ -36,10 +40,6 @@ const strongSolidPressableClass = joinClassNames(
 const fgPressableGroupClass = `text-(--fc-forma-foreground) group-hover:text-(--fc-forma-strong-foreground) group-focus-visible:text-(--fc-forma-strong-foreground)`
 const mutedFgPressableGroupClass = `text-(--fc-forma-muted-foreground) group-hover:text-(--fc-forma-primary) group-focus-visible:text-(--fc-forma-primary)`
 
-// muted button (possible to provide foreground, but opts out)
-const mutedClass = 'bg-(--fc-forma-muted)'
-const mutedPressableClass = `${mutedClass} hover:bg-(--fc-forma-strong) active:bg-(--fc-forma-stronger) ${primaryOutlineFocusClass}`
-
 // primary
 const primaryClass = 'bg-(--fc-forma-primary) text-(--fc-forma-primary-foreground)'
 const primaryPressableClass = `${primaryClass} hover:bg-(--fc-forma-primary-over) focus-visible:bg-(--fc-forma-primary-over) active:bg-(--fc-forma-primary-down)`
@@ -50,25 +50,24 @@ const secondaryButtonClass = `${mutedHoverPressableClass} border border-(--fc-fo
 const secondaryButtonIconClass = `size-5 ${fgPressableGroupClass}`
 
 // controls
-const unselectedPressableClass = 'hover:bg-(--fc-forma-muted) focus-visible:bg-(--fc-forma-muted) active:bg-(--fc-forma-strong) text-(--fc-forma-foreground)'
+const unselectedPressableClass = `${mutedHoverPressableClass} text-(--fc-forma-foreground)`
 const unselectedButtonClass = `${unselectedPressableClass} border border-transparent hover:border-(--fc-forma-muted-border) active:border-(--fc-forma-border) ${primaryOutlineFocusClass}`
 const selectedButtonClass = `bg-(--fc-forma-selected) border border-(--fc-forma-strong-border) ${primaryOutlineFocusClass} -outline-offset-1` // TODO: add active: ?
 
-// event faint background
+// computed event colors
 const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-forma-background))]'
 const eventFaintPressableClass = joinClassNames(
   eventFaintBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--fc-forma-background))]',
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-forma-background))]',
 )
-
-// event muted background
 const eventMutedBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-forma-background))]'
 const eventMutedPressableClass = joinClassNames(
   eventMutedBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--fc-forma-background))]',
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_40%,var(--fc-forma-background))]',
 )
+const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
 export { mutedFgPressableGroupClass }
 
@@ -102,7 +101,7 @@ export const optionParams: EventCalendarOptionParams = {
   eventColor: 'var(--fc-forma-event)',
   eventContrastColor: 'var(--fc-forma-event-contrast)',
   bgEventColor: 'var(--fc-forma-background-event)',
-  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
+  bgEventBgClass,
 
   popoverClass: 'border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md',
   popoverHeaderClass: `border-b border-(--fc-forma-border) bg-(--fc-forma-faint)`,

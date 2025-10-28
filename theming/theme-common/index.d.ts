@@ -76,5 +76,5 @@ export interface ThemeOptionParams {
   eventFaintPressableClass: string
   eventMutedBgClass: string
   eventMutedPressableClass: string
-  mutedEventFgClass,
+  eventMutedFgClass,
 }
