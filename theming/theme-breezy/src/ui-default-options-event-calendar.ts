@@ -22,12 +22,12 @@ because button groups have strong opinions about adjacent borders and rounded-si
 // no simulated hover-effect when focus-visible,
 // because focus-border looks like when same primary color because its spaced away
 const primaryClass = 'bg-(--fc-breezy-primary) text-(--fc-breezy-primary-foreground)'
-const primaryPressableClass = `${primaryClass} hover:bg-(--fc-breezy-primary-hover)`
-const primaryPressableGroupClass = `${primaryClass} group-hover:bg-(--fc-breezy-primary-hover)`
+const primaryPressableClass = `${primaryClass} hover:bg-(--fc-breezy-primary-over)`
+const primaryPressableGroupClass = `${primaryClass} group-hover:bg-(--fc-breezy-primary-over)`
 const primaryButtonClass = `${primaryPressableClass} border-transparent ${primaryOutlineFocusClass} ${outlineOffsetClass}`
 
 const secondaryClass = 'text-(--fc-breezy-secondary-foreground) bg-(--fc-breezy-secondary)'
-const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-secondary-hover)`
+const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-secondary-over)`
 const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-secondary-border) ${primaryOutlineFocusClass} -outline-offset-1`
 
 const ghostHoverClass = 'hover:bg-(--fc-breezy-muted)'
@@ -39,7 +39,7 @@ export const mutedFgGroupPressableClass = `${mutedFgClass} group-hover:text-(--f
 const faintHoverClass = 'hover:bg-(--fc-breezy-faint)' // only bg by choice
 const faintPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)` // only bg by choice
 
-const buttonIconClass = `size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-hover) group-focus-visible:text-(--fc-breezy-secondary-icon-hover)`
+const buttonIconClass = `size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-over) group-focus-visible:text-(--fc-breezy-secondary-icon-over)`
 
 const selectClass = `bg-(--fc-breezy-selected) text-(--fc-breezy-strong-foreground) ${primaryOutlineFocusClass}`
 

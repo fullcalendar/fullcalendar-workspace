@@ -35,14 +35,14 @@ error -> now
   --fc-monarch-faint-foreground: #bebebe; /* TODO */
 
   /* derived from future palette-specific values */
-  --fc-monarch-primary-hover: color-mix(in oklab, var(--fc-monarch-primary) 90%, white);
-  --fc-monarch-primary-active: color-mix(in oklab, var(--fc-monarch-primary) 80%, white);
-  --fc-monarch-secondary-hover: color-mix(in oklab, var(--fc-monarch-secondary) 90%, var(--fc-monarch-foreground));
-  --fc-monarch-secondary-active: color-mix(in oklab, var(--fc-monarch-secondary) 80%, var(--fc-monarch-foreground));
-  --fc-monarch-tertiary-hover: color-mix(in oklab, var(--fc-monarch-tertiary) 90%, white);
-  --fc-monarch-tertiary-active: color-mix(in oklab, var(--fc-monarch-tertiary) 80%, white);
-  --fc-monarch-selected-hover: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
-  --fc-monarch-selected-active: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
+  --fc-monarch-primary-over: color-mix(in oklab, var(--fc-monarch-primary) 90%, white);
+  --fc-monarch-primary-down: color-mix(in oklab, var(--fc-monarch-primary) 80%, white);
+  --fc-monarch-secondary-over: color-mix(in oklab, var(--fc-monarch-secondary) 90%, var(--fc-monarch-foreground));
+  --fc-monarch-secondary-down: color-mix(in oklab, var(--fc-monarch-secondary) 80%, var(--fc-monarch-foreground));
+  --fc-monarch-tertiary-over: color-mix(in oklab, var(--fc-monarch-tertiary) 90%, white);
+  --fc-monarch-tertiary-down: color-mix(in oklab, var(--fc-monarch-tertiary) 80%, white);
+  --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
+  --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
   --fc-monarch-highlight: color-mix(in oklab, var(--fc-monarch-secondary) 30%, transparent);
 }
 [data-color-scheme=dark] {

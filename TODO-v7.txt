@@ -14,7 +14,6 @@ clean+build all:
 
 
 clean up css variables
-  rename to down/over ? esp relevant to --fc-monarch-strong-hover/--fc-monarch-strong-active, which does more than that
   do ghost to hover renaming?
   because of weird forma mutedPressableClass naming issue,
     rename

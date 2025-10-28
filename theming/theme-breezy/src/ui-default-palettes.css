@@ -30,11 +30,11 @@
 
   /* secondary buttons (white on top of gray) */
   --fc-breezy-secondary: var(--fc-breezy-background);
-  --fc-breezy-secondary-hover: var(--fc-breezy-faint);
+  --fc-breezy-secondary-over: var(--fc-breezy-faint);
   --fc-breezy-secondary-border: var(--fc-breezy-strong-border);
   --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
   --fc-breezy-secondary-icon: var(--fc-breezy-faint-foreground);
-  --fc-breezy-secondary-icon-hover: var(--fc-breezy-muted-foreground);
+  --fc-breezy-secondary-icon-over: var(--fc-breezy-muted-foreground);
 }
 
 [data-color-scheme=dark] {
@@ -68,11 +68,11 @@
 
   /* secondary buttons (gray-er on top of gray) */
   --fc-breezy-secondary: var(--fc-breezy-muted);
-  --fc-breezy-secondary-hover: var(--fc-breezy-strong);
+  --fc-breezy-secondary-over: var(--fc-breezy-strong);
   --fc-breezy-secondary-border: var(--fc-breezy-muted-border);
   --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
   --fc-breezy-secondary-icon: var(--fc-breezy-muted-foreground);
-  --fc-breezy-secondary-icon-hover: var(--fc-breezy-foreground);
+  --fc-breezy-secondary-icon-over: var(--fc-breezy-foreground);
 }
 
 /* Colors
@@ -86,7 +86,7 @@ https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
 [data-palette=indigo] {
   /* primary buttons */
   --fc-breezy-primary: var(--color-indigo-600);
-  --fc-breezy-primary-hover: var(--color-indigo-500);
+  --fc-breezy-primary-over: var(--color-indigo-500);
   --fc-breezy-primary-foreground: var(--color-white);
 
   /* events */
@@ -96,7 +96,7 @@ https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
 [data-palette=indigo][data-color-scheme=dark] { /* shift lighter */
   /* primary buttons */
   --fc-breezy-primary: var(--color-indigo-500);
-  --fc-breezy-primary-hover: var(--color-indigo-400);
+  --fc-breezy-primary-over: var(--color-indigo-400);
 
   /* events */
   --fc-breezy-event: var(--color-blue-300);
@@ -110,7 +110,7 @@ https://catalyst.tailwindui.com/docs/button
 [data-palette=rose] {
   /* primary buttons */
   --fc-breezy-primary: var(--color-rose-600);
-  --fc-breezy-primary-hover: var(--color-rose-500);
+  --fc-breezy-primary-over: var(--color-rose-500);
   --fc-breezy-primary-foreground: var(--color-white);
 
   /* events */
@@ -121,7 +121,7 @@ https://catalyst.tailwindui.com/docs/button
 [data-palette=emerald] {
   /* primary buttons */
   --fc-breezy-primary: var(--color-emerald-600);
-  --fc-breezy-primary-hover: var(--color-emerald-500);
+  --fc-breezy-primary-over: var(--color-emerald-500);
   --fc-breezy-primary-foreground: var(--color-white);
 
   /* events */
@@ -132,7 +132,7 @@ https://catalyst.tailwindui.com/docs/button
 [data-palette=honey] {
   /* primary buttons */
   --fc-breezy-primary: var(--color-yellow-500);
-  --fc-breezy-primary-hover: var(--color-yellow-400);
+  --fc-breezy-primary-over: var(--color-yellow-400);
   --fc-breezy-primary-foreground: var(--color-white);
 
   /* events */

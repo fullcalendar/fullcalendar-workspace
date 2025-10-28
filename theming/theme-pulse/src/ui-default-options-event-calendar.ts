@@ -15,7 +15,7 @@ const oulineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFocusClass}
 
 // just for toolbar
 const primaryClass = 'bg-(--fc-pulse-primary) text-(--fc-pulse-primary-foreground)'
-const primaryPressableClass = `${primaryClass} hover:bg-(--fc-pulse-primary-hover) active:bg-(--fc-pulse-primary-active)`
+const primaryPressableClass = `${primaryClass} hover:bg-(--fc-pulse-primary-over) active:bg-(--fc-pulse-primary-down)`
 const primaryButtonClass = `${primaryPressableClass} border-transparent ${oulineFocusClass} ${outlineOffsetClass}`
 
 const borderColorClass = 'border-(--fc-pulse-border)'
@@ -30,8 +30,8 @@ export const mutedFgGroupPressableClass = `${mutedFgClass} group-hover:text-(--f
 const strongFgClass = 'text-(--fc-pulse-strong-foreground)'
 
 const tertiaryClass = 'bg-(--fc-pulse-tertiary) text-(--fc-pulse-tertiary-foreground)'
-const tertiaryPressableClass = `${tertiaryClass} hover:bg-(--fc-pulse-tertiary-hover) active:bg-(--fc-pulse-tertiary-active) focus-visible:bg-(--fc-pulse-tertiary-hover)`
-const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-(--fc-pulse-tertiary-hover) group-active:bg-(--fc-pulse-tertiary-active) group-focus-visible:bg-(--fc-pulse-tertiary-hover)`
+const tertiaryPressableClass = `${tertiaryClass} hover:bg-(--fc-pulse-tertiary-over) active:bg-(--fc-pulse-tertiary-down) focus-visible:bg-(--fc-pulse-tertiary-over)`
+const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-(--fc-pulse-tertiary-over) group-active:bg-(--fc-pulse-tertiary-down) group-focus-visible:bg-(--fc-pulse-tertiary-over)`
 
 const ghostHoverClass = 'hover:bg-(--fc-pulse-muted)'
 const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-pulse-strong) focus-visible:bg-(--fc-pulse-muted)`
