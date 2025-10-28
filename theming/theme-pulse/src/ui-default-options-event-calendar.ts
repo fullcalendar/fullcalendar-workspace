@@ -5,7 +5,7 @@ import * as svgs from './ui-default-svgs.js'
 const bgClass = 'bg-(--fc-pulse-background)'
 const bgRingColorClass = 'ring-(--fc-pulse-background)'
 
-const tertiaryOutlineColorClass = 'outline-(--fc-pulse-today)'
+const tertiaryOutlineColorClass = 'outline-(--fc-pulse-tertiary)'
 const outlineWidthClass = 'outline-2'
 const outlineWidthFocusClass = 'focus-visible:outline-2'
 const outlineWidthGroupFocusClass = 'group-focus-visible:outline-2'
@@ -29,19 +29,15 @@ export const mutedFgGroupPressableClass = `${mutedFgClass} group-hover:text-(--f
 
 const strongFgClass = 'text-(--fc-pulse-strong-foreground)'
 
-const tertiaryClass = 'bg-(--fc-pulse-today) text-(--fc-pulse-today-foreground)'
-const tertiaryPressableClass = `${tertiaryClass} hover:bg-(--fc-pulse-today-hover) active:bg-(--fc-pulse-today-active) focus-visible:bg-(--fc-pulse-today-hover)`
-const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-(--fc-pulse-today-hover) group-active:bg-(--fc-pulse-today-active) group-focus-visible:bg-(--fc-pulse-today-hover)`
+const tertiaryClass = 'bg-(--fc-pulse-tertiary) text-(--fc-pulse-tertiary-foreground)'
+const tertiaryPressableClass = `${tertiaryClass} hover:bg-(--fc-pulse-tertiary-hover) active:bg-(--fc-pulse-tertiary-active) focus-visible:bg-(--fc-pulse-tertiary-hover)`
+const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-(--fc-pulse-tertiary-hover) group-active:bg-(--fc-pulse-tertiary-active) group-focus-visible:bg-(--fc-pulse-tertiary-hover)`
 
 const ghostHoverClass = 'hover:bg-(--fc-pulse-muted)'
 const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-pulse-strong) focus-visible:bg-(--fc-pulse-muted)`
 
-const controlBgClass = 'bg-(--fc-pulse-tab)'
-const controlCurrentColorClass = 'bg-(--fc-pulse-tab-selected)'
-const controlHoverColorClass = 'hover:bg-(--fc-pulse-tab-hover)'
-
 // just for toolbar
-const secondaryPressableClass = `${bgClass} ${strongFgClass} ${controlHoverColorClass}`
+const secondaryPressableClass = `bg-(--fc-pulse-secondary) hover:bg-(--fc-pulse-secondary-over) focus-visible:bg-(--fc-pulse-secondary-over) active:bg-(--fc-pulse-secondary-down)`
 
 const smallBoxShadowClass = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
 const largeBoxShadowClass = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
@@ -50,9 +46,9 @@ const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transpa
 
 const faintHoverClass = 'hover:bg-(--fc-pulse-faint)'
 const faintPressableClass = `${faintHoverClass} active:bg-(--fc-pulse-muted) focus-visible:bg-(--fc-pulse-faint)` // choses not to do FG
-const faintFgGroupPressableClass = 'text-(--fc-pulse-faint-foreground) group-hover:text-(--fc-pulse-muted-foreground) group-focus-visible:text-(--fc-pulse-muted-foreground)'
+// const faintFgGroupPressableClass = 'text-(--fc-pulse-faint-foreground) group-hover:text-(--fc-pulse-muted-foreground) group-focus-visible:text-(--fc-pulse-muted-foreground)'
 
-const buttonIconClass = `size-5 ${faintFgGroupPressableClass}`
+const buttonIconClass = 'size-5 text-(--fc-pulse-secondary-icon) group-hover:text-(--fc-pulse-secondary-icon-over) group-focus-visible:text-(--fc-pulse-secondary-icon-over)'
 
 export const optionParams: EventCalendarOptionParams = {
   tertiaryClass,
@@ -133,8 +129,8 @@ export const defaultUiEventCalendarOptions: {
     buttonGroupClass: (data) => [
       'isolate items-center rounded-sm',
       data.isSelectGroup
-        ? `p-px ${controlBgClass}`
-        : `border ${strongBorderColorClass} ${smallBoxShadowClass}`
+        ? `p-px bg-(--fc-pulse-unselected)`
+        : `border ${viewBorderColorClass} ${smallBoxShadowClass}`
     ],
 
     buttonClass: (data) => [
@@ -148,9 +144,9 @@ export const defaultUiEventCalendarOptions: {
             oulineFocusClass,
             data.isSelected
               // SELECTED select-group button
-              ? `${controlCurrentColorClass} ${largeBoxShadowClass}`
+              ? `bg-(--fc-pulse-selected) text-(--fc-pulse-selected-foreground) ${largeBoxShadowClass}`
               // UN-selected select-group button
-              : ghostPressableClass
+              : `text-(--fc-pulse-unselected-foreground) ${ghostPressableClass}`
           )
         // primary/secondary buttons
         : joinClassNames(
@@ -166,8 +162,8 @@ export const defaultUiEventCalendarOptions: {
               : joinClassNames(
                   `${secondaryPressableClass} ${oulineFocusClass}`, // no border color...
                   data.inGroup // border color is conditional...
-                    ? `first:rounded-s-sm last:rounded-e-sm not-first:border-s ${borderColorClass}` // within group
-                    : `border ${strongBorderColorClass} ${smallBoxShadowClass}`, // standalone
+                    ? `first:rounded-s-sm last:rounded-e-sm not-first:border-s ${viewBorderColorClass}` // within group
+                    : `border ${viewBorderColorClass} ${smallBoxShadowClass}`, // standalone
                 )
           ),
     ],

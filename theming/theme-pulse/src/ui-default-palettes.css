@@ -33,6 +33,7 @@ can maybe remove some dark-mode colors. repeat of what's in light mode
 
 :root {
   --fc-pulse-background: #fff;
+  --fc-pulse-foreground: var(--color-gray-950); /* TODO: use elsewhere? */
 
   --fc-pulse-strong: color-mix(in oklab, var(--color-black) 12%, transparent); /* TODO */
   --fc-pulse-strong-hover: color-mix(in oklab, var(--color-black) 16%, transparent); /* TODO */
@@ -45,20 +46,28 @@ can maybe remove some dark-mode colors. repeat of what's in light mode
   --fc-pulse-foreground: #374151;
   --fc-pulse-muted-foreground: #6b7280;
   --fc-pulse-faint-foreground: #9ca3af;
-  --fc-pulse-strong-foreground: #1f2937;
+  --fc-pulse-strong-foreground: #1f2937; /* what is this used for !!?? */
 
   --fc-pulse-border: #e5e7eb;
   --fc-pulse-strong-border: #d5d5d6;
   --fc-pulse-view-border: #e4e4e5;
 
-  --fc-pulse-tab: #eeeeef;
-  --fc-pulse-tab-hover: #f3f4f6;
-  --fc-pulse-tab-selected: #fff;
+  --fc-pulse-unselected: var(--fc-pulse-muted);
+  --fc-pulse-unselected-foreground: var(--fc-pulse-foreground);
+  --fc-pulse-selected: var(--fc-pulse-background);
+  --fc-pulse-selected-foreground: var(--fc-pulse-foreground);
+
+  --fc-pulse-secondary: var(--fc-pulse-background);
+  --fc-pulse-secondary-over: var(--fc-pulse-faint);
+  --fc-pulse-secondary-down: var(--fc-pulse-muted);
+  --fc-pulse-secondary-icon: var(--fc-pulse-faint-foreground);
+  --fc-pulse-secondary-icon-over: var(--fc-pulse-muted-foreground);
 
   --fc-pulse-background-event: var(--color-green-500);
 }
 [data-color-scheme=dark] {
   --fc-pulse-background: var(--color-gray-950);
+  --fc-pulse-foreground: #fff; /* TODO: use elsewhere? */
 
   --fc-pulse-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
   --fc-pulse-strong-hover: color-mix(in oklab, var(--color-white) 16%, transparent); /* TODO */
@@ -77,9 +86,16 @@ can maybe remove some dark-mode colors. repeat of what's in light mode
   --fc-pulse-strong-border: #4a5568;
   --fc-pulse-view-border: #2d3748;
 
-  --fc-pulse-tab: var(--fc-pulse-strong);
-  --fc-pulse-tab-hover: #7e8aa0;
-  --fc-pulse-tab-selected: #505b70;
+  --fc-pulse-unselected: var(--fc-pulse-muted);
+  --fc-pulse-unselected-foreground: var(--fc-pulse-muted-foreground);
+  --fc-pulse-selected: var(--fc-pulse-strong);
+  --fc-pulse-selected-foreground: var(--fc-pulse-foreground);
+
+  --fc-pulse-secondary: var(--fc-pulse-muted);
+  --fc-pulse-secondary-over: var(--fc-pulse-strong);
+  --fc-pulse-secondary-down: var(--fc-pulse-strong-hover); /* bad name */
+  --fc-pulse-secondary-icon: var(--fc-pulse-muted-foreground);
+  --fc-pulse-secondary-icon-over: var(--fc-pulse-strong-foreground);
 }
 
 [data-palette=red] {
@@ -88,50 +104,50 @@ can maybe remove some dark-mode colors. repeat of what's in light mode
   --fc-pulse-primary-hover: color-mix(in oklab, var(--fc-pulse-primary) 90%, white);
   --fc-pulse-primary-active: color-mix(in oklab, var(--fc-pulse-primary) 80%, white);
 
-  --fc-pulse-today: #fd453b;
-  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, black);
-  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, black);
-  --fc-pulse-today-foreground: #fff;
+  --fc-pulse-tertiary: #fd453b;
+  --fc-pulse-tertiary-hover: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, black);
+  --fc-pulse-tertiary-active: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, black);
+  --fc-pulse-tertiary-foreground: #fff;
 
   --fc-pulse-event: #631515;
   --fc-pulse-event-contrast: #fff;
 }
 [data-palette=red][data-color-scheme=dark] {
-  --fc-pulse-today: #fd4539;
-  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, black);
-  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, black);
+  --fc-pulse-tertiary: #fd4539;
+  --fc-pulse-tertiary-hover: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, black);
+  --fc-pulse-tertiary-active: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, black);
 }
 
 [data-palette=blue] {
   --fc-pulse-primary: #117aff;
-  --fc-pulse-primary-foreground: #fff;
   --fc-pulse-primary-hover: color-mix(in oklab, var(--fc-pulse-primary) 90%, white);
   --fc-pulse-primary-active: color-mix(in oklab, var(--fc-pulse-primary) 80%, white);
+  --fc-pulse-primary-foreground: #fff;
 
-  --fc-pulse-today: var(--fc-pulse-primary);
-  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, white);
-  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, white);
-  --fc-pulse-today-foreground: var(--fc-pulse-primary-foreground);
+  --fc-pulse-tertiary: var(--fc-pulse-primary);
+  --fc-pulse-tertiary-hover: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);
+  --fc-pulse-tertiary-active: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, white);
+  --fc-pulse-tertiary-foreground: var(--fc-pulse-primary-foreground);
 
   --fc-pulse-event: #012e66;
   --fc-pulse-event-contrast: #fff;
 }
 [data-palette=blue][data-color-scheme=dark] {
-  --fc-pulse-today: #1284ff;
-  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, white);
-  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, white);
+  --fc-pulse-tertiary: #1284ff;
+  --fc-pulse-tertiary-hover: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);
+  --fc-pulse-tertiary-active: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, white);
 }
 
 [data-palette=purple] {
   --fc-pulse-primary: #ad46ff;
-  --fc-pulse-primary-foreground: #fff;
   --fc-pulse-primary-hover: color-mix(in oklab, var(--fc-pulse-primary) 90%, white);
   --fc-pulse-primary-active: color-mix(in oklab, var(--fc-pulse-primary) 80%, white);
+  --fc-pulse-primary-foreground: #fff;
 
-  --fc-pulse-today: var(--fc-pulse-primary);
-  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, white);
-  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, white);
-  --fc-pulse-today-foreground: var(--fc-pulse-primary-foreground);
+  --fc-pulse-tertiary: var(--fc-pulse-primary);
+  --fc-pulse-tertiary-hover: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);
+  --fc-pulse-tertiary-active: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, white);
+  --fc-pulse-tertiary-foreground: var(--fc-pulse-primary-foreground);
 
   --fc-pulse-event: #430575;
   --fc-pulse-event-contrast: #fff;
@@ -143,16 +159,16 @@ can maybe remove some dark-mode colors. repeat of what's in light mode
   --fc-pulse-primary-hover: color-mix(in oklab, var(--fc-pulse-primary) 90%, white);
   --fc-pulse-primary-active: color-mix(in oklab, var(--fc-pulse-primary) 80%, white);
 
-  --fc-pulse-today: #34c759;
-  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, white);
-  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, white);
-  --fc-pulse-today-foreground: #fff;
+  --fc-pulse-tertiary: #34c759;
+  --fc-pulse-tertiary-hover: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);
+  --fc-pulse-tertiary-active: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, white);
+  --fc-pulse-tertiary-foreground: #fff;
 
   --fc-pulse-event: #084b19;
   --fc-pulse-event-contrast: #fff;
 }
 [data-palette=green][data-color-scheme=dark] {
-  --fc-pulse-today: #30d157;
-  --fc-pulse-today-hover: color-mix(in oklab, var(--fc-pulse-today) 90%, white);
-  --fc-pulse-today-active: color-mix(in oklab, var(--fc-pulse-today) 80%, white);
+  --fc-pulse-tertiary: #30d157;
+  --fc-pulse-tertiary-hover: color-mix(in oklab, var(--fc-pulse-tertiary) 90%, white);
+  --fc-pulse-tertiary-active: color-mix(in oklab, var(--fc-pulse-tertiary) 80%, white);
 }
