@@ -34,7 +34,7 @@ const mutedHoverClass = 'hover:bg-(--fc-breezy-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-breezy-muted)`
 
 const mutedFgClass = 'text-(--fc-breezy-muted-foreground)'
-export const mutedFgGroupPressableClass = `${mutedFgClass} group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)`
+export const mutedFgPressableGroupClass = `${mutedFgClass} group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)`
 
 const faintHoverClass = 'hover:bg-(--fc-breezy-faint)' // only bg by choice
 const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)` // only bg by choice
@@ -183,7 +183,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgGroupPressableClass}`),
+    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgPressableGroupClass}`),
   },
 
   views: baseEventCalendarOptions.views,

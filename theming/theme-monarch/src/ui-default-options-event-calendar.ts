@@ -39,14 +39,14 @@ const tabUnselectedButtonClass = `${mutedHoverPressableClass} border border-tran
 
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
-const fgGroupPressableClass = 'text-(--fc-monarch-foreground) group-hover:text-(--fc-monarch-strong-foreground) group-focus-visible:text-(--fc-monarch-strong-foreground)'
+const fgPressableGroupClass = 'text-(--fc-monarch-foreground) group-hover:text-(--fc-monarch-strong-foreground) group-focus-visible:text-(--fc-monarch-strong-foreground)'
 
 const mutedFgClass = 'text-(--fc-monarch-muted-foreground)'
-export const mutedFgGroupPressableClass = `${mutedFgClass} group-hover:text-(--fc-monarch-foreground) group-focus-visible:text-(--fc-monarch-foreground)`
+export const mutedFgPressableGroupClass = `${mutedFgClass} group-hover:text-(--fc-monarch-foreground) group-focus-visible:text-(--fc-monarch-foreground)`
 
 const faintFgClass = 'text-(--fc-monarch-faint-foreground)'
 
-const buttonIconClass = `size-5 ${fgGroupPressableClass}`
+const buttonIconClass = `size-5 ${fgPressableGroupClass}`
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
@@ -161,7 +161,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgGroupPressableClass}`),
+    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgPressableGroupClass}`),
   },
   views: baseEventCalendarOptions.views,
 }

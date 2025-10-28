@@ -25,7 +25,7 @@ const strongBorderColorClass = 'border-(--fc-pulse-strong-border)'
 const fgClass = 'text-(--fc-pulse-foreground)'
 
 const mutedFgClass = 'text-(--fc-pulse-muted-foreground)'
-export const mutedFgGroupPressableClass = `${mutedFgClass} group-hover:text-(--fc-pulse-foreground) group-focus-visible:text-(--fc-pulse-foreground)`
+export const mutedFgPressableGroupClass = `${mutedFgClass} group-hover:text-(--fc-pulse-foreground) group-focus-visible:text-(--fc-pulse-foreground)`
 
 const strongFgClass = 'text-(--fc-pulse-strong-foreground)'
 
@@ -46,7 +46,7 @@ const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transpa
 
 const faintHoverClass = 'hover:bg-(--fc-pulse-faint)'
 const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-pulse-muted) focus-visible:bg-(--fc-pulse-faint)` // choses not to do FG
-// const faintFgGroupPressableClass = 'text-(--fc-pulse-faint-foreground) group-hover:text-(--fc-pulse-muted-foreground) group-focus-visible:text-(--fc-pulse-muted-foreground)'
+// const faintFgPressableGroupClass = 'text-(--fc-pulse-faint-foreground) group-hover:text-(--fc-pulse-muted-foreground) group-focus-visible:text-(--fc-pulse-muted-foreground)'
 
 const buttonIconClass = 'size-5 text-(--fc-pulse-secondary-icon) group-hover:text-(--fc-pulse-secondary-icon-over) group-focus-visible:text-(--fc-pulse-secondary-icon-over)'
 
@@ -191,7 +191,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgGroupPressableClass}`),
+    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgPressableGroupClass}`),
   },
   views: baseEventCalendarOptions.views,
 }

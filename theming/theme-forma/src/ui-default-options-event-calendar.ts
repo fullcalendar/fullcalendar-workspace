@@ -32,9 +32,9 @@ const secondaryButtonClass = `${mutedHoverPressableClass} border ${borderColorCl
 
 const mutedBgClass = 'bg-(--fc-forma-muted)'
 const mutedFgClass = 'text-(--fc-forma-muted-foreground)'
-export const mutedFgGroupPressableClass = `${mutedFgClass} group-hover:text-(--fc-forma-primary) group-focus-visible:text-(--fc-forma-primary)`
+export const mutedFgPressableGroupClass = `${mutedFgClass} group-hover:text-(--fc-forma-primary) group-focus-visible:text-(--fc-forma-primary)`
 
-const fgGroupPressableClass = `text-(--fc-forma-foreground) group-hover:text-(--fc-forma-strong-foreground) group-focus-visible:text-(--fc-forma-strong-foreground)`
+const fgPressableGroupClass = `text-(--fc-forma-foreground) group-hover:text-(--fc-forma-strong-foreground) group-focus-visible:text-(--fc-forma-strong-foreground)`
 
 const mutedClass = mutedBgClass // only uses bg
 const mutedPressableClass = `${mutedClass} hover:bg-(--fc-forma-strong) active:bg-(--fc-forma-stronger) ${primaryOutlineFocusClass}`
@@ -52,7 +52,7 @@ const selectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-muted) focus-visib
 const selectedButtonActiveBgColorClass = 'active:bg-(--fc-forma-strong)'
 const selectedButtonClass = `border ${selectedButtonBorderColorClass} ${selectedButtonBgColorClass} ${selectedButtonHoverBgColorClass} ${selectedButtonActiveBgColorClass} ${primaryOutlineFocusClass} -outline-offset-1`
 
-const buttonIconClass = `size-5 ${fgGroupPressableClass}`
+const buttonIconClass = `size-5 ${fgPressableGroupClass}`
 
 const strongSolidBgClass = '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]'
 const strongSolidPressableClass = joinClassNames(
@@ -184,7 +184,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.dismiss(`size-5 ${mutedFgGroupPressableClass}`),
+    popoverCloseContent: () => svgs.dismiss(`size-5 ${mutedFgPressableGroupClass}`),
   },
   views: baseEventCalendarOptions.views,
 }

@@ -1,6 +1,6 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import * as svgs from './ui-default-svgs.js'
-import { optionParams, mutedFgGroupPressableClass } from './ui-default-options-event-calendar.js'
+import { optionParams, mutedFgPressableGroupClass } from './ui-default-options-event-calendar.js'
 import { createSchedulerOnlyOptions } from './options-scheduler.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
@@ -14,7 +14,7 @@ export const defaultUiSchedulerOnlyOptions: {
 
     resourceExpanderContent: (data) => svgs.chevronDown(
       joinClassNames(
-        `size-4 ${mutedFgGroupPressableClass}`,
+        `size-4 ${mutedFgPressableGroupClass}`,
         !data.isExpanded && '-rotate-90 [[dir=rtl]_&]:rotate-90',
       )
     )
