@@ -43,8 +43,8 @@ export interface EventCalendarOptionParams {
   tertiaryPressableClass: string
   tertiaryPressableGroupClass: string
 
-  ghostHoverClass: string
-  ghostPressableClass: string
+  mutedHoverClass: string
+  mutedHoverPressableClass: string
   ghostPressableGroupClass: string
 
   strongSolidPressableClass: string
@@ -122,7 +122,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
-      params.ghostPressableClass,
+      params.mutedHoverPressableClass,
       data.isCompact
         ? `border ${params.primaryBorderColorClass}`
         : 'p-px'
@@ -148,13 +148,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       singleMonthHeaderInnerClass: (data) => [
         'font-bold rounded-full px-2 py-1',
-        data.hasNavLink && params.ghostPressableClass,
+        data.hasNavLink && params.mutedHoverPressableClass,
       ],
 
       popoverClass: 'min-w-3xs ' + params.popoverClass,
       popoverCloseClass: [
         'absolute top-2 end-2 rounded-full size-8 inline-flex flex-row justify-center items-center group',
-        params.ghostPressableClass,
+        params.mutedHoverPressableClass,
         params.tertiaryOutlineColorClass,
         params.outlineWidthFocusClass,
       ],
@@ -206,7 +206,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
               params.mutedBgClass,
               data.isDragging && 'shadow-sm',
             )
-          : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
+          : (data.isInteractive ? params.mutedHoverPressableClass : params.mutedHoverClass),
       ],
       listItemEventBeforeClass: 'rounded-full border-(--fc-event-color)',
       listItemEventInnerClass: 'flex flex-row items-center',
@@ -321,7 +321,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : (data.isCompact ? 'px-1' : 'px-2'), // pill
         data.isToday
           ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
-          : (data.hasNavLink && params.ghostPressableClass),
+          : (data.hasNavLink && params.mutedHoverPressableClass),
         data.hasMonthLabel && 'text-base font-bold',
         data.isOther && params.faintFgClass,
       ],
@@ -397,7 +397,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
                   : 'px-3', // pill
                 data.isToday
                   ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
-                  : (data.hasNavLink && params.ghostPressableClass)
+                  : (data.hasNavLink && params.mutedHoverPressableClass)
               )
             : 'text-xs uppercase hover:underline', // secondary (only one text child)
         ],

@@ -34,13 +34,13 @@ const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-[rgba(var(-
 
 // ghost
 // FYI, uses the tertiary outline ring, which may clash with themes that prefer the primary outline ring
-const ghostHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
+const mutedHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
 const ghostHoverGroupClass = 'group-hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
-const ghostPressableClass = `${ghostHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]`
+const mutedHoverPressableClass = `${mutedHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]`
 const ghostPressableGroupClass = `${ghostHoverGroupClass} group-active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)] group-focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]`
 
 const faintHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]'
-const faintPressableClass = `${faintHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]`
+const faintHoverPressableClass = `${faintHoverClass} active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)] focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.02)]`
 
 const mutedClass = 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]'
 const mutedPressableClass = joinClassNames(
@@ -92,8 +92,8 @@ export const optionParams: ThemeOptionParams = {
   tertiaryPressableClass,
   tertiaryPressableGroupClass,
 
-  ghostHoverClass,
-  ghostPressableClass,
+  mutedHoverClass,
+  mutedHoverPressableClass,
   ghostPressableGroupClass,
 
   strongSolidPressableClass,
@@ -102,7 +102,7 @@ export const optionParams: ThemeOptionParams = {
   mutedPressableClass,
 
   faintHoverClass,
-  faintPressableClass,
+  faintHoverPressableClass,
 
   primaryOutlineColorClass,
   tertiaryOutlineColorClass,

@@ -21,21 +21,21 @@ const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-tertiary-fo
 const tertiaryPressableClass = `${tertiaryClass} hover:bg-(--fc-monarch-tertiary-over) active:bg-(--fc-monarch-tertiary-down)`
 const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-(--fc-monarch-tertiary-over) group-active:bg-(--fc-monarch-tertiary-down) ${tertiaryOutlineFocusClass}`
 
-const ghostHoverClass = 'hover:bg-(--fc-monarch-muted)'
+const mutedHoverClass = 'hover:bg-(--fc-monarch-muted)'
 const ghostHoverGroupClass = 'group-hover:bg-(--fc-monarch-muted)'
-const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-monarch-muted) active:bg-(--fc-monarch-strong)`
+const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-monarch-muted) active:bg-(--fc-monarch-strong)`
 const ghostPressableGroupClass = `${ghostHoverGroupClass} group-focus-visible:bg-(--fc-monarch-muted) group-active:bg-(--fc-monarch-strong)`
 
 // TODO: darker border on focus!!!
 // NOTE: different than the "secondary" surface styles given to calendar
-const toolbarSecondaryButtonClass = `${ghostPressableClass} border border-(--fc-monarch-secondary-border) ${tertiaryOutlineFocusClass} -outline-offset-1`
+const toolbarSecondaryButtonClass = `${mutedHoverPressableClass} border border-(--fc-monarch-secondary-border) ${tertiaryOutlineFocusClass} -outline-offset-1`
 
 // dark grey button
 const tabSelectedClass = `bg-(--fc-monarch-selected) text-(--fc-monarch-selected-foreground)`
 const tabSelectedPressableClasss = `${tabSelectedClass} hover:bg-(--fc-monarch-selected-over) active:bg-(--fc-monarch-selected-down)`
 const tabSelectedButtonClass = `${tabSelectedPressableClasss} border border-transparent ${tertiaryOutlineFocusClass} -outline-offset-1`
 
-const tabUnselectedButtonClass = `${ghostPressableClass} border border-transparent ${tertiaryOutlineFocusClass} -outline-offset-1`
+const tabUnselectedButtonClass = `${mutedHoverPressableClass} border border-transparent ${tertiaryOutlineFocusClass} -outline-offset-1`
 
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
@@ -56,8 +56,8 @@ export const optionParams: EventCalendarOptionParams = {
   tertiaryPressableClass,
   tertiaryPressableGroupClass,
 
-  ghostHoverClass,
-  ghostPressableClass,
+  mutedHoverClass,
+  mutedHoverPressableClass,
   ghostPressableGroupClass,
 
   strongSolidPressableClass: joinClassNames(

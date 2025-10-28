@@ -11,22 +11,22 @@ const outlineWidthFocusClass = 'focus-visible:outline-2'
 const outlineOffsetClass = 'outline-offset-2'
 const outlineInsetClass = '-outline-offset-2'
 
-const ghostHoverClass = 'hover:bg-(--fc-classic-muted)'
-const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-classic-strong) focus-visible:bg-(--fc-classic-muted)`
+const mutedHoverClass = 'hover:bg-(--fc-classic-muted)'
+const mutedHoverPressableClass = `${mutedHoverClass} active:bg-(--fc-classic-strong) focus-visible:bg-(--fc-classic-muted)`
 
 const faintHoverClass = 'hover:bg-(--fc-classic-faint)'
-const faintPressableClass = `${faintHoverClass} active:bg-(--fc-classic-muted) focus-visible:bg-(--fc-classic-faint)`
+const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-classic-muted) focus-visible:bg-(--fc-classic-faint)`
 
 const buttonIconClass = 'size-5'
 
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
 export const optionParams: EventCalendarOptionParams = {
-  ghostHoverClass,
-  ghostPressableClass,
+  mutedHoverClass,
+  mutedHoverPressableClass,
 
   faintHoverClass,
-  faintPressableClass,
+  faintHoverPressableClass,
 
   strongSolidPressableClass: '[background:linear-gradient(var(--fc-classic-strong),var(--fc-classic-strong))_var(--fc-classic-background)]',
 

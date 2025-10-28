@@ -24,11 +24,11 @@ const primaryClass = 'bg-(--fc-forma-primary) text-(--fc-forma-primary-foregroun
 const primaryPressableClass = `${primaryClass} hover:bg-(--fc-forma-primary-over) focus-visible:bg-(--fc-forma-primary-over) active:bg-(--fc-forma-primary-down)`
 const primaryButtonClass = `${primaryPressableClass} border border-transparent ${primaryOutlineFocusClass} ${outlineOffsetClass}`
 
-const ghostHoverClass = 'hover:bg-(--fc-forma-muted)'
-const ghostPressableClass = `${ghostHoverClass} active:bg-(--fc-forma-strong) focus-visible:bg-(--fc-forma-strong)`
-const ghostButtonClass = `${ghostPressableClass} border border-transparent ${primaryOutlineFocusClass}`
+const mutedHoverClass = 'hover:bg-(--fc-forma-muted)'
+const mutedHoverPressableClass = `${mutedHoverClass} active:bg-(--fc-forma-strong) focus-visible:bg-(--fc-forma-strong)`
+const ghostButtonClass = `${mutedHoverPressableClass} border border-transparent ${primaryOutlineFocusClass}`
 
-const secondaryButtonClass = `${ghostPressableClass} border ${borderColorClass} ${primaryOutlineFocusClass}`
+const secondaryButtonClass = `${mutedHoverPressableClass} border ${borderColorClass} ${primaryOutlineFocusClass}`
 
 const mutedBgClass = 'bg-(--fc-forma-muted)'
 const mutedFgClass = 'text-(--fc-forma-muted-foreground)'
@@ -81,8 +81,8 @@ export const optionParams: EventCalendarOptionParams = {
   primaryClass,
   primaryPressableClass,
 
-  ghostHoverClass,
-  ghostPressableClass,
+  mutedHoverClass,
+  mutedHoverPressableClass,
 
   mutedBgClass,
 

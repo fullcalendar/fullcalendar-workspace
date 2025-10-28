@@ -8,13 +8,13 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/interaction'
 
 export interface EventCalendarOptionParams {
-  ghostHoverClass: string
-  ghostPressableClass: string
+  mutedHoverClass: string
+  mutedHoverPressableClass: string
 
   strongSolidPressableClass: string
 
   faintHoverClass: string
-  faintPressableClass: string
+  faintHoverPressableClass: string
 
   primaryOutlineColorClass: string
   outlineWidthClass: string
@@ -98,7 +98,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       `${dayRowItemBaseClass} p-px`,
       data.isSelected
         ? joinClassNames(params.mutedBgClass, data.isDragging && 'shadow-sm')
-        : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
+        : (data.isInteractive ? params.mutedHoverPressableClass : params.mutedHoverClass),
     ],
     listItemEventBeforeClass: (data) => [
       'border-4', // 8px diameter
@@ -118,7 +118,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
-      params.ghostPressableClass,
+      params.mutedHoverPressableClass,
       data.isCompact
         ? `border ${params.primaryBorderColorClass}`
         : 'self-start p-px',
@@ -342,7 +342,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           listViewItemPaddingClass,
           data.isInteractive
             ? joinClassNames(
-                params.faintPressableClass,
+                params.faintHoverPressableClass,
                 params.outlineInsetClass, // move inside
               )
             : params.faintHoverClass,

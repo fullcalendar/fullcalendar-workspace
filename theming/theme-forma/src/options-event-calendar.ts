@@ -68,8 +68,8 @@ export interface EventCalendarOptionParams {
   primaryClass: string // bg & fg
   primaryPressableClass: string
 
-  ghostHoverClass: string
-  ghostPressableClass: string
+  mutedHoverClass: string
+  mutedHoverPressableClass: string
 
   strongSolidPressableClass: string
 
@@ -133,7 +133,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'items-center',
       data.isSelected
         ? joinClassNames(params.mutedBgClass, data.isDragging && 'shadow-sm')
-        : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
+        : (data.isInteractive ? params.mutedHoverPressableClass : params.mutedHoverClass),
     ],
     listItemEventBeforeClass: (data) => [
       data.isCompact ? 'mx-px' : 'mx-1',
@@ -165,7 +165,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isCompact
         ? `border ${params.primaryBorderColorClass}`
         : 'self-start p-px',
-      params.ghostPressableClass,
+      params.mutedHoverPressableClass,
     ],
     rowMoreLinkInnerClass: (data) => [
       data.isCompact ? 'p-px' : 'p-0.5',
@@ -198,7 +198,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'absolute inline-flex flex-row top-1 end-1 p-1 rounded-sm group',
         params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
-        params.ghostPressableClass,
+        params.mutedHoverPressableClass,
         params.mutedFgClass,
       ],
 
@@ -317,7 +317,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       singleMonthHeaderInnerClass: (data) => [
         'text-center font-bold rounded-sm px-1',
-        data.hasNavLink && params.ghostPressableClass,
+        data.hasNavLink && params.mutedHoverPressableClass,
         data.isCompact ? 'text-base' : 'text-lg', // need to specify "base". no
       ],
 
@@ -337,7 +337,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isCompact ? xxsTextClass : 'text-xs',
         data.isToday && data.level && 'relative', // contain narrow top-border
         data.hasNavLink && joinClassNames(
-          params.ghostPressableClass,
+          params.mutedHoverPressableClass,
           params.outlineInsetClass, // move inside
         )
       ],
@@ -376,7 +376,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : joinClassNames( // ghost-button-like
               'rounded-e-sm',
               data.isCompact ? 'px-1' : 'px-2',
-              data.hasNavLink && params.ghostPressableClass,
+              data.hasNavLink && params.mutedHoverPressableClass,
             ),
       ],
       dayCellInnerClass: (data) => [

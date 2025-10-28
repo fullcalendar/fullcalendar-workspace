@@ -16,8 +16,8 @@ export interface ThemeOptionParams {
   tertiaryPressableClass: string
   tertiaryPressableGroupClass: string
 
-  ghostHoverClass: string
-  ghostPressableClass: string
+  mutedHoverClass: string
+  mutedHoverPressableClass: string
   ghostPressableGroupClass: string
 
   // strong button-like
@@ -30,7 +30,7 @@ export interface ThemeOptionParams {
 
   // faint ghost-button-like
   faintHoverClass: string
-  faintPressableClass: string
+  faintHoverPressableClass: string
 
   primaryOutlineColorClass: string
   tertiaryOutlineColorClass: string

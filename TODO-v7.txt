@@ -14,11 +14,7 @@ clean+build all:
 
 
 clean up css variables
-  do ghost to hover renaming?
-    ghostHoverClass     -> mutedHoverClass
-    ghostPressableClass -> mutedHoverPressableClass
-                        -> faintHoverClass
-    faintPressableClass -> faintHoverPressableClass
+  rearrange ThemeOptionParams props
   replace all #fff/#ffffff/white with var(--color-white)? same with black?
 
 

@@ -22,13 +22,13 @@ const tertiaryClass = 'bg-primary/20 dark:bg-primary/30' // ALSO SORTA LIKE neut
 const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 ${outlineFocusClass}`
 const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-primary/40`
 
-const ghostHoverClass = 'hover:bg-foreground/5'
+const mutedHoverClass = 'hover:bg-foreground/5'
 const ghostHoverGroupClass = 'group-hover:bg-foreground/5'
-const ghostPressableClass = ghostHoverClass // shadcn doesn't do down-effect
+const mutedHoverPressableClass = mutedHoverClass // shadcn doesn't do down-effect
 const ghostPressableGroupClass = ghostHoverGroupClass // shadcn doesn't do down-effect
 
 const faintHoverClass = 'hover:bg-muted/50'
-const faintPressableClass = `${faintHoverClass} focus-visible:bg-muted/50`
+const faintHoverPressableClass = `${faintHoverClass} focus-visible:bg-muted/50`
 
 const mutedClass = 'bg-foreground/5'
 const mutedPressableClass = `${mutedClass} hover:bg-foreground/10`
@@ -69,8 +69,8 @@ export const optionParams: ThemeOptionParams = {
   tertiaryPressableClass,
   tertiaryPressableGroupClass,
 
-  ghostHoverClass,
-  ghostPressableClass,
+  mutedHoverClass,
+  mutedHoverPressableClass,
   ghostPressableGroupClass,
 
   strongSolidPressableClass,
@@ -79,7 +79,7 @@ export const optionParams: ThemeOptionParams = {
   mutedPressableClass,
 
   faintHoverClass,
-  faintPressableClass,
+  faintHoverPressableClass,
 
   primaryOutlineColorClass: outlineColorClass,
   tertiaryOutlineColorClass: outlineColorClass,

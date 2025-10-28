@@ -30,14 +30,14 @@ const secondaryClass = 'text-(--fc-breezy-secondary-foreground) bg-(--fc-breezy-
 const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-secondary-over)`
 const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-secondary-border) ${primaryOutlineFocusClass} -outline-offset-1`
 
-const ghostHoverClass = 'hover:bg-(--fc-breezy-muted)'
-const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-breezy-muted)`
+const mutedHoverClass = 'hover:bg-(--fc-breezy-muted)'
+const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-breezy-muted)`
 
 const mutedFgClass = 'text-(--fc-breezy-muted-foreground)'
 export const mutedFgGroupPressableClass = `${mutedFgClass} group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)`
 
 const faintHoverClass = 'hover:bg-(--fc-breezy-faint)' // only bg by choice
-const faintPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)` // only bg by choice
+const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)` // only bg by choice
 
 const buttonIconClass = `size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-over) group-focus-visible:text-(--fc-breezy-secondary-icon-over)`
 
@@ -63,11 +63,11 @@ export const optionParams: EventCalendarOptionParams = {
   primaryPressableClass,
   primaryPressableGroupClass,
 
-  ghostHoverClass,
-  ghostPressableClass,
+  mutedHoverClass,
+  mutedHoverPressableClass,
 
   faintHoverClass,
-  faintPressableClass,
+  faintHoverPressableClass,
 
   primaryOutlineColorClass,
   outlineWidthClass,

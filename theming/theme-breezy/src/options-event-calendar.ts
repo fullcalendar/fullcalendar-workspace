@@ -114,11 +114,11 @@ export interface EventCalendarOptionParams {
   primaryPressableClass: string
   primaryPressableGroupClass: string
 
-  ghostHoverClass: string
-  ghostPressableClass: string
+  mutedHoverClass: string
+  mutedHoverPressableClass: string
 
   faintHoverClass: string,
-  faintPressableClass: string,
+  faintHoverPressableClass: string,
 
   primaryOutlineColorClass: string
   outlineWidthClass: string
@@ -189,8 +189,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'absolute top-0 end-0',
       `border-b ${params.strongBorderBottomColorClass} border-s ${params.borderStartColorClass} rounded-es-md ${params.bgClass} ${params.mutedFgClass}`,
       data.hasNavLink
-        ? `${params.ghostPressableClass} -outline-offset-1` // because border
-        : params.ghostHoverClass,
+        ? `${params.mutedHoverPressableClass} -outline-offset-1` // because border
+        : params.mutedHoverClass,
       data.isCompact
         ? `p-0.5 ${xxsTextClass}`
         : 'p-1.5 text-xs',
@@ -207,7 +207,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       getDayGridItemClass(data),
       data.isSelected
         ? joinClassNames(params.mutedBgClass, data.isDragging && 'shadow-sm')
-        : (data.isInteractive ? params.ghostPressableClass : params.ghostHoverClass),
+        : (data.isInteractive ? params.mutedHoverPressableClass : params.mutedHoverClass),
     ],
     listItemEventInnerClass: (data) => [
       'justify-between flex flex-row',
@@ -227,7 +227,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isCompact
         ? `border ${params.primaryBorderColorClass}`
         : 'self-start p-px',
-      params.ghostPressableClass,
+      params.mutedHoverPressableClass,
     ],
     rowMoreLinkInnerClass: (data) => [
       data.isCompact ? xxsTextClass : 'text-xs',
@@ -256,7 +256,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'absolute inline-flex flex-row top-2 end-2 p-0.5 rounded-sm group',
         params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
-        params.ghostPressableClass,
+        params.mutedHoverPressableClass,
       ],
 
       highlightClass: params.highlightClass,
@@ -279,7 +279,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
                 ? 'mx-2 my-3' // timegrid-view
                 : 'mx-2.5 my-2', // popover or month-view
               data.hasNavLink && joinClassNames(
-                params.ghostPressableClass,
+                params.mutedHoverPressableClass,
                 params.primaryOutlineColorClass,
                 params.outlineWidthFocusClass,
               ),
@@ -317,7 +317,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
               'rounded-e-sm',
               data.isCompact ? 'px-1' : 'px-2',
               data.isOther ? params.faintFgClass : params.mutedFgClass,
-              data.hasNavLink && params.ghostPressableClass,
+              data.hasNavLink && params.mutedHoverPressableClass,
             ),
       ],
       dayCellInnerClass: (data) => data.inPopover && 'p-2',
@@ -432,7 +432,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       singleMonthHeaderInnerClass: (data) => [
         `text-sm font-semibold rounded-sm py-1 px-2 ${params.strongFgClass}`,
-        data.hasNavLink && params.ghostPressableClass,
+        data.hasNavLink && params.mutedHoverPressableClass,
       ],
 
       nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,
@@ -515,12 +515,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
                     )
                   : joinClassNames(
                       `font-medium ${params.strongFgClass}`,
-                      data.hasNavLink && params.ghostPressableClass,
+                      data.hasNavLink && params.mutedHoverPressableClass,
                     )
               )
             : joinClassNames(
                 params.faintFgClass,
-                data.hasNavLink && params.ghostPressableClass,
+                data.hasNavLink && params.mutedHoverPressableClass,
               )
         ],
 
@@ -530,7 +530,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           `p-4 items-center gap-3 not-last:border-b`,
           params.mutedBorderColorClass,
           data.isInteractive
-            ? params.faintPressableClass
+            ? params.faintHoverPressableClass
             : params.faintHoverClass,
         ],
         listItemEventBeforeClass: 'rounded-full border-(--fc-event-color) border-4',
