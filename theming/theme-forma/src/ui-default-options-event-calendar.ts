@@ -32,24 +32,27 @@ const secondaryButtonClass = `${ghostPressableClass} border ${borderColorClass} 
 
 const mutedBgClass = 'bg-(--fc-forma-muted)'
 const mutedFgClass = 'text-(--fc-forma-muted-foreground)'
+export const mutedFgGroupPressableClass = `${mutedFgClass} group-hover:text-(--fc-forma-primary) group-focus-visible:text-(--fc-forma-primary)`
+
+const fgGroupPressableClass = `text-(--fc-forma-foreground) group-hover:text-(--fc-forma-strong-foreground) group-focus-visible:text-(--fc-forma-strong-foreground)`
 
 const mutedClass = mutedBgClass // only uses bg
-const mutedPressableClass = `${mutedClass} hover:bg-(--fc-forma-strong) ${primaryOutlineFocusClass}`
+const mutedPressableClass = `${mutedClass} hover:bg-(--fc-forma-strong) active:bg-(--fc-forma-strong-hover) ${primaryOutlineFocusClass}`
 
-const unselectedButtonTextColorClass = 'text-(--fc-forma-tab-foreground)'
-const unselectedButtonHoverBorderColorClass = 'hover:border-(--fc-forma-tab-over-border)'
-const unselectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-tab-over)'
-const unselectedButtonActiveBorderColorClass = 'active:border-(--fc-forma-tab-down-border)'
-const unselectedButtonClass = `${unselectedButtonTextColorClass} border border-transparent ${unselectedButtonHoverBorderColorClass} ${unselectedButtonHoverBgColorClass} ${unselectedButtonActiveBorderColorClass} ${primaryOutlineFocusClass}`
+const unselectedButtonTextColorClass = 'text-(--fc-forma-foreground)'
+const unselectedButtonHoverBorderColorClass = 'hover:border-(--fc-forma-muted-border)'
+const unselectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-faint)'
+const unselectedButtonActiveBgColorClass = 'active:bg-(--fc-forma-strong)'
+const unselectedButtonActiveBorderColorClass = 'active:border-(--fc-forma-border)'
+const unselectedButtonClass = `${unselectedButtonTextColorClass} border border-transparent ${unselectedButtonHoverBorderColorClass} ${unselectedButtonHoverBgColorClass} ${unselectedButtonActiveBgColorClass} ${unselectedButtonActiveBorderColorClass} ${primaryOutlineFocusClass}`
 
-const selectedButtonBorderColorClass = 'border-(--fc-forma-tab-selected-border)'
-const selectedButtonBgColorClass = 'bg-(--fc-forma-tab-selected)'
-const selectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-tab-selected-over) focus-visible:bg-(--fc-forma-tab-selected-over)'
-const selectedButtonActiveBgColorClass = 'active:bg-(--fc-forma-tab-selected-down)'
+const selectedButtonBorderColorClass = 'border-(--fc-forma-strong-border)'
+const selectedButtonBgColorClass = 'bg-(--fc-forma-selected)'
+const selectedButtonHoverBgColorClass = 'hover:bg-(--fc-forma-muted) focus-visible:bg-(--fc-forma-muted)'
+const selectedButtonActiveBgColorClass = 'active:bg-(--fc-forma-strong)'
 const selectedButtonClass = `border ${selectedButtonBorderColorClass} ${selectedButtonBgColorClass} ${selectedButtonHoverBgColorClass} ${selectedButtonActiveBgColorClass} ${primaryOutlineFocusClass} -outline-offset-1`
 
-const buttonIconColorClass = 'text-(--fc-forma-secondary-icon)' // will only work for secondary!
-const buttonIconClass = `size-5 ${buttonIconColorClass}` // will only work for secondary!
+const buttonIconClass = `size-5 ${fgGroupPressableClass}`
 
 const strongSolidBgClass = '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]'
 const strongSolidPressableClass = joinClassNames(
@@ -73,8 +76,6 @@ const mutedEventPressableClass = joinClassNames(
 )
 
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
-
-export const pressableIconClass = `${mutedFgClass} group-hover:text-(--fc-forma-primary) group-focus-visible:text-(--fc-forma-primary)`
 
 export const optionParams: EventCalendarOptionParams = {
   primaryClass,
@@ -142,7 +143,7 @@ export const defaultUiEventCalendarOptions: {
 
     buttonGroupClass: 'items-center isolate',
     buttonClass: (data) => [
-      'inline-flex flex-row text-sm py-1.5 rounded-sm',
+      'inline-flex flex-row text-sm py-1.5 rounded-sm group',
       data.isIconOnly ? 'px-2' : 'px-3',
       data.isIconOnly
         // ghost-button
@@ -183,7 +184,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.dismiss(`size-5 ${pressableIconClass}`),
+    popoverCloseContent: () => svgs.dismiss(`size-5 ${mutedFgGroupPressableClass}`),
   },
   views: baseEventCalendarOptions.views,
 }

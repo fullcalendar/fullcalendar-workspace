@@ -26,18 +26,15 @@
   --fc-breezy-popover: var(--fc-breezy-background);
   --fc-breezy-popover-border: var(--fc-breezy-strong-border);
 
-  /* tabs */
-  --fc-breezy-tab-foreground: var(--color-gray-600);
-  --fc-breezy-tab-selected-foreground: var(--color-gray-800);
-  --fc-breezy-tab-selected: var(--fc-breezy-strong);
+  --fc-breezy-selected: var(--fc-breezy-strong);
 
-  /* secondary buttons */
+  /* secondary buttons (white on top of gray) */
   --fc-breezy-secondary: var(--fc-breezy-background);
   --fc-breezy-secondary-hover: var(--fc-breezy-faint);
   --fc-breezy-secondary-border: var(--fc-breezy-strong-border);
+  --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
   --fc-breezy-secondary-icon: var(--fc-breezy-faint-foreground);
   --fc-breezy-secondary-icon-hover: var(--fc-breezy-muted-foreground);
-  --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
 }
 
 [data-color-scheme=dark] {
@@ -67,18 +64,15 @@
   --fc-breezy-popover: var(--color-gray-800); /* must be fully opaque */
   --fc-breezy-popover-border: var(--fc-breezy-border);
 
-  /* tabs */
-  --fc-breezy-tab-foreground: var(--fc-breezy-muted-foreground);
-  --fc-breezy-tab-selected-foreground: var(--fc-breezy-strong-foreground);
-  --fc-breezy-tab-selected: var(--fc-breezy-muted);
+  --fc-breezy-selected: var(--fc-breezy-muted);
 
-  /* secondary buttons */
+  /* secondary buttons (gray-er on top of gray) */
   --fc-breezy-secondary: var(--fc-breezy-muted);
   --fc-breezy-secondary-hover: var(--fc-breezy-strong);
   --fc-breezy-secondary-border: var(--fc-breezy-muted-border);
   --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
   --fc-breezy-secondary-icon: var(--fc-breezy-muted-foreground);
-  --fc-breezy-secondary-icon-hover: var(--fc-breezy-strong-foreground);
+  --fc-breezy-secondary-icon-hover: var(--fc-breezy-foreground);
 }
 
 /* Colors

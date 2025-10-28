@@ -33,22 +33,17 @@ const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-sec
 const ghostHoverClass = 'hover:bg-(--fc-breezy-muted)'
 const ghostPressableClass = `${ghostHoverClass} focus-visible:bg-(--fc-breezy-muted)`
 
-const faintHoverClass = 'hover:bg-(--fc-breezy-faint)'
-const faintPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)`
+const mutedFgClass = 'text-(--fc-breezy-muted-foreground)'
+export const mutedFgGroupPressableClass = `${mutedFgClass} group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)`
 
+const faintHoverClass = 'hover:bg-(--fc-breezy-faint)' // only bg by choice
+const faintPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)` // only bg by choice
 
-// NOTE: only works within secondary button
-// best? to sync to line-height???
-const buttonIconClass = 'size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-hover)'
+const buttonIconClass = `size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-hover) group-focus-visible:text-(--fc-breezy-secondary-icon-hover)`
 
-// TODO: rename to tab stuff
-const selectBgClass = 'bg-(--fc-breezy-tab-selected)'
-const selectTextClass = 'text-(--fc-breezy-tab-selected-foreground)'
-const selectClass = `${selectBgClass} ${selectTextClass} ${primaryOutlineFocusClass}`
+const selectClass = `bg-(--fc-breezy-selected) text-(--fc-breezy-strong-foreground) ${primaryOutlineFocusClass}`
 
-const nonSelectTextClass = 'text-(--fc-breezy-tab-foreground)'
-const hoverSelectTextClass = 'hover:text-(--fc-breezy-tab-selected-foreground)' // best name?
-const nonSelectClass = `${nonSelectTextClass} ${hoverSelectTextClass} ${primaryOutlineFocusClass}`
+const nonSelectClass = `text-(--fc-breezy-muted-foreground) hover:text-(--fc-breezy-strong-foreground) ${primaryOutlineFocusClass}`
 
 const faintEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-breezy-background))]'
 const faintEventPressableClass = joinClassNames(
@@ -61,12 +56,7 @@ const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,va
 
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
-const mutedFgClass = 'text-(--fc-breezy-muted-foreground)'
 const fgClass = 'text-(--fc-breezy-foreground)'
-const fgGroupHoverClass = 'group-hover:text-(--fc-breezy-foreground)'
-const fgGroupFocusClass = 'group-focus-visible:text-(--fc-breezy-foreground)'
-
-export const pressableIconClass = `${mutedFgClass} ${fgGroupHoverClass} ${fgGroupFocusClass}`
 
 export const optionParams: EventCalendarOptionParams = {
   primaryClass,
@@ -193,7 +183,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 ${pressableIconClass}`),
+    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgGroupPressableClass}`),
   },
 
   views: baseEventCalendarOptions.views,

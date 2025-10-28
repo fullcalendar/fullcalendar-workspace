@@ -77,6 +77,7 @@ const mutedEventFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,va
 
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
+// this is how MUI does icon color
 export const pressableIconClass = 'text-(--mui-palette-action-active) group-hover:text-(--mui-palette-text-primary) group-focus-visible:text-(--mui-palette-text-primary)'
 
 export const optionParams: ThemeOptionParams = {

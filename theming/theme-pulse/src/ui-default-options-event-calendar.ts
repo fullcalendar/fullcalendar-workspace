@@ -5,8 +5,6 @@ import * as svgs from './ui-default-svgs.js'
 const bgClass = 'bg-(--fc-pulse-background)'
 const bgRingColorClass = 'ring-(--fc-pulse-background)'
 
-const buttonIconClass = 'size-5 text-(--fc-pulse-secondary-icon)' // TODO: add hover-color
-
 const tertiaryOutlineColorClass = 'outline-(--fc-pulse-today)'
 const outlineWidthClass = 'outline-2'
 const outlineWidthFocusClass = 'focus-visible:outline-2'
@@ -25,9 +23,10 @@ const viewBorderColorClass = 'border-(--fc-pulse-view-border)'
 const strongBorderColorClass = 'border-(--fc-pulse-strong-border)'
 
 const fgClass = 'text-(--fc-pulse-foreground)'
-const fgGroupHoverClass = 'group-hover:text-(--fc-pulse-foreground)'
-const fgGroupFocusClass = 'group-focus-visible:text-(--fc-pulse-foreground)'
+
 const mutedFgClass = 'text-(--fc-pulse-muted-foreground)'
+export const mutedFgGroupPressableClass = `${mutedFgClass} group-hover:text-(--fc-pulse-foreground) group-focus-visible:text-(--fc-pulse-foreground)`
+
 const strongFgClass = 'text-(--fc-pulse-strong-foreground)'
 
 const tertiaryClass = 'bg-(--fc-pulse-today) text-(--fc-pulse-today-foreground)'
@@ -50,9 +49,10 @@ const largeBoxShadowClass = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
 const faintHoverClass = 'hover:bg-(--fc-pulse-faint)'
-const faintPressableClass = `${faintHoverClass} active:bg-(--fc-pulse-muted) focus-visible:bg-(--fc-pulse-faint)`
+const faintPressableClass = `${faintHoverClass} active:bg-(--fc-pulse-muted) focus-visible:bg-(--fc-pulse-faint)` // choses not to do FG
+const faintFgGroupPressableClass = 'text-(--fc-pulse-faint-foreground) group-hover:text-(--fc-pulse-muted-foreground) group-focus-visible:text-(--fc-pulse-muted-foreground)'
 
-export const pressableIconClass = `${mutedFgClass} ${fgGroupHoverClass} ${fgGroupFocusClass}`
+const buttonIconClass = `size-5 ${faintFgGroupPressableClass}`
 
 export const optionParams: EventCalendarOptionParams = {
   tertiaryClass,
@@ -138,7 +138,7 @@ export const defaultUiEventCalendarOptions: {
     ],
 
     buttonClass: (data) => [
-      'inline-flex flex-row text-sm py-2',
+      'inline-flex flex-row text-sm py-2 group',
       data.isIconOnly ? 'px-2.5' : 'px-4',
       data.inSelectGroup
         // all select-group buttons
@@ -195,7 +195,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 ${pressableIconClass}`),
+    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgGroupPressableClass}`),
   },
   views: baseEventCalendarOptions.views,
 }

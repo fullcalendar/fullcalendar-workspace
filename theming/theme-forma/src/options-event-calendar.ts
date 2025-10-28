@@ -43,6 +43,8 @@ Make it more like live.outlook.com
 
 start-date resizing in daygrid,
   resizer has wrong negative-start to overcome the isStart-border
+
+BUG: no hover+down effect on week-number in timegrid view
 */
 
 // ambient types (tsc strips during build because of {})
@@ -174,6 +176,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   return {
     optionDefaults: {
       eventColor: params.eventColor,
+      eventContrastColor: params.eventContrastColor,
       backgroundEventColor: params.bgEventColor,
 
       tableHeaderClass: (data) => data.isSticky && params.bgClass,

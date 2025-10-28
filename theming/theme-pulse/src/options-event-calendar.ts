@@ -64,6 +64,8 @@ scroll-filler doesn't appear on resource-timegrid, header area, when scrolled al
 for resource-timeline area divider, use strong border instead of thick gray thing?
 
 BUG: timegrid more-popover has header text centered
+
+BUG: timegrid, "W 27" is different color than day headers in same horizontal row
 */
 
 export interface EventCalendarOptionParams {

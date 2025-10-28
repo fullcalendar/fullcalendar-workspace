@@ -1,82 +1,50 @@
 
 /*
-NAMING
-over = mouseover OR focus
-down = mousedown (active)
+OLD light values:
+--fc-forma-strong: #D6D6D6;
+--fc-forma-muted: #FAFAFA;
+TODO: ensure below values have same hue!
+
+OLD dark values:
+--fc-forma-strong: #404040;
+--fc-forma-muted: #1A1A1A;
+TODO: ensure below values have same hue!
+
+define --fc-forma-strong-foreground? as just black/white?!!!
 */
 
 :root {
   --fc-forma-background: #fff;
-
-  /*
-  OLD values:
-  --fc-forma-strong: #D6D6D6;
-  --fc-forma-muted: #FAFAFA;
-  TODO: ensure below values have same hue!
-  */
+  --fc-forma-foreground: #242424; /* TODO: use elsewhere!!! */
+  --fc-forma-border: #E0E0E0;
   --fc-forma-strong: color-mix(in oklab, var(--color-black) 12%, transparent); /* TODO */
   --fc-forma-strong-hover: color-mix(in oklab, var(--color-black) 16%, transparent); /* TODO */
   --fc-forma-strong-active: color-mix(in oklab, var(--color-black) 20%, transparent); /* TODO */
-  --fc-forma-muted: color-mix(in oklab, var(--color-black) 7%, transparent); /* TODO */
-  --fc-forma-faint: color-mix(in oklab, var(--color-black) 3%, transparent); /* TODO */
-  --fc-forma-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
-
-  --fc-forma-border: #E0E0E0;
   --fc-forma-strong-border: #A6A6A6;
-
-  --fc-forma-tab-foreground: #242424; /* does NOT apply to selected i don't think */
-  --fc-forma-tab-over: var(--fc-forma-muted);
-  --fc-forma-tab-over-border: #E5E5E5;
-  --fc-forma-tab-down: #E5E5E5;
-  --fc-forma-tab-down-border: var(--fc-forma-border);
-
-  --fc-forma-tab-selected: #F5F5F5;
-  --fc-forma-tab-selected-border: var(--fc-forma-strong-border);
-  --fc-forma-tab-selected-over: #F0F0F0;
-  --fc-forma-tab-selected-down: #EBEBEB; /* maybe glassy */
-
-  --fc-forma-secondary-icon: #424242;
-
+  --fc-forma-muted: color-mix(in oklab, var(--color-black) 7%, transparent); /* TODO */
   --fc-forma-muted-foreground: var(--color-gray-500);
+  --fc-forma-muted-border: #E5E5E5;
+  --fc-forma-faint: color-mix(in oklab, var(--color-black) 3%, transparent); /* TODO */
   --fc-forma-faint-foreground: var(--color-gray-400);
-
-  --fc-forma-event-contrast: #fff;
-  --fc-forma-background-event: var(--color-green-500);
+  --fc-forma-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
+  --fc-forma-selected: #F5F5F5;
+  --fc-forma-background-event: var(--color-green-500); /* TODO */
 }
 [data-color-scheme=dark] {
   --fc-forma-background: var(--color-gray-950);
-
-  /*
-  OLD values:
-  --fc-forma-strong: #404040;
-  --fc-forma-muted: #1A1A1A;
-  TODO: ensure below values have same hue!
-  */
+  --fc-forma-foreground: #DBDBDB;
+  --fc-forma-border: #404040;
   --fc-forma-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
   --fc-forma-strong-hover: color-mix(in oklab, var(--color-white) 16%, transparent); /* TODO */
   --fc-forma-strong-active: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
-  --fc-forma-muted: color-mix(in oklab, var(--color-white) 7%, transparent); /* TODO */
-  --fc-forma-faint: color-mix(in oklab, var(--color-white) 3%, transparent); /* TODO */
-  --fc-forma-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
-
-  --fc-forma-border: #404040;
   --fc-forma-strong-border: #707070;
-
-  --fc-forma-tab-foreground: #DBDBDB; /* does NOT apply to selected i don't think */
-  --fc-forma-tab-over: var(--fc-forma-muted);
-  --fc-forma-tab-over-border: #3A3A3A;
-  --fc-forma-tab-down: #323232;
-  --fc-forma-tab-down-border: var(--fc-forma-border);
-
-  --fc-forma-tab-selected: #202020;
-  --fc-forma-tab-selected-border: var(--fc-forma-strong-border);
-  --fc-forma-tab-selected-over: #262626;
-  --fc-forma-tab-selected-down: #2C2C2C; /* maybe glassy */
-
-  --fc-forma-secondary-icon: #BDBDBD;
-
+  --fc-forma-muted: color-mix(in oklab, var(--color-white) 8%, transparent); /* TODO */
   --fc-forma-muted-foreground: var(--color-gray-500);
+  --fc-forma-muted-border: #3A3A3A;
+  --fc-forma-faint: color-mix(in oklab, var(--color-white) 4%, transparent); /* TODO */
   --fc-forma-faint-foreground: var(--color-gray-600);
+  --fc-forma-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
+  --fc-forma-selected: #202020;
 }
 
 [data-palette=blue] {
@@ -84,8 +52,8 @@ down = mousedown (active)
   --fc-forma-primary-over: #0A5AA3;
   --fc-forma-primary-down: #064889;
   --fc-forma-primary-foreground: #fff;
-
   --fc-forma-event: #3788d8;
+  --fc-forma-event-contrast: #fff;
 }
 [data-palette=blue][data-color-scheme=dark] {
   --fc-forma-primary: #3788d8;
@@ -98,8 +66,8 @@ down = mousedown (active)
   --fc-forma-primary-over: #B03001;
   --fc-forma-primary-down: #8A2601;
   --fc-forma-primary-foreground: #fff;
-
   --fc-forma-event: #d83b01;
+  --fc-forma-event-contrast: #fff;
 }
 [data-palette=red][data-color-scheme=dark] {
   --fc-forma-primary: #E84A11;
@@ -112,8 +80,8 @@ down = mousedown (active)
   --fc-forma-primary-over: #0D6334;
   --fc-forma-primary-down: #0A4A27;
   --fc-forma-primary-foreground: #fff;
-
   --fc-forma-event: #107c41;
+  --fc-forma-event-contrast: #fff;
 }
 [data-palette=green][data-color-scheme=dark] {
   --fc-forma-primary: #218D52;
@@ -126,8 +94,8 @@ down = mousedown (active)
   --fc-forma-primary-over: #5D1F5D;
   --fc-forma-primary-down: #461746;
   --fc-forma-primary-foreground: #fff;
-
   --fc-forma-event: #742774;
+  --fc-forma-event-contrast: #fff;
 }
 [data-palette=purple][data-color-scheme=dark] {
   --fc-forma-primary: #853885;

@@ -2,8 +2,6 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const buttonIconClass = 'size-5' // matches text-sm line-height
-
 const outlineWidthClass = 'outline-3'
 const outlineWidthFocusClass = 'focus-visible:outline-3'
 const outlineWidthGroupFocusClass = 'group-focus-visible:outline-3'
@@ -33,18 +31,22 @@ const ghostPressableGroupClass = `${ghostHoverGroupClass} group-focus-visible:bg
 const toolbarSecondaryButtonClass = `${ghostPressableClass} border border-(--fc-monarch-secondary-border) ${tertiaryOutlineFocusClass} -outline-offset-1`
 
 // dark grey button
-const tabSelectedClass = `bg-(--fc-monarch-tab-selected) text-(--fc-monarch-tab-selected-foreground)`
-const tabSelectedPressableClasss = `${tabSelectedClass} hover:bg-(--fc-monarch-tab-selected-hover) active:bg-(--fc-monarch-tab-selected-active)`
+const tabSelectedClass = `bg-(--fc-monarch-selected) text-(--fc-monarch-selected-foreground)`
+const tabSelectedPressableClasss = `${tabSelectedClass} hover:bg-(--fc-monarch-selected-hover) active:bg-(--fc-monarch-selected-active)`
 const tabSelectedButtonClass = `${tabSelectedPressableClasss} border border-transparent ${tertiaryOutlineFocusClass} -outline-offset-1`
 
 const tabUnselectedButtonClass = `${ghostPressableClass} border border-transparent ${tertiaryOutlineFocusClass} -outline-offset-1`
 
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
+const fgGroupPressableClass = 'text-(--fc-monarch-foreground) group-hover:text-(--fc-monarch-strong-foreground) group-focus-visible:text-(--fc-monarch-strong-foreground)'
+
 const mutedFgClass = 'text-(--fc-monarch-muted-foreground)'
+export const mutedFgGroupPressableClass = `${mutedFgClass} group-hover:text-(--fc-monarch-foreground) group-focus-visible:text-(--fc-monarch-foreground)`
+
 const faintFgClass = 'text-(--fc-monarch-faint-foreground)'
 
-export const pressableIconClass = `${mutedFgClass} group-hover:text-(--fc-monarch-foreground) group-focus-visible:text-(--fc-monarch-foreground)`
+const buttonIconClass = `size-5 ${fgGroupPressableClass}`
 
 export const optionParams: EventCalendarOptionParams = {
   secondaryClass,
@@ -159,7 +161,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 ${pressableIconClass}`),
+    popoverCloseContent: () => svgs.x(`size-5 ${mutedFgGroupPressableClass}`),
   },
   views: baseEventCalendarOptions.views,
 }
