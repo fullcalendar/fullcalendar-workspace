@@ -15,15 +15,15 @@ clean+build all:
 
 clean up css variables
   do ghost to hover renaming?
-  because of weird forma mutedPressableClass naming issue,
-    rename
-      -strong (baseline)
-      -strong-hover -> -stronger
-      -strong-active -> -strongest ?
-  revisit how we have tab text color under either muted or foreground. often needs an in-between
-    fc-breezy-selected
-    fc-breezy-selected-foreground
-    fc-breezy-unselected-foreground
+    ghostHoverClass     -> mutedHoverClass
+    ghostPressableClass -> mutedHoverPressableClass
+                        -> faintHoverClass
+    faintPressableClass -> faintHoverPressableClass
+  replace all #fff/#ffffff/white with var(--color-white)? same with black?
+  have separate --fc-*-event variable?
+    matches what  --fc-*-background-event does
+    breezy actually has different from primary
+    in most cases, just forward primary
 
 
 MANUAL TEST

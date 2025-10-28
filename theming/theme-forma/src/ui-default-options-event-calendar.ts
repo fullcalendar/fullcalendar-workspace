@@ -37,7 +37,7 @@ export const mutedFgGroupPressableClass = `${mutedFgClass} group-hover:text-(--f
 const fgGroupPressableClass = `text-(--fc-forma-foreground) group-hover:text-(--fc-forma-strong-foreground) group-focus-visible:text-(--fc-forma-strong-foreground)`
 
 const mutedClass = mutedBgClass // only uses bg
-const mutedPressableClass = `${mutedClass} hover:bg-(--fc-forma-strong) active:bg-(--fc-forma-strong-hover) ${primaryOutlineFocusClass}`
+const mutedPressableClass = `${mutedClass} hover:bg-(--fc-forma-strong) active:bg-(--fc-forma-stronger) ${primaryOutlineFocusClass}`
 
 const unselectedButtonTextColorClass = 'text-(--fc-forma-foreground)'
 const unselectedButtonHoverBorderColorClass = 'hover:border-(--fc-forma-muted-border)'
@@ -57,8 +57,8 @@ const buttonIconClass = `size-5 ${fgGroupPressableClass}`
 const strongSolidBgClass = '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]'
 const strongSolidPressableClass = joinClassNames(
   strongSolidBgClass,
-  'hover:[background:linear-gradient(var(--fc-forma-strong-hover),var(--fc-forma-strong-hover))_var(--fc-monarch-background)]',
-  'active:[background:linear-gradient(var(--fc-forma-strong-active),var(--fc-forma-strong-active))_var(--fc-monarch-background)]',
+  'hover:[background:linear-gradient(var(--fc-forma-stronger),var(--fc-forma-stronger))_var(--fc-monarch-background)]',
+  'active:[background:linear-gradient(var(--fc-forma-strongest),var(--fc-forma-strongest))_var(--fc-monarch-background)]',
 )
 
 const faintEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-forma-background))]'

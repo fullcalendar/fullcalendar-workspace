@@ -1,78 +1,86 @@
 
 :root {
-  /* standard fills */
-  --fc-breezy-background: var(--color-white);
-  /* TODO: re-match these colors to tailwindplus -- ensure toolbar button ghost-hovering too */
-  --fc-breezy-strong: color-mix(in oklab, var(--color-black) 10%, transparent); /* TODO */
-  --fc-breezy-strong-hover: color-mix(in oklab, var(--color-black) 14%, transparent); /* TODO */
-  --fc-breezy-strong-active: color-mix(in oklab, var(--color-black) 18%, transparent); /* TODO */
-  --fc-breezy-muted: color-mix(in oklab, var(--color-black) 5%, transparent); /* TODO */
-  --fc-breezy-faint: color-mix(in oklab, var(--color-black) 2%, transparent); /* TODO */
-  --fc-breezy-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
-  --fc-breezy-now: red; /* TODO */
+  /* primary */
 
-  /* standard foregrounds */
-  --fc-breezy-foreground: var(--color-gray-700);
-  --fc-breezy-muted-foreground: var(--color-gray-500);
-  --fc-breezy-faint-foreground: var(--color-gray-400);
-  --fc-breezy-strong-foreground: var(--color-gray-900);
-
-  /* standard borders */
-  --fc-breezy-border: var(--color-gray-200);
-  --fc-breezy-muted-border: var(--color-gray-100);
-  --fc-breezy-strong-border: var(--color-gray-300);
-
-  /* popovers */
-  --fc-breezy-popover: var(--fc-breezy-background);
-  --fc-breezy-popover-border: var(--fc-breezy-strong-border);
-
-  --fc-breezy-selected: var(--fc-breezy-strong);
-
-  /* secondary buttons (white on top of gray) */
+  /* secondary */
   --fc-breezy-secondary: var(--fc-breezy-background);
   --fc-breezy-secondary-over: var(--fc-breezy-faint);
   --fc-breezy-secondary-border: var(--fc-breezy-strong-border);
   --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
   --fc-breezy-secondary-icon: var(--fc-breezy-faint-foreground);
   --fc-breezy-secondary-icon-over: var(--fc-breezy-muted-foreground);
+
+  /* calendar content */
+  --fc-breezy-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
+  --fc-breezy-now: red; /* TODO */
+
+  /* controls */
+  --fc-breezy-selected: var(--fc-breezy-strong);
+
+  /* popover */
+  --fc-breezy-popover: var(--fc-breezy-background);
+  --fc-breezy-popover-border: var(--fc-breezy-strong-border);
+
+  /* neutral backgrounds */
+  --fc-breezy-background: var(--color-white);
+  --fc-breezy-faint: color-mix(in oklab, var(--color-black) 2%, transparent); /* TODO */
+  --fc-breezy-muted: color-mix(in oklab, var(--color-black) 5%, transparent); /* TODO */
+  --fc-breezy-strong: color-mix(in oklab, var(--color-black) 10%, transparent); /* TODO */
+  --fc-breezy-stronger: color-mix(in oklab, var(--color-black) 14%, transparent); /* TODO */
+  --fc-breezy-strongest: color-mix(in oklab, var(--color-black) 18%, transparent); /* TODO */
+
+  /* neutral foregrounds */
+  --fc-breezy-foreground: var(--color-gray-700);
+  --fc-breezy-faint-foreground: var(--color-gray-400);
+  --fc-breezy-muted-foreground: var(--color-gray-500);
+  --fc-breezy-strong-foreground: var(--color-gray-900);
+
+  /* neutral borders */
+  --fc-breezy-border: var(--color-gray-200);
+  --fc-breezy-muted-border: var(--color-gray-100);
+  --fc-breezy-strong-border: var(--color-gray-300);
 }
 
 [data-color-scheme=dark] {
-  /* standard fills */
-  --fc-breezy-background: var(--color-gray-900);
-  /* TODO: re-match these colors to tailwindplus */
-  --fc-breezy-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
-  --fc-breezy-strong-hover: color-mix(in oklab, var(--color-white) 16%, transparent); /* TODO */
-  --fc-breezy-strong-active: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
-  --fc-breezy-muted: color-mix(in oklab, var(--color-white) 7%, transparent); /* TODO */
-  --fc-breezy-faint: color-mix(in oklab, var(--color-white) 3%, transparent); /* TODO */
-  --fc-breezy-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
-  --fc-breezy-now: red; /* TODO */
+  /* primary */
 
-  /* standard foregrounds */
-  --fc-breezy-foreground: var(--color-gray-300);
-  --fc-breezy-muted-foreground: var(--color-gray-400);
-  --fc-breezy-faint-foreground: var(--color-gray-500);
-  --fc-breezy-strong-foreground: var(--color-white);
-
-  /* standard borders */
-  --fc-breezy-border: color-mix(in oklab, var(--color-white) 10%, transparent);
-  --fc-breezy-muted-border: color-mix(in oklab, var(--color-white) 5%, transparent);
-  --fc-breezy-strong-border: color-mix(in oklab, var(--color-white) 15%, transparent);
-
-  /* popovers */
-  --fc-breezy-popover: var(--color-gray-800); /* must be fully opaque */
-  --fc-breezy-popover-border: var(--fc-breezy-border);
-
-  --fc-breezy-selected: var(--fc-breezy-muted);
-
-  /* secondary buttons (gray-er on top of gray) */
+  /* secondary */
   --fc-breezy-secondary: var(--fc-breezy-muted);
   --fc-breezy-secondary-over: var(--fc-breezy-strong);
   --fc-breezy-secondary-border: var(--fc-breezy-muted-border);
   --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
   --fc-breezy-secondary-icon: var(--fc-breezy-muted-foreground);
   --fc-breezy-secondary-icon-over: var(--fc-breezy-foreground);
+
+  /* calendar content */
+  --fc-breezy-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
+  --fc-breezy-now: red; /* TODO */
+
+  /* controls */
+  --fc-breezy-selected: var(--fc-breezy-muted);
+
+  /* popovers */
+  --fc-breezy-popover: var(--color-gray-800); /* must be fully opaque */
+  --fc-breezy-popover-border: var(--fc-breezy-border);
+
+  /* neutral backgrounds */
+  --fc-breezy-background: var(--color-gray-900);
+  --fc-breezy-faint: color-mix(in oklab, var(--color-white) 3%, transparent); /* TODO */
+  --fc-breezy-muted: color-mix(in oklab, var(--color-white) 7%, transparent); /* TODO */
+  --fc-breezy-strong: color-mix(in oklab, var(--color-white) 12%, transparent); /* TODO */
+  --fc-breezy-stronger: color-mix(in oklab, var(--color-white) 16%, transparent); /* TODO */
+  --fc-breezy-strongest: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
+
+  /* neutral foregrounds */
+  --fc-breezy-foreground: var(--color-gray-300);
+  --fc-breezy-muted-foreground: var(--color-gray-400);
+  --fc-breezy-faint-foreground: var(--color-gray-500);
+  --fc-breezy-strong-foreground: var(--color-white);
+
+  /* neutral borders */
+  --fc-breezy-border: color-mix(in oklab, var(--color-white) 10%, transparent);
+  --fc-breezy-muted-border: color-mix(in oklab, var(--color-white) 5%, transparent);
+  --fc-breezy-strong-border: color-mix(in oklab, var(--color-white) 15%, transparent);
 }
 
 /* Colors
@@ -84,21 +92,21 @@ https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
 */
 
 [data-palette=indigo] {
-  /* primary buttons */
+  /* primary */
   --fc-breezy-primary: var(--color-indigo-600);
   --fc-breezy-primary-over: var(--color-indigo-500);
   --fc-breezy-primary-foreground: var(--color-white);
 
-  /* events */
+  /* calendar content */
   --fc-breezy-event: var(--color-blue-500);
   --fc-breezy-background-event: var(--color-green-500); /* TODO */
 }
 [data-palette=indigo][data-color-scheme=dark] { /* shift lighter */
-  /* primary buttons */
+  /* primary */
   --fc-breezy-primary: var(--color-indigo-500);
   --fc-breezy-primary-over: var(--color-indigo-400);
 
-  /* events */
+  /* calendar content */
   --fc-breezy-event: var(--color-blue-300);
 }
 
@@ -108,12 +116,12 @@ https://catalyst.tailwindui.com/docs/button
 */
 
 [data-palette=rose] {
-  /* primary buttons */
+  /* primary */
   --fc-breezy-primary: var(--color-rose-600);
   --fc-breezy-primary-over: var(--color-rose-500);
   --fc-breezy-primary-foreground: var(--color-white);
 
-  /* events */
+  /* calendar content */
   --fc-breezy-event: var(--color-pink-500);
   --fc-breezy-background-event: var(--color-green-500); /* TODO */
 }
@@ -124,7 +132,7 @@ https://catalyst.tailwindui.com/docs/button
   --fc-breezy-primary-over: var(--color-emerald-500);
   --fc-breezy-primary-foreground: var(--color-white);
 
-  /* events */
+  /* calendar content */
   --fc-breezy-event: var(--color-green-500);
   --fc-breezy-background-event: var(--color-green-500); /* TODO */
 }
@@ -135,7 +143,7 @@ https://catalyst.tailwindui.com/docs/button
   --fc-breezy-primary-over: var(--color-yellow-400);
   --fc-breezy-primary-foreground: var(--color-white);
 
-  /* events */
+  /* calendar content */
   --fc-breezy-event: var(--color-amber-500);
   --fc-breezy-background-event: var(--color-green-500); /* TODO */
 }

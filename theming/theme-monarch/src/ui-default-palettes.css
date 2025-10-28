@@ -23,197 +23,347 @@ error -> now
 */
 
 :root {
-  --fc-monarch-background: #fff;
-  --fc-monarch-foreground: var(--color-gray-950);
-  --fc-monarch-strong: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
-  --fc-monarch-strong-hover: color-mix(in oklab, var(--color-gray-500) 35%, transparent); /* TODO */
-  --fc-monarch-strong-active: color-mix(in oklab, var(--color-gray-500) 40%, transparent); /* TODO */
-  --fc-monarch-strong-border: var(--color-gray-400); /* TODO */
-  --fc-monarch-muted: color-mix(in oklab, var(--color-gray-500) 15%, transparent); /* TODO */
-  --fc-monarch-muted-foreground: #8d8d8d; /* TODO */
-  --fc-monarch-faint: color-mix(in oklab, var(--color-gray-500) 10%, transparent); /* TODO */
-  --fc-monarch-faint-foreground: #bebebe; /* TODO */
-
-  /* derived from future palette-specific values */
+  /* primary */
   --fc-monarch-primary-over: color-mix(in oklab, var(--fc-monarch-primary) 90%, white);
   --fc-monarch-primary-down: color-mix(in oklab, var(--fc-monarch-primary) 80%, white);
+
+  /* secondary */
   --fc-monarch-secondary-over: color-mix(in oklab, var(--fc-monarch-secondary) 90%, var(--fc-monarch-foreground));
   --fc-monarch-secondary-down: color-mix(in oklab, var(--fc-monarch-secondary) 80%, var(--fc-monarch-foreground));
+
+  /* tertiary */
   --fc-monarch-tertiary-over: color-mix(in oklab, var(--fc-monarch-tertiary) 90%, white);
   --fc-monarch-tertiary-down: color-mix(in oklab, var(--fc-monarch-tertiary) 80%, white);
+
+  /* calendar content */
+  --fc-monarch-highlight: color-mix(in oklab, var(--fc-monarch-secondary) 30%, transparent);
+
+  /* controls */
   --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
   --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
-  --fc-monarch-highlight: color-mix(in oklab, var(--fc-monarch-secondary) 30%, transparent);
+
+  /* popover */
+
+  /* neutral backgrounds */
+  --fc-monarch-background: #fff;
+  --fc-monarch-faint: color-mix(in oklab, var(--color-gray-500) 10%, transparent); /* TODO */
+  --fc-monarch-muted: color-mix(in oklab, var(--color-gray-500) 15%, transparent); /* TODO */
+  --fc-monarch-strong: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
+  --fc-monarch-stronger: color-mix(in oklab, var(--color-gray-500) 35%, transparent); /* TODO */
+  --fc-monarch-strongest: color-mix(in oklab, var(--color-gray-500) 40%, transparent); /* TODO */
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: var(--color-gray-950);
+  --fc-monarch-faint-foreground: #bebebe; /* TODO */
+  --fc-monarch-muted-foreground: #8d8d8d; /* TODO */
+
+  /* neutral borders */
+  --fc-monarch-strong-border: var(--color-gray-400); /* TODO */
 }
 [data-color-scheme=dark] {
+  /* neutral backgrounds */
   --fc-monarch-background: var(--color-gray-950);
-  --fc-monarch-foreground: #fff;
-  --fc-monarch-strong: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
-  --fc-monarch-strong-hover: color-mix(in oklab, var(--color-gray-500) 35%, transparent); /* TODO */
-  --fc-monarch-strong-active: color-mix(in oklab, var(--color-gray-500) 40%, transparent); /* TODO */
-  --fc-monarch-strong-border: var(--color-gray-700); /* TODO */
-  --fc-monarch-muted: color-mix(in oklab, var(--color-gray-500) 15%, transparent); /* TODO */
-  --fc-monarch-muted-foreground: #b0b0b0; /* TODO */
   --fc-monarch-faint: color-mix(in oklab, var(--color-gray-500) 10%, transparent); /* TODO */
+  --fc-monarch-muted: color-mix(in oklab, var(--color-gray-500) 15%, transparent); /* TODO */
+  --fc-monarch-strong: color-mix(in oklab, var(--color-gray-500) 30%, transparent); /* TODO */
+  --fc-monarch-stronger: color-mix(in oklab, var(--color-gray-500) 35%, transparent); /* TODO */
+  --fc-monarch-strongest: color-mix(in oklab, var(--color-gray-500) 40%, transparent); /* TODO */
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: #fff;
+  --fc-monarch-muted-foreground: #b0b0b0; /* TODO */
   --fc-monarch-faint-foreground: #898989; /* TODO */
+
+  /* neutral borders */
+  --fc-monarch-strong-border: var(--color-gray-700); /* TODO */
 }
 
 [data-palette=purple] {
+  /* primary */
   --fc-monarch-primary: #6750A4;
   --fc-monarch-primary-foreground: #FFFFFF;
+
+  /* secondary */
   --fc-monarch-secondary: #EADDFF;
   --fc-monarch-secondary-foreground: #4F378B;
   --fc-monarch-secondary-border: #CAC4D0; /* for outline secondary button */
+
+  /* tertiary */
   --fc-monarch-tertiary: #7D5260;
   --fc-monarch-tertiary-foreground: #FFFFFF;
+
+  /* calendar content */
+  --fc-monarch-now: #B3261E;
+
+  /* controls */
   --fc-monarch-selected: #625B71;
   --fc-monarch-selected-foreground: #FFFFFF;
-  --fc-monarch-popover: var(--fc-monarch-background);
-  --fc-monarch-border: #dedce1;
-  --fc-monarch-now: #B3261E;
   --fc-monarch-outline: #ff9dbb;
+
+  /* popover */
+  --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral borders */
+  --fc-monarch-border: #dedce1;
 }
 [data-palette=purple][data-color-scheme=dark] {
+  /* primary */
   --fc-monarch-primary: #D0BCFF;
   --fc-monarch-primary-foreground: #381E72;
+
+  /* secondary */
   --fc-monarch-secondary: #4F378B;
   --fc-monarch-secondary-foreground: #EADDFF;
   --fc-monarch-secondary-border: #49454F;
+
+  /* tertiary */
   --fc-monarch-tertiary: #EFB8C8;
   --fc-monarch-tertiary-foreground: #492532;
+
+  /* calendar content */
+  --fc-monarch-now: #F2B8B5;
+
+  /* controls */
   --fc-monarch-selected: #CCC2DC;
   --fc-monarch-selected-foreground: #332D41;
+  --fc-monarch-outline: red; /* TODO */
+
+  /* popover */
   --fc-monarch-popover: rgb(26 17 15);
   --fc-monarch-popover-foreground: rgb(241 223 218);
+
+  /* neutral borders */
   --fc-monarch-border: #323036;
-  --fc-monarch-now: #F2B8B5;
-  --fc-monarch-outline: red; /* TODO */
 }
 
 [data-palette=red] {
+  /* primary */
   --fc-monarch-primary: rgb(143 76 56);
   --fc-monarch-primary-foreground: rgb(255 255 255);
+
+  /* secondary */
   --fc-monarch-secondary: rgb(255 219 209);
   --fc-monarch-secondary-foreground: rgb(114 53 35);
   --fc-monarch-secondary-border: rgb(216 194 188);
+
+  /* tertiary */
   --fc-monarch-tertiary: rgb(108 93 47);
   --fc-monarch-tertiary-foreground: rgb(255 255 255);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(186 26 26);
+
+  /* controls */
   --fc-monarch-selected: rgb(119 87 78);
   --fc-monarch-selected-foreground: rgb(255 255 255);
-  --fc-monarch-popover: var(--fc-monarch-background);
-  --fc-monarch-border: rgb(216 194 188);
-  --fc-monarch-now: rgb(186 26 26);
   --fc-monarch-outline: red; /* TODO */
+
+  /* popover */
+  --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral borders */
+  --fc-monarch-border: rgb(216 194 188);
 }
 [data-palette=red][data-color-scheme=dark] {
+  /* primary */
   --fc-monarch-primary: rgb(255 181 160);
   --fc-monarch-primary-foreground: rgb(86 31 15);
+
+  /* secondary */
   --fc-monarch-secondary: rgb(114 53 35);
   --fc-monarch-secondary-foreground: rgb(255 219 209);
   --fc-monarch-secondary-border: rgb(83 67 63);
+
+  /* tertiary */
   --fc-monarch-tertiary: rgb(216 197 141);
   --fc-monarch-tertiary-foreground: rgb(59 47 5);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(255 180 171);
+
+  /* controls */
   --fc-monarch-selected: rgb(231 189 178);
   --fc-monarch-selected-foreground: rgb(68 42 34);
+  --fc-monarch-outline: red; /* TODO */
+
+  /* popover */
   --fc-monarch-popover: rgb(26 17 15);
   --fc-monarch-popover-foreground: rgb(241 223 218);
+
+  /* neutral borders */
   --fc-monarch-border: rgb(83 67 63);
-  --fc-monarch-now: rgb(255 180 171);
-  --fc-monarch-outline: red; /* TODO */
 }
 
 [data-palette=green] {
+  /* primary */
   --fc-monarch-primary: rgb(76 102 43);
   --fc-monarch-primary-foreground: rgb(255 255 255);
+
+  /* secondary */
   --fc-monarch-secondary: rgb(205 237 163);
   --fc-monarch-secondary-foreground: rgb(53 78 22);
   --fc-monarch-secondary-border: rgb(197 200 186);
+
+  /* tertiary */
   --fc-monarch-tertiary: rgb(56 102 99);
   --fc-monarch-tertiary-foreground: rgb(255 255 255);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(186 26 26);
+
+  /* controls */
   --fc-monarch-selected: rgb(88 98 73);
   --fc-monarch-selected-foreground: rgb(255 255 255);
-  --fc-monarch-popover: var(--fc-monarch-background);
-  --fc-monarch-border: rgb(197 200 186);
-  --fc-monarch-now: rgb(186 26 26);
   --fc-monarch-outline: red; /* TODO */
+
+  /* popover */
+  --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral borders */
+  --fc-monarch-border: rgb(197 200 186);
 }
 [data-palette=green][data-color-scheme=dark] {
+  /* primary */
   --fc-monarch-primary: rgb(177 209 138);
   --fc-monarch-primary-foreground: rgb(31 55 1);
+
+  /* secondary */
   --fc-monarch-secondary: rgb(53 78 22);
   --fc-monarch-secondary-foreground: rgb(205 237 163);
   --fc-monarch-secondary-border: rgb(68 72 61);
+
+  /* tertiary */
   --fc-monarch-tertiary: rgb(160 208 203);
   --fc-monarch-tertiary-foreground: rgb(0 55 53);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(255 180 171);
+
+  /* controls */
   --fc-monarch-selected: rgb(191 203 173);
   --fc-monarch-selected-foreground: rgb(42 51 30);
+  --fc-monarch-outline: red; /* TODO */
+
+  /* popover */
   --fc-monarch-popover: rgb(18 20 14);
   --fc-monarch-popover-foreground: rgb(226 227 216);
+
+  /* neutral borders */
   --fc-monarch-border: rgb(68 72 61);
-  --fc-monarch-now: rgb(255 180 171);
-  --fc-monarch-outline: red; /* TODO */
 }
 
 [data-palette=blue] {
+  /* primary */
   --fc-monarch-primary: rgb(65 95 145);
   --fc-monarch-primary-foreground: rgb(255 255 255);
+
+  /* secondary */
   --fc-monarch-secondary: rgb(214 227 255);
   --fc-monarch-secondary-foreground: rgb(40 71 119);
   --fc-monarch-secondary-border: rgb(196 198 208);
+
+  /* tertiary */
   --fc-monarch-tertiary: rgb(112 85 117);
   --fc-monarch-tertiary-foreground: rgb(255 255 255);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(186 26 26);
+
+  /* controls */
   --fc-monarch-selected: rgb(86 95 113);
   --fc-monarch-selected-foreground: rgb(255 255 255);
-  --fc-monarch-popover: var(--fc-monarch-background);
-  --fc-monarch-border: rgb(196 198 208);
-  --fc-monarch-now: rgb(186 26 26);
   --fc-monarch-outline: red; /* TODO */
+
+  /* popover */
+  --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral borders */
+  --fc-monarch-border: rgb(196 198 208);
 }
 [data-palette=blue][data-color-scheme=dark] {
+  /* primary */
   --fc-monarch-primary: rgb(170 199 255);
   --fc-monarch-primary-foreground: rgb(10 48 95);
+
+  /* secondary */
   --fc-monarch-secondary: rgb(40 71 119);
   --fc-monarch-secondary-foreground: rgb(214 227 255);
   --fc-monarch-secondary-border: rgb(68 71 78);
+
+  /* tertiary */
   --fc-monarch-tertiary: rgb(221 188 224);
   --fc-monarch-tertiary-foreground: rgb(63 40 68);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(255 180 171);
+
+  /* controls */
   --fc-monarch-selected: rgb(190 198 220);
   --fc-monarch-selected-foreground: rgb(40 49 65);
+  --fc-monarch-outline: red; /* TODO */
+
+  /* popover */
   --fc-monarch-popover: rgb(17 19 24);
   --fc-monarch-popover-foreground: rgb(226 226 233);
+
+  /* neutral borders */
   --fc-monarch-border: rgb(68 71 78);
-  --fc-monarch-now: rgb(255 180 171);
-  --fc-monarch-outline: red; /* TODO */
 }
 
 [data-palette=yellow] {
+  /* primary */
   --fc-monarch-primary: rgb(109 94 15);
   --fc-monarch-primary-foreground: rgb(255 255 255);
+
+  /* secondary */
   --fc-monarch-secondary: rgb(248 226 135);
   --fc-monarch-secondary-foreground: rgb(83 70 0);
   --fc-monarch-secondary-border: rgb(205 198 180);
+
+  /* tertiary */
   --fc-monarch-tertiary: rgb(67 102 78);
   --fc-monarch-tertiary-foreground: rgb(255 255 255);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(186 26 26);
+
+  /* controls */
   --fc-monarch-selected: rgb(102 94 64);
   --fc-monarch-selected-foreground: rgb(255 255 255);
-  --fc-monarch-popover: var(--fc-monarch-background);
-  --fc-monarch-border: rgb(205 198 180);
-  --fc-monarch-now: rgb(186 26 26);
   --fc-monarch-outline: red; /* TODO */
+
+  /* popover */
+  --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral borders */
+  --fc-monarch-border: rgb(205 198 180);
 }
 [data-palette=yellow][data-color-scheme=dark] {
+  /* primary */
   --fc-monarch-primary: rgb(219 198 110);
   --fc-monarch-primary-foreground: rgb(58 48 0);
+
+  /* secondary */
   --fc-monarch-secondary: rgb(83 70 0);
   --fc-monarch-secondary-foreground: rgb(248 226 135);
   --fc-monarch-secondary-border: rgb(75 71 57);
+
+  /* tertiary */
   --fc-monarch-tertiary: rgb(169 208 179);
   --fc-monarch-tertiary-foreground: rgb(20 55 35);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(255 180 171);
+
+  /* controls */
   --fc-monarch-selected: rgb(209 198 161);
   --fc-monarch-selected-foreground: rgb(54 48 22);
+  --fc-monarch-outline: red; /* TODO */
+
+  /* popover */
   --fc-monarch-popover: rgb(21 19 11);
   --fc-monarch-popover-foreground: rgb(232 226 212);
+
+  /* neutral borders */
   --fc-monarch-border: rgb(75 71 57);
-  --fc-monarch-now: rgb(255 180 171);
-  --fc-monarch-outline: red; /* TODO */
 }

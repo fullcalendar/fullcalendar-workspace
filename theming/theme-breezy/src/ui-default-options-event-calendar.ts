@@ -77,8 +77,8 @@ export const optionParams: EventCalendarOptionParams = {
 
   strongSolidPressableClass: joinClassNames(
     '[background:linear-gradient(var(--fc-breezy-strong),var(--fc-breezy-strong))_var(--fc-breezy-background)]',
-    'hover:[background:linear-gradient(var(--fc-breezy-strong-hover),var(--fc-breezy-strong-hover))_var(--fc-breezy-background)]',
-    'active:[background:linear-gradient(var(--fc-breezy-strong-active),var(--fc-breezy-strong-active))_var(--fc-breezy-background)]',
+    'hover:[background:linear-gradient(var(--fc-breezy-stronger),var(--fc-breezy-stronger))_var(--fc-breezy-background)]',
+    'active:[background:linear-gradient(var(--fc-breezy-strongest),var(--fc-breezy-strongest))_var(--fc-breezy-background)]',
   ),
 
   mutedBgClass: 'bg-(--fc-breezy-muted)',
