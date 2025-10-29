@@ -22,7 +22,7 @@ const primaryButtonClass = `${primaryPressableClass} border-transparent ${ouline
 
 // secondary *toolbar button*
 const secondaryPressableClass = `bg-(--fc-pulse-secondary) hover:bg-(--fc-pulse-secondary-over) focus-visible:bg-(--fc-pulse-secondary-over) active:bg-(--fc-pulse-secondary-down)`
-const secondaryButtonClass = `${secondaryPressableClass} ${oulineFocusClass}`
+const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-pulse-border) ${oulineFocusClass}`
 const secondaryButtonIconClass = 'size-5 text-(--fc-pulse-secondary-icon) group-hover:text-(--fc-pulse-secondary-icon-over) group-focus-visible:text-(--fc-pulse-secondary-icon-over)'
 
 // tertiary
@@ -114,7 +114,7 @@ export const defaultUiEventCalendarOptions: {
 
     viewClass: [
       'rounded-sm overflow-hidden',
-      `bg-(--fc-pulse-background) border border-(--fc-pulse-view-border) ${smallBoxShadowClass}`,
+      `bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`,
       // ^^^ border needs more contrast bc of drop shadow, and to match controls
     ],
 
@@ -131,7 +131,7 @@ export const defaultUiEventCalendarOptions: {
       'isolate items-center rounded-sm',
       data.isSelectGroup
         ? `p-px bg-(--fc-pulse-unselected)`
-        : `border border-(--fc-pulse-view-border) ${smallBoxShadowClass}`
+        : `border border-(--fc-pulse-strong-border) ${smallBoxShadowClass}`
     ],
 
     buttonClass: (data) => [
@@ -158,9 +158,9 @@ export const defaultUiEventCalendarOptions: {
               // secondary
               : joinClassNames(
                   secondaryButtonClass,
-                  data.inGroup // border color is conditional...
-                    ? `first:rounded-s-sm last:rounded-e-sm not-first:border-s border-(--fc-pulse-view-border)` // within group
-                    : `border border-(--fc-pulse-view-border) ${smallBoxShadowClass}`, // standalone
+                  data.inGroup
+                    ? `first:rounded-s-sm last:rounded-e-sm not-first:border-s` // within group
+                    : `border ${smallBoxShadowClass}`, // standalone
                 )
           ),
     ],

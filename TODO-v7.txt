@@ -16,7 +16,6 @@ clean+build all:
 clean up css variables
   rearrange ThemeOptionParams props
   replace all #fff/#ffffff/white with var(--color-white)? same with black?
-  clean up --fc-*-view-border classnames
 
 
 MANUAL TEST
