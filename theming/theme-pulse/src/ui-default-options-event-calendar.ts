@@ -45,7 +45,7 @@ const mutedHoverPressableClass = `${mutedHoverClass} active:bg-(--fc-pulse-stron
 const selectedButtonClass = `bg-(--fc-pulse-selected) text-(--fc-pulse-selected-foreground) ${largeBoxShadowClass} ${oulineFocusClass}`
 const unselectedButtonClass = `text-(--fc-pulse-unselected-foreground) ${mutedHoverPressableClass} ${oulineFocusClass}`
 
-// computed event colors
+// event colors
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
 export { mutedFgPressableGroupClass }
@@ -61,6 +61,7 @@ export const optionParams: EventCalendarOptionParams = {
   faintHoverClass,
   faintHoverPressableClass,
 
+  // TODO: move this up?
   strongSolidPressableClass: joinClassNames(
     '[background:linear-gradient(var(--fc-pulse-strong),var(--fc-pulse-strong))_var(--fc-pulse-background)]',
     'hover:[background:linear-gradient(var(--fc-pulse-stronger),var(--fc-pulse-stronger))_var(--fc-pulse-background)]',

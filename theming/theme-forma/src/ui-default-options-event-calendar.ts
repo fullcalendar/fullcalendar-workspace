@@ -54,7 +54,7 @@ const unselectedPressableClass = `${mutedHoverPressableClass} text-(--fc-forma-f
 const unselectedButtonClass = `${unselectedPressableClass} border border-transparent hover:border-(--fc-forma-muted-border) active:border-(--fc-forma-border) ${primaryOutlineFocusClass}`
 const selectedButtonClass = `bg-(--fc-forma-selected) border border-(--fc-forma-strong-border) ${primaryOutlineFocusClass} -outline-offset-1` // TODO: add active: ?
 
-// computed event colors
+// event colors
 const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-forma-background))]'
 const eventFaintPressableClass = joinClassNames(
   eventFaintBgClass,

@@ -16,8 +16,7 @@ clean+build all:
 clean up css variables
   rearrange ThemeOptionParams props
   replace all #fff/#ffffff/white with var(--color-white)? same with black?
-NOTES
-  mutedPressableClass/faintPressableClass do NOT change foreground color!
+  clean up --fc-*-view-border classnames
 
 
 MANUAL TEST

@@ -1,61 +1,62 @@
 import { joinClassNames } from '@fullcalendar/core'
 import { ThemeOptionParams } from '@fullcalendar/theme-common'
 
+// outline
 const outlineWidthClass = 'outline-3'
 const outlineWidthFocusClass = 'focus-visible:outline-3'
 const outlineWidthGroupFocusClass = 'group-focus-visible:outline-3'
 const outlineInsetClass = '-outline-offset-3'
-
-// single outline style
 const outlineColorClass = 'outline-ring/50'
 const outlineFocusClass = `${outlineColorClass} ${outlineWidthFocusClass}`
 
+// faint
+const faintBgHoverClass = 'hover:bg-muted/50'
+const faintBgFocusClass = 'focus-visible:bg-muted/50'
+
+// muted
+const mutedBgClass = 'bg-foreground/5'
+const mutedBgHoverClass = 'hover:bg-foreground/5'
+const mutedBgHoverGroupClass = 'group-hover:bg-foreground/5'
+
+// strong
+const strongBgClass = 'bg-foreground/10'
+const strongBgHoverClass = 'hover:bg-foreground/10'
+// (guaranteed-solid... shadcn input variables already solid before color-mix)
+const strongSolidClass = 'bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))]'
+const strongSolidPressableClass = `${strongSolidClass} hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))]`
+
+// interactive neutral foregrounds
+const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'
+
+// primary
 const primaryClass = 'bg-primary text-(--primary-foreground)'
 const primaryPressableClass = `${primaryClass} hover:bg-primary/90`
 const primaryPressableGroupClass = `${primaryClass} group-hover:bg-primary/90`
 
-const secondaryClass = 'bg-foreground/10'
+// secondary
+const secondaryClass = strongBgClass
 const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 ${outlineFocusClass}`
 
 // tertiary (based on primary, but with low contrast)
-const tertiaryClass = 'bg-primary/20 dark:bg-primary/30' // ALSO SORTA LIKE neutralClass
+const tertiaryClass = 'bg-primary/20 dark:bg-primary/30'
 const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 ${outlineFocusClass}`
 const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-primary/40`
 
-const mutedHoverClass = 'hover:bg-foreground/5'
-const ghostHoverGroupClass = 'group-hover:bg-foreground/5'
-const mutedHoverPressableClass = mutedHoverClass // shadcn doesn't do down-effect
-const mutedHoverPressableGroupClass = ghostHoverGroupClass // shadcn doesn't do down-effect
-
-const faintHoverClass = 'hover:bg-muted/50'
-const faintHoverPressableClass = `${faintHoverClass} focus-visible:bg-muted/50`
-
-const mutedClass = 'bg-foreground/5'
-const mutedPressableClass = `${mutedClass} hover:bg-foreground/10`
-
-// very probable, tho not guaranteed, this will be solid
-// however, --foreground and --background almost always solid
-// for a bulletproof technique, use the linear-gradient technique, but extremely verbose with nested expressions
-const strongSolidClass = 'bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))]'
-const strongSolidPressableClass = `${strongSolidClass} hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))]`
-
+// event colors
 const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]'
 const eventFaintPressableClass = joinClassNames(
   eventFaintBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))]',
 )
-
 const eventMutedBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]'
 const eventMutedPressableClass = joinClassNames(
   eventMutedBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--background))]',
 )
-
 const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
-
 const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
 
-export const pressableIconClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'
+export { mutedFgPressableGroupClass }
 
 export const optionParams: ThemeOptionParams = {
   primaryClass,
@@ -69,17 +70,17 @@ export const optionParams: ThemeOptionParams = {
   tertiaryPressableClass,
   tertiaryPressableGroupClass,
 
-  mutedHoverClass,
-  mutedHoverPressableClass,
-  mutedHoverPressableGroupClass,
+  mutedHoverClass: mutedBgHoverClass,
+  mutedHoverPressableClass: mutedBgHoverClass, // shadcn doesn't do down-effect
+  mutedHoverPressableGroupClass: mutedBgHoverGroupClass, // shadcn doesn't do down-effect
 
   strongSolidPressableClass,
 
-  mutedClass,
-  mutedPressableClass,
+  mutedClass: mutedBgClass,
+  mutedPressableClass: `${mutedBgClass} ${strongBgHoverClass}`,
 
-  faintHoverClass,
-  faintHoverPressableClass,
+  faintHoverClass: faintBgHoverClass,
+  faintHoverPressableClass: `${faintBgHoverClass} ${faintBgFocusClass}`,
 
   primaryOutlineColorClass: outlineColorClass,
   tertiaryOutlineColorClass: outlineColorClass,
@@ -118,7 +119,7 @@ export const optionParams: ThemeOptionParams = {
   // (monarch) popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
   // (pulse) popoverClass: 'border bg-background text-foreground shadow-lg rounded-md shadow-md m-1',
 
-  popoverHeaderClass: 'border-b bg-foreground/5',
+  popoverHeaderClass: `border-b ${mutedBgClass}`,
 
   bgClass: 'bg-background',
   bgRingColorClass: 'ring-background',
