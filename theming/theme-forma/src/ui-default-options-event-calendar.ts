@@ -19,7 +19,7 @@ const outlineInsetClass = '-outline-offset-2'
 const primaryOutlineColorClass = 'outline-(--fc-forma-primary)'
 const primaryOutlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}`
 
-// muted surface
+// muted *button*
 const mutedClass = 'bg-(--fc-forma-muted)'
 const mutedPressableClass = `${mutedClass} hover:bg-(--fc-forma-strong) active:bg-(--fc-forma-stronger) ${primaryOutlineFocusClass}`
 
@@ -28,16 +28,14 @@ const mutedHoverClass = 'hover:bg-(--fc-forma-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-forma-muted) active:bg-(--fc-forma-strong)`
 const mutedHoverButtonClass = `${mutedHoverPressableClass} border border-transparent ${primaryOutlineFocusClass}`
 
-// guaranteed-solid strong
-const strongSolidBgClass = '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]'
+// interactive neutral backgrounds
 const strongSolidPressableClass = joinClassNames(
-  strongSolidBgClass,
+  '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]',
   'hover:[background:linear-gradient(var(--fc-forma-stronger),var(--fc-forma-stronger))_var(--fc-monarch-background)]',
   'active:[background:linear-gradient(var(--fc-forma-strongest),var(--fc-forma-strongest))_var(--fc-monarch-background)]',
 )
 
 // interactive neutral foregrounds
-const fgPressableGroupClass = `text-(--fc-forma-foreground) group-hover:text-(--fc-forma-strong-foreground) group-focus-visible:text-(--fc-forma-strong-foreground)`
 const mutedFgPressableGroupClass = `text-(--fc-forma-muted-foreground) group-hover:text-(--fc-forma-primary) group-focus-visible:text-(--fc-forma-primary)`
 
 // primary
@@ -47,27 +45,28 @@ const primaryButtonClass = `${primaryPressableClass} border border-transparent $
 
 // secondary *toolbar button*
 const secondaryButtonClass = `${mutedHoverPressableClass} border border-(--fc-forma-border) ${primaryOutlineFocusClass}`
-const secondaryButtonIconClass = `size-5 ${fgPressableGroupClass}`
+const secondaryButtonIconClass = 'size-5'
 
 // controls
-const unselectedPressableClass = `${mutedHoverPressableClass} text-(--fc-forma-foreground)`
+const unselectedPressableClass = `${mutedHoverPressableClass}`
 const unselectedButtonClass = `${unselectedPressableClass} border border-transparent hover:border-(--fc-forma-muted-border) active:border-(--fc-forma-border) ${primaryOutlineFocusClass}`
-const selectedButtonClass = `bg-(--fc-forma-selected) border border-(--fc-forma-strong-border) ${primaryOutlineFocusClass} -outline-offset-1` // TODO: add active: ?
+const selectedButtonClass = `bg-(--fc-forma-selected) border border-(--fc-forma-strong-border) ${primaryOutlineFocusClass} -outline-offset-1`
 
-// event colors
-const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-forma-background))]'
-const eventFaintPressableClass = joinClassNames(
-  eventFaintBgClass,
-  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--fc-forma-background))]',
-  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-forma-background))]',
-)
+// muted *event* colors
 const eventMutedBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-forma-background))]'
 const eventMutedPressableClass = joinClassNames(
   eventMutedBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--fc-forma-background))]',
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_40%,var(--fc-forma-background))]',
 )
-const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
+
+// faint *event* colors
+const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-forma-background))]'
+const eventFaintPressableClass = joinClassNames(
+  eventFaintBgClass,
+  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--fc-forma-background))]',
+  'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-forma-background))]',
+)
 
 export { mutedFgPressableGroupClass }
 
@@ -101,7 +100,7 @@ export const optionParams: EventCalendarOptionParams = {
   eventColor: 'var(--fc-forma-event)',
   eventContrastColor: 'var(--fc-forma-event-contrast)',
   bgEventColor: 'var(--fc-forma-background-event)',
-  bgEventBgClass,
+  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
 
   popoverClass: 'border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md',
   popoverHeaderClass: `border-b border-(--fc-forma-border) bg-(--fc-forma-faint)`,
@@ -127,15 +126,15 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: `${optionParams.bgClass} border ${optionParams.borderColorClass} rounded-sm shadow-xs overflow-hidden`,
-    headerToolbarClass: `border-b ${optionParams.borderColorClass}`,
-    footerToolbarClass: `border-t ${optionParams.borderColorClass}`,
+    className: `bg-(--fc-forma-background) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden`,
+    headerToolbarClass: `border-b border-(--fc-forma-border)`,
+    footerToolbarClass: `border-t border-(--fc-forma-border)`,
 
     toolbarClass: 'p-3 items-center gap-3', // TODO: document how we do NOT need to justify-between or flex-row
     toolbarSectionClass: 'items-center gap-3',
     toolbarTitleClass: 'text-xl',
 
-    buttonGroupClass: 'items-center isolate',
+    buttonGroupClass: 'items-center',
     buttonClass: (data) => [
       'inline-flex flex-row text-sm py-1.5 rounded-sm group',
       data.isIconOnly ? 'px-2' : 'px-3',

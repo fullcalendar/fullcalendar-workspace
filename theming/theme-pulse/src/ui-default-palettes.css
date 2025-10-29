@@ -44,9 +44,9 @@ can maybe remove some dark-mode colors. repeat of what's in light mode
   /* tertiary */
 
   /* calendar content */
-  --fc-pulse-background-event: var(--color-green-500); /* TODO: better */
+  --fc-pulse-background-event: var(--color-green-500); /* TODO */
   --fc-pulse-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
-  --fc-pulse-now: red; /* TODO: better */
+  --fc-pulse-now: red; /* TODO */
 
   /* controls */
   --fc-pulse-unselected: var(--fc-pulse-muted);
@@ -63,10 +63,10 @@ can maybe remove some dark-mode colors. repeat of what's in light mode
   --fc-pulse-strongest: color-mix(in oklab, var(--color-black) 20%, transparent); /* TODO */
 
   /* neutral foregrounds */
-  --fc-pulse-foreground: #374151; /* TODO: use elsewhere? */
+  --fc-pulse-foreground: #374151;
   --fc-pulse-muted-foreground: #6b7280;
   --fc-pulse-faint-foreground: #9ca3af;
-  --fc-pulse-strong-foreground: #1f2937; /* what is this used for !!?? */
+  --fc-pulse-strong-foreground: #1f2937;
 
   /* neutral borders */
   --fc-pulse-border: #e5e7eb;
@@ -84,7 +84,7 @@ can maybe remove some dark-mode colors. repeat of what's in light mode
 
   /* calendar content */
   --fc-pulse-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
-  --fc-pulse-now: red; /* TODO: better */
+  --fc-pulse-now: red; /* TODO */
 
   /* controls */
   --fc-pulse-unselected: var(--fc-pulse-muted);
@@ -101,7 +101,7 @@ can maybe remove some dark-mode colors. repeat of what's in light mode
   --fc-pulse-strongest: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
 
   /* neutral foregrounds */
-  --fc-pulse-foreground: #a0aec0; /* TODO: use elsewhere? */
+  --fc-pulse-foreground: #a0aec0;
   --fc-pulse-faint-foreground: #4a5568;
   --fc-pulse-muted-foreground: #718096;
   --fc-pulse-strong-foreground: #cbd5e0;

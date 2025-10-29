@@ -163,8 +163,9 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
         role: (isOnlyButtons && isOnlyView) ? 'tablist' : undefined,
         'aria-label': (isOnlyButtons && isOnlyView) ? options.viewChangeHint : undefined,
         className: joinArrayishClassNames(
+          generateClassName(options.buttonGroupClass, { isSelectGroup: isOnlyView }),
           classNames.flexRow,
-          generateClassName(options.buttonGroupClass, { isSelectGroup: isOnlyView })
+          classNames.isolate,
         ),
       }, ...children)
     }

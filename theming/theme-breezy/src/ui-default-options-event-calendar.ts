@@ -29,30 +29,38 @@ const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-seconda
 const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-secondary-border) ${primaryOutlineFocusClass} -outline-offset-1`
 const secondaryButtonIconClass = `size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-over) group-focus-visible:text-(--fc-breezy-secondary-icon-over)`
 
-// faint-on-hover
-const faintHoverClass = 'hover:bg-(--fc-breezy-faint)'
-const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)`
+// interactive neutral backgrounds
+const strongSolidPressableClass = joinClassNames(
+  '[background:linear-gradient(var(--fc-breezy-strong),var(--fc-breezy-strong))_var(--fc-breezy-background)]',
+  'hover:[background:linear-gradient(var(--fc-breezy-stronger),var(--fc-breezy-stronger))_var(--fc-breezy-background)]',
+  'active:[background:linear-gradient(var(--fc-breezy-strongest),var(--fc-breezy-strongest))_var(--fc-breezy-background)]',
+)
+
+// interactive neutral foregrounds
+const mutedFgPressableGroupClass = `text-(--fc-breezy-muted-foreground) group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)`
 
 // muted-on-hover
 const mutedHoverClass = 'hover:bg-(--fc-breezy-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-breezy-muted)`
 
-// interactive neutral foregrounds
-const mutedFgPressableGroupClass = `text-(--fc-breezy-muted-foreground) group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)`
+// faint-on-hover
+const faintHoverClass = 'hover:bg-(--fc-breezy-faint)'
+const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)`
 
 // controls
 const selectedClass = `bg-(--fc-breezy-selected) text-(--fc-breezy-strong-foreground) ${primaryOutlineFocusClass}`
 const unselectedClass = `text-(--fc-breezy-muted-foreground) hover:text-(--fc-breezy-strong-foreground) ${primaryOutlineFocusClass}`
 
-// event computed colors
+// muted *event* colors
+const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--fc-breezy-foreground))]'
+
+// faint *event* colors
 const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-breezy-background))]'
 const eventFaintPressableClass = joinClassNames(
   eventFaintBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--fc-breezy-background))]',
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-breezy-background))]',
 )
-const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--fc-breezy-foreground))]'
-const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
 export { mutedFgPressableGroupClass }
 
@@ -73,11 +81,7 @@ export const optionParams: EventCalendarOptionParams = {
   outlineWidthGroupFocusClass,
   outlineOffsetClass,
 
-  strongSolidPressableClass: joinClassNames(
-    '[background:linear-gradient(var(--fc-breezy-strong),var(--fc-breezy-strong))_var(--fc-breezy-background)]',
-    'hover:[background:linear-gradient(var(--fc-breezy-stronger),var(--fc-breezy-stronger))_var(--fc-breezy-background)]',
-    'active:[background:linear-gradient(var(--fc-breezy-strongest),var(--fc-breezy-strongest))_var(--fc-breezy-background)]',
-  ),
+  strongSolidPressableClass,
 
   mutedBgClass: 'bg-(--fc-breezy-muted)',
   faintBgClass: 'bg-(--fc-breezy-faint)',
@@ -85,7 +89,7 @@ export const optionParams: EventCalendarOptionParams = {
 
   eventColor: 'var(--fc-breezy-event)',
   bgEventColor: 'var(--fc-breezy-background-event)',
-  bgEventBgClass,
+  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
 
   borderColorClass: 'border-(--fc-breezy-border)',
   borderStartColorClass: 'border-s-(--fc-breezy-border)',
@@ -120,32 +124,30 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: `${optionParams.bgClass} border ${optionParams.borderColorClass} rounded-lg overflow-hidden`,
-    headerToolbarClass: `border-b ${optionParams.borderColorClass}`,
-    footerToolbarClass: `border-t ${optionParams.borderColorClass}`,
+    className: `bg-(--fc-breezy-background) border border-(--fc-breezy-border) rounded-lg overflow-hidden`,
+    headerToolbarClass: `border-b border-(--fc-breezy-border)`,
+    footerToolbarClass: `border-t border-(--fc-breezy-border)`,
 
-    toolbarClass: `px-4 py-4 items-center ${optionParams.faintBgClass} gap-4`,
+    toolbarClass: `px-4 py-4 items-center bg-(--fc-breezy-faint) gap-4`,
     toolbarSectionClass: 'items-center gap-4',
-    toolbarTitleClass: `text-lg font-semibold ${optionParams.strongFgClass}`,
+    toolbarTitleClass: `text-lg font-semibold text-(--fc-breezy-strong-foreground)`,
 
     /*
     TODO: don't make buttons so fat
     are buttons 1px taller than in Tailwind Plus because we're not using inset border?
     */
     buttonGroupClass: (data) => [
-      'isolate',
-      !data.isSelectGroup && `rounded-md shadow-xs`
+      'items-center',
+      !data.isSelectGroup && `rounded-md shadow-xs`,
     ],
     buttonClass: (data) => [
       'inline-flex flex-row py-2 text-sm group', // group for icon group-focus
       data.isIconOnly ? 'px-2' : 'px-3',
       data.inSelectGroup ? joinClassNames(
-        // START view-switching bar item
         'rounded-md font-medium',
         data.isSelected
           ? selectedClass
           : unselectedClass,
-        // END
       ) : joinClassNames(
         'font-semibold',
         data.isPrimary

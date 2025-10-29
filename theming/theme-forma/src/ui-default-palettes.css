@@ -9,8 +9,6 @@ OLD dark values:
 --fc-forma-strong: #404040;
 --fc-forma-muted: #1A1A1A;
 TODO: ensure below values have same hue!
-
-define --fc-forma-strong-foreground? as just black/white?!!!
 */
 
 :root {
@@ -21,10 +19,10 @@ define --fc-forma-strong-foreground? as just black/white?!!!
   --fc-forma-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
 
   /* controls */
-  --fc-forma-selected: #F5F5F5;
+  --fc-forma-selected: #F5F5F5; /* between faint and muted */
 
   /* neutral backgrounds */
-  --fc-forma-background: #fff;
+  --fc-forma-background: #FFFFFF;
   --fc-forma-faint: color-mix(in oklab, var(--color-black) 3%, transparent); /* TODO */
   --fc-forma-muted: color-mix(in oklab, var(--color-black) 7%, transparent); /* TODO */
   --fc-forma-strong: color-mix(in oklab, var(--color-black) 12%, transparent); /* TODO */
@@ -32,7 +30,6 @@ define --fc-forma-strong-foreground? as just black/white?!!!
   --fc-forma-strongest: color-mix(in oklab, var(--color-black) 20%, transparent); /* TODO */
 
   /* neutral foregrounds */
-  --fc-forma-foreground: #242424; /* TODO: use elsewhere!!! */
   --fc-forma-faint-foreground: var(--color-gray-400);
   --fc-forma-muted-foreground: var(--color-gray-500);
 
@@ -48,7 +45,7 @@ define --fc-forma-strong-foreground? as just black/white?!!!
   --fc-forma-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
 
   /* controls */
-  --fc-forma-selected: #202020;
+  --fc-forma-selected: #202020; /* between faint and muted */
 
   /* neutral backgrounds */
   --fc-forma-background: var(--color-gray-950);
@@ -59,7 +56,6 @@ define --fc-forma-strong-foreground? as just black/white?!!!
   --fc-forma-strongest: color-mix(in oklab, var(--color-white) 20%, transparent); /* TODO */
 
   /* neutral foregrounds */
-  --fc-forma-foreground: #DBDBDB;
   --fc-forma-faint-foreground: var(--color-gray-600);
   --fc-forma-muted-foreground: var(--color-gray-500);
 
@@ -72,13 +68,13 @@ define --fc-forma-strong-foreground? as just black/white?!!!
 [data-palette=blue] {
   /* primary */
   --fc-forma-primary: #0F6CBD;
-  --fc-forma-primary-over: #0A5AA3; /* TODO: derive from primary!... */
-  --fc-forma-primary-down: #064889; /* same with this!!!... move these to palette-generic block above? */
-  --fc-forma-primary-foreground: #fff;
+  --fc-forma-primary-over: #0A5AA3;
+  --fc-forma-primary-down: #064889;
+  --fc-forma-primary-foreground: #FFFFFF;
 
   /* calendar content */
   --fc-forma-event: #3788d8; /* a bit lighter than primary */
-  --fc-forma-event-contrast: #fff;
+  --fc-forma-event-contrast: #FFFFFF;
 }
 [data-palette=blue][data-color-scheme=dark] {
   /* primary */
@@ -92,7 +88,7 @@ define --fc-forma-strong-foreground? as just black/white?!!!
   --fc-forma-primary: #d83b01;
   --fc-forma-primary-over: #B03001;
   --fc-forma-primary-down: #8A2601;
-  --fc-forma-primary-foreground: #fff;
+  --fc-forma-primary-foreground: #FFFFFF;
 
   /* calendar content */
   --fc-forma-event: var(--fc-forma-primary);
@@ -110,7 +106,7 @@ define --fc-forma-strong-foreground? as just black/white?!!!
   --fc-forma-primary: #107c41;
   --fc-forma-primary-over: #0D6334;
   --fc-forma-primary-down: #0A4A27;
-  --fc-forma-primary-foreground: #fff;
+  --fc-forma-primary-foreground: #FFFFFF;
 
   /* calendar content */
   --fc-forma-event: var(--fc-forma-primary);
@@ -128,7 +124,7 @@ define --fc-forma-strong-foreground? as just black/white?!!!
   --fc-forma-primary: #742774;
   --fc-forma-primary-over: #5D1F5D;
   --fc-forma-primary-down: #461746;
-  --fc-forma-primary-foreground: #fff;
+  --fc-forma-primary-foreground: #FFFFFF;
 
   /* calendar content */
   --fc-forma-event: var(--fc-forma-primary);

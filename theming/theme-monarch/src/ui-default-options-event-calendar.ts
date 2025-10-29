@@ -14,6 +14,11 @@ const mutedHoverClass = 'hover:bg-(--fc-monarch-muted)'
 const mutedHoverGroupClass = 'group-hover:bg-(--fc-monarch-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-monarch-muted) active:bg-(--fc-monarch-strong)`
 const mutedHoverPressableGroupClass = `${mutedHoverGroupClass} group-focus-visible:bg-(--fc-monarch-muted) group-active:bg-(--fc-monarch-strong)`
+const strongSolidPressableClass = joinClassNames(
+  '[background:linear-gradient(var(--fc-monarch-strong),var(--fc-monarch-strong))_var(--fc-monarch-background)]',
+  'hover:[background:linear-gradient(var(--fc-monarch-stronger),var(--fc-monarch-stronger))_var(--fc-monarch-background)]',
+  'active:[background:linear-gradient(var(--fc-monarch-strongest),var(--fc-monarch-strongest))_var(--fc-monarch-background)]',
+)
 
 // interactive neutral foregrounds
 const fgPressableGroupClass = 'text-(--fc-monarch-foreground) group-hover:text-(--fc-monarch-strong-foreground) group-focus-visible:text-(--fc-monarch-strong-foreground)'
@@ -24,12 +29,12 @@ const primaryClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreg
 const primaryPressableClass = `${primaryClass} hover:bg-(--fc-monarch-primary-over) active:bg-(--fc-monarch-primary-down)`
 const primaryButtonClass = `${primaryPressableClass} border border-transparent ${outlineFocusClass}`
 
-// secondary *calendar content* (contains color)
+// secondary *calendar content* (has muted color)
 const secondaryClass = 'bg-(--fc-monarch-secondary) text-(--fc-monarch-secondary-foreground)'
 const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-monarch-secondary-over) active:bg-(--fc-monarch-secondary-down) ${outlineFocusClass}`
 
 // secondary *toolbar button* (neutral)
-const secondaryButtonClass = `${mutedHoverPressableClass} border border-(--fc-monarch-secondary-border) ${outlineFocusClass} -outline-offset-1`
+const secondaryButtonClass = `${mutedHoverPressableClass} border border-(--fc-monarch-strong-border) ${outlineFocusClass} -outline-offset-1`
 const secondaryButtonIconClass = `size-5 ${fgPressableGroupClass}`
 
 // tertiary
@@ -57,11 +62,7 @@ export const optionParams: EventCalendarOptionParams = {
   mutedHoverPressableClass,
   mutedHoverPressableGroupClass,
 
-  strongSolidPressableClass: joinClassNames(
-    '[background:linear-gradient(var(--fc-monarch-strong),var(--fc-monarch-strong))_var(--fc-monarch-background)]',
-    'hover:[background:linear-gradient(var(--fc-monarch-stronger),var(--fc-monarch-stronger))_var(--fc-monarch-background)]',
-    'active:[background:linear-gradient(var(--fc-monarch-strongest),var(--fc-monarch-strongest))_var(--fc-monarch-background)]',
-  ),
+  strongSolidPressableClass,
 
   tertiaryOutlineColorClass: outlineColorClass, // treat as tertiary
   outlineWidthClass,
@@ -100,14 +101,14 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: `${optionParams.bgClass} border ${optionParams.borderColorClass} rounded-xl overflow-hidden`,
+    className: `bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden`,
 
     toolbarClass: 'p-4 items-center gap-3',
     toolbarSectionClass: 'items-center gap-3',
     toolbarTitleClass: 'text-2xl font-bold',
 
     buttonGroupClass: (data) => [
-      'items-center isolate rounded-full',
+      'items-center rounded-full',
       data.isSelectGroup && 'border border-(--fc-monarch-border)'
     ],
     buttonClass: (data) => [

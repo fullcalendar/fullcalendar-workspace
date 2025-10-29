@@ -9,7 +9,7 @@ const outlineWidthGroupFocusClass = 'group-focus-visible:outline-2'
 const outlineOffsetClass = 'outline-offset-2'
 const outlineInsetClass = '-outline-offset-2'
 const tertiaryOutlineColorClass = 'outline-(--fc-pulse-tertiary)'
-const oulineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFocusClass}`
+const tertiaryOulineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFocusClass}`
 
 // shadows
 const smallBoxShadowClass = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
@@ -18,11 +18,11 @@ const largeBoxShadowClass = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 // primary *toolbar button*
 const primaryClass = 'bg-(--fc-pulse-primary) text-(--fc-pulse-primary-foreground)'
 const primaryPressableClass = `${primaryClass} hover:bg-(--fc-pulse-primary-over) active:bg-(--fc-pulse-primary-down)`
-const primaryButtonClass = `${primaryPressableClass} border-transparent ${oulineFocusClass} ${outlineOffsetClass}`
+const primaryButtonClass = `${primaryPressableClass} border-transparent ${tertiaryOulineFocusClass} ${outlineOffsetClass}`
 
 // secondary *toolbar button*
 const secondaryPressableClass = `bg-(--fc-pulse-secondary) hover:bg-(--fc-pulse-secondary-over) focus-visible:bg-(--fc-pulse-secondary-over) active:bg-(--fc-pulse-secondary-down)`
-const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-pulse-border) ${oulineFocusClass}`
+const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-pulse-border) ${tertiaryOulineFocusClass}`
 const secondaryButtonIconClass = 'size-5 text-(--fc-pulse-secondary-icon) group-hover:text-(--fc-pulse-secondary-icon-over) group-focus-visible:text-(--fc-pulse-secondary-icon-over)'
 
 // tertiary
@@ -30,23 +30,28 @@ const tertiaryClass = 'bg-(--fc-pulse-tertiary) text-(--fc-pulse-tertiary-foregr
 const tertiaryPressableClass = `${tertiaryClass} hover:bg-(--fc-pulse-tertiary-over) active:bg-(--fc-pulse-tertiary-down) focus-visible:bg-(--fc-pulse-tertiary-over)`
 const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-(--fc-pulse-tertiary-over) group-active:bg-(--fc-pulse-tertiary-down) group-focus-visible:bg-(--fc-pulse-tertiary-over)`
 
+// interactive neutral backgrounds
+const mutedSolidBgClass = '[background:linear-gradient(var(--fc-pulse-muted),var(--fc-pulse-muted))_var(--fc-pulse-background)]'
+const strongSolidPressableClass = joinClassNames(
+  '[background:linear-gradient(var(--fc-pulse-strong),var(--fc-pulse-strong))_var(--fc-pulse-background)]',
+  'hover:[background:linear-gradient(var(--fc-pulse-stronger),var(--fc-pulse-stronger))_var(--fc-pulse-background)]',
+  'active:[background:linear-gradient(var(--fc-pulse-strongest),var(--fc-pulse-strongest))_var(--fc-pulse-background)]',
+)
+
 // interactive neutral foregrounds
 const mutedFgPressableGroupClass = `text-(--fc-pulse-muted-foreground) group-hover:text-(--fc-pulse-foreground) group-focus-visible:text-(--fc-pulse-foreground)`
-
-// faint-on-hover
-const faintHoverClass = 'hover:bg-(--fc-pulse-faint)'
-const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-pulse-muted) focus-visible:bg-(--fc-pulse-faint)`
 
 // muted-on-hover
 const mutedHoverClass = 'hover:bg-(--fc-pulse-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} active:bg-(--fc-pulse-strong) focus-visible:bg-(--fc-pulse-muted)`
 
-// controls
-const selectedButtonClass = `bg-(--fc-pulse-selected) text-(--fc-pulse-selected-foreground) ${largeBoxShadowClass} ${oulineFocusClass}`
-const unselectedButtonClass = `text-(--fc-pulse-unselected-foreground) ${mutedHoverPressableClass} ${oulineFocusClass}`
+// faint-on-hover
+const faintHoverClass = 'hover:bg-(--fc-pulse-faint)'
+const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-pulse-muted) focus-visible:bg-(--fc-pulse-faint)`
 
-// event colors
-const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
+// controls
+const selectedButtonClass = `bg-(--fc-pulse-selected) text-(--fc-pulse-selected-foreground) ${largeBoxShadowClass} ${tertiaryOulineFocusClass}`
+const unselectedButtonClass = `text-(--fc-pulse-unselected-foreground) ${mutedHoverPressableClass} ${tertiaryOulineFocusClass}`
 
 export { mutedFgPressableGroupClass }
 
@@ -61,15 +66,10 @@ export const optionParams: EventCalendarOptionParams = {
   faintHoverClass,
   faintHoverPressableClass,
 
-  // TODO: move this up?
-  strongSolidPressableClass: joinClassNames(
-    '[background:linear-gradient(var(--fc-pulse-strong),var(--fc-pulse-strong))_var(--fc-pulse-background)]',
-    'hover:[background:linear-gradient(var(--fc-pulse-stronger),var(--fc-pulse-stronger))_var(--fc-pulse-background)]',
-    'active:[background:linear-gradient(var(--fc-pulse-strongest),var(--fc-pulse-strongest))_var(--fc-pulse-background)]',
-  ),
+  strongSolidPressableClass,
 
   mutedBgClass: 'bg-(--fc-pulse-muted)',
-  mutedSolidBgClass: '[background:linear-gradient(var(--fc-pulse-muted),var(--fc-pulse-muted))_var(--fc-pulse-background)]',
+  mutedSolidBgClass,
   faintBgClass: 'bg-(--fc-pulse-faint)',
   highlightClass: 'bg-(--fc-pulse-highlight)',
 
@@ -88,7 +88,7 @@ export const optionParams: EventCalendarOptionParams = {
   eventColor: 'var(--fc-pulse-event)',
   eventContrastColor: 'var(--fc-pulse-event-contrast)',
   bgEventColor: 'var(--fc-pulse-background-event)',
-  bgEventBgClass,
+  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
 
   popoverClass: `bg-(--fc-pulse-background) border border-(--fc-pulse-strong-border) rounded-sm overflow-hidden shadow-md m-1`,
   popoverHeaderClass: `border-b border-(--fc-pulse-strong-border) bg-(--fc-pulse-muted)`,
@@ -115,7 +115,6 @@ export const defaultUiEventCalendarOptions: {
     viewClass: [
       'rounded-sm overflow-hidden',
       `bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`,
-      // ^^^ border needs more contrast bc of drop shadow, and to match controls
     ],
 
     toolbarClass: (data) => [
@@ -124,11 +123,9 @@ export const defaultUiEventCalendarOptions: {
     ],
     toolbarSectionClass: 'gap-5 items-center',
     toolbarTitleClass: `text-2xl font-bold text-(--fc-pulse-strong-foreground)`,
-    // how to customize title??? with text parts??? -- TODO: make ticket for toolbarTitleContent -- show Apple Calendar screenshot
-    // TODO: make ticket for buttons{}.beforeClass/afterClass, ButtonData.isFirst/isLast
 
     buttonGroupClass: (data) => [
-      'isolate items-center rounded-sm',
+      'items-center rounded-sm',
       data.isSelectGroup
         ? `p-px bg-(--fc-pulse-unselected)`
         : `border border-(--fc-pulse-strong-border) ${smallBoxShadowClass}`
@@ -153,14 +150,14 @@ export const defaultUiEventCalendarOptions: {
               ? joinClassNames(
                   primaryButtonClass,
                   'border',
-                  !data.inGroup && largeBoxShadowClass, // standalone
+                  !data.inGroup && largeBoxShadowClass,
                 )
               // secondary
               : joinClassNames(
                   secondaryButtonClass,
                   data.inGroup
-                    ? `first:rounded-s-sm last:rounded-e-sm not-first:border-s` // within group
-                    : `border ${smallBoxShadowClass}`, // standalone
+                    ? `first:rounded-s-sm last:rounded-e-sm not-first:border-s`
+                    : `border ${smallBoxShadowClass}`,
                 )
           ),
     ],

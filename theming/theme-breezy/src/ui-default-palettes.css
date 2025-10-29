@@ -60,7 +60,7 @@
   --fc-breezy-selected: var(--fc-breezy-muted);
 
   /* popovers */
-  --fc-breezy-popover: var(--color-gray-800); /* must be fully opaque */
+  --fc-breezy-popover: var(--color-gray-800);
   --fc-breezy-popover-border: var(--fc-breezy-border);
 
   /* neutral backgrounds */
@@ -127,7 +127,7 @@ https://catalyst.tailwindui.com/docs/button
 }
 
 [data-palette=emerald] {
-  /* primary buttons */
+  /* primary */
   --fc-breezy-primary: var(--color-emerald-600);
   --fc-breezy-primary-over: var(--color-emerald-500);
   --fc-breezy-primary-foreground: var(--color-white);
@@ -138,10 +138,10 @@ https://catalyst.tailwindui.com/docs/button
 }
 
 [data-palette=honey] {
-  /* primary buttons */
-  --fc-breezy-primary: var(--color-yellow-500);
-  --fc-breezy-primary-over: var(--color-yellow-400);
-  --fc-breezy-primary-foreground: var(--color-white);
+  /* primary */
+  --fc-breezy-primary: var(--color-amber-400);
+  --fc-breezy-primary-over: var(--color-amber-300);
+  --fc-breezy-primary-foreground: var(--color-amber-950);
 
   /* calendar content */
   --fc-breezy-event: var(--color-amber-500);

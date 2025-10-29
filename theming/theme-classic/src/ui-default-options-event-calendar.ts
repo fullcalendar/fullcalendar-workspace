@@ -2,24 +2,13 @@ import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-const bgClass = 'bg-(--fc-classic-background)' // TODO: make this a variable for all themes?
-const bgRingColorClass = 'ring-(--fc-classic-background)'
-
-const primaryOutlineColorClass = 'outline-(--fc-classic-primary)'
-const outlineWidthClass = 'outline-2'
-const outlineWidthFocusClass = 'focus-visible:outline-2'
-const outlineOffsetClass = 'outline-offset-2'
-const outlineInsetClass = '-outline-offset-2'
-
 const mutedHoverClass = 'hover:bg-(--fc-classic-muted)'
-const mutedHoverPressableClass = `${mutedHoverClass} active:bg-(--fc-classic-strong) focus-visible:bg-(--fc-classic-muted)`
+const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-classic-muted) active:bg-(--fc-classic-strong)`
 
 const faintHoverClass = 'hover:bg-(--fc-classic-faint)'
-const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-classic-muted) focus-visible:bg-(--fc-classic-faint)`
+const faintHoverPressableClass = `${faintHoverClass} focus-visible:bg-(--fc-classic-faint) active:bg-(--fc-classic-muted)`
 
 const buttonIconClass = 'size-5'
-
-const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
 export const optionParams: EventCalendarOptionParams = {
   mutedHoverClass,
@@ -30,11 +19,11 @@ export const optionParams: EventCalendarOptionParams = {
 
   strongSolidPressableClass: '[background:linear-gradient(var(--fc-classic-strong),var(--fc-classic-strong))_var(--fc-classic-background)]',
 
-  primaryOutlineColorClass,
-  outlineWidthClass,
-  outlineWidthFocusClass,
-  outlineOffsetClass,
-  outlineInsetClass,
+  primaryOutlineColorClass: 'outline-(--fc-classic-primary)',
+  outlineWidthClass: 'outline-2',
+  outlineWidthFocusClass: 'focus-visible:outline-2',
+  outlineOffsetClass: 'outline-offset-2',
+  outlineInsetClass: '-outline-offset-2',
 
   mutedBgClass: 'bg-(--fc-classic-muted)',
   mutedSolidBgClass: '[background:linear-gradient(var(--fc-classic-muted),var(--fc-classic-muted))_var(--fc-classic-background)]',
@@ -52,13 +41,13 @@ export const optionParams: EventCalendarOptionParams = {
   eventColor: 'var(--fc-classic-event)',
   eventContrastColor: 'var(--fc-classic-event-contrast)',
   bgEventColor: 'var(--fc-classic-background-event)',
-  bgEventBgClass,
+  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
 
-  popoverClass: `border border-(--fc-classic-border) ${bgClass} shadow-md`,
+  popoverClass: 'bg-(--fc-classic-background) border border-(--fc-classic-border) shadow-md',
   popoverHeaderClass: 'border-b border-(--fc-classic-border) bg-(--fc-classic-muted)',
 
-  bgClass,
-  bgRingColorClass,
+  bgClass: 'bg-(--fc-classic-background)',
+  bgRingColorClass: 'ring-(--fc-classic-background)',
 
   mutedFgClass: 'text-(--fc-classic-muted-foreground)',
   faintFgClass: 'text-(--fc-classic-faint-foreground)',
@@ -74,7 +63,7 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     className: 'gap-5',
-    viewClass: `border ${optionParams.borderColorClass} ${optionParams.bgClass}`,
+    viewClass: 'bg-(--fc-classic-background) border border-(--fc-classic-border)',
 
     toolbarClass: (data) => [
       'items-center gap-3',
@@ -83,7 +72,7 @@ export const defaultUiEventCalendarOptions: {
     toolbarSectionClass: 'items-center gap-3',
     toolbarTitleClass: 'text-2xl font-bold',
 
-    buttonGroupClass: 'items-center isolate',
+    buttonGroupClass: 'items-center',
     buttonClass: (data) => [
       'inline-flex flex-row items-center py-2 border-x',
       'focus-visible:outline-3 outline-slate-600/50',

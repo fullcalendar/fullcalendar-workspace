@@ -19,7 +19,6 @@ const outlineOffsetClass = 'outline-offset-1'
 const outlineInsetClass = '-outline-offset-3'
 const primaryOutlineColorClass = 'outline-(--mui-palette-primary-main)'
 const tertiaryOutlineColorClass = 'outline-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.5)]'
-const tertiaryOutlineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFocusClass}`
 
 // primary
 const primaryClass = 'bg-(--mui-palette-primary-main) text-(--mui-palette-primary-contrastText)'
@@ -28,11 +27,11 @@ const primaryPressableGroupClass = `${primaryClass} group-hover:bg-[rgba(var(--m
 
 // secondary (less-contrasty version of primary)
 const secondaryClass = 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.15)] brightness-110'
-const secondaryPressableClass = `${secondaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)] ${tertiaryOutlineFocusClass}`
+const secondaryPressableClass = `${secondaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)]`
 
 // tertiary (it's actually MUI's "secondary", like an accent color)
 const tertiaryClass = 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)'
-const tertiaryPressableClass = `${tertiaryClass} hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)] ${tertiaryOutlineFocusClass}`
+const tertiaryPressableClass = `${tertiaryClass} hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)]`
 const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] group-active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)]`
 
 // strongest (25%)
@@ -44,10 +43,10 @@ const strongerSolidBgHoverClass = 'hover:bg-[color-mix(in_oklab,var(--mui-palett
 
 // strong (15%)
 const strongBgHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
-const strongBgActiveClass = 'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
 const strongBgFocusClass = 'focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
-const strongBgActiveGroupClass = 'group-active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
 const strongBgFocusGroupClass = 'group-focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
+const strongBgActiveClass = 'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
+const strongBgActiveGroupClass = 'group-active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
 const strongSolidBgClass = 'bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_15%,var(--mui-palette-background-paper))]'
 const strongSolidPressableClass = `${strongSolidBgClass} ${strongerSolidBgHoverClass} ${strongestSolidBgActiveClass}`
 
@@ -57,8 +56,8 @@ const mutedBgHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)
 const mutedBgHoverGroupClass = 'group-hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
 const mutedBgActiveClass = 'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
 const mutedPressableClass = `${mutedBgClass} ${strongBgHoverClass} ${strongerBgActiveClass}`
-const mutedHoverPressableClass = `${mutedBgHoverClass} ${strongBgActiveClass} ${strongBgFocusClass}`
-const mutedHoverPressableGroupClass = `${mutedBgHoverGroupClass} ${strongBgActiveGroupClass} ${strongBgFocusGroupClass}`
+const mutedHoverPressableClass = `${mutedBgHoverClass} ${strongBgFocusClass} ${strongBgActiveClass}`
+const mutedHoverPressableGroupClass = `${mutedBgHoverGroupClass} ${strongBgFocusGroupClass} ${strongBgActiveGroupClass}`
 const mutedSolidBgClass = '[background:linear-gradient(rgba(var(--mui-palette-text-primaryChannel)_/_0.075),rgba(var(--mui-palette-text-primaryChannel)_/_0.075))_var(--mui-palette-background-paper)]'
 
 // faint (4%)
@@ -130,7 +129,7 @@ export const optionParams: ThemeOptionParams = {
   primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
   strongBorderColorClass: 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]',
   strongBorderBottomColorClass: 'border-b-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]',
-  mutedBorderColorClass: 'border-(--mui-palette-divider)', // same as standard
+  mutedBorderColorClass: 'border-(--mui-palette-divider)',
   nowBorderColorClass: 'border-(--mui-palette-error-main)',
   nowBorderStartColorClass: 'border-s-(--mui-palette-error-main)',
   nowBorderTopColorClass: 'border-t-(--mui-palette-error-main)',

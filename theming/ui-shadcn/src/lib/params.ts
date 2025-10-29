@@ -9,21 +9,23 @@ const outlineInsetClass = '-outline-offset-3'
 const outlineColorClass = 'outline-ring/50'
 const outlineFocusClass = `${outlineColorClass} ${outlineWidthFocusClass}`
 
-// faint
-const faintBgHoverClass = 'hover:bg-muted/50'
-const faintBgFocusClass = 'focus-visible:bg-muted/50'
-
-// muted
-const mutedBgClass = 'bg-foreground/5'
-const mutedBgHoverClass = 'hover:bg-foreground/5'
-const mutedBgHoverGroupClass = 'group-hover:bg-foreground/5'
+// stronger
+const strongerSolidBgHoverClass = 'hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))]'
 
 // strong
 const strongBgClass = 'bg-foreground/10'
 const strongBgHoverClass = 'hover:bg-foreground/10'
-// (guaranteed-solid... shadcn input variables already solid before color-mix)
-const strongSolidClass = 'bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))]'
-const strongSolidPressableClass = `${strongSolidClass} hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))]`
+const strongSolidBgClass = 'bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))]'
+const strongSolidPressableClass = `${strongSolidBgClass} ${strongerSolidBgHoverClass}`
+
+// muted (simulates a semi-transparent version of bg-muted)
+const mutedBgClass = 'bg-foreground/5'
+const mutedBgHoverClass = 'hover:bg-foreground/5'
+const mutedBgHoverGroupClass = 'group-hover:bg-foreground/5'
+
+// faint
+const faintBgHoverClass = 'hover:bg-muted/50'
+const faintBgFocusClass = 'focus-visible:bg-muted/50'
 
 // interactive neutral foregrounds
 const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'
@@ -33,7 +35,7 @@ const primaryClass = 'bg-primary text-(--primary-foreground)'
 const primaryPressableClass = `${primaryClass} hover:bg-primary/90`
 const primaryPressableGroupClass = `${primaryClass} group-hover:bg-primary/90`
 
-// secondary
+// secondary (neutral)
 const secondaryClass = strongBgClass
 const secondaryPressableClass = `${secondaryClass} hover:bg-foreground/20 ${outlineFocusClass}`
 
@@ -42,19 +44,20 @@ const tertiaryClass = 'bg-primary/20 dark:bg-primary/30'
 const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 ${outlineFocusClass}`
 const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-primary/40`
 
-// event colors
-const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]'
-const eventFaintPressableClass = joinClassNames(
-  eventFaintBgClass,
-  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))]',
-)
+// muted *event* colors
+const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
 const eventMutedBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]'
 const eventMutedPressableClass = joinClassNames(
   eventMutedBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--background))]',
 )
-const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
-const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
+
+// faint *event* colors
+const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]'
+const eventFaintPressableClass = joinClassNames(
+  eventFaintBgClass,
+  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))]',
+)
 
 export { mutedFgPressableGroupClass }
 
@@ -90,7 +93,7 @@ export const optionParams: ThemeOptionParams = {
   outlineOffsetClass: '',
   outlineInsetClass,
 
-  mutedBgClass: 'bg-foreground/5', // semi-transparent version of bg-muted
+  mutedBgClass,
   mutedSolidBgClass: 'bg-muted',
   faintBgClass: 'bg-foreground/3', // semi-transparent version of bg-sidebar
   highlightClass: 'bg-primary/10',
@@ -110,7 +113,7 @@ export const optionParams: ThemeOptionParams = {
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
   bgEventColor: 'var(--foreground)',
-  bgEventBgClass,
+  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]',
 
   popoverClass: 'border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground',
   // (breezy) popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',

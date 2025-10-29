@@ -13,9 +13,9 @@ clean+build all:
   pn build
 
 
-clean up css variables
-  rearrange ThemeOptionParams props
-  replace all #fff/#ffffff/white with var(--color-white)? same with black?
+rearrange ThemeOptionParams props
+rename optionParams -> params? (keep interface name tho)
+  rename params.ts files?
 
 
 MANUAL TEST
@@ -61,6 +61,7 @@ CODE-QUALITY (while going through each theme)
       apply .outlineWidthGroupFocusClass to sub-elements
     dayHeaderInnerClass does NOT need it! already has nav-link. but might need "offset" class
 NOTES
+  an *OulineFocusClass only goes on the *Button, NOT the *Pressable
   for alignment,
     dayHeader, resourceAreaHeader, and timeline-slotLabel are flex-col
     timeGrid-slotLabel is flex-row
