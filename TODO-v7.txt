@@ -13,8 +13,17 @@ clean+build all:
   pn build
 
 
+Ensure MUI/Shadcn toolbar title doesn't line-break when narrow screen
+Finish timegrid narrowness
+  column-content
+    (columnEventInnerClass or columnEventTimeClass+columnEventTitleClass)
+    isCompact means something else for timegrid! means short!!!
+  solution: isNarrow vs isShort?
+  AFTER
+    audit col-events AND columnMoreLinkInnerClass
+
+
 MANUAL TEST
-  test isCondensed in timegrid/timeline
   test hasMonthLabel... continuous months?
   test background event title size, in daygrid too (monitor isCompact)
   test timeline/timegrid more-link in DARK mode

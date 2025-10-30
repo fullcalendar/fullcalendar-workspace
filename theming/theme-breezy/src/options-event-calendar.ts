@@ -344,9 +344,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       allDayHeaderClass: 'items-center', // v-align
-      allDayHeaderInnerClass: `text-xs ${params.faintFgClass} p-3`,
+      allDayHeaderInnerClass: (data) => [
+        `${params.faintFgClass} p-3`,
+        data.isCompact ? xxsTextClass : 'text-xs',
+      ],
 
-      slotLabelInnerClass: `text-xs ${params.faintFgClass} uppercase`,
+      slotLabelInnerClass: (data) => [
+        `${params.faintFgClass} uppercase`,
+        data.isCompact ? xxsTextClass : 'text-xs',
+      ],
 
       slotLaneClass: `border ${params.mutedBorderColorClass}`,
 
@@ -494,13 +500,19 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           ? params.strongBorderColorClass
           : params.mutedBorderColorClass,
         weekNumberHeaderClass: 'justify-end items-center',
-        weekNumberHeaderInnerClass: `px-3 text-sm ${params.mutedFgClass}`,
+        weekNumberHeaderInnerClass: (data) => [
+          `px-3 ${params.mutedFgClass}`,
+          data.isCompact ? xxsTextClass : 'text-sm',
+        ],
 
         /*
         Figure out how not having any border on slotLabel affects height-syncing
         */
         slotLabelClass: 'justify-end',
-        slotLabelInnerClass: 'relative -top-3.5 px-3 py-2',
+        slotLabelInnerClass: [
+          'relative px-3 py-2 -top-3.5',
+          // same top value works when isCompact or not
+        ],
 
         slotLabelDividerClass: `border-l ${params.mutedBorderColorClass}`,
 

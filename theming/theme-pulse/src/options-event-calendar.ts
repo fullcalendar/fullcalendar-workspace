@@ -391,7 +391,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnMoreLinkInnerClass: `p-0.5 text-xs ${params.strongFgClass}`,
 
       allDayHeaderClass: 'items-center', // v-align
-      allDayHeaderInnerClass: `p-2 text-xs ${params.fgClass}`,
+      allDayHeaderInnerClass: (data) => [
+        `p-2 ${params.fgClass}`,
+        data.isCompact ? xxsTextClass : 'text-xs',
+      ],
 
       allDayDividerClass: `border-b ${params.borderColorClass} shadow-sm`,
 
@@ -443,7 +446,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
 
         weekNumberHeaderClass: 'justify-end items-center',
-        weekNumberHeaderInnerClass: `px-2 text-sm ${params.fgClass}`,
+        weekNumberHeaderInnerClass: (data) => [
+          `px-2 ${params.fgClass}`,
+          data.isCompact ? xxsTextClass : 'text-sm',
+        ],
 
         columnEventClass: (data) => [
           'mx-0.5', // TODO: move this to the columnInner thing? yes!!
@@ -452,7 +458,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
 
         slotLabelClass: 'justify-end', // v-align
-        slotLabelInnerClass: `relative -top-4 p-2 text-xs ${params.fgClass}`,
+        slotLabelInnerClass: (data) => [
+          `relative -top-4 p-2 ${params.fgClass}`,
+          data.isCompact ? xxsTextClass : 'text-xs',
+        ],
         slotLabelDividerClass: `border-s ${params.borderColorClass}`,
         // TODO: higher levels should have h-borders
       },

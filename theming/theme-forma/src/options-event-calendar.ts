@@ -333,8 +333,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
-      dayHeaderAlign: (data) => data.isCompact ? 'center' : 'start',
-
       dayHeaderClass: (data) => [
         data.inPopover ? params.popoverHeaderClass : joinClassNames(
           !data.isCompact && `border ${params.borderColorClass}`, // HACK for no-show-border in multimonth
@@ -413,6 +411,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     views: {
       dayGrid: {
         ...dayRowItemClasses,
+        dayHeaderAlign: (data) => data.isCompact ? 'center' : 'start', // pairs with dayHeaderClass above (TODO: rearrange)
 
         dayHeaderDividerClass: ['border-t', params.borderColorClass],
 
@@ -424,6 +423,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       multiMonth: {
         ...dayRowItemClasses,
+        dayHeaderAlign: (data) => data.isCompact ? 'center' : 'start', // pairs with dayHeaderClass above (TODO: rearrange)
 
         dayHeaderDividerClass: (data) => data.isSticky && ['border-t', params.borderColorClass],
 
@@ -436,6 +436,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       timeGrid: {
         ...dayRowItemClasses,
+        dayHeaderAlign: 'start',
         // TODO: DRY
         dayHeaderDividerClass: ['border-t', params.borderColorClass],
 

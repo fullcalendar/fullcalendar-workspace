@@ -26,6 +26,8 @@ core:
   TODO: setting for FIRST slot, for hiding label
 
 audit use of "group" classnames
+
+BUG: Monarch: when timegrid narrow, week number erroneously turns into half-pill
 */
 
 // ambient types (tsc strips during build because of {})
