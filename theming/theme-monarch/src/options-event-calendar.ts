@@ -325,7 +325,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isCompact ? 'justify-end' : 'justify-center',
       ],
       dayCellTopInnerClass: (data) => [
-        'flex flex-row items-center justify-center rounded-full',
+        'flex flex-row items-center justify-center rounded-full whitespace-nowrap',
         data.isCompact
           ? `h-5 m-px ${xxsTextClass}`
           : `h-6 m-1.5 text-sm`,
@@ -335,7 +335,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isToday
           ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
           : (data.hasNavLink && params.mutedHoverPressableClass),
-        data.hasMonthLabel && 'text-base font-bold',
+        data.hasMonthLabel && 'font-bold',
         data.isOther && params.faintFgClass,
       ],
       dayCellInnerClass: (data) => data.inPopover && 'p-2',

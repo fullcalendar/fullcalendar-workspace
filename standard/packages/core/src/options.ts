@@ -491,7 +491,7 @@ export const BASE_OPTION_DEFAULTS = {
   dayCellFormat: { day: 'numeric' },
   headingLevel: 2, // like H2
   outerBorder: true,
-  dayCompactWidth: 75,
+  dayCompactWidth: 100,
   eventOverlap: true,
   slotLabelAlign: 'start',
   slotLabelSticky: true,

@@ -293,9 +293,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'flex flex-row justify-end min-h-[2px]',
       ],
       dayCellTopInnerClass: (data) => [
-        'px-1',
+        'px-1 whitespace-nowrap',
         data.isCompact ? 'py-0.5' : 'py-1',
-        data.hasMonthLabel && 'text-base font-bold',
+        data.hasMonthLabel && 'font-bold',
         data.isCompact ? xxsTextClass : 'text-sm',
         data.isOther && params.faintFgClass,
       ],

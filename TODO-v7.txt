@@ -21,20 +21,9 @@ Finish timegrid narrowness
   solution: isNarrow vs isShort?
   AFTER
     audit col-events AND columnMoreLinkInnerClass
-hasMonthLabel in continuous months
-  text like "January 1" is too wide, esp with week numbers
-    default to narrowed format?
-  TEST: when "today" is first of month, how long-text render in today-circle
-  Classic
-    not responsive text size
-  Monarch
-    not responsive text size
-  Breezy
-    needs to be bold
-  Forma
-    good
-  Pulse
-    needs to be darker
+maybe data.hasMonthLabel could be killed
+  and just have data.monthText... and might be empty!
+  (only if we decide to kill type of api for this format... not "fallback")
 
 
 MANUAL TEST
@@ -55,6 +44,8 @@ MANUAL TEST
   ensure larger dayCellFormat formats work w/ dayCellInner circles
   For block-events that display, there should be a visual distinctions between time/title text
     test with eventDisplay='block'
+  DONE, but save for checklist
+    When "today" is first of month, how long-text render in today-circle
 CODE-QUALITY (while going through each theme)
   all hover-pressables have focus-visible:
   put text color on every text node? no inheritance?

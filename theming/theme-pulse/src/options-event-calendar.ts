@@ -269,9 +269,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         !data.isToday
           // ghost-button-like
           ? joinClassNames(
-              'rounded-s-sm',
+              'rounded-s-sm whitespace-pre',
               data.isCompact ? 'px-1' : 'px-2',
-              params.mutedFgClass,
+              data.hasMonthLabel ? params.fgClass : params.mutedFgClass,
               data.hasNavLink && params.mutedHoverPressableClass,
             )
           // circle inside (see slots.tsx)

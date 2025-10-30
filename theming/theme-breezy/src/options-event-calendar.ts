@@ -309,7 +309,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       dayCellTopClass: 'flex flex-row justify-start min-h-1',
       dayCellTopInnerClass: (data) => [
-        'flex flex-row items-center',
+        'flex flex-row items-center whitespace-nowrap',
         data.isCompact
           ? `my-px h-5 ${xxsTextClass}`
           : 'my-1 h-6 text-xs',
@@ -328,8 +328,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             )
           : joinClassNames( // half-pill
               'rounded-e-sm',
+              data.hasMonthLabel && 'font-bold',
               data.isCompact ? 'px-1' : 'px-2',
-              data.isOther ? params.faintFgClass : params.mutedFgClass,
+              data.isOther
+                ? params.faintFgClass
+                : (data.hasMonthLabel ? params.fgClass : params.mutedFgClass),
               data.hasNavLink && params.mutedHoverPressableClass,
             ),
       ],

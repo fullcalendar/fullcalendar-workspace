@@ -45,6 +45,8 @@ start-date resizing in daygrid,
   resizer has wrong negative-start to overcome the isStart-border
 
 BUG: no hover+down effect on week-number in timegrid view
+
+Make dayHeaderFormat: { weekday: 'long' } IN MORE VIEWS like dayGridYear/multiMonth -- looks nice
 */
 
 // ambient types (tsc strips during build because of {})
@@ -363,7 +365,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ((data.isOther || data.isDisabled) && data.options.businessHours) && params.faintFgClass,
       ],
       dayCellTopInnerClass: (data) => [
-        'flex flex-row items-center',
+        'flex flex-row items-center whitespace-nowrap',
         data.hasMonthLabel && 'font-bold',
         data.isCompact
           ? `my-px h-5 ${xxsTextClass}`
