@@ -5,7 +5,7 @@ import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions } from '@fullcalendar/theme-monarch-dev/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-monarch-dev/slots'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
-import { params } from '../lib/params.js'
+import { params } from '../lib/option-params.js'
 
 const baseEventCalendarOptions = createEventCalendarOptions(params)
 

@@ -9,7 +9,7 @@ import { EventCalendarView } from './event-calendar.js'
 import { eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
 import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
-import { params } from '../lib/params.js'
+import { params } from '../lib/option-params.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(params)
 

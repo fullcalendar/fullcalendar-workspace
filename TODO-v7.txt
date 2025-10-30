@@ -13,7 +13,6 @@ clean+build all:
   pn build
 
 
-rename params.ts files?
 Shadcn "default" black palette looks really bad on Forma and Breezy
 
 

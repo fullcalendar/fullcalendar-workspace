@@ -1,6 +1,6 @@
 import React from 'react'
 import { CalendarOptions, joinClassNames } from "@fullcalendar/core"
-import { mutedFgPressableGroupClass } from './params.js'
+import { mutedFgPressableGroupClass } from './option-params.js'
 import { ChevronDownIcon } from 'lucide-react'
 
 export const schedulerOnlyIconOptions: CalendarOptions = {

@@ -9,7 +9,7 @@ import { createSlots } from '@fullcalendar/theme-pulse-dev/slots'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
-import { params } from '../lib/params.js'
+import { params } from '../lib/option-params.js'
 
 export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
   className?: string
