@@ -26,17 +26,14 @@ hasMonthLabel in continuous months
     default to narrowed format?
   TEST: when "today" is first of month, how long-text render in today-circle
   Classic
-    weird isMajor line in header
     not responsive text size
   Monarch
     not responsive text size
   Breezy
-    weird isMajor line in header
     needs to be bold
   Forma
     good
   Pulse
-    weird isMajor line in header
     needs to be darker
 
 

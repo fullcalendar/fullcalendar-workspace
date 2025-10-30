@@ -60,9 +60,11 @@ export function buildDateRowConfigs(
   const majorUnit = computeMajorUnit(dateProfile, context.dateEnv)
 
   // HACK mutate isMajor
-  for (const dataConfig of rowConfig.dataConfigs) {
-    if (isMajorUnit(dataConfig.dateMarker, majorUnit, context.dateEnv)) {
-      dataConfig.renderProps.isMajor = true
+  if (datesRepDistinctDays) {
+    for (const dataConfig of rowConfig.dataConfigs) {
+      if (isMajorUnit(dataConfig.dateMarker, majorUnit, context.dateEnv)) {
+        dataConfig.renderProps.isMajor = true
+      }
     }
   }
 
