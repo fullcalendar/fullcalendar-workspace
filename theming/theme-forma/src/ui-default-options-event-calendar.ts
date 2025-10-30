@@ -28,15 +28,10 @@ const mutedHoverClass = 'hover:bg-(--fc-forma-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-forma-muted) active:bg-(--fc-forma-strong)`
 const mutedHoverButtonClass = `${mutedHoverPressableClass} border border-transparent ${primaryOutlineFocusClass}`
 
-// interactive neutral backgrounds
-const strongSolidPressableClass = joinClassNames(
-  '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]',
-  'hover:[background:linear-gradient(var(--fc-forma-stronger),var(--fc-forma-stronger))_var(--fc-monarch-background)]',
-  'active:[background:linear-gradient(var(--fc-forma-strongest),var(--fc-forma-strongest))_var(--fc-monarch-background)]',
-)
-
-// interactive neutral foregrounds
-const mutedFgPressableGroupClass = `text-(--fc-forma-muted-foreground) group-hover:text-(--fc-forma-primary) group-focus-visible:text-(--fc-forma-primary)`
+// controls
+const unselectedPressableClass = `${mutedHoverPressableClass}`
+const unselectedButtonClass = `${unselectedPressableClass} border border-transparent hover:border-(--fc-forma-muted-border) active:border-(--fc-forma-border) ${primaryOutlineFocusClass}`
+const selectedButtonClass = `bg-(--fc-forma-selected) border border-(--fc-forma-strong-border) ${primaryOutlineFocusClass} -outline-offset-1`
 
 // primary
 const primaryClass = 'bg-(--fc-forma-primary) text-(--fc-forma-primary-foreground)'
@@ -46,11 +41,6 @@ const primaryButtonClass = `${primaryPressableClass} border border-transparent $
 // secondary *toolbar button*
 const secondaryButtonClass = `${mutedHoverPressableClass} border border-(--fc-forma-border) ${primaryOutlineFocusClass}`
 const secondaryButtonIconClass = 'size-5'
-
-// controls
-const unselectedPressableClass = `${mutedHoverPressableClass}`
-const unselectedButtonClass = `${unselectedPressableClass} border border-transparent hover:border-(--fc-forma-muted-border) active:border-(--fc-forma-border) ${primaryOutlineFocusClass}`
-const selectedButtonClass = `bg-(--fc-forma-selected) border border-(--fc-forma-strong-border) ${primaryOutlineFocusClass} -outline-offset-1`
 
 // muted *event* colors
 const eventMutedBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-forma-background))]'
@@ -68,53 +58,68 @@ const eventFaintPressableClass = joinClassNames(
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-forma-background))]',
 )
 
-export { mutedFgPressableGroupClass }
+// interactive neutral foregrounds
+export const mutedFgPressableGroupClass = `text-(--fc-forma-muted-foreground) group-hover:text-(--fc-forma-primary) group-focus-visible:text-(--fc-forma-primary)`
 
 export const optionParams: EventCalendarOptionParams = {
-  primaryClass,
-  primaryPressableClass,
-
-  mutedHoverClass,
-  mutedHoverPressableClass,
-
-  mutedBgClass: 'bg-(--fc-forma-muted)',
-
-  mutedClass,
-  mutedPressableClass,
-  strongSolidPressableClass,
-
-  faintBgClass: 'bg-(--fc-forma-faint)',
-  highlightClass: 'bg-(--fc-forma-highlight)',
-
-  borderColorClass: 'border-(--fc-forma-border)',
-  primaryBorderColorClass: 'border-(--fc-forma-primary)',
-  strongBorderColorClass: 'border-(--fc-forma-strong-border)',
-  nowBorderColorClass: 'border-(--fc-forma-primary)', // same as primary
-
-  primaryOutlineColorClass,
+  // outline
   outlineWidthClass,
   outlineWidthFocusClass,
   outlineOffsetClass,
   outlineInsetClass,
+  primaryOutlineColorClass,
 
-  eventColor: 'var(--fc-forma-event)',
-  eventContrastColor: 'var(--fc-forma-event-contrast)',
-  bgEventColor: 'var(--fc-forma-background-event)',
-  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
-
-  popoverClass: 'border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md',
-  popoverHeaderClass: `border-b border-(--fc-forma-border) bg-(--fc-forma-faint)`,
-
+  // neutral backgrounds
   bgClass: 'bg-(--fc-forma-background)',
   bgRingColorClass: 'ring-(--fc-forma-background)',
+  mutedBgClass: 'bg-(--fc-forma-muted)',
+  faintBgClass: 'bg-(--fc-forma-faint)',
 
+  // neutral foregrounds
   mutedFgClass: 'text-(--fc-forma-muted-foreground)',
   faintFgClass: 'text-(--fc-forma-faint-foreground)',
 
-  eventMutedBgClass,
-  eventMutedPressableClass,
+  // neutral borders
+  borderColorClass: 'border-(--fc-forma-border)',
+  strongBorderColorClass: 'border-(--fc-forma-strong-border)',
+
+  // muted *button*
+  mutedClass,
+  mutedPressableClass,
+
+  // strong *button*
+  strongSolidPressableClass: joinClassNames(
+    '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]',
+    'hover:[background:linear-gradient(var(--fc-forma-stronger),var(--fc-forma-stronger))_var(--fc-monarch-background)]',
+    'active:[background:linear-gradient(var(--fc-forma-strongest),var(--fc-forma-strongest))_var(--fc-monarch-background)]',
+  ),
+
+  // muted-on-hover
+  mutedHoverClass,
+  mutedHoverPressableClass,
+
+  // popover
+  popoverClass: 'border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md',
+  popoverHeaderClass: `border-b border-(--fc-forma-border) bg-(--fc-forma-faint)`,
+
+  // primary
+  primaryClass,
+  primaryBorderColorClass: 'border-(--fc-forma-primary)',
+  primaryPressableClass,
+
+  // event content
+  eventColor: 'var(--fc-forma-event)',
+  eventContrastColor: 'var(--fc-forma-event-contrast)',
   eventFaintBgClass,
   eventFaintPressableClass,
+  eventMutedBgClass,
+  eventMutedPressableClass,
+  bgEventColor: 'var(--fc-forma-background-event)',
+  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
+
+  // misc calendar content
+  highlightClass: 'bg-(--fc-forma-highlight)',
+  nowBorderColorClass: 'border-(--fc-forma-primary)', // same as primary
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

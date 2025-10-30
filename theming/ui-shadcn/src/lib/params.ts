@@ -9,26 +9,23 @@ const outlineInsetClass = '-outline-offset-3'
 const outlineColorClass = 'outline-ring/50'
 const outlineFocusClass = `${outlineColorClass} ${outlineWidthFocusClass}`
 
-// stronger
+// stronger (13%)
 const strongerSolidBgHoverClass = 'hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))]'
 
-// strong
+// strong (10%)
 const strongBgClass = 'bg-foreground/10'
 const strongBgHoverClass = 'hover:bg-foreground/10'
 const strongSolidBgClass = 'bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))]'
 const strongSolidPressableClass = `${strongSolidBgClass} ${strongerSolidBgHoverClass}`
 
-// muted (simulates a semi-transparent version of bg-muted)
+// muted (5% - simulates a semi-transparent version of bg-muted)
 const mutedBgClass = 'bg-foreground/5'
 const mutedBgHoverClass = 'hover:bg-foreground/5'
 const mutedBgHoverGroupClass = 'group-hover:bg-foreground/5'
 
-// faint
+// faint (50% of bg-muted)
 const faintBgHoverClass = 'hover:bg-muted/50'
 const faintBgFocusClass = 'focus-visible:bg-muted/50'
-
-// interactive neutral foregrounds
-const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'
 
 // primary
 const primaryClass = 'bg-primary text-(--primary-foreground)'
@@ -59,82 +56,89 @@ const eventFaintPressableClass = joinClassNames(
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))]',
 )
 
-export { mutedFgPressableGroupClass }
+// interactive neutral foregrounds
+export const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'
 
 export const optionParams: ThemeOptionParams = {
-  primaryClass,
-  primaryPressableClass,
-  primaryPressableGroupClass,
-
-  secondaryClass,
-  secondaryPressableClass,
-
-  tertiaryClass,
-  tertiaryPressableClass,
-  tertiaryPressableGroupClass,
-
-  mutedHoverClass: mutedBgHoverClass,
-  mutedHoverPressableClass: mutedBgHoverClass, // shadcn doesn't do down-effect
-  mutedHoverPressableGroupClass: mutedBgHoverGroupClass, // shadcn doesn't do down-effect
-
-  strongSolidPressableClass,
-
-  mutedClass: mutedBgClass,
-  mutedPressableClass: `${mutedBgClass} ${strongBgHoverClass}`,
-
-  faintHoverClass: faintBgHoverClass,
-  faintHoverPressableClass: `${faintBgHoverClass} ${faintBgFocusClass}`,
-
-  primaryOutlineColorClass: outlineColorClass,
-  tertiaryOutlineColorClass: outlineColorClass,
+  // outline
   outlineWidthClass,
   outlineWidthFocusClass,
   outlineWidthGroupFocusClass,
   outlineOffsetClass: '',
   outlineInsetClass,
+  primaryOutlineColorClass: outlineColorClass,
+  tertiaryOutlineColorClass: outlineColorClass,
 
+  // neutral backgrounds
+  bgClass: 'bg-background',
+  bgRingColorClass: 'ring-background',
   mutedBgClass,
   mutedSolidBgClass: 'bg-muted',
   faintBgClass: 'bg-foreground/3', // semi-transparent version of bg-sidebar
-  highlightClass: 'bg-primary/10',
-  todayBgNotPrintClass: 'not-print:bg-yellow-400/15 dark:bg-yellow-200/10',
 
-  // most borders are inherited
-  borderColorClass: '',
-  borderStartColorClass: '',
-  primaryBorderColorClass: 'border-primary',
-  strongBorderColorClass: 'border-foreground/20',
-  strongBorderBottomColorClass: 'border-b-foreground/20',
-  mutedBorderColorClass: '', // same as normal
-  nowBorderColorClass: 'border-destructive',
-  nowBorderStartColorClass: 'border-s-destructive',
-  nowBorderTopColorClass: 'border-t-destructive',
-
-  eventColor: 'var(--primary)',
-  eventContrastColor: 'var(--primary-foreground)',
-  bgEventColor: 'var(--foreground)',
-  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]',
-
-  popoverClass: 'border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground',
-  // (breezy) popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
-  // (classic) popoverClass: 'border bg-background text-foreground shadow-lg',
-  // (forma) popoverClass: 'border bg-background text-foreground shadow-md',
-  // (monarch) popoverClass: 'border rounded-lg bg-popover text-popover-foreground shadow-lg',
-  // (pulse) popoverClass: 'border bg-background text-foreground shadow-lg rounded-md shadow-md m-1',
-
-  popoverHeaderClass: `border-b ${mutedBgClass}`,
-
-  bgClass: 'bg-background',
-  bgRingColorClass: 'ring-background',
-
-  fgClass: '',
-  strongFgClass: '',
+  // neutral foregrounds
+  fgClass: '', // inherited
+  strongFgClass: '', // inherited
   mutedFgClass: 'text-muted-foreground',
   faintFgClass: 'text-muted-foreground',
 
-  eventFaintBgClass,
-  eventFaintPressableClass,
+  // neutral borders
+  borderColorClass: '', // inherited
+  borderStartColorClass: '', // inherited
+  strongBorderColorClass: 'border-foreground/20',
+  strongBorderBottomColorClass: 'border-b-foreground/20',
+  mutedBorderColorClass: '', // inherited
+
+  // primary
+  primaryClass,
+  primaryBorderColorClass: 'border-primary',
+  primaryPressableClass,
+  primaryPressableGroupClass,
+
+  // secondary
+  secondaryClass,
+  secondaryPressableClass,
+
+  // tertiary
+  tertiaryClass,
+  tertiaryPressableClass,
+  tertiaryPressableGroupClass,
+
+  // strong *button*
+  strongSolidPressableClass,
+
+  // muted *button*
+  mutedClass: mutedBgClass,
+  mutedPressableClass: `${mutedBgClass} ${strongBgHoverClass}`,
+
+  // muted-on-hover
+  mutedHoverClass: mutedBgHoverClass,
+  mutedHoverPressableClass: mutedBgHoverClass, // shadcn doesn't do down-effect
+  mutedHoverPressableGroupClass: mutedBgHoverGroupClass, // shadcn doesn't do down-effect
+
+  // faint-on-hover
+  faintHoverClass: faintBgHoverClass,
+  faintHoverPressableClass: `${faintBgHoverClass} ${faintBgFocusClass}`,
+
+  // popover
+  popoverClass: 'border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground',
+  popoverHeaderClass: `border-b ${mutedBgClass}`,
+
+  // event content
+  eventColor: 'var(--primary)',
+  eventContrastColor: 'var(--primary-foreground)',
   eventMutedBgClass,
   eventMutedPressableClass,
   eventMutedFgClass,
+  eventFaintBgClass,
+  eventFaintPressableClass,
+  bgEventColor: 'var(--foreground)',
+  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]',
+
+  // misc event content
+  highlightClass: 'bg-primary/10',
+  todayBgNotPrintClass: 'not-print:bg-yellow-400/15 dark:bg-yellow-200/10',
+  nowBorderColorClass: 'border-destructive',
+  nowBorderStartColorClass: 'border-s-destructive',
+  nowBorderTopColorClass: 'border-t-destructive',
 }

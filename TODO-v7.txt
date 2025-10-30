@@ -13,7 +13,6 @@ clean+build all:
   pn build
 
 
-rearrange ThemeOptionParams props
 rename optionParams -> params? (keep interface name tho)
   rename params.ts files?
 

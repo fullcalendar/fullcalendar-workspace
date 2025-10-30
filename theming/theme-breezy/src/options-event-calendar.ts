@@ -110,55 +110,68 @@ popover-close needs hover color or bg-change
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
 
 export interface EventCalendarOptionParams {
-  primaryClass: string
-  primaryPressableClass: string
-  primaryPressableGroupClass: string
-
-  mutedHoverClass: string
-  mutedHoverPressableClass: string
-
-  faintHoverClass: string,
-  faintHoverPressableClass: string,
-
-  primaryOutlineColorClass: string
+  // outline
   outlineWidthClass: string
   outlineWidthFocusClass: string
   outlineWidthGroupFocusClass: string
-  outlineOffsetClass: string // TODO: use this on primary-today-circle
+  outlineOffsetClass: string
+  primaryOutlineColorClass: string
 
-  strongSolidPressableClass: string
-
-  mutedBgClass: string
-  faintBgClass: string
-  highlightClass: string
-
-  borderColorClass: string
-  borderStartColorClass: string
-  primaryBorderColorClass: string
-  strongBorderColorClass: string
-  strongBorderBottomColorClass: string
-  mutedBorderColorClass: string
-  nowBorderColorClass: string
-
-  eventColor: string
-  bgEventColor: string
-  bgEventBgClass: string
-
-  popoverClass: string
-  popoverHeaderClass: string
-
+  // neutral backgrounds
   bgClass: string
   bgRingColorClass: string
+  mutedBgClass: string
+  faintBgClass: string
 
+  // neutral foregrounds
   fgClass: string
   strongFgClass: string
   mutedFgClass: string
   faintFgClass: string
 
+  // neutral borders
+  borderColorClass: string
+  borderStartColorClass: string
+  strongBorderColorClass: string
+  strongBorderBottomColorClass: string
+  mutedBorderColorClass: string
+
+  // strong *button*
+  strongSolidPressableClass: string
+
+  // muted-on-hover
+  mutedHoverClass: string
+  mutedHoverPressableClass: string
+
+  // faint-on-hover
+  faintHoverClass: string
+  faintHoverPressableClass: string
+
+  // popover
+  popoverClass: string
+  popoverHeaderClass: string
+
+  // primary
+  primaryClass: string
+  primaryBorderColorClass: string
+  primaryPressableClass: string
+  primaryPressableGroupClass: string
+
+  // secondary
+  secondaryClass: string
+  secondaryPressableClass: string
+
+  // event content
+  eventColor: string
   eventFaintBgClass: string
   eventFaintPressableClass: string
-
   eventMutedFgClass: string
+  bgEventColor: string
+  bgEventBgClass: string
+
+  // misc calendar content
+  highlightClass: string
+  nowBorderColorClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {

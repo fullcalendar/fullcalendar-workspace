@@ -5,76 +5,85 @@ you need to stop and restart the watcher,
 because depending packages do not label this as a depended-upon TS workspace
 */
 export interface ThemeOptionParams {
-  primaryClass: string // bg & fg
-  primaryPressableClass: string
-  primaryPressableGroupClass: string
-
-  secondaryClass: string // bg & fg
-  secondaryPressableClass: string
-
-  tertiaryClass: string
-  tertiaryPressableClass: string
-  tertiaryPressableGroupClass: string
-
-  mutedHoverClass: string
-  mutedHoverPressableClass: string
-  mutedHoverPressableGroupClass: string
-
-  // strong button-like
-  // NOTE: assumed "solid". rename?
-  strongSolidPressableClass: string
-
-  // muted button-like
-  mutedClass: string
-  mutedPressableClass: string
-
-  // faint ghost-button-like
-  faintHoverClass: string
-  faintHoverPressableClass: string
-
-  primaryOutlineColorClass: string
-  tertiaryOutlineColorClass: string
+  // outline
   outlineWidthClass: string
   outlineWidthFocusClass: string
   outlineWidthGroupFocusClass: string
   outlineOffsetClass: string
   outlineInsetClass: string
+  primaryOutlineColorClass: string
+  tertiaryOutlineColorClass: string
 
-  mutedBgClass: string // required to be FULLY-transparent!?... best for Shadcn?
-  mutedSolidBgClass: string
-  faintBgClass: string // required to be semitransparent
-  highlightClass: string
-  todayBgNotPrintClass: string
-
-  borderColorClass: string
-  borderStartColorClass: string
-  primaryBorderColorClass: string
-  strongBorderColorClass: string
-  strongBorderBottomColorClass: string
-  mutedBorderColorClass: string
-  nowBorderColorClass: string
-  nowBorderStartColorClass: string
-  nowBorderTopColorClass: string
-
-  eventColor: string
-  eventContrastColor: string
-  bgEventColor: string
-  bgEventBgClass: string
-
-  popoverClass: string
-  popoverHeaderClass: string
-
+  // neutral backgrounds
   bgClass: string
   bgRingColorClass: string
+  mutedBgClass: string
+  mutedSolidBgClass: string
+  faintBgClass: string
 
+  // neutral foregrounds
   fgClass: string
   strongFgClass: string
   mutedFgClass: string
   faintFgClass: string
 
-  eventFaintBgClass: string
-  eventFaintPressableClass: string
+  // neutral borders
+  borderColorClass: string
+  borderStartColorClass: string
+  strongBorderColorClass: string
+  strongBorderBottomColorClass: string
+  mutedBorderColorClass: string
+
+  // strong *button*
+  strongSolidPressableClass: string
+
+  // muted *button*
+  mutedClass: string // bg & fg
+  mutedPressableClass: string
+
+  // muted-on-hover
+  mutedHoverClass: string
+  mutedHoverPressableClass: string
+  mutedHoverPressableGroupClass: string
+
+  // faint-on-hover
+  faintHoverClass: string
+  faintHoverPressableClass: string
+
+  // popover
+  popoverClass: string
+  popoverHeaderClass: string
+
+  // primary
+  primaryClass: string // bg & fg
+  primaryBorderColorClass: string
+  primaryPressableClass: string
+  primaryPressableGroupClass: string
+
+  // secondary
+  secondaryClass: string // bg & fg
+  secondaryPressableClass: string
+
+  // tertiary
+  tertiaryClass: string // bg & fg
+  tertiaryPressableClass: string
+  tertiaryPressableGroupClass: string
+
+  // event content
+  eventColor: string
+  eventContrastColor: string
   eventMutedBgClass: string
   eventMutedPressableClass: string
-  eventMutedFgClass,
+  eventMutedFgClass: string
+  eventFaintBgClass: string
+  eventFaintPressableClass: string
+  bgEventColor: string
+  bgEventBgClass: string
+
+  // misc calendar content
+  highlightClass: string
+  todayBgNotPrintClass: string
+  nowBorderColorClass: string
+  nowBorderStartColorClass: string
+  nowBorderTopColorClass: string
 }

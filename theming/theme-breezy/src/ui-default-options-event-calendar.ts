@@ -17,28 +17,6 @@ const outlineOffsetClass = 'outline-offset-2'
 const primaryOutlineColorClass = `outline-(--fc-breezy-primary)`
 const primaryOutlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}`
 
-// primary
-const primaryClass = 'bg-(--fc-breezy-primary) text-(--fc-breezy-primary-foreground)'
-const primaryPressableClass = `${primaryClass} hover:bg-(--fc-breezy-primary-over)`
-const primaryPressableGroupClass = `${primaryClass} group-hover:bg-(--fc-breezy-primary-over)`
-const primaryButtonClass = `${primaryPressableClass} border-transparent ${primaryOutlineFocusClass} ${outlineOffsetClass}`
-
-// secondary
-const secondaryClass = 'text-(--fc-breezy-secondary-foreground) bg-(--fc-breezy-secondary)'
-const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-secondary-over)`
-const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-secondary-border) ${primaryOutlineFocusClass} -outline-offset-1`
-const secondaryButtonIconClass = `size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-over) group-focus-visible:text-(--fc-breezy-secondary-icon-over)`
-
-// interactive neutral backgrounds
-const strongSolidPressableClass = joinClassNames(
-  '[background:linear-gradient(var(--fc-breezy-strong),var(--fc-breezy-strong))_var(--fc-breezy-background)]',
-  'hover:[background:linear-gradient(var(--fc-breezy-stronger),var(--fc-breezy-stronger))_var(--fc-breezy-background)]',
-  'active:[background:linear-gradient(var(--fc-breezy-strongest),var(--fc-breezy-strongest))_var(--fc-breezy-background)]',
-)
-
-// interactive neutral foregrounds
-const mutedFgPressableGroupClass = `text-(--fc-breezy-muted-foreground) group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)`
-
 // muted-on-hover
 const mutedHoverClass = 'hover:bg-(--fc-breezy-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-breezy-muted)`
@@ -51,6 +29,18 @@ const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-mute
 const selectedClass = `bg-(--fc-breezy-selected) text-(--fc-breezy-strong-foreground) ${primaryOutlineFocusClass}`
 const unselectedClass = `text-(--fc-breezy-muted-foreground) hover:text-(--fc-breezy-strong-foreground) ${primaryOutlineFocusClass}`
 
+// primary
+const primaryClass = 'bg-(--fc-breezy-primary) text-(--fc-breezy-primary-foreground)'
+const primaryPressableClass = `${primaryClass} hover:bg-(--fc-breezy-primary-over)`
+const primaryPressableGroupClass = `${primaryClass} group-hover:bg-(--fc-breezy-primary-over)`
+const primaryButtonClass = `${primaryPressableClass} border-transparent ${primaryOutlineFocusClass} ${outlineOffsetClass}`
+
+// secondary
+const secondaryClass = 'text-(--fc-breezy-secondary-foreground) bg-(--fc-breezy-secondary)'
+const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-secondary-over)`
+const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-secondary-border) ${primaryOutlineFocusClass} -outline-offset-1`
+const secondaryButtonIconClass = `size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-over) group-focus-visible:text-(--fc-breezy-secondary-icon-over)`
+
 // muted *event* colors
 const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--fc-breezy-foreground))]'
 
@@ -62,57 +52,76 @@ const eventFaintPressableClass = joinClassNames(
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-breezy-background))]',
 )
 
-export { mutedFgPressableGroupClass }
+// interactive neutral foregrounds
+export const mutedFgPressableGroupClass = `text-(--fc-breezy-muted-foreground) group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)`
 
 export const optionParams: EventCalendarOptionParams = {
-  primaryClass,
-  primaryPressableClass,
-  primaryPressableGroupClass,
-
-  mutedHoverClass,
-  mutedHoverPressableClass,
-
-  faintHoverClass,
-  faintHoverPressableClass,
-
-  primaryOutlineColorClass,
+  // outline
   outlineWidthClass,
   outlineWidthFocusClass,
   outlineWidthGroupFocusClass,
   outlineOffsetClass,
+  primaryOutlineColorClass,
 
-  strongSolidPressableClass,
-
+  // neutral backgrounds
+  bgClass: 'bg-(--fc-breezy-background)',
+  bgRingColorClass: 'ring-(--fc-breezy-background)',
   mutedBgClass: 'bg-(--fc-breezy-muted)',
   faintBgClass: 'bg-(--fc-breezy-faint)',
-  highlightClass: 'bg-(--fc-breezy-highlight)',
 
-  eventColor: 'var(--fc-breezy-event)',
-  bgEventColor: 'var(--fc-breezy-background-event)',
-  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
+  // neutral foregrounds
+  fgClass: 'text-(--fc-breezy-foreground)',
+  strongFgClass: 'text-(--fc-breezy-strong-foreground)',
+  mutedFgClass: 'text-(--fc-breezy-muted-foreground)',
+  faintFgClass: 'text-(--fc-breezy-faint-foreground)',
 
+  // neutral borders
   borderColorClass: 'border-(--fc-breezy-border)',
   borderStartColorClass: 'border-s-(--fc-breezy-border)',
-  primaryBorderColorClass: 'border-(--fc-breezy-primary)',
   strongBorderColorClass: 'border-(--fc-breezy-strong-border)',
   strongBorderBottomColorClass: 'border-b-(--fc-breezy-strong-border)',
   mutedBorderColorClass: 'border-(--fc-breezy-muted-border)',
-  nowBorderColorClass: 'border-(--fc-breezy-now)',
 
+  // strong *button*
+  strongSolidPressableClass: joinClassNames(
+    '[background:linear-gradient(var(--fc-breezy-strong),var(--fc-breezy-strong))_var(--fc-breezy-background)]',
+    'hover:[background:linear-gradient(var(--fc-breezy-stronger),var(--fc-breezy-stronger))_var(--fc-breezy-background)]',
+    'active:[background:linear-gradient(var(--fc-breezy-strongest),var(--fc-breezy-strongest))_var(--fc-breezy-background)]',
+  ),
+
+  // muted-on-hover
+  mutedHoverClass,
+  mutedHoverPressableClass,
+
+  // faint-on-hover
+  faintHoverClass,
+  faintHoverPressableClass,
+
+  // popover
   popoverClass: 'bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg overflow-hidden shadow-lg m-1',
   popoverHeaderClass: 'border-b border-(--fc-breezy-border) bg-(--fc-breezy-faint) ',
 
-  bgClass: 'bg-(--fc-breezy-background)',
-  bgRingColorClass: 'ring-(--fc-breezy-background)',
+  // primary
+  primaryClass,
+  primaryBorderColorClass: 'border-(--fc-breezy-primary)',
+  primaryPressableClass,
+  primaryPressableGroupClass,
 
-  faintFgClass: 'text-(--fc-breezy-faint-foreground)',
-  mutedFgClass: 'text-(--fc-breezy-muted-foreground)',
-  fgClass: 'text-(--fc-breezy-foreground)',
-  strongFgClass: 'text-(--fc-breezy-strong-foreground)',
+  // secondary
+  secondaryClass,
+  secondaryPressableClass,
 
+  // event content
+  eventColor: 'var(--fc-breezy-event)',
   eventFaintBgClass,
   eventFaintPressableClass,
   eventMutedFgClass,
+  bgEventColor: 'var(--fc-breezy-background-event)',
+  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
+
+  // misc calendar content
+  highlightClass: 'bg-(--fc-breezy-highlight)',
+  nowBorderColorClass: 'border-(--fc-breezy-now)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
@@ -155,7 +164,6 @@ export const defaultUiEventCalendarOptions: {
           : secondaryButtonClass,
         data.inGroup
           ? 'first:rounded-s-md first:border-s last:rounded-e-md last:border-e border-y'
-          // standalone button (responsible for own border and shadow)
           : 'rounded-md shadow-xs border',
       ),
     ],

@@ -8,46 +8,56 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/interaction'
 
 export interface EventCalendarOptionParams {
-  mutedHoverClass: string
-  mutedHoverPressableClass: string
-
-  strongSolidPressableClass: string
-
-  faintHoverClass: string
-  faintHoverPressableClass: string
-
-  primaryOutlineColorClass: string
+  // outline
   outlineWidthClass: string
   outlineWidthFocusClass: string
   outlineOffsetClass: string
   outlineInsetClass: string
+  primaryOutlineColorClass: string
 
+  // neutral backgrounds
+  bgClass: string
+  bgRingColorClass: string
   mutedBgClass: string
   mutedSolidBgClass: string
   faintBgClass: string
-  highlightClass: string
-  todayBgNotPrintClass: string
 
+  // neutral foregrounds
+  mutedFgClass: string
+  faintFgClass: string
+
+  // neutral borders
   borderColorClass: string
-  primaryBorderColorClass: string
   strongBorderColorClass: string
-  nowBorderColorClass: string
-  nowBorderStartColorClass: string
-  nowBorderTopColorClass: string
+  primaryBorderColorClass: string
 
+  // strong *button*
+  strongSolidPressableClass: string
+
+  // muted-on-hover
+  mutedHoverClass: string
+  mutedHoverPressableClass: string
+
+  // faint-on-hover
+  faintHoverClass: string
+  faintHoverPressableClass: string
+
+  // popover
+  popoverClass: string
+  popoverHeaderClass: string
+
+  // event content
   eventColor: string
   eventContrastColor: string
   bgEventColor: string
   bgEventBgClass: string
 
-  popoverClass: string
-  popoverHeaderClass: string
-
-  bgClass: string
-  bgRingColorClass: string
-
-  mutedFgClass: string
-  faintFgClass: string
+  // misc calendar content
+  highlightClass: string
+  todayBgNotPrintClass: string
+  nowBorderColorClass: string
+  nowBorderStartColorClass: string
+  nowBorderTopColorClass: string
 }
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height

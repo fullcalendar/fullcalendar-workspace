@@ -69,49 +69,62 @@ BUG: timegrid, "W 27" is different color than day headers in same horizontal row
 */
 
 export interface EventCalendarOptionParams {
-  tertiaryClass: string
-  tertiaryPressableClass: string
-  tertiaryPressableGroupClass: string
-
-  mutedHoverClass: string
-  mutedHoverPressableClass: string // needed anymore?
-
-  strongSolidPressableClass: string
-
-  mutedBgClass: string
-  mutedSolidBgClass: string
-  faintBgClass: string
-  highlightClass: string
-
-  borderColorClass: string
-  strongBorderColorClass: string
-  nowBorderColorClass: string
-  primaryBorderColorClass: string
-
-  tertiaryOutlineColorClass: string
+  // outline
   outlineWidthClass: string
   outlineWidthFocusClass: string
   outlineWidthGroupFocusClass: string
   outlineOffsetClass: string
   outlineInsetClass: string
+  tertiaryOutlineColorClass: string
 
+  // neutral backgrounds
+  bgClass: string
+  bgRingColorClass: string
+  mutedBgClass: string
+  mutedSolidBgClass: string
+  faintBgClass: string
+
+  // neutral foregrounds
+  fgClass: string
+  strongFgClass: string
+  mutedFgClass: string
+
+  // neutral borders
+  borderColorClass: string
+  strongBorderColorClass: string
+
+  // strong *button*
+  strongSolidPressableClass: string
+
+  // muted-on-hover
+  mutedHoverClass: string
+  mutedHoverPressableClass: string
+
+  // faint-on-hover
+  faintHoverClass: string
+  faintHoverPressableClass: string
+
+  // popover
+  popoverClass: string
+  popoverHeaderClass: string
+
+  // primary
+  primaryBorderColorClass: string
+
+  // tertiary
+  tertiaryClass: string
+  tertiaryPressableClass: string
+  tertiaryPressableGroupClass: string
+
+  // event content
   eventColor: string
   eventContrastColor: string
   bgEventColor: string
   bgEventBgClass: string
 
-  popoverClass: string
-  popoverHeaderClass: string
-
-  bgClass: string
-  bgRingColorClass: string
-
-  fgClass: string
-  strongFgClass: string
-  mutedFgClass: string
-
-  faintHoverClass: string
-  faintHoverPressableClass: string
+  // misc calendar content
+  highlightClass: string
+  nowBorderColorClass: string
 }
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height

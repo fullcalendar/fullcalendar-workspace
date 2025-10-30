@@ -2,55 +2,67 @@ import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
+// muted-on-hover
 const mutedHoverClass = 'hover:bg-(--fc-classic-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-classic-muted) active:bg-(--fc-classic-strong)`
 
+// faint-on-hover
 const faintHoverClass = 'hover:bg-(--fc-classic-faint)'
 const faintHoverPressableClass = `${faintHoverClass} focus-visible:bg-(--fc-classic-faint) active:bg-(--fc-classic-muted)`
 
 const buttonIconClass = 'size-5'
 
 export const optionParams: EventCalendarOptionParams = {
-  mutedHoverClass,
-  mutedHoverPressableClass,
-
-  faintHoverClass,
-  faintHoverPressableClass,
-
-  strongSolidPressableClass: '[background:linear-gradient(var(--fc-classic-strong),var(--fc-classic-strong))_var(--fc-classic-background)]',
-
-  primaryOutlineColorClass: 'outline-(--fc-classic-primary)',
+  // outline
   outlineWidthClass: 'outline-2',
   outlineWidthFocusClass: 'focus-visible:outline-2',
   outlineOffsetClass: 'outline-offset-2',
   outlineInsetClass: '-outline-offset-2',
+  primaryOutlineColorClass: 'outline-(--fc-classic-primary)',
 
+  // neutral backgrounds
+  bgClass: 'bg-(--fc-classic-background)',
+  bgRingColorClass: 'ring-(--fc-classic-background)',
   mutedBgClass: 'bg-(--fc-classic-muted)',
   mutedSolidBgClass: '[background:linear-gradient(var(--fc-classic-muted),var(--fc-classic-muted))_var(--fc-classic-background)]',
   faintBgClass: 'bg-(--fc-classic-faint)',
-  highlightClass: 'bg-(--fc-classic-highlight)',
-  todayBgNotPrintClass: 'not-print:bg-(--fc-classic-today)',
 
+  // neutral foregrounds
+  mutedFgClass: 'text-(--fc-classic-muted-foreground)',
+  faintFgClass: 'text-(--fc-classic-faint-foreground)',
+
+  // neutral borders
   borderColorClass: 'border-(--fc-classic-border)',
-  primaryBorderColorClass: 'border-(--fc-classic-primary)',
   strongBorderColorClass: 'border-(--fc-classic-strong-border)',
-  nowBorderColorClass: 'border-(--fc-classic-now)',
-  nowBorderStartColorClass: 'border-s-(--fc-classic-now)',
-  nowBorderTopColorClass: 'border-t-(--fc-classic-now)',
+  primaryBorderColorClass: 'border-(--fc-classic-primary)',
 
+  // strong *button*
+  strongSolidPressableClass: '[background:linear-gradient(var(--fc-classic-strong),var(--fc-classic-strong))_var(--fc-classic-background)]',
+
+  // muted-on-hover
+  mutedHoverClass,
+  mutedHoverPressableClass,
+
+  // faint-on-hover
+  faintHoverClass,
+  faintHoverPressableClass,
+
+  // popover
+  popoverClass: 'bg-(--fc-classic-background) border border-(--fc-classic-border) shadow-md',
+  popoverHeaderClass: 'border-b border-(--fc-classic-border) bg-(--fc-classic-muted)',
+
+  // event content
   eventColor: 'var(--fc-classic-event)',
   eventContrastColor: 'var(--fc-classic-event-contrast)',
   bgEventColor: 'var(--fc-classic-background-event)',
   bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
 
-  popoverClass: 'bg-(--fc-classic-background) border border-(--fc-classic-border) shadow-md',
-  popoverHeaderClass: 'border-b border-(--fc-classic-border) bg-(--fc-classic-muted)',
-
-  bgClass: 'bg-(--fc-classic-background)',
-  bgRingColorClass: 'ring-(--fc-classic-background)',
-
-  mutedFgClass: 'text-(--fc-classic-muted-foreground)',
-  faintFgClass: 'text-(--fc-classic-faint-foreground)',
+  // misc calendar content
+  highlightClass: 'bg-(--fc-classic-highlight)',
+  todayBgNotPrintClass: 'not-print:bg-(--fc-classic-today)',
+  nowBorderColorClass: 'border-(--fc-classic-now)',
+  nowBorderStartColorClass: 'border-s-(--fc-classic-now)',
+  nowBorderTopColorClass: 'border-t-(--fc-classic-now)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

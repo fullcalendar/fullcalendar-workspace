@@ -15,6 +15,18 @@ const tertiaryOulineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFoc
 const smallBoxShadowClass = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
 const largeBoxShadowClass = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 
+// muted-on-hover
+const mutedHoverClass = 'hover:bg-(--fc-pulse-muted)'
+const mutedHoverPressableClass = `${mutedHoverClass} active:bg-(--fc-pulse-strong) focus-visible:bg-(--fc-pulse-muted)`
+
+// faint-on-hover
+const faintHoverClass = 'hover:bg-(--fc-pulse-faint)'
+const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-pulse-muted) focus-visible:bg-(--fc-pulse-faint)`
+
+// controls
+const selectedButtonClass = `bg-(--fc-pulse-selected) text-(--fc-pulse-selected-foreground) ${largeBoxShadowClass} ${tertiaryOulineFocusClass}`
+const unselectedButtonClass = `text-(--fc-pulse-unselected-foreground) ${mutedHoverPressableClass} ${tertiaryOulineFocusClass}`
+
 // primary *toolbar button*
 const primaryClass = 'bg-(--fc-pulse-primary) text-(--fc-pulse-primary-foreground)'
 const primaryPressableClass = `${primaryClass} hover:bg-(--fc-pulse-primary-over) active:bg-(--fc-pulse-primary-down)`
@@ -30,75 +42,68 @@ const tertiaryClass = 'bg-(--fc-pulse-tertiary) text-(--fc-pulse-tertiary-foregr
 const tertiaryPressableClass = `${tertiaryClass} hover:bg-(--fc-pulse-tertiary-over) active:bg-(--fc-pulse-tertiary-down) focus-visible:bg-(--fc-pulse-tertiary-over)`
 const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-(--fc-pulse-tertiary-over) group-active:bg-(--fc-pulse-tertiary-down) group-focus-visible:bg-(--fc-pulse-tertiary-over)`
 
-// interactive neutral backgrounds
-const mutedSolidBgClass = '[background:linear-gradient(var(--fc-pulse-muted),var(--fc-pulse-muted))_var(--fc-pulse-background)]'
-const strongSolidPressableClass = joinClassNames(
-  '[background:linear-gradient(var(--fc-pulse-strong),var(--fc-pulse-strong))_var(--fc-pulse-background)]',
-  'hover:[background:linear-gradient(var(--fc-pulse-stronger),var(--fc-pulse-stronger))_var(--fc-pulse-background)]',
-  'active:[background:linear-gradient(var(--fc-pulse-strongest),var(--fc-pulse-strongest))_var(--fc-pulse-background)]',
-)
-
 // interactive neutral foregrounds
-const mutedFgPressableGroupClass = `text-(--fc-pulse-muted-foreground) group-hover:text-(--fc-pulse-foreground) group-focus-visible:text-(--fc-pulse-foreground)`
-
-// muted-on-hover
-const mutedHoverClass = 'hover:bg-(--fc-pulse-muted)'
-const mutedHoverPressableClass = `${mutedHoverClass} active:bg-(--fc-pulse-strong) focus-visible:bg-(--fc-pulse-muted)`
-
-// faint-on-hover
-const faintHoverClass = 'hover:bg-(--fc-pulse-faint)'
-const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-pulse-muted) focus-visible:bg-(--fc-pulse-faint)`
-
-// controls
-const selectedButtonClass = `bg-(--fc-pulse-selected) text-(--fc-pulse-selected-foreground) ${largeBoxShadowClass} ${tertiaryOulineFocusClass}`
-const unselectedButtonClass = `text-(--fc-pulse-unselected-foreground) ${mutedHoverPressableClass} ${tertiaryOulineFocusClass}`
-
-export { mutedFgPressableGroupClass }
+export const mutedFgPressableGroupClass = `text-(--fc-pulse-muted-foreground) group-hover:text-(--fc-pulse-foreground) group-focus-visible:text-(--fc-pulse-foreground)`
 
 export const optionParams: EventCalendarOptionParams = {
-  tertiaryClass,
-  tertiaryPressableClass,
-  tertiaryPressableGroupClass,
-
-  mutedHoverClass,
-  mutedHoverPressableClass,
-
-  faintHoverClass,
-  faintHoverPressableClass,
-
-  strongSolidPressableClass,
-
-  mutedBgClass: 'bg-(--fc-pulse-muted)',
-  mutedSolidBgClass,
-  faintBgClass: 'bg-(--fc-pulse-faint)',
-  highlightClass: 'bg-(--fc-pulse-highlight)',
-
-  borderColorClass: 'border-(--fc-pulse-border)',
-  strongBorderColorClass: 'border-(--fc-pulse-strong-border)',
-  nowBorderColorClass: 'border-(--fc-pulse-now)',
-  primaryBorderColorClass: 'border-(--fc-pulse-primary)',
-
-  tertiaryOutlineColorClass,
+  // outline
   outlineWidthClass,
   outlineWidthFocusClass,
   outlineWidthGroupFocusClass,
   outlineOffsetClass,
   outlineInsetClass,
+  tertiaryOutlineColorClass,
 
+  // neutral backgrounds
+  bgClass: 'bg-(--fc-pulse-background)',
+  bgRingColorClass: 'ring-(--fc-pulse-background)',
+  mutedBgClass: 'bg-(--fc-pulse-muted)',
+  mutedSolidBgClass: '[background:linear-gradient(var(--fc-pulse-muted),var(--fc-pulse-muted))_var(--fc-pulse-background)]',
+  faintBgClass: 'bg-(--fc-pulse-faint)',
+
+  // neutral foregrounds
+  fgClass: 'text-(--fc-pulse-foreground)',
+  strongFgClass: 'text-(--fc-pulse-strong-foreground)',
+  mutedFgClass: 'text-(--fc-pulse-muted-foreground)',
+
+  // neutral borders
+  borderColorClass: 'border-(--fc-pulse-border)',
+  strongBorderColorClass: 'border-(--fc-pulse-strong-border)',
+  primaryBorderColorClass: 'border-(--fc-pulse-primary)',
+
+  // strong *button*
+  strongSolidPressableClass: joinClassNames(
+    '[background:linear-gradient(var(--fc-pulse-strong),var(--fc-pulse-strong))_var(--fc-pulse-background)]',
+    'hover:[background:linear-gradient(var(--fc-pulse-stronger),var(--fc-pulse-stronger))_var(--fc-pulse-background)]',
+    'active:[background:linear-gradient(var(--fc-pulse-strongest),var(--fc-pulse-strongest))_var(--fc-pulse-background)]',
+  ),
+
+  // muted-on-hover
+  mutedHoverClass,
+  mutedHoverPressableClass,
+
+  // faint-on-hover
+  faintHoverClass,
+  faintHoverPressableClass,
+
+  // popover
+  popoverClass: `bg-(--fc-pulse-background) border border-(--fc-pulse-strong-border) rounded-sm overflow-hidden shadow-md m-1`,
+  popoverHeaderClass: `border-b border-(--fc-pulse-strong-border) bg-(--fc-pulse-muted)`,
+
+  // tertiary
+  tertiaryClass,
+  tertiaryPressableClass,
+  tertiaryPressableGroupClass,
+
+  // event content
   eventColor: 'var(--fc-pulse-event)',
   eventContrastColor: 'var(--fc-pulse-event-contrast)',
   bgEventColor: 'var(--fc-pulse-background-event)',
   bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
 
-  popoverClass: `bg-(--fc-pulse-background) border border-(--fc-pulse-strong-border) rounded-sm overflow-hidden shadow-md m-1`,
-  popoverHeaderClass: `border-b border-(--fc-pulse-strong-border) bg-(--fc-pulse-muted)`,
-
-  bgClass: 'bg-(--fc-pulse-background)',
-  bgRingColorClass: 'ring-(--fc-pulse-background)',
-
-  fgClass: 'text-(--fc-pulse-foreground)',
-  strongFgClass: 'text-(--fc-pulse-strong-foreground)',
-  mutedFgClass: 'text-(--fc-pulse-muted-foreground)',
+  // misc calendar content
+  highlightClass: 'bg-(--fc-pulse-highlight)',
+  nowBorderColorClass: 'border-(--fc-pulse-now)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)

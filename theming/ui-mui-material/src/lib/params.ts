@@ -20,20 +20,6 @@ const outlineInsetClass = '-outline-offset-3'
 const primaryOutlineColorClass = 'outline-(--mui-palette-primary-main)'
 const tertiaryOutlineColorClass = 'outline-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.5)]'
 
-// primary
-const primaryClass = 'bg-(--mui-palette-primary-main) text-(--mui-palette-primary-contrastText)'
-const primaryPressableClass = `${primaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.9)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.8)]`
-const primaryPressableGroupClass = `${primaryClass} group-hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.9)] group-active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.8)]`
-
-// secondary (less-contrasty version of primary)
-const secondaryClass = 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.15)] brightness-110'
-const secondaryPressableClass = `${secondaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)]`
-
-// tertiary (it's actually MUI's "secondary", like an accent color)
-const tertiaryClass = 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)'
-const tertiaryPressableClass = `${tertiaryClass} hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)]`
-const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] group-active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)]`
-
 // strongest (25%)
 const strongestSolidBgActiveClass = 'active:bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_25%,var(--mui-palette-background-paper))]'
 
@@ -64,7 +50,21 @@ const mutedSolidBgClass = '[background:linear-gradient(rgba(var(--mui-palette-te
 const faintBgClass = 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]'
 const faintBgHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]'
 const faintBgFocusClass = 'focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]'
-const faintHoverPressableClass = `${faintBgHoverClass} ${mutedBgActiveClass} ${faintBgFocusClass}`
+const faintHoverPressableClass = `${faintBgHoverClass} ${faintBgFocusClass} ${mutedBgActiveClass}`
+
+// primary
+const primaryClass = 'bg-(--mui-palette-primary-main) text-(--mui-palette-primary-contrastText)'
+const primaryPressableClass = `${primaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.9)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.8)]`
+const primaryPressableGroupClass = `${primaryClass} group-hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.9)] group-active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.8)]`
+
+// secondary (less-contrasty version of primary)
+const secondaryClass = 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.15)] brightness-110'
+const secondaryPressableClass = `${secondaryClass} hover:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.2)] active:bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.3)]`
+
+// tertiary (it's actually MUI's "secondary", like an accent color)
+const tertiaryClass = 'bg-(--mui-palette-secondary-main) text-(--mui-palette-secondary-contrastText)'
+const tertiaryPressableClass = `${tertiaryClass} hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)]`
+const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.9)] group-active:bg-[rgba(var(--mui-palette-secondary-mainChannel)_/_0.8)]`
 
 // muted *event* colors
 const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--mui-palette-text-primary))]'
@@ -83,82 +83,89 @@ const eventFaintPressableClass = joinClassNames(
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--mui-palette-background-paper))]',
 )
 
-// this is how MUI does icon color
+// how MUI does icon color
 export const pressableIconClass = 'text-(--mui-palette-action-active) group-hover:text-(--mui-palette-text-primary) group-focus-visible:text-(--mui-palette-text-primary)'
 
 export const optionParams: ThemeOptionParams = {
-  primaryClass,
-  primaryPressableClass,
-  primaryPressableGroupClass,
-
-  secondaryClass,
-  secondaryPressableClass,
-
-  tertiaryClass,
-  tertiaryPressableClass,
-  tertiaryPressableGroupClass,
-
-  mutedHoverClass: mutedBgHoverClass,
-  mutedHoverPressableClass,
-  mutedHoverPressableGroupClass,
-
-  strongSolidPressableClass,
-
-  mutedClass: mutedBgClass,
-  mutedPressableClass,
-
-  faintHoverClass: faintBgHoverClass,
-  faintHoverPressableClass,
-
-  primaryOutlineColorClass,
-  tertiaryOutlineColorClass,
+  // outline
   outlineWidthClass,
   outlineWidthFocusClass,
   outlineWidthGroupFocusClass,
   outlineOffsetClass,
   outlineInsetClass,
+  primaryOutlineColorClass,
+  tertiaryOutlineColorClass,
 
+  // neutral backgrounds
+  bgClass: 'bg-(--mui-palette-background-paper)',
+  bgRingColorClass: 'ring-(--mui-palette-background-paper)',
   mutedBgClass,
   mutedSolidBgClass,
   faintBgClass,
-  highlightClass: 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.1)]',
-  todayBgNotPrintClass: 'not-print:bg-[rgba(var(--mui-palette-warning-mainChannel)_/_0.1)]',
 
-  borderColorClass: 'border-(--mui-palette-divider)',
-  borderStartColorClass: 'border-s-(--mui-palette-divider)',
-  primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
-  strongBorderColorClass: 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]',
-  strongBorderBottomColorClass: 'border-b-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]',
-  mutedBorderColorClass: 'border-(--mui-palette-divider)',
-  nowBorderColorClass: 'border-(--mui-palette-error-main)',
-  nowBorderStartColorClass: 'border-s-(--mui-palette-error-main)',
-  nowBorderTopColorClass: 'border-t-(--mui-palette-error-main)',
-
-  eventColor: 'var(--mui-palette-primary-main)',
-  eventContrastColor: 'var(--mui-palette-primary-contrastText)',
-  bgEventColor: 'var(--mui-palette-secondary-main)',
-  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
-
-  popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-1',
-  // (breezy) ^^^
-  // (forma) popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8) m-1',
-  // (monarch) popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) shadow-(--mui-shadows-8)',
-  // (pulse) popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2',
-
-  popoverHeaderClass: 'border-b border-(--mui-palette-divider)', // no bg color. looks bad with card shadow
-
-  bgClass: 'bg-(--mui-palette-background-paper)',
-  bgRingColorClass: 'ring-(--mui-palette-background-paper)',
-
+  // neutral foregrounds
   fgClass: 'text-(--mui-palette-text-primary)',
   strongFgClass: 'text-(--mui-palette-text-primary)',
   mutedFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]',
   faintFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.4)]',
-  // probably use text-(--mui-palette-text-secondary) instead??? is that for buttons or normal text!?
 
-  eventFaintBgClass,
-  eventFaintPressableClass,
+  // neutral borders
+  borderColorClass: 'border-(--mui-palette-divider)',
+  borderStartColorClass: 'border-s-(--mui-palette-divider)',
+  strongBorderColorClass: 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]',
+  strongBorderBottomColorClass: 'border-b-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]',
+  mutedBorderColorClass: 'border-(--mui-palette-divider)',
+
+  // strong *button*
+  strongSolidPressableClass,
+
+  // muted *button*
+  mutedClass: mutedBgClass,
+  mutedPressableClass,
+
+  // muted-on-hover
+  mutedHoverClass: mutedBgHoverClass,
+  mutedHoverPressableClass,
+  mutedHoverPressableGroupClass,
+
+  // faint-on-hover
+  faintHoverClass: faintBgHoverClass,
+  faintHoverPressableClass,
+
+  // popover
+  popoverClass: 'text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-1',
+  popoverHeaderClass: 'border-b border-(--mui-palette-divider)',
+
+  // primary
+  primaryClass,
+  primaryBorderColorClass: 'border-(--mui-palette-primary-main)',
+  primaryPressableClass,
+  primaryPressableGroupClass,
+
+  // secondary
+  secondaryClass,
+  secondaryPressableClass,
+
+  // tertiary
+  tertiaryClass,
+  tertiaryPressableClass,
+  tertiaryPressableGroupClass,
+
+  // event content
+  eventColor: 'var(--mui-palette-primary-main)',
+  eventContrastColor: 'var(--mui-palette-primary-contrastText)',
+  bgEventColor: 'var(--mui-palette-secondary-main)',
   eventMutedBgClass,
   eventMutedPressableClass,
   eventMutedFgClass,
+  eventFaintBgClass,
+  eventFaintPressableClass,
+  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
+
+  // misc calendar content
+  highlightClass: 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.1)]',
+  todayBgNotPrintClass: 'not-print:bg-[rgba(var(--mui-palette-warning-mainChannel)_/_0.1)]',
+  nowBorderColorClass: 'border-(--mui-palette-error-main)',
+  nowBorderStartColorClass: 'border-s-(--mui-palette-error-main)',
+  nowBorderTopColorClass: 'border-t-(--mui-palette-error-main)',
 }

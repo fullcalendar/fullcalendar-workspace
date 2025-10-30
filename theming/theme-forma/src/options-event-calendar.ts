@@ -65,50 +65,60 @@ const getSlotClasses = (data: { isMinor: boolean }, borderClass: string) => [
 ]
 
 export interface EventCalendarOptionParams {
-  primaryClass: string // bg & fg
-  primaryPressableClass: string
-
-  mutedHoverClass: string
-  mutedHoverPressableClass: string
-
-  strongSolidPressableClass: string
-
-  mutedClass: string // can contain foreground
-  mutedPressableClass: string
-
-  mutedBgClass: string
-  faintBgClass: string
-  highlightClass: string
-
-  borderColorClass: string
-  primaryBorderColorClass: string
-  strongBorderColorClass: string
-  nowBorderColorClass: string
-
-  primaryOutlineColorClass: string
+  // outline
   outlineWidthClass: string
   outlineWidthFocusClass: string
   outlineOffsetClass: string
   outlineInsetClass: string
+  primaryOutlineColorClass: string
 
-  eventColor: string
-  eventContrastColor: string
-  bgEventColor: string
-  bgEventBgClass: string
-
-  popoverClass: string
-  popoverHeaderClass: string
-
+  // neutral backgrounds
   bgClass: string
   bgRingColorClass: string
+  mutedBgClass: string
+  faintBgClass: string
 
+  // neutral foregrounds
   mutedFgClass: string
   faintFgClass: string
 
-  eventMutedBgClass: string
-  eventMutedPressableClass: string
+  // neutral borders
+  borderColorClass: string
+  strongBorderColorClass: string
+
+  // muted *button*
+  mutedClass: string
+  mutedPressableClass: string
+
+  // strong *button*
+  strongSolidPressableClass: string
+
+  // muted-on-hover
+  mutedHoverClass: string
+  mutedHoverPressableClass: string
+
+  // popover
+  popoverClass: string
+  popoverHeaderClass: string
+
+  // primary
+  primaryClass: string
+  primaryBorderColorClass: string
+  primaryPressableClass: string
+
+  // event content
+  eventColor: string
+  eventContrastColor: string
   eventFaintBgClass: string
   eventFaintPressableClass: string
+  eventMutedBgClass: string
+  eventMutedPressableClass: string
+  bgEventColor: string
+  bgEventBgClass: string
+
+  // misc calendar content
+  highlightClass: string
+  nowBorderColorClass: string
 }
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {

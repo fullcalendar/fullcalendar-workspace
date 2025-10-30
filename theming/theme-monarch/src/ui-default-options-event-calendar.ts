@@ -9,20 +9,17 @@ const outlineWidthGroupFocusClass = 'group-focus-visible:outline-3'
 const outlineColorClass = 'outline-(--fc-monarch-outline)'
 const outlineFocusClass = `${outlineColorClass} ${outlineWidthFocusClass}`
 
-// interactive neutral backgrounds
+// muted-on-hover
 const mutedHoverClass = 'hover:bg-(--fc-monarch-muted)'
 const mutedHoverGroupClass = 'group-hover:bg-(--fc-monarch-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-monarch-muted) active:bg-(--fc-monarch-strong)`
 const mutedHoverPressableGroupClass = `${mutedHoverGroupClass} group-focus-visible:bg-(--fc-monarch-muted) group-active:bg-(--fc-monarch-strong)`
-const strongSolidPressableClass = joinClassNames(
-  '[background:linear-gradient(var(--fc-monarch-strong),var(--fc-monarch-strong))_var(--fc-monarch-background)]',
-  'hover:[background:linear-gradient(var(--fc-monarch-stronger),var(--fc-monarch-stronger))_var(--fc-monarch-background)]',
-  'active:[background:linear-gradient(var(--fc-monarch-strongest),var(--fc-monarch-strongest))_var(--fc-monarch-background)]',
-)
 
-// interactive neutral foregrounds
-const fgPressableGroupClass = 'text-(--fc-monarch-foreground) group-hover:text-(--fc-monarch-strong-foreground) group-focus-visible:text-(--fc-monarch-strong-foreground)'
-const mutedFgPressableGroupClass = 'text-(--fc-monarch-muted-foreground) group-hover:text-(--fc-monarch-foreground) group-focus-visible:text-(--fc-monarch-foreground)'
+// controls
+const selectedClass = `bg-(--fc-monarch-selected) text-(--fc-monarch-selected-foreground)`
+const selectedPressableClasss = `${selectedClass} hover:bg-(--fc-monarch-selected-over) active:bg-(--fc-monarch-selected-down)`
+const selectedButtonClass = `${selectedPressableClasss} border border-transparent ${outlineFocusClass} -outline-offset-1`
+const unselectedButtonClass = `${mutedHoverPressableClass} border border-transparent ${outlineFocusClass} -outline-offset-1`
 
 // primary
 const primaryClass = `bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreground)`
@@ -35,61 +32,71 @@ const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-monarch-second
 
 // secondary *toolbar button* (neutral)
 const secondaryButtonClass = `${mutedHoverPressableClass} border border-(--fc-monarch-strong-border) ${outlineFocusClass} -outline-offset-1`
-const secondaryButtonIconClass = `size-5 ${fgPressableGroupClass}`
+const secondaryButtonIconClass = `size-5 text-(--fc-monarch-foreground) group-hover:text-(--fc-monarch-strong-foreground) group-focus-visible:text-(--fc-monarch-strong-foreground)`
 
 // tertiary
 const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-tertiary-foreground)'
 const tertiaryPressableClass = `${tertiaryClass} hover:bg-(--fc-monarch-tertiary-over) active:bg-(--fc-monarch-tertiary-down)`
 const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-(--fc-monarch-tertiary-over) group-active:bg-(--fc-monarch-tertiary-down) ${outlineFocusClass}`
 
-// controls
-const selectedClass = `bg-(--fc-monarch-selected) text-(--fc-monarch-selected-foreground)`
-const selectedPressableClasss = `${selectedClass} hover:bg-(--fc-monarch-selected-over) active:bg-(--fc-monarch-selected-down)`
-const selectedButtonClass = `${selectedPressableClasss} border border-transparent ${outlineFocusClass} -outline-offset-1`
-const unselectedButtonClass = `${mutedHoverPressableClass} border border-transparent ${outlineFocusClass} -outline-offset-1`
-
-export { mutedFgPressableGroupClass }
+// interactive neutral foregrounds
+export const mutedFgPressableGroupClass = 'text-(--fc-monarch-muted-foreground) group-hover:text-(--fc-monarch-foreground) group-focus-visible:text-(--fc-monarch-foreground)'
 
 export const optionParams: EventCalendarOptionParams = {
-  secondaryClass,
-  secondaryPressableClass,
+  // outline
+  outlineWidthClass,
+  outlineWidthFocusClass,
+  outlineWidthGroupFocusClass,
+  tertiaryOutlineColorClass: outlineColorClass, // treat as tertiary
 
-  tertiaryClass,
-  tertiaryPressableClass,
-  tertiaryPressableGroupClass,
+  // neutral backgrounds
+  bgClass: 'bg-(--fc-monarch-background)',
+  bgRingColorClass: 'ring-(--fc-monarch-background)',
+  mutedBgClass: 'bg-(--fc-monarch-muted)',
+  faintBgClass: 'bg-(--fc-monarch-faint)',
 
+  // neutral foregrounds
+  mutedFgClass: 'text-(--fc-monarch-muted-foreground)',
+  faintFgClass: 'text-(--fc-monarch-faint-foreground)',
+
+  // neutral borders
+  borderColorClass: 'border-(--fc-monarch-border)',
+  strongBorderColorClass: 'border-(--fc-monarch-strong-border)',
+  primaryBorderColorClass: 'border-(--fc-monarch-primary)',
+
+  // strong *button*
+  strongSolidPressableClass: joinClassNames(
+    '[background:linear-gradient(var(--fc-monarch-strong),var(--fc-monarch-strong))_var(--fc-monarch-background)]',
+    'hover:[background:linear-gradient(var(--fc-monarch-stronger),var(--fc-monarch-stronger))_var(--fc-monarch-background)]',
+    'active:[background:linear-gradient(var(--fc-monarch-strongest),var(--fc-monarch-strongest))_var(--fc-monarch-background)]',
+  ),
+
+  // muted-on-hover
   mutedHoverClass,
   mutedHoverPressableClass,
   mutedHoverPressableGroupClass,
 
-  strongSolidPressableClass,
+  // popover
+  popoverClass: 'border border-(--fc-monarch-border) rounded-lg overflow-hidden m-2 bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg',
 
-  tertiaryOutlineColorClass: outlineColorClass, // treat as tertiary
-  outlineWidthClass,
-  outlineWidthFocusClass,
-  outlineWidthGroupFocusClass,
+  // secondary
+  secondaryClass,
+  secondaryPressableClass,
 
-  mutedBgClass: 'bg-(--fc-monarch-muted)',
-  faintBgClass: 'bg-(--fc-monarch-faint)',
-  highlightClass: 'bg-(--fc-monarch-highlight)',
+  // tertiary
+  tertiaryClass,
+  tertiaryPressableClass,
+  tertiaryPressableGroupClass,
 
-  borderColorClass: 'border-(--fc-monarch-border)',
-  primaryBorderColorClass: 'border-(--fc-monarch-primary)',
-  strongBorderColorClass: 'border-(--fc-monarch-strong-border)',
-  nowBorderColorClass: 'border-(--fc-monarch-now)',
-
+  // event content
   eventColor: 'var(--fc-monarch-event)',
   eventContrastColor: 'var(--fc-monarch-event-contrast)',
   bgEventColor: 'var(--fc-monarch-tertiary)',
   bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
 
-  popoverClass: 'border border-(--fc-monarch-border) rounded-lg overflow-hidden m-2 bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg',
-
-  bgClass: 'bg-(--fc-monarch-background)',
-  bgRingColorClass: 'ring-(--fc-monarch-background)',
-
-  mutedFgClass: 'text-(--fc-monarch-muted-foreground)',
-  faintFgClass: 'text-(--fc-monarch-faint-foreground)',
+  // misc calendar content
+  highlightClass: 'bg-(--fc-monarch-highlight)',
+  nowBorderColorClass: 'border-(--fc-monarch-now)',
 }
 
 const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
