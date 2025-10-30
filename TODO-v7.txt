@@ -13,9 +13,6 @@ clean+build all:
   pn build
 
 
-Shadcn "default" black palette looks really bad on Forma and Breezy
-
-
 MANUAL TEST
   test isCondensed in timegrid/timeline
   test hasMonthLabel... continuous months?
@@ -137,6 +134,7 @@ project: ResizeObserver refactor
 AFTER BETA
 ----------
 
+Update latest shadcn theme colors (newest version of shadcn updated them)
 move away from okhlc colors... bad browser support
 print-view is messed up
 think about reviving compact timegrid print view, or at least providing a setting

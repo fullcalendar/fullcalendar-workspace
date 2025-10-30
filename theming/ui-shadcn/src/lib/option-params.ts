@@ -41,20 +41,15 @@ const tertiaryClass = 'bg-primary/20 dark:bg-primary/30'
 const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 ${outlineFocusClass}`
 const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-primary/40`
 
-// muted *event* colors
-const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
-const eventMutedBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--background))]'
-const eventMutedPressableClass = joinClassNames(
-  eventMutedBgClass,
-  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--background))]',
-)
-
 // faint *event* colors
-const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]'
+const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,var(--background))]'
 const eventFaintPressableClass = joinClassNames(
   eventFaintBgClass,
-  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--background))]',
+  'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]',
 )
+
+// muted *event* colors
+const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
 
 // interactive neutral foregrounds
 export const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'
@@ -127,8 +122,8 @@ export const params: ThemeOptionParams = {
   // event content
   eventColor: 'var(--primary)',
   eventContrastColor: 'var(--primary-foreground)',
-  eventMutedBgClass,
-  eventMutedPressableClass,
+  eventMutedBgClass: eventFaintBgClass,
+  eventMutedPressableClass: eventFaintPressableClass,
   eventMutedFgClass,
   eventFaintBgClass,
   eventFaintPressableClass,
