@@ -1,9 +1,9 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import * as svgs from './ui-default-svgs.js'
-import { optionParams, mutedFgPressableGroupClass } from './ui-default-options-event-calendar.js'
+import { params, mutedFgPressableGroupClass } from './ui-default-options-event-calendar.js'
 import { createSchedulerOnlyOptions } from './options-scheduler.js'
 
-const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
+const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(params)
 
 export const defaultUiSchedulerOnlyOptions: {
   optionDefaults: CalendarOptions

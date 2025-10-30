@@ -59,7 +59,7 @@ const eventFaintPressableClass = joinClassNames(
 // interactive neutral foregrounds
 export const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'
 
-export const optionParams: ThemeOptionParams = {
+export const params: ThemeOptionParams = {
   // outline
   outlineWidthClass,
   outlineWidthFocusClass,

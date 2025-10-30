@@ -5,14 +5,14 @@ import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions } from '@fullcalendar/theme-pulse-dev/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-pulse-dev/slots'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
-import { optionParams } from '../lib/params.js'
+import { params } from '../lib/params.js'
 
-const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
+const baseEventCalendarOptions = createEventCalendarOptions(params)
 
 const slots = createSlots({
   createElement: React.createElement as any, // HACK
   Fragment: React.Fragment as any, // HACK
-}, optionParams)
+}, params)
 
 export default function EventCalendarView(calendarOptions: CalendarOptions) {
   return (

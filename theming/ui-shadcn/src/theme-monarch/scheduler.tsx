@@ -9,9 +9,9 @@ import { cn } from '../lib/utils.js'
 import { eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
 import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
-import { optionParams } from '../lib/params.js'
+import { params } from '../lib/params.js'
 
-const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(optionParams)
+const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(params)
 
 export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
   className?: string

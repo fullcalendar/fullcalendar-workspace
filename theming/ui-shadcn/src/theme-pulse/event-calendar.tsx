@@ -9,7 +9,7 @@ import { createSlots } from '@fullcalendar/theme-pulse-dev/slots'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
-import { optionParams } from '../lib/params.js'
+import { params } from '../lib/params.js'
 
 export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
   className?: string
@@ -69,12 +69,12 @@ export function EventCalendar({
   )
 }
 
-const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
+const baseEventCalendarOptions = createEventCalendarOptions(params)
 
 const slots = createSlots({
   createElement: React.createElement as any, // HACK
   Fragment: React.Fragment as any, // HACK
-}, optionParams)
+}, params)
 
 export function EventCalendarView(calendarOptions: CalendarOptions) {
   return (

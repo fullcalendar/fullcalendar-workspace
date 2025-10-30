@@ -12,7 +12,7 @@ const faintHoverPressableClass = `${faintHoverClass} focus-visible:bg-(--fc-clas
 
 const buttonIconClass = 'size-5'
 
-export const optionParams: EventCalendarOptionParams = {
+export const params: EventCalendarOptionParams = {
   // outline
   outlineWidthClass: 'outline-2',
   outlineWidthFocusClass: 'focus-visible:outline-2',
@@ -65,7 +65,7 @@ export const optionParams: EventCalendarOptionParams = {
   nowBorderTopColorClass: 'border-t-(--fc-classic-now)',
 }
 
-const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
+const baseEventCalendarOptions = createEventCalendarOptions(params)
 
 export const defaultUiEventCalendarOptions: {
   optionDefaults: CalendarOptions

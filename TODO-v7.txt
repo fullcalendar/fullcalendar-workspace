@@ -13,8 +13,8 @@ clean+build all:
   pn build
 
 
-rename optionParams -> params? (keep interface name tho)
-  rename params.ts files?
+rename params.ts files?
+Shadcn "default" black palette looks really bad on Forma and Breezy
 
 
 MANUAL TEST

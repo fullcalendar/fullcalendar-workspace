@@ -61,7 +61,7 @@ const eventFaintPressableClass = joinClassNames(
 // interactive neutral foregrounds
 export const mutedFgPressableGroupClass = `text-(--fc-forma-muted-foreground) group-hover:text-(--fc-forma-primary) group-focus-visible:text-(--fc-forma-primary)`
 
-export const optionParams: EventCalendarOptionParams = {
+export const params: EventCalendarOptionParams = {
   // outline
   outlineWidthClass,
   outlineWidthFocusClass,
@@ -122,7 +122,7 @@ export const optionParams: EventCalendarOptionParams = {
   nowBorderColorClass: 'border-(--fc-forma-primary)', // same as primary
 }
 
-const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
+const baseEventCalendarOptions = createEventCalendarOptions(params)
 
 export const defaultUiEventCalendarOptions: {
   optionDefaults: CalendarOptions

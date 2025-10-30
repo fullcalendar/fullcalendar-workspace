@@ -42,7 +42,7 @@ const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-(--fc-monar
 // interactive neutral foregrounds
 export const mutedFgPressableGroupClass = 'text-(--fc-monarch-muted-foreground) group-hover:text-(--fc-monarch-foreground) group-focus-visible:text-(--fc-monarch-foreground)'
 
-export const optionParams: EventCalendarOptionParams = {
+export const params: EventCalendarOptionParams = {
   // outline
   outlineWidthClass,
   outlineWidthFocusClass,
@@ -99,7 +99,7 @@ export const optionParams: EventCalendarOptionParams = {
   nowBorderColorClass: 'border-(--fc-monarch-now)',
 }
 
-const baseEventCalendarOptions = createEventCalendarOptions(optionParams)
+const baseEventCalendarOptions = createEventCalendarOptions(params)
 
 export const defaultUiEventCalendarOptions: {
   optionDefaults: CalendarOptions

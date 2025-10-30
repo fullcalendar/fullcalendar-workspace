@@ -86,7 +86,7 @@ const eventFaintPressableClass = joinClassNames(
 // how MUI does icon color
 export const pressableIconClass = 'text-(--mui-palette-action-active) group-hover:text-(--mui-palette-text-primary) group-focus-visible:text-(--mui-palette-text-primary)'
 
-export const optionParams: ThemeOptionParams = {
+export const params: ThemeOptionParams = {
   // outline
   outlineWidthClass,
   outlineWidthFocusClass,
