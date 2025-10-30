@@ -47,6 +47,8 @@ start-date resizing in daygrid,
 BUG: no hover+down effect on week-number in timegrid view
 
 Make dayHeaderFormat: { weekday: 'long' } IN MORE VIEWS like dayGridYear/multiMonth -- looks nice
+
+ShadCN (and MUI?) can increase their event bg-color opaqueness if they make event-titles bold
 */
 
 // ambient types (tsc strips during build because of {})

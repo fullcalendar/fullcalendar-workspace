@@ -23,6 +23,7 @@ Finish timegrid narrowness
 maybe data.hasMonthLabel could be killed
   and just have data.monthText... and might be empty!
   (only if we decide to kill type of api for this format... not "fallback")
+fix Monarch timegrid horizontal scroll
 
 
 MANUAL TEST

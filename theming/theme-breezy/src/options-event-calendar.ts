@@ -105,6 +105,8 @@ TODO day-popover header looks bad with margin/padding!
 Multi-month month shadows too intense
 
 popover-close needs hover color or bg-change
+
+ShadCN (and MUI?) can increase their event bg-color opaqueness if they make event-titles bold
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
