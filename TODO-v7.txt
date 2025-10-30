@@ -21,10 +21,26 @@ Finish timegrid narrowness
   solution: isNarrow vs isShort?
   AFTER
     audit col-events AND columnMoreLinkInnerClass
+hasMonthLabel in continuous months
+  text like "January 1" is too wide, esp with week numbers
+    default to narrowed format?
+  TEST: when "today" is first of month, how long-text render in today-circle
+  Classic
+    weird isMajor line in header
+    not responsive text size
+  Monarch
+    not responsive text size
+  Breezy
+    weird isMajor line in header
+    needs to be bold
+  Forma
+    good
+  Pulse
+    weird isMajor line in header
+    needs to be darker
 
 
 MANUAL TEST
-  test hasMonthLabel... continuous months?
   test background event title size, in daygrid too (monitor isCompact)
   test timeline/timegrid more-link in DARK mode
   now-indicator
@@ -32,7 +48,6 @@ MANUAL TEST
   test horizontal scrolling
   test growRows
   more-link in timegrid and timeline
-  when continuous months, that start-of-month works (hasMonthLabel?)
   vresource view
   multi-month stack looks good
   multi-month day with 1-event should show event, not +1more link

@@ -438,6 +438,11 @@ export default function App() {
               ui={ui}
               theme={theme}
             /> */}
+            {/* <EventCalendarDemo
+              initialView='dayGridYear'
+              ui={ui}
+              theme={theme}
+            /> */}
             <EventCalendarDemo
               initialView='listYear'
               availableViews={['listYear', 'listMonth', 'listWeek']}
