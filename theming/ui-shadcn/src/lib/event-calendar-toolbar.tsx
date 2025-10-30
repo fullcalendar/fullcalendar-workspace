@@ -26,8 +26,8 @@ export function EventCalendarToolbar({
   const buttons = controller.getButtonState()
 
   return (
-    <div className={cn('flex items-center justify-between', className)}>
-      <div className='flex items-center gap-3'>
+    <div className={cn('flex items-center justify-between flex-wrap gap-3', className)}>
+      <div className='flex items-center shrink-0 gap-3'>
         {addButton && (
           <Button
             onClick={addButton.click as any}

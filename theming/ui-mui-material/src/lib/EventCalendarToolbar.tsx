@@ -33,14 +33,17 @@ export default function EventCalendarToolbar({
       {...boxProps}
       sx={{
         display: 'flex',
+        flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'space-between',
+        gap: 1,
         ...boxProps.sx,
       }}
     >
       <Box
         sx={{
           display: 'flex',
+          flexShrink: 0,
           alignItems: 'center',
           gap: 1,
         }}

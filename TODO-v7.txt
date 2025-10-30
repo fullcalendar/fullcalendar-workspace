@@ -13,7 +13,6 @@ clean+build all:
   pn build
 
 
-Ensure MUI/Shadcn toolbar title doesn't line-break when narrow screen
 Finish timegrid narrowness
   column-content
     (columnEventInnerClass or columnEventTimeClass+columnEventTitleClass)
