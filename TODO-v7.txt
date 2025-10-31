@@ -21,19 +21,14 @@ Conundrum: Breezy timegrid isMinor has no line-dashes
 
 
 MANUAL TEST
-  test growRows
-  multi-month stack looks good
-  multi-month day with 1-event should show event, not +1more link
   check touch-selecting and dragging/resizing effects
   check print-view
   test prevYear/nextYear icons in all theme systems
-  core: test sticky footer scrollbar on timegrid-pannable/normal, daygrid-pannable/normal
-  ensure larger dayCellFormat formats work w/ dayCellInner circles
-  For block-events that display, there should be a visual distinctions between time/title text
-    test with eventDisplay='block'
-  timegrid isShort event collapsing not awkward
   FOR EACH THEME
     test timeline/timegrid more-link in DARK mode
+    timegrid isShort event collapsing not awkward
+    For block-events that display, there should be a visual distinctions between time/title text
+      test with eventDisplay='block'
   DONE, but save for checklist
     When "today" is first of month, how long-text render in today-circle
     isNarrow column-events, background-events (daygrid + timegrid)
@@ -348,6 +343,8 @@ yuck... DayHeaderData/DayCellData have [extraProp: any],
 when outer calendar wrapper has overflow:hidden,
   (happens a lot with rounded corners... esp for mui/shadcn)
   what to do about sticky children within? overflow:hidden kills stickiness
+BUG: timegrid: if now-indicator is beyond the slotMaxTime, still displays arrow (in classic theme)
+  also in timeline?
 
 
 Changelog

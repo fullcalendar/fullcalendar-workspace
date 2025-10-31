@@ -275,7 +275,7 @@ export default function App() {
 
   return (
     <>
-      <div className='topbar z-10 top-0 p-4 border-b bg-background shadow-xs flex flex-row flex-wrap gap-8 justify-between'>
+      <div className='topbar sticky z-10 top-0 p-4 border-b bg-background shadow-xs flex flex-row flex-wrap gap-8 justify-between'>
         <div className='flex flex-row flex-wrap gap-8'>
           <div className='flex flex-row items-center gap-4'>
             <div className='text-sm text-muted-foreground'>Theme</div>
@@ -482,6 +482,8 @@ function EventCalendarDemo(props: DemoProps) {
 
   return (
     <EventCalendarComponent
+      // slotMaxTime='08:00:00'
+      // expandRows
       // height='auto'
       // stickyHeaderDates={false}
       eventStartEditable={true}
@@ -606,9 +608,11 @@ function EventCalendarDemo(props: DemoProps) {
 function SchedulerDemo(props: DemoProps) {
   const SchedulerComponent = schedulerComponentMap[props.ui][props.theme]
   const vResourceView = props.availableViews?.includes('resourceTimeGridDay')
+  const expandRows = false
 
   return (
     <SchedulerComponent
+      expandRows={expandRows}
       // height='auto'
       // stickyHeaderDates={false}
       eventStartEditable={true}
@@ -653,6 +657,10 @@ function SchedulerDemo(props: DemoProps) {
         resourceTimeGridFiveDay: {
           type: 'resourceTimeGrid',
           duration: { days: 5 },
+        },
+        resourceDayGridFiveDay: {
+          type: 'resourceDayGrid',
+          duration: { days: 5 },
         }
       }}
       buttons={{
@@ -676,7 +684,7 @@ function SchedulerDemo(props: DemoProps) {
         { id: 'b', building: '460 Bryant', title: 'Auditorium B', occupancy: 40, eventColor: 'green' },
         { id: 'c', building: '460 Bryant', title: 'Auditorium C', occupancy: 40, eventColor: 'orange' },
         ...(
-          vResourceView ? [] : [
+          (vResourceView || expandRows) ? [] : [
             {
               id: 'd',
               building: '460 Bryant',
