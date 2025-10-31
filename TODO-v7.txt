@@ -13,9 +13,6 @@ clean+build all:
   pn build
 
 
-Finish timegrid narrowness
-  AFTER
-    audit col-events AND columnMoreLinkInnerClass
 maybe data.hasMonthLabel could be killed
   and just have data.monthText... and might be empty!
   (only if we decide to kill type of api for this format... not "fallback")
@@ -40,8 +37,10 @@ MANUAL TEST
   ensure larger dayCellFormat formats work w/ dayCellInner circles
   For block-events that display, there should be a visual distinctions between time/title text
     test with eventDisplay='block'
+  timegrid isShort event collapsing not awkward
   DONE, but save for checklist
     When "today" is first of month, how long-text render in today-circle
+    isNarrow column-events, background-events (daygrid + timegrid)
 CODE-QUALITY (while going through each theme)
   all hover-pressables have focus-visible:
   put text color on every text node? no inheritance?
@@ -839,6 +838,8 @@ Disallow explicit widths/heights on certain elements (bad for positioning)
   weekNumberHeaderClass
   (essentially anything with an "inner" inside)
 unrelated feature: in multimonth, even when current year, "today" button should scroll to today
+unrelated: when timegrid event isShort, don't display its END-time
+  if we do, text like "7:00 - 7:30  Birthday Party" pushes the title too far out
 
 
 Notes

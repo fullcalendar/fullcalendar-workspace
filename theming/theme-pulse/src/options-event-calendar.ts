@@ -339,9 +339,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       backgroundEventClass: params.bgEventBgClass,
       backgroundEventTitleClass: (data) => [
-        'm-2 opacity-50 italic',
-        data.isNarrow ? xxsTextClass : 'text-xs',
+        'opacity-50 italic',
         params.strongFgClass,
+        // use this technique in other themes...
+        (data.isNarrow || data.isShort) ? xxsTextClass : 'text-xs',
+        data.isNarrow ? 'mx-1' : 'mx-2',
+        data.isShort ? 'my-1' : 'my-2',
       ],
 
       rowEventClass: (data) => [
@@ -382,13 +385,26 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-bottom-1',
       ],
-      columnEventInnerClass: 'flex flex-col py-1 text-xs',
+      columnEventInnerClass: (data) => [
+        'flex',
+        (data.isNarrow || data.isShort) ? xxsTextClass : 'text-xs',
+        data.isShort ? 'flex-row' : 'flex-col py-1',
+      ],
       // TODO: move the x-padding to the inner div? same concept with row-events
-      columnEventTimeClass: 'px-2 pt-1',
-      columnEventTitleClass: 'px-2 py-1 font-medium',
+      columnEventTimeClass: (data) => [
+        'pt-1',
+        data.isNarrow ? 'px-1' : 'px-2',
+      ],
+      columnEventTitleClass: (data) => [
+        'py-1 font-medium',
+        data.isNarrow ? 'px-1' : 'px-2',
+      ],
 
       columnMoreLinkClass: `m-0.5 rounded-lg ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
-      columnMoreLinkInnerClass: `p-0.5 text-xs ${params.strongFgClass}`,
+      columnMoreLinkInnerClass: (data) => [
+        `p-0.5 ${params.strongFgClass}`,
+        data.isNarrow ? xxsTextClass : 'text-xs',
+      ],
 
       allDayHeaderClass: 'items-center', // v-align
       allDayHeaderInnerClass: (data) => [

@@ -196,7 +196,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       backgroundEventClass: params.bgEventBgClass,
       backgroundEventTitleClass: (data) => [
-        'm-2 opacity-50 italic',
+        'opacity-50 italic',
+        data.isNarrow ? 'm-1' : 'm-2',
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
@@ -261,18 +262,25 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       columnEventInnerClass: (data) => [
         'p-px',
-        data.isNarrow
+        data.isShort
           ? 'flex-row gap-1' // one line
           : 'flex-col gap-px', // two lines
       ],
       columnEventTimeClass: xxsTextClass,
-      columnEventTitleClass: (data) => data.isNarrow ? xxsTextClass : 'py-px text-xs',
+      columnEventTitleClass: (data) => [
+        (data.isShort || data.isNarrow)
+          ? xxsTextClass
+          : 'py-px text-xs',
+      ],
 
       columnMoreLinkClass: [
         `mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
         params.outlineOffsetClass, // just like block events
       ],
-      columnMoreLinkInnerClass: 'p-0.5 text-xs',
+      columnMoreLinkInnerClass: (data) => [
+        'p-0.5',
+        data.isNarrow ? xxsTextClass : 'text-xs',
+      ],
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
       dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',

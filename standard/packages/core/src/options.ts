@@ -486,7 +486,7 @@ export const BASE_OPTION_DEFAULTS = {
   selectable: false,
   eventMinHeight: 15,
   eventMinWidth: 30,
-  eventShortHeight: 30,
+  eventShortHeight: 50,
   monthStartFormat: { month: 'long', day: 'numeric' },
   dayCellFormat: { day: 'numeric' },
   headingLevel: 2, // like H2

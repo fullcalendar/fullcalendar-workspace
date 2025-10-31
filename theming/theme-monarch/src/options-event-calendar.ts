@@ -28,6 +28,8 @@ core:
 audit use of "group" classnames
 
 BUG: Monarch: when timegrid narrow, week number erroneously turns into half-pill
+
+BUG: narrow column-event time/title spacing looks bad
 */
 
 // ambient types (tsc strips during build because of {})
@@ -208,7 +210,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       backgroundEventClass: params.bgEventBgClass,
       backgroundEventTitleClass: (data) => [
-        'm-2 opacity-50 italic',
+        'opacity-50 italic',
+        data.isNarrow ? 'm-1' : 'm-2',
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
@@ -293,15 +296,23 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-bottom-1',
       ],
-      columnEventInnerClass: (data) => data.isNarrow
+      columnEventInnerClass: (data) => data.isShort
         ? 'flex-row gap-1' // one line
         : 'flex-col gap-px', // two lines
-      columnEventTimeClass: 'order-1 p-1 text-xs',
-      columnEventTitleClass: (data) => data.isNarrow ? xxsTextClass : 'p-1 text-xs',
+      columnEventTimeClass: (data) => [
+        'order-1',
+        (data.isShort || data.isNarrow) ? xxsTextClass : 'p-1 text-xs',
+      ],
+      columnEventTitleClass: (data) => [
+        (data.isShort || data.isNarrow) ? xxsTextClass : 'p-1 text-xs',
+      ],
       columnEventTitleSticky: false, // because time below title, sticky looks bad
 
       columnMoreLinkClass: `relative mb-px rounded-xs ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
-      columnMoreLinkInnerClass: 'p-0.5 text-xs',
+      columnMoreLinkInnerClass: (data) => [
+        'p-0.5',
+        data.isNarrow ? xxsTextClass : 'text-xs',
+      ],
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
       dayHeaderAlign: 'center',

@@ -241,7 +241,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       backgroundEventClass: params.bgEventBgClass,
       backgroundEventTitleClass: (data) => [
-        'm-2 opacity-50 italic',
+        'opacity-50 italic',
+        data.isNarrow ? 'p-1' : 'p-2',
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
@@ -309,7 +310,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       columnEventInnerClass: (data) => [
         'flex',
-        data.isNarrow
+        data.isShort
           ? 'flex-row gap-1' // one line
           : 'flex-col gap-px', // two lines
       ],
@@ -319,7 +320,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       columnEventTitleClass: (data) => [
         'p-0.5', // TODO: DRY with rowEvent?
-        data.isNarrow ? xxsTextClass : 'text-xs',
+        (data.isShort || data.isNarrow) ? xxsTextClass : 'text-xs',
       ],
 
       // MultiMonth

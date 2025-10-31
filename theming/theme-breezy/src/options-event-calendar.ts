@@ -396,8 +396,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       backgroundEventClass: params.bgEventBgClass,
       backgroundEventTitleClass: (data) => [
-        'm-2 opacity-50 italic',
+        'opacity-50 italic',
         params.fgClass,
+        data.isNarrow ? 'm-1' : 'm-2',
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
@@ -437,13 +438,25 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-bottom-1',
       ],
-      columnEventInnerClass: 'flex-col py-1 text-xs',
+      columnEventInnerClass: (data) => [
+        data.isNarrow ? xxsTextClass : 'text-xs',
+        data.isShort ? 'flex-row' : 'flex-col py-1',
+      ],
       // TODO: move the x-padding to the inner div? same concept with row-events
-      columnEventTimeClass: 'px-2 pt-1',
-      columnEventTitleClass: 'px-2 py-1 font-semibold',
+      columnEventTimeClass: (data) => [
+        'pt-1',
+        data.isNarrow ? 'px-1' : 'px-2',
+      ],
+      columnEventTitleClass: (data) => [
+        'py-1 font-semibold',
+        data.isNarrow ? 'px-1' : 'px-2',
+      ],
 
       columnMoreLinkClass: `rounded-md ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
-      columnMoreLinkInnerClass: `p-0.5 text-xs ${params.fgClass}`,
+      columnMoreLinkInnerClass: (data) => [
+        `p-0.5 ${params.fgClass}`,
+        data.isNarrow ? xxsTextClass : 'text-xs',
+      ],
       // TODO: see columnMoreLinkClass in timeGrid below...
 
       fillerClass: `border ${params.mutedBorderColorClass} ${params.bgClass}`,
@@ -522,9 +535,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelDividerClass: `border-l ${params.mutedBorderColorClass}`,
 
         columnEventClass: (data) => [
-          'mx-1', // TODO: move this to the columnInner thing? yes!!
-          data.isStart && 'mt-1',
-          data.isEnd && 'mb-1',
+          data.isNarrow ? 'mx-px' : 'mx-1', // TODO: move this to the columnInner thing? yes!!
+          data.isStart && (data.isNarrow ? 'mt-px' : 'mt-1'),
+          data.isEnd && (data.isNarrow ? 'mb-px' : 'mb-1'),
         ],
         columnMoreLinkClass: 'm-1',
       },
