@@ -23,7 +23,6 @@ Conundrum: Breezy timegrid isMinor has no line-dashes
 MANUAL TEST
   check touch-selecting and dragging/resizing effects
   check print-view
-  test prevYear/nextYear icons in all theme systems
   FOR EACH THEME
     test timeline/timegrid more-link in DARK mode
     timegrid isShort event collapsing not awkward
@@ -88,6 +87,8 @@ NOTES
        does) causes the way you do vertical alignment to change depending on context (items-center VS justify-center)
     2. easier to have dayHeader as its own isolated component
     CONCLUSION: make the X absolutely positioned over it
+  for testing prevYear/nextYear icons, revive this commit:
+    ed98f5eef6409a1dbdb74dbf932a0a903678a1c9
 
 
 just before beta (after theme gen)

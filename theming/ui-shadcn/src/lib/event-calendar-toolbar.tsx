@@ -1,6 +1,6 @@
 import React from 'react'
 import { CalendarController } from '@fullcalendar/core'
-import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from 'lucide-react'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import { Button } from '../ui/button.js'
 import { Tabs, TabsList, TabsTrigger } from '../ui/tabs.js'
 import { cn } from '../lib/utils.js'
@@ -41,15 +41,6 @@ export function EventCalendarToolbar({
         >{buttons.today.text}</Button>
         <div className='flex items-center'>
           <Button
-            onClick={() => controller.prevYear()}
-            disabled={buttons.prevYear.isDisabled}
-            aria-label={buttons.prevYear.hint}
-            variant='ghost'
-            size='icon'
-          >
-            <ChevronsLeftIcon className='[[dir=rtl]_&]:rotate-180' />
-          </Button>
-          <Button
             onClick={() => controller.prev()}
             disabled={buttons.prev.isDisabled}
             aria-label={buttons.prev.hint}
@@ -66,15 +57,6 @@ export function EventCalendarToolbar({
             size='icon'
           >
             <ChevronRightIcon className='[[dir=rtl]_&]:rotate-180' />
-          </Button>
-          <Button
-            onClick={() => controller.nextYear()}
-            disabled={buttons.nextYear.isDisabled}
-            aria-label={buttons.nextYear.hint}
-            variant='ghost'
-            size='icon'
-          >
-            <ChevronsRightIcon className='[[dir=rtl]_&]:rotate-180' />
           </Button>
         </div>
         <div className='text-xl'>{controller.view?.title}</div>
