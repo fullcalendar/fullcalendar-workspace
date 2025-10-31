@@ -40,6 +40,7 @@ export interface StandardEventProps {
   level?: number // default 0
   forcedTimeText?: string
   disableLiquid?: boolean // for inner-element
+  disableZindexes?: boolean
 }
 
 export class StandardEvent extends BaseComponent<StandardEventProps> {
@@ -201,7 +202,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
               <div
                 className={joinClassNames(
                   beforeClassName,
-                  classNames.z1,
+                  !props.disableZindexes && classNames.z1,
                   renderProps.isStartResizable && joinClassNames(
                     props.display === 'column'
                       ? classNames.cursorResizeT
@@ -232,7 +233,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
               tag="div"
               className={joinClassNames(
                 innerClassName,
-                classNames.z0,
+                !props.disableZindexes && classNames.z0,
               )}
             />
             {/* "after" element (resizer or left-arrow) */}
@@ -240,7 +241,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
               <div
                 className={joinClassNames(
                   afterClassName,
-                  classNames.z1,
+                  !props.disableZindexes && classNames.z1,
                   renderProps.isEndResizable && joinClassNames(
                     props.display === 'column'
                       ? classNames.cursorResizeB

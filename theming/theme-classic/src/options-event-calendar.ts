@@ -351,7 +351,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         nowIndicatorLineClass: `border-t ${params.nowBorderColorClass}`,
       },
       list: {
-        listDayHeaderClass: `sticky top-0 flex flex-row justify-between border-b ${params.borderColorClass} ${params.mutedSolidBgClass}`,
+        listDayHeaderClass: `flex flex-row justify-between border-b ${params.borderColorClass} ${params.mutedSolidBgClass}`,
         listDayHeaderInnerClass: `${listViewItemPaddingClass} text-sm font-bold`,
 
         listItemEventClass: (data) => [

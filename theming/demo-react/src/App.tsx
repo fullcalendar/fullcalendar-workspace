@@ -275,7 +275,7 @@ export default function App() {
 
   return (
     <>
-      <div className='topbar sticky z-10 top-0 p-4 border-b bg-background shadow-xs flex flex-row flex-wrap gap-8 justify-between'>
+      <div className='topbar z-10 top-0 p-4 border-b bg-background shadow-xs flex flex-row flex-wrap gap-8 justify-between'>
         <div className='flex flex-row flex-wrap gap-8'>
           <div className='flex flex-row items-center gap-4'>
             <div className='text-sm text-muted-foreground'>Theme</div>
@@ -482,6 +482,8 @@ function EventCalendarDemo(props: DemoProps) {
 
   return (
     <EventCalendarComponent
+      // height='auto'
+      // stickyHeaderDates={false}
       eventStartEditable={true}
       eventResizableFromStart={true}
       // direction='rtl'
@@ -607,6 +609,8 @@ function SchedulerDemo(props: DemoProps) {
 
   return (
     <SchedulerComponent
+      // height='auto'
+      // stickyHeaderDates={false}
       eventStartEditable={true}
       eventResizableFromStart={true}
       // direction='rtl'

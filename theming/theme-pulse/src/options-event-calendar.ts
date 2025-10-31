@@ -484,7 +484,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       list: {
         listDayClass: `flex flex-col not-first:border-t ${params.borderColorClass}`,
 
-        listDayHeaderClass: `flex flex-row justify-between ${params.mutedSolidBgClass} border-b ${params.borderColorClass} top-0 sticky`,
+        listDayHeaderClass: `flex flex-row justify-between ${params.mutedSolidBgClass} border-b ${params.borderColorClass}`,
         listDayHeaderInnerClass: (data) => [
           'm-2 px-2 py-1 rounded-sm text-sm',
           !data.level && 'font-semibold',

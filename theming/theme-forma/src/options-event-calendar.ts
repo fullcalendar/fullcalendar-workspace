@@ -481,7 +481,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listDayClass: `not-last:border-b ${params.borderColorClass} flex flex-row items-start`,
 
         listDayHeaderClass: (data) => [
-          'sticky top-0 shrink-0 w-1/4 max-w-40 p-3 flex flex-col items-start',
+          'shrink-0 w-1/4 max-w-40 p-3 flex flex-col items-start',
           data.isToday && `border-s-4 ${params.primaryBorderColorClass}`,
         ],
         listDayHeaderInnerClass: (data) => [

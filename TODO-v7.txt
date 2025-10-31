@@ -21,14 +21,7 @@ Conundrum: Breezy timegrid isMinor has no line-dashes
 
 
 MANUAL TEST
-  test background event title size, in daygrid too (monitor isCompact)
-  test timeline/timegrid more-link in DARK mode
-  now-indicator
-  ALL stickiness, esp when calendar root is overflow:hidden
-  test horizontal scrolling
   test growRows
-  more-link in timegrid and timeline
-  vresource view
   multi-month stack looks good
   multi-month day with 1-event should show event, not +1more link
   check touch-selecting and dragging/resizing effects
@@ -39,6 +32,8 @@ MANUAL TEST
   For block-events that display, there should be a visual distinctions between time/title text
     test with eventDisplay='block'
   timegrid isShort event collapsing not awkward
+  FOR EACH THEME
+    test timeline/timegrid more-link in DARK mode
   DONE, but save for checklist
     When "today" is first of month, how long-text render in today-circle
     isNarrow column-events, background-events (daygrid + timegrid)
@@ -311,6 +306,7 @@ think about browser support. just require logical properties? (2021)
     https://caniuse.com/mdn-css_properties_aspect-ratio
   color mix:
     https://caniuse.com/mdn-css_types_color_color-mix
+  using range-formatting and format-parts w/o ponyfill?
 ensure selected event as hight z-index than others
   important when selected event as outline that should go over others
 rename?: the "before" and "after" content to start/end?
@@ -349,6 +345,9 @@ rethink listDayFormat/listDaySideFormat
   other part should probably be fuller date decided by view duration
 yuck... DayHeaderData/DayCellData have [extraProp: any],
   which severly impares type checking in themes
+when outer calendar wrapper has overflow:hidden,
+  (happens a lot with rounded corners... esp for mui/shadcn)
+  what to do about sticky children within? overflow:hidden kills stickiness
 
 
 Changelog
@@ -843,6 +842,12 @@ Disallow explicit widths/heights on certain elements (bad for positioning)
 unrelated feature: in multimonth, even when current year, "today" button should scroll to today
 unrelated: when timegrid event isShort, don't display its END-time
   if we do, text like "7:00 - 7:30  Birthday Party" pushes the title too far out
+unrelated: often a page will have a sticky topbar,
+  and when calendar's height:auto, and there are sticky children within, they stick-top to 0,
+  which means they aren't seen
+  Have a UNIVERSAL sticky-top-px-baseline as an option
+  ALSO, this value will be added to each views' sticky-header-dates height value!!!
+  (because that blocks sticky children too)
 
 
 Notes

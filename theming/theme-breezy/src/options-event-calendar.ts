@@ -388,9 +388,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'border-transparent print:border-(--fc-event-color)',
       ],
       blockEventInnerClass: 'flex', // NOTE: subclass determines direction
-      /*
-      ^^^NOTE: should core determine flex-direction because core needs to do sticky anyway, right!?
-      */
       blockEventTimeClass: `${params.eventMutedFgClass} whitespace-nowrap overflow-hidden shrink-1`, // shrinks second
       blockEventTitleClass: `${params.eventMutedFgClass} whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
 
@@ -545,7 +542,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listDaysClass: 'px-4 my-10 mx-auto w-full max-w-200',
         listDayClass: `flex flex-row items-start gap-2 not-last:border-b ${params.mutedBorderColorClass}`,
 
-        listDayHeaderClass: 'sticky top-0 shrink-0 w-1/4 max-w-50 my-px py-3.5 flex flex-col items-start',
+        listDayHeaderClass: 'shrink-0 w-1/4 max-w-50 my-px py-3.5 flex flex-col items-start',
         listDayHeaderInnerClass: (data) => [
           'my-0.5 py-0.5 text-sm',
           'px-2 -mx-2 rounded-full',

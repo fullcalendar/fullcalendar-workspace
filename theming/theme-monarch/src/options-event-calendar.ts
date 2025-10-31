@@ -411,7 +411,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       list: {
         listDayClass: `flex flex-row items-start not-last:border-b ${params.borderColorClass}`,
-        listDayHeaderClass: 'shrink-0 w-1/3 max-w-44 min-h-9 flex flex-row items-center gap-2 m-2 sticky top-0',
+        listDayHeaderClass: 'shrink-0 w-1/3 max-w-44 min-h-9 flex flex-row items-center gap-2 m-2',
         listDayHeaderInnerClass: (data) => [
           !data.level
             ? joinClassNames( // primary (multiple span children)

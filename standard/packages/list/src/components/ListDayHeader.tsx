@@ -24,11 +24,11 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
     return (
       <ContentContainer
         tag="div"
-        className={stickyHeaderDates ? classNames.stickyT : ''}
         attrs={{
           'data-date': formatDayString(dayDate),
           ...(dateMeta.isToday ? { 'aria-current': 'date' } : {}),
         }}
+        className={stickyHeaderDates ? classNames.stickyT : ''}
         renderProps={renderProps}
         generatorName={undefined}
         classNameGenerator={options.listDayHeaderClass}

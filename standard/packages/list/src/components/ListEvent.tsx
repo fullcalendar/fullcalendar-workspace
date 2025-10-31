@@ -29,6 +29,7 @@ export class ListEvent extends BaseComponent<ListEventProps> {
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
         disableDragging
         disableResizing
+        disableZindexes // because conflicts with sticky list headers
         display='list-item'
       />
     )
