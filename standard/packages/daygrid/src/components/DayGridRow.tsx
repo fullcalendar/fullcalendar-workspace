@@ -45,7 +45,7 @@ export interface DayGridRowProps {
   dateProfile: DateProfile
   todayRange: DateRange
   cells: DayTableCell[]
-  cellIsCompact: boolean
+  cellIsNarrow: boolean
   showDayNumbers: boolean
   showWeekNumbers?: boolean
   forPrint: boolean
@@ -140,7 +140,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     const weekNumberRenderProps = this.buildWeekNumberRenderProps(
       weekDateMarker,
       context,
-      props.cellIsCompact,
+      props.cellIsNarrow,
       hasNavLink,
     )
 
@@ -209,7 +209,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               date={cell.date}
               isMajor={cell.isMajor}
               showDayNumber={props.showDayNumbers}
-              isCompact={props.cellIsCompact}
+              isNarrow={props.cellIsNarrow}
               borderStart={Boolean(col)}
 
               // content
@@ -312,7 +312,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             isResizing={isResizing}
             isMirror={isMirror}
             isSelected={instanceId === eventSelection}
-            isCompact={props.cellIsCompact}
+            isNarrow={props.cellIsNarrow}
             defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
             defaultDisplayEventEnd={defaultDisplayEventEnd}
             disableResizing={isListItem}
@@ -355,7 +355,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               eventRange={seg.eventRange}
               isStart={seg.isStart}
               isEnd={seg.isEnd}
-              isCompact={props.cellIsCompact}
+              isNarrow={props.cellIsNarrow}
               {...getEventRangeMeta(seg.eventRange, todayRange)}
             /> : (
               renderFill(fillType, context.options)
@@ -461,7 +461,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
 function buildWeekNumberRenderProps(
   weekDateMarker: DateMarker,
   context: ViewContext,
-  isCompact: boolean,
+  isNarrow: boolean,
   hasNavLink: boolean,
 ): InlineWeekNumberData {
   const { dateEnv, options } = context
@@ -476,7 +476,7 @@ function buildWeekNumberRenderProps(
     text: weekNumText,
     textParts: weekNumTextParts,
     date: weekDateZoned,
-    isCompact,
+    isNarrow,
     hasNavLink,
   }
 }

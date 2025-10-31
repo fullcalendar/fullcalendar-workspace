@@ -14,14 +14,12 @@ const DEFAULT_TIME_FORMAT = createFormatter({
 
 export class TimelineEvent extends BaseComponent<TimelineEventProps> {
   render() {
-    let { props, context } = this
-    let { options } = context
+    let { props } = this
 
     return (
       <StandardEvent
         {...props}
         display='row'
-        isSpacious={!options.eventOverlap}
         defaultTimeFormat={DEFAULT_TIME_FORMAT}
         defaultDisplayEventTime={!props.isTimeScale}
       />

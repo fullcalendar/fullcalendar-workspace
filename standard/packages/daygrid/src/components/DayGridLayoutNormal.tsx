@@ -23,7 +23,7 @@ import { DayGridRows } from './DayGridRows.js'
 import { DayGridHeader } from './DayGridHeader.js'
 import { RowConfig } from '../header-tier.js'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { narrowDayHeaderWidth } from './util.js'
+import { daySuperNarrowWidth } from './util.js'
 
 export interface DayGridLayoutNormalProps {
   dateProfile: DateProfile
@@ -78,8 +78,8 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
 
     const colCount = props.cellRows[0].length
     const cellWidth = clientWidth != null  ? clientWidth / colCount : undefined
-    const cellIsCompact = cellWidth != null && cellWidth <= options.dayCompactWidth
-    const cellIsNarrow = cellWidth != null && cellWidth <= narrowDayHeaderWidth
+    const cellIsSuperNarrow = cellWidth != null && cellWidth <= daySuperNarrowWidth
+    const cellIsNarrow = cellIsSuperNarrow || (cellWidth != null && cellWidth <= options.dayCompactWidth)
 
     return (
       <Fragment>
@@ -95,8 +95,8 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
             <div className={classNames.flexRow}>
               <DayGridHeader
                 headerTiers={props.headerTiers}
-                cellIsCompact={cellIsCompact}
                 cellIsNarrow={cellIsNarrow}
+                cellIsSuperNarrow={cellIsSuperNarrow}
               />
               {Boolean(endScrollbarWidth) && (
                 <div
@@ -152,7 +152,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
 
             // dimensions
             visibleWidth={totalWidth}
-            cellIsCompact={cellIsCompact}
+            cellIsNarrow={cellIsNarrow}
 
             // refs
             rowHeightRefMap={props.rowHeightRefMap}

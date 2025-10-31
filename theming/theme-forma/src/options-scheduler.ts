@@ -23,8 +23,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       ],
       resourceDayHeaderInnerClass: (data) => [
         'flex flex-col',
-        'p-2', // TODO: adjust padding when isCompact?
-        data.isCompact ? xxsTextClass : 'text-xs',
+        'p-2', // TODO: adjust padding when isNarrow?
+        data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
       resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
@@ -53,7 +53,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       ],
 
       resourceLaneClass: `border ${params.borderColorClass}`,
-      resourceLaneBottomClass: (data) => !data.isCompact && 'h-3',
+      resourceLaneBottomClass: (data) => data.options.eventOverlap && 'h-3',
 
       // Non-resource Timeline
       timelineBottomClass: 'h-3',

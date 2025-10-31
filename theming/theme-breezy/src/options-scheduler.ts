@@ -75,7 +75,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         // TODO: keep DRY with columnMoreLink
         rowMoreLinkClass: (data) => [
           `me-px mb-px ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
-          data.isCompact ? 'rounded-sm' : 'rounded-md', // needed? isn't isCompact always false in timeline?
+          data.isNarrow ? 'rounded-sm' : 'rounded-md', // needed? isn't isNarrow always false in timeline?
         ],
         rowMoreLinkInnerClass: `p-0.5 text-xs ${params.fgClass}`,
       },

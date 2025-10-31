@@ -2,7 +2,7 @@ import { CssDimValue } from '@fullcalendar/core'
 import { buildNavLinkAttrs, DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, joinClassNames, memoize, ViewProps, watchHeight, watchWidth } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef } from '@fullcalendar/core/preact'
-import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow, narrowDayHeaderWidth } from '@fullcalendar/daygrid/internal'
+import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow, daySuperNarrowWidth } from '@fullcalendar/daygrid/internal'
 import { SingleMonthData, SingleMonthHeaderData } from '../structs.js'
 
 export interface SingleMonthProps extends ViewProps {
@@ -68,8 +68,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
 
     const cellColCnt = dayTableModel.cellRows[0].length
     const colWidth = state.gridWidth != null ? state.gridWidth / cellColCnt : undefined
-    const cellIsCompact = colWidth != null && colWidth <= options.dayCompactWidth
-    const cellIsNarrow = colWidth != null && colWidth <= narrowDayHeaderWidth
+    const cellIsSuperNarrow = colWidth != null && colWidth <= daySuperNarrowWidth
+    const cellIsNarrow = cellIsSuperNarrow || (colWidth != null && colWidth <= options.dayCompactWidth)
 
     const rowHeightGuess = state.gridWidth != null
       ? invAspectRatio * state.gridWidth / 6
@@ -87,7 +87,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const headerRenderProps: SingleMonthHeaderData = {
       colCount: props.colCount,
       isSticky: isTitleAndHeaderSticky,
-      isCompact: cellIsCompact,
+      isNarrow: cellIsNarrow,
       hasNavLink,
     }
     const monthStartDate = props.dateProfile.currentRange.start
@@ -175,8 +175,8 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                 {...rowConfig}
                 role='row'
                 borderBottom={false}
-                cellIsCompact={cellIsCompact}
                 cellIsNarrow={cellIsNarrow}
+                cellIsSuperNarrow={cellIsSuperNarrow}
                 rowLevel={0}
               />
               <div
@@ -223,7 +223,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
 
                 // dimensions
                 visibleWidth={state.gridWidth}
-                cellIsCompact={cellIsCompact}
+                cellIsNarrow={cellIsNarrow}
               />
             </div>
           </div>

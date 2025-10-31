@@ -51,6 +51,7 @@ export interface TimeGridColProps {
   dateSpanProps?: Dictionary
   forPrint: boolean
   borderStart: boolean
+  isNarrow: boolean
 
   // content
   fgEventSegs: (TimeGridRange & EventRangeProps)[]
@@ -195,7 +196,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   ) {
     let { props, context } = this
     let { date, dateProfile, eventSelection, todayRange, nowDate } = props
-    let { eventMaxStack, eventCompactHeight, eventOrderStrict, eventMinHeight } = context.options
+    let { eventMaxStack, eventShortHeight, eventOrderStrict, eventMinHeight } = context.options
 
     // TODO: memoize this?
     let segVerticals = computeFgSegVerticals(
@@ -205,7 +206,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       props.slatCnt,
       props.slatHeight,
       eventMinHeight,
-      eventCompactHeight,
+      eventShortHeight,
     )
     let [segRects, hiddenGroups] = buildWebPositioning(segs, segVerticals, eventOrderStrict, eventMaxStack)
 
@@ -249,7 +250,8 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                 isMirror={isMirror}
                 isSelected={instanceId === eventSelection}
                 level={segRect ? segRect.stackDepth : 0}
-                isCompact={segVertical.isCompact || false}
+                isNarrow={props.isNarrow}
+                isShort={segVertical.isShort || false}
                 isLiquid
                 {...getEventRangeMeta(eventRange, todayRange, nowDate)}
               />
@@ -265,7 +267,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   NOTE: will already have eventMinHeight applied because segEntries(?) already had it
   */
   renderHiddenGroups(hiddenGroups: SegGroup<TimeGridCoordRange>[]) {
-    let { dateSpanProps, dateProfile, todayRange, nowDate, eventSelection, eventDrag, eventResize } = this.props
+    let { dateSpanProps, dateProfile, todayRange, nowDate, eventSelection, eventDrag, eventResize, isNarrow } = this.props
 
     return (
       <Fragment>
@@ -276,6 +278,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               hiddenSegs={hiddenGroup.segs}
               top={hiddenGroup.start}
               height={hiddenGroup.end - hiddenGroup.start}
+              isNarrow={isNarrow}
               dateSpanProps={dateSpanProps}
               dateProfile={dateProfile}
               todayRange={todayRange}
@@ -299,7 +302,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       props.slatCnt,
       props.slatHeight,
       context.options.eventMinHeight,
-      0, // eventCompactHeight
+      0, // eventShortHeight
     )
 
     return (
@@ -423,7 +426,8 @@ export function renderPlainFgSegs(
               isMirror={isMirror}
               isSelected={instanceId === eventSelection}
               level={0}
-              isCompact={false}
+              isShort={false}
+              isNarrow={false}
               disableResizing
               {...getEventRangeMeta(eventRange, todayRange, nowDate)}
             />

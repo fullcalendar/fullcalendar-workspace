@@ -18,7 +18,7 @@ export interface BgEventProps {
   isPast: boolean
   isFuture: boolean
   isToday: boolean
-  isCompact?: boolean
+  isNarrow?: boolean
 }
 
 export class BgEvent extends BaseComponent<BgEventProps> {
@@ -37,9 +37,10 @@ export class BgEvent extends BaseComponent<BgEventProps> {
     const eventUi = eventRange.ui
 
     const eventApi = this.buildPublicEvent(context, eventRange.def, eventRange.instance)
-    const subcontentRenderProps = {
+    const subcontentRenderProps = { // TODO: spread into renderProps?
       event: eventApi,
-      isCompact: props.isCompact || false,
+      isNarrow: props.isNarrow || false,
+      isShort: false,
     }
     const renderProps: EventDisplayData = {
       event: eventApi,
@@ -61,13 +62,14 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       isResizing: false,
       isInteractive: false,
       level: 0,
-      isCompact: props.isCompact || false,
-      isSpacious: false,
+      isNarrow: props.isNarrow || false,
+      isShort: false,
       timeClass: '', // never display time
       titleClass: joinClassNames(
         generateClassName(options.eventTitleClass, subcontentRenderProps),
         generateClassName(options.backgroundEventTitleClass, subcontentRenderProps),
       ),
+      options: { eventOverlap: Boolean(options.eventOverlap) },
     }
     const outerClassName = joinArrayishClassNames( // already includes eventClass below
       generateClassName(options.backgroundEventClass, renderProps),

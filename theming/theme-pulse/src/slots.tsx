@@ -66,7 +66,7 @@ export function createSlots(
                 (textPart.type === 'day' && data.isToday)
                   // today-circle
                   ? joinClassNames(
-                      data.isCompact
+                      data.isNarrow
                         ? 'size-5'
                         : 'size-6 first:-ms-1 last:-me-1',
                       'flex flex-row items-center justify-center', // h-align-text

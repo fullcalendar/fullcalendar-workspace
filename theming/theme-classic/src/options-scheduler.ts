@@ -50,7 +50,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       ],
 
       resourceLaneClass: `border ${params.borderColorClass}`,
-      resourceLaneBottomClass: (data) => !data.isCompact && 'h-3',
+      resourceLaneBottomClass: (data) => data.options.eventOverlap && 'h-3',
 
       // Non-resource Timeline
       timelineBottomClass: 'h-3',
@@ -68,7 +68,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
         rowEventInnerClass: (data) => [
           'px-px gap-1', // more h-space than daygrid
-          data.isSpacious ? 'py-1' : 'py-px',
+          !data.options.eventOverlap ? 'py-1' : 'py-px',
         ],
 
         rowMoreLinkClass: `me-px mb-px ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,

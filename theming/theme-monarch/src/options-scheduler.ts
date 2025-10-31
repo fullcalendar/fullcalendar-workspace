@@ -23,7 +23,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       ],
       resourceDayHeaderInnerClass: (data) => [
         'p-2 flex flex-col',
-        data.isCompact ? xxsTextClass : 'text-sm',
+        data.isNarrow ? xxsTextClass : 'text-sm',
       ],
 
       resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
@@ -52,7 +52,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       ],
 
       resourceLaneClass: `border ${params.borderColorClass}`,
-      resourceLaneBottomClass: (data) => !data.isCompact && 'h-3',
+      resourceLaneBottomClass: (data) => data.options.eventOverlap && 'h-3',
 
       // Non-resource Timeline
       timelineBottomClass: 'h-3',
@@ -62,7 +62,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         rowEventClass: 'me-px',
         rowEventInnerClass: (data) => [
           'gap-0.5',
-          data.isSpacious ? 'py-1' : 'py-px', // extra v space
+          !data.options.eventOverlap ? 'py-1' : 'py-px', // extra v space
         ],
 
         rowMoreLinkClass: `me-px mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,

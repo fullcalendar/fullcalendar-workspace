@@ -21,7 +21,7 @@ export function createSlots(
         <span
           className={joinClassNames(
             `text-xs ${params.fgClass}`,
-            !data.isCompact && 'font-semibold',
+            !data.isNarrow && 'font-semibold',
           )}
         >{data.text}</span>
       ) : (
@@ -32,11 +32,11 @@ export function createSlots(
               key={i}
               className={joinClassNames(
                 'whitespace-pre',
-                data.isCompact ? 'text-xs' : 'text-sm',
+                data.isNarrow ? 'text-xs' : 'text-sm',
                 textPart.type === 'day'
                   ? joinClassNames(
                       'h-8 flex flex-row items-center', // v-align-text
-                      !data.isCompact && 'font-semibold',
+                      !data.isNarrow && 'font-semibold',
                       (data.isToday && !data.inPopover)
                         ? joinClassNames(
                             'w-8 rounded-full justify-center mx-0.5',

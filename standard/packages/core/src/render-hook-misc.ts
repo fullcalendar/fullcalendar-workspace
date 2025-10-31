@@ -16,7 +16,7 @@ export interface SlotLabelData extends SlotLaneData {
   level: number
   isTime: boolean
   text: string
-  isCompact: boolean
+  isNarrow: boolean
   hasNavLink: boolean
 }
 export type SlotLabelMountData = MountData<SlotLabelData>
@@ -24,13 +24,13 @@ export type SlotLabelMountData = MountData<SlotLabelData>
 export interface AllDayHeaderData {
   text: string
   view: ViewApi
-  isCompact: boolean
+  isNarrow: boolean
 }
 export type AllDayHeaderMountData = MountData<AllDayHeaderData>
 
 export interface DayHeaderData extends DateMeta {
   date: Date
-  isCompact: boolean
+  isNarrow: boolean
   isMajor: boolean
   inPopover: boolean
   hasNavLink: boolean
@@ -47,7 +47,7 @@ export type DayHeaderMountData = MountData<DayHeaderData>
 export interface DayCellData extends DateMeta {
   date: DateMarker // localized
   isMajor: boolean
-  isCompact: boolean
+  isNarrow: boolean
   inPopover: boolean
   hasNavLink: boolean
   hasLabel: boolean

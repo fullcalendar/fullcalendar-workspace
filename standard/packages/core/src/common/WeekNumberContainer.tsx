@@ -11,7 +11,7 @@ export interface WeekNumberHeaderData {
   date?: Date // undefined if not for specific date
   text: string
   textParts: DateTimeFormatPartWithWeek[]
-  isCompact: boolean
+  isNarrow: boolean
   hasNavLink: boolean
 }
 
@@ -24,7 +24,7 @@ export interface WeekNumberCellData { // TODO: DRY with inline?
   date: Date
   text: string
   textParts: DateTimeFormatPartWithWeek[]
-  isCompact: boolean
+  isNarrow: boolean
   hasNavLink: boolean
 }
 
@@ -37,7 +37,7 @@ export interface InlineWeekNumberData {
   date: Date
   text: string
   textParts: DateTimeFormatPartWithWeek[]
-  isCompact: boolean
+  isNarrow: boolean
   hasNavLink: boolean
 }
 

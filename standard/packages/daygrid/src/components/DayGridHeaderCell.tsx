@@ -1,7 +1,7 @@
 import { ContentContainer, joinClassNames, setRef, renderText, BaseComponent, generateClassName, watchSize } from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { CellDataConfig, CellRenderConfig } from '../header-tier.js'
-import { narrowDayHeaderFormat } from './util.js'
+import { dayHeaderSuperNarrowFormat } from './util.js'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderCellProps<RenderProps> {
@@ -10,8 +10,8 @@ export interface DayGridHeaderCellProps<RenderProps> {
   borderStart: boolean
   colWidth?: number
   innerHeightRef?: Ref<number>
-  cellIsCompact: boolean
-  cellIsNarrow: boolean // even smaller than "compact"
+  cellIsNarrow: boolean
+  cellIsSuperNarrow: boolean
   rowLevel: number
 }
 
@@ -33,12 +33,12 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
     const isDisabled = dataConfig.renderProps.isDisabled
     const finalRenderProps = {
       ...dataConfig.renderProps,
-      isCompact: props.cellIsCompact,
+      isNarrow: props.cellIsNarrow,
       level: props.rowLevel,
     }
-    if (props.cellIsNarrow) {
+    if (props.cellIsSuperNarrow) {
       // TODO: only if not distinct dates
-      const [narrowText, narrowTextParts] = context.dateEnv.format(dataConfig.dateMarker, narrowDayHeaderFormat)
+      const [narrowText, narrowTextParts] = context.dateEnv.format(dataConfig.dateMarker, dayHeaderSuperNarrowFormat)
       finalRenderProps.text = (finalRenderProps as any).weekdayText = narrowText
       ;(finalRenderProps as any).textParts = narrowTextParts
     }
@@ -49,7 +49,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
     const alignInput = renderConfig.align
     const align = this.align =
       typeof alignInput === 'function'
-        ? alignInput({ level: props.rowLevel, inPopover: (dataConfig.renderProps as any).inPopover, isCompact: props.cellIsCompact })
+        ? alignInput({ level: props.rowLevel, inPopover: (dataConfig.renderProps as any).inPopover, isNarrow: props.cellIsNarrow })
         : alignInput
     const stickyInput = renderConfig.sticky
     const isSticky = this.isSticky =

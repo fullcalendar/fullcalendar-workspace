@@ -59,7 +59,7 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
     let renderProps = this.refineRenderProps({
       resource,
       context,
-      isCompact: !options.eventOverlap
+      eventOverlap: Boolean(options.eventOverlap),
     })
 
     /* sliced */

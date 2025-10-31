@@ -239,11 +239,13 @@ export interface EventDisplayData { // for *Content handlers
   isInteractive: boolean
   view: ViewApi // specifically for the API
 
-  isCompact: boolean
-  isSpacious: boolean
+  isNarrow: boolean
+  isShort: boolean
   level: number
   timeClass: string
   titleClass: string
+
+  options: { eventOverlap: boolean }
 }
 
 export type EventMountData = MountData<EventDisplayData>

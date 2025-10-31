@@ -14,10 +14,8 @@ clean+build all:
 
 
 Finish timegrid narrowness
-  column-content
-    (columnEventInnerClass or columnEventTimeClass+columnEventTitleClass)
-    isCompact means something else for timegrid! means short!!!
-  solution: isNarrow vs isShort?
+  TimeGrid BG-events should get isShort
+    search for isShort: false,
   AFTER
     audit col-events AND columnMoreLinkInnerClass
 maybe data.hasMonthLabel could be killed
@@ -372,7 +370,6 @@ changelog: feature: to disable "List" buttons while returning i18n, set listText
 changelog: dropped Bootstrap 4
 changelog: shape of a locale
 changelog: classic-theme visually capitalizes button name strings, like "Today" versus old "today"
-changelog: eventShortHeight -> eventCompactHeight
 changelog: EventContentArg `level`
 changelog: remove luxon1/2
 changelog:
@@ -794,7 +791,6 @@ punt: move cell border to flex-end
 punt: instead of position:relative/absolute an z-index:0,
   use isolation:isolate (well supported)
 punt: in toolbars, remove left/right keys. force start/end keys (then add to changelog)
-punt: rethink: isCompact vs isNarrow -- confusion for timegrid events
 punt: sticky header in vertical resource view, horizontal scrolling. new feature
   do in CORE, not in theme. analagous to vertically-sticky resource cells
   if it were the theme, we'd need to pass a renderProp, and hard to know what the name would be
@@ -850,10 +846,6 @@ unrelated feature: in multimonth, even when current year, "today" button should 
 Notes
 -----
 
-isSpacious - for timeline eventOverlap=false
-  tried to converge this with isCompact,
-  but yields small event *general* rowEventInner, making text smalle
-  keep this a separate setting because we might remove it in future anyway
 isMajor/isMinor API additions:
   isMajor
     + slotLane

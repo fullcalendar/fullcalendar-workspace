@@ -9,7 +9,7 @@ export interface ResourceDayHeaderData extends Partial<DateMeta> {
   level: number
   view: ViewApi
   isDisabled: boolean
-  isCompact: boolean
+  isNarrow: boolean
   isMajor: boolean
 }
 export type ResourceDayHeaderMountData = MountData<ResourceDayHeaderData>

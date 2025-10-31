@@ -90,7 +90,7 @@ TODO: dark mode, list-view, event text colors too dark (because brightness-60 is
 
 TODO: audit rowMoreLink effects
 
-TODO: where there's rounded-lg, ensure it goes smaller when isCompact
+TODO: where there's rounded-lg, ensure it goes smaller when isNarrow
 
 TODO: ensure resourc-timeline-lanes have bottom empty space
 
@@ -190,9 +190,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
-  const getDayGridItemClass = (data: { isCompact: boolean }) => joinClassNames(
+  const getDayGridItemClass = (data: { isNarrow: boolean }) => joinClassNames(
     'mb-px',
-    data.isCompact
+    data.isNarrow
       ? 'mx-px rounded-sm'
       : 'mx-1 rounded-md',
   )
@@ -206,15 +206,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.hasNavLink
         ? `${params.mutedHoverPressableClass} -outline-offset-1` // because border
         : params.mutedHoverClass,
-      data.isCompact
+      data.isNarrow
         ? `p-0.5 ${xxsTextClass}`
         : 'p-1.5 text-xs',
     ],
 
     rowEventClass: (data) => [
       'mb-px',
-      data.isStart && (data.isCompact ? 'ms-px' : 'ms-1'),
-      data.isEnd && (data.isCompact ? 'me-px' : 'me-1'),
+      data.isStart && (data.isNarrow ? 'ms-px' : 'ms-1'),
+      data.isEnd && (data.isNarrow ? 'me-px' : 'me-1'),
     ],
 
     listItemEventClass: (data) => [
@@ -226,37 +226,37 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
     listItemEventInnerClass: (data) => [
       'justify-between flex flex-row',
-      data.isCompact ? xxsTextClass : 'text-xs',
+      data.isNarrow ? xxsTextClass : 'text-xs',
     ],
     listItemEventTimeClass: (data) => [
-      data.isCompact ? 'p-px' : 'p-0.5',
+      data.isNarrow ? 'p-px' : 'p-0.5',
       `order-1 ${params.mutedFgClass} whitespace-nowrap overflow-hidden shrink-1`, // shrinks second
     ],
     listItemEventTitleClass: (data) => [
-      data.isCompact ? 'p-px' : 'p-0.5',
+      data.isNarrow ? 'p-px' : 'p-0.5',
       `text-ellipsis font-medium ${params.strongFgClass} whitespace-nowrap overflow-hidden shrink-100`, // shrinks first
     ],
 
     rowMoreLinkClass: (data) => [
       getDayGridItemClass(data),
-      data.isCompact
+      data.isNarrow
         ? `border ${params.primaryBorderColorClass}`
         : 'self-start p-px',
       params.mutedHoverPressableClass,
     ],
     rowMoreLinkInnerClass: (data) => [
-      data.isCompact ? xxsTextClass : 'text-xs',
-      data.isCompact ? 'p-px' : 'p-0.5',
+      data.isNarrow ? xxsTextClass : 'text-xs',
+      data.isNarrow ? 'p-px' : 'p-0.5',
       params.strongFgClass,
     ]
   }
 
   const getDayHeaderClass = (
     defaultBorderColorClass: string,
-    data: { isCompact: boolean, inPopover: boolean, isMajor: boolean }
+    data: { isNarrow: boolean, inPopover: boolean, isMajor: boolean }
   ) => (
     data.inPopover ? params.popoverHeaderClass :
-      data.isCompact ? '' : // isCompact is a HACK to detect multi-month multi-col
+      data.isNarrow ? '' : // isNarrow is a HACK to detect multi-month multi-col
         data.isMajor ? `border ${params.strongBorderColorClass}` :
           `border ${defaultBorderColorClass}`
   )
@@ -299,7 +299,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
                 params.outlineWidthFocusClass,
               ),
             ),
-        // TODO: consider isCompact for above scenarios
+        // TODO: consider isNarrow for above scenarios
       ],
 
       dayRowClass: `border ${params.borderColorClass}`,
@@ -312,18 +312,18 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayCellTopClass: 'flex flex-row justify-start min-h-1',
       dayCellTopInnerClass: (data) => [
         'flex flex-row items-center whitespace-nowrap',
-        data.isCompact
+        data.isNarrow
           ? `my-px h-5 ${xxsTextClass}`
           : 'my-1 h-6 text-xs',
         data.isToday
           ? joinClassNames(
               'rounded-full font-semibold',
-              data.isCompact
+              data.isNarrow
                 ? 'ms-px'
                 : 'ms-1',
               data.text === data.dayNumberText
-                ? (data.isCompact ? 'w-5' : 'w-6') + ' justify-center' // circle
-                : (data.isCompact ? 'px-1' : 'px-2'), // pill
+                ? (data.isNarrow ? 'w-5' : 'w-6') + ' justify-center' // circle
+                : (data.isNarrow ? 'px-1' : 'px-2'), // pill
               data.hasNavLink
                 ? joinClassNames(params.primaryPressableClass, params.outlineOffsetClass)
                 : params.primaryClass,
@@ -331,7 +331,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : joinClassNames( // half-pill
               'rounded-e-sm',
               data.hasMonthLabel && 'font-bold',
-              data.isCompact ? 'px-1' : 'px-2',
+              data.isNarrow ? 'px-1' : 'px-2',
               data.isOther
                 ? params.faintFgClass
                 : (data.hasMonthLabel ? params.fgClass : params.mutedFgClass),
@@ -351,12 +351,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       allDayHeaderClass: 'items-center', // v-align
       allDayHeaderInnerClass: (data) => [
         `${params.faintFgClass} p-3`,
-        data.isCompact ? xxsTextClass : 'text-xs',
+        data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
       slotLabelInnerClass: (data) => [
         `${params.faintFgClass} uppercase`,
-        data.isCompact ? xxsTextClass : 'text-xs',
+        data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
       slotLaneClass: `border ${params.mutedBorderColorClass}`,
@@ -398,15 +398,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventTitleClass: (data) => [
         'm-2 opacity-50 italic',
         params.fgClass,
-        data.isCompact ? xxsTextClass : 'text-xs',
+        data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
       rowEventClass: (data) => [
         'border-y',
         data.isStart && 'border-s',
         data.isEnd && 'border-e',
-        data.isStart && (data.isCompact ? 'rounded-s-sm' : 'rounded-s-md'),
-        data.isEnd && (data.isCompact ? 'rounded-e-sm' : 'rounded-e-md'),
+        data.isStart && (data.isNarrow ? 'rounded-s-sm' : 'rounded-s-md'),
+        data.isEnd && (data.isNarrow ? 'rounded-e-sm' : 'rounded-e-md'),
       ],
       rowEventBeforeClass: (data) => data.isStartResizable && [
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
@@ -418,10 +418,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       rowEventInnerClass: (data) => [
         'flex flex-row',
-        data.isCompact ? xxsTextClass : 'text-xs',
+        data.isNarrow ? xxsTextClass : 'text-xs',
       ],
-      rowEventTimeClass: (data) => data.isCompact ? 'p-px' : 'p-0.5',
-      rowEventTitleClass: (data) => data.isCompact ? 'p-px' : 'p-0.5',
+      rowEventTimeClass: (data) => data.isNarrow ? 'p-px' : 'p-0.5',
+      rowEventTitleClass: (data) => data.isNarrow ? 'p-px' : 'p-0.5',
 
       columnEventClass: (data) => [
         'border-x',
@@ -468,7 +468,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     views: {
       dayGrid: {
         ...dayGridClasses,
-        dayCellBottomClass: (data) => !data.isCompact && 'min-h-[1px]', // TODO: DRY
+        dayCellBottomClass: (data) => !data.isNarrow && 'min-h-[1px]', // TODO: DRY
         dayHeaderDividerClass: `border-b ${params.strongBorderColorClass}`,
         dayHeaderClass: (data) => getDayHeaderClass(params.borderColorClass, data),
         dayCellClass: (data) => data.isMajor
@@ -477,7 +477,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       multiMonth: {
         ...dayGridClasses,
-        dayCellBottomClass: (data) => !data.isCompact && 'min-h-[1px]', // TODO: DRY
+        dayCellBottomClass: (data) => !data.isNarrow && 'min-h-[1px]', // TODO: DRY
         dayHeaderDividerClass: (data) => [
           data.isSticky && `border-b ${params.strongBorderColorClass} shadow-sm`,
         ],
@@ -507,7 +507,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         weekNumberHeaderClass: 'justify-end items-center',
         weekNumberHeaderInnerClass: (data) => [
           `px-3 ${params.mutedFgClass}`,
-          data.isCompact ? xxsTextClass : 'text-sm',
+          data.isNarrow ? xxsTextClass : 'text-sm',
         ],
 
         /*
@@ -516,7 +516,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelClass: 'justify-end',
         slotLabelInnerClass: [
           'relative px-3 py-2 -top-3.5',
-          // same top value works when isCompact or not
+          // same top value works when isNarrow or not
         ],
 
         slotLabelDividerClass: `border-l ${params.mutedBorderColorClass}`,

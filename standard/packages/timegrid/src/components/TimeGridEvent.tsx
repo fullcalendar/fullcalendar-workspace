@@ -10,7 +10,8 @@ const DEFAULT_TIME_FORMAT = createFormatter({
 
 export interface TimeGridEventProps extends MinimalEventProps {
   level: number
-  isCompact: boolean
+  isNarrow: boolean
+  isShort: boolean
   isLiquid?: boolean
   disableResizing?: boolean // HACK
 }
@@ -24,7 +25,8 @@ export class TimeGridEvent extends BaseComponent<TimeGridEventProps> {
         {...props}
         display='column'
         level={props.level}
-        isCompact={props.isCompact}
+        isNarrow={props.isNarrow}
+        isShort={props.isShort}
         className={
           // see note in TimeGridCol on why we use flexbox
           props.isLiquid ? classNames.liquid : ''

@@ -31,12 +31,12 @@ export type ResourceGroupLaneMountData = MountData<ResourceGroupLaneData>
 export interface ResourceLaneContentArgInput {
   resource: Resource
   context: CalendarContext
-  isCompact: boolean,
+  eventOverlap: boolean
 }
 
 export interface ResourceLaneData {
   resource: ResourceApi
-  isCompact: boolean
+  options: { eventOverlap: boolean }
 }
 
 export type ResourceLaneMountData = MountData<ResourceLaneData>
@@ -44,7 +44,7 @@ export type ResourceLaneMountData = MountData<ResourceLaneData>
 export function refineRenderProps(input: ResourceLaneContentArgInput): ResourceLaneData {
   return {
     resource: new ResourceApi(input.context, input.resource),
-    isCompact: input.isCompact,
+    options: { eventOverlap: input.eventOverlap },
   }
 }
 

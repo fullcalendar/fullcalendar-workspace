@@ -11,7 +11,7 @@ export interface CellRenderConfig<RenderProps> {
   classNameGenerator: ClassNameGenerator<RenderProps>
   didMount: DidMountHandler<RenderProps & { el: HTMLElement }>
   willUnmount: WillUnmountHandler<RenderProps & { el: HTMLElement }>
-  align: 'start' | 'center' | 'end' | ((data: { level: number, inPopover: boolean, isCompact: boolean }) => 'start' | 'center' | 'end'),
+  align: 'start' | 'center' | 'end' | ((data: { level: number, inPopover: boolean, isNarrow: boolean }) => 'start' | 'center' | 'end'),
   sticky: boolean | number | string,
 }
 
@@ -170,7 +170,7 @@ export function buildDateDataConfigs(
               dateEnv.format(dateMarker, DAY_NUMBER_ONLY_FORMAT)[0]
           },
           isMajor,
-          isCompact: false, // HACK. gets overridden
+          isNarrow: false, // HACK. gets overridden
           isSticky: false, // HACK. gets overridden
           inPopover: false,
           level: 0, // HACK. gets overridden
@@ -217,7 +217,7 @@ export function buildDateDataConfigs(
           ...dateMeta,
           date: dowDates[dow],
           isMajor,
-          isCompact: false, // HACK. gets overridden
+          isNarrow: false, // HACK. gets overridden
           isSticky: false, // HACK. gets overridden
           inPopover: false,
           hasNavLink: false,

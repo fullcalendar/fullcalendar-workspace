@@ -34,7 +34,7 @@ export class TimelineLaneMoreLink extends BaseComponent<TimelineLaneMoreLinkProp
         dateProfile={props.dateProfile}
         todayRange={props.todayRange}
         dateSpanProps={dateSpanProps}
-        isCompact={false}
+        isNarrow={false}
         popoverContent={() => (
           <Fragment>
             {hiddenSegs.map((seg) => {

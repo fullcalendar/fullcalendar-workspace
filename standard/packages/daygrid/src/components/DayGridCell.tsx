@@ -45,7 +45,7 @@ export interface DayGridCellProps {
   date: DateMarker
   isMajor: boolean
   showDayNumber: boolean
-  isCompact: boolean
+  isNarrow: boolean
   borderStart: boolean
 
   // content
@@ -104,7 +104,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
     const renderProps = this.refineRenderProps({
       date: props.date,
       isMajor: props.isMajor,
-      isCompact: props.isCompact,
+      isNarrow: props.isNarrow,
       dateMeta: dateMeta,
       hasLabel: props.showDayNumber,
       hasMonthLabel: isMonthStart,
@@ -211,7 +211,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 eventDrag={props.eventDrag}
                 eventResize={props.eventResize}
                 todayRange={props.todayRange}
-                isCompact={props.isCompact}
+                isNarrow={props.isNarrow}
               />
             </div>
             <div
@@ -283,7 +283,7 @@ function shouldDisplayMonthStart(date: DateMarker, currentRange: DateRange, date
 interface DayCellRenderPropsInput {
   date: DateMarker // generic
   isMajor: boolean
-  isCompact: boolean
+  isNarrow: boolean
   dateMeta: DateMeta
   dateEnv: DateEnv
   viewApi: ViewApi
@@ -308,7 +308,7 @@ function refineRenderProps(raw: DayCellRenderPropsInput): DayCellData {
     text,
     textParts,
     isMajor: raw.isMajor,
-    isCompact: raw.isCompact,
+    isNarrow: raw.isNarrow,
     inPopover: false,
     hasLabel,
     hasMonthLabel,

@@ -36,7 +36,7 @@ export interface TimeGridSlatLabelProps extends TimeSlatMeta {
   height?: number
   liquidHeight?: boolean
   borderTop: boolean
-  isCompact: boolean
+  isNarrow: boolean
 
   // ref
   innerWidthRef?: Ref<number>
@@ -69,7 +69,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
       props.date,
       props.time,
       !props.isLabeled,
-      props.isCompact,
+      props.isNarrow,
       labelFormat,
       context,
     )
@@ -161,7 +161,7 @@ function createRenderProps(
   date: DateMarker,
   time: Duration,
   isMinor: boolean,
-  isCompact: boolean,
+  isNarrow: boolean,
   labelFormat: DateFormatter,
   context: ViewContext,
 ): SlotLabelData {
@@ -175,7 +175,7 @@ function createRenderProps(
     isMajor: false,
     isMinor,
     isTime: true,
-    isCompact,
+    isNarrow,
     hasNavLink: false,
     view: context.viewApi,
   }

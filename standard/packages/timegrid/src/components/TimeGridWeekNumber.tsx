@@ -9,7 +9,7 @@ export interface TimeGridWeekNumberProps {
   // dimensions
   width: number | undefined
   isLiquid: boolean
-  isCompact: boolean
+  isNarrow: boolean
 
   // ref
   innerWidthRef?: Ref<number>
@@ -49,7 +49,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
       text: weekText,
       textParts: weekTextParts,
       date: weekDateZoned,
-      isCompact: props.isCompact,
+      isNarrow: props.isNarrow,
       hasNavLink,
     }
 

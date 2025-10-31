@@ -151,7 +151,7 @@ export default createPlugin({
     dayCellClass: (data) => [
       'fc-day-cell',
       ...getDayClassNames(data),
-      data.isCompact ? 'fc-day-cell-compact' : 'fc-day-cell-not-compact',
+      data.isNarrow ? 'fc-day-cell-compact' : 'fc-day-cell-not-compact',
     ],
 
     dayCellTopClass: 'fc-day-cell-top',
@@ -237,7 +237,7 @@ export default createPlugin({
     resourceLaneClass: 'fc-resource-lane',
     resourceLaneBottomClass: (data) => [
       'fc-resource-lane-bottom',
-      data.isCompact && 'fc-resource-lane-bottom-compact',
+      !data.options.eventOverlap && 'fc-resource-lane-bottom-compact',
     ],
 
     // Timeline WITHOUT resources
@@ -264,7 +264,7 @@ export default createPlugin({
     timeGrid: {
       viewClass: 'fc-timegrid',
       eventClass: (data) => [
-        data.isCompact && 'fc-timegrid-event-compact',
+        (data.isNarrow || data.isShort) && 'fc-timegrid-event-compact',
         data.level && 'fc-timegrid-event-inset',
       ],
       rowEventClass: dayGridBlockEventClass,
@@ -287,7 +287,7 @@ export default createPlugin({
       viewClass: 'fc-timeline',
       eventClass: (data) => [
         'fc-timeline-event fc-event-x',
-        data.isSpacious && 'fc-timeline-event-spacious',
+        !data.options.eventOverlap && 'fc-timeline-event-spacious',
       ],
       moreLinkClass: 'fc-timeline-more-link',
       moreLinkInnerClass: 'fc-timeline-more-link-inner',

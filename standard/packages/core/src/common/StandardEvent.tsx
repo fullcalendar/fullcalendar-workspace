@@ -35,8 +35,8 @@ export interface StandardEventProps {
   defaultTimeFormat: DateFormatter
   defaultDisplayEventTime?: boolean // default true
   defaultDisplayEventEnd?: boolean // default true
-  isCompact?: boolean // default false
-  isSpacious?: boolean // default false
+  isNarrow?: boolean // default false
+  isShort?: boolean // default false
   level?: number // default 0
   forcedTimeText?: string
   disableLiquid?: boolean // for inner-element
@@ -73,9 +73,10 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
     const eventApi = this.buildPublicEvent(context, eventRange.def, eventRange.instance)
     const isDraggable = !props.disableDragging && computeEventRangeDraggable(eventRange, context)
     const isBlock = /row|column/.test(props.display)
-    const subcontentRenderProps = {
+    const subcontentRenderProps = { // TODO: spread with renderProps?
       event: eventApi,
-      isCompact: props.isCompact || false,
+      isNarrow: props.isNarrow || false,
+      isShort: props.isShort || false,
     }
     const renderProps: EventDisplayData = {
       event: eventApi, // make stable. everything else atomic. FYI, eventRange unfortunately gets reconstructed a lot, but def/instance is stable
@@ -96,8 +97,8 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       isDragging: Boolean(props.isDragging),
       isResizing: Boolean(props.isResizing),
       isInteractive,
-      isCompact: props.isCompact || false,
-      isSpacious: props.isSpacious || false,
+      isNarrow: props.isNarrow || false,
+      isShort: props.isShort || false,
       level: props.level || 0,
       timeClass: joinClassNames(
         generateClassName(options.eventTimeClass, subcontentRenderProps),
@@ -115,6 +116,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
         props.display === 'row' && options.rowEventTitleSticky && classNames.stickyS,
         props.display === 'column' && options.columnEventTitleSticky && classNames.stickyT,
       ),
+      options: { eventOverlap: Boolean(options.eventOverlap) },
     }
     const outerClassName = joinArrayishClassNames( // already includes eventClass below
       isBlock && generateClassName(options.blockEventClass, renderProps),

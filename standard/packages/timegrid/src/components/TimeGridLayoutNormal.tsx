@@ -1,7 +1,7 @@
 import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, generateClassName, getIsHeightAuto, getStickyHeaderDates, Hit, joinArrayishClassNames, joinClassNames, rangeContainsMarker, RefMap, Ruler, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { DayGridHeaderRow, narrowDayHeaderWidth, RowConfig } from '@fullcalendar/daygrid/internal'
+import { DayGridHeaderRow, daySuperNarrowWidth, RowConfig } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridRange } from "../TimeColsSeg.js"
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -129,8 +129,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
 
     const colCount = props.cells.length
     const colWidth = clientWidth != null ? clientWidth / colCount : undefined
-    const cellIsCompact = colWidth != null && colWidth <= options.dayCompactWidth
-    const cellIsNarrow = colWidth != null && colWidth <= narrowDayHeaderWidth
+    const cellIsSuperNarrow = colWidth != null && colWidth <= daySuperNarrowWidth
+    const cellIsNarrow = cellIsSuperNarrow || (colWidth != null && colWidth <= options.dayCompactWidth)
 
     return (
       <Fragment>
@@ -174,7 +174,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                       innerHeightRef={headerLabelInnerWidthRefMap.createRef(tierNum)}
                       width={axisWidth}
                       isLiquid={false}
-                      isCompact={cellIsCompact}
+                      isNarrow={cellIsNarrow}
                     />
                   ) : (
                     <TimeGridAxisEmpty
@@ -190,8 +190,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   {...rowConfig}
                   className={classNames.liquid}
                   borderBottom={tierNum < props.headerTiers.length - 1}
-                  cellIsCompact={cellIsCompact}
                   cellIsNarrow={cellIsNarrow}
+                  cellIsSuperNarrow={cellIsSuperNarrow}
                   rowLevel={0}
                 />
                 {Boolean(endScrollbarWidth) && (
@@ -240,7 +240,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 <TimeGridAllDayLabel
                   width={axisWidth}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
-                  isCompact={cellIsCompact}
+                  isNarrow={cellIsNarrow}
                 />
                 <div
                   className={generateClassName(options.slotLabelDividerClass, { isHeader: false })}
@@ -253,7 +253,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   forPrint={forPrint}
                   isHitComboAllowed={props.isHitComboAllowed}
                   className={joinClassNames(classNames.liquidX, classNames.borderNone)}
-                  cellIsCompact={cellIsCompact}
+                  cellIsNarrow={cellIsNarrow}
                   // content
                   fgEventSegs={props.fgEventSegs}
                   bgEventSegs={props.bgEventSegs}
@@ -349,6 +349,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
 
                   // dimensions
                   slatHeight={slatHeight}
+                  cellIsNarrow={cellIsNarrow}
                 />
               </div>
 
@@ -386,7 +387,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                             innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                             innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
                             borderTop={Boolean(slatI)}
-                            isCompact={cellIsCompact}
+                            isNarrow={cellIsNarrow}
                           />
                         </div>
                         <div

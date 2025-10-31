@@ -70,7 +70,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     const dayHeaderRenderProps: DayHeaderData = {
       ...dateMeta,
       isMajor: false,
-      isCompact: false,
+      isNarrow: false,
       isSticky: false,
       inPopover: true,
       level: 0,
@@ -85,7 +85,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     const dayCellRenderProps: DayCellData = {
       ...dateMeta,
       isMajor: false,
-      isCompact: false,
+      isNarrow: false,
       inPopover: true,
       hasNavLink,
       hasLabel: false,
@@ -105,7 +105,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     const { dayHeaderAlign } = options
     const align =
       typeof dayHeaderAlign === 'function'
-        ? dayHeaderAlign({ level: 0, inPopover: true, isCompact: false })
+        ? dayHeaderAlign({ level: 0, inPopover: true, isNarrow: false })
         : dayHeaderAlign
 
     const isRtl = computeElIsRtl(props.alignEl)

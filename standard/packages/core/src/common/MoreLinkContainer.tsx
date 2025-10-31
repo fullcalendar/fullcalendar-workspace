@@ -33,7 +33,7 @@ export interface MoreLinkContainerProps extends Partial<ElAttrsProps> {
   alignParentTop?: string // for popover
   forceTimed?: boolean // for popover
   popoverContent: () => ComponentChild
-  isCompact: boolean
+  isNarrow: boolean
   display: 'row' | 'column'
 }
 
@@ -41,7 +41,7 @@ export interface MoreLinkData {
   num: number
   text: string
   shortText: string
-  isCompact: boolean
+  isNarrow: boolean
   view: ViewApi
 }
 
@@ -83,7 +83,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
             num: moreCnt,
             shortText: `+${moreCnt}`, // TODO: offer hook or i18n?
             text,
-            isCompact: props.isCompact,
+            isNarrow: props.isNarrow,
             view: viewApi,
           }
 

@@ -11,7 +11,7 @@ export interface createSlotsVDom {
   Fragment: typeof FullCalendarPreact.Fragment
 }
 
-// TODO: consider isCompact
+// TODO: consider isNarrow
 
 export function createSlots(
   { createElement, Fragment }: createSlotsVDom, // masks the module-wide imports
