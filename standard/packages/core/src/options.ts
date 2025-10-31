@@ -294,7 +294,7 @@ export const BASE_OPTION_REFINERS = {
   slotLabelSticky: identity as Identity<boolean | number | string>,
 
   slotLabelRowClass: identity as Identity<ClassNameInput>,
-  slotLabelDividerClass: identity as Identity<ClassNameGenerator<{ isHeader: boolean }>>,
+  slotLabelDividerClass: identity as Identity<ClassNameGenerator<{ isHeader: boolean, options: { dayMinWidth: number | undefined } }>>,
 
   dayMaxEvents: identity as Identity<boolean | number>,
   dayMaxEventRows: identity as Identity<boolean | number>,

@@ -184,7 +184,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   )}
                 </div>
                 <div
-                  className={generateClassName(options.slotLabelDividerClass, { isHeader: true })}
+                  className={generateClassName(options.slotLabelDividerClass, {
+                    isHeader: true,
+                    options: { dayMinWidth: options.dayMinWidth },
+                  })}
                 />
                 <DayGridHeaderRow
                   {...rowConfig}
@@ -243,7 +246,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   isNarrow={cellIsNarrow}
                 />
                 <div
-                  className={generateClassName(options.slotLabelDividerClass, { isHeader: false })}
+                  className={generateClassName(options.slotLabelDividerClass, {
+                    isHeader: false,
+                    options: { dayMinWidth: options.dayMinWidth },
+                  })}
                 />
                 <TimeGridAllDayLane
                   dateProfile={props.dateProfile}
@@ -325,7 +331,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   style={{ width: axisWidth }}
                 />
                 <div
-                  className={generateClassName(options.slotLabelDividerClass, { isHeader: false })}
+                  className={generateClassName(options.slotLabelDividerClass, {
+                    isHeader: false,
+                    options: { dayMinWidth: options.dayMinWidth },
+                  })}
                 />
                 <TimeGridCols
                   dateProfile={props.dateProfile}
@@ -391,7 +400,10 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                           />
                         </div>
                         <div
-                          className={generateClassName(options.slotLabelDividerClass, { isHeader: false })}
+                          className={generateClassName(options.slotLabelDividerClass, {
+                            isHeader: false,
+                            options: { dayMinWidth: options.dayMinWidth },
+                          })}
                           style={{ visibility: 'hidden' }}
                           // ^TODO: className?
                           // invisible because dayLanes show the line

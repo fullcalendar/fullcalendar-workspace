@@ -227,7 +227,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                 ))}
               </div>
               <div
-                className={generateClassName(options.slotLabelDividerClass, { isHeader: true })}
+                className={generateClassName(options.slotLabelDividerClass, {
+                  isHeader: true,
+                  options: { dayMinWidth: options.dayMinWidth },
+                })}
               />
               {/* HEADER / main (horizontal scroller)
               -------------------------------------------------------------------------------------*/}
@@ -309,7 +312,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                   isNarrow={cellIsNarrow}
                 />
                 <div
-                  className={generateClassName(options.slotLabelDividerClass, { isHeader: false })}
+                  className={generateClassName(options.slotLabelDividerClass, {
+                    isHeader: false,
+                    options: { dayMinWidth: options.dayMinWidth },
+                  })}
                 />
                 {/* ALL-DAY / main (horizontal scroller)
                 -----------------------------------------------------------------------------------*/}
@@ -450,7 +456,10 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               )}
             </Scroller>
             <div
-              className={generateClassName(options.slotLabelDividerClass, { isHeader: false })}
+              className={generateClassName(options.slotLabelDividerClass, {
+                isHeader: false,
+                options: { dayMinWidth: options.dayMinWidth },
+              })}
             />
             {/* SLATS / main (scroller)
             ---------------------------------------------------------------------------------------*/}

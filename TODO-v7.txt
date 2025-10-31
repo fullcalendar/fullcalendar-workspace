@@ -22,9 +22,11 @@ event resizers look bad in certain scenarios
   Forma, which has left-border on events
   Forma/Breezy, which always have faint bg colors
   Forma/Breezy/Classic, which use primary outline w/ offset (Shadcn immune)
+Do isNarrow border killing on resourceDayHeaderClass too
 
 
 MANUAL TEST
+  week-number for resourceTimeGrid* views
   FOR EACH THEME
     test timeline/timegrid more-link in DARK mode
     timegrid isShort event collapsing not awkward

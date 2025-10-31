@@ -203,7 +203,10 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                   )}
                 </Scroller>
                 <div
-                  className={generateClassName(options.slotLabelDividerClass, { isHeader: true })}
+                  className={generateClassName(options.slotLabelDividerClass, {
+                    isHeader: true,
+                    options: { dayMinWidth: options.dayMinWidth },
+                  })}
                 />
               </div>
 

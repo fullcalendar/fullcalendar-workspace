@@ -319,6 +319,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderClass: (data) => [
         (data.isDisabled && !data.inPopover) && params.faintBgClass,
         'items-center',
+        data.isMajor && `border ${params.strongBorderColorClass}` // TODO: only do border-start?
       ],
       dayHeaderInnerClass: (data) => [
         'pt-2 flex flex-col items-center group outline-none', // kill outline because sub-elements do it
@@ -406,7 +407,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
         slotLabelDividerClass: (data) => [
           'border-l',
-          data.isHeader ? 'border-transparent' : params.borderColorClass,
+          (data.isHeader && !data.options.dayMinWidth) // only hide border in header if no h-scrolling -- TODO: week-number pill margin
+            ? 'border-transparent'
+            : params.borderColorClass,
         ],
       },
       list: {

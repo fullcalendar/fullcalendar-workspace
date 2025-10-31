@@ -340,7 +340,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderClass: (data) => [
         data.inPopover ? params.popoverHeaderClass : joinClassNames(
-          !data.isNarrow && `border ${params.borderColorClass}`, // HACK for no-show-border in multimonth
+          !data.isNarrow && joinClassNames( // HACK for no-show-border in multimonth
+            'border',
+            data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
+          ),
           data.isDisabled && params.faintBgClass,
         ),
         data.isToday && !data.level && 'relative', // contain wide top-border
