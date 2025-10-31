@@ -28,6 +28,14 @@ export class CalendarController {
     this.calendarApi?.next()
   }
 
+  prevYear(): void {
+    this.calendarApi?.prevYear()
+  }
+
+  nextYear(): void {
+    this.calendarApi?.nextYear()
+  }
+
   gotoDate(zonedDateInput: DateInput): void {
     this.calendarApi?.gotoDate(zonedDateInput)
   }
