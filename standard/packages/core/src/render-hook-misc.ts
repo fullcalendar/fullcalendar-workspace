@@ -50,13 +50,11 @@ export interface DayCellData extends DateMeta {
   isNarrow: boolean
   inPopover: boolean
   hasNavLink: boolean
-  hasLabel: boolean
-  hasMonthLabel: boolean
   view: ViewApi
   text: string
   textParts: Intl.DateTimeFormatPart[]
-  // weekdayText: string // TODO?
   dayNumberText: string
+  monthText: string
   options: { businessHours: boolean }
   [extraProp: string]: any // so can include a resource
 }

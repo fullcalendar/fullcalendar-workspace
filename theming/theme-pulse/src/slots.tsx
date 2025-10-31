@@ -81,7 +81,7 @@ export function createSlots(
                         : params.tertiaryClass,
                     )
                   // normal text
-                  : (data.hasMonthLabel ? params.fgClass : params.mutedFgClass),
+                  : (data.monthText ? params.fgClass : params.mutedFgClass),
               )}
             >{textPart.value}</span>
           ))}

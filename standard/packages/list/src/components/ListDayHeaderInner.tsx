@@ -1,4 +1,4 @@
-import { BaseComponent, buildNavLinkAttrs, ContentContainer, DateFormatter, DateMarker, DateMeta, DAY_NUMBER_ONLY_FORMAT, findDayNumberText, renderText } from "@fullcalendar/core/internal";
+import { BaseComponent, buildNavLinkAttrs, ContentContainer, DateFormatter, DateMarker, DateMeta, findDayNumberText, renderText } from "@fullcalendar/core/internal";
 import { createElement } from '@fullcalendar/core/preact'
 import { ListDayHeaderInnerData } from '../structs.js'
 
@@ -13,7 +13,7 @@ export interface ListDayHeaderInnerProps {
 export class ListDayHeaderInner extends BaseComponent<ListDayHeaderInnerProps> {
   render() {
     const { props, context } = this
-    const { options, dateEnv } = context
+    const { options } = context
     const [text, textParts] = context.dateEnv.format(props.dayDate, props.dayFormat)
 
     const hasNavLink = options.navLinks
@@ -22,10 +22,7 @@ export class ListDayHeaderInner extends BaseComponent<ListDayHeaderInnerProps> {
       view: context.viewApi,
       text,
       textParts,
-      get dayNumberText() {
-        return findDayNumberText(textParts) ||
-          dateEnv.format(props.dayDate, DAY_NUMBER_ONLY_FORMAT)[0]
-      },
+      get dayNumberText() { return findDayNumberText(textParts) },
       hasNavLink,
       level: props.level,
     }

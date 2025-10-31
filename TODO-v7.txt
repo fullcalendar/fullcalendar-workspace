@@ -13,10 +13,11 @@ clean+build all:
   pn build
 
 
-maybe data.hasMonthLabel could be killed
-  and just have data.monthText... and might be empty!
-  (only if we decide to kill type of api for this format... not "fallback")
 fix Monarch timegrid horizontal scroll
+Pulse: needs timegrid isMinor dashes
+Conundrum: Breezy timegrid isMinor has no line-dashes
+  looks good in default theme
+  looks bad in Shadcn/MUI
 
 
 MANUAL TEST
@@ -346,6 +347,8 @@ rethink listDayFormat/listDaySideFormat
   they get flipped for listDay <> listWeek
   one part should probably be day-of-week
   other part should probably be fuller date decided by view duration
+yuck... DayHeaderData/DayCellData have [extraProp: any],
+  which severly impares type checking in themes
 
 
 Changelog
@@ -405,7 +408,7 @@ changelog: eventColor (different behavior), +eventContrastColor, -eventBackgroun
   gotcha: in order to use eventContrastColor, you MUST define eventColor. same for event object
 changelog: --fc-event-color, --fc-event-contrast-color
 changelog: borderless(X) also indents toolbar
-changelog: dayCellTop will be rendered even if no day-cell-text. check hasLabel/hasMonthLabel
+changelog: dayCellTop will be rendered even if no day-cell-text
 changelog: premium-warning styled in dark mode
   https://github.com/fullcalendar/fullcalendar/issues/7904
 changelog: is root className/class a new feature!? i think so

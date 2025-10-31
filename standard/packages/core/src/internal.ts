@@ -40,10 +40,10 @@ export {
 } from './util/date.js'
 
 export {
-  DAY_NUMBER_ONLY_FORMAT,
   WEEKDAY_ONLY_FORMAT,
   findWeekdayText,
   findDayNumberText,
+  findMonthText,
 } from './util/date-format.js'
 
 export {

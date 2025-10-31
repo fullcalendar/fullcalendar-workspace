@@ -1,5 +1,5 @@
 import { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler, DayHeaderData } from '@fullcalendar/core'
-import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, DAY_NUMBER_ONLY_FORMAT, Dictionary, findDayNumberText, findWeekdayText, formatDayString, getDateMeta, isMajorUnit, ViewContext, WEEKDAY_ONLY_FORMAT } from '@fullcalendar/core/internal'
+import { addDays, buildDateStr, buildNavLinkAttrs, computeMajorUnit, DateFormatter, DateMarker, DateMeta, DateProfile, DateRange, Dictionary, findDayNumberText, findWeekdayText, formatDayString, getDateMeta, isMajorUnit, ViewContext, WEEKDAY_ONLY_FORMAT } from '@fullcalendar/core/internal'
 
 /*
 Just for the HEADER
@@ -161,14 +161,8 @@ export function buildDateDataConfigs(
           ...extraRenderProps,
           text,
           textParts,
-          get weekdayText() {
-            return findWeekdayText(textParts) ||
-              dateEnv.format(dateMarker, WEEKDAY_ONLY_FORMAT)[0]
-          },
-          get dayNumberText() {
-            return findDayNumberText(textParts) ||
-              dateEnv.format(dateMarker, DAY_NUMBER_ONLY_FORMAT)[0]
-          },
+          get weekdayText() { return findWeekdayText(textParts) },
+          get dayNumberText() { return findDayNumberText(textParts) },
           isMajor,
           isNarrow: false, // HACK. gets overridden
           isSticky: false, // HACK. gets overridden
@@ -225,12 +219,8 @@ export function buildDateDataConfigs(
           view: viewApi,
           text,
           textParts,
-          get weekdayText() {
-            return findWeekdayText(textParts)
-          },
-          get dayNumberText() {
-            return findDayNumberText(textParts)
-          },
+          get weekdayText() { return findWeekdayText(textParts) },
+          get dayNumberText() { return findDayNumberText(textParts) },
           ...extraRenderProps,
         }
         const fullWeekDayStr = dateEnv.format(normDate, WEEKDAY_ONLY_FORMAT)[0]

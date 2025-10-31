@@ -330,11 +330,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             )
           : joinClassNames( // half-pill
               'rounded-e-sm',
-              data.hasMonthLabel && 'font-bold',
+              data.monthText && 'font-bold',
               data.isNarrow ? 'px-1' : 'px-2',
               data.isOther
                 ? params.faintFgClass
-                : (data.hasMonthLabel ? params.fgClass : params.mutedFgClass),
+                : (data.monthText ? params.fgClass : params.mutedFgClass),
               data.hasNavLink && params.mutedHoverPressableClass,
             ),
       ],

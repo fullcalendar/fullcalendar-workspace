@@ -303,7 +303,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayCellTopInnerClass: (data) => [
         'px-1 whitespace-nowrap',
         data.isNarrow ? 'py-0.5' : 'py-1',
-        data.hasMonthLabel && 'font-bold',
+        data.monthText && 'font-bold',
         data.isNarrow ? xxsTextClass : 'text-sm',
         data.isOther && params.faintFgClass,
       ],

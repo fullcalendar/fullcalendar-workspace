@@ -271,7 +271,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           ? joinClassNames(
               'rounded-s-sm whitespace-pre',
               data.isNarrow ? 'px-1' : 'px-2',
-              data.hasMonthLabel ? params.fgClass : params.mutedFgClass,
+              data.monthText ? params.fgClass : params.mutedFgClass,
               data.hasNavLink && params.mutedHoverPressableClass,
             )
           // circle inside (see slots.tsx)

@@ -346,7 +346,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isToday
           ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
           : (data.hasNavLink && params.mutedHoverPressableClass),
-        data.hasMonthLabel && 'font-bold',
+        data.monthText && 'font-bold',
         data.isOther && params.faintFgClass,
       ],
       dayCellInnerClass: (data) => data.inPopover && 'p-2',

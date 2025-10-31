@@ -17,7 +17,7 @@ import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
 import { applyStyle, computeElIsRtl, getAppendableRoot, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-manip.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
 import { computeClippedClientRect } from '../util/dom-geom.js'
-import { findDayNumberText, findWeekdayText, WEEKDAY_ONLY_FORMAT, DAY_NUMBER_ONLY_FORMAT } from '../util/date-format.js'
+import { findDayNumberText, findMonthText, findWeekdayText } from '../util/date-format.js'
 
 export interface MorePopoverProps {
   id: string
@@ -56,16 +56,6 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     let dateMeta = this.getDateMeta(startDate, dateEnv, dateProfile, todayRange)
     let [text, textParts] = dateEnv.format(startDate, options.dayPopoverFormat)
 
-    function getWeekdayText() {
-      return findWeekdayText(textParts) ||
-        dateEnv.format(startDate, WEEKDAY_ONLY_FORMAT)[0]
-    }
-
-    function getDayNumberText() {
-      return findDayNumberText(textParts) ||
-        dateEnv.format(startDate, DAY_NUMBER_ONLY_FORMAT)[0]
-    }
-
     const hasNavLink = options.navLinks
     const dayHeaderRenderProps: DayHeaderData = {
       ...dateMeta,
@@ -77,8 +67,8 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       hasNavLink,
       text,
       textParts,
-      get weekdayText() { return getWeekdayText() },
-      get dayNumberText() { return getDayNumberText() },
+      get weekdayText() { return findWeekdayText(textParts) },
+      get dayNumberText() { return findDayNumberText(textParts) },
       view: viewApi,
       // TODO: should know about the resource!
     }
@@ -88,9 +78,8 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       isNarrow: false,
       inPopover: true,
       hasNavLink,
-      hasLabel: false,
-      hasMonthLabel: false,
-      get dayNumberText() { return getDayNumberText() },
+      get dayNumberText() { return findDayNumberText(textParts) },
+      get monthText() { return findMonthText(textParts) },
       view: viewApi,
       text: '',
       textParts: [],

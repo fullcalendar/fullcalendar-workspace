@@ -369,7 +369,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       dayCellTopInnerClass: (data) => [
         'flex flex-row items-center whitespace-nowrap',
-        data.hasMonthLabel && 'font-bold',
+        data.monthText && 'font-bold',
         data.isNarrow
           ? `my-px h-5 ${xxsTextClass}`
           : 'my-1 h-6 text-sm',
