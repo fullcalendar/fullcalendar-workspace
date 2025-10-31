@@ -5,6 +5,8 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import Typography from '@mui/material/Typography'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import ToggleButton from '@mui/material/ToggleButton'
@@ -67,6 +69,13 @@ export default function EventCalendarToolbar({
           }}
         >
           <IconButton
+            onClick={() => controller.prevYear()}
+            disabled={buttons.prevYear.isDisabled}
+            aria-label={buttons.prevYear.hint}
+          >
+            <KeyboardDoubleArrowLeftIcon className='[[dir=rtl]_&]:rotate-180' />
+          </IconButton>
+          <IconButton
             onClick={() => controller.prev()}
             disabled={buttons.prev.isDisabled}
             aria-label={buttons.prev.hint}
@@ -79,6 +88,13 @@ export default function EventCalendarToolbar({
             aria-label={buttons.next.hint}
           >
             <ChevronRightIcon className='[[dir=rtl]_&]:rotate-180' />
+          </IconButton>
+          <IconButton
+            onClick={() => controller.nextYear()}
+            disabled={buttons.nextYear.isDisabled}
+            aria-label={buttons.nextYear.hint}
+          >
+            <KeyboardDoubleArrowRightIcon className='[[dir=rtl]_&]:rotate-180' />
           </IconButton>
         </Box>
         <Typography variant="h5">{controller.view?.title}</Typography>

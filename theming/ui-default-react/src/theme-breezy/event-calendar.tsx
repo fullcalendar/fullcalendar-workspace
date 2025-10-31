@@ -29,7 +29,7 @@ export function EventCalendar({
   return (
     <FullCalendar
       headerToolbar={{
-        start: (addButton ? 'add ' : '') + 'prev,today,next',
+        start: (addButton ? 'add ' : '') + 'prevYear,prev,today,next,nextYear',
         center: 'title',
         end: availableViews.join(','),
       }}
