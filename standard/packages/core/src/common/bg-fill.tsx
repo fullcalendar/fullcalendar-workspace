@@ -19,6 +19,7 @@ export interface BgEventProps {
   isFuture: boolean
   isToday: boolean
   isNarrow?: boolean
+  isShort?: boolean
 }
 
 export class BgEvent extends BaseComponent<BgEventProps> {
@@ -40,7 +41,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
     const subcontentRenderProps = { // TODO: spread into renderProps?
       event: eventApi,
       isNarrow: props.isNarrow || false,
-      isShort: false,
+      isShort: props.isShort || false,
     }
     const renderProps: EventDisplayData = {
       event: eventApi,
@@ -63,7 +64,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       isInteractive: false,
       level: 0,
       isNarrow: props.isNarrow || false,
-      isShort: false,
+      isShort: props.isShort || false,
       timeClass: '', // never display time
       titleClass: joinClassNames(
         generateClassName(options.eventTitleClass, subcontentRenderProps),

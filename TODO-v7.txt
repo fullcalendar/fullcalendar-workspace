@@ -14,8 +14,6 @@ clean+build all:
 
 
 Finish timegrid narrowness
-  TimeGrid BG-events should get isShort
-    search for isShort: false,
   AFTER
     audit col-events AND columnMoreLinkInnerClass
 maybe data.hasMonthLabel could be killed
