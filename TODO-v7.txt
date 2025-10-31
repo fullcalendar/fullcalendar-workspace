@@ -346,6 +346,10 @@ when outer calendar wrapper has overflow:hidden,
   what to do about sticky children within? overflow:hidden kills stickiness
 BUG: timegrid: if now-indicator is beyond the slotMaxTime, still displays arrow (in classic theme)
   also in timeline?
+list-view day-headers no longer respect stickyHeaderDates, ALWAYS STICKY
+  need this to have sticky list-view day-headers even when height!='auto'
+  solution: rename stickyHeaderDates -> stickyHeader (to imply whole-calendar header. or tableHeaderSticky?)
+  solution: have stickyHeaderDates:'auto' and let view decide
 
 
 Changelog
