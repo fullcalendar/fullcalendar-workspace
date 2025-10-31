@@ -18,11 +18,13 @@ Pulse: needs timegrid isMinor dashes
 Conundrum: Breezy timegrid isMinor has no line-dashes
   looks good in default theme
   looks bad in Shadcn/MUI
+event resizers look bad in certain scenarios
+  Forma, which has left-border on events
+  Forma/Breezy, which always have faint bg colors
+  Forma/Breezy/Classic, which use primary outline w/ offset (Shadcn immune)
 
 
 MANUAL TEST
-  check touch-selecting and dragging/resizing effects
-  check print-view
   FOR EACH THEME
     test timeline/timegrid more-link in DARK mode
     timegrid isShort event collapsing not awkward
@@ -135,7 +137,7 @@ AFTER BETA
 
 Update latest shadcn theme colors (newest version of shadcn updated them)
 move away from okhlc colors... bad browser support
-print-view is messed up
+print-view is messed up!!!
 think about reviving compact timegrid print view, or at least providing a setting
   https://fullcalendar.freshdesk.com/a/tickets/11181
   We already keep this code for buggy firefox
