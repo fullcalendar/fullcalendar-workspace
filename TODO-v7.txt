@@ -21,7 +21,6 @@ event resizers look bad in certain scenarios
   Forma, which has left-border on events
   Forma/Breezy, which always have faint bg colors
   Forma/Breezy/Classic, which use primary outline w/ offset (Shadcn immune)
-Do isNarrow border killing on resourceDayHeaderClass too
 Monarch: timeline, when weeknumber and day labels stack
 Breezy: timeline: week number + day stack above time, but no borders!
 
@@ -36,6 +35,8 @@ MANUAL TEST
     When "today" is first of month, how long-text render in today-circle
     isNarrow column-events, background-events (daygrid + timegrid)
     week-number for resourceTimeGrid* views
+    ensure dayHeaderClass isMajor border more important that isNarrow border-killing
+      test with resourceTimeGridFiveDay with no dayMinWidth (no h-scrolling)
 CODE-QUALITY (while going through each theme)
   all hover-pressables have focus-visible:
   put text color on every text node? no inheritance?

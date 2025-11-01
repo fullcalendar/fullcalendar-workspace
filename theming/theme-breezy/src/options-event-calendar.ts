@@ -256,9 +256,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     data: { isNarrow: boolean, inPopover: boolean, isMajor: boolean }
   ) => (
     data.inPopover ? params.popoverHeaderClass :
-      data.isNarrow ? '' : // isNarrow is a HACK to detect multi-month multi-col
-        data.isMajor ? `border ${params.strongBorderColorClass}` :
-          `border ${defaultBorderColorClass}`
+      data.isMajor ? `border ${params.strongBorderColorClass}` :
+        !data.isNarrow && `border ${defaultBorderColorClass}`
+        // ^isNarrow is a HACK to detect multi-month multi-col
   )
 
   return {

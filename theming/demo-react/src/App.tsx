@@ -458,7 +458,7 @@ export default function App() {
             />
             <SchedulerDemo
               initialView='resourceTimeGridFiveDay'
-              availableViews={['resourceTimeGridDay', 'resourceTimeGridFiveDay', 'resourceTimeGridWeek']}
+              availableViews={['resourceTimeGridDay', 'resourceTimeGridTwoDay', 'resourceTimeGridFiveDay', 'resourceTimeGridWeek']}
               ui={ui}
               theme={theme}
             />
@@ -657,6 +657,10 @@ function SchedulerDemo(props: DemoProps) {
           // slotDuration: { days: 1 },
           slotLabelInterval: { hours: 3 },
         },
+        resourceTimeGridTwoDay: {
+          type: 'resourceTimeGrid',
+          duration: { days: 2 },
+        },
         resourceTimeGridFiveDay: {
           type: 'resourceTimeGrid',
           duration: { days: 5 },
@@ -669,6 +673,9 @@ function SchedulerDemo(props: DemoProps) {
       buttons={{
         resourceTimelineThreeDay: {
           text: '3-Day',
+        },
+        resourceTimeGridTwoDay: {
+          text: '2-Day',
         },
         resourceTimeGridFiveDay: {
           text: '5-Day',

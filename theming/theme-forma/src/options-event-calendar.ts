@@ -339,14 +339,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
       dayHeaderClass: (data) => [
-        data.inPopover ? params.popoverHeaderClass : joinClassNames(
-          !data.isNarrow && joinClassNames( // HACK for no-show-border in multimonth
-            'border',
-            data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
-          ),
-          data.isDisabled && params.faintBgClass,
-        ),
         data.isToday && !data.level && 'relative', // contain wide top-border
+        data.isDisabled && params.faintBgClass,
+        data.inPopover
+          ? params.popoverHeaderClass
+          : joinClassNames(
+              data.isMajor ? `border ${params.strongBorderColorClass}` :
+                !data.isNarrow && `border ${params.borderColorClass}`,
+            ),
       ],
       dayHeaderInnerClass: (data) => [
         'p-2 flex flex-col', // TODO: adjust padding when isNarrow?
