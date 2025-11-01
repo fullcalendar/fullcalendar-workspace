@@ -107,6 +107,8 @@ Multi-month month shadows too intense
 popover-close needs hover color or bg-change
 
 ShadCN (and MUI?) can increase their event bg-color opaqueness if they make event-titles bold
+
+are timegrid borders too faint (esp now that we have dotted isMinor) ?
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -359,7 +361,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
-      slotLaneClass: `border ${params.mutedBorderColorClass}`,
+      slotLaneClass: (data) => [
+        `border ${params.mutedBorderColorClass}`,
+        data.isMinor && 'border-dotted',
+      ],
 
       moreLinkClass: [
         params.primaryOutlineColorClass,

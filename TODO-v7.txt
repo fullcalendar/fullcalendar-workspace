@@ -13,16 +13,13 @@ clean+build all:
   pn build
 
 
-Pulse: needs timegrid isMinor dashes
-Conundrum: Breezy timegrid isMinor has no line-dashes
-  looks good in default theme
-  looks bad in Shadcn/MUI
 event resizers look bad in certain scenarios
   Forma, which has left-border on events
   Forma/Breezy, which always have faint bg colors
   Forma/Breezy/Classic, which use primary outline w/ offset (Shadcn immune)
 Monarch: timeline, when weeknumber and day labels stack
 Breezy: timeline: week number + day stack above time, but no borders!
+Pulse: timeline: no borders when isMajor!
 
 
 MANUAL TEST

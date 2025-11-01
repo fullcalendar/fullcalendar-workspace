@@ -416,7 +416,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       slotLabelRowClass: `border ${params.borderColorClass}`, // timeline only
 
-      slotLaneClass: `border ${params.borderColorClass}`,
+      slotLaneClass: (data) => [
+        `border ${params.borderColorClass}`,
+        data.isMinor && 'border-dotted',
+      ],
 
       fillerClass: (data) => [
         !data.isHeader && `border ${params.borderColorClass} opacity-50`,
