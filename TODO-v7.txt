@@ -13,10 +13,6 @@ clean+build all:
   pn build
 
 
-BUG: for narrow v-resource view WITHOUT h-scrolling,
-  ensure day+resource headers have cropping
-
-
 MANUAL TEST
   FOR EACH THEME
     test timeline/timegrid more-link in DARK mode

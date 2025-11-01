@@ -615,6 +615,7 @@ function SchedulerDemo(props: DemoProps) {
     <SchedulerComponent
       // datesAboveResources={true}
       weekNumbers={true}
+      navLinks={true}
       expandRows={expandRows}
       // height='auto'
       // stickyHeaderDates={false}
