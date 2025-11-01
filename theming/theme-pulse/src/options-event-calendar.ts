@@ -196,6 +196,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventColor: params.bgEventColor,
       // eventDisplay: 'block',
 
+      eventShortHeight: 50,
+      dayNarrowWidth: 100,
+
       // best place? be consistent with otherthemes
 
       tableHeaderClass: (data) => data.isSticky && params.bgClass,
