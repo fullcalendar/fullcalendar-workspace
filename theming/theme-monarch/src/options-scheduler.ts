@@ -88,7 +88,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           'text-sm',
           data.level
             ? joinClassNames( // pill
-                'px-2 py-1 rounded-full',
+                'px-2 py-1 my-0.5 rounded-full',
                 data.hasNavLink
                   ? params.secondaryPressableClass
                   : params.secondaryClass,

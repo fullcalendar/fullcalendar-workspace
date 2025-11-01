@@ -17,9 +17,8 @@ event resizers look bad in certain scenarios
   Forma, which has left-border on events
   Forma/Breezy, which always have faint bg colors
   Forma/Breezy/Classic, which use primary outline w/ offset (Shadcn immune)
-Monarch: timeline, when weeknumber and day labels stack
-Breezy: timeline: week number + day stack above time, but no borders!
-Pulse: timeline: no borders when isMajor!
+BUG: Monarch w/ resource-timeline
+  scroll all the way to right, continuation-arrow pops out, causing extra scroll runway!!!
 
 
 MANUAL TEST

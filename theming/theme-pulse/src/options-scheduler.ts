@@ -58,7 +58,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
     views: {
       timeline: {
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
-        slotLabelClass: 'justify-center', // v-align
+        slotLabelClass: (data) => [
+          'justify-center', // v-align
+          data.isMajor && data.level > 0 && `border ${params.borderColorClass}`,
+        ],
         slotLabelInnerClass: (data) => [
           `p-2 text-sm ${params.strongFgClass}`,
           data.isTime && 'relative -start-3',
