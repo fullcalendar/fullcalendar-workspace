@@ -130,7 +130,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
     const colCount = props.cells.length
     const colWidth = clientWidth != null ? clientWidth / colCount : undefined
     const cellIsSuperNarrow = colWidth != null && colWidth <= daySuperNarrowWidth
-    const cellIsNarrow = cellIsSuperNarrow || (colWidth != null && colWidth <= options.dayCompactWidth)
+    const cellIsNarrow = cellIsSuperNarrow || (colWidth != null && colWidth <= options.dayNarrowWidth)
 
     return (
       <Fragment>

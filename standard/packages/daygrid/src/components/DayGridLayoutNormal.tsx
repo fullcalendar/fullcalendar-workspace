@@ -79,7 +79,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
     const colCount = props.cellRows[0].length
     const cellWidth = clientWidth != null  ? clientWidth / colCount : undefined
     const cellIsSuperNarrow = cellWidth != null && cellWidth <= daySuperNarrowWidth
-    const cellIsNarrow = cellIsSuperNarrow || (cellWidth != null && cellWidth <= options.dayCompactWidth)
+    const cellIsNarrow = cellIsSuperNarrow || (cellWidth != null && cellWidth <= options.dayNarrowWidth)
 
     return (
       <Fragment>

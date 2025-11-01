@@ -69,7 +69,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
     const cellColCnt = dayTableModel.cellRows[0].length
     const colWidth = state.gridWidth != null ? state.gridWidth / cellColCnt : undefined
     const cellIsSuperNarrow = colWidth != null && colWidth <= daySuperNarrowWidth
-    const cellIsNarrow = cellIsSuperNarrow || (colWidth != null && colWidth <= options.dayCompactWidth)
+    const cellIsNarrow = cellIsSuperNarrow || (colWidth != null && colWidth <= options.dayNarrowWidth)
 
     const rowHeightGuess = state.gridWidth != null
       ? invAspectRatio * state.gridWidth / 6

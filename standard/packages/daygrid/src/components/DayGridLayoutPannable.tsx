@@ -86,7 +86,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
     const colCount = props.cellRows[0].length
     const [canvasWidth, colWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)
     const cellIsSuperNarrow = colWidth != null && colWidth <= daySuperNarrowWidth
-    const cellIsNarrow = cellIsSuperNarrow || (colWidth != null && colWidth <= options.dayCompactWidth)
+    const cellIsNarrow = cellIsSuperNarrow || (colWidth != null && colWidth <= options.dayNarrowWidth)
 
     return (
       <Fragment>

@@ -139,7 +139,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
     const colCount = props.cells.length
     const [canvasWidth, colWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)
     const cellIsSuperNarrow = colWidth != null && colWidth <= daySuperNarrowWidth
-    const cellIsNarrow = cellIsSuperNarrow || (colWidth != null && colWidth <= options.dayCompactWidth)
+    const cellIsNarrow = cellIsSuperNarrow || (colWidth != null && colWidth <= options.dayNarrowWidth)
 
     const slatCnt = props.slatMetas.length
     const [slatHeight, slatLiquidHeight] = computeSlatHeight( // TODO: memo?

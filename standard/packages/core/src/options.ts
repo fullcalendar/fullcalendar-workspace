@@ -409,7 +409,7 @@ export const BASE_OPTION_REFINERS = {
   popoverCloseClass: identity as Identity<ClassNameInput>,
   popoverCloseContent: identity as Identity<CustomContentGenerator<{}>>,
 
-  dayCompactWidth: Number,
+  dayNarrowWidth: Number,
 
   borderless: Boolean,
   borderlessX: Boolean,
@@ -491,7 +491,7 @@ export const BASE_OPTION_DEFAULTS = {
   dayCellFormat: { day: 'numeric' },
   headingLevel: 2, // like H2
   outerBorder: true,
-  dayCompactWidth: 100,
+  dayNarrowWidth: 100,
   eventOverlap: true,
   slotLabelAlign: 'start',
   slotLabelSticky: true,
