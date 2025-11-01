@@ -135,7 +135,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute h-2 w-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
+  const blockTouchResizerClass = `absolute size-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
@@ -267,7 +267,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       rowEventBeforeClass: (data) => data.isStartResizable ? [
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
-        '-start-1',
+        '-start-2', // do more than just half-width of circle, because of 6px start-border
       ] : [
         // the < continuation
         !data.isStart && (

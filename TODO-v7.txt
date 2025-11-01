@@ -13,10 +13,8 @@ clean+build all:
   pn build
 
 
-event resizers look bad in certain scenarios
-  Forma, which has left-border on events
-  Forma/Breezy, which always have faint bg colors
-  Forma/Breezy/Classic, which use primary outline w/ offset (Shadcn immune)
+BUG: for narrow v-resource view WITHOUT h-scrolling,
+  ensure day+resource headers have cropping
 
 
 MANUAL TEST
@@ -855,6 +853,12 @@ when vertical-resource-view, datesAboveResources
   and small number of resources,
   and date is "centered" above,
   looks bad because hovering over random resource (same with inverse)
+improve look of event start/end resizers
+  Forma/Breezy, which always have faint bg colors
+  Forma/Breezy/Classic, which use primary outline w/ offset (Shadcn immune)
+  SOLUTION: when primary-outline,
+    connect resizer to the outline, which may have an offset, but have theme-option-param
+    passed-in that is -start/-end
 
 
 Notes
