@@ -17,8 +17,6 @@ event resizers look bad in certain scenarios
   Forma, which has left-border on events
   Forma/Breezy, which always have faint bg colors
   Forma/Breezy/Classic, which use primary outline w/ offset (Shadcn immune)
-BUG: Monarch w/ resource-timeline
-  scroll all the way to right, continuation-arrow pops out, causing extra scroll runway!!!
 
 
 MANUAL TEST
@@ -352,6 +350,7 @@ list-view day-headers no longer respect stickyHeaderDates, ALWAYS STICKY
   need this to have sticky list-view day-headers even when height!='auto'
   solution: rename stickyHeaderDates -> stickyHeader (to imply whole-calendar header. or tableHeaderSticky?)
   solution: have stickyHeaderDates:'auto' and let view decide
+test: can now-indicator dots/lines accidentally create more scroll area causing scroll mis-sync?
 
 
 Changelog

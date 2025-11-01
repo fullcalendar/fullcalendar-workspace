@@ -135,6 +135,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'p-0.5 font-bold whitespace-nowrap overflow-hidden shrink-100', // shrinks first
     ],
 
+    rowEventClass: (data) => [
+      data.isStart && 'ms-px',
+      data.isEnd && 'me-px',
+    ],
+
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
       params.mutedHoverPressableClass,
@@ -251,8 +256,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       rowEventClass: (data) => [
         'mb-px',
         'border-y',
-        data.isStart ? 'ms-px border-s rounded-s-sm' : 'ms-2',
-        data.isEnd ? 'me-px border-e rounded-e-sm' : 'me-2',
+        data.isStart ? 'border-s rounded-s-sm' : 'ms-2',
+        data.isEnd ? 'border-e rounded-e-sm' : 'me-2',
       ],
       rowEventBeforeClass: (data) =>
         data.isStartResizable ? [
