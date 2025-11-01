@@ -13,6 +13,7 @@ export interface WeekNumberHeaderData {
   textParts: DateTimeFormatPartWithWeek[]
   isNarrow: boolean
   hasNavLink: boolean
+  options: { dayMinWidth: number | undefined }
 }
 
 export type WeekNumberHeaderMountData = MountData<WeekNumberHeaderData>

@@ -13,7 +13,6 @@ clean+build all:
   pn build
 
 
-fix Monarch timegrid horizontal scroll
 Pulse: needs timegrid isMinor dashes
 Conundrum: Breezy timegrid isMinor has no line-dashes
   looks good in default theme
@@ -23,10 +22,11 @@ event resizers look bad in certain scenarios
   Forma/Breezy, which always have faint bg colors
   Forma/Breezy/Classic, which use primary outline w/ offset (Shadcn immune)
 Do isNarrow border killing on resourceDayHeaderClass too
+Monarch: timeline, when weeknumber and day labels stack
+Breezy: timeline: week number + day stack above time, but no borders!
 
 
 MANUAL TEST
-  week-number for resourceTimeGrid* views
   FOR EACH THEME
     test timeline/timegrid more-link in DARK mode
     timegrid isShort event collapsing not awkward
@@ -35,6 +35,7 @@ MANUAL TEST
   DONE, but save for checklist
     When "today" is first of month, how long-text render in today-circle
     isNarrow column-events, background-events (daygrid + timegrid)
+    week-number for resourceTimeGrid* views
 CODE-QUALITY (while going through each theme)
   all hover-pressables have focus-visible:
   put text color on every text node? no inheritance?
@@ -854,6 +855,10 @@ unrelated: often a page will have a sticky topbar,
   Have a UNIVERSAL sticky-top-px-baseline as an option
   ALSO, this value will be added to each views' sticky-header-dates height value!!!
   (because that blocks sticky children too)
+when vertical-resource-view, datesAboveResources
+  and small number of resources,
+  and date is "centered" above,
+  looks bad because hovering over random resource (same with inverse)
 
 
 Notes

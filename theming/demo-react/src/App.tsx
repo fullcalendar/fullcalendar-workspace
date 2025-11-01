@@ -482,6 +482,7 @@ function EventCalendarDemo(props: DemoProps) {
 
   return (
     <EventCalendarComponent
+      // dayMinWidth={200}
       // slotMaxTime='08:00:00'
       // expandRows
       // height='auto'
@@ -612,6 +613,8 @@ function SchedulerDemo(props: DemoProps) {
 
   return (
     <SchedulerComponent
+      // datesAboveResources={true}
+      weekNumbers={true}
       expandRows={expandRows}
       // height='auto'
       // stickyHeaderDates={false}

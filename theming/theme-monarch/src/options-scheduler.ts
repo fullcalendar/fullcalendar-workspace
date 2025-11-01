@@ -104,6 +104,14 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
       },
+      resourceTimeGrid: {
+        dayHeaderDividerClass: `border-b ${params.borderColorClass}`, // TODO: DRY
+        dayHeaderInnerClass: 'mb-2',
+      },
+      resourceDayGrid: {
+        dayHeaderDividerClass: `border-b ${params.borderColorClass}`, // TODO: DRY
+        dayHeaderInnerClass: 'mb-2',
+      },
     },
   }
 }

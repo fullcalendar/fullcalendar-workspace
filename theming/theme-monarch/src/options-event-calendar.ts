@@ -322,7 +322,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isMajor && `border ${params.strongBorderColorClass}` // TODO: only do border-start?
       ],
       dayHeaderInnerClass: (data) => [
-        'pt-2 flex flex-col items-center group outline-none', // kill outline because sub-elements do it
+        'mt-2 mx-2 flex flex-col items-center group outline-none', // kill outline because sub-elements do it
         data.isNarrow && xxsTextClass,
       ],
 
@@ -384,7 +384,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         dayCellBottomClass: 'min-h-4', // for ALL-DAY
 
         weekNumberHeaderClass: 'items-center justify-end',
-        weekNumberHeaderInnerClass: getWeekNumberPillClasses,
+        weekNumberHeaderInnerClass: (data) => [
+          'ms-1',
+          data.options.dayMinWidth !== undefined && 'me-1',
+          ...getWeekNumberPillClasses(data),
+        ],
 
         allDayHeaderClass: 'justify-end items-center', // items-center = valign
         allDayHeaderInnerClass: (data) => [
@@ -407,7 +411,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
         slotLabelDividerClass: (data) => [
           'border-l',
-          (data.isHeader && !data.options.dayMinWidth) // only hide border in header if no h-scrolling -- TODO: week-number pill margin
+          (data.isHeader && data.options.dayMinWidth === undefined) // only hide border in header if no h-scrolling -- TODO: week-number pill margin
             ? 'border-transparent'
             : params.borderColorClass,
         ],

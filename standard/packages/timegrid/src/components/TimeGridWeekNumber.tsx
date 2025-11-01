@@ -51,6 +51,7 @@ export class TimeGridWeekNumber extends BaseComponent<TimeGridWeekNumberProps> {
       date: weekDateZoned,
       isNarrow: props.isNarrow,
       hasNavLink,
+      options: { dayMinWidth: options.dayMinWidth },
     }
 
     return (
