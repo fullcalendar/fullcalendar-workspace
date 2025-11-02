@@ -426,7 +426,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'flex flex-row',
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
-      rowEventTimeClass: (data) => data.isNarrow ? 'p-px' : 'p-0.5',
+      rowEventTimeClass: (data) => [
+        'font-medium',
+        data.isNarrow ? 'p-px' : 'p-0.5',
+      ],
       rowEventTitleClass: (data) => data.isNarrow ? 'p-px' : 'p-0.5',
 
       columnEventClass: (data) => [

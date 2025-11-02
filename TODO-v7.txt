@@ -14,9 +14,6 @@ clean+build all:
 
 
 MANUAL TEST
-  FOR EACH THEME
-    For block-events that display, there should be a visual distinctions between time/title text
-      test with eventDisplay='block'
   DONE, but save for checklist
     When "today" is first of month, how long-text render in today-circle
     isNarrow column-events, background-events (daygrid + timegrid)
@@ -24,6 +21,7 @@ MANUAL TEST
     ensure dayHeaderClass isMajor border more important that isNarrow border-killing
       test with resourceTimeGridFiveDay with no dayMinWidth (no h-scrolling)
     timegrid more-link popover, events displayed w/ correct inner-padding
+    when eventDisplay='block' in daygrid, h-events should differentiate time from title (bold?)
 CODE-QUALITY (while going through each theme)
   all hover-pressables have focus-visible:
   put text color on every text node? no inheritance?
