@@ -66,6 +66,9 @@ for resource-timeline area divider, use strong border instead of thick gray thin
 BUG: timegrid more-popover has header text centered
 
 BUG: timegrid, "W 27" is different color than day headers in same horizontal row
+
+change event color to look more puple like
+  https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
 */
 
 export interface EventCalendarOptionParams {
@@ -390,17 +393,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       columnEventInnerClass: (data) => [
         'flex',
-        (data.isNarrow || data.isShort) ? xxsTextClass : 'text-xs',
-        data.isShort ? 'flex-row' : 'flex-col py-1',
-      ],
-      // TODO: move the x-padding to the inner div? same concept with row-events
-      columnEventTimeClass: (data) => [
-        'pt-1',
-        data.isNarrow ? 'px-1' : 'px-2',
+        data.isShort
+          ? 'flex-row gap-1' // one line
+          : 'flex-col', // two lines
+        (data.isNarrow || data.isShort)
+          ? `p-1 ${xxsTextClass}`
+          : 'p-2 text-xs',
       ],
       columnEventTitleClass: (data) => [
-        'py-1 font-medium',
-        data.isNarrow ? 'px-1' : 'px-2',
+        !data.isShort && 'pt-1',
+        'font-medium',
       ],
 
       columnMoreLinkClass: `m-0.5 rounded-lg ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,

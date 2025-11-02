@@ -312,17 +312,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-bottom-1',
       ],
       columnEventInnerClass: (data) => [
-        'flex',
+        'py-1 flex',
         data.isShort
           ? 'flex-row gap-1' // one line
-          : 'flex-col gap-px', // two lines
+          : 'flex-col', // two lines
+        (data.isShort || data.isNarrow) ? 'px-0.5' : 'px-1',
       ],
-      columnEventTimeClass: [
-        'p-0.5', // TODO: DRY with rowEvent?
-        xxsTextClass,
-      ],
+      columnEventTimeClass: xxsTextClass,
       columnEventTitleClass: (data) => [
-        'p-0.5', // TODO: DRY with rowEvent?
+        !data.isShort && 'pt-1', // good for sticky
         (data.isShort || data.isNarrow) ? xxsTextClass : 'text-xs',
       ],
 

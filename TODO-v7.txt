@@ -15,8 +15,6 @@ clean+build all:
 
 MANUAL TEST
   FOR EACH THEME
-    test timeline/timegrid more-link in DARK mode
-    timegrid isShort event collapsing not awkward
     For block-events that display, there should be a visual distinctions between time/title text
       test with eventDisplay='block'
   DONE, but save for checklist
@@ -25,6 +23,7 @@ MANUAL TEST
     week-number for resourceTimeGrid* views
     ensure dayHeaderClass isMajor border more important that isNarrow border-killing
       test with resourceTimeGridFiveDay with no dayMinWidth (no h-scrolling)
+    timegrid more-link popover, events displayed w/ correct inner-padding
 CODE-QUALITY (while going through each theme)
   all hover-pressables have focus-visible:
   put text color on every text node? no inheritance?
@@ -127,6 +126,7 @@ project: ResizeObserver refactor
 AFTER BETA
 ----------
 
+Demo-App pulls in json-feed events, but doesn't have contrastColor, so looks bad in dark-mode
 Update latest shadcn theme colors (newest version of shadcn updated them)
 move away from okhlc colors... bad browser support
 print-view is messed up!!!
@@ -484,6 +484,7 @@ rowEventBeforeContent
 rowEventAfterContent
 EventDisplayData.isInteractive
 changelog: nice tab-focus effects on everything
+essentially, responsiveness-specific settings with dayNarrowWidth and .isNarrow
 
 
 Docs

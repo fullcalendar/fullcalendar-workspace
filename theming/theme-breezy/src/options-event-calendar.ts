@@ -444,17 +444,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-bottom-1',
       ],
       columnEventInnerClass: (data) => [
-        data.isNarrow ? xxsTextClass : 'text-xs',
-        data.isShort ? 'flex-row' : 'flex-col py-1',
-      ],
-      // TODO: move the x-padding to the inner div? same concept with row-events
-      columnEventTimeClass: (data) => [
-        'pt-1',
-        data.isNarrow ? 'px-1' : 'px-2',
+        data.isShort
+          ? 'flex-row gap-1' // one line
+          : 'flex-col', // two lines
+        (data.isShort || data.isNarrow)
+          ? `p-1 ${xxsTextClass}`
+          : 'p-2 text-xs',
       ],
       columnEventTitleClass: (data) => [
-        'py-1 font-semibold',
-        data.isNarrow ? 'px-1' : 'px-2',
+        !data.isShort && 'pt-1',
+        'font-semibold',
       ],
 
       columnMoreLinkClass: `rounded-md ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,

@@ -30,6 +30,8 @@ audit use of "group" classnames
 BUG: Monarch: when timegrid narrow, week number erroneously turns into half-pill
 
 BUG: narrow column-event time/title spacing looks bad
+
+when isNarrow, axis labels have wrong y positioning
 */
 
 // ambient types (tsc strips during build because of {})
@@ -253,8 +255,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             ),
       ],
       blockEventInnerClass: 'flex text-(--fc-event-contrast-color) print:text-black',
-      blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
-      blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
+      blockEventTimeClass: 'whitespace-nowrap overflow-hidden',
+      blockEventTitleClass: 'whitespace-nowrap overflow-hidden',
 
       rowEventClass: (data) => [
         'mb-px',
@@ -284,9 +286,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       rowEventTimeClass: (data) => [
         'font-bold',
         data.isNarrow ? `p-px ${xxsTextClass}` : 'p-0.5 text-xs',
+        'shrink-1', // shrinks second
       ],
       rowEventTitleClass: (data) => [
         data.isNarrow ? `p-px ${xxsTextClass}` : 'p-0.5 text-xs',
+        'shrink-100', // shrinks first
       ],
 
       columnEventClass: (data) => [
@@ -304,15 +308,21 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-bottom-1',
       ],
-      columnEventInnerClass: (data) => data.isShort
-        ? 'flex-row gap-1' // one line
-        : 'flex-col gap-px', // two lines
-      columnEventTimeClass: (data) => [
-        'order-1',
-        (data.isShort || data.isNarrow) ? xxsTextClass : 'p-1 text-xs',
+      columnEventInnerClass: (data) => [
+        data.isShort
+          ? 'flex-row gap-1' // one line
+          : 'flex-col', // two lines
+        'py-1',
+        (data.isShort || data.isNarrow)
+          ? `px-0.5 ${xxsTextClass}`
+          : 'px-1 text-xs',
       ],
-      columnEventTitleClass: (data) => [
-        (data.isShort || data.isNarrow) ? xxsTextClass : 'p-1 text-xs',
+      columnEventTimeClass: (data) => [ // appears below
+        'order-1 shrink-100', // shrinks first
+        !data.isShort && 'pt-0.5',
+      ],
+      columnEventTitleClass: [ // appears above
+        'shrink-1', // shrinks second
       ],
       columnEventTitleSticky: false, // because time below title, sticky looks bad
 

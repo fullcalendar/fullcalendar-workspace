@@ -278,7 +278,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         params.outlineOffsetClass, // just like block events
       ],
       columnMoreLinkInnerClass: (data) => [
-        'p-0.5',
+        'p-0.5', // better to use pixels like events?
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
