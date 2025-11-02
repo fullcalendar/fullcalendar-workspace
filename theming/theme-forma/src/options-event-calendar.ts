@@ -139,18 +139,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
-  const dayGridItemClass = 'mx-0.5 mb-px rounded-sm' // list-item-event and more-link
   const dayRowItemClasses: CalendarOptions = {
     listItemEventClass: (data) => [
-      dayGridItemClass,
-      'p-px',
-      'items-center',
+      'mb-px p-px rounded-sm items-center',
+      data.isNarrow ? 'mx-px' : 'mx-0.5',
       data.isSelected
         ? joinClassNames(params.mutedBgClass, data.isDragging && 'shadow-sm')
         : (data.isInteractive ? params.mutedHoverPressableClass : params.mutedHoverClass),
     ],
     listItemEventBeforeClass: (data) => [
-      data.isNarrow ? 'mx-px' : 'mx-1',
+      data.isNarrow ? 'ms-0.5' : 'ms-1',
       'border-4', // 8px diameter circle
 
       // Dot uses border instead of bg because it shows up in print
@@ -159,30 +157,35 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
     listItemEventInnerClass: (data) => [
       'flex flex-row items-center', // as opposed to display:contents
+      data.isNarrow ? 'py-px' : 'py-0.5',
       data.isNarrow ? xxsTextClass : 'text-xs',
     ],
     listItemEventTimeClass: (data) => [
-      data.isNarrow ? 'p-px' : 'p-0.5',
+      data.isNarrow ? 'ps-0.5' : 'ps-1',
       'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
     ],
     listItemEventTitleClass: (data) => [
-      data.isNarrow ? 'p-px' : 'p-0.5',
+      data.isNarrow ? 'px-0.5' : 'px-1',
       'font-bold whitespace-nowrap overflow-hidden shrink-100', // shrinks first
     ],
 
     rowEventClass: (data) => [
-      data.isEnd && (data.isNarrow ? 'me-px' : 'me-0.5'),
+      data.isEnd && 'me-0.5',
+    ],
+    rowEventInnerClass: (data) => [
+      data.isNarrow ? 'py-px' : 'py-0.5',
     ],
 
     rowMoreLinkClass: (data) => [
-      dayGridItemClass,
+      'mb-px rounded-sm',
+      data.isNarrow ? 'mx-px' : 'mx-0.5',
       data.isNarrow
         ? `border ${params.primaryBorderColorClass}`
         : 'self-start p-px',
       params.mutedHoverPressableClass,
     ],
     rowMoreLinkInnerClass: (data) => [
-      data.isNarrow ? 'p-px' : 'p-0.5',
+      data.isNarrow ? 'px-0.5 py-px' : 'px-1 py-0.5',
       data.isNarrow ? xxsTextClass : 'text-xs',
     ],
   }
@@ -291,12 +294,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       rowEventInnerClass: (data) => [
         'flex flex-row items-center',
         data.isNarrow ? xxsTextClass : 'text-xs',
+        // sub-classes determine py
       ],
       rowEventTimeClass: (data) => [
         'font-medium',
-        data.isNarrow ? 'p-px' : 'p-0.5',
+        data.isNarrow ? 'ps-0.5' : 'ps-1',
       ],
-      rowEventTitleClass: (data) => data.isNarrow ? 'p-px' : 'p-0.5',
+      rowEventTitleClass: (data) => [
+        data.isNarrow ? 'px-0.5' : 'px-1',
+      ],
 
       columnEventClass: (data) => [
         'mb-px',
@@ -315,15 +321,20 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-bottom-1',
       ],
       columnEventInnerClass: (data) => [
-        'py-1 flex',
+        'flex',
         data.isShort
-          ? 'flex-row gap-1' // one line
-          : 'flex-col', // two lines
-        (data.isShort || data.isNarrow) ? 'px-0.5' : 'px-1',
+          ? 'flex-row p-0.5 gap-1' // one line
+          : joinClassNames( // two lines
+              'flex-col',
+              data.isNarrow ? 'px-0.5' : 'px-1',
+            )
       ],
-      columnEventTimeClass: xxsTextClass,
+      columnEventTimeClass: (data) => [
+        !data.isShort && (data.isNarrow ? 'pt-0.5' : 'pt-1'),
+        xxsTextClass,
+      ],
       columnEventTitleClass: (data) => [
-        !data.isShort && 'pt-1', // good for sticky
+        !data.isShort && (data.isNarrow ? 'py-0.5' : 'py-1'),
         (data.isShort || data.isNarrow) ? xxsTextClass : 'text-xs',
       ],
 

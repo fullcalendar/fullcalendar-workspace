@@ -60,6 +60,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
     },
     views: {
       timeline: {
+        rowEventInnerClass: (data) => [
+          data.options.eventOverlap ? 'py-1' : 'py-2',
+        ],
+
         rowMoreLinkClass: `me-px mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
