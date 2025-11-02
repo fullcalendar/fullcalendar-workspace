@@ -13,6 +13,25 @@ clean+build all:
   pn build
 
 
+refactor block-style events to use more padding
+  test daygrid/timeline for row-event
+  test timegrid for col-event
+  test timegrid/timeline stickiness
+  test isShort
+  test isNarrow
+  test eventDisplay='block' in daygrid
+  test displayEventTime in resource-timeline
+  Checklist:
+  [ ] Classic
+  [ ] Monarch
+  [x] Forma
+  [x] Breezy
+  [ ] Pulse
+ensure list-item daygrid conforms similarly (same spacing from X-edges)
+ensure more-link conforms similarly
+BUG: day-popover (Forma)... wrong format. doesn't display weekday. others?
+
+
 MANUAL TEST
   DONE, but save for checklist
     When "today" is first of month, how long-text render in today-circle
@@ -23,6 +42,7 @@ MANUAL TEST
     timegrid more-link popover, events displayed w/ correct inner-padding
     when eventDisplay='block' in daygrid, h-events should differentiate time from title (bold?)
 CODE-QUALITY (while going through each theme)
+  each view-type should be in charge of putting margins around event housing
   all hover-pressables have focus-visible:
   put text color on every text node? no inheritance?
   ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)

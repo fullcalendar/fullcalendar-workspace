@@ -64,8 +64,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
 
         rowEventInnerClass: (data) => [
-          'gap-0.5',
-          !data.options.eventOverlap ? 'py-1' : 'py-px', // extra v space
+          'px-1 gap-1',
+          !data.options.eventOverlap ? 'py-1.5' : 'py-1', // extra v space
         ],
 
         rowMoreLinkClass: `me-px mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,

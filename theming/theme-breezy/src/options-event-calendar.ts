@@ -109,6 +109,8 @@ popover-close needs hover color or bg-change
 ShadCN (and MUI?) can increase their event bg-color opaqueness if they make event-titles bold
 
 are timegrid borders too faint (esp now that we have dotted isMinor) ?
+
+resourceTimegrid-ONE-day, resource-header-cell borders don't match all-day or lane
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -217,6 +219,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       'mb-px',
       data.isStart && (data.isNarrow ? 'ms-px' : 'ms-1'),
       data.isEnd && (data.isNarrow ? 'me-px' : 'me-1'),
+    ],
+    rowEventInnerClass: (data) => [
+      data.isNarrow ? 'py-px' : 'py-0.5',
     ],
 
     listItemEventClass: (data) => [
@@ -423,14 +428,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-end-1',
       ],
       rowEventInnerClass: (data) => [
-        'flex flex-row',
+        'flex flex-row items-center',
         data.isNarrow ? xxsTextClass : 'text-xs',
+        // subclasses determine py
       ],
       rowEventTimeClass: (data) => [
         'font-medium',
-        data.isNarrow ? 'p-px' : 'p-0.5',
+        data.isNarrow ? 'ps-0.5' : 'ps-1',
       ],
-      rowEventTitleClass: (data) => data.isNarrow ? 'p-px' : 'p-0.5',
+      rowEventTitleClass: (data) => [
+        data.isNarrow ? 'px-0.5' : 'px-1',
+      ],
 
       columnEventClass: (data) => [
         'border-x',
@@ -448,14 +456,18 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       columnEventInnerClass: (data) => [
         data.isShort
-          ? 'flex-row gap-1' // one line
-          : 'flex-col', // two lines
-        (data.isShort || data.isNarrow)
-          ? `p-1 ${xxsTextClass}`
-          : 'p-2 text-xs',
+          ? 'flex-row gap-1 p-1' // one line
+          : joinClassNames( // two lines
+              'flex-col',
+              data.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1',
+            ),
+        (data.isShort || data.isNarrow) ? xxsTextClass : 'text-xs',
+      ],
+      columnEventTimeClass: (data) => [
+        !data.isShort && (data.isNarrow ? 'pt-0.5' : 'pt-1'),
       ],
       columnEventTitleClass: (data) => [
-        !data.isShort && 'pt-1',
+        !data.isShort && (data.isNarrow ? 'py-0.5' : 'py-1'),
         'font-semibold',
       ],
 

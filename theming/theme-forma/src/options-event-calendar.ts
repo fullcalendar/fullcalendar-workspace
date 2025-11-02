@@ -294,7 +294,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       rowEventInnerClass: (data) => [
         'flex flex-row items-center',
         data.isNarrow ? xxsTextClass : 'text-xs',
-        // sub-classes determine py
+        // subclasses determine py
       ],
       rowEventTimeClass: (data) => [
         'font-medium',

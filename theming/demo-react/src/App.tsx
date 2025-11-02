@@ -613,6 +613,7 @@ function SchedulerDemo(props: DemoProps) {
 
   return (
     <SchedulerComponent
+      // eventOverlap={false}
       // datesAboveResources={true}
       weekNumbers={true}
       navLinks={true}
@@ -630,7 +631,6 @@ function SchedulerDemo(props: DemoProps) {
           alert('add event...')
         ]
       }}
-      // datesAboveResources
       // displayEventTime={true}
       eventMaxStack={1}
       initialView={props.initialView}

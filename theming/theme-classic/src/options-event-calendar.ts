@@ -125,6 +125,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isStart && 'ms-0.5 rounded-s-sm',
       data.isEnd && 'me-0.5 rounded-e-sm',
     ],
+    rowEventInnerClass: 'p-px gap-0.5',
 
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
@@ -235,13 +236,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-end-1',
       ],
-      rowEventInnerClass: 'flex-row items-center',
+      rowEventInnerClass: 'flex-row items-center', // sub-classes define padding and gap
       rowEventTimeClass: (data) => [
-        'p-px font-bold',
+        'font-bold',
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
       rowEventTitleClass: (data) => [
-        'p-px',
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 

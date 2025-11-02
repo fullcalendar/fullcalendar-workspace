@@ -34,7 +34,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
       resourceLaneClass: `border ${params.borderColorClass}`,
-      resourceLaneBottomClass: 'h-3',
+      resourceLaneBottomClass: (data) => [
+        data.options.eventOverlap && 'h-3',
+      ],
 
       resourceIndentClass: 'items-center ms-1 -me-1.5',
       resourceExpanderClass: [
@@ -71,6 +73,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
 
         rowEventClass: 'me-px mb-px',
+        rowEventInnerClass: (data) => [
+          data.options.eventOverlap ? 'py-1' : 'py-2',
+        ],
 
         // TODO: keep DRY with columnMoreLink
         rowMoreLinkClass: (data) => [

@@ -141,6 +141,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isStart && 'ms-px',
       data.isEnd && 'me-px',
     ],
+    rowEventInnerClass: 'p-0.5 gap-1',
 
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
@@ -281,15 +282,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
       rowEventAfterContent: (data) => !data.isEnd && filledRightTriangle('size-full text-(--fc-event-color) [[dir=rtl]_&]:rotate-180'),
 
-      rowEventInnerClass: 'flex-row items-center',
+      rowEventInnerClass: 'flex-row items-center', // sub-classes define padding and gap
 
       rowEventTimeClass: (data) => [
         'font-bold',
-        data.isNarrow ? `p-px ${xxsTextClass}` : 'p-0.5 text-xs',
+        data.isNarrow ? xxsTextClass : 'text-xs',
         'shrink-1', // shrinks second
       ],
       rowEventTitleClass: (data) => [
-        data.isNarrow ? `p-px ${xxsTextClass}` : 'p-0.5 text-xs',
+        data.isNarrow ? xxsTextClass : 'text-xs',
         'shrink-100', // shrinks first
       ],
 
