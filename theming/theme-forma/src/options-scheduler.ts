@@ -53,15 +53,15 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       ],
 
       resourceLaneClass: `border ${params.borderColorClass}`,
-      resourceLaneBottomClass: (data) => data.options.eventOverlap && 'h-3',
+      resourceLaneBottomClass: (data) => data.options.eventOverlap && 'h-2.5',
 
       // Non-resource Timeline
-      timelineBottomClass: 'h-3',
+      timelineBottomClass: 'h-2.5',
     },
     views: {
       timeline: {
         rowEventInnerClass: (data) => [
-          data.options.eventOverlap ? 'py-1' : 'py-2',
+          data.options.eventOverlap ? 'py-[0.1875rem]' : 'py-2',
         ],
 
         rowMoreLinkClass: `me-px mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,

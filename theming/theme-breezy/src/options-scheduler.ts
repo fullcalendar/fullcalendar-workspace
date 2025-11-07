@@ -35,8 +35,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
       resourceLaneClass: `border ${params.borderColorClass}`,
       resourceLaneBottomClass: (data) => [
-        data.options.eventOverlap && 'h-3',
+        data.options.eventOverlap && 'h-2',
       ],
+
+      timelineBottomClass: 'h-2',
 
       resourceIndentClass: 'items-center ms-1 -me-1.5',
       resourceExpanderClass: [

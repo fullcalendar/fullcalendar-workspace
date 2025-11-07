@@ -42,6 +42,7 @@ MANUAL TEST
     timegrid more-link popover, events displayed w/ correct inner-padding
     when eventDisplay='block' in daygrid, h-events should differentiate time from title (bold?)
 CODE-QUALITY (while going through each theme)
+  all themes should define timelineBottomClass which mimicks resourceLaneBottomClass
   each view-type should be in charge of putting margins around event housing
   all hover-pressables have focus-visible:
   put text color on every text node? no inheritance?
