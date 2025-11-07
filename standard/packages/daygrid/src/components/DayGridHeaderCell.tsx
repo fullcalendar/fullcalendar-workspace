@@ -85,7 +85,7 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
             align === 'end' ? classNames.alignEnd :
               classNames.alignStart,
           props.colWidth == null && classNames.liquid,
-          classNames.crop,
+          !isSticky && classNames.crop,
         )}
         style={{
           width: props.colWidth != null

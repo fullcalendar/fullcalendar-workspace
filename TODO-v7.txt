@@ -874,6 +874,8 @@ improve look of event start/end resizers
   SOLUTION: when primary-outline,
     connect resizer to the outline, which may have an offset, but have theme-option-param
     passed-in that is -start/-end
+for all themes, if dayMinWidth!==undefined, make axisdivider isMajor-styling
+  would look good on Breezy and Pulse (default-ui at least)
 
 
 Notes
