@@ -496,9 +496,9 @@ function EventCalendarDemo(props: DemoProps) {
       availableViews={props.availableViews}
       addButton={{
         text: 'Add Event',
-        click: () => [
+        click: () => {
           alert('add event...')
-        ]
+        }
       }}
       {...(props.betterListButtons ? { listText: '' } : {})}
       navLinkDayClick='timeGridDay'

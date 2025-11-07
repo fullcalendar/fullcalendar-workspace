@@ -159,6 +159,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isStart && (data.isNarrow ? 'ms-0.5' : 'ms-1'),
       data.isEnd && (data.isNarrow ? 'me-0.5' : 'me-1'),
     ],
+    rowEventInnerClass: (data) => [
+      data.isNarrow ? 'py-px' : 'py-0.5',
+    ],
 
     listItemEventClass: (data) => [
       'p-px',
@@ -367,12 +370,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-end-1',
       ],
       rowEventInnerClass: (data) => [
-        'flex flex-row',
+        'flex flex-row items-center',
         data.isNarrow ? xxsTextClass : 'text-xs',
+        // subclasses determine py
       ],
-      rowEventTimeClass: (data) => data.isNarrow ? 'p-px' : 'p-0.5',
+      rowEventTimeClass: (data) => [
+        data.isNarrow ? 'ps-0.5' : 'ps-1',
+      ],
       rowEventTitleClass: (data) => [
-        data.isNarrow ? 'p-px' : 'p-0.5',
+        data.isNarrow ? 'px-0.5' : 'px-1',
         'font-medium',
       ],
       //^^^for row event, switch order of title/time?
@@ -394,20 +400,27 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventInnerClass: (data) => [
         'flex',
         data.isShort
-          ? 'flex-row gap-1' // one line
-          : 'flex-col', // two lines
+          ? 'flex-row p-1 gap-1' // one line
+          : joinClassNames( // two lines
+              'flex-col',
+              data.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1',
+            ),
         (data.isNarrow || data.isShort)
-          ? `p-1 ${xxsTextClass}`
-          : 'p-2 text-xs',
+          ? xxsTextClass
+          : 'text-xs',
+      ],
+      columnEventTimeClass: (data) => [
+        !data.isShort && (data.isNarrow ? 'pt-0.5' : 'pt-1'),
       ],
       columnEventTitleClass: (data) => [
-        !data.isShort && 'pt-1',
+        !data.isShort && (data.isNarrow ? 'py-0.5' : 'py-1'),
         'font-medium',
       ],
 
       columnMoreLinkClass: `m-0.5 rounded-lg ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
       columnMoreLinkInnerClass: (data) => [
-        `p-0.5 ${params.strongFgClass}`,
+        params.strongFgClass,
+        data.isNarrow ? 'p-0.5' : 'p-1',
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
