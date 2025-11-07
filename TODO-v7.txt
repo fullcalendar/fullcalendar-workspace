@@ -41,7 +41,7 @@ refactor block-style events to use more padding
     [ ] Monarch
     [x] Forma
     [x] Breezy
-    [ ] Pulse
+    [x] Pulse
 Why not use border-transparent for more-link?
 BUG: day-popover (Forma)... wrong format. doesn't display weekday. others?
 BUG: timelin-event sticky titles have f-stickyS, which does left+right,

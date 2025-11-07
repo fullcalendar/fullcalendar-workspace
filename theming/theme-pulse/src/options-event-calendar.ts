@@ -170,14 +170,15 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
     listItemEventInnerClass: (data) => [
       'justify-between flex flex-row',
+      data.isNarrow ? 'py-px' : 'py-0.5',
       data.isNarrow ? xxsTextClass : 'text-xs',
     ],
     listItemEventTimeClass: (data) => [
-      data.isNarrow ? 'p-px' : 'p-0.5',
+      data.isNarrow ? 'px-px' : 'px-0.5',
       'order-1 whitespace-nowrap overflow-hidden shrink-1', // shrinks second
     ],
     listItemEventTitleClass: (data) => [
-      data.isNarrow ? 'p-px' : 'p-0.5',
+      data.isNarrow ? 'px-px' : 'px-0.5',
       'text-ellipsis font-medium whitespace-nowrap overflow-hidden shrink-100', // shrinks first
     ],
 
