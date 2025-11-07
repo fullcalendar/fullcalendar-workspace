@@ -473,8 +473,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       columnMoreLinkClass: `rounded-md ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
       columnMoreLinkInnerClass: (data) => [
-        `p-0.5 ${params.fgClass}`,
+        params.fgClass,
         data.isNarrow ? xxsTextClass : 'text-xs',
+        data.isNarrow ? 'p-0.5' : 'p-1',
       ],
       // TODO: see columnMoreLinkClass in timeGrid below...
 
@@ -558,7 +559,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isStart && (data.isNarrow ? 'mt-px' : 'mt-1'),
           data.isEnd && (data.isNarrow ? 'mb-px' : 'mb-1'),
         ],
-        columnMoreLinkClass: 'm-1',
+        columnMoreLinkClass: (data) => [
+          data.isNarrow ? 'm-px' : 'm-1',
+        ],
       },
       list: {
         listDaysClass: 'px-4 my-10 mx-auto w-full max-w-200',

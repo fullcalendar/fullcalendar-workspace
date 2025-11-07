@@ -485,7 +485,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           `mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
           params.outlineOffsetClass, // just like block events
         ],
-        columnMoreLinkInnerClass: 'p-0.5 text-xs',
+        columnMoreLinkInnerClass: (data) => [
+          'text-xs',
+          data.isNarrow ? 'p-0.5' : 'p-1',
+        ],
 
         slotLabelClass: axisClass,
         slotLabelInnerClass: (data) => [

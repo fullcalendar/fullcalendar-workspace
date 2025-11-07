@@ -84,7 +84,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           `me-px mb-px ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
           data.isNarrow ? 'rounded-sm' : 'rounded-md', // needed? isn't isNarrow always false in timeline?
         ],
-        rowMoreLinkInnerClass: `p-0.5 text-xs ${params.fgClass}`,
+        rowMoreLinkInnerClass: `p-1 text-xs ${params.fgClass}`,
       },
     },
   }

@@ -65,7 +65,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
 
         rowMoreLinkClass: `me-px mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
-        rowMoreLinkInnerClass: 'p-0.5 text-xs',
+        rowMoreLinkInnerClass: 'px-1 py-[0.1875rem] text-xs',
 
         slotLabelClass: 'justify-center',
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align

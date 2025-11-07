@@ -29,6 +29,9 @@ refactor block-style events to use more padding
   [ ] Pulse
 ensure list-item daygrid conforms similarly (same spacing from X-edges)
 ensure more-link conforms similarly
+  - timegrid
+  - timeline
+  test isNarrow
 BUG: day-popover (Forma)... wrong format. doesn't display weekday. others?
 
 
