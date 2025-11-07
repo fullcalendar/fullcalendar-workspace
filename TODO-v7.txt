@@ -32,13 +32,15 @@ refactor block-style events to use more padding
         isNarrow
     timeline (test w/ displayEventTime={true} so shows time)
       row-event
-        eventOverlap={false}
         stickiness
+        does not exceed datagrid row height (minimal lane-bottom height)
+        eventOverlap={false}
+          does not exceed datagrid row height (zero lane-bottom height)
       row-more-link
         stickiness
   Checklist:
     [ ] Classic
-    [ ] Monarch
+    [x] Monarch
     [x] Forma
     [x] Breezy
     [x] Pulse

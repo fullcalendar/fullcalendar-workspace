@@ -505,7 +505,6 @@ function EventCalendarDemo(props: DemoProps) {
       navLinkWeekClick='timeGridWeek'
       schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives' // for extra plugins
       weekNumbers={true}
-      // eventDisplay='block'
       plugins={[
         // extra plugins...
         scrollGridPlugin,

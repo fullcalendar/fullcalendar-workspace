@@ -52,10 +52,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       ],
 
       resourceLaneClass: `border ${params.borderColorClass}`,
-      resourceLaneBottomClass: (data) => data.options.eventOverlap && 'h-3',
+      resourceLaneBottomClass: (data) => data.options.eventOverlap && 'h-2',
 
       // Non-resource Timeline
-      timelineBottomClass: 'h-3',
+      timelineBottomClass: 'h-2',
     },
     views: {
       timeline: {
@@ -64,12 +64,13 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
 
         rowEventInnerClass: (data) => [
-          'px-1 gap-1',
-          !data.options.eventOverlap ? 'py-1.5' : 'py-1', // extra v space
+          data.options.eventOverlap
+            ? 'py-1'
+            : 'py-2',
         ],
 
         rowMoreLinkClass: `me-px mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
-        rowMoreLinkInnerClass: 'p-0.5 text-xs', // TODO: somehow add that "extra v space" ?
+        rowMoreLinkInnerClass: 'p-1 text-xs',
 
         slotLabelAlign: (data) => (data.level || data.isTime) ? 'start' : 'center',
         slotLabelSticky: '0.5rem', // for pill

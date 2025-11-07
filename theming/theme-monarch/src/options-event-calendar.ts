@@ -125,23 +125,28 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     listItemEventClass: `${dayRowItemBaseClass} p-px`,
     listItemEventBeforeClass: (data) => [
       'border-4', // 8px diameter
-      data.isNarrow ? 'mx-px' : 'mx-1',
+      data.isNarrow ? 'ms-0.5' : 'ms-1',
     ],
-    listItemEventInnerClass: (data) => data.isNarrow ? xxsTextClass : 'text-xs', // TODO: put on time/title ?
+    listItemEventInnerClass: (data) => [
+      data.isNarrow ? 'py-px' : 'py-0.5',
+      data.isNarrow ? xxsTextClass : 'text-xs',
+    ],
     listItemEventTimeClass: (data) => [
-      data.isNarrow ? 'p-px' : 'p-0.5',
+      data.isNarrow ? 'ps-0.5' : 'ps-1',
       'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
     ],
     listItemEventTitleClass: (data) => [
-      data.isNarrow ? 'p-px' : 'p-0.5',
-      'p-0.5 font-bold whitespace-nowrap overflow-hidden shrink-100', // shrinks first
+      data.isNarrow ? 'px-0.5' : 'px-1',
+      'font-bold whitespace-nowrap overflow-hidden shrink-100', // shrinks first
     ],
 
     rowEventClass: (data) => [
       data.isStart && 'ms-px',
       data.isEnd && 'me-px',
     ],
-    rowEventInnerClass: 'p-0.5 gap-1',
+    rowEventInnerClass: (data) => [
+      data.isNarrow ? 'py-px' : 'py-0.5',
+    ],
 
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
@@ -151,7 +156,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         : 'p-px'
     ],
     rowMoreLinkInnerClass: (data) => [
-      data.isNarrow ? `p-px ${xxsTextClass}` : 'p-0.5 text-xs',
+      data.isNarrow ? 'px-0.5 py-px' : 'px-1 py-0.5',
+      data.isNarrow ? xxsTextClass : 'text-xs',
     ],
   }
 
@@ -282,15 +288,18 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
       rowEventAfterContent: (data) => !data.isEnd && filledRightTriangle('size-full text-(--fc-event-color) [[dir=rtl]_&]:rotate-180'),
 
-      rowEventInnerClass: 'flex-row items-center', // sub-classes define padding and gap
-
+      rowEventInnerClass: (data) => [
+        'flex-row items-center',
+        data.isNarrow ? xxsTextClass : 'text-xs',
+        // subclasses determine py
+      ],
       rowEventTimeClass: (data) => [
         'font-bold',
-        data.isNarrow ? xxsTextClass : 'text-xs',
+        data.isNarrow ? 'ps-0.5' : 'ps-1',
         'shrink-1', // shrinks second
       ],
       rowEventTitleClass: (data) => [
-        data.isNarrow ? xxsTextClass : 'text-xs',
+        data.isNarrow ? 'px-0.5' : 'px-1',
         'shrink-100', // shrinks first
       ],
 
@@ -311,26 +320,29 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       columnEventInnerClass: (data) => [
         data.isShort
-          ? 'flex-row gap-1' // one line
-          : 'flex-col', // two lines
-        'py-1',
+          ? 'flex-row p-1 gap-1' // one line
+          : joinClassNames( // two lines
+              'flex-col',
+              data.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1',
+            ),
         (data.isShort || data.isNarrow)
-          ? `px-0.5 ${xxsTextClass}`
-          : 'px-1 text-xs',
+          ? xxsTextClass
+          : 'text-xs',
       ],
       columnEventTimeClass: (data) => [ // appears below
         'order-1 shrink-100', // shrinks first
-        !data.isShort && 'pt-0.5',
+        !data.isShort && (data.isNarrow ? 'pb-0.5' : 'pb-1'),
       ],
-      columnEventTitleClass: [ // appears above
+      columnEventTitleClass: (data) => [ // appears above
         'shrink-1', // shrinks second
+        !data.isShort && (data.isNarrow ? 'py-0.5' : 'py-1'),
       ],
       columnEventTitleSticky: false, // because time below title, sticky looks bad
 
       columnMoreLinkClass: `relative mb-px rounded-xs ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white ring ${params.bgRingColorClass}`,
       columnMoreLinkInnerClass: (data) => [
-        'p-0.5',
         data.isNarrow ? xxsTextClass : 'text-xs',
+        data.isNarrow ? 'p-0.5' : 'p-1',
       ],
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
