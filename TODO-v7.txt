@@ -19,7 +19,8 @@ refactor block-style events to use more padding
       row-event (test w/ eventDisplay='block' so shows time)
         isNarrow
       row-more-link
-      list-item-event
+        isNarrow
+      list-item-event (turn OFF eventDisplay='block')
         isNarrow
     timegrid
       col-event
@@ -27,11 +28,14 @@ refactor block-style events to use more padding
         isNarrow
         isShort
       col-more-link
+        stickiness
         isNarrow
-    timeline (test w/ displayEventTime so shows time)
+    timeline (test w/ displayEventTime={true} so shows time)
       row-event
+        eventOverlap={false}
         stickiness
       row-more-link
+        stickiness
   Checklist:
     [ ] Classic
     [ ] Monarch
@@ -40,6 +44,8 @@ refactor block-style events to use more padding
     [ ] Pulse
 Why not use border-transparent for more-link?
 BUG: day-popover (Forma)... wrong format. doesn't display weekday. others?
+BUG: timelin-event sticky titles have f-stickyS, which does left+right,
+  causing title to overlap time when scrolling left
 
 
 MANUAL TEST
