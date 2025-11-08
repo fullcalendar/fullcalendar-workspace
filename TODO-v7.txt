@@ -13,7 +13,6 @@ clean+build all:
   pn build
 
 
-Why not use border-transparent for more-link?
 BUG: day-popover (Forma)... wrong format. doesn't display weekday. others?
 
 

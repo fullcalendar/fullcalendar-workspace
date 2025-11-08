@@ -133,9 +133,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
       params.mutedHoverPressableClass,
+      'border',
       data.isNarrow
-        ? `border ${params.primaryBorderColorClass}`
-        : 'self-start p-px',
+        ? params.primaryBorderColorClass
+        : 'border-transparent self-start',
     ],
     rowMoreLinkInnerClass: (data) => [
       'p-px',

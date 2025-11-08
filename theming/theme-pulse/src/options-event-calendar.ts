@@ -184,9 +184,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
     rowMoreLinkClass: (data) => [
       getDayGridItemClass(data),
+      'border',
       data.isNarrow
-        ? `border ${params.primaryBorderColorClass}`
-        : 'self-start p-px',
+        ? params.primaryBorderColorClass
+        : 'border-transparent self-start',
       params.mutedHoverPressableClass,
     ],
     rowMoreLinkInnerClass: (data) => [

@@ -151,9 +151,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
       params.mutedHoverPressableClass,
+      'border',
       data.isNarrow
-        ? `border ${params.primaryBorderColorClass}`
-        : 'p-px'
+        ? params.primaryBorderColorClass
+        : 'border-transparent'
     ],
     rowMoreLinkInnerClass: (data) => [
       data.isNarrow ? 'px-0.5 py-px' : 'px-1 py-0.5',

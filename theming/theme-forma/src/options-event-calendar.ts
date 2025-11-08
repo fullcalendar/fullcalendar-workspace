@@ -179,9 +179,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     rowMoreLinkClass: (data) => [
       'mb-px rounded-sm',
       data.isNarrow ? 'mx-px' : 'mx-0.5',
+      'border',
       data.isNarrow
-        ? `border ${params.primaryBorderColorClass}`
-        : 'self-start p-px',
+        ? params.primaryBorderColorClass
+        : 'border-transparent self-start',
       params.mutedHoverPressableClass,
     ],
     rowMoreLinkInnerClass: (data) => [
