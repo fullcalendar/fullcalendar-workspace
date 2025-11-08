@@ -13,9 +13,6 @@ clean+build all:
   pn build
 
 
-BUG: day-popover (Forma)... wrong format. doesn't display weekday. others?
-
-
 MANUAL TEST
   DONE, but save for checklist
     When "today" is first of month, how long-text render in today-circle

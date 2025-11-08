@@ -171,6 +171,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventShortHeight: 50,
       dayNarrowWidth: 100,
 
+      dayPopoverFormat: { day: 'numeric', weekday: 'short' },
+
       tableHeaderClass: (data) => data.isSticky && `${params.bgClass} border-b ${params.borderColorClass}`,
 
       singleMonthClass: 'm-4',

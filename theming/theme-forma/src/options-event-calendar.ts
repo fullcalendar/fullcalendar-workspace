@@ -200,6 +200,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventShortHeight: 50,
       dayNarrowWidth: 100,
 
+      dayPopoverFormat: { day: 'numeric', weekday: 'long' },
+
       tableHeaderClass: (data) => data.isSticky && params.bgClass,
 
       navLinkClass: [
