@@ -116,16 +116,19 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
     listItemEventInnerClass: (data) => [
       'flex flex-row items-center',
+      'py-px gap-0.5',
       data.isNarrow ? xxsTextClass : 'text-xs',
     ],
-    listItemEventTimeClass: 'p-px whitespace-nowrap overflow-hidden shrink-1', // shrinks second
-    listItemEventTitleClass: 'p-px font-bold whitespace-nowrap overflow-hidden shrink-100', // shrinks first
+    listItemEventTimeClass: 'px-px whitespace-nowrap overflow-hidden shrink-1', // shrinks second
+    listItemEventTitleClass: 'px-px font-bold whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
     rowEventClass: (data) => [
       data.isStart && 'ms-0.5 rounded-s-sm',
       data.isEnd && 'me-0.5 rounded-e-sm',
     ],
-    rowEventInnerClass: 'p-px gap-0.5',
+    rowEventInnerClass: 'py-px gap-0.5',
+    rowEventTimeClass: 'px-px',
+    rowEventTitleClass: 'px-px',
 
     rowMoreLinkClass: (data) => [
       dayRowItemBaseClass,
@@ -236,13 +239,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-end-1',
       ],
-      rowEventInnerClass: 'flex-row items-center', // sub-classes define padding and gap
-      rowEventTimeClass: (data) => [
-        'font-bold',
+      rowEventInnerClass: (data) => [
+        'flex-row items-center',
         data.isNarrow ? xxsTextClass : 'text-xs',
+        // subclasses determine padding
       ],
-      rowEventTitleClass: (data) => [
-        data.isNarrow ? xxsTextClass : 'text-xs',
+      rowEventTimeClass: [
+        'font-bold',
+        // subclasses determine padding
       ],
 
       columnEventClass: (data) => [
@@ -261,16 +265,20 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-bottom-1',
       ],
       columnEventInnerClass: (data) => [
-        'p-px',
+        'px-0.5',
         data.isShort
-          ? 'flex-row gap-1' // one line
-          : 'flex-col gap-px', // two lines
+          ? 'flex-row p-0.5 gap-1' // one line
+          : 'flex-col' // two lines
       ],
-      columnEventTimeClass: xxsTextClass,
+      columnEventTimeClass: (data) => [
+        !data.isShort && 'pt-0.5',
+        xxsTextClass
+      ],
       columnEventTitleClass: (data) => [
+        !data.isShort &&  'py-0.5',
         (data.isShort || data.isNarrow)
           ? xxsTextClass
-          : 'py-px text-xs',
+          : 'text-xs',
       ],
 
       columnMoreLinkClass: [
@@ -278,7 +286,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         params.outlineOffsetClass, // just like block events
       ],
       columnMoreLinkInnerClass: (data) => [
-        'p-0.5', // better to use pixels like events?
+        'p-0.5',
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 

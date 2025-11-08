@@ -67,9 +67,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           'border-s-[5px] border-s-black',
         ],
         rowEventInnerClass: (data) => [
-          'px-0.5 gap-1', // more h-space than daygrid
-          !data.options.eventOverlap ? 'py-1' : 'py-0.5',
+          data.options.eventOverlap ? 'py-0.5' : 'py-1.5',
         ],
+        rowEventTimeClass: 'px-0.5',
+        rowEventTitleClass: 'px-0.5',
 
         rowMoreLinkClass: `me-px mb-px ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
         rowMoreLinkInnerClass: 'p-0.5 text-xs',

@@ -13,41 +13,8 @@ clean+build all:
   pn build
 
 
-refactor block-style events to use more padding
-  TEST:
-    daygrid
-      row-event (test w/ eventDisplay='block' so shows time)
-        isNarrow
-      row-more-link
-        isNarrow
-      list-item-event (turn OFF eventDisplay='block')
-        isNarrow
-    timegrid
-      col-event
-        stickiness
-        isNarrow
-        isShort
-      col-more-link
-        stickiness
-        isNarrow
-    timeline (test w/ displayEventTime={true} so shows time)
-      row-event
-        stickiness
-        does not exceed datagrid row height (minimal lane-bottom height)
-        eventOverlap={false}
-          does not exceed datagrid row height (zero lane-bottom height)
-      row-more-link
-        stickiness
-  Checklist:
-    [ ] Classic
-    [x] Monarch
-    [x] Forma
-    [x] Breezy
-    [x] Pulse
 Why not use border-transparent for more-link?
 BUG: day-popover (Forma)... wrong format. doesn't display weekday. others?
-BUG: timelin-event sticky titles have f-stickyS, which does left+right,
-  causing title to overlap time when scrolling left
 
 
 MANUAL TEST
@@ -59,6 +26,30 @@ MANUAL TEST
       test with resourceTimeGridFiveDay with no dayMinWidth (no h-scrolling)
     timegrid more-link popover, events displayed w/ correct inner-padding
     when eventDisplay='block' in daygrid, h-events should differentiate time from title (bold?)
+    block-style events padding/spacing:
+      daygrid
+        row-event (test w/ eventDisplay='block' so shows time)
+          isNarrow
+        row-more-link
+          isNarrow
+        list-item-event (turn OFF eventDisplay='block')
+          isNarrow
+      timegrid
+        col-event
+          stickiness
+          isNarrow
+          isShort
+        col-more-link
+          stickiness
+          isNarrow
+      timeline (test w/ displayEventTime={true} so shows time)
+        row-event
+          stickiness
+          does not exceed datagrid row height (minimal lane-bottom height)
+          eventOverlap={false}
+            does not exceed datagrid row height (zero lane-bottom height)
+        row-more-link
+          stickiness
 CODE-QUALITY (while going through each theme)
   all themes should define timelineBottomClass which mimicks resourceLaneBottomClass
   each view-type should be in charge of putting margins around event housing
@@ -382,6 +373,8 @@ list-view day-headers no longer respect stickyHeaderDates, ALWAYS STICKY
   solution: rename stickyHeaderDates -> stickyHeader (to imply whole-calendar header. or tableHeaderSticky?)
   solution: have stickyHeaderDates:'auto' and let view decide
 test: can now-indicator dots/lines accidentally create more scroll area causing scroll mis-sync?
+BUG: timeline-event sticky titles have f-stickyS, which does left+right,
+  causing title to overlap time when scrolling left
 
 
 Changelog
