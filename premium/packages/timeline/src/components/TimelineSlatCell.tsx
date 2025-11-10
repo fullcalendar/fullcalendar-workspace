@@ -35,14 +35,13 @@ export class TimelineSlatCell extends BaseComponent<TimelineSlatCellProps> {
     let { date, tDateProfile, isMajor } = props
     let dateMeta = this.getDateMeta(props.date, dateEnv, props.dateProfile, props.todayRange, props.nowDate)
 
-    let isMinor = !(
+    let isMinor =
       tDateProfile.isTimeScale &&
-      isInt(dateEnv.countDurationsBetween(
+      !isInt(dateEnv.countDurationsBetween(
         tDateProfile.normalizedRange.start,
         props.date,
         tDateProfile.labelInterval,
       ))
-    )
 
     let renderProps: SlotLaneData = {
       ...dateMeta,

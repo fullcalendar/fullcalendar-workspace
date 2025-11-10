@@ -2,8 +2,6 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { filledRightTriangle } from './svgs.js'
 
 /*
-TODO: double-check units for ticks
-TODO: day-headers in timeline have different border color that body slats
 TODO: button hover-effect for not-today?
 TODO: X is too big
 TODO: week-number hover gets really dim. weird mousedown effect

@@ -13,6 +13,10 @@ clean+build all:
   pn build
 
 
+BUG: resourceTimelineThreeDay w/ slotDuration:{days:1},
+  hovered-event show resizer which bleeds out of scrollpane and shows h-scrollbars
+
+
 CODE-QUALITY (while going through each theme)
   ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)
   ensure no unnecessary `` instead ''
