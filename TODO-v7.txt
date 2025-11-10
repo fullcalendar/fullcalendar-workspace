@@ -13,44 +13,7 @@ clean+build all:
   pn build
 
 
-MANUAL TEST
-  DONE, but save for checklist
-    When "today" is first of month, how long-text render in today-circle
-    isNarrow column-events, background-events (daygrid + timegrid)
-    week-number for resourceTimeGrid* views
-    ensure dayHeaderClass isMajor border more important that isNarrow border-killing
-      test with resourceTimeGridFiveDay with no dayMinWidth (no h-scrolling)
-    timegrid more-link popover, events displayed w/ correct inner-padding
-    when eventDisplay='block' in daygrid, h-events should differentiate time from title (bold?)
-    block-style events padding/spacing:
-      daygrid
-        row-event (test w/ eventDisplay='block' so shows time)
-          isNarrow
-        row-more-link
-          isNarrow
-        list-item-event (turn OFF eventDisplay='block')
-          isNarrow
-      timegrid
-        col-event
-          stickiness
-          isNarrow
-          isShort
-        col-more-link
-          stickiness
-          isNarrow
-      timeline (test w/ displayEventTime={true} so shows time)
-        row-event
-          stickiness
-          does not exceed datagrid row height (minimal lane-bottom height)
-          eventOverlap={false}
-            does not exceed datagrid row height (zero lane-bottom height)
-        row-more-link
-          stickiness
 CODE-QUALITY (while going through each theme)
-  all themes should define timelineBottomClass which mimicks resourceLaneBottomClass
-  each view-type should be in charge of putting margins around event housing
-  all hover-pressables have focus-visible:
-  put text color on every text node? no inheritance?
   ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)
   ensure no unnecessary `` instead ''
   stop concatenating with param classnames. sometimes they're blank
@@ -59,53 +22,6 @@ CODE-QUALITY (while going through each theme)
   make all theme util functions that emit classnames return STRING (and thus call joinClassNames)?
   slotLabel(Inner)Class and slotLabelDividerClass
     should almost always be in the timegrid/timeline sections of the theme
-  OUTLINE: props that should be given .(primary|tertiary)OutlineColorClass / .outlineWidthFocusClass:
-    eventClass (include outlineWidthClass instead if .isSelected)
-    blockEventClass (if you're using primaryOutlineColorClass, apply .outlineOffsetWidth)
-    moreLinkClass
-    navLinkClass
-    popoverCloseClass
-    resourceExpanderClass
-    if using slots.tsx,
-      apply .outlineWidthGroupFocusClass to sub-elements
-    dayHeaderInnerClass does NOT need it! already has nav-link. but might need "offset" class
-NOTES
-  an *OulineFocusClass only goes on the *Button, NOT the *Pressable
-  for alignment,
-    dayHeader, resourceAreaHeader, and timeline-slotLabel are flex-col
-    timeGrid-slotLabel is flex-row
-  text size:
-    text-sm = 14px (day-numbers, slot-labels, datagrid cells)
-    text-xs = 12px (events)
-    xxsTextClass ~= 11px (time within events -- use sparingly)
-  rowMoreLinkInner class is necessary for stickiness in timeline
-  we have CORE handle as much stickiness as possible because
-    REACT-NATIVE (when we eventually target it) cannot do stickiness,
-    we need a higher-level JSX util of sorts
-  slotLabelAlign/slotLabelSticky not supported in timegrid,
-    so only put settings in timeline
-  "dark:" not allowed in theme core! no way to detect without relying on third-party UI lib
-  we actually like moreLinkerInnerClass, because the "inner" is for stickiness
-    and the outer is for background color. just like stickiness in datagrid
-    however, for 'gap-*', but in ui-system-specific files (because not used in most UI-specific)
-  for event-like element inner-padding,
-    it's tempting to put all padding on title/time, but the wrapper elements needs 1px
-    because for print-view, it uses transparent border
-  for icons within buttons,
-    we wanted to put negative margin on the icon and keep the button padding constant regardless
-    of whether only-icon or not (in hopes that icon+text would work) but turns out negative margins
-    on icon causes icon to overlap text within same button. Best just to continue using isIconOnly
-  to do a two-col with first-col min-width percentage, up to a pixel max width, and second column liquid, do:
-    1st col - shrink-0 w-1/4 max-w-40
-    2nd col - grow max-w-0
-  for popover dayHeader,
-    we decided NOT to bake popoverClose into the dayHeader because
-    1. having the popoverClose as a child of a flex-row (which is different than how dayHeader normally
-       does) causes the way you do vertical alignment to change depending on context (items-center VS justify-center)
-    2. easier to have dayHeader as its own isolated component
-    CONCLUSION: make the X absolutely positioned over it
-  for testing prevYear/nextYear icons, revive this commit:
-    ed98f5eef6409a1dbdb74dbf932a0a903678a1c9
 
 
 just before beta (after theme gen)
@@ -1073,3 +989,82 @@ resourceExpanderClass
   always put `group` so can style icon based on group-hover group-focus-visible
 MUI datagrid column resizing is nice:
   https://mui.com/x/react-data-grid/#premium-version
+Theme Notes
+  an *OulineFocusClass only goes on the *Button, NOT the *Pressable
+  for alignment,
+    dayHeader, resourceAreaHeader, and timeline-slotLabel are flex-col
+    timeGrid-slotLabel is flex-row
+  text size:
+    text-sm = 14px (day-numbers, slot-labels, datagrid cells)
+    text-xs = 12px (events)
+    xxsTextClass ~= 11px (time within events -- use sparingly)
+  rowMoreLinkInner class is necessary for stickiness in timeline
+  we have CORE handle as much stickiness as possible because
+    REACT-NATIVE (when we eventually target it) cannot do stickiness,
+    we need a higher-level JSX util of sorts
+  slotLabelAlign/slotLabelSticky not supported in timegrid,
+    so only put settings in timeline
+  "dark:" not allowed in theme core! no way to detect without relying on third-party UI lib
+  we actually like moreLinkerInnerClass, because the "inner" is for stickiness
+    and the outer is for background color. just like stickiness in datagrid
+    however, for 'gap-*', but in ui-system-specific files (because not used in most UI-specific)
+  for event-like element inner-padding,
+    it's tempting to put all padding on title/time, but the wrapper elements needs 1px
+    because for print-view, it uses transparent border
+  for icons within buttons,
+    we wanted to put negative margin on the icon and keep the button padding constant regardless
+    of whether only-icon or not (in hopes that icon+text would work) but turns out negative margins
+    on icon causes icon to overlap text within same button. Best just to continue using isIconOnly
+  to do a two-col with first-col min-width percentage, up to a pixel max width, and second column liquid, do:
+    1st col - shrink-0 w-1/4 max-w-40
+    2nd col - grow max-w-0
+  for popover dayHeader,
+    we decided NOT to bake popoverClose into the dayHeader because
+    1. having the popoverClose as a child of a flex-row (which is different than how dayHeader normally
+       does) causes the way you do vertical alignment to change depending on context (items-center VS justify-center)
+    2. easier to have dayHeader as its own isolated component
+    CONCLUSION: make the X absolutely positioned over it
+  for testing prevYear/nextYear icons, revive this commit:
+    ed98f5eef6409a1dbdb74dbf932a0a903678a1c9
+  OUTLINE: props that should be given .(primary|tertiary)OutlineColorClass / .outlineWidthFocusClass:
+    eventClass (include outlineWidthClass instead if .isSelected)
+    blockEventClass (if you're using primaryOutlineColorClass, apply .outlineOffsetWidth)
+    moreLinkClass
+    navLinkClass
+    popoverCloseClass
+    resourceExpanderClass
+    if using slots.tsx,
+      apply .outlineWidthGroupFocusClass to sub-elements
+    dayHeaderInnerClass does NOT need it! already has nav-link. but might need "offset" class
+Theme QA checklist
+  When "today" is first of month, how long-text render in today-circle
+  isNarrow column-events, background-events (daygrid + timegrid)
+  week-number for resourceTimeGrid* views
+  ensure dayHeaderClass isMajor border more important that isNarrow border-killing
+    test with resourceTimeGridFiveDay with no dayMinWidth (no h-scrolling)
+  timegrid more-link popover, events displayed w/ correct inner-padding
+  when eventDisplay='block' in daygrid, h-events should differentiate time from title (bold?)
+  block-style events padding/spacing:
+    daygrid
+      row-event (test w/ eventDisplay='block' so shows time)
+        isNarrow
+      row-more-link
+        isNarrow
+      list-item-event (turn OFF eventDisplay='block')
+        isNarrow
+    timegrid
+      col-event
+        stickiness
+        isNarrow
+        isShort
+      col-more-link
+        stickiness
+        isNarrow
+    timeline (test w/ displayEventTime={true} so shows time)
+      row-event
+        stickiness
+        does not exceed datagrid row height (minimal lane-bottom height)
+        eventOverlap={false}
+          does not exceed datagrid row height (zero lane-bottom height)
+      row-more-link
+        stickiness
