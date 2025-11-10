@@ -8,109 +8,31 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/interaction'
 
 /*
-applies to DayGrid, TimeGrid ALL-DAY, MultiMonth
-TODO: rename to "dayRowContent" or something
-TODO: audit all forced line-heights. not a fan
+NOTE: We don't do active: states, because tailwindplus does not do this!
 
-Some dark mode:
-https://tailwindcss.com/plus/ui-blocks/application-ui/lists/tables
+REFERENCE:
+  https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
+  Some dark mode:
+    https://tailwindcss.com/plus/ui-blocks/application-ui/lists/tables
+  User different navbar for view-selector:
+    https://tailwindcss.com/plus/ui-blocks/application-ui/navigation/tabs#component-2a66fc822e8ad55f59321825e5af0980
+  Flyout menus:
+    https://tailwindcss.com/plus/ui-blocks/marketing/elements/flyout-menus#component-25601925ae83e51e1b31d3bd1c286515
 
-User different navbar for view-selector:
-https://tailwindcss.com/plus/ui-blocks/application-ui/navigation/tabs#component-2a66fc822e8ad55f59321825e5af0980
-
-Flyout menus:
-https://tailwindcss.com/plus/ui-blocks/marketing/elements/flyout-menus#component-25601925ae83e51e1b31d3bd1c286515
-
-https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
-
-Themes should completely decide if list-view dayheaders are sticky (put in the changelog?)
-
-major-border not working
-
-TODO: add all the whitespace-nowrap overflow-hidden to the text divs
-  add to checklist
-
-TODO: fix popover styling
-
-TODO: multi-month SINGLE-col sticky mess
-
-TODO: audit other more-link styles (not just for daygrid)
-
-TODO: now indicator
-TODO: shadow on resourceArea?
-
-TODO: in all-day area, when stacking events, allDayHeader not valigned
-  also, wrong cell-bottom padding
-
-PROBLEM: event color too dim to pop above background-event color
-
-TODO: fix multiple listDayFormats
-
-TODO: multi-month dayheader text should be dimmer, but hard to do with slots.ts
-
-TODO: new dark-mode!
-  https://tailwindcss.com/plus/changelog#2025-08-11
-
-TODO: move list-header sticky from listDayHeaderInnerClass -> listDayHeaderClass (like Forma)
-
-TODO: timegrid resizing broken
-TODO: timegrid events have unnecessasry extra 1px bottom margin
-
-TODO: put header drop-shadow on resource-timeline header
-
-TODO: implement nowIndicator
-
-TODO: hover effect on multi-month month navlinks
-
-TODO: use muted color in more places than just dayCell
-
-TODO: hover:bg-gray-100 -> hover-button system
-
-TODO: default-ui, for daygrid view, should have smaller dayHeader font size
-
-TODO: no hover-effect on today button when isDisabled
-
-TODO: MUI purple theme gives overly-dark toolbar bg
-
-TODO: hover effect for navlinks
-
-TODO: fix popover X valignment... easier API?
-
-TODO: multimonth title needs to be center-aligned
-
-TODO: v-resource headers different border color than days
-
-TODO: Auditorium stickness doesn't stick to right-side
-
-TODO: give navlink hover-effect to everything
-
-TODO: condense timegrid event doesn't work
-
-TODO: dark mode, list-view, event text colors too dark (because brightness-60 isn't adaptive!)
-
-TODO: audit rowMoreLink effects
-
-TODO: where there's rounded-lg, ensure it goes smaller when isNarrow
-
-TODO: ensure resourc-timeline-lanes have bottom empty space
-
-TODO: non-business-hours
-
-For list-view, when <a href> (like "Click for Google"), should hover-underline
-
-TODO: give week-numbers an ghost-pressable-effect!
-
-TODO day-popover header looks bad with margin/padding!
-
-Multi-month month shadows too intense
-
-popover-close needs hover color or bg-change
-
-ShadCN (and MUI?) can increase their event bg-color opaqueness if they make event-titles bold
-
-are timegrid borders too faint (esp now that we have dotted isMinor) ?
-
-resourceTimegrid-ONE-day, resource-header-cell borders don't match all-day or lane
+REAL TODO:
+  timeline: add lines between slotLabel levels
+    even though v-aligned bottom to look good for 1-level situation
+  shadow on resourceArea?
+  list-view alt-dayheader-format hover... make more contrast text
+  multi-month, when single-col,
+    LOOKS WEIRD: singleMonthHeader slightly different height than dayHeaderRow
+    (In other themes too?)
+  resource-timeGRID-DAY,
+    border colors between header/body inconsistent
+  timegrid WEEK-number needs hover effect
+  default-ui: are timegrid borders too faint (esp now that we have dotted isMinor) ?
+  should all datagrid text color be high?
+    Look at tailwindPLUS for inspiration
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height

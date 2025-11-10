@@ -13,9 +13,6 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
-  // TODO: fix color for expander icon
-  // TODO: should all datagrid text color be high?
-
   return {
     optionDefaults: {
       resourceAreaDividerClass: `border-l ${params.strongBorderColorClass}`,

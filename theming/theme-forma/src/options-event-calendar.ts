@@ -1,54 +1,10 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 
 /*
-TODO:
-  how to add top border to header cell. can we do it with impunity?
-  make event selected state be solid color (like apple calendar)
-
-Colors:
-https://react.fluentui.dev/?path=/docs/theme-colors--docs
-For color variations, see different brand colors:
-https://fluent2.microsoft.design/color
-spacing and whatnot:
-https://react.fluentui.dev/?path=/docs/theme-spacing--docs
-
-TODO: put blue line at top of popover when isToday?
-
-TODO: week numbers in small singleMonths look bad
-
-BUG: +more-popover in multimonth has popover-header content centered
-
-TODO: ensure +more link has same height as normal event, even in condensed multimonth
-
-TODO: bottom border radius weird
-TODO: ensure button-group (non-view) looks okay. not hover-only
-
-TODO: pressdown color on Today button looks mushy
-
-TODO: make Today button border darker
-
-TODO: remove navlink underline effect. outlook doesn't use underlines at all
-
-TODO: timeGrid short-event doesn't put title+time on same line
-
-TODO: negative margins on timegrid slot labels not working anymore
-
-TODO: nicer rounded styling for more-link in timegrid/timeline
-
-The > continuation arrow looks bad when isNarrow
-
-Make it more like live.outlook.com
-  Have some text be muted
+REAL TODO:
+  continuation arrows nomore when isNarrow
   Week-view business hours, add dark line at top bottom (see real outlook site)
-
-start-date resizing in daygrid,
-  resizer has wrong negative-start to overcome the isStart-border
-
-BUG: no hover+down effect on week-number in timegrid view
-
-Make dayHeaderFormat: { weekday: 'long' } IN MORE VIEWS like dayGridYear/multiMonth -- looks nice
-
-ShadCN (and MUI?) can increase their event bg-color opaqueness if they make event-titles bold
+  BUG: no hover+down effect on week-number in timegrid view
 */
 
 // ambient types (tsc strips during build because of {})
@@ -441,11 +397,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         dayHeaderDividerClass: ['border-t', params.borderColorClass],
 
-        dayCellBottomClass: (data) => !data.isNarrow && 'min-h-[1px]', // TODO: DRY
-      },
-      dayGridMonth: {
         // core normally display short for month (like "Mon") but long (like "Monday") looks good in Forma
         dayHeaderFormat: { weekday: 'long' },
+
+        dayCellBottomClass: (data) => !data.isNarrow && 'min-h-[1px]', // TODO: DRY
       },
       multiMonth: {
         ...dayRowItemClasses,

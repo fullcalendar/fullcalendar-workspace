@@ -1,36 +1,4 @@
 
-/*
-TODO figure out how to do button group
-  make bg slightly muted
-  don't have any borders between buttons (make transparent)
-  hover color will look weird unless buttons go to edges of group container
-    so, revive having buttons own their own borders
-
-after doing all this,
-  does it look good to have same dimness on header (and timegrid axis)?
-
-DARK-MODE:
-  Why does dark mode have blue tint?
-  TODO: look at why Classic theme in dark mode seems really blue too
-
-  FIRST,
-    Look at all dark-mode calendars in Notion
-
-  should all calendar in dark mode have raised gray bg?
-    https://themeforest.net/item/arion-admin-dashboard-ui-kit-sketch-template/23432569
-    (whereas light mode is always white)
-
-NOTICE: many of these colors are rgbA
-
-TODO: use these colors!!!
-   --card: oklch(1 0 0);
-   --card-foreground: oklch(0.145 0 0);
-   --popover: oklch(1 0 0);
-   --popover-foreground: oklch(0.145 0 0);
-
-can maybe remove some dark-mode colors. repeat of what's in light mode
-*/
-
 :root {
   /* primary */
 

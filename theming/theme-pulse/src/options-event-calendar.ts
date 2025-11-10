@@ -8,67 +8,28 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/interaction'
 
 /*
-TODO: default-background-event and selection colors
-red: #FF3D57
-green: #09B66D
-primary-blue: #0081FF
-apple-primary-blue: #117aff
-apple-red: #fd453b (same for dark mode: #fd3b30)
-light-blue: #22CCE2
+REFERENCE:
+  https://themeforest.net/item/arion-admin-dashboard-ui-kit-sketch-template/23432569
+  colors from template:
+    red: #FF3D57
+    green: #09B66D
+    primary-blue: #0081FF
+    apple-primary-blue: #117aff
+    apple-red: #fd453b (same for dark mode: #fd3b30)
+    light-blue: #22CCE2
 
-TODO: implement now-indicator
-TODO: text-gray-500 is yucky for Shadcn
-
-TODO: give day-number-circle to list-view day-headers
-
-TODO: multimonth very poorly condensed with events
-
-TODO: test standlone secondary button. correct borders and shadow?
-
-TODO: pressdown colors on buttons
-
-TODO: in default-ui, make secondary button have bg-filled-muted, not lines
-
-TODO: shift timegrid slot labels over to start-of line
-
-TODO: give nav-link hover effect to everything!
-TODO: give hover effect to singleMonthHeaderInnerClass
-
-TODO: in all-day section when many events are stacked,
-  not enough bottom padding to daycell
-
-TODO: in daygrid, day-header text doesn't align nicely with day-cell day-number-text
-
-TODO: space in-between timeline events (left-to-right space aka "me-px")
-TODO: ^^^same with vertical space
-TODO: ^^^same with more-link
-
-TODO: list-view day-headers when they stack, border is doubled-up
-
-TODO: have press-effect on ui buttons. and ALL buttons
-
-TODO: hover color on list-view events
-
-TODO: give week-numbers an ghost-pressable-effect!
-
-TODO: fix popover header text styling
-
-TODO: improve resourceExpander hover and tab effect
-
-Dark-mode Pulse buttons look bad
-
-popover-close needs hover color or bg-change
-
-scroll-filler doesn't appear on resource-timegrid, header area, when scrolled all the way right
-
-for resource-timeline area divider, use strong border instead of thick gray thing?
-
-BUG: timegrid more-popover has header text centered
-
-BUG: timegrid, "W 27" is different color than day headers in same horizontal row
-
-change event color to look more puple like
-  https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
+REAL TODO:
+  view-select-group in dark mode, text contrast not high enough
+  standalone secondary button has wrong border
+    (test in other themes)
+  timegrid labels, isNarrow, slightly misaligned
+    (test in other themes)
+  singleMonthHeaderInnerClass hover shows we need more padding
+  ugly resource-timeline datagrid divider?
+  list-view day-headers when they stack, border is doubled-up
+  scroll-filler doesn't appear on resource-timegrid, header area, when scrolled all the way right
+  BUG: timegrid more-popover has header text centered
+  BUG: timegrid, "W 27" is different color than day headers in same horizontal row
 */
 
 export interface EventCalendarOptionParams {

@@ -27,24 +27,24 @@ const strongestSolidBgActiveClass = 'active:bg-[color-mix(in_oklab,var(--mui-pal
 const strongerBgActiveClass = 'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]'
 const strongerSolidBgHoverClass = 'hover:bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_20%,var(--mui-palette-background-paper))]'
 
-// strong (15%)
-const strongBgHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
-const strongBgFocusClass = 'focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
-const strongBgFocusGroupClass = 'group-focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
-const strongBgActiveClass = 'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
-const strongBgActiveGroupClass = 'group-active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.15)]'
-const strongSolidBgClass = 'bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_15%,var(--mui-palette-background-paper))]'
+// strong (16%)
+const strongBgHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]'
+const strongBgFocusClass = 'focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]'
+const strongBgFocusGroupClass = 'group-focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]'
+const strongBgActiveClass = 'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]'
+const strongBgActiveGroupClass = 'group-active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]'
+const strongSolidBgClass = 'bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_16%,var(--mui-palette-background-paper))]'
 const strongSolidPressableClass = `${strongSolidBgClass} ${strongerSolidBgHoverClass} ${strongestSolidBgActiveClass}`
 
-// muted (7.5%)
-const mutedBgClass = 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
-const mutedBgHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
-const mutedBgHoverGroupClass = 'group-hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
-const mutedBgActiveClass = 'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.075)]'
+// muted (8%)
+const mutedBgClass = 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]'
+const mutedBgHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]'
+const mutedBgHoverGroupClass = 'group-hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]'
+const mutedBgActiveClass = 'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]'
 const mutedPressableClass = `${mutedBgClass} ${strongBgHoverClass} ${strongerBgActiveClass}`
 const mutedHoverPressableClass = `${mutedBgHoverClass} ${strongBgFocusClass} ${strongBgActiveClass}`
 const mutedHoverPressableGroupClass = `${mutedBgHoverGroupClass} ${strongBgFocusGroupClass} ${strongBgActiveGroupClass}`
-const mutedSolidBgClass = '[background:linear-gradient(rgba(var(--mui-palette-text-primaryChannel)_/_0.075),rgba(var(--mui-palette-text-primaryChannel)_/_0.075))_var(--mui-palette-background-paper)]'
+const mutedSolidBgClass = '[background:linear-gradient(rgba(var(--mui-palette-text-primaryChannel)_/_0.08),rgba(var(--mui-palette-text-primaryChannel)_/_0.08))_var(--mui-palette-background-paper)]'
 
 // faint (4%)
 const faintBgClass = 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]'

@@ -2,15 +2,6 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-/*
-TODO: focus state!?
-TODO: focus-outline should be black on everything
-TODO: muted text? is #424242 in Outlook
-TODO: kill gray-500's
-TODO: do primary-button hover effect on today-cirle too
-TODO: prev/next icons look a little too faint
-*/
-
 // outline
 const outlineWidthClass = 'outline-2'
 const outlineWidthFocusClass = 'focus-visible:outline-2'

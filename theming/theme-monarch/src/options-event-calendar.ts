@@ -2,34 +2,15 @@ import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core
 import { filledRightTriangle } from './svgs.js'
 
 /*
-TODO: button hover-effect for not-today?
-TODO: X is too big
-TODO: week-number hover gets really dim. weird mousedown effect
-TODO: MUI figure out select colors vs bg-event color. currently inverse of classic-theme
-TODO: MUI resource group oddly dark gray
-TODO: transparentPressableClass hover effect is unnoticable in dark mode
-TODO: dark-mode now-indicator color is ugly pink
-TODO: test business hours
-
-monarch no sticky col events!? disabled, in js setting, but should that js setting exist? part of theme?
-monarch col event, when really squatty, compresses divs weird
-add 2px h padding on daygrid-event time ? probably. morelink should match.
-monarch: test "today" when semi-transparent is-other
-
-color refactor:
-  TODO: MUI multimonth, stacked rows of disabled days don't work
-  TODO: don't use opacity so much... use muted text color
-
-core:
-  TODO: setting for FIRST slot, for hiding label
-
-audit use of "group" classnames
-
-BUG: Monarch: when timegrid narrow, week number erroneously turns into half-pill
-
-BUG: narrow column-event time/title spacing looks bad
-
-when isNarrow, axis labels have wrong y positioning
+COLOR TODO:
+  default-ui/shadcn: transparentPressableClass hover effect is unnoticable in dark mode
+  default-ui: dark-mode now-indicator color is ugly pink
+  default-ui: business hours a bit too dark (i.e. "faint" color not faint enough)
+REAL TODO:
+  Don't show continuation arrows on daygrid/(timeline?) when isNarrow
+  Make day-header (daygrid/timegrid) font size smaller when isNarrow
+  BUG: when timegrid narrow, week number erroneously turns into half-pill
+  BUG: when isNarrow, axis labels have wrong y positioning
 */
 
 // ambient types (tsc strips during build because of {})

@@ -1,14 +1,17 @@
 
 /*
-OLD light values:
---fc-forma-strong: #D6D6D6;
---fc-forma-muted: #FAFAFA;
-TODO: ensure below values have same hue!
+From Outlook Calendar web interface:
+  OLD light values:
+    --fc-forma-strong: #D6D6D6;
+    --fc-forma-muted: #FAFAFA;
+  OLD dark values:
+    --fc-forma-strong: #404040;
+    --fc-forma-muted: #1A1A1A;
+  TODO: ensure below values have same hue!
 
-OLD dark values:
---fc-forma-strong: #404040;
---fc-forma-muted: #1A1A1A;
-TODO: ensure below values have same hue!
+Further color reference:
+  https://fluent2.microsoft.design/color
+  https://react.fluentui.dev/?path=/docs/theme-colors--docs
 */
 
 :root {

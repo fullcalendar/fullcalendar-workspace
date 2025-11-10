@@ -13,8 +13,22 @@ clean+build all:
   pn build
 
 
+policy on oklch colors?
+Audit all day-popover max widths
+Should core decide sticky-top for list-view dayHeader? YES
+Should default-ui non-view buttonGroups look like nice continuous pill-box?
+  (start with Monarch)
+Audit all ui-default-options-event-calendar.ts
 BUG: resourceTimelineThreeDay w/ slotDuration:{days:1},
   hovered-event show resizer which bleeds out of scrollpane and shows h-scrollbars
+Setting for FIRST slot, for hiding label
+How to deal with sticky resource (or day?) headers in v-resource view,
+  that stick for a very short runway and look miscentered over content below
+  (find other todolist item for this) see resourceTimeGridTwoDay
+In list-view, hover-text-underline for events that have .href like "Click for Google"? themes that DON'T do this:
+  Forma
+  Breezy
+  Pulse
 
 
 CODE-QUALITY (while going through each theme)

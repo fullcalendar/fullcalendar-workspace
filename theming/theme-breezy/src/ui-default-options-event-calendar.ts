@@ -3,10 +3,9 @@ import { createEventCalendarOptions, EventCalendarOptionParams } from './options
 import * as svgs from './ui-default-svgs.js'
 
 /*
-We don't do active: states, because tailwindplus does not do this!
-
+NOTE: We don't do active: states, because tailwindplus does not do this!
 NOTE: buttons are responsible for border-color, but NOT border-width!
-because button groups have strong opinions about adjacent borders and rounded-sides
+  because button groups have strong opinions about adjacent borders and rounded-sides
 */
 
 // outline

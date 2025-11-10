@@ -1,28 +1,17 @@
 /*
 baseline purple color:
-https://m3.material.io/styles/color/static/baseline
-
+  https://m3.material.io/styles/color/static/baseline
 other colors:
-https://anvil.works/docs/how-to/creating-material-3-colour-scheme
-https://material-foundation.github.io/material-theme-builder/
+  https://anvil.works/docs/how-to/creating-material-3-colour-scheme
+  https://material-foundation.github.io/material-theme-builder/
+converting colors from Material-system to our system:
+  canvas -> background
+  surface -> popover (for dark-mode)
+  primary-container -> tint
+  secondary -> tab-selected
+  error -> now
 
-TODO: might need to make tertiary colors hotter (like red, like alert color)
 TODO: convert all colors to hex
-
-TODO: mousedown colors on unselected tab
-
-need --fc-strong-foreground ?
-
-when timegrid h-scroll, reintroduct axis borders (will look good!)
-  will need to do data.options.dayMinWidth trick
-*/
-
-/*
-canvas -> background
-surface -> popover (for dark-mode)
-primary-container -> tint
-secondary -> tab-selected
-error -> now
 */
 
 :root {
@@ -31,8 +20,8 @@ error -> now
   --fc-monarch-primary-down: color-mix(in oklab, var(--fc-monarch-primary) 80%, white);
 
   /* secondary */
-  --fc-monarch-secondary-over: color-mix(in oklab, var(--fc-monarch-secondary) 90%, var(--fc-monarch-foreground));
-  --fc-monarch-secondary-down: color-mix(in oklab, var(--fc-monarch-secondary) 80%, var(--fc-monarch-foreground));
+  --fc-monarch-secondary-over: color-mix(in oklab, var(--fc-monarch-secondary) 95%, var(--fc-monarch-foreground));
+  --fc-monarch-secondary-down: color-mix(in oklab, var(--fc-monarch-secondary) 90%, var(--fc-monarch-foreground));
 
   /* tertiary */
   --fc-monarch-tertiary-over: color-mix(in oklab, var(--fc-monarch-tertiary) 90%, white);
