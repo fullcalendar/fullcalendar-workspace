@@ -29,7 +29,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceAreaHeaderInnerClass: `p-2 text-sm ${params.strongFgClass}`,
       resourceAreaHeaderResizerClass: 'absolute top-0 bottom-0 w-[5px] end-[-3px]',
 
-      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${params.mutedBgClass}`,
+      resourceAreaDividerClass: `border-s ${params.strongBorderColorClass}`,
 
       // For both resources & resource groups
       resourceAreaRowClass: `border ${params.borderColorClass}`,

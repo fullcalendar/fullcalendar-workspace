@@ -6,6 +6,7 @@
   --fc-pulse-secondary: var(--fc-pulse-background);
   --fc-pulse-secondary-over: var(--fc-pulse-faint);
   --fc-pulse-secondary-down: var(--fc-pulse-muted);
+  --fc-pulse-secondary-foreground: var(--fc-pulse-foreground);
   --fc-pulse-secondary-icon: var(--fc-pulse-faint-foreground);
   --fc-pulse-secondary-icon-over: var(--fc-pulse-muted-foreground);
 
@@ -47,6 +48,7 @@
   --fc-pulse-secondary: var(--fc-pulse-muted);
   --fc-pulse-secondary-over: var(--fc-pulse-strong);
   --fc-pulse-secondary-down: var(--fc-pulse-stronger);
+  --fc-pulse-secondary-foreground: var(--fc-pulse-strong-foreground);
   --fc-pulse-secondary-icon: var(--fc-pulse-muted-foreground);
   --fc-pulse-secondary-icon-over: var(--fc-pulse-strong-foreground);
 
@@ -56,9 +58,9 @@
 
   /* controls */
   --fc-pulse-unselected: var(--fc-pulse-muted);
-  --fc-pulse-unselected-foreground: var(--fc-pulse-muted-foreground);
+  --fc-pulse-unselected-foreground: var(--fc-pulse-foreground);
   --fc-pulse-selected: var(--fc-pulse-strong);
-  --fc-pulse-selected-foreground: var(--fc-pulse-foreground);
+  --fc-pulse-selected-foreground: var(--fc-pulse-strong-foreground);
 
   /* neutral backgrounds */
   --fc-pulse-background: var(--color-gray-950);

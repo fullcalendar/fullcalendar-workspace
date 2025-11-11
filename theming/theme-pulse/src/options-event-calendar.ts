@@ -8,6 +8,10 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/interaction'
 
 /*
+COLOR TODO:
+  Bad that timegrid slots are bolder than daygridheaders in same view?
+  Rethink daygrid day-number color/boldness
+
 REFERENCE:
   https://themeforest.net/item/arion-admin-dashboard-ui-kit-sketch-template/23432569
   colors from template:
@@ -17,19 +21,6 @@ REFERENCE:
     apple-primary-blue: #117aff
     apple-red: #fd453b (same for dark mode: #fd3b30)
     light-blue: #22CCE2
-
-REAL TODO:
-  view-select-group in dark mode, text contrast not high enough
-  standalone secondary button has wrong border
-    (test in other themes)
-  timegrid labels, isNarrow, slightly misaligned
-    (test in other themes)
-  singleMonthHeaderInnerClass hover shows we need more padding
-  ugly resource-timeline datagrid divider?
-  list-view day-headers when they stack, border is doubled-up
-  scroll-filler doesn't appear on resource-timegrid, header area, when scrolled all the way right
-  BUG: timegrid more-popover has header text centered
-  BUG: timegrid, "W 27" is different color than day headers in same horizontal row
 */
 
 export interface EventCalendarOptionParams {
@@ -179,7 +170,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'justify-center', // h-align
       ],
       singleMonthHeaderInnerClass: (data) => [
-        'text-base font-semibold',
+        'text-base font-semibold rounded-sm px-1',
         data.hasNavLink && params.mutedHoverPressableClass,
       ],
 
@@ -402,9 +393,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isMinor && 'border-dotted',
       ],
 
-      fillerClass: (data) => [
-        !data.isHeader && `border ${params.borderColorClass} opacity-50`,
-      ],
+      fillerClass: `border ${params.borderColorClass} opacity-50`,
 
       nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,
       nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} ring-2 ${params.bgRingColorClass}`,
@@ -438,7 +427,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       timeGrid: {
         ...dayRowItemClasses,
         dayCellBottomClass: 'min-h-3',
-        dayHeaderAlign: 'center',
+        dayHeaderAlign: (data) => (
+          data.inPopover ? 'start' : 'center'
+        ),
 
         dayHeaderDividerClass: (data) => [
           'border-t', params.borderColorClass,
@@ -447,8 +438,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         weekNumberHeaderClass: 'justify-end items-center',
         weekNumberHeaderInnerClass: (data) => [
-          `px-2 ${params.fgClass}`,
-          data.isNarrow ? xxsTextClass : 'text-sm',
+          `mx-1 px-1 ${params.mutedFgClass} h-6 flex flex-row items-center`,
+          data.isNarrow ? 'text-xs' : 'text-sm',
+          data.hasNavLink && params.mutedHoverPressableClass,
         ],
 
         columnEventClass: (data) => [
@@ -459,8 +451,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         slotLabelClass: 'justify-end', // v-align
         slotLabelInnerClass: (data) => [
-          `relative -top-4 p-2 ${params.fgClass}`,
-          data.isNarrow ? xxsTextClass : 'text-xs',
+          `relative p-2 ${params.fgClass}`,
+          data.isNarrow
+            ? `-top-3.5 ${xxsTextClass}`
+            : '-top-4 text-xs',
         ],
         slotLabelDividerClass: `border-s ${params.borderColorClass}`,
         // TODO: higher levels should have h-borders

@@ -33,8 +33,8 @@ const primaryPressableClass = `${primaryClass} hover:bg-(--fc-pulse-primary-over
 const primaryButtonClass = `${primaryPressableClass} border-transparent ${tertiaryOulineFocusClass} ${outlineOffsetClass}`
 
 // secondary *toolbar button*
-const secondaryPressableClass = `bg-(--fc-pulse-secondary) hover:bg-(--fc-pulse-secondary-over) focus-visible:bg-(--fc-pulse-secondary-over) active:bg-(--fc-pulse-secondary-down)`
-const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-pulse-border) ${tertiaryOulineFocusClass}`
+const secondaryPressableClass = `text-(--fc-pulse-secondary-foreground) bg-(--fc-pulse-secondary) hover:bg-(--fc-pulse-secondary-over) focus-visible:bg-(--fc-pulse-secondary-over) active:bg-(--fc-pulse-secondary-down)`
+const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-pulse-strong-border) ${tertiaryOulineFocusClass}`
 const secondaryButtonIconClass = 'size-5 text-(--fc-pulse-secondary-icon) group-hover:text-(--fc-pulse-secondary-icon-over) group-focus-visible:text-(--fc-pulse-secondary-icon-over)'
 
 // tertiary
