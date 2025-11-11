@@ -6,11 +6,6 @@ COLOR TODO:
   default-ui/shadcn: transparentPressableClass hover effect is unnoticable in dark mode
   default-ui: dark-mode now-indicator color is ugly pink
   default-ui: business hours a bit too dark (i.e. "faint" color not faint enough)
-REAL TODO:
-  Don't show continuation arrows on daygrid/(timeline?) when isNarrow
-  Make day-header (daygrid/timegrid) font size smaller when isNarrow
-  BUG: when timegrid narrow, week number erroneously turns into half-pill
-  BUG: when isNarrow, axis labels have wrong y positioning
 */
 
 // ambient types (tsc strips during build because of {})
@@ -88,16 +83,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const blockTouchResizerClass = `absolute size-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
-
-  const getWeekNumberPillClasses = (data: { hasNavLink: boolean, isNarrow: boolean }) => [
-    'flex flex-row items-center', // match height of daynumber
-    data.hasNavLink
-      ? params.secondaryPressableClass
-      : params.secondaryClass,
-    data.isNarrow
-      ? `rounded-e-full h-4 pe-1 ${xxsTextClass}`
-      : 'rounded-full h-6 px-2 text-sm'
-  ]
 
   const dayRowItemBaseClass = 'mx-0.5 mb-px rounded-sm'
   const dayRowItemClasses: CalendarOptions = {
@@ -196,7 +181,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isNarrow
           ? 'top-0.5 start-0 my-px'
           : 'top-1.5 start-1',
-        ...getWeekNumberPillClasses(data),
+        'flex flex-row items-center',
+        data.hasNavLink
+          ? params.secondaryPressableClass
+          : params.secondaryClass,
+        data.isNarrow
+          ? `rounded-e-full h-4 pe-1 ${xxsTextClass}`
+          : 'rounded-full h-6 px-2 text-sm',
       ],
 
       eventClass: (data) => [
@@ -250,25 +241,29 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       rowEventClass: (data) => [
         'mb-px',
         'border-y',
-        data.isStart ? 'border-s rounded-s-sm' : 'ms-2',
-        data.isEnd ? 'border-e rounded-e-sm' : 'me-2',
+        data.isStart ? 'border-s rounded-s-sm' : (!data.isNarrow && 'ms-2'),
+        data.isEnd ? 'border-e rounded-e-sm' : (!data.isNarrow && 'me-2'),
       ],
       rowEventBeforeClass: (data) =>
         data.isStartResizable ? [
           data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
           '-start-1', // because both ^scenarious have width-2
-        ] : !data.isStart && [
+        ] : (!data.isStart && !data.isNarrow) && [
           'absolute -start-2 w-2 -top-px -bottom-px'
         ],
-      rowEventBeforeContent: (data) => !data.isStart && filledRightTriangle('size-full text-(--fc-event-color) rotate-180 [[dir=rtl]_&]:rotate-0'),
+      rowEventBeforeContent: (data) => (
+        (!data.isStart && !data.isNarrow) && filledRightTriangle('size-full text-(--fc-event-color) rotate-180 [[dir=rtl]_&]:rotate-0')
+      ),
       rowEventAfterClass: (data) =>
         data.isEndResizable ? [
           data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
           '-end-1', // because both ^scenarious have width-2
-        ] : !data.isEnd && [
+        ] : (!data.isEnd && !data.isNarrow) && [
           'absolute -end-2 w-2 -top-px -bottom-px',
         ],
-      rowEventAfterContent: (data) => !data.isEnd && filledRightTriangle('size-full text-(--fc-event-color) [[dir=rtl]_&]:rotate-180'),
+      rowEventAfterContent: (data) => (
+        (!data.isEnd && !data.isNarrow) && filledRightTriangle('size-full text-(--fc-event-color) [[dir=rtl]_&]:rotate-180')
+      ),
 
       rowEventInnerClass: (data) => [
         'flex-row items-center',
@@ -334,10 +329,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'items-center',
         data.isMajor && `border ${params.strongBorderColorClass}` // TODO: only do border-start?
       ],
-      dayHeaderInnerClass: (data) => [
+      dayHeaderInnerClass: [
         'mt-2 mx-2 flex flex-col items-center group outline-none', // kill outline because sub-elements do it
-        data.isNarrow && xxsTextClass,
       ],
+      // dayHeaderContent is defined in slots.tsx...
 
       dayRowClass: `border ${params.borderColorClass}`,
       dayCellClass: (data) => [
@@ -400,7 +395,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         weekNumberHeaderInnerClass: (data) => [
           'ms-1',
           data.options.dayMinWidth !== undefined && 'me-1',
-          ...getWeekNumberPillClasses(data),
+          'flex flex-row items-center rounded-full',
+          data.hasNavLink
+            ? params.secondaryPressableClass
+            : params.secondaryClass,
+          data.isNarrow
+            ? `h-5 px-1.5 ${xxsTextClass}`
+            : 'h-6 px-2 text-sm',
         ],
 
         allDayHeaderClass: 'justify-end items-center', // items-center = valign
@@ -419,7 +420,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelInnerClass: (data) => [
           `ps-2 pe-3 py-2 relative`,
           data.isNarrow
-            ? `${xxsTextClass} -top-4.5`
+            ? `${xxsTextClass} -top-4`
             : 'text-sm -top-5',
         ],
         slotLabelDividerClass: (data) => [
