@@ -69,7 +69,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
               tDateProfile={props.tDateProfile}
               todayRange={props.todayRange}
               nowDate={props.nowDate}
-              borderStart={Boolean(cellI)}
+              isFirst={cellI === 0}
 
               // refs
               innerWidthRef={innerWidthRefMap.createRef(key)}

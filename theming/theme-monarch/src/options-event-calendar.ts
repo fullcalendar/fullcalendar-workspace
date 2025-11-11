@@ -419,6 +419,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
         slotLabelInnerClass: (data) => [
           `ps-2 pe-3 py-2 relative`,
+          data.isFirst && 'hidden',
           data.isNarrow
             ? `${xxsTextClass} -top-4`
             : 'text-sm -top-5',

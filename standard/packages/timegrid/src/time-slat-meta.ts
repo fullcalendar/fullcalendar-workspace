@@ -15,6 +15,7 @@ export interface TimeSlatMeta {
   key: string
   isoTimeStr: string
   isLabeled: boolean
+  isFirst: boolean
 }
 
 // potential nice values for the slot-duration and interval-duration
@@ -39,6 +40,7 @@ export function buildSlatMetas(
   let slatIterator = createDuration(0)
   let labelInterval = explicitLabelInterval || computeLabelInterval(slotDuration)
   let metas: TimeSlatMeta[] = []
+  let i = 0
 
   while (asRoughMs(slatTime) < asRoughMs(slotMaxTime)) {
     let date = dateEnv.add(dayStart, slatTime)
@@ -50,10 +52,12 @@ export function buildSlatMetas(
       key: date.toISOString(), // we can't use the isoTimeStr for uniqueness when minTime/maxTime beyone 0h/24h
       isoTimeStr: formatIsoTimeString(date),
       isLabeled,
+      isFirst: i === 0,
     })
 
     slatTime = addDurations(slatTime, slotDuration)
     slatIterator = addDurations(slatIterator, slotDuration)
+    i += 1
   }
 
   return metas

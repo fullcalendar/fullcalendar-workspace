@@ -25,7 +25,7 @@ export interface TimelineHeaderCellProps {
   cell: TimelineHeaderCellData
   todayRange: DateRange
   nowDate: DateMarker
-  borderStart: boolean
+  isFirst: boolean
 
   // dimensions
   slotWidth: number | undefined // always provided. if pending, use `undefined`
@@ -63,6 +63,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
     let dateMeta = this.getDateMeta(cell.date, dateEnv, dateProfile, props.todayRange, props.nowDate)
     let hasNavLink = !dateMeta.isDisabled && (cell.rowUnit && cell.rowUnit !== 'time')
     let isTime = tDateProfile.isTimeScale && !props.rowLevel // HACK: faulty way of determining this
+
     let renderProps = {
       ...dateMeta,
       level: props.rowLevel,
@@ -72,6 +73,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
       isTime,
       hasNavLink,
       text: cell.text,
+      isFirst: props.isFirst,
       view: context.viewApi,
     }
 
@@ -105,7 +107,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
         className={joinArrayishClassNames(
           classNames.tight,
           classNames.flexCol,
-          props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
+          props.isFirst ? classNames.borderNone : classNames.borderOnlyS,
           align === 'center' ? classNames.alignCenter :
             align === 'end' ? classNames.alignEnd :
               classNames.alignStart,

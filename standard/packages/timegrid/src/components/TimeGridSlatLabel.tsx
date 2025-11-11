@@ -70,6 +70,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
       props.time,
       !props.isLabeled,
       props.isNarrow,
+      props.isFirst,
       labelFormat,
       context,
     )
@@ -162,6 +163,7 @@ function createRenderProps(
   time: Duration,
   isMinor: boolean,
   isNarrow: boolean,
+  isFirst: boolean,
   labelFormat: DateFormatter,
   context: ViewContext,
 ): SlotLabelData {
@@ -177,6 +179,7 @@ function createRenderProps(
     isTime: true,
     isNarrow,
     hasNavLink: false,
+    isFirst,
     view: context.viewApi,
   }
 }

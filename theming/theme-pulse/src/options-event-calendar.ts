@@ -452,6 +452,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelClass: 'justify-end', // v-align
         slotLabelInnerClass: (data) => [
           `relative p-2 ${params.fgClass}`,
+          data.isFirst && 'hidden',
           data.isNarrow
             ? `-top-3.5 ${xxsTextClass}`
             : '-top-4 text-xs',

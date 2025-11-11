@@ -490,8 +490,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         Figure out how not having any border on slotLabel affects height-syncing
         */
         slotLabelClass: 'justify-end',
-        slotLabelInnerClass: [
+        slotLabelInnerClass: (data) => [
           'relative px-3 py-2 -top-3.5',
+          data.isFirst && 'hidden',
           // same top value works when isNarrow or not
         ],
 

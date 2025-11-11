@@ -18,6 +18,7 @@ export interface SlotLabelData extends SlotLaneData {
   text: string
   isNarrow: boolean
   hasNavLink: boolean
+  isFirst: boolean
 }
 export type SlotLabelMountData = MountData<SlotLabelData>
 
