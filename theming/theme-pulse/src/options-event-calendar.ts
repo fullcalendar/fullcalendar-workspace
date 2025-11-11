@@ -460,7 +460,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         // TODO: higher levels should have h-borders
       },
       list: {
-        listDayClass: `flex flex-col not-first:border-t ${params.borderColorClass}`,
+        listDayClass: `flex flex-col group/day`,
 
         listDayHeaderClass: `flex flex-row justify-between ${params.mutedSolidBgClass} border-b ${params.borderColorClass}`,
         listDayHeaderInnerClass: (data) => [
@@ -472,7 +472,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             : (data.hasNavLink && params.mutedHoverPressableClass),
         ],
 
-        listDayEventsClass: 'flex flex-col py-2 gap-2',
+        listDayEventsClass: `flex flex-col py-2 gap-2 group-not-last/day:border-b ${params.borderColorClass}`,
 
         listItemEventClass: (data) => [
           'py-1',

@@ -13,9 +13,6 @@ clean+build all:
   pn build
 
 
-Solve list-view difficule border issue
-  Classic: bottom border of container doubles-up (but we still want bottom border on last item)
-  Pulse: header-bottom-borders double up
 Monarch: timegrid weeknumber, single-day view, bad margin
 Breezy: fix how short day-header (and week-header) navlinks are when isNarrow
 test in multiple themes (except Pulse already fixed):
