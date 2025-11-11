@@ -162,7 +162,7 @@ export function buildDateDataConfigs(
           text,
           textParts,
           get weekdayText() { return findWeekdayText(textParts) },
-          get dayNumberText() { return findDayNumberText(textParts) },
+          get dayNumberText() { return datesRepDistinctDays ? findDayNumberText(textParts) : '' },
           isMajor,
           isNarrow: false, // HACK. gets overridden
           isSticky: false, // HACK. gets overridden
@@ -220,7 +220,7 @@ export function buildDateDataConfigs(
           text,
           textParts,
           get weekdayText() { return findWeekdayText(textParts) },
-          get dayNumberText() { return findDayNumberText(textParts) },
+          get dayNumberText() { return datesRepDistinctDays ? findDayNumberText(textParts) : '' },
           ...extraRenderProps,
         }
         const fullWeekDayStr = dateEnv.format(normDate, WEEKDAY_ONLY_FORMAT)[0]

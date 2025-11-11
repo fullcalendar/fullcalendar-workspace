@@ -13,10 +13,6 @@ clean+build all:
   pn build
 
 
-Force display of day-of-month in day-header for certain stylized views?
-  Monarch/Forma/Breezy > TimeGridDay
-
-
 CODE-QUALITY (while going through each theme)
   ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)
   ensure no unnecessary `` instead ''
