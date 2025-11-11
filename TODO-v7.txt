@@ -13,7 +13,6 @@ clean+build all:
   pn build
 
 
-Breezy: fix how short day-header (and week-header) navlinks are when isNarrow
 test in multiple themes (except Pulse already fixed):
   standalone secondary button has wrong border
 don't let xxsTextClass into dayHeaders ever

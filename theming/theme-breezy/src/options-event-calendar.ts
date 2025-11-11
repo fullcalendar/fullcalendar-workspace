@@ -207,26 +207,48 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderInnerClass: (data) => [
         'flex flex-row items-center', // v-align
-        (data.isToday && !data.inPopover)
-          // circle inside (see slots.tsx)
+
+        (!data.dayNumberText && !data.inPopover)
+          // small uniform text
           ? joinClassNames(
-              'mx-2 my-2 group outline-none',
-              data.isNarrow ? 'h-6' : 'h-8'
-            )
-          // ghost-button-like
-          : joinClassNames(
-              'mx-2 px-1 rounded-sm',
-              data.isNarrow ? 'h-4' : 'h-6',
-              (data.dayNumberText && !data.inPopover)
-                ? 'my-3' // timegrid-view
-                : 'my-2', // popover or month-view
+              'rounded-sm',
+              data.isNarrow
+                ? 'mx-1 my-2'
+                : 'mx-2 my-3',
               data.hasNavLink && joinClassNames(
                 params.mutedHoverPressableClass,
                 params.primaryOutlineColorClass,
                 params.outlineWidthFocusClass,
               ),
-            ),
-        // TODO: consider isNarrow for above scenarios
+            )
+          // normal-sized varying-color text
+          // when not inPopover, total heights should be:
+          //   isNarrow:false -> 12
+          //   isNarrow:true -> 10
+          //
+          // TODO: clean this up using negative margins on the today circle?
+          //
+          : (data.dayNumberText && data.isToday && !data.inPopover)
+              // has today circle
+              ? joinClassNames(
+                  'm-2 outline-none group',
+                  data.isNarrow ? 'h-6' : 'h-8'
+                )
+              // WITHOUT today circle
+              : joinClassNames(
+                  'px-1 rounded-sm',
+                  data.inPopover
+                    ? 'm-2 py-0.5'
+                    : joinClassNames(
+                        'mx-2 h-6',
+                        data.isNarrow ? 'my-2' : 'my-3'
+                      ),
+                  data.hasNavLink && joinClassNames(
+                    params.mutedHoverPressableClass,
+                    params.primaryOutlineColorClass,
+                    params.outlineWidthFocusClass,
+                  ),
+                ),
       ],
       // see dayHeaderContent in slots.tsx...
 

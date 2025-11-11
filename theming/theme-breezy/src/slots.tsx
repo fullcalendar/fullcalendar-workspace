@@ -17,7 +17,7 @@ export function createSlots(
 ): CalendarOptions {
   return {
     dayHeaderContent: (data) => (
-      !data.dayNumberText ? (
+      (!data.dayNumberText && !data.inPopover) ? (
         <span
           className={joinClassNames(
             `text-xs ${params.fgClass}`,
@@ -36,12 +36,11 @@ export function createSlots(
                 textPart.type === 'day'
                   ? joinClassNames(
                       'flex flex-row items-center', // v-align-text
-                      data.isNarrow ? 'h-6' : 'h-8',
                       !data.isNarrow && 'font-semibold',
                       (data.isToday && !data.inPopover)
                         ? joinClassNames(
                             'rounded-full justify-center mx-0.5',
-                            data.isNarrow ? 'w-6' : 'w-8',
+                            data.isNarrow ? 'size-6' : 'size-8',
                             data.hasNavLink
                               ? joinClassNames(
                                   params.primaryPressableGroupClass,
