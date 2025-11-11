@@ -34,7 +34,7 @@ const primaryButtonClass = `${primaryPressableClass} border-transparent ${tertia
 
 // secondary *toolbar button*
 const secondaryPressableClass = `text-(--fc-pulse-secondary-foreground) bg-(--fc-pulse-secondary) hover:bg-(--fc-pulse-secondary-over) focus-visible:bg-(--fc-pulse-secondary-over) active:bg-(--fc-pulse-secondary-down)`
-const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-pulse-strong-border) ${tertiaryOulineFocusClass}`
+const secondaryButtonClass = `${secondaryPressableClass} ${tertiaryOulineFocusClass}` // border-color is determined by buttonClass setting below
 const secondaryButtonIconClass = 'size-5 text-(--fc-pulse-secondary-icon) group-hover:text-(--fc-pulse-secondary-icon-over) group-focus-visible:text-(--fc-pulse-secondary-icon-over)'
 
 // tertiary
@@ -133,7 +133,7 @@ export const defaultUiEventCalendarOptions: {
       'items-center rounded-sm',
       data.isSelectGroup
         ? `p-px bg-(--fc-pulse-unselected)`
-        : `border border-(--fc-pulse-strong-border) ${smallBoxShadowClass}`
+        : `border border-(--fc-pulse-strong-border) overflow-hidden ${smallBoxShadowClass}`
     ],
 
     buttonClass: (data) => [
@@ -149,20 +149,20 @@ export const defaultUiEventCalendarOptions: {
           )
         // primary/secondary buttons
         : joinClassNames(
-            !data.inGroup && 'rounded-sm',
+            !data.inGroup
+              ? 'rounded-sm border'
+              : 'not-first:border-s',
             data.isPrimary
               // primary
               ? joinClassNames(
                   primaryButtonClass,
-                  'border',
                   !data.inGroup && largeBoxShadowClass,
                 )
               // secondary
               : joinClassNames(
                   secondaryButtonClass,
-                  data.inGroup
-                    ? `first:rounded-s-sm last:rounded-e-sm not-first:border-s`
-                    : `border ${smallBoxShadowClass}`,
+                  !data.inGroup && smallBoxShadowClass,
+                  data.inGroup ? 'border-(--fc-pulse-border)' : 'border-(--fc-pulse-strong-border)',
                 )
           ),
     ],

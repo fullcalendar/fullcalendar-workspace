@@ -13,14 +13,10 @@ clean+build all:
   pn build
 
 
-test in multiple themes (except Pulse already fixed):
-  standalone secondary button has wrong border
 don't let xxsTextClass into dayHeaders ever
 policy on oklch colors?
 Audit all day-popover max widths
 Should core decide sticky-top for list-view dayHeader? YES
-Should default-ui non-view buttonGroups look like nice continuous pill-box?
-  (start with Monarch)
 Audit all ui-default-options-event-calendar.ts
 BUG: resourceTimelineThreeDay w/ slotDuration:{days:1},
   hovered-event show resizer which bleeds out of scrollpane and shows h-scrollbars
