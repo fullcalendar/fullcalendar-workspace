@@ -90,6 +90,7 @@ interface ResourceTimelineLayoutNormalProps {
   fallbackBusinessHours: EventStore
 
   slotWidth: number | undefined
+  slotLiquid: boolean
   timeCanvasWidth: number | undefined
   spreadsheetColWidths: number[] | undefined
   spreadsheetCanvasWidth: number | undefined
@@ -524,9 +525,16 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   <div // the canvas
                     aria-hidden
                     className={joinClassNames( // TODO: DRY
-                      classNames.flexCol,
                       classNames.rel, // origin for now-indicator
+                      classNames.flexCol,
                       timeCanvasWidth == null && classNames.liquid,
+
+                      // slotLiquid:true implies that slots are expanding bigger than their min,
+                      // and that there are NOT any horizontal scrollbars. if so, then no worries
+                      // about sticky-event-titles. if so, we're able to apply cropping to prevent
+                      // event hover-resizers and whatnot from bleeding out of the canvas and causing
+                      // horizontal scrollbars when there normally wouldn't be any
+                      props.slotLiquid && classNames.crop,
                     )}
                     style={{ width: timeCanvasWidth }}
                   >
@@ -600,6 +608,13 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     classNames.rel,
                     classNames.grow,
                     classNames.flexCol,
+
+                    // slotLiquid:true implies that slots are expanding bigger than their min,
+                    // and that there are NOT any horizontal scrollbars. if so, then no worries
+                    // about sticky-event-titles. if so, we're able to apply cropping to prevent
+                    // event hover-resizers and whatnot from bleeding out of the canvas and causing
+                    // horizontal scrollbars when there normally wouldn't be any
+                    props.slotLiquid && classNames.crop,
                   )}
                   style={{ width: timeCanvasWidth }}
                   ref={this.handleBodyEl}

@@ -107,7 +107,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
 
     /* table positions */
 
-    let [timeCanvasWidth, slotWidth] = this.computeSlotWidth(
+    let [timeCanvasWidth, slotWidth, slotLiquid] = this.computeSlotWidth(
       tDateProfile.slotCnt,
       tDateProfile.slotsPerLabel,
       options.slotMinWidth,
@@ -181,6 +181,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
             ) : (
               <ResourceTimelineLayoutNormal
                 {...baseProps}
+                slotLiquid={slotLiquid}
                 timeClientWidthRef={this.handleTimeClientWidth}
                 slotInnerWidthRef={this.handleSlotInnerWidth}
                 initialSpreadsheetWidth={

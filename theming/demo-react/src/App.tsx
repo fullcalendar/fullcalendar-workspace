@@ -649,6 +649,7 @@ function SchedulerDemo(props: DemoProps) {
         resourceTimelineThreeDay: {
           type: 'resourceTimeline',
           duration: { days: 3 },
+          // slotDuration: { days: 1 },
         },
         resourceTimeline: {
           slotDuration: '01:00',

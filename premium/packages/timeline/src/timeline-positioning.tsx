@@ -19,7 +19,7 @@ export function computeSlotWidth(
 ): [
   canvasWidth: number | undefined,
   slatWidth: number | undefined,
-  slatLiquid: boolean, // unused. TODO: kill this or have good reason to revive
+  slotLiquid: boolean,
 ] {
   if (labelInnerWidth == null || viewportWidth == null) {
     return [undefined, undefined, false]
@@ -31,18 +31,18 @@ export function computeSlotWidth(
     MIN_SLOT_WIDTH,
   )
   const slatTryWidth = viewportWidth / slatCnt
-  let slatLiquid: boolean
+  let slotLiquid: boolean
   let slatWidth: number
 
   if (slatTryWidth >= slatMinWidth) {
-    slatLiquid = true
+    slotLiquid = true
     slatWidth = slatTryWidth
   } else {
-    slatLiquid = false
+    slotLiquid = false
     slatWidth = Math.max(slatMinWidth, slatTryWidth)
   }
 
-  return [slatWidth * slatCnt, slatWidth, slatLiquid]
+  return [slatWidth * slatCnt, slatWidth, slotLiquid]
 }
 
 export function timeToCoord( // pixels

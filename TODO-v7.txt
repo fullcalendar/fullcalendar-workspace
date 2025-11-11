@@ -13,8 +13,6 @@ clean+build all:
   pn build
 
 
-BUG: resourceTimelineThreeDay w/ slotDuration:{days:1},
-  hovered-event show resizer which bleeds out of scrollpane and shows h-scrollbars
 Setting for FIRST slot, for hiding label
 In list-view, hover-text-underline for events that have .href like "Click for Google"? themes that DON'T do this:
   Forma
