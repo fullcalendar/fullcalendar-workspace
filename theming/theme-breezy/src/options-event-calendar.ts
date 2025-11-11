@@ -539,6 +539,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         listItemEventClass: (data) => [
           `p-4 items-center gap-3 not-last:border-b`,
+          'group',
           params.mutedBorderColorClass,
           data.isInteractive
             ? params.faintHoverPressableClass
@@ -548,7 +549,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listItemEventInnerClass: 'flex flex-row gap-3 text-sm',
 
         listItemEventTimeClass: `shrink-0 w-1/2 max-w-50 whitespace-nowrap overflow-hidden text-ellipsis ${params.mutedFgClass}`,
-        listItemEventTitleClass: `grow min-w-0 font-medium whitespace-nowrap overflow-hidden ${params.fgClass}`,
+        listItemEventTitleClass: (data) => [
+          `grow min-w-0 font-medium whitespace-nowrap overflow-hidden ${params.fgClass}`,
+          data.event.url && 'group-hover:underline',
+        ],
 
         noEventsClass: 'grow py-15 flex flex-col items-center justify-center',
         noEventsInnerClass: 'py-15',

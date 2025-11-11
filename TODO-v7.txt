@@ -14,10 +14,6 @@ clean+build all:
 
 
 Setting for FIRST slot, for hiding label
-In list-view, hover-text-underline for events that have .href like "Click for Google"? themes that DON'T do this:
-  Forma
-  Breezy
-  Pulse
 Force display of day-of-month in day-header for certain stylized views?
   Monarch/Forma/Breezy > TimeGridDay
 Pulse > TimeGridDay header is busted

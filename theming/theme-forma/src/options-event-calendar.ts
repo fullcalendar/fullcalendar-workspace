@@ -469,12 +469,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isInteractive
             ? params.eventFaintPressableClass
             : params.eventFaintBgClass,
+          'group',
           'p-3 flex flex-row rounded-sm border-s-6 border-(--fc-event-color)',
         ],
 
         listItemEventInnerClass: 'flex flex-row gap-2 text-sm',
         listItemEventTimeClass: 'shrink-0 w-1/2 max-w-40 whitespace-nowrap overflow-hidden text-ellipsis',
-        listItemEventTitleClass: 'grow min-w-0 font-semibold whitespace-nowrap overflow-hidden',
+        listItemEventTitleClass: (data) => [
+          'grow min-w-0 font-semibold whitespace-nowrap overflow-hidden',
+          data.event.url && 'group-hover:underline',
+        ],
 
         noEventsClass: 'grow flex flex-col items-center justify-center',
         noEventsInnerClass: 'py-15',
