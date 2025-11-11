@@ -19,7 +19,8 @@ export function createSlots(
     dayHeaderContent: (data) => (
       (!data.dayNumberText || !data.isToday || data.inPopover) ? (
         // simple
-        data.text
+        // NOTE: wrapping in Fragment prevents Preact VDOM bug. Try upgrading Preact
+        <Fragment>{data.text}</Fragment>
       ) : (
         // circle inside
         <Fragment>
@@ -54,7 +55,8 @@ export function createSlots(
     dayCellTopContent: (data) => (
       !data.isToday ? (
         // simple
-        data.text
+        // NOTE: wrapping in Fragment prevents Preact VDOM bug. Try upgrading Preact
+        <Fragment>{data.text}</Fragment>
       ) : (
         // circle inside
         <Fragment>

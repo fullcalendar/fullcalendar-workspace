@@ -15,7 +15,6 @@ clean+build all:
 
 Force display of day-of-month in day-header for certain stylized views?
   Monarch/Forma/Breezy > TimeGridDay
-Pulse > TimeGridDay header is busted
 
 
 CODE-QUALITY (while going through each theme)
