@@ -177,7 +177,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       highlightClass: params.highlightClass,
       nonBusinessClass: params.faintBgClass,
 
-      popoverClass: 'min-w-[220px] ' + params.popoverClass,
+      popoverClass: 'min-w-55 ' + params.popoverClass,
       popoverCloseClass: [
         'absolute inline-flex flex-row top-1.5 end-1.5 p-1 rounded-sm group',
         params.tertiaryOutlineColorClass,

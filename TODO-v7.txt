@@ -13,23 +13,13 @@ clean+build all:
   pn build
 
 
-don't let xxsTextClass into dayHeaders ever
-policy on oklch colors?
-Audit all day-popover max widths
-Should core decide sticky-top for list-view dayHeader? YES
-Audit all ui-default-options-event-calendar.ts
 BUG: resourceTimelineThreeDay w/ slotDuration:{days:1},
   hovered-event show resizer which bleeds out of scrollpane and shows h-scrollbars
 Setting for FIRST slot, for hiding label
-How to deal with sticky resource (or day?) headers in v-resource view,
-  that stick for a very short runway and look miscentered over content below
-  (find other todolist item for this) see resourceTimeGridTwoDay
 In list-view, hover-text-underline for events that have .href like "Click for Google"? themes that DON'T do this:
   Forma
   Breezy
   Pulse
-Punt: Forma business non-hours effect with dark line at top bottom (see real outlook site)
-  Can only be done when isStart/isEnd available on nonBusinessClass
 Force display of day-of-month in day-header for certain stylized views?
   Monarch/Forma/Breezy > TimeGridDay
 Pulse > TimeGridDay header is busted
@@ -309,6 +299,12 @@ list-view day-headers no longer respect stickyHeaderDates, ALWAYS STICKY
 test: can now-indicator dots/lines accidentally create more scroll area causing scroll mis-sync?
 BUG: timeline-event sticky titles have f-stickyS, which does left+right,
   causing title to overlap time when scrolling left
+policy on oklch colors?
+Punt: Forma business non-hours effect with dark line at top bottom (see real outlook site)
+  Can only be done when isStart/isEnd available on nonBusinessClass
+How to deal with sticky resource (or day?) headers in v-resource view,
+  that stick for a very short runway and look miscentered over content below
+  (find other todolist item for this) see resourceTimeGridTwoDay
 
 
 Changelog
@@ -1059,6 +1055,7 @@ Theme Notes
       apply .outlineWidthGroupFocusClass to sub-elements
     dayHeaderInnerClass does NOT need it! already has nav-link. but might need "offset" class
 Theme QA checklist
+  don't let xxsTextClass into dayHeaders ever
   When "today" is first of month, how long-text render in today-circle
   isNarrow column-events, background-events (daygrid + timegrid)
   week-number for resourceTimeGrid* views

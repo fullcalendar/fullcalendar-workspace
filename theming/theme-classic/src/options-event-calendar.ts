@@ -160,7 +160,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       singleMonthHeaderInnerClass: 'font-bold',
 
-      popoverClass: `${params.popoverClass} min-w-[220px]`,
+      popoverClass: `${params.popoverClass} min-w-55`,
       popoverCloseClass: joinClassNames(
         'absolute inline-flex flex-row top-0.5 end-0.5 group',
         params.primaryOutlineColorClass,
