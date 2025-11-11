@@ -390,10 +390,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         dayHeaderDividerClass: ['border-t', params.borderColorClass],
 
+        dayCellBottomClass: (data) => !data.isNarrow && 'min-h-[1px]', // TODO: DRY
+      },
+      dayGridMonth: {
         // core normally display short for month (like "Mon") but long (like "Monday") looks good in Forma
         dayHeaderFormat: { weekday: 'long' },
-
-        dayCellBottomClass: (data) => !data.isNarrow && 'min-h-[1px]', // TODO: DRY
       },
       multiMonth: {
         ...dayRowItemClasses,
