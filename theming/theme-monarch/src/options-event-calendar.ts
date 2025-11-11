@@ -400,7 +400,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             ? params.secondaryPressableClass
             : params.secondaryClass,
           data.isNarrow
-            ? `h-5 px-1.5 ${xxsTextClass}`
+            ? 'h-5 px-1.5 text-xs'
             : 'h-6 px-2 text-sm',
         ],
 

@@ -1,12 +1,5 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 
-/*
-REAL TODO:
-  continuation arrows nomore when isNarrow
-  Week-view business hours, add dark line at top bottom (see real outlook site)
-  BUG: no hover+down effect on week-number in timegrid view
-*/
-
 // ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/daygrid'
 import {} from '@fullcalendar/timegrid'
@@ -17,7 +10,7 @@ import {} from '@fullcalendar/interaction'
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
 const cellPaddingClass = 'p-2'
 const axisClass = 'justify-end' // align axisInner right
-const axisInnerClass = `${cellPaddingClass} text-end` // align text right when multiline
+const axisInnerClass = `${cellPaddingClass} text-end` // align text right when multiline -- useful anymore? only used twice
 
 const getSlotClasses = (data: { isMinor: boolean }, borderClass: string) => [
   borderClass,
@@ -235,7 +228,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-start-2', // do more than just half-width of circle, because of 6px start-border
       ] : [
         // the < continuation
-        !data.isStart && (
+        (!data.isStart && !data.isNarrow) && (
           'size-2 border-t-1 border-s-1 border-gray-500 ms-1' +
           ' -rotate-45' // TODO: make RTL-friendly
         )
@@ -245,7 +238,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         '-end-1',
       ] : [
         // the > continuation
-        !data.isEnd && (
+        (!data.isEnd && !data.isNarrow) && (
           'size-2 border-t-1 border-e-1 border-gray-500 me-1' +
           ' rotate-45' // TODO: make RTL-friendly
         )
@@ -324,13 +317,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
       dayHeaderInnerClass: (data) => [
         'p-2 flex flex-col', // TODO: adjust padding when isNarrow?
-        data.isNarrow ? xxsTextClass : 'text-xs',
         data.isToday && data.level && 'relative', // contain narrow top-border
         data.hasNavLink && joinClassNames(
           params.mutedHoverPressableClass,
           params.outlineInsetClass, // move inside
         )
       ],
+      // dayHeaderContent defined in slots.tsx...
 
       dayRowClass: `border ${params.borderColorClass}`,
       dayCellClass: (data) => [
@@ -435,8 +428,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         weekNumberHeaderClass: `${axisClass} items-end`,
         weekNumberHeaderInnerClass: (data) => [
-          axisInnerClass,
-          data.isNarrow ? xxsTextClass : 'text-xs',
+          'p-1 m-1 text-end text-xs rounded-sm',
+          data.hasNavLink && params.mutedHoverPressableClass,
         ],
 
         columnMoreLinkClass: [

@@ -27,7 +27,7 @@ export function createSlots(
         {data.dayNumberText && (
           <div
             className={joinClassNames(
-              'text-lg',
+              data.isNarrow ? 'text-md' : 'text-lg',
               data.isToday && 'font-bold',
             )}
           >{data.dayNumberText}</div>

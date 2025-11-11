@@ -13,6 +13,7 @@ clean+build all:
   pn build
 
 
+don't let xxsTextClass into dayHeaders ever
 policy on oklch colors?
 Audit all day-popover max widths
 Should core decide sticky-top for list-view dayHeader? YES
@@ -29,6 +30,8 @@ In list-view, hover-text-underline for events that have .href like "Click for Go
   Forma
   Breezy
   Pulse
+Punt: Forma business non-hours effect with dark line at top bottom (see real outlook site)
+  Can only be done when isStart/isEnd available on nonBusinessClass
 
 
 CODE-QUALITY (while going through each theme)

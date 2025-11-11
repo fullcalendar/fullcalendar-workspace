@@ -1,7 +1,7 @@
 import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
 import type * as FullCalendarPreact from '@fullcalendar/core/preact'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
-import { EventCalendarOptionParams, xxsTextClass } from './options-event-calendar.js'
+import { EventCalendarOptionParams } from './options-event-calendar.js'
 
 // HACK
 ;(createElement || Fragment); // import intentionally unused
@@ -21,9 +21,8 @@ export function createSlots(
         {data.weekdayText && (
           <div
             className={joinClassNames(
-              'uppercase',
+              'uppercase text-xs',
               params.mutedFgClass,
-              data.isNarrow ? xxsTextClass : 'text-xs',
             )}
           >{data.weekdayText}</div>
         )}
