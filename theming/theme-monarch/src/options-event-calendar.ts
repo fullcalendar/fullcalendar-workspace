@@ -393,7 +393,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         weekNumberHeaderClass: 'items-center justify-end',
         weekNumberHeaderInnerClass: (data) => [
-          'ms-1',
+          'my-2 ms-1',
           data.options.dayMinWidth !== undefined && 'me-1',
           'flex flex-row items-center rounded-full',
           data.hasNavLink

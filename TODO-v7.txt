@@ -13,7 +13,6 @@ clean+build all:
   pn build
 
 
-Monarch: timegrid weeknumber, single-day view, bad margin
 Breezy: fix how short day-header (and week-header) navlinks are when isNarrow
 test in multiple themes (except Pulse already fixed):
   standalone secondary button has wrong border
@@ -36,6 +35,9 @@ In list-view, hover-text-underline for events that have .href like "Click for Go
   Pulse
 Punt: Forma business non-hours effect with dark line at top bottom (see real outlook site)
   Can only be done when isStart/isEnd available on nonBusinessClass
+Force display of day-of-month in day-header for certain stylized views?
+  Monarch/Forma/Breezy > TimeGridDay
+Pulse > TimeGridDay header is busted
 
 
 CODE-QUALITY (while going through each theme)
