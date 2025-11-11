@@ -45,12 +45,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         params.outlineWidthFocusClass,
       ],
 
-      // TODO: weird
+      // TODO: DRY with getDayHeaderClass?
+      // NOTE: border-color determined per-view below
       resourceDayHeaderClass: (data) => [
         `border text-sm/6`,
-        data.isMajor
-          ? params.strongBorderColorClass
-          : params.borderColorClass,
         data.level
           ? `font-semibold ${params.fgClass}` // resource-above-dates
           : params.mutedFgClass,
@@ -60,10 +58,29 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceDayHeaderAlign: 'center', // best place?
     },
     views: {
+      resourceDayGrid: {
+        resourceDayHeaderClass: (data) => [
+          data.isMajor
+            ? params.strongBorderColorClass
+            : params.borderColorClass,
+        ],
+      },
+      resourceTimeGrid: {
+        resourceDayHeaderClass: (data) => [
+          data.isMajor
+            ? params.strongBorderColorClass
+            : params.mutedBorderColorClass,
+        ],
+      },
       timeline: {
         slotLabelDividerClass: `border-t ${params.strongBorderColorClass} shadow-sm`,
 
-        slotLabelClass: 'justify-end', // v-align-content (best for one-line with too much v space)
+        slotLabelRowClass: `border ${params.borderColorClass}`,
+
+        slotLabelClass: (data) => [
+          'justify-end', // v-align-content (best for one-line with too much v space)
+          data.level > 0 && `border ${params.mutedBorderColorClass}`,
+        ],
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align-content
         slotLabelInnerClass: (data) => [
           'px-3 py-2',

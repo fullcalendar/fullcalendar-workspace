@@ -60,7 +60,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
         slotLabelClass: (data) => [
           'justify-center', // v-align
-          data.isMajor && data.level > 0 && `border ${params.borderColorClass}`,
+          data.level > 0 && `border ${params.borderColorClass}`,
         ],
         slotLabelInnerClass: (data) => [
           `p-2 text-sm ${params.strongFgClass}`,

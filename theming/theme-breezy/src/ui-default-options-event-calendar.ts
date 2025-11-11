@@ -72,6 +72,7 @@ export const params: EventCalendarOptionParams = {
   fgClass: 'text-(--fc-breezy-foreground)',
   strongFgClass: 'text-(--fc-breezy-strong-foreground)',
   mutedFgClass: 'text-(--fc-breezy-muted-foreground)',
+  mutedFgHoverClass: 'hover:text-(--fc-breezy-muted-foreground)',
   faintFgClass: 'text-(--fc-breezy-faint-foreground)',
 
   // neutral borders

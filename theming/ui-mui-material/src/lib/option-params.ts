@@ -107,6 +107,7 @@ export const params: ThemeOptionParams = {
   fgClass: 'text-(--mui-palette-text-primary)',
   strongFgClass: 'text-(--mui-palette-text-primary)',
   mutedFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]',
+  mutedFgHoverClass: 'hover:text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]',
   faintFgClass: 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.4)]',
 
   // neutral borders

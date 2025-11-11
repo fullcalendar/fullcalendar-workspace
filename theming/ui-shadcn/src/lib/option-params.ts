@@ -75,6 +75,7 @@ export const params: ThemeOptionParams = {
   fgClass: '', // inherited
   strongFgClass: '', // inherited
   mutedFgClass: 'text-muted-foreground',
+  mutedFgHoverClass: 'hover:text-muted-foreground',
   faintFgClass: 'text-muted-foreground',
 
   // neutral borders

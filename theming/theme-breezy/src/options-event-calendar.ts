@@ -8,6 +8,9 @@ import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/interaction'
 
 /*
+COLOR TODO:
+  default-ui: are timegrid borders too faint (esp now that we have dotted isMinor) ?
+
 NOTE: We don't do active: states, because tailwindplus does not do this!
 
 REFERENCE:
@@ -18,21 +21,6 @@ REFERENCE:
     https://tailwindcss.com/plus/ui-blocks/application-ui/navigation/tabs#component-2a66fc822e8ad55f59321825e5af0980
   Flyout menus:
     https://tailwindcss.com/plus/ui-blocks/marketing/elements/flyout-menus#component-25601925ae83e51e1b31d3bd1c286515
-
-REAL TODO:
-  timeline: add lines between slotLabel levels
-    even though v-aligned bottom to look good for 1-level situation
-  shadow on resourceArea?
-  list-view alt-dayheader-format hover... make more contrast text
-  multi-month, when single-col,
-    LOOKS WEIRD: singleMonthHeader slightly different height than dayHeaderRow
-    (In other themes too?)
-  resource-timeGRID-DAY,
-    border colors between header/body inconsistent
-  timegrid WEEK-number needs hover effect
-  default-ui: are timegrid borders too faint (esp now that we have dotted isMinor) ?
-  should all datagrid text color be high?
-    Look at tailwindPLUS for inspiration
 */
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
@@ -55,6 +43,7 @@ export interface EventCalendarOptionParams {
   fgClass: string
   strongFgClass: string
   mutedFgClass: string
+  mutedFgHoverClass: string
   faintFgClass: string
 
   // neutral borders
@@ -220,13 +209,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'flex flex-row items-center', // v-align
         (data.isToday && !data.inPopover)
           // circle inside (see slots.tsx)
-          ? 'mx-2 my-2 h-8 group outline-none'
+          ? joinClassNames(
+              'mx-2 my-2 group outline-none',
+              data.isNarrow ? 'h-6' : 'h-8'
+            )
           // ghost-button-like
           : joinClassNames(
-              'h-6 px-1 rounded-sm',
+              'mx-2 px-1 rounded-sm',
+              data.isNarrow ? 'h-4' : 'h-6',
               (data.dayNumberText && !data.inPopover)
-                ? 'mx-2 my-3' // timegrid-view
-                : 'mx-2.5 my-2', // popover or month-view
+                ? 'my-3' // timegrid-view
+                : 'my-2', // popover or month-view
               data.hasNavLink && joinClassNames(
                 params.mutedHoverPressableClass,
                 params.primaryOutlineColorClass,
@@ -235,6 +228,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             ),
         // TODO: consider isNarrow for above scenarios
       ],
+      // see dayHeaderContent in slots.tsx...
 
       dayRowClass: `border ${params.borderColorClass}`,
 
@@ -461,10 +455,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         dayCellClass: (data) => data.isMajor
           ? params.strongBorderColorClass
           : params.mutedBorderColorClass,
+
         weekNumberHeaderClass: 'justify-end items-center',
         weekNumberHeaderInnerClass: (data) => [
-          `px-3 ${params.mutedFgClass}`,
-          data.isNarrow ? xxsTextClass : 'text-sm',
+          `m-2 px-1 ${params.mutedFgClass} flex flex-row items-center rounded-sm`,
+          data.isNarrow ? 'h-4' : 'h-6',
+          data.isNarrow ? 'text-xs' : 'text-sm',
+          data.hasNavLink && params.mutedHoverPressableClass,
         ],
 
         /*
@@ -509,7 +506,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
               )
             : joinClassNames(
                 params.faintFgClass,
-                data.hasNavLink && params.mutedHoverPressableClass,
+                data.hasNavLink && joinClassNames(
+                  params.mutedHoverPressableClass,
+                  params.mutedFgHoverClass,
+                ),
               )
         ],
 
