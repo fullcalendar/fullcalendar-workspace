@@ -13,6 +13,53 @@ clean+build all:
   pn build
 
 
+TODO
+  Hide isFirst slot label in timeline (in Monarch & more)
+  Make all axis font sizes XS when isNarrow instead of XXS?
+  Is there an issue with the computer sleeping (or tab going inactive)
+    and then there's a JS error which kills resizerobserver?
+    Same problem when using Vite devmode and commenting out calendars
+  Instead of:
+    top-0 bottom-0 ---> inset-y-0
+    start-0 right-0 ---> inset-x-0
+THEME CHECKLIST
+  test isNarrow for vertical resource view resource-day-headers (non-h-scrolling)
+  daygrid bg events have text title align with daycelltop
+  Test RTL with [dir=rtl] selectors
+  ensure most flex-rows have items-center
+  Probably put all "group" first. Like absolute or relative
+THEME NOTES
+  timeline events/more-link do NOT need to do isNarrow
+MAYBE REFACTOR
+  Think about inlining slots.tsx
+    Our AI will know to put all *Content props in separate files for Vue/Angular hopefully
+  QUESTION: which elements should have implicit 'relative' to make it an offsetparent?
+    resourceAreaHeaderClass already has f-rel
+FLEX AUDIT
+  Find all theme "flex"
+  Find all assumed flex but chosen "flex-row" or "flex-col"
+  Why would we use "inline-flex" instead
+  datagrid headers+cells have outer-div as flex-col, but intermediate inner-wrap is flex-row
+    needs to be flex-row for expander
+    but make BOTH flex-row? think about it? necessary?
+  CATALOG
+    - blockEventInnerClass: no flex, no force
+    - dayHeaderClass: f-flexRow
+    - weekNumberHeaderClass: f-flexRow
+    - weekNumberHeaderInnerClass: no flex, no force
+    - allDayHeaderClass: f-flexRow
+    - allDayHeaderInnerClass: ???
+    - listItemEventClass: f-flexRow
+    - listItemEventInnerClass: f-flexRow
+    - resourceDayHeaderClass: f-flexCol
+    - resourceDayHeaderInnerClass: no flex, no force
+    - resourceAreaHeaderClass: f-flexCol
+    - resourceAreaHeaderInnerClass: no flex, no force
+    - resourceIndentClass: f-flexRow
+    - slotLabelClass: f-flexCol (just for timeline?)
+    - slotLabelInnerClass: ??? (just for timeline?)
+
+
 CODE-QUALITY (while going through each theme)
   ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)
   ensure no unnecessary `` instead ''

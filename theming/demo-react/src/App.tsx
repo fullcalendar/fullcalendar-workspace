@@ -559,7 +559,8 @@ function EventCalendarDemo(props: DemoProps) {
         {
           "title": "Conference",
           "start": "2025-07-03",
-          "end": "2025-07-05"
+          "end": "2025-07-05",
+          // display: 'background',
         },
         {
           "title": "Meeting",

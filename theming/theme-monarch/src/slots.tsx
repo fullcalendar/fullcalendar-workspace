@@ -21,7 +21,7 @@ export function createSlots(
         {data.weekdayText && (
           <div
             className={joinClassNames(
-              'uppercase text-xs',
+              'text-xs uppercase',
               params.mutedFgClass,
             )}
           >{data.weekdayText}</div>
@@ -29,16 +29,16 @@ export function createSlots(
         {data.dayNumberText && (
           <div
             className={joinClassNames(
-              'm-0.5 flex flex-row items-center justify-center rounded-full',
+              'm-0.5 rounded-full flex flex-row items-center justify-center',
               data.isNarrow
-                ? 'text-md size-7'
-                : 'text-lg size-8',
+                ? 'size-7 text-md'
+                : 'size-8 text-lg',
               data.isToday
                 ? (data.hasNavLink ? params.tertiaryPressableGroupClass : params.tertiaryClass)
                 : (data.hasNavLink && params.mutedHoverPressableGroupClass),
               data.hasNavLink && joinClassNames(
-                params.tertiaryOutlineColorClass,
                 params.outlineWidthGroupFocusClass,
+                params.tertiaryOutlineColorClass,
               ),
             )}
           >{data.dayNumberText}</div>

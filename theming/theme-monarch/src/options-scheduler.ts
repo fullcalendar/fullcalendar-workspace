@@ -13,21 +13,32 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
+  const resourceDayHeaderClasses = {
+    dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
+    dayHeaderInnerClass: 'mb-1',
+  }
+
   return {
     optionDefaults: {
       resourceDayHeaderAlign: 'center',
+
+      // FORCED flex-col
       resourceDayHeaderClass: (data) => [
-        'items-center border',
+        'border items-center',
         data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
         data.isDisabled && params.faintBgClass,
       ],
+      // NOT forced
       resourceDayHeaderInnerClass: (data) => [
         'p-2 flex flex-col',
         data.isNarrow ? xxsTextClass : 'text-sm',
       ],
 
       resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
+
+      // FORCED flex-col
       resourceAreaHeaderClass: `border ${params.borderColorClass} justify-center`, // v-align
+      // NOT forced
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
       resourceAreaHeaderResizerClass: 'absolute top-0 bottom-0 w-[5px] end-[-3px]',
 
@@ -43,12 +54,14 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
 
+      // FORCED flex-row
       resourceIndentClass: 'ms-1 -me-1.5 items-center',
+
       resourceExpanderClass: [
-        'p-1 rounded-full group flex flex-row',
+        'p-1 rounded-full flex flex-row group',
         params.mutedHoverPressableClass,
-        params.tertiaryOutlineColorClass,
         params.outlineWidthFocusClass,
+        params.tertiaryOutlineColorClass,
       ],
 
       resourceLaneClass: `border ${params.borderColorClass}`,
@@ -59,48 +72,60 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
     },
     views: {
       timeline: {
-        rowEventClass: (data) => [
-          data.isEnd && 'me-px',
-        ],
+        rowEventClass: (data) => data.isEnd && 'me-px',
 
-        rowEventInnerClass: (data) => [
-          data.options.eventOverlap
-            ? 'py-1'
-            : 'py-2',
-        ],
+        rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
 
-        rowMoreLinkClass: `me-px mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
+        rowMoreLinkClass: [
+          'me-px mb-px rounded-sm',
+          'border border-transparent print:border-black',
+          `${params.strongSolidPressableClass} print:bg-white`,
+        ],
         rowMoreLinkInnerClass: 'p-1 text-xs',
 
-        slotLabelAlign: (data) => (data.level || data.isTime) ? 'start' : 'center',
+        // for timeline, this means H-ALIGN
+        slotLabelAlign: (data) => (
+          (data.level || data.isTime)
+            // pill OR time
+            ? 'start'
+            // other
+            : 'center'
+        ),
         slotLabelSticky: '0.5rem', // for pill
+
+        // FORCE flex-col
         slotLabelClass: (data) => [
           'border',
           data.level
             // housing for pill
-            ? 'border-transparent justify-start' // v-align-content
+            ? 'border-transparent justify-start' // v-align
+            // cell-like
             : joinClassNames(
                 params.borderColorClass,
                 data.isTime
                   // time-tick
-                  ? 'h-2 self-end justify-end' // v-align-self, v-align-content
+                  ? 'h-2 self-end justify-end' // self-v-align, v-align
                   // day-header
-                  : 'justify-center', // v-align-content
+                  : 'justify-center', // v-align
               )
         ],
         slotLabelInnerClass: (data) => [
           'text-sm',
           data.level
-            ? joinClassNames( // pill
-                'px-2 py-1 my-0.5 rounded-full',
+            // pill
+            ? joinClassNames(
+                'my-0.5 px-2 py-1 rounded-full',
                 data.hasNavLink
                   ? params.secondaryPressableClass
                   : params.secondaryClass,
               )
-            : joinClassNames( // just text
+            // cell-like inner
+            : joinClassNames(
                 'px-2',
                 data.isTime
+                  // time-tick inner
                   ? 'pb-3 relative -start-3'
+                  // day-header inner
                   : 'py-2',
                 data.hasNavLink && 'hover:underline',
               )
@@ -108,14 +133,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
       },
-      resourceTimeGrid: {
-        dayHeaderDividerClass: `border-b ${params.borderColorClass}`, // TODO: DRY
-        dayHeaderInnerClass: 'mb-2',
-      },
-      resourceDayGrid: {
-        dayHeaderDividerClass: `border-b ${params.borderColorClass}`, // TODO: DRY
-        dayHeaderInnerClass: 'mb-2',
-      },
+      resourceTimeGrid: resourceDayHeaderClasses,
+      resourceDayGrid: resourceDayHeaderClasses,
     },
   }
 }
