@@ -19,9 +19,6 @@ TODO
   Is there an issue with the computer sleeping (or tab going inactive)
     and then there's a JS error which kills resizerobserver?
     Same problem when using Vite devmode and commenting out calendars
-  Instead of:
-    top-0 bottom-0 ---> inset-y-0
-    start-0 right-0 ---> inset-x-0
 THEME CHECKLIST
   test isNarrow for vertical resource view resource-day-headers (non-h-scrolling)
   daygrid bg events have text title align with daycelltop
