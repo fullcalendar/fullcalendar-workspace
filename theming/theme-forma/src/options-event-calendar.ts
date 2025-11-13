@@ -379,7 +379,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayLaneInnerClass: (data) => (
         data.isSimple
           ? 'm-1' // simple print-view
-          : 'ms-0.5 me-[2.5%]'
+          : data.isNarrow ? 'mx-px' : 'ms-0.5 me-[2.5%]'
       ),
 
       // Timeline

@@ -102,6 +102,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       ...dateMeta,
       ...props.renderProps,
       isSimple,
+      isNarrow: props.isNarrow,
       isMajor: props.isMajor,
       view: context.viewApi,
     }

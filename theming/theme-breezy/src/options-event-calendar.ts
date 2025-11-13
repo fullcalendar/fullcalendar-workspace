@@ -105,7 +105,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
-  const dayGridClasses: CalendarOptions = {
+  const tallDayCellBottomClass = 'min-h-3'
+  const getShortDayCellBottomClass = (data: { isNarrow: boolean }) => (
+    !data.isNarrow && 'min-h-[1px]'
+  )
+
+  const dayRowCommonClasses: CalendarOptions = {
     // TODO: move to general settings
     inlineWeekNumberClass: (data) => [
       'absolute top-0 end-0',
@@ -423,14 +428,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,
       nowIndicatorDotClass: `rounded-full size-0 -m-[6px] border-6 ${params.nowBorderColorClass} ring-2 ${params.bgRingColorClass}`,
-
-      // TODO: event resizing
-      // TODO: do isMajor border as darker (and put into checklist)
     },
     views: {
       dayGrid: {
-        ...dayGridClasses,
-        dayCellBottomClass: (data) => !data.isNarrow && 'min-h-[1px]', // TODO: DRY
+        ...dayRowCommonClasses,
+        dayCellBottomClass: getShortDayCellBottomClass,
         dayHeaderDividerClass: `border-b ${params.strongBorderColorClass}`,
         dayCellClass: (data) => data.isMajor
           ? params.strongBorderColorClass
@@ -444,8 +446,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ),
       },
       multiMonth: {
-        ...dayGridClasses,
-        dayCellBottomClass: (data) => !data.isNarrow && 'min-h-[1px]', // TODO: DRY
+        ...dayRowCommonClasses,
+        dayCellBottomClass: getShortDayCellBottomClass,
         dayHeaderDividerClass: (data) => [
           data.isSticky && `border-b ${params.strongBorderColorClass} shadow-sm`,
         ],
@@ -459,12 +461,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         tableHeaderClass: (data) => data.isSticky && params.bgClass,
         tableBodyClass: `border ${params.borderColorClass} shadow-sm rounded-md overflow-hidden`,
-
-        // TODO: sync with dayGrid?
       },
       timeGrid: {
-        ...dayGridClasses,
-        dayCellBottomClass: 'min-h-3',
+        ...dayRowCommonClasses,
+        dayCellBottomClass: tallDayCellBottomClass,
 
         allDayDividerClass: `border-b ${params.strongBorderColorClass} shadow-sm`,
 
@@ -494,25 +494,27 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.hasNavLink && params.mutedHoverPressableClass,
         ],
 
-        /*
-        Figure out how not having any border on slotLabel affects height-syncing
-        */
         slotLabelClass: 'justify-end',
         slotLabelInnerClass: (data) => [
-          'relative px-3 py-2 -top-3.5',
+          'relative px-3 py-2',
+          data.isNarrow ? '-top-3.5' : '-top-4',
           data.isFirst && 'hidden',
-          // same top value works when isNarrow or not
         ],
 
         slotLabelDividerClass: `border-l ${params.mutedBorderColorClass}`,
 
+        dayLaneInnerClass: (data) => (
+          data.isSimple
+            ? 'm-1' // simple print-view
+            : data.isNarrow ? 'mx-px' : 'mx-1'
+        ),
+
         columnEventClass: (data) => [
-          data.isNarrow ? 'mx-px' : 'mx-1', // TODO: move this to the columnInner thing? yes!!
           data.isStart && (data.isNarrow ? 'mt-px' : 'mt-1'),
           data.isEnd && (data.isNarrow ? 'mb-px' : 'mb-1'),
         ],
         columnMoreLinkClass: (data) => [
-          data.isNarrow ? 'm-px' : 'm-1',
+          data.isNarrow ? 'my-px' : 'my-1',
         ],
       },
       list: {

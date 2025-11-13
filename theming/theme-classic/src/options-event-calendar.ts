@@ -319,9 +319,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayCellInnerClass: (data) => data.inPopover && 'p-2',
 
       dayLaneClass: getDayClasses,
-      dayLaneInnerClass: (data) => data.isSimple
-        ? 'm-1' // simple print-view
-        : 'ms-0.5 me-[2.5%]',
+      dayLaneInnerClass: (data) => (
+        data.isSimple
+          ? 'm-1' // simple print-view
+          : data.isNarrow ? 'mx-px' : 'ms-0.5 me-[2.5%]'
+      ),
 
       slotLabelRowClass: `border ${params.borderColorClass}`, // timeline only
       slotLabelClass: getSlotClasses,

@@ -444,7 +444,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
 
         columnEventClass: (data) => [
-          'mx-0.5', // TODO: move this to the columnInner thing? yes!!
+          'mx-0.5', // TODO: move this to the columnInner thing? yes!! (dayLaneInnerClass)
           data.isStart && 'mt-0.5',
           data.isEnd && 'mb-0.5',
         ],

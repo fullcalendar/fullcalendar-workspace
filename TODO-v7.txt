@@ -23,6 +23,7 @@ TODO
   Maybe disable navLink on more-popover header?
     Weird to click +more link in timegrid, and immediately be hover-state on popover, esp Forma
     This navlink isn't very useful anyway
+  touch-resizing columnEvent in timegrid when isNarrow, column seems to crop selection-border. why?
 THEME CHECKLIST
   test isNarrow for vertical resource view resource-day-headers (non-h-scrolling)
   daygrid bg events have text title align with daycelltop
@@ -36,6 +37,8 @@ THEME CHECKLIST
   dayHeaderClass has f-flexCol,
     always set justify-* for v-align
     REMOVE items-center because alignment done via dayHeaderAlign
+  always use dayLaneInnerClass instead of columnEvent x-margins
+    ensure handling of isNarrow
 THEME NOTES
   timeline events/more-link do NOT need to do isNarrow
   Dot uses border instead of bg because it shows up in print
