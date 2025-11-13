@@ -105,16 +105,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
-  const getDayGridItemClass = (data: { isNarrow: boolean }) => joinClassNames(
-    'mb-px',
-    data.isNarrow
-      ? 'mx-px rounded-sm'
-      : 'mx-1 rounded-md',
-  )
   const dayGridClasses: CalendarOptions = {
-    /*
-    BUG: z-index is wrong, can't click week numbers
-    */
+    // TODO: move to general settings
     inlineWeekNumberClass: (data) => [
       'absolute top-0 end-0',
       `border-b ${params.strongBorderBottomColorClass} border-s ${params.borderStartColorClass} rounded-es-md ${params.bgClass} ${params.mutedFgClass}`,
@@ -136,8 +128,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
 
     listItemEventClass: (data) => [
-      'p-px',
-      getDayGridItemClass(data),
+      'mb-px p-px',
+      data.isNarrow
+        ? 'mx-px rounded-sm'
+        : 'mx-1 rounded-md',
       data.isSelected
         ? joinClassNames(params.mutedBgClass, data.isDragging && 'shadow-sm')
         : (data.isInteractive ? params.mutedHoverPressableClass : params.mutedHoverClass),
@@ -157,8 +151,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
 
     rowMoreLinkClass: (data) => [
-      getDayGridItemClass(data),
-      'border',
+      'mb-px border',
+      data.isNarrow
+        ? 'mx-px rounded-sm'
+        : 'mx-1 rounded-md',
       data.isNarrow
         ? params.primaryBorderColorClass
         : 'border-transparent self-start',
@@ -171,23 +167,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ]
   }
 
-  const getDayHeaderClass = (
-    defaultBorderColorClass: string,
-    data: { isNarrow: boolean, inPopover: boolean, isMajor: boolean }
-  ) => (
-    data.inPopover ? params.popoverHeaderClass :
-      data.isMajor ? `border ${params.strongBorderColorClass}` :
-        !data.isNarrow && `border ${defaultBorderColorClass}`
-        // ^isNarrow is a HACK to detect multi-month multi-col
-  )
-
   return {
     optionDefaults: {
+      dayNarrowWidth: 100,
+      eventShortHeight: 50,
       eventColor: params.eventColor,
       backgroundEventColor: params.bgEventColor,
-
-      eventShortHeight: 50,
-      dayNarrowWidth: 100,
 
       popoverClass: `min-w-55 ${params.popoverClass}`,
       popoverCloseClass: [
@@ -200,8 +185,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       highlightClass: params.highlightClass,
       nonBusinessClass: params.faintBgClass,
 
-      dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center', // h-align
       dayHeaderRowClass: `border ${params.mutedBorderColorClass}`,
+
+      dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center', // h-align
+
+      dayHeaderClass: (data) => data.inPopover && params.popoverHeaderClass,
 
       // ensure v-align center for dayHeaderClass?
 
@@ -315,21 +303,21 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       moreLinkClass: [
-        params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
+        params.primaryOutlineColorClass,
       ],
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
       navLinkClass: [
-        params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
+        params.primaryOutlineColorClass,
       ],
 
       eventClass: (data) => [
-        params.primaryOutlineColorClass,
         data.isSelected
           ? params.outlineWidthClass
           : params.outlineWidthFocusClass,
+        params.primaryOutlineColorClass,
       ],
 
       blockEventClass: (data) => [
@@ -443,10 +431,16 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayGridClasses,
         dayCellBottomClass: (data) => !data.isNarrow && 'min-h-[1px]', // TODO: DRY
         dayHeaderDividerClass: `border-b ${params.strongBorderColorClass}`,
-        dayHeaderClass: (data) => getDayHeaderClass(params.borderColorClass, data),
         dayCellClass: (data) => data.isMajor
           ? params.strongBorderColorClass
           : params.borderColorClass,
+
+        dayHeaderClass: (data) => (
+          !data.inPopover && (
+            data.isMajor ? `border ${params.strongBorderColorClass}` :
+              !data.isNarrow && `border ${params.borderColorClass}`
+          )
+        ),
       },
       multiMonth: {
         ...dayGridClasses,
@@ -454,7 +448,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         dayHeaderDividerClass: (data) => [
           data.isSticky && `border-b ${params.strongBorderColorClass} shadow-sm`,
         ],
-        dayHeaderClass: (data) => getDayHeaderClass(params.borderColorClass, data),
+
+        dayHeaderClass: (data) => (
+          !data.inPopover && (
+            data.isMajor ? `border ${params.strongBorderColorClass}` :
+              !data.isNarrow && `border ${params.borderColorClass}`
+          )
+        ),
 
         tableHeaderClass: (data) => data.isSticky && params.bgClass,
         tableBodyClass: `border ${params.borderColorClass} shadow-sm rounded-md overflow-hidden`,
@@ -473,7 +473,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             ? params.borderColorClass
             : `${params.strongBorderColorClass} shadow-sm`,
         ],
-        dayHeaderClass: (data) => getDayHeaderClass(params.mutedBorderColorClass, data),
+
+        dayHeaderClass: (data) => (
+          !data.inPopover && (
+            data.isMajor ? `border ${params.strongBorderColorClass}` :
+              !data.isNarrow && `border ${params.mutedBorderColorClass}`
+          )
+        ),
+
         dayCellClass: (data) => data.isMajor
           ? params.strongBorderColorClass
           : params.mutedBorderColorClass,
