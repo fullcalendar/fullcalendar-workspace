@@ -172,19 +172,19 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       nonBusinessClass: params.faintBgClass,
       highlightClass: params.highlightClass,
 
-      moreLinkClass: joinClassNames(
+      moreLinkClass: [
         params.outlineWidthFocusClass,
         params.tertiaryOutlineColorClass,
-      ),
+      ],
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
-      navLinkClass: joinClassNames(
+      navLinkClass: [
         params.outlineWidthFocusClass,
         params.tertiaryOutlineColorClass,
-      ),
+      ],
 
       inlineWeekNumberClass: (data) => [
-        'absolute flex flex-row items-center', // v-align
+        'absolute flex flex-row items-center whitespace-nowrap', // v-align
         data.isNarrow
           ? `top-0.5 start-0 my-px pe-1 h-4 rounded-e-full ${xxsTextClass}` // half-pill
           : 'top-1.5 start-1 px-2 h-6 rounded-full text-sm', // pill
@@ -318,9 +318,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleSticky: false, // disabled because title is below time
 
       columnMoreLinkClass: [
-        `mb-px rounded-sm ring ${params.bgRingColorClass}`,
-        'border border-transparent print:border-black',
+        'mb-px border border-transparent print:border-black rounded-sm',
         `${params.strongSolidPressableClass} print:bg-white`,
+        `ring ${params.bgRingColorClass}`,
       ],
       columnMoreLinkInnerClass: (data) => (
         data.isNarrow
@@ -334,8 +334,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderClass: (data) => [
         'items-center',
-        (data.isDisabled && !data.inPopover) && params.faintBgClass,
         data.isMajor && `border ${params.strongBorderColorClass}`,
+        (data.isDisabled && !data.inPopover) && params.faintBgClass,
       ],
       dayHeaderInnerClass: (
         'mt-2 mx-2 flex flex-col items-center group outline-none' // children do focus outline
@@ -354,7 +354,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isNarrow ? 'justify-end' : 'justify-center',
       ],
       dayCellTopInnerClass: (data) => [
-        'flex flex-row items-center justify-center rounded-full whitespace-nowrap',
+        'flex flex-row items-center justify-center whitespace-nowrap rounded-full',
         data.isNarrow
           ? `h-5 m-px ${xxsTextClass}`
           : `h-6 m-1.5 text-sm`,
@@ -398,7 +398,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       multiMonth: {
         tableBodyClass: `border ${params.borderColorClass} rounded-sm`,
-        dayHeaderInnerClass: 'mb-2',
+        dayHeaderInnerClass: (data) => !data.inPopover && 'mb-2',
 
         ...dayRowCommonClasses,
         dayCellBottomClass: getShortDayCellBottomClass,
@@ -424,10 +424,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         allDayHeaderClass: 'items-center justify-end', // v-align, h-align
         allDayHeaderInnerClass: (data) => [
           /*
-          text-end -- aligns text when multi-line
           whitespace-pre -- respects line breaks for locale text
+          text-end -- aligns text when multi-line
           */
-          'p-2 text-end whitespace-pre',
+          'p-2 whitespace-pre text-end',
           data.isNarrow ? xxsTextClass : 'text-sm',
         ],
 
@@ -453,7 +453,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
       },
       list: {
-        listDayClass: `flex flex-row items-start not-last:border-b ${params.borderColorClass}`,
+        listDayClass: `not-last:border-b ${params.borderColorClass} flex flex-row items-start`,
 
         listDayHeaderClass: 'm-2 shrink-0 w-1/3 max-w-44 min-h-9 flex flex-row items-center gap-2',
         listDayHeaderInnerClass: (data) => (
@@ -480,7 +480,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         // FORCED flex-row
         listItemEventClass: 'p-2 rounded-s-full gap-2 group',
         listItemEventBeforeClass: 'mx-2 border-5', // 10px diameter
-
         // FORCED flex-row
         listItemEventInnerClass: 'gap-2 text-sm',
         listItemEventTimeClass: 'shrink-0 w-1/2 max-w-40 whitespace-nowrap overflow-hidden text-ellipsis',

@@ -24,7 +24,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       // FORCED flex-col
       resourceDayHeaderClass: (data) => [
-        'border items-center',
+        'border',
         data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
         data.isDisabled && params.faintBgClass,
       ],
@@ -83,8 +83,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
         rowMoreLinkInnerClass: 'p-1 text-xs',
 
-        // for timeline, this means H-ALIGN
-        slotLabelAlign: (data) => (
+        slotLabelAlign: (data) => ( // h-align
           (data.level || data.isTime)
             // pill OR time
             ? 'start'

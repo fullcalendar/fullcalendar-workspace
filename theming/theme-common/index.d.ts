@@ -26,6 +26,7 @@ export interface ThemeOptionParams {
   strongFgClass: string
   mutedFgClass: string
   mutedFgHoverClass: string
+  mutedFgBorderColorClass: string
   faintFgClass: string
 
   // neutral borders

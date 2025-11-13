@@ -67,7 +67,7 @@ export const params: EventCalendarOptionParams = {
   faintBgClass: 'bg-(--fc-forma-faint)',
 
   // neutral foregrounds
-  mutedFgClass: 'text-(--fc-forma-muted-foreground)',
+  mutedFgBorderColorClass: 'border-(--fc-forma-muted-foreground)',
   faintFgClass: 'text-(--fc-forma-faint-foreground)',
 
   // neutral borders

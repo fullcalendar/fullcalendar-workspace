@@ -11,8 +11,6 @@ export interface createSlotsVDom {
   Fragment: typeof FullCalendarPreact.Fragment
 }
 
-// TODO: consider isNarrow
-
 export function createSlots(
   { createElement, Fragment }: createSlotsVDom, // masks the module-wide imports
   params: EventCalendarOptionParams,
@@ -21,14 +19,14 @@ export function createSlots(
     dayHeaderContent: (data) => (
       <Fragment>
         {data.isToday && (
-          // contained by either dayHeaderClass or dayHeaderInnerClass
-          <div className={`absolute top-0 left-0 right-0 border-t-4 ${params.primaryBorderColorClass} pointer-events-none`} />
+          // thick line, contained by either dayHeaderClass or dayHeaderInnerClass
+          <div className={`absolute top-0 inset-x-0 border-t-4 ${params.primaryBorderColorClass} pointer-events-none`} />
         )}
         {data.dayNumberText && (
           <div
             className={joinClassNames(
-              data.isNarrow ? 'text-md' : 'text-lg',
               data.isToday && 'font-bold',
+              data.isNarrow ? 'text-md' : 'text-lg',
             )}
           >{data.dayNumberText}</div>
         )}

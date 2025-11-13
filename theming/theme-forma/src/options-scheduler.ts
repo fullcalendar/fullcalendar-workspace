@@ -16,40 +16,41 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   return {
     optionDefaults: {
 
-      // TODO: more DRY with dayHeader* ?
       resourceDayHeaderClass: (data) => [
-        data.isMajor ? `border ${params.strongBorderColorClass}` : `border ${params.borderColorClass}`,
+        'border',
+        data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
         data.isDisabled && params.mutedBgClass,
       ],
       resourceDayHeaderInnerClass: (data) => [
-        'flex flex-col',
-        'p-2', // TODO: adjust padding when isNarrow?
+        'p-2 flex flex-col',
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
       resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
-      resourceAreaHeaderClass: `border ${params.borderColorClass} justify-center`, // valign
+
+      resourceAreaHeaderClass: `border ${params.borderColorClass} justify-center`, // v-align
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
       resourceAreaHeaderResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
-      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${params.mutedBgClass}`,
+      resourceAreaDividerClass: `border-x ${params.borderColorClass} ps-0.5 ${params.mutedBgClass}`,
 
       // For both resources & resource groups
       resourceAreaRowClass: `border ${params.borderColorClass}`,
 
       resourceGroupHeaderClass: params.mutedBgClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: [`border ${params.borderColorClass}`, params.mutedBgClass],
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
 
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
 
-      resourceIndentClass: 'items-center ms-1 -me-1.5',
+      resourceIndentClass: 'ms-1 -me-1.5 items-center',
+
       resourceExpanderClass: [
-        'inline-flex flex-row p-0.5 rounded-sm group',
+        'p-0.5 rounded-sm inline-flex flex-row group',
         params.mutedHoverPressableClass,
-        params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
+        params.primaryOutlineColorClass,
       ],
 
       resourceLaneClass: `border ${params.borderColorClass}`,
@@ -66,10 +67,14 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
             : 'py-2',
         ],
 
-        rowMoreLinkClass: `me-px mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
+        rowMoreLinkClass: [
+          'me-px mb-px rounded-sm',
+          'border border-transparent print:border-black',
+          `${params.strongSolidPressableClass} print:bg-white`,
+        ],
         rowMoreLinkInnerClass: 'px-1 py-[0.1875rem] text-xs',
 
-        slotLabelClass: 'justify-center',
+        slotLabelClass: 'justify-center', // v-align
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
         slotLabelInnerClass: (data) => [
           'p-2 text-sm',

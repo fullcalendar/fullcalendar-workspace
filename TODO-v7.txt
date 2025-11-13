@@ -20,14 +20,34 @@ TODO
     and then there's a JS error which kills resizerobserver?
     Same problem when using Vite devmode and commenting out calendars
   Make hover:no-underline for eventClass part of core? part of the "reset"?
+  Maybe disable navLink on more-popover header?
+    Weird to click +more link in timegrid, and immediately be hover-state on popover, esp Forma
+    This navlink isn't very useful anyway
 THEME CHECKLIST
   test isNarrow for vertical resource view resource-day-headers (non-h-scrolling)
   daygrid bg events have text title align with daycelltop
   Test RTL with [dir=rtl] selectors
   ensure most flex-rows have items-center
   Probably put all "group" first. Like absolute or relative
+  non-isSelect event dragging should have opacity
+  don't use border-l (use border-s instead because already used and common)
+  ^^same with pl-l
+  in code, ensure tailwind border defined before padding
 THEME NOTES
   timeline events/more-link do NOT need to do isNarrow
+  Dot uses border instead of bg because it shows up in print
+  all-day-header-text MIGHT span two lines and should have whitespace:pre. DO need text-align
+  week-header-text should NEVER span to two lines. implicitly has whitespace:nowrap. don't need text-align
+    ensure whitespace:nowrap also set for week-number-text in daygrid too (inlineWeekNumberClass)
+  Places to ensure whitespace-nowrap:
+    *EventTimeClass (ensure it gets list-item and block somehow)
+    *EventTitleClass (same)
+    moreLinkInnerClass
+    inlineWeekNumberClass
+    dayCellTopInnerClass
+    weekNumberHeaderInnerClass -- NOOO, because column-width-syncing-system wants it to be natural width (and uses f-rigid already)
+    allDayHeaderInnerClass -- SORTAA, do whitespace-pre
+    slotLabelInnerClass -- NOOO, because column-width-syncing-system, don't need text-end either for same reasons
 MAYBE REFACTOR
   Think about inlining slots.tsx
     Our AI will know to put all *Content props in separate files for Vue/Angular hopefully
@@ -41,6 +61,7 @@ FLEX AUDIT
     needs to be flex-row for expander
     but make BOTH flex-row? think about it? necessary?
   CATALOG
+    - rowEventClass: f-flexRow
     - blockEventInnerClass: no flex, no force
     - dayHeaderClass: f-flexRow
     - weekNumberHeaderClass: f-flexRow
@@ -48,14 +69,20 @@ FLEX AUDIT
     - allDayHeaderClass: f-flexRow
     - allDayHeaderInnerClass: ???
     - listItemEventClass: f-flexRow
-    - listItemEventInnerClass: f-flexRow ... wait no!!?
+    - listItemEventInnerClass: no flex, no force
     - resourceDayHeaderClass: f-flexCol
     - resourceDayHeaderInnerClass: no flex, no force
     - resourceAreaHeaderClass: f-flexCol
     - resourceAreaHeaderInnerClass: no flex, no force
     - resourceIndentClass: f-flexRow
-    - slotLabelClass: f-flexCol (just for timeline?)
+    - slotLabelClass: f-flexRow for timegrid, f-flexCol for timeline
     - slotLabelInnerClass: ??? (just for timeline?)
+    - popoverCloseClass: no flex, no force
+    - inlineWeekNumberClass: no flex, no force
+    - singleMonthHeaderClass: f-flexRow
+    - dayHeaderInnerClass: no flex, no force
+    - dayCellTopClass: no flex, no force
+    - listDayClass: no flex, no force
 
 
 CODE-QUALITY (while going through each theme)
