@@ -19,6 +19,7 @@ TODO
   Is there an issue with the computer sleeping (or tab going inactive)
     and then there's a JS error which kills resizerobserver?
     Same problem when using Vite devmode and commenting out calendars
+  Make hover:no-underline for eventClass part of core? part of the "reset"?
 THEME CHECKLIST
   test isNarrow for vertical resource view resource-day-headers (non-h-scrolling)
   daygrid bg events have text title align with daycelltop
@@ -47,7 +48,7 @@ FLEX AUDIT
     - allDayHeaderClass: f-flexRow
     - allDayHeaderInnerClass: ???
     - listItemEventClass: f-flexRow
-    - listItemEventInnerClass: f-flexRow
+    - listItemEventInnerClass: f-flexRow ... wait no!!?
     - resourceDayHeaderClass: f-flexCol
     - resourceDayHeaderInnerClass: no flex, no force
     - resourceAreaHeaderClass: f-flexCol

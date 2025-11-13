@@ -90,7 +90,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   )
 
   const dayRowCommonClasses: CalendarOptions = {
-    listItemEventClass: 'mx-0.5 mb-px p-px rounded-sm',
+    listItemEventClass: (data) => [
+      'mb-px p-px rounded-sm',
+      data.isNarrow ? 'mx-px' : 'mx-0.5',
+    ],
     listItemEventBeforeClass: (data) => [
       'border-4', // 8px diameter
       data.isNarrow ? 'ms-0.5' : 'ms-1',
@@ -116,11 +119,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     rowEventInnerClass: (data) => data.isNarrow ? 'py-px' : 'py-0.5',
 
     rowMoreLinkClass: (data) => [
-      'mx-0.5 mb-px border rounded-sm',
-      params.mutedHoverPressableClass,
+      'mb-px border rounded-sm',
       data.isNarrow
-        ? params.primaryBorderColorClass
-        : 'border-transparent'
+        ? `mx-px ${params.primaryBorderColorClass}`
+        : 'mx-0.5 border-transparent',
+      params.mutedHoverPressableClass,
     ],
     rowMoreLinkInnerClass: (data) => (
       data.isNarrow
