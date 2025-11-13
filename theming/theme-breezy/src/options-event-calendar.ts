@@ -189,9 +189,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center', // h-align
 
-      dayHeaderClass: (data) => data.inPopover && params.popoverHeaderClass,
-
-      // ensure v-align center for dayHeaderClass?
+      dayHeaderClass: (data) => [
+        'justify-center', // v-align
+        data.inPopover && params.popoverHeaderClass,
+      ],
 
       dayHeaderInnerClass: (data) => [
         'flex flex-row items-center', // v-align

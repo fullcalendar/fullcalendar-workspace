@@ -332,8 +332,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderAlign: 'center',
 
+      // FORCED flex-col
       dayHeaderClass: (data) => [
-        'items-center',
+        'justify-center', // v-align
         data.isMajor && `border ${params.strongBorderColorClass}`,
         (data.isDisabled && !data.inPopover) && params.faintBgClass,
       ],

@@ -33,6 +33,9 @@ THEME CHECKLIST
   don't use border-l (use border-s instead because already used and common)
   ^^same with pl-l
   in code, ensure tailwind border defined before padding
+  dayHeaderClass has f-flexCol,
+    always set justify-* for v-align
+    REMOVE items-center because alignment done via dayHeaderAlign
 THEME NOTES
   timeline events/more-link do NOT need to do isNarrow
   Dot uses border instead of bg because it shows up in print
@@ -63,7 +66,7 @@ FLEX AUDIT
   CATALOG
     - rowEventClass: f-flexRow
     - blockEventInnerClass: no flex, no force
-    - dayHeaderClass: f-flexRow
+    - dayHeaderClass: f-flexCol
     - weekNumberHeaderClass: f-flexRow
     - weekNumberHeaderInnerClass: no flex, no force
     - allDayHeaderClass: f-flexRow

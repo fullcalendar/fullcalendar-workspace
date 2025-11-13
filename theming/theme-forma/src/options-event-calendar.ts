@@ -307,6 +307,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderAlign: (data) => data.isNarrow ? 'center' : 'start',
 
       dayHeaderClass: (data) => [
+        'justify-center', // v-align
         data.isToday && !data.level && 'relative', // contain wide top-border
         data.isDisabled && params.faintBgClass,
         data.inPopover
