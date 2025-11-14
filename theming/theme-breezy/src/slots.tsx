@@ -18,14 +18,11 @@ export function createSlots(
   return {
     dayHeaderContent: (data) => (
       (!data.dayNumberText && !data.inPopover) ? (
-        <span
-          className={joinClassNames(
-            `text-xs ${params.fgClass}`,
-            !data.isNarrow && 'font-semibold',
-          )}
-        >{data.text}</span>
+        // small uniform text
+        // NOTE: Fragment used to avoid Preact diffing problem
+        <Fragment>{data.text}</Fragment>
       ) : (
-        // for this scenario, dayHeaderInnerClass needs 'group'
+        // normal-sized varying-color text (needs 'group')
         <Fragment>
           {data.textParts.map((textPart, i) => (
             <span
@@ -44,9 +41,9 @@ export function createSlots(
                             data.hasNavLink
                               ? joinClassNames(
                                   params.primaryPressableGroupClass,
-                                  params.primaryOutlineColorClass,
                                   params.outlineWidthGroupFocusClass,
                                   params.outlineOffsetClass,
+                                  params.primaryOutlineColorClass,
                                 )
                               : params.primaryClass,
                           )

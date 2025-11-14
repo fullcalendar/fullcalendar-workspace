@@ -110,6 +110,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     !data.isNarrow && 'min-h-[1px]'
   )
 
+  const mutedHoverButtonClass = joinClassNames(
+    params.mutedHoverPressableClass,
+    params.outlineWidthFocusClass,
+    params.primaryOutlineColorClass,
+  )
+
   const dayRowCommonClasses: CalendarOptions = {
     // TODO: move to general settings
     inlineWeekNumberClass: (data) => [
@@ -182,9 +188,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverClass: `min-w-55 ${params.popoverClass}`,
       popoverCloseClass: [
         'absolute inline-flex flex-row top-2 end-2 p-0.5 rounded-sm group',
-        params.primaryOutlineColorClass,
-        params.outlineWidthFocusClass,
-        params.mutedHoverPressableClass,
+        mutedHoverButtonClass,
       ],
 
       highlightClass: params.highlightClass,
@@ -205,43 +209,30 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         (!data.dayNumberText && !data.inPopover)
           // small uniform text
           ? joinClassNames(
-              'rounded-sm',
+              'py-1 rounded-sm text-xs',
               data.isNarrow
-                ? 'mx-1 my-2'
-                : 'mx-2 my-3',
-              data.hasNavLink && joinClassNames(
-                params.mutedHoverPressableClass,
-                params.primaryOutlineColorClass,
-                params.outlineWidthFocusClass,
-              ),
+                ? 'px-1 m-1'
+                : 'px-1.5 m-2 font-semibold',
+              data.hasNavLink && mutedHoverButtonClass,
+              params.fgClass,
             )
           // normal-sized varying-color text
-          // when not inPopover, total heights should be:
-          //   isNarrow:false -> 12
-          //   isNarrow:true -> 10
-          //
-          // TODO: clean this up using negative margins on the today circle?
-          //
-          : (data.dayNumberText && data.isToday && !data.inPopover)
-              // has today circle
+          : (data.isToday && data.dayNumberText && !data.inPopover)
+              // WITH today circle
               ? joinClassNames(
                   'm-2 outline-none group',
                   data.isNarrow ? 'h-6' : 'h-8'
                 )
               // WITHOUT today circle
               : joinClassNames(
-                  'px-1 rounded-sm',
+                  'px-1.5 rounded-sm',
                   data.inPopover
                     ? 'm-2 py-0.5'
                     : joinClassNames(
                         'mx-2 h-6',
                         data.isNarrow ? 'my-2' : 'my-3'
                       ),
-                  data.hasNavLink && joinClassNames(
-                    params.mutedHoverPressableClass,
-                    params.primaryOutlineColorClass,
-                    params.outlineWidthFocusClass,
-                  ),
+                  data.hasNavLink && mutedHoverButtonClass,
                 ),
       ],
       // see dayHeaderContent in slots.tsx...
@@ -488,8 +479,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         weekNumberHeaderClass: 'justify-end items-center',
         weekNumberHeaderInnerClass: (data) => [
-          `m-2 px-1 ${params.mutedFgClass} flex flex-row items-center rounded-sm`,
-          data.isNarrow ? 'h-4' : 'h-6',
+          `${params.mutedFgClass} flex flex-row items-center rounded-sm`,
+          'h-6 px-1.5 m-1.5', // always
           data.isNarrow ? 'text-xs' : 'text-sm',
           data.hasNavLink && params.mutedHoverPressableClass,
         ],

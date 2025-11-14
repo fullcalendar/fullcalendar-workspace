@@ -45,7 +45,6 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         params.outlineWidthFocusClass,
       ],
 
-      // TODO: DRY with getDayHeaderClass?
       // NOTE: border-color determined per-view below
       resourceDayHeaderClass: (data) => [
         `border text-sm/6`,
@@ -55,7 +54,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       ],
       resourceDayHeaderInnerClass: 'p-2',
 
-      resourceDayHeaderAlign: 'center', // best place?
+      resourceDayHeaderAlign: 'center',
     },
     views: {
       resourceDayGrid: {
@@ -93,10 +92,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           data.options.eventOverlap ? 'py-1' : 'py-2',
         ],
 
-        // TODO: keep DRY with columnMoreLink
-        rowMoreLinkClass: (data) => [
+        rowMoreLinkClass: [
           `me-px mb-px ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
-          data.isNarrow ? 'rounded-sm' : 'rounded-md', // needed? isn't isNarrow always false in timeline?
+          'rounded-md',
         ],
         rowMoreLinkInnerClass: `p-1 text-xs ${params.fgClass}`,
       },

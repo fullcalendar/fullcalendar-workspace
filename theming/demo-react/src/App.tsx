@@ -488,6 +488,7 @@ function EventCalendarDemo(props: DemoProps) {
       // height='auto'
       // stickyHeaderDates={false}
       // dayPopoverFormat={{ weekday: 'long' }}
+      // dayHeaderFormat={{ weekday: 'long' }}
       eventStartEditable={true}
       eventResizableFromStart={true}
       // direction='rtl'
