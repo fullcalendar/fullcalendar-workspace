@@ -228,7 +228,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         !data.isToday
           // ghost-button
           ? joinClassNames(
-              'rounded-s-sm whitespace-pre',
+              'rounded-s-sm whitespace-nowrap',
               !data.isOther && 'font-semibold',
               data.isNarrow ? 'px-1' : 'px-2',
               data.monthText ? params.fgClass : params.mutedFgClass,

@@ -14,6 +14,10 @@ clean+build all:
 
 
 TODO
+  For pulse button, maybe do padding instead of border
+  Most popover navlink paddings are too wide now
+  Should themes define a default toolbar and style them responsively?
+    how would we pass availableViews and addButton in there?
   Hide isFirst slot label in timeline (in Monarch & more)
   Make all axis font sizes XS when isNarrow instead of XXS?
   Is there an issue with the computer sleeping (or tab going inactive)
@@ -66,6 +70,7 @@ FLEX AUDIT
   Find all theme "flex"
   Find all assumed flex but chosen "flex-row" or "flex-col"
   Why would we use "inline-flex" instead
+    Check buttons in ui-default-options-event-calendar.ts too
   datagrid headers+cells have outer-div as flex-col, but intermediate inner-wrap is flex-row
     needs to be flex-row for expander
     but make BOTH flex-row? think about it? necessary?
