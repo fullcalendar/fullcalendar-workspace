@@ -159,7 +159,7 @@ export const defaultUiEventCalendarOptions: {
             'border',
             !data.inGroup
               ? 'rounded-sm'
-              : 'first:rounded-s-sm last:rounded-e-sm not-first:-ms-px',
+              : '-my-px not-first:-ms-px first:rounded-s-sm last:rounded-e-sm',
             data.isPrimary
               // primary
               ? joinClassNames(
@@ -169,7 +169,7 @@ export const defaultUiEventCalendarOptions: {
               // secondary
               : joinClassNames(
                   secondaryButtonClass,
-                  '-my-px border-y border-(--fc-pulse-strong-border)',
+                  'border-(--fc-pulse-strong-border)',
                   !data.inGroup
                     ? `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
                     : 'not-first:border-s-transparent not-last:border-e-(--fc-pulse-border)',
