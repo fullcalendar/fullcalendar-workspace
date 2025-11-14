@@ -78,7 +78,7 @@
 
   /* neutral borders */
   --fc-pulse-border: #1a202c;
-  --fc-pulse-strong-border: #4a5568;
+  --fc-pulse-strong-border: #374257; /* TODO */
 }
 
 [data-palette=red] {

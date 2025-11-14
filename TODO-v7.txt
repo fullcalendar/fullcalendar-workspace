@@ -24,6 +24,9 @@ TODO
     Weird to click +more link in timegrid, and immediately be hover-state on popover, esp Forma
     This navlink isn't very useful anyway
   touch-resizing columnEvent in timegrid when isNarrow, column seems to crop selection-border. why?
+  after beta: dark-mode Pulse borders in secondary buttonGroup. can't see them
+    either increase the --fc-pulse-border contrast
+    or make a separate css variable
 THEME CHECKLIST
   test isNarrow for vertical resource view resource-day-headers (non-h-scrolling)
   daygrid bg events have text title align with daycelltop

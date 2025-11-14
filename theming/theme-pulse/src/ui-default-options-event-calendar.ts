@@ -33,8 +33,11 @@ const primaryPressableClass = `${primaryClass} hover:bg-(--fc-pulse-primary-over
 const primaryButtonClass = `${primaryPressableClass} border-transparent ${tertiaryOutlineFocusClass} ${outlineOffsetClass}`
 
 // secondary *toolbar button*
-const secondaryPressableClass = `text-(--fc-pulse-secondary-foreground) bg-(--fc-pulse-secondary) hover:bg-(--fc-pulse-secondary-over) focus-visible:bg-(--fc-pulse-secondary-over) active:bg-(--fc-pulse-secondary-down)`
-const secondaryButtonClass = `${secondaryPressableClass} ${tertiaryOutlineFocusClass}` // border-color is determined by buttonClass setting below
+// NOTE: does NOT have at-rest bg-color. must be applied by buttonGroupClass or buttonClass
+// NOTE: border-color is determined by buttonClass setting below
+// All this complexity is for getting border-top-left abutting buttons perfect
+const secondaryPressableClass = `text-(--fc-pulse-secondary-foreground) hover:bg-(--fc-pulse-secondary-over) focus-visible:bg-(--fc-pulse-secondary-over) active:bg-(--fc-pulse-secondary-down)`
+const secondaryButtonClass = `${secondaryPressableClass} ${tertiaryOutlineFocusClass} -outline-offset-1`
 const secondaryButtonIconClass = 'size-5 text-(--fc-pulse-secondary-icon) group-hover:text-(--fc-pulse-secondary-icon-over) group-focus-visible:text-(--fc-pulse-secondary-icon-over)'
 
 // tertiary
@@ -131,10 +134,10 @@ export const defaultUiEventCalendarOptions: {
     toolbarTitleClass: `text-2xl font-bold text-(--fc-pulse-strong-foreground)`,
 
     buttonGroupClass: (data) => [
-      'items-center rounded-sm',
+      'py-px items-center rounded-sm',
       data.isSelectGroup
-        ? `p-px bg-(--fc-pulse-unselected)`
-        : `border border-(--fc-pulse-strong-border) overflow-hidden ${smallBoxShadowClass}`
+        ? `bg-(--fc-pulse-unselected)`
+        : `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
     ],
 
     buttonClass: (data) => [
@@ -146,13 +149,17 @@ export const defaultUiEventCalendarOptions: {
             'rounded-sm',
             data.isSelected
               ? selectedButtonClass
-              : unselectedButtonClass
+              : joinClassNames(
+                  unselectedButtonClass,
+                  '-my-px border-y border-transparent',
+                )
           )
         // primary/secondary buttons
         : joinClassNames(
+            'border',
             !data.inGroup
-              ? 'rounded-sm border'
-              : 'not-first:border-s',
+              ? 'rounded-sm'
+              : 'first:rounded-s-sm last:rounded-e-sm not-first:-ms-px',
             data.isPrimary
               // primary
               ? joinClassNames(
@@ -162,8 +169,10 @@ export const defaultUiEventCalendarOptions: {
               // secondary
               : joinClassNames(
                   secondaryButtonClass,
-                  !data.inGroup && smallBoxShadowClass,
-                  data.inGroup ? 'border-(--fc-pulse-border)' : 'border-(--fc-pulse-strong-border)',
+                  '-my-px border-y border-(--fc-pulse-strong-border)',
+                  !data.inGroup
+                    ? `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
+                    : 'not-first:border-s-transparent not-last:border-e-(--fc-pulse-border)',
                 )
           ),
     ],

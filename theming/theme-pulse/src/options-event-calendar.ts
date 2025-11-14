@@ -83,11 +83,6 @@ export interface EventCalendarOptionParams {
   nowBorderColorClass: string
 }
 
-/*
-Mushy buttons
-Problem with button-group overflow-hidden swallowing outline!!!
-*/
-
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
@@ -471,9 +466,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listDayHeaderInnerClass: (data) => [
           'm-2 px-2 py-1 rounded-sm text-sm',
           !data.level && 'font-semibold',
-          data.hasNavLink && params.outlineInsetClass,
           (data.isToday && !data.level)
-            ? (data.hasNavLink ? params.tertiaryPressableClass : params.tertiaryClass)
+            ? (data.hasNavLink ? joinClassNames(params.tertiaryPressableClass, params.outlineOffsetClass) : params.tertiaryClass)
             : (data.hasNavLink && params.mutedHoverPressableClass),
         ],
 
