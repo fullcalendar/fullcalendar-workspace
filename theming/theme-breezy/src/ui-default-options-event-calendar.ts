@@ -14,7 +14,7 @@ const outlineWidthFocusClass = 'focus-visible:outline-2'
 const outlineWidthGroupFocusClass = 'group-focus-visible:outline-2'
 const outlineOffsetClass = 'outline-offset-2'
 const primaryOutlineColorClass = `outline-(--fc-breezy-primary)`
-const primaryOutlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}`
+const primaryOutlineFocusClass = `${outlineWidthFocusClass} ${primaryOutlineColorClass}`
 
 // muted-on-hover
 const mutedHoverClass = 'hover:bg-(--fc-breezy-muted)'
@@ -82,7 +82,7 @@ export const params: EventCalendarOptionParams = {
   strongBorderBottomColorClass: 'border-b-(--fc-breezy-strong-border)',
   mutedBorderColorClass: 'border-(--fc-breezy-muted-border)',
 
-  // strong *button*
+  // neutral buttons
   strongSolidPressableClass: joinClassNames(
     '[background:linear-gradient(var(--fc-breezy-strong),var(--fc-breezy-strong))_var(--fc-breezy-background)]',
     'hover:[background:linear-gradient(var(--fc-breezy-stronger),var(--fc-breezy-stronger))_var(--fc-breezy-background)]',

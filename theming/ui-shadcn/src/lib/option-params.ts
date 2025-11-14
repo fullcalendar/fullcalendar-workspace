@@ -86,26 +86,8 @@ export const params: ThemeOptionParams = {
   strongBorderBottomColorClass: 'border-b-foreground/20',
   mutedBorderColorClass: '', // inherited
 
-  // primary
-  primaryClass,
-  primaryBorderColorClass: 'border-primary',
-  primaryPressableClass,
-  primaryPressableGroupClass,
-
-  // secondary
-  secondaryClass,
-  secondaryPressableClass,
-
-  // tertiary
-  tertiaryClass,
-  tertiaryPressableClass,
-  tertiaryPressableGroupClass,
-
-  // strong *button*
+  // neutral buttons
   strongSolidPressableClass,
-
-  // muted *button*
-  mutedClass: mutedBgClass,
   mutedPressableClass: `${mutedBgClass} ${strongBgHoverClass}`,
 
   // muted-on-hover
@@ -120,6 +102,21 @@ export const params: ThemeOptionParams = {
   // popover
   popoverClass: 'border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground',
   popoverHeaderClass: `border-b ${mutedBgClass}`,
+
+  // primary
+  primaryClass,
+  primaryBorderColorClass: 'border-primary',
+  primaryPressableClass,
+  primaryPressableGroupClass,
+
+  // secondary
+  secondaryClass,
+  secondaryPressableClass,
+
+  // tertiary
+  tertiaryClass,
+  tertiaryPressableClass,
+  tertiaryPressableGroupClass,
 
   // event content
   eventColor: 'var(--primary)',

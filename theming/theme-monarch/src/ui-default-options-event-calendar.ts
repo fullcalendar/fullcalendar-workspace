@@ -64,7 +64,7 @@ export const params: EventCalendarOptionParams = {
   strongBorderColorClass: 'border-(--fc-monarch-strong-border)',
   primaryBorderColorClass: 'border-(--fc-monarch-primary)',
 
-  // strong *button*
+  // neutral buttons
   strongSolidPressableClass: joinClassNames(
     '[background:linear-gradient(var(--fc-monarch-strong),var(--fc-monarch-strong))_var(--fc-monarch-background)]',
     'hover:[background:linear-gradient(var(--fc-monarch-stronger),var(--fc-monarch-stronger))_var(--fc-monarch-background)]',

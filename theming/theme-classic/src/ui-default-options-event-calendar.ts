@@ -36,7 +36,7 @@ export const params: EventCalendarOptionParams = {
   strongBorderColorClass: 'border-(--fc-classic-strong-border)',
   primaryBorderColorClass: 'border-(--fc-classic-primary)',
 
-  // strong *button*
+  // neutral buttons
   strongSolidPressableClass: '[background:linear-gradient(var(--fc-classic-strong),var(--fc-classic-strong))_var(--fc-classic-background)]',
 
   // muted-on-hover

@@ -31,11 +31,8 @@ export interface EventCalendarOptionParams {
   borderColorClass: string
   strongBorderColorClass: string
 
-  // muted *button*
-  mutedClass: string
+  // neutral buttons
   mutedPressableClass: string
-
-  // strong *button*
   strongSolidPressableClass: string
 
   // muted-on-hover
@@ -172,7 +169,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : 'top-1 p-1 text-xs',
         data.hasNavLink
           ? params.mutedPressableClass
-          : params.mutedClass,
+          : params.mutedBgClass,
       ],
 
       // misc BG

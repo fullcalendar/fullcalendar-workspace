@@ -118,11 +118,8 @@ export const params: ThemeOptionParams = {
   strongBorderBottomColorClass: 'border-b-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]',
   mutedBorderColorClass: 'border-(--mui-palette-divider)',
 
-  // strong *button*
+  // neutral buttons
   strongSolidPressableClass,
-
-  // muted *button*
-  mutedClass: mutedBgClass,
   mutedPressableClass,
 
   // muted-on-hover

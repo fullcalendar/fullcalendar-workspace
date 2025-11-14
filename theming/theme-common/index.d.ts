@@ -36,11 +36,8 @@ export interface ThemeOptionParams {
   strongBorderBottomColorClass: string
   mutedBorderColorClass: string
 
-  // strong *button*
+  // neutral buttons
   strongSolidPressableClass: string
-
-  // muted *button*
-  mutedClass: string // bg & fg
   mutedPressableClass: string
 
   // muted-on-hover

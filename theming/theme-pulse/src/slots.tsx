@@ -17,7 +17,7 @@ export function createSlots(
 ): CalendarOptions {
   return {
     dayHeaderContent: (data) => (
-      (!data.dayNumberText || !data.isToday || data.inPopover) ? (
+      (!data.dayNumberText || data.inPopover || !data.isToday) ? (
         // simple
         // NOTE: wrapping in Fragment prevents Preact VDOM bug. Try upgrading Preact
         <Fragment>{data.text}</Fragment>
@@ -54,7 +54,7 @@ export function createSlots(
     ),
     dayCellTopContent: (data) => (
       !data.isToday ? (
-        // simple
+        // ghost-button
         // NOTE: wrapping in Fragment prevents Preact VDOM bug. Try upgrading Preact
         <Fragment>{data.text}</Fragment>
       ) : (

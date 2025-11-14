@@ -18,9 +18,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceDayHeaderAlign: 'center',
       resourceDayHeaderClass: (data) => data.isMajor && `border ${params.strongBorderColorClass}`,
       resourceDayHeaderInnerClass: [
-        // are all these paddings okay?
-        'px-2 py-2 flex flex-row items-center',
-        'text-sm',
+        'p-2 flex flex-row items-center text-sm',
         params.mutedFgClass,
       ],
 
@@ -67,15 +65,13 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           data.isTime && 'relative -start-3',
           data.hasNavLink && 'hover:underline',
         ],
-        slotLabelDividerClass: `border-b ${params.borderColorClass} shadow-sm`,
+        slotLabelDividerClass: `border-b ${params.strongBorderColorClass} shadow-sm`,
 
-        // best place for this?
-        rowEventClass: 'me-px mb-px',
+        rowEventClass: (data) => data.isEnd && 'me-px',
         rowEventInnerClass: (data) => [
           data.options.eventOverlap ? 'py-1' : 'py-2',
         ],
 
-        // TODO: keep DRY with columnMoreLink
         rowMoreLinkClass: `me-px mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
         rowMoreLinkInnerClass: `p-1 text-xs ${params.strongFgClass}`,
       },

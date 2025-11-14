@@ -9,7 +9,7 @@ const outlineWidthGroupFocusClass = 'group-focus-visible:outline-2'
 const outlineOffsetClass = 'outline-offset-2'
 const outlineInsetClass = '-outline-offset-2'
 const tertiaryOutlineColorClass = 'outline-(--fc-pulse-tertiary)'
-const tertiaryOulineFocusClass = `${tertiaryOutlineColorClass} ${outlineWidthFocusClass}`
+const tertiaryOutlineFocusClass = `${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`
 
 // shadows
 const smallBoxShadowClass = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
@@ -24,17 +24,17 @@ const faintHoverClass = 'hover:bg-(--fc-pulse-faint)'
 const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-pulse-muted) focus-visible:bg-(--fc-pulse-faint)`
 
 // controls
-const selectedButtonClass = `bg-(--fc-pulse-selected) text-(--fc-pulse-selected-foreground) ${largeBoxShadowClass} ${tertiaryOulineFocusClass}`
-const unselectedButtonClass = `text-(--fc-pulse-unselected-foreground) ${mutedHoverPressableClass} ${tertiaryOulineFocusClass}`
+const selectedButtonClass = `bg-(--fc-pulse-selected) text-(--fc-pulse-selected-foreground) ${largeBoxShadowClass} ${tertiaryOutlineFocusClass}`
+const unselectedButtonClass = `text-(--fc-pulse-unselected-foreground) ${mutedHoverPressableClass} ${tertiaryOutlineFocusClass}`
 
 // primary *toolbar button*
 const primaryClass = 'bg-(--fc-pulse-primary) text-(--fc-pulse-primary-foreground)'
 const primaryPressableClass = `${primaryClass} hover:bg-(--fc-pulse-primary-over) active:bg-(--fc-pulse-primary-down)`
-const primaryButtonClass = `${primaryPressableClass} border-transparent ${tertiaryOulineFocusClass} ${outlineOffsetClass}`
+const primaryButtonClass = `${primaryPressableClass} border-transparent ${tertiaryOutlineFocusClass} ${outlineOffsetClass}`
 
 // secondary *toolbar button*
 const secondaryPressableClass = `text-(--fc-pulse-secondary-foreground) bg-(--fc-pulse-secondary) hover:bg-(--fc-pulse-secondary-over) focus-visible:bg-(--fc-pulse-secondary-over) active:bg-(--fc-pulse-secondary-down)`
-const secondaryButtonClass = `${secondaryPressableClass} ${tertiaryOulineFocusClass}` // border-color is determined by buttonClass setting below
+const secondaryButtonClass = `${secondaryPressableClass} ${tertiaryOutlineFocusClass}` // border-color is determined by buttonClass setting below
 const secondaryButtonIconClass = 'size-5 text-(--fc-pulse-secondary-icon) group-hover:text-(--fc-pulse-secondary-icon-over) group-focus-visible:text-(--fc-pulse-secondary-icon-over)'
 
 // tertiary
@@ -71,12 +71,13 @@ export const params: EventCalendarOptionParams = {
   strongBorderColorClass: 'border-(--fc-pulse-strong-border)',
   primaryBorderColorClass: 'border-(--fc-pulse-primary)',
 
-  // strong *button*
+  // neutral buttons
   strongSolidPressableClass: joinClassNames(
     '[background:linear-gradient(var(--fc-pulse-strong),var(--fc-pulse-strong))_var(--fc-pulse-background)]',
     'hover:[background:linear-gradient(var(--fc-pulse-stronger),var(--fc-pulse-stronger))_var(--fc-pulse-background)]',
     'active:[background:linear-gradient(var(--fc-pulse-strongest),var(--fc-pulse-strongest))_var(--fc-pulse-background)]',
   ),
+  mutedPressableClass: 'bg-(--fc-pulse-muted) hover:bg-(--fc-pulse-strong) active:bg-(--fc-pulse-stronger)',
 
   // muted-on-hover
   mutedHoverClass,

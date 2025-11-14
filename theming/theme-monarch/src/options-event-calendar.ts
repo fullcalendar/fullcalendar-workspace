@@ -37,7 +37,7 @@ export interface EventCalendarOptionParams {
   strongBorderColorClass: string
   primaryBorderColorClass: string
 
-  // strong *button*
+  // neutral buttons
   strongSolidPressableClass: string
 
   // muted-on-hover

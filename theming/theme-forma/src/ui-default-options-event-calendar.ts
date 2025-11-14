@@ -8,11 +8,10 @@ const outlineWidthFocusClass = 'focus-visible:outline-2'
 const outlineOffsetClass = 'outline-offset-2'
 const outlineInsetClass = '-outline-offset-2'
 const primaryOutlineColorClass = 'outline-(--fc-forma-primary)'
-const primaryOutlineFocusClass = `${primaryOutlineColorClass} ${outlineWidthFocusClass}`
+const primaryOutlineFocusClass = `${outlineWidthFocusClass} ${primaryOutlineColorClass}`
 
-// muted *button*
-const mutedClass = 'bg-(--fc-forma-muted)'
-const mutedPressableClass = `${mutedClass} hover:bg-(--fc-forma-strong) active:bg-(--fc-forma-stronger) ${primaryOutlineFocusClass}`
+// neutral buttons
+const mutedPressableClass = `bg-(--fc-forma-muted) hover:bg-(--fc-forma-strong) active:bg-(--fc-forma-stronger) ${primaryOutlineFocusClass}`
 
 // muted-on-hover
 const mutedHoverClass = 'hover:bg-(--fc-forma-muted)'
@@ -74,11 +73,8 @@ export const params: EventCalendarOptionParams = {
   borderColorClass: 'border-(--fc-forma-border)',
   strongBorderColorClass: 'border-(--fc-forma-strong-border)',
 
-  // muted *button*
-  mutedClass,
+  // neutral buttons
   mutedPressableClass,
-
-  // strong *button*
   strongSolidPressableClass: joinClassNames(
     '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]',
     'hover:[background:linear-gradient(var(--fc-forma-stronger),var(--fc-forma-stronger))_var(--fc-monarch-background)]',
