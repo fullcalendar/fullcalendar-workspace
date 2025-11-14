@@ -14,6 +14,14 @@ clean+build all:
 
 
 TODO
+  Check that all themes have conditionally applied end-margin for timeline events
+    Classic is bad
+  Check that all themes have conditionally applied bottom-margin for timeGRID events
+    Monarch is bad
+  BUG: when timeline events stack and need more-link,
+    the more-link does NOT show event times, super vague, unlike timegrid
+  columnEvents will stack weird with native margins when isSimple or isPopover. isSimpleStack?
+    some themes have mb-px, but others like Breezy have chunkier
   For pulse button, maybe do padding instead of border
   Most popover navlink paddings are too wide now
   Should themes define a default toolbar and style them responsively?
@@ -41,6 +49,7 @@ THEME CHECKLIST
   don't use border-l (use border-s instead because already used and common)
   ^^same with pl-l
   in code, ensure tailwind border defined before padding
+    Also, put borders AFTER w/h ? considering how box-model works
   dayHeaderClass has f-flexCol,
     always set justify-* for v-align
     REMOVE items-center because alignment done via dayHeaderAlign

@@ -61,6 +61,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
     },
     views: {
       timeline: {
+        rowEventClass: (data) => data.isEnd && 'me-px',
         rowEventInnerClass: (data) => [
           data.options.eventOverlap
             ? 'py-[0.1875rem]' // usually 3px

@@ -256,7 +256,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       inlineWeekNumberClass: (data) => [
-        `absolute start-0 rounded-e-sm ${params.fgClass}`,
+        `absolute start-0 ${params.fgClass} whitespace-nowrap rounded-e-sm`,
         data.isNarrow
           ? `top-0.5 my-px p-0.5 ${xxsTextClass}`
           : 'top-1 p-1 text-xs',

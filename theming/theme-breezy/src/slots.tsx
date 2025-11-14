@@ -35,8 +35,9 @@ export function createSlots(
                       'flex flex-row items-center', // v-align-text
                       !data.isNarrow && 'font-semibold',
                       (data.isToday && !data.inPopover)
+                        // day-number circle
                         ? joinClassNames(
-                            'rounded-full justify-center mx-0.5',
+                            'mx-0.5 rounded-full justify-center',
                             data.isNarrow ? 'size-6' : 'size-8',
                             data.hasNavLink
                               ? joinClassNames(
@@ -47,6 +48,7 @@ export function createSlots(
                                 )
                               : params.primaryClass,
                           )
+                        // day-number emphasized text
                         : params.strongFgClass
                     )
                   : params.mutedFgClass,

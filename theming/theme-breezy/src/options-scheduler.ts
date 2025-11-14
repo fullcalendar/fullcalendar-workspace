@@ -15,61 +15,56 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 } {
   return {
     optionDefaults: {
-      resourceAreaDividerClass: `border-l ${params.strongBorderColorClass}`,
+      resourceAreaDividerClass: `border-s ${params.strongBorderColorClass}`,
 
       resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
       resourceAreaHeaderClass: `border ${params.mutedBorderColorClass} justify-center`, // v-align
-      resourceAreaHeaderInnerClass: `p-2 text-sm ${params.fgClass}`,
+      resourceAreaHeaderInnerClass: `p-2 ${params.fgClass} text-sm`,
       resourceAreaHeaderResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
       resourceAreaRowClass: `border ${params.borderColorClass}`,
       resourceCellClass: `border ${params.mutedBorderColorClass}`,
-      resourceCellInnerClass: `p-2 text-sm ${params.fgClass}`,
+      resourceCellInnerClass: `p-2  ${params.fgClass} text-sm`,
 
       resourceGroupHeaderClass: params.mutedBgClass,
-      resourceGroupHeaderInnerClass: `p-2 text-sm ${params.fgClass}`,
+      resourceGroupHeaderInnerClass: `p-2 ${params.fgClass} text-sm`,
 
       resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
       resourceLaneClass: `border ${params.borderColorClass}`,
-      resourceLaneBottomClass: (data) => [
-        data.options.eventOverlap && 'h-2',
-      ],
+      resourceLaneBottomClass: (data) => data.options.eventOverlap && 'h-2',
 
+      // Non-resource Timeline
       timelineBottomClass: 'h-2',
 
-      resourceIndentClass: 'items-center ms-1 -me-1.5',
+      resourceIndentClass: 'ms-1 -me-1.5 items-center',
+
       resourceExpanderClass: [
-        'inline-flex flex-row p-0.5 rounded-full group',
+        'group p-0.5 rounded-full inline-flex flex-row',
         params.mutedHoverPressableClass,
         params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
       ],
 
       // NOTE: border-color determined per-view below
-      resourceDayHeaderClass: (data) => [
-        `border text-sm/6`,
-        data.level
-          ? `font-semibold ${params.fgClass}` // resource-above-dates
-          : params.mutedFgClass,
-      ],
+      resourceDayHeaderClass: `border ${params.fgClass} text-sm/6 font-semibold`,
       resourceDayHeaderInnerClass: 'p-2',
 
       resourceDayHeaderAlign: 'center',
     },
     views: {
       resourceDayGrid: {
-        resourceDayHeaderClass: (data) => [
+        resourceDayHeaderClass: (data) => (
           data.isMajor
             ? params.strongBorderColorClass
-            : params.borderColorClass,
-        ],
+            : params.borderColorClass
+        ),
       },
       resourceTimeGrid: {
-        resourceDayHeaderClass: (data) => [
+        resourceDayHeaderClass: (data) => (
           data.isMajor
             ? params.strongBorderColorClass
-            : params.mutedBorderColorClass,
-        ],
+            : params.mutedBorderColorClass
+        ),
       },
       timeline: {
         slotLabelDividerClass: `border-t ${params.strongBorderColorClass} shadow-sm`,
@@ -77,17 +72,17 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         slotLabelRowClass: `border ${params.borderColorClass}`,
 
         slotLabelClass: (data) => [
-          'justify-end', // v-align-content (best for one-line with too much v space)
           data.level > 0 && `border ${params.mutedBorderColorClass}`,
+          'justify-end', // v-align
         ],
-        slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align-content
+        slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
         slotLabelInnerClass: (data) => [
           'px-3 py-2',
           data.isTime && 'relative -start-4',
           data.hasNavLink && 'hover:underline'
         ],
 
-        rowEventClass: 'me-px mb-px',
+        rowEventClass: (data) => data.isEnd && 'me-px',
         rowEventInnerClass: (data) => [
           data.options.eventOverlap ? 'py-1' : 'py-2',
         ],

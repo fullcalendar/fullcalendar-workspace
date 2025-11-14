@@ -147,9 +147,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       singleMonthClass: 'm-4',
       singleMonthHeaderClass: (data) => [
-        'justify-center', // h-align
-        data.colCount > 1 ? 'pb-2' : 'py-1',
         data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,
+        data.colCount > 1 ? 'pb-2' : 'py-1',
+        'justify-center', // h-align
       ],
       singleMonthHeaderInnerClass: (data) => [
         'px-3 py-1 rounded-full font-bold',
@@ -330,7 +330,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayHeaderRowClass: `border ${params.borderColorClass}`,
 
-      dayHeaderAlign: 'center',
+      dayHeaderAlign: 'center', // h-align
 
       // FORCED flex-col
       dayHeaderClass: (data) => [
