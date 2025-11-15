@@ -41,8 +41,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceExpanderClass: [
         'group p-0.5 rounded-full inline-flex flex-row',
         params.mutedHoverPressableClass,
-        params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
+        params.primaryOutlineColorClass,
       ],
 
       // NOTE: border-color determined per-view below
@@ -77,21 +77,19 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
         slotLabelInnerClass: (data) => [
-          'px-3 py-2',
+          'px-3 py-2 text-xs',
           data.isTime && 'relative -start-4',
           data.hasNavLink && 'hover:underline'
         ],
 
         rowEventClass: (data) => data.isEnd && 'me-px',
-        rowEventInnerClass: (data) => [
-          data.options.eventOverlap ? 'py-1' : 'py-2',
-        ],
+        rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
 
         rowMoreLinkClass: [
-          `me-px mb-px ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
-          'rounded-md',
+          'me-px mb-px border border-transparent print:border-black rounded-md',
+          `${params.strongSolidPressableClass} print:bg-white`,
         ],
-        rowMoreLinkInnerClass: `p-1 text-xs ${params.fgClass}`,
+        rowMoreLinkInnerClass: `p-1 ${params.fgClass} text-xs`,
       },
     },
   }

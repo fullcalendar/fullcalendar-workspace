@@ -24,7 +24,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
       resourceAreaHeaderClass: `border ${params.borderColorClass} justify-center`,
-      resourceAreaHeaderInnerClass: `p-2 text-sm ${params.strongFgClass}`,
+      resourceAreaHeaderInnerClass: `p-2 ${params.strongFgClass} text-sm`,
       resourceAreaHeaderResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
       resourceAreaDividerClass: `border-s ${params.strongBorderColorClass}`,
@@ -33,18 +33,18 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceAreaRowClass: `border ${params.borderColorClass}`,
 
       resourceGroupHeaderClass: params.mutedBgClass,
-      resourceGroupHeaderInnerClass: `p-2 text-sm ${params.strongFgClass}`,
+      resourceGroupHeaderInnerClass: `p-2 ${params.strongFgClass} text-sm`,
       resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
 
       resourceCellClass: `border ${params.borderColorClass}`,
-      resourceCellInnerClass: `p-2 text-sm ${params.strongFgClass}`,
+      resourceCellInnerClass: `p-2 ${params.strongFgClass} text-sm`,
 
-      resourceIndentClass: 'items-center ms-1 -me-1.5',
+      resourceIndentClass: 'ms-1 -me-1.5 items-center',
       resourceExpanderClass: [
-        'inline-flex flex-row p-0.5 rounded-sm group',
+        'group p-0.5 rounded-sm inline-flex flex-row',
         params.mutedHoverPressableClass,
-        params.tertiaryOutlineColorClass,
         params.outlineWidthFocusClass,
+        params.tertiaryOutlineColorClass,
       ],
 
       resourceLaneClass: `border ${params.borderColorClass}`,
@@ -57,23 +57,24 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       timeline: {
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
         slotLabelClass: (data) => [
-          'justify-center', // v-align
           data.level > 0 && `border ${params.borderColorClass}`,
+          'justify-center', // v-align
         ],
         slotLabelInnerClass: (data) => [
-          `p-2 text-sm ${params.strongFgClass}`,
+          `p-2 ${params.strongFgClass} text-sm`,
           data.isTime && 'relative -start-3',
           data.hasNavLink && 'hover:underline',
         ],
-        slotLabelDividerClass: `border-b ${params.strongBorderColorClass} shadow-sm`,
+        slotLabelDividerClass: `border-t ${params.strongBorderColorClass} shadow-sm`,
 
         rowEventClass: (data) => data.isEnd && 'me-px',
-        rowEventInnerClass: (data) => [
-          data.options.eventOverlap ? 'py-1' : 'py-2',
-        ],
+        rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
 
-        rowMoreLinkClass: `me-px mb-px rounded-sm ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
-        rowMoreLinkInnerClass: `p-1 text-xs ${params.strongFgClass}`,
+        rowMoreLinkClass: [
+          'me-px mb-px border border-transparent print:border-black rounded-sm',
+          `${params.strongSolidPressableClass} print:bg-white`,
+        ],
+        rowMoreLinkInnerClass: `p-1 ${params.strongFgClass} text-xs`,
       },
     },
   }

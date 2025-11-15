@@ -131,8 +131,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
 
     rowEventClass: (data) => [
-      data.isStart && (data.isNarrow ? 'ms-px' : 'ms-1'),
-      data.isEnd && (data.isNarrow ? 'me-px' : 'me-1'),
+      data.isStart && (data.isNarrow ? 'ms-0.5' : 'ms-1'),
+      data.isEnd && (data.isNarrow ? 'me-0.5' : 'me-1'),
     ],
     rowEventInnerClass: (data) => data.isNarrow ? 'py-px' : 'py-0.5',
 
@@ -244,9 +244,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         // don't display bg-color for other-month/disabled cells when businessHours is doing the same
         ((data.isOther || data.isDisabled) && !data.options.businessHours) && params.faintBgClass,
       ],
-      dayCellTopClass: 'flex flex-row justify-start min-h-1',
+      dayCellTopClass: 'min-h-1 flex flex-row justify-start',
       dayCellTopInnerClass: (data) => [
-        'flex flex-row items-center justify-center whitespace-nowrap',
+        'flex flex-row items-center justify-center whitespace-nowrap', // v-align, h-align
         data.isNarrow
           ? `my-px h-5 ${xxsTextClass}`
           : 'my-1 h-6 text-xs',
@@ -289,10 +289,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
-      slotLabelInnerClass: (data) => [
-        `${params.faintFgClass} uppercase`,
-        data.isNarrow ? xxsTextClass : 'text-xs',
-      ],
+      slotLabelInnerClass: `${params.faintFgClass} uppercase`,
 
       slotLaneClass: (data) => [
         `border ${params.mutedBorderColorClass}`,
@@ -364,8 +361,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
       rowEventTimeClass: (data) => [
-        'font-medium',
         data.isNarrow ? 'ps-0.5' : 'ps-1',
+        'font-medium',
       ],
       rowEventTitleClass: (data) => [
         data.isNarrow ? 'px-0.5' : 'px-1',
@@ -376,7 +373,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isStart && 'border-t rounded-t-lg',
         data.isEnd && 'border-b rounded-b-lg',
       ],
-      // NOTE: margins in timeGrid below...
+      // NOTE: margins in timeGrid below (sorta weird)...
       columnEventBeforeClass: (data) => (
         data.isStartResizable && [
           data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
@@ -417,7 +414,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : 'p-1 text-xs',
         params.fgClass,
       ],
-      // NOTE: margins in timeGrid below...
+      // NOTE: margins in timeGrid below (a little weird)...
 
       fillerClass: `border ${params.mutedBorderColorClass}`,
 
@@ -463,7 +460,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         dayCellBottomClass: getShortDayCellBottomClass,
 
         tableHeaderClass: (data) => data.isSticky && params.bgClass,
-        tableBodyClass: `border ${params.borderColorClass} shadow-sm rounded-md overflow-hidden`,
+        tableBodyClass: `border ${params.borderColorClass} rounded-md shadow-sm overflow-hidden`,
       },
       timeGrid: {
         ...dayRowCommonClasses,
@@ -494,7 +491,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         slotLabelClass: 'justify-end', // h-align
         slotLabelInnerClass: (data) => [
           'relative px-3 py-2',
-          data.isNarrow ? '-top-3.5' : '-top-4',
+          data.isNarrow
+            ? `-top-3.5 ${xxsTextClass}`
+            : '-top-4 text-xs',
           data.isFirst && 'hidden',
         ],
 
@@ -515,7 +514,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       list: {
         listDaysClass: 'my-10 mx-auto w-full max-w-200 px-4',
 
-        listDayClass: `not-last:border-b ${params.mutedBorderColorClass} flex flex-row items-start gap-2`,
+        listDayClass: [
+          `not-last:border-b ${params.mutedBorderColorClass}`,
+          'flex flex-row items-start gap-2',
+        ],
 
         listDayHeaderClass: 'my-px shrink-0 w-1/4 max-w-50 py-3.5 flex flex-col items-start',
         listDayHeaderInnerClass: (data) => [
@@ -543,7 +545,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
               )
         ],
 
-        listDayEventsClass: `my-4 grow min-w-0 border ${params.borderColorClass} rounded-md flex flex-col`,
+        listDayEventsClass: [
+          `my-4 grow min-w-0 border ${params.borderColorClass} rounded-md`,
+          'flex flex-col',
+        ],
 
         listItemEventClass: (data) => [
           `group not-last:border-b ${params.mutedBorderColorClass} p-4 items-center gap-3`,

@@ -303,7 +303,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       props.slatCnt,
       props.slatHeight,
       context.options.eventMinHeight,
-      0, // eventShortHeight
+      context.options.eventShortHeight,
     )
 
     return (
@@ -333,7 +333,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                   isStart={seg.isStart}
                   isEnd={seg.isEnd}
                   isNarrow={props.isNarrow}
-                  isShort={segVertical.isShort}
+                  isShort={segVertical.isShort || false}
                   {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate)}
                 /> :
                 renderFill(fillType, context.options)}

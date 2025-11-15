@@ -14,10 +14,24 @@ clean+build all:
 
 
 TODO
+  Ensure all horizontal dividers have border-b (not top)
+    slotLabelDividerClass (timeline)
+    allDayHeaderClass
+    dayHeaderClass
+  Check code line-length
+  New technique: bg-events... we cant differentiate between daygrid or timegrid
+    ensure v-align matches daygrid daycelltop
+    ensure h-align matched daygrid events (and handles isNarrow)
+    ensure looks find in timegrid (and handles isShort OPTIONALLY)
+    (see Pulse for good example)
+  dayCellTopClass min-height should adapt to isNarrow to match the events' x-margins
+    Good Pulse
+  Combine 'muted-on-hover' and 'faint-on-hover' into 'neutral buttons' sections?
   Check that all themes have conditionally applied end-margin for timeline events
     Classic is bad
   Check that all themes have conditionally applied bottom-margin for timeGRID events
     Monarch is bad
+    (look for isNarrow behavior too. should match what dayLaneInnerClass does)
   BUG: when timeline events stack and need more-link,
     the more-link does NOT show event times, super vague, unlike timegrid
   columnEvents will stack weird with native margins when isSimple or isPopover. isSimpleStack?
@@ -39,6 +53,8 @@ TODO
   after beta: dark-mode Pulse borders in secondary buttonGroup. can't see them
     either increase the --fc-pulse-border contrast
     or make a separate css variable
+  BUG with MUI + Classic Theme
+    Timeline resource-groups have inconsistent border color between scroll panes
 THEME CHECKLIST
   test isNarrow for vertical resource view resource-day-headers (non-h-scrolling)
   daygrid bg events have text title align with daycelltop
@@ -67,6 +83,7 @@ THEME NOTES
     moreLinkInnerClass
     inlineWeekNumberClass
     dayCellTopInnerClass
+      but if inner span parts, ensure whitespace-pre INSTEAD
     weekNumberHeaderInnerClass -- NOOO, because column-width-syncing-system wants it to be natural width (and uses f-rigid already)
     allDayHeaderInnerClass -- SORTAA, do whitespace-pre
     slotLabelInnerClass -- NOOO, because column-width-syncing-system, don't need text-end either for same reasons

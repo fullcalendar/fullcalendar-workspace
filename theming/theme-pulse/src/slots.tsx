@@ -17,7 +17,7 @@ export function createSlots(
 ): CalendarOptions {
   return {
     dayHeaderContent: (data) => (
-      (!data.dayNumberText || data.inPopover || !data.isToday) ? (
+      (data.inPopover || !data.dayNumberText || !data.isToday) ? (
         // simple
         // NOTE: wrapping in Fragment prevents Preact VDOM bug. Try upgrading Preact
         <Fragment>{data.text}</Fragment>
@@ -32,15 +32,14 @@ export function createSlots(
                 (textPart.type === 'day' && data.isToday)
                   // today-circle
                   ? joinClassNames(
-                      'size-7 first:-ms-1 last:-me-1',
-                      'flex flex-row items-center justify-center', // h-align-text
-                      'rounded-full font-semibold',
+                      'first:-ms-1 last:-me-1 size-7 rounded-full font-semibold',
+                      'flex flex-row items-center justify-center', // h-align
                       data.hasNavLink
                         ? joinClassNames(
                             params.tertiaryPressableGroupClass,
-                            params.tertiaryOutlineColorClass,
                             params.outlineWidthGroupFocusClass,
                             params.outlineOffsetClass,
+                            params.tertiaryOutlineColorClass,
                           )
                         : params.tertiaryClass,
                     )
@@ -68,17 +67,17 @@ export function createSlots(
                 (textPart.type === 'day' && data.isToday)
                   // today-circle
                   ? joinClassNames(
+                      'rounded-full font-semibold',
+                      'flex flex-row items-center justify-center', // h-align-text
                       data.isNarrow
                         ? 'size-5'
                         : 'size-6 first:-ms-1 last:-me-1',
-                      'flex flex-row items-center justify-center', // h-align-text
-                      'rounded-full font-semibold',
                       data.hasNavLink
                         ? joinClassNames(
                             params.tertiaryPressableGroupClass,
-                            params.tertiaryOutlineColorClass,
                             params.outlineWidthGroupFocusClass,
                             params.outlineOffsetClass,
+                            params.tertiaryOutlineColorClass,
                           )
                         : params.tertiaryClass,
                     )
