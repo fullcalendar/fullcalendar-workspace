@@ -76,6 +76,7 @@ THEME CHECKLIST
   always use dayLaneInnerClass instead of columnEvent x-margins
     ensure handling of isNarrow
 THEME NOTES
+  resourceAreaRowClass is for both resources & resource groups
   timeline events/more-link do NOT need to do isNarrow
   Dot uses border instead of bg because it shows up in print
   all-day-header-text MIGHT span two lines and should have whitespace:pre. DO need text-align

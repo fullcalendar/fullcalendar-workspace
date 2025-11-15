@@ -13,50 +13,51 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
   views?: { [viewName: string]: ViewOptions }
 } {
+
+  /* Common
+  ----------------------------------------------------------------------------------------------- */
+
   const resourceDayHeaderClasses = {
-    dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
     dayHeaderInnerClass: 'mb-1',
+    dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
   }
 
   return {
     optionDefaults: {
+
+      /* Resource Day Header
+      ------------------------------------------------------------------------------------------- */
+
       resourceDayHeaderAlign: 'center',
 
-      // FORCED flex-col
       resourceDayHeaderClass: (data) => [
         'border',
         data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
         data.isDisabled && params.faintBgClass,
       ],
-      // NOT forced
       resourceDayHeaderInnerClass: (data) => [
         'p-2 flex flex-col',
         data.isNarrow ? xxsTextClass : 'text-sm',
       ],
 
-      resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
+      /* Resource Data Grid
+      ------------------------------------------------------------------------------------------- */
 
-      // FORCED flex-col
+      // column header
       resourceAreaHeaderClass: `border ${params.borderColorClass} justify-center`, // v-align
-      // NOT forced
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
       resourceAreaHeaderResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
-      resourceAreaDividerClass: `border-s ${params.strongBorderColorClass}`,
-
-      // For both resources & resource groups
-      resourceAreaRowClass: `border ${params.borderColorClass}`,
-
+      // group cell
       resourceGroupHeaderClass: params.faintBgClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.faintBgClass}`,
 
+      // cell
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
 
-      // FORCED flex-row
+      // row expander
       resourceIndentClass: 'ms-1 -me-1.5 items-center',
-
       resourceExpanderClass: [
         'p-1 rounded-full flex flex-row group',
         params.mutedHoverPressableClass,
@@ -64,17 +65,32 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         params.tertiaryOutlineColorClass,
       ],
 
+      // row
+      resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
+      resourceAreaRowClass: `border ${params.borderColorClass}`,
+
+      // divider between data grid & timeline
+      resourceAreaDividerClass: `border-s ${params.strongBorderColorClass}`,
+
+      /* Timeline Lane
+      ------------------------------------------------------------------------------------------- */
+
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.faintBgClass}`,
       resourceLaneClass: `border ${params.borderColorClass}`,
       resourceLaneBottomClass: (data) => data.options.eventOverlap && 'h-2',
-
-      // Non-resource Timeline
       timelineBottomClass: 'h-2',
     },
     views: {
       timeline: {
-        rowEventClass: (data) => data.isEnd && 'me-px',
 
+        /* Timeline > Row Event
+        ----------------------------------------------------------------------------------------- */
+
+        rowEventClass: (data) => data.isEnd && 'me-px',
         rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
+
+        /* Timeline > More Link
+        ----------------------------------------------------------------------------------------- */
 
         rowMoreLinkClass: [
           'me-px mb-px rounded-sm',
@@ -83,6 +99,11 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
         rowMoreLinkInnerClass: 'p-1 text-xs',
 
+        /* Timeline > Slot Label
+        ----------------------------------------------------------------------------------------- */
+
+        slotLabelSticky: '0.5rem', // for pill
+
         slotLabelAlign: (data) => ( // h-align
           (data.level || data.isTime)
             // pill OR time
@@ -90,9 +111,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
             // other
             : 'center'
         ),
-        slotLabelSticky: '0.5rem', // for pill
 
-        // FORCE flex-col
         slotLabelClass: (data) => [
           'border',
           data.level
@@ -108,6 +127,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
                   : 'justify-center', // v-align
               )
         ],
+
         slotLabelInnerClass: (data) => [
           'text-sm',
           data.level
@@ -130,8 +150,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
               )
         ],
 
+        // divider between label and lane
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
       },
+
       resourceTimeGrid: resourceDayHeaderClasses,
       resourceDayGrid: resourceDayHeaderClasses,
     },

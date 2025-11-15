@@ -16,6 +16,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   return {
     optionDefaults: {
 
+      /* Resource Day Header
+      ------------------------------------------------------------------------------------------- */
+
       resourceDayHeaderClass: (data) => [
         'border',
         data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
@@ -26,26 +29,24 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
-      resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
+      /* Resource Data Grid
+      ------------------------------------------------------------------------------------------- */
 
+      // column header
       resourceAreaHeaderClass: `border ${params.borderColorClass} justify-center`, // v-align
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
       resourceAreaHeaderResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
-      resourceAreaDividerClass: `border-x ${params.borderColorClass} ps-0.5 ${params.mutedBgClass}`,
-
-      // For both resources & resource groups
-      resourceAreaRowClass: `border ${params.borderColorClass}`,
-
+      // group cell
       resourceGroupHeaderClass: params.mutedBgClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
 
+      // cell
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
 
+      // row expander
       resourceIndentClass: 'ms-1 -me-1.5 items-center',
-
       resourceExpanderClass: [
         'p-0.5 rounded-sm inline-flex flex-row group',
         params.mutedHoverPressableClass,
@@ -53,14 +54,27 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         params.primaryOutlineColorClass,
       ],
 
+      // row
+      resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
+      resourceAreaRowClass: `border ${params.borderColorClass}`,
+
+      // divider between data grid & timeline
+      resourceAreaDividerClass: `border-x ${params.borderColorClass} ps-0.5 ${params.mutedBgClass}`,
+
+      /* Timeline Lane
+      ------------------------------------------------------------------------------------------- */
+
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
       resourceLaneClass: `border ${params.borderColorClass}`,
       resourceLaneBottomClass: (data) => data.options.eventOverlap && 'h-2.5',
-
-      // Non-resource Timeline
       timelineBottomClass: 'h-2.5',
     },
     views: {
       timeline: {
+
+        /* Timeline > Row Event
+        ----------------------------------------------------------------------------------------- */
+
         rowEventClass: (data) => data.isEnd && 'me-px',
         rowEventInnerClass: (data) => (
           data.options.eventOverlap
@@ -68,19 +82,27 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
             : 'py-2'
         ),
 
+        /* Timeline > More Link
+        ----------------------------------------------------------------------------------------- */
+
         rowMoreLinkClass: [
           'me-px mb-px rounded-sm border border-transparent print:border-black',
           `${params.strongSolidPressableClass} print:bg-white`,
         ],
         rowMoreLinkInnerClass: 'px-1 py-[0.1875rem] text-xs',
 
-        slotLabelClass: 'justify-center', // v-align
+        /* Timeline > Slot Label
+        ----------------------------------------------------------------------------------------- */
+
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
+
+        slotLabelClass: 'justify-center', // v-align
         slotLabelInnerClass: (data) => [
           'p-2 text-sm',
           data.hasNavLink && 'hover:underline',
         ],
 
+        // divider between label and lane
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
       },
     }
