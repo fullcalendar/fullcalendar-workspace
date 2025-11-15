@@ -14,10 +14,13 @@ clean+build all:
 
 
 TODO
+  Could resourceDayHeaderClass ever be disabled? if not, remove styling for it
+  All themes have event opacity while dragging with mouse?
   Ensure all horizontal dividers have border-b (not top)
     slotLabelDividerClass (timeline)
     allDayHeaderClass
     dayHeaderClass
+    (and all vertical ones end?)
   Check code line-length
   New technique: bg-events... we cant differentiate between daygrid or timegrid
     ensure v-align matches daygrid daycelltop
@@ -34,6 +37,7 @@ TODO
     (look for isNarrow behavior too. should match what dayLaneInnerClass does)
   BUG: when timeline events stack and need more-link,
     the more-link does NOT show event times, super vague, unlike timegrid
+    does more-popover always use dayCellInnerClass!? even for timegrid/timeline?
   columnEvents will stack weird with native margins when isSimple or isPopover. isSimpleStack?
     some themes have mb-px, but others like Breezy have chunkier
   For pulse button, maybe do padding instead of border
@@ -1156,6 +1160,7 @@ Theme Notes
     dayHeaderInnerClass does NOT need it! already has nav-link. but might need "offset" class
 Theme QA checklist
   don't let xxsTextClass into dayHeaders ever
+    except Classic
   When "today" is first of month, how long-text render in today-circle
   isNarrow column-events, background-events (daygrid + timegrid)
   week-number for resourceTimeGrid* views

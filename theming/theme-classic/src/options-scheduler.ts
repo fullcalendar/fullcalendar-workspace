@@ -33,7 +33,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
       resourceAreaHeaderResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
-      resourceAreaDividerClass: `border-x ${params.borderColorClass} pl-0.5 ${params.mutedBgClass}`,
+      resourceAreaDividerClass: `border-x ${params.borderColorClass} ps-0.5 ${params.mutedBgClass}`,
 
       // For both resources & resource groups
       resourceAreaRowClass: `border ${params.borderColorClass}`,
@@ -48,8 +48,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceIndentClass: 'ms-2 -me-1 items-center',
       resourceExpanderClass: [
         'inline-flex flex-row group',
-        params.primaryOutlineColorClass,
         params.outlineWidthFocusClass,
+        params.primaryOutlineColorClass,
       ],
 
       resourceLaneClass: `border ${params.borderColorClass}`,
@@ -69,13 +69,18 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           continuationArrowClass,
           'border-s-[5px] border-s-black',
         ],
-        rowEventInnerClass: (data) => [
-          data.options.eventOverlap ? 'py-0.5' : 'py-1.5',
-        ],
+        rowEventInnerClass: (data) => (
+          data.options.eventOverlap
+            ? 'py-0.5'
+            : 'py-1.5'
+        ),
         rowEventTimeClass: 'px-0.5',
         rowEventTitleClass: 'px-0.5',
 
-        rowMoreLinkClass: `me-px mb-px ${params.strongSolidPressableClass} border border-transparent print:border-black print:bg-white`,
+        rowMoreLinkClass: [
+          'me-px mb-px border border-transparent print:border-black',
+          `${params.strongSolidPressableClass} print:bg-white`,
+        ],
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
         slotLabelClass: 'justify-center', // v-align
@@ -86,8 +91,14 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
 
-        nowIndicatorLabelClass: `top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] ${params.nowBorderColorClass}`,
-        nowIndicatorLineClass: `border-l ${params.nowBorderColorClass}`,
+        // create down pointing arrow
+        nowIndicatorLabelClass: [
+          'top-0 -mx-[5px]',
+          'border-x-[5px] border-x-transparent',
+          `border-t-[6px] ${params.nowBorderColorClass}`,
+        ],
+
+        nowIndicatorLineClass: `border-s ${params.nowBorderColorClass}`,
       },
     },
   }

@@ -114,7 +114,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     listItemEventClass: (data) => [
       'mb-px p-px rounded-sm',
       data.isNarrow ? 'mx-0.5' : 'mx-1',
-      data.isInteractive ? params.mutedHoverPressableClass : params.mutedHoverClass,
+      data.isSelected
+        ? params.mutedBgClass
+        : data.isInteractive
+          ? params.mutedHoverPressableClass
+          : params.mutedHoverClass,
     ],
     listItemEventInnerClass: (data) => [
       'justify-between flex flex-row',
@@ -276,7 +280,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       eventClass: (data) => [
         data.isSelected
-          ? params.outlineWidthClass
+          ? joinClassNames(
+              params.outlineWidthClass,
+              data.isDragging && 'shadow-lg',
+            )
           : params.outlineWidthFocusClass,
         params.tertiaryOutlineColorClass,
       ],

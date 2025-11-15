@@ -173,7 +173,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       // misc BG
-      fillerClass: `opacity-50 border ${params.borderColorClass}`,
+      fillerClass: `border ${params.borderColorClass} opacity-50`,
       nonBusinessClass: params.faintBgClass,
       highlightClass: params.highlightClass,
 
@@ -204,8 +204,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isInteractive
           ? params.eventMutedPressableClass
           : params.eventMutedBgClass,
+        (data.isDragging && !data.isSelected) && 'opacity-75',
         params.outlineOffsetClass,
-        (!data.isSelected && data.isDragging) && 'opacity-75',
       ],
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
       blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
@@ -252,9 +252,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       columnEventClass: (data) => [
         'mb-px border-s-6 not-print:pe-px print:border-e',
-        `ring ${params.bgRingColorClass}`,
         data.isStart && 'not-print:pt-px print:border-t rounded-t-sm',
         data.isEnd && 'not-print:pb-px print:border-b rounded-b-sm',
+        `ring ${params.bgRingColorClass}`,
       ],
       columnEventBeforeClass: (data) => (
         data.isStartResizable && [
