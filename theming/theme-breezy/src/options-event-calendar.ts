@@ -53,12 +53,8 @@ export interface EventCalendarOptionParams {
 
   // neutral buttons
   strongSolidPressableClass: string
-
-  // muted-on-hover
   mutedHoverClass: string
   mutedHoverPressableClass: string
-
-  // faint-on-hover
   faintHoverClass: string
   faintHoverPressableClass: string
 
@@ -84,7 +80,7 @@ export interface EventCalendarOptionParams {
   bgEventColor: string
   bgEventBgClass: string
 
-  // misc calendar content
+  // misc content
   highlightClass: string
   nowBorderColorClass: string
 }

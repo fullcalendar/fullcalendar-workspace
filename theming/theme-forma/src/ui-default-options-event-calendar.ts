@@ -12,8 +12,6 @@ const primaryOutlineFocusClass = `${outlineWidthFocusClass} ${primaryOutlineColo
 
 // neutral buttons
 const mutedPressableClass = `bg-(--fc-forma-muted) hover:bg-(--fc-forma-strong) active:bg-(--fc-forma-stronger) ${primaryOutlineFocusClass}`
-
-// muted-on-hover
 const mutedHoverClass = 'hover:bg-(--fc-forma-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-forma-muted) active:bg-(--fc-forma-strong)`
 const mutedHoverButtonClass = `${mutedHoverPressableClass} border border-transparent ${primaryOutlineFocusClass}`
@@ -80,8 +78,6 @@ export const params: EventCalendarOptionParams = {
     'hover:[background:linear-gradient(var(--fc-forma-stronger),var(--fc-forma-stronger))_var(--fc-monarch-background)]',
     'active:[background:linear-gradient(var(--fc-forma-strongest),var(--fc-forma-strongest))_var(--fc-monarch-background)]',
   ),
-
-  // muted-on-hover
   mutedHoverClass,
   mutedHoverPressableClass,
 
@@ -104,7 +100,7 @@ export const params: EventCalendarOptionParams = {
   bgEventColor: 'var(--fc-forma-background-event)',
   bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
 
-  // misc calendar content
+  // misc content
   highlightClass: 'bg-(--fc-forma-highlight)',
   nowBorderColorClass: 'border-(--fc-forma-primary)', // same as primary
 }

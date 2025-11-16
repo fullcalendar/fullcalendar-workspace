@@ -16,11 +16,9 @@ const outlineOffsetClass = 'outline-offset-2'
 const primaryOutlineColorClass = `outline-(--fc-breezy-primary)`
 const primaryOutlineFocusClass = `${outlineWidthFocusClass} ${primaryOutlineColorClass}`
 
-// muted-on-hover
+// neutral buttons
 const mutedHoverClass = 'hover:bg-(--fc-breezy-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-breezy-muted)`
-
-// faint-on-hover
 const faintHoverClass = 'hover:bg-(--fc-breezy-faint)'
 const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)`
 
@@ -88,12 +86,8 @@ export const params: EventCalendarOptionParams = {
     'hover:[background:linear-gradient(var(--fc-breezy-stronger),var(--fc-breezy-stronger))_var(--fc-breezy-background)]',
     'active:[background:linear-gradient(var(--fc-breezy-strongest),var(--fc-breezy-strongest))_var(--fc-breezy-background)]',
   ),
-
-  // muted-on-hover
   mutedHoverClass,
   mutedHoverPressableClass,
-
-  // faint-on-hover
   faintHoverClass,
   faintHoverPressableClass,
 
@@ -119,7 +113,7 @@ export const params: EventCalendarOptionParams = {
   bgEventColor: 'var(--fc-breezy-background-event)',
   bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
 
-  // misc calendar content
+  // misc content
   highlightClass: 'bg-(--fc-breezy-highlight)',
   nowBorderColorClass: 'border-(--fc-breezy-now)',
 }

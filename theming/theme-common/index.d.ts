@@ -39,13 +39,9 @@ export interface ThemeOptionParams {
   // neutral buttons
   strongSolidPressableClass: string
   mutedPressableClass: string
-
-  // muted-on-hover
   mutedHoverClass: string
   mutedHoverPressableClass: string
   mutedHoverPressableGroupClass: string
-
-  // faint-on-hover
   faintHoverClass: string
   faintHoverPressableClass: string
 
@@ -79,7 +75,7 @@ export interface ThemeOptionParams {
   bgEventColor: string
   bgEventBgClass: string
 
-  // misc calendar content
+  // misc content
   highlightClass: string
   todayBgNotPrintClass: string
   nowBorderColorClass: string

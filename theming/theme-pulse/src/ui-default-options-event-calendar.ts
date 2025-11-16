@@ -15,11 +15,9 @@ const tertiaryOutlineFocusClass = `${outlineWidthFocusClass} ${tertiaryOutlineCo
 const smallBoxShadowClass = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
 const largeBoxShadowClass = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 
-// muted-on-hover
+// neutral buttons
 const mutedHoverClass = 'hover:bg-(--fc-pulse-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} active:bg-(--fc-pulse-strong) focus-visible:bg-(--fc-pulse-muted)`
-
-// faint-on-hover
 const faintHoverClass = 'hover:bg-(--fc-pulse-faint)'
 const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-pulse-muted) focus-visible:bg-(--fc-pulse-faint)`
 
@@ -81,12 +79,8 @@ export const params: EventCalendarOptionParams = {
     'active:[background:linear-gradient(var(--fc-pulse-strongest),var(--fc-pulse-strongest))_var(--fc-pulse-background)]',
   ),
   mutedPressableClass: 'bg-(--fc-pulse-muted) hover:bg-(--fc-pulse-strong) active:bg-(--fc-pulse-stronger)',
-
-  // muted-on-hover
   mutedHoverClass,
   mutedHoverPressableClass,
-
-  // faint-on-hover
   faintHoverClass,
   faintHoverPressableClass,
 
@@ -105,7 +99,7 @@ export const params: EventCalendarOptionParams = {
   bgEventColor: 'var(--fc-pulse-background-event)',
   bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
 
-  // misc calendar content
+  // misc content
   highlightClass: 'bg-(--fc-pulse-highlight)',
   nowBorderColorClass: 'border-(--fc-pulse-now)',
 }

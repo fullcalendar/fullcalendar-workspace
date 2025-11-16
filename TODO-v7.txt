@@ -31,7 +31,6 @@ TODO
     (see Pulse for good example)
   dayCellTopClass min-height should adapt to isNarrow to match the events' x-margins
     Good Pulse
-  Combine 'muted-on-hover' and 'faint-on-hover' into 'neutral buttons' sections?
   Check that all themes have conditionally applied end-margin for timeline events
     Classic is bad
   Check that all themes have conditionally applied bottom-margin for timeGRID events

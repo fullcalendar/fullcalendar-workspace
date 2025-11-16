@@ -121,13 +121,9 @@ export const params: ThemeOptionParams = {
   // neutral buttons
   strongSolidPressableClass,
   mutedPressableClass,
-
-  // muted-on-hover
   mutedHoverClass: mutedBgHoverClass,
   mutedHoverPressableClass,
   mutedHoverPressableGroupClass,
-
-  // faint-on-hover
   faintHoverClass: faintBgHoverClass,
   faintHoverPressableClass,
 
@@ -161,7 +157,7 @@ export const params: ThemeOptionParams = {
   eventFaintPressableClass,
   bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
 
-  // misc calendar content
+  // misc content
   highlightClass: 'bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.1)]',
   todayBgNotPrintClass: 'not-print:bg-[rgba(var(--mui-palette-warning-mainChannel)_/_0.1)]',
   nowBorderColorClass: 'border-(--mui-palette-error-main)',

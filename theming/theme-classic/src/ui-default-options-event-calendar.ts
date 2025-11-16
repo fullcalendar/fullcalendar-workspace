@@ -2,11 +2,9 @@ import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
-// muted-on-hover
+// neutral buttons
 const mutedHoverClass = 'hover:bg-(--fc-classic-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-classic-muted) active:bg-(--fc-classic-strong)`
-
-// faint-on-hover
 const faintHoverClass = 'hover:bg-(--fc-classic-faint)'
 const faintHoverPressableClass = `${faintHoverClass} focus-visible:bg-(--fc-classic-faint) active:bg-(--fc-classic-muted)`
 
@@ -38,12 +36,8 @@ export const params: EventCalendarOptionParams = {
 
   // neutral buttons
   strongSolidPressableClass: '[background:linear-gradient(var(--fc-classic-strong),var(--fc-classic-strong))_var(--fc-classic-background)]',
-
-  // muted-on-hover
   mutedHoverClass,
   mutedHoverPressableClass,
-
-  // faint-on-hover
   faintHoverClass,
   faintHoverPressableClass,
 
@@ -57,7 +51,7 @@ export const params: EventCalendarOptionParams = {
   bgEventColor: 'var(--fc-classic-background-event)',
   bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
 
-  // misc calendar content
+  // misc content
   highlightClass: 'bg-(--fc-classic-highlight)',
   todayBgNotPrintClass: 'not-print:bg-(--fc-classic-today)',
   nowBorderColorClass: 'border-(--fc-classic-now)',

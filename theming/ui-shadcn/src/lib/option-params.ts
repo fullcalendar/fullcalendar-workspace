@@ -89,13 +89,9 @@ export const params: ThemeOptionParams = {
   // neutral buttons
   strongSolidPressableClass,
   mutedPressableClass: `${mutedBgClass} ${strongBgHoverClass}`,
-
-  // muted-on-hover
   mutedHoverClass: mutedBgHoverClass,
   mutedHoverPressableClass: mutedBgHoverClass, // shadcn doesn't do down-effect
   mutedHoverPressableGroupClass: mutedBgHoverGroupClass, // shadcn doesn't do down-effect
-
-  // faint-on-hover
   faintHoverClass: faintBgHoverClass,
   faintHoverPressableClass: `${faintBgHoverClass} ${faintBgFocusClass}`,
 
