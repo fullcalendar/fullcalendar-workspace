@@ -7,8 +7,6 @@ import {} from '@fullcalendar/list'
 import {} from '@fullcalendar/multimonth'
 import {} from '@fullcalendar/interaction'
 
-export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
-
 export interface EventCalendarOptionParams {
   // outline
   outlineWidthClass: string
@@ -62,6 +60,8 @@ export interface EventCalendarOptionParams {
   highlightClass: string
   nowBorderColorClass: string
 }
+
+export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
@@ -157,9 +157,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* Abstract Event
       ------------------------------------------------------------------------------------------- */
 
+      eventShortHeight: 50,
       eventColor: params.eventColor,
       eventContrastColor: params.eventContrastColor,
-      eventShortHeight: 50,
 
       eventClass: (data) => [
         data.event.url && 'hover:no-underline',

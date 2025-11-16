@@ -81,6 +81,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       timelineBottomClass: 'h-2',
     },
     views: {
+      resourceTimeGrid: resourceDayHeaderClasses,
+      resourceDayGrid: resourceDayHeaderClasses,
       timeline: {
 
         /* Timeline > Row Event
@@ -89,7 +91,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         rowEventClass: (data) => data.isEnd && 'me-px',
         rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
 
-        /* Timeline > More Link
+        /* Timeline > More-Link
         ----------------------------------------------------------------------------------------- */
 
         rowMoreLinkClass: [
@@ -153,9 +155,6 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         // divider between label and lane
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
       },
-
-      resourceTimeGrid: resourceDayHeaderClasses,
-      resourceDayGrid: resourceDayHeaderClasses,
     },
   }
 }

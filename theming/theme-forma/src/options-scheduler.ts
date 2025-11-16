@@ -82,7 +82,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
             : 'py-2'
         ),
 
-        /* Timeline > More Link
+        /* Timeline > More-Link
         ----------------------------------------------------------------------------------------- */
 
         rowMoreLinkClass: [

@@ -14,6 +14,8 @@ clean+build all:
 
 
 TODO
+  Should Classic theme's timeline-event "continuation arrow" have more spacing on left/right?
+    Give color-variable for color?
   Could resourceDayHeaderClass ever be disabled? if not, remove styling for it
   All themes have event opacity while dragging with mouse?
   Ensure all horizontal dividers have border-b (not top)

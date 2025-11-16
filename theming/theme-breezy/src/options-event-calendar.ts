@@ -23,8 +23,6 @@ REFERENCE:
     https://tailwindcss.com/plus/ui-blocks/marketing/elements/flyout-menus#component-25601925ae83e51e1b31d3bd1c286515
 */
 
-export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
-
 export interface EventCalendarOptionParams {
   // outline
   outlineWidthClass: string
@@ -90,6 +88,8 @@ export interface EventCalendarOptionParams {
   highlightClass: string
   nowBorderColorClass: string
 }
+
+export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
@@ -211,8 +211,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* Abstract Event
       ------------------------------------------------------------------------------------------- */
 
-      eventColor: params.eventColor,
       eventShortHeight: 50,
+      eventColor: params.eventColor,
 
       eventClass: (data) => [
         data.event.url && 'hover:no-underline',
@@ -325,9 +325,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         (data.isShort || data.isNarrow) ? xxsTextClass : 'text-xs',
       ],
 
-      columnEventTimeClass: (data) => [
-        !data.isShort && (data.isNarrow ? 'pt-0.5' : 'pt-1'),
-      ],
+      columnEventTimeClass: (data) => (
+        !data.isShort && (data.isNarrow ? 'pt-0.5' : 'pt-1')
+      ),
 
       columnEventTitleClass: (data) => [
         !data.isShort && (data.isNarrow ? 'py-0.5' : 'py-1'),

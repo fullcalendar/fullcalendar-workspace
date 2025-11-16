@@ -22,7 +22,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceDayHeaderAlign: 'center',
 
-      resourceDayHeaderClass: `border ${params.fgClass} text-sm/6 font-semibold`,
+      resourceDayHeaderClass: `border ${params.fgClass} text-sm font-semibold`,
       resourceDayHeaderInnerClass: 'p-2',
 
       /* Resource Data Grid
@@ -88,7 +88,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         rowEventClass: (data) => data.isEnd && 'me-px',
         rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
 
-        /* Timeline > More Link
+        /* Timeline > More-Link
         ----------------------------------------------------------------------------------------- */
 
         rowMoreLinkClass: [

@@ -17,7 +17,12 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 } {
   return {
     optionDefaults: {
+
+      /* Resource Day Header
+      ------------------------------------------------------------------------------------------- */
+
       resourceDayHeaderAlign: 'center',
+
       resourceDayHeaderClass: (data) => [
         'border',
         data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
@@ -28,23 +33,23 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         data.isNarrow ? xxsTextClass : 'text-sm',
       ],
 
-      resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
+      /* Resource Data Grid
+      ------------------------------------------------------------------------------------------- */
+
+      // column header
       resourceAreaHeaderClass: `border ${params.borderColorClass} justify-center`, // valign
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
       resourceAreaHeaderResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
-      resourceAreaDividerClass: `border-x ${params.borderColorClass} ps-0.5 ${params.mutedBgClass}`,
-
-      // For both resources & resource groups
-      resourceAreaRowClass: `border ${params.borderColorClass}`,
-
+      // group cell
       resourceGroupHeaderClass: params.mutedBgClass,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
-      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
 
+      // cell
       resourceCellClass: `border ${params.borderColorClass}`,
       resourceCellInnerClass: 'p-2 text-sm',
 
+      // row expander
       resourceIndentClass: 'ms-2 -me-1 items-center',
       resourceExpanderClass: [
         'inline-flex flex-row group',
@@ -52,30 +57,50 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         params.primaryOutlineColorClass,
       ],
 
+      // row
+      resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
+      resourceAreaRowClass: `border ${params.borderColorClass}`,
+
+      // divider between data grid & timeline
+      resourceAreaDividerClass: `border-x ${params.borderColorClass} ps-0.5 ${params.mutedBgClass}`,
+
+      /* Timeline Lane
+      ------------------------------------------------------------------------------------------- */
+
+      resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
       resourceLaneClass: `border ${params.borderColorClass}`,
       resourceLaneBottomClass: (data) => data.options.eventOverlap && 'h-3',
-
-      // Non-resource Timeline
       timelineBottomClass: 'h-3',
     },
     views: {
       timeline: {
+
+        /* Timeline > Row Event
+        ----------------------------------------------------------------------------------------- */
+
         rowEventClass: 'me-px items-center', // v-align with continuation arrows
+
         rowEventBeforeClass: (data) => !data.isStartResizable && [
           continuationArrowClass,
           'border-e-[5px] border-e-black',
         ],
+
         rowEventAfterClass: (data) => !data.isEndResizable && [
           continuationArrowClass,
           'border-s-[5px] border-s-black',
         ],
+
         rowEventInnerClass: (data) => (
           data.options.eventOverlap
             ? 'py-0.5'
             : 'py-1.5'
         ),
+
         rowEventTimeClass: 'px-0.5',
         rowEventTitleClass: 'px-0.5',
+
+        /* Timeline > More-Link
+        ----------------------------------------------------------------------------------------- */
 
         rowMoreLinkClass: [
           'me-px mb-px border border-transparent print:border-black',
@@ -83,13 +108,22 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
-        slotLabelClass: 'justify-center', // v-align
+        /* Timeline > Slot Label
+        ----------------------------------------------------------------------------------------- */
+
         slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
+
+        slotLabelClass: 'justify-center', // v-align
         slotLabelInnerClass: (data) => [
           'p-2 text-sm',
           data.hasNavLink && 'hover:underline',
         ],
+
+        // divider between label and lane
         slotLabelDividerClass: `border-b ${params.borderColorClass}`,
+
+        /* Timeline > Now-Indicator
+        ----------------------------------------------------------------------------------------- */
 
         // create down pointing arrow
         nowIndicatorLabelClass: [

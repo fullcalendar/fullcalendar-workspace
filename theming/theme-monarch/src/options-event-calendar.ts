@@ -158,9 +158,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* Abstract Event
       ------------------------------------------------------------------------------------------- */
 
+      eventShortHeight: 50,
       eventColor: params.eventColor,
       eventContrastColor: params.eventContrastColor,
-      eventShortHeight: 50,
 
       eventClass: (data) => [
         data.event.url && 'hover:no-underline',
