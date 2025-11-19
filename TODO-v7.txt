@@ -14,21 +14,14 @@ clean+build all:
 
 
 TODO
-  Make all axis font sizes XS when isNarrow instead of XXS?
   Is there an issue with the computer sleeping (or tab going inactive)
     and then there's a JS error which kills resizerobserver?
     Same problem when using Vite devmode and commenting out calendars
   Make hover:no-underline for eventClass part of core? part of the "reset"?
-  Maybe disable navLink on more-popover header?
-    Weird to click +more link in timegrid, and immediately be hover-state on popover, esp Forma
-    This navlink isn't very useful anyway
-  touch-resizing columnEvent in timegrid when isNarrow, column seems to crop selection-border. why?
-  after beta: dark-mode Pulse borders in secondary buttonGroup. can't see them
-    either increase the --fc-pulse-border contrast
-    or make a separate css variable
   BUG with MUI + Classic Theme
     Timeline resource-groups have inconsistent border color between scroll panes
 THEME CHECKLIST
+  test more with navlinks OFF
   test isNarrow for vertical resource view resource-day-headers (non-h-scrolling)
   daygrid bg events have text title align with daycelltop
   Test RTL with [dir=rtl] selectors
@@ -385,6 +378,12 @@ Punt: Forma business non-hours effect with dark line at top bottom (see real out
 How to deal with sticky resource (or day?) headers in v-resource view,
   that stick for a very short runway and look miscentered over content below
   (find other todolist item for this) see resourceTimeGridTwoDay
+touch-resizing columnEvent in timegrid when isNarrow, column seems to crop selection-border. why?
+dark-mode Pulse borders in secondary buttonGroup. can't see them
+  either increase the --fc-pulse-border contrast
+  or make a separate css variable
+for theme-*Content props that break text up into multiple slices,
+  browser text-selection is weird. how to correct?
 
 
 Changelog

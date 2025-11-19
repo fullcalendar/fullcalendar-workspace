@@ -11,7 +11,6 @@ import { memoize } from '../util/memoize.js'
 import { generateClassName } from '../content-inject/ContentContainer.js'
 import { ContentContainer } from '../content-inject/ContentContainer.js'
 import { DayCellData, DayHeaderData } from '../api/structs.js'
-import { buildNavLinkAttrs } from './nav-link.js'
 import classNames from '../internal-classnames.js'
 import { joinArrayishClassNames, joinClassNames } from '../util/html.js'
 import { applyStyle, computeElIsRtl, getAppendableRoot, getEventTargetViaRoot, getUniqueDomId } from '../util/dom-manip.js'
@@ -56,7 +55,6 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
     let dateMeta = this.getDateMeta(startDate, dateEnv, dateProfile, todayRange)
     let [text, textParts] = dateEnv.format(startDate, options.dayPopoverFormat)
 
-    const hasNavLink = options.navLinks
     const dayHeaderRenderProps: DayHeaderData = {
       ...dateMeta,
       isMajor: false,
@@ -64,7 +62,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       isSticky: false,
       inPopover: true,
       level: 0,
-      hasNavLink,
+      hasNavLink: false,
       text,
       textParts,
       get weekdayText() { return findWeekdayText(textParts) },
@@ -77,7 +75,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
       isMajor: false,
       isNarrow: false,
       inPopover: true,
-      hasNavLink,
+      hasNavLink: false,
       get dayNumberText() { return findDayNumberText(textParts) },
       get monthText() { return findMonthText(textParts) },
       view: viewApi,
@@ -135,11 +133,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
               tag="div"
               attrs={{
                 id: this.titleId,
-                ...(
-                  hasNavLink
-                    ? buildNavLinkAttrs(context, startDate, undefined, fullDateStr)
-                    : {}
-                ),
+                // NOTE: more-popover never has nav-links
               }}
               generatorName="dayHeaderContent"
               renderProps={dayHeaderRenderProps}
