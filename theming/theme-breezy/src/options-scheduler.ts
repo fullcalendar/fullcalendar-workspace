@@ -1,4 +1,4 @@
-import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import { EventCalendarOptionParams } from './options-event-calendar.js'
 
 // ambient types (tsc strips during build because of {})
@@ -108,7 +108,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
         slotLabelInnerClass: (data) => [
           'px-3 py-2 text-xs',
-          data.isTime && 'relative -start-4',
+          data.isTime && joinClassNames(
+            'relative -start-4',
+            data.isFirst && 'hidden',
+          ),
           data.hasNavLink && 'hover:underline'
         ],
 

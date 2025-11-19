@@ -14,7 +14,6 @@ clean+build all:
 
 
 TODO
-  Hide isFirst slot label in timeline (in Monarch & more)
   Make all axis font sizes XS when isNarrow instead of XXS?
   Is there an issue with the computer sleeping (or tab going inactive)
     and then there's a JS error which kills resizerobserver?

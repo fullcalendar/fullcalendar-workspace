@@ -126,7 +126,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
                   ? 'h-2 self-end justify-end' // self-v-align, v-align
                   // day-header
                   : 'justify-center', // v-align
-              )
+              ),
         ],
 
         slotLabelInnerClass: (data) => [
@@ -144,7 +144,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
                 'px-2',
                 data.isTime
                   // time-tick inner
-                  ? 'pb-3 relative -start-3'
+                  ? joinClassNames(
+                      'pb-3 relative -start-3',
+                      data.isFirst && 'hidden',
+                    )
                   // day-header inner
                   : 'py-2',
                 data.hasNavLink && 'hover:underline',
