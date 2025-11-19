@@ -14,9 +14,6 @@ clean+build all:
 
 
 TODO
-  Most popover navlink paddings are too wide now
-  Should themes define a default toolbar and style them responsively?
-    how would we pass availableViews and addButton in there?
   Hide isFirst slot label in timeline (in Monarch & more)
   Make all axis font sizes XS when isNarrow instead of XXS?
   Is there an issue with the computer sleeping (or tab going inactive)
@@ -160,6 +157,8 @@ project: ResizeObserver refactor
 AFTER BETA
 ----------
 
+Should themes define a default toolbar and style them responsively?
+  how would we pass availableViews and addButton in there?
 Demo-App pulls in json-feed events, but doesn't have contrastColor, so looks bad in dark-mode
 Update latest shadcn theme colors (newest version of shadcn updated them)
 move away from okhlc colors... bad browser support

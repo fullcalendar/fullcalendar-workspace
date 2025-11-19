@@ -336,7 +336,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isNarrow ? 'text-xs' : 'text-sm',
         data.inPopover ? joinClassNames(
           // ghost-button IN POPOVER
-          'm-2 h-6 px-1.5 rounded-sm font-semibold',
+          'm-2 h-6 px-1 rounded-sm font-semibold',
           data.hasNavLink && params.mutedHoverPressableClass,
         ) : !data.dayNumberText ? joinClassNames(
           // ghost-button IN VIEW HEADER (short)

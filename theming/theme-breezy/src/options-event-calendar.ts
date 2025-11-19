@@ -385,11 +385,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
                 )
               // WITHOUT today circle
               : joinClassNames(
-                  'px-1.5 rounded-sm',
+                  'rounded-sm',
                   data.inPopover
-                    ? 'm-2 py-0.5'
+                    ? 'm-2 px-1 py-0.5'
                     : joinClassNames(
-                        'mx-2 h-6',
+                        'mx-2 h-6 px-1.5',
                         data.isNarrow ? 'my-2' : 'my-3'
                       ),
                   data.hasNavLink && mutedHoverButtonClass,
