@@ -57,7 +57,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceAreaRowClass: `border ${params.borderColorClass}`,
 
       // divider between data grid & timeline
-      resourceAreaDividerClass: `border-s ${params.strongBorderColorClass}`,
+      resourceAreaDividerClass: `border-e ${params.strongBorderColorClass}`,
 
       /* Timeline Lane
       ------------------------------------------------------------------------------------------- */
@@ -101,7 +101,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
 
         // divider between label and lane
-        slotLabelDividerClass: `border-t ${params.strongBorderColorClass} shadow-sm`,
+        slotLabelDividerClass: `border-b ${params.strongBorderColorClass} shadow-sm`,
       },
     },
   }

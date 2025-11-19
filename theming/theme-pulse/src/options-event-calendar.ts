@@ -196,8 +196,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventTitleClass: (data) => [
         'opacity-50 italic',
         (data.isNarrow || data.isShort)
-          ? `m-1 ${xxsTextClass}`
-          : 'm-2 text-xs',
+          ? `p-1 ${xxsTextClass}`
+          : 'p-2 text-xs',
         params.strongFgClass,
       ],
 
@@ -214,6 +214,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'bg-(--fc-event-color) print:bg-white',
         'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))]',
         data.isInteractive && 'active:bg-[color-mix(in_oklab,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
+        (data.isDragging && !data.isSelected) && 'opacity-75',
       ],
 
       blockEventInnerClass: 'text-(--fc-event-contrast-color) print:text-black',
@@ -511,13 +512,13 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayGrid: {
         ...dayRowCommonClasses,
         dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
-        dayHeaderDividerClass: `border-t ${params.borderColorClass}`,
+        dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
         dayCellBottomClass: getShortDayCellBottomClass,
       },
       multiMonth: {
         ...dayRowCommonClasses,
         dayHeaderAlign: (data) => data.inPopover ? 'start' : data.isNarrow ? 'center' : 'end',
-        dayHeaderDividerClass: (data) => data.isSticky && `border-t ${params.borderColorClass}`,
+        dayHeaderDividerClass: (data) => data.isSticky && `border-b ${params.borderColorClass}`,
         dayCellBottomClass: getShortDayCellBottomClass,
 
         tableBodyClass: `border ${params.borderColorClass} rounded-sm overflow-hidden`,
@@ -526,7 +527,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayRowCommonClasses,
         dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
         dayHeaderDividerClass: (data) => [
-          'border-t',
+          'border-b',
           data.options.allDaySlot
             ? params.borderColorClass
             : `${params.strongBorderColorClass} shadow-sm`
@@ -566,7 +567,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isFirst && 'hidden',
         ],
 
-        slotLabelDividerClass: `border-s ${params.borderColorClass}`,
+        slotLabelDividerClass: `border-e ${params.borderColorClass}`,
       },
       list: {
 

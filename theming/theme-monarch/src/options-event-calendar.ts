@@ -88,7 +88,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
   const tallDayCellBottomClass = 'min-h-4'
   const getShortDayCellBottomClass = (data: { isNarrow: boolean }) => (
-    !data.isNarrow && 'min-h-[1px]'
+    !data.isNarrow && 'min-h-px'
   )
 
   const dayRowCommonClasses: CalendarOptions = {
@@ -180,8 +180,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventTitleClass: (data) => [
         'opacity-50 italic',
         data.isNarrow
-          ? `mx-1 my-1.5 ${xxsTextClass}`
-          : 'mx-2 my-2.5 text-xs',
+          ? `px-1 py-1.5 ${xxsTextClass}`
+          : 'px-2 py-2.5 text-xs',
       ],
 
       /* List-Item Event
@@ -359,7 +359,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       dayCellTopClass: (data) => [
-        'min-h-[2px] flex flex-row',
+        data.isNarrow ? 'min-h-px' : 'min-h-0.5',
+        'flex flex-row',
         data.isNarrow ? 'justify-end' : 'justify-center',
       ],
 
@@ -552,7 +553,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
 
         // divider between all-day section and slots below
-        allDayDividerClass: `border-t ${params.borderColorClass}`,
+        allDayDividerClass: `border-b ${params.borderColorClass}`,
 
         /* TimeGrid > Slot Label
         ----------------------------------------------------------------------------------------- */
@@ -571,7 +572,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ],
 
         slotLabelDividerClass: (data) => [
-          'border-s',
+          'border-e',
           (data.isHeader && data.options.dayMinWidth === undefined)
             ? 'border-transparent'
             : params.borderColorClass,

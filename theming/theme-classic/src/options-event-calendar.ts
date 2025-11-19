@@ -173,8 +173,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventTitleClass: (data) => [
         'opacity-50 italic',
         data.isNarrow
-          ? `m-0.5 ${xxsTextClass}`
-          : 'm-1.5 text-xs',
+          ? `p-0.5 ${xxsTextClass}`
+          : 'p-1.5 text-xs',
       ],
 
       /* List-Item Event
@@ -307,14 +307,17 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isNarrow ? xxsTextClass : 'text-sm',
       ],
 
-      dayHeaderDividerClass: `border-t ${params.borderColorClass}`,
+      dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
 
       /* Day Cell
       ------------------------------------------------------------------------------------------- */
 
       dayCellClass: getDayClass,
 
-      dayCellTopClass: 'min-h-[2px] flex flex-row justify-end',
+      dayCellTopClass: (data) => [
+        data.isNarrow ? 'min-h-px' : 'min-h-0.5',
+        'flex flex-row justify-end',
+      ],
 
       dayCellTopInnerClass: (data) => [
         'px-1 whitespace-nowrap',
@@ -408,11 +411,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     views: {
       dayGrid: {
         ...dayRowCommonClasses,
-        dayCellBottomClass: 'min-h-[1px]',
+        dayCellBottomClass: 'min-h-px',
       },
       multiMonth: {
         ...dayRowCommonClasses,
-        dayCellBottomClass: 'min-h-[1px]',
+        dayCellBottomClass: 'min-h-px',
 
         tableClass: `border ${params.borderColorClass}`,
       },
@@ -453,7 +456,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isNarrow ? xxsTextClass : 'text-sm',
         ],
 
-        slotLabelDividerClass: `border-s ${params.borderColorClass}`,
+        slotLabelDividerClass: `border-e ${params.borderColorClass}`,
 
         /* TimeGrid > Now-Indicator
         ----------------------------------------------------------------------------------------- */

@@ -9,7 +9,7 @@ import {} from '@fullcalendar/resource-timeline'
 import {} from '@fullcalendar/adaptive'
 import {} from '@fullcalendar/scrollgrid'
 
-const continuationArrowClass = 'mx-px border-y-[5px] border-y-transparent opacity-50'
+const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity-50'
 
 export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
@@ -26,7 +26,6 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceDayHeaderClass: (data) => [
         'border',
         data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
-        data.isDisabled && params.faintBgClass,
       ],
       resourceDayHeaderInnerClass: (data) => [
         'px-1 py-0.5 flex flex-col',
@@ -80,15 +79,13 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
         rowEventClass: 'me-px items-center', // v-align with continuation arrows
 
-        rowEventBeforeClass: (data) => !data.isStartResizable && [
-          continuationArrowClass,
-          'border-e-[5px] border-e-black',
-        ],
+        rowEventBeforeClass: (data) => (
+          !data.isStartResizable && `${continuationArrowClass} border-e-[5px] border-e-black`
+        ),
 
-        rowEventAfterClass: (data) => !data.isEndResizable && [
-          continuationArrowClass,
-          'border-s-[5px] border-s-black',
-        ],
+        rowEventAfterClass: (data) => (
+          !data.isEndResizable && `${continuationArrowClass} border-s-[5px] border-s-black`
+        ),
 
         rowEventInnerClass: (data) => (
           data.options.eventOverlap

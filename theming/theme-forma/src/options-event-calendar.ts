@@ -81,7 +81,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
   const tallDayCellBottomClass = 'min-h-4'
   const getShortDayCellBottomClass = (data: { isNarrow: boolean }) => (
-    !data.isNarrow && 'min-h-[1px]'
+    !data.isNarrow && 'min-h-px'
   )
 
   const getSlotClass = (data: { isMinor: boolean }) => joinClassNames(
@@ -109,11 +109,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isNarrow ? 'ms-0.5' : 'ms-1',
     ],
 
-    listItemEventInnerClass: (data) => [
+    listItemEventInnerClass: (data) => (
       data.isNarrow
         ? `py-px ${xxsTextClass}`
         : 'py-0.5 text-xs'
-    ],
+    ),
 
     listItemEventTimeClass: (data) => [
       data.isNarrow ? 'ps-0.5' : 'ps-1',
@@ -357,7 +357,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       dayCellTopClass: (data) => [
-        'min-h-[2px] flex flex-row',
+        data.isNarrow ? 'min-h-px' : 'min-h-0.5',
+        'flex flex-row',
         /*
         when businessHours owns the cell bg-color, use faint-text to denote other-month/disabled
         */
@@ -503,7 +504,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayGrid: {
         ...dayRowCommonClasses,
-        dayHeaderDividerClass: `border-t ${params.borderColorClass}`,
+        dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
         dayCellBottomClass: getShortDayCellBottomClass,
       },
       dayGridMonth: {
@@ -512,14 +513,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       },
       multiMonth: {
         ...dayRowCommonClasses,
-        dayHeaderDividerClass: (data) => data.isSticky && `border-t ${params.borderColorClass}`,
+        dayHeaderDividerClass: (data) => data.isSticky && `border-b ${params.borderColorClass}`,
         dayCellBottomClass: getShortDayCellBottomClass,
 
         tableBodyClass: `border ${params.borderColorClass} rounded-sm overflow-hidden`,
       },
       timeGrid: {
         ...dayRowCommonClasses,
-        dayHeaderDividerClass: `border-t ${params.borderColorClass}`,
+        dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
         dayCellBottomClass: tallDayCellBottomClass,
         dayHeaderAlign: 'start', // overrides general option
 
@@ -545,7 +546,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isNarrow ? xxsTextClass : 'text-sm',
         ],
 
-        allDayDividerClass: `border-t ${params.borderColorClass}`,
+        allDayDividerClass: `border-b ${params.borderColorClass}`,
 
         /* TimeGrid > Slot Label
         ----------------------------------------------------------------------------------------- */
@@ -556,7 +557,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isNarrow ? xxsTextClass : 'text-xs',
         ],
 
-        slotLabelDividerClass: `border-s ${params.borderColorClass}`,
+        slotLabelDividerClass: `border-e ${params.borderColorClass}`,
       },
       list: {
 

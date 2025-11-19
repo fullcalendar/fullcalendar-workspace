@@ -22,7 +22,6 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceDayHeaderClass: (data) => [
         'border',
         data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
-        data.isDisabled && params.mutedBgClass,
       ],
       resourceDayHeaderInnerClass: (data) => [
         'p-2 flex flex-col',

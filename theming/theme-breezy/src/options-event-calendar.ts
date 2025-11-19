@@ -127,7 +127,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
   const tallDayCellBottomClass = 'min-h-3'
   const getShortDayCellBottomClass = (data: { isNarrow: boolean }) => (
-    !data.isNarrow && 'min-h-[1px]'
+    !data.isNarrow && 'min-h-px'
   )
 
   const mutedHoverButtonClass = joinClassNames(
@@ -230,8 +230,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       backgroundEventTitleClass: (data) => [
         'opacity-50 italic',
         data.isNarrow
-          ? `m-1 ${xxsTextClass}`
-          : 'm-2 text-xs',
+          ? `p-1 ${xxsTextClass}`
+          : 'p-2 text-xs',
         params.fgClass,
       ],
 
@@ -245,6 +245,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : params.eventFaintBgClass,
         'print:bg-white',
         'border-transparent print:border-(--fc-event-color)',
+        (data.isDragging && !data.isSelected) && 'opacity-75',
       ],
 
       blockEventInnerClass: `flex ${params.eventMutedFgClass}`, // NOTE: subclass determines direction
@@ -284,9 +285,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'font-medium',
       ],
 
-      rowEventTitleClass: (data) => [
-        data.isNarrow ? 'px-0.5' : 'px-1',
-      ],
+      rowEventTitleClass: (data) => (
+        data.isNarrow ? 'px-0.5' : 'px-1'
+      ),
 
       /* Column Event
       ------------------------------------------------------------------------------------------- */
@@ -404,7 +405,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ((data.isOther || data.isDisabled) && !data.options.businessHours) && params.faintBgClass,
       ],
 
-      dayCellTopClass: 'min-h-1 flex flex-row justify-start',
+      dayCellTopClass: (data) => [
+        data.isNarrow ? 'min-h-0.5' : 'min-h-1',
+        'flex flex-row justify-start',
+      ],
 
       dayCellTopInnerClass: (data) => [
         'flex flex-row items-center justify-center whitespace-nowrap', // v-align, h-align
@@ -633,7 +637,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isFirst && 'hidden',
         ],
 
-        slotLabelDividerClass: `border-s ${params.mutedBorderColorClass}`,
+        slotLabelDividerClass: `border-e ${params.mutedBorderColorClass}`,
       },
       list: {
 

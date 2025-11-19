@@ -14,23 +14,6 @@ clean+build all:
 
 
 TODO
-  Should Classic theme's timeline-event "continuation arrow" have more spacing on left/right?
-    Give color-variable for color?
-  Could resourceDayHeaderClass ever be disabled? if not, remove styling for it
-  All themes have event opacity while dragging with mouse?
-  Ensure all horizontal dividers have border-b (not top)
-    slotLabelDividerClass (timeline)
-    allDayHeaderClass
-    dayHeaderClass
-    (and all vertical ones end?)
-  Check code line-length
-  New technique: bg-events... we cant differentiate between daygrid or timegrid
-    ensure v-align matches daygrid daycelltop
-    ensure h-align matched daygrid events (and handles isNarrow)
-    ensure looks find in timegrid (and handles isShort OPTIONALLY)
-    (see Pulse for good example)
-  dayCellTopClass min-height should adapt to isNarrow to match the events' x-margins
-    Good Pulse
   Check that all themes have conditionally applied end-margin for timeline events
     Classic is bad
   Check that all themes have conditionally applied bottom-margin for timeGRID events
@@ -77,6 +60,10 @@ THEME CHECKLIST
   always use dayLaneInnerClass instead of columnEvent x-margins
     ensure handling of isNarrow
 THEME NOTES
+  backgroundEventTitle is underpowered because can't differentiate between row-style or col-style like normal events
+    didn't want to make rowBackgroundEvent* columnBackgroundEvent*
+    because BG are somewhat bad UX because FG events often overlap their titles
+    will redesign in future
   resourceAreaRowClass is for both resources & resource groups
   timeline events/more-link do NOT need to do isNarrow
   Dot uses border instead of bg because it shows up in print
