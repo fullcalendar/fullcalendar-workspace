@@ -77,7 +77,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         /* Timeline > Row Event
         ----------------------------------------------------------------------------------------- */
 
-        rowEventClass: 'me-px items-center', // v-align with continuation arrows
+        rowEventClass: (data) => [
+          data.isEnd && 'me-px',
+          'items-center', // v-align with continuation arrows
+        ],
 
         rowEventBeforeClass: (data) => (
           !data.isStartResizable && `${continuationArrowClass} border-e-[5px] border-e-black`

@@ -231,9 +231,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ------------------------------------------------------------------------------------------- */
 
       columnEventClass: (data) => [
-        'mb-px border-x',
+        'border-x',
         data.isStart && 'border-t rounded-t-sm',
-        data.isEnd && 'border-b rounded-b-sm',
+        data.isEnd && 'mb-px border-b rounded-b-sm',
         `ring ${params.bgRingColorClass}`,
       ],
 

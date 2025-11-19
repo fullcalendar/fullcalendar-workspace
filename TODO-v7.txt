@@ -14,11 +14,6 @@ clean+build all:
 
 
 TODO
-  Check that all themes have conditionally applied end-margin for timeline events
-    Classic is bad
-  Check that all themes have conditionally applied bottom-margin for timeGRID events
-    Monarch is bad
-    (look for isNarrow behavior too. should match what dayLaneInnerClass does)
   BUG: when timeline events stack and need more-link,
     the more-link does NOT show event times, super vague, unlike timegrid
     does more-popover always use dayCellInnerClass!? even for timegrid/timeline?

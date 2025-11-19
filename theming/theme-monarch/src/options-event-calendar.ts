@@ -274,9 +274,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventTitleSticky: false, // disabled because title is below time
 
       columnEventClass: (data) => [
-        `mb-px border-x ring ${params.bgRingColorClass}`,
+        `border-x ring ${params.bgRingColorClass}`,
         data.isStart && 'border-t rounded-t-sm',
-        data.isEnd && 'border-b rounded-b-sm',
+        data.isEnd && 'mb-px border-b rounded-b-sm',
       ],
 
       columnEventBeforeClass: (data) => (
