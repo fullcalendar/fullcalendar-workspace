@@ -27,7 +27,7 @@ export interface ResourceGroupSubrowProps {
 }
 
 /*
-NOT a good name anymore, because not always "tall", when in print-view
+Group cell that spans vertically, consuming multiple rowspan
 */
 export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps> {
   // ref
@@ -78,7 +78,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
             props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           )}
           renderProps={renderProps}
-          generatorName="resourceGroupHeaderContent"
+          generatorName="resourceCellClass"
           customGenerator={colSpec.cellContent}
           defaultGenerator={renderGroupInner}
           classNameGenerator={colSpec.cellClass}

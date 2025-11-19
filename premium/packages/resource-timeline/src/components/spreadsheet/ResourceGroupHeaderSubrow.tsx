@@ -27,6 +27,9 @@ export interface ResourceGroupHeaderSubrowProps {
   height?: number
 }
 
+/*
+Group cell that spans horizontally, consuming multiple colspans
+*/
 export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeaderSubrowProps, ViewContext> {
   // ref
   private innerElRef = createRef<HTMLDivElement>()
