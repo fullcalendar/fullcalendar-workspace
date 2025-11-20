@@ -61,7 +61,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
     // workaround: to infer day, do NOT time
 
     let dateMeta = this.getDateMeta(cell.date, dateEnv, dateProfile, props.todayRange, props.nowDate)
-    let hasNavLink = !dateMeta.isDisabled && (cell.rowUnit && cell.rowUnit !== 'time')
+    let hasNavLink = options.navLinks && !dateMeta.isDisabled && (cell.rowUnit && cell.rowUnit !== 'time')
     let isTime = tDateProfile.isTimeScale && !props.rowLevel // HACK: faulty way of determining this
 
     let renderProps = {
