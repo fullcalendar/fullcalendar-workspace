@@ -17,7 +17,6 @@ TODO
   Is there an issue with the computer sleeping (or tab going inactive)
     and then there's a JS error which kills resizerobserver?
     Same problem when using Vite devmode and commenting out calendars
-  Make hover:no-underline for eventClass part of core? part of the "reset"?
 THEME NOTES
   filler-div border color too light in most themes? (test resource-timeline collapsed final group)
     Nah, the "final group collapse" is a rare occurence, the the sublte border looks good elsewhere
@@ -320,10 +319,6 @@ add weekdayText wherever we add dayNumberText
 core?: when timegrid overlapping events, focused event should be top z-index
 core?: control z-index of selected button in button group. always want above others
 timegrid more-link is in strange DOM order, leading to bad tab-index
-kill all hover:no-underline in themes?
-  the developer's responsiblity to prevent overly opinionated inheritance
-  (add to docs?)
-  FYI, they might be adding underline to a[href] or just all `a`
 Never have themes define z-index
   example: for event-before/after, ensure z-1
 For portal roots, give border-box and other resets?... IMPORTANT!

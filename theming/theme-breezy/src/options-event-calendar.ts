@@ -211,7 +211,6 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       eventColor: params.eventColor,
 
       eventClass: (data) => [
-        data.event.url && 'hover:no-underline',
         data.isSelected
           ? joinClassNames(
               params.outlineWidthClass,
