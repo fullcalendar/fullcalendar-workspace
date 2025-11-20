@@ -1,4 +1,4 @@
-import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
+import { BaseComponent, ContentContainer, generateClassName, joinArrayishClassNames, joinClassNames, setRef, watchHeight } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef, Ref } from '@fullcalendar/core/preact'
 import { Group } from '@fullcalendar/resource/internal'
@@ -9,7 +9,7 @@ export interface GroupLaneProps {
   role?: string // aria
   rowIndex?: number // aria
   level?: number // aria
-  expanded?: boolean // aria
+  expanded?: boolean // aria -- TODO: rename to isExpanded?
   borderBottom: boolean
 
   // refs
@@ -18,7 +18,7 @@ export interface GroupLaneProps {
   // positioning
   top?: number
   width?: number
-  height?: number
+  height?: number // does NOT include the border
 }
 
 /*
@@ -41,48 +41,57 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
     }
 
     return (
-      <ContentContainer
-        tag="div"
-        attrs={{
-          role: props.role as any, // !!!
-          'aria-rowindex': props.rowIndex,
-          'aria-level': props.level,
-          'aria-expanded': props.expanded,
-        }}
-        className={joinClassNames(
-          classNames.flexRow,
+      <div
+        role={props.role as any}  // !!!
+        aria-rowindex={props.rowIndex}
+        aria-level={props.level}
+        aria-expanded={props.expanded}
+        className={joinArrayishClassNames(
+          context.options.resourceAreaRowClass,
           classNames.fillX,
+          classNames.flexRow,
           classNames.contentBox,
-          props.borderBottom
-            ? classNames.borderOnlyB
-            : classNames.borderNone,
+          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
         )}
         style={{
           top: props.top,
           width: props.width,
           height: props.height,
         }}
-        renderProps={renderProps}
-        generatorName="resourceGroupLaneContent"
-        customGenerator={groupSpec.laneContent}
-        classNameGenerator={groupSpec.laneClass}
-        didMount={groupSpec.laneDidMount}
-        willUnmount={groupSpec.laneWillUnmount}
       >
-        {(InnerContainer) => (
-          <InnerContainer
-            tag="div"
-            attrs={{
-              role: 'gridcell',
-            }}
-            className={joinClassNames(
-              generateClassName(groupSpec.laneInnerClass, renderProps),
-              classNames.liquid,
-            )}
-            elRef={this.innerElRef}
-          />
-        )}
-      </ContentContainer>
+        <ContentContainer
+          tag="div"
+          attrs={{
+            role: 'gridcell',
+            'aria-expanded': props.expanded,
+          }}
+          className={joinClassNames(
+            classNames.liquid, // expand to whole row
+            classNames.tight,
+            classNames.flexCol,
+            classNames.borderNone,
+          )}
+          renderProps={renderProps}
+          generatorName="resourceGroupLaneContent"
+          customGenerator={groupSpec.laneContent}
+          classNameGenerator={groupSpec.laneClass}
+          didMount={groupSpec.laneDidMount}
+          willUnmount={groupSpec.laneWillUnmount}
+        >
+          {(InnerContainer) => (
+            <InnerContainer
+              tag="div"
+              elRef={this.innerElRef}
+              className={joinClassNames(
+                generateClassName(groupSpec.laneInnerClass, renderProps),
+                classNames.noShrink,
+                classNames.noMargin,
+                classNames.flexCol,
+              )}
+            />
+          )}
+        </ContentContainer>
+      </div>
     )
   }
 

@@ -18,9 +18,8 @@ TODO
     and then there's a JS error which kills resizerobserver?
     Same problem when using Vite devmode and commenting out calendars
   Make hover:no-underline for eventClass part of core? part of the "reset"?
-  BUG with MUI + Classic Theme
-    Timeline resource-groups have inconsistent border color between scroll panes
 THEME CHECKLIST
+  filler-div border color too light in most themes (test resource-timeline collapsed final group)
   test more with navlinks OFF
   test isNarrow for vertical resource view resource-day-headers (non-h-scrolling)
   daygrid bg events have text title align with daycelltop

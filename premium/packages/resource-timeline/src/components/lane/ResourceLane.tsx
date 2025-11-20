@@ -1,6 +1,6 @@
-import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, generateClassName } from '@fullcalendar/core/internal'
+import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, generateClassName, joinArrayishClassNames } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { createElement, Ref } from '@fullcalendar/core/preact'
+import { createElement, Ref, Fragment } from '@fullcalendar/core/preact'
 import { Resource } from '@fullcalendar/resource/internal'
 import { TimelineDateProfile, TimelineFg, TimelineBg, TimelineLaneSlicer } from '@fullcalendar/timeline/internal'
 import { refineRenderProps } from '../../structs.js'
@@ -14,7 +14,7 @@ export interface ResourceLaneProps {
   role?: string // aria
   rowIndex?: number // aria
   level?: number // aria
-  expanded?: boolean // aria
+  expanded?: boolean // aria -- TODO: rename to isExpanded?
   className?: string
 
   // content
@@ -76,17 +76,15 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
     )
 
     return (
-      <ContentContainer
-        tag="div"
-        attrs={{
-          role: props.role as any, // !!!
-          'aria-rowindex': props.rowIndex,
-          'aria-level': props.level,
-          'aria-expanded': props.expanded,
-          'data-resource-id': resource.id,
-        }}
-        className={joinClassNames(
-          props.className,
+      <div
+        role={props.role as any} // !!!
+        aria-rowindex={props.rowIndex}
+        aria-level={props.level}
+        aria-expanded={props.expanded}
+        data-resource-id={resource.id}
+        className={joinArrayishClassNames(
+          context.options.resourceAreaRowClass,
+          props.className, // probably contains fillX
           classNames.flexRow,
           classNames.contentBox,
           props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
@@ -97,65 +95,83 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
           height: props.height,
           insetInlineStart: props.insetInlineStart,
         }}
-        renderProps={renderProps}
-        generatorName={undefined}
-        classNameGenerator={options.resourceLaneClass}
-        didMount={options.resourceLaneDidMount}
-        willUnmount={options.resourceLaneWillUnmount}
       >
-        {() => (
-          <div
-            role='gridcell'
-            className={joinClassNames(
-              classNames.liquid,
-              classNames.flexCol,
-              classNames.rel, // for fillTop
-            )}
-          >
-            <TimelineBg
-              tDateProfile={props.tDateProfile}
-              nowDate={props.nowDate}
-              todayRange={props.todayRange}
+        <ContentContainer
+          tag="div"
+          attrs={{
+            role: 'gridcell',
+            'aria-expanded': props.expanded,
+          }}
+          className={joinClassNames(
+            classNames.liquid,
+            classNames.tight,
+            classNames.flexCol,
+            classNames.borderNone,
+            classNames.rel, // for fillTop
+          )}
+          renderProps={renderProps}
+          generatorName={undefined}
+          classNameGenerator={options.resourceLaneClass}
+          didMount={options.resourceLaneDidMount}
+          willUnmount={options.resourceLaneWillUnmount}
+        >
+          {() => (
+            <Fragment>
+              <TimelineBg
+                tDateProfile={props.tDateProfile}
+                nowDate={props.nowDate}
+                todayRange={props.todayRange}
 
-              // content
-              bgEventSegs={slicedProps.bgEventSegs}
-              businessHourSegs={slicedProps.businessHourSegs}
-              dateSelectionSegs={slicedProps.dateSelectionSegs}
-              eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : null}
+                // content
+                bgEventSegs={slicedProps.bgEventSegs}
+                businessHourSegs={slicedProps.businessHourSegs}
+                dateSelectionSegs={slicedProps.dateSelectionSegs}
+                eventResizeSegs={slicedProps.eventResize ? slicedProps.eventResize.segs : null}
 
-              // dimensions
-              slotWidth={props.slotWidth}
-            />
-            <div
-              ref={this.handleTopEl}
-              className={generateClassName(options.resourceLaneTopClass, renderProps)}
-            />
-            <TimelineFg
-              dateProfile={props.dateProfile}
-              tDateProfile={props.tDateProfile}
-              nowDate={props.nowDate}
-              todayRange={props.todayRange}
+                // dimensions
+                slotWidth={props.slotWidth}
+              />
+              <div
+                ref={this.handleTopEl}
+                className={joinClassNames(
+                  generateClassName(options.resourceLaneTopClass, renderProps),
+                  classNames.noMargin,
+                  classNames.noShrink,
+                  classNames.flexCol,
+                )}
+              />
+              <TimelineFg
+                dateProfile={props.dateProfile}
+                tDateProfile={props.tDateProfile}
+                nowDate={props.nowDate}
+                todayRange={props.todayRange}
 
-              // content
-              fgEventSegs={slicedProps.fgEventSegs}
-              eventDrag={slicedProps.eventDrag}
-              eventResize={slicedProps.eventResize}
-              eventSelection={slicedProps.eventSelection}
-              resourceId={resource.id}
+                // content
+                fgEventSegs={slicedProps.fgEventSegs}
+                eventDrag={slicedProps.eventDrag}
+                eventResize={slicedProps.eventResize}
+                eventSelection={slicedProps.eventSelection}
+                resourceId={resource.id}
 
-              // dimensions
-              slotWidth={props.slotWidth}
+                // dimensions
+                slotWidth={props.slotWidth}
 
-              // ref
-              heightRef={this.handleEventsHeight}
-            />
-            <div
-              ref={this.handleBottomEl}
-              className={generateClassName(options.resourceLaneBottomClass, renderProps)}
-            />
-          </div>
-        )}
-      </ContentContainer>
+                // ref
+                heightRef={this.handleEventsHeight}
+              />
+              <div
+                ref={this.handleBottomEl}
+                className={joinClassNames(
+                  generateClassName(options.resourceLaneBottomClass, renderProps),
+                  classNames.noMargin,
+                  classNames.noShrink,
+                  classNames.flexCol,
+                )}
+              />
+            </Fragment>
+          )}
+        </ContentContainer>
+      </div>
     )
   }
 

@@ -8,6 +8,7 @@ import {
   CoordSpan,
   setRef,
   EventSegUiInteractionState,
+  joinClassNames,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
@@ -90,8 +91,13 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
 
     return (
       <div
-        className={classNames.rel}
-        style={{ height: totalHeight }}
+        className={joinClassNames(
+          classNames.rel,
+          classNames.noShrink,
+        )}
+        style={{
+          height: totalHeight,
+        }}
       >
         {this.renderFgSegs(
           fgSegs,

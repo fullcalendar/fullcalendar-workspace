@@ -11,7 +11,7 @@ export interface ResourceGroupHeaderSubrowProps {
   isExpanded: boolean // for aria
   colSpan: number // for aria
   borderBottom: boolean
-  className?: string
+  className?: string // not ultimately user-supplied. internally-supplied
   indentWidth: number | undefined
 
   // aria
@@ -24,7 +24,7 @@ export interface ResourceGroupHeaderSubrowProps {
 
   // position
   top?: number
-  height?: number
+  height?: number // does NOT include the border
 }
 
 /*
@@ -54,14 +54,14 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
         aria-expanded={props.isExpanded}
         className={joinArrayishClassNames(
           options.resourceAreaRowClass,
-          props.className,
-          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
+          props.className, // probably contains fillX
           classNames.flexRow,
           classNames.contentBox,
+          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
         )}
         style={{
           top: props.top,
-          height: props.height
+          height: props.height,
         }}
       >
         <ContentContainer
@@ -74,10 +74,10 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
           className={joinClassNames(
             classNames.liquid,
             classNames.tight,
-            classNames.flexCol,
+            classNames.flexRow,
             classNames.alignStart,
             classNames.crop,
-            // need borderNone???
+            classNames.borderNone,
           )}
           renderProps={renderProps}
           generatorName="resourceGroupHeaderContent"
