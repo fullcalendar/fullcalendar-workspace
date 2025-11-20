@@ -13,33 +13,6 @@ clean+build all:
   pn build
 
 
-TODO
-  Is there an issue with the computer sleeping (or tab going inactive)
-    and then there's a JS error which kills resizerobserver?
-    Same problem when using Vite devmode and commenting out calendars
-THEME NOTES
-  filler-div border color too light in most themes? (test resource-timeline collapsed final group)
-    Nah, the "final group collapse" is a rare occurence, the the sublte border looks good elsewhere
-  backgroundEventTitle is underpowered because can't differentiate between row-style or col-style like normal events
-    didn't want to make rowBackgroundEvent* columnBackgroundEvent*
-    because BG are somewhat bad UX because FG events often overlap their titles
-    will redesign in future
-  resourceAreaRowClass is for both resources & resource groups
-  timeline events/more-link do NOT need to do isNarrow
-  Dot uses border instead of bg because it shows up in print
-  all-day-header-text MIGHT span two lines and should have whitespace:pre. DO need text-align
-  week-header-text should NEVER span to two lines. implicitly has whitespace:nowrap. don't need text-align
-    ensure whitespace:nowrap also set for week-number-text in daygrid too (inlineWeekNumberClass)
-  Places to ensure whitespace-nowrap:
-    *EventTimeClass (ensure it gets list-item and block somehow)
-    *EventTitleClass (same)
-    moreLinkInnerClass
-    inlineWeekNumberClass
-    dayCellTopInnerClass
-      but if inner span parts, ensure whitespace-pre INSTEAD
-    weekNumberHeaderInnerClass -- NOOO, because column-width-syncing-system wants it to be natural width (and uses f-rigid already)
-    allDayHeaderInnerClass -- SORTAA, do whitespace-pre
-    slotLabelInnerClass -- NOOO, because column-width-syncing-system, don't need text-end either for same reasons
 MAYBE REFACTOR
   QUESTION: which elements should have implicit 'relative' to make it an offsetparent?
     resourceAreaHeaderClass already has f-rel
@@ -74,8 +47,6 @@ FLEX AUDIT
     - dayHeaderInnerClass: no flex, no force
     - dayCellTopClass: no flex, no force
     - listDayClass: no flex, no force
-
-
 CODE-QUALITY (while going through each theme)
   ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)
   ensure no unnecessary `` instead ''
@@ -1114,6 +1085,28 @@ Theme Notes
     if using slots.tsx,
       apply .outlineWidthGroupFocusClass to sub-elements
     dayHeaderInnerClass does NOT need it! already has nav-link. but might need "offset" class
+  filler-div border color too light in most themes? (test resource-timeline collapsed final group)
+    Nah, the "final group collapse" is a rare occurence, the the sublte border looks good elsewhere
+  backgroundEventTitle is underpowered because can't differentiate between row-style or col-style like normal events
+    didn't want to make rowBackgroundEvent* columnBackgroundEvent*
+    because BG are somewhat bad UX because FG events often overlap their titles
+    will redesign in future
+  resourceAreaRowClass is for both resources & resource groups
+  timeline events/more-link do NOT need to do isNarrow
+  Dot uses border instead of bg because it shows up in print
+  all-day-header-text MIGHT span two lines and should have whitespace:pre. DO need text-align
+  week-header-text should NEVER span to two lines. implicitly has whitespace:nowrap. don't need text-align
+    ensure whitespace:nowrap also set for week-number-text in daygrid too (inlineWeekNumberClass)
+  Places to ensure whitespace-nowrap:
+    *EventTimeClass (ensure it gets list-item and block somehow)
+    *EventTitleClass (same)
+    moreLinkInnerClass
+    inlineWeekNumberClass
+    dayCellTopInnerClass
+      but if inner span parts, ensure whitespace-pre INSTEAD
+    weekNumberHeaderInnerClass -- NOOO, because column-width-syncing-system wants it to be natural width (and uses f-rigid already)
+    allDayHeaderInnerClass -- SORTAA, do whitespace-pre
+    slotLabelInnerClass -- NOOO, because column-width-syncing-system, don't need text-end either for same reasons
 Theme QA checklist
   test with navLinks OFF
   test with eventInteractive OFF

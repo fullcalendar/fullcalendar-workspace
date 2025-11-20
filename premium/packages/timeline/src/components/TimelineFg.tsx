@@ -137,11 +137,12 @@ export class TimelineFg extends BaseComponent<TimelineFgProps, TimelineFgState> 
           const { eventRange } = seg
           const { instanceId } = eventRange.instance
           const segTop = segTops.get(instanceId)
-          const segHorizontal = segHorizontals[instanceId]
+          const segHorizontalMaybe = segHorizontals[instanceId]
+          const segHorizontal: Partial<CoordSpan> = segHorizontalMaybe || {}
 
           const isDragging = Boolean(props.eventDrag && props.eventDrag.affectedInstances[instanceId])
           const isResizing = Boolean(props.eventResize && props.eventResize.affectedInstances[instanceId])
-          const isInvisible = !isMirror && (isDragging || isResizing || !segHorizontal || segTop == null)
+          const isInvisible = !isMirror && (isDragging || isResizing || !segHorizontalMaybe || segTop == null)
 
           return (
             <TimelineEventHarness
