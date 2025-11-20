@@ -22,8 +22,11 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceDayHeaderAlign: 'center',
 
-      resourceDayHeaderClass: `border ${params.fgClass} text-sm font-semibold`,
-      resourceDayHeaderInnerClass: 'p-2',
+      resourceDayHeaderClass: 'border',
+      resourceDayHeaderInnerClass: (data) => [
+        `p-2 ${params.fgClass} font-semibold`,
+        data.isNarrow ? 'text-xs' : 'text-sm',
+      ],
 
       /* Resource Data Grid
       ------------------------------------------------------------------------------------------- */

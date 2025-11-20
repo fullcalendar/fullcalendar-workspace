@@ -1,5 +1,5 @@
 import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
-import { xxsTextClass, EventCalendarOptionParams } from './options-event-calendar.js'
+import { EventCalendarOptionParams } from './options-event-calendar.js'
 
 // ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/timeline'
@@ -36,7 +36,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       ],
       resourceDayHeaderInnerClass: (data) => [
         'p-2 flex flex-col',
-        data.isNarrow ? xxsTextClass : 'text-sm',
+        data.isNarrow ? 'text-xs' : 'text-sm',
       ],
 
       /* Resource Data Grid

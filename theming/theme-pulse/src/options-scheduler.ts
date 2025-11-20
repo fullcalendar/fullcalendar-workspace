@@ -22,9 +22,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceDayHeaderAlign: 'center',
 
       resourceDayHeaderClass: (data) => data.isMajor && `border ${params.strongBorderColorClass}`,
-      resourceDayHeaderInnerClass: [
-        'p-2 flex flex-row items-center text-sm',
+      resourceDayHeaderInnerClass: (data) => [
+        'p-2 flex flex-row items-center',
         params.mutedFgClass,
+        data.isNarrow ? 'text-xs' : 'text-sm',
       ],
 
       /* Resource Data Grid

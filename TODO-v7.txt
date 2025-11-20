@@ -21,7 +21,6 @@ TODO
 THEME CHECKLIST
   filler-div border color too light in most themes (test resource-timeline collapsed final group)
   test more with navlinks OFF
-  test isNarrow for vertical resource view resource-day-headers (non-h-scrolling)
   daygrid bg events have text title align with daycelltop
   Test RTL with [dir=rtl] selectors
   in code, ensure tailwind border defined before padding
@@ -1128,6 +1127,7 @@ Theme Notes
       apply .outlineWidthGroupFocusClass to sub-elements
     dayHeaderInnerClass does NOT need it! already has nav-link. but might need "offset" class
 Theme QA checklist
+  test isNarrow for vertical resource view resource-day-headers (non-h-scrolling)
   non-isSelect event dragging should have opacity
   don't let xxsTextClass into dayHeaders ever
     except Classic
