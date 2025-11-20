@@ -203,7 +203,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ------------------------------------------------------------------------------------------- */
 
       blockEventClass: (data) => [
-        'relative group',
+        'group relative',
         'border-transparent print:border-(--fc-event-color)',
         'bg-(--fc-event-color) hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))] print:bg-white',
         data.isInteractive && 'active:bg-[color-mix(in_oklab,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
@@ -295,7 +295,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       columnEventInnerClass: (data) => [
         data.isShort
-          ? 'flex-row p-1 gap-1' // one line
+          ? 'flex-row items-center p-1 gap-1' // one line
           : joinClassNames( // two lines
               'flex-col',
               data.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1',
@@ -346,7 +346,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       dayHeaderInnerClass: (
-        'mt-2 mx-2 flex flex-col items-center group outline-none' // children do focus outline
+        'group mt-2 mx-2 flex flex-col items-center outline-none' // children do focus outline
       ),
 
       /* Day Cell
@@ -359,9 +359,10 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       dayCellTopClass: (data) => [
-        data.isNarrow ? 'min-h-px' : 'min-h-0.5',
         'flex flex-row',
-        data.isNarrow ? 'justify-end' : 'justify-center',
+        data.isNarrow
+          ? 'justify-end min-h-px'
+          : 'justify-center min-h-0.5',
       ],
 
       dayCellTopInnerClass: (data) => [
@@ -389,8 +390,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverClass: `${params.popoverClass} min-w-60`,
 
       popoverCloseClass: [
-        'absolute top-2 end-2 size-8 rounded-full group',
-        'inline-flex flex-row justify-center items-center',
+        'group absolute top-2 end-2 size-8 rounded-full',
+        'inline-flex flex-row items-center justify-center',
         params.mutedHoverPressableClass,
         params.outlineWidthFocusClass,
         params.tertiaryOutlineColorClass,
@@ -583,7 +584,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         /* List-View > List-Item Event
         ----------------------------------------------------------------------------------------- */
 
-        listItemEventClass: 'p-2 rounded-s-full gap-2 group',
+        listItemEventClass: 'group p-2 rounded-s-full gap-2',
         listItemEventBeforeClass: 'mx-2 border-5', // 10px diameter
         listItemEventInnerClass: 'gap-2 text-sm',
         listItemEventTimeClass: 'shrink-0 w-1/2 max-w-40 whitespace-nowrap overflow-hidden text-ellipsis',

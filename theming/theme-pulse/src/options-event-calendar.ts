@@ -122,7 +122,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     ],
 
     listItemEventInnerClass: (data) => [
-      'justify-between flex flex-row',
+      'flex flex-row items-center justify-between',
       data.isNarrow
         ? `py-px ${xxsTextClass}`
         : 'py-0.5 text-xs',
@@ -210,7 +210,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ------------------------------------------------------------------------------------------- */
 
       blockEventClass: (data) => [
-        'relative group border-transparent print:border-(--fc-event-color)',
+        'group relative border-transparent print:border-(--fc-event-color)',
         'bg-(--fc-event-color) print:bg-white',
         'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))]',
         data.isInteractive && 'active:bg-[color-mix(in_oklab,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
@@ -284,7 +284,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventInnerClass: (data) => [
         'flex',
         data.isShort
-          ? 'flex-row gap-1 p-1' // one line
+          ? 'flex-row items-center gap-1 p-1' // one line
           : joinClassNames( // two lines
               'flex-col',
               data.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1',
@@ -327,6 +327,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       // dayHeaderContent in slots.tsx...
 
       dayHeaderClass: (data) => [
+        'justify-center', // v-align
         data.inPopover ? params.popoverHeaderClass :
           data.isMajor && `border ${params.strongBorderColorClass}`
       ],
@@ -350,7 +351,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.hasNavLink && params.mutedHoverPressableClass,
         ) : (
           // circle inside (see slots.tsx)
-          'mx-2 my-2 h-7 group outline-none'
+          'group mx-2 my-2 h-7 outline-none'
         )
       ],
 
@@ -366,7 +367,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayCellTopClass: (data) => [
         data.isNarrow ? 'min-h-0.5' : 'min-h-1',
-        'flex flex-row justify-end',
+        'flex flex-row justify-end', // h-align
       ],
 
       dayCellTopInnerClass: (data) => [
@@ -428,11 +429,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* List Day
       ------------------------------------------------------------------------------------------- */
 
-      listDayClass: `flex flex-col group/day`,
+      listDayClass: `group/day flex flex-col`,
 
       listDayHeaderClass: [
         `border-b ${params.borderColorClass} ${params.mutedSolidBgClass}`,
-        'flex flex-row justify-between',
+        'flex flex-row items-center justify-between',
       ],
       listDayHeaderInnerClass: (data) => [
         'm-2 px-2 py-1 rounded-sm text-sm',

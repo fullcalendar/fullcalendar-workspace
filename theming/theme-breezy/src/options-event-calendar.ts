@@ -239,7 +239,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ------------------------------------------------------------------------------------------- */
 
       blockEventClass: (data) => [
-        'relative group',
+        'group relative',
         data.isInteractive
           ? params.eventFaintPressableClass
           : params.eventFaintBgClass,
@@ -314,7 +314,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       columnEventInnerClass: (data) => [
         data.isShort
-          ? 'flex-row gap-1 p-1' // one line
+          ? 'flex-row items-center gap-1 p-1' // one line
           : joinClassNames( // two lines
               'flex-col',
               data.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1',
@@ -380,7 +380,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : (data.isToday && data.dayNumberText && !data.inPopover)
               // WITH today circle
               ? joinClassNames(
-                  'm-2 outline-none group',
+                  'group m-2 outline-none',
                   data.isNarrow ? 'h-6' : 'h-8'
                 )
               // WITHOUT today circle
@@ -407,7 +407,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       dayCellTopClass: (data) => [
         data.isNarrow ? 'min-h-0.5' : 'min-h-1',
-        'flex flex-row justify-start',
+        'flex flex-row',
       ],
 
       dayCellTopInnerClass: (data) => [
@@ -653,7 +653,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         listItemEventBeforeClass: 'border-4 border-(--fc-event-color) rounded-full', // 8px diameter
 
-        listItemEventInnerClass: 'flex flex-row gap-3 text-sm',
+        listItemEventInnerClass: 'flex flex-row items-center gap-3 text-sm',
 
         listItemEventTimeClass: [
           'shrink-0 w-1/2 max-w-50 whitespace-nowrap overflow-hidden text-ellipsis',

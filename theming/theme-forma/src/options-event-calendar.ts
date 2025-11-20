@@ -193,7 +193,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ------------------------------------------------------------------------------------------- */
 
       blockEventClass: (data) => [
-        'relative group border-(--fc-event-color) print:bg-white',
+        'group relative border-(--fc-event-color) print:bg-white',
         data.isInteractive
           ? params.eventMutedPressableClass
           : params.eventMutedBgClass,
@@ -279,7 +279,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       columnEventInnerClass: (data) => [
         'flex',
         data.isShort
-          ? 'flex-row p-1 gap-1' // one line
+          ? 'flex-row items-center p-1 gap-1' // one line
           : joinClassNames( // two lines
               'flex-col',
               data.isNarrow ? 'px-0.5' : 'px-1',
@@ -399,7 +399,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverClass: `${params.popoverClass} min-w-55`,
 
       popoverCloseClass: [
-        'absolute top-1 end-1 p-1 rounded-sm group',
+        'group absolute top-1 end-1 p-1 rounded-sm inline-flex flex-row',
         params.mutedHoverPressableClass,
         params.outlineWidthFocusClass,
         params.primaryOutlineColorClass,
@@ -543,7 +543,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           text-end -- aligns text when multi-line
           */
           'p-2 whitespace-pre text-end',
-          data.isNarrow ? xxsTextClass : 'text-sm',
+          data.isNarrow ? xxsTextClass : 'text-xs',
         ],
 
         allDayDividerClass: `border-b ${params.borderColorClass}`,
@@ -565,7 +565,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ----------------------------------------------------------------------------------------- */
 
         listItemEventClass: (data) => [
-          'border-s-6 border-(--fc-event-color) p-3 rounded-sm group',
+          'group border-s-6 border-(--fc-event-color) p-3 rounded-sm',
           data.isInteractive
             ? params.eventFaintPressableClass
             : params.eventFaintBgClass,

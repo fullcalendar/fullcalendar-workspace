@@ -253,8 +253,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       columnEventInnerClass: (data) => (
         data.isShort
-          ? 'flex-row p-0.5 gap-1' // one line
-          : 'flex-col px-0.5' // two lines
+          ? 'p-0.5 flex-row items-center gap-1' // one line
+          : 'px-0.5 flex-col' // two lines
       ),
 
       columnEventTimeClass: (data) => [
@@ -293,6 +293,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderAlign: (data) => data.inPopover ? 'start' : 'center',
 
       dayHeaderClass: (data) => [
+        'justify-center', // v-align
         data.isDisabled && params.faintBgClass,
         data.inPopover
           ? params.popoverHeaderClass
@@ -358,7 +359,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       listDayHeaderClass: [
         `border-b ${params.borderColorClass} ${params.mutedSolidBgClass}`,
-        'flex flex-row justify-between',
+        'flex flex-row items-center justify-between',
       ],
 
       listDayHeaderInnerClass: 'px-3 py-2 text-sm font-bold',

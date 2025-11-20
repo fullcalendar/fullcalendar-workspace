@@ -47,7 +47,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       // row expander
       resourceIndentClass: 'ms-1 -me-1.5 items-center',
       resourceExpanderClass: [
-        'p-0.5 rounded-sm inline-flex flex-row group',
+        'group p-0.5 rounded-sm inline-flex flex-row',
         params.mutedHoverPressableClass,
         params.outlineWidthFocusClass,
         params.primaryOutlineColorClass,

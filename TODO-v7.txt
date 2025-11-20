@@ -24,16 +24,8 @@ THEME CHECKLIST
   test isNarrow for vertical resource view resource-day-headers (non-h-scrolling)
   daygrid bg events have text title align with daycelltop
   Test RTL with [dir=rtl] selectors
-  ensure most flex-rows have items-center
-  Probably put all "group" first. Like absolute or relative
-  non-isSelect event dragging should have opacity
-  don't use border-l (use border-s instead because already used and common)
-  ^^same with pl-l
   in code, ensure tailwind border defined before padding
     Also, put borders AFTER w/h ? considering how box-model works
-  dayHeaderClass has f-flexCol,
-    always set justify-* for v-align
-    REMOVE items-center because alignment done via dayHeaderAlign
   always use dayLaneInnerClass instead of columnEvent x-margins
     ensure handling of isNarrow
 THEME NOTES
@@ -1136,6 +1128,7 @@ Theme Notes
       apply .outlineWidthGroupFocusClass to sub-elements
     dayHeaderInnerClass does NOT need it! already has nav-link. but might need "offset" class
 Theme QA checklist
+  non-isSelect event dragging should have opacity
   don't let xxsTextClass into dayHeaders ever
     except Classic
   When "today" is first of month, how long-text render in today-circle

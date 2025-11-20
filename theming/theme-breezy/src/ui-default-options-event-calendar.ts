@@ -144,7 +144,7 @@ export const defaultUiEventCalendarOptions: {
       !data.isSelectGroup && `rounded-md shadow-xs`,
     ],
     buttonClass: (data) => [
-      'inline-flex flex-row py-2 text-sm group', // group for icon group-focus
+      'group inline-flex flex-row py-2 text-sm',
       data.isIconOnly ? 'px-2' : 'px-3',
       data.inSelectGroup ? joinClassNames(
         'rounded-md font-medium',

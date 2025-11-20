@@ -135,7 +135,7 @@ export const defaultUiEventCalendarOptions: {
     ],
 
     buttonClass: (data) => [
-      'inline-flex flex-row text-sm py-2 group',
+      'group inline-flex flex-row text-sm py-2',
       data.isIconOnly ? 'px-2.5' : 'px-4',
       data.inSelectGroup
         // all select-group buttons

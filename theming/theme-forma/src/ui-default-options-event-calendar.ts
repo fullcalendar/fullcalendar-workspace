@@ -118,13 +118,13 @@ export const defaultUiEventCalendarOptions: {
     headerToolbarClass: `border-b border-(--fc-forma-border)`,
     footerToolbarClass: `border-t border-(--fc-forma-border)`,
 
-    toolbarClass: 'p-3 items-center gap-3', // TODO: document how we do NOT need to justify-between or flex-row
+    toolbarClass: 'p-3 items-center gap-3',
     toolbarSectionClass: 'items-center gap-3',
     toolbarTitleClass: 'text-xl',
 
     buttonGroupClass: 'items-center',
     buttonClass: (data) => [
-      'inline-flex flex-row text-sm py-1.5 rounded-sm group',
+      'group inline-flex flex-row text-sm py-1.5 rounded-sm',
       data.isIconOnly ? 'px-2' : 'px-3',
       data.isIconOnly
         // ghost-button

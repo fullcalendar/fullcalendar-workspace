@@ -33,7 +33,7 @@ export function createSlots(
                   // today-circle
                   ? joinClassNames(
                       'first:-ms-1 last:-me-1 size-7 rounded-full font-semibold',
-                      'flex flex-row items-center justify-center', // h-align
+                      'flex flex-row items-center justify-center', // v-align, h-align
                       data.hasNavLink
                         ? joinClassNames(
                             params.tertiaryPressableGroupClass,
@@ -68,7 +68,7 @@ export function createSlots(
                   // today-circle
                   ? joinClassNames(
                       'rounded-full font-semibold',
-                      'flex flex-row items-center justify-center', // h-align-text
+                      'flex flex-row items-center justify-center', // v-align, h-align
                       data.isNarrow
                         ? 'size-5'
                         : 'size-6 first:-ms-1 last:-me-1',
