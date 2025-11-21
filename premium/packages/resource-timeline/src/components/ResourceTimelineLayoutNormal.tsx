@@ -430,7 +430,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               >
                 <div
                   className={joinClassNames(
-                    classNames.rel,
+                    classNames.rel, // origin for canvas?
                     classNames.grow,
                     classNames.flexCol,
                   )}
@@ -606,7 +606,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
               >
                 <div
                   className={joinClassNames(
-                    classNames.rel,
+                    classNames.rel, // origin for canvas?
                     classNames.grow,
                     classNames.flexCol,
 
@@ -654,7 +654,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   </div>
                   <div
                     role='rowgroup'
-                    className={classNames.rel}
+                    className={classNames.rel /* for abs positioning of lanes */}
                     style={{ height: totalBodyHeight }}
                   >
                     {/* group rows */}

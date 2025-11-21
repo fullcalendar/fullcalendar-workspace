@@ -56,7 +56,7 @@ export class BodySection extends BaseComponent<BodySectionProps> {
           <div
             key={colIndex}
             role='rowgroup'
-            className={classNames.rel}
+            className={classNames.rel /* origin for abs-positioned rows */}
             style={{
               minWidth: 0,
               width: colWidths[colIndex],

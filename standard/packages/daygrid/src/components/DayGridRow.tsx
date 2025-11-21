@@ -156,7 +156,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
           options.dayRowClass,
           props.className,
           classNames.flexRow,
-          classNames.rel,
+          classNames.rel, // origin for inlineWeekNumber?
           classNames.isolate,
           (props.forPrint && props.basis !== undefined) && // basis implies siblings (must share height)
             classNames.printSiblingRow,

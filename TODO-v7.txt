@@ -13,7 +13,6 @@ clean+build all:
   pn build
 
 
-search for classNames.rel where meant to "put above other siblings"
 CODE-QUALITY (while going through each theme)
   ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)
   ensure no unnecessary `` instead ''

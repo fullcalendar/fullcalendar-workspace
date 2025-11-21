@@ -163,7 +163,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
           <Fragment>
             <div
               className={joinClassNames(
-                classNames.rel, // puts it above bg-fills
+                classNames.rel, // puts it above bg-fills, which are positioned on TOP of this component :|
                 generateClassName(options.dayCellTopClass, renderProps),
               )}
               // TODO: prevent margins!? for measurements
@@ -195,7 +195,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 {props.fg}
               </div>
               <DayGridMoreLink
-                className={classNames.rel} // puts it above bg-fills
+                className={classNames.rel} // puts it above bg-fills, which are positioned on TOP of this component :|
                 allDayDate={props.date}
                 segs={props.segs}
                 hiddenSegs={props.hiddenSegs}

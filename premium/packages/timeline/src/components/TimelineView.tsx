@@ -237,7 +237,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                 <div
                   aria-label={options.eventsHint}
                   className={joinClassNames(
-                    classNames.rel,
+                    classNames.rel, // for canvas origin?
                     classNames.grow,
                   )}
                   style={{ width: canvasWidth }}
