@@ -578,6 +578,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         dayHeaderDividerClass: `border-b ${params.strongBorderColorClass}`,
         dayCellClass: getNormalDayCellBorderColorClass,
         dayCellBottomClass: getShortDayCellBottomClass,
+
+        // day-numbers are on start-side, so move bg-event titles to end-side
+        backgroundEventInnerClass: 'flex flex-row justify-end',
       },
       multiMonth: {
         ...dayRowCommonClasses,

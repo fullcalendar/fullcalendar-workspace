@@ -20,6 +20,7 @@ export interface BgEventProps {
   isToday: boolean
   isNarrow?: boolean
   isShort?: boolean
+  isVertical: boolean
 }
 
 export class BgEvent extends BaseComponent<BgEventProps> {
@@ -78,6 +79,12 @@ export class BgEvent extends BaseComponent<BgEventProps> {
       classNames.fill,
       classNames.internalEvent,
       classNames.internalBgEvent,
+      props.isVertical ? classNames.flexCol : classNames.flexRow,
+    )
+    const innerClassName = joinClassNames(
+      generateClassName(options.eventInnerClass, renderProps),
+      generateClassName(options.backgroundEventInnerClass, renderProps),
+      classNames.liquid,
     )
 
     return (
@@ -98,7 +105,7 @@ export class BgEvent extends BaseComponent<BgEventProps> {
         willUnmount={options.eventWillUnmount}
       >
         {(InnerContent) => (
-          <InnerContent tag='div' className={classNames.rel} />
+          <InnerContent tag='div' className={innerClassName} />
         )}
       </ContentContainer>
     )

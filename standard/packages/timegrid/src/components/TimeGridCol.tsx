@@ -334,6 +334,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
                   isEnd={seg.isEnd}
                   isNarrow={props.isNarrow}
                   isShort={segVertical.isShort || false}
+                  isVertical={true}
                   {...getEventRangeMeta(eventRange, props.todayRange, props.nowDate)}
                 /> :
                 renderFill(fillType, context.options)}

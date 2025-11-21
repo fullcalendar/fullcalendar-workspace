@@ -505,6 +505,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayRowCommonClasses,
         dayHeaderDividerClass: `border-b ${params.borderColorClass}`,
         dayCellBottomClass: getShortDayCellBottomClass,
+
+        // day-numbers are on start-side, so move bg-event titles to end-side
+        backgroundEventInnerClass: 'flex flex-row justify-end',
       },
       dayGridMonth: {
         // core normally display short for month (like "Mon") but long (like "Monday") looks good in Forma

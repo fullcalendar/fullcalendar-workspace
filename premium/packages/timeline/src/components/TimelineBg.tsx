@@ -63,6 +63,7 @@ export class TimelineBg extends BaseComponent<TimelineBgProps> {
                   eventRange={seg.eventRange}
                   isStart={seg.isStart}
                   isEnd={seg.isEnd}
+                  isVertical={false}
                   {...getEventRangeMeta(seg.eventRange, todayRange, nowDate)}
                 />
               ) : (

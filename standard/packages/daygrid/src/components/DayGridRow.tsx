@@ -356,6 +356,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               isStart={seg.isStart}
               isEnd={seg.isEnd}
               isNarrow={props.cellIsNarrow}
+              isVertical={false}
               {...getEventRangeMeta(seg.eventRange, todayRange)}
             /> : (
               renderFill(fillType, context.options)

@@ -266,6 +266,7 @@ export const BASE_OPTION_REFINERS = {
   columnEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
   backgroundEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
+  backgroundEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   backgroundEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isNarrow: boolean, isShort: boolean }>>,
 
   selectConstraint: identity as Identity<ConstraintInput>,
