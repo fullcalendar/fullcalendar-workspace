@@ -88,7 +88,6 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
     const baseClassName = joinClassNames(
       props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
       props.width == null && classNames.liquid,
-      classNames.flexCol,
       classNames.rel,
     )
 
