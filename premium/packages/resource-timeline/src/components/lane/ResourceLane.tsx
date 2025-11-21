@@ -83,16 +83,12 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
         aria-expanded={props.expanded}
         data-resource-id={resource.id}
         className={joinArrayishClassNames(
-          context.options.resourceAreaRowClass,
           props.className, // probably contains fillX
           classNames.flexRow,
-          classNames.contentBox,
-          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
         )}
         style={{
           top: props.top,
           width: props.width,
-          height: props.height,
           insetInlineStart: props.insetInlineStart,
         }}
       >
@@ -106,9 +102,13 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
             classNames.liquid,
             classNames.tight,
             classNames.flexCol,
-            classNames.borderNone,
+            classNames.contentBox,
+            props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
             classNames.rel, // for fillTop
           )}
+          style={{
+            height: props.height,
+          }}
           renderProps={renderProps}
           generatorName={undefined}
           classNameGenerator={options.resourceLaneClass}

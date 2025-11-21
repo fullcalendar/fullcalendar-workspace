@@ -47,16 +47,12 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
         aria-level={props.level}
         aria-expanded={props.expanded}
         className={joinArrayishClassNames(
-          context.options.resourceAreaRowClass,
           classNames.fillX,
           classNames.flexRow,
-          classNames.contentBox,
-          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
         )}
         style={{
           top: props.top,
           width: props.width,
-          height: props.height,
         }}
       >
         <ContentContainer
@@ -69,8 +65,12 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
             classNames.liquid, // expand to whole row
             classNames.tight,
             classNames.flexCol,
-            classNames.borderNone,
+            classNames.contentBox,
+            props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
           )}
+          style={{
+            height: props.height,
+          }}
           renderProps={renderProps}
           generatorName="resourceGroupLaneContent"
           customGenerator={groupSpec.laneContent}

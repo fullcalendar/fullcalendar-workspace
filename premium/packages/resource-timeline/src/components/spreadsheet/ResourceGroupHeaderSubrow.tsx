@@ -39,7 +39,6 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
 
   render() {
     let { props, context } = this
-    let { options } = context
     let renderProps: ResourceGroupHeaderData = {
       fieldValue: props.group.value,
       view: context.viewApi,
@@ -53,15 +52,11 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
         aria-level={props.level}
         aria-expanded={props.isExpanded}
         className={joinArrayishClassNames(
-          options.resourceAreaRowClass,
           props.className, // probably contains fillX
           classNames.flexRow,
-          classNames.contentBox,
-          props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
         )}
         style={{
           top: props.top,
-          height: props.height,
         }}
       >
         <ContentContainer
@@ -72,13 +67,17 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
             'aria-expanded': props.isExpanded,
           }}
           className={joinClassNames(
-            classNames.liquid,
+            classNames.liquid, // expand to whole row
             classNames.tight,
             classNames.flexRow,
-            classNames.alignStart,
+            classNames.alignStart, // v-align
             classNames.crop,
-            classNames.borderNone,
+            classNames.contentBox,
+            props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,
           )}
+          style={{
+            height: props.height,
+          }}
           renderProps={renderProps}
           generatorName="resourceGroupHeaderContent"
           customGenerator={spec.labelContent}

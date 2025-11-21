@@ -266,11 +266,7 @@ export const BASE_OPTION_REFINERS = {
   columnEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //
   backgroundEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
-  backgroundEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
-  backgroundEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isNarrow: boolean, isShort: boolean }>>,
   backgroundEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isNarrow: boolean, isShort: boolean }>>,
-  backgroundEventBeforeClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
-  backgroundEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
 
   selectConstraint: identity as Identity<ConstraintInput>,
   selectOverlap: identity as Identity<boolean | OverlapFunc>,

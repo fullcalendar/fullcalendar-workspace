@@ -13,9 +13,7 @@ clean+build all:
   pn build
 
 
-MAYBE REFACTOR
-  QUESTION: which elements should have implicit 'relative' to make it an offsetparent?
-    resourceAreaHeaderClass already has f-rel
+implement resourceLaneTopContent / resourceLaneBottomContent
 FLEX AUDIT
   Find all theme "flex"
   Find all assumed flex but chosen "flex-row" or "flex-col"
@@ -24,29 +22,7 @@ FLEX AUDIT
   datagrid headers+cells have outer-div as flex-col, but intermediate inner-wrap is flex-row
     needs to be flex-row for expander
     but make BOTH flex-row? think about it? necessary?
-  CATALOG
-    - rowEventClass: f-flexRow
-    - blockEventInnerClass: no flex, no force
-    - dayHeaderClass: f-flexCol
-    - weekNumberHeaderClass: f-flexRow
-    - weekNumberHeaderInnerClass: no flex, no force
-    - allDayHeaderClass: f-flexRow
-    - allDayHeaderInnerClass: ???
-    - listItemEventClass: f-flexRow
-    - listItemEventInnerClass: no flex, no force
-    - resourceDayHeaderClass: f-flexCol
-    - resourceDayHeaderInnerClass: no flex, no force
-    - resourceAreaHeaderClass: f-flexCol
-    - resourceAreaHeaderInnerClass: no flex, no force
-    - resourceIndentClass: f-flexRow
-    - slotLabelClass: f-flexRow for timegrid, f-flexCol for timeline
-    - slotLabelInnerClass: ??? (just for timeline?)
-    - popoverCloseClass: no flex, no force
-    - inlineWeekNumberClass: no flex, no force
-    - singleMonthHeaderClass: f-flexRow
-    - dayHeaderInnerClass: no flex, no force
-    - dayCellTopClass: no flex, no force
-    - listDayClass: no flex, no force
+search for classNames.rel where meant to "put above other siblings"
 CODE-QUALITY (while going through each theme)
   ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)
   ensure no unnecessary `` instead ''

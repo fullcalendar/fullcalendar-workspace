@@ -78,7 +78,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
             props.borderStart ? classNames.borderOnlyS : classNames.borderNone,
           )}
           renderProps={renderProps}
-          generatorName="resourceCellClass"
+          generatorName="resourceCellContent"
           customGenerator={colSpec.cellContent}
           defaultGenerator={renderGroupInner}
           classNameGenerator={colSpec.cellClass}
