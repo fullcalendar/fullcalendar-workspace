@@ -131,8 +131,8 @@ export const defaultUiEventCalendarOptions: {
     headerToolbarClass: `border-b border-(--fc-breezy-border)`,
     footerToolbarClass: `border-t border-(--fc-breezy-border)`,
 
-    toolbarClass: `px-4 py-4 items-center bg-(--fc-breezy-faint) gap-4`,
-    toolbarSectionClass: 'items-center gap-4',
+    toolbarClass: `px-4 py-4 bg-(--fc-breezy-faint) flex flex-row flex-wrap items-center justify-between gap-4`,
+    toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-4',
     toolbarTitleClass: `text-lg font-semibold text-(--fc-breezy-strong-foreground)`,
 
     /*
@@ -140,7 +140,7 @@ export const defaultUiEventCalendarOptions: {
     are buttons 1px taller than in Tailwind Plus because we're not using inset border?
     */
     buttonGroupClass: (data) => [
-      'items-center',
+      'flex flex-row items-center',
       !data.isSelectGroup && `rounded-md shadow-xs`,
     ],
     buttonClass: (data) => [

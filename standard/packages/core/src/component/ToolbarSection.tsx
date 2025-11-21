@@ -29,11 +29,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
 
     return createElement(
       'div', {
-        className: joinClassNames(
-          generateClassName(options.toolbarSectionClass, { name: props.name }),
-          classNames.flexRow,
-          classNames.noShrink,
-        ),
+        className: generateClassName(options.toolbarSectionClass, { name: props.name }),
       },
       ...children, // spread, so no React key errors
     )
@@ -162,9 +158,8 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
       return createElement('div', {
         role: (isOnlyButtons && isOnlyView) ? 'tablist' : undefined,
         'aria-label': (isOnlyButtons && isOnlyView) ? options.viewChangeHint : undefined,
-        className: joinArrayishClassNames(
+        className: joinClassNames(
           generateClassName(options.buttonGroupClass, { isSelectGroup: isOnlyView }),
-          classNames.flexRow,
           classNames.isolate,
         ),
       }, ...children)

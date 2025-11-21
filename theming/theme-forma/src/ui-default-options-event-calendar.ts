@@ -118,11 +118,11 @@ export const defaultUiEventCalendarOptions: {
     headerToolbarClass: `border-b border-(--fc-forma-border)`,
     footerToolbarClass: `border-t border-(--fc-forma-border)`,
 
-    toolbarClass: 'p-3 items-center gap-3',
-    toolbarSectionClass: 'items-center gap-3',
+    toolbarClass: 'p-3 flex flex-row flex-wrap items-center justify-between gap-3',
+    toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-3',
     toolbarTitleClass: 'text-xl',
 
-    buttonGroupClass: 'items-center',
+    buttonGroupClass: 'flex flex-row items-center',
     buttonClass: (data) => [
       'group inline-flex flex-row text-sm py-1.5 rounded-sm',
       data.isIconOnly ? 'px-2' : 'px-3',

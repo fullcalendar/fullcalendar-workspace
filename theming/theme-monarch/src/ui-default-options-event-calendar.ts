@@ -108,12 +108,12 @@ export const defaultUiEventCalendarOptions: {
 
     className: `bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden`,
 
-    toolbarClass: 'p-4 items-center gap-3',
-    toolbarSectionClass: 'items-center gap-3',
+    toolbarClass: 'p-4 flex flex-row flex-wrap items-center justify-between gap-3',
+    toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-3',
     toolbarTitleClass: 'text-2xl font-bold',
 
     buttonGroupClass: (data) => [
-      'items-center rounded-full',
+      'rounded-full flex flex-row items-center',
       data.isSelectGroup && 'border border-(--fc-monarch-border)'
     ],
     buttonClass: (data) => [

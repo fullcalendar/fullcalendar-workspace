@@ -13,8 +13,6 @@ clean+build all:
   pn build
 
 
-FLEX AUDIT
-  Check ui-default-options-event-calendar.ts
 search for classNames.rel where meant to "put above other siblings"
 CODE-QUALITY (while going through each theme)
   ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)

@@ -207,10 +207,6 @@
   flex-direction: column !important;
 }
 
-.flexWrap {
-  flex-wrap: wrap;
-}
-
 .grow {
   flex-grow: 1 !important;
 }
@@ -369,10 +365,6 @@ which can't rely on dynamic height detection after print-flag activated.
 .offscreen {
   position: absolute !important;
   left: -10000px !important;
-}
-
-.justifyBetween {
-  justify-content: space-between !important;
 }
 
 .alignCenter {

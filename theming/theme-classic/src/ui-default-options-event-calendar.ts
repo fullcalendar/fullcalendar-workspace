@@ -72,13 +72,13 @@ export const defaultUiEventCalendarOptions: {
     viewClass: 'bg-(--fc-classic-background) border border-(--fc-classic-border)',
 
     toolbarClass: (data) => [
-      'items-center gap-3',
+      'flex flex-row flex-wrap items-center justify-between gap-3',
       data.borderlessX && 'px-3',
     ],
-    toolbarSectionClass: 'items-center gap-3',
+    toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-3',
     toolbarTitleClass: 'text-2xl font-bold',
 
-    buttonGroupClass: 'items-center',
+    buttonGroupClass: 'flex flex-row items-center',
     buttonClass: (data) => [
       'inline-flex flex-row items-center py-2 border-x',
       'focus-visible:outline-3 outline-slate-600/50',

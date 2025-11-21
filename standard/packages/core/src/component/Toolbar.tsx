@@ -2,9 +2,8 @@ import { createElement } from '../preact.js'
 import { BaseComponent } from '../vdom-util.js'
 import { ToolbarModel, ToolbarWidget } from '../toolbar-struct.js'
 import { ToolbarSection, ToolbarContent } from './ToolbarSection.js'
-import { joinArrayishClassNames } from '../util/html.js'
+import { joinClassNames } from '../util/html.js'
 import { generateClassName } from '../content-inject/ContentContainer.js'
-import classNames from '../internal-classnames.js'
 
 export interface ToolbarProps extends ToolbarContent {
   className?: string
@@ -21,14 +20,11 @@ export class Toolbar extends BaseComponent<ToolbarProps> {
 
     return (
       <div
-        className={joinArrayishClassNames(
+        className={joinClassNames(
           props.className,
           generateClassName(options.toolbarClass, {
             borderlessX: props.borderlessX,
           }),
-          classNames.flexRow,
-          classNames.flexWrap,
-          classNames.justifyBetween,
         )}
       >
         {this.renderSection('start', sectionWidgets.start)}

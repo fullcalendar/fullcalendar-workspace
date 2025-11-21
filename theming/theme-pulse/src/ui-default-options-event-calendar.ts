@@ -121,14 +121,14 @@ export const defaultUiEventCalendarOptions: {
     ],
 
     toolbarClass: (data) => [
-      'gap-5 items-center',
+      'flex flex-row flex-wrap items-center justify-between gap-5',
       data.borderlessX && 'px-3',
     ],
-    toolbarSectionClass: 'gap-5 items-center',
+    toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-5',
     toolbarTitleClass: `text-2xl font-bold text-(--fc-pulse-strong-foreground)`,
 
     buttonGroupClass: (data) => [
-      'py-px items-center rounded-sm',
+      'py-px rounded-sm flex flex-row items-center',
       data.isSelectGroup
         ? `bg-(--fc-pulse-unselected)`
         : `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
