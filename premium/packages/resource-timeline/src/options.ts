@@ -64,7 +64,9 @@ export const OPTION_REFINERS = {
   resourceLaneDidMount: identity as Identity<DidMountHandler<ResourceLaneMountData>>,
   resourceLaneWillUnmount: identity as Identity<WillUnmountHandler<ResourceLaneMountData>>,
   resourceLaneTopClass: identity as Identity<ClassNameGenerator<ResourceLaneData>>,
+  resourceLaneTopContent: identity as Identity<CustomContentGenerator<ResourceLaneData>>,
   resourceLaneBottomClass: identity as Identity<ClassNameGenerator<ResourceLaneData>>,
+  resourceLaneBottomContent: identity as Identity<CustomContentGenerator<ResourceLaneData>>,
 
   resourceIndentClass: identity as Identity<ClassNameInput>,
   resourceExpanderClass: identity as Identity<ClassNameGenerator<ResourceExpanderData>>,

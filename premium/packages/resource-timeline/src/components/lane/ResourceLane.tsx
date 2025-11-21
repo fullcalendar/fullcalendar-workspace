@@ -1,4 +1,4 @@
-import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, generateClassName, joinArrayishClassNames } from '@fullcalendar/core/internal'
+import { BaseComponent, memoizeObjArg, ContentContainer, watchHeight, setRef, afterSize, joinClassNames, DateProfile, DateMarker, DateRange, EventStore, EventUiHash, DateSpan, EventInteractionState, joinArrayishClassNames } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Ref, Fragment } from '@fullcalendar/core/preact'
 import { Resource } from '@fullcalendar/resource/internal'
@@ -131,13 +131,16 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                 // dimensions
                 slotWidth={props.slotWidth}
               />
-              <div
-                ref={this.handleTopEl}
+              <ContentContainer
+                tag='div'
+                elRef={this.handleTopEl}
                 className={joinClassNames(
-                  generateClassName(options.resourceLaneTopClass, renderProps),
                   classNames.noMargin,
                   classNames.noShrink,
                 )}
+                renderProps={renderProps}
+                generatorName='resourceLaneTopContent'
+                classNameGenerator={options.resourceLaneTopClass}
               />
               <TimelineFg
                 dateProfile={props.dateProfile}
@@ -158,13 +161,16 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                 // ref
                 heightRef={this.handleEventsHeight}
               />
-              <div
-                ref={this.handleBottomEl}
+              <ContentContainer
+                tag='div'
+                elRef={this.handleBottomEl}
                 className={joinClassNames(
-                  generateClassName(options.resourceLaneBottomClass, renderProps),
                   classNames.noMargin,
                   classNames.noShrink,
                 )}
+                renderProps={renderProps}
+                generatorName='resourceLaneBottomContent'
+                classNameGenerator={options.resourceLaneBottomClass}
               />
             </Fragment>
           )}
