@@ -192,7 +192,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         params.outlineOffsetClass,
       ],
 
-      blockEventInnerClass: 'text-(--fc-event-contrast-color) print:text-black flex',
+      blockEventInnerClass: 'text-(--fc-event-contrast-color) print:text-black',
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
       blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
@@ -220,7 +220,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ),
 
       rowEventInnerClass: (data) => [
-        'flex-row items-center',
+        'flex flex-row items-center',
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
@@ -250,11 +250,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ]
       ),
 
-      columnEventInnerClass: (data) => (
+      columnEventInnerClass: (data) => [
+        'flex',
         data.isShort
           ? 'p-0.5 flex-row items-center gap-1' // one line
           : 'px-0.5 flex-col' // two lines
-      ),
+      ],
 
       columnEventTimeClass: (data) => [
         !data.isShort && 'pt-0.5',
@@ -336,7 +337,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverClass: `${params.popoverClass} min-w-55`,
 
       popoverCloseClass: [
-        'group absolute top-0.5 end-0.5 inline-flex flex-row',
+        'group absolute top-0.5 end-0.5',
         params.outlineWidthFocusClass,
         params.primaryOutlineColorClass,
       ],

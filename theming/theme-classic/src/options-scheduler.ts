@@ -51,7 +51,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       // row expander
       resourceIndentClass: 'ms-2 -me-1 justify-center', // v-align
       resourceExpanderClass: [
-        'group inline-flex flex-row',
+        'group',
         params.outlineWidthFocusClass,
         params.primaryOutlineColorClass,
       ],

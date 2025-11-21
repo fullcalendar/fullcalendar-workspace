@@ -105,6 +105,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         aria-labelledby={this.titleId}
         className={joinArrayishClassNames(
           options.popoverClass,
+          classNames.flexCol,
           classNames.popoverZ,
           classNames.abs,
           classNames.internalPopover,

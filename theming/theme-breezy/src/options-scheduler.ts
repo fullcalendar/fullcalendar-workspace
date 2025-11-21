@@ -37,17 +37,17 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceAreaHeaderResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
       // group cell
-      resourceGroupHeaderClass: `border ${params.mutedBorderColorClass} ${params.mutedBgClass}`,
+      resourceGroupHeaderClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
       resourceGroupHeaderInnerClass: `p-2 ${params.fgClass} text-sm`,
 
       // cell
       resourceCellClass: `border ${params.mutedBorderColorClass}`,
-      resourceCellInnerClass: `p-2  ${params.fgClass} text-sm`,
+      resourceCellInnerClass: `p-2 ${params.fgClass} text-sm`,
 
       // row expander
       resourceIndentClass: 'ms-1 -me-1.5 justify-center', // v-align
       resourceExpanderClass: [
-        'group p-0.5 rounded-full inline-flex flex-row',
+        'group p-0.5 rounded-full',
         params.mutedHoverPressableClass,
         params.outlineWidthFocusClass,
         params.primaryOutlineColorClass,
@@ -63,8 +63,8 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       /* Timeline Lane
       ------------------------------------------------------------------------------------------- */
 
-      resourceGroupLaneClass:  `border ${params.mutedBorderColorClass} ${params.mutedBgClass}`,
-      resourceLaneClass: `border ${params.mutedBorderColorClass}`,
+      resourceGroupLaneClass:  `border ${params.borderColorClass} ${params.mutedBgClass}`,
+      resourceLaneClass: `border ${params.borderColorClass}`,
       resourceLaneBottomClass: (data) => data.options.eventOverlap && 'h-2',
       timelineBottomClass: 'h-2',
     },

@@ -401,7 +401,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverClass: `${params.popoverClass} min-w-55`,
 
       popoverCloseClass: [
-        'group absolute top-1.5 end-1.5 p-1 rounded-sm inline-flex flex-row',
+        'group absolute top-1.5 end-1.5 p-1 rounded-sm',
         params.mutedHoverPressableClass,
         params.outlineWidthFocusClass,
         params.tertiaryOutlineColorClass,
@@ -572,7 +572,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         /* List-View > List-Item Event
         ----------------------------------------------------------------------------------------- */
 
-        listItemEventClass: (data) => [ // will have flex-stretch by default
+        listItemEventClass: (data) => [
           'group py-1',
           data.isInteractive
             ? joinClassNames(params.faintHoverPressableClass, params.outlineInsetClass)

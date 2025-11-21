@@ -209,7 +209,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         (!data.isSelected && data.isDragging) && 'opacity-75',
       ],
 
-      blockEventInnerClass: 'flex text-(--fc-event-contrast-color) print:text-black',
+      blockEventInnerClass: 'text-(--fc-event-contrast-color) print:text-black',
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden',
       blockEventTitleClass: 'whitespace-nowrap overflow-hidden',
 
@@ -253,7 +253,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ),
 
       rowEventInnerClass: (data) => [
-        'flex-row items-center',
+        'flex flex-row items-center',
         data.isNarrow ? xxsTextClass : 'text-xs',
       ],
 
@@ -293,6 +293,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ),
 
       columnEventInnerClass: (data) => [
+        'flex',
         data.isShort
           ? 'flex-row items-center p-1 gap-1' // one line
           : joinClassNames( // two lines
@@ -390,7 +391,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       popoverCloseClass: [
         'group absolute top-2 end-2 size-8 rounded-full',
-        'inline-flex flex-row items-center justify-center',
+        'flex flex-row items-center justify-center',
         params.mutedHoverPressableClass,
         params.outlineWidthFocusClass,
         params.tertiaryOutlineColorClass,

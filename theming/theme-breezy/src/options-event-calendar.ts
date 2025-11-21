@@ -247,7 +247,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         (data.isDragging && !data.isSelected) && 'opacity-75',
       ],
 
-      blockEventInnerClass: `flex ${params.eventMutedFgClass}`, // NOTE: subclass determines direction
+      blockEventInnerClass: params.eventMutedFgClass,
       blockEventTimeClass: 'whitespace-nowrap overflow-hidden shrink-1', // shrinks second
       blockEventTitleClass: 'whitespace-nowrap overflow-hidden shrink-100', // shrinks first
 
@@ -312,6 +312,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ),
 
       columnEventInnerClass: (data) => [
+        'flex',
         data.isShort
           ? 'flex-row items-center gap-1 p-1' // one line
           : joinClassNames( // two lines
@@ -448,7 +449,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverClass: `${params.popoverClass} min-w-55`,
 
       popoverCloseClass: [
-        'group absolute top-2 end-2 p-0.5 rounded-sm inline-flex flex-row',
+        'group absolute top-2 end-2 p-0.5 rounded-sm',
         mutedHoverButtonClass,
       ],
 

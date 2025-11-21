@@ -13,15 +13,8 @@ clean+build all:
   pn build
 
 
-implement resourceLaneTopContent / resourceLaneBottomContent
 FLEX AUDIT
-  Find all theme "flex"
-  Find all assumed flex but chosen "flex-row" or "flex-col"
-  Why would we use "inline-flex" instead
-    Check buttons in ui-default-options-event-calendar.ts too
-  datagrid headers+cells have outer-div as flex-col, but intermediate inner-wrap is flex-row
-    needs to be flex-row for expander
-    but make BOTH flex-row? think about it? necessary?
+  Check ui-default-options-event-calendar.ts
 search for classNames.rel where meant to "put above other siblings"
 CODE-QUALITY (while going through each theme)
   ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)
@@ -1122,3 +1115,15 @@ Theme QA checklist
           does not exceed datagrid row height (zero lane-bottom height)
       row-more-link
         stickiness
+the flexbox react-native VS web conundrum
+  where we might want core do have an opinion about the DEFAULT flex direction of an exposed element
+  but if we set it in core, hard to have theme/user override it because core does !important for web
+  so, we COULD just set display:flex in core and have themes ensure they override ALL instances,
+  so that behavior would be forced the same for both react-native and web, but that dirties up the
+  theme code's styles on elements it might not even care about styling.
+  Solution is to use <DefaultStack> (in an env where we have <HStack> and <VStack>)
+  in react native it defaults to <View style={{ display: 'flex', flexDirection: 'col' }} />
+  in web it defaults to <div style={{ display: 'block' }} />
+  (aka the defaults for <View> and <div>)
+  both behave similarly except that flex-col will shrink elements of too short
+  however, all of the elements we expose have full reign on height (and UI adapts around it), won't matter
