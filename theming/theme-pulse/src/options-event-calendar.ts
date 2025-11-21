@@ -447,10 +447,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : data.hasNavLink && params.mutedHoverPressableClass,
       ],
 
-      listDayEventsClass: [
-        `py-2 gap-2 group-not-last/day:border-b ${params.borderColorClass}`,
-        'flex flex-col',
-      ],
+      listDayEventsClass: `py-2 gap-2 group-not-last/day:border-b ${params.borderColorClass}`,
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
@@ -460,7 +457,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderClass: (data) => [
         data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,
         data.colCount > 1 ? 'pb-2' : 'py-1',
-        'justify-center', // h-align
+        'items-center', // h-align
       ],
 
       singleMonthHeaderInnerClass: (data) => [

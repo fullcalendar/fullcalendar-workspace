@@ -1,5 +1,6 @@
-import { BaseComponent, buildDateStr, DateMarker, DateRange, EventRangeProps, generateClassName, getDateMeta, getEventKey, getEventRangeMeta, memoize, sortEventSegs } from "@fullcalendar/core/internal"
+import { BaseComponent, buildDateStr, DateMarker, DateRange, EventRangeProps, generateClassName, getDateMeta, getEventKey, getEventRangeMeta, joinClassNames, memoize, sortEventSegs } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
+import classNames from '@fullcalendar/core/internal-classnames'
 import { ListDayHeader } from "./ListDayHeader.js"
 import { ListEvent } from "./ListEvent.js"
 
@@ -52,7 +53,10 @@ export class ListDay extends BaseComponent<ListDayProps> {
         <div
           role='list'
           aria-label={options.eventsHint}
-          className={generateClassName(options.listDayEventsClass, dateMeta)}
+          className={joinClassNames(
+            generateClassName(options.listDayEventsClass, dateMeta),
+            classNames.flexCol,
+          )}
         >
           {segs.map((seg) => {
             const key = getEventKey(seg)

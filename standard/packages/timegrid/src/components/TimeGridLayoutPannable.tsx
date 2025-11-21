@@ -177,6 +177,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
               }),
               props.borderlessX && classNames.borderlessX,
               // see note in TimeGridLayout about why we don't do classNames.printHeader
+              classNames.flexCol,
               stickyHeaderDates && classNames.tableHeaderSticky,
             )}
             style={{

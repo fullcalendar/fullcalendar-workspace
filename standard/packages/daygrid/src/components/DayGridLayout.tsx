@@ -82,7 +82,7 @@ export class DayGridLayout extends BaseComponent<DayGridLayoutProps> {
         }}
         className={joinArrayishClassNames(
           props.className,
-          classNames.printRoot,
+          classNames.printRoot, // either flexCol or table
           options.tableClass,
         )}
         borderlessX={props.borderlessX}

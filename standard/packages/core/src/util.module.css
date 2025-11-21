@@ -375,10 +375,6 @@ which can't rely on dynamic height detection after print-flag activated.
   justify-content: space-between !important;
 }
 
-.justifyEnd {
-  justify-content: flex-end !important;
-}
-
 .alignCenter {
   align-items: center !important;
 }

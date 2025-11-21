@@ -137,6 +137,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
           <div
             ref={this.innerWrapperElRef}
             className={joinClassNames(
+              classNames.flexCol,
               classNames.rigid,
               isSticky && classNames.sticky,
             )}

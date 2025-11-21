@@ -508,10 +508,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             )
       ],
 
-      listDayEventsClass: [
-        `my-4 grow min-w-0 border ${params.borderColorClass} rounded-md`,
-        'flex flex-col',
-      ],
+      listDayEventsClass: `my-4 grow min-w-0 border ${params.borderColorClass} rounded-md`,
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
@@ -521,7 +518,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderClass: (data) => [
         data.isSticky && `${params.bgClass} border-b ${params.borderColorClass}`,
         data.colCount > 1 ? 'pb-1' : 'py-1',
-        'justify-center', // h-align
+        'items-center', // h-align
       ],
 
       singleMonthHeaderInnerClass: (data) => [

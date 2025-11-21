@@ -148,6 +148,7 @@ export class TimelineView extends DateComponent<ViewProps, TimelineViewState> {
                     isSticky: stickyHeaderDates,
                   }),
                   props.borderlessX && classNames.borderlessX,
+                  classNames.flexCol,
                   stickyHeaderDates && classNames.tableHeaderSticky,
                 )}
                 style={{

@@ -437,7 +437,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.hasNavLink && 'hover:underline',
       ],
 
-      listDayEventsClass: 'p-4 grow min-w-0 flex flex-col items-stretch gap-4',
+      listDayEventsClass: 'p-4 grow min-w-0 items-stretch gap-4',
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
@@ -445,9 +445,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthClass: 'm-4',
 
       singleMonthHeaderClass: (data) => [
-        'justify-center', // h-align
         data.colCount > 1 ? 'pb-4' : 'py-2',
         data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,
+        'items-center', // h-align
       ],
 
       singleMonthHeaderInnerClass: (data) => [

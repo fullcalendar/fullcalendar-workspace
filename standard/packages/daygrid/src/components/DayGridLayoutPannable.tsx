@@ -96,7 +96,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
               isSticky: stickyHeaderDates,
             }),
             props.borderlessX && classNames.borderlessX,
-            classNames.printHeader,
+            classNames.printHeader, // either flexCol or table-header-group
             stickyHeaderDates && classNames.tableHeaderSticky,
           )}>
             <Scroller

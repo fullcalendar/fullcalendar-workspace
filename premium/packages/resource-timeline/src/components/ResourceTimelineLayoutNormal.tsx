@@ -494,6 +494,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                     isSticky: stickyHeaderDates,
                   }),
                   props.borderlessX && classNames.borderlessX,
+                  classNames.flexCol,
                   stickyHeaderDates && classNames.tableHeaderSticky,
                 )}
                 style={{

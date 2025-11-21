@@ -36,7 +36,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       ------------------------------------------------------------------------------------------- */
 
       // column header
-      resourceAreaHeaderClass: `border ${params.borderColorClass} justify-center`, // valign
+      resourceAreaHeaderClass: `border ${params.borderColorClass} justify-center`, // v-align
       resourceAreaHeaderInnerClass: 'p-2 text-sm',
       resourceAreaHeaderResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
@@ -49,7 +49,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceCellInnerClass: 'p-2 text-sm',
 
       // row expander
-      resourceIndentClass: 'ms-2 -me-1 items-center',
+      resourceIndentClass: 'ms-2 -me-1 justify-center', // v-align
       resourceExpanderClass: [
         'group inline-flex flex-row',
         params.outlineWidthFocusClass,

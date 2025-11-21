@@ -69,8 +69,8 @@ export class ResourceGroupHeaderSubrow extends BaseComponent<ResourceGroupHeader
           className={joinClassNames(
             classNames.liquid, // expand to whole row
             classNames.tight,
-            classNames.flexRow,
-            classNames.alignStart, // v-align
+            classNames.flexCol,
+            classNames.alignStart, // h-align
             classNames.crop,
             classNames.contentBox,
             props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,

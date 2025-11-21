@@ -137,7 +137,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                   generateClassName(options.resourceLaneTopClass, renderProps),
                   classNames.noMargin,
                   classNames.noShrink,
-                  classNames.flexCol,
                 )}
               />
               <TimelineFg
@@ -165,7 +164,6 @@ export class ResourceLane extends BaseComponent<ResourceLaneProps> {
                   generateClassName(options.resourceLaneBottomClass, renderProps),
                   classNames.noMargin,
                   classNames.noShrink,
-                  classNames.flexCol,
                 )}
               />
             </Fragment>

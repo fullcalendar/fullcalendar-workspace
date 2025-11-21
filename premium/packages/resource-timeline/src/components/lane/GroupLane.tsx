@@ -86,7 +86,6 @@ export class GroupLane extends BaseComponent<GroupLaneProps> {
                 generateClassName(groupSpec.laneInnerClass, renderProps),
                 classNames.noShrink,
                 classNames.noMargin,
-                classNames.flexCol,
               )}
             />
           )}

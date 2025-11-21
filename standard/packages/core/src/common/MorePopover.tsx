@@ -154,7 +154,6 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             className={joinArrayishClassNames(
               options.popoverCloseClass,
               classNames.cursorPointer,
-              classNames.flexRow,
             )}
             renderProps={{}}
             customGenerator={options.popoverCloseContent}
@@ -164,6 +163,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
         <div
           className={joinClassNames(
             generateClassName(options.dayCellClass, dayCellRenderProps),
+            classNames.flexCol,
             classNames.borderNone,
           )}
         >

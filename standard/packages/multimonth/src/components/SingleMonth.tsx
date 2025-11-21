@@ -123,7 +123,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             className={joinClassNames(
               generateClassName(options.singleMonthHeaderClass, headerRenderProps),
               isTitleAndHeaderSticky && classNames.stickyT,
-              classNames.flexRow,
+              classNames.flexCol,
             )}
             style={{
               // HACK to keep zIndex above table-header,
@@ -163,6 +163,7 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
                   isSticky: isTitleAndHeaderSticky,
                 }),
                 props.borderlessX && classNames.borderlessX,
+                classNames.flexCol,
                 isTitleAndHeaderSticky && classNames.sticky,
               )}
               style={{
@@ -188,8 +189,9 @@ export class SingleMonth extends DateComponent<SingleMonthProps, SingleMonthStat
             </div>
             <div
               className={joinArrayishClassNames(
-                isAspectRatio && classNames.rel,
                 options.tableBodyClass,
+                classNames.flexCol,
+                isAspectRatio && classNames.rel,
                 props.borderlessX && classNames.borderlessX,
                 isTitleAndHeaderSticky && classNames.borderlessTop,
                 (isTitleAndHeaderSticky || props.noEdgeEffects) && classNames.noEdgeEffects,

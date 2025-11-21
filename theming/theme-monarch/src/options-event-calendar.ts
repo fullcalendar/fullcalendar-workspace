@@ -443,7 +443,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             )
       ),
 
-      listDayEventsClass: 'py-2 grow min-w-0 flex flex-col',
+      listDayEventsClass: 'py-2 grow min-w-0',
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
@@ -453,7 +453,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderClass: (data) => [
         data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,
         data.colCount > 1 ? 'pb-2' : 'py-1',
-        'justify-center', // h-align
+        'items-center', // h-align
       ],
 
       singleMonthHeaderInnerClass: (data) => [

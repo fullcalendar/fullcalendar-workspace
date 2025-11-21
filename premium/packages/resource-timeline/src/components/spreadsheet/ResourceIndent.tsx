@@ -18,8 +18,8 @@ export class ResourceIndent extends BaseComponent<ResourceIndentProps> {
         className={joinArrayishClassNames(
           context.options.resourceIndentClass,
           classNames.noShrink,
-          classNames.flexRow,
-          classNames.justifyEnd,
+          classNames.flexCol,
+          classNames.alignEnd,
         )}
         style={{
           ...props.style,

@@ -56,7 +56,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceCellInnerClass: 'p-2 text-sm',
 
       // row expander
-      resourceIndentClass: 'ms-1 -me-1.5 items-center',
+      resourceIndentClass: 'ms-1 -me-1.5 justify-center', // v-align
       resourceExpanderClass: [
         'group p-1 rounded-full flex flex-row',
         params.mutedHoverPressableClass,

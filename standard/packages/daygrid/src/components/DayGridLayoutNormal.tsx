@@ -89,7 +89,7 @@ export class DayGridLayoutNormal extends BaseComponent<DayGridLayoutNormalProps,
               isSticky: stickyHeaderDates,
             }),
             props.borderlessX && classNames.borderlessX,
-            classNames.printHeader,
+            classNames.printHeader, // either flexCol or table-header-group
             stickyHeaderDates && classNames.tableHeaderSticky,
           )}>
             <div className={classNames.flexRow}>
