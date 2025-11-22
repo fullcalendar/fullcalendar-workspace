@@ -32,7 +32,7 @@ export function createSlots(
                 data.isNarrow ? 'text-xs' : 'text-sm',
                 textPart.type === 'day'
                   ? joinClassNames(
-                      'flex flex-row items-center', // v-align-text
+                      'flex flex-row items-center', // v-align
                       !data.isNarrow && 'font-semibold',
                       (data.isToday && !data.inPopover)
                         // day-number circle

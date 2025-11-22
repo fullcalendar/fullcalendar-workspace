@@ -77,7 +77,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   ----------------------------------------------------------------------------------------------- */
 
   // transparent resizer for mouse
-  const blockPointerResizerClass = `absolute hidden group-hover:block`
+  const blockPointerResizerClass = 'absolute hidden group-hover:block'
   const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
@@ -146,7 +146,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     rowMoreLinkInnerClass: (data) => (
       data.isNarrow
         ? `px-0.5 py-px ${xxsTextClass}`
-        : `px-1 py-0.5 text-xs`
+        : 'px-1 py-0.5 text-xs'
     ),
   }
 
@@ -368,8 +368,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayCellTopInnerClass: (data) => [
         'flex flex-row items-center justify-center whitespace-nowrap rounded-full',
         data.isNarrow
-          ? `h-5 m-px ${xxsTextClass}`
-          : `h-6 m-1.5 text-sm`,
+          ? `m-px h-5 ${xxsTextClass}`
+          : 'm-1.5 h-6 text-sm',
         data.text === data.dayNumberText
           ? (data.isNarrow ? 'w-5' : 'w-6') // circle
           : (data.isNarrow ? 'px-1' : 'px-2'), // pill
@@ -444,7 +444,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             )
       ),
 
-      listDayEventsClass: 'py-2 grow min-w-0',
+      listDayEventsClass: 'grow min-w-0 py-2',
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
@@ -489,8 +489,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       inlineWeekNumberClass: (data) => [
         'absolute flex flex-row items-center whitespace-nowrap', // v-align
         data.isNarrow
-          ? `top-0.5 start-0 my-px pe-1 h-4 rounded-e-full ${xxsTextClass}` // half-pill
-          : 'top-1.5 start-1 px-2 h-6 rounded-full text-sm', // pill
+          ? `top-0.5 start-0 my-px h-4 pe-1 rounded-e-full ${xxsTextClass}` // half-pill
+          : 'top-1.5 start-1 h-6 px-2 rounded-full text-sm', // pill
         data.hasNavLink
           ? params.secondaryPressableClass
           : params.secondaryClass,

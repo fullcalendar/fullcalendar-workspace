@@ -106,7 +106,7 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: `bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden`,
+    className: 'bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden',
 
     toolbarClass: 'p-4 flex flex-row flex-wrap items-center justify-between gap-3',
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-3',
@@ -117,7 +117,7 @@ export const defaultUiEventCalendarOptions: {
       data.isSelectGroup && 'border border-(--fc-monarch-border)'
     ],
     buttonClass: (data) => [
-      `inline-flex items-center justify-center py-2.5 text-sm rounded-full`,
+      'py-2.5 rounded-full flex flex-row items-center text-sm',
       data.isIconOnly ? 'px-2.5' : 'px-5',
       data.inSelectGroup && '-m-px', // overcome select-group border
       (data.isIconOnly || (data.inSelectGroup && !data.isSelected))

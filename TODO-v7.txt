@@ -13,19 +13,6 @@ clean+build all:
   pn build
 
 
-CODE-QUALITY (while going through each theme)
-  ensure joinClassNames() isn't used for top-level props. isn't needed (accepts array)
-  ensure no unnecessary `` instead ''
-  stop concatenating with param classnames. sometimes they're blank
-    like `border ${params.borderColorClass}`. many others too
-    have AI correct it
-  make all theme util functions that emit classnames return STRING (and thus call joinClassNames)?
-  slotLabel(Inner)Class and slotLabelDividerClass
-    should almost always be in the timegrid/timeline sections of the theme
-  in code, ensure tailwind border defined before padding
-    Also, put borders AFTER w/h ? considering how box-model works
-
-
 just before beta (after theme gen)
 ----------------
 Updating ANGULAR will take a long time

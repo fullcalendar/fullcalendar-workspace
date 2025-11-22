@@ -127,13 +127,13 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: `bg-(--fc-breezy-background) border border-(--fc-breezy-border) rounded-lg overflow-hidden`,
-    headerToolbarClass: `border-b border-(--fc-breezy-border)`,
-    footerToolbarClass: `border-t border-(--fc-breezy-border)`,
+    className: 'bg-(--fc-breezy-background) border border-(--fc-breezy-border) rounded-lg overflow-hidden',
+    headerToolbarClass: 'border-b border-(--fc-breezy-border)',
+    footerToolbarClass: 'border-t border-(--fc-breezy-border)',
 
-    toolbarClass: `px-4 py-4 bg-(--fc-breezy-faint) flex flex-row flex-wrap items-center justify-between gap-4`,
+    toolbarClass: 'px-4 py-4 bg-(--fc-breezy-faint) flex flex-row flex-wrap items-center justify-between gap-4',
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-4',
-    toolbarTitleClass: `text-lg font-semibold text-(--fc-breezy-strong-foreground)`,
+    toolbarTitleClass: 'text-lg font-semibold text-(--fc-breezy-strong-foreground)',
 
     /*
     TODO: don't make buttons so fat
@@ -141,10 +141,10 @@ export const defaultUiEventCalendarOptions: {
     */
     buttonGroupClass: (data) => [
       'flex flex-row items-center',
-      !data.isSelectGroup && `rounded-md shadow-xs`,
+      !data.isSelectGroup && 'rounded-md shadow-xs',
     ],
     buttonClass: (data) => [
-      'group inline-flex flex-row py-2 text-sm',
+      'group py-2 flex flex-row items-center text-sm',
       data.isIconOnly ? 'px-2' : 'px-3',
       data.inSelectGroup ? joinClassNames(
         'rounded-md font-medium',

@@ -114,9 +114,9 @@ export const defaultUiEventCalendarOptions: {
   optionDefaults: {
     ...baseEventCalendarOptions.optionDefaults,
 
-    className: `bg-(--fc-forma-background) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden`,
-    headerToolbarClass: `border-b border-(--fc-forma-border)`,
-    footerToolbarClass: `border-t border-(--fc-forma-border)`,
+    className: 'bg-(--fc-forma-background) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden',
+    headerToolbarClass: 'border-b border-(--fc-forma-border)',
+    footerToolbarClass: 'border-t border-(--fc-forma-border)',
 
     toolbarClass: 'p-3 flex flex-row flex-wrap items-center justify-between gap-3',
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-3',
@@ -124,7 +124,7 @@ export const defaultUiEventCalendarOptions: {
 
     buttonGroupClass: 'flex flex-row items-center',
     buttonClass: (data) => [
-      'group inline-flex flex-row text-sm py-1.5 rounded-sm',
+      'group py-1.5 rounded-sm flex flex-row items-center text-sm',
       data.isIconOnly ? 'px-2' : 'px-3',
       data.isIconOnly
         // ghost-button

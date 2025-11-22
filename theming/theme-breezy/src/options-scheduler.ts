@@ -115,7 +115,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
             'relative -start-4',
             data.isFirst && 'hidden',
           ),
-          data.hasNavLink && 'hover:underline'
+          data.hasNavLink && 'hover:underline',
         ],
 
         // divider between label and lane

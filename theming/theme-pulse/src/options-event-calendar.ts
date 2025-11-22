@@ -92,7 +92,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   ----------------------------------------------------------------------------------------------- */
 
   // transparent resizer for mouse
-  const blockPointerResizerClass = `absolute hidden group-hover:block`
+  const blockPointerResizerClass = 'absolute hidden group-hover:block'
   const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
@@ -311,7 +311,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
       columnMoreLinkClass: [
-        `my-0.5 border border-transparent print:border-black rounded-md`,
+        'my-0.5 border border-transparent print:border-black rounded-md',
         `${params.strongSolidPressableClass} print:bg-white`,
         `ring ${params.bgRingColorClass}`,
       ],
@@ -329,7 +329,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderClass: (data) => [
         'justify-center', // v-align
         data.inPopover ? params.popoverHeaderClass :
-          data.isMajor && `border ${params.strongBorderColorClass}`
+          data.isMajor && `border ${params.strongBorderColorClass}`,
       ],
 
       dayHeaderInnerClass: (data) => [
@@ -429,7 +429,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* List Day
       ------------------------------------------------------------------------------------------- */
 
-      listDayClass: `group/day flex flex-col`,
+      listDayClass: 'group/day flex flex-col',
 
       listDayHeaderClass: [
         `border-b ${params.borderColorClass} ${params.mutedSolidBgClass}`,
@@ -447,7 +447,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : data.hasNavLink && params.mutedHoverPressableClass,
       ],
 
-      listDayEventsClass: `py-2 gap-2 group-not-last/day:border-b ${params.borderColorClass}`,
+      listDayEventsClass: `group-not-last/day:border-b ${params.borderColorClass} py-2 gap-2`,
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
@@ -537,7 +537,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         weekNumberHeaderClass: 'items-center justify-end', // v-align, h-align
         weekNumberHeaderInnerClass: (data) => [
-          `mx-0.5 px-1.5 ${params.mutedFgClass} h-6 flex flex-row items-center rounded-sm`,
+          `mx-0.5 h-6 px-1.5 ${params.mutedFgClass} flex flex-row items-center rounded-sm`,
           data.isNarrow ? 'text-xs' : 'text-sm',
           data.hasNavLink && params.mutedHoverPressableClass,
         ],
@@ -584,7 +584,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listItemEventInnerClass: '[display:contents]',
 
         listItemEventTimeClass: [
-          '-order-1 ps-6 pe-4 py-2 shrink-0 w-1/2 max-w-60',
+          '-order-1 shrink-0 w-1/2 max-w-60 ps-6 pe-4 py-2',
           'whitespace-nowrap overflow-hidden text-ellipsis text-sm',
         ],
 

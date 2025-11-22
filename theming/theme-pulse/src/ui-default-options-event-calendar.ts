@@ -125,17 +125,17 @@ export const defaultUiEventCalendarOptions: {
       data.borderlessX && 'px-3',
     ],
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-5',
-    toolbarTitleClass: `text-2xl font-bold text-(--fc-pulse-strong-foreground)`,
+    toolbarTitleClass: 'text-2xl font-bold text-(--fc-pulse-strong-foreground)',
 
     buttonGroupClass: (data) => [
       'py-px rounded-sm flex flex-row items-center',
       data.isSelectGroup
-        ? `bg-(--fc-pulse-unselected)`
+        ? 'bg-(--fc-pulse-unselected)'
         : `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
     ],
 
     buttonClass: (data) => [
-      'group inline-flex flex-row text-sm py-2',
+      'group py-2 flex flex-row items-center text-sm',
       data.isIconOnly ? 'px-2.5' : 'px-4',
       data.inSelectGroup
         // all select-group buttons

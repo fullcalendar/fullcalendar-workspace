@@ -96,7 +96,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   ----------------------------------------------------------------------------------------------- */
 
   // transparent resizer for mouse
-  const blockPointerResizerClass = `absolute hidden group-hover:block`
+  const blockPointerResizerClass = 'absolute hidden group-hover:block'
   const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
@@ -565,7 +565,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       nowIndicatorLineClass: `-m-px border-1 ${params.nowBorderColorClass}`,
       nowIndicatorDotClass: [
         `-m-[6px] border-6 ${params.nowBorderColorClass} size-0 rounded-full`,
-        `ring-2 ${params.bgRingColorClass}`
+        `ring-2 ${params.bgRingColorClass}`,
       ],
     },
     views: {

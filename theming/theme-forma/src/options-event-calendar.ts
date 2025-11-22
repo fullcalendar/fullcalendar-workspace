@@ -70,12 +70,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   ----------------------------------------------------------------------------------------------- */
 
   // transparent resizer for mouse
-  const blockPointerResizerClass = `absolute hidden group-hover:block`
+  const blockPointerResizerClass = 'absolute hidden group-hover:block'
   const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
   // circle resizer for touch
-  const blockTouchResizerClass = `absolute size-2 rounded-full border border-(--fc-event-color) ${params.bgClass}`
+  const blockTouchResizerClass = `absolute size-2 border border-(--fc-event-color) rounded-full ${params.bgClass}`
   const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
@@ -145,7 +145,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     rowMoreLinkInnerClass: (data) => [
       data.isNarrow
         ? `px-0.5 py-px ${xxsTextClass}`
-        : `px-1 py-0.5 text-xs`
+        : 'px-1 py-0.5 text-xs'
     ],
   }
 
@@ -437,7 +437,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.hasNavLink && 'hover:underline',
       ],
 
-      listDayEventsClass: 'p-4 grow min-w-0 items-stretch gap-4',
+      listDayEventsClass: 'grow min-w-0 p-4 gap-4',
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */

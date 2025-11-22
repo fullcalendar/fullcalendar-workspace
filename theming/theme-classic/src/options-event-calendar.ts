@@ -67,7 +67,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   ----------------------------------------------------------------------------------------------- */
 
   // transparent resizer for mouse
-  const blockPointerResizerClass = `absolute hidden group-hover:block`
+  const blockPointerResizerClass = 'absolute hidden group-hover:block'
   const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
   const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
@@ -254,7 +254,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'flex',
         data.isShort
           ? 'p-0.5 flex-row items-center gap-1' // one line
-          : 'px-0.5 flex-col' // two lines
+          : 'px-0.5 flex-col', // two lines
       ],
 
       columnEventTimeClass: (data) => [
@@ -274,7 +274,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         params.outlineWidthFocusClass,
         params.primaryOutlineColorClass,
       ],
-      moreLinkInnerClass: `whitespace-nowrap overflow-hidden`,
+      moreLinkInnerClass: 'whitespace-nowrap overflow-hidden',
 
       columnMoreLinkClass: [
         'mb-px rounded-sm border border-transparent print:border-black',
@@ -300,7 +300,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : joinClassNames(
               'border',
               data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
-            )
+            ),
       ],
 
       dayHeaderInnerClass: (data) => [
@@ -477,7 +477,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ----------------------------------------------------------------------------------------- */
 
         listItemEventClass: (data) => [
-          `group px-3 py-2 border-b ${params.borderColorClass} gap-3`,
+          `group border-b ${params.borderColorClass} px-3 py-2 gap-3`,
           data.isInteractive
             ? joinClassNames(params.faintHoverPressableClass, params.outlineInsetClass)
             : params.faintHoverClass,

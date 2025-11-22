@@ -80,7 +80,7 @@ export const defaultUiEventCalendarOptions: {
 
     buttonGroupClass: 'flex flex-row items-center',
     buttonClass: (data) => [
-      'inline-flex flex-row items-center py-2 border-x',
+      'py-2 border-x flex flex-row items-center',
       'focus-visible:outline-3 outline-slate-600/50',
       'hover:border-slate-900 active:border-slate-900 print:border-slate-900',
       'hover:bg-slate-800 active:bg-slate-800 print:bg-white',
@@ -111,7 +111,7 @@ export const defaultUiEventCalendarOptions: {
       },
     },
 
-    popoverCloseContent: () => svgs.x(`size-5 text-sm not-group-hover:opacity-65`),
+    popoverCloseContent: () => svgs.x('size-5 text-sm not-group-hover:opacity-65'),
   },
   views: baseEventCalendarOptions.views,
 }
