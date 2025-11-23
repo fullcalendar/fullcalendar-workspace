@@ -477,7 +477,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ------------------------------------------------------------------------------------------- */
 
       // contains multiple days
-      listDaysClass: 'my-10 mx-auto w-full max-w-200 px-4',
+      listDaysClass: 'my-10 mx-auto w-full max-w-218 px-4',
 
       listDayClass: [
         `not-last:border-b ${params.mutedBorderColorClass}`,

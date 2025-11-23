@@ -62,8 +62,8 @@ TODO: convert all colors to hex
 
   /* neutral foregrounds */
   --fc-monarch-foreground: var(--color-white);
-  --fc-monarch-muted-foreground: #b0b0b0; /* TODO */
   --fc-monarch-faint-foreground: #898989; /* TODO */
+  --fc-monarch-muted-foreground: #b0b0b0; /* TODO */
 }
 
 [data-palette=purple] {
