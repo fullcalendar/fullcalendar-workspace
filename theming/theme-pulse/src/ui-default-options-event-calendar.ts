@@ -85,7 +85,7 @@ export const params: EventCalendarOptionParams = {
 
   // popover
   popoverClass: `bg-(--fc-pulse-background) border border-(--fc-pulse-strong-border) rounded-sm overflow-hidden shadow-md m-1`,
-  popoverHeaderClass: `border-b border-(--fc-pulse-strong-border) bg-(--fc-pulse-muted)`,
+  popoverHeaderClass: `border-b border-(--fc-pulse-border) bg-(--fc-pulse-faint)`,
 
   // tertiary
   tertiaryClass,

@@ -338,7 +338,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isNarrow ? 'text-xs' : 'text-sm',
         data.inPopover ? joinClassNames(
           // ghost-button IN POPOVER
-          'm-2 h-6 px-1 rounded-sm font-semibold',
+          'm-1.5 px-1 py-0.5 rounded-sm font-semibold',
+          params.fgClass,
           data.hasNavLink && params.mutedHoverPressableClass,
         ) : !data.dayNumberText ? joinClassNames(
           // ghost-button IN VIEW HEADER (short)
@@ -402,7 +403,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       popoverClass: `${params.popoverClass} min-w-55`,
 
       popoverCloseClass: [
-        'group absolute top-1.5 end-1.5 p-1 rounded-sm',
+        'group absolute top-1.5 end-1.5 p-0.5 rounded-sm',
         params.mutedHoverPressableClass,
         params.outlineWidthFocusClass,
         params.tertiaryOutlineColorClass,
@@ -433,11 +434,11 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       listDayClass: 'group/day flex flex-col',
 
       listDayHeaderClass: [
-        `border-b ${params.borderColorClass} ${params.mutedSolidBgClass} ${params.fgClass}`,
+        `border-b ${params.borderColorClass} ${params.faintBgClass} ${params.fgClass}`,
         'flex flex-row items-center justify-between',
       ],
       listDayHeaderInnerClass: (data) => [
-        'm-2 px-2 py-1 rounded-sm text-sm',
+        'm-1.5 px-1.5 py-0.5 rounded-sm text-sm',
         !data.level && 'font-semibold',
         (!data.level && data.isToday)
           // today
@@ -448,7 +449,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           : data.hasNavLink && params.mutedHoverPressableClass,
       ],
 
-      listDayEventsClass: `group-not-last/day:border-b ${params.borderColorClass} py-2 gap-2`,
+      listDayEventsClass: `group-not-last/day:border-b ${params.borderColorClass} px-1.5 py-2 gap-2`,
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
@@ -576,7 +577,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ----------------------------------------------------------------------------------------- */
 
         listItemEventClass: (data) => [
-          'group py-1',
+          'group py-1 rounded-sm',
           data.isInteractive
             ? joinClassNames(params.faintHoverPressableClass, params.outlineInsetClass)
             : params.faintHoverClass,
@@ -587,7 +588,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         listItemEventInnerClass: '[display:contents]',
 
         listItemEventTimeClass: [
-          '-order-1 shrink-0 w-1/2 max-w-60 ps-6 pe-4 py-2',
+          '-order-1 shrink-0 w-1/2 max-w-60 px-4 py-2',
           'whitespace-nowrap overflow-hidden text-ellipsis text-sm',
         ],
 
