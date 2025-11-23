@@ -18,8 +18,8 @@ const mutedHoverButtonClass = `${mutedHoverPressableClass} border border-transpa
 
 // controls
 const unselectedPressableClass = `${mutedHoverPressableClass}`
-const unselectedButtonClass = `${unselectedPressableClass} border border-transparent hover:border-(--fc-forma-muted-border) active:border-(--fc-forma-border) ${primaryOutlineFocusClass}`
-const selectedButtonClass = `bg-(--fc-forma-selected) border border-(--fc-forma-strong-border) ${primaryOutlineFocusClass} -outline-offset-1`
+const unselectedButtonClass = `${unselectedPressableClass} border border-transparent ${primaryOutlineFocusClass}`
+const selectedButtonClass = `bg-(--fc-forma-muted) border border-(--fc-forma-strong-border) ${primaryOutlineFocusClass} -outline-offset-1`
 
 // primary
 const primaryClass = 'bg-(--fc-forma-primary) text-(--fc-forma-primary-foreground)'
@@ -27,7 +27,7 @@ const primaryPressableClass = `${primaryClass} hover:bg-(--fc-forma-primary-over
 const primaryButtonClass = `${primaryPressableClass} border border-transparent ${primaryOutlineFocusClass} ${outlineOffsetClass}`
 
 // secondary *toolbar button*
-const secondaryButtonClass = `${mutedHoverPressableClass} border border-(--fc-forma-border) ${primaryOutlineFocusClass}`
+const secondaryButtonClass = `${mutedHoverPressableClass} border border-(--fc-forma-border) hover:border-(--fc-forma-strong-border) ${primaryOutlineFocusClass}`
 const secondaryButtonIconClass = 'size-5'
 
 // muted *event* colors

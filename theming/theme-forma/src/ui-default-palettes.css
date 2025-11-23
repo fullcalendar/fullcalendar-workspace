@@ -21,9 +21,6 @@ Further color reference:
   --fc-forma-background-event: var(--color-green-500); /* TODO */
   --fc-forma-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
 
-  /* controls */
-  --fc-forma-selected: #F5F5F5; /* between faint and muted */
-
   /* neutral backgrounds */
   --fc-forma-background: #FFFFFF;
   --fc-forma-faint: color-mix(in oklab, var(--color-black) 3%, transparent); /* TODO */
@@ -46,9 +43,6 @@ Further color reference:
 
   /* calendar content */
   --fc-forma-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
-
-  /* controls */
-  --fc-forma-selected: #202020; /* between faint and muted */
 
   /* neutral backgrounds */
   --fc-forma-background: var(--color-gray-950);
