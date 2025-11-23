@@ -154,9 +154,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     rowMoreLinkClass: (data) => [
       'mb-px border rounded-sm',
       data.isNarrow
-        ? `mx-0.5 ${params.primaryBorderColorClass}`
-        : 'self-start mx-1 border-transparent',
-      params.mutedPressableClass,
+        ? `mx-0.5 ${params.primaryBorderColorClass} ${params.mutedHoverPressableClass}`
+        : `self-start mx-1 border-transparent ${params.mutedPressableClass}`,
     ],
 
     rowMoreLinkInnerClass: (data) => [
@@ -465,6 +464,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderInnerClass: (data) => [
         'px-1.5 py-0.5 rounded-sm font-semibold',
         data.hasNavLink && params.mutedHoverPressableClass,
+        params.fgClass,
       ],
 
       /* Misc Table
