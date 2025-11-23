@@ -20,6 +20,7 @@ export interface ThemeOptionParams {
   mutedBgClass: string
   mutedSolidBgClass: string
   faintBgClass: string
+  faintSolidBgClass: string
 
   // neutral foregrounds
   fgClass: string

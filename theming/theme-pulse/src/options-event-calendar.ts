@@ -36,8 +36,8 @@ export interface EventCalendarOptionParams {
   bgClass: string
   bgRingColorClass: string
   mutedBgClass: string
-  mutedSolidBgClass: string
   faintBgClass: string
+  faintSolidBgClass: string
 
   // neutral foregrounds
   fgClass: string
@@ -434,7 +434,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       listDayClass: 'group/day flex flex-col',
 
       listDayHeaderClass: [
-        `border-b ${params.borderColorClass} ${params.faintBgClass} ${params.fgClass}`,
+        `border-b ${params.borderColorClass} ${params.faintSolidBgClass} ${params.fgClass}`,
         'flex flex-row items-center justify-between',
       ],
       listDayHeaderInnerClass: (data) => [

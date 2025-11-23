@@ -59,8 +59,8 @@ export const params: EventCalendarOptionParams = {
   bgClass: 'bg-(--fc-pulse-background)',
   bgRingColorClass: 'ring-(--fc-pulse-background)',
   mutedBgClass: 'bg-(--fc-pulse-muted)',
-  mutedSolidBgClass: '[background:linear-gradient(var(--fc-pulse-muted),var(--fc-pulse-muted))_var(--fc-pulse-background)]',
   faintBgClass: 'bg-(--fc-pulse-faint)',
+  faintSolidBgClass: '[background:linear-gradient(var(--fc-pulse-faint),var(--fc-pulse-faint))_var(--fc-pulse-background)]',
 
   // neutral foregrounds
   fgClass: 'text-(--fc-pulse-foreground)',

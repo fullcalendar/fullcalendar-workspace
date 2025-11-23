@@ -70,6 +70,7 @@ export const params: ThemeOptionParams = {
   mutedBgClass,
   mutedSolidBgClass: 'bg-muted',
   faintBgClass: 'bg-foreground/3', // semi-transparent version of bg-sidebar
+  faintSolidBgClass: 'bg-[color-mix(in_oklab,var(--foreground)_3%,var(--background))]',
 
   // neutral foregrounds
   fgClass: '', // inherited
