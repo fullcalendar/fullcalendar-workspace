@@ -46,6 +46,7 @@ export interface DayGridRowProps {
   todayRange: DateRange
   cells: DayTableCell[]
   cellIsNarrow: boolean
+  cellIsMicro: boolean
   showDayNumbers: boolean
   showWeekNumbers?: boolean
   forPrint: boolean
@@ -166,7 +167,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
         }}
         ref={this.handleRootEl}
       >
-        {props.showWeekNumbers && (
+        {(props.showWeekNumbers && !props.cellIsMicro) && (
           <ContentContainer<InlineWeekNumberData>
             tag='div'
             attrs={{
@@ -210,6 +211,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
               isMajor={cell.isMajor}
               showDayNumber={props.showDayNumbers}
               isNarrow={props.cellIsNarrow}
+              isMicro={props.cellIsMicro}
               borderStart={Boolean(col)}
 
               // content
@@ -260,7 +262,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
     isMirror: boolean,
   ): VNode[] {
     const { props, segHeightRefMap } = this
-    const { colWidth, eventSelection } = props
+    const { colWidth, eventSelection, cellIsMicro } = props
 
     const colCount = props.cells.length
     const defaultDisplayEventEnd = props.cells.length === 1
@@ -316,6 +318,7 @@ export class DayGridRow extends BaseComponent<DayGridRowProps> {
             defaultTimeFormat={DEFAULT_TABLE_EVENT_TIME_FORMAT}
             defaultDisplayEventEnd={defaultDisplayEventEnd}
             disableResizing={isListItem}
+            forcedTimeText={cellIsMicro ? '' : undefined}
             {...getEventRangeMeta(eventRange, todayRange)}
           />
         </DayGridEventHarness>,

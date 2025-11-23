@@ -376,7 +376,8 @@ changelog: querying className now returns a non-normalized ORIGINAL value:
   Event::className (previously classNames <-- KILLED)
   Resource::eventClass (previously eventClassNames <-- KILLED)
 changelog: Event::toPlainObject/toJSON returns a 'className' string instead of 'classNames' array
-changelog: dayLaneInnerClass arg.isSimple means whether it's simple PRINT-view for firefox
+changelog: dayLaneInnerClass arg.isStack means whether it's simple PRINT-view for firefox
+changelog: MoreLinkData .numericText .longText .isNarrow
 changelog: improved responsiveness when really narrow... font size adjusts
 changelog: big styling change... separate element for by event
 changelog: for porting custom themes, recomment ppl start with the "modern" theme

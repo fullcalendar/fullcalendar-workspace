@@ -78,6 +78,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       event: eventApi,
       isNarrow: props.isNarrow || false,
       isShort: props.isShort || false,
+      timeText,
     }
     const renderProps: EventDisplayData = {
       event: eventApi, // make stable. everything else atomic. FYI, eventRange unfortunately gets reconstructed a lot, but def/instance is stable

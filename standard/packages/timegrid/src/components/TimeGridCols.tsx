@@ -46,6 +46,7 @@ export interface TimeGridColsProps {
   colWidth?: number
   slatHeight: number | undefined
   cellIsNarrow: boolean
+  cellIsMicro: boolean
 }
 
 export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: rename to TimeGridRow
@@ -79,6 +80,7 @@ export class TimeGridCols extends DateComponent<TimeGridColsProps> { // TODO: re
             forPrint={props.forPrint}
             borderStart={Boolean(col)}
             isNarrow={props.cellIsNarrow}
+            isMicro={props.cellIsMicro}
 
             // content
             fgEventSegs={props.fgEventSegsByCol[col]}

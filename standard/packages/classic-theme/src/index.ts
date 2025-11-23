@@ -199,7 +199,7 @@ export default createPlugin({
     ],
     dayLaneInnerClass: (data) => [
       'fc-day-lane-inner',
-      data.isSimple && 'fc-day-lane-inner-simple',
+      data.isStack && 'fc-day-lane-inner-simple',
     ],
 
     // Slots (TimeGrid & Timeline)

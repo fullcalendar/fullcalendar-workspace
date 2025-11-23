@@ -92,7 +92,7 @@ TODO: convert all colors to hex
 
   /* neutral borders */
   --fc-monarch-border: #dedce1;
-  --fc-monarch-strong-border: #CAC4D0; /* TODO */
+  --fc-monarch-strong-border: #bcbabe; /* TODO */
 }
 [data-palette=purple][data-color-scheme=dark] {
   /* primary */
@@ -121,7 +121,7 @@ TODO: convert all colors to hex
 
   /* neutral borders */
   --fc-monarch-border: #323036;
-  --fc-monarch-strong-border: #49454F; /* TODO */
+  --fc-monarch-strong-border: #615d67; /* TODO */
 }
 
 [data-palette=red] {

@@ -46,6 +46,7 @@ export interface DayGridCellProps {
   isMajor: boolean
   showDayNumber: boolean
   isNarrow: boolean
+  isMicro: boolean
   borderStart: boolean
 
   // content
@@ -212,6 +213,7 @@ export class DayGridCell extends DateComponent<DayGridCellProps> {
                 eventResize={props.eventResize}
                 todayRange={props.todayRange}
                 isNarrow={props.isNarrow}
+                isMicro={props.isMicro}
               />
             </div>
             <div

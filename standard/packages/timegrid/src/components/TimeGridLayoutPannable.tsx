@@ -1,7 +1,7 @@
 import { BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, Hit, RefMap, Ruler, Scroller, ScrollerInterface, ScrollerSyncerInterface, SlicedCoordRange, FooterScrollbar, afterSize, getIsHeightAuto, getScrollerSyncerClass, getStickyFooterScrollbar, getStickyHeaderDates, isArraysEqual, joinClassNames, rangeContainsMarker, setRef, generateClassName, joinArrayishClassNames } from "@fullcalendar/core/internal"
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { DayGridHeaderRow, RowConfig, computeColWidth, daySuperNarrowWidth } from '@fullcalendar/daygrid/internal'
+import { DayGridHeaderRow, RowConfig, computeColWidth, dayMicroWidth } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridRange } from "../TimeColsSeg.js"
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -138,8 +138,8 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
 
     const colCount = props.cells.length
     const [canvasWidth, colWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)
-    const cellIsSuperNarrow = colWidth != null && colWidth <= daySuperNarrowWidth
-    const cellIsNarrow = cellIsSuperNarrow || (colWidth != null && colWidth <= options.dayNarrowWidth)
+    const cellIsMicro = colWidth != null && colWidth <= dayMicroWidth
+    const cellIsNarrow = cellIsMicro || (colWidth != null && colWidth <= options.dayNarrowWidth)
 
     const slatCnt = props.slatMetas.length
     const [slatHeight, slatLiquidHeight] = computeSlatHeight( // TODO: memo?
@@ -258,7 +258,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       colWidth={colWidth}
                       innerHeightRef={headerMainInnerHeightRefMap.createRef(tierNum)}
                       cellIsNarrow={cellIsNarrow}
-                      cellIsSuperNarrow={cellIsSuperNarrow}
+                      cellIsMicro={cellIsMicro}
                       rowLevel={props.headerTiers.length - tierNum - 1}
                     />
                   ))}
@@ -340,6 +340,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                       isHitComboAllowed={props.isHitComboAllowed}
                       className={joinClassNames(classNames.borderNone, classNames.liquidX)}
                       cellIsNarrow={cellIsNarrow}
+                      cellIsMicro={cellIsMicro}
 
                       // content
                       fgEventSegs={props.fgEventSegs}
@@ -516,6 +517,7 @@ export class TimeGridLayoutPannable extends BaseComponent<TimeGridLayoutPannable
                     colWidth={colWidth}
                     slatHeight={slatHeight}
                     cellIsNarrow={cellIsNarrow}
+                    cellIsMicro={cellIsMicro}
                   />
 
                   {!simplePrint && (

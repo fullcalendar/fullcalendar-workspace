@@ -8,7 +8,7 @@ export interface DayGridHeaderProps {
   headerTiers: RowConfig<{ text: string, isDisabled: boolean }>[]
   className?: string
   cellIsNarrow: boolean
-  cellIsSuperNarrow: boolean
+  cellIsMicro: boolean
 
   // dimensions
   width?: number
@@ -43,7 +43,7 @@ export class DayGridHeader extends BaseComponent<DayGridHeaderProps> {
             borderBottom={i < headerTiers.length - 1}
             colWidth={props.colWidth}
             cellIsNarrow={props.cellIsNarrow}
-            cellIsSuperNarrow={props.cellIsSuperNarrow}
+            cellIsMicro={props.cellIsMicro}
             rowLevel={headerTiers.length - i - 1}
           />
         ))}

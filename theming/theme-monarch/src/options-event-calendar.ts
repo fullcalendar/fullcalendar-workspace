@@ -406,7 +406,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isDisabled && params.faintBgClass,
       ],
       dayLaneInnerClass: (data) => (
-        data.isSimple
+        data.isStack
           ? 'm-1' // simple print-view
           : data.isNarrow ? 'mx-px' : 'ms-0.5 me-[2.5%]'
       ),
@@ -444,7 +444,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
             )
       ),
 
-      listDayEventsClass: 'grow min-w-0 py-2',
+      listDayEventsClass: 'grow min-w-0 py-2 gap-1',
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */

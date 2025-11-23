@@ -46,6 +46,7 @@ export interface DayGridRowsProps {
   width?: number | string // a CSS value
   visibleWidth?: number // for row min-height
   cellIsNarrow: boolean
+  cellIsMicro: boolean
 
   // refs
   rowHeightRefMap?: RefMap<string, number>
@@ -114,6 +115,7 @@ export class DayGridRows extends DateComponent<DayGridRowsProps> {
             todayRange={props.todayRange}
             cells={cells}
             cellIsNarrow={props.cellIsNarrow}
+            cellIsMicro={props.cellIsMicro}
             showDayNumbers={rowCount > 1}
             showWeekNumbers={rowCount > 1 && options.weekNumbers}
             forPrint={props.forPrint}

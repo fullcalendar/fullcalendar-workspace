@@ -6,7 +6,7 @@ import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderRowProps<RenderProps> extends RowConfig<RenderProps> {
   cellIsNarrow: boolean
-  cellIsSuperNarrow: boolean
+  cellIsMicro: boolean
   className?: string
   height?: number
   colWidth?: number
@@ -54,7 +54,7 @@ export class DayGridHeaderRow<RenderProps extends { text: string, isDisabled: bo
             colWidth={props.colWidth}
             innerHeightRef={this.innerHeightRefMap.createRef(dataConfig.key)}
             cellIsNarrow={props.cellIsNarrow}
-            cellIsSuperNarrow={props.cellIsSuperNarrow}
+            cellIsMicro={props.cellIsMicro}
             rowLevel={props.rowLevel}
           />
         ))}

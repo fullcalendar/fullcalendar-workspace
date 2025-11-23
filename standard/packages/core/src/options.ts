@@ -236,7 +236,7 @@ export const BASE_OPTION_REFINERS = {
   listItemEventClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   listItemEventInnerClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   listItemEventTimeClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isNarrow: boolean, isShort: boolean }>>,
-  listItemEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isNarrow: boolean, isShort: boolean }>>,
+  listItemEventTitleClass: identity as Identity<ClassNameGenerator<{ event: EventApi, isNarrow: boolean, isShort: boolean, timeText: string }>>,
   listItemEventBeforeClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   listItemEventAfterClass: identity as Identity<ClassNameGenerator<EventDisplayData>>,
   //

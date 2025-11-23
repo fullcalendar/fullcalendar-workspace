@@ -52,6 +52,7 @@ export interface TimeGridColProps {
   forPrint: boolean
   borderStart: boolean
   isNarrow: boolean
+  isMicro: boolean
 
   // content
   fgEventSegs: (TimeGridRange & EventRangeProps)[]
@@ -96,11 +97,11 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
       zIndex: 1, // get above slots
     }
 
-    const isSimple = props.forPrint && simplifiedTimeGridPrint
+    const isStack = props.forPrint && simplifiedTimeGridPrint
     const renderProps: DayLaneData = {
       ...dateMeta,
       ...props.renderProps,
-      isSimple,
+      isStack,
       isNarrow: props.isNarrow,
       isMajor: props.isMajor,
       view: context.viewApi,
@@ -122,7 +123,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
 
     const innerClassName = joinClassNames(
       generateClassName(options.dayLaneInnerClass, renderProps),
-      !isSimple && classNames.fill,
+      !isStack && classNames.fill,
     )
 
     const sortedFgSegs = this.sortEventSegs(props.fgEventSegs, options.eventOrder)
@@ -267,7 +268,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
   NOTE: will already have eventMinHeight applied because segEntries(?) already had it
   */
   renderHiddenGroups(hiddenGroups: SegGroup<TimeGridCoordRange>[]) {
-    let { dateSpanProps, dateProfile, todayRange, nowDate, eventSelection, eventDrag, eventResize, isNarrow } = this.props
+    let { dateSpanProps, dateProfile, todayRange, nowDate, eventSelection, eventDrag, eventResize, isNarrow, isMicro } = this.props
 
     return (
       <Fragment>
@@ -279,6 +280,7 @@ export class TimeGridCol extends BaseComponent<TimeGridColProps> {
               top={hiddenGroup.start}
               height={hiddenGroup.end - hiddenGroup.start}
               isNarrow={isNarrow}
+              isMicro={isMicro}
               dateSpanProps={dateSpanProps}
               dateProfile={dateProfile}
               todayRange={todayRange}

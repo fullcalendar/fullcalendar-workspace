@@ -21,6 +21,7 @@ export interface TimeGridMoreLinkProps {
   eventDrag: EventSegUiInteractionState<TimeGridRange>
   eventResize: EventSegUiInteractionState<TimeGridRange>
   isNarrow: boolean
+  isMicro: boolean
 }
 
 export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
@@ -52,6 +53,7 @@ export class TimeGridMoreLink extends BaseComponent<TimeGridMoreLinkProps> {
           popoverContent={() => renderPlainFgSegs(props.hiddenSegs, props, /* isMirror = */ false)}
           forceTimed={true}
           isNarrow={props.isNarrow}
+          isMicro={props.isMicro}
         />
       </div>
     )

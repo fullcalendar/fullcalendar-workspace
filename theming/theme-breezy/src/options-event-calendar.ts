@@ -169,7 +169,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
     listItemEventTitleClass: (data) => [
       data.isNarrow ? 'px-px' : 'px-0.5',
       params.strongFgClass,
-      'font-medium whitespace-nowrap overflow-hidden text-ellipsis shrink-100', // shrinks first
+      'font-medium whitespace-nowrap overflow-hidden shrink-100', // shrinks first
+      data.timeText && 'text-ellipsis',
     ],
 
     /* Day Row > Row Event
@@ -462,7 +463,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isDisabled && params.faintBgClass,
       ],
       dayLaneInnerClass: (data) => (
-        data.isSimple
+        data.isStack
           ? 'm-1' // simple print-view
           : data.isNarrow ? 'mx-px' : 'mx-1'
       ),

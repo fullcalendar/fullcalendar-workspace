@@ -1,7 +1,7 @@
 import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, generateClassName, getIsHeightAuto, getStickyHeaderDates, Hit, joinArrayishClassNames, joinClassNames, rangeContainsMarker, RefMap, Ruler, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import classNames from '@fullcalendar/core/internal-classnames'
-import { DayGridHeaderRow, daySuperNarrowWidth, RowConfig } from '@fullcalendar/daygrid/internal'
+import { DayGridHeaderRow, dayMicroWidth, RowConfig } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridRange } from "../TimeColsSeg.js"
 import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
@@ -129,8 +129,8 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
 
     const colCount = props.cells.length
     const colWidth = clientWidth != null ? clientWidth / colCount : undefined
-    const cellIsSuperNarrow = colWidth != null && colWidth <= daySuperNarrowWidth
-    const cellIsNarrow = cellIsSuperNarrow || (colWidth != null && colWidth <= options.dayNarrowWidth)
+    const cellIsMicro = colWidth != null && colWidth <= dayMicroWidth
+    const cellIsNarrow = cellIsMicro || (colWidth != null && colWidth <= options.dayNarrowWidth)
 
     return (
       <Fragment>
@@ -194,7 +194,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   className={classNames.liquid}
                   borderBottom={tierNum < props.headerTiers.length - 1}
                   cellIsNarrow={cellIsNarrow}
-                  cellIsSuperNarrow={cellIsSuperNarrow}
+                  cellIsMicro={cellIsMicro}
                   rowLevel={0}
                 />
                 {Boolean(endScrollbarWidth) && (
@@ -260,6 +260,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   isHitComboAllowed={props.isHitComboAllowed}
                   className={joinClassNames(classNames.liquidX, classNames.borderNone)}
                   cellIsNarrow={cellIsNarrow}
+                  cellIsMicro={cellIsMicro}
                   // content
                   fgEventSegs={props.fgEventSegs}
                   bgEventSegs={props.bgEventSegs}
@@ -359,6 +360,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   // dimensions
                   slatHeight={slatHeight}
                   cellIsNarrow={cellIsNarrow}
+                  cellIsMicro={cellIsMicro}
                 />
               </div>
 

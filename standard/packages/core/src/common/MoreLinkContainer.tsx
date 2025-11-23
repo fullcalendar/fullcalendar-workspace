@@ -34,13 +34,15 @@ export interface MoreLinkContainerProps extends Partial<ElAttrsProps> {
   forceTimed?: boolean // for popover
   popoverContent: () => ComponentChild
   isNarrow: boolean
+  isMicro: boolean
   display: 'row' | 'column'
 }
 
 export interface MoreLinkData {
   num: number
+  numericText: string
+  longText: string
   text: string
-  shortText: string
   isNarrow: boolean
   view: ViewApi
 }
@@ -74,15 +76,17 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
           let moreCnt = props.hiddenSegs.length
           let range = computeRange(props)
 
-          let text = typeof moreLinkText === 'function' // TODO: eventually use formatWithOrdinals
+          let numericText = `+${moreCnt}` // TODO: offer hook or i18n?
+          let longText = typeof moreLinkText === 'function' // TODO: eventually use formatWithOrdinals
             ? moreLinkText.call(calendarApi, moreCnt)
-            : `+${moreCnt} ${moreLinkText}`
-          let hint = formatWithOrdinals(options.moreLinkHint, [moreCnt], text)
+            : `${numericText} ${moreLinkText}`
+          let hint = formatWithOrdinals(options.moreLinkHint, [moreCnt], longText)
 
           let renderProps: MoreLinkData = {
             num: moreCnt,
-            shortText: `+${moreCnt}`, // TODO: offer hook or i18n?
-            text,
+            numericText,
+            longText,
+            text: (props.isMicro || props.display === 'column') ? numericText : longText,
             isNarrow: props.isNarrow,
             view: viewApi,
           }
@@ -120,11 +124,7 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
                   renderProps={renderProps}
                   generatorName="moreLinkContent"
                   customGenerator={options.moreLinkContent}
-                  defaultGenerator={
-                    props.display === 'row'
-                      ? renderMoreLinkText // row
-                      : renderMoreLinkShortText // column
-                  }
+                  defaultGenerator={renderMoreLinkText}
                   classNameGenerator={options.moreLinkClass}
                   didMount={options.moreLinkDidMount}
                   willUnmount={options.moreLinkWillUnmount}
@@ -228,10 +228,6 @@ export class MoreLinkContainer extends BaseComponent<MoreLinkContainerProps, Mor
 
 function renderMoreLinkText(props: MoreLinkData) {
   return props.text
-}
-
-function renderMoreLinkShortText(props: MoreLinkData) {
-  return props.shortText
 }
 
 function computeRange(props: MoreLinkContainerProps): DateRange {

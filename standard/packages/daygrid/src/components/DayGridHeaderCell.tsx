@@ -1,7 +1,7 @@
 import { ContentContainer, joinClassNames, setRef, renderText, BaseComponent, generateClassName, watchSize } from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { CellDataConfig, CellRenderConfig } from '../header-tier.js'
-import { dayHeaderSuperNarrowFormat } from './util.js'
+import { dayHeaderMicroFormat } from './util.js'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridHeaderCellProps<RenderProps> {
@@ -11,7 +11,7 @@ export interface DayGridHeaderCellProps<RenderProps> {
   colWidth?: number
   innerHeightRef?: Ref<number>
   cellIsNarrow: boolean
-  cellIsSuperNarrow: boolean
+  cellIsMicro: boolean
   rowLevel: number
 }
 
@@ -36,11 +36,11 @@ export class DayGridHeaderCell<RenderProps extends { text: string, isDisabled: b
       isNarrow: props.cellIsNarrow,
       level: props.rowLevel,
     }
-    if (props.cellIsSuperNarrow) {
+    if (props.cellIsMicro) {
       // TODO: only if not distinct dates
-      const [narrowText, narrowTextParts] = context.dateEnv.format(dataConfig.dateMarker, dayHeaderSuperNarrowFormat)
-      finalRenderProps.text = (finalRenderProps as any).weekdayText = narrowText
-      ;(finalRenderProps as any).textParts = narrowTextParts
+      const [microText, microTextParts] = context.dateEnv.format(dataConfig.dateMarker, dayHeaderMicroFormat)
+      finalRenderProps.text = (finalRenderProps as any).weekdayText = microText
+      ;(finalRenderProps as any).textParts = microTextParts
     }
 
     /*

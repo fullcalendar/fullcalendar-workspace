@@ -24,7 +24,7 @@ import {
 } from '@fullcalendar/core/internal'
 import { Fragment, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DayGridRows } from './DayGridRows.js'
-import { computeColWidth, daySuperNarrowWidth } from './util.js'
+import { computeColWidth, dayMicroWidth } from './util.js'
 import { DayGridHeader } from './DayGridHeader.js'
 import { RowConfig } from '../header-tier.js'
 import classNames from '@fullcalendar/core/internal-classnames'
@@ -85,8 +85,8 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
 
     const colCount = props.cellRows[0].length
     const [canvasWidth, colWidth] = computeColWidth(colCount, props.dayMinWidth, clientWidth)
-    const cellIsSuperNarrow = colWidth != null && colWidth <= daySuperNarrowWidth
-    const cellIsNarrow = cellIsSuperNarrow || (colWidth != null && colWidth <= options.dayNarrowWidth)
+    const cellIsMicro = colWidth != null && colWidth <= dayMicroWidth
+    const cellIsNarrow = cellIsMicro || (colWidth != null && colWidth <= options.dayNarrowWidth)
 
     return (
       <Fragment>
@@ -110,7 +110,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
                 colWidth={colWidth}
                 width={canvasWidth}
                 cellIsNarrow={cellIsNarrow}
-                cellIsSuperNarrow={cellIsSuperNarrow}
+                cellIsMicro={cellIsMicro}
               />
               {Boolean(endScrollbarWidth) && (
                 <div
@@ -174,6 +174,7 @@ export class DayGridLayoutPannable extends BaseComponent<DayGridLayoutPannablePr
             width={canvasWidth}
             visibleWidth={totalWidth}
             cellIsNarrow={cellIsNarrow}
+            cellIsMicro={cellIsMicro}
 
             // refs
             rowHeightRefMap={props.rowHeightRefMap}
