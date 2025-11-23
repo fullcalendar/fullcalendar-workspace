@@ -64,7 +64,6 @@ export const params: EventCalendarOptionParams = {
 
   // neutral foregrounds
   fgClass: 'text-(--fc-pulse-foreground)',
-  strongFgClass: 'text-(--fc-pulse-strong-foreground)',
   mutedFgClass: 'text-(--fc-pulse-muted-foreground)',
 
   // neutral borders
@@ -125,7 +124,7 @@ export const defaultUiEventCalendarOptions: {
       data.borderlessX && 'px-3',
     ],
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-5',
-    toolbarTitleClass: 'text-2xl font-bold text-(--fc-pulse-strong-foreground)',
+    toolbarTitleClass: 'text-2xl font-bold text-(--fc-pulse-foreground)',
 
     buttonGroupClass: (data) => [
       'py-px rounded-sm flex flex-row items-center',

@@ -33,16 +33,16 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       // column header
       resourceAreaHeaderClass: `border ${params.borderColorClass} justify-center`, // v-align
-      resourceAreaHeaderInnerClass: `p-2 ${params.strongFgClass} text-sm`,
+      resourceAreaHeaderInnerClass: `p-2 ${params.fgClass} text-sm`,
       resourceAreaHeaderResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
       // group cell
       resourceGroupHeaderClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
-      resourceGroupHeaderInnerClass: `p-2 ${params.strongFgClass} text-sm`,
+      resourceGroupHeaderInnerClass: `p-2 ${params.fgClass} text-sm`,
 
       // cell
       resourceCellClass: `border ${params.borderColorClass}`,
-      resourceCellInnerClass: `p-2 ${params.strongFgClass} text-sm`,
+      resourceCellInnerClass: `p-2 ${params.fgClass} text-sm`,
 
       // row expander
       resourceIndentClass: 'ms-1 -me-1.5 justify-center', // v-align
@@ -84,7 +84,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           'me-px mb-px border border-transparent print:border-black rounded-sm',
           `${params.strongSolidPressableClass} print:bg-white`,
         ],
-        rowMoreLinkInnerClass: `p-1 ${params.strongFgClass} text-xs`,
+        rowMoreLinkInnerClass: `p-1 ${params.fgClass} text-xs`,
 
         /* Timeline > Slot Label
         ----------------------------------------------------------------------------------------- */
@@ -96,7 +96,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
           'justify-center', // v-align
         ],
         slotLabelInnerClass: (data) => [
-          `p-2 ${params.strongFgClass} text-sm`,
+          'p-2 text-sm',
           data.isTime && joinClassNames(
             'relative -start-3',
             data.isFirst && 'hidden',

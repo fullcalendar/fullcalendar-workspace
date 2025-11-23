@@ -32,10 +32,9 @@
   --fc-pulse-strongest: color-mix(in oklab, var(--color-black) 20%, transparent); /* TODO */
 
   /* neutral foregrounds */
-  --fc-pulse-foreground: #374151;
-  --fc-pulse-muted-foreground: #6b7280;
+  --fc-pulse-foreground: #232d3e;
   --fc-pulse-faint-foreground: #9ca3af;
-  --fc-pulse-strong-foreground: #1f2937;
+  --fc-pulse-muted-foreground: #545c6c;
 
   /* neutral borders */
   --fc-pulse-border: #e5e7eb;
@@ -48,9 +47,9 @@
   --fc-pulse-secondary: var(--fc-pulse-muted);
   --fc-pulse-secondary-over: var(--fc-pulse-strong);
   --fc-pulse-secondary-down: var(--fc-pulse-stronger);
-  --fc-pulse-secondary-foreground: var(--fc-pulse-strong-foreground);
+  --fc-pulse-secondary-foreground: var(--fc-pulse-foreground);
   --fc-pulse-secondary-icon: var(--fc-pulse-muted-foreground);
-  --fc-pulse-secondary-icon-over: var(--fc-pulse-strong-foreground);
+  --fc-pulse-secondary-icon-over: var(--fc-pulse-foreground);
 
   /* calendar content */
   --fc-pulse-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
@@ -60,7 +59,7 @@
   --fc-pulse-unselected: var(--fc-pulse-muted);
   --fc-pulse-unselected-foreground: var(--fc-pulse-foreground);
   --fc-pulse-selected: var(--fc-pulse-strong);
-  --fc-pulse-selected-foreground: var(--fc-pulse-strong-foreground);
+  --fc-pulse-selected-foreground: var(--fc-pulse-foreground);
 
   /* neutral backgrounds */
   --fc-pulse-background: var(--color-gray-950);
@@ -74,7 +73,6 @@
   --fc-pulse-foreground: #a0aec0;
   --fc-pulse-faint-foreground: #4a5568;
   --fc-pulse-muted-foreground: #718096;
-  --fc-pulse-strong-foreground: #cbd5e0;
 
   /* neutral borders */
   --fc-pulse-border: #1a202c;

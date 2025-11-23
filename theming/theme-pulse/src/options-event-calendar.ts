@@ -41,7 +41,6 @@ export interface EventCalendarOptionParams {
 
   // neutral foregrounds
   fgClass: string
-  strongFgClass: string
   mutedFgClass: string
 
   // neutral borders
@@ -164,7 +163,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       data.isNarrow
         ? `p-px ${xxsTextClass}`
         : 'p-0.5 text-xs',
-      params.strongFgClass,
+      params.fgClass,
     ],
   }
 
@@ -199,13 +198,14 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         (data.isNarrow || data.isShort)
           ? `p-1 ${xxsTextClass}`
           : 'p-2 text-xs',
-        params.strongFgClass,
+        params.fgClass,
       ],
 
       /* List-Item Event
       ------------------------------------------------------------------------------------------- */
 
-      listItemEventInnerClass: params.strongFgClass,
+      listItemEventTitleClass: params.fgClass,
+      listItemEventTimeClass: params.mutedFgClass,
 
       /* Block Event
       ------------------------------------------------------------------------------------------- */
@@ -320,7 +320,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         data.isNarrow
           ? `p-0.5 ${xxsTextClass}`
           : 'p-1 text-xs',
-        params.strongFgClass,
+        params.fgClass,
       ],
 
       /* Day Header
@@ -433,7 +433,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       listDayClass: 'group/day flex flex-col',
 
       listDayHeaderClass: [
-        `border-b ${params.borderColorClass} ${params.mutedSolidBgClass}`,
+        `border-b ${params.borderColorClass} ${params.mutedSolidBgClass} ${params.fgClass}`,
         'flex flex-row items-center justify-between',
       ],
       listDayHeaderInnerClass: (data) => [
@@ -477,6 +477,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayRowClass: `border ${params.borderColorClass}`,
 
       slotLabelRowClass: `border ${params.borderColorClass}`,
+      slotLabelInnerClass: params.mutedFgClass,
 
       /* Misc Content
       ------------------------------------------------------------------------------------------- */
@@ -487,11 +488,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       inlineWeekNumberClass: (data) => [
-        `absolute start-0 ${params.fgClass} whitespace-nowrap rounded-e-sm`,
+        `absolute start-0 whitespace-nowrap rounded-e-sm`,
         data.isNarrow
           ? `top-0.5 my-px p-0.5 ${xxsTextClass}`
           : 'top-1 p-1 text-xs',
         data.hasNavLink && params.mutedHoverPressableClass,
+        params.mutedFgClass,
       ],
 
       highlightClass: params.highlightClass,
@@ -548,7 +550,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         allDayHeaderClass: 'items-center', // v-align
         allDayHeaderInnerClass: (data) => [
-          `p-2 ${params.fgClass}`,
+          `p-2 ${params.mutedFgClass}`,
           data.isNarrow ? xxsTextClass : 'text-xs',
         ],
 
@@ -559,7 +561,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         slotLabelClass: 'justify-end', // h-align
         slotLabelInnerClass: (data) => [
-          `relative p-2 ${params.fgClass}`,
+          'relative p-2',
           data.isNarrow
             ? `-top-3.5 ${xxsTextClass}`
             : '-top-4 text-xs',
