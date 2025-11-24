@@ -223,7 +223,7 @@ export default createPlugin({
     resourceHeaderRowClass: 'fc-resource-area-header-row',
     resourceColumnHeaderClass: 'fc-resource-area-header',
     resourceColumnHeaderInnerClass: 'fc-padding-lg',
-    resourceColumnsDividerClass: 'fc-resource-area-divider',
+    resourceColumnDividerClass: 'fc-resource-area-divider',
 
     resourceRowClass: 'fc-resource-area-row',
     resourceExpanderClass: 'fc-resource-expander',

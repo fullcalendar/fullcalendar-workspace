@@ -24,7 +24,7 @@ export const OPTION_REFINERS = {
   resourceColumnsWidth: identity as Identity<CssDimValue>,
   resourceColumns: identity as Identity<ColSpec[]>,
 
-  resourceColumnsDividerClass: identity as Identity<ClassNameInput>,
+  resourceColumnDividerClass: identity as Identity<ClassNameInput>,
 
   // datagrid super-header & normal column headers
   resourceColumnHeaderClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
