@@ -391,7 +391,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
       popoverCloseClass: [
         'group absolute top-2 end-2 size-8 rounded-full',
-        'flex flex-row items-center justify-center',
+        'items-center justify-center', // v-align, h-align
         params.mutedHoverPressableClass,
         params.outlineWidthFocusClass,
         params.tertiaryOutlineColorClass,

@@ -154,6 +154,7 @@ export class MorePopover extends DateComponent<MorePopoverProps> {
             elRef={this.closeRef}
             className={joinArrayishClassNames(
               options.popoverCloseClass,
+              classNames.flexRow,
               classNames.cursorPointer,
             )}
             renderProps={{}}

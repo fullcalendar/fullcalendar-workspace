@@ -26,6 +26,7 @@ export class ResourceExpander extends BaseComponent<ResourceExpanderProps> {
         aria-hidden // TODO: better a11y when doing roving tabindex
         className={joinClassNames(
           generateClassName(classNameGenerator, renderProps),
+          classNames.flexRow,
           classNames.cursorPointer,
           classNames.selectNone, // prevent text-selecting cell underneath
           classNames.noMargin,
