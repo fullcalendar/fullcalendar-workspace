@@ -4,7 +4,7 @@ import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions } from '@fullcalendar/theme-pulse-dev/options-event-calendar'
-import { cn } from '../lib/utils.js'
+import { cn, ClassValue } from '../lib/utils.js'
 import { createSlots } from '@fullcalendar/theme-pulse-dev/slots'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
@@ -12,7 +12,7 @@ import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-
 import { params } from '../lib/option-params.js'
 
 export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
-  className?: string
+  className?: ClassValue
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean

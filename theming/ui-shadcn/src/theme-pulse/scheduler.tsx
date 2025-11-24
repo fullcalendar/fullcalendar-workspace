@@ -4,7 +4,7 @@ import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-pulse-dev/options-scheduler'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
-import { cn } from '../lib/utils.js'
+import { cn, ClassValue } from '../lib/utils.js'
 import { eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
 import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
@@ -14,7 +14,7 @@ import { params } from '../lib/option-params.js'
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(params)
 
 export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
-  className?: string
+  className?: ClassValue
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean

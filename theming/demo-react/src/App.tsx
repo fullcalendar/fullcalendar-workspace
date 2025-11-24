@@ -140,11 +140,11 @@ const eventCalendarComponentMap: { [ui: string]: { [theme: string]: CalendarComp
     breezy: ShadcnBreezyEventCalendar,
   },
   mui: {
-    monarch: MuiMonarchEventCalendar,
-    pulse: MuiPulseEventCalendar,
-    forma: MuiFormaEventCalendar,
-    classic: MuiClassicEventCalendar,
-    breezy: MuiBreezyEventCalendar,
+    monarch: MuiMonarchEventCalendar as any, // HACK for className
+    pulse: MuiPulseEventCalendar as any,
+    forma: MuiFormaEventCalendar as any,
+    classic: MuiClassicEventCalendar as any,
+    breezy: MuiBreezyEventCalendar as any,
   },
 }
 
@@ -164,11 +164,11 @@ const schedulerComponentMap: { [ui: string]: { [theme: string]: CalendarComponen
     breezy: ShadcnBreezyScheduler,
   },
   mui: {
-    monarch: MuiMonarchScheduler,
-    pulse: MuiPulseScheduler,
-    forma: MuiFormaScheduler,
-    classic: MuiClassicScheduler,
-    breezy: MuiBreezyScheduler,
+    monarch: MuiMonarchScheduler as any, // HACK for className
+    pulse: MuiPulseScheduler as any,
+    forma: MuiFormaScheduler as any,
+    classic: MuiClassicScheduler as any,
+    breezy: MuiBreezyScheduler as any,
   },
 }
 
