@@ -178,11 +178,11 @@ const uiOptions = [
   { value: 'mui', text: 'MUI' },
 ]
 const themeOptions = [
-  { value: 'classic', text: 'Classic' },
   { value: 'monarch', text: 'Monarch' },
   { value: 'forma', text: 'Forma' },
   { value: 'breezy', text: 'Breezy' },
   { value: 'pulse', text: 'Pulse' },
+  { value: 'classic', text: 'Classic' },
 ]
 
 const fcMonarchPaletteOptions = [
