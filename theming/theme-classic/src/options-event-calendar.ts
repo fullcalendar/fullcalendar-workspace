@@ -56,7 +56,8 @@ export interface EventCalendarOptionParams {
   nowBorderTopColorClass: string
 }
 
-export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
+// usually 11px font / 12px line-height
+export const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
@@ -448,7 +449,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         allDayDividerClass: `border-y ${params.borderColorClass} pb-0.5 ${params.mutedBgClass}`,
 
-        /* TimeGrid > Slot Label
+        /* TimeGrid > Slot Header
         ----------------------------------------------------------------------------------------- */
 
         slotHeaderClass: 'justify-end', // h-align

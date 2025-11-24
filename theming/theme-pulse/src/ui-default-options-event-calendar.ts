@@ -16,6 +16,11 @@ const smallBoxShadowClass = '[box-shadow:0_1px_2px_rgba(0,0,0,0.1)]'
 const largeBoxShadowClass = '[box-shadow:0_1px_3px_rgba(0,0,0,0.2)]'
 
 // neutral buttons
+const strongSolidPressableClass = joinClassNames(
+  '[background:linear-gradient(var(--fc-pulse-strong),var(--fc-pulse-strong))_var(--fc-pulse-background)]',
+  'hover:[background:linear-gradient(var(--fc-pulse-stronger),var(--fc-pulse-stronger))_var(--fc-pulse-background)]',
+  'active:[background:linear-gradient(var(--fc-pulse-strongest),var(--fc-pulse-strongest))_var(--fc-pulse-background)]',
+)
 const mutedHoverClass = 'hover:bg-(--fc-pulse-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} active:bg-(--fc-pulse-strong) focus-visible:bg-(--fc-pulse-muted)`
 const faintHoverClass = 'hover:bg-(--fc-pulse-faint)'
@@ -72,11 +77,7 @@ export const params: EventCalendarOptionParams = {
   primaryBorderColorClass: 'border-(--fc-pulse-primary)',
 
   // neutral buttons
-  strongSolidPressableClass: joinClassNames(
-    '[background:linear-gradient(var(--fc-pulse-strong),var(--fc-pulse-strong))_var(--fc-pulse-background)]',
-    'hover:[background:linear-gradient(var(--fc-pulse-stronger),var(--fc-pulse-stronger))_var(--fc-pulse-background)]',
-    'active:[background:linear-gradient(var(--fc-pulse-strongest),var(--fc-pulse-strongest))_var(--fc-pulse-background)]',
-  ),
+  strongSolidPressableClass,
   mutedPressableClass: 'bg-(--fc-pulse-muted) hover:bg-(--fc-pulse-strong) active:bg-(--fc-pulse-stronger)',
   mutedHoverClass,
   mutedHoverPressableClass,
@@ -113,11 +114,13 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     className: 'gap-6',
-
     viewClass: [
       'rounded-sm overflow-hidden',
       `bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`,
     ],
+
+    /* Toolbar
+    --------------------------------------------------------------------------------------------- */
 
     toolbarClass: (data) => [
       'flex flex-row flex-wrap items-center justify-between gap-5',
@@ -192,6 +195,9 @@ export const defaultUiEventCalendarOptions: {
         )
       },
     },
+
+    /* Popover
+    --------------------------------------------------------------------------------------------- */
 
     popoverCloseContent: () => svgs.x(`size-5 ${mutedFgPressableGroupClass}`),
   },

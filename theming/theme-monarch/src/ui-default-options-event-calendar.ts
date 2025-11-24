@@ -10,6 +10,11 @@ const outlineColorClass = 'outline-(--fc-monarch-outline)'
 const outlineFocusClass = `${outlineColorClass} ${outlineWidthFocusClass}`
 
 // neutral buttons
+const strongSolidPressableClass = joinClassNames(
+  '[background:linear-gradient(var(--fc-monarch-strong),var(--fc-monarch-strong))_var(--fc-monarch-background)]',
+  'hover:[background:linear-gradient(var(--fc-monarch-stronger),var(--fc-monarch-stronger))_var(--fc-monarch-background)]',
+  'active:[background:linear-gradient(var(--fc-monarch-strongest),var(--fc-monarch-strongest))_var(--fc-monarch-background)]',
+)
 const mutedHoverClass = 'hover:bg-(--fc-monarch-muted)'
 const mutedHoverGroupClass = 'group-hover:bg-(--fc-monarch-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-monarch-muted) active:bg-(--fc-monarch-strong)`
@@ -65,11 +70,7 @@ export const params: EventCalendarOptionParams = {
   primaryBorderColorClass: 'border-(--fc-monarch-primary)',
 
   // neutral buttons
-  strongSolidPressableClass: joinClassNames(
-    '[background:linear-gradient(var(--fc-monarch-strong),var(--fc-monarch-strong))_var(--fc-monarch-background)]',
-    'hover:[background:linear-gradient(var(--fc-monarch-stronger),var(--fc-monarch-stronger))_var(--fc-monarch-background)]',
-    'active:[background:linear-gradient(var(--fc-monarch-strongest),var(--fc-monarch-strongest))_var(--fc-monarch-background)]',
-  ),
+  strongSolidPressableClass,
   mutedHoverClass,
   mutedHoverPressableClass,
   mutedHoverPressableGroupClass,
@@ -107,6 +108,9 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     className: 'bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden',
+
+    /* Toolbar
+    --------------------------------------------------------------------------------------------- */
 
     toolbarClass: 'p-4 flex flex-row flex-wrap items-center justify-between gap-3',
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-3',
@@ -163,6 +167,9 @@ export const defaultUiEventCalendarOptions: {
         )
       },
     },
+
+    /* Popover
+    --------------------------------------------------------------------------------------------- */
 
     popoverCloseContent: () => svgs.x(`size-5 ${mutedFgPressableGroupClass}`),
   },

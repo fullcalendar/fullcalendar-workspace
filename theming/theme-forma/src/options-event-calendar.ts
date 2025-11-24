@@ -1,4 +1,4 @@
-import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, DayCellData, joinClassNames, ViewOptions } from '@fullcalendar/core'
 
 // ambient types (tsc strips during build because of {})
 import {} from '@fullcalendar/daygrid'
@@ -60,7 +60,8 @@ export interface EventCalendarOptionParams {
   nowBorderColorClass: string
 }
 
-export const xxsTextClass = 'text-[0.6875rem]/[1.090909]' // usually 11px font / 12px line-height
+// usually 11px font / 12px line-height
+export const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
 
 export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   optionDefaults: CalendarOptions
@@ -81,7 +82,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
   const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
   const tallDayCellBottomClass = 'min-h-4'
-  const getShortDayCellBottomClass = (data: { isNarrow: boolean }) => (
+  const getShortDayCellBottomClass = (data: DayCellData) => (
     !data.isNarrow && 'min-h-px'
   )
 
@@ -552,7 +553,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
 
         allDayDividerClass: `border-b ${params.borderColorClass}`,
 
-        /* TimeGrid > Slot Label
+        /* TimeGrid > Slot Header
         ----------------------------------------------------------------------------------------- */
 
         slotHeaderClass: 'justify-end', // h-align

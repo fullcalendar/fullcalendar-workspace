@@ -16,6 +16,10 @@ export function createSlots(
   params: EventCalendarOptionParams,
 ): CalendarOptions {
   return {
+
+    /* Day Header
+    --------------------------------------------------------------------------------------------- */
+
     dayHeaderContent: (data) => (
       <Fragment>
         {data.weekdayText && (

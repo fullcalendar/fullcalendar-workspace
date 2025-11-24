@@ -17,6 +17,11 @@ const primaryOutlineColorClass = `outline-(--fc-breezy-primary)`
 const primaryOutlineFocusClass = `${outlineWidthFocusClass} ${primaryOutlineColorClass}`
 
 // neutral buttons
+const strongSolidPressableClass = joinClassNames(
+  '[background:linear-gradient(var(--fc-breezy-strong),var(--fc-breezy-strong))_var(--fc-breezy-background)]',
+  'hover:[background:linear-gradient(var(--fc-breezy-stronger),var(--fc-breezy-stronger))_var(--fc-breezy-background)]',
+  'active:[background:linear-gradient(var(--fc-breezy-strongest),var(--fc-breezy-strongest))_var(--fc-breezy-background)]',
+)
 const mutedHoverClass = 'hover:bg-(--fc-breezy-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-breezy-muted)`
 const faintHoverClass = 'hover:bg-(--fc-breezy-faint)'
@@ -38,16 +43,15 @@ const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-breezy-seconda
 const secondaryButtonClass = `${secondaryPressableClass} border-(--fc-breezy-secondary-border) ${primaryOutlineFocusClass} -outline-offset-1`
 const secondaryButtonIconClass = `size-5 text-(--fc-breezy-secondary-icon) group-hover:text-(--fc-breezy-secondary-icon-over) group-focus-visible:text-(--fc-breezy-secondary-icon-over)`
 
-// muted *event* colors
+// event content
 const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--fc-breezy-foreground))]'
-
-// faint *event* colors
 const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-breezy-background))]'
 const eventFaintPressableClass = joinClassNames(
   eventFaintBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--fc-breezy-background))]',
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-breezy-background))]',
 )
+const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
 // interactive neutral foregrounds
 export const mutedFgPressableGroupClass = `text-(--fc-breezy-muted-foreground) group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)`
@@ -81,11 +85,7 @@ export const params: EventCalendarOptionParams = {
   mutedBorderColorClass: 'border-(--fc-breezy-muted-border)',
 
   // neutral buttons
-  strongSolidPressableClass: joinClassNames(
-    '[background:linear-gradient(var(--fc-breezy-strong),var(--fc-breezy-strong))_var(--fc-breezy-background)]',
-    'hover:[background:linear-gradient(var(--fc-breezy-stronger),var(--fc-breezy-stronger))_var(--fc-breezy-background)]',
-    'active:[background:linear-gradient(var(--fc-breezy-strongest),var(--fc-breezy-strongest))_var(--fc-breezy-background)]',
-  ),
+  strongSolidPressableClass,
   mutedHoverClass,
   mutedHoverPressableClass,
   faintHoverClass,
@@ -93,7 +93,7 @@ export const params: EventCalendarOptionParams = {
 
   // popover
   popoverClass: 'bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg overflow-hidden shadow-lg m-1',
-  popoverHeaderClass: 'border-b border-(--fc-breezy-border) bg-(--fc-breezy-faint) ',
+  popoverHeaderClass: 'border-b border-(--fc-breezy-border) bg-(--fc-breezy-faint)',
 
   // primary
   primaryClass,
@@ -111,7 +111,7 @@ export const params: EventCalendarOptionParams = {
   eventFaintPressableClass,
   eventMutedFgClass,
   bgEventColor: 'var(--fc-breezy-background-event)',
-  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
+  bgEventBgClass,
 
   // misc content
   highlightClass: 'bg-(--fc-breezy-highlight)',
@@ -128,6 +128,10 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     className: 'bg-(--fc-breezy-background) border border-(--fc-breezy-border) rounded-lg overflow-hidden',
+
+    /* Toolbar
+    --------------------------------------------------------------------------------------------- */
+
     headerToolbarClass: 'border-b border-(--fc-breezy-border)',
     footerToolbarClass: 'border-t border-(--fc-breezy-border)',
 
@@ -184,6 +188,9 @@ export const defaultUiEventCalendarOptions: {
         )
       },
     },
+
+    /* Popover
+    --------------------------------------------------------------------------------------------- */
 
     popoverCloseContent: () => svgs.x(`size-5 ${mutedFgPressableGroupClass}`),
   },

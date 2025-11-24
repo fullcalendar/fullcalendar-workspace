@@ -100,7 +100,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
         rowMoreLinkInnerClass: 'p-1 text-xs',
 
-        /* Timeline > Slot Label
+        /* Timeline > Slot Header
         ----------------------------------------------------------------------------------------- */
 
         slotHeaderSticky: '0.5rem', // for pill

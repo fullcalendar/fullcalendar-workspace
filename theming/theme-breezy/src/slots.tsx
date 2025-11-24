@@ -16,6 +16,10 @@ export function createSlots(
   params: EventCalendarOptionParams,
 ): CalendarOptions {
   return {
+
+    /* Day Header
+    --------------------------------------------------------------------------------------------- */
+
     dayHeaderContent: (data) => (
       (!data.dayNumberText && !data.inPopover) ? (
         // small uniform text

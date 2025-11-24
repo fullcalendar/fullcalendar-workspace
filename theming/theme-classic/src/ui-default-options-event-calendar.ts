@@ -3,6 +3,7 @@ import { createEventCalendarOptions, EventCalendarOptionParams } from './options
 import * as svgs from './ui-default-svgs.js'
 
 // neutral buttons
+const strongSolidPressableClass = '[background:linear-gradient(var(--fc-classic-strong),var(--fc-classic-strong))_var(--fc-classic-background)]'
 const mutedHoverClass = 'hover:bg-(--fc-classic-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-classic-muted) active:bg-(--fc-classic-strong)`
 const faintHoverClass = 'hover:bg-(--fc-classic-faint)'
@@ -35,7 +36,7 @@ export const params: EventCalendarOptionParams = {
   primaryBorderColorClass: 'border-(--fc-classic-primary)',
 
   // neutral buttons
-  strongSolidPressableClass: '[background:linear-gradient(var(--fc-classic-strong),var(--fc-classic-strong))_var(--fc-classic-background)]',
+  strongSolidPressableClass,
   mutedHoverClass,
   mutedHoverPressableClass,
   faintHoverClass,
@@ -70,6 +71,9 @@ export const defaultUiEventCalendarOptions: {
 
     className: 'gap-5',
     viewClass: 'bg-(--fc-classic-background) border border-(--fc-classic-border)',
+
+    /* Toolbar
+    --------------------------------------------------------------------------------------------- */
 
     toolbarClass: (data) => [
       'flex flex-row flex-wrap items-center justify-between gap-3',
@@ -110,6 +114,9 @@ export const defaultUiEventCalendarOptions: {
         iconContent: () => svgs.chevronsLeft(`${buttonIconClass} rotate-180 [[dir=rtl]_&]:rotate-0`),
       },
     },
+
+    /* Popover
+    --------------------------------------------------------------------------------------------- */
 
     popoverCloseContent: () => svgs.x('size-5 text-sm not-group-hover:opacity-65'),
   },

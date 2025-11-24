@@ -11,6 +11,11 @@ const primaryOutlineColorClass = 'outline-(--fc-forma-primary)'
 const primaryOutlineFocusClass = `${outlineWidthFocusClass} ${primaryOutlineColorClass}`
 
 // neutral buttons
+const strongSolidPressableClass = joinClassNames(
+  '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]',
+  'hover:[background:linear-gradient(var(--fc-forma-stronger),var(--fc-forma-stronger))_var(--fc-monarch-background)]',
+  'active:[background:linear-gradient(var(--fc-forma-strongest),var(--fc-forma-strongest))_var(--fc-monarch-background)]',
+)
 const mutedPressableClass = `bg-(--fc-forma-muted) hover:bg-(--fc-forma-strong) active:bg-(--fc-forma-stronger) ${primaryOutlineFocusClass}`
 const mutedHoverClass = 'hover:bg-(--fc-forma-muted)'
 const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-forma-muted) active:bg-(--fc-forma-strong)`
@@ -30,15 +35,13 @@ const primaryButtonClass = `${primaryPressableClass} border border-transparent $
 const secondaryButtonClass = `${mutedHoverPressableClass} border border-(--fc-forma-border) hover:border-(--fc-forma-strong-border) ${primaryOutlineFocusClass}`
 const secondaryButtonIconClass = 'size-5'
 
-// muted *event* colors
+// event content
 const eventMutedBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-forma-background))]'
 const eventMutedPressableClass = joinClassNames(
   eventMutedBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_35%,var(--fc-forma-background))]',
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_40%,var(--fc-forma-background))]',
 )
-
-// faint *event* colors
 const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--fc-forma-background))]'
 const eventFaintPressableClass = joinClassNames(
   eventFaintBgClass,
@@ -73,12 +76,8 @@ export const params: EventCalendarOptionParams = {
   strongBorderColorClass: 'border-(--fc-forma-strong-border)',
 
   // neutral buttons
+  strongSolidPressableClass,
   mutedPressableClass,
-  strongSolidPressableClass: joinClassNames(
-    '[background:linear-gradient(var(--fc-forma-strong),var(--fc-forma-strong))_var(--fc-forma-background)]',
-    'hover:[background:linear-gradient(var(--fc-forma-stronger),var(--fc-forma-stronger))_var(--fc-monarch-background)]',
-    'active:[background:linear-gradient(var(--fc-forma-strongest),var(--fc-forma-strongest))_var(--fc-monarch-background)]',
-  ),
   mutedHoverClass,
   mutedHoverPressableClass,
 
@@ -116,6 +115,10 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     className: 'bg-(--fc-forma-background) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden',
+
+    /* Toolbar
+    --------------------------------------------------------------------------------------------- */
+
     headerToolbarClass: 'border-b border-(--fc-forma-border)',
     footerToolbarClass: 'border-t border-(--fc-forma-border)',
 
@@ -165,6 +168,9 @@ export const defaultUiEventCalendarOptions: {
         )
       },
     },
+
+    /* Popover
+    --------------------------------------------------------------------------------------------- */
 
     popoverCloseContent: () => svgs.dismiss(`size-5 ${mutedFgPressableGroupClass}`),
   },

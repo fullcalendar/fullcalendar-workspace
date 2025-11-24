@@ -28,11 +28,6 @@ export function EventCalendar({
 }: EventCalendarProps) {
   return (
     <FullCalendar
-      headerToolbar={{
-        start: (addButton ? 'add ' : '') + 'prev,today,next',
-        center: 'title',
-        end: availableViews.join(','),
-      }}
       initialView={availableViews[0]}
       {...defaultUiEventCalendarOptions.optionDefaults}
       {...slots}
@@ -41,6 +36,15 @@ export function EventCalendar({
         ...eventCalendarPlugins,
         ...(calendarOptions.plugins || []),
       ]}
+
+      /* Toolbar
+      ------------------------------------------------------------------------------------------- */
+
+      headerToolbar={{
+        start: (addButton ? 'add ' : '') + 'prev,today,next',
+        center: 'title',
+        end: availableViews.join(','),
+      }}
       buttons={{
         add: {
           isPrimary: true,
@@ -49,6 +53,10 @@ export function EventCalendar({
         ...defaultUiEventCalendarOptions.optionDefaults.buttons,
         ...calendarOptions.buttons,
       }}
+
+      /* View-Specific
+      ------------------------------------------------------------------------------------------- */
+
       views={mergeViewOptionsMap(
         defaultUiEventCalendarOptions.views || {},
         calendarOptions.views || {},

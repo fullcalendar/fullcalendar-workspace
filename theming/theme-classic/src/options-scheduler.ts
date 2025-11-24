@@ -108,7 +108,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
-        /* Timeline > Slot Label
+        /* Timeline > Slot Header
         ----------------------------------------------------------------------------------------- */
 
         slotHeaderAlign: (data) => data.isTime ? 'start' : 'center', // h-align

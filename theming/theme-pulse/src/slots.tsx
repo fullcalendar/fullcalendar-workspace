@@ -16,6 +16,10 @@ export function createSlots(
   params: EventCalendarOptionParams,
 ): CalendarOptions {
   return {
+
+    /* Day Header
+    --------------------------------------------------------------------------------------------- */
+
     dayHeaderContent: (data) => (
       (data.inPopover || !data.dayNumberText || !data.isToday) ? (
         // simple
@@ -51,6 +55,10 @@ export function createSlots(
         </Fragment>
       )
     ),
+
+    /* Day Cell
+    --------------------------------------------------------------------------------------------- */
+
     dayCellTopContent: (data) => (
       !data.isToday ? (
         // ghost-button

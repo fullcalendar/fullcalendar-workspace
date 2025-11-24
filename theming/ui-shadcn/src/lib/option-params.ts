@@ -41,14 +41,12 @@ const tertiaryClass = 'bg-primary/20 dark:bg-primary/30'
 const tertiaryPressableClass = `${tertiaryClass} hover:bg-primary/40 ${outlineFocusClass}`
 const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-primary/40`
 
-// faint *event* colors
+// event content
 const eventFaintBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,var(--background))]'
 const eventFaintPressableClass = joinClassNames(
   eventFaintBgClass,
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]',
 )
-
-// muted *event* colors
 const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
 
 // interactive neutral foregrounds
