@@ -11,9 +11,9 @@ describe('rerender performance for resource timeline', () => {
   })
 
   it('calls methods a limited number of times', (done) => {
-    let slotLabelMountCnt = 0
-    // let slotLabelClassNameCnt = 0
-    let slotLabelRenderCnt = 0
+    let slotHeaderMountCnt = 0
+    // let slotHeaderClassNameCnt = 0
+    let slotHeaderRenderCnt = 0
     let slotLaneRenderCnt = 0
     let resourceLabelRenderCnt = 0
     let resourceLaneRenderCnt = 0
@@ -21,15 +21,15 @@ describe('rerender performance for resource timeline', () => {
 
     initCalendar({
 
-      slotLabelDidMount() {
-        slotLabelMountCnt += 1
+      slotHeaderDidMount() {
+        slotHeaderMountCnt += 1
       },
-      // slotLabelClass() {
-      //   slotLabelClassNameCnt += 1
+      // slotHeaderClass() {
+      //   slotHeaderClassNameCnt += 1
       //   return []
       // },
-      slotLabelContent() {
-        slotLabelRenderCnt += 1
+      slotHeaderContent() {
+        slotHeaderRenderCnt += 1
       },
 
       slotLaneDidMount() {
@@ -48,18 +48,18 @@ describe('rerender performance for resource timeline', () => {
     })
 
     function resetCounts() {
-      slotLabelMountCnt = 0
-      // slotLabelClassNameCnt = 0
-      slotLabelRenderCnt = 0
+      slotHeaderMountCnt = 0
+      // slotHeaderClassNameCnt = 0
+      slotHeaderRenderCnt = 0
       slotLaneRenderCnt = 0
       resourceLabelRenderCnt = 0
       resourceLaneRenderCnt = 0
       eventRenderCnt = 0
     }
 
-    expect(slotLabelMountCnt).toBe(24)
-    // expect(slotLabelClassNameCnt).toBe(24) // allow liberal calling now
-    expect(slotLabelRenderCnt).toBe(24)
+    expect(slotHeaderMountCnt).toBe(24)
+    // expect(slotHeaderClassNameCnt).toBe(24) // allow liberal calling now
+    expect(slotHeaderRenderCnt).toBe(24)
     expect(slotLaneRenderCnt).toBe(48)
     expect(resourceLabelRenderCnt).toBe(1)
     expect(resourceLaneRenderCnt).toBe(1)
@@ -68,9 +68,9 @@ describe('rerender performance for resource timeline', () => {
     resetCounts()
     currentCalendar.next()
 
-    expect(slotLabelMountCnt).toBe(24)
-    // expect(slotLabelClassNameCnt).toBe(24)
-    expect(slotLabelRenderCnt).toBe(24)
+    expect(slotHeaderMountCnt).toBe(24)
+    // expect(slotHeaderClassNameCnt).toBe(24)
+    expect(slotHeaderRenderCnt).toBe(24)
     expect(slotLaneRenderCnt).toBe(48)
     expect(resourceLabelRenderCnt).toBe(0)
     expect(resourceLaneRenderCnt).toBe(0)
@@ -81,7 +81,7 @@ describe('rerender performance for resource timeline', () => {
     // currentCalendar.changeView('listDay') // switch to different view
     // resetCounts()
     // currentCalendar.changeView('resourceTimelineDay') // switch back to orig view
-    // expect(slotLabelRenderCnt).toBe(24)
+    // expect(slotHeaderRenderCnt).toBe(24)
     // expect(slotLaneRenderCnt).toBe(48)
     // expect(resourceLabelRenderCnt).toBe(1)
     // expect(resourceLaneRenderCnt).toBe(1)
@@ -90,9 +90,9 @@ describe('rerender performance for resource timeline', () => {
     resetCounts()
     currentCalendar.addResource({ title: 'Resource B' })
 
-    expect(slotLabelMountCnt).toBe(0)
-    // expect(slotLabelClassNameCnt).toBe(0)
-    expect(slotLabelRenderCnt).toBe(0)
+    expect(slotHeaderMountCnt).toBe(0)
+    // expect(slotHeaderClassNameCnt).toBe(0)
+    expect(slotHeaderRenderCnt).toBe(0)
     expect(slotLaneRenderCnt).toBe(0)
     expect(resourceLabelRenderCnt).toBe(1) // new resource
     expect(resourceLaneRenderCnt).toBe(1) // new resource
@@ -101,9 +101,9 @@ describe('rerender performance for resource timeline', () => {
     resetCounts()
     $(window).simulate('resize')
     setTimeout(() => {
-      expect(slotLabelMountCnt).toBe(0)
-      // expect(slotLabelClassNameCnt).toBe(0)
-      expect(slotLabelRenderCnt).toBe(0)
+      expect(slotHeaderMountCnt).toBe(0)
+      // expect(slotHeaderClassNameCnt).toBe(0)
+      expect(slotHeaderRenderCnt).toBe(0)
       expect(slotLaneRenderCnt).toBe(0)
       expect(resourceLabelRenderCnt).toBe(0)
       expect(resourceLaneRenderCnt).toBe(0)

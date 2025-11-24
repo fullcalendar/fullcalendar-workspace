@@ -3,7 +3,7 @@ import { ComponentChild, Ref, createElement, createRef } from '@fullcalendar/cor
 import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchWidth } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 
-export interface TimeGridAllDayLabelProps {
+export interface TimeGridAllDayHeaderProps {
   // dimension
   width: number | undefined
   isNarrow: boolean
@@ -12,7 +12,7 @@ export interface TimeGridAllDayLabelProps {
   innerWidthRef?: Ref<number>
 }
 
-export class TimeGridAllDayLabel extends BaseComponent<TimeGridAllDayLabelProps> {
+export class TimeGridAllDayHeader extends BaseComponent<TimeGridAllDayHeaderProps> {
   // ref
   private innerElRef = createRef<HTMLDivElement>()
 

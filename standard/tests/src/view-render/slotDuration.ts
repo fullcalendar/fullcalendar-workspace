@@ -6,13 +6,13 @@ describe('slotDuration', () => {
     initialView: 'timeGridDay',
     scrollTime: 0,
     locale: 'en-GB', // for 00:00 instead of 24:00
-    slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
+    slotHeaderFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
   })
 
   describe('when only major slots', () => {
     pushOptions({
       slotDuration: '01:00',
-      slotLabelInterval: '01:00',
+      slotHeaderInterval: '01:00',
     })
 
     describe('when in alignment with slotMinTime', () => {
@@ -53,7 +53,7 @@ describe('slotDuration', () => {
   describe('when major and minor slots', () => {
     pushOptions({
       slotDuration: '00:30',
-      slotLabelInterval: '01:00',
+      slotHeaderInterval: '01:00',
     })
 
     describe('when in alignment with slotMinTime', () => {

@@ -1,7 +1,7 @@
 import enGbLocale from '@fullcalendar/core/locales/en-gb'
 import { TimeGridViewWrapper } from '../lib/wrappers/TimeGridViewWrapper.js'
 
-describe('slotLabelFormat', () => {
+describe('slotHeaderFormat', () => {
   pushOptions({
     initialDate: '2014-06-04',
     initialView: 'timeGridWeek',
@@ -21,7 +21,7 @@ describe('slotLabelFormat', () => {
 
   it('renders correctly when customized', () => {
     let calendar = initCalendar({
-      slotLabelFormat: { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false },
+      slotHeaderFormat: { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false },
       locale: 'en-GB', // for 00:00 instead of 24:00
     })
     expectAxisText(calendar, '00:00:00')

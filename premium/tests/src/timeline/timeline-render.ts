@@ -48,13 +48,13 @@ describe('timeline rendering', () => {
     ).toEqualDate('2017-10-23T00:00:00') // start-of-week is a Monday, lv
   })
 
-  it('call slotLabelDidMount for each day', () => {
+  it('call slotHeaderDidMount for each day', () => {
     let callCnt = 0
 
     initCalendar({
       initialView: 'timelineWeek',
       slotDuration: { days: 1 },
-      slotLabelDidMount(data) {
+      slotHeaderDidMount(data) {
         expect(data.date instanceof Date).toBe(true)
         expect(data.el instanceof HTMLElement).toBe(true)
         expect(typeof data.view).toBe('object')
@@ -65,13 +65,13 @@ describe('timeline rendering', () => {
     expect(callCnt).toBe(7)
   })
 
-  it('call slotLabelDidMount for each hour', () => {
+  it('call slotHeaderDidMount for each hour', () => {
     let callCnt = 0
 
     initCalendar({
       initialView: 'timelineDay',
       slotDuration: { hours: 1 },
-      slotLabelDidMount(data) {
+      slotHeaderDidMount(data) {
         expect(startOfDay(data.date)).toEqualDate('2017-10-27')
         callCnt += 1
       },
@@ -80,16 +80,16 @@ describe('timeline rendering', () => {
     expect(callCnt).toBe(24)
   })
 
-  it('includes a level property in slotLabelContent', () => {
+  it('includes a level property in slotHeaderContent', () => {
     let levelHash = {}
 
     initCalendar({
       initialView: 'timelineWeek',
-      slotLabelFormat: [
+      slotHeaderFormat: [
         { day: 'numeric' },
         { hour: 'numeric', minute: 'numeric' },
       ],
-      slotLabelContent(info) {
+      slotHeaderContent(info) {
         expect(typeof info.level).toBe('number')
         levelHash[info.level] = true
       },
@@ -104,7 +104,7 @@ describe('timeline rendering', () => {
     let calendar = initCalendar({
       initialView: 'timelineMonth',
       navLinks: true,
-      slotLabelFormat() {
+      slotHeaderFormat() {
         return 'test'
       },
     })

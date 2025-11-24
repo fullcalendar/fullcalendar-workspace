@@ -399,7 +399,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   </Scroller>
                 </div>
                 <div
-                  className={generateClassName(options.slotLabelDividerClass, {
+                  className={generateClassName(options.slotHeaderDividerClass, {
                     isHeader: true,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
@@ -577,7 +577,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                   )}
                 </Scroller>
                 <div
-                  className={generateClassName(options.slotLabelDividerClass, {
+                  className={generateClassName(options.slotHeaderDividerClass, {
                     isHeader: false,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}

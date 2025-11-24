@@ -1,6 +1,6 @@
 import {
   Duration,
-  SlotLabelData
+  SlotHeaderData
 } from '@fullcalendar/core'
 import {
   BaseComponent,
@@ -31,7 +31,7 @@ const DEFAULT_SLAT_LABEL_FORMAT = createFormatter({
   meridiem: 'short',
 })
 
-export interface TimeGridSlatLabelProps extends TimeSlatMeta {
+export interface TimeGridSlatHeaderProps extends TimeSlatMeta {
   // dimensions
   height?: number
   liquidHeight?: boolean
@@ -46,7 +46,7 @@ export interface TimeGridSlatLabelProps extends TimeSlatMeta {
 /*
 Always oriented in a column
 */
-export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
+export class TimeGridSlatHeader extends BaseComponent<TimeGridSlatHeaderProps> {
   // memo
   private createRenderProps = memoize(createRenderProps)
 
@@ -60,10 +60,10 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
     let { props, context } = this
     let { options } = context
 
-    let labelFormat = // TODO: fully pre-parse
-      options.slotLabelFormat == null ? DEFAULT_SLAT_LABEL_FORMAT :
-        Array.isArray(options.slotLabelFormat) ? createFormatter(options.slotLabelFormat[0]) :
-          createFormatter(options.slotLabelFormat)
+    let headerFormat = // TODO: fully pre-parse
+      options.slotHeaderFormat == null ? DEFAULT_SLAT_LABEL_FORMAT :
+        Array.isArray(options.slotHeaderFormat) ? createFormatter(options.slotHeaderFormat[0]) :
+          createFormatter(options.slotHeaderFormat)
 
     let renderProps = this.createRenderProps(
       props.date,
@@ -71,7 +71,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
       !props.isLabeled,
       props.isNarrow,
       props.isFirst,
-      labelFormat,
+      headerFormat,
       context,
     )
 
@@ -87,7 +87,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
       return (
         <div
           className={joinClassNames(
-            generateClassName(options.slotLabelClass, renderProps),
+            generateClassName(options.slotHeaderClass, renderProps),
             className,
           )}
           style={{
@@ -108,12 +108,12 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
         }}
         className={className}
         renderProps={renderProps}
-        generatorName="slotLabelContent"
-        customGenerator={options.slotLabelContent}
+        generatorName="slotHeaderContent"
+        customGenerator={options.slotHeaderContent}
         defaultGenerator={renderInnerContent}
-        classNameGenerator={options.slotLabelClass}
-        didMount={options.slotLabelDidMount}
-        willUnmount={options.slotLabelWillUnmount}
+        classNameGenerator={options.slotHeaderClass}
+        didMount={options.slotHeaderDidMount}
+        willUnmount={options.slotHeaderWillUnmount}
       >
         {(InnerContent) => (
           <div
@@ -125,7 +125,7 @@ export class TimeGridSlatLabel extends BaseComponent<TimeGridSlatLabelProps> {
           >
             <InnerContent
               tag="div"
-              className={generateClassName(options.slotLabelInnerClass, renderProps)}
+              className={generateClassName(options.slotHeaderInnerClass, renderProps)}
             />
           </div>
         )}
@@ -164,15 +164,15 @@ function createRenderProps(
   isMinor: boolean,
   isNarrow: boolean,
   isFirst: boolean,
-  labelFormat: DateFormatter,
+  headerFormat: DateFormatter,
   context: ViewContext,
-): SlotLabelData {
+): SlotHeaderData {
   return {
     // this is a time-specific slot. not day-specific, so don't do today/nowRange
     ...getDateMeta(date, context.dateEnv),
 
     level: 0, // axis level (for when multiple axes)
-    text: context.dateEnv.format(date, labelFormat)[0],
+    text: context.dateEnv.format(date, headerFormat)[0],
     time: time,
     isMajor: false,
     isMinor,

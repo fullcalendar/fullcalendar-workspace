@@ -1,4 +1,4 @@
-import { SlotLabelData } from '@fullcalendar/core'
+import { SlotHeaderData } from '@fullcalendar/core'
 import {
   BaseComponent,
   buildNavLinkAttrs,
@@ -77,14 +77,14 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
       view: context.viewApi,
     }
 
-    const { slotLabelAlign } = options
+    const { slotHeaderAlign } = options
     const align = this.align =
-      typeof slotLabelAlign === 'function'
-        ? slotLabelAlign({ level: props.rowLevel, isTime })
-        : slotLabelAlign
+      typeof slotHeaderAlign === 'function'
+        ? slotHeaderAlign({ level: props.rowLevel, isTime })
+        : slotHeaderAlign
 
     const isSticky = this.isSticky =
-      props.rowLevel && options.slotLabelSticky !== false
+      props.rowLevel && options.slotHeaderSticky !== false
 
     let edgeCoord: number | string | undefined
 
@@ -95,9 +95,9 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
         }
       } else {
         edgeCoord = (
-          typeof options.slotLabelSticky === 'number' ||
-          typeof options.slotLabelSticky === 'string'
-        ) ? options.slotLabelSticky : 0
+          typeof options.slotHeaderSticky === 'number' ||
+          typeof options.slotHeaderSticky === 'string'
+        ) ? options.slotHeaderSticky : 0
       }
     }
 
@@ -126,12 +126,12 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
             : undefined,
         }}
         renderProps={renderProps}
-        generatorName="slotLabelContent"
-        customGenerator={options.slotLabelContent}
+        generatorName="slotHeaderContent"
+        customGenerator={options.slotHeaderContent}
         defaultGenerator={renderInnerContent}
-        classNameGenerator={options.slotLabelClass}
-        didMount={options.slotLabelDidMount}
-        willUnmount={options.slotLabelWillUnmount}
+        classNameGenerator={options.slotHeaderClass}
+        didMount={options.slotHeaderDidMount}
+        willUnmount={options.slotHeaderWillUnmount}
       >
         {(InnerContent) => (
           <div
@@ -154,7 +154,7 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
                   ? buildNavLinkAttrs(context, cell.date, cell.rowUnit, undefined, /* isTabbable = */ false)
                   : {} // don't bother with aria-hidden because parent already hidden
               }
-              className={generateClassName(options.slotLabelInnerClass, renderProps)}
+              className={generateClassName(options.slotHeaderInnerClass, renderProps)}
             />
           </div>
         )}
@@ -188,6 +188,6 @@ export class TimelineHeaderCell extends BaseComponent<TimelineHeaderCellProps, T
 // Utils
 // -------------------------------------------------------------------------------------------------
 
-function renderInnerContent(renderProps: SlotLabelData) {
+function renderInnerContent(renderProps: SlotHeaderData) {
   return renderProps.text
 }

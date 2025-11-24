@@ -253,7 +253,7 @@ export type {
   CustomContentGenerator, DidMountHandler, WillUnmountHandler, MountData,
 } from './common/render-hook.js'
 export { StandardEvent, StandardEventProps } from './common/StandardEvent.js'
-export { NowIndicatorLabelContainer } from './common/NowIndicatorLabelContainer.js'
+export { NowIndicatorHeaderContainer } from './common/NowIndicatorHeaderContainer.js'
 export { NowIndicatorLineContainer } from './common/NowIndicatorLineContainer.js'
 export { NowIndicatorDot } from './common/NowIndicatorDot.js'
 

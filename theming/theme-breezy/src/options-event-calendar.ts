@@ -537,8 +537,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderRowClass: `border ${params.mutedBorderColorClass}`,
       dayRowClass: `border ${params.borderColorClass}`,
 
-      slotLabelRowClass: `border ${params.borderColorClass}`,
-      slotLabelInnerClass: `${params.faintFgClass} uppercase`,
+      slotHeaderRowClass: `border ${params.borderColorClass}`,
+      slotHeaderInnerClass: `${params.faintFgClass} uppercase`,
 
       /* Misc Content
       ------------------------------------------------------------------------------------------- */
@@ -629,8 +629,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         /* TimeGrid > Slot Label
         ----------------------------------------------------------------------------------------- */
 
-        slotLabelClass: 'justify-end', // h-align
-        slotLabelInnerClass: (data) => [
+        slotHeaderClass: 'justify-end', // h-align
+        slotHeaderInnerClass: (data) => [
           'relative px-3 py-2',
           data.isNarrow
             ? `-top-3.5 ${xxsTextClass}`
@@ -638,7 +638,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isFirst && 'hidden',
         ],
 
-        slotLabelDividerClass: `border-e ${params.mutedBorderColorClass}`,
+        slotHeaderDividerClass: `border-e ${params.mutedBorderColorClass}`,
       },
       list: {
 

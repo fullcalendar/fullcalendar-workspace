@@ -660,7 +660,7 @@ function SchedulerDemo(props: DemoProps) {
         },
         resourceTimelineWeek: {
           // slotDuration: { days: 1 },
-          slotLabelInterval: { hours: 3 },
+          slotHeaderInterval: { hours: 3 },
         },
         resourceTimeGridTwoDay: {
           type: 'resourceTimeGrid',

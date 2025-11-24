@@ -205,7 +205,7 @@ export default createPlugin({
     // Slots (TimeGrid & Timeline)
     // ---------------------------------------------------------------------------------------------
 
-    slotLabelClass: (data) => [
+    slotHeaderClass: (data) => [
       'fc-slot-label',
       ...getSlotClass(data),
     ],
@@ -215,7 +215,7 @@ export default createPlugin({
     ],
 
     // only for (resource-)timeline
-    slotLabelRowClass: 'fc-slot-label-row',
+    slotHeaderRowClass: 'fc-slot-label-row',
 
     // Resource Timeline
     // ---------------------------------------------------------------------------------------------
@@ -277,10 +277,10 @@ export default createPlugin({
       weekNumberHeaderInnerClass: 'fc-timegrid-axis-inner fc-padding-sm',
       moreLinkClass: 'fc-timegrid-more-link',
       moreLinkInnerClass: 'fc-timegrid-more-link-inner',
-      slotLabelClass: 'fc-timegrid-axis',
-      slotLabelInnerClass: 'fc-timegrid-axis-inner fc-padding-sm',
-      slotLabelDividerClass: 'fc-timegrid-slot-label-divider',
-      nowIndicatorLabelClass: 'fc-timegrid-now-indicator-label',
+      slotHeaderClass: 'fc-timegrid-axis',
+      slotHeaderInnerClass: 'fc-timegrid-axis-inner fc-padding-sm',
+      slotHeaderDividerClass: 'fc-timegrid-slot-label-divider',
+      nowIndicatorHeaderClass: 'fc-timegrid-now-indicator-label',
       nowIndicatorLineClass: 'fc-timegrid-now-indicator-line',
     },
     timeline: {
@@ -291,9 +291,9 @@ export default createPlugin({
       ],
       moreLinkClass: 'fc-timeline-more-link',
       moreLinkInnerClass: 'fc-timeline-more-link-inner',
-      slotLabelInnerClass: 'fc-padding-md',
-      slotLabelDividerClass: 'fc-timeline-slot-label-divider',
-      nowIndicatorLabelClass: 'fc-timeline-now-indicator-label',
+      slotHeaderInnerClass: 'fc-padding-md',
+      slotHeaderDividerClass: 'fc-timeline-slot-label-divider',
+      nowIndicatorHeaderClass: 'fc-timeline-now-indicator-label',
       nowIndicatorLineClass: 'fc-timeline-now-indicator-line',
     },
     list: {

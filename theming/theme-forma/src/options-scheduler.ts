@@ -93,16 +93,16 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         /* Timeline > Slot Label
         ----------------------------------------------------------------------------------------- */
 
-        slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
+        slotHeaderAlign: (data) => data.isTime ? 'start' : 'center', // h-align
 
-        slotLabelClass: 'justify-center', // v-align
-        slotLabelInnerClass: (data) => [
+        slotHeaderClass: 'justify-center', // v-align
+        slotHeaderInnerClass: (data) => [
           'p-2 text-sm',
           data.hasNavLink && 'hover:underline',
         ],
 
         // divider between label and lane
-        slotLabelDividerClass: `border-b ${params.borderColorClass}`,
+        slotHeaderDividerClass: `border-b ${params.borderColorClass}`,
       },
     }
   }

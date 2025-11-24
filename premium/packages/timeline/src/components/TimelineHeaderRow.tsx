@@ -40,7 +40,7 @@ export class TimelineHeaderRow extends BaseComponent<TimelineHeaderRowProps, Tim
     return (
       <div
         className={joinArrayishClassNames(
-          options.slotLabelRowClass,
+          options.slotHeaderRowClass,
           classNames.flexRow,
           classNames.grow,
           props.rowLevel // not the last row?

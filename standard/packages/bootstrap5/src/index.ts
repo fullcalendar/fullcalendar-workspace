@@ -52,7 +52,7 @@ export default createPlugin({
     eventTimeClass: 'fc-event-time',
     eventTitleClass: 'fc-event-title',
     dayPopoverClass: (data) => getDayClassNames(data),
-    slotLabelClass: (data) => getSlotClass(data),
+    slotHeaderClass: (data) => getSlotClass(data),
     slotLaneClass: (data) => getSlotClass(data),
     ...PLUGIN_SPECIFIC_SETTINGS,
   },

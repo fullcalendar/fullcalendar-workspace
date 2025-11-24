@@ -1,6 +1,6 @@
 import { TimelineViewWrapper } from '../lib/wrappers/TimelineViewWrapper.js'
 
-describe('slotLabelFormat', () => {
+describe('slotHeaderFormat', () => {
   pushOptions({
     initialView: 'timelineWeek',
   })
@@ -9,7 +9,7 @@ describe('slotLabelFormat', () => {
     it('renders multiple levels', () => {
       let calendar = initCalendar({
         slotDuration: { hours: 1 },
-        slotLabelFormat: [
+        slotHeaderFormat: [
           { month: 'numeric', day: 'numeric' },
           { hour: 'numeric', minute: 'numeric' },
         ],

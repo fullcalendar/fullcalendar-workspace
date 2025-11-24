@@ -1,4 +1,4 @@
-import { BaseComponent, DateMarker, joinClassNames, NowIndicatorLabelContainer } from '@fullcalendar/core/internal'
+import { BaseComponent, DateMarker, joinClassNames, NowIndicatorHeaderContainer } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'
@@ -36,7 +36,7 @@ export class TimelineNowIndicatorArrow extends BaseComponent<TimelineNowIndicato
           pointerEvents: 'none', // TODO: className
         }}
       >
-        <NowIndicatorLabelContainer
+        <NowIndicatorHeaderContainer
           className={classNames.abs}
           style={xStyle}
           date={props.nowDate}

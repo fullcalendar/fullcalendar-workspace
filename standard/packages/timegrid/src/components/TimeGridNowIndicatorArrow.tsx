@@ -1,4 +1,4 @@
-import { DateMarker, DateProfile, NowIndicatorLabelContainer, joinClassNames } from "@fullcalendar/core/internal"
+import { DateMarker, DateProfile, NowIndicatorHeaderContainer, joinClassNames } from "@fullcalendar/core/internal"
 import { createElement } from '@fullcalendar/core/preact'
 import { computeDateTopFrac } from "./util.js"
 import classNames from '@fullcalendar/core/internal-classnames'
@@ -23,7 +23,7 @@ export function TimeGridNowIndicatorArrow(props: TimeGridNowIndicatorArrowProps)
         pointerEvents: 'none', // TODO: className
       }}
     >
-      <NowIndicatorLabelContainer
+      <NowIndicatorHeaderContainer
         className={classNames.abs}
         style={{
           top: props.totalHeight != null

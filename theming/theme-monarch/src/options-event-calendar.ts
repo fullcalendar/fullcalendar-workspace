@@ -559,12 +559,12 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         /* TimeGrid > Slot Label
         ----------------------------------------------------------------------------------------- */
 
-        slotLabelClass: (data) => [
+        slotHeaderClass: (data) => [
           'w-2 self-end justify-end', // self-h-align, h-align
           `border ${params.borderColorClass}`,
           data.isMinor && 'border-dotted',
         ],
-        slotLabelInnerClass: (data) => [
+        slotHeaderInnerClass: (data) => [
           'relative ps-2 pe-3 py-2',
           data.isNarrow
             ? `-top-4 ${xxsTextClass}`
@@ -572,7 +572,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           data.isFirst && 'hidden',
         ],
 
-        slotLabelDividerClass: (data) => [
+        slotHeaderDividerClass: (data) => [
           'border-e',
           (data.isHeader && data.options.dayMinWidth === undefined)
             ? 'border-transparent'

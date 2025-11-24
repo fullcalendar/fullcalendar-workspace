@@ -244,7 +244,7 @@ export class ResourceTimelineLayoutPrint extends BaseComponent<ResourceTimelineL
 
           </div>
           <div
-            className={generateClassName(options.slotLabelDividerClass, {
+            className={generateClassName(options.slotHeaderDividerClass, {
               isHeader: true,
               options: { dayMinWidth: options.dayMinWidth },
             })}

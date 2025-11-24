@@ -6,23 +6,23 @@ import { ViewApi } from '../api/ViewApi.js'
 import { ElProps } from '../content-inject/ContentInjector.js'
 import { InnerContainerFunc, ContentContainer } from '../content-inject/ContentContainer.js'
 
-export interface NowIndicatorLabelContainerProps extends Partial<ElProps> {
+export interface NowIndicatorHeaderContainerProps extends Partial<ElProps> {
   date: DateMarker
-  children?: InnerContainerFunc<NowIndicatorLabelData>
+  children?: InnerContainerFunc<NowIndicatorHeaderData>
 }
 
-export interface NowIndicatorLabelData {
+export interface NowIndicatorHeaderData {
   date: Date
   view: ViewApi
 }
 
-export type NowIndicatorLabelMountData = MountData<NowIndicatorLabelData>
+export type NowIndicatorHeaderMountData = MountData<NowIndicatorHeaderData>
 
-export const NowIndicatorLabelContainer = (props: NowIndicatorLabelContainerProps) => (
+export const NowIndicatorHeaderContainer = (props: NowIndicatorHeaderContainerProps) => (
   <ViewContextType.Consumer>
     {(context: ViewContext) => {
       let { options } = context
-      let renderProps: NowIndicatorLabelData = {
+      let renderProps: NowIndicatorHeaderData = {
         date: context.dateEnv.toDate(props.date),
         view: context.viewApi,
       }
@@ -32,11 +32,11 @@ export const NowIndicatorLabelContainer = (props: NowIndicatorLabelContainerProp
           {...props /* includes children */}
           tag={props.tag || 'div'}
           renderProps={renderProps}
-          generatorName="nowIndicatorLabelContent"
-          customGenerator={options.nowIndicatorLabelContent}
-          classNameGenerator={options.nowIndicatorLabelClass}
-          didMount={options.nowIndicatorLabelDidMount}
-          willUnmount={options.nowIndicatorLabelWillUnmount}
+          generatorName="nowIndicatorHeaderContent"
+          customGenerator={options.nowIndicatorHeaderContent}
+          classNameGenerator={options.nowIndicatorHeaderClass}
+          didMount={options.nowIndicatorHeaderDidMount}
+          willUnmount={options.nowIndicatorHeaderWillUnmount}
         />
       )
     }}

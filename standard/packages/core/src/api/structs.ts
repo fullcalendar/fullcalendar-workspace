@@ -14,7 +14,7 @@ export type { OverlapFunc, ConstraintInput, AllowFunc } from '../structs/constra
 export type { PluginDef, PluginDefInput } from '../plugin-system-struct.js'
 export type { ViewComponentType, SpecificViewData, SpecificViewMountData } from '../structs/view-config.js'
 export type { ClassNameGenerator, CustomContentGenerator, DidMountHandler, WillUnmountHandler } from '../common/render-hook.js'
-export type { NowIndicatorLabelData, NowIndicatorLabelMountData } from '../common/NowIndicatorLabelContainer.js'
+export type { NowIndicatorHeaderData, NowIndicatorHeaderMountData } from '../common/NowIndicatorHeaderContainer.js'
 export type { NowIndicatorLineData, NowIndicatorLineMountData } from '../common/NowIndicatorLineContainer.js'
 export type {
   InlineWeekNumberData,
@@ -27,7 +27,7 @@ export type { MoreLinkData, MoreLinkMountData } from '../common/MoreLinkContaine
 export * from '../common/more-link-public-types.js'
 export type {
   SlotLaneData, SlotLaneMountData,
-  SlotLabelData, SlotLabelMountData,
+  SlotHeaderData, SlotHeaderMountData,
   AllDayHeaderData, AllDayHeaderMountData,
   DayHeaderData,
   DayHeaderMountData,

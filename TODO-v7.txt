@@ -160,7 +160,7 @@ more granular sticky settings?
   tableHeaderSticky
   rowEventTitleSticky
   colEventTitleSticky
-  slotLabelInnerSticky
+  slotHeaderInnerSticky
 next theme platforms to implement:
   Vuetify
   Angular Material
@@ -176,7 +176,7 @@ THEME SYSTEM
   [rename] stickyHeaderDates -> tableHeaderSticky
     we already have tableHeaderSticky in the codebase, but its a CLASSNAME, not a flag
     (write in changelog that doesn't apply to list-view day-headers anymore)
-  [new-setting] slotLabelInnerSticky (boolean)
+  [new-setting] slotHeaderInnerSticky (boolean)
   [rename] stickyFooterScrollbar -> footerScrollbarSticky
   [eventually, when we need the feature]
     headerToolbarSticky
@@ -216,7 +216,7 @@ docs: your own responsive behavior for toolbars
   we can't make one-size fits all, because start/center/right configured by dev
 bug: now-indicator, in resourceTimeGridDay, when today, in modern themes,
   Multiple dots are displayed (see screenshot)
-bug: in resource-timeline, when 2 rows of datagrid headers & 2 rows of slotLabels,
+bug: in resource-timeline, when 2 rows of datagrid headers & 2 rows of slotHeaders,
   the header-rows heights' should sync with eachother
   but I believe I ripped this out and let flexbox-growing take-over
   TODO: restore header-row height syncing across panes
@@ -237,7 +237,7 @@ rename?: the "before" and "after" content to start/end?
 hide now-indicator when in print
 print-view, hide buttons, or at least make sure they don't look terrible?
 just like we allowed margin on dayHeaderInner (which is a navlink),
-  allow margin on slotLabelInner
+  allow margin on slotHeaderInner
   subsequently, audit align-self everywhere? because wrappers changed
 add weekdayText wherever we add dayNumberText
 core?: when timegrid overlapping events, focused event should be top z-index
@@ -253,7 +253,7 @@ Maybe don't do fallback for dayNumberText or weekdayText...
 When color-mix used, ensure fallback for older browsers
 Instead of opacity to control icon colors, use muted/disabledFgColorClass?
 Instead of opacity for backgroundEventTitleClass, muted/disabledFgColorClass?
-What controls slot min-width in timeline when slotLabelInterval is large? seems to be 30px
+What controls slot min-width in timeline when slotHeaderInterval is large? seems to be 30px
   (see resourceTimelineWeek in App)
 [rename] colCount -> monthColCount (otherwise might think days)
 rethink listDayFormat/listDaySideFormat
@@ -416,7 +416,7 @@ more-popover headers are navlinks now
 in multi-month (when very narrow months), day-of-week abbreviation is "S|M|T|..."
 in standard theme,
   no longer have day classnames on popover
-changelog: +slotLabelAlign (only about highest level)
+changelog: +slotHeaderAlign (only about highest level)
 changelog: navlinks on single-month title!
 changelog: sticky-bottom for no-events message
 changelog: classic theme has slightly more spacious look
@@ -774,7 +774,7 @@ Disallow explicit widths/heights on certain elements (bad for positioning)
   dayHeaderClass
   dayRowClass
   dayCellClass
-  slotLabel
+  slotHeader
   slotLane
   allDayHeaderClass
   weekNumberHeaderClass
@@ -811,13 +811,13 @@ Notes
 isMajor/isMinor API additions:
   isMajor
     + slotLane
-    + slotLabel
+    + slotHeader
     + dayLane
     + dayHeader
     + dayCell
   isMinor
     + slotLane
-    + slotLabel
+    + slotHeader
 we really do care about minimizing ResizeObserver loops, prevents flicker. so, safari is valuable
 flexbox row expansion works across scroll regions: https://codepen.io/arshaw/pen/rNXdrLm?editors=1100
 100% width within scroller applies to clientWidth only: https://codepen.io/arshaw/pen/GgKWRNZ?editors=1100
@@ -995,8 +995,8 @@ MUI datagrid column resizing is nice:
 Theme Notes
   an *OulineFocusClass only goes on the *Button, NOT the *Pressable
   for alignment,
-    dayHeader, resourceColumnHeader, and timeline-slotLabel are flex-col
-    timeGrid-slotLabel is flex-row
+    dayHeader, resourceColumnHeader, and timeline-slotHeader are flex-col
+    timeGrid-slotHeader is flex-row
   text size:
     text-sm = 14px (day-numbers, slot-labels, datagrid cells)
     text-xs = 12px (events)
@@ -1005,7 +1005,7 @@ Theme Notes
   we have CORE handle as much stickiness as possible because
     REACT-NATIVE (when we eventually target it) cannot do stickiness,
     we need a higher-level JSX util of sorts
-  slotLabelAlign/slotLabelSticky not supported in timegrid,
+  slotHeaderAlign/slotHeaderSticky not supported in timegrid,
     so only put settings in timeline
   "dark:" not allowed in theme core! no way to detect without relying on third-party UI lib
   we actually like moreLinkerInnerClass, because the "inner" is for stickiness
@@ -1059,7 +1059,7 @@ Theme Notes
       but if inner span parts, ensure whitespace-pre INSTEAD
     weekNumberHeaderInnerClass -- NOOO, because column-width-syncing-system wants it to be natural width (and uses f-rigid already)
     allDayHeaderInnerClass -- SORTAA, do whitespace-pre
-    slotLabelInnerClass -- NOOO, because column-width-syncing-system, don't need text-end either for same reasons
+    slotHeaderInnerClass -- NOOO, because column-width-syncing-system, don't need text-end either for same reasons
 Theme QA checklist
   test with navLinks OFF
   test with eventInteractive OFF

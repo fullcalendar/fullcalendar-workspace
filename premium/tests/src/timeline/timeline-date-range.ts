@@ -7,7 +7,7 @@ describe('timeline date range', () => {
       initialDate: '2018-01-22',
       initialView: 'timeline',
       duration: { days: 183 },
-      slotLabelInterval: { days: 7 },
+      slotHeaderInterval: { days: 7 },
       firstDay: 1, // Monday
     })
 
@@ -18,12 +18,12 @@ describe('timeline date range', () => {
   })
 
   // https://github.com/fullcalendar/fullcalendar/issues/4937
-  xit('can do day slotDuration when slotLabel is month', () => {
+  xit('can do day slotDuration when slotHeaderInterval is month', () => {
     let calendar = initCalendar({
       initialDate: '2019-05-16',
       initialView: 'timelineYear',
       slotDuration: { days: 1 },
-      slotLabelInterval: { months: 1 },
+      slotHeaderInterval: { months: 1 },
     })
 
     let viewWrapper = new TimelineViewWrapper(calendar)

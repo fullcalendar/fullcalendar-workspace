@@ -386,8 +386,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       dayHeaderRowClass: `border ${params.borderColorClass}`,
       dayRowClass: `border ${params.borderColorClass}`,
 
-      slotLabelRowClass: `border ${params.borderColorClass}`,
-      slotLabelClass: getSlotClass,
+      slotHeaderRowClass: `border ${params.borderColorClass}`,
+      slotHeaderClass: getSlotClass,
 
       /* Misc Content
       ------------------------------------------------------------------------------------------- */
@@ -451,19 +451,19 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         /* TimeGrid > Slot Label
         ----------------------------------------------------------------------------------------- */
 
-        slotLabelClass: 'justify-end', // h-align
-        slotLabelInnerClass: (data) => [
+        slotHeaderClass: 'justify-end', // h-align
+        slotHeaderInnerClass: (data) => [
           'px-1 py-0.5',
           data.isNarrow ? xxsTextClass : 'text-sm',
         ],
 
-        slotLabelDividerClass: `border-e ${params.borderColorClass}`,
+        slotHeaderDividerClass: `border-e ${params.borderColorClass}`,
 
         /* TimeGrid > Now-Indicator
         ----------------------------------------------------------------------------------------- */
 
         // create left/right pointing arrow
-        nowIndicatorLabelClass: [
+        nowIndicatorHeaderClass: [
           'start-0 -mt-[5px]',
           'border-y-[5px] border-y-transparent',
           `border-s-[6px] ${params.nowBorderStartColorClass}`,

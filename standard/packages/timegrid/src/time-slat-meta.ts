@@ -63,7 +63,7 @@ export function buildSlatMetas(
   return metas
 }
 
-// Computes an automatic value for slotLabelInterval
+// Computes an automatic value for slotHeaderInterval
 function computeLabelInterval(slotDuration) {
   let i
   let labelInterval

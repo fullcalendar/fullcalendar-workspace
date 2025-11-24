@@ -4,7 +4,7 @@ describe('timeline range', () => {
   pushOptions({
     now: '2016-02-17',
     initialView: 'timelineTwoDay',
-    slotLabelInterval: '01:00',
+    slotHeaderInterval: '01:00',
     views: {
       timelineTwoDay: {
         type: 'timeline',

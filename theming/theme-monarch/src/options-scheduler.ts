@@ -103,9 +103,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         /* Timeline > Slot Label
         ----------------------------------------------------------------------------------------- */
 
-        slotLabelSticky: '0.5rem', // for pill
+        slotHeaderSticky: '0.5rem', // for pill
 
-        slotLabelAlign: (data) => ( // h-align
+        slotHeaderAlign: (data) => ( // h-align
           (data.level || data.isTime)
             // pill OR time
             ? 'start'
@@ -113,7 +113,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
             : 'center'
         ),
 
-        slotLabelClass: (data) => [
+        slotHeaderClass: (data) => [
           'border',
           data.level
             // housing for pill
@@ -129,7 +129,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
               ),
         ],
 
-        slotLabelInnerClass: (data) => [
+        slotHeaderInnerClass: (data) => [
           'text-sm',
           data.level
             // pill
@@ -155,7 +155,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
 
         // divider between label and lane
-        slotLabelDividerClass: `border-b ${params.borderColorClass}`,
+        slotHeaderDividerClass: `border-b ${params.borderColorClass}`,
       },
     },
   }

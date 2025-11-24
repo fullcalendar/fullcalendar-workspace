@@ -77,7 +77,7 @@ export class TimeGridLayout extends BaseComponent<TimeGridLayoutProps> {
     const slatMetas = this.buildSlatMetas(
       dateProfile.slotMinTime,
       dateProfile.slotMaxTime,
-      options.slotLabelInterval,
+      options.slotHeaderInterval,
       options.slotDuration,
       dateEnv,
     )

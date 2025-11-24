@@ -12,7 +12,7 @@ export interface SlotLaneData extends DateMeta {
 }
 export type SlotLaneMountData = MountData<SlotLaneData>
 
-export interface SlotLabelData extends SlotLaneData {
+export interface SlotHeaderData extends SlotLaneData {
   level: number
   isTime: boolean
   text: string
@@ -20,7 +20,7 @@ export interface SlotLabelData extends SlotLaneData {
   hasNavLink: boolean
   isFirst: boolean
 }
-export type SlotLabelMountData = MountData<SlotLabelData>
+export type SlotHeaderMountData = MountData<SlotHeaderData>
 
 export interface AllDayHeaderData {
   text: string

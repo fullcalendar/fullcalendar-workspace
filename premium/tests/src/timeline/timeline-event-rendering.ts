@@ -424,7 +424,7 @@ describe('timeline event rendering', () => { // TAKE A REALLY LONG TIME B/C SO M
                     slotDuration: { weeks: 1 },
                   },
                 },
-                slotLabelFormat: { month: 'numeric', day: 'numeric' },
+                slotHeaderFormat: { month: 'numeric', day: 'numeric' },
               })
 
               it('renders correctly when aligns with weeks', () => {

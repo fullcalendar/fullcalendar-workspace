@@ -4,12 +4,12 @@ import classNames from '@fullcalendar/core/internal-classnames'
 import { DayGridHeaderRow, dayMicroWidth, RowConfig } from '@fullcalendar/daygrid/internal'
 import { TimeSlatMeta } from "../time-slat-meta.js"
 import { TimeGridRange } from "../TimeColsSeg.js"
-import { TimeGridAllDayLabel } from "./TimeGridAllDayLabel.js"
+import { TimeGridAllDayHeader } from "./TimeGridAllDayHeader.js"
 import { TimeGridAllDayLane } from "./TimeGridAllDayLane.js"
 import { TimeGridAxisEmpty } from "./TimeGridAxisEmpty.js"
 import { TimeGridCols } from "./TimeGridCols.js"
 import { TimeGridNowIndicatorArrow } from "./TimeGridNowIndicatorArrow.js"
-import { TimeGridSlatLabel } from "./TimeGridSlatLabel.js"
+import { TimeGridSlatHeader } from "./TimeGridSlatHeader.js"
 import { TimeGridSlatLane } from "./TimeGridSlatLane.js"
 import { TimeGridWeekNumber } from "./TimeGridWeekNumber.js"
 import { computeSlatHeight } from './util.js'
@@ -184,7 +184,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   )}
                 </div>
                 <div
-                  className={generateClassName(options.slotLabelDividerClass, {
+                  className={generateClassName(options.slotHeaderDividerClass, {
                     isHeader: true,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
@@ -240,13 +240,13 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                 className={classNames.flexRow}
                 style={{ zIndex: 1 }}
               >
-                <TimeGridAllDayLabel
+                <TimeGridAllDayHeader
                   width={axisWidth}
                   innerWidthRef={this.handleAllDayLabelInnerWidth}
                   isNarrow={cellIsNarrow}
                 />
                 <div
-                  className={generateClassName(options.slotLabelDividerClass, {
+                  className={generateClassName(options.slotHeaderDividerClass, {
                     isHeader: false,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
@@ -332,7 +332,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                   style={{ width: axisWidth }}
                 />
                 <div
-                  className={generateClassName(options.slotLabelDividerClass, {
+                  className={generateClassName(options.slotHeaderDividerClass, {
                     isHeader: false,
                     options: { dayMinWidth: options.dayMinWidth },
                   })}
@@ -393,7 +393,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                           className={classNames.flexCol}
                           style={{ width: axisWidth }}
                         >
-                          <TimeGridSlatLabel
+                          <TimeGridSlatHeader
                             {...slatMeta /* FYI doesn't need isoTimeStr */}
                             innerWidthRef={slatLabelInnerWidthRefMap.createRef(slatMeta.key)}
                             innerHeightRef={slatLabelInnerHeightRefMap.createRef(slatMeta.key)}
@@ -402,7 +402,7 @@ export class TimeGridLayoutNormal extends BaseComponent<TimeGridLayoutNormalProp
                           />
                         </div>
                         <div
-                          className={generateClassName(options.slotLabelDividerClass, {
+                          className={generateClassName(options.slotHeaderDividerClass, {
                             isHeader: false,
                             options: { dayMinWidth: options.dayMinWidth },
                           })}

@@ -69,7 +69,7 @@ export function buildTimelineDateProfile(
   dateProfileGenerator: DateProfileGenerator,
 ): TimelineDateProfile {
   let tDateProfile = {
-    labelInterval: allOptions.slotLabelInterval,
+    labelInterval: allOptions.slotHeaderInterval,
     slotDuration: allOptions.slotDuration,
   } as TimelineDateProfile
 
@@ -77,7 +77,7 @@ export function buildTimelineDateProfile(
   ensureLabelInterval(tDateProfile, dateProfile, dateEnv)
   ensureSlotDuration(tDateProfile, dateProfile, dateEnv)
 
-  let input = allOptions.slotLabelFormat
+  let input = allOptions.slotHeaderFormat
   let rawFormats =
     Array.isArray(input) ? input :
       (input != null) ? [input] :
@@ -273,7 +273,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
       tDateProfile.labelInterval,
     )
     if (labelCnt > config.MAX_TIMELINE_SLOTS) {
-      console.warn('slotLabelInterval results in too many cells')
+      console.warn('slotHeaderInterval results in too many cells')
       tDateProfile.labelInterval = null
     }
   }
@@ -295,7 +295,7 @@ function validateLabelAndSlot(tDateProfile: TimelineDateProfile, dateProfile: Da
   if (tDateProfile.labelInterval && tDateProfile.slotDuration) {
     const slotsPerLabel = wholeDivideDurations(tDateProfile.labelInterval, tDateProfile.slotDuration)
     if (slotsPerLabel === null || slotsPerLabel < 1) {
-      console.warn('slotLabelInterval must be a multiple of slotDuration')
+      console.warn('slotHeaderInterval must be a multiple of slotDuration')
       tDateProfile.slotDuration = null
     }
   }

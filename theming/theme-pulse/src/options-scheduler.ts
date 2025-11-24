@@ -89,13 +89,13 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         /* Timeline > Slot Label
         ----------------------------------------------------------------------------------------- */
 
-        slotLabelAlign: (data) => data.isTime ? 'start' : 'center', // h-align
+        slotHeaderAlign: (data) => data.isTime ? 'start' : 'center', // h-align
 
-        slotLabelClass: (data) => [
+        slotHeaderClass: (data) => [
           data.level > 0 && `border ${params.borderColorClass}`,
           'justify-center', // v-align
         ],
-        slotLabelInnerClass: (data) => [
+        slotHeaderInnerClass: (data) => [
           'p-2 text-sm',
           data.isTime && joinClassNames(
             'relative -start-3',
@@ -105,7 +105,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ],
 
         // divider between label and lane
-        slotLabelDividerClass: `border-b ${params.strongBorderColorClass} shadow-sm`,
+        slotHeaderDividerClass: `border-b ${params.strongBorderColorClass} shadow-sm`,
       },
     },
   }
