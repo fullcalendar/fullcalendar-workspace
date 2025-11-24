@@ -130,7 +130,7 @@ export class StandardEvent extends BaseComponent<StandardEventProps> {
       props.display === 'column'
         ? classNames.flexCol
         : classNames.flexRow,
-      eventRange.def.url && classNames.noTextDecoration,
+      eventRange.def.url && classNames.inheritTextDecoration,
       (eventRange.def.url || isDraggable) && classNames.cursorPointer,
       classNames.internalEvent,
       props.isMirror && classNames.internalEventMirror,

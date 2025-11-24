@@ -12,6 +12,9 @@
   isolation: isolate;
 }
 
+/*
+This will prevent all ancestors from customizing their box size unless they use .contentBox
+*/
 .borderBoxRoot,
 .borderBoxRoot *,
 .borderBoxRoot *:before,
@@ -379,8 +382,8 @@ which can't rely on dynamic height detection after print-flag activated.
   align-items: flex-end !important;
 }
 
-.noTextDecoration {
-  text-decoration: none;
+.inheritTextDecoration {
+  text-decoration: inherit;
 }
 
 /* Footer Scrollbar */
