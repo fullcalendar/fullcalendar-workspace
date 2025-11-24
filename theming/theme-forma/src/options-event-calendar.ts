@@ -22,8 +22,9 @@ export interface EventCalendarOptionParams {
   faintBgClass: string
 
   // neutral foregrounds
-  mutedFgBorderColorClass: string
   faintFgClass: string
+  mutedFgClass: string
+  mutedFgBorderColorClass: string
 
   // neutral borders
   borderColorClass: string
@@ -518,6 +519,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         dayHeaderDividerClass: (data) => data.isSticky && `border-b ${params.borderColorClass}`,
         dayCellBottomClass: getShortDayCellBottomClass,
 
+        dayHeaderInnerClass: (data) => data.isNarrow && params.mutedFgClass,
         tableBodyClass: `border ${params.borderColorClass} rounded-sm overflow-hidden`,
       },
       timeGrid: {

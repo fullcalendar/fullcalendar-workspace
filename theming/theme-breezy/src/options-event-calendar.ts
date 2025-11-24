@@ -372,10 +372,9 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
           ? joinClassNames(
               'py-1 rounded-sm text-xs',
               data.isNarrow
-                ? 'px-1 m-1'
-                : 'px-1.5 m-2 font-semibold',
+                ? `px-1 m-1 ${params.mutedFgClass}`
+                : `px-1.5 m-2 font-semibold ${params.fgClass}`,
               data.hasNavLink && mutedHoverButtonClass,
-              params.fgClass,
             )
           // normal-sized varying-color text
           : (data.isToday && data.dayNumberText && !data.inPopover)
@@ -524,7 +523,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       singleMonthHeaderInnerClass: (data) => [
-        `py-1 px-2 rounded-sm text-sm font-semibold ${params.strongFgClass}`,
+        `py-1 px-2 rounded-md text-sm font-semibold ${params.strongFgClass}`,
         data.hasNavLink && params.mutedHoverPressableClass,
       ],
 
@@ -591,7 +590,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         dayCellBottomClass: getShortDayCellBottomClass,
 
         tableHeaderClass: (data) => data.isSticky && params.bgClass,
-        tableBodyClass: `border ${params.borderColorClass} rounded-md shadow-sm overflow-hidden`,
+        tableBodyClass: `border ${params.borderColorClass} rounded-md shadow-xs overflow-hidden`,
       },
       timeGrid: {
         ...dayRowCommonClasses,
