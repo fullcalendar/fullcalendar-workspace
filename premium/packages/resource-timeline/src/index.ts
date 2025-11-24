@@ -20,7 +20,7 @@ export default createPlugin({
       type: 'timeline', // inherit configuration
       component: ResourceTimelineView,
       needsResourceData: true,
-      resourceAreaWidth: '30%',
+      resourceColumnsWidth: '30%',
       resourcesInitiallyExpanded: true,
       eventResizableFromStart: true, // TODO: not DRY with this same setting in the main timeline config
     },

@@ -52,7 +52,7 @@ export class HeaderCell extends BaseComponent<HeaderCellProps> {
           flexGrow: props.grow,
         }}
         renderProps={renderProps}
-        generatorName="resourceAreaHeaderContent"
+        generatorName="resourceColumnHeaderContent"
         customGenerator={colSpec.headerContent}
         defaultGenerator={colSpec.headerDefault}
         classNameGenerator={colSpec.headerClass}

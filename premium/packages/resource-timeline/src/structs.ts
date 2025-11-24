@@ -52,7 +52,7 @@ export interface ResourceExpanderData {
   isExpanded: boolean
 }
 
-// resourceAreaColumns
+// resourceColumns
 // -------------------------------------------------------------------------------------------------
 
 export interface ColHeaderRenderHooks {

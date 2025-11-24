@@ -21,7 +21,7 @@ describe('timeline', () => {
           duration: { days: 2 },
         },
       },
-      resourceAreaHeaderContent: 'Rooms',
+      resourceColumnHeaderContent: 'Rooms',
       resources: [
         { id: 'a', title: 'Auditorium A' },
         { id: 'b', title: 'Auditorium B', eventColor: 'green' },

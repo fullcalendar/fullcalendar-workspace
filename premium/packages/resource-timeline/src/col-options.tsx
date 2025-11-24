@@ -6,20 +6,20 @@ import { GroupSpec, ColSpec } from './structs.js'
 const SPREADSHEET_COL_MIN_WIDTH = 50
 
 export function processColOptions(options: ViewOptionsRefined) {
-  let allColSpecs: ColSpec[] = options.resourceAreaColumns || []
+  let allColSpecs: ColSpec[] = options.resourceColumns || []
   let superHeaderRendering = null
 
   if (!allColSpecs.length) {
     allColSpecs.push({
       headerDefault: () => 'Resources', // TODO: view.defaults
     })
-  } else if (options.resourceAreaHeaderContent) { // weird way to determine if content
+  } else if (options.resourceColumnHeaderContent) { // weird way to determine if content
     superHeaderRendering = {
-      headerClass: options.resourceAreaHeaderClass,
-      headerInnerClass: options.resourceAreaHeaderInnerClass,
-      headerContent: options.resourceAreaHeaderContent,
-      headerDidMount: options.resourceAreaHeaderDidMount,
-      headerWillUnmount: options.resourceAreaHeaderWillUnmount,
+      headerClass: options.resourceColumnHeaderClass,
+      headerInnerClass: options.resourceColumnHeaderInnerClass,
+      headerContent: options.resourceColumnHeaderContent,
+      headerDidMount: options.resourceColumnHeaderDidMount,
+      headerWillUnmount: options.resourceColumnHeaderWillUnmount,
     }
   }
 
@@ -38,12 +38,12 @@ export function processColOptions(options: ViewOptionsRefined) {
           : false
       ),
 
-      headerClass: joinFuncishClassNames(options.resourceAreaHeaderClass, colSpec.headerClass),
-      headerInnerClass: joinFuncishClassNames(options.resourceAreaHeaderInnerClass, colSpec.headerInnerClass),
-      headerResizerClass: joinFuncishClassNames(options.resourceAreaHeaderResizerClass, colSpec.headerResizerClass),
-      headerContent: mergeContentInjectors(options.resourceAreaHeaderContent, colSpec.headerContent),
-      headerDidMount: mergeLifecycleCallbacks(options.resourceAreaHeaderDidMount, colSpec.headerDidMount),
-      headerWillUnmount: mergeLifecycleCallbacks(options.resourceAreaHeaderWillUnmount, colSpec.headerWillUnmount),
+      headerClass: joinFuncishClassNames(options.resourceColumnHeaderClass, colSpec.headerClass),
+      headerInnerClass: joinFuncishClassNames(options.resourceColumnHeaderInnerClass, colSpec.headerInnerClass),
+      headerResizerClass: joinFuncishClassNames(options.resourceColumnResizerClass, colSpec.headerResizerClass),
+      headerContent: mergeContentInjectors(options.resourceColumnHeaderContent, colSpec.headerContent),
+      headerDidMount: mergeLifecycleCallbacks(options.resourceColumnHeaderDidMount, colSpec.headerDidMount),
+      headerWillUnmount: mergeLifecycleCallbacks(options.resourceColumnHeaderWillUnmount, colSpec.headerWillUnmount),
 
       cellClass: joinFuncishClassNames(options.resourceCellClass, colSpec.cellClass),
       cellInnerClass: joinFuncishClassNames(options.resourceCellInnerClass, colSpec.cellInnerClass),

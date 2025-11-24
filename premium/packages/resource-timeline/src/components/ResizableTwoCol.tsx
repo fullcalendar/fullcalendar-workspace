@@ -58,7 +58,7 @@ export class ResizableTwoCol extends BaseComponent<ResizableTwoColProps, Resizab
         </div>
         <div
           className={joinArrayishClassNames(
-            options.resourceAreaDividerClass,
+            options.resourceColumnsDividerClass,
             classNames.rel, // for hitX
           )}
           // TODO: make a className somehow?...

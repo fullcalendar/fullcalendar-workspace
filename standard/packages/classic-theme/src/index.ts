@@ -220,12 +220,12 @@ export default createPlugin({
     // Resource Timeline
     // ---------------------------------------------------------------------------------------------
 
-    resourceAreaHeaderRowClass: 'fc-resource-area-header-row',
-    resourceAreaHeaderClass: 'fc-resource-area-header',
-    resourceAreaHeaderInnerClass: 'fc-padding-lg',
-    resourceAreaDividerClass: 'fc-resource-area-divider',
+    resourceHeaderRowClass: 'fc-resource-area-header-row',
+    resourceColumnHeaderClass: 'fc-resource-area-header',
+    resourceColumnHeaderInnerClass: 'fc-padding-lg',
+    resourceColumnsDividerClass: 'fc-resource-area-divider',
 
-    resourceAreaRowClass: 'fc-resource-area-row',
+    resourceRowClass: 'fc-resource-area-row',
     resourceExpanderClass: 'fc-resource-expander',
 
     resourceGroupHeaderClass: 'fc-resource-group-header',

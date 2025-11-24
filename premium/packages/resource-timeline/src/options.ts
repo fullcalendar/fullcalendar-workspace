@@ -21,22 +21,22 @@ import {
 } from './structs.js'
 
 export const OPTION_REFINERS = {
-  resourceAreaWidth: identity as Identity<CssDimValue>,
-  resourceAreaColumns: identity as Identity<ColSpec[]>,
+  resourceColumnsWidth: identity as Identity<CssDimValue>,
+  resourceColumns: identity as Identity<ColSpec[]>,
 
-  resourceAreaDividerClass: identity as Identity<ClassNameInput>,
+  resourceColumnsDividerClass: identity as Identity<ClassNameInput>,
 
   // datagrid super-header & normal column headers
-  resourceAreaHeaderClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
-  resourceAreaHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
-  resourceAreaHeaderResizerClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
-  resourceAreaHeaderContent: identity as Identity<CustomContentGenerator<ResourceColumnHeaderData>>,
-  resourceAreaHeaderDidMount: identity as Identity<DidMountHandler<ResourceColumnHeaderMountData>>,
-  resourceAreaHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceColumnHeaderMountData>>,
-  resourceAreaHeaderRowClass: identity as Identity<ClassNameInput>,
+  resourceColumnHeaderClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
+  resourceColumnHeaderInnerClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
+  resourceColumnResizerClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
+  resourceColumnHeaderContent: identity as Identity<CustomContentGenerator<ResourceColumnHeaderData>>,
+  resourceColumnHeaderDidMount: identity as Identity<DidMountHandler<ResourceColumnHeaderMountData>>,
+  resourceColumnHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceColumnHeaderMountData>>,
+  resourceHeaderRowClass: identity as Identity<ClassNameInput>,
 
   // For both resources & resource groups
-  resourceAreaRowClass: identity as Identity<ClassNameInput>,
+  resourceRowClass: identity as Identity<ClassNameInput>,
 
   // datagrid cells, for both resources & resource-GROUP
   resourceCellClass: identity as Identity<ClassNameGenerator<ResourceCellData>>,

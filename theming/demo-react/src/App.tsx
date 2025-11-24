@@ -686,10 +686,10 @@ function SchedulerDemo(props: DemoProps) {
           text: '5-Day',
         }
       }}
-      resourceAreaHeaderContent='Rooms'
-      resourceAreaWidth='40%'
+      resourceColumnHeaderContent='Rooms'
+      resourceColumnsWidth='40%'
       resourceGroupField='building'
-      resourceAreaColumns={[
+      resourceColumns={[
         { headerContent: 'Building', field: 'building' },
         { headerContent: 'Room', field: 'title' },
         { headerContent: 'Occupancy', field: 'occupancy' },

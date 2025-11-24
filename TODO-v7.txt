@@ -294,7 +294,7 @@ Changelog
 Note that scrollgrid will be removed in v7
 Accept falsy className inputs. will remove
 breaking: column hooks, instead of groupValue/text, uses fieldValue
-breaking: resourceAreaHeaderClassNames apply to normal col-headers now too
+breaking: resourceColumnHeaderClass apply to normal col-headers now too
 breaking: dayLane* separated from dayCell*
 breaking: dayCellContent (now called dayCellTopContent) no longer injected into daypopover
 breaking: dayCellClassNames/DidMount/WillUnmount no longer called on daypopover
@@ -995,7 +995,7 @@ MUI datagrid column resizing is nice:
 Theme Notes
   an *OulineFocusClass only goes on the *Button, NOT the *Pressable
   for alignment,
-    dayHeader, resourceAreaHeader, and timeline-slotLabel are flex-col
+    dayHeader, resourceColumnHeader, and timeline-slotLabel are flex-col
     timeGrid-slotLabel is flex-row
   text size:
     text-sm = 14px (day-numbers, slot-labels, datagrid cells)

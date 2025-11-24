@@ -53,7 +53,7 @@ export class ResourceGroupSubrow extends BaseComponent<ResourceGroupSubrowProps>
         aria-rowindex={props.rowIndex}
         aria-level={props.level}
         className={joinArrayishClassNames(
-          options.resourceAreaRowClass,
+          options.resourceRowClass,
           props.className,
           classNames.flexRow,
           props.borderBottom ? classNames.borderOnlyB : classNames.borderNone,

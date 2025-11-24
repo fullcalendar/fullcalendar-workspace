@@ -2,9 +2,9 @@ import { ResourceTimelineViewWrapper } from '../lib/wrappers/ResourceTimelineVie
 
 describe('timeline column resizing', () => { // better renamed to 'sizing'
   pushOptions({
-    resourceAreaWidth: 230,
+    resourceColumnsWidth: 230,
     initialView: 'resourceTimelineDay',
-    resourceAreaColumns: [
+    resourceColumns: [
       {
         headerContent: 'Room',
         field: 'title',
@@ -56,7 +56,7 @@ describe('timeline column resizing', () => { // better renamed to 'sizing'
 
     let initialHeadWidths = getHeadCellWidths(dataHeaderWrapper)
 
-    calendar.setOption('resourceAreaColumns', [
+    calendar.setOption('resourceColumns', [
       {
         headerContent: 'Room',
         field: 'title',

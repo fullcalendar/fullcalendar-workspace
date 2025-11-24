@@ -172,7 +172,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 {...baseProps}
                 spreadsheetWidth={
                   this.spreadsheetResizedWidthRef.current ??
-                    options.resourceAreaWidth
+                    options.resourceColumnsWidth
                 }
                 spreadsheetColWidthConfigs={spreadsheetColWidthConfigs}
                 timeAreaOffset={this.scrollRef.current.x /* for simulating horizontal scroll */}
@@ -186,7 +186,7 @@ export class ResourceTimelineView extends DateComponent<ResourceViewProps, Resou
                 slotInnerWidthRef={this.handleSlotInnerWidth}
                 initialSpreadsheetWidth={
                   this.spreadsheetResizedWidthRef.current ??
-                    options.resourceAreaWidth
+                    options.resourceColumnsWidth
                 }
                 spreadsheetCanvasWidth={spreadsheetCanvasWidth}
                 initialScroll={this.scrollRef.current /* for reviving after print-view */}

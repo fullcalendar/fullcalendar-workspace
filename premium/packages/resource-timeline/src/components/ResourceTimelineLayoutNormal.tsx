@@ -359,7 +359,7 @@ export class ResourceTimelineLayoutNormal extends DateComponent<ResourceTimeline
                       role="row"
                       aria-rowindex={1}
                       className={joinArrayishClassNames(
-                        options.resourceAreaHeaderRowClass,
+                        options.resourceHeaderRowClass,
                         classNames.flexRow,
                         classNames.grow,
                         classNames.borderOnlyB,

@@ -47,7 +47,7 @@ export class FullCalendarComponent implements AfterViewInit, DoCheck, AfterConte
   @ContentChild('allDayHeaderContent', { static: true }) allDayHeaderContent?: CalendarTemplateRef<'allDayHeaderContent'>;
   @ContentChild('moreLinkContent', { static: true }) moreLinkContent?: CalendarTemplateRef<'moreLinkContent'>;
   @ContentChild('noEventsContent', { static: true }) noEventsContent?: CalendarTemplateRef<'noEventsContent'>;
-  @ContentChild('resourceAreaHeaderContent', { static: true }) resourceAreaHeaderContent?: CalendarTemplateRef<'resourceAreaHeaderContent'>;
+  @ContentChild('resourceColumnHeaderContent', { static: true }) resourceColumnHeaderContent?: CalendarTemplateRef<'resourceColumnHeaderContent'>;
   @ContentChild('resourceGroupHeaderContent', { static: true }) resourceGroupHeaderContent?: CalendarTemplateRef<'resourceGroupHeaderContent'>;
   @ContentChild('resourceCellContent', { static: true }) resourceCellContent?: CalendarTemplateRef<'resourceCellContent'>;
   @ContentChild('resourceLaneContent', { static: true }) resourceLaneContent?: CalendarTemplateRef<'resourceLaneContent'>;

@@ -580,7 +580,7 @@ it('eventContent render can return true to use default rendering', () => {
 })
 
 // https://github.com/fullcalendar/fullcalendar/issues/7153
-it('renders resourceAreaHeaderContent jsx', () => {
+it('renders resourceColumnHeaderContent jsx', () => {
   const { container } = render(
     <FullCalendar
       plugins={[resourceTimelinePlugin]}
@@ -589,8 +589,8 @@ it('renders resourceAreaHeaderContent jsx', () => {
         { num: '22', name: 'John' },
         { num: '66', name: 'Glen' },
       ]}
-      resourceAreaHeaderContent={<div className='test-header'>Resource Area Header</div>}
-      resourceAreaColumns={[
+      resourceColumnHeaderContent={<div className='test-header'>Resource Area Header</div>}
+      resourceColumns={[
         { field: 'num', headerContent: <div className='test-col0'>Num</div> },
         { field: 'name', headerContent: <div className='test-col1'>Name</div> },
       ]}
@@ -612,7 +612,7 @@ it('renders resourceGroupLaneContent function', () => {
         { num: '22', name: 'John' },
         { num: '66', name: 'Glen' },
       ]}
-      resourceAreaColumns={[
+      resourceColumns={[
         { field: 'num' },
         { field: 'name' },
       ]}

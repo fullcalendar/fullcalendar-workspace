@@ -6,7 +6,7 @@ TODO: write tests for text/render functions
 describe('timeline column grouping', () => {
   pushOptions({
     initialView: 'resourceTimelineDay',
-    resourceAreaColumns: [
+    resourceColumns: [
       {
         group: true,
         headerContent: 'col1',

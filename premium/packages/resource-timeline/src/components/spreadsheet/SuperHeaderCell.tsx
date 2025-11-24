@@ -44,7 +44,7 @@ export class SuperHeaderCell extends BaseComponent<SuperHeaderCellProps> {
           classNames.crop,
         )}
         renderProps={renderProps}
-        generatorName="resourceAreaHeaderContent"
+        generatorName="resourceColumnHeaderContent"
         customGenerator={renderHooks.headerContent}
         defaultGenerator={renderHooks.headerDefault}
         classNameGenerator={renderHooks.headerClass}

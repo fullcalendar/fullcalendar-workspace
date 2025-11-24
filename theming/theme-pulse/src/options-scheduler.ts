@@ -32,9 +32,9 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       ------------------------------------------------------------------------------------------- */
 
       // column header
-      resourceAreaHeaderClass: `border ${params.borderColorClass} justify-center`, // v-align
-      resourceAreaHeaderInnerClass: `p-2 ${params.fgClass} text-sm`,
-      resourceAreaHeaderResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
+      resourceColumnHeaderClass: `border ${params.borderColorClass} justify-center`, // v-align
+      resourceColumnHeaderInnerClass: `p-2 ${params.fgClass} text-sm`,
+      resourceColumnResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
       // group cell
       resourceGroupHeaderClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
@@ -54,11 +54,11 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       ],
 
       // row
-      resourceAreaHeaderRowClass: `border ${params.borderColorClass}`,
-      resourceAreaRowClass: `border ${params.borderColorClass}`,
+      resourceHeaderRowClass: `border ${params.borderColorClass}`,
+      resourceRowClass: `border ${params.borderColorClass}`,
 
       // divider between data grid & timeline
-      resourceAreaDividerClass: `border-e ${params.strongBorderColorClass}`,
+      resourceColumnsDividerClass: `border-e ${params.strongBorderColorClass}`,
 
       /* Timeline Lane
       ------------------------------------------------------------------------------------------- */
