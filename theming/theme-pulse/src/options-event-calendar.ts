@@ -453,7 +453,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
 
-      singleMonthClass: 'm-4',
+      singleMonthClass: 'm-3',
 
       singleMonthHeaderClass: (data) => [
         data.isSticky && `border-b ${params.borderColorClass} ${params.bgClass}`,
@@ -523,7 +523,8 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         dayHeaderDividerClass: (data) => data.isSticky && `border-b ${params.borderColorClass}`,
         dayCellBottomClass: getShortDayCellBottomClass,
 
-        tableBodyClass: `border ${params.borderColorClass} rounded-sm overflow-hidden`,
+        viewClass: params.faintBgClass,
+        tableBodyClass: `border ${params.borderColorClass} ${params.bgClass} rounded-sm overflow-hidden`,
       },
       timeGrid: {
         ...dayRowCommonClasses,
