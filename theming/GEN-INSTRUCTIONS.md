@@ -90,6 +90,10 @@ Evaluate the `createSlots` call from `slots.tsx`:
 
 Copy all props from `defaultUiEventCalendarOptions.optionDefaults` and inline them as direct props to the `FullCalendar` component. Replace any `params` references with actual Tailwind classNames.
 
+**Important**: The `headerToolbar` prop structure comes from the non-generated wrapper file (`theming/ui-default-react/src/theme-*/event-calendar.tsx`), not from the source theme files. Copy the exact `headerToolbar` structure from the wrapper file to ensure consistency. For example:
+- Forma/Monarch: `start: (addButton ? 'add ' : '') + 'today prev,next title'`, `end: availableViews.join(',')`
+- Breezy: `start: (addButton ? 'add ' : '') + 'prev,today,next'`, `center: 'title'`, `end: availableViews.join(',')`
+
 ### Step 3: Copy Presets as Top-Level Constants
 
 Copy `eventCalendarAvailableViews` and `eventCalendarPlugins` into the file, keeping them as top-level exported constants.
