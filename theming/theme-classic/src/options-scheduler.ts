@@ -40,7 +40,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
       resourceColumnHeaderInnerClass: 'p-2 text-sm',
       resourceColumnResizerClass: 'absolute inset-y-0 w-[5px] end-[-3px]',
 
-      // group cell
+      // group header
       resourceGroupHeaderClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
       resourceGroupHeaderInnerClass: 'p-2 text-sm',
 

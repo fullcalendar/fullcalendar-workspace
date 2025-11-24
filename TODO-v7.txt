@@ -1045,7 +1045,6 @@ Theme Notes
     didn't want to make rowBackgroundEvent* columnBackgroundEvent*
     because BG are somewhat bad UX because FG events often overlap their titles
     will redesign in future
-  resourceAreaRowClass is for both resources & resource groups
   timeline events/more-link do NOT need to do isNarrow
   Dot uses border instead of bg because it shows up in print
   all-day-header-text MIGHT span two lines and should have whitespace:pre. DO need text-align
