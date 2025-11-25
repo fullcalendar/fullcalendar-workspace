@@ -1,19 +1,42 @@
 # Converting Theme Source to React + Tailwind Components
 
-This document describes how to convert theme source files into standalone React components with inlined Tailwind CSS classNames.
+This document describes how to convert theme source files into standalone React components with inlined Tailwind CSS classNames. Two conversion flows are available: **React + Tailwind** (using standard Tailwind classes) and **React + Tailwind + SHADCN** (using SHADCN design tokens).
 
 ## Overview
 
 **Input**: Theme source files located in `<repo-root>/theming/theme-*/src/`
-**Output**: Generated React components in `<repo-root>/theming/ui-default-react/src/_gen-tailwind/theme-*/`
+
+**Output**: Generated React components in either:
+- `<repo-root>/theming/ui-default-react/src/_gen-tailwind/theme-*/` (React + Tailwind)
+- `<repo-root>/theming/ui-shadcn/src/_gen-tailwind/theme-*/` (React + Tailwind + SHADCN)
 
 The conversion process transforms modular, options-based theme definitions into self-contained React components where all Tailwind classNames are inlined directly into component props.
+
+## Conversion Flows
+
+This document describes two conversion flows that share the same source files and conversion rules, but differ in their template files, option parameters, and output directories.
+
+### React + Tailwind Flow
+
+- **Template files**: `<repo-root>/theming/ui-default-react/src/theme-*/`
+- **Option params**: `<repo-root>/theming/ui-default-react/src/option-params.ts`
+- **Output**: `<repo-root>/theming/ui-default-react/src/_gen-tailwind/theme-*/`
+- Uses standard Tailwind classes
+
+### React + Tailwind + SHADCN Flow
+
+- **Template files**: `<repo-root>/theming/ui-shadcn/src/theme-*/`
+- **Option params**: `<repo-root>/theming/ui-shadcn/src/lib/option-params.ts`
+- **Output**: `<repo-root>/theming/ui-shadcn/src/_gen-tailwind/theme-*/`
+- Uses SHADCN design tokens (e.g., `bg-primary`, `text-muted-foreground`, `bg-sidebar`)
+
+Both flows use the same theme source files and follow identical conversion rules. The specific Tailwind class names that get inlined will differ based on which `option-params.ts` file is used, but the conversion process itself is the same.
 
 ## Directory Structure
 
 ### Source Files
 
-Theme source code is located in `<repo-root>/theming/theme-*/src/`, where `*` represents the theme's casual name.
+Theme source code is located in `<repo-root>/theming/theme-*/src/`, where `*` represents the theme's casual name. These source files are the same regardless of which conversion flow you're following.
 
 **Primary source files:**
 - `./src/options-event-calendar.ts` - Event calendar styling options
@@ -25,14 +48,29 @@ Theme source code is located in `<repo-root>/theming/theme-*/src/`, where `*` re
 - `./src/ui-default-options-scheduler.ts` - Default UI scheduler options
 - `./src/ui-default-options-svgs.tsx` - SVG icon definitions
 
-### Output Location
+**Wrapper template files:**
 
-Generated files are output to:
+These non-generated wrapper files define the top-level component structure and serve as templates for the conversion. The path depends on your conversion flow:
+- **React + Tailwind**: `theming/ui-default-react/src/theme-*/event-calendar.tsx` and `scheduler.tsx`
+- **React + Tailwind + SHADCN**: `theming/ui-shadcn/src/theme-*/event-calendar.tsx` and `scheduler.tsx`
+
+### Output Locations
+
+Generated files are output to one of two directories depending on the conversion flow:
+
+**React + Tailwind:**
 - `<repo-root>/theming/ui-default-react/src/_gen-tailwind/theme-*/`
-- `event-calendar.tsx` - Standalone EventCalendar component
-- `scheduler.tsx` - Standalone Scheduler component (calls EventCalendar)
+  - `event-calendar.tsx` - Standalone EventCalendar component
+  - `scheduler.tsx` - Standalone Scheduler component (calls EventCalendar)
+
+**React + Tailwind + SHADCN:**
+- `<repo-root>/theming/ui-shadcn/src/_gen-tailwind/theme-*/`
+  - `event-calendar.tsx` - Standalone EventCalendar component
+  - `scheduler.tsx` - Standalone Scheduler component (calls EventCalendar)
 
 ## General Conversion Rules
+
+**Note**: The conversion rules below apply to both React + Tailwind and React + Tailwind + SHADCN flows. The specific Tailwind class names that get inlined will differ based on which `option-params.ts` file is used (standard Tailwind classes vs SHADCN design tokens), but the conversion process itself is identical.
 
 ### TypeScript Type Handling
 
@@ -90,9 +128,7 @@ Evaluate the `createSlots` call from `slots.tsx`:
 
 Copy all props from `defaultUiEventCalendarOptions.optionDefaults` and inline them as direct props to the `FullCalendar` component. Replace any `params` references with actual Tailwind classNames.
 
-**Important**: The `headerToolbar` prop structure comes from the non-generated wrapper file (`theming/ui-default-react/src/theme-*/event-calendar.tsx`), not from the source theme files. Copy the exact `headerToolbar` structure from the wrapper file to ensure consistency. For example:
-- Forma/Monarch: `start: (addButton ? 'add ' : '') + 'today prev,next title'`, `end: availableViews.join(',')`
-- Breezy: `start: (addButton ? 'add ' : '') + 'prev,today,next'`, `center: 'title'`, `end: availableViews.join(',')`
+**Important**: The `headerToolbar` prop structure comes from the non-generated wrapper file (see Source Files section above), not from the source theme files. Copy the exact `headerToolbar` structure from the appropriate wrapper file to ensure consistency.
 
 ### Step 3: Copy Presets as Top-Level Constants
 
@@ -144,6 +180,8 @@ export function EventCalendar({
 Use `restOptions` as the name for the rest parameter (not `restCalendarOptions` or `restProps`).
 
 ## Scheduler Component Conversion
+
+The Scheduler component is simpler than EventCalendar as it primarily wraps the EventCalendar component with scheduler-specific options. The conversion process is the same for both flows, using the appropriate wrapper file (see Source Files section above).
 
 ### Step 1: Import EventCalendar
 
