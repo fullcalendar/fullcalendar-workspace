@@ -56,10 +56,10 @@ const getMutedDayHeaderBorderClass = (data: DayHeaderData) => (
 )
 
 const getNormalDayCellBorderColorClass = (data: DayCellData) => (
-  data.isMajor ? 'border-foreground/20' : ''
+  data.isMajor && 'border-foreground/20'
 )
 const getMutedDayCellBorderColorClass = (data: DayCellData) => (
-  data.isMajor ? 'border-foreground/20' : ''
+  data.isMajor && 'border-foreground/20'
 )
 
 const mutedHoverButtonClass = joinClassNames(
@@ -465,9 +465,7 @@ export function EventCalendar({
               'rounded-e-sm',
               data.isNarrow ? 'px-1' : 'px-2',
               data.hasNavLink && 'hover:bg-foreground/5 focus-visible:bg-foreground/5',
-              data.isOther
-                ? 'text-muted-foreground'
-                : (data.monthText ? '' : 'text-muted-foreground'),
+              (data.isOther || !data.monthText) && 'text-muted-foreground',
               data.monthText && 'font-bold',
             ),
       ]}
@@ -490,7 +488,7 @@ export function EventCalendar({
 
       dayLaneClass={(data) => [
         'border',
-        data.isMajor ? 'border-foreground/20' : '',
+        data.isMajor && 'border-foreground/20',
         data.isDisabled && 'bg-foreground/3',
       ]}
       dayLaneInnerClass={(data) => (
@@ -519,7 +517,8 @@ export function EventCalendar({
               data.isToday
                 ? joinClassNames(
                     'font-semibold',
-                    data.hasNavLink ? 'bg-primary text-primary-foreground hover:bg-primary/90' : 'bg-primary text-primary-foreground',
+                    'bg-primary text-primary-foreground',
+                    data.hasNavLink && 'hover:bg-primary/90',
                   )
                 : joinClassNames(
                     'font-medium',
@@ -575,9 +574,8 @@ export function EventCalendar({
         data.isNarrow
           ? `p-0.5 ${xxsTextClass}`
           : 'p-1.5 text-xs',
-        data.hasNavLink
-          ? 'hover:bg-foreground/5 focus-visible:bg-foreground/5 -outline-offset-1'
-          : 'hover:bg-foreground/5',
+        'hover:bg-foreground/5',
+        data.hasNavLink && 'focus-visible:bg-foreground/5 -outline-offset-1',
       ]}
       highlightClass='bg-primary/10'
       nonBusinessClass='bg-foreground/3'

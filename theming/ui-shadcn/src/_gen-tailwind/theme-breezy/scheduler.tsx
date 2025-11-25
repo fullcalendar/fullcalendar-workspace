@@ -104,17 +104,13 @@ export function Scheduler({
         ...userViews,
         resourceDayGrid: {
           resourceDayHeaderClass: (data) => (
-            data.isMajor
-              ? 'border-foreground/20'
-              : ''
+            data.isMajor && 'border-foreground/20'
           ),
           ...userViews?.resourceDayGrid,
         },
         resourceTimeGrid: {
           resourceDayHeaderClass: (data) => (
-            data.isMajor
-              ? 'border-foreground/20'
-              : ''
+            data.isMajor && 'border-foreground/20'
           ),
           ...userViews?.resourceTimeGrid,
         },
