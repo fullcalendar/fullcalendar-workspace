@@ -29,6 +29,7 @@ This document describes two conversion flows that share the same source files an
 - **Option params**: `<repo-root>/theming/ui-shadcn/src/lib/option-params.ts`
 - **Output**: `<repo-root>/theming/ui-shadcn/src/_gen-tailwind/theme-*/`
 - Uses SHADCN design tokens (e.g., `bg-primary`, `text-muted-foreground`, `bg-sidebar`)
+- **Icons**: Uses `lucide-react` icons instead of custom SVG functions (e.g., `ChevronLeftIcon`, `ChevronRightIcon`, `XIcon`, `ChevronDownIcon`)
 
 Both flows use the same theme source files and follow identical conversion rules. The specific Tailwind class names that get inlined will differ based on which `option-params.ts` file is used, but the conversion process itself is the same.
 
@@ -84,6 +85,8 @@ Generated files are output to one of two directories depending on the conversion
 
 - **From UI-default source files** (`ui-default-options-event-calendar.ts`, etc.): Preserve all `const` definitions. Examples: `primaryPressableClass`, `eventMutedFgClass`, `strongSolidPressableClass`, `bgEventBgClass`.
 
+- **From option-params files**: Constants from `option-params.ts` should be **inlined** as `const` definitions in the generated file, not imported. For example, `mutedFgPressableGroupClass` from `option-params.ts` should be defined as `export const mutedFgPressableGroupClass = '...'` in the generated file. Export it if it's used in other generated files (e.g., `scheduler.tsx`).
+
 - **Type annotations**: When preserving constants, also preserve any TypeScript type annotations from the source (e.g., `DayHeaderData`, `DayCellData`, `CalendarOptions`).
 
 ### String Literals
@@ -94,11 +97,17 @@ Generated files are output to one of two directories depending on the conversion
 
 - **Single quotes for JSX**: Always use single quotes for JSX string props (e.g., `propName='value'`) instead of double quotes.
 
+- **`joinClassNames` usage**:
+  - It's acceptable to use `joinClassNames` with multiple literal strings when you want to keep them on separate lines for readability and to avoid overly long lines.
+  - Avoid `joinClassNames` when there's only a single string argument or when arguments include empty strings (e.g., `joinClassNames('string', '')` should just be `'string'`).
+  - Use `joinClassNames` when you need to conditionally combine strings or when mixing strings with variables/expressions.
+
 ### Comments
 
 **Preserve:**
 - Large block-style section delimiter comments (e.g., `/* Toolbar */`). Merge same-named sections across files when appropriate.
 - Section comments that precede groups of related statements (e.g., `// circle resizer for touch` before touch resizer constants, `// transparent resizer for mouse` before pointer resizer constants).
+- **View-specific block comments** from source files (e.g., `/* TimeGrid > Week Number Header */`, `/* List-View > List-Item Event */`, `/* No-Events Screen */`). These should be preserved in the `views` object within each view's configuration.
 
 **Remove:**
 - Comments describing where constants came from (e.g., `// Constants from params`).
@@ -106,14 +115,20 @@ Generated files are output to one of two directories depending on the conversion
 
 **Formatting**: When preserving large block-style comments, ensure the separator line (`---- */`) ends at exactly the 100th column.
 
-### SVG Functions
+### SVG Functions and Icons
 
-SVG-generating functions (functions that return JSX/TSX SVG elements) should be:
-- Placed at the bottom of generated files, after the main component function.
-- Labeled with a large block-style comment: `/* SVGs */` (separator line ending at column 100).
-- Exported if used in other files (e.g., `chevronDown` exported from `event-calendar.tsx` for use in `scheduler.tsx`).
+**React + Tailwind Flow:**
+- SVG-generating functions (functions that return JSX/TSX SVG elements) should be:
+  - Placed at the bottom of generated files, after the main component function.
+  - Labeled with a large block-style comment: `/* SVGs */` (separator line ending at column 100).
+  - Exported if used in other files (e.g., `chevronDown` exported from `event-calendar.tsx` for use in `scheduler.tsx`).
+- Function declarations are hoisted, so they work correctly even when defined after usage.
 
-Function declarations are hoisted, so they work correctly even when defined after usage.
+**React + Tailwind + SHADCN Flow:**
+- **Do NOT** create custom SVG functions. Instead, use `lucide-react` icons directly in `iconContent` props.
+- Import the appropriate icons from `lucide-react` (e.g., `ChevronLeftIcon`, `ChevronRightIcon`, `ChevronsLeftIcon`, `ChevronsRightIcon`, `XIcon`, `ChevronDownIcon`).
+- Use the icons as JSX elements directly: `iconContent: () => <ChevronLeftIcon className={...} />`
+- Check the wrapper template files to determine which icons are used for which buttons.
 
 ## EventCalendar Component Conversion
 
@@ -240,9 +255,13 @@ Ensure props passed to `EventCalendar` are ordered correctly:
 - ✅ Use single quotes for JSX props: `propName='value'`
 - ✅ Use regular quotes for strings without interpolation: `'string'` not `` `string` ``
 - ✅ Use template literals only when needed: `` `prefix ${variable} suffix` ``
+- ✅ Use `joinClassNames` for readability when keeping multiple strings on separate lines, but avoid it for single strings or empty string arguments
 - ✅ Preserve constants from source files (except `popoverClass` and `popoverHeaderClass`)
+- ✅ Inline constants from `option-params.ts` files (don't import them)
 - ✅ Preserve TypeScript type annotations from source
 - ✅ Preserve large block-style section comments (format separator to column 100)
-- ✅ Place SVG functions at bottom of file with `/* SVGs */` comment
+- ✅ Preserve view-specific block comments in the `views` object
+- ✅ For React + Tailwind: Place SVG functions at bottom of file with `/* SVGs */` comment
+- ✅ For React + Tailwind + SHADCN: Use `lucide-react` icons instead of custom SVG functions
 - ✅ Use `restOptions` for rest parameter name
 - ✅ Extract conflicting props via parameter destructuring

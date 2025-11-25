@@ -13,6 +13,16 @@ clean+build all:
   pn build
 
 
+Optimizations after conversions:
+  Shadcn (& others?):
+    convert tertiary to &&:
+      data.isMajor ? 'border-foreground/20' : '',
+    break out common propnames:
+      data.isInteractive
+        ? 'hover:bg-muted/50 focus-visible:bg-muted/50'
+        : 'hover:bg-muted/50',
+
+
 just before beta (after theme gen)
 ----------------
 Updating ANGULAR will take a long time
