@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+:root {
+  /* Tailwind color definitions */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-gray-950: #030712;
+  
+  --color-indigo-400: #818cf8;
+  --color-indigo-500: #6366f1;
+  --color-indigo-600: #4f46e5;
+  --color-indigo-950: #1e1b4b;
+  
+  --color-blue-100: #dbeafe;
+  --color-blue-300: #93c5fd;
+  --color-blue-500: #3b82f6;
+  
+  --color-cyan-100: #cffafe;
+  
+  --color-green-500: #22c55e;
+  
+  --color-pink-500: #ec4899;
+  
+  --color-rose-500: #f43f5e;
+  --color-rose-600: #e11d48;
+  
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  
+  --color-amber-300: #fcd34d;
+  --color-amber-400: #fbbf24;
+  --color-amber-500: #f59e0b;
+  --color-amber-950: #451a03;
+
+  /* Breezy Theme Variables - Light Mode */
+  /* secondary */
+  --fc-breezy-secondary: var(--fc-breezy-background);
+  --fc-breezy-secondary-over: var(--fc-breezy-faint);
+  --fc-breezy-secondary-border: var(--fc-breezy-strong-border);
+  --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
+  --fc-breezy-secondary-icon: var(--fc-breezy-faint-foreground);
+  --fc-breezy-secondary-icon-over: var(--fc-breezy-muted-foreground);
+
+  /* calendar content */
+  --fc-breezy-highlight: color-mix(in oklab, var(--color-cyan-100) 40%, transparent);
+  --fc-breezy-now: red;
+
+  /* controls */
+  --fc-breezy-selected: var(--fc-breezy-strong);
+
+  /* popover */
+  --fc-breezy-popover: var(--fc-breezy-background);
+  --fc-breezy-popover-border: var(--fc-breezy-strong-border);
+
+  /* neutral backgrounds */
+  --fc-breezy-background: var(--color-white);
+  --fc-breezy-faint: color-mix(in oklab, var(--color-black) 2%, transparent);
+  --fc-breezy-muted: color-mix(in oklab, var(--color-black) 5%, transparent);
+  --fc-breezy-strong: color-mix(in oklab, var(--color-black) 10%, transparent);
+  --fc-breezy-stronger: color-mix(in oklab, var(--color-black) 14%, transparent);
+  --fc-breezy-strongest: color-mix(in oklab, var(--color-black) 18%, transparent);
+
+  /* neutral foregrounds */
+  --fc-breezy-foreground: var(--color-gray-700);
+  --fc-breezy-faint-foreground: var(--color-gray-400);
+  --fc-breezy-muted-foreground: var(--color-gray-500);
+  --fc-breezy-strong-foreground: var(--color-gray-900);
+
+  /* neutral borders */
+  --fc-breezy-border: var(--color-gray-200);
+  --fc-breezy-muted-border: var(--color-gray-100);
+  --fc-breezy-strong-border: var(--color-gray-300);
+
+  /* primary - indigo palette */
+  --fc-breezy-primary: var(--color-indigo-600);
+  --fc-breezy-primary-over: var(--color-indigo-500);
+  --fc-breezy-primary-foreground: var(--color-white);
+
+  /* calendar content - indigo palette */
+  --fc-breezy-event: var(--color-blue-500);
+  --fc-breezy-background-event: var(--color-green-500);
+}
+
+[data-color-scheme=dark] {
+  /* secondary */
+  --fc-breezy-secondary: var(--fc-breezy-muted);
+  --fc-breezy-secondary-over: var(--fc-breezy-strong);
+  --fc-breezy-secondary-border: var(--fc-breezy-muted-border);
+  --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
+  --fc-breezy-secondary-icon: var(--fc-breezy-muted-foreground);
+  --fc-breezy-secondary-icon-over: var(--fc-breezy-foreground);
+
+  /* calendar content */
+  --fc-breezy-highlight: color-mix(in oklab, var(--color-blue-500) 20%, transparent);
+  --fc-breezy-now: red;
+
+  /* controls */
+  --fc-breezy-selected: var(--fc-breezy-muted);
+
+  /* popovers */
+  --fc-breezy-popover: var(--color-gray-800);
+  --fc-breezy-popover-border: var(--fc-breezy-border);
+
+  /* neutral backgrounds */
+  --fc-breezy-background: var(--color-gray-900);
+  --fc-breezy-faint: color-mix(in oklab, var(--color-white) 3%, transparent);
+  --fc-breezy-muted: color-mix(in oklab, var(--color-white) 7%, transparent);
+  --fc-breezy-strong: color-mix(in oklab, var(--color-white) 12%, transparent);
+  --fc-breezy-stronger: color-mix(in oklab, var(--color-white) 16%, transparent);
+  --fc-breezy-strongest: color-mix(in oklab, var(--color-white) 20%, transparent);
+
+  /* neutral foregrounds */
+  --fc-breezy-foreground: var(--color-gray-300);
+  --fc-breezy-muted-foreground: var(--color-gray-400);
+  --fc-breezy-faint-foreground: var(--color-gray-500);
+  --fc-breezy-strong-foreground: var(--color-white);
+
+  /* neutral borders */
+  --fc-breezy-border: color-mix(in oklab, var(--color-white) 10%, transparent);
+  --fc-breezy-muted-border: color-mix(in oklab, var(--color-white) 5%, transparent);
+  --fc-breezy-strong-border: color-mix(in oklab, var(--color-white) 15%, transparent);
+
+  /* primary - indigo palette (shifted lighter) */
+  --fc-breezy-primary: var(--color-indigo-500);
+  --fc-breezy-primary-over: var(--color-indigo-400);
+
+  /* calendar content - indigo palette */
+  --fc-breezy-event: var(--color-blue-300);
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
