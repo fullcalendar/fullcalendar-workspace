@@ -45,12 +45,12 @@ export function EventCalendar({
         end: availableViews.join(','),
       }}
       buttons={{
+        ...defaultUiEventCalendarOptions.optionDefaults.buttons,
+        ...userButtons,
         add: {
           isPrimary: true,
           ...addButton,
         },
-        ...defaultUiEventCalendarOptions.optionDefaults.buttons,
-        ...userButtons,
       }}
 
       /* View-Specific
