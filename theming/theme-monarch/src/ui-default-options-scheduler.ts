@@ -12,6 +12,9 @@ export const defaultUiSchedulerOnlyOptions: {
   optionDefaults: {
     ...baseSchedulerOnlyOptions.optionDefaults,
 
+    /* Resource Data Grid
+    --------------------------------------------------------------------------------------------- */
+
     resourceExpanderContent: (data) => svgs.chevronDown(
       joinClassNames(
         `size-4 ${mutedFgPressableGroupClass}`,
