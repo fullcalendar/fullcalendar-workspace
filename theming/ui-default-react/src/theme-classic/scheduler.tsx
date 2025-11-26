@@ -18,22 +18,30 @@ export interface SchedulerProps extends CalendarOptions {
 export function Scheduler({
   availableViews = schedulerAvailableViews,
   addButton,
-  ...calendarOptions
+  plugins: userPlugins,
+  views: userViews,
+  ...restOptions
 }: SchedulerProps) {
   return (
     <EventCalendar
-      {...defaultUiSchedulerOnlyOptions.optionDefaults}
-      {...calendarOptions}
-      plugins={[
-        ...schedulerOnlyPlugins,
-        ...(calendarOptions.plugins || []),
-      ]}
-      views={mergeViewOptionsMap(
-        defaultUiSchedulerOnlyOptions.views || {},
-        calendarOptions.views || {},
-      )}
       availableViews={availableViews}
       addButton={addButton}
+      plugins={[
+        ...schedulerOnlyPlugins,
+        ...(userPlugins || []),
+      ]}
+
+      /* View-Specific
+      ------------------------------------------------------------------------------------------- */
+
+      views={mergeViewOptionsMap(
+        defaultUiSchedulerOnlyOptions.views || {},
+        userViews || {},
+      )}
+
+      // spreads
+      {...defaultUiSchedulerOnlyOptions.optionDefaults}
+      {...restOptions}
     />
   )
 }

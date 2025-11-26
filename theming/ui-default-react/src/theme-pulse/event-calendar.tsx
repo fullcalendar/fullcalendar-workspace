@@ -24,37 +24,48 @@ export interface EventCalendarProps extends CalendarOptions {
 export function EventCalendar({
   availableViews = eventCalendarAvailableViews,
   addButton,
-  ...calendarOptions
+  plugins: userPlugins,
+  buttons: userButtons,
+  views: userViews,
+  ...restOptions
 }: EventCalendarProps) {
   return (
     <FullCalendar
+      initialView={availableViews[0]}
+      plugins={[
+        ...eventCalendarPlugins,
+        ...(userPlugins || []),
+      ]}
+
+      /* Toolbar
+      ------------------------------------------------------------------------------------------- */
+
       headerToolbar={{
         start: (addButton ? 'add ' : '') + 'prev,today,next',
         center: 'title',
         end: availableViews.join(','),
       }}
-      initialView={availableViews[0]}
-      {...defaultUiEventCalendarOptions.optionDefaults}
-      {...slots}
-      {...calendarOptions}
-      plugins={[
-        ...eventCalendarPlugins,
-        ...(calendarOptions.plugins || []),
-      ]}
-      {...{
-        buttons: {
-          add: {
-            isPrimary: true,
-            ...addButton,
-          },
-          ...(defaultUiEventCalendarOptions.optionDefaults as any).buttons,
-          ...(calendarOptions as any).buttons,
-        }
+      buttons={{
+        add: {
+          isPrimary: true,
+          ...addButton,
+        },
+        ...defaultUiEventCalendarOptions.optionDefaults.buttons,
+        ...userButtons,
       }}
+
+      /* View-Specific
+      ------------------------------------------------------------------------------------------- */
+
       views={mergeViewOptionsMap(
         defaultUiEventCalendarOptions.views || {},
-        calendarOptions.views || {},
+        userViews || {},
       )}
+
+      // spreads
+      {...defaultUiEventCalendarOptions.optionDefaults}
+      {...slots}
+      {...restOptions}
     />
   )
 }
