@@ -8,16 +8,25 @@ import { params } from '../lib/option-params.js'
 
 export const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(params)
 
-export default function SchedulerView(calendarOptions: CalendarOptions) {
+export default function SchedulerView({
+  views: userViews,
+  ...restOptions
+}: CalendarOptions) {
   return (
     <EventCalendarView
-      {...baseSchedulerOnlyOptions.optionDefaults}
-      {...schedulerOnlyIconOptions}
-      {...calendarOptions}
+
+      /* View-Specific Options
+      ------------------------------------------------------------------------------------------- */
+
       views={mergeViewOptionsMap(
         baseSchedulerOnlyOptions.views || {},
-        calendarOptions.views || {}
+        userViews || {}
       )}
+
+      // spreads
+      {...baseSchedulerOnlyOptions.optionDefaults}
+      {...restOptions}
+      {...schedulerOnlyIconOptions}
     />
   )
 }

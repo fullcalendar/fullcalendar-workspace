@@ -25,11 +25,12 @@ export default function Scheduler({
   height,
   contentHeight,
   direction,
-  ...calendarOptions
+  plugins: userPlugins,
+  ...restOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
-  const borderlessX = calendarOptions.borderlessX ?? calendarOptions.borderless
-  const borderlessBottom = calendarOptions.borderlessBottom ?? calendarOptions.borderless
+  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
+  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
 
   return (
     <Box
@@ -69,12 +70,12 @@ export default function Scheduler({
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}
-          {...calendarOptions}
           plugins={[
             ...eventCalendarPlugins,
             ...schedulerOnlyPlugins,
-            ...(calendarOptions.plugins || []),
+            ...(userPlugins || []),
           ]}
+          {...restOptions}
         />
       </Box>
     </Box>

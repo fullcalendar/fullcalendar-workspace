@@ -73,11 +73,11 @@ export default function EventCalendar({
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}
-          {...restOptions}
           plugins={[
             ...eventCalendarPlugins,
             ...(userPlugins || []),
           ]}
+          {...restOptions}
         />
       </Box>
     </Box>

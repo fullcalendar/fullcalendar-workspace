@@ -8,16 +8,25 @@ import { params } from '../lib/option-params.js'
 
 const baseEventCalendarOptions = createEventCalendarOptions(params)
 
-export default function EventCalendarView(calendarOptions: CalendarOptions) {
+export default function EventCalendarView({
+  views: userViews,
+  ...restOptions
+}: CalendarOptions) {
   return (
     <FullCalendar
-      {...baseEventCalendarOptions.optionDefaults}
-      {...eventCalendarIconOptions}
-      {...calendarOptions}
+
+      /* View-Specific Options
+      ------------------------------------------------------------------------------------------- */
+
       views={mergeViewOptionsMap(
         baseEventCalendarOptions.views || {},
-        calendarOptions.views || {},
+        userViews || {}
       )}
+
+      // spreads
+      {...baseEventCalendarOptions.optionDefaults}
+      {...restOptions}
+      {...eventCalendarIconOptions}
     />
   )
 }

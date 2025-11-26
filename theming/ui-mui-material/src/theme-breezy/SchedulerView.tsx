@@ -23,6 +23,7 @@ export default function SchedulerView({
         userViews || {}
       )}
 
+      // spreads
       {...baseSchedulerOnlyOptions.optionDefaults}
       {...restOptions}
       {...schedulerOnlyIconOptions}
