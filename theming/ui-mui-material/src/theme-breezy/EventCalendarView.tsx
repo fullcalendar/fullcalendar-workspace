@@ -14,17 +14,26 @@ const slots = createSlots({
   Fragment: React.Fragment as any, // HACK
 }, params)
 
-export default function EventCalendarView(calendarOptions: CalendarOptions) {
+export default function EventCalendarView({
+  views: userViews,
+  ...restOptions
+}: CalendarOptions) {
   return (
     <FullCalendar
-      {...baseEventCalendarOptions.optionDefaults}
-      {...eventCalendarIconOptions}
-      {...slots}
-      {...calendarOptions}
+
+      /* View-Specific Options
+      ------------------------------------------------------------------------------------------- */
+
       views={mergeViewOptionsMap(
         baseEventCalendarOptions.views || {},
-        calendarOptions.views || {}
+        userViews || {}
       )}
+
+      // spreads
+      {...baseEventCalendarOptions.optionDefaults}
+      {...restOptions}
+      {...eventCalendarIconOptions}
+      {...slots}
     />
   )
 }
