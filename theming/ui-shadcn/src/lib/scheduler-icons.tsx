@@ -4,6 +4,10 @@ import { mutedFgPressableGroupClass } from './option-params.js'
 import { ChevronDownIcon } from 'lucide-react'
 
 export const schedulerOnlyIconOptions: CalendarOptions = {
+
+  /* Resource Data Grid
+  ----------------------------------------------------------------------------------------------- */
+
   resourceExpanderContent: (data) => (
     <ChevronDownIcon
       className={joinClassNames(
