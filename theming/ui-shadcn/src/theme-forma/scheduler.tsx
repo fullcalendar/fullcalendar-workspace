@@ -31,12 +31,13 @@ export function Scheduler({
   height,
   contentHeight,
   direction,
-  ...calendarOptions
+  plugins: userPlugins,
+  ...restOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
-  const borderlessX = calendarOptions.borderlessX ?? calendarOptions.borderless
-  const borderlessTop = calendarOptions.borderlessTop ?? calendarOptions.borderless
-  const borderlessBottom = calendarOptions.borderlessBottom ?? calendarOptions.borderless
+  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
+  const borderlessTop = restOptions.borderlessTop ?? restOptions.borderless
+  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
 
   return (
     <div
@@ -62,28 +63,37 @@ export function Scheduler({
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}
-          {...calendarOptions}
           plugins={[
             ...eventCalendarPlugins,
             ...schedulerOnlyPlugins,
-            ...(calendarOptions.plugins || []),
+            ...(userPlugins || []),
           ]}
+          {...restOptions}
         />
       </div>
     </div>
   )
 }
 
-export function SchedulerView(calendarOptions: any) {
+export function SchedulerView({
+  views: userViews,
+  ...restOptions
+}: any) {
   return (
     <EventCalendarView
-      {...baseSchedulerOnlyOptions.optionDefaults}
-      {...schedulerOnlyIconOptions}
-      {...calendarOptions}
+
+      /* View-Specific Options
+      ------------------------------------------------------------------------------------------- */
+
       views={mergeViewOptionsMap(
         baseSchedulerOnlyOptions.views || {},
-        calendarOptions.views || {},
+        userViews || {},
       )}
+
+      // spreads
+      {...baseSchedulerOnlyOptions.optionDefaults}
+      {...restOptions}
+      {...schedulerOnlyIconOptions}
     />
   )
 }

@@ -28,11 +28,12 @@ export function EventCalendar({
   height,
   contentHeight,
   direction,
-  ...calendarOptions
+  plugins: userPlugins,
+  ...restOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
-  const borderlessX = calendarOptions.borderlessX ?? calendarOptions.borderless
-  const borderlessBottom = calendarOptions.borderlessBottom ?? calendarOptions.borderless
+  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
+  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
 
   return (
     <div
@@ -57,11 +58,11 @@ export function EventCalendar({
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}
-          {...calendarOptions}
           plugins={[
             ...eventCalendarPlugins,
-            ...(calendarOptions.plugins || []),
+            ...(userPlugins || []),
           ]}
+          {...restOptions}
         />
       </div>
     </div>
@@ -70,16 +71,25 @@ export function EventCalendar({
 
 const baseEventCalendarOptions = createEventCalendarOptions(params)
 
-export function EventCalendarView(calendarOptions: CalendarOptions) {
+export function EventCalendarView({
+  views: userViews,
+  ...restOptions
+}: CalendarOptions) {
   return (
     <FullCalendar
-      {...baseEventCalendarOptions.optionDefaults}
-      {...eventCalendarIconOptions}
-      {...calendarOptions}
+
+      /* View-Specific Options
+      ------------------------------------------------------------------------------------------- */
+
       views={mergeViewOptionsMap(
         baseEventCalendarOptions.views || {},
-        calendarOptions.views || {},
+        userViews || {},
       )}
+
+      // spreads
+      {...baseEventCalendarOptions.optionDefaults}
+      {...restOptions}
+      {...eventCalendarIconOptions}
     />
   )
 }
