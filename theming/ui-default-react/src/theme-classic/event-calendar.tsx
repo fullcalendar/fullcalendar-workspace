@@ -5,6 +5,8 @@ import FullCalendar from '@fullcalendar/react'
 import { defaultUiEventCalendarOptions } from '@fullcalendar/theme-classic-dev/ui-default/options-event-calendar'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 
+const { buttons: defaultButtons, ...restOptionDefaults } = defaultUiEventCalendarOptions.optionDefaults
+
 export interface EventCalendarProps extends CalendarOptions {
   availableViews?: string[]
   addButton?: {
@@ -40,7 +42,7 @@ export function EventCalendar({
         end: availableViews.join(','),
       }}
       buttons={{
-        ...defaultUiEventCalendarOptions.optionDefaults.buttons,
+        ...defaultButtons,
         ...userButtons,
         add: {
           isPrimary: true,
@@ -57,7 +59,7 @@ export function EventCalendar({
       )}
 
       // spreads
-      {...defaultUiEventCalendarOptions.optionDefaults}
+      {...restOptionDefaults}
       {...restOptions}
     />
   )

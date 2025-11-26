@@ -6,6 +6,8 @@ import { defaultUiEventCalendarOptions, params } from '@fullcalendar/theme-forma
 import { createSlots } from '@fullcalendar/theme-forma-dev/slots'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 
+const { buttons: defaultButtons, ...restOptionDefaults } = defaultUiEventCalendarOptions.optionDefaults
+
 const slots = createSlots({
   createElement: React.createElement as any, // HACK
   Fragment: React.Fragment as any, // HACK
@@ -45,7 +47,7 @@ export function EventCalendar({
         end: availableViews.join(','),
       }}
       buttons={{
-        ...defaultUiEventCalendarOptions.optionDefaults.buttons,
+        ...defaultButtons,
         ...userButtons,
         add: {
           isPrimary: true,
@@ -62,7 +64,7 @@ export function EventCalendar({
       )}
 
       // spreads
-      {...defaultUiEventCalendarOptions.optionDefaults}
+      {...restOptionDefaults}
       {...slots}
       {...restOptions}
     />
