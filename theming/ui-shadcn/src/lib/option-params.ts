@@ -27,6 +27,9 @@ const mutedBgHoverGroupClass = 'group-hover:bg-foreground/5'
 const faintBgHoverClass = 'hover:bg-muted/50'
 const faintBgFocusClass = 'focus-visible:bg-muted/50'
 
+// faint *solid*
+const faintSolidBgClass = 'bg-[color-mix(in_oklab,var(--foreground)_3%,var(--background))]'
+
 // primary
 const primaryClass = 'bg-primary text-(--primary-foreground)'
 const primaryPressableClass = `${primaryClass} hover:bg-primary/90`
@@ -48,6 +51,7 @@ const eventFaintPressableClass = joinClassNames(
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_20%,var(--background))]',
 )
 const eventMutedFgClass = 'text-[color-mix(in_oklab,var(--fc-event-color)_50%,var(--foreground))]'
+const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
 
 // interactive neutral foregrounds
 export const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'
@@ -68,7 +72,7 @@ export const params: ThemeOptionParams = {
   mutedBgClass,
   mutedSolidBgClass: 'bg-muted',
   faintBgClass: 'bg-foreground/3', // semi-transparent version of bg-sidebar
-  faintSolidBgClass: 'bg-[color-mix(in_oklab,var(--foreground)_3%,var(--background))]',
+  faintSolidBgClass,
 
   // neutral foregrounds
   fgClass: '', // inherited
@@ -122,7 +126,7 @@ export const params: ThemeOptionParams = {
   eventFaintBgClass,
   eventFaintPressableClass,
   bgEventColor: 'var(--foreground)',
-  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]',
+  bgEventBgClass,
 
   // misc event content
   highlightClass: 'bg-primary/10',

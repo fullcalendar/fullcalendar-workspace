@@ -69,6 +69,9 @@ const mutedHoverButtonClass = joinClassNames(
   'outline-ring/50',
 )
 
+// event content
+const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
+
 // interactive neutral foregrounds
 export const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'
 
@@ -246,7 +249,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       backgroundEventColor='var(--foreground)'
-      backgroundEventClass='bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
+      backgroundEventClass={bgEventBgClass}
       backgroundEventTitleClass={(data) => [
         'opacity-50 italic',
         data.isNarrow
