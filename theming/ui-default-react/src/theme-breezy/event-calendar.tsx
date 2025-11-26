@@ -24,17 +24,17 @@ export interface EventCalendarProps extends CalendarOptions {
 export function EventCalendar({
   availableViews = eventCalendarAvailableViews,
   addButton,
-  ...calendarOptions
+  plugins: userPlugins,
+  buttons: userButtons,
+  views: userViews,
+  ...restOptions
 }: EventCalendarProps) {
   return (
     <FullCalendar
       initialView={availableViews[0]}
-      {...defaultUiEventCalendarOptions.optionDefaults}
-      {...slots}
-      {...calendarOptions}
       plugins={[
         ...eventCalendarPlugins,
-        ...(calendarOptions.plugins || []),
+        ...(userPlugins || []),
       ]}
 
       /* Toolbar
@@ -51,7 +51,7 @@ export function EventCalendar({
           ...addButton,
         },
         ...defaultUiEventCalendarOptions.optionDefaults.buttons,
-        ...calendarOptions.buttons,
+        ...userButtons,
       }}
 
       /* View-Specific
@@ -59,8 +59,13 @@ export function EventCalendar({
 
       views={mergeViewOptionsMap(
         defaultUiEventCalendarOptions.views || {},
-        calendarOptions.views || {},
+        userViews || {},
       )}
+
+      // spreads
+      {...defaultUiEventCalendarOptions.optionDefaults}
+      {...slots}
+      {...restOptions}
     />
   )
 }
