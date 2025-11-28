@@ -175,75 +175,76 @@ const schedulerComponentMap: { [ui: string]: { [theme: string]: CalendarComponen
   },
 }
 
-const uiOptions = [
-  { value: 'fc', text: 'Default' },
-  { value: 'shadcn', text: 'Shadcn' },
-  { value: 'mui', text: 'MUI' },
-]
-const themeOptions = [
-  { value: 'monarch', text: 'Monarch' },
-  { value: 'forma', text: 'Forma' },
-  { value: 'breezy', text: 'Breezy' },
-  { value: 'pulse', text: 'Pulse' },
-  { value: 'classic', text: 'Classic' },
-]
+const uiOptions = {
+  fc: { text: 'Default' },
+  shadcn: { text: 'Shadcn' },
+  mui: { text: 'MUI' },
+}
 
-const fcMonarchPaletteOptions = [
-  { value: 'purple', text: 'Purple', colorClassName: 'bg-[#6750A4] dark:bg-[#D0BCFF]' },
-  { value: 'red', text: 'Red', colorClassName: 'bg-[rgb(143_76_56)] dark:bg-[rgb(255_181_160)]' },
-  { value: 'green', text: 'Green', colorClassName: 'bg-[rgb(76_102_43)] dark:bg-[rgb(177_209_138)]' },
-  { value: 'blue', text: 'Blue', colorClassName: 'bg-[rgb(65_95_145)] dark:bg-[rgb(170_199_255)]' },
-  { value: 'yellow', text: 'Yellow', colorClassName: 'bg-[rgb(109_94_15)] dark:bg-[rgb(219_198_110)]' },
-]
-const fcFormaPaletteOptions = [ // TODO: dark colors
-  { value: 'blue', text: 'Blue', colorClassName: 'bg-[#0F6CBD]' },
-  { value: 'red', text: 'Red', colorClassName: 'bg-[#d83b01]' },
-  { value: 'green', text: 'Green', colorClassName: 'bg-[#107c41]' },
-  { value: 'purple', text: 'Purple', colorClassName: 'bg-[#742774]' },
-]
-const fcPulsePaletteOptions = [ // TODO: dark colors
-  { value: 'red', text: 'Red', colorClassName: 'bg-[#fd453b]' },
-  { value: 'blue', text: 'Blue', colorClassName: 'bg-[#117aff]' },
-  { value: 'purple', text: 'Purple', colorClassName: 'bg-[#ad46ff]' },
-  { value: 'green', text: 'Green', colorClassName: 'bg-[#34c759]' },
-]
-const fcBreezyPaletteOptions = [ // TODO: dark colors
-  { value: 'indigo', text: 'Indigo', colorClassName: 'bg-indigo-600' },
-  { value: 'rose', text: 'Rose', colorClassName: 'bg-rose-600' },
-  { value: 'emerald', text: 'Emerald', colorClassName: 'bg-emerald-600' },
-  { value: 'honey', text: 'Honey', colorClassName: 'bg-yellow-500' },
-]
+const themeOptions = {
+  monarch: { text: 'Monarch' },
+  forma: { text: 'Forma' },
+  breezy: { text: 'Breezy' },
+  pulse: { text: 'Pulse' },
+  classic: { text: 'Classic' },
+}
 
-const shadcnPaletteOptions = [
-  { value: 'default', text: 'Default', colorClassName: 'bg-black dark:bg-white' },
-  { value: 'red', text: 'Red', colorClassName: 'bg-[oklch(0.577_0.245_27.325)] dark:bg-[oklch(0.637_0.237_25.331)]' },
-  { value: 'rose', text: 'Rose', colorClassName: 'bg-[oklch(0.586_0.253_17.585)] dark:bg-[oklch(0.645_0.246_16.439)]' },
-  { value: 'orange', text: 'Orange', colorClassName: 'bg-[oklch(0.646_0.222_41.116)] dark:bg-[oklch(0.705_0.213_47.604))]' },
-  { value: 'green', text: 'Green', colorClassName: 'bg-[oklch(0.648_0.2_131.684)] dark:bg-[oklch(0.648_0.2_131.684)]' },
-  { value: 'blue', text: 'Blue', colorClassName: 'bg-[oklch(0.546_0.245_262.881)] dark:bg-[oklch(0.623_0.214_259.815)]' },
-  { value: 'yellow', text: 'Yellow', colorClassName: 'bg-[oklch(0.852_0.199_91.936)] dark:bg-[oklch(0.795_0.184_86.047)]' },
-  { value: 'violet', text: 'Violet', colorClassName: 'bg-[oklch(0.541_0.281_293.009)] dark:bg-[oklch(0.606_0.25_292.717)]' },
-]
-const muiPaletteOptions = [
-  { value: 'blue', text: 'Blue', colorClassName: 'bg-[rgb(25,118,210)] dark:bg-[rgb(144,202,249)]' },
-  { value: 'purple', text: 'Purple', colorClassName: 'bg-[#6200ea] dark:bg-[#bb86fc]' }
-]
-const colorSchemeOptions = [
-  { value: 'light', text: 'Light' },
-  { value: 'dark', text: 'Dark' },
-]
+const fcMonarchPaletteOptions = {
+  purple: { text: 'Purple', lightColor: '#6750A4', darkColor: '#D0BCFF' },
+  red: { text: 'Red', lightColor: 'rgb(143, 76, 56)', darkColor: 'rgb(255, 181, 160)' },
+  green: { text: 'Green', lightColor: 'rgb(76, 102, 43)', darkColor: 'rgb(177, 209, 138)' },
+  blue: { text: 'Blue', lightColor: 'rgb(65, 95, 145)', darkColor: 'rgb(170, 199, 255)' },
+  yellow: { text: 'Yellow', lightColor: 'rgb(109, 94, 15)', darkColor: 'rgb(219, 198, 110)' },
+}
+const fcFormaPaletteOptions = {
+  blue: { text: 'Blue', lightColor: '#0F6CBD', darkColor: '#0F6CBD' },
+  red: { text: 'Red', lightColor: '#d83b01', darkColor: '#d83b01' },
+  green: { text: 'Green', lightColor: '#107c41', darkColor: '#107c41' },
+  purple: { text: 'Purple', lightColor: '#742774', darkColor: '#742774' },
+}
+const fcPulsePaletteOptions = {
+  red: { text: 'Red', lightColor: '#fd453b', darkColor: '#fd453b' },
+  blue: { text: 'Blue', lightColor: '#117aff', darkColor: '#117aff' },
+  purple: { text: 'Purple', lightColor: '#ad46ff', darkColor: '#ad46ff' },
+  green: { text: 'Green', lightColor: '#34c759', darkColor: '#34c759' },
+}
+const fcBreezyPaletteOptions = {
+  indigo: { text: 'Indigo', lightColor: '#4f46e5', darkColor: '#4f46e5' },
+  rose: { text: 'Rose', lightColor: '#e11d48', darkColor: '#e11d48' },
+  emerald: { text: 'Emerald', lightColor: '#059669', darkColor: '#059669' },
+  honey: { text: 'Honey', lightColor: '#eab308', darkColor: '#eab308' },
+}
 
-const uiValues = uiOptions.map((option) => option.value)
-const themeOptionValues = themeOptions.map((option) => option.value)
+const shadcnPaletteOptions = {
+  default: { text: 'Default', lightColor: 'black', darkColor: 'white' },
+  red: { text: 'Red', lightColor: 'oklch(0.577 0.245 27.325)', darkColor: 'oklch(0.637 0.237 25.331)' },
+  rose: { text: 'Rose', lightColor: 'oklch(0.586 0.253 17.585)', darkColor: 'oklch(0.645 0.246 16.439)' },
+  orange: { text: 'Orange', lightColor: 'oklch(0.646 0.222 41.116)', darkColor: 'oklch(0.705 0.213 47.604)' },
+  green: { text: 'Green', lightColor: 'oklch(0.648 0.2 131.684)', darkColor: 'oklch(0.648 0.2 131.684)' },
+  blue: { text: 'Blue', lightColor: 'oklch(0.546 0.245 262.881)', darkColor: 'oklch(0.623 0.214 259.815)' },
+  yellow: { text: 'Yellow', lightColor: 'oklch(0.852 0.199 91.936)', darkColor: 'oklch(0.795 0.184 86.047)' },
+  violet: { text: 'Violet', lightColor: 'oklch(0.541 0.281 293.009)', darkColor: 'oklch(0.606 0.25 292.717)' },
+}
+const muiPaletteOptions = {
+  blue: { text: 'Blue', lightColor: 'rgb(25, 118, 210)', darkColor: 'rgb(144, 202, 249)' },
+  purple: { text: 'Purple', lightColor: '#6200ea', darkColor: '#bb86fc' },
+}
+const colorSchemeOptions = {
+  light: { text: 'Light' },
+  dark: { text: 'Dark' },
+}
 
-const fcMonarchPaletteValues = fcMonarchPaletteOptions.map((option) => option.value)
-const fcFormaPaletteValues = fcFormaPaletteOptions.map((option) => option.value)
-const fcBreezyPaletteValues = fcBreezyPaletteOptions.map((option) => option.value)
-const fcPulsePaletteValues = fcPulsePaletteOptions.map((option) => option.value)
+const uiValues = Object.keys(uiOptions)
+const themeOptionValues = Object.keys(themeOptions)
 
-const shadcnPaletteValues = shadcnPaletteOptions.map((option) => option.value)
-const muiPaletteValues = muiPaletteOptions.map((option) => option.value)
-const colorSchemeValues = colorSchemeOptions.map((option) => option.value) as ('light' | 'dark')[]
+const fcMonarchPaletteValues = Object.keys(fcMonarchPaletteOptions)
+const fcFormaPaletteValues = Object.keys(fcFormaPaletteOptions)
+const fcBreezyPaletteValues = Object.keys(fcBreezyPaletteOptions)
+const fcPulsePaletteValues = Object.keys(fcPulsePaletteOptions)
+
+const shadcnPaletteValues = Object.keys(shadcnPaletteOptions)
+const muiPaletteValues = Object.keys(muiPaletteOptions)
+const colorSchemeValues = Object.keys(colorSchemeOptions) as ('light' | 'dark')[]
 
 export default function App() {
   const [ui, setUi] = useLocalStorageState('ui', 'fc', uiValues)
@@ -287,8 +288,8 @@ export default function App() {
             <div className='text-sm text-muted-foreground'>Theme</div>
             <Tabs value={theme} onValueChange={(v) => setTheme(v)}>
               <TabsList>
-                {themeOptions.map((option) => (
-                  <TabsTrigger key={option.value} value={option.value}>{option.text}</TabsTrigger>
+                {Object.entries(themeOptions).map(([value, option]) => (
+                  <TabsTrigger key={value} value={value}>{option.text}</TabsTrigger>
                 ))}
               </TabsList>
             </Tabs>
@@ -297,8 +298,8 @@ export default function App() {
             <div className='text-sm text-muted-foreground'>Component Lib</div>
             <Tabs value={ui} onValueChange={(v) => setUi(v)}>
               <TabsList>
-                {uiOptions.map((option) => (
-                  <TabsTrigger key={option.value} value={option.value}>{option.text}</TabsTrigger>
+                {Object.entries(uiOptions).map(([value, option]) => (
+                  <TabsTrigger key={value} value={value}>{option.text}</TabsTrigger>
                 ))}
               </TabsList>
             </Tabs>
@@ -313,9 +314,9 @@ export default function App() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {shadcnPaletteOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value} className='flex flex-row'>
-                      <div key={option.value} className={`size-4 ${option.colorClassName}`} />
+                  {Object.entries(shadcnPaletteOptions).map(([value, option]) => (
+                    <SelectItem key={value} value={value} className='flex flex-row'>
+                      <div className="size-4" style={{ backgroundColor: colorScheme === 'dark' ? option.darkColor : option.lightColor }} />
                       {option.text}
                     </SelectItem>
                   ))}
@@ -330,9 +331,9 @@ export default function App() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {muiPaletteOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value} className='flex flex-row'>
-                      <div className={`size-4 ${option.colorClassName}`} />
+                  {Object.entries(muiPaletteOptions).map(([value, option]) => (
+                    <SelectItem key={value} value={value} className='flex flex-row'>
+                      <div className="size-4" style={{ backgroundColor: colorScheme === 'dark' ? option.darkColor : option.lightColor }} />
                       {option.text}
                     </SelectItem>
                   ))}
@@ -347,9 +348,9 @@ export default function App() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {fcMonarchPaletteOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value} className='flex flex-row'>
-                      <div className={`size-4 ${option.colorClassName}`} />
+                  {Object.entries(fcMonarchPaletteOptions).map(([value, option]) => (
+                    <SelectItem key={value} value={value} className='flex flex-row'>
+                      <div className="size-4" style={{ backgroundColor: colorScheme === 'dark' ? option.darkColor : option.lightColor }} />
                       {option.text}
                     </SelectItem>
                   ))}
@@ -364,9 +365,9 @@ export default function App() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {fcFormaPaletteOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value} className='flex flex-row'>
-                      <div className={`size-4 ${option.colorClassName}`} />
+                  {Object.entries(fcFormaPaletteOptions).map(([value, option]) => (
+                    <SelectItem key={value} value={value} className='flex flex-row'>
+                      <div className="size-4" style={{ backgroundColor: colorScheme === 'dark' ? option.darkColor : option.lightColor }} />
                       {option.text}
                     </SelectItem>
                   ))}
@@ -381,9 +382,9 @@ export default function App() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {fcBreezyPaletteOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value} className='flex flex-row'>
-                      <div className={`size-4 ${option.colorClassName}`} />
+                  {Object.entries(fcBreezyPaletteOptions).map(([value, option]) => (
+                    <SelectItem key={value} value={value} className='flex flex-row'>
+                      <div className="size-4" style={{ backgroundColor: colorScheme === 'dark' ? option.darkColor : option.lightColor }} />
                       {option.text}
                     </SelectItem>
                   ))}
@@ -398,9 +399,9 @@ export default function App() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {fcPulsePaletteOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value} className='flex flex-row'>
-                      <div className={`size-4 ${option.colorClassName}`} />
+                  {Object.entries(fcPulsePaletteOptions).map(([value, option]) => (
+                    <SelectItem key={value} value={value} className='flex flex-row'>
+                      <div className="size-4" style={{ backgroundColor: colorScheme === 'dark' ? option.darkColor : option.lightColor }} />
                       {option.text}
                     </SelectItem>
                   ))}
@@ -410,8 +411,8 @@ export default function App() {
           )}
           <Tabs value={colorScheme} onValueChange={(v) => setColorScheme(v as ('light' | 'dark'))}>
             <TabsList>
-              {colorSchemeOptions.map((option) => (
-                <TabsTrigger key={option.value} value={option.value}>{option.text}</TabsTrigger>
+              {Object.entries(colorSchemeOptions).map(([value, option]) => (
+                <TabsTrigger key={value} value={value}>{option.text}</TabsTrigger>
               ))}
             </TabsList>
           </Tabs>
