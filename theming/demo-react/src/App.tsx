@@ -37,6 +37,8 @@ import {} from '@fullcalendar/timeline'
 import { eventCalendarProps, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
 import { resourceTimelineProps, vResourceProps } from '@fullcalendar/theme-common/scheduler'
 
+import { paletteMetaMap as fcMonarchPaletteOptions } from '@fullcalendar/theme-monarch-dev/ui-default/palettes-meta'
+
 // FullCalendar Default UI
 /* dev: */
 import { EventCalendar as FcMonarchEventCalendar } from '@fullcalendar/ui-default-react/dev/theme-monarch/event-calendar'
@@ -189,13 +191,6 @@ const themeOptions = {
   classic: { text: 'Classic' },
 }
 
-const fcMonarchPaletteOptions = {
-  purple: { text: 'Purple', lightColor: '#6750A4', darkColor: '#D0BCFF' },
-  red: { text: 'Red', lightColor: 'rgb(143, 76, 56)', darkColor: 'rgb(255, 181, 160)' },
-  green: { text: 'Green', lightColor: 'rgb(76, 102, 43)', darkColor: 'rgb(177, 209, 138)' },
-  blue: { text: 'Blue', lightColor: 'rgb(65, 95, 145)', darkColor: 'rgb(170, 199, 255)' },
-  yellow: { text: 'Yellow', lightColor: 'rgb(109, 94, 15)', darkColor: 'rgb(219, 198, 110)' },
-}
 const fcFormaPaletteOptions = {
   blue: { text: 'Blue', lightColor: '#0F6CBD', darkColor: '#0F6CBD' },
   red: { text: 'Red', lightColor: '#d83b01', darkColor: '#d83b01' },

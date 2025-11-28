@@ -1,4 +1,12 @@
 
+export type PaletteMetaMap = { [paletteName: string]: PaletteMeta }
+
+export type PaletteMeta = {
+  text: string
+  lightColor: string
+  darkColor: string
+}
+
 /*
 NOTE: when you EDIT this file,
 you need to stop and restart the watcher,
