@@ -3845,6 +3845,9 @@ importers:
       '@fullcalendar/scrollgrid':
         specifier: workspace:*
         version: link:../../premium/packages/scrollgrid/dist
+      '@fullcalendar/theme-common':
+        specifier: workspace:*
+        version: link:../theme-common
       '@fullcalendar/timegrid':
         specifier: workspace:*
         version: link:../../standard/packages/timegrid/dist
@@ -3978,6 +3981,9 @@ importers:
       '@fullcalendar/scrollgrid':
         specifier: workspace:*
         version: link:../../premium/packages/scrollgrid/dist
+      '@fullcalendar/theme-common':
+        specifier: workspace:*
+        version: link:../theme-common
       '@fullcalendar/timegrid':
         specifier: workspace:*
         version: link:../../standard/packages/timegrid/dist
@@ -4072,6 +4078,9 @@ importers:
       '@fullcalendar/scrollgrid':
         specifier: workspace:*
         version: link:../../premium/packages/scrollgrid/dist
+      '@fullcalendar/theme-common':
+        specifier: workspace:*
+        version: link:../theme-common
       '@fullcalendar/timegrid':
         specifier: workspace:*
         version: link:../../standard/packages/timegrid/dist

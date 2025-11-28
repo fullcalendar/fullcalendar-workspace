@@ -38,6 +38,9 @@ import { eventCalendarProps, eventCalendarPlugins } from '@fullcalendar/theme-co
 import { resourceTimelineProps, vResourceProps } from '@fullcalendar/theme-common/scheduler'
 
 import { paletteMetaMap as fcMonarchPaletteOptions } from '@fullcalendar/theme-monarch-dev/ui-default/palettes-meta'
+import { paletteMetaMap as fcFormaPaletteOptions } from '@fullcalendar/theme-forma-dev/ui-default/palettes-meta'
+import { paletteMetaMap as fcPulsePaletteOptions } from '@fullcalendar/theme-pulse-dev/ui-default/palettes-meta'
+import { paletteMetaMap as fcBreezyPaletteOptions } from '@fullcalendar/theme-breezy-dev/ui-default/palettes-meta'
 
 // FullCalendar Default UI
 /* dev: */
@@ -189,25 +192,6 @@ const themeOptions = {
   breezy: { text: 'Breezy' },
   pulse: { text: 'Pulse' },
   classic: { text: 'Classic' },
-}
-
-const fcFormaPaletteOptions = {
-  blue: { text: 'Blue', lightColor: '#0F6CBD', darkColor: '#0F6CBD' },
-  red: { text: 'Red', lightColor: '#d83b01', darkColor: '#d83b01' },
-  green: { text: 'Green', lightColor: '#107c41', darkColor: '#107c41' },
-  purple: { text: 'Purple', lightColor: '#742774', darkColor: '#742774' },
-}
-const fcPulsePaletteOptions = {
-  red: { text: 'Red', lightColor: '#fd453b', darkColor: '#fd453b' },
-  blue: { text: 'Blue', lightColor: '#117aff', darkColor: '#117aff' },
-  purple: { text: 'Purple', lightColor: '#ad46ff', darkColor: '#ad46ff' },
-  green: { text: 'Green', lightColor: '#34c759', darkColor: '#34c759' },
-}
-const fcBreezyPaletteOptions = {
-  indigo: { text: 'Indigo', lightColor: '#4f46e5', darkColor: '#4f46e5' },
-  rose: { text: 'Rose', lightColor: '#e11d48', darkColor: '#e11d48' },
-  emerald: { text: 'Emerald', lightColor: '#059669', darkColor: '#059669' },
-  honey: { text: 'Honey', lightColor: '#eab308', darkColor: '#eab308' },
 }
 
 const shadcnPaletteOptions = {
