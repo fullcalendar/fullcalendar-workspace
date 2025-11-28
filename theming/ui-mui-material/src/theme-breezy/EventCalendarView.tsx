@@ -26,7 +26,7 @@ export default function EventCalendarView({
 
       views={mergeViewOptionsMap(
         baseEventCalendarOptions.views || {},
-        userViews || {}
+        userViews || {},
       )}
 
       // spreads

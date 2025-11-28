@@ -20,7 +20,7 @@ export default function SchedulerView({
 
       views={mergeViewOptionsMap(
         baseSchedulerOnlyOptions.views || {},
-        userViews || {}
+        userViews || {},
       )}
 
       // spreads
