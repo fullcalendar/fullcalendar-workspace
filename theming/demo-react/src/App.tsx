@@ -34,6 +34,9 @@ import {} from '@fullcalendar/resource-timegrid'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import {} from '@fullcalendar/timeline'
 
+import { eventCalendarProps, eventCalendarPlugins } from './common-event-calendar.js'
+import { resourceTimelineProps, vResourceProps } from './common-scheduler.js'
+
 // FullCalendar Default UI
 /* dev: */
 import { EventCalendar as FcMonarchEventCalendar } from '@fullcalendar/ui-default-react/dev/theme-monarch/event-calendar'
@@ -273,6 +276,9 @@ export default function App() {
     rootEl.setAttribute('data-color-scheme', colorScheme)
   }, [ui, theme, fcMonarchPalette, fcFormaPalette, fcBreezyPalette, fcPulsePalette, shadcnPalette, colorScheme])
 
+  const EventCalendarComponent = eventCalendarComponentMap[ui][theme]
+  const SchedulerComponent = schedulerComponentMap[ui][theme]
+
   return (
     <>
       <div className='topbar sticky z-10 top-0 p-4 border-b bg-background shadow-xs flex flex-row flex-wrap gap-8 justify-between'>
@@ -422,335 +428,48 @@ export default function App() {
             {(ui === 'mui') && (
               <MuiCssBaseline />
             )}
-            <EventCalendarDemo
+            <EventCalendarComponent
+              {...eventCalendarProps}
               initialView='dayGridMonth'
               availableViews={['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek', 'multiMonthYear']}
-              ui={ui}
-              theme={theme}
+              plugins={[...eventCalendarPlugins, scrollGridPlugin, adaptivePlugin]}
             />
-            <EventCalendarDemo
+            <EventCalendarComponent
+              {...eventCalendarProps}
               initialView='timeGridWeek'
-              ui={ui}
-              theme={theme}
+              plugins={[...eventCalendarPlugins, scrollGridPlugin, adaptivePlugin]}
             />
-            {/* <EventCalendarDemo
+            <EventCalendarComponent
+              {...eventCalendarProps}
               initialView='multiMonthYear'
-              ui={ui}
-              theme={theme}
-            /> */}
-            {/* <EventCalendarDemo
+              plugins={[...eventCalendarPlugins, scrollGridPlugin, adaptivePlugin]}
+            />
+            <EventCalendarComponent
+              {...eventCalendarProps}
               initialView='dayGridYear'
-              ui={ui}
-              theme={theme}
-            /> */}
-            <EventCalendarDemo
+              availableViews={['dayGridYear']}
+              plugins={[...eventCalendarPlugins, scrollGridPlugin, adaptivePlugin]}
+            />
+            <EventCalendarComponent
+              {...eventCalendarProps}
               initialView='listYear'
               availableViews={['listYear', 'listMonth', 'listWeek']}
-              betterListButtons
-              ui={ui}
-              theme={theme}
+              plugins={[...eventCalendarPlugins, scrollGridPlugin, adaptivePlugin]}
+              listText='' // displays nicer list-view-button text
             />
-            <SchedulerDemo
+            <SchedulerComponent
+              {...resourceTimelineProps}
               initialView='resourceTimelineThreeDay'
               availableViews={['resourceTimelineDay', 'resourceTimelineThreeDay', 'resourceTimelineWeek']}
-              ui={ui}
-              theme={theme}
             />
-            <SchedulerDemo
+            <SchedulerComponent
+              {...vResourceProps}
               initialView='resourceTimeGridFiveDay'
               availableViews={['resourceTimeGridDay', 'resourceTimeGridTwoDay', 'resourceTimeGridFiveDay', 'resourceTimeGridWeek']}
-              ui={ui}
-              theme={theme}
             />
           </div>
         </MuiThemeProvider>
       </div>
     </>
-  )
-}
-
-interface DemoProps {
-  ui: string
-  theme: string
-  initialView?: string
-  availableViews?: string[]
-  betterListButtons?: boolean
-}
-
-function EventCalendarDemo(props: DemoProps) {
-  const EventCalendarComponent = eventCalendarComponentMap[props.ui][props.theme]
-
-  return (
-    <EventCalendarComponent
-      // dayMinWidth={200}
-      // slotMaxTime='08:00:00'
-      // expandRows
-      // height='auto'
-      // stickyHeaderDates={false}
-      // dayPopoverFormat={{ weekday: 'long' }}
-      // dayHeaderFormat={{ weekday: 'long' }}
-      eventStartEditable={true}
-      eventResizableFromStart={true}
-      // direction='rtl'
-      // displayEventTime={true}
-      // eventDisplay='block'
-      // allDaySlot={false}
-      availableViews={props.availableViews}
-      addButton={{
-        text: 'Add Event',
-        click: () => {
-          alert('add event...')
-        }
-      }}
-      {...(props.betterListButtons ? { listText: '' } : {})}
-      navLinkDayClick='timeGridDay'
-      navLinkWeekClick='timeGridWeek'
-      schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives' // for extra plugins
-      weekNumbers={true}
-      plugins={[
-        // extra plugins...
-        scrollGridPlugin,
-        adaptivePlugin,
-      ]}
-      eventInteractive={true}
-      initialView={props.initialView}
-      // multiMonthMaxColumns={1}
-      nowIndicator={true}
-      navLinks={true}
-      editable={true}
-      selectable={true}
-      selectMirror={false}
-      dayMaxEvents={true}
-      // businessHours={true} // -- TODO: background conflicts with the week number pills!!!
-      eventMaxStack={1}
-      // // for testing pill-like day-numbers
-      // dayCellFormat={{
-      //   month: "short", // gives Jan, Feb, Mar, ...
-      //   day: "numeric"  // gives 1, 2, 3, ...
-      // }}
-      // dayHeaderFormat={{
-      //   weekday: 'short',
-      // }}
-      // events='https://fullcalendar.io/api/demo-feeds/events.json?overload-day'
-      now='2025-07-04T12:00:00'
-      timeZone='UTC'
-      events={[
-        {
-          "title": "All Day Event",
-          "start": "2025-07-01",
-          color: 'pink',
-          contrastColor: '#000',
-        },
-        {
-          "title": "Long Event",
-          "start": "2025-07-07",
-          "end": "2025-07-17",
-          // "color": "var(--color-pink-500)",
-        },
-        {
-          "groupId": "999",
-          "title": "Repeating Event",
-          "start": "2025-07-09T16:00:00+00:00"
-        },
-        {
-          "groupId": "999",
-          "title": "Repeating Event",
-          "start": "2025-07-16T16:00:00+00:00"
-        },
-        {
-          "title": "Conference",
-          "start": "2025-07-03",
-          "end": "2025-07-05",
-          // display: 'background',
-        },
-        {
-          "title": "Meeting",
-          "start": "2025-07-04T10:30:00+00:00",
-          "end": "2025-07-04T12:30:00+00:00"
-        },
-        {
-          "title": "Lunch",
-          "start": "2025-07-04T12:00:00+00:00"
-        },
-        {
-          "title": "Birthday Party",
-          "start": "2025-07-05T07:00:00+00:00"
-        },
-        {
-          "url": "http:\/\/google.com\/",
-          "title": "Click for Google",
-          "start": "2025-07-28"
-        },
-        {
-          "title": "Meeting",
-          "start": "2025-07-01T08:30:00+00:00",
-          "end": "2025-07-01T16:30:00+00:00",
-          // "end": "2025-07-01T09:00:00+00:00", // for isShort
-          "display": "background",
-          // "color": "red",
-        },
-        // {
-        //   "title": "Meeting",
-        //   "start": "2025-07-04T08:30:00+00:00",
-        //   "end": "2025-07-04T16:30:00+00:00",
-        //   "display": "background",
-        //   // "color": "red",
-        // },
-        {
-          "title": "Happy Hour",
-          "start": "2025-07-04T17:30:00+00:00"
-        },
-        {
-          "title": "Dinner",
-          "start": "2025-07-04T20:00:00+00:00"
-        }
-      ]}
-    />
-  )
-}
-
-function SchedulerDemo(props: DemoProps) {
-  const SchedulerComponent = schedulerComponentMap[props.ui][props.theme]
-  const vResourceView = props.availableViews?.includes('resourceTimeGridDay')
-  const expandRows = false
-
-  return (
-    <SchedulerComponent
-      // eventOverlap={false}
-      // datesAboveResources={true}
-      weekNumbers={true}
-      navLinks={true}
-      expandRows={expandRows}
-      // height='auto'
-      // stickyHeaderDates={false}
-      eventStartEditable={true}
-      eventResizableFromStart={true}
-      // direction='rtl'
-      // weekNumbers
-      availableViews={props.availableViews}
-      addButton={{
-        text: 'Add Event',
-        click: () => [
-          alert('add event...')
-        ]
-      }}
-      // displayEventTime={true}
-      eventMaxStack={1}
-      initialView={props.initialView}
-      navLinkDayClick='resourceTimelineDay'
-      navLinkWeekClick='resourceTimelineWeek'
-      schedulerLicenseKey='CC-Attribution-NonCommercial-NoDerivatives'
-      timeZone='UTC'
-      dayMinWidth={200}
-      editable={true}
-      selectable={true}
-      nowIndicator={true}
-      aspectRatio={1.6}
-      scrollTime='07:00'
-      eventInteractive={true}
-      views={{
-        resourceTimelineThreeDay: {
-          type: 'resourceTimeline',
-          duration: { days: 3 },
-          // slotDuration: { days: 1 },
-        },
-        resourceTimeline: {
-          slotDuration: '01:00',
-          snapDuration: '00:30',
-        },
-        resourceTimelineWeek: {
-          // slotDuration: { days: 1 },
-          slotHeaderInterval: { hours: 3 },
-        },
-        resourceTimeGridTwoDay: {
-          type: 'resourceTimeGrid',
-          duration: { days: 2 },
-        },
-        resourceTimeGridFiveDay: {
-          type: 'resourceTimeGrid',
-          duration: { days: 5 },
-        },
-        resourceDayGridFiveDay: {
-          type: 'resourceDayGrid',
-          duration: { days: 5 },
-        }
-      }}
-      buttons={{
-        resourceTimelineThreeDay: {
-          text: '3-Day',
-        },
-        resourceTimeGridTwoDay: {
-          text: '2-Day',
-        },
-        resourceTimeGridFiveDay: {
-          text: '5-Day',
-        }
-      }}
-      resourceColumnHeaderContent='Rooms'
-      resourceColumnsWidth='40%'
-      resourceGroupField='building'
-      resourceColumns={[
-        { headerContent: 'Building', field: 'building' },
-        { headerContent: 'Room', field: 'title' },
-        { headerContent: 'Occupancy', field: 'occupancy' },
-      ]}
-      resources={[
-        { id: 'a', building: '460 Bryant', title: 'Auditorium A', occupancy: 40 },
-        { id: 'b', building: '460 Bryant', title: 'Auditorium B', occupancy: 40, eventColor: 'green' },
-        { id: 'c', building: '460 Bryant', title: 'Auditorium C', occupancy: 40, eventColor: 'orange' },
-        ...(
-          (vResourceView || expandRows) ? [] : [
-            {
-              id: 'd',
-              building: '460 Bryant',
-              title: 'Auditorium D',
-              occupancy: 40,
-              children: [
-                { id: 'd1', title: 'Room D1', occupancy: 10 },
-                { id: 'd2', title: 'Room D2', occupancy: 10 },
-              ],
-            },
-            { id: 'e', building: '460 Bryant', title: 'Auditorium E', occupancy: 40 },
-            { id: 'f', building: '460 Bryant', title: 'Auditorium F', occupancy: 40, eventColor: 'red' },
-            { id: 'g', building: '564 Pacific', title: 'Auditorium G', occupancy: 40 },
-            { id: 'h', building: '564 Pacific', title: 'Auditorium H', occupancy: 40 },
-            { id: 'i', building: '564 Pacific', title: 'Auditorium I', occupancy: 40 },
-            { id: 'j', building: '564 Pacific', title: 'Auditorium J', occupancy: 40 },
-            { id: 'k', building: '564 Pacific', title: 'Auditorium K', occupancy: 40 },
-            { id: 'l', building: '564 Pacific', title: 'Auditorium L', occupancy: 40 },
-            { id: 'm', building: '564 Pacific', title: 'Auditorium M', occupancy: 40 },
-            { id: 'n', building: '564 Pacific', title: 'Auditorium N', occupancy: 40 },
-            { id: 'o', building: '564 Pacific', title: 'Auditorium O', occupancy: 40 },
-            { id: 'p', building: '564 Pacific', title: 'Auditorium P', occupancy: 40 },
-            { id: 'q', building: '564 Pacific', title: 'Auditorium Q', occupancy: 40 },
-            { id: 'r', building: '564 Pacific', title: 'Auditorium R', occupancy: 40 },
-            { id: 's', building: '564 Pacific', title: 'Auditorium S', occupancy: 40 },
-            { id: 't', building: '564 Pacific', title: 'Auditorium T', occupancy: 40 },
-            { id: 'u', building: '564 Pacific', title: 'Auditorium U', occupancy: 40 },
-            { id: 'v', building: '564 Pacific', title: 'Auditorium V', occupancy: 40 },
-            { id: 'w', building: '564 Pacific', title: 'Auditorium W', occupancy: 40 },
-            { id: 'x', building: '564 Pacific', title: 'Auditorium X', occupancy: 40 },
-            { id: 'y', building: '564 Pacific', title: 'Auditorium Y', occupancy: 40 },
-            { id: 'z', building: '564 Pacific', title: 'Auditorium Z', occupancy: 40 },
-          ]
-        )
-      ]}
-      events={
-        vResourceView ? [
-          {
-            "title": "Meeting",
-            "start": "2025-07-04T10:30:00+00:00",
-            "end": "2025-07-04T12:30:00+00:00",
-            "resourceId": "a",
-          },
-          {
-            "title": "Lunch",
-            "start": "2025-07-04T12:00:00+00:00",
-            "resourceId": "a",
-          },
-        ] : 'https://fullcalendar.io/api/demo-feeds/events.json?single-day&for-resource-timeline'
-      }
-      now={vResourceView ? '2025-07-04T12:00:00' : undefined}
-    />
   )
 }
