@@ -34,8 +34,8 @@ import {} from '@fullcalendar/resource-timegrid'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import {} from '@fullcalendar/timeline'
 
-import { eventCalendarProps, eventCalendarPlugins } from './common-event-calendar.js'
-import { resourceTimelineProps, vResourceProps } from './common-scheduler.js'
+import { eventCalendarProps, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
+import { resourceTimelineProps, vResourceProps } from '@fullcalendar/theme-common/scheduler'
 
 // FullCalendar Default UI
 /* dev: */

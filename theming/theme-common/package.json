@@ -10,9 +10,63 @@
     "./package.json": "./package.json",
     ".": {
       "import": {
-        "types": "./index.d.ts",
-        "default": "./index.js"
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./event-calendar": {
+      "import": {
+        "types": "./dist/event-calendar.d.ts",
+        "default": "./dist/event-calendar.js"
+      }
+    },
+    "./scheduler": {
+      "import": {
+        "types": "./dist/scheduler.d.ts",
+        "default": "./dist/scheduler.js"
       }
     }
+  },
+  "tsConfig": {
+    "compilerOptions": {
+      "target": "ES2020",
+      "useDefineForClassFields": true,
+      "module": "Node16",
+      "lib": ["ES2020", "DOM", "DOM.Iterable"],
+      "skipLibCheck": true,
+      "jsx": "react",
+      "jsxFactory": "createElement",
+
+      "moduleResolution": "node16",
+      "isolatedModules": true,
+      "moduleDetection": "force",
+
+      "strict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noFallthroughCasesInSwitch": true,
+
+      "composite": true,
+      "declaration": true,
+      "declarationMap": true,
+      "outDir": "dist",
+      "rootDir": "src"
+    },
+    "include": ["src"]
+  },
+  "dependencies": {
+    "@fullcalendar/adaptive": "workspace:*",
+    "@fullcalendar/core": "workspace:*",
+    "@fullcalendar/daygrid": "workspace:*",
+    "@fullcalendar/interaction": "workspace:*",
+    "@fullcalendar/list": "workspace:*",
+    "@fullcalendar/multimonth": "workspace:*",
+    "@fullcalendar/resource": "workspace:*",
+    "@fullcalendar/resource-daygrid": "workspace:*",
+    "@fullcalendar/resource-timegrid": "workspace:*",
+    "@fullcalendar/resource-timeline": "workspace:*",
+    "@fullcalendar/scrollgrid": "workspace:*",
+    "@fullcalendar/timegrid": "workspace:*",
+    "@fullcalendar/timeline": "workspace:*"
   }
 }

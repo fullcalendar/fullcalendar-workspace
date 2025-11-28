@@ -46,6 +46,7 @@
     "@fullcalendar/resource-timeline": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
     "@fullcalendar/shadcn": "workspace:*",
+    "@fullcalendar/theme-common": "workspace:*",
     "@fullcalendar/theme-breezy-dev": "workspace:*",
     "@fullcalendar/theme-classic-dev": "workspace:*",
     "@fullcalendar/theme-forma-dev": "workspace:*",
