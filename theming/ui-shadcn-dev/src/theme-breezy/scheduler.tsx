@@ -1,9 +1,3 @@
-/*
-Do the same instructions I wrote at the top of event-calendar.tsx, but for this file.
-Output should be _gen/scheduler.tsx
-Instead of inline all consts afresh, try to export and reuse what's already in _gen/event-calendar.tsx
-When merging props, ensure resourceExpanderContent goes right after resourceExpanderClass
-*/
 import React from 'react'
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
