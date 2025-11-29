@@ -12,9 +12,9 @@
 
 /* Shadcn */
 /* dev: */
-@source "../node_modules/@fullcalendar/shadcn/src";
+@source "../node_modules/@fullcalendar/shadcn-dev/src";
 /* prod:
-@source "../node_modules/@fullcalendar/shadcn/src/_gen-tailwind";
+@source "../node_modules/@fullcalendar/shadcn-dev/src/_gen-tailwind";
 */
 
 /* MUI */

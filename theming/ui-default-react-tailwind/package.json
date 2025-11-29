@@ -1,5 +1,5 @@
 {
-  "name": "@fullcalendar/ui-default-react",
+  "name": "@fullcalendar/ui-default-react-tailwind",
   "private": true,
   "version": "0.0.0",
   "type": "module",
