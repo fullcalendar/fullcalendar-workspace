@@ -1,5 +1,5 @@
 {
-  "name": "@fullcalendar/ui-default-react-tailwind",
+  "name": "@fullcalendar/ui-mui-tailwind",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -46,6 +46,8 @@
   "peerDependencies": {
     "@fullcalendar/core": "workspace:*",
     "@fullcalendar/react": "workspace:*",
+    "@mui/icons-material": "^7.1.2",
+    "@mui/material": "^7.1.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
@@ -63,16 +65,22 @@
     "@fullcalendar/resource-timeline": "workspace:*",
     "@fullcalendar/adaptive": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
-    "@fullcalendar/theme-common": "workspace:*",
     "@fullcalendar/theme-monarch-tailwind": "workspace:*",
     "@fullcalendar/theme-forma-tailwind": "workspace:*",
     "@fullcalendar/theme-classic-tailwind": "workspace:*",
     "@fullcalendar/theme-breezy-tailwind": "workspace:*",
     "@fullcalendar/theme-pulse-tailwind": "workspace:*",
+    "@fullcalendar/theme-common": "workspace:*",
+    "@mui/icons-material": "^7.1.2",
+    "@mui/material": "^7.1.2",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "typescript": "~5.7.2"
+  },
+  "publishConfig": {
+    "directory": "./_gen-components-dist",
+    "linkDirectory": false
   }
 }

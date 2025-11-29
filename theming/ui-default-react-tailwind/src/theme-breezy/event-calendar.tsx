@@ -1,8 +1,8 @@
 import React from 'react'
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
-import { defaultUiEventCalendarOptions, params } from '@fullcalendar/theme-breezy-dev/ui-default-options-event-calendar'
-import { createSlots } from '@fullcalendar/theme-breezy-dev/slots'
+import { defaultUiEventCalendarOptions, params } from '@fullcalendar/theme-breezy-tailwind/ui-default-options-event-calendar'
+import { createSlots } from '@fullcalendar/theme-breezy-tailwind/slots'
 import { eventCalendarAvailableViews, eventCalendarPlugins, EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
 
 const { buttons: defaultButtons, ...restOptionDefaults } = defaultUiEventCalendarOptions.optionDefaults

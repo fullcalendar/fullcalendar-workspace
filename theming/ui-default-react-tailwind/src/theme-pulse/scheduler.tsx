@@ -1,6 +1,6 @@
 import React from 'react'
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
-import { defaultUiSchedulerOnlyOptions } from '@fullcalendar/theme-pulse-dev/ui-default-options-scheduler'
+import { defaultUiSchedulerOnlyOptions } from '@fullcalendar/theme-pulse-tailwind/ui-default-options-scheduler'
 import { EventCalendar } from './event-calendar.js'
 import { schedulerAvailableViews, schedulerOnlyPlugins, SchedulerProps } from '@fullcalendar/theme-common/scheduler'
 

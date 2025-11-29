@@ -3643,7 +3643,7 @@ importers:
         specifier: workspace:7.0.0-rc.0
         version: link:../../packages/core/dist
 
-  theming/demo-react-all:
+  theming/demo-react:
     dependencies:
       '@emotion/react':
         specifier: ^11.14.0
@@ -3739,24 +3739,24 @@ importers:
       '@fullcalendar/scrollgrid':
         specifier: workspace:*
         version: link:../../premium/packages/scrollgrid/dist
-      '@fullcalendar/theme-breezy-dev':
+      '@fullcalendar/theme-breezy-tailwind':
         specifier: workspace:*
-        version: link:../theme-breezy-dev
-      '@fullcalendar/theme-classic-dev':
+        version: link:../theme-breezy-tailwind
+      '@fullcalendar/theme-classic-tailwind':
         specifier: workspace:*
-        version: link:../theme-classic-dev
+        version: link:../theme-classic-tailwind
       '@fullcalendar/theme-common':
         specifier: workspace:*
         version: link:../theme-common
-      '@fullcalendar/theme-forma-dev':
+      '@fullcalendar/theme-forma-tailwind':
         specifier: workspace:*
-        version: link:../theme-forma-dev
-      '@fullcalendar/theme-monarch-dev':
+        version: link:../theme-forma-tailwind
+      '@fullcalendar/theme-monarch-tailwind':
         specifier: workspace:*
-        version: link:../theme-monarch-dev
-      '@fullcalendar/theme-pulse-dev':
+        version: link:../theme-monarch-tailwind
+      '@fullcalendar/theme-pulse-tailwind':
         specifier: workspace:*
-        version: link:../theme-pulse-dev
+        version: link:../theme-pulse-tailwind
       '@fullcalendar/timegrid':
         specifier: workspace:*
         version: link:../../standard/packages/timegrid/dist
@@ -3766,12 +3766,12 @@ importers:
       '@fullcalendar/ui-default-react-tailwind':
         specifier: workspace:*
         version: link:../ui-default-react-tailwind
-      '@fullcalendar/ui-mui-material-dev':
+      '@fullcalendar/ui-mui-tailwind':
         specifier: workspace:*
-        version: link:../ui-mui-material-dev
-      '@fullcalendar/ui-shadcn-dev':
+        version: link:../ui-mui-tailwind
+      '@fullcalendar/ui-shadcn':
         specifier: workspace:*
-        version: link:../ui-shadcn-dev
+        version: link:../ui-shadcn
       '@types/node':
         specifier: ^24.0.7
         version: 24.0.7
@@ -3809,7 +3809,7 @@ importers:
         specifier: ^7.0.0
         version: 7.0.5(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
 
-  theming/theme-breezy-dev:
+  theming/theme-breezy-tailwind:
     dependencies:
       '@fullcalendar/core':
         specifier: workspace:*
@@ -3858,7 +3858,7 @@ importers:
         specifier: ~5.7.2
         version: 5.7.3
 
-  theming/theme-classic-dev:
+  theming/theme-classic-tailwind:
     dependencies:
       '@fullcalendar/core':
         specifier: workspace:*
@@ -3946,7 +3946,7 @@ importers:
         specifier: workspace:*
         version: link:../../premium/packages/timeline/dist
 
-  theming/theme-forma-dev:
+  theming/theme-forma-tailwind:
     devDependencies:
       '@fullcalendar/adaptive':
         specifier: workspace:*
@@ -3994,7 +3994,7 @@ importers:
         specifier: ~5.7.2
         version: 5.7.3
 
-  theming/theme-monarch-dev:
+  theming/theme-monarch-tailwind:
     devDependencies:
       '@fullcalendar/adaptive':
         specifier: workspace:*
@@ -4042,7 +4042,7 @@ importers:
         specifier: ~5.7.2
         version: 5.7.3
 
-  theming/theme-pulse-dev:
+  theming/theme-pulse-tailwind:
     dependencies:
       '@fullcalendar/core':
         specifier: workspace:*
@@ -4126,24 +4126,24 @@ importers:
       '@fullcalendar/scrollgrid':
         specifier: workspace:*
         version: link:../../premium/packages/scrollgrid/dist
-      '@fullcalendar/theme-breezy-dev':
+      '@fullcalendar/theme-breezy-tailwind':
         specifier: workspace:*
-        version: link:../theme-breezy-dev
-      '@fullcalendar/theme-classic-dev':
+        version: link:../theme-breezy-tailwind
+      '@fullcalendar/theme-classic-tailwind':
         specifier: workspace:*
-        version: link:../theme-classic-dev
+        version: link:../theme-classic-tailwind
       '@fullcalendar/theme-common':
         specifier: workspace:*
         version: link:../theme-common
-      '@fullcalendar/theme-forma-dev':
+      '@fullcalendar/theme-forma-tailwind':
         specifier: workspace:*
-        version: link:../theme-forma-dev
-      '@fullcalendar/theme-monarch-dev':
+        version: link:../theme-forma-tailwind
+      '@fullcalendar/theme-monarch-tailwind':
         specifier: workspace:*
-        version: link:../theme-monarch-dev
-      '@fullcalendar/theme-pulse-dev':
+        version: link:../theme-monarch-tailwind
+      '@fullcalendar/theme-pulse-tailwind':
         specifier: workspace:*
-        version: link:../theme-pulse-dev
+        version: link:../theme-pulse-tailwind
       '@fullcalendar/timegrid':
         specifier: workspace:*
         version: link:../../standard/packages/timegrid/dist
@@ -4166,17 +4166,7 @@ importers:
         specifier: ~5.7.2
         version: 5.7.3
 
-  theming/ui-default-react-tailwind-demo:
-    dependencies:
-      '@fullcalendar/ui-default-react-tailwind':
-        specifier: workspace:*
-        version: link:../ui-default-react-tailwind
-      react:
-        specifier: ^19.1.0
-        version: 19.1.0
-      react-dom:
-        specifier: ^19.1.0
-        version: 19.1.0(react@19.1.0)
+  theming/ui-mui-tailwind:
     devDependencies:
       '@fullcalendar/adaptive':
         specifier: workspace:*
@@ -4211,108 +4201,24 @@ importers:
       '@fullcalendar/scrollgrid':
         specifier: workspace:*
         version: link:../../premium/packages/scrollgrid/dist
-      '@fullcalendar/theme-breezy-dev':
+      '@fullcalendar/theme-breezy-tailwind':
         specifier: workspace:*
-        version: link:../theme-breezy-dev
-      '@fullcalendar/theme-classic-dev':
+        version: link:../theme-breezy-tailwind
+      '@fullcalendar/theme-classic-tailwind':
         specifier: workspace:*
-        version: link:../theme-classic-dev
+        version: link:../theme-classic-tailwind
       '@fullcalendar/theme-common':
         specifier: workspace:*
         version: link:../theme-common
-      '@fullcalendar/theme-forma-dev':
+      '@fullcalendar/theme-forma-tailwind':
         specifier: workspace:*
-        version: link:../theme-forma-dev
-      '@fullcalendar/theme-monarch-dev':
+        version: link:../theme-forma-tailwind
+      '@fullcalendar/theme-monarch-tailwind':
         specifier: workspace:*
-        version: link:../theme-monarch-dev
-      '@fullcalendar/theme-pulse-dev':
+        version: link:../theme-monarch-tailwind
+      '@fullcalendar/theme-pulse-tailwind':
         specifier: workspace:*
-        version: link:../theme-pulse-dev
-      '@fullcalendar/timegrid':
-        specifier: workspace:*
-        version: link:../../standard/packages/timegrid/dist
-      '@fullcalendar/timeline':
-        specifier: workspace:*
-        version: link:../../premium/packages/timeline/dist
-      '@tailwindcss/vite':
-        specifier: ^4.1.4
-        version: 4.1.11(vite@7.0.5(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
-      '@types/node':
-        specifier: ^24.0.7
-        version: 24.0.7
-      '@types/react':
-        specifier: ^19.1.8
-        version: 19.1.8
-      '@types/react-dom':
-        specifier: ^19.1.6
-        version: 19.1.6(@types/react@19.1.8)
-      '@vitejs/plugin-react':
-        specifier: ^4.5.2
-        version: 4.7.0(vite@7.0.5(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
-      tailwindcss:
-        specifier: ^4.1.4
-        version: 4.1.11
-      typescript:
-        specifier: ~5.7.2
-        version: 5.7.3
-      vite:
-        specifier: ^7.0.0
-        version: 7.0.5(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
-
-  theming/ui-mui-material-dev:
-    devDependencies:
-      '@fullcalendar/adaptive':
-        specifier: workspace:*
-        version: link:../../premium/packages/adaptive/dist
-      '@fullcalendar/core':
-        specifier: workspace:*
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:*
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:*
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:*
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/multimonth':
-        specifier: workspace:*
-        version: link:../../standard/packages/multimonth/dist
-      '@fullcalendar/react':
-        specifier: workspace:*
-        version: link:../../contrib/react
-      '@fullcalendar/resource-daygrid':
-        specifier: workspace:*
-        version: link:../../premium/packages/resource-daygrid/dist
-      '@fullcalendar/resource-timegrid':
-        specifier: workspace:*
-        version: link:../../premium/packages/resource-timegrid/dist
-      '@fullcalendar/resource-timeline':
-        specifier: workspace:*
-        version: link:../../premium/packages/resource-timeline/dist
-      '@fullcalendar/scrollgrid':
-        specifier: workspace:*
-        version: link:../../premium/packages/scrollgrid/dist
-      '@fullcalendar/theme-breezy-dev':
-        specifier: workspace:*
-        version: link:../theme-breezy-dev
-      '@fullcalendar/theme-classic-dev':
-        specifier: workspace:*
-        version: link:../theme-classic-dev
-      '@fullcalendar/theme-common':
-        specifier: workspace:*
-        version: link:../theme-common
-      '@fullcalendar/theme-forma-dev':
-        specifier: workspace:*
-        version: link:../theme-forma-dev
-      '@fullcalendar/theme-monarch-dev':
-        specifier: workspace:*
-        version: link:../theme-monarch-dev
-      '@fullcalendar/theme-pulse-dev':
-        specifier: workspace:*
-        version: link:../theme-pulse-dev
+        version: link:../theme-pulse-tailwind
       '@fullcalendar/timegrid':
         specifier: workspace:*
         version: link:../../standard/packages/timegrid/dist
@@ -4342,20 +4248,7 @@ importers:
         version: 5.7.3
     publishDirectory: ./_gen-components-dist
 
-  theming/ui-shadcn-demo:
-    dependencies:
-      '@fullcalendar/ui-shadcn-dev':
-        specifier: workspace:*
-        version: link:../ui-shadcn-dev
-      lucide-react:
-        specifier: ^0.525.0
-        version: 0.525.0(react@19.1.0)
-      react:
-        specifier: ^19.1.0
-        version: 19.1.0
-      react-dom:
-        specifier: ^19.1.0
-        version: 19.1.0(react@19.1.0)
+  theming/ui-shadcn:
     devDependencies:
       '@fullcalendar/adaptive':
         specifier: workspace:*
@@ -4390,123 +4283,24 @@ importers:
       '@fullcalendar/scrollgrid':
         specifier: workspace:*
         version: link:../../premium/packages/scrollgrid/dist
-      '@fullcalendar/theme-breezy-dev':
+      '@fullcalendar/theme-breezy-tailwind':
         specifier: workspace:*
-        version: link:../theme-breezy-dev
-      '@fullcalendar/theme-classic-dev':
+        version: link:../theme-breezy-tailwind
+      '@fullcalendar/theme-classic-tailwind':
         specifier: workspace:*
-        version: link:../theme-classic-dev
+        version: link:../theme-classic-tailwind
       '@fullcalendar/theme-common':
         specifier: workspace:*
         version: link:../theme-common
-      '@fullcalendar/theme-forma-dev':
+      '@fullcalendar/theme-forma-tailwind':
         specifier: workspace:*
-        version: link:../theme-forma-dev
-      '@fullcalendar/theme-monarch-dev':
+        version: link:../theme-forma-tailwind
+      '@fullcalendar/theme-monarch-tailwind':
         specifier: workspace:*
-        version: link:../theme-monarch-dev
-      '@fullcalendar/theme-pulse-dev':
+        version: link:../theme-monarch-tailwind
+      '@fullcalendar/theme-pulse-tailwind':
         specifier: workspace:*
-        version: link:../theme-pulse-dev
-      '@fullcalendar/timegrid':
-        specifier: workspace:*
-        version: link:../../standard/packages/timegrid/dist
-      '@fullcalendar/timeline':
-        specifier: workspace:*
-        version: link:../../premium/packages/timeline/dist
-      '@radix-ui/react-slot':
-        specifier: ^1.2.3
-        version: 1.2.3(@types/react@19.1.8)(react@19.1.0)
-      '@radix-ui/react-tabs':
-        specifier: ^1.1.12
-        version: 1.1.12(@types/react-dom@19.1.6(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@tailwindcss/vite':
-        specifier: ^4.1.4
-        version: 4.1.11(vite@7.0.5(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
-      '@types/node':
-        specifier: ^24.0.7
-        version: 24.0.7
-      '@types/react':
-        specifier: ^19.1.8
-        version: 19.1.8
-      '@types/react-dom':
-        specifier: ^19.1.6
-        version: 19.1.6(@types/react@19.1.8)
-      '@vitejs/plugin-react':
-        specifier: ^4.5.2
-        version: 4.7.0(vite@7.0.5(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1))
-      class-variance-authority:
-        specifier: ^0.7.1
-        version: 0.7.1
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
-      tailwind-merge:
-        specifier: ^3.3.1
-        version: 3.3.1
-      tailwindcss:
-        specifier: ^4.1.4
-        version: 4.1.11
-      typescript:
-        specifier: ~5.7.2
-        version: 5.7.3
-      vite:
-        specifier: ^7.0.0
-        version: 7.0.5(@types/node@24.0.7)(jiti@2.4.2)(less@4.2.1)(lightningcss@1.30.1)(sass@1.82.0)(stylus@0.62.0)(terser@5.39.0)(yaml@2.6.1)
-
-  theming/ui-shadcn-dev:
-    devDependencies:
-      '@fullcalendar/adaptive':
-        specifier: workspace:*
-        version: link:../../premium/packages/adaptive/dist
-      '@fullcalendar/core':
-        specifier: workspace:*
-        version: link:../../standard/packages/core/dist
-      '@fullcalendar/daygrid':
-        specifier: workspace:*
-        version: link:../../standard/packages/daygrid/dist
-      '@fullcalendar/interaction':
-        specifier: workspace:*
-        version: link:../../standard/packages/interaction/dist
-      '@fullcalendar/list':
-        specifier: workspace:*
-        version: link:../../standard/packages/list/dist
-      '@fullcalendar/multimonth':
-        specifier: workspace:*
-        version: link:../../standard/packages/multimonth/dist
-      '@fullcalendar/react':
-        specifier: workspace:*
-        version: link:../../contrib/react
-      '@fullcalendar/resource-daygrid':
-        specifier: workspace:*
-        version: link:../../premium/packages/resource-daygrid/dist
-      '@fullcalendar/resource-timegrid':
-        specifier: workspace:*
-        version: link:../../premium/packages/resource-timegrid/dist
-      '@fullcalendar/resource-timeline':
-        specifier: workspace:*
-        version: link:../../premium/packages/resource-timeline/dist
-      '@fullcalendar/scrollgrid':
-        specifier: workspace:*
-        version: link:../../premium/packages/scrollgrid/dist
-      '@fullcalendar/theme-breezy-dev':
-        specifier: workspace:*
-        version: link:../theme-breezy-dev
-      '@fullcalendar/theme-classic-dev':
-        specifier: workspace:*
-        version: link:../theme-classic-dev
-      '@fullcalendar/theme-common':
-        specifier: workspace:*
-        version: link:../theme-common
-      '@fullcalendar/theme-forma-dev':
-        specifier: workspace:*
-        version: link:../theme-forma-dev
-      '@fullcalendar/theme-monarch-dev':
-        specifier: workspace:*
-        version: link:../theme-monarch-dev
-      '@fullcalendar/theme-pulse-dev':
-        specifier: workspace:*
-        version: link:../theme-pulse-dev
+        version: link:../theme-pulse-tailwind
       '@fullcalendar/timegrid':
         specifier: workspace:*
         version: link:../../standard/packages/timegrid/dist

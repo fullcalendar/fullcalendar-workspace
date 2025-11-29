@@ -1,0 +1,155 @@
+
+/* FullCalendar Default UI */
+/* dev: */
+@source "../node_modules/@fullcalendar/theme-classic-tailwind/src";
+@source "../node_modules/@fullcalendar/theme-breezy-tailwind/src";
+@source "../node_modules/@fullcalendar/theme-pulse-tailwind/src";
+@source "../node_modules/@fullcalendar/theme-monarch-tailwind/src";
+@source "../node_modules/@fullcalendar/theme-forma-tailwind/src";
+/* prod:
+(must use tailwind too, so keep above. test vanilla-JS plugins separately)
+*/
+
+/* Shadcn */
+/* dev: */
+@source "../node_modules/@fullcalendar/ui-shadcn/src";
+/* prod:
+@source "../node_modules/@fullcalendar/ui-shadcn/src/_gen-tailwind";
+*/
+
+/* MUI */
+/* dev: */
+@source "../node_modules/@fullcalendar/ui-mui-tailwind/src";
+/* prod:
+(no tailwind. prod uses vanilla css imports)
+*/
+
+@custom-variant dark (&:is([data-color-scheme=dark] *));
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* color palettes (used by dev and prod) */
+@import "@fullcalendar/theme-classic-tailwind/ui-default/palettes.css";
+@import "@fullcalendar/theme-breezy-tailwind/ui-default/palettes.css";
+@import "@fullcalendar/theme-pulse-tailwind/ui-default/palettes.css";
+@import "@fullcalendar/theme-monarch-tailwind/ui-default/palettes.css";
+@import "@fullcalendar/theme-forma-tailwind/ui-default/palettes.css";
+
+/* demo fonts */
+/* for Monarch */
+@import "@fontsource/roboto/300.css";
+@import "@fontsource/roboto/400.css";
+@import "@fontsource/roboto/500.css";
+@import "@fontsource/roboto/600.css";
+@import "@fontsource/roboto/700.css";
+/* for Forma */
+@import "@fontsource/noto-sans/300.css";
+@import "@fontsource/noto-sans/400.css";
+@import "@fontsource/noto-sans/500.css";
+@import "@fontsource/noto-sans/600.css";
+@import "@fontsource/noto-sans/700.css";
+/* for Breezy */
+/* See main.tsx ... use this technique for all fonts? */
+/* for Shadcn */
+@import "@fontsource/geist/300.css";
+@import "@fontsource/geist/400.css";
+@import "@fontsource/geist/500.css";
+@import "@fontsource/geist/600.css";
+@import "@fontsource/geist/700.css";
+
+
+html[data-ui=fc][data-theme=monarch] {
+  font-family: 'Roboto', sans-serif;
+}
+html[data-ui=fc][data-theme=forma] {
+  font-family: 'Noto Sans', 'Segoe UI', sans-serif;
+}
+html[data-ui=fc][data-theme=breezy] {
+  font-family: 'Inter Variable', sans-serif;
+}
+html[data-ui=shadcn] {
+  font-family: Geist, 'Geist Fallback';
+}
+
+html {
+  color-scheme: light;
+  /* ShadCN will set page bg color */
+}
+html[data-color-scheme=dark] {
+  color-scheme: dark;
+  /* ShadCN will set page bg color */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+:root {
+  /* tailwind defaults */
+  --demo-radius-sm: 0.25rem;
+  --demo-radius-md: 0.375rem;
+  --demo-radius-lg: 0.5rem;
+  --demo-radius-xl: 0.75rem;
+}
+
+[data-ui=shadcn],
+.topbar {
+  /* shadcn overrides */
+  --demo-radius-sm: calc(var(--radius) - 4px);
+  --demo-radius-md: calc(var(--radius) - 2px);
+  --demo-radius-lg: var(--radius);
+  --demo-radius-xl: calc(var(--radius) + 4px);
+}
+
+@theme inline {
+  /* HACK to avoid shadcn always overriding */
+  --radius-sm: var(--demo-radius-sm);
+  --radius-md: var(--demo-radius-md);
+  --radius-lg: var(--demo-radius-lg);
+  --radius-xl: var(--demo-radius-xl);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@import "./palettes-shadcn.css";

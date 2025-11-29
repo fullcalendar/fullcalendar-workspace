@@ -1,5 +1,5 @@
 {
-  "name": "@fullcalendar/ui-default-react-tailwind",
+  "name": "@fullcalendar/theme-forma-tailwind",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,8 +8,18 @@
     "dev": "tsc --watch",
     "clean": "rm -rf dist tsconfig.tsbuildinfo"
   },
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "exports": {
     "./package.json": "./package.json",
+    "./ui-default/palettes.css": "./src/ui-default-palettes.css",
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
     "./*": {
       "import": {
         "types": "./dist/*.d.ts",
@@ -25,6 +35,7 @@
       "lib": ["ES2020", "DOM", "DOM.Iterable"],
       "skipLibCheck": true,
       "jsx": "react",
+      "jsxFactory": "createElement",
 
       "moduleResolution": "node16",
       "isolatedModules": true,
@@ -44,35 +55,23 @@
     "include": ["src"]
   },
   "peerDependencies": {
-    "@fullcalendar/core": "workspace:*",
-    "@fullcalendar/react": "workspace:*",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "@fullcalendar/core": "workspace:*"
   },
   "devDependencies": {
     "@fullcalendar/core": "workspace:*",
+    "@fullcalendar/adaptive": "workspace:*",
     "@fullcalendar/daygrid": "workspace:*",
-    "@fullcalendar/timegrid": "workspace:*",
+    "@fullcalendar/interaction": "workspace:*",
     "@fullcalendar/list": "workspace:*",
     "@fullcalendar/multimonth": "workspace:*",
-    "@fullcalendar/interaction": "workspace:*",
-    "@fullcalendar/timeline": "workspace:*",
-    "@fullcalendar/react": "workspace:*",
+    "@fullcalendar/resource": "workspace:*",
     "@fullcalendar/resource-daygrid": "workspace:*",
-    "@fullcalendar/resource-timegrid": "workspace:*",
     "@fullcalendar/resource-timeline": "workspace:*",
-    "@fullcalendar/adaptive": "workspace:*",
+    "@fullcalendar/resource-timegrid": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
+    "@fullcalendar/timegrid": "workspace:*",
+    "@fullcalendar/timeline": "workspace:*",
     "@fullcalendar/theme-common": "workspace:*",
-    "@fullcalendar/theme-monarch-tailwind": "workspace:*",
-    "@fullcalendar/theme-forma-tailwind": "workspace:*",
-    "@fullcalendar/theme-classic-tailwind": "workspace:*",
-    "@fullcalendar/theme-breezy-tailwind": "workspace:*",
-    "@fullcalendar/theme-pulse-tailwind": "workspace:*",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
     "typescript": "~5.7.2"
   }
 }
