@@ -2,7 +2,7 @@ import React from 'react'
 import { CalendarOptions } from "@fullcalendar/core"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
-import { defaultUiEventCalendarOptions, params } from '@fullcalendar/theme-breezy-dev/ui-default/options-event-calendar'
+import { defaultUiEventCalendarOptions, params } from '@fullcalendar/theme-breezy-dev/ui-default-options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-breezy-dev/slots'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
 

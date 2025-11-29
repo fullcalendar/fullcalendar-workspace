@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "clean": "rm -rf dist",
     "preview": "vite preview",
     "cloudflare": "wrangler pages deploy --commit-dirty=true"
   },
@@ -37,7 +38,7 @@
     "@fullcalendar/daygrid": "workspace:*",
     "@fullcalendar/interaction": "workspace:*",
     "@fullcalendar/list": "workspace:*",
-    "@fullcalendar/mui-material": "workspace:*",
+    "@fullcalendar/mui-material-dev": "workspace:*",
     "@fullcalendar/multimonth": "workspace:*",
     "@fullcalendar/react": "workspace:*",
     "@fullcalendar/resource": "workspace:*",

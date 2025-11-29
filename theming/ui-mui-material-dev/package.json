@@ -1,25 +1,19 @@
 {
-  "name": "@fullcalendar/mui-material",
+  "name": "@fullcalendar/mui-material-dev",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "tsc && tsc -b tsconfig.gen-components.json && cp -f package.gen-components.json _gen-components-dist/package.json",
+    "build": "tsc",
     "dev": "tsc --watch",
-    "clean": "rm -rf dist _gen-components-dist tsconfig.tsbuildinfo tsconfig.gen-components.tsbuildinfo"
+    "clean": "rm -rf dist tsconfig.tsbuildinfo"
   },
   "exports": {
     "./package.json": "./package.json",
-    "./dev/*": {
+    "./*": {
       "import": {
         "types": "./dist/*.d.ts",
         "default": "./dist/*.js"
-      }
-    },
-    "./*": {
-      "import": {
-        "types": "./src/_gen-components-dist/*.d.ts",
-        "default": "./src/_gen-components-dist/*.js"
       }
     }
   },

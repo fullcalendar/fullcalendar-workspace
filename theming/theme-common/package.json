@@ -14,16 +14,10 @@
         "default": "./dist/index.js"
       }
     },
-    "./event-calendar": {
+    "./*": {
       "import": {
-        "types": "./dist/event-calendar.d.ts",
-        "default": "./dist/event-calendar.js"
-      }
-    },
-    "./scheduler": {
-      "import": {
-        "types": "./dist/scheduler.d.ts",
-        "default": "./dist/scheduler.js"
+        "types": "./dist/*.d.ts",
+        "default": "./dist/*.js"
       }
     }
   },
