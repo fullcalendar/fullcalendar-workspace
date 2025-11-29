@@ -1,28 +1,17 @@
 import React from 'react'
-import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { createSchedulerOnlyOptions } from '@fullcalendar/theme-classic-dev/options-scheduler'
-import { cn, ClassValue } from '../lib/utils.js'
+import { cn } from '../lib/utils.js'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { EventCalendarView } from './event-calendar.js'
 import { eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
 import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
 import { params } from '../lib/option-params.js'
+import { SchedulerProps } from '../lib/scheduler-props.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(params)
-
-export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
-  className?: ClassValue
-  availableViews?: string[]
-  addButton?: {
-    isPrimary?: boolean
-    text?: string
-    hint?: string
-    click?: (ev: MouseEvent) => void
-  }
-}
 
 export function Scheduler({
   availableViews = schedulerAvailableViews,

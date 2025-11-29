@@ -1,19 +1,8 @@
 import React from 'react'
-import { CalendarOptions } from "@fullcalendar/core"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { defaultUiSchedulerOnlyOptions } from '@fullcalendar/theme-breezy-dev/ui-default-options-scheduler'
 import { EventCalendar } from './event-calendar.js'
-import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
-
-export interface SchedulerProps extends CalendarOptions {
-  availableViews?: string[]
-  addButton?: {
-    isPrimary?: boolean
-    text?: string
-    hint?: string
-    click?: (ev: MouseEvent) => void
-  }
-}
+import { schedulerAvailableViews, schedulerOnlyPlugins, SchedulerProps } from '@fullcalendar/theme-common/scheduler'
 
 export function Scheduler({
   availableViews = schedulerAvailableViews,
