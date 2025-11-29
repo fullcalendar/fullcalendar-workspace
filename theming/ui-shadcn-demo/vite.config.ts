@@ -12,7 +12,7 @@ export default defineConfig({
   publicDir: 'public',
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src/demo'),
+      '@': path.resolve(__dirname, './src'),
     },
   },
 })

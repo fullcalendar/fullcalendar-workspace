@@ -1,10 +1,6 @@
 import React from 'react'
-import { EventCalendar } from '../theme-breezy/_gen/event-calendar.js'
-import { Scheduler } from '../theme-breezy/_gen/scheduler.js'
-
-/*
-There's currently a bug with Breezy where mutedBorderColorClass was injected with var(--muted-foreground)
-*/
+import { EventCalendar } from '@fullcalendar/ui-shadcn-dev/theme-breezy/_gen/event-calendar.js'
+import { Scheduler } from '@fullcalendar/ui-shadcn-dev/theme-breezy/_gen/scheduler.js'
 
 const sampleEvents = [
   {

@@ -1,51 +1,15 @@
 {
-  "name": "@fullcalendar/ui-shadcn-dev",
+  "name": "@fullcalendar/ui-shadcn-demo",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch",
-    "clean": "rm -rf dist tsconfig.tsbuildinfo"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "exports": {
-    "./package.json": "./package.json",
-    "./*": {
-      "import": {
-        "types": "./dist/*.d.ts",
-        "default": "./dist/*.js"
-      }
-    }
-  },
-  "tsConfig": {
-    "compilerOptions": {
-      "target": "ES2020",
-      "useDefineForClassFields": true,
-      "module": "node16",
-      "lib": ["ES2020", "DOM", "DOM.Iterable"],
-      "skipLibCheck": true,
-      "jsx": "react",
-
-      "moduleResolution": "node16",
-      "isolatedModules": true,
-      "moduleDetection": "force",
-
-      "strict": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "noFallthroughCasesInSwitch": true,
-
-      "composite": true,
-      "declaration": true,
-      "declarationMap": true,
-      "outDir": "dist",
-      "rootDir": "src"
-    },
-    "include": ["src"]
-  },
-  "peerDependencies": {
-    "@fullcalendar/core": "workspace:*",
-    "@fullcalendar/react": "workspace:*",
+  "dependencies": {
+    "@fullcalendar/ui-shadcn-dev": "workspace:*",
     "lucide-react": "^0.525.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
@@ -70,11 +34,19 @@
     "@fullcalendar/theme-monarch-dev": "workspace:*",
     "@fullcalendar/theme-pulse-dev": "workspace:*",
     "@fullcalendar/theme-common": "workspace:*",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.12",
+    "@tailwindcss/vite": "^4.1.4",
+    "@types/node": "^24.0.7",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "lucide-react": "^0.525.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "typescript": "~5.7.2"
+    "@vitejs/plugin-react": "^4.5.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.4",
+    "typescript": "~5.7.2",
+    "vite": "^7.0.0"
   }
 }
+
