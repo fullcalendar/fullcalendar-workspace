@@ -111,7 +111,7 @@ Generate files:
 - theming/ui-default-react/src/_gen-tailwind/theme-breezy2/event-calendar.tsx
   - Combine:
     - theming/ui-default-react/src/theme-breezy/event-calendar.tsx (main entrypoint)
-    - theming/ui-default-react/src/lib/event-calendar-presets.ts
+    - theming/theme-common/src/event-calendar.ts (for eventCalendarPlugins, eventCalendarAvailableViews)
     - theming/theme-breezy/src/ui-default-options-event-calendar.ts
     - theming/theme-breezy/src/ui-default-svgs.tsx
     - theming/theme-breezy/src/options-event-calendar.ts
@@ -120,7 +120,7 @@ Generate files:
     - plugins
     - initialView
   - Ordering: the meat of the resulting file will be theming/theme-breezy/src/options-event-calendar.ts + slots.tsx, but there will be consts and functions preserved from the other files. Here is how you should order those:
-    - consts from theming/ui-default-react/src/lib/event-calendar-presets.ts
+    - consts from theming/theme-common/src/event-calendar.ts (eventCalendarPlugins, eventCalendarAvailableViews)
     - consts from theming/theme-breezy/src/ui-default-options-event-calendar.ts
     - consts and helper functions from theming/theme-breezy/src/options-event-calendar.ts (like `blockPointerResizerClass`, `getNormalDayHeaderBorderClass`, `dayRowCommonClasses`, etc.) - these should be in top-level scope, not inside the component function
     - interface definitions (EventCalendarProps, etc.)
@@ -129,7 +129,7 @@ Generate files:
 - theming/ui-default-react/src/_gen-tailwind/theme-breezy2/scheduler.tsx
   - Combine:
     - theming/ui-default-react/src/theme-breezy/scheduler.tsx (main entrypoint)
-    - theming/ui-default-react/src/lib/scheduler-presets.ts
+    - theming/theme-common/src/scheduler.ts (for schedulerOnlyPlugins, schedulerAvailableViews)
     - theming/theme-breezy/src/ui-default-options-scheduler.ts
     - theming/theme-breezy/src/options-scheduler.ts
   - Special props that should be at the very top of the component:
@@ -157,7 +157,7 @@ theming/ui-shadcn/src/_gen-tailwind/theme-breezy2/event-calendar.tsx
 Combine:
 - theming/ui-shadcn/src/theme-breezy/event-calendar.tsx (main entrypoint)
 - theming/ui-shadcn/src/lib/option-params.ts
-- theming/ui-shadcn/src/lib/event-calendar-presets.ts
+- theming/theme-common/src/event-calendar.ts (for eventCalendarPlugins, eventCalendarAvailableViews)
 - theming/ui-shadcn/src/lib/event-calendar-icons.ts
 - theming/ui-shadcn/src/lib/event-calendar-toolbar.ts
 - theming/theme-breezy/src/options-event-calendar.ts
@@ -168,7 +168,7 @@ theming/ui-shadcn/src/_gen-tailwind/theme-breezy2/scheduler.tsx
 Combine:
 - theming/ui-shadcn/src/theme-breezy/scheduler.tsx (main entrypoint)
 - theming/ui-shadcn/src/lib/option-params.ts
-- theming/ui-shadcn/src/lib/scheduler-presets.ts
+- theming/theme-common/src/scheduler.ts (for schedulerOnlyPlugins, schedulerAvailableViews)
 - theming/ui-shadcn/src/lib/scheduler-icons.ts
 - theming/theme-breezy/src/options-scheduler.ts
 Import from the generated ./event-calendar.tsx:

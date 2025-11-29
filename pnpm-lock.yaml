@@ -4132,6 +4132,9 @@ importers:
       '@fullcalendar/theme-classic-dev':
         specifier: workspace:*
         version: link:../theme-classic-dev
+      '@fullcalendar/theme-common':
+        specifier: workspace:*
+        version: link:../theme-common
       '@fullcalendar/theme-forma-dev':
         specifier: workspace:*
         version: link:../theme-forma-dev

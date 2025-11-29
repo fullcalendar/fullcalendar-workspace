@@ -23,6 +23,14 @@ export const eventCalendarPlugins = [
   multiMonthPlugin,
 ]
 
+export const eventCalendarAvailableViews = [
+  'dayGridMonth',
+  'timeGridWeek',
+  'timeGridDay',
+  'listWeek',
+  'multiMonthYear',
+]
+
 export const eventCalendarProps: EventCalendarProps = {
   // dayMinWidth: 200
   // slotMaxTime: '08:00:00'

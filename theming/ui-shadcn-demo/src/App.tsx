@@ -1,6 +1,6 @@
 import React from 'react'
-import { EventCalendar } from '@fullcalendar/ui-shadcn-dev/theme-breezy/_gen/event-calendar.js'
-import { Scheduler } from '@fullcalendar/ui-shadcn-dev/theme-breezy/_gen/scheduler.js'
+import { EventCalendar } from '@fullcalendar/ui-shadcn-dev/theme-breezy/event-calendar'
+import { Scheduler } from '@fullcalendar/ui-shadcn-dev/theme-breezy/scheduler'
 
 const sampleEvents = [
   {

@@ -63,6 +63,7 @@
     "@fullcalendar/resource-timeline": "workspace:*",
     "@fullcalendar/adaptive": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
+    "@fullcalendar/theme-common": "workspace:*",
     "@fullcalendar/theme-monarch-dev": "workspace:*",
     "@fullcalendar/theme-forma-dev": "workspace:*",
     "@fullcalendar/theme-classic-dev": "workspace:*",

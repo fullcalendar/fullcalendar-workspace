@@ -25,6 +25,11 @@ export const schedulerOnlyPlugins = [
   resourceDayGridPlugin,
 ]
 
+export const schedulerAvailableViews = [
+  'resourceTimelineDay',
+  'resourceTimelineWeek',
+]
+
 export const schedulerProps: SchedulerProps = {
   now: '2025-07-04T12:00:00',
   // eventOverlap: false

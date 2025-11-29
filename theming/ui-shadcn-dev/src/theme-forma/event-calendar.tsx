@@ -8,7 +8,7 @@ import { createSlots } from '@fullcalendar/theme-forma-dev/slots'
 import { cn, ClassValue } from '../lib/utils.js'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
-import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
+import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
 import { params } from '../lib/option-params.js'
 
 export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {

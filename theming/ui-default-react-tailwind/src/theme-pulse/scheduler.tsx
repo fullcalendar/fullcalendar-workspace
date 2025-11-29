@@ -3,7 +3,7 @@ import { CalendarOptions } from "@fullcalendar/core"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import { defaultUiSchedulerOnlyOptions } from '@fullcalendar/theme-pulse-dev/ui-default-options-scheduler'
 import { EventCalendar } from './event-calendar.js'
-import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
+import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
 
 export interface SchedulerProps extends CalendarOptions {
   availableViews?: string[]

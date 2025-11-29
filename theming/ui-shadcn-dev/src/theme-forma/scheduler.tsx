@@ -6,8 +6,8 @@ import { createSchedulerOnlyOptions } from '@fullcalendar/theme-forma-dev/option
 import { cn, ClassValue } from '../lib/utils.js'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { EventCalendarView } from './event-calendar.js'
-import { eventCalendarPlugins } from '../lib/event-calendar-presets.js'
-import { schedulerAvailableViews, schedulerOnlyPlugins } from '../lib/scheduler-presets.js'
+import { eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
+import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
 import { schedulerOnlyIconOptions } from '../lib/scheduler-icons.js'
 import { params } from '../lib/option-params.js'
 

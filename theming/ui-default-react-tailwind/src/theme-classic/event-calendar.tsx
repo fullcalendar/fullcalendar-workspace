@@ -3,7 +3,7 @@ import { CalendarOptions } from "@fullcalendar/core"
 import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
 import { defaultUiEventCalendarOptions } from '@fullcalendar/theme-classic-dev/ui-default-options-event-calendar'
-import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
+import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
 
 const { buttons: defaultButtons, ...restOptionDefaults } = defaultUiEventCalendarOptions.optionDefaults
 

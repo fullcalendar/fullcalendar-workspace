@@ -3,6 +3,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { CalendarOptions, joinClassNames } from "@fullcalendar/core"
 import { pressableIconClass } from './option-params.js'
 
+import type {} from '@fullcalendar/resource-timeline'
+
 export const schedulerOnlyIconOptions: CalendarOptions = {
   resourceExpanderContent: (data) => (
     <ExpandMoreIcon

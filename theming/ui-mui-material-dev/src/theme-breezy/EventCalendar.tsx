@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
 import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
-import { eventCalendarAvailableViews, eventCalendarPlugins } from '../lib/event-calendar-presets.js'
+import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
 import EventCalendarView from './EventCalendarView.js'
 
 export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {

@@ -1,6 +1,6 @@
 import React from 'react'
-import { EventCalendar } from '@fullcalendar/ui-default-react-tailwind/_gen-tailwind/theme-breezy2/event-calendar.js'
-import { Scheduler } from '@fullcalendar/ui-default-react-tailwind/_gen-tailwind/theme-breezy2/scheduler.js'
+import { EventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-breezy/event-calendar'
+import { Scheduler } from '@fullcalendar/ui-default-react-tailwind/theme-breezy/scheduler'
 
 const sampleEvents = [
   {
