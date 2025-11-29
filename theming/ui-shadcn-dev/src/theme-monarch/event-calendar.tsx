@@ -5,22 +5,12 @@ import { mergeViewOptionsMap } from '@fullcalendar/core/internal'
 import FullCalendar from '@fullcalendar/react'
 import { createEventCalendarOptions } from '@fullcalendar/theme-monarch-dev/options-event-calendar'
 import { createSlots } from '@fullcalendar/theme-monarch-dev/slots'
-import { cn, ClassValue } from '../lib/utils.js'
+import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
+import { cn } from '../lib/utils.js'
+import { params } from '../lib/option-params.js'
 import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
-import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
-import { params } from '../lib/option-params.js'
-
-export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
-  className?: ClassValue
-  availableViews?: string[]
-  addButton?: {
-    isPrimary?: boolean
-    text?: string
-    hint?: string
-    click?: (ev: MouseEvent) => void
-  }
-}
+import { EventCalendarProps } from '../lib/event-calendar-props.js'
 
 export function EventCalendar({
   availableViews = eventCalendarAvailableViews,

@@ -1,21 +1,10 @@
 import React from 'react'
 import Box from '@mui/material/Box'
-import { CalendarOptions } from "@fullcalendar/core"
 import { useCalendarController } from "@fullcalendar/react"
-import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
 import { eventCalendarAvailableViews, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
 import EventCalendarView from './EventCalendarView.js'
-
-export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
-  className?: string
-  availableViews?: string[]
-  addButton?: {
-    isPrimary?: boolean
-    text?: string
-    hint?: string
-    click?: (ev: MouseEvent) => void
-  }
-}
+import EventCalendarToolbar from '../lib/EventCalendarToolbar.js'
+import { EventCalendarProps } from '../lib/event-calendar-props.js'
 
 export default function EventCalendar({
   availableViews = eventCalendarAvailableViews,
