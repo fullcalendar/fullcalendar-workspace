@@ -10,6 +10,7 @@
   },
   "exports": {
     "./package.json": "./package.json",
+    "./demo-palettes.css": "./src/demo-palettes.css",
     "./*": {
       "import": {
         "types": "./dist/*.d.ts",

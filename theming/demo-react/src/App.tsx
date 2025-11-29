@@ -119,7 +119,7 @@ import MuiBreezyScheduler from '@fullcalendar/ui-mui-tailwind/theme-breezy/Sched
 
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
 import MuiCssBaseline from '@mui/material/CssBaseline'
-import { getMuiTheme } from './palettes-mui-material.js'
+import { getMuiTheme } from '@fullcalendar/ui-mui-tailwind/demo-palettes'
 
 type CalendarComponentProps = CalendarOptions & {
   availableViews?: string[]

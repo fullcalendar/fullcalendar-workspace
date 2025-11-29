@@ -152,4 +152,4 @@ body {
   }
 }
 
-@import "./palettes-shadcn.css";
+@import "@fullcalendar/ui-shadcn/demo-palettes.css";

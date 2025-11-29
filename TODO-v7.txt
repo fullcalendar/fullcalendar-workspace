@@ -13,9 +13,6 @@ clean+build all:
   pn build
 
 
-in demo-react,
-  move palettes-mui-material.ts
-  move palettes-shadcn.css
 Conversions
   1. Compiled Tailwind into Single Files
     ui-default-react-tailwind/src/theme-breezy -> ui-default-react-tailwind/src/theme-breezy/_compiled
