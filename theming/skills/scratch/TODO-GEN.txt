@@ -34,7 +34,7 @@ How to make gen/src structure?
   ui-shadcn/
     src/theme-breezy/
     src/_gen-tailwind/theme-breezy/ (tailwind compiled)
-  ui-mui-material/
+  ui-mui/
     src/theme-breezy/
     src/_gen-components/theme-breezy/ (tailwind converted to ts/vanilla-css)
 
@@ -72,15 +72,15 @@ UI-DEFAULT(REACT) --- private package
 /theming/ui-default-react/src/_gen/theme-*/css-tailwind/(event-calendar|scheduler).tsx --- compiled
 --- no "dist" because React users can just use vanilla-js plugin
 
-MUI-MATERIAL
-/theming/ui-mui-material/src/theme-*/(EventCalendar|Scheduler).tsx
-/theming/ui-mui-material/src/_gen/theme-*/css-tailwind/(EventCalendar|Scheduler).tsx --- compiled
+mui
+/theming/ui-mui/src/theme-*/(EventCalendar|Scheduler).tsx
+/theming/ui-mui/src/_gen/theme-*/css-tailwind/(EventCalendar|Scheduler).tsx --- compiled
 (use AI to simultaneously fctw- prefix and externalize)
 (write script to obfuscate all fctw- classnames)
 (convert rem -> em, add our reset)
-/theming/ui-mui-material/src/_gen/theme-*/css-vanilla/(EventCalendar|Scheduler).tsx
-/theming/ui-mui-material/src/_gen/theme-*/css-vanilla/global.css --- where above fctw- stuff dumped css
-/theming/ui-mui-material/dist/(EventCalendar|Scheduler).(js|d.ts) and global.css
+/theming/ui-mui/src/_gen/theme-*/css-vanilla/(EventCalendar|Scheduler).tsx
+/theming/ui-mui/src/_gen/theme-*/css-vanilla/global.css --- where above fctw- stuff dumped css
+/theming/ui-mui/dist/(EventCalendar|Scheduler).(js|d.ts) and global.css
 
 SHADCN --- private package
 /theming/ui-shadcn/src/theme-*/(event-calendar|scheduler).tsx

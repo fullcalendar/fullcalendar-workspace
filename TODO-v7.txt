@@ -13,6 +13,98 @@ clean+build all:
   pn build
 
 
+in demo-react,
+  move palettes-mui-material.ts
+  move palettes-shadcn.css
+Conversions
+  1. Compiled Tailwind into Single Files
+    ui-default-react-tailwind/src/theme-breezy -> ui-default-react-tailwind/src/theme-breezy/_compiled
+    ui-shadcn/src/theme-breezy -> ui-shadcn/src/theme-breezy/_compiled
+    ui-mui-tailwind/src/theme-breezy -> ui-mui-tailwind/src/theme-breezy/_compiled
+  2. Port Compiled Tailwind to Default-UI *Plugin*
+    ui-default-react-tailwind/src/theme-breezy/_compiled -> theme-breezy-tailwind/src/_compiled
+  3. Convert Tailwind to Vanilla
+    theme-breezy-tailwind/src/_compiled -> theme-breezy/src
+    ui-mui-tailwind/src/theme-breezy/_compiled -> ui-mui/src/theme-breezy
+Demo Pages
+  ui-default-tailwind-dev.html
+    uses ui-default-react-tailwind/src/theme-breezy
+  ui-default-tailwind-compiled.html
+    uses ui-default-react-tailwind/src/theme-breezy/_compiled
+  ui-default-plugin-tailwind-dev.html
+    uses theme-breezy-tailwind/src
+  ui-default-plugin-tailwind-compiled.html
+    uses theme-breezy-tailwind/src/_compiled
+  ui-default-plugin.html
+    uses uses theme-breezy/src
+  ui-shadcn-dev.html
+    uses ui-shadcn/src/theme-breezy
+  ui-shadcn-compiled.html
+    uses ui-shadcn/src/theme-breezy/_compiled
+  ui-shadcn-registry.html
+    ???
+  ui-mui-tailwind-dev.html
+    uses ui-mui-tailwind/src/theme-breezy
+  ui-mui-tailwind-compiled.html
+    uses ui-mui-tailwind/src/theme-breezy/_compiled
+  ui-mui.html
+    uses ui-mui/src/theme-breezy
+Demo Config
+  {
+    default: {
+      dev: 'ui-default-tailwind-dev.html',
+      compiled: 'ui-default-tailwind-compiled.html',
+      plugin: {
+        dev: 'ui-default-plugin-tailwind-dev.html',
+        compiled: 'ui-default-plugin-tailwind-compiled.html',
+        prod: 'ui-default-plugin.html',
+      },
+    },
+    shadcn: {
+      dev: 'ui-shadcn-dev.html',
+      compiled: 'ui-shadcn-compiled.html',
+      prod: 'ui-shadcn-registry.html',
+    },
+    mui: {
+      dev: 'ui-mui-tailwind-dev.html',
+      compiled: 'ui-mui-tailwind-compiled.html',
+      prod: 'ui-mui.html',
+    }
+  }
+Demo UI
+  Theme: []  UI: [Default|Shadcn|MUI] [Dev|Compiled|Prod] [ ]Plugin --- [Palette] [Light|Dark]
+Imports
+  // default-ui *plugin*
+  // tailwind-dev (ui-default-plugin-tailwind-dev.html):
+  import { breezyThemePlugin } from '@fullcalendar/theme-breezy-tailwind'
+  // tailwind-compiled (ui-default-plugin-tailwind-compiled.html):
+  import { breezyThemePlugin } from '@fullcalendar/theme-breezy-tailwind/_compiled' (event-calendar.ts)
+  // vanilla-css (ui-default-plugin.html)
+  import { breezyThemePlugin } from '@fullcalendar/theme-breezy' (event-calendar.ts, event-calendar.css)
+  // ^^^ has unobfuscated src, but obfuscated dist
+
+  // default-ui react component w/ tailwind
+  // tailwind-dev (ui-default-tailwind-dev.html):
+  import { EventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-breezy/event-calendar'
+  // tailwind-compiled (ui-default-tailwind-compiled.html):
+  import { EventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-breezy/_compiled/event-calendar'
+
+  // shadcn
+  // dev (ui-shadcn-dev.html):
+  import { EventCalendar } from '@fullcalendar/ui-shadcn/theme-breezy/event-calendar'
+  // compiled (ui-shadcn-compiled.html):
+  import { EventCalendar } from '@fullcalendar/ui-shadcn/theme-breezy/_compiled/event-calendar'
+
+  // mui
+  // tailwind-dev (ui-mui-tailwind-dev.html):
+  import EventCalendar from '@fullcalendar/ui-mui-tailwind/theme-breezy/EventCalendar'
+  // tailwind-compiled (ui-mui-tailwind-compiled.html):
+  import EventCalendar from '@fullcalendar/ui-mui-tailwind/theme-breezy/_compiled/EventCalendar' (EventCalendar.ts)
+  // vanilla-css (ui-mui.html):
+  import EventCalendar from '@fullcalendar/ui-mui/theme-breezy/EventCalendar' (EventCalendar.ts, EventCalendar.css)
+  // ^^^ has unobfuscated src, but obfuscated dist
+
+
 just before beta (after theme gen)
 ----------------
 Updating ANGULAR will take a long time
