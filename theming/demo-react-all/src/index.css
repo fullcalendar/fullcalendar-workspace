@@ -12,14 +12,14 @@
 
 /* Shadcn */
 /* dev: */
-@source "../node_modules/@fullcalendar/shadcn-dev/src";
+@source "../node_modules/@fullcalendar/ui-shadcn-dev/src";
 /* prod:
-@source "../node_modules/@fullcalendar/shadcn-dev/src/_gen-tailwind";
+@source "../node_modules/@fullcalendar/ui-shadcn-dev/src/_gen-tailwind";
 */
 
 /* MUI */
 /* dev: */
-@source "../node_modules/@fullcalendar/mui-material-dev/src";
+@source "../node_modules/@fullcalendar/ui-mui-material-dev/src";
 /* prod:
 (no tailwind. prod uses vanilla css imports)
 */
