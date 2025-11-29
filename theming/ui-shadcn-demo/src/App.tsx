@@ -1,13 +1,7 @@
 import React from 'react'
 import { EventCalendar } from '@fullcalendar/ui-shadcn-dev/theme-breezy/event-calendar'
 import { Scheduler } from '@fullcalendar/ui-shadcn-dev/theme-breezy/scheduler'
-
-import type {} from '@fullcalendar/adaptive'
-import type {} from '@fullcalendar/scrollgrid'
-import type {} from '@fullcalendar/timeline'
-import type {} from '@fullcalendar/resource-timeline'
-import type {} from '@fullcalendar/resource-timegrid'
-import type {} from '@fullcalendar/resource-daygrid'
+import '@fullcalendar/theme-common/scheduler-types'
 
 const sampleEvents = [
   {

@@ -32,6 +32,7 @@
     "@fullcalendar/theme-classic-dev": "workspace:*",
     "@fullcalendar/theme-breezy-dev": "workspace:*",
     "@fullcalendar/theme-pulse-dev": "workspace:*",
+    "@fullcalendar/theme-common": "workspace:*",
     "@tailwindcss/vite": "^4.1.4",
     "@types/node": "^24.0.7",
     "@types/react": "^19.1.8",
