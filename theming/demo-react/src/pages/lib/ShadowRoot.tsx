@@ -2,33 +2,38 @@ import { CSSProperties, useLayoutEffect, useRef, useState, type ReactNode } from
 import { createPortal } from 'react-dom'
 
 export interface ShadowRootProps {
+  className?: string
   style?: CSSProperties
+  cssUrl?: string
   children: ReactNode
 }
 
-export function ShadowRoot({ style, children }: ShadowRootProps) {
+export function ShadowRoot({ className, style, cssUrl, children }: ShadowRootProps) {
   const hostRef = useRef<HTMLDivElement | null>(null)
   const [shadowRoot, setShadowRoot] = useState<ShadowRoot | null>(null)
 
   useLayoutEffect(() => { // executes sooner than useEffect
-    const host = hostRef.current
-    if (!host) return
+    const host = hostRef.current;
+    if (!host) return;
 
-    // If a shadow root already exists (e.g. StrictMode, hot reload),
-    // reuse it instead of calling attachShadow again.
-    const existing = host.shadowRoot
-    if (existing) {
-      setShadowRoot(existing as unknown as ShadowRoot)
-      return
+    let sr = host.shadowRoot as ShadowRoot | null;
+    if (!sr) {
+      sr = host.attachShadow({ mode: 'open' }) as ShadowRoot;
     }
 
-    const sr = host.attachShadow({ mode: 'open' })
+    if (cssUrl && !sr.querySelector('link[data-shadow-style="island"]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = cssUrl;
+      link.setAttribute('data-shadow-style', 'island');
+      sr.appendChild(link);
+    }
 
-    setShadowRoot(sr as unknown as ShadowRoot)
+    setShadowRoot(sr);
   }, []);
 
   return (
-    <div ref={hostRef} style={style}>
+    <div ref={hostRef} className={className} style={style}>
       {shadowRoot
         ? createPortal(children, shadowRoot as unknown as Element)
         : null}

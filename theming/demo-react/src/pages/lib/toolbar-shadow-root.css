@@ -1,0 +1,15 @@
+
+sl-radio-group::part(form-control) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+a[href] {
+  text-decoration: none;
+}
+
+.section {
+  display: flex;
+  gap: 4px;
+}

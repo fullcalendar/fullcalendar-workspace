@@ -13,41 +13,28 @@ import SlMenu from '@shoelace-style/shoelace/dist/react/menu/index.js';
 import SlMenuItem from '@shoelace-style/shoelace/dist/react/menu-item/index.js';
 import SlOption from '@shoelace-style/shoelace/dist/react/option/index.js';
 import SlSelect from '@shoelace-style/shoelace/dist/react/select/index.js';
+import SlIcon from '@shoelace-style/shoelace/dist/react/icon/index.js';
 import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js'
 import { ShadowRoot } from './lib/ShadowRoot.js'
+import toolbarCssUrl from './lib/toolbar-shadow-root.css?url'
 
 setBasePath(`${import.meta.env.BASE_URL}shoelace`);
 
 function App() {
   return (
     <Fragment>
-      <ShadowRoot
-        style={{
-          position: 'sticky',
-          top: 0,
-          left: 0,
-          right: 0,
-          display: 'flex',
-          flexDirection: 'row',
-          gap: 4
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 4
-          }}
-        >
+      <ShadowRoot className='topbar' cssUrl={toolbarCssUrl}>
+        <div className='section'>
           <SlDropdown>
-            <SlButton slot="trigger" caret>Edit</SlButton>
+            <SlButton variant='text' slot="trigger" caret>React</SlButton>
             <SlMenu>
-              <SlMenuItem value="cut">Cut</SlMenuItem>
-              <SlMenuItem value="copy">Copy</SlMenuItem>
-              <SlMenuItem value="paste">Paste</SlMenuItem>
+              <SlMenuItem value="react"><SlIcon slot="prefix" name="check2"></SlIcon>React</SlMenuItem>
+              <a href='https://google.com'>
+                <SlMenuItem value="js"><SlIcon slot="prefix"></SlIcon>Vanilla</SlMenuItem>
+              </a>
             </SlMenu>
           </SlDropdown>
-          <SlRadioGroup name="a" value="1">
+          <SlRadioGroup label="Theme" name="a" value="1">
             <SlRadioButton value="1">Option 1</SlRadioButton>
             <SlRadioButton value="2">Option 2</SlRadioButton>
             <SlRadioButton value="3">Option 3</SlRadioButton>
@@ -58,22 +45,17 @@ function App() {
             <SlOption value="option-3">Option 3</SlOption>
           </SlSelect>
         </div>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 4
-          }}
-        >
+        <div className='section'>
           <SlDropdown>
-            <SlButton slot="trigger" caret>Edit</SlButton>
+            <SlButton variant='text' slot="trigger" caret>React</SlButton>
             <SlMenu>
-              <SlMenuItem value="cut">Cut</SlMenuItem>
-              <SlMenuItem value="copy">Copy</SlMenuItem>
-              <SlMenuItem value="paste">Paste</SlMenuItem>
+              <SlMenuItem value="react"><SlIcon slot="prefix" name="check2"></SlIcon>React</SlMenuItem>
+              <a href='https://google.com'>
+                <SlMenuItem value="js"><SlIcon slot="prefix"></SlIcon>Vanilla</SlMenuItem>
+              </a>
             </SlMenu>
           </SlDropdown>
-          <SlRadioGroup name="a" value="1">
+          <SlRadioGroup label="Theme" name="a" value="1">
             <SlRadioButton value="1">Option 1</SlRadioButton>
             <SlRadioButton value="2">Option 2</SlRadioButton>
             <SlRadioButton value="3">Option 3</SlRadioButton>
