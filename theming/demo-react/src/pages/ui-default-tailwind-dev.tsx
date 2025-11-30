@@ -16,14 +16,14 @@ import SlSelect from '@shoelace-style/shoelace/dist/react/select/index.js';
 import SlIcon from '@shoelace-style/shoelace/dist/react/icon/index.js';
 import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js'
 import { ShadowRoot } from './lib/ShadowRoot.js'
-import toolbarCssUrl from './lib/toolbar-shadow-root.css?url'
+import toolbarCssText from './lib/toolbar-shadow-root.css?inline'
 
 setBasePath(`${import.meta.env.BASE_URL}shoelace`);
 
 function App() {
   return (
     <Fragment>
-      <ShadowRoot className='topbar' cssUrl={toolbarCssUrl}>
+      <ShadowRoot className='topbar' cssText={toolbarCssText}>
         <div className='section'>
           <SlDropdown>
             <SlButton variant='text' slot="trigger" caret>React</SlButton>

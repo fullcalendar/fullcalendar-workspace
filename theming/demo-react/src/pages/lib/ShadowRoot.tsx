@@ -4,11 +4,11 @@ import { createPortal } from 'react-dom'
 export interface ShadowRootProps {
   className?: string
   style?: CSSProperties
-  cssUrl?: string
+  cssText?: string
   children: ReactNode
 }
 
-export function ShadowRoot({ className, style, cssUrl, children }: ShadowRootProps) {
+export function ShadowRoot({ className, style, cssText, children }: ShadowRootProps) {
   const hostRef = useRef<HTMLDivElement | null>(null)
   const [shadowRoot, setShadowRoot] = useState<ShadowRoot | null>(null)
 
@@ -21,12 +21,11 @@ export function ShadowRoot({ className, style, cssUrl, children }: ShadowRootPro
       sr = host.attachShadow({ mode: 'open' }) as ShadowRoot;
     }
 
-    if (cssUrl && !sr.querySelector('link[data-shadow-style="island"]')) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = cssUrl;
-      link.setAttribute('data-shadow-style', 'island');
-      sr.appendChild(link);
+    if (cssText && !sr.querySelector('style[data-shadow-style]')) {
+      const styleEl = document.createElement('style');
+      styleEl.textContent = cssText;
+      styleEl.setAttribute('data-shadow-style', '');
+      sr.appendChild(styleEl);
     }
 
     setShadowRoot(sr);
