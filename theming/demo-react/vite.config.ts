@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   server: {
-    open: '/pages/ui-default-tailwind-dev',
+    open: '/tailwind-dev',
   },
   plugins: [
     react(),
