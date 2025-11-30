@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "clean": "rm -rf dist",
     "preview": "vite preview",
-    "cloudflare": "wrangler pages deploy --commit-dirty=true"
+    "cloudflare": "wrangler pages deploy --commit-dirty=true",
+    "copy-shoelace-assets": "mkdir -p public/shoelace/assets && cp -R node_modules/@shoelace-style/shoelace/dist/assets/ public/shoelace/assets/",
+    "postinstall": "pnpm run copy-shoelace-assets"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -22,6 +24,7 @@
     "@mui/material": "^7.1.2",
     "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-tabs": "^1.1.12",
+    "@shoelace-style/shoelace": "^2.20.1",
     "@tailwindcss/vite": "^4.1.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -45,9 +48,9 @@
     "@fullcalendar/resource-timegrid": "workspace:*",
     "@fullcalendar/resource-timeline": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
-    "@fullcalendar/theme-common": "workspace:*",
     "@fullcalendar/theme-breezy-tailwind": "workspace:*",
     "@fullcalendar/theme-classic-tailwind": "workspace:*",
+    "@fullcalendar/theme-common": "workspace:*",
     "@fullcalendar/theme-forma-tailwind": "workspace:*",
     "@fullcalendar/theme-monarch-tailwind": "workspace:*",
     "@fullcalendar/theme-pulse-tailwind": "workspace:*",

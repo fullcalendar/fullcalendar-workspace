@@ -1,4 +1,5 @@
 !tsconfig.json
+public/shoelace/assets/
 
 # Logs
 logs
