@@ -28,4 +28,6 @@ body {
   padding: 4px 8px 4px 4px;
   background: var(--sl-panel-background-color);
   border-bottom: 1px solid var(--sl-panel-border-color);
+  color: var(--sl-color-gray-800);
+  font-family: var(--sl-font-sans);
 }

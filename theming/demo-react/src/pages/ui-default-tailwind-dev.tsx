@@ -49,7 +49,9 @@ function App() {
           </SlRadioGroup>
           <SlRadioGroup label="Mode" value="1" size='small' className='margin-right'>
             <SlRadioButton value="1">Dev</SlRadioButton>
-            <SlRadioButton value="2">Compiled</SlRadioButton>
+            <a href='https://google.com'>
+              <SlRadioButton value="2">Compiled</SlRadioButton>
+            </a>
             <SlRadioButton value="3">Prod</SlRadioButton>
           </SlRadioGroup>
         </div>
