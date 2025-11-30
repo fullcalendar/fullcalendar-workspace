@@ -30,11 +30,11 @@
 @import "tw-animate-css";
 
 /* color palettes (used by dev and prod) */
-@import "@fullcalendar/theme-classic-tailwind/ui-default/palettes.css";
-@import "@fullcalendar/theme-breezy-tailwind/ui-default/palettes.css";
-@import "@fullcalendar/theme-pulse-tailwind/ui-default/palettes.css";
-@import "@fullcalendar/theme-monarch-tailwind/ui-default/palettes.css";
-@import "@fullcalendar/theme-forma-tailwind/ui-default/palettes.css";
+@import "@fullcalendar/theme-classic-tailwind/ui-default-palettes.css";
+@import "@fullcalendar/theme-breezy-tailwind/ui-default-palettes.css";
+@import "@fullcalendar/theme-pulse-tailwind/ui-default-palettes.css";
+@import "@fullcalendar/theme-monarch-tailwind/ui-default-palettes.css";
+@import "@fullcalendar/theme-forma-tailwind/ui-default-palettes.css";
 
 /* demo fonts */
 /* for Monarch */
