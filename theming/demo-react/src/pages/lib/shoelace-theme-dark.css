@@ -1,5 +1,4 @@
-:host,
-.sl-theme-dark {
+.dark {
   color-scheme: dark;
 
   --sl-color-gray-50: hsl(240 5.1% 15%);
@@ -218,17 +217,17 @@
   --sl-color-rose-900: hsl(354.5 100% 90.7%);
   --sl-color-rose-950: hsl(353.3 100% 95.7%);
 
-  --sl-color-primary-50: var(--sl-color-sky-50);
-  --sl-color-primary-100: var(--sl-color-sky-100);
-  --sl-color-primary-200: var(--sl-color-sky-200);
-  --sl-color-primary-300: var(--sl-color-sky-300);
-  --sl-color-primary-400: var(--sl-color-sky-400);
-  --sl-color-primary-500: var(--sl-color-sky-500);
-  --sl-color-primary-600: var(--sl-color-sky-600);
-  --sl-color-primary-700: var(--sl-color-sky-700);
-  --sl-color-primary-800: var(--sl-color-sky-800);
-  --sl-color-primary-900: var(--sl-color-sky-900);
-  --sl-color-primary-950: var(--sl-color-sky-950);
+  --sl-color-primary-50: var(--sl-color-blue-50);
+  --sl-color-primary-100: var(--sl-color-blue-100);
+  --sl-color-primary-200: var(--sl-color-blue-200);
+  --sl-color-primary-300: var(--sl-color-blue-300);
+  --sl-color-primary-400: var(--sl-color-blue-400);
+  --sl-color-primary-500: var(--sl-color-blue-500);
+  --sl-color-primary-600: var(--sl-color-blue-600);
+  --sl-color-primary-700: var(--sl-color-blue-700);
+  --sl-color-primary-800: var(--sl-color-blue-800);
+  --sl-color-primary-900: var(--sl-color-blue-900);
+  --sl-color-primary-950: var(--sl-color-blue-950);
 
   --sl-color-success-50: var(--sl-color-green-50);
   --sl-color-success-100: var(--sl-color-green-100);
@@ -444,40 +443,4 @@
   --sl-z-index-dropdown: 900;
   --sl-z-index-toast: 950;
   --sl-z-index-tooltip: 1000;
-}
-
-@supports (scrollbar-gutter: stable) {
-  .sl-scroll-lock {
-    scrollbar-gutter: var(--sl-scroll-lock-gutter) !important;
-  }
-
-  .sl-scroll-lock body {
-    overflow: hidden !important;
-  }
-}
-
-@supports not (scrollbar-gutter: stable) {
-  .sl-scroll-lock body {
-    padding-right: var(--sl-scroll-lock-size) !important;
-    overflow: hidden !important;
-  }
-}
-
-.sl-toast-stack {
-  position: fixed;
-  top: 0;
-  inset-inline-end: 0;
-  z-index: var(--sl-z-index-toast);
-  width: 28rem;
-  max-width: 100%;
-  max-height: 100%;
-  overflow: auto;
-}
-
-.sl-toast-stack sl-alert {
-  margin: var(--sl-spacing-medium);
-}
-
-.sl-toast-stack sl-alert::part(base) {
-  box-shadow: var(--sl-shadow-large);
 }

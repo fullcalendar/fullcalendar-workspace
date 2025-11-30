@@ -1,6 +1,5 @@
 :root,
-:host,
-.sl-theme-light {
+:host {
   color-scheme: light;
 
   --sl-color-gray-50: hsl(0 0% 97.5%);

@@ -4,8 +4,8 @@ import '@fontsource-variable/inter' // for ui-default theme-breezy
 import './lib/root.css'
 import './lib/tailwind.css'
 import './lib/ui-default.css'
-import './lib/light.css'
-import './lib/dark.css'
+import './lib/shoelace-theme-base.css'
+import './lib/shoelace-theme-dark.css'
 import SlRadioButton from '@shoelace-style/shoelace/dist/react/radio-button/index.js'
 import SlRadioGroup from '@shoelace-style/shoelace/dist/react/radio-group/index.js'
 import SlButton from '@shoelace-style/shoelace/dist/react/button/index.js';
