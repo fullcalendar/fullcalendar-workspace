@@ -4,8 +4,8 @@ import '@fontsource-variable/inter' // for ui-default theme-breezy
 import './lib/root.css'
 import './lib/tailwind.css'
 import './lib/ui-default.css'
-import './lib/shoelace-theme-base.css'
-import './lib/shoelace-theme-dark.css'
+import './lib/shoelace/theme-base.css'
+import './lib/shoelace/theme-dark.css'
 import SlRadioButton from '@shoelace-style/shoelace/dist/react/radio-button/index.js'
 import SlRadioGroup from '@shoelace-style/shoelace/dist/react/radio-group/index.js'
 import SlButton from '@shoelace-style/shoelace/dist/react/button/index.js';
@@ -16,15 +16,15 @@ import SlOption from '@shoelace-style/shoelace/dist/react/option/index.js';
 import SlSelect from '@shoelace-style/shoelace/dist/react/select/index.js';
 import SlIcon from '@shoelace-style/shoelace/dist/react/icon/index.js';
 import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js'
-import { ShadowRoot } from './lib/ShadowRoot.js'
-import toolbarCssText from './lib/toolbar-shadow-root.css?inline'
+import { ShadowRoot } from './lib/shadow-root.js'
+import topbarCssText from './lib/topbar-shadow-root.css?inline'
 
 setBasePath(`${import.meta.env.BASE_URL}shoelace`);
 
 function App() {
   return (
     <Fragment>
-      <ShadowRoot className='topbar' cssText={toolbarCssText}>
+      <ShadowRoot className='topbar' cssText={topbarCssText}>
         <div className='section'>
           <SlDropdown>
             <SlButton variant='text' slot="trigger" caret>React</SlButton>
