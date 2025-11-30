@@ -30,41 +30,39 @@ function App() {
             <SlMenu>
               <SlMenuItem value="react"><SlIcon slot="prefix" name="check2"></SlIcon>React</SlMenuItem>
               <a href='https://google.com'>
-                <SlMenuItem value="js"><SlIcon slot="prefix"></SlIcon>Vanilla</SlMenuItem>
+                <SlMenuItem value="js"><SlIcon slot="prefix"></SlIcon>Vanilla JS</SlMenuItem>
               </a>
             </SlMenu>
           </SlDropdown>
-          <SlRadioGroup label="Theme" name="a" value="1">
-            <SlRadioButton value="1">Option 1</SlRadioButton>
-            <SlRadioButton value="2">Option 2</SlRadioButton>
-            <SlRadioButton value="3">Option 3</SlRadioButton>
+          <SlRadioGroup label="Theme" value="1" size='small' className='margin-right'>
+            <SlRadioButton value="1">Monarch</SlRadioButton>
+            <SlRadioButton value="2">Forma</SlRadioButton>
+            <SlRadioButton value="3">Breezy</SlRadioButton>
+            <SlRadioButton value="4">Pulse</SlRadioButton>
+            <SlRadioButton value="5">Classic</SlRadioButton>
           </SlRadioGroup>
-          <SlSelect placeholder="Select one">
-            <SlOption value="option-1">Option 1</SlOption>
-            <SlOption value="option-2">Option 2</SlOption>
-            <SlOption value="option-3">Option 3</SlOption>
-          </SlSelect>
+          <SlRadioGroup label="UI" value="1" size='small' className='margin-right'>
+            <SlRadioButton value="1">Default</SlRadioButton>
+            <SlRadioButton value="2">Shadcn</SlRadioButton>
+            <SlRadioButton value="3">MUI</SlRadioButton>
+          </SlRadioGroup>
+          <SlRadioGroup label="Mode" value="1" size='small' className='margin-right'>
+            <SlRadioButton value="1">Dev</SlRadioButton>
+            <SlRadioButton value="2">Compiled</SlRadioButton>
+            <SlRadioButton value="3">Prod</SlRadioButton>
+          </SlRadioGroup>
         </div>
         <div className='section'>
-          <SlDropdown>
-            <SlButton variant='text' slot="trigger" caret>React</SlButton>
-            <SlMenu>
-              <SlMenuItem value="react"><SlIcon slot="prefix" name="check2"></SlIcon>React</SlMenuItem>
-              <a href='https://google.com'>
-                <SlMenuItem value="js"><SlIcon slot="prefix"></SlIcon>Vanilla</SlMenuItem>
-              </a>
-            </SlMenu>
-          </SlDropdown>
-          <SlRadioGroup label="Theme" name="a" value="1">
-            <SlRadioButton value="1">Option 1</SlRadioButton>
-            <SlRadioButton value="2">Option 2</SlRadioButton>
-            <SlRadioButton value="3">Option 3</SlRadioButton>
-          </SlRadioGroup>
-          <SlSelect placeholder="Select one">
-            <SlOption value="option-1">Option 1</SlOption>
-            <SlOption value="option-2">Option 2</SlOption>
-            <SlOption value="option-3">Option 3</SlOption>
+          <SlSelect placeholder="Select one" size='small'>
+            <div style={{ width: 15, height: 15, background: 'red' }} slot="prefix"></div>
+            <SlOption value="option-1"><div style={{ width: 15, height: 15, background: 'red' }} slot="prefix"></div>Option 1</SlOption>
+            <SlOption value="option-2"><div style={{ width: 15, height: 15, background: 'red' }} slot="prefix"></div>Option 2</SlOption>
+            <SlOption value="option-3"><div style={{ width: 15, height: 15, background: 'red' }} slot="prefix"></div>Option 3</SlOption>
           </SlSelect>
+          <SlRadioGroup value="1" size='small'>
+            <SlRadioButton value="1"><SlIcon slot="prefix" name="brightness-high" label='Light'></SlIcon></SlRadioButton>
+            <SlRadioButton value="2"><SlIcon slot="prefix" name="moon" label='dark'></SlIcon></SlRadioButton>
+          </SlRadioGroup>
         </div>
       </ShadowRoot>
     </Fragment>

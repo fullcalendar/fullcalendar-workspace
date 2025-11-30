@@ -1,8 +1,9 @@
 
+sl-select::part(form-control),
 sl-radio-group::part(form-control) {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 a[href] {
@@ -11,5 +12,10 @@ a[href] {
 
 .section {
   display: flex;
-  gap: 4px;
+  align-items: center;
+  gap: 8px;
+}
+
+.margin-right {
+  margin-right: 12px;
 }
