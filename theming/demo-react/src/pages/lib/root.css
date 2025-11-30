@@ -26,5 +26,6 @@ body {
   justify-content: space-between;
   gap: 8px;
   padding: 4px 8px 4px 4px;
-  border-bottom: 1px solid var(--sl-input-border-color);
+  background: var(--sl-panel-background-color);
+  border-bottom: 1px solid var(--sl-panel-border-color);
 }
