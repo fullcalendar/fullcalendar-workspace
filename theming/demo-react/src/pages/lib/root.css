@@ -1,0 +1,17 @@
+
+html {
+  color-scheme: light;
+}
+html[data-color-scheme=dark] {
+  color-scheme: dark;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
