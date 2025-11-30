@@ -1,25 +1,25 @@
 
 /* FullCalendar Default UI */
 /* dev: */
-@source "../node_modules/@fullcalendar/theme-classic-tailwind/src";
-@source "../node_modules/@fullcalendar/theme-breezy-tailwind/src";
-@source "../node_modules/@fullcalendar/theme-pulse-tailwind/src";
-@source "../node_modules/@fullcalendar/theme-monarch-tailwind/src";
-@source "../node_modules/@fullcalendar/theme-forma-tailwind/src";
+@source "../../node_modules/@fullcalendar/theme-classic-tailwind/src";
+@source "../../node_modules/@fullcalendar/theme-breezy-tailwind/src";
+@source "../../node_modules/@fullcalendar/theme-pulse-tailwind/src";
+@source "../../node_modules/@fullcalendar/theme-monarch-tailwind/src";
+@source "../../node_modules/@fullcalendar/theme-forma-tailwind/src";
 /* prod:
 (must use tailwind too, so keep above. test vanilla-JS plugins separately)
 */
 
 /* Shadcn */
 /* dev: */
-@source "../node_modules/@fullcalendar/ui-shadcn/src";
+@source "../../node_modules/@fullcalendar/ui-shadcn/src";
 /* prod:
-@source "../node_modules/@fullcalendar/ui-shadcn/src/_gen-tailwind";
+@source "../../node_modules/@fullcalendar/ui-shadcn/src/_gen-tailwind";
 */
 
 /* MUI */
 /* dev: */
-@source "../node_modules/@fullcalendar/ui-mui-tailwind/src";
+@source "../../node_modules/@fullcalendar/ui-mui-tailwind/src";
 /* prod:
 (no tailwind. prod uses vanilla css imports)
 */

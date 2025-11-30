@@ -1,7 +1,7 @@
 
 import './App.css'
 import { useEffect, useMemo } from 'react'
-import { useLocalStorageState } from './lib/hooks.js'
+import { useLocalStorageState } from '../lib/hooks.js'
 
 // Shadcn for this demo topbar
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs.js'
