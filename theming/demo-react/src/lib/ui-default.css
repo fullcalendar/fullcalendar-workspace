@@ -5,12 +5,12 @@
 @import "@fullcalendar/theme-monarch-tailwind/ui-default-palettes.css";
 @import "@fullcalendar/theme-forma-tailwind/ui-default-palettes.css";
 
-html[data-theme=monarch] {
+[data-theme=monarch] {
   font-family: 'Roboto Variable', sans-serif;
 }
-html[data-theme=forma] {
+[data-theme=forma] {
   font-family: 'Noto Sans Variable', sans-serif;
 }
-html[data-theme=breezy] {
+[data-theme=breezy] {
   font-family: 'Inter Variable', sans-serif;
 }

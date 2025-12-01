@@ -89,7 +89,6 @@ export function Layout(props: LayoutProps) {
     rootEl.setAttribute('data-theme', theme)
     rootEl.setAttribute('data-palette', palette || '')
     rootEl.setAttribute('data-color-scheme', colorScheme)
-    rootEl.classList.toggle('dark', colorScheme === 'dark')
   }, [theme, palette, colorScheme])
 
   return (
@@ -208,7 +207,9 @@ export function Layout(props: LayoutProps) {
           </SlRadioGroup>
         </div>
       </ShadowRoot>
-      {props.children}
+      <div className='demo-container'>
+        {props.children}
+      </div>
     </Fragment>
   )
 }

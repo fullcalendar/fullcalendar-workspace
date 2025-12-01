@@ -39,6 +39,7 @@ export class CalendarRoot extends BaseComponent<CalendarRootProps, CalendarRootS
       borderlessBottom && classNames.borderlessBottom,
       borderlessX && classNames.borderlessX,
       classNames.borderBoxRoot,
+      classNames.isolate,
       classNames.flexCol,
       forPrint ? classNames.calendarPrintRoot : classNames.calendarScreenRoot,
       (borderlessX || borderlessTop || borderlessBottom) && classNames.noEdgeEffects,

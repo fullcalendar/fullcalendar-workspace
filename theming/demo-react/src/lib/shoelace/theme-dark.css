@@ -1,4 +1,4 @@
-.dark {
+[data-color-scheme=dark] {
   color-scheme: dark;
 
   --sl-color-gray-50: hsl(240 5.1% 15%);

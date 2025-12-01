@@ -1,11 +1,4 @@
 
-html {
-  color-scheme: light;
-}
-html[data-color-scheme=dark] {
-  color-scheme: dark;
-}
-
 html, body {
   margin: 0;
   padding: 0;
@@ -13,6 +6,7 @@ html, body {
 
 .topbar {
   position: sticky;
+  z-index: 2;
   top: 0;
   display: flex;
   flex-direction: row;
@@ -23,4 +17,13 @@ html, body {
   border-bottom: 1px solid var(--sl-panel-border-color);
   color: var(--sl-color-gray-800);
   font-family: var(--sl-font-sans);
+}
+
+.demo-container {
+  z-index: 1;
+  margin: 120px auto;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
 }

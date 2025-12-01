@@ -375,6 +375,8 @@ dark-mode Pulse borders in secondary buttonGroup. can't see them
   or make a separate css variable
 for theme-*Content props that break text up into multiple slices,
   browser text-selection is weird. how to correct?
+we put classNames.isolate on the root calendar div,
+  but really, parents with z-index children should always be responsible for setting isolation
 
 
 Changelog
