@@ -119,6 +119,9 @@ import { getMuiTheme } from '@fullcalendar/ui-mui-tailwind/demo-palettes'
 import { demoPaletteMap as shadcnPaletteOptions } from '@fullcalendar/shadcn/demo-palettes-meta'
 import { demoPaletteMap as muiPaletteOptions } from '@fullcalendar/ui-mui-tailwind/demo-palettes-meta'
 
+import '../lib/ui-default-fonts.js'
+import '../lib/ui-shadcn-fonts.js'
+
 type CalendarComponentProps = CalendarOptions & {
   availableViews?: string[]
   addButton?: {

@@ -1,0 +1,2 @@
+
+import '@fontsource-variable/geist'

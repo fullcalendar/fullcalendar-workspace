@@ -5,29 +5,11 @@
 @import "@fullcalendar/theme-monarch-tailwind/ui-default-palettes.css";
 @import "@fullcalendar/theme-forma-tailwind/ui-default-palettes.css";
 
-/* for Monarch */
-@import "@fontsource/roboto/300.css";
-@import "@fontsource/roboto/400.css";
-@import "@fontsource/roboto/500.css";
-@import "@fontsource/roboto/600.css";
-@import "@fontsource/roboto/700.css";
-/* for Forma */
-@import "@fontsource/noto-sans/300.css";
-@import "@fontsource/noto-sans/400.css";
-@import "@fontsource/noto-sans/500.css";
-@import "@fontsource/noto-sans/600.css";
-@import "@fontsource/noto-sans/700.css";
-/* for Breezy */
-/*
-  See this line in main.tsx:
-    import '@fontsource-variable/inter'
-*/
-
 html[data-theme=monarch] {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto Variable', sans-serif;
 }
 html[data-theme=forma] {
-  font-family: 'Noto Sans', 'Segoe UI', sans-serif;
+  font-family: 'Noto Sans Variable', sans-serif;
 }
 html[data-theme=breezy] {
   font-family: 'Inter Variable', sans-serif;

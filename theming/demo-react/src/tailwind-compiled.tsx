@@ -2,14 +2,13 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Layout } from './lib/layout.js'
 
-import '@fontsource-variable/inter' // for ui-default theme-breezy
 import './lib/tailwind.css'
+import './lib/ui-default-fonts.js'
 import './lib/ui-default.css'
 
 function App() {
   return (
     <Layout ui='default' mode='compiled' isVanilla={false}>
-      This is a test
     </Layout>
   )
 }
