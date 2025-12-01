@@ -19,3 +19,8 @@ a[href] {
 .margin-right {
   margin-right: 12px;
 }
+
+.color-square {
+  width: 15px;
+  height: 15px;
+}

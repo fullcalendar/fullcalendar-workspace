@@ -8,7 +8,7 @@ import './lib/ui-default.css'
 
 function App() {
   return (
-    <Layout>
+    <Layout ui='default' mode='dev' isVanilla={false}>
       This is a test
     </Layout>
   )
