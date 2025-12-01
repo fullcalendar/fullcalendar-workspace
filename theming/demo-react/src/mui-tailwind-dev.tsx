@@ -3,12 +3,10 @@ import { createRoot } from 'react-dom/client'
 import { Layout } from './lib/layout.js'
 
 import './lib/tailwind.css'
-import './lib/ui-default-fonts.js'
-import './lib/ui-default.css'
 
 function App() {
   return (
-    <Layout ui='default' mode='dev'>
+    <Layout ui='mui' mode='dev'>
     </Layout>
   )
 }

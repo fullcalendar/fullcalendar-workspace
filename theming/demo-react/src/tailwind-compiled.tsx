@@ -8,7 +8,7 @@ import './lib/ui-default.css'
 
 function App() {
   return (
-    <Layout ui='default' mode='compiled' isVanilla={false}>
+    <Layout ui='default' mode='compiled'>
     </Layout>
   )
 }

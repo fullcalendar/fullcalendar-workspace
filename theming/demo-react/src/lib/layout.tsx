@@ -38,7 +38,7 @@ const colorSchemeValues = Object.keys(colorSchemeOptions) as ColorScheme[]
 export interface LayoutProps {
   ui: string
   mode: Mode
-  isVanilla: boolean
+  isVanilla?: boolean
   children: ReactNode
 }
 
@@ -124,7 +124,13 @@ export function Layout(props: LayoutProps) {
             className='margin-right'
           >
             {Object.entries(modeOptions).map(([modeOption, modeMeta]) => (
-              <a key={modeOption} href={import.meta.env.BASE_URL + uiUrls[props.ui][modeOption as Mode]}>
+              <a
+                key={modeOption}
+                href={
+                  import.meta.env.BASE_URL +
+                  (props.isVanilla ? vanillaUrls : uiUrls[props.ui])[modeOption as Mode]
+                }
+              >
                 <SlRadioButton value={modeOption}>{modeMeta.text}</SlRadioButton>
               </a>
             ))}
