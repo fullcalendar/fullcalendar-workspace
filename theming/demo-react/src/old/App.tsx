@@ -29,8 +29,7 @@ import {} from '@fullcalendar/resource-timegrid'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import {} from '@fullcalendar/timeline'
 
-import { eventCalendarProps, eventCalendarPlugins } from '@fullcalendar/theme-common/event-calendar'
-import { resourceTimelineProps, vResourceProps } from '@fullcalendar/theme-common/scheduler'
+import { eventCalendarProps, resourceTimelineProps, vResourceProps } from '../lib/demos-config.js'
 
 import { paletteMetaMap as fcMonarchPaletteOptions } from '@fullcalendar/theme-monarch-tailwind/ui-default-palettes-meta'
 import { paletteMetaMap as fcFormaPaletteOptions } from '@fullcalendar/theme-forma-tailwind/ui-default-palettes-meta'
@@ -399,29 +398,29 @@ export default function App() {
               {...eventCalendarProps}
               initialView='dayGridMonth'
               availableViews={['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek', 'multiMonthYear']}
-              plugins={[...eventCalendarPlugins, scrollGridPlugin, adaptivePlugin]}
+              plugins={[scrollGridPlugin, adaptivePlugin]}
             />
             <EventCalendarComponent
               {...eventCalendarProps}
               initialView='timeGridWeek'
-              plugins={[...eventCalendarPlugins, scrollGridPlugin, adaptivePlugin]}
+              plugins={[scrollGridPlugin, adaptivePlugin]}
             />
             <EventCalendarComponent
               {...eventCalendarProps}
               initialView='multiMonthYear'
-              plugins={[...eventCalendarPlugins, scrollGridPlugin, adaptivePlugin]}
+              plugins={[scrollGridPlugin, adaptivePlugin]}
             />
             <EventCalendarComponent
               {...eventCalendarProps}
               initialView='dayGridYear'
               availableViews={['dayGridYear']}
-              plugins={[...eventCalendarPlugins, scrollGridPlugin, adaptivePlugin]}
+              plugins={[scrollGridPlugin, adaptivePlugin]}
             />
             <EventCalendarComponent
               {...eventCalendarProps}
               initialView='listYear'
               availableViews={['listYear', 'listMonth', 'listWeek']}
-              plugins={[...eventCalendarPlugins, scrollGridPlugin, adaptivePlugin]}
+              plugins={[scrollGridPlugin, adaptivePlugin]}
               listText='' // displays nicer list-view-button text
             />
             <SchedulerComponent

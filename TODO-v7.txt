@@ -13,6 +13,10 @@ clean+build all:
   pn build
 
 
+kill @fullcalendar/theme-common/scheduler-types
+kill "old"
+
+
 Conversions
   1. Compiled Tailwind into Single Files
     ui-default-react-tailwind/src/theme-breezy -> ui-default-react-tailwind/src/theme-breezy/_compiled

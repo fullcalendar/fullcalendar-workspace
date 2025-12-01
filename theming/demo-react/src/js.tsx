@@ -2,12 +2,19 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Layout } from './lib/layout.js'
 
+import '@fullcalendar/core/global.css'
 import './lib/ui-default-fonts.js'
 import './lib/ui-default.css'
 
 function App() {
   return (
-    <Layout ui='default' mode='prod' isVanilla>
+    <Layout
+      ui='default'
+      mode='prod'
+      isVanilla
+      renderEventCalendar={() => null}
+      renderScheduler={() => null}
+    >
     </Layout>
   )
 }

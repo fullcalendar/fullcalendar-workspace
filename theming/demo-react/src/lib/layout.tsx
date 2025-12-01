@@ -15,7 +15,7 @@ import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.j
 import { ShadowRoot } from './shadow-root.js'
 import topbarCssText from './topbar-shadow-root.css?inline'
 import { useLocalStorageState } from './hooks.js'
-import { themeOptions, colorSchemeOptions, ColorScheme, Mode, uiUrls, vanillaUrls, modeOptions, uiOptions } from './config.js'
+import { themeOptions, colorSchemeOptions, ColorScheme, Mode, uiUrls, vanillaUrls, modeOptions, uiOptions, UIName, ThemeName } from './config.js'
 import { PaletteMetaMap } from '@fullcalendar/theme-common'
 import { paletteMetaMap as fcMonarchPaletteOptions } from '@fullcalendar/theme-monarch-tailwind/ui-default-palettes-meta'
 import { paletteMetaMap as fcFormaPaletteOptions } from '@fullcalendar/theme-forma-tailwind/ui-default-palettes-meta'
@@ -23,10 +23,13 @@ import { paletteMetaMap as fcPulsePaletteOptions } from '@fullcalendar/theme-pul
 import { paletteMetaMap as fcBreezyPaletteOptions } from '@fullcalendar/theme-breezy-tailwind/ui-default-palettes-meta'
 import { demoPaletteMap as shadcnPaletteOptions } from '@fullcalendar/shadcn/demo-palettes-meta'
 import { demoPaletteMap as muiPaletteOptions } from '@fullcalendar/ui-mui-tailwind/demo-palettes-meta'
+import { EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
+import { SchedulerProps } from '@fullcalendar/theme-common/scheduler'
+import { Demos } from './demos.js'
 
 setBasePath(`${import.meta.env.BASE_URL}shoelace`)
 
-const themeOptionValues = Object.keys(themeOptions)
+const themeOptionValues = Object.keys(themeOptions) as ThemeName[]
 const fcMonarchPaletteValues = Object.keys(fcMonarchPaletteOptions)
 const fcFormaPaletteValues = Object.keys(fcFormaPaletteOptions)
 const fcBreezyPaletteValues = Object.keys(fcBreezyPaletteOptions)
@@ -36,10 +39,12 @@ const muiPaletteValues = Object.keys(muiPaletteOptions)
 const colorSchemeValues = Object.keys(colorSchemeOptions) as ColorScheme[]
 
 export interface LayoutProps {
-  ui: string
+  ui: UIName
   mode: Mode
   isVanilla?: boolean
-  children: ReactNode
+  children?: ReactNode
+  renderEventCalendar: (theme: ThemeName, props: EventCalendarProps) => ReactNode
+  renderScheduler: (theme: ThemeName, props: SchedulerProps) => ReactNode
 }
 
 export function Layout(props: LayoutProps) {
@@ -153,7 +158,7 @@ export function Layout(props: LayoutProps) {
               className='margin-right'
             >
               {Object.entries(uiOptions).map(([uiOption, uiMeta]) => (
-                <a key={uiOption} href={import.meta.env.BASE_URL + uiUrls[uiOption][props.mode]}>
+                <a key={uiOption} href={import.meta.env.BASE_URL + uiUrls[uiOption as UIName][props.mode]}>
                   <SlRadioButton value={uiOption}>{uiMeta.text}</SlRadioButton>
                 </a>
               ))}
@@ -209,6 +214,11 @@ export function Layout(props: LayoutProps) {
       </ShadowRoot>
       <div className='demo-container'>
         {props.children}
+        <Demos
+          theme={theme}
+          renderEventCalendar={props.renderEventCalendar}
+          renderScheduler={props.renderScheduler}
+        />
       </div>
     </Fragment>
   )
