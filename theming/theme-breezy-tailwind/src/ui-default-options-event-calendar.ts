@@ -51,7 +51,6 @@ const eventFaintPressableClass = joinClassNames(
   'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_25%,var(--fc-breezy-background))]',
   'active:bg-[color-mix(in_oklab,var(--fc-event-color)_30%,var(--fc-breezy-background))]',
 )
-const bgEventBgClass = 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]'
 
 // interactive neutral foregrounds
 export const mutedFgPressableGroupClass = `text-(--fc-breezy-muted-foreground) group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)`
@@ -111,7 +110,7 @@ export const params: EventCalendarOptionParams = {
   eventFaintPressableClass,
   eventMutedFgClass,
   bgEventColor: 'var(--fc-breezy-background-event)',
-  bgEventBgClass,
+  bgEventBgClass: 'bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]',
 
   // misc content
   highlightClass: 'bg-(--fc-breezy-highlight)',
