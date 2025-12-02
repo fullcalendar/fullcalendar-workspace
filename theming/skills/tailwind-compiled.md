@@ -14,7 +14,9 @@ Do NOT inline symbols from these files. Continue to import from external package
   @fullcalendar/react
 
 How far should inlining go?
-- Attempt to evaluate the result of `createEventCalendarOptions`, which is a set of props. Spread those props directly into the JSX components' props.
+- Attempt to evaluate the result of `createEventCalendarOptions`, which is a set of props (aka `params`). Inline those params directly into the JSX components' props.
+  - Do NOT simply convert all params to consts and use those consts throughout the outputted file
+  - Instead, INLINE the VALUE of each params. But do NOT recursively inline any consts that are referenced in those values. If the param value references a different const, please maintain the reference to that const.
 - Same with the result of `createSlots`
 - Do NOT inline the members of `dayRowCommonClasses`
 - Some of the props from option-params.ts might not be used in the generated file. Ensure no resulting unused consts.
@@ -87,3 +89,16 @@ Forced ordering
 
 Whitespace
   For props WITHIN a section of props, please ensure no blank lines between props
+
+
+## Part 2: Converting the scheduler.tsx file
+
+Do this only if explicitly asked.
+Do the same instructions I wrote for converting event-calendar.tsx, but for scheduler.tsx instead.
+
+converting
+  INPUT: /theming/ui-default-react-tailwind/src/theme-breezy/scheduler.tsx
+  OUTPUT: /theming/ui-default-react-tailwind/src/theme-breezy/_compiled/scheduler.tsx
+
+Instead of inline all consts afresh, try to export and reuse what's already in _compiled/event-calendar.tsx
+When merging props, ensure resourceExpanderContent goes right after resourceExpanderClass

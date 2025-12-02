@@ -35,24 +35,24 @@ const eventCalendarAvailableViews = [
 ]
 
 // usually 11px font / 12px line-height
-const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
+export const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
 
 // outline
 const outlineWidthClass = 'outline-2'
-const outlineWidthFocusClass = 'focus-visible:outline-2'
+export const outlineWidthFocusClass = 'focus-visible:outline-2'
 const outlineWidthGroupFocusClass = 'group-focus-visible:outline-2'
 const outlineOffsetClass = 'outline-offset-2'
-const primaryOutlineColorClass = 'outline-(--fc-breezy-primary)'
+export const primaryOutlineColorClass = 'outline-(--fc-breezy-primary)'
 const primaryOutlineFocusClass = `${outlineWidthFocusClass} ${primaryOutlineColorClass}`
 
 // neutral buttons
-const strongSolidPressableClass = joinClassNames(
+export const strongSolidPressableClass = joinClassNames(
   '[background:linear-gradient(var(--fc-breezy-strong),var(--fc-breezy-strong))_var(--fc-breezy-background)]',
   'hover:[background:linear-gradient(var(--fc-breezy-stronger),var(--fc-breezy-stronger))_var(--fc-breezy-background)]',
   'active:[background:linear-gradient(var(--fc-breezy-strongest),var(--fc-breezy-strongest))_var(--fc-breezy-background)]',
 )
 const mutedHoverClass = 'hover:bg-(--fc-breezy-muted)'
-const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-breezy-muted)`
+export const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-breezy-muted)`
 const faintHoverClass = 'hover:bg-(--fc-breezy-faint)'
 const faintHoverPressableClass = `${faintHoverClass} active:bg-(--fc-breezy-muted) focus-visible:bg-(--fc-breezy-faint)`
 
@@ -82,7 +82,7 @@ const eventFaintPressableClass = joinClassNames(
 )
 
 // interactive neutral foregrounds
-const mutedFgPressableGroupClass = 'text-(--fc-breezy-muted-foreground) group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)'
+export const mutedFgPressableGroupClass = 'text-(--fc-breezy-muted-foreground) group-hover:text-(--fc-breezy-foreground) group-focus-visible:text-(--fc-breezy-foreground)'
 
 // transparent resizer for mouse
 const blockPointerResizerClass = 'absolute hidden group-hover:block'
@@ -740,7 +740,7 @@ export function EventCalendar({
 /* SVGs
 ------------------------------------------------------------------------------------------------- */
 
-function chevronDown(className?: string) {
+export function chevronDown(className?: string) {
   return <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" /></svg>
 }
 
