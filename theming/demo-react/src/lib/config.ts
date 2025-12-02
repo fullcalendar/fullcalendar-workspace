@@ -36,7 +36,7 @@ export const uiUrls = {
   default: {
     dev: 'tailwind-dev',
     compiled: 'tailwind-compiled',
-    prod: '', // src: index.html
+    prod: '', // src: index.html (non-tailwind js plugin)
   },
   shadcn: {
     dev: 'shadcn-dev',
@@ -50,12 +50,6 @@ export const uiUrls = {
   },
 }
 
-export const vanillaUrls = {
-  dev: 'js-tailwind-dev',
-  compiled: 'js-tailwind-compiled',
-  prod: 'js',
-}
-
 export function getUrlToSrcMap(): Record<string, string> {
   const values: string[] = []
 
@@ -66,15 +60,9 @@ export function getUrlToSrcMap(): Record<string, string> {
     }
   }
 
-  for (const mode in vanillaUrls) {
-    values.push(vanillaUrls[mode as keyof typeof vanillaUrls])
-  }
-
   const map: Record<string, string> = {}
-
   for (const value of values) {
     map[value] = (value || 'index') + '.html'
   }
-
   return map
 }

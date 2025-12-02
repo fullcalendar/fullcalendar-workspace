@@ -6,6 +6,11 @@ sl-radio-group::part(form-control) {
   gap: 8px;
 }
 
+sl-select::part(form-control-label),
+sl-radio-group::part(form-control-label) {
+  margin-left: 8px; /* HACK: extra spacing */
+}
+
 a[href] {
   text-decoration: none;
 }
@@ -14,10 +19,6 @@ a[href] {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.margin-right {
-  margin-right: 12px;
 }
 
 .color-square {

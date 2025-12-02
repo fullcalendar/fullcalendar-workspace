@@ -5,9 +5,12 @@ import { DemoGenerator } from './lib/demo-generator.js'
 import { Layout } from './lib/layout.js'
 
 import '@fullcalendar/core/global.css'
-import './lib/tailwind.css'
 import './lib/ui-shadcn-fonts.js'
 import './lib/ui-shadcn.css'
+
+/*
+TODO: import directly from the shadcn-registry packages
+*/
 
 const ui = 'shadcn'
 const mode = 'prod'

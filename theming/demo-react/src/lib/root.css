@@ -12,7 +12,7 @@ html, body {
   flex-direction: row;
   justify-content: space-between;
   gap: 8px;
-  padding: 4px 8px 4px 4px;
+  padding: 8px;
   background: var(--sl-panel-background-color);
   border-bottom: 1px solid var(--sl-panel-border-color);
   color: var(--sl-color-gray-800);
