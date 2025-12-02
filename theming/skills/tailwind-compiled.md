@@ -108,4 +108,4 @@ When merging props, ensure resourceExpanderContent goes right after resourceExpa
 
 ## Exporting consts for scheduler reuse
 
-When initially creating the event-calendar.tsx compiled file, do NOT export any consts or functions (except EventCalendarProps). Wait until the scheduler.tsx conversion is requested. Only then, determine which consts/functions need to be exported from event-calendar.tsx for reuse in scheduler.tsx, and add those exports.
+When initially creating the event-calendar.tsx compiled file, do NOT export any consts or functions (except EventCalendarProps and the main component function). Wait until the scheduler.tsx conversion is requested. Only then, determine which consts/functions need to be exported from event-calendar.tsx for reuse in scheduler.tsx, and add those exports.
