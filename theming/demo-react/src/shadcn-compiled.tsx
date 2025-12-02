@@ -1,5 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { useDemoChoices } from './lib/demo-choices.js'
+import { Demos } from './lib/demos.js'
 import { Layout } from './lib/layout.js'
 
 import '@fullcalendar/core/global.css'
@@ -7,14 +9,18 @@ import './lib/tailwind.css'
 import './lib/ui-shadcn-fonts.js'
 import './lib/ui-shadcn.css'
 
+const ui = 'shadcn'
+const mode = 'compiled'
+
 function App() {
+  const demoChoices = useDemoChoices(ui)
+
   return (
-    <Layout
-      ui='shadcn'
-      mode='compiled'
-      renderEventCalendar={() => null}
-      renderScheduler={() => null}
-    >
+    <Layout ui={ui} mode={mode} {...demoChoices}>
+      <Demos
+        renderEventCalendar={() => null}
+        renderScheduler={() => null}
+      />
     </Layout>
   )
 }

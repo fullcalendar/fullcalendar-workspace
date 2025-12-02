@@ -1,17 +1,23 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { useDemoChoices } from './lib/demo-choices.js'
+import { Demos } from './lib/demos.js'
 import { Layout } from './lib/layout.js'
 
 import '@fullcalendar/core/global.css'
 
+const ui = 'mui'
+const mode = 'prod'
+
 function App() {
+  const demoChoices = useDemoChoices(ui)
+
   return (
-    <Layout
-      ui='mui'
-      mode='prod'
-      renderEventCalendar={() => null}
-      renderScheduler={() => null}
-    >
+    <Layout ui={ui} mode={mode} {...demoChoices}>
+      <Demos
+        renderEventCalendar={() => null}
+        renderScheduler={() => null}
+      />
     </Layout>
   )
 }

@@ -1,5 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { useDemoChoices } from './lib/demo-choices.js'
+import { Demos } from './lib/demos.js'
 import { Layout } from './lib/layout.js'
 
 import '@fullcalendar/core/global.css'
@@ -34,20 +36,25 @@ const schedulerByTheme = {
   pulse: PulseScheduler,
 }
 
+const ui = 'default'
+const mode = 'dev'
+
 function App() {
+  const demoChoices = useDemoChoices(ui)
+
   return (
-    <Layout
-      ui='default'
-      mode='dev'
-      renderEventCalendar={(theme, props) => {
-        const EventCalendar = eventCalendarByTheme[theme]
-        return <EventCalendar {...props} />
-      }}
-      renderScheduler={(theme, props) => {
-        const Scheduler = schedulerByTheme[theme]
-        return <Scheduler {...props} />
-      }}
-    />
+    <Layout ui={ui} mode={mode} {...demoChoices}>
+      <Demos
+        renderEventCalendar={(props) => {
+          const EventCalendar = eventCalendarByTheme[demoChoices.theme]
+          return <EventCalendar {...props} />
+        }}
+        renderScheduler={(props) => {
+          const Scheduler = schedulerByTheme[demoChoices.theme]
+          return <Scheduler {...props} />
+        }}
+      />
+    </Layout>
   )
 }
 

@@ -4,8 +4,9 @@ import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
 import MuiCssBaseline from '@mui/material/CssBaseline'
 import { getMuiTheme } from '@fullcalendar/ui-mui-tailwind/demo-palettes'
 import { joinClassNames, ClassNameInput } from '@fullcalendar/core'
+import { useDemoChoices } from './lib/demo-choices.js'
+import { Demos } from './lib/demos.js'
 import { Layout } from './lib/layout.js'
-import { useLocalStorageState } from './lib/hooks.js' // ugghhh
 
 import '@fullcalendar/core/global.css'
 import './lib/tailwind.css'
@@ -37,41 +38,44 @@ const schedulerByTheme = {
   pulse: PulseScheduler,
 }
 
+const ui = 'mui'
+const mode = 'dev'
+
 function App() {
-  const [muiPalette] = useLocalStorageState('muiPalette', 'blue', ['blue'])
-  const [colorScheme] = useLocalStorageState<'light' | 'dark'>('colorScheme', 'light', ['light', 'dark'])
+  const demoChoices = useDemoChoices(ui)
+  const { theme, palette, colorScheme } = demoChoices
 
   const muiTheme = useMemo(
-    () => getMuiTheme(muiPalette, colorScheme),
-    [muiPalette, colorScheme],
+    () => getMuiTheme(palette, colorScheme),
+    [palette, colorScheme],
   )
 
   return (
-    <MuiThemeProvider theme={muiTheme}>
-      <MuiCssBaseline />
-      <Layout
-        ui='mui'
-        mode='dev'
-        renderEventCalendar={(theme, props) => {
-          const EventCalendar = eventCalendarByTheme[theme]
-          return (
-            <EventCalendar
-              {...props}
-              className={collapseClassNames(props.class, props.className)}
-            />
-          )
-        }}
-        renderScheduler={(theme, props) => {
-          const Scheduler = schedulerByTheme[theme]
-          return (
-            <Scheduler
-              {...props}
-              className={collapseClassNames(props.class, props.className)}
-            />
-          )
-        }}
-      />
-    </MuiThemeProvider>
+    <Layout ui={ui} mode={mode} {...demoChoices}>
+      <MuiThemeProvider theme={muiTheme}>
+        <MuiCssBaseline />
+        <Demos
+          renderEventCalendar={(props) => {
+            const EventCalendar = eventCalendarByTheme[theme]
+            return (
+              <EventCalendar
+                {...props}
+                className={collapseClassNames(props.class, props.className)}
+              />
+            )
+          }}
+          renderScheduler={(props) => {
+            const Scheduler = schedulerByTheme[theme]
+            return (
+              <Scheduler
+                {...props}
+                className={collapseClassNames(props.class, props.className)}
+              />
+            )
+          }}
+        />
+      </MuiThemeProvider>
+    </Layout>
   )
 }
 

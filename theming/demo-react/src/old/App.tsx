@@ -29,7 +29,7 @@ import {} from '@fullcalendar/resource-timegrid'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import {} from '@fullcalendar/timeline'
 
-import { eventCalendarProps, resourceTimelineProps, vResourceProps } from '../lib/demos-config.js'
+import { eventCalendarProps, resourceTimelineProps, vResourceProps } from '../lib/demo-config.js'
 
 import { paletteMetaMap as fcMonarchPaletteOptions } from '@fullcalendar/theme-monarch-tailwind/ui-default-palettes-meta'
 import { paletteMetaMap as fcFormaPaletteOptions } from '@fullcalendar/theme-forma-tailwind/ui-default-palettes-meta'

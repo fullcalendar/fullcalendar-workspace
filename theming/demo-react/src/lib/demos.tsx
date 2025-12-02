@@ -3,45 +3,43 @@ import adaptivePlugin from '@fullcalendar/adaptive'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import { EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
 import { SchedulerProps } from '@fullcalendar/theme-common/scheduler'
-import { eventCalendarProps, resourceTimelineProps, vResourceProps } from './demos-config.js'
-import { ThemeName } from './config.js'
+import { eventCalendarProps, resourceTimelineProps, vResourceProps } from './demo-config.js'
 
 export interface DemosProps {
-  theme: ThemeName
-  renderEventCalendar: (theme: ThemeName, props: EventCalendarProps) => ReactNode
-  renderScheduler: (theme: ThemeName, props: SchedulerProps) => ReactNode
+  renderEventCalendar: (props: EventCalendarProps) => ReactNode
+  renderScheduler: (props: SchedulerProps) => ReactNode
 }
 
 export function Demos(props: DemosProps) {
   return (
-    <>
-      {props.renderEventCalendar(props.theme, {
+    <div className='demo-container'>
+      {props.renderEventCalendar({
         ...eventCalendarProps,
         initialView: 'dayGridMonth',
         availableViews: ['dayGridMonth', 'timeGridWeek', 'timeGridDay', 'listWeek', 'multiMonthYear'],
         plugins: [scrollGridPlugin, adaptivePlugin],
       })}
 
-      {props.renderEventCalendar(props.theme, {
+      {props.renderEventCalendar({
         ...eventCalendarProps,
         initialView: 'timeGridWeek',
         plugins: [scrollGridPlugin, adaptivePlugin],
       })}
 
-      {props.renderEventCalendar(props.theme, {
+      {props.renderEventCalendar({
         ...eventCalendarProps,
         initialView: 'multiMonthYear',
         plugins: [scrollGridPlugin, adaptivePlugin],
       })}
 
-      {props.renderEventCalendar(props.theme, {
+      {props.renderEventCalendar({
         ...eventCalendarProps,
         initialView: 'dayGridYear',
         availableViews: ['dayGridYear'],
         plugins: [scrollGridPlugin, adaptivePlugin],
       })}
 
-      {props.renderEventCalendar(props.theme, {
+      {props.renderEventCalendar({
         ...eventCalendarProps,
         initialView: 'listYear',
         availableViews: ['listYear', 'listMonth', 'listWeek'],
@@ -49,18 +47,18 @@ export function Demos(props: DemosProps) {
         listText: '',
       })}
 
-      {props.renderScheduler(props.theme, {
+      {props.renderScheduler({
         ...resourceTimelineProps,
         initialView: 'resourceTimelineThreeDay',
         availableViews: ['resourceTimelineDay', 'resourceTimelineThreeDay', 'resourceTimelineWeek'],
       })}
 
-      {props.renderScheduler(props.theme, {
+      {props.renderScheduler({
         ...vResourceProps,
         initialView: 'resourceTimeGridFiveDay',
         availableViews: ['resourceTimeGridDay', 'resourceTimeGridTwoDay', 'resourceTimeGridFiveDay', 'resourceTimeGridWeek'],
       })}
-    </>
+    </div>
   )
 }
 
