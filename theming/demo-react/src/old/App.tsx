@@ -238,7 +238,6 @@ export default function App() {
     rootEl.setAttribute('data-ui', ui)
     rootEl.setAttribute('data-theme', theme)
     rootEl.setAttribute('data-palette', fcPalette)
-    rootEl.setAttribute('data-shadcn-palette', shadcnPalette)
     rootEl.setAttribute('data-color-scheme', colorScheme)
   }, [ui, theme, fcMonarchPalette, fcFormaPalette, fcBreezyPalette, fcPulsePalette, shadcnPalette, colorScheme])
 

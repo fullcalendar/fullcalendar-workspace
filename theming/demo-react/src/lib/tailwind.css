@@ -1,16 +1,12 @@
 
-/* Default UI */
+@custom-variant dark (&:is([data-color-scheme=dark] *));
+
+@import "tailwindcss";
+
 @source "../../node_modules/@fullcalendar/theme-classic-tailwind/src";
 @source "../../node_modules/@fullcalendar/theme-breezy-tailwind/src";
 @source "../../node_modules/@fullcalendar/theme-pulse-tailwind/src";
 @source "../../node_modules/@fullcalendar/theme-monarch-tailwind/src";
 @source "../../node_modules/@fullcalendar/theme-forma-tailwind/src";
-/* Shadcn */
 @source "../../node_modules/@fullcalendar/ui-shadcn/src";
-/* MUI */
 @source "../../node_modules/@fullcalendar/ui-mui-tailwind/src";
-
-@custom-variant dark (&:is([data-color-scheme=dark] *));
-
-@import "tailwindcss";
-

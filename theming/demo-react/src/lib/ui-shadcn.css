@@ -1,9 +1,11 @@
 
+@import "./tailwind.css"; /* imports tailwind. callers of this file don't need to */
+@import "tw-animate-css";
+@import "@fullcalendar/ui-shadcn/demo-palettes.css";
+
 html {
   font-family: 'Geist Variable', sans-serif;
 }
-
-@import "tw-animate-css";
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -51,5 +53,3 @@ html {
     @apply bg-background text-foreground;
   }
 }
-
-@import "@fullcalendar/ui-shadcn/demo-palettes.css";
