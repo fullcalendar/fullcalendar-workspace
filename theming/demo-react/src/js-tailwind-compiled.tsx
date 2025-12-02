@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { useDemoChoices } from './lib/demo-choices.js'
-import { Demos } from './lib/demos.js'
+import { DemoGenerator } from './lib/demo-generator.js'
 import { Layout } from './lib/layout.js'
 
 import '@fullcalendar/core/global.css'
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <Layout ui={ui} mode={mode} isVanilla {...demoChoices}>
-      <Demos
+      <DemoGenerator
         renderEventCalendar={() => null}
         renderScheduler={() => null}
       />

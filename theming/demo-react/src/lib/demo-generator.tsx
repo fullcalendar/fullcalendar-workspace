@@ -5,12 +5,12 @@ import { EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
 import { SchedulerProps } from '@fullcalendar/theme-common/scheduler'
 import { eventCalendarProps, resourceTimelineProps, vResourceProps } from './demo-config.js'
 
-export interface DemosProps {
+export interface DemoGeneratorProps {
   renderEventCalendar: (props: EventCalendarProps) => ReactNode
   renderScheduler: (props: SchedulerProps) => ReactNode
 }
 
-export function Demos(props: DemosProps) {
+export function DemoGenerator(props: DemoGeneratorProps) {
   return (
     <div className='demo-container'>
       {props.renderEventCalendar({

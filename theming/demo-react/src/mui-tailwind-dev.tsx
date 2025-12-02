@@ -5,7 +5,7 @@ import MuiCssBaseline from '@mui/material/CssBaseline'
 import { getMuiTheme } from '@fullcalendar/ui-mui-tailwind/demo-palettes'
 import { joinClassNames, ClassNameInput } from '@fullcalendar/core'
 import { useDemoChoices } from './lib/demo-choices.js'
-import { Demos } from './lib/demos.js'
+import { DemoGenerator } from './lib/demo-generator.js'
 import { Layout } from './lib/layout.js'
 
 import '@fullcalendar/core/global.css'
@@ -54,7 +54,7 @@ function App() {
     <Layout ui={ui} mode={mode} {...demoChoices}>
       <MuiThemeProvider theme={muiTheme}>
         <MuiCssBaseline />
-        <Demos
+        <DemoGenerator
           renderEventCalendar={(props) => {
             const EventCalendar = eventCalendarByTheme[theme]
             return (
