@@ -588,6 +588,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         ...dayRowCommonClasses,
         dayHeaderClass: getNormalDayHeaderBorderClass,
         dayHeaderDividerClass: (data) => data.isSticky && `border-b ${params.strongBorderColorClass} shadow-sm`,
+        dayCellClass: getNormalDayCellBorderColorClass,
         dayCellBottomClass: getShortDayCellBottomClass,
 
         tableHeaderClass: (data) => data.isSticky && params.bgClass,
