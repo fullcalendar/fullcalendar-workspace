@@ -3,6 +3,8 @@ converting
   INPUT: /theming/ui-default-react-tailwind/src/theme-breezy/event-calendar.tsx
   OUTPUT: /theming/ui-default-react-tailwind/src/theme-breezy/_compiled/event-calendar.tsx
 
+(NOTE: you may be instructed to do this for a different theme other then breezy. If so, please replace all references to "breezy" in paths with the provided theme name)
+
 GOAL: use the input file as the "main" file and combine nearly all other files it references into a single file
 
 DO inline all symbols from:

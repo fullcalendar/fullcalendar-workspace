@@ -9,8 +9,8 @@ import './lib/tailwind.css'
 import './lib/ui-default-fonts.js'
 import './lib/ui-default.css'
 
-// import { EventCalendar as BreezyEventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-breezy/_compiled/event-calendar'
-// import { Scheduler as BreezyScheduler } from '@fullcalendar/ui-default-react-tailwind/theme-breezy/_compiled/scheduler'
+import { EventCalendar as BreezyEventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-breezy/_compiled/event-calendar'
+import { Scheduler as BreezyScheduler } from '@fullcalendar/ui-default-react-tailwind/theme-breezy/_compiled/scheduler'
 // import { EventCalendar as ClassicEventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-classic/_compiled/event-calendar'
 // import { Scheduler as ClassicScheduler } from '@fullcalendar/ui-default-react-tailwind/theme-classic/_compiled/scheduler'
 // import { EventCalendar as FormaEventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-forma/_compiled/event-calendar'
@@ -21,7 +21,7 @@ import './lib/ui-default.css'
 // import { Scheduler as PulseScheduler } from '@fullcalendar/ui-default-react-tailwind/theme-pulse/_compiled/scheduler'
 
 const eventCalendarByTheme = {
-  // breezy: BreezyEventCalendar,
+  breezy: BreezyEventCalendar,
   // classic: ClassicEventCalendar,
   // forma: FormaEventCalendar,
   // monarch: MonarchEventCalendar,
@@ -29,7 +29,7 @@ const eventCalendarByTheme = {
 } as any // !!!
 
 const schedulerByTheme = {
-  // breezy: BreezyScheduler,
+  breezy: BreezyScheduler,
   // classic: ClassicScheduler,
   // forma: FormaScheduler,
   // monarch: MonarchScheduler,
