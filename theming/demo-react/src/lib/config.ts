@@ -36,7 +36,7 @@ export const uiUrls = {
   default: {
     dev: 'tailwind-dev',
     compiled: 'tailwind-compiled',
-    prod: '', // index.html
+    prod: '', // src: index.html
   },
   shadcn: {
     dev: 'shadcn-dev',
@@ -56,7 +56,7 @@ export const vanillaUrls = {
   prod: 'js',
 }
 
-export function getAllUrlValues(): Record<string, string> {
+export function getUrlToSrcMap(): Record<string, string> {
   const values: string[] = []
 
   for (const uiKey in uiUrls) {
@@ -73,7 +73,7 @@ export function getAllUrlValues(): Record<string, string> {
   const map: Record<string, string> = {}
 
   for (const value of values) {
-    map[value || 'index'] = (value || 'index') + '.html'
+    map[value] = (value || 'index') + '.html'
   }
 
   return map

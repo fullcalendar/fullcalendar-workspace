@@ -2,7 +2,7 @@ import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { getAllUrlValues } from './src/lib/config.js'
+import { getUrlToSrcMap } from './src/lib/config.js'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -17,7 +17,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      input: getAllUrlValues(),
+      input: getUrlToSrcMap(),
     },
   },
 })
