@@ -1,8 +1,7 @@
 import { CalendarOptions } from '@fullcalendar/core'
-import { ClassValue } from '../lib/utils.js'
 
 export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
-  className?: ClassValue
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean

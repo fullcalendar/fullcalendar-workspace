@@ -3,7 +3,7 @@ converting
 
 Take this file and transform it into a new file ./_gen/event-calendar.tsx
 Inline all symbols from ../lib/, but keep them as consts/functions (do NOT inline their primitive values).
-Exception: do NOT inline the cn() function or ClassValue types. Refer to them in their original file.
+Exception: do NOT inline the cn() function. Refer to them in their original file.
 Attempt to evaluate the result of createEventCalendarOptions, which is a set of props. Spread those props directly into the JSX components' props.
 Same with the result of createSlots.
 Some of the props from option-params.ts might not be used in the generated file. Ensure no resulting unused consts.

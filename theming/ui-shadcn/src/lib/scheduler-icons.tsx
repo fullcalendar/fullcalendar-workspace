@@ -3,7 +3,7 @@ import { ChevronDownIcon } from 'lucide-react'
 import { CalendarOptions, joinClassNames } from "@fullcalendar/core"
 import { mutedFgPressableGroupClass } from './option-params.js'
 
-import '@fullcalendar/theme-common/scheduler-types'
+import type {} from '@fullcalendar/resource-timeline'
 
 export const schedulerOnlyIconOptions: CalendarOptions = {
 

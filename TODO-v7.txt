@@ -13,12 +13,6 @@ clean+build all:
   pn build
 
 
-kill @fullcalendar/theme-common/scheduler-types
-kill "old"
-ensure shoelace UI doesn't set page bg color
-avoid exporting ClassValue
-
-
 Conversions
   1. Compiled Tailwind into Single Files
     ui-default-react-tailwind/src/theme-breezy -> ui-default-react-tailwind/src/theme-breezy/_compiled

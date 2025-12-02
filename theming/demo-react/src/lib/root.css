@@ -17,6 +17,7 @@ html, body {
   border-bottom: 1px solid var(--sl-panel-border-color);
   color: var(--sl-color-gray-800);
   font-family: var(--sl-font-sans);
+  -webkit-font-smoothing: auto; /* revert MUI changing it globally */
 }
 
 .demo-container {
