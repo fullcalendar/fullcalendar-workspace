@@ -1,6 +1,9 @@
 import { EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
 import { SchedulerProps } from '@fullcalendar/theme-common/scheduler'
 
+import type {} from '@fullcalendar/resource'
+import type {} from '@fullcalendar/resource-timeline'
+
 export const eventCalendarProps: EventCalendarProps = {
   // dayMinWidth: 200
   // slotMaxTime: '08:00:00'

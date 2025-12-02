@@ -18,6 +18,7 @@ import { EventCalendar as MonarchEventCalendar } from '@fullcalendar/ui-shadcn/t
 import { Scheduler as MonarchScheduler } from '@fullcalendar/ui-shadcn/theme-monarch/scheduler'
 import { EventCalendar as PulseEventCalendar } from '@fullcalendar/ui-shadcn/theme-pulse/event-calendar'
 import { Scheduler as PulseScheduler } from '@fullcalendar/ui-shadcn/theme-pulse/scheduler'
+import { flattenClassName } from './lib/utils.js'
 
 const eventCalendarByTheme = {
   breezy: BreezyEventCalendar,
@@ -46,11 +47,11 @@ function App() {
       <DemoGenerator
         renderEventCalendar={(props) => {
           const EventCalendar = eventCalendarByTheme[demoChoices.theme]
-          return <EventCalendar {...props} />
+          return <EventCalendar {...props} className={flattenClassName(props)} />
         }}
         renderScheduler={(props) => {
           const Scheduler = schedulerByTheme[demoChoices.theme]
-          return <Scheduler {...props} />
+          return <Scheduler {...props} className={flattenClassName(props)} />
         }}
       />
     </Layout>

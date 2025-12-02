@@ -3,10 +3,10 @@ import { createRoot } from 'react-dom/client'
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles'
 import MuiCssBaseline from '@mui/material/CssBaseline'
 import { getMuiTheme } from '@fullcalendar/ui-mui-tailwind/demo-palettes'
-import { joinClassNames, ClassNameInput } from '@fullcalendar/core'
 import { useDemoChoices } from './lib/demo-choices.js'
 import { DemoGenerator } from './lib/demo-generator.js'
 import { Layout } from './lib/layout.js'
+import { flattenClassName } from './lib/utils.js'
 
 import '@fullcalendar/core/global.css'
 import './lib/tailwind.css'
@@ -58,34 +58,18 @@ function App() {
           renderEventCalendar={(props) => {
             const EventCalendar = eventCalendarByTheme[theme]
             return (
-              <EventCalendar
-                {...props}
-                className={collapseClassNames(props.class, props.className)}
-              />
+              <EventCalendar {...props} className={flattenClassName(props)} />
             )
           }}
           renderScheduler={(props) => {
             const Scheduler = schedulerByTheme[theme]
             return (
-              <Scheduler
-                {...props}
-                className={collapseClassNames(props.class, props.className)}
-              />
+              <Scheduler {...props} className={flattenClassName(props)} />
             )
           }}
         />
       </MuiThemeProvider>
     </Layout>
-  )
-}
-
-function collapseClassNames(
-  className0: ClassNameInput,
-  className1: ClassNameInput,
-): string {
-  return joinClassNames(
-    Array.isArray(className0) ? joinClassNames(...className0) : className0,
-    Array.isArray(className1) ? joinClassNames(...className1) : className1,
   )
 }
 
