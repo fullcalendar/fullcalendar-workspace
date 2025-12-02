@@ -55,3 +55,26 @@ export const vanillaUrls = {
   compiled: 'js-tailwind-compiled',
   prod: 'js',
 }
+
+export function getAllUrlValues(): Record<string, string> {
+  const values: string[] = []
+
+  for (const uiKey in uiUrls) {
+    const modes = uiUrls[uiKey as keyof typeof uiUrls]
+    for (const mode in modes) {
+      values.push(modes[mode as keyof typeof modes])
+    }
+  }
+
+  for (const mode in vanillaUrls) {
+    values.push(vanillaUrls[mode as keyof typeof vanillaUrls])
+  }
+
+  const map: Record<string, string> = {}
+
+  for (const value of values) {
+    map[value || 'index'] = (value || 'index') + '.html'
+  }
+
+  return map
+}
