@@ -1,14 +1,16 @@
 
 converting
-  INPUT: /theming/ui-default-react-tailwind/src/theme-breezy/event-calendar.tsx
-  OUTPUT: /theming/ui-default-react-tailwind/src/theme-breezy/_compiled/event-calendar.tsx
+  INPUT: /theming/ui-default-react-tailwind/src/theme-pulse/event-calendar.tsx
+  OUTPUT: /theming/ui-default-react-tailwind/src/theme-pulse/_compiled/event-calendar.tsx
 
-(NOTE: you may be instructed to do this for a different theme other then breezy. If so, please replace all references to "breezy" in paths with the provided theme name)
+NOTE: you may be instructed to do this for a different theme other then breezy. If so, please replace all references to "breezy" in paths with the provided theme name. Here is the general form
+  INPUT: /theming/ui-default-react-tailwind/src/theme-<themename>/event-calendar.tsx
+  OUTPUT: /theming/ui-default-react-tailwind/src/theme-<themename>/_compiled/event-calendar.tsx
 
 GOAL: use the input file as the "main" file and combine nearly all other files it references into a single file
 
 DO inline all symbols from:
-  @fullcalendar/theme-breezy-tailwind
+  @fullcalendar/theme-<themename>-tailwind
   @fullcalendar/theme-common
 
 Do NOT inline symbols from these files. Continue to import from external package:
@@ -59,6 +61,14 @@ More notes on comments:
     // some comment
     const whatever = 'cool'
     const nice = 'yes'
+
+Removing some blocks
+  Remove blocks of code like this:
+    // ambient types (tsc strips during build because of {})
+    import {} from '@fullcalendar/daygrid'
+    import {} from '@fullcalendar/timegrid'
+    import {} from '@fullcalendar/list'
+    // etc...
 
 For merging `userViews` or `views`, instead of relying on `mergeViewOptionsMap`, do something like this:
 

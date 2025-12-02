@@ -17,15 +17,15 @@ import { EventCalendar as FormaEventCalendar } from '@fullcalendar/ui-default-re
 import { Scheduler as FormaScheduler } from '@fullcalendar/ui-default-react-tailwind/theme-forma/_compiled/scheduler'
 import { EventCalendar as MonarchEventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-monarch/_compiled/event-calendar'
 import { Scheduler as MonarchScheduler } from '@fullcalendar/ui-default-react-tailwind/theme-monarch/_compiled/scheduler'
-// import { EventCalendar as PulseEventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-pulse/_compiled/event-calendar'
-// import { Scheduler as PulseScheduler } from '@fullcalendar/ui-default-react-tailwind/theme-pulse/_compiled/scheduler'
+import { EventCalendar as PulseEventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-pulse/_compiled/event-calendar'
+import { Scheduler as PulseScheduler } from '@fullcalendar/ui-default-react-tailwind/theme-pulse/_compiled/scheduler'
 
 const eventCalendarByTheme = {
   breezy: BreezyEventCalendar,
   // classic: ClassicEventCalendar,
   forma: FormaEventCalendar,
   monarch: MonarchEventCalendar,
-  // pulse: PulseEventCalendar,
+  pulse: PulseEventCalendar,
 } as any // !!!
 
 const schedulerByTheme = {
@@ -33,7 +33,7 @@ const schedulerByTheme = {
   // classic: ClassicScheduler,
   forma: FormaScheduler,
   monarch: MonarchScheduler,
-  // pulse: PulseScheduler,
+  pulse: PulseScheduler,
 } as any // !!!
 
 const ui = 'default'
