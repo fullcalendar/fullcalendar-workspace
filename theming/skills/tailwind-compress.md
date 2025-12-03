@@ -190,3 +190,28 @@ When there's already a conditional/ternary items, keep items distinct
     coolConst,
     anotherConst,
   ]
+
+# Compression 7: Identical branch evaluations
+
+BEFORE:
+  [
+    someConst,
+    data.isInteractive
+      ? 'hover:bg-foreground/5'
+      : 'hover:bg-foreground/5',
+  ]
+
+AFTER:
+  [
+    someConst,
+    'hover:bg-foreground/5',
+  ]
+
+
+# Compression 8:
+
+Sometimes whole component properties will results in an empty string. Remove them
+
+  <FullCalendar
+    listItemEventTitleClass='' // remove this!!!
+  />

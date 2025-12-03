@@ -98,8 +98,7 @@ export function SchedulerView({
       resourceDayHeaderAlign='center'
       resourceDayHeaderClass={(data) => data.isMajor && 'border border-foreground/20'}
       resourceDayHeaderInnerClass={(data) => [
-        'p-2 flex flex-row items-center',
-        'text-muted-foreground',
+        'p-2 flex flex-row items-center text-muted-foreground',
         data.isNarrow ? 'text-xs' : 'text-sm',
       ]}
 
@@ -114,12 +113,7 @@ export function SchedulerView({
       resourceCellClass='border'
       resourceCellInnerClass='p-2 text-sm'
       resourceIndentClass='ms-1 -me-1.5 justify-center'
-      resourceExpanderClass={[
-        'group p-0.5 rounded-sm',
-        'hover:bg-foreground/5',
-        'focus-visible:outline-3',
-        'outline-ring/50',
-      ]}
+      resourceExpanderClass="group p-0.5 rounded-sm hover:bg-foreground/5 focus-visible:outline-3 outline-ring/50"
       resourceExpanderContent={(data) => (
         <ChevronDownIcon
           className={cn(
@@ -156,10 +150,7 @@ export function SchedulerView({
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */
 
-          rowMoreLinkClass: [
-            'me-px mb-px border border-transparent print:border-black rounded-sm',
-            'bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white',
-          ],
+          rowMoreLinkClass: "me-px mb-px border border-transparent print:border-black rounded-sm bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white",
           rowMoreLinkInnerClass: 'p-1 text-xs',
 
           /* Timeline > Slot Header

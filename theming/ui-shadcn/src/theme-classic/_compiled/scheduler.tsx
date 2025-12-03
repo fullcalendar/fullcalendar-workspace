@@ -100,7 +100,7 @@ export function SchedulerView({
       resourceDayHeaderAlign='center'
       resourceDayHeaderClass={(data) => [
         'border',
-        data.isMajor ? 'border-foreground/20' : '',
+        data.isMajor && 'border-foreground/20',
       ]}
       resourceDayHeaderInnerClass={(data) => [
         'px-1 py-0.5 flex flex-col',
@@ -118,11 +118,7 @@ export function SchedulerView({
       resourceCellClass='border'
       resourceCellInnerClass='p-2 text-sm'
       resourceIndentClass='ms-2 -me-1 justify-center'
-      resourceExpanderClass={[
-        'group',
-        'focus-visible:outline-3',
-        'outline-ring/50',
-      ]}
+      resourceExpanderClass="group focus-visible:outline-3 outline-ring/50"
       resourceExpanderContent={(data) => (
         <ChevronDownIcon
           className={cn(
@@ -174,10 +170,7 @@ export function SchedulerView({
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */
 
-          rowMoreLinkClass: [
-            'me-px mb-px border border-transparent print:border-black',
-            'bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white',
-          ],
+          rowMoreLinkClass: "me-px mb-px border border-transparent print:border-black bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white",
           rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
           /* Timeline > Slot Header
@@ -194,11 +187,7 @@ export function SchedulerView({
           /* Timeline > Now-Indicator
           --------------------------------------------------------------------------------------- */
 
-          nowIndicatorHeaderClass: [
-            'top-0 -mx-[5px]',
-            'border-x-[5px] border-x-transparent',
-            'border-t-[6px] border-destructive',
-          ],
+          nowIndicatorHeaderClass: "top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-destructive",
           nowIndicatorLineClass: 'border-s border-destructive',
 
           ...userViews?.timeline,

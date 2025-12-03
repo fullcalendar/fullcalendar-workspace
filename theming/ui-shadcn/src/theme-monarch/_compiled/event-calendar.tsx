@@ -85,11 +85,10 @@ const dayRowCommonClasses: CalendarOptions = {
   --------------------------------------------------------------------------------------------- */
 
   rowMoreLinkClass: (data) => [
-    'mb-px border rounded-sm',
+    'mb-px border rounded-sm hover:bg-foreground/5',
     data.isNarrow
       ? 'mx-px border-primary'
       : 'mx-0.5 border-transparent',
-    'hover:bg-foreground/5',
   ],
   rowMoreLinkInnerClass: (data) => (
     data.isNarrow
@@ -128,8 +127,7 @@ export function EventCalendar({
     <div
       className={cn(
         className,
-        'flex flex-col',
-        'bg-background',
+        'flex flex-col bg-background',
         !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-lg overflow-hidden',
         !borderlessX && 'border-x',
         !borderlessTop && 'border-t',
@@ -247,10 +245,7 @@ export function EventCalendarView({
       eventContrastColor='var(--primary-foreground)'
       eventClass={(data) => [
         data.isSelected
-          ? cn(
-              'outline-3',
-              data.isDragging ? 'shadow-lg' : 'shadow-md',
-            )
+          ? cn('outline-3', data.isDragging ? 'shadow-lg' : 'shadow-md')
           : 'focus-visible:outline-3',
         'outline-ring/50',
       ]}
@@ -274,9 +269,7 @@ export function EventCalendarView({
         'items-center',
         data.isSelected
           ? 'bg-foreground/5'
-          : data.isInteractive
-            ? 'hover:bg-foreground/5'
-            : 'hover:bg-foreground/5',
+          : 'hover:bg-foreground/5',
       ]}
       listItemEventBeforeClass='rounded-full border-(--fc-event-color)'
       listItemEventInnerClass='flex flex-row items-center'
@@ -285,9 +278,7 @@ export function EventCalendarView({
       ------------------------------------------------------------------------------------------- */
 
       blockEventClass={(data) => [
-        'group relative',
-        'border-transparent print:border-(--fc-event-color)',
-        'bg-(--fc-event-color) hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))] print:bg-white',
+        'group relative border-transparent print:border-(--fc-event-color) bg-(--fc-event-color) hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))] print:bg-white',
         data.isInteractive && 'active:bg-[color-mix(in_oklab,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
         (!data.isSelected && data.isDragging) && 'opacity-75',
       ]}
@@ -367,10 +358,7 @@ export function EventCalendarView({
         'flex',
         data.isShort
           ? 'flex-row items-center p-1 gap-1'
-          : cn(
-              'flex-col',
-              data.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1',
-            ),
+          : cn('flex-col', data.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1'),
         (data.isShort || data.isNarrow) ? xxsTextClass : 'text-xs',
       ]}
       columnEventTimeClass={(data) => [
@@ -385,16 +373,9 @@ export function EventCalendarView({
       /* More-Link
       ------------------------------------------------------------------------------------------- */
 
-      moreLinkClass={[
-        'focus-visible:outline-3',
-        'outline-ring/50',
-      ]}
+      moreLinkClass="focus-visible:outline-3 outline-ring/50"
       moreLinkInnerClass='whitespace-nowrap overflow-hidden'
-      columnMoreLinkClass={[
-        'mb-px border border-transparent print:border-black rounded-sm',
-        'bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white',
-        'ring ring-background',
-      ]}
+      columnMoreLinkClass="mb-px border border-transparent print:border-black rounded-sm bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white ring ring-background"
       columnMoreLinkInnerClass={(data) => (
         data.isNarrow
           ? `p-0.5 ${xxsTextClass}`
@@ -414,12 +395,7 @@ export function EventCalendarView({
       dayHeaderContent={(data) => (
         <>
           {data.weekdayText && (
-            <div
-              className={cn(
-                'text-xs uppercase',
-                'text-muted-foreground',
-              )}
-            >{data.weekdayText}</div>
+            <div className="text-xs uppercase text-muted-foreground">{data.weekdayText}</div>
           )}
           {data.dayNumberText && (
             <div
@@ -429,12 +405,12 @@ export function EventCalendarView({
                   ? 'size-7 text-md'
                   : 'size-8 text-lg',
                 data.isToday
-                  ? (data.hasNavLink ? 'bg-primary/20 dark:bg-primary/30 group-hover:bg-primary/40' : 'bg-primary/20 dark:bg-primary/30')
+                  ? cn(
+                      'bg-primary/20 dark:bg-primary/30',
+                      data.hasNavLink && 'group-hover:bg-primary/40',
+                    )
                   : (data.hasNavLink && 'hover:bg-foreground/5'),
-                data.hasNavLink && cn(
-                  'group-focus-visible:outline-3',
-                  'outline-ring/50',
-                ),
+                data.hasNavLink && 'group-focus-visible:outline-3 outline-ring/50',
               )}
             >{data.dayNumberText}</div>
           )}
@@ -446,7 +422,7 @@ export function EventCalendarView({
 
       dayCellClass={(data) => [
         'border',
-        data.isMajor ? 'border-foreground/20' : '',
+        data.isMajor && 'border-foreground/20',
         data.isDisabled && 'bg-foreground/3',
       ]}
       dayCellTopClass={(data) => [
@@ -464,7 +440,10 @@ export function EventCalendarView({
           ? (data.isNarrow ? 'w-5' : 'w-6')
           : (data.isNarrow ? 'px-1' : 'px-2'),
         data.isToday
-          ? (data.hasNavLink ? 'bg-primary/20 dark:bg-primary/30 hover:bg-primary/40 focus-visible:outline-3 outline-ring/50' : 'bg-primary/20 dark:bg-primary/30')
+          ? cn(
+              'bg-primary/20 dark:bg-primary/30',
+              data.hasNavLink && 'hover:bg-primary/40 focus-visible:outline-3 outline-ring/50',
+            )
           : (data.hasNavLink && 'hover:bg-foreground/5'),
         data.isOther && 'text-muted-foreground',
         data.monthText && 'font-bold',
@@ -476,13 +455,7 @@ export function EventCalendarView({
 
       dayPopoverFormat={{ day: 'numeric', weekday: 'short' }}
       popoverClass='border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground min-w-60'
-      popoverCloseClass={[
-        'group absolute top-2 end-2 size-8 rounded-full',
-        'items-center justify-center',
-        'hover:bg-foreground/5',
-        'focus-visible:outline-3',
-        'outline-ring/50',
-      ]}
+      popoverCloseClass="group absolute top-2 end-2 size-8 rounded-full items-center justify-center hover:bg-foreground/5 focus-visible:outline-3 outline-ring/50"
       popoverCloseContent={() => (
         <XIcon className={`size-5 ${mutedFgPressableGroupClass}`} />
       )}
@@ -492,7 +465,7 @@ export function EventCalendarView({
 
       dayLaneClass={(data) => [
         'border',
-        data.isMajor ? 'border-foreground/20' : '',
+        data.isMajor && 'border-foreground/20',
         data.isDisabled && 'bg-foreground/3',
       ]}
       dayLaneInnerClass={(data) => (
@@ -520,7 +493,10 @@ export function EventCalendarView({
                 ? 'w-9 justify-center'
                 : 'px-3',
               data.isToday
-                ? (data.hasNavLink ? 'bg-primary/20 dark:bg-primary/30 hover:bg-primary/40 focus-visible:outline-3 outline-ring/50' : 'bg-primary/20 dark:bg-primary/30')
+                ? cn(
+                    'bg-primary/20 dark:bg-primary/30',
+                    data.hasNavLink && 'hover:bg-primary/40 focus-visible:outline-3 outline-ring/50',
+                  )
                 : (data.hasNavLink && 'hover:bg-foreground/5')
             )
           : cn(
@@ -552,7 +528,7 @@ export function EventCalendarView({
       )}
       fillerClass={(data) => [
         'opacity-50 border',
-        data.isHeader ? 'border-transparent' : '',
+        data.isHeader && 'border-transparent',
       ]}
       dayNarrowWidth={100}
       dayHeaderRowClass='border'
@@ -561,26 +537,18 @@ export function EventCalendarView({
       /* Misc Content
       ------------------------------------------------------------------------------------------- */
 
-      navLinkClass={[
-        'focus-visible:outline-3',
-        'outline-ring/50',
-      ]}
+      navLinkClass="focus-visible:outline-3 outline-ring/50"
       inlineWeekNumberClass={(data) => [
-        'absolute flex flex-row items-center whitespace-nowrap',
+        'absolute flex flex-row items-center whitespace-nowrap bg-foreground/10',
         data.isNarrow
           ? `top-0.5 start-0 my-px h-4 pe-1 rounded-e-full ${xxsTextClass}`
           : 'top-1.5 start-1 h-6 px-2 rounded-full text-sm',
-        data.hasNavLink
-          ? 'bg-foreground/10 hover:bg-foreground/20 focus-visible:outline-3 outline-ring/50'
-          : 'bg-foreground/10',
+        data.hasNavLink && 'hover:bg-foreground/20 focus-visible:outline-3 outline-ring/50',
       ]}
       nonBusinessClass='bg-foreground/3'
       highlightClass='bg-primary/10'
       nowIndicatorLineClass='-m-px border-1 border-destructive'
-      nowIndicatorDotClass={[
-        '-m-[6px] border-6 border-destructive size-0 rounded-full',
-        'ring-2 ring-background',
-      ]}
+      nowIndicatorDotClass="-m-[6px] border-6 border-destructive size-0 rounded-full ring-2 ring-background"
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */
@@ -608,14 +576,12 @@ export function EventCalendarView({
 
           weekNumberHeaderClass: 'items-center justify-end',
           weekNumberHeaderInnerClass: (data) => [
-            'ms-1 my-2 flex flex-row items-center rounded-full',
+            'ms-1 my-2 flex flex-row items-center rounded-full bg-foreground/10',
             data.options.dayMinWidth !== undefined && 'me-1',
             data.isNarrow
               ? 'h-5 px-1.5 text-xs'
               : 'h-6 px-2 text-sm',
-            data.hasNavLink
-              ? 'bg-foreground/10 hover:bg-foreground/20 focus-visible:outline-3 outline-ring/50'
-              : 'bg-foreground/10',
+            data.hasNavLink && 'hover:bg-foreground/20 focus-visible:outline-3 outline-ring/50',
           ],
 
           /* TimeGrid > All-Day Header
@@ -645,9 +611,7 @@ export function EventCalendarView({
           ],
           slotHeaderDividerClass: (data) => [
             'border-e',
-            (data.isHeader && data.options.dayMinWidth === undefined)
-              ? 'border-transparent'
-              : '',
+            (data.isHeader && data.options.dayMinWidth === undefined) && 'border-transparent',
           ],
 
           ...userViews?.timeGrid,
