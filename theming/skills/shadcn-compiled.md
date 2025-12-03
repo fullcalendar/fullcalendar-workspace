@@ -26,7 +26,7 @@ How far should inlining go?
   - Do NOT simply convert all params to consts and use those consts throughout the outputted file
   - Instead, INLINE the VALUE of each params. But do NOT recursively inline any consts that are referenced in those values. If the param value references a different const, please maintain the reference to that const.
 - Same with the result of `createSlots`
-- Do NOT inline the members of `dayRowCommonClasses`
+- Do NOT inline the members of `dayRowCommonClasses` or `resourceDayHeaderClasses`
 - Some of the props from option-params.ts might not be used in the generated file. Ensure no resulting unused consts.
 
 Notes on Typescript Types

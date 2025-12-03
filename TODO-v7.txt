@@ -300,7 +300,7 @@ for theme-*Content props that break text up into multiple slices,
   browser text-selection is weird. how to correct?
 we put classNames.isolate on the root calendar div,
   but really, parents with z-index children should always be responsible for setting isolation
-address "// React HACK for stubborn SVG staying"
+address "// HACK for React vdom"
   problem with our ContentContainer detecting falsiness?
 
 Changelog

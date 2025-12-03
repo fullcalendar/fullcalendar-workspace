@@ -1,20 +1,16 @@
 import React from 'react'
-import { CalendarOptions, DayCellData } from '@fullcalendar/core'
-import { joinClassNames } from '@fullcalendar/core/internal'
+import { CalendarController, CalendarOptions, DayCellData } from '@fullcalendar/core'
+import { useCalendarController } from '@fullcalendar/react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import multiMonthPlugin from '@fullcalendar/multimonth'
-
-const eventCalendarPlugins = [
-  dayGridPlugin,
-  timeGridPlugin,
-  listPlugin,
-  interactionPlugin,
-  multiMonthPlugin,
-]
+import { ChevronLeftIcon, ChevronRightIcon, XIcon } from 'lucide-react'
+import { Button } from '../../ui/button.js'
+import { Tabs, TabsList, TabsTrigger } from '../../ui/tabs.js'
+import { cn } from '../../lib/utils.js'
 
 const eventCalendarAvailableViews = [
   'dayGridMonth',
@@ -24,61 +20,21 @@ const eventCalendarAvailableViews = [
   'multiMonthYear',
 ]
 
-// usually 11px font / 12px line-height
+export const eventCalendarPlugins = [
+  dayGridPlugin,
+  timeGridPlugin,
+  listPlugin,
+  interactionPlugin,
+  multiMonthPlugin,
+]
+
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
 
-// outline
-const outlineWidthClass = 'outline-3'
-export const outlineWidthFocusClass = 'focus-visible:outline-3'
-const outlineWidthGroupFocusClass = 'group-focus-visible:outline-3'
-export const outlineColorClass = 'outline-(--fc-monarch-outline)'
-const outlineFocusClass = `${outlineColorClass} ${outlineWidthFocusClass}`
-
-// neutral buttons
-export const strongSolidPressableClass = joinClassNames(
-  '[background:linear-gradient(var(--fc-monarch-strong),var(--fc-monarch-strong))_var(--fc-monarch-background)]',
-  'hover:[background:linear-gradient(var(--fc-monarch-stronger),var(--fc-monarch-stronger))_var(--fc-monarch-background)]',
-  'active:[background:linear-gradient(var(--fc-monarch-strongest),var(--fc-monarch-strongest))_var(--fc-monarch-background)]',
-)
-const mutedHoverClass = 'hover:bg-(--fc-monarch-muted)'
-const mutedHoverGroupClass = 'group-hover:bg-(--fc-monarch-muted)'
-export const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-monarch-muted) active:bg-(--fc-monarch-strong)`
-const mutedHoverPressableGroupClass = `${mutedHoverGroupClass} group-focus-visible:bg-(--fc-monarch-muted) group-active:bg-(--fc-monarch-strong)`
-
-// controls
-const selectedClass = 'bg-(--fc-monarch-selected) text-(--fc-monarch-selected-foreground)'
-const selectedPressableClasss = `${selectedClass} hover:bg-(--fc-monarch-selected-over) active:bg-(--fc-monarch-selected-down)`
-const selectedButtonClass = `${selectedPressableClasss} border border-transparent ${outlineFocusClass} -outline-offset-1`
-const unselectedButtonClass = `${mutedHoverPressableClass} border border-transparent ${outlineFocusClass} -outline-offset-1`
-
-// primary
-const primaryClass = 'bg-(--fc-monarch-primary) text-(--fc-monarch-primary-foreground)'
-const primaryPressableClass = `${primaryClass} hover:bg-(--fc-monarch-primary-over) active:bg-(--fc-monarch-primary-down)`
-const primaryButtonClass = `${primaryPressableClass} border border-transparent ${outlineFocusClass}`
-
-// secondary *calendar content* (has muted color)
-export const secondaryClass = 'bg-(--fc-monarch-secondary) text-(--fc-monarch-secondary-foreground)'
-export const secondaryPressableClass = `${secondaryClass} hover:bg-(--fc-monarch-secondary-over) active:bg-(--fc-monarch-secondary-down) ${outlineFocusClass}`
-
-// secondary *toolbar button* (neutral)
-const secondaryButtonClass = `${mutedHoverPressableClass} border border-(--fc-monarch-strong-border) ${outlineFocusClass} -outline-offset-1`
-const secondaryButtonIconClass = `size-5 text-(--fc-monarch-foreground) group-hover:text-(--fc-monarch-strong-foreground) group-focus-visible:text-(--fc-monarch-strong-foreground)`
-
-// tertiary
-const tertiaryClass = 'bg-(--fc-monarch-tertiary) text-(--fc-monarch-tertiary-foreground)'
-const tertiaryPressableClass = `${tertiaryClass} hover:bg-(--fc-monarch-tertiary-over) active:bg-(--fc-monarch-tertiary-down)`
-const tertiaryPressableGroupClass = `${tertiaryClass} group-hover:bg-(--fc-monarch-tertiary-over) group-active:bg-(--fc-monarch-tertiary-down) ${outlineFocusClass}`
-
-// interactive neutral foregrounds
-export const mutedFgPressableGroupClass = 'text-(--fc-monarch-muted-foreground) group-hover:text-(--fc-monarch-foreground) group-focus-visible:text-(--fc-monarch-foreground)'
-
-// transparent resizer for mouse
 const blockPointerResizerClass = 'absolute hidden group-hover:block'
 const rowPointerResizerClass = `${blockPointerResizerClass} inset-y-0 w-2`
 const columnPointerResizerClass = `${blockPointerResizerClass} inset-x-0 h-2`
 
-// circle resizer for touch
-const blockTouchResizerClass = 'absolute size-2 border border-(--fc-event-color) bg-(--fc-monarch-background) rounded-full'
+const blockTouchResizerClass = 'absolute size-2 border border-(--fc-event-color) bg-background rounded-full'
 const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
 const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
@@ -87,10 +43,12 @@ const getShortDayCellBottomClass = (data: DayCellData) => (
   !data.isNarrow && 'min-h-px'
 )
 
+export const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'
+
 const dayRowCommonClasses: CalendarOptions = {
 
   /* Day Row > List-Item Event
-  ----------------------------------------------------------------------------------------------- */
+  --------------------------------------------------------------------------------------------- */
 
   listItemEventClass: (data) => [
     'mb-px p-px rounded-sm',
@@ -115,7 +73,7 @@ const dayRowCommonClasses: CalendarOptions = {
   ],
 
   /* Day Row > Row Event
-  ----------------------------------------------------------------------------------------------- */
+  --------------------------------------------------------------------------------------------- */
 
   rowEventClass: (data) => [
     data.isStart && 'ms-px',
@@ -124,14 +82,14 @@ const dayRowCommonClasses: CalendarOptions = {
   rowEventInnerClass: (data) => data.isNarrow ? 'py-px' : 'py-0.5',
 
   /* Day Row > More-Link
-  ----------------------------------------------------------------------------------------------- */
+  --------------------------------------------------------------------------------------------- */
 
   rowMoreLinkClass: (data) => [
     'mb-px border rounded-sm',
     data.isNarrow
-      ? 'mx-px border-(--fc-monarch-primary)'
+      ? 'mx-px border-primary'
       : 'mx-0.5 border-transparent',
-    mutedHoverPressableClass,
+    'hover:bg-foreground/5',
   ],
   rowMoreLinkInnerClass: (data) => (
     data.isNarrow
@@ -140,7 +98,8 @@ const dayRowCommonClasses: CalendarOptions = {
   ),
 }
 
-export interface EventCalendarProps extends CalendarOptions {
+export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
   availableViews?: string[]
   addButton?: {
     isPrimary?: boolean
@@ -153,107 +112,154 @@ export interface EventCalendarProps extends CalendarOptions {
 export function EventCalendar({
   availableViews = eventCalendarAvailableViews,
   addButton,
+  className,
+  height,
+  contentHeight,
+  direction,
   plugins: userPlugins,
-  buttons: userButtons,
-  views: userViews,
   ...restOptions
 }: EventCalendarProps) {
+  const controller = useCalendarController()
+  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
+  const borderlessTop = restOptions.borderlessTop ?? restOptions.borderless
+  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
+
+  return (
+    <div
+      className={cn(
+        className,
+        'flex flex-col',
+        'bg-background',
+        !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-lg overflow-hidden',
+        !borderlessX && 'border-x',
+        !borderlessTop && 'border-t',
+        !borderlessBottom && 'border-b',
+      )}
+      style={{ height }}
+      dir={direction === 'rtl' ? 'rtl' : undefined}
+    >
+      <EventCalendarToolbar
+        className='p-4'
+        controller={controller}
+        availableViews={availableViews}
+        addButton={addButton}
+      />
+      <div className='grow min-h-0'>
+        <EventCalendarView
+          height={height !== undefined ? '100%' : contentHeight}
+          initialView={availableViews[0]}
+          controller={controller}
+          plugins={[
+            ...eventCalendarPlugins,
+            ...(userPlugins || []),
+          ]}
+          {...restOptions}
+        />
+      </div>
+    </div>
+  )
+}
+
+export interface EventCalendarToolbarProps {
+  className?: string
+  controller: CalendarController
+  availableViews: string[]
+  addButton?: {
+    isPrimary?: boolean
+    text?: string
+    hint?: string
+    click?: (ev: MouseEvent) => void
+  }
+}
+
+export function EventCalendarToolbar({
+  className,
+  controller,
+  availableViews,
+  addButton,
+}: EventCalendarToolbarProps) {
+  const buttons = controller.getButtonState()
+
+  return (
+    <div className={cn('flex items-center justify-between flex-wrap gap-3', className)}>
+      <div className='flex items-center shrink-0 gap-3'>
+        {addButton && (
+          <Button
+            onClick={addButton.click as any}
+            aria-label={addButton.hint}
+          >{addButton.text}</Button>
+        )}
+        <Button
+          onClick={() => controller.today()}
+          aria-label={buttons.today.hint}
+          variant='outline'
+        >{buttons.today.text}</Button>
+        <div className='flex items-center'>
+          <Button
+            onClick={() => controller.prev()}
+            disabled={buttons.prev.isDisabled}
+            aria-label={buttons.prev.hint}
+            variant='ghost'
+            size='icon'
+          >
+            <ChevronLeftIcon className='[[dir=rtl]_&]:rotate-180' />
+          </Button>
+          <Button
+            onClick={() => controller.next()}
+            disabled={buttons.next.isDisabled}
+            aria-label={buttons.next.hint}
+            variant='ghost'
+            size='icon'
+          >
+            <ChevronRightIcon className='[[dir=rtl]_&]:rotate-180' />
+          </Button>
+        </div>
+        <div className='text-xl'>{controller.view?.title}</div>
+      </div>
+      <Tabs value={controller.view?.type ?? availableViews[0]}>
+        <TabsList>
+          {availableViews.map((availableView) => (
+            <TabsTrigger
+              key={availableView}
+              value={availableView}
+              onClick={() => controller.changeView(availableView)}
+              aria-label={buttons[availableView]?.hint}
+            >{buttons[availableView]?.text}</TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
+    </div>
+  )
+}
+
+export function EventCalendarView({
+  views: userViews,
+  ...restOptions
+}: CalendarOptions) {
   return (
     <FullCalendar
-      plugins={[
-        ...eventCalendarPlugins,
-        ...(userPlugins || []),
-      ]}
-      initialView={availableViews[0]}
-      className="bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden"
-
-      /* Toolbar
-      ------------------------------------------------------------------------------------------- */
-
-      headerToolbar={{
-        start: (addButton ? 'add ' : '') + 'today prev,next title',
-        end: availableViews.join(','),
-      }}
-      toolbarClass="p-4 flex flex-row flex-wrap items-center justify-between gap-3"
-      toolbarSectionClass="shrink-0 flex flex-row items-center gap-3"
-      toolbarTitleClass="text-2xl font-bold"
-      buttonGroupClass={(data) => [
-        'rounded-full flex flex-row items-center',
-        data.isSelectGroup && 'border border-(--fc-monarch-border)'
-      ]}
-      buttonClass={(data) => [
-        'py-2.5 rounded-full flex flex-row items-center text-sm',
-        data.isIconOnly ? 'px-2.5' : 'px-5',
-        data.inSelectGroup && '-m-px',
-        (data.isIconOnly || (data.inSelectGroup && !data.isSelected))
-          ? unselectedButtonClass
-          : data.isSelected
-            ? selectedButtonClass
-            : data.isPrimary
-              ? primaryButtonClass
-              : secondaryButtonClass
-      ]}
-      buttons={{
-        prev: {
-          iconContent: () => chevronDown(
-            joinClassNames(
-              secondaryButtonIconClass,
-              'rotate-90 [[dir=rtl]_&]:-rotate-90',
-            )
-          )
-        },
-        next: {
-          iconContent: () => chevronDown(
-            joinClassNames(
-              secondaryButtonIconClass,
-              '-rotate-90 [[dir=rtl]_&]:rotate-90',
-            )
-          )
-        },
-        prevYear: {
-          iconContent: () => chevronDoubleLeft(
-            joinClassNames(
-              secondaryButtonIconClass,
-              '[[dir=rtl]_&]:rotate-180'
-            )
-          )
-        },
-        nextYear: {
-          iconContent: () => chevronDoubleLeft(
-            joinClassNames(
-              secondaryButtonIconClass,
-              'rotate-180 [[dir=rtl]_&]:rotate-0',
-            )
-          )
-        },
-        ...userButtons,
-        add: {
-          isPrimary: true,
-          ...addButton,
-        },
-      }}
 
       /* Abstract Event
       ------------------------------------------------------------------------------------------- */
 
       eventShortHeight={50}
-      eventColor="var(--fc-monarch-event)"
-      eventContrastColor="var(--fc-monarch-event-contrast)"
+      eventColor='var(--primary)'
+      eventContrastColor='var(--primary-foreground)'
       eventClass={(data) => [
         data.isSelected
-          ? joinClassNames(
-              outlineWidthClass,
+          ? cn(
+              'outline-3',
               data.isDragging ? 'shadow-lg' : 'shadow-md',
             )
-          : outlineWidthFocusClass,
-        outlineColorClass,
+          : 'focus-visible:outline-3',
+        'outline-ring/50',
       ]}
 
       /* Background Event
       ------------------------------------------------------------------------------------------- */
 
-      backgroundEventColor="var(--fc-monarch-tertiary)"
-      backgroundEventClass="bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]"
+      backgroundEventColor='var(--foreground)'
+      backgroundEventClass='bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
       backgroundEventTitleClass={(data) => [
         'opacity-50 italic',
         data.isNarrow
@@ -267,13 +273,13 @@ export function EventCalendar({
       listItemEventClass={(data) => [
         'items-center',
         data.isSelected
-          ? 'bg-(--fc-monarch-muted)'
+          ? 'bg-foreground/5'
           : data.isInteractive
-            ? mutedHoverPressableClass
-            : mutedHoverClass,
+            ? 'hover:bg-foreground/5'
+            : 'hover:bg-foreground/5',
       ]}
-      listItemEventBeforeClass="rounded-full border-(--fc-event-color)"
-      listItemEventInnerClass="flex flex-row items-center"
+      listItemEventBeforeClass='rounded-full border-(--fc-event-color)'
+      listItemEventInnerClass='flex flex-row items-center'
 
       /* Block Event
       ------------------------------------------------------------------------------------------- */
@@ -285,9 +291,9 @@ export function EventCalendar({
         data.isInteractive && 'active:bg-[color-mix(in_oklab,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
         (!data.isSelected && data.isDragging) && 'opacity-75',
       ]}
-      blockEventInnerClass="text-(--fc-event-contrast-color) print:text-black"
-      blockEventTimeClass="whitespace-nowrap overflow-hidden"
-      blockEventTitleClass="whitespace-nowrap overflow-hidden"
+      blockEventInnerClass='text-(--fc-event-contrast-color) print:text-black'
+      blockEventTimeClass='whitespace-nowrap overflow-hidden'
+      blockEventTitleClass='whitespace-nowrap overflow-hidden'
 
       /* Row Event
       ------------------------------------------------------------------------------------------- */
@@ -341,7 +347,7 @@ export function EventCalendar({
 
       columnEventTitleSticky={false}
       columnEventClass={(data) => [
-        `border-x ring ring-(--fc-monarch-background)`,
+        'border-x ring ring-background',
         data.isStart && 'border-t rounded-t-sm',
         data.isEnd && 'mb-px border-b rounded-b-sm',
       ]}
@@ -361,7 +367,7 @@ export function EventCalendar({
         'flex',
         data.isShort
           ? 'flex-row items-center p-1 gap-1'
-          : joinClassNames(
+          : cn(
               'flex-col',
               data.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1',
             ),
@@ -380,14 +386,14 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       moreLinkClass={[
-        outlineWidthFocusClass,
-        outlineColorClass,
+        'focus-visible:outline-3',
+        'outline-ring/50',
       ]}
-      moreLinkInnerClass="whitespace-nowrap overflow-hidden"
+      moreLinkInnerClass='whitespace-nowrap overflow-hidden'
       columnMoreLinkClass={[
         'mb-px border border-transparent print:border-black rounded-sm',
-        `${strongSolidPressableClass} print:bg-white`,
-        'ring ring-(--fc-monarch-background)',
+        'bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white',
+        'ring ring-background',
       ]}
       columnMoreLinkInnerClass={(data) => (
         data.isNarrow
@@ -398,36 +404,36 @@ export function EventCalendar({
       /* Day Header
       ------------------------------------------------------------------------------------------- */
 
-      dayHeaderAlign="center"
+      dayHeaderAlign='center'
       dayHeaderClass={(data) => [
         'justify-center',
-        data.isMajor && 'border border-(--fc-monarch-strong-border)',
-        (data.isDisabled && !data.inPopover) && 'bg-(--fc-monarch-faint)',
+        data.isMajor && 'border border-foreground/20',
+        (data.isDisabled && !data.inPopover) && 'bg-foreground/3',
       ]}
-      dayHeaderInnerClass="group mt-2 mx-2 flex flex-col items-center outline-none"
+      dayHeaderInnerClass='group mt-2 mx-2 flex flex-col items-center outline-none'
       dayHeaderContent={(data) => (
         <>
           {data.weekdayText && (
             <div
-              className={joinClassNames(
+              className={cn(
                 'text-xs uppercase',
-                'text-(--fc-monarch-muted-foreground)',
+                'text-muted-foreground',
               )}
             >{data.weekdayText}</div>
           )}
           {data.dayNumberText && (
             <div
-              className={joinClassNames(
+              className={cn(
                 'm-0.5 rounded-full flex flex-row items-center justify-center',
                 data.isNarrow
                   ? 'size-7 text-md'
                   : 'size-8 text-lg',
                 data.isToday
-                  ? (data.hasNavLink ? tertiaryPressableGroupClass : tertiaryClass)
-                  : (data.hasNavLink && mutedHoverPressableGroupClass),
-                data.hasNavLink && joinClassNames(
-                  outlineWidthGroupFocusClass,
-                  outlineColorClass,
+                  ? (data.hasNavLink ? 'bg-primary/20 dark:bg-primary/30 group-hover:bg-primary/40' : 'bg-primary/20 dark:bg-primary/30')
+                  : (data.hasNavLink && 'hover:bg-foreground/5'),
+                data.hasNavLink && cn(
+                  'group-focus-visible:outline-3',
+                  'outline-ring/50',
                 ),
               )}
             >{data.dayNumberText}</div>
@@ -440,8 +446,8 @@ export function EventCalendar({
 
       dayCellClass={(data) => [
         'border',
-        data.isMajor ? 'border-(--fc-monarch-strong-border)' : 'border-(--fc-monarch-border)',
-        data.isDisabled && 'bg-(--fc-monarch-faint)',
+        data.isMajor ? 'border-foreground/20' : '',
+        data.isDisabled && 'bg-foreground/3',
       ]}
       dayCellTopClass={(data) => [
         'flex flex-row',
@@ -458,9 +464,9 @@ export function EventCalendar({
           ? (data.isNarrow ? 'w-5' : 'w-6')
           : (data.isNarrow ? 'px-1' : 'px-2'),
         data.isToday
-          ? (data.hasNavLink ? tertiaryPressableClass : tertiaryClass)
-          : (data.hasNavLink && mutedHoverPressableClass),
-        data.isOther && 'text-(--fc-monarch-faint-foreground)',
+          ? (data.hasNavLink ? 'bg-primary/20 dark:bg-primary/30 hover:bg-primary/40 focus-visible:outline-3 outline-ring/50' : 'bg-primary/20 dark:bg-primary/30')
+          : (data.hasNavLink && 'hover:bg-foreground/5'),
+        data.isOther && 'text-muted-foreground',
         data.monthText && 'font-bold',
       ]}
       dayCellInnerClass={(data) => data.inPopover && 'p-2'}
@@ -469,23 +475,25 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       dayPopoverFormat={{ day: 'numeric', weekday: 'short' }}
-      popoverClass="border border-(--fc-monarch-border) rounded-lg overflow-hidden m-2 bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg min-w-60"
+      popoverClass='border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground min-w-60'
       popoverCloseClass={[
         'group absolute top-2 end-2 size-8 rounded-full',
         'items-center justify-center',
-        mutedHoverPressableClass,
-        outlineWidthFocusClass,
-        outlineColorClass,
+        'hover:bg-foreground/5',
+        'focus-visible:outline-3',
+        'outline-ring/50',
       ]}
-      popoverCloseContent={() => x(`size-5 ${mutedFgPressableGroupClass}`)}
+      popoverCloseContent={() => (
+        <XIcon className={`size-5 ${mutedFgPressableGroupClass}`} />
+      )}
 
       /* Lane
       ------------------------------------------------------------------------------------------- */
 
       dayLaneClass={(data) => [
         'border',
-        data.isMajor ? 'border-(--fc-monarch-strong-border)' : 'border-(--fc-monarch-border)',
-        data.isDisabled && 'bg-(--fc-monarch-faint)',
+        data.isMajor ? 'border-foreground/20' : '',
+        data.isDisabled && 'bg-foreground/3',
       ]}
       dayLaneInnerClass={(data) => (
         data.isStack
@@ -493,7 +501,7 @@ export function EventCalendar({
           : data.isNarrow ? 'mx-px' : 'ms-0.5 me-[2.5%]'
       )}
       slotLaneClass={(data) => [
-        'border border-(--fc-monarch-border)',
+        'border',
         data.isMinor && 'border-dotted',
       ]}
 
@@ -502,60 +510,60 @@ export function EventCalendar({
 
       listDayFormat={{ day: 'numeric' }}
       listDaySideFormat={{ month: 'short', weekday: 'short', forceCommas: true }}
-      listDayClass="not-last:border-b border-(--fc-monarch-border) flex flex-row items-start"
-      listDayHeaderClass="m-2 shrink-0 w-1/3 max-w-44 min-h-9 flex flex-row items-center gap-2"
+      listDayClass='not-last:border-b flex flex-row items-start'
+      listDayHeaderClass='m-2 shrink-0 w-1/3 max-w-44 min-h-9 flex flex-row items-center gap-2'
       listDayHeaderInnerClass={(data) => (
         !data.level
-          ? joinClassNames(
+          ? cn(
               'h-9 rounded-full flex flex-row items-center text-lg',
               data.text === data.dayNumberText
                 ? 'w-9 justify-center'
                 : 'px-3',
               data.isToday
-                ? (data.hasNavLink ? tertiaryPressableClass : tertiaryClass)
-                : (data.hasNavLink && mutedHoverPressableClass)
+                ? (data.hasNavLink ? 'bg-primary/20 dark:bg-primary/30 hover:bg-primary/40 focus-visible:outline-3 outline-ring/50' : 'bg-primary/20 dark:bg-primary/30')
+                : (data.hasNavLink && 'hover:bg-foreground/5')
             )
-          : joinClassNames(
+          : cn(
               'text-xs uppercase',
               data.hasNavLink && 'hover:underline',
             )
       )}
-      listDayEventsClass="grow min-w-0 py-2 gap-1"
+      listDayEventsClass='grow min-w-0 py-2 gap-1'
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
 
-      singleMonthClass="m-4"
+      singleMonthClass='m-4'
       singleMonthHeaderClass={(data) => [
-        data.isSticky && 'border-b border-(--fc-monarch-border) bg-(--fc-monarch-background)',
+        data.isSticky && 'border-b bg-background',
         data.colCount > 1 ? 'pb-2' : 'py-1',
         'items-center',
       ]}
       singleMonthHeaderInnerClass={(data) => [
         'px-3 py-1 rounded-full font-bold',
-        data.hasNavLink && mutedHoverPressableClass,
+        data.hasNavLink && 'hover:bg-foreground/5',
       ]}
 
       /* Misc Table
       ------------------------------------------------------------------------------------------- */
 
       tableHeaderClass={(data) => (
-        data.isSticky && 'border-b border-(--fc-monarch-border) bg-(--fc-monarch-background)'
+        data.isSticky && 'border-b bg-background'
       )}
       fillerClass={(data) => [
         'opacity-50 border',
-        data.isHeader ? 'border-transparent' : 'border-(--fc-monarch-border)',
+        data.isHeader ? 'border-transparent' : '',
       ]}
       dayNarrowWidth={100}
-      dayHeaderRowClass="border border-(--fc-monarch-border)"
-      dayRowClass="border border-(--fc-monarch-border)"
+      dayHeaderRowClass='border'
+      dayRowClass='border'
 
       /* Misc Content
       ------------------------------------------------------------------------------------------- */
 
       navLinkClass={[
-        outlineWidthFocusClass,
-        outlineColorClass,
+        'focus-visible:outline-3',
+        'outline-ring/50',
       ]}
       inlineWeekNumberClass={(data) => [
         'absolute flex flex-row items-center whitespace-nowrap',
@@ -563,15 +571,15 @@ export function EventCalendar({
           ? `top-0.5 start-0 my-px h-4 pe-1 rounded-e-full ${xxsTextClass}`
           : 'top-1.5 start-1 h-6 px-2 rounded-full text-sm',
         data.hasNavLink
-          ? secondaryPressableClass
-          : secondaryClass,
+          ? 'bg-foreground/10 hover:bg-foreground/20 focus-visible:outline-3 outline-ring/50'
+          : 'bg-foreground/10',
       ]}
-      nonBusinessClass="bg-(--fc-monarch-faint)"
-      highlightClass="bg-(--fc-monarch-highlight)"
-      nowIndicatorLineClass="-m-px border-1 border-(--fc-monarch-now)"
+      nonBusinessClass='bg-foreground/3'
+      highlightClass='bg-primary/10'
+      nowIndicatorLineClass='-m-px border-1 border-destructive'
       nowIndicatorDotClass={[
-        '-m-[6px] border-6 border-(--fc-monarch-now) size-0 rounded-full',
-        'ring-2 ring-(--fc-monarch-background)',
+        '-m-[6px] border-6 border-destructive size-0 rounded-full',
+        'ring-2 ring-background',
       ]}
 
       /* View-Specific Options
@@ -587,7 +595,7 @@ export function EventCalendar({
         multiMonth: {
           ...dayRowCommonClasses,
           dayCellBottomClass: getShortDayCellBottomClass,
-          tableBodyClass: 'border border-(--fc-monarch-border) rounded-sm',
+          tableBodyClass: 'border rounded-sm',
           dayHeaderInnerClass: (data) => !data.inPopover && 'mb-2',
           ...userViews?.multiMonth,
         },
@@ -606,8 +614,8 @@ export function EventCalendar({
               ? 'h-5 px-1.5 text-xs'
               : 'h-6 px-2 text-sm',
             data.hasNavLink
-              ? secondaryPressableClass
-              : secondaryClass,
+              ? 'bg-foreground/10 hover:bg-foreground/20 focus-visible:outline-3 outline-ring/50'
+              : 'bg-foreground/10',
           ],
 
           /* TimeGrid > All-Day Header
@@ -618,14 +626,14 @@ export function EventCalendar({
             'p-2 whitespace-pre text-end',
             data.isNarrow ? xxsTextClass : 'text-sm',
           ],
-          allDayDividerClass: 'border-b border-(--fc-monarch-border)',
+          allDayDividerClass: 'border-b',
 
           /* TimeGrid > Slot Header
           --------------------------------------------------------------------------------------- */
 
           slotHeaderClass: (data) => [
             'w-2 self-end justify-end',
-            'border border-(--fc-monarch-border)',
+            'border',
             data.isMinor && 'border-dotted',
           ],
           slotHeaderInnerClass: (data) => [
@@ -639,7 +647,7 @@ export function EventCalendar({
             'border-e',
             (data.isHeader && data.options.dayMinWidth === undefined)
               ? 'border-transparent'
-              : 'border-(--fc-monarch-border)',
+              : '',
           ],
 
           ...userViews?.timeGrid,
@@ -675,18 +683,6 @@ export function EventCalendar({
 
 /* SVGs
 ------------------------------------------------------------------------------------------------- */
-
-export function chevronDown(className?: string) {
-  return <svg xmlns="http://www.w3.org/2000/svg" className={className} width="20" height="20" viewBox="80 -880 800 800" fill="currentColor"><path d="M480-304 240-544l56-56 184 184 184-184 56 56-240 240Z"/></svg>
-}
-
-function chevronDoubleLeft(className?: string) {
-  return <svg xmlns="http://www.w3.org/2000/svg" className={className} width="20" height="20" viewBox="80 -880 800 800" fill="currentColor"><path d="M440-240 200-480l240-240 56 56-183 184 183 184-56 56Zm264 0L464-480l240-240 56 56-183 184 183 184-56 56Z"/></svg>
-}
-
-function x(className?: string) {
-  return <svg xmlns="http://www.w3.org/2000/svg" className={className} width="20" height="20" viewBox="80 -880 800 800" fill="currentColor"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
-}
 
 function filledRightTriangle(className?: string) {
   return (
