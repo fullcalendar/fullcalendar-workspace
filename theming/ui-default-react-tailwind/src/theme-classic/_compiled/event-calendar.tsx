@@ -8,16 +8,6 @@ import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import multiMonthPlugin from '@fullcalendar/multimonth'
 
-export interface EventCalendarProps extends CalendarOptions {
-  availableViews?: string[]
-  addButton?: {
-    isPrimary?: boolean
-    text?: string
-    hint?: string
-    click?: (ev: MouseEvent) => void
-  }
-}
-
 const eventCalendarPlugins = [
   interactionPlugin,
   dayGridPlugin,
@@ -129,6 +119,16 @@ const dayRowCommonClasses: CalendarOptions = {
     'p-px',
     data.isNarrow ? xxsTextClass : 'text-xs',
   ],
+}
+
+export interface EventCalendarProps extends CalendarOptions {
+  availableViews?: string[]
+  addButton?: {
+    isPrimary?: boolean
+    text?: string
+    hint?: string
+    click?: (ev: MouseEvent) => void
+  }
 }
 
 export function EventCalendar({

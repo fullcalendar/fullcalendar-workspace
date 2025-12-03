@@ -8,16 +8,6 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
 import { EventCalendar, xxsTextClass, outlineWidthFocusClass, primaryOutlineColorClass, strongSolidPressableClass } from './event-calendar.js'
 
-export interface SchedulerProps extends CalendarOptions {
-  availableViews?: string[]
-  addButton?: {
-    isPrimary?: boolean
-    text?: string
-    hint?: string
-    click?: (ev: MouseEvent) => void
-  }
-}
-
 const schedulerOnlyPlugins = [
   adaptivePlugin,
   scrollGridPlugin,
@@ -34,6 +24,16 @@ const schedulerAvailableViews = [
 
 const expanderIconClass = 'size-4 not-group-hover:opacity-65'
 const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity-50'
+
+export interface SchedulerProps extends CalendarOptions {
+  availableViews?: string[]
+  addButton?: {
+    isPrimary?: boolean
+    text?: string
+    hint?: string
+    click?: (ev: MouseEvent) => void
+  }
+}
 
 export function Scheduler({
   availableViews = schedulerAvailableViews,
