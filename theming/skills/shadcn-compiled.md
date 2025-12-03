@@ -1,11 +1,11 @@
 
 converting
-  INPUT: /theming/ui-default-react-tailwind/src/theme-breezy/event-calendar.tsx
-  OUTPUT: /theming/ui-default-react-tailwind/src/theme-breezy/_compiled/event-calendar.tsx
+  INPUT: /theming/ui-shadcn/src/theme-breezy/event-calendar.tsx
+  OUTPUT: /theming/ui-shadcn/src/theme-breezy/_compiled/event-calendar.tsx
 
 NOTE: you may be instructed to do this for a different theme other then breezy. If so, please replace all references to "breezy" in paths with the provided theme name. Here is the general form
-  INPUT: /theming/ui-default-react-tailwind/src/theme-<themename>/event-calendar.tsx
-  OUTPUT: /theming/ui-default-react-tailwind/src/theme-<themename>/_compiled/event-calendar.tsx
+  INPUT: /theming/ui-shadcn/src/theme-<themename>/event-calendar.tsx
+  OUTPUT: /theming/ui-shadcn/src/theme-<themename>/_compiled/event-calendar.tsx
 
 GOAL: use the input file as the "main" file and combine nearly all other files it references into a single file
 
@@ -16,6 +16,7 @@ DO inline all symbols from:
 Do NOT inline symbols from these files. Continue to import from external package:
   @fullcalendar/core
   @fullcalendar/react
+  lucide-react
 
 How far should inlining go?
 - Attempt to evaluate the result of `createEventCalendarOptions`, which is a set of props (aka `params`). Inline those params directly into the JSX components' props.
@@ -86,7 +87,12 @@ For merging `userViews` or `views`, instead of relying on `mergeViewOptionsMap`,
     },
   }}
 
-Forced ordering
+Augmenting `joinClassNames`
+  Replace all calls to `joinClassNames` with the Shadcn `cn` utility that does something very similar. The import will likely look like this:
+
+    import { cn } from '../../lib/utils.js'
+
+Forced ordering of properties
   For the most part, you will order things based on when they occur in the "main" file and follow dependencies depth-first. However, here are some special ways to order that should override this:
   - At the very top of component props should be these props if present:
     1. plugins
@@ -98,6 +104,12 @@ Forced ordering
   - If there are SVG-generating functions like `chevronDown`, but these at the very END of the file. Use a large block-comment section divider like this:
     /* SVGs
     ------------------------------------------------ */
+
+Forced ordering of components
+  The resulting file will have multiple components. Please order them like so:
+  - main component
+  - toolbar component
+  - view component
 
 Whitespace
   For props WITHIN a section of props, please ensure no blank lines between props
@@ -112,8 +124,8 @@ Do this only if explicitly asked.
 Do the same instructions I wrote for converting event-calendar.tsx, but for scheduler.tsx instead.
 
 converting
-  INPUT: /theming/ui-default-react-tailwind/src/theme-breezy/scheduler.tsx
-  OUTPUT: /theming/ui-default-react-tailwind/src/theme-breezy/_compiled/scheduler.tsx
+  INPUT: /theming/ui-shadcn/src/theme-breezy/scheduler.tsx
+  OUTPUT: /theming/ui-shadcn/src/theme-breezy/_compiled/scheduler.tsx
 
 Instead of inline all consts afresh, try to export and reuse what's already in _compiled/event-calendar.tsx
 When merging props, ensure resourceExpanderContent goes right after resourceExpanderClass
