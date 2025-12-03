@@ -141,14 +141,12 @@ const dayRowCommonClasses: CalendarOptions = {
   ],
   listItemEventTimeClass: (data) => [
     data.isNarrow ? 'px-px' : 'px-0.5',
-    'text-(--fc-breezy-muted-foreground)',
-    'order-1 whitespace-nowrap overflow-hidden shrink-1',
+    'text-(--fc-breezy-muted-foreground) order-1 whitespace-nowrap overflow-hidden shrink-1',
   ],
 
   listItemEventTitleClass: (data) => [
     data.isNarrow ? 'px-px' : 'px-0.5',
-    'text-(--fc-breezy-strong-foreground)',
-    'font-medium whitespace-nowrap overflow-hidden shrink-100',
+    'text-(--fc-breezy-strong-foreground) font-medium whitespace-nowrap overflow-hidden shrink-100',
     data.timeText && 'text-ellipsis',
   ],
 
@@ -276,10 +274,7 @@ export function EventCalendar({
       eventColor="var(--fc-breezy-event)"
       eventClass={(data) => [
         data.isSelected
-          ? joinClassNames(
-              outlineWidthClass,
-              data.isDragging && 'shadow-md',
-            )
+          ? joinClassNames(outlineWidthClass, data.isDragging && 'shadow-md')
           : outlineWidthFocusClass,
         primaryOutlineColorClass,
       ]}
@@ -301,12 +296,8 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       blockEventClass={(data) => [
-        'group relative',
-        data.isInteractive
-          ? eventFaintPressableClass
-          : eventFaintBgClass,
-        'print:bg-white',
-        'border-transparent print:border-(--fc-event-color)',
+        'group relative print:bg-white border-transparent print:border-(--fc-event-color)',
+        data.isInteractive ? eventFaintPressableClass : eventFaintBgClass,
         (data.isDragging && !data.isSelected) && 'opacity-75',
       ]}
       blockEventInnerClass={eventMutedFgClass}
@@ -386,16 +377,11 @@ export function EventCalendar({
       /* More-Link
       ------------------------------------------------------------------------------------------- */
 
-      moreLinkClass={[
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      moreLinkClass={`${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       moreLinkInnerClass="whitespace-nowrap overflow-hidden"
       columnMoreLinkClass={(data) => [
         data.isNarrow ? 'my-px' : 'my-1',
-        'border border-transparent print:border-black rounded-md',
-        `${strongSolidPressableClass} print:bg-white`,
-        'ring ring-(--fc-breezy-background)',
+        `border border-transparent print:border-black rounded-md ${strongSolidPressableClass} print:bg-white ring ring-(--fc-breezy-background)`,
       ]}
       columnMoreLinkInnerClass={(data) => [
         data.isNarrow
@@ -425,7 +411,7 @@ export function EventCalendar({
           : (data.isToday && data.dayNumberText && !data.inPopover)
               ? joinClassNames(
                   'group m-2 outline-none',
-                  data.isNarrow ? 'h-6' : 'h-8'
+                  data.isNarrow ? 'h-6' : 'h-8',
                 )
               : joinClassNames(
                   'rounded-sm',
@@ -433,7 +419,7 @@ export function EventCalendar({
                     ? 'm-2 px-1 py-0.5'
                     : joinClassNames(
                         'mx-2 h-6 px-1.5',
-                        data.isNarrow ? 'my-2' : 'my-3'
+                        data.isNarrow ? 'my-2' : 'my-3',
                       ),
                   data.hasNavLink && mutedHoverButtonClass,
                 ),
@@ -458,15 +444,10 @@ export function EventCalendar({
                               'mx-0.5 rounded-full justify-center',
                               data.isNarrow ? 'size-6' : 'size-8',
                               data.hasNavLink
-                                ? joinClassNames(
-                                    primaryPressableGroupClass,
-                                    outlineWidthGroupFocusClass,
-                                    outlineOffsetClass,
-                                    primaryOutlineColorClass,
-                                  )
+                                ? `${primaryPressableGroupClass} ${outlineWidthGroupFocusClass} ${outlineOffsetClass} ${primaryOutlineColorClass}`
                                 : primaryClass,
                             )
-                          : 'text-(--fc-breezy-strong-foreground)'
+                          : 'text-(--fc-breezy-strong-foreground)',
                       )
                     : 'text-(--fc-breezy-muted-foreground)',
                 )}
@@ -495,14 +476,12 @@ export function EventCalendar({
         data.isToday
           ? joinClassNames(
               'rounded-full font-semibold',
-              data.isNarrow
-                ? 'ms-px'
-                : 'ms-1',
+              data.isNarrow ? 'ms-px' : 'ms-1',
               data.text === data.dayNumberText
                 ? (data.isNarrow ? 'w-5' : 'w-6')
                 : (data.isNarrow ? 'px-1' : 'px-2'),
               data.hasNavLink
-                ? joinClassNames(primaryPressableClass, outlineOffsetClass)
+                ? `${primaryPressableClass} ${outlineOffsetClass}`
                 : primaryClass,
             )
           : joinClassNames(
@@ -521,10 +500,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       popoverClass="bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg overflow-hidden shadow-lg m-1 min-w-55"
-      popoverCloseClass={[
-        'group absolute top-2 end-2 p-0.5 rounded-sm',
-        mutedHoverButtonClass,
-      ]}
+      popoverCloseClass={`group absolute top-2 end-2 p-0.5 rounded-sm ${mutedHoverButtonClass}`}
       popoverCloseContent={() => x(`size-5 ${mutedFgPressableGroupClass}`)}
 
       /* Lane
@@ -549,10 +525,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       listDaysClass="my-10 mx-auto w-full max-w-218 px-4"
-      listDayClass={[
-        'not-last:border-b border-(--fc-breezy-muted-border)',
-        'flex flex-row items-start gap-2',
-      ]}
+      listDayClass="not-last:border-b border-(--fc-breezy-muted-border) flex flex-row items-start gap-2"
       listDayHeaderClass="my-px shrink-0 w-1/4 max-w-50 py-3.5 flex flex-col items-start"
       listDayHeaderInnerClass={(data) => [
         'my-0.5 py-0.5 px-2 -mx-2 rounded-full text-sm',
@@ -566,15 +539,12 @@ export function EventCalendar({
                 : joinClassNames(
                     'font-medium text-(--fc-breezy-strong-foreground)',
                     data.hasNavLink && mutedHoverPressableClass,
-                  )
+                  ),
             )
           : joinClassNames(
               'text-(--fc-breezy-faint-foreground)',
-              data.hasNavLink && joinClassNames(
-                mutedHoverPressableClass,
-                'hover:text-(--fc-breezy-muted-foreground)',
-              ),
-            )
+              data.hasNavLink && `${mutedHoverPressableClass} hover:text-(--fc-breezy-muted-foreground)`,
+            ),
       ]}
       listDayEventsClass="my-4 grow min-w-0 border border-(--fc-breezy-border) rounded-md"
 
@@ -605,14 +575,9 @@ export function EventCalendar({
       /* Misc Content
       ------------------------------------------------------------------------------------------- */
 
-      navLinkClass={[
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      navLinkClass={`${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       inlineWeekNumberClass={(data) => [
-        'absolute top-0 end-0 bg-(--fc-breezy-background) text-(--fc-breezy-muted-foreground) whitespace-nowrap rounded-es-md',
-        'border-b border-b-(--fc-breezy-strong-border)',
-        'border-s border-s-(--fc-breezy-border)',
+        'absolute top-0 end-0 bg-(--fc-breezy-background) text-(--fc-breezy-muted-foreground) whitespace-nowrap rounded-es-md border-b border-b-(--fc-breezy-strong-border) border-s border-s-(--fc-breezy-border)',
         data.isNarrow
           ? `p-0.5 ${xxsTextClass}`
           : 'p-1.5 text-xs',
@@ -623,10 +588,7 @@ export function EventCalendar({
       highlightClass="bg-(--fc-breezy-highlight)"
       nonBusinessClass="bg-(--fc-breezy-faint)"
       nowIndicatorLineClass="-m-px border-1 border-(--fc-breezy-now)"
-      nowIndicatorDotClass={[
-        '-m-[6px] border-6 border-(--fc-breezy-now) size-0 rounded-full',
-        'ring-2 ring-(--fc-breezy-background)',
-      ]}
+      nowIndicatorDotClass="-m-[6px] border-6 border-(--fc-breezy-now) size-0 rounded-full ring-2 ring-(--fc-breezy-background)"
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */
@@ -712,13 +674,9 @@ export function EventCalendar({
           ],
           listItemEventBeforeClass: 'border-4 border-(--fc-event-color) rounded-full',
           listItemEventInnerClass: 'flex flex-row items-center gap-3 text-sm',
-          listItemEventTimeClass: [
-            'shrink-0 w-1/2 max-w-50 whitespace-nowrap overflow-hidden text-ellipsis',
-            'text-(--fc-breezy-muted-foreground)',
-          ],
+          listItemEventTimeClass: 'shrink-0 w-1/2 max-w-50 whitespace-nowrap overflow-hidden text-ellipsis text-(--fc-breezy-muted-foreground)',
           listItemEventTitleClass: (data) => [
-            'grow min-w-0 font-medium whitespace-nowrap overflow-hidden',
-            'text-(--fc-breezy-foreground)',
+            'grow min-w-0 font-medium whitespace-nowrap overflow-hidden text-(--fc-breezy-foreground)',
             data.event.url && 'group-hover:underline',
           ],
 

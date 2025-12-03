@@ -72,12 +72,7 @@ export function Scheduler({
       resourceCellClass="border border-(--fc-forma-border)"
       resourceCellInnerClass="p-2 text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
-      resourceExpanderClass={[
-        'group p-0.5 rounded-sm',
-        mutedHoverPressableClass,
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      resourceExpanderClass={`group p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       resourceExpanderContent={(data) => chevronDown(
         joinClassNames(
           `size-4 ${mutedFgPressableGroupClass}`,
@@ -116,10 +111,7 @@ export function Scheduler({
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */
 
-          rowMoreLinkClass: [
-            'me-px mb-px rounded-sm border border-transparent print:border-black',
-            `${strongSolidPressableClass} print:bg-white`,
-          ],
+          rowMoreLinkClass: `me-px mb-px rounded-sm border border-transparent print:border-black ${strongSolidPressableClass} print:bg-white`,
           rowMoreLinkInnerClass: 'px-1 py-[0.1875rem] text-xs',
 
           /* Timeline > Slot Header

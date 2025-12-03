@@ -215,9 +215,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       blockEventClass={(data) => [
-        'group relative border-transparent print:border-(--fc-event-color)',
-        'bg-(--fc-event-color) print:bg-white',
-        'hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))]',
+        'group relative border-transparent print:border-(--fc-event-color) bg-(--fc-event-color) print:bg-white hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))]',
         data.isInteractive && 'active:bg-[color-mix(in_oklab,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
         (data.isDragging && !data.isSelected) && 'opacity-75',
       ]}
@@ -298,16 +296,9 @@ export function EventCalendar({
       /* More-Link
       ------------------------------------------------------------------------------------------- */
 
-      moreLinkClass={[
-        outlineWidthFocusClass,
-        tertiaryOutlineColorClass,
-      ]}
+      moreLinkClass={`${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
       moreLinkInnerClass="whitespace-nowrap overflow-hidden"
-      columnMoreLinkClass={[
-        'my-0.5 border border-transparent print:border-black rounded-md',
-        `${strongSolidPressableClass} print:bg-white`,
-        'ring ring-(--fc-pulse-background)',
-      ]}
+      columnMoreLinkClass={`my-0.5 border border-transparent print:border-black rounded-md ${strongSolidPressableClass} print:bg-white ring ring-(--fc-pulse-background)`}
       columnMoreLinkInnerClass={(data) => [
         data.isNarrow
           ? `p-0.5 ${xxsTextClass}`
@@ -357,12 +348,7 @@ export function EventCalendar({
                         'first:-ms-1 last:-me-1 size-7 rounded-full font-semibold',
                         'flex flex-row items-center justify-center',
                         data.hasNavLink
-                          ? joinClassNames(
-                              tertiaryPressableGroupClass,
-                              outlineWidthGroupFocusClass,
-                              outlineOffsetClass,
-                              tertiaryOutlineColorClass,
-                            )
+                          ? `${tertiaryPressableGroupClass} ${outlineWidthGroupFocusClass} ${outlineOffsetClass} ${tertiaryOutlineColorClass}`
                           : tertiaryClass,
                       )
                     : 'text-(--fc-pulse-muted-foreground)',
@@ -424,12 +410,7 @@ export function EventCalendar({
                           ? 'size-5'
                           : 'size-6 first:-ms-1 last:-me-1',
                         data.hasNavLink
-                          ? joinClassNames(
-                              tertiaryPressableGroupClass,
-                              outlineWidthGroupFocusClass,
-                              outlineOffsetClass,
-                              tertiaryOutlineColorClass,
-                            )
+                          ? `${tertiaryPressableGroupClass} ${outlineWidthGroupFocusClass} ${outlineOffsetClass} ${tertiaryOutlineColorClass}`
                           : tertiaryClass,
                       )
                     : (data.monthText ? 'text-(--fc-pulse-foreground)' : 'text-(--fc-pulse-muted-foreground)'),
@@ -445,12 +426,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       popoverClass="bg-(--fc-pulse-background) border border-(--fc-pulse-strong-border) rounded-sm overflow-hidden shadow-md m-1 min-w-55"
-      popoverCloseClass={[
-        'group absolute top-1.5 end-1.5 p-0.5 rounded-sm',
-        mutedHoverPressableClass,
-        outlineWidthFocusClass,
-        tertiaryOutlineColorClass,
-      ]}
+      popoverCloseClass={`group absolute top-1.5 end-1.5 p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
       popoverCloseContent={() => x(`size-5 ${mutedFgPressableGroupClass}`)}
 
       /* Lane
@@ -475,10 +451,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       listDayClass="group/day flex flex-col"
-      listDayHeaderClass={[
-        'border-b border-(--fc-pulse-border) [background:linear-gradient(var(--fc-pulse-faint),var(--fc-pulse-faint))_var(--fc-pulse-background)] text-(--fc-pulse-foreground)',
-        'flex flex-row items-center justify-between',
-      ]}
+      listDayHeaderClass="border-b border-(--fc-pulse-border) [background:linear-gradient(var(--fc-pulse-faint),var(--fc-pulse-faint))_var(--fc-pulse-background)] text-(--fc-pulse-foreground) flex flex-row items-center justify-between"
       listDayHeaderInnerClass={(data) => [
         'm-1.5 px-1.5 py-0.5 rounded-sm text-sm',
         !data.level && 'font-semibold',
@@ -500,9 +473,8 @@ export function EventCalendar({
         'items-center',
       ]}
       singleMonthHeaderInnerClass={(data) => [
-        'px-1.5 py-0.5 rounded-sm font-semibold',
+        'px-1.5 py-0.5 rounded-sm font-semibold text-(--fc-pulse-foreground)',
         data.hasNavLink && mutedHoverPressableClass,
-        'text-(--fc-pulse-foreground)',
       ]}
 
       /* Misc Table
@@ -519,33 +491,23 @@ export function EventCalendar({
       /* Misc Content
       ------------------------------------------------------------------------------------------- */
 
-      navLinkClass={[
-        outlineWidthFocusClass,
-        tertiaryOutlineColorClass,
-      ]}
+      navLinkClass={`${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
       inlineWeekNumberClass={(data) => [
-        'absolute start-0 whitespace-nowrap rounded-e-sm',
+        'absolute start-0 whitespace-nowrap rounded-e-sm text-(--fc-pulse-muted-foreground)',
         data.isNarrow
           ? `top-0.5 my-px p-0.5 ${xxsTextClass}`
           : 'top-1 p-1 text-xs',
         data.hasNavLink && mutedHoverPressableClass,
-        'text-(--fc-pulse-muted-foreground)',
       ]}
       highlightClass="bg-(--fc-pulse-highlight)"
       nonBusinessClass="bg-(--fc-pulse-faint)"
       nowIndicatorLineClass="-m-px border-1 border-(--fc-pulse-now)"
-      nowIndicatorDotClass={[
-        '-m-[6px] border-6 border-(--fc-pulse-now) size-0 rounded-full',
-        'ring-2 ring-(--fc-pulse-background)',
-      ]}
+      nowIndicatorDotClass="-m-[6px] border-6 border-(--fc-pulse-now) size-0 rounded-full ring-2 ring-(--fc-pulse-background)"
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */
 
-      viewClass={[
-        'rounded-sm overflow-hidden',
-        `bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`,
-      ]}
+      viewClass={`rounded-sm overflow-hidden bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`}
 
       /* Toolbar
       ------------------------------------------------------------------------------------------- */
@@ -704,10 +666,7 @@ export function EventCalendar({
           ],
           listItemEventBeforeClass: 'w-1.5 bg-(--fc-event-color) rounded-full',
           listItemEventInnerClass: '[display:contents]',
-          listItemEventTimeClass: [
-            '-order-1 shrink-0 w-1/2 max-w-60 px-4 py-2',
-            'whitespace-nowrap overflow-hidden text-ellipsis text-sm',
-          ],
+          listItemEventTimeClass: '-order-1 shrink-0 w-1/2 max-w-60 px-4 py-2 whitespace-nowrap overflow-hidden text-ellipsis text-sm',
           listItemEventTitleClass: (data) => [
             'grow min-w-0 px-4 py-2 whitespace-nowrap overflow-hidden text-sm',
             data.event.url && 'group-hover:underline',

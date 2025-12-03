@@ -75,11 +75,7 @@ export function Scheduler({
       resourceCellClass="border border-(--fc-classic-border)"
       resourceCellInnerClass="p-2 text-sm"
       resourceIndentClass="ms-2 -me-1 justify-center"
-      resourceExpanderClass={[
-        'group',
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      resourceExpanderClass={`group ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       resourceExpanderContent={(data) => data.isExpanded
         ? minusSquare(expanderIconClass)
         : plusSquare(expanderIconClass)}
@@ -126,10 +122,7 @@ export function Scheduler({
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */
 
-          rowMoreLinkClass: [
-            'me-px mb-px border border-transparent print:border-black',
-            `${strongSolidPressableClass} print:bg-white`,
-          ],
+          rowMoreLinkClass: `me-px mb-px border border-transparent print:border-black ${strongSolidPressableClass} print:bg-white`,
           rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
           /* Timeline > Slot Header
@@ -146,11 +139,7 @@ export function Scheduler({
           /* Timeline > Now-Indicator
           --------------------------------------------------------------------------------------- */
 
-          nowIndicatorHeaderClass: [
-            'top-0 -mx-[5px]',
-            'border-x-[5px] border-x-transparent',
-            'border-t-[6px] border-(--fc-classic-now)',
-          ],
+          nowIndicatorHeaderClass: 'top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-(--fc-classic-now)',
           nowIndicatorLineClass: 'border-s border-(--fc-classic-now)',
 
           ...userViews?.timeline,

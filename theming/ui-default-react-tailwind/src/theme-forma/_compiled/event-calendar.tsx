@@ -323,10 +323,9 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       columnEventClass={(data) => [
-        'border-s-6 not-print:pe-px print:border-e',
+        'border-s-6 not-print:pe-px print:border-e ring ring-(--fc-forma-background)',
         data.isStart && 'not-print:pt-px print:border-t rounded-t-sm',
         data.isEnd && 'mb-px not-print:pb-px print:border-b rounded-b-sm',
-        'ring ring-(--fc-forma-background)',
       ]}
       columnEventBeforeClass={(data) => (
         data.isStartResizable && [
@@ -361,17 +360,9 @@ export function EventCalendar({
       /* More-Link
       ------------------------------------------------------------------------------------------- */
 
-      moreLinkClass={[
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      moreLinkClass={`${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       moreLinkInnerClass="whitespace-nowrap overflow-hidden"
-      columnMoreLinkClass={[
-        'mb-px border border-transparent print:border-black rounded-sm',
-        `${strongSolidPressableClass} print:bg-white`,
-        `ring ring-(--fc-forma-background)`,
-        outlineOffsetClass,
-      ]}
+      columnMoreLinkClass={`mb-px border border-transparent print:border-black rounded-sm ${strongSolidPressableClass} print:bg-white ring ring-(--fc-forma-background) ${outlineOffsetClass}`}
       columnMoreLinkInnerClass={(data) => (
         data.isNarrow
           ? `p-0.5 ${xxsTextClass}`
@@ -394,12 +385,9 @@ export function EventCalendar({
             ),
       ]}
       dayHeaderInnerClass={(data) => [
-        data.isToday && data.level && 'relative',
         'p-2 flex flex-col',
-        data.hasNavLink && joinClassNames(
-          mutedHoverPressableClass,
-          outlineInsetClass,
-        )
+        data.isToday && data.level && 'relative',
+        data.hasNavLink && `${mutedHoverPressableClass} ${outlineInsetClass}`,
       ]}
       dayHeaderContent={(data) => (
         <>
@@ -463,12 +451,7 @@ export function EventCalendar({
 
       dayPopoverFormat={{ day: 'numeric', weekday: 'long' }}
       popoverClass="border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md min-w-55"
-      popoverCloseClass={[
-        'group absolute top-1 end-1 p-1 rounded-sm',
-        mutedHoverPressableClass,
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      popoverCloseClass={`group absolute top-1 end-1 p-1 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       popoverCloseContent={() => dismiss(`size-5 ${mutedFgPressableGroupClass}`)}
 
       /* Lane
@@ -532,10 +515,7 @@ export function EventCalendar({
       /* Misc Content
       ------------------------------------------------------------------------------------------- */
 
-      navLinkClass={[
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      navLinkClass={`${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       inlineWeekNumberClass={(data) => [
         'absolute end-0 whitespace-nowrap rounded-s-sm',
         data.isNarrow
@@ -548,10 +528,7 @@ export function EventCalendar({
       nonBusinessClass="bg-(--fc-forma-faint)"
       highlightClass="bg-(--fc-forma-highlight)"
       nowIndicatorLineClass="-m-px border-1 border-(--fc-forma-primary)"
-      nowIndicatorDotClass={[
-        '-m-[6px] border-6 border-(--fc-forma-primary) size-0 rounded-full',
-        'ring-2 ring-(--fc-forma-background)',
-      ]}
+      nowIndicatorDotClass="-m-[6px] border-6 border-(--fc-forma-primary) size-0 rounded-full ring-2 ring-(--fc-forma-background)"
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */

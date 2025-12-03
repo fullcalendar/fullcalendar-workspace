@@ -279,9 +279,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       blockEventClass={(data) => [
-        'group relative',
-        'border-transparent print:border-(--fc-event-color)',
-        'bg-(--fc-event-color) hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))] print:bg-white',
+        'group relative border-transparent print:border-(--fc-event-color) bg-(--fc-event-color) hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))] print:bg-white',
         data.isInteractive && 'active:bg-[color-mix(in_oklab,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
         (!data.isSelected && data.isDragging) && 'opacity-75',
       ]}
@@ -379,16 +377,9 @@ export function EventCalendar({
       /* More-Link
       ------------------------------------------------------------------------------------------- */
 
-      moreLinkClass={[
-        outlineWidthFocusClass,
-        outlineColorClass,
-      ]}
+      moreLinkClass={`${outlineWidthFocusClass} ${outlineColorClass}`}
       moreLinkInnerClass="whitespace-nowrap overflow-hidden"
-      columnMoreLinkClass={[
-        'mb-px border border-transparent print:border-black rounded-sm',
-        `${strongSolidPressableClass} print:bg-white`,
-        'ring ring-(--fc-monarch-background)',
-      ]}
+      columnMoreLinkClass={`mb-px border border-transparent print:border-black rounded-sm ${strongSolidPressableClass} print:bg-white ring ring-(--fc-monarch-background)`}
       columnMoreLinkInnerClass={(data) => (
         data.isNarrow
           ? `p-0.5 ${xxsTextClass}`
@@ -409,10 +400,7 @@ export function EventCalendar({
         <>
           {data.weekdayText && (
             <div
-              className={joinClassNames(
-                'text-xs uppercase',
-                'text-(--fc-monarch-muted-foreground)',
-              )}
+              className="text-xs uppercase text-(--fc-monarch-muted-foreground)"
             >{data.weekdayText}</div>
           )}
           {data.dayNumberText && (
@@ -425,10 +413,7 @@ export function EventCalendar({
                 data.isToday
                   ? (data.hasNavLink ? tertiaryPressableGroupClass : tertiaryClass)
                   : (data.hasNavLink && mutedHoverPressableGroupClass),
-                data.hasNavLink && joinClassNames(
-                  outlineWidthGroupFocusClass,
-                  outlineColorClass,
-                ),
+                data.hasNavLink && `${outlineWidthGroupFocusClass} ${outlineColorClass}`,
               )}
             >{data.dayNumberText}</div>
           )}
@@ -470,13 +455,7 @@ export function EventCalendar({
 
       dayPopoverFormat={{ day: 'numeric', weekday: 'short' }}
       popoverClass="border border-(--fc-monarch-border) rounded-lg overflow-hidden m-2 bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg min-w-60"
-      popoverCloseClass={[
-        'group absolute top-2 end-2 size-8 rounded-full',
-        'items-center justify-center',
-        mutedHoverPressableClass,
-        outlineWidthFocusClass,
-        outlineColorClass,
-      ]}
+      popoverCloseClass={`group absolute top-2 end-2 size-8 rounded-full items-center justify-center ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${outlineColorClass}`}
       popoverCloseContent={() => x(`size-5 ${mutedFgPressableGroupClass}`)}
 
       /* Lane
@@ -553,10 +532,7 @@ export function EventCalendar({
       /* Misc Content
       ------------------------------------------------------------------------------------------- */
 
-      navLinkClass={[
-        outlineWidthFocusClass,
-        outlineColorClass,
-      ]}
+      navLinkClass={`${outlineWidthFocusClass} ${outlineColorClass}`}
       inlineWeekNumberClass={(data) => [
         'absolute flex flex-row items-center whitespace-nowrap',
         data.isNarrow
@@ -569,10 +545,7 @@ export function EventCalendar({
       nonBusinessClass="bg-(--fc-monarch-faint)"
       highlightClass="bg-(--fc-monarch-highlight)"
       nowIndicatorLineClass="-m-px border-1 border-(--fc-monarch-now)"
-      nowIndicatorDotClass={[
-        '-m-[6px] border-6 border-(--fc-monarch-now) size-0 rounded-full',
-        'ring-2 ring-(--fc-monarch-background)',
-      ]}
+      nowIndicatorDotClass="-m-[6px] border-6 border-(--fc-monarch-now) size-0 rounded-full ring-2 ring-(--fc-monarch-background)"
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */
@@ -624,8 +597,7 @@ export function EventCalendar({
           --------------------------------------------------------------------------------------- */
 
           slotHeaderClass: (data) => [
-            'w-2 self-end justify-end',
-            'border border-(--fc-monarch-border)',
+            'w-2 self-end justify-end border border-(--fc-monarch-border)',
             data.isMinor && 'border-dotted',
           ],
           slotHeaderInnerClass: (data) => [

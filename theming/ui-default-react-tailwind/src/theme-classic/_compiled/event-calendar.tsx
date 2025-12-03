@@ -84,8 +84,7 @@ const dayRowCommonClasses: CalendarOptions = {
   ],
 
   listItemEventInnerClass: (data) => [
-    'flex flex-row items-center',
-    'py-px gap-0.5',
+    'flex flex-row items-center py-px gap-0.5',
     data.isNarrow ? xxsTextClass : 'text-xs',
   ],
 
@@ -93,7 +92,7 @@ const dayRowCommonClasses: CalendarOptions = {
   listItemEventTitleClass: 'px-px font-bold whitespace-nowrap overflow-hidden shrink-100',
 
   /* Day Row > Row Event
-  --------------------------------------------------------------------------------------------- */
+  ----------------------------------------------------------------------------------------------- */
 
   rowEventClass: (data) => [
     data.isStart && joinClassNames('rounded-s-sm', data.isNarrow ? 'ms-px' : 'ms-0.5'),
@@ -105,7 +104,7 @@ const dayRowCommonClasses: CalendarOptions = {
   rowEventTitleClass: 'px-px',
 
   /* Day Row > More-Link
-  --------------------------------------------------------------------------------------------- */
+  ----------------------------------------------------------------------------------------------- */
 
   rowMoreLinkClass: (data) => [
     'mb-px border rounded-sm',
@@ -185,8 +184,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       blockEventClass={(data) => [
-        'group relative border-transparent print:border-(--fc-event-color)',
-        'bg-(--fc-event-color) print:bg-white',
+        'group relative border-transparent print:border-(--fc-event-color) bg-(--fc-event-color) print:bg-white',
         (data.isDragging && !data.isSelected) && 'opacity-75',
         outlineOffsetClass,
       ]}
@@ -224,10 +222,9 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       columnEventClass={(data) => [
-        'border-x',
+        'border-x ring ring-(--fc-classic-background)',
         data.isStart && 'border-t rounded-t-sm',
         data.isEnd && 'mb-px border-b rounded-b-sm',
-        'ring ring-(--fc-classic-background)',
       ]}
       columnEventBeforeClass={(data) => (
         data.isStartResizable && [
@@ -259,17 +256,9 @@ export function EventCalendar({
       /* More-Link
       ------------------------------------------------------------------------------------------- */
 
-      moreLinkClass={[
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      moreLinkClass={`${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       moreLinkInnerClass="whitespace-nowrap overflow-hidden"
-      columnMoreLinkClass={[
-        'mb-px rounded-sm border border-transparent print:border-black',
-        `${strongSolidPressableClass} print:bg-white`,
-        'ring ring-(--fc-classic-background)',
-        outlineOffsetClass,
-      ]}
+      columnMoreLinkClass={`mb-px rounded-sm border border-transparent print:border-black ${strongSolidPressableClass} print:bg-white ring ring-(--fc-classic-background) ${outlineOffsetClass}`}
       columnMoreLinkInnerClass={(data) => [
         'p-0.5',
         data.isNarrow ? xxsTextClass : 'text-xs',
@@ -317,11 +306,7 @@ export function EventCalendar({
       ------------------------------------------------------------------------------------------- */
 
       popoverClass="bg-(--fc-classic-background) border border-(--fc-classic-border) shadow-md min-w-55"
-      popoverCloseClass={[
-        'group absolute top-0.5 end-0.5',
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      popoverCloseClass={`group absolute top-0.5 end-0.5 ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       popoverCloseContent={() => x('size-5 text-sm not-group-hover:opacity-65')}
 
       /* Lane
@@ -338,10 +323,7 @@ export function EventCalendar({
       /* List Day
       ------------------------------------------------------------------------------------------- */
 
-      listDayHeaderClass={[
-        'border-b border-(--fc-classic-border) [background:linear-gradient(var(--fc-classic-muted),var(--fc-classic-muted))_var(--fc-classic-background)]',
-        'flex flex-row items-center justify-between',
-      ]}
+      listDayHeaderClass="border-b border-(--fc-classic-border) [background:linear-gradient(var(--fc-classic-muted),var(--fc-classic-muted))_var(--fc-classic-background)] flex flex-row items-center justify-between"
       listDayHeaderInnerClass="px-3 py-2 text-sm font-bold"
 
       /* Single Month (in Multi-Month)
@@ -368,16 +350,9 @@ export function EventCalendar({
       /* Misc Content
       ------------------------------------------------------------------------------------------- */
 
-      navLinkClass={[
-        'hover:underline',
-        outlineWidthFocusClass,
-        outlineInsetClass,
-        primaryOutlineColorClass,
-      ]}
+      navLinkClass={`hover:underline ${outlineWidthFocusClass} ${outlineInsetClass} ${primaryOutlineColorClass}`}
       inlineWeekNumberClass={(data) => [
-        'absolute top-0 start-0 rounded-ee-sm p-0.5 text-center',
-        'text-(--fc-classic-muted-foreground)',
-        'bg-(--fc-classic-muted)',
+        'absolute top-0 start-0 rounded-ee-sm p-0.5 text-center text-(--fc-classic-muted-foreground) bg-(--fc-classic-muted)',
         data.isNarrow ? xxsTextClass : 'text-sm',
       ]}
       nonBusinessClass="bg-(--fc-classic-faint)"
@@ -404,11 +379,7 @@ export function EventCalendar({
       toolbarTitleClass="text-2xl font-bold"
       buttonGroupClass="flex flex-row items-center"
       buttonClass={(data) => [
-        'py-2 border-x flex flex-row items-center',
-        'focus-visible:outline-3 outline-slate-600/50',
-        'hover:border-slate-900 active:border-slate-900 print:border-slate-900',
-        'hover:bg-slate-800 active:bg-slate-800 print:bg-white',
-        'text-sm text-white print:text-black',
+        'py-2 border-x flex flex-row items-center focus-visible:outline-3 outline-slate-600/50 hover:border-slate-900 active:border-slate-900 print:border-slate-900 hover:bg-slate-800 active:bg-slate-800 print:bg-white text-sm text-white print:text-black',
         data.isIconOnly ? 'px-2.5' : 'px-3',
         data.inGroup
           ? 'first:rounded-s-[4px] last:rounded-e-[4px]'
@@ -416,8 +387,7 @@ export function EventCalendar({
         data.isSelected
           ? 'border-slate-900 bg-slate-800'
           : 'border-transparent bg-slate-700',
-        data.isDisabled
-          && 'opacity-65 pointer-events-none',
+        data.isDisabled && 'opacity-65 pointer-events-none',
       ]}
       buttons={{
         prev: {
@@ -454,7 +424,7 @@ export function EventCalendar({
           dayCellBottomClass: 'min-h-3',
 
           /* TimeGrid > Week Number Header
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
           weekNumberHeaderClass: 'items-center justify-end',
           weekNumberHeaderInnerClass: (data) => [
@@ -463,7 +433,7 @@ export function EventCalendar({
           ],
 
           /* TimeGrid > All-Day Header
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
           allDayHeaderClass: 'items-center justify-end',
           allDayHeaderInnerClass: (data) => [
@@ -473,7 +443,7 @@ export function EventCalendar({
           allDayDividerClass: 'border-y border-(--fc-classic-border) pb-0.5 bg-(--fc-classic-muted)',
 
           /* TimeGrid > Slot Header
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
           slotHeaderClass: 'justify-end',
           slotHeaderInnerClass: (data) => [
@@ -483,13 +453,9 @@ export function EventCalendar({
           slotHeaderDividerClass: 'border-e border-(--fc-classic-border)',
 
           /* TimeGrid > Now-Indicator
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
-          nowIndicatorHeaderClass: [
-            'start-0 -mt-[5px]',
-            'border-y-[5px] border-y-transparent',
-            'border-s-[6px] border-s-(--fc-classic-now)',
-          ],
+          nowIndicatorHeaderClass: 'start-0 -mt-[5px] border-y-[5px] border-y-transparent border-s-[6px] border-s-(--fc-classic-now)',
           nowIndicatorLineClass: 'border-t border-(--fc-classic-now)',
 
           ...userViews?.timeGrid,
@@ -497,7 +463,7 @@ export function EventCalendar({
         list: {
 
           /* List-View > List-Item Event
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
           listItemEventClass: (data) => [
             'group border-b border-(--fc-classic-border) px-3 py-2 gap-3',
@@ -507,17 +473,14 @@ export function EventCalendar({
           ],
           listItemEventBeforeClass: 'border-5',
           listItemEventInnerClass: '[display:contents]',
-          listItemEventTimeClass: [
-            '-order-1 shrink-0 w-1/2 max-w-50',
-            'whitespace-nowrap overflow-hidden text-ellipsis text-sm',
-          ],
+          listItemEventTimeClass: '-order-1 shrink-0 w-1/2 max-w-50 whitespace-nowrap overflow-hidden text-ellipsis text-sm',
           listItemEventTitleClass: (data) => [
             'grow min-w-0 whitespace-nowrap overflow-hidden text-sm',
             data.event.url && 'group-hover:underline',
           ],
 
           /* No-Events Screen
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
           noEventsClass: 'bg-(--fc-classic-muted) flex flex-col items-center justify-center',
           noEventsInnerClass: 'sticky bottom-0 py-15',

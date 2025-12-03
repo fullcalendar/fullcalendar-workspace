@@ -55,8 +55,7 @@ export function Scheduler({
       resourceDayHeaderAlign="center"
       resourceDayHeaderClass={(data) => data.isMajor && 'border border-(--fc-pulse-strong-border)'}
       resourceDayHeaderInnerClass={(data) => [
-        'p-2 flex flex-row items-center',
-        'text-(--fc-pulse-muted-foreground)',
+        'p-2 flex flex-row items-center text-(--fc-pulse-muted-foreground)',
         data.isNarrow ? 'text-xs' : 'text-sm',
       ]}
 
@@ -71,12 +70,7 @@ export function Scheduler({
       resourceCellClass="border border-(--fc-pulse-border)"
       resourceCellInnerClass="p-2 text-(--fc-pulse-foreground) text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
-      resourceExpanderClass={[
-        'group p-0.5 rounded-sm',
-        mutedHoverPressableClass,
-        outlineWidthFocusClass,
-        tertiaryOutlineColorClass,
-      ]}
+      resourceExpanderClass={`group p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
       resourceExpanderContent={(data) => chevronDown(
         joinClassNames(
           `size-5 ${mutedFgPressableGroupClass}`,
@@ -111,10 +105,7 @@ export function Scheduler({
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */
 
-          rowMoreLinkClass: [
-            'me-px mb-px border border-transparent print:border-black rounded-sm',
-            `${strongSolidPressableClass} print:bg-white`,
-          ],
+          rowMoreLinkClass: `me-px mb-px border border-transparent print:border-black rounded-sm ${strongSolidPressableClass} print:bg-white`,
           rowMoreLinkInnerClass: 'p-1 text-(--fc-pulse-foreground) text-xs',
 
           /* Timeline > Slot Header
