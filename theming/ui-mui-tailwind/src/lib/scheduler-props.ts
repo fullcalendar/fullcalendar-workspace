@@ -10,4 +10,3 @@ export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'classNa
     click?: (ev: MouseEvent) => void
   }
 }
-

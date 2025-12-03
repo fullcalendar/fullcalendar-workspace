@@ -11,8 +11,8 @@ import { flattenClassName } from './lib/utils.js'
 import '@fullcalendar/core/global.css'
 import './lib/tailwind.css'
 
-// import BreezyEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-breezy/_compiled/EventCalendar'
-// import BreezyScheduler from '@fullcalendar/ui-mui-tailwind/theme-breezy/_compiled/Scheduler'
+import BreezyEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-breezy/_compiled/EventCalendar'
+import BreezyScheduler from '@fullcalendar/ui-mui-tailwind/theme-breezy/_compiled/Scheduler'
 // import ClassicEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-classic/_compiled/EventCalendar'
 // import ClassicScheduler from '@fullcalendar/ui-mui-tailwind/theme-classic/_compiled/Scheduler'
 // import FormaEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-forma/_compiled/EventCalendar'
@@ -23,7 +23,7 @@ import './lib/tailwind.css'
 // import PulseScheduler from '@fullcalendar/ui-mui-tailwind/theme-pulse/_compiled/Scheduler'
 
 const eventCalendarByTheme = {
-  // breezy: BreezyEventCalendar,
+  breezy: BreezyEventCalendar,
   // classic: ClassicEventCalendar,
   // forma: FormaEventCalendar,
   // monarch: MonarchEventCalendar,
@@ -31,7 +31,7 @@ const eventCalendarByTheme = {
 } as any // !!!
 
 const schedulerByTheme = {
-  // breezy: BreezyScheduler,
+  breezy: BreezyScheduler,
   // classic: ClassicScheduler,
   // forma: FormaScheduler,
   // monarch: MonarchScheduler,
