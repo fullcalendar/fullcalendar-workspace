@@ -1,5 +1,5 @@
 import React from 'react'
-import { CalendarOptions, DayCellData, DayHeaderData } from '@fullcalendar/core'
+import { CalendarController, CalendarOptions, DayCellData, DayHeaderData } from '@fullcalendar/core'
 import { useCalendarController } from '@fullcalendar/react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -188,14 +188,9 @@ export function EventCalendar({
   )
 }
 
-export function EventCalendarToolbar({
-  className,
-  controller,
-  availableViews,
-  addButton,
-}: {
+export interface EventCalendarToolbarProps {
   className?: string
-  controller: ReturnType<typeof useCalendarController>
+  controller: CalendarController
   availableViews: string[]
   addButton?: {
     isPrimary?: boolean
@@ -203,7 +198,14 @@ export function EventCalendarToolbar({
     hint?: string
     click?: (ev: MouseEvent) => void
   }
-}) {
+}
+
+export function EventCalendarToolbar({
+  className,
+  controller,
+  availableViews,
+  addButton,
+}: EventCalendarToolbarProps) {
   const buttons = controller.getButtonState()
 
   return (
