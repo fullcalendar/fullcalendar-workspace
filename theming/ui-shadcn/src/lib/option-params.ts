@@ -31,7 +31,7 @@ const faintBgFocusClass = 'focus-visible:bg-muted/50'
 const faintSolidBgClass = 'bg-[color-mix(in_oklab,var(--foreground)_3%,var(--background))]'
 
 // primary
-const primaryClass = 'bg-primary text-(--primary-foreground)'
+const primaryClass = 'bg-primary text-primary-foreground'
 const primaryPressableClass = `${primaryClass} hover:bg-primary/90`
 const primaryPressableGroupClass = `${primaryClass} group-hover:bg-primary/90`
 
