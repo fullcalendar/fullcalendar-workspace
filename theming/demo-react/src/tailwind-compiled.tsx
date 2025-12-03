@@ -42,17 +42,18 @@ const mode = 'compiled'
 function App() {
   const demoChoices = useDemoChoices(ui)
 
+  const EventCalendar = eventCalendarByTheme[demoChoices.theme]
+  const Scheduler = schedulerByTheme[demoChoices.theme]
+
   return (
     <Layout ui={ui} mode={mode} {...demoChoices}>
       <DemoGenerator
-        renderEventCalendar={(props) => {
-          const EventCalendar = eventCalendarByTheme[demoChoices.theme]
-          return <EventCalendar {...props} />
-        }}
-        renderScheduler={(props) => {
-          const Scheduler = schedulerByTheme[demoChoices.theme]
-          return <Scheduler {...props} />
-        }}
+        renderEventCalendar={(props) => (
+          <EventCalendar {...props} />
+        )}
+        renderScheduler={(props) => (
+          <Scheduler {...props} />
+        )}
       />
     </Layout>
   )

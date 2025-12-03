@@ -45,6 +45,9 @@ function App() {
   const demoChoices = useDemoChoices(ui)
   const { theme, palette, colorScheme } = demoChoices
 
+  const EventCalendar = eventCalendarByTheme[theme]
+  const Scheduler = schedulerByTheme[theme]
+
   const muiTheme = useMemo(
     () => getMuiTheme(palette, colorScheme),
     [palette, colorScheme],
@@ -55,14 +58,12 @@ function App() {
       <MuiThemeProvider theme={muiTheme}>
         <MuiCssBaseline />
         <DemoGenerator
-          renderEventCalendar={(props) => {
-            const EventCalendar = eventCalendarByTheme[theme]
-            return <EventCalendar {...props} className={flattenClassName(props)} />
-          }}
-          renderScheduler={(props) => {
-            const Scheduler = schedulerByTheme[theme]
-            return <Scheduler {...props} className={flattenClassName(props)} />
-          }}
+          renderEventCalendar={(props) => (
+            <EventCalendar {...props} className={flattenClassName(props)} />
+          )}
+          renderScheduler={(props) => (
+            <Scheduler {...props} className={flattenClassName(props)} />
+          )}
         />
       </MuiThemeProvider>
     </Layout>
