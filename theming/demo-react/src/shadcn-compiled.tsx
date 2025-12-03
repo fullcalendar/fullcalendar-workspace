@@ -9,8 +9,8 @@ import '@fullcalendar/core/global.css'
 import './lib/ui-shadcn-fonts.js'
 import './lib/ui-shadcn.css'
 
-// import { EventCalendar as BreezyEventCalendar } from '@fullcalendar/ui-shadcn/theme-breezy/_compiled/event-calendar'
-// import { Scheduler as BreezyScheduler } from '@fullcalendar/ui-shadcn/theme-breezy/_compiled/scheduler'
+import { EventCalendar as BreezyEventCalendar } from '@fullcalendar/ui-shadcn/theme-breezy/_compiled/event-calendar'
+import { Scheduler as BreezyScheduler } from '@fullcalendar/ui-shadcn/theme-breezy/_compiled/scheduler'
 // import { EventCalendar as ClassicEventCalendar } from '@fullcalendar/ui-shadcn/theme-classic/_compiled/event-calendar'
 // import { Scheduler as ClassicScheduler } from '@fullcalendar/ui-shadcn/theme-classic/_compiled/scheduler'
 // import { EventCalendar as FormaEventCalendar } from '@fullcalendar/ui-shadcn/theme-forma/_compiled/event-calendar'
@@ -21,7 +21,7 @@ import './lib/ui-shadcn.css'
 // import { Scheduler as PulseScheduler } from '@fullcalendar/ui-shadcn/theme-pulse/_compiled/scheduler'
 
 const eventCalendarByTheme = {
-  // breezy: BreezyEventCalendar,
+  breezy: BreezyEventCalendar,
   // classic: ClassicEventCalendar,
   // forma: FormaEventCalendar,
   // monarch: MonarchEventCalendar,
@@ -29,7 +29,7 @@ const eventCalendarByTheme = {
 } as any // !!!
 
 const schedulerByTheme = {
-  // breezy: BreezyScheduler,
+  breezy: BreezyScheduler,
   // classic: ClassicScheduler,
   // forma: FormaScheduler,
   // monarch: MonarchScheduler,

@@ -12,11 +12,14 @@ GOAL: use the input file as the "main" file and combine nearly all other files i
 DO inline all symbols from:
   @fullcalendar/theme-<themename>-tailwind
   @fullcalendar/theme-common
+  Symbols from the /theming/ui-shadcn/src/lib directory
+    (though inlining should NOT follow into the ../ui directory, as mentioned below)
 
 Do NOT inline symbols from these files. Continue to import from external package:
   @fullcalendar/core
   @fullcalendar/react
   lucide-react
+  Symbols from the /theming/ui-shadcn/src/ui directory
 
 How far should inlining go?
 - Attempt to evaluate the result of `createEventCalendarOptions`, which is a set of props (aka `params`). Inline those params directly into the JSX components' props.
