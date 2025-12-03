@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { useDemoChoices } from './lib/demo-choices.js'
 import { DemoGenerator } from './lib/demo-generator.js'
 import { Layout } from './lib/layout.js'
+import { flattenClassName } from './lib/utils.js'
 
 import '@fullcalendar/core/global.css'
 import './lib/ui-shadcn-fonts.js'
@@ -18,7 +19,6 @@ import { EventCalendar as MonarchEventCalendar } from '@fullcalendar/ui-shadcn/t
 import { Scheduler as MonarchScheduler } from '@fullcalendar/ui-shadcn/theme-monarch/scheduler'
 import { EventCalendar as PulseEventCalendar } from '@fullcalendar/ui-shadcn/theme-pulse/event-calendar'
 import { Scheduler as PulseScheduler } from '@fullcalendar/ui-shadcn/theme-pulse/scheduler'
-import { flattenClassName } from './lib/utils.js'
 
 const eventCalendarByTheme = {
   breezy: BreezyEventCalendar,

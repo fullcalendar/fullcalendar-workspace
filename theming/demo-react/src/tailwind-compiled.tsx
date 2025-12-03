@@ -11,8 +11,8 @@ import './lib/ui-default.css'
 
 import { EventCalendar as BreezyEventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-breezy/_compiled/event-calendar'
 import { Scheduler as BreezyScheduler } from '@fullcalendar/ui-default-react-tailwind/theme-breezy/_compiled/scheduler'
-// import { EventCalendar as ClassicEventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-classic/_compiled/event-calendar'
-// import { Scheduler as ClassicScheduler } from '@fullcalendar/ui-default-react-tailwind/theme-classic/_compiled/scheduler'
+import { EventCalendar as ClassicEventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-classic/_compiled/event-calendar'
+import { Scheduler as ClassicScheduler } from '@fullcalendar/ui-default-react-tailwind/theme-classic/_compiled/scheduler'
 import { EventCalendar as FormaEventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-forma/_compiled/event-calendar'
 import { Scheduler as FormaScheduler } from '@fullcalendar/ui-default-react-tailwind/theme-forma/_compiled/scheduler'
 import { EventCalendar as MonarchEventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-monarch/_compiled/event-calendar'
@@ -22,19 +22,19 @@ import { Scheduler as PulseScheduler } from '@fullcalendar/ui-default-react-tail
 
 const eventCalendarByTheme = {
   breezy: BreezyEventCalendar,
-  // classic: ClassicEventCalendar,
+  classic: ClassicEventCalendar,
   forma: FormaEventCalendar,
   monarch: MonarchEventCalendar,
   pulse: PulseEventCalendar,
-} as any // !!!
+}
 
 const schedulerByTheme = {
   breezy: BreezyScheduler,
-  // classic: ClassicScheduler,
+  classic: ClassicScheduler,
   forma: FormaScheduler,
   monarch: MonarchScheduler,
   pulse: PulseScheduler,
-} as any // !!!
+}
 
 const ui = 'default'
 const mode = 'compiled'
@@ -47,15 +47,11 @@ function App() {
       <DemoGenerator
         renderEventCalendar={(props) => {
           const EventCalendar = eventCalendarByTheme[demoChoices.theme]
-          if (EventCalendar) { // !!!
-            return <EventCalendar {...props} />
-          }
+          return <EventCalendar {...props} />
         }}
         renderScheduler={(props) => {
           const Scheduler = schedulerByTheme[demoChoices.theme]
-          if (Scheduler) { // !!!
-            return <Scheduler {...props} />
-          }
+          return <Scheduler {...props} />
         }}
       />
     </Layout>

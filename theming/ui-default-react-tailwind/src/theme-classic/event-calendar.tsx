@@ -33,10 +33,7 @@ export function EventCalendar({
       buttons={{
         ...defaultButtons,
         ...userButtons,
-        add: {
-          isPrimary: true,
-          ...addButton,
-        },
+        add: addButton || {},
       }}
 
       /* View-Specific
