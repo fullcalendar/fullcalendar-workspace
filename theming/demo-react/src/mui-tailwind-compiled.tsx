@@ -17,8 +17,8 @@ import BreezyScheduler from '@fullcalendar/ui-mui-tailwind/theme-breezy/_compile
 // import ClassicScheduler from '@fullcalendar/ui-mui-tailwind/theme-classic/_compiled/Scheduler'
 import FormaEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-forma/_compiled/EventCalendar'
 import FormaScheduler from '@fullcalendar/ui-mui-tailwind/theme-forma/_compiled/Scheduler'
-// import MonarchEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-monarch/_compiled/EventCalendar'
-// import MonarchScheduler from '@fullcalendar/ui-mui-tailwind/theme-monarch/_compiled/Scheduler'
+import MonarchEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-monarch/_compiled/EventCalendar'
+import MonarchScheduler from '@fullcalendar/ui-mui-tailwind/theme-monarch/_compiled/Scheduler'
 // import PulseEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-pulse/_compiled/EventCalendar'
 // import PulseScheduler from '@fullcalendar/ui-mui-tailwind/theme-pulse/_compiled/Scheduler'
 
@@ -26,7 +26,7 @@ const eventCalendarByTheme = {
   breezy: BreezyEventCalendar,
   // classic: ClassicEventCalendar,
   forma: FormaEventCalendar,
-  // monarch: MonarchEventCalendar,
+  monarch: MonarchEventCalendar,
   // pulse: PulseEventCalendar,
 } as any // !!!
 
@@ -34,7 +34,7 @@ const schedulerByTheme = {
   breezy: BreezyScheduler,
   // classic: ClassicScheduler,
   forma: FormaScheduler,
-  // monarch: MonarchScheduler,
+  monarch: MonarchScheduler,
   // pulse: PulseScheduler,
 } as any // !!!
 

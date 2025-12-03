@@ -27,6 +27,10 @@ Conversions
 Put eventCalendarAvailableViews after eventCalendarPlugins?
   same concept for scheduler.tsx?
 
+Audit all
+  export const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
+  ^^^might be exported unnecessarily
+
 
 just before beta (after theme gen)
 ----------------
