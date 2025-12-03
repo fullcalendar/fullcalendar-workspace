@@ -34,6 +34,7 @@ Notes on Typescript Types
 - In same vein, don't attempt to fix type errors by adding `: any` type hack. Especially do not do this for the `data` param you see.
 - You might be copying functions like `getShortDayCellBottomClass`. Please move-over their parameters' type information too. These types will likely be imported from @fullcalendar/core, which should be kept external.
 - When copying over `dayRowCommonClasses`, ensure the type for that const is preserved (`CalendarOptions`). This prevents TS errors for the params of its member functions.
+- For the `EventCalendarToolbar` component, please ensure a proper separate `EventCalendarToolbarProps` interface is maintained.
 
 Section Headers
   When spreading multiple props into the same set of props, keep the props grouped by the sections you see like this:
@@ -113,6 +114,8 @@ Forced ordering of components
   - main component
   - toolbar component
   - view component
+  You will also have prop interfaces for each component.
+    Please ensure that the prop interface is RIGHT ABOVE the component source code. Please do NOT hoist the interface to the top of the file.
 
 Whitespace
   For props WITHIN a section of props, please ensure no blank lines between props

@@ -11,17 +11,6 @@ import { ChevronDownIcon } from 'lucide-react'
 import { cn } from '../../lib/utils.js'
 import { EventCalendarView, eventCalendarPlugins, EventCalendarToolbar } from './event-calendar.js'
 
-export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
-  className?: string
-  availableViews?: string[]
-  addButton?: {
-    isPrimary?: boolean
-    text?: string
-    hint?: string
-    click?: (ev: MouseEvent) => void
-  }
-}
-
 const schedulerAvailableViews = [
   'resourceTimelineDay',
   'resourceTimelineWeek',
@@ -37,6 +26,17 @@ const schedulerOnlyPlugins = [
 ]
 
 const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'
+
+export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
+  availableViews?: string[]
+  addButton?: {
+    isPrimary?: boolean
+    text?: string
+    hint?: string
+    click?: (ev: MouseEvent) => void
+  }
+}
 
 export function Scheduler({
   availableViews = schedulerAvailableViews,

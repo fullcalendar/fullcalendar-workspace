@@ -12,17 +12,6 @@ import { Button } from '../../ui/button.js'
 import { Tabs, TabsList, TabsTrigger } from '../../ui/tabs.js'
 import { cn } from '../../lib/utils.js'
 
-export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
-  className?: string
-  availableViews?: string[]
-  addButton?: {
-    isPrimary?: boolean
-    text?: string
-    hint?: string
-    click?: (ev: MouseEvent) => void
-  }
-}
-
 const eventCalendarAvailableViews = [
   'dayGridMonth',
   'timeGridWeek',
@@ -114,6 +103,17 @@ const dayRowCommonClasses: CalendarOptions = {
       ? `px-0.5 py-px ${xxsTextClass}`
       : 'px-1 py-0.5 text-xs'
   ],
+}
+
+export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
+  className?: string
+  availableViews?: string[]
+  addButton?: {
+    isPrimary?: boolean
+    text?: string
+    hint?: string
+    click?: (ev: MouseEvent) => void
+  }
 }
 
 export function EventCalendar({
