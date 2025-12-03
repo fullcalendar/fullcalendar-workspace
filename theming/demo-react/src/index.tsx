@@ -38,35 +38,35 @@ const mode = 'prod'
 
 function App() {
   const demoChoices = useDemoChoices(ui)
+  const themePlugin = pluginByTheme[demoChoices.theme]
 
   return (
     <Layout ui={ui} mode={mode} {...demoChoices}>
       <DemoGenerator
         renderEventCalendar={(props) => {
-          const themePlugin = pluginByTheme[demoChoices.theme]
+          const availableViews = props.availableViews || eventCalendarAvailableViews
           if (themePlugin) { // !!!
             return (
               <FullCalendar
+                initialView={availableViews[0]}
+                {...buildToolbarAndButtons(demoChoices.theme, availableViews, props.addButton)}
                 {...props}
                 plugins={[
                   ...eventCalendarPlugins,
                   themePlugin,
                   ...(props.plugins || []),
                 ]}
-                {...buildToolbarAndButtons(
-                  demoChoices.theme,
-                  props.availableViews || eventCalendarAvailableViews,
-                  props.addButton,
-                )}
               />
             )
           }
         }}
         renderScheduler={(props) => {
-          const themePlugin = pluginByTheme[demoChoices.theme]
+          const availableViews = props.availableViews || schedulerAvailableViews
           if (themePlugin) { // !!!
             return (
               <FullCalendar
+                initialView={availableViews[0]}
+                {...buildToolbarAndButtons(demoChoices.theme, availableViews, props.addButton)}
                 {...props}
                 plugins={[
                   ...eventCalendarPlugins,
@@ -74,11 +74,6 @@ function App() {
                   themePlugin,
                   ...(props.plugins || []),
                 ]}
-                {...buildToolbarAndButtons(
-                  demoChoices.theme,
-                  props.availableViews || schedulerAvailableViews,
-                  props.addButton,
-                )}
               />
             )
           }
