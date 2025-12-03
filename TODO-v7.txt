@@ -31,6 +31,11 @@ Audit all
   export const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
   ^^^might be exported unnecessarily
 
+export interface SchedulerProps
+  (look at all SchedulerView.tsx)
+
+Convert React.Fragment to <></>
+
 
 just before beta (after theme gen)
 ----------------

@@ -57,15 +57,11 @@ function App() {
         <DemoGenerator
           renderEventCalendar={(props) => {
             const EventCalendar = eventCalendarByTheme[theme]
-            return (
-              <EventCalendar {...props} className={flattenClassName(props)} />
-            )
+            return <EventCalendar {...props} className={flattenClassName(props)} />
           }}
           renderScheduler={(props) => {
             const Scheduler = schedulerByTheme[theme]
-            return (
-              <Scheduler {...props} className={flattenClassName(props)} />
-            )
+            return <Scheduler {...props} className={flattenClassName(props)} />
           }}
         />
       </MuiThemeProvider>

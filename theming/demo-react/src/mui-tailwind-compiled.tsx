@@ -13,30 +13,30 @@ import './lib/tailwind.css'
 
 import BreezyEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-breezy/_compiled/EventCalendar'
 import BreezyScheduler from '@fullcalendar/ui-mui-tailwind/theme-breezy/_compiled/Scheduler'
-// import ClassicEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-classic/_compiled/EventCalendar'
-// import ClassicScheduler from '@fullcalendar/ui-mui-tailwind/theme-classic/_compiled/Scheduler'
+import ClassicEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-classic/_compiled/EventCalendar'
+import ClassicScheduler from '@fullcalendar/ui-mui-tailwind/theme-classic/_compiled/Scheduler'
 import FormaEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-forma/_compiled/EventCalendar'
 import FormaScheduler from '@fullcalendar/ui-mui-tailwind/theme-forma/_compiled/Scheduler'
 import MonarchEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-monarch/_compiled/EventCalendar'
 import MonarchScheduler from '@fullcalendar/ui-mui-tailwind/theme-monarch/_compiled/Scheduler'
-// import PulseEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-pulse/_compiled/EventCalendar'
-// import PulseScheduler from '@fullcalendar/ui-mui-tailwind/theme-pulse/_compiled/Scheduler'
+import PulseEventCalendar from '@fullcalendar/ui-mui-tailwind/theme-pulse/_compiled/EventCalendar'
+import PulseScheduler from '@fullcalendar/ui-mui-tailwind/theme-pulse/_compiled/Scheduler'
 
 const eventCalendarByTheme = {
   breezy: BreezyEventCalendar,
-  // classic: ClassicEventCalendar,
+  classic: ClassicEventCalendar,
   forma: FormaEventCalendar,
   monarch: MonarchEventCalendar,
-  // pulse: PulseEventCalendar,
-} as any // !!!
+  pulse: PulseEventCalendar,
+}
 
 const schedulerByTheme = {
   breezy: BreezyScheduler,
-  // classic: ClassicScheduler,
+  classic: ClassicScheduler,
   forma: FormaScheduler,
   monarch: MonarchScheduler,
-  // pulse: PulseScheduler,
-} as any // !!!
+  pulse: PulseScheduler,
+}
 
 const ui = 'mui'
 const mode = 'compiled'
@@ -57,19 +57,11 @@ function App() {
         <DemoGenerator
           renderEventCalendar={(props) => {
             const EventCalendar = eventCalendarByTheme[theme]
-            if (EventCalendar) { // !!!
-              return (
-                <EventCalendar {...props} className={flattenClassName(props)} />
-              )
-            }
+            return <EventCalendar {...props} className={flattenClassName(props)} />
           }}
           renderScheduler={(props) => {
             const Scheduler = schedulerByTheme[theme]
-            if (Scheduler) { // !!!
-              return (
-                <Scheduler {...props} className={flattenClassName(props)} />
-              )
-            }
+            return <Scheduler {...props} className={flattenClassName(props)} />
           }}
         />
       </MuiThemeProvider>
