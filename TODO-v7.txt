@@ -24,6 +24,9 @@ Conversions
     theme-breezy-tailwind/src/_compiled -> theme-breezy/src (AFTER you can test!)
     ui-mui-tailwind/src/theme-breezy/_compiled -> ui-mui/src/theme-breezy (will need to make this package)
 
+Put eventCalendarAvailableViews after eventCalendarPlugins?
+  same concept for scheduler.tsx?
+
 
 just before beta (after theme gen)
 ----------------
