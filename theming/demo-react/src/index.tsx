@@ -8,9 +8,18 @@ import FullCalendar from '@fullcalendar/react'
 import { eventCalendarAvailableViews, eventCalendarPlugins, EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
 
+// !!!
+import './lib/tailwind.css'
+// NOTE: also see ./lib/tailwind.css for !!!
+
 import '@fullcalendar/core/global.css'
 import './lib/ui-default-fonts.js'
 import './lib/ui-default.css'
+import '@fullcalendar/theme-breezy/global.css'
+import '@fullcalendar/theme-classic/global.css'
+import '@fullcalendar/theme-forma/global.css'
+import '@fullcalendar/theme-monarch/global.css'
+import '@fullcalendar/theme-pulse/global.css'
 
 import breezyThemePlugin from '@fullcalendar/theme-breezy'
 import classicThemePlugin from '@fullcalendar/theme-classic'
@@ -126,6 +135,9 @@ function buildToolbarAndButtons(
           start: 'add today prev,next',
           center: 'title',
           end: availableViews.join(','),
+        },
+        buttons: {
+          add: addButton || {},
         }
       }
   }
