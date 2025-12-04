@@ -1,6 +1,17 @@
 import { createPlugin, PluginDef, CalendarOptions, DayHeaderData, DayCellData } from '@fullcalendar/core'
 import { joinClassNames } from '@fullcalendar/core/internal'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
+import './global.css'
+
+// ambient types (tsc strips during build because of {})
+import {} from '@fullcalendar/timeline'
+import {} from '@fullcalendar/resource-daygrid'
+import {} from '@fullcalendar/resource-timegrid'
+import {} from '@fullcalendar/resource-timeline'
+import {} from '@fullcalendar/adaptive'
+import {} from '@fullcalendar/scrollgrid'
+import {} from '@fullcalendar/list'
+import {} from '@fullcalendar/multimonth'
 
 // usually 11px font / 12px line-height
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
