@@ -35,6 +35,9 @@ The @fullcalendar/mui & shadcn packages should formally rely on @fullcalendar/re
   until they do, we need to build @fullcalendar/react manually before `pn dev`
 MUI LICENSE.md is empty
 FYI, we don't want EventCalendarToolbar but we have to...
+Instead of @fullcalendar/mui/breezy, do...
+  @fullcalendar/mui/theme-breezy ?
+  @fullcalendar/mui/themes/breezy ?
 
 
 ASAP
