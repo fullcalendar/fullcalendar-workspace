@@ -291,7 +291,7 @@ export default function EventCalendarView({
         )
       ]}
       dayHeaderContent={(data) => (
-        <React.Fragment>
+        <>
           {data.isToday && (
             <div className={`absolute top-0 inset-x-0 border-t-4 border-(--mui-palette-primary-main) pointer-events-none`} />
           )}
@@ -306,7 +306,7 @@ export default function EventCalendarView({
           {data.weekdayText && (
             <div className='text-xs'>{data.weekdayText}</div>
           )}
-        </React.Fragment>
+        </>
       )}
 
       /* Day Cell

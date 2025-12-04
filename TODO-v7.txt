@@ -24,13 +24,6 @@ Conversions
     theme-breezy-tailwind/src/_compiled -> theme-breezy/src (AFTER you can test!)
     ui-mui-tailwind/src/theme-breezy/_compiled -> ui-mui/src/theme-breezy (will need to make this package)
 
-export interface SchedulerProps
-  (look at all SchedulerView.tsx)
-
-Omit<CalendarOptions
-
-Convert React.Fragment to <></>
-
 
 just before beta (after theme gen)
 ----------------

@@ -3,10 +3,6 @@ import { CalendarOptions, DayCellData, DayHeaderData, joinClassNames } from '@fu
 import FullCalendar from '@fullcalendar/react'
 import CloseIcon from '@mui/icons-material/Close'
 
-export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
-  className?: string
-}
-
 // outline
 export const outlineWidthClass = 'outline-3'
 export const outlineWidthFocusClass = 'focus-visible:outline-3'
@@ -161,7 +157,7 @@ export const dayRowCommonClasses: CalendarOptions = {
 export default function EventCalendarView({
   views: userViews,
   ...restOptions
-}: EventCalendarProps) {
+}: CalendarOptions) {
   return (
     <FullCalendar
 
@@ -328,9 +324,9 @@ export default function EventCalendarView({
       ]}
       dayHeaderContent={(data) => (
         (!data.dayNumberText && !data.inPopover) ? (
-          <React.Fragment>{data.text}</React.Fragment>
+          <>{data.text}</>
         ) : (
-          <React.Fragment>
+          <>
             {data.textParts.map((textPart, i) => (
               <span
                 key={i}
@@ -360,7 +356,7 @@ export default function EventCalendarView({
                 )}
               >{textPart.value}</span>
             ))}
-          </React.Fragment>
+          </>
         )
       )}
 

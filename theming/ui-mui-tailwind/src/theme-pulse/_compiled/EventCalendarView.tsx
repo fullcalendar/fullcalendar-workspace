@@ -279,9 +279,9 @@ export default function EventCalendarView({
       ]}
       dayHeaderContent={(data) => (
         (data.inPopover || !data.dayNumberText || !data.isToday) ? (
-          <React.Fragment>{data.text}</React.Fragment>
+          <>{data.text}</>
         ) : (
-          <React.Fragment>
+          <>
             {data.textParts.map((textPart, i) => (
               <span
                 key={i}
@@ -303,7 +303,7 @@ export default function EventCalendarView({
                 )}
               >{textPart.value}</span>
             ))}
-          </React.Fragment>
+          </>
         )
       )}
 
@@ -342,9 +342,9 @@ export default function EventCalendarView({
       ]}
       dayCellTopContent={(data) => (
         !data.isToday ? (
-          <React.Fragment>{data.text}</React.Fragment>
+          <>{data.text}</>
         ) : (
-          <React.Fragment>
+          <>
             {data.textParts.map((textPart, i) => (
               <span
                 key={i}
@@ -369,7 +369,7 @@ export default function EventCalendarView({
                 )}
               >{textPart.value}</span>
             ))}
-          </React.Fragment>
+          </>
         )
       )}
       dayCellInnerClass={(data) => data.inPopover && 'p-2'}

@@ -10,14 +10,10 @@ import EventCalendarView, {
   strongSolidPressableClass,
 } from './EventCalendarView.js'
 
-export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
-  className?: string
-}
-
 export default function SchedulerView({
   views: userViews,
   ...restOptions
-}: SchedulerProps) {
+}: CalendarOptions) {
   return (
     <EventCalendarView
 

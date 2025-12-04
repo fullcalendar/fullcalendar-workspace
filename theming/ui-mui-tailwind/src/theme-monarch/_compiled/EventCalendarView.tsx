@@ -294,7 +294,7 @@ export default function EventCalendarView({
       ]}
       dayHeaderInnerClass="group mt-2 mx-2 flex flex-col items-center outline-none"
       dayHeaderContent={(data) => (
-        <React.Fragment>
+        <>
           {data.weekdayText && (
             <div
               className={joinClassNames(
@@ -320,7 +320,7 @@ export default function EventCalendarView({
               )}
             >{data.dayNumberText}</div>
           )}
-        </React.Fragment>
+        </>
       )}
 
       /* Day Cell

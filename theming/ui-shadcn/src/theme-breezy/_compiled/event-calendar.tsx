@@ -418,9 +418,9 @@ export function EventCalendarView({
       ]}
       dayHeaderContent={(data) => (
         (!data.dayNumberText && !data.inPopover) ? (
-          <React.Fragment>{data.text}</React.Fragment>
+          <>{data.text}</>
         ) : (
-          <React.Fragment>
+          <>
             {data.textParts.map((textPart, i) => (
               <span
                 key={i}
@@ -441,7 +441,7 @@ export function EventCalendarView({
                 )}
               >{textPart.value}</span>
             ))}
-          </React.Fragment>
+          </>
         )
       )}
 

@@ -12,10 +12,6 @@ import EventCalendarView, {
   tertiaryOutlineColorClass,
 } from './EventCalendarView.js'
 
-export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
-  className?: string
-}
-
 const resourceDayHeaderClasses = {
   dayHeaderInnerClass: 'mb-1',
   dayHeaderDividerClass: `border-b border-(--mui-palette-divider)`,
@@ -24,7 +20,7 @@ const resourceDayHeaderClasses = {
 export default function SchedulerView({
   views: userViews,
   ...restOptions
-}: SchedulerProps) {
+}: CalendarOptions) {
   return (
     <EventCalendarView
 
