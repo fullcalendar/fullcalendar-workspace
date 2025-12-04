@@ -25,6 +25,11 @@ Conversions
     ui-mui-tailwind/src/theme-breezy/_compiled -> ui-mui/src/theme-breezy (will need to make this package)
 
 
+Why is createFormatter exposed as public?
+Make joinClassNames public and only public
+Don't need nested cn(), just use arrays
+
+
 ASAP
 ----
 
@@ -289,6 +294,7 @@ we put classNames.isolate on the root calendar div,
   but really, parents with z-index children should always be responsible for setting isolation
 address "// HACK for React vdom"
   problem with our ContentContainer detecting falsiness?
+
 
 Changelog
 ---------

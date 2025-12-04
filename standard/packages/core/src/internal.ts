@@ -41,6 +41,7 @@ export {
 
 export {
   WEEKDAY_ONLY_FORMAT,
+  FULL_DATE_FORMAT,
   findWeekdayText,
   findDayNumberText,
   findMonthText,

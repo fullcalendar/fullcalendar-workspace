@@ -1,6 +1,6 @@
-import { BaseComponent, ContentContainer, DateMarker, DateMeta, formatDayString } from "@fullcalendar/core/internal";
-import { createElement, Fragment } from '@fullcalendar/core/preact'
+import { BaseComponent, ContentContainer, DateFormatter, DateMarker, DateMeta, formatDayString, ViewSpec, WEEKDAY_ONLY_FORMAT, FULL_DATE_FORMAT } from "@fullcalendar/core/internal";
 import classNames from '@fullcalendar/core/internal-classnames'
+import { createElement, Fragment } from '@fullcalendar/core/preact'
 import { ListDayHeaderData } from '../structs.js'
 import { ListDayHeaderInner } from "./ListDayHeaderInner.js";
 
@@ -12,9 +12,12 @@ export interface ListDayHeaderProps {
 
 export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
   render() {
-    let { options, viewApi } = this.context
+    let { options, viewApi, viewSpec } = this.context
     let { dayDate, dateMeta } = this.props
     let stickyHeaderDates = !this.props.forPrint
+
+    const listDayFormat = options.listDayFormat ?? createDefaultListDayFormat(viewSpec)
+    const listDaySideFormat = options.listDaySideFormat ?? createDefaultListDaySideFormat(viewSpec)
 
     let renderProps: ListDayHeaderData = {
       ...dateMeta,
@@ -37,19 +40,19 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
       >
         {() => (
           <Fragment>
-            {Boolean(options.listDayFormat) && (
+            {Boolean(listDayFormat) && (
               <ListDayHeaderInner
                 dayDate={dayDate}
-                dayFormat={options.listDayFormat}
+                dayFormat={listDayFormat}
                 isTabbable
                 dateMeta={dateMeta}
                 level={0}
               />
             )}
-            {Boolean(options.listDaySideFormat) && (
+            {Boolean(listDaySideFormat) && (
               <ListDayHeaderInner
                 dayDate={dayDate}
-                dayFormat={options.listDaySideFormat}
+                dayFormat={listDaySideFormat}
                 isTabbable={false}
                 dateMeta={dateMeta}
                 level={1}
@@ -59,5 +62,25 @@ export class ListDayHeader extends BaseComponent<ListDayHeaderProps> {
         )}
       </ContentContainer>
     )
+  }
+}
+
+function createDefaultListDayFormat({ durationUnit, singleUnit }: ViewSpec): DateFormatter {
+  if (singleUnit === 'day') {
+    return WEEKDAY_ONLY_FORMAT
+  } else if (durationUnit === 'day' || singleUnit === 'week') {
+    return WEEKDAY_ONLY_FORMAT
+  } else {
+    return FULL_DATE_FORMAT
+  }
+}
+
+function createDefaultListDaySideFormat({ durationUnit, singleUnit }: ViewSpec): DateFormatter {
+  if (singleUnit === 'day') {
+    // nothing b/c full date is probably in headerToolbar
+  } else if (durationUnit === 'day' || singleUnit === 'week') {
+    return FULL_DATE_FORMAT
+  } else {
+    return WEEKDAY_ONLY_FORMAT
   }
 }

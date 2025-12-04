@@ -1,13 +1,10 @@
-import { createFormatter } from '../datelib/formatting.js'
 import { DateMarker } from '../datelib/marker.js'
 import { joinArrayishClassNames } from '../internal.js'
 import { createAriaClickAttrs } from '../util/dom-event.js'
 import { formatWithOrdinals } from '../util/misc.js'
 import { ViewContext } from '../ViewContext.js'
 import classNames from '../internal-classnames.js'
-
-const DAY_FORMAT = createFormatter({ year: 'numeric', month: 'long', day: 'numeric' })
-const WEEK_FORMAT = createFormatter({ week: 'long' })
+import { FULL_DATE_FORMAT, WEEK_FORMAT } from '../util/date-format.js'
 
 /*
 TODO: just have this return the string?
@@ -17,7 +14,7 @@ export function buildDateStr(
   dateMarker: DateMarker,
   viewType = 'day',
 ): string {
-  return context.dateEnv.format(dateMarker, viewType === 'week' ? WEEK_FORMAT : DAY_FORMAT)[0]
+  return context.dateEnv.format(dateMarker, viewType === 'week' ? WEEK_FORMAT : FULL_DATE_FORMAT)[0]
 }
 
 /*

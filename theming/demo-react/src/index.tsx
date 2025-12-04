@@ -55,8 +55,8 @@ function App() {
             initialView={availableViews[0]}
             {...buildToolbarAndButtons(demoChoices.theme, availableViews, addButton)}
             plugins={[
-              ...eventCalendarPlugins,
               themePlugin,
+              ...eventCalendarPlugins,
               ...userPlugins,
             ]}
             {...restProps}
@@ -72,9 +72,9 @@ function App() {
             initialView={availableViews[0]}
             {...buildToolbarAndButtons(demoChoices.theme, availableViews, addButton)}
             plugins={[
+              themePlugin,
               ...eventCalendarPlugins,
               ...schedulerOnlyPlugins,
-              themePlugin,
               ...userPlugins,
             ]}
             {...restProps}
