@@ -38,6 +38,12 @@ FYI, we don't want EventCalendarToolbar but we have to...
 Instead of @fullcalendar/mui/breezy, do...
   @fullcalendar/mui/theme-breezy ?
   @fullcalendar/mui/themes/breezy ?
+conversion bugs:
+  MUI Monarch compiled+prod
+    list-view ghost-button clickdown color
+    same for day-circle (non-today) clickdown color
+    for other themes/systems? (forma:yes...)
+DRY-up MUI compiled+prod themes?
 
 
 ASAP

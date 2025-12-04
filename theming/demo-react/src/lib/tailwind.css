@@ -18,3 +18,5 @@
 @source "../../../../standard/theming/theme-pulse/src";
 @source "../../../../standard/theming/theme-monarch/src";
 @source "../../../../standard/theming/theme-forma/src";
+/* MUI */
+@source "../../../ui-mui/src";

@@ -3806,6 +3806,9 @@ importers:
       '@fullcalendar/list':
         specifier: workspace:*
         version: link:../../standard/packages/list/dist
+      '@fullcalendar/mui':
+        specifier: workspace:*
+        version: link:../ui-mui/dist
       '@fullcalendar/multimonth':
         specifier: workspace:*
         version: link:../../standard/packages/multimonth/dist

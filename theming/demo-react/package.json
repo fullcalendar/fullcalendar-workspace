@@ -48,6 +48,7 @@
     "@fullcalendar/timeline": "workspace:*",
     "@fullcalendar/ui-default-react-tailwind": "workspace:*",
     "@fullcalendar/ui-mui-tailwind": "workspace:*",
+    "@fullcalendar/mui": "workspace:*",
     "@fullcalendar/ui-shadcn": "workspace:*",
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",

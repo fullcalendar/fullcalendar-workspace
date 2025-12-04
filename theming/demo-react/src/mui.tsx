@@ -8,37 +8,43 @@ import { DemoGenerator } from './lib/demo-generator.js'
 import { Layout } from './lib/layout.js'
 import { flattenClassName } from './lib/utils.js'
 
-import '@fullcalendar/core/global.css'
+// !!!
+import './lib/tailwind.css'
+// NOTE: also see ./lib/tailwind.css for !!!
 
-// import BreezyEventCalendar from '@fullcalendar/ui-mui/theme-breezy/EventCalendar'
-// import BreezyScheduler from '@fullcalendar/ui-mui/theme-breezy/Scheduler'
-// import ClassicEventCalendar from '@fullcalendar/ui-mui/theme-classic/EventCalendar'
-// import ClassicScheduler from '@fullcalendar/ui-mui/theme-classic/Scheduler'
-// import FormaEventCalendar from '@fullcalendar/ui-mui/theme-forma/EventCalendar'
-// import FormaScheduler from '@fullcalendar/ui-mui/theme-forma/Scheduler'
-// import MonarchEventCalendar from '@fullcalendar/ui-mui/theme-monarch/EventCalendar'
-// import MonarchScheduler from '@fullcalendar/ui-mui/theme-monarch/Scheduler'
-// import PulseEventCalendar from '@fullcalendar/ui-mui/theme-pulse/EventCalendar'
-// import PulseScheduler from '@fullcalendar/ui-mui/theme-pulse/Scheduler'
-/*
-  TODO: make nice paths like '@fullcalendar/ui-mui/pulse/Scheduler' ?
-*/
+import '@fullcalendar/core/global.css'
+import '@fullcalendar/mui/breezy/global.css'
+import '@fullcalendar/mui/classic/global.css'
+import '@fullcalendar/mui/forma/global.css'
+import '@fullcalendar/mui/monarch/global.css'
+import '@fullcalendar/mui/pulse/global.css'
+
+import BreezyEventCalendar from '@fullcalendar/mui/breezy/EventCalendar'
+import BreezyScheduler from '@fullcalendar/mui/breezy/Scheduler'
+import ClassicEventCalendar from '@fullcalendar/mui/classic/EventCalendar'
+import ClassicScheduler from '@fullcalendar/mui/classic/Scheduler'
+import FormaEventCalendar from '@fullcalendar/mui/forma/EventCalendar'
+import FormaScheduler from '@fullcalendar/mui/forma/Scheduler'
+import MonarchEventCalendar from '@fullcalendar/mui/monarch/EventCalendar'
+import MonarchScheduler from '@fullcalendar/mui/monarch/Scheduler'
+import PulseEventCalendar from '@fullcalendar/mui/pulse/EventCalendar'
+import PulseScheduler from '@fullcalendar/mui/pulse/Scheduler'
 
 const eventCalendarByTheme = {
-  // breezy: BreezyEventCalendar,
-  // classic: ClassicEventCalendar,
-  // forma: FormaEventCalendar,
-  // monarch: MonarchEventCalendar,
-  // pulse: PulseEventCalendar,
-} as any // !!!
+  breezy: BreezyEventCalendar,
+  classic: ClassicEventCalendar,
+  forma: FormaEventCalendar,
+  monarch: MonarchEventCalendar,
+  pulse: PulseEventCalendar,
+}
 
 const schedulerByTheme = {
-  // breezy: BreezyScheduler,
-  // classic: ClassicScheduler,
-  // forma: FormaScheduler,
-  // monarch: MonarchScheduler,
-  // pulse: PulseScheduler,
-} as any // !!!
+  breezy: BreezyScheduler,
+  classic: ClassicScheduler,
+  forma: FormaScheduler,
+  monarch: MonarchScheduler,
+  pulse: PulseScheduler,
+}
 
 const ui = 'mui'
 const mode = 'prod'
@@ -60,20 +66,12 @@ function App() {
       <MuiThemeProvider theme={muiTheme}>
         <MuiCssBaseline />
         <DemoGenerator
-          renderEventCalendar={(props) => {
-            if (EventCalendar) { // !!!
-              return (
-                <EventCalendar {...props} className={flattenClassName(props)} />
-              )
-            }
-          }}
-          renderScheduler={(props) => {
-            if (Scheduler) { // !!!
-              return (
-                <Scheduler {...props} className={flattenClassName(props)} />
-              )
-            }
-          }}
+          renderEventCalendar={(props) => (
+            <EventCalendar {...props} className={flattenClassName(props)} />
+          )}
+          renderScheduler={(props) => (
+            <Scheduler {...props} className={flattenClassName(props)} />
+          )}
         />
       </MuiThemeProvider>
     </Layout>
