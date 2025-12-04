@@ -25,19 +25,6 @@ Conversions
     ui-mui-tailwind/src/theme-breezy/_compiled -> ui-mui/src/theme-breezy (will need to make this package)
 
 
-just before beta (after theme gen)
-----------------
-Updating ANGULAR will take a long time
-App.tsx:
-  write js-only App demo (with js plugins)
-  write mui-only App demo
-  have font-families change based on Component Lib
-  BUG?: z-index of subcomponents go above the topbar?
-Ensure .gitignore for theme packages is correct
-when themes have a strong default preference, encode it into the theme!
-  (like for Monarch, listDayFormat: { day: 'numeric' })
-
-
 ASAP
 ----
 
