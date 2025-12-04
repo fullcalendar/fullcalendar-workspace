@@ -24,15 +24,10 @@ Conversions
     theme-breezy-tailwind/src/_compiled -> theme-breezy/src (AFTER you can test!)
     ui-mui-tailwind/src/theme-breezy/_compiled -> ui-mui/src/theme-breezy (will need to make this package)
 
-Put eventCalendarAvailableViews after eventCalendarPlugins?
-  same concept for scheduler.tsx?
-
-Audit all
-  export const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
-  ^^^might be exported unnecessarily
-
 export interface SchedulerProps
   (look at all SchedulerView.tsx)
+
+Omit<CalendarOptions
 
 Convert React.Fragment to <></>
 

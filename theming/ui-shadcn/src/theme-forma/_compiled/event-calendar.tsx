@@ -12,20 +12,20 @@ import { Button } from '../../ui/button.js'
 import { Tabs, TabsList, TabsTrigger } from '../../ui/tabs.js'
 import { cn } from '../../lib/utils.js'
 
-const eventCalendarAvailableViews = [
-  'dayGridMonth',
-  'timeGridWeek',
-  'timeGridDay',
-  'listWeek',
-  'multiMonthYear',
-]
-
 export const eventCalendarPlugins = [
   dayGridPlugin,
   timeGridPlugin,
   listPlugin,
   interactionPlugin,
   multiMonthPlugin,
+]
+
+const eventCalendarAvailableViews = [
+  'dayGridMonth',
+  'timeGridWeek',
+  'timeGridDay',
+  'listWeek',
+  'multiMonthYear',
 ]
 
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]'

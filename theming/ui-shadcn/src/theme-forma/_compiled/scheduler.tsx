@@ -11,11 +11,6 @@ import { ChevronDownIcon } from 'lucide-react'
 import { cn } from '../../lib/utils.js'
 import { EventCalendarView, eventCalendarPlugins, EventCalendarToolbar } from './event-calendar.js'
 
-const schedulerAvailableViews = [
-  'resourceTimelineDay',
-  'resourceTimelineWeek',
-]
-
 const schedulerOnlyPlugins = [
   adaptivePlugin,
   scrollGridPlugin,
@@ -23,6 +18,11 @@ const schedulerOnlyPlugins = [
   resourceTimelinePlugin,
   resourceTimeGridPlugin,
   resourceDayGridPlugin,
+]
+
+const schedulerAvailableViews = [
+  'resourceTimelineDay',
+  'resourceTimelineWeek',
 ]
 
 const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'

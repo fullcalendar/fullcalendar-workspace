@@ -11,11 +11,6 @@ import { ChevronDownIcon } from 'lucide-react'
 import { cn } from '../../lib/utils.js'
 import { EventCalendarView, eventCalendarPlugins, EventCalendarToolbar, mutedFgPressableGroupClass, xxsTextClass } from './event-calendar.js'
 
-const schedulerAvailableViews = [
-  'resourceTimelineDay',
-  'resourceTimelineWeek',
-]
-
 const schedulerOnlyPlugins = [
   adaptivePlugin,
   scrollGridPlugin,
@@ -23,6 +18,11 @@ const schedulerOnlyPlugins = [
   resourceTimelinePlugin,
   resourceTimeGridPlugin,
   resourceDayGridPlugin,
+]
+
+const schedulerAvailableViews = [
+  'resourceTimelineDay',
+  'resourceTimelineWeek',
 ]
 
 const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity-50'
