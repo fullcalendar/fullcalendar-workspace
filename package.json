@@ -2,6 +2,10 @@
   "private": true,
   "name": "@fullcalendar-monorepos/root",
   "version": "7.0.0-rc.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fullcalendar/fullcalendar-workspace.git"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "@fullcalendar-scripts/standard": "workspace:*",

@@ -66,7 +66,9 @@ export async function writeDistReadme(pkgDir: string): Promise<void> {
 
 export async function writeDistLicense(pkgAnalysis: PkgAnalysis): Promise<void> {
   await copyFile(
-    joinPaths(pkgAnalysis.metaRootDir, 'LICENSE.md'),
+    pkgAnalysis.isMui
+      ? joinPaths(pkgAnalysis.pkgDir, 'LICENSE.md')
+      : joinPaths(pkgAnalysis.metaRootDir, 'LICENSE.md'),
     joinPaths(pkgAnalysis.pkgDir, 'dist', 'LICENSE.md'),
   )
 }

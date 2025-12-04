@@ -1,0 +1,125 @@
+{
+  "name": "@fullcalendar/mui",
+  "private": true,
+  "version": "0.0.0",
+  "peerDependencies": {
+    "@fullcalendar/core": "workspace:*",
+    "@fullcalendar/daygrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/timegrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/interaction": "workspace:7.0.0-rc.0",
+    "@fullcalendar/timeline": "workspace:7.0.0-rc.0",
+    "@fullcalendar/resource-daygrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/resource-timegrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/resource-timeline": "workspace:7.0.0-rc.0",
+    "@fullcalendar/adaptive": "workspace:7.0.0-rc.0",
+    "@fullcalendar/scrollgrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/list": "workspace:7.0.0-rc.0",
+    "@fullcalendar/multimonth": "workspace:7.0.0-rc.0",
+    "@fullcalendar/react": "workspace:*",
+    "@mui/icons-material": "^7.1.2",
+    "@mui/material": "^7.1.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "peerDependenciesMeta": {
+    "@fullcalendar/daygrid": { "optional": true },
+    "@fullcalendar/timegrid": { "optional": true },
+    "@fullcalendar/interaction": { "optional": true },
+    "@fullcalendar/timeline": { "optional": true },
+    "@fullcalendar/resource-daygrid": { "optional": true },
+    "@fullcalendar/resource-timegrid": { "optional": true },
+    "@fullcalendar/resource-timeline": { "optional": true },
+    "@fullcalendar/adaptive": { "optional": true },
+    "@fullcalendar/scrollgrid": { "optional": true },
+    "@fullcalendar/list": { "optional": true },
+    "@fullcalendar/multimonth": { "optional": true }
+  },
+  "devDependencies": {
+    "@fullcalendar/core": "workspace:7.0.0-rc.0",
+    "@fullcalendar/daygrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/timegrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/interaction": "workspace:7.0.0-rc.0",
+    "@fullcalendar/timeline": "workspace:7.0.0-rc.0",
+    "@fullcalendar/resource-daygrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/resource-timegrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/resource-timeline": "workspace:7.0.0-rc.0",
+    "@fullcalendar/adaptive": "workspace:7.0.0-rc.0",
+    "@fullcalendar/scrollgrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/list": "workspace:7.0.0-rc.0",
+    "@fullcalendar/multimonth": "workspace:7.0.0-rc.0",
+    "@fullcalendar/react": "workspace:*",
+    "@mui/icons-material": "^7.1.2",
+    "@mui/material": "^7.1.2",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "scripts": {
+    "build": "standard-scripts pkg:build",
+    "clean": "standard-scripts pkg:clean",
+    "lint": "eslint ."
+  },
+  "type": "module",
+  "tsConfig": {
+    "compilerOptions": {
+      "target": "ES2020",
+      "useDefineForClassFields": true,
+      "module": "node16",
+      "lib": ["ES2020", "DOM", "DOM.Iterable"],
+      "skipLibCheck": true,
+      "jsx": "react",
+
+      "moduleResolution": "node16",
+      "isolatedModules": true,
+      "moduleDetection": "force",
+
+      "strict": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noFallthroughCasesInSwitch": true,
+
+      "composite": true,
+      "declaration": true,
+      "declarationMap": true,
+      "rootDir": "./src",
+      "outDir": "./dist/.tsout"
+    },
+    "include": [
+      "./src/**/*"
+    ]
+  },
+  "buildConfig": {
+    "exports": {
+      "./breezy/EventCalendar": { "module": true },
+      "./breezy/EventCalendarView": { "module": true },
+      "./breezy/EventCalendarToolbar": { "module": true },
+      "./breezy/Scheduler": { "module": true },
+      "./breezy/SchedulerView": { "module": true },
+      "./classic/EventCalendar": { "module": true },
+      "./classic/EventCalendarView": { "module": true },
+      "./classic/EventCalendarToolbar": { "module": true },
+      "./classic/Scheduler": { "module": true },
+      "./classic/SchedulerView": { "module": true },
+      "./forma/EventCalendar": { "module": true },
+      "./forma/EventCalendarView": { "module": true },
+      "./forma/EventCalendarToolbar": { "module": true },
+      "./forma/Scheduler": { "module": true },
+      "./forma/SchedulerView": { "module": true },
+      "./monarch/EventCalendar": { "module": true },
+      "./monarch/EventCalendarView": { "module": true },
+      "./monarch/EventCalendarToolbar": { "module": true },
+      "./monarch/Scheduler": { "module": true },
+      "./monarch/SchedulerView": { "module": true },
+      "./pulse/EventCalendar": { "module": true },
+      "./pulse/EventCalendarView": { "module": true },
+      "./pulse/EventCalendarToolbar": { "module": true },
+      "./pulse/Scheduler": { "module": true },
+      "./pulse/SchedulerView": { "module": true }
+    }
+  },
+  "publishConfig": {
+    "directory": "./dist",
+    "linkDirectory": true
+  }
+}
