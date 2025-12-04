@@ -27,13 +27,6 @@ const eventCalendarAvailableViews = [
 // usually 11px font / 12px line-height
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
 
-// neutral buttons
-export const strongSolidPressableClass = '[background:linear-gradient(var(--fc-classic-strong),var(--fc-classic-strong))_var(--fc-classic-background)]'
-const mutedHoverClass = 'hover:bg-(--fc-classic-muted)'
-const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-classic-muted) active:bg-(--fc-classic-strong)`
-const faintHoverClass = 'hover:bg-(--fc-classic-faint)'
-const faintHoverPressableClass = `${faintHoverClass} focus-visible:bg-(--fc-classic-faint) active:bg-(--fc-classic-muted)`
-
 const buttonIconClass = 'size-5'
 
 // outline
@@ -42,6 +35,13 @@ export const outlineWidthFocusClass = 'focus-visible:outline-2'
 const outlineOffsetClass = 'outline-offset-2'
 const outlineInsetClass = '-outline-offset-2'
 export const primaryOutlineColorClass = 'outline-(--fc-classic-primary)'
+
+// neutral buttons
+export const strongSolidPressableClass = '[background:linear-gradient(var(--fc-classic-strong),var(--fc-classic-strong))_var(--fc-classic-background)]'
+const mutedHoverClass = 'hover:bg-(--fc-classic-muted)'
+const mutedHoverPressableClass = `${mutedHoverClass} focus-visible:bg-(--fc-classic-muted) active:bg-(--fc-classic-strong)`
+const faintHoverClass = 'hover:bg-(--fc-classic-faint)'
+const faintHoverPressableClass = `${faintHoverClass} focus-visible:bg-(--fc-classic-faint) active:bg-(--fc-classic-muted)`
 
 // transparent resizer for mouse
 const blockPointerResizerClass = 'absolute hidden group-hover:block'

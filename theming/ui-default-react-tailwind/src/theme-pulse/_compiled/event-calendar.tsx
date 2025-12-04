@@ -231,10 +231,6 @@ export function EventCalendar({
       ]}
       buttons={{
         ...userButtons,
-        add: {
-          isPrimary: true,
-          ...addButton,
-        },
         prev: {
           iconContent: () => chevronDown(
             joinClassNames(secondaryButtonIconClass, 'rotate-90 [[dir=rtl]_&]:-rotate-90'),
@@ -254,6 +250,10 @@ export function EventCalendar({
           iconContent: () => chevronsLeft(
             joinClassNames(secondaryButtonIconClass, 'rotate-180 [[dir=rtl]_&]:rotate-0'),
           )
+        },
+        add: {
+          isPrimary: true,
+          ...addButton,
         },
       }}
 
