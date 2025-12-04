@@ -45,7 +45,7 @@ export function EventCalendar({
         },
       }}
 
-      /* View-Specific
+      /* View-Specific Options
       ------------------------------------------------------------------------------------------- */
 
       views={mergeViewOptionsMap(

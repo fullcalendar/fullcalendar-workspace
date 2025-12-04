@@ -175,6 +175,87 @@ export function EventCalendar({
       ]}
       initialView={availableViews[0]}
       className="gap-6"
+      viewClass={`rounded-sm overflow-hidden bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`}
+
+      /* Toolbar
+      ------------------------------------------------------------------------------------------- */
+
+      headerToolbar={{
+        start: (addButton ? 'add ' : '') + 'prev,today,next',
+        center: 'title',
+        end: availableViews.join(','),
+      }}
+      toolbarClass={(data) => [
+        'flex flex-row flex-wrap items-center justify-between gap-5',
+        data.borderlessX && 'px-3',
+      ]}
+      toolbarSectionClass="shrink-0 flex flex-row items-center gap-5"
+      toolbarTitleClass="text-2xl font-bold text-(--fc-pulse-foreground)"
+      buttonGroupClass={(data) => [
+        'py-px rounded-sm flex flex-row items-center',
+        data.isSelectGroup
+          ? 'bg-(--fc-pulse-unselected)'
+          : `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
+      ]}
+      buttonClass={(data) => [
+        'group py-2 flex flex-row items-center text-sm',
+        data.isIconOnly ? 'px-2.5' : 'px-4',
+        data.inSelectGroup
+          ? joinClassNames(
+              'rounded-sm',
+              data.isSelected
+                ? selectedButtonClass
+                : joinClassNames(
+                    unselectedButtonClass,
+                    '-my-px border-y border-transparent',
+                  )
+            )
+          : joinClassNames(
+              'border',
+              !data.inGroup
+                ? 'rounded-sm'
+                : '-my-px not-first:-ms-px first:rounded-s-sm last:rounded-e-sm',
+              data.isPrimary
+                ? joinClassNames(
+                    primaryButtonClass,
+                    !data.inGroup && largeBoxShadowClass,
+                  )
+                : joinClassNames(
+                    secondaryButtonClass,
+                    'border-(--fc-pulse-strong-border)',
+                    !data.inGroup
+                      ? `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
+                      : 'not-first:border-s-transparent not-last:border-e-(--fc-pulse-border)',
+                  )
+            ),
+      ]}
+      buttons={{
+        ...userButtons,
+        add: {
+          isPrimary: true,
+          ...addButton,
+        },
+        prev: {
+          iconContent: () => chevronDown(
+            joinClassNames(secondaryButtonIconClass, 'rotate-90 [[dir=rtl]_&]:-rotate-90'),
+          )
+        },
+        next: {
+          iconContent: () => chevronDown(
+            joinClassNames(secondaryButtonIconClass, '-rotate-90 [[dir=rtl]_&]:rotate-90'),
+          )
+        },
+        prevYear: {
+          iconContent: () => chevronsLeft(
+            joinClassNames(secondaryButtonIconClass, '[[dir=rtl]_&]:rotate-180'),
+          )
+        },
+        nextYear: {
+          iconContent: () => chevronsLeft(
+            joinClassNames(secondaryButtonIconClass, 'rotate-180 [[dir=rtl]_&]:rotate-0'),
+          )
+        },
+      }}
 
       /* Abstract Event
       ------------------------------------------------------------------------------------------- */
@@ -506,88 +587,6 @@ export function EventCalendar({
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */
-
-      viewClass={`rounded-sm overflow-hidden bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`}
-
-      /* Toolbar
-      ------------------------------------------------------------------------------------------- */
-
-      headerToolbar={{
-        start: (addButton ? 'add ' : '') + 'prev,today,next',
-        center: 'title',
-        end: availableViews.join(','),
-      }}
-      toolbarClass={(data) => [
-        'flex flex-row flex-wrap items-center justify-between gap-5',
-        data.borderlessX && 'px-3',
-      ]}
-      toolbarSectionClass="shrink-0 flex flex-row items-center gap-5"
-      toolbarTitleClass="text-2xl font-bold text-(--fc-pulse-foreground)"
-      buttonGroupClass={(data) => [
-        'py-px rounded-sm flex flex-row items-center',
-        data.isSelectGroup
-          ? 'bg-(--fc-pulse-unselected)'
-          : `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
-      ]}
-      buttonClass={(data) => [
-        'group py-2 flex flex-row items-center text-sm',
-        data.isIconOnly ? 'px-2.5' : 'px-4',
-        data.inSelectGroup
-          ? joinClassNames(
-              'rounded-sm',
-              data.isSelected
-                ? selectedButtonClass
-                : joinClassNames(
-                    unselectedButtonClass,
-                    '-my-px border-y border-transparent',
-                  )
-            )
-          : joinClassNames(
-              'border',
-              !data.inGroup
-                ? 'rounded-sm'
-                : '-my-px not-first:-ms-px first:rounded-s-sm last:rounded-e-sm',
-              data.isPrimary
-                ? joinClassNames(
-                    primaryButtonClass,
-                    !data.inGroup && largeBoxShadowClass,
-                  )
-                : joinClassNames(
-                    secondaryButtonClass,
-                    'border-(--fc-pulse-strong-border)',
-                    !data.inGroup
-                      ? `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
-                      : 'not-first:border-s-transparent not-last:border-e-(--fc-pulse-border)',
-                  )
-            ),
-      ]}
-      buttons={{
-        ...userButtons,
-        add: {
-          isPrimary: true,
-          ...addButton,
-        },
-        prev: {
-          iconContent: () => chevronDown(
-            joinClassNames(secondaryButtonIconClass, 'rotate-90 [[dir=rtl]_&]:-rotate-90'),
-          )
-        },
-        next: {
-          iconContent: () => chevronDown(
-            joinClassNames(secondaryButtonIconClass, '-rotate-90 [[dir=rtl]_&]:rotate-90'),
-          )
-        },
-        prevYear: {
-          iconContent: () => chevronsLeft(
-            joinClassNames(secondaryButtonIconClass, '[[dir=rtl]_&]:rotate-180'),
-          )
-        },
-        nextYear: {
-          iconContent: () => chevronsLeft(
-            joinClassNames(secondaryButtonIconClass, 'rotate-180 [[dir=rtl]_&]:rotate-0'),
-          )
-        },
-      }}
 
       views={{
         ...userViews,

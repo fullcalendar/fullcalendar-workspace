@@ -146,6 +146,50 @@ export function EventCalendar({
       ]}
       initialView={availableViews[0]}
       className="gap-5"
+      viewClass="bg-(--fc-classic-background) border border-(--fc-classic-border)"
+
+      /* Toolbar
+      ------------------------------------------------------------------------------------------- */
+
+      headerToolbar={{
+        start: (addButton ? 'add ' : '') + 'today prev,next',
+        center: 'title',
+        end: availableViews.join(','),
+      }}
+      toolbarClass={(data) => [
+        'flex flex-row flex-wrap items-center justify-between gap-3',
+        data.borderlessX && 'px-3',
+      ]}
+      toolbarSectionClass="shrink-0 flex flex-row items-center gap-3"
+      toolbarTitleClass="text-2xl font-bold"
+      buttonGroupClass="flex flex-row items-center"
+      buttonClass={(data) => [
+        'py-2 border-x flex flex-row items-center focus-visible:outline-3 outline-slate-600/50 hover:border-slate-900 active:border-slate-900 print:border-slate-900 hover:bg-slate-800 active:bg-slate-800 print:bg-white text-sm text-white print:text-black',
+        data.isIconOnly ? 'px-2.5' : 'px-3',
+        data.inGroup
+          ? 'first:rounded-s-[4px] last:rounded-e-[4px]'
+          : 'rounded-[4px]',
+        data.isSelected
+          ? 'border-slate-900 bg-slate-800'
+          : 'border-transparent bg-slate-700',
+        data.isDisabled && 'opacity-65 pointer-events-none',
+      ]}
+      buttons={{
+        prev: {
+          iconContent: () => chevronLeft(`${buttonIconClass} [[dir=rtl]_&]:rotate-180`),
+        },
+        next: {
+          iconContent: () => chevronLeft(`${buttonIconClass} rotate-180 [[dir=rtl]_&]:rotate-0`),
+        },
+        prevYear: {
+          iconContent: () => chevronsLeft(`${buttonIconClass} [[dir=rtl]_&]:rotate-180`),
+        },
+        nextYear: {
+          iconContent: () => chevronsLeft(`${buttonIconClass} rotate-180 [[dir=rtl]_&]:rotate-0`),
+        },
+        ...userButtons,
+        add: addButton || {},
+      }}
 
       /* Abstract Event
       ------------------------------------------------------------------------------------------- */
@@ -360,51 +404,6 @@ export function EventCalendar({
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */
-
-      viewClass="bg-(--fc-classic-background) border border-(--fc-classic-border)"
-
-      /* Toolbar
-      ------------------------------------------------------------------------------------------- */
-
-      headerToolbar={{
-        start: (addButton ? 'add ' : '') + 'today prev,next',
-        center: 'title',
-        end: availableViews.join(','),
-      }}
-      toolbarClass={(data) => [
-        'flex flex-row flex-wrap items-center justify-between gap-3',
-        data.borderlessX && 'px-3',
-      ]}
-      toolbarSectionClass="shrink-0 flex flex-row items-center gap-3"
-      toolbarTitleClass="text-2xl font-bold"
-      buttonGroupClass="flex flex-row items-center"
-      buttonClass={(data) => [
-        'py-2 border-x flex flex-row items-center focus-visible:outline-3 outline-slate-600/50 hover:border-slate-900 active:border-slate-900 print:border-slate-900 hover:bg-slate-800 active:bg-slate-800 print:bg-white text-sm text-white print:text-black',
-        data.isIconOnly ? 'px-2.5' : 'px-3',
-        data.inGroup
-          ? 'first:rounded-s-[4px] last:rounded-e-[4px]'
-          : 'rounded-[4px]',
-        data.isSelected
-          ? 'border-slate-900 bg-slate-800'
-          : 'border-transparent bg-slate-700',
-        data.isDisabled && 'opacity-65 pointer-events-none',
-      ]}
-      buttons={{
-        prev: {
-          iconContent: () => chevronLeft(`${buttonIconClass} [[dir=rtl]_&]:rotate-180`),
-        },
-        next: {
-          iconContent: () => chevronLeft(`${buttonIconClass} rotate-180 [[dir=rtl]_&]:rotate-0`),
-        },
-        prevYear: {
-          iconContent: () => chevronsLeft(`${buttonIconClass} [[dir=rtl]_&]:rotate-180`),
-        },
-        nextYear: {
-          iconContent: () => chevronsLeft(`${buttonIconClass} rotate-180 [[dir=rtl]_&]:rotate-0`),
-        },
-        ...userButtons,
-        add: addButton || {},
-      }}
 
       views={{
         ...userViews,
