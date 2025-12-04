@@ -12,26 +12,19 @@ import '@fullcalendar/core/global.css'
 import './lib/ui-default-fonts.js'
 import './lib/ui-default.css'
 
-/*
-TODO: in @fullcalendar/theme-breezy, etc, nice way to debug tailwind WITH plugin:
-  tailwind-dev:
-    export { default as default } from '@fullcalendar/theme-breezy-tailwind'
-  tailwind-compiled:
-    export { default as default } from '@fullcalendar/theme-breezy-tailwind/_compiled/index'
-*/
-// import breezyThemePlugin from '@fullcalendar/theme-breezy'
-// import classicThemePlugin from '@fullcalendar/theme-classic'
-// import formaThemePlugin from '@fullcalendar/theme-forma'
-// import monarchThemePlugin from '@fullcalendar/theme-monarch'
-// import pulseThemePlugin from '@fullcalendar/theme-pulse'
+import breezyThemePlugin from '@fullcalendar/theme-breezy'
+import classicThemePlugin from '@fullcalendar/theme-classic'
+import formaThemePlugin from '@fullcalendar/theme-forma'
+import monarchThemePlugin from '@fullcalendar/theme-monarch'
+import pulseThemePlugin from '@fullcalendar/theme-pulse'
 
 const pluginByTheme = {
-  // breezy: breezyThemePlugin,
-  // classic: classicThemePlugin,
-  // forma: formaThemePlugin,
-  // monarch: monarchThemePlugin,
-  // pulse: pulseThemePlugin,
-} as any // !!!
+  breezy: breezyThemePlugin,
+  classic: classicThemePlugin,
+  forma: formaThemePlugin,
+  monarch: monarchThemePlugin,
+  pulse: pulseThemePlugin,
+}
 
 const ui = 'default'
 const mode = 'prod'
@@ -43,41 +36,41 @@ function App() {
   return (
     <Layout ui={ui} mode={mode} {...demoChoices}>
       <DemoGenerator
-        renderEventCalendar={(props) => {
-          const availableViews = props.availableViews || eventCalendarAvailableViews
-          if (themePlugin) { // !!!
-            return (
-              <FullCalendar
-                initialView={availableViews[0]}
-                {...buildToolbarAndButtons(demoChoices.theme, availableViews, props.addButton)}
-                {...props}
-                plugins={[
-                  ...eventCalendarPlugins,
-                  themePlugin,
-                  ...(props.plugins || []),
-                ]}
-              />
-            )
-          }
-        }}
-        renderScheduler={(props) => {
-          const availableViews = props.availableViews || schedulerAvailableViews
-          if (themePlugin) { // !!!
-            return (
-              <FullCalendar
-                initialView={availableViews[0]}
-                {...buildToolbarAndButtons(demoChoices.theme, availableViews, props.addButton)}
-                {...props}
-                plugins={[
-                  ...eventCalendarPlugins,
-                  ...schedulerOnlyPlugins,
-                  themePlugin,
-                  ...(props.plugins || []),
-                ]}
-              />
-            )
-          }
-        }}
+        renderEventCalendar={({
+          availableViews = eventCalendarAvailableViews,
+          addButton,
+          plugins: userPlugins = [],
+          ...restProps
+        }) => (
+          <FullCalendar
+            initialView={availableViews[0]}
+            {...buildToolbarAndButtons(demoChoices.theme, availableViews, addButton)}
+            plugins={[
+              ...eventCalendarPlugins,
+              themePlugin,
+              ...userPlugins,
+            ]}
+            {...restProps}
+          />
+        )}
+        renderScheduler={({
+          availableViews = schedulerAvailableViews,
+          addButton,
+          plugins: userPlugins = [],
+          ...restProps
+        }) => (
+          <FullCalendar
+            initialView={availableViews[0]}
+            {...buildToolbarAndButtons(demoChoices.theme, availableViews, addButton)}
+            plugins={[
+              ...eventCalendarPlugins,
+              ...schedulerOnlyPlugins,
+              themePlugin,
+              ...userPlugins,
+            ]}
+            {...restProps}
+          />
+        )}
       />
     </Layout>
   )
@@ -129,7 +122,7 @@ function buildToolbarAndButtons(
       }
     case 'classic':
       return {
-        headerToobar: {
+        headerToolbar: {
           start: 'add today prev,next',
           center: 'title',
           end: availableViews.join(','),
