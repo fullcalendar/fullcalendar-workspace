@@ -372,12 +372,10 @@ export function EventCalendarView({
           'm-1.5 px-1 py-0.5 rounded-sm font-semibold',
           data.hasNavLink && 'hover:bg-foreground/5',
         ) : !data.dayNumberText ? cn(
-          'mx-0.5 my-1.5 py-0.5 px-1.5 rounded-sm',
-          'text-muted-foreground',
+          'mx-0.5 my-1.5 py-0.5 px-1.5 rounded-sm text-muted-foreground',
           data.hasNavLink && 'hover:bg-foreground/5',
         ) : !data.isToday ? cn(
-          'mx-2 my-2.5 h-6 px-1.5 rounded-sm',
-          'text-muted-foreground',
+          'mx-2 my-2.5 h-6 px-1.5 rounded-sm text-muted-foreground',
           data.hasNavLink && 'hover:bg-foreground/5',
         ) : (
           'group mx-2 my-2 h-7 outline-none'

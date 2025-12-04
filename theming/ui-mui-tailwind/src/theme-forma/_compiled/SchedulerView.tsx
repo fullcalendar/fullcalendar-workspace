@@ -26,7 +26,9 @@ export default function SchedulerView({
 
       resourceDayHeaderClass={(data) => [
         'border',
-        data.isMajor ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]' : 'border-(--mui-palette-divider)',
+        data.isMajor
+          ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]'
+          : 'border-(--mui-palette-divider)',
       ]}
       resourceDayHeaderInnerClass={(data) => [
         'p-2 flex flex-col',
@@ -44,12 +46,7 @@ export default function SchedulerView({
       resourceCellClass="border border-(--mui-palette-divider)"
       resourceCellInnerClass="p-2 text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
-      resourceExpanderClass={[
-        'group p-0.5 rounded-sm',
-        mutedHoverPressableClass,
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      resourceExpanderClass={`group p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       resourceExpanderContent={(data) => (
         <ExpandMoreIcon
           sx={{ fontSize: 18, margin: '1px' }}
@@ -91,10 +88,7 @@ export default function SchedulerView({
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */
 
-          rowMoreLinkClass: [
-            'me-px mb-px rounded-sm border border-transparent print:border-black',
-            `${strongSolidPressableClass} print:bg-white`,
-          ],
+          rowMoreLinkClass: `me-px mb-px rounded-sm border border-transparent print:border-black ${strongSolidPressableClass} print:bg-white`,
           rowMoreLinkInnerClass: 'px-1 py-[0.1875rem] text-xs',
 
           /* Timeline > Slot Header

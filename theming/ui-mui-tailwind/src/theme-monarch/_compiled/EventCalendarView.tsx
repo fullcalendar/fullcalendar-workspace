@@ -176,9 +176,7 @@ export default function EventCalendarView({
       ------------------------------------------------------------------------------------------- */
 
       blockEventClass={(data) => [
-        'group relative',
-        'border-transparent print:border-(--fc-event-color)',
-        'bg-(--fc-event-color) hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))] print:bg-white',
+        'group relative border-transparent print:border-(--fc-event-color) bg-(--fc-event-color) hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))] print:bg-white',
         data.isInteractive && 'active:bg-[color-mix(in_oklab,var(--fc-event-color)_85%,var(--fc-event-contrast-color))]',
         (!data.isSelected && data.isDragging) && 'opacity-75',
       ]}
@@ -276,16 +274,9 @@ export default function EventCalendarView({
       /* More-Link
       ------------------------------------------------------------------------------------------- */
 
-      moreLinkClass={[
-        outlineWidthFocusClass,
-        tertiaryOutlineColorClass,
-      ]}
+      moreLinkClass={`${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
       moreLinkInnerClass="whitespace-nowrap overflow-hidden"
-      columnMoreLinkClass={[
-        'mb-px border border-transparent print:border-black rounded-sm',
-        `${strongSolidPressableClass} print:bg-white`,
-        `ring ring-(--mui-palette-background-paper)`,
-      ]}
+      columnMoreLinkClass={`mb-px border border-transparent print:border-black rounded-sm ${strongSolidPressableClass} print:bg-white ring ring-(--mui-palette-background-paper)`}
       columnMoreLinkInnerClass={(data) => (
         data.isNarrow
           ? `p-0.5 ${xxsTextClass}`
@@ -367,13 +358,7 @@ export default function EventCalendarView({
 
       dayPopoverFormat={{ day: 'numeric', weekday: 'short' }}
       popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-60"
-      popoverCloseClass={[
-        'group absolute top-2 end-2 size-8 rounded-full',
-        'items-center justify-center',
-        mutedHoverPressableClass,
-        outlineWidthFocusClass,
-        tertiaryOutlineColorClass,
-      ]}
+      popoverCloseClass={`group absolute top-2 end-2 size-8 rounded-full items-center justify-center ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
       popoverCloseContent={() => (
         <CloseIcon
           sx={{ fontSize: 18, margin: '1px' }}
@@ -391,7 +376,7 @@ export default function EventCalendarView({
           : data.isNarrow ? 'mx-px' : 'ms-0.5 me-[2.5%]'
       )}
       slotLaneClass={(data) => [
-        `border border-(--mui-palette-divider)`,
+        'border border-(--mui-palette-divider)',
         data.isMinor && 'border-dotted',
       ]}
       listDayFormat={{ day: 'numeric' }}
@@ -447,10 +432,7 @@ export default function EventCalendarView({
       /* Misc Content
       ------------------------------------------------------------------------------------------- */
 
-      navLinkClass={[
-        outlineWidthFocusClass,
-        tertiaryOutlineColorClass,
-      ]}
+      navLinkClass={`${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
       inlineWeekNumberClass={(data) => [
         'absolute flex flex-row items-center whitespace-nowrap',
         data.isNarrow
@@ -463,10 +445,7 @@ export default function EventCalendarView({
       nonBusinessClass={faintBgClass}
       highlightClass="bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.1)]"
       nowIndicatorLineClass="-m-px border-1 border-(--mui-palette-error-main)"
-      nowIndicatorDotClass={[
-        `-m-[6px] border-6 border-(--mui-palette-error-main) size-0 rounded-full`,
-        `ring-2 ring-(--mui-palette-background-paper)`,
-      ]}
+      nowIndicatorDotClass="-m-[6px] border-6 border-(--mui-palette-error-main) size-0 rounded-full ring-2 ring-(--mui-palette-background-paper)"
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */
@@ -518,8 +497,7 @@ export default function EventCalendarView({
           --------------------------------------------------------------------------------------- */
 
           slotHeaderClass: (data) => [
-            'w-2 self-end justify-end',
-            `border border-(--mui-palette-divider)`,
+            'w-2 self-end justify-end border border-(--mui-palette-divider)',
             data.isMinor && 'border-dotted',
           ],
           slotHeaderInnerClass: (data) => [

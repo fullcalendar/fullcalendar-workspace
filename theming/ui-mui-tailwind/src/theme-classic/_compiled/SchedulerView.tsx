@@ -26,7 +26,9 @@ export default function SchedulerView({
       resourceDayHeaderAlign="center"
       resourceDayHeaderClass={(data) => [
         'border',
-        data.isMajor ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]' : 'border-(--mui-palette-divider)',
+        data.isMajor
+          ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]'
+          : 'border-(--mui-palette-divider)',
       ]}
       resourceDayHeaderInnerClass={(data) => [
         'px-1 py-0.5 flex flex-col',
@@ -44,11 +46,7 @@ export default function SchedulerView({
       resourceCellClass="border border-(--mui-palette-divider)"
       resourceCellInnerClass="p-2 text-sm"
       resourceIndentClass="ms-2 -me-1 justify-center"
-      resourceExpanderClass={[
-        'group',
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      resourceExpanderClass={`group ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       resourceExpanderContent={(data) => (
         <ExpandMoreIcon
           sx={{ fontSize: 18, margin: '1px' }}
@@ -110,10 +108,7 @@ export default function SchedulerView({
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */
 
-          rowMoreLinkClass: [
-            'me-px mb-px border border-transparent print:border-black',
-            `${strongSolidPressableClass} print:bg-white`,
-          ],
+          rowMoreLinkClass: `me-px mb-px border border-transparent print:border-black ${strongSolidPressableClass} print:bg-white`,
           rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
           /* Timeline > Slot Header
@@ -130,11 +125,7 @@ export default function SchedulerView({
           /* Timeline > Now-Indicator
           --------------------------------------------------------------------------------------- */
 
-          nowIndicatorHeaderClass: [
-            'top-0 -mx-[5px]',
-            'border-x-[5px] border-x-transparent',
-            `border-t-[6px] border-t-(--mui-palette-error-main)`,
-          ],
+          nowIndicatorHeaderClass: 'top-0 -mx-[5px] border-x-[5px] border-x-transparent border-t-[6px] border-t-(--mui-palette-error-main)',
           nowIndicatorLineClass: `border-s border-(--mui-palette-error-main)`,
 
           ...userViews?.timeline,

@@ -174,12 +174,11 @@ export default function EventCalendarView({
       ------------------------------------------------------------------------------------------- */
 
       blockEventClass={(data) => [
-        'group relative border-(--fc-event-color) print:bg-white',
+        `group relative border-(--fc-event-color) print:bg-white ${outlineOffsetClass}`,
         data.isInteractive
           ? eventMutedPressableClass
           : eventMutedBgClass,
         (data.isDragging && !data.isSelected) && 'opacity-75',
-        outlineOffsetClass,
       ]}
       blockEventTimeClass="whitespace-nowrap overflow-hidden shrink-1"
       blockEventTitleClass="whitespace-nowrap overflow-hidden shrink-100"
@@ -196,19 +195,15 @@ export default function EventCalendarView({
         data.isStartResizable ? [
           data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
           '-start-2',
-        ] : (!data.isStart && !data.isNarrow) && [
-          `ms-1 size-2 border-t-1 border-s-1 border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]`,
-          '-rotate-45 [[dir=rtl]_&]:rotate-45',
-        ]
+        ] : (!data.isStart && !data.isNarrow) &&
+          'ms-1 size-2 border-t-1 border-s-1 border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)] -rotate-45 [[dir=rtl]_&]:rotate-45'
       )}
       rowEventAfterClass={(data) => (
         data.isEndResizable ? [
           data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
           '-end-1',
-        ] : (!data.isEnd && !data.isNarrow) && [
-          `me-1 size-2 border-t-1 border-e-1 border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]`,
-          'rotate-45 [[dir=rtl]_&]:-rotate-45',
-        ]
+        ] : (!data.isEnd && !data.isNarrow) &&
+          'me-1 size-2 border-t-1 border-e-1 border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)] rotate-45 [[dir=rtl]_&]:-rotate-45'
       )}
       rowEventInnerClass={(data) => [
         'flex flex-row items-center',
@@ -226,10 +221,9 @@ export default function EventCalendarView({
       ------------------------------------------------------------------------------------------- */
 
       columnEventClass={(data) => [
-        'border-s-6 not-print:pe-px print:border-e',
+        'border-s-6 not-print:pe-px print:border-e ring ring-(--mui-palette-background-paper)',
         data.isStart && 'not-print:pt-px print:border-t rounded-t-sm',
         data.isEnd && 'mb-px not-print:pb-px print:border-b rounded-b-sm',
-        `ring ring-(--mui-palette-background-paper)`,
       ]}
       columnEventBeforeClass={(data) => (
         data.isStartResizable && [
@@ -264,17 +258,9 @@ export default function EventCalendarView({
       /* More-Link
       ------------------------------------------------------------------------------------------- */
 
-      moreLinkClass={[
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      moreLinkClass={`${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       moreLinkInnerClass="whitespace-nowrap overflow-hidden"
-      columnMoreLinkClass={[
-        'mb-px border border-transparent print:border-black rounded-sm',
-        `${strongSolidPressableClass} print:bg-white`,
-        `ring ring-(--mui-palette-background-paper)`,
-        outlineOffsetClass,
-      ]}
+      columnMoreLinkClass={`mb-px border border-transparent print:border-black rounded-sm ${strongSolidPressableClass} print:bg-white ring ring-(--mui-palette-background-paper) ${outlineOffsetClass}`}
       columnMoreLinkInnerClass={(data) => (
         data.isNarrow
           ? `p-0.5 ${xxsTextClass}`
@@ -366,12 +352,7 @@ export default function EventCalendarView({
 
       dayPopoverFormat={{ day: 'numeric', weekday: 'long' }}
       popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-55"
-      popoverCloseClass={[
-        'group absolute top-1 end-1 p-1 rounded-sm',
-        mutedHoverPressableClass,
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      popoverCloseClass={`group absolute top-1 end-1 p-1 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       popoverCloseContent={() => (
         <CloseIcon
           sx={{ fontSize: 18, margin: '1px' }}
@@ -432,10 +413,7 @@ export default function EventCalendarView({
       /* Misc Content
       ------------------------------------------------------------------------------------------- */
 
-      navLinkClass={[
-        outlineWidthFocusClass,
-        primaryOutlineColorClass,
-      ]}
+      navLinkClass={`${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       inlineWeekNumberClass={(data) => [
         'absolute end-0 whitespace-nowrap rounded-s-sm',
         data.isNarrow
@@ -448,10 +426,7 @@ export default function EventCalendarView({
       nonBusinessClass={faintBgClass}
       highlightClass="bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.1)]"
       nowIndicatorLineClass="-m-px border-1 border-(--mui-palette-error-main)"
-      nowIndicatorDotClass={[
-        `-m-[6px] border-6 border-(--mui-palette-error-main) size-0 rounded-full`,
-        `ring-2 ring-(--mui-palette-background-paper)`,
-      ]}
+      nowIndicatorDotClass="-m-[6px] border-6 border-(--mui-palette-error-main) size-0 rounded-full ring-2 ring-(--mui-palette-background-paper)"
 
       /* View-Specific Options
       ------------------------------------------------------------------------------------------- */
