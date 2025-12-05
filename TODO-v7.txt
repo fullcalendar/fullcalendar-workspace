@@ -13,18 +13,6 @@ clean+build all:
   pn build
 
 
-Conversions
-  1. Compiled Tailwind into Single Files
-    ui-default-react-tailwind/src/theme-breezy -> ui-default-react-tailwind/src/theme-breezy/_compiled
-    ui-shadcn/src/theme-breezy -> ui-shadcn/src/theme-breezy/_compiled
-    ui-mui-tailwind/src/theme-breezy -> ui-mui-tailwind/src/theme-breezy/_compiled
-  2. Port Compiled Tailwind to Default-UI *Plugin* (easy)
-    ui-default-react-tailwind/src/theme-breezy/_compiled -> theme-breezy-tailwind/src/_compiled (but do NOT test!)
-  3. Convert Tailwind to Vanilla
-    theme-breezy-tailwind/src/_compiled -> theme-breezy/src (AFTER you can test!)
-    ui-mui-tailwind/src/theme-breezy/_compiled -> ui-mui/src/theme-breezy (will need to make this package)
-
-
 Why is createFormatter exposed as public?
 Make joinClassNames public and only public
 Don't need nested cn(), just use arrays
@@ -453,6 +441,7 @@ rowEventAfterContent
 EventDisplayData.isInteractive
 changelog: nice tab-focus effects on everything
 essentially, responsiveness-specific settings with dayNarrowWidth and .isNarrow
+listDayFormat/listDaySideFormat defaults are different. depend on view duration
 
 
 Docs
