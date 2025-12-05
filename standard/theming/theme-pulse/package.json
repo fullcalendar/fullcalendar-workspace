@@ -17,9 +17,10 @@
     "@fullcalendar/multimonth": "workspace:7.0.0-rc.0"
   },
   "scripts": {
-    "build": "standard-scripts pkg:build",
+    "build": "standard-scripts pkg:build && pnpm run clean-dist",
     "clean": "standard-scripts pkg:clean",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "clean-dist": "rm -f dist/palettes.js dist/palettes.min.js dist/palettes.css.js"
   },
   "type": "module",
   "tsConfig": {
@@ -41,6 +42,10 @@
       "./global": {
         "iife": true,
         "globalVar": "FullCalendar.ThemePulse",
+        "css": true
+      },
+      "./palettes": {
+        "iife": true,
         "css": true
       }
     }
