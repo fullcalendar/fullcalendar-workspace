@@ -44,6 +44,8 @@ conversion bugs:
     same for day-circle (non-today) clickdown color
     for other themes/systems? (forma:yes...)
 DRY-up MUI compiled+prod themes?
+Move away from clean-dist HACK
+Don't minify palettes.css for dist
 
 
 ASAP
