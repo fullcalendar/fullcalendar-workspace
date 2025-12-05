@@ -46,7 +46,6 @@
   :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    --color-pink-500: oklch(65.6% .241 354.308);
     --color-black: #000;
     --color-white: #fff;
     --spacing: .25rem;

@@ -61,7 +61,7 @@ export const eventCalendarProps: EventCalendarProps = {
       "title": "Long Event",
       "start": "2025-07-07",
       "end": "2025-07-17",
-      // "color": "var(--color-pink-500)",
+      // "color": "#ec4899", // pink500
     },
     {
       "groupId": "999",
