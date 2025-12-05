@@ -7,7 +7,7 @@ import { Layout } from './lib/layout.js'
 import '@fullcalendar/core/global.css'
 import './lib/tailwind.css'
 import './lib/ui-default-fonts.js'
-import './lib/ui-default.css'
+import './lib/ui-default-palettes.css'
 
 import { EventCalendar as BreezyEventCalendar } from '@fullcalendar/ui-default-react-tailwind/theme-breezy/event-calendar'
 import { Scheduler as BreezyScheduler } from '@fullcalendar/ui-default-react-tailwind/theme-breezy/scheduler'

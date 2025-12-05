@@ -8,13 +8,9 @@ import FullCalendar from '@fullcalendar/react'
 import { eventCalendarAvailableViews, eventCalendarPlugins, EventCalendarProps } from '@fullcalendar/theme-common/event-calendar'
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
 
-// !!!
-// import './lib/tailwind.css'
-// NOTE: also see ./lib/tailwind.css for !!!
-
 import '@fullcalendar/core/global.css'
 import './lib/ui-default-fonts.js'
-import './lib/ui-default.css'
+import './lib/ui-default-palettes-vanilla.css'
 import '@fullcalendar/theme-breezy/global.css'
 import '@fullcalendar/theme-classic/global.css'
 import '@fullcalendar/theme-forma/global.css'
