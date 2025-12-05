@@ -9,7 +9,7 @@ import { eventCalendarAvailableViews, eventCalendarPlugins, EventCalendarProps }
 import { schedulerAvailableViews, schedulerOnlyPlugins } from '@fullcalendar/theme-common/scheduler'
 
 // !!!
-import './lib/tailwind.css'
+// import './lib/tailwind.css'
 // NOTE: also see ./lib/tailwind.css for !!!
 
 import '@fullcalendar/core/global.css'
