@@ -1,0 +1,150 @@
+
+:root {
+  /* primary */
+
+  /* secondary */
+  --fc-breezy-secondary: var(--fc-breezy-background);
+  --fc-breezy-secondary-over: var(--fc-breezy-faint);
+  --fc-breezy-secondary-border: var(--fc-breezy-strong-border);
+  --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
+  --fc-breezy-secondary-icon: var(--fc-breezy-faint-foreground);
+  --fc-breezy-secondary-icon-over: var(--fc-breezy-muted-foreground);
+
+  /* calendar content */
+  --fc-breezy-highlight: #cffafe66;
+  --fc-breezy-now: red;
+
+  /* controls */
+  --fc-breezy-selected: var(--fc-breezy-strong);
+
+  /* popover */
+  --fc-breezy-popover: var(--fc-breezy-background);
+  --fc-breezy-popover-border: var(--fc-breezy-strong-border);
+
+  /* neutral backgrounds */
+  --fc-breezy-background: #ffffff;
+  --fc-breezy-faint: #00000005;
+  --fc-breezy-muted: #0000000D;
+  --fc-breezy-strong: #0000001A;
+  --fc-breezy-stronger: #00000024;
+  --fc-breezy-strongest: #0000002E;
+
+  /* neutral foregrounds */
+  --fc-breezy-foreground: #374151;
+  --fc-breezy-faint-foreground: #9ca3af;
+  --fc-breezy-muted-foreground: #6b7280;
+  --fc-breezy-strong-foreground: #111827;
+
+  /* neutral borders */
+  --fc-breezy-border: #e5e7eb;
+  --fc-breezy-muted-border: #f3f4f6;
+  --fc-breezy-strong-border: #d1d5db;
+}
+
+[data-color-scheme=dark] {
+  /* primary */
+
+  /* secondary */
+  --fc-breezy-secondary: var(--fc-breezy-muted);
+  --fc-breezy-secondary-over: var(--fc-breezy-strong);
+  --fc-breezy-secondary-border: var(--fc-breezy-muted-border);
+  --fc-breezy-secondary-foreground: var(--fc-breezy-strong-foreground);
+  --fc-breezy-secondary-icon: var(--fc-breezy-muted-foreground);
+  --fc-breezy-secondary-icon-over: var(--fc-breezy-foreground);
+
+  /* calendar content */
+  --fc-breezy-highlight: #3b82f633;
+  --fc-breezy-now: red;
+
+  /* controls */
+  --fc-breezy-selected: var(--fc-breezy-muted);
+
+  /* popovers */
+  --fc-breezy-popover: #1f2937;
+  --fc-breezy-popover-border: var(--fc-breezy-border);
+
+  /* neutral backgrounds */
+  --fc-breezy-background: #111827;
+  --fc-breezy-faint: #ffffff08;
+  --fc-breezy-muted: #ffffff12;
+  --fc-breezy-strong: #ffffff1F;
+  --fc-breezy-stronger: #ffffff29;
+  --fc-breezy-strongest: #ffffff33;
+
+  /* neutral foregrounds */
+  --fc-breezy-foreground: #d1d5db;
+  --fc-breezy-muted-foreground: #9ca3af;
+  --fc-breezy-faint-foreground: #6b7280;
+  --fc-breezy-strong-foreground: #ffffff;
+
+  /* neutral borders */
+  --fc-breezy-border: #ffffff1A;
+  --fc-breezy-muted-border: #ffffff0D;
+  --fc-breezy-strong-border: #ffffff26;
+}
+
+/* Colors
+------------------------------------------------------------------------------------------------- */
+
+/*
+Tailwind Plus colors:
+https://tailwindcss.com/plus/ui-blocks/application-ui/data-display/calendars
+*/
+
+[data-palette=indigo] {
+  /* primary */
+  --fc-breezy-primary: #4f46e5;
+  --fc-breezy-primary-over: #6366f1;
+  --fc-breezy-primary-foreground: #ffffff;
+
+  /* calendar content */
+  --fc-breezy-event: #3b82f6;
+  --fc-breezy-background-event: #22c55e;
+}
+[data-palette=indigo][data-color-scheme=dark] {
+  /* primary */
+  --fc-breezy-primary: #6366f1;
+  --fc-breezy-primary-over: #818cf8;
+
+  /* calendar content */
+  --fc-breezy-event: #3b82f6#93c5fd;
+}
+
+/*
+Inspired by Catalyst colors:
+https://catalyst.tailwindui.com/docs/button
+*/
+
+[data-palette=rose] {
+  /* primary */
+  --fc-breezy-primary: #e11d48;
+  --fc-breezy-primary-over: #f43f5e;
+  --fc-breezy-primary-foreground: #ffffff;
+
+  /* calendar content */
+  --fc-breezy-event: #ec4899;
+  --fc-breezy-background-event: #22c55e;
+}
+
+[data-palette=emerald] {
+  /* primary */
+  --fc-breezy-primary: #059669;
+  --fc-breezy-primary-over: #10b981;
+  --fc-breezy-primary-foreground: #ffffff;
+
+  /* calendar content */
+  --fc-breezy-event: #22c55e;
+  --fc-breezy-background-event: #22c55e;
+}
+
+[data-palette=honey] {
+  /* primary */
+  --fc-breezy-primary: #fbbf24;
+  --fc-breezy-primary-over: #fcd34d;
+  --fc-breezy-primary-foreground: #451a03;
+
+  /* calendar content */
+  --fc-breezy-event: #f59e0b;
+  --fc-breezy-background-event: #22c55e;
+}
+

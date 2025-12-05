@@ -1,0 +1,358 @@
+/*
+baseline purple color:
+  https://m3.material.io/styles/color/static/baseline
+other colors:
+  https://anvil.works/docs/how-to/creating-material-3-colour-scheme
+  https://material-foundation.github.io/material-theme-builder/
+converting colors from Material-system to our system:
+  canvas -> background
+  surface -> popover (for dark-mode)
+  primary-container -> tint
+  secondary -> tab-selected
+  error -> now
+
+TODO: convert all colors to hex
+*/
+
+:root {
+  /* primary */
+  --fc-monarch-primary-over: color-mix(in oklab, var(--fc-monarch-primary) 90%, white);
+  --fc-monarch-primary-down: color-mix(in oklab, var(--fc-monarch-primary) 80%, white);
+
+  /* secondary */
+  --fc-monarch-secondary-over: color-mix(in oklab, var(--fc-monarch-secondary) 95%, var(--fc-monarch-foreground));
+  --fc-monarch-secondary-down: color-mix(in oklab, var(--fc-monarch-secondary) 90%, var(--fc-monarch-foreground));
+
+  /* tertiary */
+  --fc-monarch-tertiary-over: color-mix(in oklab, var(--fc-monarch-tertiary) 90%, white);
+  --fc-monarch-tertiary-down: color-mix(in oklab, var(--fc-monarch-tertiary) 80%, white);
+
+  /* calendar content */
+  --fc-monarch-event: var(--fc-monarch-primary);
+  --fc-monarch-event-contrast: var(--fc-monarch-primary-foreground);
+  --fc-monarch-highlight: color-mix(in oklab, var(--fc-monarch-secondary) 30%, transparent);
+
+  /* controls */
+  --fc-monarch-selected-over: color-mix(in oklab, var(--fc-monarch-selected) 90%, white);
+  --fc-monarch-selected-down: color-mix(in oklab, var(--fc-monarch-selected) 80%, white);
+
+  /* popover */
+
+  /* neutral backgrounds */
+  --fc-monarch-background: #ffffff;
+  --fc-monarch-faint: #6b72801A;
+  --fc-monarch-muted: #6b728026;
+  --fc-monarch-strong: #6b72804D;
+  --fc-monarch-stronger: #6b728059;
+  --fc-monarch-strongest: #6b728066;
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: #030712;
+  --fc-monarch-faint-foreground: #bebebe;
+  --fc-monarch-muted-foreground: #8d8d8d;
+}
+[data-color-scheme=dark] {
+  /* neutral backgrounds */
+  --fc-monarch-background: #030712;
+  --fc-monarch-faint: #6b72801A;
+  --fc-monarch-muted: #6b728026;
+  --fc-monarch-strong: #6b72804D;
+  --fc-monarch-stronger: #6b728059;
+  --fc-monarch-strongest: #6b728066;
+
+  /* neutral foregrounds */
+  --fc-monarch-foreground: #ffffff;
+  --fc-monarch-faint-foreground: #898989;
+  --fc-monarch-muted-foreground: #b0b0b0;
+}
+
+[data-palette=purple] {
+  /* primary */
+  --fc-monarch-primary: #6750A4;
+  --fc-monarch-primary-foreground: #FFFFFF;
+
+  /* secondary */
+  --fc-monarch-secondary: #EADDFF;
+  --fc-monarch-secondary-foreground: #4F378B;
+
+  /* tertiary */
+  --fc-monarch-tertiary: #7D5260;
+  --fc-monarch-tertiary-foreground: #FFFFFF;
+
+  /* calendar content */
+  --fc-monarch-now: #B3261E;
+
+  /* controls */
+  --fc-monarch-selected: #625B71;
+  --fc-monarch-selected-foreground: #FFFFFF;
+  --fc-monarch-outline: #ff9dbb;
+
+  /* popover */
+  --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral borders */
+  --fc-monarch-border: #dedce1;
+  --fc-monarch-strong-border: #bcbabe;
+}
+[data-palette=purple][data-color-scheme=dark] {
+  /* primary */
+  --fc-monarch-primary: #D0BCFF;
+  --fc-monarch-primary-foreground: #381E72;
+
+  /* secondary */
+  --fc-monarch-secondary: #4F378B;
+  --fc-monarch-secondary-foreground: #EADDFF;
+
+  /* tertiary */
+  --fc-monarch-tertiary: #EFB8C8;
+  --fc-monarch-tertiary-foreground: #492532;
+
+  /* calendar content */
+  --fc-monarch-now: #F2B8B5;
+
+  /* controls */
+  --fc-monarch-selected: #CCC2DC;
+  --fc-monarch-selected-foreground: #332D41;
+  --fc-monarch-outline: red;
+
+  /* popover */
+  --fc-monarch-popover: rgb(26 17 15);
+  --fc-monarch-popover-foreground: rgb(241 223 218);
+
+  /* neutral borders */
+  --fc-monarch-border: #323036;
+  --fc-monarch-strong-border: #615d67;
+}
+
+[data-palette=red] {
+  /* primary */
+  --fc-monarch-primary: rgb(143 76 56);
+  --fc-monarch-primary-foreground: rgb(255 255 255);
+
+  /* secondary */
+  --fc-monarch-secondary: rgb(255 219 209);
+  --fc-monarch-secondary-foreground: rgb(114 53 35);
+
+  /* tertiary */
+  --fc-monarch-tertiary: rgb(108 93 47);
+  --fc-monarch-tertiary-foreground: rgb(255 255 255);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(186 26 26);
+
+  /* controls */
+  --fc-monarch-selected: rgb(119 87 78);
+  --fc-monarch-selected-foreground: rgb(255 255 255);
+  --fc-monarch-outline: red;
+
+  /* popover */
+  --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral borders */
+  --fc-monarch-border: rgb(216 194 188);
+  --fc-monarch-strong-border: rgb(216 194 188);
+}
+[data-palette=red][data-color-scheme=dark] {
+  /* primary */
+  --fc-monarch-primary: rgb(255 181 160);
+  --fc-monarch-primary-foreground: rgb(86 31 15);
+
+  /* secondary */
+  --fc-monarch-secondary: rgb(114 53 35);
+  --fc-monarch-secondary-foreground: rgb(255 219 209);
+
+  /* tertiary */
+  --fc-monarch-tertiary: rgb(216 197 141);
+  --fc-monarch-tertiary-foreground: rgb(59 47 5);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(255 180 171);
+
+  /* controls */
+  --fc-monarch-selected: rgb(231 189 178);
+  --fc-monarch-selected-foreground: rgb(68 42 34);
+  --fc-monarch-outline: red;
+
+  /* popover */
+  --fc-monarch-popover: rgb(26 17 15);
+  --fc-monarch-popover-foreground: rgb(241 223 218);
+
+  /* neutral borders */
+  --fc-monarch-border: rgb(83 67 63);
+  --fc-monarch-strong-border: rgb(83 67 63);
+}
+
+[data-palette=green] {
+  /* primary */
+  --fc-monarch-primary: rgb(76 102 43);
+  --fc-monarch-primary-foreground: rgb(255 255 255);
+
+  /* secondary */
+  --fc-monarch-secondary: rgb(205 237 163);
+  --fc-monarch-secondary-foreground: rgb(53 78 22);
+
+  /* tertiary */
+  --fc-monarch-tertiary: rgb(56 102 99);
+  --fc-monarch-tertiary-foreground: rgb(255 255 255);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(186 26 26);
+
+  /* controls */
+  --fc-monarch-selected: rgb(88 98 73);
+  --fc-monarch-selected-foreground: rgb(255 255 255);
+  --fc-monarch-outline: red;
+
+  /* popover */
+  --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral borders */
+  --fc-monarch-border: rgb(197 200 186);
+  --fc-monarch-strong-border: rgb(197 200 186);
+}
+[data-palette=green][data-color-scheme=dark] {
+  /* primary */
+  --fc-monarch-primary: rgb(177 209 138);
+  --fc-monarch-primary-foreground: rgb(31 55 1);
+
+  /* secondary */
+  --fc-monarch-secondary: rgb(53 78 22);
+  --fc-monarch-secondary-foreground: rgb(205 237 163);
+
+  /* tertiary */
+  --fc-monarch-tertiary: rgb(160 208 203);
+  --fc-monarch-tertiary-foreground: rgb(0 55 53);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(255 180 171);
+
+  /* controls */
+  --fc-monarch-selected: rgb(191 203 173);
+  --fc-monarch-selected-foreground: rgb(42 51 30);
+  --fc-monarch-outline: red;
+
+  /* popover */
+  --fc-monarch-popover: rgb(18 20 14);
+  --fc-monarch-popover-foreground: rgb(226 227 216);
+
+  /* neutral borders */
+  --fc-monarch-border: rgb(68 72 61);
+  --fc-monarch-strong-border: rgb(68 72 61);
+}
+
+[data-palette=blue] {
+  /* primary */
+  --fc-monarch-primary: rgb(65 95 145);
+  --fc-monarch-primary-foreground: rgb(255 255 255);
+
+  /* secondary */
+  --fc-monarch-secondary: rgb(214 227 255);
+  --fc-monarch-secondary-foreground: rgb(40 71 119);
+
+  /* tertiary */
+  --fc-monarch-tertiary: rgb(112 85 117);
+  --fc-monarch-tertiary-foreground: rgb(255 255 255);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(186 26 26);
+
+  /* controls */
+  --fc-monarch-selected: rgb(86 95 113);
+  --fc-monarch-selected-foreground: rgb(255 255 255);
+  --fc-monarch-outline: red;
+
+  /* popover */
+  --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral borders */
+  --fc-monarch-border: rgb(196 198 208);
+  --fc-monarch-strong-border: rgb(196 198 208);
+}
+[data-palette=blue][data-color-scheme=dark] {
+  /* primary */
+  --fc-monarch-primary: rgb(170 199 255);
+  --fc-monarch-primary-foreground: rgb(10 48 95);
+
+  /* secondary */
+  --fc-monarch-secondary: rgb(40 71 119);
+  --fc-monarch-secondary-foreground: rgb(214 227 255);
+
+  /* tertiary */
+  --fc-monarch-tertiary: rgb(221 188 224);
+  --fc-monarch-tertiary-foreground: rgb(63 40 68);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(255 180 171);
+
+  /* controls */
+  --fc-monarch-selected: rgb(190 198 220);
+  --fc-monarch-selected-foreground: rgb(40 49 65);
+  --fc-monarch-outline: red;
+
+  /* popover */
+  --fc-monarch-popover: rgb(17 19 24);
+  --fc-monarch-popover-foreground: rgb(226 226 233);
+
+  /* neutral borders */
+  --fc-monarch-border: rgb(68 71 78);
+  --fc-monarch-strong-border: rgb(68 71 78);
+}
+
+[data-palette=yellow] {
+  /* primary */
+  --fc-monarch-primary: rgb(109 94 15);
+  --fc-monarch-primary-foreground: rgb(255 255 255);
+
+  /* secondary */
+  --fc-monarch-secondary: rgb(248 226 135);
+  --fc-monarch-secondary-foreground: rgb(83 70 0);
+
+  /* tertiary */
+  --fc-monarch-tertiary: rgb(67 102 78);
+  --fc-monarch-tertiary-foreground: rgb(255 255 255);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(186 26 26);
+
+  /* controls */
+  --fc-monarch-selected: rgb(102 94 64);
+  --fc-monarch-selected-foreground: rgb(255 255 255);
+  --fc-monarch-outline: red;
+
+  /* popover */
+  --fc-monarch-popover: var(--fc-monarch-background);
+
+  /* neutral borders */
+  --fc-monarch-border: rgb(205 198 180);
+  --fc-monarch-strong-border: rgb(205 198 180);
+}
+[data-palette=yellow][data-color-scheme=dark] {
+  /* primary */
+  --fc-monarch-primary: rgb(219 198 110);
+  --fc-monarch-primary-foreground: rgb(58 48 0);
+
+  /* secondary */
+  --fc-monarch-secondary: rgb(83 70 0);
+  --fc-monarch-secondary-foreground: rgb(248 226 135);
+
+  /* tertiary */
+  --fc-monarch-tertiary: rgb(169 208 179);
+  --fc-monarch-tertiary-foreground: rgb(20 55 35);
+
+  /* calendar content */
+  --fc-monarch-now: rgb(255 180 171);
+
+  /* controls */
+  --fc-monarch-selected: rgb(209 198 161);
+  --fc-monarch-selected-foreground: rgb(54 48 22);
+  --fc-monarch-outline: red;
+
+  /* popover */
+  --fc-monarch-popover: rgb(21 19 11);
+  --fc-monarch-popover-foreground: rgb(232 226 212);
+
+  /* neutral borders */
+  --fc-monarch-border: rgb(75 71 57);
+  --fc-monarch-strong-border: rgb(75 71 57);
+}
+

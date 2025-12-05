@@ -1,0 +1,53 @@
+
+/*
+NOTE: button/toolbar UI is not defined here
+*/
+
+:root {
+  /* primary */
+  --fc-classic-primary: #3788d8;
+  --fc-classic-primary-foreground: #fff;
+
+  /* calendar content */
+  --fc-classic-event: var(--fc-classic-primary);
+  --fc-classic-event-contrast: var(--fc-classic-primary-foreground);
+  --fc-classic-background-event: #22c55e;
+  --fc-classic-highlight: #cffafe66;
+  --fc-classic-today: #facc1526;
+  --fc-classic-now: #ef4444;
+
+  /* neutral backgrounds */
+  --fc-classic-background: #ffffff;
+  --fc-classic-faint: #0000000A;
+  --fc-classic-muted: #00000014;
+  --fc-classic-strong: #00000024;
+
+  /* neutral foregrounds */
+  --fc-classic-faint-foreground: #9ca3af;
+  --fc-classic-muted-foreground: #6b7280;
+
+  /* neutral borders */
+  --fc-classic-border: #ddd;
+  --fc-classic-strong-border: #9ca3af;
+}
+
+[data-color-scheme=dark] {
+  /* calendar content */
+  --fc-classic-highlight: #3b82f633;
+  --fc-classic-today: #fef08a1A;
+
+  /* neutral backgrounds */
+  --fc-classic-background: #030712;
+  --fc-classic-faint: #ffffff0A;
+  --fc-classic-muted: #ffffff14;
+  --fc-classic-strong: #ffffff24;
+
+  /* neutral foregrounds */
+  --fc-classic-faint-foreground: #4b5563;
+  --fc-classic-muted-foreground: #6b7280;
+
+  /* neutral borders */
+  --fc-classic-border: #1f2937;
+  --fc-classic-strong-border: #374151;
+}
+
