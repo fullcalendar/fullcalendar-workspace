@@ -300,6 +300,9 @@ we put classNames.isolate on the root calendar div,
   but really, parents with z-index children should always be responsible for setting isolation
 address "// HACK for React vdom"
   problem with our ContentContainer detecting falsiness?
+rethink if we should allow plugins to define defaults,
+  because order of theme plugin in the list, if it uses a non-default value for an option
+  provided in another plugin, will depend on order (see resourceDayHeaderAlign)
 
 
 Changelog

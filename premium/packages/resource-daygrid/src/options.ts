@@ -24,7 +24,7 @@ export const OPTION_REFINERS = {
 }
 
 export const OPTION_DEFAULTS = {
-  resourceDayHeaderAlign: 'start' as const,
+  // resourceDayHeaderAlign: 'start' as const, --- this default was inlined due to plugin ordering problems
   resourceDayHeaderSticky: true,
 }
 

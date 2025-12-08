@@ -45,13 +45,12 @@ function App() {
           availableViews = eventCalendarAvailableViews,
           addButton,
           plugins: userPlugins = [],
-          ...restProps
+          buttons: userButtons,
+          ...restUserProps
         }) => {
-          const newProps = buildToolbarAndButtons(demoChoices.theme, availableViews, addButton)
+          const { buttons: newButtons, ...restNewProps } = buildToolbarAndButtons(demoChoices.theme, availableViews, addButton)
           return (
             <FullCalendar
-              {...restProps}
-              {...newProps}
               initialView={availableViews[0]}
               plugins={[
                 themePlugin,
@@ -59,9 +58,11 @@ function App() {
                 ...userPlugins,
               ]}
               buttons={{
-                ...restProps.buttons,
-                ...newProps.buttons,
+                ...newButtons,
+                ...userButtons,
               }}
+              {...restNewProps}
+              {...restUserProps}
             />
           )
         }}
@@ -69,13 +70,12 @@ function App() {
           availableViews = schedulerAvailableViews,
           addButton,
           plugins: userPlugins = [],
-          ...restProps
+          buttons: userButtons,
+          ...restUserProps
         }) => {
-          const newProps = buildToolbarAndButtons(demoChoices.theme, availableViews, addButton)
+          const { buttons: newButtons, ...restNewProps } = buildToolbarAndButtons(demoChoices.theme, availableViews, addButton)
           return (
             <FullCalendar
-              {...restProps}
-              {...newProps}
               initialView={availableViews[0]}
               plugins={[
                 themePlugin,
@@ -84,9 +84,11 @@ function App() {
                 ...userPlugins,
               ]}
               buttons={{
-                ...restProps.buttons,
-                ...newProps.buttons,
+                ...newButtons,
+                ...userButtons,
               }}
+              {...restNewProps}
+              {...restUserProps}
             />
           )
         }}
