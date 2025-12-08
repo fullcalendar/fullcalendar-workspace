@@ -114,7 +114,7 @@ const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity
 export default createPlugin({
   name: '@fullcalendar/theme-classic',
   optionDefaults: {
-    className: "gap-5",
+    className: "gap-5 reset-root",
     viewClass: "bg-(--fc-classic-background) border border-(--fc-classic-border)",
 
     /* Toolbar
@@ -128,7 +128,7 @@ export default createPlugin({
     toolbarTitleClass: "text-2xl font-bold",
     buttonGroupClass: "flex flex-row items-center",
     buttonClass: (data) => [
-      'py-2 border-x flex flex-row items-center focus-visible:outline-3 outline-slate-600/50 hover:border-slate-900 active:border-slate-900 print:border-slate-900 hover:bg-slate-800 active:bg-slate-800 print:bg-white text-sm text-white print:text-black',
+      'py-2 border-x flex flex-row items-center focus-visible:outline-3 outline-slate-600/50 hover:border-slate-900 active:border-slate-900 print:border-slate-900 hover:bg-slate-800 active:bg-slate-800 print:bg-white text-sm text-white print:text-black button-reset',
       data.isIconOnly ? 'px-2.5' : 'px-3',
       data.inGroup
         ? 'first:rounded-s-[4px] last:rounded-e-[4px]'
@@ -311,8 +311,8 @@ export default createPlugin({
     /* Popover
     --------------------------------------------------------------------------------------------- */
 
-    popoverClass: "bg-(--fc-classic-background) border border-(--fc-classic-border) shadow-md min-w-55",
-    popoverCloseClass: `group absolute top-0.5 end-0.5 ${outlineWidthFocusClass} ${primaryOutlineColorClass}`,
+    popoverClass: "bg-(--fc-classic-background) border border-(--fc-classic-border) shadow-md min-w-55 reset-root",
+    popoverCloseClass: `group absolute top-0.5 end-0.5 ${outlineWidthFocusClass} ${primaryOutlineColorClass} button-reset`,
     popoverCloseContent: () => x('size-5 text-sm not-group-hover:opacity-65'),
 
     /* Lane

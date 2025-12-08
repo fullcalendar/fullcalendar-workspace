@@ -303,6 +303,13 @@ address "// HACK for React vdom"
 rethink if we should allow plugins to define defaults,
   because order of theme plugin in the list, if it uses a non-default value for an option
   provided in another plugin, will depend on order (see resourceDayHeaderAlign)
+For tailwind -> vanilla css conversion
+  --fc-monarch-border-style AND
+  --fc-monarch-ring-color (and the like)
+  ...ARE INHERITED BY CHILD ELEMENTS...
+  not good behavior
+  tailwind solved this by doing @property with inherits:false
+  but browser support for that is too new
 
 
 Changelog
