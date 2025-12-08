@@ -144,7 +144,7 @@ const dayRowCommonClasses: CalendarOptions = {
 export default createPlugin({
   name: '@fullcalendar/theme-forma',
   optionDefaults: {
-    className: "bg-(--fc-forma-background) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden",
+    className: "bg-(--fc-forma-background) border border-(--fc-forma-border) rounded-sm shadow-xs overflow-hidden reset-root",
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
@@ -156,7 +156,7 @@ export default createPlugin({
     toolbarTitleClass: "text-xl",
     buttonGroupClass: "flex flex-row items-center",
     buttonClass: (data) => [
-      'group py-1.5 rounded-sm flex flex-row items-center text-sm',
+      'group py-1.5 rounded-sm flex flex-row items-center text-sm button-reset',
       data.isIconOnly ? 'px-2' : 'px-3',
       data.isIconOnly
         ? mutedHoverButtonClass
@@ -408,8 +408,8 @@ export default createPlugin({
     --------------------------------------------------------------------------------------------- */
 
     dayPopoverFormat: { day: 'numeric', weekday: 'long' },
-    popoverClass: "border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md min-w-55",
-    popoverCloseClass: `group absolute top-1 end-1 p-1 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`,
+    popoverClass: "border border-(--fc-forma-border) bg-(--fc-forma-background) shadow-md min-w-55 reset-root",
+    popoverCloseClass: `group absolute top-1 end-1 p-1 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass} button-reset`,
     popoverCloseContent: () => dismiss(`size-5 ${mutedFgPressableGroupClass}`),
 
     /* Lane

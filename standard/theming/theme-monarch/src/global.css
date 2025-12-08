@@ -4,10 +4,12 @@ NOTE: apply this to calendar root AND popover
 */
 .reset-root {
   line-height: 1.5;
-  --fc-border-style: solid;
-  --fc-ring-color: initial;
+  --fc-monarch-border-style: solid;
 }
 
+/*
+NOTE: apply this to buttonClass and popoverCloseClass
+*/
 .button-reset {
   appearance: button;
   font: inherit;
@@ -496,57 +498,57 @@ NOTE: apply this to calendar root AND popover
 
 .border,
 .border-1 {
-  border-style: var(--fc-border-style);
+  border-style: var(--fc-monarch-border-style);
   border-width: 1px
 }
 
 .border-4 {
-  border-style: var(--fc-border-style);
+  border-style: var(--fc-monarch-border-style);
   border-width: 4px
 }
 
 .border-5 {
-  border-style: var(--fc-border-style);
+  border-style: var(--fc-monarch-border-style);
   border-width: 5px
 }
 
 .border-6 {
-  border-style: var(--fc-border-style);
+  border-style: var(--fc-monarch-border-style);
   border-width: 6px
 }
 
 .border-x {
-  border-inline-style: var(--fc-border-style);
+  border-inline-style: var(--fc-monarch-border-style);
   border-inline-width: 1px
 }
 
 .border-y {
-  border-block-style: var(--fc-border-style);
+  border-block-style: var(--fc-monarch-border-style);
   border-block-width: 1px
 }
 
 .border-s {
-  border-inline-start-style: var(--fc-border-style);
+  border-inline-start-style: var(--fc-monarch-border-style);
   border-inline-start-width: 1px
 }
 
 .border-e {
-  border-inline-end-style: var(--fc-border-style);
+  border-inline-end-style: var(--fc-monarch-border-style);
   border-inline-end-width: 1px
 }
 
 .border-t {
-  border-top-style: var(--fc-border-style);
+  border-top-style: var(--fc-monarch-border-style);
   border-top-width: 1px
 }
 
 .border-b {
-  border-bottom-style: var(--fc-border-style);
+  border-bottom-style: var(--fc-monarch-border-style);
   border-bottom-width: 1px
 }
 
 .border-dotted {
-  --fc-border-style: dotted;
+  --fc-monarch-border-style: dotted;
   border-style: dotted
 }
 
@@ -838,23 +840,23 @@ NOTE: apply this to calendar root AND popover
 }
 
 .shadow-lg {
-  box-shadow: 0 10px 15px -3px #0000001a, 0 4px 6px -4px #0000001a;
+  box-shadow: 0 10px 15px -3px #0000001a, 0 4px 6px -4px #0000001a
 }
 
 .shadow-md {
-  box-shadow: 0 4px 6px -1px #0000001a, 0 2px 4px -2px #0000001a;
+  box-shadow: 0 4px 6px -1px #0000001a, 0 2px 4px -2px #0000001a
 }
 
 .ring {
-  box-shadow: 0 0 0 1px var(--fc-ring-color, currentcolor);
+  box-shadow: 0 0 0 1px var(--fc-monarch-ring-color, currentcolor)
 }
 
 .ring-2 {
-  box-shadow: 0 0 0 2px var(--fc-ring-color, currentcolor);
+  box-shadow: 0 0 0 2px var(--fc-monarch-ring-color, currentcolor)
 }
 
 .ring-\(--fc-monarch-background\) {
-  --fc-ring-color: var(--fc-monarch-background)
+  --fc-monarch-ring-color: var(--fc-monarch-background)
 }
 
 .outline {
@@ -884,7 +886,7 @@ NOTE: apply this to calendar root AND popover
 }
 
 .not-last\:border-b:not(:last-child) {
-  border-bottom-style: var(--fc-border-style);
+  border-bottom-style: var(--fc-monarch-border-style);
   border-bottom-width: 1px
 }
 
