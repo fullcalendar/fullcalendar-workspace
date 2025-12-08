@@ -137,7 +137,7 @@ const resourceDayHeaderClasses = {
 export default createPlugin({
   name: '@fullcalendar/theme-monarch',
   optionDefaults: {
-    className: "bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden line-height-reset",
+    className: "bg-(--fc-monarch-background) border border-(--fc-monarch-border) rounded-xl overflow-hidden reset-root",
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
@@ -417,7 +417,7 @@ export default createPlugin({
     --------------------------------------------------------------------------------------------- */
 
     dayPopoverFormat: { day: 'numeric', weekday: 'short' },
-    popoverClass: "border border-(--fc-monarch-border) rounded-lg overflow-hidden m-2 bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg min-w-60",
+    popoverClass: "border border-(--fc-monarch-border) rounded-lg overflow-hidden m-2 bg-(--fc-monarch-popover) text-(--fc-monarch-popover-foreground) shadow-lg min-w-60 reset-root",
     popoverCloseClass: `group absolute top-2 end-2 size-8 rounded-full items-center justify-center ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${outlineColorClass} button-reset`,
     popoverCloseContent: () => x(`size-5 ${mutedFgPressableGroupClass}`),
 
