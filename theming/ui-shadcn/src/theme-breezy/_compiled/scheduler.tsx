@@ -156,19 +156,19 @@ export function SchedulerView({
         timeline: {
 
           /* Timeline > Row Event
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
           rowEventClass: (data) => data.isEnd && 'me-px',
           rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
 
           /* Timeline > More-Link
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
           rowMoreLinkClass: 'me-px mb-px border border-transparent print:border-black rounded-md bg-[color-mix(in_oklab,var(--foreground)_10%,var(--background))] hover:bg-[color-mix(in_oklab,var(--foreground)_13%,var(--background))] print:bg-white',
           rowMoreLinkInnerClass: 'p-1 text-xs',
 
           /* Timeline > Slot Header
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
           slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
           slotHeaderClass: (data) => [

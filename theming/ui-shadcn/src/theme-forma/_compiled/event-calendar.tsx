@@ -53,7 +53,7 @@ const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreg
 const dayRowCommonClasses: CalendarOptions = {
 
   /* Day Row > List-Item Event
-  --------------------------------------------------------------------------------------------- */
+  ----------------------------------------------------------------------------------------------- */
 
   listItemEventClass: (data) => [
     'mb-px p-px rounded-sm',
@@ -81,13 +81,13 @@ const dayRowCommonClasses: CalendarOptions = {
   ],
 
   /* Day Row > Row Event
-  --------------------------------------------------------------------------------------------- */
+  ----------------------------------------------------------------------------------------------- */
 
   rowEventClass: (data) => data.isEnd && (data.isNarrow ? 'me-px' : 'me-0.5'),
   rowEventInnerClass: (data) => data.isNarrow ? 'py-px' : 'py-0.5',
 
   /* Day Row > More-Link
-  --------------------------------------------------------------------------------------------- */
+  ----------------------------------------------------------------------------------------------- */
 
   rowMoreLinkClass: (data) => [
     'mb-px border rounded-sm hover:bg-foreground/5',
@@ -566,7 +566,7 @@ export function EventCalendarView({
           dayHeaderAlign: 'start',
 
           /* TimeGrid > Week Number Header
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
           weekNumberHeaderClass: 'items-end justify-end',
           weekNumberHeaderInnerClass: (data) => [
@@ -575,7 +575,7 @@ export function EventCalendarView({
           ],
 
           /* TimeGrid > All-Day Header
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
           allDayHeaderClass: 'items-center justify-end',
           allDayHeaderInnerClass: (data) => [
@@ -585,7 +585,7 @@ export function EventCalendarView({
           allDayDividerClass: 'border-b',
 
           /* TimeGrid > Slot Header
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
           slotHeaderClass: 'justify-end',
           slotHeaderInnerClass: (data) => [
@@ -599,7 +599,7 @@ export function EventCalendarView({
         list: {
 
           /* List-View > List-Item Event
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
           listItemEventClass: (data) => [
             'group border-s-6 border-(--fc-event-color) p-3 rounded-sm bg-[color-mix(in_oklab,var(--fc-event-color)_15%,var(--background))]',
@@ -613,7 +613,7 @@ export function EventCalendarView({
           ],
 
           /* No-Events Screen
-          ----------------------------------------------------------------------------------------- */
+          --------------------------------------------------------------------------------------- */
 
           noEventsClass: 'grow flex flex-col items-center justify-center',
           noEventsInnerClass: 'py-15',

@@ -55,7 +55,7 @@ export const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:tex
 const dayRowCommonClasses: CalendarOptions = {
 
   /* Day Row > List-Item Event
-  --------------------------------------------------------------------------------------------- */
+  ----------------------------------------------------------------------------------------------- */
 
   listItemEventClass: (data) => [
     'mb-px p-px rounded-sm',
@@ -76,7 +76,7 @@ const dayRowCommonClasses: CalendarOptions = {
   listItemEventTitleClass: 'px-px font-bold whitespace-nowrap overflow-hidden shrink-100',
 
   /* Day Row > Row Event
-  --------------------------------------------------------------------------------------------- */
+  ----------------------------------------------------------------------------------------------- */
 
   rowEventClass: (data) => [
     data.isStart && cn('rounded-s-sm', data.isNarrow ? 'ms-px' : 'ms-0.5'),
@@ -87,7 +87,7 @@ const dayRowCommonClasses: CalendarOptions = {
   rowEventTitleClass: 'px-px',
 
   /* Day Row > More-Link
-  --------------------------------------------------------------------------------------------- */
+  ----------------------------------------------------------------------------------------------- */
 
   rowMoreLinkClass: (data) => [
     'mb-px border rounded-sm hover:bg-foreground/5',
