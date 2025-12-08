@@ -46,36 +46,50 @@ function App() {
           addButton,
           plugins: userPlugins = [],
           ...restProps
-        }) => (
-          <FullCalendar
-            initialView={availableViews[0]}
-            {...buildToolbarAndButtons(demoChoices.theme, availableViews, addButton)}
-            plugins={[
-              themePlugin,
-              ...eventCalendarPlugins,
-              ...userPlugins,
-            ]}
-            {...restProps}
-          />
-        )}
+        }) => {
+          const newProps = buildToolbarAndButtons(demoChoices.theme, availableViews, addButton)
+          return (
+            <FullCalendar
+              {...restProps}
+              {...newProps}
+              initialView={availableViews[0]}
+              plugins={[
+                themePlugin,
+                ...eventCalendarPlugins,
+                ...userPlugins,
+              ]}
+              buttons={{
+                ...restProps.buttons,
+                ...newProps.buttons,
+              }}
+            />
+          )
+        }}
         renderScheduler={({
           availableViews = schedulerAvailableViews,
           addButton,
           plugins: userPlugins = [],
           ...restProps
-        }) => (
-          <FullCalendar
-            initialView={availableViews[0]}
-            {...buildToolbarAndButtons(demoChoices.theme, availableViews, addButton)}
-            plugins={[
-              themePlugin,
-              ...eventCalendarPlugins,
-              ...schedulerOnlyPlugins,
-              ...userPlugins,
-            ]}
-            {...restProps}
-          />
-        )}
+        }) => {
+          const newProps = buildToolbarAndButtons(demoChoices.theme, availableViews, addButton)
+          return (
+            <FullCalendar
+              {...restProps}
+              {...newProps}
+              initialView={availableViews[0]}
+              plugins={[
+                themePlugin,
+                ...eventCalendarPlugins,
+                ...schedulerOnlyPlugins,
+                ...userPlugins,
+              ]}
+              buttons={{
+                ...restProps.buttons,
+                ...newProps.buttons,
+              }}
+            />
+          )
+        }}
       />
     </Layout>
   )
