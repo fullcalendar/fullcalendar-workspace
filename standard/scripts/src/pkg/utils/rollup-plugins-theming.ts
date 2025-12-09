@@ -3,6 +3,7 @@ import MagicString from 'magic-string'
 import postcss from 'postcss'
 import selectorParser from 'postcss-selector-parser'
 import { TransformPluginContext, AcornNode } from 'rollup'
+import { HashGenerator } from './hash-generator.js'
 
 export default function transformClassNamesPlugin(minify: boolean, isPublicMui: boolean) {
   return {
@@ -220,5 +221,31 @@ function transformCss(themeName: string, isPublicMui: boolean, minify: boolean, 
 }
 
 function transformClassName(themeName: string, isPublicMui: boolean, minify: boolean, className: string) {
+  if (minify) {
+    return generateObfuscatedClassName(themeName, isPublicMui, className)
+  }
   return 'fc' + themeName.charAt(0) + '-' + className
+}
+
+function generateObfuscatedClassName(themeName: string, isPublicMui: boolean, className: string): string {
+  const hashGenerator = getHashGenerator(isPublicMui, themeName)
+  return 'fc-' + themeName + '-' + hashGenerator.generate(className)!
+}
+
+const muiHashGeneratorsByTheme: { [themeName: string]: HashGenerator } = {}
+const nonMuiHashGeneratorsByTheme: { [themeName: string]: HashGenerator } = {}
+
+function getHashGenerator(isPublicMui: boolean, themeName: string): HashGenerator {
+  const hashGeneratorsByTheme = isPublicMui
+    ? muiHashGeneratorsByTheme
+    : nonMuiHashGeneratorsByTheme
+
+  const charLength = 3
+  const salt = isPublicMui ? 'mui' : 'non-mui'
+
+  if (!hashGeneratorsByTheme[themeName]) {
+    hashGeneratorsByTheme[themeName] = new HashGenerator(charLength, salt)
+  }
+
+  return hashGeneratorsByTheme[themeName]
 }
