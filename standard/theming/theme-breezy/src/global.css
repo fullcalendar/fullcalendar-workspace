@@ -856,12 +856,12 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .outline {
-  outline-style: var(--fc-breezy-outline-style);
+  outline-style: solid;
   outline-width: 1px
 }
 
 .outline-2 {
-  outline-style: var(--fc-breezy-outline-style);
+  outline-style: solid;
   outline-width: 2px
 }
 
@@ -922,7 +922,7 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .group-focus-visible\:outline-2:is(:where(.group):focus-visible *) {
-  outline-style: var(--fc-breezy-outline-style);
+  outline-style: solid;
   outline-width: 2px
 }
 
@@ -999,7 +999,7 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .focus-visible\:outline-2:focus-visible {
-  outline-style: var(--fc-breezy-outline-style);
+  outline-style: solid;
   outline-width: 2px
 }
 

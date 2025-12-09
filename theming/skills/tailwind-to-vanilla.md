@@ -75,7 +75,7 @@ There's a block near the top of the file with the selector `*,:before,:after,::b
     --tw-inset-shadow-color
       Alert if uses in the file
     --tw-outline-style
-      Keep uses of it throughout the file
+      Replace with `solid` throughout the file
     --tw-ring-color
       Keep uses of it throughout the file
     --tw-ring-inset

@@ -693,12 +693,12 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .outline {
-  outline-style: var(--fc-classic-outline-style);
+  outline-style: solid;
   outline-width: 1px
 }
 
 .outline-2 {
-  outline-style: var(--fc-classic-outline-style);
+  outline-style: solid;
   outline-width: 2px
 }
 
@@ -715,13 +715,7 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .outline-slate-600\/50 {
-  outline-color: #45556c80
-}
-
-@supports (color:color-mix(in lab, red, red)) {
-  .outline-slate-600\/50 {
-    outline-color: color-mix(in oklab, #47556950%, transparent)
-  }
+  outline-color: #47556980;
 }
 
 .\[background\:linear-gradient\(var\(--fc-classic-muted\)\,var\(--fc-classic-muted\)\)_var\(--fc-classic-background\)\] {
@@ -799,12 +793,12 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .focus-visible\:outline-2:focus-visible {
-  outline-style: var(--fc-classic-outline-style);
+  outline-style: solid;
   outline-width: 2px
 }
 
 .focus-visible\:outline-3:focus-visible {
-  outline-style: var(--fc-classic-outline-style);
+  outline-style: solid;
   outline-width: 3px
 }
 
