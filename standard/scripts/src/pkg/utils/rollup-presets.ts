@@ -46,6 +46,7 @@ import {
   simpleDotAssignment,
   injectCssSeparatelyPlugin,
 } from './rollup-plugins.js'
+import transformClassNamesPlugin from './rollup-plugins-theming.js'
 
 const commonjsPlugin = cjsInterop(commonjsPluginLib)
 const jsonPlugin = cjsInterop(jsonPluginLib)
@@ -285,6 +286,7 @@ function buildModulePlugins(
   minifyCss: boolean,
 ): Plugin[] {
   const { pkgDir, entryStructMap } = pkgBundleStruct
+  const { isPublicTheme, isPublicMui } = analyzePkg(pkgDir)
 
   return [
     rerootAssetsPlugin(pkgDir),
@@ -294,6 +296,7 @@ function buildModulePlugins(
     generatedContentPlugin(
       entryStructsToContentMap(entryStructMap),
     ),
+    ...((isPublicTheme || isPublicMui) ? [transformClassNamesPlugin(minifyCss, isPublicMui)] : []),
     ...buildJsPlugins(pkgBundleStruct, false, minifyCss),
     ...(sourcemap ? [sourcemapsPlugin()] : []), // load preexisting sourcemaps
   ]
@@ -310,6 +313,7 @@ async function buildIifePlugins(
   minify: boolean,
 ): Promise<Plugin[]> {
   const { pkgDir, entryStructMap } = pkgBundleStruct
+  const { isPublicTheme, isPublicMui } = analyzePkg(pkgDir)
 
   return [
     rerootAssetsPlugin(pkgDir),
@@ -321,6 +325,7 @@ async function buildIifePlugins(
     }),
     generatedContentPlugin(entryStructsToContentMap(entryStructMap)),
     simpleDotAssignment(),
+    ...((isPublicTheme || isPublicMui) ? [transformClassNamesPlugin(minify, isPublicMui)] : []),
     ...buildJsPlugins(pkgBundleStruct, extractCss, minify),
     ...(extractCss ? [await injectCssSeparatelyPlugin()] : []),
     ...(sourcemap ? [sourcemapsPlugin()] : []),

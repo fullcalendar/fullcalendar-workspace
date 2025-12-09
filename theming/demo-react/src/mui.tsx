@@ -8,10 +8,6 @@ import { DemoGenerator } from './lib/demo-generator.js'
 import { Layout } from './lib/layout.js'
 import { flattenClassName } from './lib/utils.js'
 
-// !!!
-import './lib/tailwind.css'
-// NOTE: also see ./lib/tailwind.css for !!!
-
 import '@fullcalendar/core/global.css'
 import '@fullcalendar/mui/breezy/global.css'
 import '@fullcalendar/mui/classic/global.css'

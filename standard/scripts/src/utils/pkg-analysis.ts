@@ -5,21 +5,25 @@ export interface PkgAnalysis {
   pkgDir: string
   isBundle: boolean
   isTests: boolean
-  isMui: boolean // HACK
+  isPublicMui: boolean // HACK
+  isPublicTheme: boolean // HACK
 }
 
 export function analyzePkg(pkgDir: string): PkgAnalysis {
   const pkgDirName = basename(pkgDir)
   const isTests = pkgDirName === 'tests'
   const isBundle = pkgDirName === 'bundle'
-  const isMui = pkgDirName === 'ui-mui'
   const metaRootDir = joinPaths(pkgDir, (isTests || isBundle) ? '..' : '../..')
+
+  const isPublicMui = pkgDirName === 'ui-mui'
+  const isPublicTheme = /theme-([A-Za-z]+)/.test(pkgDirName)
 
   return {
     metaRootDir,
     pkgDir,
     isTests,
     isBundle,
-    isMui,
+    isPublicMui,
+    isPublicTheme,
   }
 }

@@ -2,6 +2,11 @@
   "private": true,
   "name": "@fullcalendar-scripts/standard",
   "version": "0.0.1-beta.1",
+  "dependencies": {
+    "estree-walker": "^3.0.3",
+    "magic-string": "^0.30.21",
+    "postcss-selector-parser": "^7.1.1"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^12.0.0",
     "@rollup/plugin-json": "^4.0.3",
