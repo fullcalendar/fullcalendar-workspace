@@ -878,8 +878,7 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .outline-none {
-  --fc-breezy-outline-style: none;
-  outline-style: none
+  outline-style: none !important /* HACK */
 }
 
 .\[background\:linear-gradient\(var\(--fc-breezy-strong\)\,var\(--fc-breezy-strong\)\)_var\(--fc-breezy-background\)\] {

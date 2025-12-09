@@ -791,8 +791,7 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .outline-none {
-  --fc-pulse-outline-style: none;
-  outline-style: none
+  outline-style: none !important /* HACK */
 }
 
 .\[background\:linear-gradient\(var\(--fc-pulse-faint\)\,var\(--fc-pulse-faint\)\)_var\(--fc-pulse-background\)\] {

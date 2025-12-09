@@ -13,6 +13,7 @@ clean+build all:
   pn build
 
 
+Suppress package.json entries we don't need
 Why is createFormatter exposed as public?
 Make joinClassNames public and only public
 Don't need nested cn(), just use arrays
@@ -310,7 +311,8 @@ For tailwind -> vanilla css conversion
   not good behavior
   tailwind solved this by doing @property with inherits:false
   but browser support for that is too new
-
+  ALSO:
+    Undo outline-style: none !important /* HACK */
 
 Changelog
 ---------

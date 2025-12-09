@@ -878,7 +878,7 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .outline-none {
-  outline-style: none
+  outline-style: none !important /* HACK */
 }
 
 .\[background\:linear-gradient\(var\(--fc-monarch-strong\)\,var\(--fc-monarch-strong\)\)_var\(--fc-monarch-background\)\] {

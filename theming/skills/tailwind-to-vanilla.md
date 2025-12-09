@@ -10,7 +10,11 @@ Remove all @property declarations at the end of the file.
 There's a block near the top of the file with the selector `:root,:host` (most likely second block). It contains many CSS variables.
 
   Take all the variables there EXCEPT those that follow the format --text-*--line-height
-  Inline them throughout the file and further evaluate any calc statements as a result.
+  Inline them throughout the file and further evaluate any calc statements as a result. Example:
+    BEFORE:
+      padding-inline: calc(var(--spacing)*2)
+    AFTER:
+      padding-inline: calc(.5rem)
 
   Take the --text-*--line-height variables and inline them like this:
     Given
@@ -47,7 +51,9 @@ Add this very simple set of reset classes to the top of the file along with the 
     border: 0 /* originally provided on border-box reset */
   }
 
-Now we'll update the corresponding index.tsx in the same directory to USE these reset classes:
+Now we'll update the corresponding index.tsx in the same directory to USE these reset classes.
+If that file doesn't exist, look for EventCalendarView.tsx in the same directory (in the case of MUI).
+Do this to the file:
 
   add reset-root to the end of the declarations for `className` and `popoverClass`
 
@@ -118,7 +124,7 @@ Simply make the value of the box-shadow the value of the selector like this:
 Look at all vars throughout the file prefixed with --tw-
 
   Replace that prefix with --fc-<themename>-
-  Get the theme name from the name of the current directory's parent
+  Get the theme name from the name of the current directory's parent (or the current directory itself in the case of MUI)
 
   So if the variable was called:
     --tw-border-style
