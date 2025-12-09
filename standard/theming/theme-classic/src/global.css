@@ -2,7 +2,6 @@
 NOTE: apply this to calendar root AND popover
 */
 .reset-root {
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   line-height: 1.5;
   --fc-classic-border-style: solid;
 }
