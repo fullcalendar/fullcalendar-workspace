@@ -118,6 +118,7 @@ export default function EventCalendarView({
 }: CalendarOptions) {
   return (
     <FullCalendar
+      className='reset-root'
 
       /* Abstract Event
       ------------------------------------------------------------------------------------------- */
@@ -346,8 +347,8 @@ export default function EventCalendarView({
       ------------------------------------------------------------------------------------------- */
 
       dayPopoverFormat={{ day: 'numeric', weekday: 'short' }}
-      popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-60"
-      popoverCloseClass={`group absolute top-2 end-2 size-8 rounded-full items-center justify-center ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
+      popoverClass="text-(--mui-palette-text-primary) bg-(--mui-palette-background-paper) bg-(image:--mui-overlays-8) rounded-(--mui-shape-borderRadius) overflow-hidden shadow-(--mui-shadows-8) m-2 min-w-60 reset-root"
+      popoverCloseClass={`group absolute top-2 end-2 size-8 rounded-full items-center justify-center ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass} button-reset`}
       popoverCloseContent={() => (
         <CloseIcon
           sx={{ fontSize: 18, margin: '1px' }}
