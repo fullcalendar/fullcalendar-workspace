@@ -168,7 +168,7 @@ const dayRowCommonClasses: CalendarOptions = {
 export default createPlugin({
   name: '@fullcalendar/theme-breezy',
   optionDefaults: {
-    className: "bg-(--fc-breezy-background) border border-(--fc-breezy-border) rounded-lg overflow-hidden",
+    className: "bg-(--fc-breezy-background) border border-(--fc-breezy-border) rounded-lg overflow-hidden reset-root",
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
@@ -183,7 +183,7 @@ export default createPlugin({
       !data.isSelectGroup && 'rounded-md shadow-xs',
     ],
     buttonClass: (data) => [
-      'group py-2 flex flex-row items-center text-sm',
+      'group py-2 flex flex-row items-center text-sm button-reset',
       data.isIconOnly ? 'px-2' : 'px-3',
       data.inSelectGroup ? joinClassNames(
         'rounded-md font-medium',
@@ -455,8 +455,8 @@ export default createPlugin({
     /* Popover
     --------------------------------------------------------------------------------------------- */
 
-    popoverClass: "bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg overflow-hidden shadow-lg m-1 min-w-55",
-    popoverCloseClass: `group absolute top-2 end-2 p-0.5 rounded-sm ${mutedHoverButtonClass}`,
+    popoverClass: "bg-(--fc-breezy-popover) border border-(--fc-breezy-popover-border) rounded-lg overflow-hidden shadow-lg m-1 min-w-55 reset-root",
+    popoverCloseClass: `group absolute top-2 end-2 p-0.5 rounded-sm ${mutedHoverButtonClass} button-reset`,
     popoverCloseContent: () => x(`size-5 ${mutedFgPressableGroupClass}`),
 
     /* Lane
