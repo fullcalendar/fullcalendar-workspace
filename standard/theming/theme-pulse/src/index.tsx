@@ -141,7 +141,7 @@ const dayRowCommonClasses: CalendarOptions = {
 export default createPlugin({
   name: '@fullcalendar/theme-pulse',
   optionDefaults: {
-    className: "gap-6",
+    className: "gap-6 reset-root",
     viewClass: `rounded-sm overflow-hidden bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`,
 
     /* Toolbar
@@ -160,7 +160,7 @@ export default createPlugin({
         : `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
     ],
     buttonClass: (data) => [
-      'group py-2 flex flex-row items-center text-sm',
+      'group py-2 flex flex-row items-center text-sm button-reset',
       data.isIconOnly ? 'px-2.5' : 'px-4',
       data.inSelectGroup
         ? joinClassNames(
@@ -463,8 +463,8 @@ export default createPlugin({
     /* Popover
     --------------------------------------------------------------------------------------------- */
 
-    popoverClass: "bg-(--fc-pulse-background) border border-(--fc-pulse-strong-border) rounded-sm overflow-hidden shadow-md m-1 min-w-55",
-    popoverCloseClass: `group absolute top-1.5 end-1.5 p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`,
+    popoverClass: "bg-(--fc-pulse-background) border border-(--fc-pulse-strong-border) rounded-sm overflow-hidden shadow-md m-1 min-w-55 reset-root",
+    popoverCloseClass: `group absolute top-1.5 end-1.5 p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass} button-reset`,
     popoverCloseContent: () => x(`size-5 ${mutedFgPressableGroupClass}`),
 
     /* Lane

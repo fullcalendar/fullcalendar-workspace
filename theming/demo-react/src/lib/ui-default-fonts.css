@@ -8,6 +8,7 @@
 [data-theme=breezy] {
   font-family: 'Inter Variable', sans-serif;
 }
+[data-theme=pulse],
 [data-theme=classic] {
   font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji","Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
