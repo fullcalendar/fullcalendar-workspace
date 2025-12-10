@@ -17,8 +17,6 @@ build note:
     manually before `pn dev`
 
 
-add font size to reset-root for themes that don't define granular font sizes?
-  test themes on how they let font-size through
 palettes.css
   break up into deparate color files for dist
   ensure it's not minified
@@ -31,6 +29,7 @@ Convert all workspace:7.0.0-rc.0 to just workspace:* ?
 MUI doesn't need >= React 19
 Audit which packages are private:true
 MUI LICENSE.md is empty
+demo-react changes for production
 
 
 ASAP
@@ -1122,6 +1121,8 @@ Theme QA checklist
           does not exceed datagrid row height (zero lane-bottom height)
       row-more-link
         stickiness
+  text-base should be applied to text-elements that have no specified text size,
+    because we don't want font size of outer container affecting text size within calendar
 the flexbox react-native VS web conundrum
   where we might want core do have an opinion about the DEFAULT flex direction of an exposed element
   but if we set it in core, hard to have theme/user override it because core does !important for web

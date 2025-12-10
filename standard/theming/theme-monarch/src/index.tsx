@@ -474,7 +474,7 @@ export default createPlugin({
       'items-center',
     ],
     singleMonthHeaderInnerClass: (data) => [
-      'px-3 py-1 rounded-full font-bold',
+      'px-3 py-1 rounded-full text-base font-bold',
       data.hasNavLink && mutedHoverPressableClass,
     ],
 

@@ -471,7 +471,7 @@ export default function EventCalendarView({
         'items-center',
       ]}
       singleMonthHeaderInnerClass={(data) => [
-        `py-1 px-2 rounded-md text-sm font-semibold text-(--mui-palette-text-primary)`,
+        `py-1 px-2 rounded-md text-sm text-(--mui-palette-text-primary) font-semibold`,
         data.hasNavLink && mutedHoverPressableClass,
       ]}
 

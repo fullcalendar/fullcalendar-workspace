@@ -456,7 +456,7 @@ export default createPlugin({
     singleMonthHeaderInnerClass: (data) => [
       'px-1 rounded-sm font-bold',
       data.hasNavLink && mutedHoverPressableClass,
-      !data.isNarrow && 'text-lg',
+      data.isNarrow ? 'text-base' : 'text-lg',
     ],
 
     /* Misc Table

@@ -524,7 +524,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       singleMonthHeaderInnerClass: (data) => [
-        `py-1 px-2 rounded-md text-sm font-semibold ${params.strongFgClass}`,
+        `py-1 px-2 rounded-md text-sm ${params.strongFgClass} font-semibold`,
         data.hasNavLink && params.mutedHoverPressableClass,
       ],
 

@@ -463,7 +463,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       ],
 
       singleMonthHeaderInnerClass: (data) => [
-        'px-1.5 py-0.5 rounded-sm font-semibold',
+        'px-1.5 py-0.5 rounded-sm text-base font-semibold',
         data.hasNavLink && params.mutedHoverPressableClass,
         params.fgClass,
       ],

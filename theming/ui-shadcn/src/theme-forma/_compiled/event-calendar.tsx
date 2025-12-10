@@ -505,7 +505,7 @@ export function EventCalendarView({
       singleMonthHeaderInnerClass={(data) => [
         'px-1 rounded-sm font-bold',
         data.hasNavLink && 'hover:bg-foreground/5',
-        !data.isNarrow && 'text-lg',
+        data.isNarrow ? 'text-base' : 'text-lg',
       ]}
 
       /* Misc Table

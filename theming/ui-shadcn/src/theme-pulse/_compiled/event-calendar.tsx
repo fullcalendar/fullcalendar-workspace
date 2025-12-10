@@ -516,7 +516,7 @@ export function EventCalendarView({
         'items-center',
       ]}
       singleMonthHeaderInnerClass={(data) => [
-        'px-1.5 py-0.5 rounded-sm font-semibold',
+        'px-1.5 py-0.5 rounded-sm text-base font-semibold',
         data.hasNavLink && 'hover:bg-foreground/5',
       ]}
 

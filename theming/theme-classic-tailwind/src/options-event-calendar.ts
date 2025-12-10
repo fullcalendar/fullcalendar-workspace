@@ -376,7 +376,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
         'items-center', // h-align
       ],
 
-      singleMonthHeaderInnerClass: 'font-bold',
+      singleMonthHeaderInnerClass: 'text-base font-bold',
 
       /* Misc Table
       ------------------------------------------------------------------------------------------- */

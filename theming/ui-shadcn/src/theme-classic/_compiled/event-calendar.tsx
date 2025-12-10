@@ -422,7 +422,7 @@ export function EventCalendarView({
         data.colCount > 1 ? 'pb-4' : 'py-2',
         'items-center',
       ]}
-      singleMonthHeaderInnerClass='font-bold'
+      singleMonthHeaderInnerClass='text-base font-bold'
 
       /* Misc Table
       ------------------------------------------------------------------------------------------- */

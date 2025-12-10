@@ -558,7 +558,7 @@ export function EventCalendar({
         'items-center',
       ]}
       singleMonthHeaderInnerClass={(data) => [
-        'py-1 px-2 rounded-md text-sm font-semibold text-(--fc-breezy-strong-foreground)',
+        'py-1 px-2 rounded-md text-sm text-(--fc-breezy-strong-foreground) font-semibold',
         data.hasNavLink && mutedHoverPressableClass,
       ]}
 

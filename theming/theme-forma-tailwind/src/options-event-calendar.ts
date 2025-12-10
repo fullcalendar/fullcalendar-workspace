@@ -455,7 +455,7 @@ export function createEventCalendarOptions(params: EventCalendarOptionParams): {
       singleMonthHeaderInnerClass: (data) => [
         'px-1 rounded-sm font-bold',
         data.hasNavLink && params.mutedHoverPressableClass,
-        !data.isNarrow && 'text-lg',
+        data.isNarrow ? 'text-base' : 'text-lg',
       ],
 
       /* Misc Table
