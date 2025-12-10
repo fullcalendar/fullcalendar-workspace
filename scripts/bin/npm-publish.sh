@@ -21,7 +21,6 @@ root_dir=`pwd`
 
 declare -a publish_dirs=( \
   "$root_dir/standard/packages/core" \
-  "$root_dir/standard/packages/bootstrap5" \
   "$root_dir/standard/packages/daygrid" \
   "$root_dir/standard/packages/timegrid" \
   "$root_dir/standard/packages/google-calendar" \

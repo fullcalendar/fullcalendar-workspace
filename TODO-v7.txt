@@ -18,6 +18,7 @@ build note:
 
 
 Use @fullcalendar/theme-classic in tests
+  after, delete
 vue3 connector
   in markup, puts this weird attribute on calendar div
     attrs="[object Object]
@@ -38,8 +39,6 @@ package.json
 MUI LICENSE.md is empty
 Readmes for each theme?
 demo-react changes for production
-kill bootstrap5 theme
-  filenames with bootstrap5 too
 
 
 ASAP
@@ -80,7 +79,6 @@ print-view is messed up!!!
 think about reviving compact timegrid print view, or at least providing a setting
   https://fullcalendar.freshdesk.com/a/tickets/11181
   We already keep this code for buggy firefox
-delete classic-theme and bootstrap5 packages
 bug: why when resourceGroupHeaderClass bg color removed, we don't see vertical column lines underneath?
 bugs with isMajor special border on slots
   doesn't work on resourceTimelineThreeDays/Week/Month (am I not configuring correctly)

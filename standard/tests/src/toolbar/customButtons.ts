@@ -1,11 +1,10 @@
-import bootstrapPlugin from '@fullcalendar/bootstrap5'
 import classicThemePlugin from '@fullcalendar/theme-classic'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
 describe('buttons', () => {
   pushOptions({
-    plugins: [bootstrapPlugin, classicThemePlugin, dayGridPlugin],
+    plugins: [classicThemePlugin, dayGridPlugin],
   })
 
   it('can specify text', () => {
