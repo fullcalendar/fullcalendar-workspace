@@ -11,30 +11,30 @@ clean+build all:
   pn install # important because writes tsconfigs
   pn run postinstall # in case install didn't write tsconfigs
   pn build
+build note:
+  The @fullcalendar/mui & @fullcalendar/ui-shadcn packages should formally rely on
+    @fullcalendar/react in terms for `pn dev`; until they do, we need to build @fullcalendar/react
+    manually before `pn dev`
 
 
-Suppress package.json entries we don't need
-Why is createFormatter exposed as public?
-Make joinClassNames public and only public
+conversion bugs:
+  MUI Monarch/Forma/Pulse compiled VS prod
+    list-view ghost-button clickdown color
+    same for day-circle (non-today) clickdown color
+transform REM -> EM
+  add to reset-root for font-size
+palettes.css
+  break up into deparate color files for dist
+  ensure it's not minified
+Suppress package.json entries we don't need (because of clean-dist HACK)
+Make all *Class properties accept STRING only!
 Don't need nested cn(), just use arrays
+Make joinClassNames public and only public
+Why is createFormatter exposed as public?
 Convert all workspace:7.0.0-rc.0 to just workspace:* ?
 MUI doesn't need >= React 19
 Audit which packages are private:true
-The @fullcalendar/mui & shadcn packages should formally rely on @fullcalendar/react in terms for `pn dev`
-  until they do, we need to build @fullcalendar/react manually before `pn dev`
 MUI LICENSE.md is empty
-FYI, we don't want EventCalendarToolbar but we have to...
-Instead of @fullcalendar/mui/breezy, do...
-  @fullcalendar/mui/theme-breezy ?
-  @fullcalendar/mui/themes/breezy ?
-conversion bugs:
-  MUI Monarch compiled+prod
-    list-view ghost-button clickdown color
-    same for day-circle (non-today) clickdown color
-    for other themes/systems? (forma:yes...)
-DRY-up MUI compiled+prod themes?
-Move away from clean-dist HACK
-Don't minify palettes.css for dist
 
 
 ASAP
