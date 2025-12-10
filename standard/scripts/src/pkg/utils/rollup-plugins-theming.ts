@@ -138,14 +138,10 @@ const tailwindClassNamePrefixes: { [key: string]: 1 } = {
   grow: 1,
   overflow: 1,
   self: 1,
-  start: 1,
-  end: 1,
   shrink: 1,
   whitespace: 1,
   gap: 1,
   group: 1,
-  top: 1,
-  bottom: 1,
   rotate: 1,
   bg: 1,
   inset: 1,
@@ -179,7 +175,11 @@ function isClassName(s: string): boolean {
     s.startsWith('last:') ||
     s.startsWith('first:') ||
     s.startsWith('not-') ||
-    s.startsWith('focus-visible:')
+    s.startsWith('focus-visible:') ||
+    s.startsWith('start-') ||
+    s.startsWith('end-') ||
+    s.startsWith('top-') ||
+    s.startsWith('bottom-')
   ) {
     return true
   }
