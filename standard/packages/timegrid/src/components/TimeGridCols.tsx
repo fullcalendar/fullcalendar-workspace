@@ -1,4 +1,4 @@
-import { Duration } from '@fullcalendar/core'
+import { Duration, joinClassNames } from '@fullcalendar/core'
 import {
   DateComponent,
   DateMarker,
@@ -10,7 +10,6 @@ import {
   Hit,
   addDurations,
   isPropsEqualShallow,
-  joinClassNames,
   memoize,
   multiplyDuration,
   wholeDivideDurations,

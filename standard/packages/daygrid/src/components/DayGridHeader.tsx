@@ -1,4 +1,5 @@
-import { BaseComponent, joinClassNames } from '@fullcalendar/core/internal'
+import { joinClassNames } from '@fullcalendar/core'
+import { BaseComponent } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'
 import { DayGridHeaderRow } from './DayGridHeaderRow.js'
 import { RowConfig } from '../header-tier.js'

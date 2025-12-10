@@ -1,3 +1,4 @@
+import { joinClassNames } from '@fullcalendar/core'
 import {
   BaseComponent,
   DateProfile,
@@ -17,7 +18,6 @@ import {
   DayGridRange,
   EventRangeProps,
   FooterScrollbar,
-  joinClassNames,
   Ruler,
   generateClassName,
   joinArrayishClassNames,

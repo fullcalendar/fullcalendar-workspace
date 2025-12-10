@@ -1,6 +1,7 @@
 import {
   Duration,
-  SlotHeaderData
+  SlotHeaderData,
+  joinClassNames
 } from '@fullcalendar/core'
 import {
   BaseComponent,
@@ -10,7 +11,6 @@ import {
   DateMarker,
   generateClassName,
   getDateMeta,
-  joinClassNames,
   memoize,
   setRef,
   ViewContext,

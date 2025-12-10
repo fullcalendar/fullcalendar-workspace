@@ -1,5 +1,5 @@
-import { WeekNumberHeaderData } from '@fullcalendar/core'
-import { BaseComponent, ContentContainer, DateProfile, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, joinClassNames, renderText, setRef, watchSize, generateClassName } from "@fullcalendar/core/internal"
+import { WeekNumberHeaderData, joinClassNames } from '@fullcalendar/core'
+import { BaseComponent, ContentContainer, DateProfile, buildDateStr, buildNavLinkAttrs, createFormatter, diffDays, renderText, setRef, watchSize, generateClassName } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 import { Ref, createElement, createRef } from '@fullcalendar/core/preact'
 

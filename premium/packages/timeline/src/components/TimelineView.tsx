@@ -1,4 +1,4 @@
-import { Duration } from '@fullcalendar/core'
+import { Duration, joinClassNames } from '@fullcalendar/core'
 import {
   ViewProps,
   memoize,
@@ -18,7 +18,6 @@ import {
   ScrollerSyncerInterface,
   getIsHeightAuto,
   RefMap,
-  joinClassNames,
   Ruler,
   FooterScrollbar,
   generateClassName,

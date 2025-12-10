@@ -1,6 +1,5 @@
 import React from 'react'
-import { CalendarOptions, DayCellData } from '@fullcalendar/core'
-import { joinClassNames } from '@fullcalendar/core/internal'
+import { CalendarOptions, DayCellData, joinClassNames } from '@fullcalendar/core'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'

@@ -1,4 +1,5 @@
-import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, joinClassNames, generateClassName, joinArrayishClassNames } from '@fullcalendar/core/internal'
+import { joinClassNames } from '@fullcalendar/core'
+import { BaseComponent, ViewContext, ContentContainer, watchHeight, setRef, generateClassName, joinArrayishClassNames } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Fragment, ComponentChild, Ref, createRef } from '@fullcalendar/core/preact'
 import { Group, createGroupId, isGroupsEqual } from '@fullcalendar/resource/internal'

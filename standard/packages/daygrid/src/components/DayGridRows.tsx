@@ -1,3 +1,4 @@
+import { joinClassNames } from '@fullcalendar/core'
 import {
   EventSegUiInteractionState,
   DateComponent,
@@ -11,7 +12,6 @@ import {
   getIsHeightAuto,
   DayGridRange,
   EventRangeProps,
-  joinClassNames,
   ViewOptionsRefined,
 } from '@fullcalendar/core/internal'
 import { createElement } from '@fullcalendar/core/preact'

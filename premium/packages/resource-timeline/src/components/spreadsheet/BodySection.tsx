@@ -1,4 +1,5 @@
-import { BaseComponent, joinClassNames, RefMap } from "@fullcalendar/core/internal"
+import { joinClassNames } from "@fullcalendar/core"
+import { BaseComponent, RefMap } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
 import { createGroupId } from "@fullcalendar/resource/internal"

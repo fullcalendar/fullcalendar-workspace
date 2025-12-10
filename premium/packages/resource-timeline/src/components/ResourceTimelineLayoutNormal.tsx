@@ -1,4 +1,4 @@
-import { CssDimValue, Duration } from '@fullcalendar/core'
+import { CssDimValue, Duration, joinClassNames } from '@fullcalendar/core'
 import {
   afterSize,
   DateComponent,
@@ -10,7 +10,6 @@ import {
   getStickyFooterScrollbar,
   getStickyHeaderDates,
   Hit,
-  joinClassNames,
   memoize,
   multiplyDuration,
   rangeContainsMarker,

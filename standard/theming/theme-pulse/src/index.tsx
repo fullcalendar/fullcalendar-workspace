@@ -1,5 +1,4 @@
-import { createPlugin, PluginDef, CalendarOptions, DayHeaderData, DayCellData } from '@fullcalendar/core'
-import { joinClassNames } from '@fullcalendar/core/internal'
+import { createPlugin, PluginDef, CalendarOptions, DayHeaderData, DayCellData, joinClassNames } from '@fullcalendar/core'
 import { createElement, Fragment } from '@fullcalendar/core/preact'
 import './global.css'
 

@@ -1,11 +1,11 @@
-import { SlotLaneData } from '@fullcalendar/core'
+import { SlotLaneData, joinClassNames } from '@fullcalendar/core'
 import {
   BaseComponent,
   ContentContainer,
   DateMarker,
   DateProfile,
   DateRange, getDateMeta,
-  isInt, joinClassNames,
+  isInt,
   memoize
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'

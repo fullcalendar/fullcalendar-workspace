@@ -1,4 +1,5 @@
-import { ContentContainer, joinClassNames, setRef, renderText, BaseComponent, generateClassName, watchSize } from '@fullcalendar/core/internal'
+import { joinClassNames } from '@fullcalendar/core'
+import { ContentContainer, setRef, renderText, BaseComponent, generateClassName, watchSize } from '@fullcalendar/core/internal'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { CellDataConfig, CellRenderConfig } from '../header-tier.js'
 import { dayHeaderMicroFormat } from './util.js'

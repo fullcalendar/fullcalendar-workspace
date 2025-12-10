@@ -1,7 +1,8 @@
+import { joinClassNames } from '@fullcalendar/core'
 import {
   BaseComponent, DateMarker,
   DateProfile,
-  DateRange, joinClassNames
+  DateRange
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'

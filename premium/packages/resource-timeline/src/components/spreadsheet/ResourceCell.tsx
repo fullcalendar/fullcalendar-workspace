@@ -1,3 +1,4 @@
+import { joinClassNames } from '@fullcalendar/core'
 import {
   BaseComponent,
   memoizeObjArg,
@@ -5,7 +6,6 @@ import {
   ViewContext,
   watchHeight,
   setRef,
-  joinClassNames,
   generateClassName,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'

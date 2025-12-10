@@ -1,4 +1,5 @@
-import { DateMarker, DateProfile, joinClassNames, NowIndicatorDot, NowIndicatorLineContainer } from '@fullcalendar/core/internal'
+import { joinClassNames } from '@fullcalendar/core'
+import { DateMarker, DateProfile, NowIndicatorDot, NowIndicatorLineContainer } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
 import { computeDateTopFrac } from './util.js'

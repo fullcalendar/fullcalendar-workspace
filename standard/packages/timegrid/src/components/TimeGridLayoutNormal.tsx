@@ -1,4 +1,5 @@
-import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, generateClassName, getIsHeightAuto, getStickyHeaderDates, Hit, joinArrayishClassNames, joinClassNames, rangeContainsMarker, RefMap, Ruler, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
+import { joinClassNames } from "@fullcalendar/core"
+import { afterSize, BaseComponent, DateMarker, DateProfile, DateRange, DayTableCell, EventRangeProps, EventSegUiInteractionState, generateClassName, getIsHeightAuto, getStickyHeaderDates, Hit, joinArrayishClassNames, rangeContainsMarker, RefMap, Ruler, Scroller, ScrollerInterface, setRef, SlicedCoordRange } from "@fullcalendar/core/internal"
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { DayGridHeaderRow, dayMicroWidth, RowConfig } from '@fullcalendar/daygrid/internal'

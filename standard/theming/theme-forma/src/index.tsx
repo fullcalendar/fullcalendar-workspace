@@ -1,6 +1,5 @@
 import { createElement, Fragment } from '@fullcalendar/core/preact'
-import { createPlugin, PluginDef, CalendarOptions, DayCellData } from '@fullcalendar/core'
-import { joinClassNames } from '@fullcalendar/core/internal'
+import { createPlugin, PluginDef, CalendarOptions, DayCellData, joinClassNames } from '@fullcalendar/core'
 import './global.css'
 
 // ambient types (tsc strips during build because of {})

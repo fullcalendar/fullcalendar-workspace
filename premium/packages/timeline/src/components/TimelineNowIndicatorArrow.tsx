@@ -1,4 +1,5 @@
-import { BaseComponent, DateMarker, joinClassNames, NowIndicatorHeaderContainer } from '@fullcalendar/core/internal'
+import { joinClassNames } from '@fullcalendar/core'
+import { BaseComponent, DateMarker, NowIndicatorHeaderContainer } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement } from '@fullcalendar/core/preact'
 import { TimelineDateProfile } from '../timeline-date-profile.js'

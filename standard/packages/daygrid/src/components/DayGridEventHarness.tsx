@@ -1,5 +1,6 @@
 import { Component, createRef, Ref, createElement, ComponentChildren } from '@fullcalendar/core/preact'
-import { watchHeight, setRef, joinClassNames } from '@fullcalendar/core/internal'
+import { joinClassNames } from '@fullcalendar/core'
+import { watchHeight, setRef } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface DayGridEventHarnessProps {

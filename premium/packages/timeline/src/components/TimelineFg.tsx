@@ -1,3 +1,4 @@
+import { joinClassNames } from '@fullcalendar/core'
 import {
   BaseComponent, memoize,
   getEventRangeMeta, DateMarker, DateRange, DateProfile, sortEventSegs,
@@ -8,7 +9,6 @@ import {
   CoordSpan,
   setRef,
   EventSegUiInteractionState,
-  joinClassNames,
 } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Fragment, Ref } from '@fullcalendar/core/preact'

@@ -1,5 +1,5 @@
-import { CssDimValue } from '@fullcalendar/core'
-import { BaseComponent, ElementDragging, PointerDragEvent, setRef, joinClassNames, memoize, joinArrayishClassNames, computeElIsRtl } from '@fullcalendar/core/internal'
+import { CssDimValue, joinClassNames } from '@fullcalendar/core'
+import { BaseComponent, ElementDragging, PointerDragEvent, setRef, memoize, joinArrayishClassNames, computeElIsRtl } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { ComponentChildren, Ref, createElement, createRef } from '@fullcalendar/core/preact'
 import { DimConfig, parseDimConfig, resizeDimConfig, serializeDimConfig } from '../col-positioning.js'

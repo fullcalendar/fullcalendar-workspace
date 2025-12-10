@@ -1,6 +1,5 @@
 import React from 'react'
-import { joinClassNames } from '@fullcalendar/core/internal'
-import type { CalendarOptions } from '@fullcalendar/core'
+import { joinClassNames, type CalendarOptions } from '@fullcalendar/core'
 import adaptivePlugin from '@fullcalendar/adaptive'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'

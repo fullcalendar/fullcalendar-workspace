@@ -1,3 +1,4 @@
+import { joinClassNames } from '@fullcalendar/core'
 import {
   BaseComponent,
   DateMarker,
@@ -6,7 +7,6 @@ import {
   EventStore,
   generateClassName,
   joinArrayishClassNames,
-  joinClassNames,
   memoize,
   rangeContainsMarker,
   SlicedProps,

@@ -1,4 +1,4 @@
-import { DayLaneData } from '@fullcalendar/core'
+import { DayLaneData, joinClassNames } from '@fullcalendar/core'
 import {
   BaseComponent,
   BgEvent,
@@ -15,7 +15,6 @@ import {
   generateClassName,
   getDateMeta,
   getEventRangeMeta,
-  joinClassNames,
   memoize,
   renderFill,
   SegGroup,

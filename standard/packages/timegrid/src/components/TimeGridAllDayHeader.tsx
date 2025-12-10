@@ -1,6 +1,6 @@
-import { AllDayHeaderData } from '@fullcalendar/core'
+import { AllDayHeaderData, joinClassNames } from '@fullcalendar/core'
 import { ComponentChild, Ref, createElement, createRef } from '@fullcalendar/core/preact'
-import { BaseComponent, ContentContainer, generateClassName, joinClassNames, setRef, watchWidth } from "@fullcalendar/core/internal"
+import { BaseComponent, ContentContainer, generateClassName, setRef, watchWidth } from "@fullcalendar/core/internal"
 import classNames from '@fullcalendar/core/internal-classnames'
 
 export interface TimeGridAllDayHeaderProps {

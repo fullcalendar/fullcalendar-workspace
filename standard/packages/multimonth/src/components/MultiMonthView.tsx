@@ -1,4 +1,4 @@
-import { CssDimValue } from '@fullcalendar/core'
+import { CssDimValue, joinClassNames } from '@fullcalendar/core'
 import {
   DateComponent,
   ViewProps,
@@ -17,7 +17,6 @@ import {
   NowTimer,
   getIsHeightAuto,
   Scroller,
-  joinClassNames,
   afterSize,
   watchWidth,
   fracToCssDim,

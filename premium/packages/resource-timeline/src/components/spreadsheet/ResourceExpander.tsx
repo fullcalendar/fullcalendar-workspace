@@ -1,4 +1,5 @@
-import { BaseComponent, ContentContainer, generateClassName, joinClassNames } from '@fullcalendar/core/internal'
+import { joinClassNames } from '@fullcalendar/core'
+import { BaseComponent, ContentContainer, generateClassName } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, Ref } from '@fullcalendar/core/preact'
 import { ResourceExpanderData } from '../../structs.js'

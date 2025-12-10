@@ -1,4 +1,4 @@
-import { SlotHeaderData } from '@fullcalendar/core'
+import { SlotHeaderData, joinClassNames } from '@fullcalendar/core'
 import {
   BaseComponent,
   buildNavLinkAttrs,
@@ -9,7 +9,6 @@ import {
   generateClassName,
   getDateMeta,
   joinArrayishClassNames,
-  joinClassNames,
   memoize,
   setRef,
   watchSize

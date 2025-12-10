@@ -1,4 +1,4 @@
-import { EventRenderRange, ViewApi } from '@fullcalendar/core'
+import { EventRenderRange, ViewApi, joinClassNames } from '@fullcalendar/core'
 import {
   addDays,
   ContentContainer,
@@ -14,7 +14,6 @@ import {
   getIsHeightAuto,
   intersectRanges,
   joinArrayishClassNames,
-  joinClassNames,
   memoize,
   MountData,
   NowTimer,

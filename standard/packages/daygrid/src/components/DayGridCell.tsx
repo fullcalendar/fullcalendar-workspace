@@ -1,4 +1,4 @@
-import { ViewApi, DayCellData } from '@fullcalendar/core'
+import { ViewApi, DayCellData, joinClassNames } from '@fullcalendar/core'
 import {
   DateMarker,
   DateComponent,
@@ -10,7 +10,6 @@ import {
   DateEnv,
   setRef,
   SlicedCoordRange,
-  joinClassNames,
   watchSize,
   isDimsEqual,
   getDateMeta,

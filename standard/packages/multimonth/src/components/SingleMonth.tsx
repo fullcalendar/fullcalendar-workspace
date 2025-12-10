@@ -1,5 +1,5 @@
-import { CssDimValue } from '@fullcalendar/core'
-import { buildNavLinkAttrs, DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, joinClassNames, memoize, ViewProps, watchHeight, watchWidth } from '@fullcalendar/core/internal'
+import { CssDimValue, joinClassNames } from '@fullcalendar/core'
+import { buildNavLinkAttrs, DateComponent, DateFormatter, DateRange, fracToCssDim, generateClassName, getUniqueDomId, joinArrayishClassNames, memoize, ViewProps, watchHeight, watchWidth } from '@fullcalendar/core/internal'
 import classNames from '@fullcalendar/core/internal-classnames'
 import { createElement, createRef } from '@fullcalendar/core/preact'
 import { buildDateRowConfig, buildDayTableModel, createDayHeaderFormatter, DayGridRows, DayTableSlicer, DayGridHeaderRow, dayMicroWidth } from '@fullcalendar/daygrid/internal'
