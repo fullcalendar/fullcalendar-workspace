@@ -32,31 +32,31 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .inset-x-0 {
-  inset-inline: calc(.25rem*0)
+  inset-inline: 0
 }
 
 .inset-y-0 {
-  inset-block: calc(.25rem*0)
+  inset-block: 0
 }
 
 .-start-1 {
-  inset-inline-start: calc(.25rem*-1)
+  inset-inline-start: -0.25rem
 }
 
 .-start-4 {
-  inset-inline-start: calc(.25rem*-4)
+  inset-inline-start: -1rem
 }
 
 .-end-1 {
-  inset-inline-end: calc(.25rem*-1)
+  inset-inline-end: -0.25rem
 }
 
 .end-0 {
-  inset-inline-end: calc(.25rem*0)
+  inset-inline-end: 0
 }
 
 .end-2 {
-  inset-inline-end: calc(.25rem*2)
+  inset-inline-end: 0.5rem
 }
 
 .end-\[-3px\] {
@@ -64,19 +64,19 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .-top-1 {
-  top: calc(.25rem*-1)
+  top: -0.25rem
 }
 
 .-top-3\.5 {
-  top: calc(.25rem*-3.5)
+  top: -0.875rem
 }
 
 .-top-4 {
-  top: calc(.25rem*-4)
+  top: -1rem
 }
 
 .top-0 {
-  top: calc(.25rem*0)
+  top: 0
 }
 
 .top-1\/2 {
@@ -84,11 +84,11 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .top-2 {
-  top: calc(.25rem*2)
+  top: 0.5rem
 }
 
 .-bottom-1 {
-  bottom: calc(.25rem*-1)
+  bottom: -0.25rem
 }
 
 .left-1\/2 {
@@ -108,35 +108,35 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .m-1 {
-  margin: calc(.25rem*1)
+  margin: 0.25rem
 }
 
 .m-1\.5 {
-  margin: calc(.25rem*1.5)
+  margin: 0.375rem
 }
 
 .m-2 {
-  margin: calc(.25rem*2)
+  margin: 0.5rem
 }
 
 .m-4 {
-  margin: calc(.25rem*4)
+  margin: 1rem
 }
 
 .-mx-2 {
-  margin-inline: calc(.25rem*-2)
+  margin-inline: -0.5rem
 }
 
 .mx-0\.5 {
-  margin-inline: calc(.25rem*.5)
+  margin-inline: 0.125rem
 }
 
 .mx-1 {
-  margin-inline: calc(.25rem*1)
+  margin-inline: 0.25rem
 }
 
 .mx-2 {
-  margin-inline: calc(.25rem*2)
+  margin-inline: 0.5rem
 }
 
 .mx-auto {
@@ -148,27 +148,27 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .my-0\.5 {
-  margin-block: calc(.25rem*.5)
+  margin-block: 0.125rem
 }
 
 .my-1 {
-  margin-block: calc(.25rem*1)
+  margin-block: 0.25rem
 }
 
 .my-2 {
-  margin-block: calc(.25rem*2)
+  margin-block: 0.5rem
 }
 
 .my-3 {
-  margin-block: calc(.25rem*3)
+  margin-block: 0.75rem
 }
 
 .my-4 {
-  margin-block: calc(.25rem*4)
+  margin-block: 1rem
 }
 
 .my-10 {
-  margin-block: calc(.25rem*10)
+  margin-block: 2.5rem
 }
 
 .my-px {
@@ -176,11 +176,11 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .ms-0\.5 {
-  margin-inline-start: calc(.25rem*.5)
+  margin-inline-start: 0.125rem
 }
 
 .ms-1 {
-  margin-inline-start: calc(.25rem*1)
+  margin-inline-start: 0.25rem
 }
 
 .ms-px {
@@ -188,15 +188,15 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .-me-1\.5 {
-  margin-inline-end: calc(.25rem*-1.5)
+  margin-inline-end: -0.375rem
 }
 
 .me-0\.5 {
-  margin-inline-end: calc(.25rem*.5)
+  margin-inline-end: 0.125rem
 }
 
 .me-1 {
-  margin-inline-end: calc(.25rem*1)
+  margin-inline-end: 0.25rem
 }
 
 .me-px {
@@ -204,11 +204,11 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .-mt-1 {
-  margin-top: calc(.25rem*-1)
+  margin-top: -0.25rem
 }
 
 .mt-1 {
-  margin-top: calc(.25rem*1)
+  margin-top: 0.25rem
 }
 
 .mt-px {
@@ -216,7 +216,7 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .mb-1 {
-  margin-bottom: calc(.25rem*1)
+  margin-bottom: 0.25rem
 }
 
 .mb-px {
@@ -224,7 +224,7 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .-ml-1 {
-  margin-left: calc(.25rem*-1)
+  margin-left: -0.25rem
 }
 
 .block {
@@ -244,56 +244,56 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .size-0 {
-  width: calc(.25rem*0);
-  height: calc(.25rem*0)
+  width: 0;
+  height: 0
 }
 
 .size-2 {
-  width: calc(.25rem*2);
-  height: calc(.25rem*2)
+  width: 0.5rem;
+  height: 0.5rem
 }
 
 .size-5 {
-  width: calc(.25rem*5);
-  height: calc(.25rem*5)
+  width: 1.25rem;
+  height: 1.25rem
 }
 
 .size-6 {
-  width: calc(.25rem*6);
-  height: calc(.25rem*6)
+  width: 1.5rem;
+  height: 1.5rem
 }
 
 .size-8 {
-  width: calc(.25rem*8);
-  height: calc(.25rem*8)
+  width: 2rem;
+  height: 2rem
 }
 
 .h-2 {
-  height: calc(.25rem*2)
+  height: 0.5rem
 }
 
 .h-5 {
-  height: calc(.25rem*5)
+  height: 1.25rem
 }
 
 .h-6 {
-  height: calc(.25rem*6)
+  height: 1.5rem
 }
 
 .h-8 {
-  height: calc(.25rem*8)
+  height: 2rem
 }
 
 .min-h-0\.5 {
-  min-height: calc(.25rem*.5)
+  min-height: 0.125rem
 }
 
 .min-h-1 {
-  min-height: calc(.25rem*1)
+  min-height: 0.25rem
 }
 
 .min-h-3 {
-  min-height: calc(.25rem*3)
+  min-height: 0.75rem
 }
 
 .min-h-px {
@@ -309,15 +309,15 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .w-2 {
-  width: calc(.25rem*2)
+  width: 0.5rem
 }
 
 .w-5 {
-  width: calc(.25rem*5)
+  width: 1.25rem
 }
 
 .w-6 {
-  width: calc(.25rem*6)
+  width: 1.5rem
 }
 
 .w-\[5px\] {
@@ -329,19 +329,19 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .max-w-50 {
-  max-width: calc(.25rem*50)
+  max-width: 12.5rem
 }
 
 .max-w-218 {
-  max-width: calc(.25rem*218)
+  max-width: 54.5rem
 }
 
 .min-w-0 {
-  min-width: calc(.25rem*0)
+  min-width: 0
 }
 
 .min-w-55 {
-  min-width: calc(.25rem*55)
+  min-width: 13.75rem
 }
 
 .shrink-0 {
@@ -405,19 +405,19 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .gap-1 {
-  gap: calc(.25rem*1)
+  gap: 0.25rem
 }
 
 .gap-2 {
-  gap: calc(.25rem*2)
+  gap: 0.5rem
 }
 
 .gap-3 {
-  gap: calc(.25rem*3)
+  gap: 0.75rem
 }
 
 .gap-4 {
-  gap: calc(.25rem*4)
+  gap: 1rem
 }
 
 .self-start {
@@ -626,27 +626,27 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .p-0\.5 {
-  padding: calc(.25rem*.5)
+  padding: 0.125rem
 }
 
 .p-1 {
-  padding: calc(.25rem*1)
+  padding: 0.25rem
 }
 
 .p-1\.5 {
-  padding: calc(.25rem*1.5)
+  padding: 0.375rem
 }
 
 .p-2 {
-  padding: calc(.25rem*2)
+  padding: 0.5rem
 }
 
 .p-3 {
-  padding: calc(.25rem*3)
+  padding: 0.75rem
 }
 
 .p-4 {
-  padding: calc(.25rem*4)
+  padding: 1rem
 }
 
 .p-px {
@@ -654,27 +654,27 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .px-0\.5 {
-  padding-inline: calc(.25rem*.5)
+  padding-inline: 0.125rem
 }
 
 .px-1 {
-  padding-inline: calc(.25rem*1)
+  padding-inline: 0.25rem
 }
 
 .px-1\.5 {
-  padding-inline: calc(.25rem*1.5)
+  padding-inline: 0.375rem
 }
 
 .px-2 {
-  padding-inline: calc(.25rem*2)
+  padding-inline: 0.5rem
 }
 
 .px-3 {
-  padding-inline: calc(.25rem*3)
+  padding-inline: 0.75rem
 }
 
 .px-4 {
-  padding-inline: calc(.25rem*4)
+  padding-inline: 1rem
 }
 
 .px-px {
@@ -682,27 +682,27 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .py-0\.5 {
-  padding-block: calc(.25rem*.5)
+  padding-block: 0.125rem
 }
 
 .py-1 {
-  padding-block: calc(.25rem*1)
+  padding-block: 0.25rem
 }
 
 .py-2 {
-  padding-block: calc(.25rem*2)
+  padding-block: 0.5rem
 }
 
 .py-3\.5 {
-  padding-block: calc(.25rem*3.5)
+  padding-block: 0.875rem
 }
 
 .py-4 {
-  padding-block: calc(.25rem*4)
+  padding-block: 1rem
 }
 
 .py-15 {
-  padding-block: calc(.25rem*15)
+  padding-block: 3.75rem
 }
 
 .py-px {
@@ -710,23 +710,23 @@ NOTE: apply this to buttonClass and popoverCloseClass
 }
 
 .ps-0\.5 {
-  padding-inline-start: calc(.25rem*.5)
+  padding-inline-start: 0.125rem
 }
 
 .ps-1 {
-  padding-inline-start: calc(.25rem*1)
+  padding-inline-start: 0.25rem
 }
 
 .pt-0\.5 {
-  padding-top: calc(.25rem*.5)
+  padding-top: 0.125rem
 }
 
 .pt-1 {
-  padding-top: calc(.25rem*1)
+  padding-top: 0.25rem
 }
 
 .pb-1 {
-  padding-bottom: calc(.25rem*1)
+  padding-bottom: 0.25rem
 }
 
 .text-\[0\.6875rem\]\/\[1\.090909\] {

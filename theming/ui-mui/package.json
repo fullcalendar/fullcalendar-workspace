@@ -59,7 +59,7 @@
     "build": "standard-scripts pkg:build && pnpm run clean-dist",
     "clean": "standard-scripts pkg:clean",
     "lint": "eslint .",
-    "clean-dist": "rm -f dist/*/global.js dist/*/global.min.js"
+    "clean-dist": "rm -f dist/*/global.js dist/*/global.min.js dist/*/global.css.js"
   },
   "type": "module",
   "tsConfig": {

@@ -17,7 +17,6 @@ build note:
     manually before `pn dev`
 
 
-Suppress package.json entries we don't need (because of clean-dist HACK)
 Make all *Class properties accept STRING only!
 Don't need nested cn(), just use arrays
 Make joinClassNames public and only public
@@ -29,6 +28,7 @@ package.json
   make separate full-ui packages?
 MUI LICENSE.md is empty
 demo-react changes for production
+kill old classic-theme package, rig up tests better
 
 
 ASAP

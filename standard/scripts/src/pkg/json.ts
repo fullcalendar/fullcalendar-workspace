@@ -70,16 +70,25 @@ export async function writeDistPkgJson(
       const iifePath = entrySubpath + iifeExtension
       const iifeMinPath = entrySubpath + '.min' + iifeExtension
 
-      sideEffects.push(iifePath, iifeMinPath)
+      // HACK (see clean-dist)
+      const simplified =
+        pkgAnalysis.isPublicMui ||
+        (pkgAnalysis.isPublicTheme && entrySubpath.startsWith('./palette'))
+          // matches "./palettes/"" or "./palette.css" (classic)
+
+      if (!simplified) { // HACK (see clean-dist)
+        sideEffects.push(iifePath, iifeMinPath)
+      }
 
       if (entryConfig.css) { // only works for iife (for now)
         const cssPath = entrySubpath + '.css'
-        const cssJsPath = entrySubpath + '.css.js'
-
         exportsMap[cssPath] = cssPath
-        exportsMap[cssJsPath] = cssJsPath
 
-        sideEffects.push(cssJsPath)
+        if (!simplified) { // HACK (see clean-dist)
+          const cssJsPath = entrySubpath + '.css.js'
+          exportsMap[cssJsPath] = cssJsPath
+          sideEffects.push(cssJsPath)
+        }
       }
     }
   }

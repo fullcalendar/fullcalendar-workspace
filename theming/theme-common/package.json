@@ -3,6 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo"
+  },
   "types": "./dist/index.d.ts",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -61,6 +66,7 @@
     "@fullcalendar/resource-timeline": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
     "@fullcalendar/timegrid": "workspace:*",
-    "@fullcalendar/timeline": "workspace:*"
+    "@fullcalendar/timeline": "workspace:*",
+    "typescript": "~5.7.2"
   }
 }

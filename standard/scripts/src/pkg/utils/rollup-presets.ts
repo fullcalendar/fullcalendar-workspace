@@ -364,6 +364,7 @@ function buildJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean, m
 
 function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: boolean, minifyCss: boolean): Plugin[] {
   const { pkgJson } = pkgBundleStruct
+  const pkgAnalysis = analyzePkg(pkgBundleStruct.pkgDir)
 
   return [
     nodeResolvePlugin({
@@ -371,7 +372,10 @@ function buildNormalJsPlugins(pkgBundleStruct: PkgBundleStruct, extractCss: bool
     }),
     cssPlugin({
       extract: extractCss,
-      minify: minifyCss,
+      minify: minifyCss &&
+        !pkgAnalysis.isPublicTheme,
+        // HACK to ensure color palettes don't get minified, because users might want to copy and paste
+        // but this turns off minification for ALL css files :( okay for now
     }),
     replacePlugin({
       delimiters: ['<%= ', ' %>'],
