@@ -179,7 +179,11 @@ function isClassName(s: string): boolean {
     s.startsWith('start-') ||
     s.startsWith('end-') ||
     s.startsWith('top-') ||
-    s.startsWith('bottom-')
+    s.startsWith('bottom-') ||
+    s.startsWith('-start-') ||
+    s.startsWith('-end-') ||
+    s.startsWith('-top-') ||
+    s.startsWith('-bottom-')
   ) {
     return true
   }

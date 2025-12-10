@@ -21,8 +21,8 @@ conversion bugs:
   MUI Monarch/Forma/Pulse compiled VS prod
     list-view ghost-button clickdown color
     same for day-circle (non-today) clickdown color
-transform REM -> EM
-  add to reset-root for font-size
+add font size to reset-root for themes that don't define granular font sizes?
+  test themes on how they let font-size through
 palettes.css
   break up into deparate color files for dist
   ensure it's not minified
