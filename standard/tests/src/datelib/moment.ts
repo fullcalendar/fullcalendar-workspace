@@ -1,6 +1,6 @@
 import { Calendar } from '@fullcalendar/core'
 import momentPlugin, { toMoment, toMomentDuration } from '@fullcalendar/moment'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import 'moment/locale/es' // only test spanish

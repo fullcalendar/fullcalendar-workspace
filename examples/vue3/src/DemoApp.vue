@@ -1,7 +1,7 @@
 <script>
 import { defineComponent } from 'vue'
 import FullCalendar from '@fullcalendar/vue3'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'

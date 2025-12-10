@@ -17,16 +17,30 @@ build note:
     manually before `pn dev`
 
 
+audit all esm that import @fullcalendar/theme-classic
+  and make sure all css files are included
+  including:
+    example-repos
+    README code samples
+in premium/bundle/examples/resource-add-remove.html
+  promptResource button isn't customizable
+in month-view.html
+  popover X positioning bad
+in premium/bundle/examples-v7/list-views.html
+  weird button text
 Make all *Class properties accept STRING only!
 Don't need nested cn(), just use arrays
 package.json
   Convert all workspace:7.0.0-rc.0 to just workspace:* ?
+  Correct all "@fullcalendar/theme-classic": "workspace:*"
   MUI doesn't need >= React 19
   Audit which packages are private:true
   make separate full-ui packages?
 MUI LICENSE.md is empty
 demo-react changes for production
 kill old classic-theme package, rig up tests better
+kill bootstrap5 theme
+  filenames with bootstrap5 too
 
 
 ASAP

@@ -18,7 +18,7 @@ Instantiate a Calendar with the necessary plugin:
 ```js
 import { Calendar } from '@fullcalendar/core'
 import adaptivePlugin from '@fullcalendar/adaptive'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
 const calendarEl = document.getElementById('calendar')

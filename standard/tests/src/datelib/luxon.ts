@@ -2,7 +2,7 @@ import { Calendar } from '@fullcalendar/core'
 import esLocale from '@fullcalendar/core/locales/es'
 import luxonPlugin, { toLuxonDateTime, toLuxonDuration } from '@fullcalendar/luxon3'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 import { testTimeZoneImpl } from '../lib/timeZoneImpl.js'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 

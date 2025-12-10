@@ -18,7 +18,7 @@ Instantiate a Calendar with the necessary plugin:
 ```js
 import { Calendar } from '@fullcalendar/core'
 import timeGridPlugin from '@fullcalendar/timegrid'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {

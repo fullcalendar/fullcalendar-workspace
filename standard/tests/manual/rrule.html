@@ -4,11 +4,12 @@
 <meta charset='utf-8' />
 
 <link rel='stylesheet' href='../../packages/core/dist/global.css' />
-<link rel='stylesheet' href='../../packages/classic-theme/dist/global.css' />
+<link rel='stylesheet' href='../../theming/theme-classic/dist/global.css' />
+<link rel='stylesheet' href='../../theming/theme-classic/dist/palette.css' />
 
 <script src='https://cdn.jsdelivr.net/npm/rrule@2.6.6/dist/es5/rrule.js'></script>
 <script src='../../packages/core/dist/global.js'></script>
-<script src='../../packages/classic-theme/dist/global.js'></script>
+<script src='../../theming/theme-classic/dist/global.js'></script>
 <script src='../../packages/daygrid/dist/global.js'></script>
 <script src='../../packages/interaction/dist/global.js'></script>
 <script src='../../packages/rrule/dist/global.js'></script>
@@ -18,6 +19,10 @@
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
+      headerToolbar: {
+        start: 'title',
+        end: 'today prev,next',
+      },
       initialDate: '2020-09-12',
       editable: true,
       events: [

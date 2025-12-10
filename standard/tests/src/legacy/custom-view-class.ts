@@ -1,6 +1,6 @@
 import { createPlugin } from '@fullcalendar/core'
 import { sliceEvents } from '@fullcalendar/core'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
 describe('custom view class', () => { // TODO: rename file

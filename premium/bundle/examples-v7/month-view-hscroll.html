@@ -4,16 +4,21 @@
 <meta charset='utf-8' />
 
 <link rel='stylesheet' href='../dist/global.css' />
-<link rel='stylesheet' href='../../../standard/packages/classic-theme/dist/global.css' />
+<link rel='stylesheet' href='../../../standard/theming/theme-classic/dist/global.css' />
+<link rel='stylesheet' href='../../../standard/theming/theme-classic/dist/palette.css' />
 
 <script src='../dist/global.js'></script>
-<script src='../../../standard/packages/classic-theme/dist/global.js'></script>
+<script src='../../../standard/theming/theme-classic/dist/global.js'></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
+      headerToolbar: {
+        start: 'title',
+        end: 'today prev,next',
+      },
       // better to show page break
       duration: { months: 2 },
       initialView: 'dayGrid',

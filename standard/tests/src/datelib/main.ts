@@ -8,7 +8,7 @@ import {
   diffWholeDays,
   diffDayAndTime,
 } from '@fullcalendar/core/internal'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import { getDSTDeadZone } from '../lib/dst-dead-zone.js'
 import { formatPrettyTimeZoneOffset, formatIsoTimeZoneOffset, formatIsoWithoutTz } from '../lib/datelib-utils.js'

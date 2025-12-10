@@ -4,10 +4,11 @@
 <meta charset='utf-8' />
 
 <link rel='stylesheet' href='../dist/global.css' />
-<link rel='stylesheet' href='../../packages/classic-theme/dist/global.css' />
+<link rel='stylesheet' href='../../theming/theme-classic/dist/global.css' />
+<link rel='stylesheet' href='../../theming/theme-classic/dist/palette.css' />
 
 <script src='../dist/global.js'></script>
-<script src='../../packages/classic-theme/dist/global.js'></script>
+<script src='../../theming/theme-classic/dist/global.js'></script>
 <script>
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -15,6 +16,10 @@
     var destCalendarEl = document.getElementById('destination-calendar');
 
     var srcCalendar = new FullCalendar.Calendar(srcCalendarEl, {
+      headerToolbar: {
+        start: 'title',
+        end: 'today prev,next',
+      },
       editable: true,
       initialDate: '2023-01-12',
       events: [
@@ -35,6 +40,10 @@
     });
 
     var destCalendar = new FullCalendar.Calendar(destCalendarEl, {
+      headerToolbar: {
+        start: 'title',
+        end: 'today prev,next',
+      },
       initialDate: '2023-01-12',
       editable: true,
       droppable: true, // will let it receive events!

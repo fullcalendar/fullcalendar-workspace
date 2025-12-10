@@ -1,6 +1,6 @@
 import { Calendar } from '@fullcalendar/core';
 import adaptivePlugin from '@fullcalendar/adaptive';
-import classicThemePlugin from '@fullcalendar/classic-theme';
+import classicThemePlugin from '@fullcalendar/theme-classic';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';

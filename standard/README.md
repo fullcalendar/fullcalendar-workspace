@@ -34,7 +34,7 @@ Instantiate a Calendar with plugins and options:
 
 ```js
 import { Calendar } from '@fullcalendar/core'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 

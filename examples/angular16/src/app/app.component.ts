@@ -1,6 +1,6 @@
 import { Component, signal, ChangeDetectorRef } from '@angular/core';
 import { CalendarOptions, DateSelectData, EventClickData, EventApi } from '@fullcalendar/core';
-import classicThemePlugin from '@fullcalendar/classic-theme';
+import classicThemePlugin from '@fullcalendar/theme-classic';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';

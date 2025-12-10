@@ -2,7 +2,8 @@
 <html>
   <head>
     <link rel='stylesheet' href='../../packages/core/dist/global.css' />
-    <link rel='stylesheet' href='../../packages/classic-theme/dist/global.css' />
+    <link rel='stylesheet' href='../../theming/theme-classic/dist/global.css' />
+    <link rel='stylesheet' href='../../theming/theme-classic/dist/palette.css' />
 
     <!-- TODO: update importmap.public.html with public version of these URLs -->
     <script type='importmap'>
@@ -15,7 +16,7 @@
           "@fullcalendar/core/internal": "../../packages/core/dist/esm/internal.js",
           "@fullcalendar/core/internal-classnames": "../../packages/core/dist/esm/internal-classnames.js",
           "@fullcalendar/core/preact": "../../packages/core/dist/esm/preact.js",
-          "@fullcalendar/classic-theme": "../../packages/classic-theme/dist/esm/index.js",
+          "@fullcalendar/theme-classic": "../../theming/theme-classic/dist/esm/index.js",
           "@fullcalendar/daygrid": "../../packages/daygrid/dist/esm/index.js",
           "@fullcalendar/daygrid/internal": "../../packages/daygrid/dist/esm/internal.js",
           "@fullcalendar/timegrid": "../../packages/timegrid/dist/esm/index.js",
@@ -27,7 +28,7 @@
     </script>
     <script type='module'>
       import { Calendar } from '@fullcalendar/core'
-      import classicThemePlugin from '@fullcalendar/classic-theme'
+      import classicThemePlugin from '@fullcalendar/theme-classic'
       import dayGridPlugin from '@fullcalendar/daygrid'
       import timeGridPlugin from '@fullcalendar/timegrid'
       import listPlugin from '@fullcalendar/list'

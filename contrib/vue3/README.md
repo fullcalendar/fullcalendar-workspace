@@ -18,7 +18,7 @@ Render a `FullCalendar` component, supplying an [options](https://fullcalendar.i
 ```vue
 <script>
 import FullCalendar from '@fullcalendar/vue3'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
 export default {

@@ -1,7 +1,7 @@
 import fetchMock from 'fetch-mock'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { EventSourceInput } from '@fullcalendar/core'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 import iCalendarPlugin from '@fullcalendar/icalendar'
 import oneHourMeeting from './data/oneHourMeeting.js'
 import recurringWeekly from './data/recurringWeekly.js'

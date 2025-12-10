@@ -1,6 +1,6 @@
 import { Calendar, DayHeaderData } from '@fullcalendar/core';
 import { Component, createElement } from '@fullcalendar/core/preact';
-import classicThemePlugin from '@fullcalendar/classic-theme';
+import classicThemePlugin from '@fullcalendar/theme-classic';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CalendarOptions, DateSelectData, EventClickData, EventInput } from '@fullcalendar/core';
-import classicThemePlugin from '@fullcalendar/classic-theme';
+import classicThemePlugin from '@fullcalendar/theme-classic';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';

@@ -1,6 +1,6 @@
 import timeGridPlugin from '@fullcalendar/timegrid'
 import luxonPlugin from '@fullcalendar/luxon3'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 
 describe('recurring events', () => {
   describe('when timed events in local timezone', () => {

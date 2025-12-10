@@ -25,7 +25,7 @@ Instantiate a Calendar with the necessary plugin:
 import { Calendar } from '@fullcalendar/core'
 import luxon3Plugin from '@fullcalendar/luxon3'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {

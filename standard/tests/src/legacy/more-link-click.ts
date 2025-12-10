@@ -1,6 +1,6 @@
 import dayGridPlugin from '@fullcalendar/daygrid'
 import momentTimeZonePlugin from '@fullcalendar/moment-timezone'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 import { DayGridViewWrapper } from '../lib/wrappers/DayGridViewWrapper.js'
 
 describe('moreLinkClick', () => {

@@ -25,7 +25,7 @@ Instantiate a Calendar with the necessary plugins and options:
 import { Calendar } from '@fullcalendar/core'
 import iCalendarPlugin from '@fullcalendar/icalendar'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {

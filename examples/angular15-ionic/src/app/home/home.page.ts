@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
-import classicThemePlugin from '@fullcalendar/classic-theme';
+import classicThemePlugin from '@fullcalendar/theme-classic';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 

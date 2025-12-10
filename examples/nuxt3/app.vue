@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import FullCalendar from '@fullcalendar/vue3'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 import interactionPlugin from '@fullcalendar/interaction'
 import timeGridPlugin from '@fullcalendar/timegrid'
 

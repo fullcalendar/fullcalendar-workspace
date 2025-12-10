@@ -9,7 +9,3 @@
 
 # Monorepo
 .turbo
-
-# Temporary
-premium/bundle/examples-*
-premium/bundle/examples-v7

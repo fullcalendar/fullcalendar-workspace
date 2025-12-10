@@ -1,6 +1,6 @@
 import { Calendar } from '@fullcalendar/core'
 import interactionPlugin, { ThirdPartyDraggable } from '@fullcalendar/interaction'
-import classicThemePlugin from '@fullcalendar/classic-theme'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import { ListenerCounter } from '../lib/ListenerCounter.js'
