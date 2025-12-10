@@ -4,7 +4,12 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
+import classicThemePlugin from '@fullcalendar/theme-classic'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
+
+import '@fullcalendar/core/global.css'
+import '@fullcalendar/theme-classic/global.css'
+import '@fullcalendar/theme-classic/palette.css'
 
 export default function DemoApp() {
   const [weekendsVisible, setWeekendsVisible] = useState(true)
@@ -50,7 +55,7 @@ export default function DemoApp() {
       />
       <div className='demo-app-main'>
         <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          plugins={[classicThemePlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
             left: 'prev,next today',
             center: 'title',

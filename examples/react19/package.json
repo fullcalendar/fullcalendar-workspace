@@ -17,6 +17,7 @@
     "@fullcalendar/interaction": "workspace:7.0.0-rc.0",
     "@fullcalendar/react": "workspace:7.0.0-rc.0",
     "@fullcalendar/timegrid": "workspace:7.0.0-rc.0",
+    "@fullcalendar/theme-classic": "workspace:*",
     "react": "^19.0.0-rc.0",
     "react-dom": "^19.0.0-rc.0"
   },

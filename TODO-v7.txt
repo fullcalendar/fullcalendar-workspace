@@ -17,6 +17,8 @@ build note:
     manually before `pn dev`
 
 
+search for this code
+  .fc { /* the calendar root */
 audit all esm that import @fullcalendar/theme-classic
   and make sure all css files are included
   including:
@@ -319,6 +321,9 @@ For tailwind -> vanilla css conversion
   but browser support for that is too new
   ALSO:
     Undo outline-style: none !important /* HACK */
+examples repos that rely on Webpack - getting working
+  had lots of problems with cjs and importing .css files
+
 
 Changelog
 ---------
