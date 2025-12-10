@@ -35,6 +35,10 @@ import classicThemePlugin from '@fullcalendar/theme-classic'
 import interactionPlugin from '@fullcalendar/interaction'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 
+import '@fullcalendar/core/global.css'
+import '@fullcalendar/theme-classic/global.css'
+import '@fullcalendar/theme-classic/palette.css'
+
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
   plugins: [

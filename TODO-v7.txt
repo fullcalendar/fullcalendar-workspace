@@ -21,10 +21,6 @@ Use @fullcalendar/theme-classic in tests
 vue3 connector
   in markup, puts this weird attribute on calendar div
     attrs="[object Object]
-audit all esm that import @fullcalendar/theme-classic
-  and make sure all css files are included
-  including:
-    README code samples
 in premium/bundle/examples/resource-add-remove.html
   promptResource button isn't customizable
 in month-view.html

@@ -27,6 +27,10 @@ import momentPlugin from '@fullcalendar/moment'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import classicThemePlugin from '@fullcalendar/theme-classic'
 
+import '@fullcalendar/core/global.css'
+import '@fullcalendar/theme-classic/global.css'
+import '@fullcalendar/theme-classic/palette.css'
+
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
   plugins: [

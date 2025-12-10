@@ -38,6 +38,10 @@ import classicThemePlugin from '@fullcalendar/theme-classic'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 
+import '@fullcalendar/core/global.css'
+import '@fullcalendar/theme-classic/global.css'
+import '@fullcalendar/theme-classic/palette.css'
+
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
   plugins: [
