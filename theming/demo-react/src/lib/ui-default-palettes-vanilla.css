@@ -1,6 +1,6 @@
 
-@import "@fullcalendar/theme-classic/palettes.css";
-@import "@fullcalendar/theme-breezy/palettes.css";
-@import "@fullcalendar/theme-pulse/palettes.css";
-@import "@fullcalendar/theme-monarch/palettes.css";
-@import "@fullcalendar/theme-forma/palettes.css";
+@import "@fullcalendar/theme-classic/palette.css"; /* different because didn't need color-split */
+@import "@fullcalendar/theme-breezy-tailwind/ui-default-palettes-vanilla.css";
+@import "@fullcalendar/theme-pulse-tailwind/ui-default-palettes-vanilla.css";
+@import "@fullcalendar/theme-monarch-tailwind/ui-default-palettes-vanilla.css";
+@import "@fullcalendar/theme-forma-tailwind/ui-default-palettes-vanilla.css";

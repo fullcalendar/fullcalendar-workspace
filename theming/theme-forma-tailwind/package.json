@@ -14,6 +14,7 @@
   "exports": {
     "./package.json": "./package.json",
     "./ui-default-palettes.css": "./src/ui-default-palettes.css",
+    "./ui-default-palettes-vanilla.css": "./src/ui-default-palettes-vanilla.css",
     ".": {
       "import": {
         "types": "./dist/index.d.ts",

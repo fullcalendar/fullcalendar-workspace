@@ -17,11 +17,7 @@ build note:
     manually before `pn dev`
 
 
-classic theme should just have palette.css
 implement colorScheme='light|dark|auto'
-palettes.css
-  break up into deparate color files for dist
-  ensure it's not minified
 Suppress package.json entries we don't need (because of clean-dist HACK)
 Make all *Class properties accept STRING only!
 Don't need nested cn(), just use arrays
