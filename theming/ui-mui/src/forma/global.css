@@ -809,6 +809,10 @@ NOTE: apply this to buttonClass and popoverCloseClass
     background-color: rgba(var(--mui-palette-text-primaryChannel)/.12)
   }
 
+  .hover\:bg-\[rgba\(var\(--mui-palette-text-primaryChannel\)_\/_0\.16\)\]:hover {
+    background-color: rgba(var(--mui-palette-text-primaryChannel)/.16)
+  }
+
   .hover\:underline:hover {
     text-decoration-line: underline
   }
@@ -816,6 +820,10 @@ NOTE: apply this to buttonClass and popoverCloseClass
 
 .focus-visible\:bg-\[rgba\(var\(--mui-palette-text-primaryChannel\)_\/_0\.08\)\]:focus-visible {
   background-color: rgba(var(--mui-palette-text-primaryChannel)/.08)
+}
+
+.focus-visible\:bg-\[rgba\(var\(--mui-palette-text-primaryChannel\)_\/_0\.16\)\]:focus-visible {
+  background-color: rgba(var(--mui-palette-text-primaryChannel)/.16)
 }
 
 .focus-visible\:outline-3:focus-visible {
@@ -863,6 +871,10 @@ NOTE: apply this to buttonClass and popoverCloseClass
 
 .active\:bg-\[rgba\(var\(--mui-palette-text-primaryChannel\)_\/_0\.16\)\]:active {
   background-color: rgba(var(--mui-palette-text-primaryChannel)/.16)
+}
+
+.active\:bg-\[rgba\(var\(--mui-palette-text-primaryChannel\)_\/_0\.2\)\]:active {
+  background-color: rgba(var(--mui-palette-text-primaryChannel)/.2)
 }
 
 @media print {

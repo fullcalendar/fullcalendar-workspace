@@ -14,18 +14,21 @@ export const primaryOutlineColorClass = 'outline-(--mui-palette-primary-main)'
 const strongestSolidBgActiveClass = 'active:bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_25%,var(--mui-palette-background-paper))]'
 
 // stronger (20%)
+const strongerBgActiveClass = 'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]'
 const strongerSolidBgHoverClass = 'hover:bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_20%,var(--mui-palette-background-paper))]'
 
 // strong (16%)
+const strongBgHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]'
+const strongBgFocusClass = 'focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]'
+const strongBgActiveClass = 'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]'
 const strongSolidBgClass = 'bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_16%,var(--mui-palette-background-paper))]'
 export const strongSolidPressableClass = `${strongSolidBgClass} ${strongerSolidBgHoverClass} ${strongestSolidBgActiveClass}`
 
 // muted (8%)
 export const mutedBgClass = 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]'
 const mutedBgHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]'
-const mutedBgActiveClass = 'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]'
-export const mutedPressableClass = `${mutedBgClass} hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.12)] active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]`
-export const mutedHoverPressableClass = `${mutedBgHoverClass} focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)] ${mutedBgActiveClass}`
+export const mutedPressableClass = `${mutedBgClass} ${strongBgHoverClass} ${strongerBgActiveClass}`
+export const mutedHoverPressableClass = `${mutedBgHoverClass} ${strongBgFocusClass} ${strongBgActiveClass}`
 
 // faint (4%)
 export const faintBgClass = 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]'

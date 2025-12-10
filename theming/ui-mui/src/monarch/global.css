@@ -859,6 +859,10 @@ NOTE: apply this to buttonClass and popoverCloseClass
   background-color: rgba(var(--mui-palette-text-primaryChannel)/.08)
 }
 
+.group-focus-visible\:bg-\[rgba\(var\(--mui-palette-text-primaryChannel\)_\/_0\.16\)\]:is(:where(.group):focus-visible *) {
+  background-color: rgba(var(--mui-palette-text-primaryChannel)/.16)
+}
+
 .group-focus-visible\:text-\(--mui-palette-text-primary\):is(:where(.group):focus-visible *) {
   color: var(--mui-palette-text-primary)
 }
@@ -874,6 +878,10 @@ NOTE: apply this to buttonClass and popoverCloseClass
 
 .group-active\:bg-\[rgba\(var\(--mui-palette-text-primaryChannel\)_\/_0\.08\)\]:is(:where(.group):active *) {
   background-color: rgba(var(--mui-palette-text-primaryChannel)/.08)
+}
+
+.group-active\:bg-\[rgba\(var\(--mui-palette-text-primaryChannel\)_\/_0\.16\)\]:is(:where(.group):active *) {
+  background-color: rgba(var(--mui-palette-text-primaryChannel)/.16)
 }
 
 @media (hover:hover) {
@@ -918,6 +926,10 @@ NOTE: apply this to buttonClass and popoverCloseClass
   background-color: rgba(var(--mui-palette-text-primaryChannel)/.08)
 }
 
+.focus-visible\:bg-\[rgba\(var\(--mui-palette-text-primaryChannel\)_\/_0\.16\)\]:focus-visible {
+  background-color: rgba(var(--mui-palette-text-primaryChannel)/.16)
+}
+
 .focus-visible\:outline-3:focus-visible {
   outline-style: solid;
   outline-width: 3px
@@ -953,6 +965,10 @@ NOTE: apply this to buttonClass and popoverCloseClass
 
 .active\:bg-\[rgba\(var\(--mui-palette-text-primaryChannel\)_\/_0\.08\)\]:active {
   background-color: rgba(var(--mui-palette-text-primaryChannel)/.08)
+}
+
+.active\:bg-\[rgba\(var\(--mui-palette-text-primaryChannel\)_\/_0\.16\)\]:active {
+  background-color: rgba(var(--mui-palette-text-primaryChannel)/.16)
 }
 
 @media print {

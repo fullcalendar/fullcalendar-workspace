@@ -16,15 +16,19 @@ const strongestSolidBgActiveClass = 'active:bg-[color-mix(in_oklab,var(--mui-pal
 const strongerSolidBgHoverClass = 'hover:bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_20%,var(--mui-palette-background-paper))]'
 
 // strong (16%)
+const strongBgFocusClass = 'focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]'
+const strongBgFocusGroupClass = 'group-focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]'
+const strongBgActiveClass = 'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]'
+const strongBgActiveGroupClass = 'group-active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.16)]'
 const strongSolidBgClass = 'bg-[color-mix(in_oklab,var(--mui-palette-text-primary)_16%,var(--mui-palette-background-paper))]'
 export const strongSolidPressableClass = `${strongSolidBgClass} ${strongerSolidBgHoverClass} ${strongestSolidBgActiveClass}`
 
 // muted (8%)
 export const mutedBgClass = 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]'
 const mutedBgHoverClass = 'hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]'
-const mutedBgActiveClass = 'active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]'
-export const mutedHoverPressableClass = `${mutedBgHoverClass} focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)] ${mutedBgActiveClass}`
-export const mutedHoverPressableGroupClass = `group-hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)] group-focus-visible:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)] group-active:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]`
+const mutedBgHoverGroupClass = 'group-hover:bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.08)]'
+export const mutedHoverPressableClass = `${mutedBgHoverClass} ${strongBgFocusClass} ${strongBgActiveClass}`
+const mutedHoverPressableGroupClass = `${mutedBgHoverGroupClass} ${strongBgFocusGroupClass} ${strongBgActiveGroupClass}`
 
 // faint (4%)
 export const faintBgClass = 'bg-[rgba(var(--mui-palette-text-primaryChannel)_/_0.04)]'
