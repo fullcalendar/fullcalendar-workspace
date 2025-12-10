@@ -19,7 +19,6 @@ build note:
 
 Make all *Class properties accept STRING only!
 Don't need nested cn(), just use arrays
-Why is createFormatter exposed as public?
 package.json
   Convert all workspace:7.0.0-rc.0 to just workspace:* ?
   MUI doesn't need >= React 19
