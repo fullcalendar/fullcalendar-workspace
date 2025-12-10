@@ -24,18 +24,24 @@
         center: 'title',
         right: 'timelineDay,timelineTenDay,timelineMonth,timelineYear'
       },
-      initialView: 'timelineDay',
+      buttons: {
+        timelineDay: {
+          text: ':15 slots'
+        },
+        timelineTenDay: {
+          text: '10 days'
+        }
+      },
       views: {
         timelineDay: {
-          buttonText: ':15 slots',
           slotDuration: '00:15'
         },
         timelineTenDay: {
           type: 'timeline',
-          duration: { days: 10 },
-          buttonText: '10 days'
+          duration: { days: 10 }
         }
       },
+      initialView: 'timelineDay',
       navLinks: true,
       resourceAreaWidth: '25%',
       resourceAreaHeaderContent: 'Rooms',

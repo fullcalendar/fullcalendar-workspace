@@ -26,14 +26,18 @@
         center: 'title',
         right: 'resourceTimelineDay,resourceTimelineThreeDays,timeGridWeek,dayGridMonth'
       },
-      initialView: 'resourceTimelineThreeDays',
+      buttons: {
+        resourceTimelineThreeDays: {
+          text: '3 days'
+        }
+      },
       views: {
         resourceTimelineThreeDays: {
           type: 'resourceTimeline',
-          duration: { days: 3 },
-          buttonText: '3 days'
+          duration: { days: 3 }
         }
       },
+      initialView: 'resourceTimelineThreeDays',
       resourceAreaWidth: '40%',
       resourceAreaHeaderContent: 'Rooms',
       resourceAreaColumns: [

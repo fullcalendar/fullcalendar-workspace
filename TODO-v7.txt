@@ -19,13 +19,6 @@ build note:
 
 Use @fullcalendar/theme-classic in tests
   after, delete
-vue3 connector
-  in markup, puts this weird attribute on calendar div
-    attrs="[object Object]
-in premium/bundle/examples/resource-add-remove.html
-  promptResource button isn't customizable
-in premium/bundle/examples-v7/list-views.html
-  weird button text
 Make all *Class properties accept STRING only!
 Don't need nested cn(), just use arrays
 package.json
@@ -320,6 +313,9 @@ examples repos that rely on Webpack - getting working
     .fc { /* the calendar root */
 should the .css files have .d.ts? better for VSCode?
   should they be marked as providing side effects too? so they don't get tree-shaken?
+vue3 connector
+  in markup, puts this weird attribute on calendar div
+    attrs="[object Object]"
 
 
 Changelog

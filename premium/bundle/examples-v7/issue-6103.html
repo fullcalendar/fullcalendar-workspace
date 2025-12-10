@@ -24,16 +24,16 @@
         center: 'title',
         right: 'resourceTimelineDay,resourceTimeGridDay'
       },
+      buttons: {
+        resourceTimelineDay: { text: 'timeline' },
+        resourceTimeGridDay: { text: 'timeGrid' }
+      },
       resourceLaneContent: function(info) {
         return {
           html: '<div style="height: 200px; outline: 1px solid red;">test</div>'
         }
       },
       resourceAreaHeaderContent: 'Rooms',
-      views: {
-        resourceTimelineDay: { buttonText: 'timeline' },
-        resourceTimeGridDay: { buttonText: 'timeGrid' }
-      },
       events: [
         {
           resourceId: 'a',
