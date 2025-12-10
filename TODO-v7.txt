@@ -323,6 +323,8 @@ For tailwind -> vanilla css conversion
     Undo outline-style: none !important /* HACK */
 examples repos that rely on Webpack - getting working
   had lots of problems with cjs and importing .css files
+should the .css files have .d.ts? better for VSCode?
+  should they be marked as providing side effects too? so they don't get tree-shaken?
 
 
 Changelog
