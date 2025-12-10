@@ -17,15 +17,16 @@ build note:
     manually before `pn dev`
 
 
-implement colorScheme='light|dark|auto'
 Suppress package.json entries we don't need (because of clean-dist HACK)
 Make all *Class properties accept STRING only!
 Don't need nested cn(), just use arrays
 Make joinClassNames public and only public
 Why is createFormatter exposed as public?
-Convert all workspace:7.0.0-rc.0 to just workspace:* ?
-MUI doesn't need >= React 19
-Audit which packages are private:true
+package.json
+  Convert all workspace:7.0.0-rc.0 to just workspace:* ?
+  MUI doesn't need >= React 19
+  Audit which packages are private:true
+  make separate full-ui packages?
 MUI LICENSE.md is empty
 demo-react changes for production
 
@@ -1133,3 +1134,9 @@ the flexbox react-native VS web conundrum
   (aka the defaults for <View> and <div>)
   both behave similarly except that flex-col will shrink elements of too short
   however, all of the elements we expose have full reign on height (and UI adapts around it), won't matter
+color palettes we put in each themes' dist
+  for dark mode requires a data-color-scheme=dark attribute on some root element
+  other systems do .dark, but if other color-schemes in future (like solarized or whatever) not flexible
+  was impossible to have data-color-scheme=auto that relied on media query
+    because impossible to combine media query with a selector in the way we want
+    and the only other solution would be duplicating all the dark mode css
