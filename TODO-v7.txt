@@ -17,12 +17,13 @@ build note:
     manually before `pn dev`
 
 
-search for this code
-  .fc { /* the calendar root */
+Use @fullcalendar/theme-classic in tests
+vue3 connector
+  in markup, puts this weird attribute on calendar div
+    attrs="[object Object]
 audit all esm that import @fullcalendar/theme-classic
   and make sure all css files are included
   including:
-    example-repos
     README code samples
 in premium/bundle/examples/resource-add-remove.html
   promptResource button isn't customizable
@@ -39,8 +40,8 @@ package.json
   Audit which packages are private:true
   make separate full-ui packages?
 MUI LICENSE.md is empty
+Readmes for each theme?
 demo-react changes for production
-kill old classic-theme package, rig up tests better
 kill bootstrap5 theme
   filenames with bootstrap5 too
 
@@ -323,6 +324,8 @@ For tailwind -> vanilla css conversion
     Undo outline-style: none !important /* HACK */
 examples repos that rely on Webpack - getting working
   had lots of problems with cjs and importing .css files
+  also, ensure this is removed, doesn't work anymore:
+    .fc { /* the calendar root */
 should the .css files have .d.ts? better for VSCode?
   should they be marked as providing side effects too? so they don't get tree-shaken?
 

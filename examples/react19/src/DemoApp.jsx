@@ -55,6 +55,7 @@ export default function DemoApp() {
       />
       <div className='demo-app-main'>
         <FullCalendar
+          className='demo-app-calendar'
           plugins={[classicThemePlugin, dayGridPlugin, timeGridPlugin, interactionPlugin]}
           headerToolbar={{
             left: 'prev,next today',

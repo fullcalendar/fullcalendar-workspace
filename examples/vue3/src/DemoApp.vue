@@ -170,7 +170,7 @@ b { /* used for event dates/times */
   padding: 3em;
 }
 
-.fc { /* the calendar root */
+.demo-app-calendar {
   max-width: 1100px;
   margin: 0 auto;
 }
