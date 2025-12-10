@@ -48,7 +48,10 @@ Add this very simple set of reset classes to the top of the file along with the 
     opacity: 1;
     background-color: #0000;
     border-radius: 0;
-    border: 0 /* originally provided on border-box reset */
+    /* originally provided on border-box reset */
+    margin: 0;
+    border: 0;
+    padding: 0
   }
 
 Now we'll update the corresponding index.tsx in the same directory to USE these reset classes.

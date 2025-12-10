@@ -24,8 +24,6 @@ vue3 connector
     attrs="[object Object]
 in premium/bundle/examples/resource-add-remove.html
   promptResource button isn't customizable
-in month-view.html
-  popover X positioning bad
 in premium/bundle/examples-v7/list-views.html
   weird button text
 Make all *Class properties accept STRING only!

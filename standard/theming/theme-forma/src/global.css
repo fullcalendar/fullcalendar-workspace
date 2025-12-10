@@ -20,7 +20,10 @@ NOTE: apply this to buttonClass and popoverCloseClass
   opacity: 1;
   background-color: #0000;
   border-radius: 0;
-  border: 0 /* originally provided on border-box reset */
+  /* originally provided on border-box reset */
+  margin: 0;
+  border: 0;
+  padding: 0
 }
 
 .pointer-events-none {
