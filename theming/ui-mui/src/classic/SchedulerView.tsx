@@ -1,5 +1,5 @@
 import React from 'react'
-import { CalendarOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import EventCalendarView, {
   mutedBgClass,
@@ -24,16 +24,16 @@ export default function SchedulerView({
       ------------------------------------------------------------------------------------------- */
 
       resourceDayHeaderAlign="center"
-      resourceDayHeaderClass={(data) => [
+      resourceDayHeaderClass={(data) => joinClassNames(
         'border',
         data.isMajor
           ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]'
           : 'border-(--mui-palette-divider)',
-      ]}
-      resourceDayHeaderInnerClass={(data) => [
+      )}
+      resourceDayHeaderInnerClass={(data) => joinClassNames(
         'px-1 py-0.5 flex flex-col',
         data.isNarrow ? xxsTextClass : 'text-sm',
-      ]}
+      )}
 
       /* Resource Data Grid
       ------------------------------------------------------------------------------------------- */
@@ -62,7 +62,7 @@ export default function SchedulerView({
 
       resourceGroupLaneClass={`border border-(--mui-palette-divider) ${mutedBgClass}`}
       resourceLaneClass="border border-(--mui-palette-divider)"
-      resourceLaneBottomClass={(data) => data.options.eventOverlap && 'h-3'}
+      resourceLaneBottomClass={(data) => joinClassNames(data.options.eventOverlap && 'h-3')}
       timelineBottomClass="h-3"
 
       /* View-Specific Options
@@ -75,33 +75,29 @@ export default function SchedulerView({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => [
+          rowEventClass: (data) => joinClassNames(
             data.isEnd && 'me-px',
             'items-center',
-          ],
-          rowEventBeforeClass: (data) => (
+          ),
+          rowEventBeforeClass: (data) => joinClassNames(
             !data.isStartResizable ? (
               data.isSelected
-                ? [rowTouchResizerClass, '-start-1']
-                : [rowPointerResizerClass, '-start-1']
+                ? joinClassNames(rowTouchResizerClass, '-start-1')
+                : joinClassNames(rowPointerResizerClass, '-start-1')
             ) : (
               !data.isStart && `${continuationArrowClass} border-e-[5px] border-e-black`
             )
           ),
-          rowEventAfterClass: (data) => (
+          rowEventAfterClass: (data) => joinClassNames(
             !data.isEndResizable ? (
               data.isSelected
-                ? [rowTouchResizerClass, '-end-1']
-                : [rowPointerResizerClass, '-end-1']
+                ? joinClassNames(rowTouchResizerClass, '-end-1')
+                : joinClassNames(rowPointerResizerClass, '-end-1')
             ) : (
               !data.isEnd && `${continuationArrowClass} border-s-[5px] border-s-black`
             )
           ),
-          rowEventInnerClass: (data) => (
-            data.options.eventOverlap
-              ? 'py-0.5'
-              : 'py-1.5'
-          ),
+          rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-0.5' : 'py-1.5',
           rowEventTimeClass: 'px-0.5',
           rowEventTitleClass: 'px-0.5',
 
@@ -116,10 +112,10 @@ export default function SchedulerView({
 
           slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
           slotHeaderClass: 'justify-center',
-          slotHeaderInnerClass: (data) => [
+          slotHeaderInnerClass: (data) => joinClassNames(
             'p-2 text-sm',
             data.hasNavLink && 'hover:underline',
-          ],
+          ),
           slotHeaderDividerClass: `border-b border-(--mui-palette-divider)`,
 
           /* Timeline > Now-Indicator

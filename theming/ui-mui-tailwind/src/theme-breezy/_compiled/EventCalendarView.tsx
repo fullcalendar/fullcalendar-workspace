@@ -64,28 +64,28 @@ const blockTouchResizerClass = `absolute size-2 border border-(--fc-event-color)
 export const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
 const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
-export const getNormalDayHeaderBorderClass = (data: DayHeaderData) => (
+export const getNormalDayHeaderBorderClass = (data: DayHeaderData) => joinClassNames(
   !data.inPopover && (
     data.isMajor ? `border border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]` :
       !data.isNarrow && `border border-(--mui-palette-divider)`
   )
 )
-export const getMutedDayHeaderBorderClass = (data: DayHeaderData) => (
+export const getMutedDayHeaderBorderClass = (data: DayHeaderData) => joinClassNames(
   !data.inPopover && (
     data.isMajor ? `border border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]` :
       !data.isNarrow && `border border-(--mui-palette-divider)`
   )
 )
 
-export const getNormalDayCellBorderColorClass = (data: DayCellData) => (
+export const getNormalDayCellBorderColorClass = (data: DayCellData) => joinClassNames(
   data.isMajor ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]' : 'border-(--mui-palette-divider)'
 )
-export const getMutedDayCellBorderColorClass = (data: DayCellData) => (
+export const getMutedDayCellBorderColorClass = (data: DayCellData) => joinClassNames(
   data.isMajor ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]' : 'border-(--mui-palette-divider)'
 )
 
 export const tallDayCellBottomClass = 'min-h-3'
-export const getShortDayCellBottomClass = (data: DayCellData) => (
+export const getShortDayCellBottomClass = (data: DayCellData) => joinClassNames(
   !data.isNarrow && 'min-h-px'
 )
 
@@ -100,7 +100,7 @@ export const dayRowCommonClasses: CalendarOptions = {
   /* Day Row > List-Item Event
   ----------------------------------------------------------------------------------------------- */
 
-  listItemEventClass: (data) => [
+  listItemEventClass: (data) => joinClassNames(
     'mb-px p-px',
     data.isNarrow
       ? 'mx-px rounded-sm'
@@ -110,48 +110,48 @@ export const dayRowCommonClasses: CalendarOptions = {
       : data.isInteractive
         ? mutedHoverPressableClass
         : mutedBgHoverClass,
-  ],
-  listItemEventInnerClass: (data) => [
+  ),
+  listItemEventInnerClass: (data) => joinClassNames(
     'flex flex-row items-center justify-between',
     data.isNarrow
       ? `py-px ${xxsTextClass}`
       : 'py-0.5 text-xs',
-  ],
-  listItemEventTimeClass: (data) => [
+  ),
+  listItemEventTimeClass: (data) => joinClassNames(
     data.isNarrow ? 'px-px' : 'px-0.5',
     'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)] order-1 whitespace-nowrap overflow-hidden shrink-1',
-  ],
-  listItemEventTitleClass: (data) => [
+  ),
+  listItemEventTitleClass: (data) => joinClassNames(
     data.isNarrow ? 'px-px' : 'px-0.5',
     'text-(--mui-palette-text-primary) font-medium whitespace-nowrap overflow-hidden shrink-100',
     data.timeText && 'text-ellipsis',
-  ],
+  ),
 
   /* Day Row > Row Event
   ----------------------------------------------------------------------------------------------- */
 
-  rowEventClass: (data) => [
+  rowEventClass: (data) => joinClassNames(
     data.isStart && (data.isNarrow ? 'ms-0.5' : 'ms-1'),
     data.isEnd && (data.isNarrow ? 'me-0.5' : 'me-1'),
-  ],
-  rowEventInnerClass: (data) => data.isNarrow ? 'py-px' : 'py-0.5',
+  ),
+  rowEventInnerClass: (data) => joinClassNames(data.isNarrow ? 'py-px' : 'py-0.5'),
 
   /* Day Row > More-Link
   ----------------------------------------------------------------------------------------------- */
 
-  rowMoreLinkClass: (data) => [
+  rowMoreLinkClass: (data) => joinClassNames(
     'mb-px border',
     data.isNarrow
       ? `mx-px border-(--mui-palette-primary-main) rounded-sm`
       : 'self-start mx-1 border-transparent rounded-md',
     mutedHoverPressableClass,
-  ],
-  rowMoreLinkInnerClass: (data) => [
+  ),
+  rowMoreLinkInnerClass: (data) => joinClassNames(
     data.isNarrow
       ? `p-px ${xxsTextClass}`
       : 'p-0.5 text-xs',
     'text-(--mui-palette-text-primary)',
-  ]
+  )
 }
 
 export default function EventCalendarView({
@@ -166,7 +166,7 @@ export default function EventCalendarView({
 
       eventShortHeight={50}
       eventColor="var(--mui-palette-primary-main)"
-      eventClass={(data) => [
+      eventClass={(data) => joinClassNames(
         data.isSelected
           ? joinClassNames(
               outlineWidthClass,
@@ -174,30 +174,30 @@ export default function EventCalendarView({
             )
           : outlineWidthFocusClass,
         primaryOutlineColorClass,
-      ]}
+      )}
 
       /* Background Event
       ------------------------------------------------------------------------------------------- */
 
       backgroundEventColor="var(--mui-palette-secondary-main)"
       backgroundEventClass="bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]"
-      backgroundEventTitleClass={(data) => [
+      backgroundEventTitleClass={(data) => joinClassNames(
         'opacity-50 italic text-(--mui-palette-text-primary)',
         data.isNarrow
           ? `p-1 ${xxsTextClass}`
           : 'p-2 text-xs',
-      ]}
+      )}
 
       /* Block Event
       ------------------------------------------------------------------------------------------- */
 
-      blockEventClass={(data) => [
+      blockEventClass={(data) => joinClassNames(
         'group relative print:bg-white border-transparent print:border-(--fc-event-color)',
         data.isInteractive
           ? eventFaintPressableClass
           : eventFaintBgClass,
         (data.isDragging && !data.isSelected) && 'opacity-75',
-      ]}
+      )}
       blockEventInnerClass={eventMutedFgClass}
       blockEventTimeClass="whitespace-nowrap overflow-hidden shrink-1"
       blockEventTitleClass="whitespace-nowrap overflow-hidden shrink-100"
@@ -205,56 +205,54 @@ export default function EventCalendarView({
       /* Row Event
       ------------------------------------------------------------------------------------------- */
 
-      rowEventClass={(data) => [
+      rowEventClass={(data) => joinClassNames(
         'mb-px border-y',
         data.isStart && joinClassNames('border-s', data.isNarrow ? 'rounded-s-sm' : 'rounded-s-md'),
         data.isEnd && joinClassNames('border-e', data.isNarrow ? 'rounded-e-sm' : 'rounded-e-md'),
-      ]}
-      rowEventBeforeClass={(data) => (
-        data.isStartResizable && [
+      )}
+      rowEventBeforeClass={(data) => joinClassNames(
+        data.isStartResizable && joinClassNames(
           data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
           '-start-1',
-        ]
+        )
       )}
-      rowEventAfterClass={(data) => (
-        data.isEndResizable && [
+      rowEventAfterClass={(data) => joinClassNames(
+        data.isEndResizable && joinClassNames(
           data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
           '-end-1',
-        ]
+        )
       )}
-      rowEventInnerClass={(data) => [
+      rowEventInnerClass={(data) => joinClassNames(
         'flex flex-row items-center',
         data.isNarrow ? xxsTextClass : 'text-xs',
-      ]}
-      rowEventTimeClass={(data) => [
+      )}
+      rowEventTimeClass={(data) => joinClassNames(
         data.isNarrow ? 'ps-0.5' : 'ps-1',
         'font-medium',
-      ]}
-      rowEventTitleClass={(data) => (
-        data.isNarrow ? 'px-0.5' : 'px-1'
       )}
+      rowEventTitleClass={(data) => data.isNarrow ? 'px-0.5' : 'px-1'}
 
       /* Column Event
       ------------------------------------------------------------------------------------------- */
 
-      columnEventClass={(data) => [
+      columnEventClass={(data) => joinClassNames(
         `border-x ring ring-(--mui-palette-background-paper)`,
         data.isStart && joinClassNames('border-t rounded-t-lg', data.isNarrow ? 'mt-px' : 'mt-1'),
         data.isEnd && joinClassNames('border-b rounded-b-lg', data.isNarrow ? 'mb-px' : 'mb-1'),
-      ]}
-      columnEventBeforeClass={(data) => (
-        data.isStartResizable && [
+      )}
+      columnEventBeforeClass={(data) => joinClassNames(
+        data.isStartResizable && joinClassNames(
           data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
           '-top-1',
-        ]
+        )
       )}
-      columnEventAfterClass={(data) => (
-        data.isEndResizable && [
+      columnEventAfterClass={(data) => joinClassNames(
+        data.isEndResizable && joinClassNames(
           data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
           '-bottom-1',
-        ]
+        )
       )}
-      columnEventInnerClass={(data) => [
+      columnEventInnerClass={(data) => joinClassNames(
         'flex',
         data.isShort
           ? 'flex-row items-center gap-1 p-1'
@@ -263,40 +261,40 @@ export default function EventCalendarView({
               data.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1',
             ),
         (data.isShort || data.isNarrow) ? xxsTextClass : 'text-xs',
-      ]}
-      columnEventTimeClass={(data) => (
+      )}
+      columnEventTimeClass={(data) => joinClassNames(
         !data.isShort && (data.isNarrow ? 'pt-0.5' : 'pt-1')
       )}
-      columnEventTitleClass={(data) => [
+      columnEventTitleClass={(data) => joinClassNames(
         !data.isShort && (data.isNarrow ? 'py-0.5' : 'py-1'),
         'font-semibold',
-      ]}
+      )}
 
       /* More-Link
       ------------------------------------------------------------------------------------------- */
 
       moreLinkClass={`${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       moreLinkInnerClass="whitespace-nowrap overflow-hidden"
-      columnMoreLinkClass={(data) => [
+      columnMoreLinkClass={(data) => joinClassNames(
         data.isNarrow ? 'my-px' : 'my-1',
         `border border-transparent print:border-black rounded-md ${strongSolidPressableClass} print:bg-white ring ring-(--mui-palette-background-paper)`,
-      ]}
-      columnMoreLinkInnerClass={(data) => [
+      )}
+      columnMoreLinkInnerClass={(data) => joinClassNames(
         data.isNarrow
           ? `p-0.5 ${xxsTextClass}`
           : 'p-1 text-xs',
         'text-(--mui-palette-text-primary)',
-      ]}
+      )}
 
       /* Day Header
       ------------------------------------------------------------------------------------------- */
 
       dayHeaderAlign={(data) => data.inPopover ? 'start' : 'center'}
-      dayHeaderClass={(data) => [
+      dayHeaderClass={(data) => joinClassNames(
         'justify-center',
         data.inPopover && 'border-b border-(--mui-palette-divider)',
-      ]}
-      dayHeaderInnerClass={(data) => [
+      )}
+      dayHeaderInnerClass={(data) => joinClassNames(
         'flex flex-row items-center',
         (!data.dayNumberText && !data.inPopover)
           ? joinClassNames(
@@ -321,7 +319,7 @@ export default function EventCalendarView({
                       ),
                   data.hasNavLink && mutedHoverButtonClass,
                 ),
-      ]}
+      )}
       dayHeaderContent={(data) => (
         (!data.dayNumberText && !data.inPopover) ? (
           <>{data.text}</>
@@ -363,15 +361,15 @@ export default function EventCalendarView({
       /* Day Cell
       ------------------------------------------------------------------------------------------- */
 
-      dayCellClass={(data) => [
+      dayCellClass={(data) => joinClassNames(
         'border',
         ((data.isOther || data.isDisabled) && !data.options.businessHours) && faintBgClass,
-      ]}
-      dayCellTopClass={(data) => [
+      )}
+      dayCellTopClass={(data) => joinClassNames(
         data.isNarrow ? 'min-h-0.5' : 'min-h-1',
         'flex flex-row',
-      ]}
-      dayCellTopInnerClass={(data) => [
+      )}
+      dayCellTopInnerClass={(data) => joinClassNames(
         'flex flex-row items-center justify-center whitespace-nowrap',
         data.isNarrow
           ? `my-px h-5 ${xxsTextClass}`
@@ -398,8 +396,8 @@ export default function EventCalendarView({
                 : (data.monthText ? 'text-(--mui-palette-text-primary)' : 'text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]'),
               data.monthText && 'font-bold',
             ),
-      ]}
-      dayCellInnerClass={(data) => data.inPopover && 'p-2'}
+      )}
+      dayCellInnerClass={(data) => joinClassNames(data.inPopover && 'p-2')}
 
       /* Popover
       ------------------------------------------------------------------------------------------- */
@@ -416,20 +414,20 @@ export default function EventCalendarView({
       /* Lane
       ------------------------------------------------------------------------------------------- */
 
-      dayLaneClass={(data) => [
+      dayLaneClass={(data) => joinClassNames(
         'border',
         data.isMajor ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]' : 'border-(--mui-palette-divider)',
         data.isDisabled && faintBgClass,
-      ]}
-      dayLaneInnerClass={(data) => (
+      )}
+      dayLaneInnerClass={(data) => joinClassNames(
         data.isStack
           ? 'm-1'
           : data.isNarrow ? 'mx-px' : 'mx-1'
       )}
-      slotLaneClass={(data) => [
+      slotLaneClass={(data) => joinClassNames(
         'border border-(--mui-palette-divider)',
         data.isMinor && 'border-dotted',
-      ]}
+      )}
 
       /* List Day
       ------------------------------------------------------------------------------------------- */
@@ -437,7 +435,7 @@ export default function EventCalendarView({
       listDaysClass="my-10 mx-auto w-full max-w-218 px-4"
       listDayClass="not-last:border-b border-(--mui-palette-divider) flex flex-row items-start gap-2"
       listDayHeaderClass="my-px shrink-0 w-1/4 max-w-50 py-3.5 flex flex-col items-start"
-      listDayHeaderInnerClass={(data) => [
+      listDayHeaderInnerClass={(data) => joinClassNames(
         'my-0.5 py-0.5 px-2 -mx-2 rounded-full text-sm',
         !data.level
           ? joinClassNames(
@@ -458,22 +456,22 @@ export default function EventCalendarView({
                 'hover:text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]',
               ),
             )
-      ]}
+      )}
       listDayEventsClass="my-4 grow min-w-0 border border-(--mui-palette-divider) rounded-md"
 
       /* Single Month (in Multi-Month)
       ------------------------------------------------------------------------------------------- */
 
       singleMonthClass="m-4"
-      singleMonthHeaderClass={(data) => [
+      singleMonthHeaderClass={(data) => joinClassNames(
         data.isSticky && `bg-(--mui-palette-background-paper) border-b border-(--mui-palette-divider)`,
         data.colCount > 1 ? 'pb-1' : 'py-1',
         'items-center',
-      ]}
-      singleMonthHeaderInnerClass={(data) => [
+      )}
+      singleMonthHeaderInnerClass={(data) => joinClassNames(
         `py-1 px-2 rounded-md text-sm text-(--mui-palette-text-primary) font-semibold`,
         data.hasNavLink && mutedHoverPressableClass,
-      ]}
+      )}
 
       /* Misc Table
       ------------------------------------------------------------------------------------------- */
@@ -489,7 +487,7 @@ export default function EventCalendarView({
       ------------------------------------------------------------------------------------------- */
 
       navLinkClass={`${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
-      inlineWeekNumberClass={(data) => [
+      inlineWeekNumberClass={(data) => joinClassNames(
         'absolute top-0 end-0 bg-(--mui-palette-background-paper) text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)] whitespace-nowrap rounded-es-md border-b border-b-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] border-s border-s-(--mui-palette-divider)',
         data.isNarrow
           ? `p-0.5 ${xxsTextClass}`
@@ -497,7 +495,7 @@ export default function EventCalendarView({
         data.hasNavLink
           ? `${mutedHoverPressableClass} -outline-offset-1`
           : mutedBgHoverClass,
-      ]}
+      )}
       highlightClass="bg-[rgba(var(--mui-palette-primary-mainChannel)_/_0.1)]"
       nonBusinessClass={faintBgClass}
       nowIndicatorLineClass="-m-px border-1 border-(--mui-palette-error-main)"
@@ -520,22 +518,22 @@ export default function EventCalendarView({
         multiMonth: {
           ...dayRowCommonClasses,
           dayHeaderClass: getNormalDayHeaderBorderClass,
-          dayHeaderDividerClass: (data) => data.isSticky && `border-b border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] shadow-sm`,
+          dayHeaderDividerClass: (data) => joinClassNames(data.isSticky && `border-b border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] shadow-sm`),
           dayCellClass: getNormalDayCellBorderColorClass,
           dayCellBottomClass: getShortDayCellBottomClass,
-          tableHeaderClass: (data) => data.isSticky && 'bg-(--mui-palette-background-paper)',
+          tableHeaderClass: (data) => joinClassNames(data.isSticky && 'bg-(--mui-palette-background-paper)'),
           tableBodyClass: `border border-(--mui-palette-divider) rounded-md shadow-xs overflow-hidden`,
           ...userViews?.multiMonth,
         },
         timeGrid: {
           ...dayRowCommonClasses,
           dayHeaderClass: getMutedDayHeaderBorderClass,
-          dayHeaderDividerClass: (data) => [
+          dayHeaderDividerClass: (data) => joinClassNames(
             'border-b',
             data.options.allDaySlot
               ? 'border-(--mui-palette-divider)'
               : `border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] shadow-sm`,
-          ],
+          ),
           dayCellClass: getMutedDayCellBorderColorClass,
           dayCellBottomClass: tallDayCellBottomClass,
 
@@ -543,33 +541,33 @@ export default function EventCalendarView({
           --------------------------------------------------------------------------------------- */
 
           weekNumberHeaderClass: 'items-center justify-end',
-          weekNumberHeaderInnerClass: (data) => [
+          weekNumberHeaderInnerClass: (data) => joinClassNames(
             `m-1.5 h-6 px-1.5 text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)] rounded-sm flex flex-row items-center`,
             data.hasNavLink && mutedHoverPressableClass,
             data.isNarrow ? 'text-xs' : 'text-sm',
-          ],
+          ),
 
           /* TimeGrid > All-Day Header
           --------------------------------------------------------------------------------------- */
 
           allDayHeaderClass: 'items-center',
-          allDayHeaderInnerClass: (data) => [
+          allDayHeaderInnerClass: (data) => joinClassNames(
             `p-3 text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.4)]`,
             data.isNarrow ? xxsTextClass : 'text-xs',
-          ],
+          ),
           allDayDividerClass: `border-b border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] shadow-sm`,
 
           /* TimeGrid > Slot Header
           --------------------------------------------------------------------------------------- */
 
           slotHeaderClass: 'justify-end',
-          slotHeaderInnerClass: (data) => [
+          slotHeaderInnerClass: (data) => joinClassNames(
             'relative px-3 py-2',
             data.isNarrow
               ? `-top-3.5 ${xxsTextClass}`
               : '-top-4 text-xs',
             data.isFirst && 'hidden',
-          ],
+          ),
           slotHeaderDividerClass: `border-e border-(--mui-palette-divider)`,
 
           ...userViews?.timeGrid,
@@ -579,19 +577,19 @@ export default function EventCalendarView({
           /* List-View > List-Item Event
           --------------------------------------------------------------------------------------- */
 
-          listItemEventClass: (data) => [
+          listItemEventClass: (data) => joinClassNames(
             `group not-last:border-b border-(--mui-palette-divider) p-4 items-center gap-3`,
             data.isInteractive
               ? faintHoverPressableClass
               : faintBgHoverClass,
-          ],
+          ),
           listItemEventBeforeClass: 'border-4 border-(--fc-event-color) rounded-full',
           listItemEventInnerClass: 'flex flex-row items-center gap-3 text-sm',
           listItemEventTimeClass: 'shrink-0 w-1/2 max-w-50 whitespace-nowrap overflow-hidden text-ellipsis text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]',
-          listItemEventTitleClass: (data) => [
+          listItemEventTitleClass: (data) => joinClassNames(
             'grow min-w-0 font-medium whitespace-nowrap overflow-hidden text-(--mui-palette-text-primary)',
             data.event.url && 'group-hover:underline',
-          ],
+          ),
 
           /* No-Events Screen
           --------------------------------------------------------------------------------------- */

@@ -22,10 +22,10 @@ export default function SchedulerView({
 
       resourceDayHeaderAlign="center"
       resourceDayHeaderClass="border"
-      resourceDayHeaderInnerClass={(data) => [
+      resourceDayHeaderInnerClass={(data) => joinClassNames(
         `p-2 text-(--mui-palette-text-primary) font-semibold`,
         data.isNarrow ? 'text-xs' : 'text-sm',
-      ]}
+      )}
 
       /* Resource Data Grid
       ------------------------------------------------------------------------------------------- */
@@ -57,7 +57,7 @@ export default function SchedulerView({
 
       resourceGroupLaneClass={`border border-(--mui-palette-divider) ${mutedBgClass}`}
       resourceLaneClass="border border-(--mui-palette-divider)"
-      resourceLaneBottomClass={(data) => data.options.eventOverlap && 'h-2'}
+      resourceLaneBottomClass={(data) => joinClassNames(data.options.eventOverlap && 'h-2')}
       timelineBottomClass="h-2"
 
       /* View-Specific Options
@@ -86,7 +86,7 @@ export default function SchedulerView({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => data.isEnd && 'me-px',
+          rowEventClass: (data) => joinClassNames(data.isEnd && 'me-px'),
           rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
 
           /* Timeline > More-Link
@@ -99,18 +99,18 @@ export default function SchedulerView({
           --------------------------------------------------------------------------------------- */
 
           slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
-          slotHeaderClass: (data) => [
+          slotHeaderClass: (data) => joinClassNames(
             data.level > 0 && `border border-(--mui-palette-divider)`,
             'justify-end',
-          ],
-          slotHeaderInnerClass: (data) => [
+          ),
+          slotHeaderInnerClass: (data) => joinClassNames(
             'px-3 py-2 text-xs',
             data.isTime && joinClassNames(
               'relative -start-4',
               data.isFirst && 'hidden',
             ),
             data.hasNavLink && 'hover:underline',
-          ],
+          ),
           slotHeaderDividerClass: `border-b border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] shadow-sm`,
 
           ...userViews?.timeline,

@@ -28,16 +28,16 @@ export default function SchedulerView({
       ------------------------------------------------------------------------------------------- */
 
       resourceDayHeaderAlign="center"
-      resourceDayHeaderClass={(data) => [
+      resourceDayHeaderClass={(data) => joinClassNames(
         'border',
         data.isMajor
           ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]'
           : 'border-(--mui-palette-divider)',
-      ]}
-      resourceDayHeaderInnerClass={(data) => [
+      )}
+      resourceDayHeaderInnerClass={(data) => joinClassNames(
         'p-2 flex flex-col',
         data.isNarrow ? 'text-xs' : 'text-sm',
-      ]}
+      )}
 
       /* Resource Data Grid
       ------------------------------------------------------------------------------------------- */
@@ -69,7 +69,7 @@ export default function SchedulerView({
 
       resourceGroupLaneClass={`border border-(--mui-palette-divider) ${faintBgClass}`}
       resourceLaneClass="border border-(--mui-palette-divider)"
-      resourceLaneBottomClass={(data) => data.options.eventOverlap && 'h-2'}
+      resourceLaneBottomClass={(data) => joinClassNames(data.options.eventOverlap && 'h-2')}
       timelineBottomClass="h-2"
 
       /* View-Specific Options
@@ -90,8 +90,8 @@ export default function SchedulerView({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => data.isEnd && 'me-px',
-          rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
+          rowEventClass: (data) => joinClassNames(data.isEnd && 'me-px'),
+          rowEventInnerClass: (data) => joinClassNames(data.options.eventOverlap ? 'py-1' : 'py-2'),
 
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */
@@ -103,12 +103,8 @@ export default function SchedulerView({
           --------------------------------------------------------------------------------------- */
 
           slotHeaderSticky: '0.5rem',
-          slotHeaderAlign: (data) => (
-            (data.level || data.isTime)
-              ? 'start'
-              : 'center'
-          ),
-          slotHeaderClass: (data) => [
+          slotHeaderAlign: (data) => (data.level || data.isTime) ? 'start' : 'center',
+          slotHeaderClass: (data) => joinClassNames(
             'border',
             data.level
               ? 'border-transparent justify-start'
@@ -118,8 +114,8 @@ export default function SchedulerView({
                     ? 'h-2 self-end justify-end'
                     : 'justify-center',
                 ),
-          ],
-          slotHeaderInnerClass: (data) => [
+          ),
+          slotHeaderInnerClass: (data) => joinClassNames(
             'text-sm',
             data.level
               ? joinClassNames(
@@ -138,7 +134,7 @@ export default function SchedulerView({
                     : 'py-2',
                   data.hasNavLink && 'hover:underline',
                 )
-          ],
+          ),
           slotHeaderDividerClass: `border-b border-(--mui-palette-divider)`,
 
           ...userViews?.timeline,
