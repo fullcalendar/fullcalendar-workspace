@@ -96,11 +96,11 @@ export function SchedulerView({
       ------------------------------------------------------------------------------------------- */
 
       resourceDayHeaderAlign='center'
-      resourceDayHeaderClass={(data) => data.isMajor && 'border border-foreground/20'}
-      resourceDayHeaderInnerClass={(data) => [
+      resourceDayHeaderClass={(data) => cn(data.isMajor && 'border border-foreground/20')}
+      resourceDayHeaderInnerClass={(data) => cn(
         'p-2 flex flex-row items-center text-muted-foreground',
         data.isNarrow ? 'text-xs' : 'text-sm',
-      ]}
+      )}
 
       /* Resource Data Grid
       ------------------------------------------------------------------------------------------- */
@@ -131,7 +131,7 @@ export function SchedulerView({
 
       resourceGroupLaneClass='border bg-foreground/5'
       resourceLaneClass='border'
-      resourceLaneBottomClass={(data) => data.options.eventOverlap && 'h-2'}
+      resourceLaneBottomClass={(data) => cn(data.options.eventOverlap && 'h-2')}
       timelineBottomClass='h-2'
 
       /* View-Specific Options
@@ -144,7 +144,7 @@ export function SchedulerView({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => data.isEnd && 'me-px',
+          rowEventClass: (data) => cn(data.isEnd && 'me-px'),
           rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
 
           /* Timeline > More-Link
@@ -157,18 +157,18 @@ export function SchedulerView({
           --------------------------------------------------------------------------------------- */
 
           slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
-          slotHeaderClass: (data) => [
+          slotHeaderClass: (data) => cn(
             data.level > 0 && 'border',
             'justify-center',
-          ],
-          slotHeaderInnerClass: (data) => [
+          ),
+          slotHeaderInnerClass: (data) => cn(
             'p-2 text-sm',
             data.isTime && cn(
               'relative -start-3',
               data.isFirst && 'hidden',
             ),
             data.hasNavLink && 'hover:underline',
-          ],
+          ),
           slotHeaderDividerClass: 'border-b border-foreground/20 shadow-sm',
 
           ...userViews?.timeline,

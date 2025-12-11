@@ -103,14 +103,14 @@ export function SchedulerView({
       ------------------------------------------------------------------------------------------- */
 
       resourceDayHeaderAlign='center'
-      resourceDayHeaderClass={(data) => [
+      resourceDayHeaderClass={(data) => cn(
         'border',
         data.isMajor && 'border-foreground/20',
-      ]}
-      resourceDayHeaderInnerClass={(data) => [
+      )}
+      resourceDayHeaderInnerClass={(data) => cn(
         'p-2 flex flex-col',
         data.isNarrow ? 'text-xs' : 'text-sm',
-      ]}
+      )}
 
       /* Resource Data Grid
       ------------------------------------------------------------------------------------------- */
@@ -141,7 +141,7 @@ export function SchedulerView({
 
       resourceGroupLaneClass='border bg-foreground/3'
       resourceLaneClass='border'
-      resourceLaneBottomClass={(data) => data.options.eventOverlap && 'h-2'}
+      resourceLaneBottomClass={(data) => cn(data.options.eventOverlap && 'h-2')}
       timelineBottomClass='h-2'
 
       /* View-Specific Options
@@ -162,7 +162,7 @@ export function SchedulerView({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => data.isEnd && 'me-px',
+          rowEventClass: (data) => cn(data.isEnd && 'me-px'),
           rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
 
           /* Timeline > More-Link
@@ -180,13 +180,13 @@ export function SchedulerView({
               ? 'start'
               : 'center'
           ),
-          slotHeaderClass: (data) => [
+          slotHeaderClass: (data) => cn(
             'border',
             data.level
               ? 'border-transparent justify-start'
               : (data.isTime ? 'h-2 self-end justify-end' : 'justify-center'),
-          ],
-          slotHeaderInnerClass: (data) => [
+          ),
+          slotHeaderInnerClass: (data) => cn(
             'text-sm',
             data.level
               ? cn(
@@ -203,7 +203,7 @@ export function SchedulerView({
                     : 'py-2',
                   data.hasNavLink && 'hover:underline',
                 ),
-          ],
+          ),
           slotHeaderDividerClass: 'border-b',
 
           ...userViews?.timeline,

@@ -98,14 +98,14 @@ export function SchedulerView({
       ------------------------------------------------------------------------------------------- */
 
       resourceDayHeaderAlign='center'
-      resourceDayHeaderClass={(data) => [
+      resourceDayHeaderClass={(data) => cn(
         'border',
         data.isMajor && 'border-foreground/20',
-      ]}
-      resourceDayHeaderInnerClass={(data) => [
+      )}
+      resourceDayHeaderInnerClass={(data) => cn(
         'px-1 py-0.5 flex flex-col',
         data.isNarrow ? xxsTextClass : 'text-sm',
-      ]}
+      )}
 
       /* Resource Data Grid
       ------------------------------------------------------------------------------------------- */
@@ -136,7 +136,7 @@ export function SchedulerView({
 
       resourceGroupLaneClass='border bg-foreground/5'
       resourceLaneClass='border'
-      resourceLaneBottomClass={(data) => data.options.eventOverlap && 'h-3'}
+      resourceLaneBottomClass={(data) => cn(data.options.eventOverlap && 'h-3')}
       timelineBottomClass='h-3'
 
       /* View-Specific Options
@@ -149,14 +149,14 @@ export function SchedulerView({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => [
+          rowEventClass: (data) => cn(
             data.isEnd && 'me-px',
             'items-center',
-          ],
-          rowEventBeforeClass: (data) => (
+          ),
+          rowEventBeforeClass: (data) => cn(
             !data.isStartResizable && `${continuationArrowClass} border-e-[5px] border-e-black`
           ),
-          rowEventAfterClass: (data) => (
+          rowEventAfterClass: (data) => cn(
             !data.isEndResizable && `${continuationArrowClass} border-s-[5px] border-s-black`
           ),
           rowEventInnerClass: (data) => (
@@ -178,10 +178,10 @@ export function SchedulerView({
 
           slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
           slotHeaderClass: 'justify-center',
-          slotHeaderInnerClass: (data) => [
+          slotHeaderInnerClass: (data) => cn(
             'p-2 text-sm',
             data.hasNavLink && 'hover:underline',
-          ],
+          ),
           slotHeaderDividerClass: 'border-b',
 
           /* Timeline > Now-Indicator
