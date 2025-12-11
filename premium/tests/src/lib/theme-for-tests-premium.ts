@@ -4,7 +4,7 @@ export default createPlugin({
   name: 'theme-for-tests-premium',
   optionDefaults: {
     resourceColumnResizerClass: 'fc-datagrid-col-resizer',
-    resourceCellClass: 'fc-cell',
+    resourceCellClass: 'fc-cell fc-resource',
     resourceCellInnerClass: 'fc-cell-main',
     resourceIndentClass: 'fc-resource-indent',
     resourceExpanderClass: (data) => [
@@ -13,7 +13,10 @@ export default createPlugin({
         ? 'fc-resource-expander-expanded'
         : 'fc-resource-expander-collapsed',
     ],
-    resourceLaneClass: 'fc-timeline-lane',
+    resourceRowClass: 'fc-resource',
+    resourceLaneClass: 'fc-timeline-lane fc-resource',
+    resourceGroupHeaderClass: 'fc-resource-group',
+    resourceGroupLaneClass: 'fc-timeline-lane fc-resource-group',
   },
   views: {
     timeline: {

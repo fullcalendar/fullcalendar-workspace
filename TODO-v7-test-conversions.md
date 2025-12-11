@@ -14,10 +14,6 @@
 ### TimeGrid Specific
 - `fc-timegrid-slots` - Slots container
 
-### Resource (Premium) Classes
-- `fc-resource` - Resource element
-- `fc-resource-group` - Resource group
-
 ### DataGrid (Premium) Classes
 - `fc-datagrid-header` - DataGrid header
 - `fc-datagrid-body` - DataGrid body
