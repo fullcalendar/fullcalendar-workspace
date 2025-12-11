@@ -398,7 +398,12 @@ function buildTestJsPlugins(): Plugin[] {
     }),
     commonjsPlugin(), // for moment and moment-timezone
     jsonPlugin(), // for moment-timezone
-    cssPlugin({ extract: true }),
+    cssPlugin({
+      // have JS store and attach CSS
+      // BUG: in JS, the CSS string gets written twice for some reason
+      extract: false,
+      inject: true,
+    }),
     replacePlugin({
       preventAssignment: true,
       values: {
@@ -414,8 +419,9 @@ function buildTestJsPlugins(): Plugin[] {
 function cssPlugin(options?: {
   extract?: boolean,
   minify?: boolean,
+  inject?: boolean,
 }): Plugin {
-  const { extract, minify } = options || {}
+  const { extract, minify, inject } = options || {}
 
   return postcssPlugin({
     config: {
@@ -430,7 +436,7 @@ function cssPlugin(options?: {
       },
     },
     extract,
-    inject: false,
+    inject: inject || false,
     minimize: minify
       ? { // cssnano options
           preset: ['default', { calc: false }], // disable postcss-calc
