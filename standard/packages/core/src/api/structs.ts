@@ -47,7 +47,6 @@ export type { EventAddData, EventChangeData, EventDropData, EventRemoveData } fr
 export type { CustomRenderingHandler, CustomRenderingStore } from '../content-inject/CustomRenderingStore.js'
 export type { DateSpanApi, DatePointApi } from '../structs/date-span.js'
 export type { DateSelectionApi } from '../calendar-utils.js'
-export type { ClassNameInput } from '../util/html.js'
 export type { ButtonState, NavButtonState, ButtonStateMap } from '../structs/button-state.js'
 
 // used by some args

@@ -93,7 +93,7 @@ export class ToolbarSection extends BaseComponent<ToolbarSectionProps> {
         if (buttonDisplay !== 'text') {
           iconNode = (
             <ButtonIcon
-              classNameInput={widget.buttonIconClass}
+              className={widget.buttonIconClass}
               contentGenerator={widget.buttonIconContent}
             />
           )

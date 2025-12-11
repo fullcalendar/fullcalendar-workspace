@@ -1,4 +1,4 @@
-import { ClassNameGenerator, ClassNameInput, CssDimValue } from '@fullcalendar/core'
+import { ClassNameGenerator, CssDimValue } from '@fullcalendar/core'
 import {
   Identity, identity,
   CustomContentGenerator, DidMountHandler, WillUnmountHandler,
@@ -24,7 +24,7 @@ export const OPTION_REFINERS = {
   resourceColumnsWidth: identity as Identity<CssDimValue>,
   resourceColumns: identity as Identity<ColSpec[]>,
 
-  resourceColumnDividerClass: identity as Identity<ClassNameInput>,
+  resourceColumnDividerClass: identity as Identity<string | undefined>,
 
   // datagrid super-header & normal column headers
   resourceColumnHeaderClass: identity as Identity<ClassNameGenerator<ResourceColumnHeaderData>>,
@@ -33,10 +33,10 @@ export const OPTION_REFINERS = {
   resourceColumnHeaderContent: identity as Identity<CustomContentGenerator<ResourceColumnHeaderData>>,
   resourceColumnHeaderDidMount: identity as Identity<DidMountHandler<ResourceColumnHeaderMountData>>,
   resourceColumnHeaderWillUnmount: identity as Identity<WillUnmountHandler<ResourceColumnHeaderMountData>>,
-  resourceHeaderRowClass: identity as Identity<ClassNameInput>,
+  resourceHeaderRowClass: identity as Identity<string | undefined>,
 
   // For both resources & resource groups
-  resourceRowClass: identity as Identity<ClassNameInput>,
+  resourceRowClass: identity as Identity<string | undefined>,
 
   // datagrid cells, for both resources & resource-GROUP
   resourceCellClass: identity as Identity<ClassNameGenerator<ResourceCellData>>,
@@ -68,7 +68,7 @@ export const OPTION_REFINERS = {
   resourceLaneBottomClass: identity as Identity<ClassNameGenerator<ResourceLaneData>>,
   resourceLaneBottomContent: identity as Identity<CustomContentGenerator<ResourceLaneData>>,
 
-  resourceIndentClass: identity as Identity<ClassNameInput>,
+  resourceIndentClass: identity as Identity<string | undefined>,
   resourceExpanderClass: identity as Identity<ClassNameGenerator<ResourceExpanderData>>,
   resourceExpanderContent: identity as Identity<CustomContentGenerator<ResourceExpanderData>>,
 }

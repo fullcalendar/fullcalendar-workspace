@@ -65,7 +65,6 @@ import {
 import { TableHeaderData } from './common/TableAndSubsections.js'
 import { createDuration, Duration } from './datelib/duration.js'
 import { createFormatter } from './datelib/formatting.js'
-import { ClassNameInput } from './util/html.js'
 import { parseFieldSpecs } from './util/misc.js'
 import { isMaybePropsEqualShallow, isMaybePropsEqualDepth1 } from './util/object.js'
 import { isMaybeArraysEqual } from './util/array.js'
@@ -167,7 +166,7 @@ export const BASE_OPTION_REFINERS = {
   nowIndicatorHeaderDidMount: identity as Identity<DidMountHandler<NowIndicatorHeaderMountData>>,
   nowIndicatorHeaderWillUnmount: identity as Identity<WillUnmountHandler<NowIndicatorHeaderMountData>>,
 
-  nowIndicatorDotClass: identity as Identity<ClassNameInput>,
+  nowIndicatorDotClass: identity as Identity<string | undefined>,
 
   nowIndicatorLineClass: identity as Identity<ClassNameGenerator<NowIndicatorLineData>>,
   nowIndicatorLineContent: identity as Identity<CustomContentGenerator<NowIndicatorLineData>>,
@@ -290,7 +289,7 @@ export const BASE_OPTION_REFINERS = {
   slotHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number, isTime: boolean }) => 'start' | 'center' | 'end')>,
   slotHeaderSticky: identity as Identity<boolean | number | string>,
 
-  slotHeaderRowClass: identity as Identity<ClassNameInput>,
+  slotHeaderRowClass: identity as Identity<string | undefined>,
   slotHeaderDividerClass: identity as Identity<ClassNameGenerator<{ isHeader: boolean, options: { dayMinWidth: number | undefined } }>>,
 
   dayMaxEvents: identity as Identity<boolean | number>,
@@ -307,11 +306,11 @@ export const BASE_OPTION_REFINERS = {
   dayHeaderAlign: identity as Identity<'start' | 'center' | 'end' | ((data: { level: number, inPopover: boolean, isNarrow: boolean }) => 'start' | 'center' | 'end')>,
   dayHeaderSticky: identity as Identity<boolean | number | string>,
 
-  dayHeaderRowClass: identity as Identity<ClassNameInput>,
+  dayHeaderRowClass: identity as Identity<string | undefined>,
 
   dayHeaderDividerClass: identity as Identity<ClassNameGenerator<{ isSticky: boolean, options: { allDaySlot: boolean } }>>,
 
-  dayRowClass: identity as Identity<ClassNameInput>,
+  dayRowClass: identity as Identity<string | undefined>,
 
   dayCellDidMount: identity as Identity<DidMountHandler<DayCellMountData>>,
   dayCellWillUnmount: identity as Identity<WillUnmountHandler<DayCellMountData>>,
@@ -387,7 +386,7 @@ export const BASE_OPTION_REFINERS = {
   columnMoreLinkClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
   columnMoreLinkInnerClass: identity as Identity<ClassNameGenerator<MoreLinkData>>,
 
-  navLinkClass: identity as Identity<ClassNameInput>,
+  navLinkClass: identity as Identity<string | undefined>,
 
   monthStartFormat: createFormatter,
   dayCellFormat: createFormatter,
@@ -399,11 +398,11 @@ export const BASE_OPTION_REFINERS = {
   customRenderingReplaces: Boolean,
 
   // new
-  class: identity as Identity<ClassNameInput>,
-  className: identity as Identity<ClassNameInput>,
+  class: identity as Identity<string | undefined>,
+  className: identity as Identity<string | undefined>,
 
-  popoverClass: identity as Identity<ClassNameInput>,
-  popoverCloseClass: identity as Identity<ClassNameInput>,
+  popoverClass: identity as Identity<string | undefined>,
+  popoverCloseClass: identity as Identity<string | undefined>,
   popoverCloseContent: identity as Identity<CustomContentGenerator<{}>>,
 
   dayNarrowWidth: Number,
@@ -419,14 +418,14 @@ export const BASE_OPTION_REFINERS = {
   footerToolbarClass: identity as Identity<ClassNameGenerator<ToolbarData>>,
   toolbarClass: identity as Identity<ClassNameGenerator<ToolbarData>>,
   toolbarSectionClass: identity as Identity<ClassNameGenerator<ToolbarSectionData>>,
-  toolbarTitleClass: identity as Identity<ClassNameInput>,
+  toolbarTitleClass: identity as Identity<string | undefined>,
 
-  tableClass: identity as Identity<ClassNameInput>,
+  tableClass: identity as Identity<string | undefined>,
   tableHeaderClass: identity as Identity<ClassNameGenerator<TableHeaderData>>,
-  tableBodyClass: identity as Identity<ClassNameInput>,
+  tableBodyClass: identity as Identity<string | undefined>,
 
-  nonBusinessClass: identity as Identity<ClassNameInput>,
-  highlightClass: identity as Identity<ClassNameInput>,
+  nonBusinessClass: identity as Identity<string | undefined>,
+  highlightClass: identity as Identity<string | undefined>,
 }
 
 type BaseOptionRefiners = typeof BASE_OPTION_REFINERS

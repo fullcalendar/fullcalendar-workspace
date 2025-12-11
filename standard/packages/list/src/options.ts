@@ -1,4 +1,3 @@
-import { ClassNameInput } from '@fullcalendar/core'
 import { ClassNameGenerator, FormatterInput } from '@fullcalendar/core'
 import {
   identity,
@@ -21,7 +20,7 @@ import {
 } from './public-types.js'
 
 export const OPTION_REFINERS = {
-  listDaysClass: identity as Identity<ClassNameInput>,  // rename this?
+  listDaysClass: identity as Identity<string | undefined>,  // rename this?
   listDayClass: identity as Identity<ClassNameGenerator<ListDayData>>,
 
   listDayFormat: createFalsableFormatter, // defaults specified in list plugins

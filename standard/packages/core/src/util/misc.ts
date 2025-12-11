@@ -1,8 +1,6 @@
 import { preventDefault } from './dom-event.js'
 import classNames from '../internal-classnames.js'
 
-export type Falsy = false | null | undefined // TODO: 0 ?
-
 export type GenericHash = { [key: string]: any } // already did this somewhere
 
 let guidNumber = 0

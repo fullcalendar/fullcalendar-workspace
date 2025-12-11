@@ -2,16 +2,15 @@ import { createElement } from '../preact.js'
 import { CustomContentGenerator } from '../common/render-hook.js'
 import { ContentContainer } from '../content-inject/ContentContainer.js'
 import { BaseComponent } from '../vdom-util.js'
-import { ClassNameInput, joinArrayishClassNames } from '../util/html.js'
 
 interface IconProps {
+  className?: string
   contentGenerator?: CustomContentGenerator<{}>
-  classNameInput?: ClassNameInput
 }
 
 export class ButtonIcon extends BaseComponent<IconProps> {
   render() {
-    const { contentGenerator, classNameInput } = this.props
+    const { contentGenerator, className } = this.props
 
     if (contentGenerator) {
       // TODO: somehow give className to the svg?
@@ -27,11 +26,11 @@ export class ButtonIcon extends BaseComponent<IconProps> {
       )
     }
 
-    if (classNameInput) {
+    if (className !== undefined) {
       return (
         <span
           aria-hidden
-          className={joinArrayishClassNames(classNameInput)}
+          className={className}
         />
       )
     }

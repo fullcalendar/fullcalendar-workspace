@@ -1,8 +1,9 @@
 import { CustomContentGenerator } from './common/render-hook.js'
-import { ClassNameInput, joinArrayishClassNames } from './util/html.js'
+import { joinArrayishClassNames } from './util/html.js'
 import { getUnequalProps, mergeMaybePropsShallow, mergeMaybePropsDepth1 } from './util/object.js'
 import { CalendarOptions, ViewOptions } from './options.js'
 
+type ClassNameInput = string | undefined
 type FuncishClassNameInput = ((data: any) => ClassNameInput) | ClassNameInput
 
 const classNamesRe = /(^c|C)lass(Name)?$/

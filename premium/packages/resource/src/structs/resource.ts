@@ -1,4 +1,4 @@
-import { ConstraintInput, AllowFunc, BusinessHoursInput, ClassNameInput } from '@fullcalendar/core'
+import { ConstraintInput, AllowFunc, BusinessHoursInput } from '@fullcalendar/core'
 import {
   EventStore, parseBusinessHours, CalendarContext, EventUi,
   guid, identity, Identity, RawOptionsFromRefiners, refineProps, createEventUi, Dictionary,
@@ -21,7 +21,7 @@ const RESOURCE_REFINERS = {
   eventConstraint: identity as Identity<ConstraintInput>,
   eventOverlap: Boolean, // can NOT be a func, different from OptionsInput
   eventAllow: identity as Identity<AllowFunc>,
-  eventClass: identity as Identity<ClassNameInput>,
+  eventClass: identity as Identity<string | undefined>,
   eventColor: String,
   eventContrastColor: String,
 }

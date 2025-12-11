@@ -1,7 +1,7 @@
-import { ClassNameInput, joinClassNames } from '@fullcalendar/core'
+import { joinClassNames } from '@fullcalendar/core'
 
 export function flattenClassName(
-  { class: cl, className: cn }: { class?: ClassNameInput, className?: ClassNameInput }
+  { class: cl, className: cn }: { class?: string | undefined, className?: string | undefined }
 ): string {
   return joinClassNames(
     Array.isArray(cl) ? joinClassNames(...cl) : cl,
