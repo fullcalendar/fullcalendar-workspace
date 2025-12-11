@@ -1,8 +1,21 @@
-import { createPlugin, PluginDef } from '@fullcalendar/core'
+import { CalendarOptions, createPlugin, PluginDef } from '@fullcalendar/core'
 
 /*
 NOTE: other classnames in theme-for-tests-premium.ts
 */
+
+const dayRowCommonClasses: CalendarOptions = {
+  moreLinkClass: 'fc-daygrid-more-link',
+  dayCellClass: 'fc-daygrid-day',
+  dayCellTopClass: 'fc-daygrid-day-header',
+  dayCellTopInnerClass: (data) => [
+    'fc-daygrid-day-number',
+    data.monthText && 'fc-daygrid-month-start',
+  ],
+  rowEventClass: 'fc-daygrid-event',
+  listItemEventClass: 'fc-daygrid-dot-event',
+}
+
 export default createPlugin({
   name: 'theme-for-tests',
   optionDefaults: {
@@ -21,8 +34,8 @@ export default createPlugin({
       `fc-${data.view.type}-view`,
     ],
     buttonClass: (data) => [
-      `fc-${data.name}-button`,
       'fc-button',
+      `fc-${data.name}-button`,
     ],
     buttonGroupClass: 'fc-button-group',
     popoverClass: 'fc-more-popover',
@@ -59,7 +72,19 @@ export default createPlugin({
     slotLaneClass: getSlotClass,
   },
   views: {
+    dayGrid: {
+      ...dayRowCommonClasses,
+      inlineWeekNumberClass: 'fc-daygrid-week-number',
+    },
+    timeGrid: {
+      ...dayRowCommonClasses,
+      viewClass: 'fc-timegrid',
+      tableHeaderClass: 'fc-timegrid-header',
+      tableBodyClass: 'fc-timegrid-body',
+      moreLinkClass: 'fc-timegrid-more-link',
+    },
     multiMonth: {
+      ...dayRowCommonClasses,
       viewClass: 'fc-multimonth',
       singleMonthClass: 'fc-multimonth-month',
       singleMonthHeaderClass: 'fc-multimonth-title',

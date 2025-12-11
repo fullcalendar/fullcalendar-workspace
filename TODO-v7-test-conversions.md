@@ -11,20 +11,7 @@
 - `fc-direction-ltr` - Left-to-right
 - `fc-direction-rtl` - Right-to-left
 
-### DayGrid Specific
-- `fc-daygrid-day` - Day cell
-- `fc-daygrid-day-header` - Day header
-- `fc-daygrid-day-number` - Day number
-- `fc-daygrid-event` - DayGrid event
-- `fc-daygrid-dot-event` - Dot-style event
-- `fc-daygrid-more-link` - "More" link
-- `fc-daygrid-week-number` - Week number
-- `fc-daygrid-month-start` - Month start marker
-
 ### TimeGrid Specific
-- `fc-timegrid` - TimeGrid view
-- `fc-timegrid-header` - TimeGrid header
-- `fc-timegrid-body` - TimeGrid body
 - `fc-timegrid-allday` - All-day section
 - `fc-timegrid-axis` - Time axis
 - `fc-timegrid-day` - TimeGrid day column
@@ -35,7 +22,6 @@
 - `fc-timegrid-slots` - Slots container
 - `fc-timegrid-event` - TimeGrid event
 - `fc-timegrid-event-short` - Short event
-- `fc-timegrid-more-link` - "More" link
 - `fc-timegrid-now-indicator-arrow` - Now indicator arrow
 - `fc-timegrid-now-indicator-line` - Now indicator line
 
@@ -54,13 +40,8 @@
 - `fc-datagrid-col-resizer` - Column resizer
 
 ### Timeline (Premium) Classes
-- `fc-timeline` - Timeline view
-- `fc-timeline-header` - Timeline header
-- `fc-timeline-body` - Timeline body
 - `fc-timeline-lane` - Timeline lane
-- `fc-timeline-event` - Timeline event
 - `fc-timeline-slot-lane` - Timeline slot lane
 - `fc-timeline-slot-label` - Timeline slot label
-- `fc-timeline-more-link` - "More" link
 - `fc-timeline-now-indicator-arrow` - Now indicator arrow
 - `fc-timeline-now-indicator-line` - Now indicator line
