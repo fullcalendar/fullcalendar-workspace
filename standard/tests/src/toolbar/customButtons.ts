@@ -19,27 +19,7 @@ describe('buttons', () => {
     expect(buttonInfo.text).toBe('asdf')
   })
 
-  it('can specify an icon', () => {
-    let calendar = initCalendar({
-      buttons: {
-        mybutton: { iconContent: 'asdf' },
-      },
-      headerToolbar: { left: 'mybutton', center: '', right: '' },
-    })
-    let toolbarWrapper = new CalendarWrapper(calendar).toolbar
-    let buttonInfo = toolbarWrapper.getButtonInfo('mybutton')
-    expect(buttonInfo.iconName).toBe('asdf')
-  })
-
-  it('can specify a bootstrap font-awesome icon', () => {
-    let calendar = initCalendar({
-      buttons: {
-        mybutton: {}, // TODO: somehow -- { bootstrapFontAwesome: 'asdf' },
-      },
-      headerToolbar: { left: 'mybutton', center: '', right: '' },
-    })
-    let toolbarWrapper = new CalendarWrapper(calendar).toolbar
-    let buttonInfo = toolbarWrapper.getButtonInfo('mybutton', 'fa')
-    expect(buttonInfo.iconName).toBe('asdf')
-  })
+  /*
+  TODO: tests for icon replacement (iconClass/iconContent?)
+  */
 })

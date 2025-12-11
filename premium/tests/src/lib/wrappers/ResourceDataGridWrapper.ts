@@ -76,7 +76,7 @@ export class ResourceDataGridWrapper {
   }
 
   clickFirstExpander() {
-    $(this.el.querySelector('.fc-datagrid-icon-expander')).simulate('click')
+    $(this.el.querySelector('.fc-resource-expander')).simulate('click')
   }
 
   clickExpander(resourceId) {
@@ -84,17 +84,17 @@ export class ResourceDataGridWrapper {
   }
 
   getExpanderEl(resourceId) {
-    return this.getResourceCellEl(resourceId).querySelector('.fc-datagrid-icon-expander')
+    return this.getResourceCellEl(resourceId).querySelector('.fc-resource-expander')
   }
 
   isRowExpanded(resourceId) {
     let iconEl = this.getExpanderEl(resourceId)
 
-    if (iconEl.classList.contains('fc-icon-plus-square')) {
+    if (iconEl.classList.contains('fc-resource-expander-collapsed')) {
       return false
     }
 
-    if (iconEl.classList.contains('fc-icon-minus-square')) {
+    if (iconEl.classList.contains('fc-resource-expander-expanded')) {
       return true
     }
 
@@ -102,7 +102,7 @@ export class ResourceDataGridWrapper {
   }
 
   getRowIndentation(resourceId) {
-    return this.getResourceCellEl(resourceId).querySelectorAll('.fc-icon').length
+    return this.getResourceCellEl(resourceId).querySelectorAll('.fc-resource-indent').length
   }
 }
 

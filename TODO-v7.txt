@@ -316,6 +316,7 @@ should the .css files have .d.ts? better for VSCode?
 vue3 connector
   in markup, puts this weird attribute on calendar div
     attrs="[object Object]"
+Tests for replacments for buttonIcons (iconClass/iconContent?)
 
 
 Changelog

@@ -23,8 +23,6 @@ export class CalendarWrapper {
   static DOW_SLOT_CLASSNAMES = ['fc-slot-sun', 'fc-slot-mon', 'fc-slot-tue', 'fc-slot-wed', 'fc-slot-thu', 'fc-slot-fri', 'fc-slot-sat']
   static LTR_CLASSNAME = 'fc-direction-ltr'
   static RTL_CLASSNAME = 'fc-direction-rtl'
-  static BOOTSTRAP_CLASSNAME = 'fc-theme-bootstrap'
-  static UNTHEMED_CLASSNAME = 'fc-theme-standard'
   static ROOT_CLASSNAME = 'fc'
 
   constructor(private calendar: Calendar) {
