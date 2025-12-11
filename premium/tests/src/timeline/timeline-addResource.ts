@@ -60,7 +60,7 @@ describe('timeline addResource', () => {
 
     currentCalendar.addResource({ id: 'last', title: 'last resource' }, true)
 
-    const spreadsheetScrollerEl = viewWrapper.getDataScrollEl()
+    const spreadsheetScrollerEl = viewWrapper.getDataGridBodyEl()
     const maxScroll = spreadsheetScrollerEl.scrollHeight - spreadsheetScrollerEl.clientHeight
     const currentScroll = spreadsheetScrollerEl.scrollTop
     expect(Math.abs(maxScroll - currentScroll)).toBeLessThan(1)

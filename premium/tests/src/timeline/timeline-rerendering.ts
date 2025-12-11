@@ -116,7 +116,7 @@ describe('timeline view rerendering', () => {
     })
 
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
-    let scrollEl = viewWrapper.getTimeScrollEl()
+    let scrollEl = viewWrapper.getTimeBodyEl()
 
     setTimeout(() => {
       scrollEl.scrollTop = 100
@@ -150,7 +150,7 @@ describe('timeline view rerendering', () => {
     })
 
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
-    let scrollEl = viewWrapper.getTimeScrollEl()
+    let scrollEl = viewWrapper.getTimeBodyEl()
 
     setTimeout(() => {
       scrollEl.scrollTop = 100

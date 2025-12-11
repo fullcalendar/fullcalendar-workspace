@@ -1,5 +1,4 @@
 import arLocale from '@fullcalendar/core/locales/ar'
-import { CalendarWrapper } from '../lib/wrappers/CalendarWrapper.js'
 
 describe('direction', () => {
   it('has it\'s default value computed differently based off of the locale', () => {
@@ -18,12 +17,8 @@ describe('direction', () => {
     })
     let $el = $(currentCalendar.el)
 
-    expect($el).toHaveClass(CalendarWrapper.LTR_CLASSNAME)
-    expect($el).not.toHaveClass(CalendarWrapper.RTL_CLASSNAME)
-
+    expect($el).not.toHaveAttr('dir', 'rtl')
     currentCalendar.setOption('direction', 'rtl')
-
-    expect($el).toHaveClass(CalendarWrapper.RTL_CLASSNAME)
-    expect($el).not.toHaveClass(CalendarWrapper.LTR_CLASSNAME)
+    expect($el).toHaveAttr('dir', 'rtl')
   })
 })

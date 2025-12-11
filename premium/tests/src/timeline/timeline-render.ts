@@ -23,8 +23,8 @@ describe('timeline rendering', () => {
     })
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
 
-    let spreadsheetEl = viewWrapper.getDataScrollEl()
-    let timeEl = viewWrapper.getTimeScrollEl()
+    let spreadsheetEl = viewWrapper.getDataGridBodyEl()
+    let timeEl = viewWrapper.getTimeBodyEl()
 
     expect(spreadsheetEl.scrollHeight).toBeGreaterThan(0)
     expect(timeEl.scrollHeight).toBeGreaterThan(0)

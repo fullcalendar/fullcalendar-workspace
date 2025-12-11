@@ -10,39 +10,62 @@ export class ResourceTimelineViewWrapper extends ViewWrapper {
     super(calendar, 'fc-resource-timeline')
   }
 
+  /*
+  the RIGHT area's header
+  I think MUST be same-name as TimelineViewWrapper.header
+  */
   get header() {
-    return new TimelineHeaderWrapper(this.el.querySelector('.fc-timeline-header'))
+    return new TimelineHeaderWrapper(this.getTimeHeaderEl())
   }
 
+  /*
+  I think MUST be same-name as TimelineViewWrapper.timelineGrid
+  */
   get timelineGrid() {
-    return new ResourceTimelineGridWrapper(
-      this.el.querySelector('.fc-timeline-body'),
-    )
+    return new ResourceTimelineGridWrapper(this.getTimeBodyEl())
+  }
+
+  get dataHeader() {
+    return new ResourceDataHeaderWrapper(this.getDataGridHeaderEl())
   }
 
   get dataGrid() {
-    return new ResourceDataGridWrapper(this.getDataGridEl())
+    return new ResourceDataGridWrapper(this.getDataGridBodyEl())
   }
 
-  get dataHeader() { // rename `header` now?
-    // doesnt exist yet. also, delete one other one by mistake
-    return new ResourceDataHeaderWrapper(this.el.querySelector('.fc-datagrid-header'))
-  }
-
-  getDataGridEl() {
-    return this.el.querySelector('.fc-datagrid-body') as HTMLElement
+  getDataGridAreaEl() {
+    return this.el.querySelector('.fc-datagrid-divider').previousElementSibling as HTMLElement
   }
 
   getDataGridWidth() {
-    return this.getDataGridEl().getBoundingClientRect().width
+    return this.getDataGridAreaEl().getBoundingClientRect().width
   }
 
-  getDataScrollEl() {
-    return this.el.querySelector('.fc-datagrid-body') // IS the scroll element
+  getDataGridHeaderEl() {
+    return this.getDataGridAreaEl().querySelector('.fc-timeline-header') as HTMLElement
   }
 
-  getTimeScrollEl() {
-    return this.el.querySelector('.fc-timeline-body') // IS the scroll element
+  /*
+  the data grid BODY
+  IS the scroller
+  */
+  getDataGridBodyEl() {
+    return this.getDataGridAreaEl().querySelector('.fc-timeline-body') as HTMLElement
+  }
+
+  getTimeAreaEl() {
+    return this.el.querySelector('.fc-datagrid-divider').nextElementSibling as HTMLElement
+  }
+
+  getTimeHeaderEl() {
+    return this.getTimeAreaEl().querySelector('.fc-timeline-header') as HTMLElement
+  }
+
+  /*
+  IS the scroller
+  */
+  getTimeBodyEl() {
+    return this.getTimeAreaEl().querySelector('.fc-timeline-body') as HTMLElement
   }
 
   hasNowIndicator() {

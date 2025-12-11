@@ -1,4 +1,5 @@
 import { Calendar } from '@fullcalendar/core'
+import internalClassNames from '@fullcalendar/core/internal-classnames'
 import { findElements } from '../../lib/dom-misc.js'
 import { ViewWrapper } from './ViewWrapper.js'
 import { DayGridWrapper } from './DayGridWrapper.js'
@@ -28,6 +29,6 @@ export class MultiMonthViewWrapper extends ViewWrapper {
   }
 
   getScrollerEl() {
-    return this.el.querySelector('.fc-scroller')
+    return this.el.querySelector(`.${internalClassNames.internalScroller}`)
   }
 }

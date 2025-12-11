@@ -17,12 +17,13 @@ export default createPlugin({
     resourceLaneClass: 'fc-timeline-lane fc-resource',
     resourceGroupHeaderClass: 'fc-resource-group',
     resourceGroupLaneClass: 'fc-timeline-lane fc-resource-group',
+    resourceColumnDividerClass: 'fc-datagrid-divider',
   },
   views: {
     timeline: {
       viewClass: 'fc-timeline',
-      tableHeaderClass: 'fc-timeline-header',
-      tableBodyClass: 'fc-timeline-body',
+      tableHeaderClass: 'fc-timeline-header', // will apply to datagrid too
+      tableBodyClass: 'fc-timeline-body', // will apply to datagrid too
       rowEventClass: 'fc-timeline-event',
       moreLinkClass: 'fc-timeline-more-link',
       slotHeaderClass: 'fc-timeline-slot-label',

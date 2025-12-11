@@ -10,7 +10,7 @@ describe('scrollTime', () => {
       scrollTime: '06:00',
     })
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
-    let scrollEl = viewWrapper.getTimeScrollEl()
+    let scrollEl = viewWrapper.getTimeBodyEl()
 
     setTimeout(() => {
       let origScroll = scrollEl.scrollLeft
@@ -34,7 +34,7 @@ describe('scrollTime', () => {
       scrollTime: '06:00',
     })
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
-    let scrollEl = viewWrapper.getTimeScrollEl()
+    let scrollEl = viewWrapper.getTimeBodyEl()
 
     setTimeout(() => {
       let origScroll = scrollEl.scrollLeft
@@ -60,7 +60,7 @@ describe('scrollTime', () => {
     })
 
     let viewWrapper = new ResourceTimelineViewWrapper(calendar)
-    let scrollEl = viewWrapper.getTimeScrollEl()
+    let scrollEl = viewWrapper.getTimeBodyEl()
 
     setTimeout(() => {
       let scroll = scrollEl.scrollLeft
@@ -80,7 +80,7 @@ describe('scrollTime', () => {
 
     calendar.changeView('resourceTimelineWeek')
     setTimeout(() => {
-      let scrollEl = viewWrapper.getTimeScrollEl()
+      let scrollEl = viewWrapper.getTimeBodyEl()
       let slatEl = viewWrapper.timelineGrid.getSlatElByDate('2020-08-09T06:00:00')
 
       expect(

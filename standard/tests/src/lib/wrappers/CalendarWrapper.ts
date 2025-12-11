@@ -1,4 +1,5 @@
 import { Calendar } from '@fullcalendar/core'
+import internalClassNames from '@fullcalendar/core/internal-classnames'
 import { findElements } from '../../lib/dom-misc.js'
 import { ToolbarWrapper } from './ToolbarWrapper.js'
 
@@ -21,8 +22,6 @@ export class CalendarWrapper {
   static SLOT_TODAY_CLASSNAME = 'fc-slot-today'
   static DOW_CLASSNAMES = ['fc-day-sun', 'fc-day-mon', 'fc-day-tue', 'fc-day-wed', 'fc-day-thu', 'fc-day-fri', 'fc-day-sat']
   static DOW_SLOT_CLASSNAMES = ['fc-slot-sun', 'fc-slot-mon', 'fc-slot-tue', 'fc-slot-wed', 'fc-slot-thu', 'fc-slot-fri', 'fc-slot-sat']
-  static LTR_CLASSNAME = 'fc-direction-ltr'
-  static RTL_CLASSNAME = 'fc-direction-rtl'
   static ROOT_CLASSNAME = 'fc'
 
   constructor(private calendar: Calendar) {
@@ -40,7 +39,7 @@ export class CalendarWrapper {
   }
 
   getViewOuterEl() {
-    return this.calendar.el.querySelector('.fc-view-outer') as HTMLElement
+    return this.getViewEl().parentElement
   }
 
   getViewEl() {
@@ -92,10 +91,13 @@ export class CalendarWrapper {
   }
 
   getLicenseMessage() {
-    return $('.fc-license-message', this.calendar.el).text()
+    return $(
+      `.fc-more-popover.${internalClassNames.noPadding}`, // how license.tsx hijacks the style options
+      this.calendar.el
+    ).text()
   }
 
   isAllowingDragging() {
-    return !$('body').hasClass('fc-not-allowed')
+    return !$('body').hasClass(internalClassNames.notAllowed)
   }
 }

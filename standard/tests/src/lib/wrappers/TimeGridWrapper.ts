@@ -43,8 +43,11 @@ export class TimeGridWrapper {
     return findElements(this.el, '.fc-timegrid-slot[data-time] .fc-timegrid-slot-lane')
   }
 
+  /*
+  slot LANE
+  */
   getSlotElByIndex(index) {
-    return $(`.fc-timegrid-slots .fc-timegrid-slot:eq(${index})`, this.el).get()
+    return this.getSlotLaneEls()[index]
   }
 
   getSlotElByTime(timeMs) {
@@ -85,7 +88,7 @@ export class TimeGridWrapper {
 
   // for https://github.com/fullcalendar/fullcalendar-scheduler/issues/363
   isStructureValid() {
-    return Boolean(this.el.querySelector('.fc-timegrid-slots'))
+    return Boolean(this.el.querySelector('.fc-timegrid-slot'))
   }
 
   getMoreEls() {
@@ -97,8 +100,7 @@ export class TimeGridWrapper {
   }
 
   getMorePopoverEl() {
-    let viewWrapperEl = this.el.closest('.fc-view-outer')
-    return viewWrapperEl.querySelector('.fc-more-popover') as HTMLElement
+    return document.querySelector('.fc-more-popover') as HTMLElement
   }
 
   getMorePopoverEventEls() {

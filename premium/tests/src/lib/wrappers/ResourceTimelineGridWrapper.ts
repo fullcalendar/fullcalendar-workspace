@@ -181,8 +181,7 @@ export class ResourceTimelineGridWrapper {
   }
 
   getMorePopoverEl() {
-    let viewWrapperEl = this.el.closest('.fc-view-outer')
-    return viewWrapperEl.querySelector('.fc-more-popover') as HTMLElement
+    return document.querySelector('.fc-more-popover') as HTMLElement
   }
 
   getMorePopoverEventEls() {
