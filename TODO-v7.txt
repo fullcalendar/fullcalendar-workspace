@@ -17,8 +17,6 @@ build note:
     manually before `pn dev`
 
 
-Use @fullcalendar/theme-classic in tests
-  after, delete
 Make all *Class properties accept STRING only!
 Don't need nested cn(), just use arrays
 package.json

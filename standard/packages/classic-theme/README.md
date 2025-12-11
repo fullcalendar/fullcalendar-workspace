@@ -1,4 +1,0 @@
-
-# Classic Theme
-
-TODO
