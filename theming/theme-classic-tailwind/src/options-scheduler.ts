@@ -1,4 +1,4 @@
-import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import { EventCalendarOptionParams, xxsTextClass } from './options-event-calendar.js'
 
 // ambient types (tsc strips during build because of {})
@@ -23,14 +23,14 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceDayHeaderAlign: 'center',
 
-      resourceDayHeaderClass: (data) => [
+      resourceDayHeaderClass: (data) => joinClassNames(
         'border',
         data.isMajor ? params.strongBorderColorClass : params.borderColorClass,
-      ],
-      resourceDayHeaderInnerClass: (data) => [
+      ),
+      resourceDayHeaderInnerClass: (data) => joinClassNames(
         'px-1 py-0.5 flex flex-col',
         data.isNarrow ? xxsTextClass : 'text-sm',
-      ],
+      ),
 
       /* Resource Data Grid
       ------------------------------------------------------------------------------------------- */
@@ -50,11 +50,11 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       // row expander
       resourceIndentClass: 'ms-2 -me-1 justify-center', // v-align
-      resourceExpanderClass: [
+      resourceExpanderClass: joinClassNames(
         'group',
         params.outlineWidthFocusClass,
         params.primaryOutlineColorClass,
-      ],
+      ),
 
       // row
       resourceHeaderRowClass: `border ${params.borderColorClass}`,
@@ -68,7 +68,7 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
 
       resourceGroupLaneClass: `border ${params.borderColorClass} ${params.mutedBgClass}`,
       resourceLaneClass: `border ${params.borderColorClass}`,
-      resourceLaneBottomClass: (data) => data.options.eventOverlap && 'h-3',
+      resourceLaneBottomClass: (data) => joinClassNames(data.options.eventOverlap && 'h-3'),
       timelineBottomClass: 'h-3',
     },
     views: {
@@ -77,16 +77,16 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         /* Timeline > Row Event
         ----------------------------------------------------------------------------------------- */
 
-        rowEventClass: (data) => [
+        rowEventClass: (data) => joinClassNames(
           data.isEnd && 'me-px',
           'items-center', // v-align with continuation arrows
-        ],
+        ),
 
-        rowEventBeforeClass: (data) => (
+        rowEventBeforeClass: (data) => joinClassNames(
           !data.isStartResizable && `${continuationArrowClass} border-e-[5px] border-e-black`
         ),
 
-        rowEventAfterClass: (data) => (
+        rowEventAfterClass: (data) => joinClassNames(
           !data.isEndResizable && `${continuationArrowClass} border-s-[5px] border-s-black`
         ),
 
@@ -102,10 +102,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         /* Timeline > More-Link
         ----------------------------------------------------------------------------------------- */
 
-        rowMoreLinkClass: [
+        rowMoreLinkClass: joinClassNames(
           'me-px mb-px border border-transparent print:border-black',
           `${params.strongSolidPressableClass} print:bg-white`,
-        ],
+        ),
         rowMoreLinkInnerClass: 'p-0.5 text-xs',
 
         /* Timeline > Slot Header
@@ -114,10 +114,10 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         slotHeaderAlign: (data) => data.isTime ? 'start' : 'center', // h-align
 
         slotHeaderClass: 'justify-center', // v-align
-        slotHeaderInnerClass: (data) => [
+        slotHeaderInnerClass: (data) => joinClassNames(
           'p-2 text-sm',
           data.hasNavLink && 'hover:underline',
-        ],
+        ),
 
         // divider between label and lane
         slotHeaderDividerClass: `border-b ${params.borderColorClass}`,
@@ -126,11 +126,11 @@ export function createSchedulerOnlyOptions(params: EventCalendarOptionParams): {
         ----------------------------------------------------------------------------------------- */
 
         // create down pointing arrow
-        nowIndicatorHeaderClass: [
+        nowIndicatorHeaderClass: joinClassNames(
           'top-0 -mx-[5px]',
           'border-x-[5px] border-x-transparent',
           `border-t-[6px] ${params.nowBorderColorClass}`,
-        ],
+        ),
 
         nowIndicatorLineClass: `border-s ${params.nowBorderColorClass}`,
       },

@@ -116,11 +116,11 @@ export const defaultUiEventCalendarOptions: {
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-3',
     toolbarTitleClass: 'text-2xl font-bold',
 
-    buttonGroupClass: (data) => [
+    buttonGroupClass: (data) => joinClassNames(
       'rounded-full flex flex-row items-center',
       data.isSelectGroup && 'border border-(--fc-monarch-border)'
-    ],
-    buttonClass: (data) => [
+    ),
+    buttonClass: (data) => joinClassNames(
       'py-2.5 rounded-full flex flex-row items-center text-sm',
       data.isIconOnly ? 'px-2.5' : 'px-5',
       data.inSelectGroup && '-m-px', // overcome select-group border
@@ -131,7 +131,7 @@ export const defaultUiEventCalendarOptions: {
           : data.isPrimary
             ? primaryButtonClass
             : secondaryButtonClass
-    ],
+    ),
 
     buttons: {
       prev: {

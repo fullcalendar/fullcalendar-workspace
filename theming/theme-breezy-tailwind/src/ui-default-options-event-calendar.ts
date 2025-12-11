@@ -142,11 +142,11 @@ export const defaultUiEventCalendarOptions: {
     TODO: don't make buttons so fat
     are buttons 1px taller than in Tailwind Plus because we're not using inset border?
     */
-    buttonGroupClass: (data) => [
+    buttonGroupClass: (data) => joinClassNames(
       'flex flex-row items-center',
       !data.isSelectGroup && 'rounded-md shadow-xs',
-    ],
-    buttonClass: (data) => [
+    ),
+    buttonClass: (data) => joinClassNames(
       'group py-2 flex flex-row items-center text-sm',
       data.isIconOnly ? 'px-2' : 'px-3',
       data.inSelectGroup ? joinClassNames(
@@ -163,7 +163,7 @@ export const defaultUiEventCalendarOptions: {
           ? 'first:rounded-s-md first:border-s last:rounded-e-md last:border-e border-y'
           : 'rounded-md shadow-xs border',
       ),
-    ],
+    ),
 
     buttons: {
       prev: {

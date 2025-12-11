@@ -1,4 +1,4 @@
-import { CalendarOptions, ViewOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames, ViewOptions } from '@fullcalendar/core'
 import { createEventCalendarOptions, EventCalendarOptionParams } from './options-event-calendar.js'
 import * as svgs from './ui-default-svgs.js'
 
@@ -75,15 +75,15 @@ export const defaultUiEventCalendarOptions: {
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
 
-    toolbarClass: (data) => [
+    toolbarClass: (data) => joinClassNames(
       'flex flex-row flex-wrap items-center justify-between gap-3',
       data.borderlessX && 'px-3',
-    ],
+    ),
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-3',
     toolbarTitleClass: 'text-2xl font-bold',
 
     buttonGroupClass: 'flex flex-row items-center',
-    buttonClass: (data) => [
+    buttonClass: (data) => joinClassNames(
       'py-2 border-x flex flex-row items-center',
       'focus-visible:outline-3 outline-slate-600/50',
       'hover:border-slate-900 active:border-slate-900 print:border-slate-900',
@@ -98,7 +98,7 @@ export const defaultUiEventCalendarOptions: {
         : 'border-transparent bg-slate-700',
       data.isDisabled
         && 'opacity-65 pointer-events-none', // bypass hover styles
-    ],
+    ),
 
     buttons: {
       prev: {

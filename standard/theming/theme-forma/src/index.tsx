@@ -76,7 +76,7 @@ const rowTouchResizerClass = `${blockTouchResizerClass} top-1/2 -mt-1`
 const columnTouchResizerClass = `${blockTouchResizerClass} left-1/2 -ml-1`
 
 const tallDayCellBottomClass = 'min-h-4'
-const getShortDayCellBottomClass = (data: DayCellData) => (
+const getShortDayCellBottomClass = (data: DayCellData) => joinClassNames(
   !data.isNarrow && 'min-h-px'
 )
 
@@ -90,7 +90,7 @@ const dayRowCommonClasses: CalendarOptions = {
   /* Day Row > List-Item Event
   ----------------------------------------------------------------------------------------------- */
 
-  listItemEventClass: (data) => [
+  listItemEventClass: (data) => joinClassNames(
     'mb-px p-px rounded-sm',
     data.isNarrow ? 'mx-px' : 'mx-0.5',
     data.isSelected
@@ -98,46 +98,46 @@ const dayRowCommonClasses: CalendarOptions = {
       : data.isInteractive
         ? mutedHoverPressableClass
         : mutedHoverClass,
-  ],
-  listItemEventBeforeClass: (data) => [
+  ),
+  listItemEventBeforeClass: (data) => joinClassNames(
     'border-4 border-(--fc-event-color) rounded-full',
     data.isNarrow ? 'ms-0.5' : 'ms-1',
-  ],
+  ),
   listItemEventInnerClass: (data) => (
     data.isNarrow
       ? `py-px ${xxsTextClass}`
       : 'py-0.5 text-xs'
   ),
-  listItemEventTimeClass: (data) => [
+  listItemEventTimeClass: (data) => joinClassNames(
     data.isNarrow ? 'ps-0.5' : 'ps-1',
     'whitespace-nowrap overflow-hidden shrink-1',
-  ],
-  listItemEventTitleClass: (data) => [
+  ),
+  listItemEventTitleClass: (data) => joinClassNames(
     data.isNarrow ? 'px-0.5' : 'px-1',
     'font-bold whitespace-nowrap overflow-hidden shrink-100',
-  ],
+  ),
 
   /* Day Row > Row Event
   ----------------------------------------------------------------------------------------------- */
 
-  rowEventClass: (data) => data.isEnd && (data.isNarrow ? 'me-px' : 'me-0.5'),
+  rowEventClass: (data) => joinClassNames(data.isEnd && (data.isNarrow ? 'me-px' : 'me-0.5')),
   rowEventInnerClass: (data) => data.isNarrow ? 'py-px' : 'py-0.5',
 
   /* Day Row > More-Link
   ----------------------------------------------------------------------------------------------- */
 
-  rowMoreLinkClass: (data) => [
+  rowMoreLinkClass: (data) => joinClassNames(
     'mb-px border rounded-sm',
     data.isNarrow
       ? 'mx-px border-(--fc-forma-primary)'
       : 'mx-0.5 border-transparent self-start',
     mutedHoverPressableClass,
-  ],
-  rowMoreLinkInnerClass: (data) => [
+  ),
+  rowMoreLinkInnerClass: (data) => joinClassNames(
     data.isNarrow
       ? `px-0.5 py-px ${xxsTextClass}`
       : 'px-1 py-0.5 text-xs'
-  ],
+  ),
 }
 
 export default createPlugin({
@@ -154,7 +154,7 @@ export default createPlugin({
     toolbarSectionClass: "shrink-0 flex flex-row items-center gap-3",
     toolbarTitleClass: "text-xl",
     buttonGroupClass: "flex flex-row items-center",
-    buttonClass: (data) => [
+    buttonClass: (data) => joinClassNames(
       'group py-1.5 rounded-sm flex flex-row items-center text-sm button-reset',
       data.isIconOnly ? 'px-2' : 'px-3',
       data.isIconOnly
@@ -166,7 +166,7 @@ export default createPlugin({
           : data.isPrimary
             ? primaryButtonClass
             : secondaryButtonClass,
-    ],
+    ),
     buttons: {
       prev: {
         iconContent: () => chevronDown(
@@ -196,7 +196,7 @@ export default createPlugin({
     eventShortHeight: 50,
     eventColor: "var(--fc-forma-event)",
     eventContrastColor: "var(--fc-forma-event-contrast)",
-    eventClass: (data) => [
+    eventClass: (data) => joinClassNames(
       data.isSelected
         ? joinClassNames(
             outlineWidthClass,
@@ -204,19 +204,19 @@ export default createPlugin({
           )
         : outlineWidthFocusClass,
       primaryOutlineColorClass,
-    ],
+    ),
 
     /* Background Event
     --------------------------------------------------------------------------------------------- */
 
     backgroundEventColor: "var(--fc-forma-background-event)",
     backgroundEventClass: "bg-[color-mix(in_oklab,var(--fc-event-color)_15%,transparent)]",
-    backgroundEventTitleClass: (data) => [
+    backgroundEventTitleClass: (data) => joinClassNames(
       'opacity-50 italic',
       data.isNarrow
         ? `p-1 ${xxsTextClass}`
         : 'p-2 text-xs',
-    ],
+    ),
 
     /* List-Item Event
     --------------------------------------------------------------------------------------------- */
@@ -227,51 +227,51 @@ export default createPlugin({
     /* Block Event
     --------------------------------------------------------------------------------------------- */
 
-    blockEventClass: (data) => [
+    blockEventClass: (data) => joinClassNames(
       'group relative border-(--fc-event-color) print:bg-white',
       data.isInteractive
         ? eventMutedPressableClass
         : eventMutedBgClass,
       (data.isDragging && !data.isSelected) && 'opacity-75',
       outlineOffsetClass,
-    ],
+    ),
     blockEventTimeClass: "whitespace-nowrap overflow-hidden shrink-1",
     blockEventTitleClass: "whitespace-nowrap overflow-hidden shrink-100",
 
     /* Row Event
     --------------------------------------------------------------------------------------------- */
 
-    rowEventClass: (data) => [
+    rowEventClass: (data) => joinClassNames(
       'mb-px not-print:py-px print:border-y items-center',
       data.isStart && 'border-s-6 rounded-s-sm',
       data.isEnd && 'not-print:pe-px print:border-e rounded-e-sm',
-    ],
-    rowEventBeforeClass: (data) => (
-      data.isStartResizable ? [
+    ),
+    rowEventBeforeClass: (data) => joinClassNames(
+      data.isStartResizable ? joinClassNames(
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-start-2',
-      ] : (!data.isStart && !data.isNarrow) && [
+      ) : (!data.isStart && !data.isNarrow) && joinClassNames(
         `ms-1 size-2 border-t-1 border-s-1 border-(--fc-forma-muted-foreground)`,
         '-rotate-45 [[dir=rtl]_&]:rotate-45',
-      ]
+      )
     ),
-    rowEventAfterClass: (data) => (
-      data.isEndResizable ? [
+    rowEventAfterClass: (data) => joinClassNames(
+      data.isEndResizable ? joinClassNames(
         data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
         '-end-1',
-      ] : (!data.isEnd && !data.isNarrow) && [
+      ) : (!data.isEnd && !data.isNarrow) && joinClassNames(
         `me-1 size-2 border-t-1 border-e-1 border-(--fc-forma-muted-foreground)`,
         'rotate-45 [[dir=rtl]_&]:-rotate-45',
-      ]
+      )
     ),
-    rowEventInnerClass: (data) => [
+    rowEventInnerClass: (data) => joinClassNames(
       'flex flex-row items-center',
       data.isNarrow ? xxsTextClass : 'text-xs',
-    ],
-    rowEventTimeClass: (data) => [
+    ),
+    rowEventTimeClass: (data) => joinClassNames(
       'font-medium',
       data.isNarrow ? 'ps-0.5' : 'ps-1',
-    ],
+    ),
     rowEventTitleClass: (data) => (
       data.isNarrow ? 'px-0.5' : 'px-1'
     ),
@@ -279,24 +279,24 @@ export default createPlugin({
     /* Column Event
     --------------------------------------------------------------------------------------------- */
 
-    columnEventClass: (data) => [
+    columnEventClass: (data) => joinClassNames(
       'border-s-6 not-print:pe-px print:border-e ring ring-(--fc-forma-background)',
       data.isStart && 'not-print:pt-px print:border-t rounded-t-sm',
       data.isEnd && 'mb-px not-print:pb-px print:border-b rounded-b-sm',
-    ],
-    columnEventBeforeClass: (data) => (
-      data.isStartResizable && [
+    ),
+    columnEventBeforeClass: (data) => joinClassNames(
+      data.isStartResizable && joinClassNames(
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-top-1',
-      ]
+      )
     ),
-    columnEventAfterClass: (data) => (
-      data.isEndResizable && [
+    columnEventAfterClass: (data) => joinClassNames(
+      data.isEndResizable && joinClassNames(
         data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
         '-bottom-1',
-      ]
+      )
     ),
-    columnEventInnerClass: (data) => [
+    columnEventInnerClass: (data) => joinClassNames(
       'flex',
       data.isShort
         ? 'flex-row items-center p-1 gap-1'
@@ -304,15 +304,15 @@ export default createPlugin({
             'flex-col',
             data.isNarrow ? 'px-0.5' : 'px-1',
           )
-    ],
-    columnEventTimeClass: (data) => [
+    ),
+    columnEventTimeClass: (data) => joinClassNames(
       !data.isShort && (data.isNarrow ? 'pt-0.5' : 'pt-1'),
       xxsTextClass,
-    ],
-    columnEventTitleClass: (data) => [
+    ),
+    columnEventTitleClass: (data) => joinClassNames(
       !data.isShort && (data.isNarrow ? 'py-0.5' : 'py-1'),
       (data.isShort || data.isNarrow) ? xxsTextClass : 'text-xs',
-    ],
+    ),
 
     /* More-Link
     --------------------------------------------------------------------------------------------- */
@@ -330,7 +330,7 @@ export default createPlugin({
     --------------------------------------------------------------------------------------------- */
 
     dayHeaderAlign: (data) => data.isNarrow ? 'center' : 'start',
-    dayHeaderClass: (data) => [
+    dayHeaderClass: (data) => joinClassNames(
       'justify-center',
       data.isToday && !data.level && 'relative',
       data.isDisabled && 'bg-(--fc-forma-faint)',
@@ -340,12 +340,12 @@ export default createPlugin({
             data.isMajor ? 'border border-(--fc-forma-strong-border)' :
               !data.isNarrow && 'border border-(--fc-forma-border)',
           ),
-    ],
-    dayHeaderInnerClass: (data) => [
+    ),
+    dayHeaderInnerClass: (data) => joinClassNames(
       'p-2 flex flex-col',
       data.isToday && data.level && 'relative',
       data.hasNavLink && `${mutedHoverPressableClass} ${outlineInsetClass}`,
-    ],
+    ),
     dayHeaderContent: (data) => (
       <Fragment>
         {data.isToday && (
@@ -368,17 +368,17 @@ export default createPlugin({
     /* Day Cell
     --------------------------------------------------------------------------------------------- */
 
-    dayCellClass: (data) => [
+    dayCellClass: (data) => joinClassNames(
       'border',
       data.isMajor ? 'border-(--fc-forma-strong-border)' : 'border-(--fc-forma-border)',
       ((data.isOther || data.isDisabled) && !data.options.businessHours) && 'bg-(--fc-forma-faint)',
-    ],
-    dayCellTopClass: (data) => [
+    ),
+    dayCellTopClass: (data) => joinClassNames(
       data.isNarrow ? 'min-h-px' : 'min-h-0.5',
       'flex flex-row',
       ((data.isOther || data.isDisabled) && data.options.businessHours) && 'text-(--fc-forma-faint-foreground)',
-    ],
-    dayCellTopInnerClass: (data) => [
+    ),
+    dayCellTopInnerClass: (data) => joinClassNames(
       'flex flex-row items-center justify-center whitespace-nowrap',
       data.isNarrow
         ? `my-px h-5 ${xxsTextClass}`
@@ -400,8 +400,8 @@ export default createPlugin({
             data.hasNavLink && mutedHoverPressableClass,
           ),
       data.monthText && 'font-bold',
-    ],
-    dayCellInnerClass: (data) => data.inPopover && 'p-2',
+    ),
+    dayCellInnerClass: (data) => joinClassNames(data.inPopover && 'p-2'),
 
     /* Popover
     --------------------------------------------------------------------------------------------- */
@@ -414,11 +414,11 @@ export default createPlugin({
     /* Lane
     --------------------------------------------------------------------------------------------- */
 
-    dayLaneClass: (data) => [
+    dayLaneClass: (data) => joinClassNames(
       'border',
       data.isMajor ? 'border-(--fc-forma-strong-border)' : 'border-(--fc-forma-border)',
       data.isDisabled && 'bg-(--fc-forma-faint)',
-    ],
+    ),
     dayLaneInnerClass: (data) => (
       data.isStack
         ? 'm-1'
@@ -430,33 +430,33 @@ export default createPlugin({
     --------------------------------------------------------------------------------------------- */
 
     listDayClass: "not-last:border-b border-(--fc-forma-border) flex flex-row items-start",
-    listDayHeaderClass: (data) => [
+    listDayHeaderClass: (data) => joinClassNames(
       'shrink-0 w-1/4 max-w-40 p-3 flex flex-col items-start',
       data.isToday && 'border-s-4 border-(--fc-forma-primary)',
-    ],
-    listDayHeaderInnerClass: (data) => [
+    ),
+    listDayHeaderInnerClass: (data) => joinClassNames(
       'my-0.5',
       !data.level
         ? joinClassNames('text-lg', data.isToday && 'font-bold')
         : 'text-xs',
       data.hasNavLink && 'hover:underline',
-    ],
+    ),
     listDayEventsClass: "grow min-w-0 p-4 gap-4",
 
     /* Single Month (in Multi-Month)
     --------------------------------------------------------------------------------------------- */
 
     singleMonthClass: "m-4",
-    singleMonthHeaderClass: (data) => [
+    singleMonthHeaderClass: (data) => joinClassNames(
       data.colCount > 1 ? 'pb-4' : 'py-2',
       data.isSticky && 'border-b border-(--fc-forma-border) bg-(--fc-forma-background)',
       'items-center',
-    ],
-    singleMonthHeaderInnerClass: (data) => [
+    ),
+    singleMonthHeaderInnerClass: (data) => joinClassNames(
       'px-1 rounded-sm font-bold',
       data.hasNavLink && mutedHoverPressableClass,
       data.isNarrow ? 'text-base' : 'text-lg',
-    ],
+    ),
 
     /* Misc Table
     --------------------------------------------------------------------------------------------- */
@@ -473,7 +473,7 @@ export default createPlugin({
     --------------------------------------------------------------------------------------------- */
 
     navLinkClass: `${outlineWidthFocusClass} ${primaryOutlineColorClass}`,
-    inlineWeekNumberClass: (data) => [
+    inlineWeekNumberClass: (data) => joinClassNames(
       'absolute end-0 whitespace-nowrap rounded-s-sm',
       data.isNarrow
         ? `top-0.5 my-px p-0.5 ${xxsTextClass}`
@@ -481,7 +481,7 @@ export default createPlugin({
       data.hasNavLink
         ? mutedPressableClass
         : 'bg-(--fc-forma-muted)',
-    ],
+    ),
     nonBusinessClass: "bg-(--fc-forma-faint)",
     highlightClass: "bg-(--fc-forma-highlight)",
     nowIndicatorLineClass: "-m-px border-1 border-(--fc-forma-primary)",
@@ -490,14 +490,14 @@ export default createPlugin({
     /* Resource Day Header
     --------------------------------------------------------------------------------------------- */
 
-    resourceDayHeaderClass: (data) => [
+    resourceDayHeaderClass: (data) => joinClassNames(
       'border',
       data.isMajor ? 'border-(--fc-forma-strong-border)' : 'border-(--fc-forma-border)',
-    ],
-    resourceDayHeaderInnerClass: (data) => [
+    ),
+    resourceDayHeaderInnerClass: (data) => joinClassNames(
       'p-2 flex flex-col',
       data.isNarrow ? 'text-xs' : 'text-sm',
-    ],
+    ),
 
     /* Resource Data Grid
     --------------------------------------------------------------------------------------------- */
@@ -556,29 +556,29 @@ export default createPlugin({
       ------------------------------------------------------------------------------------------- */
 
       weekNumberHeaderClass: 'items-end justify-end',
-      weekNumberHeaderInnerClass: (data) => [
+      weekNumberHeaderInnerClass: (data) => joinClassNames(
         'm-1 p-1 rounded-sm text-xs',
         data.hasNavLink && mutedHoverPressableClass,
-      ],
+      ),
 
       /* TimeGrid > All-Day Header
       ------------------------------------------------------------------------------------------- */
 
       allDayHeaderClass: 'items-center justify-end',
-      allDayHeaderInnerClass: (data) => [
+      allDayHeaderInnerClass: (data) => joinClassNames(
         'p-2 whitespace-pre text-end',
         data.isNarrow ? xxsTextClass : 'text-xs',
-      ],
+      ),
       allDayDividerClass: 'border-b border-(--fc-forma-border)',
 
       /* TimeGrid > Slot Header
       ------------------------------------------------------------------------------------------- */
 
       slotHeaderClass: 'justify-end',
-      slotHeaderInnerClass: (data) => [
+      slotHeaderInnerClass: (data) => joinClassNames(
         'p-2',
         data.isNarrow ? xxsTextClass : 'text-xs',
-      ],
+      ),
       slotHeaderDividerClass: 'border-e border-(--fc-forma-border)',
     },
     list: {
@@ -586,18 +586,18 @@ export default createPlugin({
       /* List-View > List-Item Event
       ------------------------------------------------------------------------------------------- */
 
-      listItemEventClass: (data) => [
+      listItemEventClass: (data) => joinClassNames(
         'group border-s-6 border-(--fc-event-color) p-3 rounded-sm',
         data.isInteractive
           ? eventFaintPressableClass
           : eventFaintBgClass,
-      ],
+      ),
       listItemEventInnerClass: 'gap-2 text-sm',
       listItemEventTimeClass: 'shrink-0 w-1/2 max-w-40 whitespace-nowrap overflow-hidden text-ellipsis',
-      listItemEventTitleClass: (data) => [
+      listItemEventTitleClass: (data) => joinClassNames(
         'grow min-w-0 whitespace-nowrap overflow-hidden font-semibold',
         data.event.url && 'group-hover:underline',
-      ],
+      ),
 
       /* No-Events Screen
       ------------------------------------------------------------------------------------------- */
@@ -628,10 +628,10 @@ export default createPlugin({
 
       slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
       slotHeaderClass: 'justify-center',
-      slotHeaderInnerClass: (data) => [
+      slotHeaderInnerClass: (data) => joinClassNames(
         'p-2 text-sm',
         data.hasNavLink && 'hover:underline',
-      ],
+      ),
       slotHeaderDividerClass: 'border-b border-(--fc-forma-border)',
     },
   },

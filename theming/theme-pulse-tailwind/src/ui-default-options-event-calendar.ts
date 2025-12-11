@@ -114,29 +114,29 @@ export const defaultUiEventCalendarOptions: {
     ...baseEventCalendarOptions.optionDefaults,
 
     className: 'gap-6',
-    viewClass: [
+    viewClass: joinClassNames(
       'rounded-sm overflow-hidden',
       `bg-(--fc-pulse-background) border border-(--fc-pulse-border) ${smallBoxShadowClass}`,
-    ],
+    ),
 
     /* Toolbar
     --------------------------------------------------------------------------------------------- */
 
-    toolbarClass: (data) => [
+    toolbarClass: (data) => joinClassNames(
       'flex flex-row flex-wrap items-center justify-between gap-5',
       data.borderlessX && 'px-3',
-    ],
+    ),
     toolbarSectionClass: 'shrink-0 flex flex-row items-center gap-5',
     toolbarTitleClass: 'text-2xl font-bold text-(--fc-pulse-foreground)',
 
-    buttonGroupClass: (data) => [
+    buttonGroupClass: (data) => joinClassNames(
       'py-px rounded-sm flex flex-row items-center',
       data.isSelectGroup
         ? 'bg-(--fc-pulse-unselected)'
         : `bg-(--fc-pulse-secondary) ${smallBoxShadowClass}`
-    ],
+    ),
 
-    buttonClass: (data) => [
+    buttonClass: (data) => joinClassNames(
       'group py-2 flex flex-row items-center text-sm',
       data.isIconOnly ? 'px-2.5' : 'px-4',
       data.inSelectGroup
@@ -171,7 +171,7 @@ export const defaultUiEventCalendarOptions: {
                     : 'not-first:border-s-transparent not-last:border-e-(--fc-pulse-border)',
                 )
           ),
-    ],
+    ),
 
     buttons: {
       prev: {

@@ -127,7 +127,7 @@ export const defaultUiEventCalendarOptions: {
     toolbarTitleClass: 'text-xl',
 
     buttonGroupClass: 'flex flex-row items-center',
-    buttonClass: (data) => [
+    buttonClass: (data) => joinClassNames(
       'group py-1.5 rounded-sm flex flex-row items-center text-sm',
       data.isIconOnly ? 'px-2' : 'px-3',
       data.isIconOnly
@@ -144,7 +144,7 @@ export const defaultUiEventCalendarOptions: {
             ? primaryButtonClass
             // secondary button
             : secondaryButtonClass,
-    ],
+    ),
 
     buttons: {
       prev: {
