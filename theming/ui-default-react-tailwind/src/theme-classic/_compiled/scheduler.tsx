@@ -1,5 +1,5 @@
 import React from 'react'
-import type { CalendarOptions } from '@fullcalendar/core'
+import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
 import adaptivePlugin from '@fullcalendar/adaptive'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
 import timelinePlugin from '@fullcalendar/timeline'
@@ -55,14 +55,14 @@ export function Scheduler({
       ------------------------------------------------------------------------------------------- */
 
       resourceDayHeaderAlign="center"
-      resourceDayHeaderClass={(data) => [
+      resourceDayHeaderClass={(data) => joinClassNames(
         'border',
         data.isMajor ? 'border-(--fc-classic-strong-border)' : 'border-(--fc-classic-border)',
-      ]}
-      resourceDayHeaderInnerClass={(data) => [
+      )}
+      resourceDayHeaderInnerClass={(data) => joinClassNames(
         'px-1 py-0.5 flex flex-col',
         data.isNarrow ? xxsTextClass : 'text-sm',
-      ]}
+      )}
 
       /* Resource Data Grid
       ------------------------------------------------------------------------------------------- */
@@ -88,7 +88,7 @@ export function Scheduler({
 
       resourceGroupLaneClass="border border-(--fc-classic-border) bg-(--fc-classic-muted)"
       resourceLaneClass="border border-(--fc-classic-border)"
-      resourceLaneBottomClass={(data) => data.options.eventOverlap && 'h-3'}
+      resourceLaneBottomClass={(data) => joinClassNames(data.options.eventOverlap && 'h-3')}
       timelineBottomClass="h-3"
 
       /* View-Specific Options
@@ -101,14 +101,14 @@ export function Scheduler({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => [
+          rowEventClass: (data) => joinClassNames(
             data.isEnd && 'me-px',
             'items-center',
-          ],
-          rowEventBeforeClass: (data) => (
+          ),
+          rowEventBeforeClass: (data) => joinClassNames(
             !data.isStartResizable && `${continuationArrowClass} border-e-[5px] border-e-black`
           ),
-          rowEventAfterClass: (data) => (
+          rowEventAfterClass: (data) => joinClassNames(
             !data.isEndResizable && `${continuationArrowClass} border-s-[5px] border-s-black`
           ),
           rowEventInnerClass: (data) => (
@@ -130,10 +130,10 @@ export function Scheduler({
 
           slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
           slotHeaderClass: 'justify-center',
-          slotHeaderInnerClass: (data) => [
+          slotHeaderInnerClass: (data) => joinClassNames(
             'p-2 text-sm',
             data.hasNavLink && 'hover:underline',
-          ],
+          ),
           slotHeaderDividerClass: 'border-b border-(--fc-classic-border)',
 
           /* Timeline > Now-Indicator

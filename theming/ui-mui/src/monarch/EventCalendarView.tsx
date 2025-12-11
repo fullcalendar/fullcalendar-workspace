@@ -109,10 +109,10 @@ export const dayRowCommonClasses: CalendarOptions = {
       : 'mx-0.5 border-transparent',
     mutedHoverPressableClass,
   ),
-  rowMoreLinkInnerClass: (data) => joinClassNames(
+  rowMoreLinkInnerClass: (data) => (
     data.isNarrow
       ? `px-0.5 py-px ${xxsTextClass}`
-      : 'px-1 py-0.5 text-xs',
+      : 'px-1 py-0.5 text-xs'
   ),
 }
 

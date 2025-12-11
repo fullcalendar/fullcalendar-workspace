@@ -53,10 +53,10 @@ export function Scheduler({
 
       resourceDayHeaderAlign="center"
       resourceDayHeaderClass="border"
-      resourceDayHeaderInnerClass={(data) => [
+      resourceDayHeaderInnerClass={(data) => joinClassNames(
         'p-2 text-(--fc-breezy-foreground) font-semibold',
         data.isNarrow ? 'text-xs' : 'text-sm',
-      ]}
+      )}
 
       /* Resource Data Grid
       ------------------------------------------------------------------------------------------- */
@@ -85,7 +85,7 @@ export function Scheduler({
 
       resourceGroupLaneClass="border border-(--fc-breezy-border) bg-(--fc-breezy-muted)"
       resourceLaneClass="border border-(--fc-breezy-border)"
-      resourceLaneBottomClass={(data) => data.options.eventOverlap && 'h-2'}
+      resourceLaneBottomClass={(data) => joinClassNames(data.options.eventOverlap && 'h-2')}
       timelineBottomClass="h-2"
 
       /* View-Specific Options
@@ -114,7 +114,7 @@ export function Scheduler({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => data.isEnd && 'me-px',
+          rowEventClass: (data) => joinClassNames(data.isEnd && 'me-px'),
           rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
 
           /* Timeline > More-Link
@@ -127,18 +127,18 @@ export function Scheduler({
           --------------------------------------------------------------------------------------- */
 
           slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
-          slotHeaderClass: (data) => [
+          slotHeaderClass: (data) => joinClassNames(
             data.level > 0 && 'border border-(--fc-breezy-muted-border)',
             'justify-end',
-          ],
-          slotHeaderInnerClass: (data) => [
+          ),
+          slotHeaderInnerClass: (data) => joinClassNames(
             'px-3 py-2 text-xs',
             data.isTime && joinClassNames(
               'relative -start-4',
               data.isFirst && 'hidden',
             ),
             data.hasNavLink && 'hover:underline',
-          ],
+          ),
           slotHeaderDividerClass: 'border-b border-(--fc-breezy-strong-border) shadow-sm',
 
           ...userViews?.timeline,

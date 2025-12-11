@@ -17,7 +17,6 @@ build note:
     manually before `pn dev`
 
 
-Make all *Class properties accept STRING only!
 Don't need nested cn(), just use arrays
 package.json
   Convert all workspace:7.0.0-rc.0 to just workspace:* ?

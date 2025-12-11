@@ -71,7 +71,7 @@ export default function SchedulerView({
           --------------------------------------------------------------------------------------- */
 
           rowEventClass: (data) => joinClassNames(data.isEnd && 'me-px'),
-          rowEventInnerClass: (data) => joinClassNames(data.options.eventOverlap ? 'py-1' : 'py-2'),
+          rowEventInnerClass: (data) => data.options.eventOverlap ? 'py-1' : 'py-2',
 
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */

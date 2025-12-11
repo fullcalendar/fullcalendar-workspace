@@ -1,4 +1,4 @@
-import { CalendarOptions, createPlugin, PluginDef } from '@fullcalendar/core'
+import { CalendarOptions, createPlugin, PluginDef, joinClassNames } from '@fullcalendar/core'
 
 /*
 NOTE: other classnames in theme-for-tests-premium.ts
@@ -8,10 +8,10 @@ const dayRowCommonClasses: CalendarOptions = {
   moreLinkClass: 'fc-daygrid-more-link',
   dayCellClass: 'fc-daygrid-day',
   dayCellTopClass: 'fc-daygrid-day-header',
-  dayCellTopInnerClass: (data) => [
+  dayCellTopInnerClass: (data) => joinClassNames(
     'fc-daygrid-day-number',
     data.monthText && 'fc-daygrid-month-start',
-  ],
+  ),
   rowEventClass: 'fc-daygrid-event',
   listItemEventClass: 'fc-daygrid-dot-event',
 }
@@ -29,21 +29,21 @@ export default createPlugin({
     footerToolbarClass: 'fc-footer-toolbar',
     toolbarSectionClass: 'fc-toolbar-section',
     toolbarTitleClass: 'fc-toolbar-title',
-    viewClass: (data) => [
+    viewClass: (data) => joinClassNames(
       'fc-view',
       `fc-${data.view.type}-view`,
-    ],
-    buttonClass: (data) => [
+    ),
+    buttonClass: (data) => joinClassNames(
       'fc-button',
       `fc-${data.name}-button`,
-    ],
+    ),
     buttonGroupClass: 'fc-button-group',
     popoverClass: 'fc-more-popover',
     popoverCloseClass: 'fc-popover-close',
     navLinkClass: 'fc-navlink',
     nonBusinessClass: 'fc-non-business',
     highlightClass: 'fc-highlight',
-    eventClass: (data) => [
+    eventClass: (data) => joinClassNames(
       data.event.display === 'background' && 'fc-bg-event',
       'fc-event',
       data.isMirror && 'fc-event-mirror',
@@ -51,25 +51,25 @@ export default createPlugin({
       data.isEnd && 'fc-event-end',
       data.isPast && 'fc-event-past',
       data.isFuture && 'fc-event-future',
-    ],
+    ),
     eventTimeClass: 'fc-event-time',
     eventTitleClass: 'fc-event-title',
-    eventBeforeClass: (data) => [
+    eventBeforeClass: (data) => joinClassNames(
       data.isStartResizable && 'fc-event-resizer fc-event-resizer-start',
-    ],
-    eventAfterClass: (data) => [
+    ),
+    eventAfterClass: (data) => joinClassNames(
       data.isEndResizable && 'fc-event-resizer fc-event-resizer-end',
-    ],
-    dayHeaderClass: (data) => [
+    ),
+    dayHeaderClass: (data) => joinClassNames(
       ...getDayClassNames(data),
       data.inPopover && 'fc-popover-header',
-    ],
-    dayHeaderInnerClass: (data) => [
+    ),
+    dayHeaderInnerClass: (data) => joinClassNames(
       data.inPopover && 'fc-popover-title',
-    ],
-    dayCellClass: (data) => getDayClassNames(data),
-    slotHeaderClass: getSlotClass,
-    slotLaneClass: getSlotClass,
+    ),
+    dayCellClass: (data) => joinClassNames(...getDayClassNames(data)),
+    slotHeaderClass: (data) => joinClassNames(...getSlotClass(data)),
+    slotLaneClass: (data) => joinClassNames(...getSlotClass(data)),
   },
   views: {
     dayGrid: {
@@ -84,22 +84,22 @@ export default createPlugin({
       moreLinkClass: 'fc-timegrid-more-link',
       weekNumberHeaderClass: 'fc-timegrid-axis',
       allDayHeaderClass: 'fc-timegrid-allday fc-timegrid-axis',
-      slotLabelClass: (data) => [
+      slotLabelClass: (data) => joinClassNames(
         'fc-timegrid-slot-label',
         'fc-timegrid-axis',
         ...getTimeGridSlotClass(data),
-      ],
-      slotLaneClass: (data) => [
+      ),
+      slotLaneClass: (data) => joinClassNames(
         'fc-timegrid-slot-lane',
         ...getTimeGridSlotClass(data),
-      ],
+      ),
       dayLaneClass: 'fc-timegrid-day',
       nowIndicatorHeaderClass: 'fc-timegrid-now-indicator-arrow',
       nowIndicatorLineClass: 'fc-timegrid-now-indicator-line',
-      columnEventClass: (data) => [
+      columnEventClass: (data) => joinClassNames(
         'fc-timegrid-event',
         data.isShort && 'fc-timegrid-event-short',
-      ],
+      ),
     },
     multiMonth: {
       ...dayRowCommonClasses,

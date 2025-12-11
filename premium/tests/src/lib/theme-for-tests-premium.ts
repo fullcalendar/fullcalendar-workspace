@@ -1,4 +1,4 @@
-import { createPlugin, PluginDef } from '@fullcalendar/core'
+import { PluginDef, createPlugin, joinClassNames } from '@fullcalendar/core'
 
 export default createPlugin({
   name: 'theme-for-tests-premium',
@@ -7,12 +7,12 @@ export default createPlugin({
     resourceCellClass: 'fc-cell fc-resource',
     resourceCellInnerClass: 'fc-cell-main',
     resourceIndentClass: 'fc-resource-indent',
-    resourceExpanderClass: (data) => [
+    resourceExpanderClass: (data) => joinClassNames(
       'fc-resource-expander',
       data.isExpanded
         ? 'fc-resource-expander-expanded'
         : 'fc-resource-expander-collapsed',
-    ],
+    ),
     resourceRowClass: 'fc-resource',
     resourceLaneClass: 'fc-timeline-lane fc-resource',
     resourceGroupHeaderClass: 'fc-resource-group',

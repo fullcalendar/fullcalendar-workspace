@@ -51,14 +51,14 @@ export function Scheduler({
       /* Resource Day Header
       ------------------------------------------------------------------------------------------- */
 
-      resourceDayHeaderClass={(data) => [
+      resourceDayHeaderClass={(data) => joinClassNames(
         'border',
         data.isMajor ? 'border-(--fc-forma-strong-border)' : 'border-(--fc-forma-border)',
-      ]}
-      resourceDayHeaderInnerClass={(data) => [
+      )}
+      resourceDayHeaderInnerClass={(data) => joinClassNames(
         'p-2 flex flex-col',
         data.isNarrow ? 'text-xs' : 'text-sm',
-      ]}
+      )}
 
       /* Resource Data Grid
       ------------------------------------------------------------------------------------------- */
@@ -87,7 +87,7 @@ export function Scheduler({
 
       resourceGroupLaneClass="border border-(--fc-forma-border) bg-(--fc-forma-muted)"
       resourceLaneClass="border border-(--fc-forma-border)"
-      resourceLaneBottomClass={(data) => data.options.eventOverlap && 'h-2.5'}
+      resourceLaneBottomClass={(data) => joinClassNames(data.options.eventOverlap && 'h-2.5')}
       timelineBottomClass="h-2.5"
 
       /* View-Specific Options
@@ -100,7 +100,7 @@ export function Scheduler({
           /* Timeline > Row Event
           --------------------------------------------------------------------------------------- */
 
-          rowEventClass: (data) => data.isEnd && 'me-px',
+          rowEventClass: (data) => joinClassNames(data.isEnd && 'me-px'),
           rowEventInnerClass: (data) => (
             data.options.eventOverlap
               ? 'py-[0.1875rem]'
@@ -118,10 +118,10 @@ export function Scheduler({
 
           slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
           slotHeaderClass: 'justify-center',
-          slotHeaderInnerClass: (data) => [
+          slotHeaderInnerClass: (data) => joinClassNames(
             'p-2 text-sm',
             data.hasNavLink && 'hover:underline',
-          ],
+          ),
           slotHeaderDividerClass: 'border-b border-(--fc-forma-border)',
 
           ...userViews?.timeline,

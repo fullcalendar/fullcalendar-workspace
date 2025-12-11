@@ -1,3 +1,4 @@
+import { joinClassNames } from "@fullcalendar/core"
 import { CalendarWrapper } from "@fullcalendar-tests/standard/lib/wrappers/CalendarWrapper"
 
 describe('event styling hooks', () => {
@@ -15,7 +16,7 @@ describe('event styling hooks', () => {
       {
         id: 'b',
         title: 'Resource B',
-        eventClass: ['re2', 're3'],
+        eventClass: joinClassNames('re2', 're3'),
         eventColor: 'rgba(0,255,0,0.5)',
         eventContrastColor: 'rgba(0,0,255,0.5)',
       },

@@ -134,7 +134,7 @@ export const dayRowCommonClasses: CalendarOptions = {
     data.isStart && (data.isNarrow ? 'ms-0.5' : 'ms-1'),
     data.isEnd && (data.isNarrow ? 'me-0.5' : 'me-1'),
   ),
-  rowEventInnerClass: (data) => joinClassNames(data.isNarrow ? 'py-px' : 'py-0.5'),
+  rowEventInnerClass: (data) => data.isNarrow ? 'py-px' : 'py-0.5',
 
   /* Day Row > More-Link
   ----------------------------------------------------------------------------------------------- */
