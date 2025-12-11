@@ -82,6 +82,24 @@ export default createPlugin({
       tableHeaderClass: 'fc-timegrid-header',
       tableBodyClass: 'fc-timegrid-body',
       moreLinkClass: 'fc-timegrid-more-link',
+      weekNumberHeaderClass: 'fc-timegrid-axis',
+      allDayHeaderClass: 'fc-timegrid-allday fc-timegrid-axis',
+      slotLabelClass: (data) => [
+        'fc-timegrid-slot-label',
+        'fc-timegrid-axis',
+        ...getTimeGridSlotClass(data),
+      ],
+      slotLaneClass: (data) => [
+        'fc-timegrid-slot-lane',
+        ...getTimeGridSlotClass(data),
+      ],
+      dayLaneClass: 'fc-timegrid-day',
+      nowIndicatorHeaderClass: 'fc-timegrid-now-indicator-arrow',
+      nowIndicatorLineClass: 'fc-timegrid-now-indicator-line',
+      columnEventClass: (data) => [
+        'fc-timegrid-event',
+        data.isShort && 'fc-timegrid-event-short',
+      ],
     },
     multiMonth: {
       ...dayRowCommonClasses,
@@ -136,4 +154,11 @@ function getSlotClass(data: any) {
       data.isPast && 'fc-slot-past',
       data.isFuture && 'fc-slot-future',
     ]
+}
+
+function getTimeGridSlotClass(data: any) {
+  return [
+    'fc-timegrid-slot',
+    data.isMinor && 'fc-timegrid-slot-minor',
+  ]
 }
