@@ -40,7 +40,7 @@ export const uiUrls = {
   },
   shadcn: {
     dev: 'shadcn-dev',
-    compiled: 'shadcn-compiled',
+    compiled: undefined,
     prod: 'shadcn',
   },
   mui: {
@@ -56,7 +56,10 @@ export function getUrlToSrcMap(): Record<string, string> {
   for (const uiKey in uiUrls) {
     const modes = uiUrls[uiKey as keyof typeof uiUrls]
     for (const mode in modes) {
-      values.push(modes[mode as keyof typeof modes])
+      const value = modes[mode as keyof typeof modes]
+      if (value !== undefined) {
+        values.push(value)
+      }
     }
   }
 

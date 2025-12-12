@@ -3,6 +3,8 @@ Publishing:
   pnpm changeset publish --no-git-tag
   Angular beta repro:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
+IMPORTANT
+  Ensure changesets uses the "beta" npm-tag
 
 clean+build all:
   pn clean --all
@@ -18,7 +20,6 @@ build note:
 
 
 Make separate full-ui packages?
-demo-react changes for production
 
 
 ASAP

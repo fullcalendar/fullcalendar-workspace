@@ -16,6 +16,9 @@ import { DemoChoices } from './demo-choices.js'
 const baseUrl = import.meta.env.BASE_URL
 setBasePath(`${baseUrl}shoelace`)
 
+const showModeSwitcher = // true ||
+  import.meta.env.DEV
+
 export interface LayoutProps extends DemoChoices {
   ui: UIName
   mode: Mode
@@ -65,25 +68,31 @@ export function Layout(props: LayoutProps) {
               </a>
             ))}
           </SlRadioGroup>
-          <SlRadioGroup
-            label='Mode'
-            value={props.mode}
-            size='small'
-          >
-            {Object.entries(modeOptions).map(([modeOption, modeMeta]) => {
-              const url = uiUrls[props.ui][modeOption as Mode]
-              if (url !== undefined) {
-                return (
-                  <a
-                    key={modeOption}
-                    href={baseUrl + url}
-                  >
-                    <SlRadioButton value={modeOption}>{modeMeta.text}</SlRadioButton>
-                  </a>
-                )
-              }
-            })}
-          </SlRadioGroup>
+          {showModeSwitcher && (
+            <SlRadioGroup
+              label='Mode'
+              value={props.mode}
+              size='small'
+            >
+              {Object.entries(modeOptions).map(([modeOption, modeMeta]) => {
+                const url = uiUrls[props.ui][modeOption as Mode]
+                if (url === undefined) {
+                  return (
+                    <SlRadioButton value={modeOption} disabled>{modeMeta.text}</SlRadioButton>
+                  )
+                } else {
+                  return (
+                    <a
+                      key={modeOption}
+                      href={baseUrl + url}
+                    >
+                      <SlRadioButton value={modeOption}>{modeMeta.text}</SlRadioButton>
+                    </a>
+                  )
+                }
+              })}
+            </SlRadioGroup>
+          )}
         </div>
         <div className='section'>
           {props.paletteOptions && (
