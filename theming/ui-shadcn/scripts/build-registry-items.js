@@ -6,6 +6,11 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const pkgDir = joinPaths(__dirname, '..')
 
+const isDev = process.argv.includes('--dev')
+const registryUrlRoot = isDev
+  ? 'http://localhost:3000/'
+  : 'https://shadcn-registry.fullcalendar.io/'
+
 const themes = ['breezy', 'classic', 'forma', 'monarch', 'pulse']
 
 for (const theme of themes) {
@@ -74,7 +79,7 @@ async function writeSchedulerConfig(theme) {
       "lucide-react"
     ],
     "registryDependencies": [
-      // TODO: depend on event-calendar
+      `${registryUrlRoot}${theme}/event-calendar.json`
     ],
     "files": [
       {

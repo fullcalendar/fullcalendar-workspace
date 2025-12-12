@@ -7,6 +7,7 @@
     "build": "tsc && pnpm run build:registry",
     "build:registry": "node ./scripts/build-registry-items.js",
     "dev": "tsc --watch",
+    "serve": "serve registry-dist",
     "clean": "rm -rf dist tsconfig.tsbuildinfo registry-dist"
   },
   "exports": {
@@ -84,6 +85,7 @@
     "lucide-react": "^0.525.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "serve": "^14.2.5",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.4",
     "typescript": "~5.7.2"
