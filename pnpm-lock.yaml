@@ -66,28 +66,28 @@ importers:
         specifier: ~13.3.0
         version: 13.3.12(@angular/common@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(@angular/platform-browser@13.3.12(@angular/animations@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8)))(@angular/common@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8)))(rxjs@7.5.7)
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@types/jasmine':
         specifier: ~3.10.0
@@ -139,28 +139,28 @@ importers:
         specifier: ^7.9.4
         version: 7.25.9(@babel/core@7.26.0)
       '@fullcalendar/adaptive':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@rollup/plugin-babel':
         specifier: ^5.0.0
@@ -226,13 +226,13 @@ importers:
   contrib/vue3:
     devDependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@vitejs/plugin-vue':
         specifier: ^3.2.0
@@ -307,25 +307,25 @@ importers:
         specifier: ~13.3.0
         version: 13.3.12(@angular/common@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(@angular/platform-browser@13.3.12(@angular/animations@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8)))(@angular/common@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8)))(rxjs@7.5.7)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: file:contrib/angular/dist/lib(@angular/common@13.3.12(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@13.3.12(rxjs@7.5.7)(zone.js@0.11.8))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       rxjs:
         specifier: ~7.5.0
@@ -404,25 +404,25 @@ importers:
         specifier: ^14.1.0
         version: 14.3.0(@angular/common@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(@angular/platform-browser@14.3.0(@angular/animations@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(@angular/common@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8)))(rxjs@7.5.7)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: file:contrib/angular/dist/lib(@angular/common@14.3.0(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(rxjs@7.5.7))(@angular/core@14.3.0(rxjs@7.5.7)(zone.js@0.11.8))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       rxjs:
         specifier: ~7.5.0
@@ -498,25 +498,25 @@ importers:
         specifier: ^15.0.0
         version: 15.2.10(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(@angular/platform-browser@15.2.10(@angular/animations@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(rxjs@7.5.7)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: file:contrib/angular/dist/lib(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       rxjs:
         specifier: ~7.5.0
@@ -601,19 +601,19 @@ importers:
         specifier: 4.1.1
         version: 4.1.1(@capacitor/core@4.7.1)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/angular/dist/lib
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@ionic/angular':
         specifier: ^6.1.9
@@ -749,25 +749,25 @@ importers:
         specifier: ^15.0.0
         version: 15.2.10(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(@angular/platform-browser@15.2.10(@angular/animations@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0)))(rxjs@7.5.7)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: file:contrib/angular/dist/lib(@angular/common@15.2.10(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(rxjs@7.5.7))(@angular/core@15.2.10(rxjs@7.5.7)(zone.js@0.12.0))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@ngrx/store':
         specifier: ^15.0.0
@@ -846,25 +846,25 @@ importers:
         specifier: ^16.0.0
         version: 16.2.12(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(@angular/platform-browser@16.2.12(@angular/animations@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3)))(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3)))(rxjs@7.8.1)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: file:contrib/angular/dist/lib(@angular/common@16.2.12(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(rxjs@7.8.1))(@angular/core@16.2.12(rxjs@7.8.1)(zone.js@0.13.3))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       rxjs:
         specifier: ~7.8.0
@@ -940,25 +940,25 @@ importers:
         specifier: ^17.0.0
         version: 17.3.12(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(@angular/platform-browser@17.3.12(@angular/animations@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10)))(rxjs@7.8.1)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: file:contrib/angular/dist/lib(@angular/common@17.3.12(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@17.3.12(rxjs@7.8.1)(zone.js@0.14.10))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       rxjs:
         specifier: ~7.8.0
@@ -1034,25 +1034,25 @@ importers:
         specifier: ^18.0.0
         version: 18.2.13(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(@angular/platform-browser@18.2.13(@angular/animations@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10)))(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10)))(rxjs@7.8.1)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: file:contrib/angular/dist/lib(@angular/common@18.2.13(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(rxjs@7.8.1))(@angular/core@18.2.13(rxjs@7.8.1)(zone.js@0.14.10))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       rxjs:
         specifier: ~7.8.0
@@ -1128,25 +1128,25 @@ importers:
         specifier: ^19.0.0
         version: 19.0.1(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(@angular/platform-browser@19.0.1(@angular/animations@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0)))(rxjs@7.8.1)
       '@fullcalendar/angular':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: file:contrib/angular/dist/lib(@angular/common@19.0.1(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1))(@angular/core@19.0.1(rxjs@7.8.1)(zone.js@0.15.0))(@fullcalendar/core@standard+packages+core+dist)
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       rxjs:
         specifier: ~7.8.0
@@ -1198,22 +1198,22 @@ importers:
   examples/locales:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
     devDependencies:
       css-loader:
@@ -1232,25 +1232,25 @@ importers:
   examples/moment:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/moment':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/moment/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       moment:
         specifier: ^2.29.1
@@ -1278,19 +1278,19 @@ importers:
   examples/moment-timezone:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/moment-timezone':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/moment-timezone/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       moment:
         specifier: ^2.29.1
@@ -1324,25 +1324,25 @@ importers:
   examples/moment-typescript:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/moment':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/moment/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       moment:
         specifier: ^2.29.1
@@ -1376,25 +1376,25 @@ importers:
   examples/next12:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       next:
         specifier: ^12.3.2
@@ -1419,19 +1419,19 @@ importers:
   examples/next12-scheduler:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timeline/dist
       next:
         specifier: ^12.3.2
@@ -1456,25 +1456,25 @@ importers:
   examples/next13:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@next/font':
         specifier: 13.2.3
@@ -1492,25 +1492,25 @@ importers:
   examples/next13-scheduler:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       next:
         specifier: 13.5.6
@@ -1525,25 +1525,25 @@ importers:
   examples/next14:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@next/font':
         specifier: 14.2.15
@@ -1561,22 +1561,22 @@ importers:
   examples/nuxt3:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@fullcalendar/vue3':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/vue3
       nuxt:
         specifier: ^3.3.1
@@ -1585,19 +1585,19 @@ importers:
   examples/parcel:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
     devDependencies:
       '@babel/core':
@@ -1610,19 +1610,19 @@ importers:
   examples/react16:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: file:contrib/react(@fullcalendar/core@standard+packages+core+dist)(react-dom@16.14.0(react@16.14.0))(react@16.14.0)
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       react:
         specifier: ^16.13.1
@@ -1680,19 +1680,19 @@ importers:
   examples/react17:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: file:contrib/react(@fullcalendar/core@standard+packages+core+dist)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       react:
         specifier: ^17.0.2
@@ -1750,19 +1750,19 @@ importers:
   examples/react18:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       react:
         specifier: ^18.3.1
@@ -1817,19 +1817,19 @@ importers:
   examples/react18-cjs:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       react:
         specifier: ^18.3.1
@@ -1884,19 +1884,19 @@ importers:
   examples/react18-debug:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       react:
         specifier: ^18.3.1
@@ -1951,19 +1951,19 @@ importers:
   examples/react18-jest:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@fullcalendar/timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/timeline/dist
       react:
         specifier: ^18.3.1
@@ -2000,19 +2000,19 @@ importers:
   examples/react18-lazy:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       react:
         specifier: ^18.3.1
@@ -2067,19 +2067,19 @@ importers:
   examples/react18-mobx-typescript:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       mobx:
         specifier: ^6.0.3
@@ -2128,19 +2128,19 @@ importers:
   examples/react18-redux:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       react:
         specifier: ^18.3.1
@@ -2207,28 +2207,28 @@ importers:
   examples/react18-scheduler:
     dependencies:
       '@fullcalendar/adaptive':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       react:
         specifier: ^18.3.1
@@ -2283,19 +2283,19 @@ importers:
   examples/react18-typescript:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       react:
         specifier: ^18.3.1
@@ -2338,22 +2338,22 @@ importers:
   examples/react19:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       react:
         specifier: ^19.0.0-rc.0
@@ -2378,19 +2378,19 @@ importers:
   examples/remix:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@remix-run/node':
         specifier: ~1.14.2
@@ -2433,22 +2433,22 @@ importers:
   examples/rollup:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
     devDependencies:
       '@rollup/plugin-node-resolve':
@@ -2464,31 +2464,31 @@ importers:
   examples/rollup-scheduler:
     dependencies:
       '@fullcalendar/adaptive':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
     devDependencies:
       '@rollup/plugin-node-resolve':
@@ -2520,25 +2520,25 @@ importers:
         version: 3.23.8
     devDependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/react':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/react
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@types/eslint':
         specifier: ^8.21.3
@@ -2571,22 +2571,22 @@ importers:
   examples/typescript:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
     devDependencies:
       css-loader:
@@ -2614,37 +2614,37 @@ importers:
   examples/typescript-scheduler:
     dependencies:
       '@fullcalendar/adaptive':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/premium-common':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/premium-common/dist
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@fullcalendar/timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/timeline/dist
     devDependencies:
       css-loader:
@@ -2672,22 +2672,22 @@ importers:
   examples/vue3:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@fullcalendar/vue3':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/vue3
       vue:
         specifier: ^3.2.45
@@ -2703,22 +2703,22 @@ importers:
   examples/vue3-typescript:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@fullcalendar/vue3':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../contrib/vue3
       vue:
         specifier: ^3.2.45
@@ -2740,22 +2740,22 @@ importers:
   examples/webpack:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
     devDependencies:
       css-loader:
@@ -2777,31 +2777,31 @@ importers:
   examples/webpack-scheduler:
     dependencies:
       '@fullcalendar/adaptive':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
     devDependencies:
       css-loader:
@@ -2823,43 +2823,43 @@ importers:
   premium/bundle:
     dependencies:
       '@fullcalendar/adaptive':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/multimonth':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/multimonth/dist
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../packages/resource/dist
       '@fullcalendar/resource-daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../packages/resource-daygrid/dist
       '@fullcalendar/resource-timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../packages/resource-timeline/dist
       '@fullcalendar/scrollgrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../packages/scrollgrid/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@fullcalendar/timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../packages/timeline/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
@@ -2870,14 +2870,14 @@ importers:
   premium/packages/adaptive:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
@@ -2902,121 +2902,121 @@ importers:
         specifier: workspace:*
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
   premium/packages/resource:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
   premium/packages/resource-daygrid:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../standard/packages/daygrid/dist
       '@fullcalendar/premium-common':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../standard/packages/core/dist
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../resource/dist
     publishDirectory: ./dist
 
   premium/packages/resource-timegrid:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../standard/packages/daygrid/dist
       '@fullcalendar/premium-common':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../premium-common/dist
       '@fullcalendar/resource-daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../resource-daygrid/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../standard/packages/timegrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../standard/packages/core/dist
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../resource/dist
     publishDirectory: ./dist
 
   premium/packages/resource-timeline:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../premium-common/dist
       '@fullcalendar/scrollgrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../scrollgrid/dist
       '@fullcalendar/timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../timeline/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../standard/packages/core/dist
       '@fullcalendar/resource':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../resource/dist
     publishDirectory: ./dist
 
   premium/packages/scrollgrid:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../premium-common/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
   premium/packages/timeline:
     dependencies:
       '@fullcalendar/premium-common':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../premium-common/dist
       '@fullcalendar/scrollgrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../scrollgrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../../standard/scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../standard/packages/core/dist
     publishDirectory: ./dist
 
@@ -3056,7 +3056,7 @@ importers:
         specifier: workspace:*
         version: link:../packages/scrollgrid/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/timegrid':
         specifier: workspace:*
@@ -3114,22 +3114,22 @@ importers:
   standard/bundle:
     dependencies:
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../packages/list/dist
       '@fullcalendar/multimonth':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../packages/multimonth/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../packages/timegrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
@@ -3160,7 +3160,7 @@ importers:
         specifier: workspace:*
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3170,7 +3170,7 @@ importers:
         specifier: workspace:*
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3180,7 +3180,7 @@ importers:
         specifier: workspace:*
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../core/dist
       ical.js:
         specifier: ^2.0.0
@@ -3193,7 +3193,7 @@ importers:
         specifier: workspace:*
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3203,7 +3203,7 @@ importers:
         specifier: workspace:*
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3213,7 +3213,7 @@ importers:
         specifier: workspace:*
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../core/dist
       '@types/luxon':
         specifier: ^3.3.0
@@ -3229,7 +3229,7 @@ importers:
         specifier: workspace:*
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../core/dist
       moment:
         specifier: ^2.29.1
@@ -3242,7 +3242,7 @@ importers:
         specifier: workspace:*
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../core/dist
       moment-timezone:
         specifier: ^0.5.40
@@ -3252,14 +3252,14 @@ importers:
   standard/packages/multimonth:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../daygrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3269,7 +3269,7 @@ importers:
         specifier: workspace:*
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../core/dist
       rrule:
         specifier: ^2.6.0
@@ -3279,14 +3279,14 @@ importers:
   standard/packages/timegrid:
     dependencies:
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../daygrid/dist
     devDependencies:
       '@fullcalendar-scripts/standard':
         specifier: workspace:*
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3296,7 +3296,7 @@ importers:
         specifier: workspace:*
         version: link:../../scripts
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../core/dist
     publishDirectory: ./dist
 
@@ -3481,7 +3481,7 @@ importers:
         specifier: workspace:*
         version: link:../packages/rrule/dist
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../theming/theme-classic/dist
       '@fullcalendar/timegrid':
         specifier: workspace:*
@@ -3524,155 +3524,155 @@ importers:
   standard/theming/theme-breezy:
     devDependencies:
       '@fullcalendar/adaptive':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/core/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/list/dist
       '@fullcalendar/multimonth':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/multimonth/dist
       '@fullcalendar/resource-daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-daygrid/dist
       '@fullcalendar/resource-timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-timeline/dist
       '@fullcalendar/scrollgrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/scrollgrid/dist
       '@fullcalendar/timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/timeline/dist
     publishDirectory: ./dist
 
   standard/theming/theme-classic:
     devDependencies:
       '@fullcalendar/adaptive':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/core/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/list/dist
       '@fullcalendar/multimonth':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/multimonth/dist
       '@fullcalendar/resource-daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-daygrid/dist
       '@fullcalendar/resource-timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-timeline/dist
       '@fullcalendar/scrollgrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/scrollgrid/dist
       '@fullcalendar/timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/timeline/dist
     publishDirectory: ./dist
 
   standard/theming/theme-forma:
     devDependencies:
       '@fullcalendar/adaptive':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/core/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/list/dist
       '@fullcalendar/multimonth':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/multimonth/dist
       '@fullcalendar/resource-daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-daygrid/dist
       '@fullcalendar/resource-timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-timeline/dist
       '@fullcalendar/scrollgrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/scrollgrid/dist
       '@fullcalendar/timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/timeline/dist
     publishDirectory: ./dist
 
   standard/theming/theme-monarch:
     devDependencies:
       '@fullcalendar/adaptive':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/core/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/list/dist
       '@fullcalendar/multimonth':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/multimonth/dist
       '@fullcalendar/resource-daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-daygrid/dist
       '@fullcalendar/resource-timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-timeline/dist
       '@fullcalendar/scrollgrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/scrollgrid/dist
       '@fullcalendar/timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/timeline/dist
     publishDirectory: ./dist
 
   standard/theming/theme-pulse:
     devDependencies:
       '@fullcalendar/adaptive':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/core/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/list/dist
       '@fullcalendar/multimonth':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../packages/multimonth/dist
       '@fullcalendar/resource-daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-daygrid/dist
       '@fullcalendar/resource-timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/resource-timeline/dist
       '@fullcalendar/scrollgrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/scrollgrid/dist
       '@fullcalendar/timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../../premium/packages/timeline/dist
     publishDirectory: ./dist
 
@@ -3745,7 +3745,7 @@ importers:
         specifier: workspace:*
         version: link:../theme-breezy-tailwind
       '@fullcalendar/theme-classic':
-        specifier: workspace:*
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/theming/theme-classic/dist
       '@fullcalendar/theme-classic-tailwind':
         specifier: workspace:*
@@ -4231,43 +4231,43 @@ importers:
   theming/ui-mui:
     devDependencies:
       '@fullcalendar/adaptive':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/adaptive/dist
       '@fullcalendar/core':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/core/dist
       '@fullcalendar/daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/daygrid/dist
       '@fullcalendar/interaction':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/interaction/dist
       '@fullcalendar/list':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/list/dist
       '@fullcalendar/multimonth':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/multimonth/dist
       '@fullcalendar/react':
         specifier: workspace:*
         version: link:../../contrib/react
       '@fullcalendar/resource-daygrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-daygrid/dist
       '@fullcalendar/resource-timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timegrid/dist
       '@fullcalendar/resource-timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/resource-timeline/dist
       '@fullcalendar/scrollgrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/scrollgrid/dist
       '@fullcalendar/timegrid':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../standard/packages/timegrid/dist
       '@fullcalendar/timeline':
-        specifier: workspace:7.0.0-rc.0
+        specifier: workspace:7.0.0-beta.5
         version: link:../../premium/packages/timeline/dist
       '@mui/icons-material':
         specifier: ^7.1.2
@@ -8535,12 +8535,12 @@ packages:
     peerDependencies:
       '@angular/common': 13 - 19
       '@angular/core': 13 - 19
-      '@fullcalendar/core': workspace:7.0.0-rc.0
+      '@fullcalendar/core': workspace:7.0.0-beta.5
 
   '@fullcalendar/react@file:contrib/react':
     resolution: {directory: contrib/react, type: directory}
     peerDependencies:
-      '@fullcalendar/core': workspace:7.0.0-rc.0
+      '@fullcalendar/core': workspace:7.0.0-beta.5
       react: ^16.7.0 || ^17 || ^18 || ^19
       react-dom: ^16.7.0 || ^17 || ^18 || ^19
 

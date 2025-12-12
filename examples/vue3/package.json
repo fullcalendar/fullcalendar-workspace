@@ -4,12 +4,12 @@
   "version": "0.0.1-beta.1",
   "license": "ISC",
   "dependencies": {
-    "@fullcalendar/theme-classic": "workspace:*",
-    "@fullcalendar/core": "workspace:7.0.0-rc.0",
-    "@fullcalendar/daygrid": "workspace:7.0.0-rc.0",
-    "@fullcalendar/interaction": "workspace:7.0.0-rc.0",
-    "@fullcalendar/timegrid": "workspace:7.0.0-rc.0",
-    "@fullcalendar/vue3": "workspace:7.0.0-rc.0",
+    "@fullcalendar/theme-classic": "workspace:7.0.0-beta.5",
+    "@fullcalendar/core": "workspace:7.0.0-beta.5",
+    "@fullcalendar/daygrid": "workspace:7.0.0-beta.5",
+    "@fullcalendar/interaction": "workspace:7.0.0-beta.5",
+    "@fullcalendar/timegrid": "workspace:7.0.0-beta.5",
+    "@fullcalendar/vue3": "workspace:7.0.0-beta.5",
     "vue": "^3.2.45"
   },
   "devDependencies": {

@@ -18,11 +18,9 @@ build note:
 
 
 package.json
-  Convert all workspace:7.0.0-rc.0 to just workspace:* ?
-  Correct all "@fullcalendar/theme-classic": "workspace:*"
   MUI doesn't need >= React 19
   Audit which packages are private:true
-  make separate full-ui packages?
+Make separate full-ui packages?
 MUI LICENSE.md is empty
 Readmes for each theme?
 demo-react changes for production
