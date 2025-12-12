@@ -5,6 +5,7 @@ Publishing:
   https://stackblitz.com/edit/github-sphfu1?file=package.json,src%2Findex.html
 IMPORTANT
   Ensure changesets uses the "beta" npm-tag
+  Ensure shadcn @fullcalendar dependencies use @beta
 
 clean+build all:
   pn clean --all

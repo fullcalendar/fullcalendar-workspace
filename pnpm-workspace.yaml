@@ -11,3 +11,4 @@ packages:
   - './scripts'
   - './contrib/*'
   - './examples/*'
+  - './examples-v7/*'
