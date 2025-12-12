@@ -12,6 +12,12 @@ const registryUrlRoot = isDev
   : 'https://shadcn-registry.fullcalendar.io/'
 
 const themes = ['breezy', 'classic', 'forma', 'monarch', 'pulse']
+const relativeImportReplacements = {
+  '../../ui/button.js': '@/components/ui/button',
+  '../../ui/tabs.js': '@/components/ui/tabs',
+  '../../lib/utils.js': '@/lib/utils',
+  './event-calendar.js': './event-calendar.tsx',
+}
 
 for (const theme of themes) {
   await mkdir(joinPaths(pkgDir, 'registry-dist', theme), { recursive: true })
@@ -43,9 +49,11 @@ async function writeEventCalendarConfig(theme) {
     "files": [
       {
         "path": "src/registry/default/ui/event-calendar.tsx", // fictional
-        "content": await readFile(
-          joinPaths(pkgDir, 'src', `theme-${theme}`, '_compiled', 'event-calendar.tsx'),
-          'utf-8',
+        "content": transformSrcCode(
+          await readFile(
+            joinPaths(pkgDir, 'src', `theme-${theme}`, '_compiled', 'event-calendar.tsx'),
+            'utf-8',
+          ),
         ),
         "type": "registry:ui"
       }
@@ -84,9 +92,11 @@ async function writeSchedulerConfig(theme) {
     "files": [
       {
         "path": "src/registry/default/ui/scheduler.tsx", // fictional
-        "content": await readFile(
-          joinPaths(pkgDir, 'src', `theme-${theme}`, '_compiled', 'scheduler.tsx'),
-          'utf-8',
+        "content": transformSrcCode(
+          await readFile(
+            joinPaths(pkgDir, 'src', `theme-${theme}`, '_compiled', 'scheduler.tsx'),
+            'utf-8',
+          ),
         ),
         "type": "registry:ui"
       }
@@ -97,6 +107,19 @@ async function writeSchedulerConfig(theme) {
     joinPaths(pkgDir, 'registry-dist', theme, 'scheduler.json'),
     JSON.stringify(config, undefined, 2),
     'utf-8',
+  )
+}
+
+function transformSrcCode(code) {
+  return code.replace(
+    /(from\s+['"])(\.[^'"]+)(['"])/g,
+    (whole, pre, importPath, post) => {
+      const replacement = relativeImportReplacements[importPath]
+      if (replacement) {
+        return pre + replacement + post
+      }
+      return whole
+    }
   )
 }
 
