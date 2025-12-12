@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && pnpm run build:registry",
+    "build:registry": "node ./scripts/build-registry-items.js",
     "dev": "tsc --watch",
-    "clean": "rm -rf dist tsconfig.tsbuildinfo"
+    "clean": "rm -rf dist tsconfig.tsbuildinfo registry-dist"
   },
   "exports": {
     "./package.json": "./package.json",
