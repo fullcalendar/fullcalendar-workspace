@@ -17,8 +17,6 @@ build note:
     manually before `pn dev`
 
 
-package.json
-  MUI doesn't need >= React 19
 Make separate full-ui packages?
 MUI LICENSE.md is empty
 Readmes for each theme?
