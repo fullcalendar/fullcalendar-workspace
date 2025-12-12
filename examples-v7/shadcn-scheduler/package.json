@@ -1,5 +1,5 @@
 {
-  "name": "@fullcalendar-monorepos/shadcn-event-calendar",
+  "name": "@fullcalendar-monorepos/shadcn-scheduler",
   "private": true,
   "version": "0.0.0",
   "type": "module",
