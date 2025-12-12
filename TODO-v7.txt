@@ -18,7 +18,6 @@ build note:
 
 
 Make separate full-ui packages?
-MUI LICENSE.md is empty
 demo-react changes for production
 
 
