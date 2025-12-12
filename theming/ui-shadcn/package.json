@@ -23,26 +23,29 @@
       "target": "ES2020",
       "useDefineForClassFields": true,
       "module": "node16",
-      "lib": ["ES2020", "DOM", "DOM.Iterable"],
+      "lib": [
+        "ES2020",
+        "DOM",
+        "DOM.Iterable"
+      ],
       "skipLibCheck": true,
       "jsx": "react",
-
       "moduleResolution": "node16",
       "isolatedModules": true,
       "moduleDetection": "force",
-
       "strict": true,
       "noUnusedLocals": true,
       "noUnusedParameters": true,
       "noFallthroughCasesInSwitch": true,
-
       "composite": true,
       "declaration": true,
       "declarationMap": true,
       "outDir": "dist",
       "rootDir": "src"
     },
-    "include": ["src"]
+    "include": [
+      "src"
+    ]
   },
   "peerDependencies": {
     "@fullcalendar/core": "workspace:*",
@@ -52,25 +55,25 @@
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@fullcalendar/adaptive": "workspace:*",
     "@fullcalendar/core": "workspace:*",
     "@fullcalendar/daygrid": "workspace:*",
-    "@fullcalendar/timegrid": "workspace:*",
+    "@fullcalendar/interaction": "workspace:*",
     "@fullcalendar/list": "workspace:*",
     "@fullcalendar/multimonth": "workspace:*",
-    "@fullcalendar/interaction": "workspace:*",
-    "@fullcalendar/timeline": "workspace:*",
     "@fullcalendar/react": "workspace:*",
     "@fullcalendar/resource-daygrid": "workspace:*",
     "@fullcalendar/resource-timegrid": "workspace:*",
     "@fullcalendar/resource-timeline": "workspace:*",
-    "@fullcalendar/adaptive": "workspace:*",
     "@fullcalendar/scrollgrid": "workspace:*",
     "@fullcalendar/theme-breezy-tailwind": "workspace:*",
     "@fullcalendar/theme-classic-tailwind": "workspace:*",
+    "@fullcalendar/theme-common": "workspace:*",
     "@fullcalendar/theme-forma-tailwind": "workspace:*",
     "@fullcalendar/theme-monarch-tailwind": "workspace:*",
     "@fullcalendar/theme-pulse-tailwind": "workspace:*",
-    "@fullcalendar/theme-common": "workspace:*",
+    "@fullcalendar/timegrid": "workspace:*",
+    "@fullcalendar/timeline": "workspace:*",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.12",
     "@types/react": "^19.1.8",
