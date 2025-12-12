@@ -19,7 +19,6 @@ build note:
 
 package.json
   MUI doesn't need >= React 19
-  Audit which packages are private:true
 Make separate full-ui packages?
 MUI LICENSE.md is empty
 Readmes for each theme?
