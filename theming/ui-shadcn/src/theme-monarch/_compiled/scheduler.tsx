@@ -189,20 +189,20 @@ export function SchedulerView({
           slotHeaderInnerClass: (data) => cn(
             'text-sm',
             data.level
-              ? cn(
+              ? [
                   'my-0.5 px-2 py-1 rounded-full bg-foreground/10',
                   data.hasNavLink && 'hover:bg-foreground/20 focus-visible:outline-3 outline-ring/50',
-                )
-              : cn(
+                ]
+              : [
                   'px-2',
                   data.isTime
-                    ? cn(
+                    ? [
                         'pb-3 relative -start-3',
                         data.isFirst && 'hidden',
-                      )
+                      ]
                     : 'py-2',
                   data.hasNavLink && 'hover:underline',
-                ),
+                ],
           ),
           slotHeaderDividerClass: 'border-b',
 

@@ -61,7 +61,7 @@ const dayRowCommonClasses: CalendarOptions = {
     'mb-px p-px rounded-sm',
     data.isNarrow ? 'mx-px' : 'mx-0.5',
     data.isSelected
-      ? cn('bg-foreground/5', data.isDragging && 'shadow-sm')
+      ? ['bg-foreground/5', data.isDragging && 'shadow-sm']
       : 'hover:bg-foreground/5',
   ),
   listItemEventBeforeClass: (data) => cn(
@@ -79,8 +79,8 @@ const dayRowCommonClasses: CalendarOptions = {
   ----------------------------------------------------------------------------------------------- */
 
   rowEventClass: (data) => cn(
-    data.isStart && cn('rounded-s-sm', data.isNarrow ? 'ms-px' : 'ms-0.5'),
-    data.isEnd && cn('rounded-e-sm', data.isNarrow ? 'me-px' : 'me-0.5'),
+    data.isStart && ['rounded-s-sm', data.isNarrow ? 'ms-px' : 'ms-0.5'],
+    data.isEnd && ['rounded-e-sm', data.isNarrow ? 'me-px' : 'me-0.5'],
   ),
   rowEventInnerClass: 'py-px gap-0.5',
   rowEventTimeClass: 'px-px',
@@ -246,7 +246,7 @@ export function EventCalendarView({
       eventContrastColor='var(--primary-foreground)'
       eventClass={(data) => cn(
         data.isSelected
-          ? cn('outline-3', data.isDragging ? 'shadow-lg' : 'shadow-md')
+          ? ['outline-3', data.isDragging ? 'shadow-lg' : 'shadow-md']
           : 'focus-visible:outline-3',
         'outline-ring/50',
       )}
@@ -289,16 +289,16 @@ export function EventCalendarView({
         data.isEnd && 'border-e',
       )}
       rowEventBeforeClass={(data) => cn(
-        data.isStartResizable && cn(
+        data.isStartResizable && [
           data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
           '-start-1',
-        )
+        ]
       )}
       rowEventAfterClass={(data) => cn(
-        data.isEndResizable && cn(
+        data.isEndResizable && [
           data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
           '-end-1',
-        )
+        ]
       )}
       rowEventInnerClass={(data) => cn(
         'flex flex-row items-center',
@@ -315,16 +315,16 @@ export function EventCalendarView({
         data.isEnd && 'mb-px border-b rounded-b-sm',
       )}
       columnEventBeforeClass={(data) => cn(
-        data.isStartResizable && cn(
+        data.isStartResizable && [
           data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
           '-top-1',
-        )
+        ]
       )}
       columnEventAfterClass={(data) => cn(
-        data.isEndResizable && cn(
+        data.isEndResizable && [
           data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
           '-bottom-1',
-        )
+        ]
       )}
       columnEventInnerClass={(data) => cn(
         'flex',
@@ -361,7 +361,7 @@ export function EventCalendarView({
         data.isDisabled && 'bg-foreground/3',
         data.inPopover
           ? 'border-b bg-foreground/5'
-          : cn('border', data.isMajor && 'border-foreground/20'),
+          : ['border', data.isMajor && 'border-foreground/20'],
       )}
       dayHeaderInnerClass={(data) => cn(
         'px-1 py-0.5 flex flex-col',

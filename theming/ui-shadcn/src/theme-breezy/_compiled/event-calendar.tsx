@@ -268,10 +268,10 @@ export function EventCalendarView({
       eventColor="var(--primary)"
       eventClass={(data) => cn(
         data.isSelected
-          ? cn(
+          ? [
               'outline-3',
               data.isDragging && 'shadow-md',
-            )
+            ]
           : 'focus-visible:outline-3',
         'outline-ring/50',
       )}
@@ -305,20 +305,20 @@ export function EventCalendarView({
 
       rowEventClass={(data) => cn(
         'mb-px border-y',
-        data.isStart && cn('border-s', data.isNarrow ? 'rounded-s-sm' : 'rounded-s-md'),
-        data.isEnd && cn('border-e', data.isNarrow ? 'rounded-e-sm' : 'rounded-e-md'),
+        data.isStart && ['border-s', data.isNarrow ? 'rounded-s-sm' : 'rounded-s-md'],
+        data.isEnd && ['border-e', data.isNarrow ? 'rounded-e-sm' : 'rounded-e-md'],
       )}
       rowEventBeforeClass={(data) => cn(
-        data.isStartResizable && cn(
+        data.isStartResizable && [
           data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
           '-start-1',
-        )
+        ]
       )}
       rowEventAfterClass={(data) => cn(
-        data.isEndResizable && cn(
+        data.isEndResizable && [
           data.isSelected ? rowTouchResizerClass : rowPointerResizerClass,
           '-end-1',
-        )
+        ]
       )}
       rowEventInnerClass={(data) => cn(
         'flex flex-row items-center',
@@ -337,26 +337,26 @@ export function EventCalendarView({
 
       columnEventClass={(data) => cn(
         'border-x ring ring-background',
-        data.isStart && cn('border-t rounded-t-lg', data.isNarrow ? 'mt-px' : 'mt-1'),
-        data.isEnd && cn('border-b rounded-b-lg', data.isNarrow ? 'mb-px' : 'mb-1'),
+        data.isStart && ['border-t rounded-t-lg', data.isNarrow ? 'mt-px' : 'mt-1'],
+        data.isEnd && ['border-b rounded-b-lg', data.isNarrow ? 'mb-px' : 'mb-1'],
       )}
       columnEventBeforeClass={(data) => cn(
-        data.isStartResizable && cn(
+        data.isStartResizable && [
           data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
           '-top-1',
-        )
+        ]
       )}
       columnEventAfterClass={(data) => cn(
-        data.isEndResizable && cn(
+        data.isEndResizable && [
           data.isSelected ? columnTouchResizerClass : columnPointerResizerClass,
           '-bottom-1',
-        )
+        ]
       )}
       columnEventInnerClass={(data) => cn(
         'flex',
         data.isShort
           ? 'flex-row items-center gap-1 p-1'
-          : cn('flex-col', data.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1'),
+          : ['flex-col', data.isNarrow ? 'px-1 py-0.5' : 'px-2 py-1'],
         (data.isShort || data.isNarrow) ? xxsTextClass : 'text-xs',
       )}
       columnEventTimeClass={(data) => cn(
@@ -393,28 +393,28 @@ export function EventCalendarView({
       dayHeaderInnerClass={(data) => cn(
         'flex flex-row items-center',
         (!data.dayNumberText && !data.inPopover)
-          ? cn(
+          ? [
               'py-1 rounded-sm text-xs',
               data.isNarrow
                 ? 'px-1 m-1 text-muted-foreground'
                 : 'px-1.5 m-2 font-semibold',
               data.hasNavLink && mutedHoverButtonClass,
-            )
+            ]
           : (data.isToday && data.dayNumberText && !data.inPopover)
-              ? cn(
+              ? [
                   'group m-2 outline-none',
                   data.isNarrow ? 'h-6' : 'h-8'
-                )
-              : cn(
+                ]
+              : [
                   'rounded-sm',
                   data.inPopover
                     ? 'm-2 px-1 py-0.5'
-                    : cn(
+                    : [
                         'mx-2 h-6 px-1.5',
                         data.isNarrow ? 'my-2' : 'my-3'
-                      ),
+                      ],
                   data.hasNavLink && mutedHoverButtonClass,
-                ),
+                ],
       )}
       dayHeaderContent={(data) => (
         (!data.dayNumberText && !data.inPopover) ? (
@@ -428,15 +428,15 @@ export function EventCalendarView({
                   'whitespace-pre',
                   data.isNarrow ? 'text-xs' : 'text-sm',
                   textPart.type === 'day'
-                    ? cn(
+                    ? [
                         'flex flex-row items-center',
                         !data.isNarrow && 'font-semibold',
-                        (data.isToday && !data.inPopover) && cn(
+                        (data.isToday && !data.inPopover) && [
                           'mx-0.5 rounded-full justify-center bg-primary text-primary-foreground',
                           data.isNarrow ? 'size-6' : 'size-8',
                           data.hasNavLink && 'group-hover:bg-primary/90 group-focus-visible:outline-3 outline-ring/50',
-                        ),
-                      )
+                        ],
+                      ]
                     : 'text-muted-foreground',
                 )}
               >{textPart.value}</span>
@@ -462,7 +462,7 @@ export function EventCalendarView({
           ? `my-px h-5 ${xxsTextClass}`
           : 'my-1 h-6 text-xs',
         data.isToday
-          ? cn(
+          ? [
               'rounded-full font-semibold',
               data.isNarrow
                 ? 'ms-px'
@@ -472,14 +472,14 @@ export function EventCalendarView({
                 : (data.isNarrow ? 'px-1' : 'px-2'),
               'bg-primary text-primary-foreground',
               data.hasNavLink && 'hover:bg-primary/90',
-            )
-          : cn(
+            ]
+          : [
               'rounded-e-sm',
               data.isNarrow ? 'px-1' : 'px-2',
               data.hasNavLink && 'hover:bg-foreground/5',
               (data.isOther || !data.monthText) && 'text-muted-foreground',
               data.monthText && 'font-bold',
-            ),
+            ],
       )}
       dayCellInnerClass={(data) => cn(data.inPopover && 'p-2')}
 
@@ -519,21 +519,21 @@ export function EventCalendarView({
       listDayHeaderInnerClass={(data) => cn(
         'my-0.5 py-0.5 px-2 -mx-2 rounded-full text-sm',
         !data.level
-          ? cn(
+          ? [
               data.isToday
-                ? cn(
+                ? [
                     'font-semibold bg-primary text-primary-foreground',
                     data.hasNavLink && 'hover:bg-primary/90',
-                  )
-                : cn(
+                  ]
+                : [
                     'font-medium',
                     data.hasNavLink && 'hover:bg-foreground/5',
-                  )
-            )
-          : cn(
+                  ]
+            ]
+          : [
               'text-muted-foreground',
               data.hasNavLink && 'hover:bg-foreground/5 hover:text-muted-foreground',
-            )
+            ]
       )}
       listDayEventsClass="my-4 grow min-w-0 border rounded-md"
 

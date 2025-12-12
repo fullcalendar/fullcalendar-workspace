@@ -179,10 +179,10 @@ export function SchedulerView({
           ),
           slotHeaderInnerClass: (data) => cn(
             'px-3 py-2 text-xs',
-            data.isTime && cn(
+            data.isTime && [
               'relative -start-4',
               data.isFirst && 'hidden',
-            ),
+            ],
             data.hasNavLink && 'hover:underline',
           ),
           slotHeaderDividerClass: 'border-b border-foreground/20 shadow-sm',

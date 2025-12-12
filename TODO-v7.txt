@@ -17,7 +17,6 @@ build note:
     manually before `pn dev`
 
 
-Don't need nested cn(), just use arrays
 package.json
   Convert all workspace:7.0.0-rc.0 to just workspace:* ?
   Correct all "@fullcalendar/theme-classic": "workspace:*"
