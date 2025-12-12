@@ -112,6 +112,9 @@ async function writeSchedulerConfig(theme) {
 
 function transformSrcCode(code) {
   return code.replace(
+    /import React from ['"]react['"];?\n/mg,
+    '',
+  ).replace(
     /(from\s+['"])(\.[^'"]+)(['"])/g,
     (whole, pre, importPath, post) => {
       const replacement = relativeImportReplacements[importPath]

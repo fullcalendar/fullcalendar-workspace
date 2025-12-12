@@ -1,5 +1,5 @@
 import React from 'react'
-import { CalendarController, CalendarOptions, DayCellData, DayHeaderData } from '@fullcalendar/core'
+import { CalendarController, type CalendarOptions, type DayCellData, type DayHeaderData } from '@fullcalendar/core'
 import FullCalendar, { useCalendarController } from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -10,6 +10,8 @@ import { ChevronLeftIcon, ChevronRightIcon, XIcon } from 'lucide-react'
 import { Button } from '../../ui/button.js'
 import { Tabs, TabsList, TabsTrigger } from '../../ui/tabs.js'
 import { cn } from '../../lib/utils.js'
+
+import '@fullcalendar/core/global.css'
 
 export const eventCalendarPlugins = [
   dayGridPlugin,
