@@ -1,5 +1,5 @@
 import React from 'react'
-import { CalendarOptions } from '@fullcalendar/core'
+import { type CalendarOptions } from '@fullcalendar/core'
 import { useCalendarController } from '@fullcalendar/react'
 import adaptivePlugin from '@fullcalendar/adaptive'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
