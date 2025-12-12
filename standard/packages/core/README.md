@@ -26,11 +26,17 @@ Then, instantiate a Calendar object with [options](https://fullcalendar.io/docs#
 ```js
 import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
+import classicThemePlugin from '@fullcalendar/theme-classic'
+
+import '@fullcalendar/core/global.css'
+import '@fullcalendar/theme-classic/global.css'
+import '@fullcalendar/theme-classic/palette.css'
 
 const calendarEl = document.getElementById('calendar')
 const calendar = new Calendar(calendarEl, {
   plugins: [
-    dayGridPlugin
+    dayGridPlugin,
+    classicThemePlugin,
     // any other plugins
   ],
   initialView: 'dayGridMonth',

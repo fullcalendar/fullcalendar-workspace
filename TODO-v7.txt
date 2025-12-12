@@ -19,7 +19,6 @@ build note:
 
 Make separate full-ui packages?
 MUI LICENSE.md is empty
-Readmes for each theme?
 demo-react changes for production
 
 
