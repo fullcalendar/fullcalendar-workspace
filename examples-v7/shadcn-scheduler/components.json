@@ -18,5 +18,7 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "registries": {}
+  "registries": {
+    "@fullcalendar": "http://localhost:3000/{name}.json"
+  }
 }

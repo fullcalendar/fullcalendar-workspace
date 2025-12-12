@@ -6,11 +6,6 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 const pkgDir = joinPaths(__dirname, '..')
 
-const isDev = process.argv.includes('--dev')
-const registryUrlRoot = isDev
-  ? 'http://localhost:3000/'
-  : 'https://shadcn-registry.fullcalendar.io/'
-
 const themes = ['breezy', 'classic', 'forma', 'monarch', 'pulse']
 const relativeImportReplacements = {
   '../../ui/button.js': '@/components/ui/button',
@@ -87,7 +82,7 @@ async function writeSchedulerConfig(theme) {
       "lucide-react"
     ],
     "registryDependencies": [
-      `${registryUrlRoot}${theme}/event-calendar.json`
+      `@fullcalendar/${theme}/event-calendar`
     ],
     "files": [
       {
