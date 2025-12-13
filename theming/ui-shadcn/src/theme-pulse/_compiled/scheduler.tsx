@@ -24,6 +24,8 @@ const schedulerAvailableViews = [
   'resourceTimelineDay',
   'resourceTimelineWeek',
 ]
+const navLinkDayClick = 'resourceTimelineDay'
+const navLinkWeekClick = 'resourceTimelineWeek'
 
 export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
   className?: string
@@ -72,6 +74,8 @@ export function Scheduler({
           )}
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
+          navLinkDayClick={navLinkDayClick}
+          navLinkWeekClick={navLinkWeekClick}
           controller={controller}
           plugins={[
             ...eventCalendarPlugins,

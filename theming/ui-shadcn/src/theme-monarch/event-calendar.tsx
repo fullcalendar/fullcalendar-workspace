@@ -12,6 +12,9 @@ import { EventCalendarToolbar } from '../lib/event-calendar-toolbar.js'
 import { eventCalendarIconOptions } from '../lib/event-calendar-icons.js'
 import { EventCalendarProps } from '../lib/event-calendar-props.js'
 
+const navLinkDayClick = 'timeGridDay'
+const navLinkWeekClick = 'timeGridWeek'
+
 export function EventCalendar({
   availableViews = eventCalendarAvailableViews,
   addButton,
@@ -51,6 +54,8 @@ export function EventCalendar({
         <EventCalendarView
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
+          navLinkDayClick={navLinkDayClick}
+          navLinkWeekClick={navLinkWeekClick}
           controller={controller}
           plugins={[
             ...eventCalendarPlugins,

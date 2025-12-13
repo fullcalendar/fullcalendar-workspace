@@ -24,6 +24,8 @@ const schedulerAvailableViews = [
   'resourceTimelineDay',
   'resourceTimelineWeek',
 ]
+const navLinkDayClick = 'resourceTimelineDay'
+const navLinkWeekClick = 'resourceTimelineWeek'
 
 const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity-50'
 
@@ -74,6 +76,8 @@ export function Scheduler({
           )}
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
+          navLinkDayClick={navLinkDayClick}
+          navLinkWeekClick={navLinkWeekClick}
           controller={controller}
           plugins={[
             ...eventCalendarPlugins,

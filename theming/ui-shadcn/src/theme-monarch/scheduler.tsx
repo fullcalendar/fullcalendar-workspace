@@ -13,6 +13,9 @@ import { SchedulerProps } from '../lib/scheduler-props.js'
 
 const baseSchedulerOnlyOptions = createSchedulerOnlyOptions(params)
 
+const navLinkDayClick = 'resourceTimelineDay'
+const navLinkWeekClick = 'resourceTimelineWeek'
+
 export function Scheduler({
   availableViews = schedulerAvailableViews,
   addButton,
@@ -52,6 +55,8 @@ export function Scheduler({
         <SchedulerView
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
+          navLinkDayClick={navLinkDayClick}
+          navLinkWeekClick={navLinkWeekClick}
           controller={controller}
           plugins={[
             ...eventCalendarPlugins,

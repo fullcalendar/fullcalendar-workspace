@@ -24,6 +24,8 @@ const schedulerAvailableViews = [
   'resourceTimelineDay',
   'resourceTimelineWeek',
 ]
+const navLinkDayClick = 'resourceTimelineDay'
+const navLinkWeekClick = 'resourceTimelineWeek'
 
 const resourceDayHeaderClasses = {
   dayHeaderInnerClass: 'mb-1',
@@ -79,6 +81,8 @@ export function Scheduler({
         <SchedulerView
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
+          navLinkDayClick={navLinkDayClick}
+          navLinkWeekClick={navLinkWeekClick}
           controller={controller}
           plugins={[
             ...eventCalendarPlugins,

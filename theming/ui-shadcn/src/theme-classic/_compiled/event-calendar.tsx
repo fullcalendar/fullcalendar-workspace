@@ -28,6 +28,8 @@ const eventCalendarAvailableViews = [
   'listWeek',
   'multiMonthYear',
 ]
+const navLinkDayClick = 'timeGridDay'
+const navLinkWeekClick = 'timeGridWeek'
 
 export const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
 
@@ -149,6 +151,8 @@ export function EventCalendar({
           )}
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
+          navLinkDayClick={navLinkDayClick}
+          navLinkWeekClick={navLinkWeekClick}
           controller={controller}
           plugins={[
             ...eventCalendarPlugins,
