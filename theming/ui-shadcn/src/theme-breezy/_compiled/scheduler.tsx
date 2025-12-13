@@ -24,6 +24,8 @@ const schedulerAvailableViews = [
   'resourceTimelineDay',
   'resourceTimelineWeek',
 ]
+const navLinkDayClick = 'resourceTimelineDay'
+const navLinkWeekClick = 'resourceTimelineWeek'
 
 const mutedFgPressableGroupClass = 'text-muted-foreground group-hover:text-foreground group-focus-visible:text-foreground'
 
@@ -76,6 +78,8 @@ export function Scheduler({
         <SchedulerView
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
+          navLinkDayClick={navLinkDayClick}
+          navLinkWeekClick={navLinkWeekClick}
           controller={controller}
           plugins={[
             ...eventCalendarPlugins,
