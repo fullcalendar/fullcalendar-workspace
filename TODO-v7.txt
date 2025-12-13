@@ -6,6 +6,9 @@ Publishing:
 IMPORTANT
   Ensure changesets uses the "beta" npm-tag
   Ensure shadcn @fullcalendar dependencies use @beta
+  regsitry urls:
+    https://shadcn-registry.fullcalendar.io/monarch/event-calendar.json
+    https://shadcn-registry.fullcalendar.io/monarch/scheduler.json
 
 clean+build all:
   pn clean --all
@@ -25,10 +28,6 @@ Make separate full-ui packages?
 
 ASAP
 ----
-
-project: shadcn JSON file
-  example: https://www.kibo-ui.com/components/calendar
-    npx shadcn@latest add https://www.kibo-ui.com/registry/calendar.json
 
 project: ResizeObserver refactor
   ResourceTimeline height:auto

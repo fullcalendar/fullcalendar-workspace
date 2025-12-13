@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "fullcalendar-shadcn-registry",
+  "compatibility_date": "2025-12-12",
+  "assets": {
+    "directory": "./registry-dist"
+  }
+}

@@ -8,7 +8,8 @@
     "build:registry": "node ./scripts/build-registry-items.js",
     "dev": "tsc --watch",
     "serve": "serve registry-dist",
-    "clean": "rm -rf dist tsconfig.tsbuildinfo registry-dist"
+    "clean": "rm -rf dist tsconfig.tsbuildinfo registry-dist",
+    "deploy": "wrangler deploy"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -88,6 +89,7 @@
     "serve": "^14.2.5",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.4",
-    "typescript": "~5.7.2"
+    "typescript": "~5.7.2",
+    "wrangler": "^4.54.0"
   }
 }
