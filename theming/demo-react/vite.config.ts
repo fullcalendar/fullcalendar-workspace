@@ -18,6 +18,18 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: getUrlToSrcMap(),
+      output: {
+        // workaround for aggregated global css file having empty [extname]
+        // and thus tripping up Cloudflare because it depends on extension for mime-type
+        assetFileNames: (assetInfo) => {
+          const isCss =
+            assetInfo.name?.endsWith(".css") ||
+            assetInfo.originalFileNames?.some((f) => f.endsWith(".css"));
+
+          if (isCss) return "assets/[hash].css";
+          return "assets/[hash][extname]";
+        },
+      },
     },
   },
 })
