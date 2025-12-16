@@ -1,6 +1,7 @@
 import React from 'react'
 import { CalendarOptions, DayCellData, DayHeaderData, joinClassNames } from '@fullcalendar/core'
 import FullCalendar from '@fullcalendar/react'
+import { Box } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 
 // outline
@@ -154,12 +155,21 @@ export const dayRowCommonClasses: CalendarOptions = {
   )
 }
 
+export interface EventCalendarViewsProps extends CalendarOptions {
+  liquidHeight?: boolean
+}
+
 export default function EventCalendarViews({
   views: userViews,
+  liquidHeight,
+  height,
   ...restOptions
-}: CalendarOptions) {
+}: EventCalendarViewsProps) {
   return (
+    <Box sx={liquidHeight ? { flexGrow: 1, minHeight: 0 } : {}}>
+    {/* NOTE TO SELF: fix indentation */}
     <FullCalendar
+      height={liquidHeight ? '100%' : height}
       className='reset-root'
 
       /* Abstract Event
@@ -605,5 +615,6 @@ export default function EventCalendarViews({
       }}
       {...restOptions}
     />
+    </Box>
   )
 }

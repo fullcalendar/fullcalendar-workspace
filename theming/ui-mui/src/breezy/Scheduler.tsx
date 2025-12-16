@@ -54,6 +54,7 @@ export default function Scheduler({
 
   return (
     <Box
+      dir={direction === 'rtl' ? 'rtl' : undefined}
       className={className}
       sx={{
         display: 'flex',
@@ -71,7 +72,6 @@ export default function Scheduler({
           overflow: 'hidden',
         })
       }}
-      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         sx={{
@@ -84,24 +84,17 @@ export default function Scheduler({
         availableViews={availableViews}
         addButton={addButton}
       />
-      <Box
-        sx={{
-          flexGrow: 1,
-          minHeight: 0,
-        }}
-      >
-        <SchedulerViews
-          height={height !== undefined ? '100%' : contentHeight}
-          initialView={availableViews[0]}
-          controller={controller}
-          plugins={[
-            ...eventCalendarPlugins,
-            ...schedulerOnlyPlugins,
-            ...(userPlugins || []),
-          ]}
-          {...restOptions}
-        />
-      </Box>
+      <SchedulerViews
+        height={height !== undefined ? '100%' : contentHeight}
+        initialView={availableViews[0]}
+        controller={controller}
+        plugins={[
+          ...eventCalendarPlugins,
+          ...schedulerOnlyPlugins,
+          ...(userPlugins || []),
+        ]}
+        {...restOptions}
+      />
     </Box>
   )
 }

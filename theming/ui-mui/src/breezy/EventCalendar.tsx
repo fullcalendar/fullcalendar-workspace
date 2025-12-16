@@ -54,6 +54,7 @@ export default function EventCalendar({
 
   return (
     <Box
+      dir={direction === 'rtl' ? 'rtl' : undefined}
       className={className}
       sx={{
         display: 'flex',
@@ -71,7 +72,6 @@ export default function EventCalendar({
           overflow: 'hidden',
         })
       }}
-      dir={direction === 'rtl' ? 'rtl' : undefined}
     >
       <EventCalendarToolbar
         sx={{
@@ -84,23 +84,17 @@ export default function EventCalendar({
         availableViews={availableViews}
         addButton={addButton}
       />
-      <Box
-        sx={{
-          flexGrow: 1,
-          minHeight: 0,
-        }}
-      >
-        <EventCalendarViews
-          height={height !== undefined ? '100%' : contentHeight}
-          initialView={availableViews[0]}
-          controller={controller}
-          plugins={[
-            ...eventCalendarPlugins,
-            ...(userPlugins || []),
-          ]}
-          {...restOptions}
-        />
-      </Box>
+      <EventCalendarViews
+        liquidHeight={height !== undefined}
+        height={contentHeight}
+        initialView={availableViews[0]}
+        controller={controller}
+        plugins={[
+          ...eventCalendarPlugins,
+          ...(userPlugins || []),
+        ]}
+        {...restOptions}
+      />
     </Box>
   )
 }
