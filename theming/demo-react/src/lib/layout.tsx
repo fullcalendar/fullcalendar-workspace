@@ -78,7 +78,11 @@ export function Layout(props: LayoutProps) {
                 const url = uiUrls[props.ui][modeOption as Mode]
                 if (url === undefined) {
                   return (
-                    <SlRadioButton value={modeOption} disabled>{modeMeta.text}</SlRadioButton>
+                    <SlRadioButton
+                      key={modeOption}
+                      value={modeOption}
+                      disabled
+                    >{modeMeta.text}</SlRadioButton>
                   )
                 } else {
                   return (
