@@ -7,7 +7,8 @@ import { eventCalendarProps, resourceTimelineProps, vResourceProps } from './dem
 
 export interface DemoGeneratorProps {
   renderEventCalendar: (props: EventCalendarProps) => ReactNode
-  renderScheduler: (props: SchedulerProps) => ReactNode
+  renderResourceTimeline: (props: SchedulerProps) => ReactNode
+  renderResourceTimeGrid: (props: SchedulerProps) => ReactNode
 }
 
 export function DemoGenerator(props: DemoGeneratorProps) {
@@ -47,13 +48,13 @@ export function DemoGenerator(props: DemoGeneratorProps) {
         listText: '',
       })}
 
-      {props.renderScheduler({
+      {props.renderResourceTimeline({
         ...resourceTimelineProps,
         initialView: 'resourceTimelineThreeDay',
         availableViews: ['resourceTimelineDay', 'resourceTimelineThreeDay', 'resourceTimelineWeek'],
       })}
 
-      {props.renderScheduler({
+      {props.renderResourceTimeGrid({
         ...vResourceProps,
         initialView: 'resourceTimeGridFiveDay',
         availableViews: ['resourceTimeGridDay', 'resourceTimeGridTwoDay', 'resourceTimeGridFiveDay', 'resourceTimeGridWeek'],

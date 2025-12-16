@@ -65,7 +65,10 @@ function App() {
           renderEventCalendar={(props) => (
             <EventCalendar {...props} className={flattenClassName(props)} />
           )}
-          renderScheduler={(props) => (
+          renderResourceTimeline={(props) => (
+            <Scheduler {...props} className={flattenClassName(props)} />
+          )}
+          renderResourceTimeGrid={(props) => (
             <Scheduler {...props} className={flattenClassName(props)} />
           )}
         />

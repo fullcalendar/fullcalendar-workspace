@@ -51,7 +51,10 @@ function App() {
         renderEventCalendar={(props) => (
           <EventCalendar {...props} />
         )}
-        renderScheduler={(props) => (
+        renderResourceTimeline={(props) => (
+          <Scheduler {...props} />
+        )}
+        renderResourceTimeGrid={(props) => (
           <Scheduler {...props} />
         )}
       />
