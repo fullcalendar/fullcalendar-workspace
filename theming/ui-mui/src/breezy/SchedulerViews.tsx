@@ -1,29 +1,29 @@
 import React from 'react'
 import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import EventCalendarView, {
+import EventCalendarViews, {
   mutedBgClass,
   mutedHoverPressableClass,
   outlineWidthFocusClass,
+  primaryOutlineColorClass,
   pressableIconClass,
   strongSolidPressableClass,
-  tertiaryOutlineColorClass,
-} from './EventCalendarView.js'
+} from './EventCalendarViews.js'
 
-export default function SchedulerView({
+export default function SchedulerViews({
   views: userViews,
   ...restOptions
 }: CalendarOptions) {
   return (
-    <EventCalendarView
+    <EventCalendarViews
 
       /* Resource Day Header
       ------------------------------------------------------------------------------------------- */
 
       resourceDayHeaderAlign="center"
-      resourceDayHeaderClass={(data) => joinClassNames(data.isMajor && 'border border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]')}
+      resourceDayHeaderClass="border"
       resourceDayHeaderInnerClass={(data) => joinClassNames(
-        'p-2 flex flex-row items-center text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]',
+        `p-2 text-(--mui-palette-text-primary) font-semibold`,
         data.isNarrow ? 'text-xs' : 'text-sm',
       )}
 
@@ -38,7 +38,7 @@ export default function SchedulerView({
       resourceCellClass="border border-(--mui-palette-divider)"
       resourceCellInnerClass="p-2 text-(--mui-palette-text-primary) text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
-      resourceExpanderClass={`group p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
+      resourceExpanderClass={`group p-0.5 rounded-full ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${primaryOutlineColorClass}`}
       resourceExpanderContent={(data) => (
         <ExpandMoreIcon
           sx={{ fontSize: 18, margin: '1px' }}
@@ -65,6 +65,22 @@ export default function SchedulerView({
 
       views={{
         ...userViews,
+        resourceDayGrid: {
+          resourceDayHeaderClass: (data) => (
+            data.isMajor
+              ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]'
+              : 'border-(--mui-palette-divider)'
+          ),
+          ...userViews?.resourceDayGrid,
+        },
+        resourceTimeGrid: {
+          resourceDayHeaderClass: (data) => (
+            data.isMajor
+              ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]'
+              : 'border-(--mui-palette-divider)'
+          ),
+          ...userViews?.resourceTimeGrid,
+        },
         timeline: {
 
           /* Timeline > Row Event
@@ -76,7 +92,7 @@ export default function SchedulerView({
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */
 
-          rowMoreLinkClass: `me-px mb-px border border-transparent print:border-black rounded-sm ${strongSolidPressableClass} print:bg-white`,
+          rowMoreLinkClass: `me-px mb-px border border-transparent print:border-black rounded-md ${strongSolidPressableClass} print:bg-white`,
           rowMoreLinkInnerClass: `p-1 text-(--mui-palette-text-primary) text-xs`,
 
           /* Timeline > Slot Header
@@ -84,13 +100,13 @@ export default function SchedulerView({
 
           slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
           slotHeaderClass: (data) => joinClassNames(
-            data.level > 0 && 'border border-(--mui-palette-divider)',
-            'justify-center',
+            data.level > 0 && `border border-(--mui-palette-divider)`,
+            'justify-end',
           ),
           slotHeaderInnerClass: (data) => joinClassNames(
-            'p-2 text-sm',
+            'px-3 py-2 text-xs',
             data.isTime && joinClassNames(
-              'relative -start-3',
+              'relative -start-4',
               data.isFirst && 'hidden',
             ),
             data.hasNavLink && 'hover:underline',

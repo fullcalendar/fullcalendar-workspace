@@ -10,7 +10,7 @@ import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
 import { eventCalendarPlugins } from './EventCalendar.js'
 import EventCalendarToolbar from './EventCalendarToolbar.js'
-import SchedulerView from './SchedulerView.js'
+import SchedulerViews from './SchedulerViews.js'
 
 const schedulerOnlyPlugins = [
   adaptivePlugin,
@@ -89,7 +89,7 @@ export default function Scheduler({
           minHeight: 0,
         }}
       >
-        <SchedulerView
+        <SchedulerViews
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}

@@ -8,7 +8,7 @@ import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
 import multiMonthPlugin from '@fullcalendar/multimonth'
 import EventCalendarToolbar from './EventCalendarToolbar.js'
-import EventCalendarView from './EventCalendarView.js'
+import EventCalendarViews from './EventCalendarViews.js'
 
 export const eventCalendarPlugins: PluginDef[] = [
   dayGridPlugin,
@@ -89,7 +89,7 @@ export default function EventCalendar({
           minHeight: 0,
         }}
       >
-        <EventCalendarView
+        <EventCalendarViews
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}

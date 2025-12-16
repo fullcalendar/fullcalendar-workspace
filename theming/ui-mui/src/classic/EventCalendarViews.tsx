@@ -111,7 +111,7 @@ export const dayRowCommonClasses: CalendarOptions = {
   ),
 }
 
-export default function EventCalendarView({
+export default function EventCalendarViews({
   views: userViews,
   ...restOptions
 }: CalendarOptions) {

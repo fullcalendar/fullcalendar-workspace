@@ -1,41 +1,29 @@
 import React from 'react'
 import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import EventCalendarView, {
-  faintBgClass,
+import EventCalendarViews, {
+  mutedBgClass,
   mutedHoverPressableClass,
   outlineWidthFocusClass,
   pressableIconClass,
-  secondaryClass,
-  secondaryPressableClass,
   strongSolidPressableClass,
   tertiaryOutlineColorClass,
-} from './EventCalendarView.js'
+} from './EventCalendarViews.js'
 
-const resourceDayHeaderClasses = {
-  dayHeaderInnerClass: 'mb-1',
-  dayHeaderDividerClass: `border-b border-(--mui-palette-divider)`,
-}
-
-export default function SchedulerView({
+export default function SchedulerViews({
   views: userViews,
   ...restOptions
 }: CalendarOptions) {
   return (
-    <EventCalendarView
+    <EventCalendarViews
 
       /* Resource Day Header
       ------------------------------------------------------------------------------------------- */
 
       resourceDayHeaderAlign="center"
-      resourceDayHeaderClass={(data) => joinClassNames(
-        'border',
-        data.isMajor
-          ? 'border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]'
-          : 'border-(--mui-palette-divider)',
-      )}
+      resourceDayHeaderClass={(data) => joinClassNames(data.isMajor && 'border border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)]')}
       resourceDayHeaderInnerClass={(data) => joinClassNames(
-        'p-2 flex flex-col',
+        'p-2 flex flex-row items-center text-[rgba(var(--mui-palette-text-primaryChannel)_/_0.6)]',
         data.isNarrow ? 'text-xs' : 'text-sm',
       )}
 
@@ -43,14 +31,14 @@ export default function SchedulerView({
       ------------------------------------------------------------------------------------------- */
 
       resourceColumnHeaderClass="border border-(--mui-palette-divider) justify-center"
-      resourceColumnHeaderInnerClass="p-2 text-sm"
+      resourceColumnHeaderInnerClass="p-2 text-(--mui-palette-text-primary) text-sm"
       resourceColumnResizerClass="absolute inset-y-0 w-[5px] end-[-3px]"
-      resourceGroupHeaderClass={`border border-(--mui-palette-divider) ${faintBgClass}`}
-      resourceGroupHeaderInnerClass="p-2 text-sm"
+      resourceGroupHeaderClass={`border border-(--mui-palette-divider) ${mutedBgClass}`}
+      resourceGroupHeaderInnerClass="p-2 text-(--mui-palette-text-primary) text-sm"
       resourceCellClass="border border-(--mui-palette-divider)"
-      resourceCellInnerClass="p-2 text-sm"
+      resourceCellInnerClass="p-2 text-(--mui-palette-text-primary) text-sm"
       resourceIndentClass="ms-1 -me-1.5 justify-center"
-      resourceExpanderClass={`group p-1 rounded-full ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
+      resourceExpanderClass={`group p-0.5 rounded-sm ${mutedHoverPressableClass} ${outlineWidthFocusClass} ${tertiaryOutlineColorClass}`}
       resourceExpanderContent={(data) => (
         <ExpandMoreIcon
           sx={{ fontSize: 18, margin: '1px' }}
@@ -67,7 +55,7 @@ export default function SchedulerView({
       /* Timeline Lane
       ------------------------------------------------------------------------------------------- */
 
-      resourceGroupLaneClass={`border border-(--mui-palette-divider) ${faintBgClass}`}
+      resourceGroupLaneClass={`border border-(--mui-palette-divider) ${mutedBgClass}`}
       resourceLaneClass="border border-(--mui-palette-divider)"
       resourceLaneBottomClass={(data) => joinClassNames(data.options.eventOverlap && 'h-2')}
       timelineBottomClass="h-2"
@@ -77,14 +65,6 @@ export default function SchedulerView({
 
       views={{
         ...userViews,
-        resourceTimeGrid: {
-          ...resourceDayHeaderClasses,
-          ...userViews?.resourceTimeGrid,
-        },
-        resourceDayGrid: {
-          ...resourceDayHeaderClasses,
-          ...userViews?.resourceDayGrid,
-        },
         timeline: {
 
           /* Timeline > Row Event
@@ -96,46 +76,26 @@ export default function SchedulerView({
           /* Timeline > More-Link
           --------------------------------------------------------------------------------------- */
 
-          rowMoreLinkClass: `me-px mb-px rounded-sm border border-transparent print:border-black ${strongSolidPressableClass} print:bg-white`,
-          rowMoreLinkInnerClass: 'p-1 text-xs',
+          rowMoreLinkClass: `me-px mb-px border border-transparent print:border-black rounded-sm ${strongSolidPressableClass} print:bg-white`,
+          rowMoreLinkInnerClass: `p-1 text-(--mui-palette-text-primary) text-xs`,
 
           /* Timeline > Slot Header
           --------------------------------------------------------------------------------------- */
 
-          slotHeaderSticky: '0.5rem',
-          slotHeaderAlign: (data) => (data.level || data.isTime) ? 'start' : 'center',
+          slotHeaderAlign: (data) => data.isTime ? 'start' : 'center',
           slotHeaderClass: (data) => joinClassNames(
-            'border',
-            data.level
-              ? 'border-transparent justify-start'
-              : joinClassNames(
-                  'border-(--mui-palette-divider)',
-                  data.isTime
-                    ? 'h-2 self-end justify-end'
-                    : 'justify-center',
-                ),
+            data.level > 0 && 'border border-(--mui-palette-divider)',
+            'justify-center',
           ),
           slotHeaderInnerClass: (data) => joinClassNames(
-            'text-sm',
-            data.level
-              ? joinClassNames(
-                  'my-0.5 px-2 py-1 rounded-full',
-                  data.hasNavLink
-                    ? secondaryPressableClass
-                    : secondaryClass,
-                )
-              : joinClassNames(
-                  'px-2',
-                  data.isTime
-                    ? joinClassNames(
-                        'pb-3 relative -start-3',
-                        data.isFirst && 'hidden',
-                      )
-                    : 'py-2',
-                  data.hasNavLink && 'hover:underline',
-                )
+            'p-2 text-sm',
+            data.isTime && joinClassNames(
+              'relative -start-3',
+              data.isFirst && 'hidden',
+            ),
+            data.hasNavLink && 'hover:underline',
           ),
-          slotHeaderDividerClass: `border-b border-(--mui-palette-divider)`,
+          slotHeaderDividerClass: `border-b border-[rgba(var(--mui-palette-text-primaryChannel)_/_0.2)] shadow-sm`,
 
           ...userViews?.timeline,
         },
