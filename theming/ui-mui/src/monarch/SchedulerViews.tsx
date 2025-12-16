@@ -1,5 +1,9 @@
 import React from 'react'
 import { joinClassNames } from '@fullcalendar/core'
+import type {} from '@fullcalendar/timeline'
+import type {} from '@fullcalendar/resource-timeline'
+import type {} from '@fullcalendar/resource-daygrid'
+import type {} from '@fullcalendar/resource-timegrid'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import EventCalendarViews, {
   EventCalendarViewsProps,

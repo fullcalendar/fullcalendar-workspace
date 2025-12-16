@@ -1,6 +1,10 @@
 import React from 'react'
 import { CalendarOptions, DayCellData, DayHeaderData, joinClassNames } from '@fullcalendar/core'
 import FullCalendar from '@fullcalendar/react'
+import type {} from '@fullcalendar/daygrid'
+import type {} from '@fullcalendar/timegrid'
+import type {} from '@fullcalendar/list'
+import type {} from '@fullcalendar/multimonth'
 import { Box } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
 

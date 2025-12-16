@@ -2,31 +2,27 @@ import React from 'react'
 import { CalendarOptions } from '@fullcalendar/core'
 import { useCalendarController } from "@fullcalendar/react"
 import adaptivePlugin from '@fullcalendar/adaptive'
+import interactionPlugin from '@fullcalendar/interaction'
 import scrollGridPlugin from '@fullcalendar/scrollgrid'
-import timelinePlugin from '@fullcalendar/timeline'
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
-import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
-import { eventCalendarPlugins } from './EventCalendar.js'
 import EventCalendarToolbar from './EventCalendarToolbar.js'
 import SchedulerViews from './SchedulerViews.js'
 import EventCalendarContainer from './EventCalendarContainer.js'
 
-const schedulerOnlyPlugins = [
+const plugins = [
   adaptivePlugin,
+  interactionPlugin,
   scrollGridPlugin,
-  timelinePlugin,
-  resourceTimelinePlugin,
   resourceTimeGridPlugin,
-  resourceDayGridPlugin,
 ]
-
-const schedulerAvailableViews = [
-  'resourceTimelineDay',
-  'resourceTimelineWeek',
+const defaultAvailableViews = [
+  'resourceTimeGridDay',
+  'resourceTimeGridWeek',
 ]
+const navLinkDayClick = 'resourceTimeGridDay'
+const navLinkWeekClick = 'resourceTimeGridWeek'
 
-export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
+export interface ResourceTimeGridProps extends Omit<CalendarOptions, 'class' | 'className'> {
   className?: string
   availableViews?: string[]
   addButton?: {
@@ -37,8 +33,8 @@ export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'classNa
   }
 }
 
-export default function Scheduler({
-  availableViews = schedulerAvailableViews,
+export default function ResourceTimeGrid({
+  availableViews = defaultAvailableViews,
   addButton,
   className,
   height,
@@ -46,31 +42,25 @@ export default function Scheduler({
   direction,
   plugins: userPlugins = [],
   ...restOptions
-}: SchedulerProps) {
+}: ResourceTimeGridProps) {
   const controller = useCalendarController()
 
   return (
-    <EventCalendarContainer
-      direction={direction}
-      className={className}
-      height={height}
-      borderless={restOptions.borderless}
-      borderlessX={restOptions.borderlessX}
-      borderlessTop={restOptions.borderlessTop}
-      borderlessBottom={restOptions.borderlessBottom}
-    >
+    <EventCalendarContainer direction={direction} className={className} height={height}>
       <EventCalendarToolbar
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
+        borderlessX={restOptions.borderlessX ?? restOptions.borderless}
       />
       <SchedulerViews
         liquidHeight={height !== undefined}
         height={contentHeight}
         initialView={availableViews[0]}
-        borderless
+        navLinkDayClick={navLinkDayClick}
+        navLinkWeekClick={navLinkWeekClick}
         controller={controller}
-        plugins={[...eventCalendarPlugins, ...schedulerOnlyPlugins, ...userPlugins]}
+        plugins={[...plugins, ...userPlugins]}
         {...restOptions}
       />
     </EventCalendarContainer>

@@ -1,33 +1,28 @@
 import React from 'react'
-import { CalendarOptions, PluginDef } from '@fullcalendar/core'
+import { CalendarOptions } from '@fullcalendar/core'
 import { useCalendarController } from "@fullcalendar/react"
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import listPlugin from '@fullcalendar/list'
+import adaptivePlugin from '@fullcalendar/adaptive'
 import interactionPlugin from '@fullcalendar/interaction'
-import multiMonthPlugin from '@fullcalendar/multimonth'
+import scrollGridPlugin from '@fullcalendar/scrollgrid'
+import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
 import EventCalendarToolbar from './EventCalendarToolbar.js'
-import EventCalendarViews from './EventCalendarViews.js'
+import SchedulerViews from './SchedulerViews.js'
 import EventCalendarContainer from './EventCalendarContainer.js'
 
-const plugins: PluginDef[] = [
-  dayGridPlugin,
-  timeGridPlugin,
-  listPlugin,
+const plugins = [
+  adaptivePlugin,
   interactionPlugin,
-  multiMonthPlugin,
+  scrollGridPlugin,
+  resourceTimeGridPlugin,
 ]
 const defaultAvailableViews = [
-  'dayGridMonth',
-  'timeGridWeek',
-  'timeGridDay',
-  'listWeek',
-  'multiMonthYear',
+  'resourceTimeGridDay',
+  'resourceTimeGridWeek',
 ]
-const navLinkDayClick = 'timeGridDay'
-const navLinkWeekClick = 'timeGridWeek'
+const navLinkDayClick = 'resourceTimeGridDay'
+const navLinkWeekClick = 'resourceTimeGridWeek'
 
-export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
+export interface ResourceTimeGridProps extends Omit<CalendarOptions, 'class' | 'className'> {
   className?: string
   availableViews?: string[]
   addButton?: {
@@ -38,7 +33,7 @@ export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'cla
   }
 }
 
-export default function EventCalendar({
+export default function ResourceTimeGrid({
   availableViews = defaultAvailableViews,
   addButton,
   className,
@@ -47,7 +42,7 @@ export default function EventCalendar({
   direction,
   plugins: userPlugins = [],
   ...restOptions
-}: EventCalendarProps) {
+}: ResourceTimeGridProps) {
   const controller = useCalendarController()
 
   return (
@@ -65,7 +60,7 @@ export default function EventCalendar({
         availableViews={availableViews}
         addButton={addButton}
       />
-      <EventCalendarViews
+      <SchedulerViews
         liquidHeight={height !== undefined}
         height={contentHeight}
         initialView={availableViews[0]}
@@ -78,3 +73,4 @@ export default function EventCalendar({
     </EventCalendarContainer>
   )
 }
+

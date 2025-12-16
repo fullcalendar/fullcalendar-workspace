@@ -10,21 +10,22 @@ import EventCalendarToolbar from './EventCalendarToolbar.js'
 import EventCalendarViews from './EventCalendarViews.js'
 import EventCalendarContainer from './EventCalendarContainer.js'
 
-export const eventCalendarPlugins: PluginDef[] = [
+const plugins: PluginDef[] = [
   dayGridPlugin,
   timeGridPlugin,
   listPlugin,
   interactionPlugin,
   multiMonthPlugin,
 ]
-
-const eventCalendarAvailableViews = [
+const defaultAvailableViews = [
   'dayGridMonth',
   'timeGridWeek',
   'timeGridDay',
   'listWeek',
   'multiMonthYear',
 ]
+const navLinkDayClick = 'timeGridDay'
+const navLinkWeekClick = 'timeGridWeek'
 
 export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'className'> {
   className?: string
@@ -38,7 +39,7 @@ export interface EventCalendarProps extends Omit<CalendarOptions, 'class' | 'cla
 }
 
 export default function EventCalendar({
-  availableViews = eventCalendarAvailableViews,
+  availableViews = defaultAvailableViews,
   addButton,
   className,
   height,
@@ -68,8 +69,10 @@ export default function EventCalendar({
         liquidHeight={height !== undefined}
         height={contentHeight}
         initialView={availableViews[0]}
+        navLinkDayClick={navLinkDayClick}
+        navLinkWeekClick={navLinkWeekClick}
         controller={controller}
-        plugins={[...eventCalendarPlugins, ...userPlugins]}
+        plugins={[...plugins, ...userPlugins]}
         {...restOptions}
       />
     </EventCalendarContainer>

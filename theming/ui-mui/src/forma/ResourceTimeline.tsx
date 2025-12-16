@@ -2,31 +2,25 @@ import React from 'react'
 import { CalendarOptions } from '@fullcalendar/core'
 import { useCalendarController } from "@fullcalendar/react"
 import adaptivePlugin from '@fullcalendar/adaptive'
-import scrollGridPlugin from '@fullcalendar/scrollgrid'
-import timelinePlugin from '@fullcalendar/timeline'
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
-import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid'
-import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
-import { eventCalendarPlugins } from './EventCalendar.js'
+import interactionPlugin from '@fullcalendar/interaction'
 import EventCalendarToolbar from './EventCalendarToolbar.js'
 import SchedulerViews from './SchedulerViews.js'
 import EventCalendarContainer from './EventCalendarContainer.js'
 
-const schedulerOnlyPlugins = [
+const plugins = [
   adaptivePlugin,
-  scrollGridPlugin,
-  timelinePlugin,
+  interactionPlugin,
   resourceTimelinePlugin,
-  resourceTimeGridPlugin,
-  resourceDayGridPlugin,
 ]
-
-const schedulerAvailableViews = [
+const defaultAvailableViews = [
   'resourceTimelineDay',
   'resourceTimelineWeek',
 ]
+const navLinkDayClick = 'resourceTimelineDay'
+const navLinkWeekClick = 'resourceTimelineWeek'
 
-export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'className'> {
+export interface ResourceTimelineProps extends Omit<CalendarOptions, 'class' | 'className'> {
   className?: string
   availableViews?: string[]
   addButton?: {
@@ -37,8 +31,8 @@ export interface SchedulerProps extends Omit<CalendarOptions, 'class' | 'classNa
   }
 }
 
-export default function Scheduler({
-  availableViews = schedulerAvailableViews,
+export default function ResourceTimeline({
+  availableViews = defaultAvailableViews,
   addButton,
   className,
   height,
@@ -46,7 +40,7 @@ export default function Scheduler({
   direction,
   plugins: userPlugins = [],
   ...restOptions
-}: SchedulerProps) {
+}: ResourceTimelineProps) {
   const controller = useCalendarController()
 
   return (
@@ -68,10 +62,13 @@ export default function Scheduler({
         liquidHeight={height !== undefined}
         height={contentHeight}
         initialView={availableViews[0]}
+        navLinkDayClick={navLinkDayClick}
+        navLinkWeekClick={navLinkWeekClick}
         controller={controller}
-        plugins={[...eventCalendarPlugins, ...schedulerOnlyPlugins, ...userPlugins]}
+        plugins={[...plugins, ...userPlugins]}
         {...restOptions}
       />
     </EventCalendarContainer>
   )
 }
+

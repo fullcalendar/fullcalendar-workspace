@@ -16,15 +16,20 @@ import '@fullcalendar/mui/monarch/global.css'
 import '@fullcalendar/mui/pulse/global.css'
 
 import BreezyEventCalendar from '@fullcalendar/mui/breezy/EventCalendar'
-import BreezyScheduler from '@fullcalendar/mui/breezy/Scheduler'
+import BreezyResourceTimeline from '@fullcalendar/mui/breezy/ResourceTimeline'
+import BreezyResourceTimeGrid from '@fullcalendar/mui/breezy/ResourceTimeGrid'
 import ClassicEventCalendar from '@fullcalendar/mui/classic/EventCalendar'
-import ClassicScheduler from '@fullcalendar/mui/classic/Scheduler'
+import ClassicResourceTimeline from '@fullcalendar/mui/classic/ResourceTimeline'
+import ClassicResourceTimeGrid from '@fullcalendar/mui/classic/ResourceTimeGrid'
 import FormaEventCalendar from '@fullcalendar/mui/forma/EventCalendar'
-import FormaScheduler from '@fullcalendar/mui/forma/Scheduler'
+import FormaResourceTimeline from '@fullcalendar/mui/forma/ResourceTimeline'
+import FormaResourceTimeGrid from '@fullcalendar/mui/forma/ResourceTimeGrid'
 import MonarchEventCalendar from '@fullcalendar/mui/monarch/EventCalendar'
-import MonarchScheduler from '@fullcalendar/mui/monarch/Scheduler'
+import MonarchResourceTimeline from '@fullcalendar/mui/monarch/ResourceTimeline'
+import MonarchResourceTimeGrid from '@fullcalendar/mui/monarch/ResourceTimeGrid'
 import PulseEventCalendar from '@fullcalendar/mui/pulse/EventCalendar'
-import PulseScheduler from '@fullcalendar/mui/pulse/Scheduler'
+import PulseResourceTimeline from '@fullcalendar/mui/pulse/ResourceTimeline'
+import PulseResourceTimeGrid from '@fullcalendar/mui/pulse/ResourceTimeGrid'
 
 const eventCalendarByTheme = {
   breezy: BreezyEventCalendar,
@@ -34,12 +39,20 @@ const eventCalendarByTheme = {
   pulse: PulseEventCalendar,
 }
 
-const schedulerByTheme = {
-  breezy: BreezyScheduler,
-  classic: ClassicScheduler,
-  forma: FormaScheduler,
-  monarch: MonarchScheduler,
-  pulse: PulseScheduler,
+const resourceTimelineByTheme = {
+  breezy: BreezyResourceTimeline,
+  classic: ClassicResourceTimeline,
+  forma: FormaResourceTimeline,
+  monarch: MonarchResourceTimeline,
+  pulse: PulseResourceTimeline,
+}
+
+const resourceTimeGridByTheme = {
+  breezy: BreezyResourceTimeGrid,
+  classic: ClassicResourceTimeGrid,
+  forma: FormaResourceTimeGrid,
+  monarch: MonarchResourceTimeGrid,
+  pulse: PulseResourceTimeGrid,
 }
 
 const ui = 'mui'
@@ -50,7 +63,8 @@ function App() {
   const { theme, palette, colorScheme } = demoChoices
 
   const EventCalendar = eventCalendarByTheme[theme]
-  const Scheduler = schedulerByTheme[theme]
+  const ResourceTimeline = resourceTimelineByTheme[theme]
+  const ResourceTimeGrid = resourceTimeGridByTheme[theme]
 
   const muiTheme = useMemo(
     () => getMuiTheme(palette, colorScheme),
@@ -66,10 +80,10 @@ function App() {
             <EventCalendar {...props} className={flattenClassName(props)} />
           )}
           renderResourceTimeline={(props) => (
-            <Scheduler {...props} className={flattenClassName(props)} />
+            <ResourceTimeline {...props} className={flattenClassName(props)} />
           )}
           renderResourceTimeGrid={(props) => (
-            <Scheduler {...props} className={flattenClassName(props)} />
+            <ResourceTimeGrid {...props} className={flattenClassName(props)} />
           )}
         />
       </MuiThemeProvider>
