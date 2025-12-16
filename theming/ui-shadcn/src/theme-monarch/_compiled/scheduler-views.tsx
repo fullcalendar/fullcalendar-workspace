@@ -4,7 +4,7 @@ import type {} from '@fullcalendar/timeline'
 import type {} from '@fullcalendar/resource-timeline'
 import type {} from '@fullcalendar/resource-daygrid'
 import type {} from '@fullcalendar/resource-timegrid'
-import { EventCalendarViewProps, EventCalendarViews } from './event-calendar-views.js'
+import { type EventCalendarViewProps, EventCalendarViews } from './event-calendar-views.js'
 import { cn } from '../../lib/utils.js'
 
 const resourceDayHeaderClasses = {

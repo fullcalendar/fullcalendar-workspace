@@ -1,5 +1,4 @@
 import React from 'react'
-import Box from '@mui/material/Box'
 import { CalendarOptions, PluginDef } from '@fullcalendar/core'
 import { useCalendarController } from "@fullcalendar/react"
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -9,6 +8,7 @@ import interactionPlugin from '@fullcalendar/interaction'
 import multiMonthPlugin from '@fullcalendar/multimonth'
 import EventCalendarToolbar from './EventCalendarToolbar.js'
 import EventCalendarViews from './EventCalendarViews.js'
+import EventCalendarContainer from './EventCalendarContainer.js'
 
 export const eventCalendarPlugins: PluginDef[] = [
   dayGridPlugin,
@@ -44,63 +44,35 @@ export default function EventCalendar({
   height,
   contentHeight,
   direction,
-  plugins: userPlugins,
+  plugins: userPlugins = [],
   ...restOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessTop = restOptions.borderlessTop ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
 
   return (
-    <Box
+    <EventCalendarContainer
+      direction={direction}
       className={className}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        height,
-        bgcolor: 'background.paper',
-        borderStyle: 'solid',
-        borderColor: 'divider',
-        borderLeftWidth: borderlessX ? 0 : 1,
-        borderRightWidth: borderlessX ? 0 : 1,
-        borderTopWidth: borderlessTop ? 0 : 1,
-        borderBottomWidth: borderlessBottom ? 0 : 1,
-        ...(borderlessX || borderlessTop || borderlessBottom ? {} : {
-          borderRadius: 1,
-          overflow: 'hidden',
-        })
-      }}
-      dir={direction === 'rtl' ? 'rtl' : undefined}
+      height={height}
+      borderless={restOptions.borderless}
+      borderlessX={restOptions.borderlessX}
+      borderlessTop={restOptions.borderlessTop}
+      borderlessBottom={restOptions.borderlessBottom}
     >
       <EventCalendarToolbar
-        sx={{
-          padding: 1.5,
-          borderBottom: '1px solid',
-          borderColor: 'divider',
-        }}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
       />
-      <Box
-        sx={{
-          flexGrow: 1,
-          minHeight: 0,
-        }}
-      >
-        <EventCalendarViews
-          height={height !== undefined ? '100%' : contentHeight}
-          initialView={availableViews[0]}
-          controller={controller}
-          plugins={[
-            ...eventCalendarPlugins,
-            ...(userPlugins || []),
-          ]}
-          {...restOptions}
-        />
-      </Box>
-    </Box>
+      <EventCalendarViews
+        liquidHeight={height !== undefined}
+        height={contentHeight}
+        initialView={availableViews[0]}
+        controller={controller}
+        plugins={[...eventCalendarPlugins, ...userPlugins]}
+        {...restOptions}
+      />
+    </EventCalendarContainer>
   )
 }
 

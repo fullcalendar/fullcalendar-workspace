@@ -7,7 +7,7 @@ import { schedulerAvailableViews, schedulerOnlyPlugins, SchedulerProps } from '@
 export function Scheduler({
   availableViews = schedulerAvailableViews,
   addButton,
-  plugins: userPlugins,
+  plugins: userPlugins = [],
   views: userViews,
   ...restOptions
 }: SchedulerProps) {
@@ -15,10 +15,7 @@ export function Scheduler({
     <EventCalendar
       availableViews={availableViews}
       addButton={addButton}
-      plugins={[
-        ...schedulerOnlyPlugins,
-        ...(userPlugins || []),
-      ]}
+      plugins={[...schedulerOnlyPlugins, ...userPlugins]}
 
       /* View-Specific
       ------------------------------------------------------------------------------------------- */

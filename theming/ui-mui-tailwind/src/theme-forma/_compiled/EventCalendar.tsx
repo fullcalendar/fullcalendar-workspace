@@ -44,7 +44,7 @@ export default function EventCalendar({
   height,
   contentHeight,
   direction,
-  plugins: userPlugins,
+  plugins: userPlugins = [],
   ...restOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
@@ -93,10 +93,7 @@ export default function EventCalendar({
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}
-          plugins={[
-            ...eventCalendarPlugins,
-            ...(userPlugins || []),
-          ]}
+          plugins={[...eventCalendarPlugins, ...userPlugins]}
           {...restOptions}
         />
       </Box>

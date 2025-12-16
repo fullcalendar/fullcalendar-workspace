@@ -132,17 +132,14 @@ export interface EventCalendarProps extends CalendarOptions {
 export function EventCalendar({
   availableViews = eventCalendarAvailableViews,
   addButton,
-  plugins: userPlugins,
+  plugins: userPlugins = [],
   buttons: userButtons,
   views: userViews,
   ...restOptions
 }: EventCalendarProps) {
   return (
     <FullCalendar
-      plugins={[
-        ...eventCalendarPlugins,
-        ...(userPlugins || []),
-      ]}
+      plugins={[...eventCalendarPlugins, ...userPlugins]}
       initialView={availableViews[0]}
       className="gap-5"
       viewClass="bg-(--fc-classic-background) border border-(--fc-classic-border)"

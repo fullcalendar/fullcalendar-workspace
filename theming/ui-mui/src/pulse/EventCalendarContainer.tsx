@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { cn } from '../../lib/utils.js'
+import Box from '@mui/material/Box'
 
 export interface EventCalendarContainerProps {
   direction: 'ltr' | 'rtl' | undefined
@@ -8,19 +8,19 @@ export interface EventCalendarContainerProps {
   children: ReactNode
 }
 
-export function EventCalendarContainer(props: EventCalendarContainerProps) {
+export default function EventCalendarContainer(props: EventCalendarContainerProps) {
   return (
-    <div
+    <Box
       dir={props.direction === 'rtl' ? 'rtl' : undefined}
-      className={cn(
-        'flex flex-col gap-6',
-        props.className,
-      )}
-      style={{
+      className={props.className}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 3,
         height: props.height,
       }}
     >
       {props.children}
-    </div>
+    </Box>
   )
 }

@@ -12,8 +12,13 @@ export function EventCalendarContainer(props: EventCalendarContainerProps) {
   return (
     <div
       dir={props.direction === 'rtl' ? 'rtl' : undefined}
-      className={cn('flex flex-col gap-5', props.className)}
-      style={{ height: props.height }}
+      className={cn(
+        'flex flex-col gap-5',
+        props.className,
+      )}
+      style={{
+        height: props.height
+      }}
     >
       {props.children}
     </div>

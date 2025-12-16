@@ -1,7 +1,8 @@
 import React from 'react'
-import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
+import { joinClassNames } from '@fullcalendar/core'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import EventCalendarViews, {
+  EventCalendarViewsProps,
   mutedBgClass,
   mutedHoverPressableClass,
   outlineWidthFocusClass,
@@ -10,10 +11,12 @@ import EventCalendarViews, {
   tertiaryOutlineColorClass,
 } from './EventCalendarViews.js'
 
+export interface SchedulerViewsProps extends EventCalendarViewsProps {}
+
 export default function SchedulerViews({
   views: userViews,
   ...restOptions
-}: CalendarOptions) {
+}: SchedulerViewsProps) {
   return (
     <EventCalendarViews
 

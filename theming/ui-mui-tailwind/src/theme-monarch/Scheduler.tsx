@@ -14,7 +14,7 @@ export default function Scheduler({
   height,
   contentHeight,
   direction,
-  plugins: userPlugins,
+  plugins: userPlugins = [],
   ...restOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
@@ -60,11 +60,7 @@ export default function Scheduler({
           initialView={availableViews[0]}
           borderless
           controller={controller}
-          plugins={[
-            ...eventCalendarPlugins,
-            ...schedulerOnlyPlugins,
-            ...(userPlugins || []),
-          ]}
+          plugins={[...eventCalendarPlugins, ...schedulerOnlyPlugins, ...userPlugins]}
           {...restOptions}
         />
       </Box>

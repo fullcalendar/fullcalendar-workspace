@@ -1,7 +1,8 @@
 import React from 'react'
-import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
+import { joinClassNames } from '@fullcalendar/core'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import EventCalendarViews, {
+  EventCalendarViewsProps,
   faintBgClass,
   mutedHoverPressableClass,
   outlineWidthFocusClass,
@@ -17,10 +18,12 @@ const resourceDayHeaderClasses = {
   dayHeaderDividerClass: `border-b border-(--mui-palette-divider)`,
 }
 
+export interface SchedulerViewsProps extends EventCalendarViewsProps {}
+
 export default function SchedulerViews({
   views: userViews,
   ...restOptions
-}: CalendarOptions) {
+}: SchedulerViewsProps) {
   return (
     <EventCalendarViews
 

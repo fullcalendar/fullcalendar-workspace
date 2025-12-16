@@ -26,6 +26,7 @@ export function EventCalendarContainer(props: EventCalendarContainerProps) {
         !borderlessX && 'border-x',
         !borderlessTop && 'border-t',
         !borderlessBottom && 'border-b',
+        props.className,
       )}
       style={{
         height: props.height,

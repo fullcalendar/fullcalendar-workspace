@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react'
-import { cn } from '../../lib/utils.js'
+import Box from '@mui/material/Box'
 
 export interface EventCalendarContainerProps {
   direction: 'ltr' | 'rtl' | undefined
@@ -12,27 +12,33 @@ export interface EventCalendarContainerProps {
   children: ReactNode
 }
 
-export function EventCalendarContainer(props: EventCalendarContainerProps) {
+export default function EventCalendarContainer(props: EventCalendarContainerProps) {
   const borderlessX = props.borderlessX ?? props.borderless
   const borderlessTop = props.borderlessTop ?? props.borderless
   const borderlessBottom = props.borderlessBottom ?? props.borderless
 
   return (
-    <div
+    <Box
       dir={props.direction === 'rtl' ? 'rtl' : undefined}
-      className={cn(
-        'flex flex-col bg-background',
-        !borderlessX && !borderlessTop && !borderlessBottom && 'rounded-lg overflow-hidden',
-        !borderlessX && 'border-x',
-        !borderlessTop && 'border-t',
-        !borderlessBottom && 'border-b',
-        props.className,
-      )}
-      style={{
+      className={props.className}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
         height: props.height,
+        bgcolor: 'background.paper',
+        borderStyle: 'solid',
+        borderColor: 'divider',
+        borderLeftWidth: borderlessX ? 0 : 1,
+        borderRightWidth: borderlessX ? 0 : 1,
+        borderTopWidth: borderlessTop ? 0 : 1,
+        borderBottomWidth: borderlessBottom ? 0 : 1,
+        ...(borderlessX || borderlessTop || borderlessBottom ? {} : {
+          borderRadius: 1,
+          overflow: 'hidden',
+        })
       }}
     >
       {props.children}
-    </div>
+    </Box>
   )
 }

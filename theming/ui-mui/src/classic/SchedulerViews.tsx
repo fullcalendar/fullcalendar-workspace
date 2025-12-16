@@ -1,7 +1,8 @@
 import React from 'react'
-import { CalendarOptions, joinClassNames } from '@fullcalendar/core'
+import { joinClassNames } from '@fullcalendar/core'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import EventCalendarViews, {
+  EventCalendarViewsProps,
   mutedBgClass,
   outlineWidthFocusClass,
   primaryOutlineColorClass,
@@ -13,10 +14,12 @@ import EventCalendarViews, {
 const xxsTextClass = 'text-[0.6875rem]/[1.090909]'
 const continuationArrowClass = 'mx-1 border-y-[5px] border-y-transparent opacity-50'
 
+export interface SchedulerViewsProps extends EventCalendarViewsProps {}
+
 export default function SchedulerViews({
   views: userViews,
   ...restOptions
-}: CalendarOptions) {
+}: SchedulerViewsProps) {
   return (
     <EventCalendarViews
 

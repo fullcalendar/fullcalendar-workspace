@@ -9,7 +9,7 @@ const { buttons: defaultButtons, ...restOptionDefaults } = defaultUiEventCalenda
 export function EventCalendar({
   availableViews = eventCalendarAvailableViews,
   addButton,
-  plugins: userPlugins,
+  plugins: userPlugins = [],
   buttons: userButtons,
   views: userViews,
   ...restOptions
@@ -17,10 +17,7 @@ export function EventCalendar({
   return (
     <FullCalendar
       initialView={availableViews[0]}
-      plugins={[
-        ...eventCalendarPlugins,
-        ...(userPlugins || []),
-      ]}
+      plugins={[...eventCalendarPlugins, ...userPlugins]}
 
       /* Toolbar
       ------------------------------------------------------------------------------------------- */

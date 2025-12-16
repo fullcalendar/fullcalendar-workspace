@@ -1,5 +1,4 @@
 import React from 'react'
-import Box from '@mui/material/Box'
 import { CalendarOptions } from '@fullcalendar/core'
 import { useCalendarController } from "@fullcalendar/react"
 import adaptivePlugin from '@fullcalendar/adaptive'
@@ -11,6 +10,7 @@ import resourceDayGridPlugin from '@fullcalendar/resource-daygrid'
 import { eventCalendarPlugins } from './EventCalendar.js'
 import EventCalendarToolbar from './EventCalendarToolbar.js'
 import SchedulerViews from './SchedulerViews.js'
+import EventCalendarContainer from './EventCalendarContainer.js'
 
 const schedulerOnlyPlugins = [
   adaptivePlugin,
@@ -44,61 +44,36 @@ export default function Scheduler({
   height,
   contentHeight,
   direction,
-  plugins: userPlugins,
+  plugins: userPlugins = [],
   ...restOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
-  const borderlessX = restOptions.borderlessX ?? restOptions.borderless
-  const borderlessTop = restOptions.borderlessTop ?? restOptions.borderless
-  const borderlessBottom = restOptions.borderlessBottom ?? restOptions.borderless
 
   return (
-    <Box
+    <EventCalendarContainer
+      direction={direction}
       className={className}
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        height,
-        bgcolor: 'background.paper',
-        borderStyle: 'solid',
-        borderColor: 'divider',
-        borderLeftWidth: borderlessX ? 0 : 1,
-        borderRightWidth: borderlessX ? 0 : 1,
-        borderTopWidth: borderlessTop ? 0 : 1,
-        borderBottomWidth: borderlessBottom ? 0 : 1,
-        ...(borderlessX || borderlessTop || borderlessBottom ? {} : {
-          borderRadius: 1,
-          overflow: 'hidden',
-        })
-      }}
-      dir={direction === 'rtl' ? 'rtl' : undefined}
+      height={height}
+      borderless={restOptions.borderless}
+      borderlessX={restOptions.borderlessX}
+      borderlessTop={restOptions.borderlessTop}
+      borderlessBottom={restOptions.borderlessBottom}
     >
       <EventCalendarToolbar
-        sx={{ padding: 2 }}
         controller={controller}
         availableViews={availableViews}
         addButton={addButton}
       />
-      <Box
-        sx={{
-          flexGrow: 1,
-          minHeight: 0,
-        }}
-      >
-        <SchedulerViews
-          height={height !== undefined ? '100%' : contentHeight}
-          initialView={availableViews[0]}
-          borderless
-          controller={controller}
-          plugins={[
-            ...eventCalendarPlugins,
-            ...schedulerOnlyPlugins,
-            ...(userPlugins || []),
-          ]}
-          {...restOptions}
-        />
-      </Box>
-    </Box>
+      <SchedulerViews
+        liquidHeight={height !== undefined}
+        height={contentHeight}
+        initialView={availableViews[0]}
+        borderless
+        controller={controller}
+        plugins={[...eventCalendarPlugins, ...schedulerOnlyPlugins, ...userPlugins]}
+        {...restOptions}
+      />
+    </EventCalendarContainer>
   )
 }
 

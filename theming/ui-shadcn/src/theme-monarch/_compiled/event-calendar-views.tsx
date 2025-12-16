@@ -91,15 +91,15 @@ export function EventCalendarViews({
   return (
     <div
       className={cn(
-        className,
         liquidHeight && 'grow min-h-0',
+        className,
       )}
     >
       <FullCalendar
         height={liquidHeight ? '100%' : height}
 
         /* Abstract Event
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         eventShortHeight={50}
         eventColor='var(--primary)'
@@ -112,7 +112,7 @@ export function EventCalendarViews({
         )}
 
         /* Background Event
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         backgroundEventColor='var(--foreground)'
         backgroundEventClass='bg-[color-mix(in_oklab,var(--fc-event-color)_10%,transparent)]'
@@ -124,7 +124,7 @@ export function EventCalendarViews({
         )}
 
         /* List-Item Event
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         listItemEventClass={(data) => cn(
           'items-center',
@@ -136,7 +136,7 @@ export function EventCalendarViews({
         listItemEventInnerClass='flex flex-row items-center'
 
         /* Block Event
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         blockEventClass={(data) => cn(
           'group relative border-transparent print:border-(--fc-event-color) bg-(--fc-event-color) hover:bg-[color-mix(in_oklab,var(--fc-event-color)_92%,var(--fc-event-contrast-color))] print:bg-white',
@@ -148,7 +148,7 @@ export function EventCalendarViews({
         blockEventTitleClass='whitespace-nowrap overflow-hidden'
 
         /* Row Event
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         rowEventClass={(data) => cn(
           'mb-px border-y',
@@ -193,7 +193,7 @@ export function EventCalendarViews({
         )}
 
         /* Column Event
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         columnEventTitleSticky={false}
         columnEventClass={(data) => cn(
@@ -230,7 +230,7 @@ export function EventCalendarViews({
         )}
 
         /* More-Link
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         moreLinkClass="focus-visible:outline-3 outline-ring/50"
         moreLinkInnerClass='whitespace-nowrap overflow-hidden'
@@ -242,7 +242,7 @@ export function EventCalendarViews({
         )}
 
         /* Day Header
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         dayHeaderAlign='center'
         dayHeaderClass={(data) => cn(
@@ -277,7 +277,7 @@ export function EventCalendarViews({
         )}
 
         /* Day Cell
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         dayCellClass={(data) => cn(
           'border',
@@ -310,14 +310,14 @@ export function EventCalendarViews({
         dayCellInnerClass={(data) => cn(data.inPopover && 'p-2')}
 
         /* Popover
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         dayPopoverFormat={{ day: 'numeric', weekday: 'short' }}
         popoverClass='border rounded-md overflow-hidden shadow-lg m-1 bg-popover text-popover-foreground min-w-60'
         popoverCloseClass="group absolute top-2 end-2 size-8 rounded-full items-center justify-center hover:bg-foreground/5 focus-visible:outline-3 outline-ring/50"
 
         /* Lane
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         dayLaneClass={(data) => cn(
           'border',
@@ -335,7 +335,7 @@ export function EventCalendarViews({
         )}
 
         /* List Day
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         listDayFormat={{ day: 'numeric' }}
         listDaySideFormat={{ month: 'short', weekday: 'short', forceCommas: true }}
@@ -363,7 +363,7 @@ export function EventCalendarViews({
         listDayEventsClass='grow min-w-0 py-2 gap-1'
 
         /* Single Month (in Multi-Month)
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         singleMonthClass='m-4'
         singleMonthHeaderClass={(data) => cn(
@@ -377,7 +377,7 @@ export function EventCalendarViews({
         )}
 
         /* Misc Table
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         tableHeaderClass={(data) => cn(
           data.isSticky && 'border-b bg-background'
@@ -391,7 +391,7 @@ export function EventCalendarViews({
         dayRowClass='border'
 
         /* Misc Content
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         navLinkClass="focus-visible:outline-3 outline-ring/50"
         inlineWeekNumberClass={(data) => cn(
@@ -407,7 +407,7 @@ export function EventCalendarViews({
         nowIndicatorDotClass="-m-[6px] border-6 border-destructive size-0 rounded-full ring-2 ring-background"
 
         /* View-Specific Options
-        ------------------------------------------------------------------------------------------- */
+        ----------------------------------------------------------------------------------------- */
 
         views={{
           ...userViews,
@@ -428,7 +428,7 @@ export function EventCalendarViews({
             dayCellBottomClass: tallDayCellBottomClass,
 
             /* TimeGrid > Week Number Header
-            --------------------------------------------------------------------------------------- */
+            ------------------------------------------------------------------------------------- */
 
             weekNumberHeaderClass: 'items-center justify-end',
             weekNumberHeaderInnerClass: (data) => cn(
@@ -441,7 +441,7 @@ export function EventCalendarViews({
             ),
 
             /* TimeGrid > All-Day Header
-            --------------------------------------------------------------------------------------- */
+            ------------------------------------------------------------------------------------- */
 
             allDayHeaderClass: 'items-center justify-end',
             allDayHeaderInnerClass: (data) => cn(
@@ -451,7 +451,7 @@ export function EventCalendarViews({
             allDayDividerClass: 'border-b',
 
             /* TimeGrid > Slot Header
-            --------------------------------------------------------------------------------------- */
+            ------------------------------------------------------------------------------------- */
 
             slotHeaderClass: (data) => cn(
               'w-2 self-end justify-end',
@@ -475,7 +475,7 @@ export function EventCalendarViews({
           list: {
 
             /* List-View > List-Item Event
-            --------------------------------------------------------------------------------------- */
+            ------------------------------------------------------------------------------------- */
 
             listItemEventClass: 'group p-2 rounded-s-full gap-2',
             listItemEventBeforeClass: 'mx-2 border-5',
@@ -487,7 +487,7 @@ export function EventCalendarViews({
             ),
 
             /* No-Events Screen
-            --------------------------------------------------------------------------------------- */
+            ------------------------------------------------------------------------------------- */
 
             noEventsClass: 'grow flex flex-col items-center justify-center',
             noEventsInnerClass: 'py-15',

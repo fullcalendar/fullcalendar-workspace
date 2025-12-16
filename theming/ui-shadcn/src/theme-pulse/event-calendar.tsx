@@ -22,7 +22,7 @@ export function EventCalendar({
   height,
   contentHeight,
   direction,
-  plugins: userPlugins,
+  plugins: userPlugins = [],
   ...restOptions
 }: EventCalendarProps) {
   const controller = useCalendarController()
@@ -54,10 +54,7 @@ export function EventCalendar({
           navLinkDayClick={navLinkDayClick}
           navLinkWeekClick={navLinkWeekClick}
           controller={controller}
-          plugins={[
-            ...eventCalendarPlugins,
-            ...(userPlugins || []),
-          ]}
+          plugins={[...eventCalendarPlugins, ...userPlugins]}
           {...restOptions}
         />
       </div>

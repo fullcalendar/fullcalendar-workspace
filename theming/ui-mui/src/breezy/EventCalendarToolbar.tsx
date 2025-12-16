@@ -1,6 +1,6 @@
 import React from 'react'
 import { CalendarController } from '@fullcalendar/core'
-import Box, { BoxProps } from '@mui/material/Box'
+import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
 import ToggleButton from '@mui/material/ToggleButton'
 
-export interface EventCalendarToolbarProps extends BoxProps {
+export interface EventCalendarToolbarProps {
   controller: CalendarController
   availableViews: string[]
   addButton?: {
@@ -24,20 +24,21 @@ export default function EventCalendarToolbar({
   controller,
   availableViews,
   addButton,
-  ...boxProps
 }: EventCalendarToolbarProps) {
   const buttons = controller.getButtonState()
 
   return (
     <Box
-      {...boxProps}
       sx={{
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: 1,
-        ...boxProps.sx,
+        padding: 2,
+        bgcolor: 'action.hover', // low-contrast grey
+        borderBottom: '1px solid',
+        borderColor: 'divider',
       }}
     >
       <Box

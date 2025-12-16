@@ -34,7 +34,7 @@ export function Scheduler({
   height,
   contentHeight,
   direction,
-  plugins: userPlugins,
+  plugins: userPlugins = [],
   ...restOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
@@ -66,11 +66,7 @@ export function Scheduler({
           navLinkDayClick={navLinkDayClick}
           navLinkWeekClick={navLinkWeekClick}
           controller={controller}
-          plugins={[
-            ...eventCalendarPlugins,
-            ...schedulerOnlyPlugins,
-            ...(userPlugins || []),
-          ]}
+          plugins={[...eventCalendarPlugins, ...schedulerOnlyPlugins, ...userPlugins]}
           {...restOptions}
         />
       </div>

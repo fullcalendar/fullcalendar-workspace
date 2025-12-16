@@ -44,7 +44,7 @@ export default function Scheduler({
   height,
   contentHeight,
   direction,
-  plugins: userPlugins,
+  plugins: userPlugins = [],
   ...restOptions
 }: SchedulerProps) {
   const controller = useCalendarController()
@@ -93,11 +93,7 @@ export default function Scheduler({
           height={height !== undefined ? '100%' : contentHeight}
           initialView={availableViews[0]}
           controller={controller}
-          plugins={[
-            ...eventCalendarPlugins,
-            ...schedulerOnlyPlugins,
-            ...(userPlugins || []),
-          ]}
+          plugins={[...eventCalendarPlugins, ...schedulerOnlyPlugins, ...userPlugins]}
           {...restOptions}
         />
       </Box>
